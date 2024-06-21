@@ -69,13 +69,6 @@ export class AccessContractUsageAndServicesTabComponent {
   public form: FormGroup;
   public submitted = false;
   public originatingAgenciesOptions: VitamuiAutocompleteMultiselectOptions;
-  public usages: Option[] = [
-    { key: 'BinaryMaster', label: 'Archives numériques originales', info: '' },
-    { key: 'Dissemination', label: 'Copies de diffusion', info: '' },
-    { key: 'Thumbnail', label: 'Vignettes', info: '' },
-    { key: 'TextContent', label: 'Contenu textuel', info: '' },
-    { key: 'PhysicalMaster', label: 'Archives physiques', info: '' },
-  ];
 
   private _accessContract: AccessContract;
 
@@ -134,10 +127,6 @@ export class AccessContractUsageAndServicesTabComponent {
       accessContract.originatingAgencies = [];
     }
 
-    if (!accessContract.dataObjectVersion) {
-      accessContract.dataObjectVersion = [];
-    }
-
     this._accessContract = { ...accessContract, originatingAgencies: accessContract.originatingAgencies?.sort() };
 
     this.agencyService
@@ -151,7 +140,6 @@ export class AccessContractUsageAndServicesTabComponent {
       )
       .subscribe(() => {
         this.form.controls.originatingAgencies.setValue(accessContract.originatingAgencies);
-        this.form.controls.dataObjectVersion.setValue(accessContract.dataObjectVersion);
       });
 
     this.resetForm(this._accessContract);
@@ -161,8 +149,6 @@ export class AccessContractUsageAndServicesTabComponent {
     this.form = this.formBuilder.group({
       everyOriginatingAgency: [true, Validators.required],
       originatingAgencies: [[]],
-      everyDataObjectVersion: [true, Validators.required],
-      dataObjectVersion: [[]],
     });
 
     this.form.controls.everyOriginatingAgency.valueChanges.subscribe((allAgencies) => {
@@ -178,20 +164,6 @@ export class AccessContractUsageAndServicesTabComponent {
         this.form.controls.originatingAgencies.updateValueAndValidity();
       }
     });
-
-    this.form.controls.everyDataObjectVersion.valueChanges.subscribe((allUsage) => {
-      if (allUsage) {
-        // remove required validator on usageSelect
-        this.form.controls.dataObjectVersion.setValidators([]);
-        this.form.controls.dataObjectVersion.setValue([]);
-        this.form.controls.dataObjectVersion.updateValueAndValidity();
-      } else {
-        // add required validator on usageSelect
-        this.form.controls.dataObjectVersion.setValidators(Validators.required);
-        this.form.controls.dataObjectVersion.markAllAsTouched();
-        this.form.controls.dataObjectVersion.updateValueAndValidity();
-      }
-    });
   }
 
   private resetForm(accessContract: AccessContract): void {
@@ -205,14 +177,6 @@ export class AccessContractUsageAndServicesTabComponent {
     } else {
       // add required validator on originatingAgencySelect
       this.form.controls.originatingAgencies.setValidators(Validators.required);
-    }
-
-    if (accessContract.everyDataObjectVersion) {
-      // remove required validator on usageSelect
-      this.form.controls.dataObjectVersion.setValidators([]);
-    } else {
-      // add required validator on usageSelect
-      this.form.controls.dataObjectVersion.setValidators(Validators.required);
     }
 
     this.form.reset(accessContract, { emitEvent: false });

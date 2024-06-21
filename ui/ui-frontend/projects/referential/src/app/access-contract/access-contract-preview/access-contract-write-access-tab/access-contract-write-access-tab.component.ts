@@ -34,12 +34,12 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { FormBuilder, FormGroup, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
 import { extend, isEmpty } from 'underscore';
-import { AccessContract, diff } from 'vitamui-library';
+import { AccessContract, diff, Option } from 'vitamui-library';
 import { AccessContractService } from '../../access-contract.service';
 
 @Component({
@@ -47,16 +47,18 @@ import { AccessContractService } from '../../access-contract.service';
   templateUrl: './access-contract-write-access-tab.component.html',
   styleUrls: ['./access-contract-write-access-tab.component.scss'],
 })
-export class AccessContractWriteAccessTabComponent {
-  @Input() set accessContract(accessContract: AccessContract) {
-    this._accessContract = accessContract;
+export class AccessContractWriteAccessTabComponent implements OnInit {
+  public usages: Option[] = [
+    { key: 'BinaryMaster', label: 'Archives numériques originales', info: '' },
+    { key: 'Dissemination', label: 'Copies de diffusion', info: '' },
+    { key: 'Thumbnail', label: 'Vignettes', info: '' },
+    { key: 'TextContent', label: 'Contenu textuel', info: '' },
+    { key: 'PhysicalMaster', label: 'Archives physiques', info: '' },
+  ];
 
-    if (!accessContract.writingPermission) {
-      accessContract.writingPermission = false;
-      accessContract.writingRestrictedDesc = null;
-    } else if (!accessContract.writingRestrictedDesc) {
-      accessContract.writingRestrictedDesc = false;
-    }
+  @Input() set accessContract(accessContract: AccessContract) {
+    accessContract.dataObjectVersion = accessContract.dataObjectVersion || [];
+    this._accessContract = accessContract;
 
     this.resetForm(this.accessContract);
   }
@@ -80,20 +82,59 @@ export class AccessContractWriteAccessTabComponent {
     private formBuilder: FormBuilder,
     private accessContractService: AccessContractService,
   ) {
-    this.form = this.formBuilder.group({
-      writingRestrictedDesc: [true],
-      writingPermission: [false],
+    this.form = this.formBuilder.group(
+      {
+        writingPermission: [false],
+        downloadChoose: ['ALL'],
+        everyDataObjectVersion: [true],
+        dataObjectVersion: [new Array<string>()],
+        writingAuthorizedDesc: [false],
+      },
+      {
+        validators: [this.validator()],
+      },
+    );
+  }
+
+  ngOnInit() {
+    this.form.get('downloadChoose').valueChanges.subscribe((val) => {
+      this.form.get('everyDataObjectVersion').setValue(val === 'ALL', { emitEvent: false });
+
+      if (val !== 'SELECTION') {
+        this.form.get('dataObjectVersion').setValue([], { emitEvent: false });
+      }
     });
 
-    this.form.controls.writingPermission.valueChanges.subscribe((value) => {
-      if (!value) {
-        this.form.controls.writingRestrictedDesc.setValue(false);
+    this.onWritingRestrictedDescChanges();
+  }
+
+  onWritingRestrictedDescChanges(): void {
+    this.form.get('writingAuthorizedDesc').valueChanges.subscribe((val) => {
+      if (val) {
+        this.form.get('writingPermission').setValue(true, { emitEvent: false });
+      }
+    });
+
+    this.form.get('writingPermission').valueChanges.subscribe((val) => {
+      if (!val) {
+        this.form.get('writingAuthorizedDesc').setValue(false, { emitEvent: false });
       }
     });
   }
 
+  private validator(): ValidatorFn {
+    return (form: FormGroup): ValidationErrors | null => {
+      const downloadChoose = form.get('downloadChoose').value;
+      const dataObjectVersion = form.get('dataObjectVersion').value;
+      if (downloadChoose === 'SELECTION' && dataObjectVersion.length === 0) {
+        return { dataObjectVersion: true };
+      }
+      return null;
+    };
+  }
+
   public unChanged(): boolean {
-    const unchanged = JSON.stringify(diff(this.form.getRawValue(), this.previousValue())) === '{}';
+    const unchanged = JSON.stringify(diff(this.formDataValue(), this.previousValue())) === '{}';
     this.updated.emit(!unchanged);
 
     return unchanged;
@@ -115,8 +156,18 @@ export class AccessContractWriteAccessTabComponent {
     );
   }
 
+  private formDataValue(): AccessContract {
+    const accessContractValue = {
+      ...this.form.getRawValue(),
+      writingRestrictedDesc: !this.form.getRawValue().writingAuthorizedDesc,
+    };
+    delete accessContractValue.writingAuthorizedDesc;
+    delete accessContractValue.downloadChoose;
+    return accessContractValue;
+  }
+
   private prepareSubmit(): Observable<AccessContract> {
-    return of(diff(this.form.getRawValue(), this.previousValue())).pipe(
+    return of(diff(this.formDataValue(), this.previousValue())).pipe(
       filter((formData) => !isEmpty(formData)),
       map((formData) => extend({ id: this.previousValue().id, identifier: this.previousValue().identifier }, formData)),
       switchMap((formData: { id: string; [key: string]: any }) =>
@@ -126,6 +177,19 @@ export class AccessContractWriteAccessTabComponent {
   }
 
   private resetForm(accessContract: AccessContract): void {
-    this.form.reset(accessContract, { emitEvent: false });
+    const downloadChoose = accessContract.everyDataObjectVersion
+      ? 'ALL'
+      : accessContract.dataObjectVersion?.length > 0
+        ? 'SELECTION'
+        : 'NONE';
+
+    const accessContractForm = {
+      ...accessContract,
+      downloadChoose: downloadChoose,
+      writingAuthorizedDesc: !accessContract.writingRestrictedDesc,
+    };
+    delete accessContractForm.writingRestrictedDesc;
+
+    this.form.reset(accessContractForm, { emitEvent: false });
   }
 }

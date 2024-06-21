@@ -17,30 +17,6 @@
     </vitamui-common-autocomplete-multi-select>
   </ng-container>
 
-  <vitamui-common-slide-toggle class="w-100 mt-2" formControlName="everyDataObjectVersion">
-    <span>{{ 'ACCESS_CONTRACT.TAB.USAGE.ALL_USAGES' | translate }}</span>
-  </vitamui-common-slide-toggle>
-
-  <mat-form-field class="vitamui-mat-select w-100 p-0" *ngIf="!form?.get('everyDataObjectVersion')?.value">
-    <mat-select
-      formControlName="dataObjectVersion"
-      placeholder="{{ 'ACCESS_CONTRACT.TAB.USAGE.SELECT_USAGES' | translate }}"
-      panelclass="vitamui-mat-select"
-      multiple
-      required
-    >
-      <mat-option *ngFor="let usage of usages" [value]="usage.key"> {{ usage.label }}</mat-option>
-    </mat-select>
-    <div class="select-arrow">
-      <i class="material-icons">keyboard_arrow_up</i>
-      <i class="material-icons">keyboard_arrow_down</i>
-    </div>
-  </mat-form-field>
-
-  <div *ngIf="form.controls.dataObjectVersion?.touched && form.controls.dataObjectVersion.errors?.required" class="text caption danger m-2">
-    {{ 'ACCESS_CONTRACT.TAB.USAGE.NO_USAGE_SELECTED' | translate }}
-  </div>
-
   <button type="submit" class="btn primary mt-4" [disabled]="unChanged() || isInvalid() || submitted">
     {{ 'COMMON.SAVE' | translate }}
   </button>

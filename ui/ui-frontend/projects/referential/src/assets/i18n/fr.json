@@ -410,7 +410,7 @@
         "DEACTIVATION_DATE": "Date de désactivation"
       },
       "USAGE": {
-        "TITLE": "Usages et services",
+        "TITLE": "services",
         "ALL_AGENCIES": "Tous les services producteurs",
         "SELECT_AGENCY": "Service(s) producteur",
         "SELECT_AGENCY_SEARCH": "Taper l'ID ou le nom de service producteur",
@@ -420,7 +420,7 @@
         "NO_USAGE_SELECTED": "Veuillez sélectionner au moins un usage"
       },
       "WRITE_RIGHTS": {
-        "TITLE": "Droits d'écriture",
+        "TITLE": "Droits",
         "WRITING_RESTRICTION": "Restriction de modification aux métadonnées descriptives",
         "WRITE_RIGHT": "Droits d'écriture"
       },
@@ -457,8 +457,15 @@
       "EVERY_DATA_OBJECT_VERSION_TOOLTIP": "Usage auquel donne droit le contrat d'accès",
       "EVERY_DATA_OBJECT_VERSION_SELECT_PLACEHOLDER": "Sélectionnez les usages",
       "EVERY_DATA_OBJECT_VERSION_SELECT_TOOLTIP": "Choisir de un à plusieurs usages",
-      "WRITING_PERMISSION_TITLE": "Droits d'écriture",
-      "WRITING_PERMISSION": "Droits d'écriture",
+      "WRITING_PERMISSION_TITLE": "Droits d'écriture et en téléchargement",
+      "WRITE_PERMISSION_AUTHORIZE": "Autoriser les droits en écriture",
+      "AUTHORIZE_DESCRIPTIVE_METADATA_WRITE": "Autoriser l’écriture sur les métadonnées descriptives",
+      "AUTHORIZE_MANAGEMENT_METADATA_WRITE": "Autoriser l’écriture sur les métadonnées de gestion",
+      "AUTHORIZE_OBJECT_DOWNLOAD": "Autoriser le téléchargement d’objets",
+      "OBJECT_TYPE": "Type d’objet",
+      "ALL": "Tous",
+      "NONE": "Aucun",
+      "SELECTION": "Sélection",
       "WRITING_PERMISSION_TOOLTIP": "Donner des droits en écriture sur les archives",
       "WRITING_RESTRICTED_DESC": "Restriction de modification aux métadonnées descriptives",
       "POSITIONS_TITLE": "Positions de consultation",

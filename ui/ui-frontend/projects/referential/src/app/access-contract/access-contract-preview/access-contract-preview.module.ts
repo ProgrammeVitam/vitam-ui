@@ -57,6 +57,7 @@ import { AccessContractNodeUpdateComponent } from './access-contract-nodes-tab/a
 import { AccessContractPreviewComponent } from './access-contract-preview.component';
 import { AccessContractUsageAndServicesTabComponent } from './access-contract-usage-and-services-tab/access-contract-usage-and-services-tab.component';
 import { AccessContractWriteAccessTabComponent } from './access-contract-write-access-tab/access-contract-write-access-tab.component';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 
 @NgModule({
   imports: [
@@ -76,6 +77,7 @@ import { AccessContractWriteAccessTabComponent } from './access-contract-write-a
     MatTabsModule,
     MatFormFieldModule,
     MatInputModule,
+    MatButtonToggleModule,
   ],
   declarations: [
     AccessContractPreviewComponent,

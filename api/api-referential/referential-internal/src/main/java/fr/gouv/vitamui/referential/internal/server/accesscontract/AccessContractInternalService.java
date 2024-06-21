@@ -93,7 +93,13 @@ import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class AccessContractInternalService {
@@ -259,12 +265,18 @@ public class AccessContractInternalService {
             LOGGER.debug("Patch Access Contract EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
             // Fix because Vitam doesn't allow String Array as action value (transformed to a string representation"[value1, value2]"
             // Manual setting instead of updateRequest.addActions( UpdateActionHelper.set(fieldsUpdated));
-            JsonNode fieldsUpdated = converter.convertToUpperCaseFields(partialDto);
 
-            ObjectNode action = JsonHandler.createObjectNode();
-            action.set("$set", fieldsUpdated);
+            if (
+                Boolean.TRUE.equals(partialDto.get("everyDataObjectVersion")) ||
+                partialDto.get("dataObjectVersion") == null
+            ) {
+                partialDto.put("dataObjectVersion", new HashSet<>());
+            }
 
             ArrayNode actions = JsonHandler.createArrayNode();
+            JsonNode fieldsUpdated = converter.convertToUpperCaseFields(partialDto);
+            ObjectNode action = JsonHandler.createObjectNode();
+            action.set("$set", fieldsUpdated);
             actions.add(action);
 
             ObjectNode query = JsonHandler.createObjectNode();

@@ -52,8 +52,6 @@ describe('AccessContractUsageAndServicesTabComponent', () => {
   const accessContractValue = {
     everyOriginatingAgency: true,
     originatingAgencies: ['test'],
-    everyDataObjectVersion: true,
-    dataObjectVersion: ['test'],
   };
 
   const previousValue: AccessContract = {

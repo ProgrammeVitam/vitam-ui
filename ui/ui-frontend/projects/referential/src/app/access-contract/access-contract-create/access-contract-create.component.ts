@@ -145,21 +145,37 @@ export class AccessContractCreateComponent implements OnInit, OnDestroy {
         {
           everyOriginatingAgency: [true],
           originatingAgencies: [[]],
-          everyDataObjectVersion: [true],
-          dataObjectVersion: [new Array<string>()],
         },
         {
           validators: [this.secondStepValidator()],
         },
       ),
       /* <- step 3 -> */
-      writingPermission: [false],
-      writingRestrictedDesc: [true],
+      thirdStep: this.formBuilder.group(
+        {
+          writingPermission: [false],
+          downloadChoose: ['ALL'],
+          everyDataObjectVersion: [true],
+          dataObjectVersion: [new Array<string>()],
+          writingAuthorizedDesc: [false],
+        },
+        {
+          validators: [this.thirdStepValidator()],
+        },
+      ),
       /* <- step 4 -> */
       rootUnits: [[], Validators.required],
       excludedRootUnits: [[]],
     });
 
+    this.form.get('thirdStep.downloadChoose').valueChanges.subscribe((val) => {
+      this.form.get('thirdStep.everyDataObjectVersion').setValue(val === 'ALL', { emitEvent: false });
+
+      if (val !== 'SELECTION') {
+        this.form.get('thirdStep.dataObjectVersion').setValue(null);
+      }
+    });
+    this.onWritingRestrictedDescChanges();
     this.selectNodesControl.valueChanges.subscribe((value: { included: string[]; excluded: string[] }) => {
       this.form.controls.rootUnits.setValue(value.included);
       this.form.controls.excludedRootUnits.setValue(value.excluded);
@@ -200,6 +216,7 @@ export class AccessContractCreateComponent implements OnInit, OnDestroy {
     accessContract.status === 'ACTIVE'
       ? (accessContract.activationDate = new Date().toISOString())
       : (accessContract.deactivationDate = new Date().toISOString());
+
     this.accessContractService.create(accessContract).subscribe(
       () => {
         this.isDisabledButton = false;
@@ -228,13 +245,35 @@ export class AccessContractCreateComponent implements OnInit, OnDestroy {
     );
   }
 
+  onWritingRestrictedDescChanges(): void {
+    this.form.get('thirdStep.writingAuthorizedDesc').valueChanges.subscribe((val) => {
+      if (val) {
+        this.form.get('thirdStep.writingPermission').setValue(true, { emitEvent: false });
+      }
+    });
+
+    this.form.get('thirdStep.writingPermission').valueChanges.subscribe((val) => {
+      if (!val) {
+        this.form.get('thirdStep.writingAuthorizedDesc').setValue(false, { emitEvent: false });
+      }
+    });
+  }
+
+  private thirdStepValidator(): ValidatorFn {
+    return (form: FormGroup): ValidationErrors | null => {
+      const downloadChoose = form.get('downloadChoose').value;
+      const dataObjectVersion = form.get('dataObjectVersion').value;
+      if (downloadChoose === 'SELECTION' && dataObjectVersion.length === 0) {
+        return { dataObjectVersion: true };
+      }
+      return null;
+    };
+  }
+
   private secondStepValidator(): ValidatorFn {
     return (form: FormGroup): ValidationErrors | null => {
       if (form.get('everyOriginatingAgency').value == false && form.get('originatingAgencies').value.length == 0) {
         return { originatingAgencies: true };
-      }
-      if (form.get('everyDataObjectVersion').value === false && form.get('dataObjectVersion').value.length == 0) {
-        return { dataObjectVersion: true };
       }
       return null;
     };
@@ -253,8 +292,11 @@ export class AccessContractCreateComponent implements OnInit, OnDestroy {
       ...form.value,
       everyOriginatingAgency: this.getControl(form, 'secondStep.everyOriginatingAgency').value,
       originatingAgencies: this.getControl(form, 'secondStep.originatingAgencies').value,
-      everyDataObjectVersion: this.getControl(form, 'secondStep.everyDataObjectVersion').value,
-      dataObjectVersion: this.getControl(form, 'secondStep.dataObjectVersion').value,
+      writingPermission: this.getControl(form, 'thirdStep.writingPermission').value,
+      downloadChoose: this.getControl(form, 'thirdStep.downloadChoose').value,
+      everyDataObjectVersion: this.getControl(form, 'thirdStep.everyDataObjectVersion').value,
+      dataObjectVersion: this.getControl(form, 'thirdStep.dataObjectVersion').value,
+      writingRestrictedDesc: !this.getControl(form, 'thirdStep.writingAuthorizedDesc').value,
       status: this.mapStatus(this.getControl(form, 'status').value),
       accessLog: this.mapStatus(this.getControl(form, 'accessLog').value),
     } as AccessContract;
