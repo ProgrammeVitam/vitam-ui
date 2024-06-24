@@ -1,0 +1,22 @@
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0
+          https://maven.apache.org/xsd/settings-1.0.0.xsd">
+    <servers>
+        <server>
+            <id>vitam</id>
+            <username>${env.CI_USR}</username>
+            <password>${env.CI_PSW}</password>
+        </server>
+        <server>
+            <id>vitam-snapshots</id>
+            <username>${env.CI_USR}</username>
+            <password>${env.CI_PSW}</password>
+        </server>
+        <server>
+            <id>vitam-releases</id>
+            <username>${env.CI_USR}</username>
+            <password>${env.CI_PSW}</password>
+        </server>
+    </servers>
+</settings>

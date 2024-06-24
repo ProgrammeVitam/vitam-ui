@@ -77,6 +77,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.time.format.DateTimeFormatter;
 import java.util.Collection;
 import java.util.Optional;
 
@@ -166,8 +167,8 @@ public class OperationExternalController {
             X500Name signerCertIssuer = signerId.getIssuer();
             result.put(
                 "genTime",
-                LocalDateUtil.getString(
-                    LocalDateUtil.fromDate(tsResp.getTimeStampToken().getTimeStampInfo().getGenTime())
+                LocalDateUtil.fromDate(tsResp.getTimeStampToken().getTimeStampInfo().getGenTime()).format(
+                    DateTimeFormatter.ISO_DATE_TIME
                 )
             );
             result.put("signerCertIssuer", signerCertIssuer.toString());

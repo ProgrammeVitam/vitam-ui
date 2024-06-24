@@ -380,11 +380,11 @@
 
             <distributionManagement>
                 <repository>
-                    <id>releases</id>
+                    <id>vitam-releases</id>
                     <url>${env.SERVICE_NEXUS_URL}/repository/maven-releases/</url>
                 </repository>
                 <snapshotRepository>
-                    <id>snapshots</id>
+                    <id>vitam-snapshots</id>
                     <url>${env.SERVICE_NEXUS_URL}/repository/maven-snapshots/</url>
                 </snapshotRepository>
                 <site>
@@ -395,25 +395,20 @@
 
             <repositories>
                 <repository>
-                    <id>vitam</id>
-                    <url>${env.SERVICE_NEXUS_URL}/repository/maven-public/</url>
+                    <id>vitam-releases</id>
+                    <name>Vitam release repository</name>
+                    <releases><enabled>true</enabled></releases>
+                    <snapshots><enabled>false</enabled></snapshots>
+                    <url>${env.SERVICE_NEXUS_URL}/repository/maven-releases/</url>
+                </repository>
+                <repository>
+                    <id>vitam-snapshots</id>
+                    <name>Vitam SNAPSHOT repository</name>
+                    <releases><enabled>false</enabled></releases>
+                    <snapshots><enabled>true</enabled></snapshots>
+                    <url>${env.SERVICE_NEXUS_URL}/repository/maven-snapshots/</url>
                 </repository>
             </repositories>
-
-            <!-- Maven plugins repositories -->
-            <pluginRepositories>
-                <pluginRepository>
-                    <id>vitam</id>
-                    <url>${env.SERVICE_NEXUS_URL}/repository/maven-public/</url>
-                    <releases>
-                        <enabled>true</enabled>
-                    </releases>
-                    <snapshots>
-                        <enabled>false</enabled>
-                    </snapshots>
-                </pluginRepository>
-            </pluginRepositories>
-
         </profile>
     </profiles>
 </project>

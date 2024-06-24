@@ -28,6 +28,12 @@ jobs:
         with:
           distribution: "temurin"
           java-version: "11"
-          cache: "maven"
+      - name: Restore maven cache # We're not using cache feature from actions/setup-java as it could conflict with other GitHub Actions maven caches (our cache doesn't include all Vitam dependencies: it is limited to spotless and its dependencies)
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.m2/repository
+            **/target/spotless-prettier-node-modules-*
+          key: maven-spotless-${{ runner.os }}-${{ hashFiles('**/pom.xml') }} # We invalidate cache if pom.xml change to detect spotless version update or new maven modules
       - name: Lint Java
         run: mvn -T1C spotless:check
