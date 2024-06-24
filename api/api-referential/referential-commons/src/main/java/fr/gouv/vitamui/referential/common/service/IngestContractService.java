@@ -138,11 +138,11 @@ public class IngestContractService {
             ac.setComputeInheritedRulesAtIngest(acModel.isComputeInheritedRulesAtIngest());
 
             if (acModel.getActivationdate() != null) {
-                ac.setActivationdate(LocalDateUtil.getFormattedDateForMongo(acModel.getActivationdate()));
+                ac.setActivationdate(LocalDateUtil.getFormattedDateTimeForMongo(acModel.getActivationdate()));
             }
 
             if (acModel.getDeactivationdate() != null) {
-                ac.setDeactivationdate(LocalDateUtil.getFormattedDateForMongo(acModel.getDeactivationdate()));
+                ac.setDeactivationdate(LocalDateUtil.getFormattedDateTimeForMongo(acModel.getDeactivationdate()));
             }
 
             LOGGER.debug("outputIC: {}", ac);
