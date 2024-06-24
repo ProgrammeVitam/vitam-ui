@@ -1,13 +1,54 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
-  <vitamui-common-slide-toggle class="w-100" formControlName="writingPermission">
-    <span>{{ 'ACCESS_CONTRACT.TAB.WRITE_RIGHTS.WRITE_RIGHT' | translate }}</span>
-  </vitamui-common-slide-toggle>
+  <div class="mt-4 mb-4">
+    <div class="title-text medium light">{{ 'ACCESS_CONTRACT.CREATE_DIALOG.WRITE_PERMISSION_AUTHORIZE' | translate }}</div>
+    <div class="mt-3">
+      <vitamui-common-slide-toggle formControlName="writingPermission"
+        >{{ 'ACCESS_CONTRACT.CREATE_DIALOG.AUTHORIZE_DESCRIPTIVE_METADATA_WRITE' | translate }}
+        <i
+          class="vitamui-icon vitamui-icon-info align-middle primary"
+          vitamuiCommonToolTip="{{ 'ACCESS_CONTRACT.CREATE_DIALOG.AUTHORIZE_DESCRIPTIVE_METADATA_WRITE' | translate }}"
+          vitamuiCommonToolTipPosition="BOTTOM"
+        ></i>
+      </vitamui-common-slide-toggle>
+    </div>
+    <div>
+      <vitamui-common-slide-toggle formControlName="writingAuthorizedDesc"
+        >{{ 'ACCESS_CONTRACT.CREATE_DIALOG.AUTHORIZE_MANAGEMENT_METADATA_WRITE' | translate }}
+      </vitamui-common-slide-toggle>
+    </div>
+  </div>
 
-  <vitamui-common-slide-toggle class="w-100 p-0" *ngIf="!!form.controls.writingPermission.value" formControlName="writingRestrictedDesc">
-    <span>{{ 'ACCESS_CONTRACT.TAB.WRITE_RIGHTS.WRITING_RESTRICTION' | translate }}</span>
-  </vitamui-common-slide-toggle>
+  <div class="mt-4 mb-4" class="half-width">
+    <div class="title-text medium light">{{ 'ACCESS_CONTRACT.CREATE_DIALOG.AUTHORIZE_OBJECT_DOWNLOAD' | translate }}</div>
 
-  <button type="submit" class="btn primary mt-4" [disabled]="unChanged() || submited">
+    <div class="mt-4 mb-4 equal-width-container">
+      <div>
+        <mat-button-toggle-group formControlName="downloadChoose" class="vitamui-button-toggle-group">
+          <mat-button-toggle value="ALL">{{ 'ACCESS_CONTRACT.CREATE_DIALOG.ALL' | translate }}</mat-button-toggle>
+          <mat-button-toggle value="NONE">{{ 'ACCESS_CONTRACT.CREATE_DIALOG.NONE' | translate }}</mat-button-toggle>
+          <mat-button-toggle value="SELECTION">{{ 'ACCESS_CONTRACT.CREATE_DIALOG.SELECTION' | translate }}</mat-button-toggle>
+        </mat-button-toggle-group>
+      </div>
+
+      <div class="mt-2 mb-4" *ngIf="form.get('downloadChoose').value === 'SELECTION'">
+        <mat-form-field class="vitamui-mat-select pb-0 full-width">
+          <mat-select
+            formControlName="dataObjectVersion"
+            [placeholder]="'ACCESS_CONTRACT.CREATE_DIALOG.EVERY_DATA_OBJECT_VERSION_SELECT_PLACEHOLDER' | translate"
+            multiple
+            required
+          >
+            <mat-option *ngFor="let usage of usages" [value]="usage.key">{{ usage.label }}</mat-option>
+          </mat-select>
+          <div class="select-arrow">
+            <i class="material-icons">keyboard_arrow_down</i>
+          </div>
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+
+  <button type="submit" class="btn primary mt-4" [disabled]="form.errors || unChanged() || submited">
     {{ 'COMMON.SAVE' | translate }}
   </button>
 </form>

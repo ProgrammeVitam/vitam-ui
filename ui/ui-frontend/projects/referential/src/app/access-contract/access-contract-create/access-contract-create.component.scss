@@ -1,0 +1,16 @@
+.equal-width-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.equal-width-container > * {
+  width: 100%;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.half-width {
+  width: 47%;
+}
