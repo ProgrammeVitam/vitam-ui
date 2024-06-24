@@ -41,7 +41,7 @@
     "build:archive-search": "export NODE_OPTIONS=--max_old_space_size=2048; ng build archive-search --configuration production --base-href=/archive-search/ --deploy-url=/archive-search/",
     "build:referential": "export NODE_OPTIONS=--max_old_space_size=2048; ng build referential --configuration production --base-href=/referential/ --deploy-url=/referential/",
     "build:pastis": "export NODE_OPTIONS=--max_old_space_size=2048; ng build pastis --configuration production --base-href=/pastis/ --deploy-url=/pastis/",
-    "build:pastis-standalone": "NODE_OPTIONS=--max_old_space_size=2048 ng build --configuration=standalone --project=pastis",
+    "build:pastis-standalone": "NODE_OPTIONS=--max_old_space_size=2048 ng build pastis --configuration=standalone",
     "build:collect": "export NODE_OPTIONS=--max_old_space_size=2048; ng build collect --configuration production --base-href=/collect/ --deploy-url=/collect/",
     "build:design-system": "export NODE_OPTIONS=--max_old_space_size=2048; ng build design-system --configuration production --base-href=/design-system/ --deploy-url=/design-system/",
     "analyze-portal": "ng build portal --stats-json --configuration production ; webpack-bundle-analyzer dist/portal/stats.json",
