@@ -157,7 +157,7 @@
     "@angular/cli": "^17.3.8",
     "@angular/compiler-cli": "17.3.11",
     "@angular/language-service": "17.3.11",
-    "@biesbjerg/ngx-translate-extract": "^7.0.2",
+    "@vendure/ngx-translate-extract": "^9.2.0",
     "@types/d3": "^7.4.3",
     "@types/file-saver-es": "^2.0.3",
     "@types/jasmine": "~5.1.4",
