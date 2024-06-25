@@ -36,7 +36,7 @@
     "ci:test": "concurrently --max-processes 4 'npm:test:*'",
     "copy-scss:vitamui-library": "mkdir -p dist/ && cp -a ./projects/vitamui-library/src/sass ./dist/",
     "e2e": "ng e2e",
-    "extract:i18n": "ngx-translate-extract --input ./projects --output ./i18n.json --sort --format namespaced-json --key-as-default-value",
+    "i18n:extract": "ngx-translate-extract --input $(find ./projects/*/src/ -maxdepth 0) --output ./projects/vitamui-library/src/assets/shared-i18n/{fr,en}.json --format-indentation '  ' --sort --format namespaced-json --key-as-default-value",
     "lint:archive-search": "ng lint archive-search --format=stylish",
     "lint:collect": "ng lint collect --format=stylish",
     "lint:demo": "ng lint demo --format=stylish",
