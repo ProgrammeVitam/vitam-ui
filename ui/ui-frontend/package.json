@@ -128,13 +128,10 @@
     "fast-xml-parser": "^4.4.0",
     "file-saver-es": "^2.0.5",
     "filesize": "^9.0.11",
-    "generate-schema": "^2.6.0",
-    "jquery": "^3.5.1",
     "jszip": "^3.9.0",
     "lodash-es": "^4.17.15",
     "material-design-icons-iconfont": "^6.7.0",
     "moment": "^2.26.0",
-    "ng2-date-picker": "^17.0.0",
     "ng2-file-upload": "^5.0.0",
     "ngx-color-picker": "^16.0.0",
     "ngx-filesize": "^3.0.3",
@@ -142,7 +139,6 @@
     "ngx-toastr": "^19.0.0",
     "ngx-translate-multi-http-loader": "^8.0.2",
     "ngx-ui-loader": "^13.0.0",
-    "popper.js": "^1.16.1",
     "rxjs": "^7.8.1",
     "tslib": "^2.0.0",
     "underscore": "^1.13.1",
@@ -182,10 +178,10 @@
     "json-server": "^0.16.3",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.1.0",
-    "karma-coverage-istanbul-reporter": "~3.0.3",
     "karma-coverage": "^2.1.0",
-    "karma-jasmine-html-reporter": "~2.1.0",
+    "karma-coverage-istanbul-reporter": "~3.0.3",
     "karma-jasmine": "~5.1.0",
+    "karma-jasmine-html-reporter": "~2.1.0",
     "karma-junit-reporter": "2.0.1",
     "karma-spec-reporter": "0.0.36",
     "lint-staged": "13.2.3",
@@ -199,11 +195,6 @@
     "webpack-bundle-analyzer": "^3.8.0"
   },
   "overrides": {
-    "ng2-date-picker": {
-      "@angular/core": "$@angular/core",
-      "@angular/common": "$@angular/common",
-      "@angular/cdk": "$@angular/cdk"
-    },
     "ng2-file-upload": {
       "@angular/core": "$@angular/core",
       "@angular/common": "$@angular/common",
