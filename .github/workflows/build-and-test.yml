@@ -134,6 +134,8 @@ jobs:
             ~/.m2/repository/*/*/*
             !~/.m2/repository/org/owasp/dependency-check-data
           key: maven-${{ runner.os }}-${{ hashFiles('**/pom.xml') }}
+      - name: Copy m2 repository in workspace "lib" directory to make it available from SonarCloud docker container # If not copied in the source code folder, it's not visible by the docker container
+        run: cp -r ~/.m2/repository ${{ github.workspace }}/lib
       - name: Download frontend test reports
         uses: actions/download-artifact@v4
         with:
