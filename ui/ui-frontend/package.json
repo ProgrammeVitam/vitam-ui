@@ -37,6 +37,8 @@
     "copy-scss:vitamui-library": "mkdir -p dist/ && cp -a ./projects/vitamui-library/src/sass ./dist/",
     "e2e": "ng e2e",
     "i18n:extract": "ngx-translate-extract --input $(find ./projects/*/src/ -maxdepth 0) --output ./projects/vitamui-library/src/assets/shared-i18n/{fr,en}.json --format-indentation '  ' --sort --format namespaced-json --key-as-default-value",
+    "i18n:check": "node i18n-check.js",
+    "i18n:fix": "node i18n-check.js --fix",
     "lint:archive-search": "ng lint archive-search --format=stylish",
     "lint:collect": "ng lint collect --format=stylish",
     "lint:demo": "ng lint demo --format=stylish",
