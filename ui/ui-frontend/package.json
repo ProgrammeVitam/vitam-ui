@@ -76,6 +76,7 @@
     "test": "ng test --code-coverage",
     "test:archive-search": "ng test archive-search --code-coverage ",
     "test:collect": "ng test collect --code-coverage",
+    "test:design-system": "ng test design-system --code-coverage",
     "test:identity": "ng test identity --code-coverage",
     "test:ingest": "ng test ingest --code-coverage",
     "test:pastis": "ng test pastis --code-coverage",
