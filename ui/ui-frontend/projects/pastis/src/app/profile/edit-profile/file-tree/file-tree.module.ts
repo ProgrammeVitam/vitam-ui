@@ -38,7 +38,6 @@ knowledge of the CeCILL-C license and that you accept its terms.
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { DpDatePickerModule } from 'ng2-date-picker';
 import { SharedModule } from '../../../shared/shared.module';
 import { UserActionsModule } from '../../../user-actions/user-actions.module';
 
@@ -65,7 +64,6 @@ import { FiletreeFilterPipe } from './pipes/file-tree-filter.pipe';
     MatTableModule,
     SharedModule,
     UserActionsModule,
-    DpDatePickerModule,
     EditableFieldModule,
     TranslateModule,
     VitamUICommonModule,
