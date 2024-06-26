@@ -36,7 +36,7 @@ spring:
               /portal-api/ui/applications/**,
               /portal-api/users/analytics,
               /portal-api/subrogations/**,
-              
+
               /identity-api/security,
               /identity-api/userinfos/**,
               /identity-api/ui/applications/**,
@@ -50,7 +50,7 @@ spring:
               /identity-api/profiles/**,
               /identity-api/accesscontracts/**,
               /identity-api/externalparamprofile/**,
-              
+
               /referential-api/security$,
               /referential-api/security/**,
               /referential-api/userinfos/**,
@@ -63,7 +63,7 @@ spring:
               /referential-api/profiles/**,
               /referential-api/externalparameters/**,
               /referential-api/customers/**,
-              
+
               /archive-search-api/ui/applications/**,
               /archive-search-api/externalparameters/**,
               /archive-search-api/security,
@@ -73,7 +73,7 @@ spring:
               /archive-search-api/users/analytics,
               /archive-search-api/logbooks/operations/**,
               /archive-search-api/accesscontracts/**,
-              
+
               /pastis-api/ui/**,
               /pastis-api/security,
               /pastis-api/userinfos/**,
@@ -81,7 +81,7 @@ spring:
               /pastis-api/users/analytics,
               /pastis-api/logbooks/operations/**,
               /pastis-api/accesscontracts/**,
-              
+
               /collect-api/ui/applications/**,
               /collect-api/externalparameters/**,
               /collect-api/security,
@@ -91,7 +91,7 @@ spring:
               /collect-api/users/analytics,
               /collect-api/logbooks/operations/**,
               /collect-api/accesscontracts/**,
-              
+
               /ingest-api/ui/applications/**,
               /ingest-api/externalparameters/**,
               /ingest-api/security,
@@ -147,7 +147,6 @@ spring:
             - RewritePath=/ingest-api/subrogations/(?<segment>.*),/iam/v1/subrogations/$\{segment},
             - RewritePath=/collect-api/(?<segment>.*),/v1/$\{segment}
 
-
             # Ingest IAM API
             - RewritePath=/ingest-api/ui/(?<segment>.*),/iam/v1/$\{segment}
             - RewritePath=/ingest-api/externalparameters(?<segment>.*),/iam/v1/externalparameters/me$\{segment},
@@ -180,17 +179,17 @@ spring:
               /referential-api/static/**,
               /referential-api/rules/**,
               /referential-api/rule/**,
-              
+
               /archive-search-api/security-profile/**,
               /archive-search-api/ontology/**,
               /archive-search-api/rules/**,
               /archive-search-api/schemas,
-              
+
               /pastis-api/archival-profile$,
               /pastis-api/archival-profile/**,
               /pastis-api/profile$,
               /pastis-api/profile/**,
-              
+
               /collect-api/ontology/**,
               /collect-api/search/**,
               /collect-api/rules/**,
@@ -265,7 +264,6 @@ spring:
             - RewritePath=/collect-api/transactions/archive-units/(?<segment>.*)/update-units-metadata,/collect-api/v1/transactions/$\{segment}/update-units-metadata,
             - RewritePath=/collect-api/transactions/archive-units(?<segment>.*),/collect-api/v1/transactions$\{segment},
             - RewritePath=/collect-api/transactions(?<segment>.*),/collect-api/v1/transactions$\{segment},
-
 
         - id: ingest-external-service
           uri: https://localhost:8088 # URL INGEST EXTERNAL

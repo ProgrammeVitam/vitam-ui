@@ -1,0 +1,17 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Gateway - API" type="Application" factoryName="Application">
+    <option name="MAIN_CLASS_NAME" value="fr.gouv.vitamui.gateway.ApiGatewayServerApplication" />
+    <module name="api-gateway" />
+    <option name="VM_PARAMETERS" value="-Dspring.profiles.active=dev" />
+    <option name="WORKING_DIRECTORY" value="$ProjectFileDir$/api/api-gateway" />
+    <extension name="coverage">
+      <pattern>
+        <option name="PATTERN" value="fr.gouv.vitamui.gateway.*" />
+        <option name="ENABLED" value="true" />
+      </pattern>
+    </extension>
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

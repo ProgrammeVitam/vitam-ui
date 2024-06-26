@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="6 - UI-Portal back" type="MavenRunConfiguration" factoryName="Maven">
+  <configuration default="false" name="Collect - API - Internal" type="MavenRunConfiguration" factoryName="Maven">
     <MavenSettings>
       <option name="myGeneralSettings" />
       <option name="myRunnerSettings" />
@@ -10,7 +10,9 @@
           </option>
           <option name="goals">
             <list>
+              <option value="clean" />
               <option value="spring-boot:run" />
+              <option value="-Pvitam" />
             </list>
           </option>
           <option name="pomFileName" />
@@ -18,7 +20,7 @@
             <map />
           </option>
           <option name="resolveToWorkspace" value="false" />
-          <option name="workingDirPath" value="$PROJECT_DIR$/ui/ui-portal" />
+          <option name="workingDirPath" value="$PROJECT_DIR$/api/api-collect/collect-internal" />
         </MavenRunnerParameters>
       </option>
     </MavenSettings>

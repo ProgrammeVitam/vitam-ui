@@ -246,3 +246,9 @@ api/api-collect/collect-internal/src/main/resources/ontology/
 # Mongo workspace entry-point #
 ##########################################
 tools/docker/mongo/mongo-entrypoint
+
+#####################
+# Python virtualenv #
+#####################
+
+.virtualenvs

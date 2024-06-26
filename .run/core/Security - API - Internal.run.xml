@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="3 - IAM-Internal" type="MavenRunConfiguration" factoryName="Maven">
+  <configuration default="false" name="Security - API - Internal" type="MavenRunConfiguration" factoryName="Maven">
     <MavenSettings>
       <option name="myGeneralSettings" />
       <option name="myRunnerSettings" />
@@ -10,8 +10,9 @@
           </option>
           <option name="goals">
             <list>
+              <option value="clean" />
               <option value="spring-boot:run" />
-              <option value="-Dspring-boot.run.fork=false" />
+              <option value="-Pvitam" />
             </list>
           </option>
           <option name="pomFileName" />
@@ -19,7 +20,7 @@
             <map />
           </option>
           <option name="resolveToWorkspace" value="false" />
-          <option name="workingDirPath" value="$PROJECT_DIR$/api/api-iam/iam-internal" />
+          <option name="workingDirPath" value="$PROJECT_DIR$/api/api-security/security-internal" />
         </MavenRunnerParameters>
       </option>
     </MavenSettings>

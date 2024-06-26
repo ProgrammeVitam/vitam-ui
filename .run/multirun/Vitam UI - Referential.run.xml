@@ -1,0 +1,8 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Vitam UI - Referential" type="Multirun" separateTabs="false" reuseTabsWithFailures="false" startOneByOne="true" markFailedProcess="true" hideSuccessProcess="false" delayTime="0.0">
+    <runConfiguration name="Referential - API - Internal" type="Maven" />
+    <runConfiguration name="Referential - API - External" type="Maven" />
+    <runConfiguration name="Referential - UI - Frontend" type="Shell Script" />
+    <method v="2" />
+  </configuration>
+</component>

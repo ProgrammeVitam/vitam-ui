@@ -1,0 +1,8 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Vitam UI - Ingest" type="Multirun" separateTabs="false" reuseTabsWithFailures="false" startOneByOne="true" markFailedProcess="true" hideSuccessProcess="false" delayTime="0.0">
+    <runConfiguration name="Ingest - API - Internal" type="Maven" />
+    <runConfiguration name="Ingest - API - External" type="Maven" />
+    <runConfiguration name="Ingest - UI - Frontend" type="Shell Script" />
+    <method v="2" />
+  </configuration>
+</component>

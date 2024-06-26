@@ -1,0 +1,8 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="PASTIS STANDALONE" type="Multirun" separateTabs="false" reuseTabsWithFailures="true" startOneByOne="true" markFailedProcess="true" hideSuccessProcess="false" delayTime="0.0">
+    <runConfiguration name="Pastis - API - Standalone" type="Application" />
+    <runConfiguration name="Vitam UI - Library" type="Shell Script" />
+    <runConfiguration name="Pastis - UI - Standalone" type="Shell Script" />
+    <method v="2" />
+  </configuration>
+</component>
