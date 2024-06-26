@@ -398,18 +398,6 @@
               "projects/referential/**/*.html"
             ]
           }
-        },
-        "e2e": {
-          "builder": "@angular-devkit/build-angular:protractor",
-          "options": {
-            "protractorConfig": "projects/referential/e2e/protractor.conf.js",
-            "devServerTarget": "referential:serve"
-          },
-          "configurations": {
-            "production": {
-              "devServerTarget": "referential:serve:production"
-            }
-          }
         }
       }
     },
@@ -1070,18 +1058,6 @@
               "projects/pastis/**/*.ts",
               "projects/pastis/**/*.html"
             ]
-          }
-        },
-        "e2e": {
-          "builder": "@angular-devkit/build-angular:protractor",
-          "options": {
-            "protractorConfig": "projects/pastis/e2e/protractor.conf.js",
-            "devServerTarget": "pastis:serve"
-          },
-          "configurations": {
-            "production": {
-              "devServerTarget": "pastis:serve:production"
-            }
           }
         }
       }
