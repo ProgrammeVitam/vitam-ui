@@ -62,7 +62,7 @@ export const customTemplate: DisplayRule[] = [
         columns: 2,
         size: 'small',
       },
-      label: 'Service producteur',
+      label: "Service producteur responsable de l'entrée",
       disabled: true,
     },
   },
