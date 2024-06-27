@@ -1,6 +1,6 @@
 <form [formGroup]="form" class="side-form" (ngSubmit)="onSubmit()">
   <div class="d-flex mt-3">
-    <vitamui-common-input formControlName="identifier" [placeholder]="'ONTOLOGY.TAB.INFORMATION.IDENTIFIER' | translate" disabled>
+    <vitamui-common-input formControlName="identifier" [placeholder]="'ONTOLOGY.TAB.INFORMATION.IDENTIFIER' | translate">
     </vitamui-common-input>
   </div>
 
@@ -25,7 +25,7 @@
     </mat-form-field>
   </div>
 
-  <div *ngIf="sizeFieldVisible" class="d-flex mt-4">
+  <div [hidden]="!sizeFieldVisible" class="d-flex mt-4">
     <mat-form-field class="vitamui-mat-select w-100">
       <mat-select
         formControlName="stringSize"

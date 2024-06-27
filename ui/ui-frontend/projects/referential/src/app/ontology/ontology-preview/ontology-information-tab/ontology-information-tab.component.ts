@@ -91,13 +91,13 @@ export class OntologyInformationTabComponent implements OnInit {
     private ontologyService: OntologyService,
   ) {
     this.form = this.formBuilder.group({
-      identifier: [null, Validators.required],
-      shortName: [{ value: null, disabled: true }, Validators.required],
-      type: [null, Validators.required],
-      typeDetail: [null],
-      stringSize: [null],
-      collections: [null, Validators.required],
-      description: [null],
+      identifier: [{ disabled: true }, Validators.required],
+      shortName: [{ disabled: true }, Validators.required],
+      type: [{ value: null, disabled: true }, Validators.required],
+      typeDetail: [{ value: null, disabled: true }],
+      stringSize: [{ value: null, disabled: true }],
+      collections: [{ value: null, disabled: true }, Validators.required],
+      description: [{ value: null, disabled: true }],
       creationDate: [{ value: null, disabled: true }],
     });
   }
@@ -106,6 +106,7 @@ export class OntologyInformationTabComponent implements OnInit {
     if (this._inputOntology.origin === 'EXTERNAL') {
       this.form.enable({ emitEvent: false });
     }
+    this.form.controls.identifier.disable({ emitEvent: true });
   }
 
   unchanged(): boolean {
