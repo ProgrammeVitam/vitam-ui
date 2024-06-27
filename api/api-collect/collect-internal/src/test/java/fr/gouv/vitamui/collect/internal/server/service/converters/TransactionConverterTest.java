@@ -19,6 +19,7 @@ public class TransactionConverterTest {
         assertEquals(transactionDto.getId(), collectTransactionDto.getId());
         assertEquals(transactionDto.getStatus(), collectTransactionDto.getStatus());
         assertEquals(transactionDto.getName(), collectTransactionDto.getName());
+        assertEquals(transactionDto.getProjectId(), collectTransactionDto.getProjectId());
     }
 
     @Test
