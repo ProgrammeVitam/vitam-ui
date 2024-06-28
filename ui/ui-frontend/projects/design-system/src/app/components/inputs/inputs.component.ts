@@ -57,7 +57,7 @@ export class InputsComponent implements OnInit, OnDestroy {
   public duration = new FormControl({ days: 5, hours: 10, minutes: 5 });
   public file = new FormControl(new File(['test'], 'test', { type: 'text/plain' }));
 
-  public countries: Option[];
+  public countries: Option[] = [];
   public multiSelectOptions: VitamuiAutocompleteMultiselectOptions;
 
   public autoCompleteSelect = new FormControl();
