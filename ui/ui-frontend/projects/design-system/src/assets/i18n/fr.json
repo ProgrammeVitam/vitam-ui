@@ -61,6 +61,7 @@
     "EDITABLE_LIST_DISABLED": "Liste éditable désactivée",
     "AUTOCOMPLETE": "Auto-complete",
     "AUTOCOMPLETE_MULTI_SELECT": "Auto-complete à sélection multiple",
+    "AUTOCOMPLETE_MULTI_SELECT_TREE": "Auto-complete à sélection multiple avec arborescence",
     "SEARCH_PLACEHOLDER": "Rechercher dans les pays",
     "TEXTAREA": "Zone de texte",
     "EDITABLE_TEXTAREA": "Zone de texte éditable",

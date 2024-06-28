@@ -1,17 +1,26 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
+import { MockSchemaService } from 'projects/vitamui-library/src/app/modules/schema/mock-schema.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { extend } from 'underscore';
-import { CountryOption, CountryService, Option, VitamuiAutocompleteMultiselectOptions } from 'vitamui-library';
+import {
+  CountryOption,
+  CountryService,
+  ItemNode,
+  Option,
+  SchemaElement,
+  SchemaService,
+  VitamuiAutocompleteMultiselectOptions,
+} from 'vitamui-library';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'design-system-inputs',
   templateUrl: './inputs.component.html',
   styleUrls: ['./inputs.component.scss'],
-  providers: [CountryService],
+  providers: [CountryService, { provide: SchemaService, useClass: MockSchemaService }],
 })
 export class InputsComponent implements OnInit, OnDestroy {
   public control = new FormControl();
@@ -59,10 +68,15 @@ export class InputsComponent implements OnInit, OnDestroy {
 
   public countries: Option[] = [];
   public multiSelectOptions: VitamuiAutocompleteMultiselectOptions;
+  public schemaOptions: ItemNode<SchemaElement>[] = [];
+  public getSchemaElementDisplayValue = (element: SchemaElement) =>
+    `${element.Origin === 'EXTERNAL' ? 'EXT-' : ''}${element.ShortName} - ${element.FieldName}`;
 
   public autoCompleteSelect = new FormControl();
   public autoCompleteSelectDisabled = new FormControl();
   public autoCompleteMultiSelect = new FormControl();
+  public autoCompleteMultiSelectTree = new FormControl();
+  public autoCompleteMultiSelectTree2 = new FormControl();
 
   public editablePatterns = new FormControl();
   public editablePatternsOptions = [
@@ -75,6 +89,7 @@ export class InputsComponent implements OnInit, OnDestroy {
   constructor(
     private countryService: CountryService,
     private translateService: TranslateService,
+    private schemaService: SchemaService,
   ) {}
 
   onChange = (_: any) => {};
@@ -90,6 +105,7 @@ export class InputsComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.initMultiselectOptions();
+    this.initSchemaOptions();
     this.translateService.onLangChange.pipe(takeUntil(this.destroyer$)).subscribe(() => {
       this.updateCountryTranslation();
     });
@@ -121,6 +137,19 @@ export class InputsComponent implements OnInit, OnDestroy {
   private updateCountryTranslation(): void {
     this.countries.forEach((country) => {
       country.label = this.countryService.getTranslatedCountryNameByCode(country.key);
+    });
+  }
+
+  private initSchemaOptions(): void {
+    this.schemaService.getDescriptiveSchemaTree().subscribe((schemaOptions) => {
+      this.schemaOptions = schemaOptions;
+
+      this.autoCompleteMultiSelectTree2.setValue([
+        schemaOptions.find((o) => o.item.FieldName === 'TextContent').item,
+        schemaOptions.find((o) => o.item.FieldName === 'RegisteredDate').item,
+        schemaOptions.find((o) => o.item.FieldName === 'Agent').children.find((o) => o.item.FieldName === 'Activity').item,
+        schemaOptions.find((o) => o.item.FieldName === 'Agent').children.find((o) => o.item.FieldName === 'DeathDate').item,
+      ]);
     });
   }
 }

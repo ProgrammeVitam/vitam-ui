@@ -39,7 +39,6 @@ export * from './display-object-service';
 export * from './display-object.model';
 export * from './display-rule.model';
 export * from './layout.model';
-export * from './schema-element.model';
 export * from './ui-component-date-format-map.model';
 export * from './ui.model';
 export * from './with-path.model';

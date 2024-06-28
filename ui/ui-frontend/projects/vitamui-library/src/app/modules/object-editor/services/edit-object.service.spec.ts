@@ -46,7 +46,7 @@ describe('EditObjectService', () => {
           const editObject = service.editObject(path, data, template, subschema);
 
           expect(editObject).toBeTruthy();
-          expect(editObject.children.length).toEqual(16);
+          expect(editObject.children.length).toEqual(50);
           expect(editObject.children).toEqual(
             jasmine.arrayContaining(
               [
@@ -102,7 +102,7 @@ describe('EditObjectService', () => {
           const editObject = service.editObject(path, data, template, subschema);
 
           expect(editObject).toBeTruthy();
-          expect(editObject.children.length).toEqual(16);
+          expect(editObject.children.length).toEqual(50);
           expect(editObject.children).toEqual(
             jasmine.arrayContaining(
               [
@@ -166,7 +166,7 @@ describe('EditObjectService', () => {
           const editObject = service.editObject(path, projectedData, template, templatedSchema);
 
           expect(editObject).toBeTruthy();
-          expect(editObject.children.length).toEqual(13);
+          expect(editObject.children.length).toEqual(47);
           expect(editObject.children).toEqual(
             jasmine.arrayContaining(
               [
@@ -230,7 +230,7 @@ describe('EditObjectService', () => {
           const editObject: EditObject = service.editObject(path, projectedData, template, templatedSchema);
 
           expect(editObject).toBeTruthy();
-          expect(editObject.children.length).toEqual(13);
+          expect(editObject.children.length).toEqual(47);
           expect(editObject.children).toEqual(
             jasmine.arrayContaining(
               [
@@ -302,7 +302,7 @@ describe('EditObjectService', () => {
           const editObject: EditObject = service.editObject(path, projectedData, template, templatedSchema);
 
           expect(editObject).toBeTruthy();
-          expect(editObject.children.length).toEqual(13);
+          expect(editObject.children.length).toEqual(47);
           expect(editObject.children).toEqual(
             jasmine.arrayContaining(
               [
@@ -374,7 +374,7 @@ describe('EditObjectService', () => {
           const editObject: EditObject = service.editObject(path, projectedData, template, templatedSchema);
 
           expect(editObject).toBeTruthy();
-          expect(editObject.children.length).toEqual(13);
+          expect(editObject.children.length).toEqual(47);
           expect(editObject.children).toEqual(
             jasmine.arrayContaining(
               [
@@ -449,7 +449,7 @@ describe('EditObjectService', () => {
           const editObject: EditObject = service.editObject(path, projectedData, template, templatedSchema);
 
           expect(editObject).toBeTruthy();
-          expect(editObject.children.length).toEqual(16);
+          expect(editObject.children.length).toEqual(50);
           expect(editObject.children).toEqual(
             jasmine.arrayContaining(
               [
@@ -480,7 +480,7 @@ describe('EditObjectService', () => {
               }),
             ]),
           );
-          expect(editObject.children.length).toEqual(16);
+          expect(editObject.children.length).toEqual(50);
         });
       }),
     ));
@@ -529,7 +529,6 @@ describe('EditObjectService', () => {
           Type: 'OBJECT',
           DataType: 'OBJECT',
           Origin: 'VIRTUAL',
-          Indexed: false,
           StringSize: 'MEDIUM',
           Cardinality: 'ONE',
           SedaVersions: [],
@@ -547,7 +546,6 @@ describe('EditObjectService', () => {
           Type: 'OBJECT',
           DataType: 'OBJECT',
           Origin: 'VIRTUAL',
-          Indexed: false,
           StringSize: 'MEDIUM',
           Cardinality: 'ONE',
           SedaVersions: [],

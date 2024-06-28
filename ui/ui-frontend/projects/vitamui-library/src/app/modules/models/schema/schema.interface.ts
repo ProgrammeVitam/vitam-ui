@@ -27,6 +27,6 @@
  *
  */
 
-import { SchemaElement } from '../../object-viewer/models';
+import { SchemaElement } from './schema-element.model';
 
 export interface Schema extends Array<SchemaElement> {}

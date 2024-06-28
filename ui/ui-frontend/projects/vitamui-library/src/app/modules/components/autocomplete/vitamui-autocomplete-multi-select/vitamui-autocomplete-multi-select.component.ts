@@ -327,6 +327,7 @@ export class VitamUIAutocompleteMultiSelectComponent implements ControlValueAcce
   }
 
   public onSelectClosed(): void {
+    this.onTouched();
     this.showOnlySelectedOption = false;
     if (this.searchBar && this.enableSearch) {
       this.searchBar.reset();

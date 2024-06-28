@@ -31,6 +31,9 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { SchemaApiService } from '../api/schema-api.service';
 import { Collection, Schema } from '../models';
+import { map } from 'rxjs/operators';
+import { ItemNode } from '../components/autocomplete';
+import { SchemaElement } from '../models/schema/schema-element.model';
 
 @Injectable({
   providedIn: 'root',
@@ -44,5 +47,40 @@ export class SchemaService {
 
   public getSchema(collection: Collection): Observable<Schema> {
     return this.api.getSchema(collection);
+  }
+
+  public getDescriptiveSchemaTree(): Observable<ItemNode<SchemaElement>[]> {
+    const recursiveSort = function (node: ItemNode<SchemaElement>) {
+      node.children.sort((n1, n2) =>
+        n1.children.length && !n2.children.length
+          ? 1
+          : !n1.children.length && n2.children.length
+            ? -1
+            : n1.item.ShortName.localeCompare(n2.item.ShortName),
+      );
+      node.children.forEach((n) => recursiveSort(n));
+    };
+
+    return this.getSchema(Collection.ARCHIVE_UNIT).pipe(
+      map((schema) => {
+        const rootNode = schema
+          .filter((e) => e.Category === 'DESCRIPTION')
+          .reduce(
+            (acc, element) => {
+              const path = element.Path.split('.').slice(0, -1);
+              const parentNode = path.reduce((currentItem, p) => currentItem.children.find((n) => n.item.FieldName === p), acc) || acc;
+              parentNode.children.push({
+                item: element,
+                children: [],
+              });
+              return acc;
+            },
+            { children: [] } as ItemNode<SchemaElement>,
+          );
+
+        recursiveSort(rootNode);
+        return rootNode.children;
+      }),
+    );
   }
 }

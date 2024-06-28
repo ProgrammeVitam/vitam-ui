@@ -25,7 +25,7 @@ import { Application } from '../../../models/application/application.interface';
 import { StartupService } from '../../../startup.service';
 import { TenantSelectionService } from '../../../tenant-selection.service';
 import { MenuOption } from '../../navbar';
-import { SearchBarComponent } from '../../search-bar';
+import { SearchBarComponent } from '../../search-bar/search-bar.component';
 import { Tenant } from './../../../models/customer/tenant.interface';
 import { MenuOverlayRef } from './menu-overlay-ref';
 

@@ -34,5 +34,27 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-export * from './search-bar.component';
-export * from './search-bar.module';
+import { Collection } from '../index';
+import { Cardinality, SedaVersion } from '../../object-viewer/types';
+import { WithPath } from '../../object-viewer/models';
+
+export interface SchemaElement extends WithPath {
+  readonly id?: string;
+  readonly FieldName: string;
+  readonly ApiField: string;
+  readonly Type: 'TEXT' | 'KEYWORD' | 'DATE' | 'OBJECT' | 'BOOLEAN' | 'LONG';
+  readonly DataType?: 'STRING' | 'DATETIME' | 'OBJECT' | 'LONG' | 'DOUBLE' | 'BOOLEAN';
+  readonly Origin: 'INTERNAL' | 'EXTERNAL' | 'VIRTUAL';
+  readonly SedaField?: string;
+  readonly ShortName?: string;
+  readonly Description?: string;
+  readonly CreationDate?: string;
+  readonly LastUpdate?: string;
+  readonly TenantIds?: string[];
+  readonly StringSize?: 'SHORT' | 'MEDIUM' | 'LARGE';
+  readonly Cardinality: Cardinality;
+  readonly SedaVersions: SedaVersion[];
+  readonly Collection: Collection;
+  readonly ApiPath: string;
+  readonly Category: 'DESCRIPTION' | 'MANAGEMENT' | 'OTHER';
+}

@@ -35,10 +35,6 @@ $animation-time: 150ms;
   min-height: 23px;
 }
 
-.select-arrow {
-  transform: translateX(12px);
-}
-
 :host::ng-deep {
   .mat-select-trigger {
     transform: translateY(10px);
