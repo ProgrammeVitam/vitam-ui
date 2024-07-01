@@ -105,13 +105,18 @@ const authenticationModuleClass = environment.standalone ? NoAuthenticationModul
         deps: [HttpBackend],
       },
     }),
-    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
     ToastrModule.forRoot({
       positionClass: 'toast-bottom-full-width',
       preventDuplicates: false,
       timeOut: 3000,
       closeButton: false,
       easeTime: 0,
+    }),
+    ServiceWorkerModule.register('ngsw-worker.js', {
+      enabled: environment.production,
+      // Register the ServiceWorker as soon as the application is stable
+      // or after 30 seconds (whichever comes first).
+      registrationStrategy: 'registerWhenStable:30000',
     }),
   ],
   providers: [

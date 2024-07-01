@@ -30,6 +30,7 @@
             "assets": [
               "projects/identity/src/assets",
               "projects/identity/src/favicon.ico",
+              "projects/identity/src/manifest.webmanifest",
               {
                 "glob": "**/*",
                 "input": "projects/vitamui-library/src/assets",
@@ -70,7 +71,8 @@
                   "input": "projects/vitamui-library/src/assets",
                   "output": "/assets"
                 }
-              ]
+              ],
+              "serviceWorker": "projects/identity/ngsw-config.json"
             },
             "development": {
               "optimization": false,
@@ -116,7 +118,8 @@
             },
             "assets": [
               "projects/identity/src/assets",
-              "projects/identity/src/favicon.ico"
+              "projects/identity/src/favicon.ico",
+              "projects/identity/src/manifest.webmanifest"
             ]
           }
         },
@@ -160,6 +163,7 @@
             "assets": [
               "projects/portal/src/assets",
               "projects/portal/src/favicon.ico",
+              "projects/portal/src/manifest.webmanifest",
               {
                 "glob": "**/*",
                 "input": "projects/vitamui-library/src/assets",
@@ -200,7 +204,8 @@
                   "input": "projects/vitamui-library/src/assets",
                   "output": "/assets"
                 }
-              ]
+              ],
+              "serviceWorker": "projects/portal/ngsw-config.json"
             },
             "development": {
               "optimization": false,
@@ -240,7 +245,8 @@
             },
             "assets": [
               "projects/portal/src/assets",
-              "projects/portal/src/favicon.ico"
+              "projects/portal/src/favicon.ico",
+              "projects/portal/src/manifest.webmanifest"
             ]
           }
         },
@@ -284,6 +290,7 @@
             "assets": [
               "projects/referential/src/assets",
               "projects/referential/src/favicon.ico",
+              "projects/referential/src/manifest.webmanifest",
               {
                 "glob": "**/*",
                 "input": "projects/vitamui-library/src/assets",
@@ -324,7 +331,8 @@
                   "input": "projects/vitamui-library/src/assets",
                   "output": "/assets"
                 }
-              ]
+              ],
+              "serviceWorker": "projects/referential/ngsw-config.json"
             },
             "development": {
               "optimization": false,
@@ -361,7 +369,8 @@
             "karmaConfig": "karma.conf.ci.js",
             "assets": [
               "projects/referential/src/favicon.ico",
-              "projects/referential/src/assets"
+              "projects/referential/src/assets",
+              "projects/referential/src/manifest.webmanifest"
             ],
             "styles": [
               "projects/referential/src/sass/styles.scss"
@@ -456,6 +465,7 @@
             "assets": [
               "projects/design-system/src/assets",
               "projects/design-system/src/favicon.ico",
+              "projects/design-system/src/manifest.webmanifest",
               {
                 "glob": "**/*",
                 "input": "projects/vitamui-library/src/assets",
@@ -480,7 +490,8 @@
                   "replace": "projects/design-system/src/environments/environment.ts",
                   "with": "projects/design-system/src/environments/environment.prod.ts"
                 }
-              ]
+              ],
+              "serviceWorker": "projects/design-system/ngsw-config.json"
             },
             "development": {
               "optimization": false,
@@ -521,7 +532,8 @@
             },
             "assets": [
               "projects/design-system/src/assets",
-              "projects/design-system/src/favicon.ico"
+              "projects/design-system/src/favicon.ico",
+              "projects/design-system/src/manifest.webmanifest"
             ]
           }
         },
@@ -565,6 +577,7 @@
             "assets": [
               "projects/ingest/src/favicon.ico",
               "projects/ingest/src/assets",
+              "projects/ingest/src/manifest.webmanifest",
               {
                 "glob": "**/*",
                 "input": "projects/vitamui-library/src/assets",
@@ -589,7 +602,8 @@
                   "replace": "projects/ingest/src/environments/environment.ts",
                   "with": "projects/ingest/src/environments/environment.prod.ts"
                 }
-              ]
+              ],
+              "serviceWorker": "projects/ingest/ngsw-config.json"
             },
             "development": {
               "optimization": false,
@@ -626,7 +640,8 @@
             "karmaConfig": "karma.conf.ci.js",
             "assets": [
               "projects/ingest/src/favicon.ico",
-              "projects/ingest/src/assets"
+              "projects/ingest/src/assets",
+              "projects/ingest/src/manifest.webmanifest"
             ],
             "styles": [
               "projects/ingest/src/sass/styles.scss"
@@ -679,6 +694,7 @@
             "assets": [
               "projects/archive-search/src/assets",
               "projects/archive-search/src/favicon.ico",
+              "projects/archive-search/src/manifest.webmanifest",
               {
                 "glob": "**/*",
                 "input": "projects/vitamui-library/src/assets",
@@ -704,7 +720,8 @@
                   "replace": "projects/archive-search/src/environments/environment.ts",
                   "with": "projects/archive-search/src/environments/environment.prod.ts"
                 }
-              ]
+              ],
+              "serviceWorker": "projects/archive-search/ngsw-config.json"
             },
             "development": {
               "optimization": false,
@@ -750,7 +767,8 @@
             },
             "assets": [
               "projects/archive-search/src/assets",
-              "projects/archive-search/src/favicon.ico"
+              "projects/archive-search/src/favicon.ico",
+              "projects/archive-search/src/manifest.webmanifest"
             ]
           }
         },
@@ -794,6 +812,7 @@
             "assets": [
               "projects/collect/src/assets",
               "projects/collect/src/favicon.ico",
+              "projects/collect/src/manifest.webmanifest",
               {
                 "glob": "**/*",
                 "input": "projects/vitamui-library/src/assets",
@@ -818,7 +837,8 @@
                   "replace": "projects/collect/src/environments/environment.ts",
                   "with": "projects/collect/src/environments/environment.prod.ts"
                 }
-              ]
+              ],
+              "serviceWorker": "projects/collect/ngsw-config.json"
             },
             "development": {
               "optimization": false,
@@ -864,7 +884,8 @@
             },
             "assets": [
               "projects/collect/src/assets",
-              "projects/collect/src/favicon.ico"
+              "projects/collect/src/favicon.ico",
+              "projects/collect/src/manifest.webmanifest"
             ]
           }
         },
@@ -913,6 +934,7 @@
             "assets": [
               "projects/pastis/src/assets",
               "projects/pastis/src/favicon.ico",
+              "projects/pastis/src/manifest.webmanifest",
               {
                 "glob": "**/*",
                 "input": "projects/vitamui-library/src/assets",
@@ -937,7 +959,8 @@
                   "replace": "projects/pastis/src/environments/environment.ts",
                   "with": "projects/pastis/src/environments/environment.prod.ts"
                 }
-              ]
+              ],
+              "serviceWorker": "projects/pastis/ngsw-config.json"
             },
             "development": {
               "optimization": false,
@@ -987,7 +1010,8 @@
             "karmaConfig": "karma.conf.ci.js",
             "assets": [
               "projects/pastis/src/favicon.ico",
-              "projects/pastis/src/assets"
+              "projects/pastis/src/assets",
+              "projects/pastis/src/manifest.webmanifest"
             ],
             "styles": [
               "projects/pastis/src/sass/styles.scss"
