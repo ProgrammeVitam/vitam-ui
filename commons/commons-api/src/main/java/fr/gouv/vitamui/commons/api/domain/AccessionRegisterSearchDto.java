@@ -28,8 +28,8 @@ public class AccessionRegisterSearchDto {
 
     @Data
     public static class EndDateInterval {
+
         private String endDateMin;
         private String endDateMax;
     }
-
 }

@@ -42,8 +42,8 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import fr.gouv.vitamui.referential.common.dto.RuleDto;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
-import fr.gouv.vitamui.referential.internal.server.rule.RuleInternalService;
 import fr.gouv.vitamui.referential.internal.server.common.rest.ApiReferentialControllerTest;
+import fr.gouv.vitamui.referential.internal.server.rule.RuleInternalService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -78,8 +78,7 @@ public class RuleInternalControllerTest extends ApiReferentialControllerTest<Rul
     }
 
     @Override
-    protected void preparedServices() {
-    }
+    protected void preparedServices() {}
 
     @Override
     protected String getRessourcePrefix() {
@@ -95,5 +94,4 @@ public class RuleInternalControllerTest extends ApiReferentialControllerTest<Rul
     protected Class<RuleDto> getDtoClass() {
         return RuleDto.class;
     }
-
 }

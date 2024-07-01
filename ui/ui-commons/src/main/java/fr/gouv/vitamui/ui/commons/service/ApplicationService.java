@@ -119,9 +119,12 @@ public class ApplicationService extends AbstractCrudService<ApplicationDto> {
 
     private Map<String, List<String>> listEnableExternalIdentifiers;
 
-    public ApplicationService(final UIProperties properties, final CasLogoutUrl casLogoutUrl,
+    public ApplicationService(
+        final UIProperties properties,
+        final CasLogoutUrl casLogoutUrl,
         final IamExternalRestClientFactory factory,
-        final BuildProperties buildProperties) {
+        final BuildProperties buildProperties
+    ) {
         this.properties = properties;
         this.casLogoutUrl = casLogoutUrl;
         this.buildProperties = buildProperties;
@@ -138,13 +141,15 @@ public class ApplicationService extends AbstractCrudService<ApplicationDto> {
         query.addCriterion(new Criterion("filterApp", filterApp, CriterionOperator.EQUALS));
 
         Collection<ApplicationDto> applications = client.getAll(context, Optional.of(query.toJson()));
-        Map<String, Map<String,Object>> categories = properties.getPortalCategories();
-        Collection<Map<String,Object>> listCategories = new ArrayList<>();
-        categories.keySet().forEach(category -> {
-            Map<String, Object> categoryProperties = new HashMap<>(categories.get(category));
-            categoryProperties.put("identifier", category);
-            listCategories.add(categoryProperties);
-        });
+        Map<String, Map<String, Object>> categories = properties.getPortalCategories();
+        Collection<Map<String, Object>> listCategories = new ArrayList<>();
+        categories
+            .keySet()
+            .forEach(category -> {
+                Map<String, Object> categoryProperties = new HashMap<>(categories.get(category));
+                categoryProperties.put("identifier", category);
+                listCategories.add(categoryProperties);
+            });
 
         Map<String, Object> portalConfig = new HashMap<>();
         portalConfig.put(CommonConstants.APPLICATION_CONFIGURATION, applications);
@@ -165,8 +170,10 @@ public class ApplicationService extends AbstractCrudService<ApplicationDto> {
         final ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
 
         final Map<String, List<String>> externalIdentifiers = getListEnableExternalIdentifiers();
-        LOGGER.info("Reading list of external identifiers {}",
-            externalIdentifiers == null ? "null" : externalIdentifiers.toString());
+        LOGGER.info(
+            "Reading list of external identifiers {}",
+            externalIdentifiers == null ? "null" : externalIdentifiers.toString()
+        );
 
         if (externalIdentifiers != null) {
             if (listEnableExternalIdentifiers.containsKey(tenantId)) {
@@ -193,18 +200,20 @@ public class ApplicationService extends AbstractCrudService<ApplicationDto> {
         configurationData.put(CommonConstants.CAS_LOGIN_URL, getCasLoginUrl());
         configurationData.put(CommonConstants.CAS_LOGOUT_URL, casLogoutUrl.getValue());
         configurationData.put(CommonConstants.UI_URL, uiUrl);
-        configurationData
-            .put(CommonConstants.LOGOUT_REDIRECT_UI_URL, casLogoutUrl.getValueWithRedirection(uiRedirectUrl));
+        configurationData.put(
+            CommonConstants.LOGOUT_REDIRECT_UI_URL,
+            casLogoutUrl.getValueWithRedirection(uiRedirectUrl)
+        );
         configurationData.put(CommonConstants.THEME_COLORS, properties.getThemeColors());
         configurationData.put(CommonConstants.PORTAL_TITLE, properties.getPortalTitle());
         configurationData.put(CommonConstants.PORTAL_MESSAGE, properties.getPortalMessage());
         configurationData.put(CommonConstants.CUSTOMER, properties.getCustomer());
         String versionRelease = properties.getVersionRelease();
         if (StringUtils.isEmpty(versionRelease)) {
-            versionRelease = Stream.of(buildProperties.get(VERSION_RELEASE_KEY).split("\\" + DELIMITER)).limit(2)
+            versionRelease = Stream.of(buildProperties.get(VERSION_RELEASE_KEY).split("\\" + DELIMITER))
+                .limit(2)
                 .map(Object::toString)
                 .collect(Collectors.joining(DELIMITER));
-
         }
         if (StringUtils.isNotEmpty(versionRelease)) {
             configurationData.put(CommonConstants.VERSION_RELEASE, versionRelease);
@@ -221,7 +230,6 @@ public class ApplicationService extends AbstractCrudService<ApplicationDto> {
         return casExternalUrl + "/login?service=" + casCallbackUrl;
     }
 
-
     @Override
     public ApplicationExternalRestClient getClient() {
         return client;
@@ -229,9 +237,13 @@ public class ApplicationService extends AbstractCrudService<ApplicationDto> {
 
     public String getBase64File(final String fileName, final String basePath) {
         if (StringUtils.isBlank(fileName) || StringUtils.isBlank(basePath)) {
-            LOGGER.warn(String
-                .format("Logo information missing : cannot load logo with name \"%s\" in path \"%s\"", fileName,
-                    basePath));
+            LOGGER.warn(
+                String.format(
+                    "Logo information missing : cannot load logo with name \"%s\" in path \"%s\"",
+                    fileName,
+                    basePath
+                )
+            );
             return null;
         }
 
@@ -268,5 +280,4 @@ public class ApplicationService extends AbstractCrudService<ApplicationDto> {
         });
         return files;
     }
-
 }

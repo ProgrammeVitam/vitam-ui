@@ -1,10 +1,9 @@
 package fr.gouv.vitamui.commons.rest.dto;
 
-import java.util.List;
+import lombok.Data;
 
 import javax.validation.constraints.NotNull;
-
-import lombok.Data;
+import java.util.List;
 
 /**
  * VITAMUI DTO.
@@ -22,5 +21,4 @@ public class VitamUIDto {
     private Object errors;
 
     private List<Integer> args;
-
 }

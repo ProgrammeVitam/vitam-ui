@@ -39,5 +39,4 @@ public class CommonStepsFront {
     public void l_utilisateur(final UserParameterType user) {
         commonSteps.saveCurrentUser(user.getData());
     }
-
 }

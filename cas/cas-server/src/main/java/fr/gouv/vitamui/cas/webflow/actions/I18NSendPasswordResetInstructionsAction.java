@@ -36,6 +36,14 @@
  */
 package fr.gouv.vitamui.cas.webflow.actions;
 
+import fr.gouv.vitamui.cas.pm.PmMessageToSend;
+import fr.gouv.vitamui.cas.pm.PmTransientSessionTicketExpirationPolicyBuilder;
+import fr.gouv.vitamui.cas.provider.ProvidersService;
+import fr.gouv.vitamui.cas.util.Utils;
+import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
+import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
+import lombok.val;
 import org.apache.commons.lang3.StringUtils;
 import org.apereo.cas.audit.AuditActionResolvers;
 import org.apereo.cas.audit.AuditResourceResolvers;
@@ -55,15 +63,6 @@ import org.springframework.webflow.core.collection.MutableAttributeMap;
 import org.springframework.webflow.execution.Event;
 import org.springframework.webflow.execution.RequestContext;
 
-import fr.gouv.vitamui.cas.pm.PmMessageToSend;
-import fr.gouv.vitamui.cas.pm.PmTransientSessionTicketExpirationPolicyBuilder;
-import fr.gouv.vitamui.cas.provider.ProvidersService;
-import fr.gouv.vitamui.cas.util.Utils;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
-import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
-import lombok.val;
-
 /**
  * Send reset password emails with i18n messages.
  *
@@ -71,7 +70,9 @@ import lombok.val;
  */
 public class I18NSendPasswordResetInstructionsAction extends SendPasswordResetInstructionsAction {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(I18NSendPasswordResetInstructionsAction.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
+        I18NSendPasswordResetInstructionsAction.class
+    );
 
     private final HierarchicalMessageSource messageSource;
 
@@ -83,16 +84,18 @@ public class I18NSendPasswordResetInstructionsAction extends SendPasswordResetIn
 
     private final String vitamuiPlatformName;
 
-    public I18NSendPasswordResetInstructionsAction(final CasConfigurationProperties casProperties,
-                                                   final CommunicationsManager communicationsManager,
-                                                   final PasswordManagementService passwordManagementService,
-                                                   final TicketRegistry ticketRegistry,
-                                                   final TicketFactory ticketFactory,
-                                                   final HierarchicalMessageSource messageSource,
-                                                   final ProvidersService providersService,
-                                                   final IdentityProviderHelper identityProviderHelper,
-                                                   final Utils utils,
-                                                   final String vitamuiPlatformName) {
+    public I18NSendPasswordResetInstructionsAction(
+        final CasConfigurationProperties casProperties,
+        final CommunicationsManager communicationsManager,
+        final PasswordManagementService passwordManagementService,
+        final TicketRegistry ticketRegistry,
+        final TicketFactory ticketFactory,
+        final HierarchicalMessageSource messageSource,
+        final ProvidersService providersService,
+        final IdentityProviderHelper identityProviderHelper,
+        final Utils utils,
+        final String vitamuiPlatformName
+    ) {
         super(casProperties, communicationsManager, passwordManagementService, ticketRegistry, ticketFactory, null);
         this.messageSource = messageSource;
         this.providersService = providersService;
@@ -101,10 +104,12 @@ public class I18NSendPasswordResetInstructionsAction extends SendPasswordResetIn
         this.vitamuiPlatformName = vitamuiPlatformName;
     }
 
-    @Audit(action = AuditableActions.REQUEST_CHANGE_PASSWORD,
+    @Audit(
+        action = AuditableActions.REQUEST_CHANGE_PASSWORD,
         principalResolverName = "REQUEST_CHANGE_PASSWORD_PRINCIPAL_RESOLVER",
         actionResolverName = AuditActionResolvers.REQUEST_CHANGE_PASSWORD_ACTION_RESOLVER,
-        resourceResolverName = AuditResourceResolvers.REQUEST_CHANGE_PASSWORD_RESOURCE_RESOLVER)
+        resourceResolverName = AuditResourceResolvers.REQUEST_CHANGE_PASSWORD_RESOURCE_RESOLVER
+    )
     @Override
     protected Event doExecute(final RequestContext requestContext) {
         if (!communicationsManager.isMailSenderDefined() && !communicationsManager.isSmsSenderDefined()) {
@@ -142,8 +147,11 @@ public class I18NSendPasswordResetInstructionsAction extends SendPasswordResetIn
         val url = buildPasswordResetUrl(query.getUsername(), passwordManagementService, casProperties, service);
         if (StringUtils.isNotBlank(url)) {
             val pm = casProperties.getAuthn().getPm();
-            LOGGER.debug("Generated password reset URL [{}]; Link is only active for the next [{}] minute(s)",
-                url, pm.getReset().getExpirationMinutes());
+            LOGGER.debug(
+                "Generated password reset URL [{}]; Link is only active for the next [{}] minute(s)",
+                url,
+                pm.getReset().getExpirationMinutes()
+            );
             // CUSTO: only send email (and not SMS)
             val sendEmail = sendPasswordResetEmailToAccount(query.getUsername(), email, url, requestContext);
             if (sendEmail) {
@@ -153,16 +161,36 @@ public class I18NSendPasswordResetInstructionsAction extends SendPasswordResetIn
             LOGGER.error("No password reset URL could be built and sent to [{}]", email);
         }
         LOGGER.error("Failed to notify account [{}]", email);
-        return getErrorEvent("contact.failed", "Failed to send the password reset link via email address or phone", requestContext);
+        return getErrorEvent(
+            "contact.failed",
+            "Failed to send the password reset link via email address or phone",
+            requestContext
+        );
     }
 
     @Override
-    protected boolean sendPasswordResetEmailToAccount(final String username, final String to, final String url,
-                                                      final RequestContext requestContext) {
-        final PmMessageToSend messageToSend = PmMessageToSend.buildMessage(messageSource, "", "",
-            String.valueOf(casProperties.getAuthn().getPm().getReset().getExpirationMinutes()), url, vitamuiPlatformName,
-            LocaleContextHolder.getLocale());
-        return utils.htmlEmail(messageToSend.getText(), casProperties.getAuthn().getPm().getReset().getMail().getFrom(), messageToSend.getSubject(), to, null,
-                null);
+    protected boolean sendPasswordResetEmailToAccount(
+        final String username,
+        final String to,
+        final String url,
+        final RequestContext requestContext
+    ) {
+        final PmMessageToSend messageToSend = PmMessageToSend.buildMessage(
+            messageSource,
+            "",
+            "",
+            String.valueOf(casProperties.getAuthn().getPm().getReset().getExpirationMinutes()),
+            url,
+            vitamuiPlatformName,
+            LocaleContextHolder.getLocale()
+        );
+        return utils.htmlEmail(
+            messageToSend.getText(),
+            casProperties.getAuthn().getPm().getReset().getMail().getFrom(),
+            messageToSend.getSubject(),
+            to,
+            null,
+            null
+        );
     }
 }

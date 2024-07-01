@@ -39,7 +39,6 @@
 
 package fr.gouv.vitamui.archives.search.common.dto;
 
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
@@ -53,8 +52,10 @@ import java.io.Serializable;
 @Setter
 @Getter
 public class ReclassificationAction implements Serializable {
+
     @JsonProperty("$add")
     private ReclassificationQueryActionType add;
+
     @JsonProperty("$pull")
     private ReclassificationQueryActionType pull;
 }

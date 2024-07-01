@@ -73,5 +73,4 @@ public class UnexpectedDataException extends VitamUIException {
     public UnexpectedDataException(final String message, final String key) {
         super(message, key);
     }
-
 }

@@ -37,8 +37,8 @@
 package fr.gouv.vitamui.archives.search.external.server.service;
 
 import fr.gouv.archive.internal.client.SearchCriteriaHistoryInternalRestClient;
-import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaHistoryDto;
 import fr.gouv.vitamui.archives.search.external.server.rest.SearchCriteriaHistoryExternalController;
+import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaHistoryDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.iam.security.client.AbstractResourceClientService;
@@ -60,16 +60,20 @@ import java.util.Optional;
 @Getter
 @Setter
 @Service
-public class SearchCriteriaHistoryExternalService extends AbstractResourceClientService<SearchCriteriaHistoryDto, SearchCriteriaHistoryDto> {
+public class SearchCriteriaHistoryExternalService
+    extends AbstractResourceClientService<SearchCriteriaHistoryDto, SearchCriteriaHistoryDto> {
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
-        SearchCriteriaHistoryExternalController.class);
+        SearchCriteriaHistoryExternalController.class
+    );
 
-	private final SearchCriteriaHistoryInternalRestClient searchCriteriaHistoryInternalRestClient;
+    private final SearchCriteriaHistoryInternalRestClient searchCriteriaHistoryInternalRestClient;
 
     @Autowired
-    public SearchCriteriaHistoryExternalService(final SearchCriteriaHistoryInternalRestClient searchCriteriaHistoryInternalRestClient,
-    		final ExternalSecurityService externalSecurityService) {
+    public SearchCriteriaHistoryExternalService(
+        final SearchCriteriaHistoryInternalRestClient searchCriteriaHistoryInternalRestClient,
+        final ExternalSecurityService externalSecurityService
+    ) {
         super(externalSecurityService);
         this.searchCriteriaHistoryInternalRestClient = searchCriteriaHistoryInternalRestClient;
     }

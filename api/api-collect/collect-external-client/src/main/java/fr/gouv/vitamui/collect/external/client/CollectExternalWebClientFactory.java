@@ -32,11 +32,12 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 public class CollectExternalWebClientFactory extends BaseWebClientFactory {
 
-    public CollectExternalWebClientFactory(final RestClientConfiguration restClientConfiguration,
-        final WebClient.Builder webClientBuilder) {
+    public CollectExternalWebClientFactory(
+        final RestClientConfiguration restClientConfiguration,
+        final WebClient.Builder webClientBuilder
+    ) {
         super(restClientConfiguration, webClientBuilder);
     }
-
 
     public CollectExternalWebClient getCollectExternalWebClient() {
         return new CollectExternalWebClient(getWebClient(), getBaseUrl());
@@ -46,5 +47,4 @@ public class CollectExternalWebClientFactory extends BaseWebClientFactory {
     public String getBaseUrl() {
         return super.getBaseUrl();
     }
-
 }

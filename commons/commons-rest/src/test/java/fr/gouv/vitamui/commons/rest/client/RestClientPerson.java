@@ -1,14 +1,13 @@
 package fr.gouv.vitamui.commons.rest.client;
 
-import java.util.List;
-
+import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
+import fr.gouv.vitamui.commons.rest.dto.PersonDto;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.web.client.RestTemplate;
 
-import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
-import fr.gouv.vitamui.commons.rest.dto.PersonDto;
+import java.util.List;
 
-public class RestClientPerson extends BasePaginatingAndSortingRestClient<PersonDto, ExternalHttpContext>{
+public class RestClientPerson extends BasePaginatingAndSortingRestClient<PersonDto, ExternalHttpContext> {
 
     public RestClientPerson(final RestTemplate restTemplate, final String baseUrl) {
         super(restTemplate, baseUrl);
@@ -16,8 +15,7 @@ public class RestClientPerson extends BasePaginatingAndSortingRestClient<PersonD
 
     @Override
     protected ParameterizedTypeReference<PaginatedValuesDto<PersonDto>> getDtoPaginatedClass() {
-        return new ParameterizedTypeReference<PaginatedValuesDto<PersonDto>>() {
-        };
+        return new ParameterizedTypeReference<PaginatedValuesDto<PersonDto>>() {};
     }
 
     @Override
@@ -27,13 +25,11 @@ public class RestClientPerson extends BasePaginatingAndSortingRestClient<PersonD
 
     @Override
     protected ParameterizedTypeReference<List<PersonDto>> getDtoListClass() {
-        return new ParameterizedTypeReference<List<PersonDto>>() {
-        };
+        return new ParameterizedTypeReference<List<PersonDto>>() {};
     }
 
     @Override
     public String getPathUrl() {
         return "/persons";
     }
-
 }

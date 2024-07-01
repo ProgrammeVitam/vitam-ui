@@ -1,9 +1,8 @@
 package fr.gouv.vitamui.cucumber.front.runners;
 
-import org.junit.runner.RunWith;
-
 import io.cucumber.junit.CucumberOptions;
 import net.serenitybdd.cucumber.CucumberWithSerenity;
+import org.junit.runner.RunWith;
 
 /**
  * Test UI Portal.
@@ -22,6 +21,4 @@ import net.serenitybdd.cucumber.CucumberWithSerenity;
         monochrome = true
 )
 //@formatter:on
-public class UiUserIntegrationTest {
-
-}
+public class UiUserIntegrationTest {}

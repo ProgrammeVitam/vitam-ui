@@ -54,14 +54,12 @@ class ManagementContractConverterTest {
         managementContractDto.setName("ContractName");
 
         // When
-        ManagementContractModelDto managementContractModelDto = managementContractConverter
-            .convertVitamUiManagementContractToVitamMgt(managementContractDto);
+        ManagementContractModelDto managementContractModelDto =
+            managementContractConverter.convertVitamUiManagementContractToVitamMgt(managementContractDto);
 
         // Then
-        assertThat(managementContractModelDto).isNotNull()
-            .isInstanceOf(ManagementContractModelDto.class);
+        assertThat(managementContractModelDto).isNotNull().isInstanceOf(ManagementContractModelDto.class);
         assertThat(managementContractDto).isEqualToComparingFieldByField(managementContractModelDto);
-
     }
 
     @Test
@@ -74,13 +72,12 @@ class ManagementContractConverterTest {
         managementContractModelDto.setName("ContractName");
 
         // When
-        ManagementContractDto managementContractDto = managementContractConverter
-            .convertVitamMgtContractToVitamUiDto(managementContractModelDto);
+        ManagementContractDto managementContractDto = managementContractConverter.convertVitamMgtContractToVitamUiDto(
+            managementContractModelDto
+        );
 
         // Then
-        assertThat(managementContractDto).isNotNull()
-            .isInstanceOf(ManagementContractDto.class);
+        assertThat(managementContractDto).isNotNull().isInstanceOf(ManagementContractDto.class);
         assertThat(managementContractModelDto).isEqualToComparingFieldByField(managementContractDto);
-
     }
 }

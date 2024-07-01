@@ -36,17 +36,15 @@
  */
 package fr.gouv.vitamui.iam.security.config;
 
-import java.io.IOException;
-import java.io.Serializable;
+import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.web.AuthenticationEntryPoint;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.web.AuthenticationEntryPoint;
-
-import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
+import java.io.IOException;
+import java.io.Serializable;
 
 /**
  * Authentication EntryPoint for our API.
@@ -68,9 +66,11 @@ public class ApiAuthenticationEntryPoint implements AuthenticationEntryPoint, Se
     }
 
     @Override
-    public void commence(final HttpServletRequest request, final HttpServletResponse response,
-            final AuthenticationException e) throws IOException, ServletException {
-
+    public void commence(
+        final HttpServletRequest request,
+        final HttpServletResponse response,
+        final AuthenticationException e
+    ) throws IOException, ServletException {
         restExceptionHandler.writeExceptionToResponse(request, response, e);
     }
 }

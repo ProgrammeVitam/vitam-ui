@@ -21,33 +21,40 @@ import java.util.Optional;
 
 public class PastisTransformationWebClient extends BaseWebClient<ExternalHttpContext> {
 
-    private static final VitamUILogger LOGGER =
-        VitamUILoggerFactory.getInstance(PastisTransformationWebClient.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(PastisTransformationWebClient.class);
 
-    public PastisTransformationWebClient(WebClient webClient,
-        String baseUrl) {
+    public PastisTransformationWebClient(WebClient webClient, String baseUrl) {
         super(webClient, baseUrl);
     }
 
     public ResponseEntity<ProfileResponse> loadProfileFromFile(MultipartFile file, ExternalHttpContext context) {
         LOGGER.debug("Upload profile");
-        return ResponseEntity.ok(multipartData(getUrl() + RestApi.PASTIS_UPLOAD_PROFILE, HttpMethod.POST,
-            context,
-            Collections.singletonMap("fileName", file.getOriginalFilename()),
-            Optional.of(new AbstractMap.SimpleEntry<>("file", file)),
-            ProfileResponse.class )) ;
+        return ResponseEntity.ok(
+            multipartData(
+                getUrl() + RestApi.PASTIS_UPLOAD_PROFILE,
+                HttpMethod.POST,
+                context,
+                Collections.singletonMap("fileName", file.getOriginalFilename()),
+                Optional.of(new AbstractMap.SimpleEntry<>("file", file)),
+                ProfileResponse.class
+            )
+        );
     }
 
     public ResponseEntity<ElementProperties> loadProfilePA(Resource resource, ExternalHttpContext context)
         throws IOException {
         LOGGER.debug("Upload profile");
-        CustomMultipartFile multipartFile =
-            new CustomMultipartFile(resource.getInputStream().readAllBytes());
-        return ResponseEntity.ok(multipartData(getUrl() + RestApi.PASTIS_TRANSFORM_PROFILE_PA, HttpMethod.POST,
-            context,
-            Collections.singletonMap("fileName", multipartFile.getOriginalFilename()),
-            Optional.of(new AbstractMap.SimpleEntry<>("file", multipartFile)),
-            ElementProperties.class));
+        CustomMultipartFile multipartFile = new CustomMultipartFile(resource.getInputStream().readAllBytes());
+        return ResponseEntity.ok(
+            multipartData(
+                getUrl() + RestApi.PASTIS_TRANSFORM_PROFILE_PA,
+                HttpMethod.POST,
+                context,
+                Collections.singletonMap("fileName", multipartFile.getOriginalFilename()),
+                Optional.of(new AbstractMap.SimpleEntry<>("file", multipartFile)),
+                ElementProperties.class
+            )
+        );
     }
 
     @Override

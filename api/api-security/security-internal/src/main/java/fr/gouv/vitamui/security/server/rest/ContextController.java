@@ -110,8 +110,8 @@ public class ContextController implements CrudController<ContextDto> {
     }
 
     @GetMapping(CommonConstants.PATH_ID)
-    public ContextDto getOne(final @PathVariable("id") String id, final @RequestParam Optional<String> criteria) throws InvalidParseOperationException,
-        PreconditionFailedException {
+    public ContextDto getOne(final @PathVariable("id") String id, final @RequestParam Optional<String> criteria)
+        throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
         SanityChecker.checkSecureParameter(id);
         SanityChecker.sanitizeCriteria(criteria);
@@ -129,9 +129,8 @@ public class ContextController implements CrudController<ContextDto> {
 
     @Override
     @PostMapping
-    public ContextDto create(final @Valid @RequestBody ContextDto dto) throws InvalidParseOperationException,
-        PreconditionFailedException {
-
+    public ContextDto create(final @Valid @RequestBody ContextDto dto)
+        throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter("The context is a mandatory parameter: ", dto);
         SanityChecker.sanitizeCriteria(dto);
         LOGGER.debug("Create {}", dto);
@@ -140,32 +139,38 @@ public class ContextController implements CrudController<ContextDto> {
 
     @Override
     @PutMapping(CommonConstants.PATH_ID)
-    public ContextDto update(final @PathVariable("id") String id, final @Valid @RequestBody ContextDto dto) throws InvalidParseOperationException,
-        PreconditionFailedException {
+    public ContextDto update(final @PathVariable("id") String id, final @Valid @RequestBody ContextDto dto)
+        throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter("The Identifier and the context are mandatory parameters: ", id, dto);
         SanityChecker.sanitizeCriteria(dto);
         LOGGER.debug("Update {} with {}", id, dto);
-        Assert.isTrue(StringUtils.equals(id, dto.getId()),
-            "The DTO identifier must match the path identifier for update.");
+        Assert.isTrue(
+            StringUtils.equals(id, dto.getId()),
+            "The DTO identifier must match the path identifier for update."
+        );
         return contextService.update(dto);
     }
 
     @PutMapping(ADD_TENANT_TO_CONTEXT_PATH)
     @ResponseStatus(HttpStatus.CREATED)
-    public ContextDto addTenant(final @PathVariable("id") String id,
-        final @PathVariable("tenantIdentifier") Integer tenantIdentifier) throws InvalidParseOperationException,
-        PreconditionFailedException {
-        ParameterChecker.checkParameter("The Identifier and the tenant ID are mandatory parameters: ", id, tenantIdentifier);
+    public ContextDto addTenant(
+        final @PathVariable("id") String id,
+        final @PathVariable("tenantIdentifier") Integer tenantIdentifier
+    ) throws InvalidParseOperationException, PreconditionFailedException {
+        ParameterChecker.checkParameter(
+            "The Identifier and the tenant ID are mandatory parameters: ",
+            id,
+            tenantIdentifier
+        );
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Update {} with {}", id, tenantIdentifier);
         return contextService.addTenant(id, tenantIdentifier);
-
     }
 
     @Override
     @DeleteMapping(CommonConstants.PATH_ID)
-    public void delete(final @PathVariable("id") String id) throws InvalidParseOperationException,
-        PreconditionFailedException {
+    public void delete(final @PathVariable("id") String id)
+        throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Delete {}", id);

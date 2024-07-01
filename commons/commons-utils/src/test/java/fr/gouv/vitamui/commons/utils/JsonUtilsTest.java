@@ -1,11 +1,10 @@
 package fr.gouv.vitamui.commons.utils;
 
-import java.io.IOException;
-
+import com.fasterxml.jackson.databind.JsonNode;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.fasterxml.jackson.databind.JsonNode;
+import java.io.IOException;
 
 public class JsonUtilsTest {
 
@@ -13,6 +12,5 @@ public class JsonUtilsTest {
     public void readTreeTest() throws IOException {
         JsonNode json = JsonUtils.readTree("{}");
         Assert.assertNotNull(json);
-
     }
 }

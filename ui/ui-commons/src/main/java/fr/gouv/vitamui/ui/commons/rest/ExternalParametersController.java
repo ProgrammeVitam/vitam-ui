@@ -48,7 +48,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -69,16 +68,16 @@ public class ExternalParametersController extends AbstractUiRestController {
         this.service = service;
     }
 
-	/**
-	 * Get the external paremters for the authenticated user
-	 * @return
-	 */
+    /**
+     * Get the external paremters for the authenticated user
+     * @return
+     */
     @ApiOperation(value = "Get external parameters for the authenticated user")
     @GetMapping
     @Produces("application/json")
     @ResponseStatus(HttpStatus.OK)
-    public Map<String, String> getMyExternalParameters() throws InvalidParseOperationException,
-        PreconditionFailedException {
+    public Map<String, String> getMyExternalParameters()
+        throws InvalidParseOperationException, PreconditionFailedException {
         LOGGER.debug("Get external parameters for the authenticated user");
 
         Map<String, String> parameters = service.getMyExternalParameters(buildUiHttpContext());
@@ -86,5 +85,4 @@ public class ExternalParametersController extends AbstractUiRestController {
 
         return parameters;
     }
-
 }

@@ -65,9 +65,7 @@ import org.powermock.api.easymock.PowerMock;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.easymock.EasyMock.*;
@@ -89,15 +87,23 @@ public class ContextInternalServiceTest {
         objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
         converter = new ContextConverter();
         logbookService = mock(LogbookService.class);
-        contextInternalService = new ContextInternalService(vitamContextService, objectMapper, converter, logbookService);
-
+        contextInternalService = new ContextInternalService(
+            vitamContextService,
+            objectMapper,
+            converter,
+            logbookService
+        );
 
         // Mock server identity for Logs when not using spring
         PowerMock.suppress(PowerMock.constructor(ServerIdentityConfiguration.class));
         PowerMock.mockStatic(ServerIdentityConfiguration.class);
-        ServerIdentityConfiguration serverIdentityConfigurationMock = PowerMock.createMock(ServerIdentityConfiguration.class);
+        ServerIdentityConfiguration serverIdentityConfigurationMock = PowerMock.createMock(
+            ServerIdentityConfiguration.class
+        );
         expect(ServerIdentityConfiguration.getInstance()).andReturn(serverIdentityConfigurationMock).anyTimes();
-        expect(serverIdentityConfigurationMock.getLoggerMessagePrepend()).andReturn("LOG TESTS ContextInternalServiceTest - ").anyTimes();
+        expect(serverIdentityConfigurationMock.getLoggerMessagePrepend())
+            .andReturn("LOG TESTS ContextInternalServiceTest - ")
+            .anyTimes();
         PowerMock.replay(ServerIdentityConfiguration.class);
         PowerMock.replay(serverIdentityConfigurationMock);
     }
@@ -107,8 +113,9 @@ public class ContextInternalServiceTest {
         VitamContext vitamContext = new VitamContext(0);
         String identifier = "identifier";
 
-        expect(vitamContextService.findContextById(isA(VitamContext.class), isA(String.class)))
-            .andReturn(new RequestResponseOK<ContextModel>().setHttpCode(200));
+        expect(vitamContextService.findContextById(isA(VitamContext.class), isA(String.class))).andReturn(
+            new RequestResponseOK<ContextModel>().setHttpCode(200)
+        );
         EasyMock.replay(vitamContextService);
 
         assertThatCode(() -> {
@@ -121,8 +128,9 @@ public class ContextInternalServiceTest {
         VitamContext vitamContext = new VitamContext(0);
         String identifier = "identifier";
 
-        expect(vitamContextService.findContextById(isA(VitamContext.class), isA(String.class)))
-            .andReturn(new RequestResponseOK<ContextModel>().setHttpCode(400));
+        expect(vitamContextService.findContextById(isA(VitamContext.class), isA(String.class))).andReturn(
+            new RequestResponseOK<ContextModel>().setHttpCode(400)
+        );
         EasyMock.replay(vitamContextService);
 
         assertThatCode(() -> {
@@ -131,12 +139,14 @@ public class ContextInternalServiceTest {
     }
 
     @Test
-    public void getOne_should_throw_InternalServerException_when_vitamclient_throw_VitamClientException() throws VitamClientException {
+    public void getOne_should_throw_InternalServerException_when_vitamclient_throw_VitamClientException()
+        throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         String identifier = "identifier";
 
-        expect(vitamContextService.findContextById(isA(VitamContext.class), isA(String.class)))
-            .andThrow(new VitamClientException("Exception thrown by vitam"));
+        expect(vitamContextService.findContextById(isA(VitamContext.class), isA(String.class))).andThrow(
+            new VitamClientException("Exception thrown by vitam")
+        );
         EasyMock.replay(vitamContextService);
 
         assertThatCode(() -> {
@@ -148,8 +158,9 @@ public class ContextInternalServiceTest {
     public void getAll_should_return_ok_when_vitamclient_ok() throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
 
-        expect(vitamContextService.findContexts(isA(VitamContext.class), isA(JsonNode.class)))
-            .andReturn(new RequestResponseOK<ContextModel>().setHttpCode(200));
+        expect(vitamContextService.findContexts(isA(VitamContext.class), isA(JsonNode.class))).andReturn(
+            new RequestResponseOK<ContextModel>().setHttpCode(200)
+        );
         EasyMock.replay(vitamContextService);
 
         assertThatCode(() -> {
@@ -162,8 +173,9 @@ public class ContextInternalServiceTest {
         VitamContext vitamContext = new VitamContext(0);
         String identifier = "identifier";
 
-        expect(vitamContextService.findContexts(isA(VitamContext.class), isA(JsonNode.class)))
-            .andReturn(new RequestResponseOK<ContextModel>().setHttpCode(400));
+        expect(vitamContextService.findContexts(isA(VitamContext.class), isA(JsonNode.class))).andReturn(
+            new RequestResponseOK<ContextModel>().setHttpCode(400)
+        );
         EasyMock.replay(vitamContextService);
 
         assertThatCode(() -> {
@@ -172,11 +184,13 @@ public class ContextInternalServiceTest {
     }
 
     @Test
-    public void getAll_should_throw_InternalServerException_when_vitamclient_throw_VitamClientException() throws VitamClientException {
+    public void getAll_should_throw_InternalServerException_when_vitamclient_throw_VitamClientException()
+        throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
 
-        expect(vitamContextService.findContexts(isA(VitamContext.class), isA(JsonNode.class)))
-            .andThrow(new VitamClientException("Exception thrown by vitam"));
+        expect(vitamContextService.findContexts(isA(VitamContext.class), isA(JsonNode.class))).andThrow(
+            new VitamClientException("Exception thrown by vitam")
+        );
         EasyMock.replay(vitamContextService);
 
         assertThatCode(() -> {
@@ -189,8 +203,9 @@ public class ContextInternalServiceTest {
         VitamContext vitamContext = new VitamContext(0);
         JsonNode query = JsonHandler.createObjectNode();
 
-        expect(vitamContextService.findContexts(isA(VitamContext.class), isA(JsonNode.class)))
-            .andReturn(new RequestResponseOK<ContextModel>().setHttpCode(200));
+        expect(vitamContextService.findContexts(isA(VitamContext.class), isA(JsonNode.class))).andReturn(
+            new RequestResponseOK<ContextModel>().setHttpCode(200)
+        );
         EasyMock.replay(vitamContextService);
 
         assertThatCode(() -> {
@@ -203,8 +218,9 @@ public class ContextInternalServiceTest {
         VitamContext vitamContext = new VitamContext(0);
         JsonNode query = JsonHandler.createObjectNode();
 
-        expect(vitamContextService.findContexts(isA(VitamContext.class), isA(JsonNode.class)))
-            .andReturn(new RequestResponseOK<ContextModel>().setHttpCode(400));
+        expect(vitamContextService.findContexts(isA(VitamContext.class), isA(JsonNode.class))).andReturn(
+            new RequestResponseOK<ContextModel>().setHttpCode(400)
+        );
         EasyMock.replay(vitamContextService);
 
         assertThatCode(() -> {
@@ -213,12 +229,14 @@ public class ContextInternalServiceTest {
     }
 
     @Test
-    public void findAll_should_throw_VitamClientException_when_vitamclient_throws_VitamClientException() throws VitamClientException {
+    public void findAll_should_throw_VitamClientException_when_vitamclient_throws_VitamClientException()
+        throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         JsonNode query = JsonHandler.createObjectNode();
 
-        expect(vitamContextService.findContexts(isA(VitamContext.class), isA(JsonNode.class)))
-            .andThrow(new VitamClientException("Exception throw by vitam"));
+        expect(vitamContextService.findContexts(isA(VitamContext.class), isA(JsonNode.class))).andThrow(
+            new VitamClientException("Exception throw by vitam")
+        );
         EasyMock.replay(vitamContextService);
 
         assertThatCode(() -> {
@@ -227,12 +245,13 @@ public class ContextInternalServiceTest {
     }
 
     @Test
-    public void check_should_return_ok_when_vitamclient_ok()  {
+    public void check_should_return_ok_when_vitamclient_ok() {
         VitamContext vitamContext = new VitamContext(0);
         ContextDto contextDto = new ContextDto();
 
-        expect(vitamContextService.checkAbilityToCreateContextInVitam(isA(List.class),isA(VitamContext.class)))
-            .andReturn(true);
+        expect(
+            vitamContextService.checkAbilityToCreateContextInVitam(isA(List.class), isA(VitamContext.class))
+        ).andReturn(true);
         EasyMock.replay(vitamContextService);
 
         assertThatCode(() -> {
@@ -241,12 +260,13 @@ public class ContextInternalServiceTest {
     }
 
     @Test
-    public void check_should_return_ok_when_vitamclient_400()  {
+    public void check_should_return_ok_when_vitamclient_400() {
         VitamContext vitamContext = new VitamContext(0);
         ContextDto contextDto = new ContextDto();
 
-        expect(vitamContextService.checkAbilityToCreateContextInVitam(isA(List.class),isA(VitamContext.class)))
-            .andThrow(new UnavailableServiceException("Exception throw by vitam"));
+        expect(
+            vitamContextService.checkAbilityToCreateContextInVitam(isA(List.class), isA(VitamContext.class))
+        ).andThrow(new UnavailableServiceException("Exception throw by vitam"));
         EasyMock.replay(vitamContextService);
 
         assertThatCode(() -> {
@@ -255,12 +275,13 @@ public class ContextInternalServiceTest {
     }
 
     @Test
-    public void check_should_return_ok_when_vitamclient_throws_ConflictException()  {
+    public void check_should_return_ok_when_vitamclient_throws_ConflictException() {
         VitamContext vitamContext = new VitamContext(0);
         ContextDto contextDto = new ContextDto();
 
-        expect(vitamContextService.checkAbilityToCreateContextInVitam(isA(List.class),isA(VitamContext.class)))
-            .andThrow(new ConflictException("Exception throw by vitam"));
+        expect(
+            vitamContextService.checkAbilityToCreateContextInVitam(isA(List.class), isA(VitamContext.class))
+        ).andThrow(new ConflictException("Exception throw by vitam"));
         EasyMock.replay(vitamContextService);
 
         assertThatCode(() -> {
@@ -269,12 +290,14 @@ public class ContextInternalServiceTest {
     }
 
     @Test
-    public void create_should_return_ok_when_vitamclient_ok() throws AccessExternalClientException, IOException, InvalidParseOperationException {
+    public void create_should_return_ok_when_vitamclient_ok()
+        throws AccessExternalClientException, IOException, InvalidParseOperationException {
         VitamContext vitamContext = new VitamContext(0);
         ContextDto contextDto = new ContextDto();
 
-        expect(vitamContextService.createContext(isA(VitamContext.class), isA(ContextDto.class)))
-            .andReturn(new RequestResponseOK().setHttpCode(200));
+        expect(vitamContextService.createContext(isA(VitamContext.class), isA(ContextDto.class))).andReturn(
+            new RequestResponseOK().setHttpCode(200)
+        );
         EasyMock.replay(vitamContextService);
 
         assertThatCode(() -> {
@@ -283,12 +306,14 @@ public class ContextInternalServiceTest {
     }
 
     @Test
-    public void create_should_return_ok_when_vitamclient_400() throws AccessExternalClientException, IOException, InvalidParseOperationException {
+    public void create_should_return_ok_when_vitamclient_400()
+        throws AccessExternalClientException, IOException, InvalidParseOperationException {
         VitamContext vitamContext = new VitamContext(0);
         ContextDto contextDto = new ContextDto();
 
-        expect(vitamContextService.createContext(isA(VitamContext.class), isA(ContextDto.class)))
-            .andReturn(new RequestResponseOK().setHttpCode(400));
+        expect(vitamContextService.createContext(isA(VitamContext.class), isA(ContextDto.class))).andReturn(
+            new RequestResponseOK().setHttpCode(400)
+        );
         EasyMock.replay(vitamContextService);
 
         assertThatCode(() -> {
@@ -297,12 +322,14 @@ public class ContextInternalServiceTest {
     }
 
     @Test
-    public void create_should_throw_InternalServerException_when_vitamclient_throws_AccessExternalClientException() throws AccessExternalClientException, IOException, InvalidParseOperationException {
+    public void create_should_throw_InternalServerException_when_vitamclient_throws_AccessExternalClientException()
+        throws AccessExternalClientException, IOException, InvalidParseOperationException {
         VitamContext vitamContext = new VitamContext(0);
         ContextDto contextDto = new ContextDto();
 
-        expect(vitamContextService.createContext(isA(VitamContext.class), isA(ContextDto.class)))
-            .andThrow(new AccessExternalClientException(("Exception throw by vitam")));
+        expect(vitamContextService.createContext(isA(VitamContext.class), isA(ContextDto.class))).andThrow(
+            new AccessExternalClientException(("Exception throw by vitam"))
+        );
         EasyMock.replay(vitamContextService);
 
         assertThatCode(() -> {
@@ -311,12 +338,14 @@ public class ContextInternalServiceTest {
     }
 
     @Test
-    public void create_should_throw_InternalServerException_when_vitamclient_throws_IOException() throws AccessExternalClientException, IOException, InvalidParseOperationException {
+    public void create_should_throw_InternalServerException_when_vitamclient_throws_IOException()
+        throws AccessExternalClientException, IOException, InvalidParseOperationException {
         VitamContext vitamContext = new VitamContext(0);
         ContextDto contextDto = new ContextDto();
 
-        expect(vitamContextService.createContext(isA(VitamContext.class), isA(ContextDto.class)))
-            .andThrow(new IOException(("Exception throw by vitam")));
+        expect(vitamContextService.createContext(isA(VitamContext.class), isA(ContextDto.class))).andThrow(
+            new IOException(("Exception throw by vitam"))
+        );
         EasyMock.replay(vitamContextService);
 
         assertThatCode(() -> {
@@ -325,12 +354,14 @@ public class ContextInternalServiceTest {
     }
 
     @Test
-    public void create_should_throw_InternalServerException_when_vitamclient_throws_InvalidParseOperationException() throws AccessExternalClientException, IOException, InvalidParseOperationException {
+    public void create_should_throw_InternalServerException_when_vitamclient_throws_InvalidParseOperationException()
+        throws AccessExternalClientException, IOException, InvalidParseOperationException {
         VitamContext vitamContext = new VitamContext(0);
         ContextDto contextDto = new ContextDto();
 
-        expect(vitamContextService.createContext(isA(VitamContext.class), isA(ContextDto.class)))
-            .andThrow(new InvalidParseOperationException(("Exception throw by vitam")));
+        expect(vitamContextService.createContext(isA(VitamContext.class), isA(ContextDto.class))).andThrow(
+            new InvalidParseOperationException(("Exception throw by vitam"))
+        );
         EasyMock.replay(vitamContextService);
 
         assertThatCode(() -> {
@@ -339,13 +370,15 @@ public class ContextInternalServiceTest {
     }
 
     @Test
-    public void patch_should_return_ok_when_vitamclient_ok() throws InvalidParseOperationException, AccessExternalClientException {
+    public void patch_should_return_ok_when_vitamclient_ok()
+        throws InvalidParseOperationException, AccessExternalClientException {
         VitamContext vitamContext = new VitamContext(0);
         ContextDto partialDto = new ContextDto();
         partialDto.setIdentifier("identifier");
 
-        expect(vitamContextService.patchContext(isA(VitamContext.class), isA(String.class), isA(ObjectNode.class)))
-            .andReturn(new RequestResponseOK().setHttpCode(200));
+        expect(
+            vitamContextService.patchContext(isA(VitamContext.class), isA(String.class), isA(ObjectNode.class))
+        ).andReturn(new RequestResponseOK().setHttpCode(200));
         EasyMock.replay(vitamContextService);
 
         assertThatCode(() -> {
@@ -354,13 +387,15 @@ public class ContextInternalServiceTest {
     }
 
     @Test
-    public void patch_should_return_ok_when_vitamclient_400() throws InvalidParseOperationException, AccessExternalClientException {
+    public void patch_should_return_ok_when_vitamclient_400()
+        throws InvalidParseOperationException, AccessExternalClientException {
         VitamContext vitamContext = new VitamContext(0);
         ContextDto partialDto = new ContextDto();
         partialDto.setIdentifier("identifier");
 
-        expect(vitamContextService.patchContext(isA(VitamContext.class), isA(String.class), isA(ObjectNode.class)))
-            .andReturn(new RequestResponseOK().setHttpCode(400));
+        expect(
+            vitamContextService.patchContext(isA(VitamContext.class), isA(String.class), isA(ObjectNode.class))
+        ).andReturn(new RequestResponseOK().setHttpCode(400));
         EasyMock.replay(vitamContextService);
 
         assertThatCode(() -> {
@@ -369,13 +404,15 @@ public class ContextInternalServiceTest {
     }
 
     @Test
-    public void patch_should_throw_InternalServerException_when_vitamclient_throws_InvalidParseOperationException() throws InvalidParseOperationException, AccessExternalClientException {
+    public void patch_should_throw_InternalServerException_when_vitamclient_throws_InvalidParseOperationException()
+        throws InvalidParseOperationException, AccessExternalClientException {
         VitamContext vitamContext = new VitamContext(0);
         ContextDto partialDto = new ContextDto();
         partialDto.setIdentifier("identifier");
 
-        expect(vitamContextService.patchContext(isA(VitamContext.class), isA(String.class), isA(ObjectNode.class)))
-            .andThrow(new InvalidParseOperationException("Exception throw by vitam"));
+        expect(
+            vitamContextService.patchContext(isA(VitamContext.class), isA(String.class), isA(ObjectNode.class))
+        ).andThrow(new InvalidParseOperationException("Exception throw by vitam"));
         EasyMock.replay(vitamContextService);
 
         assertThatCode(() -> {
@@ -384,13 +421,15 @@ public class ContextInternalServiceTest {
     }
 
     @Test
-    public void patch_should_throw_InternalServerException_when_vitamclient_throws_AccessExternalClientException() throws InvalidParseOperationException, AccessExternalClientException {
+    public void patch_should_throw_InternalServerException_when_vitamclient_throws_AccessExternalClientException()
+        throws InvalidParseOperationException, AccessExternalClientException {
         VitamContext vitamContext = new VitamContext(0);
         ContextDto partialDto = new ContextDto();
         partialDto.setIdentifier("identifier");
 
-        expect(vitamContextService.patchContext(isA(VitamContext.class), isA(String.class), isA(ObjectNode.class)))
-            .andThrow(new AccessExternalClientException("Exception throw by vitam"));
+        expect(
+            vitamContextService.patchContext(isA(VitamContext.class), isA(String.class), isA(ObjectNode.class))
+        ).andThrow(new AccessExternalClientException("Exception throw by vitam"));
         EasyMock.replay(vitamContextService);
 
         assertThatCode(() -> {
@@ -401,10 +440,15 @@ public class ContextInternalServiceTest {
     @Test
     public void findHistoryByIdentifier_should_return_ok_when_vitamclient_ok() throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
-        String id ="id_0";
+        String id = "id_0";
 
-        expect(logbookService.findEventsByIdentifierAndCollectionNames(isA(String.class), isA(String.class), isA(VitamContext.class)))
-            .andReturn(new RequestResponseOK<LogbookOperation>().setHttpCode(200));
+        expect(
+            logbookService.findEventsByIdentifierAndCollectionNames(
+                isA(String.class),
+                isA(String.class),
+                isA(VitamContext.class)
+            )
+        ).andReturn(new RequestResponseOK<LogbookOperation>().setHttpCode(200));
         EasyMock.replay(logbookService);
 
         assertThatCode(() -> {
@@ -415,10 +459,15 @@ public class ContextInternalServiceTest {
     @Test
     public void findHistoryByIdentifier_should_return_ok_when_vitamclient_400() throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
-        String id ="id_0";
+        String id = "id_0";
 
-        expect(logbookService.findEventsByIdentifierAndCollectionNames(isA(String.class), isA(String.class), isA(VitamContext.class)))
-            .andReturn(new RequestResponseOK<LogbookOperation>().setHttpCode(400));
+        expect(
+            logbookService.findEventsByIdentifierAndCollectionNames(
+                isA(String.class),
+                isA(String.class),
+                isA(VitamContext.class)
+            )
+        ).andReturn(new RequestResponseOK<LogbookOperation>().setHttpCode(400));
         EasyMock.replay(logbookService);
 
         assertThatCode(() -> {
@@ -427,17 +476,22 @@ public class ContextInternalServiceTest {
     }
 
     @Test
-    public void findHistoryByIdentifier_should_throw_VitamClientException_when_vitamclient_throws_VitamClientException() throws VitamClientException {
+    public void findHistoryByIdentifier_should_throw_VitamClientException_when_vitamclient_throws_VitamClientException()
+        throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
-        String id ="id_0";
+        String id = "id_0";
 
-        expect(logbookService.findEventsByIdentifierAndCollectionNames(isA(String.class), isA(String.class), isA(VitamContext.class)))
-            .andThrow(new VitamClientException("Exception"));
+        expect(
+            logbookService.findEventsByIdentifierAndCollectionNames(
+                isA(String.class),
+                isA(String.class),
+                isA(VitamContext.class)
+            )
+        ).andThrow(new VitamClientException("Exception"));
         EasyMock.replay(logbookService);
 
         assertThatCode(() -> {
             contextInternalService.findHistoryByIdentifier(vitamContext, id);
         }).isInstanceOf(VitamClientException.class);
     }
-
 }

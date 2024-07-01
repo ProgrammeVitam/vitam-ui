@@ -46,16 +46,12 @@ import org.junit.runners.Parameterized.Parameters;
 import java.util.Arrays;
 import java.util.Collection;
 
-
 @RunWith(Parameterized.class)
 public class PuaPastisValidatorOKTest {
 
     @Parameters
     public static Collection<String> data() {
-        return Arrays.asList(new String[] {
-            "pua/pua_OK.json",
-            "pua/pua_OK_with_management.json",
-        });
+        return Arrays.asList(new String[] { "pua/pua_OK.json", "pua/pua_OK_with_management.json" });
     }
 
     private final String fileName;
@@ -66,13 +62,8 @@ public class PuaPastisValidatorOKTest {
         this.puaPastisValidatorTest = new PuaPastisValidatorTest();
     }
 
-
     @Test
     public void testImports() {
         puaPastisValidatorTest.testImport(fileName, true);
     }
-
-
 }
-
-

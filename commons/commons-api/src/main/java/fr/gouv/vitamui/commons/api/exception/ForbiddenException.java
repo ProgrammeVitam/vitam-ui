@@ -62,5 +62,4 @@ public class ForbiddenException extends VitamUIException {
     public ForbiddenException(final String message, final Throwable e) {
         super(message, e);
     }
-
 }

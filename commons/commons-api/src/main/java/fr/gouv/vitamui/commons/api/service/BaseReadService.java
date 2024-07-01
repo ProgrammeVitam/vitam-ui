@@ -36,15 +36,15 @@
  */
 package fr.gouv.vitamui.commons.api.service;
 
-import java.util.List;
-import java.util.Optional;
-
 import fr.gouv.vitamui.commons.api.domain.BaseIdDocument;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.IdDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.domain.RequestParamDto;
 import fr.gouv.vitamui.commons.api.domain.ResultsDto;
+
+import java.util.List;
+import java.util.Optional;
 
 /**
  * Service allowing to read entities.
@@ -54,7 +54,6 @@ import fr.gouv.vitamui.commons.api.domain.ResultsDto;
  * @param <E> Type of the entity (Entity).
  */
 public interface BaseReadService<D extends IdDto, E extends BaseIdDocument> {
-
     /**
      * Method allowing to retrieve all entities matching with the given criteria.
      * @param criteria Criteria (Json) used for the research.
@@ -100,8 +99,13 @@ public interface BaseReadService<D extends IdDto, E extends BaseIdDocument> {
      * @param direction Direction of the sort.
      * @return The paginated result.
      */
-    PaginatedValuesDto<D> getAllPaginated(final Integer page, final Integer size, final Optional<String> criteria,
-            final Optional<String> orderBy, final Optional<DirectionDto> direction);
+    PaginatedValuesDto<D> getAllPaginated(
+        final Integer page,
+        final Integer size,
+        final Optional<String> criteria,
+        final Optional<String> orderBy,
+        final Optional<DirectionDto> direction
+    );
 
     /**
      * Method allowing to get paginated entities according to the given criteria.
@@ -111,7 +115,14 @@ public interface BaseReadService<D extends IdDto, E extends BaseIdDocument> {
      * @return the resultsDto.
      */
     default ResultsDto<D> getAllRequest(final RequestParamDto requestParam) {
-        return new ResultsDto<D>(getAllPaginated(requestParam.getPage(), requestParam.getSize(), requestParam.getCriteria(), requestParam.getOrderBy(),
-                requestParam.getDirection()));
+        return new ResultsDto<D>(
+            getAllPaginated(
+                requestParam.getPage(),
+                requestParam.getSize(),
+                requestParam.getCriteria(),
+                requestParam.getOrderBy(),
+                requestParam.getDirection()
+            )
+        );
     }
 }

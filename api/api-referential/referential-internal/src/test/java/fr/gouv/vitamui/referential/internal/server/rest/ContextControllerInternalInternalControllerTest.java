@@ -36,12 +36,6 @@
  */
 package fr.gouv.vitamui.referential.internal.server.rest;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.junit4.SpringRunner;
-
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
@@ -50,12 +44,19 @@ import fr.gouv.vitamui.referential.common.dto.ContextDto;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
 import fr.gouv.vitamui.referential.internal.server.common.rest.ApiReferentialControllerTest;
 import fr.gouv.vitamui.referential.internal.server.context.ContextInternalService;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(controllers = { ContextInternalController.class })
 public class ContextControllerInternalInternalControllerTest extends ApiReferentialControllerTest<ContextDto> {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ContextControllerInternalInternalControllerTest.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
+        ContextControllerInternalInternalControllerTest.class
+    );
 
     @MockBean
     private ContextInternalService contextInternalService;
@@ -79,8 +80,7 @@ public class ContextControllerInternalInternalControllerTest extends ApiReferent
     }
 
     @Override
-    protected void preparedServices() {
-    }
+    protected void preparedServices() {}
 
     @Override
     protected String getRessourcePrefix() {
@@ -96,5 +96,4 @@ public class ContextControllerInternalInternalControllerTest extends ApiReferent
     protected Class<ContextDto> getDtoClass() {
         return ContextDto.class;
     }
-
 }

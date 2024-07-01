@@ -36,10 +36,9 @@
  */
 package fr.gouv.vitamui.referential.external.server.rest;
 
-import org.springframework.stereotype.Controller;
-
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import io.swagger.annotations.Api;
+import org.springframework.stereotype.Controller;
 
 /**
  * The status controller.
@@ -47,7 +46,9 @@ import io.swagger.annotations.Api;
  *
  */
 @Controller
-@Api(tags = CommonConstants.STATUS_API_DOCUMENTATION_TAGS, value = CommonConstants.STATUS_API_DOCUMENTATION_VALUE, description = CommonConstants.STATUS_API_DOCUMENTATION_DESCRIPTION)
-public class StatusController extends BaseStatusController {
-
-}
+@Api(
+    tags = CommonConstants.STATUS_API_DOCUMENTATION_TAGS,
+    value = CommonConstants.STATUS_API_DOCUMENTATION_VALUE,
+    description = CommonConstants.STATUS_API_DOCUMENTATION_DESCRIPTION
+)
+public class StatusController extends BaseStatusController {}

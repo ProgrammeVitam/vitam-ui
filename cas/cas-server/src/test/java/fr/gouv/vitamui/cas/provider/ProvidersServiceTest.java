@@ -3,11 +3,11 @@ package fr.gouv.vitamui.cas.provider;
 import fr.gouv.vitamui.cas.util.Utils;
 import fr.gouv.vitamui.commons.api.identity.ServerIdentityAutoConfiguration;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
-import fr.gouv.vitamui.iam.common.dto.common.ProviderEmbeddedOptions;
-import fr.gouv.vitamui.iam.external.client.IdentityProviderExternalRestClient;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
+import fr.gouv.vitamui.iam.common.dto.common.ProviderEmbeddedOptions;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import fr.gouv.vitamui.iam.common.utils.Pac4jClientBuilder;
+import fr.gouv.vitamui.iam.external.client.IdentityProviderExternalRestClient;
 import lombok.val;
 import org.junit.Before;
 import org.junit.Test;
@@ -69,8 +69,13 @@ public final class ProvidersServiceTest {
 
     @Test
     public void testGetProviders() {
-
-        when(restClient.getAll(any(ExternalHttpContext.class), eq(Optional.empty()), eq(Optional.of(ProviderEmbeddedOptions.KEYSTORE + "," + ProviderEmbeddedOptions.IDPMETADATA)))).thenReturn(Arrays.asList(provider));
+        when(
+            restClient.getAll(
+                any(ExternalHttpContext.class),
+                eq(Optional.empty()),
+                eq(Optional.of(ProviderEmbeddedOptions.KEYSTORE + "," + ProviderEmbeddedOptions.IDPMETADATA))
+            )
+        ).thenReturn(Arrays.asList(provider));
 
         service.loadData();
 
@@ -85,14 +90,18 @@ public final class ProvidersServiceTest {
 
     @Test
     public void testReloadDoesNotThrowException() {
-
         service.reloadData();
     }
 
     @Test
     public void testNoProviderResponse() {
-
-        when(restClient.getAll(any(ExternalHttpContext.class), eq(Optional.empty()), eq(Optional.of(ProviderEmbeddedOptions.KEYSTORE + "," + ProviderEmbeddedOptions.IDPMETADATA)))).thenReturn(null);
+        when(
+            restClient.getAll(
+                any(ExternalHttpContext.class),
+                eq(Optional.empty()),
+                eq(Optional.of(ProviderEmbeddedOptions.KEYSTORE + "," + ProviderEmbeddedOptions.IDPMETADATA))
+            )
+        ).thenReturn(null);
         try {
             service.loadData();
             fail("should fail");
@@ -103,8 +112,13 @@ public final class ProvidersServiceTest {
 
     @Test
     public void testBadProviderResponse() {
-
-        when(restClient.getAll(any(ExternalHttpContext.class), eq(Optional.empty()), eq(Optional.of(ProviderEmbeddedOptions.KEYSTORE + "," + ProviderEmbeddedOptions.IDPMETADATA)))).thenThrow(new RuntimeException(ERROR_MESSAGE));
+        when(
+            restClient.getAll(
+                any(ExternalHttpContext.class),
+                eq(Optional.empty()),
+                eq(Optional.of(ProviderEmbeddedOptions.KEYSTORE + "," + ProviderEmbeddedOptions.IDPMETADATA))
+            )
+        ).thenThrow(new RuntimeException(ERROR_MESSAGE));
 
         try {
             service.loadData();

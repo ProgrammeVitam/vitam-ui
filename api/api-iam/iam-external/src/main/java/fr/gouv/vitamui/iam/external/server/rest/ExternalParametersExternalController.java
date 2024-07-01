@@ -36,12 +36,6 @@
  */
 package fr.gouv.vitamui.iam.external.server.rest;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.ExternalParametersDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
@@ -52,6 +46,11 @@ import fr.gouv.vitamui.iam.external.server.service.ExternalParametersExternalSer
 import io.swagger.annotations.Api;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * The controller to check existence, create, read, update and delete the external parameters.
@@ -63,16 +62,20 @@ import lombok.Setter;
 @Setter
 @Api(tags = "externalParameters", value = "External Parameters Management")
 public class ExternalParametersExternalController {
-	
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ExternalParametersExternalController.class);
+
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
+        ExternalParametersExternalController.class
+    );
 
     private ExternalParametersExternalService externalParametersExternalService;
 
     @Autowired
-    public ExternalParametersExternalController(final ExternalParametersExternalService externalParametersExternalService) {
+    public ExternalParametersExternalController(
+        final ExternalParametersExternalService externalParametersExternalService
+    ) {
         this.externalParametersExternalService = externalParametersExternalService;
     }
-	
+
     /**
      * Retrieve the external parameters associated to the authenticated user.
      * @return
@@ -81,7 +84,7 @@ public class ExternalParametersExternalController {
     @Secured(ServicesData.ROLE_GET_EXTERNAL_PARAMS)
     public ExternalParametersDto getMyExternalParameters() {
         LOGGER.debug("GetMyExternalParameters");
-        
+
         return externalParametersExternalService.getMyExternalParameters();
     }
 }

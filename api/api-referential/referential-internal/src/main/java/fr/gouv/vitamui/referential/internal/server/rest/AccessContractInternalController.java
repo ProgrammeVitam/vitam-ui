@@ -80,7 +80,9 @@ import java.util.Optional;
 @Setter
 public class AccessContractInternalController {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(AccessContractInternalController.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
+        AccessContractInternalController.class
+    );
 
     @Autowired
     private AccessContractInternalService accessContractInternalService;
@@ -88,7 +90,7 @@ public class AccessContractInternalController {
     @Autowired
     private InternalSecurityService securityService;
 
-    @GetMapping()
+    @GetMapping
     public Collection<AccessContractDto> getAll(@RequestParam final Optional<String> criteria) {
         LOGGER.debug("get all accessContract criteria={}", criteria);
         SanityChecker.sanitizeCriteria(criteria);
@@ -97,23 +99,45 @@ public class AccessContractInternalController {
     }
 
     @GetMapping(params = { "page", "size" })
-    public PaginatedValuesDto<AccessContractDto> getAllPaginated(@RequestParam final Integer page, @RequestParam final Integer size,
-            @RequestParam(required = false) final Optional<String> criteria, @RequestParam(required = false) final Optional<String> orderBy,
-            @RequestParam(required = false) final Optional<DirectionDto> direction) {
-        LOGGER.debug("getPaginateEntities accessContract page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, criteria, orderBy, direction);
+    public PaginatedValuesDto<AccessContractDto> getAllPaginated(
+        @RequestParam final Integer page,
+        @RequestParam final Integer size,
+        @RequestParam(required = false) final Optional<String> criteria,
+        @RequestParam(required = false) final Optional<String> orderBy,
+        @RequestParam(required = false) final Optional<DirectionDto> direction
+    ) {
+        LOGGER.debug(
+            "getPaginateEntities accessContract page={}, size={}, criteria={}, orderBy={}, ascendant={}",
+            page,
+            size,
+            criteria,
+            orderBy,
+            direction
+        );
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
-        return accessContractInternalService.getAllPaginated(page, size, orderBy, direction,vitamContext, criteria);
+        return accessContractInternalService.getAllPaginated(page, size, orderBy, direction, vitamContext, criteria);
     }
 
     @GetMapping(path = RestApi.PATH_REFERENTIAL_ID)
-    public AccessContractDto getOne(final @PathVariable("identifier") String identifier) throws UnsupportedEncodingException {
-        LOGGER.debug("get accessContract identifier={} / {}", identifier, URLDecoder.decode(identifier, StandardCharsets.UTF_8.toString()));
+    public AccessContractDto getOne(final @PathVariable("identifier") String identifier)
+        throws UnsupportedEncodingException {
+        LOGGER.debug(
+            "get accessContract identifier={} / {}",
+            identifier,
+            URLDecoder.decode(identifier, StandardCharsets.UTF_8.toString())
+        );
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
-        return accessContractInternalService.getOne(vitamContext, URLDecoder.decode(identifier, StandardCharsets.UTF_8.toString()));
+        return accessContractInternalService.getOne(
+            vitamContext,
+            URLDecoder.decode(identifier, StandardCharsets.UTF_8.toString())
+        );
     }
 
     @PostMapping(CommonConstants.PATH_CHECK)
-    public ResponseEntity<Void> checkExist(@RequestBody AccessContractDto accessContractDto, @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant) {
+    public ResponseEntity<Void> checkExist(
+        @RequestBody AccessContractDto accessContractDto,
+        @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant
+    ) {
         LOGGER.debug("check exist accessContract={}", accessContractDto);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
         accessContractDto.setTenant(tenant);
@@ -122,18 +146,27 @@ public class AccessContractInternalController {
     }
 
     @PostMapping
-    public AccessContractDto create(@Valid @RequestBody AccessContractDto accessContractDto, @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant) {
+    public AccessContractDto create(
+        @Valid @RequestBody AccessContractDto accessContractDto,
+        @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant
+    ) {
         LOGGER.debug("create accessContract={}", accessContractDto);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
         accessContractDto.setTenant(tenant);
-        return accessContractInternalService.create(vitamContext,accessContractDto);
+        return accessContractInternalService.create(vitamContext, accessContractDto);
     }
 
     @PatchMapping(CommonConstants.PATH_ID)
-    public AccessContractDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto) {
+    public AccessContractDto patch(
+        final @PathVariable("id") String id,
+        @RequestBody final Map<String, Object> partialDto
+    ) {
         LOGGER.debug("Patch {} with {}", id, partialDto);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
-        Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "The DTO identifier must match the path identifier for update.");
+        Assert.isTrue(
+            StringUtils.equals(id, (String) partialDto.get("id")),
+            "The DTO identifier must match the path identifier for update."
+        );
         return accessContractInternalService.patch(vitamContext, partialDto);
     }
 

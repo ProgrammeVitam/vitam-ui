@@ -26,9 +26,8 @@
  */
 package fr.gouv.vitamui.commons.mongo.config;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import fr.gouv.vitamui.commons.api.converter.OffsetDateTimeToStringConverter;
+import fr.gouv.vitamui.commons.api.converter.StringToOffsetDateTimeConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -38,10 +37,8 @@ import org.springframework.data.mongodb.MongoDatabaseFactory;
 import org.springframework.data.mongodb.MongoTransactionManager;
 import org.springframework.data.mongodb.core.convert.MongoCustomConversions;
 
-import fr.gouv.vitamui.commons.api.converter.OffsetDateTimeToStringConverter;
-import fr.gouv.vitamui.commons.api.converter.StringToOffsetDateTimeConverter;
-import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
-import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * MongoDB configuration.
@@ -68,5 +65,4 @@ public class MongoConfig {
     MongoTransactionManager transactionManager(final MongoDatabaseFactory dbFactory) {
         return new MongoTransactionManager(dbFactory);
     }
-
 }

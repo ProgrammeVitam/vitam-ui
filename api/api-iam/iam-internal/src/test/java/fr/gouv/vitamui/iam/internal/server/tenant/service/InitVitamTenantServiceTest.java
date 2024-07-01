@@ -58,10 +58,10 @@ public class InitVitamTenantServiceTest {
     private final Resource itemsIngestContract = new ClassPathResource("data/tenant/ingest-contract/items.json");
 
     private final Resource fullAccessAccessContract = new ClassPathResource(
-        "data/tenant/access-contract/full-access.json");
+        "data/tenant/access-contract/full-access.json"
+    );
 
-    private final Resource logbookAccessContract = new ClassPathResource(
-        "data/tenant/access-contract/logbook.json");
+    private final Resource logbookAccessContract = new ClassPathResource("data/tenant/access-contract/logbook.json");
 
     private final Resource holdingAccessContract = new ClassPathResource("data/tenant/access-contract/holding.json");
 
@@ -88,25 +88,42 @@ public class InitVitamTenantServiceTest {
         initVitamTenantService.setMandatory(true);
         Mockito.when(tenantConverter.convertEntityToDto(ArgumentMatchers.any())).thenCallRealMethod();
         Mockito.when(tenantConverter.convertDtoToEntity(ArgumentMatchers.any())).thenCallRealMethod();
-        fullAccessAccessContractDto = JsonHandler.getFromInputStream(fullAccessAccessContract.getInputStream(),
-            AccessContractModelDto.class);
-        logbookAccessContractDto = JsonHandler.getFromInputStream(logbookAccessContract.getInputStream(),
-            AccessContractModelDto.class);
-        holdingAccessContractDto = JsonHandler.getFromInputStream(holdingAccessContract.getInputStream(),
-            AccessContractModelDto.class);
-        ingestContractHoldingDto = JsonHandler.getFromInputStream(ingestContractHolding.getInputStream(),
-            IngestContractDto.class);
-        itemsIngestContractDto = JsonHandler.getFromInputStream(itemsIngestContract.getInputStream(),
-            IngestContractDto.class);
+        fullAccessAccessContractDto = JsonHandler.getFromInputStream(
+            fullAccessAccessContract.getInputStream(),
+            AccessContractModelDto.class
+        );
+        logbookAccessContractDto = JsonHandler.getFromInputStream(
+            logbookAccessContract.getInputStream(),
+            AccessContractModelDto.class
+        );
+        holdingAccessContractDto = JsonHandler.getFromInputStream(
+            holdingAccessContract.getInputStream(),
+            AccessContractModelDto.class
+        );
+        ingestContractHoldingDto = JsonHandler.getFromInputStream(
+            ingestContractHolding.getInputStream(),
+            IngestContractDto.class
+        );
+        itemsIngestContractDto = JsonHandler.getFromInputStream(
+            itemsIngestContract.getInputStream(),
+            IngestContractDto.class
+        );
         ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
 
-        initVitamTenantService
-            .setContractResources(Map.of(InitVitamTenantService.HOLDING_ACCESS_CONTRACT_NAME, holdingAccessContract,
-                InitVitamTenantService.HOLDING_INGEST_CONTRACT_NAME, ingestContractHolding,
-                InitVitamTenantService.LOGBOOK_ACCESS_CONTRACT_NAME, logbookAccessContract,
-                InitVitamTenantService.ITEMS_INGEST_CONTRACT_NAME, itemsIngestContract,
-                InitVitamTenantService.FULL_ACCESS_CONTRACT_NAME, fullAccessAccessContract));
-
+        initVitamTenantService.setContractResources(
+            Map.of(
+                InitVitamTenantService.HOLDING_ACCESS_CONTRACT_NAME,
+                holdingAccessContract,
+                InitVitamTenantService.HOLDING_INGEST_CONTRACT_NAME,
+                ingestContractHolding,
+                InitVitamTenantService.LOGBOOK_ACCESS_CONTRACT_NAME,
+                logbookAccessContract,
+                InitVitamTenantService.ITEMS_INGEST_CONTRACT_NAME,
+                itemsIngestContract,
+                InitVitamTenantService.FULL_ACCESS_CONTRACT_NAME,
+                fullAccessAccessContract
+            )
+        );
     }
 
     @Test
@@ -126,27 +143,33 @@ public class InitVitamTenantServiceTest {
         externalParametersDto.setName("test");
 
         RequestResponse<AccessContractModel> requestResponse = Mockito.mock(RequestResponse.class);
-        Mockito.when(accessContractService.findAccessContracts(ArgumentMatchers.any(), ArgumentMatchers.any()))
-            .thenReturn(requestResponse);
-        List<AccessContractModelDto> results = List.of(holdingAccessContractDto, logbookAccessContractDto,
-            fullAccessAccessContractDto);
+        Mockito.when(
+            accessContractService.findAccessContracts(ArgumentMatchers.any(), ArgumentMatchers.any())
+        ).thenReturn(requestResponse);
+        List<AccessContractModelDto> results = List.of(
+            holdingAccessContractDto,
+            logbookAccessContractDto,
+            fullAccessAccessContractDto
+        );
         JsonHandler.toJsonNode(results);
         AccessContractResponseDto response = new AccessContractResponseDto();
         response.setResults(results);
-        Mockito.when(objectMapper.treeToValue(requestResponse.toJsonNode(), AccessContractResponseDto.class))
-            .thenReturn(response);
+        Mockito.when(
+            objectMapper.treeToValue(requestResponse.toJsonNode(), AccessContractResponseDto.class)
+        ).thenReturn(response);
 
         RequestResponse<IngestContractModel> requestResponseIngest = Mockito.mock(RequestResponse.class);
-        Mockito.when(ingestContractService.findIngestContracts(ArgumentMatchers.any(), ArgumentMatchers.any()))
-            .thenReturn(requestResponseIngest);
+        Mockito.when(
+            ingestContractService.findIngestContracts(ArgumentMatchers.any(), ArgumentMatchers.any())
+        ).thenReturn(requestResponseIngest);
         List<IngestContractDto> ingestsContract = List.of(ingestContractHoldingDto, itemsIngestContractDto);
         JsonHandler.toJsonNode(results);
         IngestContractResponseDto responseIngest = new IngestContractResponseDto();
         responseIngest.setResults(ingestsContract);
-        Mockito.when(objectMapper.treeToValue(requestResponse.toJsonNode(), IngestContractResponseDto.class))
-            .thenReturn(responseIngest);
+        Mockito.when(
+            objectMapper.treeToValue(requestResponse.toJsonNode(), IngestContractResponseDto.class)
+        ).thenReturn(responseIngest);
 
         initVitamTenantService.init(tenantDto, externalParametersDto);
-
     }
 }

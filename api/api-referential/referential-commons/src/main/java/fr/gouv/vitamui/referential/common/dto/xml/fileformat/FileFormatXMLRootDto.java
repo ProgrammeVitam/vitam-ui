@@ -36,16 +36,15 @@
  */
 package fr.gouv.vitamui.referential.common.dto.xml.fileformat;
 
-import java.util.Date;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-
-import lombok.Getter;
-import lombok.Setter;
+import java.util.Date;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "FFSignatureFile")
@@ -54,22 +53,23 @@ import lombok.Setter;
 public class FileFormatXMLRootDto {
 
     // fileformat Version field
-    @XmlAttribute(name="Version")
+    @XmlAttribute(name = "Version")
     private Integer version;
 
-    @XmlAttribute(name="DateCreated")
+    @XmlAttribute(name = "DateCreated")
     private Date createdDate;
 
-    @XmlAttribute(name="xmlns")
+    @XmlAttribute(name = "xmlns")
     private final String namespace = "http://www.nationalarchives.gov.uk/pronom/SignatureFile";
 
-    @XmlElement(name="InternalSignatureCollection")
+    @XmlElement(name = "InternalSignatureCollection")
     private InternalSignatureCollection internalSignatureCollection = new InternalSignatureCollection();
 
-    @XmlElement(name="FileFormatCollection")
+    @XmlElement(name = "FileFormatCollection")
     private FileFormatCollection fileFormatCollection;
 
-    @Override public String toString() {
+    @Override
+    public String toString() {
         return "" + createdDate + version + "[" + fileFormatCollection.getFileFormats().size() + " file formats]";
     }
 }

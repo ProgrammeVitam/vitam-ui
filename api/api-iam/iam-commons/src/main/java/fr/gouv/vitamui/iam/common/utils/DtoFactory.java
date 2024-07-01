@@ -36,11 +36,11 @@
  */
 package fr.gouv.vitamui.iam.common.utils;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import fr.gouv.vitamui.commons.api.domain.ProfileDto;
 import fr.gouv.vitamui.commons.api.domain.Role;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public final class DtoFactory {
 
@@ -48,8 +48,16 @@ public final class DtoFactory {
         // do nothing
     }
 
-    public static ProfileDto buildProfileDto(final String name, final String description, final boolean isReadonly, final String level, final Integer tenant,
-            final String service, final List<String> rolesName, final String customerId) {
+    public static ProfileDto buildProfileDto(
+        final String name,
+        final String description,
+        final boolean isReadonly,
+        final String level,
+        final Integer tenant,
+        final String service,
+        final List<String> rolesName,
+        final String customerId
+    ) {
         final ProfileDto profileDto = new ProfileDto();
         profileDto.setName(name);
         profileDto.setLevel(level);
@@ -68,5 +76,4 @@ public final class DtoFactory {
         rolesName.forEach(s -> roles.add(new Role(s)));
         return roles;
     }
-
 }

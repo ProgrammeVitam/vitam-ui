@@ -41,7 +41,6 @@ import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration
 import java.util.Map;
 
 public interface UIProperties {
-
     public String getPrefix();
 
     public BaseUrl getBaseUrl();
@@ -70,10 +69,9 @@ public interface UIProperties {
 
     public Map<String, String> getCustomer();
 
-    public Map<String, Map<String,Object>> getPortalCategories();
+    public Map<String, Map<String, Object>> getPortalCategories();
 
     public String getVersionRelease();
 
     public String getUserLogo();
-
 }

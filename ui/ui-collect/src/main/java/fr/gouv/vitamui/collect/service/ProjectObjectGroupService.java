@@ -65,15 +65,22 @@ public class ProjectObjectGroupService extends AbstractPaginateService<CollectPr
     private final CollectExternalRestClient collectExternalRestClient;
     private final CollectExternalWebClient collectExternalWebClient;
 
-
-    public ProjectObjectGroupService(CollectExternalRestClient collectExternalRestClient,
-        CollectExternalWebClient collectExternalWebClient) {
+    public ProjectObjectGroupService(
+        CollectExternalRestClient collectExternalRestClient,
+        CollectExternalWebClient collectExternalWebClient
+    ) {
         this.collectExternalRestClient = collectExternalRestClient;
         this.collectExternalWebClient = collectExternalWebClient;
     }
 
-    public Mono<ResponseEntity<Resource>> downloadObjectFromUnit(String unitId, String objectId, String qualifier, Integer version, ObjectData objectData,
-        ExternalHttpContext context) {
+    public Mono<ResponseEntity<Resource>> downloadObjectFromUnit(
+        String unitId,
+        String objectId,
+        String qualifier,
+        Integer version,
+        ObjectData objectData,
+        ExternalHttpContext context
+    ) {
         LOGGER.debug("Download the Archive Unit Object with id {}", unitId);
 
         ResultsDto got = findObjectById(objectId, context).getBody();
@@ -82,10 +89,12 @@ public class ProjectObjectGroupService extends AbstractPaginateService<CollectPr
             objectData.setQualifier(qualifier);
             objectData.setVersion(version);
         }
-        return collectExternalWebClient.downloadObjectFromUnit(unitId,
+        return collectExternalWebClient.downloadObjectFromUnit(
+            unitId,
             objectData.getQualifier(),
             objectData.getVersion(),
-            context);
+            context
+        );
     }
 
     public void setObjectData(ResultsDto got, ObjectData objectData) {
@@ -105,7 +114,9 @@ public class ProjectObjectGroupService extends AbstractPaginateService<CollectPr
 
     private QualifiersDto getLastObjectQualifier(ResultsDto got) {
         for (String qualifierName : ObjectQualifierType.downloadableValuesOrdered) {
-            QualifiersDto qualifierFound = got.getQualifiers().stream()
+            QualifiersDto qualifierFound = got
+                .getQualifiers()
+                .stream()
                 .filter(qualifier -> qualifierName.equals(qualifier.getQualifier()))
                 .reduce((first, second) -> second)
                 .orElse(null);
@@ -120,9 +131,7 @@ public class ProjectObjectGroupService extends AbstractPaginateService<CollectPr
         if (isNull(qualifier) || CollectionUtils.isEmpty(qualifier.getVersions())) {
             return null;
         }
-        return qualifier.getVersions().stream()
-            .reduce((first, second) -> second)
-            .orElse(null);
+        return qualifier.getVersions().stream().reduce((first, second) -> second).orElse(null);
     }
 
     private String getFilename(VersionsDto version) {
@@ -138,9 +147,14 @@ public class ProjectObjectGroupService extends AbstractPaginateService<CollectPr
             uriExtension = version.getUri().substring(version.getUri().lastIndexOf('.') + 1);
         }
         String filenameExtension = EMPTY;
-        if (nonNull(version.getFileInfoModel()) && isNotBlank(version.getFileInfoModel().getFilename()) &&
-            version.getFileInfoModel().getFilename().contains(".")) {
-            filenameExtension = version.getFileInfoModel().getFilename()
+        if (
+            nonNull(version.getFileInfoModel()) &&
+            isNotBlank(version.getFileInfoModel().getFilename()) &&
+            version.getFileInfoModel().getFilename().contains(".")
+        ) {
+            filenameExtension = version
+                .getFileInfoModel()
+                .getFilename()
                 .substring(version.getFileInfoModel().getFilename().lastIndexOf('.') + 1);
         }
         if (isNotBlank(filenameExtension)) {

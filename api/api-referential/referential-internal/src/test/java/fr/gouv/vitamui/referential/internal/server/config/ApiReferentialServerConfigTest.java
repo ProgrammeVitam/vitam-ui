@@ -88,12 +88,8 @@ public class ApiReferentialServerConfigTest extends AbstractContextConfiguration
     @Autowired
     private LogbookManagementOperationInternalService logbookManagementOperationInternalService;
 
-
-
     @Test
     public void testAgency() {
         assertThat(agencyInternalService).isNotNull();
     }
-
-
 }

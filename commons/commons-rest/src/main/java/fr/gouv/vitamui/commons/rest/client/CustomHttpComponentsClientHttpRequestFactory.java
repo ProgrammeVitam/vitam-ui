@@ -34,16 +34,17 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
- package fr.gouv.vitamui.commons.rest.client;
+package fr.gouv.vitamui.commons.rest.client;
 
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import org.apache.http.client.HttpClient;
 import org.apache.http.client.protocol.HttpClientContext;
 import org.apache.http.protocol.HttpContext;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.util.StringUtils;
-import org.apache.http.client.HttpClient;
+
 import java.net.URI;
 import java.util.UUID;
 
@@ -52,7 +53,9 @@ import java.util.UUID;
  */
 public class CustomHttpComponentsClientHttpRequestFactory extends HttpComponentsClientHttpRequestFactory {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(CustomHttpComponentsClientHttpRequestFactory.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
+        CustomHttpComponentsClientHttpRequestFactory.class
+    );
 
     private String userToken = UUID.randomUUID().toString();
 
@@ -78,7 +81,7 @@ public class CustomHttpComponentsClientHttpRequestFactory extends HttpComponents
     public CustomHttpComponentsClientHttpRequestFactory(HttpClient httpClient, String userToken) {
         super(httpClient);
         // set factory userToken if defined or else use a random uuid
-        if(!StringUtils.isEmpty(userToken)) {
+        if (!StringUtils.isEmpty(userToken)) {
             this.userToken = userToken;
         }
     }
@@ -90,10 +93,9 @@ public class CustomHttpComponentsClientHttpRequestFactory extends HttpComponents
      * @return
      */
     @Override
-    protected HttpContext createHttpContext(HttpMethod httpMethod, URI uri)  {
+    protected HttpContext createHttpContext(HttpMethod httpMethod, URI uri) {
         HttpContext context = HttpClientContext.create();
         context.setAttribute(HttpClientContext.USER_TOKEN, userToken);
         return context;
     }
-
 }

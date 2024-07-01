@@ -143,7 +143,6 @@ public abstract class BaseCasSecurityConfigurer extends WebSecurityConfigurerAda
     @Bean
     protected Cas30ServiceTicketValidator cas30ServiceTicketValidator() {
         try {
-
             SSLSocketFactory sslSocketFactory = null;
 
             // Use given truststore if configured
@@ -152,8 +151,9 @@ public abstract class BaseCasSecurityConfigurer extends WebSecurityConfigurerAda
                 try (final InputStream is = new FileInputStream(casTrustStore)) {
                     truststore.load(is, casTrustStorePassword.toCharArray());
                 }
-                final TrustManagerFactory tmf = TrustManagerFactory
-                        .getInstance(TrustManagerFactory.getDefaultAlgorithm());
+                final TrustManagerFactory tmf = TrustManagerFactory.getInstance(
+                    TrustManagerFactory.getDefaultAlgorithm()
+                );
                 tmf.init(truststore);
                 final SSLContext sslContext = SSLContext.getInstance("TLS");
                 sslContext.init(null, tmf.getTrustManagers(), null);
@@ -168,8 +168,7 @@ public abstract class BaseCasSecurityConfigurer extends WebSecurityConfigurerAda
             final Cas30ServiceTicketValidator validator = new Cas30ServiceTicketValidator(casInternalUrl);
             validator.setURLConnectionFactory(new TrustedHttpURLConnectionFactory(hostnameVerifier, sslSocketFactory));
             return validator;
-        }
-        catch (final Exception e) {
+        } catch (final Exception e) {
             throw new InternalServerException("Cannot create SSLSocketFactory", e);
         }
     }
@@ -180,7 +179,9 @@ public abstract class BaseCasSecurityConfigurer extends WebSecurityConfigurerAda
         casAuthenticationFilter.setFilterProcessesUrl("/" + uiPrefix + CALLBACK_ENDPOINT);
         casAuthenticationFilter.setAuthenticationManager(authenticationManager());
         casAuthenticationFilter.setSessionAuthenticationStrategy(new SessionFixationProtectionStrategy());
-        casAuthenticationFilter.setAuthenticationFailureHandler(new SimpleUrlAuthenticationFailureHandler(casExternalUrl));
+        casAuthenticationFilter.setAuthenticationFailureHandler(
+            new SimpleUrlAuthenticationFailureHandler(casExternalUrl)
+        );
         return casAuthenticationFilter;
     }
 
@@ -213,8 +214,7 @@ public abstract class BaseCasSecurityConfigurer extends WebSecurityConfigurerAda
     protected AuthenticationUserDetailsService<CasAssertionAuthenticationToken> customUserDetailsService() {
         return token -> {
             final AttributePrincipal principal = token.getAssertion().getPrincipal();
-            final AuthUserDto user = new AuthUserDto(principal.getName(),
-                    principal.getAttributes());
+            final AuthUserDto user = new AuthUserDto(principal.getName(), principal.getAttributes());
             LOGGER.debug("user: {}", user);
             return user;
         };

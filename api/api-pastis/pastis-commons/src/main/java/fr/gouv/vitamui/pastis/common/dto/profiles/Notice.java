@@ -63,32 +63,46 @@ import java.util.List;
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Notice extends IdDto {
+
     @JsonProperty("identifier")
     private String identifier;
+
     @JsonProperty("name")
     private String name;
+
     @JsonProperty("description")
     private String description;
+
     @JsonProperty("status")
     private ArchiveUnitProfileStatus status;
+
     @JsonProperty("creationDate")
     private String creationDate;
+
     @JsonProperty("lastUpdate")
     private String lastUpdate;
+
     @JsonProperty("activationDate")
     private String activationDate;
+
     @JsonProperty("deactivationDate")
     private String deactivationDate;
+
     @JsonProperty("controlSchema")
     private String controlSchema;
+
     @JsonProperty("tenant")
     private Integer tenant;
+
     @JsonProperty("version")
     private Integer version;
+
     @JsonProperty("fields")
     private List<String> fields;
+
     @JsonProperty("path")
     private String path;
+
     @JsonProperty("format")
     private ProfileFormat format;
 
@@ -122,7 +136,8 @@ public class Notice extends IdDto {
         this.name = fileBaseName;
 
         if (getFileType(filename) == ProfileType.PUA) {
-            final Notice notice = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+            final Notice notice = new ObjectMapper()
+                .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
                 .readValue(resource.getInputStream(), Notice.class);
 
             this.controlSchema = notice.controlSchema;
@@ -144,7 +159,6 @@ public class Notice extends IdDto {
         String[] tokens = fileName.split("\\.(?=[^\\.]+$)");
         return tokens[1].equals("rng") ? ProfileType.PA : ProfileType.PUA;
     }
-
 
     public String serialiseString() throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();

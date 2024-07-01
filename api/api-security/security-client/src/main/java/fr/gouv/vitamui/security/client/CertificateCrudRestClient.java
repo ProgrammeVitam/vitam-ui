@@ -68,7 +68,6 @@ public class CertificateCrudRestClient extends BaseCrudRestClient<CertificateDto
 
     @Override
     protected ParameterizedTypeReference<List<CertificateDto>> getDtoListClass() {
-        return new ParameterizedTypeReference<List<CertificateDto>>() {
-        };
+        return new ParameterizedTypeReference<List<CertificateDto>>() {};
     }
 }

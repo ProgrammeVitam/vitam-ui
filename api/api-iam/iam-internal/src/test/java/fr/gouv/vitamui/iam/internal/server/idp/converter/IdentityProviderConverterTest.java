@@ -1,22 +1,20 @@
 package fr.gouv.vitamui.iam.internal.server.idp.converter;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import com.fasterxml.jackson.databind.JsonNode;
+import fr.gouv.vitam.common.exception.InvalidParseOperationException;
+import fr.gouv.vitam.common.json.JsonHandler;
+import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
+import fr.gouv.vitamui.iam.common.enums.AuthnRequestBindingEnum;
+import fr.gouv.vitamui.iam.internal.server.idp.domain.IdentityProvider;
+import fr.gouv.vitamui.iam.internal.server.idp.service.SpMetadataGenerator;
+import org.junit.Test;
+import org.mockito.Mockito;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import fr.gouv.vitamui.iam.common.enums.AuthnRequestBindingEnum;
-import org.junit.Test;
-import org.mockito.Mockito;
-
-import com.fasterxml.jackson.databind.JsonNode;
-
-import fr.gouv.vitam.common.exception.InvalidParseOperationException;
-import fr.gouv.vitam.common.json.JsonHandler;
-import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
-import fr.gouv.vitamui.iam.internal.server.idp.domain.IdentityProvider;
-import fr.gouv.vitamui.iam.internal.server.idp.service.SpMetadataGenerator;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class IdentityProviderConverterTest {
 

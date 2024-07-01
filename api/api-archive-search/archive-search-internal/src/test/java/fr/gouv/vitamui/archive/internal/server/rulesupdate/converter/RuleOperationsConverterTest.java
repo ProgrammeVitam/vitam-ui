@@ -65,6 +65,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(SpringExtension.class)
 class RuleOperationsConverterTest {
+
     private final RuleOperationsConverter ruleOperationsConverter = new RuleOperationsConverter();
 
     @Test
@@ -82,12 +83,16 @@ class RuleOperationsConverterTest {
         vitamUiRuleAction.setName("rule_Name");
         vitamUiRuleAction.setHoldOwner("hold_Owner");
 
-        RuleAction ruleActionResult = ruleOperationsConverter
-            .convertToVitamRuleAction(vitamUiRuleAction);
+        RuleAction ruleActionResult = ruleOperationsConverter.convertToVitamRuleAction(vitamUiRuleAction);
 
-        LocalDateTime startDate =
-            LocalDateTime.parse(vitamUiRuleAction.getStartDate(), ArchiveSearchConsts.ISO_FRENCH_FORMATER).withHour(0)
-                .withMinute(0).withSecond(0).withNano(0);
+        LocalDateTime startDate = LocalDateTime.parse(
+            vitamUiRuleAction.getStartDate(),
+            ArchiveSearchConsts.ISO_FRENCH_FORMATER
+        )
+            .withHour(0)
+            .withMinute(0)
+            .withSecond(0)
+            .withNano(0);
         vitamUiRuleAction.setStartDate(ArchiveSearchConsts.ONLY_DATE_FRENCH_FORMATER.format(startDate.plusDays(1)));
 
         assertThat(ruleActionResult).isEqualToComparingFieldByField(vitamUiRuleAction);
@@ -97,16 +102,14 @@ class RuleOperationsConverterTest {
     void testCovertVitamUiManagementMetadataActionToVitamManagementMetadataAction() {
         VitamUiManagementMetadataAction vitamUiManagementMetadataAction = new VitamUiManagementMetadataAction();
         vitamUiManagementMetadataAction.setArchiveUnitProfile("archive_unit-profile");
-        ManagementMetadataAction managementMetadataActionResult = ruleOperationsConverter
-            .convertToVitamManagementMetadataAction(vitamUiManagementMetadataAction);
+        ManagementMetadataAction managementMetadataActionResult =
+            ruleOperationsConverter.convertToVitamManagementMetadataAction(vitamUiManagementMetadataAction);
 
         assertThat(managementMetadataActionResult).isEqualToComparingFieldByField(vitamUiManagementMetadataAction);
-
     }
 
     @Test
     void testCovertVitamUiRuleCategoryActionToVitamRuleCategoryAction() {
-
         VitamUiRuleCategoryAction vitamUiRuleCategoryAction = new VitamUiRuleCategoryAction();
         vitamUiRuleCategoryAction.setFinalAction("Keep");
         vitamUiRuleCategoryAction.setClassificationAudience("classificationAudience");
@@ -116,17 +119,16 @@ class RuleOperationsConverterTest {
         vitamUiRuleCategoryAction.setPreventRulesId(new HashSet<>());
         vitamUiRuleCategoryAction.setPreventRulesIdToAdd(new HashSet<>());
 
-        RuleCategoryAction ruleCategoryActionResult = ruleOperationsConverter
-            .convertToRuleCategoryAction(vitamUiRuleCategoryAction);
+        RuleCategoryAction ruleCategoryActionResult = ruleOperationsConverter.convertToRuleCategoryAction(
+            vitamUiRuleCategoryAction
+        );
         assertThat(ruleCategoryActionResult).isEqualToComparingFieldByField(vitamUiRuleCategoryAction);
-
     }
 
     @Test
     void testCovertVitamUiRuleCategoryActionDeletionToRuleCategoryActionDeletion() {
-
         // Given
-        Set<String> rulesIdToRemove =  new HashSet<>();
+        Set<String> rulesIdToRemove = new HashSet<>();
         VitamUiRuleCategoryActionDeletion vitamUiRuleCategoryActionDeletion = new VitamUiRuleCategoryActionDeletion();
         rulesIdToRemove.add("rulesId1");
         rulesIdToRemove.add("rulesId2");
@@ -135,12 +137,11 @@ class RuleOperationsConverterTest {
         vitamUiRuleCategoryActionDeletion.setPreventRulesIdToRemove(rulesIdToRemove);
 
         // When
-        RuleCategoryActionDeletion ruleCategoryActionDeletion = ruleOperationsConverter
-            .convertToRuleCategoryActionDeletion(vitamUiRuleCategoryActionDeletion);
+        RuleCategoryActionDeletion ruleCategoryActionDeletion =
+            ruleOperationsConverter.convertToRuleCategoryActionDeletion(vitamUiRuleCategoryActionDeletion);
 
         // Then
         assertThat(ruleCategoryActionDeletion).isEqualToComparingFieldByField(vitamUiRuleCategoryActionDeletion);
-
     }
 
     @Test
@@ -150,8 +151,7 @@ class RuleOperationsConverterTest {
         vitamUiRuleActions.setDelete(new ArrayList<>());
         vitamUiRuleActions.setUpdate(new ArrayList<>());
 
-        RuleActions ruleActionsResult = ruleOperationsConverter
-            .convertToVitamRuleActions(vitamUiRuleActions);
+        RuleActions ruleActionsResult = ruleOperationsConverter.convertToVitamRuleActions(vitamUiRuleActions);
         assertThat(ruleActionsResult).isEqualToComparingFieldByField(vitamUiRuleActions);
     }
 
@@ -159,20 +159,18 @@ class RuleOperationsConverterTest {
     void testConvertVitamUiListOfRuleActionToVitamRuleAction() {
         List<VitamUiRuleAction> vitamUiRuleActionList = RuleUpdateUtils.createListOfVitamUiRule();
         vitamUiRuleActionList.forEach(vitamUiRuleAction -> {
-
             RuleAction ruleActionResult = ruleOperationsConverter.convertToVitamRuleAction(vitamUiRuleAction);
-            LocalDateTime startDate =
-                LocalDateTime.parse(vitamUiRuleAction.getStartDate(), ArchiveSearchConsts.ISO_FRENCH_FORMATER)
-                    .withHour(0)
-                    .withMinute(0).withSecond(0).withNano(0);
+            LocalDateTime startDate = LocalDateTime.parse(
+                vitamUiRuleAction.getStartDate(),
+                ArchiveSearchConsts.ISO_FRENCH_FORMATER
+            )
+                .withHour(0)
+                .withMinute(0)
+                .withSecond(0)
+                .withNano(0);
             vitamUiRuleAction.setStartDate(ArchiveSearchConsts.ONLY_DATE_FRENCH_FORMATER.format(startDate.plusDays(1)));
 
-            assertThat(ruleActionResult)
-                .isEqualToComparingFieldByField(vitamUiRuleAction);
-
+            assertThat(ruleActionResult).isEqualToComparingFieldByField(vitamUiRuleAction);
         });
-
-
     }
-
 }

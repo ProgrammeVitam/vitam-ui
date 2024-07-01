@@ -71,20 +71,29 @@ public final class DispatcherActionTest extends BaseWebflowActionTest {
         casExternalRestClient = mock(CasExternalRestClient.class);
 
         final Utils utils = new Utils(null, 0, null, null, "");
-        action = new DispatcherAction(providersService, identityProviderHelper, casExternalRestClient, ",", utils, mock(SessionStore.class));
+        action = new DispatcherAction(
+            providersService,
+            identityProviderHelper,
+            casExternalRestClient,
+            ",",
+            utils,
+            mock(SessionStore.class)
+        );
 
         final SAML2Client client = new SAML2Client();
         provider = new Pac4jClientIdentityProviderDto(new IdentityProviderDto(), client);
         provider.setInternal(true);
-        when(identityProviderHelper.findByUserIdentifier(any(LinkedList.class), eq(USERNAME)))
-                .thenReturn(Optional.of(provider));
+        when(identityProviderHelper.findByUserIdentifier(any(LinkedList.class), eq(USERNAME))).thenReturn(
+            Optional.of(provider)
+        );
     }
 
     @Test
     public void testNoIdP() throws IOException {
         flowParameters.put("credential", new UsernamePasswordCredential(USERNAME, PASSWORD));
-        when(identityProviderHelper.findByUserIdentifier(any(LinkedList.class), eq(USERNAME)))
-            .thenReturn(Optional.empty());
+        when(identityProviderHelper.findByUserIdentifier(any(LinkedList.class), eq(USERNAME))).thenReturn(
+            Optional.empty()
+        );
 
         final Event event = action.doExecute(context);
 
@@ -107,8 +116,11 @@ public final class DispatcherActionTest extends BaseWebflowActionTest {
         flowParameters.put("credential", new UsernamePasswordCredential(" " + USERNAME + "  ", PASSWORD));
 
         final Event event = action.doExecute(context);
-        verify((casExternalRestClient), times(1))
-                .getUserByEmail(any(ExternalHttpContext.class), eq(USERNAME), any(Optional.class));
+        verify((casExternalRestClient), times(1)).getUserByEmail(
+            any(ExternalHttpContext.class),
+            eq(USERNAME),
+            any(Optional.class)
+        );
 
         assertEquals("success", event.getId());
     }
@@ -116,7 +128,9 @@ public final class DispatcherActionTest extends BaseWebflowActionTest {
     @Test
     public void testInternalDisabled() throws IOException {
         flowParameters.put("credential", new UsernamePasswordCredential(USERNAME, PASSWORD));
-        when(casExternalRestClient.getUserByEmail(any(ExternalHttpContext.class), eq(USERNAME), eq(Optional.empty()))).thenThrow(InvalidFormatException.class);
+        when(
+            casExternalRestClient.getUserByEmail(any(ExternalHttpContext.class), eq(USERNAME), eq(Optional.empty()))
+        ).thenThrow(InvalidFormatException.class);
 
         final Event event = action.doExecute(context);
 
@@ -126,8 +140,7 @@ public final class DispatcherActionTest extends BaseWebflowActionTest {
 
     @Test
     public void testInternalSubrogation() throws IOException {
-        flowParameters.put("credential",
-                new UsernamePasswordCredential("," + USERNAME, PASSWORD));
+        flowParameters.put("credential", new UsernamePasswordCredential("," + USERNAME, PASSWORD));
 
         final Event event = action.doExecute(context);
 
@@ -137,39 +150,46 @@ public final class DispatcherActionTest extends BaseWebflowActionTest {
 
     @Test
     public void testInternalPrefilledSubrogation() throws IOException {
-        flowParameters.put("credential",
-                new UsernamePasswordCredential(SURROGATE + "," + USERNAME, PASSWORD));
+        flowParameters.put("credential", new UsernamePasswordCredential(SURROGATE + "," + USERNAME, PASSWORD));
 
         final Event event = action.doExecute(context);
 
-        assertEquals(SURROGATE + "," + USERNAME,
-                ((UsernamePasswordCredential) flowParameters.get("credential")).getUsername());
+        assertEquals(
+            SURROGATE + "," + USERNAME,
+            ((UsernamePasswordCredential) flowParameters.get("credential")).getUsername()
+        );
         assertEquals("success", event.getId());
     }
 
     @Test
     public void testInternalPrefilledSubrogationSurrogateDisabled() throws IOException {
-        flowParameters.put("credential",
-            new UsernamePasswordCredential(SURROGATE + "," + USERNAME, PASSWORD));
-        when(casExternalRestClient.getUserByEmail(any(ExternalHttpContext.class), eq(SURROGATE), eq(Optional.empty()))).thenThrow(InvalidFormatException.class);
+        flowParameters.put("credential", new UsernamePasswordCredential(SURROGATE + "," + USERNAME, PASSWORD));
+        when(
+            casExternalRestClient.getUserByEmail(any(ExternalHttpContext.class), eq(SURROGATE), eq(Optional.empty()))
+        ).thenThrow(InvalidFormatException.class);
 
         final Event event = action.doExecute(context);
 
-        assertEquals(SURROGATE + "," + USERNAME,
-            ((UsernamePasswordCredential) flowParameters.get("credential")).getUsername());
+        assertEquals(
+            SURROGATE + "," + USERNAME,
+            ((UsernamePasswordCredential) flowParameters.get("credential")).getUsername()
+        );
         assertEquals("disabled", event.getId());
     }
 
     @Test
     public void testInternalPrefilledSubrogationSuperUserDisabled() throws IOException {
-        flowParameters.put("credential",
-            new UsernamePasswordCredential(SURROGATE + "," + USERNAME, PASSWORD));
-        when(casExternalRestClient.getUserByEmail(any(ExternalHttpContext.class), eq(USERNAME), eq(Optional.empty()))).thenThrow(InvalidFormatException.class);
+        flowParameters.put("credential", new UsernamePasswordCredential(SURROGATE + "," + USERNAME, PASSWORD));
+        when(
+            casExternalRestClient.getUserByEmail(any(ExternalHttpContext.class), eq(USERNAME), eq(Optional.empty()))
+        ).thenThrow(InvalidFormatException.class);
 
         final Event event = action.doExecute(context);
 
-        assertEquals(SURROGATE + "," + USERNAME,
-            ((UsernamePasswordCredential) flowParameters.get("credential")).getUsername());
+        assertEquals(
+            SURROGATE + "," + USERNAME,
+            ((UsernamePasswordCredential) flowParameters.get("credential")).getUsername()
+        );
         assertEquals("disabled", event.getId());
     }
 
@@ -190,7 +210,9 @@ public final class DispatcherActionTest extends BaseWebflowActionTest {
         provider.setInternal(false);
 
         flowParameters.put("credential", new UsernamePasswordCredential(USERNAME, PASSWORD));
-        when(casExternalRestClient.getUserByEmail(any(ExternalHttpContext.class), eq(USERNAME), eq(Optional.empty()))).thenThrow(InvalidFormatException.class);
+        when(
+            casExternalRestClient.getUserByEmail(any(ExternalHttpContext.class), eq(USERNAME), eq(Optional.empty()))
+        ).thenThrow(InvalidFormatException.class);
 
         final Event event = action.doExecute(context);
 
@@ -202,8 +224,7 @@ public final class DispatcherActionTest extends BaseWebflowActionTest {
     public void testExternalSubrogation() throws IOException {
         provider.setInternal(false);
 
-        flowParameters.put("credential",
-                new UsernamePasswordCredential("," + USERNAME, PASSWORD));
+        flowParameters.put("credential", new UsernamePasswordCredential("," + USERNAME, PASSWORD));
 
         final Event event = action.doExecute(context);
 
@@ -215,13 +236,14 @@ public final class DispatcherActionTest extends BaseWebflowActionTest {
     public void testExternalPrefilledSubrogation() throws IOException {
         provider.setInternal(false);
 
-        flowParameters.put("credential",
-                new UsernamePasswordCredential(SURROGATE + "," + USERNAME, PASSWORD));
+        flowParameters.put("credential", new UsernamePasswordCredential(SURROGATE + "," + USERNAME, PASSWORD));
 
         final Event event = action.doExecute(context);
 
-        assertEquals(SURROGATE + "," + USERNAME,
-                ((UsernamePasswordCredential) flowParameters.get("credential")).getUsername());
+        assertEquals(
+            SURROGATE + "," + USERNAME,
+            ((UsernamePasswordCredential) flowParameters.get("credential")).getUsername()
+        );
         assertEquals("stop", event.getId());
     }
 
@@ -230,12 +252,16 @@ public final class DispatcherActionTest extends BaseWebflowActionTest {
         provider.setInternal(false);
 
         flowParameters.put("credential", new UsernamePasswordCredential(SURROGATE + "," + USERNAME, PASSWORD));
-        when(casExternalRestClient.getUserByEmail(any(ExternalHttpContext.class), eq(SURROGATE), eq(Optional.empty()))).thenThrow(InvalidFormatException.class);
+        when(
+            casExternalRestClient.getUserByEmail(any(ExternalHttpContext.class), eq(SURROGATE), eq(Optional.empty()))
+        ).thenThrow(InvalidFormatException.class);
 
         final Event event = action.doExecute(context);
 
-        assertEquals(SURROGATE + "," + USERNAME,
-            ((UsernamePasswordCredential) flowParameters.get("credential")).getUsername());
+        assertEquals(
+            SURROGATE + "," + USERNAME,
+            ((UsernamePasswordCredential) flowParameters.get("credential")).getUsername()
+        );
         assertEquals("disabled", event.getId());
     }
 
@@ -244,12 +270,16 @@ public final class DispatcherActionTest extends BaseWebflowActionTest {
         provider.setInternal(false);
 
         flowParameters.put("credential", new UsernamePasswordCredential(SURROGATE + "," + USERNAME, PASSWORD));
-        when(casExternalRestClient.getUserByEmail(any(ExternalHttpContext.class), eq(USERNAME), eq(Optional.empty()))).thenThrow(InvalidFormatException.class);
+        when(
+            casExternalRestClient.getUserByEmail(any(ExternalHttpContext.class), eq(USERNAME), eq(Optional.empty()))
+        ).thenThrow(InvalidFormatException.class);
 
         final Event event = action.doExecute(context);
 
-        assertEquals(SURROGATE + "," + USERNAME,
-            ((UsernamePasswordCredential) flowParameters.get("credential")).getUsername());
+        assertEquals(
+            SURROGATE + "," + USERNAME,
+            ((UsernamePasswordCredential) flowParameters.get("credential")).getUsername()
+        );
         assertEquals("disabled", event.getId());
     }
 }

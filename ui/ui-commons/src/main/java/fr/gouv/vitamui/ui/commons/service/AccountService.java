@@ -36,13 +36,12 @@
  */
 package fr.gouv.vitamui.ui.commons.service;
 
-import java.util.Map;
-
 import fr.gouv.vitamui.commons.api.domain.UserDto;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.iam.external.client.IamExternalRestClientFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.Map;
 
 /**
  *

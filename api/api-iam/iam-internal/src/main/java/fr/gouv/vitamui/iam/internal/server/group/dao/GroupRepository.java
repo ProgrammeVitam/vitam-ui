@@ -36,11 +36,11 @@
  */
 package fr.gouv.vitamui.iam.internal.server.group.dao;
 
-import java.util.List;
-import java.util.Optional;
-
 import fr.gouv.vitamui.commons.mongo.repository.VitamUIRepository;
 import fr.gouv.vitamui.iam.internal.server.group.domain.Group;
+
+import java.util.List;
+import java.util.Optional;
 
 /**
  * MongoDB repository for the groups.
@@ -48,7 +48,6 @@ import fr.gouv.vitamui.iam.internal.server.group.domain.Group;
  *
  */
 public interface GroupRepository extends VitamUIRepository<Group, String> {
-
     Optional<Group> findByIdAndCustomerId(String id, String customerId);
 
     long countByProfileIds(String profileId);

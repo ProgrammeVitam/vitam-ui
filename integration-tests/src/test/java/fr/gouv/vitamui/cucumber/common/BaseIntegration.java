@@ -4,7 +4,6 @@ import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
-import com.mongodb.client.result.InsertOneResult;
 import fr.gouv.vitamui.RegisterRestQueryInterceptor;
 import fr.gouv.vitamui.TestContextConfiguration;
 import fr.gouv.vitamui.archives.search.external.client.ArchiveSearchExternalRestClientFactory;
@@ -20,6 +19,7 @@ import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
 import fr.gouv.vitamui.commons.rest.client.configuration.SSLConfiguration;
 import fr.gouv.vitamui.commons.rest.client.logbook.LogbookExternalRestClient;
+import fr.gouv.vitamui.iam.external.client.*;
 import fr.gouv.vitamui.iam.external.client.ApplicationExternalRestClient;
 import fr.gouv.vitamui.iam.external.client.CasExternalRestClient;
 import fr.gouv.vitamui.iam.external.client.CustomerExternalRestClient;
@@ -31,13 +31,11 @@ import fr.gouv.vitamui.iam.external.client.IamExternalWebClientFactory;
 import fr.gouv.vitamui.iam.external.client.IdentityProviderExternalRestClient;
 import fr.gouv.vitamui.iam.external.client.OwnerExternalRestClient;
 import fr.gouv.vitamui.iam.external.client.ProfileExternalRestClient;
-import fr.gouv.vitamui.iam.external.client.*;
 import fr.gouv.vitamui.referential.external.client.*;
 import fr.gouv.vitamui.utils.TestConstants;
 import org.apache.commons.lang3.time.DateUtils;
 import org.bson.BsonDocument;
 import org.bson.BsonString;
-import org.bson.BsonValue;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -287,46 +285,80 @@ public abstract class BaseIntegration {
     protected WebClient.Builder webClientBuilder;
 
     private void buildSystemTenantUserAdminContext() {
-        getUsersCollection().updateOne(new BsonDocument("_id", new BsonString(ADMIN_USER)),
-                new BsonDocument("$set", new BsonDocument("groupId", new BsonString(ADMIN_USER_GROUP))));
+        getUsersCollection()
+            .updateOne(
+                new BsonDocument("_id", new BsonString(ADMIN_USER)),
+                new BsonDocument("$set", new BsonDocument("groupId", new BsonString(ADMIN_USER_GROUP)))
+            );
         tokenUserAdmin();
     }
 
     protected ExternalHttpContext getSystemTenantUserAdminContext() {
         buildSystemTenantUserAdminContext();
-        return new ExternalHttpContext(proofTenantIdentifier, TestConstants.TOKEN_USER_ADMIN, TESTS_CONTEXT_ID, "admincaller", "requestId");
-
+        return new ExternalHttpContext(
+            proofTenantIdentifier,
+            TestConstants.TOKEN_USER_ADMIN,
+            TESTS_CONTEXT_ID,
+            "admincaller",
+            "requestId"
+        );
     }
 
     protected ExternalHttpContext getArchiveTenantUserAdminContext() {
         buildSystemTenantUserAdminContext();
-        return new ExternalHttpContext(systemArchiveTenantIdentifier, TestConstants.TOKEN_USER_ADMIN, TESTS_CONTEXT_ID, "admincaller", "requestId",
-                ACCESS_CONTRACT);
+        return new ExternalHttpContext(
+            systemArchiveTenantIdentifier,
+            TestConstants.TOKEN_USER_ADMIN,
+            TESTS_CONTEXT_ID,
+            "admincaller",
+            "requestId",
+            ACCESS_CONTRACT
+        );
     }
 
     protected ExternalHttpContext getArchiveTenantUserAdminContext(final Integer tenantIdentifier) {
         buildSystemTenantUserAdminContext();
-        return new ExternalHttpContext(tenantIdentifier, TestConstants.TOKEN_USER_ADMIN, TESTS_CONTEXT_ID, "admincaller", "requestId", ACCESS_CONTRACT);
+        return new ExternalHttpContext(
+            tenantIdentifier,
+            TestConstants.TOKEN_USER_ADMIN,
+            TESTS_CONTEXT_ID,
+            "admincaller",
+            "requestId",
+            ACCESS_CONTRACT
+        );
     }
 
     protected ExternalHttpContext getUnitAdminContext() {
         buildSystemTenantUserAdminContext();
-        return new ExternalHttpContext(proofTenantIdentifier, TestConstants.TOKEN_USER_ADMIN, TESTS_CONTEXT_ID, "admincaller", "requestId", UNIT_CONTRACT);
+        return new ExternalHttpContext(
+            proofTenantIdentifier,
+            TestConstants.TOKEN_USER_ADMIN,
+            TESTS_CONTEXT_ID,
+            "admincaller",
+            "requestId",
+            UNIT_CONTRACT
+        );
     }
 
     protected ExternalHttpContext getContext(final int tenant, final String user) {
         return new ExternalHttpContext(tenant, user, "appId", "identity");
     }
 
-    protected SSLConfiguration getSSLConfiguration(final String keystorePathname, final String iamKeystorePassword, final String trustStorePathname,
-            final String iamTruststorePassword) {
+    protected SSLConfiguration getSSLConfiguration(
+        final String keystorePathname,
+        final String iamKeystorePassword,
+        final String trustStorePathname,
+        final String iamTruststorePassword
+    ) {
         final String keystorePath = getClass().getClassLoader().getResource(keystorePathname).getPath();
         final String trustStorePath = getClass().getClassLoader().getResource(trustStorePathname).getPath();
-        final SSLConfiguration.CertificateStoreConfiguration keyStore = new SSLConfiguration.CertificateStoreConfiguration();
+        final SSLConfiguration.CertificateStoreConfiguration keyStore =
+            new SSLConfiguration.CertificateStoreConfiguration();
         keyStore.setKeyPath(keystorePath);
         keyStore.setKeyPassword(iamKeystorePassword);
         keyStore.setType("JKS");
-        final SSLConfiguration.CertificateStoreConfiguration trustStore = new SSLConfiguration.CertificateStoreConfiguration();
+        final SSLConfiguration.CertificateStoreConfiguration trustStore =
+            new SSLConfiguration.CertificateStoreConfiguration();
         trustStore.setKeyPath(trustStorePath);
         trustStore.setKeyPassword(iamTruststorePassword);
         trustStore.setType("JKS");
@@ -338,7 +370,12 @@ public abstract class BaseIntegration {
         return sslConfig;
     }
 
-    protected RestClientConfiguration getRestClientConfiguration(final String host, final int port, final boolean secure, final SSLConfiguration sslConfig) {
+    protected RestClientConfiguration getRestClientConfiguration(
+        final String host,
+        final int port,
+        final boolean secure,
+        final SSLConfiguration sslConfig
+    ) {
         final RestClientConfiguration restClientConfiguration = new RestClientConfiguration();
         restClientConfiguration.setServerHost(host);
         restClientConfiguration.setServerPort(port);
@@ -352,9 +389,26 @@ public abstract class BaseIntegration {
 
     private IamExternalRestClientFactory getIamRestClientFactory() {
         if (restClientFactory == null) {
-            LOGGER.debug("Instantiating iam rest client [host={}, port:{}, iamKeystoreFilePath:{}]", iamServerHost, iamServerPort, iamKeystoreFilePath);
-            restClientFactory = new IamExternalRestClientFactory(getRestClientConfiguration(iamServerHost, iamServerPort, true,
-                    getSSLConfiguration(iamKeystoreFilePath, iamKeystorePassword, iamTrustStoreFilePath, iamTruststorePassword)), restTemplateBuilder);
+            LOGGER.debug(
+                "Instantiating iam rest client [host={}, port:{}, iamKeystoreFilePath:{}]",
+                iamServerHost,
+                iamServerPort,
+                iamKeystoreFilePath
+            );
+            restClientFactory = new IamExternalRestClientFactory(
+                getRestClientConfiguration(
+                    iamServerHost,
+                    iamServerPort,
+                    true,
+                    getSSLConfiguration(
+                        iamKeystoreFilePath,
+                        iamKeystorePassword,
+                        iamTrustStoreFilePath,
+                        iamTruststorePassword
+                    )
+                ),
+                restTemplateBuilder
+            );
             final List<ClientHttpRequestInterceptor> interceptors = new ArrayList<>();
             interceptors.add(new RegisterRestQueryInterceptor());
             restClientFactory.setRestClientInterceptor(interceptors);
@@ -364,9 +418,19 @@ public abstract class BaseIntegration {
 
     protected IamExternalRestClientFactory getIamRestClientFactory(final String keystorePrefix) {
         final IamExternalRestClientFactory restClientFactory = new IamExternalRestClientFactory(
-                getRestClientConfiguration(iamServerHost, iamServerPort, true,
-                        getSSLConfiguration(certsFolder + keystorePrefix + ".jks", iamKeystorePassword, iamTrustStoreFilePath, iamTruststorePassword)),
-                restTemplateBuilder);
+            getRestClientConfiguration(
+                iamServerHost,
+                iamServerPort,
+                true,
+                getSSLConfiguration(
+                    certsFolder + keystorePrefix + ".jks",
+                    iamKeystorePassword,
+                    iamTrustStoreFilePath,
+                    iamTruststorePassword
+                )
+            ),
+            restTemplateBuilder
+        );
         final List<ClientHttpRequestInterceptor> interceptors = new ArrayList<>();
         interceptors.add(new RegisterRestQueryInterceptor());
         restClientFactory.setRestClientInterceptor(interceptors);
@@ -375,23 +439,70 @@ public abstract class BaseIntegration {
 
     private IamExternalWebClientFactory getIamExternalWebClientFactory() {
         if (iamExternalWebClientFactory == null) {
-            LOGGER.debug("Instantiating IAM webclient [host={}, port:{}, iamKeystoreFilePath:{}]", iamServerHost, iamServerPort, iamKeystoreFilePath);
-            iamExternalWebClientFactory = new IamExternalWebClientFactory(getRestClientConfiguration(iamServerHost, iamServerPort, true,
-                    getSSLConfiguration(iamKeystoreFilePath, iamKeystorePassword, iamTrustStoreFilePath, iamTruststorePassword)), webClientBuilder);
+            LOGGER.debug(
+                "Instantiating IAM webclient [host={}, port:{}, iamKeystoreFilePath:{}]",
+                iamServerHost,
+                iamServerPort,
+                iamKeystoreFilePath
+            );
+            iamExternalWebClientFactory = new IamExternalWebClientFactory(
+                getRestClientConfiguration(
+                    iamServerHost,
+                    iamServerPort,
+                    true,
+                    getSSLConfiguration(
+                        iamKeystoreFilePath,
+                        iamKeystorePassword,
+                        iamTrustStoreFilePath,
+                        iamTruststorePassword
+                    )
+                ),
+                webClientBuilder
+            );
         }
         return iamExternalWebClientFactory;
     }
 
     protected IamExternalWebClientFactory getIamWebClientFactory(final String keystorePrefix) {
-        final IamExternalWebClientFactory webClientFactory = new IamExternalWebClientFactory(getRestClientConfiguration(iamServerHost, iamServerPort, true,
-                getSSLConfiguration(certsFolder + keystorePrefix + ".jks", iamKeystorePassword, iamTrustStoreFilePath, iamTruststorePassword)), webClientBuilder);
+        final IamExternalWebClientFactory webClientFactory = new IamExternalWebClientFactory(
+            getRestClientConfiguration(
+                iamServerHost,
+                iamServerPort,
+                true,
+                getSSLConfiguration(
+                    certsFolder + keystorePrefix + ".jks",
+                    iamKeystorePassword,
+                    iamTrustStoreFilePath,
+                    iamTruststorePassword
+                )
+            ),
+            webClientBuilder
+        );
         return webClientFactory;
     }
+
     private ReferentialExternalRestClientFactory getReferentialRestClientFactory() {
         if (restReferentialClientFactory == null) {
-            LOGGER.debug("Instantiating referential rest client [host={}, port:{}, referentialKeystoreFilePath:{}]", referentialServerHost, referentialServerPort, referentialKeystoreFilePath);
-            restReferentialClientFactory = new ReferentialExternalRestClientFactory(getRestClientConfiguration(referentialServerHost, referentialServerPort, true,
-                    getSSLConfiguration(referentialKeystoreFilePath, referentialKeystorePassword, referentialTrustStoreFilePath, referentialTruststorePassword)), restTemplateBuilder);
+            LOGGER.debug(
+                "Instantiating referential rest client [host={}, port:{}, referentialKeystoreFilePath:{}]",
+                referentialServerHost,
+                referentialServerPort,
+                referentialKeystoreFilePath
+            );
+            restReferentialClientFactory = new ReferentialExternalRestClientFactory(
+                getRestClientConfiguration(
+                    referentialServerHost,
+                    referentialServerPort,
+                    true,
+                    getSSLConfiguration(
+                        referentialKeystoreFilePath,
+                        referentialKeystorePassword,
+                        referentialTrustStoreFilePath,
+                        referentialTruststorePassword
+                    )
+                ),
+                restTemplateBuilder
+            );
             final List<ClientHttpRequestInterceptor> interceptors = new ArrayList<>();
             interceptors.add(new RegisterRestQueryInterceptor());
             restReferentialClientFactory.setRestClientInterceptor(interceptors);
@@ -401,9 +512,26 @@ public abstract class BaseIntegration {
 
     private ArchiveSearchExternalRestClientFactory getArchiveSearchRestClientFactory() {
         if (archiveSearchExternalRestClientFactory == null) {
-            LOGGER.debug("Instantiating referential rest client [host={}, port:{}, referentialKeystoreFilePath:{}]", archiveSearchServerHost, archiveSearchServerPort, archiveSearchKeystoreFilePath);
-            archiveSearchExternalRestClientFactory = new ArchiveSearchExternalRestClientFactory(getRestClientConfiguration(archiveSearchServerHost, archiveSearchServerPort, true,
-                getSSLConfiguration(archiveSearchKeystoreFilePath, archiveSearchKeystorePassword, archiveSearchTrustStoreFilePath, archiveSearchTruststorePassword)), restTemplateBuilder);
+            LOGGER.debug(
+                "Instantiating referential rest client [host={}, port:{}, referentialKeystoreFilePath:{}]",
+                archiveSearchServerHost,
+                archiveSearchServerPort,
+                archiveSearchKeystoreFilePath
+            );
+            archiveSearchExternalRestClientFactory = new ArchiveSearchExternalRestClientFactory(
+                getRestClientConfiguration(
+                    archiveSearchServerHost,
+                    archiveSearchServerPort,
+                    true,
+                    getSSLConfiguration(
+                        archiveSearchKeystoreFilePath,
+                        archiveSearchKeystorePassword,
+                        archiveSearchTrustStoreFilePath,
+                        archiveSearchTruststorePassword
+                    )
+                ),
+                restTemplateBuilder
+            );
             final List<ClientHttpRequestInterceptor> interceptors = new ArrayList<>();
             interceptors.add(new RegisterRestQueryInterceptor());
             archiveSearchExternalRestClientFactory.setRestClientInterceptor(interceptors);
@@ -411,14 +539,26 @@ public abstract class BaseIntegration {
         return archiveSearchExternalRestClientFactory;
     }
 
-
     private ReferentialExternalWebClientFactory getReferentialWebClientFactory() {
         if (webReferentialClientFactory == null) {
-            LOGGER.debug("Instantiating referential web client [host={}, port:{}, referentialKeystoreFilePath:{}]", referentialServerHost, referentialServerPort, referentialKeystoreFilePath);
+            LOGGER.debug(
+                "Instantiating referential web client [host={}, port:{}, referentialKeystoreFilePath:{}]",
+                referentialServerHost,
+                referentialServerPort,
+                referentialKeystoreFilePath
+            );
             webReferentialClientFactory = new ReferentialExternalWebClientFactory(
-            	getRestClientConfiguration(referentialServerHost, referentialServerPort, true,
-            		getSSLConfiguration(referentialKeystoreFilePath, referentialKeystorePassword, referentialTrustStoreFilePath, referentialTruststorePassword)
-            	)
+                getRestClientConfiguration(
+                    referentialServerHost,
+                    referentialServerPort,
+                    true,
+                    getSSLConfiguration(
+                        referentialKeystoreFilePath,
+                        referentialKeystorePassword,
+                        referentialTrustStoreFilePath,
+                        referentialTruststorePassword
+                    )
+                )
             );
         }
         return webReferentialClientFactory;
@@ -459,10 +599,26 @@ public abstract class BaseIntegration {
         return fileFormatWebClient;
     }
 
-    protected IamExternalWebClientFactory getIamWebClientFactory(final boolean fullAccess, final Integer[] tenants, final String[] roles) {
+    protected IamExternalWebClientFactory getIamWebClientFactory(
+        final boolean fullAccess,
+        final Integer[] tenants,
+        final String[] roles
+    ) {
         prepareGenericContext(fullAccess, tenants, roles);
-        final IamExternalWebClientFactory restClientFactory = new IamExternalWebClientFactory(getRestClientConfiguration(iamServerHost, iamServerPort, true,
-                getSSLConfiguration(certsFolder + GENERIC_CERTIFICATE + ".jks", iamKeystorePassword, iamTrustStoreFilePath, iamTruststorePassword)), webClientBuilder);
+        final IamExternalWebClientFactory restClientFactory = new IamExternalWebClientFactory(
+            getRestClientConfiguration(
+                iamServerHost,
+                iamServerPort,
+                true,
+                getSSLConfiguration(
+                    certsFolder + GENERIC_CERTIFICATE + ".jks",
+                    iamKeystorePassword,
+                    iamTrustStoreFilePath,
+                    iamTruststorePassword
+                )
+            ),
+            webClientBuilder
+        );
         final List<ClientHttpRequestInterceptor> interceptors = new ArrayList<>();
         interceptors.add(new RegisterRestQueryInterceptor());
         return restClientFactory;
@@ -488,6 +644,7 @@ public abstract class BaseIntegration {
         }
         return BaseIntegration.mongoClientIam;
     }
+
     protected MongoDatabase getIamDatabase() {
         if (iamDatabase == null) {
             iamDatabase = getMongoIam().getDatabase("iam");
@@ -534,8 +691,7 @@ public abstract class BaseIntegration {
         //@formatter:on
         if (tenants != null) {
             itContext.append("tenants", Arrays.asList(tenants));
-        }
-        else {
+        } else {
             itContext.append("tenants", Arrays.asList(new Integer[] { -1 }));
         }
         getContextsCollection().insertOne(itContext);
@@ -562,7 +718,7 @@ public abstract class BaseIntegration {
     }
 
     private String getCertificate(final String type, final String filename, final char[] password)
-            throws KeyStoreException, IOException, CertificateException, NoSuchAlgorithmException {
+        throws KeyStoreException, IOException, CertificateException, NoSuchAlgorithmException {
         String result = "";
         final KeyStore keyStore = KeyStore.getInstance(type);
         final File key = new ClassPathResource(filename).getFile();
@@ -580,12 +736,20 @@ public abstract class BaseIntegration {
         return result;
     }
 
-    protected CustomerExternalRestClient getCustomerRestClient(final boolean fullAccess, final Integer[] tenants, final String[] roles) {
+    protected CustomerExternalRestClient getCustomerRestClient(
+        final boolean fullAccess,
+        final Integer[] tenants,
+        final String[] roles
+    ) {
         prepareGenericContext(fullAccess, tenants, roles);
         return getIamRestClientFactory(GENERIC_CERTIFICATE).getCustomerExternalRestClient();
     }
 
-    protected CustomerExternalWebClient getCustomerWebClient(final boolean fullAccess, final Integer[] tenants, final String[] roles) {
+    protected CustomerExternalWebClient getCustomerWebClient(
+        final boolean fullAccess,
+        final Integer[] tenants,
+        final String[] roles
+    ) {
         prepareGenericContext(fullAccess, tenants, roles);
         return getIamWebClientFactory(GENERIC_CERTIFICATE).getCustomerWebClient();
     }
@@ -597,7 +761,11 @@ public abstract class BaseIntegration {
         return identityProviderRestClient;
     }
 
-    protected IdentityProviderExternalRestClient getIdentityProviderRestClient(final boolean fullAccess, final Integer[] tenants, final String[] roles) {
+    protected IdentityProviderExternalRestClient getIdentityProviderRestClient(
+        final boolean fullAccess,
+        final Integer[] tenants,
+        final String[] roles
+    ) {
         prepareGenericContext(fullAccess, tenants, roles);
         return getIamRestClientFactory(GENERIC_CERTIFICATE).getIdentityProviderExternalRestClient();
     }
@@ -609,7 +777,11 @@ public abstract class BaseIntegration {
         return tenantRestClient;
     }
 
-    protected TenantExternalRestClient getTenantRestClient(final boolean fullAccess, final Integer[] tenants, final String[] roles) {
+    protected TenantExternalRestClient getTenantRestClient(
+        final boolean fullAccess,
+        final Integer[] tenants,
+        final String[] roles
+    ) {
         prepareGenericContext(fullAccess, tenants, roles);
         return getIamRestClientFactory(GENERIC_CERTIFICATE).getTenantExternalRestClient();
     }
@@ -621,7 +793,11 @@ public abstract class BaseIntegration {
         return userRestClient;
     }
 
-    protected UserExternalRestClient getUserRestClient(final boolean fullAccess, final Integer[] tenants, final String[] roles) {
+    protected UserExternalRestClient getUserRestClient(
+        final boolean fullAccess,
+        final Integer[] tenants,
+        final String[] roles
+    ) {
         prepareGenericContext(fullAccess, tenants, roles);
         return getIamRestClientFactory(GENERIC_CERTIFICATE).getUserExternalRestClient();
     }
@@ -633,7 +809,11 @@ public abstract class BaseIntegration {
         return groupRestClient;
     }
 
-    protected GroupExternalRestClient getGroupRestClient(final boolean fullAccess, final Integer[] tenants, final String[] roles) {
+    protected GroupExternalRestClient getGroupRestClient(
+        final boolean fullAccess,
+        final Integer[] tenants,
+        final String[] roles
+    ) {
         prepareGenericContext(fullAccess, tenants, roles);
         return getIamRestClientFactory(GENERIC_CERTIFICATE).getGroupExternalRestClient();
     }
@@ -645,7 +825,11 @@ public abstract class BaseIntegration {
         return applicationRestClient;
     }
 
-    protected ApplicationExternalRestClient getApplicationRestClient(final boolean fullAccess, final Integer[] tenants, final String[] roles) {
+    protected ApplicationExternalRestClient getApplicationRestClient(
+        final boolean fullAccess,
+        final Integer[] tenants,
+        final String[] roles
+    ) {
         prepareGenericContext(fullAccess, tenants, roles);
         return getIamRestClientFactory(GENERIC_CERTIFICATE).getApplicationExternalRestClient();
     }
@@ -657,7 +841,11 @@ public abstract class BaseIntegration {
         return profileRestClient;
     }
 
-    protected ProfileExternalRestClient getProfileRestClient(final boolean fullAccess, final Integer[] tenants, final String[] roles) {
+    protected ProfileExternalRestClient getProfileRestClient(
+        final boolean fullAccess,
+        final Integer[] tenants,
+        final String[] roles
+    ) {
         prepareGenericContext(fullAccess, tenants, roles);
         return getIamRestClientFactory(GENERIC_CERTIFICATE).getProfileExternalRestClient();
     }
@@ -669,7 +857,11 @@ public abstract class BaseIntegration {
         return casRestClient;
     }
 
-    protected CasExternalRestClient getCasRestClient(final boolean fullAccess, final Integer[] tenants, final String[] roles) {
+    protected CasExternalRestClient getCasRestClient(
+        final boolean fullAccess,
+        final Integer[] tenants,
+        final String[] roles
+    ) {
         prepareGenericContext(fullAccess, tenants, roles);
         return getIamRestClientFactory(GENERIC_CERTIFICATE).getCasExternalRestClient();
     }
@@ -681,7 +873,11 @@ public abstract class BaseIntegration {
         return subrogationRestClient;
     }
 
-    protected SubrogationExternalRestClient getSubrogationRestClient(final boolean fullAccess, final Integer[] tenants, final String[] roles) {
+    protected SubrogationExternalRestClient getSubrogationRestClient(
+        final boolean fullAccess,
+        final Integer[] tenants,
+        final String[] roles
+    ) {
         prepareGenericContext(fullAccess, tenants, roles);
         return getIamRestClientFactory(GENERIC_CERTIFICATE).getSubrogationExternalRestClient();
     }
@@ -693,12 +889,20 @@ public abstract class BaseIntegration {
         return ownerRestClient;
     }
 
-    protected OwnerExternalRestClient getOwnerRestClient(final boolean fullAccess, final Integer[] tenants, final String[] roles) {
+    protected OwnerExternalRestClient getOwnerRestClient(
+        final boolean fullAccess,
+        final Integer[] tenants,
+        final String[] roles
+    ) {
         prepareGenericContext(fullAccess, tenants, roles);
         return getIamRestClientFactory(GENERIC_CERTIFICATE).getOwnerExternalRestClient();
     }
 
-    protected LogbookExternalRestClient getLogbookRestClient(final boolean fullAccess, final Integer[] tenants, final String[] roles) {
+    protected LogbookExternalRestClient getLogbookRestClient(
+        final boolean fullAccess,
+        final Integer[] tenants,
+        final String[] roles
+    ) {
         prepareGenericContext(fullAccess, tenants, roles);
         return getIamRestClientFactory(GENERIC_CERTIFICATE).getLogbookExternalRestClient();
     }
@@ -747,26 +951,32 @@ public abstract class BaseIntegration {
 
     protected ExternalParametersExternalRestClient getExternalParametersExternalRestClient() {
         if (externalParametersExternalRestClient == null) {
-        	externalParametersExternalRestClient = getIamRestClientFactory().getExternalParametersExternalRestClient();
+            externalParametersExternalRestClient = getIamRestClientFactory().getExternalParametersExternalRestClient();
         }
         return externalParametersExternalRestClient;
     }
 
-    protected ExternalParametersExternalRestClient getExternalParametersExternalRestClient(final boolean fullAccess, final Integer[] tenants, final String[] roles) {
+    protected ExternalParametersExternalRestClient getExternalParametersExternalRestClient(
+        final boolean fullAccess,
+        final Integer[] tenants,
+        final String[] roles
+    ) {
         prepareGenericContext(fullAccess, tenants, roles);
         return getIamRestClientFactory(GENERIC_CERTIFICATE).getExternalParametersExternalRestClient();
     }
 
     protected SearchCriteriaHistoryExternalRestClient getSearchCriteriaHistoryExternalRestClient() {
         if (searchCriteriaHistoryExternalRestClient == null) {
-            searchCriteriaHistoryExternalRestClient = getArchiveSearchRestClientFactory().getSearchCriteriaHistoryExternalRestClient();
+            searchCriteriaHistoryExternalRestClient = getArchiveSearchRestClientFactory()
+                .getSearchCriteriaHistoryExternalRestClient();
         }
         return searchCriteriaHistoryExternalRestClient;
     }
 
     protected ExternalParamProfileExternalRestClient getExternalParamProfileExternalRestClient() {
         if (externalParamProfileExternalRestClient == null) {
-            externalParamProfileExternalRestClient = getIamRestClientFactory().getExternalParamProfileExternalRestClient();
+            externalParamProfileExternalRestClient = getIamRestClientFactory()
+                .getExternalParamProfileExternalRestClient();
         }
         return externalParamProfileExternalRestClient;
     }
@@ -799,7 +1009,13 @@ public abstract class BaseIntegration {
         return subrogationsCollection;
     }
 
-    protected void writeProfile(final String id, final String level, final int tenantId, final String[] roles, final String customerId) {
+    protected void writeProfile(
+        final String id,
+        final String level,
+        final int tenantId,
+        final String[] roles,
+        final String customerId
+    ) {
         final List<Document> rolesList = new ArrayList<>();
         for (final String role : roles) {
             rolesList.add(new Document("name", role));
@@ -835,25 +1051,22 @@ public abstract class BaseIntegration {
             .append("parameters", parameters);
         //@formatter:on
         getExternalParametersCollection().insertOne(ExternalParametersDtoDocument);
-
     }
 
-    protected void deleteProfiles(final String ... identifiers) {
-        for(String identifier : identifiers)
-            deleteProfile(identifier);
+    protected void deleteProfiles(final String... identifiers) {
+        for (String identifier : identifiers) deleteProfile(identifier);
     }
 
     protected void deleteProfile(final String identifier) {
-            getProfilesCollection().deleteOne(eq("externalParamId", identifier));
+        getProfilesCollection().deleteOne(eq("externalParamId", identifier));
     }
 
-    protected void deleteExternalParameters(final String ... identifiers) {
-        for(String identifier : identifiers)
-            deleteExternalParameter(identifier);
+    protected void deleteExternalParameters(final String... identifiers) {
+        for (String identifier : identifiers) deleteExternalParameter(identifier);
     }
 
     protected void deleteExternalParameter(final String identifier) {
-            getExternalParametersCollection().deleteOne(eq("identifier", identifier));
+        getExternalParametersCollection().deleteOne(eq("identifier", identifier));
     }
 
     protected String generateRandomInteger() {
@@ -892,7 +1105,14 @@ public abstract class BaseIntegration {
         return usersCollection;
     }
 
-    protected void writeUser(final String id, final String level, final String identifier, final String groupId, final String customerId, final String email) {
+    protected void writeUser(
+        final String id,
+        final String level,
+        final String identifier,
+        final String groupId,
+        final String customerId,
+        final String email
+    ) {
         getUsersCollection().deleteOne(eq("_id", id));
         //@formatter:off
         final Document user = new Document("_id", id)
@@ -930,7 +1150,9 @@ public abstract class BaseIntegration {
 
     protected void writeToken(final String id, final String userId) {
         getTokensCollection().deleteOne(eq("_id", id));
-        final Document token = new Document("_id", id).append("updatedDate", DateUtils.addDays(new Date(), -10)).append("refId", userId);
+        final Document token = new Document("_id", id)
+            .append("updatedDate", DateUtils.addDays(new Date(), -10))
+            .append("refId", userId);
         getTokensCollection().insertOne(token);
     }
 }

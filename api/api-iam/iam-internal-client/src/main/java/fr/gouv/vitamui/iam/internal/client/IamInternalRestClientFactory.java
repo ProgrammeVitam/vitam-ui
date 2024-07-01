@@ -52,14 +52,18 @@ import org.springframework.boot.web.client.RestTemplateBuilder;
 
 public class IamInternalRestClientFactory extends BaseRestClientFactory {
 
-    public IamInternalRestClientFactory(final RestClientConfiguration restClientConfiguration,
-        final RestTemplateBuilder restTemplateBuilder) {
+    public IamInternalRestClientFactory(
+        final RestClientConfiguration restClientConfiguration,
+        final RestTemplateBuilder restTemplateBuilder
+    ) {
         super(restClientConfiguration, restTemplateBuilder);
     }
 
-    public IamInternalRestClientFactory(final RestClientConfiguration restClientConfiguration,
-                                        final HttpPoolConfiguration httpHostConfiguration,
-                                        final RestTemplateBuilder restTemplateBuilder) {
+    public IamInternalRestClientFactory(
+        final RestClientConfiguration restClientConfiguration,
+        final HttpPoolConfiguration httpHostConfiguration,
+        final RestTemplateBuilder restTemplateBuilder
+    ) {
         super(restClientConfiguration, httpHostConfiguration, restTemplateBuilder);
     }
 
@@ -90,8 +94,6 @@ public class IamInternalRestClientFactory extends BaseRestClientFactory {
     public UserInternalRestClient getUserInternalRestClient() {
         return new UserInternalRestClient(getRestTemplate(), getBaseUrl());
     }
-
-
 
     public UserInfoInternalRestClient getUserInfoInternalRestClient() {
         return new UserInfoInternalRestClient(getRestTemplate(), getBaseUrl());

@@ -36,23 +36,22 @@
  */
 package fr.gouv.vitamui.commons.mongo.service;
 
-import java.time.OffsetDateTime;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
-import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
-
 import fr.gouv.vitamui.commons.api.converter.Converter;
 import fr.gouv.vitamui.commons.api.domain.OperationDto;
 import fr.gouv.vitamui.commons.mongo.converter.OperationConverter;
 import fr.gouv.vitamui.commons.mongo.dao.OperationRepository;
 import fr.gouv.vitamui.commons.mongo.domain.Operation;
 import fr.gouv.vitamui.commons.mongo.repository.VitamUIRepository;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
+import java.time.OffsetDateTime;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class OperationService extends VitamUICrudService<OperationDto, Operation> {
 
@@ -62,8 +61,11 @@ public class OperationService extends VitamUICrudService<OperationDto, Operation
 
     private final Converter<OperationDto, Operation> defaultConverter;
 
-    public OperationService(final SequenceGeneratorService sequenceGeneratorService, final OperationRepository<Operation> repository,
-            final OperationConverter defaultConverter) {
+    public OperationService(
+        final SequenceGeneratorService sequenceGeneratorService,
+        final OperationRepository<Operation> repository,
+        final OperationConverter defaultConverter
+    ) {
         super(sequenceGeneratorService);
         this.repository = repository;
         this.defaultConverter = defaultConverter;
@@ -71,7 +73,6 @@ public class OperationService extends VitamUICrudService<OperationDto, Operation
 
     @Override
     protected void beforeCreate(final OperationDto dto) {
-
         dto.setCreationDate(OffsetDateTime.now());
         dto.setLastModificationDate(dto.getCreationDate());
         checkIntegrity(dto);
@@ -79,7 +80,6 @@ public class OperationService extends VitamUICrudService<OperationDto, Operation
 
     @Override
     protected void beforeUpdate(final OperationDto dto) {
-
         dto.setLastModificationDate(OffsetDateTime.now());
         checkIntegrity(dto);
     }
@@ -93,8 +93,13 @@ public class OperationService extends VitamUICrudService<OperationDto, Operation
         final Validator validator = factory.getValidator();
         final Set<ConstraintViolation<OperationDto>> violations = validator.validate(dto);
         if (!violations.isEmpty()) {
-            throw new IllegalArgumentException("Unable to validate the operation: " + violations.stream()
-                    .map(violation -> String.format("%s %s", violation.getPropertyPath(), violation.getMessage())).collect(Collectors.joining(",")));
+            throw new IllegalArgumentException(
+                "Unable to validate the operation: " +
+                violations
+                    .stream()
+                    .map(violation -> String.format("%s %s", violation.getPropertyPath(), violation.getMessage()))
+                    .collect(Collectors.joining(","))
+            );
         }
     }
 
@@ -136,8 +141,10 @@ public class OperationService extends VitamUICrudService<OperationDto, Operation
      * @param type Type of the operation.
      * @param converter Converter linked to the type.
      */
-    public void addConverter(final String type, final Converter<? extends OperationDto, ? extends Operation> converter) {
+    public void addConverter(
+        final String type,
+        final Converter<? extends OperationDto, ? extends Operation> converter
+    ) {
         customConverters.put(type, converter);
     }
-
 }

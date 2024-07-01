@@ -23,7 +23,6 @@ public class PastisGetJsonTree {
 
     // Test an xml to json and a json to xml.
     public String getJsonParsedTree(ElementRNG elementRNGRoot) throws JAXBException, FileNotFoundException {
-
         //vWhen the handler is called, the proprities tree (json) is build
         // using its ElementRNG(elementRngRoot) object.
         // The elementRngRoot is filled when the xml file is read, by passing
@@ -33,26 +32,33 @@ public class PastisGetJsonTree {
         ElementRNG.buildElementPropertiesTree(elementRNGRoot, 0, null);
         ElementProperties eparent = ElementRNG.getElementStaticRoot();
 
-
         // The eparentRng is an object of type BalizeXML. It is  built using the
         // object eparent (of type ElementProperties) that, in fact, represent the json
         // prouced during the parser's first call.
         BaliseXML.buildBaliseXMLTree(eparent, 0, null);
         BaliseXML eparentRng = BaliseXML.getBaliseXMLStatic();
 
-
         // Transforms java objects to Xml file (Marshalling)
-        JAXBContext contextObj =
-            JAXBContext.newInstance(AttributeXML.class, ElementXML.class, DataXML.class, ValueXML.class,
-                OptionalXML.class, OneOrMoreXML.class,
-                ZeroOrMoreXML.class, AnnotationXML.class, DocumentationXML.class, ChoiceXml.class);
+        JAXBContext contextObj = JAXBContext.newInstance(
+            AttributeXML.class,
+            ElementXML.class,
+            DataXML.class,
+            ValueXML.class,
+            OptionalXML.class,
+            OneOrMoreXML.class,
+            ZeroOrMoreXML.class,
+            AnnotationXML.class,
+            DocumentationXML.class,
+            ChoiceXml.class
+        );
         Marshaller marshallerObj = contextObj.createMarshaller();
         marshallerObj.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-        marshallerObj.setProperty("com.sun.xml.bind.marshaller.CharacterEscapeHandler",
-            new PastisCustomCharacterEscapeHandler());
+        marshallerObj.setProperty(
+            "com.sun.xml.bind.marshaller.CharacterEscapeHandler",
+            new PastisCustomCharacterEscapeHandler()
+        );
 
         marshallerObj.marshal(eparentRng, new FileOutputStream("generated_test.xml"));
-
 
         ObjectMapper mapper = new ObjectMapper();
         String jsonString = "";

@@ -32,8 +32,8 @@ package fr.gouv.vitamui.collect.service;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.collect.external.client.CollectTransactionExternalRestClient;
 import fr.gouv.vitamui.collect.external.client.UpdateUnitsMetadataExternalRestClient;
-import fr.gouv.vitamui.commons.api.dtos.VitamUiOntologyDto;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
+import fr.gouv.vitamui.commons.api.dtos.VitamUiOntologyDto;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
@@ -71,6 +71,7 @@ public class TransactionServiceTest {
 
     @Mock
     private UpdateUnitsMetadataExternalRestClient updateUnitsMetadataExternalRestClient;
+
     @Mock
     private CollectTransactionExternalRestClient collectTransactionExternalRestClient;
 
@@ -79,8 +80,11 @@ public class TransactionServiceTest {
 
     @Before
     public void init() {
-        transactionService = new TransactionService(collectTransactionExternalRestClient, updateUnitsMetadataExternalRestClient,
-            commonService);
+        transactionService = new TransactionService(
+            collectTransactionExternalRestClient,
+            updateUnitsMetadataExternalRestClient,
+            commonService
+        );
         ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
     }
 
@@ -89,22 +93,27 @@ public class TransactionServiceTest {
         // Given
         SearchCriteriaDto searchCriteriaDto = new SearchCriteriaDto();
         ExternalHttpContext context = new ExternalHttpContext(9, "", "", "");
-        Mockito.when(transactionService.searchArchiveUnitsByTransactionAndSearchQuery(ArgumentMatchers.any(),
-                ArgumentMatchers.any(), any(SearchCriteriaDto.class)))
-            .thenReturn(new ArchiveUnitsDto());
+        Mockito.when(
+            transactionService.searchArchiveUnitsByTransactionAndSearchQuery(
+                ArgumentMatchers.any(),
+                ArgumentMatchers.any(),
+                any(SearchCriteriaDto.class)
+            )
+        ).thenReturn(new ArchiveUnitsDto());
 
         // When
         transactionService.searchArchiveUnitsByTransactionAndSearchQuery(context, "projectId", searchCriteriaDto);
 
         // Then
-        verify(collectTransactionExternalRestClient, Mockito.times(1))
-            .searchArchiveUnitsByProjectAndSearchQuery(ArgumentMatchers.any(), ArgumentMatchers.any(),
-                any(SearchCriteriaDto.class));
+        verify(collectTransactionExternalRestClient, Mockito.times(1)).searchArchiveUnitsByProjectAndSearchQuery(
+            ArgumentMatchers.any(),
+            ArgumentMatchers.any(),
+            any(SearchCriteriaDto.class)
+        );
     }
 
     @Test
     public void when_abortTransaction_ok() {
-
         ExternalHttpContext context = new ExternalHttpContext(9, "", "", "");
 
         Mockito.doNothing().when(collectTransactionExternalRestClient).abortTransaction(context, "transactionId");
@@ -114,7 +123,6 @@ public class TransactionServiceTest {
 
     @Test
     public void when_repenTransaction_ok() {
-
         ExternalHttpContext context = new ExternalHttpContext(9, "", "", "");
 
         Mockito.doNothing().when(collectTransactionExternalRestClient).reopenTransaction(context, "transactionId");
@@ -126,35 +134,51 @@ public class TransactionServiceTest {
     public void update_archive_units_metadata_should_call_appropriate_client() {
         // Given
         ExternalHttpContext context = new ExternalHttpContext(9, "", "", "");
-        Mockito.when(updateUnitsMetadataExternalRestClient.updateArchiveUnitsMetadataFromFile(any(ExternalHttpContext.class), anyString(),
-                anyString(), any(InputStream.class)))
-            .thenReturn(new ResponseEntity<>("responseFromVitam", HttpStatus.OK));
+        Mockito.when(
+            updateUnitsMetadataExternalRestClient.updateArchiveUnitsMetadataFromFile(
+                any(ExternalHttpContext.class),
+                anyString(),
+                anyString(),
+                any(InputStream.class)
+            )
+        ).thenReturn(new ResponseEntity<>("responseFromVitam", HttpStatus.OK));
 
         String transactionId = "1";
         InputStream anyInputStream = new ByteArrayInputStream("test data".getBytes());
 
         // When
-        transactionService.updateArchiveUnitsMetadataFromFile( eq(transactionId), eq("fileName"), eq(anyInputStream), eq(context) );
+        transactionService.updateArchiveUnitsMetadataFromFile(
+            eq(transactionId),
+            eq("fileName"),
+            eq(anyInputStream),
+            eq(context)
+        );
 
         // Then
-        verify(updateUnitsMetadataExternalRestClient, Mockito.times(1))
-            .updateArchiveUnitsMetadataFromFile(ArgumentMatchers.any() ,
-                ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any()
-            );
+        verify(updateUnitsMetadataExternalRestClient, Mockito.times(1)).updateArchiveUnitsMetadataFromFile(
+            ArgumentMatchers.any(),
+            ArgumentMatchers.any(),
+            ArgumentMatchers.any(),
+            ArgumentMatchers.any()
+        );
     }
+
     @Test
     public void find_object_group_by_id_should_call_appropriate_client() {
         // Given
         ExternalHttpContext context = new ExternalHttpContext(9, "", "", "");
-        when(collectTransactionExternalRestClient.findObjectGroupById(ArgumentMatchers.any(), ArgumentMatchers.any()))
-            .thenReturn(new ResponseEntity<>(new ResultsDto(), HttpStatus.OK));
+        when(
+            collectTransactionExternalRestClient.findObjectGroupById(ArgumentMatchers.any(), ArgumentMatchers.any())
+        ).thenReturn(new ResponseEntity<>(new ResultsDto(), HttpStatus.OK));
 
         // When
         ResponseEntity<ResultsDto> response = transactionService.getObjectGroupById(OBJECT_ID, context);
 
         // Then
-        verify(collectTransactionExternalRestClient, times(1))
-            .findObjectGroupById(ArgumentMatchers.any(), ArgumentMatchers.any());
+        verify(collectTransactionExternalRestClient, times(1)).findObjectGroupById(
+            ArgumentMatchers.any(),
+            ArgumentMatchers.any()
+        );
         assertNotNull(response);
         assertThat(response).isInstanceOf(ResponseEntity.class);
         assertThat(response.getBody()).isInstanceOf(ResultsDto.class);
@@ -165,15 +189,16 @@ public class TransactionServiceTest {
         // Given
         List<VitamUiOntologyDto> ontologiesList = new ArrayList<>();
         ExternalHttpContext context = new ExternalHttpContext(9, "", "", "");
-        Mockito.when(collectTransactionExternalRestClient.getExternalOntologiesList(ArgumentMatchers.any()))
-            .thenReturn( ontologiesList );
+        Mockito.when(collectTransactionExternalRestClient.getExternalOntologiesList(ArgumentMatchers.any())).thenReturn(
+            ontologiesList
+        );
 
         // When
         transactionService.getExternalOntologiesList(eq(context));
 
         // Then
-        verify(collectTransactionExternalRestClient, Mockito.times(1))
-            .getExternalOntologiesList(ArgumentMatchers.any());
+        verify(collectTransactionExternalRestClient, Mockito.times(1)).getExternalOntologiesList(
+            ArgumentMatchers.any()
+        );
     }
-
 }

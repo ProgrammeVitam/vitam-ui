@@ -59,6 +59,7 @@ import java.util.Optional;
 
 @Service
 public class OntologyService extends AbstractPaginateService<OntologyDto> {
+
     static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(OntologyService.class);
 
     private OntologyExternalRestClient ontologyExternalRestClient;
@@ -68,15 +69,25 @@ public class OntologyService extends AbstractPaginateService<OntologyDto> {
     private CommonService commonService;
 
     @Autowired
-    public OntologyService(final CommonService commonService, final OntologyExternalRestClient client, final OntologyExternalWebClient webClient) {
+    public OntologyService(
+        final CommonService commonService,
+        final OntologyExternalRestClient client,
+        final OntologyExternalWebClient webClient
+    ) {
         this.commonService = commonService;
         this.ontologyExternalRestClient = client;
         this.webClient = webClient;
     }
 
     @Override
-    public PaginatedValuesDto<OntologyDto> getAllPaginated(final Integer page, final Integer size, final Optional<String> criteria,
-                                                         final Optional<String> orderBy, final Optional<DirectionDto> direction, final ExternalHttpContext context) {
+    public PaginatedValuesDto<OntologyDto> getAllPaginated(
+        final Integer page,
+        final Integer size,
+        final Optional<String> criteria,
+        final Optional<String> orderBy,
+        final Optional<DirectionDto> direction,
+        final ExternalHttpContext context
+    ) {
         return super.getAllPaginated(page, size, criteria, orderBy, direction, context);
     }
 
@@ -85,7 +96,8 @@ public class OntologyService extends AbstractPaginateService<OntologyDto> {
         return commonService.checkPagination(page, size);
     }
 
-    @Override public BasePaginatingAndSortingRestClient<OntologyDto, ExternalHttpContext> getClient() {
+    @Override
+    public BasePaginatingAndSortingRestClient<OntologyDto, ExternalHttpContext> getClient() {
         return ontologyExternalRestClient;
     }
 
@@ -94,7 +106,7 @@ public class OntologyService extends AbstractPaginateService<OntologyDto> {
     }
 
     public boolean check(ExternalHttpContext context, OntologyDto accessContractDto) {
-        return ontologyExternalRestClient.check(context,accessContractDto);
+        return ontologyExternalRestClient.check(context, accessContractDto);
     }
 
     public void delete(ExternalHttpContext context, String id) {

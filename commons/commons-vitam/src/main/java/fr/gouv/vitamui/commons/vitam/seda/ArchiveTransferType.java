@@ -5,17 +5,15 @@
 // Généré le : 2020.07.15 à 03:41:18 PM CEST
 //
 
-
 package fr.gouv.vitamui.commons.vitam.seda;
 
-import java.util.ArrayList;
-import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * <p>Classe Java pour ArchiveTransferType complex type.
@@ -41,22 +39,21 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlRootElement(name = "ArchiveTransfer")
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "ArchiveTransferType", propOrder = {
-    "relatedTransferReference",
-    "transferRequestReplyIdentifier",
-    "archivalAgency",
-    "transferringAgency"
-})
-public class ArchiveTransferType
-    extends BusinessRequestMessageType
-{
+@XmlType(
+    name = "ArchiveTransferType",
+    propOrder = { "relatedTransferReference", "transferRequestReplyIdentifier", "archivalAgency", "transferringAgency" }
+)
+public class ArchiveTransferType extends BusinessRequestMessageType {
 
     @XmlElement(name = "RelatedTransferReference")
     protected List<IdentifierType> relatedTransferReference;
+
     @XmlElement(name = "TransferRequestReplyIdentifier")
     protected IdentifierType transferRequestReplyIdentifier;
+
     @XmlElement(name = "ArchivalAgency", required = true)
     protected OrganizationWithIdType archivalAgency;
+
     @XmlElement(name = "TransferringAgency", required = true)
     protected OrganizationWithIdType transferringAgency;
 
@@ -160,5 +157,4 @@ public class ArchiveTransferType
     public void setTransferringAgency(OrganizationWithIdType value) {
         this.transferringAgency = value;
     }
-
 }

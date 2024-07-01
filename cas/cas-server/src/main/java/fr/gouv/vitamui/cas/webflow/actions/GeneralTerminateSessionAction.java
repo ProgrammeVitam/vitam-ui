@@ -72,7 +72,6 @@ import org.springframework.webflow.execution.RequestContext;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import java.util.*;
 
 import static fr.gouv.vitamui.commons.api.CommonConstants.*;
@@ -97,17 +96,26 @@ public class GeneralTerminateSessionAction extends TerminateSessionAction {
 
     private final Action frontChannelLogoutAction;
 
-    public GeneralTerminateSessionAction(final CentralAuthenticationService centralAuthenticationService,
-                                         final CasCookieBuilder ticketGrantingTicketCookieGenerator,
-                                         final CasCookieBuilder warnCookieGenerator,
-                                         final LogoutManager logoutManager,
-                                         final ConfigurableApplicationContext applicationContext,
-                                         final Utils utils,
-                                         final CasExternalRestClient casExternalRestClient,
-                                         final ServicesManager servicesManager,
-                                         final CasConfigurationProperties casProperties,
-                                         final Action frontChannelLogoutAction) {
-        super(centralAuthenticationService, ticketGrantingTicketCookieGenerator, warnCookieGenerator, casProperties.getLogout(), logoutManager, applicationContext);
+    public GeneralTerminateSessionAction(
+        final CentralAuthenticationService centralAuthenticationService,
+        final CasCookieBuilder ticketGrantingTicketCookieGenerator,
+        final CasCookieBuilder warnCookieGenerator,
+        final LogoutManager logoutManager,
+        final ConfigurableApplicationContext applicationContext,
+        final Utils utils,
+        final CasExternalRestClient casExternalRestClient,
+        final ServicesManager servicesManager,
+        final CasConfigurationProperties casProperties,
+        final Action frontChannelLogoutAction
+    ) {
+        super(
+            centralAuthenticationService,
+            ticketGrantingTicketCookieGenerator,
+            warnCookieGenerator,
+            casProperties.getLogout(),
+            logoutManager,
+            applicationContext
+        );
         this.utils = utils;
         this.casExternalRestClient = casExternalRestClient;
         this.servicesManager = servicesManager;
@@ -115,7 +123,8 @@ public class GeneralTerminateSessionAction extends TerminateSessionAction {
         this.frontChannelLogoutAction = frontChannelLogoutAction;
     }
 
-    @Override @SneakyThrows
+    @Override
+    @SneakyThrows
     public Event terminate(final RequestContext context) {
         final HttpServletRequest request = WebUtils.getHttpServletRequestFromExternalWebflowContext(context);
         String tgtId = WebUtils.getTicketGrantingTicketId(context);
@@ -129,7 +138,6 @@ public class GeneralTerminateSessionAction extends TerminateSessionAction {
             try {
                 ticket = centralAuthenticationService.getTicket(tgtId, TicketGrantingTicket.class);
                 if (ticket != null) {
-
                     final Principal principal = ticket.getAuthentication().getPrincipal();
                     final Map<String, List<Object>> attributes = principal.getAttributes();
                     final String authToken = (String) utils.getAttributeValue(attributes, AUTHTOKEN_ATTRIBUTE);
@@ -162,7 +170,6 @@ public class GeneralTerminateSessionAction extends TerminateSessionAction {
         if (tgtId == null) {
             final List<SingleLogoutRequestContext> logoutRequests = performGeneralLogout("nocookie");
             WebUtils.putLogoutRequests(context, logoutRequests);
-
             // no ticket or expired -> general logout
         } else if (ticket == null || ticket.isExpired()) {
             final List<SingleLogoutRequestContext> logoutRequests = performGeneralLogout(tgtId);
@@ -180,7 +187,6 @@ public class GeneralTerminateSessionAction extends TerminateSessionAction {
 
     protected List<SingleLogoutRequestContext> performGeneralLogout(final String tgtId) {
         try {
-
             final Map<String, AuthenticationHandlerExecutionResult> successes = new HashMap<>();
             successes.put("fake", null);
 
@@ -190,7 +196,11 @@ public class GeneralTerminateSessionAction extends TerminateSessionAction {
                 .addCredential(null)
                 .build();
 
-            final TicketGrantingTicketImpl fakeTgt = new TicketGrantingTicketImpl(tgtId, authentication, new NeverExpiresExpirationPolicy());
+            final TicketGrantingTicketImpl fakeTgt = new TicketGrantingTicketImpl(
+                tgtId,
+                authentication,
+                new NeverExpiresExpirationPolicy()
+            );
 
             final Collection<RegisteredService> registeredServices = servicesManager.getAllServices();
             int i = 1;
@@ -206,10 +216,8 @@ public class GeneralTerminateSessionAction extends TerminateSessionAction {
             }
 
             return logoutManager.performLogout(
-                SingleLogoutExecutionRequest.builder()
-                    .ticketGrantingTicket(fakeTgt)
-                    .build());
-
+                SingleLogoutExecutionRequest.builder().ticketGrantingTicket(fakeTgt).build()
+            );
         } catch (final RuntimeException e) {
             logger.error("Unable to perform general logout", e);
             return new ArrayList<>();

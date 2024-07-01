@@ -15,6 +15,7 @@ import java.util.List;
 @Getter
 @Setter
 public class ArchivalProfileUnitDto extends IdDto implements Serializable {
+
     private Integer tenant;
     private Integer version;
     private String identifier;

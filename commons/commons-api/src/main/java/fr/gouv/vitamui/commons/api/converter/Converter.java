@@ -40,7 +40,6 @@ import fr.gouv.vitamui.commons.api.domain.BaseIdDocument;
 import fr.gouv.vitamui.commons.api.domain.IdDto;
 
 public interface Converter<D extends IdDto, E extends BaseIdDocument> {
-
     public String convertToLogbook(D dto);
 
     public E convertDtoToEntity(D dto);

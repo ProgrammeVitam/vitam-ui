@@ -112,9 +112,8 @@ public class TenantExternalController implements CrudController<TenantDto> {
     @GetMapping(CommonConstants.PATH_ID)
     @Secured({ ServicesData.ROLE_GET_TENANTS, ServicesData.ROLE_GET_ALL_TENANTS })
     @Override
-    public TenantDto getOne(final @PathVariable("id") String id) throws InvalidParseOperationException,
-        PreconditionFailedException  {
-
+    public TenantDto getOne(final @PathVariable("id") String id)
+        throws InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Get {}", id);
         return tenantExternalService.getOne(id);
@@ -123,9 +122,8 @@ public class TenantExternalController implements CrudController<TenantDto> {
     @PostMapping
     @Secured(ServicesData.ROLE_CREATE_TENANTS)
     @Override
-    public TenantDto create(final @Valid @RequestBody TenantDto dto) throws InvalidParseOperationException,
-        PreconditionFailedException {
-
+    public TenantDto create(final @Valid @RequestBody TenantDto dto)
+        throws InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.sanitizeCriteria(dto);
         LOGGER.debug("Create {}", dto);
         return tenantExternalService.create(dto);
@@ -136,11 +134,13 @@ public class TenantExternalController implements CrudController<TenantDto> {
     @Override
     public TenantDto update(final @PathVariable("id") String id, final @Valid @RequestBody TenantDto dto)
         throws InvalidParseOperationException, PreconditionFailedException {
-
         SanityChecker.checkSecureParameter(id);
         SanityChecker.sanitizeCriteria(dto);
         LOGGER.debug("Update {} with {}", id, dto);
-        Assert.isTrue(StringUtils.equals(id, dto.getId()), "The DTO identifier must match the path identifier for update.");
+        Assert.isTrue(
+            StringUtils.equals(id, dto.getId()),
+            "The DTO identifier must match the path identifier for update."
+        );
         return tenantExternalService.update(dto);
     }
 
@@ -150,11 +150,13 @@ public class TenantExternalController implements CrudController<TenantDto> {
     @Secured(ServicesData.ROLE_UPDATE_TENANTS)
     public TenantDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto)
         throws InvalidParseOperationException, PreconditionFailedException {
-
         SanityChecker.checkSecureParameter(id);
         SanityChecker.sanitizeCriteria(partialDto);
         LOGGER.debug("Patch tenant {} with {}", id, partialDto);
-        Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "Unable to patch tenant : the DTO id must match the path id");
+        Assert.isTrue(
+            StringUtils.equals(id, (String) partialDto.get("id")),
+            "Unable to patch tenant : the DTO id must match the path id"
+        );
         return tenantExternalService.patch(partialDto);
     }
 
@@ -162,16 +164,14 @@ public class TenantExternalController implements CrudController<TenantDto> {
     @GetMapping
     @Override
     public Collection<TenantDto> getAll(@RequestParam final Optional<String> criteria) {
-
         SanityChecker.sanitizeCriteria(criteria);
         LOGGER.debug("Get all criteria={}", criteria);
         return tenantExternalService.getAll(criteria);
     }
 
     @GetMapping("/{id}/history")
-    public JsonNode findHistoryById(final @PathVariable("id") String id) throws InvalidParseOperationException,
-        PreconditionFailedException {
-
+    public JsonNode findHistoryById(final @PathVariable("id") String id)
+        throws InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("get logbook for tenant with id :{}", id);
         return tenantExternalService.findHistoryById(id);

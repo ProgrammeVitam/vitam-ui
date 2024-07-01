@@ -71,7 +71,12 @@ public class ContextRestClient extends BaseCrudRestClient<ContextDto, InternalHt
     public ContextDto findByCertificate(final InternalHttpContext context, final String certificate) {
         LOGGER.debug("certificate(truncated): {}****", StringUtils.substring(certificate, 0, 100));
         final HttpEntity<String> request = new HttpEntity<>(certificate, buildHeaders(context));
-        final ResponseEntity<ContextDto> response = restTemplate.exchange(getUrl() + RestApi.FINDBYCERTIFICATE_PATH, HttpMethod.POST, request, getDtoClass());
+        final ResponseEntity<ContextDto> response = restTemplate.exchange(
+            getUrl() + RestApi.FINDBYCERTIFICATE_PATH,
+            HttpMethod.POST,
+            request,
+            getDtoClass()
+        );
         checkResponse(response);
         return response.getBody();
     }
@@ -89,8 +94,12 @@ public class ContextRestClient extends BaseCrudRestClient<ContextDto, InternalHt
         uriBuilder.path(ADD_TENANT_TO_CONTEXT_PATH);
         final MultiValueMap<String, String> headers = buildHeaders(context);
         final HttpEntity<Void> request = new HttpEntity<>(headers);
-        final ResponseEntity<ContextDto> response = restTemplate.exchange(uriBuilder.build(id, tenantIdentifier), HttpMethod.PATCH,
-                request, getDtoClass());
+        final ResponseEntity<ContextDto> response = restTemplate.exchange(
+            uriBuilder.build(id, tenantIdentifier),
+            HttpMethod.PATCH,
+            request,
+            getDtoClass()
+        );
         checkResponse(response);
         return response.getBody();
     }
@@ -107,7 +116,6 @@ public class ContextRestClient extends BaseCrudRestClient<ContextDto, InternalHt
 
     @Override
     protected ParameterizedTypeReference<List<ContextDto>> getDtoListClass() {
-        return new ParameterizedTypeReference<List<ContextDto>>() {
-        };
+        return new ParameterizedTypeReference<List<ContextDto>>() {};
     }
 }

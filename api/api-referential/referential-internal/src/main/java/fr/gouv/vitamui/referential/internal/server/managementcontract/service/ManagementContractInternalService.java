@@ -72,7 +72,9 @@ import java.util.Optional;
 @Service
 public class ManagementContractInternalService {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ManagementContractInternalService.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
+        ManagementContractInternalService.class
+    );
 
     private static final String MANAGEMENT_CONTRACT_NOT_FOUND = "Unable to find Management Contracts";
     private static final String MANAGEMENT_CONTRACT_EVENT_ID_APP_SESSION = "Management Contracts EvIdAppSession : {} ";
@@ -89,8 +91,13 @@ public class ManagementContractInternalService {
     private final LogbookService logbookService;
 
     @Autowired
-    public ManagementContractInternalService(ManagementContractService managementContractService, VitamUIManagementContractService
-        vitamUIManagementContractService, ObjectMapper objectMapper, ManagementContractConverter converter, LogbookService logbookService) {
+    public ManagementContractInternalService(
+        ManagementContractService managementContractService,
+        VitamUIManagementContractService vitamUIManagementContractService,
+        ObjectMapper objectMapper,
+        ManagementContractConverter converter,
+        LogbookService logbookService
+    ) {
         this.managementContractService = managementContractService;
         this.vitamUIManagementContractService = vitamUIManagementContractService;
         this.objectMapper = objectMapper;
@@ -101,12 +108,19 @@ public class ManagementContractInternalService {
     public List<ManagementContractDto> getAll(VitamContext vitamContext) {
         final RequestResponse<ManagementContractModel> requestResponse;
         try {
-            LOGGER.debug(MANAGEMENT_CONTRACT_EVENT_ID_APP_SESSION , vitamContext.getApplicationSessionId());
-            requestResponse = managementContractService.findManagementContracts(vitamContext, new Select().getFinalSelect());
-            final ManagementContractResponseDto managementContractResponseDto = objectMapper
-                    .treeToValue(requestResponse.toJsonNode(), ManagementContractResponseDto.class);
+            LOGGER.debug(MANAGEMENT_CONTRACT_EVENT_ID_APP_SESSION, vitamContext.getApplicationSessionId());
+            requestResponse = managementContractService.findManagementContracts(
+                vitamContext,
+                new Select().getFinalSelect()
+            );
+            final ManagementContractResponseDto managementContractResponseDto = objectMapper.treeToValue(
+                requestResponse.toJsonNode(),
+                ManagementContractResponseDto.class
+            );
 
-            return converter.convertVitamListMgtContractToVitamUIMgtContractDtos(managementContractResponseDto.getResults());
+            return converter.convertVitamListMgtContractToVitamUIMgtContractDtos(
+                managementContractResponseDto.getResults()
+            );
         } catch (VitamClientException | JsonProcessingException e) {
             LOGGER.error(MANAGEMENT_CONTRACT_NOT_FOUND + e.getMessage());
             throw new InternalServerException(MANAGEMENT_CONTRACT_NOT_FOUND, e);
@@ -115,12 +129,16 @@ public class ManagementContractInternalService {
 
     public ManagementContractDto getOne(VitamContext vitamContext, String identifier) {
         try {
-            LOGGER.debug(MANAGEMENT_CONTRACT_EVENT_ID_APP_SESSION , vitamContext.getApplicationSessionId());
-            RequestResponse<ManagementContractModel> requestResponse = managementContractService.findManagementContractById(vitamContext, identifier);
-            final ManagementContractResponseDto managementContractResponseDto = objectMapper
-                .treeToValue(requestResponse.toJsonNode(), ManagementContractResponseDto.class);
+            LOGGER.debug(MANAGEMENT_CONTRACT_EVENT_ID_APP_SESSION, vitamContext.getApplicationSessionId());
+            RequestResponse<ManagementContractModel> requestResponse =
+                managementContractService.findManagementContractById(vitamContext, identifier);
+            final ManagementContractResponseDto managementContractResponseDto = objectMapper.treeToValue(
+                requestResponse.toJsonNode(),
+                ManagementContractResponseDto.class
+            );
 
-            return managementContractResponseDto.getResults().isEmpty() ? null
+            return managementContractResponseDto.getResults().isEmpty()
+                ? null
                 : converter.convertVitamMgtContractToVitamUiDto(managementContractResponseDto.getResults().get(0));
         } catch (VitamClientException | JsonProcessingException exception) {
             LOGGER.error("Unable to get Management Contract");
@@ -128,15 +146,20 @@ public class ManagementContractInternalService {
         }
     }
 
-    public PaginatedValuesDto<ManagementContractDto> getAllPaginated(final Integer pageNumber, final Integer size,
-        final Optional<String> orderBy, final Optional<DirectionDto> direction, VitamContext vitamContext, Optional<String> criteria) {
+    public PaginatedValuesDto<ManagementContractDto> getAllPaginated(
+        final Integer pageNumber,
+        final Integer size,
+        final Optional<String> orderBy,
+        final Optional<DirectionDto> direction,
+        VitamContext vitamContext,
+        Optional<String> criteria
+    ) {
         Map<String, Object> vitamCriteria = new HashMap<>();
         JsonNode query;
-        LOGGER.debug(MANAGEMENT_CONTRACT_EVENT_ID_APP_SESSION , vitamContext.getApplicationSessionId());
+        LOGGER.debug(MANAGEMENT_CONTRACT_EVENT_ID_APP_SESSION, vitamContext.getApplicationSessionId());
         try {
             if (criteria.isPresent()) {
-                TypeReference<HashMap<String, Object>> typRef = new TypeReference<>() {
-                };
+                TypeReference<HashMap<String, Object>> typRef = new TypeReference<>() {};
                 vitamCriteria = objectMapper.readValue(criteria.get(), typRef);
             }
             query = VitamQueryHelper.createQueryDSL(vitamCriteria, pageNumber, size, orderBy, direction);
@@ -151,8 +174,9 @@ public class ManagementContractInternalService {
         ManagementContractResponseDto results = this.findAll(vitamContext, query);
         boolean hasMore = pageNumber * size + results.getHits().getSize() < results.getHits().getTotal();
 
-        final List<ManagementContractDto> valuesDto = converter.
-            convertVitamListMgtContractToVitamUIMgtContractDtos(results.getResults());
+        final List<ManagementContractDto> valuesDto = converter.convertVitamListMgtContractToVitamUIMgtContractDtos(
+            results.getResults()
+        );
         LOGGER.debug("Vitam UI DTO: {}", valuesDto);
         return new PaginatedValuesDto<>(valuesDto, pageNumber, results.getHits().getSize(), hasMore);
     }
@@ -160,13 +184,15 @@ public class ManagementContractInternalService {
     public ManagementContractResponseDto findAll(VitamContext vitamContext, JsonNode query) {
         final RequestResponse<ManagementContractModel> requestResponse;
         try {
-            LOGGER.debug(MANAGEMENT_CONTRACT_EVENT_ID_APP_SESSION , vitamContext.getApplicationSessionId());
+            LOGGER.debug(MANAGEMENT_CONTRACT_EVENT_ID_APP_SESSION, vitamContext.getApplicationSessionId());
             requestResponse = managementContractService.findManagementContracts(vitamContext, query);
-            final ManagementContractResponseDto managementContractResponseDto = objectMapper
-                .convertValue(requestResponse.toJsonNode(), ManagementContractResponseDto.class);
+            final ManagementContractResponseDto managementContractResponseDto = objectMapper.convertValue(
+                requestResponse.toJsonNode(),
+                ManagementContractResponseDto.class
+            );
             LOGGER.debug("VITAM DTO: {}", managementContractResponseDto);
             return managementContractResponseDto;
-        } catch (VitamClientException  exception) {
+        } catch (VitamClientException exception) {
             LOGGER.error(MANAGEMENT_CONTRACT_NOT_FOUND + exception);
             throw new InternalServerException(MANAGEMENT_CONTRACT_NOT_FOUND, exception);
         }
@@ -174,10 +200,14 @@ public class ManagementContractInternalService {
 
     public Boolean check(VitamContext vitamContext, ManagementContractDto managementContractDto) {
         try {
-            LOGGER.debug(MANAGEMENT_CONTRACT_EVENT_ID_APP_SESSION , vitamContext.getApplicationSessionId());
-            Integer managementContractCheckedTenant = managementContractService.checkAbilityToCreateManagementContractInVitam(converter
-                .convertVitamUiListMgtContractToVitamListMgtContract(Collections.singletonList(managementContractDto)),
-                vitamContext.getApplicationSessionId());
+            LOGGER.debug(MANAGEMENT_CONTRACT_EVENT_ID_APP_SESSION, vitamContext.getApplicationSessionId());
+            Integer managementContractCheckedTenant =
+                managementContractService.checkAbilityToCreateManagementContractInVitam(
+                    converter.convertVitamUiListMgtContractToVitamListMgtContract(
+                        Collections.singletonList(managementContractDto)
+                    ),
+                    vitamContext.getApplicationSessionId()
+                );
             return !vitamContext.getTenantId().equals(managementContractCheckedTenant);
         } catch (ConflictException e) {
             LOGGER.error("Error while checking management Contract", e.getMessage());
@@ -187,14 +217,16 @@ public class ManagementContractInternalService {
 
     public ManagementContractDto create(VitamContext vitamContext, ManagementContractDto managementContractDto) {
         try {
-            LOGGER.debug(MANAGEMENT_CONTRACT_EVENT_ID_APP_SESSION , vitamContext.getApplicationSessionId());
-            RequestResponse requestResponse = managementContractService.createManagementContracts(vitamContext,
-                Collections.singletonList(converter
-                    .convertVitamUiManagementContractToVitamMgt(managementContractDto)));
-            final ManagementContractVitamDto managementContractModelDto = objectMapper
-                .treeToValue(requestResponse.toJsonNode(), ManagementContractVitamDto.class);
-            return converter
-                .convertVitamMgtContractToVitamUiDto(managementContractModelDto);
+            LOGGER.debug(MANAGEMENT_CONTRACT_EVENT_ID_APP_SESSION, vitamContext.getApplicationSessionId());
+            RequestResponse requestResponse = managementContractService.createManagementContracts(
+                vitamContext,
+                Collections.singletonList(converter.convertVitamUiManagementContractToVitamMgt(managementContractDto))
+            );
+            final ManagementContractVitamDto managementContractModelDto = objectMapper.treeToValue(
+                requestResponse.toJsonNode(),
+                ManagementContractVitamDto.class
+            );
+            return converter.convertVitamMgtContractToVitamUiDto(managementContractModelDto);
         } catch (InvalidParseOperationException | AccessExternalClientException | IOException e) {
             LOGGER.error("Can't create management contract");
             throw new InternalServerException("Can't create management contract", e);
@@ -202,7 +234,6 @@ public class ManagementContractInternalService {
     }
 
     private JsonNode convertMapPartialDtoToUpperCaseVitamFields(Map<String, Object> partialDto) {
-
         ObjectNode propertiesToUpdate = JsonHandler.createObjectNode();
 
         // Transform Vitam-UI fields into Vitam fields
@@ -256,7 +287,7 @@ public class ManagementContractInternalService {
         partialDto.remove("identifier");
 
         try {
-            LOGGER.debug(MANAGEMENT_CONTRACT_EVENT_ID_APP_SESSION , vitamContext.getApplicationSessionId());
+            LOGGER.debug(MANAGEMENT_CONTRACT_EVENT_ID_APP_SESSION, vitamContext.getApplicationSessionId());
             JsonNode fieldsUpdated = convertMapPartialDtoToUpperCaseVitamFields(partialDto);
 
             ObjectNode action = JsonHandler.createObjectNode();
@@ -270,15 +301,18 @@ public class ManagementContractInternalService {
 
             LOGGER.debug("Send ManagementContract update request: {}", query);
 
-            RequestResponse<?> requestResponse = vitamUIManagementContractService.patchManagementContract(vitamContext, id, query);
+            RequestResponse<?> requestResponse = vitamUIManagementContractService.patchManagementContract(
+                vitamContext,
+                id,
+                query
+            );
 
-            if(Response.Status.OK.getStatusCode() != requestResponse.getHttpCode()) {
+            if (Response.Status.OK.getStatusCode() != requestResponse.getHttpCode()) {
                 throw new AccessExternalClientException(MANAGEMENT_CONTRACT_NOT_PATCH);
             }
 
             return getOne(vitamContext, id);
-
-        } catch (InvalidParseOperationException | AccessExternalClientException  e) {
+        } catch (InvalidParseOperationException | AccessExternalClientException e) {
             LOGGER.error(MANAGEMENT_CONTRACT_NOT_PATCH);
             throw new InternalServerException(MANAGEMENT_CONTRACT_NOT_PATCH, e);
         }
@@ -286,12 +320,11 @@ public class ManagementContractInternalService {
 
     public JsonNode findHistoryByIdentifier(VitamContext vitamContext, final String id) throws VitamClientException {
         try {
-            LOGGER.debug(MANAGEMENT_CONTRACT_EVENT_ID_APP_SESSION , vitamContext.getApplicationSessionId());
-            return logbookService.selectOperations(VitamQueryHelper.buildOperationQuery(id),vitamContext).toJsonNode();
+            LOGGER.debug(MANAGEMENT_CONTRACT_EVENT_ID_APP_SESSION, vitamContext.getApplicationSessionId());
+            return logbookService.selectOperations(VitamQueryHelper.buildOperationQuery(id), vitamContext).toJsonNode();
         } catch (InvalidCreateOperationException e) {
             LOGGER.error("Unable to fetch history");
             throw new InternalServerException("Unable to fetch history", e);
         }
     }
-
 }

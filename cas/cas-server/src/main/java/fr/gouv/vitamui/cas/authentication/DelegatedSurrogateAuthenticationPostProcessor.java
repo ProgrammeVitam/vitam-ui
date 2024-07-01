@@ -39,6 +39,7 @@ package fr.gouv.vitamui.cas.authentication;
 import fr.gouv.vitamui.cas.util.Constants;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import lombok.val;
 import org.apereo.cas.audit.AuditableExecution;
 import org.apereo.cas.authentication.*;
 import org.apereo.cas.authentication.principal.ClientCredential;
@@ -50,8 +51,6 @@ import org.pac4j.core.context.session.SessionStore;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.webflow.execution.RequestContextHolder;
 
-import lombok.val;
-
 import java.util.Collections;
 
 /**
@@ -61,23 +60,33 @@ import java.util.Collections;
  */
 public class DelegatedSurrogateAuthenticationPostProcessor extends SurrogateAuthenticationPostProcessor {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(DelegatedSurrogateAuthenticationPostProcessor.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
+        DelegatedSurrogateAuthenticationPostProcessor.class
+    );
 
     private final SessionStore sessionStore;
 
-    public DelegatedSurrogateAuthenticationPostProcessor(final SurrogateAuthenticationService surrogateAuthenticationService,
-                                                         final ServicesManager servicesManager, final ApplicationEventPublisher applicationEventPublisher,
-                                                         final AuditableExecution registeredServiceAccessStrategyEnforcer,
-                                                         final AuditableExecution surrogateEligibilityAuditableExecution,
-                                                         final SessionStore sessionStore) {
-        super(surrogateAuthenticationService, servicesManager, applicationEventPublisher, registeredServiceAccessStrategyEnforcer,
-            surrogateEligibilityAuditableExecution);
+    public DelegatedSurrogateAuthenticationPostProcessor(
+        final SurrogateAuthenticationService surrogateAuthenticationService,
+        final ServicesManager servicesManager,
+        final ApplicationEventPublisher applicationEventPublisher,
+        final AuditableExecution registeredServiceAccessStrategyEnforcer,
+        final AuditableExecution surrogateEligibilityAuditableExecution,
+        final SessionStore sessionStore
+    ) {
+        super(
+            surrogateAuthenticationService,
+            servicesManager,
+            applicationEventPublisher,
+            registeredServiceAccessStrategyEnforcer,
+            surrogateEligibilityAuditableExecution
+        );
         this.sessionStore = sessionStore;
     }
 
     @Override
-    public void process(final AuthenticationBuilder builder, final AuthenticationTransaction transaction) throws AuthenticationException {
-
+    public void process(final AuthenticationBuilder builder, final AuthenticationTransaction transaction)
+        throws AuthenticationException {
         val credential = transaction.getPrimaryCredential().get();
         if (credential instanceof ClientCredential) {
             val clientCredential = (ClientCredential) credential;
@@ -87,13 +96,19 @@ public class DelegatedSurrogateAuthenticationPostProcessor extends SurrogateAuth
             val webContext = new JEEContext(request, response);
             val surrogateInSession = sessionStore.get(webContext, Constants.SURROGATE).orElse(null);
             if (surrogateInSession != null) {
-                LOGGER.debug("surrogate: {} found after authentication delegation -> overriding credential", surrogateInSession);
+                LOGGER.debug(
+                    "surrogate: {} found after authentication delegation -> overriding credential",
+                    surrogateInSession
+                );
                 val newCredential = new SurrogateUsernamePasswordCredential();
                 newCredential.setUsername(clientCredential.getUserProfile().getId());
                 newCredential.setSurrogateUsername((String) surrogateInSession);
                 WebUtils.putCredential(requestContext, newCredential);
 
-                final AuthenticationTransaction newTransaction = new DefaultAuthenticationTransaction(transaction.getService(), Collections.singletonList(newCredential));
+                final AuthenticationTransaction newTransaction = new DefaultAuthenticationTransaction(
+                    transaction.getService(),
+                    Collections.singletonList(newCredential)
+                );
                 super.process(builder, newTransaction);
             } else {
                 return;
@@ -106,6 +121,9 @@ public class DelegatedSurrogateAuthenticationPostProcessor extends SurrogateAuth
     @Override
     public boolean supports(final Credential credential) {
         final Class<? extends Credential> credentialClass = credential.getClass();
-        return credentialClass.equals(SurrogateUsernamePasswordCredential.class) || credentialClass.equals(ClientCredential.class);
+        return (
+            credentialClass.equals(SurrogateUsernamePasswordCredential.class) ||
+            credentialClass.equals(ClientCredential.class)
+        );
     }
 }

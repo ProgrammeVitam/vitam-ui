@@ -54,18 +54,32 @@ public class PersonRepositoryPaginatedNestedObjectsTests {
     @Test
     public void testBuildPaginatedNestedValues() throws JsonParseException, JsonMappingException, IOException {
         initializeData();
-        final PaginatedValuesDto<Address> addresses = repository.getPaginatedNestedValues(Address.class, "person",
-                "addressList", Arrays.asList(Criteria.where("firstName").is("Makhtar")), 2, 1, Optional.of("firstName"),
-                Optional.of(DirectionDto.ASC));
+        final PaginatedValuesDto<Address> addresses = repository.getPaginatedNestedValues(
+            Address.class,
+            "person",
+            "addressList",
+            Arrays.asList(Criteria.where("firstName").is("Makhtar")),
+            2,
+            1,
+            Optional.of("firstName"),
+            Optional.of(DirectionDto.ASC)
+        );
         assertEquals("Incorrect page num.", 2, addresses.getPageNum());
         assertEquals("Incorrect page size.", 1, addresses.getPageSize());
         assertNotNull("Incorrect values.", addresses.getValues());
         assertEquals("Incorrect values size.", 1, addresses.getValues().size());
         assertThat("We have more data in database.", addresses.isHasMore(), is(true));
 
-        final PaginatedValuesDto<Address> addresses2 = repository.getPaginatedNestedValues(Address.class, "person",
-                "addressList", Arrays.asList(Criteria.where("firstName").is("Moctar")), 0, 1, Optional.of("firstName"),
-                Optional.of(DirectionDto.ASC));
+        final PaginatedValuesDto<Address> addresses2 = repository.getPaginatedNestedValues(
+            Address.class,
+            "person",
+            "addressList",
+            Arrays.asList(Criteria.where("firstName").is("Moctar")),
+            0,
+            1,
+            Optional.of("firstName"),
+            Optional.of(DirectionDto.ASC)
+        );
         assertEquals("Incorrect page num.", 0, addresses2.getPageNum());
         assertEquals("Incorrect page size.", 1, addresses2.getPageSize());
         assertNotNull("Incorrect values.", addresses2.getValues());
@@ -76,9 +90,16 @@ public class PersonRepositoryPaginatedNestedObjectsTests {
     @Test
     public void testBuildPaginatedNestedValuesWithOrder() throws JsonParseException, JsonMappingException, IOException {
         initializeData();
-        final PaginatedValuesDto<Address> addresses = repository.getPaginatedNestedValues(Address.class, "person",
-                "addressList", Arrays.asList(Criteria.where("firstName").is("Makhtar")), 0, 4,
-                Optional.of("addressList.identifier"), Optional.of(DirectionDto.ASC));
+        final PaginatedValuesDto<Address> addresses = repository.getPaginatedNestedValues(
+            Address.class,
+            "person",
+            "addressList",
+            Arrays.asList(Criteria.where("firstName").is("Makhtar")),
+            0,
+            4,
+            Optional.of("addressList.identifier"),
+            Optional.of(DirectionDto.ASC)
+        );
         assertEquals("Incorrect page num.", 0, addresses.getPageNum());
         assertEquals("Incorrect page size.", 4, addresses.getPageSize());
         assertNotNull("Incorrect values.", addresses.getValues());
@@ -93,11 +114,18 @@ public class PersonRepositoryPaginatedNestedObjectsTests {
 
     @Test
     public void testBuildPaginatedNestedValuesWithoutOrderAndDirection()
-            throws JsonParseException, JsonMappingException, IOException {
+        throws JsonParseException, JsonMappingException, IOException {
         initializeData();
-        final PaginatedValuesDto<Address> addresses = repository.getPaginatedNestedValues(Address.class, "person",
-                "addressList", Arrays.asList(Criteria.where("firstName").is("Makhtar")), 2, 1, Optional.empty(),
-                Optional.empty());
+        final PaginatedValuesDto<Address> addresses = repository.getPaginatedNestedValues(
+            Address.class,
+            "person",
+            "addressList",
+            Arrays.asList(Criteria.where("firstName").is("Makhtar")),
+            2,
+            1,
+            Optional.empty(),
+            Optional.empty()
+        );
         assertEquals("Incorrect page num.", 2, addresses.getPageNum());
         assertEquals("Incorrect page size.", 1, addresses.getPageSize());
         assertNotNull("Incorrect values.", addresses.getValues());
@@ -107,19 +135,31 @@ public class PersonRepositoryPaginatedNestedObjectsTests {
 
     @Test(expected = IllegalArgumentException.class)
     public void testBuildPaginatedNestedValuesWithOrderByEmptyAndWithDirection()
-            throws JsonParseException, JsonMappingException, IOException {
+        throws JsonParseException, JsonMappingException, IOException {
         initializeData();
-        repository.getPaginatedNestedValues(Address.class, "person", "addressList",
-                Arrays.asList(Criteria.where("firstName").is("Makhtar")), 2, 1, Optional.empty(),
-                Optional.of(DirectionDto.ASC));
+        repository.getPaginatedNestedValues(
+            Address.class,
+            "person",
+            "addressList",
+            Arrays.asList(Criteria.where("firstName").is("Makhtar")),
+            2,
+            1,
+            Optional.empty(),
+            Optional.of(DirectionDto.ASC)
+        );
     }
 
     @Test
     public void getPaginatedValues_WhenSortIsNull_ThenReturnListPaginated() {
         initializeData();
 
-        PaginatedValuesDto<Person> persons = repository.getPaginatedValues(0, 20, Optional.empty(), Optional.empty(),
-                Optional.empty());
+        PaginatedValuesDto<Person> persons = repository.getPaginatedValues(
+            0,
+            20,
+            Optional.empty(),
+            Optional.empty(),
+            Optional.empty()
+        );
         assertEquals("Paginated values not found", persons.getValues().size(), 2);
     }
 
@@ -135,7 +175,6 @@ public class PersonRepositoryPaginatedNestedObjectsTests {
         Collection<CriteriaDefinition> c = Arrays.asList(Criteria.where("age").is(20));
         Collection<Person> persons = repository.findAll(c, Optional.of("firstName"), Optional.empty(), true);
         assertEquals("Paginated values not found", 2, persons.size());
-
     }
 
     private void initializeData() {
@@ -155,5 +194,4 @@ public class PersonRepositoryPaginatedNestedObjectsTests {
         it.forEach(i -> list.add(i));
         return list;
     }
-
 }

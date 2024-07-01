@@ -87,11 +87,13 @@ public class VitamQueryHelper {
      * @throws InvalidParseOperationException
      * @throws InvalidCreateOperationException
      */
-    public static JsonNode createQueryDSL(Map<String, Object> searchCriteriaMap, final Integer pageNumber,
+    public static JsonNode createQueryDSL(
+        Map<String, Object> searchCriteriaMap,
+        final Integer pageNumber,
         final Integer size,
-        final Optional<String> orderBy, final Optional<DirectionDto> direction)
-        throws InvalidParseOperationException, InvalidCreateOperationException {
-
+        final Optional<String> orderBy,
+        final Optional<DirectionDto> direction
+    ) throws InvalidParseOperationException, InvalidCreateOperationException {
         final Select select = new Select();
         final BooleanQuery query = and();
         BooleanQuery queryOr = or();
@@ -119,7 +121,6 @@ public class VitamQueryHelper {
                 final String searchKey = entry.getKey();
 
                 switch (searchKey) {
-
                     case EV_TYPE_PROC:
                         // string equals operation
                         final String stringValue = (String) entry.getValue();

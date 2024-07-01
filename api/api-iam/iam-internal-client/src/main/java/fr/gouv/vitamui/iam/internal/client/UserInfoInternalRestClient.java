@@ -36,15 +36,6 @@
  */
 package fr.gouv.vitamui.iam.internal.client;
 
-import java.util.List;
-
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponentsBuilder;
-
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.domain.UserInfoDto;
@@ -53,7 +44,14 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.client.BasePaginatingAndSortingRestClient;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import fr.gouv.vitamui.iam.common.rest.RestApi;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.List;
 
 public class UserInfoInternalRestClient extends BasePaginatingAndSortingRestClient<UserInfoDto, InternalHttpContext> {
 
@@ -69,11 +67,15 @@ public class UserInfoInternalRestClient extends BasePaginatingAndSortingRestClie
         final HttpEntity<?> request = new HttpEntity<>(buildHeaders(context));
         final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl() + CommonConstants.PATH_ME);
 
-        final ResponseEntity<UserInfoDto> response = restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET, request, UserInfoDto.class);
+        final ResponseEntity<UserInfoDto> response = restTemplate.exchange(
+            uriBuilder.toUriString(),
+            HttpMethod.GET,
+            request,
+            UserInfoDto.class
+        );
         checkResponse(response);
         return response.getBody();
     }
-
 
     @Override
     public String getPathUrl() {
@@ -87,14 +89,11 @@ public class UserInfoInternalRestClient extends BasePaginatingAndSortingRestClie
 
     @Override
     protected ParameterizedTypeReference<List<UserInfoDto>> getDtoListClass() {
-        return new ParameterizedTypeReference<>() {
-        };
+        return new ParameterizedTypeReference<>() {};
     }
 
     @Override
     protected ParameterizedTypeReference<PaginatedValuesDto<UserInfoDto>> getDtoPaginatedClass() {
-        return new ParameterizedTypeReference<>() {
-        };
+        return new ParameterizedTypeReference<>() {};
     }
-
 }

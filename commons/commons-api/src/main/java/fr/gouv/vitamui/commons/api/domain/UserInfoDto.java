@@ -36,12 +36,12 @@
  */
 package fr.gouv.vitamui.commons.api.domain;
 
-import javax.validation.constraints.NotNull;
-
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+
+import javax.validation.constraints.NotNull;
 
 /**
  * A user info DTO with an identifier.

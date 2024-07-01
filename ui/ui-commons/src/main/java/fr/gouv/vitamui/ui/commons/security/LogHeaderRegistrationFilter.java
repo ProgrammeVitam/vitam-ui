@@ -36,20 +36,18 @@
  */
 package fr.gouv.vitamui.ui.commons.security;
 
-import java.io.IOException;
-import java.util.Optional;
+import fr.gouv.vitamui.commons.api.CommonConstants;
+import org.apache.commons.lang3.StringUtils;
+import org.jboss.logging.MDC;
+import org.springframework.web.filter.GenericFilterBean;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
-
-import org.apache.commons.lang3.StringUtils;
-import org.jboss.logging.MDC;
-import org.springframework.web.filter.GenericFilterBean;
-
-import fr.gouv.vitamui.commons.api.CommonConstants;
+import java.io.IOException;
+import java.util.Optional;
 
 /**
  * Filter allowing to register information from the original request into <code>MDC</code>.
@@ -79,8 +77,8 @@ public class LogHeaderRegistrationFilter extends GenericFilterBean {
     }
 
     @Override
-    public void doFilter(final ServletRequest request, final ServletResponse response, final FilterChain chain) throws IOException, ServletException {
-
+    public void doFilter(final ServletRequest request, final ServletResponse response, final FilterChain chain)
+        throws IOException, ServletException {
         final HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         registerHeader(httpServletRequest, CommonConstants.X_REQUEST_ID_HEADER);
         registerHeader(httpServletRequest, CommonConstants.X_APPLICATION_ID_HEADER);

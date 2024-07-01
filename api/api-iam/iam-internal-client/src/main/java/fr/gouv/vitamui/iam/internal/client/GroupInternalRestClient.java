@@ -69,22 +69,26 @@ public class GroupInternalRestClient extends BasePaginatingAndSortingRestClient<
     }
 
     private ParameterizedTypeReference<List<String>> getStringListClass() {
-        return new ParameterizedTypeReference<List<String>>() {
-        };
+        return new ParameterizedTypeReference<List<String>>() {};
     }
 
-    @Override public List<GroupDto> getAll(final InternalHttpContext context, final Optional<String> embedded) {
+    @Override
+    public List<GroupDto> getAll(final InternalHttpContext context, final Optional<String> embedded) {
         LOGGER.debug("Get ALL embedded = {}", embedded);
         final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl());
         if (embedded.isPresent()) {
             uriBuilder.queryParam("embedded", embedded.get());
         }
         final HttpEntity<Void> request = new HttpEntity<>(buildHeaders(context));
-        final ResponseEntity<List<GroupDto>> response = restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET, request, getDtoListClass());
+        final ResponseEntity<List<GroupDto>> response = restTemplate.exchange(
+            uriBuilder.toUriString(),
+            HttpMethod.GET,
+            request,
+            getDtoListClass()
+        );
         checkResponse(response);
         return response.getBody();
     }
-
 
     public List<String> getLevels(final InternalHttpContext context, final Optional<String> criteria) {
         LOGGER.debug("GetLevels criteria={}", criteria);
@@ -92,8 +96,12 @@ public class GroupInternalRestClient extends BasePaginatingAndSortingRestClient<
         final URIBuilder builder = getUriBuilderFromPath(CommonConstants.PATH_LEVELS);
         criteria.ifPresent(o -> builder.addParameter("criteria", o));
         final HttpEntity<?> request = new HttpEntity<>(buildHeaders(context));
-        final ResponseEntity<List<String>> response = restTemplate.exchange(buildUriBuilder(builder),
-                HttpMethod.GET, request, getStringListClass());
+        final ResponseEntity<List<String>> response = restTemplate.exchange(
+            buildUriBuilder(builder),
+            HttpMethod.GET,
+            request,
+            getStringListClass()
+        );
         checkResponse(response);
         return response.getBody();
     }
@@ -110,13 +118,11 @@ public class GroupInternalRestClient extends BasePaginatingAndSortingRestClient<
 
     @Override
     protected ParameterizedTypeReference<List<GroupDto>> getDtoListClass() {
-        return new ParameterizedTypeReference<List<GroupDto>>() {
-        };
+        return new ParameterizedTypeReference<List<GroupDto>>() {};
     }
 
     @Override
     protected ParameterizedTypeReference<PaginatedValuesDto<GroupDto>> getDtoPaginatedClass() {
-        return new ParameterizedTypeReference<PaginatedValuesDto<GroupDto>>() {
-        };
+        return new ParameterizedTypeReference<PaginatedValuesDto<GroupDto>>() {};
     }
 }

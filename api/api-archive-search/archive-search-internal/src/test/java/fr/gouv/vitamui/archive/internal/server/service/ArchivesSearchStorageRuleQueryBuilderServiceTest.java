@@ -52,16 +52,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ExtendWith(SpringExtension.class)
 class ArchivesSearchStorageRuleQueryBuilderServiceTest {
 
-    public static String SEARCH_QUERY_WITH_RULE_IDENTIFIER =
-        "storage/expected-search-query-with-rule-identifier.txt";
+    public static String SEARCH_QUERY_WITH_RULE_IDENTIFIER = "storage/expected-search-query-with-rule-identifier.txt";
     public static String SEARCH_QUERY_WITH_RULE_IDENTIFIER_AND_RULE_START_DATE =
         "storage/expected-search-query-with-rule-identifier-and-rule-startDate.txt";
 
     public static String SEARCH_QUERY_WITH_RULES_IDENTIFIERS =
         "storage/expected-search-query-with-rules-identifiers.txt";
 
-    private static final VitamUILogger LOGGER =
-        VitamUILoggerFactory.getInstance(ArchivesSearchStorageRuleQueryBuilderServiceTest.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
+        ArchivesSearchStorageRuleQueryBuilderServiceTest.class
+    );
 
     @BeforeEach
     public void setUp() {
@@ -69,21 +69,18 @@ class ArchivesSearchStorageRuleQueryBuilderServiceTest {
     }
 
     @Test
-    void testFillQueryFromCriteriaListRuleIdentifierIsPresentThenReturnTheExactQuery()
-        throws Exception {
+    void testFillQueryFromCriteriaListRuleIdentifierIsPresentThenReturnTheExactQuery() throws Exception {
         //Given
         List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
         SearchCriteriaEltDto searchCriteriaEltDto = new SearchCriteriaEltDto();
         searchCriteriaEltDto.setCriteria(ArchiveSearchConsts.MANAGEMENT_RULE_IDENTIFIER_CRITERIA);
         searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.STORAGE_RULE);
-        searchCriteriaEltDto.setValues(
-            List.of(new CriteriaValue("StorageRuleIdentifier")));
+        searchCriteriaEltDto.setValues(List.of(new CriteriaValue("StorageRuleIdentifier")));
         criteriaList.add(searchCriteriaEltDto);
 
         //When
         BooleanQuery query = and();
         fillQueryFromMgtRulesCriteriaList(query, criteriaList);
-
 
         //then
         assertThat(query.getQueries()).isNotEmpty();
@@ -91,7 +88,6 @@ class ArchivesSearchStorageRuleQueryBuilderServiceTest {
         String queryStr = query.getQueries().toString();
         String queryFileStr = FileReader.loadFileContent(SEARCH_QUERY_WITH_RULE_IDENTIFIER);
         assertThat(queryStr.trim()).isEqualTo(queryFileStr.trim());
-
     }
 
     @Test
@@ -102,8 +98,7 @@ class ArchivesSearchStorageRuleQueryBuilderServiceTest {
         SearchCriteriaEltDto searchCriteriaEltDto = new SearchCriteriaEltDto();
         searchCriteriaEltDto.setCriteria(ArchiveSearchConsts.MANAGEMENT_RULE_IDENTIFIER_CRITERIA);
         searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.STORAGE_RULE);
-        searchCriteriaEltDto.setValues(
-            List.of(new CriteriaValue("StorageRuleIdentifier")));
+        searchCriteriaEltDto.setValues(List.of(new CriteriaValue("StorageRuleIdentifier")));
         criteriaList.add(searchCriteriaEltDto);
 
         SearchCriteriaEltDto searchCriteriaWithDateEltDto = new SearchCriteriaEltDto();
@@ -118,26 +113,24 @@ class ArchivesSearchStorageRuleQueryBuilderServiceTest {
         BooleanQuery query = and();
         fillQueryFromMgtRulesCriteriaList(query, criteriaList);
 
-
         //then
         assertThat(query.getQueries()).isNotEmpty();
         assertThat(query.getQueries()).hasSize(2);
         String queryStr = query.getQueries().toString();
         String queryFileStr = FileReader.loadFileContent(SEARCH_QUERY_WITH_RULE_IDENTIFIER_AND_RULE_START_DATE);
         assertThat(queryStr.trim()).isEqualTo(queryFileStr.trim());
-
     }
 
     @Test
-    void testFillQueryFromCriteriaListOfRulesIdentifiersArePresentThenReturnTheExactQuery()
-        throws Exception {
+    void testFillQueryFromCriteriaListOfRulesIdentifiersArePresentThenReturnTheExactQuery() throws Exception {
         //Given
         List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
         SearchCriteriaEltDto searchCriteriaEltDto = new SearchCriteriaEltDto();
         searchCriteriaEltDto.setCriteria(ArchiveSearchConsts.MANAGEMENT_RULE_IDENTIFIER_CRITERIA);
         searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.STORAGE_RULE);
         searchCriteriaEltDto.setValues(
-            List.of(new CriteriaValue("StorageRuleFirstIdentifier"), new CriteriaValue("StorageRuleSecondIdentifier")));
+            List.of(new CriteriaValue("StorageRuleFirstIdentifier"), new CriteriaValue("StorageRuleSecondIdentifier"))
+        );
 
         criteriaList.add(searchCriteriaEltDto);
 
@@ -145,13 +138,11 @@ class ArchivesSearchStorageRuleQueryBuilderServiceTest {
         BooleanQuery query = and();
         fillQueryFromMgtRulesCriteriaList(query, criteriaList);
 
-
         //then
         assertThat(query.getQueries()).isNotEmpty();
         assertThat(query.getQueries()).hasSize(1);
         String queryStr = query.getQueries().toString();
         String queryFileStr = FileReader.loadFileContent(SEARCH_QUERY_WITH_RULES_IDENTIFIERS);
         assertThat(queryStr.trim()).isEqualTo(queryFileStr.trim());
-
     }
 }

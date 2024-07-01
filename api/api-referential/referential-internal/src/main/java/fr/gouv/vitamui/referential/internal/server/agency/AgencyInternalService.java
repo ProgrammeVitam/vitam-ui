@@ -61,29 +61,16 @@ import fr.gouv.vitamui.commons.vitam.api.administration.AgencyService;
 import fr.gouv.vitamui.referential.common.dsl.VitamQueryHelper;
 import fr.gouv.vitamui.referential.common.dto.AgencyDto;
 import fr.gouv.vitamui.referential.common.dto.AgencyResponseDto;
-import fr.gouv.vitamui.referential.common.rest.RestApi;
 import fr.gouv.vitamui.referential.common.service.VitamAgencyService;
-
 import org.apache.commons.beanutils.BeanUtilsBean;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.InputStreamResource;
-import org.springframework.core.io.Resource;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
-import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
-
 
 @Service
 public class AgencyInternalService {
@@ -101,8 +88,13 @@ public class AgencyInternalService {
     private VitamAgencyService vitamAgencyService;
 
     @Autowired
-    public AgencyInternalService(AgencyService agencyService, ObjectMapper objectMapper, AgencyConverter converter,
-            LogbookService logbookService, VitamAgencyService vitamAgencyService) {
+    public AgencyInternalService(
+        AgencyService agencyService,
+        ObjectMapper objectMapper,
+        AgencyConverter converter,
+        LogbookService logbookService,
+        VitamAgencyService vitamAgencyService
+    ) {
         this.agencyService = agencyService;
         this.objectMapper = objectMapper;
         this.converter = converter;
@@ -112,10 +104,12 @@ public class AgencyInternalService {
 
     public AgencyDto getOne(VitamContext vitamContext, String identifier) {
         try {
-              RequestResponse<AgenciesModel> requestResponse = agencyService.findAgencyById(vitamContext, identifier);
-            final AgencyResponseDto accessContractResponseDto = objectMapper
-                    .treeToValue(requestResponse.toJsonNode(), AgencyResponseDto.class);
-            if(accessContractResponseDto.getResults().size() == 0){
+            RequestResponse<AgenciesModel> requestResponse = agencyService.findAgencyById(vitamContext, identifier);
+            final AgencyResponseDto accessContractResponseDto = objectMapper.treeToValue(
+                requestResponse.toJsonNode(),
+                AgencyResponseDto.class
+            );
+            if (accessContractResponseDto.getResults().size() == 0) {
                 return null;
             } else {
                 return converter.convertVitamToDto(accessContractResponseDto.getResults().get(0));
@@ -129,8 +123,10 @@ public class AgencyInternalService {
         final RequestResponse<AgenciesModel> requestResponse;
         try {
             requestResponse = agencyService.findAgencies(vitamContext, new Select().getFinalSelect());
-            final AgencyResponseDto agencyResponseDto = objectMapper
-                    .treeToValue(requestResponse.toJsonNode(), AgencyResponseDto.class);
+            final AgencyResponseDto agencyResponseDto = objectMapper.treeToValue(
+                requestResponse.toJsonNode(),
+                AgencyResponseDto.class
+            );
 
             return converter.convertVitamsToDtos(agencyResponseDto.getResults());
         } catch (VitamClientException | JsonProcessingException e) {
@@ -138,11 +134,16 @@ public class AgencyInternalService {
         }
     }
 
-    public PaginatedValuesDto<AgencyDto> getAllPaginated(final Integer pageNumber, final Integer size,
-            final Optional<String> orderBy, final Optional<DirectionDto> direction, VitamContext vitamContext,
-            Optional<String> criteria) {
-        if(vitamContext != null) {
-            LOGGER.info("All Agencies EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
+    public PaginatedValuesDto<AgencyDto> getAllPaginated(
+        final Integer pageNumber,
+        final Integer size,
+        final Optional<String> orderBy,
+        final Optional<DirectionDto> direction,
+        VitamContext vitamContext,
+        Optional<String> criteria
+    ) {
+        if (vitamContext != null) {
+            LOGGER.info("All Agencies EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
         }
 
         Map<String, Object> vitamCriteria = new HashMap<>();
@@ -156,7 +157,7 @@ public class AgencyInternalService {
             query = VitamQueryHelper.createQueryDSL(vitamCriteria, pageNumber, size, orderBy, direction);
         } catch (InvalidParseOperationException | InvalidCreateOperationException ioe) {
             throw new InternalServerException("Unable to find agencies with pagination", ioe);
-        } catch ( IOException e ) {
+        } catch (IOException e) {
             throw new InternalServerException("Can't parse criteria as Vitam query", e);
         }
 
@@ -172,8 +173,10 @@ public class AgencyInternalService {
         try {
             requestResponse = agencyService.findAgencies(vitamContext, query);
 
-            final AgencyResponseDto agencyResponseDto = objectMapper
-                    .treeToValue(requestResponse.toJsonNode(), AgencyResponseDto.class);
+            final AgencyResponseDto agencyResponseDto = objectMapper.treeToValue(
+                requestResponse.toJsonNode(),
+                AgencyResponseDto.class
+            );
 
             return agencyResponseDto;
         } catch (VitamClientException | JsonProcessingException e) {
@@ -183,56 +186,73 @@ public class AgencyInternalService {
 
     public Boolean check(VitamContext vitamContext, AgencyDto agencyDto) {
         try {
-
-            Integer agencyCheckedTenant = vitamAgencyService.checkAbilityToCreateAgencyInVitam(converter.convertDtosToVitams(Arrays.asList(agencyDto)), vitamContext.getApplicationSessionId());
+            Integer agencyCheckedTenant = vitamAgencyService.checkAbilityToCreateAgencyInVitam(
+                converter.convertDtosToVitams(Arrays.asList(agencyDto)),
+                vitamContext.getApplicationSessionId()
+            );
             return !vitamContext.getTenantId().equals(agencyCheckedTenant);
         } catch (ConflictException e) {
             return true;
-        }catch (VitamUIException e) {
+        } catch (VitamUIException e) {
             throw new InternalServerException("Unable to check agency", e);
         }
     }
 
     public AgencyDto create(VitamContext vitamContext, AgencyDto accessContractDto) {
         try {
-            RequestResponse<?> requestResponse = vitamAgencyService.create(vitamContext, converter.convertDtoToVitam(accessContractDto));
-            final AgencyModelDto accessContractVitamDto = objectMapper
-                    .treeToValue(requestResponse.toJsonNode(), AgencyModelDto.class);
+            RequestResponse<?> requestResponse = vitamAgencyService.create(
+                vitamContext,
+                converter.convertDtoToVitam(accessContractDto)
+            );
+            final AgencyModelDto accessContractVitamDto = objectMapper.treeToValue(
+                requestResponse.toJsonNode(),
+                AgencyModelDto.class
+            );
             return converter.convertVitamToDto(accessContractVitamDto);
-        } catch (InvalidParseOperationException | AccessExternalClientException | IOException | VitamClientException e) {
+        } catch (
+            InvalidParseOperationException | AccessExternalClientException | IOException | VitamClientException e
+        ) {
             throw new InternalServerException("Unable to create agency", e);
         }
     }
 
-    public AgencyDto patch(VitamContext vitamContext,final Map<String, Object> partialDto){
+    public AgencyDto patch(VitamContext vitamContext, final Map<String, Object> partialDto) {
         final AgencyDto accessContractDto = this.getOne(vitamContext, (String) partialDto.get("identifier"));
 
-        partialDto.forEach((key,value) ->
-        {
+        partialDto.forEach((key, value) -> {
             if (!"id".equals(key)) {
                 try {
                     BeanUtilsBean.getInstance().copyProperty(accessContractDto, key, value);
                 } catch (InvocationTargetException | IllegalAccessException e) {
-                   	LOGGER.warn(e.getMessage());
+                    LOGGER.warn(e.getMessage());
                 }
             }
         });
         AgencyModelDto accessContractVitam = converter.convertDtoToVitam(accessContractDto);
         try {
-            RequestResponse<?> requestResponse = vitamAgencyService.patchAgency(vitamContext, (String) partialDto.get("id"), accessContractVitam);
-            final AgencyModelDto accessContractVitamDto = objectMapper
-                    .treeToValue(requestResponse.toJsonNode(), AgencyModelDto.class);
+            RequestResponse<?> requestResponse = vitamAgencyService.patchAgency(
+                vitamContext,
+                (String) partialDto.get("id"),
+                accessContractVitam
+            );
+            final AgencyModelDto accessContractVitamDto = objectMapper.treeToValue(
+                requestResponse.toJsonNode(),
+                AgencyModelDto.class
+            );
             return converter.convertVitamToDto(accessContractVitamDto);
-        } catch (InvalidParseOperationException | AccessExternalClientException | VitamClientException | IOException e) {
+        } catch (
+            InvalidParseOperationException | AccessExternalClientException | VitamClientException | IOException e
+        ) {
             throw new InternalServerException("Unable to patch agency", e);
         }
     }
 
     public boolean delete(VitamContext context, String id) {
         try {
-            
             return vitamAgencyService.deleteAgency(context, id);
-        } catch (InvalidParseOperationException | AccessExternalClientException | VitamClientException | IOException e) {
+        } catch (
+            InvalidParseOperationException | AccessExternalClientException | VitamClientException | IOException e
+        ) {
             throw new InternalServerException("Unable to delete agency", e);
         }
     }
@@ -247,19 +267,20 @@ public class AgencyInternalService {
 
     public JsonNode findHistoryByIdentifier(VitamContext vitamContext, final String id) throws VitamClientException {
         try {
-            return logbookService.selectOperations(VitamQueryHelper.buildOperationQuery(id),vitamContext).toJsonNode();
+            return logbookService.selectOperations(VitamQueryHelper.buildOperationQuery(id), vitamContext).toJsonNode();
         } catch (InvalidCreateOperationException e) {
-        	throw new InternalServerException("Unable to fetch history", e);
+            throw new InternalServerException("Unable to fetch history", e);
         }
     }
 
     public JsonNode importAgencies(VitamContext context, String fileName, MultipartFile file) {
         try {
             return vitamAgencyService.importAgencies(context, fileName, file).toJsonNode();
-        } catch (InvalidParseOperationException |AccessExternalClientException |VitamClientException | IOException e) {
+        } catch (
+            InvalidParseOperationException | AccessExternalClientException | VitamClientException | IOException e
+        ) {
             LOGGER.error("Unable to import agency file {}: {}", fileName, e.getMessage());
             throw new InternalServerException("Unable to import agency file " + fileName + " : ", e);
         }
     }
-
 }

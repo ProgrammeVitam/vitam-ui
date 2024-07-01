@@ -59,5 +59,4 @@ public class InvalidTypeException extends VitamUIException {
     public InvalidTypeException(final String message, final String key) {
         super(message, key);
     }
-
 }

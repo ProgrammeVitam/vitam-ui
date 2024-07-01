@@ -38,7 +38,6 @@ package fr.gouv.vitamui.ui.commons.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
-import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.domain.ExternalParamProfileDto;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
@@ -57,11 +56,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class ExternalParamProfileService extends AbstractPaginateService<ExternalParamProfileDto> {
 
-	private final ExternalParamProfileExternalRestClient client;
+    private final ExternalParamProfileExternalRestClient client;
     private final CommonService commonService;
 
-	@Autowired
-	public ExternalParamProfileService(final IamExternalRestClientFactory factory, final CommonService commonService) {
+    @Autowired
+    public ExternalParamProfileService(final IamExternalRestClientFactory factory, final CommonService commonService) {
         this.client = factory.getExternalParamProfileExternalRestClient();
         this.commonService = commonService;
     }
@@ -81,8 +80,7 @@ public class ExternalParamProfileService extends AbstractPaginateService<Externa
         final JsonNode body = client.findHistoryById(context, id);
         try {
             return JsonUtils.treeToValue(body, LogbookOperationsResponseDto.class, false);
-        }
-        catch (final JsonProcessingException e) {
+        } catch (final JsonProcessingException e) {
             throw new InternalServerException(VitamRestUtils.PARSING_ERROR_MSG, e);
         }
     }
@@ -96,5 +94,4 @@ public class ExternalParamProfileService extends AbstractPaginateService<Externa
     public ExternalParamProfileExternalRestClient getClient() {
         return client;
     }
-
 }

@@ -40,6 +40,4 @@ package fr.gouv.vitamui.commons.vitam.api.dto;
 
 import fr.gouv.vitamui.commons.api.domain.ManagementContractModelDto;
 
-public class ManagementContractResponseDto extends AbstractVitamUIResponseDto<ManagementContractModelDto> {
-
-}
+public class ManagementContractResponseDto extends AbstractVitamUIResponseDto<ManagementContractModelDto> {}

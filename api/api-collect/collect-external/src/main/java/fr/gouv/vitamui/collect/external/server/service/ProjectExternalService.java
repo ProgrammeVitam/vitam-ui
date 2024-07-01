@@ -26,7 +26,6 @@
  */
 package fr.gouv.vitamui.collect.external.server.service;
 
-import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitamui.collect.common.dto.CollectProjectDto;
 import fr.gouv.vitamui.collect.common.dto.CollectTransactionDto;
 import fr.gouv.vitamui.collect.internal.client.CollectInternalRestClient;
@@ -58,9 +57,11 @@ public class ProjectExternalService extends AbstractResourceClientService<Collec
     private final CollectStreamingInternalRestClient collectStreamingInternalRestClient;
 
     @Autowired
-    public ProjectExternalService(CollectInternalRestClient collectInternalRestClient,
+    public ProjectExternalService(
+        CollectInternalRestClient collectInternalRestClient,
         CollectStreamingInternalRestClient collectStreamingInternalRestClient,
-        ExternalSecurityService externalSecurityService) {
+        ExternalSecurityService externalSecurityService
+    ) {
         super(externalSecurityService);
         this.collectInternalRestClient = collectInternalRestClient;
         this.collectStreamingInternalRestClient = collectStreamingInternalRestClient;
@@ -72,8 +73,13 @@ public class ProjectExternalService extends AbstractResourceClientService<Collec
     }
 
     @Override
-    public PaginatedValuesDto<CollectProjectDto> getAllPaginated(final Integer page, final Integer size,
-        final Optional<String> criteria, final Optional<String> orderBy, final Optional<DirectionDto> direction) {
+    public PaginatedValuesDto<CollectProjectDto> getAllPaginated(
+        final Integer page,
+        final Integer size,
+        final Optional<String> criteria,
+        final Optional<String> orderBy,
+        final Optional<DirectionDto> direction
+    ) {
         ParameterChecker.checkPagination(size, page);
         return getClient().getAllPaginated(getInternalHttpContext(), page, size, criteria, orderBy, direction);
     }
@@ -82,13 +88,24 @@ public class ProjectExternalService extends AbstractResourceClientService<Collec
         return collectInternalRestClient.create(getInternalHttpContext(), collectProjectDto);
     }
 
-    public CollectTransactionDto createTransactionForProject(CollectTransactionDto collectTransactionDto, String projectId) {
+    public CollectTransactionDto createTransactionForProject(
+        CollectTransactionDto collectTransactionDto,
+        String projectId
+    ) {
         return collectInternalRestClient.createTransaction(getInternalHttpContext(), collectTransactionDto, projectId);
     }
 
-    public ResponseEntity<Void> streamingUpload(InputStream inputStream, String transactionId, String originalFileName) {
-        return collectStreamingInternalRestClient
-            .streamingUpload(getInternalHttpContext(), inputStream, transactionId, originalFileName);
+    public ResponseEntity<Void> streamingUpload(
+        InputStream inputStream,
+        String transactionId,
+        String originalFileName
+    ) {
+        return collectStreamingInternalRestClient.streamingUpload(
+            getInternalHttpContext(),
+            inputStream,
+            transactionId,
+            originalFileName
+        );
     }
 
     public CollectProjectDto updateProject(CollectProjectDto collectProjectDto) {
@@ -103,17 +120,32 @@ public class ProjectExternalService extends AbstractResourceClientService<Collec
         collectInternalRestClient.deleteProject(getInternalHttpContext(), projectId);
     }
 
-    public PaginatedValuesDto<CollectTransactionDto> getTransactionsByProjectPaginated(final Integer page,
-        final Integer size, final Optional<String> criteria, final Optional<String> orderBy,
-        final Optional<DirectionDto> direction, String projectId) {
+    public PaginatedValuesDto<CollectTransactionDto> getTransactionsByProjectPaginated(
+        final Integer page,
+        final Integer size,
+        final Optional<String> criteria,
+        final Optional<String> orderBy,
+        final Optional<DirectionDto> direction,
+        String projectId
+    ) {
         ParameterChecker.checkPagination(size, page);
-        final PaginatedValuesDto<CollectTransactionDto> result =
-            getClient().getTransactionsByProjectPaginated(getInternalHttpContext(), page, size,
-                checkAuthorization(criteria), orderBy, direction, projectId);
-        return new PaginatedValuesDto<>(result.getValues(), result.getPageNum(), result.getPageSize(),
-            result.isHasMore());
+        final PaginatedValuesDto<CollectTransactionDto> result = getClient()
+            .getTransactionsByProjectPaginated(
+                getInternalHttpContext(),
+                page,
+                size,
+                checkAuthorization(criteria),
+                orderBy,
+                direction,
+                projectId
+            );
+        return new PaginatedValuesDto<>(
+            result.getValues(),
+            result.getPageNum(),
+            result.getPageSize(),
+            result.isHasMore()
+        );
     }
-
 
     public CollectTransactionDto getLastTransactionForProjectId(String projectId) {
         return collectInternalRestClient.getLastTransactionForProjectId(getInternalHttpContext(), projectId);

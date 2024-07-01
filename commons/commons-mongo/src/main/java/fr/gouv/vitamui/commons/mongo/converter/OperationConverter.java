@@ -51,7 +51,6 @@ public class OperationConverter implements Converter<OperationDto, Operation> {
 
     @Override
     public Operation convertDtoToEntity(OperationDto dto) {
-
         final Operation operation = new Operation();
         VitamUIUtils.copyProperties(dto, operation);
 
@@ -60,11 +59,9 @@ public class OperationConverter implements Converter<OperationDto, Operation> {
 
     @Override
     public OperationDto convertEntityToDto(Operation entity) {
-
         final OperationDto operation = new OperationDto();
         VitamUIUtils.copyProperties(entity, operation);
 
         return operation;
     }
-
 }

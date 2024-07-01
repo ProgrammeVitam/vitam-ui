@@ -27,7 +27,6 @@
  *
  */
 
-
 package fr.gouv.vitamui.referential.external.server.rest;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -36,13 +35,13 @@ import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
+import fr.gouv.vitamui.commons.api.domain.ManagementContractDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.util.RestUtils;
-import fr.gouv.vitamui.commons.api.domain.ManagementContractDto;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
 import fr.gouv.vitamui.referential.external.server.service.ManagementContractExternalService;
 import lombok.Getter;
@@ -75,7 +74,9 @@ import java.util.Optional;
 @Setter
 public class ManagementContractExternalController {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ManagementContractExternalController.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
+        ManagementContractExternalController.class
+    );
 
     private static final String MANDATORY_IDENTIFIER = "The Identifier is a mandatory parameter: ";
 
@@ -86,7 +87,7 @@ public class ManagementContractExternalController {
         this.managementContractExternalService = managementContractExternalService;
     }
 
-    @GetMapping()
+    @GetMapping
     @Secured(ServicesData.ROLE_GET_MANAGEMENT_CONTRACT)
     public Collection<ManagementContractDto> getAll(final Optional<String> criteria) {
         SanityChecker.sanitizeCriteria(criteria);
@@ -96,15 +97,24 @@ public class ManagementContractExternalController {
 
     @GetMapping(params = { "page", "size" })
     @Secured(ServicesData.ROLE_GET_MANAGEMENT_CONTRACT)
-    public PaginatedValuesDto<ManagementContractDto> getAllPaginated(@RequestParam final Integer page, @RequestParam final Integer size,
-        @RequestParam(required = false) final Optional<String> criteria, @RequestParam(required = false) final Optional<String> orderBy,
-        @RequestParam(required = false) final Optional<DirectionDto> direction) throws InvalidParseOperationException,
-        PreconditionFailedException {
-        if(orderBy.isPresent()) {
+    public PaginatedValuesDto<ManagementContractDto> getAllPaginated(
+        @RequestParam final Integer page,
+        @RequestParam final Integer size,
+        @RequestParam(required = false) final Optional<String> criteria,
+        @RequestParam(required = false) final Optional<String> orderBy,
+        @RequestParam(required = false) final Optional<DirectionDto> direction
+    ) throws InvalidParseOperationException, PreconditionFailedException {
+        if (orderBy.isPresent()) {
             SanityChecker.checkSecureParameter(orderBy.get());
         }
         SanityChecker.sanitizeCriteria(criteria);
-        LOGGER.debug("getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, orderBy, direction);
+        LOGGER.debug(
+            "getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}",
+            page,
+            size,
+            orderBy,
+            direction
+        );
         return managementContractExternalService.getAllPaginated(page, size, criteria, orderBy, direction);
     }
 
@@ -120,9 +130,10 @@ public class ManagementContractExternalController {
 
     @PostMapping(CommonConstants.PATH_CHECK)
     @Secured({ ServicesData.ROLE_GET_MANAGEMENT_CONTRACT })
-    public ResponseEntity<Void> check(@RequestBody ManagementContractDto managementContractDto,
-        @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant)
-        throws InvalidParseOperationException {
+    public ResponseEntity<Void> check(
+        @RequestBody ManagementContractDto managementContractDto,
+        @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant
+    ) throws InvalidParseOperationException {
         SanityChecker.sanitizeCriteria(managementContractDto);
         LOGGER.debug("check exist managementContract = {}", managementContractDto);
         final boolean exist = managementContractExternalService.check(managementContractDto);
@@ -141,21 +152,26 @@ public class ManagementContractExternalController {
 
     @PatchMapping(CommonConstants.PATH_ID)
     @Secured(ServicesData.ROLE_UPDATE_MANAGEMENT_CONTRACT)
-    public ManagementContractDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto)
-        throws InvalidParseOperationException, PreconditionFailedException {
+    public ManagementContractDto patch(
+        final @PathVariable("id") String id,
+        @RequestBody final Map<String, Object> partialDto
+    ) throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
         SanityChecker.checkSecureParameter(id);
         SanityChecker.sanitizeCriteria(partialDto);
-        Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "The DTO identifier must match the path identifier for update.");
+        Assert.isTrue(
+            StringUtils.equals(id, (String) partialDto.get("id")),
+            "The DTO identifier must match the path identifier for update."
+        );
         LOGGER.debug("Patch {} with {}", id, partialDto);
         return managementContractExternalService.patch(partialDto);
     }
 
     @GetMapping(CommonConstants.PATH_ID + "/history")
     @Secured(ServicesData.ROLE_GET_MANAGEMENT_CONTRACT)
-    public JsonNode findHistoryById(final @PathVariable("id") String id) throws InvalidParseOperationException,
-        PreconditionFailedException {
-        ParameterChecker.checkParameter(MANDATORY_IDENTIFIER , id);
+    public JsonNode findHistoryById(final @PathVariable("id") String id)
+        throws InvalidParseOperationException, PreconditionFailedException {
+        ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("get logbook for ManagementContract with id :{}", id);
         return managementContractExternalService.findHistoryById(id);

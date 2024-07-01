@@ -129,8 +129,15 @@ public class PersonRepositoryTests {
     @Test
     public void testFindByEmail() {
         // save a person
-        final Person p = repository
-                .save(new Person("Moctar", "Diagne", 20, Arrays.asList("moctar@vitamui.com", "makhtar@vitamui.com"), OffsetDateTime.now()));
+        final Person p = repository.save(
+            new Person(
+                "Moctar",
+                "Diagne",
+                20,
+                Arrays.asList("moctar@vitamui.com", "makhtar@vitamui.com"),
+                OffsetDateTime.now()
+            )
+        );
 
         boolean exists = repository.exists(Criteria.where("emails").in("moctar@vitamui.com"));
         assertTrue("Entity should be find by emails criteria", exists);
@@ -191,7 +198,10 @@ public class PersonRepositoryTests {
         repository.save(person);
         final Person matcher = new Person();
         matcher.setLastName("Diagne");
-        final Example<Person> example = Example.of(matcher, ExampleMatcher.matching().withIgnoreNullValues().withIgnorePaths("age"));
+        final Example<Person> example = Example.of(
+            matcher,
+            ExampleMatcher.matching().withIgnoreNullValues().withIgnorePaths("age")
+        );
         final boolean exist = repository.exists(example);
         assertEquals("Invalid matcher.", true, exist);
     }
@@ -216,7 +226,9 @@ public class PersonRepositoryTests {
         final List<CriteriaDefinition> criteria = new ArrayList<>();
         criteria.add(Criteria.where("age").gte(20));
         criteria.add(Criteria.where("age").lte(22));
-        final boolean exist = repository.exists(MongoUtils.buildAndOperator(criteria.toArray(new Criteria[criteria.size()])));
+        final boolean exist = repository.exists(
+            MongoUtils.buildAndOperator(criteria.toArray(new Criteria[criteria.size()]))
+        );
         assertEquals("Invalid matcher.", true, exist);
     }
 
@@ -246,8 +258,13 @@ public class PersonRepositoryTests {
         // save a couple of persons
         repository.save(new Person("Moctar", "Diagne", 20, new ArrayList<>(), OffsetDateTime.now()));
         repository.save(new Person("Makhtar", "D", 20, new ArrayList<>(), OffsetDateTime.now()));
-        final PaginatedValuesDto<Person> persons = repository.getPaginatedValues(1, 1, Optional.empty(), Optional.of("firstName"),
-                Optional.of(DirectionDto.ASC));
+        final PaginatedValuesDto<Person> persons = repository.getPaginatedValues(
+            1,
+            1,
+            Optional.empty(),
+            Optional.of("firstName"),
+            Optional.of(DirectionDto.ASC)
+        );
         assertEquals("Incorrect page num.", 1, persons.getPageNum());
         assertEquals("Incorrect page size.", 1, persons.getPageSize());
         assertNotNull("Incorrect values.", persons.getValues());
@@ -262,8 +279,13 @@ public class PersonRepositoryTests {
         repository.save(moctar);
         repository.save(new Person("Makhtar", "D", 21, new ArrayList<>(), OffsetDateTime.now()));
         final Query query = Query.query(Criteria.where("firstName").is("Moctar"));
-        final PaginatedValuesDto<Person> persons = repository.getPaginatedValues(0, 1, Optional.of(query), Optional.of("firstName"),
-                Optional.of(DirectionDto.ASC));
+        final PaginatedValuesDto<Person> persons = repository.getPaginatedValues(
+            0,
+            1,
+            Optional.of(query),
+            Optional.of("firstName"),
+            Optional.of(DirectionDto.ASC)
+        );
         assertEquals("Incorrect page num.", 0, persons.getPageNum());
         assertEquals("Incorrect page size.", 1, persons.getPageSize());
         assertNotNull("Incorrect values.", persons.getValues());
@@ -279,8 +301,13 @@ public class PersonRepositoryTests {
         repository.save(new Person("Makhtar", "D", 21, new ArrayList<>(), OffsetDateTime.now()));
 
         final Query query = Query.query(Criteria.where("age").is(19));
-        final PaginatedValuesDto<Person> persons = repository.getPaginatedValues(0, 1, Optional.of(query), Optional.of("firstName"),
-                Optional.of(DirectionDto.ASC));
+        final PaginatedValuesDto<Person> persons = repository.getPaginatedValues(
+            0,
+            1,
+            Optional.of(query),
+            Optional.of("firstName"),
+            Optional.of(DirectionDto.ASC)
+        );
         assertEquals("Incorrect page num.", 0, persons.getPageNum());
         assertEquals("Incorrect page size.", 1, persons.getPageSize());
         assertNotNull("Incorrect values.", persons.getValues());
@@ -295,8 +322,13 @@ public class PersonRepositoryTests {
         repository.save(new Person("Makhtar", "D", 21, new ArrayList<>(), OffsetDateTime.now()));
         final Query query = Query.query(Criteria.where("age").gt(20));
 
-        final PaginatedValuesDto<Person> persons = repository.getPaginatedValues(0, 1, Optional.of(query), Optional.of("firstName"),
-                Optional.of(DirectionDto.ASC));
+        final PaginatedValuesDto<Person> persons = repository.getPaginatedValues(
+            0,
+            1,
+            Optional.of(query),
+            Optional.of("firstName"),
+            Optional.of(DirectionDto.ASC)
+        );
         assertEquals("Incorrect page num.", 0, persons.getPageNum());
         assertEquals("Incorrect page size.", 1, persons.getPageSize());
         assertNotNull("Incorrect values.", persons.getValues());
@@ -312,8 +344,13 @@ public class PersonRepositoryTests {
         repository.save(p);
         repository.save(new Person("Makhtar", "D", 21, new ArrayList<>(), OffsetDateTime.now()));
         final Query query = Query.query(Criteria.where("enabled").is(true));
-        final PaginatedValuesDto<Person> persons = repository.getPaginatedValues(0, 1, Optional.of(query), Optional.of("firstName"),
-                Optional.of(DirectionDto.ASC));
+        final PaginatedValuesDto<Person> persons = repository.getPaginatedValues(
+            0,
+            1,
+            Optional.of(query),
+            Optional.of("firstName"),
+            Optional.of(DirectionDto.ASC)
+        );
         assertEquals("Incorrect page num.", 0, persons.getPageNum());
         assertEquals("Incorrect page size.", 1, persons.getPageSize());
         assertNotNull("Incorrect values.", persons.getValues());
@@ -327,9 +364,16 @@ public class PersonRepositoryTests {
         final Person moctar = new Person("Moctar", "Diagne", 19, new ArrayList<>(), OffsetDateTime.now());
         repository.save(moctar);
         repository.save(new Person("Makhtar", "D", 21, new ArrayList<>(), OffsetDateTime.now()));
-        final Query query = Query.query(Criteria.where("firstName").is("Moctar").and("lastName").is("Diagne").and("age").gt(18));
-        final PaginatedValuesDto<Person> persons = repository.getPaginatedValues(0, 1, Optional.of(query), Optional.of("firstName"),
-                Optional.of(DirectionDto.ASC));
+        final Query query = Query.query(
+            Criteria.where("firstName").is("Moctar").and("lastName").is("Diagne").and("age").gt(18)
+        );
+        final PaginatedValuesDto<Person> persons = repository.getPaginatedValues(
+            0,
+            1,
+            Optional.of(query),
+            Optional.of("firstName"),
+            Optional.of(DirectionDto.ASC)
+        );
         assertEquals("Incorrect page num.", 0, persons.getPageNum());
         assertEquals("Incorrect page size.", 1, persons.getPageSize());
         assertNotNull("Incorrect values.", persons.getValues());
@@ -348,13 +392,21 @@ public class PersonRepositoryTests {
         repository.save(new Person("Pierre", "Nole", 22, new ArrayList<>(), OffsetDateTime.now()));
         final Query query = Query.query(Criteria.where("firstName").in("Moctar", "Makhtar"));
         query.addCriteria(Criteria.where("age").in(19, 21));
-        final PaginatedValuesDto<Person> persons = repository.getPaginatedValues(0, 2, Optional.of(query), Optional.of("firstName"),
-                Optional.of(DirectionDto.ASC));
+        final PaginatedValuesDto<Person> persons = repository.getPaginatedValues(
+            0,
+            2,
+            Optional.of(query),
+            Optional.of("firstName"),
+            Optional.of(DirectionDto.ASC)
+        );
         assertEquals("Incorrect page num.", 0, persons.getPageNum());
         assertEquals("Incorrect page size.", 2, persons.getPageSize());
         assertNotNull("Incorrect values.", persons.getValues());
         assertEquals("Incorrect values size.", 2, persons.getValues().size());
-        assertTrue("Incorrect person find", persons.getValues().contains(moctar) && persons.getValues().contains(makhtar));
+        assertTrue(
+            "Incorrect person find",
+            persons.getValues().contains(moctar) && persons.getValues().contains(makhtar)
+        );
         assertThat("We have more data in database.", persons.isHasMore(), is(false));
     }
 
@@ -363,7 +415,13 @@ public class PersonRepositoryTests {
         // save a couple of persons
         repository.save(new Person("Moctar", "Diagne", 20, new ArrayList<>(), OffsetDateTime.now()));
         repository.save(new Person("Makhtar", "D", 20, new ArrayList<>(), OffsetDateTime.now()));
-        final PaginatedValuesDto<Person> persons = repository.getPaginatedValues(1, 1, Optional.empty(), Optional.empty(), Optional.of(DirectionDto.ASC));
+        final PaginatedValuesDto<Person> persons = repository.getPaginatedValues(
+            1,
+            1,
+            Optional.empty(),
+            Optional.empty(),
+            Optional.of(DirectionDto.ASC)
+        );
         assertEquals("Incorrect page num.", 1, persons.getPageNum());
         assertEquals("Incorrect page size.", 1, persons.getPageSize());
         assertNotNull("Incorrect values.", persons.getValues());
@@ -376,7 +434,13 @@ public class PersonRepositoryTests {
         // save a couple of persons
         repository.save(new Person("Moctar", "Diagne", 20, new ArrayList<>(), OffsetDateTime.now()));
         repository.save(new Person("Makhtar", "D", 20, new ArrayList<>(), OffsetDateTime.now()));
-        final PaginatedValuesDto<Person> persons = repository.getPaginatedValues(1, 1, Optional.empty(), Optional.empty(), Optional.of(DirectionDto.ASC));
+        final PaginatedValuesDto<Person> persons = repository.getPaginatedValues(
+            1,
+            1,
+            Optional.empty(),
+            Optional.empty(),
+            Optional.of(DirectionDto.ASC)
+        );
         assertEquals("Incorrect page num.", 1, persons.getPageNum());
         assertEquals("Incorrect page size.", 1, persons.getPageSize());
         assertNotNull("Incorrect values.", persons.getValues());
@@ -389,7 +453,13 @@ public class PersonRepositoryTests {
         // save a couple of persons
         repository.save(new Person("Moctar", "Diagne", 20, new ArrayList<>(), OffsetDateTime.now()));
         repository.save(new Person("Makhtar", "D", 20, new ArrayList<>(), OffsetDateTime.now()));
-        final PaginatedValuesDto<Person> persons = repository.getPaginatedValues(1, 1, Optional.empty(), Optional.of("firstName"), Optional.empty());
+        final PaginatedValuesDto<Person> persons = repository.getPaginatedValues(
+            1,
+            1,
+            Optional.empty(),
+            Optional.of("firstName"),
+            Optional.empty()
+        );
         assertEquals("Incorrect page num.", 1, persons.getPageNum());
         assertEquals("Incorrect page size.", 1, persons.getPageSize());
         assertNotNull("Incorrect values.", persons.getValues());
@@ -402,7 +472,13 @@ public class PersonRepositoryTests {
         // save a couple of persons
         repository.save(new Person("Moctar", "Diagne", 20, new ArrayList<>(), OffsetDateTime.now()));
         repository.save(new Person("Makhtar", "D", 20, new ArrayList<>(), OffsetDateTime.now()));
-        final PaginatedValuesDto<Person> persons = repository.getPaginatedValues(1, 1, Optional.empty(), Optional.of("firstName"), Optional.empty());
+        final PaginatedValuesDto<Person> persons = repository.getPaginatedValues(
+            1,
+            1,
+            Optional.empty(),
+            Optional.of("firstName"),
+            Optional.empty()
+        );
         assertEquals("Incorrect page num.", 1, persons.getPageNum());
         assertEquals("Incorrect page size.", 1, persons.getPageSize());
         assertNotNull("Incorrect values.", persons.getValues());
@@ -414,9 +490,16 @@ public class PersonRepositoryTests {
     public void testBuildPaginatedValuesWithOrderBy() {
         // save a couple of persons
         final Person cakhtar = repository.save(new Person("cakhtar", "D", 21, new ArrayList<>(), OffsetDateTime.now()));
-        final Person abakhtar = repository.save(new Person("abakhtar", "D", 21, new ArrayList<>(), OffsetDateTime.now()));
-        final PaginatedValuesDto<Person> persons = repository.getPaginatedValues(0, 4, Optional.empty(), Optional.of("firstName"),
-                Optional.of(DirectionDto.ASC));
+        final Person abakhtar = repository.save(
+            new Person("abakhtar", "D", 21, new ArrayList<>(), OffsetDateTime.now())
+        );
+        final PaginatedValuesDto<Person> persons = repository.getPaginatedValues(
+            0,
+            4,
+            Optional.empty(),
+            Optional.of("firstName"),
+            Optional.of(DirectionDto.ASC)
+        );
         assertEquals("Incorrect page num.", 0, persons.getPageNum());
         assertEquals("Incorrect page size.", 4, persons.getPageSize());
         assertNotNull("Incorrect values.", persons.getValues());
@@ -440,8 +523,13 @@ public class PersonRepositoryTests {
         repository.save(new Person("Makhtar", "D", 21, new ArrayList<>(), OffsetDateTime.now()));
         final Optional<String> criteria = Optional.of("firstName>Moc");
         final Query query = Query.query(MongoUtils.buildCriteriaStartWith("firstName", "Moc", false));
-        final PaginatedValuesDto<Person> persons = repository.getPaginatedValues(0, 1, Optional.of(query), Optional.of("firstName"),
-                Optional.of(DirectionDto.ASC));
+        final PaginatedValuesDto<Person> persons = repository.getPaginatedValues(
+            0,
+            1,
+            Optional.of(query),
+            Optional.of("firstName"),
+            Optional.of(DirectionDto.ASC)
+        );
         assertEquals("Incorrect page num.", 0, persons.getPageNum());
         assertEquals("Incorrect page size.", 1, persons.getPageSize());
         assertNotNull("Incorrect values.", persons.getValues());
@@ -454,25 +542,33 @@ public class PersonRepositoryTests {
     public void testAndOperator() {
         repository.save(new Person("Moctar", "Diagne", 19, new ArrayList<>(), OffsetDateTime.now()));
         repository.save(new Person("Julien", "Cornille", 21, new ArrayList<>(), OffsetDateTime.now()));
-        final Criteria criteria = new Criteria().andOperator(Criteria.where("age").is(19), Criteria.where("firstName").is("Moctar"),
-                new Criteria().andOperator(Criteria.where("firstName").regex("^" + Pattern.quote("Moc") + ".*$")));
+        final Criteria criteria = new Criteria()
+            .andOperator(
+                Criteria.where("age").is(19),
+                Criteria.where("firstName").is("Moctar"),
+                new Criteria().andOperator(Criteria.where("firstName").regex("^" + Pattern.quote("Moc") + ".*$"))
+            );
 
         final Query query = Query.query(criteria);
         final List<Person> persons = repository.findAll(query);
         assertEquals("Incorrect values size.", 1, persons.size());
-
     }
 
     @Test
-    public void testOneDistinctField(){
+    public void testOneDistinctField() {
         repository.save(new Person("Makhtar", "D", 20, new ArrayList<>(), OffsetDateTime.now()));
         repository.save(new Person("Moctar", "Diagne", 19, new ArrayList<>(), OffsetDateTime.now()));
         repository.save(new Person("Julien", "Cornille", 19, new ArrayList<>(), OffsetDateTime.now()));
         List<String> fields = Arrays.asList("firstName");
         final Criterion c = new Criterion("lastName", Arrays.asList("Diagne", "Cornille"), CriterionOperator.IN);
         final CriteriaDefinition criteria = MongoUtils.getCriteriaDefinitionFromEntityClass(c, Person.class);
-        final Map<String, Object> result = repository.aggregation( fields, Collections.singletonList(criteria),
-            AggregationRequestOperator.DISTINCT, Optional.of("firstName"), Optional.of(DirectionDto.ASC));
+        final Map<String, Object> result = repository.aggregation(
+            fields,
+            Collections.singletonList(criteria),
+            AggregationRequestOperator.DISTINCT,
+            Optional.of("firstName"),
+            Optional.of(DirectionDto.ASC)
+        );
         assertNotNull(result);
         assertEquals(result.size(), 1);
         assertTrue(result.keySet().containsAll(fields));
@@ -481,7 +577,7 @@ public class PersonRepositoryTests {
     }
 
     @Test
-    public void testMultipleDistinctFields(){
+    public void testMultipleDistinctFields() {
         repository.save(new Person("M", "D", 22, new ArrayList<>(), OffsetDateTime.now()));
         repository.save(new Person("Makhtar", "Diagne", 20, new ArrayList<>(), OffsetDateTime.now()));
         repository.save(new Person("Moctar", "Diagne", 19, new ArrayList<>(), OffsetDateTime.now()));
@@ -489,18 +585,23 @@ public class PersonRepositoryTests {
         List<String> fields = Arrays.asList("firstName", "lastName", "age");
         final Criterion c = new Criterion("lastName", Arrays.asList("Diagne", "Cornille"), CriterionOperator.IN);
         final CriteriaDefinition criteria = MongoUtils.getCriteriaDefinitionFromEntityClass(c, Person.class);
-        final Map<String, Object> result = repository.aggregation( fields, Collections.singletonList(criteria),
-            AggregationRequestOperator.DISTINCT, Optional.of("firstName"), Optional.of(DirectionDto.DESC));
+        final Map<String, Object> result = repository.aggregation(
+            fields,
+            Collections.singletonList(criteria),
+            AggregationRequestOperator.DISTINCT,
+            Optional.of("firstName"),
+            Optional.of(DirectionDto.DESC)
+        );
         assertNotNull(result);
         assertEquals(result.size(), 3);
         assertTrue(result.keySet().containsAll(fields));
-        assertTrue(((List) result.get("firstName")).containsAll(Arrays.asList("Makhtar","Moctar","Julien")));
-        assertTrue(((List) result.get("lastName")).containsAll(Arrays.asList("Diagne","Cornille")));
-        assertTrue(((List) result.get("age")).containsAll(Arrays.asList(19,20)));
+        assertTrue(((List) result.get("firstName")).containsAll(Arrays.asList("Makhtar", "Moctar", "Julien")));
+        assertTrue(((List) result.get("lastName")).containsAll(Arrays.asList("Diagne", "Cornille")));
+        assertTrue(((List) result.get("age")).containsAll(Arrays.asList(19, 20)));
     }
 
     @Test
-    public void testCount(){
+    public void testCount() {
         repository.save(new Person("M", "D", 22, new ArrayList<>(), OffsetDateTime.now()));
         repository.save(new Person("Makhtar", "Diagne", 19, new ArrayList<>(), OffsetDateTime.now()));
         repository.save(new Person("Moctar", "Diagne", 19, new ArrayList<>(), OffsetDateTime.now()));
@@ -508,8 +609,13 @@ public class PersonRepositoryTests {
         List<String> fields = Arrays.asList("firstName", "lastName", "age");
         final Criterion c = new Criterion("lastName", Arrays.asList("Diagne", "Cornille"), CriterionOperator.IN);
         final CriteriaDefinition criteria = MongoUtils.getCriteriaDefinitionFromEntityClass(c, Person.class);
-        final Map<String, Object> result = repository.aggregation( fields, Collections.singletonList(criteria),
-            AggregationRequestOperator.COUNT, Optional.of("firstName"), Optional.of(DirectionDto.ASC));
+        final Map<String, Object> result = repository.aggregation(
+            fields,
+            Collections.singletonList(criteria),
+            AggregationRequestOperator.COUNT,
+            Optional.of("firstName"),
+            Optional.of(DirectionDto.ASC)
+        );
         assertNotNull(result);
         assertEquals(result.size(), 3);
         assertTrue(result.keySet().containsAll(fields));
@@ -523,5 +629,4 @@ public class PersonRepositoryTests {
         it.forEach(i -> list.add(i));
         return list;
     }
-
 }

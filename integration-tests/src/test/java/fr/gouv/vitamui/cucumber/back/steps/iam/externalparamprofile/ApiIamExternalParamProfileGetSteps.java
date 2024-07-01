@@ -16,7 +16,6 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-
 public class ApiIamExternalParamProfileGetSteps extends CommonSteps {
 
     private List<ExternalParamProfileDto> externalParamProfileDtoList;
@@ -31,7 +30,8 @@ public class ApiIamExternalParamProfileGetSteps extends CommonSteps {
         profile.setId(null);
         profile.setTenantIdentifier(proofTenantIdentifier);
         testContext.savedProfileDto = profile;
-        testContext.profileDto = getProfileRestClient().create(getSystemTenantUserAdminContext(), testContext.savedProfileDto);
+        testContext.profileDto = getProfileRestClient()
+            .create(getSystemTenantUserAdminContext(), testContext.savedProfileDto);
     }
 
     @When("^un utilisateur crée un paramétrage externe")
@@ -42,7 +42,6 @@ public class ApiIamExternalParamProfileGetSteps extends CommonSteps {
         testContext.externalParametersDto = externalParameters;
     }
 
-
     @When("^un utilisateur avec le rôle ROLE_SEARCH_EXTERNAL_PARAM_PROFILE cherche un profile externe avec id")
     public void un_utilisateur_avec_le_rôle_ROLE_SEARCH_EXTERNAL_PARAM_PROFILE_récupère_les_résultas() {
         externalParamProfileDto = getExternalParamProfileExternalRestClient()
@@ -51,15 +50,25 @@ public class ApiIamExternalParamProfileGetSteps extends CommonSteps {
 
     @Then("^le serveur retourne le profil externe associé$")
     public void le_serveur_retourne_profil_externe_associé() {
-        assertThat(externalParamProfileDto.getExternalParamIdentifier()).isEqualTo(TestConstants.EXTERNAL_PARAM_IDENTIFEIR);
+        assertThat(externalParamProfileDto.getExternalParamIdentifier()).isEqualTo(
+            TestConstants.EXTERNAL_PARAM_IDENTIFEIR
+        );
     }
 
-    @When("^un utilisateur avec le rôle ROLE_SEARCH_EXTERNAL_PARAM_PROFILE récupère toutes les entrées des profils et du paramétrage externe par page associé à son profil en utilisant un certificat full access avec le rôle ROLE_SEARCH_EXTERNAL_PARAM_PROFILE$")
+    @When(
+        "^un utilisateur avec le rôle ROLE_SEARCH_EXTERNAL_PARAM_PROFILE récupère toutes les entrées des profils et du paramétrage externe par page associé à son profil en utilisant un certificat full access avec le rôle ROLE_SEARCH_EXTERNAL_PARAM_PROFILE$"
+    )
     public void un_utilisateur_avec_le_rôle_ROLE_SEARCH_EXTERNAL_PARAM_PROFILE_récupère_les_entrées_des_profils_et_du_paramétrage_externe_par_page_associé_à_son_profil_en_utilisant_un_certificat_full_access_avec_le_rôle_ROLE_SEARCH_EXTERNAL_PARAM_PROFILE() {
-        final PaginatedValuesDto<ExternalParamProfileDto>
-            allPaginated = getExternalParamProfileExternalRestClient().getAllPaginated(getSystemTenantUserAdminContext(), 0, 20, Optional
-                .empty(),
-            Optional.empty(), Optional.empty(), Optional.empty());
+        final PaginatedValuesDto<ExternalParamProfileDto> allPaginated = getExternalParamProfileExternalRestClient()
+            .getAllPaginated(
+                getSystemTenantUserAdminContext(),
+                0,
+                20,
+                Optional.empty(),
+                Optional.empty(),
+                Optional.empty(),
+                Optional.empty()
+            );
 
         externalParamProfileDtoList = new ArrayList<>(allPaginated.getValues());
     }

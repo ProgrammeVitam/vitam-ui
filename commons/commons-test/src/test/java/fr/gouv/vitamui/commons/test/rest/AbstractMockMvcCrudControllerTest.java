@@ -1,24 +1,22 @@
 package fr.gouv.vitamui.commons.test.rest;
 
-import static org.junit.Assert.fail;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-
+import fr.gouv.vitamui.commons.api.domain.Criterion;
+import fr.gouv.vitamui.commons.api.domain.CriterionOperator;
+import fr.gouv.vitamui.commons.api.domain.IdDto;
+import fr.gouv.vitamui.commons.api.domain.QueryDto;
+import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import fr.gouv.vitamui.commons.api.domain.QueryDto;
-import fr.gouv.vitamui.commons.api.domain.Criterion;
-import fr.gouv.vitamui.commons.api.domain.CriterionOperator;
-import fr.gouv.vitamui.commons.api.domain.IdDto;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+
+import static org.junit.Assert.fail;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public abstract class AbstractMockMvcCrudControllerTest<T extends IdDto> extends AbstractRestControllerMockMvcTest {
 
@@ -36,7 +34,6 @@ public abstract class AbstractMockMvcCrudControllerTest<T extends IdDto> extends
      */
     public ResultActions testCreateEntity(final ResultMatcher matcher) {
         return testCreateEntity(matcher, getHeaders());
-
     }
 
     /**
@@ -64,7 +61,7 @@ public abstract class AbstractMockMvcCrudControllerTest<T extends IdDto> extends
      * @return ResultActions
      */
     public ResultActions testGetAllEntity() {
-        return testGetAllEntity(Optional.empty(),getHeaders());
+        return testGetAllEntity(Optional.empty(), getHeaders());
     }
 
     /**
@@ -72,9 +69,8 @@ public abstract class AbstractMockMvcCrudControllerTest<T extends IdDto> extends
      * @return ResultActions
      */
     public ResultActions testGetAllEntity(final QueryDto criteria) {
-        return testGetAllEntity(Optional.ofNullable(criteria),getHeaders());
+        return testGetAllEntity(Optional.ofNullable(criteria), getHeaders());
     }
-
 
     /**
      * Method for test retrieve all entity with Criteria
@@ -83,7 +79,7 @@ public abstract class AbstractMockMvcCrudControllerTest<T extends IdDto> extends
     public ResultActions testGetAllEntityWithCriteria() {
         QueryDto criteria = new QueryDto();
         criteria.addCriterion(new Criterion("id", "id", CriterionOperator.EQUALS));
-        return testGetAllEntity(Optional.of(criteria),getHeaders());
+        return testGetAllEntity(Optional.of(criteria), getHeaders());
     }
 
     /**
@@ -119,9 +115,8 @@ public abstract class AbstractMockMvcCrudControllerTest<T extends IdDto> extends
     }
 
     public ResultActions testGetPaginatedEntities(final QueryDto criteria) {
-        return testGetPaginatedEntities(getHeaders(),criteria);
+        return testGetPaginatedEntities(getHeaders(), criteria);
     }
-
 
     /**
      * Method for test entity creation
@@ -141,13 +136,11 @@ public abstract class AbstractMockMvcCrudControllerTest<T extends IdDto> extends
         final UriComponentsBuilder builder = getUriBuilder();
         ResultActions result = null;
         try {
-            result = super.perform(builder, asJsonString(buildDto()), HttpMethod.POST , matcher, httpHeaders);
-        }
-        catch (final Exception e) {
+            result = super.perform(builder, asJsonString(buildDto()), HttpMethod.POST, matcher, httpHeaders);
+        } catch (final Exception e) {
             fail(e.getMessage());
         }
         return result;
-
     }
 
     public void testCreateEntityNotSupported() {
@@ -163,9 +156,14 @@ public abstract class AbstractMockMvcCrudControllerTest<T extends IdDto> extends
         preparedServices();
         final UriComponentsBuilder builder = getUriBuilder();
         try {
-            super.perform(builder, asJsonString(buildDto()), HttpMethod.POST , status().isMethodNotAllowed(), httpHeaders);
-        }
-        catch (final Exception e) {
+            super.perform(
+                builder,
+                asJsonString(buildDto()),
+                HttpMethod.POST,
+                status().isMethodNotAllowed(),
+                httpHeaders
+            );
+        } catch (final Exception e) {
             fail(e.getMessage());
         }
     }
@@ -185,10 +183,8 @@ public abstract class AbstractMockMvcCrudControllerTest<T extends IdDto> extends
 
         ResultActions result = null;
         try {
-            result = super.perform(builder, asJsonString(entity), HttpMethod.PUT , status().isOk(), httpHeaders);
-
-        }
-        catch (final Exception e) {
+            result = super.perform(builder, asJsonString(entity), HttpMethod.PUT, status().isOk(), httpHeaders);
+        } catch (final Exception e) {
             fail(e.getMessage());
         }
         return result;
@@ -204,10 +200,8 @@ public abstract class AbstractMockMvcCrudControllerTest<T extends IdDto> extends
         entity.setId(id);
 
         try {
-            super.perform(builder, asJsonString(entity), HttpMethod.PUT , status().isMethodNotAllowed(), httpHeaders);
-
-        }
-        catch (final Exception e) {
+            super.perform(builder, asJsonString(entity), HttpMethod.PUT, status().isMethodNotAllowed(), httpHeaders);
+        } catch (final Exception e) {
             fail(e.getMessage());
         }
     }
@@ -226,25 +220,22 @@ public abstract class AbstractMockMvcCrudControllerTest<T extends IdDto> extends
         entity.setId(id);
         ResultActions result = null;
         try {
-            result =  super.perform(builder, "", HttpMethod.GET , status().isOk(), httpHeaders);
-        }
-        catch (final Exception e) {
+            result = super.perform(builder, "", HttpMethod.GET, status().isOk(), httpHeaders);
+        } catch (final Exception e) {
             fail(e.getMessage());
         }
         return result;
     }
 
-
     private ResultActions testGetAllEntity(final Optional<QueryDto> criteria, final HttpHeaders httpHeaders) {
         getLog().debug("test get all entity class ={}", getDtoClass().getName());
         preparedServices();
         final UriComponentsBuilder builder = getUriBuilder();
-        criteria.ifPresent(c ->  builder.queryParam("criteria", c.toJson()));
+        criteria.ifPresent(c -> builder.queryParam("criteria", c.toJson()));
         ResultActions result = null;
         try {
-            result = super.perform(builder, "", HttpMethod.GET , status().isOk(), httpHeaders);
-        }
-        catch (final Exception e) {
+            result = super.perform(builder, "", HttpMethod.GET, status().isOk(), httpHeaders);
+        } catch (final Exception e) {
             fail(e.getMessage());
         }
         return result;
@@ -263,9 +254,14 @@ public abstract class AbstractMockMvcCrudControllerTest<T extends IdDto> extends
         builder.path("/" + id);
         updates.put("id", id);
         try {
-            super.perform(builder,asJsonString(updates), HttpMethod.PATCH , status().isInternalServerError(), httpHeaders);
-        }
-        catch (final Exception e) {
+            super.perform(
+                builder,
+                asJsonString(updates),
+                HttpMethod.PATCH,
+                status().isInternalServerError(),
+                httpHeaders
+            );
+        } catch (final Exception e) {
             fail(e.getMessage());
         }
     }
@@ -284,9 +280,8 @@ public abstract class AbstractMockMvcCrudControllerTest<T extends IdDto> extends
         updates.put("id", id);
         ResultActions result = null;
         try {
-            result = super.perform(builder,asJsonString(updates), HttpMethod.PATCH , status().isOk(), httpHeaders);
-        }
-        catch (final Exception e) {
+            result = super.perform(builder, asJsonString(updates), HttpMethod.PATCH, status().isOk(), httpHeaders);
+        } catch (final Exception e) {
             fail(e.getMessage());
         }
         return result;
@@ -304,9 +299,8 @@ public abstract class AbstractMockMvcCrudControllerTest<T extends IdDto> extends
         builder.path("/" + id);
         ResultActions result = null;
         try {
-            result =  super.perform(builder,"",HttpMethod.DELETE,status().isNoContent(),httpHeaders);
-        }
-        catch (final Exception e) {
+            result = super.perform(builder, "", HttpMethod.DELETE, status().isNoContent(), httpHeaders);
+        } catch (final Exception e) {
             fail(e.getMessage());
         }
         return result;
@@ -315,9 +309,8 @@ public abstract class AbstractMockMvcCrudControllerTest<T extends IdDto> extends
     private ResultActions testGetPaginatedEntities(final HttpHeaders httpHeaders, final UriComponentsBuilder builder) {
         ResultActions result = null;
         try {
-            result = super.perform(builder, "", HttpMethod.GET , status().isOk(), httpHeaders);
-        }
-        catch (final Exception e) {
+            result = super.perform(builder, "", HttpMethod.GET, status().isOk(), httpHeaders);
+        } catch (final Exception e) {
             fail(e.getMessage());
         }
         return result;
@@ -329,7 +322,7 @@ public abstract class AbstractMockMvcCrudControllerTest<T extends IdDto> extends
         final UriComponentsBuilder builder = getUriBuilder();
         builder.queryParam("page", 0);
         builder.queryParam("size", "20");
-        return testGetPaginatedEntities(httpHeaders,builder);
+        return testGetPaginatedEntities(httpHeaders, builder);
     }
 
     public ResultActions testGetPaginatedEntities(String path, HttpHeaders httpHeaders) {
@@ -339,17 +332,17 @@ public abstract class AbstractMockMvcCrudControllerTest<T extends IdDto> extends
         builder.queryParam("page", 0);
         builder.queryParam("size", "20");
         builder.path(path);
-        return testGetPaginatedEntities(httpHeaders,builder);
+        return testGetPaginatedEntities(httpHeaders, builder);
     }
 
-    public ResultActions testGetPaginatedEntities(final HttpHeaders httpHeaders,final QueryDto criteria) {
+    public ResultActions testGetPaginatedEntities(final HttpHeaders httpHeaders, final QueryDto criteria) {
         getLog().debug("test get paginated entities class ={}", getDtoClass().getName());
         preparedServices();
         final UriComponentsBuilder builder = getUriBuilder();
         builder.queryParam("page", 0);
         builder.queryParam("size", "20");
         builder.queryParam("criteria", criteria.toJson());
-        return testGetPaginatedEntities(httpHeaders,builder);
+        return testGetPaginatedEntities(httpHeaders, builder);
     }
 
     protected abstract Class<T> getDtoClass();
@@ -359,5 +352,4 @@ public abstract class AbstractMockMvcCrudControllerTest<T extends IdDto> extends
     protected abstract VitamUILogger getLog();
 
     protected abstract void preparedServices();
-
 }

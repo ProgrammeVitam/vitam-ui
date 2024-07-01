@@ -104,9 +104,8 @@ public class AgencyController extends AbstractUiRestController {
     @ApiOperation(value = "Get entity")
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Collection<AgencyDto> getAll(final Optional<String> criteria) throws InvalidParseOperationException,
-        PreconditionFailedException {
-
+    public Collection<AgencyDto> getAll(final Optional<String> criteria)
+        throws InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.sanitizeCriteria(criteria);
         LOGGER.debug("Get all with criteria={}", criteria);
         return service.getAll(buildUiHttpContext(), criteria);
@@ -115,14 +114,25 @@ public class AgencyController extends AbstractUiRestController {
     @ApiOperation(value = "Get entities paginated")
     @GetMapping(params = { "page", "size" })
     @ResponseStatus(HttpStatus.OK)
-    public PaginatedValuesDto<AgencyDto> getAllPaginated(@RequestParam final Integer page, @RequestParam final Integer size,
-            @RequestParam final Optional<String> criteria, @RequestParam final Optional<String> orderBy, @RequestParam final Optional<DirectionDto> direction)
-        throws InvalidParseOperationException, PreconditionFailedException {
+    public PaginatedValuesDto<AgencyDto> getAllPaginated(
+        @RequestParam final Integer page,
+        @RequestParam final Integer size,
+        @RequestParam final Optional<String> criteria,
+        @RequestParam final Optional<String> orderBy,
+        @RequestParam final Optional<DirectionDto> direction
+    ) throws InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.sanitizeCriteria(criteria);
-        if(orderBy.isPresent()) {
+        if (orderBy.isPresent()) {
             SanityChecker.checkSecureParameter(orderBy.get());
         }
-        LOGGER.debug("getAllPaginated page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, criteria, orderBy, direction);
+        LOGGER.debug(
+            "getAllPaginated page={}, size={}, criteria={}, orderBy={}, ascendant={}",
+            page,
+            size,
+            criteria,
+            orderBy,
+            direction
+        );
         return service.getAllPaginated(page, size, criteria, orderBy, direction, buildUiHttpContext());
     }
 
@@ -144,8 +154,8 @@ public class AgencyController extends AbstractUiRestController {
      */
     @ApiOperation(value = "Check ability to create agency")
     @PostMapping(path = CommonConstants.PATH_CHECK)
-    public ResponseEntity<Void> check(@RequestBody AgencyDto agencyDto) throws InvalidParseOperationException,
-        PreconditionFailedException {
+    public ResponseEntity<Void> check(@RequestBody AgencyDto agencyDto)
+        throws InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.sanitizeCriteria(agencyDto);
         LOGGER.debug("check ability to create agency={}", agencyDto);
         final boolean exist = service.check(buildUiHttpContext(), agencyDto);
@@ -156,8 +166,8 @@ public class AgencyController extends AbstractUiRestController {
     @ApiOperation(value = "Create agency")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public AgencyDto create(@Valid @RequestBody  AgencyDto agencyDto) throws InvalidParseOperationException,
-        PreconditionFailedException {
+    public AgencyDto create(@Valid @RequestBody AgencyDto agencyDto)
+        throws InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.sanitizeCriteria(agencyDto);
         LOGGER.debug("create agency={}", agencyDto);
         return service.create(buildUiHttpContext(), agencyDto);
@@ -168,11 +178,13 @@ public class AgencyController extends AbstractUiRestController {
     @ResponseStatus(HttpStatus.OK)
     public AgencyDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto)
         throws InvalidParseOperationException, PreconditionFailedException {
-
         SanityChecker.checkSecureParameter(id);
         SanityChecker.sanitizeCriteria(partialDto);
         LOGGER.debug("Patch User {} with {}", id, partialDto);
-        Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "Unable to patch agency : the DTO id must match the path id.");
+        Assert.isTrue(
+            StringUtils.equals(id, (String) partialDto.get("id")),
+            "Unable to patch agency : the DTO id must match the path id."
+        );
         return service.patch(buildUiHttpContext(), partialDto, id);
     }
 
@@ -180,7 +192,6 @@ public class AgencyController extends AbstractUiRestController {
     @GetMapping(CommonConstants.PATH_LOGBOOK)
     public LogbookOperationsResponseDto findHistoryById(final @PathVariable String id)
         throws InvalidParseOperationException, PreconditionFailedException {
-
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("get logbook for agency with id :{}", id);
         return service.findHistoryById(buildUiHttpContext(), id);
@@ -188,9 +199,8 @@ public class AgencyController extends AbstractUiRestController {
 
     @ApiOperation(value = "delete agency")
     @DeleteMapping(CommonConstants.PATH_ID)
-    public ResponseEntity<Boolean> delete(final @PathVariable String id) throws InvalidParseOperationException,
-        PreconditionFailedException {
-
+    public ResponseEntity<Boolean> delete(final @PathVariable String id)
+        throws InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("delete agency with id :{}", id);
         return service.deleteWithResponse(buildUiHttpContext(), id);
@@ -213,7 +223,7 @@ public class AgencyController extends AbstractUiRestController {
     @PostMapping(CommonConstants.PATH_IMPORT)
     public JsonNode importAgencies(@Context HttpServletRequest request, MultipartFile file)
         throws InvalidParseOperationException, PreconditionFailedException {
-        if(file != null) {
+        if (file != null) {
             SafeFileChecker.checkSafeFilePath(file.getOriginalFilename());
         }
         LOGGER.debug("Import agency file {}", file != null ? file.getOriginalFilename() : null);

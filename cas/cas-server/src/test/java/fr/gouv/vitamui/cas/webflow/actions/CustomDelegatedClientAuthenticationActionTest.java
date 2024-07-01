@@ -47,9 +47,18 @@ public final class CustomDelegatedClientAuthenticationActionTest extends BaseWeb
         super.setUp();
 
         val configContext = mock(DelegatedClientAuthenticationConfigurationContext.class);
-        when(configContext.getDelegatedClientIdentityProvidersProducer()).thenReturn(mock(DelegatedClientIdentityProviderConfigurationProducer.class));
-        action = new CustomDelegatedClientAuthenticationAction(configContext, mock(IdentityProviderHelper.class),
-            mock(ProvidersService.class), mock(Utils.class), mock(TicketRegistry.class), "", ",");
+        when(configContext.getDelegatedClientIdentityProvidersProducer()).thenReturn(
+            mock(DelegatedClientIdentityProviderConfigurationProducer.class)
+        );
+        action = new CustomDelegatedClientAuthenticationAction(
+            configContext,
+            mock(IdentityProviderHelper.class),
+            mock(ProvidersService.class),
+            mock(Utils.class),
+            mock(TicketRegistry.class),
+            "",
+            ","
+        );
     }
 
     @Test
@@ -80,8 +89,10 @@ public final class CustomDelegatedClientAuthenticationActionTest extends BaseWeb
 
         action.doExecute(context);
 
-        assertEquals(EMAIL1 + "," + EMAIL2,
-                ((UsernamePasswordCredential) flowParameters.get("credential")).getUsername());
+        assertEquals(
+            EMAIL1 + "," + EMAIL2,
+            ((UsernamePasswordCredential) flowParameters.get("credential")).getUsername()
+        );
         assertEquals(EMAIL1, flowParameters.get("surrogate"));
         assertEquals(EMAIL2, flowParameters.get("superUser"));
     }

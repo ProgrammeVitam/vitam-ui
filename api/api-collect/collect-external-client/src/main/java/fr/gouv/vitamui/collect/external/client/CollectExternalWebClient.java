@@ -65,12 +65,25 @@ public class CollectExternalWebClient extends BaseWebClient<ExternalHttpContext>
      * @param context internl context
      * @return a mono<Response<Resourse>
      **/
-    public Mono<ResponseEntity<Resource>> downloadObjectFromUnit(String id, final String usage, Integer version,
-        final ExternalHttpContext context) {
+    public Mono<ResponseEntity<Resource>> downloadObjectFromUnit(
+        String id,
+        final String usage,
+        Integer version,
+        final ExternalHttpContext context
+    ) {
         LOGGER.debug("Start downloading Object from unit id : {} usage : {} version : {}", id, usage, version);
-        final UriComponentsBuilder uriBuilder =
-            UriComponentsBuilder.fromHttpUrl(getUrl() + PROJECTS + OBJECT_GROUPS + DOWNLOAD_ARCHIVE_UNIT + "/" + id + "?usage=" + usage +
-                "&version=" + version);
+        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(
+            getUrl() +
+            PROJECTS +
+            OBJECT_GROUPS +
+            DOWNLOAD_ARCHIVE_UNIT +
+            "/" +
+            id +
+            "?usage=" +
+            usage +
+            "&version=" +
+            version
+        );
 
         Flux<DataBuffer> dataBuffer = webClient
             .get()
@@ -79,9 +92,10 @@ public class CollectExternalWebClient extends BaseWebClient<ExternalHttpContext>
             .retrieve()
             .bodyToFlux(DataBuffer.class);
 
-        return Mono.just(ResponseEntity
-            .ok().cacheControl(CacheControl.noCache())
-            .body(convertDataBufferFileToInputStreamResponse(dataBuffer)));
-
+        return Mono.just(
+            ResponseEntity.ok()
+                .cacheControl(CacheControl.noCache())
+                .body(convertDataBufferFileToInputStreamResponse(dataBuffer))
+        );
     }
 }

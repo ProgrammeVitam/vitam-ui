@@ -1,15 +1,15 @@
 package fr.gouv.vitamui.cucumber.back.steps.iam.tenant;
 
-import static fr.gouv.vitamui.utils.TestConstants.UPDATED;
-import static org.assertj.core.api.Assertions.assertThat;
+import fr.gouv.vitamui.cucumber.common.CommonSteps;
+import fr.gouv.vitamui.utils.TestConstants;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import io.cucumber.java.en.Then;
-import io.cucumber.java.en.When;
-import fr.gouv.vitamui.cucumber.common.CommonSteps;
-import fr.gouv.vitamui.utils.TestConstants;
+import static fr.gouv.vitamui.utils.TestConstants.UPDATED;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Teste l'API Tenants dans IAM admin : opérations de mise à jour partielle.
@@ -24,13 +24,14 @@ public class ApiIamExternalTenantPatchSteps extends CommonSteps {
         return map;
     }
 
-    @When("^un utilisateur avec le rôle ROLE_UPDATE_TENANTS met à jour partiellement un tenant dans un tenant auquel il est autorisé en utilisant un certificat full access avec le rôle ROLE_UPDATE_TENANTS$")
+    @When(
+        "^un utilisateur avec le rôle ROLE_UPDATE_TENANTS met à jour partiellement un tenant dans un tenant auquel il est autorisé en utilisant un certificat full access avec le rôle ROLE_UPDATE_TENANTS$"
+    )
     public void un_utilisateur_avec_le_rôle_ROLE_UPDATE_TENANTS_met_à_jour_partiellement_un_tenant_dans_un_tenant_auquel_il_est_autorisé_en_utilisant_un_certificat_full_access_avec_le_rôle_ROLE_UPDATE_TENANTS() {
         final Map<String, Object> dto = buildTenantToPatch();
         try {
             testContext.tenantDto = getTenantRestClient().patch(getSystemTenantUserAdminContext(), dto);
-        }
-        catch (final RuntimeException e) {
+        } catch (final RuntimeException e) {
             testContext.exception = e;
         }
     }
@@ -43,8 +44,11 @@ public class ApiIamExternalTenantPatchSteps extends CommonSteps {
 
     @Then("^une trace de mise à jour du tenant est présente dans vitam$")
     public void une_trace_de_mise_à_jour_du_tenant_est_présente_dans_vitam() throws InterruptedException {
-        super.testTrace(TestConstants.SYSTEM_CUSTOMER_ID, testContext.tenantDto.getIdentifier().toString(), "tenants",
-                "EXT_VITAMUI_UPDATE_TENANT");
+        super.testTrace(
+            TestConstants.SYSTEM_CUSTOMER_ID,
+            testContext.tenantDto.getIdentifier().toString(),
+            "tenants",
+            "EXT_VITAMUI_UPDATE_TENANT"
+        );
     }
-
 }

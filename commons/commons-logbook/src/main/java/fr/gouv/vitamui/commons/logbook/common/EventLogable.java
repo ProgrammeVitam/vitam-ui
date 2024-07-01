@@ -43,5 +43,4 @@ import java.io.Serializable;
  *
  */
 
-public interface EventLogable extends Serializable {
-}
+public interface EventLogable extends Serializable {}

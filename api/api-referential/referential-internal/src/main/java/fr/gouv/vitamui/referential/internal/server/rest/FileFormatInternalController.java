@@ -101,7 +101,7 @@ public class FileFormatInternalController {
     @Autowired
     private InternalSecurityService securityService;
 
-    @GetMapping()
+    @GetMapping
     public Collection<FileFormatDto> getAll(@RequestParam final Optional<String> criteria) {
         LOGGER.debug("get all file formats criteria={}", criteria);
         SanityChecker.sanitizeCriteria(criteria);
@@ -111,34 +111,57 @@ public class FileFormatInternalController {
     }
 
     @GetMapping(params = { "page", "size" })
-    public PaginatedValuesDto<FileFormatDto> getAllPaginated(@RequestParam final Integer page, @RequestParam final Integer size,
-            @RequestParam(required = false) final Optional<String> criteria, @RequestParam(required = false) final Optional<String> orderBy,
-            @RequestParam(required = false) final Optional<DirectionDto> direction) {
-        LOGGER.debug("getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, criteria, orderBy, direction);
+    public PaginatedValuesDto<FileFormatDto> getAllPaginated(
+        @RequestParam final Integer page,
+        @RequestParam final Integer size,
+        @RequestParam(required = false) final Optional<String> criteria,
+        @RequestParam(required = false) final Optional<String> orderBy,
+        @RequestParam(required = false) final Optional<DirectionDto> direction
+    ) {
+        LOGGER.debug(
+            "getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}",
+            page,
+            size,
+            criteria,
+            orderBy,
+            direction
+        );
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
         return fileFormatInternalService.getAllPaginated(page, size, orderBy, direction, vitamContext, criteria);
     }
 
     @RequestMapping(value = "/**", method = RequestMethod.GET)
-    public Object getByIdOrHistory(HttpServletRequest request) throws UnsupportedEncodingException, VitamClientException {
+    public Object getByIdOrHistory(HttpServletRequest request)
+        throws UnsupportedEncodingException, VitamClientException {
         LOGGER.debug("getByIdOrHistory ");
         String requestURL = request.getRequestURL().toString();
-        String path = StringUtils.substringAfter(requestURL,RestApi.FILE_FORMATS_URL + "/");
+        String path = StringUtils.substringAfter(requestURL, RestApi.FILE_FORMATS_URL + "/");
         if (StringUtils.endsWith("/history", path)) {
-            return findHistoryById(StringUtils.substringBefore(path,"/history"));
+            return findHistoryById(StringUtils.substringBefore(path, "/history"));
         } else {
-            return getOne(StringUtils.removeEndIgnoreCase(path,"/"));
+            return getOne(StringUtils.removeEndIgnoreCase(path, "/"));
         }
     }
 
-    private FileFormatDto getOne(final @PathVariable("identifier") String identifier) throws UnsupportedEncodingException {
-        LOGGER.debug("get file format identifier={} / {}", identifier, URLDecoder.decode(identifier, StandardCharsets.UTF_8.toString()));
+    private FileFormatDto getOne(final @PathVariable("identifier") String identifier)
+        throws UnsupportedEncodingException {
+        LOGGER.debug(
+            "get file format identifier={} / {}",
+            identifier,
+            URLDecoder.decode(identifier, StandardCharsets.UTF_8.toString())
+        );
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
-        return fileFormatInternalService.getOne(vitamContext, URLDecoder.decode(identifier, StandardCharsets.UTF_8.toString()));
+        return fileFormatInternalService.getOne(
+            vitamContext,
+            URLDecoder.decode(identifier, StandardCharsets.UTF_8.toString())
+        );
     }
 
     @PostMapping(CommonConstants.PATH_CHECK)
-    public ResponseEntity<Void> checkExist(@RequestBody FileFormatDto fileFormat, @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant) {
+    public ResponseEntity<Void> checkExist(
+        @RequestBody FileFormatDto fileFormat,
+        @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant
+    ) {
         LOGGER.debug("check exist file format={}", fileFormat);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
         final boolean exist = fileFormatInternalService.check(vitamContext, fileFormat);
@@ -146,17 +169,23 @@ public class FileFormatInternalController {
     }
 
     @PostMapping
-    public FileFormatDto create(@Valid @RequestBody FileFormatDto fileFormat, @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant) {
+    public FileFormatDto create(
+        @Valid @RequestBody FileFormatDto fileFormat,
+        @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant
+    ) {
         LOGGER.debug("create file format={}", fileFormat);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
-        return fileFormatInternalService.create(vitamContext,fileFormat);
+        return fileFormatInternalService.create(vitamContext, fileFormat);
     }
 
     @PatchMapping(CommonConstants.PATH_ID)
     public FileFormatDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto) {
         LOGGER.debug("Patch {} with {}", id, partialDto);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
-        Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "The DTO identifier must match the path identifier for update.");
+        Assert.isTrue(
+            StringUtils.equals(id, (String) partialDto.get("id")),
+            "The DTO identifier must match the path identifier for update."
+        );
         return fileFormatInternalService.patch(vitamContext, partialDto);
     }
 
@@ -175,7 +204,7 @@ public class FileFormatInternalController {
         Response response = fileFormatInternalService.export(vitamContext);
         Object entity = response.getEntity();
         if (entity instanceof InputStream) {
-            Resource resource = new InputStreamResource((InputStream)entity);
+            Resource resource = new InputStreamResource((InputStream) entity);
             return new ResponseEntity<>(resource, HttpStatus.OK);
         }
         return null;
@@ -190,8 +219,10 @@ public class FileFormatInternalController {
     @PostMapping(CommonConstants.PATH_IMPORT)
     @Consumes(MediaType.APPLICATION_OCTET_STREAM_VALUE)
     @Produces(MediaType.APPLICATION_OCTET_STREAM_VALUE)
-    public JsonNode importFileFormats(@RequestParam("fileName") String fileName, @RequestParam("file") MultipartFile file) {
-
+    public JsonNode importFileFormats(
+        @RequestParam("fileName") String fileName,
+        @RequestParam("file") MultipartFile file
+    ) {
         SafeFileChecker.checkSafeFilePath(file.getOriginalFilename());
         SanityChecker.isValidFileName(fileName);
         SafeFileChecker.checkSafeFilePath(fileName);

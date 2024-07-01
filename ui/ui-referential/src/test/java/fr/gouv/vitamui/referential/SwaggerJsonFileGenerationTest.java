@@ -55,8 +55,8 @@ import fr.gouv.vitamui.referential.service.ProfileService;
 import fr.gouv.vitamui.referential.service.RuleService;
 import fr.gouv.vitamui.referential.service.SecurityProfileService;
 import fr.gouv.vitamui.referential.service.TenantService;
-import fr.gouv.vitamui.ui.commons.service.UnitService;
 import fr.gouv.vitamui.ui.commons.security.SecurityConfig;
+import fr.gouv.vitamui.ui.commons.service.UnitService;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -70,7 +70,7 @@ import org.springframework.test.context.junit4.SpringRunner;
  */
 @RunWith(SpringRunner.class)
 @WebMvcTest
-@Import(value = {SecurityConfig.class, ServerIdentityConfiguration.class, SwaggerConfiguration.class})
+@Import(value = { SecurityConfig.class, ServerIdentityConfiguration.class, SwaggerConfiguration.class })
 @ActiveProfiles("test, swagger")
 public class SwaggerJsonFileGenerationTest extends AbstractSwaggerJsonFileGenerationTest {
 

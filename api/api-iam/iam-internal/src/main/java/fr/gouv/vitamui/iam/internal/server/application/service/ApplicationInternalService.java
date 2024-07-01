@@ -36,16 +36,6 @@
  */
 package fr.gouv.vitamui.iam.internal.server.application.service;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
-
-import org.apache.commons.collections4.CollectionUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import fr.gouv.vitamui.commons.api.converter.Converter;
 import fr.gouv.vitamui.commons.api.domain.ApplicationDto;
 import fr.gouv.vitamui.commons.api.domain.Criterion;
@@ -55,7 +45,6 @@ import fr.gouv.vitamui.commons.api.exception.UnAuthorizedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.api.utils.CriteriaUtils;
-import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
 import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.mongo.service.VitamUICrudService;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
@@ -65,6 +54,15 @@ import fr.gouv.vitamui.iam.internal.server.application.domain.Application;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.collections4.CollectionUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 /**
  * The service to read, create, update and delete the applications.
@@ -74,6 +72,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ApplicationInternalService extends VitamUICrudService<ApplicationDto, Application> {
+
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ApplicationInternalService.class);
 
     private final ApplicationRepository applicationRepository;
@@ -81,8 +80,12 @@ public class ApplicationInternalService extends VitamUICrudService<ApplicationDt
     private final InternalSecurityService internalSecurityService;
 
     @Autowired
-    public ApplicationInternalService(final SequenceGeneratorService sequenceGeneratorService, final ApplicationRepository applicationRepository,
-        final ApplicationConverter applicationConverter, final InternalSecurityService internalSecurityService) {
+    public ApplicationInternalService(
+        final SequenceGeneratorService sequenceGeneratorService,
+        final ApplicationRepository applicationRepository,
+        final ApplicationConverter applicationConverter,
+        final InternalSecurityService internalSecurityService
+    ) {
         super(sequenceGeneratorService);
         this.applicationRepository = applicationRepository;
         this.applicationConverter = applicationConverter;
@@ -94,15 +97,15 @@ public class ApplicationInternalService extends VitamUICrudService<ApplicationDt
      */
     @Override
     public List<ApplicationDto> getAll(Optional<String> criteria, Optional<String> embedded) {
-
         Boolean filterApp = true;
 
         if (criteria.isPresent()) {
             final QueryDto queryDto = QueryDto.fromJson(criteria);
             List<Criterion> criterions = queryDto.getCriterionList();
-            Optional<Criterion> findFilterApp = criterions.stream()
-                    .filter(criterion -> "filterApp".equals(criterion.getKey()))
-                    .findFirst();
+            Optional<Criterion> findFilterApp = criterions
+                .stream()
+                .filter(criterion -> "filterApp".equals(criterion.getKey()))
+                .findFirst();
 
             if (findFilterApp.isPresent()) {
                 Criterion filterAppCriterion = findFilterApp.get();
@@ -120,7 +123,6 @@ public class ApplicationInternalService extends VitamUICrudService<ApplicationDt
         return apps;
     }
 
-
     /**
      * Filter application for logger user permission
      * @param apps initial app list
@@ -135,8 +137,7 @@ public class ApplicationInternalService extends VitamUICrudService<ApplicationDt
             tenantsByApp = new ArrayList<>();
         }
         final Collection<String> filter = tenantsByApp.stream().map(p -> p.getName()).collect(Collectors.toList());
-        final Predicate<ApplicationDto> predicate =
-                a -> !filter.contains(a.getIdentifier());
+        final Predicate<ApplicationDto> predicate = a -> !filter.contains(a.getIdentifier());
         apps.removeIf(predicate);
     }
 
@@ -160,5 +161,4 @@ public class ApplicationInternalService extends VitamUICrudService<ApplicationDt
     protected Converter<ApplicationDto, Application> getConverter() {
         return applicationConverter;
     }
-
 }

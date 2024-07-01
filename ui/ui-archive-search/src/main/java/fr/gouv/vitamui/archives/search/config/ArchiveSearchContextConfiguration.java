@@ -49,7 +49,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 @Configuration
 @EnableConfigurationProperties
-@Import(value = {SecurityConfig.class, SwaggerConfiguration.class, RestExceptionHandler.class})
+@Import(value = { SecurityConfig.class, SwaggerConfiguration.class, RestExceptionHandler.class })
 public class ArchiveSearchContextConfiguration extends AbstractContextConfiguration {
 
     @Bean
@@ -64,54 +64,61 @@ public class ArchiveSearchContextConfiguration extends AbstractContextConfigurat
     @DependsOn("uiProperties")
     public ArchiveSearchExternalRestClientFactory archiveSearchExternalRestClientFactory(
         final ArchiveSearchApplicationProperties uiProperties,
-        RestTemplateBuilder restTemplateBuilder) {
-        return new ArchiveSearchExternalRestClientFactory(uiProperties.getArchiveSearchExternalClient(),
-            restTemplateBuilder);
+        RestTemplateBuilder restTemplateBuilder
+    ) {
+        return new ArchiveSearchExternalRestClientFactory(
+            uiProperties.getArchiveSearchExternalClient(),
+            restTemplateBuilder
+        );
     }
-
 
     @Bean
     @ConditionalOnMissingBean
     @DependsOn("uiProperties")
     public ArchiveSearchExternalWebClientFactory archiveSearchExternalWebClientFactory(
-        final ArchiveSearchApplicationProperties uiProperties, final WebClient.Builder webClientBuilder) {
-        return new ArchiveSearchExternalWebClientFactory(uiProperties.getArchiveSearchExternalClient(),
-            webClientBuilder);
+        final ArchiveSearchApplicationProperties uiProperties,
+        final WebClient.Builder webClientBuilder
+    ) {
+        return new ArchiveSearchExternalWebClientFactory(
+            uiProperties.getArchiveSearchExternalClient(),
+            webClientBuilder
+        );
     }
-
 
     @Bean
     @ConditionalOnMissingBean
     @DependsOn("uiProperties")
     public ArchiveSearchStreamingExternalRestClientFactory archiveSearchStreamingExternalRestClientFactory(
-        final ArchiveSearchApplicationProperties uiProperties) {
+        final ArchiveSearchApplicationProperties uiProperties
+    ) {
         return new ArchiveSearchStreamingExternalRestClientFactory(uiProperties.getArchiveSearchExternalClient());
     }
 
-
     @Bean
     public ArchiveSearchStreamingExternalRestClient archiveSearchStreamingExternalRestClient(
-        final ArchiveSearchStreamingExternalRestClientFactory factory) {
+        final ArchiveSearchStreamingExternalRestClientFactory factory
+    ) {
         return factory.getIngestStreamingExternalRestClient();
     }
 
     @Bean
     public ArchiveSearchExternalRestClient archiveSearchExternalRestClient(
-        final ArchiveSearchExternalRestClientFactory archiveSearchExternalRestClientFactory) {
+        final ArchiveSearchExternalRestClientFactory archiveSearchExternalRestClientFactory
+    ) {
         return archiveSearchExternalRestClientFactory.getArchiveSearchExternalRestClient();
     }
 
     @Bean
     public ArchiveSearchExternalWebClient archiveSearchExternalWebClient(
-        final ArchiveSearchExternalWebClientFactory archiveSearchExternalWebClientFactory) {
+        final ArchiveSearchExternalWebClientFactory archiveSearchExternalWebClientFactory
+    ) {
         return archiveSearchExternalWebClientFactory.getArchiveSearchExternalWebClient();
     }
 
     @Bean
     public SearchCriteriaHistoryExternalRestClient searchCriteriaHistoryExternalRestClient(
-        final ArchiveSearchExternalRestClientFactory factory) {
+        final ArchiveSearchExternalRestClientFactory factory
+    ) {
         return factory.getSearchCriteriaHistoryExternalRestClient();
     }
-
- 
 }

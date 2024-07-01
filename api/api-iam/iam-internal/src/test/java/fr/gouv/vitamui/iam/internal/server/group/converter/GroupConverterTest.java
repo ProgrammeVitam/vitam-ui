@@ -1,19 +1,17 @@
 package fr.gouv.vitamui.iam.internal.server.group.converter;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.util.Arrays;
-
-import org.junit.Test;
-import org.mockito.Mockito;
-
 import com.fasterxml.jackson.databind.JsonNode;
-
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.json.JsonHandler;
 import fr.gouv.vitamui.commons.api.domain.GroupDto;
 import fr.gouv.vitamui.iam.internal.server.group.domain.Group;
 import fr.gouv.vitamui.iam.internal.server.profile.dao.ProfileRepository;
+import org.junit.Test;
+import org.mockito.Mockito;
+
+import java.util.Arrays;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class GroupConverterTest {
 
@@ -72,6 +70,5 @@ public class GroupConverterTest {
         assertThat(jsonNode.get(GroupConverter.ENABLED_KEY)).isNotNull();
         assertThat(jsonNode.get(GroupConverter.NAME_KEY)).isNotNull();
         assertThat(jsonNode.get(GroupConverter.PROFILE_IDS_KEY)).isNotNull();
-
     }
 }

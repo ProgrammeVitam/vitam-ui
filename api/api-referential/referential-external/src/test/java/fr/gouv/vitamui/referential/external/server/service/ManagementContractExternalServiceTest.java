@@ -27,9 +27,9 @@
 
 package fr.gouv.vitamui.referential.external.server.service;
 
+import fr.gouv.vitamui.commons.api.domain.ManagementContractDto;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
-import fr.gouv.vitamui.commons.api.domain.ManagementContractDto;
 import fr.gouv.vitamui.referential.internal.client.ManagementContractInternalRestClient;
 import org.junit.Before;
 import org.junit.Test;
@@ -54,7 +54,7 @@ public class ManagementContractExternalServiceTest extends ExternalServiceTest {
     @Mock
     private ExternalSecurityService externalSecurityService;
 
-    private  ManagementContractExternalService managementContractExternalService;
+    private ManagementContractExternalService managementContractExternalService;
 
     @Before
     public void init() {
@@ -72,11 +72,10 @@ public class ManagementContractExternalServiceTest extends ExternalServiceTest {
         mcd.setTenant(0);
         list.add(mcd);
 
-        when(managementContractInternalRestClient.getAll(any(InternalHttpContext.class), any(Optional.class)))
-            .thenReturn(list);
-        assertThatCode(() ->
-            managementContractExternalService.getAll(Optional.empty())
-        ).doesNotThrowAnyException();
+        when(
+            managementContractInternalRestClient.getAll(any(InternalHttpContext.class), any(Optional.class))
+        ).thenReturn(list);
+        assertThatCode(() -> managementContractExternalService.getAll(Optional.empty())).doesNotThrowAnyException();
     }
 
     @Test
@@ -85,11 +84,12 @@ public class ManagementContractExternalServiceTest extends ExternalServiceTest {
         mcd.setId("id");
         mcd.setTenant(0);
 
-        when(managementContractInternalRestClient.check(any(InternalHttpContext.class), any(ManagementContractDto.class)))
-            .thenReturn(true);
+        when(
+            managementContractInternalRestClient.check(any(InternalHttpContext.class), any(ManagementContractDto.class))
+        ).thenReturn(true);
 
-        assertThatCode(() ->
-            managementContractExternalService.check(new ManagementContractDto())
+        assertThatCode(
+            () -> managementContractExternalService.check(new ManagementContractDto())
         ).doesNotThrowAnyException();
     }
 }

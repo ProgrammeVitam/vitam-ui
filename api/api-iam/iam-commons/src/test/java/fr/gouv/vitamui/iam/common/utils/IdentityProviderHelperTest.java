@@ -1,17 +1,16 @@
 package fr.gouv.vitamui.iam.common.utils;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
+import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import org.junit.Test;
-
-import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Tests {@link IdentityProviderHelper}.

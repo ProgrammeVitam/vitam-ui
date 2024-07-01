@@ -43,5 +43,4 @@ public class AbstractVitamUIApplication {
     public String getModuleName() {
         return ServerIdentityConfiguration.getInstance().getIdentityRole();
     }
-
 }

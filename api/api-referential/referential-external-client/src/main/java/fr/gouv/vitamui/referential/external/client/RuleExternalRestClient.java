@@ -36,7 +36,6 @@
  */
 package fr.gouv.vitamui.referential.external.client;
 
-import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
@@ -61,14 +60,15 @@ import java.util.Map;
 
 public class RuleExternalRestClient extends BasePaginatingAndSortingRestClient<RuleDto, ExternalHttpContext> {
 
-	private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(RuleExternalRestClient.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(RuleExternalRestClient.class);
 
     public RuleExternalRestClient(final RestTemplate restTemplate, final String baseUrl) {
         super(restTemplate, baseUrl);
     }
 
-    @Override protected ParameterizedTypeReference<PaginatedValuesDto<RuleDto>> getDtoPaginatedClass() {
-        return new ParameterizedTypeReference<PaginatedValuesDto<RuleDto>>() { };
+    @Override
+    protected ParameterizedTypeReference<PaginatedValuesDto<RuleDto>> getDtoPaginatedClass() {
+        return new ParameterizedTypeReference<PaginatedValuesDto<RuleDto>>() {};
     }
 
     @Override
@@ -76,20 +76,24 @@ public class RuleExternalRestClient extends BasePaginatingAndSortingRestClient<R
         return RestApi.RULES_URL;
     }
 
-    @Override protected Class<RuleDto> getDtoClass() {
+    @Override
+    protected Class<RuleDto> getDtoClass() {
         return RuleDto.class;
     }
 
     protected ParameterizedTypeReference<List<RuleDto>> getDtoListClass() {
-        return new ParameterizedTypeReference<List<RuleDto>>() {
-        };
+        return new ParameterizedTypeReference<List<RuleDto>>() {};
     }
 
     public boolean check(ExternalHttpContext context, RuleDto ruleDto) {
         final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl() + CommonConstants.PATH_CHECK);
         final HttpEntity<RuleDto> request = new HttpEntity<>(ruleDto, buildHeaders(context));
-        final ResponseEntity<Boolean> response = restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.POST,
-                request, Boolean.class);
+        final ResponseEntity<Boolean> response = restTemplate.exchange(
+            uriBuilder.toUriString(),
+            HttpMethod.POST,
+            request,
+            Boolean.class
+        );
         return response.getStatusCode() == HttpStatus.OK;
     }
 
@@ -97,20 +101,33 @@ public class RuleExternalRestClient extends BasePaginatingAndSortingRestClient<R
         LOGGER.debug("Create {}", dto);
         final HttpEntity<RuleDto> request = new HttpEntity<>(dto, buildHeaders(context));
 
-        final ResponseEntity<Boolean> response = restTemplate.exchange(getUrl(), HttpMethod.POST, request, Boolean.class);
+        final ResponseEntity<Boolean> response = restTemplate.exchange(
+            getUrl(),
+            HttpMethod.POST,
+            request,
+            Boolean.class
+        );
         checkResponse(response, 200, 201, 202, 204);
-        return response.getStatusCode() == HttpStatus.OK | response.getStatusCode() == HttpStatus.CREATED;
+        return (response.getStatusCode() == HttpStatus.OK) | (response.getStatusCode() == HttpStatus.CREATED);
     }
 
     public boolean patchRule(final ExternalHttpContext context, final Map<String, Object> partialDto, final String id) {
         LOGGER.debug("Patch {}", partialDto);
-        Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "The DTO identifier must match the path identifier for patch.");
+        Assert.isTrue(
+            StringUtils.equals(id, (String) partialDto.get("id")),
+            "The DTO identifier must match the path identifier for patch."
+        );
 
         final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl());
         uriBuilder.path(CommonConstants.PATH_ID);
 
         final HttpEntity<Map<String, Object>> request = new HttpEntity<>(partialDto, buildHeaders(context));
-        final ResponseEntity<Boolean> response = restTemplate.exchange(uriBuilder.build(id), HttpMethod.PATCH, request, Boolean.class);
+        final ResponseEntity<Boolean> response = restTemplate.exchange(
+            uriBuilder.build(id),
+            HttpMethod.PATCH,
+            request,
+            Boolean.class
+        );
         checkResponse(response, 200, 201, 202, 204);
         return response.getStatusCode() == HttpStatus.OK;
     }
@@ -118,13 +135,21 @@ public class RuleExternalRestClient extends BasePaginatingAndSortingRestClient<R
     public boolean deleteRule(ExternalHttpContext context, String id) {
         LOGGER.debug("Delete {}", id);
         final HttpEntity<Void> request = new HttpEntity<>(buildHeaders(context));
-        final ResponseEntity<Boolean> response = restTemplate.exchange(getUrl() + CommonConstants.PATH_ID, HttpMethod.DELETE, request, Boolean.class, id);
+        final ResponseEntity<Boolean> response = restTemplate.exchange(
+            getUrl() + CommonConstants.PATH_ID,
+            HttpMethod.DELETE,
+            request,
+            Boolean.class,
+            id
+        );
         checkResponse(response, 200, 201, 202, 204);
         return response.getStatusCode() == HttpStatus.OK;
     }
 
     public ResponseEntity<Resource> export(ExternalHttpContext context) {
-        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl() + CommonConstants.PATH_EXPORT);
+        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(
+            getUrl() + CommonConstants.PATH_EXPORT
+        );
         final HttpEntity<RuleDto> request = new HttpEntity<>(null, buildHeaders(context));
         return restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET, request, Resource.class);
     }

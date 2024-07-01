@@ -1,15 +1,12 @@
 //
-// Ce fichier a été généré par l'implémentation de référence JavaTM Architecture for XML Binding (JAXB), v2.3.2 
-// Voir <a href="https://javaee.github.io/jaxb-v2/">https://javaee.github.io/jaxb-v2/</a> 
-// Toute modification apportée à ce fichier sera perdue lors de la recompilation du schéma source. 
-// Généré le : 2020.07.15 à 03:41:18 PM CEST 
+// Ce fichier a été généré par l'implémentation de référence JavaTM Architecture for XML Binding (JAXB), v2.3.2
+// Voir <a href="https://javaee.github.io/jaxb-v2/">https://javaee.github.io/jaxb-v2/</a>
+// Toute modification apportée à ce fichier sera perdue lors de la recompilation du schéma source.
+// Généré le : 2020.07.15 à 03:41:18 PM CEST
 //
-
 
 package fr.gouv.vitamui.commons.vitam.seda;
 
-import java.util.ArrayList;
-import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -20,13 +17,14 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.CollapsedStringAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import javax.xml.datatype.XMLGregorianCalendar;
-
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * <p>Classe Java pour AuthorizationRequestContentType complex type.
- * 
+ *
  * <p>Le fragment de schéma suivant indique le contenu attendu figurant dans cette classe.
- * 
+ *
  * <pre>
  * &lt;complexType name="AuthorizationRequestContentType"&gt;
  *   &lt;complexContent&gt;
@@ -44,35 +42,39 @@ import javax.xml.datatype.XMLGregorianCalendar;
  *   &lt;/complexContent&gt;
  * &lt;/complexType&gt;
  * </pre>
- * 
- * 
+ *
+ *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "AuthorizationRequestContentType", propOrder = {
-    "authorizationReason",
-    "comment",
-    "requestDate",
-    "unitIdentifier",
-    "requester",
-    "authorizationRequestReply"
-})
+@XmlType(
+    name = "AuthorizationRequestContentType",
+    propOrder = {
+        "authorizationReason", "comment", "requestDate", "unitIdentifier", "requester", "authorizationRequestReply",
+    }
+)
 public class AuthorizationRequestContentType {
 
     @XmlElement(name = "AuthorizationReason", required = true)
     @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
     @XmlSchemaType(name = "token")
     protected String authorizationReason;
+
     @XmlElement(name = "Comment")
     protected List<TextType> comment;
+
     @XmlElement(name = "RequestDate", required = true)
     @XmlSchemaType(name = "date")
     protected XMLGregorianCalendar requestDate;
+
     @XmlElement(name = "UnitIdentifier", required = true)
     protected List<IdentifierType> unitIdentifier;
+
     @XmlElement(name = "Requester", required = true)
     protected OrganizationType requester;
+
     @XmlElement(name = "AuthorizationRequestReply")
     protected List<BusinessAuthorizationRequestReplyMessageType> authorizationRequestReply;
+
     @XmlAttribute(name = "id", namespace = "http://www.w3.org/XML/1998/namespace")
     @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
     @XmlID
@@ -81,11 +83,11 @@ public class AuthorizationRequestContentType {
 
     /**
      * Obtient la valeur de la propriété authorizationReason.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getAuthorizationReason() {
         return authorizationReason;
@@ -93,11 +95,11 @@ public class AuthorizationRequestContentType {
 
     /**
      * Définit la valeur de la propriété authorizationReason.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setAuthorizationReason(String value) {
         this.authorizationReason = value;
@@ -105,25 +107,25 @@ public class AuthorizationRequestContentType {
 
     /**
      * Gets the value of the comment property.
-     * 
+     *
      * <p>
      * This accessor method returns a reference to the live list,
      * not a snapshot. Therefore any modification you make to the
      * returned list will be present inside the JAXB object.
      * This is why there is not a <CODE>set</CODE> method for the comment property.
-     * 
+     *
      * <p>
      * For example, to add a new item, do as follows:
      * <pre>
      *    getComment().add(newItem);
      * </pre>
-     * 
-     * 
+     *
+     *
      * <p>
      * Objects of the following type(s) are allowed in the list
      * {@link TextType }
-     * 
-     * 
+     *
+     *
      */
     public List<TextType> getComment() {
         if (comment == null) {
@@ -134,11 +136,11 @@ public class AuthorizationRequestContentType {
 
     /**
      * Obtient la valeur de la propriété requestDate.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link XMLGregorianCalendar }
-     *     
+     *
      */
     public XMLGregorianCalendar getRequestDate() {
         return requestDate;
@@ -146,11 +148,11 @@ public class AuthorizationRequestContentType {
 
     /**
      * Définit la valeur de la propriété requestDate.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link XMLGregorianCalendar }
-     *     
+     *
      */
     public void setRequestDate(XMLGregorianCalendar value) {
         this.requestDate = value;
@@ -158,25 +160,25 @@ public class AuthorizationRequestContentType {
 
     /**
      * Gets the value of the unitIdentifier property.
-     * 
+     *
      * <p>
      * This accessor method returns a reference to the live list,
      * not a snapshot. Therefore any modification you make to the
      * returned list will be present inside the JAXB object.
      * This is why there is not a <CODE>set</CODE> method for the unitIdentifier property.
-     * 
+     *
      * <p>
      * For example, to add a new item, do as follows:
      * <pre>
      *    getUnitIdentifier().add(newItem);
      * </pre>
-     * 
-     * 
+     *
+     *
      * <p>
      * Objects of the following type(s) are allowed in the list
      * {@link IdentifierType }
-     * 
-     * 
+     *
+     *
      */
     public List<IdentifierType> getUnitIdentifier() {
         if (unitIdentifier == null) {
@@ -187,11 +189,11 @@ public class AuthorizationRequestContentType {
 
     /**
      * Obtient la valeur de la propriété requester.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link OrganizationType }
-     *     
+     *
      */
     public OrganizationType getRequester() {
         return requester;
@@ -199,11 +201,11 @@ public class AuthorizationRequestContentType {
 
     /**
      * Définit la valeur de la propriété requester.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link OrganizationType }
-     *     
+     *
      */
     public void setRequester(OrganizationType value) {
         this.requester = value;
@@ -211,25 +213,25 @@ public class AuthorizationRequestContentType {
 
     /**
      * Gets the value of the authorizationRequestReply property.
-     * 
+     *
      * <p>
      * This accessor method returns a reference to the live list,
      * not a snapshot. Therefore any modification you make to the
      * returned list will be present inside the JAXB object.
      * This is why there is not a <CODE>set</CODE> method for the authorizationRequestReply property.
-     * 
+     *
      * <p>
      * For example, to add a new item, do as follows:
      * <pre>
      *    getAuthorizationRequestReply().add(newItem);
      * </pre>
-     * 
-     * 
+     *
+     *
      * <p>
      * Objects of the following type(s) are allowed in the list
      * {@link BusinessAuthorizationRequestReplyMessageType }
-     * 
-     * 
+     *
+     *
      */
     public List<BusinessAuthorizationRequestReplyMessageType> getAuthorizationRequestReply() {
         if (authorizationRequestReply == null) {
@@ -240,11 +242,11 @@ public class AuthorizationRequestContentType {
 
     /**
      * Obtient la valeur de la propriété id.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getId() {
         return id;
@@ -252,14 +254,13 @@ public class AuthorizationRequestContentType {
 
     /**
      * Définit la valeur de la propriété id.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setId(String value) {
         this.id = value;
     }
-
 }

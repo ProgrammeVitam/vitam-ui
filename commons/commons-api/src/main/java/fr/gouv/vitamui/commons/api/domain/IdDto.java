@@ -36,13 +36,12 @@
  */
 package fr.gouv.vitamui.commons.api.domain;
 
-import java.io.Serializable;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+
+import java.io.Serializable;
 
 /**
  * A DTO with an identifier.
@@ -56,5 +55,4 @@ import lombok.ToString;
 public abstract class IdDto implements Serializable {
 
     private String id;
-
 }

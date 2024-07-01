@@ -112,6 +112,5 @@ public class SIPConstant {
 
     public static final String RELATIONSHIP_RULE_CODELISTVERSION = "RelationshipCodeListVersion0";
 
-    private SIPConstant() {
-    }
+    private SIPConstant() {}
 }

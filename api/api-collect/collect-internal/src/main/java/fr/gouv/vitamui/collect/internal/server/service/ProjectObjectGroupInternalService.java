@@ -46,8 +46,9 @@ public class ProjectObjectGroupInternalService {
 
     private final CollectService collectService;
     private final ObjectMapper objectMapper;
-    private static final VitamUILogger LOGGER =
-        VitamUILoggerFactory.getInstance(ProjectObjectGroupInternalService.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
+        ProjectObjectGroupInternalService.class
+    );
 
     private static final String RESULTS = "$results";
 
@@ -59,24 +60,19 @@ public class ProjectObjectGroupInternalService {
     public Response downloadObjectFromUnit(String id, String usage, Integer version, final VitamContext vitamContext)
         throws VitamClientException {
         LOGGER.debug("Download Archive Unit Object with id {} , usage {} and version {}  ", id, usage, version);
-        return collectService
-            .getObjectStreamByUnitId(id, usage, version, vitamContext);
+        return collectService.getObjectStreamByUnitId(id, usage, version, vitamContext);
     }
 
     public ResultsDto findObjectById(String id, VitamContext vitamContext) throws VitamClientException {
         try {
             LOGGER.debug("Get Object Group");
-            String resultStringValue = StringUtils
-                .chop(
-                    collectService.getObjectById(vitamContext, id).toJsonNode()
-                        .get(RESULTS)
-                        .toString()
-                        .substring(1));
+            String resultStringValue = StringUtils.chop(
+                collectService.getObjectById(vitamContext, id).toJsonNode().get(RESULTS).toString().substring(1)
+            );
             return objectMapper.readValue(resultStringValue, ResultsDto.class);
         } catch (JsonProcessingException e) {
             LOGGER.error("Can not get the object group {} ", e);
             throw new InternalServerException("Unable to find the ObjectGroup", e);
         }
     }
-
 }

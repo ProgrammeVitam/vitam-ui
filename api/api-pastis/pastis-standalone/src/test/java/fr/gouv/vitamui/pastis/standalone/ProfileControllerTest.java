@@ -76,8 +76,10 @@ public class ProfileControllerTest {
     public void getProfiles() throws Exception {
         Map<String, String> headers = new HashMap<>();
         headers.put("X-Tenant-Id", "1");
-        RequestBuilder requestBuilder =
-            MockMvcRequestBuilders.get(RestApi.PASTIS_GET_ALL_PROFILES).header("X-Tenant-Id", "1");
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.get(RestApi.PASTIS_GET_ALL_PROFILES).header(
+            "X-Tenant-Id",
+            "1"
+        );
         mockHttpServletResponse = mockMvc.perform(requestBuilder).andReturn().getResponse();
         String resBody = mockHttpServletResponse.getContentAsString();
         LOGGER.info("response = {}", resBody);
@@ -86,13 +88,12 @@ public class ProfileControllerTest {
 
     @Test
     public void getFile() throws Exception {
-        RequestBuilder requestBuilder =
-            MockMvcRequestBuilders.get(RestApi.PASTIS_GET_PROFILE_FILE).param("name", "PA_Exemple")
-                .header("X-Tenant-Id", "1");
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.get(RestApi.PASTIS_GET_PROFILE_FILE)
+            .param("name", "PA_Exemple")
+            .header("X-Tenant-Id", "1");
         mockHttpServletResponse = mockMvc.perform(requestBuilder).andReturn().getResponse();
         String resBody = mockHttpServletResponse.getContentAsString();
         LOGGER.info("response = {}", resBody);
         Assertions.assertEquals(200, mockHttpServletResponse.getStatus());
     }
-
 }

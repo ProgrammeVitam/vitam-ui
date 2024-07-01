@@ -36,11 +36,11 @@
  */
 package fr.gouv.vitamui.iam.internal.server.tenant.dao;
 
-import java.util.List;
-import java.util.Optional;
-
 import fr.gouv.vitamui.commons.mongo.repository.VitamUIRepository;
 import fr.gouv.vitamui.iam.internal.server.tenant.domain.Tenant;
+
+import java.util.List;
+import java.util.Optional;
 
 /**
  * MongoDB repository for the tenants.
@@ -48,7 +48,6 @@ import fr.gouv.vitamui.iam.internal.server.tenant.domain.Tenant;
  *
  */
 public interface TenantRepository extends VitamUIRepository<Tenant, String> {
-
     Optional<Tenant> findByIdAndCustomerId(String id, String customerId);
 
     Tenant findByIdentifier(final Integer identifier);

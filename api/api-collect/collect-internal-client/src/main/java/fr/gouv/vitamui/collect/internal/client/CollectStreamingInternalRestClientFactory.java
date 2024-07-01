@@ -38,11 +38,14 @@ public class CollectStreamingInternalRestClientFactory extends BaseStreamingRest
 
     public CollectStreamingInternalRestClientFactory(final RestClientConfiguration restClientConfiguration) {
         super(restClientConfiguration);
-       }
+    }
 
-    public CollectStreamingInternalRestClientFactory(final RestClientConfiguration restClientConfiguration, final HttpPoolConfiguration httpHostConfiguration) {
+    public CollectStreamingInternalRestClientFactory(
+        final RestClientConfiguration restClientConfiguration,
+        final HttpPoolConfiguration httpHostConfiguration
+    ) {
         super(restClientConfiguration, httpHostConfiguration);
-       }
+    }
 
     public CollectStreamingInternalRestClient getCollectStreamingInternalRestClient() {
         return new CollectStreamingInternalRestClient(getRestTemplate(), getBaseUrl());

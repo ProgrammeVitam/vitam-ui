@@ -36,15 +36,12 @@
  */
 package fr.gouv.vitamui.portal.config;
 
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
-
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
 import fr.gouv.vitamui.commons.rest.configuration.SwaggerConfiguration;
 import fr.gouv.vitamui.ui.commons.security.SecurityConfig;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 
 @Configuration
 @Import(value = { SecurityConfig.class, SwaggerConfiguration.class, RestExceptionHandler.class })
-public class PortalContextConfiguration {
-
-}
+public class PortalContextConfiguration {}

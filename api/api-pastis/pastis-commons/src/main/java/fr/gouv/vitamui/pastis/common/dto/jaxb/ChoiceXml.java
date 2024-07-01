@@ -40,7 +40,4 @@ package fr.gouv.vitamui.pastis.common.dto.jaxb;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "rng:choice")
-public class ChoiceXml extends BaliseXML {
-
-
-}
+public class ChoiceXml extends BaliseXML {}

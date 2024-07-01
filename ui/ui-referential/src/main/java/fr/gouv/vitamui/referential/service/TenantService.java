@@ -36,15 +36,14 @@
  */
 package fr.gouv.vitamui.referential.service;
 
-import java.util.Collection;
-import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import fr.gouv.vitamui.commons.api.domain.TenantDto;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.iam.external.client.TenantExternalRestClient;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.Collection;
+import java.util.Optional;
 
 /**
  *
@@ -63,5 +62,4 @@ public class TenantService {
     public Collection<TenantDto> getAll(final ExternalHttpContext context, final Optional<String> criteria) {
         return client.getAll(context, criteria);
     }
-
 }

@@ -36,15 +36,13 @@
  */
 package fr.gouv.vitamui.ui.commons.security;
 
-import java.io.IOException;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 public class LogoutSuccessHandler extends HttpStatusReturningLogoutSuccessHandler {
 
@@ -53,8 +51,11 @@ public class LogoutSuccessHandler extends HttpStatusReturningLogoutSuccessHandle
     }
 
     @Override
-    public void onLogoutSuccess(final HttpServletRequest request, final HttpServletResponse response, final Authentication authentication)
-            throws IOException {
+    public void onLogoutSuccess(
+        final HttpServletRequest request,
+        final HttpServletResponse response,
+        final Authentication authentication
+    ) throws IOException {
         // set content because strict MIME type checking is enabled
         response.setContentType("text/html");
         super.onLogoutSuccess(request, response, authentication);

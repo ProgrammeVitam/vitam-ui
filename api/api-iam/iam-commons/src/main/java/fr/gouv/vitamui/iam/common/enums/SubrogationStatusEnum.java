@@ -42,5 +42,6 @@ package fr.gouv.vitamui.iam.common.enums;
  *
  */
 public enum SubrogationStatusEnum {
-    CREATED, ACCEPTED
+    CREATED,
+    ACCEPTED,
 }

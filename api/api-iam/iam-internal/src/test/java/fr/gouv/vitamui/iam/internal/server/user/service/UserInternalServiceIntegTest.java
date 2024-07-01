@@ -80,8 +80,10 @@ import static org.mockito.Mockito.when;
  *
  */
 @RunWith(SpringRunner.class)
-@EnableMongoRepositories(basePackageClasses = { UserRepository.class, CustomSequenceRepository.class,
-        TokenRepository.class }, repositoryBaseClass = VitamUIRepositoryImpl.class)
+@EnableMongoRepositories(
+    basePackageClasses = { UserRepository.class, CustomSequenceRepository.class, TokenRepository.class },
+    repositoryBaseClass = VitamUIRepositoryImpl.class
+)
 public final class UserInternalServiceIntegTest extends AbstractLogbookIntegrationTest {
 
     private static final String TOKEN_VALUE = "TOK1234567890";
@@ -162,11 +164,31 @@ public final class UserInternalServiceIntegTest extends AbstractLogbookIntegrati
         subrogationRepository = mock(SubrogationRepository.class);
         addressService = mock(AddressService.class);
 
-        internalUserService = new UserInternalService(sequenceGeneratorService, userRepository, groupInternalService, internalProfileService,
-                mock(UserEmailInternalService.class), tenantRepository, internalSecurityService, customerRepository, profilRepository, groupRepository,
-                iamLogbookService, userConverter, null, null, addressService, applicationInternalService, null);
+        internalUserService = new UserInternalService(
+            sequenceGeneratorService,
+            userRepository,
+            groupInternalService,
+            internalProfileService,
+            mock(UserEmailInternalService.class),
+            tenantRepository,
+            internalSecurityService,
+            customerRepository,
+            profilRepository,
+            groupRepository,
+            iamLogbookService,
+            userConverter,
+            null,
+            null,
+            addressService,
+            applicationInternalService,
+            null
+        );
 
-        iamAuthentificationService = new IamAuthentificationService(internalUserService, tokenRepository, subrogationRepository);
+        iamAuthentificationService = new IamAuthentificationService(
+            internalUserService,
+            tokenRepository,
+            subrogationRepository
+        );
         iamAuthentificationService.setTokenAdditionalTtl(15);
 
         tokenRepository.deleteAll();
@@ -176,7 +198,9 @@ public final class UserInternalServiceIntegTest extends AbstractLogbookIntegrati
         ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
         final Tenant tenant = new Tenant();
         tenant.setIdentifier(10);
-        Mockito.when(tenantRepository.findOne(ArgumentMatchers.any(Query.class))).thenReturn(Optional.ofNullable(tenant));
+        Mockito.when(tenantRepository.findOne(ArgumentMatchers.any(Query.class))).thenReturn(
+            Optional.ofNullable(tenant)
+        );
 
         // retrieve sequences
         internalUserService.getNextSequenceId(SequencesConstants.USER_IDENTIFIER);
@@ -200,7 +224,9 @@ public final class UserInternalServiceIntegTest extends AbstractLogbookIntegrati
 
         userRepository.save(user);
 
-        when(groupInternalService.getOne(ArgumentMatchers.anyString(), any(), ArgumentMatchers.any())).thenReturn(new GroupDto());
+        when(groupInternalService.getOne(ArgumentMatchers.anyString(), any(), ArgumentMatchers.any())).thenReturn(
+            new GroupDto()
+        );
         when(groupInternalService.getMany(any(String.class))).thenReturn(Arrays.asList(new GroupDto()));
         Mockito.when(internalSecurityService.userIsRootLevel()).thenReturn(true);
 
@@ -229,7 +255,9 @@ public final class UserInternalServiceIntegTest extends AbstractLogbookIntegrati
         assertThat(user.getIdentifier()).isNotBlank();
         assertThat(user.getAddress()).isNotNull();
 
-        final Optional<Event> ev = eventRepository.findOne(Query.query(Criteria.where("obId").is(user.getIdentifier())));
+        final Optional<Event> ev = eventRepository.findOne(
+            Query.query(Criteria.where("obId").is(user.getIdentifier()))
+        );
         assertThat(ev).isPresent();
     }
 
@@ -321,33 +349,39 @@ public final class UserInternalServiceIntegTest extends AbstractLogbookIntegrati
     public void testLogbookCreate() {
         final UserDto user = createUser();
 
-        final Criteria criteria = Criteria.where("obId").is(user.getIdentifier()).and("obIdReq").is(MongoDbCollections.USERS).and("evType")
-                .is(EventType.EXT_VITAMUI_CREATE_USER);
+        final Criteria criteria = Criteria.where("obId")
+            .is(user.getIdentifier())
+            .and("obIdReq")
+            .is(MongoDbCollections.USERS)
+            .and("evType")
+            .is(EventType.EXT_VITAMUI_CREATE_USER);
         final Collection<Event> events = eventRepository.findAll(Query.query(criteria));
         assertThat(events).hasSize(1);
         final Event event = events.iterator().next();
-         assertThat(event.getEvDetData()).isEqualTo("{"
-                + "\"Nom\":\"-\","
-                + "\"Prénom\":\"-\","
-                + "\"Email\":\"-\","
-                + "\"Numéro mobile\":\"-\","
-                + "\"Numéro fixe\":\"-\","
-                + "\"Type\":\"NOMINATIVE\","
-                + "\"Statut\":\"ENABLED\","
-                + "\"Subrogeable\":\"false\","
-                + "\"Code interne\":\"\","
-                + "\"Mise à jour automatique\":\"false\","
-                + "\"OTP\":\"true\","
-                + "\"Date de désactivation\":\"\","
-                + "\"Date de suppression\":\"\","
-                + "\"Code du site\":\"001\","
-                + "\"Code du centre\":\"002\","
-                + "\"Nom de la rue\":\"-\","
-                + "\"Code postal\":\"-\","
-                + "\"Ville\":\"-\","
-                + "\"Pays\":\"-\""
-                + "}");
-       }
+        assertThat(event.getEvDetData()).isEqualTo(
+            "{" +
+            "\"Nom\":\"-\"," +
+            "\"Prénom\":\"-\"," +
+            "\"Email\":\"-\"," +
+            "\"Numéro mobile\":\"-\"," +
+            "\"Numéro fixe\":\"-\"," +
+            "\"Type\":\"NOMINATIVE\"," +
+            "\"Statut\":\"ENABLED\"," +
+            "\"Subrogeable\":\"false\"," +
+            "\"Code interne\":\"\"," +
+            "\"Mise à jour automatique\":\"false\"," +
+            "\"OTP\":\"true\"," +
+            "\"Date de désactivation\":\"\"," +
+            "\"Date de suppression\":\"\"," +
+            "\"Code du site\":\"001\"," +
+            "\"Code du centre\":\"002\"," +
+            "\"Nom de la rue\":\"-\"," +
+            "\"Code postal\":\"-\"," +
+            "\"Ville\":\"-\"," +
+            "\"Pays\":\"-\"" +
+            "}"
+        );
+    }
 
     @Test
     public void testPatch() {
@@ -415,17 +449,37 @@ public final class UserInternalServiceIntegTest extends AbstractLogbookIntegrati
         internalUserService.patch(partialDto);
         partialDto.remove("autoProvisioningEnabled");
 
-        final Collection<Event> events = eventRepository
-                .findAll(Query.query(Criteria.where("obId").is(user.getIdentifier()).and("evType").is(EventType.EXT_VITAMUI_UPDATE_USER)));
+        final Collection<Event> events = eventRepository.findAll(
+            Query.query(
+                Criteria.where("obId").is(user.getIdentifier()).and("evType").is(EventType.EXT_VITAMUI_UPDATE_USER)
+            )
+        );
         assertThat(events).hasSize(14);
-
     }
 
     @Test
     public void testCheckExist() {
-        userRepository.save(IamServerUtilsTest.buildUser("userDev", "user-dev@vitamui.com", GROUP_ID, CUSTOMER_ID, LEVEL));
-        userRepository.save(IamServerUtilsTest.buildUser("userAdmin", "user-admin@vitamui.com", GROUP_ID, CUSTOMER_ID, ApiIamInternalConstants.ADMIN_LEVEL));
-        userRepository.save(IamServerUtilsTest.buildUser("userSubDev", "user-sub-dev@vitamui.com", GROUP_ID, "otherCustomerId", LEVEL + ".SUB"));
+        userRepository.save(
+            IamServerUtilsTest.buildUser("userDev", "user-dev@vitamui.com", GROUP_ID, CUSTOMER_ID, LEVEL)
+        );
+        userRepository.save(
+            IamServerUtilsTest.buildUser(
+                "userAdmin",
+                "user-admin@vitamui.com",
+                GROUP_ID,
+                CUSTOMER_ID,
+                ApiIamInternalConstants.ADMIN_LEVEL
+            )
+        );
+        userRepository.save(
+            IamServerUtilsTest.buildUser(
+                "userSubDev",
+                "user-sub-dev@vitamui.com",
+                GROUP_ID,
+                "otherCustomerId",
+                LEVEL + ".SUB"
+            )
+        );
 
         final AuthUserDto userDto = IamDtoBuilder.buildAuthUserDto(USER_ID, "test@vitamui.com");
         userDto.setLevel(LEVEL);
@@ -472,10 +526,21 @@ public final class UserInternalServiceIntegTest extends AbstractLogbookIntegrati
         final AuthUserDto mainUserDto = IamDtoBuilder.buildAuthUserDto(USER_ID, "test@vitamui.com");
         mainUserDto.setLevel(ApiIamInternalConstants.ADMIN_LEVEL);
 
-        final User userDev = IamServerUtilsTest.buildUser("userDev", "user-dev@vitamui.com", GROUP_ID, CUSTOMER_ID, LEVEL);
+        final User userDev = IamServerUtilsTest.buildUser(
+            "userDev",
+            "user-dev@vitamui.com",
+            GROUP_ID,
+            CUSTOMER_ID,
+            LEVEL
+        );
         userRepository.save(userDev);
-        final User userAdmin = IamServerUtilsTest.buildUser("userAdmin", "user-admin@vitamui.com", "otherGroup", CUSTOMER_ID,
-                ApiIamInternalConstants.ADMIN_LEVEL);
+        final User userAdmin = IamServerUtilsTest.buildUser(
+            "userAdmin",
+            "user-admin@vitamui.com",
+            "otherGroup",
+            CUSTOMER_ID,
+            ApiIamInternalConstants.ADMIN_LEVEL
+        );
         userRepository.save(userAdmin);
 
         Mockito.when(internalSecurityService.userIsRootLevel()).thenCallRealMethod();
@@ -517,8 +582,12 @@ public final class UserInternalServiceIntegTest extends AbstractLogbookIntegrati
         user.setStatus(UserStatusEnum.ENABLED);
         internalUserService.update(user);
 
-        final Criteria criteria = Criteria.where("obId").is(user.getIdentifier()).and("obIdReq").is(MongoDbCollections.USERS).and("evType")
-                .is(EventType.EXT_VITAMUI_PASSWORD_REVOCATION);
+        final Criteria criteria = Criteria.where("obId")
+            .is(user.getIdentifier())
+            .and("obIdReq")
+            .is(MongoDbCollections.USERS)
+            .and("evType")
+            .is(EventType.EXT_VITAMUI_PASSWORD_REVOCATION);
         final Collection<Event> events = eventRepository.findAll(Query.query(criteria));
         assertThat(events).hasSize(1);
         final Event event = events.iterator().next();
@@ -536,8 +605,12 @@ public final class UserInternalServiceIntegTest extends AbstractLogbookIntegrati
         user.setStatus(UserStatusEnum.ENABLED);
         internalUserService.update(user);
 
-        final Criteria criteria = Criteria.where("obId").is(user.getIdentifier()).and("obIdReq").is(MongoDbCollections.USERS).and("evType")
-                .is(EventType.EXT_VITAMUI_PASSWORD_REVOCATION);
+        final Criteria criteria = Criteria.where("obId")
+            .is(user.getIdentifier())
+            .and("obIdReq")
+            .is(MongoDbCollections.USERS)
+            .and("evType")
+            .is(EventType.EXT_VITAMUI_PASSWORD_REVOCATION);
         final Collection<Event> events = eventRepository.findAll(Query.query(criteria));
         assertThat(events).hasSize(1);
         final Event event = events.iterator().next();
@@ -557,8 +630,12 @@ public final class UserInternalServiceIntegTest extends AbstractLogbookIntegrati
         map.put("status", UserStatusEnum.ENABLED.toString());
         internalUserService.patch(map);
 
-        final Criteria criteria = Criteria.where("obId").is(user.getIdentifier()).and("obIdReq").is(MongoDbCollections.USERS).and("evType")
-                .is(EventType.EXT_VITAMUI_PASSWORD_REVOCATION);
+        final Criteria criteria = Criteria.where("obId")
+            .is(user.getIdentifier())
+            .and("obIdReq")
+            .is(MongoDbCollections.USERS)
+            .and("evType")
+            .is(EventType.EXT_VITAMUI_PASSWORD_REVOCATION);
         final Collection<Event> events = eventRepository.findAll(Query.query(criteria));
         assertThat(events).hasSize(1);
         final Event event = events.iterator().next();
@@ -583,22 +660,34 @@ public final class UserInternalServiceIntegTest extends AbstractLogbookIntegrati
         map.put("customerId", user.getCustomerId());
         map.put("address", TestUtils.getMapFromObject(newAddress));
 
-        Mockito.doCallRealMethod().when(addressService).processPatch(ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.anyBoolean());
+        Mockito.doCallRealMethod()
+            .when(addressService)
+            .processPatch(
+                ArgumentMatchers.any(),
+                ArgumentMatchers.any(),
+                ArgumentMatchers.any(),
+                ArgumentMatchers.anyBoolean()
+            );
 
         internalUserService.patch(map);
 
-        final Criteria criteria = Criteria.where("obId").is(user.getIdentifier()).and("obIdReq").is(MongoDbCollections.USERS).and("evType")
-                .is(EventType.EXT_VITAMUI_UPDATE_USER);
+        final Criteria criteria = Criteria.where("obId")
+            .is(user.getIdentifier())
+            .and("obIdReq")
+            .is(MongoDbCollections.USERS)
+            .and("evType")
+            .is(EventType.EXT_VITAMUI_UPDATE_USER);
         final Collection<Event> events = eventRepository.findAll(Query.query(criteria));
         assertThat(events).hasSize(1);
         final Event event = events.iterator().next();
         assertThat(event.getEvDetData()).isEqualTo(
-            "{\"diff\":{"
-                + "\"-Code postal\":\"-\",\"+Code postal\":\"-\","
-                + "\"-Pays\":\"-\",\"+Pays\":\"-\","
-                + "\"-Ville\":\"-\",\"+Ville\":\"-\","
-                + "\"-Nom de la rue\":\"-\",\"+Nom de la rue\":\"-\""
-                + "}}");
+            "{\"diff\":{" +
+            "\"-Code postal\":\"-\",\"+Code postal\":\"-\"," +
+            "\"-Pays\":\"-\",\"+Pays\":\"-\"," +
+            "\"-Ville\":\"-\",\"+Ville\":\"-\"," +
+            "\"-Nom de la rue\":\"-\",\"+Nom de la rue\":\"-\"" +
+            "}}"
+        );
     }
 
     @Test
@@ -615,8 +704,12 @@ public final class UserInternalServiceIntegTest extends AbstractLogbookIntegrati
         map.put("status", UserStatusEnum.ENABLED.toString());
         internalUserService.patch(map);
 
-        final Criteria criteria = Criteria.where("obId").is(user.getIdentifier()).and("obIdReq").is(MongoDbCollections.USERS).and("evType")
-                .is(EventType.EXT_VITAMUI_PASSWORD_REVOCATION);
+        final Criteria criteria = Criteria.where("obId")
+            .is(user.getIdentifier())
+            .and("obIdReq")
+            .is(MongoDbCollections.USERS)
+            .and("evType")
+            .is(EventType.EXT_VITAMUI_PASSWORD_REVOCATION);
         final Collection<Event> events = eventRepository.findAll(Query.query(criteria));
         assertThat(events).hasSize(1);
         final Event event = events.iterator().next();
@@ -625,7 +718,6 @@ public final class UserInternalServiceIntegTest extends AbstractLogbookIntegrati
 
     @Test
     public void testGetLevels() {
-
         final AuthUserDto userDto = IamDtoBuilder.buildAuthUserDto(USER_ID, "test@vitamui.com");
         userDto.setLevel(LEVEL);
         userDto.setCustomerId(CUSTOMER_ID);
@@ -643,7 +735,6 @@ public final class UserInternalServiceIntegTest extends AbstractLogbookIntegrati
 
     @Test
     public void testGroupFields() {
-
         final AuthUserDto userDto = IamDtoBuilder.buildAuthUserDto(USER_ID, "julien@vitamui.com");
         userDto.setLevel(LEVEL);
         userDto.setCustomerId(CUSTOMER_ID);
@@ -674,5 +765,4 @@ public final class UserInternalServiceIntegTest extends AbstractLogbookIntegrati
         assertThat(emailList).hasSize(2);
         assertThat(emailList).contains(user2Dto.getEmail(), userDto.getEmail());
     }
-
 }

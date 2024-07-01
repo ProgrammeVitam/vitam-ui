@@ -39,13 +39,12 @@ knowledge of the CeCILL-C license and that you accept its terms.
 package fr.gouv.vitamui.pastis.common.dto.profiles;
 
 public enum ProfileType {
-
     PA("PA"),
     PUA("PUA");
 
     private final String type;
 
-    ProfileType(String type){
+    ProfileType(String type) {
         this.type = type;
     }
 

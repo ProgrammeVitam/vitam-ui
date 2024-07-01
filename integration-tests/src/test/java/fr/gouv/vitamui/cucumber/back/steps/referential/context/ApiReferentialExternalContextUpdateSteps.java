@@ -43,8 +43,4 @@ import fr.gouv.vitamui.cucumber.common.CommonSteps;
  *
  *
  */
-public class ApiReferentialExternalContextUpdateSteps extends CommonSteps {
-
-
-
-}
+public class ApiReferentialExternalContextUpdateSteps extends CommonSteps {}

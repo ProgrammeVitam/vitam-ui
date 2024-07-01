@@ -64,7 +64,6 @@ public class InitContextConfiguration implements ServletContextInitializer {
 
     @Override
     public void onStartup(final ServletContext servletContext) throws ServletException {
-
         if (vitamuiLargeLogoPath != null) {
             try {
                 final Path logoFile = Paths.get(vitamuiLargeLogoPath);
@@ -84,7 +83,6 @@ public class InitContextConfiguration implements ServletContextInitializer {
                 LOGGER.warn("Can't find vitam ui favicon");
                 throw new ServletException(e);
             }
-
         }
     }
 }

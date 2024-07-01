@@ -36,15 +36,14 @@
  */
 package fr.gouv.vitamui.commons.api.utils;
 
+import fr.gouv.vitamui.commons.api.exception.InvalidTypeException;
+
 import java.util.List;
 import java.util.Map;
 
-import fr.gouv.vitamui.commons.api.exception.InvalidTypeException;
-
 public final class CastUtils {
 
-    private CastUtils() {
-    }
+    private CastUtils() {}
 
     /**
      * Cast the object into String.
@@ -57,8 +56,7 @@ public final class CastUtils {
     public static String toString(final Object value) {
         try {
             return (String) value;
-        }
-        catch (final ClassCastException e) {
+        } catch (final ClassCastException e) {
             throw new InvalidTypeException(e.getMessage());
         }
     }
@@ -74,8 +72,7 @@ public final class CastUtils {
     public static Boolean toBoolean(final Object value) {
         try {
             return (Boolean) value;
-        }
-        catch (final ClassCastException e) {
+        } catch (final ClassCastException e) {
             throw new InvalidTypeException(e.getMessage());
         }
     }
@@ -89,13 +86,12 @@ public final class CastUtils {
      * @return
      */
     public static Integer toInteger(final Object value) {
-        if(value == null) {
+        if (value == null) {
             return null;
         }
         try {
             return value instanceof Number ? ((Number) value).intValue() : (Integer) value;
-        }
-        catch (final ClassCastException e) {
+        } catch (final ClassCastException e) {
             throw new InvalidTypeException(e.getMessage());
         }
     }
@@ -109,13 +105,12 @@ public final class CastUtils {
      * @return
      */
     public static Long toLong(final Object value) {
-        if(value == null) {
+        if (value == null) {
             return null;
         }
         try {
             return (value != null && value instanceof Number) ? ((Number) value).longValue() : (Long) value;
-        }
-        catch (final ClassCastException e) {
+        } catch (final ClassCastException e) {
             throw new InvalidTypeException(e.getMessage());
         }
     }
@@ -129,13 +124,12 @@ public final class CastUtils {
      * @return
      */
     public static int toInt(final Object value) {
-        if(value == null) {
+        if (value == null) {
             return 0;
         }
         try {
             return Integer.parseInt(value.toString());
-        }
-        catch (final ClassCastException e) {
+        } catch (final ClassCastException e) {
             throw new InvalidTypeException(e.getMessage());
         }
     }
@@ -151,8 +145,7 @@ public final class CastUtils {
     public static Double toDouble(final Object value) {
         try {
             return value instanceof Number ? ((Number) value).doubleValue() : (Double) value;
-        }
-        catch (final ClassCastException e) {
+        } catch (final ClassCastException e) {
             throw new InvalidTypeException(e.getMessage());
         }
     }
@@ -169,8 +162,7 @@ public final class CastUtils {
     public static <T> List<T> toList(final Object value) {
         try {
             return List.class.cast(value);
-        }
-        catch (final ClassCastException e) {
+        } catch (final ClassCastException e) {
             throw new InvalidTypeException(e.getMessage());
         }
     }
@@ -187,8 +179,7 @@ public final class CastUtils {
     public static <K, V> Map<K, V> toMap(final Object value) {
         try {
             return Map.class.cast(value);
-        }
-        catch (final ClassCastException e) {
+        } catch (final ClassCastException e) {
             throw new InvalidTypeException(e.getMessage());
         }
     }
@@ -205,8 +196,7 @@ public final class CastUtils {
         T t;
         try {
             t = clazz.cast(value);
-        }
-        catch (final ClassCastException e) {
+        } catch (final ClassCastException e) {
             throw new InvalidTypeException(e.getMessage());
         }
         return t;

@@ -36,22 +36,7 @@
  */
 package fr.gouv.vitamui.referential.internal.client;
 
-import java.util.AbstractMap;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-
-import org.springframework.core.io.Resource;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.reactive.function.client.WebClient;
-
 import com.fasterxml.jackson.databind.JsonNode;
-
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
@@ -60,33 +45,45 @@ import fr.gouv.vitamui.commons.rest.client.BaseWebClient;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
+import org.springframework.http.HttpMethod;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.reactive.function.client.WebClient;
+
+import java.util.AbstractMap;
+import java.util.Collections;
+import java.util.Optional;
 
 /**
  * External WebClient for Rule operations.
  *
  *
  */
-public class RuleInternalWebClient extends BaseWebClient<ExternalHttpContext>  {
-	
+public class RuleInternalWebClient extends BaseWebClient<ExternalHttpContext> {
+
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(RuleInternalWebClient.class);
-    
+
     public RuleInternalWebClient(final WebClient webClient, final String baseUrl) {
         super(webClient, baseUrl);
     }
-    
+
     public JsonNode importRules(InternalHttpContext context, String fileName, MultipartFile file) {
-    	LOGGER.debug("import file {}", file != null ? file.getOriginalFilename() : null);
+        LOGGER.debug("import file {}", file != null ? file.getOriginalFilename() : null);
         if (file == null) {
             throw new BadRequestException("No file to import .");
         }
- 
-        return multipartData(getUrl() + CommonConstants.PATH_IMPORT, HttpMethod.POST, context, 
+
+        return multipartData(
+            getUrl() + CommonConstants.PATH_IMPORT,
+            HttpMethod.POST,
+            context,
             Collections.singletonMap("fileName", fileName),
-        	Optional.of(new AbstractMap.SimpleEntry<>("file", file)), JsonNode.class);
+            Optional.of(new AbstractMap.SimpleEntry<>("file", file)),
+            JsonNode.class
+        );
     }
-       
+
     @Override
     public String getPathUrl() {
-        return  RestApi.RULES_URL;
+        return RestApi.RULES_URL;
     }
 }

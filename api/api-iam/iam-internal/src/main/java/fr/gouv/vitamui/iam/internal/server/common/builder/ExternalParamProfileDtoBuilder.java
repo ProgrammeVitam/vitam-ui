@@ -37,7 +37,6 @@ public class ExternalParamProfileDtoBuilder {
     }
 
     public static ExternalParamProfileDto build(Profile profileDto) {
-
         final ExternalParamProfileDto externalParamProfileDto = new ExternalParamProfileDto();
 
         externalParamProfileDto.setName(profileDto.getName());

@@ -36,15 +36,14 @@
  */
 package fr.gouv.vitamui.iam.external.client;
 
-import java.util.List;
-
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.web.client.RestTemplate;
-
 import fr.gouv.vitamui.commons.api.domain.TenantDto;
 import fr.gouv.vitamui.commons.rest.client.BaseCrudRestClient;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.iam.common.rest.RestApi;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.web.client.RestTemplate;
+
+import java.util.List;
 
 /**
  * A REST client to check existence, read, create, update and delete the tenants.
@@ -69,7 +68,6 @@ public class TenantExternalRestClient extends BaseCrudRestClient<TenantDto, Exte
 
     @Override
     protected ParameterizedTypeReference<List<TenantDto>> getDtoListClass() {
-        return new ParameterizedTypeReference<List<TenantDto>>() {
-        };
+        return new ParameterizedTypeReference<List<TenantDto>>() {};
     }
 }

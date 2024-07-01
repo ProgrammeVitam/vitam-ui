@@ -55,7 +55,7 @@ import java.util.List;
 public class ResultsDto {
 
     @JsonProperty("#id")
-    @JsonAlias({"_id"})
+    @JsonAlias({ "_id" })
     private String id;
 
     @JsonProperty("Title")
@@ -86,7 +86,7 @@ public class ResultsDto {
     private Integer nbunits;
 
     @JsonProperty("#tenant")
-    @JsonAlias({"_tenant"})
+    @JsonAlias({ "_tenant" })
     private Integer tenant;
 
     @JsonProperty("#object")
@@ -111,7 +111,7 @@ public class ResultsDto {
     private List<String> operations = new ArrayList<>();
 
     @JsonProperty("#opi")
-    @JsonAlias({"_opi"})
+    @JsonAlias({ "_opi" })
     private String opi;
 
     @JsonProperty("#originating_agency")
@@ -169,7 +169,7 @@ public class ResultsDto {
     private FileInfoDto fileInfo;
 
     @JsonProperty("#qualifiers")
-    @JsonAlias({"_qualifiers"})
+    @JsonAlias({ "_qualifiers" })
     private List<QualifiersDto> qualifiers = new ArrayList<>();
 
     @JsonProperty("SubmissionAgency")
@@ -191,11 +191,11 @@ public class ResultsDto {
     private List<KeywordDto> keyword = new ArrayList<>();
 
     @JsonProperty("#approximate_creation_date")
-    @JsonAlias({"_acd"})
+    @JsonAlias({ "_acd" })
     private String approximateCreationDate;
 
     @JsonProperty("#approximate_update_date")
-    @JsonAlias({"_aud"})
+    @JsonAlias({ "_aud" })
     private String approximateEndDate;
 
     @JsonProperty("id")

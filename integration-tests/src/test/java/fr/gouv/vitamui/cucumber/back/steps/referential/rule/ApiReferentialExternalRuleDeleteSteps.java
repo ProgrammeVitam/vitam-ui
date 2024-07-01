@@ -40,6 +40,7 @@ import fr.gouv.vitamui.commons.rest.dto.RuleDto;
 import fr.gouv.vitamui.cucumber.common.CommonSteps;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
@@ -51,7 +52,9 @@ public class ApiReferentialExternalRuleDeleteSteps extends CommonSteps {
 
     private RuleDto ruleDto;
 
-    @When("^un utilisateur avec le role ROLE_GET_RULES supprime une regle en utilisant un certificat full access avec le role ROLE_GET_RULES$")
+    @When(
+        "^un utilisateur avec le role ROLE_GET_RULES supprime une regle en utilisant un certificat full access avec le role ROLE_GET_RULES$"
+    )
     public void un_utilisateur_avec_le_role_ROLE_GET_RULES_supprime_une_regle_en_utilisant_un_certificat_full_access_avec_le_role_ROLE_GET_RULES() {
         getRuleRestClient().delete(getSystemTenantUserAdminContext(), "RuleTest");
     }

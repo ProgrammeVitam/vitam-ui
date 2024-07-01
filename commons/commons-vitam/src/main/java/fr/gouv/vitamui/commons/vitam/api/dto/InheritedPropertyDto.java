@@ -37,7 +37,6 @@
 package fr.gouv.vitamui.commons.vitam.api.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -68,18 +67,15 @@ public class InheritedPropertyDto {
     @JsonProperty("PropertyName")
     private String propertyName;
 
-
     /**
      * PropertyValue
      */
     @JsonProperty("PropertyValue")
     private Object propertyValue;
 
-
     /**
      * Paths
      */
     @JsonProperty("Paths")
     private List<ArrayList<String>> paths = new ArrayList<>();
-
 }

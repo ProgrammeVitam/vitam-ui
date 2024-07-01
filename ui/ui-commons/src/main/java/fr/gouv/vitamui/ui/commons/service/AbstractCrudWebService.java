@@ -36,18 +36,17 @@
  */
 package fr.gouv.vitamui.ui.commons.service;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.util.Assert;
-
 import fr.gouv.vitamui.commons.api.domain.IdDto;
 import fr.gouv.vitamui.commons.api.exception.NotFoundException;
 import fr.gouv.vitamui.commons.api.utils.ApiUtils;
 import fr.gouv.vitamui.commons.rest.client.BaseCrudWebClient;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.util.Assert;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 /**
  * Abstract Class for WebClient calls for UI.
@@ -82,7 +81,10 @@ public abstract class AbstractCrudWebService<T extends IdDto> {
     }
 
     protected void beforePatch(final Map<String, Object> updates, final String id) {
-        Assert.isTrue(StringUtils.equals(id, (String) updates.get("id")), "The DTO identifier must match the path identifier for patch.");
+        Assert.isTrue(
+            StringUtils.equals(id, (String) updates.get("id")),
+            "The DTO identifier must match the path identifier for patch."
+        );
     }
 
     public T getOne(final ExternalHttpContext context, final String id) {
@@ -90,8 +92,7 @@ public abstract class AbstractCrudWebService<T extends IdDto> {
         final T entity = getClient().getOne(context, id, Optional.empty());
         if (entity == null) {
             throw new NotFoundException("No entities founds with id : " + id);
-        }
-        else {
+        } else {
             return entity;
         }
     }
@@ -105,5 +106,4 @@ public abstract class AbstractCrudWebService<T extends IdDto> {
     }
 
     public abstract <C extends ExternalHttpContext> BaseCrudWebClient<C, T> getClient();
-
 }

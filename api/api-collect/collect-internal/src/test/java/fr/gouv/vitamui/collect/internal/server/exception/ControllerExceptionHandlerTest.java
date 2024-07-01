@@ -70,7 +70,9 @@ class ControllerExceptionHandlerTest {
         // Verifying the response
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
         assertThat(response.getBody().getStatus()).isEqualTo(500);
-        assertThat(response.getBody().getMessage()).isEqualTo("A VitamClientException not handled by controllers does not have message");
+        assertThat(response.getBody().getMessage()).isEqualTo(
+            "A VitamClientException not handled by controllers does not have message"
+        );
     }
 
     @Test
@@ -84,7 +86,9 @@ class ControllerExceptionHandlerTest {
         // Verifying the response
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
         assertThat(response.getBody().getStatus()).isEqualTo(500);
-        assertThat(response.getBody().getMessage()).isEqualTo("A VitamClientException not handled by controllers have empty message");
+        assertThat(response.getBody().getMessage()).isEqualTo(
+            "A VitamClientException not handled by controllers have empty message"
+        );
     }
 
     @Test
@@ -142,7 +146,9 @@ class ControllerExceptionHandlerTest {
 
         // Mocking ObjectMapper behavior
         ObjectMapper objectMapper = mock(ObjectMapper.class);
-        when(objectMapper.readValue(anyString(), eq(VitamErrorDto.class))).thenReturn(new VitamErrorDto(400, null, null, null, "Bad request", null));
+        when(objectMapper.readValue(anyString(), eq(VitamErrorDto.class))).thenReturn(
+            new VitamErrorDto(400, null, null, null, "Bad request", null)
+        );
 
         // Injecting the mocked ObjectMapper
         controllerExceptionHandler.setObjectMapper(objectMapper);
@@ -162,11 +168,15 @@ class ControllerExceptionHandlerTest {
     @Test
     void shouldHandleTrackTotalHitsVitamClientException() throws IOException {
         // Mocking the exception message
-        when(exception.getMessage()).thenReturn("{\"httpCode\": 400, \"description\": \"track_total_hits is not authorized\"}");
+        when(exception.getMessage()).thenReturn(
+            "{\"httpCode\": 400, \"description\": \"track_total_hits is not authorized\"}"
+        );
 
         // Mocking ObjectMapper behavior
         ObjectMapper objectMapper = mock(ObjectMapper.class);
-        when(objectMapper.readValue(anyString(), eq(VitamErrorDto.class))).thenReturn(new VitamErrorDto(400, null, null, null, null, "track_total_hits is not authorized"));
+        when(objectMapper.readValue(anyString(), eq(VitamErrorDto.class))).thenReturn(
+            new VitamErrorDto(400, null, null, null, null, "track_total_hits is not authorized")
+        );
 
         // Injecting the mocked ObjectMapper
         controllerExceptionHandler.setObjectMapper(objectMapper);
@@ -183,4 +193,3 @@ class ControllerExceptionHandlerTest {
         verify(objectMapper, times(1)).readValue(anyString(), eq(VitamErrorDto.class));
     }
 }
-

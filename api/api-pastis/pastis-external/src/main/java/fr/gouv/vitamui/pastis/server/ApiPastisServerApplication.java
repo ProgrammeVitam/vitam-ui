@@ -52,20 +52,18 @@ import org.springframework.core.env.Environment;
 @EnableDiscoveryClient
 public class ApiPastisServerApplication implements CommandLineRunner {
 
-    private static final VitamUILogger LOGGER =
-        VitamUILoggerFactory.getInstance(ApiPastisServerApplication.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ApiPastisServerApplication.class);
+
     @Autowired
     private Environment env;
 
     public static void main(final String[] args) {
-        final SpringApplication app = new SpringApplicationBuilder(ApiPastisServerApplication.class)
-            .build();
+        final SpringApplication app = new SpringApplicationBuilder(ApiPastisServerApplication.class).build();
         app.run(args);
     }
 
     @Override
     public void run(final String... args) throws Exception {
-
         LOGGER.info("VITAMUI SpringBoot Application started:");
         LOGGER.info("spring.application.name: " + env.getProperty("spring.application.name"));
         LOGGER.info("-------------------------------");

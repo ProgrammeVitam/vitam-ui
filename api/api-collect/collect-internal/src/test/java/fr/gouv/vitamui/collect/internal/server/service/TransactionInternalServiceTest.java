@@ -66,10 +66,13 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
 class TransactionInternalServiceTest {
+
     @InjectMocks
     TransactionInternalService transactionInternalService;
+
     @Mock
     CollectService collectService;
+
     final PodamFactory factory = new PodamFactoryImpl();
     final VitamContext vitamContext = new VitamContext(1);
     ObjectMapper objectMapper = new ObjectMapper();
@@ -83,8 +86,9 @@ class TransactionInternalServiceTest {
     @Test
     void shouldValidateTransactionWithSuccess() throws VitamClientException {
         // GIVEN
-        when(collectService.validateTransaction(vitamContext, TRANSACTION_ID))
-            .thenReturn(new RequestResponseOK().setHttpCode(200));
+        when(collectService.validateTransaction(vitamContext, TRANSACTION_ID)).thenReturn(
+            new RequestResponseOK().setHttpCode(200)
+        );
         // THEN
         assertDoesNotThrow(() -> transactionInternalService.validateTransaction(TRANSACTION_ID, vitamContext));
     }
@@ -92,18 +96,20 @@ class TransactionInternalServiceTest {
     @Test
     void shouldThrowExceptionWhenValidateTransaction() throws VitamClientException {
         // GIVEN
-        when(collectService.validateTransaction(vitamContext, TRANSACTION_ID))
-            .thenThrow(VitamClientException.class);
+        when(collectService.validateTransaction(vitamContext, TRANSACTION_ID)).thenThrow(VitamClientException.class);
         // THEN
-        assertThrows(VitamClientException.class,
-            () -> transactionInternalService.validateTransaction(TRANSACTION_ID, vitamContext));
+        assertThrows(
+            VitamClientException.class,
+            () -> transactionInternalService.validateTransaction(TRANSACTION_ID, vitamContext)
+        );
     }
 
     @Test
     void shouldSendTransactionWithSuccess() throws VitamClientException {
         // GIVEN
-        when(collectService.sendTransaction(vitamContext, TRANSACTION_ID))
-            .thenReturn(new RequestResponseOK().setHttpCode(200));
+        when(collectService.sendTransaction(vitamContext, TRANSACTION_ID)).thenReturn(
+            new RequestResponseOK().setHttpCode(200)
+        );
         // THEN
         assertDoesNotThrow(() -> transactionInternalService.sendTransaction(TRANSACTION_ID, vitamContext));
     }
@@ -111,18 +117,20 @@ class TransactionInternalServiceTest {
     @Test
     void shouldThrowExceptionWhenSendTransaction() throws VitamClientException {
         // GIVEN
-        when(collectService.sendTransaction(vitamContext, TRANSACTION_ID))
-            .thenThrow(VitamClientException.class);
+        when(collectService.sendTransaction(vitamContext, TRANSACTION_ID)).thenThrow(VitamClientException.class);
         // THEN
-        assertThrows(VitamClientException.class,
-            () -> transactionInternalService.sendTransaction(TRANSACTION_ID, vitamContext));
+        assertThrows(
+            VitamClientException.class,
+            () -> transactionInternalService.sendTransaction(TRANSACTION_ID, vitamContext)
+        );
     }
 
     @Test
     void shouldAbortTransactionWithSuccess() throws VitamClientException {
         // GIVEN
-        when(collectService.abortTransaction(vitamContext, TRANSACTION_ID))
-            .thenReturn(new RequestResponseOK().setHttpCode(200));
+        when(collectService.abortTransaction(vitamContext, TRANSACTION_ID)).thenReturn(
+            new RequestResponseOK().setHttpCode(200)
+        );
         // THEN
         assertDoesNotThrow(() -> transactionInternalService.abortTransaction(TRANSACTION_ID, vitamContext));
     }
@@ -130,18 +138,20 @@ class TransactionInternalServiceTest {
     @Test
     void shouldThrowExceptionWhenAbortTransaction() throws VitamClientException {
         // GIVEN
-        when(collectService.abortTransaction(vitamContext, TRANSACTION_ID))
-            .thenThrow(VitamClientException.class);
+        when(collectService.abortTransaction(vitamContext, TRANSACTION_ID)).thenThrow(VitamClientException.class);
         // THEN
-        assertThrows(VitamClientException.class,
-            () -> transactionInternalService.abortTransaction(TRANSACTION_ID, vitamContext));
+        assertThrows(
+            VitamClientException.class,
+            () -> transactionInternalService.abortTransaction(TRANSACTION_ID, vitamContext)
+        );
     }
 
     @Test
     void shouldReopenTransactionWithSuccess() throws VitamClientException {
         // GIVEN
-        when(collectService.reopenTransaction(vitamContext, TRANSACTION_ID))
-            .thenReturn(new RequestResponseOK().setHttpCode(200));
+        when(collectService.reopenTransaction(vitamContext, TRANSACTION_ID)).thenReturn(
+            new RequestResponseOK().setHttpCode(200)
+        );
         // THEN
         assertDoesNotThrow(() -> transactionInternalService.reopenTransaction(TRANSACTION_ID, vitamContext));
     }
@@ -149,11 +159,12 @@ class TransactionInternalServiceTest {
     @Test
     void shouldThrowExceptionWhenReopenTransaction() throws VitamClientException {
         // GIVEN
-        when(collectService.reopenTransaction(vitamContext, TRANSACTION_ID))
-            .thenThrow(VitamClientException.class);
+        when(collectService.reopenTransaction(vitamContext, TRANSACTION_ID)).thenThrow(VitamClientException.class);
         // THEN
-        assertThrows(VitamClientException.class,
-            () -> transactionInternalService.reopenTransaction(TRANSACTION_ID, vitamContext));
+        assertThrows(
+            VitamClientException.class,
+            () -> transactionInternalService.reopenTransaction(TRANSACTION_ID, vitamContext)
+        );
     }
 
     @Test
@@ -164,14 +175,16 @@ class TransactionInternalServiceTest {
         RequestResponseOK<JsonNode> fakeResponse = new RequestResponseOK<>();
         fakeResponse.setHttpCode(200);
         fakeResponse.addResult(JsonHandler.toJsonNode(transactionDto));
-        RequestResponse<JsonNode> mockResponse = RequestResponse
-            .parseFromResponse(Response.ok(objectMapper.writeValueAsString(fakeResponse)).build());
+        RequestResponse<JsonNode> mockResponse = RequestResponse.parseFromResponse(
+            Response.ok(objectMapper.writeValueAsString(fakeResponse)).build()
+        );
 
-        when(collectService.getTransactionById(vitamContext, TRANSACTION_ID))
-            .thenReturn(mockResponse);
+        when(collectService.getTransactionById(vitamContext, TRANSACTION_ID)).thenReturn(mockResponse);
         // WHEN
-        CollectTransactionDto resultedTransaction =
-            transactionInternalService.getTransactionById(TRANSACTION_ID, vitamContext);
+        CollectTransactionDto resultedTransaction = transactionInternalService.getTransactionById(
+            TRANSACTION_ID,
+            vitamContext
+        );
         // THEN
         assertNotNull(resultedTransaction);
         assertEquals(transactionDto.getId(), resultedTransaction.getId());
@@ -185,11 +198,12 @@ class TransactionInternalServiceTest {
     @Test
     void shouldThrowExceptionWhenGetTransactionById() throws VitamClientException {
         // GIVEN
-        when(collectService.getTransactionById(vitamContext, TRANSACTION_ID))
-            .thenThrow(VitamClientException.class);
+        when(collectService.getTransactionById(vitamContext, TRANSACTION_ID)).thenThrow(VitamClientException.class);
         // THEN
-        assertThrows(VitamClientException.class,
-            () -> transactionInternalService.getTransactionById(TRANSACTION_ID, vitamContext));
+        assertThrows(
+            VitamClientException.class,
+            () -> transactionInternalService.getTransactionById(TRANSACTION_ID, vitamContext)
+        );
     }
 
     @Test
@@ -200,15 +214,16 @@ class TransactionInternalServiceTest {
         RequestResponseOK<JsonNode> fakeResponse = new RequestResponseOK<>();
         fakeResponse.setHttpCode(200);
         fakeResponse.addResult(JsonHandler.toJsonNode(transactionDto));
-        RequestResponse<JsonNode> mockResponse = RequestResponse
-            .parseFromResponse(Response.ok(objectMapper.writeValueAsString(fakeResponse)).build());
+        RequestResponse<JsonNode> mockResponse = RequestResponse.parseFromResponse(
+            Response.ok(objectMapper.writeValueAsString(fakeResponse)).build()
+        );
 
-        when(collectService.updateTransaction(vitamContext, transactionDto))
-            .thenReturn(mockResponse);
+        when(collectService.updateTransaction(vitamContext, transactionDto)).thenReturn(mockResponse);
         // WHEN
-        CollectTransactionDto resultedTransaction =
-            transactionInternalService.updateTransaction(TransactionConverter.toVitamUiDto(transactionDto),
-                vitamContext);
+        CollectTransactionDto resultedTransaction = transactionInternalService.updateTransaction(
+            TransactionConverter.toVitamUiDto(transactionDto),
+            vitamContext
+        );
         // THEN
         assertNotNull(resultedTransaction);
         assertEquals(transactionDto.getId(), resultedTransaction.getId());
@@ -221,11 +236,12 @@ class TransactionInternalServiceTest {
     @Test
     void shouldThrowExceptionWhenUpdateTransaction() throws VitamClientException {
         // GIVEN
-        when(collectService.getTransactionById(vitamContext, TRANSACTION_ID))
-            .thenThrow(VitamClientException.class);
+        when(collectService.getTransactionById(vitamContext, TRANSACTION_ID)).thenThrow(VitamClientException.class);
         // THEN
-        assertThrows(VitamClientException.class,
-            () -> transactionInternalService.getTransactionById(TRANSACTION_ID, vitamContext));
+        assertThrows(
+            VitamClientException.class,
+            () -> transactionInternalService.getTransactionById(TRANSACTION_ID, vitamContext)
+        );
     }
 
     @Test
@@ -239,11 +255,15 @@ class TransactionInternalServiceTest {
         String fakeContent = "Path;Name;blablabla";
         InputStream csvContent = new ByteArrayInputStream(fakeContent.getBytes());
 
-        when(collectService.updateCollectArchiveUnits(vitamContext, TRANSACTION_ID, csvContent))
-            .thenReturn("BELIEVE ME, I AM 200");
+        when(collectService.updateCollectArchiveUnits(vitamContext, TRANSACTION_ID, csvContent)).thenReturn(
+            "BELIEVE ME, I AM 200"
+        );
         // WHEN
-        String resultedOperation =
-            transactionInternalService.updateArchiveUnitsFromFile(csvContent, TRANSACTION_ID, vitamContext);
+        String resultedOperation = transactionInternalService.updateArchiveUnitsFromFile(
+            csvContent,
+            TRANSACTION_ID,
+            vitamContext
+        );
         // THEN
         assertNotNull(resultedOperation);
     }
@@ -251,10 +271,11 @@ class TransactionInternalServiceTest {
     @Test
     void shouldThrowExceptionWhenUpdateArchiveUnitsFromFile() throws VitamClientException {
         // GIVEN
-        when(collectService.updateCollectArchiveUnits(any(), any(), any()))
-            .thenReturn("ERROR_400");
+        when(collectService.updateCollectArchiveUnits(any(), any(), any())).thenReturn("ERROR_400");
         // THEN
-        assertThrows(RequestTimeOutException.class,
-            () -> transactionInternalService.updateArchiveUnitsFromFile(any(), any(), any()));
+        assertThrows(
+            RequestTimeOutException.class,
+            () -> transactionInternalService.updateArchiveUnitsFromFile(any(), any(), any())
+        );
     }
 }

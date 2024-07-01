@@ -32,16 +32,20 @@ import fr.gouv.vitamui.commons.rest.client.configuration.HttpPoolConfiguration;
 import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 
-
 public class CollectInternalRestClientFactory extends BaseRestClientFactory {
 
-    public CollectInternalRestClientFactory(final RestClientConfiguration restClientConfiguration,
-        final RestTemplateBuilder restTemplateBuilder) {
+    public CollectInternalRestClientFactory(
+        final RestClientConfiguration restClientConfiguration,
+        final RestTemplateBuilder restTemplateBuilder
+    ) {
         super(restClientConfiguration, restTemplateBuilder);
     }
 
-    public CollectInternalRestClientFactory(final RestClientConfiguration restClientConfiguration,
-        final HttpPoolConfiguration httpHostConfiguration, final RestTemplateBuilder restTemplateBuilder) {
+    public CollectInternalRestClientFactory(
+        final RestClientConfiguration restClientConfiguration,
+        final HttpPoolConfiguration httpHostConfiguration,
+        final RestTemplateBuilder restTemplateBuilder
+    ) {
         super(restClientConfiguration, httpHostConfiguration, restTemplateBuilder);
     }
 

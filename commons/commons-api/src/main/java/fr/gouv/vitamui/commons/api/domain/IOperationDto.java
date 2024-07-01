@@ -36,9 +36,9 @@
  */
 package fr.gouv.vitamui.commons.api.domain;
 
-import java.time.OffsetDateTime;
-
 import fr.gouv.vitamui.commons.api.enums.OperationStatus;
+
+import java.time.OffsetDateTime;
 
 /**
  * Interface describing a basic operation.
@@ -46,7 +46,6 @@ import fr.gouv.vitamui.commons.api.enums.OperationStatus;
  *
  */
 public interface IOperationDto {
-
     String getId();
 
     void setId(String id);
@@ -78,5 +77,4 @@ public interface IOperationDto {
     String getStatusInformation();
 
     void setStatusInformation(String statusInformation);
-
 }

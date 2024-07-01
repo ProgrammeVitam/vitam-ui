@@ -39,11 +39,11 @@ package fr.gouv.vitamui.archive.internal.server.searchcriteria.service;
 import fr.gouv.vitamui.archive.internal.server.searchcriteria.converter.SearchCriteriaHistoryConverter;
 import fr.gouv.vitamui.archive.internal.server.searchcriteria.dao.SearchCriteriaHistoryRepository;
 import fr.gouv.vitamui.archive.internal.server.searchcriteria.domain.SearchCriteriaHistory;
-import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaHistoryDto;
 import fr.gouv.vitamui.commons.api.converter.Converter;
 import fr.gouv.vitamui.commons.api.domain.Criterion;
 import fr.gouv.vitamui.commons.api.domain.CriterionOperator;
 import fr.gouv.vitamui.commons.api.domain.QueryDto;
+import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaHistoryDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
@@ -59,9 +59,12 @@ import java.util.List;
 
 @Getter
 @Setter
-public class SearchCriteriaHistoryInternalService extends VitamUICrudService<SearchCriteriaHistoryDto, SearchCriteriaHistory> {
+public class SearchCriteriaHistoryInternalService
+    extends VitamUICrudService<SearchCriteriaHistoryDto, SearchCriteriaHistory> {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(SearchCriteriaHistoryInternalService.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
+        SearchCriteriaHistoryInternalService.class
+    );
 
     private final SearchCriteriaHistoryRepository searchCriteriaHistoryRepo;
 
@@ -71,10 +74,11 @@ public class SearchCriteriaHistoryInternalService extends VitamUICrudService<Sea
 
     @Autowired
     public SearchCriteriaHistoryInternalService(
-    		final CustomSequenceRepository sequenceRepository,
-    		final SearchCriteriaHistoryRepository searchCriteriaHistoryRepo,
-    		final SearchCriteriaHistoryConverter searchCriteriaHistoryConverter,
-    		final InternalSecurityService internalSecurityService) {
+        final CustomSequenceRepository sequenceRepository,
+        final SearchCriteriaHistoryRepository searchCriteriaHistoryRepo,
+        final SearchCriteriaHistoryConverter searchCriteriaHistoryConverter,
+        final InternalSecurityService internalSecurityService
+    ) {
         super(sequenceRepository);
         this.searchCriteriaHistoryRepo = searchCriteriaHistoryRepo;
         this.searchCriteriaHistoryConverter = searchCriteriaHistoryConverter;
@@ -87,11 +91,11 @@ public class SearchCriteriaHistoryInternalService extends VitamUICrudService<Sea
      */
     public List<SearchCriteriaHistoryDto> getSearchCriteriaHistoryDtos() {
         LOGGER.debug("getSearchCriteriaHistoryDtos");
-    	AuthUserDto authUserDto = internalSecurityService.getUser();
+        AuthUserDto authUserDto = internalSecurityService.getUser();
 
         LOGGER.debug("Get the search history for user : {}", authUserDto.getIdentifier());
         QueryDto criteria = new QueryDto();
-        criteria.addCriterion(new Criterion("userId", authUserDto.getIdentifier() , CriterionOperator.EQUALS));
+        criteria.addCriterion(new Criterion("userId", authUserDto.getIdentifier(), CriterionOperator.EQUALS));
         return this.getAll(criteria);
     }
 
@@ -100,30 +104,32 @@ public class SearchCriteriaHistoryInternalService extends VitamUICrudService<Sea
         AuthUserDto authUserDto = internalSecurityService.getUser();
         dto.setUserId(authUserDto.getIdentifier());
         List<SearchCriteriaHistoryDto> list = getSearchCriteriaHistoryDtos();
-        Assert.isTrue(list != null && list.size() < 10, "L’enregistrement n'est pas possible car vous avez atteint le nombre limite de recherches enregistrées. Veuillez supprimer au moins une de vos recherches.");
+        Assert.isTrue(
+            list != null && list.size() < 10,
+            "L’enregistrement n'est pas possible car vous avez atteint le nombre limite de recherches enregistrées. Veuillez supprimer au moins une de vos recherches."
+        );
     }
 
     /**
      * {@inheritDoc}
      */
-	@Override
-	protected SearchCriteriaHistoryRepository getRepository() {
-		return searchCriteriaHistoryRepo;
-	}
+    @Override
+    protected SearchCriteriaHistoryRepository getRepository() {
+        return searchCriteriaHistoryRepo;
+    }
 
     /**
      * {@inheritDoc}
      */
-	@Override
-	protected Class<SearchCriteriaHistory> getEntityClass() {
-	      return SearchCriteriaHistory.class;
-	}
+    @Override
+    protected Class<SearchCriteriaHistory> getEntityClass() {
+        return SearchCriteriaHistory.class;
+    }
 
     @Override
     protected String getObjectName() {
         return "searchCriteriaHistory";
     }
-
 
     @Override
     protected Converter<SearchCriteriaHistoryDto, SearchCriteriaHistory> getConverter() {

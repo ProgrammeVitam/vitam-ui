@@ -62,7 +62,10 @@ import static org.junit.Assert.assertNotNull;
 
 @RunWith(SpringRunner.class)
 @Import({ TestMongoConfig.class })
-@EnableMongoRepositories(basePackageClasses = ExternalParametersRepository.class, repositoryBaseClass = VitamUIRepositoryImpl.class)
+@EnableMongoRepositories(
+    basePackageClasses = ExternalParametersRepository.class,
+    repositoryBaseClass = VitamUIRepositoryImpl.class
+)
 public class ExternalParametersRepositoryTest {
 
     @Autowired
@@ -77,16 +80,16 @@ public class ExternalParametersRepositoryTest {
 
     @Test
     public void testSave() {
-    	final ExternalParameters parameters = new ExternalParameters();
-    	parameters.setId(EXTERNAL_PARAMETERS_ID);
+        final ExternalParameters parameters = new ExternalParameters();
+        parameters.setId(EXTERNAL_PARAMETERS_ID);
 
-        final ExternalParameters created  = repository.save(parameters);
+        final ExternalParameters created = repository.save(parameters);
         assertThat(created.getId()).isEqualTo(EXTERNAL_PARAMETERS_ID);
     }
 
     @Test
     public void testFindById() {
-    	Query query = new Query();
+        Query query = new Query();
         query.addCriteria(Criteria.where("id").is(EXTERNAL_PARAMETERS_ID));
 
         final Optional<ExternalParameters> externalParameters = repository.findOne(query);

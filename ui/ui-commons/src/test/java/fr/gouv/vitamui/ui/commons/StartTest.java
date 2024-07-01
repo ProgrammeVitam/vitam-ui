@@ -26,11 +26,12 @@ public class StartTest extends AbstractVitamUIApplication {
         LOGGER.debug("Spring Boot - active profile: {}.", System.getProperty("spring.profiles.active"));
         try {
             LOGGER.debug("Spring Boot - Module: {}.", getModuleName());
-            LOGGER.debug("Spring Boot - Logger Message preprend: {}.",
-                    ServerIdentityConfiguration.getInstance().getLoggerMessagePrepend());
+            LOGGER.debug(
+                "Spring Boot - Logger Message preprend: {}.",
+                ServerIdentityConfiguration.getInstance().getLoggerMessagePrepend()
+            );
             LOGGER.debug("Spring Boot : {}.", ServerIdentityConfiguration.getInstance());
-        }
-        catch (final InternalServerException | NullPointerException exception) {
+        } catch (final InternalServerException | NullPointerException exception) {
             // do nothing
         }
     }

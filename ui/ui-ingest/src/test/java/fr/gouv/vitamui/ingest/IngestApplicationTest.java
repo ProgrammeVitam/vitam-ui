@@ -25,5 +25,4 @@ public class IngestApplicationTest {
     public void testPropertiesLoading() {
         assertThat(ingestApplicationProperties).isNotNull();
     }
-
 }

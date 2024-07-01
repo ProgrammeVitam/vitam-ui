@@ -22,6 +22,5 @@ public class IngestExternalRestClientTest extends AbstractServerIdentityBuilder 
     }
 
     @Test
-    public void basicIngestTest() {
-    }
+    public void basicIngestTest() {}
 }

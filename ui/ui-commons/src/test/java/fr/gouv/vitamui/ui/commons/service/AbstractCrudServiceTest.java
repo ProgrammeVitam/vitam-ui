@@ -1,16 +1,15 @@
 package fr.gouv.vitamui.ui.commons.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
+import fr.gouv.vitamui.commons.api.domain.IdDto;
+import fr.gouv.vitamui.commons.rest.client.BaseCrudRestClient;
+import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
+import org.mockito.Mockito;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import org.mockito.Mockito;
-
-import fr.gouv.vitamui.commons.api.domain.IdDto;
-import fr.gouv.vitamui.commons.rest.client.BaseCrudRestClient;
-import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 
 public abstract class AbstractCrudServiceTest<T extends IdDto> {
 

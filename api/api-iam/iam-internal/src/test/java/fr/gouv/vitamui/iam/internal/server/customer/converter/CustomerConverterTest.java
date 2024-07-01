@@ -1,17 +1,16 @@
 package fr.gouv.vitamui.iam.internal.server.customer.converter;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.util.ArrayList;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.Mock;
-
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.iam.internal.server.common.converter.AddressConverter;
 import fr.gouv.vitamui.iam.internal.server.owner.converter.OwnerConverter;
 import fr.gouv.vitamui.iam.internal.server.owner.dao.OwnerRepository;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.Mock;
+
+import java.util.ArrayList;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class CustomerConverterTest {
 
@@ -36,7 +35,5 @@ public class CustomerConverterTest {
         customer.setEmailDomains(new ArrayList<>());
         String json = customerConverter.convertToLogbook(customer);
         assertThat(json).isNotBlank();
-
     }
-
 }

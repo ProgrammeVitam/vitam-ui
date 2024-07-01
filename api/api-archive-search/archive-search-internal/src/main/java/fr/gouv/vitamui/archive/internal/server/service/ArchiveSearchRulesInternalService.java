@@ -66,9 +66,10 @@ import static fr.gouv.vitam.common.database.builder.query.QueryHelper.or;
  */
 @Service
 public class ArchiveSearchRulesInternalService {
-    private static final VitamUILogger LOGGER =
-        VitamUILoggerFactory.getInstance(ArchiveSearchRulesInternalService.class);
 
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
+        ArchiveSearchRulesInternalService.class
+    );
 
     private final ObjectMapper objectMapper;
     private final RuleService ruleService;
@@ -82,80 +83,94 @@ public class ArchiveSearchRulesInternalService {
     public void mapManagementRulesTitlesToCodes(SearchCriteriaDto searchQuery, VitamContext vitamContext)
         throws VitamClientException {
         if (!CollectionUtils.isEmpty(searchQuery.getCriteriaList())) {
-            for (ArchiveSearchConsts.CriteriaMgtRulesCategory mgtRulesCategory : ArchiveSearchConsts.CriteriaMgtRulesCategory
-                .values()) {
-                ArchiveSearchConsts.CriteriaCategory category =
-                    ArchiveSearchConsts.CriteriaCategory.valueOf(mgtRulesCategory.name());
+            for (ArchiveSearchConsts.CriteriaMgtRulesCategory mgtRulesCategory : ArchiveSearchConsts.CriteriaMgtRulesCategory.values()) {
+                ArchiveSearchConsts.CriteriaCategory category = ArchiveSearchConsts.CriteriaCategory.valueOf(
+                    mgtRulesCategory.name()
+                );
                 if (category != null) {
-                    List<SearchCriteriaEltDto> titleRulesCriteriaList = searchQuery
-                        .extractCriteriaListByCategoryAndFieldNames(category, List.of(ArchiveSearchConsts.RULE_TITLE));
+                    List<SearchCriteriaEltDto> titleRulesCriteriaList =
+                        searchQuery.extractCriteriaListByCategoryAndFieldNames(
+                            category,
+                            List.of(ArchiveSearchConsts.RULE_TITLE)
+                        );
 
-                    List<SearchCriteriaEltDto> appraisalMgtRulesCriteriaListProcessed =
-                        searchQuery.getCriteriaList().stream()
-                            .filter(criteriaElt -> !category.equals(criteriaElt.getCategory()) ||
-                                !criteriaElt.getCriteria().equals(ArchiveSearchConsts.RULE_TITLE))
-                            .collect(Collectors.toList());
+                    List<SearchCriteriaEltDto> appraisalMgtRulesCriteriaListProcessed = searchQuery
+                        .getCriteriaList()
+                        .stream()
+                        .filter(
+                            criteriaElt ->
+                                !category.equals(criteriaElt.getCategory()) ||
+                                !criteriaElt.getCriteria().equals(ArchiveSearchConsts.RULE_TITLE)
+                        )
+                        .collect(Collectors.toList());
 
                     if (!CollectionUtils.isEmpty(titleRulesCriteriaList)) {
                         for (SearchCriteriaEltDto titleCriteriaElt : titleRulesCriteriaList) {
                             if (!CollectionUtils.isEmpty(titleCriteriaElt.getValues())) {
-                                List<String> mgtRulesIdsFound = findRulesByNames(vitamContext,
-                                    titleCriteriaElt.getValues().stream().map(CriteriaValue::getValue)
+                                List<String> mgtRulesIdsFound = findRulesByNames(
+                                    vitamContext,
+                                    titleCriteriaElt
+                                        .getValues()
+                                        .stream()
+                                        .map(CriteriaValue::getValue)
                                         .collect(Collectors.toList()),
-                                    ArchiveSearchConsts.CriteriaMgtRulesCategory.valueOf(category.name())
-                                        .getFieldMapping())
+                                    ArchiveSearchConsts.CriteriaMgtRulesCategory.valueOf(
+                                        category.name()
+                                    ).getFieldMapping()
+                                )
                                     .stream()
                                     .map(FileRulesModel::getRuleId)
                                     .collect(Collectors.toList());
-                                handleFoundRules(searchQuery, category, appraisalMgtRulesCriteriaListProcessed,
-                                    mgtRulesIdsFound);
+                                handleFoundRules(
+                                    searchQuery,
+                                    category,
+                                    appraisalMgtRulesCriteriaListProcessed,
+                                    mgtRulesIdsFound
+                                );
                             }
                         }
                     }
                 }
             }
         }
-
-
     }
 
-    private void handleFoundRules(SearchCriteriaDto searchQuery, ArchiveSearchConsts.CriteriaCategory category,
-        List<SearchCriteriaEltDto> appraisalMgtRulesCriteriaListProcessed, List<String> mgtRulesIdsFound) {
+    private void handleFoundRules(
+        SearchCriteriaDto searchQuery,
+        ArchiveSearchConsts.CriteriaCategory category,
+        List<SearchCriteriaEltDto> appraisalMgtRulesCriteriaListProcessed,
+        List<String> mgtRulesIdsFound
+    ) {
         if (!CollectionUtils.isEmpty(mgtRulesIdsFound)) {
-            Map<String, SearchCriteriaEltDto> appraisalMgtRulesCriteriaMap =
-                appraisalMgtRulesCriteriaListProcessed.stream()
-                    .collect(
-                        Collectors
-                            .toMap(SearchCriteriaEltDto::getCriteria, Function.identity()));
+            Map<String, SearchCriteriaEltDto> appraisalMgtRulesCriteriaMap = appraisalMgtRulesCriteriaListProcessed
+                .stream()
+                .collect(Collectors.toMap(SearchCriteriaEltDto::getCriteria, Function.identity()));
             SearchCriteriaEltDto ruleIdCriteria;
-            if (appraisalMgtRulesCriteriaMap
-                .containsKey(ArchiveSearchConsts.RULE_IDENTIFIER)) {
-                ruleIdCriteria =
-                    appraisalMgtRulesCriteriaMap
-                        .get(ArchiveSearchConsts.RULE_IDENTIFIER);
+            if (appraisalMgtRulesCriteriaMap.containsKey(ArchiveSearchConsts.RULE_IDENTIFIER)) {
+                ruleIdCriteria = appraisalMgtRulesCriteriaMap.get(ArchiveSearchConsts.RULE_IDENTIFIER);
                 if (!CollectionUtils.isEmpty(mgtRulesIdsFound)) {
-                    mgtRulesIdsFound
-                        .addAll(ruleIdCriteria.getValues().stream().map(CriteriaValue::getValue)
-                            .collect(Collectors.toList()));
+                    mgtRulesIdsFound.addAll(
+                        ruleIdCriteria.getValues().stream().map(CriteriaValue::getValue).collect(Collectors.toList())
+                    );
                 }
             } else {
                 ruleIdCriteria = new SearchCriteriaEltDto();
-                ruleIdCriteria
-                    .setCriteria(ArchiveSearchConsts.RULE_IDENTIFIER);
+                ruleIdCriteria.setCriteria(ArchiveSearchConsts.RULE_IDENTIFIER);
                 ruleIdCriteria.setOperator(ArchiveSearchConsts.CriteriaOperators.EQ.name());
                 ruleIdCriteria.setCategory(category);
             }
-            ruleIdCriteria.setValues(mgtRulesIdsFound.stream().map(CriteriaValue::new).collect(
-                Collectors.toList()));
-            appraisalMgtRulesCriteriaMap
-                .put(ArchiveSearchConsts.RULE_IDENTIFIER, ruleIdCriteria);
+            ruleIdCriteria.setValues(mgtRulesIdsFound.stream().map(CriteriaValue::new).collect(Collectors.toList()));
+            appraisalMgtRulesCriteriaMap.put(ArchiveSearchConsts.RULE_IDENTIFIER, ruleIdCriteria);
             searchQuery.setCriteriaList(new ArrayList<>(appraisalMgtRulesCriteriaMap.values()));
         }
     }
 
-
-    public List<FileRulesModel> findRulesByCriteria(VitamContext vitamContext, String field,
-        List<String> rulesIdentifiers, String ruleType) throws VitamClientException {
+    public List<FileRulesModel> findRulesByCriteria(
+        VitamContext vitamContext,
+        String field,
+        List<String> rulesIdentifiers,
+        String ruleType
+    ) throws VitamClientException {
         List<FileRulesModel> rules = new ArrayList<>();
         if (rulesIdentifiers != null && !rulesIdentifiers.isEmpty()) {
             LOGGER.debug("Finding management rules by field {}  values {} ", field, rulesIdentifiers);
@@ -179,10 +194,8 @@ public class ArchiveSearchRulesInternalService {
                 select.setQuery(query);
                 JsonNode queryRules = select.getFinalSelect();
 
-                RequestResponse<FileRulesModel> requestResponse =
-                    ruleService.findRules(vitamContext, queryRules);
-                rules =
-                    objectMapper.treeToValue(requestResponse.toJsonNode(), RuleNodeResponseDto.class).getResults();
+                RequestResponse<FileRulesModel> requestResponse = ruleService.findRules(vitamContext, queryRules);
+                rules = objectMapper.treeToValue(requestResponse.toJsonNode(), RuleNodeResponseDto.class).getResults();
             } catch (InvalidCreateOperationException e) {
                 throw new VitamClientException("Unable to find the rules ", e);
             } catch (JsonProcessingException e1) {
@@ -201,12 +214,12 @@ public class ArchiveSearchRulesInternalService {
      * @return : list of vitam rules
      * @throws VitamClientException
      */
-    public List<FileRulesModel> findRulesByNames(VitamContext vitamContext, List<String> rulesIdentifiers,
-        String ruleType)
-        throws VitamClientException {
+    public List<FileRulesModel> findRulesByNames(
+        VitamContext vitamContext,
+        List<String> rulesIdentifiers,
+        String ruleType
+    ) throws VitamClientException {
         List<String> rulesIdentifiersList = new ArrayList<>(rulesIdentifiers);
         return findRulesByCriteria(vitamContext, ArchiveSearchConsts.RULE_NAME_FIELD, rulesIdentifiersList, ruleType);
     }
-
-
 }

@@ -68,7 +68,9 @@ public class ApiReferentialExternalRulePatchSteps extends CommonSteps {
         getRuleRestClient().patch(getSystemTenantUserAdminContext(), partialDto);
     }
 
-    @When("^un utilisateur avec le role ROLE_GET_RULES modifie le type d'une regle en utilisant un certificat full access avec le role ROLE_GET_RULES$")
+    @When(
+        "^un utilisateur avec le role ROLE_GET_RULES modifie le type d'une regle en utilisant un certificat full access avec le role ROLE_GET_RULES$"
+    )
     public void un_utilisateur_avec_le_role_ROLE_GET_RULES_modifie_le_type_d_une_regle_en_utilisant_un_certificat_full_access_avec_le_role_ROLE_GET_RULES() {
         final Map<String, Object> partialDto = new HashMap<>();
         partialDto.put("id", "RuleTest");
@@ -83,7 +85,9 @@ public class ApiReferentialExternalRulePatchSteps extends CommonSteps {
         assertThat(ruleDto.getRuleType()).isEqualTo("AppraisalRule");
     }
 
-    @When("^un utilisateur avec le role ROLE_GET_RULES modifie la duree d'une regle en utilisant un certificat full access avec le role ROLE_GET_RULES$")
+    @When(
+        "^un utilisateur avec le role ROLE_GET_RULES modifie la duree d'une regle en utilisant un certificat full access avec le role ROLE_GET_RULES$"
+    )
     public void un_utilisateur_avec_le_role_ROLE_GET_RULES_modifie_la_duree_d_une_regle_en_utilisant_un_certificat_full_access_avec_le_role_ROLE_GET_RULES() {
         final Map<String, Object> partialDto = new HashMap<>();
         partialDto.put("id", "RuleTest");
@@ -98,7 +102,9 @@ public class ApiReferentialExternalRulePatchSteps extends CommonSteps {
         assertThat(ruleDto.getRuleDuration()).isEqualTo("150");
     }
 
-    @When("^un utilisateur avec le role ROLE_GET_RULES modifie la mesure de la duree d'une regle en utilisant un certificat full access avec le role ROLE_GET_RULES$")
+    @When(
+        "^un utilisateur avec le role ROLE_GET_RULES modifie la mesure de la duree d'une regle en utilisant un certificat full access avec le role ROLE_GET_RULES$"
+    )
     public void un_utilisateur_avec_le_role_ROLE_GET_RULES_modifie_la_mesure_de_la_duree_d_une_regle_en_utilisant_un_certificat_full_access_avec_le_role_ROLE_GET_RULES() {
         final Map<String, Object> partialDto = new HashMap<>();
         partialDto.put("id", "RuleTest");
@@ -113,7 +119,9 @@ public class ApiReferentialExternalRulePatchSteps extends CommonSteps {
         assertThat(ruleDto.getRuleMeasurement()).isEqualTo("YEAR");
     }
 
-    @When("^un utilisateur avec le role ROLE_GET_RULES modifie la description d'une regle en utilisant un certificat full access avec le role ROLE_GET_RULES$")
+    @When(
+        "^un utilisateur avec le role ROLE_GET_RULES modifie la description d'une regle en utilisant un certificat full access avec le role ROLE_GET_RULES$"
+    )
     public void un_utilisateur_avec_le_role_ROLE_GET_RULES_modifie_la_description_d_une_regle_en_utilisant_un_certificat_full_access_avec_le_role_ROLE_GET_RULES() {
         final Map<String, Object> partialDto = new HashMap<>();
         partialDto.put("id", "RuleTest");
@@ -128,7 +136,9 @@ public class ApiReferentialExternalRulePatchSteps extends CommonSteps {
         assertThat(ruleDto.getRuleDescription()).isEqualTo("Nouvelle description");
     }
 
-    @When("^un utilisateur avec le role ROLE_GET_RULES modifie les champs d'une regle en utilisant un certificat full access avec le role ROLE_GET_RULES$")
+    @When(
+        "^un utilisateur avec le role ROLE_GET_RULES modifie les champs d'une regle en utilisant un certificat full access avec le role ROLE_GET_RULES$"
+    )
     public void un_utilisateur_avec_le_role_ROLE_GET_RULES_modifie_les_champs_d_une_regle_en_utilisant_un_certificat_full_access_avec_le_role_ROLE_GET_RULES() {
         final Map<String, Object> partialDto = new HashMap<>();
         partialDto.put("id", "RuleTest");

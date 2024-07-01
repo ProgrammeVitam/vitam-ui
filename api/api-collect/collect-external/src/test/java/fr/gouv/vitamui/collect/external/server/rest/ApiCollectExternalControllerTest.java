@@ -38,8 +38,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.TestPropertySource;
 
-@Import(value = {WebSecurityConfig.class, ServerIdentityConfiguration.class, RestExceptionHandler.class})
-@TestPropertySource(properties = {"spring.config.name=collect-external-application"})
+@Import(value = { WebSecurityConfig.class, ServerIdentityConfiguration.class, RestExceptionHandler.class })
+@TestPropertySource(properties = { "spring.config.name=collect-external-application" })
 public abstract class ApiCollectExternalControllerTest<T extends IdDto> extends ApiControllerTest<T> {
 
     @MockBean

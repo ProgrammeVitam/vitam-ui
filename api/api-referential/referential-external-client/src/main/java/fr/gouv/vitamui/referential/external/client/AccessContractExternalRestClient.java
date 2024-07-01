@@ -36,31 +36,32 @@
  */
 package fr.gouv.vitamui.referential.external.client;
 
-import java.util.List;
-
 import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
+import fr.gouv.vitamui.commons.rest.client.BasePaginatingAndSortingRestClient;
+import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
+import fr.gouv.vitamui.referential.common.dto.AccessContractDto;
+import fr.gouv.vitamui.referential.common.rest.RestApi;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
-
-import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
-import fr.gouv.vitamui.commons.rest.client.BasePaginatingAndSortingRestClient;
-import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
-import fr.gouv.vitamui.referential.common.dto.AccessContractDto;
-import fr.gouv.vitamui.referential.common.rest.RestApi;
 import org.springframework.web.util.UriComponentsBuilder;
 
-public class AccessContractExternalRestClient extends BasePaginatingAndSortingRestClient<AccessContractDto, ExternalHttpContext> {
+import java.util.List;
+
+public class AccessContractExternalRestClient
+    extends BasePaginatingAndSortingRestClient<AccessContractDto, ExternalHttpContext> {
 
     public AccessContractExternalRestClient(final RestTemplate restTemplate, final String baseUrl) {
         super(restTemplate, baseUrl);
     }
 
-    @Override protected ParameterizedTypeReference<PaginatedValuesDto<AccessContractDto>> getDtoPaginatedClass() {
-        return new ParameterizedTypeReference<PaginatedValuesDto<AccessContractDto>>() { };
+    @Override
+    protected ParameterizedTypeReference<PaginatedValuesDto<AccessContractDto>> getDtoPaginatedClass() {
+        return new ParameterizedTypeReference<PaginatedValuesDto<AccessContractDto>>() {};
     }
 
     @Override
@@ -68,20 +69,24 @@ public class AccessContractExternalRestClient extends BasePaginatingAndSortingRe
         return RestApi.ACCESS_CONTRACTS_URL;
     }
 
-    @Override protected Class<AccessContractDto> getDtoClass() {
+    @Override
+    protected Class<AccessContractDto> getDtoClass() {
         return AccessContractDto.class;
     }
 
     protected ParameterizedTypeReference<List<AccessContractDto>> getDtoListClass() {
-        return new ParameterizedTypeReference<List<AccessContractDto>>() {
-        };
+        return new ParameterizedTypeReference<List<AccessContractDto>>() {};
     }
 
     public boolean check(ExternalHttpContext context, AccessContractDto accessContractDto) {
         final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl() + CommonConstants.PATH_CHECK);
         final HttpEntity<AccessContractDto> request = new HttpEntity<>(accessContractDto, buildHeaders(context));
-        final ResponseEntity<Boolean> response = restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.POST,
-            request, Boolean.class);
+        final ResponseEntity<Boolean> response = restTemplate.exchange(
+            uriBuilder.toUriString(),
+            HttpMethod.POST,
+            request,
+            Boolean.class
+        );
         return response.getStatusCode() == HttpStatus.OK;
     }
 }

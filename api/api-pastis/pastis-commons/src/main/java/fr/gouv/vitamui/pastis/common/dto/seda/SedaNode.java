@@ -45,6 +45,7 @@ import java.util.stream.Stream;
 
 @Data
 public class SedaNode {
+
     private String name;
     private String element;
     private String cardinality;
@@ -56,10 +57,7 @@ public class SedaNode {
     private String collection;
     private List<SedaNode> children;
 
-
     public Stream<SedaNode> flattened() {
-        return Stream.concat(
-            Stream.of(this),
-            children.stream().flatMap(SedaNode::flattened));
+        return Stream.concat(Stream.of(this), children.stream().flatMap(SedaNode::flattened));
     }
 }

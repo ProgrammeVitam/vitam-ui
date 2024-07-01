@@ -47,6 +47,7 @@ import java.util.Map;
 @Getter
 @Setter
 public class UIPropertiesImpl implements UIProperties {
+
     /**
      * Prefix URL RestController
      */
@@ -87,7 +88,7 @@ public class UIPropertiesImpl implements UIProperties {
     /**
      * Map of application categories (key: category ID, value: category properties)
      */
-    private Map<String, Map<String,Object>> portalCategories;
+    private Map<String, Map<String, Object>> portalCategories;
 
     private String versionRelease;
 

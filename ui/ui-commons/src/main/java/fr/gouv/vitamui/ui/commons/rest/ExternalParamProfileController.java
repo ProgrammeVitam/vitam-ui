@@ -89,14 +89,12 @@ public class ExternalParamProfileController extends AbstractUiRestController {
         this.service = service;
     }
 
-
     @ApiOperation(value = "Get one external param profile")
     @GetMapping(CommonConstants.PATH_ID)
     @Produces("application/json")
     @ResponseStatus(HttpStatus.OK)
-    public ExternalParamProfileDto getOne(final @PathVariable String id) throws InvalidParseOperationException,
-        PreconditionFailedException {
-
+    public ExternalParamProfileDto getOne(final @PathVariable String id)
+        throws InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("get external param profile's profile with id :{}", id);
         return service.getOne(buildUiHttpContext(), id);
@@ -107,31 +105,36 @@ public class ExternalParamProfileController extends AbstractUiRestController {
     @ResponseStatus(HttpStatus.CREATED)
     public ExternalParamProfileDto create(@RequestBody final ExternalParamProfileDto entityDto)
         throws InvalidParseOperationException, PreconditionFailedException {
-
         SanityChecker.sanitizeCriteria(entityDto);
         LOGGER.debug("create class={}", entityDto.getClass().getName());
         return service.create(buildUiHttpContext(), entityDto);
     }
 
     @ApiOperation(value = "Get all external param profiles paginated")
-    @GetMapping(params = {"page", "size"})
+    @GetMapping(params = { "page", "size" })
     @ResponseStatus(HttpStatus.OK)
-    public PaginatedValuesDto<ExternalParamProfileDto> getAllPaginated(@RequestParam final Integer page,
+    public PaginatedValuesDto<ExternalParamProfileDto> getAllPaginated(
+        @RequestParam final Integer page,
         @RequestParam final Integer size,
-        @RequestParam final Optional<String> criteria, @RequestParam final Optional<String> orderBy,
+        @RequestParam final Optional<String> criteria,
+        @RequestParam final Optional<String> orderBy,
         @RequestParam final Optional<DirectionDto> direction,
-        @ApiParam(defaultValue = "ALL") @RequestParam final Optional<String> embedded)
-        throws InvalidParseOperationException, PreconditionFailedException {
-
+        @ApiParam(defaultValue = "ALL") @RequestParam final Optional<String> embedded
+    ) throws InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.sanitizeCriteria(criteria);
-        if(orderBy.isPresent()) {
+        if (orderBy.isPresent()) {
             SanityChecker.checkSecureParameter(orderBy.get());
         }
         EnumUtils.checkValidEnum(EmbeddedOptions.class, embedded);
-        LOGGER
-            .debug("getAllPaginated page={}, size={}, criteria={}, orderBy={}, ascendant={}, embedded = {}", page, size,
-                criteria, orderBy, direction,
-                embedded);
+        LOGGER.debug(
+            "getAllPaginated page={}, size={}, criteria={}, orderBy={}, ascendant={}, embedded = {}",
+            page,
+            size,
+            criteria,
+            orderBy,
+            direction,
+            embedded
+        );
         return service.getAllPaginated(page, size, criteria, orderBy, direction, embedded, buildUiHttpContext());
     }
 
@@ -139,7 +142,6 @@ public class ExternalParamProfileController extends AbstractUiRestController {
     @GetMapping(CommonConstants.PATH_LOGBOOK)
     public LogbookOperationsResponseDto findHistoryById(final @PathVariable String id)
         throws InvalidParseOperationException, PreconditionFailedException {
-
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("get logbook for external parameter profile's profile with id :{}", id);
@@ -151,7 +153,6 @@ public class ExternalParamProfileController extends AbstractUiRestController {
     @ResponseStatus(HttpStatus.OK)
     public ExternalParamProfileDto patch(@RequestBody final Map<String, Object> externalParamProfile)
         throws InvalidParseOperationException, PreconditionFailedException {
-
         SanityChecker.sanitizeCriteria(externalParamProfile);
         LOGGER.debug("Update partially provider with partialDto={}", externalParamProfile);
         return service.patch(buildUiHttpContext(), externalParamProfile, externalParamProfile.get("id").toString());
@@ -159,8 +160,8 @@ public class ExternalParamProfileController extends AbstractUiRestController {
 
     @ApiOperation(value = "Check entity exists by criteria")
     @RequestMapping(path = CommonConstants.PATH_CHECK, method = RequestMethod.HEAD)
-    public ResponseEntity<Void> checkExist(@RequestParam final String criteria) throws InvalidParseOperationException,
-        PreconditionFailedException {
+    public ResponseEntity<Void> checkExist(@RequestParam final String criteria)
+        throws InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.sanitizeCriteria(Optional.of(criteria));
         LOGGER.debug("check exists criteria={}", criteria);
         final boolean exist = service.checkExist(buildUiHttpContext(), criteria);

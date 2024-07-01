@@ -1,16 +1,5 @@
 package fr.gouv.vitamui.iam.internal.server.cas.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import java.util.List;
-import java.util.Optional;
-
-import fr.gouv.vitamui.commons.api.domain.UserInfoDto;
 import fr.gouv.vitamui.commons.api.domain.GroupDto;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.api.domain.UserInfoDto;
@@ -35,18 +24,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import fr.gouv.vitamui.commons.api.domain.GroupDto;
-import fr.gouv.vitamui.iam.common.dto.ProvidedUserDto;
-import fr.gouv.vitamui.commons.api.domain.UserDto;
-import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
-import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
-import fr.gouv.vitamui.iam.internal.server.group.service.GroupInternalService;
-import fr.gouv.vitamui.iam.internal.server.idp.service.IdentityProviderInternalService;
-import fr.gouv.vitamui.iam.internal.server.provisioning.service.ProvisioningInternalService;
-import fr.gouv.vitamui.iam.internal.server.user.dao.UserRepository;
-import fr.gouv.vitamui.iam.internal.server.user.service.UserInfoInternalService;
-import fr.gouv.vitamui.iam.internal.server.user.service.UserInternalService;
 
 import java.util.List;
 import java.util.Optional;
@@ -111,18 +88,17 @@ class CasInternalServiceTest {
 
     @Test
     void should_create_new_user_when_authenticated_user_is_unknown_in_database_and_idp_auto_provisioning_is_enabled() {
-        when(identityProviderInternalService.getOne(IDP))
-                .thenReturn(buildIDP(true));
+        when(identityProviderInternalService.getOne(IDP)).thenReturn(buildIDP(true));
 
-        when(provisioningInternalService.getUserInformation(IDP, USER_EMAIL, null, null, null, CUSTOMER_ID))
-            .thenReturn(buildProvidedUser("jean-vitam", "RH"));
+        when(provisioningInternalService.getUserInformation(IDP, USER_EMAIL, null, null, null, CUSTOMER_ID)).thenReturn(
+            buildProvidedUser("jean-vitam", "RH")
+        );
 
         when(groupInternalService.getAll(any(), any())).thenReturn(List.of(buildGroup()));
 
         when(userRepository.existsByEmail(ArgumentMatchers.any())).thenReturn(false);
 
-        when(userInternalService.findUserByEmail(USER_EMAIL))
-                .thenReturn(buildAuthUser(false));
+        when(userInternalService.findUserByEmail(USER_EMAIL)).thenReturn(buildAuthUser(false));
         when(userInfoInternalService.create(any())).thenReturn(buildUserInfo());
 
         final Customer customer = new Customer();
@@ -144,17 +120,16 @@ class CasInternalServiceTest {
 
     @Test
     void should_update_user_when_authenticated_user_is_known_in_database_and_idp_and_user_auto_provisioning_is_enabled() {
-        when(identityProviderInternalService.getOne(IDP))
-                .thenReturn(buildIDP(true));
+        when(identityProviderInternalService.getOne(IDP)).thenReturn(buildIDP(true));
 
-        when(provisioningInternalService.getUserInformation(IDP, USER_EMAIL, GROUP_ID, null, null, CUSTOMER_ID))
-            .thenReturn(buildProvidedUser("jean vitam", "RH"));
+        when(
+            provisioningInternalService.getUserInformation(IDP, USER_EMAIL, GROUP_ID, null, null, CUSTOMER_ID)
+        ).thenReturn(buildProvidedUser("jean vitam", "RH"));
 
         when(groupInternalService.getAll(any(), any())).thenReturn(List.of(buildGroup()));
 
         when(userRepository.existsByEmail(ArgumentMatchers.any())).thenReturn(true);
         when(userInternalService.findUserByEmail(USER_EMAIL)).thenReturn(buildAuthUser(true));
-
 
         final UserDto user = casInternalService.getUser(USER_EMAIL, IDP, null, null);
         verify(userInternalService, times(1)).patch(any());
@@ -164,8 +139,7 @@ class CasInternalServiceTest {
 
     @Test
     void should_not_update_user_when_user_auto_provisioning_is_disabled() {
-        when(identityProviderInternalService.getOne(IDP))
-                .thenReturn(buildIDP(true));
+        when(identityProviderInternalService.getOne(IDP)).thenReturn(buildIDP(true));
 
         when(userRepository.existsByEmail(ArgumentMatchers.any())).thenReturn(true);
         when(userInternalService.findUserByEmail(USER_EMAIL)).thenReturn(buildAuthUser(false));

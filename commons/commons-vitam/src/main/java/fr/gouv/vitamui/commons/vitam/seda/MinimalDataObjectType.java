@@ -1,15 +1,12 @@
 //
-// Ce fichier a été généré par l'implémentation de référence JavaTM Architecture for XML Binding (JAXB), v2.3.2 
-// Voir <a href="https://javaee.github.io/jaxb-v2/">https://javaee.github.io/jaxb-v2/</a> 
-// Toute modification apportée à ce fichier sera perdue lors de la recompilation du schéma source. 
-// Généré le : 2020.07.15 à 03:41:18 PM CEST 
+// Ce fichier a été généré par l'implémentation de référence JavaTM Architecture for XML Binding (JAXB), v2.3.2
+// Voir <a href="https://javaee.github.io/jaxb-v2/">https://javaee.github.io/jaxb-v2/</a>
+// Toute modification apportée à ce fichier sera perdue lors de la recompilation du schéma source.
+// Généré le : 2020.07.15 à 03:41:18 PM CEST
 //
-
 
 package fr.gouv.vitamui.commons.vitam.seda;
 
-import java.util.ArrayList;
-import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -21,13 +18,14 @@ import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.CollapsedStringAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * <p>Classe Java pour MinimalDataObjectType complex type.
- * 
+ *
  * <p>Le fragment de schéma suivant indique le contenu attendu figurant dans cette classe.
- * 
+ *
  * <pre>
  * &lt;complexType name="MinimalDataObjectType"&gt;
  *   &lt;complexContent&gt;
@@ -44,44 +42,50 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *   &lt;/complexContent&gt;
  * &lt;/complexType&gt;
  * </pre>
- * 
- * 
+ *
+ *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "MinimalDataObjectType", propOrder = {
-    "dataObjectSystemId",
-    "dataObjectGroupSystemId",
-    "relationship",
-    "dataObjectGroupReferenceId",
-    "dataObjectGroupId",
-    "dataObjectVersion"
-})
-@XmlSeeAlso({
-    BinaryDataObjectType.class,
-    PhysicalDataObjectType.class
-})
+@XmlType(
+    name = "MinimalDataObjectType",
+    propOrder = {
+        "dataObjectSystemId",
+        "dataObjectGroupSystemId",
+        "relationship",
+        "dataObjectGroupReferenceId",
+        "dataObjectGroupId",
+        "dataObjectVersion",
+    }
+)
+@XmlSeeAlso({ BinaryDataObjectType.class, PhysicalDataObjectType.class })
 public abstract class MinimalDataObjectType {
 
     @XmlElement(name = "DataObjectSystemId")
     @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
     @XmlSchemaType(name = "token")
     protected String dataObjectSystemId;
+
     @XmlElement(name = "DataObjectGroupSystemId")
     @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
     @XmlSchemaType(name = "token")
     protected String dataObjectGroupSystemId;
+
     @XmlElement(name = "Relationship")
     protected List<RelationshipType> relationship;
+
     @XmlElement(name = "DataObjectGroupReferenceId")
     @XmlIDREF
     @XmlSchemaType(name = "IDREF")
     protected Object dataObjectGroupReferenceId;
+
     @XmlElement(name = "DataObjectGroupId")
     protected String dataObjectGroupId;
+
     @XmlElement(name = "DataObjectVersion")
     @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
     @XmlSchemaType(name = "token")
     protected String dataObjectVersion;
+
     @XmlAttribute(name = "id", required = true)
     @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
     @XmlID
@@ -89,11 +93,11 @@ public abstract class MinimalDataObjectType {
 
     /**
      * Obtient la valeur de la propriété dataObjectSystemId.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getDataObjectSystemId() {
         return dataObjectSystemId;
@@ -101,11 +105,11 @@ public abstract class MinimalDataObjectType {
 
     /**
      * Définit la valeur de la propriété dataObjectSystemId.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setDataObjectSystemId(String value) {
         this.dataObjectSystemId = value;
@@ -113,11 +117,11 @@ public abstract class MinimalDataObjectType {
 
     /**
      * Obtient la valeur de la propriété dataObjectGroupSystemId.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getDataObjectGroupSystemId() {
         return dataObjectGroupSystemId;
@@ -125,11 +129,11 @@ public abstract class MinimalDataObjectType {
 
     /**
      * Définit la valeur de la propriété dataObjectGroupSystemId.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setDataObjectGroupSystemId(String value) {
         this.dataObjectGroupSystemId = value;
@@ -137,25 +141,25 @@ public abstract class MinimalDataObjectType {
 
     /**
      * Gets the value of the relationship property.
-     * 
+     *
      * <p>
      * This accessor method returns a reference to the live list,
      * not a snapshot. Therefore any modification you make to the
      * returned list will be present inside the JAXB object.
      * This is why there is not a <CODE>set</CODE> method for the relationship property.
-     * 
+     *
      * <p>
      * For example, to add a new item, do as follows:
      * <pre>
      *    getRelationship().add(newItem);
      * </pre>
-     * 
-     * 
+     *
+     *
      * <p>
      * Objects of the following type(s) are allowed in the list
      * {@link RelationshipType }
-     * 
-     * 
+     *
+     *
      */
     public List<RelationshipType> getRelationship() {
         if (relationship == null) {
@@ -166,11 +170,11 @@ public abstract class MinimalDataObjectType {
 
     /**
      * Obtient la valeur de la propriété dataObjectGroupReferenceId.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link Object }
-     *     
+     *
      */
     public Object getDataObjectGroupReferenceId() {
         return dataObjectGroupReferenceId;
@@ -178,11 +182,11 @@ public abstract class MinimalDataObjectType {
 
     /**
      * Définit la valeur de la propriété dataObjectGroupReferenceId.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link Object }
-     *     
+     *
      */
     public void setDataObjectGroupReferenceId(Object value) {
         this.dataObjectGroupReferenceId = value;
@@ -190,11 +194,11 @@ public abstract class MinimalDataObjectType {
 
     /**
      * Obtient la valeur de la propriété dataObjectGroupId.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getDataObjectGroupId() {
         return dataObjectGroupId;
@@ -202,11 +206,11 @@ public abstract class MinimalDataObjectType {
 
     /**
      * Définit la valeur de la propriété dataObjectGroupId.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setDataObjectGroupId(String value) {
         this.dataObjectGroupId = value;
@@ -214,11 +218,11 @@ public abstract class MinimalDataObjectType {
 
     /**
      * Obtient la valeur de la propriété dataObjectVersion.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getDataObjectVersion() {
         return dataObjectVersion;
@@ -226,11 +230,11 @@ public abstract class MinimalDataObjectType {
 
     /**
      * Définit la valeur de la propriété dataObjectVersion.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setDataObjectVersion(String value) {
         this.dataObjectVersion = value;
@@ -238,11 +242,11 @@ public abstract class MinimalDataObjectType {
 
     /**
      * Obtient la valeur de la propriété id.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getId() {
         return id;
@@ -250,14 +254,13 @@ public abstract class MinimalDataObjectType {
 
     /**
      * Définit la valeur de la propriété id.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setId(String value) {
         this.id = value;
     }
-
 }

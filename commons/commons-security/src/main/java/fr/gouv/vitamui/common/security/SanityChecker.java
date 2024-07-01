@@ -83,11 +83,32 @@ public class SanityChecker {
 
     // ISSUE with integration
     private static final Validator ESAPI = init();
-    private static final List<String> PARAMETERS_KEYS_OF_DSL_QUERY_WHITELIST =
-        List.of("$action", "$add", "$pull", "#unitups", "#allunitups", "#id", "$in",
-            "$or", "$exists", "$projection", "$query", "$filter", "$roots", "$and", "$fields", "authorizationRequestReplyIdentifier",
-            "$limit", "$orderby", "$eq", "$offset", "events.agIdExt.TransferringAgency",
-            "events.agIdExt.originatingAgency","events.evDetData.ArchivalAgreement", "events.evDetData.EvDetailReq" );
+    private static final List<String> PARAMETERS_KEYS_OF_DSL_QUERY_WHITELIST = List.of(
+        "$action",
+        "$add",
+        "$pull",
+        "#unitups",
+        "#allunitups",
+        "#id",
+        "$in",
+        "$or",
+        "$exists",
+        "$projection",
+        "$query",
+        "$filter",
+        "$roots",
+        "$and",
+        "$fields",
+        "authorizationRequestReplyIdentifier",
+        "$limit",
+        "$orderby",
+        "$eq",
+        "$offset",
+        "events.agIdExt.TransferringAgency",
+        "events.agIdExt.originatingAgency",
+        "events.evDetData.ArchivalAgreement",
+        "events.evDetData.EvDetailReq"
+    );
 
     private SanityChecker() {
         // Empty constructor
@@ -109,7 +130,7 @@ public class SanityChecker {
      * @return true/false
      */
     public static void isValidFileName(String fileName) throws PreconditionFailedException {
-        if( StringUtils.HTML_PATTERN.matcher(fileName).find() || isStringInfected(fileName, HTTP_PARAMETER_VALUE) ) {
+        if (StringUtils.HTML_PATTERN.matcher(fileName).find() || isStringInfected(fileName, HTTP_PARAMETER_VALUE)) {
             throw new PreconditionFailedException("The fileName is not valid", "The fileName is not valid");
         }
     }
@@ -221,7 +242,7 @@ public class SanityChecker {
                 throw new InvalidParseOperationException("Error with the parameter ", exception);
             }
         } else {
-            throw new PreconditionFailedException("the parameter " + param +  " is not valid");
+            throw new PreconditionFailedException("the parameter " + param + " is not valid");
         }
     }
 
@@ -278,8 +299,7 @@ public class SanityChecker {
      * @param invalidTag data to check as String
      * @throws InvalidParseOperationException when Sanity Check is in error
      */
-    private static void checkSanityTags(String dataLine, String invalidTag)
-        throws InvalidParseOperationException {
+    private static void checkSanityTags(String dataLine, String invalidTag) throws InvalidParseOperationException {
         if (dataLine != null && invalidTag != null && dataLine.contains(invalidTag)) {
             throw new InvalidParseOperationException("Invalid tag sanity check");
         }
@@ -293,7 +313,7 @@ public class SanityChecker {
      */
     public static void checkHtmlPattern(String param) throws PreconditionFailedException {
         if (StringUtils.HTML_PATTERN.matcher(param).find()) {
-            throw new PreconditionFailedException("the parameter : " + param +  " is not valid");
+            throw new PreconditionFailedException("the parameter : " + param + " is not valid");
         }
     }
 
@@ -342,11 +362,10 @@ public class SanityChecker {
                     }
                 } else if (!value.isValueNode()) {
                     checkJsonSanity(value);
-                } else if(value.isTextual()) {
+                } else if (value.isTextual()) {
                     checkHtmlPattern(value.textValue());
                     checkSanityTags(value.textValue(), getLimitParamSize());
-                }
-                else {
+                } else {
                     validateJSONField(value);
                 }
             }
@@ -367,8 +386,7 @@ public class SanityChecker {
      */
     private static void checkJsonFileSize(String json) throws InvalidParseOperationException {
         if (json.length() > getLimitJsonSize()) {
-            throw new InvalidParseOperationException(
-                "Json size exceeds sanity check : " + getLimitJsonSize());
+            throw new InvalidParseOperationException("Json size exceeds sanity check : " + getLimitJsonSize());
         }
     }
 

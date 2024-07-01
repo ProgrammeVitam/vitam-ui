@@ -41,6 +41,5 @@ public enum UserStatusEnum {
     DISABLED,
     BLOCKED,
     REMOVED,
-    ANONYM
-
+    ANONYM,
 }

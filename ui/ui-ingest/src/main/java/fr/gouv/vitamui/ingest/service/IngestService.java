@@ -68,9 +68,12 @@ public class IngestService extends AbstractPaginateService<LogbookOperationDto> 
     private CommonService commonService;
 
     @Autowired
-    public IngestService(final CommonService commonService, final IngestExternalRestClient ingestExternalRestClient,
+    public IngestService(
+        final CommonService commonService,
+        final IngestExternalRestClient ingestExternalRestClient,
         final IngestExternalWebClient ingestExternalWebClient,
-        final IngestStreamingExternalRestClient ingestStreamingExternalRestClient) {
+        final IngestStreamingExternalRestClient ingestStreamingExternalRestClient
+    ) {
         this.commonService = commonService;
         this.ingestExternalRestClient = ingestExternalRestClient;
         this.ingestExternalWebClient = ingestExternalWebClient;
@@ -78,9 +81,14 @@ public class IngestService extends AbstractPaginateService<LogbookOperationDto> 
     }
 
     @Override
-    public PaginatedValuesDto<LogbookOperationDto> getAllPaginated(final Integer page, final Integer size,
+    public PaginatedValuesDto<LogbookOperationDto> getAllPaginated(
+        final Integer page,
+        final Integer size,
         final Optional<String> criteria,
-        final Optional<String> orderBy, final Optional<DirectionDto> direction, final ExternalHttpContext context) {
+        final Optional<String> orderBy,
+        final Optional<DirectionDto> direction,
+        final ExternalHttpContext context
+    ) {
         return super.getAllPaginated(page, size, criteria, orderBy, direction, context);
     }
 
@@ -101,12 +109,13 @@ public class IngestService extends AbstractPaginateService<LogbookOperationDto> 
         return ingestExternalRestClient;
     }
 
-    public ResponseEntity<Void> streamingUpload(final ExternalHttpContext context, String fileName,
+    public ResponseEntity<Void> streamingUpload(
+        final ExternalHttpContext context,
+        String fileName,
         InputStream inputStream,
         final String contextId,
-        final String action) {
-        return ingestStreamingExternalRestClient.streamingUpload(context, fileName, inputStream, contextId,
-            action);
+        final String action
+    ) {
+        return ingestStreamingExternalRestClient.streamingUpload(context, fileName, inputStream, contextId, action);
     }
-
 }

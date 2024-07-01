@@ -67,5 +67,4 @@ public class ManagementContractDto extends IdDto implements Serializable {
     private StorageManagementContractDto storage;
 
     private VersionRetentionPolicyMgtContractDto versionRetentionPolicy;
-
 }

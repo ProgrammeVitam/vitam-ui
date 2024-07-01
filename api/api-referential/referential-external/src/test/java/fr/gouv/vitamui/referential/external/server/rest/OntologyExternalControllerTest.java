@@ -49,8 +49,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @ExtendWith(MockitoExtension.class)
-@WebMvcTest(controllers = {OntologyExternalController.class})
-class OntologyExternalControllerTest extends ApiReferentialControllerTest<IdDto>{
+@WebMvcTest(controllers = { OntologyExternalController.class })
+class OntologyExternalControllerTest extends ApiReferentialControllerTest<IdDto> {
 
     @MockBean
     private OntologyExternalService ontologyExternalService;
@@ -62,17 +62,13 @@ class OntologyExternalControllerTest extends ApiReferentialControllerTest<IdDto>
         ontologyExternalController = new OntologyExternalController(ontologyExternalService);
     }
 
-
     @Test
-    void testGetInternalOntologyListThenReturnOntologiesValuesList()
-        throws PreconditionFailedException {
+    void testGetInternalOntologyListThenReturnOntologiesValuesList() throws PreconditionFailedException {
         // Given
         List<VitamUiOntologyDto> expectedResponse = new ArrayList<>();
 
         // When
-        Mockito
-            .when(ontologyExternalService.getInternalOntologyList())
-            .thenReturn(expectedResponse);
+        Mockito.when(ontologyExternalService.getInternalOntologyList()).thenReturn(expectedResponse);
         List<VitamUiOntologyDto> response = ontologyExternalController.getInternalOntologiesList();
 
         // Then
@@ -81,7 +77,7 @@ class OntologyExternalControllerTest extends ApiReferentialControllerTest<IdDto>
 
     @Override
     protected String[] getServices() {
-        return new String[] {"REFERENTIAL"};
+        return new String[] { "REFERENTIAL" };
     }
 
     @Override
@@ -100,9 +96,7 @@ class OntologyExternalControllerTest extends ApiReferentialControllerTest<IdDto>
     }
 
     @Override
-    protected void preparedServices() {
-
-    }
+    protected void preparedServices() {}
 
     @Override
     protected String getRessourcePrefix() {

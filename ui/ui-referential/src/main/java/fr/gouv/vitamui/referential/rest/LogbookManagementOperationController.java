@@ -27,7 +27,6 @@
 
 package fr.gouv.vitamui.referential.rest;
 
-
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.model.ProcessQuery;
 import fr.gouv.vitamui.common.security.SanityChecker;
@@ -58,12 +57,16 @@ import javax.ws.rs.Produces;
 @Produces("application/json")
 public class LogbookManagementOperationController extends AbstractUiRestController {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(LogbookManagementOperationController.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
+        LogbookManagementOperationController.class
+    );
 
     protected final LogbookManagementOperationService logbookManagementOperationService;
 
     @Autowired
-    public LogbookManagementOperationController(final LogbookManagementOperationService logbookManagementOperationService) {
+    public LogbookManagementOperationController(
+        final LogbookManagementOperationService logbookManagementOperationService
+    ) {
         this.logbookManagementOperationService = logbookManagementOperationService;
     }
 
@@ -75,41 +78,56 @@ public class LogbookManagementOperationController extends AbstractUiRestControll
         SanityChecker.sanitizeCriteria(processQuery);
         LOGGER.debug("Get the operations details with criteria = {}", processQuery);
         VitamUIProcessDetailResponseDto operationResponseDto = new VitamUIProcessDetailResponseDto();
-        ResponseEntity<ProcessDetailDto> processDetailResponse = logbookManagementOperationService.searchOperationsDetails(buildUiHttpContext(), processQuery);
+        ResponseEntity<ProcessDetailDto> processDetailResponse =
+            logbookManagementOperationService.searchOperationsDetails(buildUiHttpContext(), processQuery);
         if (processDetailResponse != null) {
             operationResponseDto = processDetailResponse.getBody().getOperations();
         }
         return operationResponseDto;
     }
 
-
     @ApiOperation(value = "Cancel the operation")
-    @PostMapping(RestApi.OPERATIONS_PATH+"/cancel"+ CommonConstants.PATH_ID)
+    @PostMapping(RestApi.OPERATIONS_PATH + "/cancel" + CommonConstants.PATH_ID)
     @ResponseStatus(HttpStatus.OK)
-    public VitamUIProcessDetailResponseDto cancelOperationProcessExecution(final @PathVariable("id") String operationId)
-        throws InvalidParseOperationException, PreconditionFailedException {
+    public VitamUIProcessDetailResponseDto cancelOperationProcessExecution(
+        final @PathVariable("id") String operationId
+    ) throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter("operationId is mandatory : ", operationId);
         SanityChecker.checkSecureParameter(operationId);
         LOGGER.debug("Cancel the operation id= {}", operationId);
-        return logbookManagementOperationService.cancelOperationProcessExecution(buildUiHttpContext(), operationId) != null
-            ? logbookManagementOperationService.cancelOperationProcessExecution(buildUiHttpContext(), operationId).getBody().getOperations()
+        return (
+                logbookManagementOperationService.cancelOperationProcessExecution(buildUiHttpContext(), operationId) !=
+                null
+            )
+            ? logbookManagementOperationService
+                .cancelOperationProcessExecution(buildUiHttpContext(), operationId)
+                .getBody()
+                .getOperations()
             : null;
-
     }
 
     @ApiOperation(value = "Update the operation status")
-    @PostMapping(RestApi.OPERATIONS_PATH+"/update"+ CommonConstants.PATH_ID)
+    @PostMapping(RestApi.OPERATIONS_PATH + "/update" + CommonConstants.PATH_ID)
     @ResponseStatus(HttpStatus.OK)
-    public VitamUIProcessDetailResponseDto updateOperationActionProcess(final @PathVariable("id") String operationId, @RequestBody final String actionId)
-        throws InvalidParseOperationException, PreconditionFailedException {
-        ParameterChecker
-            .checkParameter("operationId and actionId are mandatories : ", operationId, actionId);
+    public VitamUIProcessDetailResponseDto updateOperationActionProcess(
+        final @PathVariable("id") String operationId,
+        @RequestBody final String actionId
+    ) throws InvalidParseOperationException, PreconditionFailedException {
+        ParameterChecker.checkParameter("operationId and actionId are mandatories : ", operationId, actionId);
         SanityChecker.checkSecureParameter(operationId, actionId);
         LOGGER.debug("Update Operation Id={} with ActionId = {}", operationId, actionId);
-        return logbookManagementOperationService.updateOperationActionProcess(buildUiHttpContext(), actionId, operationId) != null
-            ? logbookManagementOperationService.updateOperationActionProcess(buildUiHttpContext(), actionId, operationId).getBody().getOperations() :
-            null;
-
+        return (
+                logbookManagementOperationService.updateOperationActionProcess(
+                    buildUiHttpContext(),
+                    actionId,
+                    operationId
+                ) !=
+                null
+            )
+            ? logbookManagementOperationService
+                .updateOperationActionProcess(buildUiHttpContext(), actionId, operationId)
+                .getBody()
+                .getOperations()
+            : null;
     }
-
 }

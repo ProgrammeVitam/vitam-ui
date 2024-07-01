@@ -92,13 +92,24 @@ public class CollectStreamingInternalRestClientTest extends ServerIdentityExtens
         Pair<InternalHttpContext, MultiValueMap<String, String>> params = generateHeadersAndContext();
         String zipValue = "I am a Content Folder, Upload me!";
         InputStream zipContent = new ByteArrayInputStream(zipValue.getBytes());
-        when(restTemplate.exchange(BASE_URL + COLLECT_PROJECT_PATH + "/upload", HttpMethod.POST,
-            new HttpEntity<>(new InputStreamResource(zipContent), params.getValue()), Void.class))
-            .thenReturn(new ResponseEntity<>(HttpStatus.OK));
+        when(
+            restTemplate.exchange(
+                BASE_URL + COLLECT_PROJECT_PATH + "/upload",
+                HttpMethod.POST,
+                new HttpEntity<>(new InputStreamResource(zipContent), params.getValue()),
+                Void.class
+            )
+        ).thenReturn(new ResponseEntity<>(HttpStatus.OK));
         // THEN
-        assertDoesNotThrow(() ->
-            collectStreamingInternalRestClient.streamingUpload(params.getKey(), zipContent, TRANSACTION_ID,
-                ORIGINAL_FILENAME));
+        assertDoesNotThrow(
+            () ->
+                collectStreamingInternalRestClient.streamingUpload(
+                    params.getKey(),
+                    zipContent,
+                    TRANSACTION_ID,
+                    ORIGINAL_FILENAME
+                )
+        );
     }
 
     private static Pair<InternalHttpContext, MultiValueMap<String, String>> generateHeadersAndContext() {

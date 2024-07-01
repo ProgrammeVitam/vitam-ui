@@ -36,7 +36,6 @@
  */
 package fr.gouv.vitamui.ingest.internal.client;
 
-
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
@@ -65,7 +64,9 @@ import java.util.List;
 public class IngestStreamingInternalRestClient
     extends BasePaginatingAndSortingRestClient<LogbookOperationDto, InternalHttpContext> {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(IngestStreamingInternalRestClient.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
+        IngestStreamingInternalRestClient.class
+    );
 
     public IngestStreamingInternalRestClient(final RestTemplate restTemplate, final String baseUrl) {
         super(restTemplate, baseUrl);
@@ -83,23 +84,23 @@ public class IngestStreamingInternalRestClient
 
     @Override
     protected ParameterizedTypeReference<List<LogbookOperationDto>> getDtoListClass() {
-        return new ParameterizedTypeReference<List<LogbookOperationDto>>() {
-        };
+        return new ParameterizedTypeReference<List<LogbookOperationDto>>() {};
     }
 
     @Override
     protected ParameterizedTypeReference<PaginatedValuesDto<LogbookOperationDto>> getDtoPaginatedClass() {
-        return new ParameterizedTypeReference<PaginatedValuesDto<LogbookOperationDto>>() {
-        };
+        return new ParameterizedTypeReference<PaginatedValuesDto<LogbookOperationDto>>() {};
     }
 
-    public ResponseEntity<Void> streamingUpload(final InternalHttpContext context, String originalFileName,
+    public ResponseEntity<Void> streamingUpload(
+        final InternalHttpContext context,
+        String originalFileName,
         InputStream inputStream,
         final String contextId,
-        final String action) {
+        final String action
+    ) {
         LOGGER.debug("Calling upload using streaming process");
-        final UriComponentsBuilder uriBuilder =
-            UriComponentsBuilder.fromHttpUrl(getUrl() + RestApi.INGEST_UPLOAD_V2);
+        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl() + RestApi.INGEST_UPLOAD_V2);
 
         final MultiValueMap<String, String> headersList = new HttpHeaders();
         headersList.addAll(buildHeaders(context));
@@ -111,12 +112,17 @@ public class IngestStreamingInternalRestClient
         headersParams.setContentType(MediaType.APPLICATION_OCTET_STREAM);
         headersParams.addAll(headersList);
 
-        final HttpEntity<InputStreamResource> request =
-            new HttpEntity<>(new InputStreamResource(inputStream), headersParams);
+        final HttpEntity<InputStreamResource> request = new HttpEntity<>(
+            new InputStreamResource(inputStream),
+            headersParams
+        );
 
-        final ResponseEntity<Void> response =
-            restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.POST,
-                request, Void.class);
+        final ResponseEntity<Void> response = restTemplate.exchange(
+            uriBuilder.toUriString(),
+            HttpMethod.POST,
+            request,
+            Void.class
+        );
         LOGGER.debug("The response on ingest is {} ", response.toString());
         return response;
     }

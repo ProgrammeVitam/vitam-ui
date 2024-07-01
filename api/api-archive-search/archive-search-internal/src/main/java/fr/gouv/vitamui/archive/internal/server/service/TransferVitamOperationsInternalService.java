@@ -44,15 +44,17 @@ import java.io.InputStream;
 
 @Service
 public class TransferVitamOperationsInternalService {
-    private static final VitamUILogger LOGGER =
-        VitamUILoggerFactory.getInstance(TransferVitamOperationsInternalService.class);
+
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
+        TransferVitamOperationsInternalService.class
+    );
     public static final String OPERATION_IDENTIFIER = "itemId";
     private final TransferAcknowledgmentService transferAcknowledgmentService;
     private final TransferRequestService transferRequestService;
     private final ArchiveSearchInternalService archiveSearchInternalService;
 
-
-    public TransferVitamOperationsInternalService(final TransferAcknowledgmentService transferAcknowledgmentService,
+    public TransferVitamOperationsInternalService(
+        final TransferAcknowledgmentService transferAcknowledgmentService,
         final @Lazy ArchiveSearchInternalService archiveSearchInternalService,
         final TransferRequestService transferRequestService
     ) {
@@ -67,8 +69,7 @@ public class TransferVitamOperationsInternalService {
         return response.toJsonNode();
     }
 
-    private TransferRequest prepareTransferRequestBody(final TransferRequestDto transferRequestDto,
-        JsonNode dslQuery) {
+    private TransferRequest prepareTransferRequestBody(final TransferRequestDto transferRequestDto, JsonNode dslQuery) {
         TransferRequest transferRequest = new TransferRequest();
         if (transferRequestDto != null) {
             DataObjectVersions dataObjectVersions = new DataObjectVersions();
@@ -81,13 +82,13 @@ public class TransferVitamOperationsInternalService {
         return transferRequest;
     }
 
-    public String transferRequest(final TransferRequestDto transferRequestDto,
-        final VitamContext vitamContext)
+    public String transferRequest(final TransferRequestDto transferRequestDto, final VitamContext vitamContext)
         throws VitamClientException {
-
         LOGGER.debug("Transfer request: {} ", transferRequestDto.toString());
-        JsonNode dslQuery =
-            archiveSearchInternalService.prepareDslQuery(transferRequestDto.getSearchCriteria(), vitamContext);
+        JsonNode dslQuery = archiveSearchInternalService.prepareDslQuery(
+            transferRequestDto.getSearchCriteria(),
+            vitamContext
+        );
         LOGGER.debug("Transfer request final DSL query: {} ", dslQuery);
 
         DataObjectVersions dataObjectVersionToExport = new DataObjectVersions();
@@ -100,10 +101,10 @@ public class TransferVitamOperationsInternalService {
 
     public String transferAcknowledgmentService(InputStream atrInputStream, VitamContext vitamContext)
         throws VitamClientException {
-
         LOGGER.debug("Transfer Acknowledgment Operation");
-        JsonNode transferAcknowledgmentResponse =
-            transferAcknowledgmentService.transferAcknowledgment(vitamContext, atrInputStream).toJsonNode();
+        JsonNode transferAcknowledgmentResponse = transferAcknowledgmentService
+            .transferAcknowledgment(vitamContext, atrInputStream)
+            .toJsonNode();
         return transferAcknowledgmentResponse.findValue(OPERATION_IDENTIFIER).textValue();
     }
 }

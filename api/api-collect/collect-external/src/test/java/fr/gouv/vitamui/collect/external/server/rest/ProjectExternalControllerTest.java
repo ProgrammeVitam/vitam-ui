@@ -51,11 +51,10 @@ import java.util.List;
 import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
-@WebMvcTest(controllers = {ProjectExternalController.class})
+@WebMvcTest(controllers = { ProjectExternalController.class })
 public class ProjectExternalControllerTest extends ApiCollectExternalControllerTest<IdDto> {
 
-    private static final VitamUILogger LOGGER =
-        VitamUILoggerFactory.getInstance(ProjectExternalControllerTest.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ProjectExternalControllerTest.class);
 
     @MockBean
     private ProjectExternalService projectExternalService;
@@ -64,33 +63,43 @@ public class ProjectExternalControllerTest extends ApiCollectExternalControllerT
 
     @BeforeEach
     public void setUp() {
-        projectExternalController = new ProjectExternalController(
-            projectExternalService);
+        projectExternalController = new ProjectExternalController(projectExternalService);
     }
-
 
     @Test
     void when_abortTransaction_ok() throws InvalidParseOperationException {
-
         PaginatedValuesDto<CollectTransactionDto> listTransactions = new PaginatedValuesDto<>();
-        CollectTransactionDto transactionDto = CollectTransactionDto
-            .builder().id("transactionId").projectId("projectId").build();
+        CollectTransactionDto transactionDto = CollectTransactionDto.builder()
+            .id("transactionId")
+            .projectId("projectId")
+            .build();
         listTransactions.setValues(List.of(transactionDto));
-        Mockito
-            .when(projectExternalService.getTransactionsByProjectPaginated(0, 10, Optional.empty(), Optional.of("id"),
-                Optional.of(DirectionDto.ASC), "projectId"))
-            .thenReturn(listTransactions);
+        Mockito.when(
+            projectExternalService.getTransactionsByProjectPaginated(
+                0,
+                10,
+                Optional.empty(),
+                Optional.of("id"),
+                Optional.of(DirectionDto.ASC),
+                "projectId"
+            )
+        ).thenReturn(listTransactions);
 
-        PaginatedValuesDto<CollectTransactionDto> transactionsReturned= this.projectExternalController.getTransactionsByProjectPaginated(0, 10, Optional.empty(), Optional.of("id"),
-            Optional.of(DirectionDto.ASC), "projectId");
+        PaginatedValuesDto<CollectTransactionDto> transactionsReturned =
+            this.projectExternalController.getTransactionsByProjectPaginated(
+                    0,
+                    10,
+                    Optional.empty(),
+                    Optional.of("id"),
+                    Optional.of(DirectionDto.ASC),
+                    "projectId"
+                );
         Assertions.assertEquals(transactionsReturned, listTransactions);
     }
 
-
-
     @Override
     protected String[] getServices() {
-        return new String[] {ServicesData.TRANSACTIONS};
+        return new String[] { ServicesData.TRANSACTIONS };
     }
 
     @Override
@@ -109,9 +118,7 @@ public class ProjectExternalControllerTest extends ApiCollectExternalControllerT
     }
 
     @Override
-    protected void preparedServices() {
-
-    }
+    protected void preparedServices() {}
 
     @Override
     protected String getRessourcePrefix() {

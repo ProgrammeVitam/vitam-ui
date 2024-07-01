@@ -36,19 +36,17 @@
  */
 package fr.gouv.vitamui.iam.common.dto;
 
-import java.time.OffsetDateTime;
-
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
-
-import org.hibernate.validator.constraints.Length;
-
 import fr.gouv.vitamui.commons.api.domain.IdDto;
 import fr.gouv.vitamui.iam.common.enums.SubrogationStatusEnum;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.validator.constraints.Length;
+
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+import java.time.OffsetDateTime;
 
 /**
  * The DTO v1 for a subrogation.

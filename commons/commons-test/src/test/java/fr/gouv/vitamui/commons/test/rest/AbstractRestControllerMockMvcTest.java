@@ -72,8 +72,7 @@ public abstract class AbstractRestControllerMockMvcTest extends AbstractServerId
             mapper.registerModule(new JavaTimeModule());
             final String jsonContent = mapper.writeValueAsString(Object);
             return jsonContent;
-        }
-        catch (final Exception e) {
+        } catch (final Exception e) {
             throw new RuntimeException(e);
         }
     }
@@ -90,8 +89,7 @@ public abstract class AbstractRestControllerMockMvcTest extends AbstractServerId
                 for (final Object val : values) {
                     builder.queryParam(key, val);
                 }
-            }
-            else {
+            } else {
                 builder.queryParam(key, value);
             }
         });
@@ -111,30 +109,35 @@ public abstract class AbstractRestControllerMockMvcTest extends AbstractServerId
      * @param headers
      * @return
      */
-    protected ResultActions perform(final UriComponentsBuilder builder, final String jsonBody, final HttpMethod method, final ResultMatcher resultMatcher,
-            final HttpHeaders headers) {
+    protected ResultActions perform(
+        final UriComponentsBuilder builder,
+        final String jsonBody,
+        final HttpMethod method,
+        final ResultMatcher resultMatcher,
+        final HttpHeaders headers
+    ) {
         ResultActions result = null;
         MockHttpServletRequestBuilder request = null;
         switch (method) {
-            case GET :
+            case GET:
                 request = MockMvcRequestBuilders.get(builder.build().toUri()).contentType(MediaType.APPLICATION_JSON);
                 break;
-            case HEAD :
+            case HEAD:
                 request = MockMvcRequestBuilders.head(builder.build().toUri());
                 break;
-            case PATCH :
+            case PATCH:
                 request = MockMvcRequestBuilders.patch(builder.build().toUri());
                 break;
-            case DELETE :
+            case DELETE:
                 request = MockMvcRequestBuilders.delete(builder.build().toUri());
                 break;
-            case PUT :
+            case PUT:
                 request = MockMvcRequestBuilders.put(builder.build().toUri());
                 break;
-            case POST :
+            case POST:
                 request = MockMvcRequestBuilders.post(builder.build().toUri());
                 break;
-            default :
+            default:
                 break;
         }
         if (StringUtils.isNoneBlank(jsonBody)) {
@@ -146,8 +149,7 @@ public abstract class AbstractRestControllerMockMvcTest extends AbstractServerId
         try {
             result = mockMvc.perform(request).andDo(print()).andExpect(resultMatcher);
             return result;
-        }
-        catch (final Exception e) {
+        } catch (final Exception e) {
             fail(e.getMessage());
         }
         return result;
@@ -164,13 +166,22 @@ public abstract class AbstractRestControllerMockMvcTest extends AbstractServerId
         return perform(builder, StringUtils.EMPTY, HttpMethod.HEAD, status().isOk(), getHeaders());
     }
 
-    protected ResultActions performHead(final String endpoint, final Map<String, Object> params, final ResultMatcher resultMatcher) {
+    protected ResultActions performHead(
+        final String endpoint,
+        final Map<String, Object> params,
+        final ResultMatcher resultMatcher
+    ) {
         final UriComponentsBuilder builder = getUriBuilder(endpoint);
         addParams(params, builder);
         return perform(builder, StringUtils.EMPTY, HttpMethod.HEAD, resultMatcher, getHeaders());
     }
 
-    protected ResultActions performHead(final String endpoint, final Map<String, Object> params, final ResultMatcher resultMatcher, final HttpHeaders headers) {
+    protected ResultActions performHead(
+        final String endpoint,
+        final Map<String, Object> params,
+        final ResultMatcher resultMatcher,
+        final HttpHeaders headers
+    ) {
         final UriComponentsBuilder builder = getUriBuilder(endpoint);
         addParams(params, builder);
         return perform(builder, StringUtils.EMPTY, HttpMethod.HEAD, resultMatcher, headers);
@@ -204,19 +215,32 @@ public abstract class AbstractRestControllerMockMvcTest extends AbstractServerId
         return perform(builder, StringUtils.EMPTY, HttpMethod.GET, status().isOk(), getHeaders());
     }
 
-    protected ResultActions performGet(final String endpoint, final Map<String, Object> params, final ResultMatcher resultMatcher) {
+    protected ResultActions performGet(
+        final String endpoint,
+        final Map<String, Object> params,
+        final ResultMatcher resultMatcher
+    ) {
         final UriComponentsBuilder builder = getUriBuilder(endpoint);
         addParams(params, builder);
         return perform(builder, StringUtils.EMPTY, HttpMethod.GET, resultMatcher, getHeaders());
     }
 
-    protected ResultActions performGet(final String endpoint, final Map<String, Object> params, final HttpHeaders headers) {
+    protected ResultActions performGet(
+        final String endpoint,
+        final Map<String, Object> params,
+        final HttpHeaders headers
+    ) {
         final UriComponentsBuilder builder = getUriBuilder(endpoint);
         addParams(params, builder);
         return perform(builder, StringUtils.EMPTY, HttpMethod.GET, status().isOk(), headers);
     }
 
-    protected ResultActions performGet(final String endpoint, final Map<String, Object> params, final HttpHeaders headers, final ResultMatcher resultMatcher) {
+    protected ResultActions performGet(
+        final String endpoint,
+        final Map<String, Object> params,
+        final HttpHeaders headers,
+        final ResultMatcher resultMatcher
+    ) {
         final UriComponentsBuilder builder = getUriBuilder(endpoint);
         addParams(params, builder);
         return perform(builder, StringUtils.EMPTY, HttpMethod.GET, resultMatcher, headers);
@@ -231,8 +255,13 @@ public abstract class AbstractRestControllerMockMvcTest extends AbstractServerId
      * @param headers
      * @return ResultActions
      */
-    private ResultActions performMultiPart(final UriComponentsBuilder builder, final HttpMethod method, final Collection<MockMultipartFile> parts,
-            final ResultMatcher resultMatcher, final HttpHeaders headers) {
+    private ResultActions performMultiPart(
+        final UriComponentsBuilder builder,
+        final HttpMethod method,
+        final Collection<MockMultipartFile> parts,
+        final ResultMatcher resultMatcher,
+        final HttpHeaders headers
+    ) {
         ResultActions result = null;
         final MockMultipartHttpServletRequestBuilder request;
         request = MockMvcRequestBuilders.multipart(builder.build().toUri());
@@ -245,8 +274,7 @@ public abstract class AbstractRestControllerMockMvcTest extends AbstractServerId
         try {
             result = mockMvc.perform(request).andDo(print()).andExpect(resultMatcher);
             return result;
-        }
-        catch (final Exception e) {
+        } catch (final Exception e) {
             fail(e.getMessage());
         }
         return result;
@@ -260,23 +288,23 @@ public abstract class AbstractRestControllerMockMvcTest extends AbstractServerId
     private RequestPostProcessor getRequestPostProcessor(final HttpMethod method) {
         RequestPostProcessor requestPostProcessor = null;
         switch (method) {
-            case POST :
+            case POST:
                 requestPostProcessor = request -> {
                     request.setMethod("POST");
                     return request;
                 };
                 break;
-            case PUT :
+            case PUT:
                 requestPostProcessor = request -> {
                     request.setMethod("PUT");
                     return request;
                 };
-            case PATCH :
+            case PATCH:
                 requestPostProcessor = request -> {
                     request.setMethod("PATCH");
                     return request;
                 };
-            default :
+            default:
                 break;
         }
         return requestPostProcessor;
@@ -287,26 +315,44 @@ public abstract class AbstractRestControllerMockMvcTest extends AbstractServerId
         return performMultiPart(builder, HttpMethod.POST, parts, status().isCreated(), getHeaders());
     }
 
-    protected ResultActions performPostMultipart(final String endpoint, final Collection<MockMultipartFile> parts, final HttpHeaders headers) {
+    protected ResultActions performPostMultipart(
+        final String endpoint,
+        final Collection<MockMultipartFile> parts,
+        final HttpHeaders headers
+    ) {
         final UriComponentsBuilder builder = getUriBuilder(endpoint);
         return performMultiPart(builder, HttpMethod.POST, parts, status().isCreated(), headers);
     }
 
-    protected ResultActions performPostMultipart(final UriComponentsBuilder builder, final Collection<MockMultipartFile> parts) {
+    protected ResultActions performPostMultipart(
+        final UriComponentsBuilder builder,
+        final Collection<MockMultipartFile> parts
+    ) {
         return performMultiPart(builder, HttpMethod.POST, parts, status().isCreated(), getHeaders());
     }
 
-    protected ResultActions performPostMultipart(final UriComponentsBuilder builder, final Collection<MockMultipartFile> parts, final HttpHeaders headers) {
+    protected ResultActions performPostMultipart(
+        final UriComponentsBuilder builder,
+        final Collection<MockMultipartFile> parts,
+        final HttpHeaders headers
+    ) {
         return performMultiPart(builder, HttpMethod.POST, parts, status().isCreated(), headers);
     }
 
     protected ResultActions performPostMultipart(
-        final UriComponentsBuilder builder, final Collection<MockMultipartFile> parts,
-        final ResultMatcher status, final HttpHeaders headers) {
+        final UriComponentsBuilder builder,
+        final Collection<MockMultipartFile> parts,
+        final ResultMatcher status,
+        final HttpHeaders headers
+    ) {
         return performMultiPart(builder, HttpMethod.POST, parts, status, headers);
     }
 
-    protected ResultActions performPutMultipart(final UriComponentsBuilder builder, final HttpHeaders headers, final Collection<MockMultipartFile> parts) {
+    protected ResultActions performPutMultipart(
+        final UriComponentsBuilder builder,
+        final HttpHeaders headers,
+        final Collection<MockMultipartFile> parts
+    ) {
         return performMultiPart(builder, HttpMethod.PUT, parts, status().isOk(), headers);
     }
 
@@ -315,15 +361,26 @@ public abstract class AbstractRestControllerMockMvcTest extends AbstractServerId
         return performMultiPart(builder, HttpMethod.PATCH, parts, status().isOk(), getHeaders());
     }
 
-    protected ResultActions performPatchMultipart(final UriComponentsBuilder builder, final Collection<MockMultipartFile> parts) {
+    protected ResultActions performPatchMultipart(
+        final UriComponentsBuilder builder,
+        final Collection<MockMultipartFile> parts
+    ) {
         return performMultiPart(builder, HttpMethod.PATCH, parts, status().isOk(), getHeaders());
     }
 
-    protected ResultActions performPatchMultipart(final UriComponentsBuilder builder, final Collection<MockMultipartFile> parts, final HttpHeaders headers) {
+    protected ResultActions performPatchMultipart(
+        final UriComponentsBuilder builder,
+        final Collection<MockMultipartFile> parts,
+        final HttpHeaders headers
+    ) {
         return performMultiPart(builder, HttpMethod.PATCH, parts, status().isOk(), headers);
     }
 
-    protected ResultActions performPost(final UriComponentsBuilder builder, final String jsonBody, final ResultMatcher resultMatcher) {
+    protected ResultActions performPost(
+        final UriComponentsBuilder builder,
+        final String jsonBody,
+        final ResultMatcher resultMatcher
+    ) {
         return perform(builder, jsonBody, HttpMethod.POST, resultMatcher, getHeaders());
     }
 

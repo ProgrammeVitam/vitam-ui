@@ -11,8 +11,13 @@ import fr.gouv.vitamui.ui.commons.security.SecurityConfig;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.context.annotation.Import;
 
-@ImportAutoConfiguration(classes= {UICommonsAutoSpringMockConfiguration.class, UICommonsAutoConfiguration.class})
-@Import(value = {PastisApplicationProperties.class, SecurityConfig.class, ServerIdentityConfiguration.class,
-    RestExceptionHandler.class})
-public abstract class UIPastisRestControllerTest<T extends IdDto> extends UIControllerTest<T> {
-}
+@ImportAutoConfiguration(classes = { UICommonsAutoSpringMockConfiguration.class, UICommonsAutoConfiguration.class })
+@Import(
+    value = {
+        PastisApplicationProperties.class,
+        SecurityConfig.class,
+        ServerIdentityConfiguration.class,
+        RestExceptionHandler.class,
+    }
+)
+public abstract class UIPastisRestControllerTest<T extends IdDto> extends UIControllerTest<T> {}

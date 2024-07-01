@@ -43,9 +43,11 @@ public enum LanguageDto {
 
     private final String language;
 
-    private LanguageDto(final String language){
+    private LanguageDto(final String language) {
         this.language = language;
     }
 
-    public String getLanguage() { return language; }
+    public String getLanguage() {
+        return language;
+    }
 }

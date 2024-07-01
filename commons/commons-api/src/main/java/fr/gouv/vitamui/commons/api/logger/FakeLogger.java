@@ -63,5 +63,4 @@ public final class FakeLogger {
     public static void log(final Throwable e) {
         e.printStackTrace(); // NOSONAR
     }
-
 }

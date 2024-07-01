@@ -54,9 +54,11 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 @EnableGlobalMethodSecurity(securedEnabled = true, proxyTargetClass = true)
 public class WebSecurityConfig extends ExternalApiWebSecurityConfig {
 
-    public WebSecurityConfig(final ExternalApiAuthenticationProvider apiAuthenticationProvider,
-            final RestExceptionHandler restExceptionHandler, final Environment env) {
+    public WebSecurityConfig(
+        final ExternalApiAuthenticationProvider apiAuthenticationProvider,
+        final RestExceptionHandler restExceptionHandler,
+        final Environment env
+    ) {
         super(apiAuthenticationProvider, restExceptionHandler, env);
     }
-
 }

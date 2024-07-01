@@ -36,45 +36,47 @@
  */
 package fr.gouv.vitamui.referential.common.export.probativevalue;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
-import java.io.IOException;
-import java.io.InputStream;
-
-import org.junit.Test;
-
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.io.ByteStreams;
-
 import fr.gouv.vitamui.referential.common.export.probativevalue.dto.ProbativeReportDto;
+import org.junit.Test;
+
+import java.io.IOException;
+import java.io.InputStream;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class ProbativeReportDtoTest {
 
     @Test
     public void testProbativeReportDtoFromJsonWARNING() throws JsonParseException, JsonMappingException, IOException {
-    	
-    	ObjectMapper objectMapper = new ObjectMapper();
+        ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        InputStream inputStream = ProbativeReportDtoTest.class.getClassLoader().getResourceAsStream("provative_report_WARNING.json");
-        ProbativeReportDto report = objectMapper.readValue(ByteStreams.toByteArray(inputStream), ProbativeReportDto.class);
+        InputStream inputStream =
+            ProbativeReportDtoTest.class.getClassLoader().getResourceAsStream("provative_report_WARNING.json");
+        ProbativeReportDto report = objectMapper.readValue(
+            ByteStreams.toByteArray(inputStream),
+            ProbativeReportDto.class
+        );
         assertNotNull(report);
         assertEquals(1, report.getReportEntries().size());
     }
 
     @Test
     public void testProbativeReportDtoFromJsonKO() throws JsonParseException, JsonMappingException, IOException {
-    	
-    	ObjectMapper objectMapper = new ObjectMapper();
+        ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        InputStream inputStream = ProbativeReportDtoTest.class.getClassLoader().getResourceAsStream("provative_report_KO.json");
-        ProbativeReportDto report = objectMapper.readValue(ByteStreams.toByteArray(inputStream), ProbativeReportDto.class);
+        InputStream inputStream =
+            ProbativeReportDtoTest.class.getClassLoader().getResourceAsStream("provative_report_KO.json");
+        ProbativeReportDto report = objectMapper.readValue(
+            ByteStreams.toByteArray(inputStream),
+            ProbativeReportDto.class
+        );
         assertNotNull(report);
         assertEquals(1, report.getReportEntries().size());
     }
-	
 }
-

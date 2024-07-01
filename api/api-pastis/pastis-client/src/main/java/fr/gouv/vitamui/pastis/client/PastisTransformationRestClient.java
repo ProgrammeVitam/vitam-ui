@@ -60,11 +60,9 @@ import java.util.List;
 public class PastisTransformationRestClient
     extends BasePaginatingAndSortingRestClient<ProfileResponse, ExternalHttpContext> {
 
-    private static final VitamUILogger LOGGER =
-        VitamUILoggerFactory.getInstance(PastisTransformationRestClient.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(PastisTransformationRestClient.class);
 
-    public PastisTransformationRestClient(RestTemplate restTemplate,
-        String baseUrl) {
+    public PastisTransformationRestClient(RestTemplate restTemplate, String baseUrl) {
         super(restTemplate, baseUrl);
     }
 
@@ -75,14 +73,12 @@ public class PastisTransformationRestClient
 
     @Override
     protected ParameterizedTypeReference<List<ProfileResponse>> getDtoListClass() {
-        return new ParameterizedTypeReference<>() {
-        };
+        return new ParameterizedTypeReference<>() {};
     }
 
     @Override
     protected ParameterizedTypeReference<PaginatedValuesDto<ProfileResponse>> getDtoPaginatedClass() {
-        return new ParameterizedTypeReference<>() {
-        };
+        return new ParameterizedTypeReference<>() {};
     }
 
     @Override
@@ -94,31 +90,37 @@ public class PastisTransformationRestClient
         LOGGER.debug("Transform profile");
         MultiValueMap<String, String> headers = buildHeaders(context);
         final HttpEntity<Notice> request = new HttpEntity<>(notice, headers);
-        return restTemplate.exchange(getUrl() + RestApi.PASTIS_TRANSFORM_PROFILE, HttpMethod.POST,
-            request, ProfileResponse.class);
+        return restTemplate.exchange(
+            getUrl() + RestApi.PASTIS_TRANSFORM_PROFILE,
+            HttpMethod.POST,
+            request,
+            ProfileResponse.class
+        );
     }
 
     public ResponseEntity<String> getArchiveProfile(final ElementProperties json, ExternalHttpContext context) {
         LOGGER.debug("Download archive profile");
         MultiValueMap<String, String> headers = buildHeaders(context);
         final HttpEntity<ElementProperties> request = new HttpEntity<>(json, headers);
-        return restTemplate.exchange(getUrl() + RestApi.PASTIS_DOWNLOAD_PA, HttpMethod.POST,
-            request, String.class);
+        return restTemplate.exchange(getUrl() + RestApi.PASTIS_DOWNLOAD_PA, HttpMethod.POST, request, String.class);
     }
 
     public ResponseEntity<String> getArchiveUnitProfile(final ProfileNotice json, ExternalHttpContext context) {
         LOGGER.debug("Download Arichivale unit profile");
         MultiValueMap<String, String> headers = buildSearchHeaders(context);
         final HttpEntity<ProfileNotice> request = new HttpEntity<>(json, headers);
-        return restTemplate.exchange(getUrl() + RestApi.PASTIS_DOWNLOAD_PUA, HttpMethod.POST,
-            request, String.class);
+        return restTemplate.exchange(getUrl() + RestApi.PASTIS_DOWNLOAD_PUA, HttpMethod.POST, request, String.class);
     }
 
     public ResponseEntity<ProfileResponse> createProfile(String profileType, ExternalHttpContext context) {
         LOGGER.debug("Transform profile");
         MultiValueMap<String, String> headers = buildSearchHeaders(context);
         final HttpEntity<Notice> request = new HttpEntity<>(headers);
-        return restTemplate.exchange(getUrl() + RestApi.PASTIS_CREATE_PROFILE + "?type=" + profileType, HttpMethod.GET,
-            request, ProfileResponse.class);
+        return restTemplate.exchange(
+            getUrl() + RestApi.PASTIS_CREATE_PROFILE + "?type=" + profileType,
+            HttpMethod.GET,
+            request,
+            ProfileResponse.class
+        );
     }
 }

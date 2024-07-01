@@ -36,18 +36,17 @@
  */
 package fr.gouv.vitamui.iam.internal.server.idp.converter;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.stream.Collectors;
-
-import org.apache.commons.lang.StringUtils;
-
 import fr.gouv.vitamui.commons.api.converter.Converter;
 import fr.gouv.vitamui.commons.api.utils.ApiUtils;
 import fr.gouv.vitamui.commons.utils.VitamUIUtils;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.internal.server.idp.domain.IdentityProvider;
 import fr.gouv.vitamui.iam.internal.server.idp.service.SpMetadataGenerator;
+import org.apache.commons.lang.StringUtils;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class IdentityProviderConverter implements Converter<IdentityProviderDto, IdentityProvider> {
 
@@ -165,7 +164,9 @@ public class IdentityProviderConverter implements Converter<IdentityProviderDto,
 
     private void convertPatterns(final IdentityProviderDto dto, final IdentityProvider provider) {
         if (dto.getPatterns() != null && dto.getPatterns().size() > 0) {
-            dto.setPatterns(dto.getPatterns().stream().map(s -> s.startsWith(".*@") ? s : ".*@" + s).collect(Collectors.toList()));
+            dto.setPatterns(
+                dto.getPatterns().stream().map(s -> s.startsWith(".*@") ? s : ".*@" + s).collect(Collectors.toList())
+            );
         }
         provider.setPatterns(dto.getPatterns());
     }

@@ -50,7 +50,6 @@ import java.io.InputStream;
 
 public class TransactionInternalService {
 
-
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(TransactionInternalService.class);
 
     private final CollectService collectService;
@@ -68,7 +67,6 @@ public class TransactionInternalService {
     public TransactionInternalService(CollectService collectService) {
         this.collectService = collectService;
     }
-
 
     public void validateTransaction(String idTransaction, VitamContext vitamContext) throws VitamClientException {
         try {
@@ -123,15 +121,20 @@ public class TransactionInternalService {
             }
 
             return TransactionConverter.toVitamUiDto(
-                JsonHandler.getFromString(((RequestResponseOK) requestResponse).getFirstResult().toString(),
-                    TransactionDto.class));
+                JsonHandler.getFromString(
+                    ((RequestResponseOK) requestResponse).getFirstResult().toString(),
+                    TransactionDto.class
+                )
+            );
         } catch (VitamClientException | InvalidParseOperationException e) {
             throw new VitamClientException("Unable to find transaction : ", e);
         }
     }
 
-    public CollectTransactionDto updateTransaction(CollectTransactionDto collectTransactionDto,
-        VitamContext vitamContext) {
+    public CollectTransactionDto updateTransaction(
+        CollectTransactionDto collectTransactionDto,
+        VitamContext vitamContext
+    ) {
         LOGGER.debug("CollectTransactionDto: ", collectTransactionDto);
         try {
             TransactionDto transactionDto = TransactionConverter.toVitamDto(collectTransactionDto);
@@ -139,9 +142,10 @@ public class TransactionInternalService {
             if (!requestResponse.isOk()) {
                 throw new VitamClientException("Error occurs when updating transaction!");
             }
-            TransactionDto responseTransactionDto =
-                JsonHandler.getFromString(((RequestResponseOK) requestResponse).getFirstResult().toString(),
-                    TransactionDto.class);
+            TransactionDto responseTransactionDto = JsonHandler.getFromString(
+                ((RequestResponseOK) requestResponse).getFirstResult().toString(),
+                TransactionDto.class
+            );
             return TransactionConverter.toVitamUiDto(responseTransactionDto);
         } catch (VitamClientException e) {
             LOGGER.debug(UNABLE_TO_UPDATE_TRANSACTION + ": {}", e);

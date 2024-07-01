@@ -51,9 +51,10 @@ public class TransferRequestService {
      * @return
      * @throws VitamClientException
      */
-    public RequestResponse<JsonNode> transferRequest(final VitamContext vitamContext,
-        final TransferRequest transferRequest)
-        throws VitamClientException {
+    public RequestResponse<JsonNode> transferRequest(
+        final VitamContext vitamContext,
+        final TransferRequest transferRequest
+    ) throws VitamClientException {
         final RequestResponse<JsonNode> response = accessExternalClient.transfer(vitamContext, transferRequest);
         VitamRestUtils.checkResponse(response, HttpStatus.SC_OK, HttpStatus.SC_ACCEPTED);
         return response;

@@ -36,15 +36,12 @@
  */
 package fr.gouv.vitamui.iam.internal.server.config;
 
-import fr.gouv.vitamui.iam.internal.server.externalparamprofile.converter.ExternalParamProfileConverter;
-import fr.gouv.vitamui.iam.internal.server.common.converter.AccessContractConverter;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-
 import fr.gouv.vitamui.iam.internal.server.application.converter.ApplicationConverter;
+import fr.gouv.vitamui.iam.internal.server.common.converter.AccessContractConverter;
 import fr.gouv.vitamui.iam.internal.server.common.converter.AddressConverter;
 import fr.gouv.vitamui.iam.internal.server.customer.converter.CustomerConverter;
 import fr.gouv.vitamui.iam.internal.server.externalParameters.converter.ExternalParametersConverter;
+import fr.gouv.vitamui.iam.internal.server.externalparamprofile.converter.ExternalParamProfileConverter;
 import fr.gouv.vitamui.iam.internal.server.group.converter.GroupConverter;
 import fr.gouv.vitamui.iam.internal.server.group.dao.GroupRepository;
 import fr.gouv.vitamui.iam.internal.server.idp.converter.IdentityProviderConverter;
@@ -58,6 +55,8 @@ import fr.gouv.vitamui.iam.internal.server.tenant.converter.TenantConverter;
 import fr.gouv.vitamui.iam.internal.server.user.converter.UserConverter;
 import fr.gouv.vitamui.iam.internal.server.user.converter.UserInfoConverter;
 import fr.gouv.vitamui.iam.internal.server.user.dao.UserRepository;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class ConverterConfig {
@@ -71,7 +70,6 @@ public class ConverterConfig {
     public UserInfoConverter userInfoConverter() {
         return new UserInfoConverter();
     }
-
 
     @Bean
     public TenantConverter tenantConverter(final OwnerRepository ownerRepository) {
@@ -99,8 +97,11 @@ public class ConverterConfig {
     }
 
     @Bean
-    public CustomerConverter customerConverter(final OwnerRepository ownerRepository, final AddressConverter addressConverter,
-            final OwnerConverter ownerConverter) {
+    public CustomerConverter customerConverter(
+        final OwnerRepository ownerRepository,
+        final AddressConverter addressConverter,
+        final OwnerConverter ownerConverter
+    ) {
         return new CustomerConverter(addressConverter, ownerRepository, ownerConverter);
     }
 
@@ -125,13 +126,34 @@ public class ConverterConfig {
     }
 
     @Bean
-    public Converters converters(final UserConverter userConverter, final UserInfoConverter userInfoConverter, final TenantConverter tenantConverter, final OwnerConverter ownerConverter,
-            final ProfileConverter profileConverter, final ApplicationConverter applicationConverter, final GroupConverter groupConverter,
-            final CustomerConverter customerConverter, final IdentityProviderConverter identityProviderConverter,
-            final SubrogationConverter subrogationConverter, final ExternalParametersConverter externalParametersConverter,
-            final ExternalParamProfileConverter externalParamProfileConverter) {
-        return new Converters(userConverter, userInfoConverter, tenantConverter, ownerConverter, profileConverter, applicationConverter, groupConverter, customerConverter,
-                identityProviderConverter, subrogationConverter, externalParametersConverter, externalParamProfileConverter);
+    public Converters converters(
+        final UserConverter userConverter,
+        final UserInfoConverter userInfoConverter,
+        final TenantConverter tenantConverter,
+        final OwnerConverter ownerConverter,
+        final ProfileConverter profileConverter,
+        final ApplicationConverter applicationConverter,
+        final GroupConverter groupConverter,
+        final CustomerConverter customerConverter,
+        final IdentityProviderConverter identityProviderConverter,
+        final SubrogationConverter subrogationConverter,
+        final ExternalParametersConverter externalParametersConverter,
+        final ExternalParamProfileConverter externalParamProfileConverter
+    ) {
+        return new Converters(
+            userConverter,
+            userInfoConverter,
+            tenantConverter,
+            ownerConverter,
+            profileConverter,
+            applicationConverter,
+            groupConverter,
+            customerConverter,
+            identityProviderConverter,
+            subrogationConverter,
+            externalParametersConverter,
+            externalParamProfileConverter
+        );
     }
 
     @Bean
@@ -143,5 +165,4 @@ public class ConverterConfig {
     public ExternalParamProfileConverter externalParamProfileConverter() {
         return new ExternalParamProfileConverter();
     }
-
 }

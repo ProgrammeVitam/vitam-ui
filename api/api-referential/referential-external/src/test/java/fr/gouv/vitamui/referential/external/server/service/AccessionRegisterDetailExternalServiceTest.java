@@ -33,18 +33,36 @@ class AccessionRegisterDetailExternalServiceTest extends ExternalServiceTest {
         MockitoAnnotations.openMocks(this);
         final String userCustomerId = "customerIdAllowed";
         mockSecurityContext(externalSecurityService, userCustomerId, 10);
-        accessionRegisterDetailExternalService = new AccessionRegisterDetailExternalService(externalSecurityService, accessionRegisterDetailInternalRestClient);
+        accessionRegisterDetailExternalService = new AccessionRegisterDetailExternalService(
+            externalSecurityService,
+            accessionRegisterDetailInternalRestClient
+        );
     }
 
     @Test
     void should_call_the_right_rest_client_method_once_when_paginated_service_is_invoked() {
         //Given
-        doReturn(new PaginatedValuesDto<AccessionRegisterDetailDto>()).when(accessionRegisterDetailInternalRestClient).getAllPaginated(any(), any(), any(), any(), any(), any());
+        doReturn(new PaginatedValuesDto<AccessionRegisterDetailDto>())
+            .when(accessionRegisterDetailInternalRestClient)
+            .getAllPaginated(any(), any(), any(), any(), any(), any());
 
         //When
-        accessionRegisterDetailExternalService.getAllPaginated(0, 20, Optional.empty(), Optional.empty(), Optional.empty());
+        accessionRegisterDetailExternalService.getAllPaginated(
+            0,
+            20,
+            Optional.empty(),
+            Optional.empty(),
+            Optional.empty()
+        );
 
         //THen
-        verify(accessionRegisterDetailInternalRestClient, times(1)).getAllPaginated(any(), any(), any(), any(), any(), any());
+        verify(accessionRegisterDetailInternalRestClient, times(1)).getAllPaginated(
+            any(),
+            any(),
+            any(),
+            any(),
+            any(),
+            any()
+        );
     }
 }

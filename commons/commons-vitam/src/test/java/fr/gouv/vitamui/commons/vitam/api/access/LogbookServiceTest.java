@@ -52,9 +52,15 @@ public class LogbookServiceTest {
     public void setup() {
         ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
 
-        accessExternalClient = AccessExternalClientFactory.getInstance().setVitamClientType(VitamClientFactoryInterface.VitamClientType.MOCK).getClient();
-        ingestExternalClient = IngestExternalClientFactory.getInstance().setVitamClientType(VitamClientFactoryInterface.VitamClientType.MOCK).getClient();
-        adminExternalClient = AdminExternalClientFactory.getInstance().setVitamClientType(VitamClientFactoryInterface.VitamClientType.MOCK).getClient();
+        accessExternalClient = AccessExternalClientFactory.getInstance()
+            .setVitamClientType(VitamClientFactoryInterface.VitamClientType.MOCK)
+            .getClient();
+        ingestExternalClient = IngestExternalClientFactory.getInstance()
+            .setVitamClientType(VitamClientFactoryInterface.VitamClientType.MOCK)
+            .getClient();
+        adminExternalClient = AdminExternalClientFactory.getInstance()
+            .setVitamClientType(VitamClientFactoryInterface.VitamClientType.MOCK)
+            .getClient();
         logbookService = new LogbookService(accessExternalClient, ingestExternalClient, adminExternalClient);
     }
 
@@ -65,7 +71,9 @@ public class LogbookServiceTest {
         operation.setEvTypeProc(INGEST);
         final RequestResponseOK<LogbookOperation> operationResponse = new RequestResponseOK<>();
         operationResponse.addResult(operation);
-        Mockito.when(logbookService.selectOperationbyId(ArgumentMatchers.any(), ArgumentMatchers.any())).thenReturn(operationResponse);
+        Mockito.when(logbookService.selectOperationbyId(ArgumentMatchers.any(), ArgumentMatchers.any())).thenReturn(
+            operationResponse
+        );
 
         final Response response = logbookService.downloadManifest("vitamId", new VitamContext(10));
         VitamRestUtils.checkResponse(response, Response.Status.OK.getStatusCode());
@@ -78,7 +86,9 @@ public class LogbookServiceTest {
         operation.setEvTypeProc(INGEST);
         final RequestResponseOK<LogbookOperation> operationResponse = new RequestResponseOK<>();
         operationResponse.addResult(operation);
-        Mockito.when(logbookService.selectOperationbyId(ArgumentMatchers.any(), ArgumentMatchers.any())).thenReturn(operationResponse);
+        Mockito.when(logbookService.selectOperationbyId(ArgumentMatchers.any(), ArgumentMatchers.any())).thenReturn(
+            operationResponse
+        );
 
         final Response response = logbookService.downloadAtr("vitamId", new VitamContext(10));
         VitamRestUtils.checkResponse(response, Response.Status.OK.getStatusCode());
@@ -91,7 +101,9 @@ public class LogbookServiceTest {
         operation.setEvTypeProc(OTHER);
         final RequestResponseOK<LogbookOperation> operationResponse = new RequestResponseOK<>();
         operationResponse.addResult(operation);
-        Mockito.when(logbookService.selectOperationbyId(ArgumentMatchers.any(), ArgumentMatchers.any())).thenReturn(operationResponse);
+        Mockito.when(logbookService.selectOperationbyId(ArgumentMatchers.any(), ArgumentMatchers.any())).thenReturn(
+            operationResponse
+        );
 
         logbookService.downloadAtr("vitamId", new VitamContext(10));
     }
@@ -100,7 +112,9 @@ public class LogbookServiceTest {
     public void testDownloadAtr_whenNoOperation() throws VitamClientException {
         logbookService = spy(logbookService);
         final RequestResponseOK<LogbookOperation> operationResponse = new RequestResponseOK<>();
-        Mockito.when(logbookService.selectOperationbyId(ArgumentMatchers.any(), ArgumentMatchers.any())).thenReturn(operationResponse);
+        Mockito.when(logbookService.selectOperationbyId(ArgumentMatchers.any(), ArgumentMatchers.any())).thenReturn(
+            operationResponse
+        );
 
         logbookService.downloadAtr("vitamId", new VitamContext(10));
     }
@@ -108,7 +122,9 @@ public class LogbookServiceTest {
     @Test(expected = ApplicationServerException.class)
     public void testDownloadAtr_whenVitamException() throws VitamClientException {
         logbookService = spy(logbookService);
-        Mockito.doThrow(new VitamClientException("error")).when(logbookService).selectOperationbyId(ArgumentMatchers.any(), ArgumentMatchers.any());
+        Mockito.doThrow(new VitamClientException("error"))
+            .when(logbookService)
+            .selectOperationbyId(ArgumentMatchers.any(), ArgumentMatchers.any());
 
         logbookService.downloadAtr("vitamId", new VitamContext(10));
     }
@@ -119,10 +135,17 @@ public class LogbookServiceTest {
         final LogbookOperation operation = new LogbookOperation();
         operation.setEvTypeProc(DIP_EXPORT);
 
-        final Response response = logbookService.downloadReport("aeeaaaaaaggtywctaanl4al3q2moiyyaaaaq", "dip", new VitamContext(10));
+        final Response response = logbookService.downloadReport(
+            "aeeaaaaaaggtywctaanl4al3q2moiyyaaaaq",
+            "dip",
+            new VitamContext(10)
+        );
         VitamRestUtils.checkResponse(response, Response.Status.OK.getStatusCode());
 
-        String reportContent = IOUtils.toString(response.readEntity(ByteArrayInputStream.class), StandardCharsets.UTF_8);
+        String reportContent = IOUtils.toString(
+            response.readEntity(ByteArrayInputStream.class),
+            StandardCharsets.UTF_8
+        );
         Assertions.assertThat(reportContent).isEqualTo("test");
     }
 
@@ -133,10 +156,11 @@ public class LogbookServiceTest {
         operation.setEvTypeProc(MASTER_DATA);
         final RequestResponseOK<LogbookOperation> operationResponse = new RequestResponseOK<>();
         operationResponse.addResult(operation);
-        Mockito.when(logbookService.selectOperationbyId(ArgumentMatchers.any(), ArgumentMatchers.any())).thenReturn(operationResponse);
+        Mockito.when(logbookService.selectOperationbyId(ArgumentMatchers.any(), ArgumentMatchers.any())).thenReturn(
+            operationResponse
+        );
 
         final Response response = logbookService.downloadAtr("vitamId", new VitamContext(10));
         VitamRestUtils.checkResponse(response, Response.Status.OK.getStatusCode());
     }
-
 }

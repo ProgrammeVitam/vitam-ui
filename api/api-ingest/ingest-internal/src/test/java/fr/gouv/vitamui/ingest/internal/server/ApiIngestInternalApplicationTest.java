@@ -56,5 +56,4 @@ public class ApiIngestInternalApplicationTest {
     public void testContextLoads() {
         assertThat(env).isNotNull();
     }
-
 }

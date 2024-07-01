@@ -36,11 +36,10 @@
  */
 package fr.gouv.vitamui.iam.external.server.rest;
 
+import fr.gouv.vitamui.iam.common.rest.RestApi;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import fr.gouv.vitamui.iam.common.rest.RestApi;
 
 /**
  * A controller with two status endpoints: /status (up and running?) and /autotest (is MongoDB alive?)
@@ -59,7 +58,6 @@ public abstract class BaseStatusController {
     @GetMapping(RestApi.AUTOTEST_URL)
     @ResponseBody
     public String autotest() {
-        return "Autotest not implemented" ;
+        return "Autotest not implemented";
     }
-
 }

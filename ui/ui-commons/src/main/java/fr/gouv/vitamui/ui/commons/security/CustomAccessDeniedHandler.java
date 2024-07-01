@@ -58,12 +58,16 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
     private RestExceptionHandler restExceptionHandler;
 
     @Override
-    public void handle(final HttpServletRequest request, final HttpServletResponse response,
-            final AccessDeniedException exc) throws IOException, ServletException {
-
+    public void handle(
+        final HttpServletRequest request,
+        final HttpServletResponse response,
+        final AccessDeniedException exc
+    ) throws IOException, ServletException {
         final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth != null) {
-            LOGGER.warn("User: " + auth.getName() + " attempted to access the protected URL: " + request.getRequestURI());
+            LOGGER.warn(
+                "User: " + auth.getName() + " attempted to access the protected URL: " + request.getRequestURI()
+            );
         }
 
         restExceptionHandler.writeExceptionToResponse(request, response, exc);

@@ -33,6 +33,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.util.List;
+
 @ResponseStatus(value = HttpStatus.REQUEST_TIMEOUT)
 public class RequestTimeOutException extends VitamUIException {
 

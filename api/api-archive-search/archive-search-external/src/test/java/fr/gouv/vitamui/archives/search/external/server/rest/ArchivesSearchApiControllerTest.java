@@ -58,7 +58,4 @@ public abstract class ArchivesSearchApiControllerTest<T extends IdDto> extends A
     }
 
     protected abstract String[] getServices();
-
-
-
 }

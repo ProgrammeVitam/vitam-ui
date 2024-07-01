@@ -31,8 +31,8 @@ package fr.gouv.vitamui.collect.external.server.service;
 
 import fr.gouv.vitamui.collect.common.dto.CollectProjectDto;
 import fr.gouv.vitamui.collect.internal.client.CollectInternalRestClient;
-import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 import fr.gouv.vitamui.collect.internal.client.CollectInternalWebClient;
+import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 import fr.gouv.vitamui.iam.security.client.AbstractResourceClientService;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import lombok.Getter;
@@ -45,28 +45,30 @@ import reactor.core.publisher.Mono;
 @Getter
 @Setter
 @Service
-public class ProjectObjectGroupExternalService extends
-    AbstractResourceClientService<CollectProjectDto, CollectProjectDto> {
+public class ProjectObjectGroupExternalService
+    extends AbstractResourceClientService<CollectProjectDto, CollectProjectDto> {
 
     private final CollectInternalRestClient collectInternalRestClient;
     private final CollectInternalWebClient collectInternalWebClient;
 
-    public ProjectObjectGroupExternalService(CollectInternalRestClient collectInternalRestClient,
+    public ProjectObjectGroupExternalService(
+        CollectInternalRestClient collectInternalRestClient,
         CollectInternalWebClient collectInternalWebClient,
-        ExternalSecurityService externalSecurityService) {
+        ExternalSecurityService externalSecurityService
+    ) {
         super(externalSecurityService);
         this.collectInternalRestClient = collectInternalRestClient;
         this.collectInternalWebClient = collectInternalWebClient;
     }
 
     public Mono<ResponseEntity<Resource>> downloadObjectFromUnit(String id, String usage, Integer version) {
-        return collectInternalWebClient
-            .downloadObjectFromUnit(id, usage, version, getInternalHttpContext());
+        return collectInternalWebClient.downloadObjectFromUnit(id, usage, version, getInternalHttpContext());
     }
 
     public ResponseEntity<ResultsDto> findObjectById(String id) {
         return collectInternalRestClient.findObjectById(id, getInternalHttpContext());
     }
+
     @Override
     protected CollectInternalRestClient getClient() {
         return collectInternalRestClient;

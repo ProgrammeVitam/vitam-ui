@@ -106,8 +106,10 @@ import org.springframework.mail.javamail.JavaMailSender;
  * Configure all beans to customize the CAS server.
  */
 @Configuration
-@EnableConfigurationProperties({CasConfigurationProperties.class, IamClientConfigurationProperties.class, PasswordConfiguration.class})
-@Import({ServerIdentityAutoConfiguration.class})
+@EnableConfigurationProperties(
+    { CasConfigurationProperties.class, IamClientConfigurationProperties.class, PasswordConfiguration.class }
+)
+@Import({ ServerIdentityAutoConfiguration.class })
 public class AppConfig extends BaseTicketCatalogConfigurer {
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(AppConfig.class);
@@ -254,10 +256,27 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
     @Bean
     @RefreshScope
     public PrincipalResolver surrogatePrincipalResolver() {
-        val emailMapping = new X509AttributeMapping(x509EmailAttribute, x509EmailAttributeParsing, x509EmailAttributeExpansion);
-        val identifierMapping = new X509AttributeMapping(x509IdentifierAttribute, x509IdentifierAttributeParsing, x509IdentifierAttributeExpansion);
-        return new UserPrincipalResolver(principalFactory, casRestClient(), utils(), delegatedClientDistributedSessionStore,
-            identityProviderHelper(), providersService(), emailMapping, identifierMapping, x509DefaultDomain);
+        val emailMapping = new X509AttributeMapping(
+            x509EmailAttribute,
+            x509EmailAttributeParsing,
+            x509EmailAttributeExpansion
+        );
+        val identifierMapping = new X509AttributeMapping(
+            x509IdentifierAttribute,
+            x509IdentifierAttributeParsing,
+            x509IdentifierAttributeExpansion
+        );
+        return new UserPrincipalResolver(
+            principalFactory,
+            casRestClient(),
+            utils(),
+            delegatedClientDistributedSessionStore,
+            identityProviderHelper(),
+            providersService(),
+            emailMapping,
+            identifierMapping,
+            x509DefaultDomain
+        );
     }
 
     @Bean
@@ -268,21 +287,34 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
 
     @Bean
     public AuthenticationEventExecutionPlanConfigurer registerInternalHandler() {
-        return plan -> plan.registerAuthenticationHandlerWithPrincipalResolver(userAuthenticationHandler(), surrogatePrincipalResolver());
+        return plan ->
+            plan.registerAuthenticationHandlerWithPrincipalResolver(
+                userAuthenticationHandler(),
+                surrogatePrincipalResolver()
+            );
     }
 
     @Bean
     public AuthenticationEventExecutionPlanConfigurer pac4jAuthenticationEventExecutionPlanConfigurer() {
         return plan -> {
-            plan.registerAuthenticationHandlerWithPrincipalResolver(clientAuthenticationHandler, surrogatePrincipalResolver());
+            plan.registerAuthenticationHandlerWithPrincipalResolver(
+                clientAuthenticationHandler,
+                surrogatePrincipalResolver()
+            );
             plan.registerAuthenticationMetadataPopulator(clientAuthenticationMetaDataPopulator);
         };
     }
 
     @Bean
     public AuthenticationPostProcessor surrogateAuthenticationPostProcessor() {
-        return new DelegatedSurrogateAuthenticationPostProcessor(surrogateAuthenticationService, servicesManager, eventPublisher,
-                registeredServiceAccessStrategyEnforcer, surrogateEligibilityAuditableExecution, delegatedClientDistributedSessionStore);
+        return new DelegatedSurrogateAuthenticationPostProcessor(
+            surrogateAuthenticationService,
+            servicesManager,
+            eventPublisher,
+            registeredServiceAccessStrategyEnforcer,
+            surrogateEligibilityAuditableExecution,
+            delegatedClientDistributedSessionStore
+        );
     }
 
     // overrides the CAS specific message converter to prevent
@@ -332,26 +364,48 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
 
     @Bean
     public Utils utils() {
-        return new Utils(tokenApiCas, casTenantIdentifier, casIdentity, mailSender, casProperties.getServer().getPrefix());
+        return new Utils(
+            tokenApiCas,
+            casTenantIdentifier,
+            casIdentity,
+            mailSender,
+            casProperties.getServer().getPrefix()
+        );
     }
 
     @Bean
     public TicketGrantingTicketFactory defaultTicketGrantingTicketFactory() {
-        return new DynamicTicketGrantingTicketFactory(ticketGrantingTicketUniqueIdGenerator, grantingTicketExpirationPolicy.getObject(),
-                protocolTicketCipherExecutor, servicesManager, utils());
+        return new DynamicTicketGrantingTicketFactory(
+            ticketGrantingTicketUniqueIdGenerator,
+            grantingTicketExpirationPolicy.getObject(),
+            protocolTicketCipherExecutor,
+            servicesManager,
+            utils()
+        );
     }
 
     @Bean
     @RefreshScope
     public OAuth20AccessTokenFactory defaultAccessTokenFactory() {
-        return new CustomOAuth20DefaultAccessTokenFactory(accessTokenExpirationPolicy, accessTokenJwtBuilder, servicesManager);
+        return new CustomOAuth20DefaultAccessTokenFactory(
+            accessTokenExpirationPolicy,
+            accessTokenJwtBuilder,
+            servicesManager
+        );
     }
 
     @Override
     public void configureTicketCatalog(final TicketCatalog plan) {
-        final TicketDefinition metadata = buildTicketDefinition(plan, "TOK", OAuth20DefaultAccessToken.class, Ordered.HIGHEST_PRECEDENCE);
+        final TicketDefinition metadata = buildTicketDefinition(
+            plan,
+            "TOK",
+            OAuth20DefaultAccessToken.class,
+            Ordered.HIGHEST_PRECEDENCE
+        );
         metadata.getProperties().setStorageName(casProperties.getAuthn().getOauth().getAccessToken().getStorageName());
-        val timeout = Beans.newDuration(casProperties.getAuthn().getOauth().getAccessToken().getMaxTimeToLiveInSeconds()).getSeconds();
+        val timeout = Beans.newDuration(
+            casProperties.getAuthn().getOauth().getAccessToken().getMaxTimeToLiveInSeconds()
+        ).getSeconds();
         metadata.getProperties().setStorageTimeout(timeout);
         metadata.getProperties().setExcludeFromCascade(casProperties.getLogout().isRemoveDescendantTickets());
         registerTicketDefinition(plan, metadata);
@@ -367,9 +421,20 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
     @RefreshScope
     @Bean
     public PasswordManagementService passwordChangeService() {
-        return new IamPasswordManagementService(casProperties.getAuthn().getPm(), passwordManagementCipherExecutor, casProperties.getServer().getPrefix(),
-                passwordHistoryService, casRestClient(), providersService(), identityProviderHelper(), centralAuthenticationService.getObject(), utils(),
-                ticketRegistry, passwordValidator(), passwordConfiguration);
+        return new IamPasswordManagementService(
+            casProperties.getAuthn().getPm(),
+            passwordManagementCipherExecutor,
+            casProperties.getServer().getPrefix(),
+            passwordHistoryService,
+            casRestClient(),
+            providersService(),
+            identityProviderHelper(),
+            centralAuthenticationService.getObject(),
+            utils(),
+            ticketRegistry,
+            passwordValidator(),
+            passwordConfiguration
+        );
     }
 
     @Bean

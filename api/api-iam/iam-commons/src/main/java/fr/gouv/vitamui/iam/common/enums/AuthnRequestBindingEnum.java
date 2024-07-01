@@ -5,5 +5,5 @@ package fr.gouv.vitamui.iam.common.enums;
  */
 public enum AuthnRequestBindingEnum {
     POST,
-    GET
+    GET,
 }

@@ -34,13 +34,13 @@ import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.RequestResponseOK;
 import fr.gouv.vitam.common.model.administration.AgenciesModel;
+import fr.gouv.vitamui.archives.search.common.dto.AgencyResponseDto;
 import fr.gouv.vitamui.commons.api.dtos.CriteriaValue;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaEltDto;
-import fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts;
-import fr.gouv.vitamui.archives.search.common.dto.AgencyResponseDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts;
 import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import fr.gouv.vitamui.commons.vitam.api.administration.AgencyService;
 import org.assertj.core.api.Assertions;
@@ -58,13 +58,13 @@ import java.util.stream.Collectors;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
-
 @ExtendWith(SpringExtension.class)
 @SuppressWarnings("unchecked")
 public class ArchiveSearchAgenciesInternalServiceTest {
 
-    private static final VitamUILogger LOGGER =
-        VitamUILoggerFactory.getInstance(ArchiveSearchAgenciesInternalServiceTest.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
+        ArchiveSearchAgenciesInternalServiceTest.class
+    );
 
     @MockBean(name = "objectMapper")
     private ObjectMapper objectMapper;
@@ -72,10 +72,8 @@ public class ArchiveSearchAgenciesInternalServiceTest {
     @MockBean(name = "agencyService")
     private AgencyService agencyService;
 
-
     @InjectMocks
     private ArchiveSearchAgenciesInternalService archiveSearchAgenciesInternalService;
-
 
     @BeforeEach
     public void setUp() {
@@ -107,12 +105,10 @@ public class ArchiveSearchAgenciesInternalServiceTest {
 
         // Configure the mapper
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        when(objectMapper.treeToValue(any(), (Class<Object>) any()))
-            .thenReturn(getResponseAgencies());
+        when(objectMapper.treeToValue(any(), (Class<Object>) any())).thenReturn(getResponseAgencies());
 
         // When
-        archiveSearchAgenciesInternalService
-            .mapAgenciesNameToCodes(searchQuery, new VitamContext(1));
+        archiveSearchAgenciesInternalService.mapAgenciesNameToCodes(searchQuery, new VitamContext(1));
 
         // Then
         Assertions.assertThat(searchQuery).isNotNull();
@@ -120,7 +116,6 @@ public class ArchiveSearchAgenciesInternalServiceTest {
         List<SearchCriteriaEltDto> agencyIds = new ArrayList<>(searchQuery.getCriteriaList());
         Assertions.assertThat(agencyIds).isNotNull().hasSize(1);
         Assertions.assertThat(agencyIds.get(0).getValues()).hasSize(4);
-
     }
 
     @Test
@@ -142,55 +137,56 @@ public class ArchiveSearchAgenciesInternalServiceTest {
 
         // Configure the mapper
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        when(objectMapper.treeToValue(any(), (Class<Object>) any()))
-            .thenReturn(getResponseAgencies());
+        when(objectMapper.treeToValue(any(), (Class<Object>) any())).thenReturn(getResponseAgencies());
 
         // When
-        archiveSearchAgenciesInternalService
-            .mapAgenciesNameToCodes(searchQuery, new VitamContext(1));
+        archiveSearchAgenciesInternalService.mapAgenciesNameToCodes(searchQuery, new VitamContext(1));
 
         // Then
         Assertions.assertThat(searchQuery).isNotNull();
         Assertions.assertThat(searchQuery.getCriteriaList()).hasSize(1);
-        List<SearchCriteriaEltDto> agencyIds = searchQuery.getCriteriaList().stream().filter(
-            criteria -> criteria.getCriteria().equals(ArchiveSearchConsts.ORIGINATING_AGENCY_ID_FIELD))
+        List<SearchCriteriaEltDto> agencyIds = searchQuery
+            .getCriteriaList()
+            .stream()
+            .filter(criteria -> criteria.getCriteria().equals(ArchiveSearchConsts.ORIGINATING_AGENCY_ID_FIELD))
             .collect(Collectors.toList());
         Assertions.assertThat(agencyIds).isNotNull().hasSize(1);
         Assertions.assertThat(agencyIds.get(0).getValues()).hasSize(3);
     }
 
-    private AgencyResponseDto getResponseAgencies()
-        throws JsonProcessingException {
+    private AgencyResponseDto getResponseAgencies() throws JsonProcessingException {
         // Configure the mapper
         ObjectMapper objectMapper1 = new ObjectMapper();
         objectMapper1.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
-        List<AgenciesModel> agenciesModelList = List.of(createAgencyModel("producteur1", "Service producteur1", 0),
+        List<AgenciesModel> agenciesModelList = List.of(
+            createAgencyModel("producteur1", "Service producteur1", 0),
             createAgencyModel("producteur3", "Service producteur2", 0),
-            createAgencyModel("ANY_CODE", "Service producteur3", 0));
-        RequestResponseOK<AgenciesModel> response =
-            new RequestResponseOK<>(null, agenciesModelList, agenciesModelList.size()).setHttpCode(400);
+            createAgencyModel("ANY_CODE", "Service producteur3", 0)
+        );
+        RequestResponseOK<AgenciesModel> response = new RequestResponseOK<>(
+            null,
+            agenciesModelList,
+            agenciesModelList.size()
+        ).setHttpCode(400);
 
-
-        return objectMapper1
-            .treeToValue(response.toJsonNode(), AgencyResponseDto.class);
+        return objectMapper1.treeToValue(response.toJsonNode(), AgencyResponseDto.class);
     }
 
     private RequestResponse<AgenciesModel> buildAgenciesResponse() {
-        List<AgenciesModel> agenciesModelList = List.of(createAgencyModel("producteur1", "Service producteur1", 0),
-            createAgencyModel("producteur3", "Service producteur2", 0));
+        List<AgenciesModel> agenciesModelList = List.of(
+            createAgencyModel("producteur1", "Service producteur1", 0),
+            createAgencyModel("producteur3", "Service producteur2", 0)
+        );
 
         return new RequestResponseOK<>(null, agenciesModelList, agenciesModelList.size()).setHttpCode(400);
     }
 
     AgenciesModel createAgencyModel(String identifier, String name, Integer tenant) {
-
         AgenciesModel agency = new AgenciesModel();
         agency.setIdentifier(identifier);
         agency.setName(name);
         agency.setTenant(tenant);
         return agency;
     }
-
-
 }

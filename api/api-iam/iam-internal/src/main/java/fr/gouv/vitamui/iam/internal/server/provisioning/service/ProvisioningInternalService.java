@@ -38,9 +38,6 @@
 package fr.gouv.vitamui.iam.internal.server.provisioning.service;
 
 import fr.gouv.vitamui.commons.api.domain.AddressDto;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Value;
-
 import fr.gouv.vitamui.commons.api.exception.NotFoundException;
 import fr.gouv.vitamui.commons.rest.client.BaseWebClientFactory;
 import fr.gouv.vitamui.iam.common.dto.ProvidedUserDto;
@@ -48,6 +45,8 @@ import fr.gouv.vitamui.iam.internal.server.provisioning.client.ProvisioningWebCl
 import fr.gouv.vitamui.iam.internal.server.provisioning.config.IdPProvisioningClientConfiguration;
 import fr.gouv.vitamui.iam.internal.server.provisioning.config.ProvisioningClientConfiguration;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -71,21 +70,38 @@ public class ProvisioningInternalService {
     @NotNull
     private int maxStreetLength;
 
-    public ProvisioningInternalService(final WebClient.Builder webClientBuilder, final ProvisioningClientConfiguration provisioningClientConfiguration,
-        final InternalSecurityService securityService) {
+    public ProvisioningInternalService(
+        final WebClient.Builder webClientBuilder,
+        final ProvisioningClientConfiguration provisioningClientConfiguration,
+        final InternalSecurityService securityService
+    ) {
         this.webClientBuilder = webClientBuilder;
         this.provisioningClientConfiguration = provisioningClientConfiguration;
         this.securityService = securityService;
     }
 
-    public ProvidedUserDto getUserInformation(final String idp, final String email, final String groupId, final String unit, final String userIdentifier, final String customerId) {
+    public ProvidedUserDto getUserInformation(
+        final String idp,
+        final String email,
+        final String groupId,
+        final String unit,
+        final String userIdentifier,
+        final String customerId
+    ) {
         final IdPProvisioningClientConfiguration idpProvisioningClient = getProvisioningClientConfiguration(idp);
 
         var webClient = buildWebClient(idpProvisioningClient);
 
-        ProvidedUserDto providedUser = webClient.getProvidedUser(securityService.getHttpContext(), email, groupId, unit, userIdentifier, customerId);
+        ProvidedUserDto providedUser = webClient.getProvidedUser(
+            securityService.getHttpContext(),
+            email,
+            groupId,
+            unit,
+            userIdentifier,
+            customerId
+        );
         AddressDto address = providedUser.getAddress();
-        if(address != null){
+        if (address != null) {
             var shortStreetAddress = StringUtils.substring(address.getStreet(), 0, maxStreetLength);
             address.setStreet(shortStreetAddress);
             providedUser.setAddress(address);
@@ -99,10 +115,17 @@ public class ProvisioningInternalService {
      * @return
      */
     protected IdPProvisioningClientConfiguration getProvisioningClientConfiguration(final String idp) {
-        return provisioningClientConfiguration.getIdentityProviders()
+        return provisioningClientConfiguration
+            .getIdentityProviders()
             .stream()
             .filter(provisioningClient -> provisioningClient.getIdpIdentifier().equalsIgnoreCase(idp))
-            .findFirst().orElseThrow(() -> new NotFoundException(String.format("Provisioning client configuration not found for IdP : %S", idp)));
+            .findFirst()
+            .orElseThrow(
+                () ->
+                    new NotFoundException(
+                        String.format("Provisioning client configuration not found for IdP : %S", idp)
+                    )
+            );
     }
 
     /**
@@ -111,8 +134,12 @@ public class ProvisioningInternalService {
      * @return
      */
     protected ProvisioningWebClient buildWebClient(final IdPProvisioningClientConfiguration idpProvisioningClient) {
-        final BaseWebClientFactory clientFactory = new BaseWebClientFactory(idpProvisioningClient.getClient(), null ,this.webClientBuilder,
-            idpProvisioningClient.getUri());
+        final BaseWebClientFactory clientFactory = new BaseWebClientFactory(
+            idpProvisioningClient.getClient(),
+            null,
+            this.webClientBuilder,
+            idpProvisioningClient.getUri()
+        );
 
         return new ProvisioningWebClient(clientFactory.getWebClient(), idpProvisioningClient.getUri());
     }

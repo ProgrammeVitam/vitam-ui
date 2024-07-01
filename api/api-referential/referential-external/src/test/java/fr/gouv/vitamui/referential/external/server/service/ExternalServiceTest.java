@@ -47,8 +47,12 @@ import java.util.List;
 
 public class ExternalServiceTest {
 
-    protected void mockSecurityContext(ExternalSecurityService externalSecurityService, final String userCustomerId, final Integer tenantIdentifier,
-                                       final String... userRoles) {
+    protected void mockSecurityContext(
+        ExternalSecurityService externalSecurityService,
+        final String userCustomerId,
+        final Integer tenantIdentifier,
+        final String... userRoles
+    ) {
         final AuthUserDto user = new AuthUserDto();
         user.setLevel("");
         user.setCustomerId(userCustomerId);
@@ -58,7 +62,8 @@ public class ExternalServiceTest {
         }
 
         Mockito.when(externalSecurityService.getUser()).thenReturn(user);
-        Mockito.when(externalSecurityService.getHttpContext())
-            .thenReturn(new ExternalHttpContext(10, "userToken", "applicationid", "id"));
+        Mockito.when(externalSecurityService.getHttpContext()).thenReturn(
+            new ExternalHttpContext(10, "userToken", "applicationid", "id")
+        );
     }
 }

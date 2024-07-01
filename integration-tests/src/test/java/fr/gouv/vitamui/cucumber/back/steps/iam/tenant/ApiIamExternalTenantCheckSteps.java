@@ -1,10 +1,10 @@
 package fr.gouv.vitamui.cucumber.back.steps.iam.tenant;
 
-import io.cucumber.java.en.When;
 import fr.gouv.vitamui.commons.api.domain.CriterionOperator;
 import fr.gouv.vitamui.commons.api.domain.QueryDto;
 import fr.gouv.vitamui.cucumber.common.CommonSteps;
 import fr.gouv.vitamui.utils.TestConstants;
+import io.cucumber.java.en.When;
 
 /**
  * Teste l'API Tenants dans IAM admin : opérations de vérification.
@@ -19,8 +19,7 @@ public class ApiIamExternalTenantCheckSteps extends CommonSteps {
             final QueryDto criteria = QueryDto.criteria("id", TestConstants.SYSTEM_TENANT_ID, CriterionOperator.EQUALS);
 
             getTenantRestClient().checkExist(getSystemTenantUserAdminContext(), criteria.toJson());
-        }
-        catch (final RuntimeException e) {
+        } catch (final RuntimeException e) {
             testContext.exception = e;
         }
     }
@@ -30,12 +29,13 @@ public class ApiIamExternalTenantCheckSteps extends CommonSteps {
         try {
             final QueryDto criteria = QueryDto.criteria("id", TestConstants.SYSTEM_TENANT_ID, CriterionOperator.EQUALS);
 
-            getTenantRestClient(testContext.fullAccess, testContext.certificateTenants, testContext.certificateRoles)
-                    .checkExist(getContext(testContext.tenantIHMContext, testContext.tokenUser), criteria.toJson());
-        }
-        catch (final RuntimeException e) {
+            getTenantRestClient(
+                testContext.fullAccess,
+                testContext.certificateTenants,
+                testContext.certificateRoles
+            ).checkExist(getContext(testContext.tenantIHMContext, testContext.tokenUser), criteria.toJson());
+        } catch (final RuntimeException e) {
             testContext.exception = e;
         }
     }
-
 }

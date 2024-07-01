@@ -36,7 +36,8 @@
  */
 package fr.gouv.vitamui.commons.api.domain;
 
-
 public enum FilterTypeDto {
-    ALL,LIST,NONE
+    ALL,
+    LIST,
+    NONE,
 }

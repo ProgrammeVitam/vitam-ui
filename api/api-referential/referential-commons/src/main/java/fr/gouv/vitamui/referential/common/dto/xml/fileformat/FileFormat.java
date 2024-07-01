@@ -36,41 +36,39 @@
  */
 package fr.gouv.vitamui.referential.common.dto.xml.fileformat;
 
-import java.io.Serializable;
-import java.util.List;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
-
-import lombok.Getter;
-import lombok.Setter;
+import java.io.Serializable;
+import java.util.List;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @Setter
 @Getter
 public class FileFormat implements Serializable {
 
-    @XmlAttribute(name="ID")
+    @XmlAttribute(name = "ID")
     private Integer id;
 
-    @XmlAttribute(name="MIMEType")
+    @XmlAttribute(name = "MIMEType")
     private String mimeType;
 
-    @XmlAttribute(name="Name")
+    @XmlAttribute(name = "Name")
     private String name;
 
-    @XmlAttribute(name="PUID")
+    @XmlAttribute(name = "PUID")
     private String puid;
 
-    @XmlAttribute(name="Version")
+    @XmlAttribute(name = "Version")
     private String version;
 
-    @XmlElement(name="Extension")
+    @XmlElement(name = "Extension")
     private List<String> extension;
 
-    @XmlElement(name="HasPriorityOverFileFormatID")
+    @XmlElement(name = "HasPriorityOverFileFormatID")
     private List<Integer> hasPriorityOverFileFormatIDs;
-
 }

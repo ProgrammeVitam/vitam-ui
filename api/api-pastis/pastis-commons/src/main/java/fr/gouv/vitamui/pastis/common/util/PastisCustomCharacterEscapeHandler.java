@@ -58,8 +58,7 @@ public class PastisCustomCharacterEscapeHandler implements CharacterEscapeHandle
         int limit = start + length;
         for (int i = start; i < limit; i++) {
             char c = ch[i];
-            if (c == '&' || c == '<' || c == '>' || (c == '\"' && isAttVal)
-                || (c == '\'' && isAttVal)) {
+            if (c == '&' || c == '<' || c == '>' || (c == '\"' && isAttVal) || (c == '\'' && isAttVal)) {
                 if (i != start) {
                     out.write(ch, start, i - start);
                 }
@@ -68,23 +67,18 @@ public class PastisCustomCharacterEscapeHandler implements CharacterEscapeHandle
                     case '&':
                         out.write("&");
                         break;
-
                     case '<':
                         out.write("<");
                         break;
-
                     case '>':
                         out.write(">");
                         break;
-
                     case '\"':
                         out.write("\"");
                         break;
-
                     case '\'':
                         out.write("'");
                         break;
-
                     default:
                         break;
                 }

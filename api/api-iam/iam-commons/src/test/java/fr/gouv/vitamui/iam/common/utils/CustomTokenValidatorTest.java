@@ -18,8 +18,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.mockito.Mockito.*;
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 /**
  * Test {@link CustomTokenValidator}.
@@ -88,7 +88,10 @@ public class CustomTokenValidatorTest {
             validator.validate(SignedJWT.parse(idToken), nonce);
             fail("should fail");
         } catch (final BadJWTException e) {
-            assertEquals("[AGENTCONNECT] Bad acr claim in the ID token: it must match the provided value in the acr_values custom param", e.getMessage());
+            assertEquals(
+                "[AGENTCONNECT] Bad acr claim in the ID token: it must match the provided value in the acr_values custom param",
+                e.getMessage()
+            );
         }
     }
 

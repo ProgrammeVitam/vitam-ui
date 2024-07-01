@@ -43,8 +43,6 @@ import fr.gouv.vitamui.iam.security.provider.ExternalApiAuthenticationProvider;
 import fr.gouv.vitamui.referential.external.server.security.WebSecurityConfig;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
-import org.springframework.test.context.TestPropertySource;
-
 
 @Import(value = { WebSecurityConfig.class, ServerIdentityConfiguration.class, RestExceptionHandler.class })
 public abstract class ApiReferentialControllerTest<T extends IdDto> extends ApiControllerTest<T> {

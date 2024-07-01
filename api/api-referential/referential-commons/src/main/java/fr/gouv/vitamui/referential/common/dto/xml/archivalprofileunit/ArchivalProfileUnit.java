@@ -90,5 +90,4 @@ public class ArchivalProfileUnit implements Serializable {
 
     @XmlElement(name = "Fields")
     private List<String> fields;
-
 }

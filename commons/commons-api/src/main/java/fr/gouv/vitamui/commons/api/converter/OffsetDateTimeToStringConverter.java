@@ -36,10 +36,10 @@
  */
 package fr.gouv.vitamui.commons.api.converter;
 
-import java.time.OffsetDateTime;
-
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.convert.WritingConverter;
+
+import java.time.OffsetDateTime;
 
 @WritingConverter
 public class OffsetDateTimeToStringConverter implements Converter<OffsetDateTime, String> {

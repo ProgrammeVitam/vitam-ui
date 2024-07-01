@@ -47,12 +47,18 @@ import org.springframework.boot.web.client.RestTemplateBuilder;
  */
 public class ReferentialExternalRestClientFactory extends BaseRestClientFactory {
 
-    public ReferentialExternalRestClientFactory(final RestClientConfiguration restClientConfiguration, final RestTemplateBuilder restTemplateBuilder) {
+    public ReferentialExternalRestClientFactory(
+        final RestClientConfiguration restClientConfiguration,
+        final RestTemplateBuilder restTemplateBuilder
+    ) {
         super(restClientConfiguration, restTemplateBuilder);
     }
 
-    public ReferentialExternalRestClientFactory(final RestClientConfiguration restClientConfiguration, final HttpPoolConfiguration httpHostConfiguration,
-                                                final RestTemplateBuilder restTemplateBuilder) {
+    public ReferentialExternalRestClientFactory(
+        final RestClientConfiguration restClientConfiguration,
+        final HttpPoolConfiguration httpHostConfiguration,
+        final RestTemplateBuilder restTemplateBuilder
+    ) {
         super(restClientConfiguration, httpHostConfiguration, restTemplateBuilder);
     }
 
@@ -76,7 +82,7 @@ public class ReferentialExternalRestClientFactory extends BaseRestClientFactory 
         return new FileFormatExternalRestClient(getRestTemplate(), getBaseUrl());
     }
 
-    public ArchivalProfileUnitExternalRestClient getArchivalProfileExternalRestClient(){
+    public ArchivalProfileUnitExternalRestClient getArchivalProfileExternalRestClient() {
         return new ArchivalProfileUnitExternalRestClient(getRestTemplate(), getBaseUrl());
     }
 

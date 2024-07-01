@@ -66,6 +66,13 @@ public class ArchivalProfileUnitXMLRootDto {
 
     @Override
     public String toString() {
-        return "" + createdDate + version + "[" + archivalProfileUnitCollection.getArchivalProfileUnits().size() + " archival Profiles]";
+        return (
+            "" +
+            createdDate +
+            version +
+            "[" +
+            archivalProfileUnitCollection.getArchivalProfileUnits().size() +
+            " archival Profiles]"
+        );
     }
 }

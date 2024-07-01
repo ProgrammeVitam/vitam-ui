@@ -25,6 +25,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ActiveProfiles("test")
 @ImportAutoConfiguration(exclude = EmbeddedMongoAutoConfiguration.class)
 public class ApiIamServerConfigTest {
+
     @MockBean
     private AdminExternalClient adminExternalClient;
 

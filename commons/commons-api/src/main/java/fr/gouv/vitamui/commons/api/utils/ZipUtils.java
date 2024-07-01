@@ -36,6 +36,10 @@
  */
 package fr.gouv.vitamui.commons.api.utils;
 
+import fr.gouv.vitamui.commons.api.exception.FileGenerationException;
+import org.apache.commons.io.IOUtils;
+import org.springframework.util.Assert;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -43,11 +47,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
-
-import org.apache.commons.io.IOUtils;
-import org.springframework.util.Assert;
-
-import fr.gouv.vitamui.commons.api.exception.FileGenerationException;
 
 /**
  * Tool allowing to compress files into a ZIP archive.
@@ -69,14 +68,15 @@ public class ZipUtils {
         Assert.notNull(outputStream, "The output stream is null");
 
         try (ZipOutputStream zos = new ZipOutputStream(outputStream)) {
-
             for (final Entry<String, InputStream> entry : files.entrySet()) {
                 addZipEntry(zos, entry.getKey(), entry.getValue());
             }
             zos.flush();
-        }
-        catch (final IOException exception) {
-            throw new FileGenerationException("IO exception when creating zip file: " + exception.getMessage(), exception);
+        } catch (final IOException exception) {
+            throw new FileGenerationException(
+                "IO exception when creating zip file: " + exception.getMessage(),
+                exception
+            );
         }
     }
 
@@ -88,14 +88,16 @@ public class ZipUtils {
      * @return The updated archive.
      * @throws IOException Exception can be thrown when an error occurred during the copy of the file's content.
      */
-    protected static ZipOutputStream addZipEntry(final ZipOutputStream zipStream, final String name, final InputStream input) throws IOException {
-
+    protected static ZipOutputStream addZipEntry(
+        final ZipOutputStream zipStream,
+        final String name,
+        final InputStream input
+    ) throws IOException {
         final ZipEntry entry = new ZipEntry(name);
         zipStream.putNextEntry(entry);
         try {
             IOUtils.copy(input, zipStream);
-        }
-        finally {
+        } finally {
             zipStream.closeEntry();
         }
         return zipStream;

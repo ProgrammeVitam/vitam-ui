@@ -49,7 +49,6 @@ import java.util.Optional;
  */
 @Repository
 public interface CustomerRepository extends VitamUIRepository<Customer, String> {
-
     Optional<Customer> findByCode(String code);
 
     Optional<Customer> findByEmailDomainsContainsIgnoreCase(String email);

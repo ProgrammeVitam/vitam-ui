@@ -67,7 +67,8 @@ public class ExportDipV2Service {
      * @throws VitamClientException
      */
 
-    public RequestResponse<JsonNode> exportDip( final VitamContext vitamContext, final DipRequest dipRequest) throws VitamClientException {
+    public RequestResponse<JsonNode> exportDip(final VitamContext vitamContext, final DipRequest dipRequest)
+        throws VitamClientException {
         final RequestResponse<JsonNode> response = accessExternalClientV2.exportDIP(vitamContext, dipRequest);
         VitamRestUtils.checkResponse(response, HttpStatus.SC_OK, HttpStatus.SC_ACCEPTED);
         return response;

@@ -36,11 +36,12 @@
  */
 package fr.gouv.vitamui.referential.common.dto;
 
-import java.util.Set;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.Set;
+
 public class PermissionVitamDto {
+
     private String tenant;
 
     private Set<String> accessContracts;

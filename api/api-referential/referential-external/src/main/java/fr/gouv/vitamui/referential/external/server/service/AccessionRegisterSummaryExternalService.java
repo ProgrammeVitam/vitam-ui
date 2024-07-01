@@ -54,8 +54,10 @@ public class AccessionRegisterSummaryExternalService extends AbstractInternalCli
     private final AccessionRegisterSummaryInternalRestClient accessionRegisterSummaryInternalRestClient;
 
     @Autowired
-    public AccessionRegisterSummaryExternalService(ExternalSecurityService externalSecurityService,
-        AccessionRegisterSummaryInternalRestClient accessionRegisterSummaryInternalRestClient) {
+    public AccessionRegisterSummaryExternalService(
+        ExternalSecurityService externalSecurityService,
+        AccessionRegisterSummaryInternalRestClient accessionRegisterSummaryInternalRestClient
+    ) {
         super(externalSecurityService);
         this.accessionRegisterSummaryInternalRestClient = accessionRegisterSummaryInternalRestClient;
     }
@@ -68,5 +70,4 @@ public class AccessionRegisterSummaryExternalService extends AbstractInternalCli
     protected BaseRestClient<InternalHttpContext> getClient() {
         return accessionRegisterSummaryInternalRestClient;
     }
-
 }

@@ -38,6 +38,4 @@ package fr.gouv.vitamui.iam.common.dto;
 
 import fr.gouv.vitamui.commons.vitam.api.dto.AbstractVitamUIResponseDto;
 
-public class AccessContractsResponseDto extends AbstractVitamUIResponseDto<AccessContractsVitamDto> {
-
-}
+public class AccessContractsResponseDto extends AbstractVitamUIResponseDto<AccessContractsVitamDto> {}

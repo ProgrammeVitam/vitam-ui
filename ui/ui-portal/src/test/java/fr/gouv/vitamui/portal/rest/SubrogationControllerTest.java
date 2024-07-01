@@ -20,7 +20,6 @@ import org.springframework.boot.info.BuildProperties;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -43,7 +42,6 @@ public class SubrogationControllerTest extends UIControllerTest<SubrogationDto> 
 
     @MockBean
     private BuildProperties buildProperties;
-
 
     @Test
     public void testGetSubrogationById() {

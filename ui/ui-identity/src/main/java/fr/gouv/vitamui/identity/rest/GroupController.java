@@ -95,8 +95,8 @@ public class GroupController extends AbstractUiRestController {
     @ApiOperation(value = "Create entity")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public GroupDto create(@RequestBody final GroupDto entityDto) throws InvalidParseOperationException, PreconditionFailedException {
-
+    public GroupDto create(@RequestBody final GroupDto entityDto)
+        throws InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.sanitizeCriteria(entityDto);
         LOGGER.debug("create class={}", entityDto.getClass().getName());
         return service.create(buildUiHttpContext(), entityDto);
@@ -105,9 +105,10 @@ public class GroupController extends AbstractUiRestController {
     @ApiOperation(value = "Get entity, can be filter by enabled value")
     @GetMapping(CommonConstants.PATH_ID)
     @ResponseStatus(HttpStatus.OK)
-    public GroupDto getOne(final @PathVariable String id, @ApiParam(defaultValue = "ALL") @RequestParam final Optional<String> embedded)
-        throws InvalidParseOperationException, PreconditionFailedException {
-
+    public GroupDto getOne(
+        final @PathVariable String id,
+        @ApiParam(defaultValue = "ALL") @RequestParam final Optional<String> embedded
+    ) throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter("Identifier is mandatory : ", id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Get profileGroup={}", id);
@@ -118,25 +119,36 @@ public class GroupController extends AbstractUiRestController {
     @ApiOperation(value = "Get entities paginated")
     @GetMapping(params = { "page", "size" })
     @ResponseStatus(HttpStatus.OK)
-    public PaginatedValuesDto<GroupDto> getAllPaginated(@RequestParam final Integer page, @RequestParam final Integer size,
-            @RequestParam final Optional<String> criteria, @RequestParam final Optional<String> orderBy, @RequestParam final Optional<DirectionDto> direction,
-            @ApiParam(defaultValue = "ALL") @RequestParam final Optional<String> embedded)
-        throws InvalidParseOperationException, PreconditionFailedException {
+    public PaginatedValuesDto<GroupDto> getAllPaginated(
+        @RequestParam final Integer page,
+        @RequestParam final Integer size,
+        @RequestParam final Optional<String> criteria,
+        @RequestParam final Optional<String> orderBy,
+        @RequestParam final Optional<DirectionDto> direction,
+        @ApiParam(defaultValue = "ALL") @RequestParam final Optional<String> embedded
+    ) throws InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.sanitizeCriteria(criteria);
         SanityChecker.checkSecureParameter(String.valueOf(page), String.valueOf(size));
         EnumUtils.checkValidEnum(EmbeddedOptions.class, embedded);
-        if(direction.isPresent()) {
+        if (direction.isPresent()) {
             SanityChecker.sanitizeCriteria(direction.get());
         }
-        LOGGER.debug("getAllPaginated page={}, size={}, criteria={}, orderBy={}, ascendant={}, embedded = {}", page, size, orderBy, direction, embedded);
+        LOGGER.debug(
+            "getAllPaginated page={}, size={}, criteria={}, orderBy={}, ascendant={}, embedded = {}",
+            page,
+            size,
+            orderBy,
+            direction,
+            embedded
+        );
         return service.getAllPaginated(page, size, criteria, orderBy, direction, embedded, buildUiHttpContext());
     }
 
     @ApiOperation(value = "Check entity exist by criteria")
     @RequestMapping(path = CommonConstants.PATH_CHECK, method = RequestMethod.HEAD)
-    public ResponseEntity<Void> checkExist(@RequestParam final String criteria) throws InvalidParseOperationException,
-        PreconditionFailedException {
-       SanityChecker.sanitizeCriteria(Optional.of(criteria));
+    public ResponseEntity<Void> checkExist(@RequestParam final String criteria)
+        throws InvalidParseOperationException, PreconditionFailedException {
+        SanityChecker.sanitizeCriteria(Optional.of(criteria));
         LOGGER.debug("check exists by criteria={} ", criteria);
         final boolean exist = service.checkExist(buildUiHttpContext(), criteria);
         LOGGER.debug("response value={}" + exist);
@@ -149,7 +161,6 @@ public class GroupController extends AbstractUiRestController {
     @ResponseStatus(HttpStatus.OK)
     public GroupDto patch(@RequestBody final Map<String, Object> partialDto, @PathVariable final String id)
         throws InvalidParseOperationException, PreconditionFailedException {
-
         ParameterChecker.checkParameter("Identifier is mandatory : ", id);
         SanityChecker.checkSecureParameter(id);
         SanityChecker.sanitizeCriteria(partialDto);
@@ -160,10 +171,10 @@ public class GroupController extends AbstractUiRestController {
     @ApiOperation(value = "Get all entities")
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Collection<GroupDto> getAll(@RequestParam final Optional<String> criteria,
-            @ApiParam(defaultValue = "ALL") @RequestParam final Optional<String> embedded)
-        throws InvalidParseOperationException, PreconditionFailedException {
-
+    public Collection<GroupDto> getAll(
+        @RequestParam final Optional<String> criteria,
+        @ApiParam(defaultValue = "ALL") @RequestParam final Optional<String> embedded
+    ) throws InvalidParseOperationException, PreconditionFailedException {
         EnumUtils.checkValidEnum(EmbeddedOptions.class, embedded);
         SanityChecker.sanitizeCriteria(criteria);
         LOGGER.debug("get all group criteria={}, embedded={}", criteria, embedded);
@@ -174,7 +185,6 @@ public class GroupController extends AbstractUiRestController {
     @GetMapping(CommonConstants.PATH_LOGBOOK)
     public LogbookOperationsResponseDto findHistoryById(final @PathVariable String id)
         throws InvalidParseOperationException, PreconditionFailedException {
-
         ParameterChecker.checkParameter("Identifier is mandatory : ", id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("get logbook for group with id :{}", id);
@@ -187,9 +197,8 @@ public class GroupController extends AbstractUiRestController {
      * @return List of matching levels
      */
     @GetMapping(CommonConstants.PATH_LEVELS)
-    public List<String> getLevels(final Optional<String> criteria) throws InvalidParseOperationException,
-        PreconditionFailedException {
-
+    public List<String> getLevels(final Optional<String> criteria)
+        throws InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.sanitizeCriteria(criteria);
         LOGGER.debug("Get levels with criteria={}", criteria);
         return service.getLevels(buildUiHttpContext(), criteria);

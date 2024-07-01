@@ -57,47 +57,57 @@ import java.util.stream.Collectors;
 
 public class VitamResponseHandler {
 
-    private VitamResponseHandler() {
-    }
+    private VitamResponseHandler() {}
 
     public static VitamUISearchResponseDto extractSearchResponse(JsonNode jsonResponse)
-            throws JsonParseException, JsonMappingException, IOException {
+        throws JsonParseException, JsonMappingException, IOException {
         return extractResponse(jsonResponse, VitamUISearchResponseDto.class);
     }
 
     public static CollectionsDto extractCollections(JsonNode jsonResponse) throws Exception {
         VitamUISearchResponseDto searchResponse = extractResponse(jsonResponse, VitamUISearchResponseDto.class);
-        List<String> ids = searchResponse.getResults().stream()
-                .filter(res -> UnitTypeEnum.HOLDING_UNIT.getValue().equals(res.getUnitType())).map(ResultsDto::getId)
-                .collect(Collectors.toList());
+        List<String> ids = searchResponse
+            .getResults()
+            .stream()
+            .filter(res -> UnitTypeEnum.HOLDING_UNIT.getValue().equals(res.getUnitType()))
+            .map(ResultsDto::getId)
+            .collect(Collectors.toList());
         return new CollectionsDto(ids, new ArrayList<>());
     }
 
     public static <T> T extractResponse(JsonNode jsonResponse, Class<T> clazz)
-            throws JsonParseException, JsonMappingException, IOException {
+        throws JsonParseException, JsonMappingException, IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
         return objectMapper.treeToValue(jsonResponse, clazz);
     }
 
-    public static FacetResultsDto extractAutoCompletionResponse(VitamUISearchResponseDto vitamuiSearchResponseDto,
-            String word) {
+    public static FacetResultsDto extractAutoCompletionResponse(
+        VitamUISearchResponseDto vitamuiSearchResponseDto,
+        String word
+    ) {
         FacetResultsDto facetRes = new FacetResultsDto();
         List<FacetResultsDto> facetResults = vitamuiSearchResponseDto.getFacetResults();
         String[] parts = StringUtils.split(word);
         if (!facetResults.isEmpty() && parts.length > 0) {
             List<FacetBucketDto> buckets = facetResults.get(0).getBuckets();
-            List<FacetBucketDto> bucks = buckets.stream()
-                    .filter(b -> StringUtils.containsIgnoreCase(b.getValue(), parts[parts.length - 1]))
-                    .sorted((b1, b2) -> b2.getCount().compareTo(b1.getCount())).collect(Collectors.toList());
+            List<FacetBucketDto> bucks = buckets
+                .stream()
+                .filter(b -> StringUtils.containsIgnoreCase(b.getValue(), parts[parts.length - 1]))
+                .sorted((b1, b2) -> b2.getCount().compareTo(b1.getCount()))
+                .collect(Collectors.toList());
             Long total = bucks.stream().map(FacetBucketDto::getCount).reduce(0L, Long::sum);
             bucks = bucks.stream().limit(5).collect(Collectors.toList());
 
             for (FacetBucketDto facetBucket : bucks) {
-                String titre = vitamuiSearchResponseDto.getResults().stream().map(ResultsDto::getTitle)
-                        .filter(title -> isTitlePartStartWithValue(title, facetBucket.getValue())).findFirst()
-                        .orElse(null);
+                String titre = vitamuiSearchResponseDto
+                    .getResults()
+                    .stream()
+                    .map(ResultsDto::getTitle)
+                    .filter(title -> isTitlePartStartWithValue(title, facetBucket.getValue()))
+                    .findFirst()
+                    .orElse(null);
                 if (titre != null) {
                     if (parts.length > 1) {
                         parts[parts.length - 1] = getCompleteWord(titre, facetBucket.getValue());
@@ -124,7 +134,9 @@ public class VitamResponseHandler {
 
     private static String getCompleteWord(String title, String bucketValue) {
         String[] elements = StringUtils.split(title);
-        return Arrays.stream(elements).filter(e -> StringUtils.startsWithIgnoreCase(e, bucketValue)).findFirst()
-                .orElse(null);
+        return Arrays.stream(elements)
+            .filter(e -> StringUtils.startsWithIgnoreCase(e, bucketValue))
+            .findFirst()
+            .orElse(null);
     }
 }

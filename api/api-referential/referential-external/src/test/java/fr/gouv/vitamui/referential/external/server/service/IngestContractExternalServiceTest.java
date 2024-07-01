@@ -59,6 +59,7 @@ public class IngestContractExternalServiceTest extends ExternalServiceTest {
 
     @Mock
     private IngestContractInternalRestClient ingestContractInternalRestClient;
+
     @Mock
     private ExternalSecurityService externalSecurityService;
 
@@ -68,51 +69,50 @@ public class IngestContractExternalServiceTest extends ExternalServiceTest {
     public void init() {
         final String userCustomerId = "customerIdAllowed";
         mockSecurityContext(externalSecurityService, userCustomerId, 10);
-        ingestContractExternalService = new IngestContractExternalService(externalSecurityService, ingestContractInternalRestClient);
+        ingestContractExternalService = new IngestContractExternalService(
+            externalSecurityService,
+            ingestContractInternalRestClient
+        );
     }
 
     @Test
     public void getAll_should_return_IngestContractDtoList_when_ingestContractInternalRestClient_return_IngestContractDtoList() {
-
         List<IngestContractDto> list = new ArrayList<>();
         IngestContractDto ingestContractDto = new IngestContractDto();
         ingestContractDto.setId("1");
         list.add(ingestContractDto);
 
-        when(ingestContractInternalRestClient.getAll(any(InternalHttpContext.class), any(Optional.class)))
-            .thenReturn(list);
+        when(ingestContractInternalRestClient.getAll(any(InternalHttpContext.class), any(Optional.class))).thenReturn(
+            list
+        );
 
         assertThatCode(() -> {
             ingestContractExternalService.getAll(Optional.empty());
         }).doesNotThrowAnyException();
-
     }
 
     @Test
     public void create_should_return_IngestContractDto_when_ingestContractInternalRestClient_return_IngestContractDto() {
-
         IngestContractDto ingestContractDto = new IngestContractDto();
         ingestContractDto.setId("1");
 
-        when(ingestContractInternalRestClient.create(any(InternalHttpContext.class), any(IngestContractDto.class)))
-            .thenReturn(ingestContractDto);
+        when(
+            ingestContractInternalRestClient.create(any(InternalHttpContext.class), any(IngestContractDto.class))
+        ).thenReturn(ingestContractDto);
 
         assertThatCode(() -> {
             ingestContractExternalService.create(new IngestContractDto());
         }).doesNotThrowAnyException();
-
-
     }
 
     @Test
     public void check_should_return_boolean_when_ingestContractInternalRestClient_return_boolean() {
-
-        when(ingestContractInternalRestClient.check(any(InternalHttpContext.class), any(IngestContractDto.class)))
-            .thenReturn(true);
+        when(
+            ingestContractInternalRestClient.check(any(InternalHttpContext.class), any(IngestContractDto.class))
+        ).thenReturn(true);
 
         assertThatCode(() -> {
             ingestContractExternalService.check(new IngestContractDto());
         }).doesNotThrowAnyException();
-
     }
 }

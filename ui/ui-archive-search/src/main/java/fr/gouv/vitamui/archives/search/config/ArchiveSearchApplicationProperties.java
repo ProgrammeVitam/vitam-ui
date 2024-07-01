@@ -45,5 +45,4 @@ import org.springframework.stereotype.Component;
 public class ArchiveSearchApplicationProperties extends UIPropertiesImpl implements UIProperties {
 
     public RestClientConfiguration archiveSearchExternalClient;
-
 }

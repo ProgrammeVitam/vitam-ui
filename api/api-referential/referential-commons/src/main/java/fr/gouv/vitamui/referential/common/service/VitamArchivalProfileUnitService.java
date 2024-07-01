@@ -41,7 +41,11 @@ public class VitamArchivalProfileUnitService {
     private ObjectMapper objectMapper;
 
     @Autowired
-    public VitamArchivalProfileUnitService(AdminExternalClient adminExternalClient, ObjectMapper objectMapper, AccessExternalClient accessExternalClient) {
+    public VitamArchivalProfileUnitService(
+        AdminExternalClient adminExternalClient,
+        ObjectMapper objectMapper,
+        AccessExternalClient accessExternalClient
+    ) {
         this.adminExternalClient = adminExternalClient;
         this.objectMapper = objectMapper;
         this.accessExternalClient = accessExternalClient;
@@ -55,9 +59,15 @@ public class VitamArchivalProfileUnitService {
      * @return
      * @throws VitamClientException
      */
-    public RequestResponse<ArchiveUnitProfileModel> findArchivalProfiles(final VitamContext vitamContext, final JsonNode select) throws VitamClientException {
+    public RequestResponse<ArchiveUnitProfileModel> findArchivalProfiles(
+        final VitamContext vitamContext,
+        final JsonNode select
+    ) throws VitamClientException {
         LOGGER.info("Archival Unit Profile EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
-        final RequestResponse<ArchiveUnitProfileModel> response = adminExternalClient.findArchiveUnitProfiles(vitamContext, select);
+        final RequestResponse<ArchiveUnitProfileModel> response = adminExternalClient.findArchiveUnitProfiles(
+            vitamContext,
+            select
+        );
         VitamRestUtils.checkResponse(response);
         return response;
     }
@@ -70,9 +80,15 @@ public class VitamArchivalProfileUnitService {
      * @return
      * @throws VitamClientException
      */
-    public RequestResponse<ArchiveUnitProfileModel> findArchivalProfileById(final VitamContext vitamContext, final String contractId) throws VitamClientException {
+    public RequestResponse<ArchiveUnitProfileModel> findArchivalProfileById(
+        final VitamContext vitamContext,
+        final String contractId
+    ) throws VitamClientException {
         LOGGER.info("Archival Unit Profile EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
-        final RequestResponse<ArchiveUnitProfileModel> response = adminExternalClient.findArchiveUnitProfileById(vitamContext, contractId);
+        final RequestResponse<ArchiveUnitProfileModel> response = adminExternalClient.findArchiveUnitProfileById(
+            vitamContext,
+            contractId
+        );
         VitamRestUtils.checkResponse(response);
         return response;
     }
@@ -88,7 +104,11 @@ public class VitamArchivalProfileUnitService {
      * @throws InvalidParseOperationException
      * @throws AccessExternalClientException
      */
-    public RequestResponse<?> updateArchiveUnitProfile(final VitamContext vitamContext, final String id, JsonNode jsonNode) throws VitamClientException, InvalidParseOperationException, AccessExternalClientException {
+    public RequestResponse<?> updateArchiveUnitProfile(
+        final VitamContext vitamContext,
+        final String id,
+        JsonNode jsonNode
+    ) throws VitamClientException, InvalidParseOperationException, AccessExternalClientException {
         LOGGER.debug("patch: {}, {}", id, jsonNode);
         LOGGER.info("Update Archival Unit Profile EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
         return adminExternalClient.updateArchiveUnitProfile(vitamContext, id, jsonNode);
@@ -108,22 +128,24 @@ public class VitamArchivalProfileUnitService {
      */
     public RequestResponse<?> create(final VitamContext vitamContext, ArchiveUnitProfileModel newArchivalProfile)
         throws InvalidParseOperationException, AccessExternalClientException, VitamClientException, IOException, JAXBException {
-
         LOGGER.info("Create Archival Unit Profile EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
         final List<ArchiveUnitProfileModel> archiveUnitProfileModelsList = new ArrayList<>();
         archiveUnitProfileModelsList.add(newArchivalProfile);
         return importArchivalProfiles(vitamContext, archiveUnitProfileModelsList);
     }
 
-    private RequestResponse<?> importArchivalProfiles(final VitamContext vitamContext, final List<ArchiveUnitProfileModel> archivalProfileModels)
-        throws InvalidParseOperationException, AccessExternalClientException, IOException, JAXBException {
+    private RequestResponse<?> importArchivalProfiles(
+        final VitamContext vitamContext,
+        final List<ArchiveUnitProfileModel> archivalProfileModels
+    ) throws InvalidParseOperationException, AccessExternalClientException, IOException, JAXBException {
         try (ByteArrayInputStream byteArrayInputStream = serializeArchivalProfiles(archivalProfileModels)) {
             return adminExternalClient.createArchiveUnitProfile(vitamContext, byteArrayInputStream);
         }
     }
 
-
-    private ByteArrayInputStream serializeArchivalProfiles(final List<ArchiveUnitProfileModel> archiveUnitProfileModels) throws IOException {
+    private ByteArrayInputStream serializeArchivalProfiles(
+        final List<ArchiveUnitProfileModel> archiveUnitProfileModels
+    ) throws IOException {
         final ObjectMapper mapper = new ObjectMapper();
         final JsonNode node = mapper.convertValue(archiveUnitProfileModels, JsonNode.class);
         LOGGER.debug("The json for creation profile, sent to Vitam {}", node);
@@ -133,7 +155,6 @@ public class VitamArchivalProfileUnitService {
             return new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
         }
     }
-
 
     /**
      * Importer un ou plusieurs profils d'unité archivistique dans le référentiel
@@ -147,13 +168,16 @@ public class VitamArchivalProfileUnitService {
      * @throws VitamClientException
      * @throws IOException
      */
-    public RequestResponse<?> importArchivalUnitProfileByFile(VitamContext vitamContext, String fileName, MultipartFile file) throws InvalidParseOperationException, AccessExternalClientException, VitamClientException, IOException {
+    public RequestResponse<?> importArchivalUnitProfileByFile(
+        VitamContext vitamContext,
+        String fileName,
+        MultipartFile file
+    ) throws InvalidParseOperationException, AccessExternalClientException, VitamClientException, IOException {
         {
             LOGGER.debug("Import archival unit profile by file {}", fileName);
             return adminExternalClient.createArchiveUnitProfile(vitamContext, file.getInputStream());
         }
     }
-
 
     /**
      * Ignore vitam internal fields (#id, #version, #tenant) and ArchivalProfile non mutable fields (Identifier, Name)
@@ -164,29 +188,36 @@ public class VitamArchivalProfileUnitService {
         }
     }
 
-
     /**
      * check if all conditions are Ok to create an archival Profile Unit in the tenant
      *
      * @param archivalProfiles
      * @return true if the archival Profile Unit can be created, false if the ile archival Profile Unit already exists
      */
-    public boolean checkAbilityToCreateArchivalProfileInVitam(final List<ArchiveUnitProfileModel> archivalProfiles, VitamContext vitamContext) {
-
+    public boolean checkAbilityToCreateArchivalProfileInVitam(
+        final List<ArchiveUnitProfileModel> archivalProfiles,
+        VitamContext vitamContext
+    ) {
         if (archivalProfiles != null && !archivalProfiles.isEmpty()) {
             try {
                 // check if tenant exist in Vitam
                 final JsonNode select = new Select().getFinalSelect();
                 final RequestResponse<ArchiveUnitProfileModel> response = findArchivalProfiles(vitamContext, select);
                 if (response.getStatus() == HttpStatus.UNAUTHORIZED.value()) {
-                    throw new PreconditionFailedException("Can't create archival profile for the tenant : UNAUTHORIZED");
+                    throw new PreconditionFailedException(
+                        "Can't create archival profile for the tenant : UNAUTHORIZED"
+                    );
                 } else if (response.getStatus() != HttpStatus.OK.value()) {
-                    throw new UnavailableServiceException("Can't create archival profile for this tenant, Vitam response code : " + response.getStatus());
+                    throw new UnavailableServiceException(
+                        "Can't create archival profile for this tenant, Vitam response code : " + response.getStatus()
+                    );
                 }
 
                 verifyArchivalProfileExistence(archivalProfiles, response);
             } catch (final VitamClientException e) {
-                throw new UnavailableServiceException("Can't create access contracts for this tenant, error while calling Vitam : " + e.getMessage());
+                throw new UnavailableServiceException(
+                    "Can't create access contracts for this tenant, error while calling Vitam : " + e.getMessage()
+                );
             }
             return true;
         }
@@ -199,23 +230,44 @@ public class VitamArchivalProfileUnitService {
      * @param checkArchivalProfiles
      * @param vitamArchivalProfiles
      */
-    private void verifyArchivalProfileExistence(final List<ArchiveUnitProfileModel> checkArchivalProfiles, final RequestResponse<ArchiveUnitProfileModel> vitamArchivalProfiles) {
+    private void verifyArchivalProfileExistence(
+        final List<ArchiveUnitProfileModel> checkArchivalProfiles,
+        final RequestResponse<ArchiveUnitProfileModel> vitamArchivalProfiles
+    ) {
         try {
             final ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-            final ArchivalProfileUnitResponseDto accessContractResponseDto = objectMapper.treeToValue(vitamArchivalProfiles.toJsonNode(), ArchivalProfileUnitResponseDto.class);
-            final List<String> formatsNames = checkArchivalProfiles.stream().map(ac -> ac.getName()).collect(Collectors.toList());
+            final ArchivalProfileUnitResponseDto accessContractResponseDto = objectMapper.treeToValue(
+                vitamArchivalProfiles.toJsonNode(),
+                ArchivalProfileUnitResponseDto.class
+            );
+            final List<String> formatsNames = checkArchivalProfiles
+                .stream()
+                .map(ac -> ac.getName())
+                .collect(Collectors.toList());
             if (accessContractResponseDto.getResults().stream().anyMatch(ac -> formatsNames.contains(ac.getName()))) {
-                throw new ConflictException("Can't create archival profile, a format with the same name already exist in Vitam");
+                throw new ConflictException(
+                    "Can't create archival profile, a format with the same name already exist in Vitam"
+                );
             }
-            final List<String> formatsPuids = checkArchivalProfiles.stream().map(ac -> ac.getIdentifier()).collect(Collectors.toList());
-            if (accessContractResponseDto.getResults().stream().anyMatch(ac -> formatsPuids.contains(ac.getIdentifier()))) {
-                throw new ConflictException("Can't create archival profile, a format with the same puid already exist in Vitam");
+            final List<String> formatsPuids = checkArchivalProfiles
+                .stream()
+                .map(ac -> ac.getIdentifier())
+                .collect(Collectors.toList());
+            if (
+                accessContractResponseDto
+                    .getResults()
+                    .stream()
+                    .anyMatch(ac -> formatsPuids.contains(ac.getIdentifier()))
+            ) {
+                throw new ConflictException(
+                    "Can't create archival profile, a format with the same puid already exist in Vitam"
+                );
             }
         } catch (final JsonProcessingException e) {
-            throw new UnexpectedDataException("Can't create access contracts, Error while parsing Vitam response : " + e.getMessage());
+            throw new UnexpectedDataException(
+                "Can't create access contracts, Error while parsing Vitam response : " + e.getMessage()
+            );
         }
     }
-
-
 }

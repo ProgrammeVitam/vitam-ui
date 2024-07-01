@@ -36,21 +36,19 @@
  */
 package fr.gouv.vitamui.referential.common.dto.xml.fileformat;
 
-import java.util.List;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
-
-import lombok.Getter;
-import lombok.Setter;
+import java.util.List;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @Setter
 @Getter
 public class FileFormatCollection {
 
-    @XmlElement(name="FileFormat")
+    @XmlElement(name = "FileFormat")
     private List<FileFormat> fileFormats;
-
 }

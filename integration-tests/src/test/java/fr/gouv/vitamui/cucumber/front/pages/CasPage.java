@@ -1,9 +1,8 @@
 package fr.gouv.vitamui.cucumber.front.pages;
 
-import org.openqa.selenium.By;
-
 import net.serenitybdd.core.pages.WebElementFacade;
 import net.thucydides.core.annotations.DefaultUrl;
+import org.openqa.selenium.By;
 
 @DefaultUrl("/")
 public class CasPage extends AbstractPage {
@@ -33,6 +32,7 @@ public class CasPage extends AbstractPage {
     public void waitForErrorDisplayed() {
         waitFor(getErrorElement().getWrappedElement());
     }
+
     public boolean hasErrorDispalyed() {
         return getErrorElement().isDisplayed();
     }

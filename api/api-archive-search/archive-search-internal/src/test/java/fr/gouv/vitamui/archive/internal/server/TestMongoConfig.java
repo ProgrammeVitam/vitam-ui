@@ -61,11 +61,12 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import java.util.Collections;
 
-
 @Configuration
-@EnableMongoRepositories(basePackages = {
-    "fr.gouv.vitamui.commons.mongo.repository"}, repositoryBaseClass = VitamUIRepositoryImpl.class)
-@Import({ServerIdentityAutoConfiguration.class})
+@EnableMongoRepositories(
+    basePackages = { "fr.gouv.vitamui.commons.mongo.repository" },
+    repositoryBaseClass = VitamUIRepositoryImpl.class
+)
+@Import({ ServerIdentityAutoConfiguration.class })
 public class TestMongoConfig extends AbstractMongoClientConfiguration {
 
     private static final MongodStarter starter = MongodStarter.getDefaultInstance();
@@ -82,10 +83,12 @@ public class TestMongoConfig extends AbstractMongoClientConfiguration {
     public void initIt() throws Exception {
         port = Network.getFreeServerPort();
 
-        _mongodExe = starter.prepare(MongodConfig.builder()
-            .version(Version.Main.PRODUCTION)
-            .net(new Net(MONGO_HOST, port, Network.localhostIsIPv6()))
-            .build());
+        _mongodExe = starter.prepare(
+            MongodConfig.builder()
+                .version(Version.Main.PRODUCTION)
+                .net(new Net(MONGO_HOST, port, Network.localhostIsIPv6()))
+                .build()
+        );
 
         _mongod = _mongodExe.start();
     }
@@ -117,10 +120,9 @@ public class TestMongoConfig extends AbstractMongoClientConfiguration {
 
     @Override
     protected void configureConverters(
-        MongoCustomConversions.MongoConverterConfigurationAdapter converterConfigurationAdapter) {
+        MongoCustomConversions.MongoConverterConfigurationAdapter converterConfigurationAdapter
+    ) {
         converterConfigurationAdapter.registerConverter(new OffsetDateTimeToStringConverter());
         converterConfigurationAdapter.registerConverter(new StringToOffsetDateTimeConverter());
     }
-
-
 }

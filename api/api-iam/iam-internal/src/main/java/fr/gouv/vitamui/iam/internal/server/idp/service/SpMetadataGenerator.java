@@ -36,12 +36,11 @@
  */
 package fr.gouv.vitamui.iam.internal.server.idp.service;
 
+import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
+import fr.gouv.vitamui.iam.common.utils.Pac4jClientBuilder;
 import org.pac4j.core.client.IndirectClient;
 import org.pac4j.saml.client.SAML2Client;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
-import fr.gouv.vitamui.iam.common.utils.Pac4jClientBuilder;
 
 /**
  * A service provider metadata generator.

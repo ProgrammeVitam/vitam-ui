@@ -44,7 +44,6 @@ public class TransactionConverterTest {
         assertEquals(collectTransactionDtos.get(0).getStatus(), transactionDto1.getStatus());
     }
 
-
     private TransactionDto buildTransactionDto() {
         TransactionDto transactionDto = new TransactionDto();
         transactionDto.setArchivalAgencyIdentifier("archivalAgency");

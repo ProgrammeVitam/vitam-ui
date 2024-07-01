@@ -25,12 +25,11 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest
-@Import(value = {ServerIdentityConfiguration.class, SwaggerConfiguration.class })
+@Import(value = { ServerIdentityConfiguration.class, SwaggerConfiguration.class })
 @ActiveProfiles("test, swagger")
 public class SwaggerJsonFileGenerationTest extends AbstractSwaggerJsonFileGenerationTest {
 
@@ -84,5 +83,4 @@ public class SwaggerJsonFileGenerationTest extends AbstractSwaggerJsonFileGenera
 
     @MockBean
     private AccessContractExternalService accessContractExternalService;
-
 }

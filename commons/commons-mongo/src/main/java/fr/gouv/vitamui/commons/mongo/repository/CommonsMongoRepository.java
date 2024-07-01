@@ -36,13 +36,10 @@
  */
 package fr.gouv.vitamui.commons.mongo.repository;
 
-
 /**
  *
  * Class For
  *
  *
  */
-public interface CommonsMongoRepository {
-
-}
+public interface CommonsMongoRepository {}
