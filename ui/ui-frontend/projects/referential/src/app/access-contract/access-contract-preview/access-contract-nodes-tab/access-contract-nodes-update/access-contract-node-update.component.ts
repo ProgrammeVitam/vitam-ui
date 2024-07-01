@@ -35,15 +35,35 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, Inject, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
-import { AccessContract, FilingPlanMode } from 'vitamui-library';
+import {
+  AccessContract,
+  FilingPlanMode,
+  SlideToggleComponent,
+  CommonTooltipComponent,
+  FilingPlanComponent,
+  CommonTooltipDirective,
+} from 'vitamui-library';
 import { AccessContractService } from '../../../access-contract.service';
+import { TranslateModule } from '@ngx-translate/core';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-access-contract-node-update',
   templateUrl: './access-contract-node-update.component.html',
   styleUrls: ['./access-contract-node-update.component.scss'],
+  standalone: true,
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    SlideToggleComponent,
+    CommonTooltipComponent,
+    NgIf,
+    FilingPlanComponent,
+    TranslateModule,
+    CommonTooltipDirective,
+  ],
 })
 export class AccessContractNodeUpdateComponent implements OnInit {
   accessContract: AccessContract;

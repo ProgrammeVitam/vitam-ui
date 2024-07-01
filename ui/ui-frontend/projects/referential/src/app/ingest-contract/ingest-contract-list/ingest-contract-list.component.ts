@@ -38,9 +38,26 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { Subject, Subscription, merge } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
-import { DEFAULT_PAGE_SIZE, Direction, InfiniteScrollTable, IngestContract, PageRequest } from 'vitamui-library';
+import {
+  DEFAULT_PAGE_SIZE,
+  Direction,
+  InfiniteScrollTable,
+  IngestContract,
+  PageRequest,
+  InfiniteScrollDirective,
+  TableFilterComponent,
+  OrderByButtonComponent,
+  EllipsisDirective,
+  PipesModule,
+  TableFilterDirective,
+  TableFilterOptionComponent,
+} from 'vitamui-library';
 
 import { IngestContractService } from '../ingest-contract.service';
+import { DateTimePipe } from '../../../../../vitamui-library/src/app/modules/pipes/datetime.pipe';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatLegacyProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
+import { NgFor, NgClass, NgIf } from '@angular/common';
 
 const FILTER_DEBOUNCE_TIME_MS = 400;
 
@@ -48,6 +65,22 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
   selector: 'app-ingest-contract-list',
   templateUrl: './ingest-contract-list.component.html',
   styleUrls: ['./ingest-contract-list.component.scss'],
+  standalone: true,
+  imports: [
+    InfiniteScrollDirective,
+    TableFilterComponent,
+    OrderByButtonComponent,
+    NgFor,
+    NgClass,
+    EllipsisDirective,
+    NgIf,
+    MatLegacyProgressSpinnerModule,
+    PipesModule,
+    TranslateModule,
+    DateTimePipe,
+    TableFilterDirective,
+    TableFilterOptionComponent,
+  ],
 })
 export class IngestContractListComponent extends InfiniteScrollTable<IngestContract> implements OnDestroy, OnInit {
   orderBy = 'Name';

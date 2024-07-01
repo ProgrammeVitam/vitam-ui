@@ -36,18 +36,52 @@
  */
 
 import { Component, Inject, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
 import { Subscription } from 'rxjs';
-import { ConfirmDialogService, Context, Option } from 'vitamui-library';
+import {
+  ConfirmDialogService,
+  Context,
+  Option,
+  CommonProgressBarComponent,
+  StepperComponent,
+  SlideToggleComponent,
+  VitamUICommonInputComponent,
+  CommonTooltipComponent,
+} from 'vitamui-library';
 import { SecurityProfileService } from '../../security-profile/security-profile.service';
 import { ContextService } from '../context.service';
 import { ContextCreateValidators } from './context-create.validators';
+import { TranslateModule } from '@ngx-translate/core';
+import { ContextEditPermissionComponent } from './context-edit-permission/context-edit-permission.component';
+import { MatLegacyOptionModule } from '@angular/material/legacy-core';
+import { MatLegacySelectModule } from '@angular/material/legacy-select';
+import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
+import { NgIf, NgFor } from '@angular/common';
+import { CdkStepperModule } from '@angular/cdk/stepper';
 
 @Component({
   selector: 'app-context-create',
   templateUrl: './context-create.component.html',
   styleUrls: ['./context-create.component.scss'],
+  standalone: true,
+  imports: [
+    CommonProgressBarComponent,
+    FormsModule,
+    ReactiveFormsModule,
+    StepperComponent,
+    CdkStepperModule,
+    SlideToggleComponent,
+    VitamUICommonInputComponent,
+    NgIf,
+    MatLegacyFormFieldModule,
+    MatLegacySelectModule,
+    NgFor,
+    MatLegacyOptionModule,
+    CommonTooltipComponent,
+    ContextEditPermissionComponent,
+    TranslateModule,
+  ],
 })
 export class ContextCreateComponent implements OnInit, OnDestroy {
   @Input() isSlaveMode: boolean;

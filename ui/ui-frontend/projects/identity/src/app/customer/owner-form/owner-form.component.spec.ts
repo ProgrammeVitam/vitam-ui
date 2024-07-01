@@ -49,7 +49,11 @@ import { OwnerService } from '../owner.service';
 import { OwnerFormComponent } from './owner-form.component';
 import { OwnerFormValidators } from './owner-form.validators';
 
-@Component({ template: `<app-owner-form [customerId]="customerId" [(ngModel)]="owner"></app-owner-form>` })
+@Component({
+  template: `<app-owner-form [customerId]="customerId" [(ngModel)]="owner"></app-owner-form>`,
+  standalone: true,
+  imports: [MatSelectModule, ReactiveFormsModule, FormsModule, VitamUICommonTestModule, HttpClientTestingModule],
+})
 class TesthostComponent {
   owner: Owner = null;
   customerId = '4242';
@@ -75,8 +79,9 @@ describe('OwnerFormComponent', () => {
         VitamUICommonTestModule,
         HttpClientTestingModule,
         LoggerModule.forRoot(),
+        OwnerFormComponent,
+        TesthostComponent,
       ],
-      declarations: [OwnerFormComponent, TesthostComponent],
       providers: [
         { provide: WINDOW_LOCATION, useValue: window.location },
         { provide: BASE_URL, useValue: '/fake-api' },

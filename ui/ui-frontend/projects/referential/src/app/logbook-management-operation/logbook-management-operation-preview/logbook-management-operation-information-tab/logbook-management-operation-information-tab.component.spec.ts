@@ -36,6 +36,7 @@ let expectedOperation: OperationDetails;
 
 @Component({
   template: ``,
+  standalone: true,
 })
 class TestLogbookInformationComponent {
   operation = expectedOperation;
@@ -59,8 +60,7 @@ describe('LogbookManagementOperationInformationTabComponent', () => {
       stepStatus: 'KO',
     };
     await TestBed.configureTestingModule({
-      declarations: [LogbookManagementOperationInformationTabComponent, TestLogbookInformationComponent],
-      imports: [TranslateModule.forRoot()],
+      imports: [TranslateModule.forRoot(), LogbookManagementOperationInformationTabComponent, TestLogbookInformationComponent],
       providers: [{ provide: LogbookService, useValue: {} }],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();

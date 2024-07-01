@@ -70,8 +70,7 @@ describe('OperationHistoryTabComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [VitamUICommonTestModule],
-      declarations: [OperationHistoryTabComponent],
+      imports: [VitamUICommonTestModule, OperationHistoryTabComponent],
       providers: [
         { provide: AuthService, useValue: {} },
         { provide: LogbookService, useValue: {} },

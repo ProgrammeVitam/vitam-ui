@@ -42,10 +42,9 @@ import { MatLegacyFormFieldModule as MatFormFieldModule } from '@angular/materia
 import { MatLegacyInputModule as MatInputModule } from '@angular/material/legacy-input';
 import { MatLegacySlideToggleModule as MatSlideToggleModule } from '@angular/material/legacy-slide-toggle';
 import { FileUploadModule } from 'ng2-file-upload';
-import { VitamUIInputModule } from 'vitamui-library';
+import { VitamUIInputComponent } from 'vitamui-library';
 import { CoreModule } from '../core/core.module';
-import { PastisMaterialModule } from '../material.module';
-import { SharedModule } from '../shared/shared.module';
+
 import { FilterByNamePipe } from './add-metadata/add-metadata.component';
 import { UserActionAddPuaControlComponent } from './add-pua-control/add-pua-control.component';
 import { AllowAdditionalPropertiesComponent } from './allow-additional-properties/allow-additional-properties.component';
@@ -58,7 +57,16 @@ import { SelectNoticeComponent } from './select-notice/select-notice.component';
 import { UserActionUploadProfileComponent } from './upload-profile/upload-profile.component';
 
 @NgModule({
-  declarations: [
+  imports: [
+    CommonModule,
+    FileUploadModule,
+    MatInputModule,
+    MatFormFieldModule,
+    ReactiveFormsModule,
+    VitamUIInputComponent,
+    CoreModule,
+    FormsModule,
+    MatSlideToggleModule,
     UserActionUploadProfileComponent,
     FilterByNamePipe,
     UserActionSaveProfileComponent,
@@ -69,19 +77,6 @@ import { UserActionUploadProfileComponent } from './upload-profile/upload-profil
     AllowAdditionalPropertiesComponent,
     UserActionAddPuaControlComponent,
     SelectNoticeComponent,
-  ],
-  imports: [
-    CommonModule,
-    PastisMaterialModule,
-    FileUploadModule,
-    SharedModule,
-    MatInputModule,
-    MatFormFieldModule,
-    ReactiveFormsModule,
-    VitamUIInputModule,
-    CoreModule,
-    FormsModule,
-    MatSlideToggleModule,
   ],
   exports: [
     UserActionUploadProfileComponent,

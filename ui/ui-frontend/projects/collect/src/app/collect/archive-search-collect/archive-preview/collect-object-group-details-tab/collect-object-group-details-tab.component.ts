@@ -36,8 +36,13 @@ import {
   qualifiersToVersionsWithQualifier,
   Unit,
   VersionWithQualifierDto,
+  ArchiveUnitModule,
+  PipesModule,
 } from 'vitamui-library';
 import { ArchiveCollectService } from '../../archive-collect.service';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { NgIf, NgFor, NgClass } from '@angular/common';
 
 @Component({
   selector: 'app-collect-object-group-details-tab',
@@ -51,6 +56,8 @@ import { ArchiveCollectService } from '../../archive-collect.service';
       transition('true => false', animate(300 + 'ms ease-out')),
     ]),
   ],
+  standalone: true,
+  imports: [NgIf, NgFor, ArchiveUnitModule, NgClass, MatLegacyTooltipModule, PipesModule, TranslateModule],
 })
 export class CollectObjectGroupDetailsTabComponent implements OnChanges {
   @Input() archiveUnit: Unit;

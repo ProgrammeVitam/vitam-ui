@@ -131,8 +131,8 @@ describe('BlockCategoryInheritanceComponent', () => {
         VitamUICommonTestModule,
         HttpClientTestingModule,
         RouterTestingModule,
+        BlockCategoryInheritanceComponent,
       ],
-      declarations: [BlockCategoryInheritanceComponent],
       providers: [
         FormBuilder,
         { provide: BASE_URL, useValue: '/fake-api' },

@@ -10,8 +10,7 @@ describe('ObjectEditorComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ObjectEditorComponent],
-      imports: [LoggerModule.forRoot(), ObjectViewerModule],
+      imports: [LoggerModule.forRoot(), ObjectViewerModule, ObjectEditorComponent],
     }).compileComponents();
   });
 

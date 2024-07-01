@@ -66,8 +66,7 @@ const pipes = [
 ];
 
 @NgModule({
-  imports: [CommonModule],
-  declarations: pipes,
+  imports: [CommonModule, ...pipes],
   exports: pipes,
   providers: [DatePipe],
 })

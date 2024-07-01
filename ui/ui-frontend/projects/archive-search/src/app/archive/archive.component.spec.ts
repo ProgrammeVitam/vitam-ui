@@ -55,12 +55,11 @@ import {
   BASE_URL,
   InjectorModule,
   LoggerModule,
-  SearchBarModule,
+  SearchBarComponent,
   SecurityService,
   Status,
   WINDOW_LOCATION,
 } from 'vitamui-library';
-import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { environment } from '../../environments/environment';
 import { ArchiveApiService } from '../core/api/archive-api.service';
 import { ArchiveComponent } from './archive.component';
@@ -115,16 +114,15 @@ describe('ArchiveComponent', () => {
         InjectorModule,
         RouterTestingModule,
         HttpClientTestingModule,
-        VitamUICommonTestModule,
         BrowserAnimationsModule,
         LoggerModule.forRoot(),
         RouterTestingModule,
         NoopAnimationsModule,
-        SearchBarModule,
+        SearchBarComponent,
         TranslateModule.forRoot(),
         MatSnackBarModule,
+        ArchiveComponent,
       ],
-      declarations: [ArchiveComponent],
       providers: [
         FormBuilder,
         { provide: MatDialog, useValue: matDialogSpy },

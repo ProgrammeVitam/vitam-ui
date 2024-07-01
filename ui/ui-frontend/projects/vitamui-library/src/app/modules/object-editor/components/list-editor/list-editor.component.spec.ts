@@ -9,8 +9,7 @@ describe('ListEditorComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ListEditorComponent],
-      imports: [LoggerModule.forRoot()],
+      imports: [LoggerModule.forRoot(), ListEditorComponent],
     }).compileComponents();
   });
 

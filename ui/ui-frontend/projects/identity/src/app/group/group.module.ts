@@ -42,10 +42,7 @@ import { MatLegacyMenuModule as MatMenuModule } from '@angular/material/legacy-m
 import { MatSidenavModule } from '@angular/material/sidenav';
 
 import { VitamUICommonModule } from 'vitamui-library';
-import { SharedModule } from '../shared/shared.module';
-import { GroupCreateModule } from './group-create';
-import { GroupListModule } from './group-list';
-import { GroupPreviewModule } from './group-preview';
+
 import { GroupRoutingModule } from './group-routing.module';
 import { GroupComponent } from './group.component';
 
@@ -53,16 +50,12 @@ import { GroupComponent } from './group.component';
   imports: [
     CommonModule,
     VitamUICommonModule,
-    SharedModule,
-    GroupCreateModule,
-    GroupListModule,
-    GroupPreviewModule,
     MatDialogModule,
     MatMenuModule,
     HttpClientModule,
     MatSidenavModule,
     GroupRoutingModule,
+    GroupComponent,
   ],
-  declarations: [GroupComponent],
 })
 export class GroupModule {}

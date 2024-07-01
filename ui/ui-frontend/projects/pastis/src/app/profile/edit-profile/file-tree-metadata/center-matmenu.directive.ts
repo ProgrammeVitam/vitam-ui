@@ -5,6 +5,7 @@ import { MatLegacyMenuPanel as MatMenuPanel, MatLegacyMenuTrigger as MatMenuTrig
 @Directive({
   // eslint-disable-next-line @angular-eslint/directive-selector
   selector: '[center-mat-menu]',
+  standalone: true,
 })
 export class CenterMatmenuDirective {
   overlayRef: OverlayRef;

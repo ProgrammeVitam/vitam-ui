@@ -42,7 +42,7 @@ import { MatLegacyProgressSpinnerModule as MatProgressSpinnerModule } from '@ang
 import { MatLegacySelectModule as MatSelectModule } from '@angular/material/legacy-select';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { of } from 'rxjs';
-import { ApplicationApiService, ApplicationService, ProfileService, VitamUIAutocompleteModule } from 'vitamui-library';
+import { ApplicationApiService, ApplicationService, ProfileService, VitamUIAutocompleteComponent } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 
 import { ProfilesFormComponent } from './profiles-form.component';
@@ -141,7 +141,10 @@ const expectedApp = {
 };
 
 // eslint-disable-next-line @angular-eslint/directive-selector
-@Directive({ selector: '[matTooltip]' })
+@Directive({
+  selector: '[matTooltip]',
+  standalone: true,
+})
 class MatTooltipStubDirective {
   @Input() matTooltip: any;
   @Input() matTooltipDisabled: any;
@@ -150,6 +153,15 @@ class MatTooltipStubDirective {
 
 @Component({
   template: ` <app-profiles-form [(ngModel)]="profiles"></app-profiles-form> `,
+  standalone: true,
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    MatProgressSpinnerModule,
+    MatSelectModule,
+    VitamUIAutocompleteComponent,
+    VitamUICommonTestModule,
+  ],
 })
 class TesthostComponent {
   profiles: string[];
@@ -169,10 +181,12 @@ describe('ProfilesFormComponent', () => {
         MatProgressSpinnerModule,
         MatSelectModule,
         NoopAnimationsModule,
-        VitamUIAutocompleteModule,
+        VitamUIAutocompleteComponent,
         VitamUICommonTestModule,
+        ProfilesFormComponent,
+        TesthostComponent,
+        MatTooltipStubDirective,
       ],
-      declarations: [ProfilesFormComponent, TesthostComponent, MatTooltipStubDirective],
       providers: [
         { provide: ProfileService, useValue: { list: () => of(expectedProfiles) } },
         { provide: ApplicationApiService, useValue: { getAllByParams: () => of(expectedApp) } },

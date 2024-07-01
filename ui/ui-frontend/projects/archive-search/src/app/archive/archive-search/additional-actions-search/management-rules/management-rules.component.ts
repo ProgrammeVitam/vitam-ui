@@ -36,12 +36,12 @@
  */
 
 import { Component, OnChanges, OnDestroy, OnInit, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatLegacyDialog as MatDialog, MatLegacyDialogModule } from '@angular/material/legacy-dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { Logger, SearchCriteriaDto, SearchCriteriaEltDto, StartupService } from 'vitamui-library';
+import { Logger, SearchCriteriaDto, SearchCriteriaEltDto, StartupService, VitamuiTitleBreadcrumbComponent } from 'vitamui-library';
 import { ManagementRulesSharedDataService } from '../../../../core/management-rules-shared-data.service';
 import { ArchiveService } from '../../../archive.service';
 import { ArchiveSearchConstsEnum } from '../../../models/archive-search-consts-enum';
@@ -53,12 +53,37 @@ import {
   RuleCategoryAction,
   RuleSearchCriteriaDto,
 } from '../../../models/ruleAction.interface';
+import { ArchiveUnitRulesComponent } from './archive-unit-rules/archive-unit-rules.component';
+import { MatLegacyTabsModule } from '@angular/material/legacy-tabs';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { MatLegacyOptionModule } from '@angular/material/legacy-core';
+import { MatLegacySelectModule } from '@angular/material/legacy-select';
+import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
+import { MatLegacyRadioModule } from '@angular/material/legacy-radio';
+import { NgFor } from '@angular/common';
+import { MatSidenavModule } from '@angular/material/sidenav';
 
 const ARCHIVE_UNIT_HOLDING_UNIT = 'ARCHIVE_UNIT_HOLDING_UNIT';
+
 @Component({
   selector: 'app-management-rules',
   templateUrl: './management-rules.component.html',
   styleUrls: ['./management-rules.component.css'],
+  standalone: true,
+  imports: [
+    MatSidenavModule,
+    VitamuiTitleBreadcrumbComponent,
+    NgFor,
+    MatLegacyRadioModule,
+    MatLegacyFormFieldModule,
+    MatLegacySelectModule,
+    MatLegacyOptionModule,
+    MatLegacyTooltipModule,
+    MatLegacyTabsModule,
+    ArchiveUnitRulesComponent,
+    MatLegacyDialogModule,
+    TranslateModule,
+  ],
 })
 export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
   criteriaSearchListToSave: SearchCriteriaEltDto[] = [];
@@ -89,7 +114,11 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
 
   rulesCatygories: { id: string; name: string; isDisabled: boolean }[] = [
     { id: 'StorageRule', name: this.translateService.instant('RULES.CATEGORIES_NAME.STORAGE_RULE'), isDisabled: false },
-    { id: 'AppraisalRule', name: this.translateService.instant('RULES.CATEGORIES_NAME.APPRAISAL_RULE'), isDisabled: false },
+    {
+      id: 'AppraisalRule',
+      name: this.translateService.instant('RULES.CATEGORIES_NAME.APPRAISAL_RULE'),
+      isDisabled: false,
+    },
     { id: 'HoldRule', name: this.translateService.instant('RULES.CATEGORIES_NAME.HOLD_RULE'), isDisabled: true },
     { id: 'AccessRule', name: this.translateService.instant('RULES.CATEGORIES_NAME.ACCESS_RULE'), isDisabled: false },
     {
@@ -538,9 +567,21 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
         stepValid: false,
       });
 
-      this.ruleActions.push({ ruleType: this.ruleCategorySelected, actionType: rule, id: idToAdd + 2, ruleId: '', stepValid: false });
+      this.ruleActions.push({
+        ruleType: this.ruleCategorySelected,
+        actionType: rule,
+        id: idToAdd + 2,
+        ruleId: '',
+        stepValid: false,
+      });
     } else {
-      this.ruleActions.push({ ruleType: this.ruleCategorySelected, actionType: rule, id: idToAdd + 1, ruleId: '', stepValid: false });
+      this.ruleActions.push({
+        ruleType: this.ruleCategorySelected,
+        actionType: rule,
+        id: idToAdd + 1,
+        ruleId: '',
+        stepValid: false,
+      });
     }
     if (this.actionsSelected.filter((action) => action === rule).length === 0) {
       this.actionsSelected.push(rule);

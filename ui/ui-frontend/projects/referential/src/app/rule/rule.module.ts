@@ -37,7 +37,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { TableFilterModule, VitamUICommonModule } from 'vitamui-library';
+import { TableFilterComponent, VitamUICommonModule } from 'vitamui-library';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatLegacyDialogModule as MatDialogModule } from '@angular/material/legacy-dialog';
@@ -47,12 +47,11 @@ import { MatLegacySelectModule as MatSelectModule } from '@angular/material/lega
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
 import { VitamUILibraryModule } from 'vitamui-library';
-import { RuleCreateModule } from './rule-create/rule-create.module';
+
 import { RuleListComponent } from './rule-list/rule-list.component';
-import { RulePreviewModule } from './rule-preview/rule-preview.module';
+
 import { RuleRoutingModule } from './rule-routing.module';
 import { RuleComponent } from './rule.component';
-import { ImportDialogModule } from '../shared/import-dialog/import-dialog.module';
 
 @NgModule({
   imports: [
@@ -63,17 +62,15 @@ import { ImportDialogModule } from '../shared/import-dialog/import-dialog.module
     VitamUICommonModule,
     VitamUILibraryModule,
     RuleRoutingModule,
-    RuleCreateModule,
-    RulePreviewModule,
-    ImportDialogModule,
     MatMenuModule,
     MatSnackBarModule,
     MatDialogModule,
     MatSidenavModule,
     MatProgressSpinnerModule,
     MatSelectModule,
-    TableFilterModule,
+    TableFilterComponent,
+    RuleComponent,
+    RuleListComponent,
   ],
-  declarations: [RuleComponent, RuleListComponent],
 })
 export class RuleModule {}

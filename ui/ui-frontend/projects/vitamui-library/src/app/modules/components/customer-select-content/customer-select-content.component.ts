@@ -39,11 +39,14 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CustomerSelectionService } from '../../customer-selection.service';
 import { MenuOption } from '../navbar';
 import { CustomerMenuService } from '../navbar/customer-menu/customer-menu.service';
+import { NgFor } from '@angular/common';
 
 @Component({
   selector: 'vitamui-common-customer-select-content',
   templateUrl: './customer-select-content.component.html',
   styleUrls: ['./customer-select-content.component.scss'],
+  standalone: true,
+  imports: [NgFor],
 })
 export class CustomerSelectContentComponent implements OnInit {
   @Input() customers: MenuOption[];

@@ -197,8 +197,8 @@ describe('UnlockRulesInheritanceComponent', () => {
         HttpClientTestingModule,
         RouterTestingModule,
         MatSnackBarModule,
+        UnlockRulesInheritanceComponent,
       ],
-      declarations: [UnlockRulesInheritanceComponent],
       providers: [
         FormBuilder,
         { provide: BASE_URL, useValue: '/fake-api' },

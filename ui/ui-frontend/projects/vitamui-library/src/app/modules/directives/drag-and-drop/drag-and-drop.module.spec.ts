@@ -34,13 +34,13 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { DragAndDropModule } from './drag-and-drop.module';
+import { DragAndDropDirective } from './drag-and-drop.module';
 
-describe('InfiniteScrollModule', () => {
-  let dragAndDropModule: DragAndDropModule;
+describe('InfiniteScrollDirective', () => {
+  let dragAndDropModule: DragAndDropDirective;
 
   beforeEach(() => {
-    dragAndDropModule = new DragAndDropModule();
+    dragAndDropModule = new DragAndDropDirective();
   });
 
   it('should create an instance', () => {

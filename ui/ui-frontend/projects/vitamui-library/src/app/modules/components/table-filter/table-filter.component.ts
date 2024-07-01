@@ -52,11 +52,15 @@ import { defer, merge, Observable, Subject } from 'rxjs';
 import { startWith, switchMap, take, takeUntil } from 'rxjs/operators';
 
 import { TableFilterOptionComponent } from './table-filter-option/table-filter-option.component';
+import { FormsModule } from '@angular/forms';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'vitamui-common-table-filter',
   templateUrl: './table-filter.component.html',
   styleUrls: ['./table-filter.component.scss'],
+  standalone: true,
+  imports: [NgIf, FormsModule],
 })
 export class TableFilterComponent implements AfterContentInit, OnInit, OnDestroy {
   @Input()

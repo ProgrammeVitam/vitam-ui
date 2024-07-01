@@ -25,12 +25,24 @@
  * accept its terms.
  */
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { AccessionRegisterDetail } from 'vitamui-library';
+import { AccessionRegisterDetail, VitamuiSidenavHeaderComponent } from 'vitamui-library';
+import { TranslateModule } from '@ngx-translate/core';
+import { AccessionRegisterOperationsListComponent } from './accession-register-operations-list/accession-register-operations-list.component';
+import { MatLegacyTabsModule } from '@angular/material/legacy-tabs';
+import { AccessionRegisterDetailComponent } from './accession-register-detail/accession-register-detail.component';
 
 @Component({
   selector: 'app-accession-register-preview',
   templateUrl: './accession-register-preview.component.html',
   styleUrls: ['./accession-register-preview.component.scss'],
+  standalone: true,
+  imports: [
+    VitamuiSidenavHeaderComponent,
+    AccessionRegisterDetailComponent,
+    MatLegacyTabsModule,
+    AccessionRegisterOperationsListComponent,
+    TranslateModule,
+  ],
 })
 export class AccessionRegisterPreviewComponent {
   @Input()

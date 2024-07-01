@@ -39,7 +39,6 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { CoreModule } from './../core/core.module';
 import { FileTreeModule } from './../profile/edit-profile/file-tree/file-tree.module';
-import { SharedModule } from './../shared/shared.module';
 
 import { MatIconModule } from '@angular/material/icon';
 import { MatLegacyTabsModule as MatTabsModule } from '@angular/material/legacy-tabs';
@@ -50,7 +49,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { FileUploadModule } from 'ng2-file-upload';
 import { NgxUiLoaderModule } from 'ngx-ui-loader';
 import { VitamUICommonModule } from 'vitamui-library';
-import { PastisMaterialModule } from '../material.module';
+
 import { UserActionsModule } from '../user-actions/user-actions.module';
 import { CreateNoticeChoiceComponent } from './create-notice-choice/create-notice-choice.component';
 import { CreateProfileComponent } from './create-profile/create-profile.component';
@@ -58,7 +57,6 @@ import { EditProfileComponent } from './edit-profile/edit-profile.component';
 import { ListProfileComponent } from './list-profile/list-profile.component';
 import { FilterByStringNamePipe } from './list-profile/pipes/filterByStringName.pipe';
 import { FilterByTypePipe } from './list-profile/pipes/filterByType.pipe';
-import { ProfilePreviewModule } from './profile-preview/profile-preview.module';
 
 @NgModule({
   imports: [
@@ -66,19 +64,14 @@ import { ProfilePreviewModule } from './profile-preview/profile-preview.module';
     CoreModule,
     MatIconModule,
     MatTabsModule,
-    SharedModule,
     FileTreeModule,
     FileUploadModule,
-    PastisMaterialModule,
     UserActionsModule,
     MatSlideToggleModule,
     FormsModule,
     VitamUICommonModule,
     TranslateModule,
     NgxUiLoaderModule,
-    ProfilePreviewModule,
-  ],
-  exports: [
     CreateNoticeChoiceComponent,
     CreateProfileComponent,
     EditProfileComponent,
@@ -86,7 +79,7 @@ import { ProfilePreviewModule } from './profile-preview/profile-preview.module';
     FilterByStringNamePipe,
     FilterByTypePipe,
   ],
-  declarations: [
+  exports: [
     CreateNoticeChoiceComponent,
     CreateProfileComponent,
     EditProfileComponent,

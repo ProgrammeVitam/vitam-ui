@@ -26,17 +26,43 @@
  */
 
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
 import { extend, isEmpty } from 'underscore';
-import { ManagementContract, diff } from 'vitamui-library';
+import {
+  ManagementContract,
+  diff,
+  SlideToggleComponent,
+  VitamUICommonInputComponent,
+  PipesModule,
+  VitamUIInputErrorComponent,
+  VitamUITextareaComponent,
+} from 'vitamui-library';
 import { ManagementContractService } from '../../management-contract.service';
+import { DateTimePipe } from '../../../../../../vitamui-library/src/app/modules/pipes/datetime.pipe';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatLegacyProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-management-contract-information-tab',
   templateUrl: './management-contract-information-tab.component.html',
   styleUrls: ['./management-contract-information-tab.component.scss'],
+  standalone: true,
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    SlideToggleComponent,
+    VitamUICommonInputComponent,
+    NgIf,
+    MatLegacyProgressSpinnerModule,
+    PipesModule,
+    TranslateModule,
+    DateTimePipe,
+    VitamUIInputErrorComponent,
+    VitamUITextareaComponent,
+  ],
 })
 export class ManagementContractInformationTabComponent {
   @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();

@@ -37,7 +37,7 @@ The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import { BehaviorSubject, Subscription, throwError } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { FileService } from '../../../core/services/file.service';
@@ -54,6 +54,14 @@ import { DuplicateMetadataComponent } from '../../../user-actions/duplicate-meta
 import { UserActionRemoveMetadataComponent } from '../../../user-actions/remove-metadata/remove-metadata.component';
 import { FileTreeMetadataService } from '../file-tree-metadata/file-tree-metadata.service';
 import { FileTreeService } from './file-tree.service';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { ModifyTextButtonComponent } from '../../../shared/modify-text-button/modify-text-button.component';
+import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatLegacyListModule } from '@angular/material/legacy-list';
+import { MatTreeModule } from '@angular/material/tree';
+import { NgIf, NgClass, NgStyle } from '@angular/common';
 
 const FILE_TREE_TRANSLATE_PATH = 'PROFILE.EDIT_PROFILE.FILE_TREE';
 
@@ -93,6 +101,20 @@ function constantToTranslate() {
   selector: 'pastis-file-tree',
   templateUrl: './file-tree.component.html',
   styleUrls: ['./file-tree.component.scss'],
+  standalone: true,
+  imports: [
+    NgIf,
+    MatTreeModule,
+    MatLegacyListModule,
+    NgClass,
+    NgStyle,
+    MatDividerModule,
+    MatIconModule,
+    MatLegacyButtonModule,
+    ModifyTextButtonComponent,
+    MatLegacyTooltipModule,
+    TranslateModule,
+  ],
 })
 export class FileTreeComponent implements OnInit, OnDestroy {
   constructor(

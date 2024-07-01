@@ -27,6 +27,8 @@
 import { animate, AUTO_STYLE, state, style, transition, trigger } from '@angular/animations';
 import { Component, Input } from '@angular/core';
 import { RegisterValueEventModel, RegisterValueEventType } from 'vitamui-library';
+import { TranslateModule } from '@ngx-translate/core';
+import { NgSwitch, NgSwitchCase, NgSwitchDefault, DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-accession-register-operation',
@@ -40,6 +42,8 @@ import { RegisterValueEventModel, RegisterValueEventType } from 'vitamui-library
       transition('true => false', animate(300 + 'ms ease-out')),
     ]),
   ],
+  standalone: true,
+  imports: [NgSwitch, NgSwitchCase, NgSwitchDefault, DatePipe, TranslateModule],
 })
 export class AccessionRegisterOperationComponent {
   RegisterValueEventType = RegisterValueEventType;

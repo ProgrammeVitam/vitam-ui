@@ -64,8 +64,8 @@ describe('TitleAndDescriptionCriteriaSearchCollectComponent', () => {
         MatSnackBarModule,
         HttpClientTestingModule,
         RouterTestingModule,
+        TitleAndDescriptionCriteriaSearchCollectComponent,
       ],
-      declarations: [TitleAndDescriptionCriteriaSearchCollectComponent],
       providers: [
         FormBuilder,
         { provide: MatDialogRef, useValue: matDialogRefSpy },

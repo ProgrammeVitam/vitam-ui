@@ -37,4 +37,3 @@
 export * from './table-filter-search.component';
 export * from './table-filter.component';
 export * from './table-filter.directive';
-export * from './table-filter.module';

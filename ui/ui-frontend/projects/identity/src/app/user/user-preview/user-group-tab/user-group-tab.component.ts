@@ -44,11 +44,16 @@ import { GroupService } from '../../../group/group.service';
 import { GroupAttributionComponent } from '../../group-attribution/group-attribution.component';
 import { GroupSelection } from '../../group-selection.interface';
 import { UserService } from '../../user.service';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { NgIf, NgFor } from '@angular/common';
 
 @Component({
   selector: 'app-user-group-tab',
   templateUrl: './user-group-tab.component.html',
   styleUrls: ['./user-group-tab.component.scss'],
+  standalone: true,
+  imports: [NgIf, NgFor, MatLegacyTooltipModule, TranslateModule],
 })
 export class UserGroupTabComponent implements OnChanges, OnDestroy {
   @Input()

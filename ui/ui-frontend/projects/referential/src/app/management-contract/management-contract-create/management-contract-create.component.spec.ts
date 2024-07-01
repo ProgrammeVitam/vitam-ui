@@ -86,8 +86,8 @@ describe('ManagementContractCreateComponent', () => {
         BrowserAnimationsModule,
         NoopAnimationsModule,
         MatSelectModule,
+        ManagementContractCreateComponent,
       ],
-      declarations: [ManagementContractCreateComponent],
       providers: [
         { provide: MatDialog, useValue: matDialogSpy },
         { provide: MAT_DIALOG_DATA, useValue: {} },

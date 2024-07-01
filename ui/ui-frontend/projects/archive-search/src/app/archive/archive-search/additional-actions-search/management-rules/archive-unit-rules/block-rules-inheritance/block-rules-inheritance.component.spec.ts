@@ -145,8 +145,8 @@ describe('BlockRulesInheritanceComponent', () => {
         HttpClientTestingModule,
         RouterTestingModule,
         MatSnackBarModule,
+        BlockRulesInheritanceComponent,
       ],
-      declarations: [BlockRulesInheritanceComponent],
       providers: [
         FormBuilder,
         { provide: BASE_URL, useValue: '/fake-api' },

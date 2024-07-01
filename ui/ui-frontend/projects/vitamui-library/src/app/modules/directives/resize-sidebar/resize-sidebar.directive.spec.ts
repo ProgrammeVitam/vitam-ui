@@ -55,6 +55,7 @@ import { ResizeSidebarDirective } from './resize-sidebar.directive';
       }
     `,
   ],
+  standalone: true,
 })
 class ResizeSidebarTestComponent {}
 
@@ -63,7 +64,7 @@ describe('ResizeSidebarDirective', () => {
 
   beforeEach(() => {
     fixture = TestBed.configureTestingModule({
-      declarations: [ResizeSidebarDirective, ResizeSidebarTestComponent],
+      imports: [ResizeSidebarDirective, ResizeSidebarTestComponent],
     }).createComponent(ResizeSidebarTestComponent);
     fixture.detectChanges();
   });

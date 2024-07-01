@@ -39,6 +39,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject } from '@
 import { tooltipAnimation } from '../../animations';
 
 import { VITAMUI_TOOLTIP_MESSAGE, VitamUITooltipMessage } from '../../injection-tokens';
+import { NgClass } from '@angular/common';
 
 @Component({
   selector: 'vitamui-common-tooltip',
@@ -46,6 +47,8 @@ import { VITAMUI_TOOLTIP_MESSAGE, VitamUITooltipMessage } from '../../injection-
   styleUrls: ['./tooltip.component.scss'],
   animations: [tooltipAnimation],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [NgClass],
 })
 export class TooltipComponent {
   tooltipClass: string;

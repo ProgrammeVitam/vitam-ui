@@ -36,7 +36,7 @@
  */
 import { HttpHeaders } from '@angular/common/http';
 import { Component, Inject, Input, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
 import { EMPTY, Subject } from 'rxjs';
 import { map, switchMap, take, takeUntil } from 'rxjs/operators';
@@ -48,16 +48,46 @@ import {
   FilingPlanMode,
   StartupService,
   VitamUISnackBarService,
+  CommonProgressBarComponent,
+  StepperComponent,
+  SlideToggleComponent,
+  VitamUICommonInputComponent,
+  FilingPlanComponent,
 } from 'vitamui-library';
 import { AccessContractService } from '../../access-contract/access-contract.service';
 import { AuditAction, AuditType } from '../../models/audit.interface';
 import { AuditService } from '../audit.service';
 import { AuditCreateValidators } from './audit-create-validator';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatLegacyOptionModule } from '@angular/material/legacy-core';
+import { MatLegacySelectModule } from '@angular/material/legacy-select';
+import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
+import { NgFor, NgIf } from '@angular/common';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { CdkStepperModule } from '@angular/cdk/stepper';
 
 @Component({
   selector: 'app-audit-create',
   templateUrl: './audit-create.component.html',
   styleUrls: ['./audit-create.component.scss'],
+  standalone: true,
+  imports: [
+    CommonProgressBarComponent,
+    FormsModule,
+    ReactiveFormsModule,
+    StepperComponent,
+    CdkStepperModule,
+    MatButtonToggleModule,
+    NgFor,
+    NgIf,
+    SlideToggleComponent,
+    MatLegacyFormFieldModule,
+    MatLegacySelectModule,
+    MatLegacyOptionModule,
+    VitamUICommonInputComponent,
+    FilingPlanComponent,
+    TranslateModule,
+  ],
 })
 export class AuditCreateComponent implements OnInit, OnDestroy {
   @Input() tenantIdentifier: number;

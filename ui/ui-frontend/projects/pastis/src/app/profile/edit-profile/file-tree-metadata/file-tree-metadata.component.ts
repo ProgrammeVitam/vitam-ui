@@ -28,14 +28,14 @@
  */
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 import { Component, EventEmitter, OnDestroy, OnInit, Output, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatLegacyCheckboxChange as MatCheckboxChange } from '@angular/material/legacy-checkbox';
-import { MatLegacyTableDataSource as MatTableDataSource } from '@angular/material/legacy-table';
+import { FormBuilder, FormControl, FormGroup, Validators, FormsModule } from '@angular/forms';
+import { MatLegacyCheckboxChange as MatCheckboxChange, MatLegacyCheckboxModule } from '@angular/material/legacy-checkbox';
+import { MatLegacyTableDataSource as MatTableDataSource, MatLegacyTableModule } from '@angular/material/legacy-table';
 import { Router } from '@angular/router';
-import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
+import { LangChangeEvent, TranslateService, TranslateModule } from '@ngx-translate/core';
 import { environment } from 'projects/pastis/src/environments/environment';
 import { Subscription } from 'rxjs';
-import { StartupService } from 'vitamui-library';
+import { StartupService, VitamuiCommonBannerComponent, EditableFieldComponent, VitamUICommonInputComponent } from 'vitamui-library';
 import { FileService } from '../../../core/services/file.service';
 import { NotificationService } from '../../../core/services/notification.service';
 import { ProfileService } from '../../../core/services/profile.service';
@@ -64,6 +64,25 @@ import { FileTreeComponent } from '../file-tree/file-tree.component';
 import { FileTreeService } from '../file-tree/file-tree.service';
 import { AttributesPopupComponent } from './attributes/attributes.component';
 import { FileTreeMetadataService } from './file-tree-metadata.service';
+import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
+import { MatLegacyRadioModule } from '@angular/material/legacy-radio';
+import { MatLegacyDialogModule } from '@angular/material/legacy-dialog';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatLegacyMenuModule } from '@angular/material/legacy-menu';
+import { CenterMatmenuDirective } from './center-matmenu.directive';
+import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { MatLegacyOptionModule } from '@angular/material/legacy-core';
+import { MatLegacySelectModule } from '@angular/material/legacy-select';
+import { MatIconModule } from '@angular/material/icon';
+import { PastisPopupMetadataLanguageComponent } from '../../../shared/pastis-popup-metadata-language/pastis-popup-metadata-language.component';
+import { UserActionsDownloadDocComponent } from '../../../user-actions/download-doc/download-doc.component';
+import { UserActionSaveProfileComponent } from '../../../user-actions/save-profile/save-profile.component';
+import { AllowAdditionalPropertiesComponent } from '../../../user-actions/allow-additional-properties/allow-additional-properties.component';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { PastisBreadcrumbComponent } from '../../../shared/pastis-breadcrumb-components/pastis-breadcrumb/pastis-breadcrumb.component';
+import { PastisTitleBreadcrumbComponent } from '../../../shared/pastis-breadcrumb-components/pastis-title-breadcrumb/pastis-title-breadcrumb.component';
+import { NgIf, NgClass, NgSwitch, NgSwitchCase, NgFor, NgSwitchDefault } from '@angular/common';
+import { MatSidenavModule } from '@angular/material/sidenav';
 
 const FILE_TREE_METADATA_TRANSLATE_PATH = 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA';
 const ADD_PUA_CONTROL_TRANSLATE_PATH = 'USER_ACTION.ADD_PUA_CONTROL';
@@ -97,6 +116,40 @@ function constantToTranslate() {
   // Encapsulation has to be disabled in order for the
   // component style to apply to the select panel.
   encapsulation: ViewEncapsulation.None,
+  standalone: true,
+  imports: [
+    MatSidenavModule,
+    NgIf,
+    PastisTitleBreadcrumbComponent,
+    PastisBreadcrumbComponent,
+    MatLegacyTooltipModule,
+    AllowAdditionalPropertiesComponent,
+    UserActionSaveProfileComponent,
+    UserActionsDownloadDocComponent,
+    PastisPopupMetadataLanguageComponent,
+    VitamuiCommonBannerComponent,
+    MatLegacyTableModule,
+    NgClass,
+    MatIconModule,
+    NgSwitch,
+    NgSwitchCase,
+    EditableFieldComponent,
+    FormsModule,
+    MatLegacySelectModule,
+    MatLegacyOptionModule,
+    NgFor,
+    NgSwitchDefault,
+    MatLegacyButtonModule,
+    CenterMatmenuDirective,
+    MatLegacyMenuModule,
+    MatDividerModule,
+    MatLegacyCheckboxModule,
+    MatLegacyDialogModule,
+    MatLegacyRadioModule,
+    MatLegacyFormFieldModule,
+    VitamUICommonInputComponent,
+    TranslateModule,
+  ],
 })
 export class FileTreeMetadataComponent implements OnInit, OnDestroy {
   rootAdditionalProperties: boolean;

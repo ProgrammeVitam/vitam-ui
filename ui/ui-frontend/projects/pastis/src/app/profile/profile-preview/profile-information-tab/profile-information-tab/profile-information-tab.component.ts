@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { TranslateService } from '@ngx-translate/core';
+import { FormBuilder, FormControl, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { NotificationService } from '../../../../core/services/notification.service';
@@ -9,12 +9,25 @@ import { ArchivalProfileUnit } from '../../../../models/archival-profile-unit';
 import { Profile } from '../../../../models/profile';
 import { ProfileDescription } from '../../../../models/profile-description.model';
 import { ProfileType } from '../../../../models/profile-type.enum';
+import { MatLegacyProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
+import { NgIf } from '@angular/common';
+import { SlideToggleComponent, VitamUICommonInputComponent } from 'vitamui-library';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'profile-information-tab',
   templateUrl: './profile-information-tab.component.html',
   styleUrls: ['./profile-information-tab.component.scss'],
+  standalone: true,
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    SlideToggleComponent,
+    NgIf,
+    VitamUICommonInputComponent,
+    MatLegacyProgressSpinnerModule,
+    TranslateModule,
+  ],
 })
 export class ProfileInformationTabComponent {
   @Input()

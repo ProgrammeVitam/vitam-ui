@@ -9,7 +9,10 @@ import { EventTypeBadgeClassPipe } from '../../shared/pipes/event-type-badge-cla
 import { ProbativeValueService } from '../probative-value.service';
 import { ProbativeValuePreviewComponent } from './probative-value-preview.component';
 
-@Pipe({ name: 'truncate' })
+@Pipe({
+  name: 'truncate',
+  standalone: true,
+})
 class MockTruncatePipe implements PipeTransform {
   transform(value: number): number {
     return value;
@@ -31,8 +34,7 @@ describe('ProbativeValuePreviewComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      declarations: [ProbativeValuePreviewComponent, EventTypeBadgeClassPipe, MockTruncatePipe],
-      imports: [MatSnackBarModule, TranslateModule.forRoot()],
+      imports: [MatSnackBarModule, TranslateModule.forRoot(), ProbativeValuePreviewComponent, EventTypeBadgeClassPipe, MockTruncatePipe],
       providers: [
         { provide: ExternalParametersService, useValue: externalParametersServiceMock },
         { provide: ProbativeValueService, useValue: {} },

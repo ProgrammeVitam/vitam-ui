@@ -47,7 +47,10 @@ import { ProfilesEditComponent } from './profiles-edit/profiles-edit.component';
 import { ProfilesTabComponent } from './profiles-tab.component';
 
 // eslint-disable-next-line @angular-eslint/directive-selector
-@Directive({ selector: '[matTooltip]' })
+@Directive({
+  selector: '[matTooltip]',
+  standalone: true,
+})
 class MatTooltipStubDirective {
   @Input() matTooltip: any;
   @Input() matTooltipDisabled: any;
@@ -56,6 +59,8 @@ class MatTooltipStubDirective {
 
 @Component({
   template: ` <app-profiles-tab [group]="group" [readOnly]="readOnly"></app-profiles-tab> `,
+  standalone: true,
+  imports: [VitamUICommonTestModule],
 })
 class TesthostComponent {
   readOnly = false;
@@ -164,8 +169,7 @@ describe('ProfilesTabComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [VitamUICommonTestModule],
-      declarations: [ProfilesTabComponent, TesthostComponent, MatTooltipStubDirective],
+      imports: [VitamUICommonTestModule, ProfilesTabComponent, TesthostComponent, MatTooltipStubDirective],
       providers: [
         { provide: MatDialog, useValue: matDialogSpy },
         { provide: GroupService, useValue: { updated: new Subject() } },

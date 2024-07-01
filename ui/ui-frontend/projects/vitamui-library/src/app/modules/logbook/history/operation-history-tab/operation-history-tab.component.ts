@@ -42,6 +42,11 @@ import { map, switchMap, takeUntil } from 'rxjs/operators';
 import { AuthService } from '../../../auth.service';
 import { IEvent } from '../../../models';
 import { LogbookService } from '../../logbook.service';
+import { TranslateModule } from '@ngx-translate/core';
+import { HistoryEventsComponent } from '../history-events/history-events.component';
+import { CollapseComponent } from '../../../components/collapse/collapse.component';
+import { MatLegacyProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
+import { NgIf } from '@angular/common';
 
 const EVENT_LIMIT = 100;
 
@@ -49,6 +54,8 @@ const EVENT_LIMIT = 100;
   selector: 'vitamui-common-operation-history-tab',
   templateUrl: './operation-history-tab.component.html',
   styleUrls: ['./operation-history-tab.component.scss'],
+  standalone: true,
+  imports: [NgIf, MatLegacyProgressSpinnerModule, CollapseComponent, HistoryEventsComponent, TranslateModule],
 })
 export class OperationHistoryTabComponent implements OnChanges, OnDestroy {
   @Input() id: string;

@@ -45,6 +45,7 @@ import { PastisDialogConfirmComponent } from '../../shared/pastis-dialog/pastis-
   selector: 'pastis-user-action-remove-metadata',
   templateUrl: './remove-metadata.component.html',
   styleUrls: ['./remove-metadata.component.scss'],
+  standalone: true,
 })
 export class UserActionRemoveMetadataComponent implements OnInit {
   dataToSend: string;

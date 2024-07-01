@@ -38,11 +38,23 @@ import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angu
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { Subject, merge } from 'rxjs';
 import { debounceTime, filter, takeUntil } from 'rxjs/operators';
-import { ConfirmActionComponent, DEFAULT_PAGE_SIZE, Direction, InfiniteScrollTable, PageRequest } from 'vitamui-library';
+import {
+  ConfirmActionComponent,
+  DEFAULT_PAGE_SIZE,
+  Direction,
+  InfiniteScrollTable,
+  PageRequest,
+  InfiniteScrollDirective,
+  OrderByButtonComponent,
+  PipesModule,
+} from 'vitamui-library';
 
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import { Ontology } from 'vitamui-library';
 import { OntologyService } from '../ontology.service';
+import { DateTimePipe } from '../../../../../vitamui-library/src/app/modules/pipes/datetime.pipe';
+import { MatLegacyProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
+import { NgFor, NgIf } from '@angular/common';
 
 const FILTER_DEBOUNCE_TIME_MS = 400;
 
@@ -50,6 +62,17 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
   selector: 'app-ontology-list',
   templateUrl: './ontology-list.component.html',
   styleUrls: ['./ontology-list.component.scss'],
+  standalone: true,
+  imports: [
+    InfiniteScrollDirective,
+    OrderByButtonComponent,
+    NgFor,
+    NgIf,
+    MatLegacyProgressSpinnerModule,
+    PipesModule,
+    TranslateModule,
+    DateTimePipe,
+  ],
 })
 export class OntologyListComponent extends InfiniteScrollTable<Ontology> implements OnDestroy, OnInit {
   // eslint-disable-next-line @angular-eslint/no-input-rename

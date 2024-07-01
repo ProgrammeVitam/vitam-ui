@@ -100,6 +100,8 @@ const expectedCustomer: Customer = {
       multi: true,
     },
   ],
+  standalone: true,
+  imports: [ReactiveFormsModule, HttpClientTestingModule, VitamUICommonTestModule, InjectorModule],
 })
 class CustomerColorsInputStubComponent implements ControlValueAccessor {
   @Input() placeholder: string;
@@ -117,8 +119,15 @@ describe('GraphicIdentityUpdateComponent', () => {
     const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
     const snackBarSpy = jasmine.createSpyObj('VitamUISnackBarService', ['open']);
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, HttpClientTestingModule, VitamUICommonTestModule, InjectorModule, LoggerModule.forRoot()],
-      declarations: [CustomerColorsInputStubComponent, GraphicIdentityUpdateComponent],
+      imports: [
+        ReactiveFormsModule,
+        HttpClientTestingModule,
+        VitamUICommonTestModule,
+        InjectorModule,
+        LoggerModule.forRoot(),
+        CustomerColorsInputStubComponent,
+        GraphicIdentityUpdateComponent,
+      ],
       providers: [
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MAT_DIALOG_DATA, useValue: { customer: expectedCustomer, logo: null } },

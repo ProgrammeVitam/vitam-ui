@@ -43,8 +43,8 @@ describe('ErrorResponseModalComponent', () => {
             deps: [HttpBackend],
           },
         }),
+        PurgedPersistentIdentifierModalComponent,
       ],
-      declarations: [PurgedPersistentIdentifierModalComponent],
       providers: [
         {
           provide: MatDialogRef,

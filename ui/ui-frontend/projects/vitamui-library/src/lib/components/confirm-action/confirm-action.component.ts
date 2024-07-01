@@ -36,11 +36,16 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, Input } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
+import { ConfirmDialogComponent } from '../../../app/modules/components/confirm-dialog/confirm-dialog.component';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'vitamui-confirm-action',
   templateUrl: './confirm-action.component.html',
   styleUrls: ['./confirm-action.component.scss'],
+  standalone: true,
+  imports: [NgIf, ConfirmDialogComponent, TranslateModule],
 })
 export class ConfirmActionComponent {
   // delete or changeTab

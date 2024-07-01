@@ -40,19 +40,33 @@ import {
   MatLegacyTab as MatTab,
   MatLegacyTabGroup as MatTabGroup,
   MatLegacyTabHeader as MatTabHeader,
+  MatLegacyTabsModule,
 } from '@angular/material/legacy-tabs';
 import { Observable } from 'rxjs';
-import { AccessContract } from 'vitamui-library';
+import { AccessContract, VitamuiSidenavHeaderComponent, HistoryModule } from 'vitamui-library';
 import { ConfirmActionComponent } from 'vitamui-library';
 import { AccessContractService } from '../access-contract.service';
 import { AccessContractInformationTabComponent } from './access-contract-information-tab/access-contract-information-tab.component';
 import { AccessContractUsageAndServicesTabComponent } from './access-contract-usage-and-services-tab/access-contract-usage-and-services-tab.component';
 import { AccessContractWriteAccessTabComponent } from './access-contract-write-access-tab/access-contract-write-access-tab.component';
+import { TranslateModule } from '@ngx-translate/core';
+import { AccessContractNodesTabComponent } from './access-contract-nodes-tab/access-contract-nodes-tab.component';
 
 @Component({
   selector: 'app-access-contract-preview',
   templateUrl: './access-contract-preview.component.html',
   styleUrls: ['./access-contract-preview.component.scss'],
+  standalone: true,
+  imports: [
+    VitamuiSidenavHeaderComponent,
+    MatLegacyTabsModule,
+    AccessContractInformationTabComponent,
+    AccessContractUsageAndServicesTabComponent,
+    AccessContractWriteAccessTabComponent,
+    AccessContractNodesTabComponent,
+    HistoryModule,
+    TranslateModule,
+  ],
 })
 export class AccessContractPreviewComponent implements AfterViewInit {
   @Input() accessContract: AccessContract;

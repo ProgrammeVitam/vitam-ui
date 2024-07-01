@@ -64,6 +64,8 @@ import { EditableFileComponent } from './editable-file.component';
       <vitamui-common-field-error errorKey="async">Expected async error message</vitamui-common-field-error>
     </vitamui-common-editable-file>
   `,
+  standalone: true,
+  imports: [FormsModule, ReactiveFormsModule, OverlayModule, MatProgressSpinnerModule, HttpClientTestingModule],
 })
 class TesthostComponent {
   value: File;
@@ -92,9 +94,11 @@ describe('EditableFileComponent', () => {
         NoopAnimationsModule,
         HttpClientTestingModule,
         TranslateModule.forRoot(),
+        TesthostComponent,
+        EditableFileComponent,
+        VitamUIFieldErrorComponent,
       ],
       providers: [{ provide: WINDOW_LOCATION, useValue: {} }],
-      declarations: [TesthostComponent, EditableFileComponent, VitamUIFieldErrorComponent],
     }).compileComponents();
 
     inject([OverlayContainer], (oc: OverlayContainer) => {

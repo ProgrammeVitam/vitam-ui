@@ -40,11 +40,34 @@ import { internationalizedKeys } from '../../services/display-object-helper.serv
 import { FavoriteEntryService } from '../../services/favorite-entry.service';
 import { LayoutService } from '../../services/layout.service';
 import { DisplayObjectType } from '../../types';
+import { EmptyPipe } from '../../../pipes/empty.pipe';
+import { TranslateModule } from '@ngx-translate/core';
+import { PrimitiveComponent } from '../primitive/primitive.component';
+import { ListComponent } from '../list/list.component';
+import { ObjectViewerModule } from '../../object-viewer.module';
+import { AccordionComponent } from '../../../components/accordion/accordion.component';
+import { DataComponent } from '../../../components/data/data.component';
+import { NgFor, NgIf, NgSwitch, NgSwitchCase, NgTemplateOutlet } from '@angular/common';
 
 @Component({
   selector: 'vitamui-common-group',
   templateUrl: './group.component.html',
   styleUrls: ['./group.component.scss'],
+  standalone: true,
+  imports: [
+    NgIf,
+    NgFor,
+    DataComponent,
+    NgTemplateOutlet,
+    AccordionComponent,
+    NgSwitch,
+    NgSwitchCase,
+    ObjectViewerModule,
+    ListComponent,
+    PrimitiveComponent,
+    TranslateModule,
+    EmptyPipe,
+  ],
 })
 export class GroupComponent implements OnChanges {
   @Input() displayObject: DisplayObject;

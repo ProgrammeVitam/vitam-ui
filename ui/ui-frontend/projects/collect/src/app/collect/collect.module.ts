@@ -47,7 +47,7 @@ import { MatLegacySelectModule as MatSelectModule } from '@angular/material/lega
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
 import { MatLegacyTabsModule as MatTabsModule } from '@angular/material/legacy-tabs';
-import { TableFilterModule, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
+import { TableFilterComponent, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 import { CollectRoutingModule } from './collect-routing.module';
 
 @NgModule({
@@ -60,7 +60,7 @@ import { CollectRoutingModule } from './collect-routing.module';
     MatDialogModule,
     MatSidenavModule,
     MatProgressSpinnerModule,
-    TableFilterModule,
+    TableFilterComponent,
     VitamUILibraryModule,
     ReactiveFormsModule,
     MatFormFieldModule,

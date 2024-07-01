@@ -37,6 +37,7 @@
 import { CdkStepper } from '@angular/cdk/stepper';
 import { Component } from '@angular/core';
 import { transitionAnimation } from '../../animations/vitamui-common-animations';
+import { NgFor, NgTemplateOutlet } from '@angular/common';
 
 @Component({
   selector: 'vitamui-common-stepper',
@@ -46,5 +47,7 @@ import { transitionAnimation } from '../../animations/vitamui-common-animations'
   // by other components.
   providers: [{ provide: CdkStepper, useExisting: StepperComponent }],
   animations: [transitionAnimation],
+  standalone: true,
+  imports: [NgFor, NgTemplateOutlet],
 })
 export class StepperComponent extends CdkStepper {}

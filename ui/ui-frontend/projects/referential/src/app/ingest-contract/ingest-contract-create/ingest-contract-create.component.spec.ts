@@ -93,8 +93,8 @@ describe('IngestContractCreateComponent', () => {
         LoggerModule.forRoot(),
         TranslateModule.forRoot(),
         MatButtonToggleModule,
+        IngestContractCreateComponent,
       ],
-      declarations: [IngestContractCreateComponent],
       providers: [
         FormBuilder,
         { provide: BASE_URL, useValue: '/fake-api' },

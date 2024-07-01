@@ -35,18 +35,47 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { ActivatedRoute } from '@angular/router';
 import moment from 'moment';
-import { Event, GlobalEventService, SearchBarComponent, SidenavPage } from 'vitamui-library';
+import {
+  Event,
+  GlobalEventService,
+  SearchBarComponent,
+  SidenavPage,
+  VitamuiTitleBreadcrumbComponent,
+  VitamuiCommonBannerComponent,
+} from 'vitamui-library';
 import { AuditCreateComponent } from './audit-create/audit-create.component';
 import { AuditListComponent } from './audit-list/audit-list.component';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatLegacyInputModule } from '@angular/material/legacy-input';
+import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
+import { AuditPreviewComponent } from './audit-preview/audit-preview.component';
+import { NgIf } from '@angular/common';
+import { MatSidenavModule } from '@angular/material/sidenav';
 
 @Component({
   selector: 'app-audit',
   templateUrl: './audit.component.html',
   styleUrls: ['./audit.component.scss'],
+  standalone: true,
+  imports: [
+    MatSidenavModule,
+    NgIf,
+    AuditPreviewComponent,
+    VitamuiTitleBreadcrumbComponent,
+    VitamuiCommonBannerComponent,
+    FormsModule,
+    ReactiveFormsModule,
+    MatLegacyFormFieldModule,
+    MatLegacyInputModule,
+    MatDatepickerModule,
+    AuditListComponent,
+    TranslateModule,
+  ],
 })
 export class AuditComponent extends SidenavPage<Event> {
   public dateRangeFilterForm: FormGroup;

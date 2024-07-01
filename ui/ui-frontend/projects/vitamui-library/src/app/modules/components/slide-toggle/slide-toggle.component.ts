@@ -37,6 +37,7 @@
 
 import { Component, forwardRef, Input } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { NgClass } from '@angular/common';
 
 export const SLIDE_TOGGLE_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -49,6 +50,8 @@ export const SLIDE_TOGGLE_VALUE_ACCESSOR: any = {
   templateUrl: './slide-toggle.component.html',
   styleUrls: ['./slide-toggle.component.scss'],
   providers: [SLIDE_TOGGLE_VALUE_ACCESSOR],
+  standalone: true,
+  imports: [NgClass],
 })
 export class SlideToggleComponent implements ControlValueAccessor {
   @Input() required: boolean;

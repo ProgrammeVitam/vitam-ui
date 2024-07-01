@@ -3,6 +3,7 @@ import { NG_VALUE_ACCESSOR } from '@angular/forms';
 
 import { VitamUIRadioComponent } from '../vitamui-radio/vitamui-radio.component';
 import { VitamUIRadioGroupService } from './vitamui-radio-group.service';
+import { NgIf } from '@angular/common';
 
 export const RADIO_GROUP_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -15,6 +16,8 @@ export const RADIO_GROUP_VALUE_ACCESSOR: any = {
   templateUrl: './vitamui-radio-group.component.html',
   styleUrls: ['./vitamui-radio-group.component.scss'],
   providers: [RADIO_GROUP_VALUE_ACCESSOR, VitamUIRadioGroupService],
+  standalone: true,
+  imports: [NgIf],
 })
 export class VitamUIRadioGroupComponent implements OnInit, AfterContentInit {
   constructor(@Self() private radioGroupService: VitamUIRadioGroupService) {}

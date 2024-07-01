@@ -9,8 +9,7 @@ describe('PrimitiveEditorComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [PrimitiveEditorComponent],
-      imports: [LoggerModule.forRoot()],
+      imports: [LoggerModule.forRoot(), PrimitiveEditorComponent],
     }).compileComponents();
   });
 

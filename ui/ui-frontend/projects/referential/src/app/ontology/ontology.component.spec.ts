@@ -46,14 +46,24 @@ import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { OntologyComponent } from './ontology.component';
 import { TranslateModule } from '@ngx-translate/core';
 
-@Component({ selector: 'app-ontology-preview', template: '' })
+@Component({
+  selector: 'app-ontology-preview',
+  template: '',
+  standalone: true,
+  imports: [VitamUICommonTestModule, RouterTestingModule, InjectorModule, MatSidenavModule, MatDialogModule],
+})
 // eslint-disable-next-line @angular-eslint/component-class-suffix
 class OntologyPreviewStub {
   @Input()
   accessContract: any;
 }
 
-@Component({ selector: 'app-ontology-list', template: '' })
+@Component({
+  selector: 'app-ontology-list',
+  template: '',
+  standalone: true,
+  imports: [VitamUICommonTestModule, RouterTestingModule, InjectorModule, MatSidenavModule, MatDialogModule],
+})
 // eslint-disable-next-line @angular-eslint/component-class-suffix
 class OntologyListStub {}
 
@@ -63,7 +73,6 @@ describe('OntologyComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [OntologyComponent, OntologyListStub, OntologyPreviewStub],
       imports: [
         VitamUICommonTestModule,
         RouterTestingModule,
@@ -73,6 +82,9 @@ describe('OntologyComponent', () => {
         NoopAnimationsModule,
         MatSidenavModule,
         MatDialogModule,
+        OntologyComponent,
+        OntologyListStub,
+        OntologyPreviewStub,
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();

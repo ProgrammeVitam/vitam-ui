@@ -63,11 +63,11 @@ describe('OntologyListComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [OntologyListComponent],
       imports: [
         TranslateModule.forRoot({
           loader: { provide: TranslateLoader, useClass: FakeLoader },
         }),
+        OntologyListComponent,
       ],
       providers: [
         { provide: BASE_URL, useValue: '' },

@@ -72,7 +72,6 @@ describe('TransferRequestModalComponent tests', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [TransferRequestModalComponent],
       imports: [
         InjectorModule,
         TranslateModule.forRoot(),
@@ -80,6 +79,7 @@ describe('TransferRequestModalComponent tests', () => {
         HttpClientTestingModule,
         MatSnackBarModule,
         LoggerModule.forRoot(),
+        TransferRequestModalComponent,
       ],
       providers: [
         FormBuilder,

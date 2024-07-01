@@ -40,8 +40,7 @@ import { PipesModule } from '../../pipes/pipes.module';
 import { AccordionComponent } from './accordion.component';
 
 @NgModule({
-  imports: [CommonModule, PipesModule],
-  declarations: [AccordionComponent],
+  imports: [CommonModule, PipesModule, AccordionComponent],
   exports: [AccordionComponent],
 })
 export class AccordionModule {}

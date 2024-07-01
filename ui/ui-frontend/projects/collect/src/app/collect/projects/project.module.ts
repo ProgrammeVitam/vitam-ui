@@ -37,7 +37,7 @@ knowledge of the CeCILL-C license and that you accept its terms.
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { TableFilterModule, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
+import { TableFilterComponent, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
@@ -66,7 +66,7 @@ import { ProjectsComponent } from './projects.component';
     MatDialogModule,
     MatSidenavModule,
     MatProgressSpinnerModule,
-    TableFilterModule,
+    TableFilterComponent,
     VitamUILibraryModule,
     ReactiveFormsModule,
     MatFormFieldModule,
@@ -75,8 +75,11 @@ import { ProjectsComponent } from './projects.component';
     MatTabsModule,
     MatButtonToggleModule,
     FormsModule,
+    ProjectsComponent,
+    ProjectListComponent,
+    CreateProjectComponent,
+    ProjectPreviewComponent,
   ],
   providers: [{ provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: { useUtc: true } }],
-  declarations: [ProjectsComponent, ProjectListComponent, CreateProjectComponent, ProjectPreviewComponent],
 })
 export class ProjectModule {}

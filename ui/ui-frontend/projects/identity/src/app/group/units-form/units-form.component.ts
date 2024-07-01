@@ -36,8 +36,18 @@
  */
 
 import { Component, forwardRef, Input, OnInit } from '@angular/core';
-import { AbstractControl, ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR, ValidationErrors } from '@angular/forms';
+import {
+  AbstractControl,
+  ControlValueAccessor,
+  FormControl,
+  NG_VALUE_ACCESSOR,
+  ValidationErrors,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { GroupValidators } from '../group.validators';
+import { TranslateModule } from '@ngx-translate/core';
+import { NgIf, NgFor } from '@angular/common';
+import { VitamUICommonInputComponent, EllipsisDirective } from 'vitamui-library';
 
 export const UNITS_FORM_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -53,6 +63,8 @@ export const UNITS_FORM_VALUE_ACCESSOR: any = {
   templateUrl: './units-form.component.html',
   styleUrls: ['./units-form.component.scss'],
   providers: [UNITS_FORM_VALUE_ACCESSOR],
+  standalone: true,
+  imports: [VitamUICommonInputComponent, ReactiveFormsModule, NgIf, NgFor, EllipsisDirective, TranslateModule],
 })
 export class UnitsFormComponent implements ControlValueAccessor, OnInit {
   units: string[] = [];

@@ -38,9 +38,18 @@ import { HttpResponse } from '@angular/common/http';
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { ActivatedRoute } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import { FileTypes } from 'projects/vitamui-library/src/lib/models/file-types.enum';
-import { AccessContract, ApplicationService, DownloadUtils, GlobalEventService, SidenavPage } from 'vitamui-library';
+import {
+  AccessContract,
+  ApplicationService,
+  DownloadUtils,
+  GlobalEventService,
+  SidenavPage,
+  VitamuiTitleBreadcrumbComponent,
+  VitamuiCommonBannerComponent,
+  VitamuiMenuButtonComponent,
+} from 'vitamui-library';
 import { ImportDialogParam, ReferentialTypes } from '../shared/import-dialog/import-dialog-param.interface';
 import { ImportDialogComponent } from '../shared/import-dialog/import-dialog.component';
 
@@ -49,11 +58,27 @@ import { DownloadSnackBarService } from '../core/service/download-snack-bar.serv
 import { AccessContractCreateComponent } from './access-contract-create/access-contract-create.component';
 import { AccessContractListComponent } from './access-contract-list/access-contract-list.component';
 import { AccessContractService } from './access-contract.service';
+import { MatLegacyMenuModule } from '@angular/material/legacy-menu';
+import { AccessContractPreviewComponent } from './access-contract-preview/access-contract-preview.component';
+import { NgIf } from '@angular/common';
+import { MatSidenavModule } from '@angular/material/sidenav';
 
 @Component({
   selector: 'app-access',
   templateUrl: './access-contract.component.html',
   styleUrls: ['./access-contract.component.scss'],
+  standalone: true,
+  imports: [
+    MatSidenavModule,
+    NgIf,
+    AccessContractPreviewComponent,
+    VitamuiTitleBreadcrumbComponent,
+    VitamuiCommonBannerComponent,
+    VitamuiMenuButtonComponent,
+    MatLegacyMenuModule,
+    AccessContractListComponent,
+    TranslateModule,
+  ],
 })
 export class AccessContractComponent extends SidenavPage<AccessContract> implements OnInit, OnDestroy {
   public search = '';

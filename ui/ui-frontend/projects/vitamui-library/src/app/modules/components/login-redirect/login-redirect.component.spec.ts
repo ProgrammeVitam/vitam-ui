@@ -47,7 +47,7 @@ describe('LoginRedirectComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [LoginRedirectComponent],
+      imports: [LoginRedirectComponent],
       providers: [
         { provide: WINDOW_LOCATION, useValue: {} },
         { provide: StartupService, useValue: {} },

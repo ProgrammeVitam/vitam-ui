@@ -50,7 +50,10 @@ import { TranslateModule } from '@ngx-translate/core';
 import { EventTypeBadgeClassPipe } from '../../shared/pipes/event-type-badge-class.pipe';
 import { LastEventPipe } from '../../shared/pipes/last-event.pipe';
 
-@Pipe({ name: 'truncate' })
+@Pipe({
+  name: 'truncate',
+  standalone: true,
+})
 class MockTruncatePipe implements PipeTransform {
   transform(value: number): number {
     return value;
@@ -68,7 +71,6 @@ describe('LogbookOperationDetailComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      declarations: [LogbookOperationDetailComponent, EventTypeBadgeClassPipe, LastEventPipe, MockTruncatePipe],
       imports: [
         MatSnackBarModule,
         InjectorModule,
@@ -80,6 +82,10 @@ describe('LogbookOperationDetailComponent', () => {
         RouterTestingModule,
         NoopAnimationsModule,
         HttpClientModule,
+        LogbookOperationDetailComponent,
+        EventTypeBadgeClassPipe,
+        LastEventPipe,
+        MockTruncatePipe,
       ],
       providers: [
         { provide: LogbookService, useValue: {} },

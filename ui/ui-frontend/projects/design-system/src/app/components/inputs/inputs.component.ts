@@ -1,10 +1,46 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
-import { TranslateService } from '@ngx-translate/core';
+import { FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { extend } from 'underscore';
-import { CountryOption, CountryService, Option, VitamuiAutocompleteMultiselectOptions } from 'vitamui-library';
+import {
+  CountryOption,
+  CountryService,
+  Option,
+  VitamuiAutocompleteMultiselectOptions,
+  VitamUICommonInputComponent,
+  EditableFieldComponent,
+  VitamUIListInputComponent,
+  VitamuiRepeatableInputComponent,
+  VitamUIAutocompleteComponent,
+  VitamUIAutocompleteMultiSelectModule,
+  LevelInputComponent,
+  SlideToggleComponent,
+  DatepickerComponent,
+  VitamUIDurationInputComponent,
+  EditableInputComponent,
+  EditableEmailInputComponent,
+  MultipleEmailInputComponent,
+  EditableSelectComponent,
+  EditableOptionComponent,
+  VitamUIInputErrorComponent,
+  EditableTextareaComponent,
+  VitamUITextareaComponent,
+  EditableLevelInputComponent,
+  EditableToggleGroupComponent,
+  EditableButtonToggleComponent,
+  EditableDurationInputComponent,
+  EditableFileComponent,
+} from 'vitamui-library';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatLegacyInputModule } from '@angular/material/legacy-input';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { NgFor, NgIf } from '@angular/common';
+import { EditablePatternsComponent } from '../../../../../identity/src/app/shared/editable-field/editable-patterns/editable-patterns.component';
+import { MatLegacyOptionModule } from '@angular/material/legacy-core';
+import { MatLegacySelectModule } from '@angular/material/legacy-select';
+import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
@@ -12,6 +48,43 @@ import { CountryOption, CountryService, Option, VitamuiAutocompleteMultiselectOp
   templateUrl: './inputs.component.html',
   styleUrls: ['./inputs.component.scss'],
   providers: [CountryService],
+  standalone: true,
+  imports: [
+    VitamUICommonInputComponent,
+    ReactiveFormsModule,
+    EditableFieldComponent,
+    MatLegacyFormFieldModule,
+    MatLegacySelectModule,
+    MatLegacyOptionModule,
+    EditablePatternsComponent,
+    VitamUIListInputComponent,
+    VitamuiRepeatableInputComponent,
+    NgFor,
+    VitamUIAutocompleteComponent,
+    NgIf,
+    VitamUIAutocompleteMultiSelectModule,
+    LevelInputComponent,
+    SlideToggleComponent,
+    MatButtonToggleModule,
+    DatepickerComponent,
+    MatLegacyInputModule,
+    MatDatepickerModule,
+    VitamUIDurationInputComponent,
+    TranslateModule,
+    EditableInputComponent,
+    EditableEmailInputComponent,
+    MultipleEmailInputComponent,
+    EditableSelectComponent,
+    EditableOptionComponent,
+    VitamUIInputErrorComponent,
+    EditableTextareaComponent,
+    VitamUITextareaComponent,
+    EditableLevelInputComponent,
+    EditableToggleGroupComponent,
+    EditableButtonToggleComponent,
+    EditableDurationInputComponent,
+    EditableFileComponent,
+  ],
 })
 export class InputsComponent implements OnInit, OnDestroy {
   public control = new FormControl();

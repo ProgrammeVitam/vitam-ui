@@ -45,21 +45,43 @@ import {
   Group,
   Profile,
   Role,
+  CommonProgressBarComponent,
+  SlideToggleComponent,
+  VitamUICommonInputComponent,
+  LevelInputComponent,
+  RoleToggleComponent,
+  VitamUIInputErrorComponent,
+  RoleComponent,
 } from 'vitamui-library';
 
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
 
 import { CustomerService } from '../../core/customer.service';
 import { ProfileService } from '../profile.service';
 import { ProfileValidators } from '../profile.validators';
+import { TranslateModule } from '@ngx-translate/core';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-profile-create',
   templateUrl: './profile-create.component.html',
   styleUrls: ['./profile-create.component.scss'],
   animations: [collapseAnimation],
+  standalone: true,
+  imports: [
+    CommonProgressBarComponent,
+    ReactiveFormsModule,
+    SlideToggleComponent,
+    NgIf,
+    VitamUICommonInputComponent,
+    LevelInputComponent,
+    RoleToggleComponent,
+    TranslateModule,
+    VitamUIInputErrorComponent,
+    RoleComponent,
+  ],
 })
 export class ProfileCreateComponent implements OnInit, OnDestroy {
   adminProfileForm: FormGroup;

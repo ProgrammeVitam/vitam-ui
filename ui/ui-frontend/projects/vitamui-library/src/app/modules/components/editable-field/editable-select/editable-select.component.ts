@@ -35,12 +35,20 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, ContentChildren, ElementRef, forwardRef, Input, QueryList, TemplateRef, ViewChild } from '@angular/core';
-import { NG_VALUE_ACCESSOR } from '@angular/forms';
+import { FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { MatLegacyDialog as MatDialog, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
 import { filter } from 'rxjs/operators';
 
 import { EditableFieldComponent } from '../editable-field.component';
 import { EditableOptionComponent } from './editable-option.component';
+import { TranslateModule } from '@ngx-translate/core';
+import { ConfirmDialogComponent } from '../../confirm-dialog/confirm-dialog.component';
+import { MatLegacyProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
+import { MatLegacyOptionModule } from '@angular/material/legacy-core';
+import { MatLegacySelectModule } from '@angular/material/legacy-select';
+import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
+import { CdkConnectedOverlay, CdkOverlayOrigin } from '@angular/cdk/overlay';
+import { NgFor, NgIf } from '@angular/common';
 
 export const EDITABLE_SELECT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -53,6 +61,21 @@ export const EDITABLE_SELECT_VALUE_ACCESSOR: any = {
   templateUrl: './editable-select.component.html',
   styleUrls: ['./editable-select.component.scss'],
   providers: [EDITABLE_SELECT_VALUE_ACCESSOR],
+  standalone: true,
+  imports: [
+    NgIf,
+    CdkOverlayOrigin,
+    MatLegacyFormFieldModule,
+    MatLegacySelectModule,
+    FormsModule,
+    ReactiveFormsModule,
+    NgFor,
+    MatLegacyOptionModule,
+    MatLegacyProgressSpinnerModule,
+    CdkConnectedOverlay,
+    ConfirmDialogComponent,
+    TranslateModule,
+  ],
 })
 export class EditableSelectComponent extends EditableFieldComponent {
   @ContentChildren(EditableOptionComponent) options: QueryList<EditableOptionComponent>;

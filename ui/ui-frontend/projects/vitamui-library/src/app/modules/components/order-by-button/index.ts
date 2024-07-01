@@ -35,4 +35,3 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 export * from './order-by-button.component';
-export * from './order-by-button.module';

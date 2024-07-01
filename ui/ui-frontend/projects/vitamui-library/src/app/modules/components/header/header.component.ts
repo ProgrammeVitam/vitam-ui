@@ -1,9 +1,9 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { SafeResourceUrl, SafeUrl } from '@angular/platform-browser';
-import { ActivatedRoute, Router } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
-import { Observable, Subject, Subscription, forkJoin, zip } from 'rxjs';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { forkJoin, Observable, Subject, Subscription, zip } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
 import { ApplicationService } from '../../application.service';
 import { AuthService } from '../../auth.service';
@@ -21,6 +21,15 @@ import { SubrogationService } from './../../subrogation/subrogation.service';
 import { TENANT_SELECTION_URL_CONDITION, TenantSelectionService } from './../../tenant-selection.service';
 import { MenuOverlayService } from './menu/menu-overlay.service';
 import { SelectTenantDialogComponent } from './select-tenant-dialog/select-tenant-dialog.component';
+import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { UserPhotoComponent } from './user-photo/user-photo.component';
+import { MatLegacyMenuModule } from '@angular/material/legacy-menu';
+import { ItemSelectComponent } from './item-select/item-select.component';
+import { SelectLanguageComponent } from './select-language/select-language.component';
+import { SelectSiteComponent } from './select-site/select-site.component';
+import { UserAlertsMenuComponent } from '../user-alerts/user-alerts-menu/user-alerts-menu.component';
+import { NgIf } from '@angular/common';
+import { MatToolbarModule } from '@angular/material/toolbar';
 
 const MAX_ALERTS_TO_DISPLAY = 3;
 
@@ -28,6 +37,20 @@ const MAX_ALERTS_TO_DISPLAY = 3;
   selector: 'vitamui-common-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
+  standalone: true,
+  imports: [
+    MatToolbarModule,
+    NgIf,
+    UserAlertsMenuComponent,
+    SelectSiteComponent,
+    SelectLanguageComponent,
+    ItemSelectComponent,
+    MatLegacyMenuModule,
+    UserPhotoComponent,
+    RouterLink,
+    MatLegacyButtonModule,
+    TranslateModule,
+  ],
 })
 export class HeaderComponent implements OnInit, OnDestroy {
   @Input() hasLangSelection = false;

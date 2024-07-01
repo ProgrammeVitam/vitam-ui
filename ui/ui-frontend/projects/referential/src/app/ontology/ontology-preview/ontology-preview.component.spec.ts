@@ -48,7 +48,7 @@ xdescribe('OntologyPreviewComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [OntologyPreviewComponent],
+      imports: [OntologyPreviewComponent],
       providers: [
         { provide: MatDialog, useValue: {} },
         { provide: OntologyService, useValue: {} },

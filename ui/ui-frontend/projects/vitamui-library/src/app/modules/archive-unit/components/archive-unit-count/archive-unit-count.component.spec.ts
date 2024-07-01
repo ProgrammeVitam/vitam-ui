@@ -48,7 +48,6 @@ describe('ArchiveUnitCountComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ArchiveUnitCountComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       imports: [
         LoggerModule.forRoot(),
@@ -66,6 +65,7 @@ describe('ArchiveUnitCountComponent', () => {
         MatTooltipModule,
         MatProgressSpinnerModule,
         LoggerModule.forRoot(),
+        ArchiveUnitCountComponent,
       ],
     }).compileComponents();
   });

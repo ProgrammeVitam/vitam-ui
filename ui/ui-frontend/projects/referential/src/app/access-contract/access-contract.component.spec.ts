@@ -50,14 +50,24 @@ import { of } from 'rxjs';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
 
-@Component({ selector: 'app-access-contract-preview', template: '' })
+@Component({
+  selector: 'app-access-contract-preview',
+  template: '',
+  standalone: true,
+  imports: [VitamUICommonTestModule, RouterTestingModule, InjectorModule, MatSidenavModule, MatSnackBarModule, MatDialogModule],
+})
 // eslint-disable-next-line @angular-eslint/component-class-suffix
 class AccessContractPreviewStub {
   @Input()
   accessContract: any;
 }
 
-@Component({ selector: 'app-access-contract-list', template: '' })
+@Component({
+  selector: 'app-access-contract-list',
+  template: '',
+  standalone: true,
+  imports: [VitamUICommonTestModule, RouterTestingModule, InjectorModule, MatSidenavModule, MatSnackBarModule, MatDialogModule],
+})
 // eslint-disable-next-line @angular-eslint/component-class-suffix
 class AccessContractListStub {}
 
@@ -75,7 +85,6 @@ describe('AccessContractComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [AccessContractComponent, AccessContractListStub, AccessContractPreviewStub],
       imports: [
         VitamUICommonTestModule,
         RouterTestingModule,
@@ -86,6 +95,9 @@ describe('AccessContractComponent', () => {
         MatSidenavModule,
         MatSnackBarModule,
         MatDialogModule,
+        AccessContractComponent,
+        AccessContractListStub,
+        AccessContractPreviewStub,
       ],
       providers: [
         { provide: AccessContractService, useValue: accessContractServiceMock },

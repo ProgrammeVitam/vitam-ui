@@ -1,17 +1,49 @@
 import { AfterViewInit, Component, Input, OnChanges, OnDestroy, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
-import { MatLegacyDialog as MatDialog, MatLegacyDialogConfig as MatDialogConfig } from '@angular/material/legacy-dialog';
-import { Subscription, of } from 'rxjs';
+import {
+  MatLegacyDialog as MatDialog,
+  MatLegacyDialogConfig as MatDialogConfig,
+  MatLegacyDialogModule,
+} from '@angular/material/legacy-dialog';
+import { of, Subscription } from 'rxjs';
 import { filter, switchMap } from 'rxjs/operators';
 import { FavoriteEntryService } from '../../../object-viewer/services/favorite-entry.service';
 import { LayoutService } from '../../../object-viewer/services/layout.service';
 import { TypeService } from '../../../object-viewer/services/type.service';
 import { DisplayObjectType } from '../../../object-viewer/types';
 import { Action, EditObject } from '../../models/edit-object.model';
+import { AppendStarPipe } from '../../required.pipe';
+import { EmptyPipe } from '../../../pipes/empty.pipe';
+import { TranslateModule } from '@ngx-translate/core';
+import { PrimitiveEditorComponent } from '../primitive-editor/primitive-editor.component';
+import { ListEditorComponent } from '../list-editor/list-editor.component';
+import { ObjectEditorModule } from '../../object-editor.module';
+import { MatLegacyMenuModule } from '@angular/material/legacy-menu';
+import { VitamuiMenuButtonComponent } from '../../../components/vitamui-menu-button/vitamui-menu-button.component';
+import { AccordionComponent } from '../../../components/accordion/accordion.component';
+import { NgFor, NgIf, NgSwitch, NgSwitchCase, NgTemplateOutlet } from '@angular/common';
 
 @Component({
   selector: 'vitamui-common-group-editor',
   templateUrl: './group-editor.component.html',
   styleUrls: ['./group-editor.component.scss'],
+  standalone: true,
+  imports: [
+    NgIf,
+    AccordionComponent,
+    VitamuiMenuButtonComponent,
+    NgFor,
+    MatLegacyMenuModule,
+    NgTemplateOutlet,
+    NgSwitch,
+    NgSwitchCase,
+    ObjectEditorModule,
+    ListEditorComponent,
+    PrimitiveEditorComponent,
+    MatLegacyDialogModule,
+    TranslateModule,
+    EmptyPipe,
+    AppendStarPipe,
+  ],
 })
 export class GroupEditorComponent implements OnChanges, AfterViewInit, OnDestroy {
   @Input() editObject: EditObject;

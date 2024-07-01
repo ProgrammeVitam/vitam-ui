@@ -44,6 +44,7 @@ import { collapseAnimation, rotate90Animation } from '../../animations/vitamui-c
   styleUrls: ['./collapse.component.scss'],
   exportAs: 'vitamuiCommonCollapse',
   animations: [collapseAnimation, rotate90Animation],
+  standalone: true,
 })
 export class CollapseComponent {
   @HostBinding('class.collapse-container') classCollapseContainer = true;

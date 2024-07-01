@@ -34,9 +34,9 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { formatDate } from '@angular/common';
+import { formatDate, NgIf, AsyncPipe } from '@angular/common';
 import { Component, EventEmitter, Inject, Input, LOCALE_ID, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { BehaviorSubject, Observable, Subscription, combineLatest, of } from 'rxjs';
 import { catchError, filter, map, switchMap, tap } from 'rxjs/operators';
@@ -49,13 +49,26 @@ import {
   SecurityService,
   VitamuiAutocompleteMultiselectOptions,
   diff,
+  VitamUICommonInputComponent,
+  VitamUIAutocompleteMultiSelectModule,
 } from 'vitamui-library';
 import { FileFormatService } from '../../file-format.service';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-file-format-information-tab',
   templateUrl: './file-format-information-tab.component.html',
   styleUrls: ['./file-format-information-tab.component.scss'],
+  standalone: true,
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    VitamUICommonInputComponent,
+    NgIf,
+    VitamUIAutocompleteMultiSelectModule,
+    AsyncPipe,
+    TranslateModule,
+  ],
 })
 export class FileFormatInformationTabComponent {
   private _dateFormat = 'dd/MM/yyyy';

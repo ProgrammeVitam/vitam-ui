@@ -40,11 +40,15 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { GlobalEventService } from '../../global-event.service';
 import { MenuOption } from '../navbar/customer-menu/menu-option.interface';
+import { TranslateModule } from '@ngx-translate/core';
+import { CustomerSelectContentComponent } from '../customer-select-content/customer-select-content.component';
 
 @Component({
   selector: 'vitamui-common-customer-select',
   templateUrl: './vitamui-customer-select.component.html',
   styleUrls: ['./vitamui-customer-select.component.scss'],
+  standalone: true,
+  imports: [CustomerSelectContentComponent, TranslateModule],
 })
 export class VitamUICustomerSelectComponent implements OnInit, OnDestroy {
   public customers: MenuOption[];

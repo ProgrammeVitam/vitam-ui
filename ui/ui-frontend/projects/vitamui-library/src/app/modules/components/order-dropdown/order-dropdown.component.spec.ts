@@ -45,8 +45,7 @@ describe('OrderDropdownComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [OverlayModule],
-      declarations: [OrderDropdownComponent],
+      imports: [OverlayModule, OrderDropdownComponent],
     }).compileComponents();
   });
 

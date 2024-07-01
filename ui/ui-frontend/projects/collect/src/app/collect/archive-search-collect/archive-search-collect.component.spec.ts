@@ -88,7 +88,6 @@ describe('ArchiveSearchCollectComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ArchiveSearchCollectComponent],
       imports: [
         InjectorModule,
         MatSidenavModule,
@@ -100,6 +99,7 @@ describe('ArchiveSearchCollectComponent', () => {
         TranslateModule.forRoot({
           loader: { provide: TranslateLoader, useClass: FakeLoader },
         }),
+        ArchiveSearchCollectComponent,
       ],
       providers: [
         ArchiveSharedDataService,

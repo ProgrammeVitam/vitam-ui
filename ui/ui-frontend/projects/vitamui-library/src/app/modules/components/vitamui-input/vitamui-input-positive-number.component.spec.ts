@@ -45,6 +45,8 @@ import { VitamUIInputPositiveNumberComponent } from './vitamui-input-positive-nu
 
 @Component({
   template: ` <vitamui-common-input-positive-number [(ngModel)]="value" #input="ngModel"></vitamui-common-input-positive-number> `,
+  standalone: true,
+  imports: [FormsModule, MatProgressSpinnerModule],
 })
 class TesthostComponent {
   @ViewChild(VitamUIInputPositiveNumberComponent) VitamUIInputPositiveNumberComponent: VitamUIInputPositiveNumberComponent;
@@ -59,8 +61,7 @@ let fixture: ComponentFixture<TesthostComponent>;
 describe('VitamUIInputPositiveNumberComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FormsModule, NoopAnimationsModule, MatProgressSpinnerModule],
-      declarations: [VitamUIInputPositiveNumberComponent, TesthostComponent],
+      imports: [FormsModule, NoopAnimationsModule, MatProgressSpinnerModule, VitamUIInputPositiveNumberComponent, TesthostComponent],
     }).compileComponents();
   });
 

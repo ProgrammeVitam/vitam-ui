@@ -35,21 +35,57 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatLegacyDialog as MatDialog, MatLegacyDialogConfig as MatDialogConfig } from '@angular/material/legacy-dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AdminUserProfile, Direction, GlobalEventService, SearchBarComponent, SidenavPage } from 'vitamui-library';
+import {
+  AdminUserProfile,
+  Direction,
+  GlobalEventService,
+  SearchBarComponent,
+  SidenavPage,
+  VitamuiTitleBreadcrumbComponent,
+  VitamuiCommonBannerComponent,
+  VitamuiMenuButtonComponent,
+  PipesModule,
+} from 'vitamui-library';
 import { IngestList } from '../core/common/ingest-list';
 import { IngestType } from '../core/common/ingest-type.enum';
 import { UploadComponent } from '../core/common/upload.component';
 import { UploadService } from '../core/common/upload.service';
 import { LogbookOperation } from '../models/logbook-event.interface';
 import { IngestListComponent } from './ingest-list/ingest-list.component';
+import { TranslateModule } from '@ngx-translate/core';
+import { UploadTrackingComponent } from '../shared/upload-tracking/upload-tracking.component';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatLegacyMenuModule } from '@angular/material/legacy-menu';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { IngestPreviewComponent } from './ingest-preview/ingest-preview.component';
+import { NgIf, NgStyle } from '@angular/common';
+import { MatSidenavModule } from '@angular/material/sidenav';
 
 @Component({
   selector: 'app-ingest',
   templateUrl: './ingest.component.html',
   styleUrls: ['./ingest.component.scss'],
+  standalone: true,
+  imports: [
+    MatSidenavModule,
+    NgIf,
+    IngestPreviewComponent,
+    VitamuiTitleBreadcrumbComponent,
+    VitamuiCommonBannerComponent,
+    MatLegacyTooltipModule,
+    NgStyle,
+    VitamuiMenuButtonComponent,
+    MatLegacyMenuModule,
+    ReactiveFormsModule,
+    MatDatepickerModule,
+    UploadTrackingComponent,
+    IngestListComponent,
+    PipesModule,
+    TranslateModule,
+  ],
 })
 export class IngestComponent extends SidenavPage<any> implements OnInit {
   IngestType = IngestType;

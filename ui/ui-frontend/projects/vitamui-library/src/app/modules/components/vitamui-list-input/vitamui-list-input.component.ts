@@ -38,9 +38,21 @@
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { ENTER } from '@angular/cdk/keycodes';
 import { AfterContentInit, Component, ContentChildren, forwardRef, Input, QueryList } from '@angular/core';
-import { AsyncValidatorFn, ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR, ValidatorFn, Validators } from '@angular/forms';
+import {
+  AsyncValidatorFn,
+  ControlValueAccessor,
+  FormControl,
+  FormsModule,
+  NG_VALUE_ACCESSOR,
+  ReactiveFormsModule,
+  ValidatorFn,
+  Validators,
+} from '@angular/forms';
 
 import { VitamUIFieldErrorComponent } from '../vitamui-field-error/vitamui-field-error.component';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatLegacyProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
+import { NgFor, NgIf } from '@angular/common';
 
 export const LIST_INPUT_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -53,6 +65,8 @@ export const LIST_INPUT_ACCESSOR: any = {
   templateUrl: './vitamui-list-input.component.html',
   styleUrls: ['./vitamui-list-input.component.scss'],
   providers: [LIST_INPUT_ACCESSOR],
+  standalone: true,
+  imports: [FormsModule, ReactiveFormsModule, NgIf, MatLegacyProgressSpinnerModule, NgFor, TranslateModule],
 })
 export class VitamUIListInputComponent implements AfterContentInit, ControlValueAccessor {
   @Input() placeholder: string;

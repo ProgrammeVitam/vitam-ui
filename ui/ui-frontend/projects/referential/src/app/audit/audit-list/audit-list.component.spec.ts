@@ -37,7 +37,7 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
-import { Event, TableFilterModule } from 'vitamui-library';
+import { Event, TableFilterComponent } from 'vitamui-library';
 import { AuditService } from '../audit.service';
 import { AuditListComponent } from './audit-list.component';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
@@ -52,8 +52,7 @@ describe('AuditListComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      declarations: [AuditListComponent],
-      imports: [VitamUICommonTestModule, TableFilterModule],
+      imports: [VitamUICommonTestModule, TableFilterComponent, AuditListComponent],
       providers: [{ provide: AuditService, useValue: auditServiceMock }],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();

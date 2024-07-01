@@ -26,17 +26,22 @@
  */
 
 import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Observable, Subscription, of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
 import { extend, isEmpty } from 'underscore';
-import { ManagementContract, StorageStrategy, diff } from 'vitamui-library';
+import { ManagementContract, StorageStrategy, diff, VitamUICommonInputComponent } from 'vitamui-library';
 import { ManagementContractService } from '../../management-contract.service';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatLegacyProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-management-contract-storage-tab',
   templateUrl: './management-contract-storage-tab.component.html',
   styleUrls: ['./management-contract-storage-tab.component.scss'],
+  standalone: true,
+  imports: [FormsModule, ReactiveFormsModule, VitamUICommonInputComponent, NgIf, MatLegacyProgressSpinnerModule, TranslateModule],
 })
 export class ManagementContractStorageTabComponent implements OnDestroy {
   @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();

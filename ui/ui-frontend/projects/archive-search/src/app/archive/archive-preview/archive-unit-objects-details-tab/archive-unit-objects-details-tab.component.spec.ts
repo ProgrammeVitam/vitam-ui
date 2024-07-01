@@ -44,8 +44,7 @@ describe('ArchiveUnitObjectsDetailsTabComponent tests', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
-      declarations: [ArchiveUnitObjectsDetailsTabComponent],
+      imports: [TranslateModule.forRoot(), ArchiveUnitObjectsDetailsTabComponent],
       providers: [
         { provide: ArchiveService, useValue: archiveServiceSpy },
         { provide: Clipboard, useValue: clipboardSpy },

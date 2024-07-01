@@ -26,7 +26,7 @@
  */
 
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
-import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
 import { Subscription } from 'rxjs';
 import * as uuid from 'uuid';
@@ -36,11 +36,25 @@ import {
   ManagementContract,
   PersistentIdentifierPolicy,
   PersistentIdentifierPolicyTypeEnum,
+  CommonProgressBarComponent,
+  StepperComponent,
+  SlideToggleComponent,
+  VitamUICommonInputComponent,
+  VitamUIInputErrorComponent,
+  VitamUITextareaComponent,
 } from 'vitamui-library';
 import { FormGroupToManagementContractConverterService } from '../components/form-group-to-management-contract-converter.service';
 import { ManagementContractToFormGroupConverterService } from '../components/management-contract-to-form-group-converter.service';
 import { ManagementContractService } from '../management-contract.service';
 import { ManagementContractCreateValidators } from '../validators/management-contract-create.validators';
+import { TranslateModule } from '@ngx-translate/core';
+import { CreatePersistentIdentifierPolicyFormComponent } from '../components/create-persistent-identifier-policy-form/create-persistent-identifier-policy-form.component';
+import { MatLegacyOptionModule } from '@angular/material/legacy-core';
+import { MatLegacySelectModule } from '@angular/material/legacy-select';
+import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { NgIf, NgFor } from '@angular/common';
+import { CdkStepperModule } from '@angular/cdk/stepper';
 
 const PROGRESS_BAR_MULTIPLICATOR = 100;
 
@@ -53,6 +67,26 @@ interface PersistentIdentifierPolicyTypeOption {
   selector: 'app-management-contract-create',
   templateUrl: './management-contract-create.component.html',
   styleUrls: ['./management-contract-create.component.scss'],
+  standalone: true,
+  imports: [
+    CommonProgressBarComponent,
+    FormsModule,
+    ReactiveFormsModule,
+    StepperComponent,
+    CdkStepperModule,
+    SlideToggleComponent,
+    NgIf,
+    VitamUICommonInputComponent,
+    MatLegacyTooltipModule,
+    MatLegacyFormFieldModule,
+    MatLegacySelectModule,
+    NgFor,
+    MatLegacyOptionModule,
+    CreatePersistentIdentifierPolicyFormComponent,
+    TranslateModule,
+    VitamUIInputErrorComponent,
+    VitamUITextareaComponent,
+  ],
 })
 export class ManagementContractCreateComponent implements OnInit, OnDestroy {
   constructor(

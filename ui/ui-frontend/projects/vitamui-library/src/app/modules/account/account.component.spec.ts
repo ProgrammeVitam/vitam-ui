@@ -52,7 +52,12 @@ import { ENVIRONMENT } from './../injection-tokens';
 import { AccountComponent } from './account.component';
 import { AccountService } from './account.service';
 
-@Component({ selector: 'vitamui-common-account-information-tab', template: '' })
+@Component({
+  selector: 'vitamui-common-account-information-tab',
+  template: '',
+  standalone: true,
+  imports: [InjectorModule, MatTabsModule, VitamUICommonTestModule],
+})
 class InformationTabStubComponent {
   @Input() account: Account;
 }
@@ -71,8 +76,16 @@ describe('AccountComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [InjectorModule, MatTabsModule, NoopAnimationsModule, LoggerModule.forRoot(), VitamUICommonTestModule],
-      declarations: [AccountComponent, InformationTabStubComponent, NavbarStubComponent],
+      imports: [
+        InjectorModule,
+        MatTabsModule,
+        NoopAnimationsModule,
+        LoggerModule.forRoot(),
+        VitamUICommonTestModule,
+        AccountComponent,
+        InformationTabStubComponent,
+        NavbarStubComponent,
+      ],
       providers: [
         { provide: TranslateService, useValue: { instant: () => EMPTY } },
         { provide: AccountService, useValue: accountServiceSpy },

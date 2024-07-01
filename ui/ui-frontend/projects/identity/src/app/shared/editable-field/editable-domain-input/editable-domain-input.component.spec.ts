@@ -55,6 +55,8 @@ import { EditableDomainInputComponent } from './editable-domain-input.component'
       multi: true,
     },
   ],
+  standalone: true,
+  imports: [OverlayModule, FormsModule, ReactiveFormsModule, MatProgressSpinnerModule, VitamUICommonTestModule],
 })
 class DomainInputStubComponent implements ControlValueAccessor {
   @Input() placeholder: string;
@@ -71,6 +73,8 @@ class DomainInputStubComponent implements ControlValueAccessor {
   template: `
     <app-editable-domain-input [(ngModel)]="value" [label]="label" [(defaultDomain)]="defaultValue"></app-editable-domain-input>
   `,
+  standalone: true,
+  imports: [OverlayModule, FormsModule, ReactiveFormsModule, MatProgressSpinnerModule, VitamUICommonTestModule],
 })
 class TesthostComponent {
   value: string[];
@@ -92,8 +96,16 @@ describe('EditableDomainInputComponent', () => {
     });
 
     await TestBed.configureTestingModule({
-      imports: [OverlayModule, FormsModule, ReactiveFormsModule, MatProgressSpinnerModule, VitamUICommonTestModule],
-      declarations: [TesthostComponent, EditableDomainInputComponent, DomainInputStubComponent],
+      imports: [
+        OverlayModule,
+        FormsModule,
+        ReactiveFormsModule,
+        MatProgressSpinnerModule,
+        VitamUICommonTestModule,
+        TesthostComponent,
+        EditableDomainInputComponent,
+        DomainInputStubComponent,
+      ],
       providers: [{ provide: CustomerCreateValidators, useValue: customerCreateValidatorsSpy }],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();

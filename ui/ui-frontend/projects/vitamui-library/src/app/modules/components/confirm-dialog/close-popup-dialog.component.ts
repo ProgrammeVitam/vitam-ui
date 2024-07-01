@@ -37,11 +37,15 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA } from '@angular/material/legacy-dialog';
 import { DialogInputData } from './dialog-input-data.interface';
+import { TranslateModule } from '@ngx-translate/core';
+import { ConfirmDialogComponent } from './confirm-dialog.component';
 
 @Component({
   selector: 'vitamui-common-close-popup-dialog',
   templateUrl: './close-popup-dialog.component.html',
   styleUrls: ['./close-popup-dialog.component.scss'],
+  standalone: true,
+  imports: [ConfirmDialogComponent, TranslateModule],
 })
 export class ClosePopupDialogComponent {
   constructor(

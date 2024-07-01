@@ -62,15 +62,13 @@ import { PhysicalArchiveViewerComponent } from './components/physical-archive-vi
     MatProgressSpinnerModule,
     ObjectViewerModule,
     ObjectEditorModule,
-  ],
-  providers: [ArchiveUnitEditorService],
-  declarations: [
     PhysicalArchiveViewerComponent,
     ArchiveUnitCountComponent,
     ArchiveUnitViewerComponent,
     ArchiveUnitEditorComponent,
     EditorBannerComponent,
   ],
+  providers: [ArchiveUnitEditorService],
   exports: [
     PhysicalArchiveViewerComponent,
     ArchiveUnitCountComponent,

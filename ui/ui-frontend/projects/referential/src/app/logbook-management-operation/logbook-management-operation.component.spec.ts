@@ -50,8 +50,13 @@ describe('LogbookManagementOperationComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, InjectorModule, TranslateModule.forRoot(), LoggerModule.forRoot()],
-      declarations: [LogbookManagementOperationComponent],
+      imports: [
+        ReactiveFormsModule,
+        InjectorModule,
+        TranslateModule.forRoot(),
+        LoggerModule.forRoot(),
+        LogbookManagementOperationComponent,
+      ],
       providers: [
         {
           provide: ActivatedRoute,

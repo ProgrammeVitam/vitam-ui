@@ -35,4 +35,3 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 export { EmailsInputComponent } from './emails-input.component';
-export { EmailsInputModule } from './emails-input.module';

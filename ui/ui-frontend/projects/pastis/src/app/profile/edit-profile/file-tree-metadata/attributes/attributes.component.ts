@@ -36,9 +36,9 @@ The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
-import { MatLegacyCheckboxChange as MatCheckboxChange } from '@angular/material/legacy-checkbox';
+import { MatLegacyCheckboxChange as MatCheckboxChange, MatLegacyCheckboxModule } from '@angular/material/legacy-checkbox';
 import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
-import { MatLegacyTableDataSource as MatTableDataSource } from '@angular/material/legacy-table';
+import { MatLegacyTableDataSource as MatTableDataSource, MatLegacyTableModule } from '@angular/material/legacy-table';
 import { FileService } from 'projects/pastis/src/app/core/services/file.service';
 import { PopupService } from 'projects/pastis/src/app/core/services/popup.service';
 import { SedaService } from 'projects/pastis/src/app/core/services/seda.service';
@@ -49,12 +49,36 @@ import { AttributeData } from '../../../../models/edit-attribute-models';
 import { CardinalityConstants, DataTypeConstants, FileNode, TypeConstants, ValueOrDataConstants } from '../../../../models/file-node';
 import { SedaData } from '../../../../models/seda-data';
 import { FileTreeMetadataService } from '../file-tree-metadata.service';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatLegacyOptionModule } from '@angular/material/legacy-core';
+import { MatLegacySelectModule } from '@angular/material/legacy-select';
+import { EditableFieldComponent } from 'vitamui-library';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { NgStyle, NgClass, NgSwitch, NgSwitchDefault, NgSwitchCase, NgFor } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'pastis-edit-attributes',
   templateUrl: './attributes.component.html',
   styleUrls: ['./attributes.component.scss'],
+  standalone: true,
+  imports: [
+    MatLegacyTableModule,
+    MatLegacyCheckboxModule,
+    FormsModule,
+    NgStyle,
+    NgClass,
+    MatLegacyTooltipModule,
+    NgSwitch,
+    NgSwitchDefault,
+    EditableFieldComponent,
+    NgSwitchCase,
+    MatLegacySelectModule,
+    MatLegacyOptionModule,
+    NgFor,
+    TranslateModule,
+  ],
 })
 export class AttributesPopupComponent implements OnInit, OnDestroy {
   displayedColumns: string[] = ['selected', 'nomDuChamp', 'valeurFixe', 'commentaire'];

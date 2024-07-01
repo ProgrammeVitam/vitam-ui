@@ -43,11 +43,17 @@ import {
   ingestStatus,
   LogbookOperation,
 } from '../../../models/logbook-event.interface';
+import { TranslateModule } from '@ngx-translate/core';
+import { PipesModule } from 'vitamui-library';
+import { IngestEventDetailComponent } from './ingest-event-detail/ingest-event-detail.component';
+import { NgIf, NgSwitch, NgSwitchCase } from '@angular/common';
 
 @Component({
   selector: 'app-ingest-information-tab',
   templateUrl: './ingest-information-tab.component.html',
   styleUrls: ['./ingest-information-tab.component.scss'],
+  standalone: true,
+  imports: [NgIf, NgSwitch, NgSwitchCase, IngestEventDetailComponent, PipesModule, TranslateModule],
 })
 export class IngestInformationTabComponent implements OnChanges {
   @Input() ingest: LogbookOperation;

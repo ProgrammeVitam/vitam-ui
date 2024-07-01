@@ -40,11 +40,16 @@ import { Subscription } from 'rxjs';
 import { Group, Profile } from 'vitamui-library';
 import { GroupService } from '../../group.service';
 import { ProfilesEditComponent } from './profiles-edit/profiles-edit.component';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { NgIf, NgFor, TitleCasePipe } from '@angular/common';
 
 @Component({
   selector: 'app-profiles-tab',
   templateUrl: './profiles-tab.component.html',
   styleUrls: ['./profiles-tab.component.scss'],
+  standalone: true,
+  imports: [NgIf, NgFor, MatLegacyTooltipModule, TitleCasePipe, TranslateModule],
 })
 export class ProfilesTabComponent implements OnInit, OnDestroy {
   @Input() group: Group;

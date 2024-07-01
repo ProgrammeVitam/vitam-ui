@@ -35,13 +35,18 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, forwardRef, Input, OnDestroy, OnInit } from '@angular/core';
-import { ControlValueAccessor, FormBuilder, FormGroup, NG_VALUE_ACCESSOR, Validators } from '@angular/forms';
+import { ControlValueAccessor, FormBuilder, FormGroup, NG_VALUE_ACCESSOR, Validators, ReactiveFormsModule } from '@angular/forms';
 import { merge } from 'rxjs';
 import { distinctUntilChanged, map } from 'rxjs/operators';
-import { CountryOption, CountryService, Customer, StartupService } from 'vitamui-library';
+import { CountryOption, CountryService, Customer, StartupService, VitamUICommonInputComponent } from 'vitamui-library';
 
 import { Owner } from 'vitamui-library';
 import { ALPHA_NUMERIC_REGEX, OWNER_CODE_MAX_LENGTH, OwnerFormValidators } from './owner-form.validators';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatLegacyOptionModule } from '@angular/material/legacy-core';
+import { MatLegacySelectModule } from '@angular/material/legacy-select';
+import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
+import { NgIf, NgFor } from '@angular/common';
 
 export const OWNER_FORM_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -55,6 +60,17 @@ export const OWNER_FORM_VALUE_ACCESSOR: any = {
   templateUrl: './owner-form.component.html',
   styleUrls: ['./owner-form.component.scss'],
   providers: [OWNER_FORM_VALUE_ACCESSOR],
+  standalone: true,
+  imports: [
+    ReactiveFormsModule,
+    VitamUICommonInputComponent,
+    NgIf,
+    MatLegacyFormFieldModule,
+    MatLegacySelectModule,
+    NgFor,
+    MatLegacyOptionModule,
+    TranslateModule,
+  ],
 })
 export class OwnerFormComponent implements ControlValueAccessor, OnDestroy, OnInit {
   public form: FormGroup;

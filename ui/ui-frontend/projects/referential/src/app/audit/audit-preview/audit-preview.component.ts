@@ -35,13 +35,39 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Event, ExternalParameters, ExternalParametersService, VitamUISnackBarService } from 'vitamui-library';
+import {
+  Event,
+  ExternalParameters,
+  ExternalParametersService,
+  VitamUISnackBarService,
+  VitamuiSidenavHeaderComponent,
+  HistoryModule,
+  PipesModule,
+} from 'vitamui-library';
 import { AuditService } from '../audit.service';
+import { TruncatePipe } from '../../../../../vitamui-library/src/app/modules/pipes/truncate.pipe';
+import { EventTypeBadgeClassPipe } from '../../shared/pipes/event-type-badge-class.pipe';
+import { TranslateModule } from '@ngx-translate/core';
+import { SlicePipe } from '@angular/common';
+import { AuditInformationTabComponent } from './audit-information-tab/audit-information-tab.component';
+import { MatLegacyTabsModule } from '@angular/material/legacy-tabs';
 
 @Component({
   selector: 'app-audit-preview',
   templateUrl: './audit-preview.component.html',
   styleUrls: ['./audit-preview.component.scss'],
+  standalone: true,
+  imports: [
+    VitamuiSidenavHeaderComponent,
+    MatLegacyTabsModule,
+    AuditInformationTabComponent,
+    HistoryModule,
+    SlicePipe,
+    PipesModule,
+    TranslateModule,
+    EventTypeBadgeClassPipe,
+    TruncatePipe,
+  ],
 })
 export class AuditPreviewComponent implements OnInit {
   @Input() audit: Event;

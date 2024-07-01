@@ -55,6 +55,8 @@ import { RoleComponent } from './role.component';
       <vitamui-common-role name="ROLE_TEST_3">Role Test 3</vitamui-common-role>
     </vitamui-common-role-toggle>
   `,
+  standalone: true,
+  imports: [FormsModule, HttpClientTestingModule],
 })
 class TesthostComponent {
   roles: any[] = [{ name: 'ROLE_TEST_1' }, { name: 'DEFAULT_ROLE_TEST_1' }, { name: 'DEFAULT_ROLE_TEST_2' }];
@@ -66,9 +68,16 @@ describe('RoleToggleComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FormsModule, HttpClientTestingModule, TranslateModule.forRoot()],
+      imports: [
+        FormsModule,
+        HttpClientTestingModule,
+        TranslateModule.forRoot(),
+        TesthostComponent,
+        RoleToggleComponent,
+        RoleComponent,
+        SlideToggleComponent,
+      ],
       providers: [{ provide: WINDOW_LOCATION, useValue: {} }],
-      declarations: [TesthostComponent, RoleToggleComponent, RoleComponent, SlideToggleComponent],
     }).compileComponents();
   });
 

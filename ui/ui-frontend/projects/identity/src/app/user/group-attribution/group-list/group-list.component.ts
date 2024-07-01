@@ -37,13 +37,18 @@
 
 import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
 import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA } from '@angular/material/legacy-dialog';
-import { collapseAnimation, Profile, rotateAnimation } from 'vitamui-library';
+import { collapseAnimation, Profile, rotateAnimation, SearchBarComponent, CollapseDirective, EllipsisDirective } from 'vitamui-library';
 import { GroupSelection } from './../../group-selection.interface';
+import { TranslateModule } from '@ngx-translate/core';
+import { GroupDetailComponent } from '../group-detail/group-detail.component';
+import { NgIf, NgFor } from '@angular/common';
 @Component({
   selector: 'app-group-list',
   templateUrl: './group-list.component.html',
   styleUrls: ['./group-list.component.scss'],
   animations: [collapseAnimation, rotateAnimation],
+  standalone: true,
+  imports: [SearchBarComponent, NgIf, NgFor, CollapseDirective, EllipsisDirective, GroupDetailComponent, TranslateModule],
 })
 export class GroupListComponent implements OnInit {
   public groupName: string;

@@ -62,6 +62,16 @@ import { ContextCreateValidators } from './context-create.validators';
       multi: true,
     },
   ],
+  standalone: true,
+  imports: [
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatButtonToggleModule,
+    MatProgressBarModule,
+    MatProgressSpinnerModule,
+    VitamUICommonTestModule,
+  ],
 })
 class OwnerFormStubComponent implements ControlValueAccessor {
   @Input() contextInfo: any;
@@ -139,8 +149,9 @@ xdescribe('ContextCreateComponent', () => {
         NoopAnimationsModule,
         MatProgressSpinnerModule,
         VitamUICommonTestModule,
+        ContextCreateComponent,
+        OwnerFormStubComponent,
       ],
-      declarations: [ContextCreateComponent, OwnerFormStubComponent],
       providers: [
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MAT_DIALOG_DATA, useValue: {} },

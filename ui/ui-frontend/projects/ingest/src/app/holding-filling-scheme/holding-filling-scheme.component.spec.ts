@@ -48,14 +48,30 @@ import { MatLegacyMenuModule as MatMenuModule } from '@angular/material/legacy-m
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
-import { InjectorModule, LoggerModule, SearchBarModule } from 'vitamui-library';
+import { InjectorModule, LoggerModule, SearchBarComponent } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { environment } from '../../environments/environment';
 import { IngestType } from '../core/common/ingest-type.enum';
 import { IngestService } from '../ingest/ingest.service';
 import { HoldingFillingSchemeComponent } from './holding-filling-scheme.component';
 
-@Component({ selector: 'app-ingest-list', template: '' })
+@Component({
+  selector: 'app-ingest-list',
+  template: '',
+  standalone: true,
+  imports: [
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatMenuModule,
+    MatSidenavModule,
+    InjectorModule,
+    RouterTestingModule,
+    VitamUICommonTestModule,
+    RouterTestingModule,
+    SearchBarComponent,
+    MatDialogModule,
+  ],
+})
 class IngestListStubComponent {}
 
 describe('HoldingFilingSchemeComponent', () => {
@@ -83,10 +99,11 @@ describe('HoldingFilingSchemeComponent', () => {
         LoggerModule.forRoot(),
         RouterTestingModule,
         NoopAnimationsModule,
-        SearchBarModule,
+        SearchBarComponent,
         MatDialogModule,
+        HoldingFillingSchemeComponent,
+        IngestListStubComponent,
       ],
-      declarations: [HoldingFillingSchemeComponent, IngestListStubComponent],
       providers: [
         FormBuilder,
         { provide: MatDialog, useValue: matDialogSpy },

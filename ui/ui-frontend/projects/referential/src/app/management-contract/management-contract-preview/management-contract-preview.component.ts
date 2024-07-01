@@ -40,18 +40,34 @@ import {
   MatLegacyTab as MatTab,
   MatLegacyTabGroup as MatTabGroup,
   MatLegacyTabHeader as MatTabHeader,
+  MatLegacyTabsModule,
 } from '@angular/material/legacy-tabs';
 import { Subscription } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { ManagementContract } from 'vitamui-library';
+import { ManagementContract, VitamuiSidenavHeaderComponent, VitamuiMenuButtonComponent, HistoryModule, PipesModule } from 'vitamui-library';
 import { ConfirmActionComponent } from 'vitamui-library';
 import { ManagementContractIdentificationTabComponent } from './management-contract-identification-tab/management-contract-identification-tab.component';
 import { ManagementContractInformationTabComponent } from './management-contract-information-tab/management-contract-information-tab.component';
 import { ManagementContractStorageTabComponent } from './management-contract-storage-tab/management-contract-storage-tab.component';
+import { TruncatePipe } from '../../../../../vitamui-library/src/app/modules/pipes/truncate.pipe';
+import { TranslateModule } from '@ngx-translate/core';
 @Component({
   selector: 'app-management-contract-preview',
   templateUrl: './management-contract-preview.component.html',
   styleUrls: ['./management-contract-preview.component.scss'],
+  standalone: true,
+  imports: [
+    VitamuiSidenavHeaderComponent,
+    VitamuiMenuButtonComponent,
+    MatLegacyTabsModule,
+    ManagementContractInformationTabComponent,
+    ManagementContractStorageTabComponent,
+    ManagementContractIdentificationTabComponent,
+    HistoryModule,
+    PipesModule,
+    TranslateModule,
+    TruncatePipe,
+  ],
 })
 export class ManagementContractPreviewComponent implements OnChanges, AfterViewInit {
   @Output() previewClose: EventEmitter<any> = new EventEmitter();

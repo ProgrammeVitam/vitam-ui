@@ -58,8 +58,7 @@ describe('ApplicationMenuComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MatDialogModule, VitamUICommonTestModule, MatMenuModule, MatSidenavModule, NoopAnimationsModule],
-      declarations: [ApplicationMenuComponent],
+      imports: [MatDialogModule, VitamUICommonTestModule, MatMenuModule, MatSidenavModule, NoopAnimationsModule, ApplicationMenuComponent],
       providers: [
         { provide: MatDialog, useValue: matDialogSpy },
         { provide: ApplicationService, useValue: applicationServiceStub },

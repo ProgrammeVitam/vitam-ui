@@ -35,11 +35,14 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, EventEmitter, HostBinding, HostListener, Input, Output } from '@angular/core';
+import { MatPseudoCheckboxModule } from '@angular/material/core';
 
 @Component({
   selector: 'vitamui-common-table-filter-option',
   templateUrl: './table-filter-option.component.html',
   styleUrls: ['./table-filter-option.component.scss'],
+  standalone: true,
+  imports: [MatPseudoCheckboxModule],
 })
 export class TableFilterOptionComponent {
   @Input() value: any;

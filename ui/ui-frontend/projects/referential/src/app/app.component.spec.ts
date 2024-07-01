@@ -39,15 +39,20 @@ import { TestBed, waitForAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
 
-// eslint-disable-next-line @angular-eslint/component-selector
-@Component({ selector: 'vitamui-common-subrogation-banner', template: '' })
+@Component({
+  // eslint-disable-next-line @angular-eslint/component-selector
+  selector: 'vitamui-common-subrogation-banner',
+  template: '',
+  standalone: true,
+  imports: [RouterTestingModule],
+})
 class SubrogationBannerStubComponent {}
 
 describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule],
-      declarations: [SubrogationBannerStubComponent, AppComponent],
+      imports: [RouterTestingModule, SubrogationBannerStubComponent],
+      declarations: [AppComponent],
     }).compileComponents();
   });
 

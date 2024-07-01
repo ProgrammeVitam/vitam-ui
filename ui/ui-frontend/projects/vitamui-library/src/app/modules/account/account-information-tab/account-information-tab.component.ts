@@ -35,15 +35,20 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { Account } from '../../models/account/account.interface';
 import { AccountService } from '../account.service';
+import { TranslateModule } from '@ngx-translate/core';
+import { NgIf } from '@angular/common';
+import { SlideToggleComponent } from '../../components/slide-toggle/slide-toggle.component';
 
 @Component({
   selector: 'vitamui-common-account-information-tab',
   templateUrl: './account-information-tab.component.html',
   styleUrls: ['./account-information-tab.component.scss'],
+  standalone: true,
+  imports: [FormsModule, ReactiveFormsModule, SlideToggleComponent, NgIf, TranslateModule],
 })
 export class AccountInformationTabComponent implements OnInit {
   public form: FormGroup;

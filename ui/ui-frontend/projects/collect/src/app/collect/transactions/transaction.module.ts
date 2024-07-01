@@ -49,8 +49,16 @@ import { TransactionRoutingModule } from './transaction-routing.module';
 import { TransactionsComponent } from './transactions.component';
 
 @NgModule({
-  imports: [CommonModule, TransactionRoutingModule, MatMenuModule, MatSidenavModule, VitamUICommonModule, MatProgressSpinnerModule],
+  imports: [
+    CommonModule,
+    TransactionRoutingModule,
+    MatMenuModule,
+    MatSidenavModule,
+    VitamUICommonModule,
+    MatProgressSpinnerModule,
+    TransactionsComponent,
+    TransactionListComponent,
+  ],
   providers: [TransactionResolver, { provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: { useUtc: true } }],
-  declarations: [TransactionsComponent, TransactionListComponent],
 })
 export class TransactionModule {}

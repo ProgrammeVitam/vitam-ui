@@ -62,6 +62,16 @@ import { AgencyCreateValidators } from './agency-create.validators';
       multi: true,
     },
   ],
+  standalone: true,
+  imports: [
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatButtonToggleModule,
+    MatProgressBarModule,
+    MatProgressSpinnerModule,
+    VitamUICommonTestModule,
+  ],
 })
 class DomainInputStubComponent implements ControlValueAccessor {
   @Input() placeholder: string;
@@ -115,8 +125,9 @@ describe('AgencyCreateComponent', () => {
         NoopAnimationsModule,
         MatProgressSpinnerModule,
         VitamUICommonTestModule,
+        AgencyCreateComponent,
+        DomainInputStubComponent,
       ],
-      declarations: [AgencyCreateComponent, DomainInputStubComponent],
       providers: [
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MAT_DIALOG_DATA, useValue: {} },

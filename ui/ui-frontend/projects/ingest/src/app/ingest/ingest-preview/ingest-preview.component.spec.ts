@@ -10,7 +10,10 @@ import { LogbookOperation } from '../../models/logbook-event.interface';
 import { IngestService } from '../ingest.service';
 import { IngestPreviewComponent } from './ingest-preview.component';
 
-@Pipe({ name: 'truncate' })
+@Pipe({
+  name: 'truncate',
+  standalone: true,
+})
 class MockTruncatePipe implements PipeTransform {
   transform(value: string): string {
     return value;
@@ -24,8 +27,7 @@ describe('IngestPreviewComponent test:', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [IngestPreviewComponent, MockTruncatePipe],
-      imports: [HttpClientTestingModule, MatMenuModule, TranslateModule.forRoot()],
+      imports: [HttpClientTestingModule, MatMenuModule, TranslateModule.forRoot(), IngestPreviewComponent, MockTruncatePipe],
       providers: [
         { provide: LogbookService, useValue: {} },
         {

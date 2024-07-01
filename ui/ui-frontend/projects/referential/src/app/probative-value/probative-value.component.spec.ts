@@ -68,8 +68,8 @@ describe('ProbativeValueComponent', () => {
         InjectorModule,
         MatSidenavModule,
         LoggerModule.forRoot(),
+        ProbativeValueComponent,
       ],
-      declarations: [ProbativeValueComponent],
       providers: [
         FormBuilder,
         { provide: MatDialog, useValue: {} },

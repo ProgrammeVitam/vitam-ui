@@ -43,11 +43,15 @@ import { ApplicationService } from '../../../application.service';
 import { Application } from '../../../models';
 import { CommonMenuComponent } from '../common-menu/common-menu.component';
 import { MenuType } from '../menu-type.enum';
+import { TranslateModule } from '@ngx-translate/core';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'vitamui-common-application-menu',
   templateUrl: './application-menu.component.html',
   styleUrls: ['./application-menu.component.scss'],
+  standalone: true,
+  imports: [NgIf, TranslateModule],
 })
 export class ApplicationMenuComponent implements OnInit, OnDestroy {
   @Input() appId: ApplicationId;

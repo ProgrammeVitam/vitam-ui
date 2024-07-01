@@ -34,13 +34,13 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { VitamUIFieldErrorModule } from './vitamui-field-error.module';
+import { VitamUIFieldErrorComponent } from './vitamui-field-error.module';
 
-describe('VitamUIFieldErrorModule', () => {
-  let vitamuiFieldErrorModule: VitamUIFieldErrorModule;
+describe('VitamUIFieldErrorComponent', () => {
+  let vitamuiFieldErrorModule: VitamUIFieldErrorComponent;
 
   beforeEach(() => {
-    vitamuiFieldErrorModule = new VitamUIFieldErrorModule();
+    vitamuiFieldErrorModule = new VitamUIFieldErrorComponent();
   });
 
   it('should create an instance', () => {

@@ -30,7 +30,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatLegacyDialog as MatDialog, MatLegacyDialogConfig as MatDialogConfig } from '@angular/material/legacy-dialog';
 import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
 import { ActivatedRoute } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import { BehaviorSubject, Observable, Subject, Subscription, merge } from 'rxjs';
 import { debounceTime, map, mergeMap, tap } from 'rxjs/operators';
 import { isEmpty } from 'underscore';
@@ -60,6 +60,13 @@ import {
   TransactionStatus,
   Unit,
   UnitType,
+  ResizeSidebarDirective,
+  VitamuiTitleBreadcrumbComponent,
+  VitamuiMenuButtonComponent,
+  InfiniteScrollDirective,
+  ArchiveUnitModule,
+  OrderByButtonComponent,
+  PipesModule,
 } from 'vitamui-library';
 import { ArchiveCollectService } from './archive-collect.service';
 import { SearchCriteriaSaverComponent } from './archive-search-criteria/components/search-criteria-saver/search-criteria-saver.component';
@@ -67,6 +74,24 @@ import { ArchiveFacetsService } from './archive-search-criteria/services/archive
 import { ArchiveSearchHelperService } from './archive-search-criteria/services/archive-search-helper.service';
 import { ArchiveSharedDataService } from './archive-search-criteria/services/archive-shared-data.service';
 import { UpdateUnitsaMetadataComponent } from './update-units-metadata/update-units-metadata.component';
+import { DisseminationRuleSearchComponent } from './archive-search-criteria/components/dissemination-rule-search/dissemination-rule-search.component';
+import { ReuseRuleSearchComponent } from './archive-search-criteria/components/reuse-rule-search/reuse-rule-search.component';
+import { AccessRuleSearchComponent } from './archive-search-criteria/components/access-rule-search/access-rule-search.component';
+import { AppraisalRuleSearchComponent } from './archive-search-criteria/components/appraisal-rule-search/appraisal-rule-search.component';
+import { StorageRuleSearchComponent } from './archive-search-criteria/components/storage-rule-search/storage-rule-search.component';
+import { SimpleCriteriaSearchComponent } from './archive-search-criteria/components/simple-criteria-search/simple-criteria-search.component';
+import { MatLegacyTabsModule } from '@angular/material/legacy-tabs';
+import { ArchiveSearchRulesFacetsComponent } from './archive-search-criteria/components/archive-search-rules-facets/archive-search-rules-facets.component';
+import { MatLegacyProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
+import { SearchCriteriaListComponent } from './archive-search-criteria/components/search-criteria-list/search-criteria-list.component';
+import { CriteriaSearchComponent } from './archive-search-criteria/components/criteria-search/criteria-search.component';
+import { MatLegacyMenuModule } from '@angular/material/legacy-menu';
+import { TitleAndDescriptionCriteriaSearchCollectComponent } from './archive-search-criteria/components/title-and-description-criteria-search-collect/title-and-description-criteria-search-collect.component';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { ArchivePreviewComponent } from './archive-preview/archive-preview.component';
+import { FilingHoldingSchemeComponent } from './archive-search-criteria/components/filing-holding-scheme/filing-holding-scheme.component';
+import { NgIf, NgClass, NgFor, NgSwitch, NgSwitchCase, AsyncPipe } from '@angular/common';
+import { MatSidenavModule } from '@angular/material/sidenav';
 
 const PAGE_SIZE = 10;
 const ELIMINATION_TECHNICAL_ID = 'ELIMINATION_TECHNICAL_ID';
@@ -83,6 +108,40 @@ const DYNAMIC_ATTACHEMENT = 'DYNAMIC_ATTACHEMENT_';
   selector: 'app-archive-search-collect',
   templateUrl: './archive-search-collect.component.html',
   styleUrls: ['./archive-search-collect.component.scss'],
+  standalone: true,
+  imports: [
+    MatSidenavModule,
+    NgIf,
+    ResizeSidebarDirective,
+    FilingHoldingSchemeComponent,
+    NgClass,
+    ArchivePreviewComponent,
+    VitamuiTitleBreadcrumbComponent,
+    MatLegacyTooltipModule,
+    TitleAndDescriptionCriteriaSearchCollectComponent,
+    VitamuiMenuButtonComponent,
+    MatLegacyMenuModule,
+    NgFor,
+    CriteriaSearchComponent,
+    SearchCriteriaListComponent,
+    MatLegacyProgressSpinnerModule,
+    ArchiveSearchRulesFacetsComponent,
+    MatLegacyTabsModule,
+    SimpleCriteriaSearchComponent,
+    StorageRuleSearchComponent,
+    AppraisalRuleSearchComponent,
+    AccessRuleSearchComponent,
+    ReuseRuleSearchComponent,
+    DisseminationRuleSearchComponent,
+    InfiniteScrollDirective,
+    ArchiveUnitModule,
+    OrderByButtonComponent,
+    NgSwitch,
+    NgSwitchCase,
+    AsyncPipe,
+    PipesModule,
+    TranslateModule,
+  ],
 })
 export class ArchiveSearchCollectComponent extends SidenavPage<any> implements OnInit, OnDestroy {
   readonly UnitType = UnitType;

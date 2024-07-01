@@ -41,11 +41,15 @@ import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { AccessContract, ExternalParameters, ExternalParametersService, VitamUISnackBarService } from 'vitamui-library';
 import { SearchUnitApiService } from 'vitamui-library';
 import { AccessContractNodeUpdateComponent } from './access-contract-nodes-update/access-contract-node-update.component';
+import { TranslateModule } from '@ngx-translate/core';
+import { NgIf, NgFor } from '@angular/common';
 
 @Component({
   selector: 'app-access-contract-nodes-tab',
   templateUrl: './access-contract-nodes-tab.component.html',
   styleUrls: ['./access-contract-nodes-tab.component.scss'],
+  standalone: true,
+  imports: [NgIf, NgFor, TranslateModule],
 })
 export class AccessContractNodesTabComponent {
   @Input() tenantIdentifier: number;

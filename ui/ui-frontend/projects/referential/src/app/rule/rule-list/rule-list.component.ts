@@ -36,7 +36,7 @@
  */
 import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import { Subject, merge } from 'rxjs';
 import { debounceTime, filter } from 'rxjs/operators';
 import {
@@ -52,8 +52,17 @@ import {
   Rule,
   RuleService,
   VitamUISnackBarService,
+  InfiniteScrollDirective,
+  OrderByButtonComponent,
+  TableFilterComponent,
+  EllipsisDirective,
+  HasRoleDirective,
+  TableFilterDirective,
+  TableFilterOptionComponent,
 } from 'vitamui-library';
 import { RULE_MEASUREMENTS, RULE_TYPES } from '../rules.constants';
+import { MatLegacyProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
+import { NgFor, NgIf } from '@angular/common';
 
 const FILTER_DEBOUNCE_TIME_MS = 400;
 
@@ -61,6 +70,20 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
   selector: 'app-rule-list',
   templateUrl: './rule-list.component.html',
   styleUrls: ['./rule-list.component.scss'],
+  standalone: true,
+  imports: [
+    InfiniteScrollDirective,
+    OrderByButtonComponent,
+    TableFilterComponent,
+    NgFor,
+    EllipsisDirective,
+    NgIf,
+    MatLegacyProgressSpinnerModule,
+    TranslateModule,
+    HasRoleDirective,
+    TableFilterDirective,
+    TableFilterOptionComponent,
+  ],
 })
 export class RuleListComponent extends InfiniteScrollTable<Rule> implements OnDestroy, OnInit {
   // eslint-disable-next-line @angular-eslint/no-input-rename

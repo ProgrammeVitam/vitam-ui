@@ -35,9 +35,13 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, ElementRef, forwardRef } from '@angular/core';
-import { FormBuilder, FormGroup, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import moment from 'moment';
 import { EditableFieldComponent } from '../editable-field.component';
+import { HumanizedDurationPipe } from './humanized-duration.pipe';
+import { MatLegacyProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
+import { CdkConnectedOverlay, CdkOverlayOrigin } from '@angular/cdk/overlay';
+import { NgIf } from '@angular/common';
 
 export const EDITABLE_DURATION_INPUT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -50,6 +54,16 @@ export const EDITABLE_DURATION_INPUT_VALUE_ACCESSOR: any = {
   templateUrl: './editable-duration-input.component.html',
   styleUrls: ['./editable-duration-input.component.scss'],
   providers: [EDITABLE_DURATION_INPUT_VALUE_ACCESSOR],
+  standalone: true,
+  imports: [
+    NgIf,
+    CdkOverlayOrigin,
+    FormsModule,
+    ReactiveFormsModule,
+    MatLegacyProgressSpinnerModule,
+    CdkConnectedOverlay,
+    HumanizedDurationPipe,
+  ],
 })
 export class EditableDurationInputComponent extends EditableFieldComponent {
   delaySlaForm: FormGroup;

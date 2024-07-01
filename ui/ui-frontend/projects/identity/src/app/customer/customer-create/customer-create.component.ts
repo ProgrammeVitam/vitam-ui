@@ -36,7 +36,7 @@
  */
 import { ComponentType } from '@angular/cdk/portal';
 import { Component, Inject, OnDestroy, OnInit, TemplateRef } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import {
   MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA,
   MatLegacyDialog as MatDialog,
@@ -44,11 +44,34 @@ import {
 } from '@angular/material/legacy-dialog';
 import { Observable, Subject, merge } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
-import { ConfirmDialogService, CountryOption, CountryService, Customer, Logo, OtpState, StartupService } from 'vitamui-library';
+import {
+  ConfirmDialogService,
+  CountryOption,
+  CountryService,
+  Customer,
+  Logo,
+  OtpState,
+  StartupService,
+  CommonProgressBarComponent,
+  StepperComponent,
+  VitamUICommonInputComponent,
+  SlideToggleComponent,
+} from 'vitamui-library';
 import { CustomerService } from '../../core/customer.service';
 import { TenantFormValidators } from '../tenant-create/tenant-form.validators';
 import { CustomerAlertingComponent } from './customer-alerting/customer-alerting.component';
 import { ALPHA_NUMERIC_REGEX, CUSTOMER_CODE_MAX_LENGTH, CustomerCreateValidators } from './customer-create.validators';
+import { TranslateModule } from '@ngx-translate/core';
+import { OwnerFormComponent } from '../owner-form/owner-form.component';
+import { HomepageMessageComponent } from '../customer-preview/homepage-message-tab/homepage-message/homepage-message.component';
+import { GraphicIdentityComponent } from '../customer-preview/graphic-identity-tab/graphic-identity/graphic-identity.component';
+import { DomainsInputComponent } from '../../shared/domains-input/domains-input.component';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatLegacyOptionModule } from '@angular/material/legacy-core';
+import { MatLegacySelectModule } from '@angular/material/legacy-select';
+import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
+import { NgIf, NgFor, NgTemplateOutlet } from '@angular/common';
+import { CdkStepperModule } from '@angular/cdk/stepper';
 
 interface CustomerInfo {
   code: string;
@@ -60,6 +83,27 @@ interface CustomerInfo {
   selector: 'app-customer-create',
   templateUrl: './customer-create.component.html',
   styleUrls: ['./customer-create.component.scss'],
+  standalone: true,
+  imports: [
+    CommonProgressBarComponent,
+    ReactiveFormsModule,
+    StepperComponent,
+    CdkStepperModule,
+    VitamUICommonInputComponent,
+    NgIf,
+    MatLegacyFormFieldModule,
+    MatLegacySelectModule,
+    NgFor,
+    MatLegacyOptionModule,
+    SlideToggleComponent,
+    NgTemplateOutlet,
+    MatButtonToggleModule,
+    DomainsInputComponent,
+    GraphicIdentityComponent,
+    HomepageMessageComponent,
+    OwnerFormComponent,
+    TranslateModule,
+  ],
 })
 export class CustomerCreateComponent implements OnInit, OnDestroy {
   public customerCodeMaxLength = CUSTOMER_CODE_MAX_LENGTH;

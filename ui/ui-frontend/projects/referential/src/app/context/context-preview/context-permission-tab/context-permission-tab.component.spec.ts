@@ -152,8 +152,8 @@ describe('ContextPermissionTabComponent', () => {
         HttpClientTestingModule,
         RouterTestingModule,
         TranslateModule.forRoot(),
+        ContextPermissionTabComponent,
       ],
-      declarations: [ContextPermissionTabComponent],
       providers: [
         FormBuilder,
         { provide: BASE_URL, useValue: '/fake-api' },

@@ -35,14 +35,32 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Subscription, merge, of } from 'rxjs';
 import { catchError, debounceTime, filter, map, switchMap } from 'rxjs/operators';
 import { extend, isEmpty } from 'underscore';
-import { CountryOption, CountryService, Customer, OtpState, StartupService, diff } from 'vitamui-library';
+import {
+  CountryOption,
+  CountryService,
+  Customer,
+  OtpState,
+  StartupService,
+  diff,
+  EditableFieldComponent,
+  VitamUIFieldErrorComponent,
+  SlideToggleComponent,
+  EditableInputComponent,
+  EditableSelectComponent,
+  EditableOptionComponent,
+  EditableToggleGroupComponent,
+  EditableButtonToggleComponent,
+} from 'vitamui-library';
 
 import { CustomerService } from '../../../core/customer.service';
 import { ALPHA_NUMERIC_REGEX, CUSTOMER_CODE_MAX_LENGTH, CustomerCreateValidators } from '../../customer-create/customer-create.validators';
+import { TranslateModule } from '@ngx-translate/core';
+import { EditableDomainInputComponent } from '../../../shared/editable-field/editable-domain-input/editable-domain-input.component';
+import { NgFor, NgIf } from '@angular/common';
 
 const UPDATE_DEBOUNCE_TIME = 200;
 
@@ -50,6 +68,22 @@ const UPDATE_DEBOUNCE_TIME = 200;
   selector: 'app-information-tab',
   templateUrl: './information-tab.component.html',
   styleUrls: ['./information-tab.component.scss'],
+  standalone: true,
+  imports: [
+    ReactiveFormsModule,
+    EditableFieldComponent,
+    VitamUIFieldErrorComponent,
+    NgFor,
+    EditableDomainInputComponent,
+    SlideToggleComponent,
+    NgIf,
+    TranslateModule,
+    EditableInputComponent,
+    EditableSelectComponent,
+    EditableOptionComponent,
+    EditableToggleGroupComponent,
+    EditableButtonToggleComponent,
+  ],
 })
 export class InformationTabComponent implements OnInit, OnDestroy {
   public readonly form: FormGroup;

@@ -35,12 +35,20 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
+import {
+  MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA,
+  MatLegacyDialogModule,
+  MatLegacyDialogRef as MatDialogRef,
+} from '@angular/material/legacy-dialog';
 
 import { Application } from '../../../models/application/application.interface';
 import { Category } from '../../../models/application/category.interface';
 import { MenuOption } from '../customer-menu/menu-option.interface';
 import { MenuType } from '../menu-type.enum';
+import { TenantSelectContentComponent } from '../../tenant-select-content/tenant-select-content.component';
+import { CustomerSelectContentComponent } from '../../customer-select-content/customer-select-content.component';
+import { ApplicationSelectContentComponent } from '../../application-select-content/application-select-content.component';
+import { NgIf } from '@angular/common';
 
 interface ModalData {
   menuType: MenuType;
@@ -52,6 +60,8 @@ interface ModalData {
   selector: 'vitamui-common-common-menu',
   templateUrl: './common-menu.component.html',
   styleUrls: ['./common-menu.component.scss'],
+  standalone: true,
+  imports: [MatLegacyDialogModule, NgIf, ApplicationSelectContentComponent, CustomerSelectContentComponent, TenantSelectContentComponent],
 })
 export class CommonMenuComponent implements OnInit {
   title: string;

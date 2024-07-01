@@ -69,7 +69,6 @@ describe('AccessRuleSearchComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [AccessRuleSearchComponent],
       imports: [
         InjectorModule,
         VitamUICommonTestModule,
@@ -78,6 +77,7 @@ describe('AccessRuleSearchComponent', () => {
         TranslateModule.forRoot(),
         RouterTestingModule,
         BrowserAnimationsModule,
+        AccessRuleSearchComponent,
       ],
       providers: [
         FormBuilder,

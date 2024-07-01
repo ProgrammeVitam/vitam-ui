@@ -53,6 +53,8 @@ import { MultipleEmailInputComponent } from './multiple-email-input.component';
 
 @Component({
   template: ` <vitamui-common-multiple-email-input [(ngModel)]="value" [label]="label"></vitamui-common-multiple-email-input> `,
+  standalone: true,
+  imports: [OverlayModule, FormsModule, ReactiveFormsModule, MatProgressSpinnerModule, EmailsInputModule, HttpClientTestingModule],
 })
 class TesthostComponent {
   value: string[];
@@ -83,8 +85,9 @@ describe('MultipleEmailInputComponent', () => {
         BrowserAnimationsModule,
         HttpClientTestingModule,
         TranslateModule.forRoot(),
+        TesthostComponent,
+        MultipleEmailInputComponent,
       ],
-      declarations: [TesthostComponent, MultipleEmailInputComponent],
       providers: [
         { provide: WINDOW_LOCATION, useValue: {} },
         // { provide: FlowValidators, useValue: flowValidatorsSpy },

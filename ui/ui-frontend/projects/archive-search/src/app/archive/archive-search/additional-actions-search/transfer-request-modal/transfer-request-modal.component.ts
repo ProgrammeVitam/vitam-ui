@@ -25,9 +25,9 @@
  * accept its terms.
  */
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import {
   ConfirmDialogService,
@@ -37,14 +37,40 @@ import {
   SearchCriteriaEltDto,
   StartupService,
   UsageVersionEnum,
+  CommonProgressBarComponent,
+  StepperComponent,
+  VitamUICommonInputComponent,
 } from 'vitamui-library';
 import { ArchiveService } from '../../../archive.service';
 import { QualifierVersion, TransferRequestDto } from '../../../models/dip.interface';
+import { MatLegacyRadioModule } from '@angular/material/legacy-radio';
+import { MatLegacyOptionModule } from '@angular/material/legacy-core';
+import { MatLegacySelectModule } from '@angular/material/legacy-select';
+import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { CdkStepperModule } from '@angular/cdk/stepper';
+import { NgIf, NgFor } from '@angular/common';
 
 @Component({
   selector: 'app-transfer-request-modal',
   templateUrl: './transfer-request-modal.component.html',
   styleUrls: ['./transfer-request-modal.component.scss'],
+  standalone: true,
+  imports: [
+    CommonProgressBarComponent,
+    NgIf,
+    StepperComponent,
+    CdkStepperModule,
+    ReactiveFormsModule,
+    VitamUICommonInputComponent,
+    MatButtonToggleModule,
+    NgFor,
+    MatLegacyFormFieldModule,
+    MatLegacySelectModule,
+    MatLegacyOptionModule,
+    MatLegacyRadioModule,
+    TranslateModule,
+  ],
 })
 export class TransferRequestModalComponent implements OnInit, OnDestroy {
   stepIndex = 0;

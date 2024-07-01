@@ -91,8 +91,8 @@ describe('ManagementContractStorageTabComponent', () => {
         TranslateModule.forRoot(),
         RouterTestingModule,
         LoggerModule.forRoot(),
+        ManagementContractStorageTabComponent,
       ],
-      declarations: [ManagementContractStorageTabComponent],
       providers: [
         FormBuilder,
         { provide: BASE_URL, useValue: '/fake-api' },

@@ -44,7 +44,7 @@ describe('OrderOptionComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [OrderOptionComponent],
+      imports: [OrderOptionComponent],
     }).compileComponents();
   });
 

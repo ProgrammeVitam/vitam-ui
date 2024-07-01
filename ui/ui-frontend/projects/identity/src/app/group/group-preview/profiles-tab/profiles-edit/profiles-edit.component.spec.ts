@@ -59,6 +59,8 @@ import { ProfilesEditComponent } from './profiles-edit.component';
       multi: true,
     },
   ],
+  standalone: true,
+  imports: [HttpClientTestingModule, MatProgressBarModule, ReactiveFormsModule, VitamUICommonTestModule],
 })
 class ProfilesFormStubComponent {
   @Input() level: any;
@@ -76,8 +78,15 @@ describe('ProfilesEditComponent', () => {
     const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
 
     await TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, MatProgressBarModule, ReactiveFormsModule, NoopAnimationsModule, VitamUICommonTestModule],
-      declarations: [ProfilesEditComponent, ProfilesFormStubComponent],
+      imports: [
+        HttpClientTestingModule,
+        MatProgressBarModule,
+        ReactiveFormsModule,
+        NoopAnimationsModule,
+        VitamUICommonTestModule,
+        ProfilesEditComponent,
+        ProfilesFormStubComponent,
+      ],
       providers: [
         { provide: MAT_DIALOG_DATA, useValue: { group: { id: '42', name: 'Test', profileIds: [] } } },
         { provide: MatDialogRef, useValue: matDialogRefSpy },

@@ -35,15 +35,20 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { EMPTY, Observable } from 'rxjs';
 import { IngestContract, SignaturePolicy, SignedDocumentPolicyEnum } from 'vitamui-library';
 import { IngestContractService } from '../../ingest-contract.service';
+import { TranslateModule } from '@ngx-translate/core';
+import { NgClass } from '@angular/common';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 
 @Component({
   selector: 'app-ingest-contract-signature-tab',
   templateUrl: './ingest-contract-signature-tab.component.html',
   styleUrls: ['./ingest-contract-signature-tab.component.scss'],
+  standalone: true,
+  imports: [FormsModule, ReactiveFormsModule, MatButtonToggleModule, NgClass, TranslateModule],
 })
 export class IngestContractSignatureTabComponent implements OnChanges {
   readonly SignedDocumentPolicyEnum = SignedDocumentPolicyEnum;

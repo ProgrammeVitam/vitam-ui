@@ -40,8 +40,7 @@ import { PipesModule } from '../../pipes/pipes.module';
 import { DataComponent } from './data.component';
 
 @NgModule({
-  imports: [CommonModule, PipesModule],
-  declarations: [DataComponent],
+  imports: [CommonModule, PipesModule, DataComponent],
   exports: [DataComponent],
 })
 export class DataModule {}

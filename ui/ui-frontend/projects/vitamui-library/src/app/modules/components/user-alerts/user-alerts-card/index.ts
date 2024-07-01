@@ -35,4 +35,3 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 export * from './user-alerts-card.component';
-export * from './user-alerts-card.module';

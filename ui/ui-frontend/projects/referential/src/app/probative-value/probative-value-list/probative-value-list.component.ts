@@ -37,9 +37,25 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { Subject, merge } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
-import { DEFAULT_PAGE_SIZE, Direction, InfiniteScrollTable, PageRequest } from 'vitamui-library';
+import {
+  DEFAULT_PAGE_SIZE,
+  Direction,
+  InfiniteScrollTable,
+  PageRequest,
+  InfiniteScrollDirective,
+  OrderByButtonComponent,
+  EllipsisDirective,
+  PipesModule,
+} from 'vitamui-library';
 
 import { ProbativeValueService } from '../probative-value.service';
+import { DateTimePipe } from '../../../../../vitamui-library/src/app/modules/pipes/datetime.pipe';
+import { EventTypeColorClassPipe } from '../../shared/pipes/event-type-color-class.pipe';
+import { EventTypeBadgeClassPipe } from '../../shared/pipes/event-type-badge-class.pipe';
+import { LastEventPipe } from '../../shared/pipes/last-event.pipe';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatLegacyProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
+import { NgFor, NgClass, NgIf } from '@angular/common';
 
 const FILTER_DEBOUNCE_TIME_MS = 400;
 
@@ -52,6 +68,22 @@ export class ProbativeValueFilters {
   selector: 'app-probative-value-list',
   templateUrl: './probative-value-list.component.html',
   styleUrls: ['./probative-value-list.component.scss'],
+  standalone: true,
+  imports: [
+    InfiniteScrollDirective,
+    OrderByButtonComponent,
+    NgFor,
+    NgClass,
+    EllipsisDirective,
+    NgIf,
+    MatLegacyProgressSpinnerModule,
+    PipesModule,
+    TranslateModule,
+    LastEventPipe,
+    EventTypeBadgeClassPipe,
+    EventTypeColorClassPipe,
+    DateTimePipe,
+  ],
 })
 export class ProbativeValueListComponent extends InfiniteScrollTable<any> implements OnDestroy, OnInit {
   // eslint-disable-next-line @angular-eslint/no-input-rename

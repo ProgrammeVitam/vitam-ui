@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
 import { Subscription } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
@@ -46,14 +46,20 @@ import {
   Option,
   StartupService,
   VitamuiAutocompleteMultiselectOptions,
+  VitamUICommonInputComponent,
+  VitamUIAutocompleteMultiSelectModule,
 } from 'vitamui-library';
 import { FileFormatService } from '../file-format.service';
 import { FileFormatCreateValidators } from './file-format-create.validators';
+import { TranslateModule } from '@ngx-translate/core';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-file-format-create',
   templateUrl: './file-format-create.component.html',
   styleUrls: ['./file-format-create.component.scss'],
+  standalone: true,
+  imports: [FormsModule, ReactiveFormsModule, VitamUICommonInputComponent, NgIf, VitamUIAutocompleteMultiSelectModule, TranslateModule],
 })
 export class FileFormatCreateComponent implements OnInit, OnDestroy {
   form: FormGroup;

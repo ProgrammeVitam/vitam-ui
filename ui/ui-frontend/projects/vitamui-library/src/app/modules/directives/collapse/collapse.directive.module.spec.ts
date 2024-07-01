@@ -34,13 +34,13 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { CollapseDirectiveModule } from './collapse.directive.module';
+import { CollapseDirective } from './collapse.directive.module';
 
 describe('CollapseModule', () => {
-  let collapseModule: CollapseDirectiveModule;
+  let collapseModule: CollapseDirective;
 
   beforeEach(() => {
-    collapseModule = new CollapseDirectiveModule();
+    collapseModule = new CollapseDirective();
   });
 
   it('should create an instance', () => {

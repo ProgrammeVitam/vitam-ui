@@ -34,7 +34,7 @@ describe('LogbookOperationFacetteComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [VitamuiFacetComponent],
+      imports: [VitamuiFacetComponent],
     }).compileComponents();
   });
 

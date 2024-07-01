@@ -1,14 +1,36 @@
 import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
 import { Subject } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators';
-import { Customer, LanguageService, Option, StartupService } from 'vitamui-library';
+import {
+  Customer,
+  LanguageService,
+  Option,
+  StartupService,
+  VitamUICommonInputComponent,
+  VitamUIInputErrorComponent,
+  VitamUITextareaComponent,
+} from 'vitamui-library';
+import { TranslateModule } from '@ngx-translate/core';
+import { HomepageMessageTranslationComponent } from './homepage-message-translation/homepage-message-translation';
+import { NgIf, NgFor } from '@angular/common';
 
 @Component({
   selector: 'app-homepage-message',
   templateUrl: './homepage-message.component.html',
   styleUrls: ['./homepage-message.component.scss'],
+  standalone: true,
+  imports: [
+    ReactiveFormsModule,
+    VitamUICommonInputComponent,
+    NgIf,
+    NgFor,
+    HomepageMessageTranslationComponent,
+    TranslateModule,
+    VitamUIInputErrorComponent,
+    VitamUITextareaComponent,
+  ],
 })
 export class HomepageMessageComponent implements OnInit, OnDestroy, AfterViewInit {
   @Input() homepageMessageForm: FormGroup;

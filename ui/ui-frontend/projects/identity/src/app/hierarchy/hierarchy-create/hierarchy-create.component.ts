@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
 import { Observable, Subscription, forkJoin } from 'rxjs';
 import {
@@ -47,14 +47,32 @@ import {
   buildValidators,
   collapseAnimation,
   rotateAnimation,
+  CommonProgressBarComponent,
+  SlideToggleComponent,
+  LevelInputComponent,
+  VitamUICommonInputComponent,
 } from 'vitamui-library';
 import { HierarchyService } from '../hierarchy.service';
+import { TranslateModule } from '@ngx-translate/core';
+import { ProfilesFormComponent } from '../../shared/profiles-form/profiles-form.component';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-hierarchy-create',
   templateUrl: './hierarchy-create.component.html',
   styleUrls: ['./hierarchy-create.component.scss'],
   animations: [collapseAnimation, rotateAnimation],
+  standalone: true,
+  imports: [
+    CommonProgressBarComponent,
+    ReactiveFormsModule,
+    SlideToggleComponent,
+    NgIf,
+    LevelInputComponent,
+    VitamUICommonInputComponent,
+    ProfilesFormComponent,
+    TranslateModule,
+  ],
 })
 export class HierarchyCreateComponent implements OnInit, OnDestroy {
   form: FormGroup;

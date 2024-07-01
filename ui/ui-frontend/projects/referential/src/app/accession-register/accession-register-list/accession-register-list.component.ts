@@ -27,14 +27,53 @@
 import { Component, EventEmitter, Inject, Input, LOCALE_ID, OnDestroy, OnInit, Output } from '@angular/core';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { withLatestFrom } from 'rxjs/operators';
-import { AccessionRegisterDetail, DEFAULT_PAGE_SIZE, Direction, InfiniteScrollTable, OjectUtils, PageRequest } from 'vitamui-library';
+import {
+  AccessionRegisterDetail,
+  DEFAULT_PAGE_SIZE,
+  Direction,
+  InfiniteScrollTable,
+  OjectUtils,
+  PageRequest,
+  InfiniteScrollDirective,
+  OrderByButtonComponent,
+  TableFilterComponent,
+  PipesModule,
+  TableFilterDirective,
+  TableFilterSearchComponent,
+} from 'vitamui-library';
 import { AccessionRegisterSearchDto } from '../../models/accession-register-export-csv.interface';
 import { AccessionRegistersService } from '../accession-register.service';
+import { TruncatePipe } from '../../../../../vitamui-library/src/app/modules/pipes/truncate.pipe';
+import { DateTimePipe } from '../../../../../vitamui-library/src/app/modules/pipes/datetime.pipe';
+import { BytesPipe } from '../../../../../vitamui-library/src/app/modules/pipes/bytes.pipe';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatLegacyProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { NgIf, NgClass, NgFor, AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-accession-register-list',
   templateUrl: './accession-register-list.component.html',
   styleUrls: ['./accession-register-list.component.scss'],
+  standalone: true,
+  imports: [
+    InfiniteScrollDirective,
+    NgIf,
+    NgClass,
+    OrderByButtonComponent,
+    TableFilterComponent,
+    NgFor,
+    MatLegacyTooltipModule,
+    MatLegacyProgressSpinnerModule,
+    AsyncPipe,
+    PipesModule,
+    TranslateModule,
+    BytesPipe,
+    DateTimePipe,
+    TruncatePipe,
+    TableFilterDirective,
+    TableFilterSearchComponent,
+  ],
 })
 export class AccessionRegisterListComponent extends InfiniteScrollTable<AccessionRegisterDetail> implements OnDestroy, OnInit {
   @Output() accessionRegisterClick = new EventEmitter<AccessionRegisterDetail>();

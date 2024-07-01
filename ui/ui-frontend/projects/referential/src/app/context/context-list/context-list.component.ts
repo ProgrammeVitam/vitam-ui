@@ -52,8 +52,19 @@ import {
   User,
   collapseAnimation,
   rotateAnimation,
+  InfiniteScrollDirective,
+  TableFilterComponent,
+  OrderByButtonComponent,
+  EllipsisDirective,
+  PipesModule,
+  TableFilterDirective,
+  TableFilterOptionComponent,
 } from 'vitamui-library';
 import { ContextService } from '../context.service';
+import { DateTimePipe } from '../../../../../vitamui-library/src/app/modules/pipes/datetime.pipe';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatLegacyProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
+import { NgFor, NgClass, NgIf } from '@angular/common';
 
 const FILTER_DEBOUNCE_TIME_MS = 400;
 
@@ -62,6 +73,22 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
   templateUrl: './context-list.component.html',
   styleUrls: ['./context-list.component.scss'],
   animations: [collapseAnimation, rotateAnimation],
+  standalone: true,
+  imports: [
+    InfiniteScrollDirective,
+    TableFilterComponent,
+    OrderByButtonComponent,
+    NgFor,
+    NgClass,
+    EllipsisDirective,
+    NgIf,
+    MatLegacyProgressSpinnerModule,
+    PipesModule,
+    TranslateModule,
+    DateTimePipe,
+    TableFilterDirective,
+    TableFilterOptionComponent,
+  ],
 })
 export class ContextListComponent extends InfiniteScrollTable<Context> implements OnDestroy, OnInit {
   // eslint-disable-next-line @angular-eslint/no-input-rename

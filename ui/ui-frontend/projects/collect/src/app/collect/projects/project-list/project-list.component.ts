@@ -27,13 +27,41 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Subscription } from 'rxjs';
-import { DEFAULT_PAGE_SIZE, Direction, getProjectIcon, InfiniteScrollTable, PageRequest, Project } from 'vitamui-library';
+import {
+  DEFAULT_PAGE_SIZE,
+  Direction,
+  getProjectIcon,
+  InfiniteScrollTable,
+  PageRequest,
+  Project,
+  InfiniteScrollDirective,
+  OrderByButtonComponent,
+  VitamuiMenuButtonComponent,
+  PipesModule,
+} from 'vitamui-library';
 import { ProjectsService } from '../projects.service';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatLegacyProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
+import { MatLegacyMenuModule } from '@angular/material/legacy-menu';
+import { NgFor, NgIf, DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-project-list',
   templateUrl: './project-list.component.html',
   styleUrls: ['./project-list.component.css'],
+  standalone: true,
+  imports: [
+    InfiniteScrollDirective,
+    OrderByButtonComponent,
+    NgFor,
+    VitamuiMenuButtonComponent,
+    MatLegacyMenuModule,
+    NgIf,
+    MatLegacyProgressSpinnerModule,
+    DatePipe,
+    PipesModule,
+    TranslateModule,
+  ],
 })
 export class ProjectListComponent extends InfiniteScrollTable<Project> implements OnDestroy, OnInit {
   @Input()

@@ -70,6 +70,7 @@ const VITAMUI_TOOL_TIP_POSITIONS: { [key: string]: ConnectedPosition } = {
 
 @Directive({
   selector: '[vitamuiCommonToolTip]',
+  standalone: true,
 })
 export class CommonTooltipDirective implements OnInit, OnDestroy {
   @Input('vitamuiCommonToolTip') text = '';

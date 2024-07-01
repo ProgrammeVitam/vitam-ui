@@ -36,14 +36,19 @@
  */
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { AuthService, Event, isLevelAllowed, Profile, StartupService } from 'vitamui-library';
+import { AuthService, Event, isLevelAllowed, Profile, StartupService, VitamuiSidenavHeaderComponent, HistoryModule } from 'vitamui-library';
 
 import { ProfileService } from '../profile.service';
+import { TranslateModule } from '@ngx-translate/core';
+import { InformationTabComponent } from './information-tab/information-tab.component';
+import { MatLegacyTabsModule } from '@angular/material/legacy-tabs';
 
 @Component({
   selector: 'app-profile-detail',
   templateUrl: './profile-detail.component.html',
   styleUrls: ['./profile-detail.component.scss'],
+  standalone: true,
+  imports: [VitamuiSidenavHeaderComponent, MatLegacyTabsModule, InformationTabComponent, HistoryModule, TranslateModule],
 })
 export class ProfileDetailComponent implements OnInit, OnDestroy {
   @Input()

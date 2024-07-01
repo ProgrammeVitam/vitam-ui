@@ -39,16 +39,38 @@ import { Component, ViewChild } from '@angular/core';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { ActivatedRoute } from '@angular/router';
 
-import { DownloadUtils, GlobalEventService, Group, SidenavPage, VitamUISnackBarService } from 'vitamui-library';
+import {
+  DownloadUtils,
+  GlobalEventService,
+  Group,
+  SidenavPage,
+  VitamUISnackBarService,
+  VitamuiTitleBreadcrumbComponent,
+  VitamuiCommonBannerComponent,
+} from 'vitamui-library';
 import { GroupCreateComponent } from './group-create/group-create.component';
 import { GroupListComponent } from './group-list/group-list.component';
 import { DownloadSnackBarService } from 'projects/referential/src/app/core/service/download-snack-bar.service';
 import moment, { now } from 'moment';
+import { TranslateModule } from '@ngx-translate/core';
+import { GroupPreviewComponent } from './group-preview/group-preview.component';
+import { NgIf } from '@angular/common';
+import { MatSidenavModule } from '@angular/material/sidenav';
 
 @Component({
   selector: 'app-group',
   templateUrl: './group.component.html',
   styleUrls: ['./group.component.scss'],
+  standalone: true,
+  imports: [
+    MatSidenavModule,
+    NgIf,
+    GroupPreviewComponent,
+    VitamuiTitleBreadcrumbComponent,
+    VitamuiCommonBannerComponent,
+    GroupListComponent,
+    TranslateModule,
+  ],
 })
 export class GroupComponent extends SidenavPage<Group> {
   public groups: Group[];

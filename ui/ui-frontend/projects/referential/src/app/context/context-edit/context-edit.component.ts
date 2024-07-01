@@ -36,16 +36,21 @@
  */
 
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
 import { Subscription } from 'rxjs';
 import { ConfirmDialogService, ContextPermission } from 'vitamui-library';
 import { ContextCreateValidators } from '../context-create/context-create.validators';
+import { TranslateModule } from '@ngx-translate/core';
+import { NgIf } from '@angular/common';
+import { ContextEditPermissionComponent } from '../context-create/context-edit-permission/context-edit-permission.component';
 
 @Component({
   selector: 'app-context-edit',
   templateUrl: './context-edit.component.html',
   styleUrls: ['./context-edit.component.scss'],
+  standalone: true,
+  imports: [FormsModule, ReactiveFormsModule, ContextEditPermissionComponent, NgIf, TranslateModule],
 })
 export class ContextEditComponent implements OnInit, OnDestroy {
   form: FormGroup;

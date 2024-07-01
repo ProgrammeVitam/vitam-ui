@@ -109,6 +109,8 @@ const owner = {
 
 @Component({
   template: ` <app-information-tab [owner]="owner" [tenant]="tenant" [readOnly]="readonly"></app-information-tab> `,
+  standalone: true,
+  imports: [ReactiveFormsModule, MatDividerModule, VitamUICommonTestModule, HttpClientTestingModule],
 })
 class TestHostComponent {
   tenant: Tenant;
@@ -141,8 +143,9 @@ describe('Owner InformationTabComponent', () => {
         VitamUICommonTestModule,
         HttpClientTestingModule,
         LoggerModule.forRoot(),
+        TestHostComponent,
+        InformationTabComponent,
       ],
-      declarations: [TestHostComponent, InformationTabComponent],
       providers: [
         { provide: WINDOW_LOCATION, useValue: window.location },
         { provide: BASE_URL, useValue: '/fake-api' },

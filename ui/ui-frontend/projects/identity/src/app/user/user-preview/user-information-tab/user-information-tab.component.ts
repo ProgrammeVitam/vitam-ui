@@ -35,15 +35,36 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { merge, of } from 'rxjs';
 import { catchError, debounceTime, filter, map, switchMap } from 'rxjs/operators';
 import { extend, isEmpty } from 'underscore';
-import { AdminUserProfile, CountryOption, CountryService, Customer, OtpState, StartupService, User, UserInfo, diff } from 'vitamui-library';
+import {
+  AdminUserProfile,
+  CommonTooltipDirective,
+  CountryOption,
+  CountryService,
+  Customer,
+  diff,
+  EditableEmailInputComponent,
+  EditableFieldComponent,
+  EditableInputComponent,
+  EditableOptionComponent,
+  EditableSelectComponent,
+  OtpState,
+  PipesModule,
+  SlideToggleComponent,
+  StartupService,
+  User,
+  UserInfo,
+  VitamUIFieldErrorComponent,
+} from 'vitamui-library';
 import { UserInfoService } from './../../user-info.service';
 
 import { UserCreateValidators } from '../../user-create/user-create.validators';
 import { UserService } from '../../user.service';
+import { TranslateModule } from '@ngx-translate/core';
+import { NgFor, NgIf } from '@angular/common';
 
 const UPDATE_DEBOUNCE_TIME = 200;
 
@@ -51,6 +72,22 @@ const UPDATE_DEBOUNCE_TIME = 200;
   selector: 'app-user-info-tab',
   templateUrl: './user-information-tab.component.html',
   styleUrls: ['./user-information-tab.component.scss'],
+  standalone: true,
+  imports: [
+    NgIf,
+    ReactiveFormsModule,
+    EditableFieldComponent,
+    VitamUIFieldErrorComponent,
+    NgFor,
+    SlideToggleComponent,
+    PipesModule,
+    TranslateModule,
+    EditableSelectComponent,
+    EditableOptionComponent,
+    EditableInputComponent,
+    CommonTooltipDirective,
+    EditableEmailInputComponent,
+  ],
 })
 export class UserInfoTabComponent implements OnChanges, OnInit {
   @Input() user: User;
@@ -215,6 +252,7 @@ export class UserInfoTabComponent implements OnChanges, OnInit {
     this.initFormActivationState(form, customer, adminUserProfile, readOnly);
     form.updateValueAndValidity({ emitEvent: false });
   }
+
   private resetUserInfoForm(userInfoForm: FormGroup, userInfo: UserInfo) {
     if (userInfo) {
       userInfoForm.reset(userInfo, { emitEvent: false });

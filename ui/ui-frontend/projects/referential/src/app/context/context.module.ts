@@ -42,12 +42,10 @@ import { MatLegacyProgressSpinnerModule as MatProgressSpinnerModule } from '@ang
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
 import { RouterModule } from '@angular/router';
-import { TableFilterModule, VitamUICommonModule } from 'vitamui-library';
+import { TableFilterComponent, VitamUICommonModule } from 'vitamui-library';
 
-import { ContextCreateModule } from './context-create';
-import { ContextEditModule } from './context-edit/context-edit.module';
 import { ContextListComponent } from './context-list/context-list.component';
-import { ContextPreviewModule } from './context-preview/context-preview.module';
+
 import { ContextRoutingModule } from './context-routing.module';
 import { ContextComponent } from './context.component';
 
@@ -57,16 +55,14 @@ import { ContextComponent } from './context.component';
     RouterModule,
     VitamUICommonModule,
     ContextRoutingModule,
-    ContextCreateModule,
-    ContextEditModule,
-    ContextPreviewModule,
     MatMenuModule,
     MatSnackBarModule,
     MatDialogModule,
     MatSidenavModule,
     MatProgressSpinnerModule,
-    TableFilterModule,
+    TableFilterComponent,
+    ContextComponent,
+    ContextListComponent,
   ],
-  declarations: [ContextComponent, ContextListComponent],
 })
 export class ContextModule {}

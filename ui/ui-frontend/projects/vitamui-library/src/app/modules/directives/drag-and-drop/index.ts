@@ -35,4 +35,3 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 export * from './drag-and-drop.directive';
-export * from './drag-and-drop.module';

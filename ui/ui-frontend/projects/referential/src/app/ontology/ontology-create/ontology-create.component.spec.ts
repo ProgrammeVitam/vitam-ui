@@ -101,8 +101,8 @@ describe('OntologyCreateComponent', () => {
         NoopAnimationsModule,
         MatProgressSpinnerModule,
         VitamUICommonTestModule,
+        OntologyCreateComponent,
       ],
-      declarations: [OntologyCreateComponent],
       providers: [
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MAT_DIALOG_DATA, useValue: {} },

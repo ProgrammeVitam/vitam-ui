@@ -53,13 +53,13 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatLegacyTabsModule as MatTabsModule } from '@angular/material/legacy-tabs';
 import { MatLegacyTooltipModule as MatTooltipModule } from '@angular/material/legacy-tooltip';
 import { MatTreeModule } from '@angular/material/tree';
-import { AuthenticationModule, TableFilterModule, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
+import { AuthenticationModule, TableFilterComponent, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 import { CoreModule } from '../core/core.module';
 import { MainComponent } from '../main/main.component';
 import { FileTreeModule } from '../profile/edit-profile/file-tree/file-tree.module';
 import { ProfileModule } from '../profile/profile.module';
 import { SedaVisualizerComponent } from '../seda-visualizer/seda-visualizer.component';
-import { SharedModule } from '../shared/shared.module';
+
 import { UserActionAddMetadataComponent } from '../user-actions/add-metadata/add-metadata.component';
 import { UserActionRemoveMetadataComponent } from '../user-actions/remove-metadata/remove-metadata.component';
 import { UserActionsModule } from '../user-actions/user-actions.module';
@@ -70,7 +70,6 @@ import { PastisRoutingModule } from './pastis-routing.module';
     AuthenticationModule.forRoot(),
     CoreModule,
     ProfileModule,
-    SharedModule,
     UserActionsModule,
     FileTreeModule,
     MatTooltipModule,
@@ -93,12 +92,15 @@ import { PastisRoutingModule } from './pastis-routing.module';
     MatInputModule,
     MatSelectModule,
     MatProgressSpinnerModule,
-    TableFilterModule,
+    TableFilterComponent,
     VitamUILibraryModule,
     MatIconModule,
     MatTabsModule,
+    MainComponent,
+    UserActionRemoveMetadataComponent,
+    UserActionAddMetadataComponent,
+    SedaVisualizerComponent,
   ],
-  declarations: [MainComponent, UserActionRemoveMetadataComponent, UserActionAddMetadataComponent, SedaVisualizerComponent],
   exports: [],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })

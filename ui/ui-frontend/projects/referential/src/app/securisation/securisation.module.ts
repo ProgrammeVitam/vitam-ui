@@ -52,8 +52,7 @@ import { VitamUICommonModule } from 'vitamui-library';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { FR_DATE_FORMAT } from '../helpers/dates.constants';
-import { SecurisationListModule } from './securisation-list/securisation-list.module';
-import { SecurisationPreviewModule } from './securisation-preview/securisation-preview.module';
+
 import { SecurisationRoutingModule } from './securisation-routing.module';
 import { SecurisationComponent } from './securisation.component';
 
@@ -65,8 +64,6 @@ import { SecurisationComponent } from './securisation.component';
     ReactiveFormsModule,
     VitamUICommonModule,
     SecurisationRoutingModule,
-    SecurisationPreviewModule,
-    SecurisationListModule,
     MatMenuModule,
     MatSnackBarModule,
     MatDialogModule,
@@ -77,8 +74,8 @@ import { SecurisationComponent } from './securisation.component';
     MatFormFieldModule,
     MatInputModule,
     MatMomentDateModule,
+    SecurisationComponent,
   ],
-  declarations: [SecurisationComponent],
   providers: [{ provide: MAT_DATE_FORMATS, useValue: FR_DATE_FORMAT }],
 })
 export class SecurisationModule {}

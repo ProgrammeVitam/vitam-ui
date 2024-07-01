@@ -35,13 +35,18 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
-import { ComponentPortal } from '@angular/cdk/portal';
+import { ComponentPortal, PortalModule } from '@angular/cdk/portal';
 import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
+import {
+  MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA,
+  MatLegacyDialogRef as MatDialogRef,
+  MatLegacyDialogModule,
+} from '@angular/material/legacy-dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { PopupService } from '../../../core/services/popup.service';
 import { SedaService } from '../../../core/services/seda.service';
 import { PastisDialogData } from '../classes/pastis-dialog-data';
+import { NgClass, NgIf } from '@angular/common';
 
 const PASTIS_DIALOG_CONFIRM_TRANSLATE_PATH = 'PASTIS_DIALOG_CONFIRM';
 
@@ -50,6 +55,8 @@ const PASTIS_DIALOG_CONFIRM_TRANSLATE_PATH = 'PASTIS_DIALOG_CONFIRM';
   selector: 'pastis-pastis-dialog-confirm',
   templateUrl: './pastis-dialog-confirm.component.html',
   styleUrls: ['./pastis-dialog-confirm.component.scss'],
+  standalone: true,
+  imports: [MatLegacyDialogModule, NgClass, NgIf, PortalModule],
 })
 export class PastisDialogConfirmComponent implements OnInit {
   portal: ComponentPortal<any>;

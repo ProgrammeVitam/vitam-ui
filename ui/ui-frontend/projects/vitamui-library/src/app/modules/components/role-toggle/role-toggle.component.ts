@@ -52,6 +52,7 @@ export const ROLE_TOGGLE_VALUE_ACCESSOR: any = {
   templateUrl: './role-toggle.component.html',
   styleUrls: ['./role-toggle.component.scss'],
   providers: [ROLE_TOGGLE_VALUE_ACCESSOR],
+  standalone: true,
 })
 export class RoleToggleComponent implements ControlValueAccessor, AfterContentInit {
   @ContentChildren(RoleComponent, { descendants: true }) roleComponents: QueryList<RoleComponent>;

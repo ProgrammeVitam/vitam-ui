@@ -45,11 +45,15 @@ import {
   VitamUISnackBarService,
 } from 'vitamui-library';
 import { IngestContractNodeUpdateComponent } from './ingest-contract-nodes-update/ingest-contract-node-update.component';
+import { TranslateModule } from '@ngx-translate/core';
+import { NgIf, NgFor } from '@angular/common';
 
 @Component({
   selector: 'app-ingest-contract-attachment-tab',
   templateUrl: './ingest-contract-attachment-tab.component.html',
   styleUrls: ['./ingest-contract-attachment-tab.component.scss'],
+  standalone: true,
+  imports: [NgIf, NgFor, TranslateModule],
 })
 export class IngestContractAttachmentTabComponent {
   @Input() tenantIdentifier: number;

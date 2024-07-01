@@ -44,14 +44,13 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { QuicklinkModule } from 'ngx-quicklink';
 import { MultiTranslateHttpLoader } from 'ngx-translate-multi-http-loader';
-import { AuthenticationModule, VitamUICommonModule, WINDOW_LOCATION } from 'vitamui-library';
+import { AuthenticationModule, FooterComponent, VitamuiBodyComponent, VitamUICommonModule, WINDOW_LOCATION } from 'vitamui-library';
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
 import { HoldingFillingSchemeModule } from './holding-filling-scheme/holding-filling-scheme.module';
 import { IngestModule } from './ingest/ingest.module';
-import { SharedModule } from './shared/shared.module';
 
 export function httpLoaderFactory(httpBackend: HttpBackend): MultiTranslateHttpLoader {
   return new MultiTranslateHttpLoader(new HttpClient(httpBackend), [
@@ -71,7 +70,6 @@ registerLocaleData(localeFr, 'fr');
     BrowserModule,
     VitamUICommonModule.forRoot(),
     AppRoutingModule,
-    SharedModule,
     IngestModule,
     HoldingFillingSchemeModule,
     QuicklinkModule,
@@ -84,6 +82,8 @@ registerLocaleData(localeFr, 'fr');
       },
     }),
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
+    VitamuiBodyComponent,
+    FooterComponent,
   ],
   providers: [Title, { provide: LOCALE_ID, useValue: 'fr' }, { provide: WINDOW_LOCATION, useValue: window.location }, DatePipe],
   bootstrap: [AppComponent],

@@ -1,4 +1,4 @@
-import { Component, Injectable, NgModule } from '@angular/core';
+import { Component, Injectable } from '@angular/core';
 import { MatLegacyDialog as MatDialog, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
 import { MatLegacyProgressSpinnerModule as MatProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
 
@@ -15,15 +15,10 @@ import { MatLegacyProgressSpinnerModule as MatProgressSpinnerModule } from '@ang
       }
     `,
   ],
+  standalone: true,
+  imports: [MatProgressSpinnerModule],
 })
 class SpinnerComponent {}
-
-@NgModule({
-  declarations: [SpinnerComponent],
-  imports: [MatProgressSpinnerModule],
-  exports: [],
-})
-export class SpinnerModule {}
 
 @Injectable({
   providedIn: 'root',

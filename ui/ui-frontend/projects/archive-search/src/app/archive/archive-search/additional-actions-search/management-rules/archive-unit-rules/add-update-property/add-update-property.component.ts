@@ -36,17 +36,24 @@
  */
 
 import { Component, Input, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatLegacyDialog as MatDialog, MatLegacyDialogModule } from '@angular/material/legacy-dialog';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { ManagementRulesSharedDataService } from '../../../../../../core/management-rules-shared-data.service';
 import { RuleTypeEnum } from '../../../../../models/rule-type-enum';
 import { ActionsRules, ManagementRules, RuleActionsEnum, RuleCategoryAction } from '../../../../../models/ruleAction.interface';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatLegacyOptionModule } from '@angular/material/legacy-core';
+import { MatLegacySelectModule } from '@angular/material/legacy-select';
+import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-add-update-property',
   templateUrl: './add-update-property.component.html',
   styleUrls: ['./add-update-property.component.css'],
+  standalone: true,
+  imports: [NgIf, MatLegacyFormFieldModule, MatLegacySelectModule, MatLegacyOptionModule, MatLegacyDialogModule, TranslateModule],
 })
 export class AddUpdatePropertyComponent implements OnInit, OnDestroy {
   @Input()

@@ -36,12 +36,24 @@
  */
 
 import { Component, ElementRef, forwardRef, Input, OnInit, ViewChild } from '@angular/core';
-import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR, Validators } from '@angular/forms';
+import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR, Validators, ReactiveFormsModule } from '@angular/forms';
 import { switchMap, tap } from 'rxjs/operators';
-import { Application, ApplicationApiService, Option, Profile, ProfileService, VitamUIAutocompleteComponent } from 'vitamui-library';
+import {
+  Application,
+  ApplicationApiService,
+  Option,
+  Profile,
+  ProfileService,
+  VitamUIAutocompleteComponent,
+  VitamUICommonInputComponent,
+  EllipsisDirective,
+} from 'vitamui-library';
 
 import { HttpParams } from '@angular/common/http';
 import { OptionTree } from './option-tree.interface';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatLegacyProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
+import { NgIf, NgFor, NgClass } from '@angular/common';
 
 export const PROFILES_FORM_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -54,6 +66,18 @@ export const PROFILES_FORM_VALUE_ACCESSOR: any = {
   templateUrl: './profiles-form.component.html',
   styleUrls: ['./profiles-form.component.scss'],
   providers: [PROFILES_FORM_VALUE_ACCESSOR],
+  standalone: true,
+  imports: [
+    VitamUIAutocompleteComponent,
+    ReactiveFormsModule,
+    NgIf,
+    VitamUICommonInputComponent,
+    NgFor,
+    EllipsisDirective,
+    NgClass,
+    MatLegacyProgressSpinnerModule,
+    TranslateModule,
+  ],
 })
 export class ProfilesFormComponent implements ControlValueAccessor, OnInit {
   profiles: Profile[] = [];

@@ -36,15 +36,18 @@ The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
 import { Component, Input } from '@angular/core';
-import { FileUploader } from 'ng2-file-upload';
+import { FileUploader, FileUploadModule } from 'ng2-file-upload';
 import { FileService } from '../../core/services/file.service';
 import { ProfileService } from '../../core/services/profile.service';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'pastis-user-action-upload',
   templateUrl: './upload-profile.component.html',
   styleUrls: ['./upload-profile.component.scss'],
+  standalone: true,
+  imports: [MatIconModule, FileUploadModule],
 })
 export class UserActionUploadProfileComponent {
   @Input()

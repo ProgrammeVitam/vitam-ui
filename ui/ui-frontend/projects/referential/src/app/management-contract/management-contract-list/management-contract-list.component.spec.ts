@@ -77,8 +77,8 @@ describe('ManagementContractListComponent', () => {
         LoggerModule.forRoot(),
         BrowserAnimationsModule,
         NoopAnimationsModule,
+        ManagementContractListComponent,
       ],
-      declarations: [ManagementContractListComponent],
       providers: [
         { provide: MatDialog, useValue: matDialogSpy },
         { provide: WINDOW_LOCATION, useValue: window.location },

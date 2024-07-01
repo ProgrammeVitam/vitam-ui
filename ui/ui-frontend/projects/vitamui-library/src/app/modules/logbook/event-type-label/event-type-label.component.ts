@@ -35,11 +35,14 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, Input } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'vitamui-common-event-type-label',
   templateUrl: './event-type-label.component.html',
   styleUrls: ['./event-type-label.component.scss'],
+  standalone: true,
+  imports: [TranslateModule],
 })
 export class EventTypeLabelComponent {
   @Input() key: string;

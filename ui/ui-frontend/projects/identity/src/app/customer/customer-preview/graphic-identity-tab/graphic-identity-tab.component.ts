@@ -38,15 +38,20 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { Customer, Theme, ThemeColorType, ThemeService } from 'vitamui-library';
+import { Customer, Theme, ThemeColorType, ThemeService, PipesModule } from 'vitamui-library';
 import { CustomerService } from '../../../core/customer.service';
 import { GraphicIdentityUpdateComponent } from './graphic-identity-update/graphic-identity-update.component';
 import { LogosSafeResourceUrl } from './logos-safe-resource-url.interface';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatLegacyProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
+import { NgIf, NgFor } from '@angular/common';
 
 @Component({
   selector: 'app-graphic-identity-tab',
   templateUrl: './graphic-identity-tab.component.html',
   styleUrls: ['./graphic-identity-tab.component.scss'],
+  standalone: true,
+  imports: [NgIf, MatLegacyProgressSpinnerModule, NgFor, PipesModule, TranslateModule],
 })
 export class GraphicIdentityTabComponent implements OnInit, OnDestroy {
   @Input()

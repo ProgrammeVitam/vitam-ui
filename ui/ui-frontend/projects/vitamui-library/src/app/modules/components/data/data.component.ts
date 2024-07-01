@@ -35,11 +35,15 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, Input } from '@angular/core';
+import { EmptyPipe } from '../../pipes/empty.pipe';
+import { NgIf, NgFor } from '@angular/common';
 
 @Component({
   selector: 'vitamui-common-data',
   templateUrl: './data.component.html',
   styleUrls: ['./data.component.scss'],
+  standalone: true,
+  imports: [NgIf, NgFor, EmptyPipe],
 })
 export class DataComponent {
   @Input() label: string;

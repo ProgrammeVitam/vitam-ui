@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { GlobalEventService, Profile, SidenavPage } from 'vitamui-library';
+import { GlobalEventService, Profile, SidenavPage, VitamuiTitleBreadcrumbComponent, VitamuiCommonBannerComponent } from 'vitamui-library';
 
 import { Component, ViewChild } from '@angular/core';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
@@ -42,11 +42,23 @@ import { ActivatedRoute } from '@angular/router';
 
 import { ProfileCreateComponent } from './profile-create/profile-create.component';
 import { ProfileListComponent } from './profile-list/profile-list.component';
+import { TranslateModule } from '@ngx-translate/core';
+import { ProfileDetailComponent } from './profile-detail/profile-detail.component';
+import { MatSidenavModule } from '@angular/material/sidenav';
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss'],
+  standalone: true,
+  imports: [
+    MatSidenavModule,
+    ProfileDetailComponent,
+    VitamuiTitleBreadcrumbComponent,
+    VitamuiCommonBannerComponent,
+    ProfileListComponent,
+    TranslateModule,
+  ],
 })
 export class ProfileComponent extends SidenavPage<Profile> {
   public search: string;

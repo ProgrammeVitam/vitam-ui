@@ -49,7 +49,12 @@ import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { environment } from './../../../environments/environment';
 import { OwnerPreviewComponent } from './owner-preview.component';
 
-@Component({ selector: 'app-information-tab', template: '' })
+@Component({
+  selector: 'app-information-tab',
+  template: '',
+  standalone: true,
+  imports: [MatMenuModule, MatTabsModule, HttpClientTestingModule, VitamUICommonTestModule],
+})
 export class InformationTabStubComponent {
   @Input() owner: any;
   @Input() tenant: any;
@@ -69,8 +74,9 @@ describe('OwnerPreviewComponent', () => {
         HttpClientTestingModule,
         LoggerModule.forRoot(),
         VitamUICommonTestModule,
+        OwnerPreviewComponent,
+        InformationTabStubComponent,
       ],
-      declarations: [OwnerPreviewComponent, InformationTabStubComponent],
       providers: [
         { provide: WINDOW_LOCATION, useValue: {} },
         { provide: BASE_URL, useValue: '/fake-api' },

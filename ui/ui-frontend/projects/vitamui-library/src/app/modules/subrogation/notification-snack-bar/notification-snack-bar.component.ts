@@ -39,11 +39,15 @@ import {
   MAT_LEGACY_SNACK_BAR_DATA as MAT_SNACK_BAR_DATA,
   MatLegacySnackBarRef as MatSnackBarRef,
 } from '@angular/material/legacy-snack-bar';
+import { TranslateModule } from '@ngx-translate/core';
+import { NgSwitch, NgSwitchCase } from '@angular/common';
 
 @Component({
   selector: 'vitamui-common-notification-snack-bar',
   templateUrl: './notification-snack-bar.component.html',
   styleUrls: ['./notification-snack-bar.component.scss'],
+  standalone: true,
+  imports: [NgSwitch, NgSwitchCase, TranslateModule],
 })
 export class NotificationSnackBarComponent {
   constructor(

@@ -51,4 +51,3 @@ export { MultipleEmailInputComponent } from './multiple-email-input/multiple-ema
 
 export * from './emails-input';
 export * from './level-input';
-export { EditableFieldModule } from './editable-field.module';

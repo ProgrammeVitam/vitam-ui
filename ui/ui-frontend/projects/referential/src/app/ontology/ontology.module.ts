@@ -42,15 +42,13 @@ import { MatLegacyProgressSpinnerModule as MatProgressSpinnerModule } from '@ang
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
 import { RouterModule } from '@angular/router';
-import { TableFilterModule, VitamUICommonModule } from 'vitamui-library';
+import { TableFilterComponent, VitamUICommonModule } from 'vitamui-library';
 import { VitamUILibraryModule } from 'vitamui-library';
 
-import { OntologyCreateModule } from './ontology-create/ontology-create.module';
 import { OntologyListComponent } from './ontology-list/ontology-list.component';
-import { OntologyPreviewModule } from './ontology-preview/ontology-preview.module';
+
 import { OntologyRoutingModule } from './ontology-routing.module';
 import { OntologyComponent } from './ontology.component';
-import { ImportDialogModule } from '../shared/import-dialog/import-dialog.module';
 
 @NgModule({
   imports: [
@@ -59,16 +57,14 @@ import { ImportDialogModule } from '../shared/import-dialog/import-dialog.module
     VitamUICommonModule,
     VitamUILibraryModule,
     OntologyRoutingModule,
-    OntologyCreateModule,
-    OntologyPreviewModule,
-    ImportDialogModule,
     MatMenuModule,
     MatSnackBarModule,
     MatDialogModule,
     MatSidenavModule,
     MatProgressSpinnerModule,
-    TableFilterModule,
+    TableFilterComponent,
+    OntologyComponent,
+    OntologyListComponent,
   ],
-  declarations: [OntologyComponent, OntologyListComponent],
 })
 export class OntologyModule {}

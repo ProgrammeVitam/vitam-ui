@@ -39,6 +39,8 @@ import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/cor
 import { LogbookOperation } from '../../../../models/logbook-event.interface';
 import { Event } from '../../event';
 import { EventDisplayHelperService } from '../../event-display-helper.service';
+import { EventDisplayComponent } from './event-display/event-display.component';
+import { NgIf, NgFor } from '@angular/common';
 
 @Component({
   selector: 'app-ingest-event-detail',
@@ -51,6 +53,8 @@ import { EventDisplayHelperService } from '../../event-display-helper.service';
       transition('expand <=> collapse', animate('200ms ease-out')),
     ]),
   ],
+  standalone: true,
+  imports: [NgIf, NgFor, EventDisplayComponent],
 })
 export class IngestEventDetailComponent implements OnInit, OnChanges {
   @Input()

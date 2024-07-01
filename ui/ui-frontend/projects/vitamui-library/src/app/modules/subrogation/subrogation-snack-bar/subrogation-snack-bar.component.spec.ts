@@ -57,8 +57,7 @@ describe('SubrogationSnackBarComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, MatSnackBarModule, VitamUICommonTestModule],
-      declarations: [SubrogationSnackBarComponent],
+      imports: [HttpClientTestingModule, MatSnackBarModule, VitamUICommonTestModule, SubrogationSnackBarComponent],
       providers: [
         { provide: MAT_SNACK_BAR_DATA, useValue: {} },
         { provide: BASE_URL, useValue: '/fakeapi' },

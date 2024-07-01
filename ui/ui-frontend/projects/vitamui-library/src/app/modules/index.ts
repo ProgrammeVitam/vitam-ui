@@ -84,7 +84,7 @@ export * from './components/application/index';
 export * from './components/autocomplete';
 export * from './components/blank/blank.component';
 export * from './components/cancelled-snack-bar/index';
-export * from './components/collapse/collapse.module';
+
 export * from './components/confirm-dialog/index';
 export * from './components/data/data.component';
 export * from './components/datepicker/datepicker.component';

@@ -4,11 +4,14 @@ import { NavigationExtras, Router } from '@angular/router';
 import { ApiUnitObject, QualifierDto, TenantSelectionService } from 'vitamui-library';
 import { PurgedPersistentIdentifierDto } from '../../../core/api/persistent-identifier-response-dto.interface';
 import { ArchiveService } from '../../archive.service';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-found-object-modal',
   templateUrl: './found-object-modal.component.html',
   styleUrls: ['./found-object-modal.component.scss'],
+  standalone: true,
+  imports: [TranslateModule],
 })
 export class FoundObjectModalComponent {
   ark: string;

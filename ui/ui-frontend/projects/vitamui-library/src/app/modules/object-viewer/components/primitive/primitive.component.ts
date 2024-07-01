@@ -38,11 +38,15 @@ import { DatePipe } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { DisplayObject } from '../../models';
 import { DateDisplayService } from '../../services/date-display.service';
+import { TranslateModule } from '@ngx-translate/core';
+import { DataComponent } from '../../../components/data/data.component';
 
 @Component({
   selector: 'vitamui-common-primitive',
   templateUrl: './primitive.component.html',
   styleUrls: ['./primitive.component.scss'],
+  standalone: true,
+  imports: [DataComponent, TranslateModule],
 })
 export class PrimitiveComponent implements OnInit {
   @Input() displayObject: DisplayObject;

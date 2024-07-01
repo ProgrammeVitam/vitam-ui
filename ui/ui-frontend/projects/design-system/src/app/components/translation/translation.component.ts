@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
-import { TranslateService } from '@ngx-translate/core';
+import { FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
+import { NgFor, I18nPluralPipe } from '@angular/common';
+import { VitamUICommonInputComponent } from 'vitamui-library';
 
 const TRANSLATE_GET_PATH = 'TRANSLATION.TRANSLATE_GET';
 
@@ -9,6 +11,8 @@ const TRANSLATE_GET_PATH = 'TRANSLATION.TRANSLATE_GET';
   selector: 'design-system-translation',
   templateUrl: './translation.component.html',
   styleUrls: ['./translation.component.scss'],
+  standalone: true,
+  imports: [VitamUICommonInputComponent, ReactiveFormsModule, NgFor, I18nPluralPipe, TranslateModule],
 })
 export class TranslationComponent implements OnInit {
   public nbApplesTextMap: { [k: string]: string } = {

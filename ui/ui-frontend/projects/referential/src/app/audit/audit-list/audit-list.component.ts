@@ -37,9 +37,29 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { Subject, merge } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
-import { DEFAULT_PAGE_SIZE, Direction, InfiniteScrollTable, PageRequest } from 'vitamui-library';
+import {
+  DEFAULT_PAGE_SIZE,
+  Direction,
+  InfiniteScrollTable,
+  PageRequest,
+  InfiniteScrollDirective,
+  OrderByButtonComponent,
+  TableFilterComponent,
+  EllipsisDirective,
+  EventTypeLabelComponent,
+  PipesModule,
+  TableFilterDirective,
+  TableFilterOptionComponent,
+} from 'vitamui-library';
 import { AuditOperation } from '../../models/audit.interface';
 import { AuditService } from '../audit.service';
+import { DateTimePipe } from '../../../../../vitamui-library/src/app/modules/pipes/datetime.pipe';
+import { EventTypeColorClassPipe } from '../../shared/pipes/event-type-color-class.pipe';
+import { EventTypeBadgeClassPipe } from '../../shared/pipes/event-type-badge-class.pipe';
+import { LastEventPipe } from '../../shared/pipes/last-event.pipe';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatLegacyProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
+import { NgFor, NgClass, NgIf } from '@angular/common';
 
 const FILTER_DEBOUNCE_TIME_MS = 400;
 
@@ -53,6 +73,26 @@ export class AuditFilters {
   selector: 'app-audit-list',
   templateUrl: './audit-list.component.html',
   styleUrls: ['./audit-list.component.scss'],
+  standalone: true,
+  imports: [
+    InfiniteScrollDirective,
+    OrderByButtonComponent,
+    TableFilterComponent,
+    NgFor,
+    NgClass,
+    EllipsisDirective,
+    EventTypeLabelComponent,
+    NgIf,
+    MatLegacyProgressSpinnerModule,
+    PipesModule,
+    TranslateModule,
+    LastEventPipe,
+    EventTypeBadgeClassPipe,
+    EventTypeColorClassPipe,
+    DateTimePipe,
+    TableFilterDirective,
+    TableFilterOptionComponent,
+  ],
 })
 export class AuditListComponent extends InfiniteScrollTable<any> implements OnDestroy, OnInit {
   // eslint-disable-next-line @angular-eslint/no-input-rename

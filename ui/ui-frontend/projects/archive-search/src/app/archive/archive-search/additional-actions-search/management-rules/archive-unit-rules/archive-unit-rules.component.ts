@@ -41,6 +41,16 @@ import { Subscription } from 'rxjs';
 import { ManagementRulesSharedDataService } from '../../../../../core/management-rules-shared-data.service';
 import { RuleTypeEnum } from '../../../../models/rule-type-enum';
 import { ActionsRules, ManagementRules, RuleActionsEnum, RuleCategoryAction } from '../../../../models/ruleAction.interface';
+import { TranslateModule } from '@ngx-translate/core';
+import { UnlockRulesInheritanceComponent } from './unlock-rules-inheritance/unlock-rules-inheritance.component';
+import { BlockRulesInheritanceComponent } from './block-rules-inheritance/block-rules-inheritance.component';
+import { UnlockCategoryInheritanceComponent } from './unlock-category-inheritance/unlock-category-inheritance.component';
+import { BlockCategoryInheritanceComponent } from './block-category-inheritance/block-category-inheritance.component';
+import { UpdateUnitRulesComponent } from './update-unit-rules/update-unit-rules.component';
+import { AddUpdatePropertyComponent } from './add-update-property/add-update-property.component';
+import { DeleteUnitRulesComponent } from './delete-unit-rules/delete-unit-rules.component';
+import { AddManagementRulesComponent } from './add-management-rules/add-management-rules.component';
+import { NgFor, NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-archive-unit-rules',
@@ -53,6 +63,20 @@ import { ActionsRules, ManagementRules, RuleActionsEnum, RuleCategoryAction } fr
       transition('false => true', animate(300 + 'ms ease-in')),
       transition('true => false', animate(300 + 'ms ease-out')),
     ]),
+  ],
+  standalone: true,
+  imports: [
+    NgFor,
+    NgIf,
+    AddManagementRulesComponent,
+    DeleteUnitRulesComponent,
+    AddUpdatePropertyComponent,
+    UpdateUnitRulesComponent,
+    BlockCategoryInheritanceComponent,
+    UnlockCategoryInheritanceComponent,
+    BlockRulesInheritanceComponent,
+    UnlockRulesInheritanceComponent,
+    TranslateModule,
   ],
 })
 export class ArchiveUnitRulesComponent implements OnDestroy {

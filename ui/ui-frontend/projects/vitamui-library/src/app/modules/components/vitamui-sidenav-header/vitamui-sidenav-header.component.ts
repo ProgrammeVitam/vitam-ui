@@ -36,11 +36,16 @@
  */
 
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { MatLegacyProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
+import { CommonTooltipDirective } from '../common-tooltip/common-tooltip.directive';
+import { NgClass, NgIf, NgTemplateOutlet } from '@angular/common';
 
 @Component({
   selector: 'vitamui-common-sidenav-header',
   templateUrl: './vitamui-sidenav-header.component.html',
   styleUrls: ['./vitamui-sidenav-header.component.scss'],
+  standalone: true,
+  imports: [NgClass, NgIf, CommonTooltipDirective, NgTemplateOutlet, MatLegacyProgressSpinnerModule],
 })
 export class VitamuiSidenavHeaderComponent {
   @Input() icon: string;

@@ -37,18 +37,23 @@
 import { Subscription } from 'rxjs';
 import { take } from 'rxjs/operators';
 
-import { ConfirmDialogService, Group } from 'vitamui-library';
+import { ConfirmDialogService, Group, CommonProgressBarComponent, StepperComponent } from 'vitamui-library';
 
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
 
 import { GroupService } from '../../../group.service';
+import { TranslateModule } from '@ngx-translate/core';
+import { UnitsFormComponent } from '../../../units-form/units-form.component';
+import { CdkStepperModule } from '@angular/cdk/stepper';
 
 @Component({
   selector: 'app-units-edit',
   templateUrl: './units-edit.component.html',
   styleUrls: ['./units-edit.component.css'],
+  standalone: true,
+  imports: [CommonProgressBarComponent, ReactiveFormsModule, StepperComponent, CdkStepperModule, UnitsFormComponent, TranslateModule],
 })
 export class UnitsEditComponent implements OnInit, OnDestroy {
   form: FormGroup;

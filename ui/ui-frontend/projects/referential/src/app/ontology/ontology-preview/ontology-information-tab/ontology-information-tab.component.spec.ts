@@ -39,8 +39,15 @@ describe('OntologyInformationTabComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, VitamUICommonTestModule, NoopAnimationsModule, MatFormFieldModule, MatInputModule, MatSelectModule],
-      declarations: [OntologyInformationTabComponent],
+      imports: [
+        ReactiveFormsModule,
+        VitamUICommonTestModule,
+        NoopAnimationsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatSelectModule,
+        OntologyInformationTabComponent,
+      ],
       providers: [FormBuilder, { provide: OntologyService, useValue: ontologyServiceMock }],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();

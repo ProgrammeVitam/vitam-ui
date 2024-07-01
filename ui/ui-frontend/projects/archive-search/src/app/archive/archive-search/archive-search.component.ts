@@ -40,10 +40,14 @@ import {
   TemplateRef,
   ViewChild,
 } from '@angular/core';
-import { MatLegacyDialog as MatDialog, MatLegacyDialogConfig as MatDialogConfig } from '@angular/material/legacy-dialog';
+import {
+  MatLegacyDialog as MatDialog,
+  MatLegacyDialogConfig as MatDialogConfig,
+  MatLegacyDialogModule,
+} from '@angular/material/legacy-dialog';
 import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import { Observable, Subject, Subscription, merge } from 'rxjs';
 import { debounceTime, filter, map } from 'rxjs/operators';
 import {
@@ -69,6 +73,12 @@ import {
   Unit,
   UnitType,
   VitamuiRoles,
+  VitamuiMenuButtonComponent,
+  InfiniteScrollDirective,
+  ArchiveUnitModule,
+  OrderByButtonComponent,
+  PipesModule,
+  HasRoleDirective,
 } from 'vitamui-library';
 import { ArchiveSharedDataService } from '../../core/archive-shared-data.service';
 import { ManagementRulesSharedDataService } from '../../core/management-rules-shared-data.service';
@@ -83,6 +93,21 @@ import { ActionsRules } from '../models/ruleAction.interface';
 import { ReclassificationComponent } from './additional-actions-search/reclassification/reclassification.component';
 import { SearchCriteriaSaverComponent } from './search-criteria-saver/search-criteria-saver.component';
 import { TransferAcknowledgmentComponent } from './transfer-acknowledgment/transfer-acknowledgment.component';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { DisseminationRuleSearchComponent } from './archive-search-by-mgt-rules/dissemination-rule-search/dissemination-rule-search.component';
+import { ReuseRuleSearchComponent } from './archive-search-by-mgt-rules/reuse-rule-search/reuse-rule-search.component';
+import { AccessRuleSearchComponent } from './archive-search-by-mgt-rules/access-rule-search/access-rule-search.component';
+import { AppraisalRuleSearchComponent } from './archive-search-by-mgt-rules/appraisal-rule-search/appraisal-rule-search.component';
+import { StorageRuleSearchComponent } from './archive-search-by-mgt-rules/storage-rule-search/storage-rule-search.component';
+import { SimpleCriteriaSearchComponent } from './simple-criteria-search/simple-criteria-search.component';
+import { MatLegacyTabsModule } from '@angular/material/legacy-tabs';
+import { ArchiveSearchRulesFacetsComponent } from './archive-search-rules-facets/archive-search-rules-facets.component';
+import { MatLegacyProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
+import { SearchCriteriaListComponent } from './search-criteria-list/search-criteria-list.component';
+import { CriteriaSearchComponent } from '../criteria-search/criteria-search.component';
+import { NgFor, NgIf, NgClass, NgSwitch, NgSwitchCase } from '@angular/common';
+import { MatLegacyMenuModule } from '@angular/material/legacy-menu';
+import { TitleAndDescriptionCriteriaSearchComponent } from './title-and-description-criteria-search/title-and-description-criteria-search.component';
 
 const PAGE_SIZE = 10;
 const FILTER_DEBOUNCE_TIME_MS = 400;
@@ -97,6 +122,36 @@ export const GUID = 'GUID';
   selector: 'app-archive-search',
   templateUrl: './archive-search.component.html',
   styleUrls: ['./archive-search.component.scss'],
+  standalone: true,
+  imports: [
+    TitleAndDescriptionCriteriaSearchComponent,
+    VitamuiMenuButtonComponent,
+    MatLegacyMenuModule,
+    NgFor,
+    NgIf,
+    CriteriaSearchComponent,
+    SearchCriteriaListComponent,
+    MatLegacyProgressSpinnerModule,
+    NgClass,
+    ArchiveSearchRulesFacetsComponent,
+    MatLegacyTabsModule,
+    SimpleCriteriaSearchComponent,
+    StorageRuleSearchComponent,
+    AppraisalRuleSearchComponent,
+    AccessRuleSearchComponent,
+    ReuseRuleSearchComponent,
+    DisseminationRuleSearchComponent,
+    InfiniteScrollDirective,
+    ArchiveUnitModule,
+    MatLegacyTooltipModule,
+    OrderByButtonComponent,
+    NgSwitch,
+    NgSwitchCase,
+    MatLegacyDialogModule,
+    PipesModule,
+    TranslateModule,
+    HasRoleDirective,
+  ],
 })
 export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, AfterContentChecked {
   readonly UnitType = UnitType;

@@ -35,4 +35,3 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 export * from './select-tenant-dialog.component';
-export * from './select-tenant-dialog.module';

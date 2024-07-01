@@ -37,4 +37,3 @@
 export * from './collapse-container.directive';
 export * from './collapse-trigger-for.directive';
 export * from './collapse.directive';
-export * from './collapse.directive.module';

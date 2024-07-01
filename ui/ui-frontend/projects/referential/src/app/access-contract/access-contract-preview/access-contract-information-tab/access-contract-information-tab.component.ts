@@ -36,19 +36,53 @@
  */
 
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
 import { extend, isEmpty } from 'underscore';
-import { AccessContract, Option, diff } from 'vitamui-library';
+import {
+  AccessContract,
+  Option,
+  diff,
+  SlideToggleComponent,
+  VitamUICommonInputComponent,
+  PipesModule,
+  VitamUIInputErrorComponent,
+  VitamUITextareaComponent,
+} from 'vitamui-library';
 import { RULE_TYPES } from '../../../rule/rules.constants';
 import { AccessContractCreateValidators } from '../../access-contract-create/access-contract-create.validators';
 import { AccessContractService } from '../../access-contract.service';
+import { DateTimePipe } from '../../../../../../vitamui-library/src/app/modules/pipes/datetime.pipe';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatLegacyInputModule } from '@angular/material/legacy-input';
+import { MatLegacyOptionModule } from '@angular/material/legacy-core';
+import { MatLegacySelectModule } from '@angular/material/legacy-select';
+import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
+import { NgIf, NgFor } from '@angular/common';
 
 @Component({
   selector: 'app-access-contract-information-tab',
   templateUrl: './access-contract-information-tab.component.html',
   styleUrls: ['./access-contract-information-tab.component.scss'],
+  standalone: true,
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    SlideToggleComponent,
+    VitamUICommonInputComponent,
+    NgIf,
+    MatLegacyFormFieldModule,
+    MatLegacySelectModule,
+    NgFor,
+    MatLegacyOptionModule,
+    MatLegacyInputModule,
+    PipesModule,
+    TranslateModule,
+    DateTimePipe,
+    VitamUIInputErrorComponent,
+    VitamUITextareaComponent,
+  ],
 })
 export class AccessContractInformationTabComponent {
   @Input() set accessContract(accessContract: AccessContract) {

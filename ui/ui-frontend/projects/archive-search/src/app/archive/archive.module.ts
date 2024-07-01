@@ -55,8 +55,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatLegacyTabsModule as MatTabsModule } from '@angular/material/legacy-tabs';
 import { MatLegacyTooltipModule as MatTooltipModule } from '@angular/material/legacy-tooltip';
 import { MatTreeModule } from '@angular/material/tree';
-import { TableFilterModule, VitamUICommonModule } from 'vitamui-library';
-import { VitamUILibraryModule } from 'vitamui-library';
+import { VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 import { ArchivePreviewComponent } from './archive-preview/archive-preview.component';
 import { ArchiveUnitDescriptionTabComponent } from './archive-preview/archive-unit-description-tab/archive-unit-description-tab.component';
 import { ArchiveUnitInformationTabComponent } from './archive-preview/archive-unit-information-tab/archive-unit-information-tab.component';
@@ -99,7 +98,6 @@ import { CriteriaSearchComponent } from './criteria-search/criteria-search.compo
 import { ClassificationTreeComponent } from './filing-holding-scheme/classification-tree/classification-tree.component';
 import { FilingHoldingSchemeComponent } from './filing-holding-scheme/filing-holding-scheme.component';
 import { LeavesTreeComponent } from './filing-holding-scheme/leaves-tree/leaves-tree.component';
-import { SharedModule } from './shared/shared.module';
 
 @NgModule({
   imports: [
@@ -111,7 +109,6 @@ import { SharedModule } from './shared/shared.module';
     MatSidenavModule,
     MatTreeModule,
     ArchiveRoutingModule,
-    SharedModule,
     ReactiveFormsModule,
     MatDatepickerModule,
     MatButtonModule,
@@ -124,14 +121,11 @@ import { SharedModule } from './shared/shared.module';
     MatInputModule,
     MatSelectModule,
     MatProgressSpinnerModule,
-    TableFilterModule,
     VitamUILibraryModule,
     MatIconModule,
     MatTabsModule,
     MatRadioModule,
     CommonModule,
-  ],
-  declarations: [
     ArchiveComponent,
     LeavesTreeComponent,
     FilingHoldingSchemeComponent,

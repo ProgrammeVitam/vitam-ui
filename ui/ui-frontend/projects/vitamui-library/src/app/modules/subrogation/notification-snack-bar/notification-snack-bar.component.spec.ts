@@ -50,8 +50,7 @@ describe('NotificationSnackBarComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, TranslateModule.forRoot()],
-      declarations: [NotificationSnackBarComponent],
+      imports: [HttpClientTestingModule, TranslateModule.forRoot(), NotificationSnackBarComponent],
       providers: [
         { provide: WINDOW_LOCATION, useValue: {} },
         { provide: MAT_SNACK_BAR_DATA, useValue: {} },

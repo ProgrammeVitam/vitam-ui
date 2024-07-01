@@ -42,7 +42,7 @@ import { MatLegacyProgressBarModule as MatProgressBarModule } from '@angular/mat
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { TranslateModule } from '@ngx-translate/core';
 import { EMPTY, of } from 'rxjs';
-import { AuthService, ConfirmDialogService, LevelInputModule } from 'vitamui-library';
+import { AuthService, ConfirmDialogService, LevelInputComponent } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { HierarchyService } from '../hierarchy.service';
 import { HierarchyCreateComponent } from './hierarchy-create.component';
@@ -57,6 +57,8 @@ import { HierarchyCreateComponent } from './hierarchy-create.component';
       multi: true,
     },
   ],
+  standalone: true,
+  imports: [MatProgressBarModule, ReactiveFormsModule, VitamUICommonTestModule, LevelInputComponent],
 })
 class ProfilesFormStubComponent implements ControlValueAccessor {
   @Input() applicationNameExclude: string[];
@@ -80,10 +82,11 @@ describe('HierarchyCreateComponent', () => {
         ReactiveFormsModule,
         NoopAnimationsModule,
         VitamUICommonTestModule,
-        LevelInputModule,
+        LevelInputComponent,
         TranslateModule.forRoot(),
+        ProfilesFormStubComponent,
+        HierarchyCreateComponent,
       ],
-      declarations: [ProfilesFormStubComponent, HierarchyCreateComponent],
       providers: [
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MAT_DIALOG_DATA, useValue: { tenantId: 10 } },

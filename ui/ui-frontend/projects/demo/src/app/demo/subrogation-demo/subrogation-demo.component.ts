@@ -37,11 +37,14 @@
 import { Component } from '@angular/core';
 
 import { Subrogation, SubrogationModalService } from 'vitamui-library';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'demo-subrogation-demo',
   templateUrl: './subrogation-demo.component.html',
   styleUrls: ['./subrogation-demo.component.scss'],
+  standalone: true,
+  imports: [ReactiveFormsModule, FormsModule],
 })
 export class SubrogationDemoComponent {
   surrogateUser = 'julien@vitamui.com';

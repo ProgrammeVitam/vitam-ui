@@ -38,7 +38,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import {
@@ -51,15 +51,36 @@ import {
   SchemaService,
   SidenavPage,
   Unit,
+  ResizeSidebarDirective,
+  VitamuiTitleBreadcrumbComponent,
 } from 'vitamui-library';
 import { ArchiveSharedDataService } from '../core/archive-shared-data.service';
 import { ManagementRulesSharedDataService } from '../core/management-rules-shared-data.service';
 import { ArchiveService } from './archive.service';
+import { ArchiveSearchComponent } from './archive-search/archive-search.component';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { ArchivePreviewComponent } from './archive-preview/archive-preview.component';
+import { FilingHoldingSchemeComponent } from './filing-holding-scheme/filing-holding-scheme.component';
+import { NgIf, NgClass } from '@angular/common';
+import { MatSidenavModule } from '@angular/material/sidenav';
 
 @Component({
   selector: 'app-archive',
   templateUrl: './archive.component.html',
   styleUrls: ['./archive.component.scss'],
+  standalone: true,
+  imports: [
+    MatSidenavModule,
+    NgIf,
+    ResizeSidebarDirective,
+    FilingHoldingSchemeComponent,
+    NgClass,
+    ArchivePreviewComponent,
+    VitamuiTitleBreadcrumbComponent,
+    MatLegacyTooltipModule,
+    ArchiveSearchComponent,
+    TranslateModule,
+  ],
 })
 export class ArchiveComponent extends SidenavPage<any> implements OnInit, OnDestroy {
   show = true;

@@ -35,19 +35,50 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
 import { Subscription } from 'rxjs';
-import { AuthService, ConfirmDialogService, buildValidators, collapseAnimation, rotateAnimation } from 'vitamui-library';
+import {
+  AuthService,
+  ConfirmDialogService,
+  buildValidators,
+  collapseAnimation,
+  rotateAnimation,
+  CommonProgressBarComponent,
+  StepperComponent,
+  SlideToggleComponent,
+  VitamUICommonInputComponent,
+  LevelInputComponent,
+} from 'vitamui-library';
 
 import { GroupService } from '../group.service';
 import { GroupValidators } from '../group.validators';
+import { TranslateModule } from '@ngx-translate/core';
+import { UnitsFormComponent } from '../units-form/units-form.component';
+import { ProfilesFormComponent } from '../../shared/profiles-form/profiles-form.component';
+import { NgIf, NgClass } from '@angular/common';
+import { CdkStepperModule } from '@angular/cdk/stepper';
 
 @Component({
   selector: 'app-group-create',
   templateUrl: './group-create.component.html',
   styleUrls: ['./group-create.component.scss'],
   animations: [collapseAnimation, rotateAnimation],
+  standalone: true,
+  imports: [
+    CommonProgressBarComponent,
+    ReactiveFormsModule,
+    StepperComponent,
+    CdkStepperModule,
+    SlideToggleComponent,
+    NgIf,
+    VitamUICommonInputComponent,
+    LevelInputComponent,
+    NgClass,
+    ProfilesFormComponent,
+    UnitsFormComponent,
+    TranslateModule,
+  ],
 })
 export class GroupCreateComponent implements OnInit, OnDestroy {
   form: FormGroup;

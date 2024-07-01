@@ -51,19 +51,33 @@ import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { HierarchyService } from '../hierarchy.service';
 import { HierarchyDetailComponent } from './hierarchy-detail.component';
 
-@Component({ selector: 'app-information-tab', template: '' })
+@Component({
+  selector: 'app-information-tab',
+  template: '',
+  standalone: true,
+  imports: [MatMenuModule, MatTabsModule, HttpClientTestingModule, VitamUICommonTestModule],
+})
 class InformationTabStubComponent {
   @Input() profile: Profile;
   @Input() readOnly: boolean;
 }
 
-@Component({ selector: 'app-side-panel', template: `<ng-content></ng-content>` })
+@Component({
+  selector: 'app-side-panel',
+  template: `<ng-content></ng-content>`,
+  standalone: true,
+  imports: [MatMenuModule, MatTabsModule, HttpClientTestingModule, VitamUICommonTestModule],
+})
 class SidePanelStubComponent {
   @Input() popup: boolean;
   @Input() popupUrl: string;
 }
 
-@Component({ template: '<app-hierarchy-detail [profile]="profile" [isPopup]="isPopup"></app-hierarchy-detail>' })
+@Component({
+  template: '<app-hierarchy-detail [profile]="profile" [isPopup]="isPopup"></app-hierarchy-detail>',
+  standalone: true,
+  imports: [MatMenuModule, MatTabsModule, HttpClientTestingModule, VitamUICommonTestModule],
+})
 class TestHostComponent {
   profile: any;
   isPopup = false;
@@ -123,8 +137,11 @@ describe('HierarchyDetailComponent', () => {
         HttpClientTestingModule,
         LoggerModule.forRoot(),
         VitamUICommonTestModule,
+        TestHostComponent,
+        HierarchyDetailComponent,
+        SidePanelStubComponent,
+        InformationTabStubComponent,
       ],
-      declarations: [TestHostComponent, HierarchyDetailComponent, SidePanelStubComponent, InformationTabStubComponent],
       providers: [
         { provide: ActivatedRoute, useValue: { data: of({ isPopup: true, profile: expectedProfile }) } },
         { provide: HierarchyService, useValue: { updated: new Subject() } },

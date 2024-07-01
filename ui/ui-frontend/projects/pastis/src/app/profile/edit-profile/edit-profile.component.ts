@@ -37,9 +37,9 @@ The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
 import { NestedTreeControl } from '@angular/cdk/tree';
-import { MatLegacyTabChangeEvent as MatTabChangeEvent } from '@angular/material/legacy-tabs';
+import { MatLegacyTabChangeEvent as MatTabChangeEvent, MatLegacyTabsModule } from '@angular/material/legacy-tabs';
 import { MatTreeNestedDataSource } from '@angular/material/tree';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { environment } from '../../../environments/environment';
@@ -52,6 +52,7 @@ import { ProfileType } from '../../models/profile-type.enum';
 import { SedaData } from '../../models/seda-data';
 import { FileTreeComponent } from './file-tree/file-tree.component';
 import { FileTreeService } from './file-tree/file-tree.service';
+import { NgIf } from '@angular/common';
 
 const EDIT_PROFILE_TRANSLATE_PATH = 'PROFILE.EDIT_PROFILE';
 
@@ -65,6 +66,8 @@ export interface UploadedProfileResponse {
   selector: 'pastis-edit-profile',
   templateUrl: './edit-profile.component.html',
   styleUrls: ['./edit-profile.component.scss'],
+  standalone: true,
+  imports: [NgIf, MatLegacyTabsModule, FileTreeComponent, TranslateModule],
 })
 export class EditProfileComponent implements OnDestroy, AfterViewInit {
   nodeToSend: FileNode;

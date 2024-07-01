@@ -43,6 +43,10 @@ import { Customer, DownloadUtils, IdentityProvider } from 'vitamui-library';
 import { IdentityProviderCreateComponent } from './identity-provider-create/identity-provider-create.component';
 import { IdentityProviderService } from './identity-provider.service';
 import { ProviderApiService } from './provider-api.service';
+import { TranslateModule } from '@ngx-translate/core';
+import { IdentityProviderDetailsComponent } from './identity-provider-details/identity-provider-details.component';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { NgIf, NgFor } from '@angular/common';
 
 @Component({
   selector: 'app-sso-tab',
@@ -65,6 +69,8 @@ import { ProviderApiService } from './provider-api.service';
       transition(':leave', [animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)', style({ transform: 'translate3d(100%, 0, 0)' }))]),
     ]),
   ],
+  standalone: true,
+  imports: [NgIf, MatLegacyTooltipModule, NgFor, IdentityProviderDetailsComponent, TranslateModule],
 })
 export class SsoTabComponent implements OnDestroy, OnInit {
   providers: IdentityProvider[];

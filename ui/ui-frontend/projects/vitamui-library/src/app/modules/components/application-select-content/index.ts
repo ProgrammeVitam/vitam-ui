@@ -35,4 +35,3 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 export * from './application-select-content.component';
-export * from './application-select-content.module';

@@ -56,7 +56,10 @@ import { VitamUISnackBar } from '../../shared/vitamui-snack-bar/vitamui-snack-ba
 import { SearchCriteriaListComponent } from './search-criteria-list.component';
 import { SearchCriteriaListService } from './search-criteria-list.service';
 
-@Pipe({ name: 'truncate' })
+@Pipe({
+  name: 'truncate',
+  standalone: true,
+})
 class MockTruncatePipe implements PipeTransform {
   transform(value: number): number {
     return value;
@@ -97,8 +100,9 @@ describe('SearchCriteriaListComponent', () => {
           loader: { provide: TranslateLoader, useClass: FakeLoader },
         }),
         RouterTestingModule,
+        SearchCriteriaListComponent,
+        MockTruncatePipe,
       ],
-      declarations: [SearchCriteriaListComponent, MockTruncatePipe],
       providers: [
         ArchiveSharedDataService,
         DatePipe,

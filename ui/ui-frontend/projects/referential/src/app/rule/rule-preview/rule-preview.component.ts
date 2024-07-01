@@ -40,15 +40,19 @@ import {
   MatLegacyTab as MatTab,
   MatLegacyTabGroup as MatTabGroup,
   MatLegacyTabHeader as MatTabHeader,
+  MatLegacyTabsModule,
 } from '@angular/material/legacy-tabs';
-import { ConfirmActionComponent, Rule, RuleService } from 'vitamui-library';
+import { ConfirmActionComponent, Rule, RuleService, VitamuiSidenavHeaderComponent, HistoryModule } from 'vitamui-library';
 import { RuleInformationTabComponent } from './rule-information-tab/rule-information-tab.component';
 import { switchMap } from 'rxjs/operators';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-rule-preview',
   templateUrl: './rule-preview.component.html',
   styleUrls: ['./rule-preview.component.scss'],
+  standalone: true,
+  imports: [VitamuiSidenavHeaderComponent, MatLegacyTabsModule, RuleInformationTabComponent, HistoryModule, TranslateModule],
 })
 export class RulePreviewComponent implements AfterViewInit {
   @Output() previewClose: EventEmitter<any> = new EventEmitter();

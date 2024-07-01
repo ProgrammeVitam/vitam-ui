@@ -70,8 +70,8 @@ describe('SecurisationComponent', () => {
         InjectorModule,
         TranslateModule.forRoot(),
         LoggerModule.forRoot(),
+        SecurisationComponent,
       ],
-      declarations: [SecurisationComponent],
       providers: [
         FormBuilder,
         GlobalEventService,

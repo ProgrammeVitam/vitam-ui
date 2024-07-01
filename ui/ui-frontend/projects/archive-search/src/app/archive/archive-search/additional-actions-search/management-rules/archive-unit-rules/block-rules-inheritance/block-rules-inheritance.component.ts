@@ -26,20 +26,45 @@
  */
 
 import { Component, EventEmitter, Input, OnDestroy, Output, TemplateRef, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { MatLegacyDialog as MatDialog, MatLegacyDialogModule } from '@angular/material/legacy-dialog';
 import { ManagementRulesSharedDataService } from 'projects/archive-search/src/app/core/management-rules-shared-data.service';
 import { merge, Subscription } from 'rxjs';
 import { debounceTime, filter, map } from 'rxjs/operators';
-import { diff, ManagementRuleValidators, Rule, RuleService, SearchCriteriaDto } from 'vitamui-library';
+import {
+  diff,
+  ManagementRuleValidators,
+  Rule,
+  RuleService,
+  SearchCriteriaDto,
+  EditableFieldComponent,
+  VitamUIFieldErrorComponent,
+  VitamUICommonInputComponent,
+  VitamUIInputErrorComponent,
+  EditableInputComponent,
+} from 'vitamui-library';
 import { ArchiveSearchConstsEnum } from '../../../../../models/archive-search-consts-enum';
 import { ManagementRules, RuleAction, RuleActionsEnum, RuleCategoryAction } from '../../../../../models/ruleAction.interface';
 import { ManagementRulesValidatorService } from '../../../../../validators/management-rules-validator.service';
+import { TranslateModule } from '@ngx-translate/core';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-block-rules-inheritance',
   templateUrl: './block-rules-inheritance.component.html',
   styleUrls: ['./block-rules-inheritance.component.css'],
+  standalone: true,
+  imports: [
+    ReactiveFormsModule,
+    EditableFieldComponent,
+    VitamUIFieldErrorComponent,
+    VitamUICommonInputComponent,
+    NgIf,
+    MatLegacyDialogModule,
+    TranslateModule,
+    VitamUIInputErrorComponent,
+    EditableInputComponent,
+  ],
 })
 export class BlockRulesInheritanceComponent implements OnDestroy {
   @Input()

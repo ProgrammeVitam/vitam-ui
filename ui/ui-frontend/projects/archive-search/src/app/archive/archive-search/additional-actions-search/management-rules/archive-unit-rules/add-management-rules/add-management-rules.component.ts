@@ -36,9 +36,9 @@
  */
 
 import { Component, EventEmitter, Input, OnDestroy, Output, TemplateRef, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
-import { TranslateService } from '@ngx-translate/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MatLegacyDialog as MatDialog, MatLegacyDialogModule } from '@angular/material/legacy-dialog';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { cloneDeep } from 'lodash-es';
 import { merge, Subscription } from 'rxjs';
 import { debounceTime, filter, map } from 'rxjs/operators';
@@ -46,11 +46,17 @@ import {
   CriteriaDataType,
   CriteriaOperator,
   diff,
+  EditableFieldComponent,
+  EditableInputComponent,
   ManagementRuleValidators,
+  PipesModule,
   Rule,
   RuleService,
   SearchCriteriaDto,
   SearchCriteriaEltDto,
+  VitamUICommonInputComponent,
+  VitamUIFieldErrorComponent,
+  VitamUIInputErrorComponent,
 } from 'vitamui-library';
 import { ManagementRulesSharedDataService } from '../../../../../../core/management-rules-shared-data.service';
 import { ArchiveService } from '../../../../../archive.service';
@@ -58,6 +64,10 @@ import { UpdateUnitManagementRuleService } from '../../../../../common-services/
 import { ArchiveSearchConstsEnum } from '../../../../../models/archive-search-consts-enum';
 import { ManagementRules, RuleAction, RuleActionsEnum, RuleCategoryAction } from '../../../../../models/ruleAction.interface';
 import { ManagementRulesValidatorService } from '../../../../../validators/management-rules-validator.service';
+import { MatLegacyProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
+import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { NgIf, NgStyle } from '@angular/common';
 
 const MANAGEMENT_RULE_IDENTIFIER = 'MANAGEMENT_RULE_IDENTIFIER';
 const MANAGEMENT_RULE_START_DATE = 'MANAGEMENT_RULE_START_DATE';
@@ -67,6 +77,23 @@ const ORIGIN_HAS_AT_LEAST_ONE = 'ORIGIN_HAS_AT_LEAST_ONE';
   selector: 'app-add-management-rules',
   templateUrl: './add-management-rules.component.html',
   styleUrls: ['./add-management-rules.component.css'],
+  standalone: true,
+  imports: [
+    ReactiveFormsModule,
+    EditableFieldComponent,
+    VitamUIFieldErrorComponent,
+    VitamUICommonInputComponent,
+    NgIf,
+    MatDatepickerModule,
+    MatLegacyButtonModule,
+    NgStyle,
+    MatLegacyDialogModule,
+    MatLegacyProgressSpinnerModule,
+    PipesModule,
+    TranslateModule,
+    EditableInputComponent,
+    VitamUIInputErrorComponent,
+  ],
 })
 export class AddManagementRulesComponent implements OnDestroy {
   @Output() delete = new EventEmitter<any>();

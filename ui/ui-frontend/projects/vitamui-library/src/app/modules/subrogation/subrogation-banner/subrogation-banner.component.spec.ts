@@ -50,8 +50,7 @@ describe('SubrogationBannerComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MatDialogModule, VitamUICommonTestModule],
-      declarations: [SubrogationBannerComponent],
+      imports: [MatDialogModule, VitamUICommonTestModule, SubrogationBannerComponent],
       providers: [
         { provide: AuthService, useValue: { user$: of(EMPTY) } },
         { provide: SubrogationService, useValue: { getCurrent: () => of(null), stop: () => of(null) } },

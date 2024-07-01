@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
-import { CdkVirtualScrollViewport, ScrollDispatcher } from '@angular/cdk/scrolling';
+import { CdkVirtualScrollViewport, ScrollDispatcher, CdkFixedSizeVirtualScroll, CdkVirtualForOf } from '@angular/cdk/scrolling';
 import {
   AfterViewChecked,
   AfterViewInit,
@@ -57,14 +57,26 @@ import {
   NG_VALUE_ACCESSOR,
   ValidationErrors,
   Validator,
+  FormsModule,
+  ReactiveFormsModule,
 } from '@angular/forms';
-import { MatLegacyOption as MatOption, MatLegacyOptionSelectionChange as MatOptionSelectionChange } from '@angular/material/legacy-core';
-import { MatLegacySelect as MatSelect } from '@angular/material/legacy-select';
+import {
+  MatLegacyOption as MatOption,
+  MatLegacyOptionSelectionChange as MatOptionSelectionChange,
+  MatLegacyOptionModule,
+} from '@angular/material/legacy-core';
+import { MatLegacySelect as MatSelect, MatLegacySelectModule } from '@angular/material/legacy-select';
 import { merge } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { SearchBarComponent } from '../../search-bar/search-bar.component';
 import { Option } from '../utils/option.interface';
 import { VitamuiAutocompleteMultiselectOptions } from '../utils/vitamui-autocomplete-multiselect-options.interface';
+import { HighlightPipe } from '../../../pipes/highlight.pipe';
+import { TranslateModule } from '@ngx-translate/core';
+import { EllipsisDirective } from '../../../directives/ellipsis/ellipsis.directive';
+import { MatDividerModule } from '@angular/material/divider';
+import { NgIf, I18nPluralPipe } from '@angular/common';
+import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
 
 export const VITAMUI_MULTISELECT_AUTOCOMPLETE_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -84,6 +96,24 @@ export const VITAMUI_MULTISELECT_AUTOCOMPLETE_NG_VALIDATORS: any = {
   styleUrls: ['./vitamui-autocomplete-multi-select.component.scss'],
   providers: [VITAMUI_MULTISELECT_AUTOCOMPLETE_VALUE_ACCESSOR, VITAMUI_MULTISELECT_AUTOCOMPLETE_NG_VALIDATORS],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [
+    MatLegacyFormFieldModule,
+    NgIf,
+    MatLegacySelectModule,
+    FormsModule,
+    ReactiveFormsModule,
+    CdkVirtualScrollViewport,
+    CdkFixedSizeVirtualScroll,
+    SearchBarComponent,
+    MatLegacyOptionModule,
+    MatDividerModule,
+    CdkVirtualForOf,
+    EllipsisDirective,
+    I18nPluralPipe,
+    TranslateModule,
+    HighlightPipe,
+  ],
 })
 export class VitamUIAutocompleteMultiSelectComponent implements ControlValueAccessor, Validator, AfterViewInit, AfterViewChecked {
   public nbSelectedItemsMap: { [k: string]: string } = {

@@ -40,6 +40,7 @@ import { Directive, ElementRef, HostListener, Inject, Input, OnInit } from '@ang
 @Directive({
   // eslint-disable-next-line @angular-eslint/directive-selector
   selector: '[vitamuiVerticalResizeSidebar]',
+  standalone: true,
 })
 export class ResizeVerticalDirective implements OnInit {
   @Input('vitamuiVerticalResizeSidebar') orientation: 'top' | 'bottom' = 'top';

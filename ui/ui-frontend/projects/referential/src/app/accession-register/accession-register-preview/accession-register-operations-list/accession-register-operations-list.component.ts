@@ -26,8 +26,18 @@
  */
 import { animate, AUTO_STYLE, state, style, transition, trigger } from '@angular/animations';
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
-import { Direction, RegisterValueEventModel, RegisterValueEventType } from 'vitamui-library';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
+import {
+  Direction,
+  RegisterValueEventModel,
+  RegisterValueEventType,
+  TableFilterComponent,
+  OrderByButtonComponent,
+  TableFilterOptionComponent,
+  TableFilterDirective,
+} from 'vitamui-library';
+import { AccessionRegisterOperationComponent } from './accession-register-operation/accession-register-operation.component';
+import { NgFor } from '@angular/common';
 
 @Component({
   selector: 'app-accession-register-operations-list',
@@ -40,6 +50,16 @@ import { Direction, RegisterValueEventModel, RegisterValueEventType } from 'vita
       transition('false => true', animate(300 + 'ms ease-in')),
       transition('true => false', animate(300 + 'ms ease-out')),
     ]),
+  ],
+  standalone: true,
+  imports: [
+    TableFilterComponent,
+    NgFor,
+    OrderByButtonComponent,
+    AccessionRegisterOperationComponent,
+    TranslateModule,
+    TableFilterOptionComponent,
+    TableFilterDirective,
   ],
 })
 export class AccessionRegisterOperationsListComponent implements OnChanges {

@@ -37,8 +37,9 @@
 
 import { animate, AUTO_STYLE, state, style, transition, trigger } from '@angular/animations';
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
-import { InheritedPropertyDto, Logger, RuleActionDetails, Unit, UnitRuleDto } from 'vitamui-library';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
+import { InheritedPropertyDto, Logger, RuleActionDetails, Unit, UnitRuleDto, PipesModule } from 'vitamui-library';
+import { NgIf, NgFor, NgClass } from '@angular/common';
 
 @Component({
   selector: 'app-archive-unit-rules-informations-tab',
@@ -52,6 +53,8 @@ import { InheritedPropertyDto, Logger, RuleActionDetails, Unit, UnitRuleDto } fr
       transition('true => false', animate(300 + 'ms ease-out')),
     ]),
   ],
+  standalone: true,
+  imports: [NgIf, NgFor, NgClass, PipesModule, TranslateModule],
 })
 export class ArchiveUnitRulesInformationsTabComponent implements OnChanges {
   @Input()

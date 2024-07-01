@@ -1,5 +1,5 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { Subscription, merge } from 'rxjs';
 import { debounceTime, filter, map } from 'rxjs/operators';
@@ -12,10 +12,18 @@ import {
   SearchCriteriaEltDto,
   SearchCriteriaTypeEnum,
   diff,
+  EditableFieldComponent,
+  VitamUIFieldErrorComponent,
+  PipesModule,
+  EditableInputComponent,
 } from 'vitamui-library';
 import { ArchiveSharedDataService } from '../../../../core/archive-shared-data.service';
 import { ArchiveSearchConstsEnum } from '../../../models/archive-search-consts-enum';
 import { RuleValidator } from '../../rule.validator';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { NgIf } from '@angular/common';
 
 const RULE_TYPE_SUFFIX = '_APPRAISAL_RULE';
 
@@ -43,6 +51,18 @@ const ELIMINATION_TECHNICAL_ID = 'ELIMINATION_TECHNICAL_ID';
   selector: 'app-appraisal-rule-search',
   templateUrl: './appraisal-rule-search.component.html',
   styleUrls: ['./appraisal-rule-search.component.css'],
+  standalone: true,
+  imports: [
+    ReactiveFormsModule,
+    EditableFieldComponent,
+    VitamUIFieldErrorComponent,
+    NgIf,
+    MatDatepickerModule,
+    MatLegacyButtonModule,
+    PipesModule,
+    TranslateModule,
+    EditableInputComponent,
+  ],
 })
 export class AppraisalRuleSearchComponent implements OnInit, OnDestroy {
   @Input()

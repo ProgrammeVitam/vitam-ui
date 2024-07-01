@@ -37,16 +37,21 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
 import { ActivatedRoute } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import { Subject } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
-import { ExternalParameters, ExternalParametersService } from 'vitamui-library';
+import { ExternalParameters, ExternalParametersService, VitamuiSidenavHeaderComponent, PipesModule } from 'vitamui-library';
 import { ProbativeValueService } from '../probative-value.service';
+import { TruncatePipe } from '../../../../../vitamui-library/src/app/modules/pipes/truncate.pipe';
+import { EventTypeBadgeClassPipe } from '../../shared/pipes/event-type-badge-class.pipe';
+import { SlicePipe } from '@angular/common';
 
 @Component({
   selector: 'app-probative-value-preview',
   templateUrl: './probative-value-preview.component.html',
   styleUrls: ['./probative-value-preview.component.scss'],
+  standalone: true,
+  imports: [VitamuiSidenavHeaderComponent, SlicePipe, PipesModule, TranslateModule, EventTypeBadgeClassPipe, TruncatePipe],
 })
 export class ProbativeValuePreviewComponent implements OnInit, OnDestroy {
   @Input() probativeValue: any;

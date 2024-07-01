@@ -51,6 +51,8 @@ import {
   Profile,
   SubrogationModalService,
   SubrogationUser,
+  InfiniteScrollDirective,
+  EllipsisDirective,
 } from 'vitamui-library';
 
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
@@ -58,6 +60,9 @@ import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { ActivatedRoute } from '@angular/router';
 
 import { SubrogationService } from '../../subrogation.service';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatLegacyProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
+import { NgFor, NgClass, NgSwitch, NgSwitchCase, NgIf } from '@angular/common';
 
 const MINIMUM_CRITICALITY = 0;
 const AVERAGE_CRITICALITY = 1;
@@ -67,6 +72,18 @@ const MAXIMUM_CRITICALITY = 2;
   selector: 'app-subrogate-user-list',
   templateUrl: './subrogate-user-list.component.html',
   styleUrls: ['./subrogate-user-list.component.scss'],
+  standalone: true,
+  imports: [
+    InfiniteScrollDirective,
+    NgFor,
+    NgClass,
+    EllipsisDirective,
+    NgSwitch,
+    NgSwitchCase,
+    NgIf,
+    MatLegacyProgressSpinnerModule,
+    TranslateModule,
+  ],
 })
 export class SubrogateUserListComponent extends InfiniteScrollTable<SubrogationUser> implements OnDestroy, OnInit {
   @Input() emailDomains: string[];

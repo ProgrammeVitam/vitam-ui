@@ -50,14 +50,24 @@ import { AgencyComponent } from './agency.component';
 import { AgencyService } from './agency.service';
 import { TranslateModule } from '@ngx-translate/core';
 
-@Component({ selector: 'app-agency-preview', template: '' })
+@Component({
+  selector: 'app-agency-preview',
+  template: '',
+  standalone: true,
+  imports: [VitamUICommonTestModule, RouterTestingModule, InjectorModule, MatSidenavModule, MatDialogModule, MatMenuModule],
+})
 // eslint-disable-next-line @angular-eslint/component-class-suffix
 class AgencyPreviewStub {
   @Input()
   accessContract: any;
 }
 
-@Component({ selector: 'app-agency-list', template: '' })
+@Component({
+  selector: 'app-agency-list',
+  template: '',
+  standalone: true,
+  imports: [VitamUICommonTestModule, RouterTestingModule, InjectorModule, MatSidenavModule, MatDialogModule, MatMenuModule],
+})
 // eslint-disable-next-line @angular-eslint/component-class-suffix
 class AgencyListStub {}
 
@@ -71,7 +81,6 @@ describe('AgencyComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [AgencyComponent, AgencyListStub, AgencyPreviewStub],
       imports: [
         VitamUICommonTestModule,
         RouterTestingModule,
@@ -82,6 +91,9 @@ describe('AgencyComponent', () => {
         MatSidenavModule,
         MatDialogModule,
         MatMenuModule,
+        AgencyComponent,
+        AgencyListStub,
+        AgencyPreviewStub,
       ],
       providers: [
         { provide: AgencyService, useValue: {} },

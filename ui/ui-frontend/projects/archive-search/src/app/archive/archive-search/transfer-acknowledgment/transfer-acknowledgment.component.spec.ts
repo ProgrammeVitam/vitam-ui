@@ -49,7 +49,10 @@ class FakeLoader implements TranslateLoader {
   }
 }
 
-@Pipe({ name: 'dateTime' })
+@Pipe({
+  name: 'dateTime',
+  standalone: true,
+})
 export class MockDateTimePipe implements PipeTransform {
   transform(value: string = ''): any {
     return value;
@@ -84,9 +87,9 @@ describe('TransferAcknowledgmentComponent', () => {
         }),
         MatSnackBarModule,
         HttpClientTestingModule,
+        TransferAcknowledgmentComponent,
+        MockDateTimePipe,
       ],
-
-      declarations: [TransferAcknowledgmentComponent, MockDateTimePipe],
       providers: [
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: MatDialogRef, useValue: matDialogRefSpy },

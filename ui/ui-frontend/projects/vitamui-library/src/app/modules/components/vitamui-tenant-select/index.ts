@@ -35,4 +35,3 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 export * from './vitamui-tenant-select.component';
-export * from './vitamui-tenant-select.module';

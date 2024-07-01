@@ -35,4 +35,3 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 export * from './vitamui-list-input.component';
-export * from './vitamui-list-input.module';

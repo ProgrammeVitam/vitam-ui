@@ -35,11 +35,14 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, ValidatorFn, Validators, ReactiveFormsModule } from '@angular/forms';
 import { MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
 import { Subject } from 'rxjs';
-import { Customer, Logo, Theme, ThemeColorType, ThemeService } from 'vitamui-library';
+import { Customer, Logo, Theme, ThemeColorType, ThemeService, SlideToggleComponent } from 'vitamui-library';
 import { LogosSafeResourceUrl } from './../logos-safe-resource-url.interface';
+import { TranslateModule } from '@ngx-translate/core';
+import { GraphicIdentityFormComponent } from './graphic-identity-form/graphic-identity-form.component';
+import { NgIf } from '@angular/common';
 
 interface ThemeColorGroup {
   [ThemeColorType.VITAMUI_PRIMARY]: FormControl<string>;
@@ -53,6 +56,8 @@ interface ThemeColorGroup {
   selector: 'app-graphic-identity',
   templateUrl: './graphic-identity.component.html',
   styleUrls: ['./graphic-identity.component.scss'],
+  standalone: true,
+  imports: [SlideToggleComponent, ReactiveFormsModule, NgIf, GraphicIdentityFormComponent, TranslateModule],
 })
 export class GraphicIdentityComponent implements OnInit, OnDestroy {
   private hexValidator: ValidatorFn = Validators.pattern(/#([0-9A-Fa-f]{6})/);

@@ -36,6 +36,7 @@
  */
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { LogbookOperationDetailComponent } from './logbook-operation-detail.component';
 
 @Component({
   selector: 'app-logbook-operation-popup',
@@ -47,6 +48,8 @@ import { ActivatedRoute } from '@angular/router';
       [isPopup]="true"
     ></app-logbook-operation-detail>
   `,
+  standalone: true,
+  imports: [LogbookOperationDetailComponent],
 })
 export class LogbookOperationPopupComponent implements OnInit {
   eventId: string;

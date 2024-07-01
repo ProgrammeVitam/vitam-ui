@@ -41,6 +41,7 @@ import { ActivatedRoute } from '@angular/router';
   selector: 'demo-guarded-page',
   templateUrl: './guarded-page.component.html',
   styleUrls: ['./guarded-page.component.scss'],
+  standalone: true,
 })
 export class GuardedPageComponent {
   appId: string;

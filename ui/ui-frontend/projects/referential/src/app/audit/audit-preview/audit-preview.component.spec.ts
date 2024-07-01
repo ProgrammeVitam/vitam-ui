@@ -43,7 +43,10 @@ import { AuditPreviewComponent } from './audit-preview.component';
 import { AuditService } from '../audit.service';
 import { PipesModule } from '../../shared/pipes/pipes.module';
 
-@Pipe({ name: 'truncate' })
+@Pipe({
+  name: 'truncate',
+  standalone: true,
+})
 class MockTruncatePipe implements PipeTransform {
   transform(value: number): number {
     return value;
@@ -63,13 +66,12 @@ describe('AuditPreviewComponent', () => {
     const snackBarSpy = jasmine.createSpyObj(['open']);
 
     await TestBed.configureTestingModule({
-      declarations: [AuditPreviewComponent, MockTruncatePipe],
       providers: [
         { provide: AuditService, useValue: {} },
         { provide: ExternalParametersService, useValue: externalParametersServiceMock },
         { provide: VitamUISnackBarService, useValue: snackBarSpy },
       ],
-      imports: [PipesModule, TranslateModule.forRoot()],
+      imports: [PipesModule, TranslateModule.forRoot(), AuditPreviewComponent, MockTruncatePipe],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
   });

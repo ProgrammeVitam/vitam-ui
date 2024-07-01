@@ -44,11 +44,14 @@ import { Logger } from '../../../logger/logger';
 import { Application } from '../../../models/application/application.interface';
 import { BreadCrumbData } from '../../../models/breadcrumb/breadcrumb.interface';
 import { StartupService } from '../../../startup.service';
+import { VitamuiBreadcrumbComponent } from '../vitamui-breadcrumb/vitamui-breadcrumb.component';
 
 @Component({
   selector: 'vitamui-common-title-breadcrumb',
   templateUrl: './vitamui-title-breadcrumb.component.html',
   styleUrls: ['./vitamui-title-breadcrumb.component.scss'],
+  standalone: true,
+  imports: [VitamuiBreadcrumbComponent],
 })
 export class VitamuiTitleBreadcrumbComponent {
   @Input()

@@ -35,16 +35,35 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { extend, isEmpty } from 'underscore';
-import { ExternalParamProfile, diff } from 'vitamui-library';
+import { ExternalParamProfile, diff, SlideToggleComponent } from 'vitamui-library';
 import { ExternalParamProfileService } from '../../external-param-profile.service';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { MatLegacyOptionModule } from '@angular/material/legacy-core';
+import { MatLegacySelectModule } from '@angular/material/legacy-select';
+import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
+import { NgIf, NgFor, DecimalPipe } from '@angular/common';
 
 @Component({
   selector: 'app-thresholds-tab',
   templateUrl: './thresholds-tab.component.html',
   styleUrls: ['./thresholds-tab.component.css'],
+  standalone: true,
+  imports: [
+    ReactiveFormsModule,
+    SlideToggleComponent,
+    NgIf,
+    MatLegacyFormFieldModule,
+    MatLegacySelectModule,
+    NgFor,
+    MatLegacyOptionModule,
+    MatLegacyTooltipModule,
+    DecimalPipe,
+    TranslateModule,
+  ],
 })
 export class ThresholdsTabComponent implements OnDestroy, OnInit, OnChanges {
   constructor(

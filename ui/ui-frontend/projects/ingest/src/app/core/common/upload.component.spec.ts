@@ -57,8 +57,7 @@ describe('UploadComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MatProgressBarModule, MatSnackBarModule, LoggerModule.forRoot(), TranslateModule.forRoot()],
-      declarations: [UploadComponent],
+      imports: [MatProgressBarModule, MatSnackBarModule, LoggerModule.forRoot(), TranslateModule.forRoot(), UploadComponent],
       providers: [
         FormBuilder,
         { provide: MatDialogRef, useValue: matDialogRefSpy },

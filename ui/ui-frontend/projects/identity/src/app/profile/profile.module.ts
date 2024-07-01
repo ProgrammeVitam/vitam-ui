@@ -42,13 +42,8 @@ import { MatLegacyMenuModule as MatMenuModule } from '@angular/material/legacy-m
 import { MatLegacyProgressBarModule as MatProgressBarModule } from '@angular/material/legacy-progress-bar';
 import { MatSidenavModule } from '@angular/material/sidenav';
 
-import { LevelInputModule, VitamUICommonModule } from 'vitamui-library';
+import { LevelInputComponent, VitamUICommonModule } from 'vitamui-library';
 
-import { SharedModule } from '../shared/shared.module';
-import { GroupAttributionModule } from '../user/group-attribution/group-attribution.module';
-import { ProfileCreateModule } from './profile-create/profile-create.module';
-import { ProfileDetailModule } from './profile-detail/profile-detail.module';
-import { ProfileListModule } from './profile-list/profile-list.module';
 import { ProfileRoutingModule } from './profile-routing.module';
 import { ProfileComponent } from './profile.component';
 
@@ -56,19 +51,14 @@ import { ProfileComponent } from './profile.component';
   imports: [
     CommonModule,
     VitamUICommonModule,
-    SharedModule,
     MatButtonToggleModule,
     MatMenuModule,
-    ProfileListModule,
-    ProfileDetailModule,
     MatProgressBarModule,
     ReactiveFormsModule,
-    ProfileCreateModule,
-    GroupAttributionModule,
-    LevelInputModule,
+    LevelInputComponent,
     MatSidenavModule,
     ProfileRoutingModule,
+    ProfileComponent,
   ],
-  declarations: [ProfileComponent],
 })
 export class ProfileModule {}

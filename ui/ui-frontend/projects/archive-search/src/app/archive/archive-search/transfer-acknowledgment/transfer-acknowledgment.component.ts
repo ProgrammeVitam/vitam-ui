@@ -32,12 +32,25 @@ import {
   MatLegacyDialog as MatDialog,
   MatLegacyDialogRef as MatDialogRef,
   MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA,
+  MatLegacyDialogModule,
 } from '@angular/material/legacy-dialog';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
-import { BytesPipe, Logger, StartupService } from 'vitamui-library';
+import {
+  BytesPipe,
+  Logger,
+  StartupService,
+  CommonProgressBarComponent,
+  StepperComponent,
+  DragAndDropDirective,
+  PipesModule,
+} from 'vitamui-library';
 import { ArchiveService } from '../../archive.service';
 import { XMLParser } from 'fast-xml-parser';
+import { MatLegacyProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
+import { NgIf, NgSwitch, NgSwitchCase, NgClass } from '@angular/common';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { CdkStepperModule } from '@angular/cdk/stepper';
 
 const FILE_MAX_SIZE = 10737418240;
 const ATR_EXTENSION = '.xml';
@@ -46,6 +59,22 @@ const ATR_EXTENSION = '.xml';
   selector: 'app-transfer-acknowledgment',
   templateUrl: './transfer-acknowledgment.component.html',
   styleUrls: ['./transfer-acknowledgment.component.scss'],
+  standalone: true,
+  imports: [
+    CommonProgressBarComponent,
+    StepperComponent,
+    CdkStepperModule,
+    MatLegacyTooltipModule,
+    NgIf,
+    MatLegacyDialogModule,
+    MatLegacyProgressSpinnerModule,
+    NgSwitch,
+    NgSwitchCase,
+    DragAndDropDirective,
+    NgClass,
+    PipesModule,
+    TranslateModule,
+  ],
 })
 export class TransferAcknowledgmentComponent implements OnInit, OnDestroy {
   public stepIndex = 0;

@@ -60,6 +60,8 @@ import { EditableTextareaComponent } from './editable-textarea.component';
       <vitamui-common-field-error errorKey="async">Expected async error message</vitamui-common-field-error>
     </vitamui-common-editable-textarea>
   `,
+  standalone: true,
+  imports: [OverlayModule, FormsModule, ReactiveFormsModule, MatProgressSpinnerModule],
 })
 class TesthostComponent {
   value: string;
@@ -80,8 +82,16 @@ describe('EditableTextareaComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [OverlayModule, FormsModule, ReactiveFormsModule, MatProgressSpinnerModule, NoopAnimationsModule],
-      declarations: [TesthostComponent, EditableTextareaComponent, VitamUIFieldErrorStubComponent],
+      imports: [
+        OverlayModule,
+        FormsModule,
+        ReactiveFormsModule,
+        MatProgressSpinnerModule,
+        NoopAnimationsModule,
+        TesthostComponent,
+        EditableTextareaComponent,
+        VitamUIFieldErrorStubComponent,
+      ],
     }).compileComponents();
 
     inject([OverlayContainer], (oc: OverlayContainer) => {

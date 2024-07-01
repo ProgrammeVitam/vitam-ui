@@ -50,18 +50,36 @@ import {
   PageRequest,
   rotateAnimation,
   Tenant,
+  InfiniteScrollDirective,
+  CollapseDirective,
+  EllipsisDirective,
 } from 'vitamui-library';
 import { CustomerService } from '../../core/customer.service';
 import { CustomerDataService } from '../customer.data.service';
 import { OwnerCreateComponent } from '../owner-create/owner-create.component';
 import { TenantService } from '../tenant.service';
 import { CustomerListService } from './customer-list.service';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatLegacyProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
+import { OwnerListComponent } from './owner-list/owner-list.component';
+import { NgFor, NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-customer-list',
   templateUrl: './customer-list.component.html',
   styleUrls: ['./customer-list.component.scss'],
   animations: [collapseAnimation, rotateAnimation],
+  standalone: true,
+  imports: [
+    InfiniteScrollDirective,
+    NgFor,
+    CollapseDirective,
+    EllipsisDirective,
+    OwnerListComponent,
+    NgIf,
+    MatLegacyProgressSpinnerModule,
+    TranslateModule,
+  ],
 })
 export class CustomerListComponent extends InfiniteScrollTable<Customer> implements OnDestroy, OnInit {
   @Output() customerClick = new EventEmitter<Customer>();

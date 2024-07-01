@@ -34,13 +34,13 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { VitamUIDurationInputModule } from './vitamui-duration-input.module';
+import { VitamUIDurationInputComponent } from './vitamui-duration-input.module';
 
-describe('VitamUIDurationInputModule', () => {
-  let vitamuiDurationInputModule: VitamUIDurationInputModule;
+describe('VitamUIDurationInputComponent', () => {
+  let vitamuiDurationInputModule: VitamUIDurationInputComponent;
 
   beforeEach(() => {
-    vitamuiDurationInputModule = new VitamUIDurationInputModule();
+    vitamuiDurationInputModule = new VitamUIDurationInputComponent();
   });
 
   it('should create an instance', () => {

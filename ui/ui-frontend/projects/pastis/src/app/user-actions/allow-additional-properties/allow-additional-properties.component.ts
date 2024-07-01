@@ -1,10 +1,14 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { SlideToggleComponent } from 'vitamui-library';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'allow-additional-properties',
   templateUrl: './allow-additional-properties.component.html',
   styleUrls: ['./allow-additional-properties.component.scss'],
+  standalone: true,
+  imports: [SlideToggleComponent, FormsModule],
 })
 export class AllowAdditionalPropertiesComponent implements OnInit {
   @Output() stateToggleButton = new EventEmitter<boolean>();

@@ -32,13 +32,18 @@ import {
   MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA,
   MatLegacyDialog as MatDialog,
   MatLegacyDialogRef as MatDialogRef,
+  MatLegacyDialogModule,
 } from '@angular/material/legacy-dialog';
 import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
-import { BytesPipe, Logger, Transaction } from 'vitamui-library';
+import { BytesPipe, Logger, Transaction, CommonProgressBarComponent, StepperComponent, DragAndDropDirective } from 'vitamui-library';
 import { VitamUISnackBarComponent } from '../../shared/vitamui-snack-bar/vitamui-snack-bar.component';
 import { ArchiveCollectService } from '../archive-collect.service';
+import { MatLegacyProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
+import { NgIf, NgClass } from '@angular/common';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { CdkStepperModule } from '@angular/cdk/stepper';
 
 const CSV_EXTENSION = '.csv';
 const VITAMUI_SNACK_BAR = 'vitamui-snack-bar';
@@ -47,6 +52,19 @@ const VITAMUI_SNACK_BAR = 'vitamui-snack-bar';
   selector: 'app-update-units-metadata',
   templateUrl: './update-units-metadata.component.html',
   styleUrls: ['./update-units-metadata.component.scss'],
+  standalone: true,
+  imports: [
+    CommonProgressBarComponent,
+    StepperComponent,
+    CdkStepperModule,
+    MatLegacyTooltipModule,
+    NgIf,
+    MatLegacyProgressSpinnerModule,
+    DragAndDropDirective,
+    NgClass,
+    MatLegacyDialogModule,
+    TranslateModule,
+  ],
 })
 export class UpdateUnitsaMetadataComponent implements OnDestroy {
   public stepIndex = 0;

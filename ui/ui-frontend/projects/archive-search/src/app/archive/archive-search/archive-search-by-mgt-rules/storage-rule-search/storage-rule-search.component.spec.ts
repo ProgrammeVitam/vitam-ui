@@ -69,7 +69,6 @@ describe('StorageRuleSearchComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [StorageRuleSearchComponent],
       imports: [
         InjectorModule,
         VitamUICommonTestModule,
@@ -78,6 +77,7 @@ describe('StorageRuleSearchComponent', () => {
         TranslateModule.forRoot(),
         RouterTestingModule,
         BrowserAnimationsModule,
+        StorageRuleSearchComponent,
       ],
       providers: [
         FormBuilder,

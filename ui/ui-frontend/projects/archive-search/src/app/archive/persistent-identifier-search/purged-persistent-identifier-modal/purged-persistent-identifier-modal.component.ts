@@ -5,11 +5,15 @@ import {
   PurgedPersistentIdentifierDto,
   UnitPurgedPersistentOperationType,
 } from '../../../core/api/persistent-identifier-response-dto.interface';
+import { TranslateModule } from '@ngx-translate/core';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-purged-persistent-identifier-modal',
   templateUrl: './purged-persistent-identifier-modal.component.html',
   styleUrls: ['./purged-persistent-identifier-modal.component.scss'],
+  standalone: true,
+  imports: [DatePipe, TranslateModule],
 })
 export class PurgedPersistentIdentifierModalComponent implements OnInit {
   messageKey: string;

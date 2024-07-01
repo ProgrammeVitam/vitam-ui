@@ -34,13 +34,13 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { SecurityModule } from './security.module';
+import { SecurityComponent } from './security.module';
 
-describe('SecurityModule', () => {
-  let securityModule: SecurityModule;
+describe('SecurityComponent', () => {
+  let securityModule: SecurityComponent;
 
   beforeEach(() => {
-    securityModule = new SecurityModule();
+    securityModule = new SecurityComponent();
   });
 
   it('should create an instance', () => {

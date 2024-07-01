@@ -39,7 +39,7 @@ import { Component, Input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { EMPTY, of } from 'rxjs';
-import { ENVIRONMENT, Group, InjectorModule, LoggerModule, SearchBarModule, VitamUISnackBarService } from 'vitamui-library';
+import { ENVIRONMENT, Group, InjectorModule, LoggerModule, SearchBarComponent, VitamUISnackBarService } from 'vitamui-library';
 import { environment } from './../../environments/environment';
 
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
@@ -67,7 +67,12 @@ class Page {
 
 let page: Page;
 
-@Component({ selector: 'app-group-list', template: '' })
+@Component({
+  selector: 'app-group-list',
+  template: '',
+  standalone: true,
+  imports: [MatMenuModule, MatSidenavModule, VitamUICommonTestModule, InjectorModule, SearchBarComponent, MatSnackBarModule],
+})
 class GroupListStubComponent {
   // eslint-disable-next-line @angular-eslint/no-input-rename
   @Input('search') searchText: string;
@@ -75,7 +80,12 @@ class GroupListStubComponent {
   search() {}
 }
 
-@Component({ selector: 'app-group-preview', template: '' })
+@Component({
+  selector: 'app-group-preview',
+  template: '',
+  standalone: true,
+  imports: [MatMenuModule, MatSidenavModule, VitamUICommonTestModule, InjectorModule, SearchBarComponent, MatSnackBarModule],
+})
 class GroupPreviewStubComponent {
   @Input() isPopup: boolean;
   @Input() group: Group;
@@ -94,11 +104,13 @@ describe('GroupComponent', () => {
         NoopAnimationsModule,
         VitamUICommonTestModule,
         InjectorModule,
-        SearchBarModule,
+        SearchBarComponent,
         LoggerModule.forRoot(),
         MatSnackBarModule,
+        GroupComponent,
+        GroupListStubComponent,
+        GroupPreviewStubComponent,
       ],
-      declarations: [GroupComponent, GroupListStubComponent, GroupPreviewStubComponent],
       providers: [
         { provide: MatDialog, useValue: matDialogSpy },
         { provide: ActivatedRoute, useValue: { data: EMPTY } },

@@ -71,7 +71,6 @@ describe('FileTreeMetadataComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [FileTreeMetadataComponent],
       providers: [
         FileTreeMetadataService,
         FileService,
@@ -94,6 +93,7 @@ describe('FileTreeMetadataComponent', () => {
         RouterModule.forRoot([], {}),
         LoggerModule.forRoot(),
         TranslateModule.forRoot({}),
+        FileTreeMetadataComponent,
       ],
     }).compileComponents();
   });

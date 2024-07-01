@@ -42,6 +42,7 @@ import { CollapseComponent } from './collapse.component';
 
 @Component({
   template: ` <vitamui-common-collapse collapseTitle="Test Collapse Title"> Test Collapse Content </vitamui-common-collapse> `,
+  standalone: true,
 })
 class TesthostComponent {
   @ViewChild(CollapseComponent) component: CollapseComponent;
@@ -53,8 +54,7 @@ describe('CollapseComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [NoopAnimationsModule],
-      declarations: [CollapseComponent, TesthostComponent],
+      imports: [NoopAnimationsModule, CollapseComponent, TesthostComponent],
     }).compileComponents();
   });
 

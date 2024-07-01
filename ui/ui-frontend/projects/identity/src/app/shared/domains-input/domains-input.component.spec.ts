@@ -46,7 +46,11 @@ import { input } from 'vitamui-library/testing';
 import { CustomerCreateValidators } from '../../customer/customer-create/customer-create.validators';
 import { DomainsInputComponent } from './domains-input.component';
 
-@Component({ template: '<app-domains-input [(ngModel)]="domains" [(selected)]="selected"></app-domains-input>' })
+@Component({
+  template: '<app-domains-input [(ngModel)]="domains" [(selected)]="selected"></app-domains-input>',
+  standalone: true,
+  imports: [FormsModule, ReactiveFormsModule, MatProgressSpinnerModule],
+})
 export class TestHostComponent {
   @ViewChild(DomainsInputComponent, { static: false }) component: DomainsInputComponent;
   domains: string[];
@@ -61,8 +65,14 @@ describe('DomainsInputComponent', () => {
     const customerCreateValidatorsSpy = jasmine.createSpyObj('CustomerCreateValidators', { uniqueDomain: of(null) });
 
     await TestBed.configureTestingModule({
-      imports: [FormsModule, ReactiveFormsModule, MatProgressSpinnerModule, TranslateModule.forRoot()],
-      declarations: [TestHostComponent, DomainsInputComponent],
+      imports: [
+        FormsModule,
+        ReactiveFormsModule,
+        MatProgressSpinnerModule,
+        TranslateModule.forRoot(),
+        TestHostComponent,
+        DomainsInputComponent,
+      ],
       providers: [{ provide: CustomerCreateValidators, useValue: customerCreateValidatorsSpy }],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();

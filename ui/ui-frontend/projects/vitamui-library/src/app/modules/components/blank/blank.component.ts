@@ -37,11 +37,14 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ApplicationId } from '../../application-id.enum';
+import { NavbarComponent } from '../navbar/navbar.component';
 
 @Component({
   selector: 'vitamui-common-blank',
   templateUrl: './blank.component.html',
   styleUrls: ['./blank.component.scss'],
+  standalone: true,
+  imports: [NavbarComponent],
 })
 export class BlankComponent {
   appId: ApplicationId;

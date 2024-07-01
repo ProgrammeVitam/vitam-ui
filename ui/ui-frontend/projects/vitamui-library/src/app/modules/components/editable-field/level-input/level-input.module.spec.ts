@@ -36,14 +36,14 @@
  */
 
 import { TranslateModule } from '@ngx-translate/core';
-import { LevelInputModule } from './level-input.module';
+import { LevelInputComponent } from './level-input.module';
 
 describe('LevelInputComponent', () => {
-  let levelInputModule: LevelInputModule;
+  let levelInputModule: LevelInputComponent;
   let translateModule: TranslateModule;
 
   beforeEach(() => {
-    levelInputModule = new LevelInputModule();
+    levelInputModule = new LevelInputComponent();
     translateModule = new TranslateModule();
   });
 

@@ -1,9 +1,13 @@
 import { Component, Input } from '@angular/core';
+import { NgClass, NgIf } from '@angular/common';
+import { MatLegacyMenuModule } from '@angular/material/legacy-menu';
 
 @Component({
   selector: 'vitamui-common-menu-button',
   templateUrl: './vitamui-menu-button.component.html',
   styleUrls: ['./vitamui-menu-button.component.scss'],
+  standalone: true,
+  imports: [MatLegacyMenuModule, NgClass, NgIf],
 })
 export class VitamuiMenuButtonComponent {
   /** Set the menu overlay display (by defaut at start) */

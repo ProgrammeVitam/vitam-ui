@@ -33,23 +33,50 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
-import { DatePipe } from '@angular/common';
+import { DatePipe, NgClass, NgFor, NgIf } from '@angular/common';
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import {
+  MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA,
+  MatLegacyDialogRef as MatDialogRef,
+  MatLegacyDialogModule,
+} from '@angular/material/legacy-dialog';
 import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
-import { TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe, TranslateModule } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
-import { ConfirmDialogService, CriteriaSearchCriteria, Direction, SearchCriteriaHistory, SearchCriteriaTypeEnum } from 'vitamui-library';
+import {
+  ConfirmDialogService,
+  CriteriaSearchCriteria,
+  Direction,
+  SearchCriteriaHistory,
+  SearchCriteriaTypeEnum,
+  VitamUICommonInputComponent,
+  PipesModule,
+} from 'vitamui-library';
 import { VitamUISnackBarComponent } from '../../../../shared/vitamui-snack-bar/vitamui-snack-bar.component';
 import { ArchiveSharedDataService } from '../../services/archive-shared-data.service';
 import { SearchCriteriaSaverService } from '../../services/search-criteria-saver.service';
+import { MatLegacyMenuModule } from '@angular/material/legacy-menu';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
 
 @Component({
   selector: 'app-search-criteria-saver',
   templateUrl: './search-criteria-saver.component.html',
   styleUrls: ['./search-criteria-saver.component.css'],
   providers: [TranslatePipe],
+  standalone: true,
+  imports: [
+    NgClass,
+    NgFor,
+    MatLegacyTooltipModule,
+    NgIf,
+    ReactiveFormsModule,
+    VitamUICommonInputComponent,
+    MatLegacyMenuModule,
+    MatLegacyDialogModule,
+    PipesModule,
+    TranslateModule,
+  ],
 })
 export class SearchCriteriaSaverComponent implements OnInit, OnDestroy {
   searchCriteriaForm: FormGroup;

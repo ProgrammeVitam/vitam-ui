@@ -256,8 +256,8 @@ describe('UnlockCategoryInheritanceComponent', () => {
         }),
         HttpClientTestingModule,
         RouterTestingModule,
+        UnlockCategoryInheritanceComponent,
       ],
-      declarations: [UnlockCategoryInheritanceComponent],
       providers: [
         FormBuilder,
         { provide: BASE_URL, useValue: '/fake-api' },

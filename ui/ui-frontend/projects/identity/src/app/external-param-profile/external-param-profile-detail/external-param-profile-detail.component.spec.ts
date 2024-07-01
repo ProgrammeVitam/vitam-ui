@@ -48,7 +48,12 @@ import { TestHostComponent } from '../../shared/domains-input/domains-input.comp
 import { ExternalParamProfileService } from '../external-param-profile.service';
 import { ExternalParamProfileDetailComponent } from './external-param-profile-detail.component';
 
-@Component({ selector: 'app-information-tab', template: '' })
+@Component({
+  selector: 'app-information-tab',
+  template: '',
+  standalone: true,
+  imports: [MatMenuModule, MatTabsModule, HttpClientTestingModule],
+})
 class InformationTabStubComponent {
   // @Input() profile: ExternalParamProfile;
   @Input() readOnly: boolean;
@@ -80,8 +85,10 @@ describe('ExternalParamProfilDetailComponent', () => {
         NoopAnimationsModule,
         HttpClientTestingModule,
         LoggerModule.forRoot(),
+        TestHostComponent,
+        ExternalParamProfileDetailComponent,
+        InformationTabStubComponent,
       ],
-      declarations: [TestHostComponent, ExternalParamProfileDetailComponent, InformationTabStubComponent],
       providers: [
         { provide: ExternalParamProfileService, useValue: { updated: new Subject() } },
         { provide: AuthService, useValue: authServiceMock },

@@ -36,11 +36,17 @@ The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
 import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
-import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
+import {
+  MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA,
+  MatLegacyDialogRef as MatDialogRef,
+  MatLegacyDialogModule,
+} from '@angular/material/legacy-dialog';
+import { LangChangeEvent, TranslateService, TranslateModule } from '@ngx-translate/core';
 import { environment } from '../../../environments/environment';
 import { ProfileType } from '../../models/profile-type.enum';
 import { PastisDialogData } from '../../shared/pastis-dialog/classes/pastis-dialog-data';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { PastisGenericPopupComponent } from '../../shared/pastis-generic-popup/pastis-generic-popup.component';
 
 const POPUP_CREATION_CHOICE_PATH = 'PROFILE.POP_UP_CREATION.CHOICE';
 
@@ -55,6 +61,8 @@ function constantToTranslate() {
   selector: 'pastis-create-profile',
   templateUrl: './create-profile.component.html',
   styleUrls: ['./create-profile.component.scss'],
+  standalone: true,
+  imports: [MatLegacyDialogModule, PastisGenericPopupComponent, MatLegacyTooltipModule, TranslateModule],
 })
 export class CreateProfileComponent implements OnInit {
   firstChoice: string;

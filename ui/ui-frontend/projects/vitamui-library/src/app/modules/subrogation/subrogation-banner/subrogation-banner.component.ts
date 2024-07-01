@@ -41,10 +41,15 @@ import { filter } from 'rxjs/operators';
 import { AuthService } from '../../auth.service';
 import { AuthUser, Subrogation } from '../../models';
 import { SubrogationService } from '../subrogation.service';
+import { DateTimePipe } from '../../pipes/datetime.pipe';
+import { TranslateModule } from '@ngx-translate/core';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'vitamui-common-subrogation-banner',
   templateUrl: './subrogation-banner.component.html',
+  standalone: true,
+  imports: [NgIf, TranslateModule, DateTimePipe],
 })
 export class SubrogationBannerComponent implements OnInit {
   show = false;

@@ -51,8 +51,10 @@ import {
   AuthenticationModule,
   BASE_URL,
   ENVIRONMENT,
+  FooterComponent,
   InjectorModule,
   LoggerModule,
+  VitamuiBodyComponent,
   VitamUICommonModule,
   VitamuiMissingTranslationHandler,
   WINDOW_LOCATION,
@@ -61,7 +63,6 @@ import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ApplicationSvgLoader } from './application-svg-loader';
-import { PortalModule } from './portal/portal.module';
 
 registerLocaleData(localeFr, 'fr');
 
@@ -73,7 +74,10 @@ export function httpLoaderFactory(httpBackend: HttpBackend): MultiTranslateHttpL
 }
 
 export function ApplicationSvgLoaderFactory(handler: HttpBackend, transferState: TransferState) {
-  return new ApplicationSvgLoader(transferState, new HttpClient(handler), { prefix: './assets/app-icons/', suffix: '.svg' });
+  return new ApplicationSvgLoader(transferState, new HttpClient(handler), {
+    prefix: './assets/app-icons/',
+    suffix: '.svg',
+  });
 }
 
 @NgModule({
@@ -82,7 +86,6 @@ export function ApplicationSvgLoaderFactory(handler: HttpBackend, transferState:
     AuthenticationModule.forRoot(),
     BrowserModule,
     BrowserAnimationsModule,
-    PortalModule,
     VitamUICommonModule.forRoot(),
     InjectorModule,
     MatSnackBarModule,
@@ -107,6 +110,8 @@ export function ApplicationSvgLoaderFactory(handler: HttpBackend, transferState:
         deps: [HttpBackend, TransferState],
       },
     }),
+    VitamuiBodyComponent,
+    FooterComponent,
   ],
   providers: [
     Title,

@@ -34,13 +34,13 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { InfiniteScrollModule } from './infinite-scroll.module';
+import { InfiniteScrollDirective } from './infinite-scroll.module';
 
-describe('InfiniteScrollModule', () => {
-  let infiniteScrollModule: InfiniteScrollModule;
+describe('InfiniteScrollDirective', () => {
+  let infiniteScrollModule: InfiniteScrollDirective;
 
   beforeEach(() => {
-    infiniteScrollModule = new InfiniteScrollModule();
+    infiniteScrollModule = new InfiniteScrollDirective();
   });
 
   it('should create an instance', () => {

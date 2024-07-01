@@ -35,10 +35,14 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component } from '@angular/core';
+import { RouterLinkActive, RouterLink, RouterOutlet } from '@angular/router';
+import { MatLegacyTabsModule } from '@angular/material/legacy-tabs';
 
 @Component({
   selector: 'demo-component-demo',
   templateUrl: './component-demo.component.html',
   styleUrls: ['./component-demo.component.scss'],
+  standalone: true,
+  imports: [MatLegacyTabsModule, RouterLinkActive, RouterLink, RouterOutlet],
 })
 export class ComponentDemoComponent {}

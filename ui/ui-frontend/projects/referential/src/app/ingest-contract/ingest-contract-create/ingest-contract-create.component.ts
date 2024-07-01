@@ -36,7 +36,7 @@
  */
 import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { Component, Inject, Input, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
 import { Subscription } from 'rxjs';
 import {
@@ -50,17 +50,62 @@ import {
   SignedDocumentPolicyEnum,
   VitamUISnackBarService,
   VitamuiAutocompleteMultiselectOptions,
+  CommonProgressBarComponent,
+  StepperComponent,
+  SlideToggleComponent,
+  VitamUICommonInputComponent,
+  CommonTooltipComponent,
+  VitamUIAutocompleteMultiSelectModule,
+  FilingPlanComponent,
+  VitamUIRadioGroupComponent,
+  VitamUIRadioComponent,
+  VitamUIInputErrorComponent,
+  VitamUITextareaComponent,
+  CommonTooltipDirective,
 } from 'vitamui-library';
 import { ArchiveProfileApiService } from '../../core/api/archive-profile-api.service';
 import { ManagementContractApiService } from '../../core/api/management-contract-api.service';
 import { FileFormatService } from '../../file-format/file-format.service';
 import { IngestContractService } from '../ingest-contract.service';
 import { IngestContractCreateValidators } from './ingest-contract-create.validators';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatLegacyOptionModule } from '@angular/material/legacy-core';
+import { MatLegacySelectModule } from '@angular/material/legacy-select';
+import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
+import { NgIf, NgFor, NgClass } from '@angular/common';
+import { CdkStepperModule } from '@angular/cdk/stepper';
 
 @Component({
   selector: 'app-ingest-contract-create',
   templateUrl: './ingest-contract-create.component.html',
   styleUrls: ['./ingest-contract-create.component.scss'],
+  standalone: true,
+  imports: [
+    CommonProgressBarComponent,
+    FormsModule,
+    ReactiveFormsModule,
+    StepperComponent,
+    CdkStepperModule,
+    SlideToggleComponent,
+    NgIf,
+    VitamUICommonInputComponent,
+    MatLegacyFormFieldModule,
+    MatLegacySelectModule,
+    NgFor,
+    MatLegacyOptionModule,
+    CommonTooltipComponent,
+    VitamUIAutocompleteMultiSelectModule,
+    FilingPlanComponent,
+    VitamUIRadioGroupComponent,
+    VitamUIRadioComponent,
+    MatButtonToggleModule,
+    NgClass,
+    TranslateModule,
+    VitamUIInputErrorComponent,
+    VitamUITextareaComponent,
+    CommonTooltipDirective,
+  ],
 })
 export class IngestContractCreateComponent implements OnInit, OnDestroy {
   readonly SignedDocumentPolicyEnum = SignedDocumentPolicyEnum;

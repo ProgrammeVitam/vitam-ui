@@ -38,12 +38,16 @@ knowledge of the CeCILL-C license and that you accept its terms.
 
 import { Component, OnInit } from '@angular/core';
 import { PastisPopupMetadataLanguageService } from './pastis-popup-metadata-language.service';
+import { TranslateModule } from '@ngx-translate/core';
+import { NgClass } from '@angular/common';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'pastis-popup-metadata-language',
   templateUrl: './pastis-popup-metadata-language.component.html',
   styleUrls: ['./pastis-popup-metadata-language.component.scss'],
+  standalone: true,
+  imports: [NgClass, TranslateModule],
 })
 export class PastisPopupMetadataLanguageComponent implements OnInit {
   sedaLanguage: boolean;

@@ -1,10 +1,15 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { CriteriaSearchCriteria, CriteriaValue, SearchCriteriaTypeEnum, SearchCriteriaValue } from 'vitamui-library';
+import { CriteriaSearchCriteria, CriteriaValue, SearchCriteriaTypeEnum, SearchCriteriaValue, PipesModule } from 'vitamui-library';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { NgIf, NgFor, NgClass } from '@angular/common';
 
 @Component({
   selector: 'app-criteria-search',
   templateUrl: './criteria-search.component.html',
   styleUrls: ['./criteria-search.component.scss'],
+  standalone: true,
+  imports: [NgIf, NgFor, MatLegacyTooltipModule, NgClass, PipesModule, TranslateModule],
 })
 export class CriteriaSearchComponent {
   constructor() {}

@@ -1,5 +1,8 @@
 import { Component, forwardRef, Input } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
+import { CardGroupComponent } from '../card-group/card-group.component';
+import { VitamUIInputComponent } from '../vitamui-input/vitamui-input.component';
+import { NgIf } from '@angular/common';
 
 export const CARD_SELECT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -12,6 +15,8 @@ export const CARD_SELECT_VALUE_ACCESSOR: any = {
   templateUrl: './card-select.component.html',
   styleUrls: ['./card-select.component.scss'],
   providers: [CARD_SELECT_VALUE_ACCESSOR],
+  standalone: true,
+  imports: [NgIf, VitamUIInputComponent, CardGroupComponent],
 })
 export class CardSelectComponent {
   @Input()

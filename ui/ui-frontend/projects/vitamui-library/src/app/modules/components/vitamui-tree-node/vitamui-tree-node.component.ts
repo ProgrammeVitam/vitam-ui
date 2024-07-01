@@ -26,12 +26,18 @@
  */
 import { AfterContentChecked, ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
 import { FilingHoldingSchemeNode } from '../../models/nodes';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { FormsModule } from '@angular/forms';
+import { MatLegacyCheckboxModule } from '@angular/material/legacy-checkbox';
+import { MatLegacyButtonModule } from '@angular/material/legacy-button';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'vitamui-tree-node',
   templateUrl: './vitamui-tree-node.component.html',
   styleUrls: ['./vitamui-tree-node.component.scss'],
+  standalone: true,
+  imports: [MatLegacyButtonModule, MatLegacyCheckboxModule, FormsModule, MatLegacyTooltipModule],
 })
 export class VitamuiTreeNodeComponent implements AfterContentChecked {
   @Input() node: FilingHoldingSchemeNode;

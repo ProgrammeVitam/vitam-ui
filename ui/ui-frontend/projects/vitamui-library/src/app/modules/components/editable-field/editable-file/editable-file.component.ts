@@ -39,6 +39,10 @@ import { Component, ElementRef, forwardRef, Input, ViewChild } from '@angular/co
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 
 import { EditableFieldComponent } from '../editable-field.component';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatLegacyProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
+import { CdkOverlayOrigin, CdkConnectedOverlay } from '@angular/cdk/overlay';
+import { NgIf } from '@angular/common';
 
 export const EDITABLE_FILE_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -50,6 +54,8 @@ export const EDITABLE_FILE_VALUE_ACCESSOR: any = {
   selector: 'vitamui-common-editable-file',
   templateUrl: './editable-file.component.html',
   providers: [EDITABLE_FILE_VALUE_ACCESSOR],
+  standalone: true,
+  imports: [NgIf, CdkOverlayOrigin, MatLegacyProgressSpinnerModule, CdkConnectedOverlay, TranslateModule],
 })
 export class EditableFileComponent extends EditableFieldComponent {
   @Input() accept: string;

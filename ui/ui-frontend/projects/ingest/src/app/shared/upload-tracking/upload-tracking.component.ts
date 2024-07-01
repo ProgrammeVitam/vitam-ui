@@ -38,6 +38,10 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 import { Component } from '@angular/core';
 import { IngestList } from '../../core/common/ingest-list';
 import { UploadService } from '../../core/common/upload.service';
+import { TranslateModule } from '@ngx-translate/core';
+import { PipesModule } from 'vitamui-library';
+import { MatLegacyProgressBarModule } from '@angular/material/legacy-progress-bar';
+import { NgIf, NgFor, DecimalPipe, KeyValuePipe } from '@angular/common';
 
 @Component({
   selector: 'app-upload-tracking',
@@ -50,6 +54,8 @@ import { UploadService } from '../../core/common/upload.service';
       transition('expand <=> collapse', animate('200ms ease-out')),
     ]),
   ],
+  standalone: true,
+  imports: [NgIf, NgFor, MatLegacyProgressBarModule, DecimalPipe, KeyValuePipe, PipesModule, TranslateModule],
 })
 export class UploadTrackingComponent {
   ingestList: IngestList;

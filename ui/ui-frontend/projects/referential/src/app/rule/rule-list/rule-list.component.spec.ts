@@ -53,8 +53,7 @@ describe('RuleListComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
-      declarations: [RuleListComponent],
+      imports: [TranslateModule.forRoot(), RuleListComponent],
       providers: [
         { provide: BASE_URL, useValue: '' },
         { provide: RuleService, useValue: ruleServiceMock },

@@ -118,8 +118,8 @@ describe('FilingHoldingSchemeComponent', () => {
         LoggerModule.forRoot(),
         TranslateModule.forRoot(),
         RouterTestingModule,
+        FilingHoldingSchemeComponent,
       ],
-      declarations: [FilingHoldingSchemeComponent],
       providers: [
         { provide: ArchiveCollectService, useValue: archiveCollectServiceMock },
         { provide: StartupService, useValue: StartupServiceMock },

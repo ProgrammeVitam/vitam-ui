@@ -6,11 +6,15 @@ import {
 } from '@angular/material/legacy-dialog';
 import { MenuOption } from '../../navbar';
 import { StartupService } from './../../../startup.service';
+import { TranslateModule } from '@ngx-translate/core';
+import { ItemSelectComponent } from '../item-select/item-select.component';
 
 @Component({
   selector: 'vitamui-common-select-tenant-dialog',
   templateUrl: './select-tenant-dialog.component.html',
   styleUrls: ['./select-tenant-dialog.component.scss'],
+  standalone: true,
+  imports: [ItemSelectComponent, TranslateModule],
 })
 export class SelectTenantDialogComponent implements OnInit {
   public static readonly SELECT_TENANT_DIALOG_CONFIG: MatDialogConfig = {

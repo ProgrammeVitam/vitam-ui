@@ -42,10 +42,10 @@ import { MatLegacyProgressSpinnerModule as MatProgressSpinnerModule } from '@ang
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
 import { RouterModule } from '@angular/router';
-import { TableFilterModule, VitamUICommonModule } from 'vitamui-library';
-import { SecurityProfileCreateModule } from './security-profile-create';
+import { TableFilterComponent, VitamUICommonModule } from 'vitamui-library';
+
 import { SecurityProfileListComponent } from './security-profile-list/security-profile-list.component';
-import { SecurityProfilePreviewModule } from './security-profile-preview/security-profile-preview.module';
+
 import { SecurityProfileRoutingModule } from './security-profile-routing.module';
 import { SecurityProfileComponent } from './security-profile.component';
 
@@ -55,15 +55,14 @@ import { SecurityProfileComponent } from './security-profile.component';
     RouterModule,
     VitamUICommonModule,
     SecurityProfileRoutingModule,
-    SecurityProfileCreateModule,
-    SecurityProfilePreviewModule,
     MatMenuModule,
     MatSnackBarModule,
     MatDialogModule,
     MatSidenavModule,
     MatProgressSpinnerModule,
-    TableFilterModule,
+    TableFilterComponent,
+    SecurityProfileComponent,
+    SecurityProfileListComponent,
   ],
-  declarations: [SecurityProfileComponent, SecurityProfileListComponent],
 })
 export class SecurityProfileModule {}

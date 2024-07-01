@@ -36,8 +36,8 @@ knowledge of the CeCILL-C license and that you accept its terms.
 
 import { DatePipe } from '@angular/common';
 import { Component, Input, OnChanges } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
-import { Colors, FacetDetails, RuleFacets } from 'vitamui-library';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
+import { Colors, FacetDetails, RuleFacets, VitamuiFacetComponent } from 'vitamui-library';
 import { ArchiveSearchConstsEnum } from '../../../models/archive-search-consts-enum';
 import { ArchiveFacetsService } from '../../../services/archive-facets.service';
 
@@ -45,6 +45,8 @@ import { ArchiveFacetsService } from '../../../services/archive-facets.service';
   selector: 'app-search-dissemination-rules-facets',
   templateUrl: './search-dissemination-rules-facets.component.html',
   styleUrls: ['./search-dissemination-rules-facets.component.scss'],
+  standalone: true,
+  imports: [VitamuiFacetComponent, TranslateModule],
 })
 export class SearchDisseminationRulesFacetsComponent implements OnChanges {
   constructor(

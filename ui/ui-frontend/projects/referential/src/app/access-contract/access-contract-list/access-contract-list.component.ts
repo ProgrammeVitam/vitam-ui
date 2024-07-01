@@ -45,9 +45,19 @@ import {
   PageRequest,
   collapseAnimation,
   rotateAnimation,
+  InfiniteScrollDirective,
+  TableFilterComponent,
+  OrderByButtonComponent,
+  EllipsisDirective,
+  PipesModule,
+  TableFilterDirective,
 } from 'vitamui-library';
 
 import { AccessContractService } from '../access-contract.service';
+import { DateTimePipe } from '../../../../../vitamui-library/src/app/modules/pipes/datetime.pipe';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatLegacyProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
+import { NgFor, NgClass, NgIf } from '@angular/common';
 
 const FILTER_DEBOUNCE_TIME_MS = 400;
 
@@ -56,6 +66,21 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
   templateUrl: './access-contract-list.component.html',
   styleUrls: ['./access-contract-list.component.scss'],
   animations: [collapseAnimation, rotateAnimation],
+  standalone: true,
+  imports: [
+    InfiniteScrollDirective,
+    TableFilterComponent,
+    OrderByButtonComponent,
+    NgFor,
+    NgClass,
+    EllipsisDirective,
+    NgIf,
+    MatLegacyProgressSpinnerModule,
+    PipesModule,
+    TranslateModule,
+    DateTimePipe,
+    TableFilterDirective,
+  ],
 })
 export class AccessContractListComponent extends InfiniteScrollTable<AccessContract> implements OnDestroy, OnInit {
   // eslint-disable-next-line @angular-eslint/no-input-rename

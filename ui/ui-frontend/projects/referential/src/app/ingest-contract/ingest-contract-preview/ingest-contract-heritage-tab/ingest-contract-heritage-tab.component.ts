@@ -35,18 +35,21 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
 import { extend, isEmpty } from 'underscore';
-import { IngestContract, diff } from 'vitamui-library';
+import { IngestContract, diff, SlideToggleComponent } from 'vitamui-library';
 
 import { IngestContractService } from '../../ingest-contract.service';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-ingest-contract-heritage-tab',
   templateUrl: './ingest-contract-heritage-tab.component.html',
   styleUrls: ['./ingest-contract-heritage-tab.component.scss'],
+  standalone: true,
+  imports: [FormsModule, ReactiveFormsModule, SlideToggleComponent, TranslateModule],
 })
 export class IngestContractHeritageTabComponent implements OnInit {
   @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();

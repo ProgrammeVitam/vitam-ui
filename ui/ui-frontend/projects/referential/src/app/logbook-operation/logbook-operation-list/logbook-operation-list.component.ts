@@ -35,7 +35,21 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { DEFAULT_PAGE_SIZE, Direction, IEvent, InfiniteScrollTable, PageRequest } from 'vitamui-library';
+import {
+  DEFAULT_PAGE_SIZE,
+  Direction,
+  IEvent,
+  InfiniteScrollTable,
+  PageRequest,
+  InfiniteScrollDirective,
+  TableFilterComponent,
+  OrderByButtonComponent,
+  EllipsisDirective,
+  EventTypeLabelComponent,
+  PipesModule,
+  TableFilterDirective,
+  TableFilterOptionComponent,
+} from 'vitamui-library';
 
 import {
   Component,
@@ -57,6 +71,13 @@ import { EventFilter } from '../event-filter.interface';
 import { LogbookDownloadService } from '../logbook-download.service';
 import { LogbookOperation } from '../logbook-operation.enum';
 import { LogbookSearchService } from '../logbook-search.service';
+import { DateTimePipe } from '../../../../../vitamui-library/src/app/modules/pipes/datetime.pipe';
+import { EventTypeColorClassPipe } from '../../shared/pipes/event-type-color-class.pipe';
+import { EventTypeBadgeClassPipe } from '../../shared/pipes/event-type-badge-class.pipe';
+import { LastEventPipe } from '../../shared/pipes/last-event.pipe';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatLegacyProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
+import { NgFor, NgClass, NgIf } from '@angular/common';
 
 const FILTER_DEBOUNCE_TIME_MS = 400;
 const ARCHIVE_TRANSFER = 'ARCHIVE_TRANSFER';
@@ -66,6 +87,26 @@ const ARCHIVE_TRANSFER_LABEL = 'ARCHIVE_TRANSFER_LABEL';
   selector: 'app-logbook-operation-list',
   templateUrl: './logbook-operation-list.component.html',
   styleUrls: ['./logbook-operation-list.component.scss'],
+  standalone: true,
+  imports: [
+    InfiniteScrollDirective,
+    TableFilterComponent,
+    OrderByButtonComponent,
+    NgFor,
+    NgClass,
+    EllipsisDirective,
+    EventTypeLabelComponent,
+    NgIf,
+    MatLegacyProgressSpinnerModule,
+    PipesModule,
+    TranslateModule,
+    LastEventPipe,
+    EventTypeBadgeClassPipe,
+    EventTypeColorClassPipe,
+    DateTimePipe,
+    TableFilterDirective,
+    TableFilterOptionComponent,
+  ],
 })
 export class LogbookOperationListComponent extends InfiniteScrollTable<IEvent> implements OnInit, OnChanges, OnDestroy {
   @Input() tenantIdentifier: number;

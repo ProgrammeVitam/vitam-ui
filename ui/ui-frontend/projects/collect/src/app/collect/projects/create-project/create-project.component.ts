@@ -26,14 +26,14 @@
  */
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { AfterViewChecked, ChangeDetectorRef, Component, Inject, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import {
   MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA,
   MatLegacyDialog as MatDialog,
   MatLegacyDialogRef as MatDialogRef,
 } from '@angular/material/legacy-dialog';
 import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import {
@@ -51,11 +51,27 @@ import {
   TransactionStatus,
   Workflow,
   oneIncludedNodeRequired,
+  CommonProgressBarComponent,
+  StepperComponent,
+  VitamUICommonInputComponent,
+  SlideToggleComponent,
+  FilingPlanComponent,
+  PipesModule,
+  VitamUITextareaComponent,
 } from 'vitamui-library';
 import { CollectUploadFile, CollectZippedUploadFile } from '../../shared/collect-upload/collect-upload-file';
 import { CollectUploadService } from '../../shared/collect-upload/collect-upload.service';
 import { ProjectsService } from '../projects.service';
 import { TransactionsService } from '../transactions.service';
+import { MatLegacyProgressBarModule } from '@angular/material/legacy-progress-bar';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { MatLegacyOptionModule } from '@angular/material/legacy-core';
+import { NgFor, NgIf, NgClass, AsyncPipe, DecimalPipe } from '@angular/common';
+import { MatLegacySelectModule } from '@angular/material/legacy-select';
+import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { CdkStepperModule } from '@angular/cdk/stepper';
 
 @Component({
   selector: 'app-create-project',
@@ -67,6 +83,31 @@ import { TransactionsService } from '../transactions.service';
       state('expand', style({ transform: 'rotate(0deg)' })),
       transition('expand <=> collapse', animate('200ms ease-out')),
     ]),
+  ],
+  standalone: true,
+  imports: [
+    CommonProgressBarComponent,
+    ReactiveFormsModule,
+    StepperComponent,
+    CdkStepperModule,
+    MatButtonToggleModule,
+    VitamUICommonInputComponent,
+    SlideToggleComponent,
+    MatLegacyFormFieldModule,
+    MatLegacySelectModule,
+    NgFor,
+    MatLegacyOptionModule,
+    NgIf,
+    NgClass,
+    FilingPlanComponent,
+    MatLegacyTooltipModule,
+    MatDatepickerModule,
+    MatLegacyProgressBarModule,
+    AsyncPipe,
+    DecimalPipe,
+    PipesModule,
+    TranslateModule,
+    VitamUITextareaComponent,
   ],
 })
 export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewChecked {

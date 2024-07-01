@@ -39,6 +39,7 @@ import { extractSubLevel } from '../../../utils';
 
 @Pipe({
   name: 'subLevel',
+  standalone: true,
 })
 export class SubLevelPipe implements PipeTransform {
   transform(level: any, userLevel: string): any {

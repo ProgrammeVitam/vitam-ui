@@ -28,15 +28,37 @@ import { Component, OnDestroy, ViewChild } from '@angular/core';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { DEFAULT_PAGE_SIZE, Direction, PageRequest, SidenavPage } from 'vitamui-library';
+import {
+  DEFAULT_PAGE_SIZE,
+  Direction,
+  PageRequest,
+  SidenavPage,
+  VitamuiTitleBreadcrumbComponent,
+  VitamuiCommonBannerComponent,
+} from 'vitamui-library';
 import { CreateProjectComponent } from './create-project/create-project.component';
 import { ProjectListComponent } from './project-list/project-list.component';
 import { ProjectsService } from './projects.service';
+import { TranslateModule } from '@ngx-translate/core';
+import { ProjectPreviewComponent } from './project-preview/project-preview.component';
+import { NgClass, NgIf } from '@angular/common';
+import { MatSidenavModule } from '@angular/material/sidenav';
 
 @Component({
   selector: 'app-projects',
   templateUrl: './projects.component.html',
   styleUrls: ['./projects.component.scss'],
+  standalone: true,
+  imports: [
+    MatSidenavModule,
+    NgClass,
+    NgIf,
+    ProjectPreviewComponent,
+    VitamuiTitleBreadcrumbComponent,
+    VitamuiCommonBannerComponent,
+    ProjectListComponent,
+    TranslateModule,
+  ],
 })
 export class ProjectsComponent extends SidenavPage<any> implements OnDestroy {
   tenantIdentifier: string;

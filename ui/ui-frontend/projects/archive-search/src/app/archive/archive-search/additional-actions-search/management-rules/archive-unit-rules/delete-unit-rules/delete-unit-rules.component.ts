@@ -36,9 +36,9 @@
  */
 
 import { Component, EventEmitter, Input, OnDestroy, Output, TemplateRef, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
-import { TranslateService } from '@ngx-translate/core';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { MatLegacyDialog as MatDialog, MatLegacyDialogModule } from '@angular/material/legacy-dialog';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import { cloneDeep } from 'lodash-es';
 import { ManagementRulesSharedDataService } from 'projects/archive-search/src/app/core/management-rules-shared-data.service';
 import { merge, Subscription } from 'rxjs';
@@ -52,12 +52,19 @@ import {
   RuleService,
   SearchCriteriaDto,
   SearchCriteriaEltDto,
+  EditableFieldComponent,
+  VitamUIFieldErrorComponent,
+  VitamUICommonInputComponent,
+  EditableInputComponent,
+  VitamUIInputErrorComponent,
 } from 'vitamui-library';
 import { ArchiveService } from '../../../../../archive.service';
 import { UpdateUnitManagementRuleService } from '../../../../../common-services/update-unit-management-rule.service';
 import { ArchiveSearchConstsEnum } from '../../../../../models/archive-search-consts-enum';
 import { ManagementRules, RuleAction, RuleActionsEnum, RuleCategoryAction } from '../../../../../models/ruleAction.interface';
 import { ManagementRulesValidatorService } from '../../../../../validators/management-rules-validator.service';
+import { MatLegacyProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
+import { NgIf } from '@angular/common';
 
 const MANAGEMENT_RULE_IDENTIFIER = 'MANAGEMENT_RULE_IDENTIFIER';
 const ORIGIN_HAS_AT_LEAST_ONE = 'ORIGIN_HAS_AT_LEAST_ONE';
@@ -66,6 +73,19 @@ const ORIGIN_HAS_AT_LEAST_ONE = 'ORIGIN_HAS_AT_LEAST_ONE';
   selector: 'app-delete-unit-rules',
   templateUrl: './delete-unit-rules.component.html',
   styleUrls: ['./delete-unit-rules.component.css'],
+  standalone: true,
+  imports: [
+    ReactiveFormsModule,
+    EditableFieldComponent,
+    VitamUIFieldErrorComponent,
+    VitamUICommonInputComponent,
+    NgIf,
+    MatLegacyProgressSpinnerModule,
+    MatLegacyDialogModule,
+    TranslateModule,
+    EditableInputComponent,
+    VitamUIInputErrorComponent,
+  ],
 })
 export class DeleteUnitRulesComponent implements OnDestroy {
   @Output() delete = new EventEmitter<any>();

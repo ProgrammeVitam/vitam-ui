@@ -56,13 +56,12 @@ describe('TitleAndDescriptionCriteriaSearchComponent', () => {
     const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
     matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
     await TestBed.configureTestingModule({
-      declarations: [TitleAndDescriptionCriteriaSearchComponent],
       providers: [
         FormBuilder,
         { provide: MatDialog, useValue: matDialogSpy },
         { provide: ArchiveSharedDataService, useValue: archiveExchangeDataServiceMock },
       ],
-      imports: [InjectorModule, TranslateModule.forRoot()],
+      imports: [InjectorModule, TranslateModule.forRoot(), TitleAndDescriptionCriteriaSearchComponent],
     }).compileComponents();
   });
 

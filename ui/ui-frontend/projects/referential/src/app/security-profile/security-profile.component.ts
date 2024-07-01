@@ -38,14 +38,35 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { ActivatedRoute } from '@angular/router';
-import { ApplicationService, GlobalEventService, SecurityProfile, SidenavPage } from 'vitamui-library';
+import {
+  ApplicationService,
+  GlobalEventService,
+  SecurityProfile,
+  SidenavPage,
+  VitamuiTitleBreadcrumbComponent,
+  VitamuiCommonBannerComponent,
+} from 'vitamui-library';
 import { SecurityProfileCreateComponent } from './security-profile-create/security-profile-create.component';
 import { SecurityProfileListComponent } from './security-profile-list/security-profile-list.component';
+import { TranslateModule } from '@ngx-translate/core';
+import { SecurityProfilePreviewComponent } from './security-profile-preview/security-profile-preview.component';
+import { NgIf } from '@angular/common';
+import { MatSidenavModule } from '@angular/material/sidenav';
 
 @Component({
   selector: 'app-security-profile',
   templateUrl: './security-profile.component.html',
   styleUrls: ['./security-profile.component.scss'],
+  standalone: true,
+  imports: [
+    MatSidenavModule,
+    NgIf,
+    SecurityProfilePreviewComponent,
+    VitamuiTitleBreadcrumbComponent,
+    VitamuiCommonBannerComponent,
+    SecurityProfileListComponent,
+    TranslateModule,
+  ],
 })
 export class SecurityProfileComponent extends SidenavPage<SecurityProfile> implements OnInit {
   search = '';

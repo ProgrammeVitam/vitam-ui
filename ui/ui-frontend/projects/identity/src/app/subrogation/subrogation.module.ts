@@ -44,7 +44,7 @@ import { MatLegacySelectModule as MatSelectModule } from '@angular/material/lega
 import { MatSidenavModule } from '@angular/material/sidenav';
 
 import { VitamUICommonModule } from 'vitamui-library';
-import { SharedModule } from '../shared/shared.module';
+
 import { SubrogateUserListComponent } from './subrogate-user/subrogate-user-list/subrogate-user-list.component';
 import { SubrogateUserComponent } from './subrogate-user/subrogate-user.component';
 import { SubrogationRoutingModule } from './subrogation-routing.module';
@@ -53,7 +53,6 @@ import { SubrogationRoutingModule } from './subrogation-routing.module';
   imports: [
     CommonModule,
     VitamUICommonModule,
-    SharedModule,
     MatDialogModule,
     MatSidenavModule,
     MatSelectModule,
@@ -61,7 +60,8 @@ import { SubrogationRoutingModule } from './subrogation-routing.module';
     MatProgressBarModule,
     ReactiveFormsModule,
     SubrogationRoutingModule,
+    SubrogateUserListComponent,
+    SubrogateUserComponent,
   ],
-  declarations: [SubrogateUserListComponent, SubrogateUserComponent],
 })
 export class SubrogationModule {}

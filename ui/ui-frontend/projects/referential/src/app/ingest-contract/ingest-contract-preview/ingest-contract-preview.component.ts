@@ -40,9 +40,10 @@ import {
   MatLegacyTab as MatTab,
   MatLegacyTabGroup as MatTabGroup,
   MatLegacyTabHeader as MatTabHeader,
+  MatLegacyTabsModule,
 } from '@angular/material/legacy-tabs';
 import { Observable } from 'rxjs';
-import { IngestContract } from 'vitamui-library';
+import { IngestContract, VitamuiSidenavHeaderComponent, HistoryModule } from 'vitamui-library';
 import { ConfirmActionComponent } from 'vitamui-library';
 import { IngestContractService } from '../ingest-contract.service';
 import { IngestContractFormatTabComponent } from './ingest-contract-format-tab/ingest-contract-format-tab.component';
@@ -50,11 +51,26 @@ import { IngestContractHeritageTabComponent } from './ingest-contract-heritage-t
 import { IngestContractInformationTabComponent } from './ingest-contract-information-tab/ingest-contract-information-tab.component';
 import { IngestContractObjectTabComponent } from './ingest-contract-object-tab/ingest-contract-object-tab.component';
 import { IngestContractSignatureTabComponent } from './ingest-contract-signature-tab/ingest-contract-signature-tab.component';
+import { TranslateModule } from '@ngx-translate/core';
+import { IngestContractAttachmentTabComponent } from './ingest-contract-attachment-tab/ingest-contract-attachment-tab.component';
 
 @Component({
   selector: 'app-ingest-contract-preview',
   templateUrl: './ingest-contract-preview.component.html',
   styleUrls: ['./ingest-contract-preview.component.scss'],
+  standalone: true,
+  imports: [
+    VitamuiSidenavHeaderComponent,
+    MatLegacyTabsModule,
+    IngestContractInformationTabComponent,
+    IngestContractFormatTabComponent,
+    IngestContractObjectTabComponent,
+    IngestContractHeritageTabComponent,
+    IngestContractAttachmentTabComponent,
+    IngestContractSignatureTabComponent,
+    HistoryModule,
+    TranslateModule,
+  ],
 })
 export class IngestContractPreviewComponent implements OnChanges, AfterViewInit {
   @Output() previewClose: EventEmitter<any> = new EventEmitter();

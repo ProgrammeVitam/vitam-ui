@@ -1,10 +1,10 @@
-import { FilingPlanModule } from './filing-plan.module';
+import { FilingPlanComponent } from './filing-plan.module';
 
-describe('FilingPlanModule', () => {
-  let filingPlanModule: FilingPlanModule;
+describe('FilingPlanComponent', () => {
+  let filingPlanModule: FilingPlanComponent;
 
   beforeEach(() => {
-    filingPlanModule = new FilingPlanModule();
+    filingPlanModule = new FilingPlanComponent();
   });
 
   it('should create an instance', () => {

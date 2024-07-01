@@ -28,13 +28,27 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { ApplicationId, BreadCrumbData, GlobalEventService, Project, SidenavPage, Transaction } from 'vitamui-library';
+import {
+  ApplicationId,
+  BreadCrumbData,
+  GlobalEventService,
+  Project,
+  SidenavPage,
+  Transaction,
+  VitamuiTitleBreadcrumbComponent,
+} from 'vitamui-library';
 import { TransactionsService } from './transactions.service';
+import { TranslateModule } from '@ngx-translate/core';
+import { AsyncPipe } from '@angular/common';
+import { TransactionListComponent } from './transaction-list/transaction-list.component';
+import { MatSidenavModule } from '@angular/material/sidenav';
 
 @Component({
   selector: 'app-projects',
   templateUrl: './transactions.component.html',
   styleUrls: ['./transactions.component.scss'],
+  standalone: true,
+  imports: [MatSidenavModule, VitamuiTitleBreadcrumbComponent, TransactionListComponent, AsyncPipe, TranslateModule],
 })
 export class TransactionsComponent extends SidenavPage<any> implements OnInit {
   tenantIdentifier: string;

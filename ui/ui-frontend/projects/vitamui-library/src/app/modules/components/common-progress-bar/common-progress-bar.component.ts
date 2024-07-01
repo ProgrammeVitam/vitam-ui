@@ -36,6 +36,9 @@
  */
 
 import { Component, Input } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatLegacyProgressBarModule } from '@angular/material/legacy-progress-bar';
+import { NgIf } from '@angular/common';
 
 const PROGRESS_BAR_MULTIPLICATOR = 100;
 
@@ -43,6 +46,8 @@ const PROGRESS_BAR_MULTIPLICATOR = 100;
   selector: 'vitamui-common-progress-bar',
   templateUrl: './common-progress-bar.component.html',
   styleUrls: ['./common-progress-bar.component.scss'],
+  standalone: true,
+  imports: [NgIf, MatLegacyProgressBarModule, TranslateModule],
 })
 export class CommonProgressBarComponent {
   @Input() hideCounter = false;

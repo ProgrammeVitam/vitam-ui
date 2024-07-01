@@ -4,6 +4,7 @@ import {
   MatLegacyTab as MatTab,
   MatLegacyTabGroup as MatTabGroup,
   MatLegacyTabHeader as MatTabHeader,
+  MatLegacyTabsModule,
 } from '@angular/material/legacy-tabs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -16,12 +17,27 @@ import { ProfileDescription } from '../../models/profile-description.model';
 import { ProfileResponse } from '../../models/profile-response';
 import { ProfileType } from '../../models/profile-type.enum';
 import { ProfileInformationTabComponent } from './profile-information-tab/profile-information-tab/profile-information-tab.component';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatIconModule } from '@angular/material/icon';
+import { MatLegacyMenuModule } from '@angular/material/legacy-menu';
+import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { NgIf } from '@angular/common';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'profile-preview',
   templateUrl: './profile-preview.component.html',
   styleUrls: ['./profile-preview.component.scss'],
+  standalone: true,
+  imports: [
+    NgIf,
+    MatLegacyButtonModule,
+    MatLegacyMenuModule,
+    MatIconModule,
+    MatLegacyTabsModule,
+    ProfileInformationTabComponent,
+    TranslateModule,
+  ],
 })
 export class ProfilePreviewComponent implements AfterViewInit {
   @Output()

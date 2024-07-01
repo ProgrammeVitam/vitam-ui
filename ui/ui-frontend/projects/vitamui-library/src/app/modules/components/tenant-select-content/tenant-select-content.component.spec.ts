@@ -46,7 +46,7 @@ describe('TenantSelectContentComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [TenantSelectContentComponent],
+      imports: [TenantSelectContentComponent],
       providers: [
         { provide: Router, useValue: { navigate: () => {} } },
         { provide: ActivatedRoute, useValue: {} },

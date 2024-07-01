@@ -38,15 +38,36 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { ApplicationService, Context, GlobalEventService, SidenavPage } from 'vitamui-library';
+import {
+  ApplicationService,
+  Context,
+  GlobalEventService,
+  SidenavPage,
+  VitamuiTitleBreadcrumbComponent,
+  VitamuiCommonBannerComponent,
+} from 'vitamui-library';
 
 import { ContextCreateComponent } from './context-create/context-create.component';
 import { ContextListComponent } from './context-list/context-list.component';
+import { TranslateModule } from '@ngx-translate/core';
+import { ContextPreviewComponent } from './context-preview/context-preview.component';
+import { NgIf } from '@angular/common';
+import { MatSidenavModule } from '@angular/material/sidenav';
 
 @Component({
   selector: 'app-context',
   templateUrl: './context.component.html',
   styleUrls: ['./context.component.scss'],
+  standalone: true,
+  imports: [
+    MatSidenavModule,
+    NgIf,
+    ContextPreviewComponent,
+    VitamuiTitleBreadcrumbComponent,
+    VitamuiCommonBannerComponent,
+    ContextListComponent,
+    TranslateModule,
+  ],
 })
 export class ContextComponent extends SidenavPage<Context> implements OnInit {
   search = '';

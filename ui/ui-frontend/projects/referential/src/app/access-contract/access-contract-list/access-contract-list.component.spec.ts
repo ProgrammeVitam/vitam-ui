@@ -41,7 +41,7 @@ import { VitamUICommonTestModule } from 'vitamui-library/testing';
 
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { BASE_URL, TableFilterModule, WINDOW_LOCATION } from 'vitamui-library';
+import { BASE_URL, TableFilterComponent, WINDOW_LOCATION } from 'vitamui-library';
 import { AccessContractListComponent } from './access-contract-list.component';
 
 import { AccessContractService } from '../access-contract.service';
@@ -61,8 +61,13 @@ describe('AccessContractListComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [AccessContractListComponent],
-      imports: [VitamUICommonTestModule, MatProgressSpinnerModule, HttpClientTestingModule, TableFilterModule],
+      imports: [
+        VitamUICommonTestModule,
+        MatProgressSpinnerModule,
+        HttpClientTestingModule,
+        TableFilterComponent,
+        AccessContractListComponent,
+      ],
       providers: [
         { provide: BASE_URL, useValue: '' },
         { provide: MatSnackBar, useValue: {} },

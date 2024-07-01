@@ -12,14 +12,24 @@ import { ActivatedRoute } from '@angular/router';
 import { EMPTY, of } from 'rxjs';
 import { ContextComponent } from './context.component';
 
-@Component({ selector: 'app-agency-preview', template: '' })
+@Component({
+  selector: 'app-agency-preview',
+  template: '',
+  standalone: true,
+  imports: [HttpClientTestingModule, VitamUICommonTestModule, RouterTestingModule, InjectorModule, MatSidenavModule, MatDialogModule],
+})
 // eslint-disable-next-line @angular-eslint/component-class-suffix
 class ContextPreviewStub {
   @Input()
   accessContract: any;
 }
 
-@Component({ selector: 'app-agency-list', template: '' })
+@Component({
+  selector: 'app-agency-list',
+  template: '',
+  standalone: true,
+  imports: [HttpClientTestingModule, VitamUICommonTestModule, RouterTestingModule, InjectorModule, MatSidenavModule, MatDialogModule],
+})
 // eslint-disable-next-line @angular-eslint/component-class-suffix
 class ContextListStub {}
 
@@ -34,7 +44,6 @@ describe('ContextComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ContextComponent, ContextListStub, ContextPreviewStub],
       providers: [
         { provide: ApplicationService, useValue: applicationServiceMock },
         { provide: ActivatedRoute, useValue: { params: EMPTY, data: EMPTY } },
@@ -49,6 +58,9 @@ describe('ContextComponent', () => {
         NoopAnimationsModule,
         MatSidenavModule,
         MatDialogModule,
+        ContextComponent,
+        ContextListStub,
+        ContextPreviewStub,
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();

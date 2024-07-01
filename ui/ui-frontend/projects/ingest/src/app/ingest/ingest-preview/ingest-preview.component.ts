@@ -36,14 +36,34 @@
  */
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { first } from 'rxjs/operators';
-import { LogbookService } from 'vitamui-library';
+import { LogbookService, VitamuiSidenavHeaderComponent, VitamuiMenuButtonComponent, PipesModule } from 'vitamui-library';
 import { IngestStatus, LogbookOperation, ingestStatus, ingestStatusVisualColor } from '../../models/logbook-event.interface';
 import { IngestService } from '../ingest.service';
+import { TranslateModule } from '@ngx-translate/core';
+import { IngestErrorsDetailsTabComponent } from './ingest-errors-details-tab/ingest-errors-details-tab.component';
+import { IngestInformationTabComponent } from './ingest-information-tab/ingest-information-tab.component';
+import { MatLegacyTabsModule } from '@angular/material/legacy-tabs';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { MatLegacyMenuModule } from '@angular/material/legacy-menu';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-ingest-preview',
   templateUrl: './ingest-preview.component.html',
   styleUrls: ['./ingest-preview.component.scss'],
+  standalone: true,
+  imports: [
+    NgIf,
+    VitamuiSidenavHeaderComponent,
+    VitamuiMenuButtonComponent,
+    MatLegacyMenuModule,
+    MatLegacyTooltipModule,
+    MatLegacyTabsModule,
+    IngestInformationTabComponent,
+    IngestErrorsDetailsTabComponent,
+    PipesModule,
+    TranslateModule,
+  ],
 })
 export class IngestPreviewComponent implements OnInit, OnChanges {
   IngestStatus = IngestStatus;

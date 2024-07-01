@@ -50,8 +50,7 @@ describe('ArchiveUnitRulesDetailsTabComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ArchiveUnitRulesDetailsTabComponent],
-      imports: [InjectorModule, MatSnackBarModule, HttpClientTestingModule, TranslateModule.forRoot()],
+      imports: [InjectorModule, MatSnackBarModule, HttpClientTestingModule, TranslateModule.forRoot(), ArchiveUnitRulesDetailsTabComponent],
       providers: [
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: WINDOW_LOCATION, useValue: window.location },

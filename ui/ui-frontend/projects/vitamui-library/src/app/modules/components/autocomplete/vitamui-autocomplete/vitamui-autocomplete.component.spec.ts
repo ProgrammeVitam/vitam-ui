@@ -41,8 +41,11 @@ import { MatLegacyAutocompleteModule as MatAutocompleteModule } from '@angular/m
 
 import { VitamUIAutocompleteComponent } from './vitamui-autocomplete.component';
 
-// eslint-disable-next-line @angular-eslint/directive-selector
-@Directive({ selector: '[matTooltip]' })
+@Directive({
+  // eslint-disable-next-line @angular-eslint/directive-selector
+  selector: '[matTooltip]',
+  standalone: true,
+})
 class MatTooltipStubDirective {
   @Input() matTooltip: any;
   @Input() matTooltipDisabled: any;
@@ -55,8 +58,7 @@ describe('VitamUIAutocompleteComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, MatAutocompleteModule],
-      declarations: [VitamUIAutocompleteComponent, MatTooltipStubDirective],
+      imports: [ReactiveFormsModule, MatAutocompleteModule, VitamUIAutocompleteComponent, MatTooltipStubDirective],
     }).compileComponents();
   });
 

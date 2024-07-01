@@ -36,11 +36,14 @@
  */
 import { Component } from '@angular/core';
 import { MatLegacySnackBarRef as MatSnackBarRef } from '@angular/material/legacy-snack-bar';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'vitamui-common-cancelled-snack-bar',
   templateUrl: './cancelled-snack-bar.component.html',
   styleUrls: ['./cancelled-snack-bar.component.scss'],
+  standalone: true,
+  imports: [TranslateModule],
 })
 export class CancelledSnackBarComponent {
   constructor(private matSnackBarRef: MatSnackBarRef<CancelledSnackBarComponent>) {}

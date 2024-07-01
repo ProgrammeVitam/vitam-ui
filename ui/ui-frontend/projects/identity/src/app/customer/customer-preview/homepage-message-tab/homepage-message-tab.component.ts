@@ -3,11 +3,15 @@ import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { Subject } from 'rxjs';
 import { Customer, StartupService } from 'vitamui-library';
 import { HomepageMessageUpdateComponent } from './homepage-message-update/homepage-message-update.component';
+import { TranslateModule } from '@ngx-translate/core';
+import { NgFor, NgIf, KeyValuePipe } from '@angular/common';
 
 @Component({
   selector: 'app-homepage-message-tab',
   templateUrl: './homepage-message-tab.component.html',
   styleUrls: ['./homepage-message-tab.component.scss'],
+  standalone: true,
+  imports: [NgFor, NgIf, KeyValuePipe, TranslateModule],
 })
 export class HomepageMessageTabComponent implements OnDestroy {
   @Input()

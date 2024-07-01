@@ -26,7 +26,7 @@
  */
 import { NestedTreeControl } from '@angular/cdk/tree';
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
-import { MatTreeNestedDataSource } from '@angular/material/tree';
+import { MatTreeNestedDataSource, MatTreeModule } from '@angular/material/tree';
 import { Subscription } from 'rxjs';
 import {
   DescriptionLevel,
@@ -38,14 +38,20 @@ import {
   ResultFacet,
   SearchCriteriaDto,
   UnitType,
+  VitamuiTreeNodeComponent,
 } from 'vitamui-library';
 import { ArchiveSharedDataService } from '../../../core/archive-shared-data.service';
 import { ArchiveService } from '../../archive.service';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatLegacyProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
+import { NgIf, DecimalPipe } from '@angular/common';
 
 @Component({
   selector: 'app-leaves-tree',
   templateUrl: './leaves-tree.component.html',
   styleUrls: ['./leaves-tree.component.scss'],
+  standalone: true,
+  imports: [NgIf, MatLegacyProgressSpinnerModule, MatTreeModule, VitamuiTreeNodeComponent, DecimalPipe, TranslateModule],
 })
 export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
   @Input() accessContract: string;

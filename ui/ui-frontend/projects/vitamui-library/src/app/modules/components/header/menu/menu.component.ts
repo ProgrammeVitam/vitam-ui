@@ -10,12 +10,13 @@ import {
   ViewChildren,
 } from '@angular/core';
 import {
+  MatLegacyListModule,
   MatLegacySelectionList as MatSelectionList,
   MatLegacySelectionListChange as MatSelectionListChange,
 } from '@angular/material/legacy-list';
-import { MatLegacyTabChangeEvent as MatTabChangeEvent } from '@angular/material/legacy-tabs';
+import { MatLegacyTabChangeEvent as MatTabChangeEvent, MatLegacyTabsModule } from '@angular/material/legacy-tabs';
 import { Router } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Subject } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators';
 import { opacityAnimation, slideAnimation } from '../../../animations';
@@ -28,6 +29,12 @@ import { MenuOption } from '../../navbar';
 import { SearchBarComponent } from '../../search-bar';
 import { Tenant } from './../../../models/customer/tenant.interface';
 import { MenuOverlayRef } from './menu-overlay-ref';
+import { A11yModule } from '@angular/cdk/a11y';
+import { MenuApplicationTileComponent } from './menu-application-tile/menu-application-tile.component';
+import { KeyValuePipe, NgFor, NgIf } from '@angular/common';
+import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { ItemSelectComponent } from '../item-select/item-select.component';
+import { SearchBarComponent as SearchBarComponent_1 } from '../../search-bar/search-bar.component';
 
 const APPLICATION_TRANSLATE_PATH = 'APPLICATION';
 
@@ -41,6 +48,20 @@ interface NgxTranslateApp {
   templateUrl: './menu.component.html',
   styleUrls: ['./menu.component.scss'],
   animations: [opacityAnimation, slideAnimation],
+  standalone: true,
+  imports: [
+    SearchBarComponent_1,
+    ItemSelectComponent,
+    MatLegacyButtonModule,
+    NgIf,
+    MatLegacyListModule,
+    NgFor,
+    MenuApplicationTileComponent,
+    MatLegacyTabsModule,
+    A11yModule,
+    KeyValuePipe,
+    TranslateModule,
+  ],
 })
 export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
   public state = '';

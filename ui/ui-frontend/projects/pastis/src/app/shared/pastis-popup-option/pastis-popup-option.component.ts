@@ -1,7 +1,7 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
+import { LangChangeEvent, TranslateService, TranslateModule } from '@ngx-translate/core';
 import { FileUploader } from 'ng2-file-upload';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { environment } from 'projects/pastis/src/environments/environment';
@@ -16,6 +16,9 @@ import { CreateNoticeChoiceComponent } from '../../profile/create-notice-choice/
 import { CreateNoticeComponent } from '../../user-actions/create-notice/create-notice.component';
 import { PastisDialogDataCreate } from '../../user-actions/save-profile/save-profile.component';
 import { PastisDialogData } from '../pastis-dialog/classes/pastis-dialog-data';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatLegacyMenuModule } from '@angular/material/legacy-menu';
+import { NgIf } from '@angular/common';
 
 function constantToTranslate(edit: boolean) {
   if (edit) {
@@ -42,6 +45,8 @@ function constantToTranslate(edit: boolean) {
   selector: 'pastis-popup-option',
   templateUrl: './pastis-popup-option.component.html',
   styleUrls: ['./pastis-popup-option.component.scss'],
+  standalone: true,
+  imports: [NgIf, MatLegacyMenuModule, MatDividerModule, TranslateModule],
 })
 export class PastisPopupOptionComponent implements OnInit, OnDestroy {
   popupSaveCancelLabel: string;

@@ -44,24 +44,36 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Router } from '@angular/router';
 import { of, Subject } from 'rxjs';
 
-import { Group, OrderByButtonModule, TableFilterModule } from 'vitamui-library';
+import { Group, OrderByButtonComponent, TableFilterComponent } from 'vitamui-library';
 import { InfiniteScrollStubDirective, VitamUICommonTestModule } from 'vitamui-library/testing';
 import { GroupService } from '../group.service';
 import { GroupListComponent } from './group-list.component';
 
 // eslint-disable-next-line @angular-eslint/directive-selector
-@Directive({ selector: '[vitamuiCollapseTriggerFor]' })
+@Directive({
+  selector: '[vitamuiCollapseTriggerFor]',
+  standalone: true,
+})
 class CollapseTriggerForStubDirective {
   @Input() vitamuiCollapseTriggerFor: any;
 }
 
 // eslint-disable-next-line @angular-eslint/directive-selector
-@Directive({ selector: '[vitamuiCollapse]', exportAs: 'vitamuiCollapse' })
+@Directive({
+  selector: '[vitamuiCollapse]',
+  exportAs: 'vitamuiCollapse',
+  standalone: true,
+})
 class CollapseStubDirective {
   @Input() vitamuiCollapse: any;
 }
 
-@Component({ selector: 'app-owner-list', template: '' })
+@Component({
+  selector: 'app-owner-list',
+  template: '',
+  standalone: true,
+  imports: [MatProgressSpinnerModule, VitamUICommonTestModule, TableFilterComponent, OrderByButtonComponent],
+})
 class OwnerListStubComponent {
   @Input() profileGroup: any;
   @Input() owners: any;
@@ -135,8 +147,17 @@ describe('GroupListComponent', () => {
     matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
 
     await TestBed.configureTestingModule({
-      imports: [MatProgressSpinnerModule, NoopAnimationsModule, VitamUICommonTestModule, TableFilterModule, OrderByButtonModule],
-      declarations: [GroupListComponent, CollapseStubDirective, CollapseTriggerForStubDirective, OwnerListStubComponent],
+      imports: [
+        MatProgressSpinnerModule,
+        NoopAnimationsModule,
+        VitamUICommonTestModule,
+        TableFilterComponent,
+        OrderByButtonComponent,
+        GroupListComponent,
+        CollapseStubDirective,
+        CollapseTriggerForStubDirective,
+        OwnerListStubComponent,
+      ],
       providers: [
         { provide: GroupService, useValue: groupListServiceSpy },
         { provide: MatDialog, useValue: matDialogSpy },

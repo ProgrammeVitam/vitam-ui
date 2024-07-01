@@ -132,8 +132,8 @@ describe('AddUpdatePropertyComponent', () => {
         }),
         HttpClientTestingModule,
         RouterTestingModule,
+        AddUpdatePropertyComponent,
       ],
-      declarations: [AddUpdatePropertyComponent],
       providers: [
         FormBuilder,
         { provide: BASE_URL, useValue: '/fake-api' },

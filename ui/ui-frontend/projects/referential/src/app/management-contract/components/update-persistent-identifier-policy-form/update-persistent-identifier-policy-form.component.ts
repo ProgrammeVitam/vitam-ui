@@ -25,12 +25,20 @@
  * accept its terms.
  */
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
-import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
   ManagementContractValidationErrors,
   ManagementContractValidators,
 } from 'projects/referential/src/app/management-contract/validators/management-contract-validators';
-import { PersistentIdentifierPolicyTypeEnum } from 'vitamui-library';
+import { PersistentIdentifierPolicyTypeEnum, VitamUICommonInputComponent } from 'vitamui-library';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatLegacyRadioModule } from '@angular/material/legacy-radio';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { MatLegacyCheckboxModule } from '@angular/material/legacy-checkbox';
+import { MatLegacyOptionModule } from '@angular/material/legacy-core';
+import { NgFor, NgIf, NgClass, NgStyle } from '@angular/common';
+import { MatLegacySelectModule } from '@angular/material/legacy-select';
+import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
 
 interface PersistentIdentifierPolicyTypeOption {
   label: string;
@@ -47,6 +55,23 @@ interface ObjectUsageOption {
   selector: 'app-update-persistent-identifier-policy-form',
   templateUrl: './update-persistent-identifier-policy-form.component.html',
   styleUrls: ['./update-persistent-identifier-policy-form.component.scss'],
+  standalone: true,
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    MatLegacyFormFieldModule,
+    MatLegacySelectModule,
+    NgFor,
+    MatLegacyOptionModule,
+    NgIf,
+    VitamUICommonInputComponent,
+    MatLegacyCheckboxModule,
+    NgClass,
+    NgStyle,
+    MatLegacyTooltipModule,
+    MatLegacyRadioModule,
+    TranslateModule,
+  ],
 })
 export class UpdatePersistentIdentifierPolicyFormComponent implements OnChanges {
   @Input() form: FormGroup;

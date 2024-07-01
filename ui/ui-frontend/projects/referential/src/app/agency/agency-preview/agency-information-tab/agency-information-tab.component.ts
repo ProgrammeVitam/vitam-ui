@@ -35,18 +35,22 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
 import { extend, isEmpty } from 'underscore';
-import { Agency, ApplicationId, Role, SecurityService, diff } from 'vitamui-library';
+import { Agency, ApplicationId, Role, SecurityService, diff, VitamUICommonInputComponent } from 'vitamui-library';
 import { AgencyService } from '../../agency.service';
+import { TranslateModule } from '@ngx-translate/core';
+import { NgIf, AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-agency-information-tab',
   templateUrl: './agency-information-tab.component.html',
   styleUrls: ['./agency-information-tab.component.scss'],
+  standalone: true,
+  imports: [FormsModule, ReactiveFormsModule, VitamUICommonInputComponent, NgIf, AsyncPipe, TranslateModule],
 })
 export class AgencyInformationTabComponent {
   @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();

@@ -36,8 +36,12 @@
  */
 
 import { Component, forwardRef, Input, ViewChild } from '@angular/core';
-import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { MatLegacySelect as MatSelect } from '@angular/material/legacy-select';
+import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
+import { MatLegacySelect as MatSelect, MatLegacySelectModule } from '@angular/material/legacy-select';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatLegacyOptionModule } from '@angular/material/legacy-core';
+import { NgFor, NgIf } from '@angular/common';
+import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
 export const PATTERN_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
   // eslint-disable-next-line no-use-before-define
@@ -50,6 +54,8 @@ export const PATTERN_VALUE_ACCESSOR: any = {
   templateUrl: './pattern.component.html',
   styleUrls: ['./pattern.component.scss'],
   providers: [PATTERN_VALUE_ACCESSOR],
+  standalone: true,
+  imports: [MatLegacyFormFieldModule, MatLegacySelectModule, ReactiveFormsModule, NgFor, MatLegacyOptionModule, NgIf, TranslateModule],
 })
 export class PatternComponent implements ControlValueAccessor {
   @Input() options: Array<{ value: string; disabled?: boolean }>;

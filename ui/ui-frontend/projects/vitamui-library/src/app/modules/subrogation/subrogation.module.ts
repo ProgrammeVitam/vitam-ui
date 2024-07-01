@@ -43,11 +43,7 @@ import { MatLegacyProgressBarModule as MatProgressBarModule } from '@angular/mat
 import { MatLegacyProgressSpinnerModule as MatProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
 import { MatLegacySelectModule as MatSelectModule } from '@angular/material/legacy-select';
 import { TranslateModule } from '@ngx-translate/core';
-import { CommonProgressBarModule } from '../components/common-progress-bar/common-progress-bar.module';
 
-import { ConfirmDialogModule } from '../components/confirm-dialog/confirm-dialog.module';
-import { StepperModule } from '../components/stepper/stepper.module';
-import { VitamUICommonInputModule } from '../components/vitamui-input/vitamui-common-input.module';
 import { WINDOW_LOCATION } from '../injection-tokens';
 import { PipesModule } from '../pipes/pipes.module';
 import { NotificationSnackBarComponent } from './notification-snack-bar/notification-snack-bar.component';
@@ -63,15 +59,14 @@ import { SubrogationSnackBarComponent } from './subrogation-snack-bar/subrogatio
     MatProgressSpinnerModule,
     MatFormFieldModule,
     MatSelectModule,
-    StepperModule,
     ReactiveFormsModule,
-    VitamUICommonInputModule,
-    ConfirmDialogModule,
-    CommonProgressBarModule,
     TranslateModule,
     PipesModule,
+    NotificationSnackBarComponent,
+    SubrogationBannerComponent,
+    SubrogationModalComponent,
+    SubrogationSnackBarComponent,
   ],
-  declarations: [NotificationSnackBarComponent, SubrogationBannerComponent, SubrogationModalComponent, SubrogationSnackBarComponent],
   exports: [SubrogationBannerComponent],
   providers: [{ provide: WINDOW_LOCATION, useValue: window.location }],
 })

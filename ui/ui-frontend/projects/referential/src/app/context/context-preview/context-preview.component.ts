@@ -41,18 +41,29 @@ import {
   MatLegacyTab as MatTab,
   MatLegacyTabGroup as MatTabGroup,
   MatLegacyTabHeader as MatTabHeader,
+  MatLegacyTabsModule,
 } from '@angular/material/legacy-tabs';
 import { Observable } from 'rxjs';
-import { Context } from 'vitamui-library';
+import { Context, VitamuiSidenavHeaderComponent, HistoryModule } from 'vitamui-library';
 import { ConfirmActionComponent } from 'vitamui-library';
 import { ContextService } from '../context.service';
 import { ContextInformationTabComponent } from './context-information-tab/context-information-tab.component';
 import { ContextPermissionTabComponent } from './context-permission-tab/context-permission-tab.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-context-preview',
   templateUrl: './context-preview.component.html',
   styleUrls: ['./context-preview.component.scss'],
+  standalone: true,
+  imports: [
+    VitamuiSidenavHeaderComponent,
+    MatLegacyTabsModule,
+    ContextInformationTabComponent,
+    ContextPermissionTabComponent,
+    HistoryModule,
+    TranslateModule,
+  ],
 })
 export class ContextPreviewComponent implements AfterViewInit {
   @Output() previewClose: EventEmitter<any> = new EventEmitter();

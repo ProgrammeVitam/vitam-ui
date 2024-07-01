@@ -57,6 +57,16 @@ import { EditableSelectComponent } from './editable-select.component';
       <vitamui-common-editable-option value="value3" content="Content 3"></vitamui-common-editable-option>
     </vitamui-common-editable-select>
   `,
+  standalone: true,
+  imports: [
+    OverlayModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatProgressSpinnerModule,
+    MatSelectModule,
+    MatDialogModule,
+    HttpClientTestingModule,
+  ],
 })
 class TesthostComponent {
   value: string;
@@ -83,9 +93,11 @@ describe('EditableSelectComponent', () => {
         MatDialogModule,
         HttpClientTestingModule,
         TranslateModule.forRoot(),
+        TesthostComponent,
+        EditableSelectComponent,
+        EditableOptionComponent,
       ],
       providers: [{ provide: WINDOW_LOCATION, useValue: {} }],
-      declarations: [TesthostComponent, EditableSelectComponent, EditableOptionComponent],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
 

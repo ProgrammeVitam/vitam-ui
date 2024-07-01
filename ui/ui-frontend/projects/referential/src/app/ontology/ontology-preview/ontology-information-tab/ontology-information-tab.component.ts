@@ -1,16 +1,48 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { catchError, switchMap } from 'rxjs/operators';
-import { Ontology, Option, diff } from 'vitamui-library';
+import {
+  Ontology,
+  Option,
+  diff,
+  VitamUICommonInputComponent,
+  PipesModule,
+  VitamUITextareaComponent,
+  VitamUIInputErrorComponent,
+} from 'vitamui-library';
 import { setTypeDetailAndStringSize } from '../../../../../../vitamui-library/src/app/modules/models/ontology/ontology.utils';
 import { RULE_TYPES } from '../../../rule/rules.constants';
 import { OntologyService } from '../../ontology.service';
+import { DateTimePipe } from '../../../../../../vitamui-library/src/app/modules/pipes/datetime.pipe';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatLegacyInputModule } from '@angular/material/legacy-input';
+import { MatLegacyOptionModule } from '@angular/material/legacy-core';
+import { NgFor, NgIf } from '@angular/common';
+import { MatLegacySelectModule } from '@angular/material/legacy-select';
+import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
 
 @Component({
   selector: 'app-ontology-information-tab',
   templateUrl: './ontology-information-tab.component.html',
   styleUrls: ['./ontology-information-tab.component.scss'],
+  standalone: true,
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    VitamUICommonInputComponent,
+    MatLegacyFormFieldModule,
+    MatLegacySelectModule,
+    NgFor,
+    MatLegacyOptionModule,
+    NgIf,
+    MatLegacyInputModule,
+    PipesModule,
+    TranslateModule,
+    DateTimePipe,
+    VitamUITextareaComponent,
+    VitamUIInputErrorComponent,
+  ],
 })
 export class OntologyInformationTabComponent implements OnInit {
   @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();

@@ -35,13 +35,27 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, mergeMap, switchMap } from 'rxjs/operators';
 import { extend, isEmpty } from 'underscore';
-import { Rule, RuleService, SecurityService, VitamuiRoles, diff } from 'vitamui-library';
+import {
+  Rule,
+  RuleService,
+  SecurityService,
+  VitamuiRoles,
+  diff,
+  VitamUICommonInputComponent,
+  VitamUIInputErrorComponent,
+  VitamUITextareaComponent,
+} from 'vitamui-library';
 import { RULE_MEASUREMENTS, RULE_TYPES } from '../../rules.constants';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatLegacyOptionModule } from '@angular/material/legacy-core';
+import { NgFor, NgIf, AsyncPipe } from '@angular/common';
+import { MatLegacySelectModule } from '@angular/material/legacy-select';
+import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
 
 const RULES_APP = 'RULES_APP';
 
@@ -49,6 +63,21 @@ const RULES_APP = 'RULES_APP';
   selector: 'app-rule-information-tab',
   templateUrl: './rule-information-tab.component.html',
   styleUrls: ['./rule-information-tab.component.scss'],
+  standalone: true,
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    MatLegacyFormFieldModule,
+    MatLegacySelectModule,
+    NgFor,
+    MatLegacyOptionModule,
+    VitamUICommonInputComponent,
+    NgIf,
+    AsyncPipe,
+    TranslateModule,
+    VitamUIInputErrorComponent,
+    VitamUITextareaComponent,
+  ],
 })
 export class RuleInformationTabComponent implements OnInit {
   @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();

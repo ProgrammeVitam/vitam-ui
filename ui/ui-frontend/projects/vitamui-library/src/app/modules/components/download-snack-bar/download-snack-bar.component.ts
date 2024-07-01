@@ -35,14 +35,19 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, TemplateRef, ViewChild } from '@angular/core';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatLegacyDialog as MatDialog, MatLegacyDialogModule } from '@angular/material/legacy-dialog';
 import { Observable, Subject } from 'rxjs';
 import { filter } from 'rxjs/operators';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatLegacyProgressBarModule } from '@angular/material/legacy-progress-bar';
+import { NgIf, PercentPipe, I18nPluralPipe } from '@angular/common';
 
 @Component({
   selector: 'vitamui-common-download-snack-bar',
   templateUrl: './download-snack-bar.component.html',
   styleUrls: ['./download-snack-bar.component.scss'],
+  standalone: true,
+  imports: [NgIf, MatLegacyProgressBarModule, MatLegacyDialogModule, PercentPipe, I18nPluralPipe, TranslateModule],
 })
 export class DownloadSnackBarComponent {
   @ViewChild('confirmDialog', { static: true }) confirmDialog: TemplateRef<DownloadSnackBarComponent>;

@@ -52,6 +52,15 @@ import {
   rotateAnimation,
   User,
   VitamUISnackBarService,
+  InfiniteScrollDirective,
+  TableFilterComponent,
+  OrderByButtonComponent,
+  EllipsisDirective,
+  PipesModule,
+  HasAnyRoleDirective,
+  TableFilterDirective,
+  TableFilterOptionComponent,
+  TableFilterSearchComponent,
 } from 'vitamui-library';
 
 import {
@@ -71,6 +80,9 @@ import {
 import { CustomerService } from '../../core/customer.service';
 import { UserService } from '../user.service';
 import { buildCriteriaFromUserFilters } from './user-criteria-builder.util';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatLegacyProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
+import { NgIf, NgFor, NgSwitch, NgSwitchCase, UpperCasePipe, DatePipe } from '@angular/common';
 
 const FILTER_DEBOUNCE_TIME_MS = 400;
 
@@ -79,6 +91,26 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
   templateUrl: './user-list.component.html',
   styleUrls: ['./user-list.component.scss'],
   animations: [collapseAnimation, rotateAnimation],
+  standalone: true,
+  imports: [
+    InfiniteScrollDirective,
+    TableFilterComponent,
+    OrderByButtonComponent,
+    NgIf,
+    NgFor,
+    NgSwitch,
+    NgSwitchCase,
+    EllipsisDirective,
+    MatLegacyProgressSpinnerModule,
+    UpperCasePipe,
+    DatePipe,
+    PipesModule,
+    TranslateModule,
+    HasAnyRoleDirective,
+    TableFilterDirective,
+    TableFilterOptionComponent,
+    TableFilterSearchComponent,
+  ],
 })
 export class UserListComponent extends InfiniteScrollTable<User> implements OnDestroy, OnInit {
   @Input()

@@ -35,9 +35,13 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, ElementRef, forwardRef, Input, ViewChild } from '@angular/core';
-import { NG_VALUE_ACCESSOR } from '@angular/forms';
+import { NG_VALUE_ACCESSOR, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { EditableFieldComponent } from '../editable-field.component';
+import { EllipsisDirective } from '../../../directives/ellipsis/ellipsis.directive';
+import { MatLegacyProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
+import { CdkOverlayOrigin, CdkConnectedOverlay } from '@angular/cdk/overlay';
+import { NgIf } from '@angular/common';
 
 export const EDITABLE_INPUT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -50,6 +54,16 @@ export const EDITABLE_INPUT_VALUE_ACCESSOR: any = {
   templateUrl: './editable-input.component.html',
   styleUrls: ['./editable-input.component.scss'],
   providers: [EDITABLE_INPUT_VALUE_ACCESSOR],
+  standalone: true,
+  imports: [
+    NgIf,
+    CdkOverlayOrigin,
+    FormsModule,
+    ReactiveFormsModule,
+    MatLegacyProgressSpinnerModule,
+    CdkConnectedOverlay,
+    EllipsisDirective,
+  ],
 })
 export class EditableInputComponent extends EditableFieldComponent {
   @Input() maxlength: number;

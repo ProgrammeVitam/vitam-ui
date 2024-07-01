@@ -26,14 +26,19 @@
  */
 import { NestedTreeControl } from '@angular/cdk/tree';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { MatTreeNestedDataSource } from '@angular/material/tree';
-import { FilingHoldingSchemeNode, nodeHasChildren, nodeHasMatch, nodeToVitamuiIcon } from 'vitamui-library';
+import { MatTreeNestedDataSource, MatTreeModule } from '@angular/material/tree';
+import { FilingHoldingSchemeNode, nodeHasChildren, nodeHasMatch, nodeToVitamuiIcon, VitamuiTreeNodeComponent } from 'vitamui-library';
 import { Pair } from '../../../models/utils';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatLegacyProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
+import { NgIf, DecimalPipe } from '@angular/common';
 
 @Component({
   selector: 'app-classification-tree',
   templateUrl: './classification-tree.component.html',
   styleUrls: ['./classification-tree.component.scss'],
+  standalone: true,
+  imports: [NgIf, MatLegacyProgressSpinnerModule, MatTreeModule, VitamuiTreeNodeComponent, DecimalPipe, TranslateModule],
 })
 export class ClassificationTreeComponent {
   @Input() loadingHolding: boolean;

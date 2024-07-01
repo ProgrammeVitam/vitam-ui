@@ -46,7 +46,12 @@ import { FilingPlanComponent } from './filing-plan.component';
 import { FilingPlanMode, FilingPlanService } from './filing-plan.service';
 import { AuthService, FileType } from '../../../app/modules';
 
-@Component({ selector: 'lib-vitamui-library-node', template: '' })
+@Component({
+  selector: 'lib-vitamui-library-node',
+  template: '',
+  standalone: true,
+  imports: [MatTreeModule, MatProgressSpinnerModule],
+})
 class NodeStubComponent {
   @Input() tenantIdentifier: any;
   @Input() node: any;
@@ -66,8 +71,7 @@ describe('FilingPlanComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MatTreeModule, MatProgressSpinnerModule],
-      declarations: [FilingPlanComponent, NodeStubComponent],
+      imports: [MatTreeModule, MatProgressSpinnerModule, FilingPlanComponent, NodeStubComponent],
       providers: [
         { provide: FilingPlanService, useValue: fillingPlanStub },
         { provide: AuthService, useValue: { user: { profileGroup: { profiles: [] } } } },

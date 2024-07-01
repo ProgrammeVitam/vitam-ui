@@ -2,12 +2,15 @@ import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/cor
 import { DisplayObjectService, DisplayRule } from '../../../object-viewer/models';
 import { customTemplate } from '../../archive-unit-template';
 import { ArchiveUnitViewerService } from './archive-unit-viewer.service';
+import { ObjectViewerComponent } from '../../../object-viewer/object-viewer.component';
 
 @Component({
   selector: 'vitamui-common-archive-unit-viewer',
   templateUrl: './archive-unit-viewer.component.html',
   styleUrls: ['./archive-unit-viewer.component.scss'],
   providers: [{ provide: DisplayObjectService, useClass: ArchiveUnitViewerService }],
+  standalone: true,
+  imports: [ObjectViewerComponent],
 })
 export class ArchiveUnitViewerComponent implements OnInit, OnChanges {
   @Input() data!: any;

@@ -45,12 +45,21 @@ import { AuthUser } from '../../models';
 import { StartupService } from '../../startup.service';
 import { SubrogationService } from '../../subrogation/subrogation.service';
 import { MenuOption } from './customer-menu/menu-option.interface';
+import { TranslateModule } from '@ngx-translate/core';
+import { RouterLink } from '@angular/router';
+import { MatLegacyMenuModule } from '@angular/material/legacy-menu';
+import { CustomerMenuComponent } from './customer-menu/customer-menu.component';
+import { TenantMenuComponent } from './tenant-menu/tenant-menu.component';
+import { NgIf } from '@angular/common';
+import { ApplicationMenuComponent } from './application-menu/application-menu.component';
 
 @Component({
   selector: 'vitamui-common-navbar',
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss'],
   animations: [rotateUpAnimation],
+  standalone: true,
+  imports: [ApplicationMenuComponent, NgIf, TenantMenuComponent, CustomerMenuComponent, MatLegacyMenuModule, RouterLink, TranslateModule],
 })
 export class NavbarComponent {
   @Input() appId: string;

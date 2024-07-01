@@ -40,11 +40,14 @@ import { SafeResourceUrl } from '@angular/platform-browser';
 import { AuthService } from '../../../auth.service';
 import { ThemeDataType } from '../../../models';
 import { ThemeService } from '../../../theme.service';
+import { NgIf, NgClass } from '@angular/common';
 
 @Component({
   selector: 'vitamui-common-user-photo',
   templateUrl: './user-photo.component.html',
   styleUrls: ['./user-photo.component.scss'],
+  standalone: true,
+  imports: [NgIf, NgClass],
 })
 export class UserPhotoComponent implements OnInit {
   @Input() photo: string;

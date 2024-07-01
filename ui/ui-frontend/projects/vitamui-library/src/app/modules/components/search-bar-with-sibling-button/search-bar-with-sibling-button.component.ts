@@ -35,11 +35,15 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, ElementRef, EventEmitter, HostListener, Input, Output, ViewChild } from '@angular/core';
+import { NgIf } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'search-bar-with-sibling-button',
   templateUrl: './search-bar-with-sibling-button.component.html',
+  standalone: true,
+  imports: [FormsModule, NgIf],
 })
 export class SearchBarWithSiblingButtonComponent {
   @Input() placeholder: string;

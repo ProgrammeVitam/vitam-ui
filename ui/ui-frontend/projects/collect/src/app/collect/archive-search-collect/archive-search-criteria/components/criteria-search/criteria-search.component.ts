@@ -35,12 +35,17 @@ knowledge of the CeCILL-C license and that you accept its terms.
 */
 
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { CriteriaSearchCriteria, CriteriaValue, SearchCriteriaTypeEnum } from 'vitamui-library';
+import { CriteriaSearchCriteria, CriteriaValue, SearchCriteriaTypeEnum, PipesModule } from 'vitamui-library';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { NgIf, NgFor, NgClass, DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-criteria-search',
   templateUrl: './criteria-search.component.html',
   styleUrls: ['./criteria-search.component.scss'],
+  standalone: true,
+  imports: [NgIf, NgFor, MatLegacyTooltipModule, NgClass, DatePipe, PipesModule, TranslateModule],
 })
 export class CriteriaSearchComponent {
   constructor() {}

@@ -42,11 +42,15 @@ import { takeUntil } from 'rxjs/operators';
 import { Customer, Logo } from 'vitamui-library';
 import { CustomerService } from '../../../../core/customer.service';
 import { LogosSafeResourceUrl } from './../logos-safe-resource-url.interface';
+import { TranslateModule } from '@ngx-translate/core';
+import { GraphicIdentityComponent } from '../graphic-identity/graphic-identity.component';
 
 @Component({
   selector: 'app-graphic-identity-update',
   templateUrl: './graphic-identity-update.component.html',
   styleUrls: ['./graphic-identity-update.component.scss'],
+  standalone: true,
+  imports: [GraphicIdentityComponent, TranslateModule],
 })
 export class GraphicIdentityUpdateComponent implements OnInit, OnDestroy {
   private destroy = new Subject<void>();

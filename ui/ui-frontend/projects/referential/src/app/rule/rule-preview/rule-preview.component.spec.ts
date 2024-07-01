@@ -47,8 +47,7 @@ describe('RulePreviewComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
-      declarations: [RulePreviewComponent],
+      imports: [TranslateModule.forRoot(), RulePreviewComponent],
       providers: [
         { provide: MatDialog, useValue: {} },
         { provide: RuleService, useValue: {} },

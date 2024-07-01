@@ -9,7 +9,7 @@ describe('VitamuiRadioGroupComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [VitamUIRadioGroupComponent],
+      imports: [VitamUIRadioGroupComponent],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });

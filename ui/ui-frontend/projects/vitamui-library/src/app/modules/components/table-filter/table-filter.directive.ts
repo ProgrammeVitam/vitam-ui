@@ -41,6 +41,7 @@ import { Directive, ElementRef, EventEmitter, HostListener, Input, Output, Templ
 @Directive({
   selector: '[vitamuiCommonTableFilter]',
   exportAs: 'vitamuiCommonTableFilter',
+  standalone: true,
 })
 export class TableFilterDirective {
   @Input('vitamuiCommonTableFilter') templateRef: TemplateRef<any>;

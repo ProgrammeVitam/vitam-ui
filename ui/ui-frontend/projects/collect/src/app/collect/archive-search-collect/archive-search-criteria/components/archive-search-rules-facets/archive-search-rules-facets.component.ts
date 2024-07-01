@@ -36,11 +36,30 @@ knowledge of the CeCILL-C license and that you accept its terms.
 
 import { Component, Input } from '@angular/core';
 import { RuleFacets } from 'vitamui-library';
+import { TranslateModule } from '@ngx-translate/core';
+import { SearchReuseRulesFacetsComponent } from './search-reuse-rules-facets/search-reuse-rules-facets.component';
+import { SearchDisseminationRulesFacetsComponent } from './search-dissemination-rules-facets/search-dissemination-rules-facets.component';
+import { SearchAccessRulesFacetsComponent } from './search-access-rules-facets/search-access-rules-facets.component';
+import { SearchAppraisalRulesFacetsComponent } from './search-appraisal-rules-facets/search-appraisal-rules-facets.component';
+import { SearchStorageRulesFacetsComponent } from './search-storage-rules-facets/search-storage-rules-facets.component';
+import { NgIf } from '@angular/common';
+import { MatLegacyTabsModule } from '@angular/material/legacy-tabs';
 
 @Component({
   selector: 'app-archive-search-rules-facets',
   templateUrl: './archive-search-rules-facets.component.html',
   styleUrls: ['./archive-search-rules-facets.component.css'],
+  standalone: true,
+  imports: [
+    MatLegacyTabsModule,
+    NgIf,
+    SearchStorageRulesFacetsComponent,
+    SearchAppraisalRulesFacetsComponent,
+    SearchAccessRulesFacetsComponent,
+    SearchDisseminationRulesFacetsComponent,
+    SearchReuseRulesFacetsComponent,
+    TranslateModule,
+  ],
 })
 export class ArchiveSearchRulesFacetsComponent {
   @Input()

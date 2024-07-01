@@ -61,6 +61,7 @@ import { CollapseDirective } from './collapse.directive';
       </ng-container>
     </div>
   `,
+  standalone: true,
 })
 class TesthostComponent {
   @ViewChildren(CollapseDirective) collapseDirectives: QueryList<CollapseDirective>;
@@ -81,7 +82,7 @@ let page: Page;
 describe('CollapseContainerDirective', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [TesthostComponent, CollapseContainerDirective, CollapseTriggerForDirective, CollapseDirective],
+      imports: [TesthostComponent, CollapseContainerDirective, CollapseTriggerForDirective, CollapseDirective],
       providers: [],
     }).compileComponents();
   });

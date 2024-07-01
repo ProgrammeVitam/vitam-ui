@@ -57,7 +57,12 @@ class FakeLoader implements TranslateLoader {
   }
 }
 
-@Component({ selector: 'router-outlet', template: '' })
+@Component({
+  selector: 'router-outlet',
+  template: '',
+  standalone: true,
+  imports: [HttpClientTestingModule, MatSnackBarModule, InjectorModule, VitamUICommonTestModule],
+})
 class RouterOutletStubComponent {}
 
 describe('AppComponent', () => {
@@ -72,7 +77,7 @@ describe('AppComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      declarations: [AppComponent, RouterOutletStubComponent],
+      declarations: [AppComponent],
       imports: [
         HttpClientTestingModule,
         MatSnackBarModule,
@@ -83,6 +88,7 @@ describe('AppComponent', () => {
         TranslateModule.forRoot({
           loader: { provide: TranslateLoader, useClass: FakeLoader },
         }),
+        RouterOutletStubComponent,
       ],
       providers: [
         { provide: StartupService, useValue: startupServiceStub },

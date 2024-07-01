@@ -39,27 +39,24 @@ import { NgModule } from '@angular/core';
 import { MatLegacyProgressSpinnerModule as MatProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
-import { TableFilterModule, VitamUICommonModule } from 'vitamui-library';
-import { ImportDialogModule } from '../shared/import-dialog/import-dialog.module';
-import { AgencyCreateModule } from './agency-create';
+import { TableFilterComponent, VitamUICommonModule } from 'vitamui-library';
+
 import { AgencyListComponent } from './agency-list/agency-list.component';
-import { AgencyPreviewModule } from './agency-preview/agency-preview.module';
+
 import { AgencyRoutingModule } from './agency-routing.module';
 import { AgencyComponent } from './agency.component';
 
 @NgModule({
-  declarations: [AgencyComponent, AgencyListComponent],
   imports: [
     CommonModule,
     VitamUICommonModule,
     AgencyRoutingModule,
-    AgencyCreateModule,
-    AgencyPreviewModule,
     MatSnackBarModule,
     MatSidenavModule,
-    TableFilterModule,
+    TableFilterComponent,
     MatProgressSpinnerModule,
-    ImportDialogModule,
+    AgencyComponent,
+    AgencyListComponent,
   ],
 })
 export class AgencyModule {}

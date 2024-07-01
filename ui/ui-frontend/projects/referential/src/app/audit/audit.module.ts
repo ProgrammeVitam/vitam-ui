@@ -45,10 +45,8 @@ import { MatLegacySelectModule as MatSelectModule } from '@angular/material/lega
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
 import { RouterModule } from '@angular/router';
-import { TableFilterModule, VitamUICommonModule } from 'vitamui-library';
-import { PipesModule } from '../shared/pipes/pipes.module';
-import { AuditCreateModule } from './audit-create/audit-create.module';
-import { AuditPreviewModule } from './audit-preview/audit-preview.module';
+import { TableFilterComponent, VitamUICommonModule } from 'vitamui-library';
+
 import { AuditRoutingModule } from './audit-routing.module';
 import { AuditComponent } from './audit.component';
 import { MatLegacyInputModule as MatInputModule } from '@angular/material/legacy-input';
@@ -59,7 +57,6 @@ import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { FR_DATE_FORMAT } from '../helpers/dates.constants';
 
 @NgModule({
-  declarations: [AuditComponent, AuditListComponent],
   imports: [
     CommonModule,
     RouterModule,
@@ -67,8 +64,6 @@ import { FR_DATE_FORMAT } from '../helpers/dates.constants';
     ReactiveFormsModule,
     VitamUICommonModule,
     AuditRoutingModule,
-    AuditPreviewModule,
-    AuditCreateModule,
     MatMenuModule,
     MatSnackBarModule,
     MatDialogModule,
@@ -78,9 +73,10 @@ import { FR_DATE_FORMAT } from '../helpers/dates.constants';
     MatSelectModule,
     MatFormFieldModule,
     MatInputModule,
-    PipesModule,
-    TableFilterModule,
+    TableFilterComponent,
     MatMomentDateModule,
+    AuditComponent,
+    AuditListComponent,
   ],
   providers: [{ provide: MAT_DATE_FORMATS, useValue: FR_DATE_FORMAT }],
 })

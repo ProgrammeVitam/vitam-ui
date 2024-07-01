@@ -36,19 +36,40 @@
  */
 
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap, tap } from 'rxjs/operators';
 import { extend, isEmpty } from 'underscore';
-import { Context, Option, diff } from 'vitamui-library';
+import { Context, Option, diff, SlideToggleComponent, VitamUICommonInputComponent } from 'vitamui-library';
 import { RULE_TYPES } from '../../../rule/rules.constants';
 import { SecurityProfileService } from '../../../security-profile/security-profile.service';
 import { ContextService } from '../../context.service';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatLegacyInputModule } from '@angular/material/legacy-input';
+import { MatLegacyOptionModule } from '@angular/material/legacy-core';
+import { NgFor } from '@angular/common';
+import { MatLegacySelectModule } from '@angular/material/legacy-select';
+import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
 
 @Component({
   selector: 'app-context-information-tab',
   templateUrl: './context-information-tab.component.html',
   styleUrls: ['./context-information-tab.component.scss'],
+  standalone: true,
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    SlideToggleComponent,
+    VitamUICommonInputComponent,
+    MatLegacyFormFieldModule,
+    MatLegacySelectModule,
+    NgFor,
+    MatLegacyOptionModule,
+    MatLegacyInputModule,
+    MatDatepickerModule,
+    TranslateModule,
+  ],
 })
 export class ContextInformationTabComponent {
   @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();

@@ -35,5 +35,5 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 export * from './role-toggle.component';
-export * from './role-toggle.module';
+
 export * from './role.component';

@@ -26,13 +26,17 @@
  */
 
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { IEvent, LogbookService } from 'vitamui-library';
+import { IEvent, LogbookService, EventTypeLabelComponent, PipesModule } from 'vitamui-library';
 import { OperationDetails } from '../../../models/operation-response.interface';
+import { DateTimePipe } from '../../../../../../vitamui-library/src/app/modules/pipes/datetime.pipe';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-logbook-management-operation-information-tab',
   templateUrl: './logbook-management-operation-information-tab.component.html',
   styleUrls: ['./logbook-management-operation-information-tab.component.scss'],
+  standalone: true,
+  imports: [EventTypeLabelComponent, PipesModule, TranslateModule, DateTimePipe],
 })
 export class LogbookManagementOperationInformationTabComponent implements OnInit, OnChanges {
   @Input() operation: OperationDetails;

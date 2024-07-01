@@ -60,8 +60,7 @@ describe('TenantCreateComponent', () => {
     });
 
     await TestBed.configureTestingModule({
-      imports: [MatProgressBarModule, NoopAnimationsModule, ReactiveFormsModule, VitamUICommonTestModule],
-      declarations: [TenantCreateComponent],
+      imports: [MatProgressBarModule, NoopAnimationsModule, ReactiveFormsModule, VitamUICommonTestModule, TenantCreateComponent],
       providers: [
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MAT_DIALOG_DATA, useValue: { owner: { id: '42', name: 'OwnerName', customerId: '424242', enabled: true } } },

@@ -10,8 +10,7 @@ describe('ScrollTopComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ScrollTopComponent],
-      imports: [MatIconModule],
+      imports: [MatIconModule, ScrollTopComponent],
       providers: [{ provide: Router, useValue: { events: EMPTY } }],
     }).compileComponents();
   });

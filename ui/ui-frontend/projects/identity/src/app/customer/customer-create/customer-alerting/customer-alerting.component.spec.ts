@@ -10,8 +10,7 @@ describe('CustomerAlertingComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MatDialogModule, TranslateModule.forRoot()],
-      declarations: [CustomerAlertingComponent],
+      imports: [MatDialogModule, TranslateModule.forRoot(), CustomerAlertingComponent],
     }).compileComponents();
   });
 

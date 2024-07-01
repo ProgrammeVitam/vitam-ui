@@ -44,11 +44,15 @@ import { CommonMenuComponent } from '../common-menu/common-menu.component';
 import { MenuType } from '../menu-type.enum';
 import { CustomerMenuService } from './customer-menu.service';
 import { MenuOption } from './menu-option.interface';
+import { TranslateModule } from '@ngx-translate/core';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'vitamui-common-customer-menu',
   templateUrl: './customer-menu.component.html',
   styleUrls: ['./customer-menu.component.scss'],
+  standalone: true,
+  imports: [NgIf, TranslateModule],
 })
 export class CustomerMenuComponent implements OnInit, OnDestroy {
   @Input() customers: MenuOption[];

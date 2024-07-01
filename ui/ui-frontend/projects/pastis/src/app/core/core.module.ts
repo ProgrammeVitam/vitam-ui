@@ -39,8 +39,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgModule, Optional, SkipSelf } from '@angular/core';
 import { NgxUiLoaderConfig, NgxUiLoaderModule } from 'ngx-ui-loader';
 import { throwIfAlreadyLoaded, VitamUICommonModule } from 'vitamui-library';
-import { PastisMaterialModule } from '../material.module';
-import { SharedModule } from '../shared/shared.module';
 
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   bgsColor: 'red',
@@ -72,14 +70,7 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
 };
 @NgModule({
   declarations: [],
-  imports: [
-    CommonModule,
-    HttpClientModule,
-    VitamUICommonModule,
-    PastisMaterialModule,
-    SharedModule,
-    NgxUiLoaderModule.forRoot(ngxUiLoaderConfig),
-  ],
+  imports: [CommonModule, HttpClientModule, VitamUICommonModule, NgxUiLoaderModule.forRoot(ngxUiLoaderConfig)],
 
   exports: [VitamUICommonModule, NgxUiLoaderModule],
 })
