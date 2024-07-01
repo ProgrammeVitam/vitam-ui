@@ -55,26 +55,34 @@ import java.util.List;
 @Setter
 @Getter
 @JsonIgnoreProperties(value = { "id" })
-public class UnitDescriptiveMetadataDto extends IdDto  implements Serializable {
+public class UnitDescriptiveMetadataDto extends IdDto implements Serializable {
+
     @JsonProperty("Title")
     private String title;
+
     @JsonProperty("Description")
     private String description;
 
     @JsonProperty("Title_.fr")
     private String title_fr;
+
     @JsonProperty("Title_.en")
     private String title_en;
+
     @JsonProperty("Description_.fr")
     private String description_fr;
+
     @JsonProperty("Description_.en")
     private String description_en;
 
     @JsonProperty("DescriptionLevel")
     private String descriptionLevel;
+
     @JsonProperty("StartDate")
     private String startDate;
+
     @JsonProperty("EndDate")
     private String endDate;
+
     List<String> unsetAction;
 }

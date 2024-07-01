@@ -42,16 +42,19 @@ import fr.gouv.vitamui.referential.external.server.service.LogbookManagementOper
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
-
 @RequestMapping(RestApi.LOGBOOK_MANAGEMENT_OPERATION_PATH)
 @RestController
 public class LogbookManagementOperationExternalController {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(LogbookManagementOperationExternalController.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
+        LogbookManagementOperationExternalController.class
+    );
 
     private final LogbookManagementOperationExternalService logbookManagementOperationExternalService;
 
-    public LogbookManagementOperationExternalController(LogbookManagementOperationExternalService logbookManagementOperationExternalService) {
+    public LogbookManagementOperationExternalController(
+        LogbookManagementOperationExternalService logbookManagementOperationExternalService
+    ) {
         this.logbookManagementOperationExternalService = logbookManagementOperationExternalService;
     }
 
@@ -64,29 +67,26 @@ public class LogbookManagementOperationExternalController {
         return logbookManagementOperationExternalService.searchOperationsDetails(processQuery);
     }
 
-
     @PostMapping(RestApi.CANCEL_OPERATION_PATH + CommonConstants.PATH_ID)
     @Secured(ServicesData.ROLE_UPDATE_LOGBOOK_OPERATION)
     public ProcessDetailDto cancelOperationProcessExecution(final @PathVariable("id") String operationId)
         throws InvalidParseOperationException, PreconditionFailedException {
-        ParameterChecker
-            .checkParameter("The operation Id  is a mandatory paramater", operationId);
+        ParameterChecker.checkParameter("The operation Id  is a mandatory paramater", operationId);
         SanityChecker.checkSecureParameter(operationId);
         LOGGER.debug("Cancel the operation with id={}", operationId);
         return logbookManagementOperationExternalService.cancelOperationProcessExecution(operationId);
     }
 
-    @PostMapping(RestApi.UPDATE_OPERATION_PATH+ CommonConstants.PATH_ID)
+    @PostMapping(RestApi.UPDATE_OPERATION_PATH + CommonConstants.PATH_ID)
     @Secured(ServicesData.ROLE_UPDATE_LOGBOOK_OPERATION)
-    public ProcessDetailDto updateOperationActionProcess(final @PathVariable("id") String operationId, @RequestBody final String actionId)
-        throws InvalidParseOperationException, PreconditionFailedException {
-        ParameterChecker
-            .checkParameter("operationId and actionId are mandatories : ", operationId, actionId);
+    public ProcessDetailDto updateOperationActionProcess(
+        final @PathVariable("id") String operationId,
+        @RequestBody final String actionId
+    ) throws InvalidParseOperationException, PreconditionFailedException {
+        ParameterChecker.checkParameter("operationId and actionId are mandatories : ", operationId, actionId);
         SanityChecker.checkSecureParameter(actionId, operationId);
         LOGGER.debug("Update the operation id={} with actionId={}", operationId, actionId);
 
         return logbookManagementOperationExternalService.updateOperationActionProcess(actionId, operationId);
     }
-
-
 }

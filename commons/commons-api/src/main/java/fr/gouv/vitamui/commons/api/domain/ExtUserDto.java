@@ -37,7 +37,6 @@
 package fr.gouv.vitamui.commons.api.domain;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -59,9 +58,7 @@ public class ExtUserDto extends UserDto {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private GroupDto profileGroup = null;
 
-    public ExtUserDto() {
-
-    }
+    public ExtUserDto() {}
 
     public ExtUserDto(final UserDto user) {
         setId(user.getId());
@@ -94,5 +91,4 @@ public class ExtUserDto extends UserDto {
         this((UserDto) user);
         profileGroup = user.getProfileGroup();
     }
-
 }

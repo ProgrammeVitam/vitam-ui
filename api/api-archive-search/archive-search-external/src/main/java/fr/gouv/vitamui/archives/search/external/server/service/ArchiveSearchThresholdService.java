@@ -49,8 +49,8 @@ import java.util.Optional;
  */
 @Service
 public class ArchiveSearchThresholdService extends AbstractResourceClientService<ArchiveUnitsDto, ArchiveUnitsDto> {
-    private static final VitamUILogger LOGGER =
-        VitamUILoggerFactory.getInstance(ArchiveSearchThresholdService.class);
+
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ArchiveSearchThresholdService.class);
     public static final String PARAM_BULK_OPERATIONS_THRESHOLD_NAME = "PARAM_BULK_OPERATIONS_THRESHOLD";
 
     @Autowired
@@ -59,9 +59,11 @@ public class ArchiveSearchThresholdService extends AbstractResourceClientService
     @Autowired
     private final ArchiveInternalRestClient archiveInternalRestClient;
 
-    public ArchiveSearchThresholdService(@Autowired ArchiveInternalRestClient archiveInternalRestClient,
+    public ArchiveSearchThresholdService(
+        @Autowired ArchiveInternalRestClient archiveInternalRestClient,
         final ExternalSecurityService externalSecurityService,
-        final ExternalParametersInternalRestClient externalParametersInternalRestClient) {
+        final ExternalParametersInternalRestClient externalParametersInternalRestClient
+    ) {
         super(externalSecurityService);
         this.archiveInternalRestClient = archiveInternalRestClient;
         this.externalParametersInternalRestClient = externalParametersInternalRestClient;
@@ -79,13 +81,16 @@ public class ArchiveSearchThresholdService extends AbstractResourceClientService
      */
     public Optional<Long> retrieveProfilThresholds() {
         Optional<Long> thresholdOpt = Optional.empty();
-        ExternalParametersDto myExternalParameter =
-            externalParametersInternalRestClient.getMyExternalParameters(getInternalHttpContext());
+        ExternalParametersDto myExternalParameter = externalParametersInternalRestClient.getMyExternalParameters(
+            getInternalHttpContext()
+        );
         if (myExternalParameter != null && !CollectionUtils.isEmpty(myExternalParameter.getParameters())) {
-            ParameterDto parameterThreshold = myExternalParameter.getParameters().stream().filter(
-                parameter -> PARAM_BULK_OPERATIONS_THRESHOLD_NAME
-                    .equals(parameter.getKey()))
-                .findFirst().orElse(null);
+            ParameterDto parameterThreshold = myExternalParameter
+                .getParameters()
+                .stream()
+                .filter(parameter -> PARAM_BULK_OPERATIONS_THRESHOLD_NAME.equals(parameter.getKey()))
+                .findFirst()
+                .orElse(null);
             if (parameterThreshold != null && parameterThreshold.getValue() != null) {
                 try {
                     Long thresholdValue = Long.valueOf(parameterThreshold.getValue());
@@ -93,8 +98,13 @@ public class ArchiveSearchThresholdService extends AbstractResourceClientService
                 } catch (NumberFormatException nfe) {
                     LOGGER.error(
                         "external parameter of bulk threshold contains wrong integer value {}, it will not be used ",
-                        parameterThreshold.getValue());
-                    throw new IllegalArgumentException( "external parameter of bulk threshold contains wrong integer value " + parameterThreshold.getValue() + ", it will not be used ");
+                        parameterThreshold.getValue()
+                    );
+                    throw new IllegalArgumentException(
+                        "external parameter of bulk threshold contains wrong integer value " +
+                        parameterThreshold.getValue() +
+                        ", it will not be used "
+                    );
                 }
             }
         }

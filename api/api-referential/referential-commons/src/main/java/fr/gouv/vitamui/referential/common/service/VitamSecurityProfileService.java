@@ -86,43 +86,69 @@ public class VitamSecurityProfileService {
         this.objectMapper = objectMapper;
     }
 
-    public RequestResponse<?> patchSecurityProfile(final VitamContext vitamSecurityProfile, final String id, JsonNode jsonNode)  throws VitamClientException {
+    public RequestResponse<?> patchSecurityProfile(
+        final VitamContext vitamSecurityProfile,
+        final String id,
+        JsonNode jsonNode
+    ) throws VitamClientException {
         LOGGER.debug("patch: {}, {}", id, jsonNode);
-        LOGGER.debug("Patch Security Profile EvIdAppSession : {} " , vitamSecurityProfile.getApplicationSessionId());
+        LOGGER.debug("Patch Security Profile EvIdAppSession : {} ", vitamSecurityProfile.getApplicationSessionId());
         return adminExternalClient.updateSecurityProfile(vitamSecurityProfile, id, jsonNode);
     }
 
     public RequestResponse<?> deleteSecurityProfile(final VitamContext vitamContext, final String id)
-            throws InvalidParseOperationException, AccessExternalClientException, VitamClientException, IOException {
-        LOGGER.debug("Delete Security Profile EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
-        RequestResponse<SecurityProfileModel> requestResponse = adminExternalClient.findSecurityProfiles(vitamContext, new Select().getFinalSelect());
+        throws InvalidParseOperationException, AccessExternalClientException, VitamClientException, IOException {
+        LOGGER.debug("Delete Security Profile EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
+        RequestResponse<SecurityProfileModel> requestResponse = adminExternalClient.findSecurityProfiles(
+            vitamContext,
+            new Select().getFinalSelect()
+        );
         final List<SecurityProfileModel> actualSecurityProfiles = objectMapper
-                .treeToValue(requestResponse.toJsonNode(), SecurityProfileResponseDto.class).getResults();
+            .treeToValue(requestResponse.toJsonNode(), SecurityProfileResponseDto.class)
+            .getResults();
 
-        return importSecurityProfiles(vitamContext, actualSecurityProfiles.stream()
-                .filter( securityProfile -> !id.equals(securityProfile.getIdentifier()) )
-                .collect(Collectors.toList()));
+        return importSecurityProfiles(
+            vitamContext,
+            actualSecurityProfiles
+                .stream()
+                .filter(securityProfile -> !id.equals(securityProfile.getIdentifier()))
+                .collect(Collectors.toList())
+        );
     }
 
-    public RequestResponse<SecurityProfileModel> findSecurityProfiles(final VitamContext vitamSecurityProfile, final JsonNode select) throws VitamClientException {
-        LOGGER.debug("All Security Profiles EvIdAppSession : {} " , vitamSecurityProfile.getApplicationSessionId());
-        final RequestResponse<SecurityProfileModel> response = adminExternalClient.findSecurityProfiles(vitamSecurityProfile, select);
+    public RequestResponse<SecurityProfileModel> findSecurityProfiles(
+        final VitamContext vitamSecurityProfile,
+        final JsonNode select
+    ) throws VitamClientException {
+        LOGGER.debug("All Security Profiles EvIdAppSession : {} ", vitamSecurityProfile.getApplicationSessionId());
+        final RequestResponse<SecurityProfileModel> response = adminExternalClient.findSecurityProfiles(
+            vitamSecurityProfile,
+            select
+        );
         VitamRestUtils.checkResponse(response);
         return response;
     }
 
-    public RequestResponse<SecurityProfileModel> findSecurityProfileById(final VitamContext vitamSecurityProfile, final String securityProfileId) throws VitamClientException {
-        LOGGER.debug("Security Profile EvIdAppSession : {} " , vitamSecurityProfile.getApplicationSessionId());
-        final RequestResponse<SecurityProfileModel> response = adminExternalClient.findSecurityProfileById(vitamSecurityProfile, securityProfileId);
+    public RequestResponse<SecurityProfileModel> findSecurityProfileById(
+        final VitamContext vitamSecurityProfile,
+        final String securityProfileId
+    ) throws VitamClientException {
+        LOGGER.debug("Security Profile EvIdAppSession : {} ", vitamSecurityProfile.getApplicationSessionId());
+        final RequestResponse<SecurityProfileModel> response = adminExternalClient.findSecurityProfileById(
+            vitamSecurityProfile,
+            securityProfileId
+        );
         VitamRestUtils.checkResponse(response);
         return response;
     }
 
-    public RequestResponse<?> createSecurityProfile(final VitamContext vitamSecurityProfile, SecurityProfileModel newSecurityProfile)
-            throws InvalidParseOperationException, AccessExternalClientException, VitamClientException, IOException {
-        LOGGER.info("Create Security Profile EvIdAppSession : {} " , vitamSecurityProfile.getApplicationSessionId());
+    public RequestResponse<?> createSecurityProfile(
+        final VitamContext vitamSecurityProfile,
+        SecurityProfileModel newSecurityProfile
+    ) throws InvalidParseOperationException, AccessExternalClientException, VitamClientException, IOException {
+        LOGGER.info("Create Security Profile EvIdAppSession : {} ", vitamSecurityProfile.getApplicationSessionId());
         final List<SecurityProfileModel> actualSecurityProfiles = new ArrayList<>();
-        if(StringUtils.isBlank(newSecurityProfile.getIdentifier())) {
+        if (StringUtils.isBlank(newSecurityProfile.getIdentifier())) {
             newSecurityProfile.setIdentifier(newSecurityProfile.getName());
         }
         actualSecurityProfiles.add(newSecurityProfile);
@@ -130,21 +156,29 @@ public class VitamSecurityProfileService {
         return importSecurityProfiles(vitamSecurityProfile, actualSecurityProfiles);
     }
 
-    private RequestResponse importSecurityProfiles(final VitamContext vitamSecurityProfile, final List<SecurityProfileModel> agenciesModel)
-            throws InvalidParseOperationException, AccessExternalClientException, IOException, VitamClientException {
+    private RequestResponse importSecurityProfiles(
+        final VitamContext vitamSecurityProfile,
+        final List<SecurityProfileModel> agenciesModel
+    ) throws InvalidParseOperationException, AccessExternalClientException, IOException, VitamClientException {
         LOGGER.debug("Reimport securityProfileies {}", agenciesModel);
         return importSecurityProfiles(vitamSecurityProfile, agenciesModel, "SecurityProfiles.json");
     }
 
-    private RequestResponse importSecurityProfiles(final VitamContext vitamSecurityProfile, final List<SecurityProfileModel> securityProfileModels, String fileName)
-            throws InvalidParseOperationException, AccessExternalClientException, IOException, VitamClientException {
+    private RequestResponse importSecurityProfiles(
+        final VitamContext vitamSecurityProfile,
+        final List<SecurityProfileModel> securityProfileModels,
+        String fileName
+    ) throws InvalidParseOperationException, AccessExternalClientException, IOException, VitamClientException {
         try (ByteArrayInputStream byteArrayInputStream = serializeSecurityProfiles(securityProfileModels)) {
             return importSecurityProfiles(vitamSecurityProfile, byteArrayInputStream, fileName);
         }
     }
 
-    private RequestResponse<?> importSecurityProfiles(final VitamContext vitamSecurityProfile, final InputStream agencies, String fileName)
-            throws InvalidParseOperationException, AccessExternalClientException, VitamClientException {
+    private RequestResponse<?> importSecurityProfiles(
+        final VitamContext vitamSecurityProfile,
+        final InputStream agencies,
+        String fileName
+    ) throws InvalidParseOperationException, AccessExternalClientException, VitamClientException {
         return adminExternalClient.createSecurityProfiles(vitamSecurityProfile, agencies, fileName);
     }
 
@@ -154,27 +188,37 @@ public class VitamSecurityProfileService {
      * @param vitamSecurityProfile : list of security profiles in vitam
      * @return true if the securityProfile can be created, false if the ile format already exists
      */
-    public boolean checkAbilityToCreateSecurityProfileInVitam(final List<SecurityProfileModel> securityProfiles, VitamContext vitamSecurityProfile) {
-
+    public boolean checkAbilityToCreateSecurityProfileInVitam(
+        final List<SecurityProfileModel> securityProfiles,
+        VitamContext vitamSecurityProfile
+    ) {
         if (securityProfiles != null && !securityProfiles.isEmpty()) {
             try {
                 // check if tenant exist in Vitam
                 final JsonNode select = new Select().getFinalSelect();
-                final RequestResponse<SecurityProfileModel> response = findSecurityProfiles(vitamSecurityProfile, select);
+                final RequestResponse<SecurityProfileModel> response = findSecurityProfiles(
+                    vitamSecurityProfile,
+                    select
+                );
                 if (response.getStatus() == HttpStatus.UNAUTHORIZED.value()) {
-                    LOGGER.error("Can't create Security Profile for the tenant : {}  not found in Vitam", vitamSecurityProfile.getTenantId());
+                    LOGGER.error(
+                        "Can't create Security Profile for the tenant : {}  not found in Vitam",
+                        vitamSecurityProfile.getTenantId()
+                    );
                     throw new NotFoundException("Can't create Security Profile for the tenant : UNAUTHORIZED");
-                }
-                else if (response.getStatus() != HttpStatus.OK.value()) {
+                } else if (response.getStatus() != HttpStatus.OK.value()) {
                     LOGGER.error("Can't create Security Profile for this tenant");
-                    throw new UnavailableServiceException("Can't create Security Profile for this tenant, Vitam response code : " + response.getStatus());
+                    throw new UnavailableServiceException(
+                        "Can't create Security Profile for this tenant, Vitam response code : " + response.getStatus()
+                    );
                 }
 
                 verifySecurityProfileExistence(securityProfiles, response);
-            }
-            catch (final VitamClientException e) {
+            } catch (final VitamClientException e) {
                 LOGGER.error("Can't create Security Profile for this tenant, error while calling Vitam ");
-                throw new UnavailableServiceException("Can't create Security Profile for this tenant, error while calling Vitam : " + e.getMessage());
+                throw new UnavailableServiceException(
+                    "Can't create Security Profile for this tenant, error while calling Vitam : " + e.getMessage()
+                );
             }
             return true;
         }
@@ -186,36 +230,60 @@ public class VitamSecurityProfileService {
      * @param securityProfileModelList : security profile to verify existence
      * @param vitamSecurityProfiles : list of security profiles in vitam
      */
-    private void verifySecurityProfileExistence(final List<SecurityProfileModel> securityProfileModelList, final RequestResponse<SecurityProfileModel> vitamSecurityProfiles) {
+    private void verifySecurityProfileExistence(
+        final List<SecurityProfileModel> securityProfileModelList,
+        final RequestResponse<SecurityProfileModel> vitamSecurityProfiles
+    ) {
         try {
-
             objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-            final SecurityProfileResponseDto securityProfileResponseDto = objectMapper.treeToValue(vitamSecurityProfiles.toJsonNode(), SecurityProfileResponseDto.class);
-            final List<String> securityProfileNames = securityProfileModelList.stream().map(SecurityProfileModel::getName)
-                .filter(Objects::nonNull).map(String::strip)
+            final SecurityProfileResponseDto securityProfileResponseDto = objectMapper.treeToValue(
+                vitamSecurityProfiles.toJsonNode(),
+                SecurityProfileResponseDto.class
+            );
+            final List<String> securityProfileNames = securityProfileModelList
+                .stream()
+                .map(SecurityProfileModel::getName)
+                .filter(Objects::nonNull)
+                .map(String::strip)
                 .collect(Collectors.toList());
-            if (securityProfileResponseDto.getResults().stream().anyMatch(securityProfile -> securityProfileNames.contains(securityProfile.getName()))) {
-                final String messageError = "Can't create securityProfile, a format with the same name already exist in Vitam";
+            if (
+                securityProfileResponseDto
+                    .getResults()
+                    .stream()
+                    .anyMatch(securityProfile -> securityProfileNames.contains(securityProfile.getName()))
+            ) {
+                final String messageError =
+                    "Can't create securityProfile, a format with the same name already exist in Vitam";
                 LOGGER.error(messageError);
                 throw new ConflictException(messageError);
             }
-            final List<String> securityProfileIds = securityProfileModelList.stream().map(SecurityProfileModel::getIdentifier)
-                .filter(Objects::nonNull).map(String::strip)
+            final List<String> securityProfileIds = securityProfileModelList
+                .stream()
+                .map(SecurityProfileModel::getIdentifier)
+                .filter(Objects::nonNull)
+                .map(String::strip)
                 .collect(Collectors.toList());
-            if (securityProfileResponseDto.getResults().stream().anyMatch(securityProfile -> securityProfileIds.contains(securityProfile.getIdentifier()))) {
-                final String messageError = "Can't create securityProfile, a Security Profile  with the same identifier already exist in Vitam";
+            if (
+                securityProfileResponseDto
+                    .getResults()
+                    .stream()
+                    .anyMatch(securityProfile -> securityProfileIds.contains(securityProfile.getIdentifier()))
+            ) {
+                final String messageError =
+                    "Can't create securityProfile, a Security Profile  with the same identifier already exist in Vitam";
                 LOGGER.error(messageError);
                 throw new ConflictException(messageError);
             }
-        }
-        catch (final JsonProcessingException exception) {
-            final String errorMessage = "Can't create management contracts, Error while parsing Vitam response : " + exception.getMessage();
+        } catch (final JsonProcessingException exception) {
+            final String errorMessage =
+                "Can't create management contracts, Error while parsing Vitam response : " + exception.getMessage();
             LOGGER.error(errorMessage);
             throw new UnexpectedDataException(errorMessage);
         }
     }
 
-    private ByteArrayInputStream serializeSecurityProfiles(final List<SecurityProfileModel> securityProfileModels) throws IOException {
+    private ByteArrayInputStream serializeSecurityProfiles(final List<SecurityProfileModel> securityProfileModels)
+        throws IOException {
         final List<SecurityProfileVitamDto> listOfAC = convertSecurityProfilesToModelOfCreation(securityProfileModels);
         final ObjectMapper mapper = new ObjectMapper();
         final JsonNode node = mapper.convertValue(listOfAC, JsonNode.class);
@@ -227,7 +295,9 @@ public class VitamSecurityProfileService {
         }
     }
 
-    private List<SecurityProfileVitamDto> convertSecurityProfilesToModelOfCreation(final List<SecurityProfileModel> securityProfileModels) {
+    private List<SecurityProfileVitamDto> convertSecurityProfilesToModelOfCreation(
+        final List<SecurityProfileModel> securityProfileModels
+    ) {
         final List<SecurityProfileVitamDto> listOfSP = new ArrayList<>();
         for (final SecurityProfileModel securityProfileModel : securityProfileModels) {
             final SecurityProfileVitamDto securityProfile = new SecurityProfileVitamDto();
@@ -235,5 +305,4 @@ public class VitamSecurityProfileService {
         }
         return listOfSP;
     }
-
 }

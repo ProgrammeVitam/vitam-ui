@@ -49,5 +49,4 @@ public class ParameterListDto implements Serializable {
     private static final long serialVersionUID = -3137972847122776634L;
 
     private List<ParameterDto> parameters;
-
 }

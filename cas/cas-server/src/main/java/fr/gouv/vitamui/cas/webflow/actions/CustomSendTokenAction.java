@@ -37,6 +37,9 @@
 package fr.gouv.vitamui.cas.webflow.actions;
 
 import fr.gouv.vitamui.cas.util.Utils;
+import lombok.extern.slf4j.Slf4j;
+import lombok.val;
+import org.apache.commons.lang3.StringUtils;
 import org.apereo.cas.authentication.principal.Principal;
 import org.apereo.cas.configuration.model.support.mfa.CasSimpleMultifactorAuthenticationProperties;
 import org.apereo.cas.mfa.simple.CasSimpleMultifactorTokenCommunicationStrategy;
@@ -48,10 +51,6 @@ import org.apereo.cas.ticket.Ticket;
 import org.apereo.cas.ticket.registry.TicketRegistry;
 import org.apereo.cas.web.flow.CasWebflowConstants;
 import org.apereo.cas.web.support.WebUtils;
-
-import lombok.extern.slf4j.Slf4j;
-import lombok.val;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.webflow.execution.Event;
 import org.springframework.webflow.execution.RequestContext;
 
@@ -65,21 +64,25 @@ public class CustomSendTokenAction extends CasSimpleMultifactorSendTokenAction {
 
     private final Utils utils;
 
-    public CustomSendTokenAction(final TicketRegistry ticketRegistry,
-                                 final CommunicationsManager communicationsManager,
-                                 final CasSimpleMultifactorAuthenticationTicketFactory ticketFactory,
-                                 final CasSimpleMultifactorAuthenticationProperties properties,
-                                 final CasSimpleMultifactorTokenCommunicationStrategy tokenCommunicationStrategy,
-                                 final Utils utils) {
+    public CustomSendTokenAction(
+        final TicketRegistry ticketRegistry,
+        final CommunicationsManager communicationsManager,
+        final CasSimpleMultifactorAuthenticationTicketFactory ticketFactory,
+        final CasSimpleMultifactorAuthenticationProperties properties,
+        final CasSimpleMultifactorTokenCommunicationStrategy tokenCommunicationStrategy,
+        final Utils utils
+    ) {
         super(ticketRegistry, communicationsManager, ticketFactory, properties, tokenCommunicationStrategy);
         this.utils = utils;
     }
 
     @Override
-    protected boolean isSmsSent(final CommunicationsManager communicationsManager,
-                                     final CasSimpleMultifactorAuthenticationProperties properties,
-                                     final Principal principal,
-                                     final Ticket token) {
+    protected boolean isSmsSent(
+        final CommunicationsManager communicationsManager,
+        final CasSimpleMultifactorAuthenticationProperties properties,
+        final Principal principal,
+        final Ticket token
+    ) {
         if (communicationsManager.isSmsSenderDefined()) {
             val smsProperties = properties.getSms();
             String smsText = StringUtils.isNotBlank(smsProperties.getText())
@@ -87,7 +90,12 @@ public class CustomSendTokenAction extends CasSimpleMultifactorSendTokenAction {
                 : token.getId();
             // CUSTO: remove the prefix
             smsText = smsText.replace(CasSimpleMultifactorAuthenticationTicket.PREFIX + "-", "");
-            return communicationsManager.sms(principal, smsProperties.getAttributeName(), smsText, smsProperties.getFrom());
+            return communicationsManager.sms(
+                principal,
+                smsProperties.getAttributeName(),
+                smsText,
+                smsProperties.getFrom()
+            );
         }
         return false;
     }

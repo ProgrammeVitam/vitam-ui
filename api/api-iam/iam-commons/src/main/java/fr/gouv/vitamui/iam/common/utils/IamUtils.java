@@ -41,8 +41,7 @@ import java.util.Optional;
 
 public final class IamUtils {
 
-    private IamUtils() {
-    }
+    private IamUtils() {}
 
     /**
      * Method to build a string of embedded fields in following the format:

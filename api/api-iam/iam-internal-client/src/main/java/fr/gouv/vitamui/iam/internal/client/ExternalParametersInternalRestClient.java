@@ -58,9 +58,12 @@ import java.util.List;
  *
  *
  */
-public class ExternalParametersInternalRestClient extends BasePaginatingAndSortingRestClient<ExternalParametersDto, InternalHttpContext> {
+public class ExternalParametersInternalRestClient
+    extends BasePaginatingAndSortingRestClient<ExternalParametersDto, InternalHttpContext> {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ExternalParametersInternalRestClient.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
+        ExternalParametersInternalRestClient.class
+    );
 
     public ExternalParametersInternalRestClient(final RestTemplate restTemplate, final String baseUrl) {
         super(restTemplate, baseUrl);
@@ -77,7 +80,12 @@ public class ExternalParametersInternalRestClient extends BasePaginatingAndSorti
 
         final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl() + CommonConstants.PATH_ME);
 
-        final ResponseEntity<ExternalParametersDto> response = restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET, request, ExternalParametersDto.class);
+        final ResponseEntity<ExternalParametersDto> response = restTemplate.exchange(
+            uriBuilder.toUriString(),
+            HttpMethod.GET,
+            request,
+            ExternalParametersDto.class
+        );
         checkResponse(response);
         return response.getBody();
     }
@@ -94,13 +102,11 @@ public class ExternalParametersInternalRestClient extends BasePaginatingAndSorti
 
     @Override
     protected ParameterizedTypeReference<List<ExternalParametersDto>> getDtoListClass() {
-        return new ParameterizedTypeReference<List<ExternalParametersDto>>() {
-        };
+        return new ParameterizedTypeReference<List<ExternalParametersDto>>() {};
     }
 
     @Override
     protected ParameterizedTypeReference<PaginatedValuesDto<ExternalParametersDto>> getDtoPaginatedClass() {
-        return new ParameterizedTypeReference<PaginatedValuesDto<ExternalParametersDto>>() {
-        };
+        return new ParameterizedTypeReference<PaginatedValuesDto<ExternalParametersDto>>() {};
     }
 }

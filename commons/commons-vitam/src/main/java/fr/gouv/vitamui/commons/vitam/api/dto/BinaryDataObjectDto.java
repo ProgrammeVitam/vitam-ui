@@ -44,6 +44,7 @@ import lombok.ToString;
 @Setter
 @ToString
 public class BinaryDataObjectDto {
+
     private String filename;
 
     private String messageDigest;

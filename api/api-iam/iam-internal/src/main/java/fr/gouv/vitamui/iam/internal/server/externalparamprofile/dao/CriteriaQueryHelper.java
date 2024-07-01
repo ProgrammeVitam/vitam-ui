@@ -88,16 +88,16 @@ public class CriteriaQueryHelper {
                 queryOperator = query.getQueryOperator();
             }
             switch (queryOperator) {
-                case OR :
+                case OR:
                     rootCriteria.orOperator(criteriaArray);
                     break;
-                case NOR :
+                case NOR:
                     rootCriteria.norOperator(criteriaArray);
                     break;
-                case AND :
+                case AND:
                     rootCriteria.andOperator(criteriaArray);
                     break;
-                default :
+                default:
                     throw new UnsupportedOperationException("Unsupported QueryOperator " + query.getQueryOperator());
             }
         }

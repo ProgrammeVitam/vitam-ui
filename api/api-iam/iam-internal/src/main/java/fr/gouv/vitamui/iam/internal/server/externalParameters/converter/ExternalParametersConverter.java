@@ -39,20 +39,16 @@ package fr.gouv.vitamui.iam.internal.server.externalParameters.converter;
 import fr.gouv.vitamui.commons.api.converter.Converter;
 import fr.gouv.vitamui.commons.api.domain.ExternalParametersDto;
 import fr.gouv.vitamui.commons.api.domain.ParameterDto;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.api.utils.ApiUtils;
 import fr.gouv.vitamui.commons.logbook.util.LogbookUtils;
 import fr.gouv.vitamui.commons.utils.VitamUIUtils;
 import fr.gouv.vitamui.iam.internal.server.common.domain.Parameter;
 import fr.gouv.vitamui.iam.internal.server.externalParameters.domain.ExternalParameters;
-import fr.gouv.vitamui.iam.internal.server.externalParameters.service.ExternalParametersInternalService;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 @Getter
 @Setter
@@ -70,8 +66,7 @@ public class ExternalParametersConverter implements Converter<ExternalParameters
 
     public static final String PARAMETER_VALUE_KEY = "Valeur";
 
-    public ExternalParametersConverter() {
-    }
+    public ExternalParametersConverter() {}
 
     @Override
     public String convertToLogbook(final ExternalParametersDto dto) {
@@ -86,21 +81,29 @@ public class ExternalParametersConverter implements Converter<ExternalParameters
     @Override
     public ExternalParameters convertDtoToEntity(final ExternalParametersDto dto) {
         ExternalParameters externalParameters = VitamUIUtils.copyProperties(dto, new ExternalParameters());
-         if(dto.getParameters() != null ) {
-            externalParameters.setParameters(dto.getParameters().stream()
-                .map(parameterDto -> VitamUIUtils.copyProperties(parameterDto,new Parameter()))
-                .collect(Collectors.toList()));
-         }
-         return externalParameters;
+        if (dto.getParameters() != null) {
+            externalParameters.setParameters(
+                dto
+                    .getParameters()
+                    .stream()
+                    .map(parameterDto -> VitamUIUtils.copyProperties(parameterDto, new Parameter()))
+                    .collect(Collectors.toList())
+            );
+        }
+        return externalParameters;
     }
 
     @Override
     public ExternalParametersDto convertEntityToDto(final ExternalParameters externalParameters) {
         ExternalParametersDto dto = VitamUIUtils.copyProperties(externalParameters, new ExternalParametersDto());
-        if(externalParameters.getParameters() != null ) {
-            dto.setParameters(externalParameters.getParameters().stream()
-                .map(parameter -> VitamUIUtils.copyProperties(parameter,new ParameterDto()))
-                .collect(Collectors.toList()));
+        if (externalParameters.getParameters() != null) {
+            dto.setParameters(
+                externalParameters
+                    .getParameters()
+                    .stream()
+                    .map(parameter -> VitamUIUtils.copyProperties(parameter, new ParameterDto()))
+                    .collect(Collectors.toList())
+            );
         }
         return dto;
     }

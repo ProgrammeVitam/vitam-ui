@@ -37,7 +37,6 @@
 package fr.gouv.vitamui.referential.common.export.probativevalue.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -47,16 +46,15 @@ import lombok.ToString;
 @ToString
 public class ReportResultsDto {
 
-	@JsonProperty("OK")
-	private Integer nbOk;
+    @JsonProperty("OK")
+    private Integer nbOk;
 
-	@JsonProperty("KO")
-	private Integer nbKo;
+    @JsonProperty("KO")
+    private Integer nbKo;
 
-	@JsonProperty("WARNING")
-	private Integer nbWarning;
+    @JsonProperty("WARNING")
+    private Integer nbWarning;
 
-	@JsonProperty("total")
-	private Integer total;
-
+    @JsonProperty("total")
+    private Integer total;
 }

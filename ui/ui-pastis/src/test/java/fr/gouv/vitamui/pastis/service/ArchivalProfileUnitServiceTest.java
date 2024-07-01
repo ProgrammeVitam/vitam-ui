@@ -2,7 +2,6 @@ package fr.gouv.vitamui.pastis.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import fr.gouv.vitamui.commons.api.domain.IdDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.client.BaseCrudRestClient;
@@ -11,7 +10,6 @@ import fr.gouv.vitamui.referential.common.dto.ArchivalProfileUnitDto;
 import fr.gouv.vitamui.referential.external.client.ArchivalProfileUnitExternalRestClient;
 import fr.gouv.vitamui.referential.external.client.ArchivalProfileUnitExternalWebClient;
 import fr.gouv.vitamui.ui.commons.service.AbstractCrudService;
-import fr.gouv.vitamui.ui.commons.service.CommonService;
 import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -40,11 +38,10 @@ public class ArchivalProfileUnitServiceTest extends AbstractCrudService<Archival
     static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ArchivalProfileUnitService.class);
 
     @Mock
-    private  ArchivalProfileUnitExternalWebClient webClient;
+    private ArchivalProfileUnitExternalWebClient webClient;
 
     @Mock
     private ArchivalProfileUnitExternalRestClient restClient;
-
 
     private ArchivalProfileUnitService service;
 
@@ -58,7 +55,6 @@ public class ArchivalProfileUnitServiceTest extends AbstractCrudService<Archival
         return restClient;
     }
 
-
     protected ArchivalProfileUnitDto buidDto(String id) {
         final ArchivalProfileUnitDto dto = new ArchivalProfileUnitDto();
         dto.setTenant(0);
@@ -66,14 +62,13 @@ public class ArchivalProfileUnitServiceTest extends AbstractCrudService<Archival
         return dto;
     }
 
-
     protected AbstractCrudService<ArchivalProfileUnitDto> getService() {
         return service;
     }
 
     @Test
     public void testGetAll() {
-       super.getAll(null, Optional.empty());
+        super.getAll(null, Optional.empty());
     }
 
     @Test
@@ -99,21 +94,23 @@ public class ArchivalProfileUnitServiceTest extends AbstractCrudService<Archival
     public void testExport() throws IOException {
         File file = new File("src/test/resources/data/valid_pua.json");
         FileInputStream input = new FileInputStream(file);
-        MultipartFile multipartFile = new MockMultipartFile(file.getName(), file.getName(), "Application/json", IOUtils.toByteArray(input));
+        MultipartFile multipartFile = new MockMultipartFile(
+            file.getName(),
+            file.getName(),
+            "Application/json",
+            IOUtils.toByteArray(input)
+        );
 
         String response = "{\"httpCode\":\"201\"}";
         ObjectMapper mapper = new ObjectMapper();
         JsonNode jsonResponse = mapper.readTree(response);
 
-        Mockito.when(webClient.importArchivalUnitProfiles(any(ExternalHttpContext.class), any(MultipartFile.class)))
-                .thenReturn(ResponseEntity.ok().body(jsonResponse));
+        Mockito.when(
+            webClient.importArchivalUnitProfiles(any(ExternalHttpContext.class), any(MultipartFile.class))
+        ).thenReturn(ResponseEntity.ok().body(jsonResponse));
 
         assertThatCode(() -> {
             service.importArchivalUnitProfiles(null, multipartFile);
         }).doesNotThrowAnyException();
-
     }
-
-
-
 }

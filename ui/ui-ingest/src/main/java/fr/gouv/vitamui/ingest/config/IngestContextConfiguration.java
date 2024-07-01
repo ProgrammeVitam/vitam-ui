@@ -58,7 +58,7 @@ import org.springframework.context.annotation.Import;
 
 @Configuration
 @EnableConfigurationProperties
-@Import(value = {SecurityConfig.class, SwaggerConfiguration.class, RestExceptionHandler.class})
+@Import(value = { SecurityConfig.class, SwaggerConfiguration.class, RestExceptionHandler.class })
 public class IngestContextConfiguration extends AbstractContextConfiguration {
 
     @Bean
@@ -73,46 +73,48 @@ public class IngestContextConfiguration extends AbstractContextConfiguration {
     @DependsOn("uiProperties")
     public IngestExternalRestClientFactory ingestExternalRestClientFactory(
         final IngestApplicationProperties uiProperties,
-        RestTemplateBuilder restTemplateBuilder) {
+        RestTemplateBuilder restTemplateBuilder
+    ) {
         return new IngestExternalRestClientFactory(uiProperties.getIngestExternalClient(), restTemplateBuilder);
     }
-
 
     @Bean
     @ConditionalOnMissingBean
     @DependsOn("uiProperties")
     public IngestStreamingExternalRestClientFactory ingestStreamingExternalRestClientFactory(
-        final IngestApplicationProperties uiProperties) {
+        final IngestApplicationProperties uiProperties
+    ) {
         return new IngestStreamingExternalRestClientFactory(uiProperties.getIngestExternalClient());
     }
 
     @Bean
     @ConditionalOnMissingBean
     @DependsOn("uiProperties")
-    public IngestExternalWebClientFactory ingestExternalWebClientFactory(final IngestApplicationProperties uiProperties,
-        RestTemplateBuilder restTemplateBuilder) {
+    public IngestExternalWebClientFactory ingestExternalWebClientFactory(
+        final IngestApplicationProperties uiProperties,
+        RestTemplateBuilder restTemplateBuilder
+    ) {
         return new IngestExternalWebClientFactory(uiProperties.getIngestExternalClient());
     }
 
-
     @Bean
     public IngestExternalRestClient ingestExternalRestClient(
-        final IngestExternalRestClientFactory ingestExternalRestClientFactory) {
+        final IngestExternalRestClientFactory ingestExternalRestClientFactory
+    ) {
         return ingestExternalRestClientFactory.getIngestExternalRestClient();
     }
 
     @Bean
     public IngestExternalWebClient ingestExternalWebClient(
-        final IngestExternalWebClientFactory ingestExternalWebClientFactory) {
+        final IngestExternalWebClientFactory ingestExternalWebClientFactory
+    ) {
         return ingestExternalWebClientFactory.getIngestExternalWebClient();
     }
 
-
     @Bean
     public IngestStreamingExternalRestClient ingestStreamingExternalRestClient(
-        final IngestStreamingExternalRestClientFactory ingestStreamingExternalRestClientFactory) {
+        final IngestStreamingExternalRestClientFactory ingestStreamingExternalRestClientFactory
+    ) {
         return ingestStreamingExternalRestClientFactory.getIngestStreamingExternalRestClient();
     }
-
-
 }

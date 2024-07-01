@@ -36,7 +36,6 @@
  */
 package fr.gouv.vitamui.referential;
 
-
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,8 +56,7 @@ public class ReferentialApplication implements CommandLineRunner {
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ReferentialApplication.class);
 
     public static void main(final String[] args) {
-        SpringApplication app = new SpringApplicationBuilder(ReferentialApplication.class)
-            .build();
+        SpringApplication app = new SpringApplicationBuilder(ReferentialApplication.class).build();
         app.run(args);
     }
 
@@ -67,5 +65,4 @@ public class ReferentialApplication implements CommandLineRunner {
         LOGGER.info("VITAMUI SpringBoot Application started:");
         LOGGER.info("spring.application.name: " + env.getProperty("spring.application.name"));
     }
-
 }

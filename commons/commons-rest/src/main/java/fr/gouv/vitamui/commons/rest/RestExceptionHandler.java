@@ -36,20 +36,19 @@
  */
 package fr.gouv.vitamui.commons.rest;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.time.OffsetDateTime;
-import java.util.Date;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import com.fasterxml.jackson.databind.ObjectMapper;
+import fr.gouv.vitamui.commons.api.exception.BadRequestException;
+import fr.gouv.vitamui.commons.api.exception.ForbiddenException;
+import fr.gouv.vitamui.commons.api.exception.InternalServerException;
+import fr.gouv.vitamui.commons.api.exception.InvalidAuthenticationException;
+import fr.gouv.vitamui.commons.api.exception.VitamUIException;
+import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
+import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.commons.rest.dto.VitamUIError;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.ConversionNotSupportedException;
 import org.springframework.beans.TypeMismatchException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -75,18 +74,15 @@ import org.springframework.web.context.request.async.AsyncRequestTimeoutExceptio
 import org.springframework.web.multipart.support.MissingServletRequestPartException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.time.OffsetDateTime;
+import java.util.Date;
 
-import fr.gouv.vitamui.commons.api.exception.BadRequestException;
-import fr.gouv.vitamui.commons.api.exception.VitamUIException;
-import fr.gouv.vitamui.commons.api.exception.ForbiddenException;
-import fr.gouv.vitamui.commons.api.exception.InternalServerException;
-import fr.gouv.vitamui.commons.api.exception.InvalidAuthenticationException;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
-import fr.gouv.vitamui.commons.rest.dto.VitamUIError;
-
-@Order()
+@Order
 @ControllerAdvice
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
@@ -105,8 +101,11 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
      * @throws IOException
      * @throws ServletException
      */
-    public void writeExceptionToResponse(final HttpServletRequest request, final HttpServletResponse response, final Exception ex)
-            throws IOException, ServletException {
+    public void writeExceptionToResponse(
+        final HttpServletRequest request,
+        final HttpServletResponse response,
+        final Exception ex
+    ) throws IOException, ServletException {
         // retrieve the right vitamuiException that we want
         VitamUIException vitamuiException = null;
         if (ex instanceof VitamUIException) {
@@ -178,23 +177,43 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
      * {@inheritDoc}
      */
     @Override
-    protected ResponseEntity<Object> handleExceptionInternal(final Exception ex, final Object body, final HttpHeaders headers, final HttpStatus status,
-            final WebRequest request) {
+    protected ResponseEntity<Object> handleExceptionInternal(
+        final Exception ex,
+        final Object body,
+        final HttpHeaders headers,
+        final HttpStatus status,
+        final WebRequest request
+    ) {
         VitamUIException vitamuiException = null;
-        LOG.error("Handling error : {} : {}.\n{}\nCause:\n{}", ex.getClass().getName(), ex.getMessage(), buildStacktrace(ex), ex.getCause());
-        if (ex instanceof MissingPathVariableException || ex instanceof ConversionNotSupportedException || ex instanceof HttpMessageNotWritableException) {
+        LOG.error(
+            "Handling error : {} : {}.\n{}\nCause:\n{}",
+            ex.getClass().getName(),
+            ex.getMessage(),
+            buildStacktrace(ex),
+            ex.getCause()
+        );
+        if (
+            ex instanceof MissingPathVariableException ||
+            ex instanceof ConversionNotSupportedException ||
+            ex instanceof HttpMessageNotWritableException
+        ) {
             vitamuiException = ApiErrorGenerator.getInternalServerException(ex.getMessage());
-        }
-        else if (ex instanceof AsyncRequestTimeoutException) {
+        } else if (ex instanceof AsyncRequestTimeoutException) {
             vitamuiException = ApiErrorGenerator.getApplicationServerException(ex.getMessage());
-        }
-        else if (ex instanceof HttpRequestMethodNotSupportedException || ex instanceof HttpMediaTypeNotSupportedException
-                || ex instanceof HttpMediaTypeNotAcceptableException || ex instanceof MissingServletRequestParameterException
-                || ex instanceof ServletRequestBindingException || ex instanceof TypeMismatchException || ex instanceof HttpMessageNotReadableException
-                || ex instanceof MethodArgumentNotValidException || ex instanceof MissingServletRequestPartException || ex instanceof BindException) {
+        } else if (
+            ex instanceof HttpRequestMethodNotSupportedException ||
+            ex instanceof HttpMediaTypeNotSupportedException ||
+            ex instanceof HttpMediaTypeNotAcceptableException ||
+            ex instanceof MissingServletRequestParameterException ||
+            ex instanceof ServletRequestBindingException ||
+            ex instanceof TypeMismatchException ||
+            ex instanceof HttpMessageNotReadableException ||
+            ex instanceof MethodArgumentNotValidException ||
+            ex instanceof MissingServletRequestPartException ||
+            ex instanceof BindException
+        ) {
             vitamuiException = ApiErrorGenerator.getBadRequestException(ex.getMessage());
-        }
-        else {
+        } else {
             vitamuiException = ApiErrorGenerator.getInternalServerException(ex.getMessage());
         }
         logException(vitamuiException, request);
@@ -226,8 +245,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         apiErrors.setStatus(status.value());
         if (StringUtils.isEmpty(vitamuiException.getKey())) {
             apiErrors.setError(ApiErrorGenerator.buildKey(vitamuiException.getClass()));
-        }
-        else {
+        } else {
             apiErrors.setError(vitamuiException.getKey());
         }
 
@@ -269,8 +287,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         final ResponseStatus responseStatus = exception.getClass().getAnnotation(ResponseStatus.class);
         if (responseStatus != null) {
             status = responseStatus.value();
-        }
-        else {
+        } else {
             status = HttpStatus.INTERNAL_SERVER_ERROR;
         }
         return status;
@@ -289,8 +306,16 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
                 stackTrace.append("\t at " + element.toString() + "\n");
             }
         }
-        LOG.error("Error during API call {} {}. \nStatusCode : {}. \n{} : {}.\n{}\nCause:\n", request.getMethod(), request.getServletPath(), status.value(),
-                exception.getClass().getName(), exception.getMessage(), stackTrace.toString(), exception.getCause());
+        LOG.error(
+            "Error during API call {} {}. \nStatusCode : {}. \n{} : {}.\n{}\nCause:\n",
+            request.getMethod(),
+            request.getServletPath(),
+            status.value(),
+            exception.getClass().getName(),
+            exception.getMessage(),
+            stackTrace.toString(),
+            exception.getCause()
+        );
     }
 
     /**
@@ -302,9 +327,16 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         final ServletWebRequest servletWebRequest = (ServletWebRequest) request;
         final HttpStatus status = getExceptionStatus(exception);
         final String stackTrace = buildStacktrace(exception);
-        LOG.error("Error during API call {} {}. \nStatusCode : {}. \n{} : {}.\n{}\nCause:\n{}", servletWebRequest.getHttpMethod(),
-                servletWebRequest.getRequest().getServletPath(), status.value(), exception.getClass().getName(), exception.getMessage(), stackTrace,
-                exception.getCause());
+        LOG.error(
+            "Error during API call {} {}. \nStatusCode : {}. \n{} : {}.\n{}\nCause:\n{}",
+            servletWebRequest.getHttpMethod(),
+            servletWebRequest.getRequest().getServletPath(),
+            status.value(),
+            exception.getClass().getName(),
+            exception.getMessage(),
+            stackTrace,
+            exception.getCause()
+        );
     }
 
     private String buildStacktrace(final Exception exception) {
@@ -316,5 +348,4 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         }
         return stackTrace.toString();
     }
-
 }

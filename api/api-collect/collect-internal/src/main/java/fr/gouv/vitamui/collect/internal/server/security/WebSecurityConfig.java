@@ -1,4 +1,3 @@
-
 /*
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2015-2022)
  *
@@ -43,9 +42,11 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 @EnableWebSecurity
 public class WebSecurityConfig extends InternalApiWebSecurityConfig {
 
-    public WebSecurityConfig(final AuthenticationProvider apiAuthenticationProvider,
-        final RestExceptionHandler restExceptionHandler, final Environment env) {
+    public WebSecurityConfig(
+        final AuthenticationProvider apiAuthenticationProvider,
+        final RestExceptionHandler restExceptionHandler,
+        final Environment env
+    ) {
         super(apiAuthenticationProvider, restExceptionHandler, env);
     }
-
 }

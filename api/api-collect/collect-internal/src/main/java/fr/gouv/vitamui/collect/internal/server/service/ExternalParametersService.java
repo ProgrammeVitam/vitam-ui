@@ -43,14 +43,17 @@ import java.util.Objects;
  */
 @Service
 public class ExternalParametersService {
+
     public static final String PARAM_ACCESS_CONTRACT_NAME = "PARAM_ACCESS_CONTRACT";
 
     private final ExternalParametersInternalRestClient externalParametersInternalRestClient;
     private final InternalSecurityService securityService;
 
     @Autowired
-    public ExternalParametersService(final ExternalParametersInternalRestClient externalParametersInternalRestClient,
-        final InternalSecurityService securityService) {
+    public ExternalParametersService(
+        final ExternalParametersInternalRestClient externalParametersInternalRestClient,
+        final InternalSecurityService securityService
+    ) {
         this.externalParametersInternalRestClient = externalParametersInternalRestClient;
         this.securityService = securityService;
     }
@@ -61,16 +64,19 @@ public class ExternalParametersService {
      * @return access contract throws IllegalArgumentException
      */
     public String retrieveAccessContractFromExternalParam() {
-        ExternalParametersDto myExternalParameter =
-            externalParametersInternalRestClient.getMyExternalParameters(securityService.getHttpContext());
+        ExternalParametersDto myExternalParameter = externalParametersInternalRestClient.getMyExternalParameters(
+            securityService.getHttpContext()
+        );
         if (myExternalParameter == null || CollectionUtils.isEmpty(myExternalParameter.getParameters())) {
             throw new IllegalArgumentException("No external profile defined for access contract defined");
         }
 
-        ParameterDto parameterAccessContract = myExternalParameter.getParameters().stream().filter(
-                parameter -> PARAM_ACCESS_CONTRACT_NAME
-                    .equals(parameter.getKey()))
-            .findFirst().orElse(null);
+        ParameterDto parameterAccessContract = myExternalParameter
+            .getParameters()
+            .stream()
+            .filter(parameter -> PARAM_ACCESS_CONTRACT_NAME.equals(parameter.getKey()))
+            .findFirst()
+            .orElse(null);
         if (Objects.isNull(parameterAccessContract) || Objects.isNull(parameterAccessContract.getValue())) {
             throw new IllegalArgumentException("No access contract defined");
         }
@@ -83,8 +89,8 @@ public class ExternalParametersService {
      * @return
      */
     public VitamContext buildVitamContextFromExternalParam() {
-        return new VitamContext(securityService.getTenantIdentifier()).setAccessContract(
-                retrieveAccessContractFromExternalParam())
+        return new VitamContext(securityService.getTenantIdentifier())
+            .setAccessContract(retrieveAccessContractFromExternalParam())
             .setApplicationSessionId(securityService.getApplicationId());
     }
 }

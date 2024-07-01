@@ -31,5 +31,4 @@ public class RestApplicationTest extends AbstractServerIdentityBuilder {
         assertThat(serverIdentityConfiguration).isNotNull();
         assertThat(applicationConfiguration).isNotNull();
     }
-
 }

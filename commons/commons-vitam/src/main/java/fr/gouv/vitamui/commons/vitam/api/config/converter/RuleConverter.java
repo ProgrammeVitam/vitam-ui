@@ -58,10 +58,10 @@ public class RuleConverter {
 
     public RuleDto convertVitamToDto(final FileRulesModel rule) {
         final RuleDto dto = VitamUIUtils.copyProperties(rule, new RuleDto());
-        if(nonNull(rule.getRuleMeasurement())) {
+        if (nonNull(rule.getRuleMeasurement())) {
             dto.setRuleMeasurement(rule.getRuleMeasurement().getType());
         }
-        if(nonNull(rule.getRuleType())) {
+        if (nonNull(rule.getRuleType())) {
             dto.setRuleType(rule.getRuleType().name());
         }
         return dto;
@@ -74,5 +74,4 @@ public class RuleConverter {
     public List<RuleDto> convertVitamsToDtos(final List<FileRulesModel> rules) {
         return rules.stream().map(this::convertVitamToDto).collect(Collectors.toList());
     }
-
 }

@@ -35,15 +35,22 @@ import java.util.stream.Collectors;
 
 public class AccessionRegisterSummaryConverter {
 
-	private AccessionRegisterSummaryConverter() {
-		throw new UnsupportedOperationException("Utility class");
-	}
+    private AccessionRegisterSummaryConverter() {
+        throw new UnsupportedOperationException("Utility class");
+    }
 
-	public static AccessionRegisterSummaryDto convertVitamToDto(final AccessionRegisterSummaryModel accessionRegisterSummaryModel) {
-		return VitamUIUtils.copyProperties(accessionRegisterSummaryModel, new AccessionRegisterSummaryDto());
-	}
+    public static AccessionRegisterSummaryDto convertVitamToDto(
+        final AccessionRegisterSummaryModel accessionRegisterSummaryModel
+    ) {
+        return VitamUIUtils.copyProperties(accessionRegisterSummaryModel, new AccessionRegisterSummaryDto());
+    }
 
-	public static List<AccessionRegisterSummaryDto> convertVitamsToDtos(final List<AccessionRegisterSummaryModel> accessionRegisterSummaryModels) {
-		return accessionRegisterSummaryModels.stream().map(AccessionRegisterSummaryConverter::convertVitamToDto).collect(Collectors.toList());
-	}
+    public static List<AccessionRegisterSummaryDto> convertVitamsToDtos(
+        final List<AccessionRegisterSummaryModel> accessionRegisterSummaryModels
+    ) {
+        return accessionRegisterSummaryModels
+            .stream()
+            .map(AccessionRegisterSummaryConverter::convertVitamToDto)
+            .collect(Collectors.toList());
+    }
 }

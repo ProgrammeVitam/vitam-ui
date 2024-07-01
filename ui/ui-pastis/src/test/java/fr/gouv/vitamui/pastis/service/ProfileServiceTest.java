@@ -57,7 +57,6 @@ public class ProfileServiceTest extends AbstractCrudService<ProfileDto> {
         return restClient;
     }
 
-
     protected ProfileDto buidDto(String id) {
         final ProfileDto dto = new ProfileDto();
         dto.setTenant(0);
@@ -100,19 +99,23 @@ public class ProfileServiceTest extends AbstractCrudService<ProfileDto> {
     public void testExport() throws IOException {
         File file = new File("src/test/resources/data/valid_pua.json");
         FileInputStream input = new FileInputStream(file);
-        MultipartFile multipartFile = new MockMultipartFile(file.getName(), file.getName(), "Application/json", IOUtils.toByteArray(input));
+        MultipartFile multipartFile = new MockMultipartFile(
+            file.getName(),
+            file.getName(),
+            "Application/json",
+            IOUtils.toByteArray(input)
+        );
 
         String response = "{\"httpCode\":\"201\"}";
         ObjectMapper mapper = new ObjectMapper();
         JsonNode jsonResponse = mapper.readTree(response);
 
-        Mockito.when(webClient.importProfiles(any(ExternalHttpContext.class), any(MultipartFile.class)))
-            .thenReturn(ResponseEntity.ok().body(jsonResponse));
+        Mockito.when(webClient.importProfiles(any(ExternalHttpContext.class), any(MultipartFile.class))).thenReturn(
+            ResponseEntity.ok().body(jsonResponse)
+        );
 
         assertThatCode(() -> {
             service.importProfiles(null, multipartFile);
         }).doesNotThrowAnyException();
-
     }
-
 }

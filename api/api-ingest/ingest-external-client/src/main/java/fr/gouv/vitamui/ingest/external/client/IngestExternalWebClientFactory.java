@@ -46,7 +46,10 @@ public class IngestExternalWebClientFactory extends BaseWebClientFactory {
         super(restClientConfiguration);
     }
 
-    public IngestExternalWebClientFactory(final RestClientConfiguration restClientConfig, final HttpPoolConfiguration httpPoolConfig) {
+    public IngestExternalWebClientFactory(
+        final RestClientConfiguration restClientConfig,
+        final HttpPoolConfiguration httpPoolConfig
+    ) {
         super(restClientConfig, httpPoolConfig);
     }
 

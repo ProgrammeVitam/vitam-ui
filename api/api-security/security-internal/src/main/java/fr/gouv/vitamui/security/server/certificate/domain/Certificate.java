@@ -36,18 +36,17 @@
  */
 package fr.gouv.vitamui.security.server.certificate.domain;
 
-import javax.validation.constraints.NotNull;
-
-import org.hibernate.validator.constraints.Length;
-import org.springframework.data.annotation.TypeAlias;
-import org.springframework.data.mongodb.core.mapping.Document;
-
 import fr.gouv.vitamui.commons.mongo.IdDocument;
 import fr.gouv.vitamui.security.server.common.domain.MongoDbCollections;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.validator.constraints.Length;
+import org.springframework.data.annotation.TypeAlias;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+import javax.validation.constraints.NotNull;
 
 /**
  * A certificate.

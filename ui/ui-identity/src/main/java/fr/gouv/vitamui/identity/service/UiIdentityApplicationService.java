@@ -40,11 +40,11 @@ import fr.gouv.vitamui.commons.security.client.logout.CasLogoutUrl;
 import fr.gouv.vitamui.iam.external.client.IamExternalRestClientFactory;
 import fr.gouv.vitamui.ui.commons.property.UIProperties;
 import fr.gouv.vitamui.ui.commons.service.ApplicationService;
-import javax.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.info.BuildProperties;
 import org.springframework.stereotype.Service;
 
+import javax.validation.constraints.NotNull;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -67,8 +67,12 @@ public class UiIdentityApplicationService extends ApplicationService {
     @NotNull
     private String portalMessage;
 
-    public UiIdentityApplicationService(final UIProperties properties, final CasLogoutUrl casLogoutUrl,
-                                        final IamExternalRestClientFactory factory, final BuildProperties buildProperties) {
+    public UiIdentityApplicationService(
+        final UIProperties properties,
+        final CasLogoutUrl casLogoutUrl,
+        final IamExternalRestClientFactory factory,
+        final BuildProperties buildProperties
+    ) {
         super(properties, casLogoutUrl, factory, buildProperties);
     }
 
@@ -80,5 +84,4 @@ public class UiIdentityApplicationService extends ApplicationService {
         configurationData.put(PORTAL_MESSAGE, portalMessage);
         return configurationData;
     }
-
 }

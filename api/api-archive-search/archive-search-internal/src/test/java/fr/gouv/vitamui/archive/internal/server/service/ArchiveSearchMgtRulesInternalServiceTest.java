@@ -36,7 +36,6 @@
  */
 package fr.gouv.vitamui.archive.internal.server.service;
 
-
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -101,7 +100,6 @@ public class ArchiveSearchMgtRulesInternalServiceTest {
     @InjectMocks
     private ArchiveSearchMgtRulesInternalService archiveSearchMgtRulesInternalService;
 
-
     @MockBean(name = "accessContractService")
     private AccessContractService accessContractService;
 
@@ -111,19 +109,23 @@ public class ArchiveSearchMgtRulesInternalServiceTest {
     @BeforeEach
     public void setUp() {
         ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
-        archiveSearchMgtRulesInternalService =
-            new ArchiveSearchMgtRulesInternalService(archiveSearchInternalService,
-                ruleOperationsConverter,
-                accessContractService, unitService, objectMapper);
+        archiveSearchMgtRulesInternalService = new ArchiveSearchMgtRulesInternalService(
+            archiveSearchInternalService,
+            ruleOperationsConverter,
+            accessContractService,
+            unitService,
+            objectMapper
+        );
     }
 
     @Test
-    public void testSearchFilingHoldingSchemeResultsThanReturnVitamUISearchResponseDto() throws VitamClientException,
-        IOException, InvalidParseOperationException {
+    public void testSearchFilingHoldingSchemeResultsThanReturnVitamUISearchResponseDto()
+        throws VitamClientException, IOException, InvalidParseOperationException {
         // Given
 
-        when(archiveSearchInternalService.searchArchiveUnits(any(), any()))
-            .thenReturn(buildUnitMetadataResponse(FILING_HOLDING_SCHEME_RESULTS).toJsonNode());
+        when(archiveSearchInternalService.searchArchiveUnits(any(), any())).thenReturn(
+            buildUnitMetadataResponse(FILING_HOLDING_SCHEME_RESULTS).toJsonNode()
+        );
         // When
         JsonNode jsonNode = archiveSearchInternalService.searchArchiveUnits(any(), any());
 
@@ -131,8 +133,10 @@ public class ArchiveSearchMgtRulesInternalServiceTest {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
-        VitamUISearchResponseDto vitamUISearchResponseDto =
-            objectMapper.treeToValue(jsonNode, VitamUISearchResponseDto.class);
+        VitamUISearchResponseDto vitamUISearchResponseDto = objectMapper.treeToValue(
+            jsonNode,
+            VitamUISearchResponseDto.class
+        );
 
         // Then
         Assertions.assertThat(vitamUISearchResponseDto).isNotNull();
@@ -143,44 +147,47 @@ public class ArchiveSearchMgtRulesInternalServiceTest {
         throws IOException, InvalidParseOperationException {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        InputStream inputStream = ArchiveSearchMgtRulesInternalServiceTest.class.getClassLoader()
-            .getResourceAsStream(filename);
+        InputStream inputStream =
+            ArchiveSearchMgtRulesInternalServiceTest.class.getClassLoader().getResourceAsStream(filename);
         Assertions.assertThat(inputStream).isNotNull();
-        return RequestResponseOK
-            .getFromJsonNode(objectMapper.readValue(ByteStreams.toByteArray(inputStream), JsonNode.class));
+        return RequestResponseOK.getFromJsonNode(
+            objectMapper.readValue(ByteStreams.toByteArray(inputStream), JsonNode.class)
+        );
     }
-
 
     @Test
     public void testUpdateArchiveUnitsRulesWithCorrectAccessContractThenReturnSuccess() throws Exception {
         // Given
-        when(unitService.massUpdateUnitsRules(any(), any()))
-            .thenReturn(buildUnitMetadataResponse(UPDATE_RULES_ASYNC_RESPONSE));
-
+        when(unitService.massUpdateUnitsRules(any(), any())).thenReturn(
+            buildUnitMetadataResponse(UPDATE_RULES_ASYNC_RESPONSE)
+        );
 
         RequestResponseOK<AccessContractModel> response1 = new RequestResponseOK<>();
         response1.setHttpCode(200);
         response1.setHits(1, 1, 1, 1);
         response1.addResult(createAccessContractModel("contratTNR", "contrat d acces", 0, true));
 
-        when(accessContractService.findAccessContractById(any(), any()))
-            .thenReturn(response1);
+        when(accessContractService.findAccessContractById(any(), any())).thenReturn(response1);
 
         RequestResponse<AccessContractModel> requestResponse = Mockito.mock(RequestResponse.class);
-        Mockito.when(accessContractService.findAccessContracts(ArgumentMatchers.any(), ArgumentMatchers.any()))
-            .thenReturn(requestResponse);
-        List<AccessContractModelDto> results =
-            List.of(createAccessContractModelDto("contratTNR", "contrat d acces", 0, true));
+        Mockito.when(
+            accessContractService.findAccessContracts(ArgumentMatchers.any(), ArgumentMatchers.any())
+        ).thenReturn(requestResponse);
+        List<AccessContractModelDto> results = List.of(
+            createAccessContractModelDto("contratTNR", "contrat d acces", 0, true)
+        );
         JsonHandler.toJsonNode(results);
         AccessContractResponseDto response = new AccessContractResponseDto();
         response.setResults(results);
-        Mockito.when(objectMapper.treeToValue(requestResponse.toJsonNode(), AccessContractResponseDto.class))
-            .thenReturn(response);
+        Mockito.when(
+            objectMapper.treeToValue(requestResponse.toJsonNode(), AccessContractResponseDto.class)
+        ).thenReturn(response);
 
         // Configure the mapper
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        when(objectMapper.treeToValue(any(), (Class<Object>) any()))
-            .thenReturn(createAccessContractsResponseDto("contratTNR", "contrat d acces", 0, true));
+        when(objectMapper.treeToValue(any(), (Class<Object>) any())).thenReturn(
+            createAccessContractsResponseDto("contratTNR", "contrat d acces", 0, true)
+        );
 
         SearchCriteriaDto searchQuery = new SearchCriteriaDto();
         List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
@@ -198,7 +205,8 @@ public class ArchiveSearchMgtRulesInternalServiceTest {
         searchCriteriaElementsNodes.setCriteria("NODE");
         searchCriteriaElementsNodes.setCategory(ArchiveSearchConsts.CriteriaCategory.NODES);
         searchCriteriaElementsNodes.setValues(
-            Arrays.asList(new CriteriaValue("node1"), new CriteriaValue("node2"), new CriteriaValue("node3")));
+            Arrays.asList(new CriteriaValue("node1"), new CriteriaValue("node2"), new CriteriaValue("node3"))
+        );
         criteriaList.add(agencyCodeCriteria);
         criteriaList.add(searchCriteriaElementsNodes);
         searchQuery.setSize(20);
@@ -207,51 +215,51 @@ public class ArchiveSearchMgtRulesInternalServiceTest {
         RuleSearchCriteriaDto ruleSearchCriteriaDto = new RuleSearchCriteriaDto();
         ruleSearchCriteriaDto.setSearchCriteriaDto(searchQuery);
 
-
         //When //Then
-        String expectingGuid =
-            archiveSearchMgtRulesInternalService.updateArchiveUnitsRules(
-                ruleSearchCriteriaDto, new VitamContext(1));
+        String expectingGuid = archiveSearchMgtRulesInternalService.updateArchiveUnitsRules(
+            ruleSearchCriteriaDto,
+            new VitamContext(1)
+        );
         assertThatCode(() -> {
-            archiveSearchMgtRulesInternalService.updateArchiveUnitsRules(
-                ruleSearchCriteriaDto, new VitamContext(1));
+            archiveSearchMgtRulesInternalService.updateArchiveUnitsRules(ruleSearchCriteriaDto, new VitamContext(1));
         }).doesNotThrowAnyException();
 
         Assertions.assertThat(expectingGuid).isEqualTo("aeeaaaaaagh23tjvabz5gal6qlt6iaaaaaaq");
-
     }
-
-
 
     @Test
     public void testUpdateArchiveUnitsRulesWithInCorrectAccessContractThenReturBadRequest() throws Exception {
         // Given
-        when(unitService.massUpdateUnitsRules(any(), any()))
-            .thenReturn(buildUnitMetadataResponse(UPDATE_RULES_ASYNC_RESPONSE));
+        when(unitService.massUpdateUnitsRules(any(), any())).thenReturn(
+            buildUnitMetadataResponse(UPDATE_RULES_ASYNC_RESPONSE)
+        );
 
         RequestResponseOK<AccessContractModel> response1 = new RequestResponseOK<>();
         response1.setHttpCode(200);
         response1.setHits(1, 1, 1, 1);
         response1.addResult(createAccessContractModel("contratTNR", "contrat d acces", 0, false));
 
-        when(accessContractService.findAccessContractById(any(), any()))
-            .thenReturn(response1);
+        when(accessContractService.findAccessContractById(any(), any())).thenReturn(response1);
 
         RequestResponse<AccessContractModel> requestResponse = Mockito.mock(RequestResponse.class);
-        Mockito.when(accessContractService.findAccessContracts(ArgumentMatchers.any(), ArgumentMatchers.any()))
-            .thenReturn(requestResponse);
-        List<AccessContractModelDto> results =
-            List.of(createAccessContractModelDto("contratTNR", "contrat d acces", 0, false));
+        Mockito.when(
+            accessContractService.findAccessContracts(ArgumentMatchers.any(), ArgumentMatchers.any())
+        ).thenReturn(requestResponse);
+        List<AccessContractModelDto> results = List.of(
+            createAccessContractModelDto("contratTNR", "contrat d acces", 0, false)
+        );
         JsonHandler.toJsonNode(results);
         AccessContractResponseDto response = new AccessContractResponseDto();
         response.setResults(results);
-        Mockito.when(objectMapper.treeToValue(requestResponse.toJsonNode(), AccessContractResponseDto.class))
-            .thenReturn(response);
+        Mockito.when(
+            objectMapper.treeToValue(requestResponse.toJsonNode(), AccessContractResponseDto.class)
+        ).thenReturn(response);
 
         // Configure the mapper
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        when(objectMapper.treeToValue(any(), (Class<Object>) any()))
-            .thenReturn(createAccessContractsResponseDto("contratTNR", "contrat d acces", 0, false));
+        when(objectMapper.treeToValue(any(), (Class<Object>) any())).thenReturn(
+            createAccessContractsResponseDto("contratTNR", "contrat d acces", 0, false)
+        );
 
         SearchCriteriaDto searchQuery = new SearchCriteriaDto();
         List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
@@ -269,7 +277,8 @@ public class ArchiveSearchMgtRulesInternalServiceTest {
         searchCriteriaElementsNodes.setCriteria("NODE");
         searchCriteriaElementsNodes.setCategory(ArchiveSearchConsts.CriteriaCategory.NODES);
         searchCriteriaElementsNodes.setValues(
-            Arrays.asList(new CriteriaValue("node1"), new CriteriaValue("node2"), new CriteriaValue("node3")));
+            Arrays.asList(new CriteriaValue("node1"), new CriteriaValue("node2"), new CriteriaValue("node3"))
+        );
         criteriaList.add(agencyCodeCriteria);
         criteriaList.add(searchCriteriaElementsNodes);
         searchQuery.setSize(20);
@@ -282,11 +291,14 @@ public class ArchiveSearchMgtRulesInternalServiceTest {
         assertThatCode(() -> {
             archiveSearchMgtRulesInternalService.updateArchiveUnitsRules(ruleSearchCriteriaDto, new VitamContext(1));
         }).hasMessage("the access contract using to update unit rules has no writing permission to update units");
-
     }
 
-    AccessContractModel createAccessContractModel(String identifier, String name, Integer tenant,
-        Boolean writingPermission) {
+    AccessContractModel createAccessContractModel(
+        String identifier,
+        String name,
+        Integer tenant,
+        Boolean writingPermission
+    ) {
         AccessContractModel accessContractModel = new AccessContractModel();
         accessContractModel.setIdentifier(identifier);
         accessContractModel.setName(name);
@@ -295,16 +307,25 @@ public class ArchiveSearchMgtRulesInternalServiceTest {
         return accessContractModel;
     }
 
-    AccessContractsResponseDto createAccessContractsResponseDto(String identifier, String name, Integer tenant,
-        Boolean writingPermission) {
+    AccessContractsResponseDto createAccessContractsResponseDto(
+        String identifier,
+        String name,
+        Integer tenant,
+        Boolean writingPermission
+    ) {
         AccessContractsResponseDto accessContractModel = new AccessContractsResponseDto();
-        accessContractModel
-            .setResults(List.of(createAccessContractsVitamDto(identifier, name, tenant, writingPermission)));
+        accessContractModel.setResults(
+            List.of(createAccessContractsVitamDto(identifier, name, tenant, writingPermission))
+        );
         return accessContractModel;
     }
 
-    AccessContractsVitamDto createAccessContractsVitamDto(String identifier, String name, Integer tenant,
-        Boolean writingPermission) {
+    AccessContractsVitamDto createAccessContractsVitamDto(
+        String identifier,
+        String name,
+        Integer tenant,
+        Boolean writingPermission
+    ) {
         AccessContractsVitamDto accessContractModel = new AccessContractsVitamDto();
         accessContractModel.setIdentifier(identifier);
         accessContractModel.setName(name);
@@ -313,8 +334,12 @@ public class ArchiveSearchMgtRulesInternalServiceTest {
         return accessContractModel;
     }
 
-    AccessContractModelDto createAccessContractModelDto(String identifier, String name, Integer tenant,
-        Boolean writingPermission) {
+    AccessContractModelDto createAccessContractModelDto(
+        String identifier,
+        String name,
+        Integer tenant,
+        Boolean writingPermission
+    ) {
         AccessContractModelDto accessContractModel = new AccessContractModelDto();
         accessContractModel.setIdentifier(identifier);
         accessContractModel.setName(name);
@@ -322,5 +347,4 @@ public class ArchiveSearchMgtRulesInternalServiceTest {
         accessContractModel.setWritingPermission(writingPermission);
         return accessContractModel;
     }
-
 }

@@ -49,7 +49,6 @@ import java.util.List;
 @Getter
 public class RuleCollection {
 
-    @XmlElement(name="Rules")
+    @XmlElement(name = "Rules")
     private List<Rule> rules;
-
 }

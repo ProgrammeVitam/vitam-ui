@@ -56,24 +56,32 @@ import java.util.Optional;
  *
  */
 @Service
-public class ExternalParamProfileExternalService extends AbstractResourceClientService<ExternalParamProfileDto, ExternalParamProfileDto> {
+public class ExternalParamProfileExternalService
+    extends AbstractResourceClientService<ExternalParamProfileDto, ExternalParamProfileDto> {
 
-	private final ExternalParamProfileInternalRestClient externalParamProfileInternalRestClient;
+    private final ExternalParamProfileInternalRestClient externalParamProfileInternalRestClient;
     private final ProfileExternalService profileExternalService;
 
     @Autowired
-    public ExternalParamProfileExternalService(final ExternalParamProfileInternalRestClient externalParamProfileInternalRestClient,
-    		                                    final ExternalSecurityService externalSecurityService,
-                                                final ProfileExternalService profileExternalService) {
+    public ExternalParamProfileExternalService(
+        final ExternalParamProfileInternalRestClient externalParamProfileInternalRestClient,
+        final ExternalSecurityService externalSecurityService,
+        final ProfileExternalService profileExternalService
+    ) {
         super(externalSecurityService);
         this.externalParamProfileInternalRestClient = externalParamProfileInternalRestClient;
         this.profileExternalService = profileExternalService;
     }
 
     @Override
-    public PaginatedValuesDto<ExternalParamProfileDto> getAllPaginated(final Integer page, final Integer size,
-        final Optional<String> criteria, final Optional<String> orderBy, final Optional<DirectionDto> direction,
-        final Optional<String> embedded) {
+    public PaginatedValuesDto<ExternalParamProfileDto> getAllPaginated(
+        final Integer page,
+        final Integer size,
+        final Optional<String> criteria,
+        final Optional<String> orderBy,
+        final Optional<DirectionDto> direction,
+        final Optional<String> embedded
+    ) {
         return super.getAllPaginated(page, size, criteria, orderBy, direction, embedded);
     }
 

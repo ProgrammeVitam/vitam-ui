@@ -53,8 +53,7 @@ public class SanityCheckerTest {
     private final String TEST_BAD_JSON = "bad_json.json";
 
     @Before
-    public void setUp() {
-    }
+    public void setUp() {}
 
     @Test
     public void givenJsonWhenValueIsTooBigORContainXMLTag()
@@ -62,18 +61,15 @@ public class SanityCheckerTest {
         final File file = PropertiesUtils.findFile(TEST_BAD_JSON);
         final JsonNode json = JsonHandler.getFromFile(file);
         Assertions.assertThat(json).isNotNull();
-        assertThatCode(() -> SanityChecker.checkJsonSanity(json)).
-            isInstanceOf(PreconditionFailedException.class);
+        assertThatCode(() -> SanityChecker.checkJsonSanity(json)).isInstanceOf(PreconditionFailedException.class);
     }
 
     @Test
-    public void givenJsonWhenValueIsTooBigORContainXMLTagUsingAll()
-        throws InvalidParseOperationException, IOException {
+    public void givenJsonWhenValueIsTooBigORContainXMLTagUsingAll() throws InvalidParseOperationException, IOException {
         final File file = PropertiesUtils.findFile(TEST_BAD_JSON);
         final JsonNode json = JsonHandler.getFromFile(file);
         Assertions.assertThat(json).isNotNull();
-        assertThatCode(() -> SanityChecker.checkJsonAll(json)).
-            isInstanceOf(InvalidParseOperationException.class);
+        assertThatCode(() -> SanityChecker.checkJsonAll(json)).isInstanceOf(InvalidParseOperationException.class);
     }
 
     @Test
@@ -82,8 +78,9 @@ public class SanityCheckerTest {
         final File file = PropertiesUtils.findFile(TEST_BAD_JSON);
         final JsonNode json = JsonHandler.getFromFile(file);
         Assertions.assertThat(json).isNotNull();
-        assertThatCode(() -> SanityChecker.checkJsonAll(json.toString())).
-            isInstanceOf(InvalidParseOperationException.class);
+        assertThatCode(() -> SanityChecker.checkJsonAll(json.toString())).isInstanceOf(
+            InvalidParseOperationException.class
+        );
     }
 
     @Test
@@ -93,13 +90,11 @@ public class SanityCheckerTest {
         final File file = PropertiesUtils.findFile(jsonWithProjectionRootsFieldsKeys);
         final JsonNode json = JsonHandler.getFromFile(file);
         Assertions.assertThat(json).isNotNull();
-        assertThatCode(() -> SanityChecker.sanitizeJson(json)).
-            doesNotThrowAnyException();
+        assertThatCode(() -> SanityChecker.sanitizeJson(json)).doesNotThrowAnyException();
     }
 
     @Test
-    public void givenJsonWhenGoodSanityThenReturnTrue()
-        throws FileNotFoundException, InvalidParseOperationException {
+    public void givenJsonWhenGoodSanityThenReturnTrue() throws FileNotFoundException, InvalidParseOperationException {
         final long limit = SanityChecker.getLimitJsonSize();
         final String TEST_GOOD_JSON = "good_json_sanity.json";
         try {
@@ -108,8 +103,7 @@ public class SanityCheckerTest {
             final JsonNode json = JsonHandler.getFromFile(file);
             try {
                 SanityChecker.checkJsonAll(json);
-            } catch (final InvalidParseOperationException ignored) {
-            }
+            } catch (final InvalidParseOperationException ignored) {}
             SanityChecker.setLimitJsonSize(10000);
             SanityChecker.checkJsonAll(json);
             SanityChecker.checkJsonAll(json.toString());
@@ -130,10 +124,7 @@ public class SanityCheckerTest {
         final String TEST_GOOD_JSON_CRITERIA = "good_criteria.json";
         final File file = PropertiesUtils.findFile(TEST_GOOD_JSON_CRITERIA);
         final JsonNode json = JsonHandler.getFromFile(file);
-        assertThatCode(() ->
-            SanityChecker.sanitizeCriteria(Optional.of(json.toString()))).
-            doesNotThrowAnyException();
-
+        assertThatCode(() -> SanityChecker.sanitizeCriteria(Optional.of(json.toString()))).doesNotThrowAnyException();
     }
 
     @Test(expected = InvalidSanitizeCriteriaException.class)
@@ -161,8 +152,9 @@ public class SanityCheckerTest {
 
     @Test
     public void testCheckSecureParameterWithBadStringAndThrowException() {
-        assertThatCode(() -> SanityChecker.checkSecureParameter("§§§§§***ù^65")).
-            hasMessage("the parameter §§§§§***ù^65 is not valid");
+        assertThatCode(() -> SanityChecker.checkSecureParameter("§§§§§***ù^65")).hasMessage(
+            "the parameter §§§§§***ù^65 is not valid"
+        );
     }
 
     @Test(expected = PreconditionFailedException.class)
@@ -199,29 +191,25 @@ public class SanityCheckerTest {
     @Test
     public void testIsValidFileNameWithBadName() {
         final String badString = "aa<script>bb";
-        assertThatCode(() -> SanityChecker.isValidFileName(badString)).
-            hasMessage("The fileName is not valid");
+        assertThatCode(() -> SanityChecker.isValidFileName(badString)).hasMessage("The fileName is not valid");
     }
 
     @Test
     public void testIsValidFileNameWithGoodName() {
         final String goodFileName = "fileName";
-        assertThatCode(() -> SanityChecker.isValidFileName(goodFileName))
-            .doesNotThrowAnyException();
+        assertThatCode(() -> SanityChecker.isValidFileName(goodFileName)).doesNotThrowAnyException();
     }
 
     @Test
     public void testIsValidFileNameWithXmlString() {
         final String badString = "text<strong>text</strong>bb";
-        assertThatCode(() -> SanityChecker.isValidFileName(badString)).
-            hasMessage("The fileName is not valid");
+        assertThatCode(() -> SanityChecker.isValidFileName(badString)).hasMessage("The fileName is not valid");
     }
 
     @Test
     public void testIsValidFileNameWhenGivenStringIsBad() {
         final String badText = "aa<![CDATA[bb";
-        assertThatCode(() -> SanityChecker.isValidFileName(badText)).
-            hasMessage("The fileName is not valid");
+        assertThatCode(() -> SanityChecker.isValidFileName(badText)).hasMessage("The fileName is not valid");
     }
 
     @Test
@@ -231,14 +219,12 @@ public class SanityCheckerTest {
         final File file = PropertiesUtils.findFile(jsonWithActionPullAddKeys);
         final JsonNode json = JsonHandler.getFromFile(file);
         Assertions.assertThat(json).isNotNull();
-        assertThatCode(() -> SanityChecker.sanitizeJson(json)).
-            doesNotThrowAnyException();
+        assertThatCode(() -> SanityChecker.sanitizeJson(json)).doesNotThrowAnyException();
     }
 
     @Test
     public void testCheckSecureParameterWithIdAsParameter() {
-        assertThatCode(() -> SanityChecker.checkSecureParameter("#id")).
-            doesNotThrowAnyException();
+        assertThatCode(() -> SanityChecker.checkSecureParameter("#id")).doesNotThrowAnyException();
     }
 
     @Test
@@ -248,8 +234,7 @@ public class SanityCheckerTest {
         final File file = PropertiesUtils.findFile(jsonWithInOrQueryKeys);
         final JsonNode json = JsonHandler.getFromFile(file);
         Assertions.assertThat(json).isNotNull();
-        assertThatCode(() -> SanityChecker.sanitizeJson(json)).
-            doesNotThrowAnyException();
+        assertThatCode(() -> SanityChecker.sanitizeJson(json)).doesNotThrowAnyException();
     }
 
     @Test
@@ -259,8 +244,7 @@ public class SanityCheckerTest {
         final File file = PropertiesUtils.findFile(jsonWithExistsKey);
         final JsonNode json = JsonHandler.getFromFile(file);
         Assertions.assertThat(json).isNotNull();
-        assertThatCode(() -> SanityChecker.sanitizeJson(json)).
-            doesNotThrowAnyException();
+        assertThatCode(() -> SanityChecker.sanitizeJson(json)).doesNotThrowAnyException();
     }
 
     @Test
@@ -274,11 +258,9 @@ public class SanityCheckerTest {
         final String JSON_WITH_LONG_KEY = "json_with_long_key.json";
         final File file = PropertiesUtils.findFile(JSON_WITH_LONG_KEY);
         final JsonNode json = JsonHandler.getFromFile(file);
-        assertThatCode(() ->
-            SanityChecker.sanitizeCriteria(Optional.of(json.toString()))).
-            doesNotThrowAnyException();
-
+        assertThatCode(() -> SanityChecker.sanitizeCriteria(Optional.of(json.toString()))).doesNotThrowAnyException();
     }
+
     @Test
     public void sanitizeJson_should_not_fail_with_keys_$eq_$offset()
         throws FileNotFoundException, InvalidParseOperationException {
@@ -286,8 +268,7 @@ public class SanityCheckerTest {
         final File file = PropertiesUtils.findFile(jsonWithOffsetEqKeys);
         final JsonNode json = JsonHandler.getFromFile(file);
         Assertions.assertThat(json).isNotNull();
-        assertThatCode(() -> SanityChecker.sanitizeJson(json)).
-            doesNotThrowAnyException();
+        assertThatCode(() -> SanityChecker.sanitizeJson(json)).doesNotThrowAnyException();
     }
 
     @Test
@@ -297,8 +278,7 @@ public class SanityCheckerTest {
         final File file = PropertiesUtils.findFile(jsonWithLimitOrderByKeys);
         final JsonNode json = JsonHandler.getFromFile(file);
         Assertions.assertThat(json).isNotNull();
-        assertThatCode(() -> SanityChecker.sanitizeJson(json)).
-            doesNotThrowAnyException();
+        assertThatCode(() -> SanityChecker.sanitizeJson(json)).doesNotThrowAnyException();
     }
 
     @Test
@@ -308,8 +288,7 @@ public class SanityCheckerTest {
         final File file = PropertiesUtils.findFile(jsonWithIngestComplexe_Keys);
         final JsonNode json = JsonHandler.getFromFile(file);
         Assertions.assertThat(json).isNotNull();
-        assertThatCode(() -> SanityChecker.sanitizeJson(json)).
-            doesNotThrowAnyException();
+        assertThatCode(() -> SanityChecker.sanitizeJson(json)).doesNotThrowAnyException();
     }
 
     @Test
@@ -324,13 +303,17 @@ public class SanityCheckerTest {
         final File file = PropertiesUtils.findFile(OBJECT_XML_TAG);
         final JsonNode json = JsonHandler.getFromFile(file);
         Assertions.assertThat(json).isNotNull();
-        assertThatCode(() -> SanityChecker.sanitizeCriteria(json)).
-            isInstanceOf(PreconditionFailedException.class);
+        assertThatCode(() -> SanityChecker.sanitizeCriteria(json)).isInstanceOf(PreconditionFailedException.class);
     }
 
     @Test
     public void test_checkHtmlPattern_with_html_text() {
-        assertThatCode(() -> SanityChecker.checkHtmlPattern("<div class=\"col-6 form-control\"> <p class=\"title-text\">bla bla bla</p></div>"))
+        assertThatCode(
+            () ->
+                SanityChecker.checkHtmlPattern(
+                    "<div class=\"col-6 form-control\"> <p class=\"title-text\">bla bla bla</p></div>"
+                )
+        )
             .isInstanceOf(PreconditionFailedException.class)
             .hasMessageContaining("the parameter :");
     }
@@ -342,14 +325,12 @@ public class SanityCheckerTest {
         final File file = PropertiesUtils.findFile(OBJECT_HTML_TAG);
         final JsonNode json = JsonHandler.getFromFile(file);
         Assertions.assertThat(json).isNotNull();
-        assertThatCode(() -> SanityChecker.sanitizeCriteria(json)).
-            isInstanceOf(PreconditionFailedException.class);
+        assertThatCode(() -> SanityChecker.sanitizeCriteria(json)).isInstanceOf(PreconditionFailedException.class);
     }
 
     @Test
     public void test_checkHtmlPattern_with_correct_text() {
-        assertThatCode(() -> SanityChecker.checkHtmlPattern("test test good values"))
-            .doesNotThrowAnyException();
+        assertThatCode(() -> SanityChecker.checkHtmlPattern("test test good values")).doesNotThrowAnyException();
     }
 
     @Test
@@ -359,15 +340,13 @@ public class SanityCheckerTest {
         final File file = PropertiesUtils.findFile(OBJECT_WITH_CORRECT_VALUES);
         final JsonNode json = JsonHandler.getFromFile(file);
         Assertions.assertThat(json).isNotNull();
-        assertThatCode(() -> SanityChecker.sanitizeCriteria(json)).
-            doesNotThrowAnyException();
+        assertThatCode(() -> SanityChecker.sanitizeCriteria(json)).doesNotThrowAnyException();
     }
 
     @Test
     public void test_checkJsonAll_with_null_object() {
-        assertThatCode(() -> SanityChecker.checkJsonAll((JsonNode) null)).
-            isInstanceOf(InvalidParseOperationException.class)
+        assertThatCode(() -> SanityChecker.checkJsonAll((JsonNode) null))
+            .isInstanceOf(InvalidParseOperationException.class)
             .hasMessage("Json is not valid from Sanitize check");
     }
-
 }

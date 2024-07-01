@@ -29,25 +29,37 @@ public class CustomerExternalRestClientTest extends AbstractServerIdentityBuilde
     private RestTemplate restTemplate;
 
     @Before
-    public void setUp(){
-        customerExternalRestClient = new CustomerExternalRestClient(restTemplate,"http://localhost:8083");
+    public void setUp() {
+        customerExternalRestClient = new CustomerExternalRestClient(restTemplate, "http://localhost:8083");
     }
 
     @Test
-    public void getMyCustomer_returnsCustomer(){
+    public void getMyCustomer_returnsCustomer() {
         ExternalHttpContext context = new ExternalHttpContext(9, "", "", "");
         String url = "http://localhost:8083/iam/v1/customers/me";
-        Mockito.when(restTemplate.exchange(Mockito.eq(url), Mockito.eq(HttpMethod.GET), Mockito.any(), Mockito.eq(CustomerDto.class))).thenReturn(new ResponseEntity<CustomerDto>(new CustomerDto(),
-            HttpStatus.OK));
+        Mockito.when(
+            restTemplate.exchange(
+                Mockito.eq(url),
+                Mockito.eq(HttpMethod.GET),
+                Mockito.any(),
+                Mockito.eq(CustomerDto.class)
+            )
+        ).thenReturn(new ResponseEntity<CustomerDto>(new CustomerDto(), HttpStatus.OK));
         customerExternalRestClient.getMyCustomer(context);
     }
 
     @Test(expected = InternalServerException.class)
-    public void getMyCustomer_WhenResponseStatus_isNotOK(){
+    public void getMyCustomer_WhenResponseStatus_isNotOK() {
         ExternalHttpContext context = new ExternalHttpContext(9, "", "", "");
         String url = "http://localhost:8083/iam/v1/customers/me";
-        Mockito.when(restTemplate.exchange(Mockito.eq(url), Mockito.eq(HttpMethod.GET), Mockito.any(), Mockito.eq(CustomerDto.class))).thenReturn(new ResponseEntity<CustomerDto>(new CustomerDto(),
-            HttpStatus.ACCEPTED));
+        Mockito.when(
+            restTemplate.exchange(
+                Mockito.eq(url),
+                Mockito.eq(HttpMethod.GET),
+                Mockito.any(),
+                Mockito.eq(CustomerDto.class)
+            )
+        ).thenReturn(new ResponseEntity<CustomerDto>(new CustomerDto(), HttpStatus.ACCEPTED));
         customerExternalRestClient.getMyCustomer(context);
     }
 
@@ -56,8 +68,14 @@ public class CustomerExternalRestClientTest extends AbstractServerIdentityBuilde
         ExternalHttpContext context = new ExternalHttpContext(9, "", "", "");
         String url = "http://localhost:8083/iam/v1/customers/123/logo";
         URIBuilder builder = new URIBuilder(url);
-        Mockito.when(restTemplate.exchange(Mockito.eq(builder.build()), Mockito.eq(HttpMethod.GET), Mockito.any(), Mockito.eq(Resource.class))).thenReturn(new ResponseEntity<Resource>(new ByteArrayResource(new byte[]{}),
-            HttpStatus.OK));
+        Mockito.when(
+            restTemplate.exchange(
+                Mockito.eq(builder.build()),
+                Mockito.eq(HttpMethod.GET),
+                Mockito.any(),
+                Mockito.eq(Resource.class)
+            )
+        ).thenReturn(new ResponseEntity<Resource>(new ByteArrayResource(new byte[] {}), HttpStatus.OK));
         customerExternalRestClient.getCustomerLogo(context, "123");
     }
 }

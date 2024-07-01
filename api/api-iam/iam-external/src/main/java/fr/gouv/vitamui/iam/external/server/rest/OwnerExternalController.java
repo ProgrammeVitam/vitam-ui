@@ -108,9 +108,8 @@ public class OwnerExternalController implements CrudController<OwnerDto> {
     @Override
     @GetMapping(CommonConstants.PATH_ID)
     @Secured(ServicesData.ROLE_GET_OWNERS)
-    public OwnerDto getOne(final @PathVariable("id") String id) throws InvalidParseOperationException,
-        PreconditionFailedException {
-
+    public OwnerDto getOne(final @PathVariable("id") String id)
+        throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter("Identifier is mandatory : ", id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Get {}", id);
@@ -120,9 +119,8 @@ public class OwnerExternalController implements CrudController<OwnerDto> {
     @Override
     @PostMapping
     @Secured(ServicesData.ROLE_CREATE_OWNERS)
-    public OwnerDto create(@Valid final @RequestBody OwnerDto dto) throws InvalidParseOperationException,
-        PreconditionFailedException {
-
+    public OwnerDto create(@Valid final @RequestBody OwnerDto dto)
+        throws InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.sanitizeCriteria(dto);
         LOGGER.debug("Create {}", dto);
         return ownerExternalService.create(dto);
@@ -133,12 +131,14 @@ public class OwnerExternalController implements CrudController<OwnerDto> {
     @Secured(ServicesData.ROLE_UPDATE_OWNERS)
     public OwnerDto update(final @PathVariable("id") String id, final @Valid @RequestBody OwnerDto dto)
         throws InvalidParseOperationException, PreconditionFailedException {
-
         ParameterChecker.checkParameter("Identifier is mandatory : ", id);
         SanityChecker.checkSecureParameter(id);
         SanityChecker.sanitizeCriteria(dto);
         LOGGER.debug("Update {} with {}", id, dto);
-        Assert.isTrue(StringUtils.equals(id, dto.getId()), "The DTO identifier must match the path identifier for update.");
+        Assert.isTrue(
+            StringUtils.equals(id, dto.getId()),
+            "The DTO identifier must match the path identifier for update."
+        );
         return ownerExternalService.update(dto);
     }
 
@@ -147,19 +147,20 @@ public class OwnerExternalController implements CrudController<OwnerDto> {
     @Secured(ServicesData.ROLE_UPDATE_OWNERS)
     public OwnerDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto)
         throws InvalidParseOperationException, PreconditionFailedException {
-
         ParameterChecker.checkParameter("Identifier is mandatory : ", id);
         SanityChecker.checkSecureParameter(id);
         SanityChecker.sanitizeCriteria(partialDto);
         LOGGER.debug("Patch {} with {}", id, partialDto);
-        Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "Unable to patch owner : the DTO id must match the path id");
+        Assert.isTrue(
+            StringUtils.equals(id, (String) partialDto.get("id")),
+            "Unable to patch owner : the DTO id must match the path id"
+        );
         return ownerExternalService.patch(partialDto);
     }
 
     @GetMapping("/{id}/history")
-    public JsonNode findHistoryById(final @PathVariable("id") String id) throws InvalidParseOperationException,
-        PreconditionFailedException  {
-
+    public JsonNode findHistoryById(final @PathVariable("id") String id)
+        throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter("Identifier is mandatory : ", id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("get logbook for owner with id :{}", id);

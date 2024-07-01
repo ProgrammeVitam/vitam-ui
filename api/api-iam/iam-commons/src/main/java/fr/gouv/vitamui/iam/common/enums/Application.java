@@ -40,5 +40,5 @@ package fr.gouv.vitamui.iam.common.enums;
  * Enumeration for the application name.
  */
 public enum Application {
-	EXTERNAL_PARAMS
+    EXTERNAL_PARAMS,
 }

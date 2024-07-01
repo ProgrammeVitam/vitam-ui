@@ -41,6 +41,7 @@ import java.io.Serializable;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class ObjectData implements Serializable {
+
     private Resource resource;
     private String filename;
     // mimeType to use to get the exact VITAM mimetype

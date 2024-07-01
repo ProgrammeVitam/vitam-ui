@@ -12,5 +12,4 @@ public class Context {
     public TestContext securityContext() {
         return new TestContext();
     }
-
 }

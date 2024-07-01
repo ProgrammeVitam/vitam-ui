@@ -66,5 +66,4 @@ public class ValueTag {
     public Tag getParent() {
         return parent;
     }
-
 }

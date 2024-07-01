@@ -26,19 +26,18 @@
 
 package fr.gouv.vitamui.archives.search.external.server.service;
 
-
 import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.archive.internal.client.ArchiveInternalRestClient;
 import fr.gouv.archive.internal.client.ArchiveSearchInternalWebClient;
 import fr.gouv.archive.internal.client.ArchiveSearchStreamingInternalRestClient;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.archives.search.common.dto.ExportDipCriteriaDto;
-import fr.gouv.vitamui.commons.api.dtos.VitamUiOntologyDto;
 import fr.gouv.vitamui.archives.search.common.dto.ReclassificationCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.RuleSearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.TransferRequestDto;
 import fr.gouv.vitamui.archives.search.common.dto.UnitDescriptiveMetadataDto;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
+import fr.gouv.vitamui.commons.api.dtos.VitamUiOntologyDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
@@ -57,7 +56,6 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.Optional;
 
-
 /**
  * The service to create vitam Archive-Search.
  */
@@ -65,6 +63,7 @@ import java.util.Optional;
 @Setter
 @Service
 public class ArchivesSearchExternalService extends AbstractResourceClientService<ArchiveUnitsDto, ArchiveUnitsDto> {
+
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ArchivesSearchExternalService.class);
 
     @Autowired
@@ -79,11 +78,13 @@ public class ArchivesSearchExternalService extends AbstractResourceClientService
     @Autowired
     private final ArchiveSearchStreamingInternalRestClient archiveSearchStreamingInternalRestClient;
 
-    public ArchivesSearchExternalService(@Autowired ArchiveInternalRestClient archiveInternalRestClient,
+    public ArchivesSearchExternalService(
+        @Autowired ArchiveInternalRestClient archiveInternalRestClient,
         ArchiveSearchInternalWebClient archiveSearchInternalWebClient,
         final ExternalSecurityService externalSecurityService,
         final ArchiveSearchStreamingInternalRestClient archiveSearchStreamingInternalRestClient,
-        final ArchiveSearchThresholdService archiveSearchThresholdService) {
+        final ArchiveSearchThresholdService archiveSearchThresholdService
+    ) {
         super(externalSecurityService);
         this.archiveInternalRestClient = archiveInternalRestClient;
         this.archiveSearchInternalWebClient = archiveSearchInternalWebClient;
@@ -95,7 +96,6 @@ public class ArchivesSearchExternalService extends AbstractResourceClientService
     protected ArchiveInternalRestClient getClient() {
         return archiveInternalRestClient;
     }
-
 
     public ArchiveUnitsDto searchArchiveUnitsByCriteria(final SearchCriteriaDto query) {
         Optional<Long> thresholdOpt = archiveSearchThresholdService.retrieveProfilThresholds();
@@ -118,8 +118,7 @@ public class ArchivesSearchExternalService extends AbstractResourceClientService
     }
 
     public Mono<ResponseEntity<Resource>> downloadObjectFromUnit(String id, String usage, Integer version) {
-        return archiveSearchInternalWebClient
-            .downloadObjectFromUnit(id, usage, version, getInternalHttpContext());
+        return archiveSearchInternalWebClient.downloadObjectFromUnit(id, usage, version, getInternalHttpContext());
     }
 
     public Resource exportCsvArchiveUnitsByCriteria(final SearchCriteriaDto query) {
@@ -195,9 +194,11 @@ public class ArchivesSearchExternalService extends AbstractResourceClientService
     }
 
     public String transferAcknowledgment(InputStream atrInputStream, final String originalFileName) {
-        return
-            archiveSearchStreamingInternalRestClient
-                .transferAcknowledgment(getInternalHttpContext(), originalFileName, atrInputStream);
+        return archiveSearchStreamingInternalRestClient.transferAcknowledgment(
+            getInternalHttpContext(),
+            originalFileName,
+            atrInputStream
+        );
     }
 
     public List<VitamUiOntologyDto> getExternalOntologiesList() {

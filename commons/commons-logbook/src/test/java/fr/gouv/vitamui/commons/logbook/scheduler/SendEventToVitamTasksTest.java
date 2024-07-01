@@ -1,26 +1,5 @@
 package fr.gouv.vitamui.commons.logbook.scheduler;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.io.IOException;
-import java.time.OffsetDateTime;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.TreeSet;
-
-import javax.ws.rs.core.Response.Status;
-
-import org.apache.commons.lang.StringUtils;
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.ArgumentMatchers;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
-import org.mockito.internal.verification.VerificationModeFactory;
-import org.springframework.data.mongodb.core.query.Query;
-
 import fr.gouv.vitam.access.external.client.AdminExternalClient;
 import fr.gouv.vitam.access.external.common.exception.LogbookExternalClientException;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
@@ -35,6 +14,25 @@ import fr.gouv.vitamui.commons.logbook.common.EventTypeProc;
 import fr.gouv.vitamui.commons.logbook.dao.EventRepository;
 import fr.gouv.vitamui.commons.logbook.domain.Event;
 import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
+import org.apache.commons.lang.StringUtils;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.ArgumentMatchers;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
+import org.mockito.internal.verification.VerificationModeFactory;
+import org.springframework.data.mongodb.core.query.Query;
+
+import javax.ws.rs.core.Response.Status;
+import java.io.IOException;
+import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.TreeSet;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class SendEventToVitamTasksTest {
 
@@ -71,48 +69,59 @@ public class SendEventToVitamTasksTest {
         assertThat(events).hasSize(1);
     }
 
-    @Test()
-    public void sendToVitam_when_vitamIsUnreacheable_then_eventSatusIsError() throws InvalidParseOperationException,
-            IllegalArgumentException, IOException, LogbookExternalClientException {
-        Comparator<Event> byPersistedDate = (final Event e1, final Event e2) -> e1.getCreationDate()
-                .compareTo(e2.getCreationDate());
+    @Test
+    public void sendToVitam_when_vitamIsUnreacheable_then_eventSatusIsError()
+        throws InvalidParseOperationException, IllegalArgumentException, IOException, LogbookExternalClientException {
+        Comparator<Event> byPersistedDate = (final Event e1, final Event e2) ->
+            e1.getCreationDate().compareTo(e2.getCreationDate());
         TreeSet<Event> events = new TreeSet<>(byPersistedDate);
         Event ev1 = new Event();
         ev1.setCreationDate(System.currentTimeMillis());
         events.add(ev1);
-        Mockito.doReturn(LogbookParametersFactory.newLogbookOperationParameters()).when(sendEventToVitamTasks)
-                .convertEventToMaster(ArgumentMatchers.any());
-        Mockito.doReturn(LogbookParametersFactory.newLogbookOperationParameters()).when(sendEventToVitamTasks)
-                .convertEventToLogbookOperationParams(ArgumentMatchers.any());
-        Mockito.when(adminExternalClient.createExternalOperation(ArgumentMatchers.any(), ArgumentMatchers.any()))
-                .thenThrow(new LogbookExternalClientException("Vitam client exception"));
+        Mockito.doReturn(LogbookParametersFactory.newLogbookOperationParameters())
+            .when(sendEventToVitamTasks)
+            .convertEventToMaster(ArgumentMatchers.any());
+        Mockito.doReturn(LogbookParametersFactory.newLogbookOperationParameters())
+            .when(sendEventToVitamTasks)
+            .convertEventToLogbookOperationParams(ArgumentMatchers.any());
+        Mockito.when(
+            adminExternalClient.createExternalOperation(ArgumentMatchers.any(), ArgumentMatchers.any())
+        ).thenThrow(new LogbookExternalClientException("Vitam client exception"));
         sendEventToVitamTasks.sendToVitam(events);
         Mockito.verify(sendEventToVitamTasks, VerificationModeFactory.times(1)).updateEventStatus(
-                ArgumentMatchers.any(), ArgumentMatchers.eq(EventStatus.ERROR), ArgumentMatchers.any());
-
+            ArgumentMatchers.any(),
+            ArgumentMatchers.eq(EventStatus.ERROR),
+            ArgumentMatchers.any()
+        );
     }
 
     @Test
-    public void sendToVitam_when_vitamResponseIs201_then_eventSatusIsSuccess() throws InvalidParseOperationException,
-            IllegalArgumentException, IOException, LogbookExternalClientException {
-        Comparator<Event> byPersistedDate = (final Event e1, final Event e2) -> e1.getCreationDate()
-                .compareTo(e2.getCreationDate());
+    public void sendToVitam_when_vitamResponseIs201_then_eventSatusIsSuccess()
+        throws InvalidParseOperationException, IllegalArgumentException, IOException, LogbookExternalClientException {
+        Comparator<Event> byPersistedDate = (final Event e1, final Event e2) ->
+            e1.getCreationDate().compareTo(e2.getCreationDate());
         TreeSet<Event> events = new TreeSet<>(byPersistedDate);
         Event ev1 = new Event();
         ev1.setCreationDate(System.currentTimeMillis());
         events.add(ev1);
-        Mockito.doReturn(LogbookParametersFactory.newLogbookOperationParameters()).when(sendEventToVitamTasks)
-                .convertEventToMaster(ArgumentMatchers.any());
-        Mockito.doReturn(LogbookParametersFactory.newLogbookOperationParameters()).when(sendEventToVitamTasks)
-                .convertEventToLogbookOperationParams(ArgumentMatchers.any());
+        Mockito.doReturn(LogbookParametersFactory.newLogbookOperationParameters())
+            .when(sendEventToVitamTasks)
+            .convertEventToMaster(ArgumentMatchers.any());
+        Mockito.doReturn(LogbookParametersFactory.newLogbookOperationParameters())
+            .when(sendEventToVitamTasks)
+            .convertEventToLogbookOperationParams(ArgumentMatchers.any());
 
         RequestResponse reqResponse = new RequestResponseOK<>();
         reqResponse.setHttpCode(Status.CREATED.getStatusCode());
-        Mockito.when(adminExternalClient.createExternalOperation(ArgumentMatchers.any(), ArgumentMatchers.any()))
-                .thenReturn(reqResponse);
+        Mockito.when(
+            adminExternalClient.createExternalOperation(ArgumentMatchers.any(), ArgumentMatchers.any())
+        ).thenReturn(reqResponse);
         sendEventToVitamTasks.sendToVitam(events);
         Mockito.verify(sendEventToVitamTasks, VerificationModeFactory.times(1)).updateEventStatus(
-                ArgumentMatchers.any(), ArgumentMatchers.eq(EventStatus.SUCCESS), ArgumentMatchers.any());
+            ArgumentMatchers.any(),
+            ArgumentMatchers.eq(EventStatus.SUCCESS),
+            ArgumentMatchers.any()
+        );
     }
 
     @Test
@@ -134,7 +143,7 @@ public class SendEventToVitamTasksTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void convertEventToMaster_when_eventIsMalFormed_then_throws_IllegalArgumentException()
-            throws IllegalArgumentException, IOException {
+        throws IllegalArgumentException, IOException {
         Event event = new Event();
         event.setEvType(EventType.EXT_VITAMUI_CREATE_USER.toString());
         event.setEvIdProc("idproc");
@@ -151,7 +160,7 @@ public class SendEventToVitamTasksTest {
 
     @Test
     public void convertEventToLogbookOperationParams_when_eventIsCorrectFormed_then_ok()
-            throws IllegalArgumentException, IOException {
+        throws IllegalArgumentException, IOException {
         Event event = new Event();
         event.setId("id");
         event.setEvType(EventType.EXT_VITAMUI_CREATE_USER.toString());
@@ -186,5 +195,4 @@ public class SendEventToVitamTasksTest {
     public void addDateInformation_when_evDetDataIsNull_then_ok() throws IOException {
         sendEventToVitamTasks.addDateInformation(null, OffsetDateTime.now().toString());
     }
-
 }

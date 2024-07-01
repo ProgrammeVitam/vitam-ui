@@ -76,7 +76,8 @@ public final class ErrorsConstants {
 
     public static final String API_ERRORS_INTERNAL_SERVER_ERROR = "internalservererror";
 
-    public static final String API_ERRORS_INTERNAL_SERVER_ERROR_MESSAGE = "Internal Server Error during the process of the request.";
+    public static final String API_ERRORS_INTERNAL_SERVER_ERROR_MESSAGE =
+        "Internal Server Error during the process of the request.";
 
     public static final String API_ERRORS_BAD_REQUEST = "badrequest";
 
@@ -96,7 +97,8 @@ public final class ErrorsConstants {
 
     public static final String API_ERRORS_NO_RIGHTS = "norights";
 
-    public static final String API_ERRORS_NO_RIGHTS_MESSAGE = "You don't have the necessary authorizations to access this resource.";
+    public static final String API_ERRORS_NO_RIGHTS_MESSAGE =
+        "You don't have the necessary authorizations to access this resource.";
 
     public static final String API_ERRORS_ROUTE_NOT_FOUND = "routenotfound";
 
@@ -127,5 +129,4 @@ public final class ErrorsConstants {
     private ErrorsConstants() {
         // do nothing
     }
-
 }

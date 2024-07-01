@@ -48,7 +48,6 @@ import lombok.ToString;
 import java.io.Serializable;
 import java.util.List;
 
-
 @ToString
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Setter

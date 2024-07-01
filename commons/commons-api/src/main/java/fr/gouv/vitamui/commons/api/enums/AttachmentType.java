@@ -7,9 +7,11 @@ public enum AttachmentType {
     USER("USER");
 
     private String value;
+
     AttachmentType(String v) {
         value = v;
     }
+
     public String value() {
         return value;
     }

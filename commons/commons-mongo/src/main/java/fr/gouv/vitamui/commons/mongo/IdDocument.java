@@ -36,13 +36,12 @@
  */
 package fr.gouv.vitamui.commons.mongo;
 
-import org.springframework.data.annotation.Id;
-
 import fr.gouv.vitamui.commons.api.domain.BaseIdDocument;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.data.annotation.Id;
 
 /**
  * A MongoDB document with an identifier.
@@ -57,5 +56,4 @@ public abstract class IdDocument implements BaseIdDocument {
 
     @Id
     private String id;
-
 }

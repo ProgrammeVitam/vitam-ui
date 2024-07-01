@@ -72,9 +72,17 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import java.util.Arrays;
 
 @Configuration
-@Import({RestExceptionHandler.class, MongoConfig.class, SwaggerConfiguration.class, WebSecurityConfig.class,
-    VitamAccessConfig.class, VitamIngestConfig.class,
-    VitamAdministrationConfig.class})
+@Import(
+    {
+        RestExceptionHandler.class,
+        MongoConfig.class,
+        SwaggerConfiguration.class,
+        WebSecurityConfig.class,
+        VitamAccessConfig.class,
+        VitamIngestConfig.class,
+        VitamAdministrationConfig.class,
+    }
+)
 public class ApiIngestInternalServerConfig extends AbstractContextConfiguration {
 
     @Bean
@@ -86,7 +94,8 @@ public class ApiIngestInternalServerConfig extends AbstractContextConfiguration 
     @Bean
     public IamInternalRestClientFactory iamInternalRestClientFactory(
         final RestClientConfiguration IamInternalRestClientConfiguration,
-        final RestTemplateBuilder restTemplateBuilder) {
+        final RestTemplateBuilder restTemplateBuilder
+    ) {
         return new IamInternalRestClientFactory(IamInternalRestClientConfiguration, restTemplateBuilder);
     }
 
@@ -97,25 +106,30 @@ public class ApiIngestInternalServerConfig extends AbstractContextConfiguration 
             Arrays.asList(
                 MediaType.APPLICATION_JSON,
                 new MediaType("application", "*+json"),
-                MediaType.APPLICATION_OCTET_STREAM));
+                MediaType.APPLICATION_OCTET_STREAM
+            )
+        );
         return converter;
     }
 
     @Bean
     public InternalApiAuthenticationProvider internalApiAuthenticationProvider(
-        final InternalAuthentificationService internalAuthentificationService) {
+        final InternalAuthentificationService internalAuthentificationService
+    ) {
         return new InternalApiAuthenticationProvider(internalAuthentificationService);
     }
 
     @Bean
     public UserInternalRestClient userInternalRestClient(
-        final IamInternalRestClientFactory iamInternalRestClientFactory) {
+        final IamInternalRestClientFactory iamInternalRestClientFactory
+    ) {
         return iamInternalRestClientFactory.getUserInternalRestClient();
     }
 
     @Bean
     public InternalAuthentificationService internalAuthentificationService(
-        final UserInternalRestClient userInternalRestClient) {
+        final UserInternalRestClient userInternalRestClient
+    ) {
         return new InternalAuthentificationService(userInternalRestClient);
     }
 
@@ -126,7 +140,8 @@ public class ApiIngestInternalServerConfig extends AbstractContextConfiguration 
 
     @Bean
     public CustomerInternalRestClient customerInternalRestClient(
-        final IamInternalRestClientFactory iamInternalRestClientFactory) {
+        final IamInternalRestClientFactory iamInternalRestClientFactory
+    ) {
         return iamInternalRestClientFactory.getCustomerInternalRestClient();
     }
 
@@ -137,7 +152,8 @@ public class ApiIngestInternalServerConfig extends AbstractContextConfiguration 
 
     @Bean
     public ExternalParametersInternalRestClient externalParametersInternalRestClient(
-        final IamInternalRestClientFactory iamInternalRestClientFactory) {
+        final IamInternalRestClientFactory iamInternalRestClientFactory
+    ) {
         return iamInternalRestClientFactory.getExternalParametersInternalRestClient();
     }
 
@@ -156,10 +172,18 @@ public class ApiIngestInternalServerConfig extends AbstractContextConfiguration 
         final CustomerInternalRestClient customerInternalRestClient,
         final IngestGeneratorODTFile ingestGeneratorODTFile,
         final IngestExternalParametersService ingestExternalParametersService,
-        final AccessContractInternalService accessContractInternalService) {
-        return new IngestInternalService(internalSecurityService, logbookService, objectMapper, ingestExternalClient,
+        final AccessContractInternalService accessContractInternalService
+    ) {
+        return new IngestInternalService(
+            internalSecurityService,
+            logbookService,
+            objectMapper,
+            ingestExternalClient,
             ingestService,
-            customerInternalRestClient, ingestGeneratorODTFile, ingestExternalParametersService,
-            accessContractInternalService);
+            customerInternalRestClient,
+            ingestGeneratorODTFile,
+            ingestExternalParametersService,
+            accessContractInternalService
+        );
     }
 }

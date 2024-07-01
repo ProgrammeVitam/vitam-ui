@@ -36,9 +36,9 @@
  */
 package fr.gouv.vitamui.referential.internal.server.common.rest;
 
-import static org.junit.Assert.assertEquals;
-
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * Tests the {@link BaseStatusController}.
@@ -53,5 +53,4 @@ public final class BaseStatusControllerTest {
     public void testStatus() {
         assertEquals("OK", controller.status());
     }
-
 }

@@ -36,21 +36,19 @@
  */
 package fr.gouv.vitamui.commons.rest.client;
 
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
+import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.commons.rest.converter.VitamUIErrorConverter;
+import fr.gouv.vitamui.commons.rest.dto.VitamUIError;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.web.client.DefaultResponseErrorHandler;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
-import fr.gouv.vitamui.commons.rest.converter.VitamUIErrorConverter;
-import fr.gouv.vitamui.commons.rest.dto.VitamUIError;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 /**
  *
@@ -76,11 +74,11 @@ public class ErrorHandler extends DefaultResponseErrorHandler {
         } else {
             // Added FAIL_ON_UNKNOWN_PROPERTIES:false to prevent error "UnrecognizedPropertyException: Unrecognized field"
             // TODO check where the property "path" comes from
-            error = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-                    .readValue(body, VitamUIError.class);
+            error = new ObjectMapper()
+                .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+                .readValue(body, VitamUIError.class);
         }
         final VitamUIErrorConverter converter = new VitamUIErrorConverter();
         throw converter.convert(error);
     }
-
 }

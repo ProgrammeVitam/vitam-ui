@@ -37,7 +37,6 @@
 package fr.gouv.vitamui.referential.common.export.probativevalue.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -46,10 +45,10 @@ import lombok.ToString;
 @Setter
 @ToString
 public class ItemWithLabelDto {
-	
-	@JsonProperty("item")
-	private String item;
-	
-	@JsonProperty("label")
-	private String label;
+
+    @JsonProperty("item")
+    private String item;
+
+    @JsonProperty("label")
+    private String label;
 }

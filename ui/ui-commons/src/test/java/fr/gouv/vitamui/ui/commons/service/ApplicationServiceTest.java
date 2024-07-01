@@ -1,18 +1,12 @@
 package fr.gouv.vitamui.ui.commons.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.ArgumentMatchers.isNull;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
+import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.api.domain.ApplicationDto;
+import fr.gouv.vitamui.commons.api.identity.ServerIdentityAutoConfiguration;
+import fr.gouv.vitamui.commons.security.client.logout.CasLogoutUrl;
+import fr.gouv.vitamui.iam.external.client.ApplicationExternalRestClient;
+import fr.gouv.vitamui.ui.commons.config.UIPropertiesImpl;
+import fr.gouv.vitamui.ui.commons.property.BaseUrl;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,13 +18,17 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import fr.gouv.vitamui.commons.api.CommonConstants;
-import fr.gouv.vitamui.commons.api.domain.ApplicationDto;
-import fr.gouv.vitamui.commons.api.identity.ServerIdentityAutoConfiguration;
-import fr.gouv.vitamui.commons.security.client.logout.CasLogoutUrl;
-import fr.gouv.vitamui.iam.external.client.ApplicationExternalRestClient;
-import fr.gouv.vitamui.ui.commons.config.UIPropertiesImpl;
-import fr.gouv.vitamui.ui.commons.property.BaseUrl;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.isNull;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = ServerIdentityAutoConfiguration.class)
@@ -82,12 +80,19 @@ public class ApplicationServiceTest extends ServiceTest<ApplicationDto> {
         Map<String, Object> config = service.getApplications(null, true);
         Assert.assertNotNull(config);
 
-        final Collection<ApplicationDto> applications = (Collection<ApplicationDto>) config.get(CommonConstants.APPLICATION_CONFIGURATION);
+        final Collection<ApplicationDto> applications = (Collection<ApplicationDto>) config.get(
+            CommonConstants.APPLICATION_CONFIGURATION
+        );
         Assert.assertNotNull(applications);
-        final Collection<String> applicationsId = applications.stream().map(a -> a.getId()).collect(Collectors.toList());
+        final Collection<String> applicationsId = applications
+            .stream()
+            .map(a -> a.getId())
+            .collect(Collectors.toList());
         assertThat(applicationsId).containsExactly("USERS", "CUSTOMERS");
 
-        final Collection<Map<String, Object>> categories = (Collection<Map<String, Object>>) config.get(CommonConstants.CATEGORY_CONFIGURATION);
+        final Collection<Map<String, Object>> categories = (Collection<Map<String, Object>>) config.get(
+            CommonConstants.CATEGORY_CONFIGURATION
+        );
         Assert.assertNotNull(categories);
         assertThat(categories.size()).isEqualTo(2);
     }
@@ -121,7 +126,6 @@ public class ApplicationServiceTest extends ServiceTest<ApplicationDto> {
         app.setUrl("${BASE_URL_IDENTITY}/customer");
         return app;
     }
-
 
     @Override
     public ApplicationExternalRestClient getClient() {

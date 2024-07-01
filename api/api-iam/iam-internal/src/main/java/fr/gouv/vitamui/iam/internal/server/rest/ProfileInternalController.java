@@ -97,8 +97,10 @@ public class ProfileInternalController implements CrudController<ProfileDto> {
      * @return
      */
     @GetMapping
-    public Collection<ProfileDto> getAll(final Optional<String> criteria, @RequestParam final Optional<String> embedded) {
-
+    public Collection<ProfileDto> getAll(
+        final Optional<String> criteria,
+        @RequestParam final Optional<String> embedded
+    ) {
         SanityChecker.sanitizeCriteria(criteria);
         EnumUtils.checkValidEnum(EmbeddedOptions.class, embedded);
         LOGGER.debug("Get all with criteria={}, embedded={}", criteria, embedded);
@@ -112,13 +114,25 @@ public class ProfileInternalController implements CrudController<ProfileDto> {
      * @return
      */
     @GetMapping(params = { "page", "size" })
-    public PaginatedValuesDto<ProfileDto> getAllPaginated(@RequestParam final Integer page, @RequestParam final Integer size,
-            @RequestParam(required = false) final Optional<String> criteria, @RequestParam(required = false) final Optional<String> orderBy,
-            @RequestParam(required = false) final Optional<DirectionDto> direction, @RequestParam(required = false) final Optional<String> embedded)
-        throws InvalidParseOperationException, PreconditionFailedException {
-        LOGGER.debug("getAllPaginated page={}, size={}, criteria={}, orderBy={}, ascendant={}, embedded = {}", page, size, criteria, orderBy, direction, embedded);
+    public PaginatedValuesDto<ProfileDto> getAllPaginated(
+        @RequestParam final Integer page,
+        @RequestParam final Integer size,
+        @RequestParam(required = false) final Optional<String> criteria,
+        @RequestParam(required = false) final Optional<String> orderBy,
+        @RequestParam(required = false) final Optional<DirectionDto> direction,
+        @RequestParam(required = false) final Optional<String> embedded
+    ) throws InvalidParseOperationException, PreconditionFailedException {
+        LOGGER.debug(
+            "getAllPaginated page={}, size={}, criteria={}, orderBy={}, ascendant={}, embedded = {}",
+            page,
+            size,
+            criteria,
+            orderBy,
+            direction,
+            embedded
+        );
         SanityChecker.sanitizeCriteria(criteria);
-        if(direction.isPresent()) {
+        if (direction.isPresent()) {
             SanityChecker.sanitizeCriteria(direction.get());
         }
         SanityChecker.checkSecureParameter(String.valueOf(size), String.valueOf(page));
@@ -134,10 +148,11 @@ public class ProfileInternalController implements CrudController<ProfileDto> {
      * @return
      */
     @GetMapping(CommonConstants.PATH_ID)
-    public ProfileDto getOne(final @PathVariable("id") String id, @RequestParam final Optional<String> criteria,
-            final @RequestParam Optional<String> embedded) throws InvalidParseOperationException,
-        PreconditionFailedException {
-
+    public ProfileDto getOne(
+        final @PathVariable("id") String id,
+        @RequestParam final Optional<String> criteria,
+        final @RequestParam Optional<String> embedded
+    ) throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter("Identifier is mandatory : ", id);
         SanityChecker.sanitizeCriteria(criteria);
         SanityChecker.checkSecureParameter(id);
@@ -165,9 +180,8 @@ public class ProfileInternalController implements CrudController<ProfileDto> {
      */
     @PostMapping
     @Override
-    public ProfileDto create(final @Valid @RequestBody ProfileDto dto) throws InvalidParseOperationException,
-        PreconditionFailedException {
-
+    public ProfileDto create(final @Valid @RequestBody ProfileDto dto)
+        throws InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.sanitizeCriteria(dto);
         LOGGER.debug("Create {}", dto);
         return internalProfileService.create(dto);
@@ -188,19 +202,20 @@ public class ProfileInternalController implements CrudController<ProfileDto> {
     @PatchMapping(CommonConstants.PATH_ID)
     public ProfileDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto)
         throws InvalidParseOperationException, PreconditionFailedException {
-
         ParameterChecker.checkParameter("Identifier is mandatory : ", id);
         SanityChecker.checkSecureParameter(id);
         SanityChecker.sanitizeCriteria(partialDto);
         LOGGER.debug("Patch {} with {}", id, partialDto);
-        Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "The DTO identifier must match the path identifier for update.");
+        Assert.isTrue(
+            StringUtils.equals(id, (String) partialDto.get("id")),
+            "The DTO identifier must match the path identifier for update."
+        );
         return internalProfileService.patch(partialDto);
     }
 
     @GetMapping("/{id}/history")
     public JsonNode findHistoryById(final @PathVariable("id") String id)
         throws VitamClientException, InvalidParseOperationException, PreconditionFailedException {
-
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("get logbook for profile with id :{}", id);
@@ -214,7 +229,6 @@ public class ProfileInternalController implements CrudController<ProfileDto> {
      */
     @GetMapping(CommonConstants.PATH_LEVELS)
     public List<String> getLevels(final Optional<String> criteria) {
-
         SanityChecker.sanitizeCriteria(criteria);
         LOGGER.debug("Get levels with criteria={}", criteria);
         return internalProfileService.getLevels(criteria);

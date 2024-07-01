@@ -37,7 +37,6 @@
 package fr.gouv.vitamui.referential.external.server.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
-
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
@@ -62,13 +61,16 @@ public class AccessContractExternalService extends AbstractResourceClientService
     private AccessContractInternalRestClient accessContractInternalRestClient;
 
     @Autowired
-    public AccessContractExternalService(ExternalSecurityService externalSecurityService, AccessContractInternalRestClient accessContractInternalRestClient) {
+    public AccessContractExternalService(
+        ExternalSecurityService externalSecurityService,
+        AccessContractInternalRestClient accessContractInternalRestClient
+    ) {
         super(externalSecurityService);
         this.accessContractInternalRestClient = accessContractInternalRestClient;
     }
 
     public List<AccessContractDto> getAll(final Optional<String> criteria) {
-        return accessContractInternalRestClient.getAll(getInternalHttpContext(),criteria);
+        return accessContractInternalRestClient.getAll(getInternalHttpContext(), criteria);
     }
 
     @Override
@@ -89,13 +91,19 @@ public class AccessContractExternalService extends AbstractResourceClientService
         return Arrays.asList("name");
     }
 
-    @Override protected BasePaginatingAndSortingRestClient<AccessContractDto, InternalHttpContext> getClient() {
+    @Override
+    protected BasePaginatingAndSortingRestClient<AccessContractDto, InternalHttpContext> getClient() {
         return accessContractInternalRestClient;
     }
 
     @Override
-    public PaginatedValuesDto<AccessContractDto> getAllPaginated(final Integer page, final Integer size, final Optional<String> criteria,
-            final Optional<String> orderBy, final Optional<DirectionDto> direction) {
+    public PaginatedValuesDto<AccessContractDto> getAllPaginated(
+        final Integer page,
+        final Integer size,
+        final Optional<String> criteria,
+        final Optional<String> orderBy,
+        final Optional<DirectionDto> direction
+    ) {
         ParameterChecker.checkPagination(size, page);
         return getClient().getAllPaginated(getInternalHttpContext(), page, size, criteria, orderBy, direction);
     }

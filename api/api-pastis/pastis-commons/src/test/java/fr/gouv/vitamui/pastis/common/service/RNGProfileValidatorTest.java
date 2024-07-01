@@ -64,7 +64,9 @@ public class RNGProfileValidatorTest {
 
     @Rule
     public TemporaryFolder tempFolder = new TemporaryFolder();
+
     private RNGProfileValidator rngProfileValidator;
+
     @Value("${json.base.file}")
     private String jsonFileName;
 
@@ -98,7 +100,6 @@ public class RNGProfileValidatorTest {
      * Génère un profil RNG depuis un fichier JSON et valide ce profil
      */
     public void validateGeneratedRNGProfileFromJSON() throws Exception {
-
         InputStream jsonInputStream = getClass().getClassLoader().getResourceAsStream(jsonFileName);
         ObjectMapper objectMapper = new ObjectMapper();
         ElementProperties jsonMap = objectMapper.readValue(jsonInputStream, ElementProperties.class);
@@ -106,14 +107,26 @@ public class RNGProfileValidatorTest {
 
         BaliseXML.buildBaliseXMLTree(jsonMap, 0, null);
         BaliseXML eparentRng = BaliseXML.getBaliseXMLStatic();
-        JAXBContext contextObj = JAXBContext.newInstance(AttributeXML.class, ElementXML.class, DataXML.class,
-            ValueXML.class, OptionalXML.class, OneOrMoreXML.class,
-            ZeroOrMoreXML.class, AnnotationXML.class, DocumentationXML.class,
-            StartXML.class, GrammarXML.class, ChoiceXml.class);
+        JAXBContext contextObj = JAXBContext.newInstance(
+            AttributeXML.class,
+            ElementXML.class,
+            DataXML.class,
+            ValueXML.class,
+            OptionalXML.class,
+            OneOrMoreXML.class,
+            ZeroOrMoreXML.class,
+            AnnotationXML.class,
+            DocumentationXML.class,
+            StartXML.class,
+            GrammarXML.class,
+            ChoiceXml.class
+        );
         Marshaller marshallerObj = contextObj.createMarshaller();
         marshallerObj.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-        marshallerObj.setProperty("com.sun.xml.bind.marshaller.CharacterEscapeHandler",
-            new PastisCustomCharacterEscapeHandler());
+        marshallerObj.setProperty(
+            "com.sun.xml.bind.marshaller.CharacterEscapeHandler",
+            new PastisCustomCharacterEscapeHandler()
+        );
 
         File rngProfile = tempFolder.newFile();
         OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(rngProfile), "UTF-8");

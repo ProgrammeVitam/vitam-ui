@@ -60,13 +60,13 @@ public class VitamUIManagementContractService {
      * @return
      * @throws VitamClientException
      */
-    public RequestResponse<?> patchManagementContract(final VitamContext vitamContext, final String contractId, JsonNode jsonNode)
-        throws InvalidParseOperationException,
-        PreconditionFailedException, AccessExternalClientException {
+    public RequestResponse<?> patchManagementContract(
+        final VitamContext vitamContext,
+        final String contractId,
+        JsonNode jsonNode
+    ) throws InvalidParseOperationException, PreconditionFailedException, AccessExternalClientException {
         LOGGER.debug("patch: {}, {}", contractId, jsonNode);
-        LOGGER.debug("Management Contract EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
-        return adminExternalClient.updateManagementContract(vitamContext,contractId,jsonNode);
+        LOGGER.debug("Management Contract EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
+        return adminExternalClient.updateManagementContract(vitamContext, contractId, jsonNode);
     }
-
-
 }

@@ -36,9 +36,12 @@
  */
 package fr.gouv.vitamui.referential.internal.client;
 
-
-import java.util.List;
-
+import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
+import fr.gouv.vitamui.commons.rest.client.BasePaginatingAndSortingRestClient;
+import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
+import fr.gouv.vitamui.referential.common.dto.FileFormatDto;
+import fr.gouv.vitamui.referential.common.rest.RestApi;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpEntity;
@@ -48,21 +51,18 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import fr.gouv.vitamui.commons.api.CommonConstants;
-import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
-import fr.gouv.vitamui.commons.rest.client.BasePaginatingAndSortingRestClient;
-import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
-import fr.gouv.vitamui.referential.common.dto.FileFormatDto;
-import fr.gouv.vitamui.referential.common.rest.RestApi;
+import java.util.List;
 
-public class FileFormatInternalRestClient extends BasePaginatingAndSortingRestClient<FileFormatDto, InternalHttpContext> {
+public class FileFormatInternalRestClient
+    extends BasePaginatingAndSortingRestClient<FileFormatDto, InternalHttpContext> {
 
     public FileFormatInternalRestClient(final RestTemplate restTemplate, final String baseUrl) {
         super(restTemplate, baseUrl);
     }
 
-    @Override protected ParameterizedTypeReference<PaginatedValuesDto<FileFormatDto>> getDtoPaginatedClass() {
-        return new ParameterizedTypeReference<PaginatedValuesDto<FileFormatDto>>() { };
+    @Override
+    protected ParameterizedTypeReference<PaginatedValuesDto<FileFormatDto>> getDtoPaginatedClass() {
+        return new ParameterizedTypeReference<PaginatedValuesDto<FileFormatDto>>() {};
     }
 
     @Override
@@ -70,19 +70,24 @@ public class FileFormatInternalRestClient extends BasePaginatingAndSortingRestCl
         return RestApi.FILE_FORMATS_URL;
     }
 
-    @Override protected Class<FileFormatDto> getDtoClass() {
+    @Override
+    protected Class<FileFormatDto> getDtoClass() {
         return FileFormatDto.class;
     }
 
     protected ParameterizedTypeReference<List<FileFormatDto>> getDtoListClass() {
-        return new ParameterizedTypeReference<List<FileFormatDto>>() { };
+        return new ParameterizedTypeReference<List<FileFormatDto>>() {};
     }
 
     public boolean check(InternalHttpContext context, FileFormatDto accessContractDto) {
         final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl() + CommonConstants.PATH_CHECK);
         final HttpEntity<FileFormatDto> request = new HttpEntity<>(accessContractDto, buildHeaders(context));
-        final ResponseEntity<Boolean> response = restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.POST,
-                request, Boolean.class);
+        final ResponseEntity<Boolean> response = restTemplate.exchange(
+            uriBuilder.toUriString(),
+            HttpMethod.POST,
+            request,
+            Boolean.class
+        );
         return response.getStatusCode() == HttpStatus.OK;
     }
 
@@ -91,5 +96,4 @@ public class FileFormatInternalRestClient extends BasePaginatingAndSortingRestCl
         final HttpEntity<FileFormatDto> request = new HttpEntity<>(null, buildHeaders(context));
         return restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET, request, Resource.class);
     }
-
 }

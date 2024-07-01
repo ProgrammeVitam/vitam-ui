@@ -40,7 +40,6 @@ package fr.gouv.vitamui.pastis.common.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitamui.pastis.common.dto.ElementProperties;
-import fr.gouv.vitamui.pastis.common.dto.profiles.Notice;
 import fr.gouv.vitamui.pastis.common.util.NoticeUtils;
 import org.json.JSONObject;
 import org.json.JSONTokener;
@@ -54,7 +53,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-
 
 @RunWith(SpringRunner.class)
 @TestPropertySource(locations = "/application-test.yml")
@@ -87,8 +85,9 @@ public class JsonFromPuaTest {
         ObjectMapper mapper = new ObjectMapper();
         String fileNodeActual = mapper.writeValueAsString(profileActual);
         JSONObject fileNodeJSONActual = new JSONObject(fileNodeActual);
-        InputStream inputStreamExpected =
-            getClass().getClassLoader().getResourceAsStream("pua/profile_Expected_with_management.json");
+        InputStream inputStreamExpected = getClass()
+            .getClassLoader()
+            .getResourceAsStream("pua/profile_Expected_with_management.json");
         tokener = new JSONTokener(inputStreamExpected);
         JSONObject fileNodeJSONExpected = new JSONObject(tokener);
         JSONAssert.assertEquals(fileNodeJSONActual, fileNodeJSONExpected, JSONCompareMode.STRICT);
@@ -96,8 +95,9 @@ public class JsonFromPuaTest {
 
     @Test
     public void testImportNOK_missing_definitions() throws IOException {
-        InputStream inputStreamPua =
-            getClass().getClassLoader().getResourceAsStream("pua/pua_NOK_missing_definitions.json");
+        InputStream inputStreamPua = getClass()
+            .getClassLoader()
+            .getResourceAsStream("pua/pua_NOK_missing_definitions.json");
 
         JSONTokener tokener = new JSONTokener(new InputStreamReader(inputStreamPua));
         JSONObject profileJson = new JSONObject(tokener);
@@ -109,8 +109,9 @@ public class JsonFromPuaTest {
 
     @Test
     public void testImportNOK_missing_management() throws IOException {
-        InputStream inputStreamPua =
-            getClass().getClassLoader().getResourceAsStream("pua/pua_NOK_missing_management.json");
+        InputStream inputStreamPua = getClass()
+            .getClassLoader()
+            .getResourceAsStream("pua/pua_NOK_missing_management.json");
 
         JSONTokener tokener = new JSONTokener(new InputStreamReader(inputStreamPua));
         JSONObject profileJson = new JSONObject(tokener);
@@ -122,8 +123,9 @@ public class JsonFromPuaTest {
 
     @Test
     public void testImportNOK_missing_properties() throws IOException {
-        InputStream inputStreamPua =
-            getClass().getClassLoader().getResourceAsStream("pua/pua_NOK_missing_properties.json");
+        InputStream inputStreamPua = getClass()
+            .getClassLoader()
+            .getResourceAsStream("pua/pua_NOK_missing_properties.json");
 
         JSONTokener tokener = new JSONTokener(new InputStreamReader(inputStreamPua));
         JSONObject profileJson = new JSONObject(tokener);
@@ -135,8 +137,9 @@ public class JsonFromPuaTest {
 
     @Test
     public void testImportNOK_both_management_present() throws IOException {
-        InputStream inputStreamPua =
-            getClass().getClassLoader().getResourceAsStream("pua/pua_NOK_both_management_present.json");
+        InputStream inputStreamPua = getClass()
+            .getClassLoader()
+            .getResourceAsStream("pua/pua_NOK_both_management_present.json");
 
         JSONTokener tokener = new JSONTokener(new InputStreamReader(inputStreamPua));
         JSONObject profileJson = new JSONObject(tokener);

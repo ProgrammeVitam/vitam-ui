@@ -71,6 +71,7 @@ import java.util.Optional;
 @Getter
 @Setter
 public class UnitInternalController {
+
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(UnitInternalController.class);
 
     @Autowired
@@ -88,8 +89,8 @@ public class UnitInternalController {
     @GetMapping(CommonConstants.PATH_ID)
     public JsonNode findUnitById(
         @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) final Integer tenantId,
-        @PathVariable final String id) throws VitamClientException, InvalidParseOperationException,
-        PreconditionFailedException {
+        @PathVariable final String id
+    ) throws VitamClientException, InvalidParseOperationException, PreconditionFailedException {
         final VitamContext vitamContext = externalParametersService.buildVitamContextFromExternalParam();
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         SanityChecker.checkSecureParameter(id);
@@ -97,13 +98,13 @@ public class UnitInternalController {
     }
 
     // TODO : Secure it !
-    @PostMapping({RestApi.DSL_PATH, RestApi.DSL_PATH + CommonConstants.PATH_ID})
+    @PostMapping({ RestApi.DSL_PATH, RestApi.DSL_PATH + CommonConstants.PATH_ID })
     public JsonNode findByDsl(
         @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) final Integer tenantId,
         @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) final String accessContractId,
         @PathVariable final Optional<String> id,
-        @RequestBody final JsonNode dsl)
-        throws VitamClientException, InvalidParseOperationException, PreconditionFailedException {
+        @RequestBody final JsonNode dsl
+    ) throws VitamClientException, InvalidParseOperationException, PreconditionFailedException {
         final VitamContext vitamContext = securityService.buildVitamContext(tenantId, accessContractId);
         SanityChecker.sanitizeJson(dsl);
         SanityChecker.checkSecureParameter(accessContractId);
@@ -115,8 +116,8 @@ public class UnitInternalController {
         @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) final Integer tenantId,
         @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) final String accessContractId,
         @PathVariable final String id,
-        @RequestBody final JsonNode dsl)
-        throws VitamClientException, InvalidParseOperationException, PreconditionFailedException {
+        @RequestBody final JsonNode dsl
+    ) throws VitamClientException, InvalidParseOperationException, PreconditionFailedException {
         final VitamContext vitamContext = securityService.buildVitamContext(tenantId, accessContractId);
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         SanityChecker.sanitizeJson(dsl);
@@ -126,13 +127,16 @@ public class UnitInternalController {
 
     @GetMapping(RestApi.FILING_PLAN_PATH)
     public VitamUISearchResponseDto getFilingAndHoldingUnits(
-        @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) final Integer tenantId)
-        throws VitamClientException, IOException, InvalidParseOperationException, PreconditionFailedException {
+        @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) final Integer tenantId
+    ) throws VitamClientException, IOException, InvalidParseOperationException, PreconditionFailedException {
         LOGGER.debug("Get filing and holding units with projections on needed fields ONLY!");
         final JsonNode fillingOrHoldingQuery = unitInternalService.createQueryForFillingOrHoldingUnit();
-        return objectMapper.treeToValue(unitInternalService.searchUnits(fillingOrHoldingQuery,
-                externalParametersService.buildVitamContextFromExternalParam()),
-            VitamUISearchResponseDto.class);
+        return objectMapper.treeToValue(
+            unitInternalService.searchUnits(
+                fillingOrHoldingQuery,
+                externalParametersService.buildVitamContextFromExternalParam()
+            ),
+            VitamUISearchResponseDto.class
+        );
     }
-
 }

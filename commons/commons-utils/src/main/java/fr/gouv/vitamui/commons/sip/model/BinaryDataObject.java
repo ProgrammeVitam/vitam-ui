@@ -36,13 +36,13 @@
  */
 package fr.gouv.vitamui.commons.sip.model;
 
+import lombok.Getter;
+import lombok.ToString;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
-
-import lombok.Getter;
-import lombok.ToString;
 
 @Getter
 @ToString
@@ -67,8 +67,7 @@ public class BinaryDataObject {
     @XmlElement(name = "FileInfo")
     private FileInfo fileInfo;
 
-    private BinaryDataObject() {
-    }
+    private BinaryDataObject() {}
 
     private BinaryDataObject(Builder builder) {
         id = builder.id;

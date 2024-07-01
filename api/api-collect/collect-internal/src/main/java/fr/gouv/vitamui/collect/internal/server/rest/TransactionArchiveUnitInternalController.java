@@ -39,8 +39,8 @@ import fr.gouv.vitamui.collect.internal.server.service.TransactionArchiveUnitInt
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
-import fr.gouv.vitamui.commons.api.dtos.VitamUiOntologyDto;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
+import fr.gouv.vitamui.commons.api.dtos.VitamUiOntologyDto;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
@@ -71,19 +71,20 @@ import static fr.gouv.vitamui.collect.common.rest.RestApi.COLLECT_TRANSACTION_AR
 @Api(tags = "collect", value = "Unités archivistiques d'un projet")
 public class TransactionArchiveUnitInternalController {
 
-    private static final VitamUILogger LOGGER =
-        VitamUILoggerFactory.getInstance(TransactionArchiveUnitInternalController.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
+        TransactionArchiveUnitInternalController.class
+    );
     private final InternalSecurityService securityService;
     private final TransactionArchiveUnitInternalService transactionArchiveUnitInternalService;
     private final ExternalParametersService externalParametersService;
-    private static final String MANDATORY_PARAMETERS =
-        "The tenant Id, the SearchCriteria are mandatory parameters: ";
-    private static final String IDENTIFIER_ACCESS_CONTRACT_MANDATORY =
-        "The identifier is mandatory parameter: ";
+    private static final String MANDATORY_PARAMETERS = "The tenant Id, the SearchCriteria are mandatory parameters: ";
+    private static final String IDENTIFIER_ACCESS_CONTRACT_MANDATORY = "The identifier is mandatory parameter: ";
 
-    public TransactionArchiveUnitInternalController(InternalSecurityService securityService,
+    public TransactionArchiveUnitInternalController(
+        InternalSecurityService securityService,
         TransactionArchiveUnitInternalService transactionArchiveUnitInternalService,
-        final ExternalParametersService externalParametersService) {
+        final ExternalParametersService externalParametersService
+    ) {
         this.securityService = securityService;
         this.transactionArchiveUnitInternalService = transactionArchiveUnitInternalService;
         this.externalParametersService = externalParametersService;
@@ -93,35 +94,38 @@ public class TransactionArchiveUnitInternalController {
     public ArchiveUnitsDto searchArchiveUnitsByCriteria(
         @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) final Integer tenantId,
         @PathVariable("transactionId") final String transactionId,
-        @RequestBody final SearchCriteriaDto searchQuery)
-        throws VitamClientException, IOException, InvalidParseOperationException, PreconditionFailedException,
-        InvalidCreateOperationException {
-
+        @RequestBody final SearchCriteriaDto searchQuery
+    )
+        throws VitamClientException, IOException, InvalidParseOperationException, PreconditionFailedException, InvalidCreateOperationException {
         SanityChecker.sanitizeCriteria(searchQuery);
-        ParameterChecker
-            .checkParameter("The tenant Id and the SearchCriteria are mandatory parameters: ",
-                tenantId, searchQuery);
+        ParameterChecker.checkParameter(
+            "The tenant Id and the SearchCriteria are mandatory parameters: ",
+            tenantId,
+            searchQuery
+        );
         SanityChecker.checkSecureParameter(transactionId);
-        LOGGER.debug("Calling service searchArchiveUnits for tenantId {} by Criteria {} ",
-            tenantId, searchQuery);
-        return
-            transactionArchiveUnitInternalService.searchArchiveUnitsByCriteria(transactionId, searchQuery,
-                externalParametersService.buildVitamContextFromExternalParam());
+        LOGGER.debug("Calling service searchArchiveUnits for tenantId {} by Criteria {} ", tenantId, searchQuery);
+        return transactionArchiveUnitInternalService.searchArchiveUnitsByCriteria(
+            transactionId,
+            searchQuery,
+            externalParametersService.buildVitamContextFromExternalParam()
+        );
     }
 
     @PostMapping("/{transactionId}" + ARCHIVE_UNITS + EXPORT_CSV_SEARCH_PATH)
     public ResponseEntity<Resource> exportCsvArchiveUnitsByCriteria(
         @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) final Integer tenantId,
         @PathVariable("transactionId") final String transactionId,
-        @RequestBody final SearchCriteriaDto searchQuery)
-        throws VitamClientException, InvalidParseOperationException, PreconditionFailedException {
+        @RequestBody final SearchCriteriaDto searchQuery
+    ) throws VitamClientException, InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.checkSecureParameter(transactionId);
         SanityChecker.sanitizeCriteria(searchQuery);
         LOGGER.debug("Export to CSV file Archive Units by criteria {}", searchQuery);
-        Resource exportedResult =
-            transactionArchiveUnitInternalService
-                .exportToCsvSearchArchiveUnitsByCriteria(transactionId, searchQuery,
-                    externalParametersService.buildVitamContextFromExternalParam());
+        Resource exportedResult = transactionArchiveUnitInternalService.exportToCsvSearchArchiveUnitsByCriteria(
+            transactionId,
+            searchQuery,
+            externalParametersService.buildVitamContextFromExternalParam()
+        );
         return new ResponseEntity<>(exportedResult, HttpStatus.OK);
     }
 
@@ -132,25 +136,27 @@ public class TransactionArchiveUnitInternalController {
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("UA Details  {}", id);
 
-        return transactionArchiveUnitInternalService.findArchiveUnitById(id,
-            externalParametersService.buildVitamContextFromExternalParam());
+        return transactionArchiveUnitInternalService.findArchiveUnitById(
+            id,
+            externalParametersService.buildVitamContextFromExternalParam()
+        );
     }
 
     @GetMapping(CommonConstants.OBJECTS_PATH + CommonConstants.PATH_ID)
     public ResultsDto findObjectGroupById(final @PathVariable("id") String id)
         throws InvalidParseOperationException, VitamClientException {
-        ParameterChecker
-            .checkParameter(IDENTIFIER_ACCESS_CONTRACT_MANDATORY, id);
+        ParameterChecker.checkParameter(IDENTIFIER_ACCESS_CONTRACT_MANDATORY, id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("[INTERNAL] : Get ObjectGroup By id : {}", id);
-        return transactionArchiveUnitInternalService.findObjectGroupById(id,
-            externalParametersService.buildVitamContextFromExternalParam());
+        return transactionArchiveUnitInternalService.findObjectGroupById(
+            id,
+            externalParametersService.buildVitamContextFromExternalParam()
+        );
     }
 
     @GetMapping(CommonConstants.EXTERNAL_ONTOLOGIES_LIST)
     public List<VitamUiOntologyDto> getExternalOntologiesList() throws IOException {
-        LOGGER.debug("[INTERNAL] : Get All ontologies values for tenant {}",
-            securityService.getTenantIdentifier());
+        LOGGER.debug("[INTERNAL] : Get All ontologies values for tenant {}", securityService.getTenantIdentifier());
         final Integer tenantId = securityService.getTenantIdentifier();
         return transactionArchiveUnitInternalService.readExternalOntologiesFromFile(tenantId);
     }
@@ -159,15 +165,20 @@ public class TransactionArchiveUnitInternalController {
     public ResultsDto selectUnitsWithInheritedRules(
         @PathVariable("transactionId") final String transactionId,
         @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) final Integer tenantId,
-        @RequestBody final SearchCriteriaDto searchQuery)
-        throws VitamClientException, IOException, InvalidParseOperationException, PreconditionFailedException {
+        @RequestBody final SearchCriteriaDto searchQuery
+    ) throws VitamClientException, IOException, InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.sanitizeCriteria(searchQuery);
         ParameterChecker.checkParameter(MANDATORY_PARAMETERS, tenantId, searchQuery);
         SanityChecker.checkSecureParameter(transactionId);
         LOGGER.debug(
             "Calling service select Unit With Inherited Rules for tenantId {}, By Criteria {} ",
-            tenantId, searchQuery);
-        return transactionArchiveUnitInternalService.selectUnitWithInheritedRules(searchQuery, transactionId,
-            externalParametersService.buildVitamContextFromExternalParam());
+            tenantId,
+            searchQuery
+        );
+        return transactionArchiveUnitInternalService.selectUnitWithInheritedRules(
+            searchQuery,
+            transactionId,
+            externalParametersService.buildVitamContextFromExternalParam()
+        );
     }
 }

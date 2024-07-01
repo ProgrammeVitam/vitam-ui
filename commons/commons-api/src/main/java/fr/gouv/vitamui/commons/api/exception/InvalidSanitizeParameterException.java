@@ -65,5 +65,4 @@ public class InvalidSanitizeParameterException extends VitamUIException {
     public InvalidSanitizeParameterException(final String message, final String key) {
         super(message, key);
     }
-
 }

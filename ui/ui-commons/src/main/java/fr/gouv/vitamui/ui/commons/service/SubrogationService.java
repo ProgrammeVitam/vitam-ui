@@ -36,11 +36,6 @@
  */
 package fr.gouv.vitamui.ui.commons.service;
 
-import java.util.Collection;
-import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.GroupDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
@@ -49,6 +44,10 @@ import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.iam.common.dto.SubrogationDto;
 import fr.gouv.vitamui.iam.external.client.IamExternalRestClientFactory;
 import fr.gouv.vitamui.iam.external.client.SubrogationExternalRestClient;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.Collection;
+import java.util.Optional;
 
 public class SubrogationService extends AbstractCrudService<SubrogationDto> {
 
@@ -90,9 +89,14 @@ public class SubrogationService extends AbstractCrudService<SubrogationDto> {
         return client.getMySubrogationAsSuperuser(context);
     }
 
-    public PaginatedValuesDto<UserDto> getGenericUsers(final ExternalHttpContext context, final Integer page,
-            final Integer size, final Optional<String> criteria, final Optional<String> orderBy,
-            final Optional<DirectionDto> direction) {
+    public PaginatedValuesDto<UserDto> getGenericUsers(
+        final ExternalHttpContext context,
+        final Integer page,
+        final Integer size,
+        final Optional<String> criteria,
+        final Optional<String> orderBy,
+        final Optional<DirectionDto> direction
+    ) {
         return client.getGenericUsers(context, page, size, criteria, orderBy, direction);
     }
 
@@ -104,5 +108,4 @@ public class SubrogationService extends AbstractCrudService<SubrogationDto> {
     public SubrogationExternalRestClient getClient() {
         return client;
     }
-
 }

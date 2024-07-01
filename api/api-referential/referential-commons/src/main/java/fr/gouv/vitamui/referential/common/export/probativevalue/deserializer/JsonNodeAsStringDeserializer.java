@@ -36,15 +36,14 @@
  */
 package fr.gouv.vitamui.referential.common.export.probativevalue.deserializer;
 
-import java.io.IOException;
-
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
-
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.json.JsonHandler;
+
+import java.io.IOException;
 
 /**
  * Deserializer used to transform Json as string to a real JsonNode.
@@ -52,18 +51,17 @@ import fr.gouv.vitam.common.json.JsonHandler;
  */
 public class JsonNodeAsStringDeserializer extends JsonDeserializer<JsonNode> {
 
-	public JsonNodeAsStringDeserializer() {
-		// empty
-	}
+    public JsonNodeAsStringDeserializer() {
+        // empty
+    }
 
-	@Override
-	public JsonNode deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
-		try {
-			String value = p.readValueAs(String.class);
-			return JsonHandler.getFromString(value);
-		} catch (InvalidParseOperationException e) {
-			return JsonHandler.createObjectNode();
-		}
-	}
-
+    @Override
+    public JsonNode deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
+        try {
+            String value = p.readValueAs(String.class);
+            return JsonHandler.getFromString(value);
+        } catch (InvalidParseOperationException e) {
+            return JsonHandler.createObjectNode();
+        }
+    }
 }

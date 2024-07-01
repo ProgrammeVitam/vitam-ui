@@ -1,11 +1,11 @@
 package fr.gouv.vitamui.ui.commons.config;
 
-import java.util.Properties;
-
 import org.springframework.boot.info.BuildProperties;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import java.util.Properties;
 
 @Configuration
 public class UICommonsAutoSpringMockConfiguration {
@@ -18,7 +18,6 @@ public class UICommonsAutoSpringMockConfiguration {
         properties.put("version", "2.0.0");
         return new BuildProperties(properties);
     }
-
 
     @Bean
     public RestTemplateBuilder restTemplateBuilder() {

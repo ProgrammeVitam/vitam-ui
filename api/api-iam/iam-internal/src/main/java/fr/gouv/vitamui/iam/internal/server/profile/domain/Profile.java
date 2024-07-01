@@ -36,17 +36,6 @@
  */
 package fr.gouv.vitamui.iam.internal.server.profile.domain;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-
-import org.hibernate.validator.constraints.Length;
-import org.springframework.data.annotation.TypeAlias;
-import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.data.mongodb.core.mapping.Document;
-
 import fr.gouv.vitamui.commons.api.domain.Role;
 import fr.gouv.vitamui.iam.internal.server.common.domain.CustomerIdDocument;
 import fr.gouv.vitamui.iam.internal.server.common.domain.MongoDbCollections;
@@ -54,6 +43,15 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.validator.constraints.Length;
+import org.springframework.data.annotation.TypeAlias;
+import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A profile.
@@ -77,7 +75,6 @@ public class Profile extends CustomerIdDocument {
     @Length(max = 100)
     @Indexed(name = "idx_profile_name", background = true)
     private String name;
-
 
     private boolean enabled = true;
 

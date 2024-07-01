@@ -36,19 +36,7 @@
  */
 package fr.gouv.vitamui.referential.rest;
 
-import static org.mockito.ArgumentMatchers.any;
-
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.HttpHeaders;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
 import com.google.common.collect.ImmutableMap;
-
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.CriterionOperator;
 import fr.gouv.vitamui.commons.api.domain.QueryDto;
@@ -58,30 +46,40 @@ import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsResponseDto;
 import fr.gouv.vitamui.referential.common.dto.OntologyDto;
 import fr.gouv.vitamui.referential.service.OntologyService;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpHeaders;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import static org.mockito.ArgumentMatchers.any;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebMvcTest(controllers = { OntologyController.class })
 public class OntologyControllerTest extends UiReferentialRestControllerTest<OntologyDto> {
 
-	@Value("${ui-referential.prefix}")
-	protected String apiUrl;
+    @Value("${ui-referential.prefix}")
+    protected String apiUrl;
 
-	@MockBean
-	private OntologyService service;
+    @MockBean
+    private OntologyService service;
 
-	private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(OntologyController.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(OntologyController.class);
 
-	private static final String PREFIX = "/ontology";
+    private static final String PREFIX = "/ontology";
 
-	@Test
-	public void testCreateOntology() {
-		super.testCreateEntity();
-	}
+    @Test
+    public void testCreateOntology() {
+        super.testCreateEntity();
+    }
 
-	@Test
-	public void testGetAllOntologies() {
-		super.testGetAllEntityWithCriteria();
-	}
+    @Test
+    public void testGetAllOntologies() {
+        super.testGetAllEntityWithCriteria();
+    }
 
     @Test
     public void testGetAllPaginatedOntologies() {
@@ -90,59 +88,60 @@ public class OntologyControllerTest extends UiReferentialRestControllerTest<Onto
         super.performGet("/", ImmutableMap.of("page", 1, "size", 20, "orderBy", "id"), headers);
     }
 
-	@Test
-	public void testPatchOntology() {
-		super.testPatchEntity();
-	}
+    @Test
+    public void testPatchOntology() {
+        super.testPatchEntity();
+    }
 
-	@Test
-	public void testCheckExistByName() {
-		Mockito.when(service.checkExist(any(), any())).thenReturn(true);
-		final QueryDto criteria = QueryDto.criteria().addCriterion("name", "agencyName",
-				CriterionOperator.EQUALS);
-		super.performHead(CommonConstants.PATH_CHECK, ImmutableMap.of("criteria", criteria.toJson()));
-	}
+    @Test
+    public void testCheckExistByName() {
+        Mockito.when(service.checkExist(any(), any())).thenReturn(true);
+        final QueryDto criteria = QueryDto.criteria().addCriterion("name", "agencyName", CriterionOperator.EQUALS);
+        super.performHead(CommonConstants.PATH_CHECK, ImmutableMap.of("criteria", criteria.toJson()));
+    }
 
-	@Test
-	public void testFindHistoryById() {
-		Mockito.when(service.findHistoryById(any(ExternalHttpContext.class), any(String.class))).thenReturn(new LogbookOperationsResponseDto());
-		super.performGet("/1/history");
-	}
+    @Test
+    public void testFindHistoryById() {
+        Mockito.when(service.findHistoryById(any(ExternalHttpContext.class), any(String.class))).thenReturn(
+            new LogbookOperationsResponseDto()
+        );
+        super.performGet("/1/history");
+    }
 
-	@Test
-	public void testGetOntologyById() {
-		super.testGetEntityById();
-	}
+    @Test
+    public void testGetOntologyById() {
+        super.testGetEntityById();
+    }
 
     @Test
     public void testDeleteOntology() {
-    	super.performDelete("/1");
+        super.performDelete("/1");
     }
 
-	@Override
-	protected String getRessourcePrefix() {
-		return "/" + apiUrl + PREFIX;
-	}
+    @Override
+    protected String getRessourcePrefix() {
+        return "/" + apiUrl + PREFIX;
+    }
 
-	@Override
-	protected Class<OntologyDto> getDtoClass() {
-		return OntologyDto.class;
-	}
+    @Override
+    protected Class<OntologyDto> getDtoClass() {
+        return OntologyDto.class;
+    }
 
-	@Override
-	protected OntologyDto buildDto() {
-		final OntologyDto dto = new OntologyDto();
-		return dto;
-	}
+    @Override
+    protected OntologyDto buildDto() {
+        final OntologyDto dto = new OntologyDto();
+        return dto;
+    }
 
-	@Override
-	protected VitamUILogger getLog() {
-		return LOGGER;
-	}
+    @Override
+    protected VitamUILogger getLog() {
+        return LOGGER;
+    }
 
-	@Override
-	protected void preparedServices() {
-		Mockito.when(service.create(any(), any(OntologyDto.class))).thenReturn(new OntologyDto());
-		Mockito.when(service.update(any(), any(OntologyDto.class))).thenReturn(new OntologyDto());
-	}
+    @Override
+    protected void preparedServices() {
+        Mockito.when(service.create(any(), any(OntologyDto.class))).thenReturn(new OntologyDto());
+        Mockito.when(service.update(any(), any(OntologyDto.class))).thenReturn(new OntologyDto());
+    }
 }

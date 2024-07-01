@@ -1,16 +1,14 @@
 package fr.gouv.vitamui.identity.service;
 
+import fr.gouv.vitamui.commons.api.domain.OwnerDto;
+import fr.gouv.vitamui.iam.external.client.OwnerExternalRestClient;
+import fr.gouv.vitamui.ui.commons.service.AbstractCrudService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import fr.gouv.vitamui.commons.api.domain.OwnerDto;
-import fr.gouv.vitamui.iam.external.client.OwnerExternalRestClient;
-import fr.gouv.vitamui.ui.commons.service.AbstractCrudService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 public class OwnerServiceTest extends UIIdentityServiceTest<OwnerDto> {

@@ -56,7 +56,6 @@ import fr.gouv.vitamui.referential.common.dto.FileFormatDto;
 import fr.gouv.vitamui.referential.common.service.VitamFileFormatService;
 import fr.gouv.vitamui.referential.internal.server.fileformat.FileFormatConverter;
 import fr.gouv.vitamui.referential.internal.server.fileformat.FileFormatInternalService;
-
 import org.apache.commons.io.IOUtils;
 import org.easymock.EasyMock;
 import org.junit.Before;
@@ -68,7 +67,6 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.xml.bind.JAXBException;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -96,15 +94,23 @@ public class FileFormatInternalServiceTest {
         converter = new FileFormatConverter();
         logbookService = mock(LogbookService.class);
         vitamFileFormatService = mock(VitamFileFormatService.class);
-        fileFormatInternalService = new FileFormatInternalService(objectMapper, converter, logbookService, vitamFileFormatService);
-
+        fileFormatInternalService = new FileFormatInternalService(
+            objectMapper,
+            converter,
+            logbookService,
+            vitamFileFormatService
+        );
 
         // Mock server identity for Logs when not using spring
         PowerMock.suppress(PowerMock.constructor(ServerIdentityConfiguration.class));
         PowerMock.mockStatic(ServerIdentityConfiguration.class);
-        ServerIdentityConfiguration serverIdentityConfigurationMock = PowerMock.createMock(ServerIdentityConfiguration.class);
+        ServerIdentityConfiguration serverIdentityConfigurationMock = PowerMock.createMock(
+            ServerIdentityConfiguration.class
+        );
         expect(ServerIdentityConfiguration.getInstance()).andReturn(serverIdentityConfigurationMock).anyTimes();
-        expect(serverIdentityConfigurationMock.getLoggerMessagePrepend()).andReturn("LOG TESTS FileFormatInternalServiceTest - ").anyTimes();
+        expect(serverIdentityConfigurationMock.getLoggerMessagePrepend())
+            .andReturn("LOG TESTS FileFormatInternalServiceTest - ")
+            .anyTimes();
         PowerMock.replay(ServerIdentityConfiguration.class);
         PowerMock.replay(serverIdentityConfigurationMock);
     }
@@ -114,8 +120,9 @@ public class FileFormatInternalServiceTest {
         VitamContext vitamContext = new VitamContext(0);
         String identifier = "identifier";
 
-        expect(vitamFileFormatService.findFileFormatById(isA(VitamContext.class), isA(String.class)))
-            .andReturn(new RequestResponseOK<FileFormatModel>().setHttpCode(200));
+        expect(vitamFileFormatService.findFileFormatById(isA(VitamContext.class), isA(String.class))).andReturn(
+            new RequestResponseOK<FileFormatModel>().setHttpCode(200)
+        );
         EasyMock.replay(vitamFileFormatService);
 
         assertThatCode(() -> {
@@ -128,8 +135,9 @@ public class FileFormatInternalServiceTest {
         VitamContext vitamContext = new VitamContext(0);
         String identifier = "identifier";
 
-        expect(vitamFileFormatService.findFileFormatById(isA(VitamContext.class), isA(String.class)))
-            .andReturn(new RequestResponseOK<FileFormatModel>().setHttpCode(400));
+        expect(vitamFileFormatService.findFileFormatById(isA(VitamContext.class), isA(String.class))).andReturn(
+            new RequestResponseOK<FileFormatModel>().setHttpCode(400)
+        );
         EasyMock.replay(vitamFileFormatService);
 
         assertThatCode(() -> {
@@ -138,12 +146,14 @@ public class FileFormatInternalServiceTest {
     }
 
     @Test
-    public void getOne_should_throw_InternalServerException_when_vitamclient_throws_VitamClientException() throws VitamClientException {
+    public void getOne_should_throw_InternalServerException_when_vitamclient_throws_VitamClientException()
+        throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         String identifier = "identifier";
 
-        expect(vitamFileFormatService.findFileFormatById(isA(VitamContext.class), isA(String.class)))
-            .andThrow(new VitamClientException("Exception thrown by vitam"));
+        expect(vitamFileFormatService.findFileFormatById(isA(VitamContext.class), isA(String.class))).andThrow(
+            new VitamClientException("Exception thrown by vitam")
+        );
         EasyMock.replay(vitamFileFormatService);
 
         assertThatCode(() -> {
@@ -155,8 +165,9 @@ public class FileFormatInternalServiceTest {
     public void getAll_should_return_ok_when_vitamclient_ok() throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
 
-        expect(vitamFileFormatService.findFileFormats(isA(VitamContext.class), isA(ObjectNode.class)))
-            .andReturn(new RequestResponseOK<FileFormatModel>().setHttpCode(200));
+        expect(vitamFileFormatService.findFileFormats(isA(VitamContext.class), isA(ObjectNode.class))).andReturn(
+            new RequestResponseOK<FileFormatModel>().setHttpCode(200)
+        );
         EasyMock.replay(vitamFileFormatService);
 
         assertThatCode(() -> {
@@ -168,8 +179,9 @@ public class FileFormatInternalServiceTest {
     public void getAll_should_return_ok_when_vitamclient_400() throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
 
-        expect(vitamFileFormatService.findFileFormats(isA(VitamContext.class), isA(ObjectNode.class)))
-            .andReturn(new RequestResponseOK<FileFormatModel>().setHttpCode(400));
+        expect(vitamFileFormatService.findFileFormats(isA(VitamContext.class), isA(ObjectNode.class))).andReturn(
+            new RequestResponseOK<FileFormatModel>().setHttpCode(400)
+        );
         EasyMock.replay(vitamFileFormatService);
 
         assertThatCode(() -> {
@@ -178,11 +190,13 @@ public class FileFormatInternalServiceTest {
     }
 
     @Test
-    public void getAll_should_throw_VitamClientException_when_vitamclient_throws_VitamClientException() throws VitamClientException {
+    public void getAll_should_throw_VitamClientException_when_vitamclient_throws_VitamClientException()
+        throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
 
-        expect(vitamFileFormatService.findFileFormats(isA(VitamContext.class), isA(ObjectNode.class)))
-            .andThrow(new VitamClientException("Exception thrown by vitam"));
+        expect(vitamFileFormatService.findFileFormats(isA(VitamContext.class), isA(ObjectNode.class))).andThrow(
+            new VitamClientException("Exception thrown by vitam")
+        );
         EasyMock.replay(vitamFileFormatService);
 
         assertThatCode(() -> {
@@ -195,8 +209,9 @@ public class FileFormatInternalServiceTest {
         VitamContext vitamContext = new VitamContext(0);
         FileFormatDto accessContractDto = new FileFormatDto();
 
-        expect(vitamFileFormatService.checkAbilityToCreateFileFormatInVitam(isA(List.class), isA(VitamContext.class)))
-            .andReturn(true);
+        expect(
+            vitamFileFormatService.checkAbilityToCreateFileFormatInVitam(isA(List.class), isA(VitamContext.class))
+        ).andReturn(true);
         EasyMock.replay(vitamFileFormatService);
 
         assertThatCode(() -> {
@@ -205,12 +220,13 @@ public class FileFormatInternalServiceTest {
     }
 
     @Test
-    public void check_should_return_ok_when_vitamclient_throws_ConflictException()  {
+    public void check_should_return_ok_when_vitamclient_throws_ConflictException() {
         VitamContext vitamContext = new VitamContext(0);
         FileFormatDto accessContractDto = new FileFormatDto();
 
-        expect(vitamFileFormatService.checkAbilityToCreateFileFormatInVitam(isA(List.class), isA(VitamContext.class)))
-            .andThrow(new ConflictException("Exception thrown by vitam"));
+        expect(
+            vitamFileFormatService.checkAbilityToCreateFileFormatInVitam(isA(List.class), isA(VitamContext.class))
+        ).andThrow(new ConflictException("Exception thrown by vitam"));
         EasyMock.replay(vitamFileFormatService);
 
         assertThatCode(() -> {
@@ -219,12 +235,14 @@ public class FileFormatInternalServiceTest {
     }
 
     @Test
-    public void create_should_return_ok_when_vitamclient_ok() throws JAXBException, AccessExternalClientException, InvalidParseOperationException, VitamClientException, IOException {
+    public void create_should_return_ok_when_vitamclient_ok()
+        throws JAXBException, AccessExternalClientException, InvalidParseOperationException, VitamClientException, IOException {
         VitamContext vitamContext = new VitamContext(0);
         FileFormatDto accessContractDto = new FileFormatDto();
 
-        expect(vitamFileFormatService.create(isA(VitamContext.class), isA(FileFormatModel.class)))
-            .andReturn(new RequestResponseOK().setHttpCode(200));
+        expect(vitamFileFormatService.create(isA(VitamContext.class), isA(FileFormatModel.class))).andReturn(
+            new RequestResponseOK().setHttpCode(200)
+        );
         EasyMock.replay(vitamFileFormatService);
 
         assertThatCode(() -> {
@@ -233,12 +251,14 @@ public class FileFormatInternalServiceTest {
     }
 
     @Test
-    public void create_should_return_ok_when_vitamclient_400() throws JAXBException, AccessExternalClientException, InvalidParseOperationException, VitamClientException, IOException {
+    public void create_should_return_ok_when_vitamclient_400()
+        throws JAXBException, AccessExternalClientException, InvalidParseOperationException, VitamClientException, IOException {
         VitamContext vitamContext = new VitamContext(0);
         FileFormatDto accessContractDto = new FileFormatDto();
 
-        expect(vitamFileFormatService.create(isA(VitamContext.class), isA(FileFormatModel.class)))
-            .andReturn(new RequestResponseOK().setHttpCode(400));
+        expect(vitamFileFormatService.create(isA(VitamContext.class), isA(FileFormatModel.class))).andReturn(
+            new RequestResponseOK().setHttpCode(400)
+        );
         EasyMock.replay(vitamFileFormatService);
 
         assertThatCode(() -> {
@@ -247,12 +267,14 @@ public class FileFormatInternalServiceTest {
     }
 
     @Test
-    public void create_should_throw_InternalServerException_when_vitamclient_throws_JAXBException() throws JAXBException, AccessExternalClientException, InvalidParseOperationException, VitamClientException, IOException {
+    public void create_should_throw_InternalServerException_when_vitamclient_throws_JAXBException()
+        throws JAXBException, AccessExternalClientException, InvalidParseOperationException, VitamClientException, IOException {
         VitamContext vitamContext = new VitamContext(0);
         FileFormatDto accessContractDto = new FileFormatDto();
 
-        expect(vitamFileFormatService.create(isA(VitamContext.class), isA(FileFormatModel.class)))
-            .andThrow(new JAXBException("Exception thrown by vitam"));
+        expect(vitamFileFormatService.create(isA(VitamContext.class), isA(FileFormatModel.class))).andThrow(
+            new JAXBException("Exception thrown by vitam")
+        );
         EasyMock.replay(vitamFileFormatService);
 
         assertThatCode(() -> {
@@ -261,12 +283,14 @@ public class FileFormatInternalServiceTest {
     }
 
     @Test
-    public void create_should_throw_InternalServerException_when_vitamclient_throws_AccessExternalClientException() throws JAXBException, AccessExternalClientException, InvalidParseOperationException, VitamClientException, IOException {
+    public void create_should_throw_InternalServerException_when_vitamclient_throws_AccessExternalClientException()
+        throws JAXBException, AccessExternalClientException, InvalidParseOperationException, VitamClientException, IOException {
         VitamContext vitamContext = new VitamContext(0);
         FileFormatDto accessContractDto = new FileFormatDto();
 
-        expect(vitamFileFormatService.create(isA(VitamContext.class), isA(FileFormatModel.class)))
-            .andThrow(new AccessExternalClientException("Exception thrown by vitam"));
+        expect(vitamFileFormatService.create(isA(VitamContext.class), isA(FileFormatModel.class))).andThrow(
+            new AccessExternalClientException("Exception thrown by vitam")
+        );
         EasyMock.replay(vitamFileFormatService);
 
         assertThatCode(() -> {
@@ -275,12 +299,14 @@ public class FileFormatInternalServiceTest {
     }
 
     @Test
-    public void create_should_throw_InternalServerException_when_vitamclient_throws_InvalidParseOperationException() throws JAXBException, AccessExternalClientException, InvalidParseOperationException, VitamClientException, IOException {
+    public void create_should_throw_InternalServerException_when_vitamclient_throws_InvalidParseOperationException()
+        throws JAXBException, AccessExternalClientException, InvalidParseOperationException, VitamClientException, IOException {
         VitamContext vitamContext = new VitamContext(0);
         FileFormatDto accessContractDto = new FileFormatDto();
 
-        expect(vitamFileFormatService.create(isA(VitamContext.class), isA(FileFormatModel.class)))
-            .andThrow(new InvalidParseOperationException("Exception thrown by vitam"));
+        expect(vitamFileFormatService.create(isA(VitamContext.class), isA(FileFormatModel.class))).andThrow(
+            new InvalidParseOperationException("Exception thrown by vitam")
+        );
         EasyMock.replay(vitamFileFormatService);
 
         assertThatCode(() -> {
@@ -289,12 +315,14 @@ public class FileFormatInternalServiceTest {
     }
 
     @Test
-    public void create_should_throw_InternalServerException_when_vitamclient_throws_VitamClientException() throws JAXBException, AccessExternalClientException, InvalidParseOperationException, VitamClientException, IOException {
+    public void create_should_throw_InternalServerException_when_vitamclient_throws_VitamClientException()
+        throws JAXBException, AccessExternalClientException, InvalidParseOperationException, VitamClientException, IOException {
         VitamContext vitamContext = new VitamContext(0);
         FileFormatDto accessContractDto = new FileFormatDto();
 
-        expect(vitamFileFormatService.create(isA(VitamContext.class), isA(FileFormatModel.class)))
-            .andThrow(new VitamClientException("Exception thrown by vitam"));
+        expect(vitamFileFormatService.create(isA(VitamContext.class), isA(FileFormatModel.class))).andThrow(
+            new VitamClientException("Exception thrown by vitam")
+        );
         EasyMock.replay(vitamFileFormatService);
 
         assertThatCode(() -> {
@@ -303,12 +331,14 @@ public class FileFormatInternalServiceTest {
     }
 
     @Test
-    public void create_should_throw_InternalServerException_when_vitamclient_throws_IOException() throws JAXBException, AccessExternalClientException, InvalidParseOperationException, VitamClientException, IOException {
+    public void create_should_throw_InternalServerException_when_vitamclient_throws_IOException()
+        throws JAXBException, AccessExternalClientException, InvalidParseOperationException, VitamClientException, IOException {
         VitamContext vitamContext = new VitamContext(0);
         FileFormatDto accessContractDto = new FileFormatDto();
 
-        expect(vitamFileFormatService.create(isA(VitamContext.class), isA(FileFormatModel.class)))
-            .andThrow(new IOException("Exception thrown by vitam"));
+        expect(vitamFileFormatService.create(isA(VitamContext.class), isA(FileFormatModel.class))).andThrow(
+            new IOException("Exception thrown by vitam")
+        );
         EasyMock.replay(vitamFileFormatService);
 
         assertThatCode(() -> {
@@ -317,7 +347,8 @@ public class FileFormatInternalServiceTest {
     }
 
     @Test
-    public void patch_should_return_ok_when_vitamclient_ok() throws JAXBException, AccessExternalClientException, InvalidParseOperationException, VitamClientException, IOException {
+    public void patch_should_return_ok_when_vitamclient_ok()
+        throws JAXBException, AccessExternalClientException, InvalidParseOperationException, VitamClientException, IOException {
         VitamContext vitamContext = new VitamContext(0);
         vitamContext.setAccessContract("accessContract");
         vitamContext.setApplicationSessionId("applicationSessionId");
@@ -327,41 +358,22 @@ public class FileFormatInternalServiceTest {
 
         RequestResponseOK<FileFormatModel> response = new RequestResponseOK<>();
         response.setHttpCode(200);
-        response.setHits(1,1,1,1);
+        response.setHits(1, 1, 1, 1);
         response.addResult(new FileFormatModel());
 
         expect(vitamFileFormatService.findFileFormatById(isA(VitamContext.class), isA(String.class)))
-            .andReturn(response).anyTimes();
+            .andReturn(response)
+            .anyTimes();
 
-        expect(vitamFileFormatService.patchFileFormat(isA(VitamContext.class), isA(String.class), isA(FileFormatModel.class)))
-            .andReturn(new RequestResponseOK().setHttpCode(200)).anyTimes();
-        EasyMock.replay(vitamFileFormatService);
-
-
-        assertThatCode(() -> {
-            fileFormatInternalService.patch(vitamContext, partialDto);
-        }).doesNotThrowAnyException();
-    }
-
-    @Test
-    public void patch_should_return_ok_when_vitamclient_400() throws JAXBException, AccessExternalClientException, InvalidParseOperationException, VitamClientException, IOException {
-        VitamContext vitamContext = new VitamContext(0);
-        vitamContext.setAccessContract("accessContract");
-        vitamContext.setApplicationSessionId("applicationSessionId");
-        String puid = "EXTERNAL_LOGBOOK";
-        Map<String, Object> partialDto = new HashMap<>();
-        partialDto.put("puid", "EXTERNAL_LOGBOOK");
-
-        RequestResponseOK<FileFormatModel> response = new RequestResponseOK<>();
-        response.setHttpCode(200);
-        response.setHits(1,1,1,1);
-        response.addResult(new FileFormatModel());
-
-        expect(vitamFileFormatService.findFileFormatById(isA(VitamContext.class), isA(String.class)))
-            .andReturn(response).anyTimes();
-
-        expect(vitamFileFormatService.patchFileFormat(isA(VitamContext.class), isA(String.class), isA(FileFormatModel.class)))
-            .andReturn(new RequestResponseOK().setHttpCode(400));
+        expect(
+            vitamFileFormatService.patchFileFormat(
+                isA(VitamContext.class),
+                isA(String.class),
+                isA(FileFormatModel.class)
+            )
+        )
+            .andReturn(new RequestResponseOK().setHttpCode(200))
+            .anyTimes();
         EasyMock.replay(vitamFileFormatService);
 
         assertThatCode(() -> {
@@ -370,7 +382,8 @@ public class FileFormatInternalServiceTest {
     }
 
     @Test
-    public void patch_should_throw_InternalServerException_when_vitamclient_throws_JAXBException() throws JAXBException, AccessExternalClientException, InvalidParseOperationException, VitamClientException, IOException {
+    public void patch_should_return_ok_when_vitamclient_400()
+        throws JAXBException, AccessExternalClientException, InvalidParseOperationException, VitamClientException, IOException {
         VitamContext vitamContext = new VitamContext(0);
         vitamContext.setAccessContract("accessContract");
         vitamContext.setApplicationSessionId("applicationSessionId");
@@ -380,23 +393,30 @@ public class FileFormatInternalServiceTest {
 
         RequestResponseOK<FileFormatModel> response = new RequestResponseOK<>();
         response.setHttpCode(200);
-        response.setHits(1,1,1,1);
+        response.setHits(1, 1, 1, 1);
         response.addResult(new FileFormatModel());
 
         expect(vitamFileFormatService.findFileFormatById(isA(VitamContext.class), isA(String.class)))
-            .andReturn(response).anyTimes();
+            .andReturn(response)
+            .anyTimes();
 
-        expect(vitamFileFormatService.patchFileFormat(isA(VitamContext.class), isA(String.class), isA(FileFormatModel.class)))
-            .andThrow(new JAXBException("Exception thrown by vitam"));
+        expect(
+            vitamFileFormatService.patchFileFormat(
+                isA(VitamContext.class),
+                isA(String.class),
+                isA(FileFormatModel.class)
+            )
+        ).andReturn(new RequestResponseOK().setHttpCode(400));
         EasyMock.replay(vitamFileFormatService);
 
         assertThatCode(() -> {
             fileFormatInternalService.patch(vitamContext, partialDto);
-        }).isInstanceOf(InternalServerException.class);
+        }).doesNotThrowAnyException();
     }
 
     @Test
-    public void patch_should_throw_InternalServerException_when_vitamclient_throws_AccessExternalClientException() throws JAXBException, AccessExternalClientException, InvalidParseOperationException, VitamClientException, IOException {
+    public void patch_should_throw_InternalServerException_when_vitamclient_throws_JAXBException()
+        throws JAXBException, AccessExternalClientException, InvalidParseOperationException, VitamClientException, IOException {
         VitamContext vitamContext = new VitamContext(0);
         vitamContext.setAccessContract("accessContract");
         vitamContext.setApplicationSessionId("applicationSessionId");
@@ -406,14 +426,20 @@ public class FileFormatInternalServiceTest {
 
         RequestResponseOK<FileFormatModel> response = new RequestResponseOK<>();
         response.setHttpCode(200);
-        response.setHits(1,1,1,1);
+        response.setHits(1, 1, 1, 1);
         response.addResult(new FileFormatModel());
 
         expect(vitamFileFormatService.findFileFormatById(isA(VitamContext.class), isA(String.class)))
-            .andReturn(response).anyTimes();
+            .andReturn(response)
+            .anyTimes();
 
-        expect(vitamFileFormatService.patchFileFormat(isA(VitamContext.class), isA(String.class), isA(FileFormatModel.class)))
-            .andThrow(new AccessExternalClientException("Exception thrown by vitam"));
+        expect(
+            vitamFileFormatService.patchFileFormat(
+                isA(VitamContext.class),
+                isA(String.class),
+                isA(FileFormatModel.class)
+            )
+        ).andThrow(new JAXBException("Exception thrown by vitam"));
         EasyMock.replay(vitamFileFormatService);
 
         assertThatCode(() -> {
@@ -422,7 +448,8 @@ public class FileFormatInternalServiceTest {
     }
 
     @Test
-    public void patch_should_throw_InternalServerException_when_vitamclient_throws_InvalidParseOperationException() throws JAXBException, AccessExternalClientException, InvalidParseOperationException, VitamClientException, IOException {
+    public void patch_should_throw_InternalServerException_when_vitamclient_throws_AccessExternalClientException()
+        throws JAXBException, AccessExternalClientException, InvalidParseOperationException, VitamClientException, IOException {
         VitamContext vitamContext = new VitamContext(0);
         vitamContext.setAccessContract("accessContract");
         vitamContext.setApplicationSessionId("applicationSessionId");
@@ -432,14 +459,20 @@ public class FileFormatInternalServiceTest {
 
         RequestResponseOK<FileFormatModel> response = new RequestResponseOK<>();
         response.setHttpCode(200);
-        response.setHits(1,1,1,1);
+        response.setHits(1, 1, 1, 1);
         response.addResult(new FileFormatModel());
 
         expect(vitamFileFormatService.findFileFormatById(isA(VitamContext.class), isA(String.class)))
-            .andReturn(response).anyTimes();
+            .andReturn(response)
+            .anyTimes();
 
-        expect(vitamFileFormatService.patchFileFormat(isA(VitamContext.class), isA(String.class), isA(FileFormatModel.class)))
-            .andThrow(new InvalidParseOperationException("Exception thrown by vitam"));
+        expect(
+            vitamFileFormatService.patchFileFormat(
+                isA(VitamContext.class),
+                isA(String.class),
+                isA(FileFormatModel.class)
+            )
+        ).andThrow(new AccessExternalClientException("Exception thrown by vitam"));
         EasyMock.replay(vitamFileFormatService);
 
         assertThatCode(() -> {
@@ -448,7 +481,8 @@ public class FileFormatInternalServiceTest {
     }
 
     @Test
-    public void patch_should_throw_InternalServerException_when_vitamclient_throws_VitamClientException() throws JAXBException, AccessExternalClientException, InvalidParseOperationException, VitamClientException, IOException {
+    public void patch_should_throw_InternalServerException_when_vitamclient_throws_InvalidParseOperationException()
+        throws JAXBException, AccessExternalClientException, InvalidParseOperationException, VitamClientException, IOException {
         VitamContext vitamContext = new VitamContext(0);
         vitamContext.setAccessContract("accessContract");
         vitamContext.setApplicationSessionId("applicationSessionId");
@@ -458,14 +492,20 @@ public class FileFormatInternalServiceTest {
 
         RequestResponseOK<FileFormatModel> response = new RequestResponseOK<>();
         response.setHttpCode(200);
-        response.setHits(1,1,1,1);
+        response.setHits(1, 1, 1, 1);
         response.addResult(new FileFormatModel());
 
         expect(vitamFileFormatService.findFileFormatById(isA(VitamContext.class), isA(String.class)))
-            .andReturn(response).anyTimes();
+            .andReturn(response)
+            .anyTimes();
 
-        expect(vitamFileFormatService.patchFileFormat(isA(VitamContext.class), isA(String.class), isA(FileFormatModel.class)))
-            .andThrow(new VitamClientException("Exception thrown by vitam"));
+        expect(
+            vitamFileFormatService.patchFileFormat(
+                isA(VitamContext.class),
+                isA(String.class),
+                isA(FileFormatModel.class)
+            )
+        ).andThrow(new InvalidParseOperationException("Exception thrown by vitam"));
         EasyMock.replay(vitamFileFormatService);
 
         assertThatCode(() -> {
@@ -474,7 +514,8 @@ public class FileFormatInternalServiceTest {
     }
 
     @Test
-    public void patch_should_throw_InternalServerException_when_vitamclient_throws_IOException() throws JAXBException, AccessExternalClientException, InvalidParseOperationException, VitamClientException, IOException {
+    public void patch_should_throw_InternalServerException_when_vitamclient_throws_VitamClientException()
+        throws JAXBException, AccessExternalClientException, InvalidParseOperationException, VitamClientException, IOException {
         VitamContext vitamContext = new VitamContext(0);
         vitamContext.setAccessContract("accessContract");
         vitamContext.setApplicationSessionId("applicationSessionId");
@@ -484,14 +525,20 @@ public class FileFormatInternalServiceTest {
 
         RequestResponseOK<FileFormatModel> response = new RequestResponseOK<>();
         response.setHttpCode(200);
-        response.setHits(1,1,1,1);
+        response.setHits(1, 1, 1, 1);
         response.addResult(new FileFormatModel());
 
         expect(vitamFileFormatService.findFileFormatById(isA(VitamContext.class), isA(String.class)))
-            .andReturn(response).anyTimes();
+            .andReturn(response)
+            .anyTimes();
 
-        expect(vitamFileFormatService.patchFileFormat(isA(VitamContext.class), isA(String.class), isA(FileFormatModel.class)))
-            .andThrow(new IOException("Exception thrown by vitam"));
+        expect(
+            vitamFileFormatService.patchFileFormat(
+                isA(VitamContext.class),
+                isA(String.class),
+                isA(FileFormatModel.class)
+            )
+        ).andThrow(new VitamClientException("Exception thrown by vitam"));
         EasyMock.replay(vitamFileFormatService);
 
         assertThatCode(() -> {
@@ -500,12 +547,47 @@ public class FileFormatInternalServiceTest {
     }
 
     @Test
-    public void delete_should_return_ok_when_vitamclient_ok() throws JAXBException, AccessExternalClientException, InvalidParseOperationException, VitamClientException, IOException {
+    public void patch_should_throw_InternalServerException_when_vitamclient_throws_IOException()
+        throws JAXBException, AccessExternalClientException, InvalidParseOperationException, VitamClientException, IOException {
+        VitamContext vitamContext = new VitamContext(0);
+        vitamContext.setAccessContract("accessContract");
+        vitamContext.setApplicationSessionId("applicationSessionId");
+        String puid = "EXTERNAL_LOGBOOK";
+        Map<String, Object> partialDto = new HashMap<>();
+        partialDto.put("puid", "EXTERNAL_LOGBOOK");
+
+        RequestResponseOK<FileFormatModel> response = new RequestResponseOK<>();
+        response.setHttpCode(200);
+        response.setHits(1, 1, 1, 1);
+        response.addResult(new FileFormatModel());
+
+        expect(vitamFileFormatService.findFileFormatById(isA(VitamContext.class), isA(String.class)))
+            .andReturn(response)
+            .anyTimes();
+
+        expect(
+            vitamFileFormatService.patchFileFormat(
+                isA(VitamContext.class),
+                isA(String.class),
+                isA(FileFormatModel.class)
+            )
+        ).andThrow(new IOException("Exception thrown by vitam"));
+        EasyMock.replay(vitamFileFormatService);
+
+        assertThatCode(() -> {
+            fileFormatInternalService.patch(vitamContext, partialDto);
+        }).isInstanceOf(InternalServerException.class);
+    }
+
+    @Test
+    public void delete_should_return_ok_when_vitamclient_ok()
+        throws JAXBException, AccessExternalClientException, InvalidParseOperationException, VitamClientException, IOException {
         VitamContext vitamContext = new VitamContext(0);
         String id = "EXTERNAL_0";
 
-        expect(vitamFileFormatService.deleteFileFormat(isA(VitamContext.class), isA(String.class)))
-            .andReturn(new RequestResponseOK().setHttpCode(200));
+        expect(vitamFileFormatService.deleteFileFormat(isA(VitamContext.class), isA(String.class))).andReturn(
+            new RequestResponseOK().setHttpCode(200)
+        );
         EasyMock.replay(vitamFileFormatService);
 
         assertThatCode(() -> {
@@ -514,12 +596,14 @@ public class FileFormatInternalServiceTest {
     }
 
     @Test
-    public void delete_should_return_ok_when_vitamclient_400() throws JAXBException, AccessExternalClientException, InvalidParseOperationException, VitamClientException, IOException {
+    public void delete_should_return_ok_when_vitamclient_400()
+        throws JAXBException, AccessExternalClientException, InvalidParseOperationException, VitamClientException, IOException {
         VitamContext vitamContext = new VitamContext(0);
         String id = "EXTERNAL_0";
 
-        expect(vitamFileFormatService.deleteFileFormat(isA(VitamContext.class), isA(String.class)))
-            .andReturn(new RequestResponseOK().setHttpCode(400));
+        expect(vitamFileFormatService.deleteFileFormat(isA(VitamContext.class), isA(String.class))).andReturn(
+            new RequestResponseOK().setHttpCode(400)
+        );
         EasyMock.replay(vitamFileFormatService);
 
         assertThatCode(() -> {
@@ -528,12 +612,14 @@ public class FileFormatInternalServiceTest {
     }
 
     @Test
-    public void delete_should_throw_InternalServerException_when_vitamclient_throws_JAXBException() throws JAXBException, AccessExternalClientException, InvalidParseOperationException, VitamClientException, IOException {
+    public void delete_should_throw_InternalServerException_when_vitamclient_throws_JAXBException()
+        throws JAXBException, AccessExternalClientException, InvalidParseOperationException, VitamClientException, IOException {
         VitamContext vitamContext = new VitamContext(0);
         String id = "EXTERNAL_0";
 
-        expect(vitamFileFormatService.deleteFileFormat(isA(VitamContext.class), isA(String.class)))
-            .andThrow(new JAXBException("Exception thrown by vitam"));
+        expect(vitamFileFormatService.deleteFileFormat(isA(VitamContext.class), isA(String.class))).andThrow(
+            new JAXBException("Exception thrown by vitam")
+        );
         EasyMock.replay(vitamFileFormatService);
 
         assertThatCode(() -> {
@@ -542,12 +628,14 @@ public class FileFormatInternalServiceTest {
     }
 
     @Test
-    public void delete_should_throw_InternalServerException_when_vitamclient_throws_AccessExternalClientException() throws JAXBException, AccessExternalClientException, InvalidParseOperationException, VitamClientException, IOException {
+    public void delete_should_throw_InternalServerException_when_vitamclient_throws_AccessExternalClientException()
+        throws JAXBException, AccessExternalClientException, InvalidParseOperationException, VitamClientException, IOException {
         VitamContext vitamContext = new VitamContext(0);
         String id = "EXTERNAL_0";
 
-        expect(vitamFileFormatService.deleteFileFormat(isA(VitamContext.class), isA(String.class)))
-            .andThrow(new AccessExternalClientException("Exception thrown by vitam"));
+        expect(vitamFileFormatService.deleteFileFormat(isA(VitamContext.class), isA(String.class))).andThrow(
+            new AccessExternalClientException("Exception thrown by vitam")
+        );
         EasyMock.replay(vitamFileFormatService);
 
         assertThatCode(() -> {
@@ -556,12 +644,14 @@ public class FileFormatInternalServiceTest {
     }
 
     @Test
-    public void delete_should_throw_InternalServerException_when_vitamclient_throws_InvalidParseOperationException() throws JAXBException, AccessExternalClientException, InvalidParseOperationException, VitamClientException, IOException {
+    public void delete_should_throw_InternalServerException_when_vitamclient_throws_InvalidParseOperationException()
+        throws JAXBException, AccessExternalClientException, InvalidParseOperationException, VitamClientException, IOException {
         VitamContext vitamContext = new VitamContext(0);
         String id = "EXTERNAL_0";
 
-        expect(vitamFileFormatService.deleteFileFormat(isA(VitamContext.class), isA(String.class)))
-            .andThrow(new InvalidParseOperationException("Exception thrown by vitam"));
+        expect(vitamFileFormatService.deleteFileFormat(isA(VitamContext.class), isA(String.class))).andThrow(
+            new InvalidParseOperationException("Exception thrown by vitam")
+        );
         EasyMock.replay(vitamFileFormatService);
 
         assertThatCode(() -> {
@@ -570,12 +660,14 @@ public class FileFormatInternalServiceTest {
     }
 
     @Test
-    public void delete_should_throw_InternalServerException_when_vitamclient_throws_VitamClientException() throws JAXBException, AccessExternalClientException, InvalidParseOperationException, VitamClientException, IOException {
+    public void delete_should_throw_InternalServerException_when_vitamclient_throws_VitamClientException()
+        throws JAXBException, AccessExternalClientException, InvalidParseOperationException, VitamClientException, IOException {
         VitamContext vitamContext = new VitamContext(0);
         String id = "EXTERNAL_0";
 
-        expect(vitamFileFormatService.deleteFileFormat(isA(VitamContext.class), isA(String.class)))
-            .andThrow(new VitamClientException("Exception thrown by vitam"));
+        expect(vitamFileFormatService.deleteFileFormat(isA(VitamContext.class), isA(String.class))).andThrow(
+            new VitamClientException("Exception thrown by vitam")
+        );
         EasyMock.replay(vitamFileFormatService);
 
         assertThatCode(() -> {
@@ -584,12 +676,14 @@ public class FileFormatInternalServiceTest {
     }
 
     @Test
-    public void delete_should_throw_InternalServerException_when_vitamclient_throws_IOException() throws JAXBException, AccessExternalClientException, InvalidParseOperationException, VitamClientException, IOException {
+    public void delete_should_throw_InternalServerException_when_vitamclient_throws_IOException()
+        throws JAXBException, AccessExternalClientException, InvalidParseOperationException, VitamClientException, IOException {
         VitamContext vitamContext = new VitamContext(0);
         String id = "EXTERNAL_0";
 
-        expect(vitamFileFormatService.deleteFileFormat(isA(VitamContext.class), isA(String.class)))
-            .andThrow(new IOException("Exception thrown by vitam"));
+        expect(vitamFileFormatService.deleteFileFormat(isA(VitamContext.class), isA(String.class))).andThrow(
+            new IOException("Exception thrown by vitam")
+        );
         EasyMock.replay(vitamFileFormatService);
 
         assertThatCode(() -> {
@@ -602,8 +696,13 @@ public class FileFormatInternalServiceTest {
         VitamContext vitamContext = new VitamContext(0);
         String id = "identifier";
 
-        expect(logbookService.findEventsByIdentifierAndCollectionNames(isA(String.class), isA(String.class), isA(VitamContext.class)))
-            .andReturn(new RequestResponseOK<LogbookOperation>().setHttpCode(200));
+        expect(
+            logbookService.findEventsByIdentifierAndCollectionNames(
+                isA(String.class),
+                isA(String.class),
+                isA(VitamContext.class)
+            )
+        ).andReturn(new RequestResponseOK<LogbookOperation>().setHttpCode(200));
         EasyMock.replay(logbookService);
 
         assertThatCode(() -> {
@@ -616,8 +715,13 @@ public class FileFormatInternalServiceTest {
         VitamContext vitamContext = new VitamContext(0);
         String id = "identifier";
 
-        expect(logbookService.findEventsByIdentifierAndCollectionNames(isA(String.class), isA(String.class), isA(VitamContext.class)))
-            .andReturn(new RequestResponseOK<LogbookOperation>().setHttpCode(400));
+        expect(
+            logbookService.findEventsByIdentifierAndCollectionNames(
+                isA(String.class),
+                isA(String.class),
+                isA(VitamContext.class)
+            )
+        ).andReturn(new RequestResponseOK<LogbookOperation>().setHttpCode(400));
         EasyMock.replay(logbookService);
 
         assertThatCode(() -> {
@@ -626,12 +730,18 @@ public class FileFormatInternalServiceTest {
     }
 
     @Test
-    public void findHistoryByIdentifier_should_throw_VitamClientException_when_vitamclient_throws_VitamClientException() throws VitamClientException {
+    public void findHistoryByIdentifier_should_throw_VitamClientException_when_vitamclient_throws_VitamClientException()
+        throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         String id = "identifier";
 
-        expect(logbookService.findEventsByIdentifierAndCollectionNames(isA(String.class), isA(String.class), isA(VitamContext.class)))
-            .andThrow(new VitamClientException("Exception thrown by vitam"));
+        expect(
+            logbookService.findEventsByIdentifierAndCollectionNames(
+                isA(String.class),
+                isA(String.class),
+                isA(VitamContext.class)
+            )
+        ).andThrow(new VitamClientException("Exception thrown by vitam"));
         EasyMock.replay(logbookService);
 
         assertThatCode(() -> {
@@ -640,23 +750,33 @@ public class FileFormatInternalServiceTest {
     }
 
     @Test
-    public void import_should_return_ok() throws
-    InvalidParseOperationException, AccessExternalClientException, VitamClientException, IOException {
-    	VitamContext vitamContext = new VitamContext(1);
-	    File file = new File("src/test/resources/data/import_fileFormats_valid.xml");
-	    FileInputStream input = new FileInputStream(file);
-	    MultipartFile multipartFile = new MockMultipartFile(file.getName(), file.getName(), "text/csv", IOUtils.toByteArray(input));
+    public void import_should_return_ok()
+        throws InvalidParseOperationException, AccessExternalClientException, VitamClientException, IOException {
+        VitamContext vitamContext = new VitamContext(1);
+        File file = new File("src/test/resources/data/import_fileFormats_valid.xml");
+        FileInputStream input = new FileInputStream(file);
+        MultipartFile multipartFile = new MockMultipartFile(
+            file.getName(),
+            file.getName(),
+            "text/csv",
+            IOUtils.toByteArray(input)
+        );
 
-	    String stringReponse = "{\"httpCode\":\"201\"}";
-	    ObjectMapper mapper = new ObjectMapper();
-	    JsonNode jsonResponse = mapper.readTree(stringReponse);
+        String stringReponse = "{\"httpCode\":\"201\"}";
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode jsonResponse = mapper.readTree(stringReponse);
 
-        expect(vitamFileFormatService.importFileFormats(isA(VitamContext.class), isA(String.class), isA(MultipartFile.class)))
-    	    .andReturn((RequestResponse) new RequestResponseOK<JsonNode>(jsonResponse));
+        expect(
+            vitamFileFormatService.importFileFormats(
+                isA(VitamContext.class),
+                isA(String.class),
+                isA(MultipartFile.class)
+            )
+        ).andReturn((RequestResponse) new RequestResponseOK<JsonNode>(jsonResponse));
         EasyMock.replay(vitamFileFormatService);
 
         assertThatCode(() -> {
-        	fileFormatInternalService.importFileFormats(vitamContext, file.getName(), multipartFile);
+            fileFormatInternalService.importFileFormats(vitamContext, file.getName(), multipartFile);
         }).doesNotThrowAnyException();
     }
 }

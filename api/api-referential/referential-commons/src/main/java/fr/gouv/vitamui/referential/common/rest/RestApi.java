@@ -93,11 +93,11 @@ public abstract class RestApi {
 
     public static final String OPERATIONS_PATH = "/operations";
 
-    public static final String  ARCHIVAL_PROFILE_URL = PREFIX + ARCHIVAL_PROFILE;
+    public static final String ARCHIVAL_PROFILE_URL = PREFIX + ARCHIVAL_PROFILE;
 
     public static final String DETAILS = "/details";
 
-    public static final String EXPORT_CSV =  "/export-csv";
+    public static final String EXPORT_CSV = "/export-csv";
 
     public static final String DETAILS_EXPORT_CSV = DETAILS + EXPORT_CSV;
 
@@ -116,7 +116,6 @@ public abstract class RestApi {
     public static final String DOWNLOAD_PROFILE = "/download";
 
     public static final String UPDATE_PROFILE_FILE = "/updateProfileFile";
-
 
     private RestApi() {
         // do nothing

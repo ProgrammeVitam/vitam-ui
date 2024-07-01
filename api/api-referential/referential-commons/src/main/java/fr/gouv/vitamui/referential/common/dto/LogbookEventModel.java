@@ -96,5 +96,4 @@ public class LogbookEventModel {
 
     @JsonProperty("rightsStatementIdentifier")
     private String rightsStatementIdentifier;
-
 }

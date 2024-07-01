@@ -46,6 +46,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name = "xsd:annotation")
 @Setter
 public class AnnotationTag extends RngTag {
+
     DocumentationTag documentationTag;
 
     @XmlElement(name = "xsd:documentation")

@@ -36,10 +36,9 @@
  */
 package fr.gouv.vitamui.ui.commons.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.ui.commons.property.UIProperties;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class CommonService {
 
@@ -66,5 +65,4 @@ public class CommonService {
             return pageSize;
         }
     }
-
 }

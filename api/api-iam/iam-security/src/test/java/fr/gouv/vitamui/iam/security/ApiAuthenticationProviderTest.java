@@ -1,6 +1,5 @@
 package fr.gouv.vitamui.iam.security;
 
-import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.GroupDto;
 import fr.gouv.vitamui.commons.api.domain.ProfileDto;
 import fr.gouv.vitamui.commons.api.domain.Role;
@@ -67,8 +66,10 @@ public final class ApiAuthenticationProviderTest extends AbstractServerIdentityB
     public void setUp() throws Exception {
         final ContextRestClient contextRestClient = mock(ContextRestClient.class);
         final UserInternalRestClient userInternalRestClient = mock(UserInternalRestClient.class);
-        final ExternalAuthentificationService securityService = new ExternalAuthentificationService(contextRestClient,
-                userInternalRestClient);
+        final ExternalAuthentificationService securityService = new ExternalAuthentificationService(
+            contextRestClient,
+            userInternalRestClient
+        );
         provider = new ExternalApiAuthenticationProvider(securityService);
         profiles = new ArrayList<>();
         context = new ContextDto();
@@ -82,8 +83,12 @@ public final class ApiAuthenticationProviderTest extends AbstractServerIdentityB
         userProfile.setId(USER_ID);
         userProfile.setIdentifier("identifier");
         userProfile.setCustomerIdentifier("customerIdentifier");
-        when(contextRestClient.findByCertificate(any(InternalHttpContext.class),
-                eq(Base64.getEncoder().encodeToString(CERTIFICATE)))).thenReturn(context);
+        when(
+            contextRestClient.findByCertificate(
+                any(InternalHttpContext.class),
+                eq(Base64.getEncoder().encodeToString(CERTIFICATE))
+            )
+        ).thenReturn(context);
         when(userInternalRestClient.getMe(ArgumentMatchers.any())).thenReturn(userProfile);
     }
 
@@ -101,16 +106,23 @@ public final class ApiAuthenticationProviderTest extends AbstractServerIdentityB
 
     @Test
     public void testOk() {
-        final ExternalHttpContext httpContext = new ExternalHttpContext(TENANT_IDENTIFIER, USER_TOKEN, APPLICATION_ID,
-                IDENTITY, REQUEST_ID);
+        final ExternalHttpContext httpContext = new ExternalHttpContext(
+            TENANT_IDENTIFIER,
+            USER_TOKEN,
+            APPLICATION_ID,
+            IDENTITY,
+            REQUEST_ID
+        );
         context.setTenants(Arrays.asList(TENANT_IDENTIFIER));
         context.setRoleNames(Arrays.asList(ROLE));
         final ProfileDto profile = new ProfileDto();
         profile.setTenantIdentifier(Integer.valueOf(TENANT_IDENTIFIER));
         profile.setRoles(Arrays.asList(new Role(ROLE)));
         profiles.add(profile);
-        final PreAuthenticatedAuthenticationToken token = new PreAuthenticatedAuthenticationToken(httpContext,
-                certificate);
+        final PreAuthenticatedAuthenticationToken token = new PreAuthenticatedAuthenticationToken(
+            httpContext,
+            certificate
+        );
         final ExternalAuthentication securityContext = (ExternalAuthentication) provider.authenticate(token);
         final Collection<GrantedAuthority> authorities = securityContext.getAuthorities();
         assertEquals(1, authorities.size());
@@ -119,74 +131,103 @@ public final class ApiAuthenticationProviderTest extends AbstractServerIdentityB
 
     @Test
     public void testOkBadContextTenantButFullAccess() {
-        final ExternalHttpContext httpContext = new ExternalHttpContext(TENANT_IDENTIFIER, USER_TOKEN, APPLICATION_ID,
-                IDENTITY, REQUEST_ID);
+        final ExternalHttpContext httpContext = new ExternalHttpContext(
+            TENANT_IDENTIFIER,
+            USER_TOKEN,
+            APPLICATION_ID,
+            IDENTITY,
+            REQUEST_ID
+        );
         context.setFullAccess(true);
         final ProfileDto profile = new ProfileDto();
         profile.setTenantIdentifier(TENANT_IDENTIFIER);
         profiles.add(profile);
-        final PreAuthenticatedAuthenticationToken token = new PreAuthenticatedAuthenticationToken(httpContext,
-                certificate);
+        final PreAuthenticatedAuthenticationToken token = new PreAuthenticatedAuthenticationToken(
+            httpContext,
+            certificate
+        );
         provider.authenticate(token);
     }
 
     @Test
     public void testBadContextTenant() {
-        final ExternalHttpContext httpContext = new ExternalHttpContext(TENANT_IDENTIFIER, USER_TOKEN, APPLICATION_ID,
-                IDENTITY, REQUEST_ID);
+        final ExternalHttpContext httpContext = new ExternalHttpContext(
+            TENANT_IDENTIFIER,
+            USER_TOKEN,
+            APPLICATION_ID,
+            IDENTITY,
+            REQUEST_ID
+        );
         context.setTenants(Arrays.asList(12));
-        final PreAuthenticatedAuthenticationToken token = new PreAuthenticatedAuthenticationToken(httpContext,
-                certificate);
+        final PreAuthenticatedAuthenticationToken token = new PreAuthenticatedAuthenticationToken(
+            httpContext,
+            certificate
+        );
         try {
             provider.authenticate(token);
             fail("should fail");
-        }
-        catch (final InvalidAuthenticationException e) {
+        } catch (final InvalidAuthenticationException e) {
             assertEquals(
-                    "This tenant: " + TENANT_IDENTIFIER + " is not allowed for the application context: " + IDENTITY,
-                    e.getMessage());
-        }
-        catch (final BadCredentialsException e) {
+                "This tenant: " + TENANT_IDENTIFIER + " is not allowed for the application context: " + IDENTITY,
+                e.getMessage()
+            );
+        } catch (final BadCredentialsException e) {
             assertEquals(
-                    "This tenant: " + TENANT_IDENTIFIER + " is not allowed for the application context: " + IDENTITY,
-                    e.getMessage());
+                "This tenant: " + TENANT_IDENTIFIER + " is not allowed for the application context: " + IDENTITY,
+                e.getMessage()
+            );
         }
     }
 
     @Test
     public void testBadUserTenant() {
-        final ExternalHttpContext httpContext = new ExternalHttpContext(TENANT_IDENTIFIER, USER_TOKEN, APPLICATION_ID,
-                IDENTITY, REQUEST_ID);
+        final ExternalHttpContext httpContext = new ExternalHttpContext(
+            TENANT_IDENTIFIER,
+            USER_TOKEN,
+            APPLICATION_ID,
+            IDENTITY,
+            REQUEST_ID
+        );
         context.setTenants(Arrays.asList(TENANT_IDENTIFIER));
 
         final ProfileDto profile = new ProfileDto();
         profile.setTenantIdentifier(12);
 
         profiles.add(profile);
-        final PreAuthenticatedAuthenticationToken token = new PreAuthenticatedAuthenticationToken(httpContext,
-                certificate);
+        final PreAuthenticatedAuthenticationToken token = new PreAuthenticatedAuthenticationToken(
+            httpContext,
+            certificate
+        );
         try {
             provider.authenticate(token);
             fail("should fail");
-        }
-        catch (final BadCredentialsException e) {
-            assertEquals("This tenant: " + TENANT_IDENTIFIER + " is not allowed for this user: " + USER_ID,
-                    e.getMessage());
+        } catch (final BadCredentialsException e) {
+            assertEquals(
+                "This tenant: " + TENANT_IDENTIFIER + " is not allowed for this user: " + USER_ID,
+                e.getMessage()
+            );
         }
     }
 
     @Test
     public void testNoMatchingRole() {
-        final ExternalHttpContext httpContext = new ExternalHttpContext(TENANT_IDENTIFIER, USER_TOKEN, APPLICATION_ID,
-                IDENTITY, REQUEST_ID);
+        final ExternalHttpContext httpContext = new ExternalHttpContext(
+            TENANT_IDENTIFIER,
+            USER_TOKEN,
+            APPLICATION_ID,
+            IDENTITY,
+            REQUEST_ID
+        );
         context.setTenants(Arrays.asList(TENANT_IDENTIFIER));
         context.setRoleNames(Arrays.asList("role1"));
         final ProfileDto profile = new ProfileDto();
         profile.setTenantIdentifier(TENANT_IDENTIFIER);
         profile.setRoles(Arrays.asList(new Role("role2")));
         profiles.add(profile);
-        final PreAuthenticatedAuthenticationToken token = new PreAuthenticatedAuthenticationToken(httpContext,
-                certificate);
+        final PreAuthenticatedAuthenticationToken token = new PreAuthenticatedAuthenticationToken(
+            httpContext,
+            certificate
+        );
         final ExternalAuthentication securityContext = (ExternalAuthentication) provider.authenticate(token);
         final Collection<GrantedAuthority> authorities = securityContext.getAuthorities();
         assertEquals(0, authorities.size());

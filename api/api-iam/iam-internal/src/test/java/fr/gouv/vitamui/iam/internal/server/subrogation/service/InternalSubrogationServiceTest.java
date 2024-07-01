@@ -1,24 +1,5 @@
 package fr.gouv.vitamui.iam.internal.server.subrogation.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
-
-import java.util.Arrays;
-import java.util.Date;
-import java.util.Optional;
-import java.util.concurrent.ThreadLocalRandom;
-
-import org.apache.commons.lang3.RandomStringUtils;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.AdditionalAnswers;
-import org.mockito.ArgumentMatchers;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
-
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
@@ -41,6 +22,24 @@ import fr.gouv.vitamui.iam.internal.server.user.domain.User;
 import fr.gouv.vitamui.iam.internal.server.user.service.UserInternalService;
 import fr.gouv.vitamui.iam.internal.server.utils.IamServerUtilsTest;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
+import org.apache.commons.lang3.RandomStringUtils;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.AdditionalAnswers;
+import org.mockito.ArgumentMatchers;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
+
+import java.util.Arrays;
+import java.util.Date;
+import java.util.Optional;
+import java.util.concurrent.ThreadLocalRandom;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
 
 /**
  * Tests {@link UserInternalService}.
@@ -88,8 +87,19 @@ public final class InternalSubrogationServiceTest {
     public void setUp() {
         ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
         subrogationConverter = new SubrogationConverter(userRepository);
-        service = new SubrogationInternalService(sequenceGeneratorService, subrogationRepository, userRepository, userInternalService, groupInternalService,
-                groupRepository, profilRepository, internalSecurityService, customerRepository, subrogationConverter, iamLogbookService);
+        service = new SubrogationInternalService(
+            sequenceGeneratorService,
+            subrogationRepository,
+            userRepository,
+            userInternalService,
+            groupInternalService,
+            groupRepository,
+            profilRepository,
+            internalSecurityService,
+            customerRepository,
+            subrogationConverter,
+            iamLogbookService
+        );
         service.setGenericUsersSubrogationTtl(15);
         service.setSubrogationTtl(15);
     }
@@ -166,7 +176,9 @@ public final class InternalSubrogationServiceTest {
         final Subrogation subro = buildSubrogation("id", "julien.cornille@vitamui.com", surrogate);
         Mockito.when(subrogationRepository.findById(idSubro)).thenReturn(Optional.of(subro));
         Mockito.when(internalSecurityService.getUser()).thenReturn(IamDtoBuilder.buildAuthUserDto("id", surrogate));
-        Mockito.when(subrogationRepository.save(ArgumentMatchers.any())).thenAnswer(AdditionalAnswers.returnsFirstArg());
+        Mockito.when(subrogationRepository.save(ArgumentMatchers.any())).thenAnswer(
+            AdditionalAnswers.returnsFirstArg()
+        );
         final SubrogationDto dto = service.accept(idSubro);
         assertThat(dto.getStatus()).isEqualTo(SubrogationStatusEnum.ACCEPTED);
     }
@@ -178,13 +190,16 @@ public final class InternalSubrogationServiceTest {
         final String emailCurrentUser = "baduser@vitamui.com";
         final Subrogation subro = buildSubrogation("id", "julien.cornille@vitamui.com", surrogate);
         Mockito.when(subrogationRepository.findById(idSubro)).thenReturn(Optional.of(subro));
-        Mockito.when(internalSecurityService.getUser()).thenReturn(IamDtoBuilder.buildAuthUserDto("id", emailCurrentUser));
+        Mockito.when(internalSecurityService.getUser()).thenReturn(
+            IamDtoBuilder.buildAuthUserDto("id", emailCurrentUser)
+        );
         try {
             service.accept(idSubro);
             fail();
-        }
-        catch (final IllegalArgumentException e) {
-            assertThat(e.getMessage()).isEqualTo("Users " + emailCurrentUser + " can't accept subrogation of " + subro.getSurrogate());
+        } catch (final IllegalArgumentException e) {
+            assertThat(e.getMessage()).isEqualTo(
+                "Users " + emailCurrentUser + " can't accept subrogation of " + subro.getSurrogate()
+            );
             throw e;
         }
     }
@@ -206,13 +221,16 @@ public final class InternalSubrogationServiceTest {
         final String emailCurrentUser = "baduser@vitamui.com";
         final Subrogation subro = buildSubrogation("id", "julien.cornille@vitamui.com", surrogate);
         Mockito.when(subrogationRepository.findById(idSubro)).thenReturn(Optional.of(subro));
-        Mockito.when(internalSecurityService.getUser()).thenReturn(IamDtoBuilder.buildAuthUserDto("id", emailCurrentUser));
+        Mockito.when(internalSecurityService.getUser()).thenReturn(
+            IamDtoBuilder.buildAuthUserDto("id", emailCurrentUser)
+        );
         try {
             service.decline(idSubro);
             fail();
-        }
-        catch (final IllegalArgumentException e) {
-            assertThat(e.getMessage()).isEqualTo("Users " + emailCurrentUser + " can't decline subrogation of " + subro.getSurrogate());
+        } catch (final IllegalArgumentException e) {
+            assertThat(e.getMessage()).isEqualTo(
+                "Users " + emailCurrentUser + " can't decline subrogation of " + subro.getSurrogate()
+            );
             throw e;
         }
     }
@@ -229,8 +247,12 @@ public final class InternalSubrogationServiceTest {
 
     private Customer buildCustomer() {
         final String generatedString = generateRandomString();
-        final Customer customer = IamServerUtilsTest.buildCustomer(null, "Integration tests : " + generatedString,
-                Integer.toString(ThreadLocalRandom.current().nextInt(1000000, 10000000)), Arrays.asList(CommonConstants.EMAIL_SEPARATOR + generatedString));
+        final Customer customer = IamServerUtilsTest.buildCustomer(
+            null,
+            "Integration tests : " + generatedString,
+            Integer.toString(ThreadLocalRandom.current().nextInt(1000000, 10000000)),
+            Arrays.asList(CommonConstants.EMAIL_SEPARATOR + generatedString)
+        );
         customer.setSubrogeable(true);
         return customer;
     }

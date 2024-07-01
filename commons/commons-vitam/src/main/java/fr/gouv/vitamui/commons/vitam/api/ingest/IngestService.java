@@ -36,16 +36,15 @@
  */
 package fr.gouv.vitamui.commons.vitam.api.ingest;
 
-import java.io.InputStream;
-
-import org.springframework.beans.factory.annotation.Autowired;
-
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.ingest.external.api.exception.IngestExternalException;
 import fr.gouv.vitam.ingest.external.client.IngestExternalClient;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.io.InputStream;
 
 public class IngestService {
 
@@ -59,9 +58,12 @@ public class IngestService {
         this.ingestExternalClient = ingestExternalClient;
     }
 
-    public RequestResponse<Void> ingest(final VitamContext vitamContext, final InputStream stream, final String contextId, final String action)
-            throws IngestExternalException {
+    public RequestResponse<Void> ingest(
+        final VitamContext vitamContext,
+        final InputStream stream,
+        final String contextId,
+        final String action
+    ) throws IngestExternalException {
         return ingestExternalClient.ingest(vitamContext, stream, contextId, action);
     }
-
 }

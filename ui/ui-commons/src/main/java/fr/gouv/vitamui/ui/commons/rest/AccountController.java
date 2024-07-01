@@ -36,25 +36,24 @@
  */
 package fr.gouv.vitamui.ui.commons.rest;
 
-import java.util.Map;
-
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitamui.common.security.SanityChecker;
+import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
+import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
+import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.commons.rest.AbstractUiRestController;
+import fr.gouv.vitamui.ui.commons.service.AccountService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import fr.gouv.vitamui.commons.api.CommonConstants;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
-import fr.gouv.vitamui.commons.rest.AbstractUiRestController;
-import fr.gouv.vitamui.ui.commons.service.AccountService;
-import io.swagger.annotations.Api;
+import java.util.Map;
 
 @Api(tags = "accounts")
 @RequestMapping("${ui-prefix}/accounts")
@@ -71,9 +70,8 @@ public class AccountController extends AbstractUiRestController {
     }
 
     @PatchMapping(CommonConstants.PATH_ME)
-    public UserDto patchMe(@RequestBody final Map<String, Object> partialDto) throws InvalidParseOperationException,
-        PreconditionFailedException {
-
+    public UserDto patchMe(@RequestBody final Map<String, Object> partialDto)
+        throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter("The User Entity is a mandatory parameter: ", partialDto);
         SanityChecker.sanitizeCriteria(partialDto);
         LOGGER.debug("Patch me with {}", partialDto);

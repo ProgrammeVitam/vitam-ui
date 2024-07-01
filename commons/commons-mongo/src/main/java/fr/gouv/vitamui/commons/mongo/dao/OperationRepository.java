@@ -36,11 +36,9 @@
  */
 package fr.gouv.vitamui.commons.mongo.dao;
 
-import org.springframework.stereotype.Repository;
-
 import fr.gouv.vitamui.commons.mongo.domain.Operation;
 import fr.gouv.vitamui.commons.mongo.repository.VitamUIRepository;
+import org.springframework.stereotype.Repository;
 
 @Repository
-public interface OperationRepository<T extends Operation> extends VitamUIRepository<T, String> {
-}
+public interface OperationRepository<T extends Operation> extends VitamUIRepository<T, String> {}

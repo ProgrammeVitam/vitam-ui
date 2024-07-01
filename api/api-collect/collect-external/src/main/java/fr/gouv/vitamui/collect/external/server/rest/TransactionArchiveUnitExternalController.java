@@ -34,8 +34,8 @@ import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
-import fr.gouv.vitamui.commons.api.dtos.VitamUiOntologyDto;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
+import fr.gouv.vitamui.commons.api.dtos.VitamUiOntologyDto;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
@@ -73,15 +73,17 @@ import static fr.gouv.vitamui.collect.common.rest.RestApi.COLLECT_TRANSACTION_AR
 @ResponseBody
 public class TransactionArchiveUnitExternalController {
 
-    private static final VitamUILogger LOGGER =
-        VitamUILoggerFactory.getInstance(TransactionArchiveUnitExternalController.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
+        TransactionArchiveUnitExternalController.class
+    );
     private static final String MANDATORY_QUERY = "The query is a mandatory parameter: ";
     private static final String MANDATORY_IDENTIFIER = "The identifier is a mandatory parameter: ";
     private final TransactionArchiveUnitExternalService transactionArchiveUnitExternalService;
 
     @Autowired
     public TransactionArchiveUnitExternalController(
-        TransactionArchiveUnitExternalService transactionArchiveUnitExternalService) {
+        TransactionArchiveUnitExternalService transactionArchiveUnitExternalService
+    ) {
         this.transactionArchiveUnitExternalService = transactionArchiveUnitExternalService;
     }
 
@@ -90,12 +92,15 @@ public class TransactionArchiveUnitExternalController {
     @PostMapping("/{transactionId}" + ARCHIVE_UNITS)
     @Consumes(MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public ArchiveUnitsDto searchArchiveUnits(final @PathVariable("transactionId") String transactionId,
-        @RequestBody final SearchCriteriaDto searchQuery)
-        throws InvalidParseOperationException, PreconditionFailedException {
-
-        ParameterChecker.checkParameter("The Query and the transactionId are mandatories parameters: ", transactionId,
-            searchQuery);
+    public ArchiveUnitsDto searchArchiveUnits(
+        final @PathVariable("transactionId") String transactionId,
+        @RequestBody final SearchCriteriaDto searchQuery
+    ) throws InvalidParseOperationException, PreconditionFailedException {
+        ParameterChecker.checkParameter(
+            "The Query and the transactionId are mandatories parameters: ",
+            transactionId,
+            searchQuery
+        );
         SanityChecker.sanitizeCriteria(searchQuery);
         SanityChecker.checkSecureParameter(transactionId);
         LOGGER.debug("search archives Units by criteria = {}", searchQuery);
@@ -104,9 +109,10 @@ public class TransactionArchiveUnitExternalController {
     }
 
     @PostMapping("/{transactionId}" + ARCHIVE_UNITS + EXPORT_CSV_SEARCH_PATH)
-    public Resource exportCsvArchiveUnitsByCriteria(final @PathVariable("transactionId") String transactionId,
-        final @RequestBody SearchCriteriaDto query)
-        throws InvalidParseOperationException, PreconditionFailedException {
+    public Resource exportCsvArchiveUnitsByCriteria(
+        final @PathVariable("transactionId") String transactionId,
+        final @RequestBody SearchCriteriaDto query
+    ) throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter(MANDATORY_QUERY, query);
         SanityChecker.checkSecureParameter(transactionId);
         SanityChecker.sanitizeCriteria(query);
@@ -143,9 +149,10 @@ public class TransactionArchiveUnitExternalController {
 
     @PostMapping("/{transactionId}" + RestApi.UNIT_WITH_INHERITED_RULES)
     @Secured(ServicesData.ROLE_GET_ARCHIVE)
-    public ResultsDto selectUnitWithInheritedRules(final @PathVariable("transactionId") String transactionId,
-        final @RequestBody SearchCriteriaDto query)
-        throws InvalidParseOperationException, PreconditionFailedException {
+    public ResultsDto selectUnitWithInheritedRules(
+        final @PathVariable("transactionId") String transactionId,
+        final @RequestBody SearchCriteriaDto query
+    ) throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter(MANDATORY_QUERY, query);
         SanityChecker.checkSecureParameter(transactionId);
         SanityChecker.sanitizeCriteria(query);

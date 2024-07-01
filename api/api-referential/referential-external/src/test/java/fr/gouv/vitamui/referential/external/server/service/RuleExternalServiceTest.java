@@ -36,12 +36,13 @@
  */
 package fr.gouv.vitamui.referential.external.server.service;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import fr.gouv.vitamui.referential.common.dto.RuleDto;
 import fr.gouv.vitamui.referential.internal.client.RuleInternalRestClient;
 import fr.gouv.vitamui.referential.internal.client.RuleInternalWebClient;
-
 import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -54,9 +55,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -66,7 +64,6 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -74,8 +71,10 @@ public class RuleExternalServiceTest extends ExternalServiceTest {
 
     @Mock
     private RuleInternalRestClient ruleInternalRestClient;
+
     @Mock
     private RuleInternalWebClient ruleInternalWebClient;
+
     @Mock
     private ExternalSecurityService externalSecurityService;
 
@@ -85,7 +84,11 @@ public class RuleExternalServiceTest extends ExternalServiceTest {
     public void init() {
         final String userCustomerId = "customerIdAllowed";
         mockSecurityContext(externalSecurityService, userCustomerId, 10);
-        ruleExternalService = new RuleExternalService(externalSecurityService, ruleInternalRestClient, ruleInternalWebClient);
+        ruleExternalService = new RuleExternalService(
+            externalSecurityService,
+            ruleInternalRestClient,
+            ruleInternalWebClient
+        );
     }
 
     @Test
@@ -95,8 +98,7 @@ public class RuleExternalServiceTest extends ExternalServiceTest {
         ruleDto.setTenant(1);
         list.add(ruleDto);
 
-        when(ruleInternalRestClient.getAll(any(InternalHttpContext.class), any(Optional.class)))
-            .thenReturn(list);
+        when(ruleInternalRestClient.getAll(any(InternalHttpContext.class), any(Optional.class))).thenReturn(list);
 
         assertThatCode(() -> {
             ruleExternalService.getAll(Optional.empty());
@@ -108,8 +110,7 @@ public class RuleExternalServiceTest extends ExternalServiceTest {
         final RuleDto ruleDto = new RuleDto();
         ruleDto.setTenant(1);
 
-        when(ruleInternalRestClient.createRule(any(InternalHttpContext.class), any(RuleDto.class)))
-            .thenReturn(true);
+        when(ruleInternalRestClient.createRule(any(InternalHttpContext.class), any(RuleDto.class))).thenReturn(true);
 
         assertThatCode(() -> {
             ruleExternalService.createRule(new RuleDto());
@@ -118,8 +119,7 @@ public class RuleExternalServiceTest extends ExternalServiceTest {
 
     @Test
     public void check_should_return_boolean_when_ruleInternalRestClient_return_boolean() {
-        when(ruleInternalRestClient.check(any(InternalHttpContext.class), any(RuleDto.class)))
-            .thenReturn(true);
+        when(ruleInternalRestClient.check(any(InternalHttpContext.class), any(RuleDto.class))).thenReturn(true);
 
         assertThatCode(() -> {
             ruleExternalService.check(new RuleDto());
@@ -128,8 +128,7 @@ public class RuleExternalServiceTest extends ExternalServiceTest {
 
     @Test
     public void delete_should_return_ok_when_ruleInternalRestClient_return_ok() {
-        when(ruleInternalRestClient.deleteRule(any(InternalHttpContext.class), any(String.class)))
-            .thenReturn(true);
+        when(ruleInternalRestClient.deleteRule(any(InternalHttpContext.class), any(String.class))).thenReturn(true);
         String id = "1";
 
         assertThatCode(() -> {
@@ -139,8 +138,9 @@ public class RuleExternalServiceTest extends ExternalServiceTest {
 
     @Test
     public void export_should_return_ok_when_ruleInternalRestClient_return_ok() {
-        when(ruleInternalRestClient.export(any(InternalHttpContext.class)))
-            .thenReturn(new ResponseEntity<Resource>(HttpStatus.ACCEPTED));
+        when(ruleInternalRestClient.export(any(InternalHttpContext.class))).thenReturn(
+            new ResponseEntity<Resource>(HttpStatus.ACCEPTED)
+        );
 
         assertThatCode(() -> {
             ruleExternalService.export();
@@ -149,19 +149,29 @@ public class RuleExternalServiceTest extends ExternalServiceTest {
 
     @Test
     public void import_should_return_ok() throws IOException {
-	    File file = new File("src/test/resources/data/import_rules_valid.csv");
-	    FileInputStream input = new FileInputStream(file);
-	    MultipartFile multipartFile = new MockMultipartFile(file.getName(), file.getName(), "text/csv", IOUtils.toByteArray(input));
+        File file = new File("src/test/resources/data/import_rules_valid.csv");
+        FileInputStream input = new FileInputStream(file);
+        MultipartFile multipartFile = new MockMultipartFile(
+            file.getName(),
+            file.getName(),
+            "text/csv",
+            IOUtils.toByteArray(input)
+        );
 
-	    String stringReponse = "{\"httpCode\":\"201\"}";
-	    ObjectMapper mapper = new ObjectMapper();
-	    JsonNode jsonResponse = mapper.readTree(stringReponse);
+        String stringReponse = "{\"httpCode\":\"201\"}";
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode jsonResponse = mapper.readTree(stringReponse);
 
-        when(ruleInternalWebClient.importRules(any(InternalHttpContext.class), any(String.class), any(MultipartFile.class)))
-        	.thenReturn(jsonResponse);
+        when(
+            ruleInternalWebClient.importRules(
+                any(InternalHttpContext.class),
+                any(String.class),
+                any(MultipartFile.class)
+            )
+        ).thenReturn(jsonResponse);
 
         assertThatCode(() -> {
-        	ruleExternalService.importRules(file.getName(), multipartFile);
+            ruleExternalService.importRules(file.getName(), multipartFile);
         }).doesNotThrowAnyException();
     }
 }

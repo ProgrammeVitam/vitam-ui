@@ -36,16 +36,6 @@
  */
 package fr.gouv.vitamui.iam.internal.server.group.converter;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
-
 import fr.gouv.vitamui.commons.api.converter.Converter;
 import fr.gouv.vitamui.commons.api.domain.GroupDto;
 import fr.gouv.vitamui.commons.api.utils.ApiUtils;
@@ -56,6 +46,16 @@ import fr.gouv.vitamui.iam.internal.server.profile.dao.ProfileRepository;
 import fr.gouv.vitamui.iam.internal.server.profile.domain.Profile;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Getter
 @Setter
@@ -104,7 +104,8 @@ public class GroupConverter implements Converter<GroupDto, Group> {
     public String convertProfileIdsToLogbook(final Collection<String> profileIds) {
         Iterable<Profile> profiles = profileRepository.findAllById(profileIds);
         List<Integer> ids = StreamSupport.stream(profiles.spliterator(), false)
-                .map(p -> Integer.parseInt(p.getIdentifier())).collect(Collectors.toList());
+            .map(p -> Integer.parseInt(p.getIdentifier()))
+            .collect(Collectors.toList());
         ids.sort(Comparator.naturalOrder());
         return ids.toString();
     }

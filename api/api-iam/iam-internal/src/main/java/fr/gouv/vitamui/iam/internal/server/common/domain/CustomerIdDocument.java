@@ -36,13 +36,13 @@
  */
 package fr.gouv.vitamui.iam.internal.server.common.domain;
 
-import javax.validation.constraints.NotNull;
-
 import fr.gouv.vitamui.commons.mongo.IdDocument;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+
+import javax.validation.constraints.NotNull;
 
 /**
  * A MongoDB document with an identifier and a customer identifier.

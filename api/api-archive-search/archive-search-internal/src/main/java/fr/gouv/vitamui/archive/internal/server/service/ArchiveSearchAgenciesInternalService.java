@@ -64,8 +64,10 @@ import java.util.stream.Collectors;
  */
 @Service
 public class ArchiveSearchAgenciesInternalService {
-    private static final VitamUILogger LOGGER =
-        VitamUILoggerFactory.getInstance(ArchiveSearchAgenciesInternalService.class);
+
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
+        ArchiveSearchAgenciesInternalService.class
+    );
 
     private final ObjectMapper objectMapper;
     private final AgencyService agencyService;
@@ -80,12 +82,16 @@ public class ArchiveSearchAgenciesInternalService {
         throws VitamClientException {
         LOGGER.debug("calling mapAgenciesNameToCodes  {} ", searchQuery.toString());
         Set<String> agencyOriginNamesCriteria = new HashSet<>();
-        searchQuery.getCriteriaList().stream()
+        searchQuery
+            .getCriteriaList()
+            .stream()
             .filter(criteriaElt -> criteriaElt.getCriteria().equals(ArchiveSearchConsts.ORIGINATING_AGENCY_LABEL_FIELD))
             .forEach(
-                criteriaElt -> agencyOriginNamesCriteria
-                    .addAll(criteriaElt.getValues().stream().map(CriteriaValue::getValue).collect(
-                        Collectors.toList())));
+                criteriaElt ->
+                    agencyOriginNamesCriteria.addAll(
+                        criteriaElt.getValues().stream().map(CriteriaValue::getValue).collect(Collectors.toList())
+                    )
+            );
         List<AgencyModelDto> agenciesOrigins;
         if (!agencyOriginNamesCriteria.isEmpty()) {
             LOGGER.debug(" trying to mapping agencies labels {} ", agencyOriginNamesCriteria.toString());
@@ -93,67 +99,81 @@ public class ArchiveSearchAgenciesInternalService {
             if (!CollectionUtils.isEmpty(agenciesOrigins)) {
                 mapAgenciesNamesToAgenciesCodesInCriteria(searchQuery, agenciesOrigins);
             }
-
         }
     }
 
-    private void mapAgenciesNamesToAgenciesCodesInCriteria(SearchCriteriaDto searchQuery,
-        List<AgencyModelDto> actualAgencies) {
-
+    private void mapAgenciesNamesToAgenciesCodesInCriteria(
+        SearchCriteriaDto searchQuery,
+        List<AgencyModelDto> actualAgencies
+    ) {
         if (searchQuery != null && searchQuery.getCriteriaList() != null && !searchQuery.getCriteriaList().isEmpty()) {
-            List<SearchCriteriaEltDto> mergedCriteriaList = searchQuery.getCriteriaList().stream().filter(
-                    criteria -> (!ArchiveSearchConsts.ORIGINATING_AGENCY_ID_FIELD.equals(criteria.getCriteria())
-                        && !ArchiveSearchConsts.ORIGINATING_AGENCY_LABEL_FIELD.equals(criteria.getCriteria())))
+            List<SearchCriteriaEltDto> mergedCriteriaList = searchQuery
+                .getCriteriaList()
+                .stream()
+                .filter(
+                    criteria ->
+                        (!ArchiveSearchConsts.ORIGINATING_AGENCY_ID_FIELD.equals(criteria.getCriteria()) &&
+                            !ArchiveSearchConsts.ORIGINATING_AGENCY_LABEL_FIELD.equals(criteria.getCriteria()))
+                )
                 .collect(Collectors.toList());
 
-            List<String> filteredAgenciesId = actualAgencies.stream()
+            List<String> filteredAgenciesId = actualAgencies
+                .stream()
                 .map(AgencyModelDto::getIdentifier)
                 .collect(Collectors.toList());
 
-            List<SearchCriteriaEltDto> idCriteriaList = searchQuery.getCriteriaList().stream()
+            List<SearchCriteriaEltDto> idCriteriaList = searchQuery
+                .getCriteriaList()
+                .stream()
                 .filter(criteria -> ArchiveSearchConsts.ORIGINATING_AGENCY_ID_FIELD.equals(criteria.getCriteria()))
                 .collect(Collectors.toList());
             SearchCriteriaEltDto idCriteria;
             if (CollectionUtils.isEmpty(idCriteriaList)) {
                 idCriteria = new SearchCriteriaEltDto();
                 idCriteria.setCriteria(ArchiveSearchConsts.ORIGINATING_AGENCY_ID_FIELD);
-                idCriteria.setValues(
-                    filteredAgenciesId.stream().map(CriteriaValue::new).collect(Collectors.toList()));
+                idCriteria.setValues(filteredAgenciesId.stream().map(CriteriaValue::new).collect(Collectors.toList()));
                 idCriteria.setOperator(ArchiveSearchConsts.CriteriaOperators.EQ.name());
                 idCriteria.setCategory(ArchiveSearchConsts.CriteriaCategory.FIELDS);
                 mergedCriteriaList.add(idCriteria);
             } else {
                 idCriteriaList.forEach(criteria -> {
-                        if (!CollectionUtils.isEmpty(criteria.getValues())) {
-                            filteredAgenciesId.addAll(criteria.getValues().stream().map(CriteriaValue::getValue).collect(
-                                Collectors.toList()));
-                        }
-                        criteria.setValues(
-                            filteredAgenciesId.stream().map(CriteriaValue::new).collect(Collectors.toList()));
-                        mergedCriteriaList.add(criteria);
+                    if (!CollectionUtils.isEmpty(criteria.getValues())) {
+                        filteredAgenciesId.addAll(
+                            criteria.getValues().stream().map(CriteriaValue::getValue).collect(Collectors.toList())
+                        );
                     }
-                );
+                    criteria.setValues(
+                        filteredAgenciesId.stream().map(CriteriaValue::new).collect(Collectors.toList())
+                    );
+                    mergedCriteriaList.add(criteria);
+                });
             }
 
             searchQuery.setCriteriaList(mergedCriteriaList);
         }
     }
 
-    public List<AgencyModelDto> findOriginAgenciesByCriteria(VitamContext vitamContext, String field,
-        List<String> originAgenciesCodes) throws VitamClientException {
+    public List<AgencyModelDto> findOriginAgenciesByCriteria(
+        VitamContext vitamContext,
+        String field,
+        List<String> originAgenciesCodes
+    ) throws VitamClientException {
         List<AgencyModelDto> agencies = new ArrayList<>();
         if (originAgenciesCodes != null && !originAgenciesCodes.isEmpty()) {
             LOGGER.debug("Finding originating agencies by field {}  values {} ", field, originAgenciesCodes);
             Map<String, Object> searchCriteriaMap = new HashMap<>();
             searchCriteriaMap.put(field, originAgenciesCodes);
             try {
-                JsonNode queryOriginAgencies = VitamQueryHelper
-                    .createQueryDSL(searchCriteriaMap, Optional.empty(),
-                        Optional.empty());
-                RequestResponse<AgenciesModel> requestResponse =
-                    agencyService.findAgencies(vitamContext, queryOriginAgencies);
-                agencies = objectMapper
-                    .treeToValue(requestResponse.toJsonNode(), AgencyResponseDto.class).getResults();
+                JsonNode queryOriginAgencies = VitamQueryHelper.createQueryDSL(
+                    searchCriteriaMap,
+                    Optional.empty(),
+                    Optional.empty()
+                );
+                RequestResponse<AgenciesModel> requestResponse = agencyService.findAgencies(
+                    vitamContext,
+                    queryOriginAgencies
+                );
+                agencies = objectMapper.treeToValue(requestResponse.toJsonNode(), AgencyResponseDto.class).getResults();
             } catch (InvalidCreateOperationException e) {
                 throw new VitamClientException("Unable to find the agencies ", e);
             } catch (InvalidParseOperationException | JsonProcessingException e1) {
@@ -173,8 +193,8 @@ public class ArchiveSearchAgenciesInternalService {
      * @throws InvalidParseOperationException
      * @throws VitamClientException
      */
-    public List<AgencyModelDto> findOriginAgenciesByCodes(VitamContext vitamContext,
-        Set<String> originAgenciesCodes) throws VitamClientException {
+    public List<AgencyModelDto> findOriginAgenciesByCodes(VitamContext vitamContext, Set<String> originAgenciesCodes)
+        throws VitamClientException {
         List<String> originAgenciesCodesList = new ArrayList<>(originAgenciesCodes);
         return findOriginAgenciesByCriteria(vitamContext, "Identifier", originAgenciesCodesList);
     }
@@ -188,8 +208,8 @@ public class ArchiveSearchAgenciesInternalService {
      * @throws InvalidParseOperationException
      * @throws VitamClientException
      */
-    public List<AgencyModelDto> findOriginAgenciesByNames(VitamContext vitamContext,
-        Set<String> originAgenciesCodes) throws VitamClientException {
+    public List<AgencyModelDto> findOriginAgenciesByNames(VitamContext vitamContext, Set<String> originAgenciesCodes)
+        throws VitamClientException {
         List<String> originAgenciesCodesList = new ArrayList<>(originAgenciesCodes);
         return findOriginAgenciesByCriteria(vitamContext, "Name", originAgenciesCodesList);
     }

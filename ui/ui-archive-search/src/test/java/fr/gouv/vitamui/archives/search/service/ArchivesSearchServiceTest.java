@@ -35,13 +35,13 @@ import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.RequestResponseOK;
 import fr.gouv.vitamui.archives.search.common.dto.ObjectData;
-import fr.gouv.vitamui.commons.api.dtos.VitamUiOntologyDto;
 import fr.gouv.vitamui.archives.search.common.dto.ReclassificationCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.RuleSearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.external.client.ArchiveSearchExternalRestClient;
 import fr.gouv.vitamui.archives.search.external.client.ArchiveSearchExternalWebClient;
 import fr.gouv.vitamui.archives.search.external.client.ArchiveSearchStreamingExternalRestClient;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
+import fr.gouv.vitamui.commons.api.dtos.VitamUiOntologyDto;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import fr.gouv.vitamui.commons.vitam.api.access.UnitService;
@@ -79,6 +79,7 @@ import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
 public class ArchivesSearchServiceTest {
+
     public final String ARCHIVE_UNITS_RESULTS_CSV = "data/vitam_archive_units_response.csv";
     public final String GOT_PHYSICAL = "data/vitam_got_physical.json";
     public final String GOT_DISSEMINATION = "data/vitam_got_dissemination.json";
@@ -93,6 +94,7 @@ public class ArchivesSearchServiceTest {
 
     @Mock
     private ArchiveSearchExternalWebClient archiveSearchExternalWebClient;
+
     @Mock
     private ArchiveSearchStreamingExternalRestClient archiveSearchStreamingExternalRestClient;
 
@@ -104,8 +106,12 @@ public class ArchivesSearchServiceTest {
 
     @Before
     public void init() {
-        archivesSearchService = new ArchivesSearchService(commonService, archiveSearchExternalRestClient,
-            archiveSearchExternalWebClient, archiveSearchStreamingExternalRestClient);
+        archivesSearchService = new ArchivesSearchService(
+            commonService,
+            archiveSearchExternalRestClient,
+            archiveSearchExternalWebClient,
+            archiveSearchStreamingExternalRestClient
+        );
         ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
     }
 
@@ -117,20 +123,27 @@ public class ArchivesSearchServiceTest {
     @Test
     public void testGetFilingHolding() {
         when(archiveSearchExternalRestClient.getFilingHoldingScheme(ArgumentMatchers.any())).thenReturn(
-            new VitamUISearchResponseDto());
+            new VitamUISearchResponseDto()
+        );
         Assert.assertNotNull(archivesSearchService.findFilingHoldingScheme(null));
     }
 
     @Test
     public void testExportCsv() throws IOException {
-        Resource resource = new ByteArrayResource(ArchivesSearchServiceTest.class.getClassLoader()
-            .getResourceAsStream(ARCHIVE_UNITS_RESULTS_CSV).readAllBytes());
+        Resource resource = new ByteArrayResource(
+            ArchivesSearchServiceTest.class.getClassLoader()
+                .getResourceAsStream(ARCHIVE_UNITS_RESULTS_CSV)
+                .readAllBytes()
+        );
         ExternalHttpContext context = new ExternalHttpContext(9, "", "", "");
         SearchCriteriaDto query = new SearchCriteriaDto();
 
-        when(archiveSearchExternalRestClient
-            .exportCsvArchiveUnitsByCriteria(ArgumentMatchers.any(), ArgumentMatchers.any())).thenReturn(
-            (new ResponseEntity<>(resource, HttpStatus.OK)));
+        when(
+            archiveSearchExternalRestClient.exportCsvArchiveUnitsByCriteria(
+                ArgumentMatchers.any(),
+                ArgumentMatchers.any()
+            )
+        ).thenReturn((new ResponseEntity<>(resource, HttpStatus.OK)));
         Assert.assertNotNull(archivesSearchService.exportCsvArchiveUnitsByCriteria(query, context));
     }
 
@@ -142,10 +155,8 @@ public class ArchivesSearchServiceTest {
         RequestResponse<JsonNode> jsonNodeRequestResponse = buildGot(GOT_BINARYMASTER);
         ResultsDto resultsDto = buildResults(jsonNodeRequestResponse);
         // When
-        when(unitService.findObjectMetadataById(any(), any()))
-            .thenReturn(jsonNodeRequestResponse);
-        when(archivesSearchService.findObjectById(any(), any()))
-            .thenReturn(ResponseEntity.of(Optional.of(resultsDto)));
+        when(unitService.findObjectMetadataById(any(), any())).thenReturn(jsonNodeRequestResponse);
+        when(archivesSearchService.findObjectById(any(), any())).thenReturn(ResponseEntity.of(Optional.of(resultsDto)));
         archivesSearchService.setObjectData(resultsDto, objectData);
 
         // Then
@@ -155,19 +166,15 @@ public class ArchivesSearchServiceTest {
         assertThat(objectData.getFilename()).isEqualTo("aeaaaaaaaahl2zz5ab23malq4gw2cnqaaaaq.txt");
     }
 
-
     @Test
-    public void should_return_version()
-        throws VitamClientException, IOException, InvalidParseOperationException {
+    public void should_return_version() throws VitamClientException, IOException, InvalidParseOperationException {
         // Given
         ObjectData objectData = new ObjectData();
         RequestResponse<JsonNode> jsonNodeRequestResponse = buildGot(GOT_BINARYMASTER);
         ResultsDto resultsDto = buildResults(jsonNodeRequestResponse);
         // When
-        when(unitService.findObjectMetadataById(any(), any()))
-            .thenReturn(jsonNodeRequestResponse);
-        when(archivesSearchService.findObjectById(any(), any()))
-            .thenReturn(ResponseEntity.of(Optional.of(resultsDto)));
+        when(unitService.findObjectMetadataById(any(), any())).thenReturn(jsonNodeRequestResponse);
+        when(archivesSearchService.findObjectById(any(), any())).thenReturn(ResponseEntity.of(Optional.of(resultsDto)));
         archivesSearchService.setObjectData(resultsDto, objectData);
 
         // Then
@@ -178,17 +185,14 @@ public class ArchivesSearchServiceTest {
     }
 
     @Test
-    public void should_return_multi_version()
-        throws VitamClientException, IOException, InvalidParseOperationException {
+    public void should_return_multi_version() throws VitamClientException, IOException, InvalidParseOperationException {
         // Given
         ObjectData objectData = new ObjectData();
         RequestResponse<JsonNode> jsonNodeRequestResponse = buildGot(GOT_BINARYMASTER_MULTI_QUALIFIERS);
         ResultsDto resultsDto = buildResults(jsonNodeRequestResponse);
         // When
-        when(unitService.findObjectMetadataById(any(), any()))
-            .thenReturn(jsonNodeRequestResponse);
-        when(archivesSearchService.findObjectById(any(), any()))
-            .thenReturn(ResponseEntity.of(Optional.of(resultsDto)));
+        when(unitService.findObjectMetadataById(any(), any())).thenReturn(jsonNodeRequestResponse);
+        when(archivesSearchService.findObjectById(any(), any())).thenReturn(ResponseEntity.of(Optional.of(resultsDto)));
         archivesSearchService.setObjectData(resultsDto, objectData);
 
         // Then
@@ -199,17 +203,14 @@ public class ArchivesSearchServiceTest {
     }
 
     @Test
-    public void should_return_dissemination()
-        throws VitamClientException, IOException, InvalidParseOperationException {
+    public void should_return_dissemination() throws VitamClientException, IOException, InvalidParseOperationException {
         // Given
         ObjectData objectData = new ObjectData();
         RequestResponse<JsonNode> jsonNodeRequestResponse = buildGot(GOT_DISSEMINATION);
         ResultsDto resultsDto = buildResults(jsonNodeRequestResponse);
         // When
-        when(unitService.findObjectMetadataById(any(), any()))
-            .thenReturn(jsonNodeRequestResponse);
-        when(archivesSearchService.findObjectById(any(), any()))
-            .thenReturn(ResponseEntity.of(Optional.of(resultsDto)));
+        when(unitService.findObjectMetadataById(any(), any())).thenReturn(jsonNodeRequestResponse);
+        when(archivesSearchService.findObjectById(any(), any())).thenReturn(ResponseEntity.of(Optional.of(resultsDto)));
         archivesSearchService.setObjectData(resultsDto, objectData);
 
         // Then
@@ -227,10 +228,8 @@ public class ArchivesSearchServiceTest {
         RequestResponse<JsonNode> jsonNodeRequestResponse = buildGot(GOT_DISSEMINATION);
         ResultsDto resultsDto = buildResults(jsonNodeRequestResponse);
         // When
-        when(unitService.findObjectMetadataById(any(), any()))
-            .thenReturn(jsonNodeRequestResponse);
-        when(archivesSearchService.findObjectById(any(), any()))
-            .thenReturn(ResponseEntity.of(Optional.of(resultsDto)));
+        when(unitService.findObjectMetadataById(any(), any())).thenReturn(jsonNodeRequestResponse);
+        when(archivesSearchService.findObjectById(any(), any())).thenReturn(ResponseEntity.of(Optional.of(resultsDto)));
         archivesSearchService.setObjectData(resultsDto, objectData);
 
         // Then
@@ -248,10 +247,8 @@ public class ArchivesSearchServiceTest {
         RequestResponse<JsonNode> jsonNodeRequestResponse = buildGot(GOT_PHYSICAL);
         ResultsDto resultsDto = buildResults(jsonNodeRequestResponse);
         // When
-        when(unitService.findObjectMetadataById(any(), any()))
-            .thenReturn(jsonNodeRequestResponse);
-        when(archivesSearchService.findObjectById(any(), any()))
-            .thenReturn(ResponseEntity.of(Optional.of(resultsDto)));
+        when(unitService.findObjectMetadataById(any(), any())).thenReturn(jsonNodeRequestResponse);
+        when(archivesSearchService.findObjectById(any(), any())).thenReturn(ResponseEntity.of(Optional.of(resultsDto)));
         archivesSearchService.setObjectData(resultsDto, objectData);
 
         // Then
@@ -269,10 +266,8 @@ public class ArchivesSearchServiceTest {
         RequestResponse<JsonNode> jsonNodeRequestResponse = buildGot("data/vitam_got_full_with_thumbs.json");
         ResultsDto resultsDto = buildResults(jsonNodeRequestResponse);
         // When
-        when(unitService.findObjectMetadataById(any(), any()))
-            .thenReturn(jsonNodeRequestResponse);
-        when(archivesSearchService.findObjectById(any(), any()))
-            .thenReturn(ResponseEntity.of(Optional.of(resultsDto)));
+        when(unitService.findObjectMetadataById(any(), any())).thenReturn(jsonNodeRequestResponse);
+        when(archivesSearchService.findObjectById(any(), any())).thenReturn(ResponseEntity.of(Optional.of(resultsDto)));
         archivesSearchService.setObjectData(resultsDto, objectData);
 
         // Then
@@ -287,14 +282,13 @@ public class ArchivesSearchServiceTest {
         throws IOException, InvalidParseOperationException, VitamClientException {
         // Given
         ObjectData objectData = new ObjectData();
-        RequestResponse<JsonNode> jsonNodeRequestResponse =
-            buildGot("data/vitam_got_full_qualifiers_without_filemodel.json");
+        RequestResponse<JsonNode> jsonNodeRequestResponse = buildGot(
+            "data/vitam_got_full_qualifiers_without_filemodel.json"
+        );
         ResultsDto resultsDto = buildResults(jsonNodeRequestResponse);
         // When
-        when(unitService.findObjectMetadataById(any(), any()))
-            .thenReturn(jsonNodeRequestResponse);
-        when(archivesSearchService.findObjectById(any(), any()))
-            .thenReturn(ResponseEntity.of(Optional.of(resultsDto)));
+        when(unitService.findObjectMetadataById(any(), any())).thenReturn(jsonNodeRequestResponse);
+        when(archivesSearchService.findObjectById(any(), any())).thenReturn(ResponseEntity.of(Optional.of(resultsDto)));
         archivesSearchService.setObjectData(resultsDto, objectData);
 
         // Then
@@ -314,16 +308,14 @@ public class ArchivesSearchServiceTest {
     private RequestResponse<JsonNode> buildGot(String filename) throws IOException, InvalidParseOperationException {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        InputStream inputStream = ArchivesSearchServiceTest.class.getClassLoader()
-            .getResourceAsStream(filename);
-        return RequestResponseOK
-            .getFromJsonNode(objectMapper.readValue(ByteStreams.toByteArray(inputStream), JsonNode.class));
+        InputStream inputStream = ArchivesSearchServiceTest.class.getClassLoader().getResourceAsStream(filename);
+        return RequestResponseOK.getFromJsonNode(
+            objectMapper.readValue(ByteStreams.toByteArray(inputStream), JsonNode.class)
+        );
     }
 
-
     @Test
-    public void should_return_textcontent()
-        throws VitamClientException, IOException, InvalidParseOperationException {
+    public void should_return_textcontent() throws VitamClientException, IOException, InvalidParseOperationException {
         // Given
         ObjectData objectData = new ObjectData();
         RequestResponse<JsonNode> jsonNodeRequestResponse = buildGot(GOT_TEXTCONTENT);
@@ -361,21 +353,23 @@ public class ArchivesSearchServiceTest {
         assertThat(objectData.getFilename()).isEqualTo("aeaaaaaaaahlju6xaayh6alycfih5ziaaaba.png");
     }
 
-
     @Test
     public void update_archive_units_rules_should_call_appropriate_rest_client_once() {
-
         // Given
-        Mockito.when(archiveSearchExternalRestClient.updateArchiveUnitsRules(any(RuleSearchCriteriaDto.class),
-                ArgumentMatchers.any()))
-            .thenReturn(new ResponseEntity<>(new String(), HttpStatus.OK));
+        Mockito.when(
+            archiveSearchExternalRestClient.updateArchiveUnitsRules(
+                any(RuleSearchCriteriaDto.class),
+                ArgumentMatchers.any()
+            )
+        ).thenReturn(new ResponseEntity<>(new String(), HttpStatus.OK));
         // When
         archivesSearchService.updateArchiveUnitsRules(new RuleSearchCriteriaDto(), null);
 
         // Then
-        verify(archiveSearchExternalRestClient, Mockito.times(1))
-            .updateArchiveUnitsRules(any(RuleSearchCriteriaDto.class), ArgumentMatchers.any());
-
+        verify(archiveSearchExternalRestClient, Mockito.times(1)).updateArchiveUnitsRules(
+            any(RuleSearchCriteriaDto.class),
+            ArgumentMatchers.any()
+        );
     }
 
     @Test
@@ -383,16 +377,18 @@ public class ArchivesSearchServiceTest {
         // Given
         SearchCriteriaDto searchCriteriaDto = new SearchCriteriaDto();
         ExternalHttpContext context = new ExternalHttpContext(9, "", "", "");
-        Mockito.when(archiveSearchExternalRestClient.computedInheritedRules(any(SearchCriteriaDto.class),
-                ArgumentMatchers.any()))
-            .thenReturn(new ResponseEntity<>(new String(), HttpStatus.OK));
+        Mockito.when(
+            archiveSearchExternalRestClient.computedInheritedRules(any(SearchCriteriaDto.class), ArgumentMatchers.any())
+        ).thenReturn(new ResponseEntity<>(new String(), HttpStatus.OK));
 
         // When
         archivesSearchService.computedInheritedRules(searchCriteriaDto, context);
 
         // Then
-        verify(archiveSearchExternalRestClient, Mockito.times(1))
-            .computedInheritedRules(any(SearchCriteriaDto.class), ArgumentMatchers.any());
+        verify(archiveSearchExternalRestClient, Mockito.times(1)).computedInheritedRules(
+            any(SearchCriteriaDto.class),
+            ArgumentMatchers.any()
+        );
     }
 
     @Test
@@ -400,16 +396,21 @@ public class ArchivesSearchServiceTest {
         // Given
         SearchCriteriaDto searchCriteriaDto = new SearchCriteriaDto();
         ExternalHttpContext context = new ExternalHttpContext(9, "", "", "");
-        Mockito.when(archiveSearchExternalRestClient.selectUnitWithInheritedRules(ArgumentMatchers.any(),
-                any(SearchCriteriaDto.class)))
-            .thenReturn(new ResponseEntity<>(new ResultsDto(), HttpStatus.OK));
+        Mockito.when(
+            archiveSearchExternalRestClient.selectUnitWithInheritedRules(
+                ArgumentMatchers.any(),
+                any(SearchCriteriaDto.class)
+            )
+        ).thenReturn(new ResponseEntity<>(new ResultsDto(), HttpStatus.OK));
 
         // When
         archivesSearchService.selectUnitsWithInheritedRules(searchCriteriaDto, context);
 
         // Then
-        verify(archiveSearchExternalRestClient, Mockito.times(1))
-            .selectUnitWithInheritedRules(ArgumentMatchers.any(), any(SearchCriteriaDto.class));
+        verify(archiveSearchExternalRestClient, Mockito.times(1)).selectUnitWithInheritedRules(
+            ArgumentMatchers.any(),
+            any(SearchCriteriaDto.class)
+        );
     }
 
     @Test
@@ -417,32 +418,44 @@ public class ArchivesSearchServiceTest {
         // Given
         ReclassificationCriteriaDto reclassificationCriteriaDto = new ReclassificationCriteriaDto();
         ExternalHttpContext context = new ExternalHttpContext(9, "", "", "");
-        Mockito.when(archiveSearchExternalRestClient.reclassification(any(ReclassificationCriteriaDto.class),
-                ArgumentMatchers.any()))
-            .thenReturn(new ResponseEntity<>(new String(), HttpStatus.OK));
+        Mockito.when(
+            archiveSearchExternalRestClient.reclassification(
+                any(ReclassificationCriteriaDto.class),
+                ArgumentMatchers.any()
+            )
+        ).thenReturn(new ResponseEntity<>(new String(), HttpStatus.OK));
 
         // When
         archivesSearchService.reclassification(reclassificationCriteriaDto, context);
 
         // Then
-        verify(archiveSearchExternalRestClient, Mockito.times(1))
-            .reclassification(any(ReclassificationCriteriaDto.class), ArgumentMatchers.any());
+        verify(archiveSearchExternalRestClient, Mockito.times(1)).reclassification(
+            any(ReclassificationCriteriaDto.class),
+            ArgumentMatchers.any()
+        );
     }
 
     @Test
     public void launch_transfer_reply_should_call_appropriate_rest_client_one_time() {
         // Given
         ExternalHttpContext context = new ExternalHttpContext(9, "", "", "");
-        Mockito.when(archiveSearchStreamingExternalRestClient.transferAcknowledgment(
-                ArgumentMatchers.any(), any(String.class), any(InputStream.class)))
-            .thenReturn(new ResponseEntity<>("OperationId", HttpStatus.OK));
+        Mockito.when(
+            archiveSearchStreamingExternalRestClient.transferAcknowledgment(
+                ArgumentMatchers.any(),
+                any(String.class),
+                any(InputStream.class)
+            )
+        ).thenReturn(new ResponseEntity<>("OperationId", HttpStatus.OK));
 
         // When
         archivesSearchService.transferAcknowledgment(eq(context), eq("fileName"), ArgumentMatchers.any());
 
         // Then
-        verify(archiveSearchStreamingExternalRestClient, Mockito.times(1))
-            .transferAcknowledgment(ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any());
+        verify(archiveSearchStreamingExternalRestClient, Mockito.times(1)).transferAcknowledgment(
+            ArgumentMatchers.any(),
+            ArgumentMatchers.any(),
+            ArgumentMatchers.any()
+        );
     }
 
     @Test
@@ -450,14 +463,14 @@ public class ArchivesSearchServiceTest {
         // Given
         List<VitamUiOntologyDto> ontologiesList = new ArrayList<>();
         ExternalHttpContext context = new ExternalHttpContext(9, "", "", "");
-        Mockito.when(archiveSearchExternalRestClient.getExternalOntologyFieldsList(ArgumentMatchers.any()))
-            .thenReturn( ontologiesList );
+        Mockito.when(archiveSearchExternalRestClient.getExternalOntologyFieldsList(ArgumentMatchers.any())).thenReturn(
+            ontologiesList
+        );
 
         // When
         archivesSearchService.getExternalOntologyFieldsList(eq(context));
 
         // Then
-        verify(archiveSearchExternalRestClient, Mockito.times(1))
-            .getExternalOntologyFieldsList(ArgumentMatchers.any());
+        verify(archiveSearchExternalRestClient, Mockito.times(1)).getExternalOntologyFieldsList(ArgumentMatchers.any());
     }
 }

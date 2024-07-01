@@ -42,20 +42,22 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
+
 import java.util.Arrays;
 import java.util.Collection;
-
 
 @RunWith(Parameterized.class)
 public class PuaPastisValidatorNOKTest {
 
     @Parameters
     public static Collection<String> data() {
-        return Arrays.asList(new String[] {
-            "pua/pua_NOK_missing_management.json",
-            "pua/pua_NOK_missing_properties.json",
-            "pua/pua_NOK_both_management_present.json"
-        });
+        return Arrays.asList(
+            new String[] {
+                "pua/pua_NOK_missing_management.json",
+                "pua/pua_NOK_missing_properties.json",
+                "pua/pua_NOK_both_management_present.json",
+            }
+        );
     }
 
     private final String fileName;
@@ -70,8 +72,4 @@ public class PuaPastisValidatorNOKTest {
     public void testImports() {
         puaPastisValidatorTest.testImport(fileName, true);
     }
-
-
 }
-
-

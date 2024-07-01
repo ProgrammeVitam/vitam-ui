@@ -1,33 +1,5 @@
 package fr.gouv.vitamui.iam.internal.server.customer.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.Mockito.when;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.ArgumentMatchers;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Import;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
-import org.springframework.test.context.junit4.SpringRunner;
-
 import fr.gouv.vitamui.commons.api.domain.AddressDto;
 import fr.gouv.vitamui.commons.api.domain.CriterionOperator;
 import fr.gouv.vitamui.commons.api.domain.LanguageDto;
@@ -66,11 +38,40 @@ import fr.gouv.vitamui.iam.internal.server.tenant.service.TenantInternalService;
 import fr.gouv.vitamui.iam.internal.server.user.dao.UserRepository;
 import fr.gouv.vitamui.iam.internal.server.user.service.UserInternalService;
 import fr.gouv.vitamui.iam.internal.server.utils.IamServerUtilsTest;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.ArgumentMatchers;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
+import org.springframework.test.context.junit4.SpringRunner;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
-@Import({TestMongoConfig.class})
-@EnableMongoRepositories(basePackageClasses = {CustomerRepository.class,
-    OwnerRepository.class}, repositoryBaseClass = VitamUIRepositoryImpl.class)
+@Import({ TestMongoConfig.class })
+@EnableMongoRepositories(
+    basePackageClasses = { CustomerRepository.class, OwnerRepository.class },
+    repositoryBaseClass = VitamUIRepositoryImpl.class
+)
 public class CustomerInternalServiceIntegrationTest extends AbstractLogbookIntegrationTest {
 
     private CustomerInternalService service;
@@ -129,7 +130,6 @@ public class CustomerInternalServiceIntegrationTest extends AbstractLogbookInteg
     @MockBean
     private UserRepository userRepository;
 
-
     @MockBean
     private TenantRepository tenantRepository;
 
@@ -139,19 +139,27 @@ public class CustomerInternalServiceIntegrationTest extends AbstractLogbookInteg
     @Mock
     private ExternalParametersInternalService externalParametersInternalService;
 
-
-
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
 
-        service = new CustomerInternalService(sequenceGeneratorService, customerRepository, internalOwnerService,
-            userInternalService, internalSecurityService,
-            addressService, initCustomerService, iamLogbookService, customerConverter, logbookService);
+        service = new CustomerInternalService(
+            sequenceGeneratorService,
+            customerRepository,
+            internalOwnerService,
+            userInternalService,
+            internalSecurityService,
+            addressService,
+            initCustomerService,
+            iamLogbookService,
+            customerConverter,
+            logbookService
+        );
         final Tenant tenant = new Tenant();
         tenant.setIdentifier(10);
-        Mockito.when(tenantRepository.findOne(ArgumentMatchers.any(Query.class)))
-            .thenReturn(Optional.ofNullable(tenant));
+        Mockito.when(tenantRepository.findOne(ArgumentMatchers.any(Query.class))).thenReturn(
+            Optional.ofNullable(tenant)
+        );
         ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
         customerRepository.deleteAll();
 
@@ -160,38 +168,40 @@ public class CustomerInternalServiceIntegrationTest extends AbstractLogbookInteg
 
     @Test
     public void testCheckExist() {
-        customerRepository
-            .save(IamServerUtilsTest.buildCustomer("id", "name", "0123456", Arrays.asList("vitamui.com", "gmail.com")));
-        customerRepository
-            .save(IamServerUtilsTest.buildCustomer("id2", "name3", "01234567", Arrays.asList("toto.com")));
+        customerRepository.save(
+            IamServerUtilsTest.buildCustomer("id", "name", "0123456", Arrays.asList("vitamui.com", "gmail.com"))
+        );
+        customerRepository.save(
+            IamServerUtilsTest.buildCustomer("id2", "name3", "01234567", Arrays.asList("toto.com"))
+        );
 
-        QueryDto criteria = QueryDto.criteria().addCriterion("code", "0123456", CriterionOperator.EQUALS)
-            .addCriterion("emailDomains", "vitamui.com",
-                CriterionOperator.CONTAINS);
+        QueryDto criteria = QueryDto.criteria()
+            .addCriterion("code", "0123456", CriterionOperator.EQUALS)
+            .addCriterion("emailDomains", "vitamui.com", CriterionOperator.CONTAINS);
         boolean exist = service.checkExist(criteria.toJson());
         assertThat(exist).isTrue();
 
-        criteria = QueryDto.criteria().addCriterion("code", "01234567", CriterionOperator.EQUALS)
-            .addCriterion("emailDomains", Arrays.asList("toto.com"),
-                CriterionOperator.IN);
+        criteria = QueryDto.criteria()
+            .addCriterion("code", "01234567", CriterionOperator.EQUALS)
+            .addCriterion("emailDomains", Arrays.asList("toto.com"), CriterionOperator.IN);
         exist = service.checkExist(criteria.toJson());
         assertThat(exist).isTrue();
 
-        criteria = QueryDto.criteria().addCriterion("code", "01234567", CriterionOperator.EQUALS)
-            .addCriterion("emailDomains", Arrays.asList("toto.com"),
-                CriterionOperator.EQUALS);
+        criteria = QueryDto.criteria()
+            .addCriterion("code", "01234567", CriterionOperator.EQUALS)
+            .addCriterion("emailDomains", Arrays.asList("toto.com"), CriterionOperator.EQUALS);
         exist = service.checkExist(criteria.toJson());
         assertThat(exist).isTrue();
 
-        criteria = QueryDto.criteria().addCriterion("code", "01234567", CriterionOperator.EQUALS)
-            .addCriterion("emailDomains", "TOTO.com",
-                CriterionOperator.CONTAINSIGNORECASE);
+        criteria = QueryDto.criteria()
+            .addCriterion("code", "01234567", CriterionOperator.EQUALS)
+            .addCriterion("emailDomains", "TOTO.com", CriterionOperator.CONTAINSIGNORECASE);
         exist = service.checkExist(criteria.toJson());
         assertThat(exist).isTrue();
 
-        criteria = QueryDto.criteria().addCriterion("code", "012345678", CriterionOperator.EQUALS)
-            .addCriterion("emailDomains", Arrays.asList("toto.com"),
-                CriterionOperator.IN);
+        criteria = QueryDto.criteria()
+            .addCriterion("code", "012345678", CriterionOperator.EQUALS)
+            .addCriterion("emailDomains", Arrays.asList("toto.com"), CriterionOperator.IN);
         exist = service.checkExist(criteria.toJson());
         assertThat(exist).isFalse();
     }
@@ -201,10 +211,12 @@ public class CustomerInternalServiceIntegrationTest extends AbstractLogbookInteg
         final CustomerDto customer = createCustomer();
         assertThat(customer.getIdentifier()).isNotBlank();
 
-        final Criteria criteria =
-            Criteria.where("obId").is(customer.getIdentifier()).and("obIdReq").is(MongoDbCollections.CUSTOMERS)
-                .and("evType")
-                .is(EventType.EXT_VITAMUI_CREATE_CUSTOMER);
+        final Criteria criteria = Criteria.where("obId")
+            .is(customer.getIdentifier())
+            .and("obIdReq")
+            .is(MongoDbCollections.CUSTOMERS)
+            .and("evType")
+            .is(EventType.EXT_VITAMUI_CREATE_CUSTOMER);
         final Optional<Event> ev = eventRepository.findOne(Query.query(criteria));
         assertThat(ev).isPresent();
     }
@@ -263,10 +275,12 @@ public class CustomerInternalServiceIntegrationTest extends AbstractLogbookInteg
         service.patch(customerPatchFormData);
         partialDto.remove("subrogeable");
 
-        final Criteria criteria =
-            Criteria.where("obId").is(customer.getIdentifier()).and("obIdReq").is(MongoDbCollections.CUSTOMERS)
-                .and("evType")
-                .is(EventType.EXT_VITAMUI_UPDATE_CUSTOMER);
+        final Criteria criteria = Criteria.where("obId")
+            .is(customer.getIdentifier())
+            .and("obIdReq")
+            .is(MongoDbCollections.CUSTOMERS)
+            .and("evType")
+            .is(EventType.EXT_VITAMUI_UPDATE_CUSTOMER);
         final Collection<Event> events = eventRepository.findAll(Query.query(criteria));
         assertThat(events).hasSize(9);
     }
@@ -294,5 +308,4 @@ public class CustomerInternalServiceIntegrationTest extends AbstractLogbookInteg
         dto.setGdprAlertDelay(72);
         return dto;
     }
-
 }

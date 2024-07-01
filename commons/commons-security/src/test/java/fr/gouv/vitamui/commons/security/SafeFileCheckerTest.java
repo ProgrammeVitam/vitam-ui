@@ -26,7 +26,6 @@
  */
 package fr.gouv.vitamui.commons.security;
 
-
 import fr.gouv.vitamui.common.security.SafeFileChecker;
 import fr.gouv.vitamui.commons.api.exception.InvalidFileSanitizeException;
 import org.junit.BeforeClass;
@@ -38,13 +37,13 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-
 /**
  * Test Class for SafeFileChecker
  *
  */
 
 public class SafeFileCheckerTest {
+
     private final String VALID_ROOT_PATH = "mydirectory";
     private final String INVALID_ROOT_PATH = "my|filena?me?query=<code>danger</code>.json";
     private final String VALID_SUBPATH = "good_json_sanity.json";
@@ -75,60 +74,61 @@ public class SafeFileCheckerTest {
 
     @Test
     public void checkValidPath() {
-        assertThatCode(() -> SafeFileChecker.checkSafeFilePath(VALID_ROOT_PATH)).
-            doesNotThrowAnyException();
+        assertThatCode(() -> SafeFileChecker.checkSafeFilePath(VALID_ROOT_PATH)).doesNotThrowAnyException();
     }
-
 
     @Test
     public void checkInvalidPath() {
-        assertThatCode(() -> SafeFileChecker.checkSafeFilePath(INVALID_PATH)).
-            hasMessage("Security check error : Invalid name (" + INVALID_PATH +")");
+        assertThatCode(() -> SafeFileChecker.checkSafeFilePath(INVALID_PATH)).hasMessage(
+            "Security check error : Invalid name (" + INVALID_PATH + ")"
+        );
     }
 
     @Test
     public void checkInValidPath() {
-        assertThatThrownBy(() -> SafeFileChecker.checkSafeFilePath(INVALID_ROOT_PATH)).
-            hasMessage("Security check error : Invalid name (" + INVALID_ROOT_PATH +")");
+        assertThatThrownBy(() -> SafeFileChecker.checkSafeFilePath(INVALID_ROOT_PATH)).hasMessage(
+            "Security check error : Invalid name (" + INVALID_ROOT_PATH + ")"
+        );
     }
 
     @Test
     public void checkAnotherInValidPath() {
-        assertThatThrownBy(() -> SafeFileChecker.checkSafeFilePath("../../etc/password")).
-            hasMessageContaining("Security check error : Invalid name (../../etc/password)");
+        assertThatThrownBy(() -> SafeFileChecker.checkSafeFilePath("../../etc/password")).hasMessageContaining(
+            "Security check error : Invalid name (../../etc/password)"
+        );
     }
 
     @Test
     public void checkValidRootPaths() {
-        for(String rootPath : validPaths) {
-            assertThatCode(() -> SafeFileChecker.checkSafeFilePath(rootPath, VALID_SUBPATH)).
-                isInstanceOf(InvalidFileSanitizeException.class);
+        for (String rootPath : validPaths) {
+            assertThatCode(() -> SafeFileChecker.checkSafeFilePath(rootPath, VALID_SUBPATH)).isInstanceOf(
+                InvalidFileSanitizeException.class
+            );
         }
     }
 
     @Test
     public void checkInvalidRootPaths() {
-        for(String rootPath : invalidPaths) {
-            assertThatCode(() -> SafeFileChecker.checkSafeFilePath(rootPath, VALID_SUBPATH))
-                .isInstanceOf(InvalidFileSanitizeException.class);
+        for (String rootPath : invalidPaths) {
+            assertThatCode(() -> SafeFileChecker.checkSafeFilePath(rootPath, VALID_SUBPATH)).isInstanceOf(
+                InvalidFileSanitizeException.class
+            );
         }
     }
 
     @Test
     public void checkInvalidSubPaths() {
-        for(String subPath : validFilenames) {
-            assertThatCode(() -> SafeFileChecker.checkSafeFilePath(VALID_ROOT_PATH, subPath)).
-                isInstanceOf(InvalidFileSanitizeException.class);
-
+        for (String subPath : validFilenames) {
+            assertThatCode(() -> SafeFileChecker.checkSafeFilePath(VALID_ROOT_PATH, subPath)).isInstanceOf(
+                InvalidFileSanitizeException.class
+            );
         }
     }
 
     @Test
     public void checkValidSubNamePaths() {
-        for(String subPath : validFilenames) {
-            assertThatCode(() -> SafeFileChecker.checkSafeFilePath(subPath)).
-                doesNotThrowAnyException();
-
+        for (String subPath : validFilenames) {
+            assertThatCode(() -> SafeFileChecker.checkSafeFilePath(subPath)).doesNotThrowAnyException();
         }
     }
 }

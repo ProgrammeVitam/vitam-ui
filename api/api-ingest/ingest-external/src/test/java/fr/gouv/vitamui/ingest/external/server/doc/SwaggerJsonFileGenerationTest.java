@@ -50,14 +50,12 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
-
 @RunWith(SpringRunner.class)
 @WebMvcTest
 @Import(value = { ServerIdentityConfiguration.class, SwaggerConfiguration.class })
 @TestPropertySource(properties = { "spring.config.name=ingest-external-application" })
 @ActiveProfiles("test, swagger")
 public class SwaggerJsonFileGenerationTest extends AbstractSwaggerJsonFileGenerationTest {
-
 
     @MockBean
     private ExternalApiAuthenticationProvider externalApiAuthenticationProvider;
@@ -67,5 +65,4 @@ public class SwaggerJsonFileGenerationTest extends AbstractSwaggerJsonFileGenera
 
     @MockBean
     private IngestExternalController ingestExternalController;
-
 }

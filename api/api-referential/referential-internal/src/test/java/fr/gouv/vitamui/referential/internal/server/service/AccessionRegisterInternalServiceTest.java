@@ -72,7 +72,6 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-
 class AccessionRegisterInternalServiceTest {
 
     @Mock
@@ -97,31 +96,42 @@ class AccessionRegisterInternalServiceTest {
         MockitoAnnotations.openMocks(this);
         objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        accessionRegisterInternalService = new AccessionRegisterInternalService(objectMapper,
-            adminExternalClient, agencyService, accessionRegisterService);
+        accessionRegisterInternalService = new AccessionRegisterInternalService(
+            objectMapper,
+            adminExternalClient,
+            agencyService,
+            accessionRegisterService
+        );
 
         doNothing().when(vitamUILogger).info(any());
     }
 
     @Test
-    void should_call_appropriate_api_once_when_get_paginated_is_invoked() throws IOException,
-        InvalidCreateOperationException, InvalidParseOperationException, VitamClientException {
+    void should_call_appropriate_api_once_when_get_paginated_is_invoked()
+        throws IOException, InvalidCreateOperationException, InvalidParseOperationException, VitamClientException {
         //Given
         VitamContext vitamContext = new VitamContext(0);
         Map<String, Object> vitamCriteria = new HashMap<>();
         int pageNumber = 0;
         int size = 20;
-        JsonNode query =
-            VitamQueryHelper.createQueryDSL(vitamCriteria, pageNumber, size, Optional.empty(), Optional.empty());
+        JsonNode query = VitamQueryHelper.createQueryDSL(
+            vitamCriteria,
+            pageNumber,
+            size,
+            Optional.empty(),
+            Optional.empty()
+        );
         doReturn(
-            buildResponseFrom("data/accession-register-details-mocked.json", AccessionRegisterDetailResponseDto.class))
-            .when(adminExternalClient).findAccessionRegisterDetails(vitamContext, query);
+            buildResponseFrom("data/accession-register-details-mocked.json", AccessionRegisterDetailResponseDto.class)
+        )
+            .when(adminExternalClient)
+            .findAccessionRegisterDetails(vitamContext, query);
         doReturn(buildResponseFrom("data/agencies-mocked.json", AgenciesModel.class))
-            .when(agencyService).findAgencies(any(VitamContext.class), any(JsonNode.class));
+            .when(agencyService)
+            .findAgencies(any(VitamContext.class), any(JsonNode.class));
 
         //When
-        accessionRegisterInternalService
-            .getAllPaginated(Optional.empty(), pageNumber, size, null, null, vitamContext);
+        accessionRegisterInternalService.getAllPaginated(Optional.empty(), pageNumber, size, null, null, vitamContext);
 
         //Then
         verify(adminExternalClient, times(1)).findAccessionRegisterDetails(vitamContext, query);
@@ -136,5 +146,4 @@ class AccessionRegisterInternalServiceTest {
         JsonNode data = objectMapper.readValue(ByteStreams.toByteArray(inputStream), JsonNode.class);
         return RequestResponseOK.getFromJsonNode(data, clazz);
     }
-
 }

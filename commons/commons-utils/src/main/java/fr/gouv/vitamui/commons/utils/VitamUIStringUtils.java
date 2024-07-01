@@ -36,10 +36,10 @@
  */
 package fr.gouv.vitamui.commons.utils;
 
+import org.apache.commons.lang3.BooleanUtils;
+
 import java.util.List;
 import java.util.regex.Pattern;
-
-import org.apache.commons.lang3.BooleanUtils;
 
 /**
  * String utils
@@ -61,22 +61,32 @@ public final class VitamUIStringUtils {
     private static final String SCRIPT_TAG_ESCAPED = "&lt;script&gt;";
 
     // default parameters for Json check
-    private static final String TAG_START = "\\<\\w+((\\s+\\w+(\\s*\\=\\s*(?:\".*?\"|'.*?'|[^'\"\\>\\s]+))?)+\\s*|\\s*)\\>";
+    private static final String TAG_START =
+        "\\<\\w+((\\s+\\w+(\\s*\\=\\s*(?:\".*?\"|'.*?'|[^'\"\\>\\s]+))?)+\\s*|\\s*)\\>";
 
     private static final String TAG_END = "\\</\\w+\\>";
 
-    private static final String TAG_SELF_CLOSING = "\\<\\w+((\\s+\\w+(\\s*\\=\\s*(?:\".*?\"|'.*?'|[^'\"\\>\\s]+))?)+\\s*|\\s*)/\\>";
+    private static final String TAG_SELF_CLOSING =
+        "\\<\\w+((\\s+\\w+(\\s*\\=\\s*(?:\".*?\"|'.*?'|[^'\"\\>\\s]+))?)+\\s*|\\s*)/\\>";
 
     private static final String HTML_ENTITY = "&[a-zA-Z][a-zA-Z0-9]+;";
 
-    public static final Pattern HTML_PATTERN = Pattern.compile("(" + TAG_START + ".*" + TAG_END + ")|(" + TAG_SELF_CLOSING + ")|(" + HTML_ENTITY + ")",
-            Pattern.DOTALL);
+    public static final Pattern HTML_PATTERN = Pattern.compile(
+        "(" + TAG_START + ".*" + TAG_END + ")|(" + TAG_SELF_CLOSING + ")|(" + HTML_ENTITY + ")",
+        Pattern.DOTALL
+    );
 
     // Default ASCII for Param check
     public static final Pattern UNPRINTABLE_PATTERN = Pattern.compile("[\\p{Cntrl}&&[^\r\n\t]]");
 
-    private static final List<String> RULES = VitamUIUtils.listOf(CDATA_TAG_UNESCAPED, CDATA_TAG_ESCAPED, ENTITY_TAG_UNESCAPED, ENTITY_TAG_ESCAPED,
-            SCRIPT_TAG_UNESCAPED, SCRIPT_TAG_ESCAPED);
+    private static final List<String> RULES = VitamUIUtils.listOf(
+        CDATA_TAG_UNESCAPED,
+        CDATA_TAG_ESCAPED,
+        ENTITY_TAG_UNESCAPED,
+        ENTITY_TAG_ESCAPED,
+        SCRIPT_TAG_UNESCAPED,
+        SCRIPT_TAG_ESCAPED
+    );
 
     private VitamUIStringUtils() {
         // do nothing
@@ -91,8 +101,7 @@ public final class VitamUIStringUtils {
         String name = clasz.getSimpleName();
         if (name != null && !name.isEmpty()) {
             return name;
-        }
-        else {
+        } else {
             name = clasz.getName();
             final int pos = name.lastIndexOf('.');
             if (pos < 0) {
@@ -119,8 +128,7 @@ public final class VitamUIStringUtils {
     public static boolean isNumeric(final String s) {
         try {
             Integer.parseInt(s);
-        }
-        catch (final NumberFormatException e) {
+        } catch (final NumberFormatException e) {
             return false;
         }
         return true;
@@ -133,5 +141,4 @@ public final class VitamUIStringUtils {
     public static List<String> getRules() {
         return RULES;
     }
-
 }

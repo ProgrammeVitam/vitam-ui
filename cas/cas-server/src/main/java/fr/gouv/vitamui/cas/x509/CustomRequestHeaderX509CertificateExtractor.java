@@ -63,7 +63,10 @@ public class CustomRequestHeaderX509CertificateExtractor implements X509Certific
 
     private final boolean x509AuthnMandatory;
 
-    public CustomRequestHeaderX509CertificateExtractor(final String customCertificateHeader, final boolean x509AuthnMandatory) {
+    public CustomRequestHeaderX509CertificateExtractor(
+        final String customCertificateHeader,
+        final boolean x509AuthnMandatory
+    ) {
         this.customCertificateHeader = customCertificateHeader;
         this.x509AuthnMandatory = x509AuthnMandatory;
     }
@@ -103,7 +106,11 @@ public class CustomRequestHeaderX509CertificateExtractor implements X509Certific
         final X509Certificate[] certificates = new X509Certificate[1];
         certificates[0] = cert;
 
-        LOGGER.debug("[{}] Certificate(s) found via custom header: [{}]", certificates.length, Arrays.toString(certificates));
+        LOGGER.debug(
+            "[{}] Certificate(s) found via custom header: [{}]",
+            certificates.length,
+            Arrays.toString(certificates)
+        );
         return certificates;
     }
 
@@ -111,16 +118,28 @@ public class CustomRequestHeaderX509CertificateExtractor implements X509Certific
         final String data = header.replaceAll("\t", "\n");
 
         final String decoded = URLDecoder.decode(data, StandardCharsets.UTF_8);
-        final String cert = decoded.replace(BEGIN_CERT, "").replace(END_CERT, "").replaceAll(" ","+").replaceAll("\\n", "");
+        final String cert = decoded
+            .replace(BEGIN_CERT, "")
+            .replace(END_CERT, "")
+            .replaceAll(" ", "+")
+            .replaceAll("\\n", "");
 
         final CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
-        return (X509Certificate) certificateFactory.generateCertificate(new ByteArrayInputStream(Base64.getDecoder().decode(cert)));
+        return (X509Certificate) certificateFactory.generateCertificate(
+            new ByteArrayInputStream(Base64.getDecoder().decode(cert))
+        );
     }
 
     protected X509Certificate parseCertificateGeneratedByApache(final String header) throws CertificateException {
-        final String cert = header.replace(BEGIN_CERT, "").replace(END_CERT, "").replaceAll(" ", "").replaceAll("\\n", "");
+        final String cert = header
+            .replace(BEGIN_CERT, "")
+            .replace(END_CERT, "")
+            .replaceAll(" ", "")
+            .replaceAll("\\n", "");
 
         final CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
-        return (X509Certificate) certificateFactory.generateCertificate(new ByteArrayInputStream(Base64.getDecoder().decode(cert)));
+        return (X509Certificate) certificateFactory.generateCertificate(
+            new ByteArrayInputStream(Base64.getDecoder().decode(cert))
+        );
     }
 }

@@ -36,10 +36,12 @@
  */
 package fr.gouv.vitamui.cas.util;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.Map;
-
+import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
+import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
+import lombok.RequiredArgsConstructor;
+import lombok.val;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apereo.cas.CasProtocolConstants;
@@ -47,8 +49,8 @@ import org.apereo.cas.configuration.model.support.cookie.TicketGrantingCookiePro
 import org.apereo.cas.web.flow.CasWebflowConstants;
 import org.apereo.cas.web.support.WebUtils;
 import org.pac4j.core.client.IndirectClient;
-import org.pac4j.core.util.Pac4jConstants;
 import org.pac4j.core.util.CommonHelper;
+import org.pac4j.core.util.Pac4jConstants;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.webflow.context.ExternalContext;
@@ -60,13 +62,9 @@ import javax.mail.internet.MimeMessage;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import fr.gouv.vitamui.commons.api.CommonConstants;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
-import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
-import lombok.RequiredArgsConstructor;
-import lombok.val;
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Helper class.
@@ -94,11 +92,19 @@ public class Utils {
         return new ExternalHttpContext(casTenantIdentifier, casToken, "cas+" + username, casIdentity);
     }
 
-    public Event performClientRedirection(final Action action, final IndirectClient client, final RequestContext requestContext) throws IOException {
+    public Event performClientRedirection(
+        final Action action,
+        final IndirectClient client,
+        final RequestContext requestContext
+    ) throws IOException {
         final HttpServletResponse response = WebUtils.getHttpServletResponseFromExternalWebflowContext(requestContext);
         val service = WebUtils.getService(requestContext);
 
-        String url = CommonHelper.addParameter(casServerPrefix + "/clientredirect", Pac4jConstants.DEFAULT_CLIENT_NAME_PARAMETER, client.getName());
+        String url = CommonHelper.addParameter(
+            casServerPrefix + "/clientredirect",
+            Pac4jConstants.DEFAULT_CLIENT_NAME_PARAMETER,
+            client.getName()
+        );
         if (service != null) {
             url = CommonHelper.addParameter(url, CasProtocolConstants.PARAMETER_SERVICE, service.getOriginalUrl());
         }
@@ -130,19 +136,31 @@ public class Utils {
     public String sanitizePasswordResetUrl(final String url) {
         if (url != null && url.length() > 15) {
             return url.substring(0, url.length() - 15) + "...";
-        }
-        else {
+        } else {
             return "\"passwordResetURL\"...";
         }
     }
 
-    public boolean htmlEmail(final String text, final String from, final String subject, final String to, final String cc, final String bcc) {
+    public boolean htmlEmail(
+        final String text,
+        final String from,
+        final String subject,
+        final String to,
+        final String cc,
+        final String bcc
+    ) {
         try {
-            if (mailSender == null || StringUtils.isBlank(text) || StringUtils.isBlank(from)
-                || StringUtils.isBlank(subject) || StringUtils.isBlank(to)) {
+            if (
+                mailSender == null ||
+                StringUtils.isBlank(text) ||
+                StringUtils.isBlank(from) ||
+                StringUtils.isBlank(subject) ||
+                StringUtils.isBlank(to)
+            ) {
                 LOGGER.warn(
                     "Could not send email to [{}] because either no address/subject/text is found or email settings are not configured.",
-                    to);
+                    to
+                );
                 return false;
             }
 
@@ -163,8 +181,7 @@ public class Utils {
             }
             mailSender.send(message);
             return true;
-        }
-        catch (final Exception ex) {
+        } catch (final Exception ex) {
             LOGGER.error(ex.getMessage(), ex);
         }
         return false;

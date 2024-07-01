@@ -46,10 +46,12 @@ public class IngestInternalWebClientFactory extends BaseWebClientFactory {
         super(restClientConfiguration);
     }
 
-    public IngestInternalWebClientFactory(final RestClientConfiguration restClientConfig, final HttpPoolConfiguration httpPoolConfig) {
+    public IngestInternalWebClientFactory(
+        final RestClientConfiguration restClientConfig,
+        final HttpPoolConfiguration httpPoolConfig
+    ) {
         super(restClientConfig, httpPoolConfig);
     }
-
 
     public IngestInternalWebClient getIngestInternalWebClient() {
         return new IngestInternalWebClient(getWebClient(), getBaseUrl());

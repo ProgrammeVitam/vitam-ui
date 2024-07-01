@@ -54,11 +54,13 @@ public class ApiReferentialInternalServerApplication implements CommandLineRunne
     private Environment env;
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
-        ApiReferentialInternalServerApplication.class);
+        ApiReferentialInternalServerApplication.class
+    );
 
     public static void main(final String[] args) {
-        final SpringApplication app = new SpringApplicationBuilder(ApiReferentialInternalServerApplication.class)
-            .build();
+        final SpringApplication app = new SpringApplicationBuilder(
+            ApiReferentialInternalServerApplication.class
+        ).build();
         app.run(args);
     }
 

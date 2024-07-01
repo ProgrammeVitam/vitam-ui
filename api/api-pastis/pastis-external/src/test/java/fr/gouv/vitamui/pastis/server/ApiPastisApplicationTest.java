@@ -57,5 +57,4 @@ public class ApiPastisApplicationTest {
     public void testContextLoads() {
         assertThat(env).isNotNull();
     }
-
 }

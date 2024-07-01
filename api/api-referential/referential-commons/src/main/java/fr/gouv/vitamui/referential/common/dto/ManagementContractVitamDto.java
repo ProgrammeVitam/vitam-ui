@@ -35,7 +35,4 @@ import java.io.Serializable;
 
 @ToString
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ManagementContractVitamDto extends ManagementContractModelDto implements Serializable {
-
-}
-
+public class ManagementContractVitamDto extends ManagementContractModelDto implements Serializable {}

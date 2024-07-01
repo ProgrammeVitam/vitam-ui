@@ -36,50 +36,49 @@
  */
 package fr.gouv.vitamui.referential.common.export.probativevalue.dto;
 
-import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import fr.gouv.vitam.common.model.StatusCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+
+import java.util.List;
 
 @Getter
 @Setter
 @ToString
 public class ReportEntryDto {
 
-	@JsonProperty("unitIds")
-	private List<String> unitIds;
-	
-	@JsonProperty("objectGroupId")
-	private String objectGroupId;
-	
-	@JsonProperty("objectId")
-	private String objectId;
-	
-	@JsonProperty("objectLabel")
-	private String objectLabel;
-	
-	@JsonProperty("usageVersion")
-	private String usageVersion;
-	
-	@JsonProperty("operations")
-	private List<ProbativeOperationDto> operations;
-	
-	@JsonProperty("checks")
-	private List<CheckDto> checks;
-	
-	@JsonProperty("evStartDateTime")
-	private String evStartDateTime;
-	
-	@JsonProperty("evEndDateTime")
-	private String evEndDateTime;
-	
-	@JsonProperty("status")
-	private StatusCode status;
-	
-	@JsonProperty("unitIdWithLabels")
-	private List<ItemWithLabelDto> unitIdWithLabels;
+    @JsonProperty("unitIds")
+    private List<String> unitIds;
+
+    @JsonProperty("objectGroupId")
+    private String objectGroupId;
+
+    @JsonProperty("objectId")
+    private String objectId;
+
+    @JsonProperty("objectLabel")
+    private String objectLabel;
+
+    @JsonProperty("usageVersion")
+    private String usageVersion;
+
+    @JsonProperty("operations")
+    private List<ProbativeOperationDto> operations;
+
+    @JsonProperty("checks")
+    private List<CheckDto> checks;
+
+    @JsonProperty("evStartDateTime")
+    private String evStartDateTime;
+
+    @JsonProperty("evEndDateTime")
+    private String evEndDateTime;
+
+    @JsonProperty("status")
+    private StatusCode status;
+
+    @JsonProperty("unitIdWithLabels")
+    private List<ItemWithLabelDto> unitIdWithLabels;
 }

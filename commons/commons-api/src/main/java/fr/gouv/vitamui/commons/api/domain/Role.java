@@ -36,16 +36,14 @@
  */
 package fr.gouv.vitamui.commons.api.domain;
 
-import javax.validation.constraints.NotNull;
-
-import org.hibernate.validator.constraints.Length;
-
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.validator.constraints.Length;
 
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 /**
@@ -63,11 +61,9 @@ public class Role implements Serializable {
 
     public Role(@NotNull final String name) {
         this.name = name;
-
     }
 
     @NotNull
     @Length(max = 100)
     private String name;
-
 }

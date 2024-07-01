@@ -41,7 +41,6 @@ public class UserControllerTest extends UiIdentityRestControllerTest<UserDto> {
     @MockBean
     private BuildProperties buildProperties;
 
-
     @Test
     public void testUpdateUser() {
         super.testUpdateEntity();
@@ -65,15 +64,19 @@ public class UserControllerTest extends UiIdentityRestControllerTest<UserDto> {
         LOGGER.debug("testFindUsersByBadHeaderValueThenReturnBadRequest");
         final HttpHeaders headers = new HttpHeaders();
         headers.add(CommonConstants.X_TENANT_ID_HEADER, "%ds#</><!-sdq");
-        super.performGet("/archive", ImmutableMap.of("page", 1, "size", 20, "orderBy", "id"), headers, status().isBadRequest());
+        super.performGet(
+            "/archive",
+            ImmutableMap.of("page", 1, "size", 20, "orderBy", "id"),
+            headers,
+            status().isBadRequest()
+        );
     }
 
     @Test
     public void testCheckExistByEmail() {
         LOGGER.debug("testCheckExistByEmail");
         Mockito.when(service.checkExist(any(), any())).thenReturn(true);
-        final QueryDto criteria = QueryDto.criteria().addCriterion("email", "email@test.fr",
-                CriterionOperator.EQUALS);
+        final QueryDto criteria = QueryDto.criteria().addCriterion("email", "email@test.fr", CriterionOperator.EQUALS);
         super.performGet(CommonConstants.PATH_CHECK, ImmutableMap.of("criteria", criteria.toJson()));
     }
 
@@ -81,27 +84,30 @@ public class UserControllerTest extends UiIdentityRestControllerTest<UserDto> {
     public void testCheckExistByEmailNotFound() {
         LOGGER.debug("testCheckExistByEmail");
         Mockito.when(service.checkExist(any(), any())).thenReturn(false);
-        final QueryDto criteria = QueryDto.criteria().addCriterion("email", "email@test.fr",
-                CriterionOperator.EQUALS);
-        super.performHead(CommonConstants.PATH_CHECK, ImmutableMap.of("criteria", criteria.toJson()),
-                status().isNoContent());
+        final QueryDto criteria = QueryDto.criteria().addCriterion("email", "email@test.fr", CriterionOperator.EQUALS);
+        super.performHead(
+            CommonConstants.PATH_CHECK,
+            ImmutableMap.of("criteria", criteria.toJson()),
+            status().isNoContent()
+        );
     }
 
     @Test
     public void testCheckExistByTotoWithBadCriteraiThenReturnPreconditionFailedException() {
         LOGGER.debug("testCheckExistByTotoWithBadCriteraiThenReturnPreconditionFailedException");
         Mockito.when(service.checkExist(any(), any())).thenReturn(false);
-        final QueryDto criteria = QueryDto.criteria().addCriterion("toto<s></s>", "titi",
-            CriterionOperator.EQUALS);
-        super.performHead(CommonConstants.PATH_CHECK, ImmutableMap.of("criteria", criteria.toJson()),
-            status().isPreconditionFailed());
+        final QueryDto criteria = QueryDto.criteria().addCriterion("toto<s></s>", "titi", CriterionOperator.EQUALS);
+        super.performHead(
+            CommonConstants.PATH_CHECK,
+            ImmutableMap.of("criteria", criteria.toJson()),
+            status().isPreconditionFailed()
+        );
     }
 
     @Test
     public void testGetLevels() {
         LOGGER.debug("testGetLevels");
-        super.performGet(CommonConstants.PATH_LEVELS, ImmutableMap.of(),
-                status().isOk());
+        super.performGet(CommonConstants.PATH_LEVELS, ImmutableMap.of(), status().isOk());
     }
 
     @Test

@@ -36,15 +36,14 @@
  */
 package fr.gouv.vitamui.referential.common.dto;
 
-import java.io.Serializable;
-import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
-
 import fr.gouv.vitamui.commons.api.domain.IdDto;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+
+import java.io.Serializable;
+import java.util.List;
 
 @ToString
 @JsonInclude(JsonInclude.Include.NON_NULL)

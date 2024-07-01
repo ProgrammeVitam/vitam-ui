@@ -78,11 +78,10 @@ public class ElementProperties {
 
     private PuaData puaData;
 
-
     public void setCardinality(String cardinality) {
-        this.cardinality = (null != RNGConstants.getCardinalityMap().get(cardinality) ?
-            RNGConstants.getCardinalityMap().get(cardinality) :
-            cardinality);
+        this.cardinality = (null != RNGConstants.getCardinalityMap().get(cardinality)
+                ? RNGConstants.getCardinalityMap().get(cardinality)
+                : cardinality);
     }
 
     public String getGroupOrChoice() {
@@ -101,8 +100,6 @@ public class ElementProperties {
     }
 
     public Stream<ElementProperties> flattened() {
-        return Stream.concat(
-            Stream.of(this),
-            children.stream().flatMap(ElementProperties::flattened));
+        return Stream.concat(Stream.of(this), children.stream().flatMap(ElementProperties::flattened));
     }
 }

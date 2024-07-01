@@ -74,8 +74,10 @@ public class ExternalParamProfileRepository {
     }
 
     public ExternalParamProfileDto findByIdProfile(String idProfile) {
-        String criteria = "{\"criteria\":[{\"queryOperator\":\"AND\",\"criteria\":[{\"key\":\"_id\",\"value\":\"" +
-            idProfile + "\",\"operator\":\"EQUALSIGNORECASE\"}]}]}";
+        String criteria =
+            "{\"criteria\":[{\"queryOperator\":\"AND\",\"criteria\":[{\"key\":\"_id\",\"value\":\"" +
+            idProfile +
+            "\",\"operator\":\"EQUALSIGNORECASE\"}]}]}";
         Aggregation aggregation = buildAggregation(criteria, null, null);
         ExternalParamProfileDto profileDto = mongoOperations
             .aggregate(aggregation, MongoDbCollections.PROFILES, ExternalParamProfileDto.class)
@@ -86,9 +88,13 @@ public class ExternalParamProfileRepository {
         return profileDto;
     }
 
-    public PaginatedValuesDto<ExternalParamProfileDto> getAllPaginated(final Integer pageNumber, final Integer size,
-        final String criteria, final String orderBy, final DirectionDto direction) {
-
+    public PaginatedValuesDto<ExternalParamProfileDto> getAllPaginated(
+        final Integer pageNumber,
+        final Integer size,
+        final String criteria,
+        final String orderBy,
+        final DirectionDto direction
+    ) {
         Aggregation aggregation = buildAggregation(criteria, orderBy, direction);
         List<AggregationOperation> operations = aggregation.getPipeline().getOperations();
 
@@ -96,7 +102,8 @@ public class ExternalParamProfileRepository {
         Aggregation countAggregation = Aggregation.newAggregation(operations.toArray(new AggregationOperation[0]));
         countAggregation.getPipeline().add(Aggregation.count().as(COUNT));
         NumberOfResults counter = mongoOperations
-            .aggregate(countAggregation, MongoDbCollections.PROFILES, NumberOfResults.class).getUniqueMappedResult();
+            .aggregate(countAggregation, MongoDbCollections.PROFILES, NumberOfResults.class)
+            .getUniqueMappedResult();
 
         //pagination
         Aggregation paginateAggregation = Aggregation.newAggregation(operations.toArray(new AggregationOperation[0]));
@@ -115,7 +122,6 @@ public class ExternalParamProfileRepository {
     }
 
     private Aggregation buildAggregation(final String criteria, final String orderBy, final DirectionDto direction) {
-
         List<AggregationOperation> operations = new ArrayList<>();
 
         if (criteria != null) {
@@ -123,22 +129,27 @@ public class ExternalParamProfileRepository {
             operations.add(matchOperation);
         }
 
-        LookupOperation lookupOperation = Aggregation.lookup(MongoDbCollections.EXTERNAL_PARAMETERS, EXTERNAL_PARAM_ID,
-            ID, EXTERNAL);
+        LookupOperation lookupOperation = Aggregation.lookup(
+            MongoDbCollections.EXTERNAL_PARAMETERS,
+            EXTERNAL_PARAM_ID,
+            ID,
+            EXTERNAL
+        );
         operations.add(lookupOperation);
 
         UnwindOperation externalUnwindOperation = Aggregation.unwind(EXTERNAL, false);
         operations.add(externalUnwindOperation);
 
-
         ProjectionOperation projectionOperation = Aggregation.project(NAME, DESCRIPTION, ENABLED)
-            .andExpression(IDENTIFIER).as(PROFILE_ID)
-            .andExpression(ID).as(ID_PROFILE)
-            .andExpression(PARAMETERS).as(EXTERNAL_PARAMETERS)
+            .andExpression(IDENTIFIER)
+            .as(PROFILE_ID)
+            .andExpression(ID)
+            .as(ID_PROFILE)
+            .andExpression(PARAMETERS)
+            .as(EXTERNAL_PARAMETERS)
             .andInclude(Fields.from(Fields.field(PARAMETERS, EXTERNAL_PARAMETERS)))
             .andInclude(Fields.from(Fields.field(EXTERNAL_PARAM_IDENTIFIER, EXTERNAL_IDENTIFIER)))
             .andInclude(Fields.from(Fields.field(ID_EXTERNAL_PARAM, EXTERNAL_ID)));
-
 
         operations.add(projectionOperation);
 
@@ -151,6 +162,7 @@ public class ExternalParamProfileRepository {
     }
 
     private static class NumberOfResults {
+
         private int count = 0;
 
         public int getCount() {
@@ -163,10 +175,7 @@ public class ExternalParamProfileRepository {
 
         @Override
         public String toString() {
-            return "NumberOfResults{" +
-                "count=" + count +
-                '}';
+            return "NumberOfResults{" + "count=" + count + '}';
         }
     }
-
 }

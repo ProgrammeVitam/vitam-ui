@@ -52,14 +52,16 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
 
-public class ManagementContractExternalRestClient extends BasePaginatingAndSortingRestClient<ManagementContractDto, ExternalHttpContext> {
+public class ManagementContractExternalRestClient
+    extends BasePaginatingAndSortingRestClient<ManagementContractDto, ExternalHttpContext> {
 
     public ManagementContractExternalRestClient(final RestTemplate restTemplate, final String baseUrl) {
         super(restTemplate, baseUrl);
     }
 
-    @Override protected ParameterizedTypeReference<PaginatedValuesDto<ManagementContractDto>> getDtoPaginatedClass() {
-        return new ParameterizedTypeReference<PaginatedValuesDto<ManagementContractDto>>() { };
+    @Override
+    protected ParameterizedTypeReference<PaginatedValuesDto<ManagementContractDto>> getDtoPaginatedClass() {
+        return new ParameterizedTypeReference<PaginatedValuesDto<ManagementContractDto>>() {};
     }
 
     @Override
@@ -67,20 +69,27 @@ public class ManagementContractExternalRestClient extends BasePaginatingAndSorti
         return RestApi.MANAGEMENT_CONTRACTS_URL;
     }
 
-    @Override protected Class<ManagementContractDto> getDtoClass() {
+    @Override
+    protected Class<ManagementContractDto> getDtoClass() {
         return ManagementContractDto.class;
     }
 
     protected ParameterizedTypeReference<List<ManagementContractDto>> getDtoListClass() {
-        return new ParameterizedTypeReference<List<ManagementContractDto>>() {
-        };
+        return new ParameterizedTypeReference<List<ManagementContractDto>>() {};
     }
 
     public boolean check(ExternalHttpContext context, ManagementContractDto managementContractDto) {
         final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl() + CommonConstants.PATH_CHECK);
-        final HttpEntity<ManagementContractDto> request = new HttpEntity<>(managementContractDto, buildHeaders(context));
-        final ResponseEntity<Boolean> response = restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.POST,
-            request, Boolean.class);
+        final HttpEntity<ManagementContractDto> request = new HttpEntity<>(
+            managementContractDto,
+            buildHeaders(context)
+        );
+        final ResponseEntity<Boolean> response = restTemplate.exchange(
+            uriBuilder.toUriString(),
+            HttpMethod.POST,
+            request,
+            Boolean.class
+        );
         return response.getStatusCode() == HttpStatus.OK;
     }
 }

@@ -36,12 +36,12 @@
  */
 package fr.gouv.vitamui.referential.internal.server.fileformat;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 import fr.gouv.vitam.common.model.administration.FileFormatModel;
 import fr.gouv.vitamui.commons.utils.VitamUIUtils;
 import fr.gouv.vitamui.referential.common.dto.FileFormatDto;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class FileFormatConverter {
 
@@ -66,5 +66,4 @@ public class FileFormatConverter {
     public List<FileFormatDto> convertVitamsToDtos(final List<FileFormatModel> agencies) {
         return agencies.stream().map(this::convertVitamToDto).collect(Collectors.toList());
     }
-
 }

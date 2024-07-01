@@ -56,14 +56,12 @@ public class ApiIamExternalServerApplication implements CommandLineRunner {
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ApiIamExternalServerApplication.class);
 
     public static void main(final String[] args) {
-        final SpringApplication app = new SpringApplicationBuilder(ApiIamExternalServerApplication.class)
-            .build();
+        final SpringApplication app = new SpringApplicationBuilder(ApiIamExternalServerApplication.class).build();
         app.run(args);
     }
 
     @Override
     public void run(final String... args) throws Exception {
-
         LOGGER.debug("VITAMUI SpringBoot Application started:");
         LOGGER.debug("spring.application.name: " + env.getProperty("spring.application.name"));
         LOGGER.debug("-------------------------------");

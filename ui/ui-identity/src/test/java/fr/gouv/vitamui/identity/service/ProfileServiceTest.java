@@ -1,18 +1,16 @@
 package fr.gouv.vitamui.identity.service;
 
+import fr.gouv.vitamui.commons.api.domain.ProfileDto;
+import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
+import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.iam.external.client.ProfileExternalRestClient;
+import fr.gouv.vitamui.ui.commons.service.AbstractCrudService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
-import fr.gouv.vitamui.commons.api.domain.ProfileDto;
-import fr.gouv.vitamui.iam.external.client.ProfileExternalRestClient;
-import fr.gouv.vitamui.ui.commons.service.AbstractCrudService;
 
 @RunWith(SpringRunner.class)
 public class ProfileServiceTest extends UIIdentityServiceTest<ProfileDto> {
@@ -65,5 +63,4 @@ public class ProfileServiceTest extends UIIdentityServiceTest<ProfileDto> {
     public void testUpdateWithIdEmpty() {
         super.updateWithIdEmpty();
     }
-
 }

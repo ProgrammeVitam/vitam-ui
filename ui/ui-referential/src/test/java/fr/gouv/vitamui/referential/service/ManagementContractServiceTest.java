@@ -59,6 +59,7 @@ public class ManagementContractServiceTest {
 
     @Mock
     private CommonService commonService;
+
     private ManagementContractService service;
 
     @Before

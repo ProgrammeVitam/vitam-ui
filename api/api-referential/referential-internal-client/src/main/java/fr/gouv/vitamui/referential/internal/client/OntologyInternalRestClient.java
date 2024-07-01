@@ -36,7 +36,6 @@
  */
 package fr.gouv.vitamui.referential.internal.client;
 
-
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.dtos.VitamUiOntologyDto;
@@ -59,15 +58,15 @@ import java.util.List;
 
 public class OntologyInternalRestClient extends BasePaginatingAndSortingRestClient<OntologyDto, InternalHttpContext> {
 
-    private static final VitamUILogger LOGGER =
-        VitamUILoggerFactory.getInstance(OntologyInternalRestClient.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(OntologyInternalRestClient.class);
 
     public OntologyInternalRestClient(final RestTemplate restTemplate, final String baseUrl) {
         super(restTemplate, baseUrl);
     }
 
-    @Override protected ParameterizedTypeReference<PaginatedValuesDto<OntologyDto>> getDtoPaginatedClass() {
-        return new ParameterizedTypeReference<PaginatedValuesDto<OntologyDto>>() { };
+    @Override
+    protected ParameterizedTypeReference<PaginatedValuesDto<OntologyDto>> getDtoPaginatedClass() {
+        return new ParameterizedTypeReference<PaginatedValuesDto<OntologyDto>>() {};
     }
 
     @Override
@@ -75,26 +74,32 @@ public class OntologyInternalRestClient extends BasePaginatingAndSortingRestClie
         return RestApi.ONTOLOGIES_URL;
     }
 
-    @Override protected Class<OntologyDto> getDtoClass() {
+    @Override
+    protected Class<OntologyDto> getDtoClass() {
         return OntologyDto.class;
     }
 
     protected ParameterizedTypeReference<List<OntologyDto>> getDtoListClass() {
-        return new ParameterizedTypeReference<List<OntologyDto>>() { };
+        return new ParameterizedTypeReference<List<OntologyDto>>() {};
     }
 
     public boolean check(InternalHttpContext context, OntologyDto ontologyDto) {
         final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl() + CommonConstants.PATH_CHECK);
         final HttpEntity<OntologyDto> request = new HttpEntity<>(ontologyDto, buildHeaders(context));
-        final ResponseEntity<Boolean> response = restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.POST,
-                request, Boolean.class);
+        final ResponseEntity<Boolean> response = restTemplate.exchange(
+            uriBuilder.toUriString(),
+            HttpMethod.POST,
+            request,
+            Boolean.class
+        );
         return response.getStatusCode() == HttpStatus.OK;
     }
 
     public List<VitamUiOntologyDto> getInternalOntologyList(final InternalHttpContext context) {
         LOGGER.debug("[INTERNAL] : Calling Get default internal ontology fields list");
-        final UriComponentsBuilder uriBuilder =
-            UriComponentsBuilder.fromHttpUrl(getUrl() + CommonConstants.INTERNAL_ONTOLOGY_LIST);
+        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(
+            getUrl() + CommonConstants.INTERNAL_ONTOLOGY_LIST
+        );
         final HttpEntity<?> request = new HttpEntity<>(buildHeaders(context));
         return restTemplate.exchange(uriBuilder.build().toUri(), HttpMethod.GET, request, ArrayList.class).getBody();
     }

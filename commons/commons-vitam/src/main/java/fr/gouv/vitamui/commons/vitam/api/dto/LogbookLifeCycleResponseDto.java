@@ -43,5 +43,4 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class LogbookLifeCycleResponseDto extends AbstractVitamUIResponseDto<LogbookLifecycleDto> {
-}
+public class LogbookLifeCycleResponseDto extends AbstractVitamUIResponseDto<LogbookLifecycleDto> {}

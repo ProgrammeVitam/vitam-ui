@@ -36,12 +36,11 @@
  */
 package fr.gouv.vitamui.identity.domain.dto;
 
-import javax.validation.constraints.Email;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
+
+import javax.validation.constraints.Email;
 
 /**
  *
@@ -68,5 +67,4 @@ public class UserAuthDto {
     private String token;
 
     private boolean smsValidationRequired;
-
 }

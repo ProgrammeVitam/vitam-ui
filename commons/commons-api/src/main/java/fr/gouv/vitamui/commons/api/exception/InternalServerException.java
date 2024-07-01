@@ -71,5 +71,4 @@ public class InternalServerException extends VitamUIException {
     public InternalServerException(final String message, final Throwable e) {
         super(message, e);
     }
-
 }

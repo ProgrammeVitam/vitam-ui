@@ -44,7 +44,6 @@ import org.springframework.web.reactive.function.client.WebClient;
  *
  */
 public interface WebClientFactory {
-
     /**
      * @return the RestTemplate
      * A non-blocking, reactive client for performing HTTP requests with Reactive

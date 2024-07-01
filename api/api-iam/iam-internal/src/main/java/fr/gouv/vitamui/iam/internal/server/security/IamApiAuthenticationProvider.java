@@ -63,9 +63,7 @@ public class IamApiAuthenticationProvider implements AuthenticationProvider {
 
     @Override
     public Authentication authenticate(final Authentication authentication) {
-
         if (supports(authentication.getClass())) {
-
             final PreAuthenticatedAuthenticationToken token = (PreAuthenticatedAuthenticationToken) authentication;
             final InternalHttpContext httpContext = (InternalHttpContext) token.getPrincipal();
             LOGGER.debug("HttpContext: {}", httpContext);
@@ -83,5 +81,4 @@ public class IamApiAuthenticationProvider implements AuthenticationProvider {
     public boolean supports(final Class<?> authentication) {
         return authentication.equals(PreAuthenticatedAuthenticationToken.class);
     }
-
 }

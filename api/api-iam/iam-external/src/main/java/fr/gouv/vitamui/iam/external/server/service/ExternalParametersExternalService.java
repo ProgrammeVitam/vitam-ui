@@ -55,13 +55,16 @@ import java.util.Optional;
 @Getter
 @Setter
 @Service
-public class ExternalParametersExternalService extends AbstractResourceClientService<ExternalParametersDto, ExternalParametersDto> {
+public class ExternalParametersExternalService
+    extends AbstractResourceClientService<ExternalParametersDto, ExternalParametersDto> {
 
-	private final ExternalParametersInternalRestClient externalParametersInternalRestClient;
+    private final ExternalParametersInternalRestClient externalParametersInternalRestClient;
 
     @Autowired
-    public ExternalParametersExternalService(final ExternalParametersInternalRestClient externalParametersInternalRestClient,
-    		final ExternalSecurityService externalSecurityService) {
+    public ExternalParametersExternalService(
+        final ExternalParametersInternalRestClient externalParametersInternalRestClient,
+        final ExternalSecurityService externalSecurityService
+    ) {
         super(externalSecurityService);
         this.externalParametersInternalRestClient = externalParametersInternalRestClient;
     }

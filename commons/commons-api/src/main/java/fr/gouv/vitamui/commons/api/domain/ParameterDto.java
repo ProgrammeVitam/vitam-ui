@@ -36,13 +36,13 @@
  */
 package fr.gouv.vitamui.commons.api.domain;
 
-import java.io.Serializable;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+
+import java.io.Serializable;
 
 /**
  *
@@ -57,9 +57,9 @@ import lombok.ToString;
 @ToString
 public class ParameterDto implements Serializable {
 
-	private static final long serialVersionUID = -3137972847122776634L;
+    private static final long serialVersionUID = -3137972847122776634L;
 
-	private String key;
+    private String key;
 
     private String value;
 }

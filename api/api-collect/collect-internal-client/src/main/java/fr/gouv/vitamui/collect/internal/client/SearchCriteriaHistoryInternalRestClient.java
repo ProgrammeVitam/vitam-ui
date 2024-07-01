@@ -50,7 +50,8 @@ public class SearchCriteriaHistoryInternalRestClient
     extends BasePaginatingAndSortingRestClient<SearchCriteriaHistoryDto, InternalHttpContext> {
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
-        SearchCriteriaHistoryInternalRestClient.class);
+        SearchCriteriaHistoryInternalRestClient.class
+    );
 
     public SearchCriteriaHistoryInternalRestClient(final RestTemplate restTemplate, final String baseUrl) {
         super(restTemplate, baseUrl);
@@ -68,8 +69,12 @@ public class SearchCriteriaHistoryInternalRestClient
 
         final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl() + CommonConstants.PATH_ME);
 
-        final ResponseEntity<List<SearchCriteriaHistoryDto>> response =
-            restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET, request, getDtoListClass());
+        final ResponseEntity<List<SearchCriteriaHistoryDto>> response = restTemplate.exchange(
+            uriBuilder.toUriString(),
+            HttpMethod.GET,
+            request,
+            getDtoListClass()
+        );
         checkResponse(response);
         return response.getBody();
     }
@@ -86,13 +91,11 @@ public class SearchCriteriaHistoryInternalRestClient
 
     @Override
     protected ParameterizedTypeReference<List<SearchCriteriaHistoryDto>> getDtoListClass() {
-        return new ParameterizedTypeReference<>() {
-        };
+        return new ParameterizedTypeReference<>() {};
     }
 
     @Override
     protected ParameterizedTypeReference<PaginatedValuesDto<SearchCriteriaHistoryDto>> getDtoPaginatedClass() {
-        return new ParameterizedTypeReference<>() {
-        };
+        return new ParameterizedTypeReference<>() {};
     }
 }

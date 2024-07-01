@@ -36,9 +36,8 @@
  */
 package fr.gouv.vitamui.cas.webflow.configurer;
 
-import javax.security.auth.login.*;
-
 import fr.gouv.vitamui.cas.webflow.actions.DispatcherAction;
+import fr.gouv.vitamui.cas.webflow.actions.TriggerChangePasswordAction;
 import lombok.val;
 import org.apereo.cas.authentication.PrincipalException;
 import org.apereo.cas.authentication.adaptive.UnauthorizedAuthenticationException;
@@ -60,7 +59,7 @@ import org.springframework.webflow.engine.Flow;
 import org.springframework.webflow.engine.History;
 import org.springframework.webflow.engine.builder.support.FlowBuilderServices;
 
-import fr.gouv.vitamui.cas.webflow.actions.TriggerChangePasswordAction;
+import javax.security.auth.login.*;
 
 /**
  * A webflow configurer:
@@ -81,56 +80,143 @@ public class CustomLoginWebflowConfigurer extends DefaultLoginWebflowConfigurer 
 
     private static final String BAD_CONFIGURATION_VIEW = "casAccountBadConfigurationView";
 
-    public CustomLoginWebflowConfigurer(final FlowBuilderServices flowBuilderServices, final FlowDefinitionRegistry flowDefinitionRegistry,
-                                        final ConfigurableApplicationContext applicationContext, final CasConfigurationProperties casProperties) {
+    public CustomLoginWebflowConfigurer(
+        final FlowBuilderServices flowBuilderServices,
+        final FlowDefinitionRegistry flowDefinitionRegistry,
+        final ConfigurableApplicationContext applicationContext,
+        final CasConfigurationProperties casProperties
+    ) {
         super(flowBuilderServices, flowDefinitionRegistry, applicationContext, casProperties);
     }
 
-
     @Override
     protected void createTicketGrantingTicketCheckAction(final Flow flow) {
-        val action = createActionState(flow, CasWebflowConstants.STATE_ID_TICKET_GRANTING_TICKET_CHECK,
-            CasWebflowConstants.ACTION_ID_TICKET_GRANTING_TICKET_CHECK);
-        createTransitionForState(action, CasWebflowConstants.TRANSITION_ID_TICKET_GRANTING_TICKET_NOT_EXISTS,
-            CasWebflowConstants.STATE_ID_GATEWAY_REQUEST_CHECK);
-        createTransitionForState(action, CasWebflowConstants.TRANSITION_ID_TICKET_GRANTING_TICKET_INVALID,
-            CasWebflowConstants.STATE_ID_TERMINATE_SESSION);
+        val action = createActionState(
+            flow,
+            CasWebflowConstants.STATE_ID_TICKET_GRANTING_TICKET_CHECK,
+            CasWebflowConstants.ACTION_ID_TICKET_GRANTING_TICKET_CHECK
+        );
+        createTransitionForState(
+            action,
+            CasWebflowConstants.TRANSITION_ID_TICKET_GRANTING_TICKET_NOT_EXISTS,
+            CasWebflowConstants.STATE_ID_GATEWAY_REQUEST_CHECK
+        );
+        createTransitionForState(
+            action,
+            CasWebflowConstants.TRANSITION_ID_TICKET_GRANTING_TICKET_INVALID,
+            CasWebflowConstants.STATE_ID_TERMINATE_SESSION
+        );
         // CUSTO: instead of STATE_ID_HAS_SERVICE_CHECK, send to STATE_ID_TRIGGER_CHANGE_PASSWORD
-        createTransitionForState(action, CasWebflowConstants.TRANSITION_ID_TICKET_GRANTING_TICKET_VALID,
-            STATE_ID_TRIGGER_CHANGE_PASSWORD);
+        createTransitionForState(
+            action,
+            CasWebflowConstants.TRANSITION_ID_TICKET_GRANTING_TICKET_VALID,
+            STATE_ID_TRIGGER_CHANGE_PASSWORD
+        );
 
         createTriggerChangePasswordAction(flow);
     }
 
     private void createTriggerChangePasswordAction(final Flow flow) {
-        final ActionState action = createActionState(flow, STATE_ID_TRIGGER_CHANGE_PASSWORD, "triggerChangePasswordAction");
-        createTransitionForState(action, TriggerChangePasswordAction.EVENT_ID_CHANGE_PASSWORD, CasWebflowConstants.STATE_ID_MUST_CHANGE_PASSWORD);
-        createTransitionForState(action, TriggerChangePasswordAction.EVENT_ID_CONTINUE, CasWebflowConstants.STATE_ID_HAS_SERVICE_CHECK);
+        final ActionState action = createActionState(
+            flow,
+            STATE_ID_TRIGGER_CHANGE_PASSWORD,
+            "triggerChangePasswordAction"
+        );
+        createTransitionForState(
+            action,
+            TriggerChangePasswordAction.EVENT_ID_CHANGE_PASSWORD,
+            CasWebflowConstants.STATE_ID_MUST_CHANGE_PASSWORD
+        );
+        createTransitionForState(
+            action,
+            TriggerChangePasswordAction.EVENT_ID_CONTINUE,
+            CasWebflowConstants.STATE_ID_HAS_SERVICE_CHECK
+        );
     }
 
     @Override
     protected void createHandleAuthenticationFailureAction(final Flow flow) {
-        val handler = createActionState(flow, CasWebflowConstants.STATE_ID_HANDLE_AUTHN_FAILURE,
-            CasWebflowConstants.ACTION_ID_AUTHENTICATION_EXCEPTION_HANDLER);
-        createTransitionForState(handler, AccountDisabledException.class.getSimpleName(), CasWebflowConstants.STATE_ID_ACCOUNT_DISABLED);
-        createTransitionForState(handler, AccountLockedException.class.getSimpleName(), CasWebflowConstants.STATE_ID_ACCOUNT_LOCKED);
-        createTransitionForState(handler, AccountExpiredException.class.getSimpleName(), CasWebflowConstants.STATE_ID_EXPIRED_PASSWORD);
-        createTransitionForState(handler, AccountLockedException.class.getSimpleName(), CasWebflowConstants.STATE_ID_ACCOUNT_LOCKED);
+        val handler = createActionState(
+            flow,
+            CasWebflowConstants.STATE_ID_HANDLE_AUTHN_FAILURE,
+            CasWebflowConstants.ACTION_ID_AUTHENTICATION_EXCEPTION_HANDLER
+        );
+        createTransitionForState(
+            handler,
+            AccountDisabledException.class.getSimpleName(),
+            CasWebflowConstants.STATE_ID_ACCOUNT_DISABLED
+        );
+        createTransitionForState(
+            handler,
+            AccountLockedException.class.getSimpleName(),
+            CasWebflowConstants.STATE_ID_ACCOUNT_LOCKED
+        );
+        createTransitionForState(
+            handler,
+            AccountExpiredException.class.getSimpleName(),
+            CasWebflowConstants.STATE_ID_EXPIRED_PASSWORD
+        );
+        createTransitionForState(
+            handler,
+            AccountLockedException.class.getSimpleName(),
+            CasWebflowConstants.STATE_ID_ACCOUNT_LOCKED
+        );
         // CUSTO: instead of STATE_ID_MUST_CHANGE_PASSWORD, send to STATE_ID_SEND_RESET_PASSWORD_ACCT_INFO
-        createTransitionForState(handler, AccountPasswordMustChangeException.class.getSimpleName(), CasWebflowConstants.STATE_ID_SEND_RESET_PASSWORD_ACCT_INFO);
-        createTransitionForState(handler, CredentialExpiredException.class.getSimpleName(), CasWebflowConstants.STATE_ID_EXPIRED_PASSWORD);
-        createTransitionForState(handler, InvalidLoginLocationException.class.getSimpleName(), CasWebflowConstants.STATE_ID_INVALID_WORKSTATION);
-        createTransitionForState(handler, InvalidLoginTimeException.class.getSimpleName(), CasWebflowConstants.STATE_ID_INVALID_AUTHENTICATION_HOURS);
-        createTransitionForState(handler, FailedLoginException.class.getSimpleName(), CasWebflowConstants.STATE_ID_INIT_LOGIN_FORM);
-        createTransitionForState(handler, AccountNotFoundException.class.getSimpleName(), CasWebflowConstants.STATE_ID_INIT_LOGIN_FORM);
-        createTransitionForState(handler, UnauthorizedServiceForPrincipalException.class.getSimpleName(),
-            CasWebflowConstants.STATE_ID_INIT_LOGIN_FORM);
-        createTransitionForState(handler, PrincipalException.class.getSimpleName(), CasWebflowConstants.STATE_ID_INIT_LOGIN_FORM);
-        createTransitionForState(handler, UnsatisfiedAuthenticationPolicyException.class.getSimpleName(),
-            CasWebflowConstants.STATE_ID_INIT_LOGIN_FORM);
-        createTransitionForState(handler, UnauthorizedAuthenticationException.class.getSimpleName(),
-            CasWebflowConstants.STATE_ID_AUTHENTICATION_BLOCKED);
-        createTransitionForState(handler, CasWebflowConstants.STATE_ID_SERVICE_UNAUTHZ_CHECK, CasWebflowConstants.STATE_ID_SERVICE_UNAUTHZ_CHECK);
+        createTransitionForState(
+            handler,
+            AccountPasswordMustChangeException.class.getSimpleName(),
+            CasWebflowConstants.STATE_ID_SEND_RESET_PASSWORD_ACCT_INFO
+        );
+        createTransitionForState(
+            handler,
+            CredentialExpiredException.class.getSimpleName(),
+            CasWebflowConstants.STATE_ID_EXPIRED_PASSWORD
+        );
+        createTransitionForState(
+            handler,
+            InvalidLoginLocationException.class.getSimpleName(),
+            CasWebflowConstants.STATE_ID_INVALID_WORKSTATION
+        );
+        createTransitionForState(
+            handler,
+            InvalidLoginTimeException.class.getSimpleName(),
+            CasWebflowConstants.STATE_ID_INVALID_AUTHENTICATION_HOURS
+        );
+        createTransitionForState(
+            handler,
+            FailedLoginException.class.getSimpleName(),
+            CasWebflowConstants.STATE_ID_INIT_LOGIN_FORM
+        );
+        createTransitionForState(
+            handler,
+            AccountNotFoundException.class.getSimpleName(),
+            CasWebflowConstants.STATE_ID_INIT_LOGIN_FORM
+        );
+        createTransitionForState(
+            handler,
+            UnauthorizedServiceForPrincipalException.class.getSimpleName(),
+            CasWebflowConstants.STATE_ID_INIT_LOGIN_FORM
+        );
+        createTransitionForState(
+            handler,
+            PrincipalException.class.getSimpleName(),
+            CasWebflowConstants.STATE_ID_INIT_LOGIN_FORM
+        );
+        createTransitionForState(
+            handler,
+            UnsatisfiedAuthenticationPolicyException.class.getSimpleName(),
+            CasWebflowConstants.STATE_ID_INIT_LOGIN_FORM
+        );
+        createTransitionForState(
+            handler,
+            UnauthorizedAuthenticationException.class.getSimpleName(),
+            CasWebflowConstants.STATE_ID_AUTHENTICATION_BLOCKED
+        );
+        createTransitionForState(
+            handler,
+            CasWebflowConstants.STATE_ID_SERVICE_UNAUTHZ_CHECK,
+            CasWebflowConstants.STATE_ID_SERVICE_UNAUTHZ_CHECK
+        );
         createStateDefaultTransition(handler, CasWebflowConstants.STATE_ID_INIT_LOGIN_FORM);
         handler.getEntryActionList().add(createEvaluateAction(CasWebflowConstants.ACTION_ID_CLEAR_WEBFLOW_CREDENTIALS));
     }
@@ -157,7 +243,11 @@ public class CustomLoginWebflowConfigurer extends DefaultLoginWebflowConfigurer 
     protected void createIntermediateSubmitAction(final Flow flow) {
         val action = createActionState(flow, INTERMEDIATE_SUBMIT, "dispatcherAction");
         createTransitionForState(action, CasWebflowConstants.TRANSITION_ID_SUCCESS, VIEW_PWD_FORM);
-        createTransitionForState(action, CasWebflowConstants.TRANSITION_ID_STOP, CasWebflowConstants.STATE_ID_STOP_WEBFLOW);
+        createTransitionForState(
+            action,
+            CasWebflowConstants.TRANSITION_ID_STOP,
+            CasWebflowConstants.STATE_ID_STOP_WEBFLOW
+        );
         createTransitionForState(action, DispatcherAction.DISABLED, CasWebflowConstants.STATE_ID_ACCOUNT_DISABLED);
         createTransitionForState(action, DispatcherAction.BAD_CONFIGURATION, BAD_CONFIGURATION_VIEW);
 
@@ -172,12 +262,20 @@ public class CustomLoginWebflowConfigurer extends DefaultLoginWebflowConfigurer 
         state.getRenderActionList().add(createEvaluateAction(CasWebflowConstants.ACTION_ID_RENDER_LOGIN_FORM));
         createStateModelBinding(state, CasWebflowConstants.VAR_ID_CREDENTIAL, UsernamePasswordCredential.class);
 
-        val transition = createTransitionForState(state, CasWebflowConstants.TRANSITION_ID_SUBMIT, CasWebflowConstants.STATE_ID_REAL_SUBMIT);
+        val transition = createTransitionForState(
+            state,
+            CasWebflowConstants.TRANSITION_ID_SUBMIT,
+            CasWebflowConstants.STATE_ID_REAL_SUBMIT
+        );
         val attributes = transition.getAttributes();
         attributes.put("bind", Boolean.TRUE);
         attributes.put("validate", Boolean.TRUE);
         attributes.put("history", History.INVALIDATE);
 
-        createTransitionForState(state, CasWebflowConstants.TRANSITION_ID_RESET_PASSWORD, CasWebflowConstants.STATE_ID_SEND_RESET_PASSWORD_ACCT_INFO);
+        createTransitionForState(
+            state,
+            CasWebflowConstants.TRANSITION_ID_RESET_PASSWORD,
+            CasWebflowConstants.STATE_ID_SEND_RESET_PASSWORD_ACCT_INFO
+        );
     }
 }

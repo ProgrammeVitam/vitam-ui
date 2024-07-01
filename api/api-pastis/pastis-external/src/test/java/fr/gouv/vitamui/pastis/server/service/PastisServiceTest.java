@@ -48,7 +48,9 @@ class PastisServiceTest {
     @Test
     void createProfileByType_with_xxe_should_fail() {
         Resource resource = new ClassPathResource("profiles/test-xxe.xml");
-        Assertions.assertThrows(TechnicalException.class,
-            () -> pastisService.createProfileByType(resource, ProfileType.PA));
+        Assertions.assertThrows(
+            TechnicalException.class,
+            () -> pastisService.createProfileByType(resource, ProfileType.PA)
+        );
     }
 }

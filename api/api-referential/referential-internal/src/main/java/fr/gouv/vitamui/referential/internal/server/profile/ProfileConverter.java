@@ -67,5 +67,4 @@ public class ProfileConverter {
     public List<ProfileDto> convertVitamsToDtos(final List<ProfileModel> profiles) {
         return profiles.stream().map(this::convertVitamToDto).collect(Collectors.toList());
     }
-
 }

@@ -26,12 +26,10 @@
 
 package fr.gouv.vitamui.archives.search.external.server.rest;
 
-
 import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.archives.search.common.dto.ExportDipCriteriaDto;
-import fr.gouv.vitamui.commons.api.dtos.VitamUiOntologyDto;
 import fr.gouv.vitamui.archives.search.common.dto.ReclassificationCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.RuleSearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.TransferRequestDto;
@@ -44,6 +42,7 @@ import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
+import fr.gouv.vitamui.commons.api.dtos.VitamUiOntologyDto;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
@@ -71,7 +70,6 @@ import reactor.core.publisher.Mono;
 import java.io.InputStream;
 import java.util.List;
 
-
 /**
  * UI Archive-Search External controller
  */
@@ -81,8 +79,9 @@ import java.util.List;
 @ResponseBody
 public class ArchivesSearchExternalController {
 
-    private static final VitamUILogger LOGGER =
-        VitamUILoggerFactory.getInstance(ArchivesSearchExternalController.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
+        ArchivesSearchExternalController.class
+    );
 
     private static final String MANDATORY_QUERY = "The query is a mandatory parameter: ";
     private static final String MANDATORY_IDENTIFIER = "The Identifier is a mandatory parameter: ";
@@ -110,12 +109,16 @@ public class ArchivesSearchExternalController {
         return archivesSearchExternalService.getFilingHoldingScheme();
     }
 
-    @GetMapping(value = RestApi.DOWNLOAD_ARCHIVE_UNIT +
-        CommonConstants.PATH_ID, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    @GetMapping(
+        value = RestApi.DOWNLOAD_ARCHIVE_UNIT + CommonConstants.PATH_ID,
+        produces = MediaType.APPLICATION_OCTET_STREAM_VALUE
+    )
     @Secured(ServicesData.ROLE_GET_ARCHIVE)
-    public Mono<ResponseEntity<Resource>> downloadObjectFromUnit(final @PathVariable("id") String id,
-        final @RequestParam("usage") String usage, final @RequestParam("version") Integer version)
-        throws InvalidParseOperationException, PreconditionFailedException {
+    public Mono<ResponseEntity<Resource>> downloadObjectFromUnit(
+        final @PathVariable("id") String id,
+        final @RequestParam("usage") String usage,
+        final @RequestParam("version") Integer version
+    ) throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Download the Archive Unit Object with id {} ", id);
@@ -212,7 +215,6 @@ public class ArchivesSearchExternalController {
         return archivesSearchExternalService.computedInheritedRules(searchCriteriaDto);
     }
 
-
     @PostMapping(RestApi.UNIT_WITH_INHERITED_RULES)
     @Secured(ServicesData.ROLE_GET_ARCHIVE)
     public ResultsDto selectUnitWithInheritedRules(final @RequestBody SearchCriteriaDto query)
@@ -222,7 +224,6 @@ public class ArchivesSearchExternalController {
         LOGGER.debug("Calling select Unit With Inherited Rules By Criteria {} ", query);
         return archivesSearchExternalService.selectUnitWithInheritedRules(query);
     }
-
 
     @PostMapping(RestApi.RECLASSIFICATION)
     @Secured(ServicesData.ROLE_RECLASSIFICATION)
@@ -234,12 +235,12 @@ public class ArchivesSearchExternalController {
         return archivesSearchExternalService.reclassification(reclassificationCriteriaDto);
     }
 
-
     @PutMapping(RestApi.ARCHIVE_UNIT_INFO + CommonConstants.PATH_ID)
     @Secured(ServicesData.ROLE_UPDATE_UNIT_DESC_METADATA)
-    public String updateUnitById(final @PathVariable("id") String id,
-        @RequestBody final UnitDescriptiveMetadataDto unitDescriptiveMetadataDto)
-        throws InvalidParseOperationException, PreconditionFailedException {
+    public String updateUnitById(
+        final @PathVariable("id") String id,
+        @RequestBody final UnitDescriptiveMetadataDto unitDescriptiveMetadataDto
+    ) throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
         SanityChecker.checkSecureParameter(id);
         SanityChecker.sanitizeCriteria(unitDescriptiveMetadataDto);
@@ -248,12 +249,15 @@ public class ArchivesSearchExternalController {
     }
 
     @Secured(ServicesData.ROLE_TRANSFER_ACKNOWLEDGMENT)
-    @ApiOperation(value = "Upload an ATR file for the transfer acknowledgment", consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-    @PostMapping(value = RestApi.TRANSFER_ACKNOWLEDGMENT , consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-    public String transferAcknowledgment(InputStream inputStream,
+    @ApiOperation(
+        value = "Upload an ATR file for the transfer acknowledgment",
+        consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE
+    )
+    @PostMapping(value = RestApi.TRANSFER_ACKNOWLEDGMENT, consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    public String transferAcknowledgment(
+        InputStream inputStream,
         @RequestHeader(value = CommonConstants.X_ORIGINAL_FILENAME_HEADER) final String originalFileName
     ) throws InvalidParseOperationException, PreconditionFailedException {
-
         LOGGER.debug("[EXTERNAL] : Transfer Acknowledgment Operation");
         ParameterChecker.checkParameter("The  fileName is mandatory parameter : ", originalFileName);
         SanityChecker.checkSecureParameter(originalFileName);

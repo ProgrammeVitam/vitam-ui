@@ -24,7 +24,6 @@
  * accept its terms.
  */
 
-
 package fr.gouv.vitamui.archive.internal.server.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -46,27 +45,26 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class ExportDipInternalService {
-    private static final VitamUILogger LOGGER =
-        VitamUILoggerFactory.getInstance(ExportDipInternalService.class);
+
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ExportDipInternalService.class);
     public static final String OPERATION_IDENTIFIER = "itemId";
 
     private final ExportDipV2Service exportDipV2Service;
     private final ArchiveSearchInternalService archiveSearchInternalService;
 
-
-    public ExportDipInternalService(final @Lazy ArchiveSearchInternalService archiveSearchInternalService,
-        final ExportDipV2Service exportDipV2Service) {
+    public ExportDipInternalService(
+        final @Lazy ArchiveSearchInternalService archiveSearchInternalService,
+        final ExportDipV2Service exportDipV2Service
+    ) {
         this.archiveSearchInternalService = archiveSearchInternalService;
 
         this.exportDipV2Service = exportDipV2Service;
     }
 
-    public JsonNode exportDIP(final VitamContext vitamContext, DipRequest dipRequest)
-        throws VitamClientException {
+    public JsonNode exportDIP(final VitamContext vitamContext, DipRequest dipRequest) throws VitamClientException {
         RequestResponse<JsonNode> response = exportDipV2Service.exportDip(vitamContext, dipRequest);
         return response.toJsonNode();
     }
-
 
     private DipRequest prepareDipRequestBody(final ExportDipCriteriaDto exportDipCriteriaDto, JsonNode dslQuery) {
         DipRequest dipRequest = new DipRequest();
@@ -83,14 +81,13 @@ public class ExportDipInternalService {
         return dipRequest;
     }
 
-
-    public String requestToExportDIP(final ExportDipCriteriaDto exportDipCriteriaDto,
-        final VitamContext vitamContext)
+    public String requestToExportDIP(final ExportDipCriteriaDto exportDipCriteriaDto, final VitamContext vitamContext)
         throws VitamClientException {
-
         LOGGER.debug("Export DIP by criteria {} ", exportDipCriteriaDto.toString());
-        JsonNode dslQuery = archiveSearchInternalService
-            .prepareDslQuery(exportDipCriteriaDto.getExportDIPSearchCriteria(), vitamContext);
+        JsonNode dslQuery = archiveSearchInternalService.prepareDslQuery(
+            exportDipCriteriaDto.getExportDIPSearchCriteria(),
+            vitamContext
+        );
         LOGGER.debug("Export DIP final DSL query {} ", dslQuery);
 
         DataObjectVersions dataObjectVersionToExport = new DataObjectVersions();

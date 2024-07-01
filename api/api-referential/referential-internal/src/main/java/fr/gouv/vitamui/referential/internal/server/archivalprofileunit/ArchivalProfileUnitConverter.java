@@ -9,13 +9,15 @@ import java.util.stream.Collectors;
 
 public class ArchivalProfileUnitConverter {
 
-
     public ArchiveUnitProfileModel convertDtoToVitam(final ArchivalProfileUnitDto dto) {
         return VitamUIUtils.copyProperties(dto, new ArchiveUnitProfileModel());
     }
 
     public ArchivalProfileUnitDto convertVitamToDto(final ArchiveUnitProfileModel archivalUnitProfile) {
-        ArchivalProfileUnitDto archivalProfileUnitDto = VitamUIUtils.copyProperties(archivalUnitProfile, new ArchivalProfileUnitDto());
+        ArchivalProfileUnitDto archivalProfileUnitDto = VitamUIUtils.copyProperties(
+            archivalUnitProfile,
+            new ArchivalProfileUnitDto()
+        );
         archivalProfileUnitDto.setActivationDate(archivalUnitProfile.getActivationdate());
         archivalProfileUnitDto.setCreationDate(archivalUnitProfile.getCreationdate());
         archivalProfileUnitDto.setDeactivationDate(archivalUnitProfile.getDeactivationdate());
@@ -27,8 +29,9 @@ public class ArchivalProfileUnitConverter {
         return dtos.stream().map(this::convertDtoToVitam).collect(Collectors.toList());
     }
 
-    public List<ArchivalProfileUnitDto> convertVitamsToDtos(final List<ArchiveUnitProfileModel> archiveUnitProfileModels) {
+    public List<ArchivalProfileUnitDto> convertVitamsToDtos(
+        final List<ArchiveUnitProfileModel> archiveUnitProfileModels
+    ) {
         return archiveUnitProfileModels.stream().map(this::convertVitamToDto).collect(Collectors.toList());
     }
-
 }

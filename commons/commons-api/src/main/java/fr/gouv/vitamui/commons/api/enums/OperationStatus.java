@@ -36,13 +36,11 @@
  */
 package fr.gouv.vitamui.commons.api.enums;
 
-import lombok.Getter;
-
 public enum OperationStatus {
     CANCELED,
     WAITING,
     PAUSED,
     RUNNING,
     FAILED,
-    COMPLETED;
+    COMPLETED,
 }

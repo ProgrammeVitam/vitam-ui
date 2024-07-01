@@ -66,29 +66,36 @@ public class IngestExternalWebClient extends BaseWebClient<ExternalHttpContext> 
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(IngestExternalWebClient.class);
 
-
     public IngestExternalWebClient(final WebClient webClient, final String baseUrl) {
         super(webClient, baseUrl);
     }
 
-    public ClientResponse upload(final ExternalHttpContext context, InputStream in, String contextId, String action,
-        final String originalFilename) {
+    public ClientResponse upload(
+        final ExternalHttpContext context,
+        InputStream in,
+        String contextId,
+        String action,
+        final String originalFilename
+    ) {
         LOGGER.debug("[IngestExternalWebClient] upload file :  {}", originalFilename);
         if (in == null) {
             throw new FileOperationException("The uploaded file stream is null.");
         }
 
-        final Path filePath =
-            Paths.get(System.getProperty(CommonConstants.VITAMUI_TEMP_DIRECTORY), context.getRequestId());
+        final Path filePath = Paths.get(
+            System.getProperty(CommonConstants.VITAMUI_TEMP_DIRECTORY),
+            context.getRequestId()
+        );
         int length = 0;
         try {
             length = in.available();
             Files.copy(in, filePath, StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
-            LOGGER
-                .debug("[IngestExternalWebClient] Error writing InputStream of length [{}] to temporary path {}",
-                    length,
-                    filePath.toAbsolutePath());
+            LOGGER.debug(
+                "[IngestExternalWebClient] Error writing InputStream of length [{}] to temporary path {}",
+                length,
+                filePath.toAbsolutePath()
+            );
             throw new BadRequestException("ERROR: InputStream writing error : ", e);
         }
 
@@ -96,11 +103,14 @@ public class IngestExternalWebClient extends BaseWebClient<ExternalHttpContext> 
         headers.add(CommonConstants.X_CONTEXT_ID, contextId);
         headers.add(CommonConstants.X_ACTION, action);
 
-        return multipartDataFromFile(getPathUrl() + CommonConstants.INGEST_UPLOAD, HttpMethod.POST, context,
+        return multipartDataFromFile(
+            getPathUrl() + CommonConstants.INGEST_UPLOAD,
+            HttpMethod.POST,
+            context,
             Optional.of(new AbstractMap.SimpleEntry<>(CommonConstants.MULTIPART_FILE_PARAM_NAME, filePath)),
-            headers);
+            headers
+        );
     }
-
 
     @Override
     public String getPathUrl() {

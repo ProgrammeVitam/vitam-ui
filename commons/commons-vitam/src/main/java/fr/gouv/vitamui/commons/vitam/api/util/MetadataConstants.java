@@ -104,6 +104,5 @@ public abstract class MetadataConstants {
 
     public static final String PHYSICAL_STATUS = "PhysicalStatus";
 
-    private MetadataConstants() {
-    }
+    private MetadataConstants() {}
 }

@@ -42,7 +42,6 @@ package fr.gouv.vitamui.commons.api.logger;
  *
  */
 public interface VitamUILogger {
-
     /**
      * Return the name of this <code>Logger</code> instance.
      *
@@ -95,7 +94,7 @@ public interface VitamUILogger {
      *            the first argument
      * @param arg2
      *            the second argument
- *
+     *
      */
     public void trace(String format, Object arg1, Object arg2);
 
@@ -445,5 +444,4 @@ public interface VitamUILogger {
      *            the exception (throwable) to log
      */
     public void error(String msg, Throwable t);
-
 }

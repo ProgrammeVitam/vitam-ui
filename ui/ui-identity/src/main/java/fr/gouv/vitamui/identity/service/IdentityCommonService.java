@@ -36,12 +36,11 @@
  */
 package fr.gouv.vitamui.identity.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.ui.commons.property.UIProperties;
 import fr.gouv.vitamui.ui.commons.service.CommonService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @Service("commonService")
 public class IdentityCommonService extends CommonService {
@@ -63,5 +62,4 @@ public class IdentityCommonService extends CommonService {
         ParameterChecker.checkPagination(pageSize, pageNum);
         return Math.min(pageSize, uiProperties.getLimitPagination());
     }
-
 }

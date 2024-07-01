@@ -42,5 +42,4 @@ import springfox.documentation.annotations.ApiIgnore;
 
 @RestController
 @ApiIgnore
-public class ApiErrorController extends BaseApiErrorController {
-}
+public class ApiErrorController extends BaseApiErrorController {}

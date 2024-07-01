@@ -67,8 +67,9 @@ import java.util.Optional;
 @RequestMapping(RestApi.ACCESSION_REGISTER_URL)
 public class AccessionRegisterInternalController {
 
-    private static final VitamUILogger LOGGER =
-        VitamUILoggerFactory.getInstance(AccessionRegisterInternalController.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
+        AccessionRegisterInternalController.class
+    );
 
     private final AccessionRegisterInternalService detailInternalService;
 
@@ -76,45 +77,62 @@ public class AccessionRegisterInternalController {
 
     public AccessionRegisterInternalController(
         AccessionRegisterInternalService accessionRegisterInternalService,
-        InternalSecurityService securityService) {
+        InternalSecurityService securityService
+    ) {
         this.detailInternalService = accessionRegisterInternalService;
         this.securityService = securityService;
     }
 
     @GetMapping("/summary")
-    public Collection<AccessionRegisterSummaryDto> getAll(@RequestParam final Optional<String> criteria,
-        @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) String accessContractId) {
+    public Collection<AccessionRegisterSummaryDto> getAll(
+        @RequestParam final Optional<String> criteria,
+        @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) String accessContractId
+    ) {
         LOGGER.debug("get all customer criteria={}", criteria);
         SanityChecker.sanitizeCriteria(criteria);
-        final VitamContext vitamContext =
-            securityService.buildVitamContext(securityService.getTenantIdentifier(), accessContractId);
+        final VitamContext vitamContext = securityService.buildVitamContext(
+            securityService.getTenantIdentifier(),
+            accessContractId
+        );
         return detailInternalService.getAll(vitamContext);
     }
 
-    @GetMapping(value = RestApi.DETAILS, params = {"page", "size"})
+    @GetMapping(value = RestApi.DETAILS, params = { "page", "size" })
     public PaginatedValuesDto<AccessionRegisterDetailDto> getAllPaginated(
         @RequestParam final Integer page,
         @RequestParam final Integer size,
         @RequestParam(required = false) final Optional<String> criteria,
         @RequestParam(required = false) final Optional<String> orderBy,
-        @RequestParam(required = false) final Optional<DirectionDto> direction) {
-        LOGGER.debug("getPaginateEntities accession registers page={}, size={}, orderBy={}, direction={}, criteria={}",
-            page, size, orderBy, direction, criteria);
+        @RequestParam(required = false) final Optional<DirectionDto> direction
+    ) {
+        LOGGER.debug(
+            "getPaginateEntities accession registers page={}, size={}, orderBy={}, direction={}, criteria={}",
+            page,
+            size,
+            orderBy,
+            direction,
+            criteria
+        );
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
-        return detailInternalService.getAllPaginated(criteria, page, size,
-            orderBy.orElse(null), direction.orElse(null),
-            vitamContext);
+        return detailInternalService.getAllPaginated(
+            criteria,
+            page,
+            size,
+            orderBy.orElse(null),
+            direction.orElse(null),
+            vitamContext
+        );
     }
 
     @PostMapping(RestApi.DETAILS_EXPORT_CSV)
     public ResponseEntity<Resource> exportCsvArchiveUnitsByCriteria(
         @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) final Integer tenantId,
         @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) final String accessContractId,
-        @RequestBody final AccessionRegisterSearchDto searchQuery) {
+        @RequestBody final AccessionRegisterSearchDto searchQuery
+    ) {
         LOGGER.info("Export to CSV of accession register details {}", searchQuery);
         final VitamContext vitamContext = securityService.buildVitamContext(tenantId, accessContractId);
         Resource exportedResult = detailInternalService.exportToCsvAccessionRegister(searchQuery, vitamContext);
         return new ResponseEntity<>(exportedResult, HttpStatus.OK);
     }
-
 }

@@ -96,7 +96,7 @@ public class RuleExternalController {
         this.ruleExternalService = ruleExternalService;
     }
 
-    @GetMapping()
+    @GetMapping
     @Secured(ServicesData.ROLE_GET_RULES)
     public Collection<RuleDto> getAll(final Optional<String> criteria) {
         LOGGER.debug("get all rules criteria={}", criteria);
@@ -106,21 +106,31 @@ public class RuleExternalController {
 
     @Secured(ServicesData.ROLE_GET_RULES)
     @GetMapping(params = { "page", "size" })
-    public PaginatedValuesDto<RuleDto> getAllPaginated(@RequestParam final Integer page, @RequestParam final Integer size,
-            @RequestParam(required = false) final Optional<String> criteria, @RequestParam(required = false) final Optional<String> orderBy,
-            @RequestParam(required = false) final Optional<DirectionDto> direction)
-        throws InvalidParseOperationException, PreconditionFailedException {
-        if(orderBy.isPresent()) {
+    public PaginatedValuesDto<RuleDto> getAllPaginated(
+        @RequestParam final Integer page,
+        @RequestParam final Integer size,
+        @RequestParam(required = false) final Optional<String> criteria,
+        @RequestParam(required = false) final Optional<String> orderBy,
+        @RequestParam(required = false) final Optional<DirectionDto> direction
+    ) throws InvalidParseOperationException, PreconditionFailedException {
+        if (orderBy.isPresent()) {
             SanityChecker.checkSecureParameter(orderBy.get());
         }
         SanityChecker.sanitizeCriteria(criteria);
-        LOGGER.debug("getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, orderBy, direction);
+        LOGGER.debug(
+            "getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}",
+            page,
+            size,
+            orderBy,
+            direction
+        );
         return ruleExternalService.getAllPaginated(page, size, criteria, orderBy, direction);
     }
 
     @Secured(ServicesData.ROLE_GET_RULES)
     @GetMapping(path = RestApi.PATH_REFERENTIAL_ID)
-    public RuleDto getOne(final @PathVariable("identifier") String identifier) throws InvalidParseOperationException, PreconditionFailedException {
+    public RuleDto getOne(final @PathVariable("identifier") String identifier)
+        throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter(IDENTIFIER_MANDATORY_MESSAGE, identifier);
         SanityChecker.checkSecureParameter(identifier);
         LOGGER.debug("get rule identifier={}");
@@ -129,8 +139,10 @@ public class RuleExternalController {
 
     @Secured({ ServicesData.ROLE_GET_RULES })
     @PostMapping(CommonConstants.PATH_CHECK)
-    public ResponseEntity<Void> check(@RequestBody RuleDto ruleDto, @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant)
-        throws InvalidParseOperationException, PreconditionFailedException {
+    public ResponseEntity<Void> check(
+        @RequestBody RuleDto ruleDto,
+        @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant
+    ) throws InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.sanitizeCriteria(ruleDto);
         LOGGER.debug("check exist accessContract={}", ruleDto);
         final boolean exist = ruleExternalService.check(ruleDto);
@@ -145,29 +157,29 @@ public class RuleExternalController {
         ParameterChecker.checkParameter(IDENTIFIER_MANDATORY_MESSAGE, ruleDto);
         SanityChecker.sanitizeCriteria(ruleDto);
         LOGGER.debug("Create {}", ruleDto);
-        return RestUtils.buildBooleanResponse(
-        		ruleExternalService.createRule(ruleDto)
-        );
+        return RestUtils.buildBooleanResponse(ruleExternalService.createRule(ruleDto));
     }
 
     @PatchMapping(CommonConstants.PATH_ID)
     @Secured(ServicesData.ROLE_UPDATE_RULES)
-    public ResponseEntity<Void> patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto)
-        throws InvalidParseOperationException, PreconditionFailedException  {
-
+    public ResponseEntity<Void> patch(
+        final @PathVariable("id") String id,
+        @RequestBody final Map<String, Object> partialDto
+    ) throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter(IDENTIFIER_MANDATORY_MESSAGE, id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Patch {} with {}", id, partialDto);
-        Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "The DTO identifier must match the path identifier for update.");
-        return RestUtils.buildBooleanResponse(
-        		ruleExternalService.patchRule(id, partialDto)
+        Assert.isTrue(
+            StringUtils.equals(id, (String) partialDto.get("id")),
+            "The DTO identifier must match the path identifier for update."
         );
+        return RestUtils.buildBooleanResponse(ruleExternalService.patchRule(id, partialDto));
     }
 
     @Secured(ServicesData.ROLE_GET_RULES)
     @GetMapping("/{id}/history")
-    public JsonNode findHistoryById(final @PathVariable("id") String id) throws InvalidParseOperationException, PreconditionFailedException {
-
+    public JsonNode findHistoryById(final @PathVariable("id") String id)
+        throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter(IDENTIFIER_MANDATORY_MESSAGE, id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("get logbook for accessContract with id :{}", id);
@@ -176,13 +188,12 @@ public class RuleExternalController {
 
     @Secured(ServicesData.ROLE_DELETE_RULES)
     @DeleteMapping(CommonConstants.PATH_ID)
-    public ResponseEntity<Void> delete(final @PathVariable("id") String id) throws InvalidParseOperationException, PreconditionFailedException {
+    public ResponseEntity<Void> delete(final @PathVariable("id") String id)
+        throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter(IDENTIFIER_MANDATORY_MESSAGE, id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Delete rule with id :{}", id);
-        return RestUtils.buildBooleanResponse(
-        	ruleExternalService.deleteRule(id)
-        );
+        return RestUtils.buildBooleanResponse(ruleExternalService.deleteRule(id));
     }
 
     @Secured(ServicesData.ROLE_GET_RULES)
@@ -200,7 +211,7 @@ public class RuleExternalController {
     @Secured(ServicesData.ROLE_IMPORT_RULES)
     @PostMapping(CommonConstants.PATH_IMPORT)
     public JsonNode importRules(@RequestParam("fileName") String fileName, @RequestParam("file") MultipartFile file) {
-        if(file != null) {
+        if (file != null) {
             SafeFileChecker.checkSafeFilePath(file.getOriginalFilename());
             SanityChecker.isValidFileName(file.getOriginalFilename());
         }

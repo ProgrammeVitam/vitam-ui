@@ -92,7 +92,8 @@ public class UserController extends AbstractUiRestController {
     @ApiOperation(value = "Get entity")
     @GetMapping(CommonConstants.PATH_ID)
     @ResponseStatus(HttpStatus.OK)
-    public UserDto getOne(final @PathVariable String id) throws InvalidParseOperationException, PreconditionFailedException {
+    public UserDto getOne(final @PathVariable String id)
+        throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Get user={}", id);
@@ -108,8 +109,8 @@ public class UserController extends AbstractUiRestController {
     @ApiOperation(value = "Update entity")
     @PutMapping(CommonConstants.PATH_ID)
     @ResponseStatus(HttpStatus.OK)
-    public UserDto update(@RequestBody final UserDto userDto) throws InvalidParseOperationException, PreconditionFailedException {
-
+    public UserDto update(@RequestBody final UserDto userDto)
+        throws InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.sanitizeCriteria(userDto);
         LOGGER.debug("update user {}", userDto.getId());
         return service.update(buildUiHttpContext(), userDto);
@@ -124,8 +125,8 @@ public class UserController extends AbstractUiRestController {
     @ApiOperation(value = "Create entity")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public UserDto create(@RequestBody final UserDto dto) throws InvalidParseOperationException, PreconditionFailedException {
-
+    public UserDto create(@RequestBody final UserDto dto)
+        throws InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.sanitizeCriteria(dto);
         LOGGER.debug("create user = {}", dto.getEmail());
         return service.create(buildUiHttpContext(), dto);
@@ -143,18 +144,27 @@ public class UserController extends AbstractUiRestController {
     @ApiOperation(value = "Find users by customer")
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public PaginatedValuesDto<UserDto> getAllPaginated(@RequestParam final Integer page, @RequestParam final Optional<String> criteria,
-            @RequestParam final Integer size, @RequestParam final Optional<String> orderBy, @RequestParam final Optional<DirectionDto> direction)
-        throws InvalidParseOperationException, PreconditionFailedException {
-
+    public PaginatedValuesDto<UserDto> getAllPaginated(
+        @RequestParam final Integer page,
+        @RequestParam final Optional<String> criteria,
+        @RequestParam final Integer size,
+        @RequestParam final Optional<String> orderBy,
+        @RequestParam final Optional<DirectionDto> direction
+    ) throws InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.sanitizeCriteria(criteria);
-        if(direction.isPresent()) {
+        if (direction.isPresent()) {
             SanityChecker.sanitizeCriteria(direction.get());
         }
-        if(orderBy.isPresent()) {
+        if (orderBy.isPresent()) {
             SanityChecker.checkSecureParameter(orderBy.get());
         }
-        LOGGER.debug("getAllPaginated page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, orderBy, direction);
+        LOGGER.debug(
+            "getAllPaginated page={}, size={}, criteria={}, orderBy={}, ascendant={}",
+            page,
+            size,
+            orderBy,
+            direction
+        );
         return service.getAllPaginated(page, size, criteria, orderBy, direction, buildUiHttpContext());
     }
 
@@ -163,11 +173,13 @@ public class UserController extends AbstractUiRestController {
     @ResponseStatus(HttpStatus.OK)
     public UserDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto)
         throws InvalidParseOperationException, PreconditionFailedException {
-
         SanityChecker.checkSecureParameter(id);
         SanityChecker.sanitizeCriteria(partialDto);
         LOGGER.debug("Patch User {} with {}", id, partialDto);
-        Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "Unable to patch user : the DTO id must match the path id.");
+        Assert.isTrue(
+            StringUtils.equals(id, (String) partialDto.get("id")),
+            "Unable to patch user : the DTO id must match the path id."
+        );
         return service.patch(buildUiHttpContext(), partialDto, id);
     }
 
@@ -181,7 +193,6 @@ public class UserController extends AbstractUiRestController {
     @RequestMapping(path = CommonConstants.PATH_CHECK, method = RequestMethod.HEAD)
     public ResponseEntity<Void> checkExistByParams(@RequestParam final String criteria)
         throws InvalidParseOperationException, PreconditionFailedException {
-
         SanityChecker.sanitizeCriteria(Optional.of(criteria));
         SanityChecker.sanitizeCriteria(criteria);
         LOGGER.debug("check exist by criteria={}", criteria);
@@ -194,7 +205,6 @@ public class UserController extends AbstractUiRestController {
     @GetMapping(CommonConstants.PATH_LOGBOOK)
     public LogbookOperationsResponseDto findHistoryById(final @PathVariable String id)
         throws InvalidParseOperationException, PreconditionFailedException {
-
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("get logbook for users with id :{}", id);
         return service.findHistoryById(buildUiHttpContext(), id);
@@ -206,8 +216,8 @@ public class UserController extends AbstractUiRestController {
      * @return List of matching levels
      */
     @GetMapping(CommonConstants.PATH_LEVELS)
-    public List<String> getLevels(final Optional<String> criteria) throws InvalidParseOperationException, PreconditionFailedException {
-
+    public List<String> getLevels(final Optional<String> criteria)
+        throws InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.sanitizeCriteria(criteria);
         LOGGER.debug("Get levels with criteria={}", criteria);
         return service.getLevels(buildUiHttpContext(), criteria);

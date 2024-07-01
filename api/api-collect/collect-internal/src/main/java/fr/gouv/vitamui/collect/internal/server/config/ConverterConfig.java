@@ -33,10 +33,8 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class ConverterConfig {
 
-
     @Bean
     public SearchCriteriaHistoryConverter searchCriteriaHistoryConverter() {
         return new SearchCriteriaHistoryConverter();
     }
-
 }

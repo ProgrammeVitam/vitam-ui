@@ -38,6 +38,4 @@ package fr.gouv.vitamui.commons.vitam.api.dto;
 
 import fr.gouv.vitam.common.model.administration.FileRulesModel;
 
-public class RuleNodeResponseDto extends AbstractVitamUIResponseDto<FileRulesModel> {
-
-}
+public class RuleNodeResponseDto extends AbstractVitamUIResponseDto<FileRulesModel> {}

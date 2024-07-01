@@ -1,16 +1,15 @@
 package fr.gouv.vitamui.commons.api.domain;
 
-import java.io.Serializable;
-import java.util.Optional;
-
-import javax.validation.constraints.NotNull;
-
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+
+import javax.validation.constraints.NotNull;
+import java.io.Serializable;
+import java.util.Optional;
 
 /**
  * Request Param Dto.
@@ -36,5 +35,4 @@ public class RequestParamDto implements Serializable {
     private Optional<DirectionDto> direction;
 
     private Optional<RequestParamGroupDto> groups;
-
 }

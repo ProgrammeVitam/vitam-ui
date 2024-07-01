@@ -36,24 +36,7 @@
  */
 package fr.gouv.vitamui.identity.service;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.*;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ByteArrayResource;
-import org.springframework.stereotype.Service;
-import org.springframework.util.Assert;
-import org.springframework.web.multipart.MultipartFile;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import fr.gouv.vitamui.commons.api.exception.InvalidFormatException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
@@ -67,6 +50,20 @@ import fr.gouv.vitamui.iam.external.client.IamExternalRestClientFactory;
 import fr.gouv.vitamui.iam.external.client.IdentityProviderExternalRestClient;
 import fr.gouv.vitamui.identity.domain.dto.ProviderPatchType;
 import fr.gouv.vitamui.ui.commons.service.AbstractCrudService;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -85,7 +82,11 @@ public class ProviderService extends AbstractCrudService<IdentityProviderDto> {
     static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(OwnerService.class);
 
     @Override
-    public Collection<IdentityProviderDto> getAll(final ExternalHttpContext context, final Optional<String> criteria, final Optional<String> embedded) {
+    public Collection<IdentityProviderDto> getAll(
+        final ExternalHttpContext context,
+        final Optional<String> criteria,
+        final Optional<String> embedded
+    ) {
         return super.getAll(context, criteria, embedded);
     }
 
@@ -119,24 +120,30 @@ public class ProviderService extends AbstractCrudService<IdentityProviderDto> {
      * @param patchType
      * @return
      */
-    public IdentityProviderDto patch(final ExternalHttpContext c, final Map<String, Object> partialDto, final MultipartFile keystore,
-            final MultipartFile idpMetadata, final String id, final ProviderPatchType patchType) {
+    public IdentityProviderDto patch(
+        final ExternalHttpContext c,
+        final Map<String, Object> partialDto,
+        final MultipartFile keystore,
+        final MultipartFile idpMetadata,
+        final String id,
+        final ProviderPatchType patchType
+    ) {
         beforePatch(partialDto, keystore, idpMetadata, id, patchType);
         Optional<String> embedded = Optional.empty();
         switch (patchType) {
-            case JSON :
+            case JSON:
                 break;
-            case KEYSTORE :
+            case KEYSTORE:
                 final String keystoreBase64 = getKeystoreBase64(keystore);
                 partialDto.put("keystoreBase64", keystoreBase64);
                 embedded = IamUtils.buildOptionalEmbedded(ProviderEmbeddedOptions.KEYSTORE);
                 break;
-            case IDPMETADATA :
+            case IDPMETADATA:
                 final String idpMetadataFormatter = getIdpMetadata(idpMetadata);
                 partialDto.put("idpMetadata", idpMetadataFormatter);
                 embedded = IamUtils.buildOptionalEmbedded(ProviderEmbeddedOptions.IDPMETADATA);
                 break;
-            default :
+            default:
                 break;
         }
         return convertDtoFromApi(super.patch(c, partialDto, id));
@@ -146,8 +153,7 @@ public class ProviderService extends AbstractCrudService<IdentityProviderDto> {
         try (final InputStream isIdpMeta = idpMetadata.getInputStream()) {
             final String idpMeta = IOUtils.toString(isIdpMeta);
             return idpMeta;
-        }
-        catch (final IOException e) {
+        } catch (final IOException e) {
             throw new InvalidFormatException("IdpMetadata is unreadable");
         }
     }
@@ -157,25 +163,32 @@ public class ProviderService extends AbstractCrudService<IdentityProviderDto> {
             final byte[] keystore = IOUtils.toByteArray(isKeystore);
             final String keystoreBase64 = new String(Base64.getEncoder().encode(keystore), "UTF-8");
             return keystoreBase64;
-        }
-        catch (final IOException e) {
+        } catch (final IOException e) {
             throw new InvalidFormatException("Keystore is unreadable");
         }
     }
 
-    protected void beforePatch(final Map<String, Object> partialDto, final MultipartFile keystore, final MultipartFile idpMetadata, final String id,
-            final ProviderPatchType patchType) {
+    protected void beforePatch(
+        final Map<String, Object> partialDto,
+        final MultipartFile keystore,
+        final MultipartFile idpMetadata,
+        final String id,
+        final ProviderPatchType patchType
+    ) {
         super.beforePatch(partialDto, id);
         switch (patchType) {
-            case JSON :
+            case JSON:
                 break;
-            case KEYSTORE :
-                Assert.isTrue(StringUtils.isNotEmpty((String) partialDto.get("keystorePassword")) && !keystore.isEmpty(), "The keystorePassword is missing");
+            case KEYSTORE:
+                Assert.isTrue(
+                    StringUtils.isNotEmpty((String) partialDto.get("keystorePassword")) && !keystore.isEmpty(),
+                    "The keystorePassword is missing"
+                );
                 break;
-            case IDPMETADATA :
+            case IDPMETADATA:
                 Assert.isTrue(!idpMetadata.isEmpty(), "idpMetadata is missing");
                 break;
-            default :
+            default:
                 break;
         }
     }
@@ -205,13 +218,40 @@ public class ProviderService extends AbstractCrudService<IdentityProviderDto> {
         return apiDto.stream().map(dto -> convertDtoFromApi(dto)).collect(Collectors.toList());
     }
 
-    public IdentityProviderDto create(final ExternalHttpContext c, final MultipartFile keystore, final MultipartFile idpMetadata, final String provider)
-            throws Exception {
+    public IdentityProviderDto create(
+        final ExternalHttpContext c,
+        final MultipartFile keystore,
+        final MultipartFile idpMetadata,
+        final String provider
+    ) throws Exception {
         IdentityProviderDto dto = new ObjectMapper().readValue(provider, IdentityProviderDto.class);
-        final IdentityProviderBuilder builder = new IdentityProviderBuilder(dto.getName(), dto.getTechnicalName(), dto.getEnabled(), dto.getInternal(),
-                dto.getPatterns(), Objects.nonNull(keystore)?new ByteArrayResource(keystore.getBytes()):null, dto.getKeystorePassword(), dto.getPrivateKeyPassword(),
-            Objects.nonNull(idpMetadata)?new ByteArrayResource(idpMetadata.getBytes()):null, dto.getCustomerId(), dto.isReadonly(), dto.getMailAttribute(), dto.getIdentifierAttribute(), dto.getAuthnRequestBinding(), dto.isAutoProvisioningEnabled(),dto.getClientId(),
-            dto.getClientSecret(),dto.getDiscoveryUrl(), dto.getScope(),dto.getPreferredJwsAlgorithm(),dto.getCustomParams(),dto.getUseState(),dto.getUseNonce(),dto.getUsePkce(), dto.getProtocoleType());
+        final IdentityProviderBuilder builder = new IdentityProviderBuilder(
+            dto.getName(),
+            dto.getTechnicalName(),
+            dto.getEnabled(),
+            dto.getInternal(),
+            dto.getPatterns(),
+            Objects.nonNull(keystore) ? new ByteArrayResource(keystore.getBytes()) : null,
+            dto.getKeystorePassword(),
+            dto.getPrivateKeyPassword(),
+            Objects.nonNull(idpMetadata) ? new ByteArrayResource(idpMetadata.getBytes()) : null,
+            dto.getCustomerId(),
+            dto.isReadonly(),
+            dto.getMailAttribute(),
+            dto.getIdentifierAttribute(),
+            dto.getAuthnRequestBinding(),
+            dto.isAutoProvisioningEnabled(),
+            dto.getClientId(),
+            dto.getClientSecret(),
+            dto.getDiscoveryUrl(),
+            dto.getScope(),
+            dto.getPreferredJwsAlgorithm(),
+            dto.getCustomParams(),
+            dto.getUseState(),
+            dto.getUseNonce(),
+            dto.getUsePkce(),
+            dto.getProtocoleType()
+        );
         dto = builder.build();
         return getClient().create(c, dto);
     }

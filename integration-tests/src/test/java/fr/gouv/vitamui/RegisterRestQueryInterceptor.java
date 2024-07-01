@@ -40,8 +40,11 @@ public class RegisterRestQueryInterceptor implements ClientHttpRequestIntercepto
     }
 
     @Override
-    public ClientHttpResponse intercept(final HttpRequest request, final byte[] body,
-            final ClientHttpRequestExecution execution) throws IOException {
+    public ClientHttpResponse intercept(
+        final HttpRequest request,
+        final byte[] body,
+        final ClientHttpRequestExecution execution
+    ) throws IOException {
         logRequest(request, body);
         final ClientHttpResponse response = execution.execute(request, body);
         logErrorResponse(request, response);
@@ -51,26 +54,37 @@ public class RegisterRestQueryInterceptor implements ClientHttpRequestIntercepto
     }
 
     private void registerForSerenity(final HttpRequest request, final byte[] body, final ClientHttpResponse response)
-            throws IOException {
+        throws IOException {
         final String jsonResponse = StreamUtils.copyToString(response.getBody(), Charset.defaultCharset());
 
         final RestQuery query = new RestQuery(TO_REST_METHOD.get(request.getMethodValue()), request.getURI().toString())
-                .withRequestHeaders(request.getHeaders().toString()).withContent(new String(body, "UTF-8"))
-                .withResponseHeaders(response.getHeaders().toString()).withResponse(jsonResponse);
+            .withRequestHeaders(request.getHeaders().toString())
+            .withContent(new String(body, "UTF-8"))
+            .withResponseHeaders(response.getHeaders().toString())
+            .withResponse(jsonResponse);
 
         StepEventBus.getEventBus().getBaseStepListener().recordRestQuery(query);
     }
 
     private void logRequest(final HttpRequest request, final byte[] body) throws IOException {
-        LOGGER.debug("Request URI : {}, Method : {}, Headers : {}, Request body : {}", request.getURI(),
-                request.getMethod(), request.getHeaders(), new String(body, "UTF-8"));
-
+        LOGGER.debug(
+            "Request URI : {}, Method : {}, Headers : {}, Request body : {}",
+            request.getURI(),
+            request.getMethod(),
+            request.getHeaders(),
+            new String(body, "UTF-8")
+        );
     }
 
     private void logErrorResponse(final HttpRequest request, final ClientHttpResponse response) throws IOException {
-        final StringBuilder builder = new StringBuilder("Received \"").append(response.getRawStatusCode()).append(" ")
-                .append(response.getStatusText()).append("\" response for ").append(request.getMethod())
-                .append(" request to ").append(request.getURI());
+        final StringBuilder builder = new StringBuilder("Received \"")
+            .append(response.getRawStatusCode())
+            .append(" ")
+            .append(response.getStatusText())
+            .append("\" response for ")
+            .append(request.getMethod())
+            .append(" request to ")
+            .append(request.getURI());
         final HttpHeaders responseHeaders = response.getHeaders();
         final long contentLength = responseHeaders.getContentLength();
         if (contentLength != 0) {
@@ -99,22 +113,42 @@ public class RegisterRestQueryInterceptor implements ClientHttpRequestIntercepto
                 // on HEAD requests, we don't have a body
                 if (request.getMethod() != HttpMethod.HEAD) {
                     error = mapper.readValue(res, VitamUIError.class);
-                    LOGGER.debug("Response Status code : {}, Status text : {}, Headers : {}, Response body: {} !!! {}",
-                            response.getStatusCode(), response.getStatusText(), response.getHeaders(),
-                            builder.toString(), error);
+                    LOGGER.debug(
+                        "Response Status code : {}, Status text : {}, Headers : {}, Response body: {} !!! {}",
+                        response.getStatusCode(),
+                        response.getStatusText(),
+                        response.getHeaders(),
+                        builder.toString(),
+                        error
+                    );
                 } else {
-                    LOGGER.debug("Response Status code : {}, Status text : {}, Headers : {}", response.getStatusCode(),
-                            response.getStatusText(), response.getHeaders());
+                    LOGGER.debug(
+                        "Response Status code : {}, Status text : {}, Headers : {}",
+                        response.getStatusCode(),
+                        response.getStatusText(),
+                        response.getHeaders()
+                    );
                 }
-            }
-            catch (final Exception ex) {
-                LOGGER.error("Response Status code : {}, Status text : {}, Headers : {}, Response body: {} !!! {} !!! {}",
-                        response.getStatusCode(), response.getStatusText(), response.getHeaders(), builder.toString(),
-                        StreamUtils.copyToString(response.getBody(), Charset.defaultCharset()), ex);
+            } catch (final Exception ex) {
+                LOGGER.error(
+                    "Response Status code : {}, Status text : {}, Headers : {}, Response body: {} !!! {} !!! {}",
+                    response.getStatusCode(),
+                    response.getStatusText(),
+                    response.getHeaders(),
+                    builder.toString(),
+                    StreamUtils.copyToString(response.getBody(), Charset.defaultCharset()),
+                    ex
+                );
             }
         } else {
-            LOGGER.debug("Response Status code : {}, Status text : {}, Headers : {}, Response body: {} !!! {}",
-                    response.getStatusCode(), response.getStatusText(), response.getHeaders(), builder.toString(), res);
+            LOGGER.debug(
+                "Response Status code : {}, Status text : {}, Headers : {}, Response body: {} !!! {}",
+                response.getStatusCode(),
+                response.getStatusText(),
+                response.getHeaders(),
+                builder.toString(),
+                res
+            );
         }
     }
 
@@ -126,8 +160,12 @@ public class RegisterRestQueryInterceptor implements ClientHttpRequestIntercepto
             }
             final String subtype = contentType.getSubtype();
             if (subtype != null) {
-                return "xml".equals(subtype) || "json".equals(subtype) || subtype.endsWith("+xml")
-                        || subtype.endsWith("+json");
+                return (
+                    "xml".equals(subtype) ||
+                    "json".equals(subtype) ||
+                    subtype.endsWith("+xml") ||
+                    subtype.endsWith("+json")
+                );
             }
         }
         return false;
@@ -141,12 +179,10 @@ public class RegisterRestQueryInterceptor implements ClientHttpRequestIntercepto
                 if (charSet != null) {
                     return charSet;
                 }
-            }
-            catch (final UnsupportedCharsetException e) {
+            } catch (final UnsupportedCharsetException e) {
                 // ignore
             }
         }
         return StandardCharsets.UTF_8;
     }
-
 }

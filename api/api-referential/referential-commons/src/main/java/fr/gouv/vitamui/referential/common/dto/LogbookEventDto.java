@@ -81,5 +81,4 @@ public class LogbookEventDto extends IdDto implements Serializable {
     private String agIdExt;
 
     private String rightsStatementIdentifier;
-
 }

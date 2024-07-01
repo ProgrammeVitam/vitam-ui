@@ -31,29 +31,41 @@ class OperationInternalServiceTest {
     AuditOptions auditOptions;
     String inputJsonConsistensy = "audit/AUDIT_FILE_CONSISTENCY.json";
     String inputJsonExistance = "audit/AUDIT_FILE_EXISTING.json";
+
     @Mock
     private OperationInternalService operationInternalService;
+
     @Mock
     private OperationService operationService;
+
     @Mock
     private LogbookService logbookService;
+
     @Mock
     private ExternalParametersService externalParametersService;
+
     public static final String DSL_QUERY_PROJECTION = "$projection";
-    final private String AUDIT_FILE_CONSISTENCY = "AUDIT_FILE_CONSISTENCY";
-    final private String AUDIT_FILE_EXISTING = "AUDIT_FILE_EXISTING";
+    private final String AUDIT_FILE_CONSISTENCY = "AUDIT_FILE_CONSISTENCY";
+    private final String AUDIT_FILE_EXISTING = "AUDIT_FILE_EXISTING";
+
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
-        operationService=mock(OperationService.class);
-        logbookService=mock(LogbookService.class);
-        externalParametersService=mock(ExternalParametersService.class);
+        operationService = mock(OperationService.class);
+        logbookService = mock(LogbookService.class);
+        externalParametersService = mock(ExternalParametersService.class);
         objectMapper = new ObjectMapper();
         objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-        operationInternalService = new OperationInternalService(operationService,logbookService,objectMapper,externalParametersService);
+        operationInternalService = new OperationInternalService(
+            operationService,
+            logbookService,
+            objectMapper,
+            externalParametersService
+        );
         auditOptions = new AuditOptions();
         ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
     }
+
     @Test
     void updateAuditDslQuery_should_handle_dsl_types() throws JsonProcessingException, FileNotFoundException {
         //AuditType ko
@@ -63,24 +75,25 @@ class OperationInternalServiceTest {
         auditOptions.setQuery(dslQuery);
         //set unexpected threshold
         assertThatCode(() -> operationInternalService.updateAuditDslQuery(auditOptions, Optional.empty()))
-            .isInstanceOf(BadRequestException.class).hasMessageContaining("Invalid audit query");
+            .isInstanceOf(BadRequestException.class)
+            .hasMessageContaining("Invalid audit query");
 
         //set right AuditType ok
         auditOptions.setAuditType("dsl");
         auditOptions.setAuditActions(AUDIT_FILE_CONSISTENCY);
         //load query
         assertThatCode(() -> operationInternalService.updateAuditDslQuery(auditOptions, null))
-            .isInstanceOf(BadRequestException.class).hasMessageContaining("Invalid audit query");
+            .isInstanceOf(BadRequestException.class)
+            .hasMessageContaining("Invalid audit query");
 
         //check expected threshold
-        assertThatCode(() -> operationInternalService.updateAuditDslQuery(auditOptions, Optional.empty()))
-        .doesNotThrowAnyException();
-
-
+        assertThatCode(
+            () -> operationInternalService.updateAuditDslQuery(auditOptions, Optional.empty())
+        ).doesNotThrowAnyException();
     }
+
     @Test
     void updateAuditDslQuery_should_handle_dsl_attributes() throws JsonProcessingException, FileNotFoundException {
-
         //check that dsl shoud not include projection
         String jsonWrongDslQuery = PropertiesUtils.getResourceAsString(inputJsonExistance).trim();
         JsonNode wrongDslQuery = objectMapper.readTree(jsonWrongDslQuery);
@@ -98,9 +111,7 @@ class OperationInternalServiceTest {
         Assertions.assertTrue(containsAttribute(auditOptions.getQuery(), DSL_QUERY_PROJECTION));
     }
 
-
-
-    public boolean containsAttribute(JsonNode query, String attr){
+    public boolean containsAttribute(JsonNode query, String attr) {
         return query.findValue(attr) != null;
     }
 }

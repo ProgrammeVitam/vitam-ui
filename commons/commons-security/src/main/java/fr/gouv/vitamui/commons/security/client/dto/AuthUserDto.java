@@ -93,8 +93,7 @@ public class AuthUserDto extends UserDto implements UserDetails {
 
     private BasicCustomerDto basicCustomer;
 
-    public AuthUserDto() {
-    }
+    public AuthUserDto() {}
 
     public AuthUserDto(final UserDto user) {
         setId(user.getId());
@@ -173,93 +172,93 @@ public class AuthUserDto extends UserDto implements UserDetails {
                     case READONLY_ATTRIBUTE:
                         setReadonly(Boolean.parseBoolean((String) value));
                         break;
-                    case USER_ID_ATTRIBUTE :
+                    case USER_ID_ATTRIBUTE:
                         setId((String) value);
                         break;
-                    case CUSTOMER_ID_ATTRIBUTE :
+                    case CUSTOMER_ID_ATTRIBUTE:
                         setCustomerId((String) value);
                         break;
-                    case CUSTOMER_IDENTIFIER_ATTRIBUTE :
+                    case CUSTOMER_IDENTIFIER_ATTRIBUTE:
                         setCustomerIdentifier((String) value);
                         break;
-                    case BASIC_CUSTOMER_ATTRIBUTE :
-                        setBasicCustomer((BasicCustomerDto) parseJson(value, new TypeReference<BasicCustomerDto>() {
-                        }));
+                    case BASIC_CUSTOMER_ATTRIBUTE:
+                        setBasicCustomer((BasicCustomerDto) parseJson(value, new TypeReference<BasicCustomerDto>() {}));
                         break;
-                    case EMAIL_ATTRIBUTE :
+                    case EMAIL_ATTRIBUTE:
                         setEmail((String) value);
                         break;
-                    case FIRSTNAME_ATTRIBUTE :
+                    case FIRSTNAME_ATTRIBUTE:
                         setFirstname((String) value);
                         break;
-                    case LASTNAME_ATTRIBUTE :
+                    case LASTNAME_ATTRIBUTE:
                         setLastname((String) value);
                         break;
-                    case IDENTIFIER_ATTRIBUTE :
+                    case IDENTIFIER_ATTRIBUTE:
                         setIdentifier((String) value);
                         break;
-                    case OTP_ATTRIBUTE :
+                    case OTP_ATTRIBUTE:
                         setOtp(Boolean.parseBoolean((String) value));
                         break;
-                    case SUBROGEABLE_ATTRIBUTE :
+                    case SUBROGEABLE_ATTRIBUTE:
                         setSubrogeable(Boolean.parseBoolean((String) value));
                         break;
-                    case PHONE_ATTRIBUTE :
+                    case PHONE_ATTRIBUTE:
                         setPhone((String) value);
                         break;
                     case ADDRESS_ATTRIBUTE:
-                        setAddress((AddressDto) parseJson(value, new TypeReference<AddressDto>() {
-
-                        }));
+                        setAddress((AddressDto) parseJson(value, new TypeReference<AddressDto>() {}));
                         break;
-                    case MOBILE_ATTRIBUTE :
+                    case MOBILE_ATTRIBUTE:
                         setMobile((String) value);
                         break;
-                    case LEVEL_ATTRIBUTE :
+                    case LEVEL_ATTRIBUTE:
                         setLevel((String) value);
                         break;
-                    case LAST_CONNECTION_ATTRIBUTE :
+                    case LAST_CONNECTION_ATTRIBUTE:
                         setLastConnection(OffsetDateTime.parse((String) value));
                         break;
-                    case NB_FAILED_ATTEMPTS_ATTRIBUTE :
+                    case NB_FAILED_ATTEMPTS_ATTRIBUTE:
                         setNbFailedAttempts(Integer.valueOf((String) value));
                         break;
-                    case PASSWORD_EXPIRATION_DATE_ATTRIBUTE :
+                    case PASSWORD_EXPIRATION_DATE_ATTRIBUTE:
                         setPasswordExpirationDate(OffsetDateTime.parse((String) value));
                         break;
-                    case GROUP_ID_ATTRIBUTE :
+                    case GROUP_ID_ATTRIBUTE:
                         setGroupId((String) value);
                         break;
-                    case ANALYTICS_ATTRIBUTE :
+                    case ANALYTICS_ATTRIBUTE:
                         setAnalytics((AnalyticsDto) parseJson(value, new TypeReference<AnalyticsDto>() {}));
                         break;
-                    case AUTHTOKEN_ATTRIBUTE :
+                    case AUTHTOKEN_ATTRIBUTE:
                         setAuthToken((String) value);
                         break;
-                    case PROFILE_GROUP_ATTRIBUTE :
-                        setProfileGroup((GroupDto) parseJson(value, new TypeReference<GroupDto>() {
-                        }));
+                    case PROFILE_GROUP_ATTRIBUTE:
+                        setProfileGroup((GroupDto) parseJson(value, new TypeReference<GroupDto>() {}));
                         break;
-                    case SUPER_USER_ATTRIBUTE :
+                    case SUPER_USER_ATTRIBUTE:
                         setSuperUser((String) value);
                         break;
-                    case SUPER_USER_IDENTIFIER_ATTRIBUTE :
+                    case SUPER_USER_IDENTIFIER_ATTRIBUTE:
                         setSuperUserIdentifier((String) value);
                         break;
-                    case PROOF_TENANT_ID_ATTRIBUTE :
+                    case PROOF_TENANT_ID_ATTRIBUTE:
                         setProofTenantIdentifier(Integer.valueOf((String) value));
                         break;
-                    case TENANTS_BY_APP_ATTRIBUTE :
-                        setTenantsByApp((List<TenantInformationDto>) parseJson(value, new TypeReference<List<TenantInformationDto>>() {
-                        }));
+                    case TENANTS_BY_APP_ATTRIBUTE:
+                        setTenantsByApp(
+                            (List<TenantInformationDto>) parseJson(
+                                value,
+                                new TypeReference<List<TenantInformationDto>>() {}
+                            )
+                        );
                         break;
-                    case SITE_CODE :
+                    case SITE_CODE:
                         setSiteCode((String) value);
                         break;
-                    case CENTER_CODE :
+                    case CENTER_CODE:
                         setCenterCode((String) value);
                         break;
-                    case INTERNAL_CODE :
+                    case INTERNAL_CODE:
                         setInternalCode((String) value);
                         break;
                     case USER_INFO_ID:
@@ -275,8 +274,7 @@ public class AuthUserDto extends UserDto implements UserDetails {
             final String json = (String) value;
             try {
                 return JsonUtils.fromJson(json, type);
-            }
-            catch (final IOException e) {
+            } catch (final IOException e) {
                 throw new ApplicationServerException(e.getMessage(), e);
             }
         }

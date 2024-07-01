@@ -58,7 +58,9 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
-public class ArchivalProfileUnitExternalService extends AbstractResourceClientService<ArchivalProfileUnitDto, ArchivalProfileUnitDto> {
+public class ArchivalProfileUnitExternalService
+    extends AbstractResourceClientService<ArchivalProfileUnitDto, ArchivalProfileUnitDto> {
+
     private ArchivalProfileUnitInternalRestClient archivalProfileUnitInternalRestClient;
 
     private ArchivalProfileInternalWebClient archivalProfileInternalWebClient;
@@ -67,30 +69,38 @@ public class ArchivalProfileUnitExternalService extends AbstractResourceClientSe
     public ArchivalProfileUnitExternalService(
         ExternalSecurityService externalSecurityService,
         ArchivalProfileUnitInternalRestClient archivalProfileUnitInternalRestClient,
-        ArchivalProfileInternalWebClient archivalProfileInternalWebClient) {
+        ArchivalProfileInternalWebClient archivalProfileInternalWebClient
+    ) {
         super(externalSecurityService);
         this.archivalProfileUnitInternalRestClient = archivalProfileUnitInternalRestClient;
         this.archivalProfileInternalWebClient = archivalProfileInternalWebClient;
     }
 
     public List<ArchivalProfileUnitDto> getAll(final Optional<String> criteria) {
-        return archivalProfileUnitInternalRestClient.getAll(getInternalHttpContext(),criteria);
+        return archivalProfileUnitInternalRestClient.getAll(getInternalHttpContext(), criteria);
     }
 
-    @Override protected BasePaginatingAndSortingRestClient<ArchivalProfileUnitDto, InternalHttpContext> getClient() {
+    @Override
+    protected BasePaginatingAndSortingRestClient<ArchivalProfileUnitDto, InternalHttpContext> getClient() {
         return archivalProfileUnitInternalRestClient;
     }
 
-    public PaginatedValuesDto<ArchivalProfileUnitDto> getAllPaginated(final Integer page, final Integer size, final Optional<String> criteria,
-                                                                      final Optional<String> orderBy, final Optional<DirectionDto> direction) {
-
+    public PaginatedValuesDto<ArchivalProfileUnitDto> getAllPaginated(
+        final Integer page,
+        final Integer size,
+        final Optional<String> criteria,
+        final Optional<String> orderBy,
+        final Optional<DirectionDto> direction
+    ) {
         ParameterChecker.checkPagination(size, page);
-        final PaginatedValuesDto<ArchivalProfileUnitDto> result = getClient().getAllPaginated(getInternalHttpContext(), page, size, criteria, orderBy, direction);
+        final PaginatedValuesDto<ArchivalProfileUnitDto> result = getClient()
+            .getAllPaginated(getInternalHttpContext(), page, size, criteria, orderBy, direction);
         return new PaginatedValuesDto<>(
             result.getValues().stream().map(element -> converterToExternalDto(element)).collect(Collectors.toList()),
             result.getPageNum(),
             result.getPageSize(),
-            result.isHasMore());
+            result.isHasMore()
+        );
     }
 
     public ArchivalProfileUnitDto getOne(String id) {

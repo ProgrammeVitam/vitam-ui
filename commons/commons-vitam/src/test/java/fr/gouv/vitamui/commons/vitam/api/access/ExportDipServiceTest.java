@@ -1,15 +1,14 @@
 package fr.gouv.vitamui.commons.vitam.api.access;
 
+import fr.gouv.vitam.access.external.client.AccessExternalClient;
+import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
+import fr.gouv.vitamui.commons.test.utils.FieldUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-
-import fr.gouv.vitam.access.external.client.AccessExternalClient;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.test.utils.FieldUtils;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ExportDipServiceTest {
@@ -32,5 +31,4 @@ public class ExportDipServiceTest {
     public void toImplement() {
         // TODO implement
     }
-
 }

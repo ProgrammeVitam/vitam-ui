@@ -36,22 +36,24 @@
  */
 package fr.gouv.vitamui.iam.internal.server.logbook.config;
 
-import fr.gouv.vitamui.iam.internal.server.config.Converters;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-
 import fr.gouv.vitamui.commons.logbook.service.EventService;
+import fr.gouv.vitamui.iam.internal.server.config.Converters;
 import fr.gouv.vitamui.iam.internal.server.logbook.service.IamLogbookService;
 import fr.gouv.vitamui.iam.internal.server.tenant.dao.TenantRepository;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class LogbookConfiguration {
 
     @Bean
-    public IamLogbookService IamLogbookService(final EventService eventService, final InternalSecurityService internalSecurityService,
-            final Converters converters, final TenantRepository tenantRepository) {
+    public IamLogbookService IamLogbookService(
+        final EventService eventService,
+        final InternalSecurityService internalSecurityService,
+        final Converters converters,
+        final TenantRepository tenantRepository
+    ) {
         return new IamLogbookService(eventService, internalSecurityService, converters, tenantRepository);
     }
-
 }

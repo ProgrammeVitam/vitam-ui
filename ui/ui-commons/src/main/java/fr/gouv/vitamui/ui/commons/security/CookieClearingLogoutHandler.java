@@ -26,18 +26,17 @@
  */
 package fr.gouv.vitamui.ui.commons.security;
 
-import java.util.Arrays;
-import java.util.List;
-
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.env.Environment;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.util.Assert;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * When deleting cookies, use the cookiePath instead of the contextPath and avoid the trailing slash.
@@ -59,7 +58,11 @@ public final class CookieClearingLogoutHandler implements LogoutHandler {
     }
 
     @Override
-    public void logout(final HttpServletRequest request, final HttpServletResponse response, final Authentication authentication) {
+    public void logout(
+        final HttpServletRequest request,
+        final HttpServletResponse response,
+        final Authentication authentication
+    ) {
         for (final String cookieName : cookiesToClear) {
             final Cookie cookie = new Cookie(cookieName, null);
             String path = "/";

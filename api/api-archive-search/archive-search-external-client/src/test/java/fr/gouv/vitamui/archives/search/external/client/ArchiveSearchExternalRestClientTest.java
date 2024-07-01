@@ -60,11 +60,11 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 public class ArchiveSearchExternalRestClientTest extends ServerIdentityExtension {
 
-    private static final VitamUILogger LOGGER =
-        VitamUILoggerFactory.getInstance(ArchiveSearchExternalRestClientTest.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
+        ArchiveSearchExternalRestClientTest.class
+    );
 
     public final String ARCHIVE_UNITS_RESULTS_CSV = "data/vitam_archive_units_response.csv";
-
 
     private ArchiveSearchExternalRestClient archiveSearchExternalRestClient;
 
@@ -73,8 +73,10 @@ public class ArchiveSearchExternalRestClientTest extends ServerIdentityExtension
 
     @BeforeEach
     public void setUp() {
-        archiveSearchExternalRestClient =
-            new ArchiveSearchExternalRestClient(restTemplate, RestApi.ARCHIVE_SEARCH_PATH);
+        archiveSearchExternalRestClient = new ArchiveSearchExternalRestClient(
+            restTemplate,
+            RestApi.ARCHIVE_SEARCH_PATH
+        );
     }
 
     @Test
@@ -83,19 +85,17 @@ public class ArchiveSearchExternalRestClientTest extends ServerIdentityExtension
         Assertions.assertEquals(RestApi.ARCHIVE_SEARCH_PATH, archiveSearchExternalRestClient.getPathUrl());
     }
 
-
     @Test
     public void when_searchArchiveUnitsByCriteria_rest_template_ok_should_return_ok() {
         ExternalHttpContext context = new ExternalHttpContext(9, "", "", "");
         SearchCriteriaDto query = new SearchCriteriaDto();
         final ArchiveUnitsDto responseEntity = new ArchiveUnitsDto();
 
-        when(restTemplate
-            .exchange(anyString(), eq(HttpMethod.POST), any(HttpEntity.class), eq(ArchiveUnitsDto.class)))
-            .thenReturn(new ResponseEntity<>(responseEntity, HttpStatus.OK));
+        when(
+            restTemplate.exchange(anyString(), eq(HttpMethod.POST), any(HttpEntity.class), eq(ArchiveUnitsDto.class))
+        ).thenReturn(new ResponseEntity<>(responseEntity, HttpStatus.OK));
 
-        ArchiveUnitsDto response =
-            archiveSearchExternalRestClient.searchArchiveUnitsByCriteria(context, query);
+        ArchiveUnitsDto response = archiveSearchExternalRestClient.searchArchiveUnitsByCriteria(context, query);
 
         Assertions.assertEquals(response, responseEntity);
     }
@@ -105,16 +105,19 @@ public class ArchiveSearchExternalRestClientTest extends ServerIdentityExtension
         ExternalHttpContext context = new ExternalHttpContext(9, "", "", "");
         final VitamUISearchResponseDto responseEntity = new VitamUISearchResponseDto();
 
-        when(restTemplate
-            .exchange(anyString(), eq(HttpMethod.GET), any(HttpEntity.class), eq(VitamUISearchResponseDto.class)))
-            .thenReturn(new ResponseEntity<>(responseEntity, HttpStatus.OK));
+        when(
+            restTemplate.exchange(
+                anyString(),
+                eq(HttpMethod.GET),
+                any(HttpEntity.class),
+                eq(VitamUISearchResponseDto.class)
+            )
+        ).thenReturn(new ResponseEntity<>(responseEntity, HttpStatus.OK));
 
-        VitamUISearchResponseDto response =
-            archiveSearchExternalRestClient.getFilingHoldingScheme(context);
+        VitamUISearchResponseDto response = archiveSearchExternalRestClient.getFilingHoldingScheme(context);
 
         Assertions.assertEquals(response, responseEntity);
     }
-
 
     @Test
     public void whenGetexportCsvArchiveUnitsByCriteria_Srvc_ok_ThenShouldReturnOK() throws IOException {
@@ -123,14 +126,20 @@ public class ArchiveSearchExternalRestClientTest extends ServerIdentityExtension
         final HttpEntity<SearchCriteriaDto> request = new HttpEntity<>(query);
 
         Resource resource = new ByteArrayResource(
-            Objects.requireNonNull(ArchiveSearchExternalRestClientTest.class.getClassLoader()
-                .getResourceAsStream(ARCHIVE_UNITS_RESULTS_CSV)).readAllBytes());
+            Objects.requireNonNull(
+                ArchiveSearchExternalRestClientTest.class.getClassLoader()
+                    .getResourceAsStream(ARCHIVE_UNITS_RESULTS_CSV)
+            ).readAllBytes()
+        );
 
-        when(restTemplate.exchange(anyString(), eq(HttpMethod.POST),
-            any(HttpEntity.class), eq(Resource.class))).thenReturn(new ResponseEntity<>(resource, HttpStatus.OK));
+        when(
+            restTemplate.exchange(anyString(), eq(HttpMethod.POST), any(HttpEntity.class), eq(Resource.class))
+        ).thenReturn(new ResponseEntity<>(resource, HttpStatus.OK));
 
-        ResponseEntity<Resource> response =
-            archiveSearchExternalRestClient.exportCsvArchiveUnitsByCriteria(query, context);
+        ResponseEntity<Resource> response = archiveSearchExternalRestClient.exportCsvArchiveUnitsByCriteria(
+            query,
+            context
+        );
 
         Assertions.assertEquals(response.getBody(), resource);
     }
@@ -140,8 +149,9 @@ public class ArchiveSearchExternalRestClientTest extends ServerIdentityExtension
         ExternalHttpContext context = new ExternalHttpContext(9, "", "", "");
         TransferRequestDto transferRequestDto = new TransferRequestDto();
         final HttpEntity<TransferRequestDto> request = new HttpEntity<>(transferRequestDto);
-        when(restTemplate.exchange(anyString(), eq(HttpMethod.POST), any(HttpEntity.class), any(Class.class)))
-            .thenReturn(new ResponseEntity<>("OK", HttpStatus.OK));
+        when(
+            restTemplate.exchange(anyString(), eq(HttpMethod.POST), any(HttpEntity.class), any(Class.class))
+        ).thenReturn(new ResponseEntity<>("OK", HttpStatus.OK));
         // When
         ResponseEntity<String> response = archiveSearchExternalRestClient.transferRequest(transferRequestDto, context);
 

@@ -36,21 +36,7 @@
  */
 package fr.gouv.vitamui.referential.external.server.service;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-
 import com.fasterxml.jackson.databind.JsonNode;
-
-import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
@@ -63,6 +49,17 @@ import fr.gouv.vitamui.referential.internal.client.AgencyInternalRestClient;
 import fr.gouv.vitamui.referential.internal.client.AgencyInternalWebClient;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @Getter
 @Setter
@@ -70,30 +67,40 @@ import lombok.Setter;
 public class AgencyExternalService extends AbstractResourceClientService<AgencyDto, AgencyDto> {
 
     private AgencyInternalRestClient agencyInternalRestClient;
-    
+
     private AgencyInternalWebClient agencyInternalWebClient;
 
     @Autowired
-    public AgencyExternalService(ExternalSecurityService externalSecurityService, AgencyInternalRestClient agencyInternalRestClient, AgencyInternalWebClient agencyInternalWebClient) {
+    public AgencyExternalService(
+        ExternalSecurityService externalSecurityService,
+        AgencyInternalRestClient agencyInternalRestClient,
+        AgencyInternalWebClient agencyInternalWebClient
+    ) {
         super(externalSecurityService);
         this.agencyInternalRestClient = agencyInternalRestClient;
         this.agencyInternalWebClient = agencyInternalWebClient;
     }
 
     public List<AgencyDto> getAll(final Optional<String> criteria) {
-        return agencyInternalRestClient.getAll(getInternalHttpContext(),criteria);
+        return agencyInternalRestClient.getAll(getInternalHttpContext(), criteria);
     }
 
     public AgencyDto getOne(String id) {
         return getClient().getOne(getInternalHttpContext(), id);
     }
 
-    @Override protected BasePaginatingAndSortingRestClient<AgencyDto, InternalHttpContext> getClient() {
+    @Override
+    protected BasePaginatingAndSortingRestClient<AgencyDto, InternalHttpContext> getClient() {
         return agencyInternalRestClient;
     }
 
-    public PaginatedValuesDto<AgencyDto> getAllPaginated(final Integer page, final Integer size, final Optional<String> criteria,
-            final Optional<String> orderBy, final Optional<DirectionDto> direction) {
+    public PaginatedValuesDto<AgencyDto> getAllPaginated(
+        final Integer page,
+        final Integer size,
+        final Optional<String> criteria,
+        final Optional<String> orderBy,
+        final Optional<DirectionDto> direction
+    ) {
         ParameterChecker.checkPagination(size, page);
         return getClient().getAllPaginated(getInternalHttpContext(), page, size, criteria, orderBy, direction);
     }
@@ -132,7 +139,7 @@ public class AgencyExternalService extends AbstractResourceClientService<AgencyD
     public ResponseEntity<Resource> export() {
         return agencyInternalRestClient.export(getInternalHttpContext());
     }
-    
+
     public JsonNode importAgencies(String fileName, MultipartFile file) {
         return agencyInternalWebClient.importAgencies(getInternalHttpContext(), fileName, file);
     }

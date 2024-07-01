@@ -28,8 +28,18 @@ public final class GeneralTerminateSessionActionTest {
 
         final LogoutManager logoutManager = mock(LogoutManager.class);
 
-        final GeneralTerminateSessionAction action = new GeneralTerminateSessionAction(null, null,
-            null, logoutManager, null, null, null, servicesManager, new CasConfigurationProperties(), null);
+        final GeneralTerminateSessionAction action = new GeneralTerminateSessionAction(
+            null,
+            null,
+            null,
+            logoutManager,
+            null,
+            null,
+            null,
+            servicesManager,
+            new CasConfigurationProperties(),
+            null
+        );
 
         action.performGeneralLogout("tgtId");
     }

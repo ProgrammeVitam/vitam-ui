@@ -36,16 +36,6 @@
  */
 package fr.gouv.vitamui.iam.security.service;
 
-import java.security.cert.CertificateEncodingException;
-import java.security.cert.X509Certificate;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.BadCredentialsException;
-
 import fr.gouv.vitamui.commons.api.domain.ProfileDto;
 import fr.gouv.vitamui.commons.api.exception.InvalidFormatException;
 import fr.gouv.vitamui.commons.api.exception.NotFoundException;
@@ -60,6 +50,15 @@ import fr.gouv.vitamui.iam.internal.client.UserInternalRestClient;
 import fr.gouv.vitamui.security.client.ContextRestClient;
 import fr.gouv.vitamui.security.common.dto.ContextDto;
 import lombok.Getter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.BadCredentialsException;
+
+import java.security.cert.CertificateEncodingException;
+import java.security.cert.X509Certificate;
+import java.util.ArrayList;
+import java.util.Base64;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * External authentication service
@@ -76,8 +75,10 @@ public class ExternalAuthentificationService {
     private final ContextRestClient contextRestClient;
 
     @Autowired
-    public ExternalAuthentificationService(final ContextRestClient contextRestClient, final UserInternalRestClient userInternalRestClient) {
-
+    public ExternalAuthentificationService(
+        final ContextRestClient contextRestClient,
+        final UserInternalRestClient userInternalRestClient
+    ) {
         this.contextRestClient = contextRestClient;
         this.userInternalRestClient = userInternalRestClient;
     }
@@ -89,9 +90,19 @@ public class ExternalAuthentificationService {
      * @param context
      * @return
      */
-    public String buildApplicationId(final AuthUserDto user, final ExternalHttpContext httpContext, final ContextDto context) {
-        return VitamUIUtils.generateApplicationId(httpContext.getApplicationId(), context.getName(), user.getIdentifier(), user.getSuperUserIdentifier(),
-                user.getCustomerIdentifier(), httpContext.getRequestId());
+    public String buildApplicationId(
+        final AuthUserDto user,
+        final ExternalHttpContext httpContext,
+        final ContextDto context
+    ) {
+        return VitamUIUtils.generateApplicationId(
+            httpContext.getApplicationId(),
+            context.getName(),
+            user.getIdentifier(),
+            user.getSuperUserIdentifier(),
+            user.getCustomerIdentifier(),
+            httpContext.getRequestId()
+        );
     }
 
     /**
@@ -103,19 +114,32 @@ public class ExternalAuthentificationService {
             throw new BadCredentialsException("User token not found: " + userToken);
         }
 
-        final InternalHttpContext internalHttpContext = InternalHttpContext.buildFromExternalHttpContext(httpContext, null, null);
+        final InternalHttpContext internalHttpContext = InternalHttpContext.buildFromExternalHttpContext(
+            httpContext,
+            null,
+            null
+        );
         final AuthUserDto userDto = userInternalRestClient.getMe(internalHttpContext);
         if (userDto == null) {
             throw new NotFoundException("User not found for token: " + userToken);
         }
 
-
         final Integer tenantIdentifier = httpContext.getTenantIdentifier();
-        final List<Integer> userTenants = userDto.getProfileGroup().getProfiles().stream().filter(ProfileDto::isEnabled).map(ProfileDto::getTenantIdentifier)
-                .collect(Collectors.toList());
+        final List<Integer> userTenants = userDto
+            .getProfileGroup()
+            .getProfiles()
+            .stream()
+            .filter(ProfileDto::isEnabled)
+            .map(ProfileDto::getTenantIdentifier)
+            .collect(Collectors.toList());
         if (!userTenants.contains(tenantIdentifier)) {
             LOGGER.debug("Tenant id [{}] not in user tenants [{}]", tenantIdentifier, userTenants);
-            throw new BadCredentialsException("This tenant: " + httpContext.getTenantIdentifier() + " is not allowed for this user: " + userDto.getId());
+            throw new BadCredentialsException(
+                "This tenant: " +
+                httpContext.getTenantIdentifier() +
+                " is not allowed for this user: " +
+                userDto.getId()
+            );
         }
         return userDto;
     }
@@ -127,13 +151,14 @@ public class ExternalAuthentificationService {
      * @param certificate
      * @return
      */
-    public ContextDto getContextFromHttpContext(final ExternalHttpContext httpContext, final X509Certificate certificate) {
-
+    public ContextDto getContextFromHttpContext(
+        final ExternalHttpContext httpContext,
+        final X509Certificate certificate
+    ) {
         String certificateBase64;
         try {
             certificateBase64 = Base64.getEncoder().encodeToString(certificate.getEncoded());
-        }
-        catch (final CertificateEncodingException e) {
+        } catch (final CertificateEncodingException e) {
             throw new InvalidFormatException("Invalid certificate: " + e.getMessage());
         }
 
@@ -147,15 +172,27 @@ public class ExternalAuthentificationService {
             final Integer tenantIdentifier = httpContext.getTenantIdentifier();
 
             if (!context.isFullAccess() && tenantIdentifier != null && !contextTenants.contains(tenantIdentifier)) {
-                LOGGER.warn("[InvalidAuthenticationException] This tenant: {} is not allowed for the application context: {}. credential={}", tenantIdentifier,
-                        httpContext.getIdentity(), certificate);
+                LOGGER.warn(
+                    "[InvalidAuthenticationException] This tenant: {} is not allowed for the application context: {}. credential={}",
+                    tenantIdentifier,
+                    httpContext.getIdentity(),
+                    certificate
+                );
                 throw new BadCredentialsException(
-                        "This tenant: " + tenantIdentifier + " is not allowed for the application context: " + httpContext.getIdentity());
+                    "This tenant: " +
+                    tenantIdentifier +
+                    " is not allowed for the application context: " +
+                    httpContext.getIdentity()
+                );
             }
             return context;
-        }
-        catch (final NotFoundException e) {
-            LOGGER.error("Certificate not found [IssuerDN={}, certificateBase64={}, credential={}]", certificate.getIssuerDN(), certificateBase64, certificate);
+        } catch (final NotFoundException e) {
+            LOGGER.error(
+                "Certificate not found [IssuerDN={}, certificateBase64={}, credential={}]",
+                certificate.getIssuerDN(),
+                certificateBase64,
+                certificate
+            );
             throw e;
         }
     }
@@ -167,7 +204,6 @@ public class ExternalAuthentificationService {
      * @return
      */
     public List<String> getRoles(final ContextDto context, final AuthUserDto userProfile, final int tenantIdentifier) {
-
         final List<String> contextRoles = context.extractRoleNames();
         LOGGER.debug("context roles: {}", contextRoles);
 
@@ -178,18 +214,28 @@ public class ExternalAuthentificationService {
 
     protected List<String> getUserRoles(final AuthUserDto userProfile, final int tenantIdentifier) {
         final List<String> userRoles = new ArrayList<>();
-        userProfile.getProfileGroup().getProfiles().stream().filter(profile -> profile.getTenantIdentifier().intValue() == tenantIdentifier)
-                .filter(ProfileDto::isEnabled).forEach(profile -> {
-                    final List<String> rolesNames = profile.getRoles().stream().map(role -> ApiUtils.ensureHasRolePrefix(role.getName()))
-                            .collect(Collectors.toList());
-                    userRoles.addAll(rolesNames);
-                });
+        userProfile
+            .getProfileGroup()
+            .getProfiles()
+            .stream()
+            .filter(profile -> profile.getTenantIdentifier().intValue() == tenantIdentifier)
+            .filter(ProfileDto::isEnabled)
+            .forEach(profile -> {
+                final List<String> rolesNames = profile
+                    .getRoles()
+                    .stream()
+                    .map(role -> ApiUtils.ensureHasRolePrefix(role.getName()))
+                    .collect(Collectors.toList());
+                userRoles.addAll(rolesNames);
+            });
 
         LOGGER.debug("user roles: {}", userRoles);
         return userRoles;
     }
 
-    protected InternalHttpContext getInternalHttpContextForUserNotAuthenticated(final ExternalHttpContext externalHttpContext) {
+    protected InternalHttpContext getInternalHttpContextForUserNotAuthenticated(
+        final ExternalHttpContext externalHttpContext
+    ) {
         return InternalHttpContext.buildFromExternalHttpContext(externalHttpContext, null, null);
     }
 }

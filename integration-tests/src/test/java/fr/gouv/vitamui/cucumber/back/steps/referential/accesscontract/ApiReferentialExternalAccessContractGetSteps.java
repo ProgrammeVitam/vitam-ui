@@ -59,15 +59,18 @@ import static org.assertj.core.api.Assertions.assertThat;
  *
  */
 public class ApiReferentialExternalAccessContractGetSteps extends CommonSteps {
+
     private List<AccessContractDto> accessContractDtos;
 
     private AccessContractDto accessContractDto;
 
     private JsonNode contextHistory;
 
-    @When("^un utilisateur avec le rôle ROLE_GET_ACCESS_CONTRACT récupère tous les contrat d'accès applicatifs en utilisant un certificat full access avec le rôle ROLE_GET_ACCESS_CONTRACT$")
+    @When(
+        "^un utilisateur avec le rôle ROLE_GET_ACCESS_CONTRACT récupère tous les contrat d'accès applicatifs en utilisant un certificat full access avec le rôle ROLE_GET_ACCESS_CONTRACT$"
+    )
     public void un_utilisateur_avec_le_rôle_ROLE_GET_ACCESS_CONTRACT_récupère_tous_les_contrat_d_accès_en_utilisant_un_certificat_full_access_avec_le_rôle_ROLE_GET_ACCESS_CONTRACT() {
-    	accessContractDtos = getAccessContractRestClient().getAll(getSystemTenantUserAdminContext());
+        accessContractDtos = getAccessContractRestClient().getAll(getSystemTenantUserAdminContext());
     }
 
     @Then("^le serveur retourne tous les contrat d'accès$")
@@ -78,9 +81,12 @@ public class ApiReferentialExternalAccessContractGetSteps extends CommonSteps {
         assertThat(size).isGreaterThanOrEqualTo(1);
     }
 
-    @When("^un utilisateur avec le rôle ROLE_GET_ACCESS_CONTRACT récupère un contrat d'accès par son identifiant en utilisant un certificat full access avec le rôle ROLE_GET_ACCESS_CONTRACT$")
+    @When(
+        "^un utilisateur avec le rôle ROLE_GET_ACCESS_CONTRACT récupère un contrat d'accès par son identifiant en utilisant un certificat full access avec le rôle ROLE_GET_ACCESS_CONTRACT$"
+    )
     public void un_utilisateur_avec_le_rôle_ROLE_GET_ACCESS_CONTRACT_récupère_un_contrat_d_accès_par_son_identifiant_en_utilisant_un_certificat_full_access_avec_le_rôle_ROLE_GET_ACCESS_CONTRACT() {
-    	accessContractDto = getAccessContractRestClient().getOne(getSystemTenantUserAdminContext(), TestConstants.ACCESS_CONTRACT_IDENTIFIER, Optional.empty());
+        accessContractDto = getAccessContractRestClient()
+            .getOne(getSystemTenantUserAdminContext(), TestConstants.ACCESS_CONTRACT_IDENTIFIER, Optional.empty());
     }
 
     @Then("^le serveur retourne le contrat d'accès avec cet identifiant$")
@@ -90,59 +96,91 @@ public class ApiReferentialExternalAccessContractGetSteps extends CommonSteps {
         assertThat(accessContractDto.getName()).isEqualTo(TestConstants.ACCESS_CONTRACT_NAME);
     }
 
-    @When("^un utilisateur avec le rôle ROLE_GET_ACCESS_CONTRACT récupère tous les contrat d'accès par code et nom en utilisant un certificat full access avec le rôle ROLE_GET_ACCESS_CONTRACT$")
+    @When(
+        "^un utilisateur avec le rôle ROLE_GET_ACCESS_CONTRACT récupère tous les contrat d'accès par code et nom en utilisant un certificat full access avec le rôle ROLE_GET_ACCESS_CONTRACT$"
+    )
     public void un_utilisateur_avec_le_rôle_ROLE_GET_CUSTOMERS_récupère_tous_les_contrat_d_accès_par_code_et_nom_en_utilisant_un_certificat_full_access_avec_le_rôle_ROLE_GET_ACCESS_CONTRACT() {
         QueryDto criteria = QueryDto.criteria(
-        	"id", TestConstants.ACCESS_CONTRACT_IDENTIFIER, CriterionOperator.EQUALS).addCriterion(
-        	"name",TestConstants.ACCESS_CONTRACT_NAME, CriterionOperator.EQUALS);
-        accessContractDtos = getAccessContractRestClient().getAll(getSystemTenantUserAdminContext(), criteria.toOptionalJson(), Optional.empty());
+            "id",
+            TestConstants.ACCESS_CONTRACT_IDENTIFIER,
+            CriterionOperator.EQUALS
+        ).addCriterion("name", TestConstants.ACCESS_CONTRACT_NAME, CriterionOperator.EQUALS);
+        accessContractDtos = getAccessContractRestClient()
+            .getAll(getSystemTenantUserAdminContext(), criteria.toOptionalJson(), Optional.empty());
     }
 
     @Then("^le serveur retourne les contrat d'accès par code et nom$")
     public void le_serveur_retourne_les_contrat_d_accès_par_code_et_nom() {
         assertThat(accessContractDtos).isNotNull().isNotEmpty();
-        assertThat(accessContractDtos.stream().anyMatch(c ->
-        	(c.getIdentifier().equals(TestConstants.ACCESS_CONTRACT_IDENTIFIER) && c.getName().equals(TestConstants.ACCESS_CONTRACT_NAME)
-        ))).isTrue();
+        assertThat(
+            accessContractDtos
+                .stream()
+                .anyMatch(
+                    c ->
+                        (c.getIdentifier().equals(TestConstants.ACCESS_CONTRACT_IDENTIFIER) &&
+                            c.getName().equals(TestConstants.ACCESS_CONTRACT_NAME))
+                )
+        ).isTrue();
     }
 
-    @When("^un utilisateur avec le rôle ROLE_GET_ACCESS_CONTRACT récupère tous les contrat d'accès par code ou nom en utilisant un certificat full access avec le rôle ROLE_GET_ACCESS_CONTRACT$")
+    @When(
+        "^un utilisateur avec le rôle ROLE_GET_ACCESS_CONTRACT récupère tous les contrat d'accès par code ou nom en utilisant un certificat full access avec le rôle ROLE_GET_ACCESS_CONTRACT$"
+    )
     public void un_utilisateur_avec_le_rôle_ROLE_GET_CUSTOMERS_récupère_tous_les_contrat_d_accès_par_code_ou_nom_en_utilisant_un_certificat_full_access_avec_le_rôle_ROLE_GET_ACCESS_CONTRACT() {
         QueryDto criteria = new QueryDto(QueryOperator.OR)
-        	.addCriterion("id", TestConstants.ACCESS_CONTRACT_IDENTIFIER, CriterionOperator.EQUALS)
-        	.addCriterion("name",TestConstants.ACCESS_CONTRACT_NAME, CriterionOperator.EQUALS);
-        accessContractDtos = getAccessContractRestClient().getAll(getSystemTenantUserAdminContext(), criteria.toOptionalJson(), Optional.empty());
+            .addCriterion("id", TestConstants.ACCESS_CONTRACT_IDENTIFIER, CriterionOperator.EQUALS)
+            .addCriterion("name", TestConstants.ACCESS_CONTRACT_NAME, CriterionOperator.EQUALS);
+        accessContractDtos = getAccessContractRestClient()
+            .getAll(getSystemTenantUserAdminContext(), criteria.toOptionalJson(), Optional.empty());
     }
 
     @Then("^le serveur retourne les contrat d'accès par code ou nom$")
     public void le_serveur_retourne_les_contrat_d_accès_par_code_ou_nom() {
         assertThat(accessContractDtos).isNotNull().isNotEmpty();
-        assertThat(accessContractDtos.stream().anyMatch(c ->
-        	(c.getIdentifier().equals(TestConstants.ACCESS_CONTRACT_IDENTIFIER) || c.getName().equals(TestConstants.ACCESS_CONTRACT_NAME)
-        ))).isTrue();
+        assertThat(
+            accessContractDtos
+                .stream()
+                .anyMatch(
+                    c ->
+                        (c.getIdentifier().equals(TestConstants.ACCESS_CONTRACT_IDENTIFIER) ||
+                            c.getName().equals(TestConstants.ACCESS_CONTRACT_NAME))
+                )
+        ).isTrue();
     }
 
-    @When("^un utilisateur avec le rôle ROLE_GET_ACCESS_CONTRACT récupère tous les contrat d'accès avec pagination en utilisant un certificat full access avec le rôle ROLE_GET_ACCESS_CONTRACT$")
+    @When(
+        "^un utilisateur avec le rôle ROLE_GET_ACCESS_CONTRACT récupère tous les contrat d'accès avec pagination en utilisant un certificat full access avec le rôle ROLE_GET_ACCESS_CONTRACT$"
+    )
     public void un_utilisateur_avec_le_rôle_ROLE_GET_ACCESS_CONTRACT_récupère_tous_les_contrat_d_accès_avec_pagination_en_utilisant_un_certificat_full_access_avec_le_rôle_ROLE_GET_ACCESS_CONTRACT() {
-    	final PaginatedValuesDto<AccessContractDto> paginatedContexts = getAccessContractRestClient().getAllPaginated(
-    		getSystemTenantUserAdminContext(), 0, 10, Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
+        final PaginatedValuesDto<AccessContractDto> paginatedContexts = getAccessContractRestClient()
+            .getAllPaginated(
+                getSystemTenantUserAdminContext(),
+                0,
+                10,
+                Optional.empty(),
+                Optional.empty(),
+                Optional.empty(),
+                Optional.empty()
+            );
 
         accessContractDtos = new ArrayList<>(paginatedContexts.getValues());
     }
 
     @Then("^le serveur retourne les contrat d'accès paginés$")
     public void le_serveur_retourne_les_clients_paginés() {
-    	le_serveur_retourne_les_contrat_d_accès_par_code_ou_nom();
+        le_serveur_retourne_les_contrat_d_accès_par_code_ou_nom();
     }
 
-    @When("^un utilisateur avec le rôle ROLE_GET_ACCESS_CONTRACT récupère l'historique d'un contrat d'accès à partir de son son identifiant en utilisant un certificat full access avec le rôle ROLE_GET_ACCESS_CONTRACT$")
+    @When(
+        "^un utilisateur avec le rôle ROLE_GET_ACCESS_CONTRACT récupère l'historique d'un contrat d'accès à partir de son son identifiant en utilisant un certificat full access avec le rôle ROLE_GET_ACCESS_CONTRACT$"
+    )
     public void un_utilisateur_avec_le_rôle_ROLE_GET_ACCESS_CONTRACT_récupère_l_historique_d_un_contrat_d_accès_à_partir_de_son_identifiant_en_utilisant_un_certificat_full_access_avec_le_rôle_ROLE_GET_ACCESS_CONTRACT() {
-    	contextHistory = getAccessContractRestClient().findHistoryById(getSystemTenantUserAdminContext(), TestConstants.ACCESS_CONTRACT_IDENTIFIER);
+        contextHistory = getAccessContractRestClient()
+            .findHistoryById(getSystemTenantUserAdminContext(), TestConstants.ACCESS_CONTRACT_IDENTIFIER);
     }
 
     @Then("^le serveur retourne l'historique du contrat d'accès$")
     public void le_serveur_retourne_l_historique_du_contrat_d_accès() {
         assertThat(contextHistory).isNotNull();
     }
-
 }

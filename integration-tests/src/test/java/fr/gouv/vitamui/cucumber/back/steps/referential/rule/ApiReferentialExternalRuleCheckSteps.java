@@ -51,16 +51,32 @@ public class ApiReferentialExternalRuleCheckSteps extends CommonSteps {
 
     @Given("la regle RuleTest existe")
     public void la_regle_RuleTest_existe() {
-        final RuleDto ruleDto = ReferentialDtoBuilder.buildRuleDto(null, "RuleTest", "StorageRule", "Test rule value 1", "Test rule Description 1", "1", "DAY");
-        if(!getRuleRestClient().check(getSystemTenantUserAdminContext(), ruleDto)) {
+        final RuleDto ruleDto = ReferentialDtoBuilder.buildRuleDto(
+            null,
+            "RuleTest",
+            "StorageRule",
+            "Test rule value 1",
+            "Test rule Description 1",
+            "1",
+            "DAY"
+        );
+        if (!getRuleRestClient().check(getSystemTenantUserAdminContext(), ruleDto)) {
             getRuleRestClient().create(getSystemTenantUserAdminContext(), ruleDto);
         }
     }
 
     @Given("la regle RuleTest n'existe pas")
     public void la_regle_RuleTest_n_existe_pas() {
-        final RuleDto ruleDto = ReferentialDtoBuilder.buildRuleDto(null, "RuleTest", "StorageRule", "Test rule value 1", "Test rule Description 1", "1", "DAY");
-        if(getRuleRestClient().check(getSystemTenantUserAdminContext(), ruleDto)) {
+        final RuleDto ruleDto = ReferentialDtoBuilder.buildRuleDto(
+            null,
+            "RuleTest",
+            "StorageRule",
+            "Test rule value 1",
+            "Test rule Description 1",
+            "1",
+            "DAY"
+        );
+        if (getRuleRestClient().check(getSystemTenantUserAdminContext(), ruleDto)) {
             getRuleRestClient().delete(getSystemTenantUserAdminContext(), "RuleTest");
         }
     }
@@ -71,8 +87,7 @@ public class ApiReferentialExternalRuleCheckSteps extends CommonSteps {
             final RuleDto ruleDto = new RuleDto();
             ruleDto.setRuleId("RuleTest");
             testContext.bResponse = getRuleRestClient().check(getSystemTenantUserAdminContext(), ruleDto);
-        }
-        catch (final RuntimeException e) {
+        } catch (final RuntimeException e) {
             testContext.exception = e;
         }
     }

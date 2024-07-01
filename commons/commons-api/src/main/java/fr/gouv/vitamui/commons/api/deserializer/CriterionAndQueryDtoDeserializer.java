@@ -51,7 +51,9 @@ import java.io.IOException;
 
 public class CriterionAndQueryDtoDeserializer extends StdDeserializer<Object> {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(CriterionAndQueryDtoDeserializer.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
+        CriterionAndQueryDtoDeserializer.class
+    );
 
     public CriterionAndQueryDtoDeserializer() {
         this(null);
@@ -81,7 +83,6 @@ public class CriterionAndQueryDtoDeserializer extends StdDeserializer<Object> {
             } catch (IOException e) {
                 LOGGER.debug("Node is not a " + QueryDto.class, e);
             }
-
         }
 
         if (result == null || node.isNull()) {
@@ -90,5 +91,4 @@ public class CriterionAndQueryDtoDeserializer extends StdDeserializer<Object> {
 
         return result;
     }
-
 }

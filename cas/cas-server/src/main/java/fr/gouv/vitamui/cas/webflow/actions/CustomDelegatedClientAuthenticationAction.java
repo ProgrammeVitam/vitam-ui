@@ -43,6 +43,7 @@ import fr.gouv.vitamui.cas.util.Utils;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
+import lombok.val;
 import org.apache.commons.lang3.StringUtils;
 import org.apereo.cas.authentication.credential.UsernamePasswordCredential;
 import org.apereo.cas.ticket.TicketGrantingTicket;
@@ -55,8 +56,6 @@ import org.springframework.webflow.execution.RequestContext;
 
 import java.io.IOException;
 
-import lombok.val;
-
 /**
  * Custom authentication delegation:
  * - automatic delegation given the provided IdP
@@ -67,7 +66,9 @@ import lombok.val;
  */
 public class CustomDelegatedClientAuthenticationAction extends DelegatedClientAuthenticationAction {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(CustomDelegatedClientAuthenticationAction.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
+        CustomDelegatedClientAuthenticationAction.class
+    );
 
     private final IdentityProviderHelper identityProviderHelper;
 
@@ -81,13 +82,15 @@ public class CustomDelegatedClientAuthenticationAction extends DelegatedClientAu
 
     private final String surrogationSeparator;
 
-    public CustomDelegatedClientAuthenticationAction(final DelegatedClientAuthenticationConfigurationContext context,
-                                                     final IdentityProviderHelper identityProviderHelper,
-                                                     final ProvidersService providersService,
-                                                     final Utils utils,
-                                                     final TicketRegistry ticketRegistry,
-                                                     final String vitamuiPortalUrl,
-                                                     final String surrogationSeparator) {
+    public CustomDelegatedClientAuthenticationAction(
+        final DelegatedClientAuthenticationConfigurationContext context,
+        final IdentityProviderHelper identityProviderHelper,
+        final ProvidersService providersService,
+        final Utils utils,
+        final TicketRegistry ticketRegistry,
+        final String vitamuiPortalUrl,
+        final String surrogationSeparator
+    ) {
         super(context);
         this.identityProviderHelper = identityProviderHelper;
         this.providersService = providersService;
@@ -99,7 +102,6 @@ public class CustomDelegatedClientAuthenticationAction extends DelegatedClientAu
 
     @Override
     public Event doExecute(final RequestContext context) {
-
         // save a label in the webflow
         val flowScope = context.getFlowScope();
         flowScope.put(Constants.PORTAL_URL, vitamuiPortalUrl);
@@ -112,11 +114,9 @@ public class CustomDelegatedClientAuthenticationAction extends DelegatedClientAu
 
         val event = super.doExecute(context);
         if ("error".equals(event.getId())) {
-
             // extract and parse the request username if provided
             String username = context.getRequestParameters().get(Constants.USERNAME);
             if (username != null) {
-
                 username = username.toLowerCase();
                 LOGGER.debug("Provided username: {}", username);
                 if (username.startsWith(surrogationSeparator)) {
@@ -137,7 +137,6 @@ public class CustomDelegatedClientAuthenticationAction extends DelegatedClientAu
             val idp = utils.getIdpValue(request);
             LOGGER.debug("Provided idp: {}", idp);
             if (StringUtils.isNotBlank(idp)) {
-
                 TicketGrantingTicket tgt = null;
                 val tgtId = WebUtils.getTicketGrantingTicketId(context);
                 if (tgtId != null) {
@@ -146,7 +145,6 @@ public class CustomDelegatedClientAuthenticationAction extends DelegatedClientAu
 
                 // if no authentication
                 if (tgt == null || tgt.isExpired()) {
-
                     // if it matches an existing IdP, save it and redirect
                     val optProvider = identityProviderHelper.findByTechnicalName(providersService.getProviders(), idp);
                     if (optProvider.isPresent()) {
@@ -162,7 +160,6 @@ public class CustomDelegatedClientAuthenticationAction extends DelegatedClientAu
                     }
                 }
             }
-
         }
 
         return event;

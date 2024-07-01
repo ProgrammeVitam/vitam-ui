@@ -36,14 +36,6 @@
  */
 package fr.gouv.vitamui.cas.authentication;
 
-import java.util.List;
-import java.util.Optional;
-
-import org.apereo.cas.authentication.principal.Principal;
-import org.apereo.cas.authentication.principal.Service;
-import org.apereo.cas.authentication.surrogate.BaseSurrogateAuthenticationService;
-import org.apereo.cas.services.ServicesManager;
-
 import fr.gouv.vitamui.cas.util.Utils;
 import fr.gouv.vitamui.commons.api.exception.VitamUIException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
@@ -51,6 +43,13 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.iam.common.enums.SubrogationStatusEnum;
 import fr.gouv.vitamui.iam.external.client.CasExternalRestClient;
 import lombok.val;
+import org.apereo.cas.authentication.principal.Principal;
+import org.apereo.cas.authentication.principal.Service;
+import org.apereo.cas.authentication.surrogate.BaseSurrogateAuthenticationService;
+import org.apereo.cas.services.ServicesManager;
+
+import java.util.List;
+import java.util.Optional;
 
 /**
  * Specific surrogate service based on the IAM API.
@@ -59,14 +58,19 @@ import lombok.val;
  */
 public class IamSurrogateAuthenticationService extends BaseSurrogateAuthenticationService {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(IamSurrogateAuthenticationService.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
+        IamSurrogateAuthenticationService.class
+    );
 
     private final CasExternalRestClient casExternalRestClient;
 
     private final Utils utils;
 
-    public IamSurrogateAuthenticationService(final CasExternalRestClient casExternalRestClient,
-                                             final ServicesManager servicesManager, final Utils utils) {
+    public IamSurrogateAuthenticationService(
+        final CasExternalRestClient casExternalRestClient,
+        final ServicesManager servicesManager,
+        final Utils utils
+    ) {
         super(servicesManager);
         this.casExternalRestClient = casExternalRestClient;
         this.utils = utils;

@@ -72,40 +72,59 @@ public class LogbookManagementOperationInternalServiceTest {
         MockitoAnnotations.openMocks(this);
         ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
         dummyData = new DummyData();
-        logbookManagementOperationInternalService = new LogbookManagementOperationInternalService(objectMapper, vitamOperationService);
+        logbookManagementOperationInternalService = new LogbookManagementOperationInternalService(
+            objectMapper,
+            vitamOperationService
+        );
     }
 
     @Test
-    public void updateOperationActionProcess_should_not_throw_VitamClientException_when_actionId_is_correct() throws VitamClientException,
-        // Given
-        JsonProcessingException {
+    public void updateOperationActionProcess_should_not_throw_VitamClientException_when_actionId_is_correct()
+        throws VitamClientException, JsonProcessingException { // Given
         VitamContext vitamContext = new VitamContext(0);
         OperationActionStatus replay = OperationActionStatus.REPLAY;
         String operationId = "id";
 
-        when(vitamOperationService.listOperationsDetails(any(VitamContext.class), any(ProcessQuery.class)))
-            .thenReturn(dummyData.listOperationsDetailsRequestResponse());
+        when(vitamOperationService.listOperationsDetails(any(VitamContext.class), any(ProcessQuery.class))).thenReturn(
+            dummyData.listOperationsDetailsRequestResponse()
+        );
         RequestResponse<ItemStatus> updateResponse = dummyData.updateOperationActionProcessRequestResponse();
-        when(vitamOperationService.updateOperationActionProcess(any(VitamContext.class), any(String.class), any(String.class)))
-            .thenReturn(updateResponse);
-        when(objectMapper.treeToValue(updateResponse.toJsonNode(), VitamUIProcessDetailResponseDto.class))
-            .thenReturn(dummyData.vitamUIProcessDetailResponseDto());
+        when(
+            vitamOperationService.updateOperationActionProcess(
+                any(VitamContext.class),
+                any(String.class),
+                any(String.class)
+            )
+        ).thenReturn(updateResponse);
+        when(objectMapper.treeToValue(updateResponse.toJsonNode(), VitamUIProcessDetailResponseDto.class)).thenReturn(
+            dummyData.vitamUIProcessDetailResponseDto()
+        );
 
         //When //Then
         assertThatCode(() -> {
-            logbookManagementOperationInternalService.updateOperationActionProcess(vitamContext, replay.toString(), operationId);
+            logbookManagementOperationInternalService.updateOperationActionProcess(
+                vitamContext,
+                replay.toString(),
+                operationId
+            );
         }).doesNotThrowAnyException();
     }
 
     @Test
-    public void updateOperationActionProcess_should_throw_VitamClientException_when_actionId_is_not_correct() throws VitamClientException {
+    public void updateOperationActionProcess_should_throw_VitamClientException_when_actionId_is_not_correct()
+        throws VitamClientException {
         //Given
         VitamContext vitamContext = new VitamContext(0);
         String actionId = "action";
         String operationId = "id";
 
-        when(vitamOperationService.updateOperationActionProcess(any(VitamContext.class), any(String.class), any(String.class)))
-            .thenReturn(dummyData.updateOperationActionProcessRequestResponse());
+        when(
+            vitamOperationService.updateOperationActionProcess(
+                any(VitamContext.class),
+                any(String.class),
+                any(String.class)
+            )
+        ).thenReturn(dummyData.updateOperationActionProcessRequestResponse());
 
         //When //Then
         assertThatCode(() -> {
@@ -114,13 +133,15 @@ public class LogbookManagementOperationInternalServiceTest {
     }
 
     @Test
-    public void cancelOperationProcessExecution_should_throw_VitamClientException_when_vitamclient_throw_VitamClientException() throws VitamClientException {
+    public void cancelOperationProcessExecution_should_throw_VitamClientException_when_vitamclient_throw_VitamClientException()
+        throws VitamClientException {
         //Given
         VitamContext vitamContext = new VitamContext(0);
         String identifier = "identifier";
 
-        when(vitamOperationService.cancelOperationProcessExecution(any(VitamContext.class), any(String.class)))
-            .thenThrow(new VitamClientException("Exception thrown by vitam"));
+        when(
+            vitamOperationService.cancelOperationProcessExecution(any(VitamContext.class), any(String.class))
+        ).thenThrow(new VitamClientException("Exception thrown by vitam"));
 
         //When //Then
         assertThatCode(() -> {
@@ -131,7 +152,7 @@ public class LogbookManagementOperationInternalServiceTest {
     private static class DummyData {
 
         RequestResponse<ItemStatus> updateOperationActionProcessRequestResponse() {
-            return  new RequestResponse<ItemStatus>() {
+            return new RequestResponse<ItemStatus>() {
                 @Override
                 public Response toResponse() {
                     ProcessDetail processDetail = new ProcessDetail();

@@ -39,7 +39,6 @@ package fr.gouv.vitamui.referential.common.export.probativevalue.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-
 import fr.gouv.vitamui.referential.common.export.probativevalue.deserializer.JsonNodeAsStringDeserializer;
 import lombok.Getter;
 import lombok.Setter;
@@ -50,32 +49,31 @@ import lombok.ToString;
 @ToString
 public class ProbativeOperationDto {
 
-	@JsonProperty("id")
-	private String id;
+    @JsonProperty("id")
+    private String id;
 
-	@JsonProperty("evTypeProc")
-	private String evType;
+    @JsonProperty("evTypeProc")
+    private String evType;
 
-	@JsonProperty("evIdAppSession")
-	private String evIdAppSession;
+    @JsonProperty("evIdAppSession")
+    private String evIdAppSession;
 
-	@JsonProperty("rightsStatementIdentifier")
-	@JsonDeserialize(using = JsonNodeAsStringDeserializer.class)
-	private JsonNode rightsStatementIdentifier;
+    @JsonProperty("rightsStatementIdentifier")
+    @JsonDeserialize(using = JsonNodeAsStringDeserializer.class)
+    private JsonNode rightsStatementIdentifier;
 
-	@JsonProperty("agIdApp")
-	private String agIdApp;
+    @JsonProperty("agIdApp")
+    private String agIdApp;
 
-	@JsonProperty("evDateTime")
-	private String evDateTime;
-	
-	@JsonProperty("archivalAgreement")
-	private String archivalAgreement;
-	
-	@JsonProperty("profil")
-	private String profil;
-	
-	@JsonProperty("accessContract")
-	private String accessContract;
+    @JsonProperty("evDateTime")
+    private String evDateTime;
 
+    @JsonProperty("archivalAgreement")
+    private String archivalAgreement;
+
+    @JsonProperty("profil")
+    private String profil;
+
+    @JsonProperty("accessContract")
+    private String accessContract;
 }

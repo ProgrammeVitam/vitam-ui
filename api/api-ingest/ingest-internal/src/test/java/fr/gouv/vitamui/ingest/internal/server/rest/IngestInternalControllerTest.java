@@ -56,7 +56,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(controllers = { IngestInternalControllerTest.class })
-public class IngestInternalControllerTest  {
+public class IngestInternalControllerTest {
 
     @MockBean(name = "adminExternalClient")
     private AdminExternalClient adminExternalClient;
@@ -91,5 +91,4 @@ public class IngestInternalControllerTest  {
         Assert.assertNotNull(internalApiAuthenticationProvider);
         Assert.assertNotNull(restExceptionHandler);
     }
-
 }

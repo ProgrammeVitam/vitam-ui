@@ -36,7 +36,6 @@
  */
 package fr.gouv.vitamui.iam.external.client;
 
-import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.enums.AttachmentType;
@@ -74,8 +73,12 @@ public class CustomerExternalRestClient extends BasePaginatingAndSortingRestClie
 
         final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl() + CommonConstants.PATH_ME);
 
-        final ResponseEntity<CustomerDto> response =
-            restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET, request, CustomerDto.class);
+        final ResponseEntity<CustomerDto> response = restTemplate.exchange(
+            uriBuilder.toUriString(),
+            HttpMethod.GET,
+            request,
+            CustomerDto.class
+        );
         checkResponse(response);
         return response.getBody();
     }
@@ -92,14 +95,12 @@ public class CustomerExternalRestClient extends BasePaginatingAndSortingRestClie
 
     @Override
     protected ParameterizedTypeReference<List<CustomerDto>> getDtoListClass() {
-        return new ParameterizedTypeReference<List<CustomerDto>>() {
-        };
+        return new ParameterizedTypeReference<List<CustomerDto>>() {};
     }
 
     @Override
     protected ParameterizedTypeReference<PaginatedValuesDto<CustomerDto>> getDtoPaginatedClass() {
-        return new ParameterizedTypeReference<PaginatedValuesDto<CustomerDto>>() {
-        };
+        return new ParameterizedTypeReference<PaginatedValuesDto<CustomerDto>>() {};
     }
 
     @Override
@@ -112,17 +113,30 @@ public class CustomerExternalRestClient extends BasePaginatingAndSortingRestClie
         LOGGER.debug("Get logo for customer with id {}", id);
         final URIBuilder builder = getUriBuilderFromPath("/" + id + "/logo");
         final HttpEntity<Void> request = new HttpEntity<>(buildHeaders(context));
-        final ResponseEntity<Resource> response =
-            restTemplate.exchange(buildUriBuilder(builder), HttpMethod.GET, request, Resource.class);
+        final ResponseEntity<Resource> response = restTemplate.exchange(
+            buildUriBuilder(builder),
+            HttpMethod.GET,
+            request,
+            Resource.class
+        );
         checkResponse(response);
         return response;
     }
 
-    public ResponseEntity<Resource> getLogo(final ExternalHttpContext context, final String id, final AttachmentType type) {
+    public ResponseEntity<Resource> getLogo(
+        final ExternalHttpContext context,
+        final String id,
+        final AttachmentType type
+    ) {
         LOGGER.debug("Get logo for customer with id {}, type {}", id, type);
         final URIBuilder builder = getUriBuilderFromPath("/" + id + "/logo?type=" + type);
         final HttpEntity<Void> request = new HttpEntity<>(buildHeaders(context));
-        final ResponseEntity<Resource> response = restTemplate.exchange(buildUriBuilder(builder), HttpMethod.GET, request, Resource.class);
+        final ResponseEntity<Resource> response = restTemplate.exchange(
+            buildUriBuilder(builder),
+            HttpMethod.GET,
+            request,
+            Resource.class
+        );
         checkResponse(response, 200, 204);
         return response;
     }
@@ -132,11 +146,16 @@ public class CustomerExternalRestClient extends BasePaginatingAndSortingRestClie
 
         final HttpEntity<?> request = new HttpEntity<>(buildHeaders(context));
 
-        final UriComponentsBuilder uriBuilder =
-            UriComponentsBuilder.fromHttpUrl(getUrl() + CommonConstants.GDPR_STATUS);
+        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(
+            getUrl() + CommonConstants.GDPR_STATUS
+        );
 
-        final ResponseEntity<Boolean> response =
-            restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET, request, Boolean.class);
+        final ResponseEntity<Boolean> response = restTemplate.exchange(
+            uriBuilder.toUriString(),
+            HttpMethod.GET,
+            request,
+            Boolean.class
+        );
         checkResponse(response);
         return response.getBody();
     }

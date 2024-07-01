@@ -100,7 +100,6 @@ import java.util.Optional;
 @Setter
 public class TenantInternalService extends VitamUICrudService<TenantDto, Tenant> {
 
-
     private final TenantRepository tenantRepository;
 
     private final CustomerRepository customerRepository;
@@ -137,23 +136,28 @@ public class TenantInternalService extends VitamUICrudService<TenantDto, Tenant>
 
     private final ExternalParametersInternalService externalParametersInternalService;
 
-
-
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(TenantInternalService.class);
 
     @Autowired
-    public TenantInternalService(final SequenceGeneratorService sequenceGeneratorService,
+    public TenantInternalService(
+        final SequenceGeneratorService sequenceGeneratorService,
         final TenantRepository tenantRepository,
-        final CustomerRepository customerRepository, final OwnerRepository ownerRepository,
+        final CustomerRepository customerRepository,
+        final OwnerRepository ownerRepository,
         final GroupRepository groupRepository,
-        final ProfileRepository profileRepository, final UserRepository userRepository,
+        final ProfileRepository profileRepository,
+        final UserRepository userRepository,
         final GroupInternalService internalGroupService,
-        final UserInternalService internalUserService, final OwnerInternalService internalOwnerService,
+        final UserInternalService internalUserService,
+        final OwnerInternalService internalOwnerService,
         final ProfileInternalService internalProfileService,
-        final InternalSecurityService internalSecurityService, final IamLogbookService iamLogbookService,
+        final InternalSecurityService internalSecurityService,
+        final IamLogbookService iamLogbookService,
         final TenantConverter tenantConverter,
-        final InitVitamTenantService initVitamTenantService, final LogbookService logbookService,
-        final CustomerInitConfig customerInitConfig, final ExternalParametersRepository externalParametersRepository,
+        final InitVitamTenantService initVitamTenantService,
+        final LogbookService logbookService,
+        final CustomerInitConfig customerInitConfig,
+        final ExternalParametersRepository externalParametersRepository,
         final ExternalParametersInternalService externalParametersInternalService
     ) {
         super(sequenceGeneratorService);
@@ -175,7 +179,6 @@ public class TenantInternalService extends VitamUICrudService<TenantDto, Tenant>
         this.customerInitConfig = customerInitConfig;
         this.externalParametersRepository = externalParametersRepository;
         this.externalParametersInternalService = externalParametersInternalService;
-
     }
 
     /**
@@ -186,28 +189,39 @@ public class TenantInternalService extends VitamUICrudService<TenantDto, Tenant>
     public List<Profile> getDefaultProfiles(final String customerId, final Integer tenantIdentifier) {
         final List<Profile> profiles = new ArrayList<>();
 
-
-        profiles.add(EntityFactory.buildProfile(ApiIamInternalConstants.HIERARCHY_PROFILE_NAME + " " + tenantIdentifier,
-            getNextSequenceId(SequencesConstants.PROFILE_IDENTIFIER),
-            ApiIamInternalConstants.HIERARCHY_PROFILE_DESCRIPTION,
-            true,
-            ApiIamInternalConstants.ADMIN_LEVEL,
-            tenantIdentifier,
-            CommonConstants.HIERARCHY_PROFILE_APPLICATIONS_NAME,
-            ApiIamInternalConstants.getHierarchyRoles(),
-            customerId));
+        profiles.add(
+            EntityFactory.buildProfile(
+                ApiIamInternalConstants.HIERARCHY_PROFILE_NAME + " " + tenantIdentifier,
+                getNextSequenceId(SequencesConstants.PROFILE_IDENTIFIER),
+                ApiIamInternalConstants.HIERARCHY_PROFILE_DESCRIPTION,
+                true,
+                ApiIamInternalConstants.ADMIN_LEVEL,
+                tenantIdentifier,
+                CommonConstants.HIERARCHY_PROFILE_APPLICATIONS_NAME,
+                ApiIamInternalConstants.getHierarchyRoles(),
+                customerId
+            )
+        );
 
         if (customerInitConfig.getTenantProfiles() != null) {
-            customerInitConfig.getTenantProfiles()
-                .forEach(p -> profiles.add(EntityFactory.buildProfile(p.getName() + " " + tenantIdentifier,
-                    getNextSequenceId(SequencesConstants.PROFILE_IDENTIFIER),
-                    p.getDescription(),
-                    true,
-                    p.getLevel(),
-                    tenantIdentifier,
-                    p.getAppName(),
-                    p.getRoles(),
-                    customerId)));
+            customerInitConfig
+                .getTenantProfiles()
+                .forEach(
+                    p ->
+                        profiles.add(
+                            EntityFactory.buildProfile(
+                                p.getName() + " " + tenantIdentifier,
+                                getNextSequenceId(SequencesConstants.PROFILE_IDENTIFIER),
+                                p.getDescription(),
+                                true,
+                                p.getLevel(),
+                                tenantIdentifier,
+                                p.getAppName(),
+                                p.getRoles(),
+                                customerId
+                            )
+                        )
+                );
         }
 
         //@formatter:on
@@ -226,46 +240,63 @@ public class TenantInternalService extends VitamUICrudService<TenantDto, Tenant>
             checkSetReadonly(tenantDto.isReadonly(), message);
         }
         tenantDto.setIdentifier(generateTenantIdentifier());
-        ExternalParametersDto fullAccessContract =
-            initFullAccessContractExternalParameter(customer.getIdentifier(), tenantDto.getName());
-        LOGGER.debug("Initializing VITAM Tenant with customer identifier {} and tenant name {}", customer.getIdentifier(), tenantDto.getName());
+        ExternalParametersDto fullAccessContract = initFullAccessContractExternalParameter(
+            customer.getIdentifier(),
+            tenantDto.getName()
+        );
+        LOGGER.debug(
+            "Initializing VITAM Tenant with customer identifier {} and tenant name {}",
+            customer.getIdentifier(),
+            tenantDto.getName()
+        );
         initVitamTenantService.init(tenantDto, fullAccessContract);
-        fullAccessContract.setName(ExternalParametersInternalService.EXTERNAL_PARAMETER_IDENTIFIER_PREFIX
-            + tenantDto.getIdentifier());
+        fullAccessContract.setName(
+            ExternalParametersInternalService.EXTERNAL_PARAMETER_IDENTIFIER_PREFIX + tenantDto.getIdentifier()
+        );
         externalParametersInternalService.create(fullAccessContract);
         final String name = tenantDto.getName() != null ? tenantDto.getName().trim() : tenantDto.getName();
-        final List<Tenant> tenants =
-            tenantRepository.findByNameIgnoreCaseAndCustomerId(name, tenantDto.getCustomerId());
-        Assert.isTrue(tenants == null || tenants.isEmpty(),
-            message + ": a tenant with the name: " + name + " already exists.");
+        final List<Tenant> tenants = tenantRepository.findByNameIgnoreCaseAndCustomerId(
+            name,
+            tenantDto.getCustomerId()
+        );
+        Assert.isTrue(
+            tenants == null || tenants.isEmpty(),
+            message + ": a tenant with the name: " + name + " already exists."
+        );
     }
-
-
 
     @Override
     @Transactional
     public TenantDto create(final TenantDto tenantDto) {
-
         Optional<Customer> customerOptional = customerRepository.findById(tenantDto.getCustomerId());
-        Assert.isTrue(customerOptional.isPresent(),
-            "No customer found with id " + tenantDto.getCustomerId());
+        Assert.isTrue(customerOptional.isPresent(), "No customer found with id " + tenantDto.getCustomerId());
         Customer customer = customerOptional.get();
         final TenantDto createdTenantDto = super.create(tenantDto);
         Optional<ExternalParameters> fullAccessContractOpt = externalParametersRepository.findByIdentifier(
             ExternalParametersInternalService.EXTERNAL_PARAMETER_IDENTIFIER_PREFIX +
-                customer.getIdentifier() + "_" +
-                tenantDto.getName());
-        Assert.isTrue(fullAccessContractOpt.isPresent(),
+            customer.getIdentifier() +
+            "_" +
+            tenantDto.getName()
+        );
+        Assert.isTrue(
+            fullAccessContractOpt.isPresent(),
             "No external parameter found with id " +
-                ExternalParametersInternalService.EXTERNAL_PARAMETER_IDENTIFIER_PREFIX +
-                customer.getIdentifier() + "_" +
-                tenantDto.getName());
-        createExternalParameterProfileForDefaultAccessContract(tenantDto.getCustomerId(), tenantDto.getIdentifier(),
-            fullAccessContractOpt.get().getId());
+            ExternalParametersInternalService.EXTERNAL_PARAMETER_IDENTIFIER_PREFIX +
+            customer.getIdentifier() +
+            "_" +
+            tenantDto.getName()
+        );
+        createExternalParameterProfileForDefaultAccessContract(
+            tenantDto.getCustomerId(),
+            tenantDto.getIdentifier(),
+            fullAccessContractOpt.get().getId()
+        );
 
         iamLogbookService.createTenantEvent(createdTenantDto);
-        final List<Profile> profiles =
-            getDefaultProfiles(createdTenantDto.getCustomerId(), createdTenantDto.getIdentifier());
+        final List<Profile> profiles = getDefaultProfiles(
+            createdTenantDto.getCustomerId(),
+            createdTenantDto.getIdentifier()
+        );
         profiles.forEach(profile -> saveProfile(profile));
         addAdminProfilesToAdminGroup(createdTenantDto.getCustomerId(), profiles);
         return createdTenantDto;
@@ -285,8 +316,10 @@ public class TenantInternalService extends VitamUICrudService<TenantDto, Tenant>
         final String name = tenantDto.getName() != null ? tenantDto.getName().trim() : tenantDto.getName();
         final List<Tenant> tenants = tenantRepository.findByNameIgnoreCaseAndCustomerId(name, tenant.getCustomerId());
         if (tenants != null && !tenants.isEmpty()) {
-            Assert.isTrue(tenants.size() == 1 && tenants.contains(tenant),
-                message + ": a tenant with the name: " + name + " already exists.");
+            Assert.isTrue(
+                tenants.size() == 1 && tenants.contains(tenant),
+                message + ": a tenant with the name: " + name + " already exists."
+            );
         }
     }
 
@@ -295,11 +328,17 @@ public class TenantInternalService extends VitamUICrudService<TenantDto, Tenant>
         final String id = CastUtils.toString(partialDto.get("id"));
 
         final String message = "Unable to patch tenant " + id;
-        final Tenant tenant = tenantRepository.findById(id)
+        final Tenant tenant = tenantRepository
+            .findById(id)
             .orElseThrow(() -> new NotFoundException("Entity not found " + getObjectName() + " with id : " + id));
 
-        Assert.isTrue(!checkMapContainsOnlyFieldsUnmodifiable(partialDto,
-            Arrays.asList("id", "customerId", "readonly", "identifier", "proof")), message);
+        Assert.isTrue(
+            !checkMapContainsOnlyFieldsUnmodifiable(
+                partialDto,
+                Arrays.asList("id", "customerId", "readonly", "identifier", "proof")
+            ),
+            message
+        );
 
         final String customerId = CastUtils.toString(partialDto.get("customerId"));
         if (customerId != null) {
@@ -325,11 +364,15 @@ public class TenantInternalService extends VitamUICrudService<TenantDto, Tenant>
 
         final String name = CastUtils.toString(partialDto.get("name"));
         if (name != null) {
-            final List<Tenant> tenants =
-                tenantRepository.findByNameIgnoreCaseAndCustomerId(name.trim(), tenant.getCustomerId());
+            final List<Tenant> tenants = tenantRepository.findByNameIgnoreCaseAndCustomerId(
+                name.trim(),
+                tenant.getCustomerId()
+            );
             if (tenants != null && !tenants.isEmpty()) {
-                Assert.isTrue(tenants.size() == 1 && tenants.contains(tenant),
-                    message + ": a tenant with the name: " + name + " already exists.");
+                Assert.isTrue(
+                    tenants.size() == 1 && tenants.contains(tenant),
+                    message + ": a tenant with the name: " + name + " already exists."
+                );
             }
         }
 
@@ -345,8 +388,9 @@ public class TenantInternalService extends VitamUICrudService<TenantDto, Tenant>
     @Override
     protected void processPatch(final Tenant tenant, final Map<String, Object> partialDto) {
         final Collection<EventDiffDto> logbooks = new ArrayList<>();
-        final VitamContext vitamContext =
-            internalSecurityService.buildVitamContext(internalSecurityService.getTenantIdentifier());
+        final VitamContext vitamContext = internalSecurityService.buildVitamContext(
+            internalSecurityService.getTenantIdentifier()
+        );
         if (vitamContext != null) {
             LOGGER.info("Patch Tenant EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
         }
@@ -369,44 +413,68 @@ public class TenantInternalService extends VitamUICrudService<TenantDto, Tenant>
                     break;
                 case "ownerId":
                     final OwnerDto oldOwner = internalOwnerService.getOne(tenant.getOwnerId(), Optional.empty());
-                    final OwnerDto newOwner =
-                        internalOwnerService.getOne(CastUtils.toString(entry.getValue()), Optional.empty());
+                    final OwnerDto newOwner = internalOwnerService.getOne(
+                        CastUtils.toString(entry.getValue()),
+                        Optional.empty()
+                    );
 
-                    logbooks.add(new EventDiffDto(TenantConverter.OWNER_ID_KEY, oldOwner.getIdentifier(),
-                        newOwner.getIdentifier()));
+                    logbooks.add(
+                        new EventDiffDto(
+                            TenantConverter.OWNER_ID_KEY,
+                            oldOwner.getIdentifier(),
+                            newOwner.getIdentifier()
+                        )
+                    );
                     tenant.setOwnerId(CastUtils.toString(entry.getValue()));
                     break;
                 case "accessContractHoldingIdentifier":
                     final String accessContractHoldingIdentifier = CastUtils.toString(entry.getValue());
-                    logbooks.add(new EventDiffDto(TenantConverter.ACCESS_CONTRACT_HOLDING_IDENTIFIER_KEY,
-                        tenant.getAccessContractHoldingIdentifier(),
-                        accessContractHoldingIdentifier));
+                    logbooks.add(
+                        new EventDiffDto(
+                            TenantConverter.ACCESS_CONTRACT_HOLDING_IDENTIFIER_KEY,
+                            tenant.getAccessContractHoldingIdentifier(),
+                            accessContractHoldingIdentifier
+                        )
+                    );
                     tenant.setAccessContractHoldingIdentifier(accessContractHoldingIdentifier);
                     break;
                 case "accessContractLogbookIdentifier":
                     final String accessContractLogbookIdentifier = CastUtils.toString(entry.getValue());
-                    logbooks.add(new EventDiffDto(TenantConverter.ACCESS_CONTRACT_LOGBOOK_IDENTIFIER_KEY,
-                        tenant.getAccessContractLogbookIdentifier(),
-                        accessContractLogbookIdentifier));
+                    logbooks.add(
+                        new EventDiffDto(
+                            TenantConverter.ACCESS_CONTRACT_LOGBOOK_IDENTIFIER_KEY,
+                            tenant.getAccessContractLogbookIdentifier(),
+                            accessContractLogbookIdentifier
+                        )
+                    );
                     tenant.setAccessContractLogbookIdentifier(accessContractLogbookIdentifier);
                     break;
                 case "ingestContractHoldingIdentifier":
                     final String ingestContractHoldingIdentifier = CastUtils.toString(entry.getValue());
-                    logbooks.add(new EventDiffDto(TenantConverter.INGEST_CONTRACT_HOLDING_IDENTIFIER_KEY,
-                        tenant.getIngestContractHoldingIdentifier(),
-                        ingestContractHoldingIdentifier));
+                    logbooks.add(
+                        new EventDiffDto(
+                            TenantConverter.INGEST_CONTRACT_HOLDING_IDENTIFIER_KEY,
+                            tenant.getIngestContractHoldingIdentifier(),
+                            ingestContractHoldingIdentifier
+                        )
+                    );
                     tenant.setIngestContractHoldingIdentifier(ingestContractHoldingIdentifier);
                     break;
                 case "itemIngestContractIdentifier":
                     final String itemIngestContractIdentifier = CastUtils.toString(entry.getValue());
-                    logbooks.add(new EventDiffDto(TenantConverter.ITEM_INGEST_CONTRACT_IDENTIFIER_KEY,
-                        tenant.getItemIngestContractIdentifier(),
-                        itemIngestContractIdentifier));
+                    logbooks.add(
+                        new EventDiffDto(
+                            TenantConverter.ITEM_INGEST_CONTRACT_IDENTIFIER_KEY,
+                            tenant.getItemIngestContractIdentifier(),
+                            itemIngestContractIdentifier
+                        )
+                    );
                     tenant.setItemIngestContractIdentifier(itemIngestContractIdentifier);
                     break;
                 default:
                     throw new IllegalArgumentException(
-                        "Unable to patch tenant " + tenant.getId() + ": key " + entry.getKey() + " is not allowed");
+                        "Unable to patch tenant " + tenant.getId() + ": key " + entry.getKey() + " is not allowed"
+                    );
             }
         }
         iamLogbookService.updateTenantEvent(tenant, logbooks);
@@ -417,15 +485,19 @@ public class TenantInternalService extends VitamUICrudService<TenantDto, Tenant>
     }
 
     private void checkIdentifier(final int identifier1, final int identifier2, final String message) {
-        Assert.isTrue(identifier1 == identifier2,
-            message + ": tenant identifiers " + identifier1 + " and " + identifier2 + " are not equals");
+        Assert.isTrue(
+            identifier1 == identifier2,
+            message + ": tenant identifiers " + identifier1 + " and " + identifier2 + " are not equals"
+        );
     }
 
     private void checkProof(final boolean isProof, final String customerId, final String message) {
         if (isProof) {
             final Optional<Tenant> optTenant = tenantRepository.findByCustomerIdAndProofIsTrue(customerId);
-            Assert.isTrue(!optTenant.isPresent(),
-                message + ": a proof tenant already exists for customerId: " + customerId);
+            Assert.isTrue(
+                !optTenant.isPresent(),
+                message + ": a proof tenant already exists for customerId: " + customerId
+            );
         }
     }
 
@@ -452,9 +524,10 @@ public class TenantInternalService extends VitamUICrudService<TenantDto, Tenant>
 
         final String ownerCustId = optOwner.get().getCustomerId();
         final String tenantCustId = optOwner.get().getCustomerId();
-        Assert.isTrue(StringUtils.equals(ownerCustId, tenantCustId),
-            message + " owner.customerId " + ownerCustId + " and tenant.customerId " + tenantCustId +
-                " must be equals");
+        Assert.isTrue(
+            StringUtils.equals(ownerCustId, tenantCustId),
+            message + " owner.customerId " + ownerCustId + " and tenant.customerId " + tenantCustId + " must be equals"
+        );
     }
 
     private void checkOwner(final Tenant tenant, final String ownerId, final String message) {
@@ -463,17 +536,23 @@ public class TenantInternalService extends VitamUICrudService<TenantDto, Tenant>
 
         final String ownerCustId = optOwner.get().getCustomerId();
         final String tenantCustId = tenant.getCustomerId();
-        Assert.isTrue(StringUtils.equals(ownerCustId, tenantCustId),
-            message + " owner.customerId " + ownerCustId + " and tenant.customerId " + tenantCustId +
-                " must be equals");
+        Assert.isTrue(
+            StringUtils.equals(ownerCustId, tenantCustId),
+            message + " owner.customerId " + ownerCustId + " and tenant.customerId " + tenantCustId + " must be equals"
+        );
     }
 
-    private ExternalParametersDto checkAndGetExternalParameterByIdentifier(final String externalParameterIdentifier,
-        final String message) {
-        final Optional<ExternalParameters> optExternalParameter =
-            externalParametersRepository.findByIdentifier(externalParameterIdentifier);
-        Assert.isTrue(optExternalParameter.isPresent(),
-            message + ": External Parameter with identifier" + externalParameterIdentifier + " does not exist");
+    private ExternalParametersDto checkAndGetExternalParameterByIdentifier(
+        final String externalParameterIdentifier,
+        final String message
+    ) {
+        final Optional<ExternalParameters> optExternalParameter = externalParametersRepository.findByIdentifier(
+            externalParameterIdentifier
+        );
+        Assert.isTrue(
+            optExternalParameter.isPresent(),
+            message + ": External Parameter with identifier" + externalParameterIdentifier + " does not exist"
+        );
         return externalParametersInternalService.internalConvertFromEntityToDto(optExternalParameter.get());
     }
 
@@ -492,7 +571,8 @@ public class TenantInternalService extends VitamUICrudService<TenantDto, Tenant>
      * @return The tenant linked to the id.
      */
     protected Tenant findById(final String id) {
-        return tenantRepository.findById(id)
+        return tenantRepository
+            .findById(id)
             .orElseThrow(() -> new NotFoundException("Entity not found " + getObjectName() + " with id : " + id));
     }
 
@@ -504,16 +584,26 @@ public class TenantInternalService extends VitamUICrudService<TenantDto, Tenant>
     }
 
     private void addAdminProfilesToAdminGroup(final String customerId, final List<Profile> profiles) {
-        final String[] apps = {CommonConstants.HIERARCHY_PROFILE_APPLICATIONS_NAME};
+        final String[] apps = { CommonConstants.HIERARCHY_PROFILE_APPLICATIONS_NAME };
 
         final UserDto adminUserDto = internalUserService.getDefaultAdminUser(customerId);
-        final GroupDto adminGroupDto =
-            internalGroupService.getOne(adminUserDto.getGroupId(), Optional.empty(), Optional.empty());
+        final GroupDto adminGroupDto = internalGroupService.getOne(
+            adminUserDto.getGroupId(),
+            Optional.empty(),
+            Optional.empty()
+        );
 
         for (final String app : apps) {
-            final Profile profile = profiles.stream().filter(p -> app.equals(p.getApplicationName())).findFirst()
-                .orElseThrow(() -> new ApplicationServerException(
-                    String.format("Profile not found for app %s and customer %s.", app, customerId)));
+            final Profile profile = profiles
+                .stream()
+                .filter(p -> app.equals(p.getApplicationName()))
+                .findFirst()
+                .orElseThrow(
+                    () ->
+                        new ApplicationServerException(
+                            String.format("Profile not found for app %s and customer %s.", app, customerId)
+                        )
+                );
             adminGroupDto.getProfileIds().add(profile.getId());
         }
         internalGroupService.updateProfilesById(adminGroupDto.getId(), adminGroupDto.getProfileIds());
@@ -530,16 +620,26 @@ public class TenantInternalService extends VitamUICrudService<TenantDto, Tenant>
         final Optional<Tenant> tenant = getRepository().findById(id);
         tenant.orElseThrow(() -> new NotFoundException(String.format("No tenant found with id : %s", id)));
 
-        LOGGER.info("Tenant History EvIdAppSession : {} ",
-            internalSecurityService.buildVitamContext(internalSecurityService.getTenantIdentifier())
-                .getApplicationSessionId());
-        return logbookService.findEventsByIdentifierAndCollectionNames(String.valueOf(tenant.get().getIdentifier()),
-            MongoDbCollections.TENANTS, vitamContext)
+        LOGGER.info(
+            "Tenant History EvIdAppSession : {} ",
+            internalSecurityService
+                .buildVitamContext(internalSecurityService.getTenantIdentifier())
+                .getApplicationSessionId()
+        );
+        return logbookService
+            .findEventsByIdentifierAndCollectionNames(
+                String.valueOf(tenant.get().getIdentifier()),
+                MongoDbCollections.TENANTS,
+                vitamContext
+            )
             .toJsonNode();
     }
 
     private int generateTenantIdentifier() {
-        return getNextSequenceId(SequencesConstants.TENANT_IDENTIFIER, CustomSequencesConstants.DEFAULT_SEQUENCE_INCREMENT_VALUE);
+        return getNextSequenceId(
+            SequencesConstants.TENANT_IDENTIFIER,
+            CustomSequencesConstants.DEFAULT_SEQUENCE_INCREMENT_VALUE
+        );
     }
 
     @Override
@@ -577,35 +677,45 @@ public class TenantInternalService extends VitamUICrudService<TenantDto, Tenant>
         return tenantConverter;
     }
 
-
-    private Profile createExternalParameterProfileForDefaultAccessContract(String customerId, Integer tenantIdentifier,
-        String externalParameterId) {
-        Profile defaultAccessContractProfile = EntityFactory
-            .buildProfile(ExternalParametersInternalService.EXTERNAL_PARAMS_PROFILE_NAME_PREFIX + " " +
-                    tenantIdentifier,
-                String.valueOf(sequenceGeneratorService.getNextSequenceId(SequencesConstants.PROFILE_IDENTIFIER,
-                    CustomSequencesConstants.DEFAULT_SEQUENCE_INCREMENT_VALUE)),
-                ExternalParametersInternalService.EXTERNAL_PARAMS_PROFILE_NAME_PREFIX + " " +
-                    tenantIdentifier,
-                true,
-                "",
-                tenantIdentifier,
-                Application.EXTERNAL_PARAMS.name(),
-                List.of(ServicesData.ROLE_GET_EXTERNAL_PARAMS),
-                customerId, externalParameterId);
+    private Profile createExternalParameterProfileForDefaultAccessContract(
+        String customerId,
+        Integer tenantIdentifier,
+        String externalParameterId
+    ) {
+        Profile defaultAccessContractProfile = EntityFactory.buildProfile(
+            ExternalParametersInternalService.EXTERNAL_PARAMS_PROFILE_NAME_PREFIX + " " + tenantIdentifier,
+            String.valueOf(
+                sequenceGeneratorService.getNextSequenceId(
+                    SequencesConstants.PROFILE_IDENTIFIER,
+                    CustomSequencesConstants.DEFAULT_SEQUENCE_INCREMENT_VALUE
+                )
+            ),
+            ExternalParametersInternalService.EXTERNAL_PARAMS_PROFILE_NAME_PREFIX + " " + tenantIdentifier,
+            true,
+            "",
+            tenantIdentifier,
+            Application.EXTERNAL_PARAMS.name(),
+            List.of(ServicesData.ROLE_GET_EXTERNAL_PARAMS),
+            customerId,
+            externalParameterId
+        );
         return saveProfile(defaultAccessContractProfile);
     }
 
-    private ExternalParametersDto initFullAccessContractExternalParameter(String customerIdentifier,
-        String tenantName) {
+    private ExternalParametersDto initFullAccessContractExternalParameter(
+        String customerIdentifier,
+        String tenantName
+    ) {
         ExternalParametersDto fullAccessContract = new ExternalParametersDto();
         fullAccessContract.setIdentifier(
-            ExternalParametersInternalService.EXTERNAL_PARAMETER_IDENTIFIER_PREFIX + customerIdentifier + "_" +
-                tenantName);
+            ExternalParametersInternalService.EXTERNAL_PARAMETER_IDENTIFIER_PREFIX +
+            customerIdentifier +
+            "_" +
+            tenantName
+        );
         fullAccessContract.setName(
-            ExternalParametersInternalService.EXTERNAL_PARAMETER_NAME_PREFIX +
-                customerIdentifier + "_" +
-                tenantName);
+            ExternalParametersInternalService.EXTERNAL_PARAMETER_NAME_PREFIX + customerIdentifier + "_" + tenantName
+        );
         return fullAccessContract;
     }
 }

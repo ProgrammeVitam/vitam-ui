@@ -59,7 +59,9 @@ public class ExternalParametersExternalServiceTest {
     private ExternalParametersExternalService externalParametersExternalService;
 
     @Mock
-    private final ExternalParametersInternalRestClient externalParametersInternalRestClient= Mockito.mock(ExternalParametersInternalRestClient.class);
+    private final ExternalParametersInternalRestClient externalParametersInternalRestClient = Mockito.mock(
+        ExternalParametersInternalRestClient.class
+    );
 
     private final ExternalSecurityService externalSecurityService = Mockito.mock(ExternalSecurityService.class);
 
@@ -76,16 +78,21 @@ public class ExternalParametersExternalServiceTest {
 
         ParameterDto parameter = new ParameterDto();
         parameter.setKey(TEST_KEY);
-		parameter.setValue(TEST_VALUE);
-		List<ParameterDto> parameters = new ArrayList<ParameterDto>();
-		parameters.add(parameter);
+        parameter.setValue(TEST_VALUE);
+        List<ParameterDto> parameters = new ArrayList<ParameterDto>();
+        parameters.add(parameter);
         dto.setParameters(parameters);
 
-    	externalParametersExternalService = new ExternalParametersExternalService(externalParametersInternalRestClient, externalSecurityService);
+        externalParametersExternalService = new ExternalParametersExternalService(
+            externalParametersInternalRestClient,
+            externalSecurityService
+        );
         Mockito.reset(externalParametersInternalRestClient, externalSecurityService);
 
-    	Mockito.when(externalSecurityService.getHttpContext()).thenReturn(new ExternalHttpContext(null, null, null, null));
-    	Mockito.when(externalSecurityService.getUser()).thenReturn(new AuthUserDto());
+        Mockito.when(externalSecurityService.getHttpContext()).thenReturn(
+            new ExternalHttpContext(null, null, null, null)
+        );
+        Mockito.when(externalSecurityService.getUser()).thenReturn(new AuthUserDto());
         Mockito.when(externalParametersInternalRestClient.getMyExternalParameters(Mockito.any())).thenReturn(dto);
     }
 
@@ -103,4 +110,3 @@ public class ExternalParametersExternalServiceTest {
         assertEquals(dto.getParameters().get(0).getValue(), TEST_VALUE);
     }
 }
-

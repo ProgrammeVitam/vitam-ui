@@ -14,5 +14,4 @@ public class UserStepDefinitions extends CommonStepDefinitions {
     public boolean userListIsDisplayed() {
         return userPage.userListIsDisplayed();
     }
-
 }

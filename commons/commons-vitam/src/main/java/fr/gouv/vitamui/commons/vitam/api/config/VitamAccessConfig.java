@@ -36,15 +36,14 @@
  */
 package fr.gouv.vitamui.commons.vitam.api.config;
 
-import fr.gouv.vitamui.commons.vitam.api.access.ExportDipV2Service;
 import fr.gouv.vitamui.commons.vitam.api.access.EliminationService;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-
 import fr.gouv.vitamui.commons.vitam.api.access.ExportDipService;
+import fr.gouv.vitamui.commons.vitam.api.access.ExportDipV2Service;
 import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
 import fr.gouv.vitamui.commons.vitam.api.access.ObjectService;
 import fr.gouv.vitamui.commons.vitam.api.access.UnitService;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class VitamAccessConfig extends VitamClientConfig {

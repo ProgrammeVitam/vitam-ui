@@ -36,12 +36,19 @@ import org.springframework.boot.web.client.RestTemplateBuilder;
  * A Rest client factory to create Collect Rest clients
  */
 public class CollectExternalRestClientFactory extends BaseRestClientFactory {
-    public CollectExternalRestClientFactory(RestClientConfiguration restClientConfiguration, RestTemplateBuilder restTemplateBuilder) {
+
+    public CollectExternalRestClientFactory(
+        RestClientConfiguration restClientConfiguration,
+        RestTemplateBuilder restTemplateBuilder
+    ) {
         super(restClientConfiguration, restTemplateBuilder);
     }
 
-    public CollectExternalRestClientFactory(RestClientConfiguration restClientConfig, HttpPoolConfiguration httpPoolConfig,
-        RestTemplateBuilder restTemplateBuilder) {
+    public CollectExternalRestClientFactory(
+        RestClientConfiguration restClientConfig,
+        HttpPoolConfiguration httpPoolConfig,
+        RestTemplateBuilder restTemplateBuilder
+    ) {
         super(restClientConfig, httpPoolConfig, restTemplateBuilder);
     }
 

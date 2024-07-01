@@ -1,11 +1,11 @@
 package fr.gouv.vitamui.commons.api.converter;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import org.junit.Test;
 
 import java.time.OffsetDateTime;
 
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class DateConverterTest {
 
@@ -31,5 +31,4 @@ public class DateConverterTest {
         assertNotNull("Converter shouldn't be null", toStringconverter);
         assertEquals("String Date is incorrect", "2020-01-01T00:00+01:00", toStringconverter.convert(date));
     }
-
 }

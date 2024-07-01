@@ -62,26 +62,29 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import java.util.Arrays;
 
 @Configuration
-@Import({RestExceptionHandler.class, SwaggerConfiguration.class, HttpMessageConvertersAutoConfiguration.class})
+@Import({ RestExceptionHandler.class, SwaggerConfiguration.class, HttpMessageConvertersAutoConfiguration.class })
 public class ApiPastisServerConfig extends AbstractContextConfiguration {
 
     @Bean
     public SecurityRestClientFactory securityRestClientFactory(
         final ApiPastisApplicationProperties apiArchiveExternalApplicationProperties,
-        final RestTemplateBuilder restTemplateBuilder) {
-        return new SecurityRestClientFactory(apiArchiveExternalApplicationProperties.getSecurityClient(),
-            restTemplateBuilder);
+        final RestTemplateBuilder restTemplateBuilder
+    ) {
+        return new SecurityRestClientFactory(
+            apiArchiveExternalApplicationProperties.getSecurityClient(),
+            restTemplateBuilder
+        );
     }
 
     @Bean
     public ContextRestClient contextCrudRestClient(final SecurityRestClientFactory securityRestClientFactory) {
-
         return securityRestClientFactory.getContextRestClient();
     }
 
     @Bean
     public ExternalApiAuthenticationProvider apiAuthenticationProvider(
-        final ExternalAuthentificationService externalAuthentificationService) {
+        final ExternalAuthentificationService externalAuthentificationService
+    ) {
         return new ExternalApiAuthenticationProvider(externalAuthentificationService);
     }
 
@@ -91,23 +94,28 @@ public class ApiPastisServerConfig extends AbstractContextConfiguration {
     }
 
     @Bean
-    public ExternalAuthentificationService externalAuthentificationService(final ContextRestClient contextRestClient,
-        final UserInternalRestClient userInternalRestClient) {
+    public ExternalAuthentificationService externalAuthentificationService(
+        final ContextRestClient contextRestClient,
+        final UserInternalRestClient userInternalRestClient
+    ) {
         return new ExternalAuthentificationService(contextRestClient, userInternalRestClient);
     }
 
     @Bean
     public IamInternalRestClientFactory iamInternalRestClientFactory(
         final ApiPastisApplicationProperties apiArchiveExternalApplicationProperties,
-        final RestTemplateBuilder restTemplateBuilder) {
-        return new IamInternalRestClientFactory(apiArchiveExternalApplicationProperties.getIamInternalClient(),
-            restTemplateBuilder);
-
+        final RestTemplateBuilder restTemplateBuilder
+    ) {
+        return new IamInternalRestClientFactory(
+            apiArchiveExternalApplicationProperties.getIamInternalClient(),
+            restTemplateBuilder
+        );
     }
 
     @Bean
     public UserInternalRestClient userInternalRestClient(
-        final IamInternalRestClientFactory iamInternalRestClientFactory) {
+        final IamInternalRestClientFactory iamInternalRestClientFactory
+    ) {
         return iamInternalRestClientFactory.getUserInternalRestClient();
     }
 
@@ -118,7 +126,9 @@ public class ApiPastisServerConfig extends AbstractContextConfiguration {
             Arrays.asList(
                 MediaType.APPLICATION_JSON,
                 new MediaType("application", "*+json"),
-                MediaType.APPLICATION_OCTET_STREAM));
+                MediaType.APPLICATION_OCTET_STREAM
+            )
+        );
         return converter;
     }
 
@@ -136,5 +146,4 @@ public class ApiPastisServerConfig extends AbstractContextConfiguration {
     public PuaPastisValidator puaPastisValidator() {
         return new PuaPastisValidator();
     }
-
 }

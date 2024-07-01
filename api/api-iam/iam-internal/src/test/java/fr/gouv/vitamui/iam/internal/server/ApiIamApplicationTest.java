@@ -1,7 +1,5 @@
 package fr.gouv.vitamui.iam.internal.server;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,6 +9,8 @@ import org.springframework.core.env.Environment;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @Import({ TestMongoConfig.class })
@@ -31,5 +31,4 @@ public class ApiIamApplicationTest {
         assertThat(env).isNotNull();
         assertThat(env.getProperty("spring.config.name")).isEqualTo("iam-internal-application");
     }
-
 }

@@ -83,7 +83,9 @@ import java.util.Optional;
 @Setter
 public class ManagementContractInternalController {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ManagementContractInternalController.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
+        ManagementContractInternalController.class
+    );
 
     private static final String MANDATORY_IDENTIFIER = "The Identifier is a mandatory parameter: ";
 
@@ -93,7 +95,7 @@ public class ManagementContractInternalController {
     @Autowired
     private InternalSecurityService securityService;
 
-    @GetMapping()
+    @GetMapping
     public Collection<ManagementContractDto> getAll(@RequestParam final Optional<String> criteria) {
         LOGGER.debug("get all management contract criteria={}", criteria);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
@@ -101,35 +103,58 @@ public class ManagementContractInternalController {
     }
 
     @GetMapping(params = { "page", "size" })
-    public PaginatedValuesDto<ManagementContractDto> getAllPaginated(@RequestParam final Integer page, @RequestParam final Integer size,
-        @RequestParam(required = false) final Optional<String> criteria, @RequestParam(required = false) final Optional<String> orderBy,
-        @RequestParam(required = false) final Optional<DirectionDto> direction)
-        throws InvalidParseOperationException, PreconditionFailedException {
-        if(orderBy.isPresent()) {
+    public PaginatedValuesDto<ManagementContractDto> getAllPaginated(
+        @RequestParam final Integer page,
+        @RequestParam final Integer size,
+        @RequestParam(required = false) final Optional<String> criteria,
+        @RequestParam(required = false) final Optional<String> orderBy,
+        @RequestParam(required = false) final Optional<DirectionDto> direction
+    ) throws InvalidParseOperationException, PreconditionFailedException {
+        if (orderBy.isPresent()) {
             SanityChecker.checkSecureParameter(orderBy.get());
         }
         SanityChecker.sanitizeCriteria(criteria);
-        LOGGER.debug("getPaginateEntities managementContract page={}, size={}, criteria={}, orderBy={}, ascendant={}",
-            page, size, criteria, orderBy, direction);
+        LOGGER.debug(
+            "getPaginateEntities managementContract page={}, size={}, criteria={}, orderBy={}, ascendant={}",
+            page,
+            size,
+            criteria,
+            orderBy,
+            direction
+        );
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
-        return managementContractInternalService.getAllPaginated(page, size, orderBy, direction, vitamContext, criteria);
+        return managementContractInternalService.getAllPaginated(
+            page,
+            size,
+            orderBy,
+            direction,
+            vitamContext,
+            criteria
+        );
     }
 
     @GetMapping(path = RestApi.PATH_REFERENTIAL_ID)
     public ManagementContractDto getOne(final @PathVariable("identifier") String identifier)
         throws UnsupportedEncodingException, InvalidParseOperationException, PreconditionFailedException {
-        ParameterChecker.checkParameter(MANDATORY_IDENTIFIER , identifier);
+        ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, identifier);
         SanityChecker.checkSecureParameter(identifier);
-        LOGGER.debug("get managementContract identifier = {} / {}", identifier, URLDecoder.decode(identifier,
-            StandardCharsets.UTF_8));
+        LOGGER.debug(
+            "get managementContract identifier = {} / {}",
+            identifier,
+            URLDecoder.decode(identifier, StandardCharsets.UTF_8)
+        );
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
-        return managementContractInternalService.getOne(vitamContext, URLDecoder.decode(identifier, StandardCharsets.UTF_8.toString()));
+        return managementContractInternalService.getOne(
+            vitamContext,
+            URLDecoder.decode(identifier, StandardCharsets.UTF_8.toString())
+        );
     }
 
     @PostMapping(CommonConstants.PATH_CHECK)
-    public ResponseEntity<Void> checkExist(@RequestBody ManagementContractDto managementContractDto,
-        @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant)
-        throws InvalidParseOperationException, PreconditionFailedException {
+    public ResponseEntity<Void> checkExist(
+        @RequestBody ManagementContractDto managementContractDto,
+        @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant
+    ) throws InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.sanitizeCriteria(managementContractDto);
         LOGGER.debug("check exist managementContract = {}", managementContractDto);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
@@ -139,25 +164,31 @@ public class ManagementContractInternalController {
     }
 
     @PostMapping
-    public ManagementContractDto create(@Valid @RequestBody ManagementContractDto managementContractDto,
-        @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant)
-        throws InvalidParseOperationException, PreconditionFailedException {
+    public ManagementContractDto create(
+        @Valid @RequestBody ManagementContractDto managementContractDto,
+        @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant
+    ) throws InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.sanitizeCriteria(managementContractDto);
         LOGGER.debug("create managementContract = {}", managementContractDto);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
         managementContractDto.setTenant(tenant);
-        return managementContractInternalService.create(vitamContext,managementContractDto);
+        return managementContractInternalService.create(vitamContext, managementContractDto);
     }
 
     @PatchMapping(CommonConstants.PATH_ID)
-    public ManagementContractDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto)
-        throws InvalidParseOperationException, PreconditionFailedException {
+    public ManagementContractDto patch(
+        final @PathVariable("id") String id,
+        @RequestBody final Map<String, Object> partialDto
+    ) throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
         SanityChecker.sanitizeCriteria(partialDto);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Patch {} with {}", id, partialDto);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
-        Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "The DTO identifier must match the path identifier for update.");
+        Assert.isTrue(
+            StringUtils.equals(id, (String) partialDto.get("id")),
+            "The DTO identifier must match the path identifier for update."
+        );
         return managementContractInternalService.patch(vitamContext, partialDto);
     }
 

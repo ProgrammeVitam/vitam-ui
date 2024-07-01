@@ -1,10 +1,10 @@
 package fr.gouv.vitamui.commons.api.domain;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.Test;
 
 import java.util.List;
 
-import org.junit.Test;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class ServicesDataTest {
 
@@ -17,5 +17,4 @@ public class ServicesDataTest {
         services = ServicesData.getServicesByName(ServicesData.SERVICE_USERS, ServicesData.SERVICE_PROVIDERS);
         assertThat(services).isNotEmpty();
     }
-
 }

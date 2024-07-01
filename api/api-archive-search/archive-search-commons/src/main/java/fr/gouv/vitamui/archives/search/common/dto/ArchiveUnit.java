@@ -35,7 +35,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Getter
 @Setter
@@ -46,5 +45,4 @@ public class ArchiveUnit extends ResultsDto {
 
     @JsonProperty("originating_agencyName")
     private String originatingAgencyName;
-
 }

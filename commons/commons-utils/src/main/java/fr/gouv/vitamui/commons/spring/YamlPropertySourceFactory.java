@@ -49,11 +49,15 @@ import java.io.IOException;
 import java.util.Properties;
 
 public class YamlPropertySourceFactory implements PropertySourceFactory {
+
     @Override
     public PropertySource<?> createPropertySource(@Nullable String name, EncodedResource resource) throws IOException {
         Properties loadedProperties = this.loadYamlIntoProperties(resource.getResource());
 
-        return new PropertiesPropertySource((StringUtils.isNotBlank(name)) ? name : resource.getResource().getFilename(), loadedProperties);
+        return new PropertiesPropertySource(
+            (StringUtils.isNotBlank(name)) ? name : resource.getResource().getFilename(),
+            loadedProperties
+        );
     }
 
     private Properties loadYamlIntoProperties(Resource resource) {

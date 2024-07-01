@@ -37,13 +37,12 @@
 package fr.gouv.vitamui.referential.config;
 
 import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
-import fr.gouv.vitamui.ui.commons.property.UIProperties;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
-
 import fr.gouv.vitamui.ui.commons.config.UIPropertiesImpl;
+import fr.gouv.vitamui.ui.commons.property.UIProperties;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
 
 /**
  * Properties specific to Ihm-Portal Application.
@@ -57,5 +56,4 @@ import lombok.Setter;
 public class ReferentialApplicationProperties extends UIPropertiesImpl implements UIProperties {
 
     public RestClientConfiguration referentialExternalClient;
-
 }

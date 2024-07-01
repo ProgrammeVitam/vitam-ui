@@ -46,24 +46,25 @@ import java.io.InputStream;
 @Getter
 @Setter
 @Service
-public class TransactionExternalService extends AbstractResourceClientService<CollectTransactionDto, CollectTransactionDto> {
+public class TransactionExternalService
+    extends AbstractResourceClientService<CollectTransactionDto, CollectTransactionDto> {
 
-    private static final VitamUILogger LOGGER =
-        VitamUILoggerFactory.getInstance(TransactionExternalService.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(TransactionExternalService.class);
 
     private final CollectTransactionInternalRestClient collectTransactionInternalRestClient;
 
     private final UpdateUnitsMetadataInternalRestClient updateUnitsMetadataInternalRestClient;
+
     @Autowired
-    public TransactionExternalService(ExternalSecurityService externalSecurityService,
+    public TransactionExternalService(
+        ExternalSecurityService externalSecurityService,
         CollectTransactionInternalRestClient collectTransactionInternalRestClient,
-        UpdateUnitsMetadataInternalRestClient updateUnitsMetadataInternalRestClient) {
+        UpdateUnitsMetadataInternalRestClient updateUnitsMetadataInternalRestClient
+    ) {
         super(externalSecurityService);
         this.collectTransactionInternalRestClient = collectTransactionInternalRestClient;
         this.updateUnitsMetadataInternalRestClient = updateUnitsMetadataInternalRestClient;
     }
-
-
 
     public void sendTransaction(String projectId) {
         collectTransactionInternalRestClient.sendTransaction(getInternalHttpContext(), projectId);
@@ -86,12 +87,9 @@ public class TransactionExternalService extends AbstractResourceClientService<Co
         return collectTransactionInternalRestClient;
     }
 
-
     public CollectTransactionDto getTransactionById(String transactionId) {
         return collectTransactionInternalRestClient.getTransactionById(getInternalHttpContext(), transactionId);
     }
-
-
 
     public CollectTransactionDto updateTransaction(CollectTransactionDto collectTransactionDto) {
         return collectTransactionInternalRestClient.updateTransaction(getInternalHttpContext(), collectTransactionDto);
@@ -108,7 +106,10 @@ public class TransactionExternalService extends AbstractResourceClientService<Co
     public String updateArchiveUnitsFromFile(final String transactionId, InputStream inputStream, String fileName) {
         LOGGER.debug(" [External] start updating archive units from csv file for transactionId {}", transactionId);
         return updateUnitsMetadataInternalRestClient.updateArchiveUnitsMetadataFromFile(
-            getInternalHttpContext(), fileName, transactionId, inputStream);
+            getInternalHttpContext(),
+            fileName,
+            transactionId,
+            inputStream
+        );
     }
-
 }

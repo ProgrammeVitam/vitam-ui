@@ -44,5 +44,4 @@ import fr.gouv.vitamui.security.server.context.domain.Context;
  *
  *
  */
-public interface ContextRepository extends VitamUIRepository<Context, String> {
-}
+public interface ContextRepository extends VitamUIRepository<Context, String> {}

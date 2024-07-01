@@ -36,27 +36,22 @@
  */
 package fr.gouv.vitamui.ui.commons.service;
 
-import fr.gouv.vitamui.commons.rest.client.logbook.LogbookExternalWebClient;
-import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
-import org.springframework.http.ResponseEntity;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
-
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.commons.rest.client.logbook.LogbookExternalRestClient;
+import fr.gouv.vitamui.commons.rest.client.logbook.LogbookExternalWebClient;
 import fr.gouv.vitamui.commons.utils.JsonUtils;
 import fr.gouv.vitamui.commons.vitam.api.dto.LogbookLifeCycleResponseDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsResponseDto;
 import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.ResponseEntity;
 import reactor.core.publisher.Mono;
-
-import java.util.Objects;
 
 /**
  *  UI logbook service.
@@ -71,7 +66,10 @@ public class LogbookService {
     private final LogbookExternalWebClient logbookExternalWebClient;
 
     @Autowired
-    public LogbookService(final LogbookExternalRestClient logbookRestClient, final LogbookExternalWebClient logbookExternalWebClient) {
+    public LogbookService(
+        final LogbookExternalRestClient logbookRestClient,
+        final LogbookExternalWebClient logbookExternalWebClient
+    ) {
         this.logbookRestClient = logbookRestClient;
         this.logbookExternalWebClient = logbookExternalWebClient;
     }
@@ -91,9 +89,14 @@ public class LogbookService {
      * @param unitId
      * @return
      */
-    public LogbookLifeCycleResponseDto findUnitLifeCyclesByUnitId(final ExternalHttpContext context, final String unitId) {
-
-        return responseMapping(getLogbookRestClient().findUnitLifeCyclesByUnitId(context, unitId), LogbookLifeCycleResponseDto.class);
+    public LogbookLifeCycleResponseDto findUnitLifeCyclesByUnitId(
+        final ExternalHttpContext context,
+        final String unitId
+    ) {
+        return responseMapping(
+            getLogbookRestClient().findUnitLifeCyclesByUnitId(context, unitId),
+            LogbookLifeCycleResponseDto.class
+        );
     }
 
     /**
@@ -103,9 +106,14 @@ public class LogbookService {
      * @param unitId
      * @return
      */
-    public LogbookLifeCycleResponseDto findObjectLifeCyclesByUnitId(final ExternalHttpContext context, final String unitId) {
-
-        return responseMapping(getLogbookRestClient().findObjectLifeCyclesByUnitId(context, unitId), LogbookLifeCycleResponseDto.class);
+    public LogbookLifeCycleResponseDto findObjectLifeCyclesByUnitId(
+        final ExternalHttpContext context,
+        final String unitId
+    ) {
+        return responseMapping(
+            getLogbookRestClient().findObjectLifeCyclesByUnitId(context, unitId),
+            LogbookLifeCycleResponseDto.class
+        );
     }
 
     /**
@@ -116,7 +124,10 @@ public class LogbookService {
      * @return
      */
     public LogbookOperationsResponseDto findOperationById(final ExternalHttpContext context, final String id) {
-        return responseMapping(getLogbookRestClient().findOperationById(context, id), LogbookOperationsResponseDto.class);
+        return responseMapping(
+            getLogbookRestClient().findOperationById(context, id),
+            LogbookOperationsResponseDto.class
+        );
     }
 
     /**
@@ -127,7 +138,10 @@ public class LogbookService {
      * @return
      */
     public LogbookOperationsResponseDto findOperations(final ExternalHttpContext context, final JsonNode select) {
-        return responseMapping(getLogbookRestClient().findOperations(context, select), LogbookOperationsResponseDto.class);
+        return responseMapping(
+            getLogbookRestClient().findOperations(context, select),
+            LogbookOperationsResponseDto.class
+        );
     }
 
     /**
@@ -159,10 +173,16 @@ public class LogbookService {
      * @param id
      * @return
      */
-    public Mono<ResponseEntity<Resource>>  downloadReport(final ExternalHttpContext context, final String id, final String downloadType) {
-        final Mono<ResponseEntity<Resource>> resourceResponseEntityResponse =
-            logbookExternalWebClient.downloadReport(context, id, downloadType);
+    public Mono<ResponseEntity<Resource>> downloadReport(
+        final ExternalHttpContext context,
+        final String id,
+        final String downloadType
+    ) {
+        final Mono<ResponseEntity<Resource>> resourceResponseEntityResponse = logbookExternalWebClient.downloadReport(
+            context,
+            id,
+            downloadType
+        );
         return resourceResponseEntityResponse;
     }
-
 }

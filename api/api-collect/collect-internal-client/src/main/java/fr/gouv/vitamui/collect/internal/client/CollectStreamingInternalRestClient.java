@@ -54,7 +54,9 @@ import java.util.List;
 public class CollectStreamingInternalRestClient
     extends BasePaginatingAndSortingRestClient<CollectProjectUploadDto, InternalHttpContext> {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(CollectStreamingInternalRestClient.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
+        CollectStreamingInternalRestClient.class
+    );
 
     public CollectStreamingInternalRestClient(final RestTemplate restTemplate, final String baseUrl) {
         super(restTemplate, baseUrl);
@@ -80,11 +82,14 @@ public class CollectStreamingInternalRestClient
         return new ParameterizedTypeReference<>() {};
     }
 
-    public ResponseEntity<Void> streamingUpload(final InternalHttpContext context, InputStream inputStream,
-        String transactionId,  String originalFileName) {
+    public ResponseEntity<Void> streamingUpload(
+        final InternalHttpContext context,
+        InputStream inputStream,
+        String transactionId,
+        String originalFileName
+    ) {
         LOGGER.debug("Calling upload using streaming process");
-        final UriComponentsBuilder uriBuilder =
-            UriComponentsBuilder.fromHttpUrl(getUrl() + "/upload");
+        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl() + "/upload");
 
         final MultiValueMap<String, String> headersList = new HttpHeaders();
         headersList.addAll(buildHeaders(context));
@@ -95,12 +100,17 @@ public class CollectStreamingInternalRestClient
         headersParams.setContentType(MediaType.APPLICATION_OCTET_STREAM);
         headersParams.addAll(headersList);
 
-        final HttpEntity<InputStreamResource> request =
-            new HttpEntity<>(new InputStreamResource(inputStream), headersParams);
+        final HttpEntity<InputStreamResource> request = new HttpEntity<>(
+            new InputStreamResource(inputStream),
+            headersParams
+        );
 
-        final ResponseEntity<Void> response =
-            restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.POST,
-                request, Void.class);
+        final ResponseEntity<Void> response = restTemplate.exchange(
+            uriBuilder.toUriString(),
+            HttpMethod.POST,
+            request,
+            Void.class
+        );
         LOGGER.debug("The response on collect upload is {} ", response.toString());
         return response;
     }

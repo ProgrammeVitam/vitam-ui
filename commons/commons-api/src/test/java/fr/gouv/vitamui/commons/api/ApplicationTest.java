@@ -1,7 +1,8 @@
 package fr.gouv.vitamui.commons.api;
 
-import javax.annotation.PostConstruct;
-
+import fr.gouv.vitamui.commons.api.application.AbstractVitamUIApplication;
+import fr.gouv.vitamui.commons.api.exception.InternalServerException;
+import fr.gouv.vitamui.commons.api.identity.ServerIdentityConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
@@ -9,9 +10,7 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 
-import fr.gouv.vitamui.commons.api.application.AbstractVitamUIApplication;
-import fr.gouv.vitamui.commons.api.exception.InternalServerException;
-import fr.gouv.vitamui.commons.api.identity.ServerIdentityConfiguration;
+import javax.annotation.PostConstruct;
 
 @SpringBootApplication
 @EnableAutoConfiguration
@@ -29,11 +28,12 @@ public class ApplicationTest extends AbstractVitamUIApplication {
         logger.debug("Spring Boot - active profile: {}.", System.getProperty("spring.profiles.active"));
         try {
             logger.debug("Spring Boot - Module: {}.", getModuleName());
-            logger.debug("Spring Boot - Logger Message preprend: {}.",
-                    ServerIdentityConfiguration.getInstance().getLoggerMessagePrepend());
+            logger.debug(
+                "Spring Boot - Logger Message preprend: {}.",
+                ServerIdentityConfiguration.getInstance().getLoggerMessagePrepend()
+            );
             logger.debug("Spring Boot : {}.", ServerIdentityConfiguration.getInstance());
-        }
-        catch (final InternalServerException | NullPointerException exception) {
+        } catch (final InternalServerException | NullPointerException exception) {
             // do nothing
         }
     }

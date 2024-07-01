@@ -115,8 +115,8 @@ public class CertificateCrudController implements CrudController<CertificateDto>
 
     @Override
     @PostMapping
-    public CertificateDto create(final @Valid @RequestBody CertificateDto dto) throws InvalidParseOperationException,
-        PreconditionFailedException {
+    public CertificateDto create(final @Valid @RequestBody CertificateDto dto)
+        throws InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.sanitizeCriteria(dto);
         LOGGER.debug("Create {}", dto);
         return certificateCrudService.create(dto);
@@ -130,13 +130,17 @@ public class CertificateCrudController implements CrudController<CertificateDto>
         SanityChecker.checkSecureParameter(id);
         SanityChecker.sanitizeCriteria(dto);
         LOGGER.debug("Update {} with {}", id, dto);
-        Assert.isTrue(StringUtils.equals(id, dto.getId()), "The DTO identifier must match the path identifier for update.");
+        Assert.isTrue(
+            StringUtils.equals(id, dto.getId()),
+            "The DTO identifier must match the path identifier for update."
+        );
         return certificateCrudService.update(dto);
     }
 
     @Override
     @DeleteMapping(CommonConstants.PATH_ID)
-    public void delete(final @PathVariable("id") String id) throws InvalidParseOperationException, PreconditionFailedException {
+    public void delete(final @PathVariable("id") String id)
+        throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Delete {}", id);

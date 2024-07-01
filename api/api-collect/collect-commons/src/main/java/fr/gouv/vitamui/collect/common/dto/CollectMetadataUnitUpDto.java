@@ -40,5 +40,4 @@ public class CollectMetadataUnitUpDto {
     private String metadataKey;
     private String metadataValue;
     private String unitUp;
-
 }

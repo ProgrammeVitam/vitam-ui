@@ -36,14 +36,14 @@
  */
 package fr.gouv.vitamui.commons.api.domain;
 
-import javax.validation.constraints.NotNull;
-
 import fr.gouv.vitamui.commons.api.enums.AccessRight;
 import fr.gouv.vitamui.commons.api.enums.IngestRight;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+
+import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter

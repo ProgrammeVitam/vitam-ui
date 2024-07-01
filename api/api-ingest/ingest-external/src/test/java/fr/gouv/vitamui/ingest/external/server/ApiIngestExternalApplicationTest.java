@@ -46,7 +46,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
 public class ApiIngestExternalApplicationTest {
@@ -57,7 +56,6 @@ public class ApiIngestExternalApplicationTest {
     @Autowired
     private ApiIngestExternalApplicationProperties apiIngestExternalApplicationProperties;
 
-
     @Test
     public void testContextLoads() {
         assertThat(env).isNotNull();
@@ -66,6 +64,4 @@ public class ApiIngestExternalApplicationTest {
         assertThat(apiIngestExternalApplicationProperties.getIamInternalClient()).isNotNull();
         assertThat(apiIngestExternalApplicationProperties.getSecurityClient()).isNotNull();
     }
-
 }
-

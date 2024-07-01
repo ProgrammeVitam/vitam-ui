@@ -47,5 +47,4 @@ import lombok.Setter;
 public class AggregationResultValue {
 
     private Object value;
-
 }

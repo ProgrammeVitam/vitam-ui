@@ -39,7 +39,7 @@ package fr.gouv.vitamui.commons.rest.client;
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLSession;
 
- /**
+/**
  * Implementation of {@link HostnameVerifier} which allows ANY hosts.
  *
  *
@@ -49,8 +49,7 @@ public class TrustAllHostnameVerifier implements HostnameVerifier {
 
     public static final TrustAllHostnameVerifier INSTANCE = new TrustAllHostnameVerifier();
 
-    private TrustAllHostnameVerifier() {
-    }
+    private TrustAllHostnameVerifier() {}
 
     @Override
     public boolean verify(String hostname, SSLSession sslSession) {

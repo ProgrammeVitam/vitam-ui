@@ -36,12 +36,11 @@
  */
 package org.apereo.cas;
 
-import org.apereo.cas.util.logging.LoggingInitialization;
-import org.apereo.cas.util.spring.boot.AbstractCasBanner;
-
 import lombok.experimental.UtilityClass;
 import lombok.val;
 import org.apache.commons.lang3.StringUtils;
+import org.apereo.cas.util.logging.LoggingInitialization;
+import org.apereo.cas.util.spring.boot.AbstractCasBanner;
 import org.springframework.boot.Banner;
 import org.springframework.boot.context.metrics.buffering.BufferingApplicationStartup;
 import org.springframework.core.metrics.ApplicationStartup;
@@ -54,6 +53,7 @@ import java.util.Optional;
  */
 @UtilityClass
 public class CasEmbeddedContainerUtils {
+
     private static final int APPLICATION_EVENTS_CAPACITY = 5_000;
 
     public static Optional<LoggingInitialization> getLoggingInitialization() {
@@ -68,14 +68,16 @@ public class CasEmbeddedContainerUtils {
 
         @Override
         protected String getTitle() {
-            return "   _______           _____  __      ___ _                  _    _ _______  \n" +
+            return (
+                "   _______           _____  __      ___ _                  _    _ _______  \n" +
                 "  / / ____|   /\\    / ____| \\ \\    / (_) |                | |  | |_   _\\ \\ \n" +
                 " | | |       /  \\  | (___    \\ \\  / / _| |_ __ _ _ __ ___ | |  | | | |  | |\n" +
                 " | | |      / /\\ \\  \\___ \\    \\ \\/ / | | __/ _` | '_ ` _ \\| |  | | | |  | |\n" +
                 " | | |____ / ____ \\ ____) |    \\  /  | | || (_| | | | | | | |__| |_| |_ | |\n" +
                 " | |\\_____/_/    \\_\\_____/      \\/   |_|\\__\\__,_|_| |_| |_|\\____/|_____|| |\n" +
                 "  \\_\\                                                                  /_/ \n" +
-                "                                                                           \n";
+                "                                                                           \n"
+            );
         }
     }
 

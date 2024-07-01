@@ -38,9 +38,9 @@ package fr.gouv.vitamui.archives.search.rest;
 
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitamui.archives.search.service.SearchCriteriaHistoryService;
-import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaHistoryDto;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaHistoryDto;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
@@ -82,11 +82,13 @@ public class SearchCriteriaHistoryController extends AbstractUiRestController {
     @GetMapping
     @Produces("application/json")
     @ResponseStatus(HttpStatus.OK)
-    public List<SearchCriteriaHistoryDto> getSearchCritriaHistory() throws InvalidParseOperationException,
-        PreconditionFailedException {
+    public List<SearchCriteriaHistoryDto> getSearchCritriaHistory()
+        throws InvalidParseOperationException, PreconditionFailedException {
         LOGGER.debug("Get the search criteria history");
 
-        List<SearchCriteriaHistoryDto> searchCriteriaHistoryDtoList = service.getSearchCritriaHistory(buildUiHttpContext());
+        List<SearchCriteriaHistoryDto> searchCriteriaHistoryDtoList = service.getSearchCritriaHistory(
+            buildUiHttpContext()
+        );
         LOGGER.debug("Ui commons controller : {}", searchCriteriaHistoryDtoList.toString());
         return searchCriteriaHistoryDtoList;
     }
@@ -103,7 +105,8 @@ public class SearchCriteriaHistoryController extends AbstractUiRestController {
 
     @ApiOperation(value = "delete Search criteria history")
     @DeleteMapping(CommonConstants.PATH_ID)
-    public void delete(final @PathVariable("id") String id) throws InvalidParseOperationException, PreconditionFailedException {
+    public void delete(final @PathVariable("id") String id)
+        throws InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Delete SearchCriteriaHistory by id :{}", id);
         service.delete(buildUiHttpContext(), id);

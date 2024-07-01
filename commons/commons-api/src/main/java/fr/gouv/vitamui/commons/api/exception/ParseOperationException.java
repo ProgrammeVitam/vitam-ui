@@ -65,5 +65,4 @@ public class ParseOperationException extends VitamUIException {
     public ParseOperationException(final String message, final String key) {
         super(message, key);
     }
-
 }

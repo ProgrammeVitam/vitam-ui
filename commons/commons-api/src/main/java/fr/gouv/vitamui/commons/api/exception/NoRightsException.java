@@ -58,5 +58,4 @@ public class NoRightsException extends VitamUIException {
     public NoRightsException(final String message, final String key) {
         super(message, key);
     }
-
 }

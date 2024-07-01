@@ -36,14 +36,6 @@
  */
 package fr.gouv.vitamui.commons.mongo.service;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.Assert;
-
 import fr.gouv.vitamui.commons.api.domain.BaseIdDocument;
 import fr.gouv.vitamui.commons.api.domain.IdDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
@@ -51,13 +43,20 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.api.service.BaseCrudService;
 import fr.gouv.vitamui.commons.mongo.CustomSequencesConstants;
 import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
+import org.springframework.util.Assert;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 /**
  * A service to read, create, update and delete an object with identifier.
  *
  *
  */
-public abstract class VitamUICrudService<D extends IdDto, E extends BaseIdDocument> extends VitamUIReadService<D, E> implements BaseCrudService<D, E> {
+public abstract class VitamUICrudService<D extends IdDto, E extends BaseIdDocument>
+    extends VitamUIReadService<D, E>
+    implements BaseCrudService<D, E> {
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(VitamUICrudService.class);
 
@@ -100,15 +99,13 @@ public abstract class VitamUICrudService<D extends IdDto, E extends BaseIdDocume
         return convertFromEntityToDto(createdEntity);
     }
 
-    protected void beforeCreate(final E entity) {
-    }
+    protected void beforeCreate(final E entity) {}
 
     /**
      * Method allowing to perform checks and provide additional information before to create an object.
      * @param dto Object to create.
      */
-    protected void beforeCreate(final D dto) {
-    }
+    protected void beforeCreate(final D dto) {}
 
     /**
      * {@inheritDoc}
@@ -120,7 +117,10 @@ public abstract class VitamUICrudService<D extends IdDto, E extends BaseIdDocume
         final E entity = convertFromDtoToEntity(dto);
         LOGGER.debug("Update entity {} {}", getObjectName(), entity);
         Assert.isTrue(entity != null, "Unable to update " + getObjectName() + ": entity is null");
-        Assert.isTrue(getRepository().existsById(entity.getId()), "Unable to update " + getObjectName() + NO_ENTITY_MESSAGE + entity.getId());
+        Assert.isTrue(
+            getRepository().existsById(entity.getId()),
+            "Unable to update " + getObjectName() + NO_ENTITY_MESSAGE + entity.getId()
+        );
         final E savedEntity = getRepository().save(entity);
         return convertFromEntityToDto(savedEntity);
     }
@@ -129,8 +129,7 @@ public abstract class VitamUICrudService<D extends IdDto, E extends BaseIdDocume
      * Method allowing to perform checks and provide additional information before to update an object.
      * @param dto Object to update.
      */
-    protected void beforeUpdate(final D dto) {
-    }
+    protected void beforeUpdate(final D dto) {}
 
     /**
      * {@inheritDoc}
@@ -140,7 +139,10 @@ public abstract class VitamUICrudService<D extends IdDto, E extends BaseIdDocume
         LOGGER.debug("Patch {} with {}", getObjectName(), partialDto);
         final E entity = beforePatch(partialDto);
         processPatch(entity, partialDto);
-        Assert.isTrue(getRepository().existsById(entity.getId()), "Unable to patch " + getObjectName() + NO_ENTITY_MESSAGE + entity.getId());
+        Assert.isTrue(
+            getRepository().existsById(entity.getId()),
+            "Unable to patch " + getObjectName() + NO_ENTITY_MESSAGE + entity.getId()
+        );
         final E savedEntity = getRepository().save(entity);
         return convertFromEntityToDto(savedEntity);
     }
@@ -150,10 +152,12 @@ public abstract class VitamUICrudService<D extends IdDto, E extends BaseIdDocume
      * @param entity Entity to patch.
      * @param partialDto Specifics fields to update.
      */
-    protected void processPatch(final E entity, final Map<String, Object> partialDto) {
-    }
+    protected void processPatch(final E entity, final Map<String, Object> partialDto) {}
 
-    protected boolean checkMapContainsOnlyFieldsUnmodifiable(final Map<String, Object> partialDto, final List<String> unmodifiableFields) {
+    protected boolean checkMapContainsOnlyFieldsUnmodifiable(
+        final Map<String, Object> partialDto,
+        final List<String> unmodifiableFields
+    ) {
         boolean containsOnlyFieldsUnModifiable = true;
         for (final Entry<String, Object> entry : partialDto.entrySet()) {
             if (!unmodifiableFields.contains(entry.getKey())) {
@@ -170,7 +174,11 @@ public abstract class VitamUICrudService<D extends IdDto, E extends BaseIdDocume
      */
     protected E beforePatch(final Map<String, Object> partialDto) {
         final String id = (String) partialDto.get("id");
-        return getRepository().findById(id).orElseThrow(() -> new IllegalArgumentException("Unable to patch " + getObjectName() + NO_ENTITY_MESSAGE + id));
+        return getRepository()
+            .findById(id)
+            .orElseThrow(
+                () -> new IllegalArgumentException("Unable to patch " + getObjectName() + NO_ENTITY_MESSAGE + id)
+            );
     }
 
     /**
@@ -189,8 +197,7 @@ public abstract class VitamUICrudService<D extends IdDto, E extends BaseIdDocume
      * Method allowing to perform checks/retrieve additional information before to delete the entity.
      * @param id Id of the entity.
      */
-    protected void beforeDelete(final String id) {
-    }
+    protected void beforeDelete(final String id) {}
 
     /**
      * Method allowing to generate the next value of the sequence.
@@ -248,5 +255,4 @@ public abstract class VitamUICrudService<D extends IdDto, E extends BaseIdDocume
     protected E internalConvertFromDtoToEntity(final D dto) {
         return getConverter().convertDtoToEntity(dto);
     }
-
 }

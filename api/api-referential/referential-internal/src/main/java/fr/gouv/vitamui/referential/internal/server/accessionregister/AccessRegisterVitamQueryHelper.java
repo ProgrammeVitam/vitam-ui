@@ -68,17 +68,29 @@ import static org.apache.commons.collections4.CollectionUtils.isNotEmpty;
 @UtilityClass
 public class AccessRegisterVitamQueryHelper {
 
-    private static final DateTimeFormatter INPUT_DTF =
-        DateTimeFormatter.ofPattern("dd/MM/yyyy").withZone(ZoneOffset.UTC);
-    private static final DateTimeFormatter OUTPUT_DTF =
-        DateTimeFormatter.ofPattern("yyyy-MM-dd").withZone(ZoneOffset.UTC);
+    private static final DateTimeFormatter INPUT_DTF = DateTimeFormatter.ofPattern("dd/MM/yyyy").withZone(
+        ZoneOffset.UTC
+    );
+    private static final DateTimeFormatter OUTPUT_DTF = DateTimeFormatter.ofPattern("yyyy-MM-dd").withZone(
+        ZoneOffset.UTC
+    );
 
     private static final String ACQUISITION_INFORMATION = "AcquisitionInformation";
     private static final String NON_RENSEIGNE = "Non renseigné";
     private static final String AUTRES = "Autres";
     private static final Collection<String> NON_RENSEIGNE_ET_AUTRES = List.of(NON_RENSEIGNE, AUTRES);
-    private static final Collection<String> ACQUISITION_INFORMATIONS_AVAILABLE = List.of("Versement",
-        "Protocole", "Achat", "Copie", "Dation", "Dépôt", "Dévolution", "Don", "Legs", "Réintégration", NON_RENSEIGNE,
+    private static final Collection<String> ACQUISITION_INFORMATIONS_AVAILABLE = List.of(
+        "Versement",
+        "Protocole",
+        "Achat",
+        "Copie",
+        "Dation",
+        "Dépôt",
+        "Dévolution",
+        "Don",
+        "Legs",
+        "Réintégration",
+        NON_RENSEIGNE,
         AUTRES
     );
 
@@ -95,9 +107,8 @@ public class AccessRegisterVitamQueryHelper {
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(AccessRegisterVitamQueryHelper.class);
 
-    public static JsonNode createQueryDSL(
-        AccessionRegisterSearchDto criteria
-    ) throws InvalidCreateOperationException, InvalidParseOperationException {
+    public static JsonNode createQueryDSL(AccessionRegisterSearchDto criteria)
+        throws InvalidCreateOperationException, InvalidParseOperationException {
         return AccessRegisterVitamQueryHelper.createQueryDSL(
             criteria,
             null,
@@ -198,7 +209,6 @@ public class AccessRegisterVitamQueryHelper {
         } else {
             select.addOrderByAscFilter(orderBy);
         }
-
     }
 
     private static void addEventsToQuery(BooleanQuery query, String value, String searchKeyUpperCase)
@@ -229,25 +239,30 @@ public class AccessRegisterVitamQueryHelper {
         if (acquisitionInformationsList.contains(AUTRES)) {
             List<String> othersAcquisitionInformations = new ArrayList<>(ACQUISITION_INFORMATIONS_AVAILABLE);
             othersAcquisitionInformations.removeAll(NON_RENSEIGNE_ET_AUTRES);
-            query.add(and().add(exists(ACQUISITION_INFORMATION))
-                .add(nin(ACQUISITION_INFORMATION, othersAcquisitionInformations.toArray(String[]::new)))
+            query.add(
+                and()
+                    .add(exists(ACQUISITION_INFORMATION))
+                    .add(nin(ACQUISITION_INFORMATION, othersAcquisitionInformations.toArray(String[]::new)))
             );
         }
         acquisitionInformationsList.removeAll(NON_RENSEIGNE_ET_AUTRES);
         if (!acquisitionInformationsList.isEmpty()) {
-            query.add(and().add(exists(ACQUISITION_INFORMATION))
-                .add(in(ACQUISITION_INFORMATION, acquisitionInformationsList.toArray(String[]::new)))
+            query.add(
+                and()
+                    .add(exists(ACQUISITION_INFORMATION))
+                    .add(in(ACQUISITION_INFORMATION, acquisitionInformationsList.toArray(String[]::new)))
             );
         }
     }
 
-    private static void addEndDateToQuery(BooleanQuery query,
-        AccessionRegisterSearchDto.EndDateInterval endDateInterval) {
+    private static void addEndDateToQuery(
+        BooleanQuery query,
+        AccessionRegisterSearchDto.EndDateInterval endDateInterval
+    ) {
         if (isNull(endDateInterval)) {
             return;
         }
         try {
-
             String dateMinStr = endDateInterval.getEndDateMin();
             String dateMaxStr = endDateInterval.getEndDateMax();
             if (nonNull(dateMinStr) && isNull(dateMaxStr)) {
@@ -257,12 +272,18 @@ public class AccessRegisterVitamQueryHelper {
                 query.add(eq(END_DATE, LocalDate.parse(dateMaxStr, INPUT_DTF).format(OUTPUT_DTF)));
             }
             if (nonNull(dateMinStr) && nonNull(dateMaxStr)) {
-                query.add(range(END_DATE, LocalDate.parse(dateMinStr, INPUT_DTF).format(OUTPUT_DTF), true,
-                    LocalDate.parse(dateMaxStr, INPUT_DTF).format(OUTPUT_DTF), true));
+                query.add(
+                    range(
+                        END_DATE,
+                        LocalDate.parse(dateMinStr, INPUT_DTF).format(OUTPUT_DTF),
+                        true,
+                        LocalDate.parse(dateMaxStr, INPUT_DTF).format(OUTPUT_DTF),
+                        true
+                    )
+                );
             }
         } catch (InvalidCreateOperationException e) {
             LOGGER.error("Can not find binding for EndDate key: \n {}", e);
         }
     }
-
 }

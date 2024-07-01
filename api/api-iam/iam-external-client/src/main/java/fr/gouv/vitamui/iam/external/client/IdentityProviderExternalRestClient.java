@@ -36,15 +36,14 @@
  */
 package fr.gouv.vitamui.iam.external.client;
 
-import java.util.List;
-
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.web.client.RestTemplate;
-
 import fr.gouv.vitamui.commons.rest.client.BaseCrudRestClient;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.common.rest.RestApi;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.web.client.RestTemplate;
+
+import java.util.List;
 
 /**
  * A REST client to check existence, read, create, update and delete an identity provider.
@@ -69,7 +68,6 @@ public class IdentityProviderExternalRestClient extends BaseCrudRestClient<Ident
 
     @Override
     protected ParameterizedTypeReference<List<IdentityProviderDto>> getDtoListClass() {
-        return new ParameterizedTypeReference<List<IdentityProviderDto>>() {
-        };
+        return new ParameterizedTypeReference<List<IdentityProviderDto>>() {};
     }
 }

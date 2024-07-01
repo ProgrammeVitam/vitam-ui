@@ -37,7 +37,6 @@ knowledge of the CeCILL-C license and that you accept its terms.
 */
 package fr.gouv.vitamui.pastis.server;
 
-
 import fr.gouv.vitam.access.external.client.AccessExternalClient;
 import fr.gouv.vitam.access.external.client.AdminExternalClient;
 import fr.gouv.vitamui.commons.api.identity.ServerIdentityConfiguration;
@@ -66,31 +65,43 @@ import org.springframework.test.context.junit4.SpringRunner;
  */
 @RunWith(SpringRunner.class)
 @WebMvcTest
-@Import(value = {ServerIdentityConfiguration.class, SwaggerConfiguration.class})
+@Import(value = { ServerIdentityConfiguration.class, SwaggerConfiguration.class })
 @ActiveProfiles("dev, swagger")
 public class SwaggerJsonFileGenerationTest extends AbstractSwaggerJsonFileGenerationTest {
+
     @MockBean
     public ContextRestClient contextCrudRestClient;
+
     @MockBean
     public ExternalApiAuthenticationProvider apiAuthenticationProvider;
+
     @MockBean
     public ExternalSecurityService externalSecurityService;
+
     @MockBean
     public ExternalAuthentificationService externalAuthentificationService;
+
     @MockBean
     public IamInternalRestClientFactory iamInternalRestClientFactory;
+
     @MockBean
     public UserInternalRestClient userInternalRestClient;
+
     @MockBean
     private RestExceptionHandler restExceptionHandler;
+
     @MockBean
     private AdminExternalClient adminExternalClient;
+
     @MockBean(name = "accessExternalClient")
     private AccessExternalClient accessExternalClient;
+
     @MockBean
     private InternalSecurityService internalSecurityService;
+
     @MockBean
     private AuthenticationProvider authenticationProvider;
+
     @MockBean
     private SecurityRestClientFactory securityRestClientFactory;
 }

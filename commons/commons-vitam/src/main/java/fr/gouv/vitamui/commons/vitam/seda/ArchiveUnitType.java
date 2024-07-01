@@ -5,11 +5,10 @@
 // Généré le : 2020.07.15 à 03:41:18 PM CEST
 //
 
-
 package fr.gouv.vitamui.commons.vitam.seda;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.w3c.dom.Element;
+
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -22,8 +21,8 @@ import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.CollapsedStringAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-import org.w3c.dom.Element;
-
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Unité de base des métadonnées de description contenant la gestion de l'arborescence.
@@ -59,31 +58,41 @@ import org.w3c.dom.Element;
  *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "ArchiveUnitType", propOrder = {
-    "archiveUnitRefId",
-    "archiveUnitProfile",
-    "management",
-    "content",
-    "archiveUnitOrDataObjectReferenceOrDataObjectGroup"
-})
+@XmlType(
+    name = "ArchiveUnitType",
+    propOrder = {
+        "archiveUnitRefId",
+        "archiveUnitProfile",
+        "management",
+        "content",
+        "archiveUnitOrDataObjectReferenceOrDataObjectGroup",
+    }
+)
 public class ArchiveUnitType {
 
     @XmlElement(name = "ArchiveUnitRefId")
     @XmlIDREF
     @XmlSchemaType(name = "IDREF")
     protected Object archiveUnitRefId;
+
     @XmlElement(name = "ArchiveUnitProfile")
     protected IdentifierType archiveUnitProfile;
+
     @XmlElement(name = "Management")
     protected ManagementType management;
+
     @XmlElement(name = "Content")
     protected DescriptiveMetadataContentType content;
-    @XmlElements({
-        @XmlElement(name = "ArchiveUnit", type = ArchiveUnitType.class),
-        @XmlElement(name = "DataObjectReference", type = DataObjectRefType.class),
-        @XmlElement(name = "DataObjectGroup", type = DataObjectGroupType.class)
-    })
+
+    @XmlElements(
+        {
+            @XmlElement(name = "ArchiveUnit", type = ArchiveUnitType.class),
+            @XmlElement(name = "DataObjectReference", type = DataObjectRefType.class),
+            @XmlElement(name = "DataObjectGroup", type = DataObjectGroupType.class),
+        }
+    )
     protected List<Object> archiveUnitOrDataObjectReferenceOrDataObjectGroup;
+
     @XmlAttribute(name = "id", required = true)
     @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
     @XmlID
@@ -241,5 +250,4 @@ public class ArchiveUnitType {
     public void setId(String value) {
         this.id = value;
     }
-
 }

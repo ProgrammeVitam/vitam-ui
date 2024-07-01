@@ -57,6 +57,7 @@ import static org.springframework.http.HttpStatus.OK;
 
 @Configuration
 public class PastisConfiguration {
+
     private ResourceLoader resourceLoader;
 
     @Value("${cors.allowed-origins}")

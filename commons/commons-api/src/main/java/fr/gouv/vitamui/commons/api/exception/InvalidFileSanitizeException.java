@@ -50,5 +50,4 @@ public class InvalidFileSanitizeException extends VitamUIException {
     public InvalidFileSanitizeException(final String message) {
         super(message);
     }
-
 }
