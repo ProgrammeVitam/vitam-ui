@@ -19,7 +19,9 @@ import static org.junit.Assert.fail;
  *
  */
 //@RunWith(SpringRunner.class)
-public abstract class AbstractCrudControllerTest<D extends IdDto, E extends BaseIdDocument> extends AbstractServerIdentityBuilder implements CrudControllerTest {
+public abstract class AbstractCrudControllerTest<D extends IdDto, E extends BaseIdDocument>
+    extends AbstractServerIdentityBuilder
+    implements CrudControllerTest {
 
     protected static final String ID = "id";
 
@@ -29,7 +31,6 @@ public abstract class AbstractCrudControllerTest<D extends IdDto, E extends Base
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-
     }
 
     /**
@@ -58,8 +59,7 @@ public abstract class AbstractCrudControllerTest<D extends IdDto, E extends Base
         try {
             getController().create(dto);
             fail("should fail");
-        }
-        catch (final IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e) {
             assertEquals("The DTO identifier must be null for creation.", e.getMessage());
         }
     }
@@ -75,8 +75,7 @@ public abstract class AbstractCrudControllerTest<D extends IdDto, E extends Base
         prepareServices();
         try {
             getController().update(ID, dto);
-        }
-        catch (final IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e) {
             assertEquals("The DTO identifier must match the path identifier for update.", e.getMessage());
         }
     }
@@ -94,8 +93,7 @@ public abstract class AbstractCrudControllerTest<D extends IdDto, E extends Base
 
     protected abstract CrudController<D> getController();
 
-    protected void prepareServices() {
-    }
+    protected void prepareServices() {}
 
     protected abstract D buildDto() throws Exception;
 }

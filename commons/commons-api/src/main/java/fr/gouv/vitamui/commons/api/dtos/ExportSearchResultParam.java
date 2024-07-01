@@ -8,6 +8,7 @@ import java.util.Map;
 
 @Data
 public class ExportSearchResultParam {
+
     //Export CSV headers
     //French
     private static final String FR_GUID_FIELD_HEADER_NAME = "Identifiant technique de l'UA";
@@ -43,7 +44,6 @@ public class ExportSearchResultParam {
     private static final String FR_PATTERN_DATE = "dd/MM/yyyy";
     private static final String EN_PATTERN_DATE = "MM/dd/yyyy";
 
-
     private Map<String, String> descriptionLevelMap;
     private String patternDate;
     private List<String> headers;
@@ -59,18 +59,28 @@ public class ExportSearchResultParam {
                 FR_ARCHIVE_UNIT_NAME_FIELD_HEADER_NAME,
                 FR_BEGIN_DATE_FIELD_HEADER_NAME,
                 FR_END_DATE_FIELD_HEADER_NAME,
-                FR_DESCRIPTION_FIELD_HEADER_NAME);
+                FR_DESCRIPTION_FIELD_HEADER_NAME
+            );
             this.patternDate = FR_PATTERN_DATE;
             this.descriptionLevelMap = Map.of(
-                "File", "Dossier",
-                "Item", "Document",
-                "RecordGrp", "Dossier",
-                "Fonds", "Fonds",
-                "Subfonds", "Subfonds",
-                "Class", "Class",
-                "Collection", "Collection",
-                "Serie", "Serie",
-                "Subseries", "Subseries",
+                "File",
+                "Dossier",
+                "Item",
+                "Document",
+                "RecordGrp",
+                "Dossier",
+                "Fonds",
+                "Fonds",
+                "Subfonds",
+                "Subfonds",
+                "Class",
+                "Class",
+                "Collection",
+                "Collection",
+                "Serie",
+                "Serie",
+                "Subseries",
+                "Subseries",
                 "SubGrp :SubGrp",
                 "OtherLevel :OtherLevel"
             );
@@ -83,18 +93,28 @@ public class ExportSearchResultParam {
                 EN_ARCHIVE_UNIT_NAME_FIELD_HEADER_NAME,
                 EN_BEGIN_DATE_FIELD_HEADER_NAME,
                 EN_END_DATE_FIELD_HEADER_NAME,
-                EN_DESCRIPTION_FIELD_HEADER_NAME);
+                EN_DESCRIPTION_FIELD_HEADER_NAME
+            );
             this.patternDate = EN_PATTERN_DATE;
             this.descriptionLevelMap = Map.of(
-                "File", "File",
-                "Item", "File",
-                "RecordGrp", "RecordGrp",
-                "Fonds", "Fonds",
-                "Subfonds", "Subfonds",
-                "Class", "Class",
-                "Collection", "Collection",
-                "Serie", "Serie",
-                "Subseries", "Subseries",
+                "File",
+                "File",
+                "Item",
+                "File",
+                "RecordGrp",
+                "RecordGrp",
+                "Fonds",
+                "Fonds",
+                "Subfonds",
+                "Subfonds",
+                "Class",
+                "Class",
+                "Collection",
+                "Collection",
+                "Serie",
+                "Serie",
+                "Subseries",
+                "Subseries",
                 "SubGrp :SubGrp",
                 "OtherLevel :OtherLevel"
             );

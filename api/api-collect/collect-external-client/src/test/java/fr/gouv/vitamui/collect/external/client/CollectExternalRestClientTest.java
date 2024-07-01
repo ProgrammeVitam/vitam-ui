@@ -46,5 +46,4 @@ public class CollectExternalRestClientTest extends ServerIdentityExtension {
     public void setUp() {
         collectExternalRestClient = new CollectExternalRestClient(restTemplate, RestApi.COLLECT_PROJECT_PATH);
     }
-
 }

@@ -36,20 +36,10 @@
  */
 package fr.gouv.vitamui.referential.internal.client;
 
-import java.util.Collections;
-import java.util.Optional;
-
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.client.RestTemplate;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
@@ -58,6 +48,14 @@ import fr.gouv.vitamui.commons.rest.client.BaseRestClient;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
+
+import java.util.Collections;
+import java.util.Optional;
 
 /**
  * A REST client to search operations.
@@ -91,13 +89,16 @@ public class UnitInternalRestClient extends BaseRestClient<InternalHttpContext> 
 
         final HttpEntity<Void> request = new HttpEntity<>(headers);
         VitamUISearchResponseDto result;
-        final ResponseEntity<JsonNode> response = restTemplate.exchange(getUrl() + "/" + unitId, HttpMethod.GET,
-                request, getJsonNodeClass());
+        final ResponseEntity<JsonNode> response = restTemplate.exchange(
+            getUrl() + "/" + unitId,
+            HttpMethod.GET,
+            request,
+            getJsonNodeClass()
+        );
         checkResponse(response);
         try {
             result = objectMapper.treeToValue(response.getBody(), VitamUISearchResponseDto.class);
-        }
-        catch (JsonProcessingException e) {
+        } catch (JsonProcessingException e) {
             throw new InternalServerException("Error while parsing Vitam response", e);
         }
         return result;
@@ -108,8 +109,11 @@ public class UnitInternalRestClient extends BaseRestClient<InternalHttpContext> 
 
         final HttpEntity<JsonNode> request = new HttpEntity<>(dsl, headers);
         final ResponseEntity<JsonNode> response = restTemplate.exchange(
-        	getUrl() + RestApi.DSL_PATH + (id.isPresent() ? "/" + id.get() : ""),
-        	HttpMethod.POST, request, getJsonNodeClass());
+            getUrl() + RestApi.DSL_PATH + (id.isPresent() ? "/" + id.get() : ""),
+            HttpMethod.POST,
+            request,
+            getJsonNodeClass()
+        );
         checkResponse(response);
         return response.getBody();
     }
@@ -119,8 +123,11 @@ public class UnitInternalRestClient extends BaseRestClient<InternalHttpContext> 
 
         final HttpEntity<JsonNode> request = new HttpEntity<>(dsl, headers);
         final ResponseEntity<JsonNode> response = restTemplate.exchange(
-        	getUrl() + "/" + id + RestApi.OBJECTS_PATH,
-        	HttpMethod.POST, request, getJsonNodeClass());
+            getUrl() + "/" + id + RestApi.OBJECTS_PATH,
+            HttpMethod.POST,
+            request,
+            getJsonNodeClass()
+        );
         checkResponse(response);
         return response.getBody();
     }
@@ -130,8 +137,12 @@ public class UnitInternalRestClient extends BaseRestClient<InternalHttpContext> 
         MultiValueMap<String, String> headers = buildSearchHeaders(context);
 
         final HttpEntity<Void> request = new HttpEntity<>(headers);
-        final ResponseEntity<VitamUISearchResponseDto> response = restTemplate
-                .exchange(getUrl() + RestApi.FILING_PLAN_PATH, HttpMethod.GET, request, VitamUISearchResponseDto.class);
+        final ResponseEntity<VitamUISearchResponseDto> response = restTemplate.exchange(
+            getUrl() + RestApi.FILING_PLAN_PATH,
+            HttpMethod.GET,
+            request,
+            VitamUISearchResponseDto.class
+        );
         checkResponse(response);
         return response.getBody();
     }
@@ -150,5 +161,4 @@ public class UnitInternalRestClient extends BaseRestClient<InternalHttpContext> 
         }
         return headers;
     }
-
 }

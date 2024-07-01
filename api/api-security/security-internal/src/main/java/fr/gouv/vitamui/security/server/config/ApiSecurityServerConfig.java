@@ -36,11 +36,6 @@
  */
 package fr.gouv.vitamui.security.server.config;
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
-import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
-
 import fr.gouv.vitamui.commons.api.application.AbstractContextConfiguration;
 import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
 import fr.gouv.vitamui.commons.mongo.repository.impl.VitamUIRepositoryImpl;
@@ -50,11 +45,17 @@ import fr.gouv.vitamui.security.server.certificate.dao.CertificateRepository;
 import fr.gouv.vitamui.security.server.certificate.service.CertificateCrudService;
 import fr.gouv.vitamui.security.server.context.dao.ContextRepository;
 import fr.gouv.vitamui.security.server.context.service.ContextService;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
+import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
 @Configuration
 @Import({ RestExceptionHandler.class })
-@EnableMongoRepositories(basePackages = { "fr.gouv.vitamui.commons.mongo",
-"fr.gouv.vitamui.security.server" }, repositoryBaseClass = VitamUIRepositoryImpl.class)
+@EnableMongoRepositories(
+    basePackages = { "fr.gouv.vitamui.commons.mongo", "fr.gouv.vitamui.security.server" },
+    repositoryBaseClass = VitamUIRepositoryImpl.class
+)
 public class ApiSecurityServerConfig extends AbstractContextConfiguration {
 
     @Bean
@@ -65,17 +66,18 @@ public class ApiSecurityServerConfig extends AbstractContextConfiguration {
     @Bean
     public CertificateCrudService certificateCrudService(
         final SequenceGeneratorService sequenceGeneratorService,
-            final CertificateRepository certificateRepository,
-            final ContextService contextCrudService) {
+        final CertificateRepository certificateRepository,
+        final ContextService contextCrudService
+    ) {
         return new CertificateCrudService(sequenceGeneratorService, certificateRepository, contextCrudService);
     }
 
     @Bean
     public ContextService contextService(
-            final SequenceGeneratorService sequenceGeneratorService,
-            final ContextRepository contextRepository,
-            final CertificateRepository certificateRepository) {
+        final SequenceGeneratorService sequenceGeneratorService,
+        final ContextRepository contextRepository,
+        final CertificateRepository certificateRepository
+    ) {
         return new ContextService(sequenceGeneratorService, contextRepository, certificateRepository);
     }
-
 }

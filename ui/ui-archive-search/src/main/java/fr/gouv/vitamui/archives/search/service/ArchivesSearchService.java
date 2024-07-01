@@ -26,12 +26,10 @@
  */
 package fr.gouv.vitamui.archives.search.service;
 
-
 import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.archives.search.common.dto.ExportDipCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.ObjectData;
-import fr.gouv.vitamui.commons.api.dtos.OntologyDto;
 import fr.gouv.vitamui.archives.search.common.dto.ReclassificationCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.RuleSearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.TransferRequestDto;
@@ -39,6 +37,7 @@ import fr.gouv.vitamui.archives.search.common.dto.UnitDescriptiveMetadataDto;
 import fr.gouv.vitamui.archives.search.external.client.ArchiveSearchExternalRestClient;
 import fr.gouv.vitamui.archives.search.external.client.ArchiveSearchExternalWebClient;
 import fr.gouv.vitamui.archives.search.external.client.ArchiveSearchStreamingExternalRestClient;
+import fr.gouv.vitamui.commons.api.dtos.OntologyDto;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
@@ -67,7 +66,6 @@ import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.apache.commons.lang3.StringUtils.isEmpty;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
-
 /**
  * UI
  * Archive-Search Service
@@ -84,10 +82,12 @@ public class ArchivesSearchService extends AbstractPaginateService<ArchiveUnitsD
     private final CommonService commonService;
 
     @Autowired
-    public ArchivesSearchService(final CommonService commonService,
+    public ArchivesSearchService(
+        final CommonService commonService,
         final ArchiveSearchExternalRestClient archiveSearchExternalRestClient,
         final ArchiveSearchExternalWebClient archiveSearchExternalWebClient,
-        ArchiveSearchStreamingExternalRestClient archiveSearchStreamingExternalRestClient) {
+        ArchiveSearchStreamingExternalRestClient archiveSearchStreamingExternalRestClient
+    ) {
         this.commonService = commonService;
         this.archiveSearchExternalRestClient = archiveSearchExternalRestClient;
         this.archiveSearchExternalWebClient = archiveSearchExternalWebClient;
@@ -103,8 +103,7 @@ public class ArchivesSearchService extends AbstractPaginateService<ArchiveUnitsD
         return archiveSearchExternalRestClient;
     }
 
-    public ArchiveUnitsDto findArchiveUnits(final SearchCriteriaDto searchQuery,
-        final ExternalHttpContext context) {
+    public ArchiveUnitsDto findArchiveUnits(final SearchCriteriaDto searchQuery, final ExternalHttpContext context) {
         LOGGER.debug("calling find archive units by criteria {} ", searchQuery);
         return getClient().searchArchiveUnitsByCriteria(context, searchQuery);
     }
@@ -113,8 +112,13 @@ public class ArchivesSearchService extends AbstractPaginateService<ArchiveUnitsD
         return archiveSearchExternalRestClient.getFilingHoldingScheme(context);
     }
 
-    public Mono<ResponseEntity<Resource>> downloadObjectFromUnit(String unitId, String qualifier, Integer version,
-        ObjectData objectData, ExternalHttpContext context) {
+    public Mono<ResponseEntity<Resource>> downloadObjectFromUnit(
+        String unitId,
+        String qualifier,
+        Integer version,
+        ObjectData objectData,
+        ExternalHttpContext context
+    ) {
         LOGGER.debug("Download the Archive Unit Object with id {}", unitId);
         ResultsDto got = findObjectById(unitId, context).getBody();
         setObjectData(Objects.requireNonNull(got), objectData);
@@ -122,10 +126,12 @@ public class ArchivesSearchService extends AbstractPaginateService<ArchiveUnitsD
             objectData.setQualifier(qualifier);
             objectData.setVersion(version);
         }
-        return archiveSearchExternalWebClient.downloadObjectFromUnit(unitId,
+        return archiveSearchExternalWebClient.downloadObjectFromUnit(
+            unitId,
             objectData.getQualifier(),
             objectData.getVersion(),
-            context);
+            context
+        );
     }
 
     public ResponseEntity<ResultsDto> findUnitById(String id, ExternalHttpContext context) {
@@ -138,8 +144,10 @@ public class ArchivesSearchService extends AbstractPaginateService<ArchiveUnitsD
         return archiveSearchExternalRestClient.findObjectById(id, context);
     }
 
-    public ResponseEntity<Resource> exportCsvArchiveUnitsByCriteria(final SearchCriteriaDto searchQuery,
-        ExternalHttpContext context) {
+    public ResponseEntity<Resource> exportCsvArchiveUnitsByCriteria(
+        final SearchCriteriaDto searchQuery,
+        ExternalHttpContext context
+    ) {
         LOGGER.debug("export search archives Units by criteria into csv format with criteria {}", searchQuery);
         return archiveSearchExternalRestClient.exportCsvArchiveUnitsByCriteria(searchQuery, context);
     }
@@ -161,7 +169,9 @@ public class ArchivesSearchService extends AbstractPaginateService<ArchiveUnitsD
 
     private QualifiersDto getLastObjectQualifier(ResultsDto got) {
         for (String qualifierName : ObjectQualifierType.downloadableValuesOrdered) {
-            QualifiersDto qualifierFound = got.getQualifiers().stream()
+            QualifiersDto qualifierFound = got
+                .getQualifiers()
+                .stream()
                 .filter(qualifier -> qualifierName.equals(qualifier.getQualifier()))
                 .reduce((first, second) -> second)
                 .orElse(null);
@@ -176,9 +186,7 @@ public class ArchivesSearchService extends AbstractPaginateService<ArchiveUnitsD
         if (isNull(qualifier) || CollectionUtils.isEmpty(qualifier.getVersions())) {
             return null;
         }
-        return qualifier.getVersions().stream()
-            .reduce((first, second) -> second)
-            .orElse(null);
+        return qualifier.getVersions().stream().reduce((first, second) -> second).orElse(null);
     }
 
     private String getFilename(VersionsDto version) {
@@ -194,9 +202,14 @@ public class ArchivesSearchService extends AbstractPaginateService<ArchiveUnitsD
             uriExtension = version.getUri().substring(version.getUri().lastIndexOf('.') + 1);
         }
         String filenameExtension = EMPTY;
-        if (nonNull(version.getFileInfoModel()) && isNotBlank(version.getFileInfoModel().getFilename()) &&
-            version.getFileInfoModel().getFilename().contains(".")) {
-            filenameExtension = version.getFileInfoModel().getFilename()
+        if (
+            nonNull(version.getFileInfoModel()) &&
+            isNotBlank(version.getFileInfoModel().getFilename()) &&
+            version.getFileInfoModel().getFilename().contains(".")
+        ) {
+            filenameExtension = version
+                .getFileInfoModel()
+                .getFilename()
                 .substring(version.getFileInfoModel().getFilename().lastIndexOf('.') + 1);
         }
         if (isNotBlank(filenameExtension)) {
@@ -221,65 +234,86 @@ public class ArchivesSearchService extends AbstractPaginateService<ArchiveUnitsD
         return Integer.parseInt(version.getDataObjectVersion().split("_")[1]);
     }
 
-    public ResponseEntity<String> exportDIPByCriteria(final ExportDipCriteriaDto exportDipCriteriaDto,
-        ExternalHttpContext context) {
+    public ResponseEntity<String> exportDIPByCriteria(
+        final ExportDipCriteriaDto exportDipCriteriaDto,
+        ExternalHttpContext context
+    ) {
         LOGGER.info("export DIP with criteria {}", exportDipCriteriaDto);
         return archiveSearchExternalRestClient.exportDIPCriteria(exportDipCriteriaDto, context);
     }
 
-    public ResponseEntity<String> transferRequest(final TransferRequestDto transferRequestDto,
-        ExternalHttpContext context) {
+    public ResponseEntity<String> transferRequest(
+        final TransferRequestDto transferRequestDto,
+        ExternalHttpContext context
+    ) {
         LOGGER.debug("Transfer request: {}", transferRequestDto);
         return archiveSearchExternalRestClient.transferRequest(transferRequestDto, context);
     }
 
-    public ResponseEntity<JsonNode> startEliminationAnalysis(ExternalHttpContext context,
-        final SearchCriteriaDto searchQuery) {
+    public ResponseEntity<JsonNode> startEliminationAnalysis(
+        ExternalHttpContext context,
+        final SearchCriteriaDto searchQuery
+    ) {
         LOGGER.info("elimination analysis with query : {}", searchQuery);
         return archiveSearchExternalRestClient.startEliminationAnalysis(context, searchQuery);
     }
 
-    public ResponseEntity<JsonNode> startEliminationAction(ExternalHttpContext context,
-        final SearchCriteriaDto searchQuery) {
+    public ResponseEntity<JsonNode> startEliminationAction(
+        ExternalHttpContext context,
+        final SearchCriteriaDto searchQuery
+    ) {
         LOGGER.info("elimination action with query : {}", searchQuery);
         return archiveSearchExternalRestClient.startEliminationAction(context, searchQuery);
     }
 
-    public ResponseEntity<String> updateArchiveUnitsRules(final RuleSearchCriteriaDto ruleSearchCriteriaDto,
-        ExternalHttpContext context) {
+    public ResponseEntity<String> updateArchiveUnitsRules(
+        final RuleSearchCriteriaDto ruleSearchCriteriaDto,
+        ExternalHttpContext context
+    ) {
         LOGGER.info("Update Archive Units Rules  with criteria {}", ruleSearchCriteriaDto);
         return archiveSearchExternalRestClient.updateArchiveUnitsRules(ruleSearchCriteriaDto, context);
     }
 
-    public ResponseEntity<String> computedInheritedRules(final SearchCriteriaDto searchCriteriaDto,
-        ExternalHttpContext context) {
+    public ResponseEntity<String> computedInheritedRules(
+        final SearchCriteriaDto searchCriteriaDto,
+        ExternalHttpContext context
+    ) {
         LOGGER.info("computed Inherited Rules with criteria {}", searchCriteriaDto);
         return archiveSearchExternalRestClient.computedInheritedRules(searchCriteriaDto, context);
     }
 
-    public ResponseEntity<ResultsDto> selectUnitsWithInheritedRules(final SearchCriteriaDto searchQuery,
-        final ExternalHttpContext context) {
+    public ResponseEntity<ResultsDto> selectUnitsWithInheritedRules(
+        final SearchCriteriaDto searchQuery,
+        final ExternalHttpContext context
+    ) {
         LOGGER.debug("calling select Unit With Inherited Rules by criteria {} ", searchQuery);
         return archiveSearchExternalRestClient.selectUnitWithInheritedRules(context, searchQuery);
     }
 
-    public ResponseEntity<String> reclassification(final ReclassificationCriteriaDto reclassificationCriteriaDto,
-        ExternalHttpContext context) {
+    public ResponseEntity<String> reclassification(
+        final ReclassificationCriteriaDto reclassificationCriteriaDto,
+        ExternalHttpContext context
+    ) {
         LOGGER.info("Reclassification with criteria {}", reclassificationCriteriaDto);
         return archiveSearchExternalRestClient.reclassification(reclassificationCriteriaDto, context);
     }
 
-    public ResponseEntity<String> updateUnitById(String id, final UnitDescriptiveMetadataDto unitDescriptiveMetadataDto,
-        ExternalHttpContext context) {
+    public ResponseEntity<String> updateUnitById(
+        String id,
+        final UnitDescriptiveMetadataDto unitDescriptiveMetadataDto,
+        ExternalHttpContext context
+    ) {
         LOGGER.debug("Update the Archive Unit with id {}", id);
         return archiveSearchExternalRestClient.updateUnitById(id, unitDescriptiveMetadataDto, context);
     }
 
-    public ResponseEntity<String> transferAcknowledgment(final ExternalHttpContext context, String fileName,
-        InputStream inputStream) {
+    public ResponseEntity<String> transferAcknowledgment(
+        final ExternalHttpContext context,
+        String fileName,
+        InputStream inputStream
+    ) {
         LOGGER.debug("transfer acknowledgment");
-        return archiveSearchStreamingExternalRestClient
-            .transferAcknowledgment(context, fileName, inputStream);
+        return archiveSearchStreamingExternalRestClient.transferAcknowledgment(context, fileName, inputStream);
     }
 
     public List<OntologyDto> getExternalOntologiesList(ExternalHttpContext context) {

@@ -36,11 +36,11 @@
  */
 package fr.gouv.vitamui.identity.config;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.springframework.boot.SpringApplication;
 import org.springframework.core.env.Environment;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Utility class to load a Spring profile to be used as default
@@ -52,8 +52,7 @@ public final class DefaultProfileUtil {
     private static final String SPRING_PROFILE_DEFAULT = "spring.profiles.default";
     private static final String SPRING_PROFILE_DEVELOPMENT = "dev";
 
-    private DefaultProfileUtil() {
-    }
+    private DefaultProfileUtil() {}
 
     /**
      * Set a default to use when no profile is configured.

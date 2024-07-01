@@ -88,7 +88,6 @@ public class ApplicationExternalController implements CrudController<Application
 
     @GetMapping
     public List<ApplicationDto> getAll(final Optional<String> criteria, @RequestParam final Optional<String> embedded) {
-
         SanityChecker.sanitizeCriteria(criteria);
         EnumUtils.checkValidEnum(EmbeddedOptions.class, embedded);
         LOGGER.debug("Get all with criteria={}, embedded={}", criteria, embedded);
@@ -112,7 +111,10 @@ public class ApplicationExternalController implements CrudController<Application
 
     @Override
     @PatchMapping(CommonConstants.PATH_ID)
-    public ApplicationDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto) {
+    public ApplicationDto patch(
+        final @PathVariable("id") String id,
+        @RequestBody final Map<String, Object> partialDto
+    ) {
         throw new UnsupportedOperationException("patch not implemented");
     }
 }

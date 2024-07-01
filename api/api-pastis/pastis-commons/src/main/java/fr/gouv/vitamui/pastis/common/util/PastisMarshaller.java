@@ -38,11 +38,11 @@ knowledge of the CeCILL-C license and that you accept its terms.
 
 package fr.gouv.vitamui.pastis.common.util;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import fr.gouv.vitamui.pastis.common.dto.ElementProperties;
 import fr.gouv.vitamui.pastis.common.dto.factory.RngTag;
 import fr.gouv.vitamui.pastis.common.dto.factory.RngTagFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -58,11 +58,9 @@ public class PastisMarshaller {
     public static final String CHAR_ESCAPE_HANDLER = "com.sun.xml.bind.marshaller.CharacterEscapeHandler";
     public static final String MARSHALLER_FORMAT = Marshaller.JAXB_FORMATTED_OUTPUT;
 
-
     private static final Logger LOGGER = LoggerFactory.getLogger(PastisMarshaller.class);
 
     public String getMarshalledObject(ElementProperties mappedJson) throws IOException, JAXBException {
-
         RngTagFactory tagFactory = new RngTagFactory();
         RngTag rngTree = tagFactory.createTag(mappedJson, null, 0);
 
@@ -82,5 +80,4 @@ public class PastisMarshaller {
 
         return response;
     }
-
 }

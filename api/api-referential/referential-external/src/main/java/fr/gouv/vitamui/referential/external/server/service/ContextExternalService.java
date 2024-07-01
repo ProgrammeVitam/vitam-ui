@@ -36,16 +36,7 @@
  */
 package fr.gouv.vitamui.referential.external.server.service;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.fasterxml.jackson.databind.JsonNode;
-
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
@@ -57,6 +48,13 @@ import fr.gouv.vitamui.referential.common.dto.ContextDto;
 import fr.gouv.vitamui.referential.internal.client.ContextInternalRestClient;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
 
 @Getter
 @Setter
@@ -66,22 +64,30 @@ public class ContextExternalService extends AbstractResourceClientService<Contex
     private ContextInternalRestClient contextInternalRestClient;
 
     @Autowired
-    public ContextExternalService(ExternalSecurityService externalSecurityService, ContextInternalRestClient contextInternalRestClient) {
+    public ContextExternalService(
+        ExternalSecurityService externalSecurityService,
+        ContextInternalRestClient contextInternalRestClient
+    ) {
         super(externalSecurityService);
         this.contextInternalRestClient = contextInternalRestClient;
     }
 
     public List<ContextDto> getAll(final Optional<String> criteria) {
-        return contextInternalRestClient.getAll(getInternalHttpContext(),criteria);
+        return contextInternalRestClient.getAll(getInternalHttpContext(), criteria);
     }
 
-    @Override protected BasePaginatingAndSortingRestClient<ContextDto, InternalHttpContext> getClient() {
+    @Override
+    protected BasePaginatingAndSortingRestClient<ContextDto, InternalHttpContext> getClient() {
         return contextInternalRestClient;
     }
 
-    public PaginatedValuesDto<ContextDto> getAllPaginated(final Integer page, final Integer size, final Optional<String> criteria,
-            final Optional<String> orderBy, final Optional<DirectionDto> direction) {
-
+    public PaginatedValuesDto<ContextDto> getAllPaginated(
+        final Integer page,
+        final Integer size,
+        final Optional<String> criteria,
+        final Optional<String> orderBy,
+        final Optional<DirectionDto> direction
+    ) {
         ParameterChecker.checkPagination(size, page);
         return getClient().getAllPaginated(getInternalHttpContext(), page, size, criteria, orderBy, direction);
     }
@@ -115,5 +121,4 @@ public class ContextExternalService extends AbstractResourceClientService<Contex
     public boolean check(ContextDto accessContractDto) {
         return contextInternalRestClient.check(getInternalHttpContext(), accessContractDto);
     }
-
 }

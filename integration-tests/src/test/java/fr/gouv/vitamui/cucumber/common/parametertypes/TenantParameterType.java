@@ -30,10 +30,9 @@ public class TenantParameterType {
                 break;
             default:
                 throw new IllegalArgumentException(
-                        "Le paramètre " + paramTenant + " ne correspond pas à un tenant possible");
+                    "Le paramètre " + paramTenant + " ne correspond pas à un tenant possible"
+                );
         }
         return chosenTenant;
     }
-
 }
-

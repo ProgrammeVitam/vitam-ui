@@ -47,5 +47,4 @@ public class ArchiveUnitDto implements Serializable {
     private String endDate;
 
     private String title;
-
 }

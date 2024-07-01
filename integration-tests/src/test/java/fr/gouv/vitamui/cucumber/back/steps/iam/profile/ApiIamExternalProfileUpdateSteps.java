@@ -1,11 +1,11 @@
 package fr.gouv.vitamui.cucumber.back.steps.iam.profile;
 
-import static fr.gouv.vitamui.utils.TestConstants.UPDATED;
-
-import io.cucumber.java.en.When;
 import fr.gouv.vitamui.commons.api.domain.ProfileDto;
 import fr.gouv.vitamui.cucumber.common.CommonSteps;
 import fr.gouv.vitamui.utils.FactoryDto;
+import io.cucumber.java.en.When;
+
+import static fr.gouv.vitamui.utils.TestConstants.UPDATED;
 
 /**
  * Teste l'API Profiles dans IAM admin : opérations de mise à jour.

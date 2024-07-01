@@ -56,7 +56,9 @@ import java.util.Optional;
 
 public class ArchivalProfileUnitExternalWebClient extends BaseWebClient<ExternalHttpContext> {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ArchivalProfileUnitExternalWebClient.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
+        ArchivalProfileUnitExternalWebClient.class
+    );
 
     public ArchivalProfileUnitExternalWebClient(final WebClient webClient, final String baseUrl) {
         super(webClient, baseUrl);
@@ -68,9 +70,16 @@ public class ArchivalProfileUnitExternalWebClient extends BaseWebClient<External
             throw new BadRequestException("No file to check .");
         }
 
-        return ResponseEntity.ok(multipartData(getUrl() + CommonConstants.PATH_IMPORT, HttpMethod.POST, context,
-            Collections.singletonMap("fileName", file.getOriginalFilename()),
-            Optional.of(new AbstractMap.SimpleEntry<>("file", file)), JsonNode.class));
+        return ResponseEntity.ok(
+            multipartData(
+                getUrl() + CommonConstants.PATH_IMPORT,
+                HttpMethod.POST,
+                context,
+                Collections.singletonMap("fileName", file.getOriginalFilename()),
+                Optional.of(new AbstractMap.SimpleEntry<>("file", file)),
+                JsonNode.class
+            )
+        );
     }
 
     @Override

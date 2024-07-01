@@ -36,7 +36,6 @@
  */
 package fr.gouv.vitamui.referential.internal.client;
 
-
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.rest.client.BasePaginatingAndSortingRestClient;
@@ -53,14 +52,16 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
 
-public class AccessContractInternalRestClient extends BasePaginatingAndSortingRestClient<AccessContractDto, InternalHttpContext> {
+public class AccessContractInternalRestClient
+    extends BasePaginatingAndSortingRestClient<AccessContractDto, InternalHttpContext> {
 
     public AccessContractInternalRestClient(final RestTemplate restTemplate, final String baseUrl) {
         super(restTemplate, baseUrl);
     }
 
-    @Override protected ParameterizedTypeReference<PaginatedValuesDto<AccessContractDto>> getDtoPaginatedClass() {
-        return new ParameterizedTypeReference<PaginatedValuesDto<AccessContractDto>>() { };
+    @Override
+    protected ParameterizedTypeReference<PaginatedValuesDto<AccessContractDto>> getDtoPaginatedClass() {
+        return new ParameterizedTypeReference<PaginatedValuesDto<AccessContractDto>>() {};
     }
 
     @Override
@@ -68,20 +69,24 @@ public class AccessContractInternalRestClient extends BasePaginatingAndSortingRe
         return RestApi.ACCESS_CONTRACTS_URL;
     }
 
-    @Override protected Class<AccessContractDto> getDtoClass() {
+    @Override
+    protected Class<AccessContractDto> getDtoClass() {
         return AccessContractDto.class;
     }
 
     protected ParameterizedTypeReference<List<AccessContractDto>> getDtoListClass() {
-        return new ParameterizedTypeReference<List<AccessContractDto>>() {
-        };
+        return new ParameterizedTypeReference<List<AccessContractDto>>() {};
     }
 
     public boolean check(InternalHttpContext context, AccessContractDto accessContractDto) {
         final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl() + CommonConstants.PATH_CHECK);
         final HttpEntity<AccessContractDto> request = new HttpEntity<>(accessContractDto, buildHeaders(context));
-        final ResponseEntity<Boolean> response = restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.POST,
-            request, Boolean.class);
+        final ResponseEntity<Boolean> response = restTemplate.exchange(
+            uriBuilder.toUriString(),
+            HttpMethod.POST,
+            request,
+            Boolean.class
+        );
         return response.getStatusCode() == HttpStatus.OK;
     }
 }

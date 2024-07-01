@@ -59,7 +59,6 @@ public class ArchiveInternalRestClientTest extends ServerIdentityExtension {
     private ArchiveInternalRestClient archivesSearchExternalRestClient;
     public final String ARCHIVE_UNITS_RESULTS_CSV = "data/vitam_archive_units_response.csv";
 
-
     @Mock
     private RestTemplate restTemplate;
 
@@ -74,8 +73,6 @@ public class ArchiveInternalRestClientTest extends ServerIdentityExtension {
         Assertions.assertEquals(RestApi.ARCHIVE_SEARCH_PATH, archivesSearchExternalRestClient.getPathUrl());
     }
 
-
-
     @Test
     public void when_searchArchiveUnitsByCriteria_rest_template_ok_should_return_ok() {
         InternalHttpContext context = new InternalHttpContext(9, "", "", "", "", "", "", "");
@@ -83,13 +80,10 @@ public class ArchiveInternalRestClientTest extends ServerIdentityExtension {
 
         final ArchiveUnitsDto responseEntity = new ArchiveUnitsDto();
 
-        when(restTemplate
-            .exchange(anyString(),
-                eq(HttpMethod.POST), any(HttpEntity.class),
-                eq(ArchiveUnitsDto.class)))
-            .thenReturn(new ResponseEntity<>(responseEntity, HttpStatus.OK));
-        ArchiveUnitsDto response =
-            archivesSearchExternalRestClient.searchArchiveUnitsByCriteria(context, query);
+        when(
+            restTemplate.exchange(anyString(), eq(HttpMethod.POST), any(HttpEntity.class), eq(ArchiveUnitsDto.class))
+        ).thenReturn(new ResponseEntity<>(responseEntity, HttpStatus.OK));
+        ArchiveUnitsDto response = archivesSearchExternalRestClient.searchArchiveUnitsByCriteria(context, query);
         Assertions.assertEquals(response, responseEntity);
     }
 
@@ -98,11 +92,15 @@ public class ArchiveInternalRestClientTest extends ServerIdentityExtension {
         InternalHttpContext context = new InternalHttpContext(9, "", "", "", "", "", "", "");
         final VitamUISearchResponseDto responseEntity = new VitamUISearchResponseDto();
 
-        when(restTemplate
-            .exchange(anyString(), eq(HttpMethod.GET), any(HttpEntity.class), eq(VitamUISearchResponseDto.class)))
-            .thenReturn(new ResponseEntity<>(responseEntity, HttpStatus.OK));
-        VitamUISearchResponseDto response =
-            archivesSearchExternalRestClient.getFilingHoldingScheme(context);
+        when(
+            restTemplate.exchange(
+                anyString(),
+                eq(HttpMethod.GET),
+                any(HttpEntity.class),
+                eq(VitamUISearchResponseDto.class)
+            )
+        ).thenReturn(new ResponseEntity<>(responseEntity, HttpStatus.OK));
+        VitamUISearchResponseDto response = archivesSearchExternalRestClient.getFilingHoldingScheme(context);
         Assertions.assertEquals(response, responseEntity);
     }
 
@@ -111,17 +109,18 @@ public class ArchiveInternalRestClientTest extends ServerIdentityExtension {
         InternalHttpContext context = new InternalHttpContext(9, "", "", "", "", "", "", "");
         SearchCriteriaDto query = new SearchCriteriaDto();
 
-        Resource resource = new ByteArrayResource(ArchiveInternalRestClientTest.class.getClassLoader()
-            .getResourceAsStream(ARCHIVE_UNITS_RESULTS_CSV).readAllBytes());
+        Resource resource = new ByteArrayResource(
+            ArchiveInternalRestClientTest.class.getClassLoader()
+                .getResourceAsStream(ARCHIVE_UNITS_RESULTS_CSV)
+                .readAllBytes()
+        );
 
-        when(restTemplate.exchange(anyString(), eq(HttpMethod.POST),
-            any(HttpEntity.class), eq(Resource.class))).thenReturn(new ResponseEntity<>(resource, HttpStatus.OK));
+        when(
+            restTemplate.exchange(anyString(), eq(HttpMethod.POST), any(HttpEntity.class), eq(Resource.class))
+        ).thenReturn(new ResponseEntity<>(resource, HttpStatus.OK));
 
-        Resource response =
-            archivesSearchExternalRestClient.exportCsvArchiveUnitsByCriteria(query, context);
-
+        Resource response = archivesSearchExternalRestClient.exportCsvArchiveUnitsByCriteria(query, context);
 
         Assertions.assertEquals(response, resource);
     }
-
 }

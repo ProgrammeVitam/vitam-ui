@@ -57,10 +57,9 @@ public class ZipGenerator {
      * @throws IOException
      * @throws FileNotFoundException
      */
-    public static void createZipFolder(final List<Path> filePaths, final OutputStream zipOutputStream) throws IOException {
-
+    public static void createZipFolder(final List<Path> filePaths, final OutputStream zipOutputStream)
+        throws IOException {
         try (final ZipOutputStream zipFolder = new ZipOutputStream(zipOutputStream);) {
-
             for (final Path path : filePaths) {
                 final File fileToZip = path.toFile();
                 try (final FileInputStream fileInputStream = new FileInputStream(fileToZip)) {
@@ -76,5 +75,4 @@ public class ZipGenerator {
             }
         }
     }
-
 }

@@ -36,7 +36,6 @@
  */
 package fr.gouv.vitamui.archive.internal.server.service;
 
-
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -99,6 +98,7 @@ public class ArchiveSearchInternalServiceTest {
 
     @MockBean(name = "archiveSearchInternalService")
     private ArchiveSearchFacetsInternalService archiveSearchFacetsInternalService;
+
     public final String FILING_HOLDING_SCHEME_RESULTS = "data/vitam_filing_holding_units_response.json";
     public final String UPDATE_RULES_ASYNC_RESPONSE = "data/update_rules_async_response.json";
     public final String UPDATE_UNIT_DESCRIPTIVE_METADATA_RESPONSE =
@@ -110,17 +110,22 @@ public class ArchiveSearchInternalServiceTest {
     @BeforeEach
     public void setUp() {
         ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
-        archiveSearchInternalService =
-            new ArchiveSearchInternalService(objectMapper, unitService, archiveSearchAgenciesInternalService,
-                archiveSearchRulesInternalService, archiveSearchFacetsInternalService);
+        archiveSearchInternalService = new ArchiveSearchInternalService(
+            objectMapper,
+            unitService,
+            archiveSearchAgenciesInternalService,
+            archiveSearchRulesInternalService,
+            archiveSearchFacetsInternalService
+        );
     }
 
     @Test
-    void testSearchFilingHoldingSchemeResultsThanReturnVitamUISearchResponseDto() throws VitamClientException,
-        IOException, InvalidParseOperationException {
+    void testSearchFilingHoldingSchemeResultsThanReturnVitamUISearchResponseDto()
+        throws VitamClientException, IOException, InvalidParseOperationException {
         // Given
-        when(unitService.searchUnits(any(), any()))
-            .thenReturn(buildUnitMetadataResponse(FILING_HOLDING_SCHEME_RESULTS));
+        when(unitService.searchUnits(any(), any())).thenReturn(
+            buildUnitMetadataResponse(FILING_HOLDING_SCHEME_RESULTS)
+        );
         // When
         JsonNode jsonNode = archiveSearchInternalService.searchArchiveUnits(any(), any());
 
@@ -128,8 +133,10 @@ public class ArchiveSearchInternalServiceTest {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
-        VitamUISearchResponseDto vitamUISearchResponseDto =
-            objectMapper.treeToValue(jsonNode, VitamUISearchResponseDto.class);
+        VitamUISearchResponseDto vitamUISearchResponseDto = objectMapper.treeToValue(
+            jsonNode,
+            VitamUISearchResponseDto.class
+        );
 
         // Then
         Assertions.assertThat(vitamUISearchResponseDto).isNotNull();
@@ -140,38 +147,39 @@ public class ArchiveSearchInternalServiceTest {
         throws IOException, InvalidParseOperationException {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        InputStream inputStream = ArchiveSearchInternalServiceTest.class.getClassLoader()
-            .getResourceAsStream(filename);
+        InputStream inputStream = ArchiveSearchInternalServiceTest.class.getClassLoader().getResourceAsStream(filename);
         Assertions.assertThat(inputStream).isNotNull();
-        return RequestResponseOK
-            .getFromJsonNode(objectMapper.readValue(ByteStreams.toByteArray(inputStream), JsonNode.class));
+        return RequestResponseOK.getFromJsonNode(
+            objectMapper.readValue(ByteStreams.toByteArray(inputStream), JsonNode.class)
+        );
     }
-
-
 
     @Test
     public void getFinalFillingHoldingSchemeQuery() throws Exception {
         // Given
-        JsonNode expectedQuery =
-            JsonHandler.getFromFile(PropertiesUtils.findFile(FILLING_HOLDING_SCHEME_EXPECTED_QUERY));
+        JsonNode expectedQuery = JsonHandler.getFromFile(
+            PropertiesUtils.findFile(FILLING_HOLDING_SCHEME_EXPECTED_QUERY)
+        );
 
         // When
-        JsonNode givenQuery =
-            archiveSearchInternalService.createQueryForHoldingFillingUnit();
+        JsonNode givenQuery = archiveSearchInternalService.createQueryForHoldingFillingUnit();
 
         // Then
         Assertions.assertThat(expectedQuery.toString()).hasToString(String.valueOf(givenQuery));
         Assertions.assertThat(
-            givenQuery.get(BuilderToken.GLOBAL.FILTER.exactToken()).get(BuilderToken.SELECTFILTER.ORDERBY.exactToken())
-                .has("Title")).isTrue();
+            givenQuery
+                .get(BuilderToken.GLOBAL.FILTER.exactToken())
+                .get(BuilderToken.SELECTFILTER.ORDERBY.exactToken())
+                .has("Title")
+        ).isTrue();
     }
-
 
     @Test
     public void testReclassificationThenOK() throws Exception {
         // Given
-        when(unitService.reclassification(any(), any()))
-            .thenReturn(buildUnitMetadataResponse(UPDATE_RULES_ASYNC_RESPONSE));
+        when(unitService.reclassification(any(), any())).thenReturn(
+            buildUnitMetadataResponse(UPDATE_RULES_ASYNC_RESPONSE)
+        );
 
         SearchCriteriaDto searchQuery = new SearchCriteriaDto();
         List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
@@ -189,7 +197,8 @@ public class ArchiveSearchInternalServiceTest {
         searchCriteriaElementsNodes.setCriteria("NODE");
         searchCriteriaElementsNodes.setCategory(ArchiveSearchConsts.CriteriaCategory.NODES);
         searchCriteriaElementsNodes.setValues(
-            Arrays.asList(new CriteriaValue("node1"), new CriteriaValue("node2"), new CriteriaValue("node3")));
+            Arrays.asList(new CriteriaValue("node1"), new CriteriaValue("node2"), new CriteriaValue("node3"))
+        );
         criteriaList.add(agencyCodeCriteria);
         criteriaList.add(searchCriteriaElementsNodes);
         searchQuery.setSize(20);
@@ -200,8 +209,10 @@ public class ArchiveSearchInternalServiceTest {
         reclassificationCriteriaDto.setSearchCriteriaDto(searchQuery);
 
         //When //Then
-        String expectingGuid =
-            archiveSearchInternalService.reclassification(reclassificationCriteriaDto, new VitamContext(1));
+        String expectingGuid = archiveSearchInternalService.reclassification(
+            reclassificationCriteriaDto,
+            new VitamContext(1)
+        );
         assertThatCode(() -> {
             archiveSearchInternalService.reclassification(reclassificationCriteriaDto, new VitamContext(1));
         }).doesNotThrowAnyException();
@@ -232,11 +243,18 @@ public class ArchiveSearchInternalServiceTest {
     @Test
     public void testUpdateUnitDescriptiveMetadataWithUnsetFieldsTest1() throws Exception {
         // Given
-        when(unitService.updateUnitById(any(), any(), any()))
-            .thenReturn(buildUnitMetadataResponse(UPDATE_UNIT_DESCRIPTIVE_METADATA_RESPONSE));
+        when(unitService.updateUnitById(any(), any(), any())).thenReturn(
+            buildUnitMetadataResponse(UPDATE_UNIT_DESCRIPTIVE_METADATA_RESPONSE)
+        );
 
-        UnitDescriptiveMetadataDto unitDescriptiveMetadataDto =
-            buildUnitDescriptiveMetadataDto(null, null, null, null, "01/01/2023", Arrays.asList("StartDate"));
+        UnitDescriptiveMetadataDto unitDescriptiveMetadataDto = buildUnitDescriptiveMetadataDto(
+            null,
+            null,
+            null,
+            null,
+            "01/01/2023",
+            Arrays.asList("StartDate")
+        );
 
         //When //Then
         ObjectNode expectingQuery = archiveSearchInternalService.createUpdateQuery(unitDescriptiveMetadataDto);
@@ -247,12 +265,18 @@ public class ArchiveSearchInternalServiceTest {
     @Test
     void testUpdateUnitDescriptiveMetadataWithUnsetFieldsTest2() throws Exception {
         // Given
-        when(unitService.updateUnitById(any(), any(), any()))
-            .thenReturn(buildUnitMetadataResponse(UPDATE_UNIT_DESCRIPTIVE_METADATA_RESPONSE));
+        when(unitService.updateUnitById(any(), any(), any())).thenReturn(
+            buildUnitMetadataResponse(UPDATE_UNIT_DESCRIPTIVE_METADATA_RESPONSE)
+        );
 
-        UnitDescriptiveMetadataDto unitDescriptiveMetadataDto =
-            buildUnitDescriptiveMetadataDto("some title", null, null, null, "01/01/2023",
-                Arrays.asList("StartDate", "Description"));
+        UnitDescriptiveMetadataDto unitDescriptiveMetadataDto = buildUnitDescriptiveMetadataDto(
+            "some title",
+            null,
+            null,
+            null,
+            "01/01/2023",
+            Arrays.asList("StartDate", "Description")
+        );
 
         //When //Then
         ObjectNode expectingQuery = archiveSearchInternalService.createUpdateQuery(unitDescriptiveMetadataDto);
@@ -264,12 +288,18 @@ public class ArchiveSearchInternalServiceTest {
     @Test
     public void testUpdateUnitDescriptiveMetadataWithUnsetFieldsTest3() throws Exception {
         // Given
-        when(unitService.updateUnitById(any(), any(), any()))
-            .thenReturn(buildUnitMetadataResponse(UPDATE_UNIT_DESCRIPTIVE_METADATA_RESPONSE));
+        when(unitService.updateUnitById(any(), any(), any())).thenReturn(
+            buildUnitMetadataResponse(UPDATE_UNIT_DESCRIPTIVE_METADATA_RESPONSE)
+        );
 
-        UnitDescriptiveMetadataDto unitDescriptiveMetadataDto =
-            buildUnitDescriptiveMetadataDto("some title", "some description", "Item", null, null,
-                Arrays.asList("StartDate", "EndDate"));
+        UnitDescriptiveMetadataDto unitDescriptiveMetadataDto = buildUnitDescriptiveMetadataDto(
+            "some title",
+            "some description",
+            "Item",
+            null,
+            null,
+            Arrays.asList("StartDate", "EndDate")
+        );
 
         //When //Then
         ObjectNode expectingQuery = archiveSearchInternalService.createUpdateQuery(unitDescriptiveMetadataDto);
@@ -281,12 +311,18 @@ public class ArchiveSearchInternalServiceTest {
     @Test
     public void testUpdateUnitDescriptiveMetadataWithUnsetFieldsTest4() throws Exception {
         // Given
-        when(unitService.updateUnitById(any(), any(), any()))
-            .thenReturn(buildUnitMetadataResponse(UPDATE_UNIT_DESCRIPTIVE_METADATA_RESPONSE));
+        when(unitService.updateUnitById(any(), any(), any())).thenReturn(
+            buildUnitMetadataResponse(UPDATE_UNIT_DESCRIPTIVE_METADATA_RESPONSE)
+        );
 
-        UnitDescriptiveMetadataDto unitDescriptiveMetadataDto =
-            buildUnitDescriptiveMetadataDto(null, null, null, null, null,
-                Arrays.asList("StartDate", "EndDate", "Description"));
+        UnitDescriptiveMetadataDto unitDescriptiveMetadataDto = buildUnitDescriptiveMetadataDto(
+            null,
+            null,
+            null,
+            null,
+            null,
+            Arrays.asList("StartDate", "EndDate", "Description")
+        );
 
         //When //Then
         ObjectNode expectingQuery = archiveSearchInternalService.createUpdateQuery(unitDescriptiveMetadataDto);
@@ -298,12 +334,18 @@ public class ArchiveSearchInternalServiceTest {
     @Test
     public void testUpdateUnitDescriptiveMetadataWithUnsetFieldsTest5() throws Exception {
         // Given
-        when(unitService.updateUnitById(any(), any(), any()))
-            .thenReturn(buildUnitMetadataResponse(UPDATE_UNIT_DESCRIPTIVE_METADATA_RESPONSE));
+        when(unitService.updateUnitById(any(), any(), any())).thenReturn(
+            buildUnitMetadataResponse(UPDATE_UNIT_DESCRIPTIVE_METADATA_RESPONSE)
+        );
 
-        UnitDescriptiveMetadataDto unitDescriptiveMetadataDto =
-            buildUnitDescriptiveMetadataDto("Title", null, "Item", null, null,
-                Arrays.asList("StartDate", "EndDate", "Description"));
+        UnitDescriptiveMetadataDto unitDescriptiveMetadataDto = buildUnitDescriptiveMetadataDto(
+            "Title",
+            null,
+            "Item",
+            null,
+            null,
+            Arrays.asList("StartDate", "EndDate", "Description")
+        );
 
         //When //Then
         ObjectNode expectingQuery = archiveSearchInternalService.createUpdateQuery(unitDescriptiveMetadataDto);
@@ -315,13 +357,20 @@ public class ArchiveSearchInternalServiceTest {
     @Test
     public void testUpdateUnitDescriptiveMetadataWithUnsetFieldsTest6() throws Exception {
         // Given
-        when(unitService.updateUnitById(any(), any(), any()))
-            .thenReturn(buildUnitMetadataResponse(UPDATE_UNIT_DESCRIPTIVE_METADATA_RESPONSE));
+        when(unitService.updateUnitById(any(), any(), any())).thenReturn(
+            buildUnitMetadataResponse(UPDATE_UNIT_DESCRIPTIVE_METADATA_RESPONSE)
+        );
 
-        UnitDescriptiveMetadataDto unitDescriptiveMetadataDto =
-            buildFullUnitDescriptiveMetadataDto(
-                "french title", "english title", "french description", "english description", "Item", null, null,
-                Arrays.asList("StartDate", "EndDate"));
+        UnitDescriptiveMetadataDto unitDescriptiveMetadataDto = buildFullUnitDescriptiveMetadataDto(
+            "french title",
+            "english title",
+            "french description",
+            "english description",
+            "Item",
+            null,
+            null,
+            Arrays.asList("StartDate", "EndDate")
+        );
 
         //When //Then
         ObjectNode expectingQuery = archiveSearchInternalService.createUpdateQuery(unitDescriptiveMetadataDto);
@@ -334,13 +383,20 @@ public class ArchiveSearchInternalServiceTest {
     @Test
     public void testUpdateUnitDescriptiveMetadataWithUnsetFieldsTest7() throws Exception {
         // Given
-        when(unitService.updateUnitById(any(), any(), any()))
-            .thenReturn(buildUnitMetadataResponse(UPDATE_UNIT_DESCRIPTIVE_METADATA_RESPONSE));
+        when(unitService.updateUnitById(any(), any(), any())).thenReturn(
+            buildUnitMetadataResponse(UPDATE_UNIT_DESCRIPTIVE_METADATA_RESPONSE)
+        );
 
-        UnitDescriptiveMetadataDto unitDescriptiveMetadataDto =
-            buildFullUnitDescriptiveMetadataDto(
-                null, "english title", "french description", null, "Item", null, null,
-                Arrays.asList("StartDate", "EndDate", "Title_.fr", "Description_.en"));
+        UnitDescriptiveMetadataDto unitDescriptiveMetadataDto = buildFullUnitDescriptiveMetadataDto(
+            null,
+            "english title",
+            "french description",
+            null,
+            "Item",
+            null,
+            null,
+            Arrays.asList("StartDate", "EndDate", "Title_.fr", "Description_.en")
+        );
 
         //When //Then
         ObjectNode expectingQuery = archiveSearchInternalService.createUpdateQuery(unitDescriptiveMetadataDto);
@@ -353,50 +409,65 @@ public class ArchiveSearchInternalServiceTest {
     @Test
     void getFinalFillingHoldingSchemeQueryWithProjection() throws Exception {
         // Given
-        JsonNode expectedQuery =
-            JsonHandler.getFromFile(PropertiesUtils.findFile(FILLING_HOLDING_SCHEME_QUERY));
+        JsonNode expectedQuery = JsonHandler.getFromFile(PropertiesUtils.findFile(FILLING_HOLDING_SCHEME_QUERY));
 
         // When
-        JsonNode givenQuery =
-            archiveSearchInternalService.createQueryForHoldingFillingUnit();
+        JsonNode givenQuery = archiveSearchInternalService.createQueryForHoldingFillingUnit();
 
         // Then
         Assertions.assertThat(expectedQuery.toString()).hasToString(String.valueOf(givenQuery));
         Assertions.assertThat(
-            givenQuery.get(BuilderToken.GLOBAL.FILTER.exactToken()).get(BuilderToken.SELECTFILTER.ORDERBY.exactToken())
-                .has("Title")).isTrue();
-
+            givenQuery
+                .get(BuilderToken.GLOBAL.FILTER.exactToken())
+                .get(BuilderToken.SELECTFILTER.ORDERBY.exactToken())
+                .has("Title")
+        ).isTrue();
     }
 
     @Test
     void getFinalFillingHoldingSchemeQueryWithAllProjectionFields() throws Exception {
         // Given
-        JsonNode expectedQuery =
-            JsonHandler.getFromFile(PropertiesUtils.findFile(FILLING_HOLDING_SCHEME_QUERY));
+        JsonNode expectedQuery = JsonHandler.getFromFile(PropertiesUtils.findFile(FILLING_HOLDING_SCHEME_QUERY));
 
         // When
-        JsonNode givenQuery =
-            archiveSearchInternalService.createQueryForHoldingFillingUnit();
+        JsonNode givenQuery = archiveSearchInternalService.createQueryForHoldingFillingUnit();
 
         // Then
         Assertions.assertThat(expectedQuery.toString()).hasToString(String.valueOf(givenQuery));
         Assertions.assertThat(
-            givenQuery.get(BuilderToken.GLOBAL.PROJECTION.exactToken()).get(BuilderToken.PROJECTION.FIELDS.exactToken())
-                .has("#object")).isTrue();
+            givenQuery
+                .get(BuilderToken.GLOBAL.PROJECTION.exactToken())
+                .get(BuilderToken.PROJECTION.FIELDS.exactToken())
+                .has("#object")
+        ).isTrue();
         Assertions.assertThat(
-            givenQuery.get(BuilderToken.GLOBAL.PROJECTION.exactToken()).get(BuilderToken.PROJECTION.FIELDS.exactToken())
-                .has("#unitType")).isTrue();
+            givenQuery
+                .get(BuilderToken.GLOBAL.PROJECTION.exactToken())
+                .get(BuilderToken.PROJECTION.FIELDS.exactToken())
+                .has("#unitType")
+        ).isTrue();
         Assertions.assertThat(
-            givenQuery.get(BuilderToken.GLOBAL.PROJECTION.exactToken()).get(BuilderToken.PROJECTION.FIELDS.exactToken())
-                .has("#id")).isTrue();
+            givenQuery
+                .get(BuilderToken.GLOBAL.PROJECTION.exactToken())
+                .get(BuilderToken.PROJECTION.FIELDS.exactToken())
+                .has("#id")
+        ).isTrue();
         Assertions.assertThat(
-            givenQuery.get(BuilderToken.GLOBAL.PROJECTION.exactToken()).get(BuilderToken.PROJECTION.FIELDS.exactToken())
-                .has("DescriptionLevel")).isTrue();
+            givenQuery
+                .get(BuilderToken.GLOBAL.PROJECTION.exactToken())
+                .get(BuilderToken.PROJECTION.FIELDS.exactToken())
+                .has("DescriptionLevel")
+        ).isTrue();
     }
 
-    private UnitDescriptiveMetadataDto buildUnitDescriptiveMetadataDto
-        (String title, String description, String descriptionLevel, String startDate, String endDate,
-            List<String> unsetAction) {
+    private UnitDescriptiveMetadataDto buildUnitDescriptiveMetadataDto(
+        String title,
+        String description,
+        String descriptionLevel,
+        String startDate,
+        String endDate,
+        List<String> unsetAction
+    ) {
         UnitDescriptiveMetadataDto unitDescriptiveMetadataDto = new UnitDescriptiveMetadataDto();
         unitDescriptiveMetadataDto.setId("aeeaaaaaagh23tjvabz5gal6qlt6iaaaaaaq");
         unitDescriptiveMetadataDto.setTitle(title);
@@ -408,9 +479,16 @@ public class ArchiveSearchInternalServiceTest {
         return unitDescriptiveMetadataDto;
     }
 
-    private UnitDescriptiveMetadataDto buildFullUnitDescriptiveMetadataDto
-        (String title_fr, String title_en, String description_fr, String description_en, String descriptionLevel,
-            String startDate, String endDate, List<String> unsetAction) {
+    private UnitDescriptiveMetadataDto buildFullUnitDescriptiveMetadataDto(
+        String title_fr,
+        String title_en,
+        String description_fr,
+        String description_en,
+        String descriptionLevel,
+        String startDate,
+        String endDate,
+        List<String> unsetAction
+    ) {
         UnitDescriptiveMetadataDto unitDescriptiveMetadataDto = new UnitDescriptiveMetadataDto();
         unitDescriptiveMetadataDto.setId("aeeaaaaaagh23tjvabz5gal6qlt6iaaaaaaq");
         unitDescriptiveMetadataDto.setTitle_fr(title_fr);
@@ -423,5 +501,4 @@ public class ArchiveSearchInternalServiceTest {
         unitDescriptiveMetadataDto.setUnsetAction(unsetAction);
         return unitDescriptiveMetadataDto;
     }
-
 }

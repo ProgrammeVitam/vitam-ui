@@ -73,9 +73,8 @@ public class TenantController extends AbstractUiRestController {
     @ApiOperation(value = "Get all entities")
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Collection<TenantDto> getAll(final Optional<String> criteria) throws InvalidParseOperationException,
-        PreconditionFailedException {
-
+    public Collection<TenantDto> getAll(final Optional<String> criteria)
+        throws InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.sanitizeCriteria(criteria);
         LOGGER.debug("Get all with criteria={}", criteria);
         return service.getAll(buildUiHttpContext(), criteria);

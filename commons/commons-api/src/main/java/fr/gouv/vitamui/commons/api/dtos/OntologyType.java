@@ -35,5 +35,5 @@ public enum OntologyType {
     LONG,
     BOOLEAN,
     DOUBLE,
-    TEXT
+    TEXT,
 }

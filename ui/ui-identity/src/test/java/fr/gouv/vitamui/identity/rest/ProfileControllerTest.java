@@ -1,7 +1,9 @@
 package fr.gouv.vitamui.identity.rest;
 
-import static org.mockito.ArgumentMatchers.any;
-
+import fr.gouv.vitamui.commons.api.domain.ProfileDto;
+import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
+import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.identity.service.ProfileService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -11,10 +13,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import fr.gouv.vitamui.commons.api.domain.ProfileDto;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
-import fr.gouv.vitamui.identity.service.ProfileService;
+import static org.mockito.ArgumentMatchers.any;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebMvcTest(controllers = { ProfileController.class })
@@ -78,8 +77,7 @@ public class ProfileControllerTest extends UiIdentityRestControllerTest<ProfileD
     protected void preparedServices() {
         try {
             Mockito.when(service.create(any(), any())).thenReturn(new ProfileDto());
-        }
-        catch (final Exception e) {
+        } catch (final Exception e) {
             LOGGER.debug(e.getMessage(), e);
         }
         Mockito.when(service.update(any(), any(ProfileDto.class))).thenReturn(new ProfileDto());

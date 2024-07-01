@@ -36,12 +36,9 @@
  */
 package fr.gouv.vitamui.referential.internal.server.common.rest;
 
-
 /**
  * A status controller mock.
  *
  *
  */
-public class MockStatusController extends BaseStatusController {
-
-}
+public class MockStatusController extends BaseStatusController {}

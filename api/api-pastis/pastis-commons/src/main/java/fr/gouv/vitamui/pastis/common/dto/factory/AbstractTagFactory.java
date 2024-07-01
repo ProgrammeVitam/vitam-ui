@@ -44,13 +44,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 public interface AbstractTagFactory<T> {
-
-    default T createTag(ElementProperties node, Tag tag, int level){
+    default T createTag(ElementProperties node, Tag tag, int level) {
         return null;
     }
 
-    default Map<RngTag, RngTag> createTagWithTag(ElementProperties node, RngTag tag, RngTag currentTag, int level){
+    default Map<RngTag, RngTag> createTagWithTag(ElementProperties node, RngTag tag, RngTag currentTag, int level) {
         return new HashMap<>();
     }
-
 }

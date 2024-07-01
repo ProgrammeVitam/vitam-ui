@@ -1,18 +1,17 @@
 package fr.gouv.vitamui.commons.api.logger;
 
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.CoreMatchers.not;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.Test;
-
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.CoreMatchers.not;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 public class FakeLoggerTest {
 
@@ -25,7 +24,6 @@ public class FakeLoggerTest {
     protected static ByteArrayOutputStream out;
 
     protected static final StringBuilder buf = new StringBuilder();
-
 
     /**
      * @throws java.lang.Exception
@@ -74,5 +72,4 @@ public class FakeLoggerTest {
         FakeLogger.log(new IOException());
         assertThat("Log message should be written.", err.toString(), containsString("IOException"));
     }
-
 }

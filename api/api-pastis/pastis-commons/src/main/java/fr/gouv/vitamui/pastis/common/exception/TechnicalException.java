@@ -1,6 +1,6 @@
 package fr.gouv.vitamui.pastis.common.exception;
 
-public class TechnicalException extends PastisException{
+public class TechnicalException extends PastisException {
 
     public TechnicalException(String message) {
         super(message);

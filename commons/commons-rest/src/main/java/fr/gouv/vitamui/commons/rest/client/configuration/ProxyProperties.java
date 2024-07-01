@@ -36,11 +36,11 @@
  */
 package fr.gouv.vitamui.commons.rest.client.configuration;
 
-import javax.annotation.Nullable;
-
 import lombok.Getter;
 import lombok.Setter;
 import reactor.netty.transport.ProxyProvider;
+
+import javax.annotation.Nullable;
 
 /**
  * Used for mapping proxy properties defined in application.yml
@@ -80,5 +80,4 @@ public class ProxyProperties {
      * Password used for proxy authentication
      */
     private @Nullable String password;
-
 }

@@ -36,16 +36,6 @@
  */
 package fr.gouv.vitamui.iam.internal.server.security;
 
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.util.Date;
-
-import javax.validation.constraints.NotNull;
-
-import org.apache.commons.lang.time.DateUtils;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.authentication.BadCredentialsException;
-
 import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
@@ -56,6 +46,14 @@ import fr.gouv.vitamui.iam.internal.server.token.domain.Token;
 import fr.gouv.vitamui.iam.internal.server.user.service.UserInternalService;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.lang.time.DateUtils;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.BadCredentialsException;
+
+import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 
 /**
  * External authentication service
@@ -77,8 +75,11 @@ public class IamAuthentificationService {
     @Setter
     private Integer tokenAdditionalTtl;
 
-    public IamAuthentificationService(final UserInternalService internalUserService, final TokenRepository tokenRepository,
-            final SubrogationRepository subrogationRepository) {
+    public IamAuthentificationService(
+        final UserInternalService internalUserService,
+        final TokenRepository tokenRepository,
+        final SubrogationRepository subrogationRepository
+    ) {
         this.internalUserService = internalUserService;
         this.tokenRepository = tokenRepository;
         this.subrogationRepository = subrogationRepository;
@@ -90,7 +91,6 @@ public class IamAuthentificationService {
      * @return
      */
     public AuthUserDto getUserFromHttpContext(final InternalHttpContext httpContext) {
-
         final String userToken = httpContext.getUserToken();
         if (userToken == null) {
             throw new BadCredentialsException("Usertoken not found in header");
@@ -100,7 +100,9 @@ public class IamAuthentificationService {
     }
 
     private AuthUserDto getUserByToken(final String userToken) {
-        final Token token = tokenRepository.findById(userToken).orElseThrow(() -> new BadCredentialsException("No user found for usertoken: " + userToken));
+        final Token token = tokenRepository
+            .findById(userToken)
+            .orElseThrow(() -> new BadCredentialsException("No user found for usertoken: " + userToken));
 
         if (!token.isSurrogation()) {
             final LocalDate date = convertToLocalDate(token.getUpdatedDate());

@@ -84,7 +84,10 @@ import java.util.Optional;
 @Getter
 @Setter
 public class ArchivalProfileUnitInternalController {
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ArchivalProfileUnitInternalController.class);
+
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
+        ArchivalProfileUnitInternalController.class
+    );
 
     @Autowired
     private ArchivalProfileUnitInternalService archivalProfileUnitInternalService;
@@ -92,7 +95,7 @@ public class ArchivalProfileUnitInternalController {
     @Autowired
     private InternalSecurityService securityService;
 
-    @GetMapping()
+    @GetMapping
     public Collection<ArchivalProfileUnitDto> getAll(@RequestParam final Optional<String> criteria) {
         LOGGER.debug("get all archival unit profiles criteria={}", criteria);
         SanityChecker.sanitizeCriteria(criteria);
@@ -101,17 +104,34 @@ public class ArchivalProfileUnitInternalController {
         return archivalProfileUnitInternalService.getAll(vitamContext);
     }
 
-    @GetMapping(params = {"page", "size"})
-    public PaginatedValuesDto<ArchivalProfileUnitDto> getAllPaginated(@RequestParam final Integer page, @RequestParam final Integer size,
-                                                                      @RequestParam(required = false) final Optional<String> criteria, @RequestParam(required = false) final Optional<String> orderBy,
-                                                                      @RequestParam(required = false) final Optional<DirectionDto> direction)
-        throws InvalidParseOperationException, PreconditionFailedException {
-        if(orderBy.isPresent()){
+    @GetMapping(params = { "page", "size" })
+    public PaginatedValuesDto<ArchivalProfileUnitDto> getAllPaginated(
+        @RequestParam final Integer page,
+        @RequestParam final Integer size,
+        @RequestParam(required = false) final Optional<String> criteria,
+        @RequestParam(required = false) final Optional<String> orderBy,
+        @RequestParam(required = false) final Optional<DirectionDto> direction
+    ) throws InvalidParseOperationException, PreconditionFailedException {
+        if (orderBy.isPresent()) {
             SanityChecker.checkSecureParameter(orderBy.get());
         }
-        LOGGER.debug("getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, criteria, orderBy, direction);
+        LOGGER.debug(
+            "getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}",
+            page,
+            size,
+            criteria,
+            orderBy,
+            direction
+        );
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
-        return archivalProfileUnitInternalService.getAllPaginated(page, size, orderBy, direction, vitamContext, criteria);
+        return archivalProfileUnitInternalService.getAllPaginated(
+            page,
+            size,
+            orderBy,
+            direction,
+            vitamContext,
+            criteria
+        );
     }
 
     @GetMapping(path = RestApi.PATH_REFERENTIAL_ID)
@@ -119,29 +139,41 @@ public class ArchivalProfileUnitInternalController {
         throws UnsupportedEncodingException, InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter("Identifier is mandatory : ", identifier);
         SanityChecker.checkSecureParameter(identifier);
-        LOGGER.debug("get archival unit profile identifier={} / {}", identifier, URLDecoder.decode(identifier,
-            StandardCharsets.UTF_8));
+        LOGGER.debug(
+            "get archival unit profile identifier={} / {}",
+            identifier,
+            URLDecoder.decode(identifier, StandardCharsets.UTF_8)
+        );
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
-        return archivalProfileUnitInternalService.getOne(vitamContext, URLDecoder.decode(identifier, StandardCharsets.UTF_8.toString()));
+        return archivalProfileUnitInternalService.getOne(
+            vitamContext,
+            URLDecoder.decode(identifier, StandardCharsets.UTF_8.toString())
+        );
     }
 
-
     @PutMapping(CommonConstants.PATH_ID)
-    public ArchivalProfileUnitDto update(final @PathVariable("id") String id, final @RequestBody ArchivalProfileUnitDto dto) throws InvalidParseOperationException, AccessExternalClientException {
-
+    public ArchivalProfileUnitDto update(
+        final @PathVariable("id") String id,
+        final @RequestBody ArchivalProfileUnitDto dto
+    ) throws InvalidParseOperationException, AccessExternalClientException {
         ParameterChecker.checkParameter("Identifier is mandatory : ", id);
         SanityChecker.checkSecureParameter(id);
         SanityChecker.sanitizeCriteria(dto);
         LOGGER.debug("Update {} with {}", id, dto);
-        Assert.isTrue(StringUtils.equals(id, dto.getId()), "The DTO identifier must match the path identifier for update.");
+        Assert.isTrue(
+            StringUtils.equals(id, dto.getId()),
+            "The DTO identifier must match the path identifier for update."
+        );
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
         LOGGER.debug("context={}", vitamContext);
         return archivalProfileUnitInternalService.update(dto, vitamContext);
     }
 
     @PostMapping
-    public ArchivalProfileUnitDto create(@Valid @RequestBody ArchivalProfileUnitDto archivalUnitProfile, @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant)
-        throws InvalidParseOperationException, PreconditionFailedException {
+    public ArchivalProfileUnitDto create(
+        @Valid @RequestBody ArchivalProfileUnitDto archivalUnitProfile,
+        @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant
+    ) throws InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.sanitizeCriteria(archivalUnitProfile);
         LOGGER.debug("create archival unit profile={}", archivalUnitProfile);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
@@ -150,8 +182,10 @@ public class ArchivalProfileUnitInternalController {
     }
 
     @PostMapping(CommonConstants.PATH_IMPORT)
-    public ResponseEntity<JsonNode> importArchivalUnitProfile(@RequestParam("fileName") String fileName, @RequestParam("file") MultipartFile file)
-        throws PreconditionFailedException{
+    public ResponseEntity<JsonNode> importArchivalUnitProfile(
+        @RequestParam("fileName") String fileName,
+        @RequestParam("file") MultipartFile file
+    ) throws PreconditionFailedException {
         SanityChecker.isValidFileName(fileName);
         LOGGER.debug("import Archival Unit Profile by a file {}", fileName);
         SafeFileChecker.checkSafeFilePath(file.getOriginalFilename());
@@ -161,18 +195,14 @@ public class ArchivalProfileUnitInternalController {
 
     //TODO : Patch Check
     @PostMapping(CommonConstants.PATH_CHECK)
-    public ResponseEntity<Void> checkExist(@RequestBody ArchivalProfileUnitDto archivalProfile, @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant)
-        throws InvalidParseOperationException, PreconditionFailedException {
+    public ResponseEntity<Void> checkExist(
+        @RequestBody ArchivalProfileUnitDto archivalProfile,
+        @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant
+    ) throws InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.sanitizeCriteria(archivalProfile);
         LOGGER.debug("check exist file format={}", archivalProfile);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
         final boolean exist = archivalProfileUnitInternalService.check(vitamContext, archivalProfile);
         return RestUtils.buildBooleanResponse(exist);
     }
-
-
-
-
-
-
 }

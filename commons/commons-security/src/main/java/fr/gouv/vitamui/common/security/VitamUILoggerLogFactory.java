@@ -33,6 +33,7 @@ import org.owasp.esapi.Logger;
  * Dummy Implementation of Logger Factory for Esapi
  */
 public class VitamUILoggerLogFactory implements LogFactory {
+
     private static final VitamUILoggerLogFactory LOG_FACTORY = new VitamUILoggerLogFactory();
 
     private VitamUILoggerLogFactory() {

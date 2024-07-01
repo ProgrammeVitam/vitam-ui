@@ -59,7 +59,6 @@ import static fr.gouv.vitamui.collect.common.rest.RestApi.SEND_PATH;
 import static fr.gouv.vitamui.collect.common.rest.RestApi.VALIDATE_PATH;
 import static fr.gouv.vitamui.commons.api.CommonConstants.PATH_ID;
 
-
 public class CollectTransactionExternalRestClient
     extends BasePaginatingAndSortingRestClient<CollectTransactionDto, ExternalHttpContext> {
 
@@ -74,14 +73,12 @@ public class CollectTransactionExternalRestClient
 
     @Override
     protected ParameterizedTypeReference<List<CollectTransactionDto>> getDtoListClass() {
-        return new ParameterizedTypeReference<>() {
-        };
+        return new ParameterizedTypeReference<>() {};
     }
 
     @Override
     protected ParameterizedTypeReference<PaginatedValuesDto<CollectTransactionDto>> getDtoPaginatedClass() {
-        return new ParameterizedTypeReference<>() {
-        };
+        return new ParameterizedTypeReference<>() {};
     }
 
     @Override
@@ -89,111 +86,136 @@ public class CollectTransactionExternalRestClient
         return RestApi.COLLECT_TRANSACTION_PATH;
     }
 
-
-
-    public ArchiveUnitsDto searchArchiveUnitsByProjectAndSearchQuery(ExternalHttpContext context, String transactionId,
-        SearchCriteriaDto searchQuery) {
+    public ArchiveUnitsDto searchArchiveUnitsByProjectAndSearchQuery(
+        ExternalHttpContext context,
+        String transactionId,
+        SearchCriteriaDto searchQuery
+    ) {
         MultiValueMap<String, String> headers = buildHeaders(context);
         final HttpEntity<SearchCriteriaDto> request = new HttpEntity<>(searchQuery, headers);
-        final ResponseEntity<ArchiveUnitsDto> response =
-            restTemplate.exchange(getUrl() + "/" + transactionId + ARCHIVE_UNITS, HttpMethod.POST, request,
-                ArchiveUnitsDto.class);
+        final ResponseEntity<ArchiveUnitsDto> response = restTemplate.exchange(
+            getUrl() + "/" + transactionId + ARCHIVE_UNITS,
+            HttpMethod.POST,
+            request,
+            ArchiveUnitsDto.class
+        );
         checkResponse(response);
         return response.getBody();
     }
 
     public ResponseEntity<ResultsDto> findUnitById(String id, ExternalHttpContext context) {
-        final UriComponentsBuilder uriBuilder =
-            UriComponentsBuilder.fromHttpUrl(getUrl() + ARCHIVE_UNIT_INFO + CommonConstants.PATH_ID);
+        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(
+            getUrl() + ARCHIVE_UNIT_INFO + CommonConstants.PATH_ID
+        );
         final HttpEntity<?> request = new HttpEntity<>(buildHeaders(context));
         return restTemplate.exchange(uriBuilder.build(id), HttpMethod.GET, request, ResultsDto.class);
     }
 
-    public ResponseEntity<Resource> exportCsvArchiveUnitsByCriteria(String transactionId, SearchCriteriaDto query,
-        ExternalHttpContext context) {
+    public ResponseEntity<Resource> exportCsvArchiveUnitsByCriteria(
+        String transactionId,
+        SearchCriteriaDto query,
+        ExternalHttpContext context
+    ) {
         MultiValueMap<String, String> headers = buildHeaders(context);
         final HttpEntity<SearchCriteriaDto> request = new HttpEntity<>(query, headers);
-        return restTemplate.exchange(getUrl() + "/" + transactionId + ARCHIVE_UNITS + EXPORT_CSV_SEARCH_PATH,
-            HttpMethod.POST, request, Resource.class);
+        return restTemplate.exchange(
+            getUrl() + "/" + transactionId + ARCHIVE_UNITS + EXPORT_CSV_SEARCH_PATH,
+            HttpMethod.POST,
+            request,
+            Resource.class
+        );
     }
 
     public void sendTransaction(ExternalHttpContext context, String transactionId) {
-
-        final UriComponentsBuilder uriBuilder =
-            UriComponentsBuilder.fromHttpUrl(getUrl() + CommonConstants.PATH_ID + SEND_PATH);
+        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(
+            getUrl() + CommonConstants.PATH_ID + SEND_PATH
+        );
         final HttpEntity<?> request = new HttpEntity<>(buildHeaders(context));
         restTemplate.exchange(uriBuilder.build(transactionId), HttpMethod.PUT, request, Void.class);
     }
 
     public void reopenTransaction(ExternalHttpContext context, String transactionId) {
-
-        final UriComponentsBuilder uriBuilder =
-            UriComponentsBuilder.fromHttpUrl(getUrl() + CommonConstants.PATH_ID + REOPEN_PATH);
+        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(
+            getUrl() + CommonConstants.PATH_ID + REOPEN_PATH
+        );
         final HttpEntity<?> request = new HttpEntity<>(buildHeaders(context));
         restTemplate.exchange(uriBuilder.build(transactionId), HttpMethod.PUT, request, Void.class);
     }
 
     public void abortTransaction(ExternalHttpContext context, String transactionId) {
-        final UriComponentsBuilder uriBuilder =
-            UriComponentsBuilder.fromHttpUrl(getUrl() + CommonConstants.PATH_ID + ABORT_PATH);
+        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(
+            getUrl() + CommonConstants.PATH_ID + ABORT_PATH
+        );
         final HttpEntity<?> request = new HttpEntity<>(buildHeaders(context));
         restTemplate.exchange(uriBuilder.build(transactionId), HttpMethod.PUT, request, Void.class);
     }
 
     public void validateTransaction(ExternalHttpContext context, String transactionId) {
-
-        final UriComponentsBuilder uriBuilder =
-            UriComponentsBuilder.fromHttpUrl(getUrl() + CommonConstants.PATH_ID + VALIDATE_PATH);
+        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(
+            getUrl() + CommonConstants.PATH_ID + VALIDATE_PATH
+        );
         final HttpEntity<?> request = new HttpEntity<>(buildHeaders(context));
         restTemplate.exchange(uriBuilder.build(transactionId), HttpMethod.PUT, request, Void.class);
     }
 
     public CollectTransactionDto getTransactionById(ExternalHttpContext context, String transactionId) {
-        final UriComponentsBuilder uriBuilder =
-            UriComponentsBuilder.fromHttpUrl(getUrl() + CommonConstants.PATH_ID);
+        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl() + CommonConstants.PATH_ID);
         final HttpEntity<?> request = new HttpEntity<>(buildHeaders(context));
-        ResponseEntity<CollectTransactionDto> response =
-            restTemplate.exchange(uriBuilder.build(transactionId), HttpMethod.GET, request,
-                CollectTransactionDto.class);
+        ResponseEntity<CollectTransactionDto> response = restTemplate.exchange(
+            uriBuilder.build(transactionId),
+            HttpMethod.GET,
+            request,
+            CollectTransactionDto.class
+        );
         return response.getBody();
     }
 
-    public CollectTransactionDto updateTransaction(ExternalHttpContext context,
-        CollectTransactionDto collectTransactionDto) {
+    public CollectTransactionDto updateTransaction(
+        ExternalHttpContext context,
+        CollectTransactionDto collectTransactionDto
+    ) {
         final HttpEntity<?> request = new HttpEntity<>(collectTransactionDto, buildHeaders(context));
-        final ResponseEntity<CollectTransactionDto> response = restTemplate.exchange(getUrl(), HttpMethod.PUT,
-            request, CollectTransactionDto.class);
+        final ResponseEntity<CollectTransactionDto> response = restTemplate.exchange(
+            getUrl(),
+            HttpMethod.PUT,
+            request,
+            CollectTransactionDto.class
+        );
         checkResponse(response);
         return response.getBody();
     }
 
     public ResponseEntity<ResultsDto> findObjectGroupById(String id, ExternalHttpContext context) {
-        final UriComponentsBuilder uriBuilder =
-            UriComponentsBuilder.fromHttpUrl(getUrl() + CommonConstants.OBJECTS_PATH + PATH_ID);
+        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(
+            getUrl() + CommonConstants.OBJECTS_PATH + PATH_ID
+        );
         final HttpEntity<?> request = new HttpEntity<>(buildHeaders(context));
         return restTemplate.exchange(uriBuilder.build(id), HttpMethod.GET, request, ResultsDto.class);
     }
 
     public List<OntologyDto> getExternalOntologiesList(ExternalHttpContext context) {
-        final UriComponentsBuilder uriBuilder =
-            UriComponentsBuilder.fromHttpUrl(getUrl() + CommonConstants.EXTERNAL_ONTOLOGIES_LIST);
+        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(
+            getUrl() + CommonConstants.EXTERNAL_ONTOLOGIES_LIST
+        );
         final HttpEntity<?> request = new HttpEntity<>(buildHeaders(context));
         return restTemplate.exchange(uriBuilder.build().toUri(), HttpMethod.GET, request, ArrayList.class).getBody();
     }
 
-    public ResponseEntity<ResultsDto> selectUnitWithInheritedRules(ExternalHttpContext context, String transactionId,
-        SearchCriteriaDto query) {
+    public ResponseEntity<ResultsDto> selectUnitWithInheritedRules(
+        ExternalHttpContext context,
+        String transactionId,
+        SearchCriteriaDto query
+    ) {
         MultiValueMap<String, String> headers = buildHeaders(context);
 
         final HttpEntity<SearchCriteriaDto> request = new HttpEntity<>(query, headers);
-        final ResponseEntity<ResultsDto> response =
-            restTemplate.exchange(
-                getUrl() + "/" + transactionId +
-                    UNIT_WITH_INHERITED_RULES,
-                HttpMethod.POST,
-                request, ResultsDto.class);
+        final ResponseEntity<ResultsDto> response = restTemplate.exchange(
+            getUrl() + "/" + transactionId + UNIT_WITH_INHERITED_RULES,
+            HttpMethod.POST,
+            request,
+            ResultsDto.class
+        );
         checkResponse(response);
         return response;
     }
-
 }

@@ -53,13 +53,14 @@ import java.util.List;
 
 import static fr.gouv.vitamui.collect.common.rest.RestApi.UPDATE_UNITS_METADATA_PATH;
 
-public class UpdateUnitsMetadataExternalRestClient extends
-    BasePaginatingAndSortingRestClient<CollectTransactionDto, ExternalHttpContext> {
+public class UpdateUnitsMetadataExternalRestClient
+    extends BasePaginatingAndSortingRestClient<CollectTransactionDto, ExternalHttpContext> {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(UpdateUnitsMetadataExternalRestClient.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
+        UpdateUnitsMetadataExternalRestClient.class
+    );
 
-    public UpdateUnitsMetadataExternalRestClient(RestTemplate restTemplate,
-        String baseUrl) {
+    public UpdateUnitsMetadataExternalRestClient(RestTemplate restTemplate, String baseUrl) {
         super(restTemplate, baseUrl);
     }
 
@@ -70,14 +71,12 @@ public class UpdateUnitsMetadataExternalRestClient extends
 
     @Override
     protected ParameterizedTypeReference<List<CollectTransactionDto>> getDtoListClass() {
-        return new ParameterizedTypeReference<>() {
-        };
+        return new ParameterizedTypeReference<>() {};
     }
 
     @Override
     protected ParameterizedTypeReference<PaginatedValuesDto<CollectTransactionDto>> getDtoPaginatedClass() {
-        return new ParameterizedTypeReference<>() {
-        };
+        return new ParameterizedTypeReference<>() {};
     }
 
     @Override
@@ -95,13 +94,16 @@ public class UpdateUnitsMetadataExternalRestClient extends
      * @return a String
      */
 
-
-    public ResponseEntity<String> updateArchiveUnitsMetadataFromFile(final ExternalHttpContext context, String fileName, final String transactionId,
-        InputStream inputStream) {
+    public ResponseEntity<String> updateArchiveUnitsMetadataFromFile(
+        final ExternalHttpContext context,
+        String fileName,
+        final String transactionId,
+        InputStream inputStream
+    ) {
         LOGGER.debug("[External] Calling upload metadata csv file using streaming process");
-        final UriComponentsBuilder uriBuilder =
-            UriComponentsBuilder.fromHttpUrl(
-                getUrl() +  CommonConstants.TRANSACTION_PATH_ID + UPDATE_UNITS_METADATA_PATH);
+        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(
+            getUrl() + CommonConstants.TRANSACTION_PATH_ID + UPDATE_UNITS_METADATA_PATH
+        );
 
         final MultiValueMap<String, String> headersList = new HttpHeaders();
         headersList.addAll(buildHeaders(context));
@@ -110,12 +112,12 @@ public class UpdateUnitsMetadataExternalRestClient extends
         headersParams.setContentType(MediaType.APPLICATION_OCTET_STREAM);
         headersParams.addAll(headersList);
 
-        final HttpEntity<InputStreamResource> request =
-            new HttpEntity<>(new InputStreamResource(inputStream), headersParams);
+        final HttpEntity<InputStreamResource> request = new HttpEntity<>(
+            new InputStreamResource(inputStream),
+            headersParams
+        );
         LOGGER.debug("[External] update units metadata with transactionId : {}", transactionId);
 
-        return restTemplate.exchange(uriBuilder.build(transactionId), HttpMethod.PUT,
-            request, String.class);
-
+        return restTemplate.exchange(uriBuilder.build(transactionId), HttpMethod.PUT, request, String.class);
     }
 }

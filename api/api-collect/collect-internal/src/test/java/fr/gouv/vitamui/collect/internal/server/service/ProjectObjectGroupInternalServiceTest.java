@@ -54,6 +54,7 @@ import static org.mockito.ArgumentMatchers.eq;
 class ProjectObjectGroupInternalServiceTest {
 
     ObjectMapper objectMapper = new ObjectMapper();
+
     @Mock
     CollectService collectService;
 
@@ -67,7 +68,8 @@ class ProjectObjectGroupInternalServiceTest {
 
     @Test
     void findObjectById() throws VitamClientException, JsonProcessingException {
-        String resultStringValue = "{\n" +
+        String resultStringValue =
+            "{\n" +
             "  \"httpCode\": 200,\n" +
             "  \"$hits\": {\n" +
             "    \"total\": 1,\n" +
@@ -118,31 +120,34 @@ class ProjectObjectGroupInternalServiceTest {
             "  \"$facetResults\": [],\n" +
             "  \"$context\": {}\n" +
             "}";
-        RequestResponse<JsonNode> mockResponse = RequestResponse
-            .parseFromResponse(Response.ok(resultStringValue).build());
-        Mockito.when(collectService.getObjectById(any(), eq("aebaaaaaaehjuynkaa3goamemgtl6wiaaaba")))
-            .thenReturn(mockResponse);
+        RequestResponse<JsonNode> mockResponse = RequestResponse.parseFromResponse(
+            Response.ok(resultStringValue).build()
+        );
+        Mockito.when(collectService.getObjectById(any(), eq("aebaaaaaaehjuynkaa3goamemgtl6wiaaaba"))).thenReturn(
+            mockResponse
+        );
 
-        ResultsDto resultsDto = projectObjectGroupInternalService
-            .findObjectById("aebaaaaaaehjuynkaa3goamemgtl6wiaaaba", null);
+        ResultsDto resultsDto = projectObjectGroupInternalService.findObjectById(
+            "aebaaaaaaehjuynkaa3goamemgtl6wiaaaba",
+            null
+        );
 
         Assertions.assertEquals(resultsDto.getId(), "aebaaaaaaehjuynkaa3goamemgtl6wiaaaba");
         Assertions.assertEquals(resultsDto.getOpi(), "aeeaaaaaaghjuynkaa3goamemgtj73yaaaaq");
         Assertions.assertEquals(resultsDto.getQualifiers().size(), 1);
         Assertions.assertEquals(resultsDto.getQualifiers().get(0).getQualifier(), "BinaryMaster");
         Assertions.assertEquals(resultsDto.getQualifiers().get(0).getVersions().size(), 1);
-        Assertions.assertEquals(resultsDto.getQualifiers().get(0)
-                .getVersions().get(0)
-                .getFileInfoModel().getFilename(),
-            "file1.pem");
-        Assertions.assertEquals(resultsDto.getQualifiers().get(0)
-                .getVersions().get(0)
-                .getFormatIdentification().getMimeType(),
-            "text/plain");
-        Assertions.assertEquals(resultsDto.getQualifiers().get(0)
-                .getVersions().get(0)
-                .getDataObjectVersion(),
-            "BinaryMaster_1");
+        Assertions.assertEquals(
+            resultsDto.getQualifiers().get(0).getVersions().get(0).getFileInfoModel().getFilename(),
+            "file1.pem"
+        );
+        Assertions.assertEquals(
+            resultsDto.getQualifiers().get(0).getVersions().get(0).getFormatIdentification().getMimeType(),
+            "text/plain"
+        );
+        Assertions.assertEquals(
+            resultsDto.getQualifiers().get(0).getVersions().get(0).getDataObjectVersion(),
+            "BinaryMaster_1"
+        );
     }
-
 }

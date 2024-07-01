@@ -96,5 +96,4 @@ public class SubrogationServiceTest extends ServiceTest<SubrogationDto> {
     protected AbstractCrudService<SubrogationDto> getService() {
         return service;
     }
-
 }

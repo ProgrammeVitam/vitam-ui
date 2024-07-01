@@ -37,8 +37,7 @@
 package fr.gouv.vitamui.commons.vitam.api.util;
 
 public enum VitamContextID {
-
     DEFAULT_WORKFLOW,
     HOLDING_SCHEME,
-    FILING_SCHEME
+    FILING_SCHEME,
 }

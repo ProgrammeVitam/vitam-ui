@@ -42,6 +42,4 @@ import fr.gouv.vitamui.iam.internal.server.user.domain.UserInfo;
 /**
  * MongoDB repository for the users info.
  */
-public interface UserInfoRepository extends VitamUIRepository<UserInfo, String> {
-
-}
+public interface UserInfoRepository extends VitamUIRepository<UserInfo, String> {}

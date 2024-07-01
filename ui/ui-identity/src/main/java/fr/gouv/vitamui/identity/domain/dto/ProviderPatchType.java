@@ -36,9 +36,8 @@
  */
 package fr.gouv.vitamui.identity.domain.dto;
 
-
 public enum ProviderPatchType {
     JSON,
     IDPMETADATA,
-    KEYSTORE
+    KEYSTORE,
 }

@@ -39,10 +39,18 @@ public class ProfileDtoBuilder {
         throw new IllegalStateException("Utility class");
     }
 
-    public static ProfileDto build(final String name, final String description,
-        final boolean enabled, final boolean isReadonly, final String level, final Integer tenant, final String service,
-        final List<String> roleNames, final String customerId, final String externalParameterId) {
-
+    public static ProfileDto build(
+        final String name,
+        final String description,
+        final boolean enabled,
+        final boolean isReadonly,
+        final String level,
+        final Integer tenant,
+        final String service,
+        final List<String> roleNames,
+        final String customerId,
+        final String externalParameterId
+    ) {
         final ProfileDto profileDto = new ProfileDto();
         profileDto.setName(name);
         profileDto.setDescription(description);

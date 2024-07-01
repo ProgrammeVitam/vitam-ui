@@ -59,8 +59,14 @@ public class ProvisioningWebClient extends BaseWebClient<InternalHttpContext> {
         super(webClient, baseUrl);
     }
 
-    public ProvidedUserDto getProvidedUser(final InternalHttpContext context, final String email, final String groupId, final String unit, final String userIdentifier, final String customerId)  {
-
+    public ProvidedUserDto getProvidedUser(
+        final InternalHttpContext context,
+        final String email,
+        final String groupId,
+        final String unit,
+        final String userIdentifier,
+        final String customerId
+    ) {
         final URIBuilder builder = getUriBuilderFromUrl();
 
         if (StringUtils.isNotBlank(email)) {
@@ -80,8 +86,14 @@ public class ProvisioningWebClient extends BaseWebClient<InternalHttpContext> {
             builder.addParameter("customerId", customerId);
         }
 
-        return webClient.get().uri(buildUriBuilder(builder)).headers(headersConsumer -> headersConsumer.addAll(buildHeaders(context))).retrieve().onStatus(status -> !status.is2xxSuccessful(), BaseCrudWebClient::createResponseException)
-            .bodyToMono(ProvidedUserDto.class).block();
+        return webClient
+            .get()
+            .uri(buildUriBuilder(builder))
+            .headers(headersConsumer -> headersConsumer.addAll(buildHeaders(context)))
+            .retrieve()
+            .onStatus(status -> !status.is2xxSuccessful(), BaseCrudWebClient::createResponseException)
+            .bodyToMono(ProvidedUserDto.class)
+            .block();
     }
 
     //PATH URL is given by configuration
@@ -89,5 +101,4 @@ public class ProvisioningWebClient extends BaseWebClient<InternalHttpContext> {
     public String getPathUrl() {
         return StringUtils.EMPTY;
     }
-
 }

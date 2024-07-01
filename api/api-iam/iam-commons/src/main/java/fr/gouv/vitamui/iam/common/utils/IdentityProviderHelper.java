@@ -50,7 +50,10 @@ import java.util.regex.Pattern;
  */
 public class IdentityProviderHelper {
 
-    public Optional<IdentityProviderDto> findByTechnicalName(final List<IdentityProviderDto> providers, final String name) {
+    public Optional<IdentityProviderDto> findByTechnicalName(
+        final List<IdentityProviderDto> providers,
+        final String name
+    ) {
         for (final IdentityProviderDto provider : providers) {
             if (StringUtils.equals(provider.getTechnicalName(), name)) {
                 return Optional.of(provider);
@@ -59,7 +62,10 @@ public class IdentityProviderHelper {
         return Optional.empty();
     }
 
-    public Optional<IdentityProviderDto> findByUserIdentifier(final List<IdentityProviderDto> providers, final String identifier) {
+    public Optional<IdentityProviderDto> findByUserIdentifier(
+        final List<IdentityProviderDto> providers,
+        final String identifier
+    ) {
         for (final IdentityProviderDto provider : providers) {
             for (final String pattern : provider.getPatterns()) {
                 if (Pattern.compile(pattern).matcher(identifier).matches()) {

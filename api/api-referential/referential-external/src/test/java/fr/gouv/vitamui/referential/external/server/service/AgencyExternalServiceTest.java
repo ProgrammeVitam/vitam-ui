@@ -36,32 +36,24 @@
  */
 package fr.gouv.vitamui.referential.external.server.service;
 
-import fr.gouv.vitam.common.client.VitamContext;
-import fr.gouv.vitam.common.exception.InvalidParseOperationException;
-import fr.gouv.vitam.common.exception.VitamClientException;
-import fr.gouv.vitam.common.model.RequestResponse;
-import fr.gouv.vitam.common.model.RequestResponseOK;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import fr.gouv.vitamui.referential.common.dto.AgencyDto;
 import fr.gouv.vitamui.referential.internal.client.AgencyInternalRestClient;
 import fr.gouv.vitamui.referential.internal.client.AgencyInternalWebClient;
-
 import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
-
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -72,15 +64,17 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AgencyExternalServiceTest extends ExternalServiceTest {
+
     @Mock
     private AgencyInternalRestClient agencyInternalRestClient;
+
     @Mock
     private AgencyInternalWebClient agencyInternalWebClient;
+
     @Mock
     private ExternalSecurityService externalSecurityService;
 
@@ -90,7 +84,11 @@ public class AgencyExternalServiceTest extends ExternalServiceTest {
     public void init() {
         final String userCustomerId = "customerIdAllowed";
         mockSecurityContext(externalSecurityService, userCustomerId, 10);
-        agencyExternalService = new AgencyExternalService(externalSecurityService, agencyInternalRestClient, agencyInternalWebClient);
+        agencyExternalService = new AgencyExternalService(
+            externalSecurityService,
+            agencyInternalRestClient,
+            agencyInternalWebClient
+        );
     }
 
     @Test
@@ -100,8 +98,7 @@ public class AgencyExternalServiceTest extends ExternalServiceTest {
         agencyDto.setTenant(1);
         list.add(agencyDto);
 
-        when(agencyInternalRestClient.getAll(any(InternalHttpContext.class), any(Optional.class)))
-            .thenReturn(list);
+        when(agencyInternalRestClient.getAll(any(InternalHttpContext.class), any(Optional.class))).thenReturn(list);
 
         assertThatCode(() -> {
             agencyExternalService.getAll(Optional.empty());
@@ -113,8 +110,9 @@ public class AgencyExternalServiceTest extends ExternalServiceTest {
         AgencyDto agencyDto = new AgencyDto();
         agencyDto.setTenant(1);
 
-        when(agencyInternalRestClient.create(any(InternalHttpContext.class), any(AgencyDto.class)))
-            .thenReturn(agencyDto);
+        when(agencyInternalRestClient.create(any(InternalHttpContext.class), any(AgencyDto.class))).thenReturn(
+            agencyDto
+        );
 
         assertThatCode(() -> {
             agencyExternalService.create(new AgencyDto());
@@ -123,8 +121,7 @@ public class AgencyExternalServiceTest extends ExternalServiceTest {
 
     @Test
     public void check_should_return_boolean_when_agencyInternalRestClient_return_boolean() {
-        when(agencyInternalRestClient.check(any(InternalHttpContext.class), any(AgencyDto.class)))
-            .thenReturn(true);
+        when(agencyInternalRestClient.check(any(InternalHttpContext.class), any(AgencyDto.class))).thenReturn(true);
 
         assertThatCode(() -> {
             agencyExternalService.check(new AgencyDto());
@@ -133,8 +130,9 @@ public class AgencyExternalServiceTest extends ExternalServiceTest {
 
     @Test
     public void delete_should_return_ok_when_agencyInternalRestClient_return_ok() {
-        when(agencyInternalRestClient.deleteWithResponse(any(InternalHttpContext.class), any(String.class)))
-        	.thenReturn(new ResponseEntity<Boolean>(true, HttpStatus.OK));
+        when(agencyInternalRestClient.deleteWithResponse(any(InternalHttpContext.class), any(String.class))).thenReturn(
+            new ResponseEntity<Boolean>(true, HttpStatus.OK)
+        );
         String id = "1";
 
         assertThatCode(() -> {
@@ -144,8 +142,9 @@ public class AgencyExternalServiceTest extends ExternalServiceTest {
 
     @Test
     public void export_should_return_ok_when_agencyInternalRestClient_return_ok() {
-        when(agencyInternalRestClient.export(any(InternalHttpContext.class)))
-            .thenReturn(new ResponseEntity<Resource>(HttpStatus.ACCEPTED));
+        when(agencyInternalRestClient.export(any(InternalHttpContext.class))).thenReturn(
+            new ResponseEntity<Resource>(HttpStatus.ACCEPTED)
+        );
 
         assertThatCode(() -> {
             agencyExternalService.export();
@@ -154,19 +153,29 @@ public class AgencyExternalServiceTest extends ExternalServiceTest {
 
     @Test
     public void import_should_return_ok() throws IOException {
-	    File file = new File("src/test/resources/data/import_agencies_valid.csv");
-	    FileInputStream input = new FileInputStream(file);
-	    MultipartFile multipartFile = new MockMultipartFile(file.getName(), file.getName(), "text/csv", IOUtils.toByteArray(input));
+        File file = new File("src/test/resources/data/import_agencies_valid.csv");
+        FileInputStream input = new FileInputStream(file);
+        MultipartFile multipartFile = new MockMultipartFile(
+            file.getName(),
+            file.getName(),
+            "text/csv",
+            IOUtils.toByteArray(input)
+        );
 
-	    String stringReponse = "{\"httpCode\":\"201\"}";
-	    ObjectMapper mapper = new ObjectMapper();
-	    JsonNode jsonResponse = mapper.readTree(stringReponse);
+        String stringReponse = "{\"httpCode\":\"201\"}";
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode jsonResponse = mapper.readTree(stringReponse);
 
-        when(agencyInternalWebClient.importAgencies(any(InternalHttpContext.class), any(String.class), any(MultipartFile.class)))
-        	.thenReturn(jsonResponse);
+        when(
+            agencyInternalWebClient.importAgencies(
+                any(InternalHttpContext.class),
+                any(String.class),
+                any(MultipartFile.class)
+            )
+        ).thenReturn(jsonResponse);
 
         assertThatCode(() -> {
-        	agencyExternalService.importAgencies(file.getName(), multipartFile);
+            agencyExternalService.importAgencies(file.getName(), multipartFile);
         }).doesNotThrowAnyException();
     }
 }

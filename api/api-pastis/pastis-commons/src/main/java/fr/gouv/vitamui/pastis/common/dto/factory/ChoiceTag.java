@@ -41,5 +41,4 @@ package fr.gouv.vitamui.pastis.common.dto.factory;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "rng:choice")
-public class ChoiceTag extends RngTag {
-}
+public class ChoiceTag extends RngTag {}

@@ -36,45 +36,47 @@
  */
 package fr.gouv.vitamui.referential.internal.client;
 
-import java.util.AbstractMap;
-import java.util.Collections;
-import java.util.Optional;
-
-import javax.ws.rs.BadRequestException;
-
-import org.springframework.http.HttpMethod;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework	.web.reactive.function.client.WebClient;
-
 import com.fasterxml.jackson.databind.JsonNode;
-
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.client.BaseWebClient;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
+import org.springframework.http.HttpMethod;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.reactive.function.client.WebClient;
 
-public class OntologyInternalWebClient extends BaseWebClient<InternalHttpContext>  {
+import javax.ws.rs.BadRequestException;
+import java.util.AbstractMap;
+import java.util.Collections;
+import java.util.Optional;
+
+public class OntologyInternalWebClient extends BaseWebClient<InternalHttpContext> {
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(OntologyInternalWebClient.class);
-    
+
     public OntologyInternalWebClient(final WebClient webClient, final String baseUrl) {
         super(webClient, baseUrl);
     }
-    
+
     public JsonNode importOntologies(InternalHttpContext context, String fileName, MultipartFile file) {
         if (file == null) {
             LOGGER.error("No file to import");
             throw new BadRequestException("No file to import .");
         }
-        
-    	LOGGER.debug("Import file {}", file.getOriginalFilename());
-        return multipartData(getUrl() + CommonConstants.PATH_IMPORT, HttpMethod.POST, context, 
+
+        LOGGER.debug("Import file {}", file.getOriginalFilename());
+        return multipartData(
+            getUrl() + CommonConstants.PATH_IMPORT,
+            HttpMethod.POST,
+            context,
             Collections.singletonMap("fileName", fileName),
-        	Optional.of(new AbstractMap.SimpleEntry<>("file", file)), JsonNode.class);
+            Optional.of(new AbstractMap.SimpleEntry<>("file", file)),
+            JsonNode.class
+        );
     }
-    
+
     @Override
     public String getPathUrl() {
         return RestApi.ONTOLOGIES_URL;

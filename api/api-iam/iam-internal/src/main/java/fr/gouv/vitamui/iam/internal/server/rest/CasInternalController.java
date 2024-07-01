@@ -86,7 +86,11 @@ import java.util.Optional;
  */
 @RestController
 @RequestMapping(RestApi.V1_CAS_URL)
-@Api(tags = "cas", value = "User authentication management for CAS", description = "User authentication management for CAS")
+@Api(
+    tags = "cas",
+    value = "User authentication management for CAS",
+    description = "User authentication management for CAS"
+)
 public class CasInternalController {
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(CasInternalController.class);
@@ -107,7 +111,11 @@ public class CasInternalController {
     private final UserInternalService internalUserService;
 
     @Autowired
-    public CasInternalController(final CasInternalService casService, final PasswordEncoder passwordEncoder, final UserInternalService internalUserService) {
+    public CasInternalController(
+        final CasInternalService casService,
+        final PasswordEncoder passwordEncoder,
+        final UserInternalService internalUserService
+    ) {
         this.casService = casService;
         this.passwordEncoder = passwordEncoder;
         this.internalUserService = internalUserService;
@@ -132,8 +140,7 @@ public class CasInternalController {
         final boolean passwordMatch = passwordEncoder.matches(dto.getPassword(), password);
         if (!passwordMatch) {
             nbFailedAttemps++;
-        }
-        else if (nbFailedAttemps < maximumFailuresForLoginAttempts) {
+        } else if (nbFailedAttemps < maximumFailuresForLoginAttempts) {
             nbFailedAttemps = 0;
         }
         user.setNbFailedAttempts(nbFailedAttemps);
@@ -141,24 +148,26 @@ public class CasInternalController {
 
         if (nbFailedAttemps >= maximumFailuresForLoginAttempts) {
             user.setStatus(UserStatusEnum.BLOCKED);
-        }
-        else if (user.getStatus() == UserStatusEnum.BLOCKED) {
+        } else if (user.getStatus() == UserStatusEnum.BLOCKED) {
             user.setStatus(UserStatusEnum.ENABLED);
         }
         casService.updateNbFailedAttempsPlusLastConnectionAndStatus(user, nbFailedAttemps, oldStatus);
 
-        LOGGER.debug("username: {} -> passwordMatch: {} / nbFailedAttemps: {}", username, passwordMatch, nbFailedAttemps);
+        LOGGER.debug(
+            "username: {} -> passwordMatch: {} / nbFailedAttemps: {}",
+            username,
+            passwordMatch,
+            nbFailedAttemps
+        );
         if (nbFailedAttemps >= maximumFailuresForLoginAttempts) {
             final String message = "Too many login attempts for username: " + username;
             iamLogbookService.loginEvent(user, findSurrogateByEmail(dto), dto.getIp(), message);
             throw new TooManyRequestsException(message);
-        }
-        else if (passwordMatch) {
+        } else if (passwordMatch) {
             final UserDto userDto = internalUserService.internalConvertFromEntityToDto(user);
             iamLogbookService.loginEvent(user, findSurrogateByEmail(dto), dto.getIp(), null);
             return new ResponseEntity<>(userDto, HttpStatus.OK);
-        }
-        else {
+        } else {
             final String message = "Bad credentials for username: " + username;
             iamLogbookService.loginEvent(user, findSurrogateByEmail(dto), dto.getIp(), message);
             throw new UnAuthorizedException(message);
@@ -170,8 +179,7 @@ public class CasInternalController {
         if (surrogate != null) {
             try {
                 return internalUserService.findUserByEmail(surrogate).getIdentifier();
-            }
-            catch (final NotFoundException e) {
+            } catch (final NotFoundException e) {
                 return "User not found: " + surrogate;
             }
         }
@@ -180,8 +188,15 @@ public class CasInternalController {
 
     @PostMapping(RestApi.CAS_CHANGE_PASSWORD_PATH)
     @ResponseBody
-    public String changePassword(@RequestHeader(defaultValue = "") final String username, @RequestHeader(defaultValue = "") final String password) {
-        LOGGER.debug("changePassword for username: {} / password_exists? {}", username, StringUtils.isNotBlank(password));
+    public String changePassword(
+        @RequestHeader(defaultValue = "") final String username,
+        @RequestHeader(defaultValue = "") final String password
+    ) {
+        LOGGER.debug(
+            "changePassword for username: {} / password_exists? {}",
+            username,
+            StringUtils.isNotBlank(password)
+        );
         casService.updatePassword(username, password);
         return "true";
     }
@@ -194,14 +209,23 @@ public class CasInternalController {
     }
 
     @GetMapping(value = RestApi.CAS_USERS_PATH + RestApi.USERS_PROVISIONING, params = { "email", "idp" })
-    public UserDto getUser(@RequestParam final String email, @RequestParam final String idp, @RequestParam(required = false) final String userIdentifier,
-            @RequestParam(required = false) final String embedded) throws InvalidParseOperationException,
-        ParameterRecognitionException {
+    public UserDto getUser(
+        @RequestParam final String email,
+        @RequestParam final String idp,
+        @RequestParam(required = false) final String userIdentifier,
+        @RequestParam(required = false) final String embedded
+    ) throws InvalidParseOperationException, ParameterRecognitionException {
         SanityChecker.checkSecureParameter(idp, email);
-        if(userIdentifier!= null) {
+        if (userIdentifier != null) {
             SanityChecker.checkSecureParameter(userIdentifier);
         }
-        LOGGER.debug("getUser - email : {}, idp : {}, userIdentifier : {}, embedded options : {}", email, idp, userIdentifier, embedded);
+        LOGGER.debug(
+            "getUser - email : {}, idp : {}, userIdentifier : {}, embedded options : {}",
+            email,
+            idp,
+            userIdentifier,
+            embedded
+        );
         return casService.getUser(email, idp, userIdentifier, embedded);
     }
 
@@ -227,8 +251,7 @@ public class CasInternalController {
             final String email = user.getEmail();
             LOGGER.debug("-> email: {}", email);
             return casService.getSubrogationsBySuperUser(email);
-        }
-        else {
+        } else {
             return new ArrayList<>();
         }
     }

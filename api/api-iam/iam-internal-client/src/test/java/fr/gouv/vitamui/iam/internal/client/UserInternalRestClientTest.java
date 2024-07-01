@@ -1,6 +1,5 @@
 package fr.gouv.vitamui.iam.internal.client;
 
-import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import fr.gouv.vitamui.commons.test.utils.AbstractServerIdentityBuilder;
@@ -46,8 +45,9 @@ public class UserInternalRestClientTest extends AbstractServerIdentityBuilder {
         InternalHttpContext context = new InternalHttpContext(9, "", "", "", "", "", "", "");
 
         String PATCH_ANALYTIC_URL = BASE_URL + "/iam/v1/users/analytics";
-        when(restTemplate.exchange(eq(URI.create(PATCH_ANALYTIC_URL)), eq(HttpMethod.POST), any(), eq(UserDto.class)))
-                .thenReturn(new ResponseEntity<>(user, HttpStatus.OK));
+        when(
+            restTemplate.exchange(eq(URI.create(PATCH_ANALYTIC_URL)), eq(HttpMethod.POST), any(), eq(UserDto.class))
+        ).thenReturn(new ResponseEntity<>(user, HttpStatus.OK));
         Map<String, Object> analytics = Map.of(APPLICATION_ID, "INGEST_SUPERVISION_APP");
 
         UserDto response = userInternalRestClient.patchAnalytics(context, analytics);

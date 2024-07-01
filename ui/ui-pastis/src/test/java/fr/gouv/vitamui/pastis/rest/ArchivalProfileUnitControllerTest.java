@@ -47,7 +47,7 @@ public class ArchivalProfileUnitControllerTest extends UIPastisRestControllerTes
     public void testGetAllPaginatedManagementContract() {
         final HttpHeaders headers = new HttpHeaders();
         headers.add(CommonConstants.X_TENANT_ID_HEADER, "1");
-        super.performGet("/", ImmutableMap.of("page", 1, "size", 20, "orderBy", "id" ));
+        super.performGet("/", ImmutableMap.of("page", 1, "size", 20, "orderBy", "id"));
     }
 
     @Test

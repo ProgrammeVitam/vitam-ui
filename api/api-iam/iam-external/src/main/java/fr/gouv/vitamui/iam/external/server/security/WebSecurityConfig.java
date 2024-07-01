@@ -36,14 +36,13 @@
  */
 package fr.gouv.vitamui.iam.external.server.security;
 
+import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
+import fr.gouv.vitamui.iam.security.config.ExternalApiWebSecurityConfig;
+import fr.gouv.vitamui.iam.security.provider.ExternalApiAuthenticationProvider;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-
-import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
-import fr.gouv.vitamui.iam.security.config.ExternalApiWebSecurityConfig;
-import fr.gouv.vitamui.iam.security.provider.ExternalApiAuthenticationProvider;
 
 /**
  * The security configuration.
@@ -55,9 +54,11 @@ import fr.gouv.vitamui.iam.security.provider.ExternalApiAuthenticationProvider;
 @EnableGlobalMethodSecurity(securedEnabled = true, proxyTargetClass = true)
 public class WebSecurityConfig extends ExternalApiWebSecurityConfig {
 
-    public WebSecurityConfig(final ExternalApiAuthenticationProvider apiAuthenticationProvider,
-            final RestExceptionHandler restExceptionHandler, final Environment env) {
+    public WebSecurityConfig(
+        final ExternalApiAuthenticationProvider apiAuthenticationProvider,
+        final RestExceptionHandler restExceptionHandler,
+        final Environment env
+    ) {
         super(apiAuthenticationProvider, restExceptionHandler, env);
     }
-
 }

@@ -80,7 +80,9 @@ import java.util.Optional;
 @Setter
 public class IngestContractExternalController {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(IngestContractExternalController.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
+        IngestContractExternalController.class
+    );
 
     @Autowired
     private IngestContractExternalService ingestContractExternalService;
@@ -95,16 +97,27 @@ public class IngestContractExternalController {
 
     @Secured(ServicesData.ROLE_GET_INGEST_CONTRACTS)
     @GetMapping(params = { "page", "size" })
-    public PaginatedValuesDto<IngestContractDto> getAllPaginated(@RequestParam final Integer page, @RequestParam final Integer size,
-                                                                 @RequestParam(required = false) final Optional<String> criteria, @RequestParam(required = false) final Optional<String> orderBy,
-                                                                 @RequestParam(required = false) final Optional<DirectionDto> direction) {
-        LOGGER.debug("getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, orderBy, direction);
+    public PaginatedValuesDto<IngestContractDto> getAllPaginated(
+        @RequestParam final Integer page,
+        @RequestParam final Integer size,
+        @RequestParam(required = false) final Optional<String> criteria,
+        @RequestParam(required = false) final Optional<String> orderBy,
+        @RequestParam(required = false) final Optional<DirectionDto> direction
+    ) {
+        LOGGER.debug(
+            "getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}",
+            page,
+            size,
+            orderBy,
+            direction
+        );
         return ingestContractExternalService.getAllPaginated(page, size, criteria, orderBy, direction);
     }
 
     @Secured(ServicesData.ROLE_GET_INGEST_CONTRACTS)
     @GetMapping(path = RestApi.PATH_REFERENTIAL_ID)
-    public IngestContractDto getOne(final @PathVariable("identifier") String identifier) throws UnsupportedEncodingException {
+    public IngestContractDto getOne(final @PathVariable("identifier") String identifier)
+        throws UnsupportedEncodingException {
         LOGGER.debug("get ingestcontract  identifier={}", identifier);
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", identifier);
         return ingestContractExternalService.getOne(identifier);
@@ -112,7 +125,10 @@ public class IngestContractExternalController {
 
     @Secured({ ServicesData.ROLE_GET_INGEST_CONTRACTS })
     @PostMapping(CommonConstants.PATH_CHECK)
-    public ResponseEntity<Void> check(@RequestBody IngestContractDto ingestContractDto, @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant) {
+    public ResponseEntity<Void> check(
+        @RequestBody IngestContractDto ingestContractDto,
+        @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant
+    ) {
         LOGGER.debug("check exist ingestContract={}", ingestContractDto);
         final boolean exist = ingestContractExternalService.check(ingestContractDto);
         return RestUtils.buildBooleanResponse(exist);
@@ -128,10 +144,16 @@ public class IngestContractExternalController {
 
     @PatchMapping(CommonConstants.PATH_ID)
     @Secured(ServicesData.ROLE_UPDATE_INGEST_CONTRACTS)
-    public IngestContractDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto) {
+    public IngestContractDto patch(
+        final @PathVariable("id") String id,
+        @RequestBody final Map<String, Object> partialDto
+    ) {
         LOGGER.debug("Patch {} with {}", id, partialDto);
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
-        Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "The DTO identifier must match the path identifier for update.");
+        Assert.isTrue(
+            StringUtils.equals(id, (String) partialDto.get("id")),
+            "The DTO identifier must match the path identifier for update."
+        );
         return ingestContractExternalService.patch(partialDto);
     }
 
@@ -139,7 +161,7 @@ public class IngestContractExternalController {
     @GetMapping("/{id}/history")
     public JsonNode findHistoryById(final @PathVariable("id") String id) {
         LOGGER.debug("get logbook for ingestContract with id :{}", id);
-        ParameterChecker.checkParameter("Identifier is mandatory : " , id);
+        ParameterChecker.checkParameter("Identifier is mandatory : ", id);
         return ingestContractExternalService.findHistoryById(id);
     }
 }

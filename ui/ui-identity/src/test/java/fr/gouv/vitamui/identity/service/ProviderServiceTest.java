@@ -1,7 +1,19 @@
 package fr.gouv.vitamui.identity.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
+import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
+import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
+import fr.gouv.vitamui.iam.external.client.IdentityProviderExternalRestClient;
+import fr.gouv.vitamui.identity.domain.dto.ProviderPatchType;
+import fr.gouv.vitamui.ui.commons.service.AbstractCrudService;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
@@ -9,22 +21,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.web.multipart.MultipartFile;
-
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
-import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
-import fr.gouv.vitamui.iam.external.client.IdentityProviderExternalRestClient;
-import fr.gouv.vitamui.identity.domain.dto.ProviderPatchType;
-import fr.gouv.vitamui.ui.commons.service.AbstractCrudService;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 public class ProviderServiceTest extends UIIdentityServiceTest<IdentityProviderDto> {
@@ -69,7 +67,6 @@ public class ProviderServiceTest extends UIIdentityServiceTest<IdentityProviderD
         partialDto.put("id", ID);
         partialDto.put("keystorePassword", "keyspwd");
         service.patch(null, partialDto, keystore, null, ID, ProviderPatchType.KEYSTORE);
-
     }
 
     @Test(expected = IllegalArgumentException.class)

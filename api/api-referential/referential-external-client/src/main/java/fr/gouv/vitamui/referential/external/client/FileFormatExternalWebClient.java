@@ -57,7 +57,7 @@ import java.util.Optional;
  *
  *
  */
-public class FileFormatExternalWebClient extends BaseWebClient<ExternalHttpContext>  {
+public class FileFormatExternalWebClient extends BaseWebClient<ExternalHttpContext> {
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(FileFormatExternalWebClient.class);
 
@@ -66,18 +66,23 @@ public class FileFormatExternalWebClient extends BaseWebClient<ExternalHttpConte
     }
 
     public JsonNode importFileFormats(ExternalHttpContext context, MultipartFile file) {
-    	LOGGER.debug("Import file {}", file != null ? file.getOriginalFilename() : null);
+        LOGGER.debug("Import file {}", file != null ? file.getOriginalFilename() : null);
         if (file == null) {
             throw new BadRequestException("No file to check .");
         }
 
-        return multipartData(getUrl() + CommonConstants.PATH_IMPORT, HttpMethod.POST, context,
-        	Collections.singletonMap("fileName", file.getOriginalFilename()),
-        	Optional.of(new AbstractMap.SimpleEntry<>("file", file)), JsonNode.class);
+        return multipartData(
+            getUrl() + CommonConstants.PATH_IMPORT,
+            HttpMethod.POST,
+            context,
+            Collections.singletonMap("fileName", file.getOriginalFilename()),
+            Optional.of(new AbstractMap.SimpleEntry<>("file", file)),
+            JsonNode.class
+        );
     }
 
     @Override
     public String getPathUrl() {
-        return  RestApi.FILE_FORMATS_URL;
+        return RestApi.FILE_FORMATS_URL;
     }
 }

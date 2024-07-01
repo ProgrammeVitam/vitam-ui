@@ -113,8 +113,11 @@ public final class ParamsUtils {
             throw new IllegalArgumentException(errorMessage + MANDATORY_PARAMETER);
         }
         for (final Object parameter : parameters) {
-            if (parameter == null || (parameter instanceof String
-                    && (StringUtils.isEmpty(parameter.toString()) || parameter.toString().trim().isEmpty()))) {
+            if (
+                parameter == null ||
+                (parameter instanceof String &&
+                    (StringUtils.isEmpty(parameter.toString()) || parameter.toString().trim().isEmpty()))
+            ) {
                 throw new IllegalArgumentException(errorMessage + MANDATORY_PARAMETER);
             }
         }

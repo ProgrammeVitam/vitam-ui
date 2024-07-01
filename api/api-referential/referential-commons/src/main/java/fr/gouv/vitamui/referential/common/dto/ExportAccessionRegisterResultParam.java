@@ -7,6 +7,7 @@ import java.util.Locale;
 
 @Data
 public class ExportAccessionRegisterResultParam {
+
     //Export CSV headers
     //dateEntree;ID;servProd;servVers;contratEntree;modeEntree;statutJur;nbreArt;gpeobjElec;objElec;volElec;statut
 
@@ -41,7 +42,6 @@ public class ExportAccessionRegisterResultParam {
     private static final String FR_PATTERN_DATE = "dd/MM/yyyy";
     private static final String EN_PATTERN_DATE = "MM/dd/yyyy";
 
-
     private String patternDate;
     private List<String> headers;
     private char separator = ';';
@@ -60,7 +60,8 @@ public class ExportAccessionRegisterResultParam {
                 FR_GPE_OBJ_ELEC,
                 FR_OBJ_ELEC,
                 FR_VOL_ELEC,
-                FR_STATUT);
+                FR_STATUT
+            );
             this.patternDate = FR_PATTERN_DATE;
         } else if (locale.equals(Locale.ENGLISH)) {
             this.headers = List.of(
@@ -75,7 +76,8 @@ public class ExportAccessionRegisterResultParam {
                 EN_GPE_OBJ_ELEC,
                 EN_OBJ_ELEC,
                 EN_VOL_ELEC,
-                EN_STATUT);
+                EN_STATUT
+            );
             this.patternDate = EN_PATTERN_DATE;
         }
     }

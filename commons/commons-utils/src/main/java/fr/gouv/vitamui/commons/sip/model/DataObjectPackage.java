@@ -36,12 +36,12 @@
  */
 package fr.gouv.vitamui.commons.sip.model;
 
+import lombok.Getter;
+import lombok.ToString;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
-
-import lombok.Getter;
-import lombok.ToString;
 
 @Getter
 @ToString
@@ -57,8 +57,7 @@ public class DataObjectPackage {
     @XmlElement(name = "ManagementMetadata")
     private ManagementMetadata managementMetadata;
 
-    private DataObjectPackage() {
-    }
+    private DataObjectPackage() {}
 
     private DataObjectPackage(Builder builder) {
         descriptiveMetadata = builder.descriptiveMetadata;
@@ -93,5 +92,4 @@ public class DataObjectPackage {
             return new DataObjectPackage(this);
         }
     }
-
 }

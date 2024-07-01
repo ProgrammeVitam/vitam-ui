@@ -84,8 +84,13 @@ public class UserAuthenticationHandler extends AbstractUsernamePasswordAuthentic
 
     private final String ipHeaderName;
 
-    public UserAuthenticationHandler(final ServicesManager servicesManager, final PrincipalFactory principalFactory,
-                                     final CasExternalRestClient casExternalRestClient, final Utils utils, final String ipHeaderName) {
+    public UserAuthenticationHandler(
+        final ServicesManager servicesManager,
+        final PrincipalFactory principalFactory,
+        final CasExternalRestClient casExternalRestClient,
+        final Utils utils,
+        final String ipHeaderName
+    ) {
         super(UserAuthenticationHandler.class.getSimpleName(), servicesManager, principalFactory, 1);
         this.casExternalRestClient = casExternalRestClient;
         this.utils = utils;
@@ -93,9 +98,10 @@ public class UserAuthenticationHandler extends AbstractUsernamePasswordAuthentic
     }
 
     @Override
-    protected AuthenticationHandlerExecutionResult authenticateUsernamePasswordInternal(final UsernamePasswordCredential transformedCredential,
-                                                                                        final String originalPassword) throws GeneralSecurityException, PreventedException {
-
+    protected AuthenticationHandlerExecutionResult authenticateUsernamePasswordInternal(
+        final UsernamePasswordCredential transformedCredential,
+        final String originalPassword
+    ) throws GeneralSecurityException, PreventedException {
         val username = transformedCredential.getUsername().toLowerCase().trim();
         val requestContext = RequestContextHolder.getRequestContext();
         String surrogate = null;
@@ -135,20 +141,16 @@ public class UserAuthenticationHandler extends AbstractUsernamePasswordAuthentic
                 LOGGER.debug("No user found for: {}", username);
                 throw new AccountNotFoundException("Bad credentials for: " + username);
             }
-        }
-        catch (final InvalidAuthenticationException e) {
+        } catch (final InvalidAuthenticationException e) {
             LOGGER.error("Bad credentials for username: {}", username);
             throw new CredentialNotFoundException("Bad credentials for username: " + username);
-        }
-        catch (final TooManyRequestsException e) {
+        } catch (final TooManyRequestsException e) {
             LOGGER.error("Too many login attempts for username: {}", username);
             throw new AccountLockedException("Too many login attempts for username: " + username);
-        }
-        catch (final InvalidFormatException e) {
+        } catch (final InvalidFormatException e) {
             LOGGER.error("Bad status for username: {}", username);
             throw new AccountDisabledException("Bad status: " + username);
-        }
-        catch (final VitamUIException e) {
+        } catch (final VitamUIException e) {
             LOGGER.error("Unexpected exception for username: {} -> {}", username, e);
             throw new PreventedException(e);
         }

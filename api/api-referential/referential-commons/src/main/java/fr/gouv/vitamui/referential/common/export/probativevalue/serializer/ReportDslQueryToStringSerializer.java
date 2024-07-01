@@ -36,13 +36,12 @@
  */
 package fr.gouv.vitamui.referential.common.export.probativevalue.serializer;
 
-import java.io.IOException;
-
-import org.apache.commons.lang3.RegExUtils;
-
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import org.apache.commons.lang3.RegExUtils;
+
+import java.io.IOException;
 
 /**
  * Serializer used to add some whitespaces in DSLQuery as string to help
@@ -51,11 +50,10 @@ import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
  */
 public class ReportDslQueryToStringSerializer extends ToStringSerializer {
 
-	public void serialize(Object value, JsonGenerator gen, SerializerProvider provider) throws IOException {
-		String modifiedValue = value.toString();
-		modifiedValue = RegExUtils.replaceAll(modifiedValue, ",", ", ");
-		modifiedValue = RegExUtils.replaceAll(modifiedValue, ":", ": ");
-		gen.writeString(modifiedValue);
-	}
-
+    public void serialize(Object value, JsonGenerator gen, SerializerProvider provider) throws IOException {
+        String modifiedValue = value.toString();
+        modifiedValue = RegExUtils.replaceAll(modifiedValue, ",", ", ");
+        modifiedValue = RegExUtils.replaceAll(modifiedValue, ":", ": ");
+        gen.writeString(modifiedValue);
+    }
 }

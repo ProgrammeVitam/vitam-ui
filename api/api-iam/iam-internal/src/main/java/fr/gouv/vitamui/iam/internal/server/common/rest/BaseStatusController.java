@@ -36,15 +36,14 @@
  */
 package fr.gouv.vitamui.iam.internal.server.common.rest;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import fr.gouv.vitamui.commons.mongo.repository.VitamUIRepository;
+import fr.gouv.vitamui.iam.common.rest.RestApi;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import fr.gouv.vitamui.commons.mongo.repository.VitamUIRepository;
-import fr.gouv.vitamui.iam.common.rest.RestApi;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A controller with two status endpoints: /status (up and running?) and /autotest (is MongoDB alive?)
@@ -75,8 +74,7 @@ public abstract class BaseStatusController {
             try {
                 entry.getValue().count();
                 sb.append("OK");
-            }
-            catch (final RuntimeException e) {
+            } catch (final RuntimeException e) {
                 sb.append("KO");
             }
             first = false;

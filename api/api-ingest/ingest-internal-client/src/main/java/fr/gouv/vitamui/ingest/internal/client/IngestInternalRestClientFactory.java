@@ -47,14 +47,18 @@ import org.springframework.boot.web.client.RestTemplateBuilder;
 
 public class IngestInternalRestClientFactory extends BaseRestClientFactory {
 
-    public IngestInternalRestClientFactory(final RestClientConfiguration restClientConfiguration,
-        final RestTemplateBuilder restTemplateBuilder) {
+    public IngestInternalRestClientFactory(
+        final RestClientConfiguration restClientConfiguration,
+        final RestTemplateBuilder restTemplateBuilder
+    ) {
         super(restClientConfiguration, restTemplateBuilder);
     }
 
-    public IngestInternalRestClientFactory(final RestClientConfiguration restClientConfiguration,
+    public IngestInternalRestClientFactory(
+        final RestClientConfiguration restClientConfiguration,
         final HttpPoolConfiguration httpHostConfiguration,
-        final RestTemplateBuilder restTemplateBuilder) {
+        final RestTemplateBuilder restTemplateBuilder
+    ) {
         super(restClientConfiguration, httpHostConfiguration, restTemplateBuilder);
     }
 

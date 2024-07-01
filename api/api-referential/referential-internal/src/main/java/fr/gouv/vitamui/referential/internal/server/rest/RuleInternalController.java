@@ -99,7 +99,7 @@ public class RuleInternalController {
     @Autowired
     private InternalSecurityService securityService;
 
-    @GetMapping()
+    @GetMapping
     public Collection<RuleDto> getAll(@RequestParam final Optional<String> criteria) {
         LOGGER.debug("get all rules criteria={}", criteria);
         SanityChecker.sanitizeCriteria(criteria);
@@ -109,10 +109,21 @@ public class RuleInternalController {
     }
 
     @GetMapping(params = { "page", "size" })
-    public PaginatedValuesDto<RuleDto> getAllPaginated(@RequestParam final Integer page, @RequestParam final Integer size,
-            @RequestParam(required = false) final Optional<String> criteria, @RequestParam(required = false) final Optional<String> orderBy,
-            @RequestParam(required = false) final Optional<DirectionDto> direction) {
-        LOGGER.debug("getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, criteria, orderBy, direction);
+    public PaginatedValuesDto<RuleDto> getAllPaginated(
+        @RequestParam final Integer page,
+        @RequestParam final Integer size,
+        @RequestParam(required = false) final Optional<String> criteria,
+        @RequestParam(required = false) final Optional<String> orderBy,
+        @RequestParam(required = false) final Optional<DirectionDto> direction
+    ) {
+        LOGGER.debug(
+            "getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}",
+            page,
+            size,
+            criteria,
+            orderBy,
+            direction
+        );
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
         return ruleInternalService.getAllPaginated(page, size, orderBy, direction, vitamContext, criteria);
     }
@@ -122,14 +133,23 @@ public class RuleInternalController {
         throws UnsupportedEncodingException, InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", identifier);
         SanityChecker.checkSecureParameter(identifier);
-        LOGGER.debug("get rule identifier={} / {}", identifier, URLDecoder.decode(identifier, StandardCharsets.UTF_8.toString()));
+        LOGGER.debug(
+            "get rule identifier={} / {}",
+            identifier,
+            URLDecoder.decode(identifier, StandardCharsets.UTF_8.toString())
+        );
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
-        return ruleInternalService.getOne(vitamContext, URLDecoder.decode(identifier, StandardCharsets.UTF_8.toString()));
+        return ruleInternalService.getOne(
+            vitamContext,
+            URLDecoder.decode(identifier, StandardCharsets.UTF_8.toString())
+        );
     }
 
     @PostMapping(CommonConstants.PATH_CHECK)
-    public ResponseEntity<Void> checkExist(@RequestBody RuleDto ruleDto, @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant)
-        throws InvalidParseOperationException, PreconditionFailedException {
+    public ResponseEntity<Void> checkExist(
+        @RequestBody RuleDto ruleDto,
+        @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant
+    ) throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter("The ruleDto is a mandatory parameter: ", ruleDto);
         SanityChecker.sanitizeCriteria(ruleDto);
         LOGGER.debug("check exist rule={}", ruleDto);
@@ -139,24 +159,31 @@ public class RuleInternalController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> create(@Valid @RequestBody RuleDto ruleDto, @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant)
-        throws InvalidParseOperationException, PreconditionFailedException {
+    public ResponseEntity<Void> create(
+        @Valid @RequestBody RuleDto ruleDto,
+        @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant
+    ) throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter("The ruleDto is a mandatory parameter: ", ruleDto);
         SanityChecker.sanitizeCriteria(ruleDto);
         LOGGER.debug("create rule={}", ruleDto);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
-        return RestUtils.buildBooleanResponse(ruleInternalService.create(vitamContext,ruleDto));
+        return RestUtils.buildBooleanResponse(ruleInternalService.create(vitamContext, ruleDto));
     }
 
     @PatchMapping(CommonConstants.PATH_ID)
-    public ResponseEntity<Void> patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto)
-        throws InvalidParseOperationException, PreconditionFailedException {
+    public ResponseEntity<Void> patch(
+        final @PathVariable("id") String id,
+        @RequestBody final Map<String, Object> partialDto
+    ) throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         SanityChecker.checkSecureParameter(id);
         SanityChecker.sanitizeCriteria(partialDto);
         LOGGER.debug("Patch {} with {}", id, partialDto);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
-        Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "The DTO identifier must match the path identifier for update.");
+        Assert.isTrue(
+            StringUtils.equals(id, (String) partialDto.get("id")),
+            "The DTO identifier must match the path identifier for update."
+        );
         return RestUtils.buildBooleanResponse(ruleInternalService.patch(vitamContext, partialDto));
     }
 
@@ -171,7 +198,8 @@ public class RuleInternalController {
     }
 
     @DeleteMapping(CommonConstants.PATH_ID)
-    public ResponseEntity<Void> delete(final @PathVariable("id") String id) throws InvalidParseOperationException, PreconditionFailedException {
+    public ResponseEntity<Void> delete(final @PathVariable("id") String id)
+        throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Delete {}", id);
@@ -187,14 +215,17 @@ public class RuleInternalController {
         Response response = ruleInternalService.export(vitamContext);
         Object entity = response.getEntity();
         if (entity instanceof InputStream) {
-            Resource resource = new InputStreamResource((InputStream)entity);
+            Resource resource = new InputStreamResource((InputStream) entity);
             return new ResponseEntity<>(resource, HttpStatus.OK);
         }
         return null;
     }
 
     @PostMapping(CommonConstants.PATH_IMPORT)
-    public JsonNode importAgencies(@RequestParam("fileName") String fileName, @RequestParam("file") MultipartFile file) {
+    public JsonNode importAgencies(
+        @RequestParam("fileName") String fileName,
+        @RequestParam("file") MultipartFile file
+    ) {
         SanityChecker.isValidFileName(fileName);
         SafeFileChecker.checkSafeFilePath(fileName);
         LOGGER.debug("import rule file {}", fileName);

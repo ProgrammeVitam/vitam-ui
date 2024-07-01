@@ -53,11 +53,12 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-@WebMvcTest(controllers = {TransactionExternalController.class})
+@WebMvcTest(controllers = { TransactionExternalController.class })
 class TransactionExternalControllerTest extends ApiCollectExternalControllerTest<IdDto> {
 
-    private static final VitamUILogger LOGGER =
-        VitamUILoggerFactory.getInstance(TransactionExternalControllerTest.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
+        TransactionExternalControllerTest.class
+    );
 
     @MockBean
     private TransactionExternalService transactionExternalService;
@@ -66,13 +67,12 @@ class TransactionExternalControllerTest extends ApiCollectExternalControllerTest
 
     @BeforeEach
     public void setUp() {
-        transactionExternalController = new TransactionExternalController(
-            transactionExternalService);
+        transactionExternalController = new TransactionExternalController(transactionExternalService);
     }
 
     @Override
     protected String[] getServices() {
-        return new String[] {ServicesData.TRANSACTIONS};
+        return new String[] { ServicesData.TRANSACTIONS };
     }
 
     @Override
@@ -91,18 +91,15 @@ class TransactionExternalControllerTest extends ApiCollectExternalControllerTest
     }
 
     @Override
-    protected void preparedServices() {
-
-    }
+    protected void preparedServices() {}
 
     @Override
     protected String getRessourcePrefix() {
         return COLLECT_TRANSACTION_PATH;
     }
 
-     @Test
+    @Test
     void when_abortTransaction_ok() throws InvalidParseOperationException {
-
         Mockito.doNothing().when(transactionExternalService).abortTransaction("transactionId");
         this.transactionExternalController.abortTransaction("transactionId");
         verify(transactionExternalService, times(1)).abortTransaction("transactionId");
@@ -110,7 +107,6 @@ class TransactionExternalControllerTest extends ApiCollectExternalControllerTest
 
     @Test
     void when_searchCollectUnitsByCriteria_Service_ko_should_return_ko() throws InvalidParseOperationException {
-
         Mockito.doNothing().when(transactionExternalService).reopenTransaction("transactionId");
         this.transactionExternalController.reopenTransaction("transactionId");
         verify(transactionExternalService, times(1)).reopenTransaction("transactionId");
@@ -127,13 +123,16 @@ class TransactionExternalControllerTest extends ApiCollectExternalControllerTest
         InputStream csvFile = new ByteArrayInputStream(initialString.getBytes());
 
         // When
-        Mockito
-            .when(transactionExternalService.updateArchiveUnitsFromFile(transactionId, csvFile, fileName))
-            .thenReturn(expectedResponse);
-        String response = transactionExternalController.updateArchiveUnitsMetadataFromFile(transactionId, csvFile, fileName);
+        Mockito.when(
+            transactionExternalService.updateArchiveUnitsFromFile(transactionId, csvFile, fileName)
+        ).thenReturn(expectedResponse);
+        String response = transactionExternalController.updateArchiveUnitsMetadataFromFile(
+            transactionId,
+            csvFile,
+            fileName
+        );
 
         // Then
         Assertions.assertEquals(response, expectedResponse);
     }
-
-    }
+}

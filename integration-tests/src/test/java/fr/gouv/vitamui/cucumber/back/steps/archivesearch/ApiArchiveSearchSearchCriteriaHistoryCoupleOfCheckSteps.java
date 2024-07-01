@@ -46,21 +46,24 @@ import java.util.List;
 import static fr.gouv.vitamui.utils.TestConstants.SEARCH_CRITERIA_NAME;
 import static org.assertj.core.api.Assertions.assertThat;
 
-
 public class ApiArchiveSearchSearchCriteriaHistoryCoupleOfCheckSteps extends CommonSteps {
+
     private List<SearchCriteriaHistoryDto> searchCriteriaHistoryDtos;
     private SearchCriteriaHistoryDto searchCriteriaHistoryDto;
 
     @When("^l'utilisateur avec le rôle ROLE_GET_ALL_ARCHIVE_SEARCH récupère tous les critères enregistrés$")
     public void un_utilisateur_avec_le_rôle_ROLE_GET_ACCESS_CONTRACT_récupère_tous_les_criteres_enregistres_en_utilisant_un_certificat_full_access_avec_le_rôle_ROLE_GET_ALL_ARCHIVE_SEARCH() {
-        searchCriteriaHistoryDtos =
-            getSearchCriteriaHistoryExternalRestClient().getSearchCriteriaHistory(getSystemTenantUserAdminContext());
+        searchCriteriaHistoryDtos = getSearchCriteriaHistoryExternalRestClient()
+            .getSearchCriteriaHistory(getSystemTenantUserAdminContext());
     }
 
     @Then("le nom de la recherche est {string}")
     public void le_serveur_retourne_la_liste_des_criteres_enregistres(String name) {
-        searchCriteriaHistoryDto =
-            searchCriteriaHistoryDtos.stream().filter(c -> c.getName().equals(SEARCH_CRITERIA_NAME)).findFirst().get();
+        searchCriteriaHistoryDto = searchCriteriaHistoryDtos
+            .stream()
+            .filter(c -> c.getName().equals(SEARCH_CRITERIA_NAME))
+            .findFirst()
+            .get();
         assertThat(searchCriteriaHistoryDtos.get(0).getName()).isEqualTo(SEARCH_CRITERIA_NAME);
     }
 
@@ -68,6 +71,7 @@ public class ApiArchiveSearchSearchCriteriaHistoryCoupleOfCheckSteps extends Com
     public void nombre_de_criteres(Integer size) {
         assertThat(searchCriteriaHistoryDto.getSearchCriteriaList().size()).isEqualTo(2);
     }
+
     @Then("l'utilisateur associé a l'identifiant {string}")
     public void utilisateur_associe(String identifiant) {
         assertThat(searchCriteriaHistoryDto.getUserId()).isEqualTo("1");

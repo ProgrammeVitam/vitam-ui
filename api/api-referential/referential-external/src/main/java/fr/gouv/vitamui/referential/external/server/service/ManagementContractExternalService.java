@@ -39,12 +39,12 @@ package fr.gouv.vitamui.referential.external.server.service;
 import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
+import fr.gouv.vitamui.commons.api.domain.ManagementContractDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.rest.client.BasePaginatingAndSortingRestClient;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import fr.gouv.vitamui.iam.security.client.AbstractResourceClientService;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
-import fr.gouv.vitamui.commons.api.domain.ManagementContractDto;
 import fr.gouv.vitamui.referential.internal.client.ManagementContractInternalRestClient;
 import lombok.Getter;
 import lombok.Setter;
@@ -57,20 +57,22 @@ import java.util.stream.Collectors;
 @Getter
 @Setter
 @Service
-public class ManagementContractExternalService extends AbstractResourceClientService<ManagementContractDto, ManagementContractDto> {
+public class ManagementContractExternalService
+    extends AbstractResourceClientService<ManagementContractDto, ManagementContractDto> {
 
     @Autowired
     private ManagementContractInternalRestClient managementContractInternalRestClient;
 
-    public ManagementContractExternalService(@Autowired  ExternalSecurityService externalSecurityService) {
+    public ManagementContractExternalService(@Autowired ExternalSecurityService externalSecurityService) {
         super(externalSecurityService);
     }
 
     public List<ManagementContractDto> getAll(final Optional<String> criteria) {
-        return managementContractInternalRestClient.getAll(getInternalHttpContext(),criteria);
+        return managementContractInternalRestClient.getAll(getInternalHttpContext(), criteria);
     }
 
-    @Override protected BasePaginatingAndSortingRestClient<ManagementContractDto, InternalHttpContext> getClient() {
+    @Override
+    protected BasePaginatingAndSortingRestClient<ManagementContractDto, InternalHttpContext> getClient() {
         return managementContractInternalRestClient;
     }
 
@@ -96,15 +98,22 @@ public class ManagementContractExternalService extends AbstractResourceClientSer
         return super.checkExists(criteria);
     }
 
-    public PaginatedValuesDto<ManagementContractDto> getAllPaginated(final Integer page, final Integer size, final Optional<String> criteria,
-                                                                 final Optional<String> orderBy, final Optional<DirectionDto> direction) {
+    public PaginatedValuesDto<ManagementContractDto> getAllPaginated(
+        final Integer page,
+        final Integer size,
+        final Optional<String> criteria,
+        final Optional<String> orderBy,
+        final Optional<DirectionDto> direction
+    ) {
         ParameterChecker.checkPagination(size, page);
-        final PaginatedValuesDto<ManagementContractDto> result = getClient().getAllPaginated(getInternalHttpContext(), page, size, criteria, orderBy, direction);
+        final PaginatedValuesDto<ManagementContractDto> result = getClient()
+            .getAllPaginated(getInternalHttpContext(), page, size, criteria, orderBy, direction);
         return new PaginatedValuesDto<>(
             result.getValues().stream().map(element -> converterToExternalDto(element)).collect(Collectors.toList()),
             result.getPageNum(),
             result.getPageSize(),
-            result.isHasMore());
+            result.isHasMore()
+        );
     }
 
     @Override

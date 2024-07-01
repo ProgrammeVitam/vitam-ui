@@ -49,5 +49,4 @@ public class VitamUIProcessDetailResponseDto extends AbstractVitamUIResponseDto<
 
     @JsonProperty("$facetResults")
     private List<FacetResultsDto> facetResults = new ArrayList<>();
-
 }

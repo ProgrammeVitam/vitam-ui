@@ -18,5 +18,4 @@ public class PortalSteps {
     public void la_page_qui_liste_les_applications_est_affichée() {
         portalSteps.checkAppListPageDisplayed();
     }
-
 }

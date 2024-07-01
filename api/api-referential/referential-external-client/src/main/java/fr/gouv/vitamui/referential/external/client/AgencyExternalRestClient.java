@@ -36,8 +36,12 @@
  */
 package fr.gouv.vitamui.referential.external.client;
 
-import java.util.List;
-
+import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
+import fr.gouv.vitamui.commons.rest.client.BasePaginatingAndSortingRestClient;
+import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
+import fr.gouv.vitamui.referential.common.dto.AgencyDto;
+import fr.gouv.vitamui.referential.common.rest.RestApi;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpEntity;
@@ -47,12 +51,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import fr.gouv.vitamui.commons.api.CommonConstants;
-import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
-import fr.gouv.vitamui.commons.rest.client.BasePaginatingAndSortingRestClient;
-import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
-import fr.gouv.vitamui.referential.common.dto.AgencyDto;
-import fr.gouv.vitamui.referential.common.rest.RestApi;
+import java.util.List;
 
 public class AgencyExternalRestClient extends BasePaginatingAndSortingRestClient<AgencyDto, ExternalHttpContext> {
 
@@ -60,8 +59,9 @@ public class AgencyExternalRestClient extends BasePaginatingAndSortingRestClient
         super(restTemplate, baseUrl);
     }
 
-    @Override protected ParameterizedTypeReference<PaginatedValuesDto<AgencyDto>> getDtoPaginatedClass() {
-        return new ParameterizedTypeReference<PaginatedValuesDto<AgencyDto>>() { };
+    @Override
+    protected ParameterizedTypeReference<PaginatedValuesDto<AgencyDto>> getDtoPaginatedClass() {
+        return new ParameterizedTypeReference<PaginatedValuesDto<AgencyDto>>() {};
     }
 
     @Override
@@ -69,20 +69,24 @@ public class AgencyExternalRestClient extends BasePaginatingAndSortingRestClient
         return RestApi.AGENCIES_URL;
     }
 
-    @Override protected Class<AgencyDto> getDtoClass() {
+    @Override
+    protected Class<AgencyDto> getDtoClass() {
         return AgencyDto.class;
     }
 
     protected ParameterizedTypeReference<List<AgencyDto>> getDtoListClass() {
-        return new ParameterizedTypeReference<List<AgencyDto>>() {
-        };
+        return new ParameterizedTypeReference<List<AgencyDto>>() {};
     }
 
     public boolean check(ExternalHttpContext context, AgencyDto accessContractDto) {
         final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl() + CommonConstants.PATH_CHECK);
         final HttpEntity<AgencyDto> request = new HttpEntity<>(accessContractDto, buildHeaders(context));
-        final ResponseEntity<Boolean> response = restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.POST,
-                request, Boolean.class);
+        final ResponseEntity<Boolean> response = restTemplate.exchange(
+            uriBuilder.toUriString(),
+            HttpMethod.POST,
+            request,
+            Boolean.class
+        );
         return response.getStatusCode() == HttpStatus.OK;
     }
 

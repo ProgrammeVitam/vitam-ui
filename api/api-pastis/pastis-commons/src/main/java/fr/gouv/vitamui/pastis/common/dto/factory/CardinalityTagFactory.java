@@ -56,6 +56,4 @@ public class CardinalityTagFactory implements AbstractTagFactory<CardinalityTag>
         }
         return cardinality;
     }
-
-
 }

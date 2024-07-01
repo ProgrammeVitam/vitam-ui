@@ -32,9 +32,11 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 
 @RunWith(SpringRunner.class)
-@Import({TestMongoConfig.class})
-@EnableMongoRepositories(basePackageClasses = {ProfileRepository.class,
-    ExternalParametersRepository.class}, repositoryBaseClass = VitamUIRepositoryImpl.class)
+@Import({ TestMongoConfig.class })
+@EnableMongoRepositories(
+    basePackageClasses = { ProfileRepository.class, ExternalParametersRepository.class },
+    repositoryBaseClass = VitamUIRepositoryImpl.class
+)
 public class ExternalParamProfileCustomRepositoryTest {
 
     @Autowired
@@ -48,7 +50,6 @@ public class ExternalParamProfileCustomRepositoryTest {
     @Autowired
     private ExternalParametersRepository externalParametersRepository;
 
-
     @After
     public void cleanUp() {
         profileRepository.deleteAll();
@@ -59,9 +60,14 @@ public class ExternalParamProfileCustomRepositoryTest {
     public void init() {
         ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
         externalParamProfileRepository = new ExternalParamProfileRepository(mongoOperations);
-        Profile profile =
-            IamServerUtilsTest.buildProfile("id", "identifier", "name", "customerId", 10,
-                CommonConstants.USERS_APPLICATIONS_NAME);
+        Profile profile = IamServerUtilsTest.buildProfile(
+            "id",
+            "identifier",
+            "name",
+            "customerId",
+            10,
+            CommonConstants.USERS_APPLICATIONS_NAME
+        );
         profile.setExternalParamId("externalparamidentifier");
         profileRepository.save(profile);
         final ExternalParameters parameters = new ExternalParameters();
@@ -81,9 +87,13 @@ public class ExternalParamProfileCustomRepositoryTest {
 
     @Test
     public void testGetAllPaginated() {
-        PaginatedValuesDto<ExternalParamProfileDto> allPaginated =
-            externalParamProfileRepository.getAllPaginated(0, 20, "{}", null, null);
+        PaginatedValuesDto<ExternalParamProfileDto> allPaginated = externalParamProfileRepository.getAllPaginated(
+            0,
+            20,
+            "{}",
+            null,
+            null
+        );
         assertThat(allPaginated.getValues().size()).isEqualTo(1);
     }
-
 }

@@ -44,7 +44,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @ActiveProfiles("test")
@@ -66,13 +65,11 @@ public class ApiArchiveSearchInternalServerConfigTest {
     @MockBean(name = "agencyService")
     private AgencyService agencyService;
 
-
     @Autowired
     private ArchiveSearchInternalService archiveSearchInternalService;
 
     @Autowired
     private ArchiveSearchAgenciesInternalService archiveSearchAgenciesInternalService;
-
 
     @Test
     void testArchiveInternalConf() {

@@ -54,8 +54,11 @@ public class SearchCriteriaHistoryConverterTest {
     void testConvertEntityToDto() {
         SearchCriteriaHistory searchCriteriaHistory = Utils.buildSearchCriteriaHistory();
         SearchCriteriaHistoryDto result = searchCriteriaHistoryConverter.convertEntityToDto(searchCriteriaHistory);
-        assertThat(result)
-            .isEqualToComparingOnlyGivenFields(searchCriteriaHistory, "name", "savingDate", "searchCriteriaList");
-
+        assertThat(result).isEqualToComparingOnlyGivenFields(
+            searchCriteriaHistory,
+            "name",
+            "savingDate",
+            "searchCriteriaList"
+        );
     }
 }

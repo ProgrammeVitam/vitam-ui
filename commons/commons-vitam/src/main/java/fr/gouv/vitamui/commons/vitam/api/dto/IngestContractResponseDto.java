@@ -38,6 +38,4 @@ package fr.gouv.vitamui.commons.vitam.api.dto;
 
 import fr.gouv.vitamui.commons.api.domain.IngestContractDto;
 
-public class IngestContractResponseDto extends AbstractVitamUIResponseDto<IngestContractDto> {
-
-}
+public class IngestContractResponseDto extends AbstractVitamUIResponseDto<IngestContractDto> {}

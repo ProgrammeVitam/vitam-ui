@@ -29,28 +29,55 @@ public class CertificateParserTest {
 
     @Test
     public void testIssuerDnNoParsingExpansion() throws CertificateParsingException {
-        assertEquals(ISSUER_DN, CertificateParser.extract(cert, new X509AttributeMapping(X509CertificateAttributes.ISSUER_DN.toString(), null, null)));
+        assertEquals(
+            ISSUER_DN,
+            CertificateParser.extract(
+                cert,
+                new X509AttributeMapping(X509CertificateAttributes.ISSUER_DN.toString(), null, null)
+            )
+        );
     }
 
     @Test
     public void testIssuerDnParsingNoExpansion() throws CertificateParsingException {
-        assertEquals("Vitam", CertificateParser.extract(cert, new X509AttributeMapping(X509CertificateAttributes.ISSUER_DN.toString(), ".*O=(.*), ST=.*", null)));
+        assertEquals(
+            "Vitam",
+            CertificateParser.extract(
+                cert,
+                new X509AttributeMapping(X509CertificateAttributes.ISSUER_DN.toString(), ".*O=(.*), ST=.*", null)
+            )
+        );
     }
 
     @Test
     public void testIssuerDnParsingExpansion() throws CertificateParsingException {
-        assertEquals("Vitam@email", CertificateParser.extract(cert, new X509AttributeMapping(X509CertificateAttributes.ISSUER_DN.toString(), ".*O=(.*), ST=.*", "{0}@email")));
+        assertEquals(
+            "Vitam@email",
+            CertificateParser.extract(
+                cert,
+                new X509AttributeMapping(X509CertificateAttributes.ISSUER_DN.toString(), ".*O=(.*), ST=.*", "{0}@email")
+            )
+        );
     }
 
     @Test
     public void testSubjectDnNoParsingExpansion() throws CertificateParsingException {
-        assertEquals(SUBJECT_DN, CertificateParser.extract(cert, new X509AttributeMapping(X509CertificateAttributes.SUBJECT_DN.toString(), null, null)));
+        assertEquals(
+            SUBJECT_DN,
+            CertificateParser.extract(
+                cert,
+                new X509AttributeMapping(X509CertificateAttributes.SUBJECT_DN.toString(), null, null)
+            )
+        );
     }
 
     @Test
     public void testSubjectAlternateNameNoParsingExpansion() {
         try {
-            CertificateParser.extract(cert, new X509AttributeMapping(X509CertificateAttributes.SUBJECT_ALTERNATE_NAME.toString(), null, null));
+            CertificateParser.extract(
+                cert,
+                new X509AttributeMapping(X509CertificateAttributes.SUBJECT_ALTERNATE_NAME.toString(), null, null)
+            );
             fail();
         } catch (final CertificateParsingException e) {
             assertEquals("Cannot find X509 value for: SUBJECT_ALTERNATE_NAME", e.getMessage());

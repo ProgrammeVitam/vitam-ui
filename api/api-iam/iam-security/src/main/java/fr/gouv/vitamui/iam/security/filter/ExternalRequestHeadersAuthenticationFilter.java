@@ -36,14 +36,12 @@
  */
 package fr.gouv.vitamui.iam.security.filter;
 
-import java.security.cert.X509Certificate;
-
-import javax.servlet.http.HttpServletRequest;
-
+import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.web.authentication.preauth.x509.X509AuthenticationFilter;
 
-import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
+import javax.servlet.http.HttpServletRequest;
+import java.security.cert.X509Certificate;
 
 /**
  * The authentication filter based on the request headers.
@@ -82,16 +80,16 @@ public class ExternalRequestHeadersAuthenticationFilter extends X509Authenticati
 
     private X509Certificate extractRequestClientCertificate(final HttpServletRequest request) {
         X509Certificate cert = null;
-        final X509Certificate[] certs = (X509Certificate[]) request.getAttribute("javax.servlet.request.X509Certificate");
+        final X509Certificate[] certs = (X509Certificate[]) request.getAttribute(
+            "javax.servlet.request.X509Certificate"
+        );
 
         if (certs != null && certs.length > 0) {
             cert = certs[0];
             if (logger.isDebugEnabled()) {
                 logger.debug("X.509 client authentication certificate:" + cert.getSubjectX500Principal());
             }
-
-        }
-        else if (logger.isDebugEnabled()) {
+        } else if (logger.isDebugEnabled()) {
             logger.debug("No client certificate found in request.");
         }
 

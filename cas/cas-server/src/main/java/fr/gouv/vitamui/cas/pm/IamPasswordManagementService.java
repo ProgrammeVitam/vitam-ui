@@ -98,7 +98,8 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
 
     private static Integer maxOldPassword;
 
-    public IamPasswordManagementService(final PasswordManagementProperties passwordManagementProperties,
+    public IamPasswordManagementService(
+        final PasswordManagementProperties passwordManagementProperties,
         final CipherExecutor<Serializable, String> cipherExecutor,
         final String issuer,
         final PasswordHistoryService passwordHistoryService,
@@ -109,7 +110,8 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
         final Utils utils,
         final TicketRegistry ticketRegistry,
         final PasswordValidator passwordValidator,
-        final PasswordConfiguration passwordConfiguration) {
+        final PasswordConfiguration passwordConfiguration
+    ) {
         super(passwordManagementProperties, cipherExecutor, issuer, passwordHistoryService);
         this.casExternalRestClient = casExternalRestClient;
         this.providersService = providersService;
@@ -127,10 +129,16 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
         val authentication = WebUtils.getAuthentication(requestContext);
         if (authentication != null) {
             // login/pwd subrogation
-            String superUsername = (String) utils.getAttributeValue(authentication.getAttributes(), SurrogateAuthenticationService.AUTHENTICATION_ATTR_SURROGATE_PRINCIPAL);
+            String superUsername = (String) utils.getAttributeValue(
+                authentication.getAttributes(),
+                SurrogateAuthenticationService.AUTHENTICATION_ATTR_SURROGATE_PRINCIPAL
+            );
             if (superUsername == null) {
                 // authn delegation subrogation
-                superUsername = (String) utils.getAttributeValue(authentication.getPrincipal().getAttributes(), SUPER_USER_ATTRIBUTE);
+                superUsername = (String) utils.getAttributeValue(
+                    authentication.getPrincipal().getAttributes(),
+                    SUPER_USER_ATTRIBUTE
+                );
             }
             LOGGER.debug("is it currently a superUser: {}", superUsername);
             Assert.isNull(superUsername, "cannot use password management with subrogation");
@@ -140,7 +148,8 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
     }
 
     @Override
-    public boolean changeInternal(final Credential c, final PasswordChangeRequest bean) throws InvalidPasswordException {
+    public boolean changeInternal(final Credential c, final PasswordChangeRequest bean)
+        throws InvalidPasswordException {
         val requestContext = blockIfSubrogation();
         val flowScope = requestContext.getFlowScope();
         if (flowScope != null) {
@@ -160,13 +169,28 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
 
         LOGGER.debug("passwordConfiguration: {}", passwordConfiguration);
 
-        if((passwordConfiguration.getProfile().equalsIgnoreCase("anssi") && passwordConfiguration.isCheckOccurrence() && passwordConfiguration.getOccurrencesCharsNumber() != null && passwordConfiguration.getOccurrencesCharsNumber() > 0) ||
-            (!passwordConfiguration.getProfile().equalsIgnoreCase("anssi") && passwordConfiguration.isCheckOccurrence() && passwordConfiguration.getOccurrencesCharsNumber() != null && passwordConfiguration.getOccurrencesCharsNumber() > 0)) {
+        if (
+            (passwordConfiguration.getProfile().equalsIgnoreCase("anssi") &&
+                passwordConfiguration.isCheckOccurrence() &&
+                passwordConfiguration.getOccurrencesCharsNumber() != null &&
+                passwordConfiguration.getOccurrencesCharsNumber() > 0) ||
+            (!passwordConfiguration.getProfile().equalsIgnoreCase("anssi") &&
+                passwordConfiguration.isCheckOccurrence() &&
+                passwordConfiguration.getOccurrencesCharsNumber() != null &&
+                passwordConfiguration.getOccurrencesCharsNumber() > 0)
+        ) {
             String userLastName = findUserLastName(username);
             Assert.notNull(userLastName, "user last name can not be null");
-            if (passwordValidator.isContainsUserOccurrences(userLastName, bean.getPassword(), passwordConfiguration.getOccurrencesCharsNumber())) {
+            if (
+                passwordValidator.isContainsUserOccurrences(
+                    userLastName,
+                    bean.getPassword(),
+                    passwordConfiguration.getOccurrencesCharsNumber()
+                )
+            ) {
                 throw new PasswordContainsUserDictionaryException(
-                    "Invalid password containing an occurence of user name !");
+                    "Invalid password containing an occurence of user name !"
+                );
             }
         }
 
@@ -174,19 +198,29 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
         // username to lowercase
         val usernameLowercase = username.toLowerCase().trim();
         LOGGER.debug("username: {}", usernameLowercase);
-        val identityProvider =
-            identityProviderHelper.findByUserIdentifier(providersService.getProviders(), usernameLowercase);
-        Assert.isTrue(identityProvider.isPresent(),
-            "only a user [" + usernameLowercase + "] linked to an identity provider can change his password");
-        Assert.isTrue(identityProvider.get().getInternal() != null && identityProvider.get().getInternal(),
-                "only an internal user [" + usernameLowercase + "] can change his password");
+        val identityProvider = identityProviderHelper.findByUserIdentifier(
+            providersService.getProviders(),
+            usernameLowercase
+        );
+        Assert.isTrue(
+            identityProvider.isPresent(),
+            "only a user [" + usernameLowercase + "] linked to an identity provider can change his password"
+        );
+        Assert.isTrue(
+            identityProvider.get().getInternal() != null && identityProvider.get().getInternal(),
+            "only an internal user [" + usernameLowercase + "] can change his password"
+        );
 
         try {
-            casExternalRestClient.changePassword(utils.buildContext(usernameLowercase), usernameLowercase, bean.getPassword());
+            casExternalRestClient.changePassword(
+                utils.buildContext(usernameLowercase),
+                usernameLowercase,
+                bean.getPassword()
+            );
             return true;
         } catch (final ConflictException e) {
             throw new PasswordAlreadyUsedException();
-        }  catch (final VitamUIException e) {
+        } catch (final VitamUIException e) {
             LOGGER.error("Cannot change password", e);
             return false;
         }
@@ -198,12 +232,15 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
         String email = null;
         val usernameWithLowercase = username.toLowerCase().trim();
         try {
-            val user = casExternalRestClient.getUserByEmail(utils.buildContext(usernameWithLowercase), usernameWithLowercase, Optional.empty());
+            val user = casExternalRestClient.getUserByEmail(
+                utils.buildContext(usernameWithLowercase),
+                usernameWithLowercase,
+                Optional.empty()
+            );
             if (user != null && UserStatusEnum.ENABLED.equals(user.getStatus())) {
                 email = user.getEmail();
             }
-        }
-        catch (final VitamUIException e) {
+        } catch (final VitamUIException e) {
             LOGGER.error("Cannot retrieve user: {}", usernameWithLowercase, e);
         }
         return email;
@@ -232,12 +269,15 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
         String userLastName = null;
         val usernameWithLowercase = userMail.toLowerCase().trim();
         try {
-            val user = casExternalRestClient.getUserByEmail(utils.buildContext(usernameWithLowercase), usernameWithLowercase, Optional.empty());
+            val user = casExternalRestClient.getUserByEmail(
+                utils.buildContext(usernameWithLowercase),
+                usernameWithLowercase,
+                Optional.empty()
+            );
             if (user != null && UserStatusEnum.ENABLED.equals(user.getStatus())) {
                 return user.getLastname();
             }
-        }
-        catch (final VitamUIException e) {
+        } catch (final VitamUIException e) {
             LOGGER.error("Cannot retrieve user: {}", usernameWithLowercase, e);
         }
         return userLastName;

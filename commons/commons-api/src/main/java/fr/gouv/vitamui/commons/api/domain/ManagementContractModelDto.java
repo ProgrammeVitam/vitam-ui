@@ -65,8 +65,6 @@ public class ManagementContractModelDto implements Serializable {
 
     private String activationDate;
 
-
-
     @JsonProperty("versionRetentionPolicy")
     public void setVersionRetentionPolicy(VersionRetentionPolicyDto versionRetentionPolicy) {
         this.versionRetentionPolicy = versionRetentionPolicy;
@@ -196,5 +194,4 @@ public class ManagementContractModelDto implements Serializable {
     public String getDeactivationDate() {
         return deactivationDate;
     }
-
 }

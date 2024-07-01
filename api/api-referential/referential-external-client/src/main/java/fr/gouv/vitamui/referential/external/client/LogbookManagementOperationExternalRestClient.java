@@ -27,7 +27,6 @@
 
 package fr.gouv.vitamui.referential.external.client;
 
-
 import fr.gouv.vitam.common.model.AuditOptions;
 import fr.gouv.vitam.common.model.ProcessQuery;
 import fr.gouv.vitamui.commons.api.CommonConstants;
@@ -45,7 +44,8 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
 
-public class LogbookManagementOperationExternalRestClient extends BasePaginatingAndSortingRestClient<ProcessDetailDto, ExternalHttpContext> {
+public class LogbookManagementOperationExternalRestClient
+    extends BasePaginatingAndSortingRestClient<ProcessDetailDto, ExternalHttpContext> {
 
     public LogbookManagementOperationExternalRestClient(final RestTemplate restTemplate, final String baseUrl) {
         super(restTemplate, baseUrl);
@@ -53,8 +53,9 @@ public class LogbookManagementOperationExternalRestClient extends BasePaginating
 
     @Override
     protected ParameterizedTypeReference<PaginatedValuesDto<ProcessDetailDto>> getDtoPaginatedClass() {
-        return new ParameterizedTypeReference<PaginatedValuesDto<ProcessDetailDto>>() { };
+        return new ParameterizedTypeReference<PaginatedValuesDto<ProcessDetailDto>>() {};
     }
+
     @Override
     public String getPathUrl() {
         return RestApi.LOGBOOK_MANAGEMENT_OPERATION_PATH;
@@ -66,29 +67,47 @@ public class LogbookManagementOperationExternalRestClient extends BasePaginating
     }
 
     protected ParameterizedTypeReference<List<ProcessDetailDto>> getDtoListClass() {
-        return new ParameterizedTypeReference<List<ProcessDetailDto>>() {
-        };
+        return new ParameterizedTypeReference<List<ProcessDetailDto>>() {};
     }
 
-    public ResponseEntity<ProcessDetailDto> searchOperationsDetails(ExternalHttpContext context, ProcessQuery processQuery) {
-        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl() + RestApi.OPERATIONS_PATH );
+    public ResponseEntity<ProcessDetailDto> searchOperationsDetails(
+        ExternalHttpContext context,
+        ProcessQuery processQuery
+    ) {
+        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl() + RestApi.OPERATIONS_PATH);
         final HttpEntity<AuditOptions> request = new HttpEntity(processQuery, buildHeaders(context));
         return restTemplate.exchange(uriBuilder.build().toUri(), HttpMethod.POST, request, ProcessDetailDto.class);
-
     }
 
     public ResponseEntity<ProcessDetailDto> cancelOperationProcessExecution(ExternalHttpContext context, String id) {
-        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl() + RestApi.CANCEL_OPERATION_PATH+ CommonConstants.PATH_ID);
+        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(
+            getUrl() + RestApi.CANCEL_OPERATION_PATH + CommonConstants.PATH_ID
+        );
         final HttpEntity<AuditOptions> request = new HttpEntity(buildHeaders(context));
-        ResponseEntity<ProcessDetailDto> response = restTemplate.exchange(uriBuilder.build(id), HttpMethod.POST, request, ProcessDetailDto.class);
+        ResponseEntity<ProcessDetailDto> response = restTemplate.exchange(
+            uriBuilder.build(id),
+            HttpMethod.POST,
+            request,
+            ProcessDetailDto.class
+        );
         return response;
     }
 
-    public ResponseEntity<ProcessDetailDto> updateOperationActionProcess(ExternalHttpContext context, String id, String actionId) {
-        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl() + RestApi.UPDATE_OPERATION_PATH+ CommonConstants.PATH_ID);
+    public ResponseEntity<ProcessDetailDto> updateOperationActionProcess(
+        ExternalHttpContext context,
+        String id,
+        String actionId
+    ) {
+        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(
+            getUrl() + RestApi.UPDATE_OPERATION_PATH + CommonConstants.PATH_ID
+        );
         final HttpEntity<AuditOptions> request = new HttpEntity(actionId, buildHeaders(context));
-        ResponseEntity<ProcessDetailDto> response = restTemplate.exchange(uriBuilder.build(id), HttpMethod.POST, request, ProcessDetailDto.class);
+        ResponseEntity<ProcessDetailDto> response = restTemplate.exchange(
+            uriBuilder.build(id),
+            HttpMethod.POST,
+            request,
+            ProcessDetailDto.class
+        );
         return response;
     }
-
 }

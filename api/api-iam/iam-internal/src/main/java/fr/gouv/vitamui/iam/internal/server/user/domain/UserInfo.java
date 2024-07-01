@@ -37,19 +37,17 @@
 package fr.gouv.vitamui.iam.internal.server.user.domain;
 
 import fr.gouv.vitamui.commons.api.domain.BaseIdentifierDocument;
-import org.hibernate.validator.constraints.Length;
-import org.springframework.data.annotation.TypeAlias;
-import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.data.mongodb.core.mapping.Document;
-
-import javax.validation.constraints.NotNull;
-
 import fr.gouv.vitamui.commons.mongo.IdDocument;
 import fr.gouv.vitamui.iam.internal.server.common.domain.MongoDbCollections;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.validator.constraints.Length;
+import org.springframework.data.annotation.TypeAlias;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+import javax.validation.constraints.NotNull;
 
 /**
  * A user info.
@@ -61,6 +59,7 @@ import lombok.ToString;
 @EqualsAndHashCode
 @ToString
 public class UserInfo extends IdDocument implements BaseIdentifierDocument {
+
     @NotNull
     private String language;
 

@@ -53,6 +53,7 @@ import java.util.Optional;
 
 @Service
 public class ManagementContractService extends AbstractPaginateService<ManagementContractDto> {
+
     static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ManagementContractService.class);
 
     private ManagementContractExternalRestClient client;
@@ -60,26 +61,41 @@ public class ManagementContractService extends AbstractPaginateService<Managemen
     private CommonService commonService;
 
     @Autowired
-    public ManagementContractService(final CommonService commonService, final ManagementContractExternalRestClient client) {
+    public ManagementContractService(
+        final CommonService commonService,
+        final ManagementContractExternalRestClient client
+    ) {
         this.commonService = commonService;
         this.client = client;
     }
 
-    public Collection<ManagementContractDto> getAll(final ExternalHttpContext context, final Optional<String> criteria) {
+    public Collection<ManagementContractDto> getAll(
+        final ExternalHttpContext context,
+        final Optional<String> criteria
+    ) {
         return client.getAll(context, criteria);
     }
 
     public boolean check(ExternalHttpContext context, ManagementContractDto managementContractDto) {
-        return client.check(context,managementContractDto);
+        return client.check(context, managementContractDto);
     }
 
     @Override
-    public PaginatedValuesDto<ManagementContractDto> getAllPaginated(final Integer page, final Integer size, final Optional<String> criteria,
-                                                                 final Optional<String> orderBy, final Optional<DirectionDto> direction, final ExternalHttpContext context) {
+    public PaginatedValuesDto<ManagementContractDto> getAllPaginated(
+        final Integer page,
+        final Integer size,
+        final Optional<String> criteria,
+        final Optional<String> orderBy,
+        final Optional<DirectionDto> direction,
+        final ExternalHttpContext context
+    ) {
         return super.getAllPaginated(page, size, criteria, orderBy, direction, context);
     }
 
-    public ManagementContractDto create(final ExternalHttpContext context, final ManagementContractDto managementContractDto) {
+    public ManagementContractDto create(
+        final ExternalHttpContext context,
+        final ManagementContractDto managementContractDto
+    ) {
         super.beforeCreate(managementContractDto);
         return client.create(context, managementContractDto);
     }
@@ -89,7 +105,8 @@ public class ManagementContractService extends AbstractPaginateService<Managemen
         return commonService.checkPagination(page, size);
     }
 
-    @Override public ManagementContractExternalRestClient getClient() {
+    @Override
+    public ManagementContractExternalRestClient getClient() {
         return client;
     }
 }

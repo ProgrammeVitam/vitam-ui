@@ -52,12 +52,22 @@ public class OperationConverter {
     }
 
     public static LogbookOperationDto convertVitamToDto(final LogbookOperationModel logbookOperationModel) {
-        LogbookOperationDto dto = (LogbookOperationDto) OperationConverter.convertVitamToDto((LogbookEventModel) logbookOperationModel);
-        dto.setEvents(logbookOperationModel.getEvents().stream().map(OperationConverter::convertVitamToDto).collect(Collectors.toList()));
+        LogbookOperationDto dto = (LogbookOperationDto) OperationConverter.convertVitamToDto(
+            (LogbookEventModel) logbookOperationModel
+        );
+        dto.setEvents(
+            logbookOperationModel
+                .getEvents()
+                .stream()
+                .map(OperationConverter::convertVitamToDto)
+                .collect(Collectors.toList())
+        );
         return dto;
     }
 
-    public static List<LogbookOperationDto> convertVitamsToDtos(final List<LogbookOperationModel> logbookOperationModels) {
+    public static List<LogbookOperationDto> convertVitamsToDtos(
+        final List<LogbookOperationModel> logbookOperationModels
+    ) {
         return logbookOperationModels.stream().map(OperationConverter::convertVitamToDto).collect(Collectors.toList());
     }
 }

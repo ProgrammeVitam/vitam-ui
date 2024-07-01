@@ -67,9 +67,16 @@ public class ProfileExternalWebClient extends BaseWebClient<ExternalHttpContext>
         if (file == null) {
             throw new BadRequestException("No file to check .");
         }
-        return ResponseEntity.ok(multipartData(getUrl() + CommonConstants.PATH_IMPORT, HttpMethod.POST, context,
-            Collections.singletonMap("fileName", file.getOriginalFilename()),
-            Optional.of(new AbstractMap.SimpleEntry<>("file", file)), JsonNode.class));
+        return ResponseEntity.ok(
+            multipartData(
+                getUrl() + CommonConstants.PATH_IMPORT,
+                HttpMethod.POST,
+                context,
+                Collections.singletonMap("fileName", file.getOriginalFilename()),
+                Optional.of(new AbstractMap.SimpleEntry<>("file", file)),
+                JsonNode.class
+            )
+        );
     }
 
     @Override

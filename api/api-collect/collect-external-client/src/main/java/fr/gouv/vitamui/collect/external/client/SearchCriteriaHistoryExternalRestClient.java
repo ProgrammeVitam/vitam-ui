@@ -26,7 +26,6 @@
  */
 package fr.gouv.vitamui.collect.external.client;
 
-import fr.gouv.vitamui.archives.search.common.rest.RestApi;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaHistoryDto;
@@ -51,10 +50,12 @@ import static fr.gouv.vitamui.collect.common.rest.RestApi.SEARCH_CRITERIA_HISTOR
  *
  *
  */
-public class SearchCriteriaHistoryExternalRestClient extends BasePaginatingAndSortingRestClient<SearchCriteriaHistoryDto, ExternalHttpContext> {
+public class SearchCriteriaHistoryExternalRestClient
+    extends BasePaginatingAndSortingRestClient<SearchCriteriaHistoryDto, ExternalHttpContext> {
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
-        SearchCriteriaHistoryExternalRestClient.class);
+        SearchCriteriaHistoryExternalRestClient.class
+    );
 
     public SearchCriteriaHistoryExternalRestClient(final RestTemplate restTemplate, final String baseUrl) {
         super(restTemplate, baseUrl);
@@ -71,7 +72,12 @@ public class SearchCriteriaHistoryExternalRestClient extends BasePaginatingAndSo
 
         final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl() + CommonConstants.PATH_ME);
 
-        final ResponseEntity<List<SearchCriteriaHistoryDto>> response = restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET, request, getDtoListClass());
+        final ResponseEntity<List<SearchCriteriaHistoryDto>> response = restTemplate.exchange(
+            uriBuilder.toUriString(),
+            HttpMethod.GET,
+            request,
+            getDtoListClass()
+        );
         checkResponse(response);
         return response.getBody();
     }
@@ -88,13 +94,11 @@ public class SearchCriteriaHistoryExternalRestClient extends BasePaginatingAndSo
 
     @Override
     protected ParameterizedTypeReference<List<SearchCriteriaHistoryDto>> getDtoListClass() {
-        return new ParameterizedTypeReference<List<SearchCriteriaHistoryDto>>() {
-        };
+        return new ParameterizedTypeReference<List<SearchCriteriaHistoryDto>>() {};
     }
 
     @Override
     protected ParameterizedTypeReference<PaginatedValuesDto<SearchCriteriaHistoryDto>> getDtoPaginatedClass() {
-        return new ParameterizedTypeReference<PaginatedValuesDto<SearchCriteriaHistoryDto>>() {
-        };
+        return new ParameterizedTypeReference<PaginatedValuesDto<SearchCriteriaHistoryDto>>() {};
     }
 }

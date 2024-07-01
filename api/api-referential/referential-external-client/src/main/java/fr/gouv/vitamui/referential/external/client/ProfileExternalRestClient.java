@@ -70,8 +70,7 @@ public class ProfileExternalRestClient extends BasePaginatingAndSortingRestClien
 
     @Override
     protected ParameterizedTypeReference<PaginatedValuesDto<ProfileDto>> getDtoPaginatedClass() {
-        return new ParameterizedTypeReference<PaginatedValuesDto<ProfileDto>>() {
-        };
+        return new ParameterizedTypeReference<PaginatedValuesDto<ProfileDto>>() {};
     }
 
     @Override
@@ -85,35 +84,42 @@ public class ProfileExternalRestClient extends BasePaginatingAndSortingRestClien
     }
 
     protected ParameterizedTypeReference<List<ProfileDto>> getDtoListClass() {
-        return new ParameterizedTypeReference<List<ProfileDto>>() {
-        };
+        return new ParameterizedTypeReference<List<ProfileDto>>() {};
     }
 
     public boolean check(ExternalHttpContext context, ProfileDto ProfileDto) {
         final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl() + CommonConstants.PATH_CHECK);
         final HttpEntity<ProfileDto> request = new HttpEntity<>(ProfileDto, buildHeaders(context));
-        final ResponseEntity<Boolean> response = restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.POST,
-            request, Boolean.class);
+        final ResponseEntity<Boolean> response = restTemplate.exchange(
+            uriBuilder.toUriString(),
+            HttpMethod.POST,
+            request,
+            Boolean.class
+        );
         return response.getStatusCode() == HttpStatus.OK;
     }
 
     public ResponseEntity<Resource> download(ExternalHttpContext context, String id) {
-        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl() + RestApi.DOWNLOAD_PROFILE + CommonConstants.PATH_ID);
+        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(
+            getUrl() + RestApi.DOWNLOAD_PROFILE + CommonConstants.PATH_ID
+        );
         final HttpEntity<ProfileDto> request = new HttpEntity<>(null, buildHeaders(context));
         return restTemplate.exchange(uriBuilder.build(id), HttpMethod.GET, request, Resource.class);
     }
 
-
-    public ResponseEntity<JsonNode> updateProfileFile(ExternalHttpContext context, String id, MultipartFile profileFile) throws IOException {
-        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl() + RestApi.UPDATE_PROFILE_FILE + CommonConstants.PATH_ID);
+    public ResponseEntity<JsonNode> updateProfileFile(
+        ExternalHttpContext context,
+        String id,
+        MultipartFile profileFile
+    ) throws IOException {
+        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(
+            getUrl() + RestApi.UPDATE_PROFILE_FILE + CommonConstants.PATH_ID
+        );
 
         MultiValueMap<String, Object> bodyMap = new LinkedMultiValueMap<>();
         bodyMap.add("file", new FileSystemResource(profileFile.getBytes(), profileFile.getOriginalFilename()));
         final HttpEntity<MultiValueMap<String, Object>> request = new HttpEntity<>(bodyMap, buildHeaders(context));
-        return restTemplate.exchange(uriBuilder.build(id),
-            HttpMethod.PUT,
-            request,
-            JsonNode.class);
+        return restTemplate.exchange(uriBuilder.build(id), HttpMethod.PUT, request, JsonNode.class);
     }
 
     public ResponseEntity<JsonNode> updateProfile(ExternalHttpContext c, ProfileDto dto) {
@@ -121,8 +127,13 @@ public class ProfileExternalRestClient extends BasePaginatingAndSortingRestClien
         ApiUtils.checkValidity(dto);
         final String dtoId = dto.getId();
         final HttpEntity<ProfileDto> request = new HttpEntity<>(dto, buildHeaders(c));
-        final ResponseEntity<JsonNode> response = restTemplate.exchange(getUrl() + CommonConstants.PATH_ID, HttpMethod.PUT,
-            request, JsonNode.class, dtoId);
+        final ResponseEntity<JsonNode> response = restTemplate.exchange(
+            getUrl() + CommonConstants.PATH_ID,
+            HttpMethod.PUT,
+            request,
+            JsonNode.class,
+            dtoId
+        );
         checkResponse(response);
         return response;
     }
@@ -148,7 +159,5 @@ public class ProfileExternalRestClient extends BasePaginatingAndSortingRestClien
         public void setFilename(String fileName) {
             this.fileName = fileName;
         }
-
     }
-
 }

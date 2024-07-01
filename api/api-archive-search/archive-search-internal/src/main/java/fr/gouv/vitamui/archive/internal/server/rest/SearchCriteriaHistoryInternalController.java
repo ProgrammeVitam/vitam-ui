@@ -38,11 +38,11 @@ package fr.gouv.vitamui.archive.internal.server.rest;
 
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitamui.archive.internal.server.searchcriteria.service.SearchCriteriaHistoryInternalService;
-import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaHistoryDto;
 import fr.gouv.vitamui.archives.search.common.rest.RestApi;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
+import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaHistoryDto;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
@@ -73,12 +73,15 @@ import java.util.List;
 public class SearchCriteriaHistoryInternalController {
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
-        SearchCriteriaHistoryInternalController.class);
+        SearchCriteriaHistoryInternalController.class
+    );
 
     private SearchCriteriaHistoryInternalService searchCriteriaHistoryInternalService;
 
     @Autowired
-    public SearchCriteriaHistoryInternalController(final SearchCriteriaHistoryInternalService searchCriteriaHistoryInternalService) {
+    public SearchCriteriaHistoryInternalController(
+        final SearchCriteriaHistoryInternalService searchCriteriaHistoryInternalService
+    ) {
         this.searchCriteriaHistoryInternalService = searchCriteriaHistoryInternalService;
     }
 
@@ -97,8 +100,9 @@ public class SearchCriteriaHistoryInternalController {
     }
 
     @DeleteMapping(CommonConstants.PATH_ID)
-    public void delete(final @PathVariable("id") String id) throws InvalidParseOperationException, PreconditionFailedException {
-        ParameterChecker.checkParameter("Identifier is mandatory : " , id);
+    public void delete(final @PathVariable("id") String id)
+        throws InvalidParseOperationException, PreconditionFailedException {
+        ParameterChecker.checkParameter("Identifier is mandatory : ", id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Delete SearchCriteriaHistory with id :{}", id);
         searchCriteriaHistoryInternalService.delete(id);
@@ -107,7 +111,7 @@ public class SearchCriteriaHistoryInternalController {
     @PutMapping(CommonConstants.PATH_ID)
     public SearchCriteriaHistoryDto update(final @RequestBody SearchCriteriaHistoryDto dto)
         throws InvalidParseOperationException, PreconditionFailedException {
-        ParameterChecker.checkParameter("Identifier is mandatory : " , dto.getId());
+        ParameterChecker.checkParameter("Identifier is mandatory : ", dto.getId());
         SanityChecker.sanitizeCriteria(dto);
         LOGGER.debug("Update SearchCriteriaHistory with id :{}", dto.getId());
         return searchCriteriaHistoryInternalService.update(dto);

@@ -56,7 +56,10 @@ import java.util.List;
  *
  */
 @Configuration
-@EnableMongoRepositories(basePackages = { "fr.gouv.vitamui.commons.mongo", "fr.gouv.vitamui.archive.internal.server" }, repositoryBaseClass = VitamUIRepositoryImpl.class)
+@EnableMongoRepositories(
+    basePackages = { "fr.gouv.vitamui.commons.mongo", "fr.gouv.vitamui.archive.internal.server" },
+    repositoryBaseClass = VitamUIRepositoryImpl.class
+)
 public class MongoDbConfig {
 
     @Autowired
@@ -69,5 +72,4 @@ public class MongoDbConfig {
         converters.add(new StringToOffsetDateTimeConverter());
         return new MongoCustomConversions(converters);
     }
-
 }

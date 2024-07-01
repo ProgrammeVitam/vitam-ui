@@ -36,13 +36,6 @@
  */
 package fr.gouv.vitamui.commons.rest.client;
 
-import java.util.Optional;
-
-import org.apache.http.client.utils.URIBuilder;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.web.reactive.function.client.WebClient;
-
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.IdDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
@@ -50,6 +43,12 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.apache.http.client.utils.URIBuilder;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.web.reactive.function.client.WebClient;
+
+import java.util.Optional;
 
 /**
  * A REST client to check existence, read, created, update and delete an object with identifier, with paginated results.
@@ -57,27 +56,51 @@ import lombok.ToString;
  */
 @EqualsAndHashCode(callSuper = true)
 @ToString
-public abstract class BasePaginatingAndSortingWebClient<C extends AbstractHttpContext, D extends IdDto> extends BaseCrudWebClient<C, D> {
+public abstract class BasePaginatingAndSortingWebClient<C extends AbstractHttpContext, D extends IdDto>
+    extends BaseCrudWebClient<C, D> {
 
     private static final String EMBEDDED_QUERY_PARAM = "embedded";
 
     private static final String CRITERIA_QUERY_PARAM = "criteria";
 
     @Autowired
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(BasePaginatingAndSortingWebClient.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
+        BasePaginatingAndSortingWebClient.class
+    );
 
     public BasePaginatingAndSortingWebClient(@Autowired final WebClient webClient, final String baseUrl) {
         super(webClient, baseUrl);
     }
 
-    public PaginatedValuesDto<D> getAllPaginated(final C context, final Integer page, final Integer size, final Optional<String> criteria,
-            final Optional<String> orderBy, final Optional<DirectionDto> direction) {
+    public PaginatedValuesDto<D> getAllPaginated(
+        final C context,
+        final Integer page,
+        final Integer size,
+        final Optional<String> criteria,
+        final Optional<String> orderBy,
+        final Optional<DirectionDto> direction
+    ) {
         return getAllPaginated(context, page, size, criteria, orderBy, direction, Optional.empty());
     }
 
-    public PaginatedValuesDto<D> getAllPaginated(final C context, final Integer page, final Integer size, final Optional<String> criteria,
-            final Optional<String> orderBy, final Optional<DirectionDto> direction, final Optional<String> embedded) {
-        LOGGER.debug("search page={}, size={}, criteria={}, orderBy={}, direction={}, embedded={}", page, size, criteria, orderBy, direction, embedded);
+    public PaginatedValuesDto<D> getAllPaginated(
+        final C context,
+        final Integer page,
+        final Integer size,
+        final Optional<String> criteria,
+        final Optional<String> orderBy,
+        final Optional<DirectionDto> direction,
+        final Optional<String> embedded
+    ) {
+        LOGGER.debug(
+            "search page={}, size={}, criteria={}, orderBy={}, direction={}, embedded={}",
+            page,
+            size,
+            criteria,
+            orderBy,
+            direction,
+            embedded
+        );
 
         final URIBuilder builder = getUriBuilderFromUrl();
         builder.addParameter("page", page.toString());
@@ -87,16 +110,15 @@ public abstract class BasePaginatingAndSortingWebClient<C extends AbstractHttpCo
         direction.ifPresent(o -> builder.addParameter("direction", o.toString()));
         embedded.ifPresent(o -> builder.addParameter(EMBEDDED_QUERY_PARAM, o));
 
-        return webClient.get()
-                        .uri(buildUriBuilder(builder))
-                        .headers(headersConsumer -> headersConsumer.addAll(buildHeaders(context)))
-                        .retrieve()
-                        .onStatus(status -> !status.is2xxSuccessful(), BaseCrudWebClient::createResponseException)
-                        .bodyToMono(getDtoPaginatedClass())
-                        .block();
-
+        return webClient
+            .get()
+            .uri(buildUriBuilder(builder))
+            .headers(headersConsumer -> headersConsumer.addAll(buildHeaders(context)))
+            .retrieve()
+            .onStatus(status -> !status.is2xxSuccessful(), BaseCrudWebClient::createResponseException)
+            .bodyToMono(getDtoPaginatedClass())
+            .block();
     }
 
     protected abstract ParameterizedTypeReference<PaginatedValuesDto<D>> getDtoPaginatedClass();
-
 }

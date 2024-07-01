@@ -55,7 +55,6 @@ import java.util.Set;
 @Getter
 public class VitamUiRuleCategoryActionDeletion implements Serializable {
 
-
     private Optional<List<VitamUiRuleAction>> rules;
 
     private Optional<String> finalAction;

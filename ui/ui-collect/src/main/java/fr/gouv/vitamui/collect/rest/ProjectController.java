@@ -87,36 +87,58 @@ public class ProjectController extends AbstractUiRestController {
     }
 
     @ApiOperation(value = "Get projects paginated")
-    @GetMapping(params = {"page", "size"})
+    @GetMapping(params = { "page", "size" })
     @ResponseStatus(HttpStatus.OK)
-    public PaginatedValuesDto<CollectProjectDto> getAllProjectsPaginated(@RequestParam final Integer page,
+    public PaginatedValuesDto<CollectProjectDto> getAllProjectsPaginated(
+        @RequestParam final Integer page,
         @RequestParam final Integer size,
-        @RequestParam final Optional<String> criteria, @RequestParam final Optional<String> orderBy,
-        @RequestParam final Optional<DirectionDto> direction) throws InvalidParseOperationException {
+        @RequestParam final Optional<String> criteria,
+        @RequestParam final Optional<String> orderBy,
+        @RequestParam final Optional<DirectionDto> direction
+    ) throws InvalidParseOperationException {
         SanityChecker.sanitizeCriteria(criteria);
-        LOGGER.debug("getAllProjectsPaginated page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size,
+        LOGGER.debug(
+            "getAllProjectsPaginated page={}, size={}, criteria={}, orderBy={}, ascendant={}",
+            page,
+            size,
             criteria,
-            orderBy, direction);
+            orderBy,
+            direction
+        );
         return projectService.getAllProjectsPaginated(buildUiHttpContext(), page, size, criteria, orderBy, direction);
     }
 
-
     @ApiOperation(value = "Get transactions by project paginated")
-    @GetMapping(params = {"page", "size"}, value = "/{id}" + TRANSACTIONS)
+    @GetMapping(params = { "page", "size" }, value = "/{id}" + TRANSACTIONS)
     @ResponseStatus(HttpStatus.OK)
-    public PaginatedValuesDto<CollectTransactionDto> getTransactionsByProjectPaginated(@RequestParam final Integer page,
+    public PaginatedValuesDto<CollectTransactionDto> getTransactionsByProjectPaginated(
+        @RequestParam final Integer page,
         @RequestParam final Integer size,
-        @RequestParam final Optional<String> criteria, @RequestParam final Optional<String> orderBy,
+        @RequestParam final Optional<String> criteria,
+        @RequestParam final Optional<String> orderBy,
         @RequestParam final Optional<DirectionDto> direction,
-        @PathVariable("id") final String projectId) throws InvalidParseOperationException {
+        @PathVariable("id") final String projectId
+    ) throws InvalidParseOperationException {
         SanityChecker.sanitizeCriteria(criteria);
         ParameterChecker.checkParameter(IDENTIFIER_MANDATORY_MESSAGE, projectId);
         SanityChecker.checkSecureParameter(projectId);
-        LOGGER.debug("getAllProjectsPaginated page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size,
+        LOGGER.debug(
+            "getAllProjectsPaginated page={}, size={}, criteria={}, orderBy={}, ascendant={}",
+            page,
+            size,
             criteria,
-            orderBy, direction);
-        return projectService.getTransactionsByProjectPaginated(page, size, criteria, orderBy, direction,
-            buildUiHttpContext(), projectId);
+            orderBy,
+            direction
+        );
+        return projectService.getTransactionsByProjectPaginated(
+            page,
+            size,
+            criteria,
+            orderBy,
+            direction,
+            buildUiHttpContext(),
+            projectId
+        );
     }
 
     @ApiOperation(value = "Create new collect project")
@@ -134,26 +156,34 @@ public class ProjectController extends AbstractUiRestController {
         @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) final String tenantId,
         @RequestHeader(value = CommonConstants.X_TRANSACTION_ID_HEADER) final String transactionId,
         @RequestHeader(value = CommonConstants.X_ORIGINAL_FILENAME_HEADER) final String filename,
-        final InputStream inputStream) throws InvalidParseOperationException {
-        ParameterChecker
-            .checkParameter("The tenantId and transactionId are mandatory parameters : ",
-                tenantId, transactionId);
+        final InputStream inputStream
+    ) throws InvalidParseOperationException {
+        ParameterChecker.checkParameter(
+            "The tenantId and transactionId are mandatory parameters : ",
+            tenantId,
+            transactionId
+        );
         SanityChecker.checkSecureParameter(tenantId);
         SanityChecker.checkSecureParameter(transactionId);
         SafeFileChecker.checkSafeFilePath(filename);
         SanityChecker.isValidFileName(filename);
         LOGGER.debug("Start uploading file ...{} ", filename);
-        ResponseEntity<Void> response =
-            projectService.streamingUpload(buildUiHttpContext(), filename, transactionId, inputStream);
+        ResponseEntity<Void> response = projectService.streamingUpload(
+            buildUiHttpContext(),
+            filename,
+            transactionId,
+            inputStream
+        );
 
         LOGGER.debug("The response in ui Ingest is {} ", response.toString());
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PutMapping(PATH_ID)
-    public CollectProjectDto updateProject(final @PathVariable("id") String id,
-        @RequestBody CollectProjectDto collectProjectDto)
-        throws InvalidParseOperationException, PreconditionFailedException {
+    public CollectProjectDto updateProject(
+        final @PathVariable("id") String id,
+        @RequestBody CollectProjectDto collectProjectDto
+    ) throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter(IDENTIFIER_MANDATORY_MESSAGE, id, collectProjectDto);
         SanityChecker.checkSecureParameter(id);
         SanityChecker.sanitizeCriteria(collectProjectDto);
@@ -161,18 +191,17 @@ public class ProjectController extends AbstractUiRestController {
         return projectService.update(buildUiHttpContext(), collectProjectDto);
     }
 
-    @PostMapping(value = PATH_ID+ "/transactions")
-    public CollectTransactionDto createTransactionForProject(final @PathVariable("id") String id, @RequestBody
-        CollectTransactionDto collectTransactionDto)
-        throws InvalidParseOperationException, PreconditionFailedException {
-
+    @PostMapping(value = PATH_ID + "/transactions")
+    public CollectTransactionDto createTransactionForProject(
+        final @PathVariable("id") String id,
+        @RequestBody CollectTransactionDto collectTransactionDto
+    ) throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter(IDENTIFIER_MANDATORY_MESSAGE, id, collectTransactionDto);
         SanityChecker.checkSecureParameter(id);
         SanityChecker.sanitizeCriteria(collectTransactionDto);
         LOGGER.debug("Transaction to create : {}", collectTransactionDto);
         return projectService.createTransactionForProject(buildUiHttpContext(), collectTransactionDto, id);
     }
-
 
     @ApiOperation(value = "Get project Details")
     @GetMapping(PATH_ID)
@@ -197,16 +226,12 @@ public class ProjectController extends AbstractUiRestController {
     }
 
     @ApiOperation(value = "Get last Transaction for project")
-    @GetMapping(PATH_ID  + LAST_TRANSACTION_PATH)
+    @GetMapping(PATH_ID + LAST_TRANSACTION_PATH)
     public CollectTransactionDto findLastTransactionByProjectId(final @PathVariable("id") String id)
         throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter(IDENTIFIER_MANDATORY_MESSAGE, id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Find the transaction by project with ID {}", id);
-        return
-            projectService.getLastTransactionForProjectId(buildUiHttpContext(), id);
-
+        return projectService.getLastTransactionForProjectId(buildUiHttpContext(), id);
     }
-
-
 }

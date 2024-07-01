@@ -53,7 +53,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(controllers = {IngestExternalController.class})
+@WebMvcTest(controllers = { IngestExternalController.class })
 public class IngestExternalControllerTest extends ApiIngestExternalControllerTest<IdDto> {
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(IngestExternalControllerTest.class);
@@ -69,7 +69,6 @@ public class IngestExternalControllerTest extends ApiIngestExternalControllerTes
 
     @MockBean
     private ExternalSecurityService externalSecurityService;
-
 
     @Override
     protected IdDto buildDto() {
@@ -94,7 +93,7 @@ public class IngestExternalControllerTest extends ApiIngestExternalControllerTes
 
     @Override
     protected String[] getServices() {
-        return new String[] {ServicesData.SERVICE_INGEST};
+        return new String[] { ServicesData.SERVICE_INGEST };
     }
 
     @Override
@@ -104,11 +103,9 @@ public class IngestExternalControllerTest extends ApiIngestExternalControllerTes
 
     @Test
     public void testIngest() {
-
         Assert.assertNotNull(ingestExternalService);
         Assert.assertNotNull(externalSecurityService);
         Assert.assertNotNull(ingestExternalRestClient);
         Assert.assertNotNull(ingestInternalRestClient);
-
     }
 }

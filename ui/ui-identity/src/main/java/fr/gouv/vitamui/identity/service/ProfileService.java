@@ -36,14 +36,6 @@
  */
 package fr.gouv.vitamui.identity.service;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.domain.ProfileDto;
@@ -54,6 +46,13 @@ import fr.gouv.vitamui.iam.external.client.IamExternalRestClientFactory;
 import fr.gouv.vitamui.iam.external.client.ProfileExternalRestClient;
 import fr.gouv.vitamui.ui.commons.service.AbstractPaginateService;
 import fr.gouv.vitamui.ui.commons.service.CommonService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 /**
  * ProfileGroupService.
@@ -75,7 +74,11 @@ public class ProfileService extends AbstractPaginateService<ProfileDto> {
     }
 
     @Override
-    public Collection<ProfileDto> getAll(final ExternalHttpContext context, final Optional<String> criteria, final Optional<String> embedded) {
+    public Collection<ProfileDto> getAll(
+        final ExternalHttpContext context,
+        final Optional<String> criteria,
+        final Optional<String> embedded
+    ) {
         return super.getAll(context, criteria, embedded);
     }
 
@@ -85,8 +88,15 @@ public class ProfileService extends AbstractPaginateService<ProfileDto> {
     }
 
     @Override
-    public PaginatedValuesDto<ProfileDto> getAllPaginated(final Integer page, final Integer size, final Optional<String> criteria,
-            final Optional<String> orderBy, final Optional<DirectionDto> direction, final Optional<String> embedded, final ExternalHttpContext context) {
+    public PaginatedValuesDto<ProfileDto> getAllPaginated(
+        final Integer page,
+        final Integer size,
+        final Optional<String> criteria,
+        final Optional<String> orderBy,
+        final Optional<DirectionDto> direction,
+        final Optional<String> embedded,
+        final ExternalHttpContext context
+    ) {
         return super.getAllPaginated(page, size, criteria, orderBy, direction, embedded, context);
     }
 

@@ -39,7 +39,6 @@ package fr.gouv.vitamui.referential.common.export.probativevalue.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-
 import fr.gouv.vitamui.referential.common.export.probativevalue.serializer.ReportDslQueryToStringSerializer;
 import lombok.Getter;
 import lombok.Setter;
@@ -50,14 +49,13 @@ import lombok.ToString;
 @ToString
 public class ContextDto {
 
-	@JsonSerialize(using = ReportDslQueryToStringSerializer.class)
-	@JsonProperty("dslQuery")
-	private JsonNode dslQuery;
+    @JsonSerialize(using = ReportDslQueryToStringSerializer.class)
+    @JsonProperty("dslQuery")
+    private JsonNode dslQuery;
 
-	@JsonProperty("usage")
-	private String usage;
+    @JsonProperty("usage")
+    private String usage;
 
-	@JsonProperty("version")
-	private Integer version;
-
+    @JsonProperty("version")
+    private Integer version;
 }

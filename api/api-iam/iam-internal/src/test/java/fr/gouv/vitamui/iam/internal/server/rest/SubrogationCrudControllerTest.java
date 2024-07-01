@@ -1,23 +1,10 @@
 package fr.gouv.vitamui.iam.internal.server.rest;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
-import java.time.OffsetDateTime;
-import java.util.Optional;
-
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
-import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-
 import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
 import fr.gouv.vitamui.commons.api.enums.UserTypeEnum;
 import fr.gouv.vitamui.commons.api.exception.NotImplementedException;
+import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.rest.CrudController;
 import fr.gouv.vitamui.commons.test.rest.AbstractCrudControllerTest;
@@ -39,6 +26,17 @@ import fr.gouv.vitamui.iam.internal.server.user.dao.UserRepository;
 import fr.gouv.vitamui.iam.internal.server.user.domain.User;
 import fr.gouv.vitamui.iam.internal.server.user.service.UserInternalService;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+
+import java.time.OffsetDateTime;
+import java.util.Optional;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
 /**
  * Tests the {@link SubrogationInternalController}.
@@ -60,6 +58,7 @@ public final class SubrogationCrudControllerTest extends AbstractCrudControllerT
     private static final User SURROGATE_CREATE;
 
     private static final User SUPERUSER;
+
     static {
         SURROGATE = new User();
         SURROGATE.setId(SURROGATE_EMAIL);
@@ -123,14 +122,23 @@ public final class SubrogationCrudControllerTest extends AbstractCrudControllerT
     public void setup() {
         super.setup();
         subrogationConverter = new SubrogationConverter(userRepository);
-        final SubrogationInternalService service = new SubrogationInternalService(sequenceGeneratorService, subrogationRepository, userRepository,
-                userInternalService, groupInternalService, groupRepository, profilRepository, internalSecurityService, customerRepository, subrogationConverter,
-                iamLogbookService);
+        final SubrogationInternalService service = new SubrogationInternalService(
+            sequenceGeneratorService,
+            subrogationRepository,
+            userRepository,
+            userInternalService,
+            groupInternalService,
+            groupRepository,
+            profilRepository,
+            internalSecurityService,
+            customerRepository,
+            subrogationConverter,
+            iamLogbookService
+        );
         service.setGenericUsersSubrogationTtl(15);
         service.setSubrogationTtl(15);
         controller.setInternalSubrogationService(service);
         controller.setInternalUserService(internalUserService);
-
     }
 
     @Override
@@ -166,9 +174,10 @@ public final class SubrogationCrudControllerTest extends AbstractCrudControllerT
         prepareServices();
         Mockito.when(userRepository.findByEmail(SURROGATE_CREATE_EMAIL)).thenReturn(SURROGATE_CREATE);
         Mockito.when(subrogationRepository.findOneBySurrogate(SURROGATE_CREATE_EMAIL)).thenReturn(null);
-        Mockito.when(internalSecurityService.getUser()).thenReturn(IamDtoBuilder.buildAuthUserDto("id", SUPER_USER_EMAIL));
+        Mockito.when(internalSecurityService.getUser()).thenReturn(
+            IamDtoBuilder.buildAuthUserDto("id", SUPER_USER_EMAIL)
+        );
         getController().create(dto);
-
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -182,7 +191,6 @@ public final class SubrogationCrudControllerTest extends AbstractCrudControllerT
         customer.setSubrogeable(false);
         when(customerRepository.findById(any())).thenReturn(Optional.of(customer));
         getController().create(dto);
-
     }
 
     @Override
@@ -196,8 +204,8 @@ public final class SubrogationCrudControllerTest extends AbstractCrudControllerT
 
     @Override
     @Test(expected = NotImplementedException.class)
-    public void testUpdateFailsAsDtoIdAndPathIdAreDifferentOK() throws InvalidParseOperationException,
-        PreconditionFailedException {
+    public void testUpdateFailsAsDtoIdAndPathIdAreDifferentOK()
+        throws InvalidParseOperationException, PreconditionFailedException {
         final SubrogationDto dto = buildDto();
         dto.setId("anotherId");
         prepareServices();

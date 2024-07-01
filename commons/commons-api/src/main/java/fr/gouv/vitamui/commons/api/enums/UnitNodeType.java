@@ -37,9 +37,8 @@
 package fr.gouv.vitamui.commons.api.enums;
 
 public enum UnitNodeType {
-
     NODE,
     FINAL,
     SERIAL,
-    SOLIDARY
+    SOLIDARY,
 }

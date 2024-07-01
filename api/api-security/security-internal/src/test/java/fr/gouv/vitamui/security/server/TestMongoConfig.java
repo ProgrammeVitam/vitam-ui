@@ -35,21 +35,21 @@ public class TestMongoConfig extends AbstractMongoClientConfiguration {
     public void initIt() throws Exception {
         port = Network.getFreeServerPort();
 
-        _mongodExe = starter.prepare(MongodConfig.builder()
-            .version(Version.Main.PRODUCTION)
-            .net(new Net(MONGO_HOST, port, Network.localhostIsIPv6()))
-            .build());
+        _mongodExe = starter.prepare(
+            MongodConfig.builder()
+                .version(Version.Main.PRODUCTION)
+                .net(new Net(MONGO_HOST, port, Network.localhostIsIPv6()))
+                .build()
+        );
 
         _mongod = _mongodExe.start();
     }
 
     @PreDestroy
     public void close() {
-        if (_mongod != null)
-            _mongod.stop();
+        if (_mongod != null) _mongod.stop();
 
-        if (_mongodExe != null)
-            _mongodExe.stop();
+        if (_mongodExe != null) _mongodExe.stop();
     }
 
     @Override
@@ -67,9 +67,9 @@ public class TestMongoConfig extends AbstractMongoClientConfiguration {
 
     @Override
     protected void configureConverters(
-        MongoCustomConversions.MongoConverterConfigurationAdapter converterConfigurationAdapter) {
+        MongoCustomConversions.MongoConverterConfigurationAdapter converterConfigurationAdapter
+    ) {
         converterConfigurationAdapter.registerConverter(new OffsetDateTimeToStringConverter());
         converterConfigurationAdapter.registerConverter(new StringToOffsetDateTimeConverter());
     }
-
 }

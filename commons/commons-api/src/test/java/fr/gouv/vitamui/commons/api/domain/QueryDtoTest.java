@@ -36,7 +36,8 @@ public class QueryDtoTest {
     @Test
     public void testSerialization() throws JsonProcessingException {
         QueryDto criteria = new QueryDto();
-        String exceptedQueryString = "{\"queryOperator\":\"AND\",\"criteria\":[{\"key\":\"lastname\",\"value\":\"nole\",\"operator\":\"EQUALSIGNORECASE\"},{\"queryOperator\":\"AND\",\"criteria\":[{\"key\":\"firstname\",\"value\":\"Pierre\",\"operator\":\"EQUALS\"}]}]}";
+        String exceptedQueryString =
+            "{\"queryOperator\":\"AND\",\"criteria\":[{\"key\":\"lastname\",\"value\":\"nole\",\"operator\":\"EQUALSIGNORECASE\"},{\"queryOperator\":\"AND\",\"criteria\":[{\"key\":\"firstname\",\"value\":\"Pierre\",\"operator\":\"EQUALS\"}]}]}";
         criteria.addCriterion(new Criterion("lastname", "nole", CriterionOperator.EQUALSIGNORECASE));
         QueryDto subQuery = new QueryDto();
         subQuery.addCriterion(new Criterion("firstname", "Pierre", CriterionOperator.EQUALS));
@@ -48,7 +49,8 @@ public class QueryDtoTest {
 
     @Test
     public void testDeserialization() throws JsonParseException, JsonMappingException, IOException {
-        String queryAsJson = "{\"queryOperator\":\"OR\",\"criteria\":[{\"key\":\"lastName\",\"value\":\"nole\",\"operator\":\"EQUALS\"}]}";
+        String queryAsJson =
+            "{\"queryOperator\":\"OR\",\"criteria\":[{\"key\":\"lastName\",\"value\":\"nole\",\"operator\":\"EQUALS\"}]}";
         QueryDto query = JsonUtils.fromJson(queryAsJson, QueryDto.class);
         Assertions.assertThat(query.getQueryOperator()).isEqualTo(QueryOperator.OR);
         Assertions.assertThat(query.getCriterionList()).hasSize(1);
@@ -60,7 +62,8 @@ public class QueryDtoTest {
 
     @Test
     public void testDeserializationWithSubquery() throws JsonParseException, JsonMappingException, IOException {
-        String queryAsJson = "{\"queryOperator\":\"OR\",\"criteria\":[{\"key\":\"lastName\",\"value\":\"nole\",\"operator\":\"EQUALS\"},{\"queryOperator\":\"NOR\",\"criteria\":[{\"key\":\"firstname\",\"value\":\"Pierre\",\"operator\":\"EQUALS\"}]}]}";
+        String queryAsJson =
+            "{\"queryOperator\":\"OR\",\"criteria\":[{\"key\":\"lastName\",\"value\":\"nole\",\"operator\":\"EQUALS\"},{\"queryOperator\":\"NOR\",\"criteria\":[{\"key\":\"firstname\",\"value\":\"Pierre\",\"operator\":\"EQUALS\"}]}]}";
         QueryDto query = JsonUtils.fromJson(queryAsJson, QueryDto.class);
         Assertions.assertThat(query.getQueryOperator()).isEqualTo(QueryOperator.OR);
         Assertions.assertThat(query.getCriterionList()).hasSize(1);
@@ -71,7 +74,5 @@ public class QueryDtoTest {
         Assertions.assertThat(criterionFromSubquery.getKey()).isEqualTo("firstname");
         Assertions.assertThat(criterionFromSubquery.getValue()).isEqualTo("Pierre");
         Assertions.assertThat(criterionFromSubquery.getOperator()).isEqualTo(CriterionOperator.EQUALS);
-
     }
-
 }

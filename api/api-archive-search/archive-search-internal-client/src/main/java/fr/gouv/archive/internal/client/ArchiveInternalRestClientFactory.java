@@ -33,14 +33,18 @@ import org.springframework.boot.web.client.RestTemplateBuilder;
 
 public class ArchiveInternalRestClientFactory extends BaseRestClientFactory {
 
-    public ArchiveInternalRestClientFactory(final RestClientConfiguration restClientConfiguration,
-        final RestTemplateBuilder restTemplateBuilder) {
+    public ArchiveInternalRestClientFactory(
+        final RestClientConfiguration restClientConfiguration,
+        final RestTemplateBuilder restTemplateBuilder
+    ) {
         super(restClientConfiguration, restTemplateBuilder);
     }
 
-    public ArchiveInternalRestClientFactory(final RestClientConfiguration restClientConfiguration,
+    public ArchiveInternalRestClientFactory(
+        final RestClientConfiguration restClientConfiguration,
         final HttpPoolConfiguration httpHostConfiguration,
-        final RestTemplateBuilder restTemplateBuilder) {
+        final RestTemplateBuilder restTemplateBuilder
+    ) {
         super(restClientConfiguration, httpHostConfiguration, restTemplateBuilder);
     }
 
@@ -51,5 +55,4 @@ public class ArchiveInternalRestClientFactory extends BaseRestClientFactory {
     public SearchCriteriaHistoryInternalRestClient getSearchCriteriaHistoryInternalRestClient() {
         return new SearchCriteriaHistoryInternalRestClient(getRestTemplate(), getBaseUrl());
     }
-
 }

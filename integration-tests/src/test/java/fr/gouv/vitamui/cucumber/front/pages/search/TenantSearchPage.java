@@ -9,5 +9,4 @@ public class TenantSearchPage extends PageObject {
     public boolean isAppSearchPageDisplayed() {
         return $("//div[@class='vitamui-container']/h2").isDisplayed();
     }
-
 }

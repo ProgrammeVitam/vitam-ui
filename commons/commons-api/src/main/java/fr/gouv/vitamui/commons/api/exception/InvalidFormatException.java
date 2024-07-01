@@ -36,10 +36,10 @@
  */
 package fr.gouv.vitamui.commons.api.exception;
 
-import java.util.List;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
+
+import java.util.List;
 
 /**
  * Base exception for invalid format requests.
@@ -68,5 +68,4 @@ public class InvalidFormatException extends VitamUIException {
     public InvalidFormatException(final String message, final String key, final List<String> args) {
         super(message, key, args);
     }
-
 }

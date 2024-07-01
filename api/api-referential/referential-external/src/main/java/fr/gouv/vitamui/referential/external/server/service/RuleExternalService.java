@@ -36,20 +36,7 @@
  */
 package fr.gouv.vitamui.referential.external.server.service;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-
 import com.fasterxml.jackson.databind.JsonNode;
-
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
@@ -62,6 +49,17 @@ import fr.gouv.vitamui.referential.internal.client.RuleInternalRestClient;
 import fr.gouv.vitamui.referential.internal.client.RuleInternalWebClient;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @Getter
 @Setter
@@ -69,27 +67,36 @@ import lombok.Setter;
 public class RuleExternalService extends AbstractResourceClientService<RuleDto, RuleDto> {
 
     private RuleInternalRestClient ruleInternalRestClient;
-    
+
     private RuleInternalWebClient ruleInternalWebClient;
 
     @Autowired
-    public RuleExternalService(ExternalSecurityService externalSecurityService, RuleInternalRestClient ruleInternalRestClient, RuleInternalWebClient ruleInternalWebClient) {
+    public RuleExternalService(
+        ExternalSecurityService externalSecurityService,
+        RuleInternalRestClient ruleInternalRestClient,
+        RuleInternalWebClient ruleInternalWebClient
+    ) {
         super(externalSecurityService);
         this.ruleInternalRestClient = ruleInternalRestClient;
         this.ruleInternalWebClient = ruleInternalWebClient;
     }
 
     public List<RuleDto> getAll(final Optional<String> criteria) {
-        return ruleInternalRestClient.getAll(getInternalHttpContext(),criteria);
+        return ruleInternalRestClient.getAll(getInternalHttpContext(), criteria);
     }
 
-    @Override protected BasePaginatingAndSortingRestClient<RuleDto, InternalHttpContext> getClient() {
+    @Override
+    protected BasePaginatingAndSortingRestClient<RuleDto, InternalHttpContext> getClient() {
         return ruleInternalRestClient;
     }
 
-    public PaginatedValuesDto<RuleDto> getAllPaginated(final Integer page, final Integer size, final Optional<String> criteria,
-            final Optional<String> orderBy, final Optional<DirectionDto> direction) {
-
+    public PaginatedValuesDto<RuleDto> getAllPaginated(
+        final Integer page,
+        final Integer size,
+        final Optional<String> criteria,
+        final Optional<String> orderBy,
+        final Optional<DirectionDto> direction
+    ) {
         ParameterChecker.checkPagination(size, page);
         return getClient().getAllPaginated(getInternalHttpContext(), page, size, criteria, orderBy, direction);
     }
@@ -99,7 +106,7 @@ public class RuleExternalService extends AbstractResourceClientService<RuleDto, 
     }
 
     public boolean patchRule(final String id, final Map<String, Object> partialDto) {
-    	return ruleInternalRestClient.patchRule(getInternalHttpContext(), id, partialDto);
+        return ruleInternalRestClient.patchRule(getInternalHttpContext(), id, partialDto);
     }
 
     public boolean createRule(final RuleDto ruleDto) {
@@ -127,9 +134,8 @@ public class RuleExternalService extends AbstractResourceClientService<RuleDto, 
     public ResponseEntity<Resource> export() {
         return ruleInternalRestClient.export(getInternalHttpContext());
     }
-    
+
     public JsonNode importRules(String fileName, MultipartFile file) {
         return ruleInternalWebClient.importRules(getInternalHttpContext(), fileName, file);
     }
-
 }

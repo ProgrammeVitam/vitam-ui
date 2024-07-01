@@ -1,6 +1,6 @@
 package fr.gouv.vitamui.pastis.common.exception;
 
-public class PastisException extends Exception{
+public class PastisException extends Exception {
 
     public PastisException(String message) {
         super(message);
@@ -13,5 +13,4 @@ public class PastisException extends Exception{
     public PastisException(String message, Throwable cause) {
         super(message, cause);
     }
-
 }

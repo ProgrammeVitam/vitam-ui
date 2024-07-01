@@ -61,16 +61,20 @@ public class ResultsDto<T> implements Serializable {
         // Intentionally empty.
     }
 
-    public ResultsDto(final Collection<T> values, final int pageNum, final int maxResults,
-            final boolean hasMore) {
+    public ResultsDto(final Collection<T> values, final int pageNum, final int maxResults, final boolean hasMore) {
         this.values = values;
         this.pageNum = pageNum;
         this.pageSize = maxResults;
         this.hasMore = hasMore;
     }
 
-    public ResultsDto(final Collection<T> values, final int pageNum, final int maxResults,
-            final boolean hasMore, Map<String, Object> groups) {
+    public ResultsDto(
+        final Collection<T> values,
+        final int pageNum,
+        final int maxResults,
+        final boolean hasMore,
+        Map<String, Object> groups
+    ) {
         this.values = values;
         this.pageNum = pageNum;
         this.pageSize = maxResults;
@@ -124,5 +128,4 @@ public class ResultsDto<T> implements Serializable {
     public Map<String, Object> getGroups() {
         return groups;
     }
-
 }

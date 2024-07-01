@@ -36,23 +36,22 @@
  */
 package fr.gouv.vitamui.iam.external.server.service;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Map;
-
 import com.fasterxml.jackson.databind.JsonNode;
+import fr.gouv.vitamui.commons.api.domain.OwnerDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.exception.ForbiddenException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import fr.gouv.vitamui.commons.api.domain.OwnerDto;
 import fr.gouv.vitamui.iam.internal.client.OwnerInternalRestClient;
 import fr.gouv.vitamui.iam.security.client.AbstractResourceClientService;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Map;
 
 /**
  * The service to read, create, update and delete the tenants.
@@ -67,8 +66,10 @@ public class OwnerExternalService extends AbstractResourceClientService<OwnerDto
     private final OwnerInternalRestClient ownerInternalRestClient;
 
     @Autowired
-    public OwnerExternalService(final OwnerInternalRestClient ownerInternalRestClient,
-            final ExternalSecurityService externalSecurityService) {
+    public OwnerExternalService(
+        final OwnerInternalRestClient ownerInternalRestClient,
+        final ExternalSecurityService externalSecurityService
+    ) {
         super(externalSecurityService);
         this.ownerInternalRestClient = ownerInternalRestClient;
     }
@@ -133,5 +134,4 @@ public class OwnerExternalService extends AbstractResourceClientService<OwnerDto
     protected String getVersionApiCrtieria() {
         return CRITERIA_VERSION_V2;
     }
-
 }

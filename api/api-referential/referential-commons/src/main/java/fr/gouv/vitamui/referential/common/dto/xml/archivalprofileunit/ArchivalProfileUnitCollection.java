@@ -51,5 +51,4 @@ public class ArchivalProfileUnitCollection {
 
     @XmlElement(name = "ArchivalProfiles")
     private List<ArchivalProfileUnit> archivalProfileUnits;
-
 }

@@ -1,11 +1,11 @@
 package fr.gouv.vitamui.iam.internal.server.common.rest;
 
-import static org.mockito.Mockito.mock;
+import fr.gouv.vitamui.commons.mongo.repository.VitamUIRepository;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import fr.gouv.vitamui.commons.mongo.repository.VitamUIRepository;
+import static org.mockito.Mockito.mock;
 
 /**
  * A status controller mock.

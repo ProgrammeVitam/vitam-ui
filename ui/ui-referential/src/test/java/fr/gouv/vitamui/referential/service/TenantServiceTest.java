@@ -38,7 +38,6 @@ package fr.gouv.vitamui.referential.service;
 
 import fr.gouv.vitamui.commons.api.domain.TenantDto;
 import fr.gouv.vitamui.iam.external.client.TenantExternalRestClient;
-import fr.gouv.vitamui.referential.common.dto.SecurityProfileDto;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -82,5 +81,4 @@ public class TenantServiceTest {
         Assert.assertNotNull(tenantList);
         assertThat(tenantList).containsExactly(tenantDto);
     }
-
 }

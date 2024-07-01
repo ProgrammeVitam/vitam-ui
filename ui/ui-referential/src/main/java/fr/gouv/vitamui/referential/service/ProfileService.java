@@ -36,21 +36,21 @@
  */
 package fr.gouv.vitamui.referential.service;
 
-import java.util.Collection;
-import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.referential.common.dto.ProfileDto;
 import fr.gouv.vitamui.referential.external.client.ProfileExternalRestClient;
 import fr.gouv.vitamui.ui.commons.service.AbstractCrudService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.Collection;
+import java.util.Optional;
 
 @Service
 public class ProfileService extends AbstractCrudService<ProfileDto> {
+
     static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ProfileService.class);
 
     private ProfileExternalRestClient client;
@@ -64,7 +64,8 @@ public class ProfileService extends AbstractCrudService<ProfileDto> {
         return client.getAll(context, criteria);
     }
 
-    @Override public ProfileExternalRestClient getClient() {
+    @Override
+    public ProfileExternalRestClient getClient() {
         return client;
     }
 }

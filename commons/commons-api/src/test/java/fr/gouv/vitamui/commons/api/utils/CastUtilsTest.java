@@ -1,13 +1,11 @@
 package fr.gouv.vitamui.commons.api.utils;
 
-
-import static org.assertj.core.api.Assertions.assertThat;
+import fr.gouv.vitamui.commons.api.exception.InvalidTypeException;
+import org.junit.Test;
 
 import java.io.IOException;
 
-import org.junit.Test;
-
-import fr.gouv.vitamui.commons.api.exception.InvalidTypeException;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class CastUtilsTest {
 
@@ -21,7 +19,6 @@ public class CastUtilsTest {
 
         a = CastUtils.toInteger(new Double(5));
         assertThat(a).isEqualTo(5);
-
 
         a = CastUtils.toInteger(null);
         assertThat(a).isEqualTo(null);

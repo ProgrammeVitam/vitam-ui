@@ -87,8 +87,8 @@ import static fr.gouv.vitamui.commons.api.utils.MetadataSearchCriteriaUtils.mapR
 @Getter
 @Service
 public class ArchiveSearchInternalService {
-    private static final VitamUILogger LOGGER =
-        VitamUILoggerFactory.getInstance(ArchiveSearchInternalService.class);
+
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ArchiveSearchInternalService.class);
     private static final String ARCHIVE_UNIT_DETAILS = "$results";
     public static final String DSL_QUERY_PROJECTION = "$projection";
     public static final String DSL_QUERY_FILTER = "$filter";
@@ -99,9 +99,16 @@ public class ArchiveSearchInternalService {
 
     private static final Integer SEARCH_UNIT_MAX_RESULTS = 10000;
 
-    private static final String[] FILING_PLAN_PROJECTION =
-        new String[] {"#id", TITLE_FIELD, "Title_", "DescriptionLevel", "#unitType", "#unitups", "#allunitups",
-            "#object"};
+    private static final String[] FILING_PLAN_PROJECTION = new String[] {
+        "#id",
+        TITLE_FIELD,
+        "Title_",
+        "DescriptionLevel",
+        "#unitType",
+        "#unitups",
+        "#allunitups",
+        "#object",
+    };
     public static final String FALSE = "false";
     public static final String TRUE = "true";
 
@@ -119,10 +126,13 @@ public class ArchiveSearchInternalService {
     private final ArchiveSearchFacetsInternalService archiveSearchFacetsInternalService;
 
     @Autowired
-    public ArchiveSearchInternalService(final ObjectMapper objectMapper, final UnitService unitService,
+    public ArchiveSearchInternalService(
+        final ObjectMapper objectMapper,
+        final UnitService unitService,
         final ArchiveSearchAgenciesInternalService archiveSearchAgenciesInternalService,
         final ArchiveSearchRulesInternalService archiveSearchRulesInternalService,
-        final ArchiveSearchFacetsInternalService archiveSearchFacetsInternalService) {
+        final ArchiveSearchFacetsInternalService archiveSearchFacetsInternalService
+    ) {
         this.unitService = unitService;
         this.objectMapper = objectMapper;
         this.archiveSearchAgenciesInternalService = archiveSearchAgenciesInternalService;
@@ -130,9 +140,10 @@ public class ArchiveSearchInternalService {
         this.archiveSearchFacetsInternalService = archiveSearchFacetsInternalService;
     }
 
-    public ArchiveUnitsDto searchArchiveUnitsByCriteria(final SearchCriteriaDto searchQuery,
-        final VitamContext vitamContext)
-        throws VitamClientException, IOException {
+    public ArchiveUnitsDto searchArchiveUnitsByCriteria(
+        final SearchCriteriaDto searchQuery,
+        final VitamContext vitamContext
+    ) throws VitamClientException, IOException {
         try {
             LOGGER.debug("calling find archive units by criteria {} ", searchQuery.toString());
             archiveSearchAgenciesInternalService.mapAgenciesNameToCodes(searchQuery, vitamContext);
@@ -150,17 +161,28 @@ public class ArchiveSearchInternalService {
         }
     }
 
-    private void fillManagementRulesFacets(SearchCriteriaDto searchQuery, ArchiveUnitsDto archiveUnitsDto,
-        boolean trackTotalHits, VitamContext vitamContext)
-        throws InvalidCreateOperationException, VitamClientException, JsonProcessingException {
+    private void fillManagementRulesFacets(
+        SearchCriteriaDto searchQuery,
+        ArchiveUnitsDto archiveUnitsDto,
+        boolean trackTotalHits,
+        VitamContext vitamContext
+    ) throws InvalidCreateOperationException, VitamClientException, JsonProcessingException {
         try {
-            archiveUnitsDto.getArchives().getFacetResults()
-                .addAll(archiveSearchFacetsInternalService.fillManagementRulesFacets(searchQuery, trackTotalHits,
-                    vitamContext));
+            archiveUnitsDto
+                .getArchives()
+                .getFacetResults()
+                .addAll(
+                    archiveSearchFacetsInternalService.fillManagementRulesFacets(
+                        searchQuery,
+                        trackTotalHits,
+                        vitamContext
+                    )
+                );
         } catch (UnexpectedSettingsException e) {
             if (!searchQuery.isComputeFacets()) {
                 LOGGER.error(
-                    "Could not compute facets,the setting track total hits is not allowed in vitam, we return units without facets");
+                    "Could not compute facets,the setting track total hits is not allowed in vitam, we return units without facets"
+                );
             } else {
                 LOGGER.error("Could not compute facets,the setting track total hits is not allowed in vitam, ");
                 throw new UnexpectedSettingsException(e.getMessage());
@@ -170,19 +192,31 @@ public class ArchiveSearchInternalService {
 
     private ArchiveUnitsDto decorateAndMapResponse(JsonNode vitamResponse, VitamContext vitamContext)
         throws JsonProcessingException, VitamClientException {
-        final VitamUISearchResponseDto archivesOriginResponse =
-            objectMapper.treeToValue(vitamResponse, VitamUISearchResponseDto.class);
-        Set<String> originatingAgenciesCodes = archivesOriginResponse.getResults().stream().map(
-                ResultsDto::getOriginatingAgency).
-            filter(Objects::nonNull).collect(Collectors.toSet());
-        List<AgencyModelDto> originAgenciesFound =
-            archiveSearchAgenciesInternalService.findOriginAgenciesByCodes(vitamContext, originatingAgenciesCodes);
-        Map<String, AgencyModelDto> agenciesMapByIdentifier =
-            originAgenciesFound.stream().collect(Collectors.toMap(AgencyModelDto::getIdentifier, agency -> agency));
+        final VitamUISearchResponseDto archivesOriginResponse = objectMapper.treeToValue(
+            vitamResponse,
+            VitamUISearchResponseDto.class
+        );
+        Set<String> originatingAgenciesCodes = archivesOriginResponse
+            .getResults()
+            .stream()
+            .map(ResultsDto::getOriginatingAgency)
+            .filter(Objects::nonNull)
+            .collect(Collectors.toSet());
+        List<AgencyModelDto> originAgenciesFound = archiveSearchAgenciesInternalService.findOriginAgenciesByCodes(
+            vitamContext,
+            originatingAgenciesCodes
+        );
+        Map<String, AgencyModelDto> agenciesMapByIdentifier = originAgenciesFound
+            .stream()
+            .collect(Collectors.toMap(AgencyModelDto::getIdentifier, agency -> agency));
 
-        List<ArchiveUnit> archivesFilled = archivesOriginResponse.getResults().stream().map(
-            archiveUnit -> RulesUpdateCommonService.fillOriginatingAgencyName(archiveUnit, agenciesMapByIdentifier)
-        ).collect(Collectors.toList());
+        List<ArchiveUnit> archivesFilled = archivesOriginResponse
+            .getResults()
+            .stream()
+            .map(
+                archiveUnit -> RulesUpdateCommonService.fillOriginatingAgencyName(archiveUnit, agenciesMapByIdentifier)
+            )
+            .collect(Collectors.toList());
         VitamUIArchiveUnitResponseDto responseFilled = new VitamUIArchiveUnitResponseDto();
         responseFilled.setContext(archivesOriginResponse.getContext());
         responseFilled.setFacetResults(archivesOriginResponse.getFacetResults());
@@ -210,9 +244,14 @@ public class ArchiveSearchInternalService {
     public ResultsDto findArchiveUnitById(String id, VitamContext vitamContext) throws VitamClientException {
         try {
             LOGGER.debug("Archive Unit Id : {}", id);
-            String re = StringUtils
-                .chop(unitService.findUnitById(id, vitamContext).toJsonNode().get(ARCHIVE_UNIT_DETAILS).toString()
-                    .substring(1));
+            String re = StringUtils.chop(
+                unitService
+                    .findUnitById(id, vitamContext)
+                    .toJsonNode()
+                    .get(ARCHIVE_UNIT_DETAILS)
+                    .toString()
+                    .substring(1)
+            );
             return objectMapper.readValue(re, ResultsDto.class);
         } catch (JsonProcessingException e) {
             LOGGER.error("Can not get the archive unit {} ", e);
@@ -220,9 +259,11 @@ public class ArchiveSearchInternalService {
         }
     }
 
-    public String updateUnitById(String id, UnitDescriptiveMetadataDto unitDescriptiveMetadataDto,
-        VitamContext vitamContext) throws VitamClientException {
-
+    public String updateUnitById(
+        String id,
+        UnitDescriptiveMetadataDto unitDescriptiveMetadataDto,
+        VitamContext vitamContext
+    ) throws VitamClientException {
         if (unitDescriptiveMetadataDto == null) {
             LOGGER.error("Error update unit criteria");
             throw new BadRequestException("Error update unit criteria");
@@ -237,8 +278,10 @@ public class ArchiveSearchInternalService {
         if (updateResponse.isOk()) {
             RequestResponse<JsonNode> unitById = unitService.findUnitById(id, vitamContext);
             try {
-                final VitamUISearchResponseDto archivesResponse =
-                    objectMapper.treeToValue(unitById.toJsonNode(), VitamUISearchResponseDto.class);
+                final VitamUISearchResponseDto archivesResponse = objectMapper.treeToValue(
+                    unitById.toJsonNode(),
+                    VitamUISearchResponseDto.class
+                );
                 List<String> operations = archivesResponse.getResults().get(0).getOperations();
                 response = operations.get(operations.size() - 1);
             } catch (Exception e) {
@@ -250,7 +293,6 @@ public class ArchiveSearchInternalService {
     }
 
     public ObjectNode createUpdateQuery(UnitDescriptiveMetadataDto unitDescriptiveMetadataDto) {
-
         ObjectNode dslQuery = JsonHandler.createObjectNode();
         ArrayNode arrayAction = JsonHandler.createArrayNode();
         ObjectNode unsetNode = JsonHandler.createObjectNode();
@@ -284,49 +326,55 @@ public class ArchiveSearchInternalService {
     }
 
     private void nullifyField(UnitDescriptiveMetadataDto unitDescriptiveMetadataDto) {
-        unitDescriptiveMetadataDto.getUnsetAction().forEach(f -> {
-            switch (f) {
-                case "StartDate":
-                    unitDescriptiveMetadataDto.setStartDate(null);
-                    break;
-                case "EndDate":
-                    unitDescriptiveMetadataDto.setEndDate(null);
-                    break;
-                case "Description":
-                    unitDescriptiveMetadataDto.setDescription(null);
-                    break;
-                case "Description_.fr":
-                    unitDescriptiveMetadataDto.setDescription_fr(null);
-                    break;
-                case "Description_.en":
-                    unitDescriptiveMetadataDto.setDescription_en(null);
-                    break;
-                default:
-                    break;
-            }
-        });
+        unitDescriptiveMetadataDto
+            .getUnsetAction()
+            .forEach(f -> {
+                switch (f) {
+                    case "StartDate":
+                        unitDescriptiveMetadataDto.setStartDate(null);
+                        break;
+                    case "EndDate":
+                        unitDescriptiveMetadataDto.setEndDate(null);
+                        break;
+                    case "Description":
+                        unitDescriptiveMetadataDto.setDescription(null);
+                        break;
+                    case "Description_.fr":
+                        unitDescriptiveMetadataDto.setDescription_fr(null);
+                        break;
+                    case "Description_.en":
+                        unitDescriptiveMetadataDto.setDescription_en(null);
+                        break;
+                    default:
+                        break;
+                }
+            });
     }
 
     private void transformDate(UnitDescriptiveMetadataDto unitDescriptiveMetadataDto) {
         if (unitDescriptiveMetadataDto.getStartDate() != null) {
             unitDescriptiveMetadataDto.setStartDate(
-                LocalDateUtil.getFormattedDateForMongo(unitDescriptiveMetadataDto.getStartDate()).split("T")[0]);
+                LocalDateUtil.getFormattedDateForMongo(unitDescriptiveMetadataDto.getStartDate()).split("T")[0]
+            );
         }
         if (unitDescriptiveMetadataDto.getEndDate() != null) {
             unitDescriptiveMetadataDto.setEndDate(
-                LocalDateUtil.getFormattedDateForMongo(unitDescriptiveMetadataDto.getEndDate()).split("T")[0]);
+                LocalDateUtil.getFormattedDateForMongo(unitDescriptiveMetadataDto.getEndDate()).split("T")[0]
+            );
         }
     }
 
     public ResultsDto findObjectById(String id, VitamContext vitamContext) throws VitamClientException {
         try {
             LOGGER.debug("Get Object Group");
-            String re = StringUtils
-                .chop(
-                    unitService.findObjectMetadataById(id, vitamContext).toJsonNode()
-                        .get(ARCHIVE_UNIT_DETAILS)
-                        .toString()
-                        .substring(1));
+            String re = StringUtils.chop(
+                unitService
+                    .findObjectMetadataById(id, vitamContext)
+                    .toJsonNode()
+                    .get(ARCHIVE_UNIT_DETAILS)
+                    .toString()
+                    .substring(1)
+            );
             LOGGER.debug("Object received: {}" + re);
             return objectMapper.readValue(re, ResultsDto.class);
         } catch (JsonProcessingException e) {
@@ -347,8 +395,7 @@ public class ArchiveSearchInternalService {
     public Response downloadObjectFromUnit(String id, String usage, Integer version, final VitamContext vitamContext)
         throws VitamClientException {
         LOGGER.debug("Download Archive Unit Object with id {} , usage {} and version {}  ", id, usage, version);
-        return unitService
-            .getObjectStreamByUnitId(id, usage, version, vitamContext);
+        return unitService.getObjectStreamByUnitId(id, usage, version, vitamContext);
     }
 
     public JsonNode prepareDslQuery(final SearchCriteriaDto searchQuery, final VitamContext vitamContext)
@@ -362,8 +409,11 @@ public class ArchiveSearchInternalService {
     public JsonNode createQueryForHoldingFillingUnit() {
         try {
             final SelectMultiQuery select = new SelectMultiQuery();
-            final Query query =
-                in(unitType(), UnitTypeEnum.HOLDING_UNIT.getValue(), UnitTypeEnum.FILING_UNIT.getValue());
+            final Query query = in(
+                unitType(),
+                UnitTypeEnum.HOLDING_UNIT.getValue(),
+                UnitTypeEnum.FILING_UNIT.getValue()
+            );
             select.addQueries(query);
             ObjectNode orderFilter = JsonHandler.createObjectNode();
             orderFilter.put(TITLE_FIELD, 1);
@@ -375,18 +425,22 @@ public class ArchiveSearchInternalService {
             return select.getFinalSelect();
         } catch (InvalidCreateOperationException | InvalidParseOperationException e) {
             throw new UnexpectedDataException(
-                "Unexpected error occured while building holding dsl query : " + e.getMessage());
+                "Unexpected error occured while building holding dsl query : " + e.getMessage()
+            );
         }
     }
-
 
     public String computedInheritedRules(final SearchCriteriaDto searchCriteriaDto, final VitamContext vitamContext)
         throws VitamClientException {
         LOGGER.debug("Computed Inherited Rules by criteria {} ", searchCriteriaDto.toString());
         JsonNode jsonNode = mapRequestToDslQuery(searchCriteriaDto);
         ObjectNode dslRequest = (ObjectNode) jsonNode;
-        RulesUpdateCommonService.deleteAttributesFromObjectNode(dslRequest, DSL_QUERY_PROJECTION, DSL_QUERY_FILTER,
-            DSL_QUERY_FACETS);
+        RulesUpdateCommonService.deleteAttributesFromObjectNode(
+            dslRequest,
+            DSL_QUERY_PROJECTION,
+            DSL_QUERY_FILTER,
+            DSL_QUERY_FACETS
+        );
         LOGGER.debug("Computed Inherited Rules final dslQuery : {}", dslRequest);
         JsonNode response = computedInheritedRules(vitamContext, dslRequest);
         return response.findValue(OPERATION_IDENTIFIER).textValue();
@@ -398,16 +452,16 @@ public class ArchiveSearchInternalService {
         return response.toJsonNode();
     }
 
-
     public JsonNode selectUnitWithInheritedRules(final JsonNode dslQuery, final VitamContext vitamContext)
         throws VitamClientException {
         RequestResponse<JsonNode> response = unitService.selectUnitsWithInheritedRules(vitamContext, dslQuery);
         return response.toJsonNode();
     }
 
-    public ResultsDto selectUnitWithInheritedRules(final SearchCriteriaDto searchQuery,
-        final VitamContext vitamContext)
-        throws VitamClientException, IOException {
+    public ResultsDto selectUnitWithInheritedRules(
+        final SearchCriteriaDto searchQuery,
+        final VitamContext vitamContext
+    ) throws VitamClientException, IOException {
         ResultsDto response = new ResultsDto();
         LOGGER.debug("calling select Units With Inherited Rules by criteria {} ", searchQuery.toString());
         archiveSearchAgenciesInternalService.mapAgenciesNameToCodes(searchQuery, vitamContext);
@@ -415,16 +469,19 @@ public class ArchiveSearchInternalService {
         RulesUpdateCommonService.deleteAttributesFromObjectNode((ObjectNode) dslQuery, DSL_QUERY_FACETS);
         JsonNode vitamResponse = selectUnitWithInheritedRules(dslQuery, vitamContext);
         ArchiveUnitsDto archiveUnitsDto = decorateAndMapResponse(vitamResponse, vitamContext);
-        if (Objects.nonNull(archiveUnitsDto.getArchives()) &&
-            !CollectionUtils.isEmpty(archiveUnitsDto.getArchives().getResults())) {
+        if (
+            Objects.nonNull(archiveUnitsDto.getArchives()) &&
+            !CollectionUtils.isEmpty(archiveUnitsDto.getArchives().getResults())
+        ) {
             response = archiveUnitsDto.getArchives().getResults().get(0);
         }
         return response;
     }
 
     public String reclassification(
-        final ReclassificationCriteriaDto reclassificationCriteriaDto, final VitamContext vitamContext)
-        throws VitamClientException {
+        final ReclassificationCriteriaDto reclassificationCriteriaDto,
+        final VitamContext vitamContext
+    ) throws VitamClientException {
         if (reclassificationCriteriaDto == null) {
             throw new BadRequestException("Error reclassification criteria");
         }
@@ -432,8 +489,9 @@ public class ArchiveSearchInternalService {
         JsonNode dslQuery = mapRequestToDslQuery(reclassificationCriteriaDto.getSearchCriteriaDto());
         ArrayNode array = JsonHandler.createArrayNode();
         ((ObjectNode) dslQuery).putPOJO(ACTION, reclassificationCriteriaDto.getAction());
-        Arrays.stream(new String[] {DSL_QUERY_PROJECTION, DSL_QUERY_FILTER, DSL_QUERY_FACETS})
-            .forEach(((ObjectNode) dslQuery)::remove);
+        Arrays.stream(new String[] { DSL_QUERY_PROJECTION, DSL_QUERY_FILTER, DSL_QUERY_FACETS }).forEach(
+            ((ObjectNode) dslQuery)::remove
+        );
         array.add(dslQuery);
         LOGGER.debug("Reclassification query : {}", array);
         RequestResponse<JsonNode> jsonNodeRequestResponse = unitService.reclassification(vitamContext, array);
@@ -450,5 +508,4 @@ public class ArchiveSearchInternalService {
         LOGGER.debug("get ontologies file from path : {} ", ontologiesFilePath);
         return OntologyServiceReader.readExternalOntologiesFromFile(tenantId, ontologiesFilePath);
     }
-
 }

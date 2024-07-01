@@ -1,29 +1,5 @@
 package fr.gouv.vitamui.iam.internal.server.group.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.ArgumentMatchers;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
-import org.springframework.test.context.junit4.SpringRunner;
-
 import fr.gouv.vitamui.commons.api.domain.CriterionOperator;
 import fr.gouv.vitamui.commons.api.domain.GroupDto;
 import fr.gouv.vitamui.commons.api.domain.ProfileDto;
@@ -54,9 +30,35 @@ import fr.gouv.vitamui.iam.internal.server.tenant.dao.TenantRepository;
 import fr.gouv.vitamui.iam.internal.server.tenant.domain.Tenant;
 import fr.gouv.vitamui.iam.internal.server.user.dao.UserRepository;
 import fr.gouv.vitamui.iam.internal.server.utils.IamServerUtilsTest;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.ArgumentMatchers;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
+import org.springframework.test.context.junit4.SpringRunner;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
 
 @RunWith(SpringRunner.class)
-@EnableMongoRepositories(basePackageClasses = {GroupRepository.class, CustomSequenceRepository.class}, repositoryBaseClass = VitamUIRepositoryImpl.class)
+@EnableMongoRepositories(
+    basePackageClasses = { GroupRepository.class, CustomSequenceRepository.class },
+    repositoryBaseClass = VitamUIRepositoryImpl.class
+)
 public class GroupInternalServiceIntegrationTest extends AbstractLogbookIntegrationTest {
 
     private GroupInternalService service;
@@ -100,12 +102,24 @@ public class GroupInternalServiceIntegrationTest extends AbstractLogbookIntegrat
 
     @Before
     public void setup() {
-        service = new GroupInternalService(new SequenceGeneratorService(sequenceRepository), repository, customerRepository, internalProfileService, userRepository, internalSecurityService,
-                tenantRepository, iamLogbookService, groupConverter, null);
+        service = new GroupInternalService(
+            new SequenceGeneratorService(sequenceRepository),
+            repository,
+            customerRepository,
+            internalProfileService,
+            userRepository,
+            internalSecurityService,
+            tenantRepository,
+            iamLogbookService,
+            groupConverter,
+            null
+        );
 
         repository.deleteAll();
         ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
-        Mockito.when(tenantRepository.findOne(ArgumentMatchers.any(Query.class))).thenReturn(Optional.ofNullable(new Tenant()));
+        Mockito.when(tenantRepository.findOne(ArgumentMatchers.any(Query.class))).thenReturn(
+            Optional.ofNullable(new Tenant())
+        );
 
         final CustomSequence customSequence = new CustomSequence();
         customSequence.setName(SequencesConstants.GROUP_IDENTIFIER);
@@ -124,13 +138,15 @@ public class GroupInternalServiceIntegrationTest extends AbstractLogbookIntegrat
 
         repository.save(IamServerUtilsTest.buildGroup(ID, "identifier", "nameknow", CUSTOMER_ID));
 
-        QueryDto criteria = QueryDto.criteria().addCriterion("customerId", CUSTOMER_ID, CriterionOperator.EQUALS)
-                .addCriterion("name", "nameknow", CriterionOperator.EQUALS);
+        QueryDto criteria = QueryDto.criteria()
+            .addCriterion("customerId", CUSTOMER_ID, CriterionOperator.EQUALS)
+            .addCriterion("name", "nameknow", CriterionOperator.EQUALS);
         boolean exist = service.checkExist(criteria.toJson());
         assertThat(exist).isTrue();
 
-        criteria = QueryDto.criteria().addCriterion("customerId", CUSTOMER_ID, CriterionOperator.EQUALS)
-                .addCriterion("name", "nameunknow", CriterionOperator.EQUALS);
+        criteria = QueryDto.criteria()
+            .addCriterion("customerId", CUSTOMER_ID, CriterionOperator.EQUALS)
+            .addCriterion("name", "nameunknow", CriterionOperator.EQUALS);
         exist = service.checkExist(criteria.toJson());
         assertThat(exist).isFalse();
 
@@ -146,7 +162,9 @@ public class GroupInternalServiceIntegrationTest extends AbstractLogbookIntegrat
         repository.save(IamServerUtilsTest.buildGroup("id30", "id3", "nametest30", CUSTOMER_ID, "EDF.INFRA"));
         repository.save(IamServerUtilsTest.buildGroup("id35", "id4", "nametest35", CUSTOMER_ID, "EDF.MARKET"));
         repository.save(IamServerUtilsTest.buildGroup("id36", "id5", "nametest36", CUSTOMER_ID, "EDF"));
-        repository.save(IamServerUtilsTest.buildGroup("idothercustomerid", "id2", "nametest35", "other_customer_id", "EDF.VITAMUI"));
+        repository.save(
+            IamServerUtilsTest.buildGroup("idothercustomerid", "id2", "nametest35", "other_customer_id", "EDF.VITAMUI")
+        );
 
         List<String> levels = service.getSubLevels("EDF", CUSTOMER_ID);
         assertThat(levels).containsOnly("EDF.RH.PARIS", "EDF.RH", "EDF.MARKET", "EDF.INFRA");
@@ -159,7 +177,15 @@ public class GroupInternalServiceIntegrationTest extends AbstractLogbookIntegrat
     public void testCheckExist() {
         repository.save(IamServerUtilsTest.buildGroup(ID, "id1", "name", CUSTOMER_ID, LEVEL));
         repository.save(IamServerUtilsTest.buildGroup("idLevel", "id2", "nameLevel", CUSTOMER_ID, LEVEL));
-        repository.save(IamServerUtilsTest.buildGroup("idAdmin", "id3", "nameAdmin", CUSTOMER_ID, ApiIamInternalConstants.ADMIN_LEVEL));
+        repository.save(
+            IamServerUtilsTest.buildGroup(
+                "idAdmin",
+                "id3",
+                "nameAdmin",
+                CUSTOMER_ID,
+                ApiIamInternalConstants.ADMIN_LEVEL
+            )
+        );
         repository.save(IamServerUtilsTest.buildGroup("idSubLvl", "id4", "nameSubLvl", CUSTOMER_ID, LEVEL + ".SUB"));
 
         final AuthUserDto userDto = IamDtoBuilder.buildAuthUserDto("userId", "test@vitamui.com");
@@ -206,7 +232,15 @@ public class GroupInternalServiceIntegrationTest extends AbstractLogbookIntegrat
         mainUserDto.setCustomerId(CUSTOMER_ID);
 
         repository.save(IamServerUtilsTest.buildGroup(ID, "id1", "name", CUSTOMER_ID, LEVEL));
-        repository.save(IamServerUtilsTest.buildGroup("idAdmin", "id2", "nameAdmin", CUSTOMER_ID, ApiIamInternalConstants.ADMIN_LEVEL));
+        repository.save(
+            IamServerUtilsTest.buildGroup(
+                "idAdmin",
+                "id2",
+                "nameAdmin",
+                CUSTOMER_ID,
+                ApiIamInternalConstants.ADMIN_LEVEL
+            )
+        );
 
         Mockito.when(internalSecurityService.userIsRootLevel()).thenCallRealMethod();
         Mockito.when(internalSecurityService.getUser()).thenReturn(mainUserDto);
@@ -235,8 +269,12 @@ public class GroupInternalServiceIntegrationTest extends AbstractLogbookIntegrat
         final GroupDto group = createGroup();
         assertThat(group.getIdentifier()).isNotBlank();
 
-        final Criteria criteria = Criteria.where("obId").is(group.getIdentifier()).and("obIdReq").is(MongoDbCollections.GROUPS).and("evType")
-                .is(EventType.EXT_VITAMUI_CREATE_GROUP);
+        final Criteria criteria = Criteria.where("obId")
+            .is(group.getIdentifier())
+            .and("obIdReq")
+            .is(MongoDbCollections.GROUPS)
+            .and("evType")
+            .is(EventType.EXT_VITAMUI_CREATE_GROUP);
         final Optional<Event> ev = eventRepository.findOne(Query.query(criteria));
         assertThat(ev).isPresent();
     }
@@ -265,8 +303,12 @@ public class GroupInternalServiceIntegrationTest extends AbstractLogbookIntegrat
         service.patch(partialDto);
         partialDto.remove("enabled");
 
-        final Criteria criteria = Criteria.where("obId").is(group.getIdentifier()).and("obIdReq").is(MongoDbCollections.GROUPS).and("evType")
-                .is(EventType.EXT_VITAMUI_UPDATE_GROUP);
+        final Criteria criteria = Criteria.where("obId")
+            .is(group.getIdentifier())
+            .and("obIdReq")
+            .is(MongoDbCollections.GROUPS)
+            .and("evType")
+            .is(EventType.EXT_VITAMUI_UPDATE_GROUP);
         final Collection<Event> events = eventRepository.findAll(Query.query(criteria));
         assertThat(events).hasSize(4);
     }
@@ -282,7 +324,12 @@ public class GroupInternalServiceIntegrationTest extends AbstractLogbookIntegrat
         profile.setCustomerId(customerId);
         profile.setTenantIdentifier(tenantIdentifier);
 
-        final GroupDto groupDto = IamServerUtilsTest.buildGroupDto(null, "nameTest", customerId, Arrays.asList(profile.getId()));
+        final GroupDto groupDto = IamServerUtilsTest.buildGroupDto(
+            null,
+            "nameTest",
+            customerId,
+            Arrays.asList(profile.getId())
+        );
         groupDto.setIdentifier(null);
         final Customer customer = new Customer();
         customer.setEnabled(true);
@@ -292,10 +339,11 @@ public class GroupInternalServiceIntegrationTest extends AbstractLogbookIntegrat
         Mockito.when(internalSecurityService.isLevelAllowed(any())).thenReturn(true);
         Mockito.when(internalSecurityService.getCustomerId()).thenReturn(customerId);
         Mockito.when(internalSecurityService.getHttpContext()).thenReturn(internalHttpContext);
-        Mockito.when(internalProfileService.getMany(ArgumentMatchers.any(), ArgumentMatchers.any())).thenReturn(Arrays.asList(profile));
+        Mockito.when(internalProfileService.getMany(ArgumentMatchers.any(), ArgumentMatchers.any())).thenReturn(
+            Arrays.asList(profile)
+        );
         Mockito.when(tenantRepository.findByIdentifier(ArgumentMatchers.any())).thenReturn(tenant);
 
         return service.create(groupDto);
     }
-
 }

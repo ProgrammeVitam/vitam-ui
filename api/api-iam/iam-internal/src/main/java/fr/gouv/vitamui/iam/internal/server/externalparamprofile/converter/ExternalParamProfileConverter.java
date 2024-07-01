@@ -80,5 +80,4 @@ public class ExternalParamProfileConverter {
         logbookData.put(DATE_TIME, LogbookUtils.getValue(dto.getDateTime()));
         return ApiUtils.toJson(logbookData);
     }
-
 }

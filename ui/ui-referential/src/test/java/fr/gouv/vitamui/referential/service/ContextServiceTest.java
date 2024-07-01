@@ -62,10 +62,13 @@ import static org.mockito.ArgumentMatchers.isNull;
 public class ContextServiceTest {
 
     static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ContextService.class);
+
     @Mock
     private ContextExternalRestClient client;
+
     @Mock
     private CommonService commonService;
+
     private ContextService service;
 
     @Before

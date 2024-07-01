@@ -48,6 +48,7 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import fr.gouv.vitamui.iam.external.client.CasExternalRestClient;
 import lombok.RequiredArgsConstructor;
+import lombok.val;
 import org.apache.commons.lang.StringUtils;
 import org.apereo.cas.authentication.credential.UsernamePasswordCredential;
 import org.apereo.cas.web.support.WebUtils;
@@ -59,8 +60,6 @@ import org.springframework.webflow.execution.RequestContext;
 
 import java.io.IOException;
 import java.util.Optional;
-
-import lombok.val;
 
 /**
  * This class can dispatch the user:
@@ -93,7 +92,6 @@ public class DispatcherAction extends AbstractAction {
 
     @Override
     protected Event doExecute(final RequestContext requestContext) throws IOException {
-
         val credential = WebUtils.getCredential(requestContext, UsernamePasswordCredential.class);
         val username = credential.getUsername().toLowerCase().trim();
         String dispatchedUser = username;
@@ -110,30 +108,38 @@ public class DispatcherAction extends AbstractAction {
 
         // if the user is disabled, send him to a specific page (ignore not found users: it will fail when checking login/password)
         try {
-            val dispatcherUserDto = casExternalRestClient.getUserByEmail(utils.buildContext(dispatchedUser), dispatchedUser, Optional.empty());
+            val dispatcherUserDto = casExternalRestClient.getUserByEmail(
+                utils.buildContext(dispatchedUser),
+                dispatchedUser,
+                Optional.empty()
+            );
             if (dispatcherUserDto != null && dispatcherUserDto.getStatus() != UserStatusEnum.ENABLED) {
                 return userDisabled(dispatchedUser);
             }
         } catch (final InvalidFormatException e) {
             return userDisabled(dispatchedUser);
-        } catch (final NotFoundException e) {
-        }
+        } catch (final NotFoundException e) {}
         if (surrogate != null) {
             try {
-                val surrogateDto = casExternalRestClient.getUserByEmail(utils.buildContext(surrogate), surrogate, Optional.empty());
+                val surrogateDto = casExternalRestClient.getUserByEmail(
+                    utils.buildContext(surrogate),
+                    surrogate,
+                    Optional.empty()
+                );
                 if (surrogateDto != null && surrogateDto.getStatus() != UserStatusEnum.ENABLED) {
                     LOGGER.error("Bad status for surrogate: {}", surrogate);
                     return userDisabled(surrogate);
                 }
             } catch (final InvalidFormatException e) {
                 return userDisabled(surrogate);
-            } catch (final NotFoundException e) {
-            }
+            } catch (final NotFoundException e) {}
         }
 
         val request = WebUtils.getHttpServletRequestFromExternalWebflowContext(requestContext);
         boolean isInternal;
-        val provider = (Pac4jClientIdentityProviderDto) identityProviderHelper.findByUserIdentifier(providersService.getProviders(), dispatchedUser).orElse(null);
+        val provider = (Pac4jClientIdentityProviderDto) identityProviderHelper
+            .findByUserIdentifier(providersService.getProviders(), dispatchedUser)
+            .orElse(null);
         if (provider != null) {
             isInternal = provider.getInternal();
         } else {
@@ -146,7 +152,6 @@ public class DispatcherAction extends AbstractAction {
             LOGGER.debug("Redirect the user to the password page...");
             return success();
         } else {
-
             // save the surrogate in the session to be retrieved by the UserPrincipalResolver and DelegatedSurrogateAuthenticationPostProcessor
             if (surrogate != null) {
                 LOGGER.debug("Saving surrogate for after authentication delegation: {}", surrogate);

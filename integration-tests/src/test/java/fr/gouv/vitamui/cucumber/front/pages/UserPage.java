@@ -1,8 +1,7 @@
 package fr.gouv.vitamui.cucumber.front.pages;
 
-import org.openqa.selenium.By;
-
 import net.thucydides.core.annotations.DefaultUrl;
+import org.openqa.selenium.By;
 
 @DefaultUrl("/")
 public class UserPage extends AbstractPage {
@@ -20,5 +19,4 @@ public class UserPage extends AbstractPage {
     public boolean userListIsDisplayed() {
         return this.find(By.tagName("app-user-list")).isDisplayed();
     }
-
 }

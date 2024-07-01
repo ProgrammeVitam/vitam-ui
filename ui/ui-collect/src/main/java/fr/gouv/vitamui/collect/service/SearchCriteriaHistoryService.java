@@ -38,23 +38,23 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-
 @Service
 public class SearchCriteriaHistoryService extends AbstractPaginateService<SearchCriteriaHistoryDto> {
 
-	static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(SearchCriteriaHistoryService.class);
+    static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(SearchCriteriaHistoryService.class);
 
-	private final SearchCriteriaHistoryExternalRestClient client;
+    private final SearchCriteriaHistoryExternalRestClient client;
 
-	@Autowired
-	public SearchCriteriaHistoryService(final SearchCriteriaHistoryExternalRestClient client) {
-	    this.client = client;
-	}
+    @Autowired
+    public SearchCriteriaHistoryService(final SearchCriteriaHistoryExternalRestClient client) {
+        this.client = client;
+    }
 
     public List<SearchCriteriaHistoryDto> getSearchCritriaHistory(ExternalHttpContext context) {
         LOGGER.debug("Get search criterias for the authenticated user");
         return client.getSearchCriteriaHistory(context);
-	}
+    }
+
     @Override
     public SearchCriteriaHistoryDto create(final ExternalHttpContext c, final SearchCriteriaHistoryDto dto) {
         return super.create(c, dto);
@@ -80,5 +80,4 @@ public class SearchCriteriaHistoryService extends AbstractPaginateService<Search
     public SearchCriteriaHistoryExternalRestClient getClient() {
         return client;
     }
-
 }

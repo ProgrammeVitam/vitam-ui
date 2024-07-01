@@ -89,32 +89,38 @@ public class IngestExternalController {
     }
 
     @Secured(ServicesData.ROLE_GET_ALL_INGEST)
-    @GetMapping(params = {"page", "size"})
-    public PaginatedValuesDto<LogbookOperationDto> getAllPaginated(@RequestParam final Integer page,
+    @GetMapping(params = { "page", "size" })
+    public PaginatedValuesDto<LogbookOperationDto> getAllPaginated(
+        @RequestParam final Integer page,
         @RequestParam final Integer size,
         @RequestParam(required = false) final Optional<String> criteria,
         @RequestParam(required = false) final Optional<String> orderBy,
-        @RequestParam(required = false) final Optional<DirectionDto> direction)
-        throws PreconditionFailedException, InvalidParseOperationException, IOException {
-        if(direction.isPresent()) {
+        @RequestParam(required = false) final Optional<DirectionDto> direction
+    ) throws PreconditionFailedException, InvalidParseOperationException, IOException {
+        if (direction.isPresent()) {
             SanityChecker.sanitizeCriteria(direction.get());
         }
-        if(orderBy.isPresent()) {
+        if (orderBy.isPresent()) {
             SanityChecker.checkSecureParameter(orderBy.get());
         }
         SanityChecker.sanitizeCriteria(criteria);
-        if(criteria.isPresent()) {
-            SanityChecker.sanitizeCriteria(VitamUIUtils
-                .convertObjectFromJson(criteria.get(), Object.class));
+        if (criteria.isPresent()) {
+            SanityChecker.sanitizeCriteria(VitamUIUtils.convertObjectFromJson(criteria.get(), Object.class));
         }
-        LOGGER.debug("getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, orderBy,
-            direction);
+        LOGGER.debug(
+            "getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}",
+            page,
+            size,
+            orderBy,
+            direction
+        );
         return ingestExternalService.getAllPaginated(page, size, criteria, orderBy, direction);
     }
 
     @Secured(ServicesData.ROLE_GET_INGEST)
     @GetMapping(CommonConstants.PATH_ID)
-    public LogbookOperationDto getOne(@PathVariable("id") final String id) throws PreconditionFailedException, InvalidParseOperationException {
+    public LogbookOperationDto getOne(@PathVariable("id") final String id)
+        throws PreconditionFailedException, InvalidParseOperationException {
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("get One Ingest id={}", id);
@@ -134,13 +140,18 @@ public class IngestExternalController {
     @Secured(ServicesData.ROLE_CREATE_INGEST)
     @ApiOperation(value = "Upload an streaming SIP", consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     @PostMapping(value = CommonConstants.INGEST_UPLOAD_V2, consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-    public ResponseEntity<Void> streamingUpload(InputStream inputStream,
+    public ResponseEntity<Void> streamingUpload(
+        InputStream inputStream,
         @RequestHeader(value = CommonConstants.X_ACTION) final String action,
         @RequestHeader(value = CommonConstants.X_CONTEXT_ID) final String contextId,
         @RequestHeader(value = CommonConstants.X_ORIGINAL_FILENAME_HEADER) final String originalFileName
     ) throws InvalidParseOperationException, PreconditionFailedException {
-        ParameterChecker.checkParameter("The action and the context ID are mandatory parameters: ", action, contextId,
-            originalFileName);
+        ParameterChecker.checkParameter(
+            "The action and the context ID are mandatory parameters: ",
+            action,
+            contextId,
+            originalFileName
+        );
         SanityChecker.checkSecureParameter(action, contextId, originalFileName);
         SanityChecker.isValidFileName(originalFileName);
         SafeFileChecker.checkSafeFilePath(originalFileName);

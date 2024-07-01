@@ -1,12 +1,11 @@
 package fr.gouv.vitamui.commons.rest;
 
+import fr.gouv.vitamui.commons.rest.client.configuration.HttpPoolConfiguration;
+import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import fr.gouv.vitamui.commons.rest.client.configuration.HttpPoolConfiguration;
-import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
 
 /**
  * Beans creation for Spring
@@ -35,5 +34,4 @@ public class RestTestApplicationConfiguration {
     public RestClientConfiguration getRestClientConfiguration2() {
         return new RestClientConfiguration();
     }
-
 }

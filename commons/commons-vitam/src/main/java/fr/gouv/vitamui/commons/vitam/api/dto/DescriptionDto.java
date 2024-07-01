@@ -49,7 +49,6 @@ import lombok.ToString;
 @ToString
 public class DescriptionDto {
 
-
     @JsonProperty("fr")
     private String fr;
 

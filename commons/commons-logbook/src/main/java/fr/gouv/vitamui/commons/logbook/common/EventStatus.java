@@ -39,5 +39,5 @@ package fr.gouv.vitamui.commons.logbook.common;
 public enum EventStatus {
     CREATED,
     SUCCESS,
-    ERROR
+    ERROR,
 }

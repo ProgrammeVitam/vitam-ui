@@ -37,7 +37,6 @@
 
 package fr.gouv.vitamui.ingest.common.enums;
 
-
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 
 import java.util.Arrays;
@@ -46,7 +45,6 @@ import java.util.Arrays;
  * Enumeration for the image extension
  */
 public enum Extension {
-
     PNG("i"),
     JPG("/"),
     GIF("R"),
@@ -63,10 +61,11 @@ public enum Extension {
     }
 
     public static Extension findExtensionFromValue(String value) {
-        return Arrays.stream(Extension.values()).filter(
-            extension -> extension.getValue().equalsIgnoreCase(value))
+        return Arrays.stream(Extension.values())
+            .filter(extension -> extension.getValue().equalsIgnoreCase(value))
             .findFirst()
-            .orElseThrow(() -> new BadRequestException("the Character " + value + " specified is not a valid extension"));
-
+            .orElseThrow(
+                () -> new BadRequestException("the Character " + value + " specified is not a valid extension")
+            );
     }
 }

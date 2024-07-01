@@ -45,7 +45,6 @@ import fr.gouv.vitamui.commons.utils.VitamUIAutoClosable;
  */
 
 public interface RestClient extends VitamUIAutoClosable {
-
     /**
      * @return the base url (ie. http[s]://server:port)
      */
@@ -60,5 +59,4 @@ public interface RestClient extends VitamUIAutoClosable {
     default void close() {
         // default is nothing to close
     }
-
 }

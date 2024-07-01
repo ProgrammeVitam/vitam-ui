@@ -36,9 +36,9 @@
  */
 package fr.gouv.vitamui.cas.pm;
 
-import java.io.Serializable;
-import java.util.Locale;
-
+import fr.gouv.vitamui.cas.util.Utils;
+import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
+import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.apache.commons.lang3.StringUtils;
@@ -59,11 +59,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import fr.gouv.vitamui.cas.util.Utils;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
-
 import javax.servlet.http.HttpServletRequest;
+import java.io.Serializable;
+import java.util.Locale;
 
 /**
  * Rest controller for CAS extra features.
@@ -95,19 +93,23 @@ public class ResetPasswordController {
     private String vitamuiPlatformName;
 
     @GetMapping("/resetPassword")
-    public boolean resetPassword(@RequestParam(value = "username", defaultValue = "") final String username,
-                                 @RequestParam(value = "firstname", defaultValue = "") final String firstname,
-                                 @RequestParam(value = "lastname", defaultValue = "") final String lastname, @RequestParam(value = "ttl", defaultValue = "") final String ttl,
-                                 @RequestParam(value = "language", defaultValue = "en") final String language,
-                                 final HttpServletRequest request) {
-
+    public boolean resetPassword(
+        @RequestParam(value = "username", defaultValue = "") final String username,
+        @RequestParam(value = "firstname", defaultValue = "") final String firstname,
+        @RequestParam(value = "lastname", defaultValue = "") final String lastname,
+        @RequestParam(value = "ttl", defaultValue = "") final String ttl,
+        @RequestParam(value = "language", defaultValue = "en") final String language,
+        final HttpServletRequest request
+    ) {
         if (StringUtils.isBlank(username)) {
             LOGGER.warn("No username is provided");
             return false;
         }
 
         if (!communicationsManager.isMailSenderDefined()) {
-            LOGGER.warn("CAS is unable to send password-reset emails given no settings are defined to account for email servers");
+            LOGGER.warn(
+                "CAS is unable to send password-reset emails given no settings are defined to account for email servers"
+            );
             return false;
         }
         val usernameLower = username.toLowerCase().trim();
@@ -119,13 +121,31 @@ public class ResetPasswordController {
         }
 
         final Locale locale = new Locale(language);
-        final long expMinutes = PmMessageToSend.ONE_DAY.equals(ttl) ? 24 * 60L : casProperties.getAuthn().getPm().getReset().getExpirationMinutes();
-        request.setAttribute(PmTransientSessionTicketExpirationPolicyBuilder.PM_EXPIRATION_IN_MINUTES_ATTRIBUTE, expMinutes);
+        final long expMinutes = PmMessageToSend.ONE_DAY.equals(ttl)
+            ? 24 * 60L
+            : casProperties.getAuthn().getPm().getReset().getExpirationMinutes();
+        request.setAttribute(
+            PmTransientSessionTicketExpirationPolicyBuilder.PM_EXPIRATION_IN_MINUTES_ATTRIBUTE,
+            expMinutes
+        );
         final String url = buildPasswordResetUrl(usernameLower, casProperties);
-        final PmMessageToSend messageToSend = PmMessageToSend.buildMessage(messageSource, firstname, lastname, String.valueOf(expMinutes), url, vitamuiPlatformName, locale);
+        final PmMessageToSend messageToSend = PmMessageToSend.buildMessage(
+            messageSource,
+            firstname,
+            lastname,
+            String.valueOf(expMinutes),
+            url,
+            vitamuiPlatformName,
+            locale
+        );
 
-        LOGGER.debug("Generated password reset URL [{}] for: {} ({}); Link is only active for the next [{}] minute(s)", utils.sanitizePasswordResetUrl(url),
-            email, messageToSend.getSubject(), expMinutes);
+        LOGGER.debug(
+            "Generated password reset URL [{}] for: {} ({}); Link is only active for the next [{}] minute(s)",
+            utils.sanitizePasswordResetUrl(url),
+            email,
+            messageToSend.getSubject(),
+            expMinutes
+        );
 
         return sendPasswordResetEmailToAccount(email, messageToSend.getSubject(), messageToSend.getText());
     }
@@ -134,18 +154,32 @@ public class ResetPasswordController {
         val query = PasswordManagementQuery.builder().username(username).build();
         val token = passwordManagementService.createToken(query);
 
-        val properties = CollectionUtils.<String, Serializable>wrap(PasswordManagementWebflowUtils.FLOWSCOPE_PARAMETER_NAME_TOKEN, token);
+        val properties = CollectionUtils.<String, Serializable>wrap(
+            PasswordManagementWebflowUtils.FLOWSCOPE_PARAMETER_NAME_TOKEN,
+            token
+        );
         val ticket = pmTicketFactory.create((Service) null, properties);
         this.ticketRegistry.addTicket(ticket);
 
         val resetUrl = new StringBuilder(casProperties.getServer().getPrefix())
-            .append('/').append(CasWebflowConfigurer.FLOW_ID_LOGIN).append('?')
-            .append(PasswordManagementWebflowUtils.REQUEST_PARAMETER_NAME_PASSWORD_RESET_TOKEN).append('=').append(ticket.getId());
+            .append('/')
+            .append(CasWebflowConfigurer.FLOW_ID_LOGIN)
+            .append('?')
+            .append(PasswordManagementWebflowUtils.REQUEST_PARAMETER_NAME_PASSWORD_RESET_TOKEN)
+            .append('=')
+            .append(ticket.getId());
 
         return resetUrl.toString();
     }
 
     protected boolean sendPasswordResetEmailToAccount(final String to, final String subject, final String msg) {
-        return utils.htmlEmail(msg, casProperties.getAuthn().getPm().getReset().getMail().getFrom(), subject, to, null, null);
+        return utils.htmlEmail(
+            msg,
+            casProperties.getAuthn().getPm().getReset().getMail().getFrom(),
+            subject,
+            to,
+            null,
+            null
+        );
     }
 }

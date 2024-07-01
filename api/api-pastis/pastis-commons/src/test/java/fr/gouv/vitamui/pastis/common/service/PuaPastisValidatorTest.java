@@ -40,9 +40,9 @@ package fr.gouv.vitamui.pastis.common.service;
 
 import org.json.JSONObject;
 import org.json.JSONTokener;
+
 import java.io.InputStream;
 import java.io.InputStreamReader;
-
 
 public class PuaPastisValidatorTest {
 

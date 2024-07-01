@@ -113,53 +113,78 @@ public class BaseWebClientFactory implements WebClientFactory {
      * @param httpPoolConfig
      */
     @Deprecated
-    public BaseWebClientFactory(final RestClientConfiguration restClientConfiguration,
-        final HttpPoolConfiguration httpPoolConfig) {
+    public BaseWebClientFactory(
+        final RestClientConfiguration restClientConfiguration,
+        final HttpPoolConfiguration httpPoolConfig
+    ) {
         this(restClientConfiguration, httpPoolConfig, WebClient.builder());
     }
 
-    public BaseWebClientFactory(final RestClientConfiguration restClientConfiguration,
-        final WebClient.Builder webClientBuilder, final String baseUrl) {
+    public BaseWebClientFactory(
+        final RestClientConfiguration restClientConfiguration,
+        final WebClient.Builder webClientBuilder,
+        final String baseUrl
+    ) {
         this(restClientConfiguration, null, webClientBuilder);
     }
 
-    public BaseWebClientFactory(final RestClientConfiguration restClientConfiguration,
-        final WebClient.Builder webClientBuilder) {
+    public BaseWebClientFactory(
+        final RestClientConfiguration restClientConfiguration,
+        final WebClient.Builder webClientBuilder
+    ) {
         this(restClientConfiguration, null, webClientBuilder);
     }
 
-    public BaseWebClientFactory(final RestClientConfiguration restClientConfiguration,
-        final HttpPoolConfiguration httpPoolConfig, final WebClient.Builder webClientBuilder) {
+    public BaseWebClientFactory(
+        final RestClientConfiguration restClientConfiguration,
+        final HttpPoolConfiguration httpPoolConfig,
+        final WebClient.Builder webClientBuilder
+    ) {
         this(restClientConfiguration, null, webClientBuilder, null, true);
     }
 
-    public BaseWebClientFactory(final RestClientConfiguration restClientConfiguration,
-        final HttpPoolConfiguration httpPoolConfig, final WebClient.Builder webClientBuilder,
-        final boolean useBaseUrl) {
+    public BaseWebClientFactory(
+        final RestClientConfiguration restClientConfiguration,
+        final HttpPoolConfiguration httpPoolConfig,
+        final WebClient.Builder webClientBuilder,
+        final boolean useBaseUrl
+    ) {
         this(restClientConfiguration, null, webClientBuilder, null, useBaseUrl);
     }
 
-    public BaseWebClientFactory(final RestClientConfiguration restClientConfiguration,
-        final HttpPoolConfiguration httpPoolConfig, final WebClient.Builder webClientBuilder,
-        final String webClientBaseUrl) {
+    public BaseWebClientFactory(
+        final RestClientConfiguration restClientConfiguration,
+        final HttpPoolConfiguration httpPoolConfig,
+        final WebClient.Builder webClientBuilder,
+        final String webClientBaseUrl
+    ) {
         this(restClientConfiguration, null, webClientBuilder, webClientBaseUrl, true);
     }
 
-    private BaseWebClientFactory(final RestClientConfiguration restClientConfig,
-        final HttpPoolConfiguration httpPoolConfig, final WebClient.Builder webClientBuilder,
-        final String webClientBaseUrl, final boolean useBaseUrl) {
+    private BaseWebClientFactory(
+        final RestClientConfiguration restClientConfig,
+        final HttpPoolConfiguration httpPoolConfig,
+        final WebClient.Builder webClientBuilder,
+        final String webClientBaseUrl,
+        final boolean useBaseUrl
+    ) {
         Assert.notNull(restClientConfig, "Rest client configuration must be specified");
         webClientBuilder.clientConnector(createClientHttpConnector(restClientConfig));
         if (useBaseUrl) {
             // Build or retrieve the baseUrl provided
-            this.baseUrl = StringUtils.isBlank(webClientBaseUrl) ?
-                buildBaseUrl(restClientConfig, restClientConfig.isSecure()) :
-                webClientBaseUrl;
+            this.baseUrl = StringUtils.isBlank(webClientBaseUrl)
+                ? buildBaseUrl(restClientConfig, restClientConfig.isSecure())
+                : webClientBaseUrl;
             webClientBuilder.baseUrl(baseUrl);
         }
-        webClient = webClientBuilder.exchangeStrategies(ExchangeStrategies.builder()
-            .codecs(configurer -> configurer.defaultCodecs().maxInMemorySize(restClientConfig.getMaxInMemorySize()))
-            .build())
+        webClient = webClientBuilder
+            .exchangeStrategies(
+                ExchangeStrategies.builder()
+                    .codecs(
+                        configurer -> configurer.defaultCodecs().maxInMemorySize(restClientConfig.getMaxInMemorySize())
+                    )
+                    .build()
+            )
             .build();
     }
 
@@ -173,7 +198,7 @@ public class BaseWebClientFactory implements WebClientFactory {
             final SslContext sslContext = useSSL ? buildSSLContext(restClientConfig) : null;
 
             HttpClient httpClient = HttpClient.create();
-            if(useSSL) {
+            if (useSSL) {
                 // secure must precede tcpConfiguration in order for sslContext configuration to be applied.
                 httpClient = httpClient.secure(sslSpec -> sslSpec.sslContext(sslContext));
             }
@@ -183,31 +208,43 @@ public class BaseWebClientFactory implements WebClientFactory {
         } catch (final Exception e) {
             throw new ApplicationServerException(e);
         }
-
     }
 
     private Function<TcpClient, TcpClient> getTcpMapper(final RestClientConfiguration restClientConfig) {
-            return client -> getTcpClient(restClientConfig, restClientConfig.getProxy(), client);
+        return client -> getTcpClient(restClientConfig, restClientConfig.getProxy(), client);
     }
 
-    private TcpClient getTcpClient(final RestClientConfiguration restClientConfig, final ProxyProperties proxyProperties, final TcpClient client) {
-        var tcpClient = client.option(ChannelOption.CONNECT_TIMEOUT_MILLIS, restClientConfig.getConnectTimeOut() * 1000)
-            .doOnConnected(connection ->  connection.addHandlerLast(new ReadTimeoutHandler(restClientConfig.getReadTimeOut()))
-                .addHandlerLast(new WriteTimeoutHandler(restClientConfig.getWriteTimeOut())));
+    private TcpClient getTcpClient(
+        final RestClientConfiguration restClientConfig,
+        final ProxyProperties proxyProperties,
+        final TcpClient client
+    ) {
+        var tcpClient = client
+            .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, restClientConfig.getConnectTimeOut() * 1000)
+            .doOnConnected(
+                connection ->
+                    connection
+                        .addHandlerLast(new ReadTimeoutHandler(restClientConfig.getReadTimeOut()))
+                        .addHandlerLast(new WriteTimeoutHandler(restClientConfig.getWriteTimeOut()))
+            );
 
-        if(Objects.nonNull(proxyProperties) && proxyProperties.isEnabled()) {
+        if (Objects.nonNull(proxyProperties) && proxyProperties.isEnabled()) {
             tcpClient = tcpClient.proxy(proxy -> getProxyBuilder(proxyProperties, proxy));
         }
 
         return tcpClient;
     }
 
-    private ProxyProvider.Builder getProxyBuilder(final ProxyProperties proxyProperties, final ProxyProvider.TypeSpec proxySpec) {
-        return proxySpec.type(proxyProperties.getType())
-                  .host(proxyProperties.getHost())
-                  .port(proxyProperties.getPort())
-                  .username(proxyProperties.getUsername())
-                  .password(user -> proxyProperties.getPassword());
+    private ProxyProvider.Builder getProxyBuilder(
+        final ProxyProperties proxyProperties,
+        final ProxyProvider.TypeSpec proxySpec
+    ) {
+        return proxySpec
+            .type(proxyProperties.getType())
+            .host(proxyProperties.getHost())
+            .port(proxyProperties.getPort())
+            .username(proxyProperties.getUsername())
+            .password(user -> proxyProperties.getPassword());
     }
 
     /*
@@ -218,33 +255,37 @@ public class BaseWebClientFactory implements WebClientFactory {
     private SslContext buildSSLContext(final RestClientConfiguration restClientConfig) {
         if (restClientConfig == null || restClientConfig.getSslConfiguration() == null) {
             throw new ApplicationServerException(
-                "SSL Configuration is not defined. Unable to configure the SSLConnection");
+                "SSL Configuration is not defined. Unable to configure the SSLConnection"
+            );
         }
 
         final SSLConfiguration.CertificateStoreConfiguration ks = restClientConfig.getSslConfiguration().getKeystore();
-        final SSLConfiguration.CertificateStoreConfiguration ts =
-            restClientConfig.getSslConfiguration().getTruststore();
+        final SSLConfiguration.CertificateStoreConfiguration ts = restClientConfig
+            .getSslConfiguration()
+            .getTruststore();
 
         try {
-
             SslContextBuilder sslContextBuilder = SslContextBuilder.forClient();
             sslContextBuilder = sslContextBuilder.clientAuth(ClientAuth.NONE);
 
             if (restClientConfig.isNoClientAuthentication()) {
-                LOGGER
-                    .warn("By deactivating the authentication client we deprive ourselves of two-way authentication.");
-
+                LOGGER.warn(
+                    "By deactivating the authentication client we deprive ourselves of two-way authentication."
+                );
             } else {
                 if (ks != null) {
                     sslContextBuilder = sslContextBuilder.keyManager(
-                        createKeyManagerFactory(ks.getType(), ks.getKeyPath(), ks.getKeyPassword().toCharArray()));
+                        createKeyManagerFactory(ks.getType(), ks.getKeyPath(), ks.getKeyPassword().toCharArray())
+                    );
                 }
-
             }
 
             if (restClientConfig.getSslConfiguration().isHostnameVerification()) {
-                final TrustManagerFactory tmfactory =
-                    createTrustManagerFactory(ts.getType(), ts.getKeyPath(), ts.getKeyPassword().toCharArray());
+                final TrustManagerFactory tmfactory = createTrustManagerFactory(
+                    ts.getType(),
+                    ts.getKeyPath(),
+                    ts.getKeyPassword().toCharArray()
+                );
                 sslContextBuilder = sslContextBuilder.sslProvider(SslProvider.JDK).trustManager(tmfactory);
             } else {
                 return sslContextBuilder.trustManager(InsecureTrustManagerFactory.INSTANCE).build();
@@ -259,12 +300,15 @@ public class BaseWebClientFactory implements WebClientFactory {
 
     private KeyManagerFactory createKeyManagerFactory(final String type, final String filename, final char[] password)
         throws IOException, GeneralSecurityException {
+        final KeyStore keyStore = loadPkcs(
+            StringUtils.isEmpty(type) ? KeyStore.getDefaultType() : type,
+            filename,
+            password
+        );
 
-        final KeyStore keyStore =
-            loadPkcs(StringUtils.isEmpty(type) ? KeyStore.getDefaultType() : type, filename, password);
-
-        final KeyManagerFactory keyManagerFactory =
-            KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
+        final KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance(
+            KeyManagerFactory.getDefaultAlgorithm()
+        );
         keyManagerFactory.init(keyStore, password);
 
         return keyManagerFactory;
@@ -280,15 +324,20 @@ public class BaseWebClientFactory implements WebClientFactory {
         return keyStore;
     }
 
-    private TrustManagerFactory createTrustManagerFactory(final String type, final String filename,
-        final char[] password)
-        throws GeneralSecurityException, IOException {
+    private TrustManagerFactory createTrustManagerFactory(
+        final String type,
+        final String filename,
+        final char[] password
+    ) throws GeneralSecurityException, IOException {
+        final KeyStore trustStore = loadPkcs(
+            StringUtils.isEmpty(type) ? KeyStore.getDefaultType() : type,
+            filename,
+            password
+        );
 
-        final KeyStore trustStore =
-            loadPkcs(StringUtils.isEmpty(type) ? KeyStore.getDefaultType() : type, filename, password);
-
-        final TrustManagerFactory trustManagerFactory =
-            TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
+        final TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(
+            TrustManagerFactory.getDefaultAlgorithm()
+        );
         trustManagerFactory.init(trustStore);
 
         return trustManagerFactory;
@@ -303,5 +352,4 @@ public class BaseWebClientFactory implements WebClientFactory {
     public WebClient getWebClient() {
         return webClient;
     }
-
 }

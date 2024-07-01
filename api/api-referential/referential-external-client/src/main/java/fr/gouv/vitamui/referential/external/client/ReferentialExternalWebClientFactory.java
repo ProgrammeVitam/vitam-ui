@@ -40,12 +40,16 @@ import fr.gouv.vitamui.commons.rest.client.BaseWebClientFactory;
 import fr.gouv.vitamui.commons.rest.client.configuration.HttpPoolConfiguration;
 import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
 
-public class ReferentialExternalWebClientFactory extends BaseWebClientFactory  {
+public class ReferentialExternalWebClientFactory extends BaseWebClientFactory {
+
     public ReferentialExternalWebClientFactory(final RestClientConfiguration restClientConfiguration) {
         super(restClientConfiguration);
     }
 
-    public ReferentialExternalWebClientFactory(final RestClientConfiguration restClientConfig, final HttpPoolConfiguration httpPoolConfig) {
+    public ReferentialExternalWebClientFactory(
+        final RestClientConfiguration restClientConfig,
+        final HttpPoolConfiguration httpPoolConfig
+    ) {
         super(restClientConfig, httpPoolConfig);
     }
 

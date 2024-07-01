@@ -52,10 +52,12 @@ public class IngestStreamingExternalRestClientFactory extends BaseStreamingRestC
         super(restClientConfiguration);
     }
 
-    public IngestStreamingExternalRestClientFactory(final RestClientConfiguration restClientConfiguration, final HttpPoolConfiguration httpHostConfiguration) {
+    public IngestStreamingExternalRestClientFactory(
+        final RestClientConfiguration restClientConfiguration,
+        final HttpPoolConfiguration httpHostConfiguration
+    ) {
         super(restClientConfiguration, httpHostConfiguration);
     }
-
 
     public IngestStreamingExternalRestClient getIngestStreamingExternalRestClient() {
         return new IngestStreamingExternalRestClient(getRestTemplate(), getBaseUrl());

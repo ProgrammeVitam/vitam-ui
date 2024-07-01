@@ -51,7 +51,7 @@ public class QualifiersDto {
     private String qualifier;
 
     @JsonProperty("#nbc")
-    @JsonAlias({"_nbc"})
+    @JsonAlias({ "_nbc" })
     private String nbc;
 
     private List<VersionsDto> versions = new ArrayList<>();

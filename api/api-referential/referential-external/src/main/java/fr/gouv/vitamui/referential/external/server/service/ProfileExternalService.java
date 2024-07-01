@@ -70,19 +70,22 @@ public class ProfileExternalService extends AbstractResourceClientService<Profil
     private ProfileInternalWebClient profileInternalWebClient;
 
     @Autowired
-    public ProfileExternalService(@Autowired  ExternalSecurityService externalSecurityService,
-                                  ProfileInternalRestClient profileInternalRestClient,
-                                  ProfileInternalWebClient profileInternalWebClient) {
+    public ProfileExternalService(
+        @Autowired ExternalSecurityService externalSecurityService,
+        ProfileInternalRestClient profileInternalRestClient,
+        ProfileInternalWebClient profileInternalWebClient
+    ) {
         super(externalSecurityService);
         this.profileInternalRestClient = profileInternalRestClient;
         this.profileInternalWebClient = profileInternalWebClient;
     }
 
     public List<ProfileDto> getAll(final Optional<String> criteria) {
-        return profileInternalRestClient.getAll(getInternalHttpContext(),criteria);
+        return profileInternalRestClient.getAll(getInternalHttpContext(), criteria);
     }
 
-    @Override protected BasePaginatingAndSortingRestClient<ProfileDto, InternalHttpContext> getClient() {
+    @Override
+    protected BasePaginatingAndSortingRestClient<ProfileDto, InternalHttpContext> getClient() {
         return profileInternalRestClient;
     }
 
@@ -91,16 +94,22 @@ public class ProfileExternalService extends AbstractResourceClientService<Profil
         return Arrays.asList("name", "identifier");
     }
 
-    public PaginatedValuesDto<ProfileDto> getAllPaginated(final Integer page, final Integer size, final Optional<String> criteria,
-                                                                  final Optional<String> orderBy, final Optional<DirectionDto> direction) {
-
+    public PaginatedValuesDto<ProfileDto> getAllPaginated(
+        final Integer page,
+        final Integer size,
+        final Optional<String> criteria,
+        final Optional<String> orderBy,
+        final Optional<DirectionDto> direction
+    ) {
         ParameterChecker.checkPagination(size, page);
-        final PaginatedValuesDto<ProfileDto> result = getClient().getAllPaginated(getInternalHttpContext(), page, size, criteria, orderBy, direction);
+        final PaginatedValuesDto<ProfileDto> result = getClient()
+            .getAllPaginated(getInternalHttpContext(), page, size, criteria, orderBy, direction);
         return new PaginatedValuesDto<>(
             result.getValues().stream().map(this::converterToExternalDto).collect(Collectors.toList()),
             result.getPageNum(),
             result.getPageSize(),
-            result.isHasMore());
+            result.isHasMore()
+        );
     }
 
     public ProfileDto getOne(String id) {
@@ -145,8 +154,7 @@ public class ProfileExternalService extends AbstractResourceClientService<Profil
         return profileInternalWebClient.importProfiles(getInternalHttpContext(), fileName, file);
     }
 
-
     public ResponseEntity<JsonNode> updateProfileFile(String id, MultipartFile profileFile) throws IOException {
-        return profileInternalRestClient.updateProfileFile(getInternalHttpContext(),id,profileFile);
+        return profileInternalRestClient.updateProfileFile(getInternalHttpContext(), id, profileFile);
     }
 }

@@ -5,11 +5,10 @@ import lombok.Getter;
 
 @Getter
 public class UserParameterType {
-    
+
     private UserEnum data;
 
     public UserParameterType(final String data) {
         this.data = UserEnum.valueOf(data.toUpperCase());
     }
-
 }

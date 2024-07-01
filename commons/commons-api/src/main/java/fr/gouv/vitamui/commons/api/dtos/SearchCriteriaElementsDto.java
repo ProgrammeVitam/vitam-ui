@@ -51,6 +51,7 @@ import java.util.List;
 @Setter
 @Getter
 public class SearchCriteriaElementsDto implements Serializable {
+
     private String criteria;
     private String operator;
     private String dataType;

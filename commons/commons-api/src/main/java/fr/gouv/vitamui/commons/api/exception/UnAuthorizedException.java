@@ -63,5 +63,4 @@ public class UnAuthorizedException extends VitamUIException {
     public UnAuthorizedException(final String message, final String key) {
         super(message, key);
     }
-
 }

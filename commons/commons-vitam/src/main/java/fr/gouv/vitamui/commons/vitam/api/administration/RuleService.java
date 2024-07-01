@@ -86,11 +86,12 @@ public class RuleService {
         throws VitamClientException, InvalidCreateOperationException, JsonProcessingException {
         final Select select = new Select();
         select.setQuery(QueryHelper.eq("RuleId", ruleId));
-        RequestResponse<FileRulesModel> rulesVitamResponse =
-            this.findRules(vitamContext, select.getFinalSelect());
+        RequestResponse<FileRulesModel> rulesVitamResponse = this.findRules(vitamContext, select.getFinalSelect());
         if (rulesVitamResponse.isOk()) {
-            RuleNodeResponseDto ruleNodeResponseDto = objectMapper
-                .treeToValue(rulesVitamResponse.toJsonNode(), RuleNodeResponseDto.class);
+            RuleNodeResponseDto ruleNodeResponseDto = objectMapper.treeToValue(
+                rulesVitamResponse.toJsonNode(),
+                RuleNodeResponseDto.class
+            );
             FileRulesModel rule = ruleNodeResponseDto.getResults().get(0);
             if (RuleMeasurementEnum.YEAR.equals(rule.getRuleMeasurement())) {
                 return Optional.of(Long.parseLong(rule.getRuleDuration()));

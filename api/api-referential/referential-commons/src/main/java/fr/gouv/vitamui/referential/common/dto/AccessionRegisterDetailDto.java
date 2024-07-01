@@ -95,5 +95,4 @@ public class AccessionRegisterDetailDto extends AccessionRegisterDto {
     private String obIdIn;
 
     private List<String> comment;
-
 }

@@ -36,28 +36,20 @@
  */
 package fr.gouv.vitamui.commons.rest.client.logbook;
 
-import java.io.InputStream;
-import java.util.Collections;
-import java.util.Map;
-
-import org.springframework.core.io.ByteArrayResource;
-import org.springframework.core.io.InputStreamResource;
+import com.fasterxml.jackson.databind.JsonNode;
+import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.rest.client.AbstractHttpContext;
+import fr.gouv.vitamui.commons.rest.client.BaseRestClient;
+import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.fasterxml.jackson.databind.JsonNode;
-
-import fr.gouv.vitamui.commons.api.CommonConstants;
-import fr.gouv.vitamui.commons.rest.client.AbstractHttpContext;
-import fr.gouv.vitamui.commons.rest.client.BaseRestClient;
-import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
+import java.util.Collections;
 
 /**
  * A REST client to get logbooks.
@@ -88,8 +80,12 @@ public class LogbookInternalRestClient<C extends AbstractHttpContext> extends Ba
 
         final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl());
         uriBuilder.path(CommonConstants.LOGBOOK_UNIT_LYFECYCLES_PATH);
-        final ResponseEntity<JsonNode> response = restTemplate.exchange(uriBuilder.build(id), HttpMethod.GET,
-                request, JsonNode.class);
+        final ResponseEntity<JsonNode> response = restTemplate.exchange(
+            uriBuilder.build(id),
+            HttpMethod.GET,
+            request,
+            JsonNode.class
+        );
         checkResponse(response);
         return response.getBody();
     }
@@ -108,8 +104,12 @@ public class LogbookInternalRestClient<C extends AbstractHttpContext> extends Ba
         final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl());
         uriBuilder.path(CommonConstants.LOGBOOK_OBJECT_LYFECYCLES_PATH);
 
-        final ResponseEntity<JsonNode> response = restTemplate.exchange(uriBuilder.build(id),
-                HttpMethod.GET, request, JsonNode.class);
+        final ResponseEntity<JsonNode> response = restTemplate.exchange(
+            uriBuilder.build(id),
+            HttpMethod.GET,
+            request,
+            JsonNode.class
+        );
         checkResponse(response);
         return response.getBody();
     }
@@ -128,8 +128,12 @@ public class LogbookInternalRestClient<C extends AbstractHttpContext> extends Ba
         final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl());
         uriBuilder.path(CommonConstants.LOGBOOK_OPERATION_BY_ID_PATH);
 
-        final ResponseEntity<JsonNode> response = restTemplate.exchange(uriBuilder.build(id), HttpMethod.GET,
-                request, JsonNode.class);
+        final ResponseEntity<JsonNode> response = restTemplate.exchange(
+            uriBuilder.build(id),
+            HttpMethod.GET,
+            request,
+            JsonNode.class
+        );
         checkResponse(response);
         return response.getBody();
     }
@@ -144,8 +148,12 @@ public class LogbookInternalRestClient<C extends AbstractHttpContext> extends Ba
         final MultiValueMap<String, String> headers = buildRequestHeaders(context);
         final HttpEntity<JsonNode> request = new HttpEntity<>(select, headers);
 
-        final ResponseEntity<JsonNode> response =
-                restTemplate.exchange(getUrl() + CommonConstants.LOGBOOK_OPERATIONS_PATH + "/", HttpMethod.POST, request, JsonNode.class);
+        final ResponseEntity<JsonNode> response = restTemplate.exchange(
+            getUrl() + CommonConstants.LOGBOOK_OPERATIONS_PATH + "/",
+            HttpMethod.POST,
+            request,
+            JsonNode.class
+        );
         checkResponse(response);
         return response.getBody();
     }
@@ -163,7 +171,12 @@ public class LogbookInternalRestClient<C extends AbstractHttpContext> extends Ba
         final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl());
         uriBuilder.path(CommonConstants.LOGBOOK_DOWNLOAD_MANIFEST_PATH);
 
-        final ResponseEntity<Resource> response = restTemplate.exchange(uriBuilder.build(id), HttpMethod.GET, request, Resource.class);
+        final ResponseEntity<Resource> response = restTemplate.exchange(
+            uriBuilder.build(id),
+            HttpMethod.GET,
+            request,
+            Resource.class
+        );
         checkResponse(response, 200);
         return response;
     }
@@ -181,7 +194,12 @@ public class LogbookInternalRestClient<C extends AbstractHttpContext> extends Ba
         final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl());
         uriBuilder.path(CommonConstants.LOGBOOK_DOWNLOAD_ATR_PATH);
 
-        final ResponseEntity<Resource> response = restTemplate.exchange(uriBuilder.build(id), HttpMethod.GET, request, Resource.class);
+        final ResponseEntity<Resource> response = restTemplate.exchange(
+            uriBuilder.build(id),
+            HttpMethod.GET,
+            request,
+            Resource.class
+        );
         checkResponse(response, 200);
         return response;
     }
@@ -199,5 +217,4 @@ public class LogbookInternalRestClient<C extends AbstractHttpContext> extends Ba
         }
         return headers;
     }
-
 }

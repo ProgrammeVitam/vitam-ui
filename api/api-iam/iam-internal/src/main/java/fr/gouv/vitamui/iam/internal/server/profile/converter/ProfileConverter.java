@@ -36,13 +36,6 @@
  */
 package fr.gouv.vitamui.iam.internal.server.profile.converter;
 
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
 import fr.gouv.vitamui.commons.api.converter.Converter;
 import fr.gouv.vitamui.commons.api.domain.ProfileDto;
 import fr.gouv.vitamui.commons.api.domain.Role;
@@ -51,6 +44,13 @@ import fr.gouv.vitamui.commons.logbook.util.LogbookUtils;
 import fr.gouv.vitamui.commons.utils.VitamUIUtils;
 import fr.gouv.vitamui.iam.internal.server.profile.domain.Profile;
 import org.apache.commons.lang3.StringUtils;
+
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class ProfileConverter implements Converter<ProfileDto, Profile> {
 
@@ -100,5 +100,4 @@ public class ProfileConverter implements Converter<ProfileDto, Profile> {
         rolesName.sort(Comparator.naturalOrder());
         return rolesName.toString();
     }
-
 }

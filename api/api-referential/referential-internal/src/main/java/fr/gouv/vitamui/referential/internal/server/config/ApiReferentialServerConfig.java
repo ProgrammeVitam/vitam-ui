@@ -76,8 +76,16 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 @Configuration
-@Import({RestExceptionHandler.class, SwaggerConfiguration.class, WebSecurityConfig.class, VitamAccessConfig.class,
-    VitamAdministrationConfig.class, ConverterConfig.class})
+@Import(
+    {
+        RestExceptionHandler.class,
+        SwaggerConfiguration.class,
+        WebSecurityConfig.class,
+        VitamAccessConfig.class,
+        VitamAdministrationConfig.class,
+        ConverterConfig.class,
+    }
+)
 public class ApiReferentialServerConfig extends AbstractContextConfiguration {
 
     @Bean
@@ -89,25 +97,29 @@ public class ApiReferentialServerConfig extends AbstractContextConfiguration {
     @Bean
     public IamInternalRestClientFactory iamInternalRestClientFactory(
         final RestClientConfiguration IamInternalRestClientConfiguration,
-        final RestTemplateBuilder restTemplateBuilder) {
+        final RestTemplateBuilder restTemplateBuilder
+    ) {
         return new IamInternalRestClientFactory(IamInternalRestClientConfiguration, restTemplateBuilder);
     }
 
     @Bean
     public UserInternalRestClient userInternalRestClient(
-        final IamInternalRestClientFactory iamInternalRestClientFactory) {
+        final IamInternalRestClientFactory iamInternalRestClientFactory
+    ) {
         return iamInternalRestClientFactory.getUserInternalRestClient();
     }
 
     @Bean
     public InternalAuthentificationService internalAuthentificationService(
-        final UserInternalRestClient userInternalRestClient) {
+        final UserInternalRestClient userInternalRestClient
+    ) {
         return new InternalAuthentificationService(userInternalRestClient);
     }
 
     @Bean
     public InternalApiAuthenticationProvider internalApiAuthenticationProvider(
-        final InternalAuthentificationService internalAuthentificationService) {
+        final InternalAuthentificationService internalAuthentificationService
+    ) {
         return new InternalApiAuthenticationProvider(internalAuthentificationService);
     }
 
@@ -122,9 +134,12 @@ public class ApiReferentialServerConfig extends AbstractContextConfiguration {
     }
 
     @Bean
-    public VitamAgencyService vitamAgencyService(final AdminExternalClient adminClient,
-        final AgencyService agencyService, ObjectMapper objectMapper, final
-    AccessExternalClient accessClient) {
+    public VitamAgencyService vitamAgencyService(
+        final AdminExternalClient adminClient,
+        final AgencyService agencyService,
+        ObjectMapper objectMapper,
+        final AccessExternalClient accessClient
+    ) {
         return new VitamAgencyService(adminClient, agencyService, objectMapper, accessClient);
     }
 
@@ -139,14 +154,20 @@ public class ApiReferentialServerConfig extends AbstractContextConfiguration {
     }
 
     @Bean
-    public VitamFileFormatService vitamFileFormatService(final AdminExternalClient adminClient,
-        ObjectMapper objectMapper, final AccessExternalClient accessClient) {
+    public VitamFileFormatService vitamFileFormatService(
+        final AdminExternalClient adminClient,
+        ObjectMapper objectMapper,
+        final AccessExternalClient accessClient
+    ) {
         return new VitamFileFormatService(adminClient, objectMapper, accessClient);
     }
 
     @Bean
-    public VitamArchivalProfileUnitService vitamArchivalProfileService(final AdminExternalClient adminClient,
-        ObjectMapper objectMapper, final AccessExternalClient accessClient) {
+    public VitamArchivalProfileUnitService vitamArchivalProfileService(
+        final AdminExternalClient adminClient,
+        ObjectMapper objectMapper,
+        final AccessExternalClient accessClient
+    ) {
         return new VitamArchivalProfileUnitService(adminClient, objectMapper, accessClient);
     }
 
@@ -156,8 +177,11 @@ public class ApiReferentialServerConfig extends AbstractContextConfiguration {
     }
 
     @Bean
-    public VitamRuleService vitamRuleService(final AdminExternalClient adminClient, ObjectMapper objectMapper,
-        final AccessExternalClient accessClient) {
+    public VitamRuleService vitamRuleService(
+        final AdminExternalClient adminClient,
+        ObjectMapper objectMapper,
+        final AccessExternalClient accessClient
+    ) {
         return new VitamRuleService(adminClient, objectMapper, accessClient);
     }
 
@@ -167,8 +191,10 @@ public class ApiReferentialServerConfig extends AbstractContextConfiguration {
     }
 
     @Bean
-    public VitamSecurityProfileService vitamSecurityProfileService(final AdminExternalClient adminClient,
-        ObjectMapper objectMapper) {
+    public VitamSecurityProfileService vitamSecurityProfileService(
+        final AdminExternalClient adminClient,
+        ObjectMapper objectMapper
+    ) {
         return new VitamSecurityProfileService(adminClient, objectMapper);
     }
 
@@ -204,7 +230,8 @@ public class ApiReferentialServerConfig extends AbstractContextConfiguration {
 
     @Bean
     public ExternalParametersInternalRestClient externalParametersInternalRestClient(
-        final IamInternalRestClientFactory iamInternalRestClientFactory) {
+        final IamInternalRestClientFactory iamInternalRestClientFactory
+    ) {
         return iamInternalRestClientFactory.getExternalParametersInternalRestClient();
     }
 }

@@ -42,6 +42,5 @@ package fr.gouv.vitamui.iam.common.enums;
 public enum OtpEnum {
     OPTIONAL,
     DISABLED,
-    MANDATORY
-
+    MANDATORY,
 }

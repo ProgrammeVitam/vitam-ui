@@ -75,7 +75,14 @@ class AccessionRegisterDetailServiceTest {
         doReturn(new PaginatedValuesDto<>()).when(client).getAllPaginated(any(), any(), any(), any(), any(), any());
 
         //When
-        accessionRegisterDetailService.getAllPaginated(0, 20, Optional.empty(), Optional.empty(), Optional.empty(), null);
+        accessionRegisterDetailService.getAllPaginated(
+            0,
+            20,
+            Optional.empty(),
+            Optional.empty(),
+            Optional.empty(),
+            null
+        );
 
         //Then
         verify(client, times(1)).getAllPaginated(any(), any(), any(), any(), any(), any());

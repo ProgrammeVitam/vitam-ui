@@ -36,17 +36,18 @@
  */
 package fr.gouv.vitamui.iam.internal.server.provisioning.config;
 
-import java.util.List;
-
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+
+import java.util.List;
 
 @Getter
 @Setter
 @EqualsAndHashCode
 @ToString
 public class ProvisioningClientConfiguration {
+
     private List<IdPProvisioningClientConfiguration> identityProviders;
 }

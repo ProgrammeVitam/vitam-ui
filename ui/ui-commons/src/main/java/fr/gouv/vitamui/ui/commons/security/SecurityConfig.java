@@ -120,5 +120,4 @@ public class SecurityConfig extends BaseCasSecurityConfigurer {
     public AccessDeniedHandler accessDeniedHandler() {
         return new CustomAccessDeniedHandler();
     }
-
 }

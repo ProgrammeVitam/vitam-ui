@@ -1,9 +1,9 @@
 package fr.gouv.vitamui.cucumber.front.steps.portal;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import fr.gouv.vitamui.cucumber.front.pages.PortalPage;
 import fr.gouv.vitamui.cucumber.front.steps.common.CommonStepDefinitions;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class PortalStepDefinitions extends CommonStepDefinitions {
 
@@ -21,7 +21,8 @@ public class PortalStepDefinitions extends CommonStepDefinitions {
         portalPage.waitForTitleToAppear();
         portalPage.waitForMenuToAppear();
         assertThat(portalPage.isAppListPageDisplayed())
-                .overridingErrorMessage("La page de recherche des applications n'est pas affichée").isTrue();
+            .overridingErrorMessage("La page de recherche des applications n'est pas affichée")
+            .isTrue();
     }
 
     public void openApplication(String applicationId) {
@@ -32,5 +33,4 @@ public class PortalStepDefinitions extends CommonStepDefinitions {
             portalPage.clickOn(portalPage.getApplicationElement(applicationId));
         }
     }
-
 }

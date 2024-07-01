@@ -1,8 +1,13 @@
 package fr.gouv.vitamui.iam.external.server.rest;
 
-import java.util.Arrays;
-import java.util.Optional;
-
+import fr.gouv.vitamui.commons.api.domain.ServicesData;
+import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
+import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.iam.common.dto.CustomerCreationFormData;
+import fr.gouv.vitamui.iam.common.dto.CustomerDto;
+import fr.gouv.vitamui.iam.common.rest.RestApi;
+import fr.gouv.vitamui.iam.external.server.service.CustomerExternalService;
+import fr.gouv.vitamui.iam.external.server.utils.ApiIamServerUtils;
 import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,14 +17,8 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.ResultActions;
 
-import fr.gouv.vitamui.commons.api.domain.ServicesData;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
-import fr.gouv.vitamui.iam.common.dto.CustomerCreationFormData;
-import fr.gouv.vitamui.iam.common.dto.CustomerDto;
-import fr.gouv.vitamui.iam.common.rest.RestApi;
-import fr.gouv.vitamui.iam.external.server.service.CustomerExternalService;
-import fr.gouv.vitamui.iam.external.server.utils.ApiIamServerUtils;
+import java.util.Arrays;
+import java.util.Optional;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(controllers = { CustomerExternalController.class })
@@ -38,9 +37,13 @@ public class CustomerExternalControllerTest extends ApiIamControllerTest<Custome
         creationFormData.setFooter(Optional.empty());
         creationFormData.setPortal(Optional.empty());
 
-        final MockMultipartFile customer = new MockMultipartFile("customerData", "", "application/json", asJsonString(creationFormData).getBytes());
+        final MockMultipartFile customer = new MockMultipartFile(
+            "customerData",
+            "",
+            "application/json",
+            asJsonString(creationFormData).getBytes()
+        );
         final ResultActions result = performPostMultipart(StringUtils.EMPTY, Arrays.asList(customer));
-
     }
 
     @Test
@@ -59,8 +62,7 @@ public class CustomerExternalControllerTest extends ApiIamControllerTest<Custome
     }
 
     @Override
-    protected void preparedServices() {
-    }
+    protected void preparedServices() {}
 
     @Override
     protected String getRessourcePrefix() {
@@ -76,5 +78,4 @@ public class CustomerExternalControllerTest extends ApiIamControllerTest<Custome
     protected Class<CustomerDto> getDtoClass() {
         return CustomerDto.class;
     }
-
 }

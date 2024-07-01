@@ -82,30 +82,37 @@ public class OperationInternalService {
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(OperationInternalService.class);
 
-    final private OperationService operationService;
+    private final OperationService operationService;
 
-    final private LogbookService logbookService;
+    private final LogbookService logbookService;
 
     private ObjectMapper objectMapper;
 
     @Autowired
-    OperationInternalService(OperationService operationService, LogbookService logbookService,
-        ObjectMapper objectMapper) {
+    OperationInternalService(
+        OperationService operationService,
+        LogbookService logbookService,
+        ObjectMapper objectMapper
+    ) {
         this.operationService = operationService;
         this.logbookService = logbookService;
         this.objectMapper = objectMapper;
     }
 
-    public PaginatedValuesDto<LogbookOperationDto> getAllPaginated(final Integer pageNumber, final Integer size,
-        final Optional<String> orderBy, final Optional<DirectionDto> direction, VitamContext vitamContext,
-        Optional<String> criteria) {
+    public PaginatedValuesDto<LogbookOperationDto> getAllPaginated(
+        final Integer pageNumber,
+        final Integer size,
+        final Optional<String> orderBy,
+        final Optional<DirectionDto> direction,
+        VitamContext vitamContext,
+        Optional<String> criteria
+    ) {
         Map<String, Object> vitamCriteria = new HashMap<>();
         JsonNode query;
         LOGGER.info("All Operations EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
         try {
             if (criteria.isPresent()) {
-                TypeReference<HashMap<String, Object>> typRef = new TypeReference<HashMap<String, Object>>() {
-                };
+                TypeReference<HashMap<String, Object>> typRef = new TypeReference<HashMap<String, Object>>() {};
                 vitamCriteria = objectMapper.readValue(criteria.get(), typRef);
             }
             query = VitamQueryHelper.createQueryDSL(vitamCriteria, pageNumber, size, orderBy, direction);
@@ -127,8 +134,10 @@ public class OperationInternalService {
             LOGGER.info("All Operations EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
             requestResponse = logbookService.selectOperations(query, vitamContext);
 
-            final LogbookOperationsResponseDto logbookOperationsResponseDto = objectMapper
-                .treeToValue(requestResponse.toJsonNode(), LogbookOperationsResponseDto.class);
+            final LogbookOperationsResponseDto logbookOperationsResponseDto = objectMapper.treeToValue(
+                requestResponse.toJsonNode(),
+                LogbookOperationsResponseDto.class
+            );
 
             return logbookOperationsResponseDto;
         } catch (VitamClientException | JsonProcessingException e) {
@@ -166,7 +175,6 @@ public class OperationInternalService {
                 default:
                     throw new InternalServerException("Unable to  export that kind of report: " + type);
             }
-
         } catch (VitamClientException | AccessExternalClientServerException e) {
             throw new InternalServerException("Unable to export operation report", e);
         }
@@ -183,8 +191,12 @@ public class OperationInternalService {
 
             RequestResponse response = logbookService.checkTraceability(vitamContext, select.getFinalSelect());
             return response.toJsonNode();
-        } catch (InvalidCreateOperationException | AccessExternalClientServerException |
-                 InvalidParseOperationException | AccessUnauthorizedException e) {
+        } catch (
+            InvalidCreateOperationException
+            | AccessExternalClientServerException
+            | InvalidParseOperationException
+            | AccessUnauthorizedException e
+        ) {
             throw new InternalServerException("Unable to check traceability operation", e);
         }
     }

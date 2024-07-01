@@ -87,39 +87,40 @@ public class TransactionController extends AbstractUiRestController {
 
     static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(TransactionController.class);
 
-
     private final TransactionService transactionService;
 
     @Autowired
     public TransactionController(final TransactionService service) {
-
         this.transactionService = service;
     }
-
-
 
     @ApiOperation(value = "Get AU collect paginated")
     @PostMapping(ARCHIVE_UNITS + "/{transactionId}" + SEARCH)
     @Consumes(MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public VitamUIArchiveUnitResponseDto searchArchiveUnits(final @PathVariable("transactionId") String transactionId,
-        @RequestBody final SearchCriteriaDto searchQuery)
-        throws InvalidParseOperationException, PreconditionFailedException {
-        ParameterChecker.checkParameter("The Query  and the transactionId are mandatories parameters: ",
-            searchQuery, transactionId);
+    public VitamUIArchiveUnitResponseDto searchArchiveUnits(
+        final @PathVariable("transactionId") String transactionId,
+        @RequestBody final SearchCriteriaDto searchQuery
+    ) throws InvalidParseOperationException, PreconditionFailedException {
+        ParameterChecker.checkParameter(
+            "The Query  and the transactionId are mandatories parameters: ",
+            searchQuery,
+            transactionId
+        );
         SanityChecker.checkSecureParameter(transactionId);
         SanityChecker.sanitizeCriteria(searchQuery);
         LOGGER.debug("search archives Units by criteria = {}", searchQuery);
         VitamUIArchiveUnitResponseDto archiveResponseDtos = new VitamUIArchiveUnitResponseDto();
-        ArchiveUnitsDto archiveUnits =
-            transactionService.searchArchiveUnitsByTransactionAndSearchQuery(buildUiHttpContext(), transactionId,
-                searchQuery);
+        ArchiveUnitsDto archiveUnits = transactionService.searchArchiveUnitsByTransactionAndSearchQuery(
+            buildUiHttpContext(),
+            transactionId,
+            searchQuery
+        );
 
         if (archiveUnits != null) {
             archiveResponseDtos = archiveUnits.getArchives();
         }
         return archiveResponseDtos;
-
     }
 
     @ApiOperation(value = "export into csv format archive units by criteria")
@@ -128,15 +129,15 @@ public class TransactionController extends AbstractUiRestController {
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Resource> exportCsvArchiveUnitsByCriteria(
         final @PathVariable("transactionId") String transactionId,
-        @RequestBody final SearchCriteriaDto searchQuery)
-        throws InvalidParseOperationException, PreconditionFailedException {
+        @RequestBody final SearchCriteriaDto searchQuery
+    ) throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter("The Query is a mandatory parameter: ", searchQuery);
         SanityChecker.sanitizeCriteria(searchQuery);
         SanityChecker.checkSecureParameter(transactionId);
         LOGGER.debug("Export search archives Units by criteria into csv format = {}", searchQuery);
-        Resource exportedCsvResult =
-            transactionService.exportCsvArchiveUnitsByCriteria(transactionId, searchQuery, buildUiHttpContext())
-                .getBody();
+        Resource exportedCsvResult = transactionService
+            .exportCsvArchiveUnitsByCriteria(transactionId, searchQuery, buildUiHttpContext())
+            .getBody();
         return ResponseEntity.ok()
             .contentType(MediaType.APPLICATION_OCTET_STREAM)
             .header("Content-Disposition", "attachment")
@@ -165,9 +166,10 @@ public class TransactionController extends AbstractUiRestController {
     }
 
     @PutMapping(CommonConstants.PATH_ID)
-    public CollectTransactionDto updateTransaction(final @PathVariable("id") String id,
-        @RequestBody CollectTransactionDto collectTransactionDto)
-        throws InvalidParseOperationException {
+    public CollectTransactionDto updateTransaction(
+        final @PathVariable("id") String id,
+        @RequestBody CollectTransactionDto collectTransactionDto
+    ) throws InvalidParseOperationException {
         ParameterChecker.checkParameter(IDENTIFIER_MANDATORY_PARAMETER, id);
         SanityChecker.checkSecureParameter(id);
         SanityChecker.sanitizeCriteria(collectTransactionDto);
@@ -203,7 +205,6 @@ public class TransactionController extends AbstractUiRestController {
         transactionService.abortTransaction(buildUiHttpContext(), transactionId);
     }
 
-
     @ApiOperation(value = "Get transaction by project")
     @GetMapping(CommonConstants.PATH_ID)
     @ResponseStatus(HttpStatus.OK)
@@ -215,7 +216,6 @@ public class TransactionController extends AbstractUiRestController {
         return transactionService.getTransactionById(buildUiHttpContext(), id);
     }
 
-
     /**
      * service to update archive Units Metadata From File
      *
@@ -224,21 +224,28 @@ public class TransactionController extends AbstractUiRestController {
      * @return a String
      */
 
-    @ApiOperation(value = "Upload on streaming metadata file and update archive units", consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-    @PutMapping(value = CommonConstants.TRANSACTION_PATH_ID +
-        UPDATE_UNITS_METADATA_PATH, consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    @ApiOperation(
+        value = "Upload on streaming metadata file and update archive units",
+        consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE
+    )
+    @PutMapping(
+        value = CommonConstants.TRANSACTION_PATH_ID + UPDATE_UNITS_METADATA_PATH,
+        consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE
+    )
     @ResponseStatus(HttpStatus.OK)
-    public String updateArchiveUnitsMetadataFromFile(final @PathVariable("transactionId") String transactionId,
+    public String updateArchiveUnitsMetadataFromFile(
+        final @PathVariable("transactionId") String transactionId,
         InputStream inputStream,
-        @RequestHeader(value = "fileName") final String fileName)
-        throws InvalidParseOperationException, PreconditionFailedException {
+        @RequestHeader(value = "fileName") final String fileName
+    ) throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter("[UI] The transaction id is a mandatory parameter: ", transactionId);
         SanityChecker.checkSecureParameter(transactionId);
         SanityChecker.isValidFileName(fileName);
         SafeFileChecker.checkSafeFilePath(fileName);
         LOGGER.debug(" [UI] Calling update archive units metadata for transaction Id  {} ", transactionId);
         return transactionService
-            .updateArchiveUnitsMetadataFromFile(transactionId, fileName, inputStream, buildUiHttpContext()).getBody();
+            .updateArchiveUnitsMetadataFromFile(transactionId, fileName, inputStream, buildUiHttpContext())
+            .getBody();
     }
 
     @ApiOperation(value = "Find the Object Group Details")
@@ -263,15 +270,16 @@ public class TransactionController extends AbstractUiRestController {
     @ApiOperation(value = "select Unit With Inherited Rules")
     @PostMapping("/{transactionId}" + RestApi.UNIT_WITH_INHERITED_RULES)
     @ResponseStatus(HttpStatus.OK)
-    public ResultsDto selectUnitsWithInheritedRules(@PathVariable("transactionId") final String transactionId,
-        @RequestBody final SearchCriteriaDto searchQuery)
-        throws InvalidParseOperationException, PreconditionFailedException {
+    public ResultsDto selectUnitsWithInheritedRules(
+        @PathVariable("transactionId") final String transactionId,
+        @RequestBody final SearchCriteriaDto searchQuery
+    ) throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter("The Query is a mandatory parameter: ", searchQuery);
         SanityChecker.sanitizeCriteria(searchQuery);
         SanityChecker.checkSecureParameter(transactionId);
         LOGGER.debug("select Unit With Inherited Rules by criteria = {}", searchQuery);
-        return transactionService.selectUnitsWithInheritedRules(transactionId, searchQuery, buildUiHttpContext())
+        return transactionService
+            .selectUnitsWithInheritedRules(transactionId, searchQuery, buildUiHttpContext())
             .getBody();
-
     }
 }

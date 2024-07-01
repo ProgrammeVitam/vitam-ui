@@ -36,19 +36,17 @@
  */
 package fr.gouv.vitamui.referential.common.service;
 
-import java.io.InputStream;
-
-import javax.ws.rs.core.Response;
-
-import org.apache.http.HttpStatus;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import fr.gouv.vitam.access.external.client.AdminExternalClient;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
+import org.apache.http.HttpStatus;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import javax.ws.rs.core.Response;
+import java.io.InputStream;
 
 /**
  * Service used to call batch report admin vitam services.
@@ -56,22 +54,21 @@ import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
  */
 public class VitamBatchReportService {
 
-	private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(VitamBatchReportService.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(VitamBatchReportService.class);
 
-	private final AdminExternalClient adminExternalClient;
+    private final AdminExternalClient adminExternalClient;
 
-	@Autowired
-	public VitamBatchReportService(AdminExternalClient adminExternalClient) {
-		this.adminExternalClient = adminExternalClient;
-	}
+    @Autowired
+    public VitamBatchReportService(AdminExternalClient adminExternalClient) {
+        this.adminExternalClient = adminExternalClient;
+    }
 
-	public InputStream downloadBatchReport(final VitamContext vitamContext, final String operationId)
-			throws VitamClientException {
-        LOGGER.info("Batch Report EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
-		LOGGER.debug("findBatchReport: {}", operationId);
-		Response response = adminExternalClient.downloadRulesReport(vitamContext, operationId);
-		VitamRestUtils.checkResponse(response, HttpStatus.SC_OK, HttpStatus.SC_ACCEPTED);
-		return response.readEntity(InputStream.class);
-
-	}
+    public InputStream downloadBatchReport(final VitamContext vitamContext, final String operationId)
+        throws VitamClientException {
+        LOGGER.info("Batch Report EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
+        LOGGER.debug("findBatchReport: {}", operationId);
+        Response response = adminExternalClient.downloadRulesReport(vitamContext, operationId);
+        VitamRestUtils.checkResponse(response, HttpStatus.SC_OK, HttpStatus.SC_ACCEPTED);
+        return response.readEntity(InputStream.class);
+    }
 }

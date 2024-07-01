@@ -36,17 +36,16 @@
  */
 package fr.gouv.vitamui.commons.sip.model;
 
-import java.time.LocalDateTime;
+import fr.gouv.vitamui.commons.sip.util.LocalDateTimeAdapter;
+import lombok.Getter;
+import lombok.ToString;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-
-import fr.gouv.vitamui.commons.sip.util.LocalDateTimeAdapter;
-import lombok.Getter;
-import lombok.ToString;
+import java.time.LocalDateTime;
 
 @Getter
 @ToString
@@ -79,8 +78,7 @@ public class ArchiveTransfer {
     @XmlElement(name = "TransferringAgency")
     private TransferringAgency transferringAgency;
 
-    private ArchiveTransfer() {
-    }
+    private ArchiveTransfer() {}
 
     private ArchiveTransfer(Builder builder) {
         comment = builder.comment;

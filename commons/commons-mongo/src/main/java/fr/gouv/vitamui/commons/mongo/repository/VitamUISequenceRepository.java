@@ -36,15 +36,14 @@
  */
 package fr.gouv.vitamui.commons.mongo.repository;
 
-import java.io.Serializable;
-import java.util.Optional;
-
+import fr.gouv.vitamui.commons.mongo.IdDocument;
+import fr.gouv.vitamui.commons.mongo.domain.CustomSequence;
 import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.data.repository.Repository;
 import org.springframework.data.repository.query.QueryByExampleExecutor;
 
-import fr.gouv.vitamui.commons.mongo.IdDocument;
-import fr.gouv.vitamui.commons.mongo.domain.CustomSequence;
+import java.io.Serializable;
+import java.util.Optional;
 
 /**
  * VITAMUI Mongo CRUD Repository A service to read, create, update and delete an object with identifier.
@@ -53,8 +52,7 @@ import fr.gouv.vitamui.commons.mongo.domain.CustomSequence;
  */
 @NoRepositoryBean
 public interface VitamUISequenceRepository<T extends IdDocument, ID extends Serializable>
-        extends Repository<T, ID>, QueryByExampleExecutor<T> {
-
+    extends Repository<T, ID>, QueryByExampleExecutor<T> {
     /**
      * Search customSequence by key and increment a property with a number.
      * Use findAndModify mongo db atomic operator
@@ -102,5 +100,4 @@ public interface VitamUISequenceRepository<T extends IdDocument, ID extends Seri
      * Deletes all entities managed by the repository.
      */
     void deleteAll();
-
 }

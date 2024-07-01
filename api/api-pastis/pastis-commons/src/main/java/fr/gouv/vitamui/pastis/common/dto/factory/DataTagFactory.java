@@ -47,12 +47,13 @@ public class DataTagFactory implements AbstractTagFactory<Object> {
 
     @Override
     public Map<RngTag, RngTag> createTagWithTag(ElementProperties node, RngTag dataRNG, RngTag currentTag, int level) {
-
         Map<RngTag, RngTag> rngMapTags = new HashMap<>();
 
-        if (!currentTag.getChildren().isEmpty() &&
-            (currentTag.getChildren().get(0) instanceof ElementTag
-                || currentTag.getChildren().get(0) instanceof AttributeTag)) {
+        if (
+            !currentTag.getChildren().isEmpty() &&
+            (currentTag.getChildren().get(0) instanceof ElementTag ||
+                currentTag.getChildren().get(0) instanceof AttributeTag)
+        ) {
             RngTag currentTagFirstChild = (RngTag) currentTag.getChildren().get(0);
             currentTagFirstChild.getChildren().add(dataRNG);
             dataRNG.setParent(currentTag);

@@ -62,9 +62,19 @@ public class ApiReferentialExternalRuleCreationSteps extends CommonSteps {
 
     private JsonNode response;
 
-    @When("^un utilisateur avec le role ROLE_CREATE_RULES ajoute une nouvelle regle en utilisant un certificat full access avec le role ROLE_CREATE_RULES$")
+    @When(
+        "^un utilisateur avec le role ROLE_CREATE_RULES ajoute une nouvelle regle en utilisant un certificat full access avec le role ROLE_CREATE_RULES$"
+    )
     public void un_utilisateur_avec_le_role_ROLE_CREATE_RULES_ajoute_une_nouvelle_regle_en_utilisant_un_certificat_full_access_avec_le_role_ROLE_CREATE_RULES() {
-        final RuleDto ruleDto = ReferentialDtoBuilder.buildRuleDto(null, "RuleTest", "StorageRule", "Test rule value 1", "Test rule Description 1", "1", "DAY");
+        final RuleDto ruleDto = ReferentialDtoBuilder.buildRuleDto(
+            null,
+            "RuleTest",
+            "StorageRule",
+            "Test rule value 1",
+            "Test rule Description 1",
+            "1",
+            "DAY"
+        );
         testContext.savedRuleDto = getRuleRestClient().create(getSystemTenantUserAdminContext(), ruleDto);
     }
 
@@ -75,11 +85,15 @@ public class ApiReferentialExternalRuleCreationSteps extends CommonSteps {
 
     @When("^un utilisateur importe des règles à partir d'un fichier csv valide$")
     public void un_utilisateur_importe_des_regles_à_partir_d_un_fichier_csv_valide() throws IOException {
-	    File file = new File("src/test/resources/data/import_rules_valid.csv");
-	    FileInputStream input = new FileInputStream(file);
-	    MultipartFile multipartFile = new MockMultipartFile("import_rules_valid.csv",
-	    	file.getName(), "application/csv", IOUtils.toByteArray(input));
-	    response = getFileFormatWebClient().importFileFormats(getSystemTenantUserAdminContext(), multipartFile);
+        File file = new File("src/test/resources/data/import_rules_valid.csv");
+        FileInputStream input = new FileInputStream(file);
+        MultipartFile multipartFile = new MockMultipartFile(
+            "import_rules_valid.csv",
+            file.getName(),
+            "application/csv",
+            IOUtils.toByteArray(input)
+        );
+        response = getFileFormatWebClient().importFileFormats(getSystemTenantUserAdminContext(), multipartFile);
     }
 
     @Then("^l'import des règles a réussi$")
@@ -90,11 +104,15 @@ public class ApiReferentialExternalRuleCreationSteps extends CommonSteps {
 
     @When("^un utilisateur importe des règles à partir d'un fichier csv invalide$")
     public void un_utilisateur_importe_des_formats_de_fichier_à_partir_d_un_fichier_csv_invalide() throws IOException {
-	    File file = new File("src/test/resources/data/import_rules_invalid.csv");
-	    FileInputStream input = new FileInputStream(file);
-	    MultipartFile multipartFile = new MockMultipartFile("import_rules_invalid.csv",
-	    	file.getName(), "application/csv", IOUtils.toByteArray(input));
-	    response = getFileFormatWebClient().importFileFormats(getSystemTenantUserAdminContext(), multipartFile);
+        File file = new File("src/test/resources/data/import_rules_invalid.csv");
+        FileInputStream input = new FileInputStream(file);
+        MultipartFile multipartFile = new MockMultipartFile(
+            "import_rules_invalid.csv",
+            file.getName(),
+            "application/csv",
+            IOUtils.toByteArray(input)
+        );
+        response = getFileFormatWebClient().importFileFormats(getSystemTenantUserAdminContext(), multipartFile);
     }
 
     @Then("^l'import des règles a échoué$")
@@ -102,5 +120,4 @@ public class ApiReferentialExternalRuleCreationSteps extends CommonSteps {
         assertThat(response).isNotNull();
         assertThat(response.get("httpCode").asInt()).isEqualTo(400);
     }
-
 }

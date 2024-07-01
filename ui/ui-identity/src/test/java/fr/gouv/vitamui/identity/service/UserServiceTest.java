@@ -1,24 +1,17 @@
 package fr.gouv.vitamui.identity.service;
 
-import static org.mockito.ArgumentMatchers.eq;
-
-import java.util.Map;
-
-import org.assertj.core.api.Assertions;
+import fr.gouv.vitamui.commons.api.domain.UserDto;
+import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
+import fr.gouv.vitamui.commons.api.enums.UserTypeEnum;
+import fr.gouv.vitamui.iam.external.client.UserExternalRestClient;
+import fr.gouv.vitamui.ui.commons.service.AbstractCrudService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import fr.gouv.vitamui.commons.api.domain.UserDto;
-import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
-import fr.gouv.vitamui.commons.api.enums.UserTypeEnum;
-import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
-import fr.gouv.vitamui.iam.external.client.UserExternalRestClient;
-import fr.gouv.vitamui.ui.commons.service.AbstractCrudService;
 @RunWith(SpringJUnit4ClassRunner.class)
 public class UserServiceTest extends UIIdentityServiceTest<UserDto> {
 

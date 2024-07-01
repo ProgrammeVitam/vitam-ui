@@ -15,7 +15,7 @@ public class ParameterizedTypeReferenceFactory {
      * @param parameterType the parameter type
      * @return
      */
-    public static ParameterizedTypeReference create(Type mainType, Type ...parameterType) {
+    public static ParameterizedTypeReference create(Type mainType, Type... parameterType) {
         Type resultDtoType = new ParameterizedType() {
             public Type getRawType() {
                 return mainType;

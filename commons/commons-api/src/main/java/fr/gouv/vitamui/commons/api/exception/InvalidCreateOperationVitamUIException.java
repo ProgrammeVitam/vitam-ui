@@ -33,7 +33,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(value = HttpStatus.BAD_REQUEST)
-
 public class InvalidCreateOperationVitamUIException extends VitamUIException {
 
     /**
@@ -48,6 +47,7 @@ public class InvalidCreateOperationVitamUIException extends VitamUIException {
     public InvalidCreateOperationVitamUIException(final String message, final String key) {
         super(message, key);
     }
+
     public InvalidCreateOperationVitamUIException(String arg0, Throwable arg1) {
         super(arg0, arg1);
     }

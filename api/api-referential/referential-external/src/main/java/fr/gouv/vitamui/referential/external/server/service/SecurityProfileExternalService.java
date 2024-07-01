@@ -36,17 +36,7 @@
  */
 package fr.gouv.vitamui.referential.external.server.service;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.fasterxml.jackson.databind.JsonNode;
-
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
@@ -58,31 +48,48 @@ import fr.gouv.vitamui.referential.common.dto.SecurityProfileDto;
 import fr.gouv.vitamui.referential.internal.client.SecurityProfileInternalRestClient;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @Getter
 @Setter
 @Service
-public class SecurityProfileExternalService extends AbstractResourceClientService<SecurityProfileDto, SecurityProfileDto> {
+public class SecurityProfileExternalService
+    extends AbstractResourceClientService<SecurityProfileDto, SecurityProfileDto> {
 
     private SecurityProfileInternalRestClient securityProfileInternalRestClient;
 
     @Autowired
-    public SecurityProfileExternalService(ExternalSecurityService externalSecurityService, SecurityProfileInternalRestClient securityProfileInternalRestClient) {
+    public SecurityProfileExternalService(
+        ExternalSecurityService externalSecurityService,
+        SecurityProfileInternalRestClient securityProfileInternalRestClient
+    ) {
         super(externalSecurityService);
         this.securityProfileInternalRestClient = securityProfileInternalRestClient;
     }
 
     public List<SecurityProfileDto> getAll(final Optional<String> criteria) {
-        return securityProfileInternalRestClient.getAll(getInternalHttpContext(),criteria);
+        return securityProfileInternalRestClient.getAll(getInternalHttpContext(), criteria);
     }
 
-    @Override protected BasePaginatingAndSortingRestClient<SecurityProfileDto, InternalHttpContext> getClient() {
+    @Override
+    protected BasePaginatingAndSortingRestClient<SecurityProfileDto, InternalHttpContext> getClient() {
         return securityProfileInternalRestClient;
     }
 
-    public PaginatedValuesDto<SecurityProfileDto> getAllPaginated(final Integer page, final Integer size, final Optional<String> criteria,
-            final Optional<String> orderBy, final Optional<DirectionDto> direction) {
-
+    public PaginatedValuesDto<SecurityProfileDto> getAllPaginated(
+        final Integer page,
+        final Integer size,
+        final Optional<String> criteria,
+        final Optional<String> orderBy,
+        final Optional<DirectionDto> direction
+    ) {
         ParameterChecker.checkPagination(size, page);
         return getClient().getAllPaginated(getInternalHttpContext(), page, size, criteria, orderBy, direction);
     }
@@ -121,5 +128,4 @@ public class SecurityProfileExternalService extends AbstractResourceClientServic
     public void delete(final String id) {
         securityProfileInternalRestClient.delete(getInternalHttpContext(), id);
     }
-
 }

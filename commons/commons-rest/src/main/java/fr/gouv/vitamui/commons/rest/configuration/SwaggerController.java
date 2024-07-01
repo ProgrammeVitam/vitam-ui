@@ -36,14 +36,13 @@
  */
 package fr.gouv.vitamui.commons.rest.configuration;
 
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import lombok.Setter;
 import springfox.documentation.annotations.ApiIgnore;
 
 @RestController
@@ -60,5 +59,4 @@ public class SwaggerController {
     public Resource getSwaggerFile() {
         return swaggerFile;
     }
-
 }

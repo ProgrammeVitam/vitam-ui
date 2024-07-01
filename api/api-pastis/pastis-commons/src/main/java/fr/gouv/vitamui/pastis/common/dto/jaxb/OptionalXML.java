@@ -40,6 +40,4 @@ package fr.gouv.vitamui.pastis.common.dto.jaxb;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "rng:optional")
-public class OptionalXML extends BaliseXML {
-
-}
+public class OptionalXML extends BaliseXML {}

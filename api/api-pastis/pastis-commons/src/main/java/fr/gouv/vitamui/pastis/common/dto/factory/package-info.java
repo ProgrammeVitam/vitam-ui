@@ -37,7 +37,6 @@ knowledge of the CeCILL-C license and that you accept its terms.
 */
 
 @XmlSchema(
-
     xmlns = {
         @XmlNs(prefix = "a", namespaceURI = "http://relaxng.org/ns/compatibility/annotations/1.0"),
         @XmlNs(prefix = "rng", namespaceURI = "http://relaxng.org/ns/structure/1.0"),
@@ -45,8 +44,8 @@ knowledge of the CeCILL-C license and that you accept its terms.
         @XmlNs(prefix = "xlink", namespaceURI = "http://www.w3.org/1999/xlink"),
         @XmlNs(prefix = "xsd", namespaceURI = "http://www.w3.org/2001/XMLSchema"),
     },
-    elementFormDefault = XmlNsForm.QUALIFIED)
-
+    elementFormDefault = XmlNsForm.QUALIFIED
+)
 package fr.gouv.vitamui.pastis.common.dto.factory;
 
 import javax.xml.bind.annotation.XmlNs;

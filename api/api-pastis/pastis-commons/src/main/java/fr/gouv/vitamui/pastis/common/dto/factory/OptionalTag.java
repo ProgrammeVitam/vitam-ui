@@ -41,5 +41,4 @@ package fr.gouv.vitamui.pastis.common.dto.factory;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "rng:optional")
-public class OptionalTag extends CardinalityTag {
-}
+public class OptionalTag extends CardinalityTag {}

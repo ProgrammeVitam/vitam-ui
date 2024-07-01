@@ -82,7 +82,6 @@ public class IngestContractInternalService {
 
     private IngestContractService ingestContractService;
 
-
     private ObjectMapper objectMapper;
 
     private IngestContractConverter converter;
@@ -90,7 +89,12 @@ public class IngestContractInternalService {
     private LogbookService logbookService;
 
     @Autowired
-    public IngestContractInternalService(IngestContractService ingestContractService, ObjectMapper objectMapper, IngestContractConverter converter, LogbookService logbookService) {
+    public IngestContractInternalService(
+        IngestContractService ingestContractService,
+        ObjectMapper objectMapper,
+        IngestContractConverter converter,
+        LogbookService logbookService
+    ) {
         this.ingestContractService = ingestContractService;
         this.objectMapper = objectMapper;
         this.converter = converter;
@@ -99,45 +103,55 @@ public class IngestContractInternalService {
 
     public IngestContractDto getOne(VitamContext vitamContext, String identifier) {
         try {
-            LOGGER.info("Ingest Contract EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
-            RequestResponse<IngestContractModel> requestResponse = ingestContractService.findIngestContractById(vitamContext, identifier);
-            final IngestContractResponseDto ingestContractResponseDto = objectMapper
-                .treeToValue(requestResponse.toJsonNode(), IngestContractResponseDto.class);
+            LOGGER.info("Ingest Contract EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
+            RequestResponse<IngestContractModel> requestResponse = ingestContractService.findIngestContractById(
+                vitamContext,
+                identifier
+            );
+            final IngestContractResponseDto ingestContractResponseDto = objectMapper.treeToValue(
+                requestResponse.toJsonNode(),
+                IngestContractResponseDto.class
+            );
             if (ingestContractResponseDto.getResults().isEmpty()) {
                 return null;
             } else {
                 return converter.convertVitamToDto(ingestContractResponseDto.getResults().get(0));
             }
         } catch (VitamClientException | JsonProcessingException e) {
-        	throw new InternalServerException("Unable to get Ingest Contrat", e);
+            throw new InternalServerException("Unable to get Ingest Contrat", e);
         }
     }
 
     public List<IngestContractDto> getAll(VitamContext vitamContext) {
         final RequestResponse<IngestContractModel> requestResponse;
         try {
-            LOGGER.debug("All Ingest Contracts EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
-            requestResponse = ingestContractService
-                .findIngestContracts(vitamContext, new Select().getFinalSelect());
-            final IngestContractResponseDto ingestContractResponseDto = objectMapper
-                .treeToValue(requestResponse.toJsonNode(), IngestContractResponseDto.class);
+            LOGGER.debug("All Ingest Contracts EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
+            requestResponse = ingestContractService.findIngestContracts(vitamContext, new Select().getFinalSelect());
+            final IngestContractResponseDto ingestContractResponseDto = objectMapper.treeToValue(
+                requestResponse.toJsonNode(),
+                IngestContractResponseDto.class
+            );
 
             return converter.convertVitamsToDtos(ingestContractResponseDto.getResults());
         } catch (JsonProcessingException | VitamClientException e) {
-        	throw new InternalServerException("Unable to get Ingest Contrats", e);
+            throw new InternalServerException("Unable to get Ingest Contrats", e);
         }
     }
 
-    public PaginatedValuesDto<IngestContractDto> getAllPaginated(final Integer pageNumber, final Integer size,
-                                                                 final Optional<String> orderBy, final Optional<DirectionDto> direction, VitamContext vitamContext,
-                                                                 Optional<String> criteria) {
+    public PaginatedValuesDto<IngestContractDto> getAllPaginated(
+        final Integer pageNumber,
+        final Integer size,
+        final Optional<String> orderBy,
+        final Optional<DirectionDto> direction,
+        VitamContext vitamContext,
+        Optional<String> criteria
+    ) {
         Map<String, Object> vitamCriteria = new HashMap<>();
         JsonNode query = null;
-        LOGGER.debug("All Ingest Contracts EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
+        LOGGER.debug("All Ingest Contracts EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
         try {
             if (criteria.isPresent()) {
-                TypeReference<HashMap<String, Object>> typRef = new TypeReference<HashMap<String, Object>>() {
-                };
+                TypeReference<HashMap<String, Object>> typRef = new TypeReference<HashMap<String, Object>>() {};
                 vitamCriteria = objectMapper.readValue(criteria.get(), typRef);
             }
 
@@ -159,23 +173,28 @@ public class IngestContractInternalService {
     public IngestContractResponseDto findAll(VitamContext vitamContext, JsonNode query) {
         final RequestResponse<IngestContractModel> requestResponse;
         try {
-            LOGGER.info("All Ingest Contracts EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
+            LOGGER.info("All Ingest Contracts EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
             requestResponse = ingestContractService.findIngestContracts(vitamContext, query);
             LOGGER.debug("VITAM Response: {}", requestResponse.toJsonNode().toPrettyString());
-            final IngestContractResponseDto ingestContractResponseDto = objectMapper
-                .treeToValue(requestResponse.toJsonNode(), IngestContractResponseDto.class);
+            final IngestContractResponseDto ingestContractResponseDto = objectMapper.treeToValue(
+                requestResponse.toJsonNode(),
+                IngestContractResponseDto.class
+            );
             LOGGER.debug("VITAM DTO: {}", ingestContractResponseDto);
 
             return ingestContractResponseDto;
         } catch (VitamClientException | JsonProcessingException e) {
-        	throw new InternalServerException("Unable to find Ingest Contrats", e);
+            throw new InternalServerException("Unable to find Ingest Contrats", e);
         }
     }
 
     public Boolean check(VitamContext vitamContext, IngestContractDto ingestContractDto) {
         try {
-            LOGGER.debug("Ingest Contract Check EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
-            Integer ingestContractCheckedTenant = ingestContractService.checkAbilityToCreateIngestContractInVitam(converter.convertDtosToVitams(Arrays.asList(ingestContractDto)), vitamContext.getApplicationSessionId());
+            LOGGER.debug("Ingest Contract Check EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
+            Integer ingestContractCheckedTenant = ingestContractService.checkAbilityToCreateIngestContractInVitam(
+                converter.convertDtosToVitams(Arrays.asList(ingestContractDto)),
+                vitamContext.getApplicationSessionId()
+            );
             return !vitamContext.getTenantId().equals(ingestContractCheckedTenant);
         } catch (ConflictException e) {
             return true;
@@ -184,10 +203,15 @@ public class IngestContractInternalService {
 
     public IngestContractDto create(VitamContext vitamContext, IngestContractDto ingestContractDto) {
         try {
-            LOGGER.debug("Create Ingest Contract EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
-            RequestResponse requestResponse = ingestContractService.createIngestContracts(vitamContext, converter.convertDtosToVitams(Arrays.asList(ingestContractDto)));
-            final IngestContractModel ingestContractVitamDto = objectMapper
-                .treeToValue(requestResponse.toJsonNode(), IngestContractModel.class);
+            LOGGER.debug("Create Ingest Contract EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
+            RequestResponse requestResponse = ingestContractService.createIngestContracts(
+                vitamContext,
+                converter.convertDtosToVitams(Arrays.asList(ingestContractDto))
+            );
+            final IngestContractModel ingestContractVitamDto = objectMapper.treeToValue(
+                requestResponse.toJsonNode(),
+                IngestContractModel.class
+            );
             return converter.convertVitamToDto(ingestContractVitamDto);
         } catch (InvalidParseOperationException | AccessExternalClientException | IOException e) {
             throw new InternalServerException("Can't create ingest contract", e);
@@ -195,8 +219,7 @@ public class IngestContractInternalService {
     }
 
     private JsonNode convertMapPartialDtoToUpperCaseVitamFields(Map<String, Object> partialDto) {
-
-    	ObjectNode propertiesToUpdate = JsonHandler.createObjectNode();
+        ObjectNode propertiesToUpdate = JsonHandler.createObjectNode();
 
         // Transform Vitam-UI fields into Vitam fields
         if (partialDto.get("name") != null) {
@@ -233,7 +256,10 @@ public class IngestContractInternalService {
             propertiesToUpdate.put("MasterMandatory", (boolean) partialDto.get("masterMandatory"));
         }
         if (partialDto.get("formatUnidentifiedAuthorized") != null) {
-            propertiesToUpdate.put("FormatUnidentifiedAuthorized", (boolean) partialDto.get("formatUnidentifiedAuthorized"));
+            propertiesToUpdate.put(
+                "FormatUnidentifiedAuthorized",
+                (boolean) partialDto.get("formatUnidentifiedAuthorized")
+            );
         }
         if (partialDto.get("everyFormatType") != null) {
             propertiesToUpdate.put("EveryFormatType", (boolean) partialDto.get("everyFormatType"));
@@ -244,34 +270,37 @@ public class IngestContractInternalService {
 
         if (partialDto.get("checkParentId") != null) {
             ArrayNode array = JsonHandler.createArrayNode();
-            for (String value: (List<String>) partialDto.get("checkParentId")) {
+            for (String value : (List<String>) partialDto.get("checkParentId")) {
                 array.add(value);
             }
             propertiesToUpdate.set("CheckParentId", array);
         }
         if (partialDto.get("formatType") != null) {
             ArrayNode array = JsonHandler.createArrayNode();
-            for (String value: (List<String>) partialDto.get("formatType")) {
+            for (String value : (List<String>) partialDto.get("formatType")) {
                 array.add(value);
             }
             propertiesToUpdate.set("FormatType", array);
         }
         if (partialDto.get("archiveProfiles") != null) {
             ArrayNode array = JsonHandler.createArrayNode();
-            for (String value: (List<String>) partialDto.get("archiveProfiles")) {
+            for (String value : (List<String>) partialDto.get("archiveProfiles")) {
                 array.add(value);
             }
             propertiesToUpdate.set("ArchiveProfiles", array);
         }
         if (partialDto.get("dataObjectVersion") != null) {
             ArrayNode array = JsonHandler.createArrayNode();
-            for(String value: (List<String>) partialDto.get("dataObjectVersion")) {
+            for (String value : (List<String>) partialDto.get("dataObjectVersion")) {
                 array.add(value);
             }
             propertiesToUpdate.set("DataObjectVersion", array);
         }
         if (partialDto.get("computeInheritedRulesAtIngest") != null) {
-            propertiesToUpdate.put("ComputeInheritedRulesAtIngest", (boolean) partialDto.get("computeInheritedRulesAtIngest"));
+            propertiesToUpdate.put(
+                "ComputeInheritedRulesAtIngest",
+                (boolean) partialDto.get("computeInheritedRulesAtIngest")
+            );
         }
         return propertiesToUpdate;
     }
@@ -285,7 +314,7 @@ public class IngestContractInternalService {
         partialDto.remove("identifier");
 
         try {
-            LOGGER.debug("Patch Ingest Contract EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
+            LOGGER.debug("Patch Ingest Contract EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
             // Fix because Vitam doesn't allow String Array as action value (transformed to a string representation"[value1, value2]"
             JsonNode fieldsUpdated = convertMapPartialDtoToUpperCaseVitamFields(partialDto);
 
@@ -310,22 +339,21 @@ public class IngestContractInternalService {
             LOGGER.debug("Send IngestContract update request: {}", query);
 
             RequestResponse<?> requestResponse = ingestContractService.patchIngestContract(vitamContext, id, query);
-            if(Response.Status.OK.getStatusCode() != requestResponse.getHttpCode()) {
+            if (Response.Status.OK.getStatusCode() != requestResponse.getHttpCode()) {
                 throw new AccessExternalClientException("Can't patch ingest contract");
             }
             return getOne(vitamContext, id);
-
-        } catch (InvalidParseOperationException | AccessExternalClientException  e) {
+        } catch (InvalidParseOperationException | AccessExternalClientException e) {
             throw new InternalServerException("Can't patch ingest contract", e);
         }
     }
 
     public JsonNode findHistoryByIdentifier(VitamContext vitamContext, final String id) throws VitamClientException {
         try {
-            LOGGER.info("Ingest Contract History EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
-            return logbookService.selectOperations(VitamQueryHelper.buildOperationQuery(id),vitamContext).toJsonNode();
+            LOGGER.info("Ingest Contract History EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
+            return logbookService.selectOperations(VitamQueryHelper.buildOperationQuery(id), vitamContext).toJsonNode();
         } catch (InvalidCreateOperationException e) {
-        	throw new InternalServerException("Unable to fetch history", e);
+            throw new InternalServerException("Unable to fetch history", e);
         }
     }
 }

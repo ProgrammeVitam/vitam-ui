@@ -36,6 +36,8 @@
  */
 package fr.gouv.vitamui.referential.service;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
@@ -43,7 +45,6 @@ import fr.gouv.vitamui.referential.common.dto.OntologyDto;
 import fr.gouv.vitamui.referential.external.client.OntologyExternalRestClient;
 import fr.gouv.vitamui.referential.external.client.OntologyExternalWebClient;
 import fr.gouv.vitamui.ui.commons.service.CommonService;
-
 import org.apache.commons.io.IOUtils;
 import org.junit.Assert;
 import org.junit.Before;
@@ -57,9 +58,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.multipart.MultipartFile;
-
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -78,12 +76,16 @@ import static org.mockito.ArgumentMatchers.isNull;
 public class OntologyServiceTest {
 
     static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(OntologyService.class);
+
     @Mock
     private OntologyExternalRestClient client;
+
     @Mock
     private OntologyExternalWebClient webClient;
+
     @Mock
     private CommonService commonService;
+
     private OntologyService service;
 
     @Before
@@ -118,7 +120,6 @@ public class OntologyServiceTest {
 
     @Test
     public void testExport() {
-
         ResponseEntity<Resource> responseEntity = new ResponseEntity<Resource>(HttpStatus.OK);
 
         Mockito.when(client.export(isNull())).thenReturn(responseEntity);
@@ -130,19 +131,25 @@ public class OntologyServiceTest {
 
     @Test
     public void import_should_return_ok() throws IOException {
-	    File file = new File("src/test/resources/data/import_ontologies_valid.json");
-	    FileInputStream input = new FileInputStream(file);
-	    MultipartFile multipartFile = new MockMultipartFile(file.getName(), file.getName(), "text/csv", IOUtils.toByteArray(input));
+        File file = new File("src/test/resources/data/import_ontologies_valid.json");
+        FileInputStream input = new FileInputStream(file);
+        MultipartFile multipartFile = new MockMultipartFile(
+            file.getName(),
+            file.getName(),
+            "text/csv",
+            IOUtils.toByteArray(input)
+        );
 
-	    String stringReponse = "{\"httpCode\":\"201\"}";
-	    ObjectMapper mapper = new ObjectMapper();
-	    JsonNode jsonResponse = mapper.readTree(stringReponse);
+        String stringReponse = "{\"httpCode\":\"201\"}";
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode jsonResponse = mapper.readTree(stringReponse);
 
-	    Mockito.when(webClient.importOntologies(any(ExternalHttpContext.class), any(MultipartFile.class)))
-        	.thenReturn(jsonResponse);
+        Mockito.when(webClient.importOntologies(any(ExternalHttpContext.class), any(MultipartFile.class))).thenReturn(
+            jsonResponse
+        );
 
         assertThatCode(() -> {
-        	service.importOntologies(null, multipartFile);
+            service.importOntologies(null, multipartFile);
         }).doesNotThrowAnyException();
     }
 }

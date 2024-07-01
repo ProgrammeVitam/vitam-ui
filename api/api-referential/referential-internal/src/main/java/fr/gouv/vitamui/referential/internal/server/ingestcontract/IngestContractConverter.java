@@ -49,7 +49,7 @@ import java.util.stream.Collectors;
 
 public class IngestContractConverter {
 
-	private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(IngestContractConverter.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(IngestContractConverter.class);
 
     public IngestContractModel convertDtoToVitam(final IngestContractDto dto) {
         final IngestContractModel ingestContract = VitamUIUtils.copyProperties(dto, new IngestContractModel());
@@ -96,5 +96,4 @@ public class IngestContractConverter {
     public List<IngestContractDto> convertVitamsToDtos(final List<IngestContractModel> ingestContracts) {
         return ingestContracts.stream().map(this::convertVitamToDto).collect(Collectors.toList());
     }
-
 }

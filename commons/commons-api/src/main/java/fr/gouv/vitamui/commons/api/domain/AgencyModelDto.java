@@ -37,7 +37,6 @@
 package fr.gouv.vitamui.commons.api.domain;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import lombok.ToString;
 
 @ToString
@@ -114,5 +113,4 @@ public class AgencyModelDto {
     public String getDescription() {
         return description;
     }
-
 }

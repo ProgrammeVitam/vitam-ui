@@ -43,7 +43,6 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Path;
 
-
 /**
  * Property Utility class
  * <p>
@@ -54,9 +53,7 @@ public final class ResourcesUtils {
 
     private static final String FILE_NOT_FOUND_IN_RESOURCES = "File not found in Resources: ";
 
-    private ResourcesUtils() {
-
-    }
+    private ResourcesUtils() {}
 
     /**
      * Get the InputStream representation from the Resources directory
@@ -72,16 +69,14 @@ public final class ResourcesUtils {
         InputStream stream = null;
         try {
             stream = Thread.currentThread().getContextClassLoader().getResourceAsStream(resourcesFile);
-        }
-        catch (final SecurityException e) {
+        } catch (final SecurityException e) {
             // since another exception is thrown
             // Nothing to do
         }
         if (stream == null) {
             try {
                 stream = ResourcesUtils.class.getClassLoader().getResourceAsStream(resourcesFile);
-            }
-            catch (final SecurityException e) {
+            } catch (final SecurityException e) {
                 // since another exception is thrown
                 // Nothing to do
             }
@@ -106,8 +101,7 @@ public final class ResourcesUtils {
         URL url;
         try {
             url = ResourcesUtils.class.getClassLoader().getResource(resourcesFile);
-        }
-        catch (final SecurityException e) {
+        } catch (final SecurityException e) {
             // since another exception is thrown
             // Nothing to do
             throw new FileNotFoundException(FILE_NOT_FOUND_IN_RESOURCES + resourcesFile);
@@ -121,8 +115,7 @@ public final class ResourcesUtils {
         File file;
         try {
             file = new File(url.toURI());
-        }
-        catch (final URISyntaxException e) {
+        } catch (final URISyntaxException e) {
             // Nothing to do
             file = new File(url.getFile().replaceAll("%20", " "));
         }
@@ -142,6 +135,4 @@ public final class ResourcesUtils {
     public static final Path getResourcePath(final String resourcesFile) throws FileNotFoundException {
         return getResourceFile(resourcesFile).toPath();
     }
-
-
 }

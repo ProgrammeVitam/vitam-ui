@@ -65,7 +65,11 @@ public abstract class AbstractCrudService<T extends IdDto> {
         return getClient().getAll(context, criteria);
     }
 
-    protected Collection<T> getAll(final ExternalHttpContext context, final Optional<String> criteria, final Optional<String> embedded) {
+    protected Collection<T> getAll(
+        final ExternalHttpContext context,
+        final Optional<String> criteria,
+        final Optional<String> embedded
+    ) {
         return getClient().getAll(context, criteria, embedded);
     }
 
@@ -99,7 +103,10 @@ public abstract class AbstractCrudService<T extends IdDto> {
     }
 
     protected void beforePatch(final Map<String, Object> updates, final String id) {
-        Assert.isTrue(StringUtils.equals(id, (String) updates.get("id")), "The DTO identifier must match the path identifier for patch.");
+        Assert.isTrue(
+            StringUtils.equals(id, (String) updates.get("id")),
+            "The DTO identifier must match the path identifier for patch."
+        );
     }
 
     public T getOne(final ExternalHttpContext context, final String id) {
@@ -147,5 +154,4 @@ public abstract class AbstractCrudService<T extends IdDto> {
             throw new InternalServerException(VitamRestUtils.PARSING_ERROR_MSG, e);
         }
     }
-
 }

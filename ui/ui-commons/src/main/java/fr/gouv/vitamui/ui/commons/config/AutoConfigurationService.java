@@ -74,18 +74,26 @@ public class AutoConfigurationService {
     @Bean
     @DependsOn("iamRestClientFactory")
     @ConditionalOnMissingBean
-    public ApplicationService applicationService(final UIProperties uiProperties, final CasLogoutUrl casLogoutUrl,
-        final IamExternalRestClientFactory factory, final BuildProperties buildProperties) {
+    public ApplicationService applicationService(
+        final UIProperties uiProperties,
+        final CasLogoutUrl casLogoutUrl,
+        final IamExternalRestClientFactory factory,
+        final BuildProperties buildProperties
+    ) {
         return new ApplicationService(uiProperties, casLogoutUrl, factory, buildProperties);
     }
 
     @Bean
     @DependsOn("iamRestClientFactory")
     @ConditionalOnMissingBean
-    public LogbookService logbookService(final IamExternalRestClientFactory factory,
-        final IamExternalWebClientFactory webClientFactory) {
-        return new LogbookService(factory.getLogbookExternalRestClient(),
-            webClientFactory.getLogbookExternalWebClient());
+    public LogbookService logbookService(
+        final IamExternalRestClientFactory factory,
+        final IamExternalWebClientFactory webClientFactory
+    ) {
+        return new LogbookService(
+            factory.getLogbookExternalRestClient(),
+            webClientFactory.getLogbookExternalWebClient()
+        );
     }
 
     @Bean
@@ -96,14 +104,14 @@ public class AutoConfigurationService {
     }
 
     @Bean
-    @DependsOn(value = {"iamRestClientFactory", "commonService"})
+    @DependsOn(value = { "iamRestClientFactory", "commonService" })
     @ConditionalOnMissingBean
     public SubrogationService subrogationService(final IamExternalRestClientFactory factory) {
         return new SubrogationService(factory);
     }
 
     @Bean("accountService")
-    @DependsOn(value = {"iamRestClientFactory", "commonService"})
+    @DependsOn(value = { "iamRestClientFactory", "commonService" })
     @ConditionalOnMissingBean
     public AccountService accountService(final IamExternalRestClientFactory factory) {
         return new AccountService(factory);
@@ -126,12 +134,11 @@ public class AutoConfigurationService {
     @Bean
     @DependsOn("iamRestClientFactory")
     @ConditionalOnMissingBean
-    public ExternalParamProfileService externalParamProfileService(final IamExternalRestClientFactory factory,
-        CommonService commonService) {
-        return new ExternalParamProfileService(
-            factory,
-            commonService
-        );
+    public ExternalParamProfileService externalParamProfileService(
+        final IamExternalRestClientFactory factory,
+        CommonService commonService
+    ) {
+        return new ExternalParamProfileService(factory, commonService);
     }
 
     @Bean("CommonAccessContractService")
@@ -144,15 +151,20 @@ public class AutoConfigurationService {
     @Bean("CommonRuleService")
     @DependsOn("referentialRestClientFactory")
     @ConditionalOnMissingBean
-    public RuleService ruleService(final CommonService commonService,
-        final ReferentialExternalRestClientFactory factoryRest, final
-    ReferentialExternalWebClientFactory dactoryWeb) {
-        return new RuleService(commonService, factoryRest.getRuleExternalRestClient(),
-            dactoryWeb.getRuleExternalWebClient());
+    public RuleService ruleService(
+        final CommonService commonService,
+        final ReferentialExternalRestClientFactory factoryRest,
+        final ReferentialExternalWebClientFactory dactoryWeb
+    ) {
+        return new RuleService(
+            commonService,
+            factoryRest.getRuleExternalRestClient(),
+            dactoryWeb.getRuleExternalWebClient()
+        );
     }
 
     @Bean("unitService")
-    @DependsOn(value = {"unitExternalRestClient"})
+    @DependsOn(value = { "unitExternalRestClient" })
     @ConditionalOnMissingBean
     public UnitService unitService(final UnitExternalRestClient unitRestClient) {
         return new UnitService(unitRestClient);

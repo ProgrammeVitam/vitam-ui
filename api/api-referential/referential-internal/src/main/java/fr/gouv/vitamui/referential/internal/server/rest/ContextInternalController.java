@@ -86,7 +86,7 @@ public class ContextInternalController {
     @Autowired
     private InternalSecurityService securityService;
 
-    @GetMapping()
+    @GetMapping
     public Collection<ContextDto> getAll(@RequestParam final Optional<String> criteria) {
         LOGGER.debug("get all customer criteria={}", criteria);
         SanityChecker.sanitizeCriteria(criteria);
@@ -95,19 +95,37 @@ public class ContextInternalController {
     }
 
     @GetMapping(params = { "page", "size" })
-    public PaginatedValuesDto<ContextDto> getAllPaginated(@RequestParam final Integer page, @RequestParam final Integer size,
-            @RequestParam(required = false) final Optional<String> criteria, @RequestParam(required = false) final Optional<String> orderBy,
-            @RequestParam(required = false) final Optional<DirectionDto> direction) {
-        LOGGER.debug("getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, criteria, orderBy, direction);
+    public PaginatedValuesDto<ContextDto> getAllPaginated(
+        @RequestParam final Integer page,
+        @RequestParam final Integer size,
+        @RequestParam(required = false) final Optional<String> criteria,
+        @RequestParam(required = false) final Optional<String> orderBy,
+        @RequestParam(required = false) final Optional<DirectionDto> direction
+    ) {
+        LOGGER.debug(
+            "getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}",
+            page,
+            size,
+            criteria,
+            orderBy,
+            direction
+        );
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
         return contextInternalService.getAllPaginated(page, size, orderBy, direction, vitamContext, criteria);
     }
 
     @GetMapping(path = RestApi.PATH_REFERENTIAL_ID)
     public ContextDto getOne(final @PathVariable("identifier") String identifier) throws UnsupportedEncodingException {
-        LOGGER.debug("get context identifier={} / {}", identifier, URLDecoder.decode(identifier, StandardCharsets.UTF_8.toString()));
+        LOGGER.debug(
+            "get context identifier={} / {}",
+            identifier,
+            URLDecoder.decode(identifier, StandardCharsets.UTF_8.toString())
+        );
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
-        return contextInternalService.getOne(vitamContext, URLDecoder.decode(identifier, StandardCharsets.UTF_8.toString()));
+        return contextInternalService.getOne(
+            vitamContext,
+            URLDecoder.decode(identifier, StandardCharsets.UTF_8.toString())
+        );
     }
 
     @PostMapping(CommonConstants.PATH_CHECK)
@@ -122,14 +140,17 @@ public class ContextInternalController {
     public ContextDto create(@Valid @RequestBody ContextDto contextDto) {
         LOGGER.debug("create context={}", contextDto);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
-        return contextInternalService.create(vitamContext,contextDto);
+        return contextInternalService.create(vitamContext, contextDto);
     }
 
     @PatchMapping(CommonConstants.PATH_ID)
     public ContextDto patch(final @PathVariable("id") String id, @RequestBody final ContextDto partialDto) {
         LOGGER.debug("Patch {} with {}", id, partialDto);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
-        Assert.isTrue(StringUtils.equals(id, partialDto.getId()), "The DTO identifier must match the path identifier for update.");
+        Assert.isTrue(
+            StringUtils.equals(id, partialDto.getId()),
+            "The DTO identifier must match the path identifier for update."
+        );
         return contextInternalService.patch(vitamContext, partialDto);
     }
 
@@ -139,5 +160,4 @@ public class ContextInternalController {
         LOGGER.debug("get logbook for accessContract with id :{}", id);
         return contextInternalService.findHistoryByIdentifier(vitamContext, id);
     }
-
 }

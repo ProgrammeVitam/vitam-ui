@@ -53,17 +53,20 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
-
 @RunWith(SpringRunner.class)
 @WebMvcTest(controllers = { ExternalParametersExternalController.class })
 public class ExternalParametersExternalControllerTest extends ApiIamControllerTest<ExternalParametersDto> {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ExternalParametersExternalControllerTest.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
+        ExternalParametersExternalControllerTest.class
+    );
 
-	@MockBean
-	private ExternalParametersExternalService service;
+    @MockBean
+    private ExternalParametersExternalService service;
 
-	private ExternalParametersExternalController mockedController = MvcUriComponentsBuilder.on(ExternalParametersExternalController.class);
+    private ExternalParametersExternalController mockedController = MvcUriComponentsBuilder.on(
+        ExternalParametersExternalController.class
+    );
 
     @Test
     public void getMyExternalParameters_thenOk() throws Exception {
@@ -74,33 +77,31 @@ public class ExternalParametersExternalControllerTest extends ApiIamControllerTe
         result.andExpect(MockMvcResultMatchers.handler().methodCall(mockedController.getMyExternalParameters()));
     }
 
-	@Override
-	protected ExternalParametersDto buildDto() {
-	    return new ExternalParametersDto();
-	}
+    @Override
+    protected ExternalParametersDto buildDto() {
+        return new ExternalParametersDto();
+    }
 
-	@Override
-	protected VitamUILogger getLog() {
-	    return LOGGER;
-	}
+    @Override
+    protected VitamUILogger getLog() {
+        return LOGGER;
+    }
 
-	@Override
-	protected void preparedServices() {
-	}
+    @Override
+    protected void preparedServices() {}
 
-	@Override
-	protected String getRessourcePrefix() {
-	    return RestApi.V1_EXTERNAL_PARAMETERS_URL;
-	}
+    @Override
+    protected String getRessourcePrefix() {
+        return RestApi.V1_EXTERNAL_PARAMETERS_URL;
+    }
 
-	@Override
-	protected String[] getServices() {
-	    return new String[] {ServicesData.SERVICE_EXTERNAL_PARAMS};
-	}
-	@Override
-	protected Class<ExternalParametersDto> getDtoClass() {
-	   return ExternalParametersDto.class;
-	}
+    @Override
+    protected String[] getServices() {
+        return new String[] { ServicesData.SERVICE_EXTERNAL_PARAMS };
+    }
 
+    @Override
+    protected Class<ExternalParametersDto> getDtoClass() {
+        return ExternalParametersDto.class;
+    }
 }
-

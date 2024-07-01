@@ -36,12 +36,12 @@
  */
 package fr.gouv.vitamui.commons.rest.client;
 
-import javax.servlet.http.HttpServletRequest;
-
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
+
+import javax.servlet.http.HttpServletRequest;
 
 @Getter
 @ToString(callSuper = true)
@@ -54,34 +54,60 @@ public class InternalHttpContext extends AbstractHttpContext {
 
     private final String customerId;
 
-    public InternalHttpContext(final Integer tenantIdentifier, final String userToken, final String customerId, final String userLevel,
-            final String applicationId, final String identity, final String requestId, final String accessContract) {
+    public InternalHttpContext(
+        final Integer tenantIdentifier,
+        final String userToken,
+        final String customerId,
+        final String userLevel,
+        final String applicationId,
+        final String identity,
+        final String requestId,
+        final String accessContract
+    ) {
         super(tenantIdentifier, userToken, applicationId, identity, requestId, accessContract);
         this.userLevel = userLevel;
         this.customerId = customerId;
     }
 
     public static InternalHttpContext buildFromExternalHttpContext(final ExternalHttpContext externalHttpContext) {
-
-        final InternalHttpContext internalHttpContext = new InternalHttpContext(externalHttpContext.getTenantIdentifier(), externalHttpContext.getUserToken(),
-                null, null, externalHttpContext.getApplicationId(), externalHttpContext.getIdentity(), externalHttpContext.getRequestId(),
-                externalHttpContext.getAccessContract());
+        final InternalHttpContext internalHttpContext = new InternalHttpContext(
+            externalHttpContext.getTenantIdentifier(),
+            externalHttpContext.getUserToken(),
+            null,
+            null,
+            externalHttpContext.getApplicationId(),
+            externalHttpContext.getIdentity(),
+            externalHttpContext.getRequestId(),
+            externalHttpContext.getAccessContract()
+        );
 
         return internalHttpContext;
     }
 
-    public static InternalHttpContext buildFromExternalHttpContext(final ExternalHttpContext externalHttpContext, final String customerId,
-            final String userLevel) {
-
-        final InternalHttpContext internalHttpContext = new InternalHttpContext(externalHttpContext.getTenantIdentifier(), externalHttpContext.getUserToken(),
-                customerId, userLevel, externalHttpContext.getApplicationId(), externalHttpContext.getIdentity(), externalHttpContext.getRequestId(),
-                externalHttpContext.getAccessContract());
+    public static InternalHttpContext buildFromExternalHttpContext(
+        final ExternalHttpContext externalHttpContext,
+        final String customerId,
+        final String userLevel
+    ) {
+        final InternalHttpContext internalHttpContext = new InternalHttpContext(
+            externalHttpContext.getTenantIdentifier(),
+            externalHttpContext.getUserToken(),
+            customerId,
+            userLevel,
+            externalHttpContext.getApplicationId(),
+            externalHttpContext.getIdentity(),
+            externalHttpContext.getRequestId(),
+            externalHttpContext.getAccessContract()
+        );
 
         return internalHttpContext;
     }
 
     public static InternalHttpContext buildFromRequest(final HttpServletRequest request) {
-        final Integer tenantIdentifier = getTenantIdentifier(request.getHeader(CommonConstants.X_TENANT_ID_HEADER), request.getRequestURI());
+        final Integer tenantIdentifier = getTenantIdentifier(
+            request.getHeader(CommonConstants.X_TENANT_ID_HEADER),
+            request.getRequestURI()
+        );
         final String userToken = request.getHeader(CommonConstants.X_USER_TOKEN_HEADER);
         final String applicationId = request.getHeader(CommonConstants.X_APPLICATION_ID_HEADER);
         final String identity = request.getHeader(CommonConstants.X_IDENTITY_HEADER);
@@ -89,7 +115,15 @@ public class InternalHttpContext extends AbstractHttpContext {
         final String accessContract = request.getHeader(CommonConstants.X_ACCESS_CONTRACT_ID_HEADER);
         final String customerId = request.getHeader(CommonConstants.X_CUSTOMER_ID_HEADER);
         final String userLevel = request.getHeader(CommonConstants.X_USER_LEVEL_HEADER);
-        return new InternalHttpContext(tenantIdentifier, userToken, customerId, userLevel, applicationId, identity, requestId, accessContract);
+        return new InternalHttpContext(
+            tenantIdentifier,
+            userToken,
+            customerId,
+            userLevel,
+            applicationId,
+            identity,
+            requestId,
+            accessContract
+        );
     }
-
 }

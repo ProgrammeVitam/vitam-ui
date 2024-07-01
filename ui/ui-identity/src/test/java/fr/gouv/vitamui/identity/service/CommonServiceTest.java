@@ -1,16 +1,14 @@
 package fr.gouv.vitamui.identity.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.fail;
-
+import fr.gouv.vitamui.identity.config.IdentityApplicationProperties;
+import fr.gouv.vitamui.ui.commons.service.CommonService;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import fr.gouv.vitamui.identity.config.IdentityApplicationProperties;
-import fr.gouv.vitamui.ui.commons.service.CommonService;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.fail;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 public class CommonServiceTest {
@@ -40,7 +38,7 @@ public class CommonServiceTest {
         assertThat(pagination).isEqualTo(PAGINATIONLIMIT);
     }
 
-    @Test(expected=IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testBadPagination() {
         service.checkPagination(1, -1);
         fail();

@@ -56,5 +56,4 @@ public class IamStatusExternalRestClient extends BaseStatusRestClient {
     public String getPathUrl() {
         return RestApi.STATUS_URL;
     }
-
 }

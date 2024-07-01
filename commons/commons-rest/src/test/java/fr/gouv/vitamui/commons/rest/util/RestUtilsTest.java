@@ -68,26 +68,40 @@ public class RestUtilsTest {
     @Test
     public void testCheckResponseEntityWhenDowloadingEmptyResourcesThenOK() throws IOException {
         final HttpHeaders headers = new HttpHeaders();
-        ResponseEntity<Resource> response =
-            ResponseEntity.ok().headers(headers).contentLength(0).contentType(MediaType.APPLICATION_OCTET_STREAM)
-                .body(null);
+        ResponseEntity<Resource> response = ResponseEntity.ok()
+            .headers(headers)
+            .contentLength(0)
+            .contentType(MediaType.APPLICATION_OCTET_STREAM)
+            .body(null);
 
-        ResponseEntity<Resource> resourceResponseEntity =
-            RestUtils.buildFileResponse(response, Optional.empty(), Optional.empty());
+        ResponseEntity<Resource> resourceResponseEntity = RestUtils.buildFileResponse(
+            response,
+            Optional.empty(),
+            Optional.empty()
+        );
 
-        Assertions.assertThat(Objects.requireNonNull(resourceResponseEntity.getBody()).getInputStream().readAllBytes()).isEqualTo(ArrayUtils.EMPTY_BYTE_ARRAY);
+        Assertions.assertThat(
+            Objects.requireNonNull(resourceResponseEntity.getBody()).getInputStream().readAllBytes()
+        ).isEqualTo(ArrayUtils.EMPTY_BYTE_ARRAY);
     }
 
     @Test
     public void testCheckResponseEntityWhenDowloadingNotEmptyResourcesThenGetAllBytes() throws IOException {
         final HttpHeaders headers = new HttpHeaders();
-        ResponseEntity<Resource> response =
-            ResponseEntity.ok().headers(headers).contentLength(0).contentType(MediaType.APPLICATION_OCTET_STREAM)
-                .body(new InputStreamResource(new ByteArrayInputStream("someBytes".getBytes())));
+        ResponseEntity<Resource> response = ResponseEntity.ok()
+            .headers(headers)
+            .contentLength(0)
+            .contentType(MediaType.APPLICATION_OCTET_STREAM)
+            .body(new InputStreamResource(new ByteArrayInputStream("someBytes".getBytes())));
 
-        ResponseEntity<Resource> resourceResponseEntity =
-            RestUtils.buildFileResponse(response, Optional.empty(), Optional.empty());
+        ResponseEntity<Resource> resourceResponseEntity = RestUtils.buildFileResponse(
+            response,
+            Optional.empty(),
+            Optional.empty()
+        );
 
-        Assertions.assertThat(Objects.requireNonNull(resourceResponseEntity.getBody()).getInputStream().readAllBytes()).isEqualTo("someBytes".getBytes());
+        Assertions.assertThat(
+            Objects.requireNonNull(resourceResponseEntity.getBody()).getInputStream().readAllBytes()
+        ).isEqualTo("someBytes".getBytes());
     }
 }

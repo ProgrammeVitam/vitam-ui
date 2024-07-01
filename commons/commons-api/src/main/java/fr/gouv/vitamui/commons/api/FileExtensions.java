@@ -57,9 +57,7 @@ public class FileExtensions {
 
     public static final String CSV = ".csv";
 
-
     private FileExtensions() {
         // do nothing
     }
-
 }

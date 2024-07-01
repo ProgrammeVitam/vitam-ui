@@ -61,5 +61,4 @@ public class ServerIdentityAutoConfiguration {
     public ServerIdentityAutoConfiguration(final ServerIdentityConfiguration serverIdentityConfiguration) {
         this.serverIdentityConfiguration = serverIdentityConfiguration;
     }
-
 }

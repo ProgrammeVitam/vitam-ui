@@ -36,22 +36,7 @@
  */
 package fr.gouv.vitamui.iam.external.server.service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.util.Assert;
-
 import com.fasterxml.jackson.databind.JsonNode;
-
 import fr.gouv.vitamui.commons.api.domain.Criterion;
 import fr.gouv.vitamui.commons.api.domain.CriterionOperator;
 import fr.gouv.vitamui.commons.api.domain.QueryDto;
@@ -69,6 +54,19 @@ import fr.gouv.vitamui.iam.security.client.AbstractResourceClientService;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * The service to read, create, update and delete the tenants.
@@ -84,17 +82,21 @@ public class TenantExternalService extends AbstractResourceClientService<TenantD
 
     private final TenantInternalRestClient tenantInternalRestClient;
 
-    private final String CUSTOMER_INSUFFICIENT_PERMISSION_MESSAGE = "Unable to update the tenant %s: insufficient permissions on customer.";
+    private final String CUSTOMER_INSUFFICIENT_PERMISSION_MESSAGE =
+        "Unable to update the tenant %s: insufficient permissions on customer.";
 
-    private final String TENANT_INSUFFICIENT_PERMISSION_MESSAGE = "Unable to access to the tenant %s: insufficient permissions.";
+    private final String TENANT_INSUFFICIENT_PERMISSION_MESSAGE =
+        "Unable to access to the tenant %s: insufficient permissions.";
 
     private final String ID_KEY = "id";
 
     @Autowired
-    public TenantExternalService(final ExternalSecurityService externalSecurityService, final TenantInternalRestClient tenantInternalRestClient) {
+    public TenantExternalService(
+        final ExternalSecurityService externalSecurityService,
+        final TenantInternalRestClient tenantInternalRestClient
+    ) {
         super(externalSecurityService);
         this.tenantInternalRestClient = tenantInternalRestClient;
-
     }
 
     @Override
@@ -160,7 +162,10 @@ public class TenantExternalService extends AbstractResourceClientService<TenantD
      * @return true if the action is allowed, false otherwise.
      */
     protected boolean canAccessToCustomer(final String customerId) {
-        if (!externalSecurityService.hasRole(ServicesData.ROLE_UPDATE_TENANTS_ALL_CUSTOMERS) && !customerId.equals(externalSecurityService.getCustomerId())) {
+        if (
+            !externalSecurityService.hasRole(ServicesData.ROLE_UPDATE_TENANTS_ALL_CUSTOMERS) &&
+            !customerId.equals(externalSecurityService.getCustomerId())
+        ) {
             return false;
         }
         return true;
@@ -205,8 +210,10 @@ public class TenantExternalService extends AbstractResourceClientService<TenantD
      */
     @Override
     protected void checkCustomerCriteria(final Criterion customerCriteria) {
-        Assert.isTrue(canAccessToCustomer(CastUtils.toString(customerCriteria.getValue())),
-                "customerId's criteria is not equal to the customerId from context");
+        Assert.isTrue(
+            canAccessToCustomer(CastUtils.toString(customerCriteria.getValue())),
+            "customerId's criteria is not equal to the customerId from context"
+        );
     }
 
     /**
@@ -215,16 +222,15 @@ public class TenantExternalService extends AbstractResourceClientService<TenantD
     @Override
     protected void addRestriction(final String key, final QueryDto criteria) {
         switch (key) {
-            case "identifier" :
+            case "identifier":
                 final Optional<Criterion> criterionOpt = criteria.find("identifier");
                 if (criterionOpt.isPresent()) {
                     checkIdentifierCriteria(criterionOpt.get());
-                }
-                else {
+                } else {
                     criteria.addCriterion(getIdentifierRestriction());
                 }
                 break;
-            default :
+            default:
                 throw new NotImplementedException("Restriction not defined for key: " + key);
         }
     }
@@ -240,18 +246,25 @@ public class TenantExternalService extends AbstractResourceClientService<TenantD
     protected void checkIdentifierCriteria(final Criterion identifierCriterion) {
         final List<Integer> identifiers = new ArrayList<>();
         switch (identifierCriterion.getOperator()) {
-            case EQUALS :
+            case EQUALS:
                 identifiers.add(CastUtils.toInteger(identifierCriterion.getValue()));
                 break;
-            case IN :
+            case IN:
                 identifiers.addAll(CastUtils.toList(identifierCriterion.getValue()));
                 break;
-            default :
-                throw new IllegalArgumentException("Operation " + identifierCriterion.getOperator() + " is not supported for field : identifier");
+            default:
+                throw new IllegalArgumentException(
+                    "Operation " + identifierCriterion.getOperator() + " is not supported for field : identifier"
+                );
         }
-        final List<Integer> wrongIdentifiers = identifiers.stream().filter(identifier -> canAccessToTenant(identifier)).collect(Collectors.toList());
+        final List<Integer> wrongIdentifiers = identifiers
+            .stream()
+            .filter(identifier -> canAccessToTenant(identifier))
+            .collect(Collectors.toList());
         if (!wrongIdentifiers.isEmpty()) {
-            throw new NoRightsException(String.format(TENANT_INSUFFICIENT_PERMISSION_MESSAGE, wrongIdentifiers.toString()));
+            throw new NoRightsException(
+                String.format(TENANT_INSUFFICIENT_PERMISSION_MESSAGE, wrongIdentifiers.toString())
+            );
         }
     }
 
@@ -267,7 +280,6 @@ public class TenantExternalService extends AbstractResourceClientService<TenantD
             if (!StringUtils.equals(externalSecurityService.getCurrentTenantDto().getId(), id)) {
                 throw new ForbiddenException(String.format("Unable to access tenant with id: %s", id));
             }
-
         }
         final TenantDto tenantDto = super.getOne(id);
         if (tenantDto == null) {

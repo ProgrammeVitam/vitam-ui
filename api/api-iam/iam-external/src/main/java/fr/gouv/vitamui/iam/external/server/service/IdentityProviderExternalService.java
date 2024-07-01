@@ -36,22 +36,21 @@
  */
 package fr.gouv.vitamui.iam.external.server.service;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.internal.client.IdentityProviderInternalRestClient;
 import fr.gouv.vitamui.iam.security.client.AbstractResourceClientService;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 /**
  * The service to read, create, update and delete the identity providers.
@@ -62,13 +61,15 @@ import lombok.Setter;
 @Setter
 @Service
 public class IdentityProviderExternalService
-        extends AbstractResourceClientService<IdentityProviderDto, IdentityProviderDto> {
+    extends AbstractResourceClientService<IdentityProviderDto, IdentityProviderDto> {
 
     @Autowired
     private final IdentityProviderInternalRestClient identityProviderInternalRestClient;
 
-    public IdentityProviderExternalService(final IdentityProviderInternalRestClient identityProviderInternalRestClient,
-            final ExternalSecurityService externalSecurityService) {
+    public IdentityProviderExternalService(
+        final IdentityProviderInternalRestClient identityProviderInternalRestClient,
+        final ExternalSecurityService externalSecurityService
+    ) {
         super(externalSecurityService);
         this.identityProviderInternalRestClient = identityProviderInternalRestClient;
     }
@@ -117,5 +118,4 @@ public class IdentityProviderExternalService
     protected String getVersionApiCrtieria() {
         return CRITERIA_VERSION_V2;
     }
-
 }

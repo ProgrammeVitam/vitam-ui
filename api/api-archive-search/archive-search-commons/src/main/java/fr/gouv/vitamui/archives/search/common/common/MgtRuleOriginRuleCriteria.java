@@ -31,6 +31,7 @@ import lombok.Data;
 
 @Data
 public class MgtRuleOriginRuleCriteria {
+
     private Boolean waitingToRecalculate;
     private Boolean inheritAtLeastOneRule;
     private Boolean hasAtLeastOneRule;
@@ -38,7 +39,12 @@ public class MgtRuleOriginRuleCriteria {
     private Boolean hasNoRule;
 
     public boolean containsOriginRule() {
-        return this.waitingToRecalculate != null || this.inheritAtLeastOneRule != null || hasAtLeastOneRule != null ||
-            hasNoRule != null || hasLocalOrInheritedRule != null;
+        return (
+            this.waitingToRecalculate != null ||
+            this.inheritAtLeastOneRule != null ||
+            hasAtLeastOneRule != null ||
+            hasNoRule != null ||
+            hasLocalOrInheritedRule != null
+        );
     }
 }

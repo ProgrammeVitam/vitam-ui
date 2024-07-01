@@ -73,8 +73,8 @@ public class JsonFromRng {
     List<ElementProperties> children = new ArrayList<>();
 
     public void setCardinality(String cardinality) {
-        this.cardinality = (null != RNGConstants.getCardinalityMap().get(cardinality) ?
-            RNGConstants.getCardinalityMap().get(cardinality) :
-            cardinality);
+        this.cardinality = (null != RNGConstants.getCardinalityMap().get(cardinality)
+                ? RNGConstants.getCardinalityMap().get(cardinality)
+                : cardinality);
     }
 }

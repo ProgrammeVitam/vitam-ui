@@ -80,9 +80,13 @@ public class VitamFileFormatServiceTest {
         // Mock server identity for Logs when not using spring
         PowerMock.suppress(PowerMock.constructor(ServerIdentityConfiguration.class));
         PowerMock.mockStatic(ServerIdentityConfiguration.class);
-        ServerIdentityConfiguration serverIdentityConfigurationMock = PowerMock.createMock(ServerIdentityConfiguration.class);
+        ServerIdentityConfiguration serverIdentityConfigurationMock = PowerMock.createMock(
+            ServerIdentityConfiguration.class
+        );
         expect(ServerIdentityConfiguration.getInstance()).andReturn(serverIdentityConfigurationMock).anyTimes();
-        expect(serverIdentityConfigurationMock.getLoggerMessagePrepend()).andReturn("LOG TESTS VitamFileFormatServiceTest - ").anyTimes();
+        expect(serverIdentityConfigurationMock.getLoggerMessagePrepend())
+            .andReturn("LOG TESTS VitamFileFormatServiceTest - ")
+            .anyTimes();
         PowerMock.replay(ServerIdentityConfiguration.class);
         PowerMock.replay(serverIdentityConfigurationMock);
     }
@@ -92,8 +96,9 @@ public class VitamFileFormatServiceTest {
         VitamContext vitamContext = new VitamContext(0);
         JsonNode select = JsonHandler.createObjectNode();
 
-        expect(adminExternalClient.findFormats(vitamContext, select))
-            .andReturn(new RequestResponseOK<FileFormatModel>().setHttpCode(200));
+        expect(adminExternalClient.findFormats(vitamContext, select)).andReturn(
+            new RequestResponseOK<FileFormatModel>().setHttpCode(200)
+        );
         EasyMock.replay(adminExternalClient);
 
         assertThatCode(() -> {
@@ -106,8 +111,9 @@ public class VitamFileFormatServiceTest {
         VitamContext vitamContext = new VitamContext(0);
         JsonNode select = JsonHandler.createObjectNode();
 
-        expect(adminExternalClient.findFormats(vitamContext, select))
-            .andReturn(new RequestResponseOK<FileFormatModel>().setHttpCode(400));
+        expect(adminExternalClient.findFormats(vitamContext, select)).andReturn(
+            new RequestResponseOK<FileFormatModel>().setHttpCode(400)
+        );
         EasyMock.replay(adminExternalClient);
 
         assertThatCode(() -> {
@@ -116,12 +122,14 @@ public class VitamFileFormatServiceTest {
     }
 
     @Test
-    public void findFileFormats_should_throw_VitamClientException_when_vitamclient_throws_VitamClientException() throws VitamClientException {
+    public void findFileFormats_should_throw_VitamClientException_when_vitamclient_throws_VitamClientException()
+        throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         JsonNode select = JsonHandler.createObjectNode();
 
-        expect(adminExternalClient.findFormats(vitamContext, select))
-            .andThrow(new VitamClientException("Exception thrown by Vitam"));
+        expect(adminExternalClient.findFormats(vitamContext, select)).andThrow(
+            new VitamClientException("Exception thrown by Vitam")
+        );
         EasyMock.replay(adminExternalClient);
 
         assertThatCode(() -> {
@@ -130,7 +138,8 @@ public class VitamFileFormatServiceTest {
     }
 
     @Test
-    public void findFileFormatById_should_return_ok_when_vitamclient_ok() throws VitamClientException, InvalidCreateOperationException {
+    public void findFileFormatById_should_return_ok_when_vitamclient_ok()
+        throws VitamClientException, InvalidCreateOperationException {
         VitamContext vitamContext = new VitamContext(0);
         String id = "Id_0";
 
@@ -138,8 +147,9 @@ public class VitamFileFormatServiceTest {
         select.setQuery(QueryHelper.eq("PUID", id));
         JsonNode selectQuery = select.getFinalSelect();
 
-        expect(adminExternalClient.findFormats(vitamContext, selectQuery))
-            .andReturn(new RequestResponseOK<FileFormatModel>().setHttpCode(200));
+        expect(adminExternalClient.findFormats(vitamContext, selectQuery)).andReturn(
+            new RequestResponseOK<FileFormatModel>().setHttpCode(200)
+        );
         EasyMock.replay(adminExternalClient);
 
         assertThatCode(() -> {
@@ -148,7 +158,8 @@ public class VitamFileFormatServiceTest {
     }
 
     @Test
-    public void findFileFormatById_should_throw_BadRequestException_when_vitamclient_400() throws VitamClientException, InvalidCreateOperationException {
+    public void findFileFormatById_should_throw_BadRequestException_when_vitamclient_400()
+        throws VitamClientException, InvalidCreateOperationException {
         VitamContext vitamContext = new VitamContext(0);
         String id = "Id_0";
 
@@ -156,8 +167,9 @@ public class VitamFileFormatServiceTest {
         select.setQuery(QueryHelper.eq("PUID", id));
         JsonNode selectQuery = select.getFinalSelect();
 
-        expect(adminExternalClient.findFormats(vitamContext, selectQuery))
-            .andReturn(new RequestResponseOK<FileFormatModel>().setHttpCode(400));
+        expect(adminExternalClient.findFormats(vitamContext, selectQuery)).andReturn(
+            new RequestResponseOK<FileFormatModel>().setHttpCode(400)
+        );
         EasyMock.replay(adminExternalClient);
 
         assertThatCode(() -> {
@@ -166,20 +178,21 @@ public class VitamFileFormatServiceTest {
     }
 
     @Test
-    public void findFileFormatById_should_throw_VitamClientException_when_vitamclient_throws_VitamClientException() throws VitamClientException, InvalidCreateOperationException {
+    public void findFileFormatById_should_throw_VitamClientException_when_vitamclient_throws_VitamClientException()
+        throws VitamClientException, InvalidCreateOperationException {
         VitamContext vitamContext = new VitamContext(0);
         String id = "Id_0";
         Select select = new Select();
         select.setQuery(QueryHelper.eq("PUID", id));
         JsonNode selectQuery = select.getFinalSelect();
 
-        expect(adminExternalClient.findFormats(vitamContext, selectQuery))
-            .andThrow(new VitamClientException("Exception thrown by Vitam"));
+        expect(adminExternalClient.findFormats(vitamContext, selectQuery)).andThrow(
+            new VitamClientException("Exception thrown by Vitam")
+        );
         EasyMock.replay(adminExternalClient);
 
         assertThatCode(() -> {
             vitamFileFormatService.findFileFormatById(vitamContext, id);
         }).isInstanceOf(VitamClientException.class);
     }
-
 }

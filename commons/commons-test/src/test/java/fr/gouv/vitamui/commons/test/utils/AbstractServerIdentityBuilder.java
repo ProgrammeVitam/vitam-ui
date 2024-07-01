@@ -13,9 +13,6 @@ public abstract class AbstractServerIdentityBuilder {
 
     @BeforeClass
     public static void beforeClass() {
-
         ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
     }
-
 }
-

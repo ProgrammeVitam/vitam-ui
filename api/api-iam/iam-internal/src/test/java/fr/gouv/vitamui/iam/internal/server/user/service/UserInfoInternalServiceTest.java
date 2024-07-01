@@ -1,18 +1,5 @@
 package fr.gouv.vitamui.iam.internal.server.user.service;
 
-import static org.junit.Assert.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
-
-import java.util.Optional;
-
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
-
 import fr.gouv.vitamui.commons.api.domain.UserInfoDto;
 import fr.gouv.vitamui.commons.api.exception.ApplicationServerException;
 import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
@@ -23,6 +10,18 @@ import fr.gouv.vitamui.iam.internal.server.user.converter.UserInfoConverter;
 import fr.gouv.vitamui.iam.internal.server.user.dao.UserInfoRepository;
 import fr.gouv.vitamui.iam.internal.server.user.domain.UserInfo;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.Optional;
+
+import static org.junit.Assert.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 
 @ExtendWith(MockitoExtension.class)
 class UserInfoInternalServiceTest {
@@ -44,7 +43,6 @@ class UserInfoInternalServiceTest {
 
     @Mock
     private UserInfoConverter userInfoConverter;
-
 
     @Test
     void testGetMe_should_be_ok() {
@@ -74,10 +72,8 @@ class UserInfoInternalServiceTest {
 
             //then
             Assertions.assertEquals("fr", userInfoDto.getLanguage());
-
         });
     }
-
 
     @Test
     void testGetMe_should_throw_ApplicationServerException_when_userInfoId_not_found() {
@@ -93,7 +89,6 @@ class UserInfoInternalServiceTest {
 
             //then
             Assertions.assertEquals("fr", userInfoDto.getLanguage());
-
         });
     }
 
@@ -113,18 +108,16 @@ class UserInfoInternalServiceTest {
 
     @Test
     void testGetEntityClass() {
-        Assertions.assertEquals( UserInfo.class, userInfoInternalService.getEntityClass());
-
+        Assertions.assertEquals(UserInfo.class, userInfoInternalService.getEntityClass());
     }
 
     @Test
     void testGetRepository() {
-        Assertions.assertEquals( userInfoRepository, userInfoInternalService.getRepository());
+        Assertions.assertEquals(userInfoRepository, userInfoInternalService.getRepository());
     }
 
     @Test
     void testGetConverter() {
-        Assertions.assertEquals( userInfoConverter, userInfoInternalService.getUserInfoConverter());
+        Assertions.assertEquals(userInfoConverter, userInfoInternalService.getUserInfoConverter());
     }
-
 }

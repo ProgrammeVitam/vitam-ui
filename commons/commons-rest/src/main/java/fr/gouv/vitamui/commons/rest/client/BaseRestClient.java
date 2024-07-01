@@ -36,10 +36,9 @@
  */
 package fr.gouv.vitamui.commons.rest.client;
 
-import org.springframework.web.client.RestTemplate;
-
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.springframework.web.client.RestTemplate;
 
 /**
  * A REST client to check existence, read, created, update and delete an object with identifier.
@@ -56,5 +55,4 @@ public abstract class BaseRestClient<C extends AbstractHttpContext> extends Base
         super(baseUrl);
         this.restTemplate = restTemplate;
     }
-
 }

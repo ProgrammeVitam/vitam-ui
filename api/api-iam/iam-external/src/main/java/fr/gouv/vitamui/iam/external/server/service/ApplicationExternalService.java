@@ -36,21 +36,20 @@
  */
 package fr.gouv.vitamui.iam.external.server.service;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import fr.gouv.vitamui.commons.api.domain.ApplicationDto;
 import fr.gouv.vitamui.iam.internal.client.ApplicationInternalRestClient;
 import fr.gouv.vitamui.iam.security.client.AbstractResourceClientService;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * The service to read, create, update and delete the applications.
@@ -65,8 +64,10 @@ public class ApplicationExternalService extends AbstractResourceClientService<Ap
     private final ApplicationInternalRestClient applicationInternalRestClient;
 
     @Autowired
-    public ApplicationExternalService(final ApplicationInternalRestClient applicationInternalRestClient,
-            final ExternalSecurityService externalSecurityService) {
+    public ApplicationExternalService(
+        final ApplicationInternalRestClient applicationInternalRestClient,
+        final ExternalSecurityService externalSecurityService
+    ) {
         super(externalSecurityService);
         this.applicationInternalRestClient = applicationInternalRestClient;
     }
@@ -95,5 +96,4 @@ public class ApplicationExternalService extends AbstractResourceClientService<Ap
     protected String getVersionApiCrtieria() {
         return CRITERIA_VERSION_V1;
     }
-
 }

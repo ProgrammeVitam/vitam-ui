@@ -1,12 +1,12 @@
 package fr.gouv.vitamui.cucumber.front.steps.cas;
 
-import java.util.UUID;
-
+import fr.gouv.vitamui.cucumber.front.steps.common.CommonStepDefinitions;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import fr.gouv.vitamui.cucumber.front.steps.common.CommonStepDefinitions;
 import net.thucydides.core.annotations.Steps;
+
+import java.util.UUID;
 
 public class CasSteps extends CommonStepDefinitions {
 

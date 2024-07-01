@@ -65,8 +65,9 @@ import java.util.List;
 public class ArchiveSearchStreamingExternalRestClient
     extends BasePaginatingAndSortingRestClient<LogbookOperationDto, ExternalHttpContext> {
 
-    private static final VitamUILogger LOGGER =
-        VitamUILoggerFactory.getInstance(ArchiveSearchStreamingExternalRestClient.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
+        ArchiveSearchStreamingExternalRestClient.class
+    );
 
     public ArchiveSearchStreamingExternalRestClient(final RestTemplate restTemplate, final String baseUrl) {
         super(restTemplate, baseUrl);
@@ -84,38 +85,50 @@ public class ArchiveSearchStreamingExternalRestClient
 
     @Override
     protected ParameterizedTypeReference<List<LogbookOperationDto>> getDtoListClass() {
-        return new ParameterizedTypeReference<List<LogbookOperationDto>>() {
-        };
+        return new ParameterizedTypeReference<List<LogbookOperationDto>>() {};
     }
 
     @Override
     protected ParameterizedTypeReference<PaginatedValuesDto<LogbookOperationDto>> getDtoPaginatedClass() {
-        return new ParameterizedTypeReference<PaginatedValuesDto<LogbookOperationDto>>() {
-        };
+        return new ParameterizedTypeReference<PaginatedValuesDto<LogbookOperationDto>>() {};
     }
 
-    public ResponseEntity<Resource> downloadObjectFromUnit(String id, String usage, Integer version,
-        ExternalHttpContext context) {
-
-        LOGGER.debug("download binary object with id : {}, version : {}, usage : {}", id,version, usage);
-        final UriComponentsBuilder uriBuilder =
-            UriComponentsBuilder.fromHttpUrl(
-                getUrl() + RestApi.DOWNLOAD_ARCHIVE_UNIT + CommonConstants.PATH_ID + "?usage=" + usage + "&version=" +
-                    version);
+    public ResponseEntity<Resource> downloadObjectFromUnit(
+        String id,
+        String usage,
+        Integer version,
+        ExternalHttpContext context
+    ) {
+        LOGGER.debug("download binary object with id : {}, version : {}, usage : {}", id, version, usage);
+        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(
+            getUrl() +
+            RestApi.DOWNLOAD_ARCHIVE_UNIT +
+            CommonConstants.PATH_ID +
+            "?usage=" +
+            usage +
+            "&version=" +
+            version
+        );
         final HttpEntity<?> request = new HttpEntity<>(buildHeaders(context));
-        ResponseEntity<Resource> responseEntity =
-            restTemplate.exchange(uriBuilder.build(id), HttpMethod.GET, request, Resource.class);
+        ResponseEntity<Resource> responseEntity = restTemplate.exchange(
+            uriBuilder.build(id),
+            HttpMethod.GET,
+            request,
+            Resource.class
+        );
 
-
-        return ResponseEntity.ok()
-            .contentType(MediaType.APPLICATION_OCTET_STREAM).body(responseEntity.getBody());
+        return ResponseEntity.ok().contentType(MediaType.APPLICATION_OCTET_STREAM).body(responseEntity.getBody());
     }
 
-    public ResponseEntity<String> transferAcknowledgment(final ExternalHttpContext context, String fileName,
-        InputStream inputStream) {
+    public ResponseEntity<String> transferAcknowledgment(
+        final ExternalHttpContext context,
+        String fileName,
+        InputStream inputStream
+    ) {
         LOGGER.debug("Calling transfer Acknowledgment using streaming process");
-        final UriComponentsBuilder uriBuilder =
-            UriComponentsBuilder.fromHttpUrl(getUrl() + RestApi.TRANSFER_ACKNOWLEDGMENT );
+        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(
+            getUrl() + RestApi.TRANSFER_ACKNOWLEDGMENT
+        );
 
         final MultiValueMap<String, String> headersList = new HttpHeaders();
         headersList.addAll(buildHeaders(context));
@@ -124,11 +137,11 @@ public class ArchiveSearchStreamingExternalRestClient
         headersParams.setContentType(MediaType.APPLICATION_OCTET_STREAM);
         headersParams.addAll(headersList);
 
-        final HttpEntity<InputStreamResource> request =
-            new HttpEntity<>(new InputStreamResource(inputStream), headersParams);
+        final HttpEntity<InputStreamResource> request = new HttpEntity<>(
+            new InputStreamResource(inputStream),
+            headersParams
+        );
 
-        return restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.POST,
-                request, String.class);
-
+        return restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.POST, request, String.class);
     }
 }

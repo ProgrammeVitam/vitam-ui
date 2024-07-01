@@ -36,19 +36,18 @@
  */
 package fr.gouv.vitamui.iam.internal.server.config;
 
-import javax.annotation.PostConstruct;
-
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.IndexOptions;
+import fr.gouv.vitamui.commons.mongo.repository.impl.VitamUIRepositoryImpl;
+import fr.gouv.vitamui.iam.internal.server.common.domain.MongoDbCollections;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.MongoDatabaseFactory;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
-import fr.gouv.vitamui.commons.mongo.repository.impl.VitamUIRepositoryImpl;
-import fr.gouv.vitamui.iam.internal.server.common.domain.MongoDbCollections;
+import javax.annotation.PostConstruct;
 
 /**
  * MongoDB configuration.
@@ -56,8 +55,14 @@ import fr.gouv.vitamui.iam.internal.server.common.domain.MongoDbCollections;
  *
  */
 @Configuration
-@EnableMongoRepositories(basePackages = { "fr.gouv.vitamui.commons.mongo.repository", "fr.gouv.vitamui.commons.mongo.dao",
-        "fr.gouv.vitamui.iam.internal.server" }, repositoryBaseClass = VitamUIRepositoryImpl.class)
+@EnableMongoRepositories(
+    basePackages = {
+        "fr.gouv.vitamui.commons.mongo.repository",
+        "fr.gouv.vitamui.commons.mongo.dao",
+        "fr.gouv.vitamui.iam.internal.server",
+    },
+    repositoryBaseClass = VitamUIRepositoryImpl.class
+)
 public class MongoDbConfig {
 
     @Autowired
@@ -65,12 +70,10 @@ public class MongoDbConfig {
 
     @PostConstruct
     public void afterPropertiesSet() {
-
         setUpTenantIndexOnCustomerId();
     }
 
     private void setUpTenantIndexOnCustomerId() {
-
         final MongoDatabase db = mongoDbFactory.getMongoDatabase();
         final MongoCollection tenantsCollection = db.getCollection(MongoDbCollections.TENANTS);
         Document doc = new Document();
@@ -79,7 +82,5 @@ public class MongoDbConfig {
         options.background(true);
         options.name("idx_tenant_customerId");
         tenantsCollection.createIndex(doc, options);
-
     }
-
 }

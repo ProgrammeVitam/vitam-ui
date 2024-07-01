@@ -37,9 +37,11 @@ public class TestController {
 
     public static final String APPLICATION_SERVER_EXCEPTION = "/test/applicationServerException";
 
-    public static final String APPLICATION_SERVER_EXCEPTION_WITH_THROWABLE = "/test/applicationServerExceptionWithThrowable";
+    public static final String APPLICATION_SERVER_EXCEPTION_WITH_THROWABLE =
+        "/test/applicationServerExceptionWithThrowable";
 
-    public static final String APPLICATION_SERVER_EXCEPTION_WITH_MESSAGE_AND_THROWABLE = "/test/applicationServerExceptionWithMessageAndThrowable";
+    public static final String APPLICATION_SERVER_EXCEPTION_WITH_MESSAGE_AND_THROWABLE =
+        "/test/applicationServerExceptionWithMessageAndThrowable";
 
     public static final String BAD_REQUEST_EXCEPTION = "/test/badRequestException";
 
@@ -83,7 +85,8 @@ public class TestController {
 
     public static final String SPRING_MISSING_PATH_VARIABLE_EXCEPTION = "/test/missingPathVariableException";
 
-    public static final String SPRING_MISSING_SERVLET_REQUEST_PART_EXCEPTION = "/test/missingServletRequestPartException";
+    public static final String SPRING_MISSING_SERVLET_REQUEST_PART_EXCEPTION =
+        "/test/missingServletRequestPartException";
 
     public static final String UN_AUTHORIZED_EXCEPTION = "/test/unAuthorizedException";
 
@@ -91,10 +94,13 @@ public class TestController {
 
     public static final String REQUEST_TIMEOUT_ERROR = "/test/requestTimeOutException";
 
-    @RequestMapping(value = VITAMUI_EXCEPTION, method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(
+        value = VITAMUI_EXCEPTION,
+        method = RequestMethod.POST,
+        consumes = MediaType.APPLICATION_JSON_UTF8_VALUE
+    )
     public @ResponseBody String vitamuiException(@RequestBody final VitamUIDto name) {
         throw new VitamUIException("Test") {
-
             /**
              *
              */
@@ -134,9 +140,8 @@ public class TestController {
 
     @RequestMapping(value = ILLEGAL_ARGUMENT_SERVER_EXCEPTION)
     public void getIllegalArgumentException() {
-        Assert.isTrue(false,"Conditions false");
+        Assert.isTrue(false, "Conditions false");
     }
-
 
     @RequestMapping(value = INVALID_AUTHENTICATION_EXCEPTION)
     public String getInvalidAuthenticationException() {
@@ -174,12 +179,19 @@ public class TestController {
     }
 
     @RequestMapping(value = SPRING_BAD_REQUEST_EXCEPTION, method = RequestMethod.GET)
-    public String springBadRequest(@RequestParam(value = "name", required = true) final Integer name,
-            @RequestHeader(value = "myheader") final String myheader) {
+    public String springBadRequest(
+        @RequestParam(value = "name", required = true) final Integer name,
+        @RequestHeader(value = "myheader") final String myheader
+    ) {
         return "";
     }
 
-    @RequestMapping(value = SPRING_POST_BAD_REQUEST_EXCEPTION, produces = MediaType.TEXT_PLAIN_VALUE, method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(
+        value = SPRING_POST_BAD_REQUEST_EXCEPTION,
+        produces = MediaType.TEXT_PLAIN_VALUE,
+        method = RequestMethod.POST,
+        consumes = MediaType.APPLICATION_JSON_UTF8_VALUE
+    )
     public @ResponseBody String springBadRequestPost(@RequestBody final VitamUIError name) {
         return "";
     }
@@ -206,7 +218,11 @@ public class TestController {
 
     @RequestMapping(SPRING_CONVERSION_NOT_SUPPORTED_EXCEPTION)
     public @ResponseBody String springConversionNotSupportedException(@RequestBody final VitamUIError name) {
-        throw new ConversionNotSupportedException(new VitamUIDto(), VitamUIDto.class, new IllegalArgumentException("test"));
+        throw new ConversionNotSupportedException(
+            new VitamUIDto(),
+            VitamUIDto.class,
+            new IllegalArgumentException("test")
+        );
     }
 
     @RequestMapping(SPRING_HTTP_MESSAGE_NOT_WRITABLE_EXCEPTION)
@@ -216,7 +232,7 @@ public class TestController {
 
     @RequestMapping(SPRING_MISSING_PATH_VARIABLE_EXCEPTION)
     public @ResponseBody String springMissingPathVariableException()
-            throws MissingPathVariableException, NoSuchMethodException, SecurityException {
+        throws MissingPathVariableException, NoSuchMethodException, SecurityException {
         final Method testMethod = getClass().getDeclaredMethod("toString");
         throw new MissingPathVariableException("", new MethodParameter(testMethod, -1));
     }
@@ -245,5 +261,4 @@ public class TestController {
     public String toString() {
         return super.toString();
     }
-
 }

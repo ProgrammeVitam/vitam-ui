@@ -56,17 +56,13 @@ public class SafeFileChecker {
      * @param path full path representing a FileSystem resource
      * @throws IOException thrown when any check fails with UnChecked or Runtime exception
      */
-    public static void checkSafeFilePath(String path)  {
-
+    public static void checkSafeFilePath(String path) {
         try {
             checkNullParameter(path);
             doCanonicalPathCheck(path);
-
         } catch (Exception ex) {
-            throw new InvalidFileSanitizeException(String
-                .format("Security check error : Invalid name (%s)", path));
+            throw new InvalidFileSanitizeException(String.format("Security check error : Invalid name (%s)", path));
         }
-
     }
 
     /**
@@ -107,11 +103,9 @@ public class SafeFileChecker {
 
         if (!path.equals(canonicalPath)) {
             LOGGER.error("Invalid path {} did not match canonical : {}", path, canonicalPath);
-            throw new IOException(
-                String.format("Invalid path (%s) did not match canonical : %s", path, canonicalPath));
+            throw new IOException(String.format("Invalid path (%s) did not match canonical : %s", path, canonicalPath));
         }
     }
-
 
     /**
      * Check directory path component against a whitelist of characters
@@ -119,20 +113,27 @@ public class SafeFileChecker {
      * @param pathParent a parent path obtained from File.getParent()
      */
     private static void doDirCheck(String pathParent) {
-
         String[] dirComponent = pathParent.split(File.separator);
 
         for (int index = 0; index < dirComponent.length; index++) {
             String component = dirComponent[index];
             if (index != 0 && !PATH_COMPONENT_PATTERN.matcher(component).matches()) {
-                LOGGER.error("Invalid path {} (has unauthorized characters in component[{}] : {}", pathParent, index,
-                    component);
-                throw new InvalidFileSanitizeException(String
-                        .format("Invalid path (%s) (has unauthorized characters in component[%d] : %s", pathParent, index,
-                                component));
+                LOGGER.error(
+                    "Invalid path {} (has unauthorized characters in component[{}] : {}",
+                    pathParent,
+                    index,
+                    component
+                );
+                throw new InvalidFileSanitizeException(
+                    String.format(
+                        "Invalid path (%s) (has unauthorized characters in component[%d] : %s",
+                        pathParent,
+                        index,
+                        component
+                    )
+                );
             }
         }
-
     }
 
     /**
@@ -142,12 +143,12 @@ public class SafeFileChecker {
      */
     private static void doFilenameCheck(String pathName) {
         if (pathName != null) {
-            if(!pathName.matches(FILENAME_PATTERN)) {
+            if (!pathName.matches(FILENAME_PATTERN)) {
                 LOGGER.error("Invalid pathName {} ", pathName);
-                throw new InvalidFileSanitizeException(String
-                    .format("Invalid filename (%s) (has unauthorized characters in part %s", pathName));
+                throw new InvalidFileSanitizeException(
+                    String.format("Invalid filename (%s) (has unauthorized characters in part %s", pathName)
+                );
             }
         }
-
     }
 }

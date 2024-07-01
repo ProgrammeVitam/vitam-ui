@@ -121,8 +121,8 @@ public class CustomerController extends AbstractUiRestController {
     @ApiOperation(value = "Get entity")
     @GetMapping(CommonConstants.PATH_ID)
     @ResponseStatus(HttpStatus.OK)
-    public CustomerDto getOne(final @PathVariable String id) throws InvalidParseOperationException, PreconditionFailedException {
-
+    public CustomerDto getOne(final @PathVariable String id)
+        throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter("Identifier is mandatory : ", id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Get customer={}", id);
@@ -132,25 +132,33 @@ public class CustomerController extends AbstractUiRestController {
     @ApiOperation(value = "Get entities paginated")
     @GetMapping(params = { "page", "size" })
     @ResponseStatus(HttpStatus.OK)
-    public PaginatedValuesDto<CustomerDto> getAllPaginated(@RequestParam final Integer page, @RequestParam final Integer size,
-            @RequestParam final Optional<String> criteria, @RequestParam final Optional<String> orderBy, @RequestParam final Optional<DirectionDto> direction)
-        throws InvalidParseOperationException, PreconditionFailedException {
-
+    public PaginatedValuesDto<CustomerDto> getAllPaginated(
+        @RequestParam final Integer page,
+        @RequestParam final Integer size,
+        @RequestParam final Optional<String> criteria,
+        @RequestParam final Optional<String> orderBy,
+        @RequestParam final Optional<DirectionDto> direction
+    ) throws InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.sanitizeCriteria(criteria);
-        if(direction.isPresent()){
+        if (direction.isPresent()) {
             SanityChecker.sanitizeCriteria(direction.get());
         }
         SanityChecker.checkSecureParameter(String.valueOf(page), String.valueOf(size));
-        LOGGER.debug("getAllPaginated page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, orderBy, direction);
+        LOGGER.debug(
+            "getAllPaginated page={}, size={}, criteria={}, orderBy={}, ascendant={}",
+            page,
+            size,
+            orderBy,
+            direction
+        );
         return service.getAllPaginated(page, size, criteria, orderBy, direction, buildUiHttpContext());
     }
 
     @ApiOperation(value = "Get all entities")
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Collection<CustomerDto> getAll(final Optional<String> criteria) throws InvalidParseOperationException,
-        PreconditionFailedException {
-
+    public Collection<CustomerDto> getAll(final Optional<String> criteria)
+        throws InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.sanitizeCriteria(criteria);
         LOGGER.debug("Get all with criteria={}", criteria);
         return service.getAll(buildUiHttpContext(), criteria);
@@ -158,8 +166,8 @@ public class CustomerController extends AbstractUiRestController {
 
     @ApiOperation(value = "Check entity exist by criteria")
     @RequestMapping(path = CommonConstants.PATH_CHECK, method = RequestMethod.HEAD)
-    public ResponseEntity<Void> checkExist(@RequestParam final String criteria) throws InvalidParseOperationException,
-        PreconditionFailedException {
+    public ResponseEntity<Void> checkExist(@RequestParam final String criteria)
+        throws InvalidParseOperationException, PreconditionFailedException {
         LOGGER.debug("check exist criteria={}", criteria);
         SanityChecker.sanitizeCriteria(Optional.of(criteria));
         final boolean exist = service.checkExist(buildUiHttpContext(), criteria);
@@ -174,7 +182,10 @@ public class CustomerController extends AbstractUiRestController {
         LOGGER.debug("update class={}", entityDto.getClass().getName());
         ParameterChecker.checkParameter("Identifier is mandatory : ", id);
         SanityChecker.sanitizeCriteria(entityDto);
-        Assert.isTrue(StringUtils.equals(id, entityDto.getId()), "The DTO identifier must match the path identifier for update.");
+        Assert.isTrue(
+            StringUtils.equals(id, entityDto.getId()),
+            "The DTO identifier must match the path identifier for update."
+        );
         return service.update(buildUiHttpContext(), entityDto);
     }
 
@@ -191,12 +202,15 @@ public class CustomerController extends AbstractUiRestController {
     @ApiOperation(value = "Patch entity")
     @PatchMapping(CommonConstants.PATH_ID)
     @ResponseStatus(HttpStatus.OK)
-    public CustomerDto patch(final @PathVariable("id") String id, @ModelAttribute final CustomerPatchFormData customerPatchFormData)
-        throws InvalidParseOperationException, PreconditionFailedException {
-
+    public CustomerDto patch(
+        final @PathVariable("id") String id,
+        @ModelAttribute final CustomerPatchFormData customerPatchFormData
+    ) throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter("Identifier is mandatory : ", id);
-        Assert.isTrue(StringUtils.equals(id, (String) customerPatchFormData.getPartialCustomerDto().get("id")),
-                "Unable to patch customer : the DTO id must match the path id");
+        Assert.isTrue(
+            StringUtils.equals(id, (String) customerPatchFormData.getPartialCustomerDto().get("id")),
+            "Unable to patch customer : the DTO id must match the path id"
+        );
         SanityChecker.checkSecureParameter(id);
         SanityChecker.sanitizeCriteria(customerPatchFormData.getPartialCustomerDto());
         LOGGER.debug("Patch Customer {} with {}", id, customerPatchFormData);
@@ -207,7 +221,6 @@ public class CustomerController extends AbstractUiRestController {
     @GetMapping(CommonConstants.PATH_LOGBOOK)
     public LogbookOperationsResponseDto findHistoryById(final @PathVariable String id)
         throws InvalidParseOperationException, PreconditionFailedException {
-
         ParameterChecker.checkParameter("Identifier is mandatory : ", id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("get logbook for customer with id :{}", id);
@@ -217,17 +230,22 @@ public class CustomerController extends AbstractUiRestController {
     @ApiOperation(value = "Get entity logo")
     @GetMapping(CommonConstants.PATH_ID + "/logo")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Resource> getLogo(final @PathVariable String id, final @RequestParam(value = "type") AttachmentType type)
-        throws InvalidParseOperationException, PreconditionFailedException {
-
+    public ResponseEntity<Resource> getLogo(
+        final @PathVariable String id,
+        final @RequestParam(value = "type") AttachmentType type
+    ) throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter("Identifier is mandatory : ", id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Get customer logos={}", id);
         final ResponseEntity<Resource> response = service.getLogo(buildUiHttpContext(), id, type);
-        if(HttpStatus.NO_CONTENT.equals(response.getStatusCode())) {
+        if (HttpStatus.NO_CONTENT.equals(response.getStatusCode())) {
             return response;
         } else {
-            return RestUtils.buildFileResponse(response, Optional.ofNullable(ContentDispositionType.INLINE), Optional.empty());
+            return RestUtils.buildFileResponse(
+                response,
+                Optional.ofNullable(ContentDispositionType.INLINE),
+                Optional.empty()
+            );
         }
     }
 

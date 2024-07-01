@@ -60,13 +60,8 @@ import org.junit.runner.RunWith;
 public class ArchiveSearchIntegrationTest extends AbstractIntegrationTest {
 
     @BeforeClass
-    public static void startServersAndSetData() {
-
-    }
+    public static void startServersAndSetData() {}
 
     @AfterClass
-    public static void someStuff() {
-
-    }
-
+    public static void someStuff() {}
 }

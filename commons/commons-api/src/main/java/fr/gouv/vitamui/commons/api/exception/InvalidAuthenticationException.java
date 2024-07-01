@@ -63,5 +63,4 @@ public class InvalidAuthenticationException extends VitamUIException {
     public InvalidAuthenticationException(final String message, final Throwable e) {
         super(message, e);
     }
-
 }

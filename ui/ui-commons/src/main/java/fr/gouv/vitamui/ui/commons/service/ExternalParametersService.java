@@ -56,29 +56,30 @@ import java.util.stream.Collectors;
 @Service
 public class ExternalParametersService {
 
-	static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ExternalParametersService.class);
+    static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ExternalParametersService.class);
 
-	private ExternalParametersExternalRestClient client;
+    private ExternalParametersExternalRestClient client;
 
-	@Autowired
-	public ExternalParametersService(final ExternalParametersExternalRestClient client) {
-	    this.client = client;
-	}
+    @Autowired
+    public ExternalParametersService(final ExternalParametersExternalRestClient client) {
+        this.client = client;
+    }
 
-	/**
-	 * Get the external parameters for the authenticated user
-	 * @return
-	 */
+    /**
+     * Get the external parameters for the authenticated user
+     * @return
+     */
     public Map<String, String> getMyExternalParameters(ExternalHttpContext context) {
         LOGGER.debug("Get external parameters for the authenticated user");
 
         final ExternalParametersDto userParameters = client.getMyExternalParameters(context);
-        if(userParameters != null && userParameters.getParameters() != null) {
-        	return userParameters.getParameters().stream()
-        		.collect(Collectors.toMap(ParameterDto::getKey, ParameterDto::getValue));
+        if (userParameters != null && userParameters.getParameters() != null) {
+            return userParameters
+                .getParameters()
+                .stream()
+                .collect(Collectors.toMap(ParameterDto::getKey, ParameterDto::getValue));
         }
 
         return null;
     }
-
 }

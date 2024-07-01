@@ -36,24 +36,25 @@
  */
 package fr.gouv.vitamui.referential.external.server.rest;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.junit4.SpringRunner;
-
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.referential.common.dto.AccessContractDto;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
 import fr.gouv.vitamui.referential.external.server.service.AccessContractExternalService;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(controllers = { AccessContractExternalController.class })
 public class AccessContractExternalControllerTest extends ApiReferentialControllerTest<AccessContractDto> {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(AccessContractExternalControllerTest.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
+        AccessContractExternalControllerTest.class
+    );
 
     @MockBean
     private AccessContractExternalService accessContractExternalService;
@@ -74,8 +75,7 @@ public class AccessContractExternalControllerTest extends ApiReferentialControll
     }
 
     @Override
-    protected void preparedServices() {
-    }
+    protected void preparedServices() {}
 
     @Override
     protected String getRessourcePrefix() {
@@ -91,5 +91,4 @@ public class AccessContractExternalControllerTest extends ApiReferentialControll
     protected Class<AccessContractDto> getDtoClass() {
         return AccessContractDto.class;
     }
-
 }

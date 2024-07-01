@@ -36,14 +36,13 @@
  */
 package fr.gouv.vitamui.commons.mongo.domain;
 
-import javax.validation.constraints.NotNull;
-
-import org.springframework.data.annotation.TypeAlias;
-import org.springframework.data.mongodb.core.mapping.Document;
-
 import fr.gouv.vitamui.commons.mongo.IdDocument;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.annotation.TypeAlias;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+import javax.validation.constraints.NotNull;
 
 @Document(collection = CommonsMongoDbCollection.CUSTOMSEQUENCES)
 @TypeAlias(CommonsMongoDbCollection.CUSTOMSEQUENCES)

@@ -77,7 +77,7 @@ import org.springframework.context.annotation.Import;
 
 @Configuration
 @EnableConfigurationProperties
-@Import(value = {SecurityConfig.class, SwaggerConfiguration.class, RestExceptionHandler.class})
+@Import(value = { SecurityConfig.class, SwaggerConfiguration.class, RestExceptionHandler.class })
 public class ReferentialContextConfiguration extends AbstractContextConfiguration {
 
     @Bean
@@ -90,70 +90,99 @@ public class ReferentialContextConfiguration extends AbstractContextConfiguratio
     @Bean
     @ConditionalOnMissingBean
     @DependsOn("uiProperties")
-    public ReferentialExternalRestClientFactory referentialRestClientFactory(final ReferentialApplicationProperties uiProperties, RestTemplateBuilder restTemplateBuilder) {
-        return new ReferentialExternalRestClientFactory(uiProperties.getReferentialExternalClient(), restTemplateBuilder);
+    public ReferentialExternalRestClientFactory referentialRestClientFactory(
+        final ReferentialApplicationProperties uiProperties,
+        RestTemplateBuilder restTemplateBuilder
+    ) {
+        return new ReferentialExternalRestClientFactory(
+            uiProperties.getReferentialExternalClient(),
+            restTemplateBuilder
+        );
     }
 
     @Bean
     @ConditionalOnMissingBean
     @DependsOn("uiProperties")
-    public ReferentialExternalWebClientFactory referentialWebClientFactory(final ReferentialApplicationProperties uiProperties) {
-    	return new ReferentialExternalWebClientFactory(uiProperties.getReferentialExternalClient());
+    public ReferentialExternalWebClientFactory referentialWebClientFactory(
+        final ReferentialApplicationProperties uiProperties
+    ) {
+        return new ReferentialExternalWebClientFactory(uiProperties.getReferentialExternalClient());
     }
 
-
     @Bean
-    public AccessContractExternalRestClient accessContractExternalRestClient(final ReferentialExternalRestClientFactory referentialExternalRestClientFactory) {
+    public AccessContractExternalRestClient accessContractExternalRestClient(
+        final ReferentialExternalRestClientFactory referentialExternalRestClientFactory
+    ) {
         return referentialExternalRestClientFactory.getAccessContractExternalRestClient();
     }
 
     @Bean
-    public IngestContractExternalRestClient ingestContractExternalRestClient(final ReferentialExternalRestClientFactory referentialExternalRestClientFactory) {
+    public IngestContractExternalRestClient ingestContractExternalRestClient(
+        final ReferentialExternalRestClientFactory referentialExternalRestClientFactory
+    ) {
         return referentialExternalRestClientFactory.getIngestContractExternalRestClient();
     }
 
     @Bean
-    public AgencyExternalRestClient agencyCrudRestClient(final ReferentialExternalRestClientFactory referentialExternalRestClientFactory) {
+    public AgencyExternalRestClient agencyCrudRestClient(
+        final ReferentialExternalRestClientFactory referentialExternalRestClientFactory
+    ) {
         return referentialExternalRestClientFactory.getAgencyExternalRestClient();
     }
 
     @Bean
-    public FileFormatExternalRestClient fileFormatCrudRestClient(final ReferentialExternalRestClientFactory referentialExternalRestClientFactory) {
+    public FileFormatExternalRestClient fileFormatCrudRestClient(
+        final ReferentialExternalRestClientFactory referentialExternalRestClientFactory
+    ) {
         return referentialExternalRestClientFactory.getFileFormatExternalRestClient();
     }
 
     @Bean
-    public ContextExternalRestClient contextCrudRestClient(final ReferentialExternalRestClientFactory referentialExternalRestClientFactory) {
+    public ContextExternalRestClient contextCrudRestClient(
+        final ReferentialExternalRestClientFactory referentialExternalRestClientFactory
+    ) {
         return referentialExternalRestClientFactory.getContextExternalRestClient();
     }
 
     @Bean
-    public SecurityProfileExternalRestClient securityProfileCrudRestClient(final ReferentialExternalRestClientFactory referentialExternalRestClientFactory) {
+    public SecurityProfileExternalRestClient securityProfileCrudRestClient(
+        final ReferentialExternalRestClientFactory referentialExternalRestClientFactory
+    ) {
         return referentialExternalRestClientFactory.getSecurityProfileExternalRestClient();
     }
 
     @Bean
-    public OntologyExternalRestClient ontologyCrudRestClient(final ReferentialExternalRestClientFactory referentialExternalRestClientFactory) {
+    public OntologyExternalRestClient ontologyCrudRestClient(
+        final ReferentialExternalRestClientFactory referentialExternalRestClientFactory
+    ) {
         return referentialExternalRestClientFactory.getOntologyRestClient();
     }
 
     @Bean
-    public TenantExternalRestClient tenantCrudRestClient(final IamExternalRestClientFactory iamExternalRestClientFactory) {
+    public TenantExternalRestClient tenantCrudRestClient(
+        final IamExternalRestClientFactory iamExternalRestClientFactory
+    ) {
         return iamExternalRestClientFactory.getTenantExternalRestClient();
     }
 
     @Bean
-    public CustomerExternalRestClient customerCrudRestClient(final IamExternalRestClientFactory iamExternalRestClientFactory) {
+    public CustomerExternalRestClient customerCrudRestClient(
+        final IamExternalRestClientFactory iamExternalRestClientFactory
+    ) {
         return iamExternalRestClientFactory.getCustomerExternalRestClient();
     }
 
     @Bean
-    public OperationExternalRestClient auditCrudRestClient(final ReferentialExternalRestClientFactory referentialExternalRestClientFactory) {
+    public OperationExternalRestClient auditCrudRestClient(
+        final ReferentialExternalRestClientFactory referentialExternalRestClientFactory
+    ) {
         return referentialExternalRestClientFactory.getOperationExternalRestClient();
     }
 
     @Bean
-    public AccessionRegisterSummaryExternalRestClient accessionRegisterExternalRestClient(final ReferentialExternalRestClientFactory referentialExternalRestClientFactory) {
+    public AccessionRegisterSummaryExternalRestClient accessionRegisterExternalRestClient(
+        final ReferentialExternalRestClientFactory referentialExternalRestClientFactory
+    ) {
         return referentialExternalRestClientFactory.getAccessionRegisterExternalRestClient();
     }
 
@@ -163,7 +192,9 @@ public class ReferentialContextConfiguration extends AbstractContextConfiguratio
     }
 
     @Bean
-    public ManagementContractExternalRestClient managementContractExternalRestClient(final ReferentialExternalRestClientFactory factory) {
+    public ManagementContractExternalRestClient managementContractExternalRestClient(
+        final ReferentialExternalRestClientFactory factory
+    ) {
         return factory.getManagementContractRestClient();
     }
 
@@ -178,38 +209,51 @@ public class ReferentialContextConfiguration extends AbstractContextConfiguratio
     }
 
     @Bean
-    public AgencyExternalWebClient agencyWebRestClient(final ReferentialExternalWebClientFactory referentialExternalWebClientFactory) {
-    	return referentialExternalWebClientFactory.getAgencyExternalWebClient();
+    public AgencyExternalWebClient agencyWebRestClient(
+        final ReferentialExternalWebClientFactory referentialExternalWebClientFactory
+    ) {
+        return referentialExternalWebClientFactory.getAgencyExternalWebClient();
     }
 
     @Bean
-    public FileFormatExternalWebClient fileFormatWebRestClient(final ReferentialExternalWebClientFactory referentialExternalWebClientFactory) {
-    	return referentialExternalWebClientFactory.getFileFormatExternalWebClient();
+    public FileFormatExternalWebClient fileFormatWebRestClient(
+        final ReferentialExternalWebClientFactory referentialExternalWebClientFactory
+    ) {
+        return referentialExternalWebClientFactory.getFileFormatExternalWebClient();
     }
 
     @Bean
-    public OntologyExternalWebClient ontologyWebRestClient(final ReferentialExternalWebClientFactory referentialExternalWebClientFactory) {
-    	return referentialExternalWebClientFactory.getOntologyExternalWebClient();
+    public OntologyExternalWebClient ontologyWebRestClient(
+        final ReferentialExternalWebClientFactory referentialExternalWebClientFactory
+    ) {
+        return referentialExternalWebClientFactory.getOntologyExternalWebClient();
     }
 
     @Bean
-    public ExternalParametersExternalRestClient externalParametersExternalRestClient(final IamExternalRestClientFactory factory) {
+    public ExternalParametersExternalRestClient externalParametersExternalRestClient(
+        final IamExternalRestClientFactory factory
+    ) {
         return factory.getExternalParametersExternalRestClient();
     }
 
     @Bean
-    public RuleExternalWebClient ruleExternalWebClient(final ReferentialExternalWebClientFactory referentialExternalWebClientFactory) {
-    	return referentialExternalWebClientFactory.getRuleExternalWebClient();
+    public RuleExternalWebClient ruleExternalWebClient(
+        final ReferentialExternalWebClientFactory referentialExternalWebClientFactory
+    ) {
+        return referentialExternalWebClientFactory.getRuleExternalWebClient();
     }
 
     @Bean
-    public LogbookManagementOperationExternalRestClient logbookManagementOperationExternalRestClient(final ReferentialExternalRestClientFactory referentialExternalRestClientFactory) {
+    public LogbookManagementOperationExternalRestClient logbookManagementOperationExternalRestClient(
+        final ReferentialExternalRestClientFactory referentialExternalRestClientFactory
+    ) {
         return referentialExternalRestClientFactory.getLogbookManagementOperationExternalRestClient();
     }
 
     @Bean
-    public AccessionRegisterDetailExternalRestClient aaccessionRegisterDetailExternalRestClient(final ReferentialExternalRestClientFactory referentialExternalRestClientFactory) {
+    public AccessionRegisterDetailExternalRestClient aaccessionRegisterDetailExternalRestClient(
+        final ReferentialExternalRestClientFactory referentialExternalRestClientFactory
+    ) {
         return referentialExternalRestClientFactory.getAccessionRegisterDetailExternalRestClient();
     }
-
 }

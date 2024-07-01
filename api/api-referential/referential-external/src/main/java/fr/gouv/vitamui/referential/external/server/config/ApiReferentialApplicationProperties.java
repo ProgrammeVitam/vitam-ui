@@ -36,12 +36,11 @@
  */
 package fr.gouv.vitamui.referential.external.server.config;
 
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
-
 import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
 
 /**
  * Properties specific to API Iam Application.
@@ -59,5 +58,4 @@ public class ApiReferentialApplicationProperties {
     private RestClientConfiguration securityClient;
 
     private RestClientConfiguration referentialInternalClient;
-
 }

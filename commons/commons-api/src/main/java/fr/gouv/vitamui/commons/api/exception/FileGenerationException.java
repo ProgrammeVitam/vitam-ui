@@ -58,5 +58,4 @@ public class FileGenerationException extends VitamUIException {
     public FileGenerationException(final String message, final Throwable e) {
         super(message, e);
     }
-
 }

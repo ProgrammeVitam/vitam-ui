@@ -49,10 +49,13 @@ public class RuleServiceTest {
         final var fileRule = buildFileRuleModel(RuleMeasurementEnum.YEAR);
         final var requestResponseOk = new RequestResponseOK<FileRulesModel>().addResult(fileRule);
         when(adminExternalClient.findRules(Mockito.any(VitamContext.class), Mockito.any(JsonNode.class))).thenReturn(
-            requestResponseOk);
+            requestResponseOk
+        );
         // Do
-        Optional<Long> ruleDuration =
-            ruleService.findRulesDurationByRuleId(new VitamContext(TENANT_IDENTIFIER), RULE_ID);
+        Optional<Long> ruleDuration = ruleService.findRulesDurationByRuleId(
+            new VitamContext(TENANT_IDENTIFIER),
+            RULE_ID
+        );
         // Verify
         Assertions.assertTrue(ruleDuration.isPresent(), "The rule duration should be present");
         Assertions.assertEquals(RULE_DURATION, ruleDuration.get(), "The rule duration value should match the duration");
@@ -65,13 +68,17 @@ public class RuleServiceTest {
         final var fileRule = buildFileRuleModel(RuleMeasurementEnum.MONTH);
         final var requestResponseOk = new RequestResponseOK<FileRulesModel>().addResult(fileRule);
         when(adminExternalClient.findRules(Mockito.any(VitamContext.class), Mockito.any(JsonNode.class))).thenReturn(
-            requestResponseOk);
+            requestResponseOk
+        );
         // Do and Verify
         var thrownException = Assertions.assertThrows(UnexpectedDataException.class, () -> {
             ruleService.findRulesDurationByRuleId(new VitamContext(TENANT_IDENTIFIER), RULE_ID);
         });
-        Assertions.assertEquals("The rule duration measurement should be in years.", thrownException.getMessage(),
-            "The exception message should match");
+        Assertions.assertEquals(
+            "The rule duration measurement should be in years.",
+            thrownException.getMessage(),
+            "The exception message should match"
+        );
     }
 
     @After
@@ -87,5 +94,4 @@ public class RuleServiceTest {
         rule.setRuleMeasurement(ruleMeasurementEnum);
         return rule;
     }
-
 }

@@ -36,12 +36,12 @@
  */
 package fr.gouv.vitamui.commons.mongo.service;
 
-import java.time.OffsetDateTime;
-
 import fr.gouv.vitamui.commons.api.domain.OperationDto;
 import fr.gouv.vitamui.commons.api.domain.TriggeredVitamOperationDto;
 import fr.gouv.vitamui.commons.api.enums.OperationStatus;
 import fr.gouv.vitamui.commons.api.enums.OperationType;
+
+import java.time.OffsetDateTime;
 
 public class OperationFactory {
 
@@ -58,15 +58,19 @@ public class OperationFactory {
 
     protected static OperationDto createOperation(OperationType type) {
         switch (type) {
-            case VITAM :
+            case VITAM:
                 return new TriggeredVitamOperationDto();
-            default :
+            default:
                 return new OperationDto();
         }
     }
 
-    protected static OperationDto initOperation(OperationDto operation, String author, Integer tenantIdentifier,
-            String type) {
+    protected static OperationDto initOperation(
+        OperationDto operation,
+        String author,
+        Integer tenantIdentifier,
+        String type
+    ) {
         operation.setStatus(OperationStatus.RUNNING);
         operation.setTenantIdentifier(tenantIdentifier);
         operation.setCreationDate(OffsetDateTime.now());

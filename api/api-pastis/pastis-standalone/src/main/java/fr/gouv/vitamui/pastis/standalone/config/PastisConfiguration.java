@@ -52,14 +52,12 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import java.security.NoSuchAlgorithmException;
 import java.util.Collections;
 
 @Configuration
 public class PastisConfiguration {
 
     private ResourceLoader resourceLoader;
-
 
     @Value("${cors.allowed-origins}")
     private String origins;
@@ -69,17 +67,18 @@ public class PastisConfiguration {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(@NotNull CorsRegistry registry) {
-                registry.addMapping("/**")
-                    .allowedOrigins(origins.split(","))
-                    .allowCredentials(true);
+                registry.addMapping("/**").allowedOrigins(origins.split(",")).allowCredentials(true);
             }
         };
     }
 
     @Bean
     public ErrorViewResolver customErrorViewResolver() {
-        final ModelAndView redirectToIndexHtml =
-            new ModelAndView("forward:/index.html", Collections.emptyMap(), HttpStatus.OK);
+        final ModelAndView redirectToIndexHtml = new ModelAndView(
+            "forward:/index.html",
+            Collections.emptyMap(),
+            HttpStatus.OK
+        );
         return (request, status, model) -> status == HttpStatus.NOT_FOUND ? redirectToIndexHtml : null;
     }
 
@@ -95,12 +94,11 @@ public class PastisConfiguration {
 
     @Bean
     public PastisService pastisService() {
-        return new PastisService(this.resourceLoader, puaPastisValidator(),jsonFromPUA(), puaFromJSON());
+        return new PastisService(this.resourceLoader, puaPastisValidator(), jsonFromPUA(), puaFromJSON());
     }
 
     @Bean
     public PuaPastisValidator puaPastisValidator() {
         return new PuaPastisValidator();
     }
-
 }

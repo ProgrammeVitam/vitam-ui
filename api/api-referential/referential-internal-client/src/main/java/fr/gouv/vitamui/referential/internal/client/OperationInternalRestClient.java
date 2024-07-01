@@ -36,12 +36,12 @@
  */
 package fr.gouv.vitamui.referential.internal.client;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitam.common.model.AuditOptions;
 import fr.gouv.vitam.common.model.ProbativeValueRequest;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.rest.client.BasePaginatingAndSortingRestClient;
-import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import fr.gouv.vitamui.referential.common.dto.LogbookOperationDto;
 import fr.gouv.vitamui.referential.common.dto.ReportType;
@@ -57,9 +57,8 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
 
-import com.fasterxml.jackson.databind.JsonNode;
-
-public class OperationInternalRestClient extends BasePaginatingAndSortingRestClient<LogbookOperationDto, InternalHttpContext> {
+public class OperationInternalRestClient
+    extends BasePaginatingAndSortingRestClient<LogbookOperationDto, InternalHttpContext> {
 
     public OperationInternalRestClient(final RestTemplate restTemplate, final String baseUrl) {
         super(restTemplate, baseUrl);
@@ -67,8 +66,7 @@ public class OperationInternalRestClient extends BasePaginatingAndSortingRestCli
 
     @Override
     protected ParameterizedTypeReference<PaginatedValuesDto<LogbookOperationDto>> getDtoPaginatedClass() {
-        return new ParameterizedTypeReference<PaginatedValuesDto<LogbookOperationDto>>() {
-        };
+        return new ParameterizedTypeReference<PaginatedValuesDto<LogbookOperationDto>>() {};
     }
 
     @Override
@@ -82,42 +80,63 @@ public class OperationInternalRestClient extends BasePaginatingAndSortingRestCli
     }
 
     protected ParameterizedTypeReference<List<LogbookOperationDto>> getDtoListClass() {
-        return new ParameterizedTypeReference<List<LogbookOperationDto>>() {
-        };
+        return new ParameterizedTypeReference<List<LogbookOperationDto>>() {};
     }
 
     public boolean runAudit(InternalHttpContext context, AuditOptions auditOptions) {
         final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl());
         final HttpEntity<AuditOptions> request = new HttpEntity<>(auditOptions, buildHeaders(context));
-        final ResponseEntity<Boolean> response = restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.POST,
-            request, Boolean.class);
+        final ResponseEntity<Boolean> response = restTemplate.exchange(
+            uriBuilder.toUriString(),
+            HttpMethod.POST,
+            request,
+            Boolean.class
+        );
         return response.getStatusCode() == HttpStatus.OK;
     }
 
     public JsonNode checkTraceabilityOperation(InternalHttpContext context, String id) {
-        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl() + "/check" + CommonConstants.PATH_ID);
+        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(
+            getUrl() + "/check" + CommonConstants.PATH_ID
+        );
         final HttpEntity<AuditOptions> request = new HttpEntity<>(buildHeaders(context));
-        final ResponseEntity<JsonNode> response = restTemplate.exchange(uriBuilder.build(id), HttpMethod.GET, request, JsonNode.class);
+        final ResponseEntity<JsonNode> response = restTemplate.exchange(
+            uriBuilder.build(id),
+            HttpMethod.GET,
+            request,
+            JsonNode.class
+        );
         checkResponse(response);
         return response.getBody();
     }
 
     public ResponseEntity<Resource> export(InternalHttpContext context, String id, ReportType type) {
-        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl() + CommonConstants.PATH_ID + "/download/{type}");
+        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(
+            getUrl() + CommonConstants.PATH_ID + "/download/{type}"
+        );
         final HttpEntity<AuditOptions> request = new HttpEntity<>(buildHeaders(context));
         return restTemplate.exchange(uriBuilder.build(id, type), HttpMethod.GET, request, Resource.class);
     }
 
     public boolean runProbativeValue(InternalHttpContext context, ProbativeValueRequest probativeValueOptions) {
         final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl() + "/probativeValue");
-        final HttpEntity<ProbativeValueRequest> request = new HttpEntity<>(probativeValueOptions, buildHeaders(context));
-        final ResponseEntity<Boolean> response = restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.POST,
-                request, Boolean.class);
+        final HttpEntity<ProbativeValueRequest> request = new HttpEntity<>(
+            probativeValueOptions,
+            buildHeaders(context)
+        );
+        final ResponseEntity<Boolean> response = restTemplate.exchange(
+            uriBuilder.toUriString(),
+            HttpMethod.POST,
+            request,
+            Boolean.class
+        );
         return response.getStatusCode() == HttpStatus.OK;
     }
 
     public ResponseEntity<Resource> exportProbativeValue(InternalHttpContext context, String operationId) {
-        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl() + "/probativeValue" + CommonConstants.PATH_ID);
+        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(
+            getUrl() + "/probativeValue" + CommonConstants.PATH_ID
+        );
         final HttpEntity<ProbativeValueRequest> request = new HttpEntity<>(buildHeaders(context));
         return restTemplate.exchange(uriBuilder.build(operationId), HttpMethod.GET, request, Resource.class);
     }

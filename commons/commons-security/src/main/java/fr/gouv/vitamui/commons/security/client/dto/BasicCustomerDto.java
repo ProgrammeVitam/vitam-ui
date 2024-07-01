@@ -36,14 +36,14 @@
  */
 package fr.gouv.vitamui.commons.security.client.dto;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import fr.gouv.vitamui.commons.api.domain.IdDto;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Getter
 @Setter

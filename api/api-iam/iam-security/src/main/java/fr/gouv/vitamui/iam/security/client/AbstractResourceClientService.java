@@ -92,7 +92,6 @@ public abstract class AbstractResourceClientService<E extends IdDto, I extends I
 
     protected static final String CRITERIA_VERSION_V2 = "v2";
 
-
     public AbstractResourceClientService(final ExternalSecurityService externalSecurityService) {
         super(externalSecurityService);
     }
@@ -120,31 +119,59 @@ public abstract class AbstractResourceClientService<E extends IdDto, I extends I
         return converterToExternalDto(getClient().getOne(getInternalHttpContext(), id, criteria, embedded));
     }
 
-    protected PaginatedValuesDto<E> getAllPaginated(final Integer page, final Integer size,
-        final Optional<String> criteria, final Optional<String> orderBy, final Optional<DirectionDto> direction) {
+    protected PaginatedValuesDto<E> getAllPaginated(
+        final Integer page,
+        final Integer size,
+        final Optional<String> criteria,
+        final Optional<String> orderBy,
+        final Optional<DirectionDto> direction
+    ) {
         ParameterChecker.checkPagination(size, page);
-        final PaginatedValuesDto<I> result = getClient().getAllPaginated(getInternalHttpContext(), page, size,
-            checkAuthorization(criteria), orderBy, direction);
-        return new PaginatedValuesDto<>(result.getValues().stream().map(element -> converterToExternalDto(element))
-            .collect(Collectors.toList()), result.getPageNum(), result.getPageSize(), result.isHasMore());
+        final PaginatedValuesDto<I> result = getClient()
+            .getAllPaginated(getInternalHttpContext(), page, size, checkAuthorization(criteria), orderBy, direction);
+        return new PaginatedValuesDto<>(
+            result.getValues().stream().map(element -> converterToExternalDto(element)).collect(Collectors.toList()),
+            result.getPageNum(),
+            result.getPageSize(),
+            result.isHasMore()
+        );
     }
 
-    protected PaginatedValuesDto<E> getAllPaginated(final Integer page, final Integer size,
-        final Optional<String> criteria, final Optional<String> orderBy, final Optional<DirectionDto> direction,
-        final Optional<String> embedded) {
+    protected PaginatedValuesDto<E> getAllPaginated(
+        final Integer page,
+        final Integer size,
+        final Optional<String> criteria,
+        final Optional<String> orderBy,
+        final Optional<DirectionDto> direction,
+        final Optional<String> embedded
+    ) {
         ParameterChecker.checkPagination(size, page);
-        final PaginatedValuesDto<I> result = getClient().getAllPaginated(getInternalHttpContext(), page, size,
-            checkAuthorization(criteria), orderBy, direction, embedded);
-        return new PaginatedValuesDto<>(result.getValues().stream().map(element -> converterToExternalDto(element))
-            .collect(Collectors.toList()), result.getPageNum(), result.getPageSize(), result.isHasMore());
+        final PaginatedValuesDto<I> result = getClient()
+            .getAllPaginated(
+                getInternalHttpContext(),
+                page,
+                size,
+                checkAuthorization(criteria),
+                orderBy,
+                direction,
+                embedded
+            );
+        return new PaginatedValuesDto<>(
+            result.getValues().stream().map(element -> converterToExternalDto(element)).collect(Collectors.toList()),
+            result.getPageNum(),
+            result.getPageSize(),
+            result.isHasMore()
+        );
     }
 
     protected ResultsDto<E> getAllRequest(final RequestParamDto requestParamDto) {
         ParameterChecker.checkPagination(requestParamDto.getSize(), requestParamDto.getPage());
         requestParamDto.setCriteria(checkRequestAuthorization(requestParamDto));
         final ResultsDto<I> result = getClient().getAllRequest(getInternalHttpContext(), requestParamDto);
-        return new ResultsDto<>(result.getValues().stream().map(element -> converterToExternalDto(element))
-            .collect(Collectors.toList()), result);
+        return new ResultsDto<>(
+            result.getValues().stream().map(element -> converterToExternalDto(element)).collect(Collectors.toList()),
+            result
+        );
     }
 
     /**
@@ -178,8 +205,9 @@ public abstract class AbstractResourceClientService<E extends IdDto, I extends I
         if (requestParamDto.getGroups().isPresent()) {
             RequestParamGroupDto requestParamGroupDto = requestParamDto.getGroups().get();
             for (String field : requestParamGroupDto.getFields()) {
-                if (!getAllowedAggregationKeys().contains(field))
-                    throw new ForbiddenException(String.format("Not allowed to get aggregation %s values", field));
+                if (!getAllowedAggregationKeys().contains(field)) throw new ForbiddenException(
+                    String.format("Not allowed to get aggregation %s values", field)
+                );
             }
         }
         return addAccessRestriction(QueryDto.fromJson(requestParamDto.getCriteria())).toOptionalJson();
@@ -234,19 +262,23 @@ public abstract class AbstractResourceClientService<E extends IdDto, I extends I
     private void checkContainsAuthorizedKeys(final QueryDto query) {
         query.keyFilter(getAllowedKeys());
         if (query.getSubQueries() != null) {
-            query.getSubQueries().forEach((q) -> {
-                checkContainsAuthorizedKeys(q);
-            });
+            query
+                .getSubQueries()
+                .forEach(q -> {
+                    checkContainsAuthorizedKeys(q);
+                });
         }
-
     }
 
     protected QueryDto addAccessRestrictionV1(final QueryDto criteria) {
         criteria.keyFilter(getAllowedKeys());
         getRestrictedKeys().forEach(key -> addAccessRestrictionByKey(key, criteria));
         if (!(criteria.getQueryOperator() == null || QueryOperator.AND.equals(criteria.getQueryOperator()))) {
-            throw new UnsupportedOperationException("Unsupported operator " + criteria.getQueryOperator()
-                + ". This API only supports the queryOperator \"AND\" on the root query.");
+            throw new UnsupportedOperationException(
+                "Unsupported operator " +
+                criteria.getQueryOperator() +
+                ". This API only supports the queryOperator \"AND\" on the root query."
+            );
         }
         return criteria;
     }
@@ -292,15 +324,18 @@ public abstract class AbstractResourceClientService<E extends IdDto, I extends I
         } else {
             criteria.addCriterion(getTenantIdentifierRestriction());
         }
-
     }
 
     protected void checkTenantIdentifierCriteria(final Criterion tenantIdentifierCriteria) {
-        if (!CastUtils.toInteger(tenantIdentifierCriteria.getValue())
-            .equals(externalSecurityService.getTenantIdentifier())
-            || !tenantIdentifierCriteria.getOperator().equals(CriterionOperator.EQUALS)) {
+        if (
+            !CastUtils.toInteger(tenantIdentifierCriteria.getValue()).equals(
+                externalSecurityService.getTenantIdentifier()
+            ) ||
+            !tenantIdentifierCriteria.getOperator().equals(CriterionOperator.EQUALS)
+        ) {
             throw new ForbiddenException(
-                "tenantIdentifier's criteria is not equal to the tenantIdentifier from context");
+                "tenantIdentifier's criteria is not equal to the tenantIdentifier from context"
+            );
         }
     }
 
@@ -314,9 +349,13 @@ public abstract class AbstractResourceClientService<E extends IdDto, I extends I
     }
 
     protected void checkCustomerCriteria(final Criterion customerCriteria) {
-        if (!StringUtils.equals(CastUtils.toString(customerCriteria.getValue()),
-            externalSecurityService.getCustomerId())
-            || !customerCriteria.getOperator().equals(CriterionOperator.EQUALS)) {
+        if (
+            !StringUtils.equals(
+                CastUtils.toString(customerCriteria.getValue()),
+                externalSecurityService.getCustomerId()
+            ) ||
+            !customerCriteria.getOperator().equals(CriterionOperator.EQUALS)
+        ) {
             throw new ForbiddenException("customerId's criteria is not equal to the customerId from context");
         }
     }
@@ -355,8 +394,11 @@ public abstract class AbstractResourceClientService<E extends IdDto, I extends I
     }
 
     protected Criterion getTenantIdentifierRestriction() {
-        return new Criterion(TENANT_IDENTIFIER_KEY, externalSecurityService.getTenantIdentifier(),
-            CriterionOperator.EQUALS);
+        return new Criterion(
+            TENANT_IDENTIFIER_KEY,
+            externalSecurityService.getTenantIdentifier(),
+            CriterionOperator.EQUALS
+        );
     }
 
     protected E update(final E dto) {
@@ -365,18 +407,24 @@ public abstract class AbstractResourceClientService<E extends IdDto, I extends I
     }
 
     protected List<E> getAll(final Optional<String> criteria) {
-        return getClient().getAll(getInternalHttpContext(), checkAuthorization(criteria)).stream()
-            .map(element -> converterToExternalDto(element)).collect(Collectors.toList());
+        return getClient()
+            .getAll(getInternalHttpContext(), checkAuthorization(criteria))
+            .stream()
+            .map(element -> converterToExternalDto(element))
+            .collect(Collectors.toList());
     }
 
     protected List<E> getAll(final Optional<String> criteria, final Optional<String> embedded) {
-        return getClient().getAll(getInternalHttpContext(), checkAuthorization(criteria), embedded).stream()
-            .map(element -> converterToExternalDto(element)).collect(Collectors.toList());
+        return getClient()
+            .getAll(getInternalHttpContext(), checkAuthorization(criteria), embedded)
+            .stream()
+            .map(element -> converterToExternalDto(element))
+            .collect(Collectors.toList());
     }
 
     protected boolean checkExists(final String criteria) {
-        return getClient().checkExist(getInternalHttpContext(),
-            checkAuthorization(Optional.ofNullable(criteria)).get());
+        return getClient()
+            .checkExist(getInternalHttpContext(), checkAuthorization(Optional.ofNullable(criteria)).get());
     }
 
     protected void delete(final String id) {
@@ -387,13 +435,17 @@ public abstract class AbstractResourceClientService<E extends IdDto, I extends I
     protected abstract BasePaginatingAndSortingRestClient<I, InternalHttpContext> getClient();
 
     protected void checkCustomerId(final String customerId, final String message) {
-        Assert.isTrue(StringUtils.equals(customerId, externalSecurityService.getCustomerId()),
-            message + ": customerId " + customerId + " is not allowed");
+        Assert.isTrue(
+            StringUtils.equals(customerId, externalSecurityService.getCustomerId()),
+            message + ": customerId " + customerId + " is not allowed"
+        );
     }
 
     protected void checkTenantIdentifier(final Integer tenantIdentifier, final String message) {
-        Assert.isTrue(externalSecurityService.getTenantIdentifier().equals(tenantIdentifier),
-            message + ": tenantIdentifier " + tenantIdentifier + " is not allowed");
+        Assert.isTrue(
+            externalSecurityService.getTenantIdentifier().equals(tenantIdentifier),
+            message + ": tenantIdentifier " + tenantIdentifier + " is not allowed"
+        );
     }
 
     protected void checkLevel(final String level, final String message) {

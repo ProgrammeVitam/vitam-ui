@@ -1,8 +1,8 @@
 package fr.gouv.vitamui.iam.internal.server.common.rest;
 
-import static org.junit.Assert.assertEquals;
-
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * Tests the {@link BaseStatusController}.

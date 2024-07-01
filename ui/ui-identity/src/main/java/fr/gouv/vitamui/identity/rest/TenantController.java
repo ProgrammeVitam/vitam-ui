@@ -88,8 +88,8 @@ public class TenantController extends AbstractUiRestController {
     @ApiOperation(value = "Get entity")
     @GetMapping(CommonConstants.PATH_ID)
     @ResponseStatus(HttpStatus.OK)
-    public TenantDto getOne(final @PathVariable String id) throws InvalidParseOperationException, PreconditionFailedException {
-
+    public TenantDto getOne(final @PathVariable String id)
+        throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter("Identifier is mandatory : ", id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.info("Get tenant={}", id);
@@ -99,9 +99,8 @@ public class TenantController extends AbstractUiRestController {
     @ApiOperation(value = "Get all entities")
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Collection<TenantDto> getAll(final Optional<String> criteria) throws InvalidParseOperationException,
-        PreconditionFailedException {
-
+    public Collection<TenantDto> getAll(final Optional<String> criteria)
+        throws InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.sanitizeCriteria(criteria);
         LOGGER.debug("Get all with criteria={}", criteria);
         return service.getAll(buildUiHttpContext(), criteria);
@@ -110,8 +109,8 @@ public class TenantController extends AbstractUiRestController {
     @ApiOperation(value = "Create entity")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public TenantDto create(@RequestBody final TenantDto entityDto) throws InvalidParseOperationException, PreconditionFailedException {
-
+    public TenantDto create(@RequestBody final TenantDto entityDto)
+        throws InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.sanitizeCriteria(entityDto);
         LOGGER.info("create class={}", entityDto.getClass().getName());
         return service.create(buildUiHttpContext(), entityDto);
@@ -122,12 +121,14 @@ public class TenantController extends AbstractUiRestController {
     @ResponseStatus(HttpStatus.OK)
     public TenantDto update(final @PathVariable("id") String id, @RequestBody final TenantDto entityDto)
         throws InvalidParseOperationException, PreconditionFailedException {
-
         ParameterChecker.checkParameter("Identifier is mandatory : ", id);
         SanityChecker.checkSecureParameter(id);
         SanityChecker.sanitizeCriteria(entityDto);
         LOGGER.info("update class={}", entityDto.getClass().getName());
-        Assert.isTrue(StringUtils.equals(id, entityDto.getId()), "The DTO identifier must match the path identifier for update.");
+        Assert.isTrue(
+            StringUtils.equals(id, entityDto.getId()),
+            "The DTO identifier must match the path identifier for update."
+        );
         return service.update(buildUiHttpContext(), entityDto);
     }
 
@@ -136,20 +137,21 @@ public class TenantController extends AbstractUiRestController {
     @ResponseStatus(HttpStatus.OK)
     public TenantDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto)
         throws InvalidParseOperationException, PreconditionFailedException {
-
         ParameterChecker.checkParameter("Identifier is mandatory : ", id);
         SanityChecker.checkSecureParameter(id);
         SanityChecker.sanitizeCriteria(partialDto);
         LOGGER.debug("Patch tenant {} with {}", id, partialDto);
-        Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "Unable to patch tenant : the DTO id must match the path id");
+        Assert.isTrue(
+            StringUtils.equals(id, (String) partialDto.get("id")),
+            "Unable to patch tenant : the DTO id must match the path id"
+        );
         return service.patch(buildUiHttpContext(), partialDto, id);
     }
 
     @ApiOperation(value = "Check entity exist by criteria")
     @RequestMapping(path = CommonConstants.PATH_CHECK, method = RequestMethod.HEAD)
-    public ResponseEntity<Void> checkExist(@RequestParam final String criteria) throws InvalidParseOperationException,
-        PreconditionFailedException {
-
+    public ResponseEntity<Void> checkExist(@RequestParam final String criteria)
+        throws InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.sanitizeCriteria(Optional.of(criteria));
         LOGGER.debug("check exists criteria={}", criteria);
         final boolean exist = service.checkExist(buildUiHttpContext(), criteria);
@@ -161,7 +163,6 @@ public class TenantController extends AbstractUiRestController {
     @GetMapping(CommonConstants.PATH_LOGBOOK)
     public LogbookOperationsResponseDto findHistoryById(final @PathVariable String id)
         throws InvalidParseOperationException, PreconditionFailedException {
-
         ParameterChecker.checkParameter("Identifier is mandatory : ", id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("get logbook for tenant with id :{}", id);

@@ -36,16 +36,15 @@
  */
 package fr.gouv.vitamui.iam.security.authentication;
 
-import java.security.cert.X509Certificate;
-import java.util.ArrayList;
-import java.util.List;
-
+import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
-import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
+import java.security.cert.X509Certificate;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The current external authentification.
@@ -65,11 +64,13 @@ public class ExternalAuthentication extends AbstractAuthenticationToken {
 
     private final AuthUserDto currentUser;
 
-    public ExternalAuthentication(final AuthUserDto currentUser, final ExternalHttpContext credentials, final X509Certificate certificate,
-                                  final List<String> roles) {
-
+    public ExternalAuthentication(
+        final AuthUserDto currentUser,
+        final ExternalHttpContext credentials,
+        final X509Certificate certificate,
+        final List<String> roles
+    ) {
         super(buildAuthorities(roles));
-
         this.currentUser = currentUser;
         this.credentials = credentials;
         this.certificate = certificate;
@@ -117,8 +118,7 @@ public class ExternalAuthentication extends AbstractAuthenticationToken {
 
                 sb.append(authority);
             }
-        }
-        else {
+        } else {
             sb.append("Not granted any authorities");
         }
 

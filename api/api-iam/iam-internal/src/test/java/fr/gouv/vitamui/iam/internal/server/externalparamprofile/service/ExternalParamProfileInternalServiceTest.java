@@ -48,9 +48,13 @@ public class ExternalParamProfileInternalServiceTest {
 
     private final ProfileInternalService profileInternalService = mock(ProfileInternalService.class);
 
-    private final ExternalParametersInternalService externalParametersInternalService = mock(ExternalParametersInternalService.class);
+    private final ExternalParametersInternalService externalParametersInternalService = mock(
+        ExternalParametersInternalService.class
+    );
 
-    private final ExternalParamProfileRepository externalParamProfileRepository = mock(ExternalParamProfileRepository.class);
+    private final ExternalParamProfileRepository externalParamProfileRepository = mock(
+        ExternalParamProfileRepository.class
+    );
 
     private final InternalSecurityService internalSecurityService = mock(InternalSecurityService.class);
 
@@ -66,9 +70,15 @@ public class ExternalParamProfileInternalServiceTest {
 
     @Before
     public void setup() throws Exception {
-        externalParamProfileInternalService = new ExternalParamProfileInternalService(externalParametersInternalService,
-            profileInternalService, internalSecurityService, iamLogbookService,
-            externalParamProfileRepository, logbookService, profileConverter);
+        externalParamProfileInternalService = new ExternalParamProfileInternalService(
+            externalParametersInternalService,
+            profileInternalService,
+            internalSecurityService,
+            iamLogbookService,
+            externalParamProfileRepository,
+            logbookService,
+            profileConverter
+        );
 
         ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
         FieldUtils.setFinalStatic(CustomerInitConfig.class.getDeclaredField("allRoles"), ServicesData.getAllRoles());
@@ -82,8 +92,16 @@ public class ExternalParamProfileInternalServiceTest {
     @Test
     public void testCreateProfileUser() {
         // Givens
-        final ProfileDto profileDto = DtoFactory.buildProfileDto("User", "User", false, "", 10, "USERS_APP",
-            Arrays.asList(ServicesData.ROLE_GET_USERS, ServicesData.ROLE_GET_GROUPS), IamServerUtilsTest.CUSTOMER_ID);
+        final ProfileDto profileDto = DtoFactory.buildProfileDto(
+            "User",
+            "User",
+            false,
+            "",
+            10,
+            "USERS_APP",
+            Arrays.asList(ServicesData.ROLE_GET_USERS, ServicesData.ROLE_GET_GROUPS),
+            IamServerUtilsTest.CUSTOMER_ID
+        );
         profileDto.setExternalParamId("external_param_id");
 
         final ExternalParamProfileDto externalParamProfileDto = new ExternalParamProfileDto();
@@ -121,7 +139,9 @@ public class ExternalParamProfileInternalServiceTest {
         externalParametersDto.setIdentifier("identifier");
         when(externalParametersRepository.save(externalParameters)).thenReturn(externalParameters);
         when(externalParametersRepository.save(externalParameters)).thenReturn(externalParameters);
-        when(externalParametersInternalService.getExternalParametersRepository()).thenReturn(externalParametersRepository);
+        when(externalParametersInternalService.getExternalParametersRepository()).thenReturn(
+            externalParametersRepository
+        );
         when(externalParametersRepository.generateSuperId()).thenReturn("id");
         when(externalParametersInternalService.create(any())).thenReturn(externalParametersDto);
         when(profileInternalService.create(any())).thenReturn(profileDto);
@@ -134,7 +154,9 @@ public class ExternalParamProfileInternalServiceTest {
         expectedValue.setDescription(other.getDescription());
         expectedValue.setAccessContract("access_contract");
 
-        final ExternalParamProfileDto CreatedExternalParamProfileDto = externalParamProfileInternalService.create(externalParamProfileDto);
+        final ExternalParamProfileDto CreatedExternalParamProfileDto = externalParamProfileInternalService.create(
+            externalParamProfileDto
+        );
 
         assertNotNull("Of course external parameter profile should not be null", CreatedExternalParamProfileDto);
         // compare all fields except operation dateTime
@@ -147,6 +169,7 @@ public class ExternalParamProfileInternalServiceTest {
             "enabled",
             "idProfile",
             "profileIdentifier",
-            "idExternalParam");
+            "idExternalParam"
+        );
     }
 }

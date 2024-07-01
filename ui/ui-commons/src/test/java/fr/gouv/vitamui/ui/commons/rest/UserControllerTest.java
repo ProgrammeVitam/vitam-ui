@@ -36,9 +36,9 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ImportAutoConfiguration(classes = {UICommonsAutoConfiguration.class, UICommonsAutoSpringMockConfiguration.class})
-@WebMvcTest(controllers = {UserController.class})
-@Import(value = {SecurityConfig.class, ServerIdentityConfiguration.class})
+@ImportAutoConfiguration(classes = { UICommonsAutoConfiguration.class, UICommonsAutoSpringMockConfiguration.class })
+@WebMvcTest(controllers = { UserController.class })
+@Import(value = { SecurityConfig.class, ServerIdentityConfiguration.class })
 public class UserControllerTest extends UIControllerTest<UserDto> {
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(UserControllerTest.class);
@@ -62,17 +62,20 @@ public class UserControllerTest extends UIControllerTest<UserDto> {
             return properties;
         }
 
-
         @MockBean
         private BuildProperties buildProperties;
-
     }
 
     @Test
     public void patchAnalyticsOk() throws Exception {
         LOGGER.debug("testPatchAnalytics");
         Map<String, Object> analytics = ImmutableMap.of(APPLICATION_ID, "API_SUPERVISION_APP");
-        ResultActions result = this.performPost(getUriBuilder(CommonConstants.PATH_ANALYTICS), asJsonString(analytics), status().isCreated());
+        ResultActions result =
+            this.performPost(
+                    getUriBuilder(CommonConstants.PATH_ANALYTICS),
+                    asJsonString(analytics),
+                    status().isCreated()
+                );
         Mockito.verify(userService).patchAnalytics(any(ExternalHttpContext.class), eq(analytics));
     }
 
@@ -97,8 +100,5 @@ public class UserControllerTest extends UIControllerTest<UserDto> {
     }
 
     @Override
-    protected void preparedServices() {
-
-    }
-
+    protected void preparedServices() {}
 }

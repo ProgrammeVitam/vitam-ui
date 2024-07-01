@@ -1,30 +1,26 @@
 package fr.gouv.vitamui.ui.commons.service;
 
-import static fr.gouv.vitamui.commons.api.CommonConstants.APPLICATION_ID;
-import static org.assertj.core.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import java.util.Map;
-
-import fr.gouv.vitamui.commons.api.CommonConstants;
-import org.assertj.core.api.Assertions;
+import fr.gouv.vitamui.commons.api.domain.UserDto;
+import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
+import fr.gouv.vitamui.commons.api.enums.UserTypeEnum;
+import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
+import fr.gouv.vitamui.iam.external.client.UserExternalRestClient;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import fr.gouv.vitamui.commons.api.domain.UserDto;
-import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
-import fr.gouv.vitamui.commons.api.enums.UserTypeEnum;
-import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
-import fr.gouv.vitamui.iam.external.client.UserExternalRestClient;
+import java.util.Map;
+
+import static fr.gouv.vitamui.commons.api.CommonConstants.APPLICATION_ID;
+import static org.assertj.core.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 public class UserServiceTest extends ServiceTest<UserDto> {
@@ -53,7 +49,7 @@ public class UserServiceTest extends ServiceTest<UserDto> {
         final ArgumentCaptor<Map> argument = ArgumentCaptor.forClass(Map.class);
         verify(getClient()).patchAnalytics(eq(context), argument.capture());
         assertThat(argument.getValue()).isEqualTo(analytics);
-        assertThat( result).isEqualTo(user);
+        assertThat(result).isEqualTo(user);
     }
 
     @Override
@@ -83,5 +79,4 @@ public class UserServiceTest extends ServiceTest<UserDto> {
     protected AbstractCrudService<UserDto> getService() {
         return service;
     }
-
 }

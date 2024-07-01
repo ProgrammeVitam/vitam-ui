@@ -91,7 +91,11 @@ public class LogbookService {
     private final AdminExternalClient adminExternalClient;
 
     @Autowired
-    public LogbookService(final AccessExternalClient accessExternalClient, final IngestExternalClient ingestExternalClient, final AdminExternalClient adminExternalClient) {
+    public LogbookService(
+        final AccessExternalClient accessExternalClient,
+        final IngestExternalClient ingestExternalClient,
+        final AdminExternalClient adminExternalClient
+    ) {
         this.accessExternalClient = accessExternalClient;
         this.ingestExternalClient = ingestExternalClient;
         this.adminExternalClient = adminExternalClient;
@@ -104,9 +108,15 @@ public class LogbookService {
      * @return
      * @throws VitamClientException
      */
-    public RequestResponse<LogbookOperation> selectOperationbyId(final String operationId, final VitamContext vitamContext) throws VitamClientException {
-        final RequestResponse<LogbookOperation> response = accessExternalClient.selectOperationbyId(vitamContext, operationId,
-                new Select().getFinalSelectById());
+    public RequestResponse<LogbookOperation> selectOperationbyId(
+        final String operationId,
+        final VitamContext vitamContext
+    ) throws VitamClientException {
+        final RequestResponse<LogbookOperation> response = accessExternalClient.selectOperationbyId(
+            vitamContext,
+            operationId,
+            new Select().getFinalSelectById()
+        );
         VitamRestUtils.checkResponse(response, HttpStatus.SC_OK, HttpStatus.SC_ACCEPTED);
         return response;
     }
@@ -118,9 +128,15 @@ public class LogbookService {
      * @return
      * @throws VitamClientException
      */
-    public RequestResponse<LogbookLifecycle> findUnitLifeCyclesByUnitId(final String unitId, final VitamContext vitamContext) throws VitamClientException {
-        final RequestResponse<LogbookLifecycle> jsonResponse = accessExternalClient.selectUnitLifeCycleById(vitamContext, unitId,
-                new Select().getFinalSelectById());
+    public RequestResponse<LogbookLifecycle> findUnitLifeCyclesByUnitId(
+        final String unitId,
+        final VitamContext vitamContext
+    ) throws VitamClientException {
+        final RequestResponse<LogbookLifecycle> jsonResponse = accessExternalClient.selectUnitLifeCycleById(
+            vitamContext,
+            unitId,
+            new Select().getFinalSelectById()
+        );
         VitamRestUtils.checkResponse(jsonResponse);
         return jsonResponse;
     }
@@ -132,15 +148,21 @@ public class LogbookService {
      * @return
      * @throws VitamClientException
      */
-    public RequestResponse<LogbookLifecycle> findObjectGroupLifeCyclesByUnitId(final String unitId, final VitamContext vitamContext)
-            throws VitamClientException {
-        final RequestResponse<LogbookLifecycle> jsonResponse = accessExternalClient.selectObjectGroupLifeCycleById(vitamContext, unitId,
-                new Select().getFinalSelectById());
+    public RequestResponse<LogbookLifecycle> findObjectGroupLifeCyclesByUnitId(
+        final String unitId,
+        final VitamContext vitamContext
+    ) throws VitamClientException {
+        final RequestResponse<LogbookLifecycle> jsonResponse = accessExternalClient.selectObjectGroupLifeCycleById(
+            vitamContext,
+            unitId,
+            new Select().getFinalSelectById()
+        );
         VitamRestUtils.checkResponse(jsonResponse);
         return jsonResponse;
     }
 
-    public RequestResponse<LogbookOperation> selectOperations(final JsonNode select, final VitamContext vitamContext) throws VitamClientException {
+    public RequestResponse<LogbookOperation> selectOperations(final JsonNode select, final VitamContext vitamContext)
+        throws VitamClientException {
         final RequestResponse<LogbookOperation> response = accessExternalClient.selectOperations(vitamContext, select);
         VitamRestUtils.checkResponse(response, HttpStatus.SC_OK, HttpStatus.SC_ACCEPTED);
         return response;
@@ -154,10 +176,17 @@ public class LogbookService {
      * @return
      * @throws VitamClientException
      */
-    public RequestResponse<LogbookOperation> findEventsByIdentifierAndCollectionNames(final String identifier, final String collectionNames,
-            final VitamContext vitamContext) throws VitamClientException {
-        LOGGER.debug("findEventsByIdentifierAndCollectionNames for : identifier {}, collection {}, vitamContext {}", identifier, collectionNames,
-                vitamContext);
+    public RequestResponse<LogbookOperation> findEventsByIdentifierAndCollectionNames(
+        final String identifier,
+        final String collectionNames,
+        final VitamContext vitamContext
+    ) throws VitamClientException {
+        LOGGER.debug(
+            "findEventsByIdentifierAndCollectionNames for : identifier {}, collection {}, vitamContext {}",
+            identifier,
+            collectionNames,
+            vitamContext
+        );
         final ObjectNode select = buildOperationQuery(identifier, collectionNames);
         LOGGER.debug("selectOperations : select query {}, vitamContext {}", select, vitamContext);
         final RequestResponse<LogbookOperation> response = accessExternalClient.selectOperations(vitamContext, select);
@@ -184,7 +213,8 @@ public class LogbookService {
         return select.getFinalSelect();
     }
 
-    public RequestResponse checkTraceability(final VitamContext context, final JsonNode query) throws AccessExternalClientServerException, InvalidParseOperationException, AccessUnauthorizedException {
+    public RequestResponse checkTraceability(final VitamContext context, final JsonNode query)
+        throws AccessExternalClientServerException, InvalidParseOperationException, AccessUnauthorizedException {
         return adminExternalClient.checkTraceabilityOperation(context, query);
     }
 
@@ -210,24 +240,40 @@ public class LogbookService {
         return downloadIngestOperationObject(id, vitamContext, IngestCollection.ARCHIVETRANSFERREPLY);
     }
 
-    public Response downloadIngestOperationObject(final String id, final VitamContext vitamContext, final IngestCollection collection) {
+    public Response downloadIngestOperationObject(
+        final String id,
+        final VitamContext vitamContext,
+        final IngestCollection collection
+    ) {
         try {
             // Check operation type
-            final LogbookOperationsResponseDto operation =
-                    responseMapping(selectOperationbyId(id, vitamContext).toJsonNode(), LogbookOperationsResponseDto.class);
+            final LogbookOperationsResponseDto operation = responseMapping(
+                selectOperationbyId(id, vitamContext).toJsonNode(),
+                LogbookOperationsResponseDto.class
+            );
             if (operation == null || operation.getResults() == null || operation.getResults().size() == 0) {
-                throw new IllegalArgumentException("Unable to download object of operation " + id + ": the operation does not exist");
+                throw new IllegalArgumentException(
+                    "Unable to download object of operation " + id + ": the operation does not exist"
+                );
             }
             if (!INGEST_ALLOWED_TYPES_PROC.contains(operation.getResults().get(0).getEvTypeProc())) {
-                throw new IllegalArgumentException("Unable to download object of operation " + id + ": the operation is not an ingest or master data one");
+                throw new IllegalArgumentException(
+                    "Unable to download object of operation " +
+                    id +
+                    ": the operation is not an ingest or master data one"
+                );
             }
 
             final Response response = ingestExternalClient.downloadObjectAsync(vitamContext, id, collection);
             VitamRestUtils.checkResponse(response, Response.Status.OK.getStatusCode());
 
-            final ContentDisposition.Builder contentDispositionBuilder = ContentDisposition.builder(ContentDispositionType.ATTACHMENT.getValue());
+            final ContentDisposition.Builder contentDispositionBuilder = ContentDisposition.builder(
+                ContentDispositionType.ATTACHMENT.getValue()
+            );
             contentDispositionBuilder.filename(String.format(collection + "_%s.xml", id));
-            response.getHeaders().put(HttpHeaders.CONTENT_DISPOSITION, Arrays.asList(contentDispositionBuilder.build().toString()));
+            response
+                .getHeaders()
+                .put(HttpHeaders.CONTENT_DISPOSITION, Arrays.asList(contentDispositionBuilder.build().toString()));
 
             return response;
         } catch (final VitamClientException exception) {
@@ -236,7 +282,8 @@ public class LogbookService {
         }
     }
 
-    public Response downloadReport(final String id, final String downloadType, final VitamContext vitamContext) throws VitamClientException {
+    public Response downloadReport(final String id, final String downloadType, final VitamContext vitamContext)
+        throws VitamClientException {
         Response response;
         switch (downloadType) {
             case TRANSFER_REPORT:

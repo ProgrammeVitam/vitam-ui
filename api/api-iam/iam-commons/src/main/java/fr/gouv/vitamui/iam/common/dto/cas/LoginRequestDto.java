@@ -62,7 +62,16 @@ public class LoginRequestDto {
 
     @Override
     public String toString() {
-        return "[username: " + username + ", passwordExists?: " + (password != null) +
-            ", surrogate: " + surrogate + ", IP: " + ip + "]";
+        return (
+            "[username: " +
+            username +
+            ", passwordExists?: " +
+            (password != null) +
+            ", surrogate: " +
+            surrogate +
+            ", IP: " +
+            ip +
+            "]"
+        );
     }
 }
