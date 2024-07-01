@@ -36,7 +36,6 @@ The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
 
-
 package fr.gouv.vitamui.pastis.server.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -115,14 +114,19 @@ public class PastisService {
 
     private static final String APPLICATION_JSON_UTF8 = "application/json; charset=utf-8";
     private final ResourceLoader resourceLoader;
+
     @Value("${rng.base.file}")
     private String rngFile;
+
     @Value("${json.template.fileStandalone}")
     private String jsonFileStandalone;
+
     @Value("${json.template.fileVitam}")
     private String jsonFileVitam;
+
     @Value("${rng.base.directory}")
     private String rngLocation;
+
     private final PuaPastisValidator puaPastisValidator;
 
     private final JsonFromPUA jsonFromPUA;
@@ -134,8 +138,12 @@ public class PastisService {
     private Random rand;
 
     @Autowired
-    public PastisService(ResourceLoader resourceLoader, PuaPastisValidator puaPastisValidator, JsonFromPUA jsonFromPUA,
-        PuaFromJSON puaFromJSON) {
+    public PastisService(
+        ResourceLoader resourceLoader,
+        PuaPastisValidator puaPastisValidator,
+        JsonFromPUA jsonFromPUA,
+        PuaFromJSON puaFromJSON
+    ) {
         this.resourceLoader = resourceLoader;
         this.puaPastisValidator = puaPastisValidator;
         this.jsonFromPUA = jsonFromPUA;
@@ -143,7 +151,6 @@ public class PastisService {
     }
 
     public String getArchiveProfile(final ElementProperties json) throws TechnicalException {
-
         // Recover a statically generated BaliseXML by buildBaliseXMLTree
         json.initTree(json);
         BaliseXML.buildBaliseXMLTree(json, 0, null);
@@ -153,15 +160,31 @@ public class PastisService {
         String response;
         try (
             ByteArrayOutputStream os = new ByteArrayOutputStream();
-            Writer writer = new OutputStreamWriter(os, StandardCharsets.UTF_8)) {
-            JAXBContext contextObj = JAXBContext.newInstance(AttributeXML.class, ElementXML.class, DataXML.class,
-                ValueXML.class, OptionalXML.class, OneOrMoreXML.class,
-                ZeroOrMoreXML.class, AnnotationXML.class, DocumentationXML.class,
-                StartXML.class, GrammarXML.class, ChoiceXml.class, AnyNameXML.class, ExceptXML.class, NsNameXML.class);
+            Writer writer = new OutputStreamWriter(os, StandardCharsets.UTF_8)
+        ) {
+            JAXBContext contextObj = JAXBContext.newInstance(
+                AttributeXML.class,
+                ElementXML.class,
+                DataXML.class,
+                ValueXML.class,
+                OptionalXML.class,
+                OneOrMoreXML.class,
+                ZeroOrMoreXML.class,
+                AnnotationXML.class,
+                DocumentationXML.class,
+                StartXML.class,
+                GrammarXML.class,
+                ChoiceXml.class,
+                AnyNameXML.class,
+                ExceptXML.class,
+                NsNameXML.class
+            );
             Marshaller marshallerObj = contextObj.createMarshaller();
             marshallerObj.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-            marshallerObj.setProperty("com.sun.xml.bind.marshaller.CharacterEscapeHandler",
-                new PastisCustomCharacterEscapeHandler());
+            marshallerObj.setProperty(
+                "com.sun.xml.bind.marshaller.CharacterEscapeHandler",
+                new PastisCustomCharacterEscapeHandler()
+            );
             marshallerObj.marshal(eparentRng, writer);
             response = os.toString(StandardCharsets.UTF_8);
         } catch (JAXBException | IOException e) {
@@ -171,12 +194,10 @@ public class PastisService {
         return response;
     }
 
-
     public String getArchiveUnitProfile(final ProfileNotice json, final boolean standalone) throws TechnicalException {
         Notice notice = new Notice();
         if (!standalone && json.getNotice() != null) {
             notice = json.getNotice();
-
         }
         String controlSchema;
         try {
@@ -184,7 +205,8 @@ public class PastisService {
         } catch (IOException e) {
             throw new TechnicalException(
                 "Problems when deserializing using Jackson with Element Properties of AUP json to have ControlsShema",
-                e);
+                e
+            );
         }
         notice.setControlSchema(controlSchema);
 
@@ -209,8 +231,7 @@ public class PastisService {
             if (type.equals(ProfileType.PA.getType())) {
                 resource = new ClassPathResource(rngFile);
             } else {
-                if (standalone)
-                    resource = new ClassPathResource(jsonFileStandalone);
+                if (standalone) resource = new ClassPathResource(jsonFileStandalone);
                 else {
                     resource = new ClassPathResource(jsonFileVitam);
                 }
@@ -233,8 +254,9 @@ public class PastisService {
             JSONObject profileJson = new JSONObject(s);
 
             if (fileType.equals(ProfileType.PA)) {
-                InputStream inputStream = getClass().getClassLoader().getResourceAsStream(rngLocation +
-                    notice.getPath());
+                InputStream inputStream = getClass()
+                    .getClassLoader()
+                    .getResourceAsStream(rngLocation + notice.getPath());
                 InputSource inputSource = new InputSource(inputStream);
                 XMLReader xmlReader = createXmlReader(handler);
                 xmlReader.parse(inputSource);
@@ -301,7 +323,6 @@ public class PastisService {
                 xmlReader.parse(inputSource);
                 profileResponse.setProfile(getJson.getJsonParsedTree(handler.getElementRNGRoot()));
                 LOGGER.info("Starting editing Archive Profile from file : {}", resource.getFilename());
-
             } else {
                 JSONTokener tokener = new JSONTokener(new InputStreamReader(fileInputStream));
                 JSONObject profileJson = new JSONObject(tokener);
@@ -320,7 +341,6 @@ public class PastisService {
 
     public ProfileResponse loadProfileFromFile(MultipartFile file, String fileName, boolean standalone)
         throws NoSuchAlgorithmException, TechnicalException {
-
         PastisSAX2Handler handler = new PastisSAX2Handler();
         PastisGetXmlJsonTree getJson = new PastisGetXmlJsonTree();
         ProfileResponse profileResponse = new ProfileResponse();
@@ -342,7 +362,6 @@ public class PastisService {
                 xmlReader.parse(inputSource);
                 profileResponse.setProfile(getJson.getJsonParsedTree(handler.getElementRNGRoot()));
                 LOGGER.info("Starting editing Archive Profile from file : {}", fileName);
-
             } else {
                 JSONTokener tokener = new JSONTokener(new InputStreamReader(fileInputStream));
                 JSONObject profileJson = new JSONObject(tokener);
@@ -351,7 +370,6 @@ public class PastisService {
                 profileResponse.setNotice(NoticeUtils.getNoticeFromPUA(profileJson));
                 LOGGER.info("Starting editing Archive Unit Profile with name : {}", file.getOriginalFilename());
             }
-
         } catch (SAXException | IOException e) {
             throw new TechnicalException("Failed to load profile " + fileName, e);
         } catch (AssertionError ae) {
@@ -363,13 +381,12 @@ public class PastisService {
 
     public List<Notice> getFiles() throws TechnicalException {
         try {
-            Resource[] resources = ResourcePatternUtils
-                .getResourcePatternResolver(resourceLoader)
-                .getResources("classpath*:" + rngLocation + "*.*");
+            Resource[] resources = ResourcePatternUtils.getResourcePatternResolver(resourceLoader).getResources(
+                "classpath*:" + rngLocation + "*.*"
+            );
 
             if (notices.isEmpty()) {
                 for (Resource r : resources) {
-
                     notices.add(new Notice(r));
                 }
             }

@@ -36,9 +36,9 @@
  */
 package fr.gouv.vitamui.referential.rest;
 
-import fr.gouv.vitamui.commons.api.domain.AccessionRegisterSearchDto;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitamui.common.security.SanityChecker;
+import fr.gouv.vitamui.commons.api.domain.AccessionRegisterSearchDto;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
@@ -68,7 +68,6 @@ import javax.ws.rs.Produces;
 import java.util.Collection;
 import java.util.Optional;
 
-
 @Api(tags = "accession-register")
 @RestController
 @RequestMapping("${ui-referential.prefix}/accession-register")
@@ -81,8 +80,10 @@ public class AccessionRegisterController extends AbstractUiRestController {
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(AccessionRegisterController.class);
 
-    public AccessionRegisterController(AccessionRegisterSummaryService summaryService,
-        AccessionRegisterDetailService detailsService) {
+    public AccessionRegisterController(
+        AccessionRegisterSummaryService summaryService,
+        AccessionRegisterDetailService detailsService
+    ) {
         this.summaryService = summaryService;
         this.detailsService = detailsService;
     }
@@ -92,26 +93,33 @@ public class AccessionRegisterController extends AbstractUiRestController {
     @ResponseStatus(HttpStatus.OK)
     public Collection<AccessionRegisterSummaryDto> getAll(final Optional<String> criteria)
         throws InvalidParseOperationException, PreconditionFailedException {
-
         SanityChecker.sanitizeCriteria(criteria);
         LOGGER.debug("Get all with criteria={}", criteria);
         return summaryService.getAll(buildUiHttpContext(), criteria);
     }
 
     @ApiOperation(value = "Get accession register details entities paginated")
-    @GetMapping(value = "/details", params = {"page", "size"})
+    @GetMapping(value = "/details", params = { "page", "size" })
     @ResponseStatus(HttpStatus.OK)
     public PaginatedValuesDto<AccessionRegisterDetailDto> getAllPaginated(
         @RequestParam final Integer page,
         @RequestParam final Integer size,
-        @RequestParam final Optional<String> criteria, @RequestParam final Optional<String> orderBy,
-        @RequestParam final Optional<DirectionDto> direction) throws InvalidParseOperationException, PreconditionFailedException {
+        @RequestParam final Optional<String> criteria,
+        @RequestParam final Optional<String> orderBy,
+        @RequestParam final Optional<DirectionDto> direction
+    ) throws InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.sanitizeCriteria(criteria);
-        if(orderBy.isPresent()){
+        if (orderBy.isPresent()) {
             SanityChecker.checkSecureParameter(orderBy.get());
         }
-        LOGGER.debug("getAllPaginated page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, criteria,
-            orderBy, direction);
+        LOGGER.debug(
+            "getAllPaginated page={}, size={}, criteria={}, orderBy={}, ascendant={}",
+            page,
+            size,
+            criteria,
+            orderBy,
+            direction
+        );
         return detailsService.getAllPaginated(page, size, criteria, orderBy, direction, buildUiHttpContext());
     }
 
@@ -121,14 +129,14 @@ public class AccessionRegisterController extends AbstractUiRestController {
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Resource> exportCsvArchiveUnitsByCriteria(
         @RequestBody final AccessionRegisterSearchDto searchQuery
-    ) throws InvalidParseOperationException, PreconditionFailedException{
+    ) throws InvalidParseOperationException, PreconditionFailedException {
         LOGGER.debug("Export accession register by criteria into csv format = {}", searchQuery);
-        Resource exportedCsvResult =
-            detailsService.exportAccessionRegisterCsv(searchQuery, buildUiHttpContext()).getBody();
+        Resource exportedCsvResult = detailsService
+            .exportAccessionRegisterCsv(searchQuery, buildUiHttpContext())
+            .getBody();
         return ResponseEntity.ok()
             .contentType(MediaType.APPLICATION_OCTET_STREAM)
             .header("Content-Disposition", "attachment")
             .body(exportedCsvResult);
     }
-
 }

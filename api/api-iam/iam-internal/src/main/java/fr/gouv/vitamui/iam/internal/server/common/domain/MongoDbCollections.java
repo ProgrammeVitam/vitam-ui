@@ -72,5 +72,4 @@ public final class MongoDbCollections {
     private MongoDbCollections() {
         // do nothing
     }
-
 }

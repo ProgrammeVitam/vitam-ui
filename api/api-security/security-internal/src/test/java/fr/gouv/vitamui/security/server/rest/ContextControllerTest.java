@@ -1,19 +1,8 @@
 package fr.gouv.vitamui.security.server.rest;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
-import static org.mockito.Mockito.when;
-
-import java.util.*;
-
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
-import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
+import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.rest.CrudController;
 import fr.gouv.vitamui.commons.test.rest.AbstractCrudControllerTest;
@@ -22,6 +11,16 @@ import fr.gouv.vitamui.security.server.certificate.dao.CertificateRepository;
 import fr.gouv.vitamui.security.server.context.dao.ContextRepository;
 import fr.gouv.vitamui.security.server.context.domain.Context;
 import fr.gouv.vitamui.security.server.context.service.ContextService;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+
+import java.util.*;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+import static org.mockito.Mockito.when;
 
 /**
  * Tests the {@link ContextController}.
@@ -48,14 +47,18 @@ public final class ContextControllerTest extends AbstractCrudControllerTest<Cont
     @Before
     public void setup() {
         super.setup();
-        final ContextService service = new ContextService(sequenceGeneratorService, contextRepository, certificateRepository);
+        final ContextService service = new ContextService(
+            sequenceGeneratorService,
+            contextRepository,
+            certificateRepository
+        );
         controller.setContextService(service);
     }
 
     @Test(expected = NullPointerException.class)
     public void testCreationFailsAsTheRoleIsNull() throws InvalidParseOperationException, PreconditionFailedException {
         final ContextDto dto = buildDto();
-        List list = Arrays.asList(null) ;
+        List list = Arrays.asList(null);
         dto.setRoleNames(list);
         getController().create(dto);
         fail("should fail");
@@ -64,7 +67,7 @@ public final class ContextControllerTest extends AbstractCrudControllerTest<Cont
     @Test(expected = NullPointerException.class)
     public void testUpdateFailsAsTheRoleIsNull() throws InvalidParseOperationException, PreconditionFailedException {
         final ContextDto dto = buildDto();
-        List list = Arrays.asList(null) ;
+        List list = Arrays.asList(null);
         dto.setRoleNames(list);
         dto.setId(ID);
         getController().update(ID, dto);
@@ -79,8 +82,7 @@ public final class ContextControllerTest extends AbstractCrudControllerTest<Cont
             dto.setRoleNames(Arrays.asList("badRole"));
             getController().create(dto);
             fail("should fail");
-        }
-        catch (final IllegalArgumentException | InvalidParseOperationException e) {
+        } catch (final IllegalArgumentException | InvalidParseOperationException e) {
             assertEquals("Some of the rolenames: [badRole] are not allowed", e.getMessage());
         } catch (PreconditionFailedException exception) {
             throw new PreconditionFailedException("The object is not valid " + exception);
@@ -100,8 +102,7 @@ public final class ContextControllerTest extends AbstractCrudControllerTest<Cont
 
             getController().update(ID, dto);
             fail("should fail");
-        }
-        catch (final IllegalArgumentException | InvalidParseOperationException e) {
+        } catch (final IllegalArgumentException | InvalidParseOperationException e) {
             assertEquals("Some of the rolenames: [badRole] are not allowed", e.getMessage());
         }
     }
@@ -111,7 +112,6 @@ public final class ContextControllerTest extends AbstractCrudControllerTest<Cont
         final Context entity = new Context();
         entity.setId(ID);
         when(contextRepository.findById(ID)).thenReturn(Optional.of(entity));
-
     }
 
     @Override

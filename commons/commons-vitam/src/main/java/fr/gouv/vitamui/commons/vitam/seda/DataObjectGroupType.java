@@ -5,21 +5,19 @@
 // Généré le : 2020.07.15 à 03:41:18 PM CEST
 //
 
-
 package fr.gouv.vitamui.commons.vitam.seda;
 
-import java.util.ArrayList;
-import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.adapters.CollapsedStringAdapter;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlID;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import javax.xml.bind.annotation.XmlType;
-
+import javax.xml.bind.annotation.adapters.CollapsedStringAdapter;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * <p>Classe Java pour DataObjectGroupType complex type.
@@ -46,19 +44,20 @@ import javax.xml.bind.annotation.XmlType;
  *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "DataObjectGroupType", propOrder = {
-    "binaryDataObjectOrPhysicalDataObject",
-    "logBook"
-})
+@XmlType(name = "DataObjectGroupType", propOrder = { "binaryDataObjectOrPhysicalDataObject", "logBook" })
 public class DataObjectGroupType {
 
-    @XmlElements({
-        @XmlElement(name = "BinaryDataObject", type = BinaryDataObjectType.class),
-        @XmlElement(name = "PhysicalDataObject", type = PhysicalDataObjectType.class)
-    })
+    @XmlElements(
+        {
+            @XmlElement(name = "BinaryDataObject", type = BinaryDataObjectType.class),
+            @XmlElement(name = "PhysicalDataObject", type = PhysicalDataObjectType.class),
+        }
+    )
     protected List<MinimalDataObjectType> binaryDataObjectOrPhysicalDataObject;
+
     @XmlElement(name = "LogBook")
     protected LogBookOgType logBook;
+
     @XmlAttribute(name = "id", required = true)
     @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
     @XmlID
@@ -141,5 +140,4 @@ public class DataObjectGroupType {
     public void setId(String value) {
         this.id = value;
     }
-
 }

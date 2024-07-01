@@ -55,5 +55,4 @@ public class PuaData implements Serializable {
     Integer maximum;
     Boolean exclusiveMinimum;
     Boolean exclusiveMaximum;
-
 }

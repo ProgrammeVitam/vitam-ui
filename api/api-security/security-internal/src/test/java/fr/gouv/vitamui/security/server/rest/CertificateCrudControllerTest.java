@@ -1,20 +1,6 @@
 package fr.gouv.vitamui.security.server.rest;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
-
-import java.util.Arrays;
-import java.util.Optional;
-
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-
-import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
 import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.rest.CrudController;
 import fr.gouv.vitamui.commons.test.rest.AbstractCrudControllerTest;
@@ -24,6 +10,18 @@ import fr.gouv.vitamui.security.server.certificate.dao.CertificateRepository;
 import fr.gouv.vitamui.security.server.certificate.domain.Certificate;
 import fr.gouv.vitamui.security.server.certificate.service.CertificateCrudService;
 import fr.gouv.vitamui.security.server.context.service.ContextService;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+
+import java.util.Arrays;
+import java.util.Optional;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
 /**
  * Tests the {@link CertificateCrudController}.
@@ -50,7 +48,11 @@ public final class CertificateCrudControllerTest extends AbstractCrudControllerT
     @Before
     public void setup() {
         super.setup();
-        final CertificateCrudService service = new CertificateCrudService(sequenceGeneratorService, certificateRepository, contextService);
+        final CertificateCrudService service = new CertificateCrudService(
+            sequenceGeneratorService,
+            certificateRepository,
+            contextService
+        );
         controller.setCertificateCrudService(service);
     }
 
@@ -62,8 +64,7 @@ public final class CertificateCrudControllerTest extends AbstractCrudControllerT
 
             getController().create(buildDto());
             fail("should fail");
-        }
-        catch (final IllegalArgumentException | InvalidParseOperationException e) {
+        } catch (final IllegalArgumentException | InvalidParseOperationException e) {
             assertEquals("The context: " + CONTEXT_ID + " does not exist.", e.getMessage());
         }
     }
@@ -74,16 +75,15 @@ public final class CertificateCrudControllerTest extends AbstractCrudControllerT
             final CertificateDto dto = buildDto();
             dto.setId(ID);
 
-//            prepareServices();
+            //            prepareServices();
             when(contextService.getMany(CONTEXT_ID)).thenReturn(Arrays.asList(new ContextDto()));
             when(certificateRepository.existsById(any())).thenReturn(false);
-//            when(contextService.getMany(CONTEXT_ID)).thenReturn(null);
-//            when(certificateRepository.findById(ID)).thenReturn(Optional.empty());
+            //            when(contextService.getMany(CONTEXT_ID)).thenReturn(null);
+            //            when(certificateRepository.findById(ID)).thenReturn(Optional.empty());
 
             getController().update(ID, dto);
             fail("should fail");
-        }
-        catch (final IllegalArgumentException | InvalidParseOperationException e) {
+        } catch (final IllegalArgumentException | InvalidParseOperationException e) {
             assertEquals("Unable to update certificate: no entity found with id: " + ID, e.getMessage());
         }
     }
@@ -122,6 +122,4 @@ public final class CertificateCrudControllerTest extends AbstractCrudControllerT
         dto.setData("-- BEGIN CERT -- XXX --- END CERT ---");
         return dto;
     }
-
-
 }

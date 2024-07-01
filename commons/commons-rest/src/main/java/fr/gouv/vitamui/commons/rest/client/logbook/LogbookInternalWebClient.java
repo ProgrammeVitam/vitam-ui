@@ -62,7 +62,6 @@ public class LogbookInternalWebClient<C extends AbstractHttpContext> extends Bas
         return CommonConstants.API_VERSION_1;
     }
 
-
     /**
      * Download an operation report
      *
@@ -81,8 +80,10 @@ public class LogbookInternalWebClient<C extends AbstractHttpContext> extends Bas
             .retrieve()
             .bodyToFlux(DataBuffer.class);
 
-        return Mono.just(ResponseEntity
-            .ok().cacheControl(CacheControl.noCache())
-            .body(convertDataBufferFileToInputStreamResponse(dataBuffer)));
+        return Mono.just(
+            ResponseEntity.ok()
+                .cacheControl(CacheControl.noCache())
+                .body(convertDataBufferFileToInputStreamResponse(dataBuffer))
+        );
     }
 }

@@ -69,8 +69,9 @@ public class TriggerChangePasswordAction extends AbstractAction {
     private final Utils utils;
 
     protected Event doExecute(final RequestContext context) {
-
-        final String doChangePassword = context.getRequestParameters().get(PasswordManagementWebflowConfigurer.DO_CHANGE_PASSWORD_PARAMETER);
+        final String doChangePassword = context
+            .getRequestParameters()
+            .get(PasswordManagementWebflowConfigurer.DO_CHANGE_PASSWORD_PARAMETER);
         LOGGER.debug("doChangePassword: {}", doChangePassword);
         if (doChangePassword != null) {
             // we force to change the password and as the user is already authenticated,
@@ -78,7 +79,10 @@ public class TriggerChangePasswordAction extends AbstractAction {
             // and a specific property: pswdChangePostLogin in the flow
             final RequestContext requestContext = RequestContextHolder.getRequestContext();
             final Principal principal = WebUtils.getPrincipalFromRequestContext(requestContext, ticketRegistrySupport);
-            final String username = (String) utils.getAttributeValue(principal.getAttributes(), CommonConstants.EMAIL_ATTRIBUTE);
+            final String username = (String) utils.getAttributeValue(
+                principal.getAttributes(),
+                CommonConstants.EMAIL_ATTRIBUTE
+            );
             final UsernamePasswordCredential credential = new UsernamePasswordCredential(username, null);
             WebUtils.putCredential(requestContext, credential);
             requestContext.getFlowScope().put("pswdChangePostLogin", true);

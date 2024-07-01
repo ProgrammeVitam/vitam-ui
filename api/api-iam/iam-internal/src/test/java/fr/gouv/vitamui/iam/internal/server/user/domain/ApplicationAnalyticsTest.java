@@ -1,9 +1,8 @@
 package fr.gouv.vitamui.iam.internal.server.user.domain;
 
+import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-
-import org.junit.jupiter.api.Test;
 
 class ApplicationAnalyticsTest {
 
@@ -19,7 +18,6 @@ class ApplicationAnalyticsTest {
         assertThat(sut.getAccessCounter()).isEqualTo(1);
     }
 
-
     @Test
     void shouldIncrementAccessCounter() {
         String applicationId = "GROUPS_APP";
@@ -30,5 +28,4 @@ class ApplicationAnalyticsTest {
         assertThat(sut.getApplicationId()).isEqualTo(applicationId);
         assertThat(sut.getAccessCounter()).isEqualTo(2);
     }
-
 }

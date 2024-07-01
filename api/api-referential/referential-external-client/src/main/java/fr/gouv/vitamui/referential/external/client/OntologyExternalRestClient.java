@@ -59,8 +59,9 @@ public class OntologyExternalRestClient extends BasePaginatingAndSortingRestClie
         super(restTemplate, baseUrl);
     }
 
-    @Override protected ParameterizedTypeReference<PaginatedValuesDto<OntologyDto>> getDtoPaginatedClass() {
-        return new ParameterizedTypeReference<PaginatedValuesDto<OntologyDto>>() { };
+    @Override
+    protected ParameterizedTypeReference<PaginatedValuesDto<OntologyDto>> getDtoPaginatedClass() {
+        return new ParameterizedTypeReference<PaginatedValuesDto<OntologyDto>>() {};
     }
 
     @Override
@@ -68,20 +69,24 @@ public class OntologyExternalRestClient extends BasePaginatingAndSortingRestClie
         return RestApi.ONTOLOGIES_URL;
     }
 
-    @Override protected Class<OntologyDto> getDtoClass() {
+    @Override
+    protected Class<OntologyDto> getDtoClass() {
         return OntologyDto.class;
     }
 
     protected ParameterizedTypeReference<List<OntologyDto>> getDtoListClass() {
-        return new ParameterizedTypeReference<List<OntologyDto>>() {
-        };
+        return new ParameterizedTypeReference<List<OntologyDto>>() {};
     }
 
     public boolean check(ExternalHttpContext context, OntologyDto accessContractDto) {
         final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl() + CommonConstants.PATH_CHECK);
         final HttpEntity<OntologyDto> request = new HttpEntity<>(accessContractDto, buildHeaders(context));
-        final ResponseEntity<Boolean> response = restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.POST,
-            request, Boolean.class);
+        final ResponseEntity<Boolean> response = restTemplate.exchange(
+            uriBuilder.toUriString(),
+            HttpMethod.POST,
+            request,
+            Boolean.class
+        );
         return response.getStatusCode() == HttpStatus.OK;
     }
 

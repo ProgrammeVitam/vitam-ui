@@ -1,18 +1,16 @@
 package fr.gouv.vitamui.iam.common.dto;
 
-import lombok.ToString;
-import org.hibernate.validator.constraints.Length;
-
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
-
 import fr.gouv.vitamui.commons.api.deserializer.ToLowerCaseConverter;
 import fr.gouv.vitamui.commons.api.domain.AddressDto;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
+import org.hibernate.validator.constraints.Length;
+
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter

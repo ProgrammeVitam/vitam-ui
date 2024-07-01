@@ -36,24 +36,6 @@
  */
 package fr.gouv.vitamui.iam.internal.server.rest;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.when;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
-import fr.gouv.vitamui.iam.internal.server.logbook.service.IamLogbookService;
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.ArgumentMatchers;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
-import org.springframework.data.mongodb.core.query.Query;
-
 import fr.gouv.vitamui.commons.api.domain.ExternalParametersDto;
 import fr.gouv.vitamui.commons.api.domain.GroupDto;
 import fr.gouv.vitamui.commons.api.domain.ProfileDto;
@@ -65,7 +47,23 @@ import fr.gouv.vitamui.iam.internal.server.externalParameters.converter.External
 import fr.gouv.vitamui.iam.internal.server.externalParameters.dao.ExternalParametersRepository;
 import fr.gouv.vitamui.iam.internal.server.externalParameters.domain.ExternalParameters;
 import fr.gouv.vitamui.iam.internal.server.externalParameters.service.ExternalParametersInternalService;
+import fr.gouv.vitamui.iam.internal.server.logbook.service.IamLogbookService;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.ArgumentMatchers;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
+import org.springframework.data.mongodb.core.query.Query;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.mockito.Mockito.when;
 
 /**
  * Tests the {@link ExternalParametersInternalController}.
@@ -103,33 +101,36 @@ public class ExternalParametersInternalControllerTest extends AbstractServerIden
         Mockito.when(externalParametersConverter.convertEntityToDto(ArgumentMatchers.any())).thenCallRealMethod();
 
         externalParametersInternalService = new ExternalParametersInternalService(
-        		sequenceRepository, externalParametersRepository, externalParametersConverter, internalSecurityService,
-            iamLogbookService);
+            sequenceRepository,
+            externalParametersRepository,
+            externalParametersConverter,
+            internalSecurityService,
+            iamLogbookService
+        );
 
         controller = new ExternalParametersInternalController(externalParametersInternalService);
     }
 
     @Test
     public void testGetMyExternalParameters() {
-    	ProfileDto profile = new ProfileDto();
-    	profile.setApplicationName(Application.EXTERNAL_PARAMS.toString());
-    	profile.setExternalParamId(PARAMETER_ID);
-    	profile.setTenantIdentifier(1);
-    	List<ProfileDto> profiles = new ArrayList<ProfileDto>();
-    	profiles.add(profile);
-    	GroupDto group = new GroupDto();
-    	group.setProfiles(profiles);
+        ProfileDto profile = new ProfileDto();
+        profile.setApplicationName(Application.EXTERNAL_PARAMS.toString());
+        profile.setExternalParamId(PARAMETER_ID);
+        profile.setTenantIdentifier(1);
+        List<ProfileDto> profiles = new ArrayList<ProfileDto>();
+        profiles.add(profile);
+        GroupDto group = new GroupDto();
+        group.setProfiles(profiles);
 
-    	AuthUserDto user = new AuthUserDto();
-    	user.setProfileGroup(group);
+        AuthUserDto user = new AuthUserDto();
+        user.setProfileGroup(group);
 
+        ExternalParameters result = new ExternalParameters();
+        result.setId(PARAMETER_ID);
 
-    	ExternalParameters result = new ExternalParameters();
-    	result.setId(PARAMETER_ID);
-
-    	when(internalSecurityService.getUser()).thenReturn(user);
-    	when(internalSecurityService.getTenantIdentifier()).thenReturn(1);
-    	when(externalParametersRepository.findOne(ArgumentMatchers.any(Query.class))).thenReturn(Optional.of(result));
+        when(internalSecurityService.getUser()).thenReturn(user);
+        when(internalSecurityService.getTenantIdentifier()).thenReturn(1);
+        when(externalParametersRepository.findOne(ArgumentMatchers.any(Query.class))).thenReturn(Optional.of(result));
         ExternalParametersDto dto = controller.getMyExternalParameters();
 
         assertNotNull(dto);

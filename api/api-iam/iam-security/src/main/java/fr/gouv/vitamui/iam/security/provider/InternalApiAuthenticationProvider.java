@@ -56,7 +56,9 @@ import org.springframework.security.web.authentication.preauth.PreAuthenticatedA
 
 public class InternalApiAuthenticationProvider implements AuthenticationProvider {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(InternalApiAuthenticationProvider.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
+        InternalApiAuthenticationProvider.class
+    );
 
     private final InternalAuthentificationService internalAuthentificationService;
 
@@ -89,5 +91,4 @@ public class InternalApiAuthenticationProvider implements AuthenticationProvider
     public boolean supports(final Class<?> authentication) {
         return authentication.equals(PreAuthenticatedAuthenticationToken.class);
     }
-
 }

@@ -59,8 +59,10 @@ import java.util.Objects;
  */
 @Service
 public class ArchiveSearchMgtRulesInternalService {
-    private static final VitamUILogger LOGGER =
-        VitamUILoggerFactory.getInstance(ArchiveSearchMgtRulesInternalService.class);
+
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
+        ArchiveSearchMgtRulesInternalService.class
+    );
     private final ObjectMapper objectMapper;
     private final ArchiveSearchInternalService archiveSearchInternalService;
     private final RuleOperationsConverter ruleOperationsConverter;
@@ -71,8 +73,10 @@ public class ArchiveSearchMgtRulesInternalService {
     public ArchiveSearchMgtRulesInternalService(
         final @Lazy ArchiveSearchInternalService archiveSearchInternalService,
         final RuleOperationsConverter ruleOperationsConverter,
-        final AccessContractService accessContractService, final UnitService unitService,
-        final ObjectMapper objectMapper) {
+        final AccessContractService accessContractService,
+        final UnitService unitService,
+        final ObjectMapper objectMapper
+    ) {
         this.archiveSearchInternalService = archiveSearchInternalService;
         this.objectMapper = objectMapper;
         this.ruleOperationsConverter = ruleOperationsConverter;
@@ -81,27 +85,38 @@ public class ArchiveSearchMgtRulesInternalService {
     }
 
     public String updateArchiveUnitsRules(
-        final RuleSearchCriteriaDto ruleSearchCriteriaDto, final VitamContext vitamContext)
-        throws VitamClientException {
-        LOGGER.debug("Add Rules to ArchiveUnits using query : {} and DSL actions : {}",
-            ruleSearchCriteriaDto.getSearchCriteriaDto().toString(), ruleSearchCriteriaDto.getRuleActions());
+        final RuleSearchCriteriaDto ruleSearchCriteriaDto,
+        final VitamContext vitamContext
+    ) throws VitamClientException {
+        LOGGER.debug(
+            "Add Rules to ArchiveUnits using query : {} and DSL actions : {}",
+            ruleSearchCriteriaDto.getSearchCriteriaDto().toString(),
+            ruleSearchCriteriaDto.getRuleActions()
+        );
         boolean hasAccessContractWritePermission = checkAccessContractWritePermission(vitamContext);
         if (!hasAccessContractWritePermission) {
-            LOGGER
-                .error("the access contract : {} ,using to update unit rules has no writing permission to update units",
-                    vitamContext.getAccessContract());
+            LOGGER.error(
+                "the access contract : {} ,using to update unit rules has no writing permission to update units",
+                vitamContext.getAccessContract()
+            );
             throw new ForbiddenException(
-                "the access contract using to update unit rules has no writing permission to update units");
+                "the access contract using to update unit rules has no writing permission to update units"
+            );
         }
-        RuleActions ruleActions =
-            ruleOperationsConverter.convertToVitamRuleActions(ruleSearchCriteriaDto.getRuleActions());
+        RuleActions ruleActions = ruleOperationsConverter.convertToVitamRuleActions(
+            ruleSearchCriteriaDto.getRuleActions()
+        );
         MassUpdateUnitRuleRequest massUpdateUnitRuleRequest = new MassUpdateUnitRuleRequest();
-        JsonNode dslQuery =
-            archiveSearchInternalService.mapRequestToDslQuery(ruleSearchCriteriaDto.getSearchCriteriaDto());
+        JsonNode dslQuery = archiveSearchInternalService.mapRequestToDslQuery(
+            ruleSearchCriteriaDto.getSearchCriteriaDto()
+        );
         ObjectNode dslRequest = (ObjectNode) dslQuery;
-        RulesUpdateCommonService
-            .deleteAttributesFromObjectNode(dslRequest, ArchiveSearchInternalService.DSL_QUERY_PROJECTION,
-                ArchiveSearchInternalService.DSL_QUERY_FILTER, ArchiveSearchInternalService.DSL_QUERY_FACETS);
+        RulesUpdateCommonService.deleteAttributesFromObjectNode(
+            dslRequest,
+            ArchiveSearchInternalService.DSL_QUERY_PROJECTION,
+            ArchiveSearchInternalService.DSL_QUERY_FILTER,
+            ArchiveSearchInternalService.DSL_QUERY_FACETS
+        );
 
         RulesUpdateCommonService.setMassUpdateUnitRuleRequest(massUpdateUnitRuleRequest, ruleActions, dslRequest);
         objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
@@ -123,17 +138,23 @@ public class ArchiveSearchMgtRulesInternalService {
         try {
             RequestResponse<AccessContractModel> response =
                 this.accessContractService.findAccessContractById(vitamContext, vitamContext.getAccessContract());
-            accessContractResponseDto = objectMapper
-                .treeToValue(response.toJsonNode(), AccessContractsResponseDto.class);
+            accessContractResponseDto = objectMapper.treeToValue(
+                response.toJsonNode(),
+                AccessContractsResponseDto.class
+            );
         } catch (VitamClientException | JsonProcessingException e) {
             throw new InternalServerException("Error while parsing Vitam response", e);
         }
-        if (Objects.nonNull(accessContractResponseDto) &&
-            !CollectionUtils.isEmpty(accessContractResponseDto.getResults())) {
+        if (
+            Objects.nonNull(accessContractResponseDto) &&
+            !CollectionUtils.isEmpty(accessContractResponseDto.getResults())
+        ) {
             return accessContractResponseDto.getResults().get(0).getWritingPermission();
         } else {
-            LOGGER.error("the access contract {} using to update unit rules is not found in vitam",
-                vitamContext.getAccessContract());
+            LOGGER.error(
+                "the access contract {} using to update unit rules is not found in vitam",
+                vitamContext.getAccessContract()
+            );
             throw new ForbiddenException("the access contract is not found, update unit rules will fail.");
         }
     }

@@ -73,17 +73,24 @@ public abstract class CommonSteps extends BaseIntegration {
 
     protected String getOrInitializeDefaultSubrogationId() {
         if (!defaultSubrogationInitialized) {
-            writeSubrogation(IamDtoBuilder.buildSubrogationDto("juliensurrogatespierre",
+            writeSubrogation(
+                IamDtoBuilder.buildSubrogationDto(
+                    "juliensurrogatespierre",
                     TestConstants.PIERRE_USER_PREFIX_EMAIL + CommonConstants.EMAIL_SEPARATOR + defaultEmailDomain,
-                    TestConstants.JULIEN_USER_PREFIX_EMAIL + CommonConstants.EMAIL_SEPARATOR + defaultEmailDomain));
+                    TestConstants.JULIEN_USER_PREFIX_EMAIL + CommonConstants.EMAIL_SEPARATOR + defaultEmailDomain
+                )
+            );
         }
 
         return "juliensurrogatespierre";
     }
 
-    protected void buildSubrogation(final boolean clientSubrogeable, final boolean surrogateSubrogeable, final UserStatusEnum surrogateStatus,
-            final UserStatusEnum superUserStatus) {
-
+    protected void buildSubrogation(
+        final boolean clientSubrogeable,
+        final boolean surrogateSubrogeable,
+        final UserStatusEnum surrogateStatus,
+        final UserStatusEnum superUserStatus
+    ) {
         CustomerDto customer = FactoryDto.buildDto(CustomerDto.class);
         final String ownerName = customer.getOwners().get(0).getName();
         customer.setSubrogeable(clientSubrogeable);
@@ -91,23 +98,36 @@ public abstract class CommonSteps extends BaseIntegration {
         final String customerId = customer.getId();
 
         final String adminEmail = "admin@" + customer.getDefaultEmailDomain();
-        final AuthUserDto adminUser = (AuthUserDto) getCasRestClient(false, new Integer[] { casTenantIdentifier },
-                new String[] { ServicesData.ROLE_CAS_USERS }).getUserByEmail(getContext(casTenantIdentifier, TestConstants.TOKEN_USER_CAS),
-                        adminEmail, Optional.of(CommonConstants.AUTH_TOKEN_PARAMETER));
+        final AuthUserDto adminUser = (AuthUserDto) getCasRestClient(
+            false,
+            new Integer[] { casTenantIdentifier },
+            new String[] { ServicesData.ROLE_CAS_USERS }
+        ).getUserByEmail(
+            getContext(casTenantIdentifier, TestConstants.TOKEN_USER_CAS),
+            adminEmail,
+            Optional.of(CommonConstants.AUTH_TOKEN_PARAMETER)
+        );
 
         final QueryDto criteria = QueryDto.criteria("name", ownerName, CriterionOperator.CONTAINSIGNORECASE);
 
-        testContext.tenantDto = getTenantRestClient().getAll(getSystemTenantUserAdminContext(), criteria.toOptionalJson(), Optional.empty()).get(0);
+        testContext.tenantDto = getTenantRestClient()
+            .getAll(getSystemTenantUserAdminContext(), criteria.toOptionalJson(), Optional.empty())
+            .get(0);
 
-        final ExternalHttpContext customerAdminContext = getContext(testContext.tenantDto.getIdentifier(), adminUser.getAuthToken());
+        final ExternalHttpContext customerAdminContext = getContext(
+            testContext.tenantDto.getIdentifier(),
+            adminUser.getAuthToken()
+        );
 
         // retrieve admin group in order to create the right user
         final List<GroupDto> groups = getGroupRestClient().getAll(customerAdminContext, Optional.empty());
         if (CollectionUtils.isEmpty(groups)) {
             throw new ApplicationServerException("Can't find groups for customer : " + customerId);
         }
-        final Optional<GroupDto> optionalGroup = groups.stream()
-                .filter(group -> BooleanUtils.isTrue(group.isEnabled()) && StringUtils.isEmpty(group.getLevel())).findFirst();
+        final Optional<GroupDto> optionalGroup = groups
+            .stream()
+            .filter(group -> BooleanUtils.isTrue(group.isEnabled()) && StringUtils.isEmpty(group.getLevel()))
+            .findFirst();
         if (!optionalGroup.isPresent()) {
             throw new ApplicationServerException("Can't find existing admin group for customer : " + customerId);
         }
@@ -122,15 +142,17 @@ public abstract class CommonSteps extends BaseIntegration {
         basicUserDto = getUserRestClient().create(customerAdminContext, basicUserDto);
         surrogateUser = new AuthUserDto(basicUserDto);
 
-        subrogationDto = IamDtoBuilder.buildSubrogationDto(null, TestConstants.JULIEN_USER_PREFIX_EMAIL + CommonConstants.EMAIL_SEPARATOR + defaultEmailDomain,
-                TestConstants.SYSTEM_USER_PREFIX_EMAIL + CommonConstants.EMAIL_SEPARATOR + defaultEmailDomain);
+        subrogationDto = IamDtoBuilder.buildSubrogationDto(
+            null,
+            TestConstants.JULIEN_USER_PREFIX_EMAIL + CommonConstants.EMAIL_SEPARATOR + defaultEmailDomain,
+            TestConstants.SYSTEM_USER_PREFIX_EMAIL + CommonConstants.EMAIL_SEPARATOR + defaultEmailDomain
+        );
         subrogationDto.setSurrogateCustomerId(surrogateUser.getCustomerId());
         subrogationDto.setSuperUserCustomerId(customerId);
 
         if (testContext.superUserEmail != null) {
             subrogationDto.setSuperUser(testContext.superUserEmail);
-        }
-        else {
+        } else {
             if (superUserStatus != null) {
                 superUser = FactoryDto.buildDto(UserDto.class);
                 superUser.setCustomerId(customerId);
@@ -138,8 +160,7 @@ public abstract class CommonSteps extends BaseIntegration {
                 superUser.setGroupId(optionalGroup.get().getId());
                 superUser = getUserRestClient().create(customerAdminContext, superUser);
                 subrogationDto.setSuperUser(superUser.getEmail());
-            }
-            else {
+            } else {
                 superUser = null;
             }
         }
@@ -174,7 +195,14 @@ public abstract class CommonSteps extends BaseIntegration {
         testContext.otherTenant = secondTenant;
     }
 
-    protected String tokenUser(final String[] roles, final String customerId, final String email, final String level, final int tenant, final String globalId) {
+    protected String tokenUser(
+        final String[] roles,
+        final String customerId,
+        final String email,
+        final String level,
+        final int tenant,
+        final String globalId
+    ) {
         final String PROFILE_ID = globalId;
         final String GROUP_ID = globalId;
         final String USER_ID = globalId;
@@ -187,11 +215,23 @@ public abstract class CommonSteps extends BaseIntegration {
         return TOKEN_ID;
     }
 
-    protected String tokenUserTest(final String[] roles, final int tenant, final String customerId, final String level) {
+    protected String tokenUserTest(
+        final String[] roles,
+        final int tenant,
+        final String customerId,
+        final String level
+    ) {
         final long t0 = new Date().getTime();
         writeProfile(TestConstants.TESTS_PROFILE_ID, level, tenant, roles, customerId);
         writeGroup(TestConstants.TESTS_GROUP_ID, level, TestConstants.TESTS_PROFILE_ID, customerId);
-        writeUser(TestConstants.TESTS_USER_ID, level, "" + t0, TestConstants.TESTS_GROUP_ID, customerId, TEST_USER_EMAIL);
+        writeUser(
+            TestConstants.TESTS_USER_ID,
+            level,
+            "" + t0,
+            TestConstants.TESTS_GROUP_ID,
+            customerId,
+            TEST_USER_EMAIL
+        );
         writeToken(TestConstants.TESTS_TOKEN_ID, TestConstants.TESTS_USER_ID);
         return TestConstants.TESTS_TOKEN_ID;
     }
@@ -210,7 +250,13 @@ public abstract class CommonSteps extends BaseIntegration {
 
     protected String tokenUserNoRole(final int tenant) {
         tokenUserTestSystemCustomer((String) null, tenant);
-        writeProfile(TestConstants.TESTS_PROFILE_ID, testContext.level, tenant, new String[] {}, TestConstants.SYSTEM_CUSTOMER_ID);
+        writeProfile(
+            TestConstants.TESTS_PROFILE_ID,
+            testContext.level,
+            tenant,
+            new String[] {},
+            TestConstants.SYSTEM_CUSTOMER_ID
+        );
         return TestConstants.TESTS_TOKEN_ID;
     }
 
@@ -219,9 +265,13 @@ public abstract class CommonSteps extends BaseIntegration {
         subrogationDto.setId(id);
         final Date sDate = Date.from(subrogationDto.getDate().toInstant());
         getSubrogationsCollection().deleteOne(eq("_id", id));
-        final Document subrogation = new Document("_id", id).append("status", subrogationDto.getStatus().toString()).append("date", sDate)
-                .append("surrogate", subrogationDto.getSurrogate()).append("superUser", subrogationDto.getSuperUser())
-                .append("surrogateCustomerId", subrogationDto.getSurrogateCustomerId()).append("superUserCustomerId", subrogationDto.getSuperUserCustomerId());
+        final Document subrogation = new Document("_id", id)
+            .append("status", subrogationDto.getStatus().toString())
+            .append("date", sDate)
+            .append("surrogate", subrogationDto.getSurrogate())
+            .append("superUser", subrogationDto.getSuperUser())
+            .append("surrogateCustomerId", subrogationDto.getSurrogateCustomerId())
+            .append("superUserCustomerId", subrogationDto.getSuperUserCustomerId());
         deleteSubrogation(subrogationDto);
         getSubrogationsCollection().insertOne(subrogation);
     }
@@ -240,8 +290,7 @@ public abstract class CommonSteps extends BaseIntegration {
     protected void createSubrogationByUserStatus(final boolean isSuperUserDisabled) {
         if (isSuperUserDisabled) {
             buildSubrogation(true, true, null, UserStatusEnum.DISABLED);
-        }
-        else {
+        } else {
             buildSubrogation(true, true, null, UserStatusEnum.ENABLED);
         }
         writeSubrogation(subrogationDto);
@@ -265,21 +314,31 @@ public abstract class CommonSteps extends BaseIntegration {
             select.addUsedProjection("events");
             select.addOrderByDescFilter("evDateTime");
             select.setLimitFilter(0, 5);
-        }
-        catch (final InvalidCreateOperationException | InvalidParseOperationException e) {
+        } catch (final InvalidCreateOperationException | InvalidParseOperationException e) {
             throw new ApplicationServerException("An error occured while creating vitam query", e);
         }
 
         return select.getFinalSelect();
     }
 
-    protected Optional<LogbookEventDto> testTrace(final String customerId, final String identifier, final String collectionNames, final String eventType) {
+    protected Optional<LogbookEventDto> testTrace(
+        final String customerId,
+        final String identifier,
+        final String collectionNames,
+        final String eventType
+    ) {
         Optional<LogbookEventDto> event = Optional.empty();
         if (traceEnabled) {
-            final QueryDto criteria = QueryDto.criteria("customerId", customerId, CriterionOperator.EQUALS).addCriterion("proof", true,
-                    CriterionOperator.EQUALS);
-            final List<TenantDto> tenantDto = getTenantRestClient(true, null, new String[] { ServicesData.ROLE_GET_ALL_TENANTS, ServicesData.ROLE_GET_TENANTS })
-                    .getAll(getSystemTenantUserAdminContext(), criteria.toOptionalJson());
+            final QueryDto criteria = QueryDto.criteria(
+                "customerId",
+                customerId,
+                CriterionOperator.EQUALS
+            ).addCriterion("proof", true, CriterionOperator.EQUALS);
+            final List<TenantDto> tenantDto = getTenantRestClient(
+                true,
+                null,
+                new String[] { ServicesData.ROLE_GET_ALL_TENANTS, ServicesData.ROLE_GET_TENANTS }
+            ).getAll(getSystemTenantUserAdminContext(), criteria.toOptionalJson());
             assertThat(tenantDto).hasSize(1);
             final Integer tenantIdentifier = tenantDto.stream().findFirst().get().getIdentifier();
 
@@ -289,37 +348,43 @@ public abstract class CommonSteps extends BaseIntegration {
                     // Retry every 5 secondes
                     Thread.sleep(5000L);
                     event = retrieveTraceFromVitam(identifier, collectionNames, eventType, tenantIdentifier);
-                }
-                catch (final InterruptedException e) {
+                } catch (final InterruptedException e) {
                     LOGGER.error("Error message", e);
                 }
-
             }
             assertThat(event).isPresent();
         }
         return event;
     }
 
-    private Optional<LogbookEventDto> retrieveTraceFromVitam(final String identifier, final String collectionNames, final String eventType,
-            final Integer tenantIdentifier) {
+    private Optional<LogbookEventDto> retrieveTraceFromVitam(
+        final String identifier,
+        final String collectionNames,
+        final String eventType,
+        final Integer tenantIdentifier
+    ) {
         Optional<LogbookEventDto> event = Optional.empty();
-        final JsonNode responseJson = getLogbookRestClient(true, null, new String[] { ServicesData.ROLE_LOGBOOKS })
-                .findOperations(getArchiveTenantUserAdminContext(tenantIdentifier), buildOperationQuery(identifier, collectionNames, eventType));
+        final JsonNode responseJson = getLogbookRestClient(
+            true,
+            null,
+            new String[] { ServicesData.ROLE_LOGBOOKS }
+        ).findOperations(
+            getArchiveTenantUserAdminContext(tenantIdentifier),
+            buildOperationQuery(identifier, collectionNames, eventType)
+        );
 
         final LogbookOperationsResponseDto response;
         try {
             response = JsonUtils.treeToValue(responseJson, LogbookOperationsResponseDto.class, false);
-        }
-        catch (final JsonProcessingException e) {
+        } catch (final JsonProcessingException e) {
             throw new InternalServerException(VitamRestUtils.PARSING_ERROR_MSG, e);
         }
         if (CollectionUtils.isNotEmpty(response.getResults())) {
-            final Predicate<LogbookEventDto> predicate = (l) -> {
+            final Predicate<LogbookEventDto> predicate = l -> {
                 JsonNode evDetData = null;
                 try {
                     evDetData = JsonUtils.readTree(l.getEvDetData());
-                }
-                catch (final IOException e) {
+                } catch (final IOException e) {
                     LOGGER.error("Error Message :", e);
                 }
                 final JsonNode dateOp = evDetData.get(TestConstants.EVENT_DATE_TIME_KEY);
@@ -331,12 +396,15 @@ public abstract class CommonSteps extends BaseIntegration {
                 if (evDateOperation != null) {
                     dateOperation = OffsetDateTime.parse(evDateOperation);
                 }
-                return dateOperation != null && dateOperation.isAfter(AbstractIntegrationTest.start) && StringUtils.equals(l.getEvType(), eventType);
+                return (
+                    dateOperation != null &&
+                    dateOperation.isAfter(AbstractIntegrationTest.start) &&
+                    StringUtils.equals(l.getEvType(), eventType)
+                );
             };
 
             event = response.getResults().stream().flatMap(l -> l.getEvents().stream()).filter(predicate).findFirst();
         }
         return event;
     }
-
 }

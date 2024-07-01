@@ -1,7 +1,10 @@
 package fr.gouv.vitamui.commons.logbook.config;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
+import fr.gouv.vitam.access.external.client.AdminExternalClient;
+import fr.gouv.vitam.access.external.client.AdminExternalClientMock;
+import fr.gouv.vitamui.commons.logbook.TestMongoConfig;
+import fr.gouv.vitamui.commons.logbook.service.EventService;
+import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,17 +14,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import fr.gouv.vitam.access.external.client.AdminExternalClient;
-import fr.gouv.vitam.access.external.client.AdminExternalClientMock;
-import fr.gouv.vitamui.commons.logbook.TestMongoConfig;
-import fr.gouv.vitamui.commons.logbook.service.EventService;
-import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 public class LogbookAutoConfigurationTest {
 
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-            .withConfiguration(AutoConfigurations.of(LogbookAutoConfiguration.class));
+        .withConfiguration(AutoConfigurations.of(LogbookAutoConfiguration.class));
 
     @BeforeClass
     public static void setup() {
@@ -30,10 +29,12 @@ public class LogbookAutoConfigurationTest {
 
     @Test
     public void serviceNameCanBeConfigured() {
-        contextRunner.withUserConfiguration(TestMongoConfig.class).withUserConfiguration(UserConfiguration.class)
-                .run((context) -> {
-                    assertThat(context).hasSingleBean(EventService.class);
-                });
+        contextRunner
+            .withUserConfiguration(TestMongoConfig.class)
+            .withUserConfiguration(UserConfiguration.class)
+            .run(context -> {
+                assertThat(context).hasSingleBean(EventService.class);
+            });
     }
 
     @Configuration
@@ -43,6 +44,5 @@ public class LogbookAutoConfigurationTest {
         AdminExternalClient adminExternalClient() {
             return new AdminExternalClientMock();
         }
-
     }
 }

@@ -36,9 +36,9 @@
  */
 package fr.gouv.vitamui.commons.rest.dto;
 
-import java.util.List;
-
 import lombok.Data;
+
+import java.util.List;
 
 /**
  * VITAMUI Error.
@@ -77,5 +77,4 @@ public class VitamUIError {
      * Arguments.
      */
     private List<String> args;
-
 }

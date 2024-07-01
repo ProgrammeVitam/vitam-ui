@@ -66,46 +66,51 @@ import static fr.gouv.vitamui.archives.search.common.rest.RestApi.DOWNLOAD_ARCHI
 @Api(tags = "collect", value = "Groupe d'object d'un projet")
 public class ProjectObjectGroupInternalController {
 
-    private static final VitamUILogger LOGGER =
-        VitamUILoggerFactory.getInstance(ProjectObjectGroupInternalController.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
+        ProjectObjectGroupInternalController.class
+    );
     private final ProjectObjectGroupInternalService projectObjectGroupInternalService;
     private final ExternalParametersService externalParametersService;
     private static final String IDENTIFIER_MANDATORY = "The identifier is mandatory parameter: ";
 
-    public ProjectObjectGroupInternalController(ProjectObjectGroupInternalService projectObjectGroupInternalService,
-        final ExternalParametersService externalParametersService) {
+    public ProjectObjectGroupInternalController(
+        ProjectObjectGroupInternalService projectObjectGroupInternalService,
+        final ExternalParametersService externalParametersService
+    ) {
         this.projectObjectGroupInternalService = projectObjectGroupInternalService;
         this.externalParametersService = externalParametersService;
     }
 
-    @GetMapping(value = DOWNLOAD_ARCHIVE_UNIT +
-        CommonConstants.PATH_ID, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-    public Mono<ResponseEntity<Resource>> downloadObjectFromUnit(final @PathVariable("id") String id,
-        final @RequestParam("usage") String usage, final @RequestParam("version") Integer version
+    @GetMapping(
+        value = DOWNLOAD_ARCHIVE_UNIT + CommonConstants.PATH_ID,
+        produces = MediaType.APPLICATION_OCTET_STREAM_VALUE
+    )
+    public Mono<ResponseEntity<Resource>> downloadObjectFromUnit(
+        final @PathVariable("id") String id,
+        final @RequestParam("usage") String usage,
+        final @RequestParam("version") Integer version
     ) throws InvalidParseOperationException, PreconditionFailedException {
-
-        ParameterChecker
-            .checkParameter(IDENTIFIER_MANDATORY, id);
+        ParameterChecker.checkParameter(IDENTIFIER_MANDATORY, id);
         SanityChecker.checkSecureParameter(id, usage);
         VitamContext context = externalParametersService.buildVitamContextFromExternalParam();
         LOGGER.debug("Download Archive Unit Object with id {}", id);
         return Mono.<Resource>fromCallable(() -> {
-                Response response = projectObjectGroupInternalService.downloadObjectFromUnit(id, usage, version, context);
-                return new InputStreamResource((InputStream) response.getEntity());
-            }).subscribeOn(Schedulers.boundedElastic())
-            .flatMap(resource -> Mono.just(ResponseEntity
-                .ok().cacheControl(CacheControl.noCache())
-                .body(resource)));
+            Response response = projectObjectGroupInternalService.downloadObjectFromUnit(id, usage, version, context);
+            return new InputStreamResource((InputStream) response.getEntity());
+        })
+            .subscribeOn(Schedulers.boundedElastic())
+            .flatMap(resource -> Mono.just(ResponseEntity.ok().cacheControl(CacheControl.noCache()).body(resource)));
     }
 
     @GetMapping(CommonConstants.PATH_ID)
     public ResultsDto findObjectById(final @PathVariable("id") String id)
         throws InvalidParseOperationException, VitamClientException {
-        ParameterChecker
-            .checkParameter(IDENTIFIER_MANDATORY, id);
+        ParameterChecker.checkParameter(IDENTIFIER_MANDATORY, id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Get ObjectGroup By id : {}", id);
-        return projectObjectGroupInternalService.findObjectById(id,
-            externalParametersService.buildVitamContextFromExternalParam());
+        return projectObjectGroupInternalService.findObjectById(
+            id,
+            externalParametersService.buildVitamContextFromExternalParam()
+        );
     }
 }

@@ -50,7 +50,8 @@ public class CertificateParser {
 
     private CertificateParser() {}
 
-    public static String extract(final X509Certificate cert, final X509AttributeMapping mapping) throws CertificateParsingException {
+    public static String extract(final X509Certificate cert, final X509AttributeMapping mapping)
+        throws CertificateParsingException {
         val name = mapping.getName();
         String value = null;
         if (X509CertificateAttributes.ISSUER_DN.name().equalsIgnoreCase(name)) {

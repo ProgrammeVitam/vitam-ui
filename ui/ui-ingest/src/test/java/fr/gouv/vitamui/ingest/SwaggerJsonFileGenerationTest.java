@@ -19,7 +19,7 @@ import org.springframework.test.context.junit4.SpringRunner;
  */
 @RunWith(SpringRunner.class)
 @WebMvcTest
-@Import(value = {SecurityConfig.class, ServerIdentityConfiguration.class, SwaggerConfiguration.class})
+@Import(value = { SecurityConfig.class, ServerIdentityConfiguration.class, SwaggerConfiguration.class })
 @ActiveProfiles("test, swagger")
 public class SwaggerJsonFileGenerationTest extends AbstractSwaggerJsonFileGenerationTest {
 
@@ -28,6 +28,4 @@ public class SwaggerJsonFileGenerationTest extends AbstractSwaggerJsonFileGenera
 
     @MockBean
     private IngestService ingestService;
-
-
 }

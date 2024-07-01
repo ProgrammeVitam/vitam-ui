@@ -128,8 +128,19 @@ public final class CasControllerTest extends AbstractServerIdentityBuilder {
         iamLogbookService = mock(IamLogbookService.class);
         passwordValidator = new PasswordValidator();
         subrogationConverter = new SubrogationConverter(userRepository);
-        internalSubrogationService = new SubrogationInternalService(sequenceGeneratorService, subrogationRepository, userRepository, userInternalService,
-                groupInternalService, groupRepository, profilRepository, internalSecurityService, customerRepository, subrogationConverter, iamLogbookService);
+        internalSubrogationService = new SubrogationInternalService(
+            sequenceGeneratorService,
+            subrogationRepository,
+            userRepository,
+            userInternalService,
+            groupInternalService,
+            groupRepository,
+            profilRepository,
+            internalSecurityService,
+            customerRepository,
+            subrogationConverter,
+            iamLogbookService
+        );
 
         casService = spy(CasInternalService.class);
         casService.setInternalUserService(internalUserService);
@@ -180,7 +191,10 @@ public final class CasControllerTest extends AbstractServerIdentityBuilder {
         userProfile.setProfileGroup(new GroupDto());
         when(internalUserService.loadGroupAndProfiles(user)).thenReturn(userProfile);
         when(tokenRepository.generateSuperId()).thenReturn("en");
-        final AuthUserDto result = (AuthUserDto) controller.getUserByEmail(EMAIL, Optional.of(CommonConstants.AUTH_TOKEN_PARAMETER));
+        final AuthUserDto result = (AuthUserDto) controller.getUserByEmail(
+            EMAIL,
+            Optional.of(CommonConstants.AUTH_TOKEN_PARAMETER)
+        );
 
         userProfile.setAuthToken("TOKEN");
         assertEquals(userProfile, result);
@@ -236,8 +250,7 @@ public final class CasControllerTest extends AbstractServerIdentityBuilder {
         request.setPassword(PASSWORD);
         try {
             controller.login(request);
-        }
-        finally {
+        } finally {
             verify(iamLogbookService).loginEvent(user, null, null, "Too many login attempts for username: " + EMAIL);
         }
     }
@@ -264,8 +277,7 @@ public final class CasControllerTest extends AbstractServerIdentityBuilder {
         try {
             controller.login(request);
             fail("should fail");
-        }
-        catch (final UnAuthorizedException e) {
+        } catch (final UnAuthorizedException e) {
             verify(iamLogbookService).loginEvent(user, null, null, "Bad credentials for username: " + EMAIL);
             assertEquals("Bad credentials for username: " + EMAIL, e.getMessage());
         }

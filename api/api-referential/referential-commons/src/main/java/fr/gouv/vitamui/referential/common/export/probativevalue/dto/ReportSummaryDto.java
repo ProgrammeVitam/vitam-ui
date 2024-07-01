@@ -40,7 +40,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
-
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -65,5 +64,4 @@ public class ReportSummaryDto {
     @JsonProperty("extendedInfo")
     @JsonSerialize(using = ToStringSerializer.class)
     private JsonNode extendedInfo;
-
 }

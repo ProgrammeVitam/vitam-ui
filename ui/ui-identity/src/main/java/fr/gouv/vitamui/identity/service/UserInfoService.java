@@ -36,18 +36,16 @@
  */
 package fr.gouv.vitamui.identity.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import fr.gouv.vitamui.commons.api.domain.UserInfoDto;
 import fr.gouv.vitamui.commons.api.exception.NotImplementedException;
 import fr.gouv.vitamui.iam.external.client.IamExternalRestClientFactory;
 import fr.gouv.vitamui.iam.external.client.UserInfoExternalRestClient;
 import fr.gouv.vitamui.ui.commons.service.AbstractPaginateService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @Service
 public class UserInfoService extends AbstractPaginateService<UserInfoDto> {
-
 
     private final IamExternalRestClientFactory factory;
 
@@ -56,16 +54,13 @@ public class UserInfoService extends AbstractPaginateService<UserInfoDto> {
         this.factory = factory;
     }
 
-
     @Override
     public UserInfoExternalRestClient getClient() {
         return factory.getUserInfoInfoExternalRestClient();
     }
 
-
     @Override
     protected Integer beforePaginate(final Integer page, final Integer size) {
         throw new NotImplementedException("get all not supported");
     }
-
 }

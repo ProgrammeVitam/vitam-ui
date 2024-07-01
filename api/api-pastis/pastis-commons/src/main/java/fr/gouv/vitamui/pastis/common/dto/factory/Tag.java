@@ -65,6 +65,4 @@ public abstract class Tag {
     String getTagName() {
         return this.getClass().getSimpleName();
     }
-
-
 }

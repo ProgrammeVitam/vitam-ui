@@ -49,7 +49,6 @@ import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
 import org.apache.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 
-
 /**
  * Service de lancement des workflows d'élimination d'analyse et d'action
  * Pour plus d'informations : <a href="http://www.programmevitam.fr/ressources/DocCourante/autres/fonctionnel/VITAM_Eliminations.pdf">documentation métier</a>
@@ -73,8 +72,14 @@ public class EliminationService {
      * @return
      * @throws VitamClientException
      */
-    public RequestResponse<JsonNode> startEliminationAnalysis(final VitamContext vitamContext, final EliminationRequestBody eliminationRequestBody) throws VitamClientException {
-        final RequestResponse<JsonNode> response = accessExternalClient.startEliminationAnalysis(vitamContext, eliminationRequestBody);
+    public RequestResponse<JsonNode> startEliminationAnalysis(
+        final VitamContext vitamContext,
+        final EliminationRequestBody eliminationRequestBody
+    ) throws VitamClientException {
+        final RequestResponse<JsonNode> response = accessExternalClient.startEliminationAnalysis(
+            vitamContext,
+            eliminationRequestBody
+        );
         VitamRestUtils.checkResponse(response, HttpStatus.SC_OK, HttpStatus.SC_ACCEPTED);
         return response;
     }
@@ -86,8 +91,14 @@ public class EliminationService {
      * @return
      * @throws VitamClientException
      */
-    public RequestResponse<JsonNode> startEliminationAction(final VitamContext vitamContext, final EliminationRequestBody eliminationRequestBody) throws VitamClientException {
-        final RequestResponse<JsonNode> response = accessExternalClient.startEliminationAction(vitamContext, eliminationRequestBody);
+    public RequestResponse<JsonNode> startEliminationAction(
+        final VitamContext vitamContext,
+        final EliminationRequestBody eliminationRequestBody
+    ) throws VitamClientException {
+        final RequestResponse<JsonNode> response = accessExternalClient.startEliminationAction(
+            vitamContext,
+            eliminationRequestBody
+        );
         VitamRestUtils.checkResponse(response, HttpStatus.SC_OK, HttpStatus.SC_ACCEPTED);
         return response;
     }

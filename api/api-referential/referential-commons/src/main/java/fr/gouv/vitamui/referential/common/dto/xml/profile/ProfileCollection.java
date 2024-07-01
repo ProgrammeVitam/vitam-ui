@@ -51,5 +51,4 @@ public class ProfileCollection {
 
     @XmlElement(name = "Profiles")
     private List<Profile> profiles;
-
 }

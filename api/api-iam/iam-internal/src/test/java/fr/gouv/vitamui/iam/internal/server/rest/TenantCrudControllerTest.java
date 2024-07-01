@@ -113,12 +113,12 @@ public final class TenantCrudControllerTest implements InternalCrudControllerTes
 
     @Mock
     protected CustomerInitConfig customerInitConfig;
+
     @Mock
     protected ExternalParametersRepository externalParametersRepository;
 
     @Mock
     protected ExternalParametersInternalService externalParametersInternalService;
-
 
     @Before
     public void setup() {
@@ -140,16 +140,19 @@ public final class TenantCrudControllerTest implements InternalCrudControllerTes
         userProfile.setId("userId");
 
         when(tenantRepository.findByIdentifier(tenantDto.getIdentifier())).thenReturn(null);
-        when(tenantRepository.findByCustomerIdAndProofIsTrue(tenantDto.getCustomerId()))
-            .thenReturn(Optional.of(proofTenant));
+        when(tenantRepository.findByCustomerIdAndProofIsTrue(tenantDto.getCustomerId())).thenReturn(
+            Optional.of(proofTenant)
+        );
         when(tenantRepository.existsById(any())).thenReturn(true);
         when(tenantRepository.save(any())).thenReturn(buildTenant());
 
-        when(tenantRepository.findByIdAndCustomerId(tenantDto.getId(), tenantDto.getCustomerId()))
-            .thenReturn(Optional.of(buildTenant()));
+        when(tenantRepository.findByIdAndCustomerId(tenantDto.getId(), tenantDto.getCustomerId())).thenReturn(
+            Optional.of(buildTenant())
+        );
 
-        when(customerRepository.findById(tenantDto.getCustomerId()))
-            .thenReturn(Optional.of(IamServerUtilsTest.buildCustomer()));
+        when(customerRepository.findById(tenantDto.getCustomerId())).thenReturn(
+            Optional.of(IamServerUtilsTest.buildCustomer())
+        );
 
         when(internalCustomerService.getMany(tenantDto.getCustomerId())).thenReturn(Arrays.asList(new CustomerDto()));
 
@@ -160,8 +163,9 @@ public final class TenantCrudControllerTest implements InternalCrudControllerTes
 
         when(internalOwnerService.getOne(tenantDto.getOwnerId(), Optional.empty())).thenReturn(buildOwnerDto());
 
-        when(internalGroupService.getOne(buildUserDto().getGroupId(), Optional.empty(), Optional.empty()))
-            .thenReturn(buildGroupDto());
+        when(internalGroupService.getOne(buildUserDto().getGroupId(), Optional.empty(), Optional.empty())).thenReturn(
+            buildGroupDto()
+        );
         when(ownerRepository.findById(tenantDto.getOwnerId())).thenReturn(Optional.of(buildOwner()));
 
         when(internalOwnerService.getMany(any(String.class))).thenReturn(Arrays.asList(buildOwnerDto()));
@@ -169,9 +173,9 @@ public final class TenantCrudControllerTest implements InternalCrudControllerTes
 
         when(internalUserService.getDefaultAdminUser(proofTenant.getCustomerId())).thenReturn(buildUserDto());
         when(internalUserService.getAll(any(QueryDto.class))).thenReturn(Arrays.asList(buildUserDto()));
-        when(externalParametersRepository.findByIdentifier(anyString()))
-            .thenReturn(Optional.of(buildExternalParameter()));
-
+        when(externalParametersRepository.findByIdentifier(anyString())).thenReturn(
+            Optional.of(buildExternalParameter())
+        );
     }
 
     public ExternalParameters buildExternalParameter() {
@@ -186,10 +190,19 @@ public final class TenantCrudControllerTest implements InternalCrudControllerTes
     public void testCreationOK() throws Exception {
         final TenantDto dto = buildTenantDto();
         dto.setId(null);
-        when(customerInitConfig.getTenantProfiles()).thenReturn(Arrays.asList(
-            new CustomerInitConfig.ProfileInitConfig[] {
-                new CustomerInitConfig.ProfileInitConfig(APP_NAME, DESCRIPTION, LEVEL, APP_NAME,
-                    Arrays.asList(new String[] {ROLE}))}));
+        when(customerInitConfig.getTenantProfiles()).thenReturn(
+            Arrays.asList(
+                new CustomerInitConfig.ProfileInitConfig[] {
+                    new CustomerInitConfig.ProfileInitConfig(
+                        APP_NAME,
+                        DESCRIPTION,
+                        LEVEL,
+                        APP_NAME,
+                        Arrays.asList(new String[] { ROLE })
+                    ),
+                }
+            )
+        );
         when(profileRepository.save(any())).thenReturn(IamServerUtilsTest.buildProfile());
 
         prepareServices();
@@ -240,8 +253,10 @@ public final class TenantCrudControllerTest implements InternalCrudControllerTes
             controller.create(dto);
             fail("should fail");
         } catch (final IllegalArgumentException e) {
-            assertEquals("Unable to create tenant " + dto.getName() + ": owner " + dto.getOwnerId() + " does not exist",
-                e.getMessage());
+            assertEquals(
+                "Unable to create tenant " + dto.getName() + ": owner " + dto.getOwnerId() + " does not exist",
+                e.getMessage()
+            );
         }
     }
 
@@ -265,12 +280,11 @@ public final class TenantCrudControllerTest implements InternalCrudControllerTes
         } catch (final IllegalArgumentException e) {
             assertEquals("The DTO identifier must match the path identifier for update.", e.getMessage());
         }
-
     }
 
     @Test
-    public void testUpdateFailsAsIdentifierIsDifferent() throws InvalidParseOperationException,
-        PreconditionFailedException  {
+    public void testUpdateFailsAsIdentifierIsDifferent()
+        throws InvalidParseOperationException, PreconditionFailedException {
         final TenantDto dto = buildTenantDto();
         dto.setIdentifier(8435455);
 
@@ -285,9 +299,15 @@ public final class TenantCrudControllerTest implements InternalCrudControllerTes
             fail("should fail");
         } catch (final IllegalArgumentException e) {
             assertEquals(
-                "Unable to update tenant " + dto.getId() + ": tenant identifiers " + tenant.getIdentifier() + " and " +
-                    dto.getIdentifier()
-                    + " are not equals", e.getMessage());
+                "Unable to update tenant " +
+                dto.getId() +
+                ": tenant identifiers " +
+                tenant.getIdentifier() +
+                " and " +
+                dto.getIdentifier() +
+                " are not equals",
+                e.getMessage()
+            );
         }
     }
 
@@ -311,7 +331,6 @@ public final class TenantCrudControllerTest implements InternalCrudControllerTes
         } catch (final IllegalArgumentException e) {
             assertEquals("Unable to update tenant tenantId: customer does not exist", e.getMessage());
         }
-
     }
 
     private TenantDto buildTenantDto() {
@@ -341,5 +360,4 @@ public final class TenantCrudControllerTest implements InternalCrudControllerTes
     private Tenant buildTenant() {
         return IamServerUtilsTest.buildTenant();
     }
-
 }

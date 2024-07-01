@@ -92,32 +92,35 @@ public class VitamContextService {
         this.objectMapper = objectMapper;
     }
 
-    public RequestResponse<?> patchContext(final VitamContext vitamContext, final String id, JsonNode jsonNode)  throws InvalidParseOperationException, AccessExternalClientException {
+    public RequestResponse<?> patchContext(final VitamContext vitamContext, final String id, JsonNode jsonNode)
+        throws InvalidParseOperationException, AccessExternalClientException {
         LOGGER.debug("patch: {}, {}", id, jsonNode);
-        LOGGER.info("Patch Context EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
+        LOGGER.info("Patch Context EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
         return adminExternalClient.updateContext(vitamContext, id, jsonNode);
     }
 
-    public RequestResponse<ContextModel> findContexts(final VitamContext vitamContext, final JsonNode select) throws VitamClientException {
-        LOGGER.info("Context EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
+    public RequestResponse<ContextModel> findContexts(final VitamContext vitamContext, final JsonNode select)
+        throws VitamClientException {
+        LOGGER.info("Context EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
         final RequestResponse<ContextModel> response = adminExternalClient.findContexts(vitamContext, select);
         VitamRestUtils.checkResponse(response);
         return response;
     }
 
-    public RequestResponse<ContextModel> findContextById(final VitamContext vitamContext, final String contextId) throws VitamClientException {
-        LOGGER.info("Context EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
+    public RequestResponse<ContextModel> findContextById(final VitamContext vitamContext, final String contextId)
+        throws VitamClientException {
+        LOGGER.info("Context EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
         final RequestResponse<ContextModel> response = adminExternalClient.findContextById(vitamContext, contextId);
         VitamRestUtils.checkResponse(response);
         return response;
     }
 
     public RequestResponse<?> createContext(final VitamContext vitamContext, ContextDto newContext)
-            throws InvalidParseOperationException, AccessExternalClientException, IOException {
-        LOGGER.info("Create Context EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
+        throws InvalidParseOperationException, AccessExternalClientException, IOException {
+        LOGGER.info("Create Context EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
 
         final List<ContextDto> actualContexts = new ArrayList<>();
-        if(StringUtils.isBlank(newContext.getIdentifier())) {
+        if (StringUtils.isBlank(newContext.getIdentifier())) {
             newContext.setIdentifier(newContext.getName());
         }
         actualContexts.add(newContext);
@@ -126,7 +129,7 @@ public class VitamContextService {
     }
 
     private RequestResponse createContexts(final VitamContext vitamContext, final List<ContextDto> contextModels)
-            throws InvalidParseOperationException, AccessExternalClientException, IOException {
+        throws InvalidParseOperationException, AccessExternalClientException, IOException {
         LOGGER.debug("Reimport contexties {}", contextModels);
         try (ByteArrayInputStream byteArrayInputStream = serializeContexts(contextModels)) {
             return createContexts(vitamContext, byteArrayInputStream);
@@ -134,7 +137,7 @@ public class VitamContextService {
     }
 
     private RequestResponse<?> createContexts(final VitamContext vitamContext, final InputStream contexts)
-            throws InvalidParseOperationException, AccessExternalClientException {
+        throws InvalidParseOperationException, AccessExternalClientException {
         return adminExternalClient.createContexts(vitamContext, contexts);
     }
 
@@ -145,26 +148,30 @@ public class VitamContextService {
      * @return true if the context can be created, false if the ile format already exists
      */
     public boolean checkAbilityToCreateContextInVitam(final List<ContextModel> contexts, VitamContext vitamContext) {
-
         if (contexts != null && !contexts.isEmpty()) {
             try {
                 // check if tenant exist in Vitam
                 final JsonNode select = new Select().getFinalSelect();
                 final RequestResponse<ContextModel> response = findContexts(vitamContext, select);
                 if (response.getStatus() == HttpStatus.UNAUTHORIZED.value()) {
-                    LOGGER.error("Can't create Vitam Contexts for the tenant : {}  not found in Vitam", vitamContext.getTenantId());
+                    LOGGER.error(
+                        "Can't create Vitam Contexts for the tenant : {}  not found in Vitam",
+                        vitamContext.getTenantId()
+                    );
                     throw new NotFoundException("Can't create Vitam Contexts for the tenant : UNAUTHORIZED");
-                }
-                else if (response.getStatus() != HttpStatus.OK.value()) {
+                } else if (response.getStatus() != HttpStatus.OK.value()) {
                     LOGGER.error("Can't create Vitam Context for this tenant");
-                    throw new UnavailableServiceException("Can't create Vitam Context for this tenant, Vitam response code : " + response.getStatus());
+                    throw new UnavailableServiceException(
+                        "Can't create Vitam Context for this tenant, Vitam response code : " + response.getStatus()
+                    );
                 }
 
                 verifyFileFormatExistence(contexts, response);
-            }
-            catch (final VitamClientException exception) {
+            } catch (final VitamClientException exception) {
                 LOGGER.error("Can't create Vitam Context for this tenant");
-                throw new UnavailableServiceException("Can't create Vitam Contexts for this tenant, error while calling Vitam : " + exception.getMessage());
+                throw new UnavailableServiceException(
+                    "Can't create Vitam Contexts for this tenant, error while calling Vitam : " + exception.getMessage()
+                );
             }
             return true;
         }
@@ -176,57 +183,78 @@ public class VitamContextService {
      * @param contextModelList : application context to verify existence
      * @param vitamContextModelList : list of application contexts in vitam
      */
-    private void verifyFileFormatExistence(final List<ContextModel> contextModelList, final RequestResponse<ContextModel> vitamContextModelList) {
+    private void verifyFileFormatExistence(
+        final List<ContextModel> contextModelList,
+        final RequestResponse<ContextModel> vitamContextModelList
+    ) {
         try {
-
             objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-            final ContextResponseDto contextResponseDto = objectMapper.treeToValue(vitamContextModelList.toJsonNode(), ContextResponseDto.class);
-            final List<String> contextNames = contextModelList.stream().map(ContextModel::getName)
-                .filter(Objects::nonNull).map(String::strip)
+            final ContextResponseDto contextResponseDto = objectMapper.treeToValue(
+                vitamContextModelList.toJsonNode(),
+                ContextResponseDto.class
+            );
+            final List<String> contextNames = contextModelList
+                .stream()
+                .map(ContextModel::getName)
+                .filter(Objects::nonNull)
+                .map(String::strip)
                 .collect(Collectors.toList());
-            if (contextResponseDto.getResults().stream().anyMatch(context -> contextNames.contains(context.getName()))) {
-                final String messageError = "Can't create context, an application context with the same name already exist in Vitam";
+            if (
+                contextResponseDto.getResults().stream().anyMatch(context -> contextNames.contains(context.getName()))
+            ) {
+                final String messageError =
+                    "Can't create context, an application context with the same name already exist in Vitam";
                 LOGGER.error(messageError);
                 throw new ConflictException(messageError);
             }
-            final List<String> contextIds = contextModelList.stream().map(ContextModel::getIdentifier)
-                .filter(Objects::nonNull).map(String::strip)
+            final List<String> contextIds = contextModelList
+                .stream()
+                .map(ContextModel::getIdentifier)
+                .filter(Objects::nonNull)
+                .map(String::strip)
                 .collect(Collectors.toList());
-            if (contextResponseDto.getResults().stream().anyMatch(context -> contextIds.contains(context.getIdentifier()))) {
-                final String messageError = "Can't create context, an application context with the same puid already exist in Vitam";
+            if (
+                contextResponseDto
+                    .getResults()
+                    .stream()
+                    .anyMatch(context -> contextIds.contains(context.getIdentifier()))
+            ) {
+                final String messageError =
+                    "Can't create context, an application context with the same puid already exist in Vitam";
                 LOGGER.error(messageError);
                 throw new ConflictException(messageError);
             }
-        }
-        catch (final JsonProcessingException exception) {
-            final String messageError = "Can't create application contexts, Error while parsing Vitam response : " ;
+        } catch (final JsonProcessingException exception) {
+            final String messageError = "Can't create application contexts, Error while parsing Vitam response : ";
             LOGGER.error(messageError);
             throw new UnexpectedDataException(messageError + exception.getMessage());
         }
     }
 
     private ByteArrayInputStream serializeContexts(final List<ContextDto> contextDto) throws IOException {
-        final List<ContextVitamDto> listOfContexts = ContextDtoConverterUtil.convertContextsToModelOfCreation(contextDto);
+        final List<ContextVitamDto> listOfContexts = ContextDtoConverterUtil.convertContextsToModelOfCreation(
+            contextDto
+        );
         final ObjectMapper mapper = new ObjectMapper();
         final JsonNode node = mapper.convertValue(listOfContexts, JsonNode.class);
 
         // The "accessContracts" and "ingestContracts" in the permissions must be rename to "AccessContracts" and "IngestContracts" to be saved in Vitam
         final ArrayNode arrayNode = (ArrayNode) node;
         arrayNode.forEach(contextNode -> {
-        	final ArrayNode permissionsNode = (ArrayNode) contextNode.get("Permissions");
-        	if (permissionsNode != null) {
-            	permissionsNode.forEach(permissionNode -> {
-            		final ObjectNode objectNode = (ObjectNode) permissionNode;
-                	if (permissionNode.get(ACCESS_CONTRACTS) != null) {
-                		objectNode.set("AccessContracts", permissionNode.get(ACCESS_CONTRACTS));
-                		objectNode.remove(ACCESS_CONTRACTS);
-                	}
-                	if (permissionNode.get(INGEST_CONTRACTS) != null) {
-                		objectNode.set("IngestContracts", permissionNode.get(INGEST_CONTRACTS));
-                		objectNode.remove(INGEST_CONTRACTS);
-                	}
-            	});
-        	}
+            final ArrayNode permissionsNode = (ArrayNode) contextNode.get("Permissions");
+            if (permissionsNode != null) {
+                permissionsNode.forEach(permissionNode -> {
+                    final ObjectNode objectNode = (ObjectNode) permissionNode;
+                    if (permissionNode.get(ACCESS_CONTRACTS) != null) {
+                        objectNode.set("AccessContracts", permissionNode.get(ACCESS_CONTRACTS));
+                        objectNode.remove(ACCESS_CONTRACTS);
+                    }
+                    if (permissionNode.get(INGEST_CONTRACTS) != null) {
+                        objectNode.set("IngestContracts", permissionNode.get(INGEST_CONTRACTS));
+                        objectNode.remove(INGEST_CONTRACTS);
+                    }
+                });
+            }
         });
 
         try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream()) {

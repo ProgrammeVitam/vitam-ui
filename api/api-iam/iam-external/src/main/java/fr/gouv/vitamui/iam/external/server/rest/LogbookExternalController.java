@@ -94,7 +94,6 @@ public class LogbookExternalController {
     @ResponseStatus(HttpStatus.OK)
     public LogbookOperationsResponseDto findOperationByUnitId(@PathVariable final String id)
         throws InvalidParseOperationException, PreconditionFailedException {
-
         SanityChecker.checkSecureParameter(id);
         ParameterChecker.checkParameter("Identifier is mandatory : ", id);
         return logbookExternalService.findOperationByUnitId(id);
@@ -105,7 +104,6 @@ public class LogbookExternalController {
     @ResponseStatus(HttpStatus.OK)
     public LogbookLifeCycleResponseDto findUnitLifeCyclesByUnitId(@PathVariable final String id)
         throws InvalidParseOperationException, PreconditionFailedException {
-
         SanityChecker.checkSecureParameter(id);
         ParameterChecker.checkParameter("Identifier is mandatory : ", id);
         return logbookExternalService.findUnitLifeCyclesByUnitId(id);
@@ -116,14 +114,13 @@ public class LogbookExternalController {
     @ResponseStatus(HttpStatus.OK)
     public LogbookLifeCycleResponseDto findObjectGroupLifeCyclesByUnitId(@PathVariable final String id)
         throws InvalidParseOperationException, PreconditionFailedException {
-
         SanityChecker.checkSecureParameter(id);
         ParameterChecker.checkParameter("Identifier is mandatory : ", id);
         return logbookExternalService.findObjectGroupLifeCyclesByUnitId(id);
     }
 
     @ApiOperation(value = "Get logbook operations by json select")
-    @Secured({ServicesData.ROLE_LOGBOOKS})
+    @Secured({ ServicesData.ROLE_LOGBOOKS })
     @PostMapping(value = CommonConstants.LOGBOOK_OPERATIONS_PATH)
     public LogbookOperationsResponseDto findOperations(@RequestBody final JsonNode select)
         throws VitamClientException, InvalidParseOperationException, PreconditionFailedException {
@@ -139,7 +136,6 @@ public class LogbookExternalController {
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Resource> downloadManifest(@PathVariable final String id)
         throws InvalidParseOperationException, PreconditionFailedException {
-
         ParameterChecker.checkParameter("Identifier is mandatory : ", id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Download the manifest for the Vitam operation : {}", id);
@@ -151,9 +147,8 @@ public class LogbookExternalController {
     @GetMapping(value = CommonConstants.LOGBOOK_DOWNLOAD_ATR_PATH)
     @Secured(ServicesData.ROLE_LOGBOOKS)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Resource> downloadAtr(@PathVariable final String id) throws InvalidParseOperationException,
-        PreconditionFailedException {
-
+    public ResponseEntity<Resource> downloadAtr(@PathVariable final String id)
+        throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter("Identifier is mandatory : ", id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Download the ATR file for the Vitam operation : {}", id);
@@ -162,17 +157,24 @@ public class LogbookExternalController {
     }
 
     @ApiOperation(value = "Download the report file for a given operation")
-    @GetMapping(value = CommonConstants.LOGBOOK_DOWNLOAD_REPORT_PATH, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    @GetMapping(
+        value = CommonConstants.LOGBOOK_DOWNLOAD_REPORT_PATH,
+        produces = MediaType.APPLICATION_OCTET_STREAM_VALUE
+    )
     @Secured(ServicesData.ROLE_LOGBOOKS)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Resource> downloadReport(@PathVariable final String id, @PathVariable final String downloadType)
-        throws InvalidParseOperationException, PreconditionFailedException {
-
-        ParameterChecker.checkParameter("The Identifier and the download type are mandatory parameters: ", id, downloadType);
+    public ResponseEntity<Resource> downloadReport(
+        @PathVariable final String id,
+        @PathVariable final String downloadType
+    ) throws InvalidParseOperationException, PreconditionFailedException {
+        ParameterChecker.checkParameter(
+            "The Identifier and the download type are mandatory parameters: ",
+            id,
+            downloadType
+        );
         SanityChecker.checkSecureParameter(id, downloadType);
         LOGGER.debug("Download the report file for the Vitam operation : {} with download type : {}", id, downloadType);
         ResponseEntity<Resource> responseResource = logbookExternalService.downloadReport(id, downloadType).block();
         return RestUtils.buildFileResponse(responseResource, Optional.empty(), Optional.empty());
     }
-
 }

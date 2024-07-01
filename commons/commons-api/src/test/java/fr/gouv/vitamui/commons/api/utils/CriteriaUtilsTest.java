@@ -1,23 +1,29 @@
 package fr.gouv.vitamui.commons.api.utils;
 
-
-import static org.assertj.core.api.Assertions.assertThat;
-
-import org.junit.Assert;
-import org.junit.Test;
-
 import fr.gouv.vitamui.commons.api.domain.Criterion;
 import fr.gouv.vitamui.commons.api.domain.CriterionOperator;
 import fr.gouv.vitamui.commons.api.domain.QueryDto;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
+import org.junit.Assert;
+import org.junit.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class CriteriaUtilsTest {
 
     @Test
     public void testTransformCriteriaToJsonString() {
         final QueryDto criteria = new QueryDto();
-        final Criterion criterion1 = new Criterion("creationDate", "2018-08-24T17:15:33.790+02:00", CriterionOperator.LOWERTHANOREQUALS);
-        final Criterion criterion2 = new Criterion("creationDate", "2018-08-24T17:15:33.790+02:00", CriterionOperator.GREATERTHANOREQUALS);
+        final Criterion criterion1 = new Criterion(
+            "creationDate",
+            "2018-08-24T17:15:33.790+02:00",
+            CriterionOperator.LOWERTHANOREQUALS
+        );
+        final Criterion criterion2 = new Criterion(
+            "creationDate",
+            "2018-08-24T17:15:33.790+02:00",
+            CriterionOperator.GREATERTHANOREQUALS
+        );
         criteria.addCriterion(criterion1);
         criteria.addCriterion(criterion2);
 
@@ -30,8 +36,16 @@ public class CriteriaUtilsTest {
     @Test
     public void test_checkFormat_with_invalid_subquery() {
         final QueryDto criteria = new QueryDto();
-        final Criterion criterion1 = new Criterion("creationDate", "2018-08-24T17:15:33.790+02:00", CriterionOperator.LOWERTHANOREQUALS);
-        final Criterion criterion2 = new Criterion("updatedDate", "2018-08-24T17:15:33.790+02:00", CriterionOperator.GREATERTHANOREQUALS);
+        final Criterion criterion1 = new Criterion(
+            "creationDate",
+            "2018-08-24T17:15:33.790+02:00",
+            CriterionOperator.LOWERTHANOREQUALS
+        );
+        final Criterion criterion2 = new Criterion(
+            "updatedDate",
+            "2018-08-24T17:15:33.790+02:00",
+            CriterionOperator.GREATERTHANOREQUALS
+        );
         criteria.addCriterion(criterion1);
         criteria.addCriterion(criterion2);
         final QueryDto subQuery = new QueryDto();
@@ -74,5 +88,4 @@ public class CriteriaUtilsTest {
             assertThat(e.getMessage()).contains("externalParamId");
         }
     }
-
 }

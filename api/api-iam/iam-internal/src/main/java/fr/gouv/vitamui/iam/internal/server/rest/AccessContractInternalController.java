@@ -71,6 +71,7 @@ import java.util.List;
 @RequestMapping(CommonConstants.API_VERSION_1)
 @Api(tags = "accesscontracts", value = "Access contacts", description = "Access contracts Management")
 public class AccessContractInternalController {
+
     static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(AccessContractInternalController.class);
     protected final InternalSecurityService securityService;
     private final AccessContractService accessContractService;
@@ -78,10 +79,12 @@ public class AccessContractInternalController {
     private final AccessContractConverter converter;
 
     @Autowired
-    public AccessContractInternalController(InternalSecurityService securityService,
-                                            AccessContractService accessContractService,
-                                            AccessContractConverter converter,
-                                            ObjectMapper objectMapper) {
+    public AccessContractInternalController(
+        InternalSecurityService securityService,
+        AccessContractService accessContractService,
+        AccessContractConverter converter,
+        ObjectMapper objectMapper
+    ) {
         this.securityService = securityService;
         this.accessContractService = accessContractService;
         this.objectMapper = objectMapper;
@@ -90,15 +93,15 @@ public class AccessContractInternalController {
 
     @GetMapping("/accesscontracts")
     public List<AccessContractsDto> getAll() {
-
         final RequestResponse<AccessContractModel> requestResponse;
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
 
         try {
-            requestResponse = accessContractService
-                .findAccessContracts(vitamContext, new Select().getFinalSelect());
-            final AccessContractsResponseDto accessContractResponseDto = objectMapper
-                .treeToValue(requestResponse.toJsonNode(), AccessContractsResponseDto.class);
+            requestResponse = accessContractService.findAccessContracts(vitamContext, new Select().getFinalSelect());
+            final AccessContractsResponseDto accessContractResponseDto = objectMapper.treeToValue(
+                requestResponse.toJsonNode(),
+                AccessContractsResponseDto.class
+            );
 
             return converter.convertVitamsToDtos(accessContractResponseDto.getResults());
         } catch (VitamClientException | JsonProcessingException e) {
@@ -107,16 +110,25 @@ public class AccessContractInternalController {
     }
 
     @GetMapping(path = "/accesscontracts/{identifier:.+}")
-    public AccessContractsDto getAccessContractById(final @PathVariable("identifier") String identifier) throws UnsupportedEncodingException {
-        LOGGER.debug("get accessContract identifier={} / {}", identifier, URLDecoder.decode(identifier, StandardCharsets.UTF_8.toString()));
+    public AccessContractsDto getAccessContractById(final @PathVariable("identifier") String identifier)
+        throws UnsupportedEncodingException {
+        LOGGER.debug(
+            "get accessContract identifier={} / {}",
+            identifier,
+            URLDecoder.decode(identifier, StandardCharsets.UTF_8.toString())
+        );
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
 
         try {
-
-            LOGGER.info("Access Contract EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
-            RequestResponse<AccessContractModel> requestResponse = accessContractService.findAccessContractById(vitamContext, identifier);
-            final AccessContractsResponseDto accessContractResponseDto = objectMapper
-                .treeToValue(requestResponse.toJsonNode(), AccessContractsResponseDto.class);
+            LOGGER.info("Access Contract EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
+            RequestResponse<AccessContractModel> requestResponse = accessContractService.findAccessContractById(
+                vitamContext,
+                identifier
+            );
+            final AccessContractsResponseDto accessContractResponseDto = objectMapper.treeToValue(
+                requestResponse.toJsonNode(),
+                AccessContractsResponseDto.class
+            );
             if (accessContractResponseDto.getResults().size() == 0) {
                 return null;
             } else {
@@ -126,6 +138,4 @@ public class AccessContractInternalController {
             throw new InternalServerException("Unable to get Access Contrat", e);
         }
     }
-
-
 }

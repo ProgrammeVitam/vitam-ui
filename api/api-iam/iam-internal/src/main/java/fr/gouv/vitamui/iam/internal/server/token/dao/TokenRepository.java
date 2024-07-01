@@ -44,5 +44,4 @@ import fr.gouv.vitamui.iam.internal.server.token.domain.Token;
  *
  *
  */
-public interface TokenRepository extends VitamUIRepository<Token, String> {
-}
+public interface TokenRepository extends VitamUIRepository<Token, String> {}

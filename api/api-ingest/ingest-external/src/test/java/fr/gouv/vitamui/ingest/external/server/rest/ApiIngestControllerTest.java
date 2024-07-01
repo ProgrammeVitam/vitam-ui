@@ -46,11 +46,11 @@ import org.springframework.security.core.Authentication;
 
 import java.util.List;
 
-public abstract class ApiIngestControllerTest<T extends IdDto>  extends AbstractMockMvcCrudControllerTest<T> {
+public abstract class ApiIngestControllerTest<T extends IdDto> extends AbstractMockMvcCrudControllerTest<T> {
 
     @Override
     protected Authentication buildUserAuthenticated() {
-        return new ExternalAuthentication(buildPrincipal(), buildCredentials(),null,buildUserRoles());
+        return new ExternalAuthentication(buildPrincipal(), buildCredentials(), null, buildUserRoles());
     }
 
     protected AuthUserDto buildPrincipal() {
@@ -68,5 +68,4 @@ public abstract class ApiIngestControllerTest<T extends IdDto>  extends Abstract
     }
 
     protected abstract String[] getServices();
-
 }

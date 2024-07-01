@@ -51,26 +51,29 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 @Configuration
-@Import({RestExceptionHandler.class, SwaggerConfiguration.class, HttpMessageConvertersAutoConfiguration.class})
+@Import({ RestExceptionHandler.class, SwaggerConfiguration.class, HttpMessageConvertersAutoConfiguration.class })
 public class ApiArchiveServerConfig extends AbstractContextConfiguration {
 
     @Bean
     public SecurityRestClientFactory securityRestClientFactory(
         final ApiArchiveExternalApplicationProperties apiArchiveExternalApplicationProperties,
-        final RestTemplateBuilder restTemplateBuilder) {
-        return new SecurityRestClientFactory(apiArchiveExternalApplicationProperties.getSecurityClient(),
-            restTemplateBuilder);
+        final RestTemplateBuilder restTemplateBuilder
+    ) {
+        return new SecurityRestClientFactory(
+            apiArchiveExternalApplicationProperties.getSecurityClient(),
+            restTemplateBuilder
+        );
     }
 
     @Bean
     public ContextRestClient contextCrudRestClient(final SecurityRestClientFactory securityRestClientFactory) {
-
         return securityRestClientFactory.getContextRestClient();
     }
 
     @Bean
     public ExternalApiAuthenticationProvider apiAuthenticationProvider(
-        final ExternalAuthentificationService externalAuthentificationService) {
+        final ExternalAuthentificationService externalAuthentificationService
+    ) {
         return new ExternalApiAuthenticationProvider(externalAuthentificationService);
     }
 
@@ -80,80 +83,91 @@ public class ApiArchiveServerConfig extends AbstractContextConfiguration {
     }
 
     @Bean
-    public ExternalAuthentificationService externalAuthentificationService(final ContextRestClient contextRestClient,
-        final UserInternalRestClient userInternalRestClient) {
+    public ExternalAuthentificationService externalAuthentificationService(
+        final ContextRestClient contextRestClient,
+        final UserInternalRestClient userInternalRestClient
+    ) {
         return new ExternalAuthentificationService(contextRestClient, userInternalRestClient);
     }
 
     @Bean
     public IamInternalRestClientFactory iamInternalRestClientFactory(
         final ApiArchiveExternalApplicationProperties apiArchiveExternalApplicationProperties,
-        final RestTemplateBuilder restTemplateBuilder) {
-        return new IamInternalRestClientFactory(apiArchiveExternalApplicationProperties.getIamInternalClient(),
-            restTemplateBuilder);
-
+        final RestTemplateBuilder restTemplateBuilder
+    ) {
+        return new IamInternalRestClientFactory(
+            apiArchiveExternalApplicationProperties.getIamInternalClient(),
+            restTemplateBuilder
+        );
     }
 
     @Bean
     public UserInternalRestClient userInternalRestClient(
-        final IamInternalRestClientFactory iamInternalRestClientFactory) {
+        final IamInternalRestClientFactory iamInternalRestClientFactory
+    ) {
         return iamInternalRestClientFactory.getUserInternalRestClient();
     }
 
     @Bean
     public ArchiveSearchStreamingInternalRestClientFactory archiveSearchStreamingInternalRestClientFactory(
-        final ApiArchiveExternalApplicationProperties apiArchiveExternalApplicationProperties) {
+        final ApiArchiveExternalApplicationProperties apiArchiveExternalApplicationProperties
+    ) {
         return new ArchiveSearchStreamingInternalRestClientFactory(
-            apiArchiveExternalApplicationProperties.getArchiveSearchInternalClient());
+            apiArchiveExternalApplicationProperties.getArchiveSearchInternalClient()
+        );
     }
 
     @Bean
     public ArchiveSearchStreamingInternalRestClient archiveSearchStreamingInternalRestClient(
-        final ArchiveSearchStreamingInternalRestClientFactory factory) {
+        final ArchiveSearchStreamingInternalRestClientFactory factory
+    ) {
         return factory.getArchiveSearchStreamingInternalRestClient();
     }
 
     @Bean
     public ArchiveInternalRestClientFactory archiveInternalRestClientFactory(
         final ApiArchiveExternalApplicationProperties apiArchiveExternalApplicationProperties,
-        final RestTemplateBuilder restTemplateBuilder) {
+        final RestTemplateBuilder restTemplateBuilder
+    ) {
         return new ArchiveInternalRestClientFactory(
-            apiArchiveExternalApplicationProperties.getArchiveSearchInternalClient(), restTemplateBuilder);
+            apiArchiveExternalApplicationProperties.getArchiveSearchInternalClient(),
+            restTemplateBuilder
+        );
     }
 
-
-
     @Bean
-    public ArchiveInternalRestClient archiveInternalRestClient(
-        final ArchiveInternalRestClientFactory factory) {
+    public ArchiveInternalRestClient archiveInternalRestClient(final ArchiveInternalRestClientFactory factory) {
         return factory.getArchiveInternalRestClient();
     }
 
     @Bean
     public ArchiveSearchInternalWebClientFactory archiveInternalWebClientFactory(
         final ApiArchiveExternalApplicationProperties apiArchiveExternalApplicationProperties,
-        final RestTemplateBuilder restTemplateBuilder) {
+        final RestTemplateBuilder restTemplateBuilder
+    ) {
         return new ArchiveSearchInternalWebClientFactory(
-            apiArchiveExternalApplicationProperties.getArchiveSearchInternalClient());
+            apiArchiveExternalApplicationProperties.getArchiveSearchInternalClient()
+        );
     }
-
 
     @Bean
     public ArchiveSearchInternalWebClient archiveInternalWebClient(
-        final ArchiveSearchInternalWebClientFactory factory) {
+        final ArchiveSearchInternalWebClientFactory factory
+    ) {
         return factory.getArchiveInternalWebClient();
     }
 
     @Bean
     public SearchCriteriaHistoryInternalRestClient searchCriteriaHistoryInternalRestClient(
-        final ArchiveInternalRestClientFactory archiveInternalRestClientFactory) {
+        final ArchiveInternalRestClientFactory archiveInternalRestClientFactory
+    ) {
         return archiveInternalRestClientFactory.getSearchCriteriaHistoryInternalRestClient();
     }
 
     @Bean
     public ExternalParametersInternalRestClient externalParametersInternalRestClient(
-        final IamInternalRestClientFactory iamInternalRestClientFactory) {
+        final IamInternalRestClientFactory iamInternalRestClientFactory
+    ) {
         return iamInternalRestClientFactory.getExternalParametersInternalRestClient();
     }
-
 }

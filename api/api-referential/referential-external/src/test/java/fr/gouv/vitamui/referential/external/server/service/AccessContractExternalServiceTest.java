@@ -59,6 +59,7 @@ public class AccessContractExternalServiceTest extends ExternalServiceTest {
 
     @Mock
     private AccessContractInternalRestClient accessContractInternalRestClient;
+
     @Mock
     private ExternalSecurityService externalSecurityService;
 
@@ -68,56 +69,54 @@ public class AccessContractExternalServiceTest extends ExternalServiceTest {
     public void init() {
         final String userCustomerId = "customerIdAllowed";
         mockSecurityContext(externalSecurityService, userCustomerId, 10);
-        accessContractExternalService = new AccessContractExternalService(externalSecurityService, accessContractInternalRestClient);
+        accessContractExternalService = new AccessContractExternalService(
+            externalSecurityService,
+            accessContractInternalRestClient
+        );
     }
 
     @Test
     public void getAll_should_return_AccessContractDtoList_when_accessContractInternalRestClient_return_AccessContractDtoList() {
-
         List<AccessContractDto> list = new ArrayList<>();
         AccessContractDto accessContractDto = new AccessContractDto();
         accessContractDto.setTenant(1);
         accessContractDto.setDescription("description");
         list.add(accessContractDto);
 
-        when(accessContractInternalRestClient.getAll(any(InternalHttpContext.class), any(Optional.class)))
-            .thenReturn(new ArrayList<AccessContractDto>());
+        when(accessContractInternalRestClient.getAll(any(InternalHttpContext.class), any(Optional.class))).thenReturn(
+            new ArrayList<AccessContractDto>()
+        );
 
         assertThatCode(() -> {
             accessContractExternalService.getAll(Optional.empty());
         }).doesNotThrowAnyException();
-
     }
 
     @Test
     public void create_should_return_AccessContractDto_when_accessContractInternalRestClient_return_AccessContractDtoList() {
-
         AccessContractDto accessContractDto = new AccessContractDto();
         accessContractDto.setTenant(1);
 
-        when(accessContractInternalRestClient.create(any(InternalHttpContext.class), any(AccessContractDto.class)))
-            .thenReturn(accessContractDto);
+        when(
+            accessContractInternalRestClient.create(any(InternalHttpContext.class), any(AccessContractDto.class))
+        ).thenReturn(accessContractDto);
 
         assertThatCode(() -> {
             accessContractExternalService.create(new AccessContractDto());
         }).doesNotThrowAnyException();
-
     }
 
     @Test
     public void check_should_return_boolean_when_accessContractInternalRestClient_return_boolean() {
-
         AccessContractDto accessContractDto = new AccessContractDto();
         accessContractDto.setTenant(1);
 
-        when(accessContractInternalRestClient.check(any(InternalHttpContext.class), any(AccessContractDto.class)))
-            .thenReturn(true);
+        when(
+            accessContractInternalRestClient.check(any(InternalHttpContext.class), any(AccessContractDto.class))
+        ).thenReturn(true);
 
         assertThatCode(() -> {
             accessContractExternalService.check(new AccessContractDto());
         }).doesNotThrowAnyException();
-
     }
-
-
 }

@@ -36,20 +36,19 @@
  */
 package fr.gouv.vitamui.iam.external.server.service;
 
-import java.util.List;
-import java.util.Optional;
-
-import fr.gouv.vitamui.iam.common.dto.cas.LoginRequestDto;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.iam.common.dto.SubrogationDto;
+import fr.gouv.vitamui.iam.common.dto.cas.LoginRequestDto;
 import fr.gouv.vitamui.iam.internal.client.CasInternalRestClient;
 import fr.gouv.vitamui.iam.security.client.AbstractInternalClientService;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
 
 /**
  * Specific CAS service.
@@ -66,8 +65,10 @@ public class CasExternalService extends AbstractInternalClientService {
     private final ExternalSecurityService securityService;
 
     @Autowired
-    public CasExternalService(final CasInternalRestClient casInternalRestClient,
-            final ExternalSecurityService securityService) {
+    public CasExternalService(
+        final CasInternalRestClient casInternalRestClient,
+        final ExternalSecurityService securityService
+    ) {
         super(securityService);
         this.casInternalRestClient = casInternalRestClient;
         this.securityService = securityService;
@@ -85,7 +86,12 @@ public class CasExternalService extends AbstractInternalClientService {
         return getClient().getUserByEmail(getInternalHttpContext(), email, embedded);
     }
 
-    public UserDto getUser(final String email, final String idp, final Optional<String> userIdentifier, final Optional<String> embedded) {
+    public UserDto getUser(
+        final String email,
+        final String idp,
+        final Optional<String> userIdentifier,
+        final Optional<String> embedded
+    ) {
         return getClient().getUser(getInternalHttpContext(), email, idp, userIdentifier, embedded);
     }
 

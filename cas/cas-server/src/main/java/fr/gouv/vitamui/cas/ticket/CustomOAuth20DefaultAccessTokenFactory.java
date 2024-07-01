@@ -37,6 +37,8 @@
 package fr.gouv.vitamui.cas.ticket;
 
 import fr.gouv.vitamui.commons.api.CommonConstants;
+import lombok.Getter;
+import lombok.val;
 import org.apereo.cas.authentication.Authentication;
 import org.apereo.cas.authentication.principal.Principal;
 import org.apereo.cas.authentication.principal.Service;
@@ -48,9 +50,6 @@ import org.apereo.cas.ticket.ExpirationPolicyBuilder;
 import org.apereo.cas.ticket.TicketGrantingTicket;
 import org.apereo.cas.ticket.accesstoken.*;
 import org.apereo.cas.token.JwtBuilder;
-
-import lombok.Getter;
-import lombok.val;
 
 import java.util.Collection;
 import java.util.List;
@@ -64,30 +63,47 @@ import java.util.Map;
 @Getter
 public class CustomOAuth20DefaultAccessTokenFactory extends OAuth20DefaultAccessTokenFactory {
 
-    public CustomOAuth20DefaultAccessTokenFactory(final ExpirationPolicyBuilder<OAuth20AccessToken> expirationPolicy,
-                                                  final JwtBuilder jwtBuilder,
-                                                  final ServicesManager servicesManager) {
+    public CustomOAuth20DefaultAccessTokenFactory(
+        final ExpirationPolicyBuilder<OAuth20AccessToken> expirationPolicy,
+        final JwtBuilder jwtBuilder,
+        final ServicesManager servicesManager
+    ) {
         super(expirationPolicy, jwtBuilder, servicesManager);
     }
 
     @Override
-    public OAuth20AccessToken create(final Service service,
-                                     final Authentication authentication,
-                                     final TicketGrantingTicket ticketGrantingTicket,
-                                     final Collection<String> scopes,
-                                     final String token,
-                                     final String clientId,
-                                     final Map<String, Map<String, Object>> requestClaims,
-                                     final OAuth20ResponseTypes responseType,
-                                     final OAuth20GrantTypes grantType) {
-        val registeredService = OAuth20Utils.getRegisteredOAuthServiceByClientId(jwtBuilder.getServicesManager(), clientId);
+    public OAuth20AccessToken create(
+        final Service service,
+        final Authentication authentication,
+        final TicketGrantingTicket ticketGrantingTicket,
+        final Collection<String> scopes,
+        final String token,
+        final String clientId,
+        final Map<String, Map<String, Object>> requestClaims,
+        final OAuth20ResponseTypes responseType,
+        final OAuth20GrantTypes grantType
+    ) {
+        val registeredService = OAuth20Utils.getRegisteredOAuthServiceByClientId(
+            jwtBuilder.getServicesManager(),
+            clientId
+        );
         val expirationPolicyToUse = determineExpirationPolicyForService(registeredService);
         // CUSTO: don't generate the identifier, but use the token of the principal
         val accessTokenId = generateAccessTokenId(authentication);
 
-        val at = new OAuth20DefaultAccessToken(accessTokenId, service, authentication,
-            expirationPolicyToUse, ticketGrantingTicket, token, scopes,
-            clientId, requestClaims, responseType, grantType);
+        val at = new OAuth20DefaultAccessToken(
+            accessTokenId,
+            service,
+            authentication,
+            expirationPolicyToUse,
+            ticketGrantingTicket,
+            token,
+            scopes,
+            clientId,
+            requestClaims,
+            responseType,
+            grantType
+        );
         if (ticketGrantingTicket != null) {
             ticketGrantingTicket.getDescendantTickets().add(at.getId());
         }

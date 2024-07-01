@@ -38,6 +38,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class OntologyDto {
+
     private String identifier;
     private String apiField;
     private String description;
@@ -48,7 +49,6 @@ public class OntologyDto {
     private String shortName;
 
     private List<Integer> tenantIds;
-
 
     @JsonProperty("Identifier")
     public String getIdentifier() {
@@ -130,5 +130,4 @@ public class OntologyDto {
     public void setTenantIds(List<Integer> tenantIds) {
         this.tenantIds = tenantIds;
     }
-
 }

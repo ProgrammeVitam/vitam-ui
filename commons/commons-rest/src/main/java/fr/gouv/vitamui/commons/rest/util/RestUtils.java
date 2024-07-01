@@ -36,7 +36,6 @@
  */
 package fr.gouv.vitamui.commons.rest.util;
 
-import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.domain.QueryDto;
 import fr.gouv.vitamui.commons.api.exception.ApplicationServerException;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
@@ -125,8 +124,11 @@ public final class RestUtils {
      * @return
      * @throws IOException
      */
-    public static ResponseEntity<Resource> buildFileResponse(final ResponseEntity<Resource> responseEntity, Optional<ContentDispositionType> disposition,
-            final Optional<String> filename) {
+    public static ResponseEntity<Resource> buildFileResponse(
+        final ResponseEntity<Resource> responseEntity,
+        Optional<ContentDispositionType> disposition,
+        final Optional<String> filename
+    ) {
         // Sets default disposition
         if (!disposition.isPresent()) {
             disposition = Optional.of(ContentDispositionType.ATTACHMENT);
@@ -138,17 +140,20 @@ public final class RestUtils {
         // the body could be null when fetching empty byte resources.
         InputStreamResource fileInputStreamResource = null;
         try {
-            if(responseEntity.getBody() != null) {
+            if (responseEntity.getBody() != null) {
                 fileInputStream = responseEntity.getBody().getInputStream();
             } else {
                 LOGGER.debug("The request body is null in response : {}", responseEntity);
-                fileInputStreamResource = new InputStreamResource(new ByteArrayInputStream(ArrayUtils.EMPTY_BYTE_ARRAY));
+                fileInputStreamResource = new InputStreamResource(
+                    new ByteArrayInputStream(ArrayUtils.EMPTY_BYTE_ARRAY)
+                );
             }
-        }
-        catch (final IOException e) {
+        } catch (final IOException e) {
             throw new InternalServerException("An error occured while opening the response stream", e);
         }
-        final InputStreamResource fileStreamRessource = fileInputStream != null ? new InputStreamResource(fileInputStream): fileInputStreamResource;
+        final InputStreamResource fileStreamRessource = fileInputStream != null
+            ? new InputStreamResource(fileInputStream)
+            : fileInputStreamResource;
 
         final HttpHeaders responseHeaders = responseEntity.getHeaders();
 
@@ -156,8 +161,7 @@ public final class RestUtils {
         final String contentType = responseHeaders.getFirst(HttpHeaders.CONTENT_TYPE);
         if (StringUtils.isNotBlank(contentType)) {
             builder.contentType(MediaType.parseMediaType(contentType));
-        }
-        else {
+        } else {
             LOGGER.debug("No content-type in response : {}", responseEntity);
         }
 
@@ -166,8 +170,7 @@ public final class RestUtils {
         final String contentDispositionStr = responseHeaders.getFirst(HttpHeaders.CONTENT_DISPOSITION);
         if (filename.isPresent()) {
             contentDispositionBuilder.filename(filename.get());
-        }
-        else if (StringUtils.isNotBlank(contentDispositionStr)) {
+        } else if (StringUtils.isNotBlank(contentDispositionStr)) {
             final ContentDisposition contentDisposition = ContentDisposition.parse(contentDispositionStr);
             if (StringUtils.isNotBlank(contentDisposition.getFilename())) {
                 contentDispositionBuilder.filename(contentDisposition.getFilename());
@@ -185,9 +188,11 @@ public final class RestUtils {
      * @return
      * @throws IOException
      */
-    public static ResponseEntity<Resource> buildResourceResponse(final Optional<ContentDispositionType> disposition, final Resource resource,
-            final Optional<String> optFileName) {
-
+    public static ResponseEntity<Resource> buildResourceResponse(
+        final Optional<ContentDispositionType> disposition,
+        final Resource resource,
+        final Optional<String> optFileName
+    ) {
         final StringBuilder contentDisposition = new StringBuilder();
         contentDisposition.append(disposition.orElse(ContentDispositionType.ATTACHMENT).getValue() + ";");
 
@@ -203,17 +208,19 @@ public final class RestUtils {
             try {
                 mimeType = Files.probeContentType(Paths.get(resource.getFile().getAbsolutePath()));
                 mediaType = MediaType.valueOf(mimeType);
-            }
-            catch (final IOException | InvalidMediaTypeException e) {
+            } catch (final IOException | InvalidMediaTypeException e) {
                 // use the default mediaType
                 LOGGER.error("Cannot find mimetype for {}", resource.getFilename(), e);
             }
         }
 
         try {
-            return ResponseEntity.ok().headers(headers).contentLength(resource.contentLength()).contentType(mediaType).body(resource);
-        }
-        catch (final IOException e) {
+            return ResponseEntity.ok()
+                .headers(headers)
+                .contentLength(resource.contentLength())
+                .contentType(mediaType)
+                .body(resource);
+        } catch (final IOException e) {
             throw new ApplicationServerException(e.getMessage(), e);
         }
     }
@@ -226,8 +233,10 @@ public final class RestUtils {
      * @throws FileUploadException
      * @throws IOException
      */
-    public static FileItemIterator getFileItemIterator(final DiskFileItemFactory factory, final HttpServletRequest request)
-            throws FileUploadException, IOException {
+    public static FileItemIterator getFileItemIterator(
+        final DiskFileItemFactory factory,
+        final HttpServletRequest request
+    ) throws FileUploadException, IOException {
         // Configure a repository (to ensure a secure temp location is used)
         final ServletContext servletContext = request.getServletContext();
         final File repository = (File) servletContext.getAttribute("javax.servlet.context.tempdir");
@@ -244,5 +253,4 @@ public final class RestUtils {
 
         return upload.getItemIterator(request);
     }
-
 }

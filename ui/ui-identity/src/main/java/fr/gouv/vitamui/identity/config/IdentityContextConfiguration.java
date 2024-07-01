@@ -36,6 +36,12 @@
  */
 package fr.gouv.vitamui.identity.config;
 
+import fr.gouv.vitamui.commons.api.application.AbstractContextConfiguration;
+import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
+import fr.gouv.vitamui.commons.rest.configuration.SwaggerConfiguration;
+import fr.gouv.vitamui.iam.external.client.IamExternalWebClientFactory;
+import fr.gouv.vitamui.ui.commons.property.UIProperties;
+import fr.gouv.vitamui.ui.commons.security.SecurityConfig;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -44,23 +50,18 @@ import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.Import;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import fr.gouv.vitamui.commons.api.application.AbstractContextConfiguration;
-import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
-import fr.gouv.vitamui.commons.rest.configuration.SwaggerConfiguration;
-import fr.gouv.vitamui.iam.external.client.IamExternalWebClientFactory;
-import fr.gouv.vitamui.ui.commons.property.UIProperties;
-import fr.gouv.vitamui.ui.commons.security.SecurityConfig;
-
 @Configuration
 @EnableConfigurationProperties
-@Import(value = {SecurityConfig.class, SwaggerConfiguration.class, RestExceptionHandler.class})
+@Import(value = { SecurityConfig.class, SwaggerConfiguration.class, RestExceptionHandler.class })
 public class IdentityContextConfiguration extends AbstractContextConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
     @DependsOn("uiProperties")
-    public IamExternalWebClientFactory iamWebClientFactory(final UIProperties uiProperties, final WebClient.Builder webClientBuilder) {
+    public IamExternalWebClientFactory iamWebClientFactory(
+        final UIProperties uiProperties,
+        final WebClient.Builder webClientBuilder
+    ) {
         return new IamExternalWebClientFactory(uiProperties.getIamExternalClient(), webClientBuilder);
     }
-
 }

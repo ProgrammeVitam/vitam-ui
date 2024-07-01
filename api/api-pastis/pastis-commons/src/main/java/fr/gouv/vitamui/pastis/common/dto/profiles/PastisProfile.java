@@ -41,6 +41,7 @@ package fr.gouv.vitamui.pastis.common.dto.profiles;
 import fr.gouv.vitamui.commons.api.domain.IdDto;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 import java.security.SecureRandom;
 import java.sql.Timestamp;
 
@@ -74,4 +75,3 @@ public class PastisProfile extends IdDto {
         return tokens[0];
     }
 }
-

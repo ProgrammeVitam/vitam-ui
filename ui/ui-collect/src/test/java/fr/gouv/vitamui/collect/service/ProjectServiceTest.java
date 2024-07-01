@@ -62,8 +62,10 @@ public class ProjectServiceTest {
 
     @Mock
     private CollectExternalRestClient collectExternalRestClient;
+
     @Mock
     private CollectStreamingExternalRestClient collectStreamingExternalRestClient;
+
     @Mock
     private CommonService commonService;
 
@@ -72,8 +74,11 @@ public class ProjectServiceTest {
 
     @Before
     public void init() {
-        projectService =
-            new ProjectService(commonService, collectExternalRestClient, collectStreamingExternalRestClient);
+        projectService = new ProjectService(
+            commonService,
+            collectExternalRestClient,
+            collectStreamingExternalRestClient
+        );
         ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
     }
 
@@ -81,15 +86,15 @@ public class ProjectServiceTest {
     public void shouldCreateProjectWithSuccess() {
         // Given
         ExternalHttpContext context = new ExternalHttpContext(9, "", "", "");
-        when(collectExternalRestClient.create(ArgumentMatchers.any(), ArgumentMatchers.any()))
-            .thenReturn(new CollectProjectDto());
+        when(collectExternalRestClient.create(ArgumentMatchers.any(), ArgumentMatchers.any())).thenReturn(
+            new CollectProjectDto()
+        );
 
         // When
         CollectProjectDto response = projectService.createProject(context, new CollectProjectDto());
 
         // Then
-        verify(collectExternalRestClient, times(1))
-            .create(ArgumentMatchers.any(), ArgumentMatchers.any());
+        verify(collectExternalRestClient, times(1)).create(ArgumentMatchers.any(), ArgumentMatchers.any());
         assertNotNull(response);
         assertThat(response).isInstanceOf(CollectProjectDto.class);
     }
@@ -98,19 +103,36 @@ public class ProjectServiceTest {
     public void shouldGetAllProjectsPaginatedWithSuccess() {
         // Given
         ExternalHttpContext context = new ExternalHttpContext(9, "", "", "");
-        when(collectExternalRestClient.getAllPaginated(ArgumentMatchers.any(), ArgumentMatchers.any(),
-            ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any()))
-            .thenReturn(new PaginatedValuesDto<>());
+        when(
+            collectExternalRestClient.getAllPaginated(
+                ArgumentMatchers.any(),
+                ArgumentMatchers.any(),
+                ArgumentMatchers.any(),
+                ArgumentMatchers.any(),
+                ArgumentMatchers.any(),
+                ArgumentMatchers.any()
+            )
+        ).thenReturn(new PaginatedValuesDto<>());
 
         // When
-        PaginatedValuesDto<CollectProjectDto> response =
-            projectService.getAllProjectsPaginated(context, 1, 1,
-                Optional.empty(), Optional.empty(), Optional.empty());
+        PaginatedValuesDto<CollectProjectDto> response = projectService.getAllProjectsPaginated(
+            context,
+            1,
+            1,
+            Optional.empty(),
+            Optional.empty(),
+            Optional.empty()
+        );
 
         // Then
-        verify(collectExternalRestClient, times(1))
-            .getAllPaginated(ArgumentMatchers.any(), ArgumentMatchers.any(),
-                ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any());
+        verify(collectExternalRestClient, times(1)).getAllPaginated(
+            ArgumentMatchers.any(),
+            ArgumentMatchers.any(),
+            ArgumentMatchers.any(),
+            ArgumentMatchers.any(),
+            ArgumentMatchers.any(),
+            ArgumentMatchers.any()
+        );
         assertNotNull(response);
         assertThat(response).isInstanceOf(PaginatedValuesDto.class);
     }
@@ -119,18 +141,30 @@ public class ProjectServiceTest {
     public void shouldStreamingUploadWithSuccess() {
         // Given
         ExternalHttpContext context = new ExternalHttpContext(9, "", "", "");
-        when(collectStreamingExternalRestClient.streamingUpload(ArgumentMatchers.any(), ArgumentMatchers.any(),
-            ArgumentMatchers.any(), ArgumentMatchers.any()))
-            .thenReturn(ResponseEntity.ok().build());
+        when(
+            collectStreamingExternalRestClient.streamingUpload(
+                ArgumentMatchers.any(),
+                ArgumentMatchers.any(),
+                ArgumentMatchers.any(),
+                ArgumentMatchers.any()
+            )
+        ).thenReturn(ResponseEntity.ok().build());
 
         // When
-        ResponseEntity<Void> response = projectService.streamingUpload(context, "filename", TRANSACTION_ID,
-            new ByteArrayInputStream("Fake file".getBytes()));
+        ResponseEntity<Void> response = projectService.streamingUpload(
+            context,
+            "filename",
+            TRANSACTION_ID,
+            new ByteArrayInputStream("Fake file".getBytes())
+        );
 
         // Then
-        verify(collectStreamingExternalRestClient, times(1))
-            .streamingUpload(ArgumentMatchers.any(), ArgumentMatchers.any(),
-                ArgumentMatchers.any(), ArgumentMatchers.any());
+        verify(collectStreamingExternalRestClient, times(1)).streamingUpload(
+            ArgumentMatchers.any(),
+            ArgumentMatchers.any(),
+            ArgumentMatchers.any(),
+            ArgumentMatchers.any()
+        );
         assertNotNull(response);
     }
 
@@ -146,17 +180,27 @@ public class ProjectServiceTest {
     public void shouldCreateTransactionForProjectWithSuccess() {
         // Given
         ExternalHttpContext context = new ExternalHttpContext(9, "", "", "");
-        when(collectExternalRestClient.createTransactionForProject(ArgumentMatchers.any(), ArgumentMatchers.any(),
-            ArgumentMatchers.any()))
-            .thenReturn(new CollectTransactionDto());
+        when(
+            collectExternalRestClient.createTransactionForProject(
+                ArgumentMatchers.any(),
+                ArgumentMatchers.any(),
+                ArgumentMatchers.any()
+            )
+        ).thenReturn(new CollectTransactionDto());
 
         // When
-        CollectTransactionDto response =
-            projectService.createTransactionForProject(context, new CollectTransactionDto(), TRANSACTION_ID);
+        CollectTransactionDto response = projectService.createTransactionForProject(
+            context,
+            new CollectTransactionDto(),
+            TRANSACTION_ID
+        );
 
         // Then
-        verify(collectExternalRestClient, times(1))
-            .createTransactionForProject(ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any());
+        verify(collectExternalRestClient, times(1)).createTransactionForProject(
+            ArgumentMatchers.any(),
+            ArgumentMatchers.any(),
+            ArgumentMatchers.any()
+        );
         assertNotNull(response);
         assertThat(response).isInstanceOf(CollectTransactionDto.class);
     }
@@ -165,16 +209,18 @@ public class ProjectServiceTest {
     public void shouldGetLastTransactionForProjectIdWithSuccess() {
         // Given
         ExternalHttpContext context = new ExternalHttpContext(9, "", "", "");
-        when(collectExternalRestClient.getLastTransactionForProjectId(ArgumentMatchers.any(), ArgumentMatchers.any()))
-            .thenReturn(new CollectTransactionDto());
+        when(
+            collectExternalRestClient.getLastTransactionForProjectId(ArgumentMatchers.any(), ArgumentMatchers.any())
+        ).thenReturn(new CollectTransactionDto());
 
         // When
-        CollectTransactionDto response =
-            projectService.getLastTransactionForProjectId(context, PROJECT_ID);
+        CollectTransactionDto response = projectService.getLastTransactionForProjectId(context, PROJECT_ID);
 
         // Then
-        verify(collectExternalRestClient, times(1))
-            .getLastTransactionForProjectId(ArgumentMatchers.any(), ArgumentMatchers.any());
+        verify(collectExternalRestClient, times(1)).getLastTransactionForProjectId(
+            ArgumentMatchers.any(),
+            ArgumentMatchers.any()
+        );
         assertNotNull(response);
         assertThat(response).isInstanceOf(CollectTransactionDto.class);
     }
@@ -183,20 +229,39 @@ public class ProjectServiceTest {
     public void shouldGetTransactionsByProjectPaginatedWithSuccess() {
         // Given
         ExternalHttpContext context = new ExternalHttpContext(9, "", "", "");
-        when(collectExternalRestClient.getTransactionsByProjectPaginated(ArgumentMatchers.any(), ArgumentMatchers.any(),
-            ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any(),
-            ArgumentMatchers.any()))
-            .thenReturn(new PaginatedValuesDto<>());
+        when(
+            collectExternalRestClient.getTransactionsByProjectPaginated(
+                ArgumentMatchers.any(),
+                ArgumentMatchers.any(),
+                ArgumentMatchers.any(),
+                ArgumentMatchers.any(),
+                ArgumentMatchers.any(),
+                ArgumentMatchers.any(),
+                ArgumentMatchers.any()
+            )
+        ).thenReturn(new PaginatedValuesDto<>());
 
         // When
-        PaginatedValuesDto<CollectTransactionDto> response = projectService.getTransactionsByProjectPaginated(1, 1,
-            Optional.empty(), Optional.empty(), Optional.empty(), context, PROJECT_ID);
+        PaginatedValuesDto<CollectTransactionDto> response = projectService.getTransactionsByProjectPaginated(
+            1,
+            1,
+            Optional.empty(),
+            Optional.empty(),
+            Optional.empty(),
+            context,
+            PROJECT_ID
+        );
 
         // Then
-        verify(collectExternalRestClient, times(1))
-            .getTransactionsByProjectPaginated(ArgumentMatchers.any(), ArgumentMatchers.any(),
-                ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any(),
-                ArgumentMatchers.any());
+        verify(collectExternalRestClient, times(1)).getTransactionsByProjectPaginated(
+            ArgumentMatchers.any(),
+            ArgumentMatchers.any(),
+            ArgumentMatchers.any(),
+            ArgumentMatchers.any(),
+            ArgumentMatchers.any(),
+            ArgumentMatchers.any(),
+            ArgumentMatchers.any()
+        );
         assertNotNull(response);
         assertThat(response).isInstanceOf(PaginatedValuesDto.class);
     }

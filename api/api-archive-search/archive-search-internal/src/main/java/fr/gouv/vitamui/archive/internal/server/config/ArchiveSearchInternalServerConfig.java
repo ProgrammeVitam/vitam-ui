@@ -56,9 +56,16 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 @Configuration
-@Import({RestExceptionHandler.class, SwaggerConfiguration.class,
-    fr.gouv.vitamui.archive.internal.server.security.WebSecurityConfig.class,
-    VitamAccessConfig.class, VitamAdministrationConfig.class, ConverterConfig.class})
+@Import(
+    {
+        RestExceptionHandler.class,
+        SwaggerConfiguration.class,
+        fr.gouv.vitamui.archive.internal.server.security.WebSecurityConfig.class,
+        VitamAccessConfig.class,
+        VitamAdministrationConfig.class,
+        ConverterConfig.class,
+    }
+)
 public class ArchiveSearchInternalServerConfig extends AbstractContextConfiguration {
 
     @Bean
@@ -70,25 +77,29 @@ public class ArchiveSearchInternalServerConfig extends AbstractContextConfigurat
     @Bean
     public IamInternalRestClientFactory iamInternalRestClientFactory(
         final RestClientConfiguration iamInternalRestClientConfiguration,
-        final RestTemplateBuilder restTemplateBuilder) {
+        final RestTemplateBuilder restTemplateBuilder
+    ) {
         return new IamInternalRestClientFactory(iamInternalRestClientConfiguration, restTemplateBuilder);
     }
 
     @Bean
     public InternalApiAuthenticationProvider internalApiAuthenticationProvider(
-        final InternalAuthentificationService internalAuthentificationService) {
+        final InternalAuthentificationService internalAuthentificationService
+    ) {
         return new InternalApiAuthenticationProvider(internalAuthentificationService);
     }
 
     @Bean
     public UserInternalRestClient userInternalRestClient(
-        final IamInternalRestClientFactory iamInternalRestClientFactory) {
+        final IamInternalRestClientFactory iamInternalRestClientFactory
+    ) {
         return iamInternalRestClientFactory.getUserInternalRestClient();
     }
 
     @Bean
     public InternalAuthentificationService internalAuthentificationService(
-        final UserInternalRestClient userInternalRestClient) {
+        final UserInternalRestClient userInternalRestClient
+    ) {
         return new InternalAuthentificationService(userInternalRestClient);
     }
 
@@ -114,7 +125,8 @@ public class ArchiveSearchInternalServerConfig extends AbstractContextConfigurat
 
     @Bean
     public TransferAcknowledgmentService transferAcknowledgmentService(
-        final AccessExternalClient accessExternalClient) {
+        final AccessExternalClient accessExternalClient
+    ) {
         return new TransferAcknowledgmentService(accessExternalClient);
     }
 
@@ -123,20 +135,25 @@ public class ArchiveSearchInternalServerConfig extends AbstractContextConfigurat
         return new RuleOperationsConverter();
     }
 
-
     @Bean
     public SearchCriteriaHistoryInternalService searchCriteriaHistoryInternalService(
         final CustomSequenceRepository sequenceRepository,
         final SearchCriteriaHistoryRepository searchCriteriaHistoryRepository,
         final SearchCriteriaHistoryConverter searchCriteriaHistoryConverter,
-        final InternalSecurityService internalSecurityService) {
-        return new SearchCriteriaHistoryInternalService(sequenceRepository, searchCriteriaHistoryRepository,
-            searchCriteriaHistoryConverter, internalSecurityService);
+        final InternalSecurityService internalSecurityService
+    ) {
+        return new SearchCriteriaHistoryInternalService(
+            sequenceRepository,
+            searchCriteriaHistoryRepository,
+            searchCriteriaHistoryConverter,
+            internalSecurityService
+        );
     }
 
     @Bean
     public ExternalParametersInternalRestClient externalParametersInternalRestClient(
-        final IamInternalRestClientFactory iamInternalRestClientFactory) {
+        final IamInternalRestClientFactory iamInternalRestClientFactory
+    ) {
         return iamInternalRestClientFactory.getExternalParametersInternalRestClient();
     }
 }

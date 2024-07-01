@@ -43,6 +43,7 @@ import java.util.List;
 @Accessors(chain = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class SearchCriteriaEltDto implements Serializable {
+
     @NotNull
     private String criteria;
 

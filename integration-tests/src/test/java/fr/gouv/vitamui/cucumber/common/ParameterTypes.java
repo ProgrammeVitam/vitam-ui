@@ -47,5 +47,4 @@ public class ParameterTypes {
     public LevelParameterType level(final String data) {
         return new LevelParameterType(data);
     }
-
 }

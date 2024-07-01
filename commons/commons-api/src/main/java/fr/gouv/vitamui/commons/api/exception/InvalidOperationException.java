@@ -59,5 +59,4 @@ public class InvalidOperationException extends VitamUIException {
     public InvalidOperationException(final String message, final String key) {
         super(message, key);
     }
-
 }

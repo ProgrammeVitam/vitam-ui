@@ -36,7 +36,6 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.core.env.Environment;
 
-
 @SpringBootApplication
 @EnableDiscoveryClient
 public class ApiArchivesSearchExternalServerApplication implements CommandLineRunner {
@@ -45,17 +44,18 @@ public class ApiArchivesSearchExternalServerApplication implements CommandLineRu
     private Environment env;
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
-        ApiArchivesSearchExternalServerApplication.class);
+        ApiArchivesSearchExternalServerApplication.class
+    );
 
     public static void main(final String[] args) {
-        final SpringApplication app = new SpringApplicationBuilder(ApiArchivesSearchExternalServerApplication.class)
-            .build();
+        final SpringApplication app = new SpringApplicationBuilder(
+            ApiArchivesSearchExternalServerApplication.class
+        ).build();
         app.run(args);
     }
 
     @Override
     public void run(final String... args) throws Exception {
-
         LOGGER.info("VITAMUI SpringBoot Application started:");
         LOGGER.info("-------------------------------");
         LOGGER.info("\n");

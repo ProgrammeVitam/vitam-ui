@@ -60,13 +60,18 @@ public class AccessionRegisterDetailService extends AbstractPaginateService<Acce
     private final CommonService commonService;
 
     @Autowired
-    public AccessionRegisterDetailService(final CommonService commonService, final AccessionRegisterDetailExternalRestClient client) {
+    public AccessionRegisterDetailService(
+        final CommonService commonService,
+        final AccessionRegisterDetailExternalRestClient client
+    ) {
         this.commonService = commonService;
         this.client = client;
     }
 
-    public ResponseEntity<Resource> exportAccessionRegisterCsv(final AccessionRegisterSearchDto searchQuery,
-                                                               ExternalHttpContext context) {
+    public ResponseEntity<Resource> exportAccessionRegisterCsv(
+        final AccessionRegisterSearchDto searchQuery,
+        ExternalHttpContext context
+    ) {
         LOGGER.info("Accession register details csv export: {}", searchQuery);
         return client.exportAccessionRegisterCsv(searchQuery, context);
     }

@@ -60,23 +60,28 @@ import static fr.gouv.vitamui.collect.common.rest.RestApi.COLLECT_PROJECT_OBJECT
 @ResponseBody
 public class ProjectObjectGroupExternalController {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ProjectObjectGroupExternalController.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
+        ProjectObjectGroupExternalController.class
+    );
     private final ProjectObjectGroupExternalService projectObjectGroupExternalService;
     private static final String MANDATORY_IDENTIFIER = "The Identifier is a mandatory parameter: ";
     private static final String MANDATORY_USAGE = "Usage is a mandatory parameter: ";
     private static final String MANDATORY_VERSION = "Version is a mandatory parameter: ";
 
     @Autowired
-    public ProjectObjectGroupExternalController(
-        ProjectObjectGroupExternalService projectObjectGroupExternalService) {
+    public ProjectObjectGroupExternalController(ProjectObjectGroupExternalService projectObjectGroupExternalService) {
         this.projectObjectGroupExternalService = projectObjectGroupExternalService;
     }
 
-    @GetMapping(value = DOWNLOAD_ARCHIVE_UNIT +
-        CommonConstants.PATH_ID, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-    public Mono<ResponseEntity<Resource>> downloadObjectFromUnit(final @PathVariable("id") String id,
-        final @RequestParam("usage") String usage, final @RequestParam("version") Integer version)
-        throws InvalidParseOperationException, PreconditionFailedException {
+    @GetMapping(
+        value = DOWNLOAD_ARCHIVE_UNIT + CommonConstants.PATH_ID,
+        produces = MediaType.APPLICATION_OCTET_STREAM_VALUE
+    )
+    public Mono<ResponseEntity<Resource>> downloadObjectFromUnit(
+        final @PathVariable("id") String id,
+        final @RequestParam("usage") String usage,
+        final @RequestParam("version") Integer version
+    ) throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
         ParameterChecker.checkParameter(MANDATORY_USAGE, usage);
         ParameterChecker.checkParameter(MANDATORY_VERSION, version);
@@ -85,7 +90,7 @@ public class ProjectObjectGroupExternalController {
         return projectObjectGroupExternalService.downloadObjectFromUnit(id, usage, version);
     }
 
-    @GetMapping( CommonConstants.PATH_ID)
+    @GetMapping(CommonConstants.PATH_ID)
     public ResponseEntity<ResultsDto> findObjectById(final @PathVariable("id") String id)
         throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);

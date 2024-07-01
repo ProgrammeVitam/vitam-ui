@@ -1,21 +1,25 @@
 package fr.gouv.vitamui.iam.external.server.rest;
 
-import java.util.List;
-
-import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
-import org.springframework.security.core.Authentication;
-
 import fr.gouv.vitamui.commons.api.domain.IdDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
+import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.commons.test.rest.AbstractMockMvcCrudControllerTest;
 import fr.gouv.vitamui.iam.security.authentication.ExternalAuthentication;
+import org.springframework.security.core.Authentication;
 
-public abstract class ApiControllerTest<T extends IdDto>  extends AbstractMockMvcCrudControllerTest<T> {
+import java.util.List;
+
+public abstract class ApiControllerTest<T extends IdDto> extends AbstractMockMvcCrudControllerTest<T> {
 
     @Override
     protected Authentication buildUserAuthenticated() {
-        final Authentication authentication = new ExternalAuthentication(buildPrincipal(), buildCredentials(),null,buildUserRoles());
+        final Authentication authentication = new ExternalAuthentication(
+            buildPrincipal(),
+            buildCredentials(),
+            null,
+            buildUserRoles()
+        );
         return authentication;
     }
 
@@ -34,5 +38,4 @@ public abstract class ApiControllerTest<T extends IdDto>  extends AbstractMockMv
     }
 
     protected abstract String[] getServices();
-
 }

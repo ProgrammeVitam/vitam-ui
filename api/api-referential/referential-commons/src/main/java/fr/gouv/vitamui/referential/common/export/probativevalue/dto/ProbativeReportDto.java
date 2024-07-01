@@ -36,35 +36,32 @@
  */
 package fr.gouv.vitamui.referential.common.export.probativevalue.dto;
 
-import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+
+import java.util.List;
 
 @Getter
 @Setter
 @ToString
 public class ProbativeReportDto {
-	
-	@JsonProperty("operationSummary")
-	private OperationSummaryDto operationSummary;
-	
-	@JsonProperty("reportSummary")
-	private ReportSummaryDto reportSummary;
-	
-	@JsonProperty("context")
-	private ContextDto context;
-	
-	@JsonProperty("reportEntries")
-	private List<ReportEntryDto> reportEntries;
-	
-	@JsonProperty("reportVersion")
-	@JsonAlias("ReportVersion")
-	private Integer reportVersion;
-	
-	
+
+    @JsonProperty("operationSummary")
+    private OperationSummaryDto operationSummary;
+
+    @JsonProperty("reportSummary")
+    private ReportSummaryDto reportSummary;
+
+    @JsonProperty("context")
+    private ContextDto context;
+
+    @JsonProperty("reportEntries")
+    private List<ReportEntryDto> reportEntries;
+
+    @JsonProperty("reportVersion")
+    @JsonAlias("ReportVersion")
+    private Integer reportVersion;
 }

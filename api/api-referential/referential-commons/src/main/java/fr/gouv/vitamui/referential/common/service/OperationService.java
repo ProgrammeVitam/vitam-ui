@@ -60,38 +60,40 @@ public class OperationService {
         this.adminExternalClient = adminExternalClient;
     }
 
-    public Response exportTraceability(VitamContext context, String id) throws VitamClientException, AccessExternalClientServerException {
-        LOGGER.info("Export Tracability EvIdAppSession : {} " , context.getApplicationSessionId());
+    public Response exportTraceability(VitamContext context, String id)
+        throws VitamClientException, AccessExternalClientServerException {
+        LOGGER.info("Export Tracability EvIdAppSession : {} ", context.getApplicationSessionId());
         return adminExternalClient.downloadTraceabilityOperationFile(context, id);
     }
+
     public Response exportAudit(VitamContext context, String id) throws VitamClientException {
-        LOGGER.info("Export Audit EvIdAppSession : {} " , context.getApplicationSessionId());
+        LOGGER.info("Export Audit EvIdAppSession : {} ", context.getApplicationSessionId());
         return adminExternalClient.downloadBatchReport(context, id);
     }
 
     public void runAudit(VitamContext context, JsonNode jsonNode) throws AccessExternalClientServerException {
         LOGGER.debug("run audit {}", jsonNode);
-        LOGGER.info("run audit EvIdAppSession : {} " , context.getApplicationSessionId());
+        LOGGER.info("run audit EvIdAppSession : {} ", context.getApplicationSessionId());
         RequestResponse r = this.adminExternalClient.launchAudit(context, jsonNode);
         LOGGER.debug(r.toString());
     }
 
     public void lauchEvidenceAudit(VitamContext context, JsonNode jsonNode) throws VitamClientException {
         LOGGER.debug("run evidenceAudit {}", jsonNode);
-        LOGGER.info("run Evidence Audit EvIdAppSession : {} " , context.getApplicationSessionId());
+        LOGGER.info("run Evidence Audit EvIdAppSession : {} ", context.getApplicationSessionId());
         RequestResponse r = this.adminExternalClient.evidenceAudit(context, jsonNode);
         LOGGER.debug(r.toString());
     }
 
-    public void launchRectificationAudit(final VitamContext context, final String evidenceAuditIdentifier) throws VitamClientException {
+    public void launchRectificationAudit(final VitamContext context, final String evidenceAuditIdentifier)
+        throws VitamClientException {
         LOGGER.debug("Run rectificationAudit {}", evidenceAuditIdentifier);
         final RequestResponse r = this.adminExternalClient.rectificationAudit(context, evidenceAuditIdentifier);
         LOGGER.debug(r.toString());
     }
 
     public void runProbativeValue(VitamContext context, ProbativeValueRequest request) throws VitamClientException {
-        LOGGER.info("run Probative Value EvIdAppSession : {} " , context.getApplicationSessionId());
+        LOGGER.info("run Probative Value EvIdAppSession : {} ", context.getApplicationSessionId());
         this.adminExternalClient.exportProbativeValue(context, request);
     }
-
 }

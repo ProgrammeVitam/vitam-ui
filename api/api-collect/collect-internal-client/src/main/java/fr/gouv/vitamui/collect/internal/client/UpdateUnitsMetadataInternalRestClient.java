@@ -53,13 +53,14 @@ import java.util.List;
 
 import static fr.gouv.vitamui.collect.common.rest.RestApi.UPDATE_UNITS_METADATA_PATH;
 
-public class UpdateUnitsMetadataInternalRestClient extends
-    BasePaginatingAndSortingRestClient<CollectTransactionDto, InternalHttpContext> {
+public class UpdateUnitsMetadataInternalRestClient
+    extends BasePaginatingAndSortingRestClient<CollectTransactionDto, InternalHttpContext> {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(UpdateUnitsMetadataInternalRestClient.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
+        UpdateUnitsMetadataInternalRestClient.class
+    );
 
-    public UpdateUnitsMetadataInternalRestClient(RestTemplate restTemplate,
-        String baseUrl) {
+    public UpdateUnitsMetadataInternalRestClient(RestTemplate restTemplate, String baseUrl) {
         super(restTemplate, baseUrl);
     }
 
@@ -70,19 +71,16 @@ public class UpdateUnitsMetadataInternalRestClient extends
 
     @Override
     protected ParameterizedTypeReference<List<CollectTransactionDto>> getDtoListClass() {
-        return new ParameterizedTypeReference<>() {
-        };
+        return new ParameterizedTypeReference<>() {};
     }
 
     @Override
     protected ParameterizedTypeReference<PaginatedValuesDto<CollectTransactionDto>> getDtoPaginatedClass() {
-        return new ParameterizedTypeReference<>() {
-        };
+        return new ParameterizedTypeReference<>() {};
     }
 
     @Override
     public String getPathUrl() {
-
         return RestApi.COLLECT_TRANSACTION_PATH;
     }
 
@@ -96,12 +94,16 @@ public class UpdateUnitsMetadataInternalRestClient extends
      * @return a String
      */
 
-    public String updateArchiveUnitsMetadataFromFile(final InternalHttpContext context, String originalFileName, String transactionId,
-        InputStream inputStream) {
+    public String updateArchiveUnitsMetadataFromFile(
+        final InternalHttpContext context,
+        String originalFileName,
+        String transactionId,
+        InputStream inputStream
+    ) {
         LOGGER.debug("[Internal] Calling upload metadata csv file using streaming process");
-        final UriComponentsBuilder uriBuilder =
-            UriComponentsBuilder.fromHttpUrl(
-                getUrl() +  CommonConstants.TRANSACTION_PATH_ID + UPDATE_UNITS_METADATA_PATH);
+        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(
+            getUrl() + CommonConstants.TRANSACTION_PATH_ID + UPDATE_UNITS_METADATA_PATH
+        );
 
         final MultiValueMap<String, String> headersList = new HttpHeaders();
         headersList.addAll(buildHeaders(context));
@@ -111,14 +113,18 @@ public class UpdateUnitsMetadataInternalRestClient extends
         headersParams.setContentType(MediaType.APPLICATION_OCTET_STREAM);
         headersParams.addAll(headersList);
 
-        final HttpEntity<InputStreamResource> request =
-            new HttpEntity<>(new InputStreamResource(inputStream), headersParams);
+        final HttpEntity<InputStreamResource> request = new HttpEntity<>(
+            new InputStreamResource(inputStream),
+            headersParams
+        );
 
-        final ResponseEntity<String> response =
-            restTemplate.exchange(uriBuilder.build(transactionId), HttpMethod.PUT,
-                request, String.class);
+        final ResponseEntity<String> response = restTemplate.exchange(
+            uriBuilder.build(transactionId),
+            HttpMethod.PUT,
+            request,
+            String.class
+        );
         LOGGER.debug("[Internal] The units metadata update response is : {} ", response.toString());
         return response.getBody();
     }
-
 }

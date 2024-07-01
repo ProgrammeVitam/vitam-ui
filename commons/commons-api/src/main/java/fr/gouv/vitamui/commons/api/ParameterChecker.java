@@ -40,8 +40,7 @@ import org.apache.commons.lang3.StringUtils;
 
 public final class ParameterChecker {
 
-    private ParameterChecker() {
-    }
+    private ParameterChecker() {}
 
     public static void checkPagination(final Integer pageSize, final Integer pageNum) {
         if (pageSize == null || pageSize <= 0) {
@@ -75,7 +74,11 @@ public final class ParameterChecker {
             throw new IllegalArgumentException(errorMessage);
         }
         for (final Object parameter : parameters) {
-            if (parameter == null || (parameter instanceof String && (StringUtils.isEmpty(parameter.toString()) || parameter.toString().trim().isEmpty()))) {
+            if (
+                parameter == null ||
+                (parameter instanceof String &&
+                    (StringUtils.isEmpty(parameter.toString()) || parameter.toString().trim().isEmpty()))
+            ) {
                 throw new IllegalArgumentException(errorMessage);
             }
         }
@@ -93,5 +96,4 @@ public final class ParameterChecker {
             throw new IllegalArgumentException("Parameter " + name + " is less than " + minValue);
         }
     }
-
 }

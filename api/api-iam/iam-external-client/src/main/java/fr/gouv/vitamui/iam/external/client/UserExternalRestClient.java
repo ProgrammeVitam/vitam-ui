@@ -91,8 +91,12 @@ public class UserExternalRestClient extends BasePaginatingAndSortingRestClient<U
         final String id = (String) partialDto.get("id");
         final MultiValueMap<String, String> headers = buildHeaders(context);
         final HttpEntity<Map<String, Object>> request = new HttpEntity<>(partialDto, headers);
-        final ResponseEntity<UserDto> response = restTemplate.exchange(uriBuilder.build(id), HttpMethod.PATCH, request,
-                getDtoClass());
+        final ResponseEntity<UserDto> response = restTemplate.exchange(
+            uriBuilder.build(id),
+            HttpMethod.PATCH,
+            request,
+            getDtoClass()
+        );
         checkResponse(response);
         return response.getBody();
     }
@@ -103,8 +107,12 @@ public class UserExternalRestClient extends BasePaginatingAndSortingRestClient<U
         final URIBuilder builder = getUriBuilderFromPath(CommonConstants.PATH_LEVELS);
         criteria.ifPresent(o -> builder.addParameter("criteria", o));
         final HttpEntity<?> request = new HttpEntity<>(buildHeaders(context));
-        final ResponseEntity<List<String>> response = restTemplate.exchange(buildUriBuilder(builder),
-                HttpMethod.GET, request, getStringListClass());
+        final ResponseEntity<List<String>> response = restTemplate.exchange(
+            buildUriBuilder(builder),
+            HttpMethod.GET,
+            request,
+            getStringListClass()
+        );
         checkResponse(response);
         return response.getBody();
     }
@@ -132,18 +140,15 @@ public class UserExternalRestClient extends BasePaginatingAndSortingRestClient<U
 
     @Override
     protected ParameterizedTypeReference<List<UserDto>> getDtoListClass() {
-        return new ParameterizedTypeReference<List<UserDto>>() {
-        };
+        return new ParameterizedTypeReference<List<UserDto>>() {};
     }
 
     @Override
     protected ParameterizedTypeReference<PaginatedValuesDto<UserDto>> getDtoPaginatedClass() {
-        return new ParameterizedTypeReference<PaginatedValuesDto<UserDto>>() {
-        };
+        return new ParameterizedTypeReference<PaginatedValuesDto<UserDto>>() {};
     }
 
     private ParameterizedTypeReference<List<String>> getStringListClass() {
-        return new ParameterizedTypeReference<List<String>>() {
-        };
+        return new ParameterizedTypeReference<List<String>>() {};
     }
 }

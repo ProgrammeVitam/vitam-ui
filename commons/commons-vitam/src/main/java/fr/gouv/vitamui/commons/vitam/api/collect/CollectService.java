@@ -66,20 +66,32 @@ public class CollectService {
      * @return
      * @throws VitamClientException
      */
-    public RequestResponse<JsonNode> searchUnitsByTransactionId(final String transactionId, JsonNode searchQuery,
-        final VitamContext vitamContext) throws VitamClientException {
+    public RequestResponse<JsonNode> searchUnitsByTransactionId(
+        final String transactionId,
+        JsonNode searchQuery,
+        final VitamContext vitamContext
+    ) throws VitamClientException {
         LOGGER.debug(TRANSACTION_ID, transactionId);
-        final RequestResponse<JsonNode> result =
-            collectExternalClient.getUnitsByTransaction(vitamContext, transactionId, searchQuery);
+        final RequestResponse<JsonNode> result = collectExternalClient.getUnitsByTransaction(
+            vitamContext,
+            transactionId,
+            searchQuery
+        );
         VitamRestUtils.checkResponse(result);
         return result;
     }
 
-    public RequestResponse<JsonNode> searchUnitsByTransaction(final String transactionId, JsonNode searchQuery,
-        final VitamContext vitamContext) throws VitamClientException {
+    public RequestResponse<JsonNode> searchUnitsByTransaction(
+        final String transactionId,
+        JsonNode searchQuery,
+        final VitamContext vitamContext
+    ) throws VitamClientException {
         LOGGER.debug(PROJECT_ID, transactionId);
-        final RequestResponse<JsonNode> result =
-            collectExternalClient.getUnitsByTransaction(vitamContext, transactionId, searchQuery);
+        final RequestResponse<JsonNode> result = collectExternalClient.getUnitsByTransaction(
+            vitamContext,
+            transactionId,
+            searchQuery
+        );
         VitamRestUtils.checkResponse(result);
         return result;
     }
@@ -109,11 +121,17 @@ public class CollectService {
      * @return
      * @throws VitamClientException
      */
-    public RequestResponse<JsonNode> initTransaction(final VitamContext vitamContext,
-        final TransactionDto transactionDto, String projectId) throws VitamClientException {
+    public RequestResponse<JsonNode> initTransaction(
+        final VitamContext vitamContext,
+        final TransactionDto transactionDto,
+        String projectId
+    ) throws VitamClientException {
         LOGGER.debug(TRANSACTION_ID, transactionDto.getId());
-        final RequestResponse<JsonNode> result =
-            collectExternalClient.initTransaction(vitamContext, transactionDto, projectId);
+        final RequestResponse<JsonNode> result = collectExternalClient.initTransaction(
+            vitamContext,
+            transactionDto,
+            projectId
+        );
         VitamRestUtils.checkResponse(result);
         return result;
     }
@@ -134,7 +152,6 @@ public class CollectService {
         return result;
     }
 
-
     /**
      * update existing Transaction.
      *
@@ -143,8 +160,10 @@ public class CollectService {
      * @return
      * @throws VitamClientException
      */
-    public RequestResponse<JsonNode> updateTransaction(final VitamContext vitamContext,
-        final TransactionDto transactionDto) throws VitamClientException {
+    public RequestResponse<JsonNode> updateTransaction(
+        final VitamContext vitamContext,
+        final TransactionDto transactionDto
+    ) throws VitamClientException {
         LOGGER.debug(TRANSACTION_ID, transactionDto.getId());
         final RequestResponse<JsonNode> result = collectExternalClient.updateTransaction(vitamContext, transactionDto);
         VitamRestUtils.checkResponse(result);
@@ -174,8 +193,10 @@ public class CollectService {
      */
     public RequestResponse<JsonNode> getTransactionsByProject(final String projectId, final VitamContext vitamContext)
         throws VitamClientException {
-        final RequestResponse<JsonNode> result =
-            collectExternalClient.getTransactionByProjectId(vitamContext, projectId);
+        final RequestResponse<JsonNode> result = collectExternalClient.getTransactionByProjectId(
+            vitamContext,
+            projectId
+        );
         VitamRestUtils.checkResponse(result);
         return result;
     }
@@ -188,11 +209,10 @@ public class CollectService {
      * @return
      * @throws VitamClientException
      */
-    public RequestResponse<JsonNode> searchProject(final VitamContext vitamContext,
-        CriteriaProjectDto criteriaProjectDto)
-        throws VitamClientException {
-
-
+    public RequestResponse<JsonNode> searchProject(
+        final VitamContext vitamContext,
+        CriteriaProjectDto criteriaProjectDto
+    ) throws VitamClientException {
         final RequestResponse<JsonNode> result = collectExternalClient.searchProject(vitamContext, criteriaProjectDto);
         VitamRestUtils.checkResponse(result);
         return result;
@@ -205,8 +225,11 @@ public class CollectService {
      * @return
      * @throws VitamClientException
      */
-    public RequestResponse uploadProjectZip(final VitamContext vitamContext, final String transactionId,
-        final InputStream inputStream) throws VitamClientException {
+    public RequestResponse uploadProjectZip(
+        final VitamContext vitamContext,
+        final String transactionId,
+        final InputStream inputStream
+    ) throws VitamClientException {
         LOGGER.debug("upload zip by transaction id : {}", transactionId);
         final RequestResponse result = collectExternalClient.uploadProjectZip(vitamContext, transactionId, inputStream);
         VitamRestUtils.checkResponse(result);
@@ -221,12 +244,15 @@ public class CollectService {
         return result;
     }
 
-
-    public RequestResponse<JsonNode> getLastTransactionForProjectId(final VitamContext vitamContext,
-        final String projectId) throws VitamClientException {
+    public RequestResponse<JsonNode> getLastTransactionForProjectId(
+        final VitamContext vitamContext,
+        final String projectId
+    ) throws VitamClientException {
         LOGGER.debug("get last transaction by project id : {}", projectId);
-        final RequestResponse<JsonNode> result =
-            collectExternalClient.getTransactionByProjectId(vitamContext, projectId);
+        final RequestResponse<JsonNode> result = collectExternalClient.getTransactionByProjectId(
+            vitamContext,
+            projectId
+        );
         VitamRestUtils.checkResponse(result);
         return result;
     }
@@ -257,8 +283,12 @@ public class CollectService {
      * @return Response
      * @throws VitamClientException Thrown exception
      */
-    public Response getObjectStreamByUnitId(final String unitId, final String usage, final int version,
-        final VitamContext vitamContext) throws VitamClientException {
+    public Response getObjectStreamByUnitId(
+        final String unitId,
+        final String usage,
+        final int version,
+        final VitamContext vitamContext
+    ) throws VitamClientException {
         final Response response = collectExternalClient.getObjectStreamByUnitId(vitamContext, unitId, usage, version);
         VitamRestUtils.checkResponse(response);
         return response;
@@ -304,7 +334,6 @@ public class CollectService {
         return response;
     }
 
-
     public RequestResponse<JsonNode> getTransactionById(VitamContext vitamContext, String transactionId)
         throws VitamClientException {
         LOGGER.debug(TRANSACTION_ID, transactionId);
@@ -344,11 +373,16 @@ public class CollectService {
         return response;
     }
 
-    public JsonNode selectUnitWithInheritedRules(final JsonNode dslQuery, String transactionId,
-        final VitamContext vitamContext)
-        throws VitamClientException {
-        RequestResponse<JsonNode> response =
-            collectExternalClient.selectUnitsWithInheritedRules(vitamContext, transactionId, dslQuery);
+    public JsonNode selectUnitWithInheritedRules(
+        final JsonNode dslQuery,
+        String transactionId,
+        final VitamContext vitamContext
+    ) throws VitamClientException {
+        RequestResponse<JsonNode> response = collectExternalClient.selectUnitsWithInheritedRules(
+            vitamContext,
+            transactionId,
+            dslQuery
+        );
         return response.toJsonNode();
     }
 }

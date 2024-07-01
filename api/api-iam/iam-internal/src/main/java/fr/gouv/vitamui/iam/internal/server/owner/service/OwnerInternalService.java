@@ -36,20 +36,7 @@
  */
 package fr.gouv.vitamui.iam.internal.server.owner.service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Optional;
-
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.Assert;
 import com.fasterxml.jackson.databind.JsonNode;
-
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitamui.commons.api.converter.Converter;
@@ -76,6 +63,18 @@ import fr.gouv.vitamui.iam.internal.server.tenant.dao.TenantRepository;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Optional;
 
 /**
  * The service to read, create, update and delete the tenants.
@@ -109,10 +108,17 @@ public class OwnerInternalService extends VitamUICrudService<OwnerDto, Owner> {
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(OwnerInternalService.class);
 
     @Autowired
-    public OwnerInternalService(final SequenceGeneratorService sequenceGeneratorService, final OwnerRepository ownerRepository,
-            final CustomerRepository customerRepository, final AddressService addressService, final IamLogbookService iamLogbookService,
-            final InternalSecurityService internalSecurityService, final OwnerConverter ownerConverter, final LogbookService logbookService,
-            final TenantRepository tenantRepository) {
+    public OwnerInternalService(
+        final SequenceGeneratorService sequenceGeneratorService,
+        final OwnerRepository ownerRepository,
+        final CustomerRepository customerRepository,
+        final AddressService addressService,
+        final IamLogbookService iamLogbookService,
+        final InternalSecurityService internalSecurityService,
+        final OwnerConverter ownerConverter,
+        final LogbookService logbookService,
+        final TenantRepository tenantRepository
+    ) {
         super(sequenceGeneratorService);
         this.ownerRepository = ownerRepository;
         this.customerRepository = customerRepository;
@@ -162,7 +168,13 @@ public class OwnerInternalService extends VitamUICrudService<OwnerDto, Owner> {
 
         checkIsReadonly(owner.isReadonly(), message);
 
-        Assert.isTrue(!checkMapContainsOnlyFieldsUnmodifiable(partialDto, Arrays.asList("id", "readonly", "identifier", "customerId")), message);
+        Assert.isTrue(
+            !checkMapContainsOnlyFieldsUnmodifiable(
+                partialDto,
+                Arrays.asList("id", "readonly", "identifier", "customerId")
+            ),
+            message
+        );
 
         final String customerId = CastUtils.toString(partialDto.get("customerId"));
         if (customerId != null) {
@@ -190,56 +202,64 @@ public class OwnerInternalService extends VitamUICrudService<OwnerDto, Owner> {
     @Override
     protected void processPatch(final Owner owner, final Map<String, Object> partialDto) {
         final Collection<EventDiffDto> logbooks = new ArrayList<>();
-        final VitamContext vitamContext =  internalSecurityService.buildVitamContext(internalSecurityService.getTenantIdentifier());
-        if(vitamContext != null) {
+        final VitamContext vitamContext = internalSecurityService.buildVitamContext(
+            internalSecurityService.getTenantIdentifier()
+        );
+        if (vitamContext != null) {
             LOGGER.info("Patch Owner EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
         }
 
         for (final Entry<String, Object> entry : partialDto.entrySet()) {
             switch (entry.getKey()) {
-                case "id" :
-                case "readonly" :
-                case "customerId" :
-                case "identifier" :
+                case "id":
+                case "readonly":
+                case "customerId":
+                case "identifier":
                     break;
-                case "name" :
+                case "name":
                     logbooks.add(new EventDiffDto(OwnerConverter.NAME_KEY, owner.getName(), entry.getValue()));
                     owner.setName(CastUtils.toString(entry.getValue()));
                     break;
-                case "code" :
+                case "code":
                     logbooks.add(new EventDiffDto(OwnerConverter.CODE_KEY, owner.getCode(), entry.getValue()));
                     owner.setCode(CastUtils.toString(entry.getValue()));
                     break;
-                case "companyName" :
-                    logbooks.add(new EventDiffDto(OwnerConverter.COMPANY_NAME_KEY, owner.getCompanyName(), entry.getValue()));
+                case "companyName":
+                    logbooks.add(
+                        new EventDiffDto(OwnerConverter.COMPANY_NAME_KEY, owner.getCompanyName(), entry.getValue())
+                    );
                     owner.setCompanyName(CastUtils.toString(entry.getValue()));
                     break;
-                case "internalCode" :
-                    logbooks.add(new EventDiffDto(OwnerConverter.INTERNAL_CODE_KEY, owner.getInternalCode(), entry.getValue()));
+                case "internalCode":
+                    logbooks.add(
+                        new EventDiffDto(OwnerConverter.INTERNAL_CODE_KEY, owner.getInternalCode(), entry.getValue())
+                    );
                     owner.setInternalCode(CastUtils.toString(entry.getValue()));
                     break;
-                case "address" :
+                case "address":
                     Address address;
                     if (owner.getAddress() == null) {
                         address = new Address();
                         owner.setAddress(address);
-                    }
-                    else {
+                    } else {
                         address = owner.getAddress();
                     }
                     addressService.processPatch(address, CastUtils.toMap(entry.getValue()), logbooks, false);
                     break;
-                default :
-                    throw new IllegalArgumentException("Unable to patch owner " + owner.getId() + ": key " + entry.getKey() + " is not allowed");
+                default:
+                    throw new IllegalArgumentException(
+                        "Unable to patch owner " + owner.getId() + ": key " + entry.getKey() + " is not allowed"
+                    );
             }
         }
         iamLogbookService.updateOwnerEvent(owner, logbooks);
-
     }
 
     private Owner find(final String id, final String message) {
         Assert.isTrue(StringUtils.isNotEmpty(id), message + ": no id");
-        return getRepository().findById(id).orElseThrow(() -> new IllegalArgumentException(message + ": no owner found for id " + id));
+        return getRepository()
+            .findById(id)
+            .orElseThrow(() -> new IllegalArgumentException(message + ": no owner found for id " + id));
     }
 
     private void checkSetReadonly(final boolean readonly, final String message) {
@@ -258,22 +278,34 @@ public class OwnerInternalService extends VitamUICrudService<OwnerDto, Owner> {
 
     private void checkCode(final String id, final String code, final String message) {
         final Optional<Owner> optOwner = getRepository().findByCode(code);
-        optOwner.ifPresent(owner -> Assert.isTrue(StringUtils.equals(owner.getId(), id), message + ": a owner with code: " + code + " already exists."));
+        optOwner.ifPresent(
+            owner ->
+                Assert.isTrue(
+                    StringUtils.equals(owner.getId(), id),
+                    message + ": a owner with code: " + code + " already exists."
+                )
+        );
     }
 
     public JsonNode findHistoryById(final String id) throws VitamClientException {
         LOGGER.debug("findHistoryById for id {}", id);
         final Integer tenantIdentifier = internalSecurityService.getTenantIdentifier();
         final VitamContext vitamContext = new VitamContext(tenantIdentifier)
-                .setAccessContract(internalSecurityService.getTenant(tenantIdentifier).getAccessContractLogbookIdentifier())
-                .setApplicationSessionId(internalSecurityService.getApplicationId());
+            .setAccessContract(internalSecurityService.getTenant(tenantIdentifier).getAccessContractLogbookIdentifier())
+            .setApplicationSessionId(internalSecurityService.getApplicationId());
 
         final Optional<Owner> owner = getRepository().findById(id);
         owner.orElseThrow(() -> new NotFoundException(String.format("No owner found with id : %s", id)));
 
-         LOGGER.info("Find History EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
+        LOGGER.info("Find History EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
 
-        return logbookService.findEventsByIdentifierAndCollectionNames(owner.get().getIdentifier(), MongoDbCollections.OWNERS, vitamContext).toJsonNode();
+        return logbookService
+            .findEventsByIdentifierAndCollectionNames(
+                owner.get().getIdentifier(),
+                MongoDbCollections.OWNERS,
+                vitamContext
+            )
+            .toJsonNode();
     }
 
     private void checkIsReadonly(final boolean readonly, final String message) {
@@ -318,5 +350,4 @@ public class OwnerInternalService extends VitamUICrudService<OwnerDto, Owner> {
     protected Class<Owner> getEntityClass() {
         return Owner.class;
     }
-
 }

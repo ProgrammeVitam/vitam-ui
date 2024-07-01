@@ -63,8 +63,6 @@ public class AccessionRegisterSummaryInternalRestClient
     }
 
     protected ParameterizedTypeReference<List<AccessionRegisterSummaryDto>> getDtoListClass() {
-        return new ParameterizedTypeReference<>() {
-        };
+        return new ParameterizedTypeReference<>() {};
     }
-
 }

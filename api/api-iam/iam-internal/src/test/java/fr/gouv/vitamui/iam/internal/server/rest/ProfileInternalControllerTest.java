@@ -1,17 +1,6 @@
 package fr.gouv.vitamui.iam.internal.server.rest;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.ArgumentMatchers;
-import org.mockito.Mockito;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.junit4.SpringRunner;
-
 import com.google.common.collect.ImmutableMap;
-
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.ProfileDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
@@ -20,6 +9,15 @@ import fr.gouv.vitamui.iam.common.rest.RestApi;
 import fr.gouv.vitamui.iam.internal.server.common.rest.ApiIamControllerTest;
 import fr.gouv.vitamui.iam.internal.server.profile.service.ProfileInternalService;
 import fr.gouv.vitamui.iam.internal.server.utils.IamServerUtilsTest;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.ArgumentMatchers;
+import org.mockito.Mockito;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.junit4.SpringRunner;
+
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(controllers = { ProfileInternalController.class })
@@ -51,8 +49,7 @@ public class ProfileInternalControllerTest extends ApiIamControllerTest<ProfileD
     @Test
     public void testGetLevels() {
         LOGGER.debug("testGetLevels");
-        super.performGet(CommonConstants.PATH_LEVELS, ImmutableMap.of(),
-                status().isOk());
+        super.performGet(CommonConstants.PATH_LEVELS, ImmutableMap.of(), status().isOk());
         Mockito.verify(profileInternalService, Mockito.times(1)).getLevels(ArgumentMatchers.any());
     }
 
@@ -67,8 +64,7 @@ public class ProfileInternalControllerTest extends ApiIamControllerTest<ProfileD
     }
 
     @Override
-    protected void preparedServices() {
-    }
+    protected void preparedServices() {}
 
     @Override
     protected String getRessourcePrefix() {

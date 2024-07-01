@@ -126,8 +126,8 @@ public class SubrogationInternalController implements CrudController<Subrogation
      */
     @Override
     @PostMapping
-    public SubrogationDto create(@Valid final @RequestBody SubrogationDto dto) throws InvalidParseOperationException,
-        PreconditionFailedException{
+    public SubrogationDto create(@Valid final @RequestBody SubrogationDto dto)
+        throws InvalidParseOperationException, PreconditionFailedException {
         LOGGER.debug("Create {}", dto);
         SanityChecker.sanitizeCriteria(dto);
         return internalSubrogationService.create(dto);
@@ -143,8 +143,8 @@ public class SubrogationInternalController implements CrudController<Subrogation
     }
 
     @PatchMapping("/surrogate/accept/{id}")
-    public SubrogationDto accept(final @PathVariable("id") String id) throws InvalidParseOperationException,
-        PreconditionFailedException {
+    public SubrogationDto accept(final @PathVariable("id") String id)
+        throws InvalidParseOperationException, PreconditionFailedException {
         LOGGER.debug("Accepte subrogation id : {}", id);
         ParameterChecker.checkParameter("Identifier is mandatory : ", id);
         SanityChecker.checkSecureParameter(id);
@@ -152,8 +152,8 @@ public class SubrogationInternalController implements CrudController<Subrogation
     }
 
     @DeleteMapping("/surrogate/decline/{id}")
-    public void decline(final @PathVariable("id") String id) throws InvalidParseOperationException,
-        PreconditionFailedException {
+    public void decline(final @PathVariable("id") String id)
+        throws InvalidParseOperationException, PreconditionFailedException {
         LOGGER.debug("Decline subrogation id : {}", id);
         ParameterChecker.checkParameter("Identifier is mandatory : ", id);
         SanityChecker.checkSecureParameter(id);
@@ -171,14 +171,24 @@ public class SubrogationInternalController implements CrudController<Subrogation
     }
 
     @GetMapping(path = "/users", params = { "page", "size" })
-    public PaginatedValuesDto<UserDto> getUsers(@RequestParam final Integer page, @RequestParam final Integer size,
-            @RequestParam(required = false) final Optional<String> criteria, @RequestParam(required = false) final Optional<String> orderBy,
-            @RequestParam(required = false) final Optional<DirectionDto> direction)
-        throws InvalidParseOperationException, PreconditionFailedException {
-        LOGGER.debug("getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, criteria, orderBy, direction);
+    public PaginatedValuesDto<UserDto> getUsers(
+        @RequestParam final Integer page,
+        @RequestParam final Integer size,
+        @RequestParam(required = false) final Optional<String> criteria,
+        @RequestParam(required = false) final Optional<String> orderBy,
+        @RequestParam(required = false) final Optional<DirectionDto> direction
+    ) throws InvalidParseOperationException, PreconditionFailedException {
+        LOGGER.debug(
+            "getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}",
+            page,
+            size,
+            criteria,
+            orderBy,
+            direction
+        );
         SanityChecker.sanitizeCriteria(criteria);
         SanityChecker.checkSecureParameter(String.valueOf(page), String.valueOf(size));
-        if(direction.isPresent()){
+        if (direction.isPresent()) {
             SanityChecker.sanitizeCriteria(direction.get());
         }
         return internalSubrogationService.getUsers(page, size, criteria, orderBy, direction);
@@ -199,8 +209,8 @@ public class SubrogationInternalController implements CrudController<Subrogation
      */
     @Override
     @DeleteMapping(CommonConstants.PATH_ID)
-    public void delete(@PathVariable final String id) throws InvalidParseOperationException,
-        PreconditionFailedException {
+    public void delete(@PathVariable final String id)
+        throws InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.checkSecureParameter(id);
         internalSubrogationService.delete(id);
     }

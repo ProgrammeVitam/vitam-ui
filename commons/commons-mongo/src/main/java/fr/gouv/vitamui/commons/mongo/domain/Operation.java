@@ -36,19 +36,16 @@
  */
 package fr.gouv.vitamui.commons.mongo.domain;
 
-import java.time.OffsetDateTime;
-
-import javax.validation.constraints.NotNull;
-
-import org.springframework.data.mongodb.core.mapping.Document;
-
 import fr.gouv.vitamui.commons.api.enums.OperationStatus;
-import fr.gouv.vitamui.commons.api.enums.OperationType;
 import fr.gouv.vitamui.commons.mongo.IdDocument;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+import javax.validation.constraints.NotNull;
+import java.time.OffsetDateTime;
 
 /**
  * Class allowing to describe an async operation.

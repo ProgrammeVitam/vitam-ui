@@ -104,9 +104,8 @@ public class FileFormatController extends AbstractUiRestController {
     @ApiOperation(value = "Get entity")
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Collection<FileFormatDto> getAll(final Optional<String> criteria) throws
-        PreconditionFailedException, InvalidParseOperationException {
-
+    public Collection<FileFormatDto> getAll(final Optional<String> criteria)
+        throws PreconditionFailedException, InvalidParseOperationException {
         SanityChecker.sanitizeCriteria(criteria);
         LOGGER.debug("Get all with criteria={}", criteria);
         return service.getAll(buildUiHttpContext(), criteria);
@@ -115,21 +114,33 @@ public class FileFormatController extends AbstractUiRestController {
     @ApiOperation(value = "Get entities paginated")
     @GetMapping(params = { "page", "size" })
     @ResponseStatus(HttpStatus.OK)
-    public PaginatedValuesDto<FileFormatDto> getAllPaginated(@RequestParam final Integer page, @RequestParam final Integer size,
-            @RequestParam final Optional<String> criteria, @RequestParam final Optional<String> orderBy, @RequestParam final Optional<DirectionDto> direction)
-        throws InvalidParseOperationException, PreconditionFailedException {
+    public PaginatedValuesDto<FileFormatDto> getAllPaginated(
+        @RequestParam final Integer page,
+        @RequestParam final Integer size,
+        @RequestParam final Optional<String> criteria,
+        @RequestParam final Optional<String> orderBy,
+        @RequestParam final Optional<DirectionDto> direction
+    ) throws InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.sanitizeCriteria(criteria);
-        if(orderBy.isPresent()) {
+        if (orderBy.isPresent()) {
             SanityChecker.checkSecureParameter(orderBy.get());
         }
-        LOGGER.debug("getAllPaginated page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, criteria, orderBy, direction);
+        LOGGER.debug(
+            "getAllPaginated page={}, size={}, criteria={}, orderBy={}, ascendant={}",
+            page,
+            size,
+            criteria,
+            orderBy,
+            direction
+        );
         return service.getAllPaginated(page, size, criteria, orderBy, direction, buildUiHttpContext());
     }
 
     @ApiOperation(value = "Get file format by ID or history by file format's id if path ends by /history")
     @RequestMapping(value = "/**", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public Object getByIdOrHistory(HttpServletRequest request) throws UnsupportedEncodingException, InvalidParseOperationException {
+    public Object getByIdOrHistory(HttpServletRequest request)
+        throws UnsupportedEncodingException, InvalidParseOperationException {
         LOGGER.debug("Entering in 'getByIdOrHistory' method");
 
         final String requestUrl = request.getRequestURL().toString();
@@ -152,7 +163,7 @@ public class FileFormatController extends AbstractUiRestController {
         if (isHistoryRequest) {
             return StringUtils.substringBefore(path, historySuffix);
         }
-        return StringUtils.removeEndIgnoreCase(path,"/");
+        return StringUtils.removeEndIgnoreCase(path, "/");
     }
 
     private boolean isHistoryRequest(final String url) {
@@ -175,8 +186,8 @@ public class FileFormatController extends AbstractUiRestController {
      */
     @ApiOperation(value = "Check ability to create file format")
     @PostMapping(path = CommonConstants.PATH_CHECK)
-    public ResponseEntity<Void> check(@RequestBody FileFormatDto fileformatDto) throws InvalidParseOperationException,
-        PreconditionFailedException {
+    public ResponseEntity<Void> check(@RequestBody FileFormatDto fileformatDto)
+        throws InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.sanitizeCriteria(fileformatDto);
         LOGGER.debug("check ability to create file format={}", fileformatDto);
         final boolean exist = service.check(buildUiHttpContext(), fileformatDto);
@@ -187,7 +198,7 @@ public class FileFormatController extends AbstractUiRestController {
     @ApiOperation(value = "Create file format")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public FileFormatDto create(@Valid @RequestBody  FileFormatDto fileformatDto)
+    public FileFormatDto create(@Valid @RequestBody FileFormatDto fileformatDto)
         throws PreconditionFailedException, InvalidParseOperationException {
         SanityChecker.sanitizeCriteria(fileformatDto);
         LOGGER.debug("create file format={}", fileformatDto);
@@ -203,12 +214,15 @@ public class FileFormatController extends AbstractUiRestController {
         SanityChecker.sanitizeCriteria(partialDto);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Patch User {} with {}", id, partialDto);
-        Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "Unable to patch fileformat : the DTO id must match the path id.");
+        Assert.isTrue(
+            StringUtils.equals(id, (String) partialDto.get("id")),
+            "Unable to patch fileformat : the DTO id must match the path id."
+        );
         return service.patch(buildUiHttpContext(), partialDto, id);
     }
 
-    private LogbookOperationsResponseDto findHistoryById(String id) throws InvalidParseOperationException,
-        PreconditionFailedException {
+    private LogbookOperationsResponseDto findHistoryById(String id)
+        throws InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("get logbook for file format with id :{}", id);
         return service.findHistoryById(buildUiHttpContext(), id);
@@ -216,9 +230,8 @@ public class FileFormatController extends AbstractUiRestController {
 
     @ApiOperation(value = "delete file format")
     @DeleteMapping(CommonConstants.PATH_ID)
-    public void delete(final @PathVariable String id) throws InvalidParseOperationException,
-        PreconditionFailedException {
-
+    public void delete(final @PathVariable String id)
+        throws InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("delete file format with id :{}", id);
         service.delete(buildUiHttpContext(), id);
@@ -227,8 +240,7 @@ public class FileFormatController extends AbstractUiRestController {
     @ApiOperation(value = "get exported csv for file formats")
     @GetMapping("/export")
     @Produces(MediaType.APPLICATION_OCTET_STREAM_VALUE)
-    public ResponseEntity<Resource> export() throws InvalidParseOperationException,
-        PreconditionFailedException {
+    public ResponseEntity<Resource> export() throws InvalidParseOperationException, PreconditionFailedException {
         LOGGER.debug("export file formats");
         return service.export(buildUiHttpContext());
     }
@@ -243,7 +255,7 @@ public class FileFormatController extends AbstractUiRestController {
     @PostMapping(CommonConstants.PATH_IMPORT)
     public JsonNode importFileFormats(@Context HttpServletRequest request, MultipartFile file)
         throws InvalidParseOperationException, PreconditionFailedException {
-        if(file != null) {
+        if (file != null) {
             SafeFileChecker.checkSafeFilePath(file.getOriginalFilename());
         }
         LOGGER.debug("Import file format file {}", file != null ? file.getOriginalFilename() : null);

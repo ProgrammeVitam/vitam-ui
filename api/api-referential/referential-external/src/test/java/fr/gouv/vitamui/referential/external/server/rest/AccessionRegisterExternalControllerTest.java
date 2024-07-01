@@ -100,12 +100,11 @@ class AccessionRegisterExternalControllerTest extends ApiReferentialControllerTe
 
     @Override
     protected String[] getServices() {
-        return new String[] { ServicesData.ROLE_GET_ACCESSION_REGISTER_DETAIL};
+        return new String[] { ServicesData.ROLE_GET_ACCESSION_REGISTER_DETAIL };
     }
 
     @Override
     protected Class<AccessionRegisterDetailDto> getDtoClass() {
         return AccessionRegisterDetailDto.class;
     }
-
 }

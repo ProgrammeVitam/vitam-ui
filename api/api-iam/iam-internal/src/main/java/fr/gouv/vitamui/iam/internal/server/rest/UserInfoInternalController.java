@@ -87,7 +87,6 @@ public class UserInfoInternalController implements CrudController<UserInfoDto> {
         this.userInfoInternalService = userInfoInternalService;
     }
 
-
     @Override
     public ResponseEntity<Void> checkExist(final String criteria) {
         throw new NotImplementedException("checkExist not supported");
@@ -98,8 +97,8 @@ public class UserInfoInternalController implements CrudController<UserInfoDto> {
      */
     @Override
     @PostMapping
-    public UserInfoDto create(final @Valid @RequestBody UserInfoDto userInfoDto) throws InvalidParseOperationException,
-        PreconditionFailedException{
+    public UserInfoDto create(final @Valid @RequestBody UserInfoDto userInfoDto)
+        throws InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.sanitizeCriteria(userInfoDto);
         LOGGER.debug("Create {}", userInfoDto);
         return userInfoInternalService.create(userInfoDto);
@@ -109,7 +108,6 @@ public class UserInfoInternalController implements CrudController<UserInfoDto> {
     public UserInfoDto update(final String id, final UserInfoDto dto) {
         throw new NotImplementedException("update not supported");
     }
-
 
     /**
      * GetOne with criteria, item id.
@@ -139,7 +137,6 @@ public class UserInfoInternalController implements CrudController<UserInfoDto> {
         return userInfoInternalService.getMe();
     }
 
-
     /**
      * {@inheritDoc}
      */
@@ -151,7 +148,10 @@ public class UserInfoInternalController implements CrudController<UserInfoDto> {
         SanityChecker.checkSecureParameter(id);
         SanityChecker.sanitizeCriteria(partialDto);
         LOGGER.debug("Patch {} with {}", id, partialDto);
-        Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "The DTO identifier must match the path identifier for update.");
+        Assert.isTrue(
+            StringUtils.equals(id, (String) partialDto.get("id")),
+            "The DTO identifier must match the path identifier for update."
+        );
         return userInfoInternalService.patch(partialDto);
     }
 
@@ -163,5 +163,4 @@ public class UserInfoInternalController implements CrudController<UserInfoDto> {
         LOGGER.debug("get logbook for user info with id :{}", id);
         return userInfoInternalService.findHistoryById(id);
     }
-
 }

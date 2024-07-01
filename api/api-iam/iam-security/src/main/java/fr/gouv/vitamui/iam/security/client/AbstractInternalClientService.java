@@ -62,11 +62,11 @@ public abstract class AbstractInternalClientService {
      */
     protected InternalHttpContext getInternalHttpContext() {
         final ExternalHttpContext externalHttpContext = externalSecurityService.getHttpContext();
-        final AuthUserDto user = externalSecurityService.getUser() ;
+        final AuthUserDto user = externalSecurityService.getUser();
 
         final String userLevel = user.getLevel();
-        if ( userLevel == null ) {
-            throw new ApplicationServerException("Level is null for user " + user.getEmail()) ;
+        if (userLevel == null) {
+            throw new ApplicationServerException("Level is null for user " + user.getEmail());
         }
 
         final String customerId = externalSecurityService.getUser().getCustomerId();
@@ -74,7 +74,5 @@ public abstract class AbstractInternalClientService {
         return InternalHttpContext.buildFromExternalHttpContext(externalHttpContext, customerId, userLevel);
     }
 
-
     protected abstract BaseRestClient<InternalHttpContext> getClient();
-
 }

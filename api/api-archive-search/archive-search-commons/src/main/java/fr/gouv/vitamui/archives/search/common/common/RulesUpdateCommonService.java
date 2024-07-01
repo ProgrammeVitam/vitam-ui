@@ -55,9 +55,7 @@ import java.util.Map;
  */
 public final class RulesUpdateCommonService {
 
-    private RulesUpdateCommonService() {
-
-    }
+    private RulesUpdateCommonService() {}
 
     public static void deleteAttributesFromObjectNode(ObjectNode dslRequest, String... attributes) {
         if (dslRequest != null && attributes.length > 0) {
@@ -65,11 +63,13 @@ public final class RulesUpdateCommonService {
         }
     }
 
-    public static void setMassUpdateUnitRuleRequest(MassUpdateUnitRuleRequest massUpdateUnitRuleRequest,
-        RuleActions ruleActions, ObjectNode dslRequest) {
+    public static void setMassUpdateUnitRuleRequest(
+        MassUpdateUnitRuleRequest massUpdateUnitRuleRequest,
+        RuleActions ruleActions,
+        ObjectNode dslRequest
+    ) {
         massUpdateUnitRuleRequest.setRuleActions(ruleActions);
         massUpdateUnitRuleRequest.setDslRequest(dslRequest);
-
     }
 
     /**
@@ -79,8 +79,10 @@ public final class RulesUpdateCommonService {
      * @param actualAgenciesMapById
      * @return
      */
-    public static ArchiveUnit fillOriginatingAgencyName(ResultsDto originResponse,
-        Map<String, AgencyModelDto> actualAgenciesMapById) {
+    public static ArchiveUnit fillOriginatingAgencyName(
+        ResultsDto originResponse,
+        Map<String, AgencyModelDto> actualAgenciesMapById
+    ) {
         ArchiveUnit archiveUnit = new ArchiveUnit();
         BeanUtils.copyProperties(originResponse, archiveUnit);
         if (actualAgenciesMapById != null && !actualAgenciesMapById.isEmpty()) {

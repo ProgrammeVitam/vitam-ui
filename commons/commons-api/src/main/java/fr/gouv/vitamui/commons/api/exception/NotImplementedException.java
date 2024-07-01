@@ -58,5 +58,4 @@ public class NotImplementedException extends VitamUIException {
     public NotImplementedException(final String message, final String key) {
         super(message, key);
     }
-
 }

@@ -61,10 +61,13 @@ public class CustomerCreationFormData {
 
     @JsonIgnore
     private Optional<MultipartFile> header;
+
     @JsonIgnore
     private Optional<MultipartFile> footer;
+
     @JsonIgnore
     private Optional<MultipartFile> portal;
+
     @JsonIgnore
     private Optional<MultipartFile> logo;
 

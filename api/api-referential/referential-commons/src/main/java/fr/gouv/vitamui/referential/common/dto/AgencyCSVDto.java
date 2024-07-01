@@ -36,14 +36,13 @@
  */
 package fr.gouv.vitamui.referential.common.dto;
 
-import java.io.Serializable;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+
+import java.io.Serializable;
 
 @ToString
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -59,5 +58,4 @@ public class AgencyCSVDto implements Serializable {
 
     @JsonProperty("Description")
     private String description;
-
 }

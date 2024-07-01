@@ -44,6 +44,4 @@ import java.io.Serializable;
 
 @ToString
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class AccessContractsVitamDto extends AccessContractModelDto implements Serializable {
-
-}
+public class AccessContractsVitamDto extends AccessContractModelDto implements Serializable {}

@@ -25,30 +25,30 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(SpringJUnit4ClassRunner.class)
 public class UICommonsAutoConfigurationTest {
 
-
-    private final ApplicationContextRunner contextRunner =
-            new ApplicationContextRunner().withConfiguration(AutoConfigurations.of(UICommonsAutoConfiguration.class))
-                    .withConfiguration(AutoConfigurations.of(UICommonsAutoSpringMockConfiguration.class))
-                    .withSystemProperties("controller.subrogation.enabled=true", "controller.user.enabled=true");
+    private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
+        .withConfiguration(AutoConfigurations.of(UICommonsAutoConfiguration.class))
+        .withConfiguration(AutoConfigurations.of(UICommonsAutoSpringMockConfiguration.class))
+        .withSystemProperties("controller.subrogation.enabled=true", "controller.user.enabled=true");
 
     @Test
     public void serviceNameCanBeConfigured() {
-        contextRunner.withUserConfiguration(UserConfiguration.class).run((context) -> {
-            assertThat(context).hasSingleBean(ApplicationService.class);
-            assertThat(context).hasSingleBean(ApplicationController.class);
-            assertThat(context).hasSingleBean(IamExternalRestClientFactory.class);
-            assertThat(context).hasSingleBean(SubrogationController.class);
-            assertThat(context).hasSingleBean(AccountController.class);
-            assertThat(context).hasSingleBean(ReferentialExternalRestClientFactory.class);
-            assertThat(context).hasSingleBean(ReferentialExternalWebClientFactory.class);
-            assertThat(context).hasSingleBean(RuleService.class);
-            assertThat(context).hasSingleBean(RuleController.class);
-        });
+        contextRunner
+            .withUserConfiguration(UserConfiguration.class)
+            .run(context -> {
+                assertThat(context).hasSingleBean(ApplicationService.class);
+                assertThat(context).hasSingleBean(ApplicationController.class);
+                assertThat(context).hasSingleBean(IamExternalRestClientFactory.class);
+                assertThat(context).hasSingleBean(SubrogationController.class);
+                assertThat(context).hasSingleBean(AccountController.class);
+                assertThat(context).hasSingleBean(ReferentialExternalRestClientFactory.class);
+                assertThat(context).hasSingleBean(ReferentialExternalWebClientFactory.class);
+                assertThat(context).hasSingleBean(RuleService.class);
+                assertThat(context).hasSingleBean(RuleController.class);
+            });
     }
 
     @Configuration
     static class UserConfiguration {
-
 
         @Bean
         public UIProperties uiProperties() {
@@ -63,7 +63,5 @@ public class UICommonsAutoConfigurationTest {
             final CasLogoutUrl casBean = new CasLogoutUrl("url");
             return casBean;
         }
-
     }
-
 }

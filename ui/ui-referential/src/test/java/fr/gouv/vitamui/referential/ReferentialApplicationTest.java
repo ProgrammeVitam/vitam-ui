@@ -68,7 +68,5 @@ public class ReferentialApplicationTest {
         assertThat(referentialProperties).isNotNull();
         assertThat(referentialProperties.getIamExternalClient()).isNotNull();
         assertThat(referentialProperties.getReferentialExternalClient()).isNotNull();
-
     }
-
 }

@@ -92,8 +92,9 @@ import java.util.stream.Collectors;
 @Service
 public class AccessionRegisterInternalService {
 
-    private static final VitamUILogger LOGGER =
-        VitamUILoggerFactory.getInstance(AccessionRegisterInternalService.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
+        AccessionRegisterInternalService.class
+    );
 
     private final ObjectMapper objectMapper;
 
@@ -104,8 +105,12 @@ public class AccessionRegisterInternalService {
     private final AccessionRegisterService accessionRegisterService;
 
     @Autowired
-    public AccessionRegisterInternalService(ObjectMapper objectMapper, AdminExternalClient adminExternalClient,
-        AgencyService agencyService, AccessionRegisterService accessionRegisterService) {
+    public AccessionRegisterInternalService(
+        ObjectMapper objectMapper,
+        AdminExternalClient adminExternalClient,
+        AgencyService agencyService,
+        AccessionRegisterService accessionRegisterService
+    ) {
         this.objectMapper = objectMapper;
         this.agencyService = agencyService;
         this.adminExternalClient = adminExternalClient;
@@ -117,8 +122,10 @@ public class AccessionRegisterInternalService {
         try {
             LOGGER.debug("List of Accession Register EvIdAppSession : {} ", context.getApplicationSessionId());
             requestResponse = accessionRegisterService.findAccessionRegisterSummary(context);
-            final AccessionRegisterSummaryResponseDto accessionRegisterSymbolicResponseDto = objectMapper
-                .treeToValue(requestResponse.toJsonNode(), AccessionRegisterSummaryResponseDto.class);
+            final AccessionRegisterSummaryResponseDto accessionRegisterSymbolicResponseDto = objectMapper.treeToValue(
+                requestResponse.toJsonNode(),
+                AccessionRegisterSummaryResponseDto.class
+            );
             return AccessionRegisterConverter.toSummaryDtos(accessionRegisterSymbolicResponseDto.getResults());
         } catch (JsonProcessingException | VitamClientException e) {
             throw new InternalServerException("Unable to find accessionRegisterSymbolic", e);
@@ -131,18 +138,23 @@ public class AccessionRegisterInternalService {
         final Integer pageSize,
         final String orderBy,
         final DirectionDto direction,
-        VitamContext vitamContext) {
-
+        VitamContext vitamContext
+    ) {
         //Constructing json query for Vitam
         LOGGER.debug("List of Accession Registers EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
         JsonNode query;
         AccessionRegisterSearchDto accessionRegisterSearchDto;
         try {
-            accessionRegisterSearchDto = criteria.isPresent() ?
-                objectMapper.readValue(criteria.get(), AccessionRegisterSearchDto.class) :
-                new AccessionRegisterSearchDto();
+            accessionRegisterSearchDto = criteria.isPresent()
+                ? objectMapper.readValue(criteria.get(), AccessionRegisterSearchDto.class)
+                : new AccessionRegisterSearchDto();
             query = AccessRegisterVitamQueryHelper.createQueryDSL(
-                accessionRegisterSearchDto, pageNumber, pageSize, orderBy, direction);
+                accessionRegisterSearchDto,
+                pageNumber,
+                pageSize,
+                orderBy,
+                direction
+            );
         } catch (JsonProcessingException | InvalidParseOperationException | InvalidCreateOperationException ioe) {
             throw new InternalServerException("Can't create dsl query to get paginated accession registers", ioe);
         }
@@ -176,19 +188,34 @@ public class AccessionRegisterInternalService {
             //extract stats from current results
             statsDto = AccessRegisterStatsHelper.fetchStats(results.getResults());
         }
-        return new PaginatedValuesDto<>(valuesDto, pageNumber, pageSize, resultTotal, hasMoreData,
-            Map.of("stats", statsDto));
+        return new PaginatedValuesDto<>(
+            valuesDto,
+            pageNumber,
+            pageSize,
+            resultTotal,
+            hasMoreData,
+            Map.of("stats", statsDto)
+        );
     }
 
     @NotNull
-    private AccessionRegisterStatsDto buildStatisticData(AccessionRegisterSearchDto accessionRegisterSearchDto,
-        VitamContext vitamContext) {
+    private AccessionRegisterStatsDto buildStatisticData(
+        AccessionRegisterSearchDto accessionRegisterSearchDto,
+        VitamContext vitamContext
+    ) {
         try {
-            JsonNode bigStatisticQuery =
-                AccessRegisterVitamQueryHelper.createQueryDSL(accessionRegisterSearchDto, 0, 10000, null, null);
+            JsonNode bigStatisticQuery = AccessRegisterVitamQueryHelper.createQueryDSL(
+                accessionRegisterSearchDto,
+                0,
+                10000,
+                null,
+                null
+            );
             //fetching all 10000 elements as another query to compute statistics as quick solution
-            AccessionRegisterDetailResponseDto statisticResults =
-                fetchingAllPaginatedDataFromVitam(vitamContext, bigStatisticQuery);
+            AccessionRegisterDetailResponseDto statisticResults = fetchingAllPaginatedDataFromVitam(
+                vitamContext,
+                bigStatisticQuery
+            );
             return AccessRegisterStatsHelper.fetchStats(statisticResults.getResults());
         } catch (InvalidCreateOperationException | InvalidParseOperationException e) {
             throw new InternalServerException("Can't create dsl query to get paginated accession registers", e);
@@ -203,8 +230,10 @@ public class AccessionRegisterInternalService {
      * @throws VitamClientException
      * @throws IOException
      */
-    public Resource exportToCsvAccessionRegister(final AccessionRegisterSearchDto searchQuery,
-        final VitamContext vitamContext) {
+    public Resource exportToCsvAccessionRegister(
+        final AccessionRegisterSearchDto searchQuery,
+        final VitamContext vitamContext
+    ) {
         LOGGER.debug("Calling exportToCsvAccessionRegister with query {} ", searchQuery);
         Locale locale = Locale.FRENCH;
         // add language to query model
@@ -221,19 +250,23 @@ public class AccessionRegisterInternalService {
      * @return
      * @throws VitamClientException
      */
-    private Resource exportAccessionRegistersByCriteriaAndParams(final AccessionRegisterSearchDto searchQuery,
-        final ExportAccessionRegisterResultParam exportAccessionRegisterResultParam, final VitamContext vitamContext) {
+    private Resource exportAccessionRegistersByCriteriaAndParams(
+        final AccessionRegisterSearchDto searchQuery,
+        final ExportAccessionRegisterResultParam exportAccessionRegisterResultParam,
+        final VitamContext vitamContext
+    ) {
         try {
-
-            List<AccessionRegisterCsv> accessionRegisterCsvList =
-                exportAccessionRegisterToCsvFile(searchQuery, vitamContext);
+            List<AccessionRegisterCsv> accessionRegisterCsvList = exportAccessionRegisterToCsvFile(
+                searchQuery,
+                vitamContext
+            );
             // create a write
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             Writer writer = new OutputStreamWriter(outputStream, StandardCharsets.UTF_8.name());
             // header record
-            String[] headerRecordFr =
-                exportAccessionRegisterResultParam.getHeaders()
-                    .toArray(new String[exportAccessionRegisterResultParam.getHeaders().size()]);
+            String[] headerRecordFr = exportAccessionRegisterResultParam
+                .getHeaders()
+                .toArray(new String[exportAccessionRegisterResultParam.getHeaders().size()]);
             SimpleDateFormat dateFormat = new SimpleDateFormat(exportAccessionRegisterResultParam.getPatternDate());
             // create a csv writer
             ICSVWriter csvWriter = new CSVWriterBuilder(writer)
@@ -246,32 +279,37 @@ public class AccessionRegisterInternalService {
             csvWriter.writeNext(headerRecordFr);
 
             // write data records
-            accessionRegisterCsvList.stream().forEach(accessionRegisterCsv -> {
-                String startDateFormated = null;
-                if (accessionRegisterCsv.getStartDate() != null) {
-                    try {
-                        startDateFormated =
-                            dateFormat.format(LocalDateUtil.getDate(accessionRegisterCsv.getStartDate()));
-                    } catch (ParseException e) {
-                        LOGGER.error("Error parsing starting date {} ", accessionRegisterCsv.getStartDate());
+            accessionRegisterCsvList
+                .stream()
+                .forEach(accessionRegisterCsv -> {
+                    String startDateFormated = null;
+                    if (accessionRegisterCsv.getStartDate() != null) {
+                        try {
+                            startDateFormated = dateFormat.format(
+                                LocalDateUtil.getDate(accessionRegisterCsv.getStartDate())
+                            );
+                        } catch (ParseException e) {
+                            LOGGER.error("Error parsing starting date {} ", accessionRegisterCsv.getStartDate());
+                        }
                     }
-                }
 
-                csvWriter.writeNext(new String[] {
-                    accessionRegisterCsv.getOpi(),
-                    startDateFormated, //dateEntree
-                    accessionRegisterCsv.getOriginatingAgency(), //servProd
-                    accessionRegisterCsv.getSubmissionAgency(), //servVers
-                    accessionRegisterCsv.getArchivalAgreement(), //contratEntree
-                    accessionRegisterCsv.getAcquisitionInformation(), //modeEntree
-                    accessionRegisterCsv.getLegalStatus(), //statutJur
-                    String.valueOf(accessionRegisterCsv.getTotalUnits().getIngested()),
-                    String.valueOf(accessionRegisterCsv.getTotalObjectsGroups().getIngested()),
-                    String.valueOf(accessionRegisterCsv.getTotalObjects().getIngested()),
-                    VitamUIUtils.humanReadableByteCountBin(accessionRegisterCsv.getObjectSize().getIngested()),
-                    accessionRegisterCsv.getStatus().value()
+                    csvWriter.writeNext(
+                        new String[] {
+                            accessionRegisterCsv.getOpi(),
+                            startDateFormated, //dateEntree
+                            accessionRegisterCsv.getOriginatingAgency(), //servProd
+                            accessionRegisterCsv.getSubmissionAgency(), //servVers
+                            accessionRegisterCsv.getArchivalAgreement(), //contratEntree
+                            accessionRegisterCsv.getAcquisitionInformation(), //modeEntree
+                            accessionRegisterCsv.getLegalStatus(), //statutJur
+                            String.valueOf(accessionRegisterCsv.getTotalUnits().getIngested()),
+                            String.valueOf(accessionRegisterCsv.getTotalObjectsGroups().getIngested()),
+                            String.valueOf(accessionRegisterCsv.getTotalObjects().getIngested()),
+                            VitamUIUtils.humanReadableByteCountBin(accessionRegisterCsv.getObjectSize().getIngested()),
+                            accessionRegisterCsv.getStatus().value(),
+                        }
+                    );
                 });
-            });
             // close writers
             csvWriter.close();
             writer.close();
@@ -281,20 +319,26 @@ public class AccessionRegisterInternalService {
         }
     }
 
-    private List<AccessionRegisterCsv> exportAccessionRegisterToCsvFile(final AccessionRegisterSearchDto searchQuery,
-        final VitamContext vitamContext) {
+    private List<AccessionRegisterCsv> exportAccessionRegisterToCsvFile(
+        final AccessionRegisterSearchDto searchQuery,
+        final VitamContext vitamContext
+    ) {
         try {
             JsonNode query = AccessRegisterVitamQueryHelper.createQueryDSL(searchQuery);
             LOGGER.debug("Final query details: {}", query.toPrettyString());
             //Fetching data from vitam
-            AccessionRegisterDetailResponseDto accessionRegisterDetailResponseDto =
-                fetchingAllPaginatedDataFromVitam(vitamContext, query);
+            AccessionRegisterDetailResponseDto accessionRegisterDetailResponseDto = fetchingAllPaginatedDataFromVitam(
+                vitamContext,
+                query
+            );
             LOGGER.debug("Fetched accession register data : {} ", accessionRegisterDetailResponseDto);
             List<AccessionRegisterCsv> accessionRegisterList = new ArrayList<>();
             if (accessionRegisterDetailResponseDto != null) {
-                accessionRegisterList =
-                    accessionRegisterDetailResponseDto.getResults().stream().map(this::fillOriginatingAgencyName)
-                        .collect(Collectors.toList());
+                accessionRegisterList = accessionRegisterDetailResponseDto
+                    .getResults()
+                    .stream()
+                    .map(this::fillOriginatingAgencyName)
+                    .collect(Collectors.toList());
             }
             return accessionRegisterList;
         } catch (InvalidCreateOperationException e) {
@@ -310,14 +354,18 @@ public class AccessionRegisterInternalService {
         return accessionRegisterCsv;
     }
 
-    private AccessionRegisterDetailResponseDto fetchingAllPaginatedDataFromVitam(VitamContext vitamContext,
-        JsonNode query) {
+    private AccessionRegisterDetailResponseDto fetchingAllPaginatedDataFromVitam(
+        VitamContext vitamContext,
+        JsonNode query
+    ) {
         AccessionRegisterDetailResponseDto results;
         try {
             RequestResponse<AccessionRegisterDetailModel> accessionRegisterDetails =
                 adminExternalClient.findAccessionRegisterDetails(vitamContext, query);
-            results = objectMapper.treeToValue(accessionRegisterDetails.toJsonNode(),
-                AccessionRegisterDetailResponseDto.class);
+            results = objectMapper.treeToValue(
+                accessionRegisterDetails.toJsonNode(),
+                AccessionRegisterDetailResponseDto.class
+            );
         } catch (VitamClientException e) {
             throw new InternalServerException("Can't fetch data from VITAM", e);
         } catch (JsonProcessingException e) {
@@ -327,13 +375,11 @@ public class AccessionRegisterInternalService {
     }
 
     private Map<String, String> findAgencies(VitamContext vitamContext, AccessionRegisterDetailResponseDto results) {
-
         JsonNode agencyQuery;
         List<AgencyModelDto> agencies;
         try {
             agencyQuery = buildAgencyProjectionQuery(results);
-            RequestResponse<AgenciesModel> requestResponse =
-                agencyService.findAgencies(vitamContext, agencyQuery);
+            RequestResponse<AgenciesModel> requestResponse = agencyService.findAgencies(vitamContext, agencyQuery);
             agencies = objectMapper.treeToValue(requestResponse.toJsonNode(), AgencyResponseDto.class).getResults();
         } catch (JsonProcessingException e) {
             throw new InternalServerException("Error parsing query", e);
@@ -348,19 +394,24 @@ public class AccessionRegisterInternalService {
 
     private JsonNode buildAgencyProjectionQuery(AccessionRegisterDetailResponseDto results)
         throws InvalidCreateOperationException {
-
         List<String> distinctOriginatingAgencies = new ArrayList<>();
         if (results != null) {
-            distinctOriginatingAgencies = results.getResults().stream()
+            distinctOriginatingAgencies = results
+                .getResults()
+                .stream()
                 .map(AccessionRegisterDetailModel::getOriginatingAgency)
                 .filter(Objects::nonNull)
                 .filter(originatingAgency -> ConcurrentHashMap.newKeySet().add(originatingAgency))
                 .collect(Collectors.toList());
 
-            distinctOriginatingAgencies.addAll(results.getResults().stream()
-                .map(AccessionRegisterDetailModel::getSubmissionAgency)
-                .filter(Objects::nonNull)
-                .collect(Collectors.toSet()));
+            distinctOriginatingAgencies.addAll(
+                results
+                    .getResults()
+                    .stream()
+                    .map(AccessionRegisterDetailModel::getSubmissionAgency)
+                    .filter(Objects::nonNull)
+                    .collect(Collectors.toSet())
+            );
         }
 
         final Select select = new Select();
@@ -380,5 +431,4 @@ public class AccessionRegisterInternalService {
         LOGGER.debug("agencies query: {}", select.getFinalSelect());
         return select.getFinalSelect();
     }
-
 }

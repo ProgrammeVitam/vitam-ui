@@ -36,16 +36,15 @@
  */
 package fr.gouv.vitamui.iam.internal.server.common.domain;
 
-import javax.validation.constraints.NotNull;
-
-import org.hibernate.validator.constraints.Length;
-
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.validator.constraints.Length;
+
+import javax.validation.constraints.NotNull;
 
 /**
  * Entity embeded
@@ -64,7 +63,7 @@ public class Parameter {
     @Length(max = 250)
     @NotNull
     private String key;
-    
+
     @Length(max = 250)
     @NotNull
     private String value;

@@ -84,7 +84,7 @@ public class ContextExternalController {
     @Autowired
     private ContextExternalService contextExternalService;
 
-    @GetMapping()
+    @GetMapping
     @Secured(ServicesData.ROLE_GET_CONTEXTS)
     public Collection<ContextDto> getAll(final Optional<String> criteria) {
         LOGGER.debug("get all context criteria={}", criteria);
@@ -94,10 +94,20 @@ public class ContextExternalController {
 
     @Secured(ServicesData.ROLE_GET_CONTEXTS)
     @GetMapping(params = { "page", "size" })
-    public PaginatedValuesDto<ContextDto> getAllPaginated(@RequestParam final Integer page, @RequestParam final Integer size,
-            @RequestParam(required = false) final Optional<String> criteria, @RequestParam(required = false) final Optional<String> orderBy,
-            @RequestParam(required = false) final Optional<DirectionDto> direction) {
-        LOGGER.debug("getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, orderBy, direction);
+    public PaginatedValuesDto<ContextDto> getAllPaginated(
+        @RequestParam final Integer page,
+        @RequestParam final Integer size,
+        @RequestParam(required = false) final Optional<String> criteria,
+        @RequestParam(required = false) final Optional<String> orderBy,
+        @RequestParam(required = false) final Optional<DirectionDto> direction
+    ) {
+        LOGGER.debug(
+            "getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}",
+            page,
+            size,
+            orderBy,
+            direction
+        );
         return contextExternalService.getAllPaginated(page, size, criteria, orderBy, direction);
     }
 
@@ -110,7 +120,10 @@ public class ContextExternalController {
 
     @Secured({ ServicesData.ROLE_GET_CONTEXTS })
     @PostMapping(CommonConstants.PATH_CHECK)
-    public ResponseEntity<Void> check(@Valid @RequestBody ContextDto contextDto, @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant) {
+    public ResponseEntity<Void> check(
+        @Valid @RequestBody ContextDto contextDto,
+        @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant
+    ) {
         LOGGER.debug("check exist context = {}", contextDto);
         ApiUtils.checkValidity(contextDto);
         final boolean exist = contextExternalService.check(contextDto);
@@ -129,7 +142,10 @@ public class ContextExternalController {
     @Secured(ServicesData.ROLE_UPDATE_CONTEXTS)
     public ContextDto patch(final @PathVariable("id") String id, @RequestBody final ContextDto partialDto) {
         LOGGER.debug("Patch {} with {}", id, partialDto);
-        Assert.isTrue(StringUtils.equals(id, partialDto.getId()), "The DTO identifier must match the path identifier for update.");
+        Assert.isTrue(
+            StringUtils.equals(id, partialDto.getId()),
+            "The DTO identifier must match the path identifier for update."
+        );
         return contextExternalService.patch(partialDto);
     }
 
@@ -137,8 +153,7 @@ public class ContextExternalController {
     @GetMapping("/{id}/history")
     public JsonNode findHistoryById(final @PathVariable("id") String id) {
         LOGGER.debug("get logbook for context with id :{}", id);
-        ParameterChecker.checkParameter("Identifier is mandatory : " , id);
+        ParameterChecker.checkParameter("Identifier is mandatory : ", id);
         return contextExternalService.findHistoryById(id);
     }
-
 }

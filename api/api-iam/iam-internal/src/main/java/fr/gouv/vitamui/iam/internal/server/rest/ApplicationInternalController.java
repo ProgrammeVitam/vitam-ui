@@ -84,7 +84,10 @@ public class ApplicationInternalController {
      * @return all Applications matching user privileges
      */
     @GetMapping
-    public Collection<ApplicationDto> getAll(final Optional<String> criteria, @RequestParam final Optional<String> embedded) {
+    public Collection<ApplicationDto> getAll(
+        final Optional<String> criteria,
+        @RequestParam final Optional<String> embedded
+    ) {
         LOGGER.debug("Get all with criteria={}, embedded={}", criteria, embedded);
         SanityChecker.sanitizeCriteria(criteria);
         EnumUtils.checkValidEnum(EmbeddedOptions.class, embedded);

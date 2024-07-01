@@ -40,11 +40,10 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-
 @ExtendWith(SpringExtension.class)
 @WebMvcTest
-@Import(value = {ServerIdentityConfiguration.class, SwaggerConfiguration.class})
-@TestPropertySource(properties = {"spring.config.name=archive-search-external-application"})
+@Import(value = { ServerIdentityConfiguration.class, SwaggerConfiguration.class })
+@TestPropertySource(properties = { "spring.config.name=archive-search-external-application" })
 @ActiveProfiles("test, swagger")
 public class SwaggerJsonFileGenerationTest extends AbstractSwaggerJsonFileGenerationJunit5 {
 
@@ -59,5 +58,4 @@ public class SwaggerJsonFileGenerationTest extends AbstractSwaggerJsonFileGenera
 
     @MockBean
     private SearchCriteriaHistoryExternalController searchCriteriaHistoryExternalController;
-
 }

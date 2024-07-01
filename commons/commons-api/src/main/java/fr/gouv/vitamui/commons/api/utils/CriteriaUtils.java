@@ -56,8 +56,7 @@ import java.util.stream.Collectors;
 
 public final class CriteriaUtils {
 
-    private CriteriaUtils() {
-    }
+    private CriteriaUtils() {}
 
     public static void checkFormat(final String criteriaJson) {
         final QueryDto criteriaDto = fromJson(criteriaJson);
@@ -81,7 +80,6 @@ public final class CriteriaUtils {
         }
     }
 
-
     private static void checkCriterion(final Criterion criterion) {
         final CriterionOperator operator = criterion.getOperator();
         if (operator == null) {
@@ -94,24 +92,33 @@ public final class CriteriaUtils {
             throw new BadRequestException("Value not defined for criterion : " + criterion.getKey());
         }
         switch (operator) {
-            case BETWEEN :
+            case BETWEEN:
                 try {
                     final Map<String, Object> c = (Map<String, Object>) criterion.getValue();
                     if (!(c.containsKey("start") && c.containsKey("end"))) {
-                        throw new BadRequestException("Can't determine start or end value for operator BETWEEN for criterion : " + criterion.getKey());
+                        throw new BadRequestException(
+                            "Can't determine start or end value for operator BETWEEN for criterion : " +
+                            criterion.getKey()
+                        );
                     }
                 } catch (final ClassCastException e) {
-                    throw new BadRequestException("Value is not defined as a map with operator BETWEEN for criterion : " + criterion.getKey(), e);
+                    throw new BadRequestException(
+                        "Value is not defined as a map with operator BETWEEN for criterion : " + criterion.getKey(),
+                        e
+                    );
                 }
                 break;
-            case IN :
+            case IN:
                 try {
                     final List<Object> c = (List<Object>) criterion.getValue();
                 } catch (final ClassCastException e) {
-                    throw new BadRequestException("Value is not defined as an array with operator IN for criterion : " + criterion.getKey(), e);
+                    throw new BadRequestException(
+                        "Value is not defined as an array with operator IN for criterion : " + criterion.getKey(),
+                        e
+                    );
                 }
                 break;
-            default :
+            default:
                 break;
         }
     }
@@ -122,42 +129,47 @@ public final class CriteriaUtils {
      * @param allowedKeys
      */
     public static void checkContainsAuthorizedKeys(final QueryDto queryDto, final Collection<String> allowedKeys) {
-        queryDto.getCriterionList().forEach(criterion -> {
-            if (allowedKeys.contains(criterion.getKey())) {
-                return;
-            }
-
-            // if we have a ElemMatch operator we have to check that current field is allowed and his child field also
-            // field.childField
-            final String keyWithPoint = criterion.getKey() + ".";
-            if (criterion.getOperator().equals(CriterionOperator.ELEMMATCH) &&
-                allowedKeys.stream().anyMatch(key -> key.startsWith(keyWithPoint))) {
-                // we recurse on children's to check the allowed key
-                try {
-                    final QueryDto elemMatchQuery = QueryDto.fromJson(JsonUtils.toJson(criterion.getValue()));
-                    final List<String> elemAllowedKeys =
-                            allowedKeys.stream().filter(key -> key.startsWith(keyWithPoint)).map(key -> key.replaceFirst(keyWithPoint, ""))
-                                    .collect(Collectors.toList());
-                    checkContainsAuthorizedKeys(elemMatchQuery, elemAllowedKeys);
-                } catch (final JsonProcessingException e) {
-                    throw new InvalidFormatException(e.getMessage(), e);
+        queryDto
+            .getCriterionList()
+            .forEach(criterion -> {
+                if (allowedKeys.contains(criterion.getKey())) {
+                    return;
                 }
-                return;
-            }
 
-            throw new ForbiddenException("Criterion with key : " + criterion.getKey() + " is not allowed");
-        });
+                // if we have a ElemMatch operator we have to check that current field is allowed and his child field also
+                // field.childField
+                final String keyWithPoint = criterion.getKey() + ".";
+                if (
+                    criterion.getOperator().equals(CriterionOperator.ELEMMATCH) &&
+                    allowedKeys.stream().anyMatch(key -> key.startsWith(keyWithPoint))
+                ) {
+                    // we recurse on children's to check the allowed key
+                    try {
+                        final QueryDto elemMatchQuery = QueryDto.fromJson(JsonUtils.toJson(criterion.getValue()));
+                        final List<String> elemAllowedKeys = allowedKeys
+                            .stream()
+                            .filter(key -> key.startsWith(keyWithPoint))
+                            .map(key -> key.replaceFirst(keyWithPoint, ""))
+                            .collect(Collectors.toList());
+                        checkContainsAuthorizedKeys(elemMatchQuery, elemAllowedKeys);
+                    } catch (final JsonProcessingException e) {
+                        throw new InvalidFormatException(e.getMessage(), e);
+                    }
+                    return;
+                }
+
+                throw new ForbiddenException("Criterion with key : " + criterion.getKey() + " is not allowed");
+            });
         queryDto.getSubQueries().forEach(queryDtoItem -> checkContainsAuthorizedKeys(queryDtoItem, allowedKeys));
     }
 
     public static QueryDto fromJson(final String criteriaJson) {
         if (StringUtils.isBlank(criteriaJson) || StringUtils.equals(criteriaJson, "null")) {
-                return new QueryDto();
+            return new QueryDto();
         }
         try {
             return JsonUtils.fromJson(criteriaJson, QueryDto.class);
-        }
-        catch (final IOException e) {
+        } catch (final IOException e) {
             throw new InvalidFormatException("criteria is mal formed :" + e.getMessage(), e);
         }
     }
@@ -167,12 +179,10 @@ public final class CriteriaUtils {
             return JsonUtils.toJson(criteria);
         } catch (final JsonProcessingException e) {
             throw new InvalidFormatException(e.getMessage(), e);
-
         }
     }
 
     public static boolean isNullOrEmpty(final QueryDto criteria) {
         return criteria == null || criteria.isEmpty();
     }
-
 }

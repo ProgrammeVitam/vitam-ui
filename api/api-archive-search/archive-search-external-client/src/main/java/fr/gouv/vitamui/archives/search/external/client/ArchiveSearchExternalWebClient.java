@@ -26,8 +26,6 @@
 
 package fr.gouv.vitamui.archives.search.external.client;
 
-
-
 import fr.gouv.vitamui.archives.search.common.rest.RestApi;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
@@ -55,8 +53,6 @@ public class ArchiveSearchExternalWebClient extends BaseWebClient<ExternalHttpCo
         return RestApi.ARCHIVE_SEARCH_PATH;
     }
 
-
-
     /**
      * Download object from unit
      *
@@ -66,13 +62,16 @@ public class ArchiveSearchExternalWebClient extends BaseWebClient<ExternalHttpCo
      * @param context internl context
      * @return a mono<Response<Resourse>
      **/
-    public Mono<ResponseEntity<Resource>> downloadObjectFromUnit(String id, final String usage, Integer version,
-        final ExternalHttpContext context) {
+    public Mono<ResponseEntity<Resource>> downloadObjectFromUnit(
+        String id,
+        final String usage,
+        Integer version,
+        final ExternalHttpContext context
+    ) {
         LOGGER.debug("Start downloading Object from unit id : {} usage : {} version : {}", id, usage, version);
-        final UriComponentsBuilder uriBuilder =
-            UriComponentsBuilder.fromHttpUrl(getUrl() + RestApi.DOWNLOAD_ARCHIVE_UNIT + "/" + id + "?usage=" + usage +
-                "&version=" +
-                version);
+        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(
+            getUrl() + RestApi.DOWNLOAD_ARCHIVE_UNIT + "/" + id + "?usage=" + usage + "&version=" + version
+        );
 
         Flux<DataBuffer> dataBuffer = webClient
             .get()
@@ -81,9 +80,10 @@ public class ArchiveSearchExternalWebClient extends BaseWebClient<ExternalHttpCo
             .retrieve()
             .bodyToFlux(DataBuffer.class);
 
-        return Mono.just(ResponseEntity
-            .ok().cacheControl(CacheControl.noCache())
-            .body(convertDataBufferFileToInputStreamResponse(dataBuffer)));
-
+        return Mono.just(
+            ResponseEntity.ok()
+                .cacheControl(CacheControl.noCache())
+                .body(convertDataBufferFileToInputStreamResponse(dataBuffer))
+        );
     }
 }

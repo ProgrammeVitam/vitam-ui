@@ -36,10 +36,14 @@
  */
 package fr.gouv.vitamui.iam.external.client;
 
-import java.net.URI;
-import java.util.List;
-import java.util.Map;
-
+import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
+import fr.gouv.vitamui.commons.api.domain.UserInfoDto;
+import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
+import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.commons.rest.client.BasePaginatingAndSortingRestClient;
+import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
+import fr.gouv.vitamui.iam.common.rest.RestApi;
 import org.apache.http.client.utils.URIBuilder;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
@@ -48,15 +52,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
-import fr.gouv.vitamui.commons.api.CommonConstants;
-import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
-import fr.gouv.vitamui.commons.api.domain.UserDto;
-import fr.gouv.vitamui.commons.api.domain.UserInfoDto;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
-import fr.gouv.vitamui.commons.rest.client.BasePaginatingAndSortingRestClient;
-import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
-import fr.gouv.vitamui.iam.common.rest.RestApi;
+import java.net.URI;
+import java.util.List;
+import java.util.Map;
 
 /**
  * A REST client to check existence, read, create, update and delete the user infos.
@@ -78,7 +76,7 @@ public class UserInfoExternalRestClient extends BasePaginatingAndSortingRestClie
         final URIBuilder uriBuilder = getUriBuilderFromPath(CommonConstants.PATH_ME);
         final URI uri = buildUriBuilder(uriBuilder);
 
-        final ResponseEntity<UserInfoDto> response = restTemplate.exchange(uri, HttpMethod.GET, request,getDtoClass());
+        final ResponseEntity<UserInfoDto> response = restTemplate.exchange(uri, HttpMethod.GET, request, getDtoClass());
         checkResponse(response);
         return response.getBody();
     }
@@ -90,12 +88,15 @@ public class UserInfoExternalRestClient extends BasePaginatingAndSortingRestClie
 
         final URI uri = buildUriBuilder(uriBuilder);
         final HttpEntity<Map<String, Object>> request = new HttpEntity<>(partialDto, headers);
-        final ResponseEntity<UserInfoDto> response = restTemplate.exchange(uri, HttpMethod.PATCH, request, getDtoClass());
+        final ResponseEntity<UserInfoDto> response = restTemplate.exchange(
+            uri,
+            HttpMethod.PATCH,
+            request,
+            getDtoClass()
+        );
         checkResponse(response);
         return response.getBody();
     }
-
-
 
     @Override
     public String getPathUrl() {
@@ -109,14 +110,11 @@ public class UserInfoExternalRestClient extends BasePaginatingAndSortingRestClie
 
     @Override
     protected ParameterizedTypeReference<List<UserInfoDto>> getDtoListClass() {
-        return new ParameterizedTypeReference<>() {
-        };
+        return new ParameterizedTypeReference<>() {};
     }
 
     @Override
     protected ParameterizedTypeReference<PaginatedValuesDto<UserInfoDto>> getDtoPaginatedClass() {
-        return new ParameterizedTypeReference<>() {
-        };
+        return new ParameterizedTypeReference<>() {};
     }
-
 }

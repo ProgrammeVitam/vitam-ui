@@ -21,26 +21,27 @@ public class IngestServiceTest {
 
     @Mock
     private IngestExternalRestClient ingestExternalRestClient;
+
     @Mock
     private IngestStreamingExternalRestClient ingestStreamingExternalRestClient;
 
     @Mock
     private IngestExternalWebClient ingestExternalWebClient;
 
-
     @Mock
     private CommonService commonService;
 
     @Before
     public void init() {
-        ingestService = new IngestService(commonService, ingestExternalRestClient, ingestExternalWebClient,
-            ingestStreamingExternalRestClient);
+        ingestService = new IngestService(
+            commonService,
+            ingestExternalRestClient,
+            ingestExternalWebClient,
+            ingestStreamingExternalRestClient
+        );
         ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
-
     }
 
     @Test
-    public void testIngest() {
-
-    }
+    public void testIngest() {}
 }

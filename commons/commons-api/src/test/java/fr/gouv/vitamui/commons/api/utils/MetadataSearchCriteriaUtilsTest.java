@@ -89,13 +89,12 @@ public class MetadataSearchCriteriaUtilsTest {
         // Then
         Assertions.assertEquals(
             "{\"$or\":[" +
-                "{\"$and\":[" +
-                "{\"$gte\":{\"ontologyFieldDate\":\"2023-03-05T23:00:00.000Z\"}}," +
-                "{\"$lt\":{\"ontologyFieldDate\":\"2023-03-06T23:00:00.000Z\"}}" +
-                "]}" +
-                "]}",
+            "{\"$and\":[" +
+            "{\"$gte\":{\"ontologyFieldDate\":\"2023-03-05T23:00:00.000Z\"}}," +
+            "{\"$lt\":{\"ontologyFieldDate\":\"2023-03-06T23:00:00.000Z\"}}" +
+            "]}" +
+            "]}",
             queryToFill.toString()
         );
     }
-
 }

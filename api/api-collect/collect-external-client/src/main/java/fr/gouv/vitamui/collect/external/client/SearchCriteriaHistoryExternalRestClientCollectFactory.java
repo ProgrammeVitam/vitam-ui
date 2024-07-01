@@ -35,8 +35,10 @@ import org.springframework.boot.web.client.RestTemplateBuilder;
  */
 public class SearchCriteriaHistoryExternalRestClientCollectFactory extends BaseRestClientFactory {
 
-    public SearchCriteriaHistoryExternalRestClientCollectFactory(final RestClientConfiguration restClientConfiguration,
-        final RestTemplateBuilder restTemplateBuilder) {
+    public SearchCriteriaHistoryExternalRestClientCollectFactory(
+        final RestClientConfiguration restClientConfiguration,
+        final RestTemplateBuilder restTemplateBuilder
+    ) {
         super(restClientConfiguration, restTemplateBuilder);
     }
 

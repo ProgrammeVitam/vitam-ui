@@ -160,11 +160,16 @@ public class InitCustomerServiceIntegrationTest {
         initSeq();
         final Tenant tenant = new Tenant();
         tenant.setIdentifier(10);
-        Mockito.when(tenantRepository.findOne(ArgumentMatchers.any(Query.class)))
-            .thenReturn(Optional.ofNullable(tenant));
+        Mockito.when(tenantRepository.findOne(ArgumentMatchers.any(Query.class))).thenReturn(
+            Optional.ofNullable(tenant)
+        );
         Mockito.when(tenantRepository.save(ArgumentMatchers.any())).thenReturn(tenant);
-        Mockito.when(initVitamTenantService.init(ArgumentMatchers.any(Tenant.class), ArgumentMatchers.any(
-            ExternalParametersDto.class))).thenAnswer(AdditionalAnswers.returnsFirstArg());
+        Mockito.when(
+            initVitamTenantService.init(
+                ArgumentMatchers.any(Tenant.class),
+                ArgumentMatchers.any(ExternalParametersDto.class)
+            )
+        ).thenAnswer(AdditionalAnswers.returnsFirstArg());
 
         customerRepository.deleteAll();
     }
@@ -221,44 +226,60 @@ public class InitCustomerServiceIntegrationTest {
         customerDta.setTenantName("tenantName");
         customerInternalService.create(customerDta);
 
-        Criteria criteria = Criteria.where("obId").is(customerDta.getCustomerDto().getIdentifier()).and("obIdReq")
+        Criteria criteria = Criteria.where("obId")
+            .is(customerDta.getCustomerDto().getIdentifier())
+            .and("obIdReq")
             .is(MongoDbCollections.CUSTOMERS)
-            .and("evType").is(EventType.EXT_VITAMUI_CREATE_CUSTOMER);
+            .and("evType")
+            .is(EventType.EXT_VITAMUI_CREATE_CUSTOMER);
         List<Event> ev = eventRepository.findAll(Query.query(criteria));
         assertThat(ev).isNotEmpty();
         assertThat(ev).hasSize(1);
 
-        criteria = Criteria.where("obIdReq").is(MongoDbCollections.OWNERS).and("evType")
+        criteria = Criteria.where("obIdReq")
+            .is(MongoDbCollections.OWNERS)
+            .and("evType")
             .is(EventType.EXT_VITAMUI_CREATE_OWNER);
         ev = eventRepository.findAll(Query.query(criteria));
         assertThat(ev).isNotEmpty();
         assertThat(ev).hasSize(1);
 
-        criteria = Criteria.where("obIdReq").is(MongoDbCollections.TENANTS).and("evType")
+        criteria = Criteria.where("obIdReq")
+            .is(MongoDbCollections.TENANTS)
+            .and("evType")
             .is(EventType.EXT_VITAMUI_CREATE_TENANT);
         ev = eventRepository.findAll(Query.query(criteria));
         assertThat(ev).isNotEmpty();
         assertThat(ev).hasSize(1);
 
-        criteria = Criteria.where("obIdReq").is(MongoDbCollections.PROFILES).and("evType")
+        criteria = Criteria.where("obIdReq")
+            .is(MongoDbCollections.PROFILES)
+            .and("evType")
             .is(EventType.EXT_VITAMUI_CREATE_PROFILE);
         ev = eventRepository.findAll(Query.query(criteria));
         assertThat(ev).isNotEmpty();
         assertThat(ev).hasSize(10);
 
-        criteria = Criteria.where("obIdReq").is(MongoDbCollections.GROUPS).and("evType")
+        criteria = Criteria.where("obIdReq")
+            .is(MongoDbCollections.GROUPS)
+            .and("evType")
             .is(EventType.EXT_VITAMUI_CREATE_GROUP);
         ev = eventRepository.findAll(Query.query(criteria));
         assertThat(ev).isNotEmpty();
         assertThat(ev).hasSize(2);
 
-        criteria =
-            Criteria.where("obIdReq").is(MongoDbCollections.USERS).and("evType").is(EventType.EXT_VITAMUI_CREATE_USER);
+        criteria = Criteria.where("obIdReq")
+            .is(MongoDbCollections.USERS)
+            .and("evType")
+            .is(EventType.EXT_VITAMUI_CREATE_USER);
         ev = eventRepository.findAll(Query.query(criteria));
         assertThat(ev).isNotEmpty();
         assertThat(ev).hasSize(2);
 
-        criteria = Criteria.where("obIdReq").is(MongoDbCollections.USER_INFOS).and("evType").is(EventType.EXT_VITAMUI_CREATE_USER_INFO);
+        criteria = Criteria.where("obIdReq")
+            .is(MongoDbCollections.USER_INFOS)
+            .and("evType")
+            .is(EventType.EXT_VITAMUI_CREATE_USER_INFO);
         ev = eventRepository.findAll(Query.query(criteria));
         assertThat(ev).isNotEmpty();
         assertThat(ev).hasSize(2);
@@ -266,40 +287,55 @@ public class InitCustomerServiceIntegrationTest {
         final Optional<Customer> customer = customerRepository.findByCode(CUSTOMER_CODE);
         assertThat(customer).isPresent();
 
-        final Profile profile1 = profileRepository
-            .findByNameAndLevelAndTenantIdentifier(PROFILE_NAME_1 + " " + TENANT_IDENTIFIER, LEVEL_1,
-                TENANT_IDENTIFIER);
+        final Profile profile1 = profileRepository.findByNameAndLevelAndTenantIdentifier(
+            PROFILE_NAME_1 + " " + TENANT_IDENTIFIER,
+            LEVEL_1,
+            TENANT_IDENTIFIER
+        );
         assertThat(profile1).isNotNull();
         assertThat(profile1.getDescription()).isEqualTo(DESCRIPTION_1);
         assertThat(profile1.getLevel()).isEqualTo(LEVEL_1);
         assertThat(profile1.getApplicationName()).isEqualTo(APP_NAME_1);
-        assertThat(profile1.getRoles().stream().map(r -> r.getName()).collect(Collectors.toList()))
-            .contains(ROLE_1, ROLE_2, ROLE_3);
+        assertThat(profile1.getRoles().stream().map(r -> r.getName()).collect(Collectors.toList())).contains(
+            ROLE_1,
+            ROLE_2,
+            ROLE_3
+        );
 
-        final Profile profile2 = profileRepository
-            .findByNameAndLevelAndTenantIdentifier(PROFILE_NAME_2 + " " + TENANT_IDENTIFIER, LEVEL_2,
-                TENANT_IDENTIFIER);
+        final Profile profile2 = profileRepository.findByNameAndLevelAndTenantIdentifier(
+            PROFILE_NAME_2 + " " + TENANT_IDENTIFIER,
+            LEVEL_2,
+            TENANT_IDENTIFIER
+        );
         assertThat(profile2).isNotNull();
         assertThat(profile2.getDescription()).isEqualTo(DESCRIPTION_2);
         assertThat(profile2.getLevel()).isEqualTo(LEVEL_2);
         assertThat(profile2.getApplicationName()).isEqualTo(APP_NAME_2);
-        assertThat(profile2.getRoles().stream().map(r -> r.getName()).collect(Collectors.toList()))
-            .contains(ROLE_2, ROLE_3);
+        assertThat(profile2.getRoles().stream().map(r -> r.getName()).collect(Collectors.toList())).contains(
+            ROLE_2,
+            ROLE_3
+        );
 
-        final Profile profile3 = profileRepository
-            .findByNameAndLevelAndTenantIdentifier(PROFILE_NAME_3 + " " + TENANT_IDENTIFIER, LEVEL_1,
-                TENANT_IDENTIFIER);
+        final Profile profile3 = profileRepository.findByNameAndLevelAndTenantIdentifier(
+            PROFILE_NAME_3 + " " + TENANT_IDENTIFIER,
+            LEVEL_1,
+            TENANT_IDENTIFIER
+        );
         assertThat(profile3).isNotNull();
         assertThat(profile3.getDescription()).isEqualTo(DESCRIPTION_4);
         assertThat(profile3.getLevel()).isEqualTo(LEVEL_1);
         assertThat(profile3.getApplicationName()).isEqualTo(APP_NAME_2);
-        assertThat(profile3.getRoles().stream().map(r -> r.getName()).collect(Collectors.toList()))
-            .contains(ROLE_1, ROLE_2, ROLE_3);
+        assertThat(profile3.getRoles().stream().map(r -> r.getName()).collect(Collectors.toList())).contains(
+            ROLE_1,
+            ROLE_2,
+            ROLE_3
+        );
 
         final List<Group> groups = groupRepository.findByCustomerId(customer.get().getId());
         assertThat(groups).isNotEmpty();
-        final Map<String, Group> groupByName =
-            groups.stream().collect(Collectors.toMap(Group::getName, Function.identity()));
+        final Map<String, Group> groupByName = groups
+            .stream()
+            .collect(Collectors.toMap(Group::getName, Function.identity()));
         final Group group = groupByName.get(GROUP_NAME_1);
         assertThat(group).isNotNull();
         assertThat(group.getDescription()).isEqualTo(DESCRIPTION_3);
@@ -309,13 +345,15 @@ public class InitCustomerServiceIntegrationTest {
         final Group adminGroup = groupByName.get(ApiIamInternalConstants.ADMIN_CLIENT_ROOT + " " + CUSTOMER_CODE);
         assertThat(adminGroup).isNotNull();
         final List<Profile> adminProfiles = profileRepository.findAllByIdIn(adminGroup.getProfileIds());
-        final Map<String, Profile> profileByName =
-            adminProfiles.stream().collect(Collectors.toMap(Profile::getName, Function.identity()));
+        final Map<String, Profile> profileByName = adminProfiles
+            .stream()
+            .collect(Collectors.toMap(Profile::getName, Function.identity()));
         final Profile customProfileAdmin = profileByName.get(PROFILE_NAME_4 + " " + TENANT_IDENTIFIER);
         assertThat(customProfileAdmin).isNotNull();
         assertThat(customProfileAdmin.getApplicationName()).isEqualTo(APP_NAME_1);
-        assertThat(customProfileAdmin.getRoles().stream().map(r -> r.getName()).collect(Collectors.toList()))
-            .contains(ROLE_3);
+        assertThat(customProfileAdmin.getRoles().stream().map(r -> r.getName()).collect(Collectors.toList())).contains(
+            ROLE_3
+        );
 
         final User user = userRepository.findByEmail(EMAIl);
         assertThat(user).isNotNull();
@@ -323,8 +361,6 @@ public class InitCustomerServiceIntegrationTest {
         assertThat(user.getFirstname()).isEqualTo(FIRST_NAME);
         assertThat(user.getGroupId()).isEqualTo(group.getId());
         assertThat(user.getLevel()).isEqualTo(LEVEL_1);
-
-
     }
 
     protected CustomerDto buildCustomerDto() {

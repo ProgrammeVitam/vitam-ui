@@ -62,7 +62,7 @@ public class TrustedHttpURLConnectionFactory implements HttpURLConnectionFactory
 
     @Override
     public HttpURLConnection buildHttpURLConnection(final URLConnection url) {
-        if(url instanceof HttpsURLConnection) {
+        if (url instanceof HttpsURLConnection) {
             final HttpsURLConnection httpsURLConnection = (HttpsURLConnection) url;
             httpsURLConnection.setSSLSocketFactory(sslSocketFactory);
             if (this.verifier != null) {

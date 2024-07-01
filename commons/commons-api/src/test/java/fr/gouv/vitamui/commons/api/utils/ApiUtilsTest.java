@@ -1,11 +1,10 @@
 package fr.gouv.vitamui.commons.api.utils;
 
-import java.io.IOException;
-
+import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import org.junit.Assert;
 import org.junit.Test;
 
-import fr.gouv.vitamui.commons.api.exception.InternalServerException;
+import java.io.IOException;
 
 public class ApiUtilsTest {
 

@@ -53,22 +53,28 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class AccessionRegisterDetailExternalService extends
-    AbstractResourceClientService<AccessionRegisterDetailDto, AccessionRegisterDetailDto> {
+public class AccessionRegisterDetailExternalService
+    extends AbstractResourceClientService<AccessionRegisterDetailDto, AccessionRegisterDetailDto> {
 
     private final AccessionRegisterDetailInternalRestClient accessionRegisterDetailInternalRestClient;
 
     @Autowired
-    public AccessionRegisterDetailExternalService(ExternalSecurityService externalSecurityService,
-        AccessionRegisterDetailInternalRestClient accessionRegisterDetailInternalRestClient) {
+    public AccessionRegisterDetailExternalService(
+        ExternalSecurityService externalSecurityService,
+        AccessionRegisterDetailInternalRestClient accessionRegisterDetailInternalRestClient
+    ) {
         super(externalSecurityService);
         this.accessionRegisterDetailInternalRestClient = accessionRegisterDetailInternalRestClient;
     }
 
     @Override
-    public PaginatedValuesDto<AccessionRegisterDetailDto> getAllPaginated(final Integer page, final Integer size,
+    public PaginatedValuesDto<AccessionRegisterDetailDto> getAllPaginated(
+        final Integer page,
+        final Integer size,
         final Optional<String> criteria,
-        final Optional<String> orderBy, final Optional<DirectionDto> direction) {
+        final Optional<String> orderBy,
+        final Optional<DirectionDto> direction
+    ) {
         ParameterChecker.checkPagination(size, page);
         return getClient().getAllPaginated(getInternalHttpContext(), page, size, criteria, orderBy, direction);
     }
@@ -81,5 +87,4 @@ public class AccessionRegisterDetailExternalService extends
     public Resource exportCsvArchiveUnitsByCriteria(final AccessionRegisterSearchDto query) {
         return accessionRegisterDetailInternalRestClient.exportAccessionRegisterCsv(query, getInternalHttpContext());
     }
-
 }

@@ -36,15 +36,17 @@
  */
 package fr.gouv.vitamui.commons.api.utils;
 
-import java.util.Optional;
-
 import fr.gouv.vitamui.commons.api.exception.InvalidTypeException;
 import fr.gouv.vitamui.commons.api.exception.ValidationException;
 
+import java.util.Optional;
+
 public class EnumUtils {
 
-    public static <E extends Enum<E>> void checkValidEnum(final Class<E> enumClass,
-            final Optional<String> optionalEnumList) {
+    public static <E extends Enum<E>> void checkValidEnum(
+        final Class<E> enumClass,
+        final Optional<String> optionalEnumList
+    ) {
         if (optionalEnumList.isPresent()) {
             final String enumList = optionalEnumList.get();
             final String[] values = enumList.split(",");
@@ -53,7 +55,6 @@ public class EnumUtils {
             }
         }
     }
-
 
     /**
      * Cast the object into the given type.
@@ -68,7 +69,6 @@ public class EnumUtils {
         isValidEnum(enumType, enumName);
         return Enum.valueOf(enumType, enumName);
     }
-
 
     private static <E extends Enum<E>> void isValidEnum(final Class<E> enumClass, final String enumName) {
         final Boolean valid = org.apache.commons.lang3.EnumUtils.isValidEnum(enumClass, enumName);

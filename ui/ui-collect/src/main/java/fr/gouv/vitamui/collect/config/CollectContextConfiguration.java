@@ -56,7 +56,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 @Configuration
 @EnableConfigurationProperties
-@Import(value = {SecurityConfig.class, SwaggerConfiguration.class, RestExceptionHandler.class})
+@Import(value = { SecurityConfig.class, SwaggerConfiguration.class, RestExceptionHandler.class })
 public class CollectContextConfiguration extends AbstractContextConfiguration {
 
     @Bean
@@ -70,13 +70,16 @@ public class CollectContextConfiguration extends AbstractContextConfiguration {
     @ConditionalOnMissingBean
     @DependsOn("uiProperties")
     public CollectExternalRestClientFactory collectExternalRestClientFactory(
-        final CollectApplicationProperties uiProperties, RestTemplateBuilder restTemplateBuilder) {
+        final CollectApplicationProperties uiProperties,
+        RestTemplateBuilder restTemplateBuilder
+    ) {
         return new CollectExternalRestClientFactory(uiProperties.getCollectExternalClient(), restTemplateBuilder);
     }
 
     @Bean
     public CollectExternalRestClient collectExternalRestClient(
-        final CollectExternalRestClientFactory collectExternalRestClientFactory) {
+        final CollectExternalRestClientFactory collectExternalRestClientFactory
+    ) {
         return collectExternalRestClientFactory.getCollectExternalRestClient();
     }
 
@@ -84,14 +87,19 @@ public class CollectContextConfiguration extends AbstractContextConfiguration {
     @ConditionalOnMissingBean
     @DependsOn("uiProperties")
     public CollectTransactionExternalRestClientFactory collectTransactionExternalRestClientFactory(
-        final CollectApplicationProperties uiProperties, RestTemplateBuilder restTemplateBuilder) {
-        return new CollectTransactionExternalRestClientFactory(uiProperties.getCollectExternalClient(),
-            restTemplateBuilder);
+        final CollectApplicationProperties uiProperties,
+        RestTemplateBuilder restTemplateBuilder
+    ) {
+        return new CollectTransactionExternalRestClientFactory(
+            uiProperties.getCollectExternalClient(),
+            restTemplateBuilder
+        );
     }
 
     @Bean
     public CollectTransactionExternalRestClient collectTransactionExternalRestClient(
-        final CollectTransactionExternalRestClientFactory collectTransactionExternalRestClientFactory) {
+        final CollectTransactionExternalRestClientFactory collectTransactionExternalRestClientFactory
+    ) {
         return collectTransactionExternalRestClientFactory.getCollectExternalRestClient();
     }
 
@@ -99,13 +107,15 @@ public class CollectContextConfiguration extends AbstractContextConfiguration {
     @ConditionalOnMissingBean
     @DependsOn("uiProperties")
     public CollectStreamingExternalRestClientFactory collectStreamingExternalRestClientFactory(
-        final CollectApplicationProperties uiProperties) {
+        final CollectApplicationProperties uiProperties
+    ) {
         return new CollectStreamingExternalRestClientFactory(uiProperties.getCollectExternalClient());
     }
 
     @Bean
     public CollectStreamingExternalRestClient collectStreamingExternalRestClient(
-        final CollectStreamingExternalRestClientFactory collectStreamingExternalRestClientFactory) {
+        final CollectStreamingExternalRestClientFactory collectStreamingExternalRestClientFactory
+    ) {
         return collectStreamingExternalRestClientFactory.getCollectStreamingExternalRestClient();
     }
 
@@ -113,14 +123,16 @@ public class CollectContextConfiguration extends AbstractContextConfiguration {
     @ConditionalOnMissingBean
     @DependsOn("uiProperties")
     public CollectExternalWebClientFactory collectExternalWebClientFactory(
-        final CollectApplicationProperties uiProperties, final WebClient.Builder webClientBuilder) {
-        return new CollectExternalWebClientFactory(uiProperties.getCollectExternalClient(),
-            webClientBuilder);
+        final CollectApplicationProperties uiProperties,
+        final WebClient.Builder webClientBuilder
+    ) {
+        return new CollectExternalWebClientFactory(uiProperties.getCollectExternalClient(), webClientBuilder);
     }
 
     @Bean
     public CollectExternalWebClient collectExternalWebClient(
-        final CollectExternalWebClientFactory collectExternalWebClientFactory) {
+        final CollectExternalWebClientFactory collectExternalWebClientFactory
+    ) {
         return collectExternalWebClientFactory.getCollectExternalWebClient();
     }
 
@@ -128,29 +140,39 @@ public class CollectContextConfiguration extends AbstractContextConfiguration {
     @ConditionalOnMissingBean
     @DependsOn("uiProperties")
     public SearchCriteriaHistoryExternalRestClientCollectFactory searchCriteriaHistoryExternalRestClientFactory(
-        final CollectApplicationProperties uiProperties, RestTemplateBuilder restTemplateBuilder) {
-        return new SearchCriteriaHistoryExternalRestClientCollectFactory(uiProperties.getCollectExternalClient(),
-            restTemplateBuilder);
+        final CollectApplicationProperties uiProperties,
+        RestTemplateBuilder restTemplateBuilder
+    ) {
+        return new SearchCriteriaHistoryExternalRestClientCollectFactory(
+            uiProperties.getCollectExternalClient(),
+            restTemplateBuilder
+        );
     }
 
     @Bean
     public SearchCriteriaHistoryExternalRestClient searchCriteriaHistoryExternalRestClient(
-        SearchCriteriaHistoryExternalRestClientCollectFactory factory) {
+        SearchCriteriaHistoryExternalRestClientCollectFactory factory
+    ) {
         return factory.getSearchCriteriaHistoryExternalRestClient();
     }
-
 
     @Bean
     @ConditionalOnMissingBean
     @DependsOn("uiProperties")
     public UpdateUnitsMetadataExternalRestClientFactory updateUnitsMetadataExternalRestClientFactory(
-        final CollectApplicationProperties uiProperties, RestTemplateBuilder restTemplateBuilder) {
-        return new UpdateUnitsMetadataExternalRestClientFactory(uiProperties.getUpdateUnitsMetadataExternalClient(), restTemplateBuilder);
+        final CollectApplicationProperties uiProperties,
+        RestTemplateBuilder restTemplateBuilder
+    ) {
+        return new UpdateUnitsMetadataExternalRestClientFactory(
+            uiProperties.getUpdateUnitsMetadataExternalClient(),
+            restTemplateBuilder
+        );
     }
 
     @Bean
     public UpdateUnitsMetadataExternalRestClient updateUnitsMetadataExternalRestClient(
-        final UpdateUnitsMetadataExternalRestClientFactory updateUnitsMetadataExternalRestClientFactory) {
+        final UpdateUnitsMetadataExternalRestClientFactory updateUnitsMetadataExternalRestClientFactory
+    ) {
         return updateUnitsMetadataExternalRestClientFactory.getUpdateUnitsMetadataExternalRestClient();
     }
 }

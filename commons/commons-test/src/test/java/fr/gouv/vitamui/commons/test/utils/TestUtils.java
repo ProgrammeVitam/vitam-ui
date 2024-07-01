@@ -49,7 +49,6 @@ public final class TestUtils {
         value = getValueFromType(f, other);
         f.setAccessible(isAccessible);
         partialDto.put(key, value);
-
     }
 
     private static Object getValueFromType(final Field f, final Object other) {
@@ -60,14 +59,11 @@ public final class TestUtils {
             if (optionalVal.isPresent()) {
                 if (fieldType.isEnum() || Duration.class.equals(fieldType) || OffsetDateTime.class.equals(fieldType)) {
                     val = optionalVal.get().toString();
-                }
-                else {
+                } else {
                     val = optionalVal.get();
                 }
             }
-
-        }
-        catch (IllegalArgumentException | IllegalAccessException e) {
+        } catch (IllegalArgumentException | IllegalAccessException e) {
             throw new RuntimeException("Exception error :", e);
         }
 
@@ -80,11 +76,8 @@ public final class TestUtils {
             target = clazz.newInstance();
             VitamUIUtils.copyProperties(source, target);
             return target;
-        }
-        catch (InstantiationException | IllegalAccessException e) {
+        } catch (InstantiationException | IllegalAccessException e) {
             throw new RuntimeException(e);
         }
-
     }
-
 }

@@ -77,10 +77,13 @@ import static org.mockito.Mockito.when;
 class TransactionArchiveUnitInternalServiceTest {
 
     TransactionArchiveUnitInternalService transactionArchiveUnitInternalService;
+
     @Mock
     CollectService collectService;
+
     @Mock
     AgencyService agencyService;
+
     final PodamFactory factory = new PodamFactoryImpl();
     final VitamContext vitamContext = new VitamContext(1);
     ObjectMapper objectMapper = new ObjectMapper();
@@ -93,32 +96,42 @@ class TransactionArchiveUnitInternalServiceTest {
     public void beforeEach() {
         ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        transactionArchiveUnitInternalService = new TransactionArchiveUnitInternalService(collectService, agencyService, objectMapper);
+        transactionArchiveUnitInternalService = new TransactionArchiveUnitInternalService(
+            collectService,
+            agencyService,
+            objectMapper
+        );
     }
 
     @Test
     void shouldSearchArchiveUnitsByCriteriaWithSuccess()
-        throws VitamClientException, InvalidParseOperationException, InvalidCreateOperationException,
-        IOException {
+        throws VitamClientException, InvalidParseOperationException, InvalidCreateOperationException, IOException {
         // GIVEN
-        final VitamUIArchiveUnitResponseDto vitamUIArchiveUnitResponseDto =
-            factory.manufacturePojo(VitamUIArchiveUnitResponseDto.class);
+        final VitamUIArchiveUnitResponseDto vitamUIArchiveUnitResponseDto = factory.manufacturePojo(
+            VitamUIArchiveUnitResponseDto.class
+        );
         RequestResponseOK<VitamUIArchiveUnitResponseDto> responseFromVitam = new RequestResponseOK<>();
         responseFromVitam.setHttpCode(200);
         responseFromVitam.setHits(1, 1, 1, 1);
         responseFromVitam.addResult(vitamUIArchiveUnitResponseDto);
 
-        when(collectService.searchUnitsByTransactionId(any(), any(), any()))
-            .thenReturn(buildUnitMetadataResponse(VITAM_UNIT_ONE_RESULT_UNIT_WITH_OBJECT));
+        when(collectService.searchUnitsByTransactionId(any(), any(), any())).thenReturn(
+            buildUnitMetadataResponse(VITAM_UNIT_ONE_RESULT_UNIT_WITH_OBJECT)
+        );
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        transactionArchiveUnitInternalService =
-            new TransactionArchiveUnitInternalService(collectService, agencyService, objectMapper);
+        transactionArchiveUnitInternalService = new TransactionArchiveUnitInternalService(
+            collectService,
+            agencyService,
+            objectMapper
+        );
         SearchCriteriaDto searchQuery = new SearchCriteriaDto();
 
         // WHEN
-        ArchiveUnitsDto archiveUnitsDto =
-            transactionArchiveUnitInternalService.searchArchiveUnitsByCriteria(TRANSACTION_ID, searchQuery,
-                vitamContext);
+        ArchiveUnitsDto archiveUnitsDto = transactionArchiveUnitInternalService.searchArchiveUnitsByCriteria(
+            TRANSACTION_ID,
+            searchQuery,
+            vitamContext
+        );
 
         // THEN
         assertNotNull(archiveUnitsDto);
@@ -130,47 +143,61 @@ class TransactionArchiveUnitInternalServiceTest {
     void shouldExportToCsvSearchArchiveUnitsByCriteriaWithSuccess()
         throws VitamClientException, InvalidParseOperationException, IOException {
         // GIVEN
-        final VitamUIArchiveUnitResponseDto vitamUIArchiveUnitResponseDto =
-            factory.manufacturePojo(VitamUIArchiveUnitResponseDto.class);
+        final VitamUIArchiveUnitResponseDto vitamUIArchiveUnitResponseDto = factory.manufacturePojo(
+            VitamUIArchiveUnitResponseDto.class
+        );
         RequestResponseOK<VitamUIArchiveUnitResponseDto> responseFromVitam = new RequestResponseOK<>();
         responseFromVitam.setHttpCode(200);
         responseFromVitam.setHits(1, 1, 1, 1);
         responseFromVitam.addResult(vitamUIArchiveUnitResponseDto);
 
-        when(collectService.searchUnitsByTransactionId(any(), any(), any()))
-            .thenReturn(buildUnitMetadataResponse(VITAM_UNIT_ONE_RESULT_UNIT_WITH_OBJECT));
+        when(collectService.searchUnitsByTransactionId(any(), any(), any())).thenReturn(
+            buildUnitMetadataResponse(VITAM_UNIT_ONE_RESULT_UNIT_WITH_OBJECT)
+        );
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        transactionArchiveUnitInternalService =
-            new TransactionArchiveUnitInternalService(collectService, agencyService, objectMapper);
+        transactionArchiveUnitInternalService = new TransactionArchiveUnitInternalService(
+            collectService,
+            agencyService,
+            objectMapper
+        );
 
         ArrayList agencies = factory.manufacturePojo(ArrayList.class, AgenciesModel.class);
         when(agencyService.findAgencies(any(), any())).thenReturn(
-            new RequestResponseOK<>(null, agencies, agencies.size()).setHttpCode(400));
+            new RequestResponseOK<>(null, agencies, agencies.size()).setHttpCode(400)
+        );
 
         final SearchCriteriaDto searchQuery = new SearchCriteriaDto();
 
         // THEN
-        assertDoesNotThrow(() ->
-            transactionArchiveUnitInternalService.exportToCsvSearchArchiveUnitsByCriteria(TRANSACTION_ID, searchQuery,
-                vitamContext));
+        assertDoesNotThrow(
+            () ->
+                transactionArchiveUnitInternalService.exportToCsvSearchArchiveUnitsByCriteria(
+                    TRANSACTION_ID,
+                    searchQuery,
+                    vitamContext
+                )
+        );
     }
 
     @Test
-    void shouldFindArchiveUnitByIdWithSuccess() throws VitamClientException, InvalidParseOperationException,
-        IOException {
+    void shouldFindArchiveUnitByIdWithSuccess()
+        throws VitamClientException, InvalidParseOperationException, IOException {
         // GIVEN
         RequestResponse<JsonNode> jsonNodeRequestResponse = buildArchiveUnit(VITAM_UNIT_ONE_RESULTS);
         ResultsDto resultsDto = buildResults(jsonNodeRequestResponse);
         String unitId = "id";
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        when(collectService.findUnitById(unitId, vitamContext))
-            .thenReturn(new RequestResponseOK<JsonNode>().setHttpCode(200)
-                .addResult(JsonHandler.toJsonNode(resultsDto)));
-        transactionArchiveUnitInternalService =
-            new TransactionArchiveUnitInternalService(collectService, agencyService, objectMapper);
+        when(collectService.findUnitById(unitId, vitamContext)).thenReturn(
+            new RequestResponseOK<JsonNode>().setHttpCode(200).addResult(JsonHandler.toJsonNode(resultsDto))
+        );
+        transactionArchiveUnitInternalService = new TransactionArchiveUnitInternalService(
+            collectService,
+            agencyService,
+            objectMapper
+        );
         // THEN
-        assertThatCode(() ->
-            transactionArchiveUnitInternalService.findArchiveUnitById(unitId, vitamContext)
+        assertThatCode(
+            () -> transactionArchiveUnitInternalService.findArchiveUnitById(unitId, vitamContext)
         ).doesNotThrowAnyException();
     }
 
@@ -178,17 +205,18 @@ class TransactionArchiveUnitInternalServiceTest {
     void shouldThrowExceptionWhenFindArchiveUnitById() throws VitamClientException {
         // GIVEN
         String unitId = "id";
-        when(collectService.findUnitById(unitId, vitamContext))
-            .thenThrow(new VitamClientException("FAKE EXCEPTION!"));
+        when(collectService.findUnitById(unitId, vitamContext)).thenThrow(new VitamClientException("FAKE EXCEPTION!"));
         // THEN
-        assertThrows(VitamClientException.class, () ->
-            transactionArchiveUnitInternalService.findArchiveUnitById(unitId, vitamContext)
+        assertThrows(
+            VitamClientException.class,
+            () -> transactionArchiveUnitInternalService.findArchiveUnitById(unitId, vitamContext)
         );
     }
 
     @Test
     void test_find_object_group_by_id() throws VitamClientException {
-        String resultStringValue = "{\n" +
+        String resultStringValue =
+            "{\n" +
             "  \"httpCode\": 200,\n" +
             "  \"$hits\": {\n" +
             "    \"total\": 1,\n" +
@@ -239,31 +267,35 @@ class TransactionArchiveUnitInternalServiceTest {
             "  \"$facetResults\": [],\n" +
             "  \"$context\": {}\n" +
             "}";
-        RequestResponse<JsonNode> mockResponse = RequestResponse
-            .parseFromResponse(Response.ok(resultStringValue).build());
-        Mockito.when(collectService.getObjectById(any(), eq("aebaaaaaaehjuynkaa3goamemgtl6wiaaaba")))
-            .thenReturn(mockResponse);
+        RequestResponse<JsonNode> mockResponse = RequestResponse.parseFromResponse(
+            Response.ok(resultStringValue).build()
+        );
+        Mockito.when(collectService.getObjectById(any(), eq("aebaaaaaaehjuynkaa3goamemgtl6wiaaaba"))).thenReturn(
+            mockResponse
+        );
 
-        ResultsDto resultsDto = transactionArchiveUnitInternalService
-            .findObjectGroupById("aebaaaaaaehjuynkaa3goamemgtl6wiaaaba", null);
+        ResultsDto resultsDto = transactionArchiveUnitInternalService.findObjectGroupById(
+            "aebaaaaaaehjuynkaa3goamemgtl6wiaaaba",
+            null
+        );
 
         org.junit.jupiter.api.Assertions.assertEquals(resultsDto.getId(), "aebaaaaaaehjuynkaa3goamemgtl6wiaaaba");
         org.junit.jupiter.api.Assertions.assertEquals(resultsDto.getOpi(), "aeeaaaaaaghjuynkaa3goamemgtj73yaaaaq");
         org.junit.jupiter.api.Assertions.assertEquals(resultsDto.getQualifiers().size(), 1);
         org.junit.jupiter.api.Assertions.assertEquals(resultsDto.getQualifiers().get(0).getQualifier(), "BinaryMaster");
         org.junit.jupiter.api.Assertions.assertEquals(resultsDto.getQualifiers().get(0).getVersions().size(), 1);
-        org.junit.jupiter.api.Assertions.assertEquals(resultsDto.getQualifiers().get(0)
-                .getVersions().get(0)
-                .getFileInfoModel().getFilename(),
-            "file1.pem");
-        org.junit.jupiter.api.Assertions.assertEquals(resultsDto.getQualifiers().get(0)
-                .getVersions().get(0)
-                .getFormatIdentification().getMimeType(),
-            "text/plain");
-        org.junit.jupiter.api.Assertions.assertEquals(resultsDto.getQualifiers().get(0)
-                .getVersions().get(0)
-                .getDataObjectVersion(),
-            "BinaryMaster_1");
+        org.junit.jupiter.api.Assertions.assertEquals(
+            resultsDto.getQualifiers().get(0).getVersions().get(0).getFileInfoModel().getFilename(),
+            "file1.pem"
+        );
+        org.junit.jupiter.api.Assertions.assertEquals(
+            resultsDto.getQualifiers().get(0).getVersions().get(0).getFormatIdentification().getMimeType(),
+            "text/plain"
+        );
+        org.junit.jupiter.api.Assertions.assertEquals(
+            resultsDto.getQualifiers().get(0).getVersions().get(0).getDataObjectVersion(),
+            "BinaryMaster_1"
+        );
     }
 
     private ResultsDto buildResults(RequestResponse<JsonNode> jsonNodeRequestResponse) throws IOException {
@@ -277,23 +309,23 @@ class TransactionArchiveUnitInternalServiceTest {
         throws IOException, InvalidParseOperationException {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        InputStream inputStream = TransactionArchiveUnitInternalServiceTest.class.getClassLoader()
-            .getResourceAsStream(filename);
+        InputStream inputStream =
+            TransactionArchiveUnitInternalServiceTest.class.getClassLoader().getResourceAsStream(filename);
         assertThat(inputStream).isNotNull();
-        return RequestResponseOK
-            .getFromJsonNode(objectMapper.readValue(ByteStreams.toByteArray(inputStream), JsonNode.class));
+        return RequestResponseOK.getFromJsonNode(
+            objectMapper.readValue(ByteStreams.toByteArray(inputStream), JsonNode.class)
+        );
     }
 
     private RequestResponse<JsonNode> buildArchiveUnit(String filename)
         throws IOException, InvalidParseOperationException {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        InputStream inputStream = TransactionArchiveUnitInternalServiceTest.class.getClassLoader()
-            .getResourceAsStream(filename);
+        InputStream inputStream =
+            TransactionArchiveUnitInternalServiceTest.class.getClassLoader().getResourceAsStream(filename);
         Assertions.assertThat(inputStream).isNotNull();
-        return RequestResponseOK
-            .getFromJsonNode(objectMapper.readValue(ByteStreams.toByteArray(inputStream), JsonNode.class));
+        return RequestResponseOK.getFromJsonNode(
+            objectMapper.readValue(ByteStreams.toByteArray(inputStream), JsonNode.class)
+        );
     }
-
-
 }

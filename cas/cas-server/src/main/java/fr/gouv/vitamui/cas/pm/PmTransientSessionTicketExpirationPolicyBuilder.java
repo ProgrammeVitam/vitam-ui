@@ -50,7 +50,9 @@ import org.springframework.web.context.request.RequestContextHolder;
  */
 public class PmTransientSessionTicketExpirationPolicyBuilder extends TransientSessionTicketExpirationPolicyBuilder {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(PmTransientSessionTicketExpirationPolicyBuilder.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
+        PmTransientSessionTicketExpirationPolicyBuilder.class
+    );
 
     public static final String PM_EXPIRATION_IN_MINUTES_ATTRIBUTE = "pmExpirationInMinutes";
 

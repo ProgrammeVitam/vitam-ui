@@ -38,19 +38,32 @@ knowledge of the CeCILL-C license and that you accept its terms.
 
 package fr.gouv.vitamui.pastis.common.dto.factory;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import lombok.Getter;
 import lombok.Setter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
 
 @XmlRootElement
-@XmlSeeAlso({GrammarTag.class, StartTag.class, ElementTag.class, CardinalityTag.class, DataTag.class,
-    AttributeTag.class,
-    ValueTag.class, DocumentationTag.class, AnnotationTag.class, GroupTag.class, ChoiceTag.class})
+@XmlSeeAlso(
+    {
+        GrammarTag.class,
+        StartTag.class,
+        ElementTag.class,
+        CardinalityTag.class,
+        DataTag.class,
+        AttributeTag.class,
+        ValueTag.class,
+        DocumentationTag.class,
+        AnnotationTag.class,
+        GroupTag.class,
+        ChoiceTag.class,
+    }
+)
 @Setter
 @Getter
 public class RngTag extends Tag {
@@ -61,7 +74,6 @@ public class RngTag extends Tag {
     String dataType;
     String groupOrChoice;
     ValueTag valueTag;
-
 
     @XmlAttribute
     public String getName() {
@@ -77,8 +89,4 @@ public class RngTag extends Tag {
     public ValueTag getValueTag() {
         return valueTag;
     }
-
-
 }
-
-

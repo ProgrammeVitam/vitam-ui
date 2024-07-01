@@ -57,6 +57,7 @@ public class HttpPoolConfiguration {
 
     @Data
     public static class HostConfiguration {
+
         private String scheme;
         private String host;
         private int port;

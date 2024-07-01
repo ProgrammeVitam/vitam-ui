@@ -95,8 +95,8 @@ public class ProfileController extends AbstractUiRestController {
     @ApiOperation(value = "Create entity")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ProfileDto create(@RequestBody final ProfileDto entityDto) throws InvalidParseOperationException, PreconditionFailedException {
-
+    public ProfileDto create(@RequestBody final ProfileDto entityDto)
+        throws InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.sanitizeCriteria(entityDto);
         LOGGER.debug("create class={}", entityDto.getClass().getName());
         return service.create(buildUiHttpContext(), entityDto);
@@ -107,7 +107,6 @@ public class ProfileController extends AbstractUiRestController {
     @ResponseStatus(HttpStatus.OK)
     public ProfileDto getOne(final @PathVariable String id, @RequestParam final Optional<String> embedded)
         throws InvalidParseOperationException, PreconditionFailedException {
-
         EnumUtils.checkValidEnum(EmbeddedOptions.class, embedded);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Get profile={}", id);
@@ -116,8 +115,8 @@ public class ProfileController extends AbstractUiRestController {
 
     @ApiOperation(value = "Check entity exists by criteria")
     @RequestMapping(path = CommonConstants.PATH_CHECK, method = RequestMethod.HEAD)
-    public ResponseEntity<Void> checkExist(@RequestParam final String criteria) throws InvalidParseOperationException,
-        PreconditionFailedException {
+    public ResponseEntity<Void> checkExist(@RequestParam final String criteria)
+        throws InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.sanitizeCriteria(Optional.of(criteria));
         LOGGER.debug("check exists criteria={}", criteria);
         final boolean exist = service.checkExist(buildUiHttpContext(), criteria);
@@ -130,7 +129,6 @@ public class ProfileController extends AbstractUiRestController {
     @ResponseStatus(HttpStatus.OK)
     public ProfileDto patch(@RequestBody final Map<String, Object> profile, @PathVariable final String id)
         throws InvalidParseOperationException, PreconditionFailedException {
-
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         SanityChecker.checkSecureParameter(id);
         SanityChecker.sanitizeCriteria(profile);
@@ -141,9 +139,10 @@ public class ProfileController extends AbstractUiRestController {
     @ApiOperation(value = "Get all entities")
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Collection<ProfileDto> getAll(final Optional<String> criteria, @RequestParam final Optional<String> embedded)
-        throws InvalidParseOperationException, PreconditionFailedException {
-
+    public Collection<ProfileDto> getAll(
+        final Optional<String> criteria,
+        @RequestParam final Optional<String> embedded
+    ) throws InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.sanitizeCriteria(criteria);
         EnumUtils.checkValidEnum(EmbeddedOptions.class, embedded);
         LOGGER.debug("Get all with criteria={}, embedded={}", criteria, embedded);
@@ -153,17 +152,28 @@ public class ProfileController extends AbstractUiRestController {
     @ApiOperation(value = "Get entities paginated")
     @GetMapping(params = { "page", "size" })
     @ResponseStatus(HttpStatus.OK)
-    public PaginatedValuesDto<ProfileDto> getAllPaginated(@RequestParam final Integer page, @RequestParam final Integer size,
-            @RequestParam final Optional<String> criteria, @RequestParam final Optional<String> orderBy, @RequestParam final Optional<DirectionDto> direction,
-            @ApiParam(defaultValue = "ALL") @RequestParam final Optional<String> embedded)
-        throws InvalidParseOperationException, PreconditionFailedException {
+    public PaginatedValuesDto<ProfileDto> getAllPaginated(
+        @RequestParam final Integer page,
+        @RequestParam final Integer size,
+        @RequestParam final Optional<String> criteria,
+        @RequestParam final Optional<String> orderBy,
+        @RequestParam final Optional<DirectionDto> direction,
+        @ApiParam(defaultValue = "ALL") @RequestParam final Optional<String> embedded
+    ) throws InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.sanitizeCriteria(criteria);
-        if(direction.isPresent()) {
+        if (direction.isPresent()) {
             SanityChecker.sanitizeCriteria(direction.get());
         }
         EnumUtils.checkValidEnum(EmbeddedOptions.class, embedded);
-        LOGGER.debug("getAllPaginated page={}, size={}, criteria={}, orderBy={}, ascendant={}, embedded = {}", page, size, criteria, orderBy, direction,
-            embedded);
+        LOGGER.debug(
+            "getAllPaginated page={}, size={}, criteria={}, orderBy={}, ascendant={}, embedded = {}",
+            page,
+            size,
+            criteria,
+            orderBy,
+            direction,
+            embedded
+        );
         return service.getAllPaginated(page, size, criteria, orderBy, direction, embedded, buildUiHttpContext());
     }
 
@@ -171,7 +181,6 @@ public class ProfileController extends AbstractUiRestController {
     @GetMapping(CommonConstants.PATH_LOGBOOK)
     public LogbookOperationsResponseDto findHistoryById(final @PathVariable String id)
         throws InvalidParseOperationException, PreconditionFailedException {
-
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("get logbook for profile with id :{}", id);
@@ -184,9 +193,8 @@ public class ProfileController extends AbstractUiRestController {
      * @return List of matching levels
      */
     @GetMapping(CommonConstants.PATH_LEVELS)
-    public List<String> getLevels(final Optional<String> criteria) throws InvalidParseOperationException,
-        PreconditionFailedException {
-
+    public List<String> getLevels(final Optional<String> criteria)
+        throws InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.sanitizeCriteria(criteria);
         LOGGER.debug("Get levels with criteria={}", criteria);
         return service.getLevels(buildUiHttpContext(), criteria);

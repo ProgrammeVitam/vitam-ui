@@ -88,7 +88,9 @@ import java.util.Optional;
 @Api(tags = "identityproviders", value = "Identity Providers Management", description = "Identity Providers Management")
 public class IdentityProviderExternalController implements CrudController<IdentityProviderDto> {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(IdentityProviderExternalController.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
+        IdentityProviderExternalController.class
+    );
 
     @Autowired
     private IdentityProviderExternalService identityProviderCrudService;
@@ -100,8 +102,10 @@ public class IdentityProviderExternalController implements CrudController<Identi
 
     @GetMapping
     @Secured(ServicesData.ROLE_GET_PROVIDERS)
-    public List<IdentityProviderDto> getAll(final Optional<String> criteria, @RequestParam final Optional<String> embedded) {
-
+    public List<IdentityProviderDto> getAll(
+        final Optional<String> criteria,
+        @RequestParam final Optional<String> embedded
+    ) {
         EnumUtils.checkValidEnum(ProviderEmbeddedOptions.class, embedded);
         LOGGER.debug("Get all criteria={} embedded={}", criteria, embedded);
         return identityProviderCrudService.getAll(criteria, embedded);
@@ -109,9 +113,10 @@ public class IdentityProviderExternalController implements CrudController<Identi
 
     @GetMapping(CommonConstants.PATH_ID)
     @Secured(ServicesData.ROLE_GET_PROVIDERS)
-    public IdentityProviderDto getOne(final @PathVariable("id") String id, final @RequestParam Optional<String> embedded)
-        throws InvalidParseOperationException, PreconditionFailedException {
-
+    public IdentityProviderDto getOne(
+        final @PathVariable("id") String id,
+        final @RequestParam Optional<String> embedded
+    ) throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter("Identifier is mandatory : ", id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Get {}", id);
@@ -132,13 +137,15 @@ public class IdentityProviderExternalController implements CrudController<Identi
     @Secured(ServicesData.ROLE_CREATE_PROVIDERS)
     public IdentityProviderDto create(final @Valid @RequestBody IdentityProviderDto dto)
         throws InvalidParseOperationException, PreconditionFailedException {
-
         LOGGER.debug("Create {}", dto);
         return identityProviderCrudService.create(dto);
     }
 
     @Override
-    public IdentityProviderDto update(final @PathVariable("id") String id, final @Valid @RequestBody IdentityProviderDto dto) {
+    public IdentityProviderDto update(
+        final @PathVariable("id") String id,
+        final @Valid @RequestBody IdentityProviderDto dto
+    ) {
         throw new UnsupportedOperationException("update not implemented");
     }
 
@@ -148,13 +155,17 @@ public class IdentityProviderExternalController implements CrudController<Identi
     @Override
     @PatchMapping(CommonConstants.PATH_ID)
     @Secured(ServicesData.ROLE_UPDATE_PROVIDERS)
-    public IdentityProviderDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto)
-        throws InvalidParseOperationException, PreconditionFailedException {
-
+    public IdentityProviderDto patch(
+        final @PathVariable("id") String id,
+        @RequestBody final Map<String, Object> partialDto
+    ) throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter("Identifier is mandatory : ", id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Patch {} with {}", id, partialDto);
-        Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "The DTO identifier must match the path identifier for update.");
+        Assert.isTrue(
+            StringUtils.equals(id, (String) partialDto.get("id")),
+            "The DTO identifier must match the path identifier for update."
+        );
         return identityProviderCrudService.patch(partialDto);
     }
 }

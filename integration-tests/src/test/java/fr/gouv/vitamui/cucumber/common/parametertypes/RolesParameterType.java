@@ -1,9 +1,8 @@
 package fr.gouv.vitamui.cucumber.common.parametertypes;
 
+import lombok.Getter;
 import org.junit.Assert;
 import org.junit.Test;
-
-import lombok.Getter;
 
 /**
  * Transformer for roles.
@@ -11,7 +10,7 @@ import lombok.Getter;
  */
 @Getter
 public class RolesParameterType {
-    
+
     private String[] data;
 
     public RolesParameterType(final String data) {
@@ -26,7 +25,6 @@ public class RolesParameterType {
         this.data = arrayRoles;
     }
 
-
     @Test
     public void test() {
         final RolesParameterType roles = new RolesParameterType("ROLE_GET_USERS+ROLE_GET_GROUPS+ROLE_CREATE_PROFILES");
@@ -35,5 +33,4 @@ public class RolesParameterType {
         Assert.assertEquals("ROLE_GET_GROUPS", results[1]);
         Assert.assertEquals("ROLE_CREATE_PROFILES", results[2]);
     }
-
 }

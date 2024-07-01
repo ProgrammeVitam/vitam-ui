@@ -36,10 +36,9 @@
  */
 package fr.gouv.vitamui.commons.mongo.dao;
 
-import org.springframework.stereotype.Repository;
-
 import fr.gouv.vitamui.commons.mongo.domain.CustomSequence;
 import fr.gouv.vitamui.commons.mongo.repository.VitamUISequenceRepository;
+import org.springframework.stereotype.Repository;
 
 /**
  * VITAMUI Mongo CRUD Repository A service to read, create, update and delete an object with identifier.
@@ -47,7 +46,4 @@ import fr.gouv.vitamui.commons.mongo.repository.VitamUISequenceRepository;
  *
  */
 @Repository
-public interface CustomSequenceRepository extends VitamUISequenceRepository<CustomSequence, String> {
-
-
-}
+public interface CustomSequenceRepository extends VitamUISequenceRepository<CustomSequence, String> {}

@@ -62,15 +62,25 @@ public class TenantExternalControllerTest extends ApiIamControllerTest<TenantDto
     @Test
     public void testCheckExistByBadCriteriaScriptThenReturnBadRequest() {
         Mockito.when(tenantExternalService.checkExists(any(String.class))).thenReturn(true);
-        final QueryDto criteria = QueryDto.criteria().addCriterion("name", "tenantName<s></s>", CriterionOperator.EQUALS);
-        super.performHead(CommonConstants.PATH_CHECK, ImmutableMap.of("criteria", criteria.toJson()), status().isBadRequest());
+        final QueryDto criteria = QueryDto.criteria()
+            .addCriterion("name", "tenantName<s></s>", CriterionOperator.EQUALS);
+        super.performHead(
+            CommonConstants.PATH_CHECK,
+            ImmutableMap.of("criteria", criteria.toJson()),
+            status().isBadRequest()
+        );
     }
 
     @Test
     public void testCheckExistByBadCriteriaForbiddenFieldTypeThenReturnBadRequest() {
         Mockito.when(tenantExternalService.checkExists(any(String.class))).thenReturn(true);
-        final QueryDto criteria = QueryDto.criteria().addCriterion("name", "tenantName<![CDATA[", CriterionOperator.EQUALS);
-        super.performHead(CommonConstants.PATH_CHECK, ImmutableMap.of("criteria", criteria.toJson()), status().isBadRequest());
+        final QueryDto criteria = QueryDto.criteria()
+            .addCriterion("name", "tenantName<![CDATA[", CriterionOperator.EQUALS);
+        super.performHead(
+            CommonConstants.PATH_CHECK,
+            ImmutableMap.of("criteria", criteria.toJson()),
+            status().isBadRequest()
+        );
     }
 
     @Test
@@ -90,8 +100,7 @@ public class TenantExternalControllerTest extends ApiIamControllerTest<TenantDto
     }
 
     @Override
-    protected void preparedServices() {
-    }
+    protected void preparedServices() {}
 
     @Override
     protected String getRessourcePrefix() {
@@ -107,5 +116,4 @@ public class TenantExternalControllerTest extends ApiIamControllerTest<TenantDto
     protected Class<TenantDto> getDtoClass() {
         return TenantDto.class;
     }
-
 }

@@ -36,21 +36,19 @@
  */
 package fr.gouv.vitamui.commons.api.domain;
 
-import java.time.OffsetDateTime;
-
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
-
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import fr.gouv.vitamui.commons.api.deserializer.ToLowerCaseConverter;
-import org.hibernate.validator.constraints.Length;
-
 import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
 import fr.gouv.vitamui.commons.api.enums.UserTypeEnum;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.validator.constraints.Length;
+
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+import java.time.OffsetDateTime;
 
 /**
  * A DTO with an identifier.

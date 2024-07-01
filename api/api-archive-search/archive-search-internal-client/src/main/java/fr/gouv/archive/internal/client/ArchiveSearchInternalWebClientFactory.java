@@ -36,8 +36,10 @@ public class ArchiveSearchInternalWebClientFactory extends BaseWebClientFactory 
         super(restClientConfiguration);
     }
 
-    public ArchiveSearchInternalWebClientFactory(final RestClientConfiguration restClientConfig,
-        final HttpPoolConfiguration httpPoolConfig) {
+    public ArchiveSearchInternalWebClientFactory(
+        final RestClientConfiguration restClientConfig,
+        final HttpPoolConfiguration httpPoolConfig
+    ) {
         super(restClientConfig, httpPoolConfig);
     }
 

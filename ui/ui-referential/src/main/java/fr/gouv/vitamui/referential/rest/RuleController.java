@@ -105,9 +105,8 @@ public class RuleController extends AbstractUiRestController {
     @ApiOperation(value = "Get entity")
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Collection<RuleDto> getAll(final Optional<String> criteria) throws InvalidParseOperationException,
-        PreconditionFailedException {
-
+    public Collection<RuleDto> getAll(final Optional<String> criteria)
+        throws InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.sanitizeCriteria(criteria);
         LOGGER.debug("Get all with criteria={}", criteria);
         return service.getAll(buildUiHttpContext(), criteria);
@@ -116,13 +115,24 @@ public class RuleController extends AbstractUiRestController {
     @ApiOperation(value = "Get entities paginated")
     @GetMapping(params = { "page", "size" })
     @ResponseStatus(HttpStatus.OK)
-    public PaginatedValuesDto<RuleDto> getAllPaginated(@RequestParam final Integer page, @RequestParam final Integer size,
-            @RequestParam final Optional<String> criteria, @RequestParam final Optional<String> orderBy, @RequestParam final Optional<DirectionDto> direction)
-        throws InvalidParseOperationException, PreconditionFailedException {
-        if(orderBy.isPresent()) {
+    public PaginatedValuesDto<RuleDto> getAllPaginated(
+        @RequestParam final Integer page,
+        @RequestParam final Integer size,
+        @RequestParam final Optional<String> criteria,
+        @RequestParam final Optional<String> orderBy,
+        @RequestParam final Optional<DirectionDto> direction
+    ) throws InvalidParseOperationException, PreconditionFailedException {
+        if (orderBy.isPresent()) {
             SanityChecker.checkSecureParameter(orderBy.get());
         }
-        LOGGER.debug("getAllPaginated page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, criteria, orderBy, direction);
+        LOGGER.debug(
+            "getAllPaginated page={}, size={}, criteria={}, orderBy={}, ascendant={}",
+            page,
+            size,
+            criteria,
+            orderBy,
+            direction
+        );
         return service.getAllPaginated(page, size, criteria, orderBy, direction, buildUiHttpContext());
     }
 
@@ -140,8 +150,8 @@ public class RuleController extends AbstractUiRestController {
 
     @ApiOperation(value = "Check ability to create rule")
     @PostMapping(path = CommonConstants.PATH_CHECK)
-    public ResponseEntity<Void> check(@RequestBody RuleDto ruleDto) throws InvalidParseOperationException,
-        PreconditionFailedException {
+    public ResponseEntity<Void> check(@RequestBody RuleDto ruleDto)
+        throws InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.sanitizeCriteria(ruleDto);
         LOGGER.debug("check ability to create rule={}", ruleDto);
         final boolean exist = service.check(buildUiHttpContext(), ruleDto);
@@ -152,35 +162,35 @@ public class RuleController extends AbstractUiRestController {
     @ApiOperation(value = "Create rule")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Void> create(@Valid @RequestBody  RuleDto ruleDto) throws InvalidParseOperationException,
-        PreconditionFailedException {
+    public ResponseEntity<Void> create(@Valid @RequestBody RuleDto ruleDto)
+        throws InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.sanitizeCriteria(ruleDto);
         LOGGER.debug("create rule={}", ruleDto);
-        return RestUtils.buildBooleanResponse(
-            service.createRule(buildUiHttpContext(), ruleDto)
-        );
+        return RestUtils.buildBooleanResponse(service.createRule(buildUiHttpContext(), ruleDto));
     }
 
     @ApiOperation(value = "Patch entity")
     @PatchMapping(CommonConstants.PATH_ID)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Void> patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto)
-        throws InvalidParseOperationException, PreconditionFailedException {
+    public ResponseEntity<Void> patch(
+        final @PathVariable("id") String id,
+        @RequestBody final Map<String, Object> partialDto
+    ) throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter("The Identifier, the partialEntity are mandatory parameters: ", id, partialDto);
         SanityChecker.sanitizeCriteria(partialDto);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Patch User {} with {}", id, partialDto);
-        Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "Unable to patch rule : the DTO id must match the path id.");
-        return RestUtils.buildBooleanResponse(
-        	service.patchRule(buildUiHttpContext(), partialDto, id)
+        Assert.isTrue(
+            StringUtils.equals(id, (String) partialDto.get("id")),
+            "Unable to patch rule : the DTO id must match the path id."
         );
+        return RestUtils.buildBooleanResponse(service.patchRule(buildUiHttpContext(), partialDto, id));
     }
 
     @ApiOperation(value = "get history by rule's id")
     @GetMapping(CommonConstants.PATH_LOGBOOK)
     public LogbookOperationsResponseDto findHistoryById(final @PathVariable String id)
         throws InvalidParseOperationException, PreconditionFailedException {
-
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("get logbook for rule with id :{}", id);
@@ -189,22 +199,18 @@ public class RuleController extends AbstractUiRestController {
 
     @ApiOperation(value = "delete rule")
     @DeleteMapping(CommonConstants.PATH_ID)
-    public ResponseEntity<Void> delete(final @PathVariable String id) throws InvalidParseOperationException,
-        PreconditionFailedException {
-
+    public ResponseEntity<Void> delete(final @PathVariable String id)
+        throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("delete rule with id :{}", id);
-        return RestUtils.buildBooleanResponse(
-        	service.deleteRule(buildUiHttpContext(), id)
-        );
+        return RestUtils.buildBooleanResponse(service.deleteRule(buildUiHttpContext(), id));
     }
 
     @ApiOperation(value = "get exported csv for rules")
     @GetMapping("/export")
     @Produces(MediaType.APPLICATION_OCTET_STREAM_VALUE)
-    public ResponseEntity<Resource> export() throws InvalidParseOperationException,
-        PreconditionFailedException{
+    public ResponseEntity<Resource> export() throws InvalidParseOperationException, PreconditionFailedException {
         LOGGER.debug("export rules");
         return service.export(buildUiHttpContext());
     }
@@ -221,5 +227,4 @@ public class RuleController extends AbstractUiRestController {
         LOGGER.debug("Import rule file {}", file != null ? file.getOriginalFilename() : null);
         return service.importRules(buildUiHttpContext(), file);
     }
-
 }

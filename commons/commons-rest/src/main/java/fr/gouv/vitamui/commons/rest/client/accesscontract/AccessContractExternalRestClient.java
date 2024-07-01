@@ -40,7 +40,7 @@ import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import org.springframework.web.client.RestTemplate;
 
 public class AccessContractExternalRestClient extends AccessContractInternalRestClient<ExternalHttpContext> {
-    
+
     public AccessContractExternalRestClient(final RestTemplate restTemplate, final String baseUrl) {
         super(restTemplate, baseUrl);
     }

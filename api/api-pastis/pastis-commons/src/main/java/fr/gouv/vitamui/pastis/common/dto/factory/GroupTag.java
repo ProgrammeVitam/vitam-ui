@@ -41,5 +41,4 @@ package fr.gouv.vitamui.pastis.common.dto.factory;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "rng:group")
-public class GroupTag extends RngTag {
-}
+public class GroupTag extends RngTag {}

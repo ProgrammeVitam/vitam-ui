@@ -49,6 +49,4 @@ public class Converters {
     private AccessContractConverter accessContractConverter;
 
     private SearchCriteriaHistoryConverter searchCriteriaHistoryConverter;
-
-
 }

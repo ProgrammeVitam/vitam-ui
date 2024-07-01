@@ -1,10 +1,9 @@
 //
-// Ce fichier a été généré par l'implémentation de référence JavaTM Architecture for XML Binding (JAXB), v2.3.2 
-// Voir <a href="https://javaee.github.io/jaxb-v2/">https://javaee.github.io/jaxb-v2/</a> 
-// Toute modification apportée à ce fichier sera perdue lors de la recompilation du schéma source. 
-// Généré le : 2020.07.15 à 03:41:18 PM CEST 
+// Ce fichier a été généré par l'implémentation de référence JavaTM Architecture for XML Binding (JAXB), v2.3.2
+// Voir <a href="https://javaee.github.io/jaxb-v2/">https://javaee.github.io/jaxb-v2/</a>
+// Toute modification apportée à ce fichier sera perdue lors de la recompilation du schéma source.
+// Généré le : 2020.07.15 à 03:41:18 PM CEST
 //
-
 
 package fr.gouv.vitamui.commons.vitam.seda;
 
@@ -13,14 +12,13 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
-
 /**
  * Permet d'exprimer les mesures de dimensions basiques.
- * 
+ *
  * <p>Classe Java pour DimensionsType complex type.
- * 
+ *
  * <p>Le fragment de schéma suivant indique le contenu attendu figurant dans cette classe.
- * 
+ *
  * <pre>
  * &lt;complexType name="DimensionsType"&gt;
  *   &lt;complexContent&gt;
@@ -40,51 +38,50 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent&gt;
  * &lt;/complexType&gt;
  * </pre>
- * 
- * 
+ *
+ *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "DimensionsType", propOrder = {
-    "width",
-    "height",
-    "depth",
-    "shape",
-    "diameter",
-    "length",
-    "thickness",
-    "weight",
-    "numberOfPage"
-})
-public class DimensionsType
-    extends BaseDimensionsType
-{
+@XmlType(
+    name = "DimensionsType",
+    propOrder = { "width", "height", "depth", "shape", "diameter", "length", "thickness", "weight", "numberOfPage" }
+)
+public class DimensionsType extends BaseDimensionsType {
 
     @XmlElement(name = "Width")
     protected MeasurementType width;
+
     @XmlElement(name = "Height")
     protected MeasurementType height;
+
     @XmlElement(name = "Depth")
     protected MeasurementType depth;
+
     @XmlElement(name = "Shape")
     protected String shape;
+
     @XmlElement(name = "Diameter")
     protected MeasurementType diameter;
+
     @XmlElement(name = "Length")
     protected MeasurementType length;
+
     @XmlElement(name = "Thickness")
     protected MeasurementType thickness;
+
     @XmlElement(name = "Weight")
     protected MeasurementWeightType weight;
+
     @XmlElement(name = "NumberOfPage")
     protected Integer numberOfPage;
 
     /**
      * Obtient la valeur de la propriété width.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link MeasurementType }
-     *     
+     *
      */
     public MeasurementType getWidth() {
         return width;
@@ -92,11 +89,11 @@ public class DimensionsType
 
     /**
      * Définit la valeur de la propriété width.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link MeasurementType }
-     *     
+     *
      */
     public void setWidth(MeasurementType value) {
         this.width = value;
@@ -104,11 +101,11 @@ public class DimensionsType
 
     /**
      * Obtient la valeur de la propriété height.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link MeasurementType }
-     *     
+     *
      */
     public MeasurementType getHeight() {
         return height;
@@ -116,11 +113,11 @@ public class DimensionsType
 
     /**
      * Définit la valeur de la propriété height.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link MeasurementType }
-     *     
+     *
      */
     public void setHeight(MeasurementType value) {
         this.height = value;
@@ -128,11 +125,11 @@ public class DimensionsType
 
     /**
      * Obtient la valeur de la propriété depth.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link MeasurementType }
-     *     
+     *
      */
     public MeasurementType getDepth() {
         return depth;
@@ -140,11 +137,11 @@ public class DimensionsType
 
     /**
      * Définit la valeur de la propriété depth.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link MeasurementType }
-     *     
+     *
      */
     public void setDepth(MeasurementType value) {
         this.depth = value;
@@ -152,11 +149,11 @@ public class DimensionsType
 
     /**
      * Obtient la valeur de la propriété shape.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getShape() {
         return shape;
@@ -164,11 +161,11 @@ public class DimensionsType
 
     /**
      * Définit la valeur de la propriété shape.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setShape(String value) {
         this.shape = value;
@@ -176,11 +173,11 @@ public class DimensionsType
 
     /**
      * Obtient la valeur de la propriété diameter.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link MeasurementType }
-     *     
+     *
      */
     public MeasurementType getDiameter() {
         return diameter;
@@ -188,11 +185,11 @@ public class DimensionsType
 
     /**
      * Définit la valeur de la propriété diameter.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link MeasurementType }
-     *     
+     *
      */
     public void setDiameter(MeasurementType value) {
         this.diameter = value;
@@ -200,11 +197,11 @@ public class DimensionsType
 
     /**
      * Obtient la valeur de la propriété length.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link MeasurementType }
-     *     
+     *
      */
     public MeasurementType getLength() {
         return length;
@@ -212,11 +209,11 @@ public class DimensionsType
 
     /**
      * Définit la valeur de la propriété length.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link MeasurementType }
-     *     
+     *
      */
     public void setLength(MeasurementType value) {
         this.length = value;
@@ -224,11 +221,11 @@ public class DimensionsType
 
     /**
      * Obtient la valeur de la propriété thickness.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link MeasurementType }
-     *     
+     *
      */
     public MeasurementType getThickness() {
         return thickness;
@@ -236,11 +233,11 @@ public class DimensionsType
 
     /**
      * Définit la valeur de la propriété thickness.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link MeasurementType }
-     *     
+     *
      */
     public void setThickness(MeasurementType value) {
         this.thickness = value;
@@ -248,11 +245,11 @@ public class DimensionsType
 
     /**
      * Obtient la valeur de la propriété weight.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link MeasurementWeightType }
-     *     
+     *
      */
     public MeasurementWeightType getWeight() {
         return weight;
@@ -260,11 +257,11 @@ public class DimensionsType
 
     /**
      * Définit la valeur de la propriété weight.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link MeasurementWeightType }
-     *     
+     *
      */
     public void setWeight(MeasurementWeightType value) {
         this.weight = value;
@@ -272,11 +269,11 @@ public class DimensionsType
 
     /**
      * Obtient la valeur de la propriété numberOfPage.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link Integer }
-     *     
+     *
      */
     public Integer getNumberOfPage() {
         return numberOfPage;
@@ -284,14 +281,13 @@ public class DimensionsType
 
     /**
      * Définit la valeur de la propriété numberOfPage.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link Integer }
-     *     
+     *
      */
     public void setNumberOfPage(Integer value) {
         this.numberOfPage = value;
     }
-
 }

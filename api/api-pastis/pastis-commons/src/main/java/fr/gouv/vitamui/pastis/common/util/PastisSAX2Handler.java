@@ -49,11 +49,11 @@ public class PastisSAX2Handler extends DefaultHandler {
 
     @Getter
     private ElementRNG elementRNGRoot;
+
     boolean isValue;
     private Stack<ElementRNG> stackRNG = new Stack<>();
     private boolean isInDocumentationTag;
     private StringBuilder documentationContent;
-
 
     /**
      * BEGIN OF OVERRIDE OF SAX 5 METHODS : startElement, endElement, startDocument, endDocument and characters
@@ -61,11 +61,9 @@ public class PastisSAX2Handler extends DefaultHandler {
      * Identifies which tag has being opened at time by assiging a new flag
      */
     public void startElement(String nameSpace, String localName, String qName, Attributes attr) {
-
         //cette variable contient le nom du nœud qui a créé l'événement
         // If node not a grammar tag or start tag
         if (!("grammar".equals(localName) || "start".equals(localName))) {
-
             // If node is ArchiveTransfer
             if (null != attr.getValue("name") && attr.getValue("name").equals("ArchiveTransfer")) {
                 return;
@@ -85,26 +83,20 @@ public class PastisSAX2Handler extends DefaultHandler {
                 e.getChildren().add(elementRNG);
             }
             stackRNG.push(elementRNG);
-
-
-
         }
 
         documentationContent = new StringBuilder();
         if (qName.equalsIgnoreCase("xsd:documentation")) {
             isInDocumentationTag = true;
         }
-
     }
 
     /**
      * Actions à réaliser lors de la détection de la fin d'un élément.
      */
     public void endElement(String nameSpace, String localName, String qName) throws SAXException {
-
         if (qName.equalsIgnoreCase("xsd:documentation")) {
             isInDocumentationTag = false;
-
         }
         if (!stackRNG.isEmpty()) {
             stackRNG.pop();

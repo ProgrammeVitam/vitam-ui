@@ -53,9 +53,9 @@ public class ApiReferentialExternalSecurityProfileCheckSteps extends CommonSteps
         try {
             final SecurityProfileDto ingestContractDto = new SecurityProfileDto();
             ingestContractDto.setIdentifier(TestConstants.SECURITY_PROFILE_IDENTIFIER);
-            testContext.bResponse = getSecurityProfileRestClient().check(getSystemTenantUserAdminContext(), ingestContractDto);
-        }
-        catch (final RuntimeException e) {
+            testContext.bResponse = getSecurityProfileRestClient()
+                .check(getSystemTenantUserAdminContext(), ingestContractDto);
+        } catch (final RuntimeException e) {
             testContext.exception = e;
         }
     }

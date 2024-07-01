@@ -39,5 +39,5 @@ package fr.gouv.vitamui.commons.api.domain;
 public enum QueryOperator {
     AND,
     NOR,
-    OR;
+    OR,
 }

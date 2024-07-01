@@ -36,13 +36,7 @@
  */
 package fr.gouv.vitamui.commons.vitam.api.administration;
 
-import java.io.IOException;
-import java.io.InputStream;
-
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.fasterxml.jackson.databind.JsonNode;
-
 import fr.gouv.vitam.access.external.client.AdminExternalClient;
 import fr.gouv.vitam.access.external.common.exception.AccessExternalClientException;
 import fr.gouv.vitam.common.client.VitamContext;
@@ -51,6 +45,10 @@ import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.administration.IngestContractModel;
 import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.io.IOException;
+import java.io.InputStream;
 
 public class IngestContractService {
 
@@ -61,24 +59,32 @@ public class IngestContractService {
         this.adminExternalClient = adminExternalClient;
     }
 
-    public RequestResponse<IngestContractModel> findIngestContractById(final VitamContext vitamContext,
-            final String contractId) throws VitamClientException {
-        RequestResponse<IngestContractModel> jsonResponse = adminExternalClient.findIngestContractById(vitamContext,
-                contractId);
+    public RequestResponse<IngestContractModel> findIngestContractById(
+        final VitamContext vitamContext,
+        final String contractId
+    ) throws VitamClientException {
+        RequestResponse<IngestContractModel> jsonResponse = adminExternalClient.findIngestContractById(
+            vitamContext,
+            contractId
+        );
         VitamRestUtils.checkResponse(jsonResponse);
         return jsonResponse;
     }
 
-    public RequestResponse<IngestContractModel> findIngestContracts(final VitamContext vitamContext,
-            final JsonNode query) throws VitamClientException {
-        RequestResponse<IngestContractModel> jsonResponse = adminExternalClient.findIngestContracts(vitamContext,
-                query);
+    public RequestResponse<IngestContractModel> findIngestContracts(
+        final VitamContext vitamContext,
+        final JsonNode query
+    ) throws VitamClientException {
+        RequestResponse<IngestContractModel> jsonResponse = adminExternalClient.findIngestContracts(
+            vitamContext,
+            query
+        );
         VitamRestUtils.checkResponse(jsonResponse);
         return jsonResponse;
     }
 
     public RequestResponse<?> createIngestContracts(final VitamContext vitamContext, final InputStream ingestContract)
-            throws InvalidParseOperationException, AccessExternalClientException, IOException {
+        throws InvalidParseOperationException, AccessExternalClientException, IOException {
         return adminExternalClient.createIngestContracts(vitamContext, ingestContract);
     }
 }

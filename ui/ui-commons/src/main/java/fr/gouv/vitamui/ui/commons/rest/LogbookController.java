@@ -99,7 +99,6 @@ public class LogbookController extends AbstractUiRestController {
     @ResponseStatus(HttpStatus.OK)
     public LogbookOperationsResponseDto findOperationByUnitId(@PathVariable final String id)
         throws InvalidParseOperationException, PreconditionFailedException {
-
         ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Get Logbook operation by id : {}", id);
@@ -111,7 +110,6 @@ public class LogbookController extends AbstractUiRestController {
     @ResponseStatus(HttpStatus.OK)
     public LogbookLifeCycleResponseDto findUnitLifeCyclesByUnitId(@PathVariable final String id)
         throws InvalidParseOperationException, PreconditionFailedException {
-
         ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Get logbook unit lifecycle by archive unit id : {}", id);
@@ -123,7 +121,6 @@ public class LogbookController extends AbstractUiRestController {
     @ResponseStatus(HttpStatus.OK)
     public LogbookLifeCycleResponseDto findObjectGroupLifeCyclesByUnitId(@PathVariable final String id)
         throws InvalidParseOperationException, PreconditionFailedException {
-
         ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Get logbook object lifecycle by archive unit id : {}", id);
@@ -142,10 +139,11 @@ public class LogbookController extends AbstractUiRestController {
     @ApiOperation(value = "Download the manifest for a given operation")
     @GetMapping(value = CommonConstants.LOGBOOK_DOWNLOAD_MANIFEST_PATH)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Resource> downloadManifest(@PathVariable final String id,
-        @RequestParam final Optional<ContentDispositionType> disposition) throws InvalidParseOperationException,
-        PreconditionFailedException {
-        if(disposition.isPresent()){
+    public ResponseEntity<Resource> downloadManifest(
+        @PathVariable final String id,
+        @RequestParam final Optional<ContentDispositionType> disposition
+    ) throws InvalidParseOperationException, PreconditionFailedException {
+        if (disposition.isPresent()) {
             SanityChecker.sanitizeCriteria(disposition.get());
         }
         ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
@@ -158,10 +156,11 @@ public class LogbookController extends AbstractUiRestController {
     @ApiOperation(value = "Download the ATR file for a given operation")
     @GetMapping(value = CommonConstants.LOGBOOK_DOWNLOAD_ATR_PATH)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Resource> downloadAtr(@PathVariable final String id,
-        @RequestParam final Optional<ContentDispositionType> disposition) throws InvalidParseOperationException,
-        PreconditionFailedException {
-        if(disposition.isPresent()){
+    public ResponseEntity<Resource> downloadAtr(
+        @PathVariable final String id,
+        @RequestParam final Optional<ContentDispositionType> disposition
+    ) throws InvalidParseOperationException, PreconditionFailedException {
+        if (disposition.isPresent()) {
             SanityChecker.sanitizeCriteria(disposition.get());
         }
 
@@ -172,21 +171,27 @@ public class LogbookController extends AbstractUiRestController {
     }
 
     @ApiOperation(value = "Download the report file for a given operation")
-    @GetMapping(value = CommonConstants.LOGBOOK_DOWNLOAD_REPORT_PATH, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    @GetMapping(
+        value = CommonConstants.LOGBOOK_DOWNLOAD_REPORT_PATH,
+        produces = MediaType.APPLICATION_OCTET_STREAM_VALUE
+    )
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Resource> downloadReport(@PathVariable final String id,
+    public ResponseEntity<Resource> downloadReport(
+        @PathVariable final String id,
         @PathVariable final String downloadType,
         @RequestParam final Optional<ContentDispositionType> disposition,
         @QueryParam("tenantId") Integer tenantId,
-        @QueryParam("contractId") String contractId) throws InvalidParseOperationException,
-        PreconditionFailedException {
-
-        if(disposition.isPresent()){
+        @QueryParam("contractId") String contractId
+    ) throws InvalidParseOperationException, PreconditionFailedException {
+        if (disposition.isPresent()) {
             SanityChecker.sanitizeCriteria(disposition.get());
         }
         SanityChecker.checkSecureParameter(id);
-        ParameterChecker
-            .checkParameter("The Identifier, the downloadType are mandatory parameters: ", id, downloadType);
+        ParameterChecker.checkParameter(
+            "The Identifier, the downloadType are mandatory parameters: ",
+            id,
+            downloadType
+        );
         SanityChecker.checkSecureParameter(id, String.valueOf(tenantId), contractId, downloadType);
         String fileName = id + ".json";
         if (DOWNLOAD_TYPE_OBJECT.equals(downloadType)) {
@@ -200,9 +205,9 @@ public class LogbookController extends AbstractUiRestController {
             fileName = id + ".zip";
         }
         LOGGER.debug("downloadReport: id={}, downloadType:{}, disposition={}", id, downloadType, disposition);
-        final ResponseEntity<Resource> response =
-            logbookService.downloadReport(buildUiHttpContext(tenantId, contractId), id, downloadType).block();
+        final ResponseEntity<Resource> response = logbookService
+            .downloadReport(buildUiHttpContext(tenantId, contractId), id, downloadType)
+            .block();
         return RestUtils.buildFileResponse(response, disposition, Optional.of(fileName));
     }
-
 }

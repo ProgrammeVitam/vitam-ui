@@ -43,24 +43,24 @@ import fr.gouv.vitamui.commons.rest.client.configuration.HttpPoolConfiguration;
 import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 
-
 public class PastisRestClientFactory extends BaseRestClientFactory {
 
     public PastisRestClientFactory(
         RestClientConfiguration pastisExternalClientConfiguration,
-        RestTemplateBuilder restTemplateBuilder) {
+        RestTemplateBuilder restTemplateBuilder
+    ) {
         super(pastisExternalClientConfiguration, restTemplateBuilder);
     }
 
     public PastisRestClientFactory(
         RestClientConfiguration restClientConfig,
         HttpPoolConfiguration httpPoolConfig,
-        RestTemplateBuilder restTemplateBuilder) {
+        RestTemplateBuilder restTemplateBuilder
+    ) {
         super(restClientConfig, httpPoolConfig, restTemplateBuilder);
     }
 
     public PastisTransformationRestClient getPastisTransformationRestClient() {
         return new PastisTransformationRestClient(getRestTemplate(), getBaseUrl());
     }
-
 }

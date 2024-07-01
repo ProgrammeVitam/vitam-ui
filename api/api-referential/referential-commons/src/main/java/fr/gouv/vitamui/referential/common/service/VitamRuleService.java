@@ -92,8 +92,11 @@ public class VitamRuleService {
     private ObjectMapper objectMapper;
 
     @Autowired
-    public VitamRuleService(AdminExternalClient adminExternalClient, ObjectMapper objectMapper,
-        AccessExternalClient accessExternalClient) {
+    public VitamRuleService(
+        AdminExternalClient adminExternalClient,
+        ObjectMapper objectMapper,
+        AccessExternalClient accessExternalClient
+    ) {
         this.adminExternalClient = adminExternalClient;
         this.objectMapper = objectMapper;
         this.accessExternalClient = accessExternalClient;
@@ -148,17 +151,17 @@ public class VitamRuleService {
     }
 
     public boolean patchRule(final VitamContext vitamContext, final String ruleId, FileRulesModel patchRule)
-        throws InvalidParseOperationException, AccessExternalClientException, VitamClientException, IOException,
-        JAXBException {
-
+        throws InvalidParseOperationException, AccessExternalClientException, VitamClientException, IOException, JAXBException {
         RequestResponse<FileRulesModel> requestResponse = findRules(vitamContext, new Select().getFinalSelect());
         final List<FileRulesModel> actualRules = objectMapper
-            .treeToValue(requestResponse.toJsonNode(), RuleNodeResponseDto.class).getResults();
+            .treeToValue(requestResponse.toJsonNode(), RuleNodeResponseDto.class)
+            .getResults();
 
         LOGGER.debug("inputPatchRule {}", patchRule);
 
         LOGGER.debug("Actual rules before patching : {}", actualRules);
-        actualRules.stream()
+        actualRules
+            .stream()
             .filter(rule -> ruleId.equals(rule.getRuleId()))
             .forEach(rule -> {
                 LOGGER.debug("Rule before patching {}", rule);
@@ -174,27 +177,27 @@ public class VitamRuleService {
     }
 
     public boolean deleteRule(final VitamContext vitamContext, final String ruleId)
-        throws InvalidParseOperationException, AccessExternalClientException, VitamClientException, IOException,
-        JAXBException {
-
+        throws InvalidParseOperationException, AccessExternalClientException, VitamClientException, IOException, JAXBException {
         RequestResponse<FileRulesModel> requestResponse = findRules(vitamContext, new Select().getFinalSelect());
         final List<FileRulesModel> actualRules = objectMapper
-            .treeToValue(requestResponse.toJsonNode(), RuleNodeResponseDto.class).getResults();
+            .treeToValue(requestResponse.toJsonNode(), RuleNodeResponseDto.class)
+            .getResults();
 
-        List<FileRulesModel> newRulesList =
-            actualRules.stream().filter(rule -> !ruleId.equals(rule.getRuleId())).collect(Collectors.toList());
+        List<FileRulesModel> newRulesList = actualRules
+            .stream()
+            .filter(rule -> !ruleId.equals(rule.getRuleId()))
+            .collect(Collectors.toList());
 
         RequestResponse response = importRules(vitamContext, newRulesList);
         return checkImportRulesResponse(response);
     }
 
     public boolean createRule(final VitamContext vitamContext, FileRulesModel newRule)
-        throws InvalidParseOperationException, AccessExternalClientException, VitamClientException, IOException,
-        JAXBException {
-
+        throws InvalidParseOperationException, AccessExternalClientException, VitamClientException, IOException, JAXBException {
         RequestResponse<FileRulesModel> requestResponse = findRules(vitamContext, new Select().getFinalSelect());
         final List<FileRulesModel> actualRules = objectMapper
-            .treeToValue(requestResponse.toJsonNode(), RuleNodeResponseDto.class).getResults();
+            .treeToValue(requestResponse.toJsonNode(), RuleNodeResponseDto.class)
+            .getResults();
 
         LOGGER.debug("Before Add List: {}", actualRules);
 
@@ -209,8 +212,10 @@ public class VitamRuleService {
 
     private RequestResponse importRules(final VitamContext vitamContext, final List<FileRulesModel> rulesModels)
         throws InvalidParseOperationException, AccessExternalClientException, IOException, JAXBException {
-        try (ByteArrayInputStream byteArrayInputStream = serializeRules(rulesModels);
-            ByteArrayInputStream debugStream = serializeRules(rulesModels)) {
+        try (
+            ByteArrayInputStream byteArrayInputStream = serializeRules(rulesModels);
+            ByteArrayInputStream debugStream = serializeRules(rulesModels)
+        ) {
             return adminExternalClient.createRules(vitamContext, byteArrayInputStream, "Rules.csv");
         }
     }
@@ -220,10 +225,8 @@ public class VitamRuleService {
         LOGGER.debug("The json for creation rules, sent to Vitam {}", listOfRules);
 
         try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream()) {
-
             final CsvMapper csvMapper = new CsvMapper();
-            final CsvSchema schema = csvMapper.schemaFor(RuleCSVDto.class)
-                .withColumnSeparator(',').withHeader();
+            final CsvSchema schema = csvMapper.schemaFor(RuleCSVDto.class).withColumnSeparator(',').withHeader();
 
             final ObjectWriter writer = csvMapper.writer(schema);
 
@@ -264,7 +267,6 @@ public class VitamRuleService {
      * @throws PreconditionFailedException when we are not authorized to make the check
      */
     public boolean checkExistenceOfRuleInVitam(final RuleDto ruleDto, VitamContext vitamContext) {
-
         if (ruleDto != null && ruleDto.getRuleId() != null) {
             try {
                 // check if tenant exist in Vitam
@@ -276,14 +278,16 @@ public class VitamRuleService {
                 } else if (response.getStatus() != HttpStatus.OK.value()) {
                     LOGGER.error("Can't create rule for this tenant, Vitam response code : " + response.getStatus());
                     throw new UnavailableServiceException(
-                        "Can't create rule for this tenant, Vitam response code : " + response.getStatus());
+                        "Can't create rule for this tenant, Vitam response code : " + response.getStatus()
+                    );
                 }
 
                 verifyRuleExistence(ruleDto, response);
             } catch (final VitamClientException exception) {
                 LOGGER.error("Can't create rules for this tenant, error while calling Vitam : " + exception);
                 throw new UnavailableServiceException(
-                    "Can't create rules for this tenant, error while calling Vitam : " + exception);
+                    "Can't create rules for this tenant, error while calling Vitam : " + exception
+                );
             }
             return true;
         }
@@ -298,45 +302,64 @@ public class VitamRuleService {
      * @throws JsonProcessingException
      * @throws ConflictException when the rule does not exists in VITAM
      */
-    private void verifyRuleExistence(final RuleDto checkRule,
-        final RequestResponse<FileRulesModel> existingRules) {
+    private void verifyRuleExistence(final RuleDto checkRule, final RequestResponse<FileRulesModel> existingRules) {
         try {
             objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-            final RuleNodeResponseDto existingRulesDto =
-                objectMapper.treeToValue(existingRules.toJsonNode(), RuleNodeResponseDto.class);
-            if(checkRule.getRuleType() == null) {
-                if(existingRulesDto.getResults().stream()
-                    .noneMatch(existingRule -> existingRule.getRuleId().equals(checkRule.getRuleId()))) {
-                    LOGGER.error("Can't find the requested rule with id {} and category {}, this rule does not exist in VITAM",
-                        checkRule.getRuleId(), checkRule.getRuleType());
+            final RuleNodeResponseDto existingRulesDto = objectMapper.treeToValue(
+                existingRules.toJsonNode(),
+                RuleNodeResponseDto.class
+            );
+            if (checkRule.getRuleType() == null) {
+                if (
+                    existingRulesDto
+                        .getResults()
+                        .stream()
+                        .noneMatch(existingRule -> existingRule.getRuleId().equals(checkRule.getRuleId()))
+                ) {
+                    LOGGER.error(
+                        "Can't find the requested rule with id {} and category {}, this rule does not exist in VITAM",
+                        checkRule.getRuleId(),
+                        checkRule.getRuleType()
+                    );
                     throw new ConflictException(
-                        "Can't find the requested rule  with id and category, this rule does not exist in VITAM");
+                        "Can't find the requested rule  with id and category, this rule does not exist in VITAM"
+                    );
                 }
-
             } else {
-                if(existingRulesDto.getResults().stream()
-                    .noneMatch(existingRule -> existingRule.getRuleId().equals(checkRule.getRuleId()) &&
-                        existingRule.getRuleType().name().equals(checkRule.getRuleType()))) {
+                if (
+                    existingRulesDto
+                        .getResults()
+                        .stream()
+                        .noneMatch(
+                            existingRule ->
+                                existingRule.getRuleId().equals(checkRule.getRuleId()) &&
+                                existingRule.getRuleType().name().equals(checkRule.getRuleType())
+                        )
+                ) {
                     LOGGER.error("Can't find the requested rule with identifier, this rule does not exist in VITAM");
                     throw new ConflictException(
-                        "Can't find the requested rule with identifier {}, this rule does not exist in VITAM", checkRule.getRuleId());
+                        "Can't find the requested rule with identifier {}, this rule does not exist in VITAM",
+                        checkRule.getRuleId()
+                    );
                 }
             }
         } catch (final JsonProcessingException exception) {
-            LOGGER.error("Can't find the requested rule, Error while parsing Vitam response : " , exception);
-            throw new UnexpectedDataException(
-                "Can't create rule, Error while parsing Vitam response : " + exception);
+            LOGGER.error("Can't find the requested rule, Error while parsing Vitam response : ", exception);
+            throw new UnexpectedDataException("Can't create rule, Error while parsing Vitam response : " + exception);
         }
     }
 
     public Response export(VitamContext context)
         throws InvalidParseOperationException, InvalidCreateOperationException, VitamClientException {
         JsonNode query = VitamQueryHelper.getLastOperationQuery(VitamQueryHelper.RULE_IMPORT_OPERATION_TYPE);
-        RequestResponse<LogbookOperation> lastImportOperationResponse =
-            accessExternalClient.selectOperations(context, query);
-        LogbookOperationsResponseDto lastImportOperation =
-            VitamRestUtils.responseMapping(lastImportOperationResponse.toJsonNode(),
-                LogbookOperationsResponseDto.class);
+        RequestResponse<LogbookOperation> lastImportOperationResponse = accessExternalClient.selectOperations(
+            context,
+            query
+        );
+        LogbookOperationsResponseDto lastImportOperation = VitamRestUtils.responseMapping(
+            lastImportOperationResponse.toJsonNode(),
+            LogbookOperationsResponseDto.class
+        );
 
         if (lastImportOperation.getHits().getTotal() == 0) {
             throw new VitamClientException("Can't get a result while selecting last rule import");
@@ -359,9 +382,17 @@ public class VitamRuleService {
      */
     private boolean checkImportRulesResponse(RequestResponse response) {
         // Check the Vitam response (if status == 200, the rule has been deleted else if status == BAD_REQUEST, Vitam has not delete the rule else, a technical  exception occured)
-        VitamRestUtils.checkResponse(response, HttpStatus.OK.value(), HttpStatus.CREATED.value(),
-            HttpStatus.ACCEPTED.value(), HttpStatus.BAD_REQUEST.value());
-        return response.getStatus() == HttpStatus.OK.value() || response.getStatus() == HttpStatus.CREATED.value() ||
-            response.getStatus() == HttpStatus.ACCEPTED.value();
+        VitamRestUtils.checkResponse(
+            response,
+            HttpStatus.OK.value(),
+            HttpStatus.CREATED.value(),
+            HttpStatus.ACCEPTED.value(),
+            HttpStatus.BAD_REQUEST.value()
+        );
+        return (
+            response.getStatus() == HttpStatus.OK.value() ||
+            response.getStatus() == HttpStatus.CREATED.value() ||
+            response.getStatus() == HttpStatus.ACCEPTED.value()
+        );
     }
 }

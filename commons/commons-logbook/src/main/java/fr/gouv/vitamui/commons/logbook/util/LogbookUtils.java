@@ -96,12 +96,10 @@ public class LogbookUtils {
                 String newValue = logbook.getNewValue() != null ? logbook.getNewValue().toString() : StringUtils.EMPTY;
                 diff.put("-" + key, oldValue);
                 diff.put("+" + key, newValue);
-
             });
             evData.set(DIFF_KEY_WORDS, diff);
             return evData;
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             LOGGER.error(e.getMessage(), e);
             throw ApiErrorGenerator.getInternalServerException(e);
         }
@@ -113,22 +111,27 @@ public class LogbookUtils {
      * @param response Logbook operation response
      * @return the last event
      */
-    public static LogbookEventDto getLastEvent(final RequestResponse<LogbookOperation> response) throws JsonProcessingException {
-        final LogbookOperationsResponseDto logbookOperationsResponseDto = objectMapper.treeToValue(response.toJsonNode(), LogbookOperationsResponseDto.class);
-        final LogbookOperationDto logbookOperation = logbookOperationsResponseDto.getResults()
+    public static LogbookEventDto getLastEvent(final RequestResponse<LogbookOperation> response)
+        throws JsonProcessingException {
+        final LogbookOperationsResponseDto logbookOperationsResponseDto = objectMapper.treeToValue(
+            response.toJsonNode(),
+            LogbookOperationsResponseDto.class
+        );
+        final LogbookOperationDto logbookOperation = logbookOperationsResponseDto
+            .getResults()
             .stream()
             .findFirst()
-            .orElseThrow(() -> new ApplicationServerException(
-                String.format("No logbook returned in the following response : %s",
-                    response)));
+            .orElseThrow(
+                () ->
+                    new ApplicationServerException(
+                        String.format("No logbook returned in the following response : %s", response)
+                    )
+            );
 
         // Initialized with the first element by default
         LogbookEventDto lastLogbookEvent = logbookOperation;
-        if (logbookOperation.getEvents() != null && !logbookOperation.getEvents()
-            .isEmpty()) {
-            lastLogbookEvent = logbookOperation.getEvents()
-                .get(logbookOperation.getEvents()
-                    .size() - 1);
+        if (logbookOperation.getEvents() != null && !logbookOperation.getEvents().isEmpty()) {
+            lastLogbookEvent = logbookOperation.getEvents().get(logbookOperation.getEvents().size() - 1);
         }
         return lastLogbookEvent;
     }

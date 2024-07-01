@@ -48,7 +48,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.regex.Pattern;
 
-
 /**
  *
  * Class Helper for doing reflection on java object
@@ -64,11 +63,11 @@ public class ReflectionUtils {
      * @throws IllegalArgumentException if type is null
      */
     public static boolean isParametrizedList(final Type type) throws IllegalArgumentException {
-        if (  type instanceof ParameterizedType ) {
+        if (type instanceof ParameterizedType) {
             final Class<?> clazz = castTypeToClass(((ParameterizedType) type).getRawType());
-            return clazz.isAssignableFrom(List.class) ;
+            return clazz.isAssignableFrom(List.class);
         }
-        return false ;
+        return false;
     }
 
     /**
@@ -90,10 +89,12 @@ public class ReflectionUtils {
      * @throws IllegalArgumentException if type is a List.class with out parameterizedTypes
      */
     public static Class<?> getParametrizedClass(final Type type) throws IllegalArgumentException {
-        if (type instanceof ParameterizedType ) {
+        if (type instanceof ParameterizedType) {
             final List<Type> parameterizedTypes = Arrays.asList(((ParameterizedType) type).getActualTypeArguments());
-            final Optional<Type> optParamType = parameterizedTypes.stream().findFirst() ;
-            final Type paramType =  optParamType.orElseThrow(() -> new IllegalArgumentException("Missing parameterized types")) ;
+            final Optional<Type> optParamType = parameterizedTypes.stream().findFirst();
+            final Type paramType = optParamType.orElseThrow(
+                () -> new IllegalArgumentException("Missing parameterized types")
+            );
             return castTypeToClass(paramType);
         }
         return castTypeToClass(type);
@@ -107,56 +108,54 @@ public class ReflectionUtils {
      * @throws NoSuchFieldException if no field with {@code fieldName} exist in {@code entityClass}
      */
     public static Type getTypeOfField(final Class<?> entityClass, final String fieldName) throws NoSuchFieldException {
-
         // Field composed
         if (fieldName.contains(".")) {
             String[] fieldsName = fieldName.split(Pattern.quote("."));
             // TODO exception if field doesn't exist
             final Field field = FieldUtils.getField(entityClass, fieldsName[0], true);
             fieldsName = ArrayUtils.removeElement(fieldsName, fieldsName[0]);
-            Class<?> subClass = ReflectionUtils.isParametrizedList(field.getGenericType()) ?
-                    getParametrizedClass(field.getGenericType()) : field.getType();
+            Class<?> subClass = ReflectionUtils.isParametrizedList(field.getGenericType())
+                ? getParametrizedClass(field.getGenericType())
+                : field.getType();
             return getTypeOfField(subClass, StringUtils.join(fieldsName, "."));
         }
 
         try {
             final Field field = FieldUtils.getField(entityClass, fieldName, true);
             return field.getGenericType();
-        }
-        catch (final Exception e) {
+        } catch (final Exception e) {
             throw new NoSuchFieldException("no fields " + fieldName + " found");
         }
     }
 
     /**
-    * Method allowing to check if a given field exists in the class.
-    * @param entityClass Class to analyze.
-    * @param fieldName Field to check.
-    * @return True if the field exists, false otherwhise.
-    */
-   public static boolean hasField(final Class<?> entityClass, final String fieldName){
+     * Method allowing to check if a given field exists in the class.
+     * @param entityClass Class to analyze.
+     * @param fieldName Field to check.
+     * @return True if the field exists, false otherwhise.
+     */
+    public static boolean hasField(final Class<?> entityClass, final String fieldName) {
+        //       LOGGER.debug("getTypeOfField : entityClass {} - field {}", entityClass, fieldName);
+        if (fieldName.contains(".")) {
+            String[] fields = fieldName.split(Pattern.quote("."));
+            // TODO exception if field doesn't exist
+            final Field field = FieldUtils.getField(entityClass, fields[0], true);
+            // If the field does not exist, we return false.
+            if (field == null) {
+                return false;
+            }
+            fields = ArrayUtils.removeElement(fields, fields[0]);
+            Class<?> subClass = ReflectionUtils.isParametrizedList(field.getGenericType())
+                ? getParametrizedClass(field.getGenericType())
+                : field.getType();
+            //           LOGGER.debug("getTypeOfField : entityClass {} - fields {}", subClass, fields);
+            return hasField(subClass, StringUtils.join(fields, "."));
+        }
 
-//       LOGGER.debug("getTypeOfField : entityClass {} - field {}", entityClass, fieldName);
-       if (fieldName.contains(".")) {
-           String[] fields = fieldName.split(Pattern.quote("."));
-           // TODO exception if field doesn't exist
-           final Field field = FieldUtils.getField(entityClass, fields[0], true);
-           // If the field does not exist, we return false.
-           if (field == null) {
-               return false;
-           }
-           fields = ArrayUtils.removeElement(fields, fields[0]);
-           Class<?> subClass = ReflectionUtils.isParametrizedList(field.getGenericType()) ?
-                   getParametrizedClass(field.getGenericType()) : field.getType();
-//           LOGGER.debug("getTypeOfField : entityClass {} - fields {}", subClass, fields);
-           return hasField(subClass, StringUtils.join(fields, "."));
-       }
-
-       try {
-           return FieldUtils.getField(entityClass, fieldName, true) != null;
-       }
-       catch (final Exception e) {
-           return false;
-       }
-   }
+        try {
+            return FieldUtils.getField(entityClass, fieldName, true) != null;
+        } catch (final Exception e) {
+            return false;
+        }
+    }
 }

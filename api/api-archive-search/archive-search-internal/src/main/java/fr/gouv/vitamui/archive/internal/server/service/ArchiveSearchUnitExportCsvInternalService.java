@@ -75,8 +75,10 @@ import static fr.gouv.vitamui.commons.api.utils.MetadataSearchCriteriaUtils.clea
  */
 @Service
 public class ArchiveSearchUnitExportCsvInternalService {
-    private static final VitamUILogger LOGGER =
-        VitamUILoggerFactory.getInstance(ArchiveSearchUnitExportCsvInternalService.class);
+
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
+        ArchiveSearchUnitExportCsvInternalService.class
+    );
 
     private static final Integer EXPORT_ARCHIVE_UNITS_MAX_ELEMENTS = 10000;
     public static final String FILING_UNIT = "FILING_UNIT";
@@ -91,11 +93,11 @@ public class ArchiveSearchUnitExportCsvInternalService {
     public ArchiveSearchUnitExportCsvInternalService(
         final @Lazy ArchiveSearchInternalService archiveSearchInternalService,
         final ArchiveSearchAgenciesInternalService archiveSearchAgenciesInternalService,
-        final ObjectMapper objectMapper) {
+        final ObjectMapper objectMapper
+    ) {
         this.archiveSearchAgenciesInternalService = archiveSearchAgenciesInternalService;
         this.archiveSearchInternalService = archiveSearchInternalService;
         this.objectMapper = objectMapper;
-
     }
 
     /**
@@ -106,18 +108,21 @@ public class ArchiveSearchUnitExportCsvInternalService {
      * @throws VitamClientException
      * @throws IOException
      */
-    public Resource exportToCsvSearchArchiveUnitsByCriteria(final SearchCriteriaDto searchQuery,
-        final VitamContext vitamContext) throws VitamClientException {
+    public Resource exportToCsvSearchArchiveUnitsByCriteria(
+        final SearchCriteriaDto searchQuery,
+        final VitamContext vitamContext
+    ) throws VitamClientException {
         LOGGER.info("Calling exportToCsvSearchArchiveUnitsByCriteria with query {} ", searchQuery);
         Locale locale = Locale.FRENCH;
-        if (Locale.FRENCH.getLanguage().equals(searchQuery.getLanguage()) ||
-            Locale.ENGLISH.getLanguage().equals(searchQuery.getLanguage())) {
+        if (
+            Locale.FRENCH.getLanguage().equals(searchQuery.getLanguage()) ||
+            Locale.ENGLISH.getLanguage().equals(searchQuery.getLanguage())
+        ) {
             locale = Locale.forLanguageTag(searchQuery.getLanguage());
         }
         ExportSearchResultParam exportSearchResultParam = new ExportSearchResultParam(locale);
         return exportToCsvSearchArchiveUnitsByCriteriaAndParams(searchQuery, exportSearchResultParam, vitamContext);
     }
-
 
     /**
      * export ToCsv Search ArchiveUnits By Criteria And Params by language
@@ -128,9 +133,11 @@ public class ArchiveSearchUnitExportCsvInternalService {
      * @return
      * @throws VitamClientException
      */
-    private Resource exportToCsvSearchArchiveUnitsByCriteriaAndParams(final SearchCriteriaDto searchQuery, final
-    ExportSearchResultParam exportSearchResultParam, final VitamContext vitamContext)
-        throws VitamClientException {
+    private Resource exportToCsvSearchArchiveUnitsByCriteriaAndParams(
+        final SearchCriteriaDto searchQuery,
+        final ExportSearchResultParam exportSearchResultParam,
+        final VitamContext vitamContext
+    ) throws VitamClientException {
         try {
             archiveSearchAgenciesInternalService.mapAgenciesNameToCodes(searchQuery, vitamContext);
             List<ArchiveUnitCsv> unitCsvList = exportArchiveUnitsByCriteriaToCsvFile(searchQuery, vitamContext);
@@ -138,8 +145,9 @@ public class ArchiveSearchUnitExportCsvInternalService {
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             Writer writer = new OutputStreamWriter(outputStream, StandardCharsets.UTF_8.name());
             // header record
-            String[] headerRecordFr =
-                exportSearchResultParam.getHeaders().toArray(new String[exportSearchResultParam.getHeaders().size()]);
+            String[] headerRecordFr = exportSearchResultParam
+                .getHeaders()
+                .toArray(new String[exportSearchResultParam.getHeaders().size()]);
             SimpleDateFormat dateFormat = new SimpleDateFormat(exportSearchResultParam.getPatternDate());
             // create a csv writer
             ICSVWriter csvWriter = new CSVWriterBuilder(writer)
@@ -152,30 +160,38 @@ public class ArchiveSearchUnitExportCsvInternalService {
             csvWriter.writeNext(headerRecordFr);
 
             // write data records
-            unitCsvList.stream().forEach(archiveUnitCsv -> {
-                String startDt = null;
-                String endDt = null;
-                if (archiveUnitCsv.getStartDate() != null) {
-                    try {
-                        startDt = dateFormat.format(LocalDateUtil.getDate(archiveUnitCsv.getStartDate()));
-                    } catch (ParseException e) {
-                        LOGGER.error("Error parsing starting date {} ", archiveUnitCsv.getStartDate());
+            unitCsvList
+                .stream()
+                .forEach(archiveUnitCsv -> {
+                    String startDt = null;
+                    String endDt = null;
+                    if (archiveUnitCsv.getStartDate() != null) {
+                        try {
+                            startDt = dateFormat.format(LocalDateUtil.getDate(archiveUnitCsv.getStartDate()));
+                        } catch (ParseException e) {
+                            LOGGER.error("Error parsing starting date {} ", archiveUnitCsv.getStartDate());
+                        }
                     }
-                }
-                if (archiveUnitCsv.getEndDate() != null) {
-                    try {
-                        endDt = dateFormat.format(LocalDateUtil.getDate(archiveUnitCsv.getEndDate()));
-                    } catch (ParseException e) {
-                        LOGGER.error("Error parsing end date {} ", archiveUnitCsv.getEndDate());
+                    if (archiveUnitCsv.getEndDate() != null) {
+                        try {
+                            endDt = dateFormat.format(LocalDateUtil.getDate(archiveUnitCsv.getEndDate()));
+                        } catch (ParseException e) {
+                            LOGGER.error("Error parsing end date {} ", archiveUnitCsv.getEndDate());
+                        }
                     }
-                }
-                csvWriter.writeNext(new String[] {archiveUnitCsv.getId(), archiveUnitCsv.getArchiveUnitType(),
-                    archiveUnitCsv.getOriginatingAgencyName(),
-                    exportSearchResultParam.getDescriptionLevelMap().get(archiveUnitCsv.getDescriptionLevel()),
-                    archiveUnitCsv.getTitle(),
-                    startDt, endDt,
-                    archiveUnitCsv.getDescription()});
-            });
+                    csvWriter.writeNext(
+                        new String[] {
+                            archiveUnitCsv.getId(),
+                            archiveUnitCsv.getArchiveUnitType(),
+                            archiveUnitCsv.getOriginatingAgencyName(),
+                            exportSearchResultParam.getDescriptionLevelMap().get(archiveUnitCsv.getDescriptionLevel()),
+                            archiveUnitCsv.getTitle(),
+                            startDt,
+                            endDt,
+                            archiveUnitCsv.getDescription(),
+                        }
+                    );
+                });
             // close writers
             csvWriter.close();
             writer.close();
@@ -185,34 +201,47 @@ public class ArchiveSearchUnitExportCsvInternalService {
         }
     }
 
-
-    private List<ArchiveUnitCsv> exportArchiveUnitsByCriteriaToCsvFile(final SearchCriteriaDto searchQuery,
-        final VitamContext vitamContext) throws VitamClientException {
+    private List<ArchiveUnitCsv> exportArchiveUnitsByCriteriaToCsvFile(
+        final SearchCriteriaDto searchQuery,
+        final VitamContext vitamContext
+    ) throws VitamClientException {
         try {
             LOGGER.info("Calling exporting  export ArchiveUnits to CSV with criteria {}", searchQuery);
             checkSizeLimit(vitamContext, searchQuery);
             searchQuery.setPageNumber(0);
             searchQuery.setSize(EXPORT_ARCHIVE_UNITS_MAX_ELEMENTS);
-            JsonNode archiveUnitsResult =
-                archiveSearchInternalService
-                    .searchArchiveUnits(archiveSearchInternalService.mapRequestToDslQuery(searchQuery), vitamContext);
-            final VitamUISearchResponseDto archivesResponse =
-                objectMapper.treeToValue(archiveUnitsResult, VitamUISearchResponseDto.class);
+            JsonNode archiveUnitsResult = archiveSearchInternalService.searchArchiveUnits(
+                archiveSearchInternalService.mapRequestToDslQuery(searchQuery),
+                vitamContext
+            );
+            final VitamUISearchResponseDto archivesResponse = objectMapper.treeToValue(
+                archiveUnitsResult,
+                VitamUISearchResponseDto.class
+            );
             LOGGER.info("archivesResponse found {} ", archivesResponse.getResults().size());
-            Set<String> originesAgenciesCodes = archivesResponse.getResults().stream().map(
-                    ResultsDto::getOriginatingAgency).
-                filter(Objects::nonNull).collect(Collectors.toSet());
+            Set<String> originesAgenciesCodes = archivesResponse
+                .getResults()
+                .stream()
+                .map(ResultsDto::getOriginatingAgency)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toSet());
 
-            List<AgencyModelDto> originAgenciesFound =
-                archiveSearchAgenciesInternalService.findOriginAgenciesByCodes(vitamContext, originesAgenciesCodes);
-            Map<String, AgencyModelDto> agenciesMapByIdentifier =
-                originAgenciesFound.stream().collect(Collectors.toMap(AgencyModelDto::getIdentifier, agency -> agency));
-            return archivesResponse.getResults().stream().map(
-                    archiveUnit -> RulesUpdateCommonService
-                        .fillOriginatingAgencyName(archiveUnit, agenciesMapByIdentifier)
-                ).map(archiveUnit -> cleanAndMapArchiveUnitResult(archiveUnit, searchQuery.getLanguage()))
+            List<AgencyModelDto> originAgenciesFound = archiveSearchAgenciesInternalService.findOriginAgenciesByCodes(
+                vitamContext,
+                originesAgenciesCodes
+            );
+            Map<String, AgencyModelDto> agenciesMapByIdentifier = originAgenciesFound
+                .stream()
+                .collect(Collectors.toMap(AgencyModelDto::getIdentifier, agency -> agency));
+            return archivesResponse
+                .getResults()
+                .stream()
+                .map(
+                    archiveUnit ->
+                        RulesUpdateCommonService.fillOriginatingAgencyName(archiveUnit, agenciesMapByIdentifier)
+                )
+                .map(archiveUnit -> cleanAndMapArchiveUnitResult(archiveUnit, searchQuery.getLanguage()))
                 .collect(Collectors.toList());
-
         } catch (IOException e) {
             LOGGER.error("Can't parse criteria as Vitam query {} : ", e);
             throw new BadRequestException("Can't parse criteria as Vitam query", e);
@@ -229,21 +258,25 @@ public class ArchiveSearchUnitExportCsvInternalService {
         throws VitamClientException, IOException {
         SearchCriteriaDto searchQueryCounting = new SearchCriteriaDto();
         searchQueryCounting.setCriteriaList(searchQuery.getCriteriaList());
-        JsonNode archiveUnitsResult =
-            archiveSearchInternalService
-                .searchArchiveUnits(archiveSearchInternalService.mapRequestToDslQuery(searchQueryCounting),
-                    vitamContext);
-        final VitamUISearchResponseDto archivesOriginResponse =
-            objectMapper.treeToValue(archiveUnitsResult, VitamUISearchResponseDto.class);
+        JsonNode archiveUnitsResult = archiveSearchInternalService.searchArchiveUnits(
+            archiveSearchInternalService.mapRequestToDslQuery(searchQueryCounting),
+            vitamContext
+        );
+        final VitamUISearchResponseDto archivesOriginResponse = objectMapper.treeToValue(
+            archiveUnitsResult,
+            VitamUISearchResponseDto.class
+        );
         Integer nbResults = archivesOriginResponse.getHits().getTotal();
         if (nbResults >= EXPORT_ARCHIVE_UNITS_MAX_ELEMENTS) {
-            LOGGER.error("The archives units result found is greater than allowed {} ",
-                EXPORT_ARCHIVE_UNITS_MAX_ELEMENTS);
+            LOGGER.error(
+                "The archives units result found is greater than allowed {} ",
+                EXPORT_ARCHIVE_UNITS_MAX_ELEMENTS
+            );
             throw new RequestEntityTooLargeException(
-                "The archives units result found is greater than allowed:  " + EXPORT_ARCHIVE_UNITS_MAX_ELEMENTS);
+                "The archives units result found is greater than allowed:  " + EXPORT_ARCHIVE_UNITS_MAX_ELEMENTS
+            );
         }
     }
-
 
     private ArchiveUnitCsv cleanAndMapArchiveUnitResult(ArchiveUnit archiveUnit, String language) {
         if (archiveUnit == null) {
@@ -252,14 +285,16 @@ public class ArchiveSearchUnitExportCsvInternalService {
         ArchiveUnitCsv archiveUnitCsv = new ArchiveUnitCsv();
         BeanUtils.copyProperties(archiveUnit, archiveUnitCsv);
         archiveUnitCsv.setDescription(
-            archiveUnit.getDescription() != null ? cleanString(archiveUnit.getDescription()) : null);
+            archiveUnit.getDescription() != null ? cleanString(archiveUnit.getDescription()) : null
+        );
         archiveUnitCsv.setDescriptionLevel(
-            archiveUnit.getDescriptionLevel() != null ? cleanString(archiveUnit.getDescriptionLevel()) : null);
+            archiveUnit.getDescriptionLevel() != null ? cleanString(archiveUnit.getDescriptionLevel()) : null
+        );
         archiveUnitCsv.setArchiveUnitType(getArchiveUnitType(archiveUnit, language));
         archiveUnitCsv.setTitle(cleanString(getArchiveUnitTitle(archiveUnit)));
         archiveUnitCsv.setOriginatingAgencyName(
-            archiveUnit.getOriginatingAgencyName() != null ? cleanString(archiveUnit.getOriginatingAgencyName()) :
-                null);
+            archiveUnit.getOriginatingAgencyName() != null ? cleanString(archiveUnit.getOriginatingAgencyName()) : null
+        );
         return archiveUnitCsv;
     }
 
@@ -268,8 +303,10 @@ public class ArchiveSearchUnitExportCsvInternalService {
         if (archiveUnit != null) {
             if (StringUtils.isEmpty(archiveUnit.getTitle()) || StringUtils.isBlank(archiveUnit.getTitle())) {
                 if (archiveUnit.getTitle_() != null) {
-                    if (!StringUtils.isEmpty(archiveUnit.getTitle_().getFr()) &&
-                        !StringUtils.isBlank(archiveUnit.getTitle_().getFr())) {
+                    if (
+                        !StringUtils.isEmpty(archiveUnit.getTitle_().getFr()) &&
+                        !StringUtils.isBlank(archiveUnit.getTitle_().getFr())
+                    ) {
                         title = archiveUnit.getTitle_().getFr();
                     } else {
                         title = archiveUnit.getTitle_().getEn();
@@ -287,20 +324,24 @@ public class ArchiveSearchUnitExportCsvInternalService {
         if (archiveUnit != null && !StringUtils.isEmpty(archiveUnit.getUnitType())) {
             switch (archiveUnit.getUnitType()) {
                 case FILING_UNIT:
-                    archiveUnitType = language.equals(Locale.FRENCH.getLanguage()) ?
-                        ExportSearchResultParam.FR_AU_FILING_SCHEME : ExportSearchResultParam.EN_AU_FILING_SCHEME;
+                    archiveUnitType = language.equals(Locale.FRENCH.getLanguage())
+                        ? ExportSearchResultParam.FR_AU_FILING_SCHEME
+                        : ExportSearchResultParam.EN_AU_FILING_SCHEME;
                     break;
                 case HOLDING_UNIT:
-                    archiveUnitType = language.equals(Locale.FRENCH.getLanguage()) ?
-                        ExportSearchResultParam.FR_AU_HOLDING_SCHEME : ExportSearchResultParam.EN_AU_HOLDING_SCHEME;
+                    archiveUnitType = language.equals(Locale.FRENCH.getLanguage())
+                        ? ExportSearchResultParam.FR_AU_HOLDING_SCHEME
+                        : ExportSearchResultParam.EN_AU_HOLDING_SCHEME;
                     break;
                 case INGEST_ARCHIVE_TYPE:
                     if (StringUtils.isEmpty(archiveUnit.getUnitObject())) {
-                        archiveUnitType = language.equals(Locale.FRENCH.getLanguage()) ?
-                            ExportSearchResultParam.FR_AU_WITHOUT_OBJECT : ExportSearchResultParam.EN_AU_WITHOUT_OBJECT;
+                        archiveUnitType = language.equals(Locale.FRENCH.getLanguage())
+                            ? ExportSearchResultParam.FR_AU_WITHOUT_OBJECT
+                            : ExportSearchResultParam.EN_AU_WITHOUT_OBJECT;
                     } else {
-                        archiveUnitType = language.equals(Locale.FRENCH.getLanguage()) ?
-                            ExportSearchResultParam.FR_AU_WITH_OBJECT : ExportSearchResultParam.EN_AU_WITH_OBJECT;
+                        archiveUnitType = language.equals(Locale.FRENCH.getLanguage())
+                            ? ExportSearchResultParam.FR_AU_WITH_OBJECT
+                            : ExportSearchResultParam.EN_AU_WITH_OBJECT;
                     }
                     break;
                 default:

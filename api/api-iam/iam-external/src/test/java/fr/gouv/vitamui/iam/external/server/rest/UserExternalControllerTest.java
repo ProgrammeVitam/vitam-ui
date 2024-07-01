@@ -1,22 +1,5 @@
 package fr.gouv.vitamui.iam.external.server.rest;
 
-import static fr.gouv.vitamui.commons.api.CommonConstants.APPLICATION_ID;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-import java.util.Map;
-import java.util.Optional;
-
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.ArgumentMatchers;
-import org.mockito.Mockito;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
-
 import com.google.common.collect.ImmutableMap;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
@@ -38,8 +21,10 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
+import java.util.Map;
 import java.util.Optional;
 
+import static fr.gouv.vitamui.commons.api.CommonConstants.APPLICATION_ID;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
@@ -51,8 +36,9 @@ public class UserExternalControllerTest extends ApiIamControllerTest<UserDto> {
     @MockBean
     private UserExternalService userExternalService;
 
-    private final UserExternalController userExternalController = MvcUriComponentsBuilder
-            .on(UserExternalController.class);
+    private final UserExternalController userExternalController = MvcUriComponentsBuilder.on(
+        UserExternalController.class
+    );
 
     @Test
     public void updateUserStatus_thenOk() throws Exception {
@@ -60,8 +46,10 @@ public class UserExternalControllerTest extends ApiIamControllerTest<UserDto> {
         final String id = "iduser";
         final String status = UserStatusEnum.DISABLED.toString();
         final String endpoint = "/" + id;
-        final ResultActions result = super.performPatch(endpoint,
-                asJsonString(ImmutableMap.of("id", id, "status", status)));
+        final ResultActions result = super.performPatch(
+            endpoint,
+            asJsonString(ImmutableMap.of("id", id, "status", status))
+        );
         result.andExpect(MockMvcResultMatchers.handler().methodCall(userExternalController.patch(null, null)));
         Mockito.verify(userExternalService, Mockito.times(1)).patch(ArgumentMatchers.any());
     }
@@ -77,7 +65,8 @@ public class UserExternalControllerTest extends ApiIamControllerTest<UserDto> {
         LOGGER.debug("testGetLevels");
         ResultActions result = super.performGet(CommonConstants.PATH_LEVELS, ImmutableMap.of(), status().isOk());
         result.andExpect(
-                MockMvcResultMatchers.handler().methodCall(userExternalController.getLevels(Optional.empty())));
+            MockMvcResultMatchers.handler().methodCall(userExternalController.getLevels(Optional.empty()))
+        );
         Mockito.verify(userExternalService, Mockito.times(1)).getLevels(Optional.empty());
     }
 
@@ -92,7 +81,8 @@ public class UserExternalControllerTest extends ApiIamControllerTest<UserDto> {
     @Test
     public void patchAnalytics_thenOk() throws Exception {
         Map<String, Object> analytics = ImmutableMap.of(APPLICATION_ID, "API_SUPERVISION_APP");
-        ResultActions result = this.performPost(getUriBuilder(CommonConstants.PATH_ANALYTICS), asJsonString(analytics), status().isOk());
+        ResultActions result =
+            this.performPost(getUriBuilder(CommonConstants.PATH_ANALYTICS), asJsonString(analytics), status().isOk());
         result.andExpect(MockMvcResultMatchers.handler().methodCall(userExternalController.patchAnalytics(analytics)));
         Mockito.verify(userExternalService).patchAnalytics(analytics);
     }
@@ -108,8 +98,7 @@ public class UserExternalControllerTest extends ApiIamControllerTest<UserDto> {
     }
 
     @Override
-    protected void preparedServices() {
-    }
+    protected void preparedServices() {}
 
     @Override
     protected String getRessourcePrefix() {

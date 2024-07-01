@@ -42,7 +42,6 @@ package fr.gouv.vitamui.commons.api.domain;
  *
  */
 public interface BaseIdDocument {
-
     /**
      * Get Id.
      * @return
@@ -54,5 +53,4 @@ public interface BaseIdDocument {
      * @param id
      */
     public void setId(String id);
-
 }

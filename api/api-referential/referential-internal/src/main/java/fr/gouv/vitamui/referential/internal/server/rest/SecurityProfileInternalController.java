@@ -81,7 +81,9 @@ import java.util.Optional;
 @Setter
 public class SecurityProfileInternalController {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(SecurityProfileInternalController.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
+        SecurityProfileInternalController.class
+    );
 
     @Autowired
     private SecurityProfileInternalService securityProfileInternalService;
@@ -89,7 +91,7 @@ public class SecurityProfileInternalController {
     @Autowired
     private InternalSecurityService securityService;
 
-    @GetMapping()
+    @GetMapping
     public Collection<SecurityProfileDto> getAll(@RequestParam final Optional<String> criteria) {
         LOGGER.debug("get all customer criteria={}", criteria);
         SanityChecker.sanitizeCriteria(criteria);
@@ -98,20 +100,39 @@ public class SecurityProfileInternalController {
     }
 
     @GetMapping(params = { "page", "size" })
-    public PaginatedValuesDto<SecurityProfileDto> getAllPaginated(@RequestParam final Integer page, @RequestParam final Integer size,
-            @RequestParam(required = false) final Optional<String> criteria, @RequestParam(required = false) final Optional<String> orderBy,
-            @RequestParam(required = false) final Optional<DirectionDto> direction) {
-        LOGGER.debug("getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, criteria, orderBy, direction);
+    public PaginatedValuesDto<SecurityProfileDto> getAllPaginated(
+        @RequestParam final Integer page,
+        @RequestParam final Integer size,
+        @RequestParam(required = false) final Optional<String> criteria,
+        @RequestParam(required = false) final Optional<String> orderBy,
+        @RequestParam(required = false) final Optional<DirectionDto> direction
+    ) {
+        LOGGER.debug(
+            "getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}",
+            page,
+            size,
+            criteria,
+            orderBy,
+            direction
+        );
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
         return securityProfileInternalService.getAllPaginated(page, size, orderBy, direction, vitamContext, criteria);
     }
 
     @GetMapping(path = RestApi.PATH_REFERENTIAL_ID)
-    public SecurityProfileDto getOne(final @PathVariable("identifier") String identifier) throws UnsupportedEncodingException {
-        LOGGER.debug("get security profile identifier={} / {}", identifier, URLDecoder.decode(identifier, StandardCharsets.UTF_8.toString()));
+    public SecurityProfileDto getOne(final @PathVariable("identifier") String identifier)
+        throws UnsupportedEncodingException {
+        LOGGER.debug(
+            "get security profile identifier={} / {}",
+            identifier,
+            URLDecoder.decode(identifier, StandardCharsets.UTF_8.toString())
+        );
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", identifier);
-        return securityProfileInternalService.getOne(vitamContext, URLDecoder.decode(identifier, StandardCharsets.UTF_8.toString()));
+        return securityProfileInternalService.getOne(
+            vitamContext,
+            URLDecoder.decode(identifier, StandardCharsets.UTF_8.toString())
+        );
     }
 
     @PostMapping(CommonConstants.PATH_CHECK)
@@ -126,15 +147,21 @@ public class SecurityProfileInternalController {
     public SecurityProfileDto create(@Valid @RequestBody SecurityProfileDto accessContractDto) {
         LOGGER.debug("create accessContract={}", accessContractDto);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
-        return securityProfileInternalService.create(vitamContext,accessContractDto);
+        return securityProfileInternalService.create(vitamContext, accessContractDto);
     }
 
     @PatchMapping(CommonConstants.PATH_ID)
-    public SecurityProfileDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto) {
+    public SecurityProfileDto patch(
+        final @PathVariable("id") String id,
+        @RequestBody final Map<String, Object> partialDto
+    ) {
         LOGGER.debug("Patch {} with {}", id, partialDto);
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
-        Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "The DTO identifier must match the path identifier for update.");
+        Assert.isTrue(
+            StringUtils.equals(id, (String) partialDto.get("id")),
+            "The DTO identifier must match the path identifier for update."
+        );
         return securityProfileInternalService.patch(vitamContext, partialDto);
     }
 
@@ -153,7 +180,4 @@ public class SecurityProfileInternalController {
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         return securityProfileInternalService.findHistoryByIdentifier(vitamContext, id);
     }
-
-
-
 }

@@ -36,10 +36,9 @@
  */
 package fr.gouv.vitamui.commons.sip.util;
 
+import javax.xml.bind.annotation.adapters.XmlAdapter;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-
-import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 public class LocalDateTimeAdapter extends XmlAdapter<String, LocalDateTime> {
 
@@ -54,5 +53,4 @@ public class LocalDateTimeAdapter extends XmlAdapter<String, LocalDateTime> {
         DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
         return v.format(formatter);
     }
-
 }

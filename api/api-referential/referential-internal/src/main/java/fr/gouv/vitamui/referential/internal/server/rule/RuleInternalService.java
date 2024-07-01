@@ -89,8 +89,12 @@ public class RuleInternalService {
     private VitamRuleService ruleService;
 
     @Autowired
-    public RuleInternalService(ObjectMapper objectMapper, RuleConverter converter,
-        LogbookService logbookService, VitamRuleService ruleService) {
+    public RuleInternalService(
+        ObjectMapper objectMapper,
+        RuleConverter converter,
+        LogbookService logbookService,
+        VitamRuleService ruleService
+    ) {
         this.objectMapper = objectMapper;
         this.converter = converter;
         this.logbookService = logbookService;
@@ -100,8 +104,10 @@ public class RuleInternalService {
     public RuleDto getOne(VitamContext vitamContext, String identifier) {
         try {
             RequestResponse<FileRulesModel> requestResponse = ruleService.findRuleById(vitamContext, identifier);
-            final RuleNodeResponseDto ruleResponseDto = objectMapper
-                .treeToValue(requestResponse.toJsonNode(), RuleNodeResponseDto.class);
+            final RuleNodeResponseDto ruleResponseDto = objectMapper.treeToValue(
+                requestResponse.toJsonNode(),
+                RuleNodeResponseDto.class
+            );
             if (ruleResponseDto.getResults().isEmpty()) {
                 return null;
             } else {
@@ -117,11 +123,12 @@ public class RuleInternalService {
         final RequestResponse<FileRulesModel> requestResponse;
         LOGGER.debug("Get ALL Rules !");
         try {
-            requestResponse = ruleService
-                .findRules(vitamContext, new Select().getFinalSelect());
+            requestResponse = ruleService.findRules(vitamContext, new Select().getFinalSelect());
             LOGGER.debug("Response: {}", requestResponse);
-            final RuleNodeResponseDto ruleResponseDto = objectMapper
-                .treeToValue(requestResponse.toJsonNode(), RuleNodeResponseDto.class);
+            final RuleNodeResponseDto ruleResponseDto = objectMapper.treeToValue(
+                requestResponse.toJsonNode(),
+                RuleNodeResponseDto.class
+            );
             return converter.convertVitamsToDtos(ruleResponseDto.getResults());
         } catch (VitamClientException | JsonProcessingException exception) {
             LOGGER.error("Unable to find management rules", exception);
@@ -129,10 +136,14 @@ public class RuleInternalService {
         }
     }
 
-    public PaginatedValuesDto<RuleDto> getAllPaginated(final Integer pageNumber, final Integer size,
-        final Optional<String> orderBy, final Optional<DirectionDto> direction, VitamContext vitamContext,
-        Optional<String> criteria) {
-
+    public PaginatedValuesDto<RuleDto> getAllPaginated(
+        final Integer pageNumber,
+        final Integer size,
+        final Optional<String> orderBy,
+        final Optional<DirectionDto> direction,
+        VitamContext vitamContext,
+        Optional<String> criteria
+    ) {
         Map<String, Object> vitamCriteria = new HashMap<>();
         JsonNode query;
         try {
@@ -145,7 +156,7 @@ public class RuleInternalService {
         } catch (InvalidParseOperationException | InvalidCreateOperationException ioe) {
             LOGGER.error("Unable to find management rules with pagination", ioe);
             throw new InternalServerException("Unable to find management rules with pagination", ioe);
-        } catch ( IOException e ) {
+        } catch (IOException e) {
             LOGGER.error("Can't parse criteria as Vitam query", e);
             throw new InternalServerException("Can't parse criteria as Vitam query", e);
         }
@@ -163,8 +174,10 @@ public class RuleInternalService {
         try {
             requestResponse = ruleService.findRules(vitamContext, query);
 
-            final RuleNodeResponseDto ruleResponseDto = objectMapper
-                .treeToValue(requestResponse.toJsonNode(), RuleNodeResponseDto.class);
+            final RuleNodeResponseDto ruleResponseDto = objectMapper.treeToValue(
+                requestResponse.toJsonNode(),
+                RuleNodeResponseDto.class
+            );
 
             LOGGER.debug("Formats: {}", ruleResponseDto);
 
@@ -190,20 +203,24 @@ public class RuleInternalService {
         LOGGER.debug("Try to create Rule {} {}", ruleDto, vitamContext);
         try {
             return ruleService.createRule(vitamContext, converter.convertDtoToVitam(ruleDto));
-        } catch (InvalidParseOperationException | AccessExternalClientException | VitamClientException | IOException |
-                 JAXBException e) {
+        } catch (
+            InvalidParseOperationException
+            | AccessExternalClientException
+            | VitamClientException
+            | IOException
+            | JAXBException e
+        ) {
             LOGGER.error("Unable to create rule", e);
             throw new InternalServerException("Unable to create rule", e);
         }
     }
 
-    public Boolean patch(VitamContext vitamContext,final Map<String, Object> partialDto){
+    public Boolean patch(VitamContext vitamContext, final Map<String, Object> partialDto) {
         LOGGER.debug("Try to patch rule {} {}", partialDto, vitamContext);
         String ruleId = (String) partialDto.get("id");
         RuleDto rule = this.getOne(vitamContext, ruleId);
         LOGGER.debug("Before update rule Dto : {}", rule);
-        partialDto.forEach((key,value) ->
-        {
+        partialDto.forEach((key, value) -> {
             if (!"id".equals(key)) {
                 try {
                     BeanUtilsBean.getInstance().copyProperty(rule, key, value);
@@ -217,7 +234,13 @@ public class RuleInternalService {
         LOGGER.debug("Converted rule Vitam DTO : {}", ruleVitam);
         try {
             return ruleService.patchRule(vitamContext, ruleId, ruleVitam);
-        } catch (InvalidParseOperationException | AccessExternalClientException | VitamClientException | IOException | JAXBException exception) {
+        } catch (
+            InvalidParseOperationException
+            | AccessExternalClientException
+            | VitamClientException
+            | IOException
+            | JAXBException exception
+        ) {
             LOGGER.error("Unable to patch rule", exception);
             throw new InternalServerException("Unable to patch rule", exception);
         }
@@ -228,8 +251,13 @@ public class RuleInternalService {
 
         try {
             return ruleService.deleteRule(context, ruleId);
-        } catch (InvalidParseOperationException | AccessExternalClientException | VitamClientException | IOException |
-                 JAXBException exception) {
+        } catch (
+            InvalidParseOperationException
+            | AccessExternalClientException
+            | VitamClientException
+            | IOException
+            | JAXBException exception
+        ) {
             LOGGER.error("Unable to delete rule", exception);
             throw new InternalServerException("Unable to delete rule", exception);
         }
@@ -244,9 +272,12 @@ public class RuleInternalService {
         }
     }
 
-    public JsonNode findHistoryByIdentifier(VitamContext vitamContext, final String identifier) throws VitamClientException {
+    public JsonNode findHistoryByIdentifier(VitamContext vitamContext, final String identifier)
+        throws VitamClientException {
         try {
-            return logbookService.selectOperations(VitamQueryHelper.buildOperationQuery(identifier),vitamContext).toJsonNode();
+            return logbookService
+                .selectOperations(VitamQueryHelper.buildOperationQuery(identifier), vitamContext)
+                .toJsonNode();
         } catch (InvalidCreateOperationException exception) {
             LOGGER.error("Unable to fetch history", exception);
             throw new InternalServerException("Unable to fetch history", exception);
@@ -256,10 +287,14 @@ public class RuleInternalService {
     public JsonNode importRules(VitamContext context, String fileName, MultipartFile file) {
         try {
             return ruleService.importRules(context, fileName, file).toJsonNode();
-        } catch (InvalidParseOperationException |AccessExternalClientException | IOException | VitamClientException exception) {
+        } catch (
+            InvalidParseOperationException
+            | AccessExternalClientException
+            | IOException
+            | VitamClientException exception
+        ) {
             LOGGER.error("Unable to import rule file " + fileName + " : ", exception);
             throw new InternalServerException("Unable to import rule file " + fileName + " : ", exception);
         }
     }
-
 }

@@ -36,10 +36,14 @@
  */
 package fr.gouv.vitamui.archives.search.external.client;
 
-import java.util.List;
-
 import fr.gouv.vitamui.archives.search.common.rest.RestApi;
+import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaHistoryDto;
+import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
+import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.commons.rest.client.BasePaginatingAndSortingRestClient;
+import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -47,22 +51,19 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import fr.gouv.vitamui.commons.api.CommonConstants;
-import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
-import fr.gouv.vitamui.commons.rest.client.BasePaginatingAndSortingRestClient;
-import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
+import java.util.List;
 
 /**
  * A REST client to check existence, read and create the search criteria history.
  *
  *
  */
-public class SearchCriteriaHistoryExternalRestClient extends BasePaginatingAndSortingRestClient<SearchCriteriaHistoryDto, ExternalHttpContext> {
+public class SearchCriteriaHistoryExternalRestClient
+    extends BasePaginatingAndSortingRestClient<SearchCriteriaHistoryDto, ExternalHttpContext> {
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
-        SearchCriteriaHistoryExternalRestClient.class);
+        SearchCriteriaHistoryExternalRestClient.class
+    );
 
     public SearchCriteriaHistoryExternalRestClient(final RestTemplate restTemplate, final String baseUrl) {
         super(restTemplate, baseUrl);
@@ -79,7 +80,12 @@ public class SearchCriteriaHistoryExternalRestClient extends BasePaginatingAndSo
 
         final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl() + CommonConstants.PATH_ME);
 
-        final ResponseEntity<List<SearchCriteriaHistoryDto>> response = restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET, request, getDtoListClass());
+        final ResponseEntity<List<SearchCriteriaHistoryDto>> response = restTemplate.exchange(
+            uriBuilder.toUriString(),
+            HttpMethod.GET,
+            request,
+            getDtoListClass()
+        );
         checkResponse(response);
         return response.getBody();
     }
@@ -96,13 +102,11 @@ public class SearchCriteriaHistoryExternalRestClient extends BasePaginatingAndSo
 
     @Override
     protected ParameterizedTypeReference<List<SearchCriteriaHistoryDto>> getDtoListClass() {
-        return new ParameterizedTypeReference<List<SearchCriteriaHistoryDto>>() {
-        };
+        return new ParameterizedTypeReference<List<SearchCriteriaHistoryDto>>() {};
     }
 
     @Override
     protected ParameterizedTypeReference<PaginatedValuesDto<SearchCriteriaHistoryDto>> getDtoPaginatedClass() {
-        return new ParameterizedTypeReference<PaginatedValuesDto<SearchCriteriaHistoryDto>>() {
-        };
+        return new ParameterizedTypeReference<PaginatedValuesDto<SearchCriteriaHistoryDto>>() {};
     }
 }

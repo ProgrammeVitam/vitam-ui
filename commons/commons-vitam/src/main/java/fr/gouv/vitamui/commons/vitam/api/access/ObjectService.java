@@ -36,11 +36,7 @@
  */
 package fr.gouv.vitamui.commons.vitam.api.access;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.fasterxml.jackson.databind.JsonNode;
-import javax.ws.rs.core.Response;
-
 import fr.gouv.vitam.access.external.client.AccessExternalClient;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.database.builder.request.multiple.SelectMultiQuery;
@@ -49,6 +45,9 @@ import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import javax.ws.rs.core.Response;
 
 public class ObjectService {
 
@@ -62,15 +61,21 @@ public class ObjectService {
         this.accessExternalClient = accessExternalClient;
     }
 
-    public RequestResponse<JsonNode> searchObjects(final JsonNode dslQuery, final VitamContext vitamContext) throws VitamClientException {
+    public RequestResponse<JsonNode> searchObjects(final JsonNode dslQuery, final VitamContext vitamContext)
+        throws VitamClientException {
         final RequestResponse<JsonNode> result = accessExternalClient.selectObjects(vitamContext, dslQuery);
         VitamRestUtils.checkResponse(result);
         return result;
     }
 
-    public RequestResponse<JsonNode> findObjectMetadataById(final String unitId, final VitamContext vitamContext) throws VitamClientException {
+    public RequestResponse<JsonNode> findObjectMetadataById(final String unitId, final VitamContext vitamContext)
+        throws VitamClientException {
         final SelectMultiQuery select = new SelectMultiQuery();
-        final RequestResponse<JsonNode> result = accessExternalClient.selectObjectMetadatasByUnitId(vitamContext, select.getFinalSelectById(), unitId);
+        final RequestResponse<JsonNode> result = accessExternalClient.selectObjectMetadatasByUnitId(
+            vitamContext,
+            select.getFinalSelectById(),
+            unitId
+        );
         VitamRestUtils.checkResponse(result);
         return result;
     }
@@ -83,11 +88,14 @@ public class ObjectService {
      * @return
      * @throws VitamClientException
      */
-    public Response getObjectStreamByUnitId(final String unitId, final String usage, final int version, final VitamContext vitamContext)
-            throws VitamClientException {
+    public Response getObjectStreamByUnitId(
+        final String unitId,
+        final String usage,
+        final int version,
+        final VitamContext vitamContext
+    ) throws VitamClientException {
         final Response response = accessExternalClient.getObjectStreamByUnitId(vitamContext, unitId, usage, version);
         VitamRestUtils.checkResponse(response);
         return response;
     }
-
 }

@@ -36,10 +36,10 @@
  */
 package fr.gouv.vitamui.iam.internal.server.common;
 
-import java.util.List;
-
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.utils.VitamUIUtils;
+
+import java.util.List;
 
 /**
  * Constants for API IAM Internal.
@@ -50,22 +50,44 @@ public final class ApiIamInternalConstants {
 
     private static final List<String> ACCOUNT_ROLES = VitamUIUtils.listOf(ServicesData.ROLE_UPDATE_ME_USERS);
 
-    private static final List<String> USERS_ROLES = VitamUIUtils
-            .listOf(ServicesData.ROLE_GET_USERS, ServicesData.ROLE_CREATE_USERS, ServicesData.ROLE_UPDATE_USERS, ServicesData.ROLE_UPDATE_STANDARD_USERS,
-                    ServicesData.ROLE_MFA_USERS, ServicesData.ROLE_ANONYMIZATION_USERS, ServicesData.ROLE_GENERIC_USERS, ServicesData.ROLE_GET_GROUPS,
-                    ServicesData.ROLE_GET_USER_INFOS, ServicesData.ROLE_CREATE_USER_INFOS, ServicesData.ROLE_UPDATE_USER_INFOS);
+    private static final List<String> USERS_ROLES = VitamUIUtils.listOf(
+        ServicesData.ROLE_GET_USERS,
+        ServicesData.ROLE_CREATE_USERS,
+        ServicesData.ROLE_UPDATE_USERS,
+        ServicesData.ROLE_UPDATE_STANDARD_USERS,
+        ServicesData.ROLE_MFA_USERS,
+        ServicesData.ROLE_ANONYMIZATION_USERS,
+        ServicesData.ROLE_GENERIC_USERS,
+        ServicesData.ROLE_GET_GROUPS,
+        ServicesData.ROLE_GET_USER_INFOS,
+        ServicesData.ROLE_CREATE_USER_INFOS,
+        ServicesData.ROLE_UPDATE_USER_INFOS
+    );
 
-    private static final List<String> GROUPS_ROLES = VitamUIUtils
-            .listOf(ServicesData.ROLE_GET_GROUPS, ServicesData.ROLE_CREATE_GROUPS, ServicesData.ROLE_UPDATE_GROUPS, ServicesData.ROLE_DELETE_GROUPS,
-                    ServicesData.ROLE_GET_PROFILES, ServicesData.ROLE_GET_PROFILES_ALL_TENANTS);
+    private static final List<String> GROUPS_ROLES = VitamUIUtils.listOf(
+        ServicesData.ROLE_GET_GROUPS,
+        ServicesData.ROLE_CREATE_GROUPS,
+        ServicesData.ROLE_UPDATE_GROUPS,
+        ServicesData.ROLE_DELETE_GROUPS,
+        ServicesData.ROLE_GET_PROFILES,
+        ServicesData.ROLE_GET_PROFILES_ALL_TENANTS
+    );
 
-    private static final List<String> PROFILES_ROLES = VitamUIUtils
-            .listOf(ServicesData.ROLE_GET_PROFILES, ServicesData.ROLE_CREATE_PROFILES, ServicesData.ROLE_UPDATE_PROFILES, ServicesData.ROLE_DELETE_PROFILES,
-                    ServicesData.ROLE_GET_GROUPS);
+    private static final List<String> PROFILES_ROLES = VitamUIUtils.listOf(
+        ServicesData.ROLE_GET_PROFILES,
+        ServicesData.ROLE_CREATE_PROFILES,
+        ServicesData.ROLE_UPDATE_PROFILES,
+        ServicesData.ROLE_DELETE_PROFILES,
+        ServicesData.ROLE_GET_GROUPS
+    );
 
-    private static final List<String> HIERARCHY_ROLES = VitamUIUtils
-            .listOf(ServicesData.ROLE_GET_PROFILES, ServicesData.ROLE_CREATE_PROFILES, ServicesData.ROLE_UPDATE_PROFILES, ServicesData.ROLE_DELETE_PROFILES,
-                    ServicesData.ROLE_UPDATE_ME_USERS);
+    private static final List<String> HIERARCHY_ROLES = VitamUIUtils.listOf(
+        ServicesData.ROLE_GET_PROFILES,
+        ServicesData.ROLE_CREATE_PROFILES,
+        ServicesData.ROLE_UPDATE_PROFILES,
+        ServicesData.ROLE_DELETE_PROFILES,
+        ServicesData.ROLE_UPDATE_ME_USERS
+    );
 
     public static final String ADMIN_CLIENT_PREFIX_EMAIL = "admin";
 
@@ -89,9 +111,11 @@ public final class ApiIamInternalConstants {
 
     public static final String HIERARCHY_PROFILE_NAME = "Hierarchy Profiles";
 
-    public static final String HIERARCHY_PROFILE_DESCRIPTION = "Profil de l'application de gestion des hiérarchies de profils";
+    public static final String HIERARCHY_PROFILE_DESCRIPTION =
+        "Profil de l'application de gestion des hiérarchies de profils";
 
-    public static final String EMAIL_VALID_REGEXP = "^[_a-z0-9]+(((\\.|-)[_a-z0-9]+))*@[a-z0-9-]+(\\.[a-z0-9-]+)*(\\.[a-z]{2,})$";
+    public static final String EMAIL_VALID_REGEXP =
+        "^[_a-z0-9]+(((\\.|-)[_a-z0-9]+))*@[a-z0-9-]+(\\.[a-z0-9-]+)*(\\.[a-z]{2,})$";
 
     public static final String PHONE_NUMBER_VALID_REGEXP = "^[+]{1}[0-9]{11,12}$";
 
@@ -143,5 +167,4 @@ public final class ApiIamInternalConstants {
     public static List<String> getHierarchyRoles() {
         return HIERARCHY_ROLES;
     }
-
 }

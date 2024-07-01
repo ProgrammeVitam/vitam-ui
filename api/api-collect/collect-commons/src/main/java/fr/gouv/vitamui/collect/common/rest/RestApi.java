@@ -27,7 +27,6 @@
 
 package fr.gouv.vitamui.collect.common.rest;
 
-
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
@@ -58,5 +57,4 @@ public class RestApi {
     public static final String COLLECT_TRANSACTION_PATH = COLLECT_PATH + TRANSACTIONS;
     public static final String COLLECT_TRANSACTION_ARCHIVE_UNITS_PATH = COLLECT_PATH + TRANSACTIONS;
     public static final String COLLECT_PROJECT_OBJECT_GROUPS_PATH = COLLECT_PATH + PROJECTS + OBJECT_GROUPS;
-
 }

@@ -88,15 +88,23 @@ public class SecurityProfileInternalServiceTest {
         converter = new SecurityProfileConverter();
         vitamSecurityProfileService = mock(VitamSecurityProfileService.class);
         logbookService = mock(LogbookService.class);
-        securityProfileInternalService = new SecurityProfileInternalService(vitamSecurityProfileService, objectMapper, converter, logbookService);
-
+        securityProfileInternalService = new SecurityProfileInternalService(
+            vitamSecurityProfileService,
+            objectMapper,
+            converter,
+            logbookService
+        );
 
         // Mock server identity for Logs when not using spring
         PowerMock.suppress(PowerMock.constructor(ServerIdentityConfiguration.class));
         PowerMock.mockStatic(ServerIdentityConfiguration.class);
-        ServerIdentityConfiguration serverIdentityConfigurationMock = PowerMock.createMock(ServerIdentityConfiguration.class);
+        ServerIdentityConfiguration serverIdentityConfigurationMock = PowerMock.createMock(
+            ServerIdentityConfiguration.class
+        );
         expect(ServerIdentityConfiguration.getInstance()).andReturn(serverIdentityConfigurationMock).anyTimes();
-        expect(serverIdentityConfigurationMock.getLoggerMessagePrepend()).andReturn("LOG TESTS SecurityProfileInternalServiceTest - ").anyTimes();
+        expect(serverIdentityConfigurationMock.getLoggerMessagePrepend())
+            .andReturn("LOG TESTS SecurityProfileInternalServiceTest - ")
+            .anyTimes();
         PowerMock.replay(ServerIdentityConfiguration.class);
         PowerMock.replay(serverIdentityConfigurationMock);
     }
@@ -106,8 +114,9 @@ public class SecurityProfileInternalServiceTest {
         VitamContext vitamContext = new VitamContext(0);
         String identifier = "identifier";
 
-        expect(vitamSecurityProfileService.findSecurityProfileById(isA(VitamContext.class), isA(String.class)))
-            .andReturn(new RequestResponseOK<SecurityProfileModel>().setHttpCode(200));
+        expect(
+            vitamSecurityProfileService.findSecurityProfileById(isA(VitamContext.class), isA(String.class))
+        ).andReturn(new RequestResponseOK<SecurityProfileModel>().setHttpCode(200));
         EasyMock.replay(vitamSecurityProfileService);
 
         assertThatCode(() -> {
@@ -120,8 +129,9 @@ public class SecurityProfileInternalServiceTest {
         VitamContext vitamContext = new VitamContext(0);
         String identifier = "identifier";
 
-        expect(vitamSecurityProfileService.findSecurityProfileById(isA(VitamContext.class), isA(String.class)))
-            .andReturn(new RequestResponseOK<SecurityProfileModel>().setHttpCode(400));
+        expect(
+            vitamSecurityProfileService.findSecurityProfileById(isA(VitamContext.class), isA(String.class))
+        ).andReturn(new RequestResponseOK<SecurityProfileModel>().setHttpCode(400));
         EasyMock.replay(vitamSecurityProfileService);
 
         assertThatCode(() -> {
@@ -130,12 +140,14 @@ public class SecurityProfileInternalServiceTest {
     }
 
     @Test
-    public void getOne_should_throw_InternalServerException_when_vitamclient_throws_VitamClientException() throws VitamClientException {
+    public void getOne_should_throw_InternalServerException_when_vitamclient_throws_VitamClientException()
+        throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         String identifier = "identifier";
 
-        expect(vitamSecurityProfileService.findSecurityProfileById(isA(VitamContext.class), isA(String.class)))
-            .andThrow(new VitamClientException("Exception thrown by vitam"));
+        expect(
+            vitamSecurityProfileService.findSecurityProfileById(isA(VitamContext.class), isA(String.class))
+        ).andThrow(new VitamClientException("Exception thrown by vitam"));
         EasyMock.replay(vitamSecurityProfileService);
 
         assertThatCode(() -> {
@@ -147,8 +159,9 @@ public class SecurityProfileInternalServiceTest {
     public void getAll_should_return_ok_when_vitamclient_ok() throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
 
-        expect(vitamSecurityProfileService.findSecurityProfiles(isA(VitamContext.class), isA(ObjectNode.class)))
-            .andReturn(new RequestResponseOK<SecurityProfileModel>().setHttpCode(200));
+        expect(
+            vitamSecurityProfileService.findSecurityProfiles(isA(VitamContext.class), isA(ObjectNode.class))
+        ).andReturn(new RequestResponseOK<SecurityProfileModel>().setHttpCode(200));
         EasyMock.replay(vitamSecurityProfileService);
 
         assertThatCode(() -> {
@@ -160,8 +173,9 @@ public class SecurityProfileInternalServiceTest {
     public void getAll_should_return_ok_when_vitamclient_400() throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
 
-        expect(vitamSecurityProfileService.findSecurityProfiles(isA(VitamContext.class), isA(ObjectNode.class)))
-            .andReturn(new RequestResponseOK<SecurityProfileModel>().setHttpCode(400));
+        expect(
+            vitamSecurityProfileService.findSecurityProfiles(isA(VitamContext.class), isA(ObjectNode.class))
+        ).andReturn(new RequestResponseOK<SecurityProfileModel>().setHttpCode(400));
         EasyMock.replay(vitamSecurityProfileService);
 
         assertThatCode(() -> {
@@ -170,11 +184,13 @@ public class SecurityProfileInternalServiceTest {
     }
 
     @Test
-    public void getAll_should_throw_InternalServerException_when_vitamclient_throws_VitamClientException() throws VitamClientException {
+    public void getAll_should_throw_InternalServerException_when_vitamclient_throws_VitamClientException()
+        throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
 
-        expect(vitamSecurityProfileService.findSecurityProfiles(isA(VitamContext.class), isA(ObjectNode.class)))
-            .andThrow(new VitamClientException("Exception thrown by vitam"));
+        expect(
+            vitamSecurityProfileService.findSecurityProfiles(isA(VitamContext.class), isA(ObjectNode.class))
+        ).andThrow(new VitamClientException("Exception thrown by vitam"));
         EasyMock.replay(vitamSecurityProfileService);
 
         assertThatCode(() -> {
@@ -187,12 +203,13 @@ public class SecurityProfileInternalServiceTest {
         VitamContext vitamContext = new VitamContext(0);
         JsonNode query = JsonHandler.createObjectNode();
 
-        expect(vitamSecurityProfileService.findSecurityProfiles(isA(VitamContext.class), isA(JsonNode.class)))
-            .andReturn(new RequestResponseOK<SecurityProfileModel>().setHttpCode(200));
+        expect(
+            vitamSecurityProfileService.findSecurityProfiles(isA(VitamContext.class), isA(JsonNode.class))
+        ).andReturn(new RequestResponseOK<SecurityProfileModel>().setHttpCode(200));
         EasyMock.replay(vitamSecurityProfileService);
 
         assertThatCode(() -> {
-            securityProfileInternalService.findAll( vitamContext, query);
+            securityProfileInternalService.findAll(vitamContext, query);
         }).doesNotThrowAnyException();
     }
 
@@ -201,36 +218,43 @@ public class SecurityProfileInternalServiceTest {
         VitamContext vitamContext = new VitamContext(0);
         JsonNode query = JsonHandler.createObjectNode();
 
-        expect(vitamSecurityProfileService.findSecurityProfiles(isA(VitamContext.class), isA(JsonNode.class)))
-            .andReturn(new RequestResponseOK<SecurityProfileModel>().setHttpCode(400));
+        expect(
+            vitamSecurityProfileService.findSecurityProfiles(isA(VitamContext.class), isA(JsonNode.class))
+        ).andReturn(new RequestResponseOK<SecurityProfileModel>().setHttpCode(400));
         EasyMock.replay(vitamSecurityProfileService);
 
         assertThatCode(() -> {
-            securityProfileInternalService.findAll( vitamContext, query);
+            securityProfileInternalService.findAll(vitamContext, query);
         }).doesNotThrowAnyException();
     }
 
     @Test
-    public void findAll_should_throw_InternalServerException_when_vitamclient_throws_VitamClientException() throws VitamClientException {
+    public void findAll_should_throw_InternalServerException_when_vitamclient_throws_VitamClientException()
+        throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         JsonNode query = JsonHandler.createObjectNode();
 
-        expect(vitamSecurityProfileService.findSecurityProfiles(isA(VitamContext.class), isA(JsonNode.class)))
-            .andThrow(new VitamClientException("Exception thrown by vitam"));
+        expect(vitamSecurityProfileService.findSecurityProfiles(isA(VitamContext.class), isA(JsonNode.class))).andThrow(
+            new VitamClientException("Exception thrown by vitam")
+        );
         EasyMock.replay(vitamSecurityProfileService);
 
         assertThatCode(() -> {
-            securityProfileInternalService.findAll( vitamContext, query);
+            securityProfileInternalService.findAll(vitamContext, query);
         }).isInstanceOf(InternalServerException.class);
     }
 
     @Test
-    public void check_should_return_ok_when_vitamclient_ok(){
+    public void check_should_return_ok_when_vitamclient_ok() {
         VitamContext vitamContext = new VitamContext(0);
         SecurityProfileDto securityProfileDto = new SecurityProfileDto();
 
-        expect(vitamSecurityProfileService.checkAbilityToCreateSecurityProfileInVitam(isA(List.class), isA(VitamContext.class)))
-            .andReturn(true);
+        expect(
+            vitamSecurityProfileService.checkAbilityToCreateSecurityProfileInVitam(
+                isA(List.class),
+                isA(VitamContext.class)
+            )
+        ).andReturn(true);
         EasyMock.replay(vitamSecurityProfileService);
 
         assertThatCode(() -> {
@@ -243,8 +267,12 @@ public class SecurityProfileInternalServiceTest {
         VitamContext vitamContext = new VitamContext(0);
         SecurityProfileDto securityProfileDto = new SecurityProfileDto();
 
-        expect(vitamSecurityProfileService.checkAbilityToCreateSecurityProfileInVitam(isA(List.class), isA(VitamContext.class)))
-            .andThrow(new ConflictException("Exception thrown by vitam"));
+        expect(
+            vitamSecurityProfileService.checkAbilityToCreateSecurityProfileInVitam(
+                isA(List.class),
+                isA(VitamContext.class)
+            )
+        ).andThrow(new ConflictException("Exception thrown by vitam"));
         EasyMock.replay(vitamSecurityProfileService);
 
         assertThatCode(() -> {
@@ -253,86 +281,98 @@ public class SecurityProfileInternalServiceTest {
     }
 
     @Test
-    public void create_should_return_ok_when_vitamclient_ok() throws VitamClientException, AccessExternalClientException, IOException, InvalidParseOperationException {
+    public void create_should_return_ok_when_vitamclient_ok()
+        throws VitamClientException, AccessExternalClientException, IOException, InvalidParseOperationException {
         VitamContext vitamContext = new VitamContext(0);
         SecurityProfileDto securityProfileDto = new SecurityProfileDto();
 
-        expect(vitamSecurityProfileService.createSecurityProfile(isA(VitamContext.class), isA(SecurityProfileModel.class)))
-            .andReturn(new RequestResponseOK().setHttpCode(200));
+        expect(
+            vitamSecurityProfileService.createSecurityProfile(isA(VitamContext.class), isA(SecurityProfileModel.class))
+        ).andReturn(new RequestResponseOK().setHttpCode(200));
         EasyMock.replay(vitamSecurityProfileService);
 
         assertThatCode(() -> {
-            securityProfileInternalService.create(vitamContext , securityProfileDto);
+            securityProfileInternalService.create(vitamContext, securityProfileDto);
         }).doesNotThrowAnyException();
     }
 
     @Test
-    public void create_should_return_ok_when_vitamclient_400() throws VitamClientException, AccessExternalClientException, IOException, InvalidParseOperationException {
+    public void create_should_return_ok_when_vitamclient_400()
+        throws VitamClientException, AccessExternalClientException, IOException, InvalidParseOperationException {
         VitamContext vitamContext = new VitamContext(0);
         SecurityProfileDto securityProfileDto = new SecurityProfileDto();
 
-        expect(vitamSecurityProfileService.createSecurityProfile(isA(VitamContext.class), isA(SecurityProfileModel.class)))
-            .andReturn(new RequestResponseOK().setHttpCode(400));
+        expect(
+            vitamSecurityProfileService.createSecurityProfile(isA(VitamContext.class), isA(SecurityProfileModel.class))
+        ).andReturn(new RequestResponseOK().setHttpCode(400));
         EasyMock.replay(vitamSecurityProfileService);
 
         assertThatCode(() -> {
-            securityProfileInternalService.create(vitamContext , securityProfileDto);
+            securityProfileInternalService.create(vitamContext, securityProfileDto);
         }).doesNotThrowAnyException();
     }
 
     @Test
-    public void create_should_throw_InternalServerException_when_vitamclient_throws_VitamClientException() throws VitamClientException, AccessExternalClientException, IOException, InvalidParseOperationException {
+    public void create_should_throw_InternalServerException_when_vitamclient_throws_VitamClientException()
+        throws VitamClientException, AccessExternalClientException, IOException, InvalidParseOperationException {
         VitamContext vitamContext = new VitamContext(0);
         SecurityProfileDto securityProfileDto = new SecurityProfileDto();
 
-        expect(vitamSecurityProfileService.createSecurityProfile(isA(VitamContext.class), isA(SecurityProfileModel.class)))
-            .andThrow(new VitamClientException("Exception thrown by vitam"));
+        expect(
+            vitamSecurityProfileService.createSecurityProfile(isA(VitamContext.class), isA(SecurityProfileModel.class))
+        ).andThrow(new VitamClientException("Exception thrown by vitam"));
         EasyMock.replay(vitamSecurityProfileService);
 
         assertThatCode(() -> {
-            securityProfileInternalService.create(vitamContext , securityProfileDto);
+            securityProfileInternalService.create(vitamContext, securityProfileDto);
         }).isInstanceOf(InternalServerException.class);
     }
 
     @Test
-    public void create_should_throw_InternalServerException_when_vitamclient_throws_AccessExternalClientException() throws VitamClientException, AccessExternalClientException, IOException, InvalidParseOperationException {
+    public void create_should_throw_InternalServerException_when_vitamclient_throws_AccessExternalClientException()
+        throws VitamClientException, AccessExternalClientException, IOException, InvalidParseOperationException {
         VitamContext vitamContext = new VitamContext(0);
         SecurityProfileDto securityProfileDto = new SecurityProfileDto();
 
-        expect(vitamSecurityProfileService.createSecurityProfile(isA(VitamContext.class), isA(SecurityProfileModel.class)))
-            .andThrow(new AccessExternalClientException("Exception thrown by vitam"));
+        expect(
+            vitamSecurityProfileService.createSecurityProfile(isA(VitamContext.class), isA(SecurityProfileModel.class))
+        ).andThrow(new AccessExternalClientException("Exception thrown by vitam"));
         EasyMock.replay(vitamSecurityProfileService);
 
         assertThatCode(() -> {
-            securityProfileInternalService.create(vitamContext , securityProfileDto);
+            securityProfileInternalService.create(vitamContext, securityProfileDto);
         }).isInstanceOf(InternalServerException.class);
     }
 
     @Test
-    public void create_should_throw_InternalServerException_when_vitamclient_throws_IOException() throws VitamClientException, AccessExternalClientException, IOException, InvalidParseOperationException {
+    public void create_should_throw_InternalServerException_when_vitamclient_throws_IOException()
+        throws VitamClientException, AccessExternalClientException, IOException, InvalidParseOperationException {
         VitamContext vitamContext = new VitamContext(0);
         SecurityProfileDto securityProfileDto = new SecurityProfileDto();
 
-        expect(vitamSecurityProfileService.createSecurityProfile(isA(VitamContext.class), isA(SecurityProfileModel.class)))
-            .andThrow(new IOException("Exception thrown by vitam"));
+        expect(
+            vitamSecurityProfileService.createSecurityProfile(isA(VitamContext.class), isA(SecurityProfileModel.class))
+        ).andThrow(new IOException("Exception thrown by vitam"));
         EasyMock.replay(vitamSecurityProfileService);
 
         assertThatCode(() -> {
-            securityProfileInternalService.create(vitamContext , securityProfileDto);
+            securityProfileInternalService.create(vitamContext, securityProfileDto);
         }).isInstanceOf(InternalServerException.class);
     }
 
     @Test
-    public void create_should_throw_InternalServerException_when_vitamclient_throws_InvalidParseOperationException() throws VitamClientException, AccessExternalClientException, IOException, InvalidParseOperationException {
+    public void create_should_throw_InternalServerException_when_vitamclient_throws_InvalidParseOperationException()
+        throws VitamClientException, AccessExternalClientException, IOException, InvalidParseOperationException {
         VitamContext vitamContext = new VitamContext(0);
         SecurityProfileDto securityProfileDto = new SecurityProfileDto();
 
-        expect(vitamSecurityProfileService.createSecurityProfile(isA(VitamContext.class), isA(SecurityProfileModel.class)))
-            .andThrow(new InvalidParseOperationException("Exception thrown by vitam"));
+        expect(
+            vitamSecurityProfileService.createSecurityProfile(isA(VitamContext.class), isA(SecurityProfileModel.class))
+        ).andThrow(new InvalidParseOperationException("Exception thrown by vitam"));
         EasyMock.replay(vitamSecurityProfileService);
 
         assertThatCode(() -> {
-            securityProfileInternalService.create(vitamContext , securityProfileDto);
+            securityProfileInternalService.create(vitamContext, securityProfileDto);
         }).isInstanceOf(InternalServerException.class);
     }
 
@@ -342,12 +382,17 @@ public class SecurityProfileInternalServiceTest {
         Map<String, Object> partialDto = new HashMap<>();
         partialDto.put("identifier", "identifier");
 
-        expect(vitamSecurityProfileService.patchSecurityProfile(isA(VitamContext.class), isA(String.class), isA(JsonNode.class)))
-            .andReturn(new RequestResponseOK().setHttpCode(200));
+        expect(
+            vitamSecurityProfileService.patchSecurityProfile(
+                isA(VitamContext.class),
+                isA(String.class),
+                isA(JsonNode.class)
+            )
+        ).andReturn(new RequestResponseOK().setHttpCode(200));
         EasyMock.replay(vitamSecurityProfileService);
 
         assertThatCode(() -> {
-            securityProfileInternalService.patch(vitamContext ,partialDto);
+            securityProfileInternalService.patch(vitamContext, partialDto);
         }).doesNotThrowAnyException();
     }
 
@@ -357,37 +402,50 @@ public class SecurityProfileInternalServiceTest {
         Map<String, Object> partialDto = new HashMap<>();
         partialDto.put("identifier", "identifier");
 
-        expect(vitamSecurityProfileService.patchSecurityProfile(isA(VitamContext.class), isA(String.class), isA(JsonNode.class)))
-            .andReturn(new RequestResponseOK().setHttpCode(400));
+        expect(
+            vitamSecurityProfileService.patchSecurityProfile(
+                isA(VitamContext.class),
+                isA(String.class),
+                isA(JsonNode.class)
+            )
+        ).andReturn(new RequestResponseOK().setHttpCode(400));
         EasyMock.replay(vitamSecurityProfileService);
 
         assertThatCode(() -> {
-            securityProfileInternalService.patch(vitamContext ,partialDto);
+            securityProfileInternalService.patch(vitamContext, partialDto);
         }).doesNotThrowAnyException();
     }
 
     @Test
-    public void patch_should_throw_InternalServerException_when_vitamclient_throws_VitamClientException() throws VitamClientException {
+    public void patch_should_throw_InternalServerException_when_vitamclient_throws_VitamClientException()
+        throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         Map<String, Object> partialDto = new HashMap<>();
         partialDto.put("identifier", "identifier");
 
-        expect(vitamSecurityProfileService.patchSecurityProfile(isA(VitamContext.class), isA(String.class), isA(JsonNode.class)))
-            .andThrow(new VitamClientException("Exception thrown by vitam"));
+        expect(
+            vitamSecurityProfileService.patchSecurityProfile(
+                isA(VitamContext.class),
+                isA(String.class),
+                isA(JsonNode.class)
+            )
+        ).andThrow(new VitamClientException("Exception thrown by vitam"));
         EasyMock.replay(vitamSecurityProfileService);
 
         assertThatCode(() -> {
-            securityProfileInternalService.patch(vitamContext ,partialDto);
+            securityProfileInternalService.patch(vitamContext, partialDto);
         }).isInstanceOf(InternalServerException.class);
     }
 
     @Test
-    public void delete_should_return_ok_when_vitamclient_ok() throws AccessExternalClientException, InvalidParseOperationException, VitamClientException, IOException {
+    public void delete_should_return_ok_when_vitamclient_ok()
+        throws AccessExternalClientException, InvalidParseOperationException, VitamClientException, IOException {
         VitamContext vitamContext = new VitamContext(0);
         String id = "identifier";
 
-        expect(vitamSecurityProfileService.deleteSecurityProfile(isA(VitamContext.class), isA(String.class)))
-            .andReturn(new RequestResponseOK().setHttpCode(200));
+        expect(vitamSecurityProfileService.deleteSecurityProfile(isA(VitamContext.class), isA(String.class))).andReturn(
+            new RequestResponseOK().setHttpCode(200)
+        );
         EasyMock.replay(vitamSecurityProfileService);
 
         assertThatCode(() -> {
@@ -396,12 +454,14 @@ public class SecurityProfileInternalServiceTest {
     }
 
     @Test
-    public void delete_should_return_ok_when_vitamclient_400() throws AccessExternalClientException, InvalidParseOperationException, VitamClientException, IOException {
+    public void delete_should_return_ok_when_vitamclient_400()
+        throws AccessExternalClientException, InvalidParseOperationException, VitamClientException, IOException {
         VitamContext vitamContext = new VitamContext(0);
         String id = "identifier";
 
-        expect(vitamSecurityProfileService.deleteSecurityProfile(isA(VitamContext.class), isA(String.class)))
-            .andReturn(new RequestResponseOK().setHttpCode(400));
+        expect(vitamSecurityProfileService.deleteSecurityProfile(isA(VitamContext.class), isA(String.class))).andReturn(
+            new RequestResponseOK().setHttpCode(400)
+        );
         EasyMock.replay(vitamSecurityProfileService);
 
         assertThatCode(() -> {
@@ -410,12 +470,14 @@ public class SecurityProfileInternalServiceTest {
     }
 
     @Test
-    public void delete_should_throw_InternalServerException_when_vitamclient_throws_AccessExternalClientException() throws AccessExternalClientException, InvalidParseOperationException, VitamClientException, IOException {
+    public void delete_should_throw_InternalServerException_when_vitamclient_throws_AccessExternalClientException()
+        throws AccessExternalClientException, InvalidParseOperationException, VitamClientException, IOException {
         VitamContext vitamContext = new VitamContext(0);
         String id = "identifier";
 
-        expect(vitamSecurityProfileService.deleteSecurityProfile(isA(VitamContext.class), isA(String.class)))
-            .andThrow(new AccessExternalClientException("Exception thrown by vitam"));
+        expect(vitamSecurityProfileService.deleteSecurityProfile(isA(VitamContext.class), isA(String.class))).andThrow(
+            new AccessExternalClientException("Exception thrown by vitam")
+        );
         EasyMock.replay(vitamSecurityProfileService);
 
         assertThatCode(() -> {
@@ -424,12 +486,14 @@ public class SecurityProfileInternalServiceTest {
     }
 
     @Test
-    public void delete_should_throw_InternalServerException_when_vitamclient_throws_InvalidParseOperationException() throws AccessExternalClientException, InvalidParseOperationException, VitamClientException, IOException {
+    public void delete_should_throw_InternalServerException_when_vitamclient_throws_InvalidParseOperationException()
+        throws AccessExternalClientException, InvalidParseOperationException, VitamClientException, IOException {
         VitamContext vitamContext = new VitamContext(0);
         String id = "identifier";
 
-        expect(vitamSecurityProfileService.deleteSecurityProfile(isA(VitamContext.class), isA(String.class)))
-            .andThrow(new InvalidParseOperationException("Exception thrown by vitam"));
+        expect(vitamSecurityProfileService.deleteSecurityProfile(isA(VitamContext.class), isA(String.class))).andThrow(
+            new InvalidParseOperationException("Exception thrown by vitam")
+        );
         EasyMock.replay(vitamSecurityProfileService);
 
         assertThatCode(() -> {
@@ -438,12 +502,14 @@ public class SecurityProfileInternalServiceTest {
     }
 
     @Test
-    public void delete_should_throw_InternalServerException_when_vitamclient_throws_VitamClientException() throws AccessExternalClientException, InvalidParseOperationException, VitamClientException, IOException {
+    public void delete_should_throw_InternalServerException_when_vitamclient_throws_VitamClientException()
+        throws AccessExternalClientException, InvalidParseOperationException, VitamClientException, IOException {
         VitamContext vitamContext = new VitamContext(0);
         String id = "identifier";
 
-        expect(vitamSecurityProfileService.deleteSecurityProfile(isA(VitamContext.class), isA(String.class)))
-            .andThrow(new VitamClientException("Exception thrown by vitam"));
+        expect(vitamSecurityProfileService.deleteSecurityProfile(isA(VitamContext.class), isA(String.class))).andThrow(
+            new VitamClientException("Exception thrown by vitam")
+        );
         EasyMock.replay(vitamSecurityProfileService);
 
         assertThatCode(() -> {
@@ -452,12 +518,14 @@ public class SecurityProfileInternalServiceTest {
     }
 
     @Test
-    public void delete_should_throw_InternalServerException_when_vitamclient_throws_IOException() throws AccessExternalClientException, InvalidParseOperationException, VitamClientException, IOException {
+    public void delete_should_throw_InternalServerException_when_vitamclient_throws_IOException()
+        throws AccessExternalClientException, InvalidParseOperationException, VitamClientException, IOException {
         VitamContext vitamContext = new VitamContext(0);
         String id = "identifier";
 
-        expect(vitamSecurityProfileService.deleteSecurityProfile(isA(VitamContext.class), isA(String.class)))
-            .andThrow(new IOException("Exception thrown by vitam"));
+        expect(vitamSecurityProfileService.deleteSecurityProfile(isA(VitamContext.class), isA(String.class))).andThrow(
+            new IOException("Exception thrown by vitam")
+        );
         EasyMock.replay(vitamSecurityProfileService);
 
         assertThatCode(() -> {
@@ -470,12 +538,17 @@ public class SecurityProfileInternalServiceTest {
         VitamContext vitamContext = new VitamContext(0);
         String id = "identifier";
 
-        expect(logbookService.findEventsByIdentifierAndCollectionNames(isA(String.class), isA(String.class), isA(VitamContext.class)))
-            .andReturn(new RequestResponseOK<LogbookOperation>().setHttpCode(200));
+        expect(
+            logbookService.findEventsByIdentifierAndCollectionNames(
+                isA(String.class),
+                isA(String.class),
+                isA(VitamContext.class)
+            )
+        ).andReturn(new RequestResponseOK<LogbookOperation>().setHttpCode(200));
         EasyMock.replay(logbookService);
 
         assertThatCode(() -> {
-            securityProfileInternalService.findHistoryByIdentifier(vitamContext , id);
+            securityProfileInternalService.findHistoryByIdentifier(vitamContext, id);
         }).doesNotThrowAnyException();
     }
 
@@ -484,27 +557,37 @@ public class SecurityProfileInternalServiceTest {
         VitamContext vitamContext = new VitamContext(0);
         String id = "identifier";
 
-        expect(logbookService.findEventsByIdentifierAndCollectionNames(isA(String.class), isA(String.class), isA(VitamContext.class)))
-            .andReturn(new RequestResponseOK<LogbookOperation>().setHttpCode(400));
+        expect(
+            logbookService.findEventsByIdentifierAndCollectionNames(
+                isA(String.class),
+                isA(String.class),
+                isA(VitamContext.class)
+            )
+        ).andReturn(new RequestResponseOK<LogbookOperation>().setHttpCode(400));
         EasyMock.replay(logbookService);
 
         assertThatCode(() -> {
-            securityProfileInternalService.findHistoryByIdentifier(vitamContext , id);
+            securityProfileInternalService.findHistoryByIdentifier(vitamContext, id);
         }).doesNotThrowAnyException();
     }
 
     @Test
-    public void findHistoryByIdentifier_should_throw_VitamClientException_when_vitamclient_throws_VitamClientException() throws VitamClientException {
+    public void findHistoryByIdentifier_should_throw_VitamClientException_when_vitamclient_throws_VitamClientException()
+        throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         String id = "identifier";
 
-        expect(logbookService.findEventsByIdentifierAndCollectionNames(isA(String.class), isA(String.class), isA(VitamContext.class)))
-            .andThrow(new VitamClientException("Exception thrown by vitam"));
+        expect(
+            logbookService.findEventsByIdentifierAndCollectionNames(
+                isA(String.class),
+                isA(String.class),
+                isA(VitamContext.class)
+            )
+        ).andThrow(new VitamClientException("Exception thrown by vitam"));
         EasyMock.replay(logbookService);
 
         assertThatCode(() -> {
-            securityProfileInternalService.findHistoryByIdentifier(vitamContext , id);
+            securityProfileInternalService.findHistoryByIdentifier(vitamContext, id);
         }).isInstanceOf(VitamClientException.class);
     }
-
 }

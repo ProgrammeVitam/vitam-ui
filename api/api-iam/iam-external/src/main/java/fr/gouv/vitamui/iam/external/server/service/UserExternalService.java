@@ -36,19 +36,7 @@
  */
 package fr.gouv.vitamui.iam.external.server.service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.fasterxml.jackson.databind.JsonNode;
-
 import fr.gouv.vitamui.commons.api.domain.Criterion;
 import fr.gouv.vitamui.commons.api.domain.CriterionOperator;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
@@ -67,6 +55,16 @@ import fr.gouv.vitamui.iam.security.client.AbstractResourceClientService;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 /**
  * The service to read, create, update and delete the users.
@@ -85,8 +83,10 @@ public class UserExternalService extends AbstractResourceClientService<UserDto, 
     private final UserInternalRestClient userInternalRestClient;
 
     @Autowired
-    public UserExternalService(final UserInternalRestClient userInternalRestClient,
-            final ExternalSecurityService externalSecurityService) {
+    public UserExternalService(
+        final UserInternalRestClient userInternalRestClient,
+        final ExternalSecurityService externalSecurityService
+    ) {
         super(externalSecurityService);
         this.userInternalRestClient = userInternalRestClient;
     }
@@ -133,21 +133,26 @@ public class UserExternalService extends AbstractResourceClientService<UserDto, 
     }
 
     @Override
-    public PaginatedValuesDto<UserDto> getAllPaginated(final Integer page, final Integer size,
-            final Optional<String> criteria, final Optional<String> orderBy, final Optional<DirectionDto> direction) {
+    public PaginatedValuesDto<UserDto> getAllPaginated(
+        final Integer page,
+        final Integer size,
+        final Optional<String> criteria,
+        final Optional<String> orderBy,
+        final Optional<DirectionDto> direction
+    ) {
         return super.getAllPaginated(page, size, criteria, orderBy, direction);
     }
 
     @Override
     protected void addRestriction(final String key, final QueryDto query) {
         switch (key) {
-            case TYPE_KEY :
+            case TYPE_KEY:
                 addTypeRestriction(query);
                 break;
-            case LEVEL_KEY :
+            case LEVEL_KEY:
                 addLevelRestriction(query);
                 break;
-            default :
+            default:
                 throw new NotImplementedException("Restriction not defined for key: " + key);
         }
     }
@@ -170,8 +175,9 @@ public class UserExternalService extends AbstractResourceClientService<UserDto, 
         if (typeCriterion.isPresent()) {
             final Criterion criterion = typeCriterion.get();
             final UserTypeEnum userType = EnumUtils.stringToEnum(UserTypeEnum.class, criterion.getValue().toString());
-            if (!(criterion.getOperator().equals(CriterionOperator.EQUALS)
-                    && userType.equals(UserTypeEnum.NOMINATIVE))) {
+            if (
+                !(criterion.getOperator().equals(CriterionOperator.EQUALS) && userType.equals(UserTypeEnum.NOMINATIVE))
+            ) {
                 throw new ForbiddenException(String.format("User's type %s is not allowed", userType));
             }
         } else {
@@ -181,8 +187,26 @@ public class UserExternalService extends AbstractResourceClientService<UserDto, 
 
     @Override
     protected Collection<String> getAllowedKeys() {
-        return Arrays.asList("id", "lastname", "firstname", "identifier", "groupId", "language", "email", "otp",
-                "subrogeable", "phone", "mobile", "lastConnection", "status", "level", TYPE_KEY, CUSTOMER_ID_KEY, "siteCode", "centerCode");
+        return Arrays.asList(
+            "id",
+            "lastname",
+            "firstname",
+            "identifier",
+            "groupId",
+            "language",
+            "email",
+            "otp",
+            "subrogeable",
+            "phone",
+            "mobile",
+            "lastConnection",
+            "status",
+            "level",
+            TYPE_KEY,
+            CUSTOMER_ID_KEY,
+            "siteCode",
+            "centerCode"
+        );
     }
 
     @Override
@@ -216,14 +240,13 @@ public class UserExternalService extends AbstractResourceClientService<UserDto, 
     public void checkLogbookRight(final String id) {
         final boolean hasRoleGetUsers = externalSecurityService.hasRole(ServicesData.ROLE_GET_USERS);
         if (!hasRoleGetUsers && !StringUtils.equals(externalSecurityService.getUser().getId(), id)) {
-                throw new ForbiddenException(String.format("Unable to access user with id: %s", id));
+            throw new ForbiddenException(String.format("Unable to access user with id: %s", id));
         }
         final UserDto usersDto = super.getOne(id);
         if (usersDto == null) {
             throw new ForbiddenException(String.format("Unable to access user with id: %s", id));
         }
     }
-
 
     public List<String> getLevels(final Optional<String> criteria) {
         return getClient().getLevels(getInternalHttpContext(), checkAuthorization(criteria));
@@ -232,5 +255,4 @@ public class UserExternalService extends AbstractResourceClientService<UserDto, 
     public UserDto patchAnalytics(final Map<String, Object> partialDto) {
         return getClient().patchAnalytics(getInternalHttpContext(), partialDto);
     }
-
 }

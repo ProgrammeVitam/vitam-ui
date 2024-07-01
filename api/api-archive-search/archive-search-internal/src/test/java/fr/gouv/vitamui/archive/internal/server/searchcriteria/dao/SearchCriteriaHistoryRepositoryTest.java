@@ -53,8 +53,11 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(SpringExtension.class)
-@Import({TestMongoConfig.class})
-@EnableMongoRepositories(basePackageClasses = SearchCriteriaHistoryRepository.class, repositoryBaseClass = VitamUIRepositoryImpl.class)
+@Import({ TestMongoConfig.class })
+@EnableMongoRepositories(
+    basePackageClasses = SearchCriteriaHistoryRepository.class,
+    repositoryBaseClass = VitamUIRepositoryImpl.class
+)
 public class SearchCriteriaHistoryRepositoryTest {
 
     @Autowired
@@ -67,20 +70,16 @@ public class SearchCriteriaHistoryRepositoryTest {
 
     @Test
     void testSaveSearchCriteriaHistory() {
-        final SearchCriteriaHistory
-            s = repository.save(Utils.buildSearchCriteriaHistory());
+        final SearchCriteriaHistory s = repository.save(Utils.buildSearchCriteriaHistory());
         assertThat(s.getUserId()).isEqualTo("999");
     }
 
     @Test
     void testGetSearchCriteriaHistoryDtos() {
-        final SearchCriteriaHistory
-            s1 = repository.save(Utils.buildSearchCriteriaHistory());
+        final SearchCriteriaHistory s1 = repository.save(Utils.buildSearchCriteriaHistory());
 
-        final SearchCriteriaHistory
-            s2 = repository.save(Utils.buildSearchCriteriaHistory());
+        final SearchCriteriaHistory s2 = repository.save(Utils.buildSearchCriteriaHistory());
         List<SearchCriteriaHistory> list = (List<SearchCriteriaHistory>) repository.findAll();
         assertThat(list).hasSize(2);
     }
-
 }

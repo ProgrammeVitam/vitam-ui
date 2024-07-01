@@ -71,9 +71,7 @@ public class RNGProfileValidator {
         return checkTag(file);
     }
 
-    private boolean checkTag(File file)
-        throws FileNotFoundException, XMLStreamException {
-
+    private boolean checkTag(File file) throws FileNotFoundException, XMLStreamException {
         final XMLInputFactory xmlInputFactory = XMLInputFactoryUtils.newInstance();
         final XMLEventReader eventReader = xmlInputFactory.createXMLEventReader(new FileInputStream(file));
         while (eventReader.hasNext()) {

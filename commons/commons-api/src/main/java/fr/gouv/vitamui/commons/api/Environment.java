@@ -44,6 +44,5 @@ public enum Environment {
     /**
      * Use real service (need server to be set)
      */
-    PRODUCTION
+    PRODUCTION,
 }
-

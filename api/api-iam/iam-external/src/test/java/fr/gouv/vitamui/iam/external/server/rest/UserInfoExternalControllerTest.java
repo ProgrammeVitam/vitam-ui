@@ -1,5 +1,13 @@
 package fr.gouv.vitamui.iam.external.server.rest;
 
+import com.google.common.collect.ImmutableMap;
+import fr.gouv.vitamui.commons.api.domain.ServicesData;
+import fr.gouv.vitamui.commons.api.domain.UserInfoDto;
+import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
+import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.iam.common.rest.RestApi;
+import fr.gouv.vitamui.iam.external.server.service.UserInfoExternalService;
+import fr.gouv.vitamui.iam.external.server.utils.ApiIamServerUtils;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentMatchers;
@@ -11,19 +19,8 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
-import com.google.common.collect.ImmutableMap;
-
-import fr.gouv.vitamui.commons.api.domain.ServicesData;
-import fr.gouv.vitamui.commons.api.domain.UserInfoDto;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
-import fr.gouv.vitamui.iam.common.rest.RestApi;
-import fr.gouv.vitamui.iam.external.server.service.UserInfoExternalService;
-import fr.gouv.vitamui.iam.external.server.utils.ApiIamServerUtils;
-
-
 @RunWith(SpringRunner.class)
-@WebMvcTest(controllers = {UserInfoExternalController.class})
+@WebMvcTest(controllers = { UserInfoExternalController.class })
 class UserInfoExternalControllerTest extends ApiIamControllerTest<UserInfoDto> {
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(UserInfoExternalControllerTest.class);
@@ -31,18 +28,21 @@ class UserInfoExternalControllerTest extends ApiIamControllerTest<UserInfoDto> {
     @MockBean
     private UserInfoExternalService userExternalService;
 
-    private final UserInfoExternalController userExternalController = MvcUriComponentsBuilder.on(UserInfoExternalController.class);
-
+    private final UserInfoExternalController userExternalController = MvcUriComponentsBuilder.on(
+        UserInfoExternalController.class
+    );
 
     @Test
     void test_patch_should_be_Ok() throws Exception {
         final String id = "iduser";
         final String endpoint = "/" + id;
-        final ResultActions result = super.performPatch(endpoint, asJsonString(ImmutableMap.of("id", id, "language", "fr")));
+        final ResultActions result = super.performPatch(
+            endpoint,
+            asJsonString(ImmutableMap.of("id", id, "language", "fr"))
+        );
         result.andExpect(MockMvcResultMatchers.handler().methodCall(userExternalController.patch(null, null)));
         Mockito.verify(userExternalService, Mockito.times(1)).patch(ArgumentMatchers.any());
     }
-
 
     @Override
     protected UserInfoDto buildDto() {
@@ -55,8 +55,7 @@ class UserInfoExternalControllerTest extends ApiIamControllerTest<UserInfoDto> {
     }
 
     @Override
-    protected void preparedServices() {
-    }
+    protected void preparedServices() {}
 
     @Override
     protected String getRessourcePrefix() {
@@ -65,12 +64,11 @@ class UserInfoExternalControllerTest extends ApiIamControllerTest<UserInfoDto> {
 
     @Override
     protected String[] getServices() {
-        return new String[]{ServicesData.SERVICE_USER_INFOS};
+        return new String[] { ServicesData.SERVICE_USER_INFOS };
     }
 
     @Override
     protected Class<UserInfoDto> getDtoClass() {
         return UserInfoDto.class;
     }
-
 }

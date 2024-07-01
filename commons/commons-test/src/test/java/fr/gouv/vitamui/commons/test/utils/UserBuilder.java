@@ -9,7 +9,6 @@ import java.util.List;
 
 public class UserBuilder {
 
-
     public static UserDto buildWithAnalytics() {
         ApplicationAnalyticsDto applicationAnalytic = new ApplicationAnalyticsDto();
         applicationAnalytic.setAccessCounter(9546);

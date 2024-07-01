@@ -52,14 +52,16 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
 
-public class IngestContractExternalRestClient extends BasePaginatingAndSortingRestClient<IngestContractDto, ExternalHttpContext> {
+public class IngestContractExternalRestClient
+    extends BasePaginatingAndSortingRestClient<IngestContractDto, ExternalHttpContext> {
 
     public IngestContractExternalRestClient(final RestTemplate restTemplate, final String baseUrl) {
         super(restTemplate, baseUrl);
     }
 
-    @Override protected ParameterizedTypeReference<PaginatedValuesDto<IngestContractDto>> getDtoPaginatedClass() {
-        return new ParameterizedTypeReference<PaginatedValuesDto<IngestContractDto>>() { };
+    @Override
+    protected ParameterizedTypeReference<PaginatedValuesDto<IngestContractDto>> getDtoPaginatedClass() {
+        return new ParameterizedTypeReference<PaginatedValuesDto<IngestContractDto>>() {};
     }
 
     @Override
@@ -67,20 +69,24 @@ public class IngestContractExternalRestClient extends BasePaginatingAndSortingRe
         return RestApi.INGEST_CONTRACTS_URL;
     }
 
-    @Override protected Class<IngestContractDto> getDtoClass() {
+    @Override
+    protected Class<IngestContractDto> getDtoClass() {
         return IngestContractDto.class;
     }
 
     protected ParameterizedTypeReference<List<IngestContractDto>> getDtoListClass() {
-        return new ParameterizedTypeReference<List<IngestContractDto>>() {
-        };
+        return new ParameterizedTypeReference<List<IngestContractDto>>() {};
     }
 
     public boolean check(ExternalHttpContext context, IngestContractDto ingestContractDto) {
         final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl() + CommonConstants.PATH_CHECK);
         final HttpEntity<IngestContractDto> request = new HttpEntity<>(ingestContractDto, buildHeaders(context));
-        final ResponseEntity<Boolean> response = restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.POST,
-            request, Boolean.class);
+        final ResponseEntity<Boolean> response = restTemplate.exchange(
+            uriBuilder.toUriString(),
+            HttpMethod.POST,
+            request,
+            Boolean.class
+        );
         return response.getStatusCode() == HttpStatus.OK;
     }
 }

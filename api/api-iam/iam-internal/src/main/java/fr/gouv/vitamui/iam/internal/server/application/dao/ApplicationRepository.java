@@ -44,6 +44,4 @@ import fr.gouv.vitamui.iam.internal.server.application.domain.Application;
  *
  *
  */
-public interface ApplicationRepository extends VitamUIRepository<Application, String> {
-
-}
+public interface ApplicationRepository extends VitamUIRepository<Application, String> {}

@@ -36,16 +36,14 @@
  */
 package fr.gouv.vitamui.iam.common.utils;
 
-import java.beans.PropertyEditorSupport;
-import java.io.IOException;
-
-import org.springframework.util.StringUtils;
-
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
+import org.springframework.util.StringUtils;
+
+import java.beans.PropertyEditorSupport;
+import java.io.IOException;
 
 public class CustomerDtoEditor extends PropertyEditorSupport {
 
@@ -60,16 +58,12 @@ public class CustomerDtoEditor extends PropertyEditorSupport {
         if (StringUtils.hasText(text)) {
             try {
                 final ObjectMapper mapper = new ObjectMapper();
-                final CustomerDto customerDto = mapper.readValue(text, new TypeReference<>() {
-                });
+                final CustomerDto customerDto = mapper.readValue(text, new TypeReference<>() {});
                 setValue(customerDto);
-            }
-            catch (final IOException e) {
+            } catch (final IOException e) {
                 throw new BadRequestException("Invalid customer format", e);
             }
-
-        }
-        else {
+        } else {
             setValue(null);
         }
     }

@@ -36,9 +36,8 @@
  */
 package fr.gouv.vitamui.cas.config;
 
-import org.springframework.boot.context.properties.ConfigurationProperties;
-
 import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
  * The iam-client configuration properties.
@@ -46,6 +45,4 @@ import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration
  *
  */
 @ConfigurationProperties(value = "iam-client")
-public class IamClientConfigurationProperties extends RestClientConfiguration {
-
-}
+public class IamClientConfigurationProperties extends RestClientConfiguration {}

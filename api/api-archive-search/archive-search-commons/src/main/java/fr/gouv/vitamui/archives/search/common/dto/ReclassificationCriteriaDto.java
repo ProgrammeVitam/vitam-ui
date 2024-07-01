@@ -56,6 +56,7 @@ import java.util.List;
 public class ReclassificationCriteriaDto implements Serializable {
 
     private SearchCriteriaDto searchCriteriaDto;
+
     @JsonProperty("$action")
     private List<ReclassificationAction> action;
 }

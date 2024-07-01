@@ -64,5 +64,4 @@ public class GrammarXML extends BaliseXML {
     public void setStart(StartXML start) {
         this.start = start;
     }
-
 }

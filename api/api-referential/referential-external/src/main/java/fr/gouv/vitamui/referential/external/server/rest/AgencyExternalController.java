@@ -93,7 +93,7 @@ public class AgencyExternalController {
     @Autowired
     private AgencyExternalService agencyExternalService;
 
-    @GetMapping()
+    @GetMapping
     @Secured(ServicesData.ROLE_GET_AGENCIES)
     public Collection<AgencyDto> getAll(final Optional<String> criteria) {
         SanityChecker.sanitizeCriteria(criteria);
@@ -103,27 +103,39 @@ public class AgencyExternalController {
 
     @Secured(ServicesData.ROLE_GET_AGENCIES)
     @GetMapping(params = { "page", "size" })
-    public PaginatedValuesDto<AgencyDto> getAllPaginated(@RequestParam final Integer page, @RequestParam final Integer size,
-            @RequestParam(required = false) final Optional<String> criteria, @RequestParam(required = false) final Optional<String> orderBy,
-            @RequestParam(required = false) final Optional<DirectionDto> direction) {
-        LOGGER.debug("getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, orderBy, direction);
+    public PaginatedValuesDto<AgencyDto> getAllPaginated(
+        @RequestParam final Integer page,
+        @RequestParam final Integer size,
+        @RequestParam(required = false) final Optional<String> criteria,
+        @RequestParam(required = false) final Optional<String> orderBy,
+        @RequestParam(required = false) final Optional<DirectionDto> direction
+    ) {
+        LOGGER.debug(
+            "getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}",
+            page,
+            size,
+            orderBy,
+            direction
+        );
         return agencyExternalService.getAllPaginated(page, size, criteria, orderBy, direction);
     }
 
     @Secured(ServicesData.ROLE_GET_AGENCIES)
     @GetMapping(path = RestApi.PATH_REFERENTIAL_ID)
-    public AgencyDto getOne(final @PathVariable("identifier") String identifier) throws InvalidParseOperationException,
-        PreconditionFailedException {
+    public AgencyDto getOne(final @PathVariable("identifier") String identifier)
+        throws InvalidParseOperationException, PreconditionFailedException {
         LOGGER.debug("get agency identifier={}");
-        ParameterChecker.checkParameter(MANDATORY_IDENTIFIER , identifier);
+        ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, identifier);
         SanityChecker.checkSecureParameter(identifier);
         return agencyExternalService.getOne(identifier);
     }
 
     @Secured({ ServicesData.ROLE_GET_AGENCIES })
     @PostMapping(CommonConstants.PATH_CHECK)
-    public ResponseEntity<Void> check(@RequestBody @Valid AgencyDto agencyDto, @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant)
-        throws InvalidParseOperationException, PreconditionFailedException {
+    public ResponseEntity<Void> check(
+        @RequestBody @Valid AgencyDto agencyDto,
+        @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant
+    ) throws InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.sanitizeCriteria(agencyDto);
         ApiUtils.checkValidity(agencyDto);
         LOGGER.debug("check exist accessContract={}", agencyDto);
@@ -134,8 +146,8 @@ public class AgencyExternalController {
     @Secured(ServicesData.ROLE_CREATE_AGENCIES)
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public AgencyDto create(final @Valid @RequestBody AgencyDto agencyDto) throws InvalidParseOperationException,
-        PreconditionFailedException {
+    public AgencyDto create(final @Valid @RequestBody AgencyDto agencyDto)
+        throws InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.sanitizeCriteria(agencyDto);
         ApiUtils.checkValidity(agencyDto);
         LOGGER.debug("Create {}", agencyDto);
@@ -146,19 +158,22 @@ public class AgencyExternalController {
     @Secured(ServicesData.ROLE_UPDATE_AGENCIES)
     public AgencyDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto)
         throws InvalidParseOperationException, PreconditionFailedException {
-        ParameterChecker.checkParameter(MANDATORY_IDENTIFIER , id);
+        ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
         SanityChecker.checkSecureParameter(id);
         SanityChecker.sanitizeCriteria(partialDto);
         LOGGER.debug("Patch {} with {}", id, partialDto);
-        Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "The DTO identifier must match the path identifier for update.");
+        Assert.isTrue(
+            StringUtils.equals(id, (String) partialDto.get("id")),
+            "The DTO identifier must match the path identifier for update."
+        );
         return agencyExternalService.patch(partialDto);
     }
 
     @Secured(ServicesData.ROLE_GET_AGENCIES)
     @GetMapping("/{id}/history")
-    public JsonNode findHistoryById(final @PathVariable("id") String id) throws InvalidParseOperationException,
-        PreconditionFailedException {
-        ParameterChecker.checkParameter(MANDATORY_IDENTIFIER , id);
+    public JsonNode findHistoryById(final @PathVariable("id") String id)
+        throws InvalidParseOperationException, PreconditionFailedException {
+        ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("get logbook for accessContract with id :{}", id);
         return agencyExternalService.findHistoryById(id);
@@ -166,10 +181,10 @@ public class AgencyExternalController {
 
     @Secured(ServicesData.ROLE_DELETE_AGENCIES)
     @DeleteMapping(CommonConstants.PATH_ID)
-    public ResponseEntity<Boolean> delete(final @PathVariable("id") String id) throws InvalidParseOperationException,
-        PreconditionFailedException {
+    public ResponseEntity<Boolean> delete(final @PathVariable("id") String id)
+        throws InvalidParseOperationException, PreconditionFailedException {
         LOGGER.debug("Delete agency with id :{}", id);
-        ParameterChecker.checkParameter(MANDATORY_IDENTIFIER , id);
+        ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
         SanityChecker.checkSecureParameter(id);
         return agencyExternalService.deleteWithResponse(id);
     }
@@ -188,8 +203,11 @@ public class AgencyExternalController {
      */
     @Secured(ServicesData.ROLE_IMPORT_AGENCIES)
     @PostMapping(CommonConstants.PATH_IMPORT)
-    public JsonNode importAgencies(@RequestParam("fileName") String fileName, @RequestParam("file") MultipartFile file) {
-        if(file != null) {
+    public JsonNode importAgencies(
+        @RequestParam("fileName") String fileName,
+        @RequestParam("file") MultipartFile file
+    ) {
+        if (file != null) {
             SafeFileChecker.checkSafeFilePath(file.getOriginalFilename());
             SanityChecker.isValidFileName(file.getOriginalFilename());
         }

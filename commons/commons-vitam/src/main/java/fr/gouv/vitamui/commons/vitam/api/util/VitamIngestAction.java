@@ -37,7 +37,6 @@
 package fr.gouv.vitamui.commons.vitam.api.util;
 
 public enum VitamIngestAction {
-
     RESUME,
-    NEXT
+    NEXT,
 }

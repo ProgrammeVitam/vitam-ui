@@ -36,15 +36,13 @@
  */
 package fr.gouv.vitamui.commons.mongo.service;
 
-import java.util.Optional;
-
+import fr.gouv.vitamui.commons.api.exception.InternalServerException;
+import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
+import fr.gouv.vitamui.commons.mongo.domain.CustomSequence;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import fr.gouv.vitamui.commons.api.exception.InternalServerException;
-import fr.gouv.vitamui.commons.mongo.CustomSequencesConstants;
-import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
-import fr.gouv.vitamui.commons.mongo.domain.CustomSequence;
+import java.util.Optional;
 
 /**
  * Service allowing to manage sequences.

@@ -89,7 +89,7 @@ public class OntologyExternalController {
     @Autowired
     private OntologyExternalService ontologyExternalService;
 
-    @GetMapping()
+    @GetMapping
     @Secured(ServicesData.ROLE_GET_ONTOLOGIES)
     public Collection<OntologyDto> getAll(final Optional<String> criteria) {
         SanityChecker.sanitizeCriteria(criteria);
@@ -99,10 +99,20 @@ public class OntologyExternalController {
 
     @Secured(ServicesData.ROLE_GET_ONTOLOGIES)
     @GetMapping(params = { "page", "size" })
-    public PaginatedValuesDto<OntologyDto> getAllPaginated(@RequestParam final Integer page, @RequestParam final Integer size,
-            @RequestParam(required = false) final Optional<String> criteria, @RequestParam(required = false) final Optional<String> orderBy,
-            @RequestParam(required = false) final Optional<DirectionDto> direction) {
-        LOGGER.debug("getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, orderBy, direction);
+    public PaginatedValuesDto<OntologyDto> getAllPaginated(
+        @RequestParam final Integer page,
+        @RequestParam final Integer size,
+        @RequestParam(required = false) final Optional<String> criteria,
+        @RequestParam(required = false) final Optional<String> orderBy,
+        @RequestParam(required = false) final Optional<DirectionDto> direction
+    ) {
+        LOGGER.debug(
+            "getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}",
+            page,
+            size,
+            orderBy,
+            direction
+        );
         return ontologyExternalService.getAllPaginated(page, size, criteria, orderBy, direction);
     }
 
@@ -118,8 +128,10 @@ public class OntologyExternalController {
 
     @Secured({ ServicesData.ROLE_GET_ONTOLOGIES })
     @PostMapping(CommonConstants.PATH_CHECK)
-    public ResponseEntity<Void> check(@RequestBody OntologyDto ontologyDto, @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant)
-        throws InvalidParseOperationException, PreconditionFailedException {
+    public ResponseEntity<Void> check(
+        @RequestBody OntologyDto ontologyDto,
+        @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant
+    ) throws InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.sanitizeCriteria(ontologyDto);
         LOGGER.debug("check exist ontology={}", ontologyDto);
         final boolean exist = ontologyExternalService.check(ontologyDto);
@@ -130,11 +142,13 @@ public class OntologyExternalController {
     @Secured(ServicesData.ROLE_UPDATE_AGENCIES)
     public OntologyDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto)
         throws InvalidParseOperationException {
-
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Patch {} with {}", id, partialDto);
-        Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "The DTO identifier must match the path identifier for update.");
+        Assert.isTrue(
+            StringUtils.equals(id, (String) partialDto.get("id")),
+            "The DTO identifier must match the path identifier for update."
+        );
         return ontologyExternalService.patch(partialDto);
     }
 
@@ -149,9 +163,9 @@ public class OntologyExternalController {
 
     @Secured(ServicesData.ROLE_GET_ONTOLOGIES)
     @GetMapping("/{id}/history")
-    public JsonNode findHistoryById(final @PathVariable("id") String id) throws InvalidParseOperationException, PreconditionFailedException {
-
-        ParameterChecker.checkParameter("Identifier is mandatory : " , id);
+    public JsonNode findHistoryById(final @PathVariable("id") String id)
+        throws InvalidParseOperationException, PreconditionFailedException {
+        ParameterChecker.checkParameter("Identifier is mandatory : ", id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("get logbook for ontology with id :{}", id);
         return ontologyExternalService.findHistoryById(id);
@@ -159,9 +173,9 @@ public class OntologyExternalController {
 
     @Secured(ServicesData.ROLE_DELETE_ONTOLOGIES)
     @DeleteMapping(CommonConstants.PATH_ID)
-    public void delete(final @PathVariable("id") String id) throws InvalidParseOperationException,
-        PreconditionFailedException {
-        ParameterChecker.checkParameter("Identifier is mandatory : " , id);
+    public void delete(final @PathVariable("id") String id)
+        throws InvalidParseOperationException, PreconditionFailedException {
+        ParameterChecker.checkParameter("Identifier is mandatory : ", id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Delete ontology with id :{}", id);
         ontologyExternalService.delete(id);
@@ -175,8 +189,11 @@ public class OntologyExternalController {
      */
     @Secured(ServicesData.ROLE_IMPORT_ONTOLOGIES)
     @PostMapping(CommonConstants.PATH_IMPORT)
-    public JsonNode importFileFormats(@RequestParam("fileName") String fileName, @RequestParam("file") MultipartFile file) {
-        if(file != null) {
+    public JsonNode importFileFormats(
+        @RequestParam("fileName") String fileName,
+        @RequestParam("file") MultipartFile file
+    ) {
+        if (file != null) {
             SafeFileChecker.checkSafeFilePath(file.getOriginalFilename());
             SanityChecker.isValidFileName(file.getOriginalFilename());
         }

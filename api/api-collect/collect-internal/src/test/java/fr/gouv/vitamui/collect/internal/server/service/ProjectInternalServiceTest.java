@@ -74,10 +74,13 @@ import static org.mockito.ArgumentMatchers.any;
 
 @ExtendWith(SpringExtension.class)
 class ProjectInternalServiceTest {
+
     @InjectMocks
     ProjectInternalService projectInternalService;
+
     @Mock
     CollectService collectService;
+
     final PodamFactory factory = new PodamFactoryImpl();
     final VitamContext vitamContext = new VitamContext(1);
     ObjectMapper objectMapper = new ObjectMapper();
@@ -98,15 +101,17 @@ class ProjectInternalServiceTest {
         responseFromVitam.setHits(1, 1, 1, 1);
         responseFromVitam.addResult(projectDto);
 
-        RequestResponse<JsonNode> mockResponse = RequestResponse
-            .parseFromResponse(Response.ok(objectMapper.writeValueAsString(responseFromVitam)).build());
+        RequestResponse<JsonNode> mockResponse = RequestResponse.parseFromResponse(
+            Response.ok(objectMapper.writeValueAsString(responseFromVitam)).build()
+        );
 
-        Mockito.when(collectService.initProject(any(), any()))
-            .thenReturn(mockResponse);
+        Mockito.when(collectService.initProject(any(), any())).thenReturn(mockResponse);
 
         // WHEN
-        CollectProjectDto resultedProject =
-            projectInternalService.createProject(ProjectConverter.toVitamuiCollectProjectDto(projectDto), vitamContext);
+        CollectProjectDto resultedProject = projectInternalService.createProject(
+            ProjectConverter.toVitamuiCollectProjectDto(projectDto),
+            vitamContext
+        );
 
         // THEN
         assertNotNull(resultedProject);
@@ -130,10 +135,10 @@ class ProjectInternalServiceTest {
                 return null;
             }
         };
-        RequestResponse<JsonNode> mockResponse = RequestResponse
-            .parseFromResponse(Response.ok(objectMapper.writeValueAsString(responseFromVitam)).build());
-        Mockito.when(collectService.initProject(any(), any()))
-            .thenReturn(mockResponse);
+        RequestResponse<JsonNode> mockResponse = RequestResponse.parseFromResponse(
+            Response.ok(objectMapper.writeValueAsString(responseFromVitam)).build()
+        );
+        Mockito.when(collectService.initProject(any(), any())).thenReturn(mockResponse);
 
         // WHEN
         assertThrows(InternalServerException.class, () -> {
@@ -150,16 +155,18 @@ class ProjectInternalServiceTest {
         responseFromVitam.setHits(1, 1, 1, 1);
         responseFromVitam.addResult(transactionDto);
 
-        RequestResponse<JsonNode> mockResponse = RequestResponse
-            .parseFromResponse(Response.ok(objectMapper.writeValueAsString(responseFromVitam)).build());
+        RequestResponse<JsonNode> mockResponse = RequestResponse.parseFromResponse(
+            Response.ok(objectMapper.writeValueAsString(responseFromVitam)).build()
+        );
 
-        Mockito.when(collectService.initTransaction(vitamContext, transactionDto, PROJECT_ID))
-            .thenReturn(mockResponse);
+        Mockito.when(collectService.initTransaction(vitamContext, transactionDto, PROJECT_ID)).thenReturn(mockResponse);
 
         // WHEN
-        CollectTransactionDto resultedTransaction =
-            projectInternalService.createTransactionForProject(
-                TransactionConverter.toVitamUiDto(transactionDto), PROJECT_ID, vitamContext);
+        CollectTransactionDto resultedTransaction = projectInternalService.createTransactionForProject(
+            TransactionConverter.toVitamUiDto(transactionDto),
+            PROJECT_ID,
+            vitamContext
+        );
 
         // THEN
         assertNotNull(resultedTransaction);
@@ -181,15 +188,20 @@ class ProjectInternalServiceTest {
                 return null;
             }
         };
-        RequestResponse<JsonNode> mockResponse = RequestResponse
-            .parseFromResponse(Response.ok(objectMapper.writeValueAsString(responseFromVitam)).build());
-        Mockito.when(collectService.initTransaction(vitamContext, transactionDto, PROJECT_ID))
-            .thenReturn(mockResponse);
+        RequestResponse<JsonNode> mockResponse = RequestResponse.parseFromResponse(
+            Response.ok(objectMapper.writeValueAsString(responseFromVitam)).build()
+        );
+        Mockito.when(collectService.initTransaction(vitamContext, transactionDto, PROJECT_ID)).thenReturn(mockResponse);
 
         // WHEN
-        assertThrows(InternalServerException.class, () ->
-            projectInternalService.createTransactionForProject(
-                TransactionConverter.toVitamUiDto(transactionDto), PROJECT_ID, vitamContext)
+        assertThrows(
+            InternalServerException.class,
+            () ->
+                projectInternalService.createTransactionForProject(
+                    TransactionConverter.toVitamUiDto(transactionDto),
+                    PROJECT_ID,
+                    vitamContext
+                )
         );
     }
 
@@ -201,17 +213,22 @@ class ProjectInternalServiceTest {
         responseFromVitam.setHttpCode(200);
         responseFromVitam.setHits(projects.size(), 1, 1000, projects.size());
         responseFromVitam.addAllResults(projects);
-        RequestResponse<JsonNode> mockResponse = RequestResponse
-            .parseFromResponse(Response.ok(objectMapper.writeValueAsString(responseFromVitam)).build());
-        Mockito.when(collectService.getProjects(vitamContext))
-            .thenReturn(mockResponse);
+        RequestResponse<JsonNode> mockResponse = RequestResponse.parseFromResponse(
+            Response.ok(objectMapper.writeValueAsString(responseFromVitam)).build()
+        );
+        Mockito.when(collectService.getProjects(vitamContext)).thenReturn(mockResponse);
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         projectInternalService = new ProjectInternalService(collectService, objectMapper);
 
         // WHEN
-        PaginatedValuesDto<CollectProjectDto> paginatedProjects =
-            projectInternalService.getAllProjectsPaginated(1, 1, Optional.empty(),
-                Optional.empty(), Optional.empty(), vitamContext);
+        PaginatedValuesDto<CollectProjectDto> paginatedProjects = projectInternalService.getAllProjectsPaginated(
+            1,
+            1,
+            Optional.empty(),
+            Optional.empty(),
+            Optional.empty(),
+            vitamContext
+        );
 
         // THEN
         assertNotNull(paginatedProjects);
@@ -227,18 +244,23 @@ class ProjectInternalServiceTest {
         responseFromVitam.setHttpCode(200);
         responseFromVitam.setHits(projects.size(), 1, 1000, projects.size());
         responseFromVitam.addAllResults(projects);
-        RequestResponse<JsonNode> mockResponse = RequestResponse
-            .parseFromResponse(Response.ok(objectMapper.writeValueAsString(responseFromVitam)).build());
-        Mockito.when(collectService.searchProject(any(), any()))
-            .thenReturn(mockResponse);
+        RequestResponse<JsonNode> mockResponse = RequestResponse.parseFromResponse(
+            Response.ok(objectMapper.writeValueAsString(responseFromVitam)).build()
+        );
+        Mockito.when(collectService.searchProject(any(), any())).thenReturn(mockResponse);
         ObjectNode criteriaNode = JsonHandler.createObjectNode().put("testKey", "testValue");
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         projectInternalService = new ProjectInternalService(collectService, objectMapper);
 
         // WHEN
-        PaginatedValuesDto<CollectProjectDto> paginatedProjects =
-            projectInternalService.getAllProjectsPaginated(1, 1, Optional.empty(),
-                Optional.empty(), Optional.of(JsonHandler.writeAsString(criteriaNode)), vitamContext);
+        PaginatedValuesDto<CollectProjectDto> paginatedProjects = projectInternalService.getAllProjectsPaginated(
+            1,
+            1,
+            Optional.empty(),
+            Optional.empty(),
+            Optional.of(JsonHandler.writeAsString(criteriaNode)),
+            vitamContext
+        );
 
         // THEN
         assertNotNull(paginatedProjects);
@@ -254,44 +276,65 @@ class ProjectInternalServiceTest {
                 return null;
             }
         };
-        RequestResponse<JsonNode> mockResponse = RequestResponse
-            .parseFromResponse(Response.ok(objectMapper.writeValueAsString(responseFromVitam)).build());
-        Mockito.when(collectService.getProjects(vitamContext))
-            .thenReturn(mockResponse);
+        RequestResponse<JsonNode> mockResponse = RequestResponse.parseFromResponse(
+            Response.ok(objectMapper.writeValueAsString(responseFromVitam)).build()
+        );
+        Mockito.when(collectService.getProjects(vitamContext)).thenReturn(mockResponse);
 
         // WHEN
-        assertThrows(InternalServerException.class, () ->
-            projectInternalService.getAllProjectsPaginated(1, 1, Optional.empty(),
-                Optional.empty(), Optional.empty(), vitamContext)
+        assertThrows(
+            InternalServerException.class,
+            () ->
+                projectInternalService.getAllProjectsPaginated(
+                    1,
+                    1,
+                    Optional.empty(),
+                    Optional.empty(),
+                    Optional.empty(),
+                    vitamContext
+                )
         );
     }
 
     @Test
     void shouldStreamUploadWithSuccess() throws VitamClientException {
         // GIVEN
-        Mockito.when(collectService.uploadProjectZip(any(), any(), any()))
-            .thenReturn(new RequestResponseOK());
-        InputStream csvFileInputStream = ProjectInternalService.class.getClassLoader()
-            .getResourceAsStream("data/updateCollectArchiveUnits/collect_metadata.csv");
+        Mockito.when(collectService.uploadProjectZip(any(), any(), any())).thenReturn(new RequestResponseOK());
+        InputStream csvFileInputStream =
+            ProjectInternalService.class.getClassLoader()
+                .getResourceAsStream("data/updateCollectArchiveUnits/collect_metadata.csv");
 
         // THEN
-        assertDoesNotThrow(() ->
-            projectInternalService.streamingUpload(csvFileInputStream, "FAKE_TRANSACTION_ID",
-                "FAKE_VALUE", vitamContext));
+        assertDoesNotThrow(
+            () ->
+                projectInternalService.streamingUpload(
+                    csvFileInputStream,
+                    "FAKE_TRANSACTION_ID",
+                    "FAKE_VALUE",
+                    vitamContext
+                )
+        );
     }
 
     @Test
     void shouldThrowExceptionWhenStreamUpload() throws VitamClientException {
         // GIVEN
-        Mockito.when(collectService.uploadProjectZip(any(), any(), any()))
-            .thenThrow(VitamClientException.class);
-        InputStream csvFileInputStream = ProjectInternalService.class.getClassLoader()
-            .getResourceAsStream("data/updateCollectArchiveUnits/collect_metadata.csv");
+        Mockito.when(collectService.uploadProjectZip(any(), any(), any())).thenThrow(VitamClientException.class);
+        InputStream csvFileInputStream =
+            ProjectInternalService.class.getClassLoader()
+                .getResourceAsStream("data/updateCollectArchiveUnits/collect_metadata.csv");
 
         // THEN
-        assertThrows(InternalServerException.class, () ->
-            projectInternalService.streamingUpload(csvFileInputStream, "FAKE_TRANSACTION_ID",
-                "FAKE_VALUE", vitamContext));
+        assertThrows(
+            InternalServerException.class,
+            () ->
+                projectInternalService.streamingUpload(
+                    csvFileInputStream,
+                    "FAKE_TRANSACTION_ID",
+                    "FAKE_VALUE",
+                    vitamContext
+                )
+        );
     }
 
     @Test
@@ -303,15 +346,18 @@ class ProjectInternalServiceTest {
         responseFromVitam.setHits(1, 1, 1, 1);
         responseFromVitam.addResult(projectDto);
 
-        RequestResponse<JsonNode> mockResponse = RequestResponse
-            .parseFromResponse(Response.ok(objectMapper.writeValueAsString(responseFromVitam)).build());
+        RequestResponse<JsonNode> mockResponse = RequestResponse.parseFromResponse(
+            Response.ok(objectMapper.writeValueAsString(responseFromVitam)).build()
+        );
 
-        Mockito.when(collectService.updateProject(vitamContext, projectDto))
-            .thenReturn(mockResponse);
+        Mockito.when(collectService.updateProject(vitamContext, projectDto)).thenReturn(mockResponse);
 
         // WHEN
-        CollectProjectDto updatedProject = projectInternalService.update(PROJECT_ID,
-            ProjectConverter.toVitamuiCollectProjectDto(projectDto), vitamContext);
+        CollectProjectDto updatedProject = projectInternalService.update(
+            PROJECT_ID,
+            ProjectConverter.toVitamuiCollectProjectDto(projectDto),
+            vitamContext
+        );
 
         // THEN
         assertNotNull(updatedProject);
@@ -332,15 +378,22 @@ class ProjectInternalServiceTest {
                 return null;
             }
         };
-        RequestResponse<JsonNode> mockResponse = RequestResponse
-            .parseFromResponse(Response.ok(objectMapper.writeValueAsString(responseFromVitam)).build());
+        RequestResponse<JsonNode> mockResponse = RequestResponse.parseFromResponse(
+            Response.ok(objectMapper.writeValueAsString(responseFromVitam)).build()
+        );
 
-        Mockito.when(collectService.updateProject(vitamContext, projectDto))
-            .thenReturn(mockResponse);
+        Mockito.when(collectService.updateProject(vitamContext, projectDto)).thenReturn(mockResponse);
 
         // THEN
-        assertThrows(InternalServerException.class, () -> projectInternalService.update(PROJECT_ID,
-            ProjectConverter.toVitamuiCollectProjectDto(projectDto), vitamContext));
+        assertThrows(
+            InternalServerException.class,
+            () ->
+                projectInternalService.update(
+                    PROJECT_ID,
+                    ProjectConverter.toVitamuiCollectProjectDto(projectDto),
+                    vitamContext
+                )
+        );
     }
 
     @Test
@@ -352,11 +405,11 @@ class ProjectInternalServiceTest {
         responseFromVitam.setHits(1, 1, 1, 1);
         responseFromVitam.addResult(projectDto);
 
-        RequestResponse<JsonNode> mockResponse = RequestResponse
-            .parseFromResponse(Response.ok(objectMapper.writeValueAsString(responseFromVitam)).build());
+        RequestResponse<JsonNode> mockResponse = RequestResponse.parseFromResponse(
+            Response.ok(objectMapper.writeValueAsString(responseFromVitam)).build()
+        );
 
-        Mockito.when(collectService.getProjectById(vitamContext, PROJECT_ID))
-            .thenReturn(mockResponse);
+        Mockito.when(collectService.getProjectById(vitamContext, PROJECT_ID)).thenReturn(mockResponse);
 
         // WHEN
         CollectProjectDto updatedProject = projectInternalService.getProjectById(PROJECT_ID, vitamContext);
@@ -379,11 +432,11 @@ class ProjectInternalServiceTest {
                 return null;
             }
         };
-        RequestResponse<JsonNode> mockResponse = RequestResponse
-            .parseFromResponse(Response.ok(objectMapper.writeValueAsString(responseFromVitam)).build());
+        RequestResponse<JsonNode> mockResponse = RequestResponse.parseFromResponse(
+            Response.ok(objectMapper.writeValueAsString(responseFromVitam)).build()
+        );
 
-        Mockito.when(collectService.getProjectById(vitamContext, PROJECT_ID))
-            .thenReturn(mockResponse);
+        Mockito.when(collectService.getProjectById(vitamContext, PROJECT_ID)).thenReturn(mockResponse);
 
         // THEN
         assertThrows(VitamClientException.class, () -> projectInternalService.getProjectById(PROJECT_ID, vitamContext));
@@ -395,25 +448,25 @@ class ProjectInternalServiceTest {
         RequestResponseOK<ProjectDto> responseFromVitam = new RequestResponseOK<>();
         responseFromVitam.setHttpCode(200);
         responseFromVitam.setHits(1, 1, 1, 1);
-        RequestResponse<JsonNode> mockResponse = RequestResponse
-            .parseFromResponse(Response.ok(objectMapper.writeValueAsString(responseFromVitam)).build());
-        Mockito.when(collectService.deleteProjectById(vitamContext, PROJECT_ID))
-            .thenReturn(mockResponse);
+        RequestResponse<JsonNode> mockResponse = RequestResponse.parseFromResponse(
+            Response.ok(objectMapper.writeValueAsString(responseFromVitam)).build()
+        );
+        Mockito.when(collectService.deleteProjectById(vitamContext, PROJECT_ID)).thenReturn(mockResponse);
 
         // THEN
-        assertDoesNotThrow(() ->
-            projectInternalService.deleteProjectById(PROJECT_ID, vitamContext));
+        assertDoesNotThrow(() -> projectInternalService.deleteProjectById(PROJECT_ID, vitamContext));
     }
 
     @Test
     void shouldThrowExceptionWhenDeleteProject() throws VitamClientException, JsonProcessingException {
         // GIVEN
-        Mockito.when(collectService.deleteProjectById(vitamContext, PROJECT_ID))
-            .thenThrow(VitamClientException.class);
+        Mockito.when(collectService.deleteProjectById(vitamContext, PROJECT_ID)).thenThrow(VitamClientException.class);
 
         // THEN
-        assertThrows(VitamClientException.class, () ->
-            projectInternalService.deleteProjectById(PROJECT_ID, vitamContext));
+        assertThrows(
+            VitamClientException.class,
+            () -> projectInternalService.deleteProjectById(PROJECT_ID, vitamContext)
+        );
     }
 
     @Test
@@ -424,17 +477,23 @@ class ProjectInternalServiceTest {
         responseFromVitam.setHttpCode(200);
         responseFromVitam.setHits(transactionDtos.size(), 1, 1000, transactionDtos.size());
         responseFromVitam.addAllResults(transactionDtos);
-        RequestResponse<JsonNode> mockResponse = RequestResponse
-            .parseFromResponse(Response.ok(objectMapper.writeValueAsString(responseFromVitam)).build());
-        Mockito.when(collectService.getTransactionsByProject(PROJECT_ID, vitamContext))
-            .thenReturn(mockResponse);
+        RequestResponse<JsonNode> mockResponse = RequestResponse.parseFromResponse(
+            Response.ok(objectMapper.writeValueAsString(responseFromVitam)).build()
+        );
+        Mockito.when(collectService.getTransactionsByProject(PROJECT_ID, vitamContext)).thenReturn(mockResponse);
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         projectInternalService = new ProjectInternalService(collectService, objectMapper);
 
         // WHEN
         PaginatedValuesDto<CollectTransactionDto> fakePaginatedTransactions =
-            projectInternalService.getTransactionsByProjectPaginated(PROJECT_ID, 1, 1, Optional.empty(),
-                Optional.empty(), vitamContext);
+            projectInternalService.getTransactionsByProjectPaginated(
+                PROJECT_ID,
+                1,
+                1,
+                Optional.empty(),
+                Optional.empty(),
+                vitamContext
+            );
 
         // THEN
         assertNotNull(fakePaginatedTransactions);
@@ -450,15 +509,23 @@ class ProjectInternalServiceTest {
                 return null;
             }
         };
-        RequestResponse<JsonNode> mockResponse = RequestResponse
-            .parseFromResponse(Response.ok(objectMapper.writeValueAsString(responseFromVitam)).build());
-        Mockito.when(collectService.getTransactionsByProject(PROJECT_ID, vitamContext))
-            .thenReturn(mockResponse);
+        RequestResponse<JsonNode> mockResponse = RequestResponse.parseFromResponse(
+            Response.ok(objectMapper.writeValueAsString(responseFromVitam)).build()
+        );
+        Mockito.when(collectService.getTransactionsByProject(PROJECT_ID, vitamContext)).thenReturn(mockResponse);
 
         // WHEN
-        assertThrows(VitamClientException.class, () ->
-            projectInternalService.getTransactionsByProjectPaginated(PROJECT_ID, 1, 1, Optional.empty(),
-                Optional.empty(), vitamContext)
+        assertThrows(
+            VitamClientException.class,
+            () ->
+                projectInternalService.getTransactionsByProjectPaginated(
+                    PROJECT_ID,
+                    1,
+                    1,
+                    Optional.empty(),
+                    Optional.empty(),
+                    vitamContext
+                )
         );
     }
 
@@ -470,17 +537,19 @@ class ProjectInternalServiceTest {
         responseFromVitam.setHttpCode(200);
         responseFromVitam.setHits(transactionDtos.size(), 1, 1000, transactionDtos.size());
         responseFromVitam.addAllResults(transactionDtos);
-        RequestResponse<JsonNode> mockResponse = RequestResponse
-            .parseFromResponse(Response.ok(objectMapper.writeValueAsString(responseFromVitam)).build());
+        RequestResponse<JsonNode> mockResponse = RequestResponse.parseFromResponse(
+            Response.ok(objectMapper.writeValueAsString(responseFromVitam)).build()
+        );
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         projectInternalService = new ProjectInternalService(collectService, objectMapper);
 
-        Mockito.when(collectService.getLastTransactionForProjectId(vitamContext, PROJECT_ID))
-            .thenReturn(mockResponse);
+        Mockito.when(collectService.getLastTransactionForProjectId(vitamContext, PROJECT_ID)).thenReturn(mockResponse);
 
         // WHEN
-        CollectTransactionDto lastTransaction =
-            projectInternalService.getLastTransactionForProjectId(PROJECT_ID, vitamContext);
+        CollectTransactionDto lastTransaction = projectInternalService.getLastTransactionForProjectId(
+            PROJECT_ID,
+            vitamContext
+        );
 
         // THEN
         assertNotNull(lastTransaction);
@@ -498,11 +567,14 @@ class ProjectInternalServiceTest {
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         projectInternalService = new ProjectInternalService(collectService, objectMapper);
 
-        Mockito.when(collectService.getLastTransactionForProjectId(vitamContext, PROJECT_ID))
-            .thenThrow(VitamClientException.class);
+        Mockito.when(collectService.getLastTransactionForProjectId(vitamContext, PROJECT_ID)).thenThrow(
+            VitamClientException.class
+        );
 
         // THEN
-        assertThrows(VitamClientException.class,
-            () -> projectInternalService.getLastTransactionForProjectId(PROJECT_ID, vitamContext));
+        assertThrows(
+            VitamClientException.class,
+            () -> projectInternalService.getLastTransactionForProjectId(PROJECT_ID, vitamContext)
+        );
     }
 }

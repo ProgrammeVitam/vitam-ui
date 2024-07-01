@@ -79,15 +79,24 @@ public final class ApiErrorGenerator {
     private static Map<String, String> initializeApiErrors() {
         final Map<String, String> mappings = new HashMap<>();
 
-        mappings.put(ErrorsConstants.API_ERRORS_INTERNAL_SERVER_ERROR, ErrorsConstants.API_ERRORS_INTERNAL_SERVER_ERROR_MESSAGE);
+        mappings.put(
+            ErrorsConstants.API_ERRORS_INTERNAL_SERVER_ERROR,
+            ErrorsConstants.API_ERRORS_INTERNAL_SERVER_ERROR_MESSAGE
+        );
         mappings.put(ErrorsConstants.API_ERRORS_BAD_REQUEST, ErrorsConstants.API_ERRORS_BAD_REQUEST_MESSAGE);
         mappings.put(ErrorsConstants.API_ERRORS_UNAUTHORIZED, ErrorsConstants.API_ERRORS_UNAUTHORIZED_MESSAGE);
-        mappings.put(ErrorsConstants.API_ERRORS_INTERNAL_SERVER_ERROR, ErrorsConstants.API_ERRORS_INTERNAL_SERVER_ERROR_MESSAGE);
+        mappings.put(
+            ErrorsConstants.API_ERRORS_INTERNAL_SERVER_ERROR,
+            ErrorsConstants.API_ERRORS_INTERNAL_SERVER_ERROR_MESSAGE
+        );
         mappings.put(ErrorsConstants.API_ERRORS_UNAUTHORIZED, ErrorsConstants.API_ERRORS_UNAUTHORIZED_MESSAGE);
         mappings.put(ErrorsConstants.API_ERRORS_BAD_FORMAT, ErrorsConstants.API_ERRORS_BAD_FORMAT_MESSAGE);
         mappings.put(ErrorsConstants.API_ERRORS_NO_RIGHTS, ErrorsConstants.API_ERRORS_NO_RIGHTS_MESSAGE);
         mappings.put(ErrorsConstants.API_ERRORS_NOTFOUND, ErrorsConstants.API_ERRORS_NOTFOUND_MESSAGE);
-        mappings.put(ErrorsConstants.API_ERRORS_ROUTE_NOT_IMPLEMENTED_YET, ErrorsConstants.API_ERRORS_ROUTE_NOT_IMPLEMENTED_YET_MESSAGE);
+        mappings.put(
+            ErrorsConstants.API_ERRORS_ROUTE_NOT_IMPLEMENTED_YET,
+            ErrorsConstants.API_ERRORS_ROUTE_NOT_IMPLEMENTED_YET_MESSAGE
+        );
         mappings.put(ErrorsConstants.API_ERRORS_BAD_REQUEST, ErrorsConstants.API_ERRORS_BAD_REQUEST_MESSAGE);
         mappings.put(ErrorsConstants.API_ERRORS_ROUTE_NOT_FOUND, ErrorsConstants.API_ERRORS_ROUTE_NOT_FOUND_MESSAGE);
         mappings.put(ErrorsConstants.API_ERRORS_UNAUTHORIZED, ErrorsConstants.API_ERRORS_UNAUTHORIZED_MESSAGE);
@@ -126,86 +135,120 @@ public final class ApiErrorGenerator {
      * @return the invalidAuthentificationException
      */
     public static InvalidAuthenticationException getInvalidAuthentificationException(final Object... args) {
-        return new InvalidAuthenticationException(getMessage(ErrorsConstants.API_ERRORS_UNAUTHORIZED, args), buildKey(ErrorsConstants.API_ERRORS_UNAUTHORIZED));
+        return new InvalidAuthenticationException(
+            getMessage(ErrorsConstants.API_ERRORS_UNAUTHORIZED, args),
+            buildKey(ErrorsConstants.API_ERRORS_UNAUTHORIZED)
+        );
     }
 
     /**
      * @return the noRightsException
      */
     public static NoRightsException getNoRightsException(final Object... args) {
-        return new NoRightsException(getMessage(ErrorsConstants.API_ERRORS_NO_RIGHTS, args), buildKey(ErrorsConstants.API_ERRORS_NO_RIGHTS));
+        return new NoRightsException(
+            getMessage(ErrorsConstants.API_ERRORS_NO_RIGHTS, args),
+            buildKey(ErrorsConstants.API_ERRORS_NO_RIGHTS)
+        );
     }
 
     /**
      * @return the badRequestException
      */
     public static BadRequestException getBadRequestException(final Object... args) {
-        return new BadRequestException(getMessage(ErrorsConstants.API_ERRORS_BAD_REQUEST, args), buildKey(ErrorsConstants.API_ERRORS_BAD_REQUEST));
+        return new BadRequestException(
+            getMessage(ErrorsConstants.API_ERRORS_BAD_REQUEST, args),
+            buildKey(ErrorsConstants.API_ERRORS_BAD_REQUEST)
+        );
     }
 
     /**
      * @return the invalidFormatException
      */
     public static InvalidFormatException getInvalidFormatException(final Object... args) {
-        return new InvalidFormatException(getMessage(ErrorsConstants.API_ERRORS_BAD_FORMAT, args), buildKey(ErrorsConstants.API_ERRORS_BAD_FORMAT));
+        return new InvalidFormatException(
+            getMessage(ErrorsConstants.API_ERRORS_BAD_FORMAT, args),
+            buildKey(ErrorsConstants.API_ERRORS_BAD_FORMAT)
+        );
     }
 
     /**
      * @return the forbiddenException
      */
     public static ForbiddenException getForbiddenException(final Object... args) {
-        return new ForbiddenException(getMessage(ErrorsConstants.API_ERRORS_UNAUTHORIZED, args), buildKey(ErrorsConstants.API_ERRORS_UNAUTHORIZED));
+        return new ForbiddenException(
+            getMessage(ErrorsConstants.API_ERRORS_UNAUTHORIZED, args),
+            buildKey(ErrorsConstants.API_ERRORS_UNAUTHORIZED)
+        );
     }
 
     /**
      * @return the unAuthorizedException
      */
     public static UnAuthorizedException getUnAuthorizedException(final Object... args) {
-        return new UnAuthorizedException(getMessage(ErrorsConstants.API_ERRORS_UNAUTHORIZED, args), buildKey(ErrorsConstants.API_ERRORS_UNAUTHORIZED));
+        return new UnAuthorizedException(
+            getMessage(ErrorsConstants.API_ERRORS_UNAUTHORIZED, args),
+            buildKey(ErrorsConstants.API_ERRORS_UNAUTHORIZED)
+        );
     }
 
     /**
      * @return the notFoundException
      */
     public static NotFoundException getNotFoundException(final Object... args) {
-        return new NotFoundException(getMessage(ErrorsConstants.API_ERRORS_NOTFOUND, args), buildKey(ErrorsConstants.API_ERRORS_NOTFOUND));
+        return new NotFoundException(
+            getMessage(ErrorsConstants.API_ERRORS_NOTFOUND, args),
+            buildKey(ErrorsConstants.API_ERRORS_NOTFOUND)
+        );
     }
 
     /**
      * @return the routeNotFoundException
      */
     public static RouteNotFoundException getRouteNotFoundException(final Object... args) {
-        return new RouteNotFoundException(getMessage(ErrorsConstants.API_ERRORS_ROUTE_NOT_FOUND, args), buildKey(ErrorsConstants.API_ERRORS_ROUTE_NOT_FOUND));
+        return new RouteNotFoundException(
+            getMessage(ErrorsConstants.API_ERRORS_ROUTE_NOT_FOUND, args),
+            buildKey(ErrorsConstants.API_ERRORS_ROUTE_NOT_FOUND)
+        );
     }
 
     /**
      * @return the validationException
      */
     public static ValidationException getValidationException(final Object... args) {
-        return new ValidationException(getMessage(ErrorsConstants.API_ERRORS_VALIDATION, args), buildKey(ErrorsConstants.API_ERRORS_VALIDATION));
+        return new ValidationException(
+            getMessage(ErrorsConstants.API_ERRORS_VALIDATION, args),
+            buildKey(ErrorsConstants.API_ERRORS_VALIDATION)
+        );
     }
 
     /**
      * @return the applicationServerException
      */
     public static ApplicationServerException getApplicationServerException(final Object... args) {
-        return new ApplicationServerException(getMessage(ErrorsConstants.API_ERRORS_INTERNAL_SERVER_ERROR, args),
-                buildKey(ErrorsConstants.API_ERRORS_INTERNAL_SERVER_ERROR));
+        return new ApplicationServerException(
+            getMessage(ErrorsConstants.API_ERRORS_INTERNAL_SERVER_ERROR, args),
+            buildKey(ErrorsConstants.API_ERRORS_INTERNAL_SERVER_ERROR)
+        );
     }
 
     /**
      * @return the parseOperationException
      */
     public static ParseOperationException getParseOperationException(final Object... args) {
-        return new ParseOperationException(getMessage(ErrorsConstants.API_ERRORS_BAD_REQUEST, args), buildKey(ErrorsConstants.API_ERRORS_BAD_REQUEST));
+        return new ParseOperationException(
+            getMessage(ErrorsConstants.API_ERRORS_BAD_REQUEST, args),
+            buildKey(ErrorsConstants.API_ERRORS_BAD_REQUEST)
+        );
     }
 
     /**
      * @return the internalServerException
      */
     public static InternalServerException getInternalServerException(final Object... args) {
-        return new InternalServerException(getMessage(ErrorsConstants.API_ERRORS_INTERNAL_SERVER_ERROR, args),
-                buildKey(ErrorsConstants.API_ERRORS_INTERNAL_SERVER_ERROR));
+        return new InternalServerException(
+            getMessage(ErrorsConstants.API_ERRORS_INTERNAL_SERVER_ERROR, args),
+            buildKey(ErrorsConstants.API_ERRORS_INTERNAL_SERVER_ERROR)
+        );
     }
 
     /**
@@ -219,15 +262,20 @@ public final class ApiErrorGenerator {
      * @return the notImplementedException
      */
     public static NotImplementedException getNotImplementedException(final Object... args) {
-        return new NotImplementedException(getMessage(ErrorsConstants.API_ERRORS_ROUTE_NOT_IMPLEMENTED_YET, args),
-                buildKey(ErrorsConstants.API_ERRORS_ROUTE_NOT_IMPLEMENTED_YET));
+        return new NotImplementedException(
+            getMessage(ErrorsConstants.API_ERRORS_ROUTE_NOT_IMPLEMENTED_YET, args),
+            buildKey(ErrorsConstants.API_ERRORS_ROUTE_NOT_IMPLEMENTED_YET)
+        );
     }
 
     /**
      * @return the RequestTimeOutException
      */
     public static RequestTimeOutException getRequestTimeOutException(final Object... args) {
-        return new RequestTimeOutException(getMessage(ErrorsConstants.API_ERRORS_REQUEST_TIMEOUT, args), buildKey(ErrorsConstants.API_ERRORS_REQUEST_TIMEOUT));
+        return new RequestTimeOutException(
+            getMessage(ErrorsConstants.API_ERRORS_REQUEST_TIMEOUT, args),
+            buildKey(ErrorsConstants.API_ERRORS_REQUEST_TIMEOUT)
+        );
     }
 
     public static String buildKey(@SuppressWarnings("rawtypes") final Class clazz) {
@@ -255,10 +303,8 @@ public final class ApiErrorGenerator {
     private static String getMessage(final String key, final Object... args) {
         try {
             return String.format(apiErrorsMessages.get(key), args);
-        }
-        catch (final MissingFormatArgumentException exception) {
+        } catch (final MissingFormatArgumentException exception) {
             throw getInternalServerException();
         }
     }
-
 }

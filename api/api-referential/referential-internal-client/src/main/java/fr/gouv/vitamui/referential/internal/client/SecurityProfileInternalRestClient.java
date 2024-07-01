@@ -36,9 +36,12 @@
  */
 package fr.gouv.vitamui.referential.internal.client;
 
-
-import java.util.List;
-
+import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
+import fr.gouv.vitamui.commons.rest.client.BasePaginatingAndSortingRestClient;
+import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
+import fr.gouv.vitamui.referential.common.dto.SecurityProfileDto;
+import fr.gouv.vitamui.referential.common.rest.RestApi;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -47,21 +50,18 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import fr.gouv.vitamui.commons.api.CommonConstants;
-import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
-import fr.gouv.vitamui.commons.rest.client.BasePaginatingAndSortingRestClient;
-import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
-import fr.gouv.vitamui.referential.common.dto.SecurityProfileDto;
-import fr.gouv.vitamui.referential.common.rest.RestApi;
+import java.util.List;
 
-public class SecurityProfileInternalRestClient extends BasePaginatingAndSortingRestClient<SecurityProfileDto, InternalHttpContext> {
+public class SecurityProfileInternalRestClient
+    extends BasePaginatingAndSortingRestClient<SecurityProfileDto, InternalHttpContext> {
 
     public SecurityProfileInternalRestClient(final RestTemplate restTemplate, final String baseUrl) {
         super(restTemplate, baseUrl);
     }
 
-    @Override protected ParameterizedTypeReference<PaginatedValuesDto<SecurityProfileDto>> getDtoPaginatedClass() {
-        return new ParameterizedTypeReference<PaginatedValuesDto<SecurityProfileDto>>() { };
+    @Override
+    protected ParameterizedTypeReference<PaginatedValuesDto<SecurityProfileDto>> getDtoPaginatedClass() {
+        return new ParameterizedTypeReference<PaginatedValuesDto<SecurityProfileDto>>() {};
     }
 
     @Override
@@ -69,20 +69,24 @@ public class SecurityProfileInternalRestClient extends BasePaginatingAndSortingR
         return RestApi.SECURITY_PROFILES_URL;
     }
 
-    @Override protected Class<SecurityProfileDto> getDtoClass() {
+    @Override
+    protected Class<SecurityProfileDto> getDtoClass() {
         return SecurityProfileDto.class;
     }
 
     protected ParameterizedTypeReference<List<SecurityProfileDto>> getDtoListClass() {
-        return new ParameterizedTypeReference<List<SecurityProfileDto>>() { };
+        return new ParameterizedTypeReference<List<SecurityProfileDto>>() {};
     }
 
     public boolean check(InternalHttpContext context, SecurityProfileDto accessContractDto) {
         final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl() + CommonConstants.PATH_CHECK);
         final HttpEntity<SecurityProfileDto> request = new HttpEntity<>(accessContractDto, buildHeaders(context));
-        final ResponseEntity<Boolean> response = restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.POST,
-                request, Boolean.class);
+        final ResponseEntity<Boolean> response = restTemplate.exchange(
+            uriBuilder.toUriString(),
+            HttpMethod.POST,
+            request,
+            Boolean.class
+        );
         return response.getStatusCode() == HttpStatus.OK;
     }
-
 }

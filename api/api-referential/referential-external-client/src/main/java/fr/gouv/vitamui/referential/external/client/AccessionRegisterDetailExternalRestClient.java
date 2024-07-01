@@ -54,11 +54,12 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
-public class AccessionRegisterDetailExternalRestClient extends
-    BasePaginatingAndSortingRestClient<AccessionRegisterDetailDto, ExternalHttpContext> {
+public class AccessionRegisterDetailExternalRestClient
+    extends BasePaginatingAndSortingRestClient<AccessionRegisterDetailDto, ExternalHttpContext> {
 
-    private static final VitamUILogger LOGGER =
-        VitamUILoggerFactory.getInstance(AccessionRegisterDetailExternalRestClient.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
+        AccessionRegisterDetailExternalRestClient.class
+    );
 
     public AccessionRegisterDetailExternalRestClient(final RestTemplate restTemplate, final String baseUrl) {
         super(restTemplate, baseUrl);
@@ -66,8 +67,7 @@ public class AccessionRegisterDetailExternalRestClient extends
 
     @Override
     protected ParameterizedTypeReference<PaginatedValuesDto<AccessionRegisterDetailDto>> getDtoPaginatedClass() {
-        return new ParameterizedTypeReference<>() {
-        };
+        return new ParameterizedTypeReference<>() {};
     }
 
     @Override
@@ -81,16 +81,16 @@ public class AccessionRegisterDetailExternalRestClient extends
     }
 
     protected ParameterizedTypeReference<List<AccessionRegisterDetailDto>> getDtoListClass() {
-        return new ParameterizedTypeReference<>() {
-        };
+        return new ParameterizedTypeReference<>() {};
     }
 
-    public ResponseEntity<Resource> exportAccessionRegisterCsv(AccessionRegisterSearchDto query,
-        ExternalHttpContext context) {
+    public ResponseEntity<Resource> exportAccessionRegisterCsv(
+        AccessionRegisterSearchDto query,
+        ExternalHttpContext context
+    ) {
         LOGGER.debug("Accession register details csv export");
         MultiValueMap<String, String> headers = buildHeaders(context);
         final HttpEntity<AccessionRegisterSearchDto> request = new HttpEntity<>(query, headers);
-        return restTemplate.exchange(getUrl() + RestApi.EXPORT_CSV, HttpMethod.POST,
-            request, Resource.class);
+        return restTemplate.exchange(getUrl() + RestApi.EXPORT_CSV, HttpMethod.POST, request, Resource.class);
     }
 }

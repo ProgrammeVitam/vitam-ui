@@ -38,7 +38,6 @@ knowledge of the CeCILL-C license and that you accept its terms.
 
 package fr.gouv.vitamui.pastis.server.config;
 
-
 import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
 import lombok.Getter;
 import lombok.Setter;
@@ -59,5 +58,4 @@ public class ApiPastisApplicationProperties {
     private RestClientConfiguration iamInternalClient;
 
     private RestClientConfiguration securityClient;
-
 }

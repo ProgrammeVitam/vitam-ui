@@ -27,10 +27,10 @@
 
 package fr.gouv.vitamui.referential.external.server.rest;
 
+import fr.gouv.vitamui.commons.api.domain.ManagementContractDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
-import fr.gouv.vitamui.commons.api.domain.ManagementContractDto;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
 import fr.gouv.vitamui.referential.external.server.service.ManagementContractExternalService;
 import org.junit.Assert;
@@ -41,15 +41,17 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(controllers={ ManagementContractExternalController.class })
-public  class ManagementContractExternalControllerTest extends ApiReferentialControllerTest<ManagementContractDto> {
+@WebMvcTest(controllers = { ManagementContractExternalController.class })
+public class ManagementContractExternalControllerTest extends ApiReferentialControllerTest<ManagementContractDto> {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ManagementContractExternalControllerTest.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
+        ManagementContractExternalControllerTest.class
+    );
 
     @MockBean
     private ManagementContractExternalService managementContractExternalService;
 
-     @Override
+    @Override
     protected String[] getServices() {
         return new String[] {
             ServicesData.SERVICE_MANAGEMENT_CONTRACT,
@@ -91,7 +93,4 @@ public  class ManagementContractExternalControllerTest extends ApiReferentialCon
     public void testManagementContract() {
         Assert.assertNotNull(managementContractExternalService);
     }
-
-
-
 }

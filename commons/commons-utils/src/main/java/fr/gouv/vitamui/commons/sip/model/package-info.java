@@ -37,7 +37,7 @@
 @XmlSchema(namespace = SIPConstant.SEDA_NAMESPACE, elementFormDefault = XmlNsForm.QUALIFIED)
 package fr.gouv.vitamui.commons.sip.model;
 
+import fr.gouv.vitamui.commons.sip.util.SIPConstant;
+
 import javax.xml.bind.annotation.XmlNsForm;
 import javax.xml.bind.annotation.XmlSchema;
-
-import fr.gouv.vitamui.commons.sip.util.SIPConstant;

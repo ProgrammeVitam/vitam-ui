@@ -46,6 +46,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 public class VersionUsageMgtContractDto implements Serializable {
+
     private String usageName;
     private boolean initialVersion;
     private IntermediaryVersionEnum intermediaryVersion;

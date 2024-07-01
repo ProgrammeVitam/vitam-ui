@@ -26,7 +26,6 @@
 
 package fr.gouv.vitamui.archives.search.external.server;
 
-
 import fr.gouv.vitamui.archives.search.external.server.config.ApiArchiveExternalApplicationProperties;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -35,18 +34,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 public class ApiArchivesSearchExternalApplicationTest {
-
 
     @Autowired
     private ApiArchiveExternalApplicationProperties apiArchiveExternalApplicationProperties;
 
     @Test
     public void testArchiveContextLoads() {
-
         Assertions.assertNotNull(apiArchiveExternalApplicationProperties);
         Assertions.assertNotNull(apiArchiveExternalApplicationProperties.getArchiveSearchInternalClient());
         Assertions.assertNotNull(apiArchiveExternalApplicationProperties.getIamInternalClient());

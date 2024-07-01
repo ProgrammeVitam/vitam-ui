@@ -78,10 +78,9 @@ public class OperationExternalController {
     @Autowired
     private OperationExternalService operationExternalService;
 
-    @GetMapping()
+    @GetMapping
     @Secured(ServicesData.ROLE_GET_OPERATIONS)
     public Collection<LogbookOperationDto> getAll(final Optional<String> criteria) {
-
         SanityChecker.sanitizeCriteria(criteria);
         LOGGER.debug("get all audits criteria={}", criteria);
         return operationExternalService.getAll(criteria);
@@ -89,18 +88,27 @@ public class OperationExternalController {
 
     @Secured(ServicesData.ROLE_GET_OPERATIONS)
     @GetMapping(params = { "page", "size" })
-    public PaginatedValuesDto<LogbookOperationDto> getAllPaginated(@RequestParam final Integer page, @RequestParam final Integer size,
-                                                         @RequestParam(required = false) final Optional<String> criteria, @RequestParam(required = false) final Optional<String> orderBy,
-                                                         @RequestParam(required = false) final Optional<DirectionDto> direction) {
-        LOGGER.debug("getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, orderBy, direction);
+    public PaginatedValuesDto<LogbookOperationDto> getAllPaginated(
+        @RequestParam final Integer page,
+        @RequestParam final Integer size,
+        @RequestParam(required = false) final Optional<String> criteria,
+        @RequestParam(required = false) final Optional<String> orderBy,
+        @RequestParam(required = false) final Optional<DirectionDto> direction
+    ) {
+        LOGGER.debug(
+            "getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}",
+            page,
+            size,
+            orderBy,
+            direction
+        );
         return operationExternalService.getAllPaginated(page, size, criteria, orderBy, direction);
     }
 
     @Secured(ServicesData.ROLE_GET_OPERATIONS)
     @GetMapping("/{id}/history")
-    public JsonNode findHistoryById(final @PathVariable("id") String id) throws InvalidParseOperationException,
-        PreconditionFailedException {
-
+    public JsonNode findHistoryById(final @PathVariable("id") String id)
+        throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("get logbook for audit with id :{}", id);
@@ -108,11 +116,12 @@ public class OperationExternalController {
     }
 
     @GetMapping(CommonConstants.PATH_ID + "/download/{type}")
-    public ResponseEntity<Resource> exportEventById(final @PathVariable("id") String id, final @PathVariable("type") ReportType type)
-        throws InvalidParseOperationException, PreconditionFailedException {
-
+    public ResponseEntity<Resource> exportEventById(
+        final @PathVariable("id") String id,
+        final @PathVariable("type") ReportType type
+    ) throws InvalidParseOperationException, PreconditionFailedException {
         EnumUtils.checkValidEnum(ReportType.class, Optional.of(type.name()));
-        ParameterChecker.checkParameter("Event Identifier is mandatory : " , id);
+        ParameterChecker.checkParameter("Event Identifier is mandatory : ", id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("export logbook for {} operation with id :{}", type, id);
         return operationExternalService.export(id, type);
@@ -121,9 +130,9 @@ public class OperationExternalController {
     @Secured(ServicesData.ROLE_RUN_AUDITS)
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public boolean create(final @Valid @RequestBody AuditOptions auditOptions) throws InvalidParseOperationException, PreconditionFailedException {
-
-        ParameterChecker.checkParameter("Audit Options is mandatory parameter : " , auditOptions);
+    public boolean create(final @Valid @RequestBody AuditOptions auditOptions)
+        throws InvalidParseOperationException, PreconditionFailedException {
+        ParameterChecker.checkParameter("Audit Options is mandatory parameter : ", auditOptions);
         SanityChecker.sanitizeCriteria(auditOptions);
         LOGGER.debug("Create {}", auditOptions);
         return operationExternalService.runAudit(auditOptions);
@@ -131,15 +140,13 @@ public class OperationExternalController {
 
     @Secured(ServicesData.ROLE_GET_OPERATIONS)
     @GetMapping(value = "/check" + CommonConstants.PATH_ID)
-    public JsonNode checkTraceabilityOperation(final @PathVariable String id) throws InvalidParseOperationException,
-        PreconditionFailedException {
-
+    public JsonNode checkTraceabilityOperation(final @PathVariable String id)
+        throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Launch check traceability operation with id = {}", id);
         return operationExternalService.checkTraceabilityOperation(id);
     }
-
 
     @Secured(ServicesData.ROLE_RUN_PROBATIVE_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
@@ -155,8 +162,7 @@ public class OperationExternalController {
     @GetMapping("/probativeValue" + CommonConstants.PATH_ID)
     public ResponseEntity<Resource> exportProbativeValue(final @PathVariable("id") String operationId)
         throws InvalidParseOperationException, PreconditionFailedException {
-
-        ParameterChecker.checkParameter("Operation Identifier is mandatory : " , operationId);
+        ParameterChecker.checkParameter("Operation Identifier is mandatory : ", operationId);
         SanityChecker.checkSecureParameter(operationId);
         LOGGER.debug("export logbook for operation with id :{}", operationId);
         return operationExternalService.exportProbativeValue(operationId);

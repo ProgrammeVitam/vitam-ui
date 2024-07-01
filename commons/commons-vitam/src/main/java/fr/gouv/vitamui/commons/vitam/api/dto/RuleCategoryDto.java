@@ -54,5 +54,4 @@ public class RuleCategoryDto {
 
     @JsonProperty("FinalAction")
     private String finalAction;
-
 }

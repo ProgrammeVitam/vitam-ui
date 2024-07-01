@@ -50,22 +50,23 @@ import java.util.Date;
 public class RuleXMLRootDto {
 
     // fileformat Version field
-    @XmlAttribute(name="Version")
+    @XmlAttribute(name = "Version")
     private Integer version;
 
-    @XmlAttribute(name="DateCreated")
+    @XmlAttribute(name = "DateCreated")
     private Date createdDate;
 
-    @XmlAttribute(name="xmlns")
+    @XmlAttribute(name = "xmlns")
     private final String namespace = "http://www.nationalarchives.gov.uk/pronom/SignatureFile";
 
-    @XmlElement(name="InternalSignatureCollection")
+    @XmlElement(name = "InternalSignatureCollection")
     private InternalSignatureCollection internalSignatureCollection = new InternalSignatureCollection();
 
-    @XmlElement(name="RuleCollection")
+    @XmlElement(name = "RuleCollection")
     private RuleCollection ruleCollection;
 
-    @Override public String toString() {
+    @Override
+    public String toString() {
         return "" + createdDate + version + "[" + ruleCollection.getRules().size() + " rules]";
     }
 }

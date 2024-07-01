@@ -39,40 +39,40 @@ knowledge of the CeCILL-C license and that you accept its terms.
 package fr.gouv.vitamui.pastis.common.dto;
 
 public enum PuaAttributes {
-	REF("$ref"),
-	ENUM("enum"),
-	PATTERN("pattern"),
-	MIN_LENGTH("minLength"),
-	MAX_LENGTH("maxLength"),
-	MINIMUM("minimum"),
-	MAXIMUM("maximum"),
-	ADDITIONAL_PROPERTIES("additionalProperties"),
-	EXCLUSIVE_MINIMUM("exclusiveMinimum"),
-	EXCLUSIVE_MAXIMUM("exclusiveMaximum"),
-	DESCRIPTION("description"),
-	MIN_ITEMS("minItems"),
-	MAX_ITEMS("maxItems"),
-	TYPE("type");    	
+    REF("$ref"),
+    ENUM("enum"),
+    PATTERN("pattern"),
+    MIN_LENGTH("minLength"),
+    MAX_LENGTH("maxLength"),
+    MINIMUM("minimum"),
+    MAXIMUM("maximum"),
+    ADDITIONAL_PROPERTIES("additionalProperties"),
+    EXCLUSIVE_MINIMUM("exclusiveMinimum"),
+    EXCLUSIVE_MAXIMUM("exclusiveMaximum"),
+    DESCRIPTION("description"),
+    MIN_ITEMS("minItems"),
+    MAX_ITEMS("maxItems"),
+    TYPE("type");
 
-	private String name;
-	
-	PuaAttributes(String s) {
-		name = s;
-	}
-	
-	@Override
-	public String toString() {
-		return this.name;
-	}
-	
-	public String getName() {
-		return this.name;
-	}
-	
-	public static PuaAttributes fromString(String s) {
-		for (PuaAttributes att : PuaAttributes.values()) {
-			if (att.name.equals(s)) return att;
-		}
-		return null;
-	}
+    private String name;
+
+    PuaAttributes(String s) {
+        name = s;
+    }
+
+    @Override
+    public String toString() {
+        return this.name;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public static PuaAttributes fromString(String s) {
+        for (PuaAttributes att : PuaAttributes.values()) {
+            if (att.name.equals(s)) return att;
+        }
+        return null;
+    }
 }

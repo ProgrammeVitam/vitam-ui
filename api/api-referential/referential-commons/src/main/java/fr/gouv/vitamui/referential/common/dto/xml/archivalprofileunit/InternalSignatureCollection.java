@@ -50,7 +50,6 @@ import java.util.List;
 @Getter
 public class InternalSignatureCollection {
 
-    @XmlElement(name="InternalSignature")
+    @XmlElement(name = "InternalSignature")
     private List<Object> internalSignature = new ArrayList<>();
-
 }

@@ -134,9 +134,25 @@ public final class UserInternalServiceTest {
         addressService = mock(AddressService.class);
         applicationInternalService = mock(ApplicationInternalService.class);
 
-        internalUserService = new UserInternalService(sequenceGeneratorService, userRepository, internalGroupService, internalProfileService,
-                userEmailInternalService, tenantRepository, internalSecurityService, customerRepository, profileRepository, groupRepository,
-                mock(IamLogbookService.class), userConverter, null, null, addressService, applicationInternalService,  null);
+        internalUserService = new UserInternalService(
+            sequenceGeneratorService,
+            userRepository,
+            internalGroupService,
+            internalProfileService,
+            userEmailInternalService,
+            tenantRepository,
+            internalSecurityService,
+            customerRepository,
+            profileRepository,
+            groupRepository,
+            mock(IamLogbookService.class),
+            userConverter,
+            null,
+            null,
+            addressService,
+            applicationInternalService,
+            null
+        );
 
         tokenRepository = mock(TokenRepository.class);
         ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
@@ -150,7 +166,6 @@ public final class UserInternalServiceTest {
 
     @Test
     public void testGetUserByToken() {
-
         when(internalSecurityService.getLevel()).thenReturn("DSI");
         when(internalSecurityService.userIsRootLevel()).thenReturn(true);
         when(internalGroupService.getMany(GROUP_ID)).thenReturn(Arrays.asList(buildGroupDto()));
@@ -218,9 +233,15 @@ public final class UserInternalServiceTest {
     @Test
     public void testGetUsersGenericByCustomer() {
         final String customerId = "customerId";
-        when(userRepository
-                .getPaginatedValues(ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any()))
-                .thenReturn(buildPageable(buildUser("id")));
+        when(
+            userRepository.getPaginatedValues(
+                ArgumentMatchers.any(),
+                ArgumentMatchers.any(),
+                ArgumentMatchers.any(),
+                ArgumentMatchers.any(),
+                ArgumentMatchers.any()
+            )
+        ).thenReturn(buildPageable(buildUser("id")));
 
         final Customer customer = new Customer();
         customer.setId("ID");
@@ -236,8 +257,13 @@ public final class UserInternalServiceTest {
         final AuthUserDto user = IamServerUtilsTest.buildAuthUserDto();
         Mockito.when(internalSecurityService.getUser()).thenReturn(user);
 
-        final PaginatedValuesDto<UserDto> subrogateUsers =
-                internalUserService.getAllPaginated(0, 20, criteriaWrapper.toOptionalJson(), Optional.empty(), Optional.empty());
+        final PaginatedValuesDto<UserDto> subrogateUsers = internalUserService.getAllPaginated(
+            0,
+            20,
+            criteriaWrapper.toOptionalJson(),
+            Optional.empty(),
+            Optional.empty()
+        );
         assertThat(subrogateUsers.getValues()).isNotEmpty();
         assertThat(subrogateUsers.getValues().size()).isEqualTo(1);
     }
@@ -245,11 +271,24 @@ public final class UserInternalServiceTest {
     @Test
     public void testGetResultsUsersGenericByCustomer() {
         final String customerId = "customerId";
-        when(userRepository
-                .getPaginatedValues(ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any()))
-                .thenReturn(buildPageable(buildUser("id")));
-        when(userRepository.aggregation(ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any()))
-                .thenReturn(Map.of("type", Arrays.asList("DISTINCT")));
+        when(
+            userRepository.getPaginatedValues(
+                ArgumentMatchers.any(),
+                ArgumentMatchers.any(),
+                ArgumentMatchers.any(),
+                ArgumentMatchers.any(),
+                ArgumentMatchers.any()
+            )
+        ).thenReturn(buildPageable(buildUser("id")));
+        when(
+            userRepository.aggregation(
+                ArgumentMatchers.any(),
+                ArgumentMatchers.any(),
+                ArgumentMatchers.any(),
+                ArgumentMatchers.any(),
+                ArgumentMatchers.any()
+            )
+        ).thenReturn(Map.of("type", Arrays.asList("DISTINCT")));
 
         final Customer customer = new Customer();
         customer.setId("ID");
@@ -265,9 +304,18 @@ public final class UserInternalServiceTest {
         final AuthUserDto user = IamServerUtilsTest.buildAuthUserDto();
         Mockito.when(internalSecurityService.getUser()).thenReturn(user);
 
-        final RequestParamGroupDto groups = new RequestParamGroupDto(Arrays.asList("type"), AggregationRequestOperator.COUNT);
-        final RequestParamDto requestParamDto =
-                new RequestParamDto(0, 20, criteriaWrapper.toOptionalJson(), Optional.empty(), Optional.empty(), Optional.of(groups));
+        final RequestParamGroupDto groups = new RequestParamGroupDto(
+            Arrays.asList("type"),
+            AggregationRequestOperator.COUNT
+        );
+        final RequestParamDto requestParamDto = new RequestParamDto(
+            0,
+            20,
+            criteriaWrapper.toOptionalJson(),
+            Optional.empty(),
+            Optional.empty(),
+            Optional.of(groups)
+        );
         final ResultsDto<UserDto> subrogateUsers = internalUserService.getAllRequest(requestParamDto);
         assertThat(subrogateUsers.getValues()).hasSize(1);
         assertThat(subrogateUsers.getGroups()).hasSize(1);
@@ -277,9 +325,15 @@ public final class UserInternalServiceTest {
 
     @Test
     public void testGetUsersGenericByCustomerNotSubreogable() {
-        when(userRepository
-                .getPaginatedValues(ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any()))
-                .thenReturn(buildPageable(buildUser("id")));
+        when(
+            userRepository.getPaginatedValues(
+                ArgumentMatchers.any(),
+                ArgumentMatchers.any(),
+                ArgumentMatchers.any(),
+                ArgumentMatchers.any(),
+                ArgumentMatchers.any()
+            )
+        ).thenReturn(buildPageable(buildUser("id")));
         final String customerId = "customerId";
         final Customer customer = new Customer();
         customer.setId("ID");
@@ -294,7 +348,13 @@ public final class UserInternalServiceTest {
         final AuthUserDto user = IamServerUtilsTest.buildAuthUserDto();
         Mockito.when(internalSecurityService.getUser()).thenReturn(user);
 
-        internalUserService.getAllPaginated(0, 20, criteriaWrapper.toOptionalJson(), Optional.empty(), Optional.empty());
+        internalUserService.getAllPaginated(
+            0,
+            20,
+            criteriaWrapper.toOptionalJson(),
+            Optional.empty(),
+            Optional.empty()
+        );
     }
 
     private PaginatedValuesDto<User> buildPageable(final User user) {
@@ -509,7 +569,9 @@ public final class UserInternalServiceTest {
         mappedResults.add(document);
         final Document rawResults = new Document();
         final AggregationResults<Document> value = new AggregationResults<>(mappedResults, rawResults);
-        when(userRepository.aggregate(any(TypedAggregation.class), ArgumentMatchers.eq(Document.class))).thenReturn(value);
+        when(userRepository.aggregate(any(TypedAggregation.class), ArgumentMatchers.eq(Document.class))).thenReturn(
+            value
+        );
         final List<String> levels = internalUserService.getLevels(criteria);
         assertThat(levels.size()).isEqualTo(2);
         assertThat(levels.get(0)).isEqualTo("DEV");
@@ -522,7 +584,9 @@ public final class UserInternalServiceTest {
         final List<Document> mappedResults = new ArrayList<>();
         final Document rawResults = new Document();
         final AggregationResults<Document> value = new AggregationResults<>(mappedResults, rawResults);
-        when(userRepository.aggregate(any(TypedAggregation.class), ArgumentMatchers.eq(Document.class))).thenReturn(value);
+        when(userRepository.aggregate(any(TypedAggregation.class), ArgumentMatchers.eq(Document.class))).thenReturn(
+            value
+        );
         final List<String> levels = internalUserService.getLevels(criteria);
         assertThat(levels.size()).isEqualTo(0);
     }
@@ -848,10 +912,13 @@ public final class UserInternalServiceTest {
 
     @Test
     public void patchNotAllowedAnalyticsFieldShouldThrowAnException() {
-        final Throwable thrown = catchThrowable(() -> internalUserService.patchAnalytics(Map.of("notAllowedField", "test")));
+        final Throwable thrown = catchThrowable(
+            () -> internalUserService.patchAnalytics(Map.of("notAllowedField", "test"))
+        );
 
-        assertThat(thrown).isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("Unable to patch user analytics key : notAllowedField is not allowed");
+        assertThat(thrown)
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessageContaining("Unable to patch user analytics key : notAllowedField is not allowed");
         verifyNoInteractions(applicationInternalService);
         verifyNoInteractions(userRepository);
     }
@@ -860,7 +927,9 @@ public final class UserInternalServiceTest {
     public void patchAnalyticsWithEmptyPayloadShouldThrowAnException() {
         final Throwable thrown = catchThrowable(() -> internalUserService.patchAnalytics(Map.of()));
 
-        assertThat(thrown).isInstanceOf(IllegalArgumentException.class).hasMessageContaining("Unable to patch user analytics : payload is empty");
+        assertThat(thrown)
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessageContaining("Unable to patch user analytics : payload is empty");
         verifyNoInteractions(applicationInternalService);
         verifyNoInteractions(userRepository);
     }
@@ -872,7 +941,9 @@ public final class UserInternalServiceTest {
         when(internalUserService.getMe()).thenReturn(authUserDto);
         when(userRepository.findById(any())).thenReturn(Optional.empty());
 
-        final Throwable thrown = catchThrowable(() -> internalUserService.patchAnalytics(Map.of("applicationId", "PROFILES_APP")));
+        final Throwable thrown = catchThrowable(
+            () -> internalUserService.patchAnalytics(Map.of("applicationId", "PROFILES_APP"))
+        );
 
         assertThat(thrown).isInstanceOf(NotFoundException.class).hasMessageContaining("No user found with id : userId");
         verify(userRepository).findById(authUserDto.getId());
@@ -889,10 +960,13 @@ public final class UserInternalServiceTest {
         when(userRepository.findById(any())).thenReturn(Optional.of(user));
         when(applicationInternalService.getAll(Optional.empty(), Optional.empty())).thenReturn(List.of());
 
-        final Throwable thrown = catchThrowable(() -> internalUserService.patchAnalytics(Map.of("applicationId", "applicationWithoutPermission")));
+        final Throwable thrown = catchThrowable(
+            () -> internalUserService.patchAnalytics(Map.of("applicationId", "applicationWithoutPermission"))
+        );
 
-        assertThat(thrown).isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("User has no permission to access to the application : applicationWithoutPermission");
+        assertThat(thrown)
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessageContaining("User has no permission to access to the application : applicationWithoutPermission");
         verify(userRepository).findById(user.getId());
         verify(applicationInternalService).getAll(Optional.empty(), Optional.empty());
         verifyNoMoreInteractions(applicationInternalService);
@@ -928,5 +1002,4 @@ public final class UserInternalServiceTest {
         assertThat(applications.get(0).getApplicationId()).isEqualTo(applicationId);
         assertThat(applications.get(0).getAccessCounter()).isEqualTo(1);
     }
-
 }

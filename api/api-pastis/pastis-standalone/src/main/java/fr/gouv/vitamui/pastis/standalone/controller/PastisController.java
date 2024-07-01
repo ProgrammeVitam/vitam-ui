@@ -67,12 +67,19 @@ import org.springframework.web.multipart.MultipartFile;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
-
-@OpenAPIDefinition(tags = {@Tag(name = "pastis")},
+@OpenAPIDefinition(
+    tags = { @Tag(name = "pastis") },
     info = @Info(title = "Pastis Rest Api"),
-    servers = {@Server(url = "localhost",
-        variables = {@ServerVariable(name = "scheme", allowableValues = {"https", "http"}, defaultValue = "http"),
-            @ServerVariable(name = "port", description = "Api port", defaultValue = "8096")})})
+    servers = {
+        @Server(
+            url = "localhost",
+            variables = {
+                @ServerVariable(name = "scheme", allowableValues = { "https", "http" }, defaultValue = "http"),
+                @ServerVariable(name = "port", description = "Api port", defaultValue = "8096"),
+            }
+        ),
+    }
+)
 @RestController
 class PastisController {
 
@@ -85,10 +92,16 @@ class PastisController {
         this.profileService = profileService;
     }
 
-    @Operation(summary = "Retrieve RNG representation of the JSON structure",
+    @Operation(
+        summary = "Retrieve RNG representation of the JSON structure",
         description = "Retrieve RNG representation of the JSON structure of archive profile",
-        tags = {"pastis"})
-    @PostMapping(value = RestApi.PASTIS_DOWNLOAD_PA, consumes = APPLICATION_JSON_UTF8, produces = MediaType.APPLICATION_XML_VALUE)
+        tags = { "pastis" }
+    )
+    @PostMapping(
+        value = RestApi.PASTIS_DOWNLOAD_PA,
+        consumes = APPLICATION_JSON_UTF8,
+        produces = MediaType.APPLICATION_XML_VALUE
+    )
     ResponseEntity<String> getArchiveProfile(@RequestBody final ElementProperties json) throws TechnicalException {
         String pa = profileService.getArchiveProfile(json);
         if (pa != null) {
@@ -98,25 +111,33 @@ class PastisController {
         }
     }
 
-    @Operation(summary = "Retrieve JSON representation of archive unit profile",
+    @Operation(
+        summary = "Retrieve JSON representation of archive unit profile",
         description = "Retrieve JSON representation of archive unit profile",
-        tags = {"pastis"})
-    @PostMapping(value = RestApi.PASTIS_DOWNLOAD_PUA, consumes = APPLICATION_JSON_UTF8, produces = MediaType.APPLICATION_JSON_VALUE)
-    ResponseEntity<String> getArchiveUnitProfile(@RequestBody final ProfileNotice json) throws  TechnicalException {
+        tags = { "pastis" }
+    )
+    @PostMapping(
+        value = RestApi.PASTIS_DOWNLOAD_PUA,
+        consumes = APPLICATION_JSON_UTF8,
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    ResponseEntity<String> getArchiveUnitProfile(@RequestBody final ProfileNotice json) throws TechnicalException {
         String pua = profileService.getArchiveUnitProfile(json, true);
         if (pua != null) {
             return ResponseEntity.ok(pua);
         } else {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
     }
 
-    @Operation(summary = "Retrieve JSON representation of the RNG structure",
+    @Operation(
+        summary = "Retrieve JSON representation of the RNG structure",
         description = "Retrieve JSON representation of the RNG structure",
-        tags = {"pastis"})
+        tags = { "pastis" }
+    )
     @GetMapping(value = RestApi.PASTIS_CREATE_PROFILE)
-    ResponseEntity<ProfileResponse> createProfile(@RequestParam(name = "type") String profileType) throws NoSuchAlgorithmException, TechnicalException {
+    ResponseEntity<ProfileResponse> createProfile(@RequestParam(name = "type") String profileType)
+        throws NoSuchAlgorithmException, TechnicalException {
         ProfileResponse profileResponse = profileService.createProfile(profileType, true);
         if (profileResponse != null) {
             return ResponseEntity.ok(profileResponse);
@@ -128,7 +149,7 @@ class PastisController {
     @GetMapping(value = RestApi.PASTIS_GET_PROFILE_FILE)
     ResponseEntity<Resource> getFile(@RequestParam(name = "name") String filename) {
         Resource resource = profileService.getFile(filename);
-        if(!isValidFileName(filename)) {
+        if (!isValidFileName(filename)) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
         if (resource != null) {
@@ -138,9 +159,11 @@ class PastisController {
         }
     }
 
-    @Operation(summary = "Transform profile JSON representation from Notice",
+    @Operation(
+        summary = "Transform profile JSON representation from Notice",
         description = "Transform profile JSON representation from Notice",
-        tags = {"pastis"})
+        tags = { "pastis" }
+    )
     @PostMapping(value = RestApi.PASTIS_TRANSFORM_PROFILE)
     ResponseEntity<ProfileResponse> loadProfile(@RequestBody final Notice notice) throws TechnicalException {
         ProfileResponse profileResponse = profileService.loadProfile(notice);
@@ -151,15 +174,13 @@ class PastisController {
         }
     }
 
-    @Operation(summary = "Upload profile PA or PUA",
-        description = "Upload profile PA or PUA",
-        tags = {"pastis"})
-    @PostMapping(value = RestApi.PASTIS_UPLOAD_PROFILE,
-        consumes = "multipart/form-data", produces = "application/json")
-    ResponseEntity<ProfileResponse> loadProfileFromFile(@RequestParam MultipartFile file) throws NoSuchAlgorithmException, TechnicalException {
+    @Operation(summary = "Upload profile PA or PUA", description = "Upload profile PA or PUA", tags = { "pastis" })
+    @PostMapping(value = RestApi.PASTIS_UPLOAD_PROFILE, consumes = "multipart/form-data", produces = "application/json")
+    ResponseEntity<ProfileResponse> loadProfileFromFile(@RequestParam MultipartFile file)
+        throws NoSuchAlgorithmException, TechnicalException {
         String originalFileName = file.getOriginalFilename();
         isValidFileName(originalFileName);
-        ProfileResponse profileResponse = profileService.loadProfileFromFile(file, originalFileName,true);
+        ProfileResponse profileResponse = profileService.loadProfileFromFile(file, originalFileName, true);
         if (profileResponse != null) {
             return ResponseEntity.ok(profileResponse);
         } else {
@@ -167,9 +188,11 @@ class PastisController {
         }
     }
 
-    @Operation(summary = "Retrieve all profiles PA and PUA",
+    @Operation(
+        summary = "Retrieve all profiles PA and PUA",
         description = "Retrieve all profiles PA and PUA",
-        tags = {"pastis"})
+        tags = { "pastis" }
+    )
     @GetMapping(value = RestApi.PASTIS_GET_ALL_PROFILES)
     ResponseEntity<List<Notice>> getFiles() throws TechnicalException {
         List<Notice> notices = profileService.getFiles();
@@ -183,5 +206,4 @@ class PastisController {
     private static boolean isValidFileName(String fileName) {
         return !StringUtils.HTML_PATTERN.matcher(fileName).find();
     }
-
 }

@@ -41,6 +41,4 @@ package fr.gouv.vitamui.pastis.common.dto.jaxb;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "rng:except")
-public class ExceptXML extends BaliseXML {
-
-}
+public class ExceptXML extends BaliseXML {}

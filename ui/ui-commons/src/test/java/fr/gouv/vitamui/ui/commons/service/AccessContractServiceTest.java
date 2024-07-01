@@ -29,8 +29,7 @@ public class AccessContractServiceTest {
     @Test
     public void should_call_appropriate_rest_client_method_when_get_all_operation_is_invoked() {
         // Given
-        when(accessContractExternalRestClient.getAll(ArgumentMatchers.any()))
-                .thenReturn(new ArrayList<>());
+        when(accessContractExternalRestClient.getAll(ArgumentMatchers.any())).thenReturn(new ArrayList<>());
 
         // When
         accessContractService.getAll(null);
@@ -38,5 +37,4 @@ public class AccessContractServiceTest {
         // Then
         verify(accessContractExternalRestClient, Mockito.times(1)).getAll(ArgumentMatchers.any());
     }
-
 }

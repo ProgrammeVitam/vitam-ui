@@ -45,11 +45,11 @@ public class ApiCollectExternalServerApplication implements CommandLineRunner {
     private Environment env;
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
-        ApiCollectExternalServerApplication.class);
+        ApiCollectExternalServerApplication.class
+    );
 
     public static void main(final String[] args) {
-        final SpringApplication app = new SpringApplicationBuilder(ApiCollectExternalServerApplication.class)
-            .build();
+        final SpringApplication app = new SpringApplicationBuilder(ApiCollectExternalServerApplication.class).build();
         app.run(args);
     }
 

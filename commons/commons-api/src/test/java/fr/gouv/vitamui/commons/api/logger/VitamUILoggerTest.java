@@ -1,14 +1,13 @@
 package fr.gouv.vitamui.commons.api.logger;
 
-import static org.junit.Assert.assertEquals;
-
+import fr.gouv.vitamui.commons.api.config.ServerIdentityConfigurationForProfiles;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import fr.gouv.vitamui.commons.api.config.ServerIdentityConfigurationForProfiles;
+import static org.junit.Assert.assertEquals;
 
 /**
  * VitamUILogger Test.
@@ -43,8 +42,10 @@ public class VitamUILoggerTest extends AbstractVitamUITest {
     @Test
     public void testToString() {
         final VitamUILogger logger = VitamUILoggerFactory.getInstance(VitamUILoggerTest.class);
-        assertEquals("Logger name isn't correctly set.",
-                "VitamUILoggerImpl(fr.gouv.vitamui.commons.api.logger.VitamUILoggerTest)", logger.toString());
+        assertEquals(
+            "Logger name isn't correctly set.",
+            "VitamUILoggerImpl(fr.gouv.vitamui.commons.api.logger.VitamUILoggerTest)",
+            logger.toString()
+        );
     }
-
 }

@@ -1,10 +1,9 @@
 //
-// Ce fichier a été généré par l'implémentation de référence JavaTM Architecture for XML Binding (JAXB), v2.3.2 
-// Voir <a href="https://javaee.github.io/jaxb-v2/">https://javaee.github.io/jaxb-v2/</a> 
-// Toute modification apportée à ce fichier sera perdue lors de la recompilation du schéma source. 
-// Généré le : 2020.07.15 à 03:41:18 PM CEST 
+// Ce fichier a été généré par l'implémentation de référence JavaTM Architecture for XML Binding (JAXB), v2.3.2
+// Voir <a href="https://javaee.github.io/jaxb-v2/">https://javaee.github.io/jaxb-v2/</a>
+// Toute modification apportée à ce fichier sera perdue lors de la recompilation du schéma source.
+// Généré le : 2020.07.15 à 03:41:18 PM CEST
 //
-
 
 package fr.gouv.vitamui.commons.vitam.seda;
 
@@ -17,12 +16,11 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.CollapsedStringAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-
 /**
  * <p>Classe Java pour DataObjectOrArchiveUnitReferenceType complex type.
- * 
+ *
  * <p>Le fragment de schéma suivant indique le contenu attendu figurant dans cette classe.
- * 
+ *
  * <pre>
  * &lt;complexType name="DataObjectOrArchiveUnitReferenceType"&gt;
  *   &lt;complexContent&gt;
@@ -38,33 +36,40 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *   &lt;/complexContent&gt;
  * &lt;/complexType&gt;
  * </pre>
- * 
- * 
+ *
+ *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "DataObjectOrArchiveUnitReferenceType", propOrder = {
-    "archiveUnitRefId",
-    "dataObjectReference",
-    "repositoryArchiveUnitPID",
-    "repositoryObjectPID",
-    "externalReference"
-})
+@XmlType(
+    name = "DataObjectOrArchiveUnitReferenceType",
+    propOrder = {
+        "archiveUnitRefId",
+        "dataObjectReference",
+        "repositoryArchiveUnitPID",
+        "repositoryObjectPID",
+        "externalReference",
+    }
+)
 public class DataObjectOrArchiveUnitReferenceType {
 
     @XmlElement(name = "ArchiveUnitRefId")
     @XmlIDREF
     @XmlSchemaType(name = "IDREF")
     protected Object archiveUnitRefId;
+
     @XmlElement(name = "DataObjectReference")
     protected DataObjectRefType dataObjectReference;
+
     @XmlElement(name = "RepositoryArchiveUnitPID")
     @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
     @XmlSchemaType(name = "token")
     protected String repositoryArchiveUnitPID;
+
     @XmlElement(name = "RepositoryObjectPID")
     @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
     @XmlSchemaType(name = "token")
     protected String repositoryObjectPID;
+
     @XmlElement(name = "ExternalReference")
     @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
     @XmlSchemaType(name = "token")
@@ -72,11 +77,11 @@ public class DataObjectOrArchiveUnitReferenceType {
 
     /**
      * Obtient la valeur de la propriété archiveUnitRefId.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link Object }
-     *     
+     *
      */
     public Object getArchiveUnitRefId() {
         return archiveUnitRefId;
@@ -84,11 +89,11 @@ public class DataObjectOrArchiveUnitReferenceType {
 
     /**
      * Définit la valeur de la propriété archiveUnitRefId.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link Object }
-     *     
+     *
      */
     public void setArchiveUnitRefId(Object value) {
         this.archiveUnitRefId = value;
@@ -96,11 +101,11 @@ public class DataObjectOrArchiveUnitReferenceType {
 
     /**
      * Obtient la valeur de la propriété dataObjectReference.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link DataObjectRefType }
-     *     
+     *
      */
     public DataObjectRefType getDataObjectReference() {
         return dataObjectReference;
@@ -108,11 +113,11 @@ public class DataObjectOrArchiveUnitReferenceType {
 
     /**
      * Définit la valeur de la propriété dataObjectReference.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link DataObjectRefType }
-     *     
+     *
      */
     public void setDataObjectReference(DataObjectRefType value) {
         this.dataObjectReference = value;
@@ -120,11 +125,11 @@ public class DataObjectOrArchiveUnitReferenceType {
 
     /**
      * Obtient la valeur de la propriété repositoryArchiveUnitPID.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getRepositoryArchiveUnitPID() {
         return repositoryArchiveUnitPID;
@@ -132,11 +137,11 @@ public class DataObjectOrArchiveUnitReferenceType {
 
     /**
      * Définit la valeur de la propriété repositoryArchiveUnitPID.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setRepositoryArchiveUnitPID(String value) {
         this.repositoryArchiveUnitPID = value;
@@ -144,11 +149,11 @@ public class DataObjectOrArchiveUnitReferenceType {
 
     /**
      * Obtient la valeur de la propriété repositoryObjectPID.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getRepositoryObjectPID() {
         return repositoryObjectPID;
@@ -156,11 +161,11 @@ public class DataObjectOrArchiveUnitReferenceType {
 
     /**
      * Définit la valeur de la propriété repositoryObjectPID.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setRepositoryObjectPID(String value) {
         this.repositoryObjectPID = value;
@@ -168,11 +173,11 @@ public class DataObjectOrArchiveUnitReferenceType {
 
     /**
      * Obtient la valeur de la propriété externalReference.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getExternalReference() {
         return externalReference;
@@ -180,14 +185,13 @@ public class DataObjectOrArchiveUnitReferenceType {
 
     /**
      * Définit la valeur de la propriété externalReference.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setExternalReference(String value) {
         this.externalReference = value;
     }
-
 }

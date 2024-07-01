@@ -36,13 +36,12 @@
  */
 package fr.gouv.vitamui.cucumber.back.runners;
 
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.runner.RunWith;
-
 import fr.gouv.vitamui.AbstractIntegrationTest;
 import io.cucumber.junit.CucumberOptions;
 import net.serenitybdd.cucumber.CucumberWithSerenity;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.runner.RunWith;
 
 @RunWith(CucumberWithSerenity.class)
 //@formatter:off
@@ -61,13 +60,8 @@ import net.serenitybdd.cucumber.CucumberWithSerenity;
 public class ReferentialIntegrationTest extends AbstractIntegrationTest {
 
     @BeforeClass
-    public static void startServersAndSetData() {
-
-    }
+    public static void startServersAndSetData() {}
 
     @AfterClass
-    public static void someStuff() {
-
-    }
-
+    public static void someStuff() {}
 }

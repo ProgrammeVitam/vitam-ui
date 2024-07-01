@@ -76,7 +76,11 @@ class PastisController {
 
     @ApiOperation(value = "Download Pa Profile rng file")
     @Secured(ServicesData.ROLE_GET_PROFILES)
-    @PostMapping(value = RestApi.PASTIS_DOWNLOAD_PA, consumes = APPLICATION_JSON_UTF8, produces = MediaType.APPLICATION_XML_VALUE)
+    @PostMapping(
+        value = RestApi.PASTIS_DOWNLOAD_PA,
+        consumes = APPLICATION_JSON_UTF8,
+        produces = MediaType.APPLICATION_XML_VALUE
+    )
     ResponseEntity<String> getArchiveProfile(@RequestBody final ElementProperties json)
         throws TechnicalException, InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.sanitizeCriteria(json);
@@ -90,7 +94,11 @@ class PastisController {
 
     @ApiOperation(value = "Download Pua Profile json file")
     @Secured(ServicesData.ROLE_GET_ARCHIVE_PROFILES)
-    @PostMapping(value = RestApi.PASTIS_DOWNLOAD_PUA, consumes = APPLICATION_JSON_UTF8, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(
+        value = RestApi.PASTIS_DOWNLOAD_PUA,
+        consumes = APPLICATION_JSON_UTF8,
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
     ResponseEntity<String> getArchiveUnitProfile(@RequestBody final ProfileNotice json)
         throws TechnicalException, InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.sanitizeCriteria(json);
@@ -100,11 +108,10 @@ class PastisController {
         } else {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
     }
 
     @ApiOperation(value = "Retrieve json representation from PUA notice")
-    @Secured({ServicesData.ROLE_UPDATE_ARCHIVE_PROFILES, ServicesData.ROLE_UPDATE_PROFILES})
+    @Secured({ ServicesData.ROLE_UPDATE_ARCHIVE_PROFILES, ServicesData.ROLE_UPDATE_PROFILES })
     @PostMapping(value = RestApi.PASTIS_TRANSFORM_PROFILE)
     ResponseEntity<ProfileResponse> loadProfile(@RequestBody final Notice notice)
         throws TechnicalException, InvalidParseOperationException, PreconditionFailedException {
@@ -118,13 +125,14 @@ class PastisController {
     }
 
     @ApiOperation(value = "Retrieve json representation from input file")
-    @Secured({ServicesData.ROLE_CREATE_ARCHIVE_PROFILES, ServicesData.ROLE_CREATE_PROFILES})
-    @PostMapping(value = RestApi.PASTIS_UPLOAD_PROFILE,
-        consumes = "multipart/form-data", produces = "application/json")
-    ResponseEntity<ProfileResponse> loadProfileFromFile(@RequestParam MultipartFile file, @RequestParam("fileName") String fileName) throws NoSuchAlgorithmException,
-        TechnicalException, PreconditionFailedException {
+    @Secured({ ServicesData.ROLE_CREATE_ARCHIVE_PROFILES, ServicesData.ROLE_CREATE_PROFILES })
+    @PostMapping(value = RestApi.PASTIS_UPLOAD_PROFILE, consumes = "multipart/form-data", produces = "application/json")
+    ResponseEntity<ProfileResponse> loadProfileFromFile(
+        @RequestParam MultipartFile file,
+        @RequestParam("fileName") String fileName
+    ) throws NoSuchAlgorithmException, TechnicalException, PreconditionFailedException {
         SanityChecker.isValidFileName(fileName);
-        ProfileResponse profileResponse = profileService.loadProfileFromFile(file,fileName, false);
+        ProfileResponse profileResponse = profileService.loadProfileFromFile(file, fileName, false);
         if (profileResponse != null) {
             return ResponseEntity.ok(profileResponse);
         } else {
@@ -133,9 +141,12 @@ class PastisController {
     }
 
     @ApiOperation(value = "Retrieve json representation from PA file")
-    @Secured({ServicesData.ROLE_UPDATE_ARCHIVE_PROFILES, ServicesData.ROLE_UPDATE_PROFILES})
-    @PostMapping(value = RestApi.PASTIS_TRANSFORM_PROFILE_PA,
-        consumes = "multipart/form-data", produces = "application/json")
+    @Secured({ ServicesData.ROLE_UPDATE_ARCHIVE_PROFILES, ServicesData.ROLE_UPDATE_PROFILES })
+    @PostMapping(
+        value = RestApi.PASTIS_TRANSFORM_PROFILE_PA,
+        consumes = "multipart/form-data",
+        produces = "application/json"
+    )
     ResponseEntity<ElementProperties> loadPA(@RequestParam("file") MultipartFile file) {
         ElementProperties elementProperties = profileService.loadProfilePA(file);
         if (elementProperties != null) {
@@ -146,7 +157,7 @@ class PastisController {
     }
 
     @ApiOperation(value = "Get template profile by type")
-    @Secured({ServicesData.ROLE_CREATE_ARCHIVE_PROFILES, ServicesData.ROLE_CREATE_PROFILES})
+    @Secured({ ServicesData.ROLE_CREATE_ARCHIVE_PROFILES, ServicesData.ROLE_CREATE_PROFILES })
     @GetMapping(value = RestApi.PASTIS_CREATE_PROFILE)
     ResponseEntity<ProfileResponse> createProfile(@RequestParam(name = "type") String profileType)
         throws NoSuchAlgorithmException, TechnicalException, InvalidParseOperationException {
@@ -158,5 +169,4 @@ class PastisController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
 }

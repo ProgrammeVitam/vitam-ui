@@ -68,6 +68,7 @@ public class ProjectObjectGroupServiceTest {
 
     @Mock
     private CollectExternalRestClient collectExternalRestClient;
+
     @Mock
     private CollectExternalWebClient collectExternalWebClient;
 
@@ -86,21 +87,35 @@ public class ProjectObjectGroupServiceTest {
     public void searchDownloadObjectFromUnitWithSuccess() {
         // Given
         ExternalHttpContext context = new ExternalHttpContext(9, "", "", "");
-        when(collectExternalWebClient.downloadObjectFromUnit(ArgumentMatchers.any(), ArgumentMatchers.any(),
-                ArgumentMatchers.any(), ArgumentMatchers.any()))
-            .thenReturn(Mono.just(ResponseEntity.ok().build()));
-        when(collectExternalRestClient.findObjectById(ArgumentMatchers.any(), ArgumentMatchers.any()))
-            .thenReturn(new ResponseEntity<>(new ResultsDto(), HttpStatus.OK));
+        when(
+            collectExternalWebClient.downloadObjectFromUnit(
+                ArgumentMatchers.any(),
+                ArgumentMatchers.any(),
+                ArgumentMatchers.any(),
+                ArgumentMatchers.any()
+            )
+        ).thenReturn(Mono.just(ResponseEntity.ok().build()));
+        when(collectExternalRestClient.findObjectById(ArgumentMatchers.any(), ArgumentMatchers.any())).thenReturn(
+            new ResponseEntity<>(new ResultsDto(), HttpStatus.OK)
+        );
 
         // When
-        Mono<ResponseEntity<Resource>> response =
-            projectObjectGroupService.downloadObjectFromUnit(UNIT_ID, OBJECT_ID, OBJECT_QUALIFIER, OBJECT_VERSION,
-                new ObjectData(), context);
+        Mono<ResponseEntity<Resource>> response = projectObjectGroupService.downloadObjectFromUnit(
+            UNIT_ID,
+            OBJECT_ID,
+            OBJECT_QUALIFIER,
+            OBJECT_VERSION,
+            new ObjectData(),
+            context
+        );
 
         // Then
-        verify(collectExternalWebClient, times(1))
-            .downloadObjectFromUnit(ArgumentMatchers.any(), ArgumentMatchers.any(),
-                ArgumentMatchers.any(), ArgumentMatchers.any());
+        verify(collectExternalWebClient, times(1)).downloadObjectFromUnit(
+            ArgumentMatchers.any(),
+            ArgumentMatchers.any(),
+            ArgumentMatchers.any(),
+            ArgumentMatchers.any()
+        );
         assertNotNull(response);
         assertThat(response).isInstanceOf(Mono.class);
     }
@@ -109,15 +124,15 @@ public class ProjectObjectGroupServiceTest {
     public void searchFindObjectByIdWithSuccess() {
         // Given
         ExternalHttpContext context = new ExternalHttpContext(9, "", "", "");
-        when(collectExternalRestClient.findObjectById(ArgumentMatchers.any(), ArgumentMatchers.any()))
-            .thenReturn(new ResponseEntity<>(new ResultsDto(), HttpStatus.OK));
+        when(collectExternalRestClient.findObjectById(ArgumentMatchers.any(), ArgumentMatchers.any())).thenReturn(
+            new ResponseEntity<>(new ResultsDto(), HttpStatus.OK)
+        );
 
         // When
         ResponseEntity<ResultsDto> response = projectObjectGroupService.findObjectById(UNIT_ID, context);
 
         // Then
-        verify(collectExternalRestClient, times(1))
-            .findObjectById(ArgumentMatchers.any(), ArgumentMatchers.any());
+        verify(collectExternalRestClient, times(1)).findObjectById(ArgumentMatchers.any(), ArgumentMatchers.any());
         assertNotNull(response);
         assertThat(response).isInstanceOf(ResponseEntity.class);
         assertThat(response.getBody()).isInstanceOf(ResultsDto.class);
@@ -129,26 +144,34 @@ public class ProjectObjectGroupServiceTest {
         final ObjectData objectData = new ObjectData();
         ResultsDto resultsDto = new ResultsDto()
             .setId("whatever")
-            .setQualifiers(List.of(
-                new QualifiersDto()
-                    .setQualifier("unknow_qualifier")
-                    .setVersions(List.of(
-                        new VersionsDto().setId("unknow_qualifier_version_1"),
-                        new VersionsDto().setId("unknow_qualifier_version_2")
-                    )),
-                new QualifiersDto()
-                    .setQualifier(DISSEMINATION.getValue())
-                    .setVersions(List.of(
-                        new VersionsDto().setId("DISSEMINATION_1"),
-                        new VersionsDto().setId("DISSEMINATION_2")
-                    )),
-                new QualifiersDto()
-                    .setQualifier(BINARYMASTER.getValue())
-                    .setVersions(List.of(
-                        new VersionsDto().setId("BINARYMASTER_1"),
-                        newVersionsDto("aeaaaaaaaahl2zz5ab23malq4gw2cnqaaaaq", BINARYMASTER, 2, "sdfghjk.pouet")
-                    ))
-            ));
+            .setQualifiers(
+                List.of(
+                    new QualifiersDto()
+                        .setQualifier("unknow_qualifier")
+                        .setVersions(
+                            List.of(
+                                new VersionsDto().setId("unknow_qualifier_version_1"),
+                                new VersionsDto().setId("unknow_qualifier_version_2")
+                            )
+                        ),
+                    new QualifiersDto()
+                        .setQualifier(DISSEMINATION.getValue())
+                        .setVersions(
+                            List.of(
+                                new VersionsDto().setId("DISSEMINATION_1"),
+                                new VersionsDto().setId("DISSEMINATION_2")
+                            )
+                        ),
+                    new QualifiersDto()
+                        .setQualifier(BINARYMASTER.getValue())
+                        .setVersions(
+                            List.of(
+                                new VersionsDto().setId("BINARYMASTER_1"),
+                                newVersionsDto("aeaaaaaaaahl2zz5ab23malq4gw2cnqaaaaq", BINARYMASTER, 2, "sdfghjk.pouet")
+                            )
+                        )
+                )
+            );
         // When
         projectObjectGroupService.setObjectData(resultsDto, objectData);
 
@@ -159,9 +182,7 @@ public class ProjectObjectGroupServiceTest {
     }
 
     private ResultsDto newResultDto(List<QualifiersDto> qualifiers) {
-        return new ResultsDto()
-            .setId("whatever")
-            .setQualifiers(qualifiers);
+        return new ResultsDto().setId("whatever").setQualifiers(qualifiers);
     }
 
     private FileInfoModel newFileInfoModel(String filename) {
@@ -169,7 +190,6 @@ public class ProjectObjectGroupServiceTest {
         fileInfoModel.setFilename(filename);
         return fileInfoModel;
     }
-
 
     private VersionsDto newVersionsDto(String id, ObjectQualifierType type, Integer version, String filename) {
         return new VersionsDto()

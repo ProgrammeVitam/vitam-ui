@@ -36,12 +36,11 @@
  */
 package fr.gouv.vitamui.iam.external.client;
 
-import fr.gouv.vitamui.commons.rest.client.logbook.LogbookExternalWebClient;
-import org.springframework.web.reactive.function.client.WebClient;
-
 import fr.gouv.vitamui.commons.rest.client.BaseWebClientFactory;
 import fr.gouv.vitamui.commons.rest.client.configuration.HttpPoolConfiguration;
 import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
+import fr.gouv.vitamui.commons.rest.client.logbook.LogbookExternalWebClient;
+import org.springframework.web.reactive.function.client.WebClient;
 
 public class IamExternalWebClientFactory extends BaseWebClientFactory {
 
@@ -60,15 +59,25 @@ public class IamExternalWebClientFactory extends BaseWebClientFactory {
      * @param httpPoolConfig
      */
     @Deprecated
-    public IamExternalWebClientFactory(final RestClientConfiguration restClientConfig, final HttpPoolConfiguration httpPoolConfig) {
+    public IamExternalWebClientFactory(
+        final RestClientConfiguration restClientConfig,
+        final HttpPoolConfiguration httpPoolConfig
+    ) {
         super(restClientConfig, httpPoolConfig);
     }
 
-    public IamExternalWebClientFactory(final RestClientConfiguration restClientConfiguration, final WebClient.Builder webClientBuilder) {
+    public IamExternalWebClientFactory(
+        final RestClientConfiguration restClientConfiguration,
+        final WebClient.Builder webClientBuilder
+    ) {
         super(restClientConfiguration, webClientBuilder);
     }
 
-    public IamExternalWebClientFactory(final RestClientConfiguration restClientConfig, final HttpPoolConfiguration httpPoolConfig, final WebClient.Builder webClientBuilder) {
+    public IamExternalWebClientFactory(
+        final RestClientConfiguration restClientConfig,
+        final HttpPoolConfiguration httpPoolConfig,
+        final WebClient.Builder webClientBuilder
+    ) {
         super(restClientConfig, httpPoolConfig, webClientBuilder);
     }
 

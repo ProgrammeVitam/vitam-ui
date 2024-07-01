@@ -29,22 +29,22 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 
-
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebMvcTest(controllers = PastisController.class)
 public class PastisControllerTest extends UIPastisRestControllerTest {
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(PastisController.class);
+
     @Value("${ui-pastis.prefix}")
     protected String apiUrl;
 
     private static final String PREFIX = RestApi.PASTIS;
+
     @MockBean
     private PastisTransformationService service;
 
@@ -74,25 +74,29 @@ public class PastisControllerTest extends UIPastisRestControllerTest {
     public void testLoadProfileFromFile() throws IOException {
         File file = new File("src/test/resources/data/valid_pua.json");
         FileInputStream input = new FileInputStream(file);
-        MockMultipartFile multipartFile = new MockMultipartFile(file.getName(), file.getName(), "Application/json", IOUtils.toByteArray(input));
+        MockMultipartFile multipartFile = new MockMultipartFile(
+            file.getName(),
+            file.getName(),
+            "Application/json",
+            IOUtils.toByteArray(input)
+        );
         UriComponentsBuilder uriBuilder = getUriBuilder("/profile");
 
-        Mockito.when(service.loadProfileFromFile(any(MultipartFile.class), any(ExternalHttpContext.class)))
-            .thenReturn(ResponseEntity.ok().body(null));
+        Mockito.when(service.loadProfileFromFile(any(MultipartFile.class), any(ExternalHttpContext.class))).thenReturn(
+            ResponseEntity.ok().body(null)
+        );
 
         assertThatCode(() -> {
             controller.loadProfileFromFile(multipartFile);
         }).doesNotThrowAnyException();
-
     }
 
     @Test
-    public void testLoadProfile () {
+    public void testLoadProfile() {
         Notice dto = new Notice();
         UriComponentsBuilder uriBuilder = getUriBuilder("/edit");
         super.performPost(uriBuilder, asJsonString(dto), status().isOk());
     }
-
 
     @Override
     protected Class getDtoClass() {
@@ -110,7 +114,7 @@ public class PastisControllerTest extends UIPastisRestControllerTest {
     }
 
     @Override
-    protected void preparedServices()  {
+    protected void preparedServices() {
         try {
             Mockito.when(service.createProfile(eq("PUA"), any())).thenReturn(ResponseEntity.ok(new ProfileResponse()));
         } catch (IOException e) {

@@ -107,8 +107,9 @@ public abstract class VitamUIReadService<D extends IdDto, E extends BaseIdDocume
      * @return The list of dto object <D>.
      */
     protected List<D> convertIterableToList(final Iterable<E> it) {
-        return StreamSupport.stream(it.spliterator(), false).map(this::convertFromEntityToDto)
-                .collect(Collectors.toList());
+        return StreamSupport.stream(it.spliterator(), false)
+            .map(this::convertFromEntityToDto)
+            .collect(Collectors.toList());
     }
 
     /**
@@ -150,8 +151,7 @@ public abstract class VitamUIReadService<D extends IdDto, E extends BaseIdDocume
      * @param dto Dto to update.
      * @param embedded Extra element to load.
      */
-    protected void loadExtraInformation(final D dto, final Optional<String> embedded) {
-    }
+    protected void loadExtraInformation(final D dto, final Optional<String> embedded) {}
 
     /**
      * {@inheritDoc}
@@ -211,47 +211,73 @@ public abstract class VitamUIReadService<D extends IdDto, E extends BaseIdDocume
      * {@inheritDoc}
      */
     @Override
-    public PaginatedValuesDto<D> getAllPaginated(final Integer page, final Integer size,
-            final Optional<String> criteriaJsonString, final Optional<String> orderBy,
-            final Optional<DirectionDto> direction) {
-
+    public PaginatedValuesDto<D> getAllPaginated(
+        final Integer page,
+        final Integer size,
+        final Optional<String> criteriaJsonString,
+        final Optional<String> orderBy,
+        final Optional<DirectionDto> direction
+    ) {
         final Query query = getQuerySecured(criteriaJsonString);
-        final PaginatedValuesDto<E> entititesValues = getRepository().getPaginatedValues(page, size, Optional.of(query),
-                orderBy, direction);
+        final PaginatedValuesDto<E> entititesValues = getRepository()
+            .getPaginatedValues(page, size, Optional.of(query), orderBy, direction);
 
-        final List<D> valuesDto = entititesValues.getValues().stream().map(this::convertFromEntityToDto)
-                .collect(Collectors.toList());
-        return new PaginatedValuesDto<>(valuesDto, entititesValues.getPageNum(), entititesValues.getPageSize(),
-                entititesValues.isHasMore());
+        final List<D> valuesDto = entititesValues
+            .getValues()
+            .stream()
+            .map(this::convertFromEntityToDto)
+            .collect(Collectors.toList());
+        return new PaginatedValuesDto<>(
+            valuesDto,
+            entititesValues.getPageNum(),
+            entititesValues.getPageSize(),
+            entititesValues.isHasMore()
+        );
     }
-
 
     /**
      * {@inheritDoc}
      */
     @Override
     public ResultsDto<D> getAllRequest(final RequestParamDto requestParam) {
-
         final Query query = getQuerySecured(requestParam.getCriteria());
-        final PaginatedValuesDto<E> entitiesValues = getRepository().getPaginatedValues(requestParam.getPage(), requestParam.getSize(), Optional.of(query),
-                requestParam.getOrderBy(), requestParam.getDirection());
+        final PaginatedValuesDto<E> entitiesValues = getRepository()
+            .getPaginatedValues(
+                requestParam.getPage(),
+                requestParam.getSize(),
+                Optional.of(query),
+                requestParam.getOrderBy(),
+                requestParam.getDirection()
+            );
 
-        final List<D> valuesDto = entitiesValues.getValues().stream().map(this::convertFromEntityToDto)
-                .collect(Collectors.toList());
+        final List<D> valuesDto = entitiesValues
+            .getValues()
+            .stream()
+            .map(this::convertFromEntityToDto)
+            .collect(Collectors.toList());
         // get aggregation results if request param group was given.
         Map<String, Object> groups = null;
-        if(requestParam.getGroups().isPresent()) {
+        if (requestParam.getGroups().isPresent()) {
             RequestParamGroupDto requestParamGroups = requestParam.getGroups().get();
-            final Collection<CriteriaDefinition> criteria = convertCriteriaJsonToMongoCriteria(requestParam.getCriteria());
+            final Collection<CriteriaDefinition> criteria = convertCriteriaJsonToMongoCriteria(
+                requestParam.getCriteria()
+            );
             groups = getRepository()
-                .aggregation(requestParamGroups.getFields(),
-                             criteria,
-                             requestParamGroups.getOperator(),
-                             requestParam.getOrderBy(),
-                             requestParam.getDirection());
+                .aggregation(
+                    requestParamGroups.getFields(),
+                    criteria,
+                    requestParamGroups.getOperator(),
+                    requestParam.getOrderBy(),
+                    requestParam.getDirection()
+                );
         }
-        return new ResultsDto(valuesDto, entitiesValues.getPageNum(), entitiesValues.getPageSize(),
-                entitiesValues.isHasMore(), groups);
+        return new ResultsDto(
+            valuesDto,
+            entitiesValues.getPageNum(),
+            entitiesValues.getPageSize(),
+            entitiesValues.isHasMore(),
+            groups
+        );
     }
 
     /**
@@ -264,21 +290,32 @@ public abstract class VitamUIReadService<D extends IdDto, E extends BaseIdDocume
      * @param embedded Extra information to load.
      * @return The paginated result.
      */
-    protected PaginatedValuesDto<D> getAllPaginated(final Integer page, final Integer size,
-            final Optional<String> criteriaJsonString, final Optional<String> orderBy,
-            final Optional<DirectionDto> direction, final Optional<String> embedded) {
-
+    protected PaginatedValuesDto<D> getAllPaginated(
+        final Integer page,
+        final Integer size,
+        final Optional<String> criteriaJsonString,
+        final Optional<String> orderBy,
+        final Optional<DirectionDto> direction,
+        final Optional<String> embedded
+    ) {
         final Query query = getQuerySecured(criteriaJsonString);
-        final PaginatedValuesDto<E> entititesValues = getRepository().getPaginatedValues(page, size, Optional.of(query),
-                orderBy, direction);
+        final PaginatedValuesDto<E> entititesValues = getRepository()
+            .getPaginatedValues(page, size, Optional.of(query), orderBy, direction);
 
-        final List<D> valuesDto = entititesValues.getValues().stream().map(this::convertFromEntityToDto)
-                .collect(Collectors.toList());
+        final List<D> valuesDto = entititesValues
+            .getValues()
+            .stream()
+            .map(this::convertFromEntityToDto)
+            .collect(Collectors.toList());
         if (embedded.isPresent()) {
             loadExtraInformations(valuesDto, embedded);
         }
-        return new PaginatedValuesDto<>(valuesDto, entititesValues.getPageNum(), entititesValues.getPageSize(),
-                entititesValues.isHasMore());
+        return new PaginatedValuesDto<>(
+            valuesDto,
+            entititesValues.getPageNum(),
+            entititesValues.getPageSize(),
+            entititesValues.isHasMore()
+        );
     }
 
     /**
@@ -290,18 +327,28 @@ public abstract class VitamUIReadService<D extends IdDto, E extends BaseIdDocume
      * @param direction Direction of the sort.
      * @return The paginated result.
      */
-    public PaginatedValuesDto<D> getAllPaginatedByPassSecurity(final Integer page, final Integer size,
-            final Optional<String> criteriaJsonString, final Optional<String> orderBy,
-            final Optional<DirectionDto> direction) {
-
+    public PaginatedValuesDto<D> getAllPaginatedByPassSecurity(
+        final Integer page,
+        final Integer size,
+        final Optional<String> criteriaJsonString,
+        final Optional<String> orderBy,
+        final Optional<DirectionDto> direction
+    ) {
         final Query query = getQueryUnsecured(criteriaJsonString);
-        final PaginatedValuesDto<E> entititesValues = getRepository().getPaginatedValues(page, size, Optional.of(query),
-                orderBy, direction);
+        final PaginatedValuesDto<E> entititesValues = getRepository()
+            .getPaginatedValues(page, size, Optional.of(query), orderBy, direction);
 
-        final List<D> valuesDto = entititesValues.getValues().stream().map(this::convertFromEntityToDto)
-                .collect(Collectors.toList());
-        return new PaginatedValuesDto<>(valuesDto, entititesValues.getPageNum(), entititesValues.getPageSize(),
-                entititesValues.isHasMore());
+        final List<D> valuesDto = entititesValues
+            .getValues()
+            .stream()
+            .map(this::convertFromEntityToDto)
+            .collect(Collectors.toList());
+        return new PaginatedValuesDto<>(
+            valuesDto,
+            entititesValues.getPageNum(),
+            entititesValues.getPageSize(),
+            entititesValues.isHasMore()
+        );
     }
 
     /**
@@ -343,7 +390,7 @@ public abstract class VitamUIReadService<D extends IdDto, E extends BaseIdDocume
         }
 
         GroupOperation groupOperation = group();
-        for (String field: fields) {
+        for (String field : fields) {
             groupOperation = groupOperation.addToSet(field).as(field);
         }
         operationList.add(groupOperation);
@@ -358,9 +405,7 @@ public abstract class VitamUIReadService<D extends IdDto, E extends BaseIdDocume
      * Method allowing to add restrictions on the Mongo's query.
      * @param criteria The provided criteria which must be secured.
      */
-    protected void addDataAccessRestrictions(final Collection<CriteriaDefinition> criteria) {
-
-    }
+    protected void addDataAccessRestrictions(final Collection<CriteriaDefinition> criteria) {}
 
     /**
      * Method to override if specific fields
@@ -368,7 +413,8 @@ public abstract class VitamUIReadService<D extends IdDto, E extends BaseIdDocume
      * @return
      */
     protected Collection<CriteriaDefinition> convertCriteriaJsonToMongoCriteria(
-            final Optional<String> queryJsonString) {
+        final Optional<String> queryJsonString
+    ) {
         final Collection<CriteriaDefinition> result = new ArrayList<>();
         Criteria rootCriteria = new Criteria();
         if (queryJsonString.isPresent()) {
@@ -386,7 +432,8 @@ public abstract class VitamUIReadService<D extends IdDto, E extends BaseIdDocume
      */
     @Deprecated
     protected Collection<CriteriaDefinition> convertCriteriaJsonToMongoCriteriaV1(
-            final Optional<String> criteriaJsonString) {
+        final Optional<String> criteriaJsonString
+    ) {
         final Collection<CriteriaDefinition> criteria = new ArrayList<>();
         if (criteriaJsonString.isPresent()) {
             final QueryDto criteriaDto = QueryDto.fromJson(criteriaJsonString);
@@ -423,16 +470,16 @@ public abstract class VitamUIReadService<D extends IdDto, E extends BaseIdDocume
                 queryOperator = query.getQueryOperator();
             }
             switch (queryOperator) {
-                case OR :
+                case OR:
                     rootCriteria.orOperator(criteriaArray);
                     break;
-                case NOR :
+                case NOR:
                     rootCriteria.norOperator(criteriaArray);
                     break;
-                case AND :
+                case AND:
                     rootCriteria.andOperator(criteriaArray);
                     break;
-                default :
+                default:
                     throw new UnsupportedOperationException("Unsupported QueryOperator " + query.getQueryOperator());
             }
         }
@@ -572,8 +619,9 @@ public abstract class VitamUIReadService<D extends IdDto, E extends BaseIdDocume
      */
     private D getOne(final String id, final Query query, final Optional<String> embedded) {
         query.addCriteria(Criteria.where("id").is(id));
-        final E entity = getRepository().findOne(query)
-                .orElseThrow(() -> new NotFoundException("Entity not found " + getObjectName() + " with id : " + id));
+        final E entity = getRepository()
+            .findOne(query)
+            .orElseThrow(() -> new NotFoundException("Entity not found " + getObjectName() + " with id : " + id));
         final D dto = convertFromEntityToDto(entity);
         loadExtraInformation(dto, embedded);
         return dto;

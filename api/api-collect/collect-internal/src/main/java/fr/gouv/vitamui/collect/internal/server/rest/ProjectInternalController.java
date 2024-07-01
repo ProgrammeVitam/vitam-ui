@@ -76,45 +76,68 @@ public class ProjectInternalController {
     private final ExternalParametersService externalParametersService;
 
     @Autowired
-    public ProjectInternalController(final ProjectInternalService projectInternalService,
-        final ExternalParametersService externalParametersService) {
+    public ProjectInternalController(
+        final ProjectInternalService projectInternalService,
+        final ExternalParametersService externalParametersService
+    ) {
         this.projectInternalService = projectInternalService;
         this.externalParametersService = externalParametersService;
     }
 
-    @GetMapping(params = {"page", "size"})
-    public PaginatedValuesDto<CollectProjectDto> getAllProjectsPaginated(@RequestParam final Integer page,
-        @RequestParam final Integer size, @RequestParam(required = false) final Optional<String> criteria,
+    @GetMapping(params = { "page", "size" })
+    public PaginatedValuesDto<CollectProjectDto> getAllProjectsPaginated(
+        @RequestParam final Integer page,
+        @RequestParam final Integer size,
+        @RequestParam(required = false) final Optional<String> criteria,
         @RequestParam(required = false) final Optional<String> orderBy,
-        @RequestParam(required = false) final Optional<DirectionDto> direction) {
+        @RequestParam(required = false) final Optional<DirectionDto> direction
+    ) {
         SanityChecker.sanitizeCriteria(criteria);
-        LOGGER.debug("getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size,
-            criteria, orderBy, direction);
-        return projectInternalService.getAllProjectsPaginated(page, size, orderBy, direction, criteria,
-            externalParametersService.buildVitamContextFromExternalParam());
+        LOGGER.debug(
+            "getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}",
+            page,
+            size,
+            criteria,
+            orderBy,
+            direction
+        );
+        return projectInternalService.getAllProjectsPaginated(
+            page,
+            size,
+            orderBy,
+            direction,
+            criteria,
+            externalParametersService.buildVitamContextFromExternalParam()
+        );
     }
 
-    @PostMapping()
+    @PostMapping
     public CollectProjectDto createProject(@RequestBody CollectProjectDto collectProjectDto)
         throws InvalidParseOperationException {
         ParameterChecker.checkParameter("the project is mandatory : ", collectProjectDto);
         SanityChecker.sanitizeCriteria(collectProjectDto);
         LOGGER.debug("Project to create {}", collectProjectDto);
-        return projectInternalService.createProject(collectProjectDto,
-            externalParametersService.buildVitamContextFromExternalParam());
+        return projectInternalService.createProject(
+            collectProjectDto,
+            externalParametersService.buildVitamContextFromExternalParam()
+        );
     }
 
     @PostMapping(value = CommonConstants.PATH_ID + "/transactions")
-    public CollectTransactionDto createTransactionForProject(final @PathVariable("id") String id,
-        @RequestBody CollectTransactionDto collectTransactionDto)
-        throws InvalidParseOperationException {
+    public CollectTransactionDto createTransactionForProject(
+        final @PathVariable("id") String id,
+        @RequestBody CollectTransactionDto collectTransactionDto
+    ) throws InvalidParseOperationException {
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         ParameterChecker.checkParameter("The transaction is a mandatory parameter: ", collectTransactionDto);
         SanityChecker.checkSecureParameter(id);
         SanityChecker.sanitizeCriteria(collectTransactionDto);
         LOGGER.debug("Transaction to create {}", collectTransactionDto);
-        return projectInternalService.createTransactionForProject(collectTransactionDto, id,
-            externalParametersService.buildVitamContextFromExternalParam());
+        return projectInternalService.createTransactionForProject(
+            collectTransactionDto,
+            id,
+            externalParametersService.buildVitamContextFromExternalParam()
+        );
     }
 
     @ApiOperation(value = "Upload and stream collect zip file", consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE)
@@ -129,21 +152,30 @@ public class ProjectInternalController {
         SafeFileChecker.checkSafeFilePath(originalFileName);
         SanityChecker.checkSecureParameter(transactionId);
         LOGGER.debug("[Internal] upload collect zip file : {}", originalFileName);
-        projectInternalService.streamingUpload(inputStream, transactionId, originalFileName,
-            externalParametersService.buildVitamContextFromExternalParam());
+        projectInternalService.streamingUpload(
+            inputStream,
+            transactionId,
+            originalFileName,
+            externalParametersService.buildVitamContextFromExternalParam()
+        );
     }
 
     @PutMapping(PATH_ID)
-    public CollectProjectDto updateProject(final @PathVariable("id") String id,
-        @RequestBody CollectProjectDto collectProjectDto) throws InvalidParseOperationException {
+    public CollectProjectDto updateProject(
+        final @PathVariable("id") String id,
+        @RequestBody CollectProjectDto collectProjectDto
+    ) throws InvalidParseOperationException {
         ParameterChecker.checkParameter(IDENTIFIER_MANDATORY_PARAMETER, id);
         ParameterChecker.checkParameter("the project is mandatory : ", collectProjectDto);
         SanityChecker.sanitizeCriteria(collectProjectDto);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("[Internal] Project to update : {}", collectProjectDto);
 
-        return projectInternalService.update(id, collectProjectDto,
-            externalParametersService.buildVitamContextFromExternalParam());
+        return projectInternalService.update(
+            id,
+            collectProjectDto,
+            externalParametersService.buildVitamContextFromExternalParam()
+        );
     }
 
     @GetMapping(PATH_ID)
@@ -153,8 +185,10 @@ public class ProjectInternalController {
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Project to get  {}", id);
 
-        return projectInternalService.getProjectById(id,
-            externalParametersService.buildVitamContextFromExternalParam());
+        return projectInternalService.getProjectById(
+            id,
+            externalParametersService.buildVitamContextFromExternalParam()
+        );
     }
 
     @DeleteMapping(PATH_ID)
@@ -172,23 +206,31 @@ public class ProjectInternalController {
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Find the transaction by project with ID {}", id);
-        return projectInternalService.getLastTransactionForProjectId(id,
-            externalParametersService.buildVitamContextFromExternalParam());
+        return projectInternalService.getLastTransactionForProjectId(
+            id,
+            externalParametersService.buildVitamContextFromExternalParam()
+        );
     }
 
     @ApiOperation(value = "Get transactions by project paginated")
-    @GetMapping(params = {"page", "size"}, value = PATH_ID + TRANSACTIONS)
-    public PaginatedValuesDto<CollectTransactionDto> getTransactionsByProjectPaginated(@RequestParam final Integer page,
-        @RequestParam final Integer size, @RequestParam(required = false) final Optional<String> orderBy,
-        @RequestParam(required = false) final Optional<DirectionDto> direction, @PathVariable("id") String projectId)
-        throws VitamClientException, InvalidParseOperationException {
+    @GetMapping(params = { "page", "size" }, value = PATH_ID + TRANSACTIONS)
+    public PaginatedValuesDto<CollectTransactionDto> getTransactionsByProjectPaginated(
+        @RequestParam final Integer page,
+        @RequestParam final Integer size,
+        @RequestParam(required = false) final Optional<String> orderBy,
+        @RequestParam(required = false) final Optional<DirectionDto> direction,
+        @PathVariable("id") String projectId
+    ) throws VitamClientException, InvalidParseOperationException {
         ParameterChecker.checkParameter(IDENTIFIER_MANDATORY_PARAMETER, projectId);
         SanityChecker.checkSecureParameter(projectId);
         LOGGER.debug("getPaginateEntities page={}, size={}, orderBy={}, ascendant={}", page, size, orderBy, direction);
-        return projectInternalService.getTransactionsByProjectPaginated(projectId, page, size, orderBy, direction,
-            externalParametersService.buildVitamContextFromExternalParam());
+        return projectInternalService.getTransactionsByProjectPaginated(
+            projectId,
+            page,
+            size,
+            orderBy,
+            direction,
+            externalParametersService.buildVitamContextFromExternalParam()
+        );
     }
-
-
-
 }

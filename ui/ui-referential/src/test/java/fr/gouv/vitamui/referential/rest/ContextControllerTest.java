@@ -36,19 +36,7 @@
  */
 package fr.gouv.vitamui.referential.rest;
 
-import static org.mockito.ArgumentMatchers.any;
-
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.HttpHeaders;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
 import com.google.common.collect.ImmutableMap;
-
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.CriterionOperator;
 import fr.gouv.vitamui.commons.api.domain.QueryDto;
@@ -58,30 +46,40 @@ import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsResponseDto;
 import fr.gouv.vitamui.referential.common.dto.ContextDto;
 import fr.gouv.vitamui.referential.service.ContextService;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpHeaders;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import static org.mockito.ArgumentMatchers.any;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebMvcTest(controllers = { ContextController.class })
 public class ContextControllerTest extends UiReferentialRestControllerTest<ContextDto> {
 
-	@Value("${ui-referential.prefix}")
-	protected String apiUrl;
+    @Value("${ui-referential.prefix}")
+    protected String apiUrl;
 
-	@MockBean
-	private ContextService service;
+    @MockBean
+    private ContextService service;
 
-	private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ContextControllerTest.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ContextControllerTest.class);
 
-	private static final String PREFIX = "/context";
+    private static final String PREFIX = "/context";
 
-	@Test
-	public void testCreateAccessContract() {
-		super.testCreateEntity();
-	}
+    @Test
+    public void testCreateAccessContract() {
+        super.testCreateEntity();
+    }
 
-	@Test
-	public void testGetAllContexts() {
-		super.testGetAllEntityWithCriteria();
-	}
+    @Test
+    public void testGetAllContexts() {
+        super.testGetAllEntityWithCriteria();
+    }
 
     @Test
     public void testGetAllPaginatedContexts() {
@@ -90,54 +88,55 @@ public class ContextControllerTest extends UiReferentialRestControllerTest<Conte
         super.performGet("/", ImmutableMap.of("page", 1, "size", 20, "orderBy", "id"), headers);
     }
 
-	@Test
-	public void testPatchContext() {
-		super.testPatchEntity();
-	}
+    @Test
+    public void testPatchContext() {
+        super.testPatchEntity();
+    }
 
-	@Test
-	public void testCheckExistByName() {
-		Mockito.when(service.checkExist(any(), any())).thenReturn(true);
-		final QueryDto criteria = QueryDto.criteria().addCriterion("name", "contextName",
-				CriterionOperator.EQUALS);
-		super.performHead(CommonConstants.PATH_CHECK, ImmutableMap.of("criteria", criteria.toJson()));
-	}
+    @Test
+    public void testCheckExistByName() {
+        Mockito.when(service.checkExist(any(), any())).thenReturn(true);
+        final QueryDto criteria = QueryDto.criteria().addCriterion("name", "contextName", CriterionOperator.EQUALS);
+        super.performHead(CommonConstants.PATH_CHECK, ImmutableMap.of("criteria", criteria.toJson()));
+    }
 
-	@Test
-	public void testFindHistoryById() {
-		Mockito.when(service.findHistoryById(any(ExternalHttpContext.class), any(String.class))).thenReturn(new LogbookOperationsResponseDto());
-		super.performGet("/1/history");
-	}
+    @Test
+    public void testFindHistoryById() {
+        Mockito.when(service.findHistoryById(any(ExternalHttpContext.class), any(String.class))).thenReturn(
+            new LogbookOperationsResponseDto()
+        );
+        super.performGet("/1/history");
+    }
 
-	@Test
-	public void testGetContextById() {
-		super.testGetEntityById();
-	}
+    @Test
+    public void testGetContextById() {
+        super.testGetEntityById();
+    }
 
-	@Override
-	protected String getRessourcePrefix() {
-		return "/" + apiUrl + PREFIX;
-	}
+    @Override
+    protected String getRessourcePrefix() {
+        return "/" + apiUrl + PREFIX;
+    }
 
-	@Override
-	protected Class<ContextDto> getDtoClass() {
-		return ContextDto.class;
-	}
+    @Override
+    protected Class<ContextDto> getDtoClass() {
+        return ContextDto.class;
+    }
 
-	@Override
-	protected ContextDto buildDto() {
-		final ContextDto dto = new ContextDto();
-		return dto;
-	}
+    @Override
+    protected ContextDto buildDto() {
+        final ContextDto dto = new ContextDto();
+        return dto;
+    }
 
-	@Override
-	protected VitamUILogger getLog() {
-		return LOGGER;
-	}
+    @Override
+    protected VitamUILogger getLog() {
+        return LOGGER;
+    }
 
-	@Override
-	protected void preparedServices() {
-		Mockito.when(service.create(any(), any(ContextDto.class))).thenReturn(new ContextDto());
-		Mockito.when(service.update(any(), any(ContextDto.class))).thenReturn(new ContextDto());
-	}
+    @Override
+    protected void preparedServices() {
+        Mockito.when(service.create(any(), any(ContextDto.class))).thenReturn(new ContextDto());
+        Mockito.when(service.update(any(), any(ContextDto.class))).thenReturn(new ContextDto());
+    }
 }

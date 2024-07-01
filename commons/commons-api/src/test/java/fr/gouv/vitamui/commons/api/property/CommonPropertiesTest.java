@@ -8,15 +8,12 @@ public class CommonPropertiesTest {
 
     @Test
     public void testProperties() {
+        CommonProperties properties = new CommonProperties();
 
-        CommonProperties properties =  new CommonProperties() ;
-
-        String adminPath = properties.getAdminPath() ;
+        String adminPath = properties.getAdminPath();
         assertTrue(adminPath == "/admin/v0");
 
-        int timeout = properties.getConnectTimeout() ;
+        int timeout = properties.getConnectTimeout();
         assertTrue(timeout == 2000);
-
     }
-
 }

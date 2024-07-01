@@ -36,20 +36,18 @@
  */
 package fr.gouv.vitamui.iam.common.dto;
 
-import java.util.List;
-import java.util.Map;
-
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-
-import fr.gouv.vitamui.iam.common.enums.AuthnRequestBindingEnum;
-import org.hibernate.validator.constraints.Length;
-
 import fr.gouv.vitamui.commons.api.domain.CustomerIdDto;
+import fr.gouv.vitamui.iam.common.enums.AuthnRequestBindingEnum;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.validator.constraints.Length;
+
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.util.List;
+import java.util.Map;
 
 /**
  * The DTO v1 for an identity provider.
@@ -59,8 +57,10 @@ import lombok.ToString;
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = true)
-@ToString(callSuper = true, exclude = { "keystoreBase64", "keystorePassword", "privateKeyPassword", "idpMetadata",
-        "spMetadata" })
+@ToString(
+    callSuper = true,
+    exclude = { "keystoreBase64", "keystorePassword", "privateKeyPassword", "idpMetadata", "spMetadata" }
+)
 public class IdentityProviderDto extends CustomerIdDto {
 
     /**
@@ -89,14 +89,12 @@ public class IdentityProviderDto extends CustomerIdDto {
 
     private boolean readonly;
 
-
     // Common data to external providers (SAML + OIDC)
     private String mailAttribute;
 
     private String identifierAttribute;
 
     private boolean autoProvisioningEnabled;
-
 
     // SAML provider data
     private String keystoreBase64;
@@ -112,7 +110,6 @@ public class IdentityProviderDto extends CustomerIdDto {
     private Integer maximumAuthenticationLifetime;
 
     private AuthnRequestBindingEnum authnRequestBinding = AuthnRequestBindingEnum.POST;
-
 
     // OIDC provider data
     private String clientId;

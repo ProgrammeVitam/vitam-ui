@@ -41,6 +41,4 @@ package fr.gouv.vitamui.pastis.common.dto.factory;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "rng:attribute")
-public class AttributeTag extends RngTag {
-
-}
+public class AttributeTag extends RngTag {}

@@ -73,33 +73,43 @@ public class ManagementContractInternalServiceTest {
         objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
         ManagementContractConverter converter = new ManagementContractConverter();
         logbookService = mock(LogbookService.class);
-        VitamUIManagementContractService vitamUIManagementContractService =
-            mock(VitamUIManagementContractService.class);
+        VitamUIManagementContractService vitamUIManagementContractService = mock(
+            VitamUIManagementContractService.class
+        );
         managementContractService = mock(ManagementContractService.class);
-        managementContractInternalService = new ManagementContractInternalService(managementContractService,
-            vitamUIManagementContractService, objectMapper, converter, logbookService);
+        managementContractInternalService = new ManagementContractInternalService(
+            managementContractService,
+            vitamUIManagementContractService,
+            objectMapper,
+            converter,
+            logbookService
+        );
 
         // Mock server identity for Logs when not using spring
         PowerMock.suppress(PowerMock.constructor(ServerIdentityConfiguration.class));
         PowerMock.mockStatic(ServerIdentityConfiguration.class);
-        ServerIdentityConfiguration serverIdentityConfigurationMock = PowerMock.createMock(ServerIdentityConfiguration.class);
+        ServerIdentityConfiguration serverIdentityConfigurationMock = PowerMock.createMock(
+            ServerIdentityConfiguration.class
+        );
         expect(ServerIdentityConfiguration.getInstance()).andReturn(serverIdentityConfigurationMock).anyTimes();
-        expect(serverIdentityConfigurationMock.getLoggerMessagePrepend()).andReturn("LOG TESTS FileFormatInternalServiceTest - ").anyTimes();
+        expect(serverIdentityConfigurationMock.getLoggerMessagePrepend())
+            .andReturn("LOG TESTS FileFormatInternalServiceTest - ")
+            .anyTimes();
         PowerMock.replay(ServerIdentityConfiguration.class);
         PowerMock.replay(serverIdentityConfigurationMock);
-
     }
 
     @Test
     public void getOne_should_return_ok_when_vitamclient_ok() throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         String identifier = "identifier";
-        expect(managementContractService.findManagementContractById(isA(VitamContext.class), isA(String.class)))
-            .andReturn(new RequestResponseOK<ManagementContractModel>().setHttpCode(200));
+        expect(
+            managementContractService.findManagementContractById(isA(VitamContext.class), isA(String.class))
+        ).andReturn(new RequestResponseOK<ManagementContractModel>().setHttpCode(200));
         EasyMock.replay(managementContractService);
 
-        assertThatCode(() ->
-            managementContractInternalService.getOne(vitamContext,identifier)
+        assertThatCode(
+            () -> managementContractInternalService.getOne(vitamContext, identifier)
         ).doesNotThrowAnyException();
     }
 
@@ -108,52 +118,55 @@ public class ManagementContractInternalServiceTest {
         VitamContext vitamContext = new VitamContext(0);
         String identifier = "identifier";
 
-        expect(managementContractService.findManagementContractById(isA(VitamContext.class), isA(String.class)))
-            .andReturn(new RequestResponseOK<ManagementContractModel>().setHttpCode(400));
+        expect(
+            managementContractService.findManagementContractById(isA(VitamContext.class), isA(String.class))
+        ).andReturn(new RequestResponseOK<ManagementContractModel>().setHttpCode(400));
         EasyMock.replay(managementContractService);
 
-        assertThatCode(() ->
-            managementContractInternalService.getOne(vitamContext, identifier)
+        assertThatCode(
+            () -> managementContractInternalService.getOne(vitamContext, identifier)
         ).doesNotThrowAnyException();
     }
 
     @Test
-    public void getOne_should_throw_InternalServerException_when_vitamclient_throws_vitamclientexception() throws VitamClientException {
+    public void getOne_should_throw_InternalServerException_when_vitamclient_throws_vitamclientexception()
+        throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         String identifier = "identifier";
 
-        expect(managementContractService.findManagementContractById(isA(VitamContext.class), isA(String.class)))
-            .andThrow(new VitamClientException("Exception thrown by vitam"));
+        expect(
+            managementContractService.findManagementContractById(isA(VitamContext.class), isA(String.class))
+        ).andThrow(new VitamClientException("Exception thrown by vitam"));
         EasyMock.replay(managementContractService);
 
-        assertThatCode(() ->
-            managementContractInternalService.getOne(vitamContext, identifier)
-        ).isInstanceOf(InternalServerException.class);
+        assertThatCode(() -> managementContractInternalService.getOne(vitamContext, identifier)).isInstanceOf(
+            InternalServerException.class
+        );
     }
 
     @Test
     public void getAll_should_return_ok_when_vitamclient_ok() throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
 
-        expect(managementContractService.findManagementContracts(vitamContext, new Select().getFinalSelect()))
-            .andReturn(new RequestResponseOK<ManagementContractModel>().setHttpCode(400));
+        expect(
+            managementContractService.findManagementContracts(vitamContext, new Select().getFinalSelect())
+        ).andReturn(new RequestResponseOK<ManagementContractModel>().setHttpCode(400));
         EasyMock.replay(managementContractService);
 
-        assertThatCode(() ->
-            managementContractInternalService.getAll(vitamContext)
-        ).doesNotThrowAnyException();
+        assertThatCode(() -> managementContractInternalService.getAll(vitamContext)).doesNotThrowAnyException();
     }
 
     @Test
     public void findHistoryByIdentifier_should_return_ok_when_vitamclient_ok() throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         String identifier = "identifier";
-        expect(logbookService.selectOperations(isA(JsonNode.class), isA(VitamContext.class)))
-            .andReturn(new RequestResponseOK<LogbookOperation>().setHttpCode(200));
+        expect(logbookService.selectOperations(isA(JsonNode.class), isA(VitamContext.class))).andReturn(
+            new RequestResponseOK<LogbookOperation>().setHttpCode(200)
+        );
         EasyMock.replay(logbookService);
 
-        assertThatCode(() ->
-            managementContractInternalService.findHistoryByIdentifier(vitamContext,identifier)
+        assertThatCode(
+            () -> managementContractInternalService.findHistoryByIdentifier(vitamContext, identifier)
         ).doesNotThrowAnyException();
     }
 
@@ -162,13 +175,13 @@ public class ManagementContractInternalServiceTest {
         VitamContext vitamContext = new VitamContext(0);
         JsonNode jsonQuery = new Select().getFinalSelect();
 
-        expect(managementContractService.findManagementContracts(vitamContext, new Select().getFinalSelect()))
-            .andReturn(new RequestResponseOK<ManagementContractModel>().setHttpCode(400));
+        expect(
+            managementContractService.findManagementContracts(vitamContext, new Select().getFinalSelect())
+        ).andReturn(new RequestResponseOK<ManagementContractModel>().setHttpCode(400));
         EasyMock.replay(managementContractService);
 
-        assertThatCode(() ->
-            managementContractInternalService.findAll(vitamContext, jsonQuery)
+        assertThatCode(
+            () -> managementContractInternalService.findAll(vitamContext, jsonQuery)
         ).doesNotThrowAnyException();
     }
-
 }

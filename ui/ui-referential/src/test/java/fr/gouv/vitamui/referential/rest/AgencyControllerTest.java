@@ -36,19 +36,7 @@
  */
 package fr.gouv.vitamui.referential.rest;
 
-import static org.mockito.ArgumentMatchers.any;
-
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.HttpHeaders;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
 import com.google.common.collect.ImmutableMap;
-
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.CriterionOperator;
 import fr.gouv.vitamui.commons.api.domain.QueryDto;
@@ -58,30 +46,40 @@ import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsResponseDto;
 import fr.gouv.vitamui.referential.common.dto.AgencyDto;
 import fr.gouv.vitamui.referential.service.AgencyService;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpHeaders;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import static org.mockito.ArgumentMatchers.any;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebMvcTest(controllers = { AgencyController.class })
 public class AgencyControllerTest extends UiReferentialRestControllerTest<AgencyDto> {
 
-	@Value("${ui-referential.prefix}")
-	protected String apiUrl;
+    @Value("${ui-referential.prefix}")
+    protected String apiUrl;
 
-	@MockBean
-	private AgencyService service;
+    @MockBean
+    private AgencyService service;
 
-	private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(AgencyController.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(AgencyController.class);
 
-	private static final String PREFIX = "/agency";
+    private static final String PREFIX = "/agency";
 
-	@Test
-	public void testCreateAgency() {
-		super.testCreateEntity();
-	}
+    @Test
+    public void testCreateAgency() {
+        super.testCreateEntity();
+    }
 
-	@Test
-	public void testGetAllAgencies() {
-		super.testGetAllEntityWithCriteria();
-	}
+    @Test
+    public void testGetAllAgencies() {
+        super.testGetAllEntityWithCriteria();
+    }
 
     @Test
     public void testGetAllPaginatedAgencies() {
@@ -90,59 +88,60 @@ public class AgencyControllerTest extends UiReferentialRestControllerTest<Agency
         super.performGet("/", ImmutableMap.of("page", 1, "size", 20, "orderBy", "id"), headers);
     }
 
-	@Test
-	public void testPatchAgency() {
-		super.testPatchEntity();
-	}
+    @Test
+    public void testPatchAgency() {
+        super.testPatchEntity();
+    }
 
-	@Test
-	public void testCheckExistByName() {
-		Mockito.when(service.checkExist(any(), any())).thenReturn(true);
-		final QueryDto criteria = QueryDto.criteria().addCriterion("name", "agencyName",
-				CriterionOperator.EQUALS);
-		super.performHead(CommonConstants.PATH_CHECK, ImmutableMap.of("criteria", criteria.toJson()));
-	}
+    @Test
+    public void testCheckExistByName() {
+        Mockito.when(service.checkExist(any(), any())).thenReturn(true);
+        final QueryDto criteria = QueryDto.criteria().addCriterion("name", "agencyName", CriterionOperator.EQUALS);
+        super.performHead(CommonConstants.PATH_CHECK, ImmutableMap.of("criteria", criteria.toJson()));
+    }
 
-	@Test
-	public void testFindHistoryById() {
-		Mockito.when(service.findHistoryById(any(ExternalHttpContext.class), any(String.class))).thenReturn(new LogbookOperationsResponseDto());
-		super.performGet("/1/history");
-	}
+    @Test
+    public void testFindHistoryById() {
+        Mockito.when(service.findHistoryById(any(ExternalHttpContext.class), any(String.class))).thenReturn(
+            new LogbookOperationsResponseDto()
+        );
+        super.performGet("/1/history");
+    }
 
-	@Test
-	public void testGetAgencyById() {
-		super.testGetEntityById();
-	}
+    @Test
+    public void testGetAgencyById() {
+        super.testGetEntityById();
+    }
 
     @Test
     public void testDeleteAgency() {
-    	super.performDelete("/1");
+        super.performDelete("/1");
     }
 
-	@Override
-	protected String getRessourcePrefix() {
-		return "/" + apiUrl + PREFIX;
-	}
+    @Override
+    protected String getRessourcePrefix() {
+        return "/" + apiUrl + PREFIX;
+    }
 
-	@Override
-	protected Class<AgencyDto> getDtoClass() {
-		return AgencyDto.class;
-	}
+    @Override
+    protected Class<AgencyDto> getDtoClass() {
+        return AgencyDto.class;
+    }
 
-	@Override
-	protected AgencyDto buildDto() {
-		final AgencyDto dto = new AgencyDto();
-		return dto;
-	}
+    @Override
+    protected AgencyDto buildDto() {
+        final AgencyDto dto = new AgencyDto();
+        return dto;
+    }
 
-	@Override
-	protected VitamUILogger getLog() {
-		return LOGGER;
-	}
+    @Override
+    protected VitamUILogger getLog() {
+        return LOGGER;
+    }
 
-	@Override
-	protected void preparedServices() {
-		Mockito.when(service.create(any(), any(AgencyDto.class))).thenReturn(new AgencyDto());
-		Mockito.when(service.update(any(), any(AgencyDto.class))).thenReturn(new AgencyDto());
-	}
+    @Override
+    protected void preparedServices() {
+        Mockito.when(service.create(any(), any(AgencyDto.class))).thenReturn(new AgencyDto());
+        Mockito.when(service.update(any(), any(AgencyDto.class))).thenReturn(new AgencyDto());
+    }
 }

@@ -64,7 +64,8 @@ public class PaginatedValuesDto<T> implements Serializable {
         // Intentionally empty.
     }
 
-    public PaginatedValuesDto(final Collection<T> values,
+    public PaginatedValuesDto(
+        final Collection<T> values,
         final int pageNum,
         final int maxResults,
         final boolean hasMore
@@ -76,7 +77,8 @@ public class PaginatedValuesDto<T> implements Serializable {
         this.optionalValues = new HashMap<>();
     }
 
-    public PaginatedValuesDto(final Collection<T> values,
+    public PaginatedValuesDto(
+        final Collection<T> values,
         final int pageNum,
         final int maxResults,
         final boolean hasMore,
@@ -88,5 +90,4 @@ public class PaginatedValuesDto<T> implements Serializable {
         this.hasMore = hasMore;
         this.optionalValues = optionalValues;
     }
-
 }

@@ -1,12 +1,5 @@
 package fr.gouv.vitamui.iam.internal.server.utils;
 
-import java.time.OffsetDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import fr.gouv.vitamui.commons.api.domain.ApplicationDto;
 import fr.gouv.vitamui.commons.api.domain.ExternalParamProfileDto;
 import fr.gouv.vitamui.commons.api.domain.GroupDto;
@@ -102,8 +95,10 @@ public final class IamServerUtilsTest {
 
     public static final String APP_NAME = "appName";
 
-    public static final List<Role> ROLES =
-        Arrays.asList(new Role(ServicesData.ROLE_CREATE_USERS), new Role(ServicesData.ROLE_GET_USERS));
+    public static final List<Role> ROLES = Arrays.asList(
+        new Role(ServicesData.ROLE_CREATE_USERS),
+        new Role(ServicesData.ROLE_GET_USERS)
+    );
 
     /**
      * User
@@ -120,8 +115,13 @@ public final class IamServerUtilsTest {
         return buildUser(id, email, groupId, customerId, LEVEL);
     }
 
-    public static User buildUser(final String id, final String email, final String groupId, final String customerId,
-        final String level) {
+    public static User buildUser(
+        final String id,
+        final String email,
+        final String groupId,
+        final String customerId,
+        final String level
+    ) {
         final User user = new User();
         user.setId(id);
         user.setEmail(email);
@@ -154,8 +154,12 @@ public final class IamServerUtilsTest {
         return buildUserDto(id, email, groupId, CUSTOMER_ID);
     }
 
-    public static UserDto buildUserDto(final String id, final String email, final String groupId,
-        final String customerId) {
+    public static UserDto buildUserDto(
+        final String id,
+        final String email,
+        final String groupId,
+        final String customerId
+    ) {
         return IamDtoBuilder.buildUserDto(id, email, groupId, customerId, LEVEL);
     }
 
@@ -177,15 +181,26 @@ public final class IamServerUtilsTest {
         return buildProfile(PROFILE_ID, PROFILE_IDENTIFIER, PROFILE_NAME, CUSTOMER_ID, TENANT_IDENTIFIER, APP_NAME);
     }
 
-    public static Profile buildProfile(final String id, final String identifier, final String name,
-        final String customerId, final Integer tenantId,
-        final String applicationName) {
+    public static Profile buildProfile(
+        final String id,
+        final String identifier,
+        final String name,
+        final String customerId,
+        final Integer tenantId,
+        final String applicationName
+    ) {
         return buildProfile(id, identifier, name, customerId, tenantId, applicationName, LEVEL);
     }
 
-    public static Profile buildProfile(final String id, final String identifier, final String name,
-        final String customerId, final Integer tenantId,
-        final String applicationName, final String level) {
+    public static Profile buildProfile(
+        final String id,
+        final String identifier,
+        final String name,
+        final String customerId,
+        final Integer tenantId,
+        final String applicationName,
+        final String level
+    ) {
         final Profile profile = new Profile();
         profile.setId(id);
         profile.setIdentifier(identifier);
@@ -207,12 +222,15 @@ public final class IamServerUtilsTest {
         return buildProfileDto(PROFILE_ID, PROFILE_NAME, CUSTOMER_ID, TENANT_IDENTIFIER, APP_NAME);
     }
 
-    public static ProfileDto buildProfileDto(final String id, final String name, final String customerId,
+    public static ProfileDto buildProfileDto(
+        final String id,
+        final String name,
+        final String customerId,
         final Integer tenantId,
-        final String applicationName) {
+        final String applicationName
+    ) {
         return IamDtoBuilder.buildProfileDto(id, name, customerId, tenantId, applicationName, LEVEL, ROLES);
     }
-
 
     /**
      * External param ProfileDto
@@ -253,13 +271,22 @@ public final class IamServerUtilsTest {
         return buildGroup(GROUP_ID, GROUP_IDENTIFIER, GROUP_NAME, CUSTOMER_ID, LEVEL);
     }
 
-    public static Group buildGroup(final String id, final String identifier, final String name,
-        final String customerId) {
+    public static Group buildGroup(
+        final String id,
+        final String identifier,
+        final String name,
+        final String customerId
+    ) {
         return buildGroup(id, identifier, name, customerId, LEVEL);
     }
 
-    public static Group buildGroup(final String id, final String identifier, final String name, final String customerId,
-        final String level) {
+    public static Group buildGroup(
+        final String id,
+        final String identifier,
+        final String name,
+        final String customerId,
+        final String level
+    ) {
         final Group group = new Group();
         final List<String> profileIds = new ArrayList<>();
         profileIds.add("1");
@@ -282,8 +309,12 @@ public final class IamServerUtilsTest {
         return IamDtoBuilder.buildGroupDto(GROUP_ID, GROUP_NAME, CUSTOMER_ID, Arrays.asList(PROFILE_ID), LEVEL);
     }
 
-    public static GroupDto buildGroupDto(final String id, final String name, final String customerId,
-        final List<String> profileIds) {
+    public static GroupDto buildGroupDto(
+        final String id,
+        final String name,
+        final String customerId,
+        final List<String> profileIds
+    ) {
         return IamDtoBuilder.buildGroupDto(id, name, customerId, profileIds, LEVEL);
     }
 
@@ -294,9 +325,12 @@ public final class IamServerUtilsTest {
         return buildCustomer(CUSTOMER_ID, CUSTOMER_NAME, CUSTOMER_CODE, EMAIL_DOMAINS);
     }
 
-    public static Customer buildCustomer(final String id, final String name, final String code,
-        final List<String> emailDomains) {
-
+    public static Customer buildCustomer(
+        final String id,
+        final String name,
+        final String code,
+        final List<String> emailDomains
+    ) {
         final Address address = buildAddress();
 
         final Customer customer = new Customer();
@@ -329,8 +363,12 @@ public final class IamServerUtilsTest {
         return buildTenant(TENANT_ID, TENANT_NAME, TENANT_IDENTIFIER);
     }
 
-    public static Tenant buildTenant(final String id, final String name, final Integer tenantIdentifier,
-        final String customerId) {
+    public static Tenant buildTenant(
+        final String id,
+        final String name,
+        final Integer tenantIdentifier,
+        final String customerId
+    ) {
         final Tenant tenant = buildTenant(id, name, tenantIdentifier);
         tenant.setCustomerId(customerId);
         return tenant;
@@ -428,5 +466,4 @@ public final class IamServerUtilsTest {
         userInfoDto.setLanguage("FRENCH");
         return userInfoDto;
     }
-
 }

@@ -36,17 +36,8 @@
  */
 package fr.gouv.vitamui.referential.service;
 
-import java.util.Collection;
-import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
-
 import fr.gouv.vitam.common.model.AuditOptions;
 import fr.gouv.vitam.common.model.ProbativeValueRequest;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
@@ -64,9 +55,17 @@ import fr.gouv.vitamui.referential.common.dto.ReportType;
 import fr.gouv.vitamui.referential.external.client.OperationExternalRestClient;
 import fr.gouv.vitamui.ui.commons.service.AbstractPaginateService;
 import fr.gouv.vitamui.ui.commons.service.CommonService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+
+import java.util.Collection;
+import java.util.Optional;
 
 @Service
 public class OperationService extends AbstractPaginateService<LogbookOperationDto> {
+
     static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(OperationService.class);
 
     private OperationExternalRestClient client;
@@ -80,8 +79,14 @@ public class OperationService extends AbstractPaginateService<LogbookOperationDt
     }
 
     @Override
-    public PaginatedValuesDto<LogbookOperationDto> getAllPaginated(final Integer page, final Integer size, final Optional<String> criteria,
-                                                                   final Optional<String> orderBy, final Optional<DirectionDto> direction, final ExternalHttpContext context) {
+    public PaginatedValuesDto<LogbookOperationDto> getAllPaginated(
+        final Integer page,
+        final Integer size,
+        final Optional<String> criteria,
+        final Optional<String> orderBy,
+        final Optional<DirectionDto> direction,
+        final ExternalHttpContext context
+    ) {
         return super.getAllPaginated(page, size, criteria, orderBy, direction, context);
     }
 
@@ -103,8 +108,7 @@ public class OperationService extends AbstractPaginateService<LogbookOperationDt
         final JsonNode body = client.checkTraceabilityOperation(context, operationId);
         try {
             return JsonUtils.treeToValue(body, LogbookOperationsResponseDto.class, false);
-        }
-        catch (final JsonProcessingException e) {
+        } catch (final JsonProcessingException e) {
             throw new InternalServerException(VitamRestUtils.PARSING_ERROR_MSG, e);
         }
     }
@@ -122,7 +126,6 @@ public class OperationService extends AbstractPaginateService<LogbookOperationDt
     }
 
     public ResponseEntity<Resource> exportProbativeValue(ExternalHttpContext context, String id) {
-        return client.exportProbativeValue(context,id);
+        return client.exportProbativeValue(context, id);
     }
-
 }

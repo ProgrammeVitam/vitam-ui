@@ -39,16 +39,15 @@ import org.springframework.core.env.Environment;
 @SpringBootApplication
 @EnableDiscoveryClient
 public class ArchiveSearchApplication implements CommandLineRunner {
+
     @Autowired
     private Environment env;
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ArchiveSearchApplication.class);
 
     public static void main(final String[] args) {
-        SpringApplication app = new SpringApplicationBuilder(ArchiveSearchApplication.class)
-            .build();
+        SpringApplication app = new SpringApplicationBuilder(ArchiveSearchApplication.class).build();
         app.run(args);
-
     }
 
     @Override
@@ -56,5 +55,4 @@ public class ArchiveSearchApplication implements CommandLineRunner {
         LOGGER.info("VITAMUI SpringBoot Application started:");
         LOGGER.info("spring.application.name: " + env.getProperty("spring.application.name"));
     }
-
 }

@@ -50,6 +50,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AccessionRegisterStatsDto implements Serializable {
+
     private long totalUnits;
     private long totalObjectsGroups;
     private long totalObjects;

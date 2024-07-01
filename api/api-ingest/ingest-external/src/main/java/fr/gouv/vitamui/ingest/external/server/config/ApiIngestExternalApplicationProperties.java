@@ -58,5 +58,4 @@ public class ApiIngestExternalApplicationProperties {
     private RestClientConfiguration securityClient;
 
     private RestClientConfiguration ingestInternalClient;
-
 }

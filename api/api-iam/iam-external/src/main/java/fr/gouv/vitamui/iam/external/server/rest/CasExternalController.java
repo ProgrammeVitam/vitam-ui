@@ -75,7 +75,11 @@ import java.util.Optional;
  */
 @RestController
 @RequestMapping(RestApi.V1_CAS_URL)
-@Api(tags = "cas", value = "User authentication management for CAS", description = "User authentication management for CAS")
+@Api(
+    tags = "cas",
+    value = "User authentication management for CAS",
+    description = "User authentication management for CAS"
+)
 public class CasExternalController {
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(CasExternalController.class);
@@ -97,9 +101,15 @@ public class CasExternalController {
     @PostMapping(RestApi.CAS_CHANGE_PASSWORD_PATH)
     @Secured(ServicesData.ROLE_CAS_CHANGE_PASSWORD)
     @ResponseBody
-    public String changePassword(@RequestHeader(defaultValue = "") final String username, @RequestHeader(defaultValue = "") final String password)
-        throws InvalidParseOperationException, PreconditionFailedException {
-        LOGGER.debug("changePassword for username: {} / password_exists? {}", username, StringUtils.isNotBlank(password));
+    public String changePassword(
+        @RequestHeader(defaultValue = "") final String username,
+        @RequestHeader(defaultValue = "") final String password
+    ) throws InvalidParseOperationException, PreconditionFailedException {
+        LOGGER.debug(
+            "changePassword for username: {} / password_exists? {}",
+            username,
+            StringUtils.isNotBlank(password)
+        );
         ParameterChecker.checkParameter("The user and password are mandatory : ", username, password);
         SanityChecker.checkSecureParameter(username);
         casService.changePassword(username, password);
@@ -116,16 +126,26 @@ public class CasExternalController {
 
     @GetMapping(value = RestApi.CAS_USERS_PATH + RestApi.USERS_PROVISIONING, params = { "email", "idp" })
     @Secured(ServicesData.ROLE_CAS_USERS)
-    public UserDto getUser(@RequestParam final String email, @RequestParam final String idp,
-            @RequestParam final Optional<String> userIdentifier, @RequestParam final Optional<String> embedded) {
-        LOGGER.debug("getUser - email : {}, idp : {}, user identifier : {}, embedded: {}", email, idp, userIdentifier, embedded);
+    public UserDto getUser(
+        @RequestParam final String email,
+        @RequestParam final String idp,
+        @RequestParam final Optional<String> userIdentifier,
+        @RequestParam final Optional<String> embedded
+    ) {
+        LOGGER.debug(
+            "getUser - email : {}, idp : {}, user identifier : {}, embedded: {}",
+            email,
+            idp,
+            userIdentifier,
+            embedded
+        );
         return casService.getUser(email, idp, userIdentifier, embedded);
     }
 
     @GetMapping(value = RestApi.CAS_USERS_PATH, params = "id")
     @Secured(ServicesData.ROLE_CAS_USERS)
-    public UserDto getUserById(@RequestParam final String id) throws InvalidParseOperationException,
-        PreconditionFailedException  {
+    public UserDto getUserById(@RequestParam final String id)
+        throws InvalidParseOperationException, PreconditionFailedException {
         LOGGER.debug("getUserById: {}", id);
         ParameterChecker.checkParameter("The identifier is mandatory : ", id);
         SanityChecker.checkSecureParameter(id);
@@ -154,7 +174,6 @@ public class CasExternalController {
     @Secured(ServicesData.ROLE_CAS_LOGOUT)
     @ResponseStatus(HttpStatus.OK)
     public void logout(@RequestParam final String authToken, @RequestParam final String superUser) {
-
         LOGGER.debug("logout: authToken={}, superUser={}", authToken, superUser);
         ParameterChecker.checkParameter("The authToken is mandatory : ", authToken);
         casService.logout(authToken, superUser);

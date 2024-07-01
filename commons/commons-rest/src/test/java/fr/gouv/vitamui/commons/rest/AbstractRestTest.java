@@ -26,15 +26,19 @@ public abstract class AbstractRestTest extends AbstractServerIdentityBuilder {
     @PostConstruct
     public static void setUpBeforeClass() {
         try {
-            System.setOut(new PrintStream(new OutputStream() {
-
-                @Override
-                public void write(final int b) {
-                    buf.append((char) b);
-                }
-            }, true, "UTF-8"));
-        }
-        catch (final UnsupportedEncodingException e) {
+            System.setOut(
+                new PrintStream(
+                    new OutputStream() {
+                        @Override
+                        public void write(final int b) {
+                            buf.append((char) b);
+                        }
+                    },
+                    true,
+                    "UTF-8"
+                )
+            );
+        } catch (final UnsupportedEncodingException e) {
             throw new RuntimeErrorException(new Error(e));
         }
     }
@@ -46,5 +50,4 @@ public abstract class AbstractRestTest extends AbstractServerIdentityBuilder {
     public static void tearDownAfterClass() {
         System.setErr(out);
     }
-
 }

@@ -1,15 +1,14 @@
 package fr.gouv.vitamui.commons.api.logger;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
+import fr.gouv.vitamui.commons.api.config.ServerIdentityConfigurationForProfiles;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import fr.gouv.vitamui.commons.api.config.ServerIdentityConfigurationForProfiles;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * VitamUILoggerFactory Test.
@@ -29,5 +28,4 @@ public class VitamUILoggerFactoryTest extends AbstractVitamUITest {
         logger.info("Message");
         assertTrue("Log message should be written.", buf.length() > 0);
     }
-
 }

@@ -88,21 +88,28 @@ public class UnitService {
         return result;
     }
 
-    public RequestResponse<JsonNode> searchUnitsWithErrors(final Optional<String> unitId, final JsonNode dslQuery, final VitamContext vitamContext)
-        throws VitamClientException {
-    	final RequestResponse<JsonNode> result;
-    	if (unitId.isPresent()) {
+    public RequestResponse<JsonNode> searchUnitsWithErrors(
+        final Optional<String> unitId,
+        final JsonNode dslQuery,
+        final VitamContext vitamContext
+    ) throws VitamClientException {
+        final RequestResponse<JsonNode> result;
+        if (unitId.isPresent()) {
             result = accessExternalClient.selectUnitbyId(vitamContext, dslQuery, unitId.get());
-    	} else {
+        } else {
             result = accessExternalClient.selectUnits(vitamContext, dslQuery);
-    	}
-    	return result;
+        }
+        return result;
     }
 
-    public RequestResponse<JsonNode> searchUnitsWithInheritedRules(final JsonNode dslQuery,
-        final VitamContext vitamContext) throws VitamClientException {
-        final RequestResponse<JsonNode> result =
-            accessExternalClient.selectUnitsWithInheritedRules(vitamContext, dslQuery);
+    public RequestResponse<JsonNode> searchUnitsWithInheritedRules(
+        final JsonNode dslQuery,
+        final VitamContext vitamContext
+    ) throws VitamClientException {
+        final RequestResponse<JsonNode> result = accessExternalClient.selectUnitsWithInheritedRules(
+            vitamContext,
+            dslQuery
+        );
         VitamRestUtils.checkResponse(result);
         return result;
     }
@@ -110,14 +117,25 @@ public class UnitService {
     public RequestResponse<JsonNode> findObjectMetadataById(final String unitId, final VitamContext vitamContext)
         throws VitamClientException {
         final SelectMultiQuery select = new SelectMultiQuery();
-        final RequestResponse<JsonNode> result =
-            accessExternalClient.selectObjectMetadatasByUnitId(vitamContext, select.getFinalSelectById(), unitId);
+        final RequestResponse<JsonNode> result = accessExternalClient.selectObjectMetadatasByUnitId(
+            vitamContext,
+            select.getFinalSelectById(),
+            unitId
+        );
         VitamRestUtils.checkResponse(result);
         return result;
     }
 
-    public RequestResponse<JsonNode> findObjectMetadataById(final String unitId, final JsonNode dslQuery, final VitamContext vitamContext) throws VitamClientException {
-        final RequestResponse<JsonNode> result = accessExternalClient.selectObjectMetadatasByUnitId(vitamContext, dslQuery, unitId);
+    public RequestResponse<JsonNode> findObjectMetadataById(
+        final String unitId,
+        final JsonNode dslQuery,
+        final VitamContext vitamContext
+    ) throws VitamClientException {
+        final RequestResponse<JsonNode> result = accessExternalClient.selectObjectMetadatasByUnitId(
+            vitamContext,
+            dslQuery,
+            unitId
+        );
         VitamRestUtils.checkResponse(result);
         return result;
     }
@@ -130,9 +148,12 @@ public class UnitService {
      * @return
      * @throws VitamClientException
      */
-    public Response getObjectStreamByUnitId(final String unitId, final String usage, final int version,
-        final VitamContext vitamContext)
-        throws VitamClientException {
+    public Response getObjectStreamByUnitId(
+        final String unitId,
+        final String usage,
+        final int version,
+        final VitamContext vitamContext
+    ) throws VitamClientException {
         final Response response = accessExternalClient.getObjectStreamByUnitId(vitamContext, unitId, usage, version);
         VitamRestUtils.checkResponse(response);
         return response;
@@ -148,8 +169,11 @@ public class UnitService {
      */
     public RequestResponse<JsonNode> findUnitById(final String unitId, final VitamContext vitamContext)
         throws VitamClientException {
-        final RequestResponse<JsonNode> jsonResponse =
-            accessExternalClient.selectUnitbyId(vitamContext, new SelectMultiQuery().getFinalSelectById(), unitId);
+        final RequestResponse<JsonNode> jsonResponse = accessExternalClient.selectUnitbyId(
+            vitamContext,
+            new SelectMultiQuery().getFinalSelectById(),
+            unitId
+        );
         VitamRestUtils.checkResponse(jsonResponse);
         return jsonResponse;
     }
@@ -162,10 +186,12 @@ public class UnitService {
      * @return
      * @throws VitamClientException
      */
-    public RequestResponse<JsonNode> findUnitWithInheritedRulesById(final String unitId,
-        final VitamContext vitamContext) throws VitamClientException {
-
-        final String validatedUnitId = Optional.ofNullable(unitId).filter(StringUtils::isNotEmpty)
+    public RequestResponse<JsonNode> findUnitWithInheritedRulesById(
+        final String unitId,
+        final VitamContext vitamContext
+    ) throws VitamClientException {
+        final String validatedUnitId = Optional.ofNullable(unitId)
+            .filter(StringUtils::isNotEmpty)
             .orElseThrow(() -> new IllegalArgumentException("No unitId has been set."));
         final SelectMultiQuery select = new SelectMultiQuery();
         select.addProjection(JsonHandler.createObjectNode());
@@ -175,8 +201,10 @@ public class UnitService {
             throw new ApplicationServerException("An error occured while creating vitam query", exception);
         }
 
-        final RequestResponse<JsonNode> jsonResponse =
-            accessExternalClient.selectUnitsWithInheritedRules(vitamContext, select.getFinalSelect());
+        final RequestResponse<JsonNode> jsonResponse = accessExternalClient.selectUnitsWithInheritedRules(
+            vitamContext,
+            select.getFinalSelect()
+        );
         VitamRestUtils.checkResponse(jsonResponse);
         return jsonResponse;
     }
@@ -189,11 +217,15 @@ public class UnitService {
      * @return The Vitam response
      * @throws VitamClientException
      */
-    public RequestResponse<JsonNode> findUnitWithInheritedRulesByIds(final List<String> unitIds,
-        final VitamContext vitamContext) throws VitamClientException {
-
-        final String[] validatedUnitIds =
-            unitIds.stream().filter(StringUtils::isNotEmpty).distinct().toArray(String[]::new);
+    public RequestResponse<JsonNode> findUnitWithInheritedRulesByIds(
+        final List<String> unitIds,
+        final VitamContext vitamContext
+    ) throws VitamClientException {
+        final String[] validatedUnitIds = unitIds
+            .stream()
+            .filter(StringUtils::isNotEmpty)
+            .distinct()
+            .toArray(String[]::new);
         if (validatedUnitIds.length < 1) {
             throw new IllegalArgumentException("No unitId has been set.");
         }
@@ -205,8 +237,10 @@ public class UnitService {
             throw new ApplicationServerException("An error occured while creating vitam query", exception);
         }
 
-        final RequestResponse<JsonNode> jsonResponse =
-            accessExternalClient.selectUnitsWithInheritedRules(vitamContext, select.getFinalSelect());
+        final RequestResponse<JsonNode> jsonResponse = accessExternalClient.selectUnitsWithInheritedRules(
+            vitamContext,
+            select.getFinalSelect()
+        );
         VitamRestUtils.checkResponse(jsonResponse);
         return jsonResponse;
     }
@@ -220,11 +254,16 @@ public class UnitService {
      * @return
      * @throws VitamClientException
      */
-    public RequestResponse<JsonNode> updateUnitById(final VitamContext vitamContext, final JsonNode updateQuery,
-        final String unitId)
-        throws VitamClientException {
-        final RequestResponse<JsonNode> jsonResponse =
-            accessExternalClient.updateUnitbyId(vitamContext, updateQuery, unitId);
+    public RequestResponse<JsonNode> updateUnitById(
+        final VitamContext vitamContext,
+        final JsonNode updateQuery,
+        final String unitId
+    ) throws VitamClientException {
+        final RequestResponse<JsonNode> jsonResponse = accessExternalClient.updateUnitbyId(
+            vitamContext,
+            updateQuery,
+            unitId
+        );
         VitamRestUtils.checkResponse(jsonResponse);
         return jsonResponse;
     }
@@ -260,11 +299,12 @@ public class UnitService {
             throw new InternalServerException("Error while parsing vitam response", e);
         }
         return response;
-
     }
 
-    public RequestResponse<JsonNode> startEliminationAction(final EliminationRequestBody eliminationRequest,
-        final VitamContext vitamContext) {
+    public RequestResponse<JsonNode> startEliminationAction(
+        final EliminationRequestBody eliminationRequest,
+        final VitamContext vitamContext
+    ) {
         try {
             return accessExternalClient.startEliminationAction(vitamContext, eliminationRequest);
         } catch (final VitamClientException exception) {
@@ -290,10 +330,13 @@ public class UnitService {
      */
     public RequestResponse<JsonNode> massUpdateUnitsRules(final VitamContext vitamContext, final JsonNode updateQuery)
         throws VitamClientException {
-        final RequestResponse<JsonNode> jsonResponse = accessExternalClient.massUpdateUnitsRules(vitamContext, updateQuery);
+        final RequestResponse<JsonNode> jsonResponse = accessExternalClient.massUpdateUnitsRules(
+            vitamContext,
+            updateQuery
+        );
         VitamRestUtils.checkResponse(jsonResponse, HttpStatus.SC_OK, HttpStatus.SC_ACCEPTED);
         return jsonResponse;
-            }
+    }
 
     /**
      * computed Inherited Rules
@@ -305,11 +348,13 @@ public class UnitService {
      */
     public RequestResponse<JsonNode> computedInheritedRules(final VitamContext vitamContext, final JsonNode dslQuery)
         throws VitamClientException {
-        final RequestResponse<JsonNode> jsonResponse = accessExternalClient.computedInheritedRules(vitamContext, dslQuery);
+        final RequestResponse<JsonNode> jsonResponse = accessExternalClient.computedInheritedRules(
+            vitamContext,
+            dslQuery
+        );
         VitamRestUtils.checkResponse(jsonResponse, HttpStatus.SC_OK, HttpStatus.SC_ACCEPTED);
         return jsonResponse;
     }
-
 
     /**
      * select Units With Inherited Rules
@@ -319,9 +364,14 @@ public class UnitService {
      * @return
      * @throws VitamClientException
      */
-    public RequestResponse<JsonNode> selectUnitsWithInheritedRules(final VitamContext vitamContext, final JsonNode dslQuery)
-        throws VitamClientException {
-        final RequestResponse<JsonNode> jsonResponse = accessExternalClient.selectUnitsWithInheritedRules(vitamContext, dslQuery);
+    public RequestResponse<JsonNode> selectUnitsWithInheritedRules(
+        final VitamContext vitamContext,
+        final JsonNode dslQuery
+    ) throws VitamClientException {
+        final RequestResponse<JsonNode> jsonResponse = accessExternalClient.selectUnitsWithInheritedRules(
+            vitamContext,
+            dslQuery
+        );
         VitamRestUtils.checkResponse(jsonResponse, HttpStatus.SC_OK, HttpStatus.SC_ACCEPTED);
         return jsonResponse;
     }

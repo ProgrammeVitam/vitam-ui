@@ -36,16 +36,14 @@
  */
 package fr.gouv.vitamui.iam.common.utils;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import fr.gouv.vitamui.commons.api.exception.BadRequestException;
+import org.springframework.util.StringUtils;
+
 import java.beans.PropertyEditorSupport;
 import java.io.IOException;
 import java.util.Map;
-
-import org.springframework.util.StringUtils;
-
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 
 public class MapEditor extends PropertyEditorSupport {
 
@@ -60,16 +58,15 @@ public class MapEditor extends PropertyEditorSupport {
         if (StringUtils.hasText(text)) {
             try {
                 final ObjectMapper mapper = new ObjectMapper();
-                final Map<String, Object> partialDto = mapper.readValue(text, new TypeReference<Map<String, Object>>() {
-                });
+                final Map<String, Object> partialDto = mapper.readValue(
+                    text,
+                    new TypeReference<Map<String, Object>>() {}
+                );
                 setValue(partialDto);
-            }
-            catch (final IOException e) {
+            } catch (final IOException e) {
                 throw new BadRequestException("Invalid partial dto format", e);
             }
-
-        }
-        else {
+        } else {
             setValue(null);
         }
     }

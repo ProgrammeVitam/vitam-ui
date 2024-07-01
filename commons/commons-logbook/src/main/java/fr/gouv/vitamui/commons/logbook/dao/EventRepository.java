@@ -39,6 +39,4 @@ package fr.gouv.vitamui.commons.logbook.dao;
 import fr.gouv.vitamui.commons.logbook.domain.Event;
 import fr.gouv.vitamui.commons.mongo.repository.VitamUIRepository;
 
-public interface EventRepository extends VitamUIRepository<Event, String> {
-
-}
+public interface EventRepository extends VitamUIRepository<Event, String> {}

@@ -54,17 +54,18 @@ public class ApiReferentialExternalServerApplication implements CommandLineRunne
     private Environment env;
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
-        ApiReferentialExternalServerApplication.class);
+        ApiReferentialExternalServerApplication.class
+    );
 
     public static void main(final String[] args) {
-        final SpringApplication app = new SpringApplicationBuilder(ApiReferentialExternalServerApplication.class)
-            .build();
+        final SpringApplication app = new SpringApplicationBuilder(
+            ApiReferentialExternalServerApplication.class
+        ).build();
         app.run(args);
     }
 
     @Override
     public void run(final String... args) throws Exception {
-
         LOGGER.info("VITAMUI SpringBoot Application started:");
         LOGGER.info("spring.application.name: " + env.getProperty("spring.application.name"));
         LOGGER.info("-------------------------------");

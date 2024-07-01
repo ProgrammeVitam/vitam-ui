@@ -36,15 +36,6 @@
  */
 package fr.gouv.vitamui.iam.external.server.service;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
-
-import org.apache.commons.collections4.CollectionUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import fr.gouv.vitamui.commons.api.domain.CriterionOperator;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.GroupDto;
@@ -59,6 +50,14 @@ import fr.gouv.vitamui.iam.security.client.AbstractResourceClientService;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.collections4.CollectionUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * The service to read, create, update and delete the subrogations.
@@ -73,8 +72,10 @@ public class SubrogationExternalService extends AbstractResourceClientService<Su
     private final SubrogationInternalRestClient subrogationInternalRestClient;
 
     @Autowired
-    public SubrogationExternalService(final ExternalSecurityService externalSecurityService,
-            final SubrogationInternalRestClient subrogationInternalRestClient) {
+    public SubrogationExternalService(
+        final ExternalSecurityService externalSecurityService,
+        final SubrogationInternalRestClient subrogationInternalRestClient
+    ) {
         super(externalSecurityService);
         this.subrogationInternalRestClient = subrogationInternalRestClient;
     }
@@ -115,13 +116,18 @@ public class SubrogationExternalService extends AbstractResourceClientService<Su
         return getClient().getMySubrogationAsSuperuser(getInternalHttpContext());
     }
 
-    public PaginatedValuesDto<UserDto> getGenericUsers(final Integer page, final Integer size,
-            final Optional<String> criteria, final Optional<String> orderBy, final Optional<DirectionDto> direction) {
+    public PaginatedValuesDto<UserDto> getGenericUsers(
+        final Integer page,
+        final Integer size,
+        final Optional<String> criteria,
+        final Optional<String> orderBy,
+        final Optional<DirectionDto> direction
+    ) {
         final QueryDto criteriaFiltered = QueryDto.fromJson(criteria);
         criteriaFiltered.addCriterion("type", UserTypeEnum.GENERIC, CriterionOperator.EQUALS);
 
-        return getClient().getUsers(getInternalHttpContext(), page, size, criteriaFiltered.toOptionalJson(), orderBy,
-                direction);
+        return getClient()
+            .getUsers(getInternalHttpContext(), page, size, criteriaFiltered.toOptionalJson(), orderBy, direction);
     }
 
     @Override

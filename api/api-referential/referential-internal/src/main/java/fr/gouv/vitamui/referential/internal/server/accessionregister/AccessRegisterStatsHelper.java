@@ -47,23 +47,28 @@ public class AccessRegisterStatsHelper {
         throw new UnsupportedOperationException("Utility class !");
     }
 
-    public static AccessionRegisterStatsDto fetchStats(List<AccessionRegisterDetailModel> accessionRegisterDetailModels ) {
-
+    public static AccessionRegisterStatsDto fetchStats(
+        List<AccessionRegisterDetailModel> accessionRegisterDetailModels
+    ) {
         AccessionRegisterStatsDto statsDto = new AccessionRegisterStatsDto();
 
-        Long objectSizes = accessionRegisterDetailModels.parallelStream()
+        Long objectSizes = accessionRegisterDetailModels
+            .parallelStream()
             .map(ardm -> ardm.getObjectSize().getIngested())
             .reduce(0L, Long::sum);
 
-        Long totalObjects = accessionRegisterDetailModels.parallelStream()
+        Long totalObjects = accessionRegisterDetailModels
+            .parallelStream()
             .map(ardm -> ardm.getTotalObjects().getIngested())
             .reduce(0L, Long::sum);
 
-        Long totalUnits = accessionRegisterDetailModels.parallelStream()
+        Long totalUnits = accessionRegisterDetailModels
+            .parallelStream()
             .map(ardm -> ardm.getTotalUnits().getIngested())
             .reduce(0L, Long::sum);
 
-        Long totalObjectsGroups = accessionRegisterDetailModels.parallelStream()
+        Long totalObjectsGroups = accessionRegisterDetailModels
+            .parallelStream()
             .map(ardm -> ardm.getTotalObjectsGroups().getIngested())
             .reduce(0L, Long::sum);
 
@@ -74,5 +79,4 @@ public class AccessRegisterStatsHelper {
 
         return statsDto;
     }
-
 }

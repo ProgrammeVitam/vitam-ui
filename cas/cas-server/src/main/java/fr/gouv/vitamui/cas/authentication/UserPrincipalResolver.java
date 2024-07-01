@@ -36,15 +36,22 @@
  */
 package fr.gouv.vitamui.cas.authentication;
 
-import java.security.cert.CertificateParsingException;
-import java.util.*;
-import java.util.regex.Pattern;
-
 import fr.gouv.vitamui.cas.provider.ProvidersService;
+import fr.gouv.vitamui.cas.util.Constants;
+import fr.gouv.vitamui.cas.util.Utils;
 import fr.gouv.vitamui.cas.x509.CertificateParser;
 import fr.gouv.vitamui.cas.x509.X509AttributeMapping;
+import fr.gouv.vitamui.commons.api.domain.ProfileDto;
+import fr.gouv.vitamui.commons.api.domain.UserDto;
+import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
+import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
+import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.commons.api.utils.CasJsonWrapper;
+import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
+import fr.gouv.vitamui.iam.external.client.CasExternalRestClient;
 import lombok.RequiredArgsConstructor;
+import lombok.val;
 import org.apache.commons.lang.StringUtils;
 import org.apereo.cas.adaptors.x509.authentication.principal.X509CertificateCredential;
 import org.apereo.cas.authentication.AuthenticationHandler;
@@ -62,21 +69,11 @@ import org.apereo.services.persondir.IPersonAttributeDao;
 import org.pac4j.core.context.JEEContext;
 import org.pac4j.core.context.session.SessionStore;
 import org.pac4j.core.util.CommonHelper;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.webflow.execution.RequestContextHolder;
 
-import fr.gouv.vitamui.cas.util.Constants;
-import fr.gouv.vitamui.cas.util.Utils;
-import fr.gouv.vitamui.commons.api.domain.ProfileDto;
-import fr.gouv.vitamui.commons.api.domain.UserDto;
-import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
-import fr.gouv.vitamui.commons.api.utils.CasJsonWrapper;
-import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
-import fr.gouv.vitamui.iam.external.client.CasExternalRestClient;
-
-import lombok.val;
+import java.security.cert.CertificateParsingException;
+import java.util.*;
+import java.util.regex.Pattern;
 
 import static fr.gouv.vitamui.commons.api.CommonConstants.*;
 
@@ -88,7 +85,8 @@ import static fr.gouv.vitamui.commons.api.CommonConstants.*;
 @RequiredArgsConstructor
 public class UserPrincipalResolver implements PrincipalResolver {
 
-    public static final String EMAIL_VALID_REGEXP = "^[_a-z0-9]+(((\\.|-)[_a-z0-9]+))*@[a-z0-9-]+(\\.[a-z0-9-]+)*(\\.[a-z]{2,})$";
+    public static final String EMAIL_VALID_REGEXP =
+        "^[_a-z0-9]+(((\\.|-)[_a-z0-9]+))*@[a-z0-9-]+(\\.[a-z0-9-]+)*(\\.[a-z]{2,})$";
     public static final String SUPER_USER_ID_ATTRIBUTE = "superUserId";
     public static final String COMPUTED_OTP = "computedOtp";
 
@@ -113,8 +111,11 @@ public class UserPrincipalResolver implements PrincipalResolver {
     private final String x509DefaultDomain;
 
     @Override
-    public Principal resolve(final Credential credential, final Optional<Principal> optPrincipal, final Optional<AuthenticationHandler> handler) {
-
+    public Principal resolve(
+        final Credential credential,
+        final Optional<Principal> optPrincipal,
+        final Optional<AuthenticationHandler> handler
+    ) {
         val principal = optPrincipal.get();
         val principalId = principal.getId();
         val requestContext = RequestContextHolder.getRequestContext();
@@ -129,7 +130,9 @@ public class UserPrincipalResolver implements PrincipalResolver {
             try {
                 val certificate = ((X509CertificateCredential) credential).getCertificate();
                 username = CertificateParser.extract(certificate, x509EmailAttributeMapping);
-                technicalUserId = Optional.ofNullable(CertificateParser.extract(certificate, x509IdentifierAttributeMapping));
+                technicalUserId = Optional.ofNullable(
+                    CertificateParser.extract(certificate, x509IdentifierAttributeMapping)
+                );
             } catch (final CertificateParsingException e) {
                 throw new RuntimeException(e.getMessage());
             }
@@ -171,17 +174,29 @@ public class UserPrincipalResolver implements PrincipalResolver {
             val webContext = new JEEContext(request, response);
             val clientCredential = (ClientCredential) credential;
             val providerName = clientCredential.getClientName();
-            val provider = identityProviderHelper.findByTechnicalName(providersService.getProviders(), providerName).get();
+            val provider = identityProviderHelper
+                .findByTechnicalName(providersService.getProviders(), providerName)
+                .get();
             val mailAttribute = provider.getMailAttribute();
             String email = principalId;
             if (CommonHelper.isNotBlank(mailAttribute)) {
                 val mails = principal.getAttributes().get(mailAttribute);
                 if (mails == null || mails.size() == 0 || CommonHelper.isBlank((String) mails.get(0))) {
-                    LOGGER.error("Provider: '{}' requested specific mail attribute: '{}' for id, but attribute does not exist or has no value", providerName, mailAttribute);
+                    LOGGER.error(
+                        "Provider: '{}' requested specific mail attribute: '{}' for id, but attribute does not exist or has no value",
+                        providerName,
+                        mailAttribute
+                    );
                     return NullPrincipal.getInstance();
                 } else {
                     val mail = (String) mails.get(0);
-                    LOGGER.info("Provider: '{}' requested specific mail attribute: '{}' for id: '{}' replaced by: '{}'", providerName, mailAttribute, principalId, mail);
+                    LOGGER.info(
+                        "Provider: '{}' requested specific mail attribute: '{}' for id: '{}' replaced by: '{}'",
+                        providerName,
+                        mailAttribute,
+                        principalId,
+                        mail
+                    );
                     email = mail;
                 }
             }
@@ -190,12 +205,24 @@ public class UserPrincipalResolver implements PrincipalResolver {
             String identifier = principalId;
             if (CommonHelper.isNotBlank(identifierAttribute)) {
                 val identifiers = principal.getAttributes().get(identifierAttribute);
-                if (identifiers == null || identifiers.size() == 0 || CommonHelper.isBlank((String) identifiers.get(0))) {
-                    LOGGER.error("Provider: '{}' requested specific identifier attribute: '{}' for id, but attribute does not exist or has no value", providerName, identifierAttribute);
+                if (
+                    identifiers == null || identifiers.size() == 0 || CommonHelper.isBlank((String) identifiers.get(0))
+                ) {
+                    LOGGER.error(
+                        "Provider: '{}' requested specific identifier attribute: '{}' for id, but attribute does not exist or has no value",
+                        providerName,
+                        identifierAttribute
+                    );
                     return NullPrincipal.getInstance();
                 } else {
                     val identifierAttr = (String) identifiers.get(0);
-                    LOGGER.info("Provider: '{}' requested specific identifier attribute: '{}' for id: '{}' replaced by: '{}'", providerName, identifierAttribute, principalId, identifierAttr);
+                    LOGGER.info(
+                        "Provider: '{}' requested specific identifier attribute: '{}' for id: '{}' replaced by: '{}'",
+                        providerName,
+                        identifierAttribute,
+                        principalId,
+                        identifierAttr
+                    );
                     identifier = identifierAttr;
                 }
             }
@@ -215,7 +242,12 @@ public class UserPrincipalResolver implements PrincipalResolver {
             }
         }
 
-        LOGGER.debug("Resolving username: {} | superUsername: {} | surrogationCall: {}", username, superUsername, surrogationCall);
+        LOGGER.debug(
+            "Resolving username: {} | superUsername: {} | surrogationCall: {}",
+            username,
+            superUsername,
+            surrogationCall
+        );
 
         String embedded = AUTH_TOKEN_PARAMETER;
         if (surrogationCall) {
@@ -225,13 +257,18 @@ public class UserPrincipalResolver implements PrincipalResolver {
         }
         LOGGER.debug("Computed embedded: {}", embedded);
 
-        final UserDto user = casExternalRestClient.getUser(utils.buildContext(username), username, userProviderId, technicalUserId, Optional.ofNullable(embedded));
+        final UserDto user = casExternalRestClient.getUser(
+            utils.buildContext(username),
+            username,
+            userProviderId,
+            technicalUserId,
+            Optional.ofNullable(embedded)
+        );
 
         if (user == null) {
             LOGGER.debug("No user resolved for: {}", username);
             return null;
-        }
-        else if (user.getStatus() != UserStatusEnum.ENABLED) {
+        } else if (user.getStatus() != UserStatusEnum.ENABLED) {
             LOGGER.debug("User cannot login: {} - User {}", username, user.toString());
             return null;
         }
@@ -250,7 +287,8 @@ public class UserPrincipalResolver implements PrincipalResolver {
         val otp = user.isOtp();
         attributes.put(OTP_ATTRIBUTE, Collections.singletonList(otp));
         val otpUsername = superUsername != null ? superUsername : username;
-        val computedOtp = otp && identityProviderHelper.identifierMatchProviderPattern(providersService.getProviders(), otpUsername);
+        val computedOtp =
+            otp && identityProviderHelper.identifierMatchProviderPattern(providersService.getProviders(), otpUsername);
         attributes.put(COMPUTED_OTP, Collections.singletonList("" + computedOtp));
         attributes.put(SUBROGEABLE_ATTRIBUTE, Collections.singletonList(user.isSubrogeable()));
         attributes.put(USER_INFO_ID, Collections.singletonList(user.getUserInfoId()));
@@ -270,7 +308,13 @@ public class UserPrincipalResolver implements PrincipalResolver {
         UserDto superUser = null;
         if (surrogationCall) {
             attributes.put(SUPER_USER_ATTRIBUTE, Collections.singletonList(superUsername));
-            superUser = casExternalRestClient.getUser(utils.buildContext(superUsername), superUsername, null, Optional.empty(), Optional.empty());
+            superUser = casExternalRestClient.getUser(
+                utils.buildContext(superUsername),
+                superUsername,
+                null,
+                Optional.empty(),
+                Optional.empty()
+            );
             if (superUser == null) {
                 LOGGER.debug("No super user found for: {}", superUsername);
                 return NullPrincipal.getInstance();
@@ -280,12 +324,21 @@ public class UserPrincipalResolver implements PrincipalResolver {
         }
         if (user instanceof AuthUserDto) {
             final AuthUserDto authUser = (AuthUserDto) user;
-            attributes.put(PROFILE_GROUP_ATTRIBUTE, Collections.singletonList(new CasJsonWrapper(authUser.getProfileGroup())));
+            attributes.put(
+                PROFILE_GROUP_ATTRIBUTE,
+                Collections.singletonList(new CasJsonWrapper(authUser.getProfileGroup()))
+            );
             attributes.put(CUSTOMER_IDENTIFIER_ATTRIBUTE, Collections.singletonList(authUser.getCustomerIdentifier()));
-            attributes.put(BASIC_CUSTOMER_ATTRIBUTE, Collections.singletonList(new CasJsonWrapper(authUser.getBasicCustomer())));
+            attributes.put(
+                BASIC_CUSTOMER_ATTRIBUTE,
+                Collections.singletonList(new CasJsonWrapper(authUser.getBasicCustomer()))
+            );
             attributes.put(AUTHTOKEN_ATTRIBUTE, Collections.singletonList(authUser.getAuthToken()));
             attributes.put(PROOF_TENANT_ID_ATTRIBUTE, Collections.singletonList(authUser.getProofTenantIdentifier()));
-            attributes.put(TENANTS_BY_APP_ATTRIBUTE, Collections.singletonList(new CasJsonWrapper(authUser.getTenantsByApp())));
+            attributes.put(
+                TENANTS_BY_APP_ATTRIBUTE,
+                Collections.singletonList(new CasJsonWrapper(authUser.getTenantsByApp()))
+            );
             attributes.put(SITE_CODE, Collections.singletonList(user.getSiteCode()));
             attributes.put(CENTER_CODE, Collections.singletonList(user.getCenterCode()));
             final Set<String> roles = new HashSet<>();
@@ -304,8 +357,12 @@ public class UserPrincipalResolver implements PrincipalResolver {
 
     @Override
     public boolean supports(final Credential credential) {
-        return credential instanceof UsernamePasswordCredential || credential instanceof ClientCredential
-            || credential instanceof SurrogateUsernamePasswordCredential || credential instanceof X509CertificateCredential;
+        return (
+            credential instanceof UsernamePasswordCredential ||
+            credential instanceof ClientCredential ||
+            credential instanceof SurrogateUsernamePasswordCredential ||
+            credential instanceof X509CertificateCredential
+        );
     }
 
     @Override

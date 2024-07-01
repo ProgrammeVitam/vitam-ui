@@ -37,16 +37,15 @@
  *
  */
 
-
 package fr.gouv.vitamui.archive.search.dsl;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import fr.gouv.vitam.common.PropertiesUtils;
 import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOperationException;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.json.JsonHandler;
 import fr.gouv.vitamui.archives.search.common.dsl.VitamQueryHelper;
+import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -65,9 +64,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 class VitamQueryHelperTest {
 
     public final String SEARCH_WITH_ONE_NAME_QUERY = "data/query_with_one_name_criteria.json";
-    public final String SEARCH_WITH_LIST_OF_NAME_QUERY ="data/query_with_list_of_names_criteria.json";
-    public final String SEARCH_WITH_IDENTIFIER_QUERY ="data/query_with_identifier_criteria.json";
-    public final String SEARCH_WITH_NAME_AND_IDENTIFIER_QUERY ="data/query_with_identifier_name_criteria.json";
+    public final String SEARCH_WITH_LIST_OF_NAME_QUERY = "data/query_with_list_of_names_criteria.json";
+    public final String SEARCH_WITH_IDENTIFIER_QUERY = "data/query_with_identifier_criteria.json";
+    public final String SEARCH_WITH_NAME_AND_IDENTIFIER_QUERY = "data/query_with_identifier_name_criteria.json";
 
     @BeforeEach
     public void setUp() {
@@ -75,22 +74,25 @@ class VitamQueryHelperTest {
     }
 
     @Test
-    void search_query_with_one_originating_agency_name_as_criteria() throws FileNotFoundException,
-        InvalidParseOperationException, InvalidCreateOperationException {
+    void search_query_with_one_originating_agency_name_as_criteria()
+        throws FileNotFoundException, InvalidParseOperationException, InvalidCreateOperationException {
         Map<String, Object> searchCriteriaMap = new HashMap<>();
         List<String> originAgenciesNames = new ArrayList<>();
         originAgenciesNames.add("originating agency name");
         searchCriteriaMap.put("Name", originAgenciesNames);
         JsonNode search_query_json = JsonHandler.getFromFile(PropertiesUtils.findFile(SEARCH_WITH_ONE_NAME_QUERY));
-        JsonNode expected_search_query_json = VitamQueryHelper.createQueryDSL(searchCriteriaMap, Optional.empty(),
-            Optional.empty());
+        JsonNode expected_search_query_json = VitamQueryHelper.createQueryDSL(
+            searchCriteriaMap,
+            Optional.empty(),
+            Optional.empty()
+        );
 
         assertThat(search_query_json).isEqualTo(expected_search_query_json);
     }
 
     @Test
-    void search_query_with_list_of_originating_agency_names_as_criteria() throws FileNotFoundException,
-        InvalidParseOperationException, InvalidCreateOperationException {
+    void search_query_with_list_of_originating_agency_names_as_criteria()
+        throws FileNotFoundException, InvalidParseOperationException, InvalidCreateOperationException {
         Map<String, Object> searchCriteriaMap = new HashMap<>();
         List<String> originAgenciesNames = new ArrayList<>();
         originAgenciesNames.add("originating agency name 1");
@@ -98,29 +100,35 @@ class VitamQueryHelperTest {
         originAgenciesNames.add("originating agency name 3");
         searchCriteriaMap.put("Name", originAgenciesNames);
         JsonNode search_query_json = JsonHandler.getFromFile(PropertiesUtils.findFile(SEARCH_WITH_LIST_OF_NAME_QUERY));
-        JsonNode expected_search_query_json = VitamQueryHelper.createQueryDSL(searchCriteriaMap, Optional.empty(),
-            Optional.empty());
+        JsonNode expected_search_query_json = VitamQueryHelper.createQueryDSL(
+            searchCriteriaMap,
+            Optional.empty(),
+            Optional.empty()
+        );
 
         assertThat(search_query_json).isEqualTo(expected_search_query_json);
     }
 
     @Test
-    void search_query_with_originating_agency_identifier_as_criteria() throws FileNotFoundException,
-        InvalidParseOperationException, InvalidCreateOperationException {
+    void search_query_with_originating_agency_identifier_as_criteria()
+        throws FileNotFoundException, InvalidParseOperationException, InvalidCreateOperationException {
         Map<String, Object> searchCriteriaMap = new HashMap<>();
         List<String> originAgenciesCodes = new ArrayList<>();
         originAgenciesCodes.add("originating agency identifier");
         searchCriteriaMap.put("Identifier", originAgenciesCodes);
         JsonNode search_query_json = JsonHandler.getFromFile(PropertiesUtils.findFile(SEARCH_WITH_IDENTIFIER_QUERY));
-        JsonNode expected_search_query_json = VitamQueryHelper.createQueryDSL(searchCriteriaMap, Optional.empty(),
-            Optional.empty());
+        JsonNode expected_search_query_json = VitamQueryHelper.createQueryDSL(
+            searchCriteriaMap,
+            Optional.empty(),
+            Optional.empty()
+        );
 
         assertThat(search_query_json).isEqualTo(expected_search_query_json);
     }
 
     @Test
-    void search_query_with_originating_agency_identifier_and_name_as_criterias() throws FileNotFoundException,
-        InvalidParseOperationException, InvalidCreateOperationException {
+    void search_query_with_originating_agency_identifier_and_name_as_criterias()
+        throws FileNotFoundException, InvalidParseOperationException, InvalidCreateOperationException {
         Map<String, Object> searchCriteriaMap = new HashMap<>();
         List<String> originAgenciesCodes = new ArrayList<>();
         List<String> originAgenciesNames = new ArrayList<>();
@@ -128,9 +136,14 @@ class VitamQueryHelperTest {
         originAgenciesNames.add("originating agency name");
         searchCriteriaMap.put("Identifier", originAgenciesCodes);
         searchCriteriaMap.put("Name", originAgenciesNames);
-        JsonNode search_query_json = JsonHandler.getFromFile(PropertiesUtils.findFile(SEARCH_WITH_NAME_AND_IDENTIFIER_QUERY));
-        JsonNode expected_search_query_json = VitamQueryHelper.createQueryDSL(searchCriteriaMap, Optional.empty(),
-            Optional.empty());
+        JsonNode search_query_json = JsonHandler.getFromFile(
+            PropertiesUtils.findFile(SEARCH_WITH_NAME_AND_IDENTIFIER_QUERY)
+        );
+        JsonNode expected_search_query_json = VitamQueryHelper.createQueryDSL(
+            searchCriteriaMap,
+            Optional.empty(),
+            Optional.empty()
+        );
 
         assertThat(search_query_json).isEqualTo(expected_search_query_json);
     }

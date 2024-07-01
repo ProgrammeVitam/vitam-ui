@@ -35,9 +35,17 @@ import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
 @EnableMongoRepositories(
-    basePackageClasses = {ExternalParametersRepository.class, CustomSequenceRepository.class, GroupRepository.class,
-        OwnerRepository.class, ProfileRepository.class, UserRepository.class, TenantRepository.class},
-    repositoryBaseClass = VitamUIRepositoryImpl.class)
+    basePackageClasses = {
+        ExternalParametersRepository.class,
+        CustomSequenceRepository.class,
+        GroupRepository.class,
+        OwnerRepository.class,
+        ProfileRepository.class,
+        UserRepository.class,
+        TenantRepository.class,
+    },
+    repositoryBaseClass = VitamUIRepositoryImpl.class
+)
 public class ExternalParametersInternalServiceTest extends AbstractLogbookIntegrationTest {
 
     public static final String ANY_EXTERNAL_PARAM_ID = "ANY_EXTERNAL_PARAM_ID";
@@ -61,14 +69,17 @@ public class ExternalParametersInternalServiceTest extends AbstractLogbookIntegr
     @MockBean
     private SpMetadataGenerator spMetadataGenerator;
 
-
     private static final String ID = "ID";
 
     @Before
     public void setup() {
         service = new ExternalParametersInternalService(
-            sequenceRepository, externalParametersRepository, externalParametersConverter, internalSecurityService,
-            iamLogbookService);
+            sequenceRepository,
+            externalParametersRepository,
+            externalParametersConverter,
+            internalSecurityService,
+            iamLogbookService
+        );
     }
 
     @Test
@@ -80,7 +91,9 @@ public class ExternalParametersInternalServiceTest extends AbstractLogbookIntegr
         ExternalParameters externalParameters = new ExternalParameters();
         externalParameters.setId(ID);
 
-        when(externalParametersRepository.findOne(ArgumentMatchers.any(Query.class))).thenReturn(Optional.of(externalParameters));
+        when(externalParametersRepository.findOne(ArgumentMatchers.any(Query.class))).thenReturn(
+            Optional.of(externalParameters)
+        );
         when(internalSecurityService.getUser()).thenReturn(user);
         when(internalSecurityService.getTenantIdentifier()).thenReturn(1);
 
@@ -88,5 +101,4 @@ public class ExternalParametersInternalServiceTest extends AbstractLogbookIntegr
         Assert.assertNotNull("ExternalParameters should be returned.", res);
         Assert.assertTrue(res.getId().equals(ID));
     }
-
 }

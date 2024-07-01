@@ -36,13 +36,12 @@
  */
 package fr.gouv.vitamui.iam.security.filter;
 
-import javax.servlet.http.HttpServletRequest;
-
+import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter;
 
-import fr.gouv.vitamui.commons.api.CommonConstants;
-import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * The authentication filter based on the request headers.

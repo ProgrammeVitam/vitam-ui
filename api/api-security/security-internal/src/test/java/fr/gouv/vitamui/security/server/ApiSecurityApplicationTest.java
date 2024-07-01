@@ -25,5 +25,4 @@ public class ApiSecurityApplicationTest {
     public void testContextLoads() {
         assertThat(env).isNotNull();
     }
-
 }

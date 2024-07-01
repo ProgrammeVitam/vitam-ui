@@ -41,5 +41,4 @@ package fr.gouv.vitamui.pastis.common.dto.factory;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "rng:zeroOrMore")
-public class ZeroOrMoreTag extends CardinalityTag {
-}
+public class ZeroOrMoreTag extends CardinalityTag {}

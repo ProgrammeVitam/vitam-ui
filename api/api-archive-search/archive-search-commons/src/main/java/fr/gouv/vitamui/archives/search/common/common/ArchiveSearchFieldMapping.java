@@ -33,6 +33,7 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class ArchiveSearchFieldMapping {
+
     private String rules;
     private String ruleIdentifier;
     private String ruleEndDate;

@@ -89,30 +89,39 @@ public class SearchCriteriaHistoryInternalRestClientTest extends ServerIdentityE
     @Test
     public void shouldGetSearchCriteriaHistoryWithSuccess() {
         // GIVEN
-        List<SearchCriteriaHistoryDto> results =
-            factory.manufacturePojo(ArrayList.class, SearchCriteriaHistoryDto.class);
+        List<SearchCriteriaHistoryDto> results = factory.manufacturePojo(
+            ArrayList.class,
+            SearchCriteriaHistoryDto.class
+        );
         Pair<InternalHttpContext, MultiValueMap<String, String>> params = generateHeadersAndContext();
         when(
-            restTemplate.exchange(BASE_URL + SEARCH_CRITERIA_HISTORY + PATH_ME,
+            restTemplate.exchange(
+                BASE_URL + SEARCH_CRITERIA_HISTORY + PATH_ME,
                 HttpMethod.GET,
-                new HttpEntity<>(params.getValue()), searchCriteriaHistoryInternalRestClient.getDtoListClass()))
-            .thenReturn(new ResponseEntity<>(results, HttpStatus.OK));
+                new HttpEntity<>(params.getValue()),
+                searchCriteriaHistoryInternalRestClient.getDtoListClass()
+            )
+        ).thenReturn(new ResponseEntity<>(results, HttpStatus.OK));
         // WHEN
-        List<SearchCriteriaHistoryDto> response =
-            searchCriteriaHistoryInternalRestClient.getSearchCriteriaHistory(params.getKey());
+        List<SearchCriteriaHistoryDto> response = searchCriteriaHistoryInternalRestClient.getSearchCriteriaHistory(
+            params.getKey()
+        );
 
         // THEN
         assertNotNull(response);
         assertEquals(5, response.size());
         assertEquals(results.get(0).getId(), response.get(0).getId());
         assertEquals(results.get(0).getName(), response.get(0).getName());
-        assertEquals(results.get(0).getSearchCriteriaList().get(0).getCriteria(),
-            response.get(0).getSearchCriteriaList().get(0).getCriteria());
+        assertEquals(
+            results.get(0).getSearchCriteriaList().get(0).getCriteria(),
+            response.get(0).getSearchCriteriaList().get(0).getCriteria()
+        );
         assertEquals(results.get(4).getId(), response.get(4).getId());
         assertEquals(results.get(4).getName(), response.get(4).getName());
-        assertEquals(results.get(4).getSearchCriteriaList().get(0).getCriteria(),
-            response.get(4).getSearchCriteriaList().get(0).getCriteria());
-
+        assertEquals(
+            results.get(4).getSearchCriteriaList().get(0).getCriteria(),
+            response.get(4).getSearchCriteriaList().get(0).getCriteria()
+        );
     }
 
     private static Pair<InternalHttpContext, MultiValueMap<String, String>> generateHeadersAndContext() {

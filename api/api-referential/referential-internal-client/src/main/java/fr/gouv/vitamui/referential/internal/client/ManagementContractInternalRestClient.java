@@ -37,10 +37,10 @@
 package fr.gouv.vitamui.referential.internal.client;
 
 import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.api.domain.ManagementContractDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.rest.client.BasePaginatingAndSortingRestClient;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
-import fr.gouv.vitamui.commons.api.domain.ManagementContractDto;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
@@ -52,14 +52,16 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
 
-public class ManagementContractInternalRestClient extends BasePaginatingAndSortingRestClient<ManagementContractDto, InternalHttpContext> {
+public class ManagementContractInternalRestClient
+    extends BasePaginatingAndSortingRestClient<ManagementContractDto, InternalHttpContext> {
 
     public ManagementContractInternalRestClient(final RestTemplate restTemplate, final String baseUrl) {
         super(restTemplate, baseUrl);
     }
 
-    @Override protected ParameterizedTypeReference<PaginatedValuesDto<ManagementContractDto>> getDtoPaginatedClass() {
-        return new ParameterizedTypeReference<>() { };
+    @Override
+    protected ParameterizedTypeReference<PaginatedValuesDto<ManagementContractDto>> getDtoPaginatedClass() {
+        return new ParameterizedTypeReference<>() {};
     }
 
     @Override
@@ -67,19 +69,27 @@ public class ManagementContractInternalRestClient extends BasePaginatingAndSorti
         return RestApi.MANAGEMENT_CONTRACTS_URL;
     }
 
-    @Override protected Class<ManagementContractDto> getDtoClass() {
+    @Override
+    protected Class<ManagementContractDto> getDtoClass() {
         return ManagementContractDto.class;
     }
 
     protected ParameterizedTypeReference<List<ManagementContractDto>> getDtoListClass() {
-        return new ParameterizedTypeReference<>() { };
+        return new ParameterizedTypeReference<>() {};
     }
 
     public boolean check(InternalHttpContext context, ManagementContractDto managementContractDto) {
         final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl() + CommonConstants.PATH_CHECK);
-        final HttpEntity<ManagementContractDto> request = new HttpEntity<>(managementContractDto, buildHeaders(context));
-        final ResponseEntity<Boolean> response = restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.POST,
-            request, Boolean.class);
+        final HttpEntity<ManagementContractDto> request = new HttpEntity<>(
+            managementContractDto,
+            buildHeaders(context)
+        );
+        final ResponseEntity<Boolean> response = restTemplate.exchange(
+            uriBuilder.toUriString(),
+            HttpMethod.POST,
+            request,
+            Boolean.class
+        );
         return response.getStatusCode() == HttpStatus.OK;
     }
 }

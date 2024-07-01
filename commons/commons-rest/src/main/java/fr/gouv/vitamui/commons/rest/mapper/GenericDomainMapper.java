@@ -40,7 +40,6 @@ import fr.gouv.vitamui.commons.api.domain.BaseIdDocument;
 import fr.gouv.vitamui.commons.api.domain.IdDto;
 
 public interface GenericDomainMapper<D extends IdDto, E extends BaseIdDocument> {
-
     /**
      * Convert from DTO to Entity;
      * @param dto the domain
@@ -54,5 +53,4 @@ public interface GenericDomainMapper<D extends IdDto, E extends BaseIdDocument> 
      * @return the corresponding DTO
      */
     D convertFromEntityToDto(E entity);
-
 }
