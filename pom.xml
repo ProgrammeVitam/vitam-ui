@@ -1222,12 +1222,6 @@
                 <artifactId>bcprov-jdk18on</artifactId>
                 <version>${bouncycastle.version}</version>
             </dependency>
-            <!-- convert relaxng to xsd -->
-            <dependency>
-                <groupId>org.relaxng</groupId>
-                <artifactId>trang</artifactId>
-                <version>${trang.version}</version>
-            </dependency>
             <!-- convert xsd to xml -->
             <dependency>
                 <groupId>in.jlibs</groupId>
