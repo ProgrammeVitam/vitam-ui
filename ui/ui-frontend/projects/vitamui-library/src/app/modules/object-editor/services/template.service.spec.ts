@@ -36,9 +36,9 @@ describe('TemplateService', () => {
 
     it('should convert to ui data with simple projection', () => {
       const input = { username: 'azerty1234' };
-      const template: DisplayRule[] = [{ Path: 'username', ui: { Path: 'password', component: 'textfield' } }];
+      const template: DisplayRule[] = [{ Path: 'username', ui: { Path: 'login', component: 'textfield' } }];
       const output = service.toProjected(input, template);
-      const expected = { password: 'azerty1234' };
+      const expected = { login: 'azerty1234' };
 
       expect(output).toBeTruthy();
       expect(output).toEqual(expected);
@@ -46,26 +46,26 @@ describe('TemplateService', () => {
 
     it('should projection ignore template less fields', () => {
       const input = { username: 'azerty1234', templateLessField: 'templateLess' };
-      const template: DisplayRule[] = [{ Path: 'username', ui: { Path: 'password', component: 'textfield' } }];
+      const template: DisplayRule[] = [{ Path: 'username', ui: { Path: 'login', component: 'textfield' } }];
       const output = service.toProjected(input, template);
-      const expected = { password: 'azerty1234' };
+      const expected = { login: 'azerty1234' };
 
       expect(output).toBeTruthy();
       expect(output).toEqual(expected);
     });
 
     it('should convert to ui data with virtual projection', () => {
-      const input = { username: 'azerty1234', password: 'john' };
+      const input = { username: 'azerty1234', firstname: 'john' };
       const template: DisplayRule[] = [
         { Path: null, ui: { Path: 'credentials', component: 'group' } },
-        { Path: 'username', ui: { Path: 'credentials.password', component: 'textfield' } },
-        { Path: 'password', ui: { Path: 'credentials.login', component: 'textfield' } },
+        { Path: 'username', ui: { Path: 'credentials.firstname', component: 'textfield' } },
+        { Path: 'firstname', ui: { Path: 'credentials.login', component: 'textfield' } },
       ];
       const output = service.toProjected(input, template);
       const expected = {
         credentials: {
           login: 'john',
-          password: 'azerty1234',
+          firstname: 'azerty1234',
         },
       };
 
@@ -119,8 +119,8 @@ describe('TemplateService', () => {
     });
 
     it('should convert to original data with simple projection', () => {
-      const input = { password: 'azerty1234' };
-      const template: DisplayRule[] = [{ Path: 'username', ui: { Path: 'password', component: 'textfield' } }];
+      const input = { foo: 'azerty1234' };
+      const template: DisplayRule[] = [{ Path: 'username', ui: { Path: 'foo', component: 'textfield' } }];
       const output = service.toOriginal(input, template);
 
       expect(output).toBeTruthy();
@@ -128,8 +128,8 @@ describe('TemplateService', () => {
     });
 
     it('should projection ignore template less fields', () => {
-      const input = { password: 'azerty1234', templateLessField: 'templateLess' };
-      const template: DisplayRule[] = [{ Path: 'username', ui: { Path: 'password', component: 'textfield' } }];
+      const input = { foo: 'azerty1234', templateLessField: 'templateLess' };
+      const template: DisplayRule[] = [{ Path: 'username', ui: { Path: 'foo', component: 'textfield' } }];
       const output = service.toOriginal(input, template);
 
       expect(output).toBeTruthy();
@@ -140,15 +140,15 @@ describe('TemplateService', () => {
       const input = {
         credentials: {
           login: 'john',
-          password: 'azerty1234',
+          foo: 'azerty1234',
         },
       };
       const template: DisplayRule[] = [
         { Path: null, ui: { Path: 'credentials', component: 'group' } },
-        { Path: 'username', ui: { Path: 'credentials.password', component: 'textfield' } },
-        { Path: 'password', ui: { Path: 'credentials.login', component: 'textfield' } },
+        { Path: 'username', ui: { Path: 'credentials.foo', component: 'textfield' } },
+        { Path: 'foo', ui: { Path: 'credentials.login', component: 'textfield' } },
       ];
-      const expected = { username: 'azerty1234', password: 'john' };
+      const expected = { username: 'azerty1234', foo: 'john' };
       const output = service.toOriginal(input, template);
 
       expect(output).toBeTruthy();
