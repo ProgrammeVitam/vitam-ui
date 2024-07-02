@@ -42,7 +42,7 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Observable, of } from 'rxjs';
 
 import { input } from '../../../../../testing/src/helpers';
-import { CommonTooltipComponent } from '../common-tooltip/common-tooltip.module';
+import { CommonTooltipComponent } from '../common-tooltip/common-tooltip.component';
 import { VitamuiRepeatableInputComponent } from './vitamui-repeatable-input.component';
 
 let component: VitamuiRepeatableInputComponent;

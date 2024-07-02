@@ -60,6 +60,8 @@ import {
 import { environment } from '../../../../environments/environment';
 import { ArchiveCollectService } from '../archive-collect.service';
 import { ArchivePreviewComponent } from './archive-preview.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { MatLegacySnackBarModule } from '@angular/material/legacy-snack-bar';
 
 describe('ArchivePreviewComponent', () => {
   let component: ArchivePreviewComponent;
@@ -105,6 +107,8 @@ describe('ArchivePreviewComponent', () => {
         MatIconModule,
         BrowserAnimationsModule,
         TranslateModule.forRoot(),
+        HttpClientTestingModule,
+        MatLegacySnackBarModule,
         ArchivePreviewComponent,
         MockTruncatePipe,
         MockUnitI18nPipe,

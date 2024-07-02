@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, forwardRef, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { DisplayObject } from '../../models';
 import { internationalizedKeys } from '../../services/display-object-helper.service';
 import { FavoriteEntryService } from '../../services/favorite-entry.service';
@@ -44,7 +44,6 @@ import { EmptyPipe } from '../../../pipes/empty.pipe';
 import { TranslateModule } from '@ngx-translate/core';
 import { PrimitiveComponent } from '../primitive/primitive.component';
 import { ListComponent } from '../list/list.component';
-import { ObjectViewerModule } from '../../object-viewer.module';
 import { AccordionComponent } from '../../../components/accordion/accordion.component';
 import { DataComponent } from '../../../components/data/data.component';
 import { NgFor, NgIf, NgSwitch, NgSwitchCase, NgTemplateOutlet } from '@angular/common';
@@ -62,8 +61,7 @@ import { NgFor, NgIf, NgSwitch, NgSwitchCase, NgTemplateOutlet } from '@angular/
     AccordionComponent,
     NgSwitch,
     NgSwitchCase,
-    ObjectViewerModule,
-    ListComponent,
+    forwardRef(() => ListComponent),
     PrimitiveComponent,
     TranslateModule,
     EmptyPipe,

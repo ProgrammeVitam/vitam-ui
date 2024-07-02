@@ -36,7 +36,7 @@
  */
 
 import { TranslateModule } from '@ngx-translate/core';
-import { LevelInputComponent } from './level-input.module';
+import { LevelInputComponent } from './level-input.component';
 
 describe('LevelInputComponent', () => {
   let levelInputModule: LevelInputComponent;

@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Input, OnChanges, OnDestroy, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, forwardRef, Input, OnChanges, OnDestroy, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
 import {
   MatLegacyDialog as MatDialog,
   MatLegacyDialogConfig as MatDialogConfig,
@@ -15,12 +15,11 @@ import { AppendStarPipe } from '../../required.pipe';
 import { EmptyPipe } from '../../../pipes/empty.pipe';
 import { TranslateModule } from '@ngx-translate/core';
 import { PrimitiveEditorComponent } from '../primitive-editor/primitive-editor.component';
-import { ListEditorComponent } from '../list-editor/list-editor.component';
-import { ObjectEditorModule } from '../../object-editor.module';
 import { MatLegacyMenuModule } from '@angular/material/legacy-menu';
 import { VitamuiMenuButtonComponent } from '../../../components/vitamui-menu-button/vitamui-menu-button.component';
 import { AccordionComponent } from '../../../components/accordion/accordion.component';
 import { NgFor, NgIf, NgSwitch, NgSwitchCase, NgTemplateOutlet } from '@angular/common';
+import { ListEditorComponent } from '../list-editor/list-editor.component';
 
 @Component({
   selector: 'vitamui-common-group-editor',
@@ -36,13 +35,12 @@ import { NgFor, NgIf, NgSwitch, NgSwitchCase, NgTemplateOutlet } from '@angular/
     NgTemplateOutlet,
     NgSwitch,
     NgSwitchCase,
-    ObjectEditorModule,
-    ListEditorComponent,
     PrimitiveEditorComponent,
     MatLegacyDialogModule,
     TranslateModule,
     EmptyPipe,
     AppendStarPipe,
+    forwardRef(() => ListEditorComponent),
   ],
 })
 export class GroupEditorComponent implements OnChanges, AfterViewInit, OnDestroy {

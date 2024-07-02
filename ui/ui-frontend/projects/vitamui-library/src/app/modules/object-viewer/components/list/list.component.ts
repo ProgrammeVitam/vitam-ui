@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, forwardRef, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { DisplayObject } from '../../models';
 import { FavoriteEntryService } from '../../services/favorite-entry.service';
 import { TypeService } from '../../services/type.service';
@@ -42,16 +42,15 @@ import { DisplayObjectType } from '../../types';
 import { TranslateModule } from '@ngx-translate/core';
 import { DataComponent } from '../../../components/data/data.component';
 import { PrimitiveComponent } from '../primitive/primitive.component';
-import { ObjectViewerModule } from '../../object-viewer.module';
 import { GroupComponent } from '../group/group.component';
-import { NgIf, NgFor } from '@angular/common';
+import { NgFor, NgIf } from '@angular/common';
 
 @Component({
   selector: 'vitamui-common-list',
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.scss'],
   standalone: true,
-  imports: [NgIf, NgFor, GroupComponent, ObjectViewerModule, PrimitiveComponent, DataComponent, TranslateModule],
+  imports: [NgIf, NgFor, forwardRef(() => GroupComponent), PrimitiveComponent, DataComponent, TranslateModule],
 })
 export class ListComponent implements OnChanges {
   @Input() displayObject: DisplayObject;

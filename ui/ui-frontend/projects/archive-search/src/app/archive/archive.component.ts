@@ -38,7 +38,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
-import { TranslateService, TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import {
@@ -48,10 +48,10 @@ import {
   ExternalParametersService,
   GlobalEventService,
   Logger,
+  ResizeSidebarDirective,
   SchemaService,
   SidenavPage,
   Unit,
-  ResizeSidebarDirective,
   VitamuiTitleBreadcrumbComponent,
 } from 'vitamui-library';
 import { ArchiveSharedDataService } from '../core/archive-shared-data.service';
@@ -61,7 +61,7 @@ import { ArchiveSearchComponent } from './archive-search/archive-search.componen
 import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
 import { ArchivePreviewComponent } from './archive-preview/archive-preview.component';
 import { FilingHoldingSchemeComponent } from './filing-holding-scheme/filing-holding-scheme.component';
-import { NgIf, NgClass } from '@angular/common';
+import { NgClass, NgIf } from '@angular/common';
 import { MatSidenavModule } from '@angular/material/sidenav';
 
 @Component({
@@ -76,10 +76,10 @@ import { MatSidenavModule } from '@angular/material/sidenav';
     FilingHoldingSchemeComponent,
     NgClass,
     ArchivePreviewComponent,
-    VitamuiTitleBreadcrumbComponent,
     MatLegacyTooltipModule,
     ArchiveSearchComponent,
     TranslateModule,
+    VitamuiTitleBreadcrumbComponent,
   ],
 })
 export class ArchiveComponent extends SidenavPage<any> implements OnInit, OnDestroy {

@@ -48,13 +48,19 @@ import { TranslateModule } from '@ngx-translate/core';
 
 // import { FlowValidators } from '../../../flow/flow.validators';
 import { WINDOW_LOCATION } from '../../../injection-tokens';
-import { EmailsInputModule } from '../emails-input/emails-input.module';
 import { MultipleEmailInputComponent } from './multiple-email-input.component';
 
 @Component({
   template: ` <vitamui-common-multiple-email-input [(ngModel)]="value" [label]="label"></vitamui-common-multiple-email-input> `,
   standalone: true,
-  imports: [OverlayModule, FormsModule, ReactiveFormsModule, MatProgressSpinnerModule, EmailsInputModule, HttpClientTestingModule],
+  imports: [
+    OverlayModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatProgressSpinnerModule,
+    HttpClientTestingModule,
+    MultipleEmailInputComponent,
+  ],
 })
 class TesthostComponent {
   value: string[];
@@ -81,7 +87,6 @@ describe('MultipleEmailInputComponent', () => {
         FormsModule,
         ReactiveFormsModule,
         MatProgressSpinnerModule,
-        EmailsInputModule,
         BrowserAnimationsModule,
         HttpClientTestingModule,
         TranslateModule.forRoot(),

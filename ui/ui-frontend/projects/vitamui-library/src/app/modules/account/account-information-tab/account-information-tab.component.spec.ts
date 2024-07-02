@@ -41,8 +41,8 @@ import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 
 import { NavbarStubComponent, VitamUIFieldErrorStubComponent } from '../../../../../testing/src/public_api';
-import { EditableFieldComponent } from '../../components/editable-field/editable-field.module';
-import { SlideToggleComponent } from '../../components/slide-toggle/slide-toggle.module';
+import { EditableFieldComponent } from '../../components/editable-field/editable-field.component';
+import { SlideToggleComponent } from '../../components/slide-toggle/slide-toggle.component';
 import { WINDOW_LOCATION } from '../../injection-tokens';
 import { AccountService } from '../account.service';
 import { AccountInformationTabComponent } from './account-information-tab.component';

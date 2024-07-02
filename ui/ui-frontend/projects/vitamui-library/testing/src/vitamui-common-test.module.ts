@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 /* eslint-disable max-classes-per-file */
-import { Component, Directive, EventEmitter, forwardRef, Input, Output, Pipe, PipeTransform } from '@angular/core';
+import { Component, Directive, EventEmitter, forwardRef, Input, NgModule, Output, Pipe, PipeTransform } from '@angular/core';
 import { AsyncValidatorFn, ControlValueAccessor, NG_VALUE_ACCESSOR, ValidatorFn } from '@angular/forms';
 
 @Component({
@@ -444,3 +444,71 @@ export class RowCollapseStubDirective {
 export class RowCollapseTriggerForStubDirective {
   @Input() vitamuiCommonRowCollapseTriggerFor: any;
 }
+
+@NgModule({
+  imports: [
+    ApplicationSelectContentStubComponent,
+    VitamUICustomerSelectStubComponent,
+    VitamUIDurationInputStubComponent,
+    VitamUIEditableButtonToggleStubComponent,
+    VitamUIEditableEmailInputStubComponent,
+    VitamUIEditableFileStubComponent,
+    VitamUIEditableInputStubComponent,
+    VitamUIEditableOptionStubComponent,
+    VitamUIEditableSelectStubComponent,
+    VitamUIAutocompleteMultiSelectStubComponent,
+    VitamUIEditableTextareaStubComponent,
+    VitamUIEditableToggleGroupStubComponent,
+    VitamUIFieldErrorStubComponent,
+    VitamUIInputErrorStubComponent,
+    VitamUIInputPositiveNumberStubComponent,
+    VitamUIInputStubComponent,
+    VitamUIListInputStubComponent,
+    VitamUISlideToggleStubComponent,
+    VitamUITenantSelectStubComponent,
+    VitamUITextareaStubComponent,
+    EditableLevelInputStubComponent,
+    InfiniteScrollStubDirective,
+    NavbarStubComponent,
+    RowCollapseStubDirective,
+    RowCollapseTriggerForStubDirective,
+    StepperStubComponent,
+    StrongifyStubPipe,
+    TruncateStubPipe,
+    TranslateStubPipe,
+    DateTimeStubPipe,
+  ],
+  exports: [
+    ApplicationSelectContentStubComponent,
+    VitamUICustomerSelectStubComponent,
+    VitamUIDurationInputStubComponent,
+    VitamUIEditableButtonToggleStubComponent,
+    VitamUIEditableEmailInputStubComponent,
+    VitamUIEditableFileStubComponent,
+    VitamUIEditableInputStubComponent,
+    VitamUIEditableOptionStubComponent,
+    VitamUIEditableSelectStubComponent,
+    VitamUIAutocompleteMultiSelectStubComponent,
+    VitamUIEditableTextareaStubComponent,
+    VitamUIEditableToggleGroupStubComponent,
+    VitamUIFieldErrorStubComponent,
+    VitamUIInputErrorStubComponent,
+    VitamUIInputPositiveNumberStubComponent,
+    VitamUIInputStubComponent,
+    VitamUIListInputStubComponent,
+    VitamUISlideToggleStubComponent,
+    VitamUITenantSelectStubComponent,
+    VitamUITextareaStubComponent,
+    EditableLevelInputStubComponent,
+    InfiniteScrollStubDirective,
+    NavbarStubComponent,
+    RowCollapseStubDirective,
+    RowCollapseTriggerForStubDirective,
+    StepperStubComponent,
+    StrongifyStubPipe,
+    TruncateStubPipe,
+    TranslateStubPipe,
+    DateTimeStubPipe,
+  ],
+})
+export class VitamUICommonTestModule {}

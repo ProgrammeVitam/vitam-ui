@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, forwardRef, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { FavoriteEntryService } from '../../../object-viewer/services/favorite-entry.service';
 import { DisplayObjectType } from '../../../object-viewer/types';
 import { EditObject } from '../../models/edit-object.model';
@@ -8,9 +8,8 @@ import { TranslateModule } from '@ngx-translate/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { VitamuiRepeatableInputComponent } from '../../../components/vitamui-repeatable-input/vitamui-repeatable-input.component';
 import { PrimitiveEditorComponent } from '../primitive-editor/primitive-editor.component';
-import { ObjectEditorModule } from '../../object-editor.module';
-import { GroupEditorComponent } from '../group-editor/group-editor.component';
 import { NgClass, NgFor, NgIf, NgTemplateOutlet } from '@angular/common';
+import { GroupEditorComponent } from '../group-editor/group-editor.component';
 
 @Component({
   selector: 'vitamui-common-list-editor',
@@ -22,8 +21,6 @@ import { NgClass, NgFor, NgIf, NgTemplateOutlet } from '@angular/common';
     NgClass,
     NgTemplateOutlet,
     NgFor,
-    GroupEditorComponent,
-    ObjectEditorModule,
     PrimitiveEditorComponent,
     VitamuiRepeatableInputComponent,
     FormsModule,
@@ -31,6 +28,7 @@ import { NgClass, NgFor, NgIf, NgTemplateOutlet } from '@angular/common';
     TranslateModule,
     EmptyPipe,
     AppendStarPipe,
+    forwardRef(() => GroupEditorComponent),
   ],
 })
 export class ListEditorComponent implements OnChanges {
