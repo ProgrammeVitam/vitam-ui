@@ -34,14 +34,14 @@ import fr.gouv.vitamui.collect.external.server.service.TransactionExternalServic
 import fr.gouv.vitamui.commons.api.domain.IdDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
@@ -56,9 +56,7 @@ import static org.mockito.Mockito.verify;
 @WebMvcTest(controllers = { TransactionExternalController.class })
 class TransactionExternalControllerTest extends ApiCollectExternalControllerTest<IdDto> {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
-        TransactionExternalControllerTest.class
-    );
+    private static final Logger LOGGER = LoggerFactory.getLogger(TransactionExternalControllerTest.class);
 
     @MockBean
     private TransactionExternalService transactionExternalService;
@@ -86,7 +84,7 @@ class TransactionExternalControllerTest extends ApiCollectExternalControllerTest
     }
 
     @Override
-    protected VitamUILogger getLog() {
+    protected Logger getLog() {
         return LOGGER;
     }
 

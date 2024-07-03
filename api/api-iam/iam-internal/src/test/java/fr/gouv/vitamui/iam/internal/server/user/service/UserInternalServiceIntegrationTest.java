@@ -6,16 +6,13 @@ import fr.gouv.vitamui.commons.api.domain.QueryDto;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
 import fr.gouv.vitamui.commons.api.enums.UserTypeEnum;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.logbook.common.EventType;
 import fr.gouv.vitamui.commons.logbook.dao.EventRepository;
 import fr.gouv.vitamui.commons.logbook.domain.Event;
-import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
-import fr.gouv.vitamui.commons.mongo.repository.impl.VitamUIRepositoryImpl;
 import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
-import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
+import fr.gouv.vitamui.commons.test.VitamClientTestConfig;
 import fr.gouv.vitamui.commons.test.utils.TestUtils;
 import fr.gouv.vitamui.commons.utils.VitamUIUtils;
 import fr.gouv.vitamui.iam.common.enums.OtpEnum;
@@ -30,10 +27,8 @@ import fr.gouv.vitamui.iam.internal.server.customer.dao.CustomerRepository;
 import fr.gouv.vitamui.iam.internal.server.customer.domain.Customer;
 import fr.gouv.vitamui.iam.internal.server.group.dao.GroupRepository;
 import fr.gouv.vitamui.iam.internal.server.group.service.GroupInternalService;
-import fr.gouv.vitamui.iam.internal.server.idp.service.SpMetadataGenerator;
 import fr.gouv.vitamui.iam.internal.server.logbook.service.AbstractLogbookIntegrationTest;
 import fr.gouv.vitamui.iam.internal.server.logbook.service.IamLogbookService;
-import fr.gouv.vitamui.iam.internal.server.owner.dao.OwnerRepository;
 import fr.gouv.vitamui.iam.internal.server.profile.dao.ProfileRepository;
 import fr.gouv.vitamui.iam.internal.server.profile.service.ProfileInternalService;
 import fr.gouv.vitamui.iam.internal.server.security.IamAuthentificationService;
@@ -47,19 +42,21 @@ import fr.gouv.vitamui.iam.internal.server.user.dao.UserRepository;
 import fr.gouv.vitamui.iam.internal.server.user.domain.User;
 import fr.gouv.vitamui.iam.internal.server.utils.IamServerUtilsTest;
 import org.bson.Document;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Arrays;
 import java.util.Calendar;
@@ -79,12 +76,11 @@ import static org.mockito.Mockito.when;
  * Class.
  *
  */
-@RunWith(SpringRunner.class)
-@EnableMongoRepositories(
-    basePackageClasses = { UserRepository.class, CustomSequenceRepository.class, TokenRepository.class },
-    repositoryBaseClass = VitamUIRepositoryImpl.class
-)
-public final class UserInternalServiceIntegTest extends AbstractLogbookIntegrationTest {
+@SpringBootTest
+@ExtendWith(SpringExtension.class)
+@ActiveProfiles("test")
+@Import(VitamClientTestConfig.class)
+public final class UserInternalServiceIntegrationTest extends AbstractLogbookIntegrationTest {
 
     private static final String TOKEN_VALUE = "TOK1234567890";
 
@@ -98,8 +94,15 @@ public final class UserInternalServiceIntegTest extends AbstractLogbookIntegrati
 
     private UserInternalService internalUserService;
 
-    @MockBean
-    private SequenceGeneratorService sequenceGeneratorService;
+    private CustomerRepository customerRepository;
+
+    private IamAuthentificationService iamAuthentificationService;
+
+    private GroupInternalService groupInternalService;
+
+    private InternalHttpContext internalHttpContext;
+
+    private AddressService addressService;
 
     @Autowired
     private UserRepository userRepository;
@@ -113,66 +116,33 @@ public final class UserInternalServiceIntegTest extends AbstractLogbookIntegrati
     @Autowired
     private EventRepository eventRepository;
 
-    private CustomerRepository customerRepository;
-
-    private IamAuthentificationService iamAuthentificationService;
-
-    private GroupInternalService groupInternalService;
-
-    private ProfileInternalService internalProfileService;
+    @MockBean
+    private SequenceGeneratorService sequenceGeneratorService;
 
     @MockBean
     private TenantRepository tenantRepository;
 
     @MockBean
-    private ConnectionHistoryService connectionHistoryService;
-
-    private InternalHttpContext internalHttpContext;
-
-    private ProfileRepository profilRepository;
-
-    private SubrogationRepository subrogationRepository;
-
-    @MockBean
     private GroupRepository groupRepository;
-
-    @MockBean
-    private ProfileRepository profileRepository;
 
     @Autowired
     private UserConverter userConverter;
 
     @MockBean
-    private OwnerRepository ownerRepository;
-
-    @MockBean
-    private SpMetadataGenerator spMetadataGenerator;
-
-    private AddressService addressService;
-
-    @Mock
-    private VitamUILogger logger;
-
-    @MockBean
     private ApplicationInternalService applicationInternalService;
 
-    private UserExportService userExportService;
-
-    private UserInfoInternalService userInfoInternalService;
-
-    @Before
+    @BeforeEach
     public void setUp() throws NoSuchFieldException, SecurityException, Exception {
-        ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
         groupInternalService = mock(GroupInternalService.class);
-        internalProfileService = mock(ProfileInternalService.class);
+        ProfileInternalService internalProfileService = mock(ProfileInternalService.class);
         internalHttpContext = mock(InternalHttpContext.class);
         customerRepository = mock(CustomerRepository.class);
-        profilRepository = mock(ProfileRepository.class);
-        subrogationRepository = mock(SubrogationRepository.class);
+        ProfileRepository profilRepository = mock(ProfileRepository.class);
+        SubrogationRepository subrogationRepository = mock(SubrogationRepository.class);
         addressService = mock(AddressService.class);
-        userExportService = mock(UserExportService.class);
-        userInfoInternalService = mock(UserInfoInternalService.class);
-        connectionHistoryService = mock(ConnectionHistoryService.class);
+        UserExportService userExportService = mock(UserExportService.class);
+        UserInfoInternalService userInfoInternalService = mock(UserInfoInternalService.class);
+        ConnectionHistoryService connectionHistoryService = mock(ConnectionHistoryService.class);
         internalUserService = new UserInternalService(
             sequenceGeneratorService,
             userRepository,
@@ -207,21 +177,21 @@ public final class UserInternalServiceIntegTest extends AbstractLogbookIntegrati
         userRepository.deleteAll();
         eventRepository.deleteAll();
 
-        ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
         final Tenant tenant = new Tenant();
         tenant.setIdentifier(10);
-        Mockito.when(tenantRepository.findOne(ArgumentMatchers.any(Query.class))).thenReturn(
-            Optional.ofNullable(tenant)
-        );
+        Mockito.when(tenantRepository.findOne(ArgumentMatchers.any(Query.class))).thenReturn(Optional.of(tenant));
 
         // retrieve sequences
         internalUserService.getNextSequenceId(SequencesConstants.USER_IDENTIFIER);
     }
 
-    @Test(expected = BadCredentialsException.class)
+    @Test
     public void testGetUserProfileByTokenNoTokenInDatabase() {
         when(internalHttpContext.getUserToken()).thenReturn(TOKEN_VALUE);
-        iamAuthentificationService.getUserFromHttpContext(internalHttpContext);
+        Assertions.assertThrows(
+            BadCredentialsException.class,
+            () -> iamAuthentificationService.getUserFromHttpContext(internalHttpContext)
+        );
     }
 
     @Test
@@ -274,7 +244,7 @@ public final class UserInternalServiceIntegTest extends AbstractLogbookIntegrati
         assertThat(ev).isPresent();
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testCreateAnotherUserAdmin() {
         final UserDto userAdminCom = IamServerUtilsTest.buildUserDto(null, "admin@vitamui.com", GROUP_ID, CUSTOMER_ID);
         final UserDto userAdminFr = IamServerUtilsTest.buildUserDto(null, "admin@vitamui.fr", GROUP_ID, CUSTOMER_ID);
@@ -297,7 +267,7 @@ public final class UserInternalServiceIntegTest extends AbstractLogbookIntegrati
 
         final UserDto userAdminComDto = internalUserService.create(userAdminCom);
         assertThat(userAdminComDto.getIdentifier()).isNotBlank();
-        internalUserService.create(userAdminFr);
+        Assertions.assertThrows(IllegalArgumentException.class, () -> internalUserService.create(userAdminFr));
     }
 
     @Test

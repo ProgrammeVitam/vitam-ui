@@ -56,13 +56,13 @@ import fr.gouv.vitamui.commons.api.exception.ConflictException;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.exception.UnavailableServiceException;
 import fr.gouv.vitamui.commons.api.exception.UnexpectedDataException;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
 import fr.gouv.vitamui.referential.common.dto.FileFormatResponseDto;
 import fr.gouv.vitamui.referential.common.dto.xml.fileformat.FileFormat;
 import fr.gouv.vitamui.referential.common.dto.xml.fileformat.FileFormatCollection;
 import fr.gouv.vitamui.referential.common.dto.xml.fileformat.FileFormatXMLRootDto;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.multipart.MultipartFile;
@@ -82,7 +82,7 @@ import java.util.stream.Collectors;
 
 public class VitamFileFormatService {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(VitamFileFormatService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(VitamFileFormatService.class);
 
     private final AdminExternalClient adminExternalClient;
 

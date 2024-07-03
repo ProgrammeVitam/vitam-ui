@@ -2,7 +2,6 @@ package fr.gouv.vitamui.commons.test.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import fr.gouv.vitamui.commons.test.utils.AbstractServerIdentityBuilder;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -29,7 +28,7 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public abstract class AbstractRestControllerMockMvcTest extends AbstractServerIdentityBuilder {
+public abstract class AbstractRestControllerMockMvcTest {
 
     @Autowired
     protected MockMvc mockMvc;

@@ -42,9 +42,9 @@ import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.database.builder.request.multiple.SelectMultiQuery;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.model.RequestResponse;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.ws.rs.core.Response;
@@ -52,7 +52,7 @@ import javax.ws.rs.core.Response;
 public class ObjectService {
 
     @SuppressWarnings("unused")
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ObjectService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ObjectService.class);
 
     private final AccessExternalClient accessExternalClient;
 

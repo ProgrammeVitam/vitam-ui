@@ -41,9 +41,9 @@ import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaEltDto;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.InvalidCreateOperationVitamUIException;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 
@@ -86,7 +86,7 @@ import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.WAITING_RECA
 
 public final class MetadataSearchCriteriaUtils {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(MetadataSearchCriteriaUtils.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(MetadataSearchCriteriaUtils.class);
 
     public static final String SCOPED_FIELDS = "#management.";
     public static final String COMPUTED_FIELDS = "#computedInheritedRules.";

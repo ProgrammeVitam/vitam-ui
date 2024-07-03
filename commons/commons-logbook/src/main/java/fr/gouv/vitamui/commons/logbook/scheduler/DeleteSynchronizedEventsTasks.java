@@ -36,13 +36,13 @@
  */
 package fr.gouv.vitamui.commons.logbook.scheduler;
 
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.logbook.common.EventStatus;
 import fr.gouv.vitamui.commons.logbook.dao.EventRepository;
 import fr.gouv.vitamui.commons.logbook.domain.Event;
 import lombok.Getter;
 import lombok.Setter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -72,7 +72,7 @@ public class DeleteSynchronizedEventsTasks {
     @Value("${logbook.scheduling.deleteSynchronizedEventsTasks.ttlInDays:30}")
     private Long ttlInDays;
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(DeleteSynchronizedEventsTasks.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DeleteSynchronizedEventsTasks.class);
 
     public DeleteSynchronizedEventsTasks(final EventRepository eventRepository) {
         this.eventRepository = eventRepository;

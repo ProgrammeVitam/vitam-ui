@@ -38,6 +38,7 @@ package fr.gouv.vitamui.iam.internal.server.group.dao;
 
 import fr.gouv.vitamui.commons.mongo.repository.VitamUIRepository;
 import fr.gouv.vitamui.iam.internal.server.group.domain.Group;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
@@ -47,6 +48,7 @@ import java.util.Optional;
  *
  *
  */
+@Repository
 public interface GroupRepository extends VitamUIRepository<Group, String> {
     Optional<Group> findByIdAndCustomerId(String id, String customerId);
 

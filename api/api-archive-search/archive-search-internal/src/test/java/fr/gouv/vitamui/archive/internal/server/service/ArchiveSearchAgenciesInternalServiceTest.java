@@ -38,16 +38,15 @@ import fr.gouv.vitamui.archives.search.common.dto.AgencyResponseDto;
 import fr.gouv.vitamui.commons.api.dtos.CriteriaValue;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaEltDto;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts;
-import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import fr.gouv.vitamui.commons.vitam.api.administration.AgencyService;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -62,9 +61,7 @@ import static org.mockito.Mockito.when;
 @SuppressWarnings("unchecked")
 public class ArchiveSearchAgenciesInternalServiceTest {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
-        ArchiveSearchAgenciesInternalServiceTest.class
-    );
+    private static final Logger LOGGER = LoggerFactory.getLogger(ArchiveSearchAgenciesInternalServiceTest.class);
 
     @MockBean(name = "objectMapper")
     private ObjectMapper objectMapper;
@@ -77,7 +74,6 @@ public class ArchiveSearchAgenciesInternalServiceTest {
 
     @BeforeEach
     public void setUp() {
-        ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
         archiveSearchAgenciesInternalService = new ArchiveSearchAgenciesInternalService(objectMapper, agencyService);
     }
 

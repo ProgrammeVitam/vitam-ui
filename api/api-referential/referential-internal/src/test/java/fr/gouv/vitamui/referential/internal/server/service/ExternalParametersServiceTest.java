@@ -2,7 +2,6 @@ package fr.gouv.vitamui.referential.internal.server.service;
 
 import fr.gouv.vitamui.commons.api.domain.ExternalParametersDto;
 import fr.gouv.vitamui.commons.api.domain.ParameterDto;
-import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import fr.gouv.vitamui.iam.internal.client.ExternalParametersInternalRestClient;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import org.junit.jupiter.api.Assertions;
@@ -34,7 +33,6 @@ class ExternalParametersServiceTest {
 
     @BeforeEach
     public void setUp() {
-        ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
         externalParametersService = new ExternalParametersService(exteralParametersInternalRestClient, securityService);
     }
 

@@ -41,7 +41,6 @@ import fr.gouv.vitamui.commons.api.domain.GroupDto;
 import fr.gouv.vitamui.commons.api.domain.ProfileDto;
 import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
-import fr.gouv.vitamui.commons.test.utils.AbstractServerIdentityBuilder;
 import fr.gouv.vitamui.iam.common.enums.Application;
 import fr.gouv.vitamui.iam.internal.server.externalParameters.converter.ExternalParametersConverter;
 import fr.gouv.vitamui.iam.internal.server.externalParameters.dao.ExternalParametersRepository;
@@ -70,7 +69,7 @@ import static org.mockito.Mockito.when;
  *
  *
  */
-public class ExternalParametersInternalControllerTest extends AbstractServerIdentityBuilder {
+public class ExternalParametersInternalControllerTest {
 
     private ExternalParametersInternalController controller;
 

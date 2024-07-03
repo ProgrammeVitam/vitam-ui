@@ -37,8 +37,6 @@
 package fr.gouv.vitamui.referential.internal.server.rest;
 
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import fr.gouv.vitamui.referential.common.dto.AgencyDto;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
@@ -46,6 +44,8 @@ import fr.gouv.vitamui.referential.internal.server.agency.AgencyInternalService;
 import fr.gouv.vitamui.referential.internal.server.common.rest.ApiReferentialControllerTest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -54,7 +54,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 @WebMvcTest(controllers = { AgencyInternalController.class })
 public class AgencyInternalControllerTest extends ApiReferentialControllerTest<AgencyDto> {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(AgencyInternalControllerTest.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AgencyInternalControllerTest.class);
 
     @MockBean
     private AgencyInternalService agencyInternalService;
@@ -73,7 +73,7 @@ public class AgencyInternalControllerTest extends ApiReferentialControllerTest<A
     }
 
     @Override
-    protected VitamUILogger getLog() {
+    protected Logger getLog() {
         return LOGGER;
     }
 

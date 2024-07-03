@@ -36,13 +36,17 @@
  */
 package fr.gouv.vitamui.commons.rest.client;
 
-import fr.gouv.vitamui.commons.api.domain.*;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.commons.api.domain.DirectionDto;
+import fr.gouv.vitamui.commons.api.domain.IdDto;
+import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
+import fr.gouv.vitamui.commons.api.domain.RequestParamDto;
+import fr.gouv.vitamui.commons.api.domain.ResultsDto;
 import fr.gouv.vitamui.commons.utils.ParameterizedTypeReferenceFactory;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.apache.http.client.utils.URIBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -63,9 +67,7 @@ public abstract class BasePaginatingAndSortingWebClient<C extends AbstractHttpCo
     private static final String CRITERIA_QUERY_PARAM = "criteria";
 
     @Autowired
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
-        BasePaginatingAndSortingWebClient.class
-    );
+    private static final Logger LOGGER = LoggerFactory.getLogger(BasePaginatingAndSortingWebClient.class);
 
     public BasePaginatingAndSortingWebClient(@Autowired final WebClient webClient, final String baseUrl) {
         super(webClient, baseUrl);

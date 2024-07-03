@@ -37,7 +37,6 @@
 package fr.gouv.vitamui.iam.external.client;
 
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
-import fr.gouv.vitamui.commons.test.utils.AbstractServerIdentityBuilder;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -56,7 +55,7 @@ import java.util.Map;
 import static org.junit.Assert.*;
 
 @RunWith(MockitoJUnitRunner.class)
-public class ExternalParametersExternalRestClientTest extends AbstractServerIdentityBuilder {
+public class ExternalParametersExternalRestClientTest {
 
     private ExternalParametersExternalRestClient externalParametersExternalRestClient;
 

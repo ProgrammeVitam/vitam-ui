@@ -5,13 +5,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitam.common.model.RequestResponseOK;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.api.exception.NotFoundException;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
-import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import org.junit.Assert;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.ws.rs.core.Response;
@@ -25,12 +23,7 @@ import static org.mockito.Mockito.spy;
 @RunWith(SpringRunner.class)
 public class VitamRestUtilsTest {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(VitamRestUtilsTest.class);
-
-    @BeforeClass
-    public static void setup() {
-        ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
-    }
+    private static final Logger LOGGER = LoggerFactory.getLogger(VitamRestUtilsTest.class);
 
     @Test
     public void testCheckResponseOk() throws IOException {

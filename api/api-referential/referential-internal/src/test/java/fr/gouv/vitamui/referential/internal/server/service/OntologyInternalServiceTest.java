@@ -34,6 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+
 package fr.gouv.vitamui.referential.internal.server.service;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -54,20 +55,18 @@ import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.ConflictException;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.api.exception.UnavailableServiceException;
-import fr.gouv.vitamui.commons.api.identity.ServerIdentityConfiguration;
 import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
 import fr.gouv.vitamui.referential.common.dto.OntologyDto;
 import fr.gouv.vitamui.referential.common.service.OntologyService;
 import fr.gouv.vitamui.referential.internal.server.ontology.OntologyConverter;
 import fr.gouv.vitamui.referential.internal.server.ontology.OntologyInternalService;
-import org.easymock.Capture;
-import org.easymock.EasyMock;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.powermock.api.easymock.PowerMock;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -78,42 +77,26 @@ import java.util.Map;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.easymock.EasyMock.capture;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.isA;
-import static org.easymock.EasyMock.mock;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
-@RunWith(PowerMockRunner.class)
-@PrepareForTest({ ServerIdentityConfiguration.class })
+@ExtendWith(SpringExtension.class)
 public class OntologyInternalServiceTest {
 
+    @Mock
     private OntologyService ontologyService;
-    private ObjectMapper objectMapper;
-    private OntologyConverter converter;
+
+    @Mock
     private LogbookService logbookService;
+
+    @InjectMocks
     private OntologyInternalService ontologyInternalService;
 
-    @Before
+    @BeforeEach
     public void setUp() {
-        objectMapper = new ObjectMapper();
-        objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-        converter = new OntologyConverter();
-        ontologyService = mock(OntologyService.class);
-        logbookService = mock(LogbookService.class);
+        ObjectMapper objectMapper = new ObjectMapper().disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+        OntologyConverter converter = new OntologyConverter();
         ontologyInternalService = new OntologyInternalService(ontologyService, objectMapper, converter, logbookService);
-
-        // Mock server identity for Logs when not using spring
-        PowerMock.suppress(PowerMock.constructor(ServerIdentityConfiguration.class));
-        PowerMock.mockStatic(ServerIdentityConfiguration.class);
-        ServerIdentityConfiguration serverIdentityConfigurationMock = PowerMock.createMock(
-            ServerIdentityConfiguration.class
-        );
-        expect(ServerIdentityConfiguration.getInstance()).andReturn(serverIdentityConfigurationMock).anyTimes();
-        expect(serverIdentityConfigurationMock.getLoggerMessagePrepend())
-            .andReturn("LOG TESTS ContextInternalServiceTest - ")
-            .anyTimes();
-        PowerMock.replay(ServerIdentityConfiguration.class);
-        PowerMock.replay(serverIdentityConfigurationMock);
     }
 
     @Test
@@ -121,14 +104,11 @@ public class OntologyInternalServiceTest {
         VitamContext vitamContext = new VitamContext(0);
         String identifier = "identifier";
 
-        expect(ontologyService.findOntologyById(isA(VitamContext.class), isA(String.class))).andReturn(
+        when(ontologyService.findOntologyById(any(VitamContext.class), any(String.class))).thenReturn(
             new RequestResponseOK<OntologyModel>().setHttpCode(200)
         );
-        EasyMock.replay(ontologyService);
 
-        assertThatCode(() -> {
-            ontologyInternalService.getOne(vitamContext, identifier);
-        }).doesNotThrowAnyException();
+        assertThatCode(() -> ontologyInternalService.getOne(vitamContext, identifier)).doesNotThrowAnyException();
     }
 
     @Test
@@ -136,14 +116,11 @@ public class OntologyInternalServiceTest {
         VitamContext vitamContext = new VitamContext(0);
         String identifier = "identifier";
 
-        expect(ontologyService.findOntologyById(isA(VitamContext.class), isA(String.class))).andReturn(
+        when(ontologyService.findOntologyById(any(VitamContext.class), any(String.class))).thenReturn(
             new RequestResponseOK<OntologyModel>().setHttpCode(400)
         );
-        EasyMock.replay(ontologyService);
 
-        assertThatCode(() -> {
-            ontologyInternalService.getOne(vitamContext, identifier);
-        }).doesNotThrowAnyException();
+        assertThatCode(() -> ontologyInternalService.getOne(vitamContext, identifier)).doesNotThrowAnyException();
     }
 
     @Test
@@ -152,42 +129,35 @@ public class OntologyInternalServiceTest {
         VitamContext vitamContext = new VitamContext(0);
         String identifier = "identifier";
 
-        expect(ontologyService.findOntologyById(isA(VitamContext.class), isA(String.class))).andThrow(
+        when(ontologyService.findOntologyById(any(VitamContext.class), any(String.class))).thenThrow(
             new VitamClientException("Exception thrown by vitam")
         );
-        EasyMock.replay(ontologyService);
 
-        assertThatCode(() -> {
-            ontologyInternalService.getOne(vitamContext, identifier);
-        }).isInstanceOf(InternalServerException.class);
+        assertThatCode(() -> ontologyInternalService.getOne(vitamContext, identifier)).isInstanceOf(
+            InternalServerException.class
+        );
     }
 
     @Test
     public void getAll_should_return_ok_when_vitamclient_ok() throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
 
-        expect(ontologyService.findOntologies(isA(VitamContext.class), isA(ObjectNode.class))).andReturn(
+        when(ontologyService.findOntologies(any(VitamContext.class), any(ObjectNode.class))).thenReturn(
             new RequestResponseOK<OntologyModel>().setHttpCode(200)
         );
-        EasyMock.replay(ontologyService);
 
-        assertThatCode(() -> {
-            ontologyInternalService.getAll(vitamContext);
-        }).doesNotThrowAnyException();
+        assertThatCode(() -> ontologyInternalService.getAll(vitamContext)).doesNotThrowAnyException();
     }
 
     @Test
     public void getAll_should_return_ok_when_vitamclient_400() throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
 
-        expect(ontologyService.findOntologies(isA(VitamContext.class), isA(ObjectNode.class))).andReturn(
+        when(ontologyService.findOntologies(any(VitamContext.class), any(ObjectNode.class))).thenReturn(
             new RequestResponseOK<OntologyModel>().setHttpCode(400)
         );
-        EasyMock.replay(ontologyService);
 
-        assertThatCode(() -> {
-            ontologyInternalService.getAll(vitamContext);
-        }).doesNotThrowAnyException();
+        assertThatCode(() -> ontologyInternalService.getAll(vitamContext)).doesNotThrowAnyException();
     }
 
     @Test
@@ -195,14 +165,11 @@ public class OntologyInternalServiceTest {
         throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
 
-        expect(ontologyService.findOntologies(isA(VitamContext.class), isA(ObjectNode.class))).andThrow(
+        when(ontologyService.findOntologies(any(VitamContext.class), any(ObjectNode.class))).thenThrow(
             new VitamClientException("Exception thrown by vitam")
         );
-        EasyMock.replay(ontologyService);
 
-        assertThatCode(() -> {
-            ontologyInternalService.getAll(vitamContext);
-        }).isInstanceOf(InternalServerException.class);
+        assertThatCode(() -> ontologyInternalService.getAll(vitamContext)).isInstanceOf(InternalServerException.class);
     }
 
     @Test
@@ -210,14 +177,11 @@ public class OntologyInternalServiceTest {
         VitamContext vitamContext = new VitamContext(0);
         OntologyDto ontologyDto = new OntologyDto();
 
-        expect(ontologyService.checkAbilityToCreateOntologyInVitam(isA(List.class), isA(VitamContext.class))).andReturn(
+        when(ontologyService.checkAbilityToCreateOntologyInVitam(any(List.class), any(VitamContext.class))).thenReturn(
             true
         );
-        EasyMock.replay(ontologyService);
 
-        assertThatCode(() -> {
-            ontologyInternalService.check(vitamContext, ontologyDto);
-        }).doesNotThrowAnyException();
+        assertThatCode(() -> ontologyInternalService.check(vitamContext, ontologyDto)).doesNotThrowAnyException();
     }
 
     @Test
@@ -225,14 +189,13 @@ public class OntologyInternalServiceTest {
         VitamContext vitamContext = new VitamContext(0);
         OntologyDto ontologyDto = new OntologyDto();
 
-        expect(ontologyService.checkAbilityToCreateOntologyInVitam(isA(List.class), isA(VitamContext.class))).andThrow(
+        when(ontologyService.checkAbilityToCreateOntologyInVitam(any(List.class), any(VitamContext.class))).thenThrow(
             new BadRequestException("Exception thrown by vitam")
         );
-        EasyMock.replay(ontologyService);
 
-        assertThatCode(() -> {
-            ontologyInternalService.check(vitamContext, ontologyDto);
-        }).isInstanceOf(BadRequestException.class);
+        assertThatCode(() -> ontologyInternalService.check(vitamContext, ontologyDto)).isInstanceOf(
+            BadRequestException.class
+        );
     }
 
     @Test
@@ -240,14 +203,13 @@ public class OntologyInternalServiceTest {
         VitamContext vitamContext = new VitamContext(0);
         OntologyDto ontologyDto = new OntologyDto();
 
-        expect(ontologyService.checkAbilityToCreateOntologyInVitam(isA(List.class), isA(VitamContext.class))).andThrow(
+        when(ontologyService.checkAbilityToCreateOntologyInVitam(any(List.class), any(VitamContext.class))).thenThrow(
             new UnavailableServiceException("Exception thrown by vitam")
         );
-        EasyMock.replay(ontologyService);
 
-        assertThatCode(() -> {
-            ontologyInternalService.check(vitamContext, ontologyDto);
-        }).isInstanceOf(UnavailableServiceException.class);
+        assertThatCode(() -> ontologyInternalService.check(vitamContext, ontologyDto)).isInstanceOf(
+            UnavailableServiceException.class
+        );
     }
 
     @Test
@@ -255,14 +217,11 @@ public class OntologyInternalServiceTest {
         VitamContext vitamContext = new VitamContext(0);
         OntologyDto ontologyDto = new OntologyDto();
 
-        expect(ontologyService.checkAbilityToCreateOntologyInVitam(isA(List.class), isA(VitamContext.class))).andThrow(
+        when(ontologyService.checkAbilityToCreateOntologyInVitam(any(List.class), any(VitamContext.class))).thenThrow(
             new ConflictException("Exception thrown by vitam")
         );
-        EasyMock.replay(ontologyService);
 
-        assertThatCode(() -> {
-            ontologyInternalService.check(vitamContext, ontologyDto);
-        }).doesNotThrowAnyException();
+        assertThatCode(() -> ontologyInternalService.check(vitamContext, ontologyDto)).doesNotThrowAnyException();
     }
 
     @Test
@@ -272,18 +231,15 @@ public class OntologyInternalServiceTest {
         OntologyDto ontologyDto = new OntologyDto();
         ontologyDto.setId("1");
 
-        expect(ontologyService.findOntologies(isA(VitamContext.class), isA(ObjectNode.class))).andReturn(
+        when(ontologyService.findOntologies(any(VitamContext.class), any(ObjectNode.class))).thenReturn(
             new RequestResponseOK<OntologyModel>().setHttpCode(200)
         );
 
-        expect(ontologyService.importOntologies(isA(VitamContext.class), isA(List.class))).andReturn(
+        when(ontologyService.importOntologies(any(VitamContext.class), any(List.class))).thenReturn(
             new RequestResponseOK().setHttpCode(200)
         );
-        EasyMock.replay(ontologyService);
 
-        assertThatCode(() -> {
-            ontologyInternalService.create(vitamContext, ontologyDto);
-        }).doesNotThrowAnyException();
+        assertThatCode(() -> ontologyInternalService.create(vitamContext, ontologyDto)).doesNotThrowAnyException();
     }
 
     @Test
@@ -293,14 +249,13 @@ public class OntologyInternalServiceTest {
         OntologyDto ontologyDto = new OntologyDto();
         ontologyDto.setId("1");
 
-        expect(ontologyService.findOntologies(isA(VitamContext.class), isA(ObjectNode.class))).andReturn(
+        when(ontologyService.findOntologies(any(VitamContext.class), any(ObjectNode.class))).thenReturn(
             new RequestResponseOK<OntologyModel>().setHttpCode(200)
         );
 
-        expect(ontologyService.importOntologies(isA(VitamContext.class), isA(List.class))).andReturn(
+        when(ontologyService.importOntologies(any(VitamContext.class), any(List.class))).thenReturn(
             new RequestResponseOK().setHttpCode(400)
         );
-        EasyMock.replay(ontologyService);
 
         assertThatThrownBy(() -> ontologyInternalService.create(vitamContext, ontologyDto)).isInstanceOf(
             BadRequestException.class
@@ -314,18 +269,17 @@ public class OntologyInternalServiceTest {
         OntologyDto ontologyDto = new OntologyDto();
         ontologyDto.setId("1");
 
-        expect(ontologyService.findOntologies(isA(VitamContext.class), isA(ObjectNode.class))).andReturn(
+        when(ontologyService.findOntologies(any(VitamContext.class), any(ObjectNode.class))).thenReturn(
             new RequestResponseOK<OntologyModel>().setHttpCode(200)
         );
 
-        expect(ontologyService.importOntologies(isA(VitamContext.class), isA(List.class))).andThrow(
+        when(ontologyService.importOntologies(any(VitamContext.class), any(List.class))).thenThrow(
             new AccessExternalClientException("Exception thrown by vitam")
         );
-        EasyMock.replay(ontologyService);
 
-        assertThatCode(() -> {
-            ontologyInternalService.create(vitamContext, ontologyDto);
-        }).isInstanceOf(InternalServerException.class);
+        assertThatCode(() -> ontologyInternalService.create(vitamContext, ontologyDto)).isInstanceOf(
+            InternalServerException.class
+        );
     }
 
     @Test
@@ -335,18 +289,17 @@ public class OntologyInternalServiceTest {
         OntologyDto ontologyDto = new OntologyDto();
         ontologyDto.setId("1");
 
-        expect(ontologyService.findOntologies(isA(VitamContext.class), isA(ObjectNode.class))).andReturn(
+        when(ontologyService.findOntologies(any(VitamContext.class), any(ObjectNode.class))).thenReturn(
             new RequestResponseOK<OntologyModel>().setHttpCode(200)
         );
 
-        expect(ontologyService.importOntologies(isA(VitamContext.class), isA(List.class))).andThrow(
+        when(ontologyService.importOntologies(any(VitamContext.class), any(List.class))).thenThrow(
             new IOException("Exception thrown by vitam")
         );
-        EasyMock.replay(ontologyService);
 
-        assertThatCode(() -> {
-            ontologyInternalService.create(vitamContext, ontologyDto);
-        }).isInstanceOf(InternalServerException.class);
+        assertThatCode(() -> ontologyInternalService.create(vitamContext, ontologyDto)).isInstanceOf(
+            InternalServerException.class
+        );
     }
 
     @Test
@@ -356,18 +309,17 @@ public class OntologyInternalServiceTest {
         OntologyDto ontologyDto = new OntologyDto();
         ontologyDto.setId("1");
 
-        expect(ontologyService.findOntologies(isA(VitamContext.class), isA(ObjectNode.class))).andReturn(
+        when(ontologyService.findOntologies(any(VitamContext.class), any(ObjectNode.class))).thenReturn(
             new RequestResponseOK<OntologyModel>().setHttpCode(200)
         );
 
-        expect(ontologyService.importOntologies(isA(VitamContext.class), isA(List.class))).andThrow(
+        when(ontologyService.importOntologies(any(VitamContext.class), any(List.class))).thenThrow(
             new InvalidParseOperationException("Exception thrown by vitam")
         );
-        EasyMock.replay(ontologyService);
 
-        assertThatCode(() -> {
-            ontologyInternalService.create(vitamContext, ontologyDto);
-        }).isInstanceOf(InternalServerException.class);
+        assertThatCode(() -> ontologyInternalService.create(vitamContext, ontologyDto)).isInstanceOf(
+            InternalServerException.class
+        );
     }
 
     @Test
@@ -376,18 +328,15 @@ public class OntologyInternalServiceTest {
         VitamContext vitamContext = new VitamContext(0);
         String identifier = "identifier";
 
-        expect(ontologyService.findOntologies(isA(VitamContext.class), isA(ObjectNode.class))).andReturn(
+        when(ontologyService.findOntologies(any(VitamContext.class), any(ObjectNode.class))).thenReturn(
             new RequestResponseOK().setHttpCode(200)
         );
 
-        expect(ontologyService.importOntologies(isA(VitamContext.class), isA(List.class))).andReturn(
+        when(ontologyService.importOntologies(any(VitamContext.class), any(List.class))).thenReturn(
             new RequestResponseOK().setHttpCode(200)
         );
-        EasyMock.replay(ontologyService);
 
-        assertThatCode(() -> {
-            ontologyInternalService.delete(vitamContext, identifier);
-        }).doesNotThrowAnyException();
+        assertThatCode(() -> ontologyInternalService.delete(vitamContext, identifier)).doesNotThrowAnyException();
     }
 
     @Test
@@ -396,18 +345,15 @@ public class OntologyInternalServiceTest {
         VitamContext vitamContext = new VitamContext(0);
         String identifier = "identifier";
 
-        expect(ontologyService.findOntologies(isA(VitamContext.class), isA(ObjectNode.class))).andReturn(
+        when(ontologyService.findOntologies(any(VitamContext.class), any(ObjectNode.class))).thenReturn(
             new RequestResponseOK().setHttpCode(200)
         );
 
-        expect(ontologyService.importOntologies(isA(VitamContext.class), isA(List.class))).andReturn(
+        when(ontologyService.importOntologies(any(VitamContext.class), any(List.class))).thenReturn(
             new RequestResponseOK().setHttpCode(400)
         );
-        EasyMock.replay(ontologyService);
 
-        assertThatCode(() -> {
-            ontologyInternalService.delete(vitamContext, identifier);
-        }).doesNotThrowAnyException();
+        assertThatCode(() -> ontologyInternalService.delete(vitamContext, identifier)).doesNotThrowAnyException();
     }
 
     @Test
@@ -416,18 +362,17 @@ public class OntologyInternalServiceTest {
         VitamContext vitamContext = new VitamContext(0);
         String identifier = "identifier";
 
-        expect(ontologyService.findOntologies(isA(VitamContext.class), isA(ObjectNode.class))).andReturn(
+        when(ontologyService.findOntologies(any(VitamContext.class), any(ObjectNode.class))).thenReturn(
             new RequestResponseOK().setHttpCode(200)
         );
 
-        expect(ontologyService.importOntologies(isA(VitamContext.class), isA(List.class))).andThrow(
+        when(ontologyService.importOntologies(any(VitamContext.class), any(List.class))).thenThrow(
             new AccessExternalClientException("Exception throw by vitam")
         );
-        EasyMock.replay(ontologyService);
 
-        assertThatCode(() -> {
-            ontologyInternalService.delete(vitamContext, identifier);
-        }).isInstanceOf(InternalServerException.class);
+        assertThatCode(() -> ontologyInternalService.delete(vitamContext, identifier)).isInstanceOf(
+            InternalServerException.class
+        );
     }
 
     @Test
@@ -436,18 +381,17 @@ public class OntologyInternalServiceTest {
         VitamContext vitamContext = new VitamContext(0);
         String identifier = "identifier";
 
-        expect(ontologyService.findOntologies(isA(VitamContext.class), isA(ObjectNode.class))).andReturn(
+        when(ontologyService.findOntologies(any(VitamContext.class), any(ObjectNode.class))).thenReturn(
             new RequestResponseOK().setHttpCode(200)
         );
 
-        expect(ontologyService.importOntologies(isA(VitamContext.class), isA(List.class))).andThrow(
+        when(ontologyService.importOntologies(any(VitamContext.class), any(List.class))).thenThrow(
             new IOException("Exception throw by vitam")
         );
-        EasyMock.replay(ontologyService);
 
-        assertThatCode(() -> {
-            ontologyInternalService.delete(vitamContext, identifier);
-        }).isInstanceOf(InternalServerException.class);
+        assertThatCode(() -> ontologyInternalService.delete(vitamContext, identifier)).isInstanceOf(
+            InternalServerException.class
+        );
     }
 
     @Test
@@ -456,18 +400,17 @@ public class OntologyInternalServiceTest {
         VitamContext vitamContext = new VitamContext(0);
         String identifier = "identifier";
 
-        expect(ontologyService.findOntologies(isA(VitamContext.class), isA(ObjectNode.class))).andReturn(
+        when(ontologyService.findOntologies(any(VitamContext.class), any(ObjectNode.class))).thenReturn(
             new RequestResponseOK().setHttpCode(200)
         );
 
-        expect(ontologyService.importOntologies(isA(VitamContext.class), isA(List.class))).andThrow(
+        when(ontologyService.importOntologies(any(VitamContext.class), any(List.class))).thenThrow(
             new InvalidParseOperationException("Exception throw by vitam")
         );
-        EasyMock.replay(ontologyService);
 
-        assertThatCode(() -> {
-            ontologyInternalService.delete(vitamContext, identifier);
-        }).isInstanceOf(InternalServerException.class);
+        assertThatCode(() -> ontologyInternalService.delete(vitamContext, identifier)).isInstanceOf(
+            InternalServerException.class
+        );
     }
 
     @Test
@@ -475,20 +418,16 @@ public class OntologyInternalServiceTest {
         throws AccessExternalClientException, IOException, InvalidParseOperationException, VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         String identifier = "identifier";
-        OntologyDto patchOntology = new OntologyDto();
 
-        expect(ontologyService.findOntologies(isA(VitamContext.class), isA(ObjectNode.class))).andReturn(
+        when(ontologyService.findOntologies(any(VitamContext.class), any(ObjectNode.class))).thenReturn(
             new RequestResponseOK<OntologyModel>().setHttpCode(200)
         );
 
-        expect(ontologyService.importOntologies(isA(VitamContext.class), isA(List.class))).andReturn(
+        when(ontologyService.importOntologies(any(VitamContext.class), any(List.class))).thenReturn(
             new RequestResponseOK().setHttpCode(200)
         );
-        EasyMock.replay(ontologyService);
 
-        assertThatCode(() -> {
-            ontologyInternalService.delete(vitamContext, identifier);
-        }).doesNotThrowAnyException();
+        assertThatCode(() -> ontologyInternalService.delete(vitamContext, identifier)).doesNotThrowAnyException();
     }
 
     @Test
@@ -496,20 +435,16 @@ public class OntologyInternalServiceTest {
         throws AccessExternalClientException, IOException, InvalidParseOperationException, VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         String identifier = "identifier";
-        OntologyDto patchOntology = new OntologyDto();
 
-        expect(ontologyService.findOntologies(isA(VitamContext.class), isA(ObjectNode.class))).andReturn(
+        when(ontologyService.findOntologies(any(VitamContext.class), any(ObjectNode.class))).thenReturn(
             new RequestResponseOK<OntologyModel>().setHttpCode(200)
         );
 
-        expect(ontologyService.importOntologies(isA(VitamContext.class), isA(List.class))).andReturn(
+        when(ontologyService.importOntologies(any(VitamContext.class), any(List.class))).thenReturn(
             new RequestResponseOK().setHttpCode(400)
         );
-        EasyMock.replay(ontologyService);
 
-        assertThatCode(() -> {
-            ontologyInternalService.delete(vitamContext, identifier);
-        }).doesNotThrowAnyException();
+        assertThatCode(() -> ontologyInternalService.delete(vitamContext, identifier)).doesNotThrowAnyException();
     }
 
     @Test
@@ -517,20 +452,18 @@ public class OntologyInternalServiceTest {
         throws AccessExternalClientException, IOException, InvalidParseOperationException, VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         String identifier = "identifier";
-        OntologyDto patchOntology = new OntologyDto();
 
-        expect(ontologyService.findOntologies(isA(VitamContext.class), isA(ObjectNode.class))).andReturn(
+        when(ontologyService.findOntologies(any(VitamContext.class), any(ObjectNode.class))).thenReturn(
             new RequestResponseOK<OntologyModel>().setHttpCode(200)
         );
 
-        expect(ontologyService.importOntologies(isA(VitamContext.class), isA(List.class))).andThrow(
+        when(ontologyService.importOntologies(any(VitamContext.class), any(List.class))).thenThrow(
             new AccessExternalClientException("Exception")
         );
-        EasyMock.replay(ontologyService);
 
-        assertThatCode(() -> {
-            ontologyInternalService.delete(vitamContext, identifier);
-        }).isInstanceOf(InternalServerException.class);
+        assertThatCode(() -> ontologyInternalService.delete(vitamContext, identifier)).isInstanceOf(
+            InternalServerException.class
+        );
     }
 
     @Test
@@ -538,20 +471,18 @@ public class OntologyInternalServiceTest {
         throws AccessExternalClientException, IOException, InvalidParseOperationException, VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         String identifier = "identifier";
-        OntologyDto patchOntology = new OntologyDto();
 
-        expect(ontologyService.findOntologies(isA(VitamContext.class), isA(ObjectNode.class))).andReturn(
+        when(ontologyService.findOntologies(any(VitamContext.class), any(ObjectNode.class))).thenReturn(
             new RequestResponseOK<OntologyModel>().setHttpCode(200)
         );
 
-        expect(ontologyService.importOntologies(isA(VitamContext.class), isA(List.class))).andThrow(
+        when(ontologyService.importOntologies(any(VitamContext.class), any(List.class))).thenThrow(
             new IOException("Exception")
         );
-        EasyMock.replay(ontologyService);
 
-        assertThatCode(() -> {
-            ontologyInternalService.delete(vitamContext, identifier);
-        }).isInstanceOf(InternalServerException.class);
+        assertThatCode(() -> ontologyInternalService.delete(vitamContext, identifier)).isInstanceOf(
+            InternalServerException.class
+        );
     }
 
     @Test
@@ -559,20 +490,18 @@ public class OntologyInternalServiceTest {
         throws AccessExternalClientException, IOException, InvalidParseOperationException, VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         String identifier = "identifier";
-        OntologyDto patchOntology = new OntologyDto();
 
-        expect(ontologyService.findOntologies(isA(VitamContext.class), isA(ObjectNode.class))).andReturn(
+        when(ontologyService.findOntologies(any(VitamContext.class), any(ObjectNode.class))).thenReturn(
             new RequestResponseOK<OntologyModel>().setHttpCode(200)
         );
 
-        expect(ontologyService.importOntologies(isA(VitamContext.class), isA(List.class))).andThrow(
+        when(ontologyService.importOntologies(any(VitamContext.class), any(List.class))).thenThrow(
             new InvalidParseOperationException("Exception")
         );
-        EasyMock.replay(ontologyService);
 
-        assertThatCode(() -> {
-            ontologyInternalService.delete(vitamContext, identifier);
-        }).isInstanceOf(InternalServerException.class);
+        assertThatCode(() -> ontologyInternalService.delete(vitamContext, identifier)).isInstanceOf(
+            InternalServerException.class
+        );
     }
 
     @Test
@@ -599,12 +528,12 @@ public class OntologyInternalServiceTest {
         ontologies.add(model);
         ontologies.add(model2);
 
-        expect(ontologyService.findOntologies(isA(VitamContext.class), isA(ObjectNode.class))).andReturn(
+        // Mocking behavior for findOntologies
+        when(ontologyService.findOntologies(any(VitamContext.class), any(ObjectNode.class))).thenReturn(
             new RequestResponseOK<OntologyModel>().addAllResults(ontologies).setHttpCode(200)
         );
 
         Map<String, Object> partialDto = new HashMap<>();
-
         partialDto.put("id", "1");
         partialDto.put("identifier", "identifier");
         partialDto.put("shortName", "vocabtext");
@@ -612,25 +541,30 @@ public class OntologyInternalServiceTest {
         partialDto.put("typeDetail", TypeDetail.STRING.toString());
         partialDto.put("stringSize", StringSize.SHORT.toString());
 
-        Capture<List<OntologyModel>> capturedOntologies = Capture.newInstance();
-        expect(ontologyService.importOntologies(isA(VitamContext.class), capture(capturedOntologies))).andReturn(null);
+        // Capturing argument passed to importOntologies
+        ArgumentCaptor<List<OntologyModel>> captor = ArgumentCaptor.forClass(List.class);
 
-        EasyMock.replay(ontologyService);
+        // Mocking behavior for importOntologies
+        when(ontologyService.importOntologies(any(VitamContext.class), captor.capture())).thenReturn(null);
 
-        final OntologyDto patchedOntology = ontologyInternalService.patch(vitamContext, partialDto);
+        // Calling the method under test
+        OntologyDto patchedOntology = ontologyInternalService.patch(vitamContext, partialDto);
 
-        assertThat(capturedOntologies.getValue().size()).isEqualTo(2);
+        // Assertions
+        List<OntologyModel> capturedOntologies = captor.getValue();
 
-        assertThat(capturedOntologies.getValue().get(0).getIdentifier()).isEqualTo("identifier");
-        assertThat(capturedOntologies.getValue().get(0).getShortName()).isEqualTo("vocabtext");
-        assertThat(capturedOntologies.getValue().get(0).getType()).isEqualTo(OntologyType.TEXT);
-        assertThat(capturedOntologies.getValue().get(0).getTypeDetail()).isEqualTo(TypeDetail.STRING);
-        assertThat(capturedOntologies.getValue().get(0).getStringSize()).isEqualTo(StringSize.SHORT);
+        assertThat(capturedOntologies.size()).isEqualTo(2);
 
-        assertThat(capturedOntologies.getValue().get(1).getIdentifier()).isEqualTo("2");
-        assertThat(capturedOntologies.getValue().get(1).getShortName()).isEqualTo("vocbool");
-        assertThat(capturedOntologies.getValue().get(1).getType()).isEqualTo(OntologyType.BOOLEAN);
-        assertThat(capturedOntologies.getValue().get(1).getTypeDetail()).isEqualTo(TypeDetail.BOOLEAN);
+        assertThat(capturedOntologies.get(0).getIdentifier()).isEqualTo("identifier");
+        assertThat(capturedOntologies.get(0).getShortName()).isEqualTo("vocabtext");
+        assertThat(capturedOntologies.get(0).getType()).isEqualTo(OntologyType.TEXT);
+        assertThat(capturedOntologies.get(0).getTypeDetail()).isEqualTo(TypeDetail.STRING);
+        assertThat(capturedOntologies.get(0).getStringSize()).isEqualTo(StringSize.SHORT);
+
+        assertThat(capturedOntologies.get(1).getIdentifier()).isEqualTo("2");
+        assertThat(capturedOntologies.get(1).getShortName()).isEqualTo("vocbool");
+        assertThat(capturedOntologies.get(1).getType()).isEqualTo(OntologyType.BOOLEAN);
+        assertThat(capturedOntologies.get(1).getTypeDetail()).isEqualTo(TypeDetail.BOOLEAN);
 
         assertThat(patchedOntology.getIdentifier()).isEqualTo("identifier");
         assertThat(patchedOntology.getId()).isEqualTo("1");
@@ -645,14 +579,13 @@ public class OntologyInternalServiceTest {
         VitamContext vitamContext = new VitamContext(0);
         String identifier = "identifier";
 
-        expect(logbookService.selectOperations(isA(JsonNode.class), isA(VitamContext.class))).andReturn(
+        when(logbookService.selectOperations(any(JsonNode.class), any(VitamContext.class))).thenReturn(
             new RequestResponseOK<LogbookOperation>().setHttpCode(200)
         );
-        EasyMock.replay(logbookService);
 
-        assertThatCode(() -> {
-            ontologyInternalService.findHistoryByIdentifier(vitamContext, identifier);
-        }).doesNotThrowAnyException();
+        assertThatCode(
+            () -> ontologyInternalService.findHistoryByIdentifier(vitamContext, identifier)
+        ).doesNotThrowAnyException();
     }
 
     @Test
@@ -660,14 +593,13 @@ public class OntologyInternalServiceTest {
         VitamContext vitamContext = new VitamContext(0);
         String identifier = "identifier";
 
-        expect(logbookService.selectOperations(isA(JsonNode.class), isA(VitamContext.class))).andReturn(
+        when(logbookService.selectOperations(any(JsonNode.class), any(VitamContext.class))).thenReturn(
             new RequestResponseOK<LogbookOperation>().setHttpCode(400)
         );
-        EasyMock.replay(logbookService);
 
-        assertThatCode(() -> {
-            ontologyInternalService.findHistoryByIdentifier(vitamContext, identifier);
-        }).doesNotThrowAnyException();
+        assertThatCode(
+            () -> ontologyInternalService.findHistoryByIdentifier(vitamContext, identifier)
+        ).doesNotThrowAnyException();
     }
 
     @Test
@@ -676,13 +608,12 @@ public class OntologyInternalServiceTest {
         VitamContext vitamContext = new VitamContext(0);
         String identifier = "identifier";
 
-        expect(logbookService.selectOperations(isA(JsonNode.class), isA(VitamContext.class))).andThrow(
+        when(logbookService.selectOperations(any(JsonNode.class), any(VitamContext.class))).thenThrow(
             new VitamClientException(("Exception throws by vitam"))
         );
-        EasyMock.replay(logbookService);
 
-        assertThatCode(() -> {
-            ontologyInternalService.findHistoryByIdentifier(vitamContext, identifier);
-        }).isInstanceOf(VitamClientException.class);
+        assertThatCode(() -> ontologyInternalService.findHistoryByIdentifier(vitamContext, identifier)).isInstanceOf(
+            VitamClientException.class
+        );
     }
 }

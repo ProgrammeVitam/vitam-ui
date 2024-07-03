@@ -42,8 +42,8 @@ import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOper
 import fr.gouv.vitam.common.database.builder.request.single.Select;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,7 +60,7 @@ import static fr.gouv.vitam.common.database.builder.query.QueryHelper.or;
 
 public class VitamQueryHelper {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(VitamQueryHelper.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(VitamQueryHelper.class);
 
     /* Operation types */
     public static final String AGENCY_IMPORT_OPERATION_TYPE = "IMPORT_AGENCIES.OK";

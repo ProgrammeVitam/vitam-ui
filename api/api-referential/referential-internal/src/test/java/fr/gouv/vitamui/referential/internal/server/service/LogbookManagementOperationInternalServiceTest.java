@@ -37,7 +37,6 @@ import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.RequestResponseOK;
 import fr.gouv.vitam.common.model.processing.ProcessDetail;
 import fr.gouv.vitamui.commons.api.enums.OperationActionStatus;
-import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import fr.gouv.vitamui.commons.vitam.api.administration.VitamOperationService;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamSearchRequestDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUIProcessDetailResponseDto;
@@ -70,7 +69,7 @@ public class LogbookManagementOperationInternalServiceTest {
     @Before
     public void setUp() {
         MockitoAnnotations.openMocks(this);
-        ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
+
         dummyData = new DummyData();
         logbookManagementOperationInternalService = new LogbookManagementOperationInternalService(
             objectMapper,

@@ -46,10 +46,10 @@ import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitamui.commons.api.exception.UnexpectedDataException;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.vitam.api.access.UnitService;
 import fr.gouv.vitamui.commons.vitam.api.model.UnitTypeEnum;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -62,7 +62,7 @@ import static fr.gouv.vitam.common.database.builder.query.VitamFieldsHelper.unit
 @Service
 public class UnitInternalService {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(UnitInternalService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(UnitInternalService.class);
 
     private final UnitService unitService;
 

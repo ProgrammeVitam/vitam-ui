@@ -39,14 +39,14 @@ package fr.gouv.vitamui.commons.rest.client;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.commons.utils.VitamUIUtils;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.server.ServletServerHttpRequest;
 
 import javax.servlet.http.HttpServletRequest;
@@ -64,7 +64,7 @@ public class ExternalHttpContext extends AbstractHttpContext {
 
     private static final long serialVersionUID = 56932902134844917L;
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ExternalHttpContext.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ExternalHttpContext.class);
 
     private String requestUri;
 

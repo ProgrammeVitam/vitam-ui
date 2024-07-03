@@ -47,8 +47,6 @@ import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.dtos.VitamUiOntologyDto;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.util.RestUtils;
 import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsResponseDto;
 import fr.gouv.vitamui.referential.common.dto.OntologyDto;
@@ -57,6 +55,8 @@ import fr.gouv.vitamui.referential.external.server.service.OntologyExternalServi
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -77,7 +77,7 @@ import java.util.Optional;
 @Setter
 public class OntologyExternalController {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(OntologyExternalController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(OntologyExternalController.class);
 
     private OntologyExternalService ontologyExternalService;
 

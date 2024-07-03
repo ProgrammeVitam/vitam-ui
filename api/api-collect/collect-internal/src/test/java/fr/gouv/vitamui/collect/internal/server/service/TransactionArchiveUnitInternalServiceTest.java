@@ -44,7 +44,6 @@ import fr.gouv.vitam.common.model.administration.AgenciesModel;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.archives.search.common.dto.VitamUIArchiveUnitResponseDto;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
-import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import fr.gouv.vitamui.commons.vitam.api.administration.AgencyService;
 import fr.gouv.vitamui.commons.vitam.api.collect.CollectService;
 import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
@@ -94,7 +93,6 @@ class TransactionArchiveUnitInternalServiceTest {
 
     @BeforeEach
     public void beforeEach() {
-        ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         transactionArchiveUnitInternalService = new TransactionArchiveUnitInternalService(
             collectService,

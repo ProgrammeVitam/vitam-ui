@@ -38,14 +38,14 @@ package fr.gouv.vitamui.cas.webflow.actions;
 
 import fr.gouv.vitamui.cas.util.Utils;
 import fr.gouv.vitamui.commons.api.CommonConstants;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import lombok.RequiredArgsConstructor;
 import org.apereo.cas.authentication.credential.UsernamePasswordCredential;
 import org.apereo.cas.authentication.principal.Principal;
 import org.apereo.cas.pm.web.flow.PasswordManagementWebflowConfigurer;
 import org.apereo.cas.ticket.registry.TicketRegistrySupport;
 import org.apereo.cas.web.support.WebUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.webflow.action.AbstractAction;
 import org.springframework.webflow.execution.Event;
 import org.springframework.webflow.execution.RequestContext;
@@ -59,7 +59,7 @@ import org.springframework.webflow.execution.RequestContextHolder;
 @RequiredArgsConstructor
 public class TriggerChangePasswordAction extends AbstractAction {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(TriggerChangePasswordAction.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(TriggerChangePasswordAction.class);
 
     public static final String EVENT_ID_CHANGE_PASSWORD = "changePassword";
     public static final String EVENT_ID_CONTINUE = "continue";

@@ -37,8 +37,6 @@
 package fr.gouv.vitamui.commons.rest.client;
 
 import fr.gouv.vitamui.commons.api.exception.ApplicationServerException;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.client.configuration.HttpPoolConfiguration;
 import fr.gouv.vitamui.commons.rest.client.configuration.ProxyProperties;
 import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
@@ -53,6 +51,8 @@ import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
 import io.netty.handler.timeout.ReadTimeoutHandler;
 import io.netty.handler.timeout.WriteTimeoutHandler;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.client.reactive.ClientHttpConnector;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.util.Assert;
@@ -85,7 +85,7 @@ import java.util.function.Function;
 
 public class BaseWebClientFactory implements WebClientFactory {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(BaseWebClientFactory.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(BaseWebClientFactory.class);
 
     private final WebClient webClient;
 

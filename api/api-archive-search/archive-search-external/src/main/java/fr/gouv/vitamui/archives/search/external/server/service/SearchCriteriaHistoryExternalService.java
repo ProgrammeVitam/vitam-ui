@@ -39,12 +39,12 @@ package fr.gouv.vitamui.archives.search.external.server.service;
 import fr.gouv.archive.internal.client.SearchCriteriaHistoryInternalRestClient;
 import fr.gouv.vitamui.archives.search.external.server.rest.SearchCriteriaHistoryExternalController;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaHistoryDto;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.iam.security.client.AbstractResourceClientService;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import lombok.Getter;
 import lombok.Setter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -63,9 +63,7 @@ import java.util.Optional;
 public class SearchCriteriaHistoryExternalService
     extends AbstractResourceClientService<SearchCriteriaHistoryDto, SearchCriteriaHistoryDto> {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
-        SearchCriteriaHistoryExternalController.class
-    );
+    private static final Logger LOGGER = LoggerFactory.getLogger(SearchCriteriaHistoryExternalController.class);
 
     private final SearchCriteriaHistoryInternalRestClient searchCriteriaHistoryInternalRestClient;
 

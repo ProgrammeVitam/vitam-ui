@@ -1,9 +1,7 @@
 package fr.gouv.vitamui.iam.common.utils;
 
 import com.nimbusds.jose.JWSAlgorithm;
-import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
-import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.pac4j.core.client.IndirectClient;
@@ -13,7 +11,9 @@ import org.pac4j.oidc.config.OidcConfiguration;
 import java.util.Map;
 import java.util.Optional;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Tests {@link Pac4jClientBuilder}.
@@ -28,11 +28,6 @@ public class Pac4jClientBuilderTest {
     private static final String SCOPE = "openid email";
     private static final JWSAlgorithm ALGORITHM = JWSAlgorithm.HS256;
     private static final Map CUSTOM_PARAMS = Map.of("prompt", "login");
-
-    @Before
-    public void setUp() {
-        ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
-    }
 
     @Ignore
     @Test

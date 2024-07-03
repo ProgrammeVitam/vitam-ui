@@ -38,8 +38,6 @@
 package fr.gouv.vitamui.ingest.internal.server.service;
 
 import fr.gouv.vitamui.commons.api.exception.IngestFileGenerationException;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.vitam.seda.LevelType;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.ingest.common.dto.ArchiveUnitDto;
@@ -55,6 +53,8 @@ import org.odftoolkit.simple.table.Cell;
 import org.odftoolkit.simple.table.Row;
 import org.odftoolkit.simple.table.Table;
 import org.odftoolkit.simple.text.Paragraph;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.util.CollectionUtils;
@@ -93,7 +93,7 @@ import java.util.stream.Collectors;
  */
 public class IngestGeneratorODTFile {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(IngestGeneratorODTFile.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(IngestGeneratorODTFile.class);
     public static final String FIRST_TITLE = "Bordereau de versement d'archives";
     public static final String SECOND_TITLE = "Détail des unités archivistiques de type répertoire et dossier:";
     private static final String NO_TEXT = "_ _ _ _";

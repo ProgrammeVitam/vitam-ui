@@ -39,9 +39,9 @@ import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.exception.RequestTimeOutException;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import io.swagger.annotations.Api;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -65,7 +65,7 @@ import static fr.gouv.vitamui.collect.common.rest.RestApi.VALIDATE_PATH;
 @Api(tags = "collect", value = "Préparation de versements")
 public class TransactionInternalController {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(TransactionInternalController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(TransactionInternalController.class);
     private final TransactionInternalService transactionInternalService;
 
     private final ExternalParametersService externalParametersService;

@@ -29,7 +29,6 @@ package fr.gouv.vitamui.referential.external.server.service;
 
 import fr.gouv.vitam.common.model.ProcessQuery;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
-import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import fr.gouv.vitamui.commons.vitam.api.dto.ProcessDetailDto;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import fr.gouv.vitamui.referential.internal.client.LogbookManagementOperationInternalRestClient;
@@ -57,7 +56,6 @@ public class LogbookManagementOperationExternalServiceTest extends ExternalServi
 
     @Before
     public void init() {
-        ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
         final String userCustomerId = "customerIdAllowed";
         mockSecurityContext(externalSecurityService, userCustomerId, 10);
         logbookManagementOperationExternalService = new LogbookManagementOperationExternalService(

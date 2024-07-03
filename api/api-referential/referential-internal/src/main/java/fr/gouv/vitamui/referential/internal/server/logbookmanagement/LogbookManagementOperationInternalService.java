@@ -34,21 +34,19 @@ import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.model.ProcessQuery;
 import fr.gouv.vitamui.commons.api.enums.OperationActionStatus;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.vitam.api.administration.VitamOperationService;
 import fr.gouv.vitamui.commons.vitam.api.dto.ProcessDetailDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUIProcessDetailResponseDto;
 import org.apache.commons.lang3.EnumUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class LogbookManagementOperationInternalService {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
-        LogbookManagementOperationInternalService.class
-    );
+    private static final Logger LOGGER = LoggerFactory.getLogger(LogbookManagementOperationInternalService.class);
     private static final String START_MAX_DATE = "30/12/2999";
     private static final String START_MIN_DATE = "01/01/1900";
 

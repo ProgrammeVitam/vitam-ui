@@ -40,11 +40,11 @@ package fr.gouv.vitamui.referential.external.client;
 import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.client.BaseWebClient;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
@@ -56,9 +56,7 @@ import java.util.Optional;
 
 public class ArchivalProfileUnitExternalWebClient extends BaseWebClient<ExternalHttpContext> {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
-        ArchivalProfileUnitExternalWebClient.class
-    );
+    private static final Logger LOGGER = LoggerFactory.getLogger(ArchivalProfileUnitExternalWebClient.class);
 
     public ArchivalProfileUnitExternalWebClient(final WebClient webClient, final String baseUrl) {
         super(webClient, baseUrl);

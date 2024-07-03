@@ -41,8 +41,6 @@ import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.api.utils.EnumUtils;
 import fr.gouv.vitamui.commons.rest.CrudController;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
@@ -53,6 +51,8 @@ import io.swagger.annotations.Api;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.Assert;
@@ -81,9 +81,7 @@ import java.util.Optional;
 @Api(tags = "identityproviders", value = "Identity Providers Management", description = "Identity Providers Management")
 public class IdentityProviderInternalController implements CrudController<IdentityProviderDto> {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
-        IdentityProviderInternalController.class
-    );
+    private static final Logger LOGGER = LoggerFactory.getLogger(IdentityProviderInternalController.class);
 
     @Autowired
     private IdentityProviderInternalService internalIdentityProviderService;

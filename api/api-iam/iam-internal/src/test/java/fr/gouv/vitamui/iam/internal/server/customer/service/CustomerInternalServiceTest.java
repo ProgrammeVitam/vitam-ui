@@ -6,7 +6,6 @@ import fr.gouv.vitamui.commons.api.domain.LanguageDto;
 import fr.gouv.vitamui.commons.api.domain.OwnerDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
-import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import fr.gouv.vitamui.commons.test.utils.TestUtils;
 import fr.gouv.vitamui.commons.utils.VitamUIUtils;
 import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
@@ -125,7 +124,6 @@ public class CustomerInternalServiceTest {
         OwnerConverter ownerConverter = new OwnerConverter(addressConverter);
         CustomerConverter customerConverter = new CustomerConverter(addressConverter, ownerRepository, ownerConverter);
 
-        ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
         internalCustomerService = new CustomerInternalService(
             sequenceGeneratorService,
             customerRepository,

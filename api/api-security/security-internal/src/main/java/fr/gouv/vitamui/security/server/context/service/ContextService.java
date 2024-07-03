@@ -39,8 +39,6 @@ package fr.gouv.vitamui.security.server.context.service;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.api.exception.NotFoundException;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.mongo.service.VitamUICrudService;
 import fr.gouv.vitamui.security.common.dto.ContextDto;
@@ -50,6 +48,8 @@ import fr.gouv.vitamui.security.server.context.dao.ContextRepository;
 import fr.gouv.vitamui.security.server.context.domain.Context;
 import lombok.Getter;
 import lombok.Setter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 
@@ -65,7 +65,7 @@ import java.util.Optional;
 @Setter
 public class ContextService extends VitamUICrudService<ContextDto, Context> {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ContextService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ContextService.class);
 
     private final ContextRepository contextRepository;
 

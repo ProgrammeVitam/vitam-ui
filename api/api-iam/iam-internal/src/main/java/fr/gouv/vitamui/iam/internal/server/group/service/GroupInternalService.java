@@ -47,8 +47,6 @@ import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.domain.ProfileDto;
 import fr.gouv.vitamui.commons.api.exception.NotFoundException;
 import fr.gouv.vitamui.commons.api.exception.UnexpectedDataException;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.api.utils.CastUtils;
 import fr.gouv.vitamui.commons.logbook.dto.EventDiffDto;
 import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
@@ -79,6 +77,8 @@ import lombok.Setter;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.bson.Document;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -88,8 +88,17 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -100,7 +109,7 @@ import static fr.gouv.vitamui.commons.logbook.common.EventType.EXT_VITAMUI_UPDAT
 @Setter
 public class GroupInternalService extends VitamUICrudService<GroupDto, Group> {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(GroupInternalService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(GroupInternalService.class);
 
     private final GroupRepository groupRepository;
 
@@ -520,13 +529,13 @@ public class GroupInternalService extends VitamUICrudService<GroupDto, Group> {
                     profileIds,
                     IamUtils.buildOptionalEmbedded(EmbeddedOptions.ALL)
                 );
-                profiles.sort(
+                final List<ProfileDto> sortedProfiles = new ArrayList<>(profiles);
+                sortedProfiles.sort(
                     Comparator.comparing(ProfileDto::getApplicationName)
-                        .thenComparing((p1, p2) -> p1.getTenantName().compareTo(p2.getTenantName()))
+                        .thenComparing(ProfileDto::getTenantName)
                         .thenComparing(ProfileDto::getName)
                 );
-                dto.setProfiles(profiles);
-
+                dto.setProfiles(sortedProfiles);
                 dto.setUsersCount(userRepository.countByGroupId(dto.getId()));
             }
         }

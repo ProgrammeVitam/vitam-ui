@@ -39,10 +39,10 @@ package fr.gouv.vitamui.archives.search.external.client;
 import fr.gouv.vitamui.archives.search.common.rest.RestApi;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaHistoryDto;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.client.BasePaginatingAndSortingRestClient;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -60,9 +60,7 @@ import java.util.List;
 public class SearchCriteriaHistoryExternalRestClient
     extends BasePaginatingAndSortingRestClient<SearchCriteriaHistoryDto, ExternalHttpContext> {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
-        SearchCriteriaHistoryExternalRestClient.class
-    );
+    private static final Logger LOGGER = LoggerFactory.getLogger(SearchCriteriaHistoryExternalRestClient.class);
 
     public SearchCriteriaHistoryExternalRestClient(final RestTemplate restTemplate, final String baseUrl) {
         super(restTemplate, baseUrl);

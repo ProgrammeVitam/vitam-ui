@@ -3,8 +3,6 @@ package fr.gouv.vitamui.iam.internal.server.rest;
 import com.google.common.collect.ImmutableMap;
 import fr.gouv.vitamui.commons.api.domain.IdDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.iam.common.rest.RestApi;
 import fr.gouv.vitamui.iam.internal.server.cas.service.CasInternalService;
 import fr.gouv.vitamui.iam.internal.server.common.rest.ApiIamControllerTest;
@@ -12,6 +10,8 @@ import fr.gouv.vitamui.iam.internal.server.logbook.service.IamLogbookService;
 import fr.gouv.vitamui.iam.internal.server.user.service.UserInternalService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,7 +21,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 @WebMvcTest(controllers = { CasInternalController.class })
 public class CasInternalControllerTest extends ApiIamControllerTest<IdDto> {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(CasInternalControllerTest.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(CasInternalControllerTest.class);
 
     @MockBean
     private CasInternalService casInternalService;
@@ -49,7 +49,7 @@ public class CasInternalControllerTest extends ApiIamControllerTest<IdDto> {
     }
 
     @Override
-    protected VitamUILogger getLog() {
+    protected Logger getLog() {
         return LOGGER;
     }
 

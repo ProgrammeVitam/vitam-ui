@@ -44,8 +44,6 @@ import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
 import fr.gouv.vitamui.commons.api.exception.NotFoundException;
 import fr.gouv.vitamui.commons.api.exception.TooManyRequestsException;
 import fr.gouv.vitamui.commons.api.exception.UnAuthorizedException;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.iam.common.dto.SubrogationDto;
 import fr.gouv.vitamui.iam.common.dto.cas.LoginRequestDto;
@@ -57,6 +55,8 @@ import fr.gouv.vitamui.iam.internal.server.user.service.UserInternalService;
 import io.swagger.annotations.Api;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -91,7 +91,7 @@ import java.util.Optional;
 )
 public class CasInternalController {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(CasInternalController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(CasInternalController.class);
 
     @Value("${login.attempts.maximum.failures}")
     @NotNull

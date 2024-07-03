@@ -38,16 +38,30 @@ package fr.gouv.vitamui.commons.mongo.service;
 
 import com.google.common.collect.Iterators;
 import fr.gouv.vitamui.commons.api.converter.Converter;
-import fr.gouv.vitamui.commons.api.domain.*;
+import fr.gouv.vitamui.commons.api.domain.BaseIdDocument;
+import fr.gouv.vitamui.commons.api.domain.Criterion;
+import fr.gouv.vitamui.commons.api.domain.DirectionDto;
+import fr.gouv.vitamui.commons.api.domain.IdDto;
+import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
+import fr.gouv.vitamui.commons.api.domain.QueryDto;
+import fr.gouv.vitamui.commons.api.domain.QueryOperator;
+import fr.gouv.vitamui.commons.api.domain.RequestParamDto;
+import fr.gouv.vitamui.commons.api.domain.RequestParamGroupDto;
+import fr.gouv.vitamui.commons.api.domain.ResultsDto;
 import fr.gouv.vitamui.commons.api.exception.NotFoundException;
 import fr.gouv.vitamui.commons.api.exception.NotImplementedException;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.api.service.BaseReadService;
 import fr.gouv.vitamui.commons.mongo.repository.VitamUIRepository;
 import fr.gouv.vitamui.commons.mongo.utils.MongoUtils;
 import org.bson.Document;
-import org.springframework.data.mongodb.core.aggregation.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.data.mongodb.core.aggregation.Aggregation;
+import org.springframework.data.mongodb.core.aggregation.AggregationOperation;
+import org.springframework.data.mongodb.core.aggregation.AggregationResults;
+import org.springframework.data.mongodb.core.aggregation.GroupOperation;
+import org.springframework.data.mongodb.core.aggregation.MatchOperation;
+import org.springframework.data.mongodb.core.aggregation.TypedAggregation;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.CriteriaDefinition;
 import org.springframework.data.mongodb.core.query.Query;
@@ -72,7 +86,7 @@ import static org.springframework.data.mongodb.core.aggregation.Aggregation.newA
  */
 public abstract class VitamUIReadService<D extends IdDto, E extends BaseIdDocument> implements BaseReadService<D, E> {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(VitamUIReadService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(VitamUIReadService.class);
 
     /**
      * Method allowing to retrieve all entities matching with the provided criteria.

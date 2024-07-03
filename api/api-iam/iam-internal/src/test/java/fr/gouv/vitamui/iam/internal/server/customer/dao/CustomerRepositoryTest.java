@@ -1,21 +1,22 @@
 package fr.gouv.vitamui.iam.internal.server.customer.dao;
 
-import fr.gouv.vitamui.commons.mongo.repository.impl.VitamUIRepositoryImpl;
 import fr.gouv.vitamui.commons.mongo.utils.MongoUtils;
-import fr.gouv.vitamui.iam.internal.server.TestMongoConfig;
+import fr.gouv.vitamui.commons.test.AbstractMongoTests;
+import fr.gouv.vitamui.commons.test.VitamClientTestConfig;
 import fr.gouv.vitamui.iam.internal.server.customer.domain.Customer;
 import fr.gouv.vitamui.iam.internal.server.user.dao.UserRepository;
 import fr.gouv.vitamui.iam.internal.server.utils.IamServerUtilsTest;
 import org.apache.commons.lang3.StringUtils;
-import org.junit.After;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Arrays;
 import java.util.List;
@@ -29,18 +30,16 @@ import static org.assertj.core.api.Assertions.assertThat;
  *
  */
 
-@RunWith(SpringRunner.class)
-@Import({ TestMongoConfig.class })
-@EnableMongoRepositories(
-    basePackageClasses = CustomerRepository.class,
-    repositoryBaseClass = VitamUIRepositoryImpl.class
-)
-public class CustomerRepositoryTest {
+@SpringBootTest
+@ExtendWith(SpringExtension.class)
+@ActiveProfiles("test")
+@Import(VitamClientTestConfig.class)
+public class CustomerRepositoryTest extends AbstractMongoTests {
 
     @Autowired
     private CustomerRepository repository;
 
-    @After
+    @AfterEach
     public void cleanUp() {
         repository.deleteAll();
     }

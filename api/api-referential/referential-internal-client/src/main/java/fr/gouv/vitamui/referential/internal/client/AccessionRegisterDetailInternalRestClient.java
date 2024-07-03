@@ -38,12 +38,12 @@ package fr.gouv.vitamui.referential.internal.client;
 
 import fr.gouv.vitamui.commons.api.domain.AccessionRegisterSearchDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.client.BasePaginatingAndSortingRestClient;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import fr.gouv.vitamui.referential.common.dto.AccessionRegisterDetailDto;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpEntity;
@@ -57,9 +57,7 @@ import java.util.List;
 public class AccessionRegisterDetailInternalRestClient
     extends BasePaginatingAndSortingRestClient<AccessionRegisterDetailDto, InternalHttpContext> {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
-        AccessionRegisterDetailInternalRestClient.class
-    );
+    private static final Logger LOGGER = LoggerFactory.getLogger(AccessionRegisterDetailInternalRestClient.class);
 
     public AccessionRegisterDetailInternalRestClient(final RestTemplate restTemplate, final String baseUrl) {
         super(restTemplate, baseUrl);

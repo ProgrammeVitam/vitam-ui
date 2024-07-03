@@ -7,7 +7,12 @@ import fr.gouv.vitamui.commons.vitam.api.dto.LogbookEventDto;
 import fr.gouv.vitamui.commons.vitam.xls.ExcelFileGeneratorUtils;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +22,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
-import static fr.gouv.vitamui.commons.logbook.common.EventType.*;
+import static fr.gouv.vitamui.commons.logbook.common.EventType.EXT_VITAMUI_CREATE_OWNER;
+import static fr.gouv.vitamui.commons.logbook.common.EventType.EXT_VITAMUI_CREATE_USER;
+import static fr.gouv.vitamui.commons.logbook.common.EventType.EXT_VITAMUI_CREATE_USER_INFO;
 
 @Service
 @RequiredArgsConstructor

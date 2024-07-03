@@ -47,10 +47,10 @@ import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.administration.AgenciesModel;
 import fr.gouv.vitamui.commons.api.domain.AgencyDto;
 import fr.gouv.vitamui.commons.api.domain.AgencyModelDto;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.utils.VitamUIUtils;
 import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.ByteArrayInputStream;
@@ -62,7 +62,7 @@ import java.util.List;
 
 public class AgencyService {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(AgencyService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AgencyService.class);
 
     private final AdminExternalClient adminExternalClient;
 

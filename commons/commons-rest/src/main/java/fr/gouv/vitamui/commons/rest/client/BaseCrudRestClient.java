@@ -41,12 +41,12 @@ import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.IdDto;
 import fr.gouv.vitamui.commons.api.exception.ApplicationServerException;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.api.utils.ApiUtils;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.apache.http.client.utils.URIBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -74,7 +74,7 @@ public abstract class BaseCrudRestClient<D extends IdDto, C extends AbstractHttp
 
     private static final String CRITERIA_QUERY_PARAM = "criteria";
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(BaseCrudRestClient.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(BaseCrudRestClient.class);
 
     public BaseCrudRestClient(final RestTemplate restTemplate, final String baseUrl) {
         super(restTemplate, baseUrl);

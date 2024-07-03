@@ -12,7 +12,9 @@ import org.mapstruct.ap.internal.util.Strings;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.Collection;
+import java.util.Map;
+import java.util.Optional;
 
 import static fr.gouv.vitamui.commons.vitam.xls.dto.Type.DOUBLE;
 import static fr.gouv.vitamui.commons.vitam.xls.dto.Type.STRING;

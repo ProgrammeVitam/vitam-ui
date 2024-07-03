@@ -30,9 +30,9 @@ package fr.gouv.vitamui.collect.internal.server.exception;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitam.common.LocalDateUtil;
 import fr.gouv.vitam.common.exception.VitamClientException;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.dto.VitamUIError;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -47,7 +47,7 @@ import static org.springframework.http.HttpStatus.EXPECTATION_FAILED;
 @ControllerAdvice
 public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ControllerExceptionHandler.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ControllerExceptionHandler.class);
     private ObjectMapper objectMapper;
 
     @Autowired

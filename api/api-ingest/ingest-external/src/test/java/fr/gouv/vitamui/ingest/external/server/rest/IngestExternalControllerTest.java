@@ -38,8 +38,6 @@ package fr.gouv.vitamui.ingest.external.server.rest;
 
 import fr.gouv.vitamui.commons.api.domain.IdDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import fr.gouv.vitamui.ingest.common.rest.RestApi;
 import fr.gouv.vitamui.ingest.external.client.IngestExternalRestClient;
@@ -48,6 +46,8 @@ import fr.gouv.vitamui.ingest.internal.client.IngestInternalRestClient;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -56,7 +56,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 @WebMvcTest(controllers = { IngestExternalController.class })
 public class IngestExternalControllerTest extends ApiIngestExternalControllerTest<IdDto> {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(IngestExternalControllerTest.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(IngestExternalControllerTest.class);
 
     @MockBean
     private IngestExternalService ingestExternalService;
@@ -77,7 +77,7 @@ public class IngestExternalControllerTest extends ApiIngestExternalControllerTes
     }
 
     @Override
-    protected VitamUILogger getLog() {
+    protected Logger getLog() {
         return LOGGER;
     }
 

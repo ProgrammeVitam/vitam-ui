@@ -48,7 +48,7 @@ import org.pac4j.oidc.profile.creator.TokenValidator;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.pac4j.oidc.profile.OidcProfileDefinition.*;
+import static org.pac4j.oidc.profile.OidcProfileDefinition.ACR;
 
 /**
  * Custom OIDC token validator.

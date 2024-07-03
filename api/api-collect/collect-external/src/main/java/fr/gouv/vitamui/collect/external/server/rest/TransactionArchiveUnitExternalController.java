@@ -37,11 +37,11 @@ import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
 import fr.gouv.vitamui.commons.api.dtos.VitamUiOntologyDto;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
@@ -73,9 +73,7 @@ import static fr.gouv.vitamui.collect.common.rest.RestApi.COLLECT_TRANSACTION_AR
 @ResponseBody
 public class TransactionArchiveUnitExternalController {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
-        TransactionArchiveUnitExternalController.class
-    );
+    private static final Logger LOGGER = LoggerFactory.getLogger(TransactionArchiveUnitExternalController.class);
     private static final String MANDATORY_QUERY = "The query is a mandatory parameter: ";
     private static final String MANDATORY_IDENTIFIER = "The identifier is a mandatory parameter: ";
     private final TransactionArchiveUnitExternalService transactionArchiveUnitExternalService;

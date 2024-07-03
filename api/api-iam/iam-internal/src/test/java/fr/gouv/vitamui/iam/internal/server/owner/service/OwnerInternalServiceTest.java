@@ -2,7 +2,6 @@ package fr.gouv.vitamui.iam.internal.server.owner.service;
 
 import fr.gouv.vitamui.commons.api.domain.OwnerDto;
 import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
-import fr.gouv.vitamui.commons.test.utils.AbstractServerIdentityBuilder;
 import fr.gouv.vitamui.commons.test.utils.TestUtils;
 import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
 import fr.gouv.vitamui.iam.internal.server.common.converter.AddressConverter;
@@ -41,7 +40,7 @@ import static org.mockito.Mockito.when;
  *
  */
 
-public class OwnerInternalServiceTest extends AbstractServerIdentityBuilder {
+public class OwnerInternalServiceTest {
 
     private OwnerInternalService ownerService;
 

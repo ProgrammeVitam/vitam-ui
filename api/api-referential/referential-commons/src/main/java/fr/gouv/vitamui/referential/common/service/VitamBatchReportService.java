@@ -39,10 +39,10 @@ package fr.gouv.vitamui.referential.common.service;
 import fr.gouv.vitam.access.external.client.AdminExternalClient;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.VitamClientException;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
 import org.apache.http.HttpStatus;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.ws.rs.core.Response;
@@ -54,7 +54,7 @@ import java.io.InputStream;
  */
 public class VitamBatchReportService {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(VitamBatchReportService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(VitamBatchReportService.class);
 
     private final AdminExternalClient adminExternalClient;
 

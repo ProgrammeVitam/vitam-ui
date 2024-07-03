@@ -37,8 +37,6 @@ import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.exception.IngestFileGenerationException;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.utils.VitamUIUtils;
 import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationDto;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
@@ -48,6 +46,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.Getter;
 import lombok.Setter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -72,7 +72,7 @@ import java.util.Optional;
 @Api(tags = "ingest", value = "Ingest an SIP", description = "Ingest an SIP")
 public class IngestInternalController {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(IngestInternalController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(IngestInternalController.class);
 
     private IngestInternalService ingestInternalService;
 

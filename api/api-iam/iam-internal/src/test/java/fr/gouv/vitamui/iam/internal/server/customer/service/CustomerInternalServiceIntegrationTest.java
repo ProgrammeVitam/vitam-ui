@@ -7,52 +7,39 @@ import fr.gouv.vitamui.commons.api.domain.OwnerDto;
 import fr.gouv.vitamui.commons.api.domain.QueryDto;
 import fr.gouv.vitamui.commons.logbook.common.EventType;
 import fr.gouv.vitamui.commons.logbook.domain.Event;
-import fr.gouv.vitamui.commons.mongo.repository.impl.VitamUIRepositoryImpl;
 import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
-import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
+import fr.gouv.vitamui.commons.test.VitamClientTestConfig;
 import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
 import fr.gouv.vitamui.iam.common.dto.CustomerCreationFormData;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.iam.common.dto.CustomerPatchFormData;
 import fr.gouv.vitamui.iam.common.enums.OtpEnum;
-import fr.gouv.vitamui.iam.internal.server.TestMongoConfig;
 import fr.gouv.vitamui.iam.internal.server.common.domain.MongoDbCollections;
 import fr.gouv.vitamui.iam.internal.server.common.service.AddressService;
 import fr.gouv.vitamui.iam.internal.server.customer.converter.CustomerConverter;
 import fr.gouv.vitamui.iam.internal.server.customer.dao.CustomerRepository;
-import fr.gouv.vitamui.iam.internal.server.externalParameters.service.ExternalParametersInternalService;
-import fr.gouv.vitamui.iam.internal.server.group.dao.GroupRepository;
-import fr.gouv.vitamui.iam.internal.server.group.service.GroupInternalService;
-import fr.gouv.vitamui.iam.internal.server.idp.dao.IdentityProviderRepository;
-import fr.gouv.vitamui.iam.internal.server.idp.service.IdentityProviderInternalService;
-import fr.gouv.vitamui.iam.internal.server.idp.service.SpMetadataGenerator;
 import fr.gouv.vitamui.iam.internal.server.logbook.service.AbstractLogbookIntegrationTest;
-import fr.gouv.vitamui.iam.internal.server.owner.dao.OwnerRepository;
 import fr.gouv.vitamui.iam.internal.server.owner.service.OwnerInternalService;
-import fr.gouv.vitamui.iam.internal.server.profile.dao.ProfileRepository;
-import fr.gouv.vitamui.iam.internal.server.profile.service.ProfileInternalService;
 import fr.gouv.vitamui.iam.internal.server.tenant.dao.TenantRepository;
 import fr.gouv.vitamui.iam.internal.server.tenant.domain.Tenant;
-import fr.gouv.vitamui.iam.internal.server.tenant.service.TenantInternalService;
-import fr.gouv.vitamui.iam.internal.server.user.dao.UserRepository;
-import fr.gouv.vitamui.iam.internal.server.user.service.ConnectionHistoryService;
 import fr.gouv.vitamui.iam.internal.server.user.service.UserInternalService;
 import fr.gouv.vitamui.iam.internal.server.utils.IamServerUtilsTest;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -67,12 +54,10 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
 
-@RunWith(SpringRunner.class)
-@Import({ TestMongoConfig.class })
-@EnableMongoRepositories(
-    basePackageClasses = { CustomerRepository.class, OwnerRepository.class },
-    repositoryBaseClass = VitamUIRepositoryImpl.class
-)
+@SpringBootTest
+@ExtendWith(SpringExtension.class)
+@ActiveProfiles("test")
+@Import(VitamClientTestConfig.class)
 public class CustomerInternalServiceIntegrationTest extends AbstractLogbookIntegrationTest {
 
     private CustomerInternalService service;
@@ -84,34 +69,10 @@ public class CustomerInternalServiceIntegrationTest extends AbstractLogbookInteg
     private CustomerRepository customerRepository;
 
     @Mock
-    private IdentityProviderRepository identityProviderRepository;
-
-    @MockBean
-    private OwnerRepository ownerRepository;
-
-    @MockBean
-    private GroupRepository groupRepository;
-
-    @MockBean
-    private ProfileRepository profileRepository;
-
-    @Mock
     private UserInternalService userInternalService;
 
     @Mock
     private OwnerInternalService internalOwnerService;
-
-    @Mock
-    private TenantInternalService internalTenantService;
-
-    @Mock
-    private IdentityProviderInternalService internalIdentityProviderService;
-
-    @Mock
-    private GroupInternalService internalGroupService;
-
-    @Mock
-    private ProfileInternalService internalProfileService;
 
     @Mock
     private InternalHttpContext internalHttpContext;
@@ -126,24 +87,12 @@ public class CustomerInternalServiceIntegrationTest extends AbstractLogbookInteg
     private CustomerConverter customerConverter;
 
     @MockBean
-    private SpMetadataGenerator spMetadataGenerator;
-
-    @MockBean
-    private UserRepository userRepository;
-
-    @MockBean
     private TenantRepository tenantRepository;
 
     @MockBean
     private LogbookService logbookService;
 
-    @Mock
-    private ExternalParametersInternalService externalParametersInternalService;
-
-    @MockBean
-    private ConnectionHistoryService connectionHistoryService;
-
-    @Before
+    @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);
 
@@ -161,10 +110,8 @@ public class CustomerInternalServiceIntegrationTest extends AbstractLogbookInteg
         );
         final Tenant tenant = new Tenant();
         tenant.setIdentifier(10);
-        Mockito.when(tenantRepository.findOne(ArgumentMatchers.any(Query.class))).thenReturn(
-            Optional.ofNullable(tenant)
-        );
-        ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
+        Mockito.when(tenantRepository.findOne(ArgumentMatchers.any(Query.class))).thenReturn(Optional.of(tenant));
+
         customerRepository.deleteAll();
 
         when(sequenceGeneratorService.getNextSequenceId(any(), anyInt())).thenReturn(1);
@@ -175,9 +122,7 @@ public class CustomerInternalServiceIntegrationTest extends AbstractLogbookInteg
         customerRepository.save(
             IamServerUtilsTest.buildCustomer("id", "name", "0123456", Arrays.asList("vitamui.com", "gmail.com"))
         );
-        customerRepository.save(
-            IamServerUtilsTest.buildCustomer("id2", "name3", "01234567", Arrays.asList("toto.com"))
-        );
+        customerRepository.save(IamServerUtilsTest.buildCustomer("id2", "name3", "01234567", List.of("toto.com")));
 
         QueryDto criteria = QueryDto.criteria()
             .addCriterion("code", "0123456", CriterionOperator.EQUALS)
@@ -187,13 +132,13 @@ public class CustomerInternalServiceIntegrationTest extends AbstractLogbookInteg
 
         criteria = QueryDto.criteria()
             .addCriterion("code", "01234567", CriterionOperator.EQUALS)
-            .addCriterion("emailDomains", Arrays.asList("toto.com"), CriterionOperator.IN);
+            .addCriterion("emailDomains", List.of("toto.com"), CriterionOperator.IN);
         exist = service.checkExist(criteria.toJson());
         assertThat(exist).isTrue();
 
         criteria = QueryDto.criteria()
             .addCriterion("code", "01234567", CriterionOperator.EQUALS)
-            .addCriterion("emailDomains", Arrays.asList("toto.com"), CriterionOperator.EQUALS);
+            .addCriterion("emailDomains", List.of("toto.com"), CriterionOperator.EQUALS);
         exist = service.checkExist(criteria.toJson());
         assertThat(exist).isTrue();
 
@@ -205,7 +150,7 @@ public class CustomerInternalServiceIntegrationTest extends AbstractLogbookInteg
 
         criteria = QueryDto.criteria()
             .addCriterion("code", "012345678", CriterionOperator.EQUALS)
-            .addCriterion("emailDomains", Arrays.asList("toto.com"), CriterionOperator.IN);
+            .addCriterion("emailDomains", List.of("toto.com"), CriterionOperator.IN);
         exist = service.checkExist(criteria.toJson());
         assertThat(exist).isFalse();
     }

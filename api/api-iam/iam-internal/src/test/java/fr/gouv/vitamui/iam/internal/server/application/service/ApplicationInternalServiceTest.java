@@ -6,20 +6,17 @@ import fr.gouv.vitamui.commons.api.domain.CriterionOperator;
 import fr.gouv.vitamui.commons.api.domain.QueryDto;
 import fr.gouv.vitamui.commons.api.domain.TenantInformationDto;
 import fr.gouv.vitamui.commons.api.exception.UnAuthorizedException;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
-import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import fr.gouv.vitamui.iam.internal.server.application.converter.ApplicationConverter;
 import fr.gouv.vitamui.iam.internal.server.application.dao.ApplicationRepository;
 import fr.gouv.vitamui.iam.internal.server.application.domain.Application;
 import fr.gouv.vitamui.iam.internal.server.common.ApiIamInternalConstants;
 import fr.gouv.vitamui.iam.internal.server.utils.IamServerUtilsTest;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.data.mongodb.core.query.Query;
 
@@ -29,15 +26,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.Assert.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class ApplicationInternalServiceTest {
-
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ApplicationInternalServiceTest.class);
 
     private ApplicationInternalService applicationService;
 
@@ -53,7 +47,7 @@ public class ApplicationInternalServiceTest {
         ExternalIdentifierConfiguration.class
     );
 
-    @Before
+    @BeforeEach
     public void setup() {
         applicationService = new ApplicationInternalService(
             sequenceGeneratorService,
@@ -62,8 +56,6 @@ public class ApplicationInternalServiceTest {
             internalSecurityService,
             externalIdentifierConfiguration
         );
-
-        ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
 
         when(sequenceGeneratorService.getNextSequenceId(any(), anyInt())).thenReturn(1);
     }
@@ -79,8 +71,8 @@ public class ApplicationInternalServiceTest {
         final QueryDto criteria = QueryDto.criteria("identifier", "cont", CriterionOperator.CONTAINSIGNORECASE);
 
         final List<ApplicationDto> result = applicationService.getAll(Optional.of(criteria.toJson()), Optional.empty());
-        Assert.assertNotNull("Applications should be returned.", result);
-        Assert.assertEquals("Applications size should be returned.", apps.size(), result.size());
+        Assertions.assertNotNull(result, "Applications should be returned.");
+        Assertions.assertEquals(apps.size(), result.size(), "Applications size should be returned.");
     }
 
     @Test
@@ -95,8 +87,8 @@ public class ApplicationInternalServiceTest {
         final QueryDto criteria = QueryDto.criteria("identifier", "cont", CriterionOperator.CONTAINSIGNORECASE);
 
         final List<ApplicationDto> result = applicationService.getAll(Optional.of(criteria.toJson()), Optional.empty());
-        Assert.assertNotNull("Applications should be returned.", result);
-        Assert.assertEquals("Applications size should be returned.", 1, result.size());
+        Assertions.assertNotNull(result, "Applications should be returned.");
+        Assertions.assertEquals(1, result.size(), "Applications size should be returned.");
     }
 
     @Test
@@ -111,14 +103,14 @@ public class ApplicationInternalServiceTest {
         final QueryDto criteria = QueryDto.criteria("filterApp", false, CriterionOperator.EQUALS);
 
         final List<ApplicationDto> result = applicationService.getAll(Optional.of(criteria.toJson()), Optional.empty());
-        Assert.assertNotNull("Applications should be returned.", result);
-        Assert.assertEquals("Applications size should be returned.", 2, result.size());
+        Assertions.assertNotNull(result, "Applications should be returned.");
+        Assertions.assertEquals(2, result.size(), "Applications size should be returned.");
     }
 
     @Test
     public void testGetAllForNullUserThenThrowException() {
         final Application app = IamServerUtilsTest.buildApplication();
-        final List<Application> apps = Arrays.asList(app);
+        final List<Application> apps = List.of(app);
         when(applicationRepository.findAll(any(Query.class))).thenReturn(apps);
 
         Mockito.when(internalSecurityService.getUser()).thenReturn(null);
@@ -126,8 +118,8 @@ public class ApplicationInternalServiceTest {
         final QueryDto criteria = QueryDto.criteria("identifier", "cont", CriterionOperator.CONTAINSIGNORECASE);
         try {
             applicationService.getAll(Optional.of(criteria.toJson()), Optional.empty());
-            fail("Should Throw Exception");
-        } catch (UnAuthorizedException e) {}
+            Assertions.fail("Should Throw Exception");
+        } catch (UnAuthorizedException ignored) {}
     }
 
     @Test
@@ -141,8 +133,8 @@ public class ApplicationInternalServiceTest {
         final QueryDto criteria = QueryDto.criteria("identifier", "cont", CriterionOperator.CONTAINSIGNORECASE);
 
         final List<ApplicationDto> result = applicationService.getAll(Optional.of(criteria.toJson()), Optional.empty());
-        Assert.assertNotNull("Applications should be returned.", result);
-        Assert.assertEquals("Applications size should be returned.", 0, result.size());
+        Assertions.assertNotNull(result, "Applications should be returned.");
+        Assertions.assertEquals(0, result.size(), "Applications size should be returned.");
     }
 
     private void wireInternalSecurityServerCalls(boolean withApplications) {
@@ -163,6 +155,6 @@ public class ApplicationInternalServiceTest {
         tenantForApp.setName(CommonConstants.APPLICATION_ID);
         tenantForApp.setTenants(new HashSet<>());
 
-        return Arrays.asList(tenantForApp);
+        return List.of(tenantForApp);
     }
 }

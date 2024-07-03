@@ -34,22 +34,21 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+
 package fr.gouv.vitamui.iam.internal.server.customer.config;
 
 import fr.gouv.vitamui.commons.api.domain.Role;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.spring.YamlPropertySourceFactory;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
-import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -65,26 +64,19 @@ import java.util.stream.Stream;
 @ConfigurationProperties("customer-init")
 public class CustomerInitConfig implements InitializingBean {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(CustomerInitConfig.class);
+    @Getter
+    @Setter(AccessLevel.NONE)
+    private List<Role> allRoles;
 
     private List<ProfileInitConfig> profiles;
-
     private List<ProfileInitConfig> tenantProfiles;
-
     private List<ProfileInitConfig> adminProfiles;
-
     private List<ProfilesGroupInitConfig> profilesGroups;
-
     private List<UserInitConfig> users;
-
     private List<String> otherRoles;
 
-    @Getter(AccessLevel.NONE)
-    @Setter(AccessLevel.NONE)
-    private static List<Role> allRoles;
-
     @Override
-    public void afterPropertiesSet() throws Exception {
+    public void afterPropertiesSet() {
         final List<ProfileInitConfig> allProfiles = new ArrayList<>();
         if (profiles != null) {
             allProfiles.addAll(profiles);
@@ -108,14 +100,11 @@ public class CustomerInitConfig implements InitializingBean {
             );
         });
         Assert.isTrue(
-            allProfiles.stream().map(p -> p.getName()).allMatch(new HashSet<>()::add),
+            allProfiles.stream().map(ProfileInitConfig::getName).allMatch(new HashSet<>()::add),
             "profiles list contains duplicate name for profile config"
         );
         if (profilesGroups != null) {
-            final List<String> availableProfileNames = allProfiles
-                .stream()
-                .map(p -> p.getName())
-                .collect(Collectors.toList());
+            final List<String> availableProfileNames = allProfiles.stream().map(ProfileInitConfig::getName).toList();
             profilesGroups.forEach(g -> {
                 Assert.isTrue(!StringUtils.isEmpty(g.getName()), "name cannot be empty for profiles-groups config");
                 Assert.isTrue(
@@ -136,13 +125,13 @@ public class CustomerInitConfig implements InitializingBean {
                 );
             });
             Assert.isTrue(
-                profilesGroups.stream().map(p -> p.getName()).allMatch(new HashSet<>()::add),
+                profilesGroups.stream().map(ProfilesGroupInitConfig::getName).allMatch(new HashSet<>()::add),
                 "profiles group list contains duplicate name for profiles-groups config"
             );
         }
         if (users != null) {
             final List<String> availableProfilesGroupNames = profilesGroups != null
-                ? profilesGroups.stream().map(g -> g.getName()).collect(Collectors.toList())
+                ? profilesGroups.stream().map(ProfilesGroupInitConfig::getName).toList()
                 : new ArrayList<>();
             users.forEach(u -> {
                 Assert.isTrue(!StringUtils.isEmpty(u.getLastName()), "last-name cannot be empty for users config");
@@ -158,15 +147,15 @@ public class CustomerInitConfig implements InitializingBean {
                 Assert.isTrue(!StringUtils.isEmpty(u.getEmailPrefix()), "email cannot be empty for users config");
             });
             Assert.isTrue(
-                users.stream().map(u -> u.getEmailPrefix()).allMatch(new HashSet<>()::add),
+                users.stream().map(UserInitConfig::getEmailPrefix).allMatch(new HashSet<>()::add),
                 "users list contains duplicate email for users config"
             );
         }
 
         Set<String> profileRoles = allProfiles.stream().flatMap(p -> p.getRoles().stream()).collect(Collectors.toSet());
-        List<Role> profileRoleList = profileRoles.stream().map(Role::new).collect(Collectors.toList());
+        List<Role> profileRoleList = profileRoles.stream().map(Role::new).toList();
         List<Role> otherRoleList = otherRoles != null
-            ? otherRoles.stream().map(Role::new).collect(Collectors.toList())
+            ? otherRoles.stream().map(Role::new).toList()
             : new ArrayList<Role>();
         allRoles = Stream.concat(
             Stream.concat(profileRoleList.stream(), otherRoleList.stream()),
@@ -174,13 +163,14 @@ public class CustomerInitConfig implements InitializingBean {
         ).collect(Collectors.toList());
     }
 
-    public static List<Role> getAllRoles() {
-        return allRoles;
-    }
-
     @Getter
     @Setter
     public static class ProfilesGroupInitConfig {
+
+        private String name;
+        private String description;
+        private String level;
+        private List<String> profiles;
 
         public ProfilesGroupInitConfig() {}
 
@@ -195,19 +185,17 @@ public class CustomerInitConfig implements InitializingBean {
             this.level = level;
             this.profiles = profiles;
         }
-
-        private String name;
-
-        private String description;
-
-        private String level;
-
-        private List<String> profiles;
     }
 
     @Getter
     @Setter
     public static class ProfileInitConfig {
+
+        private String name;
+        private String description;
+        private String level;
+        private String appName;
+        private List<String> roles;
 
         public ProfileInitConfig() {}
 
@@ -224,21 +212,17 @@ public class CustomerInitConfig implements InitializingBean {
             this.appName = appName;
             this.roles = roles;
         }
-
-        private String name;
-
-        private String description;
-
-        private String level;
-
-        private String appName;
-
-        private List<String> roles;
     }
 
     @Getter
     @Setter
     public static class UserInitConfig {
+
+        private String lastName;
+        private String firstName;
+        private String profilesGroupName;
+        private String emailPrefix;
+        private String level;
 
         public UserInitConfig() {}
 
@@ -255,15 +239,5 @@ public class CustomerInitConfig implements InitializingBean {
             this.emailPrefix = emailPrefix;
             this.level = level;
         }
-
-        private String lastName;
-
-        private String firstName;
-
-        private String profilesGroupName;
-
-        private String emailPrefix;
-
-        private String level;
     }
 }

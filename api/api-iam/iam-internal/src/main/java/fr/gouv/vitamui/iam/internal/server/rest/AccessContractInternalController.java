@@ -46,13 +46,13 @@ import fr.gouv.vitam.common.model.administration.AccessContractModel;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.AccessContractsDto;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.vitam.api.administration.AccessContractService;
 import fr.gouv.vitamui.iam.common.dto.AccessContractsResponseDto;
 import fr.gouv.vitamui.iam.internal.server.common.converter.AccessContractConverter;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import io.swagger.annotations.Api;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -72,7 +72,7 @@ import java.util.List;
 @Api(tags = "accesscontracts", value = "Access contacts", description = "Access contracts Management")
 public class AccessContractInternalController {
 
-    static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(AccessContractInternalController.class);
+    static final Logger LOGGER = LoggerFactory.getLogger(AccessContractInternalController.class);
     protected final InternalSecurityService securityService;
     private final AccessContractService accessContractService;
     private final ObjectMapper objectMapper;

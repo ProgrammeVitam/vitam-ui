@@ -36,9 +36,9 @@ import fr.gouv.vitam.common.json.JsonHandler;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.elimination.EliminationRequestBody;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.vitam.api.access.EliminationService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
@@ -54,9 +54,7 @@ import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.ONLY_DATE_FO
 @Service
 public class ArchiveSearchEliminationInternalService {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
-        ArchiveSearchEliminationInternalService.class
-    );
+    private static final Logger LOGGER = LoggerFactory.getLogger(ArchiveSearchEliminationInternalService.class);
 
     private final EliminationService eliminationService;
     private final ArchiveSearchInternalService archiveSearchInternalService;

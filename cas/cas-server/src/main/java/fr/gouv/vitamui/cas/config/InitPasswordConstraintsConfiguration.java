@@ -37,9 +37,9 @@
 package fr.gouv.vitamui.cas.config;
 
 import fr.gouv.vitamui.cas.util.Constants;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.security.client.config.password.PasswordConfiguration;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.ServletContextInitializer;
 
@@ -52,9 +52,7 @@ import java.util.Objects;
  */
 public class InitPasswordConstraintsConfiguration implements ServletContextInitializer {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
-        InitPasswordConstraintsConfiguration.class
-    );
+    private static final Logger LOGGER = LoggerFactory.getLogger(InitPasswordConstraintsConfiguration.class);
 
     @Autowired
     private PasswordConfiguration passwordConfiguration;

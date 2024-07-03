@@ -28,8 +28,8 @@ package fr.gouv.vitamui.common.security;
 
 import com.google.common.base.Joiner;
 import fr.gouv.vitamui.commons.api.exception.InvalidFileSanitizeException;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
@@ -41,7 +41,7 @@ import java.util.regex.Pattern;
  */
 public class SafeFileChecker {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(SafeFileChecker.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(SafeFileChecker.class);
 
     private static final String FILENAME_PATTERN = "^[a-zA-Z0-9\\-_]+(\\.[a-zA-Z0-9]+)*$";
     private static final Pattern PATH_COMPONENT_PATTERN = Pattern.compile("^[a-zA-Z0-9\\-_.@]+$");

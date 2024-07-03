@@ -33,9 +33,7 @@ import fr.gouv.vitamui.collect.internal.server.dao.SearchCriteriaHistoryReposito
 import fr.gouv.vitamui.commons.api.domain.QueryDto;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaHistoryDto;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
-import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -63,11 +61,6 @@ class SearchCriteriaHistoryInternalServiceTest {
     SearchCriteriaHistoryRepository searchCriteriaHistoryRepository;
 
     final PodamFactory factory = new PodamFactoryImpl();
-
-    @BeforeEach
-    public void beforeEach() {
-        ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
-    }
 
     @Test
     void shouldGetSearchCriteriaHistoryDtosWithSuccess() {

@@ -29,11 +29,11 @@ package fr.gouv.vitamui.collect.external.client;
 import fr.gouv.vitamui.collect.common.rest.RestApi;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.client.BasePaginatingAndSortingRestClient;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.commons.vitam.api.dto.CollectProjectUploadDto;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpEntity;
@@ -57,9 +57,7 @@ import static fr.gouv.vitamui.collect.common.rest.RestApi.STREAM_UPLOAD_PATH;
 public class CollectStreamingExternalRestClient
     extends BasePaginatingAndSortingRestClient<CollectProjectUploadDto, ExternalHttpContext> {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
-        CollectStreamingExternalRestClient.class
-    );
+    private static final Logger LOGGER = LoggerFactory.getLogger(CollectStreamingExternalRestClient.class);
 
     public CollectStreamingExternalRestClient(final RestTemplate restTemplate, final String baseUrl) {
         super(restTemplate, baseUrl);

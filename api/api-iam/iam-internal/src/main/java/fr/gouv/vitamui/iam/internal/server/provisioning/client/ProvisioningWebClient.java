@@ -36,14 +36,14 @@
  */
 package fr.gouv.vitamui.iam.internal.server.provisioning.client;
 
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.client.BaseCrudWebClient;
 import fr.gouv.vitamui.commons.rest.client.BaseWebClient;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import fr.gouv.vitamui.iam.common.dto.ProvidedUserDto;
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.client.utils.URIBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.reactive.function.client.WebClient;
 
 /**
@@ -53,7 +53,7 @@ import org.springframework.web.reactive.function.client.WebClient;
  */
 public class ProvisioningWebClient extends BaseWebClient<InternalHttpContext> {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ProvisioningWebClient.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ProvisioningWebClient.class);
 
     public ProvisioningWebClient(final WebClient webClient, final String baseUrl) {
         super(webClient, baseUrl);

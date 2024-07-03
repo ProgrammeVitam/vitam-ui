@@ -43,13 +43,13 @@ import fr.gouv.vitam.common.database.builder.request.single.Select;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.administration.AccessionRegisterSummaryModel;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class AccessionRegisterService {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(AccessionRegisterService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AccessionRegisterService.class);
 
     private final AdminExternalClient adminExternalClient;
 

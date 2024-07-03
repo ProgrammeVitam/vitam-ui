@@ -44,8 +44,6 @@ import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.enums.ContentDispositionType;
 import fr.gouv.vitamui.commons.rest.util.RestUtils;
 import fr.gouv.vitamui.commons.vitam.api.dto.LogbookLifeCycleResponseDto;
@@ -53,6 +51,8 @@ import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsResponseDto;
 import fr.gouv.vitamui.iam.external.server.service.LogbookExternalService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
@@ -82,7 +82,7 @@ import java.util.Optional;
 @ResponseBody
 public class LogbookExternalController {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(LogbookExternalController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(LogbookExternalController.class);
 
     private static final String DOWNLOAD_TYPE_DIP = "dip";
     private static final String DOWNLOAD_TYPE_TRANSFER_SIP = "transfersip";

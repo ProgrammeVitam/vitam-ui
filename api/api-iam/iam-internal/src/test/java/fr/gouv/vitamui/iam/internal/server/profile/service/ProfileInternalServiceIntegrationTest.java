@@ -8,17 +8,14 @@ import fr.gouv.vitamui.commons.api.domain.ProfileDto;
 import fr.gouv.vitamui.commons.api.domain.QueryDto;
 import fr.gouv.vitamui.commons.api.domain.Role;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.logbook.common.EventType;
 import fr.gouv.vitamui.commons.logbook.dao.EventRepository;
 import fr.gouv.vitamui.commons.logbook.domain.Event;
 import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
-import fr.gouv.vitamui.commons.mongo.repository.impl.VitamUIRepositoryImpl;
 import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
-import fr.gouv.vitamui.commons.test.utils.FieldUtils;
+import fr.gouv.vitamui.commons.test.VitamClientTestConfig;
 import fr.gouv.vitamui.commons.utils.VitamUIUtils;
 import fr.gouv.vitamui.iam.internal.server.common.ApiIamInternalConstants;
 import fr.gouv.vitamui.iam.internal.server.common.domain.MongoDbCollections;
@@ -27,31 +24,30 @@ import fr.gouv.vitamui.iam.internal.server.customer.dao.CustomerRepository;
 import fr.gouv.vitamui.iam.internal.server.customer.domain.Customer;
 import fr.gouv.vitamui.iam.internal.server.group.dao.GroupRepository;
 import fr.gouv.vitamui.iam.internal.server.group.domain.Group;
-import fr.gouv.vitamui.iam.internal.server.idp.service.SpMetadataGenerator;
 import fr.gouv.vitamui.iam.internal.server.logbook.service.AbstractLogbookIntegrationTest;
 import fr.gouv.vitamui.iam.internal.server.logbook.service.IamLogbookService;
-import fr.gouv.vitamui.iam.internal.server.owner.dao.OwnerRepository;
 import fr.gouv.vitamui.iam.internal.server.profile.converter.ProfileConverter;
 import fr.gouv.vitamui.iam.internal.server.profile.dao.ProfileRepository;
 import fr.gouv.vitamui.iam.internal.server.tenant.dao.TenantRepository;
 import fr.gouv.vitamui.iam.internal.server.tenant.domain.Tenant;
 import fr.gouv.vitamui.iam.internal.server.user.dao.UserRepository;
-import fr.gouv.vitamui.iam.internal.server.user.service.ConnectionHistoryService;
 import fr.gouv.vitamui.iam.internal.server.utils.IamServerUtilsTest;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -64,38 +60,23 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 /**
  * Class for test InternalProfileService with a real repository
  */
 
-@RunWith(SpringRunner.class)
-@EnableMongoRepositories(
-    basePackageClasses = { ProfileRepository.class },
-    repositoryBaseClass = VitamUIRepositoryImpl.class
-)
-public class ProfileInternalServiceIntegTest extends AbstractLogbookIntegrationTest {
+@SpringBootTest
+@ExtendWith(SpringExtension.class)
+@ActiveProfiles("test")
+@Import(VitamClientTestConfig.class)
+public class ProfileInternalServiceIntegrationTest extends AbstractLogbookIntegrationTest {
 
     @Autowired
     private ProfileRepository repository;
 
-    @MockBean
-    private GroupRepository groupRepository;
-
-    @MockBean
-    private UserRepository userRepository;
-
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ProfileInternalServiceIntegTest.class);
-
-    @MockBean
-    private SequenceGeneratorService sequenceGeneratorService;
-
-    private final CustomerRepository customerRepository = mock(CustomerRepository.class);
-
-    @MockBean
-    private TenantRepository tenantRepository;
+    @Autowired
+    private CustomerInitConfig customerInitConfig;
 
     @Autowired
     private EventRepository eventRepository;
@@ -107,17 +88,25 @@ public class ProfileInternalServiceIntegTest extends AbstractLogbookIntegrationT
     private ProfileConverter profileConverter;
 
     @MockBean
-    private OwnerRepository ownerRepository;
+    private GroupRepository groupRepository;
 
     @MockBean
-    private ConnectionHistoryService connectionHistoryService;
+    private UserRepository userRepository;
 
     @MockBean
-    private SpMetadataGenerator spMetadataGenerator;
+    private SequenceGeneratorService sequenceGeneratorService;
 
-    private final InternalHttpContext internalHttpContext = mock(InternalHttpContext.class);
+    @MockBean
+    private CustomerRepository customerRepository;
 
-    private final CustomSequenceRepository sequenceRepository = mock(CustomSequenceRepository.class);
+    @MockBean
+    private TenantRepository tenantRepository;
+
+    @MockBean
+    private InternalHttpContext internalHttpContext;
+
+    @MockBean
+    private CustomSequenceRepository sequenceRepository;
 
     private static final Integer TENANT_IDENTIFIER = 10;
 
@@ -125,9 +114,9 @@ public class ProfileInternalServiceIntegTest extends AbstractLogbookIntegrationT
 
     private DummyData dummyData;
 
-    @Before
+    @BeforeEach
     public void setup() throws Exception {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
 
         service = new ProfileInternalService(
             sequenceGeneratorService,
@@ -139,7 +128,8 @@ public class ProfileInternalServiceIntegTest extends AbstractLogbookIntegrationT
             internalSecurityService,
             iamLogbookService,
             profileConverter,
-            null
+            null,
+            customerInitConfig
         );
         repository.deleteAll();
 
@@ -148,12 +138,10 @@ public class ProfileInternalServiceIntegTest extends AbstractLogbookIntegrationT
 
         when(sequenceGeneratorService.getNextSequenceId(any(), anyInt())).thenReturn(1);
 
-        FieldUtils.setFinalStatic(CustomerInitConfig.class.getDeclaredField("allRoles"), ServicesData.getAllRoles());
-
         dummyData = new DummyData();
     }
 
-    @After
+    @AfterEach
     public void cleanUp() {
         repository.deleteAll();
     }
@@ -511,10 +499,10 @@ public class ProfileInternalServiceIntegTest extends AbstractLogbookIntegrationT
             assertThat(e.getMessage()).contains(identifier);
             return;
         }
-        Assert.fail("Excepted DuplicateKeyException to be thrown");
+        Assertions.fail("Excepted DuplicateKeyException to be thrown");
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void should_raised_exception_when_trying_to_create_two_same_profile() {
         // Given
         when(customerRepository.findById(any())).thenReturn(Optional.of(dummyData.customer()));
@@ -529,7 +517,7 @@ public class ProfileInternalServiceIntegTest extends AbstractLogbookIntegrationT
 
         // When
         service.create(profileDto);
-        service.create(profileDto2);
+        Assertions.assertThrows(IllegalArgumentException.class, () -> service.create(profileDto2));
         // Then : Exception is raised
     }
 

@@ -50,8 +50,6 @@ import fr.gouv.vitamui.commons.api.domain.UserInfoDto;
 import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
 import fr.gouv.vitamui.commons.api.exception.ApplicationServerException;
 import fr.gouv.vitamui.commons.api.exception.NotFoundException;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.api.utils.ApiUtils;
 import fr.gouv.vitamui.commons.logbook.common.EventType;
 import fr.gouv.vitamui.commons.logbook.dto.EventDiffDto;
@@ -77,12 +75,21 @@ import fr.gouv.vitamui.iam.internal.server.user.domain.UserInfo;
 import fr.gouv.vitamui.iam.internal.server.user.service.ConnectionHistoryService;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Duration;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 /**
  *
@@ -96,7 +103,7 @@ public class IamLogbookService {
 
     private final InternalSecurityService internalSecurityService;
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(IamLogbookService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(IamLogbookService.class);
 
     private final Converters converters;
 
@@ -125,6 +132,7 @@ public class IamLogbookService {
      *
      * @param sourceEvent
      */
+    @Transactional
     public void createCustomerEvent(final CustomerDto sourceEvent) {
         LOGGER.debug("Create Customer {}", sourceEvent.toString());
         create(
@@ -136,6 +144,7 @@ public class IamLogbookService {
         );
     }
 
+    @Transactional
     public void subrogation(final SubrogationDto sourceEvent, final EventType eventType) {
         String msg = null;
         switch (eventType) {
@@ -167,6 +176,7 @@ public class IamLogbookService {
         );
     }
 
+    @Transactional
     public void subrogation(final Subrogation sourceEvent, final EventType eventType) {
         this.subrogation(converters.getSubrogationConverter().convertEntityToDto(sourceEvent), eventType);
     }
@@ -175,6 +185,7 @@ public class IamLogbookService {
      *
      * @param sourceEvent
      */
+    @Transactional
     public void createProfileEvent(final ProfileDto sourceEvent) {
         LOGGER.debug("Create Profile {}", sourceEvent.toString());
         create(
@@ -190,6 +201,7 @@ public class IamLogbookService {
      *
      * @param sourceEvent
      */
+    @Transactional
     public void createIdpEvent(final IdentityProviderDto sourceEvent) {
         LOGGER.debug("Create Provider {}", sourceEvent.toString());
         create(
@@ -228,6 +240,7 @@ public class IamLogbookService {
      *
      * @param sourceEvent
      */
+    @Transactional
     public void createProfileEvent(final Profile sourceEvent) {
         createProfileEvent(converters.getProfileConverter().convertEntityToDto(sourceEvent));
     }
@@ -236,6 +249,7 @@ public class IamLogbookService {
      *
      * @param sourceEvent
      */
+    @Transactional
     public void createUserEvent(final UserDto sourceEvent) {
         LOGGER.debug("Create User {}", sourceEvent.toString());
         create(
@@ -266,6 +280,7 @@ public class IamLogbookService {
      *
      * @param sourceEvent
      */
+    @Transactional
     public void createOwnerEvent(final OwnerDto sourceEvent) {
         LOGGER.debug("Create Owner {}", sourceEvent.toString());
         create(
@@ -292,6 +307,7 @@ public class IamLogbookService {
      *
      * @param sourceEvent
      */
+    @Transactional
     public void createGroupEvent(final GroupDto sourceEvent) {
         LOGGER.debug("Create Group {}", sourceEvent.toString());
         create(
@@ -311,6 +327,7 @@ public class IamLogbookService {
      *
      * @param sourceEvent
      */
+    @Transactional
     public void createTenantEvent(final TenantDto sourceEvent) {
         LOGGER.debug("Create Tenant {}", sourceEvent.toString());
 
@@ -345,6 +362,7 @@ public class IamLogbookService {
      * @param profile
      * @param logbooks
      */
+    @Transactional
     public void updateProfileEvent(final Profile profile, final Collection<EventDiffDto> logbooks) {
         LOGGER.debug("Update Profile {}", profile.toString());
         update(
@@ -361,6 +379,7 @@ public class IamLogbookService {
      * @param group
      * @param logbooks
      */
+    @Transactional
     public void updateGroupEvent(final Group group, final Collection<EventDiffDto> logbooks) {
         LOGGER.debug("Update Group {}", group.toString());
         update(
@@ -377,6 +396,7 @@ public class IamLogbookService {
      * @param user
      * @param logbooks
      */
+    @Transactional
     public void updateUserEvent(final User user, final Collection<EventDiffDto> logbooks) {
         LOGGER.debug("Update User {}", user.toString());
         update(
@@ -409,6 +429,7 @@ public class IamLogbookService {
      * @param tenant
      * @param logbooks
      */
+    @Transactional
     public void updateTenantEvent(final Tenant tenant, final Collection<EventDiffDto> logbooks) {
         LOGGER.debug("Update tenant {}", tenant.toString());
         update(
@@ -425,6 +446,7 @@ public class IamLogbookService {
      * @param owner
      * @param logbooks
      */
+    @Transactional
     public void updateOwnerEvent(final Owner owner, final Collection<EventDiffDto> logbooks) {
         LOGGER.debug("Update Owner {}", owner.toString());
         update(
@@ -441,6 +463,7 @@ public class IamLogbookService {
      * @param idp
      * @param logbooks
      */
+    @Transactional
     public void updateIdpEvent(final IdentityProvider idp, final Collection<EventDiffDto> logbooks) {
         LOGGER.debug("Update Provider {}", idp.toString());
         update(
@@ -457,6 +480,7 @@ public class IamLogbookService {
      * @param customer
      * @param logbooks
      */
+    @Transactional
     public void updateCustomerEvent(final Customer customer, final Collection<EventDiffDto> logbooks) {
         LOGGER.debug("Update Customer {}", customer.toString());
         update(
@@ -506,6 +530,7 @@ public class IamLogbookService {
      * @param user the user identifier for whom the password is revoked
      * @param superUser the super user
      */
+    @Transactional
     public void revokePasswordEvent(final User user, final String superUser) {
         LOGGER.debug("revoke password for user: {} / superUser: {}", user, superUser);
         final Map<String, String> logbookData = new HashMap<>();
@@ -522,6 +547,7 @@ public class IamLogbookService {
         );
     }
 
+    @Transactional
     public void revokePasswordEvent(final UserDto dto, final String superUserIdentifier) {
         revokePasswordEvent(converters.getUserConverter().convertDtoToEntity(dto), superUserIdentifier);
     }
@@ -589,7 +615,7 @@ public class IamLogbookService {
      * @param eventType
      * @param evData
      */
-
+    @Transactional
     public void create(
         final Integer tenantIdentifier,
         final String identifier,
@@ -615,7 +641,7 @@ public class IamLogbookService {
      * @param eventType
      * @param evData
      */
-
+    @Transactional
     public void update(
         final Integer tenantIdentifier,
         final String identifier,

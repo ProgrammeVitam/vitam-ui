@@ -2,7 +2,6 @@ package fr.gouv.vitamui.iam.external.client;
 
 import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
-import fr.gouv.vitamui.commons.test.utils.AbstractServerIdentityBuilder;
 import fr.gouv.vitamui.commons.test.utils.UserBuilder;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,7 +24,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class UserExternalRestClientTest extends AbstractServerIdentityBuilder {
+public class UserExternalRestClientTest {
 
     private final String BASE_URL = "http://localhost:8083";
 

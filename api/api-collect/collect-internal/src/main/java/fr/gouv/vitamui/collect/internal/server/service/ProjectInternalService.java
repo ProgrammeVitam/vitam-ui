@@ -50,9 +50,9 @@ import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.vitam.api.collect.CollectService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.core.Response;
 import java.io.InputStream;
@@ -74,7 +74,7 @@ public class ProjectInternalService {
     public static final String UNABLE_TO_RETRIEVE_PROJECT = "Unable to retrieve project";
     private final CollectService collectService;
     private final ObjectMapper objectMapper;
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ProjectInternalService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ProjectInternalService.class);
 
     public ProjectInternalService(CollectService collectService, ObjectMapper objectMapper) {
         this.collectService = collectService;

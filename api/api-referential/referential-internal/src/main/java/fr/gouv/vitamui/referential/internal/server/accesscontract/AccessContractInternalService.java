@@ -65,8 +65,6 @@ import fr.gouv.vitamui.commons.api.enums.ErrorImportFileMessage;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.ConflictException;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
 import fr.gouv.vitamui.commons.vitam.api.administration.AccessContractService;
 import fr.gouv.vitamui.iam.internal.client.ApplicationInternalRestClient;
@@ -78,6 +76,8 @@ import fr.gouv.vitamui.referential.common.service.VitamUIAccessContractService;
 import fr.gouv.vitamui.referential.internal.server.utils.ExportCSVUtils;
 import fr.gouv.vitamui.referential.internal.server.utils.ImportCSVUtils;
 import org.apache.commons.io.input.BOMInputStream;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
@@ -104,7 +104,7 @@ import java.util.Optional;
 @Service
 public class AccessContractInternalService {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(AccessContractInternalService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AccessContractInternalService.class);
 
     private static final String ACCESS_CONTRACT = "ACCESS_CONTRACT";
 

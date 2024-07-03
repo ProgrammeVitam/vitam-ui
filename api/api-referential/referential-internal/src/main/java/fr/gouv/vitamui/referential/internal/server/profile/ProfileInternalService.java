@@ -59,14 +59,14 @@ import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.api.exception.NotFoundException;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import fr.gouv.vitamui.referential.common.dsl.VitamQueryHelper;
 import fr.gouv.vitamui.referential.common.dto.ProfileDto;
 import fr.gouv.vitamui.referential.common.dto.ProfileResponseDto;
 import fr.gouv.vitamui.referential.common.service.VitamProfileService;
 import org.apache.commons.collections4.CollectionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -85,7 +85,7 @@ import java.util.Optional;
 @Service
 public class ProfileInternalService {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ProfileInternalService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ProfileInternalService.class);
 
     private ObjectMapper objectMapper;
 

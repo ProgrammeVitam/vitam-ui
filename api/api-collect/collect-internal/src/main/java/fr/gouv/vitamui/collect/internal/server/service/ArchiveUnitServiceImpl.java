@@ -46,8 +46,8 @@ import fr.gouv.vitamui.commons.api.converter.UpdateMultiQueriesToBulkCommandDto;
 import fr.gouv.vitamui.commons.api.dtos.BulkCommandDto;
 import fr.gouv.vitamui.commons.api.dtos.JsonPatchDto;
 import fr.gouv.vitamui.commons.api.dtos.MultiJsonPatchDto;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -60,7 +60,7 @@ import static fr.gouv.vitamui.commons.api.CommonConstants.X_REQUEST_ID_HEADER;
 @Service
 public class ArchiveUnitServiceImpl implements ArchiveUnitService {
 
-    private static final VitamUILogger log = VitamUILoggerFactory.getInstance(ArchiveUnitServiceImpl.class);
+    private static final Logger log = LoggerFactory.getLogger(ArchiveUnitServiceImpl.class);
     private final CollectExternalClient collectExternalClient;
     private final UpdateArchiveUnitDtoToUpdateMultiQueryConverter updateArchiveUnitDtoToUpdateMultiQueryConverter;
     private final ExternalParametersService externalParametersService;

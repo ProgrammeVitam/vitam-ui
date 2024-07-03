@@ -44,11 +44,11 @@ import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaHistoryDto;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import io.swagger.annotations.Api;
 import lombok.Getter;
 import lombok.Setter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -72,9 +72,7 @@ import java.util.List;
 @Api(tags = "searchcriteriahistory", value = "Search Criteria History")
 public class SearchCriteriaHistoryInternalController {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
-        SearchCriteriaHistoryInternalController.class
-    );
+    private static final Logger LOGGER = LoggerFactory.getLogger(SearchCriteriaHistoryInternalController.class);
 
     private SearchCriteriaHistoryInternalService searchCriteriaHistoryInternalService;
 

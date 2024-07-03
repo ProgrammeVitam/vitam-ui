@@ -48,8 +48,6 @@ import fr.gouv.vitam.logbook.common.parameters.LogbookParameterName;
 import fr.gouv.vitam.logbook.common.parameters.LogbookParameters;
 import fr.gouv.vitam.logbook.common.parameters.LogbookParametersFactory;
 import fr.gouv.vitam.logbook.common.parameters.LogbookTypeProcess;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.api.utils.ApiUtils;
 import fr.gouv.vitamui.commons.logbook.common.EventStatus;
 import fr.gouv.vitamui.commons.logbook.dao.EventRepository;
@@ -60,6 +58,8 @@ import fr.gouv.vitamui.commons.utils.VitamUIUtils;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.collections4.CollectionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
@@ -97,7 +97,7 @@ public class SendEventToVitamTasks {
 
     private static final String EVENT_KEY_STATUS = "status";
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(SendEventToVitamTasks.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(SendEventToVitamTasks.class);
 
     private static final String EVENT_DATE_TIME_KEY = "Date d'opération";
 

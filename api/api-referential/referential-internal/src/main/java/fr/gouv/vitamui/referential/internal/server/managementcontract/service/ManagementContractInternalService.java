@@ -48,8 +48,6 @@ import fr.gouv.vitamui.commons.api.domain.ManagementContractDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.exception.ConflictException;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
 import fr.gouv.vitamui.commons.vitam.api.administration.ManagementContractService;
 import fr.gouv.vitamui.referential.common.dsl.VitamQueryHelper;
@@ -60,6 +58,8 @@ import fr.gouv.vitamui.referential.internal.server.managementcontract.Management
 import fr.gouv.vitamui.referential.internal.server.managementcontract.ManagementContractModelToDtoConverter;
 import fr.gouv.vitamui.referential.internal.server.managementcontract.PatchManagementContractModel;
 import fr.gouv.vitamui.referential.internal.server.managementcontract.converter.ManagementContractConverter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -74,9 +74,7 @@ import java.util.Optional;
 @Service
 public class ManagementContractInternalService {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
-        ManagementContractInternalService.class
-    );
+    private static final Logger LOGGER = LoggerFactory.getLogger(ManagementContractInternalService.class);
 
     private static final String MANAGEMENT_CONTRACT_NOT_FOUND = "Unable to find Management Contracts";
     private static final String MANAGEMENT_CONTRACT_EVENT_ID_APP_SESSION = "Management Contracts EvIdAppSession : {} ";

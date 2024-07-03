@@ -40,8 +40,6 @@ package fr.gouv.vitamui.pastis.server.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.pastis.common.dto.ElementProperties;
 import fr.gouv.vitamui.pastis.common.dto.jaxb.AnnotationXML;
 import fr.gouv.vitamui.pastis.common.dto.jaxb.AnyNameXML;
@@ -76,6 +74,8 @@ import lombok.Getter;
 import lombok.Setter;
 import org.json.JSONObject;
 import org.json.JSONTokener;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
@@ -110,7 +110,7 @@ import java.util.Random;
 @Service
 public class PastisService {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(PastisService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(PastisService.class);
 
     private static final String APPLICATION_JSON_UTF8 = "application/json; charset=utf-8";
     private final ResourceLoader resourceLoader;

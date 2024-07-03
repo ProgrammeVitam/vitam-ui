@@ -1,24 +1,19 @@
 package fr.gouv.vitamui.commons.logbook.scheduler;
 
 import fr.gouv.vitam.access.external.client.AdminExternalClient;
-import fr.gouv.vitamui.commons.logbook.TestMongoConfig;
 import fr.gouv.vitamui.commons.logbook.common.EventStatus;
-import fr.gouv.vitamui.commons.logbook.config.LogbookAutoConfiguration;
 import fr.gouv.vitamui.commons.logbook.dao.EventRepository;
 import fr.gouv.vitamui.commons.logbook.domain.Event;
-import fr.gouv.vitamui.commons.mongo.repository.impl.VitamUIRepositoryImpl;
-import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import fr.gouv.vitamui.commons.test.AbstractMongoTests;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -27,11 +22,11 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@RunWith(SpringRunner.class)
-@ContextConfiguration(classes = { LogbookAutoConfiguration.class, TestMongoConfig.class })
-@EnableMongoRepositories(basePackageClasses = EventRepository.class, repositoryBaseClass = VitamUIRepositoryImpl.class)
-public class SendEventToVitamTasksIntegTest {
+@SpringBootTest
+@ExtendWith(SpringExtension.class)
+public class SendEventToVitamTasksIntegrationTest extends AbstractMongoTests {
 
+    private final Long retryErrorEventInMinutes = 60L;
     private SendEventToVitamTasks sendEventToVitamTasks;
 
     @Autowired
@@ -40,14 +35,7 @@ public class SendEventToVitamTasksIntegTest {
     @MockBean
     private AdminExternalClient adminExternalClient;
 
-    private final Long retryErrorEventInMinutes = 60L;
-
-    @BeforeClass
-    public static void beforeClass() {
-        ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
-    }
-
-    @Before
+    @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);
         sendEventToVitamTasks = new SendEventToVitamTasks(eventRepository, adminExternalClient);

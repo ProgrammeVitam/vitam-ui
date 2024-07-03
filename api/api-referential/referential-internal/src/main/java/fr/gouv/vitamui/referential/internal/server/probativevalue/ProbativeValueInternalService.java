@@ -46,8 +46,6 @@ import fr.gouv.vitam.common.model.objectgroup.ObjectGroupResponse;
 import fr.gouv.vitam.common.model.objectgroup.QualifiersModel;
 import fr.gouv.vitam.common.model.objectgroup.VersionsModel;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.utils.PdfFileGenerator;
 import fr.gouv.vitamui.commons.utils.SecurePathUtils;
 import fr.gouv.vitamui.commons.utils.SecureZipUtils;
@@ -61,6 +59,8 @@ import fr.gouv.vitamui.referential.common.export.probativevalue.dto.ReportEntryD
 import fr.gouv.vitamui.referential.common.service.VitamBatchReportService;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -83,7 +83,7 @@ public class ProbativeValueInternalService {
 
     private static final String TEMPLATE_PROBATIVEVALUEREPORT_ODT = "templates/probativevaluereport.ftl.odt";
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ProbativeValueInternalService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ProbativeValueInternalService.class);
 
     private final VitamBatchReportService vitamBatchReportService;
 

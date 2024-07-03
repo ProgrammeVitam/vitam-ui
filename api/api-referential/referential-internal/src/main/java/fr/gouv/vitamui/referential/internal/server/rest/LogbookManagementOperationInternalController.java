@@ -36,14 +36,14 @@ import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.vitam.api.dto.ProcessDetailDto;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
 import fr.gouv.vitamui.referential.internal.server.logbookmanagement.LogbookManagementOperationInternalService;
 import lombok.Getter;
 import lombok.Setter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -53,9 +53,7 @@ import org.springframework.web.bind.annotation.*;
 @Setter
 public class LogbookManagementOperationInternalController {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
-        LogbookManagementOperationInternalController.class
-    );
+    private static final Logger LOGGER = LoggerFactory.getLogger(LogbookManagementOperationInternalController.class);
 
     @Autowired
     private LogbookManagementOperationInternalService logbookManagementOperationInternalService;

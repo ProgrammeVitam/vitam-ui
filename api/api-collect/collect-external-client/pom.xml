@@ -17,36 +17,30 @@
     <dependencies>
 
         <!-- VITAMUI -->
-
         <dependency>
             <groupId>fr.gouv.vitamui.commons</groupId>
             <artifactId>commons-api</artifactId>
         </dependency>
-
         <dependency>
             <groupId>fr.gouv.vitamui.commons</groupId>
             <artifactId>commons-rest</artifactId>
         </dependency>
-
         <dependency>
             <groupId>fr.gouv.vitamui</groupId>
             <artifactId>collect-commons</artifactId>
         </dependency>
 
         <!-- JSON -->
-
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
         </dependency>
-
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-core</artifactId>
         </dependency>
 
         <!-- SPRING -->
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -57,7 +51,6 @@
         </dependency>
 
         <!-- TEST -->
-
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
@@ -68,31 +61,11 @@
             <artifactId>mockito-inline</artifactId>
             <scope>test</scope>
         </dependency>
-
-        <dependency>
-            <groupId>org.easymock</groupId>
-            <artifactId>easymock</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.powermock</groupId>
-            <artifactId>powermock-api-easymock</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.powermock</groupId>
-            <artifactId>powermock-module-junit4</artifactId>
-            <scope>test</scope>
-        </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-
         <dependency>
             <groupId>fr.gouv.vitamui.commons</groupId>
             <artifactId>commons-test</artifactId>
@@ -103,8 +76,5 @@
             <groupId>fr.gouv.vitamui</groupId>
             <artifactId>archive-search-commons</artifactId>
         </dependency>
-
     </dependencies>
-
-
 </project>

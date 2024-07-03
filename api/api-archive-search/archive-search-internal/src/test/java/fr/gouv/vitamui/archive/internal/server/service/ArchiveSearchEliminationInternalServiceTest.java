@@ -41,7 +41,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitam.common.PropertiesUtils;
 import fr.gouv.vitam.common.json.JsonHandler;
 import fr.gouv.vitam.common.model.elimination.EliminationRequestBody;
-import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import fr.gouv.vitamui.commons.vitam.api.access.EliminationService;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -71,7 +70,6 @@ public class ArchiveSearchEliminationInternalServiceTest {
 
     @BeforeEach
     public void setUp() {
-        ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
         archiveSearchEliminationInternalService = new ArchiveSearchEliminationInternalService(
             archiveSearchInternalService,
             eliminationService,

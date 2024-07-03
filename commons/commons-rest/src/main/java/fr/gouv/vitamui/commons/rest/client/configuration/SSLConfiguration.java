@@ -36,7 +36,12 @@
  */
 package fr.gouv.vitamui.commons.rest.client.configuration;
 
-import lombok.*;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 /**
  * The SSLConfiguration stores SSL properties used in HTTPS connections

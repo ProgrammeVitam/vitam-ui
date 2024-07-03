@@ -44,8 +44,6 @@ import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.api.domain.UserInfoDto;
 import fr.gouv.vitamui.commons.api.enums.UserTypeEnum;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.mongo.CustomSequencesConstants;
 import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
@@ -80,10 +78,15 @@ import fr.gouv.vitamui.iam.internal.server.user.service.UserInternalService;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.tuple.Pair;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -155,7 +158,7 @@ public class InitCustomerService {
     @Autowired
     private ExternalParametersInternalService externalParametersInternalService;
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(InitCustomerService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(InitCustomerService.class);
 
     @Transactional
     public void initCustomer(final String tenantName, final CustomerDto customerDto, final List<OwnerDto> owners) {

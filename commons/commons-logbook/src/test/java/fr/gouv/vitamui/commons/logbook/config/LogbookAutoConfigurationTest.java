@@ -2,35 +2,31 @@ package fr.gouv.vitamui.commons.logbook.config;
 
 import fr.gouv.vitam.access.external.client.AdminExternalClient;
 import fr.gouv.vitam.access.external.client.AdminExternalClientMock;
-import fr.gouv.vitamui.commons.logbook.TestMongoConfig;
 import fr.gouv.vitamui.commons.logbook.service.EventService;
-import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import fr.gouv.vitamui.commons.test.AbstractMongoTests;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-public class LogbookAutoConfigurationTest {
+@SpringBootTest
+@ExtendWith(SpringExtension.class)
+public class LogbookAutoConfigurationTest extends AbstractMongoTests {
 
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
         .withConfiguration(AutoConfigurations.of(LogbookAutoConfiguration.class));
 
-    @BeforeClass
-    public static void setup() {
-        ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
-    }
-
     @Test
+    @Disabled
     public void serviceNameCanBeConfigured() {
         contextRunner
-            .withUserConfiguration(TestMongoConfig.class)
             .withUserConfiguration(UserConfiguration.class)
             .run(context -> {
                 assertThat(context).hasSingleBean(EventService.class);

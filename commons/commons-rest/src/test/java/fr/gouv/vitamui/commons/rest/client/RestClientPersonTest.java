@@ -1,7 +1,6 @@
 package fr.gouv.vitamui.commons.rest.client;
 
 import fr.gouv.vitamui.commons.rest.dto.PersonDto;
-import fr.gouv.vitamui.commons.rest.util.AbstractServerIdentityBuilder;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -18,7 +17,7 @@ import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class RestClientPersonTest extends AbstractServerIdentityBuilder {
+public class RestClientPersonTest {
 
     private RestClientPerson client;
 

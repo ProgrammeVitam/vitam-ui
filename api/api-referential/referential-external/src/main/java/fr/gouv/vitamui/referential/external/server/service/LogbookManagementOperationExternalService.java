@@ -28,8 +28,6 @@
 package fr.gouv.vitamui.referential.external.server.service;
 
 import fr.gouv.vitam.common.model.ProcessQuery;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.client.BasePaginatingAndSortingRestClient;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import fr.gouv.vitamui.commons.vitam.api.dto.ProcessDetailDto;
@@ -38,6 +36,8 @@ import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import fr.gouv.vitamui.referential.internal.client.LogbookManagementOperationInternalRestClient;
 import lombok.Getter;
 import lombok.Setter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -47,9 +47,7 @@ import org.springframework.stereotype.Service;
 public class LogbookManagementOperationExternalService
     extends AbstractResourceClientService<ProcessDetailDto, ProcessDetailDto> {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
-        LogbookManagementOperationExternalService.class
-    );
+    private static final Logger LOGGER = LoggerFactory.getLogger(LogbookManagementOperationExternalService.class);
 
     private LogbookManagementOperationInternalRestClient logbookManagementOperationInternalRestClient;
 

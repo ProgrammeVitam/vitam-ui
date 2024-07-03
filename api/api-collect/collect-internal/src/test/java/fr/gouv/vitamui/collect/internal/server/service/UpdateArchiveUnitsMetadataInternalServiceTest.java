@@ -31,9 +31,7 @@ package fr.gouv.vitamui.collect.internal.server.service;
 
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitamui.commons.api.exception.RequestTimeOutException;
-import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import fr.gouv.vitamui.commons.vitam.api.collect.CollectService;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -59,11 +57,6 @@ class UpdateArchiveUnitsMetadataInternalServiceTest {
 
     @Mock
     private CollectService collectService;
-
-    @BeforeEach
-    public void beforeEach() {
-        ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
-    }
 
     @Test
     void updateCollectArchiveUnits_should_pass_when_Vitam_Return_Ok() {

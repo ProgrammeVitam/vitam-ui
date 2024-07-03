@@ -4,7 +4,7 @@ import fr.gouv.vitamui.commons.api.domain.Criterion;
 import fr.gouv.vitamui.commons.api.domain.CriterionOperator;
 import fr.gouv.vitamui.commons.api.domain.IdDto;
 import fr.gouv.vitamui.commons.api.domain.QueryDto;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
+import org.slf4j.Logger;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.web.servlet.ResultActions;
@@ -22,6 +22,7 @@ public abstract class AbstractMockMvcCrudControllerTest<T extends IdDto> extends
 
     /**
      * Method for test entity creation
+     *
      * @return ResultActions
      */
     public ResultActions testCreateEntity() {
@@ -30,6 +31,7 @@ public abstract class AbstractMockMvcCrudControllerTest<T extends IdDto> extends
 
     /**
      * Method for test entity creation
+     *
      * @return ResultActions
      */
     public ResultActions testCreateEntity(final ResultMatcher matcher) {
@@ -38,6 +40,7 @@ public abstract class AbstractMockMvcCrudControllerTest<T extends IdDto> extends
 
     /**
      * Method for test entity update
+     *
      * @return ResultActions
      */
     public ResultActions testUpdateEntity() {
@@ -50,6 +53,7 @@ public abstract class AbstractMockMvcCrudControllerTest<T extends IdDto> extends
 
     /**
      * Method for test get entity by id
+     *
      * @return ResultActions
      */
     public ResultActions testGetEntityById() {
@@ -58,6 +62,7 @@ public abstract class AbstractMockMvcCrudControllerTest<T extends IdDto> extends
 
     /**
      * Method for test retrieve all entity
+     *
      * @return ResultActions
      */
     public ResultActions testGetAllEntity() {
@@ -66,6 +71,7 @@ public abstract class AbstractMockMvcCrudControllerTest<T extends IdDto> extends
 
     /**
      * Method for test retrieve all entity
+     *
      * @return ResultActions
      */
     public ResultActions testGetAllEntity(final QueryDto criteria) {
@@ -74,6 +80,7 @@ public abstract class AbstractMockMvcCrudControllerTest<T extends IdDto> extends
 
     /**
      * Method for test retrieve all entity with Criteria
+     *
      * @return ResultActions
      */
     public ResultActions testGetAllEntityWithCriteria() {
@@ -84,6 +91,7 @@ public abstract class AbstractMockMvcCrudControllerTest<T extends IdDto> extends
 
     /**
      * Method for test patch entity
+     *
      * @return ResultActions
      */
     public ResultActions testPatchEntity() {
@@ -92,6 +100,7 @@ public abstract class AbstractMockMvcCrudControllerTest<T extends IdDto> extends
 
     /**
      * Method for test patch entity not supported
+     *
      * @return ResultActions
      */
     public void testPatchEntityNotSupported() {
@@ -100,6 +109,7 @@ public abstract class AbstractMockMvcCrudControllerTest<T extends IdDto> extends
 
     /**
      * Method for test delete entity
+     *
      * @return ResultActions
      */
     public ResultActions testDeleteEntity() {
@@ -108,6 +118,7 @@ public abstract class AbstractMockMvcCrudControllerTest<T extends IdDto> extends
 
     /**
      * Method for test get paginated entities
+     *
      * @return
      */
     public ResultActions testGetPaginatedEntities() {
@@ -120,6 +131,7 @@ public abstract class AbstractMockMvcCrudControllerTest<T extends IdDto> extends
 
     /**
      * Method for test entity creation
+     *
      * @return ResultActions
      */
     public ResultActions testCreateEntity(final HttpHeaders httpHeaders) {
@@ -128,6 +140,7 @@ public abstract class AbstractMockMvcCrudControllerTest<T extends IdDto> extends
 
     /**
      * Method for test entity creation
+     *
      * @return ResultActions
      */
     public ResultActions testCreateEntity(final ResultMatcher matcher, final HttpHeaders httpHeaders) {
@@ -149,6 +162,7 @@ public abstract class AbstractMockMvcCrudControllerTest<T extends IdDto> extends
 
     /**
      * Method for test entity creation
+     *
      * @return ResultActions
      */
     public void testCreateEntityNotSupported(final HttpHeaders httpHeaders) {
@@ -170,6 +184,7 @@ public abstract class AbstractMockMvcCrudControllerTest<T extends IdDto> extends
 
     /**
      * Method for test entity update
+     *
      * @return ResultActions
      */
     public ResultActions testUpdateEntity(final HttpHeaders httpHeaders) {
@@ -208,6 +223,7 @@ public abstract class AbstractMockMvcCrudControllerTest<T extends IdDto> extends
 
     /**
      * Method for test get entity by id
+     *
      * @return ResultActions
      */
     public ResultActions testGetEntityById(final HttpHeaders httpHeaders) {
@@ -243,6 +259,7 @@ public abstract class AbstractMockMvcCrudControllerTest<T extends IdDto> extends
 
     /**
      * Method for test patch entity
+     *
      * @return ResultActions
      */
     public void testPatchEntityNotSupported(final HttpHeaders httpHeaders) {
@@ -268,6 +285,7 @@ public abstract class AbstractMockMvcCrudControllerTest<T extends IdDto> extends
 
     /**
      * Method for test patch entity
+     *
      * @return ResultActions
      */
     public ResultActions testPatchEntity(final HttpHeaders httpHeaders) {
@@ -289,6 +307,7 @@ public abstract class AbstractMockMvcCrudControllerTest<T extends IdDto> extends
 
     /**
      * Method for test delete entity
+     *
      * @return ResultActions
      */
     public ResultActions testDeleteEntity(final HttpHeaders httpHeaders) {
@@ -349,7 +368,7 @@ public abstract class AbstractMockMvcCrudControllerTest<T extends IdDto> extends
 
     protected abstract T buildDto();
 
-    protected abstract VitamUILogger getLog();
+    protected abstract Logger getLog();
 
     protected abstract void preparedServices();
 }

@@ -65,8 +65,6 @@ import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.api.exception.InvalidTypeException;
 import fr.gouv.vitamui.commons.api.exception.RequestEntityTooLargeException;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts;
 import fr.gouv.vitamui.commons.api.utils.OntologyServiceReader;
 import fr.gouv.vitamui.commons.vitam.api.administration.AgencyService;
@@ -78,6 +76,8 @@ import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
 import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
 import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ByteArrayResource;
@@ -155,9 +155,7 @@ public class TransactionArchiveUnitInternalService {
 
     private AgencyService agencyService;
     private final ObjectMapper objectMapper;
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
-        TransactionArchiveUnitInternalService.class
-    );
+    private static final Logger LOGGER = LoggerFactory.getLogger(TransactionArchiveUnitInternalService.class);
 
     private static final String RESULTS = "$results";
 

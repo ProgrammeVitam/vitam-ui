@@ -12,7 +12,6 @@ import fr.gouv.vitamui.commons.api.domain.UserInfoDto;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
-import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import fr.gouv.vitamui.commons.utils.VitamUIUtils;
 import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
 import fr.gouv.vitamui.iam.common.dto.CustomerCreationFormData;
@@ -211,7 +210,6 @@ public final class CustomerCrudControllerTest {
                 ArgumentMatchers.any(ExternalParametersDto.class)
             )
         ).thenAnswer(AdditionalAnswers.returnsFirstArg());
-        ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
     }
 
     protected void prepareServices() {

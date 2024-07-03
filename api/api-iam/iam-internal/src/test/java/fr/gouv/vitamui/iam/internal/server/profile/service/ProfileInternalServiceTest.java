@@ -2,12 +2,10 @@ package fr.gouv.vitamui.iam.internal.server.profile.service;
 
 import fr.gouv.vitamui.commons.api.domain.ProfileDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
-import fr.gouv.vitamui.commons.test.utils.FieldUtils;
-import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
+import fr.gouv.vitamui.commons.test.AbstractMongoTests;
+import fr.gouv.vitamui.commons.test.VitamClientTestConfig;
 import fr.gouv.vitamui.commons.test.utils.TestUtils;
 import fr.gouv.vitamui.commons.utils.VitamUIUtils;
 import fr.gouv.vitamui.iam.common.utils.DtoFactory;
@@ -16,7 +14,6 @@ import fr.gouv.vitamui.iam.internal.server.customer.config.CustomerInitConfig;
 import fr.gouv.vitamui.iam.internal.server.customer.dao.CustomerRepository;
 import fr.gouv.vitamui.iam.internal.server.group.dao.GroupRepository;
 import fr.gouv.vitamui.iam.internal.server.group.domain.Group;
-import fr.gouv.vitamui.iam.internal.server.group.service.GroupInternalService;
 import fr.gouv.vitamui.iam.internal.server.logbook.service.IamLogbookService;
 import fr.gouv.vitamui.iam.internal.server.profile.converter.ProfileConverter;
 import fr.gouv.vitamui.iam.internal.server.profile.dao.ProfileRepository;
@@ -26,13 +23,22 @@ import fr.gouv.vitamui.iam.internal.server.user.dao.UserRepository;
 import fr.gouv.vitamui.iam.internal.server.utils.IamServerUtilsTest;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import org.bson.Document;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.data.mongodb.core.aggregation.TypedAggregation;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.CriteriaDefinition;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -44,39 +50,49 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class ProfileInternalServiceTest {
+@SpringBootTest
+@ExtendWith(SpringExtension.class)
+@ActiveProfiles("test")
+@Import(VitamClientTestConfig.class)
+public class ProfileInternalServiceTest extends AbstractMongoTests {
 
+    @Autowired
+    private CustomerInitConfig customerInitConfig;
+
+    @Mock
+    private ProfileRepository profileRepository;
+
+    @Mock
+    private UserRepository userRepository;
+
+    @Mock
+    private InternalSecurityService internalSecurityService;
+
+    @Mock
+    private SequenceGeneratorService sequenceGeneratorService;
+
+    @Mock
+    private GroupRepository groupRepository;
+
+    @Mock
+    private CustomerRepository customerRepository;
+
+    @Mock
+    private TenantRepository tenantRepository;
+
+    @Mock
+    private IamLogbookService iamLogbookService;
+
+    @InjectMocks
     private ProfileInternalService service;
-
-    private final ProfileRepository profileRepository = mock(ProfileRepository.class);
-
-    private final GroupInternalService profileGroupCrudService = mock(GroupInternalService.class);
-
-    private final UserRepository userRepository = mock(UserRepository.class);
-
-    private final InternalSecurityService internalSecurityService = mock(InternalSecurityService.class);
-
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ProfileInternalServiceTest.class);
-
-    private final SequenceGeneratorService sequenceGeneratorService = mock(SequenceGeneratorService.class);
-
-    private final GroupRepository groupRepository = mock(GroupRepository.class);
-
-    private final CustomerRepository customerRepository = mock(CustomerRepository.class);
-
-    private final TenantRepository tenantRepository = mock(TenantRepository.class);
-
-    private final IamLogbookService iamLogbookService = mock(IamLogbookService.class);
 
     private final ProfileConverter profileConverter = new ProfileConverter();
 
-    @Before
+    @BeforeEach
     public void setup() throws Exception {
         service = new ProfileInternalService(
             sequenceGeneratorService,
@@ -88,11 +104,9 @@ public class ProfileInternalServiceTest {
             internalSecurityService,
             iamLogbookService,
             profileConverter,
-            null
+            null,
+            customerInitConfig
         );
-
-        ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
-        FieldUtils.setFinalStatic(CustomerInitConfig.class.getDeclaredField("allRoles"), ServicesData.getAllRoles());
 
         when(sequenceGeneratorService.getNextSequenceId(any(), anyInt())).thenReturn(1);
     }
@@ -146,7 +160,7 @@ public class ProfileInternalServiceTest {
         profile.setDescription(profileDto.getDescription());
         profile.setRoles(profileDto.getRoles());
 
-        assertNotNull("Profile id should be defined", profileCreated.getId());
+        Assertions.assertNotNull(profileCreated.getId(), "Profile id should be defined");
         assertThat(profile).isEqualToComparingFieldByField(profileCreated);
     }
 
@@ -158,7 +172,7 @@ public class ProfileInternalServiceTest {
         final Map<String, Object> partialDto = TestUtils.getMapFromObject(other);
         partialDto.put(
             "roles",
-            other.getRoles().stream().map(role -> TestUtils.getMapFromObject(role)).collect(Collectors.toList())
+            other.getRoles().stream().map(TestUtils::getMapFromObject).collect(Collectors.toList())
         );
         service.processPatch(entity, partialDto);
 

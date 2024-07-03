@@ -32,8 +32,6 @@ package fr.gouv.vitamui.referential.external.server.rest;
 import fr.gouv.vitamui.commons.api.domain.IdDto;
 import fr.gouv.vitamui.commons.api.dtos.VitamUiOntologyDto;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
 import fr.gouv.vitamui.referential.external.server.service.OntologyExternalService;
 import org.junit.jupiter.api.Assertions;
@@ -42,6 +40,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
@@ -91,8 +91,8 @@ class OntologyExternalControllerTest extends ApiReferentialControllerTest<IdDto>
     }
 
     @Override
-    protected VitamUILogger getLog() {
-        return VitamUILoggerFactory.getInstance(OntologyExternalController.class);
+    protected Logger getLog() {
+        return LoggerFactory.getLogger(OntologyExternalController.class);
     }
 
     @Override

@@ -33,12 +33,12 @@ import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaHistoryDto;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.Getter;
 import lombok.Setter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -65,9 +65,7 @@ import static fr.gouv.vitamui.collect.common.rest.RestApi.SEARCH_CRITERIA_HISTOR
 @Api(tags = "searchCriteriaHistory", value = "Search Criteria History")
 public class SearchCriteriaHistoryExternalController {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
-        SearchCriteriaHistoryExternalController.class
-    );
+    private static final Logger LOGGER = LoggerFactory.getLogger(SearchCriteriaHistoryExternalController.class);
 
     private SearchCriteriaHistoryExternalService searchCriteriaHistoryExternalService;
 

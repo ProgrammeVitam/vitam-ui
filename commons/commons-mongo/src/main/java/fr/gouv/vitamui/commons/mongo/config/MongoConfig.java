@@ -24,6 +24,7 @@
  * this means that you have had knowledge of the CeCILL-C license and that you
  * accept its terms.
  */
+
 package fr.gouv.vitamui.commons.mongo.config;
 
 import fr.gouv.vitamui.commons.api.converter.OffsetDateTimeToStringConverter;
@@ -31,7 +32,6 @@ import fr.gouv.vitamui.commons.api.converter.StringToOffsetDateTimeConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.mongodb.MongoDatabaseFactory;
 import org.springframework.data.mongodb.MongoTransactionManager;
@@ -42,11 +42,8 @@ import java.util.List;
 
 /**
  * MongoDB configuration.
- *
- *
  */
 
-@Profile("!test")
 @Configuration
 public class MongoConfig {
 

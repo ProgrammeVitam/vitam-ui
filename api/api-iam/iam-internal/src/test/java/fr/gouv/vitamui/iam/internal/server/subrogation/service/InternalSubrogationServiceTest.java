@@ -3,7 +3,6 @@ package fr.gouv.vitamui.iam.internal.server.subrogation.service;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
-import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import fr.gouv.vitamui.commons.utils.VitamUIUtils;
 import fr.gouv.vitamui.iam.common.dto.SubrogationDto;
 import fr.gouv.vitamui.iam.common.enums.SubrogationStatusEnum;
@@ -89,7 +88,6 @@ public final class InternalSubrogationServiceTest {
 
     @Before
     public void setUp() {
-        ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
         SubrogationConverter subrogationConverter = new SubrogationConverter(userRepository);
         service = new SubrogationInternalService(
             sequenceGeneratorService,

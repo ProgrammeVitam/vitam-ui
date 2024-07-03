@@ -37,8 +37,6 @@
 package fr.gouv.vitamui.commons.rest.client;
 
 import fr.gouv.vitamui.commons.api.exception.ApplicationServerException;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.client.configuration.HttpPoolConfiguration;
 import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
 import fr.gouv.vitamui.commons.rest.client.configuration.SSLConfiguration;
@@ -54,6 +52,8 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.ssl.SSLContextBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.util.Assert;
@@ -84,7 +84,7 @@ import java.util.List;
 
 public class BaseStreamingRestClientFactory implements RestClientFactory {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(BaseStreamingRestClientFactory.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(BaseStreamingRestClientFactory.class);
 
     private final RestTemplate restTemplate;
 

@@ -39,11 +39,11 @@ package fr.gouv.vitamui.iam.external.server.rest;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.AccessContractsDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.iam.external.server.service.AccessContractExternalService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -64,7 +64,7 @@ import java.util.List;
 @Api(tags = "accesscontracts", value = "Access contact", description = "Access contract Management")
 public class AccessContractExternalController {
 
-    static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(AccessContractExternalController.class);
+    static final Logger LOGGER = LoggerFactory.getLogger(AccessContractExternalController.class);
 
     private final AccessContractExternalService accessContractExternalService;
 

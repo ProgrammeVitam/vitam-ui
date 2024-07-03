@@ -51,8 +51,6 @@ import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.api.exception.UnexpectedDataException;
 import fr.gouv.vitamui.commons.api.exception.UnexpectedSettingsException;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.api.utils.OntologyServiceReader;
 import fr.gouv.vitamui.commons.vitam.api.access.PersistentIdentifierService;
 import fr.gouv.vitamui.commons.vitam.api.access.UnitService;
@@ -62,6 +60,8 @@ import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
 import fr.gouv.vitamui.commons.vitam.api.model.UnitTypeEnum;
 import lombok.Getter;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -88,7 +88,7 @@ import static fr.gouv.vitamui.commons.api.utils.MetadataSearchCriteriaUtils.mapR
 @Service
 public class ArchiveSearchInternalService {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ArchiveSearchInternalService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ArchiveSearchInternalService.class);
     private static final String ARCHIVE_UNIT_DETAILS = "$results";
     private static final String HISTORY = "$history";
     public static final String DSL_QUERY_PROJECTION = "$projection";

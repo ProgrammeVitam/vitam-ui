@@ -32,14 +32,12 @@ import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOper
 import fr.gouv.vitamui.archive.internal.server.utils.FileReader;
 import fr.gouv.vitamui.commons.api.dtos.CriteriaValue;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaEltDto;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts;
-import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.io.IOException;
@@ -68,14 +66,9 @@ public class ArchivesSearchAccessMgtRulesQueryBuilderServiceTest {
         "access/expected-search-query-with-rule-identifier-and-rule-startDate.txt";
     public static String SEARCH_QUERY_WITH_ONE_DATE = "access/one-date-query.txt";
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
+    private static final Logger LOGGER = LoggerFactory.getLogger(
         ArchivesSearchAccessMgtRulesQueryBuilderServiceTest.class
     );
-
-    @BeforeEach
-    public void setUp() {
-        ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
-    }
 
     @Test
     public void testFillQueryFromCriteriaListWhenNullCriteriaList() throws InvalidCreateOperationException {

@@ -10,7 +10,6 @@ import fr.gouv.vitamui.commons.api.exception.UnAuthorizedException;
 import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.commons.security.client.password.PasswordValidator;
-import fr.gouv.vitamui.commons.test.utils.AbstractServerIdentityBuilder;
 import fr.gouv.vitamui.iam.common.dto.SubrogationDto;
 import fr.gouv.vitamui.iam.common.dto.cas.LoginRequestDto;
 import fr.gouv.vitamui.iam.common.enums.SubrogationStatusEnum;
@@ -56,7 +55,7 @@ import static org.mockito.Mockito.when;
  * Tests the {@link CasInternalController}.
  */
 
-public final class CasControllerTest extends AbstractServerIdentityBuilder {
+public final class CasControllerTest {
 
     private static final String ID = "myUser";
 

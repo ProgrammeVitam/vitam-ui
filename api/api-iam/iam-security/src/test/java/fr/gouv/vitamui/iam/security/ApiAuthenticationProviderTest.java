@@ -7,7 +7,6 @@ import fr.gouv.vitamui.commons.api.exception.InvalidAuthenticationException;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
-import fr.gouv.vitamui.commons.test.utils.AbstractServerIdentityBuilder;
 import fr.gouv.vitamui.iam.internal.client.UserInternalRestClient;
 import fr.gouv.vitamui.iam.security.authentication.ExternalAuthentication;
 import fr.gouv.vitamui.iam.security.provider.ExternalApiAuthenticationProvider;
@@ -38,7 +37,7 @@ import static org.mockito.Mockito.when;
  *
  *
  */
-public final class ApiAuthenticationProviderTest extends AbstractServerIdentityBuilder {
+public final class ApiAuthenticationProviderTest {
 
     private static final byte[] CERTIFICATE = "CERTIFICATE".getBytes();
 

@@ -4,49 +4,40 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
-import fr.gouv.vitamui.commons.mongo.TestMongoConfig;
 import fr.gouv.vitamui.commons.mongo.domain.Address;
 import fr.gouv.vitamui.commons.mongo.domain.Person;
 import fr.gouv.vitamui.commons.mongo.repository.impl.VitamUIRepositoryImpl;
-import org.junit.After;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import fr.gouv.vitamui.commons.test.AbstractMongoTests;
+import org.hamcrest.MatcherAssert;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Import;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.CriteriaDefinition;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
 
-/**
- * PersonRepositoryTest.
- *
- *
- */
-@RunWith(SpringRunner.class)
-@Import({ TestMongoConfig.class })
+@SpringBootTest
+@ExtendWith(SpringExtension.class)
 @EnableMongoRepositories(basePackageClasses = PersonRepository.class, repositoryBaseClass = VitamUIRepositoryImpl.class)
-public class PersonRepositoryPaginatedNestedObjectsTests {
+public class PersonRepositoryPaginatedNestedObjectsTests extends AbstractMongoTests {
 
     @Autowired
     private PersonRepository repository;
 
-    @After
+    @AfterEach
     public void cleanUp() {
         repository.deleteAll();
     }
@@ -58,33 +49,33 @@ public class PersonRepositoryPaginatedNestedObjectsTests {
             Address.class,
             "person",
             "addressList",
-            Arrays.asList(Criteria.where("firstName").is("Makhtar")),
+            List.of(Criteria.where("firstName").is("Makhtar")),
             2,
             1,
             Optional.of("firstName"),
             Optional.of(DirectionDto.ASC)
         );
-        assertEquals("Incorrect page num.", 2, addresses.getPageNum());
-        assertEquals("Incorrect page size.", 1, addresses.getPageSize());
-        assertNotNull("Incorrect values.", addresses.getValues());
-        assertEquals("Incorrect values size.", 1, addresses.getValues().size());
-        assertThat("We have more data in database.", addresses.isHasMore(), is(true));
+        Assertions.assertEquals(2, addresses.getPageNum(), "Incorrect page num.");
+        Assertions.assertEquals(1, addresses.getPageSize(), "Incorrect page size.");
+        Assertions.assertNotNull(addresses.getValues(), "Incorrect values.");
+        Assertions.assertEquals(1, addresses.getValues().size(), "Incorrect values size.");
+        MatcherAssert.assertThat("We have more data in database.", addresses.isHasMore(), is(true));
 
         final PaginatedValuesDto<Address> addresses2 = repository.getPaginatedNestedValues(
             Address.class,
             "person",
             "addressList",
-            Arrays.asList(Criteria.where("firstName").is("Moctar")),
+            List.of(Criteria.where("firstName").is("Moctar")),
             0,
             1,
             Optional.of("firstName"),
             Optional.of(DirectionDto.ASC)
         );
-        assertEquals("Incorrect page num.", 0, addresses2.getPageNum());
-        assertEquals("Incorrect page size.", 1, addresses2.getPageSize());
-        assertNotNull("Incorrect values.", addresses2.getValues());
-        assertEquals("Incorrect values size.", 0, addresses2.getValues().size());
-        assertThat("We have more data in database.", addresses2.isHasMore(), is(false));
+        Assertions.assertEquals(0, addresses2.getPageNum(), "Incorrect page num.");
+        Assertions.assertEquals(1, addresses2.getPageSize(), "Incorrect page size.");
+        Assertions.assertNotNull(addresses2.getValues(), "Incorrect values.");
+        Assertions.assertEquals(0, addresses2.getValues().size(), "Incorrect values size.");
+        MatcherAssert.assertThat("We have more data in database.", addresses2.isHasMore(), is(false));
     }
 
     @Test
@@ -94,58 +85,60 @@ public class PersonRepositoryPaginatedNestedObjectsTests {
             Address.class,
             "person",
             "addressList",
-            Arrays.asList(Criteria.where("firstName").is("Makhtar")),
+            List.of(Criteria.where("firstName").is("Makhtar")),
             0,
             4,
             Optional.of("addressList.identifier"),
             Optional.of(DirectionDto.ASC)
         );
-        assertEquals("Incorrect page num.", 0, addresses.getPageNum());
-        assertEquals("Incorrect page size.", 4, addresses.getPageSize());
-        assertNotNull("Incorrect values.", addresses.getValues());
-        assertEquals("Incorrect values size.", 4, addresses.getValues().size());
-        assertThat("We have more data in database.", addresses.isHasMore(), is(false));
-        final List<Address> result = addresses.getValues().stream().collect(Collectors.toList());
-        assertEquals("Incorrect values size.", "1", result.get(0).getIdentifier());
-        assertEquals("Incorrect values size.", "2", result.get(1).getIdentifier());
-        assertEquals("Incorrect values size.", "3", result.get(2).getIdentifier());
-        assertEquals("Incorrect values size.", "4", result.get(3).getIdentifier());
+        Assertions.assertEquals(0, addresses.getPageNum(), "Incorrect page num.");
+        Assertions.assertEquals(4, addresses.getPageSize(), "Incorrect page size.");
+        Assertions.assertNotNull(addresses.getValues(), "Incorrect values.");
+        Assertions.assertEquals(4, addresses.getValues().size(), "Incorrect values size.");
+        MatcherAssert.assertThat("We have more data in database.", addresses.isHasMore(), is(false));
+        final List<Address> result = addresses.getValues().stream().toList();
+        Assertions.assertEquals("1", result.get(0).getIdentifier(), "Incorrect values size.");
+        Assertions.assertEquals("2", result.get(1).getIdentifier(), "Incorrect values size.");
+        Assertions.assertEquals("3", result.get(2).getIdentifier(), "Incorrect values size.");
+        Assertions.assertEquals("4", result.get(3).getIdentifier(), "Incorrect values size.");
     }
 
     @Test
-    public void testBuildPaginatedNestedValuesWithoutOrderAndDirection()
-        throws JsonParseException, JsonMappingException, IOException {
+    public void testBuildPaginatedNestedValuesWithoutOrderAndDirection() throws IOException {
         initializeData();
         final PaginatedValuesDto<Address> addresses = repository.getPaginatedNestedValues(
             Address.class,
             "person",
             "addressList",
-            Arrays.asList(Criteria.where("firstName").is("Makhtar")),
+            List.of(Criteria.where("firstName").is("Makhtar")),
             2,
             1,
             Optional.empty(),
             Optional.empty()
         );
-        assertEquals("Incorrect page num.", 2, addresses.getPageNum());
-        assertEquals("Incorrect page size.", 1, addresses.getPageSize());
-        assertNotNull("Incorrect values.", addresses.getValues());
-        assertEquals("Incorrect values size.", 1, addresses.getValues().size());
-        assertThat("We have more data in database.", addresses.isHasMore(), is(true));
+        Assertions.assertEquals(2, addresses.getPageNum(), "Incorrect page num.");
+        Assertions.assertEquals(1, addresses.getPageSize(), "Incorrect page size.");
+        Assertions.assertNotNull(addresses.getValues(), "Incorrect values.");
+        Assertions.assertEquals(1, addresses.getValues().size(), "Incorrect values size.");
+        MatcherAssert.assertThat("We have more data in database.", addresses.isHasMore(), is(true));
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void testBuildPaginatedNestedValuesWithOrderByEmptyAndWithDirection()
-        throws JsonParseException, JsonMappingException, IOException {
+    @Test
+    public void testBuildPaginatedNestedValuesWithOrderByEmptyAndWithDirection() {
         initializeData();
-        repository.getPaginatedNestedValues(
-            Address.class,
-            "person",
-            "addressList",
-            Arrays.asList(Criteria.where("firstName").is("Makhtar")),
-            2,
-            1,
-            Optional.empty(),
-            Optional.of(DirectionDto.ASC)
+        Assertions.assertThrows(
+            IllegalArgumentException.class,
+            () ->
+                repository.getPaginatedNestedValues(
+                    Address.class,
+                    "person",
+                    "addressList",
+                    List.of(Criteria.where("firstName").is("Makhtar")),
+                    2,
+                    1,
+                    Optional.empty(),
+                    Optional.of(DirectionDto.ASC)
+                )
         );
     }
 
@@ -160,21 +153,21 @@ public class PersonRepositoryPaginatedNestedObjectsTests {
             Optional.empty(),
             Optional.empty()
         );
-        assertEquals("Paginated values not found", persons.getValues().size(), 2);
+        Assertions.assertEquals(persons.getValues().size(), 2, "Paginated values not found");
     }
 
     @Test
     public void generateSuperId_thenReturnSuperIdFormatted() {
         String superId = repository.generateSuperId();
-        assertTrue("superId must be formatted", !superId.contains("-"));
+        Assertions.assertFalse(superId.contains("-"), "superId must be formatted");
     }
 
     @Test
     public void findAll_thenReturnAll() {
         initializeData();
-        Collection<CriteriaDefinition> c = Arrays.asList(Criteria.where("age").is(20));
+        Collection<CriteriaDefinition> c = List.of(Criteria.where("age").is(20));
         Collection<Person> persons = repository.findAll(c, Optional.of("firstName"), Optional.empty(), true);
-        assertEquals("Paginated values not found", 2, persons.size());
+        Assertions.assertEquals(2, persons.size(), "Paginated values not found");
     }
 
     private void initializeData() {
@@ -191,7 +184,7 @@ public class PersonRepositoryPaginatedNestedObjectsTests {
 
     protected List<Person> convertIterableToList(final Iterable<Person> it) {
         final List<Person> list = new ArrayList<>();
-        it.forEach(i -> list.add(i));
+        it.forEach(list::add);
         return list;
     }
 }

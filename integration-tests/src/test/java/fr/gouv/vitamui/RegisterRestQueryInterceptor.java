@@ -2,12 +2,12 @@ package fr.gouv.vitamui;
 
 import com.fasterxml.jackson.core.JsonParser.Feature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.dto.VitamUIError;
 import net.serenitybdd.core.rest.RestMethod;
 import net.serenitybdd.core.rest.RestQuery;
 import net.thucydides.core.steps.StepEventBus;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpRequest;
@@ -26,7 +26,7 @@ import java.util.Map;
 
 public class RegisterRestQueryInterceptor implements ClientHttpRequestInterceptor {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(RegisterRestQueryInterceptor.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(RegisterRestQueryInterceptor.class);
 
     private static final Map<String, RestMethod> TO_REST_METHOD = new HashMap<>();
 

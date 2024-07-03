@@ -36,10 +36,10 @@ import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.annotation.Secured;
@@ -69,7 +69,7 @@ import static fr.gouv.vitamui.collect.common.rest.RestApi.VALIDATE_PATH;
 @ResponseBody
 public class TransactionExternalController {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(TransactionExternalController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(TransactionExternalController.class);
 
     private final TransactionExternalService transactionExternalService;
 

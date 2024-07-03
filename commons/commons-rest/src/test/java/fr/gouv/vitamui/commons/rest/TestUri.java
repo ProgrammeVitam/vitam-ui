@@ -1,10 +1,10 @@
 package fr.gouv.vitamui.commons.rest;
 
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.client.AbstractHttpContext;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import org.apache.http.client.utils.URIBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.IOException;
@@ -15,7 +15,7 @@ import java.time.OffsetDateTime;
 
 public class TestUri {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(TestUri.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(TestUri.class);
 
     public static void main(final String[] args) throws IOException {
         final UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl("http://localhost");

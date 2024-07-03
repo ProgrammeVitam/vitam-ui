@@ -1,7 +1,5 @@
 package fr.gouv.vitamui.commons.vitam.xls;
 
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.vitam.xls.dto.SheetDto;
 import fr.gouv.vitamui.commons.vitam.xls.dto.ValueDto;
 import org.apache.commons.lang3.StringUtils;
@@ -12,6 +10,8 @@ import org.apache.poi.xssf.streaming.SXSSFSheet;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ByteArrayResource;
 
 import java.io.ByteArrayOutputStream;
@@ -28,7 +28,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public final class ExcelUtils {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ExcelUtils.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ExcelUtils.class);
     private static final int FIRST_ELEMENT = 0;
     private static final int SECOND_ELEMENT = 1;
     private static final int MAX_ROWS_IN_MEMORY = 500;

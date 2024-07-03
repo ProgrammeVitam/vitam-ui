@@ -34,6 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+
 package fr.gouv.vitamui.referential.common.service;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -53,53 +54,39 @@ import fr.gouv.vitam.common.model.administration.RuleType;
 import fr.gouv.vitam.common.model.logbook.LogbookOperation;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.ConflictException;
-import fr.gouv.vitamui.commons.api.identity.ServerIdentityConfiguration;
 import fr.gouv.vitamui.commons.rest.dto.RuleDto;
-import org.easymock.EasyMock;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.powermock.api.easymock.PowerMock;
-import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import javax.ws.rs.core.Response;
 import java.io.InputStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.isA;
-import static org.easymock.EasyMock.mock;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
-@RunWith(org.powermock.modules.junit4.PowerMockRunner.class)
-@PrepareForTest({ ServerIdentityConfiguration.class })
+@ExtendWith(MockitoExtension.class)
 public class VitamRuleServiceTest {
 
+    @Mock
     private AdminExternalClient adminExternalClient;
-    private AccessExternalClient accessExternalClient;
-    private VitamRuleService vitamRuleService;
-    private ObjectMapper objectMapper;
 
-    @Before
+    @Mock
+    private AccessExternalClient accessExternalClient;
+
+    private VitamRuleService vitamRuleService;
+
+    @BeforeEach
     public void setUp() {
-        adminExternalClient = mock(AdminExternalClient.class);
-        accessExternalClient = mock(AccessExternalClient.class);
-        objectMapper = new ObjectMapper();
+        MockitoAnnotations.openMocks(VitamRuleServiceTest.class);
+        ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
         vitamRuleService = new VitamRuleService(adminExternalClient, objectMapper, accessExternalClient);
-
-        // Mock server identity for Logs when not using spring
-        PowerMock.suppress(PowerMock.constructor(ServerIdentityConfiguration.class));
-        PowerMock.mockStatic(ServerIdentityConfiguration.class);
-        ServerIdentityConfiguration serverIdentityConfigurationMock = PowerMock.createMock(
-            ServerIdentityConfiguration.class
-        );
-        expect(ServerIdentityConfiguration.getInstance()).andReturn(serverIdentityConfigurationMock).anyTimes();
-        expect(serverIdentityConfigurationMock.getLoggerMessagePrepend())
-            .andReturn("LOG TESTS VitamRuleServiceTest - ")
-            .anyTimes();
-        PowerMock.replay(ServerIdentityConfiguration.class);
-        PowerMock.replay(serverIdentityConfigurationMock);
     }
 
     @Test
@@ -107,14 +94,11 @@ public class VitamRuleServiceTest {
         VitamContext vitamContext = new VitamContext(0);
         JsonNode select = JsonHandler.createObjectNode();
 
-        expect(adminExternalClient.findRules(vitamContext, select)).andReturn(
+        when(adminExternalClient.findRules(vitamContext, select)).thenReturn(
             new RequestResponseOK<FileRulesModel>().setHttpCode(200)
         );
-        EasyMock.replay(adminExternalClient);
 
-        assertThatCode(() -> {
-            vitamRuleService.findRules(vitamContext, select);
-        }).doesNotThrowAnyException();
+        assertThatCode(() -> vitamRuleService.findRules(vitamContext, select)).doesNotThrowAnyException();
     }
 
     @Test
@@ -122,14 +106,11 @@ public class VitamRuleServiceTest {
         VitamContext vitamContext = new VitamContext(0);
         JsonNode select = JsonHandler.createObjectNode();
 
-        expect(adminExternalClient.findRules(vitamContext, select)).andReturn(
+        when(adminExternalClient.findRules(vitamContext, select)).thenReturn(
             new RequestResponseOK<FileRulesModel>().setHttpCode(400)
         );
-        EasyMock.replay(adminExternalClient);
 
-        assertThatCode(() -> {
-            vitamRuleService.findRules(vitamContext, select);
-        }).isInstanceOf(BadRequestException.class);
+        assertThatCode(() -> vitamRuleService.findRules(vitamContext, select)).isInstanceOf(BadRequestException.class);
     }
 
     @Test
@@ -138,14 +119,11 @@ public class VitamRuleServiceTest {
         VitamContext vitamContext = new VitamContext(0);
         JsonNode select = JsonHandler.createObjectNode();
 
-        expect(adminExternalClient.findRules(vitamContext, select)).andThrow(
+        when(adminExternalClient.findRules(vitamContext, select)).thenThrow(
             new VitamClientException("Exception thrown by Vitam")
         );
-        EasyMock.replay(adminExternalClient);
 
-        assertThatCode(() -> {
-            vitamRuleService.findRules(vitamContext, select);
-        }).isInstanceOf(VitamClientException.class);
+        assertThatCode(() -> vitamRuleService.findRules(vitamContext, select)).isInstanceOf(VitamClientException.class);
     }
 
     @Test
@@ -153,14 +131,11 @@ public class VitamRuleServiceTest {
         VitamContext vitamContext = new VitamContext(0);
         String id = "id_0";
 
-        expect(adminExternalClient.findRuleById(vitamContext, id)).andReturn(
+        when(adminExternalClient.findRuleById(vitamContext, id)).thenReturn(
             new RequestResponseOK<FileRulesModel>().setHttpCode(200)
         );
-        EasyMock.replay(adminExternalClient);
 
-        assertThatCode(() -> {
-            vitamRuleService.findRuleById(vitamContext, id);
-        }).doesNotThrowAnyException();
+        assertThatCode(() -> vitamRuleService.findRuleById(vitamContext, id)).doesNotThrowAnyException();
     }
 
     @Test
@@ -168,14 +143,11 @@ public class VitamRuleServiceTest {
         VitamContext vitamContext = new VitamContext(0);
         String id = "id_0";
 
-        expect(adminExternalClient.findRuleById(vitamContext, id)).andReturn(
+        when(adminExternalClient.findRuleById(vitamContext, id)).thenReturn(
             new RequestResponseOK<FileRulesModel>().setHttpCode(400)
         );
-        EasyMock.replay(adminExternalClient);
 
-        assertThatCode(() -> {
-            vitamRuleService.findRuleById(vitamContext, id);
-        }).isInstanceOf(BadRequestException.class);
+        assertThatCode(() -> vitamRuleService.findRuleById(vitamContext, id)).isInstanceOf(BadRequestException.class);
     }
 
     @Test
@@ -184,14 +156,11 @@ public class VitamRuleServiceTest {
         VitamContext vitamContext = new VitamContext(0);
         String id = "id_0";
 
-        expect(adminExternalClient.findRuleById(vitamContext, id)).andThrow(
+        when(adminExternalClient.findRuleById(vitamContext, id)).thenThrow(
             new VitamClientException("Exception thrown by Vitam")
         );
-        EasyMock.replay(adminExternalClient);
 
-        assertThatCode(() -> {
-            vitamRuleService.findRuleById(vitamContext, id);
-        }).isInstanceOf(VitamClientException.class);
+        assertThatCode(() -> vitamRuleService.findRuleById(vitamContext, id)).isInstanceOf(VitamClientException.class);
     }
 
     @Test
@@ -200,19 +169,15 @@ public class VitamRuleServiceTest {
         LogbookOperation logbookOperation = new LogbookOperation();
         logbookOperation.setEvId("1");
 
-        expect(accessExternalClient.selectOperations(isA(VitamContext.class), isA(JsonNode.class))).andReturn(
+        when(accessExternalClient.selectOperations(any(VitamContext.class), any(JsonNode.class))).thenReturn(
             new RequestResponseOK<LogbookOperation>().addResult(logbookOperation).setHttpCode(200)
         );
-        EasyMock.replay(accessExternalClient);
 
-        expect(adminExternalClient.downloadRulesCsvAsStream(isA(VitamContext.class), isA(String.class))).andReturn(
+        when(adminExternalClient.downloadRulesCsvAsStream(any(VitamContext.class), any(String.class))).thenReturn(
             Response.status(200).build()
         );
-        EasyMock.replay(adminExternalClient);
 
-        assertThatCode(() -> {
-            vitamRuleService.export(vitamContext);
-        }).doesNotThrowAnyException();
+        assertThatCode(() -> vitamRuleService.export(vitamContext)).doesNotThrowAnyException();
     }
 
     @Test
@@ -221,19 +186,11 @@ public class VitamRuleServiceTest {
         LogbookOperation logbookOperation = new LogbookOperation();
         logbookOperation.setEvId("1");
 
-        expect(accessExternalClient.selectOperations(isA(VitamContext.class), isA(JsonNode.class))).andReturn(
+        when(accessExternalClient.selectOperations(any(VitamContext.class), any(JsonNode.class))).thenReturn(
             new RequestResponseOK<LogbookOperation>().setHttpCode(400)
         );
-        EasyMock.replay(accessExternalClient);
 
-        expect(adminExternalClient.downloadRulesCsvAsStream(isA(VitamContext.class), isA(String.class))).andReturn(
-            Response.status(400).build()
-        );
-        EasyMock.replay(adminExternalClient);
-
-        assertThatCode(() -> {
-            vitamRuleService.export(vitamContext);
-        }).isInstanceOf(VitamClientException.class);
+        assertThatCode(() -> vitamRuleService.export(vitamContext)).isInstanceOf(VitamClientException.class);
     }
 
     @Test
@@ -243,19 +200,11 @@ public class VitamRuleServiceTest {
         LogbookOperation logbookOperation = new LogbookOperation();
         logbookOperation.setEvId("1");
 
-        expect(accessExternalClient.selectOperations(isA(VitamContext.class), isA(JsonNode.class))).andThrow(
+        when(accessExternalClient.selectOperations(any(VitamContext.class), any(JsonNode.class))).thenThrow(
             new VitamClientException("Exception thrown by vitam")
         );
-        EasyMock.replay(accessExternalClient);
 
-        expect(adminExternalClient.downloadRulesCsvAsStream(isA(VitamContext.class), isA(String.class))).andThrow(
-            new VitamClientException("Exception thrown by vitam")
-        );
-        EasyMock.replay(adminExternalClient);
-
-        assertThatCode(() -> {
-            vitamRuleService.export(vitamContext);
-        }).isInstanceOf(VitamClientException.class);
+        assertThatCode(() -> vitamRuleService.export(vitamContext)).isInstanceOf(VitamClientException.class);
     }
 
     @Test
@@ -265,18 +214,15 @@ public class VitamRuleServiceTest {
         String id = "id_0";
         FileRulesModel patchRule = new FileRulesModel();
 
-        expect(adminExternalClient.findRules(isA(VitamContext.class), isA(JsonNode.class))).andReturn(
+        when(adminExternalClient.findRules(any(VitamContext.class), any(JsonNode.class))).thenReturn(
             new RequestResponseOK<FileRulesModel>().setHttpCode(200)
         );
 
-        expect(
-            adminExternalClient.createRules(isA(VitamContext.class), isA(InputStream.class), isA(String.class))
-        ).andReturn(new RequestResponseOK<FileRulesModel>().setHttpCode(200));
-        EasyMock.replay(adminExternalClient);
+        when(
+            adminExternalClient.createRules(any(VitamContext.class), any(InputStream.class), any(String.class))
+        ).thenReturn(new RequestResponseOK<FileRulesModel>().setHttpCode(200));
 
-        assertThatCode(() -> {
-            vitamRuleService.patchRule(vitamContext, id, patchRule);
-        }).doesNotThrowAnyException();
+        assertThatCode(() -> vitamRuleService.patchRule(vitamContext, id, patchRule)).doesNotThrowAnyException();
     }
 
     @Test
@@ -285,14 +231,13 @@ public class VitamRuleServiceTest {
         String id = "id_0";
         FileRulesModel patchRule = new FileRulesModel();
 
-        expect(adminExternalClient.findRules(isA(VitamContext.class), isA(JsonNode.class))).andReturn(
+        when(adminExternalClient.findRules(any(VitamContext.class), any(JsonNode.class))).thenReturn(
             new RequestResponseOK<FileRulesModel>().setHttpCode(400)
         );
-        EasyMock.replay(adminExternalClient);
 
-        assertThatCode(() -> {
-            vitamRuleService.patchRule(vitamContext, id, patchRule);
-        }).isInstanceOf(BadRequestException.class);
+        assertThatCode(() -> vitamRuleService.patchRule(vitamContext, id, patchRule)).isInstanceOf(
+            BadRequestException.class
+        );
     }
 
     @Test
@@ -302,14 +247,13 @@ public class VitamRuleServiceTest {
         String id = "id_0";
         FileRulesModel patchRule = new FileRulesModel();
 
-        expect(adminExternalClient.findRules(isA(VitamContext.class), isA(JsonNode.class))).andThrow(
+        when(adminExternalClient.findRules(any(VitamContext.class), any(JsonNode.class))).thenThrow(
             new VitamClientException("Exception thrown by vitam")
         );
-        EasyMock.replay(adminExternalClient);
 
-        assertThatCode(() -> {
-            vitamRuleService.patchRule(vitamContext, id, patchRule);
-        }).isInstanceOf(VitamClientException.class);
+        assertThatCode(() -> vitamRuleService.patchRule(vitamContext, id, patchRule)).isInstanceOf(
+            VitamClientException.class
+        );
     }
 
     @Test
@@ -318,18 +262,15 @@ public class VitamRuleServiceTest {
         VitamContext vitamContext = new VitamContext(1);
         String id = "id_0";
 
-        expect(adminExternalClient.findRules(isA(VitamContext.class), isA(JsonNode.class))).andReturn(
+        when(adminExternalClient.findRules(any(VitamContext.class), any(JsonNode.class))).thenReturn(
             new RequestResponseOK<FileRulesModel>().setHttpCode(200)
         );
 
-        expect(
-            adminExternalClient.createRules(isA(VitamContext.class), isA(InputStream.class), isA(String.class))
-        ).andReturn(new RequestResponseOK<FileRulesModel>().setHttpCode(200));
-        EasyMock.replay(adminExternalClient);
+        when(
+            adminExternalClient.createRules(any(VitamContext.class), any(InputStream.class), any(String.class))
+        ).thenReturn(new RequestResponseOK<FileRulesModel>().setHttpCode(200));
 
-        assertThatCode(() -> {
-            vitamRuleService.deleteRule(vitamContext, id);
-        }).doesNotThrowAnyException();
+        assertThatCode(() -> vitamRuleService.deleteRule(vitamContext, id)).doesNotThrowAnyException();
     }
 
     @Test
@@ -337,14 +278,11 @@ public class VitamRuleServiceTest {
         VitamContext vitamContext = new VitamContext(1);
         String id = "id_0";
 
-        expect(adminExternalClient.findRules(isA(VitamContext.class), isA(JsonNode.class))).andReturn(
+        when(adminExternalClient.findRules(any(VitamContext.class), any(JsonNode.class))).thenReturn(
             new RequestResponseOK<FileRulesModel>().setHttpCode(400)
         );
-        EasyMock.replay(adminExternalClient);
 
-        assertThatCode(() -> {
-            vitamRuleService.deleteRule(vitamContext, id);
-        }).isInstanceOf(BadRequestException.class);
+        assertThatCode(() -> vitamRuleService.deleteRule(vitamContext, id)).isInstanceOf(BadRequestException.class);
     }
 
     @Test
@@ -353,14 +291,11 @@ public class VitamRuleServiceTest {
         VitamContext vitamContext = new VitamContext(1);
         String id = "id_0";
 
-        expect(adminExternalClient.findRules(isA(VitamContext.class), isA(JsonNode.class))).andThrow(
+        when(adminExternalClient.findRules(any(VitamContext.class), any(JsonNode.class))).thenThrow(
             new VitamClientException("Exception throw by vitam")
         );
-        EasyMock.replay(adminExternalClient);
 
-        assertThatCode(() -> {
-            vitamRuleService.deleteRule(vitamContext, id);
-        }).isInstanceOf(VitamClientException.class);
+        assertThatCode(() -> vitamRuleService.deleteRule(vitamContext, id)).isInstanceOf(VitamClientException.class);
     }
 
     @Test
@@ -371,18 +306,15 @@ public class VitamRuleServiceTest {
         newRule.setRuleType(RuleType.AppraisalRule);
         newRule.setRuleMeasurement(RuleMeasurementEnum.YEAR);
 
-        expect(adminExternalClient.findRules(isA(VitamContext.class), isA(JsonNode.class))).andReturn(
+        when(adminExternalClient.findRules(any(VitamContext.class), any(JsonNode.class))).thenReturn(
             new RequestResponseOK<FileRulesModel>().setHttpCode(200)
         );
 
-        expect(
-            adminExternalClient.createRules(isA(VitamContext.class), isA(InputStream.class), isA(String.class))
-        ).andReturn(new RequestResponseOK<FileRulesModel>().setHttpCode(200));
-        EasyMock.replay(adminExternalClient);
+        when(
+            adminExternalClient.createRules(any(VitamContext.class), any(InputStream.class), any(String.class))
+        ).thenReturn(new RequestResponseOK<FileRulesModel>().setHttpCode(200));
 
-        assertThatCode(() -> {
-            vitamRuleService.createRule(vitamContext, newRule);
-        }).doesNotThrowAnyException();
+        assertThatCode(() -> vitamRuleService.createRule(vitamContext, newRule)).doesNotThrowAnyException();
     }
 
     @Test
@@ -390,15 +322,13 @@ public class VitamRuleServiceTest {
         VitamContext vitamContext = new VitamContext(1);
         FileRulesModel newRule = new FileRulesModel();
 
-        expect(adminExternalClient.findRules(isA(VitamContext.class), isA(JsonNode.class))).andReturn(
+        when(adminExternalClient.findRules(any(VitamContext.class), any(JsonNode.class))).thenReturn(
             new RequestResponseOK<FileRulesModel>().setHttpCode(400)
         );
 
-        EasyMock.replay(adminExternalClient);
-
-        assertThatCode(() -> {
-            vitamRuleService.createRule(vitamContext, newRule);
-        }).isInstanceOf(BadRequestException.class);
+        assertThatCode(() -> vitamRuleService.createRule(vitamContext, newRule)).isInstanceOf(
+            BadRequestException.class
+        );
     }
 
     @Test
@@ -407,14 +337,13 @@ public class VitamRuleServiceTest {
         VitamContext vitamContext = new VitamContext(1);
         FileRulesModel newRule = new FileRulesModel();
 
-        expect(adminExternalClient.findRules(isA(VitamContext.class), isA(JsonNode.class))).andThrow(
+        when(adminExternalClient.findRules(any(VitamContext.class), any(JsonNode.class))).thenThrow(
             new VitamClientException("Exception thrown by vitam")
         );
-        EasyMock.replay(adminExternalClient);
 
-        assertThatCode(() -> {
-            vitamRuleService.createRule(vitamContext, newRule);
-        }).isInstanceOf(VitamClientException.class);
+        assertThatCode(() -> vitamRuleService.createRule(vitamContext, newRule)).isInstanceOf(
+            VitamClientException.class
+        );
     }
 
     @Test
@@ -422,17 +351,12 @@ public class VitamRuleServiceTest {
         VitamContext vitamContext = new VitamContext(1);
         RuleDto ruleDto = new RuleDto();
 
-        expect(adminExternalClient.findRules(isA(VitamContext.class), isA(JsonNode.class))).andReturn(
-            new RequestResponseOK<FileRulesModel>().setHttpCode(200)
+        assertThatCode(() -> vitamRuleService.checkExistenceOfRuleInVitam(ruleDto, vitamContext)).hasMessage(
+            "The body is not found"
         );
-        EasyMock.replay(adminExternalClient);
-
-        assertThatCode(() -> {
-            vitamRuleService.checkExistenceOfRuleInVitam(ruleDto, vitamContext);
-        }).hasMessage("The body is not found");
-        assertThatCode(() -> {
-            vitamRuleService.checkExistenceOfRuleInVitam(ruleDto, vitamContext);
-        }).isInstanceOf(BadRequestException.class);
+        assertThatCode(() -> vitamRuleService.checkExistenceOfRuleInVitam(ruleDto, vitamContext)).isInstanceOf(
+            BadRequestException.class
+        );
     }
 
     @Test
@@ -456,18 +380,17 @@ public class VitamRuleServiceTest {
         ruleDto.setRuleType("AppraisalRule");
 
         // When
-        final RequestResponseOK<FileRulesModel> mockResponse = new RequestResponseOK<FileRulesModel>();
+        final RequestResponseOK<FileRulesModel> mockResponse = new RequestResponseOK<>();
         mockResponse.setHttpCode(200);
         mockResponse.addResult(existingRule);
         mockResponse.addResult(secondExistingRule);
-        expect(adminExternalClient.findRules(isA(VitamContext.class), isA(JsonNode.class))).andReturn(mockResponse);
-        EasyMock.replay(adminExternalClient);
+        when(adminExternalClient.findRules(any(VitamContext.class), any(JsonNode.class))).thenReturn(mockResponse);
 
         // Then
         assertThat(mockResponse.getResults()).hasSize(2);
-        assertThatCode(() -> {
-            vitamRuleService.checkExistenceOfRuleInVitam(ruleDto, vitamContext);
-        }).doesNotThrowAnyException();
+        assertThatCode(
+            () -> vitamRuleService.checkExistenceOfRuleInVitam(ruleDto, vitamContext)
+        ).doesNotThrowAnyException();
     }
 
     @Test
@@ -486,17 +409,16 @@ public class VitamRuleServiceTest {
         ruleDto.setRuleType("AppraisalRule");
 
         // When
-        final RequestResponseOK<FileRulesModel> mockResponse = new RequestResponseOK<FileRulesModel>();
+        final RequestResponseOK<FileRulesModel> mockResponse = new RequestResponseOK<>();
         mockResponse.setHttpCode(200);
         mockResponse.addResult(existingRule);
-        expect(adminExternalClient.findRules(isA(VitamContext.class), isA(JsonNode.class))).andReturn(mockResponse);
-        EasyMock.replay(adminExternalClient);
+        when(adminExternalClient.findRules(any(VitamContext.class), any(JsonNode.class))).thenReturn(mockResponse);
 
         // Then
         assertThat(mockResponse.getResults()).hasSize(1);
-        assertThatCode(() -> {
-            vitamRuleService.checkExistenceOfRuleInVitam(ruleDto, vitamContext);
-        }).isInstanceOf(ConflictException.class);
+        assertThatCode(() -> vitamRuleService.checkExistenceOfRuleInVitam(ruleDto, vitamContext)).isInstanceOf(
+            ConflictException.class
+        );
     }
 
     @Test
@@ -524,19 +446,18 @@ public class VitamRuleServiceTest {
         ruleDto.setRuleId("APP-00001");
 
         // When
-        final RequestResponseOK<FileRulesModel> mockResponse = new RequestResponseOK<FileRulesModel>();
+        final RequestResponseOK<FileRulesModel> mockResponse = new RequestResponseOK<>();
         mockResponse.setHttpCode(200);
         mockResponse.addResult(existingRule);
         mockResponse.addResult(secondExistingRule);
         mockResponse.addResult(storageExistingRule);
-        expect(adminExternalClient.findRules(isA(VitamContext.class), isA(JsonNode.class))).andReturn(mockResponse);
-        EasyMock.replay(adminExternalClient);
+        when(adminExternalClient.findRules(any(VitamContext.class), any(JsonNode.class))).thenReturn(mockResponse);
 
         // Then
         assertThat(mockResponse.getResults()).hasSize(3);
-        assertThatCode(() -> {
-            vitamRuleService.checkExistenceOfRuleInVitam(ruleDto, vitamContext);
-        }).doesNotThrowAnyException();
+        assertThatCode(
+            () -> vitamRuleService.checkExistenceOfRuleInVitam(ruleDto, vitamContext)
+        ).doesNotThrowAnyException();
     }
 
     @Test
@@ -561,22 +482,20 @@ public class VitamRuleServiceTest {
         RuleDto ruleDto = new RuleDto();
 
         // When
-        final RequestResponseOK<FileRulesModel> mockResponse = new RequestResponseOK<FileRulesModel>();
+        final RequestResponseOK<FileRulesModel> mockResponse = new RequestResponseOK<>();
         mockResponse.setHttpCode(200);
         mockResponse.addResult(existingRule);
         mockResponse.addResult(secondExistingRule);
         mockResponse.addResult(storageExistingRule);
-        expect(adminExternalClient.findRules(isA(VitamContext.class), isA(JsonNode.class))).andReturn(mockResponse);
-        EasyMock.replay(adminExternalClient);
 
         // Then
         assertThat(mockResponse.getResults()).hasSize(3);
-        assertThatCode(() -> {
-            vitamRuleService.checkExistenceOfRuleInVitam(ruleDto, vitamContext);
-        }).isInstanceOf(BadRequestException.class);
+        assertThatCode(() -> vitamRuleService.checkExistenceOfRuleInVitam(ruleDto, vitamContext)).isInstanceOf(
+            BadRequestException.class
+        );
 
-        assertThatCode(() -> {
-            vitamRuleService.checkExistenceOfRuleInVitam(ruleDto, vitamContext);
-        }).hasMessage("The body is not found");
+        assertThatCode(() -> vitamRuleService.checkExistenceOfRuleInVitam(ruleDto, vitamContext)).hasMessage(
+            "The body is not found"
+        );
     }
 }

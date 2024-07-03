@@ -33,8 +33,8 @@ import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.json.JsonHandler;
 import fr.gouv.vitamui.commons.security.client.password.PasswordValidator;
 import org.assertj.core.api.Assertions;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.FileNotFoundException;
 
@@ -48,7 +48,7 @@ public class PasswordValidatorTest {
 
     private JsonNode jsonNode;
 
-    @Before
+    @BeforeEach
     public void setUp() throws FileNotFoundException, InvalidParseOperationException {
         jsonNode = JsonHandler.getFromFile(PropertiesUtils.findFile(CREDENTIALS_DETAILS_FILE));
         passwordValidator = new PasswordValidator();

@@ -1,35 +1,35 @@
 package fr.gouv.vitamui.iam.internal.server.group.dao;
 
-import fr.gouv.vitamui.commons.mongo.repository.impl.VitamUIRepositoryImpl;
-import fr.gouv.vitamui.iam.internal.server.TestMongoConfig;
+import fr.gouv.vitamui.commons.test.AbstractMongoTests;
+import fr.gouv.vitamui.commons.test.VitamClientTestConfig;
 import fr.gouv.vitamui.iam.internal.server.group.domain.Group;
 import fr.gouv.vitamui.iam.internal.server.user.dao.UserRepository;
-import org.junit.After;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
-import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.List;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
 /**
  * Tests for {@link UserRepository}
  *
  */
-@RunWith(SpringRunner.class)
-@Import({ TestMongoConfig.class })
-@EnableMongoRepositories(basePackageClasses = GroupRepository.class, repositoryBaseClass = VitamUIRepositoryImpl.class)
-public class GroupRepositoryTest {
+@SpringBootTest
+@ExtendWith(SpringExtension.class)
+@ActiveProfiles("test")
+@Import(VitamClientTestConfig.class)
+public class GroupRepositoryTest extends AbstractMongoTests {
 
     @Autowired
     private GroupRepository repository;
 
-    @After
+    @AfterEach
     public void cleanUp() {
         repository.deleteAll();
     }
@@ -59,8 +59,8 @@ public class GroupRepositoryTest {
 
         final List<Group> result = repository.findByProfileIds(profileToFind);
 
-        assertNotNull("ProfileGroup collection is null", result);
-        assertEquals("ProfileGroup collection incorrect size", 1, result.size());
-        assertEquals("ProfileGroup incorrect id", expectedId, result.get(0).getId());
+        Assertions.assertNotNull(result, "ProfileGroup collection is null");
+        Assertions.assertEquals(1, result.size(), "ProfileGroup collection incorrect size");
+        Assertions.assertEquals(expectedId, result.get(0).getId(), "ProfileGroup incorrect id");
     }
 }

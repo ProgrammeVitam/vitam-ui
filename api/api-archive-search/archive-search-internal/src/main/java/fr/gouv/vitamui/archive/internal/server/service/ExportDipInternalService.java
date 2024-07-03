@@ -34,9 +34,9 @@ import fr.gouv.vitam.common.model.dip.DataObjectVersions;
 import fr.gouv.vitam.common.model.export.dip.DipExportType;
 import fr.gouv.vitam.common.model.export.dip.DipRequest;
 import fr.gouv.vitamui.archives.search.common.dto.ExportDipCriteriaDto;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.vitam.api.access.ExportDipV2Service;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
@@ -46,7 +46,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class ExportDipInternalService {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ExportDipInternalService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ExportDipInternalService.class);
     public static final String OPERATION_IDENTIFIER = "itemId";
 
     private final ExportDipV2Service exportDipV2Service;

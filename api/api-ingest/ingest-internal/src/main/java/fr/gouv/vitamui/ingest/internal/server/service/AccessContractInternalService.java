@@ -34,11 +34,11 @@ import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.administration.AccessContractModel;
 import fr.gouv.vitamui.commons.api.domain.AccessContractDto;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.vitam.api.administration.AccessContractService;
 import fr.gouv.vitamui.ingest.common.dto.AccessContractResponseDto;
 import org.apache.commons.collections.CollectionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -47,7 +47,7 @@ import java.util.Optional;
 @Service
 public class AccessContractInternalService {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(AccessContractInternalService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AccessContractInternalService.class);
 
     private AccessContractService accessContractService;
 

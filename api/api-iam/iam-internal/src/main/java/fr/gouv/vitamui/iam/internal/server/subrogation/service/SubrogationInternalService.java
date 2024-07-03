@@ -44,8 +44,6 @@ import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
 import fr.gouv.vitamui.commons.api.enums.UserTypeEnum;
 import fr.gouv.vitamui.commons.api.exception.ApplicationServerException;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.logbook.common.EventType;
 import fr.gouv.vitamui.commons.mongo.repository.VitamUIRepository;
 import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
@@ -70,6 +68,8 @@ import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang.time.DateUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.transaction.annotation.Transactional;
@@ -87,7 +87,7 @@ import java.util.Optional;
 @Setter
 public class SubrogationInternalService extends VitamUICrudService<SubrogationDto, Subrogation> {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(SubrogationInternalService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(SubrogationInternalService.class);
 
     private SubrogationRepository subrogationRepository;
 

@@ -55,14 +55,14 @@ import fr.gouv.vitamui.commons.api.exception.ConflictException;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.api.exception.NotImplementedException;
 import fr.gouv.vitamui.commons.api.exception.VitamUIException;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
 import fr.gouv.vitamui.referential.common.dsl.VitamQueryHelper;
 import fr.gouv.vitamui.referential.common.dto.FileFormatDto;
 import fr.gouv.vitamui.referential.common.dto.FileFormatResponseDto;
 import fr.gouv.vitamui.referential.common.service.VitamFileFormatService;
 import org.apache.commons.beanutils.BeanUtilsBean;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -80,7 +80,7 @@ import java.util.Optional;
 @Service
 public class FileFormatInternalService {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(FileFormatInternalService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(FileFormatInternalService.class);
 
     private ObjectMapper objectMapper;
 

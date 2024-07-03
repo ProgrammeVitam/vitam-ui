@@ -45,8 +45,6 @@ import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOper
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.json.JsonHandler;
 import fr.gouv.vitamui.archives.search.common.dsl.VitamQueryHelper;
-import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -67,11 +65,6 @@ class VitamQueryHelperTest {
     public final String SEARCH_WITH_LIST_OF_NAME_QUERY = "data/query_with_list_of_names_criteria.json";
     public final String SEARCH_WITH_IDENTIFIER_QUERY = "data/query_with_identifier_criteria.json";
     public final String SEARCH_WITH_NAME_AND_IDENTIFIER_QUERY = "data/query_with_identifier_name_criteria.json";
-
-    @BeforeEach
-    public void setUp() {
-        ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
-    }
 
     @Test
     void search_query_with_one_originating_agency_name_as_criteria()

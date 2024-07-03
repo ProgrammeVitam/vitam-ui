@@ -7,7 +7,6 @@ import fr.gouv.vitamui.commons.api.domain.QueryDto;
 import fr.gouv.vitamui.commons.api.domain.TenantDto;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
-import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import fr.gouv.vitamui.commons.test.utils.TestUtils;
 import fr.gouv.vitamui.commons.vitam.api.administration.AccessContractService;
 import fr.gouv.vitamui.iam.internal.server.customer.config.CustomerInitConfig;
@@ -112,7 +111,7 @@ public class TenantInternalServiceTest {
         MockitoAnnotations.initMocks(this);
         Mockito.when(tenantConverter.convertEntityToDto(ArgumentMatchers.any())).thenCallRealMethod();
         Mockito.when(tenantConverter.convertDtoToEntity(ArgumentMatchers.any())).thenCallRealMethod();
-        ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
+
         when(externalParametersRepository.findByIdentifier(Mockito.any(String.class))).thenReturn(
             Optional.of(buildExternalParameter())
         );

@@ -1,13 +1,13 @@
 package fr.gouv.vitamui.pastis.client;
 
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.client.BaseWebClient;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.pastis.common.dto.ElementProperties;
 import fr.gouv.vitamui.pastis.common.dto.profiles.ProfileResponse;
 import fr.gouv.vitamui.pastis.common.rest.RestApi;
 import fr.gouv.vitamui.pastis.common.util.CustomMultipartFile;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +21,7 @@ import java.util.Optional;
 
 public class PastisTransformationWebClient extends BaseWebClient<ExternalHttpContext> {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(PastisTransformationWebClient.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(PastisTransformationWebClient.class);
 
     public PastisTransformationWebClient(WebClient webClient, String baseUrl) {
         super(webClient, baseUrl);

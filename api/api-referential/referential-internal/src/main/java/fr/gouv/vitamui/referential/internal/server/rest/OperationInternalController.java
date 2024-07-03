@@ -49,8 +49,6 @@ import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import fr.gouv.vitamui.referential.common.dto.LogbookOperationDto;
 import fr.gouv.vitamui.referential.common.dto.ReportType;
@@ -59,6 +57,8 @@ import fr.gouv.vitamui.referential.internal.server.operation.OperationInternalSe
 import fr.gouv.vitamui.referential.internal.server.probativevalue.ProbativeValueInternalService;
 import lombok.Getter;
 import lombok.Setter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
@@ -88,7 +88,7 @@ import java.util.Optional;
 @Setter
 public class OperationInternalController {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(OperationInternalController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(OperationInternalController.class);
 
     @Autowired
     private OperationInternalService operationInternalService;

@@ -27,9 +27,9 @@
 
 package fr.gouv.vitamui.gateway.filters;
 
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import org.apache.commons.codec.binary.Base64;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
@@ -49,7 +49,7 @@ import java.security.cert.X509Certificate;
 @Component
 public class X509CertificateFilter implements GlobalFilter {
 
-    private static final VitamUILogger logger = VitamUILoggerFactory.getInstance(X509CertificateFilter.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(X509CertificateFilter.class);
 
     @Value("${authn.client-certificate-header-name}")
     private String clientCertificateHeaderName;
@@ -75,7 +75,7 @@ public class X509CertificateFilter implements GlobalFilter {
                             | CertificateExpiredException
                             | CertificateNotYetValidException e
                         ) {
-                            logger.error("Certificate is invalid : {}", certificate, e);
+                            LOGGER.error("Certificate is invalid : {}", certificate, e);
                         }
                     })
                     .build();

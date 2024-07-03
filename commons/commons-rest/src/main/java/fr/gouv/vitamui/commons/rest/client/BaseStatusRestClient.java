@@ -37,10 +37,10 @@
 package fr.gouv.vitamui.commons.rest.client;
 
 import fr.gouv.vitamui.commons.api.exception.ApplicationServerException;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -56,7 +56,7 @@ import org.springframework.web.client.RestTemplate;
 @ToString
 public abstract class BaseStatusRestClient implements RestClient {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(BaseStatusRestClient.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(BaseStatusRestClient.class);
 
     protected RestTemplate restTemplate;
 

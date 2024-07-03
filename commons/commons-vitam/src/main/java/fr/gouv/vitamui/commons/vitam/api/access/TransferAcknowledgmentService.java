@@ -34,16 +34,16 @@ import fr.gouv.vitam.access.external.client.AccessExternalClient;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.model.RequestResponse;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
 import org.apache.http.HttpStatus;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.InputStream;
 
 public class TransferAcknowledgmentService {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(TransferAcknowledgmentService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(TransferAcknowledgmentService.class);
     private final AccessExternalClient accessExternalClient;
 
     public TransferAcknowledgmentService(AccessExternalClient accessExternalClient) {

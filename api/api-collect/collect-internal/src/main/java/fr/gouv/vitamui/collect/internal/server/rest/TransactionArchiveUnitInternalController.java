@@ -42,11 +42,11 @@ import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
 import fr.gouv.vitamui.commons.api.dtos.VitamUiOntologyDto;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import io.swagger.annotations.Api;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -71,9 +71,7 @@ import static fr.gouv.vitamui.collect.common.rest.RestApi.COLLECT_TRANSACTION_AR
 @Api(tags = "collect", value = "Unités archivistiques d'un projet")
 public class TransactionArchiveUnitInternalController {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
-        TransactionArchiveUnitInternalController.class
-    );
+    private static final Logger LOGGER = LoggerFactory.getLogger(TransactionArchiveUnitInternalController.class);
     private final InternalSecurityService securityService;
     private final TransactionArchiveUnitInternalService transactionArchiveUnitInternalService;
     private final ExternalParametersService externalParametersService;

@@ -3,19 +3,19 @@ package fr.gouv.vitamui.iam.internal.server.user.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.HashMap;
 import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
 public class OperationParser {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(OperationParser.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(OperationParser.class);
 
     private static final String OLD_VALUE_PREFIX = "-";
 

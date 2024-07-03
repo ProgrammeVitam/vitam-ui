@@ -33,13 +33,11 @@ import fr.gouv.vitam.common.database.builder.query.BooleanQuery;
 import fr.gouv.vitamui.archive.internal.server.utils.FileReader;
 import fr.gouv.vitamui.commons.api.dtos.CriteriaValue;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaEltDto;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts;
-import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.ArrayList;
@@ -59,14 +57,9 @@ class ArchivesSearchStorageRuleQueryBuilderServiceTest {
     public static String SEARCH_QUERY_WITH_RULES_IDENTIFIERS =
         "storage/expected-search-query-with-rules-identifiers.txt";
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
+    private static final Logger LOGGER = LoggerFactory.getLogger(
         ArchivesSearchStorageRuleQueryBuilderServiceTest.class
     );
-
-    @BeforeEach
-    public void setUp() {
-        ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
-    }
 
     @Test
     void testFillQueryFromCriteriaListRuleIdentifierIsPresentThenReturnTheExactQuery() throws Exception {

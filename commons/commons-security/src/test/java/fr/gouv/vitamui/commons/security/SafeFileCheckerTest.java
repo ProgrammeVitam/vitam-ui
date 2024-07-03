@@ -28,8 +28,8 @@ package fr.gouv.vitamui.commons.security;
 
 import fr.gouv.vitamui.common.security.SafeFileChecker;
 import fr.gouv.vitamui.commons.api.exception.InvalidFileSanitizeException;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,7 +53,7 @@ public class SafeFileCheckerTest {
     private static final List<String> invalidPaths = new ArrayList<>();
     private static final List<String> validFilenames = new ArrayList<>();
 
-    @BeforeClass
+    @BeforeAll
     public static void setUpBeforeClass() {
         validPaths.add("/directory/subdirectory");
         validPaths.add("/directory");

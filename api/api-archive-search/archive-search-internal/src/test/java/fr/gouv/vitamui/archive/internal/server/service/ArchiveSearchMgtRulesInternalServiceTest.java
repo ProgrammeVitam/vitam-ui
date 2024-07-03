@@ -54,7 +54,6 @@ import fr.gouv.vitamui.commons.api.dtos.CriteriaValue;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaEltDto;
 import fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts;
-import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import fr.gouv.vitamui.commons.vitam.api.access.UnitService;
 import fr.gouv.vitamui.commons.vitam.api.administration.AccessContractService;
 import fr.gouv.vitamui.commons.vitam.api.dto.AccessContractResponseDto;
@@ -108,7 +107,6 @@ public class ArchiveSearchMgtRulesInternalServiceTest {
 
     @BeforeEach
     public void setUp() {
-        ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
         archiveSearchMgtRulesInternalService = new ArchiveSearchMgtRulesInternalService(
             archiveSearchInternalService,
             ruleOperationsConverter,

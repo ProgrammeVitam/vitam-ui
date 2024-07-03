@@ -38,13 +38,13 @@ package fr.gouv.vitamui.iam.internal.server.rest;
 
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.ExternalParametersDto;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.iam.common.rest.RestApi;
 import fr.gouv.vitamui.iam.internal.server.externalParameters.service.ExternalParametersInternalService;
 import io.swagger.annotations.Api;
 import lombok.Getter;
 import lombok.Setter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -62,9 +62,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Api(tags = "externalParameters", value = "External Parameters Management")
 public class ExternalParametersInternalController {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
-        ExternalParametersInternalController.class
-    );
+    private static final Logger LOGGER = LoggerFactory.getLogger(ExternalParametersInternalController.class);
 
     private ExternalParametersInternalService externalParametersInternalService;
 

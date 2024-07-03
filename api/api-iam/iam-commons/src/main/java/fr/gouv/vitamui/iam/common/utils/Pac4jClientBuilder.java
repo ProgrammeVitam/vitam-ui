@@ -39,8 +39,6 @@ package fr.gouv.vitamui.iam.common.utils;
 import com.nimbusds.jose.JWSAlgorithm;
 import com.nimbusds.openid.connect.sdk.Nonce;
 import fr.gouv.vitamui.commons.api.exception.InvalidFormatException;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.ErrorsConstants;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.common.enums.AuthnRequestBindingEnum;
@@ -54,6 +52,8 @@ import org.pac4j.oidc.client.OidcClient;
 import org.pac4j.oidc.config.OidcConfiguration;
 import org.pac4j.saml.client.SAML2Client;
 import org.pac4j.saml.config.SAML2Configuration;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ByteArrayResource;
 
@@ -71,7 +71,7 @@ import java.util.Optional;
 @Setter
 public class Pac4jClientBuilder {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(Pac4jClientBuilder.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(Pac4jClientBuilder.class);
 
     @Value("${login.url}")
     @NotNull

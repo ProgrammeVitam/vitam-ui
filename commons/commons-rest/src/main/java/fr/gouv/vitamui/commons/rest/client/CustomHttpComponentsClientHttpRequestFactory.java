@@ -36,11 +36,11 @@
  */
 package fr.gouv.vitamui.commons.rest.client;
 
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.protocol.HttpClientContext;
 import org.apache.http.protocol.HttpContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.util.StringUtils;
@@ -53,9 +53,7 @@ import java.util.UUID;
  */
 public class CustomHttpComponentsClientHttpRequestFactory extends HttpComponentsClientHttpRequestFactory {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
-        CustomHttpComponentsClientHttpRequestFactory.class
-    );
+    private static final Logger LOGGER = LoggerFactory.getLogger(CustomHttpComponentsClientHttpRequestFactory.class);
 
     private String userToken = UUID.randomUUID().toString();
 

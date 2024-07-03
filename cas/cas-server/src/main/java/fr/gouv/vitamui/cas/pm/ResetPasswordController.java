@@ -41,8 +41,6 @@ import fr.gouv.vitamui.cas.model.UserLoginModel;
 import fr.gouv.vitamui.cas.provider.ProvidersService;
 import fr.gouv.vitamui.cas.util.Constants;
 import fr.gouv.vitamui.cas.util.Utils;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -54,6 +52,8 @@ import org.apereo.cas.notifications.CommunicationsManager;
 import org.apereo.cas.pm.PasswordManagementQuery;
 import org.apereo.cas.pm.PasswordManagementService;
 import org.apereo.cas.pm.PasswordResetUrlBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.HierarchicalMessageSource;
 import org.springframework.util.LinkedMultiValueMap;
@@ -74,7 +74,7 @@ import java.util.Locale;
 @Slf4j
 public class ResetPasswordController {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ResetPasswordController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ResetPasswordController.class);
 
     private final CasConfigurationProperties casProperties;
 

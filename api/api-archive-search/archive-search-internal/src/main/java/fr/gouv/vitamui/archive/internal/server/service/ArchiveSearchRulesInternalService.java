@@ -41,11 +41,11 @@ import fr.gouv.vitamui.commons.api.dtos.CriteriaValue;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaEltDto;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts;
 import fr.gouv.vitamui.commons.vitam.api.administration.RuleService;
 import fr.gouv.vitamui.commons.vitam.api.dto.RuleNodeResponseDto;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -67,9 +67,7 @@ import static fr.gouv.vitam.common.database.builder.query.QueryHelper.or;
 @Service
 public class ArchiveSearchRulesInternalService {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
-        ArchiveSearchRulesInternalService.class
-    );
+    private static final Logger LOGGER = LoggerFactory.getLogger(ArchiveSearchRulesInternalService.class);
 
     private final ObjectMapper objectMapper;
     private final RuleService ruleService;

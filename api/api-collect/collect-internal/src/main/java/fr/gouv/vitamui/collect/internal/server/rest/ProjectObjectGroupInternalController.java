@@ -39,11 +39,11 @@ import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import io.swagger.annotations.Api;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.CacheControl;
@@ -67,9 +67,7 @@ import static fr.gouv.vitamui.archives.search.common.rest.RestApi.DOWNLOAD_ARCHI
 @Api(tags = "collect", value = "Groupe d'object d'un projet")
 public class ProjectObjectGroupInternalController {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
-        ProjectObjectGroupInternalController.class
-    );
+    private static final Logger LOGGER = LoggerFactory.getLogger(ProjectObjectGroupInternalController.class);
     private final ProjectObjectGroupInternalService projectObjectGroupInternalService;
     private final ExternalParametersService externalParametersService;
 

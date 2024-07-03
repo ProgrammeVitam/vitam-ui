@@ -36,11 +36,11 @@ import fr.gouv.vitam.common.database.builder.request.single.Select;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitamui.commons.api.domain.AccessionRegisterSearchDto;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import lombok.experimental.UtilityClass;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.LocalDate;
 import java.time.ZoneOffset;
@@ -105,7 +105,7 @@ public class AccessRegisterVitamQueryHelper {
     private static final String END_DATE = "EndDate";
     private static final String ALL = "all";
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(AccessRegisterVitamQueryHelper.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AccessRegisterVitamQueryHelper.class);
 
     public static JsonNode createQueryDSL(AccessionRegisterSearchDto criteria)
         throws InvalidCreateOperationException, InvalidParseOperationException {

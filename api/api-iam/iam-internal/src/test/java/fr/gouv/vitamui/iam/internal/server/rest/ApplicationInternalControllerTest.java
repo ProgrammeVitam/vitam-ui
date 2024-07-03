@@ -1,7 +1,6 @@
 package fr.gouv.vitamui.iam.internal.server.rest;
 
 import fr.gouv.vitamui.commons.api.domain.ApplicationDto;
-import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import fr.gouv.vitamui.iam.internal.server.application.service.ApplicationInternalService;
 import fr.gouv.vitamui.iam.internal.server.utils.IamServerUtilsTest;
 import org.junit.Before;
@@ -34,7 +33,6 @@ public final class ApplicationInternalControllerTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
     }
 
     @Test

@@ -41,54 +41,29 @@ import fr.gouv.vitamui.commons.api.dtos.CriteriaValue;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaEltDto;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts;
 import fr.gouv.vitamui.commons.vitam.api.dto.FacetBucketDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.FacetResultsDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
 import org.apache.commons.lang.StringUtils;
-import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static fr.gouv.vitamui.archive.internal.server.service.ArchiveSearchInternalService.TRUE;
-import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.CriteriaCategory.ACCESS_RULE;
-import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.CriteriaCategory.APPRAISAL_RULE;
-import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.CriteriaCategory.DISSEMINATION_RULE;
-import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.CriteriaCategory.FIELDS;
-import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.CriteriaCategory.REUSE_RULE;
-import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.CriteriaCategory.STORAGE_RULE;
+import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.*;
+import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.CriteriaCategory.*;
 import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.CriteriaDataType.STRING;
 import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.CriteriaOperators.EQ;
-import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.FACETS_COUNT_WITHOUT_RULES;
-import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.FACETS_EXPIRED_RULES_COMPUTED;
-import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.FACETS_FINAL_ACTION_COMPUTED;
-import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.FACETS_RULES_COMPUTED_NUMBER;
-import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.FACETS_UNEXPIRED_RULES_COMPUTED;
-import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.FINAL_ACTION_CONFLICT_FIELD_VALUE;
-import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.FINAL_ACTION_DESTROY_FIELD_VALUE;
-import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.FINAL_ACTION_KEEP_FIELD_VALUE;
-import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.FINAL_ACTION_TYPE_CONFLICT;
-import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.FR_DATE_FORMAT_WITH_SLASH;
-import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.ISO_FRENCH_FORMATER;
-import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.ONLY_DATE_FRENCH_FORMATTER_WITH_SLASH;
-import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.RULES_COMPUTED;
-import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.RULE_END_DATE;
-import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.RULE_FINAL_ACTION_TYPE;
-import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.RULE_ORIGIN_CRITERIA;
 import static fr.gouv.vitamui.commons.api.utils.MetadataSearchCriteriaUtils.createSelectMultiQuery;
 
 /**
@@ -97,9 +72,7 @@ import static fr.gouv.vitamui.commons.api.utils.MetadataSearchCriteriaUtils.crea
 @Service
 public class ArchiveSearchFacetsInternalService {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
-        ArchiveSearchFacetsInternalService.class
-    );
+    private static final Logger LOGGER = LoggerFactory.getLogger(ArchiveSearchFacetsInternalService.class);
     public static final String SOME_OLD_DATE = "01/01/0001";
     public static final String SOME_FUTUR_DATE = "31/12/9999";
 

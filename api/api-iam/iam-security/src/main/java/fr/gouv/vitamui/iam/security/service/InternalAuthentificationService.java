@@ -37,11 +37,11 @@
 package fr.gouv.vitamui.iam.security.service;
 
 import fr.gouv.vitamui.commons.api.exception.NotFoundException;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.iam.internal.client.UserInternalRestClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 
@@ -53,7 +53,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 
 public class InternalAuthentificationService {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(InternalAuthentificationService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(InternalAuthentificationService.class);
 
     private final UserInternalRestClient userInternalRestClient;
 

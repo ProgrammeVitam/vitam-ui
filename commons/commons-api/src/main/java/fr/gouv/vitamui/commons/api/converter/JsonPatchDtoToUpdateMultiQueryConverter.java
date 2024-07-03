@@ -33,8 +33,8 @@ import fr.gouv.vitam.common.database.builder.query.action.Action;
 import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOperationException;
 import fr.gouv.vitam.common.database.builder.request.multiple.UpdateMultiQuery;
 import fr.gouv.vitamui.commons.api.dtos.JsonPatchDto;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Service;
@@ -45,9 +45,7 @@ import static java.util.Objects.nonNull;
 @Service
 public class JsonPatchDtoToUpdateMultiQueryConverter implements Converter<JsonPatchDto, UpdateMultiQuery> {
 
-    private static final VitamUILogger log = VitamUILoggerFactory.getInstance(
-        JsonPatchDtoToUpdateMultiQueryConverter.class
-    );
+    private static final Logger log = LoggerFactory.getLogger(JsonPatchDtoToUpdateMultiQueryConverter.class);
     private final JsonPatchToSetActionConverter jsonPatchToSetActionConverter;
     private final JsonPatchToUnsetActionConverter jsonPatchToUnsetActionConverter;
 

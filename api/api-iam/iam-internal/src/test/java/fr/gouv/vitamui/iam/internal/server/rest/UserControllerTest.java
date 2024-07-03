@@ -6,7 +6,6 @@ import fr.gouv.vitamui.commons.api.domain.ProfileDto;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
-import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.iam.internal.server.customer.dao.CustomerRepository;
 import fr.gouv.vitamui.iam.internal.server.customer.domain.Customer;
@@ -97,7 +96,6 @@ public final class UserControllerTest implements InternalCrudControllerTest {
         userController = new UserInternalController(internalUserService, connectionHistoryService);
         Mockito.when(userConverter.convertDtoToEntity(ArgumentMatchers.any())).thenCallRealMethod();
         Mockito.when(userConverter.convertEntityToDto(ArgumentMatchers.any())).thenCallRealMethod();
-        ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
 
         when(sequenceGeneratorService.getNextSequenceId(any(), anyInt())).thenReturn(1);
     }

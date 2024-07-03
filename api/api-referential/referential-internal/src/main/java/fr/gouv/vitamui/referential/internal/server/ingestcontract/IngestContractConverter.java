@@ -39,11 +39,11 @@ package fr.gouv.vitamui.referential.internal.server.ingestcontract;
 import fr.gouv.vitam.common.model.administration.IngestContractCheckState;
 import fr.gouv.vitam.common.model.administration.IngestContractModel;
 import fr.gouv.vitam.common.model.administration.SignaturePolicy;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.utils.VitamUIUtils;
 import fr.gouv.vitamui.referential.common.dto.IngestContractDto;
 import fr.gouv.vitamui.referential.common.dto.SignaturePolicyDto;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashSet;
 import java.util.List;
@@ -52,7 +52,7 @@ import java.util.stream.Collectors;
 
 public class IngestContractConverter {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(IngestContractConverter.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(IngestContractConverter.class);
 
     public IngestContractModel convertDtoToVitam(final IngestContractDto dto) {
         final IngestContractModel ingestContract = VitamUIUtils.copyProperties(dto, new IngestContractModel());

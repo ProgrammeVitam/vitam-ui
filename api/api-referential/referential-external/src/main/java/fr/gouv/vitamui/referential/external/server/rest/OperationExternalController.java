@@ -51,8 +51,6 @@ import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.api.utils.EnumUtils;
 import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsResponseDto;
 import fr.gouv.vitamui.referential.common.dto.LogbookOperationDto;
@@ -67,6 +65,8 @@ import org.bouncycastle.asn1.x500.X500Name;
 import org.bouncycastle.cms.SignerId;
 import org.bouncycastle.tsp.TSPException;
 import org.bouncycastle.tsp.TimeStampResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
@@ -87,7 +87,7 @@ import java.util.Optional;
 @Setter
 public class OperationExternalController {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(AgencyExternalController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AgencyExternalController.class);
 
     @Autowired
     private OperationExternalService operationExternalService;

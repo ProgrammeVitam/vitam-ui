@@ -51,8 +51,6 @@ import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
 import fr.gouv.vitamui.commons.api.dtos.VitamUiOntologyDto;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.vitam.api.dto.PersistentIdentifierResponseDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
@@ -61,6 +59,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.Getter;
 import lombok.Setter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
@@ -91,7 +91,7 @@ import java.util.List;
 @Api(tags = "archives search", value = "Archives units search")
 public class ArchiveSearchInternalController {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ArchiveSearchInternalController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ArchiveSearchInternalController.class);
 
     private static final String MANDATORY_PARAMETERS =
         "The tenant Id and the SearchCriteria are mandatory parameters: ";
