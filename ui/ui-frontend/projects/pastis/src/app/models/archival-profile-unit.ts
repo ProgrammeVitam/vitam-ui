@@ -1,4 +1,5 @@
 import { ProfileCommon } from './profile-common-models';
+import { ProfileVersion } from './profile-version.enum';
 
 export interface ArchivalProfileUnit extends ProfileCommon {
   controlSchema: string;
@@ -19,4 +20,5 @@ export class ArchivalProfileUnitModel implements ArchivalProfileUnit {
   deactivationDate: string;
   controlSchema: string;
   fields: string[];
+  sedaVersion: ProfileVersion;
 }

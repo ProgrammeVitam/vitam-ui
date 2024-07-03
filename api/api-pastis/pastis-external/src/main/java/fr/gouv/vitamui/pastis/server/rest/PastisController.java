@@ -50,6 +50,9 @@ import fr.gouv.vitamui.pastis.common.dto.ElementProperties;
 import fr.gouv.vitamui.pastis.common.dto.profiles.Notice;
 import fr.gouv.vitamui.pastis.common.dto.profiles.ProfileNotice;
 import fr.gouv.vitamui.pastis.common.dto.profiles.ProfileResponse;
+import fr.gouv.vitamui.pastis.common.dto.profiles.ProfileType;
+import fr.gouv.vitamui.pastis.common.dto.profiles.ProfileVersion;
+import fr.gouv.vitamui.pastis.common.dto.seda.SedaNode;
 import fr.gouv.vitamui.pastis.common.exception.TechnicalException;
 import fr.gouv.vitamui.pastis.common.rest.RestApi;
 import fr.gouv.vitamui.pastis.common.util.NoticeUtils;
@@ -62,10 +65,18 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
+import java.util.Objects;
 
 @Api(tags = "pastis")
 @RequestMapping(RestApi.PASTIS)
@@ -101,10 +112,16 @@ class PastisController extends AbstractInternalClientService {
         consumes = APPLICATION_JSON_UTF8,
         produces = MediaType.APPLICATION_XML_VALUE
     )
-    ResponseEntity<String> getArchiveProfile(@RequestBody final ElementProperties json)
-        throws TechnicalException, InvalidParseOperationException, PreconditionFailedException {
+    ResponseEntity<String> getArchiveProfile(
+        @RequestParam(name = "version", required = false) String profileVersion,
+        @RequestBody final ElementProperties json
+    ) throws TechnicalException, InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.sanitizeCriteria(json);
-        String archiveProfile = profileService.getArchiveProfile(json);
+        SanityChecker.checkSecureParameter(profileVersion);
+        ProfileVersion version = Objects.isNull(profileVersion)
+            ? ProfileVersion.VERSION_2_1
+            : ProfileVersion.fromVersionString(profileVersion);
+        String archiveProfile = profileService.getArchiveProfile(json, version);
         if (archiveProfile != null) {
             return ResponseEntity.ok(archiveProfile);
         } else {
@@ -188,14 +205,34 @@ class PastisController extends AbstractInternalClientService {
     @ApiOperation(value = "Get template profile by type")
     @Secured({ ServicesData.ROLE_CREATE_ARCHIVE_PROFILES, ServicesData.ROLE_CREATE_PROFILES })
     @GetMapping(value = RestApi.PASTIS_CREATE_PROFILE)
-    ResponseEntity<ProfileResponse> createProfile(@RequestParam(name = "type") String profileType)
-        throws NoSuchAlgorithmException, TechnicalException, InvalidParseOperationException {
+    ResponseEntity<ProfileResponse> createProfile(
+        @RequestParam(name = "type") String profileType,
+        @RequestParam(name = "version", required = false) String profileVersion
+    ) throws NoSuchAlgorithmException, TechnicalException, InvalidParseOperationException {
         SanityChecker.checkSecureParameter(profileType);
-        ProfileResponse profileResponse = profileService.createProfile(profileType, false);
+        SanityChecker.checkSecureParameter(profileVersion);
+        ProfileType type = Objects.isNull(profileType) ? null : ProfileType.valueOf(profileType);
+        ProfileVersion version = Objects.isNull(profileVersion)
+            ? ProfileVersion.VERSION_2_1
+            : ProfileVersion.fromVersionString(profileVersion);
+        ProfileResponse profileResponse = profileService.createProfile(type, version, false);
         if (profileResponse != null) {
             return ResponseEntity.ok(profileResponse);
         } else {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @ApiOperation(value = "Get meta-model by type and version")
+    @Secured({ ServicesData.ROLE_GET_ARCHIVE_PROFILES, ServicesData.ROLE_GET_PROFILES })
+    @GetMapping(value = RestApi.PASTIS_METAMODEL)
+    ResponseEntity<SedaNode> getMetaModel(@RequestParam(name = "version") String version) throws IOException {
+        SanityChecker.checkSecureParameter(version);
+        ProfileVersion profileVersion = ProfileVersion.fromVersionString(version);
+        SedaNode sedaNode = profileService.getMetaModel(profileVersion);
+        if (sedaNode == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(sedaNode);
     }
 }

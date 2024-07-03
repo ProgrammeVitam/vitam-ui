@@ -195,7 +195,7 @@ export class SedaVisualizerComponent implements OnInit {
         .attr('dy', '0.31em')
         .attr('x', (d: any) => (d._children ? -textMargin : textMargin))
         .attr('text-anchor', (d: any) => (d._children ? 'end' : 'start'))
-        .text((d) => d.data.Name)
+        .text((d) => d.data.name)
         .attr('stroke-linejoin', 'round')
         .attr('stroke-width', 3)
         .attr('stroke', 'white')

@@ -36,11 +36,12 @@ The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
-import sedaRulesFile from '../../../assets/seda.json';
+import { BehaviorSubject, Observable, shareReplay } from 'rxjs';
 import { CardinalityConstants, FileNode } from '../../models/file-node';
 import { CardinalityValues } from '../../models/models';
 import { SedaData } from '../../models/seda-data';
+import { ProfileService } from './profile.service';
+import { ProfileVersion } from '../../models/profile-version.enum';
 
 @Injectable({
   providedIn: 'root',
@@ -49,23 +50,22 @@ export class SedaService {
   selectedSedaNode = new BehaviorSubject<SedaData>(null);
   selectedSedaNodeParent = new BehaviorSubject<SedaData>(null);
   sedaTabNodeRootToSearch = new BehaviorSubject<SedaData>(null);
-  private sedaRulesTemp: any = sedaRulesFile;
-  public sedaRules: SedaData = this.sedaRulesTemp;
+  public sedaRules$: Observable<SedaData> = this.profileService.getMetaModel(ProfileVersion.VERSION_2_3).pipe(shareReplay(1));
 
-  constructor() {}
+  constructor(private profileService: ProfileService) {}
 
   getSedaNode(currentNode: SedaData, nameNode: string): SedaData {
     if (currentNode && nameNode) {
       let i: number;
       let currentChild: SedaData;
-      if (nameNode === currentNode.Name) {
+      if (nameNode === currentNode.name) {
         return currentNode;
       } else {
         // Use a for loop instead of forEach to avoid nested functions
         // Otherwise "return" will not work properly
-        if (currentNode.Children) {
-          for (i = 0; i < currentNode.Children.length; i += 1) {
-            currentChild = currentNode.Children[i];
+        if (currentNode.children) {
+          for (i = 0; i < currentNode.children.length; i += 1) {
+            currentChild = currentNode.children[i];
             // Search in the current child
             const result = this.getSedaNode(currentChild, nameNode);
             // Return the result if the node has been found
@@ -85,14 +85,14 @@ export class SedaService {
     let currentChild: SedaData;
     let resultNode: SedaData;
     if (currentNode) {
-      if (nameNode === currentNode.Name) {
+      if (nameNode === currentNode.name) {
         resultNode = currentNode;
       } else {
         // Use a for loop instead of forEach to avoid nested functions
         // Otherwise "return" will not work properly
-        if (currentNode.Children) {
-          for (i = 0; i < currentNode.Children.length; i += 1) {
-            currentChild = currentNode.Children[i];
+        if (currentNode.children) {
+          for (i = 0; i < currentNode.children.length; i += 1) {
+            currentChild = currentNode.children[i];
             // Search in the current child
             const result = this.getSedaNodeRecursively(currentChild, nameNode);
             // Return the result if the node has been found
@@ -113,10 +113,10 @@ export class SedaService {
   getSedaNodeCollection(sedaNode: SedaData, nodeName: string, collectionName: string): SedaData {
     let resultNode: SedaData;
     if (sedaNode) {
-      if (sedaNode.Collection === collectionName && sedaNode.Name === nodeName) {
+      if (sedaNode.collection === collectionName && sedaNode.name === nodeName) {
         resultNode = sedaNode;
       }
-      for (const child of sedaNode.Children) {
+      for (const child of sedaNode.children) {
         const nodeFound = this.getSedaNodeCollection(child, nodeName, collectionName);
         if (nodeFound) {
           resultNode = nodeFound;
@@ -133,12 +133,12 @@ export class SedaService {
   // aways be included in the list
   findSelectableElementList(sedaNode: SedaData, fileNode: FileNode): SedaData[] {
     const fileNodesNames = fileNode.children.map((e) => e.name);
-    const allowedSelectableList = sedaNode.Children.filter(
-      (x) =>
-        (!fileNodesNames.includes(x.Name) && x.Cardinality !== CardinalityConstants.Obligatoire.valueOf()) ||
-        (fileNodesNames.includes(x.Name) &&
-          (x.Cardinality === CardinalityConstants['Zero or More'].valueOf() ||
-            x.Cardinality === CardinalityConstants['One Or More'].valueOf())),
+    const allowedSelectableList = sedaNode.children.filter(
+      (x: SedaData) =>
+        (!fileNodesNames.includes(x.name) && x.cardinality !== CardinalityConstants.Obligatoire.valueOf()) ||
+        (fileNodesNames.includes(x.name) &&
+          (x.cardinality === CardinalityConstants['Zero or More'].valueOf() ||
+            x.cardinality === CardinalityConstants['One Or More'].valueOf())),
     );
     return allowedSelectableList;
   }
@@ -157,51 +157,51 @@ export class SedaService {
    */
   getAttributes(sedaNode: SedaData, collection: string): SedaData[] {
     // if (!sedaNode) return;
-    return sedaNode.Children.filter((children) => children.Element === 'Attribute' && sedaNode.Collection === collection);
+    return sedaNode.children.filter((children: SedaData) => children.element === 'Attribute' && sedaNode.collection === collection);
   }
 
   isSedaNodeObligatory(nodeName: string, sedaParent: SedaData): boolean {
-    if (sedaParent.Name === nodeName) {
-      return sedaParent.Cardinality.startsWith('1');
+    if (sedaParent.name === nodeName) {
+      return sedaParent.cardinality.startsWith('1');
     }
     if (sedaParent) {
-      for (const child of sedaParent.Children) {
-        if (child.Name === nodeName) {
-          return child.Cardinality.startsWith('1');
+      for (const child of sedaParent.children) {
+        if (child.name === nodeName) {
+          return child.cardinality.startsWith('1');
         }
       }
     }
   }
 
   isDuplicated(fieldName: string, sedaParent: SedaData) {
-    if (sedaParent.Name === fieldName) {
-      return sedaParent.Cardinality.includes('N');
+    if (sedaParent.name === fieldName) {
+      return sedaParent.cardinality.includes('N');
     }
     if (sedaParent) {
-      for (const child of sedaParent.Children) {
-        if (child.Name === fieldName) {
-          return child.Cardinality.includes('N');
+      for (const child of sedaParent.children) {
+        if (child.name === fieldName) {
+          return child.cardinality.includes('N');
         }
       }
     }
   }
 
   checkSedaElementType(nodeName: string, sedaNode: SedaData): string {
-    if (sedaNode.Name === nodeName) {
-      return sedaNode.Element;
+    if (sedaNode.name === nodeName) {
+      return sedaNode.element;
     }
 
-    const node = sedaNode.Children.find((c) => c.Name === nodeName);
+    const node = sedaNode.children.find((c) => c.name === nodeName);
     if (node) {
-      return node.Element;
+      return node.element;
     }
   }
 
   findSedaChildByName(nodeName: string, sedaNode: SedaData): SedaData {
-    if (nodeName === sedaNode.Name) {
+    if (nodeName === sedaNode.name) {
       return sedaNode;
     }
-    const childFound = sedaNode.Children.find((c) => c.Name === nodeName);
+    const childFound = sedaNode.children.find((c) => c.name === nodeName);
     return childFound ? childFound : null;
   }
 
@@ -216,9 +216,9 @@ export class SedaService {
   getCardinalitiesOfSedaChildrenAttributes(fileNode: FileNode, sedaNode: SedaData): string[] {
     const cardinalities: string[] = [];
     for (const fileChild of fileNode.children) {
-      for (const sedaChild of sedaNode.Children) {
-        if (fileChild.name === sedaChild.Name) {
-          fileChild.cardinality ? cardinalities.push(fileChild.cardinality) : cardinalities.push(sedaChild.Cardinality);
+      for (const sedaChild of sedaNode.children) {
+        if (fileChild.name === sedaChild.name) {
+          fileChild.cardinality ? cardinalities.push(fileChild.cardinality) : cardinalities.push(sedaChild.cardinality);
         }
       }
     }

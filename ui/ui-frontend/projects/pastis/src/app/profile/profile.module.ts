@@ -44,7 +44,7 @@ import { SharedModule } from './../shared/shared.module';
 import { MatIconModule } from '@angular/material/icon';
 import { MatLegacyTabsModule as MatTabsModule } from '@angular/material/legacy-tabs';
 
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatLegacySlideToggleModule as MatSlideToggleModule } from '@angular/material/legacy-slide-toggle';
 import { TranslateModule } from '@ngx-translate/core';
 import { FileUploadModule } from 'ng2-file-upload';
@@ -52,7 +52,6 @@ import { NgxUiLoaderModule } from 'ngx-ui-loader';
 import { VitamUICommonModule } from 'vitamui-library';
 import { PastisMaterialModule } from '../material.module';
 import { UserActionsModule } from '../user-actions/user-actions.module';
-import { CreateNoticeChoiceComponent } from './create-notice-choice/create-notice-choice.component';
 import { CreateProfileComponent } from './create-profile/create-profile.component';
 import { EditProfileComponent } from './edit-profile/edit-profile.component';
 import { ListProfileComponent } from './list-profile/list-profile.component';
@@ -77,22 +76,9 @@ import { ProfilePreviewModule } from './profile-preview/profile-preview.module';
     TranslateModule,
     NgxUiLoaderModule,
     ProfilePreviewModule,
+    ReactiveFormsModule,
   ],
-  exports: [
-    CreateNoticeChoiceComponent,
-    CreateProfileComponent,
-    EditProfileComponent,
-    ListProfileComponent,
-    FilterByStringNamePipe,
-    FilterByTypePipe,
-  ],
-  declarations: [
-    CreateNoticeChoiceComponent,
-    CreateProfileComponent,
-    EditProfileComponent,
-    ListProfileComponent,
-    FilterByStringNamePipe,
-    FilterByTypePipe,
-  ],
+  exports: [CreateProfileComponent, EditProfileComponent, ListProfileComponent, FilterByStringNamePipe, FilterByTypePipe],
+  declarations: [CreateProfileComponent, EditProfileComponent, ListProfileComponent, FilterByStringNamePipe, FilterByTypePipe],
 })
 export class ProfileModule {}

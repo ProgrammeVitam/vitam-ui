@@ -46,8 +46,8 @@ export interface PastisDialogData {
   subTitleDialog: string;
   okLabel: string;
   cancelLabel: string;
-  fileNode: FileNode;
-  disableBtnOuiOnInit: boolean;
-  component: ComponentType<any>;
+  fileNode?: FileNode;
+  disableBtnOuiOnInit?: boolean;
+  component?: ComponentType<any>;
   modeProfile?: string;
 }

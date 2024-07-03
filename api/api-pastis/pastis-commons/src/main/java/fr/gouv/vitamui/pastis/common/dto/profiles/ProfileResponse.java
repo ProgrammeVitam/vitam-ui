@@ -51,4 +51,5 @@ public class ProfileResponse extends IdDto {
     transient ElementProperties profile;
     Notice notice;
     ProfileType type;
+    ProfileVersion sedaVersion;
 }

@@ -1,8 +1,11 @@
 import { ArchivalProfileUnit } from './archival-profile-unit';
 import { Profile } from './profile';
+import { ProfileVersion } from './profile-version.enum';
+import { ProfileType } from './profile-type.enum';
 
 export interface ProfileDescription extends Partial<Profile>, Partial<ArchivalProfileUnit> {
-  type: string;
+  type: ProfileType;
+  sedaVersion: ProfileVersion;
   isEditable?: boolean;
 }
 
@@ -18,7 +21,8 @@ export class ProfileDescriptionModel implements ProfileDescription {
   lastUpdate: string;
   activationDate: string;
   deactivationDate: string;
-  type: string;
+  type: ProfileType;
+  sedaVersion: ProfileVersion;
   controlSchema: string;
   fields: string[];
   format: string;

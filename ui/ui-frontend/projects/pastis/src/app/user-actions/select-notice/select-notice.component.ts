@@ -34,11 +34,11 @@ export class SelectNoticeComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    if (this.data.profileMode === ProfileType.PUA) {
+    if (this.data.profileType === ProfileType.PUA) {
       this.profilService.getAllProfilesPUA().subscribe((profileListPUA: ProfileDescription[]) => {
         this.profiles = profileListPUA;
       });
-    } else if (this.data.profileMode === ProfileType.PA) {
+    } else if (this.data.profileType === ProfileType.PA) {
       this.profilService.getAllProfilesPA().subscribe((profileListPUA: ProfileDescription[]) => {
         this.profiles = profileListPUA;
       });
@@ -56,7 +56,13 @@ export class SelectNoticeComponent implements OnInit {
   }
 
   onSubmit() {
-    this.dialogRef.close({ success: true, action: 'none', data: this.selectedProfile, mode: this.data.profileMode });
+    this.dialogRef.close({
+      success: true,
+      action: 'none',
+      data: this.selectedProfile,
+      profileType: this.data.profileType,
+      profileVersion: this.data.profileVersion,
+    });
   }
 
   onCancel() {

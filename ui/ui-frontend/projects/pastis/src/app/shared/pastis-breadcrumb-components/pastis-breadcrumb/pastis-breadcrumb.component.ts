@@ -71,8 +71,8 @@ export class PastisBreadcrumbComponent {
   getLabel(data: BreadcrumbDataMetadata): string {
     if (data.node && data.label === data.node.name) {
       if (!this.metadataLanguageService.sedaLanguage.getValue()) {
-        if (data.node.sedaData.NameFr) {
-          return data.node.sedaData.NameFr;
+        if (data.node.sedaData.nameFr) {
+          return data.node.sedaData.nameFr;
         }
       }
     }

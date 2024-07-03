@@ -37,11 +37,15 @@ knowledge of the CeCILL-C license and that you accept its terms.
 */
 package fr.gouv.vitamui.pastis.common.dto.jaxb;
 
+import fr.gouv.vitamui.pastis.common.dto.profiles.ProfileVersion;
+
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "rng:grammar")
 public class GrammarXML extends BaliseXML {
+
+    public static final String SEDA_PREFIX = "fr:gouv:culture:archivesdefrance:seda:";
 
     StartXML start;
 
@@ -49,10 +53,10 @@ public class GrammarXML extends BaliseXML {
     private String datatypeLibrary = "http://www.w3.org/2001/XMLSchema-datatypes";
 
     @XmlAttribute(name = "ns")
-    private String ns = "fr:gouv:culture:archivesdefrance:seda:v2.1";
+    public String ns = SEDA_PREFIX + ProfileVersion.VERSION_2_1.getVersion();
 
     @XmlAttribute(name = "xmlns")
-    private String xmlns = "fr:gouv:culture:archivesdefrance:seda:v2.1";
+    public String xmlns = SEDA_PREFIX + ProfileVersion.VERSION_2_1.getVersion();
 
     @XmlAttribute(name = "xmlns:xsd")
     private String xd = "http://www.w3.org/2001/XMLSchema";

@@ -54,5 +54,6 @@ public class RestApi {
     public static final String PASTIS_DOWNLOAD_PUA = "/getarchiveunitprofile";
     public static final String PASTIS_DOWNLOAD_PA = "/archiveprofile";
     public static final String PASTIS_CREATE_PROFILE = "/profile";
+    public static final String PASTIS_METAMODEL = "/metamodel";
     public static final String PASTIS = "/pastis";
 }

@@ -9,5 +9,6 @@
   "uploadProfileUrl": "/profile",
   "getFileUrl": "/getfile",
   "savePAasFileUrl": "/archiveprofile",
-  "savePUAasFileUrl": "/getarchiveunitprofile"
+  "savePUAasFileUrl": "/getarchiveunitprofile",
+  "metaModelUrl": "/metamodel"
 }

@@ -15,6 +15,7 @@ import { Profile } from '../../models/profile';
 import { ProfileType } from '../../models/profile-type.enum';
 import { PastisDialogData } from '../../shared/pastis-dialog/classes/pastis-dialog-data';
 import { PastisDialogDataCreate } from '../save-profile/save-profile.component';
+import { ProfileVersion } from '../../models/profile-version.enum';
 
 interface Status {
   value: string;
@@ -47,7 +48,8 @@ export class CreateNoticeComponent implements OnInit, OnDestroy {
   okLabel: string;
   cancelLabel: string;
   arrayStatus: Status[];
-  typeProfile?: ProfileType;
+  profileType?: ProfileType;
+  profileVersion?: ProfileVersion;
   modePUA: boolean;
   information: string;
   presenceNonDeclareMetadonneesPUAControl = new FormControl(false);
@@ -74,12 +76,13 @@ export class CreateNoticeComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.typeProfile = this.data.profileMode;
-    if (this.typeProfile === ProfileType.PUA) {
+    this.profileType = this.data.profileType;
+    this.profileVersion = this.data.profileVersion;
+    if (this.profileType === ProfileType.PUA) {
       this.modePUA = true;
     }
     this.applicationService
-      .isApplicationExternalIdentifierEnabled(this.typeProfile === ProfileType.PUA ? 'ARCHIVE_UNIT_PROFILE' : 'PROFILE')
+      .isApplicationExternalIdentifierEnabled(this.profileType === ProfileType.PUA ? 'ARCHIVE_UNIT_PROFILE' : 'PROFILE')
       .subscribe((value) => {
         this.externalIdentifierEnabled = value;
       });
@@ -218,6 +221,12 @@ export class CreateNoticeComponent implements OnInit, OnDestroy {
       this.fileService.noticeEditable.next(this.notice);
       this.fileService.setNotice(true);
     }
-    this.dialogRef.close({ success: true, action: 'none', data: this.form.value, mode: this.typeProfile });
+    this.dialogRef.close({
+      success: true,
+      action: 'none',
+      data: this.form.value,
+      profileType: this.profileType,
+      profileVersion: this.profileVersion,
+    });
   }
 }

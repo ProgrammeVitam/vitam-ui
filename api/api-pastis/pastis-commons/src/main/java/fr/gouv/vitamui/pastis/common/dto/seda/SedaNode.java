@@ -47,6 +47,7 @@ import java.util.stream.Stream;
 public class SedaNode {
 
     private String name;
+    private String nameFr;
     private String element;
     private String cardinality;
     private String type;

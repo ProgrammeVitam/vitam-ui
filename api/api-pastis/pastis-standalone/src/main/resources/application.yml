@@ -27,7 +27,6 @@ springdoc:
 # Pastis Rest APi
 rng.base.file: profiles_new/Profil_seda_pastis_mvp.rng
 rng.base.directory: rng/
-json.base.file: profiles_new/ProfileJson.json
 pua.definitions.file: pua_validation/ProfileJson.json
 json.template.fileStandalone: profiles_new/AUP_default_PASTIS.json
 json.template.fileVitam: profiles_new/AUP_default_VITAM.json

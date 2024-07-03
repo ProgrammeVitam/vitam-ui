@@ -27,7 +27,7 @@ jobs:
       - uses: actions/setup-java@v4
         with:
           distribution: "temurin"
-          java-version: "11"
+          java-version: "17"
       - name: Restore maven cache # We're not using cache feature from actions/setup-java as it could conflict with other GitHub Actions maven caches (our cache doesn't include all Vitam dependencies: it is limited to spotless and its dependencies)
         uses: actions/cache@v4
         with:

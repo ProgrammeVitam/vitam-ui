@@ -275,7 +275,7 @@ export class FileTreeMetadataComponent implements OnInit, OnDestroy {
     });
     // BreadCrump Top for navigation
     this.profileModeLabel =
-      this.profileService.profileMode === ProfileType.PUA
+      this.profileService.profileType === ProfileType.PUA
         ? 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.PUA'
         : 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.PA';
     this.breadcrumbDataTop = [
@@ -297,8 +297,10 @@ export class FileTreeMetadataComponent implements OnInit, OnDestroy {
           const rulesFromService = this.fileService.tabChildrenRulesChange.getValue();
           const tabChildrenToInclude = rulesFromService[0];
           const tabChildrenToExclude = rulesFromService[1];
-          this.sedaService.selectedSedaNode.next(this.sedaService.sedaRules[0]);
-          this.selectedSedaNode = this.sedaService.sedaRules[0];
+          this.sedaService.sedaRules$.subscribe((value) => {
+            this.sedaService.selectedSedaNode.next(value);
+            this.selectedSedaNode = value;
+          });
           this.fileService.nodeChange.next(this.clickedNode);
           const filteredData = this.fileService.filteredNode.getValue();
           // Initial data for metadata table based on rules defined by tabChildrenRulesChange
@@ -434,9 +436,9 @@ export class FileTreeMetadataComponent implements OnInit, OnDestroy {
   }
 
   isElementComplex(elementName: string) {
-    const childFound = this.selectedSedaNode.Children.find((el) => el.Name === elementName);
+    const childFound = this.selectedSedaNode.children.find((el) => el.name === elementName);
     if (childFound) {
-      return childFound.Element === SedaElementConstants.complex;
+      return childFound.element === SedaElementConstants.complex;
     }
   }
 
@@ -445,17 +447,17 @@ export class FileTreeMetadataComponent implements OnInit, OnDestroy {
       // eslint-disable-next-line prefer-const
       let elements: SedaData[];
       elements.push({
-        Name: 'ArchiveUnit',
-        NameFr: null,
-        Type: null,
-        Element: null,
-        Cardinality: null,
-        Definition: null,
-        Extensible: null,
-        Choice: null,
-        Children: null,
-        Enumeration: null,
-        Collection: null,
+        name: 'ArchiveUnit',
+        nameFr: null,
+        type: null,
+        element: null,
+        cardinality: null,
+        definition: null,
+        extensible: null,
+        choice: null,
+        children: null,
+        enumeration: null,
+        collection: null,
       });
       const params: FileNodeInsertParams = {
         node: this.clickedNode,
@@ -563,7 +565,7 @@ export class FileTreeMetadataComponent implements OnInit, OnDestroy {
     const fileNode = this.fileService.findChildById(fileNodeId, this.clickedNode);
     this.clickedControl = fileNode;
     if (fileNode.puaData && fileNode.puaData.enum) {
-      this.enumerationsSedaControl = this.selectedSedaNode.Enumeration;
+      this.enumerationsSedaControl = this.selectedSedaNode.enumeration;
       this.enumerationControl = true;
       this.editedEnumControl = [];
       this.enumsControlSelected = [];
@@ -578,7 +580,7 @@ export class FileTreeMetadataComponent implements OnInit, OnDestroy {
       this.openControls = true;
       this.expressionControl = true;
       this.commentaire = fileNode.documentation;
-      this.setAvailableRegex(this.selectedSedaNode.Type);
+      this.setAvailableRegex(this.selectedSedaNode.type);
       if (this.availableRegex.map((e) => e.value).includes(actualPattern)) {
         this.regex = this.availableRegex.filter((e) => e.value === actualPattern).map((e) => e.value)[0];
         this.radioExpressionReguliere = 'select';
@@ -642,7 +644,7 @@ export class FileTreeMetadataComponent implements OnInit, OnDestroy {
   }
 
   isDataType(): boolean {
-    const type: string = this.selectedSedaNode.Type;
+    const type: string = this.selectedSedaNode.type;
     return type === DateFormatType.date || type === DateFormatType.dateTime || type === DateFormatType.dateType;
   }
 
@@ -651,10 +653,10 @@ export class FileTreeMetadataComponent implements OnInit, OnDestroy {
     if (elements.includes('Enumération') || elements.includes(this.translated(ADD_PUA_CONTROL_TRANSLATE_PATH + '.ENUMERATIONS_LABEL'))) {
       this.enumerationControl = true;
 
-      this.enumerationsSedaControl = this.sedaService.findSedaChildByName(sedaName, this.selectedSedaNode).Enumeration;
+      this.enumerationsSedaControl = this.sedaService.findSedaChildByName(sedaName, this.selectedSedaNode).enumeration;
       this.editedEnumControl = this.enumerationsSedaControl;
       this.enumsControlSelected = this.enumerationsSedaControl;
-      const type: string = this.sedaService.findSedaChildByName(sedaName, this.selectedSedaNode).Type;
+      const type: string = this.sedaService.findSedaChildByName(sedaName, this.selectedSedaNode).type;
       this.setAvailableRegex(type);
     }
     if (
@@ -665,7 +667,7 @@ export class FileTreeMetadataComponent implements OnInit, OnDestroy {
       this.expressionControl = true;
       this.customRegex = '';
       this.commentaire = fileNode.documentation;
-      const type: string = this.sedaService.findSedaChildByName(sedaName, this.selectedSedaNode).Type;
+      const type: string = this.sedaService.findSedaChildByName(sedaName, this.selectedSedaNode).type;
       this.setAvailableRegex(type);
       this.regex = this.formatagePredefini[0].value;
     }
@@ -684,7 +686,7 @@ export class FileTreeMetadataComponent implements OnInit, OnDestroy {
   }
 
   isNotRegexCustomisable(): boolean {
-    const type: string = this.selectedSedaNode.Type;
+    const type: string = this.selectedSedaNode.type;
     return type === DateFormatType.date || type === DateFormatType.dateTime;
   }
 
@@ -719,7 +721,7 @@ export class FileTreeMetadataComponent implements OnInit, OnDestroy {
 
   checkElementType(elementName?: string) {
     if (this.selectedSedaNode) {
-      const nameToSearch = elementName ? elementName : this.sedaService.selectedSedaNode.getValue().Name;
+      const nameToSearch = elementName ? elementName : this.sedaService.selectedSedaNode.getValue().name;
       const nodeElementType = this.sedaService.checkSedaElementType(nameToSearch, this.selectedSedaNode);
       return nodeElementType === SedaElementConstants.complex;
     }
@@ -737,8 +739,8 @@ export class FileTreeMetadataComponent implements OnInit, OnDestroy {
   hasAttributes(nodeName: string): boolean {
     const node = this.sedaService.findSedaChildByName(nodeName, this.selectedSedaNode);
 
-    if (node && node.Children.length > 0) {
-      return node.Children.find((c) => c.Element === SedaElementConstants.attribute) !== undefined;
+    if (node && node.children.length > 0) {
+      return node.children.find((c) => c.element === SedaElementConstants.attribute) !== undefined;
     }
     return false;
   }
@@ -755,17 +757,17 @@ export class FileTreeMetadataComponent implements OnInit, OnDestroy {
   getSedaDefinition(elementName: string) {
     const node = this.getSedaNode(elementName);
     if (node != null) {
-      return node.Definition;
+      return node.definition;
     }
     return '';
   }
 
   getSedaNode(elementName: string): SedaData {
-    if (this.selectedSedaNode.Name === elementName) {
+    if (this.selectedSedaNode.name === elementName) {
       return this.selectedSedaNode;
     } else {
-      for (const node of this.selectedSedaNode.Children) {
-        if (node.Name === elementName) {
+      for (const node of this.selectedSedaNode.children) {
+        if (node.name === elementName) {
           return node;
         }
       }
@@ -779,10 +781,10 @@ export class FileTreeMetadataComponent implements OnInit, OnDestroy {
     }
     const node = this.getSedaNode(elementName);
     if (node != null) {
-      if (node.NameFr) {
-        return node.NameFr;
+      if (node.nameFr) {
+        return node.nameFr;
       }
-      return node.Name;
+      return node.name;
     }
     return elementName;
   }
@@ -858,7 +860,7 @@ export class FileTreeMetadataComponent implements OnInit, OnDestroy {
   }
 
   isElementEdit(node: MetadataHeaders): boolean {
-    if (this.profileService.profileMode === ProfileType.PUA) {
+    if (this.profileService.profileType === ProfileType.PUA) {
       return false;
     }
     return !!node.nomDuChampEdit;
@@ -884,7 +886,7 @@ export class FileTreeMetadataComponent implements OnInit, OnDestroy {
   onDeleteControls() {
     if (this.clickedControl) {
       this.clickedControl.puaData.enum = null;
-      this.clickedControl.sedaData.Enumeration = [];
+      this.clickedControl.sedaData.enumeration = [];
     }
     if (this.expressionControl) {
       this.clickedControl.puaData.pattern = null;

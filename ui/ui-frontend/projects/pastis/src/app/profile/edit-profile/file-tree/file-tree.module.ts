@@ -52,7 +52,6 @@ import { CoreModule } from '../../../core/core.module';
 import { AttributesPopupComponent } from '../file-tree-metadata/attributes/attributes.component';
 import { FileTreeMetadataComponent } from '../file-tree-metadata/file-tree-metadata.component';
 import { FileTreeComponent } from './file-tree.component';
-import { FiletreeFilterPipe } from './pipes/file-tree-filter.pipe';
 
 @NgModule({
   imports: [
@@ -70,6 +69,6 @@ import { FiletreeFilterPipe } from './pipes/file-tree-filter.pipe';
   ],
   exports: [FileTreeComponent, FileTreeMetadataComponent],
   providers: [{ provide: MAT_RIPPLE_GLOBAL_OPTIONS, useValue: { disabled: true } }],
-  declarations: [FileTreeMetadataComponent, FileTreeComponent, FiletreeFilterPipe, AttributesPopupComponent],
+  declarations: [FileTreeMetadataComponent, FileTreeComponent, AttributesPopupComponent],
 })
 export class FileTreeModule {}

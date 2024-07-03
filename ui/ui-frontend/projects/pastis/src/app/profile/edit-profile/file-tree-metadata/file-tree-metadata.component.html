@@ -8,10 +8,10 @@
       <div class="pastis-metadata-option-entete-1">
         <h5>
           <i class="vitamui-icon vitamui-icon-ic40-dossier-physique"></i>
-          <ng-container *ngIf="this.profileService.profileMode === 'PUA'">
+          <ng-container *ngIf="this.profileService.profileType === 'PUA'">
             {{ 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.PUA' | translate }}
           </ng-container>
-          <ng-container *ngIf="this.profileService.profileMode === 'PA'">
+          <ng-container *ngIf="this.profileService.profileType === 'PA'">
             {{ 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.PA' | translate }}
           </ng-container>
         </h5>
@@ -22,7 +22,7 @@
       <div class="pastis-metadata-option-entete-2">
         <!--Toggle button allow additional properties-->
         <div
-          *ngIf="this.profileService.profileMode === 'PUA' && this.isStandalone"
+          *ngIf="this.profileService.profileType === 'PUA' && this.isStandalone"
           class="panel-buttons"
           matTooltip="{{ 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.ADDITIONAL_PROPERTIES_TOOLTIP' | translate }}"
         >
@@ -123,7 +123,7 @@
                     [maxlength]="120"
                     [ngModel]="element.valeurFixe"
                     class="valeur-fixe-pastis"
-                    [disabled]="profileService.profileMode === 'PUA'"
+                    [disabled]="profileService.profileType === 'PUA'"
                   >
                   </vitamui-common-editable-textarea>
                 </div>
@@ -133,7 +133,7 @@
                   [ngModel]="element.valeurFixe"
                   class="mat-select-valeur-fixe"
                   placeholder="Choisissez une valeur"
-                  *ngIf="profileService.profileMode === 'PA'"
+                  *ngIf="profileService.profileType === 'PA'"
                   (selectionChange)="onChangeSelected(element, $event.value)"
                 >
                   <mat-option [value]="">--None--</mat-option>
@@ -148,7 +148,7 @@
                     [maxlength]="120"
                     [ngModel]="element.valeurFixe"
                     class="valeur-fixe-pastis"
-                    [disabled]="this.profileService.profileMode === 'PUA'"
+                    [disabled]="this.profileService.profileType === 'PUA'"
                   >
                   </vitamui-common-editable-textarea>
                 </div>
@@ -226,13 +226,13 @@
             <mat-menu #menu="matMenu" (closed)="buttonClickedId = undefined" [overlapTrigger]="false" class="pastis-menu-item-vitam">
               <!-- Dupliquer-->
               <mat-divider
-                *ngIf="isDuplicated(element.nomDuChamp) && this.profileService.profileMode === 'PA'"
+                *ngIf="isDuplicated(element.nomDuChamp) && this.profileService.profileType === 'PA'"
                 style="border-top-color: #e0e0e0"
               >
               </mat-divider>
               <button
                 (click)="onDuplicateNode(element.id)"
-                *ngIf="isDuplicated(element.nomDuChamp) && this.profileService.profileMode === 'PA'"
+                *ngIf="isDuplicated(element.nomDuChamp) && this.profileService.profileType === 'PA'"
                 mat-menu-item
               >
                 <mat-icon style="color: #757575">filter_none</mat-icon>
@@ -240,12 +240,12 @@
               </button>
               <!-- @Attributs-->
               <mat-divider
-                *ngIf="hasAttributes(element.nomDuChamp) && this.profileService.profileMode === 'PA'"
+                *ngIf="hasAttributes(element.nomDuChamp) && this.profileService.profileType === 'PA'"
                 style="border-top-color: #e0e0e0"
               ></mat-divider>
               <button
                 (click)="onEditAttributesClick(element.id)"
-                *ngIf="hasAttributes(element.nomDuChamp) && this.profileService.profileMode === 'PA'"
+                *ngIf="hasAttributes(element.nomDuChamp) && this.profileService.profileType === 'PA'"
                 mat-menu-item
               >
                 <span class="text normal">{{ 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.ATTRIBUT_METADONNEE' | translate }}</span>
@@ -255,7 +255,7 @@
               <mat-divider
                 *ngIf="
                   isElementComplex(element.nomDuChamp) &&
-                  this.profileService.profileMode === 'PUA' &&
+                  this.profileService.profileType === 'PUA' &&
                   isElementNameNotContentManagement(element.nomDuChamp)
                 "
                 style="border-top-color: #e0e0e0"
@@ -264,7 +264,7 @@
               <mat-checkbox
                 *ngIf="
                   isElementComplex(element.nomDuChamp) &&
-                  this.profileService.profileMode === 'PUA' &&
+                  this.profileService.profileType === 'PUA' &&
                   isElementNameNotContentManagement(element.nomDuChamp)
                 "
                 class="mat-menu-item"
@@ -295,7 +295,7 @@
               <!-- Contrôle de métadonnées => PUA -->
               <mat-divider
                 *ngIf="
-                  this.profileService.profileMode === 'PUA' &&
+                  this.profileService.profileType === 'PUA' &&
                   !isElementComplex(element.nomDuChamp) &&
                   element.id === clickedNode.id &&
                   !isAppliedControl(element.id)
@@ -306,7 +306,7 @@
               <button
                 (click)="onControlClick(element.id)"
                 *ngIf="
-                  this.profileService.profileMode === 'PUA' &&
+                  this.profileService.profileType === 'PUA' &&
                   !isElementComplex(element.nomDuChamp) &&
                   element.id === clickedNode.id &&
                   !isAppliedControl(element.id)
@@ -320,7 +320,7 @@
               <!-- Edition des contres de métadonnées -->
               <mat-divider
                 *ngIf="
-                  this.profileService.profileMode === 'PUA' &&
+                  this.profileService.profileType === 'PUA' &&
                   !isElementComplex(element.nomDuChamp) &&
                   element.id === clickedNode.id &&
                   isAppliedControl(element.id)
@@ -331,7 +331,7 @@
               <button
                 (click)="onEditControlClick(element.id)"
                 *ngIf="
-                  this.profileService.profileMode === 'PUA' &&
+                  this.profileService.profileType === 'PUA' &&
                   !isElementComplex(element.nomDuChamp) &&
                   element.id === clickedNode.id &&
                   isAppliedControl(element.id)
@@ -357,7 +357,7 @@
     </div>
 
     <!-- Metadata Control Part-->
-    <div *ngIf="this.profileService.profileMode === 'PUA' && openControls">
+    <div *ngIf="this.profileService.profileType === 'PUA' && openControls">
       <div class="pastis-panel-metadata-control" *ngIf="enumerationControl && clickedControl.name === clickedNode.name">
         <div class="row">
           <div class="col">
