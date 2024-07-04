@@ -191,11 +191,6 @@
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-core</artifactId>
         </dependency>
-        <dependency>
-            <groupId>fr.gouv.vitam</groupId>
-            <artifactId>common-private</artifactId>
-        </dependency>
-
 
         <!-- Apereo CAS Server Core Api Ticket -->
         <dependency>
