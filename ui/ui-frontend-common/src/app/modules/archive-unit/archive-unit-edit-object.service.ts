@@ -157,11 +157,22 @@ export class ArchiveUnitEditObjectService {
   }
 
   public displayOtherMetadata(displayObject: DisplayObject, path = 'OtherMetadata') {
-    if (displayObject.path === path) {
-      displayObject.displayRule = { ...displayObject.displayRule, ui: { ...displayObject.displayRule.ui, display: true } };
+    if (!displayObject.path.includes(path)) return;
+
+    if (!displayObject.displayRule) {
+      return this.logger.warn(this, `Element '${displayObject.path}' has no displayRule`);
     }
 
-    displayObject.children.forEach((child) => this.displayOtherMetadata(child));
+    const isConsistent = this.typeService.isConsistent(displayObject.value);
+
+    displayObject.displayRule = {
+      ...displayObject.displayRule,
+      ui: { ...displayObject.displayRule.ui, display: isConsistent },
+    };
+
+    if (isConsistent) {
+      displayObject.children.forEach((child) => this.displayOtherMetadata(child));
+    }
   }
 
   public hideInconsistentDisplayObjects(displayObject: DisplayObject): void {
