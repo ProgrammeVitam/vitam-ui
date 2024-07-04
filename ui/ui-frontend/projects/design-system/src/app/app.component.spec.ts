@@ -48,7 +48,12 @@ import { AuthService, InjectorModule, LoggerModule, StartupService } from 'vitam
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { AppComponent } from './app.component';
 
-@Component({ selector: 'router-outlet', template: '' })
+@Component({
+  selector: 'router-outlet',
+  template: '',
+  standalone: true,
+  imports: [HttpClientTestingModule, MatSnackBarModule, InjectorModule, VitamUICommonTestModule],
+})
 class RouterOutletStubComponent {}
 
 describe('AppComponent', () => {
@@ -62,7 +67,7 @@ describe('AppComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      declarations: [AppComponent, RouterOutletStubComponent],
+      declarations: [AppComponent],
       imports: [
         HttpClientTestingModule,
         MatSnackBarModule,
@@ -70,6 +75,7 @@ describe('AppComponent', () => {
         VitamUICommonTestModule,
         BrowserAnimationsModule,
         LoggerModule.forRoot(),
+        RouterOutletStubComponent,
       ],
       providers: [
         { provide: StartupService, useValue: startupServiceStub },

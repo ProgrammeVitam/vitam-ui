@@ -37,13 +37,17 @@
 
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Unit } from 'vitamui-library';
+import { Unit, PipesModule } from 'vitamui-library';
 import { ArchiveService } from '../../archive.service';
+import { TranslateModule } from '@ngx-translate/core';
+import { NgIf, AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-archive-unit-information-tab',
   templateUrl: './archive-unit-information-tab.component.html',
   styleUrls: ['./archive-unit-information-tab.component.css'],
+  standalone: true,
+  imports: [NgIf, AsyncPipe, PipesModule, TranslateModule],
 })
 export class ArchiveUnitInformationTabComponent implements OnInit, OnChanges {
   @Input() archiveUnit: Unit;

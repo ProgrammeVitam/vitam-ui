@@ -38,6 +38,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
   name: 'strongify',
+  standalone: true,
 })
 export class StrongifyPipe implements PipeTransform {
   transform(value: any, search: string): any {

@@ -66,19 +66,34 @@ class Page {
 
 let page: Page;
 
-@Component({ selector: 'app-customer-list', template: '' })
+@Component({
+  selector: 'app-customer-list',
+  template: '',
+  standalone: true,
+  imports: [MatMenuModule, MatSidenavModule, VitamUICommonTestModule, InjectorModule],
+})
 class CustomerListStubComponent {
   search() {}
 }
 
-@Component({ selector: 'app-customer-preview', template: '' })
+@Component({
+  selector: 'app-customer-preview',
+  template: '',
+  standalone: true,
+  imports: [MatMenuModule, MatSidenavModule, VitamUICommonTestModule, InjectorModule],
+})
 class CustomerPreviewStubComponent {
   @Input() customer: any;
   @Output() previewClose = new EventEmitter();
   @Input() gdprReadOnlySettingStatus: boolean;
 }
 
-@Component({ selector: 'app-owner-preview', template: '' })
+@Component({
+  selector: 'app-owner-preview',
+  template: '',
+  standalone: true,
+  imports: [MatMenuModule, MatSidenavModule, VitamUICommonTestModule, InjectorModule],
+})
 class OwnerPreviewStubComponent {
   @Input() owner: any;
   @Input() tenant: any;
@@ -95,8 +110,18 @@ describe('CustomerComponent', () => {
     matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
 
     await TestBed.configureTestingModule({
-      imports: [MatMenuModule, MatSidenavModule, NoopAnimationsModule, VitamUICommonTestModule, InjectorModule, LoggerModule.forRoot()],
-      declarations: [CustomerComponent, CustomerListStubComponent, CustomerPreviewStubComponent, OwnerPreviewStubComponent],
+      imports: [
+        MatMenuModule,
+        MatSidenavModule,
+        NoopAnimationsModule,
+        VitamUICommonTestModule,
+        InjectorModule,
+        LoggerModule.forRoot(),
+        CustomerComponent,
+        CustomerListStubComponent,
+        CustomerPreviewStubComponent,
+        OwnerPreviewStubComponent,
+      ],
       providers: [
         { provide: CustomerService, useValue: customerServiceSpy },
         { provide: MatDialog, useValue: matDialogSpy },

@@ -1,10 +1,14 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
+import { FormBuilder, FormControl, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+  MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA,
+  MatLegacyDialogRef as MatDialogRef,
+  MatLegacyDialogModule,
+} from '@angular/material/legacy-dialog';
 import { Router } from '@angular/router';
-import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
+import { LangChangeEvent, TranslateService, TranslateModule } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
-import { ApplicationService } from 'vitamui-library';
+import { ApplicationService, VitamUICommonInputComponent, SlideToggleComponent, VitamUITextareaComponent } from 'vitamui-library';
 import { environment } from '../../../environments/environment';
 import { FileService } from '../../core/services/file.service';
 import { PopupService } from '../../core/services/popup.service';
@@ -15,6 +19,11 @@ import { Profile } from '../../models/profile';
 import { ProfileType } from '../../models/profile-type.enum';
 import { PastisDialogData } from '../../shared/pastis-dialog/classes/pastis-dialog-data';
 import { PastisDialogDataCreate } from '../save-profile/save-profile.component';
+import { MatLegacyOptionModule } from '@angular/material/legacy-core';
+import { MatLegacySelectModule } from '@angular/material/legacy-select';
+import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { NgIf, NgFor, NgStyle } from '@angular/common';
 
 interface Status {
   value: string;
@@ -33,6 +42,23 @@ function constantToTranslate() {
   selector: 'create-notice',
   templateUrl: './create-notice.component.html',
   styleUrls: ['./create-notice.component.scss'],
+  standalone: true,
+  imports: [
+    MatLegacyDialogModule,
+    FormsModule,
+    ReactiveFormsModule,
+    NgIf,
+    VitamUICommonInputComponent,
+    SlideToggleComponent,
+    MatLegacyTooltipModule,
+    MatLegacyFormFieldModule,
+    MatLegacySelectModule,
+    NgFor,
+    MatLegacyOptionModule,
+    NgStyle,
+    TranslateModule,
+    VitamUITextareaComponent,
+  ],
 })
 export class CreateNoticeComponent implements OnInit, OnDestroy {
   form: FormGroup;

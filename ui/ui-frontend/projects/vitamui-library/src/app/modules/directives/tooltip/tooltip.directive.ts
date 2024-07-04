@@ -45,6 +45,7 @@ import { TooltipService } from './tooltip.service';
 
 @Directive({
   selector: '[vitamuiCommonTooltip]',
+  standalone: true,
 })
 export class TooltipDirective implements OnDestroy {
   @Input() vitamuiCommonTooltip: string;

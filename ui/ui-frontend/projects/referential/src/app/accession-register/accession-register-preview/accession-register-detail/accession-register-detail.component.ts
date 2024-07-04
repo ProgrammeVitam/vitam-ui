@@ -27,6 +27,9 @@
 import { animate, AUTO_STYLE, state, style, transition, trigger } from '@angular/animations';
 import { Component, Input, OnInit } from '@angular/core';
 import { AccessionRegisterDetail, rotate90Animation } from 'vitamui-library';
+import { TranslateModule } from '@ngx-translate/core';
+import { NgIf, DatePipe } from '@angular/common';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
 
 @Component({
   selector: 'app-accession-register-detail',
@@ -46,6 +49,8 @@ import { AccessionRegisterDetail, rotate90Animation } from 'vitamui-library';
     ]),
     rotate90Animation,
   ],
+  standalone: true,
+  imports: [MatLegacyTooltipModule, NgIf, DatePipe, TranslateModule],
 })
 export class AccessionRegisterDetailComponent implements OnInit {
   @Input()

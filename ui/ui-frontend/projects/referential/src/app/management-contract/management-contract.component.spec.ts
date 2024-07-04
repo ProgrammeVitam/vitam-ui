@@ -67,8 +67,8 @@ describe('ManagementContractComponent', () => {
         LoggerModule.forRoot(),
         BrowserAnimationsModule,
         NoopAnimationsModule,
+        ManagementContractComponent,
       ],
-      declarations: [ManagementContractComponent],
       providers: [
         {
           provide: ActivatedRoute,

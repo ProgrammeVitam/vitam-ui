@@ -7,7 +7,13 @@ import { PersistentIdentifierSearchComponent } from './persistent-identifier-sea
 import { PurgedPersistentIdentifierModalComponent } from './purged-persistent-identifier-modal/purged-persistent-identifier-modal.component';
 
 @NgModule({
-  imports: [CommonModule, PersistentIdentifierSearchRoutingModule, VitamUICommonModule],
-  declarations: [PersistentIdentifierSearchComponent, PurgedPersistentIdentifierModalComponent, FoundObjectModalComponent],
+  imports: [
+    CommonModule,
+    PersistentIdentifierSearchRoutingModule,
+    VitamUICommonModule,
+    PersistentIdentifierSearchComponent,
+    PurgedPersistentIdentifierModalComponent,
+    FoundObjectModalComponent,
+  ],
 })
 export class PersistentIdentifierSearchModule {}

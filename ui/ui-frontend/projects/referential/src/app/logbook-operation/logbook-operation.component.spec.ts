@@ -42,7 +42,7 @@ import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { MatLegacyMenuModule as MatMenuModule } from '@angular/material/legacy-menu';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EMPTY, of } from 'rxjs';
-import { ENVIRONMENT, GlobalEventService, InjectorModule, LoggerModule, SearchBarComponent, SearchBarModule } from 'vitamui-library';
+import { ENVIRONMENT, GlobalEventService, InjectorModule, LoggerModule, SearchBarComponent, SearchBarComponent } from 'vitamui-library';
 import { environment } from '../../environments/environment';
 import { LogbookOperationComponent } from './logbook-operation.component';
 import { LogbookSearchService } from './logbook-search.service';
@@ -56,8 +56,16 @@ describe('LogbookOperationComponent', () => {
     const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
     matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
     await TestBed.configureTestingModule({
-      imports: [MatMenuModule, ReactiveFormsModule, InjectorModule, LoggerModule.forRoot(), SearchBarModule, TranslateModule.forRoot()],
-      declarations: [LogbookOperationComponent, SearchBarComponent],
+      imports: [
+        MatMenuModule,
+        ReactiveFormsModule,
+        InjectorModule,
+        LoggerModule.forRoot(),
+        SearchBarComponent,
+        TranslateModule.forRoot(),
+        LogbookOperationComponent,
+      ],
+      declarations: [SearchBarComponent],
       providers: [
         { provide: MatDialog, useValue: matDialogSpy },
         { provide: ActivatedRoute, useValue: { paramMap: EMPTY, data: EMPTY, queryParams: of({ guid: 'operationId' }) } },

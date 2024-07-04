@@ -37,12 +37,15 @@
 
 import { Component, Input } from '@angular/core';
 import { slideDownAnimation } from '../../animations/vitamui-common-animations';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'vitamui-common-field-error',
   template: `<div *ngIf="show" @slideDownAnimation><ng-content></ng-content></div>`,
   styleUrls: ['./vitamui-field-error.component.scss'],
   animations: [slideDownAnimation],
+  standalone: true,
+  imports: [NgIf],
 })
 export class VitamUIFieldErrorComponent {
   @Input() errorKey: string;

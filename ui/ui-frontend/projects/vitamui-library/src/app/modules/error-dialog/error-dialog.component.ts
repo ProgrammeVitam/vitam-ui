@@ -38,11 +38,14 @@ import { Component } from '@angular/core';
 import { MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { StartupService } from './../startup.service';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'vitamui-common-error-dialog',
   templateUrl: './error-dialog.component.html',
   styleUrls: ['./error-dialog.component.scss'],
+  standalone: true,
+  imports: [TranslateModule],
 })
 export class ErrorDialogComponent {
   trustedAppLogoUrl: SafeUrl;

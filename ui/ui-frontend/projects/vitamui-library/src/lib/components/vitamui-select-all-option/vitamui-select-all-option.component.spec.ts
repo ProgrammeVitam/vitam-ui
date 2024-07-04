@@ -9,8 +9,7 @@ describe('VitamuiSelectAllOptionComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CommonModule, MatPseudoCheckboxModule, MatRippleModule],
-      declarations: [VitamUISelectAllOptionComponent],
+      imports: [CommonModule, MatPseudoCheckboxModule, MatRippleModule, VitamUISelectAllOptionComponent],
     }).compileComponents();
   });
 

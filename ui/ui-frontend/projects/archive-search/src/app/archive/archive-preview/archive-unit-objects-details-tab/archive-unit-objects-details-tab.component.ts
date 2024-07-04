@@ -28,8 +28,19 @@ import { animate, AUTO_STYLE, state, style, transition, trigger } from '@angular
 import { Clipboard } from '@angular/cdk/clipboard';
 import { HttpHeaders } from '@angular/common/http';
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { ApiUnitObject, DescriptionLevel, qualifiersToVersionsWithQualifier, Unit, VersionWithQualifierDto } from 'vitamui-library';
+import {
+  ApiUnitObject,
+  DescriptionLevel,
+  qualifiersToVersionsWithQualifier,
+  Unit,
+  VersionWithQualifierDto,
+  ArchiveUnitModule,
+  PipesModule,
+} from 'vitamui-library';
 import { ArchiveService } from '../../archive.service';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { NgIf, NgFor, NgClass } from '@angular/common';
 
 @Component({
   selector: 'app-archive-unit-objects-details-tab',
@@ -43,6 +54,8 @@ import { ArchiveService } from '../../archive.service';
       transition('true => false', animate(300 + 'ms ease-out')),
     ]),
   ],
+  standalone: true,
+  imports: [NgIf, NgFor, ArchiveUnitModule, NgClass, MatLegacyTooltipModule, PipesModule, TranslateModule],
 })
 export class ArchiveUnitObjectsDetailsTabComponent implements OnChanges {
   @Input() archiveUnit: Unit;

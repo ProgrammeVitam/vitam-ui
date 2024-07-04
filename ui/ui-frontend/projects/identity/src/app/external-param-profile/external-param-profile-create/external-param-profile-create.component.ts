@@ -36,17 +36,51 @@
  */
 
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
 import { Observable, Subscription } from 'rxjs';
-import { AccessContract, ApplicationId, ConfirmDialogService, ExternalParamProfile } from 'vitamui-library';
+import {
+  AccessContract,
+  ApplicationId,
+  ConfirmDialogService,
+  ExternalParamProfile,
+  CommonProgressBarComponent,
+  StepperComponent,
+  SlideToggleComponent,
+  VitamUICommonInputComponent,
+} from 'vitamui-library';
 import { ExternalParamProfileService } from '../external-param-profile.service';
 import { ExternalParamProfileValidators } from '../external-param-profile.validators';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { MatLegacyOptionModule } from '@angular/material/legacy-core';
+import { MatLegacySelectModule } from '@angular/material/legacy-select';
+import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
+import { NgIf, NgFor, AsyncPipe, DecimalPipe } from '@angular/common';
+import { CdkStepperModule } from '@angular/cdk/stepper';
 
 @Component({
   selector: 'app-external-param-profile-create',
   templateUrl: './external-param-profile-create.component.html',
   styleUrls: ['./external-param-profile-create.component.scss'],
+  standalone: true,
+  imports: [
+    CommonProgressBarComponent,
+    ReactiveFormsModule,
+    StepperComponent,
+    CdkStepperModule,
+    SlideToggleComponent,
+    NgIf,
+    VitamUICommonInputComponent,
+    MatLegacyFormFieldModule,
+    MatLegacySelectModule,
+    NgFor,
+    MatLegacyOptionModule,
+    MatLegacyTooltipModule,
+    AsyncPipe,
+    DecimalPipe,
+    TranslateModule,
+  ],
 })
 export class ExternalParamProfileCreateComponent implements OnInit, OnDestroy {
   externalParamProfileForm: FormGroup;

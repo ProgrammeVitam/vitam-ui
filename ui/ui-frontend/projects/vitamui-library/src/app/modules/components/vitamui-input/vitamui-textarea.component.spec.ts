@@ -45,6 +45,8 @@ import { VitamUITextareaComponent } from './vitamui-textarea.component';
 
 @Component({
   template: ` <vitamui-common-textarea [(ngModel)]="value" #input="ngModel"></vitamui-common-textarea> `,
+  standalone: true,
+  imports: [FormsModule, MatProgressSpinnerModule],
 })
 class TesthostComponent {
   @ViewChild(VitamUITextareaComponent) vitamuiTextareaComponent: VitamUITextareaComponent;
@@ -59,8 +61,7 @@ let fixture: ComponentFixture<TesthostComponent>;
 describe('VitamUITextareaComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FormsModule, NoopAnimationsModule, MatProgressSpinnerModule],
-      declarations: [VitamUITextareaComponent, TesthostComponent],
+      imports: [FormsModule, NoopAnimationsModule, MatProgressSpinnerModule, VitamUITextareaComponent, TesthostComponent],
     }).compileComponents();
   });
 

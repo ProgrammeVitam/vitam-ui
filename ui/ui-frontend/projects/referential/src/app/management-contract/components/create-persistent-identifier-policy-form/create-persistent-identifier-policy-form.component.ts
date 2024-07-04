@@ -25,9 +25,17 @@
  * accept its terms.
  */
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
-import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { PersistentIdentifierPolicyTypeEnum } from 'vitamui-library';
+import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { PersistentIdentifierPolicyTypeEnum, VitamUICommonInputComponent } from 'vitamui-library';
 import { ManagementContractValidationErrors, ManagementContractValidators } from '../../validators/management-contract-validators';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { MatLegacyRadioModule } from '@angular/material/legacy-radio';
+import { MatLegacyCheckboxModule } from '@angular/material/legacy-checkbox';
+import { MatLegacyOptionModule } from '@angular/material/legacy-core';
+import { NgFor, NgIf, NgClass, NgStyle } from '@angular/common';
+import { MatLegacySelectModule } from '@angular/material/legacy-select';
+import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
 
 interface PersistentIdentifierPolicyTypeOption {
   label: string;
@@ -44,6 +52,23 @@ interface ObjectUsageOption {
   selector: 'app-create-persistent-identifier-policy-form',
   templateUrl: './create-persistent-identifier-policy-form.component.html',
   styleUrls: ['./create-persistent-identifier-policy-form.component.scss'],
+  standalone: true,
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    MatLegacyFormFieldModule,
+    MatLegacySelectModule,
+    NgFor,
+    MatLegacyOptionModule,
+    NgIf,
+    VitamUICommonInputComponent,
+    MatLegacyCheckboxModule,
+    NgClass,
+    NgStyle,
+    MatLegacyRadioModule,
+    MatLegacyTooltipModule,
+    TranslateModule,
+  ],
 })
 export class CreatePersistentIdentifierPolicyFormComponent implements OnChanges {
   @Input() form: FormGroup;

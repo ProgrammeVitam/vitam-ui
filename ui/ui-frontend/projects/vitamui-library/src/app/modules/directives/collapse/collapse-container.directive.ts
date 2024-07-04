@@ -40,6 +40,7 @@ import { CollapseDirective } from './collapse.directive';
 
 @Directive({
   selector: '[vitamuiCommonCollapseContainer]',
+  standalone: true,
 })
 export class CollapseContainerDirective implements AfterContentInit {
   @ContentChildren(CollapseDirective) collapseDirectives: QueryList<CollapseDirective>;

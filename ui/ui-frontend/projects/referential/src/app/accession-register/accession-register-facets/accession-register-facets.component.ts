@@ -1,12 +1,16 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Observable } from 'rxjs';
-import { FacetDetails } from 'vitamui-library';
+import { FacetDetails, VitamUICommonModule, LogbookOperationFacetComponent } from 'vitamui-library';
 import { AccessionRegistersService } from '../accession-register.service';
+import { TranslateModule } from '@ngx-translate/core';
+import { NgIf, AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-accession-register-facets',
   templateUrl: './accession-register-facets.component.html',
   styleUrls: ['./accession-register-facets.component.scss'],
+  standalone: true,
+  imports: [NgIf, VitamUICommonModule, LogbookOperationFacetComponent, AsyncPipe, TranslateModule],
 })
 export class AccessionRegisterFacetsComponent implements OnInit {
   @Output() showAdvancedSearchPanel = new EventEmitter<boolean>();

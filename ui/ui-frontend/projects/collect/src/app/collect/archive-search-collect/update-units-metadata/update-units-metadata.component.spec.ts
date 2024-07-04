@@ -82,8 +82,8 @@ describe('UpdateUaMetadataComponent', () => {
         }),
         MatSnackBarModule,
         HttpClientTestingModule,
+        UpdateUnitsaMetadataComponent,
       ],
-      declarations: [UpdateUnitsaMetadataComponent],
       providers: [
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: MatDialogRef, useValue: matDialogRefSpy },

@@ -82,8 +82,7 @@ describe('LeavesTreeComponent', () => {
     archiveSharedDataServiceStub.getSearchCriterias.and.returnValue(of(searchCriteria));
 
     await TestBed.configureTestingModule({
-      imports: [BrowserAnimationsModule, TranslateModule.forRoot()],
-      declarations: [LeavesTreeComponent],
+      imports: [BrowserAnimationsModule, TranslateModule.forRoot(), LeavesTreeComponent],
       providers: [
         { provide: ArchiveCollectService, useValue: archiveServiceStub },
         { provide: ArchiveSharedDataService, useValue: archiveSharedDataServiceStub },

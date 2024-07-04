@@ -36,7 +36,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
 import { Subscription } from 'rxjs';
 import {
@@ -52,6 +52,10 @@ import {
   StartupService,
   UserInfo,
   isRootLevel,
+  CommonProgressBarComponent,
+  StepperComponent,
+  SlideToggleComponent,
+  VitamUICommonInputComponent,
 } from 'vitamui-library';
 import { GroupSelection } from './../group-selection.interface';
 import { UserInfoService } from './../user-info.service';
@@ -60,6 +64,14 @@ import { distinctUntilChanged, map } from 'rxjs/operators';
 import { UserService } from '../user.service';
 import { UserValidators } from '../user.validators';
 import { UserCreateValidators } from './user-create.validators';
+import { TranslateModule } from '@ngx-translate/core';
+import { GroupListComponent } from '../group-attribution/group-list/group-list.component';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatLegacyOptionModule } from '@angular/material/legacy-core';
+import { MatLegacySelectModule } from '@angular/material/legacy-select';
+import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
+import { NgIf, NgFor } from '@angular/common';
+import { CdkStepperModule } from '@angular/cdk/stepper';
 
 const LAST_STEP_INDEX = 2;
 
@@ -70,6 +82,23 @@ const emailValidator: RegExp =
   selector: 'app-user-create',
   templateUrl: './user-create.component.html',
   styleUrls: ['./user-create.component.scss'],
+  standalone: true,
+  imports: [
+    CommonProgressBarComponent,
+    ReactiveFormsModule,
+    StepperComponent,
+    CdkStepperModule,
+    SlideToggleComponent,
+    NgIf,
+    VitamUICommonInputComponent,
+    MatLegacyFormFieldModule,
+    MatLegacySelectModule,
+    NgFor,
+    MatLegacyOptionModule,
+    MatButtonToggleModule,
+    GroupListComponent,
+    TranslateModule,
+  ],
 })
 export class UserCreateComponent implements OnInit, OnDestroy {
   public maxStreetLength: number;

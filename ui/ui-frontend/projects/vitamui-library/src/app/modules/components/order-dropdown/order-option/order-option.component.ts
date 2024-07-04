@@ -42,6 +42,7 @@ import { Direction } from '../../../vitamui-table';
   selector: 'vitamui-common-order-option',
   templateUrl: './order-option.component.html',
   styleUrls: ['./order-option.component.scss'],
+  standalone: true,
 })
 export class OrderOptionComponent {
   @Input() orderByKey: string;

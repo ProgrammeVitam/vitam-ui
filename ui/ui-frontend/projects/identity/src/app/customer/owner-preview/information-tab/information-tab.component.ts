@@ -35,16 +35,31 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { merge, of } from 'rxjs';
 import { catchError, debounceTime, filter, map, switchMap } from 'rxjs/operators';
 import { extend, isEmpty } from 'underscore';
-import { CountryOption, CountryService, Owner, StartupService, Tenant, diff } from 'vitamui-library';
+import {
+  CountryOption,
+  CountryService,
+  Owner,
+  StartupService,
+  Tenant,
+  diff,
+  EditableFieldComponent,
+  VitamUIFieldErrorComponent,
+  EditableInputComponent,
+  EditableSelectComponent,
+  EditableOptionComponent,
+} from 'vitamui-library';
 
 import { ALPHA_NUMERIC_REGEX, OWNER_CODE_MAX_LENGTH, OwnerFormValidators } from '../../owner-form/owner-form.validators';
 import { OwnerService } from '../../owner.service';
 import { TenantFormValidators } from '../../tenant-create/tenant-form.validators';
 import { TenantService } from '../../tenant.service';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatDividerModule } from '@angular/material/divider';
+import { NgFor, NgIf } from '@angular/common';
 
 const UPDATE_DEBOUNCE_TIME = 200;
 
@@ -52,6 +67,19 @@ const UPDATE_DEBOUNCE_TIME = 200;
   selector: 'app-information-tab',
   templateUrl: './information-tab.component.html',
   styleUrls: ['./information-tab.component.scss'],
+  standalone: true,
+  imports: [
+    ReactiveFormsModule,
+    EditableFieldComponent,
+    VitamUIFieldErrorComponent,
+    NgFor,
+    NgIf,
+    MatDividerModule,
+    TranslateModule,
+    EditableInputComponent,
+    EditableSelectComponent,
+    EditableOptionComponent,
+  ],
 })
 export class InformationTabComponent implements OnChanges, OnInit {
   @Input() owner: Owner;

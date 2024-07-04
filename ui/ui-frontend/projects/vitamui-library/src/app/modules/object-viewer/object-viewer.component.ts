@@ -37,11 +37,17 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { Logger } from '../logger/logger';
 import { DisplayObjectService, DisplayRule } from './models';
+import { PrimitiveComponent } from './components/primitive/primitive.component';
+import { ListComponent } from './components/list/list.component';
+import { GroupComponent } from './components/group/group.component';
+import { AsyncPipe, NgIf } from '@angular/common';
 
 @Component({
   selector: 'vitamui-common-object-viewer',
   templateUrl: './object-viewer.component.html',
   styleUrls: ['./object-viewer.component.scss'],
+  standalone: true,
+  imports: [NgIf, GroupComponent, ListComponent, PrimitiveComponent, AsyncPipe],
 })
 export class ObjectViewerComponent implements OnInit, OnChanges {
   @Input() data!: any;

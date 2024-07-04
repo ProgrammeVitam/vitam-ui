@@ -38,15 +38,39 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { ActivatedRoute } from '@angular/router';
 
-import { Customer, GlobalEventService, Owner, SidenavPage, Tenant } from 'vitamui-library';
+import {
+  Customer,
+  GlobalEventService,
+  Owner,
+  SidenavPage,
+  Tenant,
+  VitamuiTitleBreadcrumbComponent,
+  VitamuiCommonBannerComponent,
+} from 'vitamui-library';
 import { CustomerService } from '../core/customer.service';
 import { CustomerCreateComponent } from './customer-create/customer-create.component';
 import { CustomerListComponent } from './customer-list/customer-list.component';
+import { TranslateModule } from '@ngx-translate/core';
+import { OwnerPreviewComponent } from './owner-preview/owner-preview.component';
+import { CustomerPreviewComponent } from './customer-preview/customer-preview.component';
+import { NgIf } from '@angular/common';
+import { MatSidenavModule } from '@angular/material/sidenav';
 
 @Component({
   selector: 'app-customer',
   templateUrl: './customer.component.html',
   styleUrls: ['./customer.component.scss'],
+  standalone: true,
+  imports: [
+    MatSidenavModule,
+    NgIf,
+    CustomerPreviewComponent,
+    OwnerPreviewComponent,
+    VitamuiTitleBreadcrumbComponent,
+    VitamuiCommonBannerComponent,
+    CustomerListComponent,
+    TranslateModule,
+  ],
 })
 export class CustomerComponent extends SidenavPage<Customer | Owner | Tenant> implements OnInit {
   public customers: Customer[];

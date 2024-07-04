@@ -35,13 +35,15 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { Group, User } from 'vitamui-library';
+import { Group, User, CommonProgressBarComponent } from 'vitamui-library';
 
 import { Component, forwardRef, Inject, OnInit } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { MatLegacyDialogRef as MatDialogRef, MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA } from '@angular/material/legacy-dialog';
 import { GroupSelection } from '../group-selection.interface';
 import { UserService } from '../user.service';
+import { TranslateModule } from '@ngx-translate/core';
+import { GroupListComponent } from './group-list/group-list.component';
 
 export const GROUP_ATTRIBUTION_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -55,6 +57,8 @@ export const GROUP_ATTRIBUTION_VALUE_ACCESSOR: any = {
   templateUrl: './group-attribution.component.html',
   styleUrls: ['./group-attribution.component.scss'],
   providers: [GROUP_ATTRIBUTION_VALUE_ACCESSOR],
+  standalone: true,
+  imports: [CommonProgressBarComponent, GroupListComponent, TranslateModule],
 })
 export class GroupAttributionComponent implements OnInit {
   user: User;

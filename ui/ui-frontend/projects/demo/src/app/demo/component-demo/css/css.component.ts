@@ -40,5 +40,6 @@ import { Component } from '@angular/core';
   selector: 'demo-css',
   templateUrl: './css.component.html',
   styleUrls: ['./css.component.scss'],
+  standalone: true,
 })
 export class CssComponent {}

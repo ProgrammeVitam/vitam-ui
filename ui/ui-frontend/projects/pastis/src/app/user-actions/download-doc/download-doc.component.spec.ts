@@ -8,7 +8,7 @@ describe('DownloadDocComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [UserActionsDownloadDocComponent],
+      imports: [UserActionsDownloadDocComponent],
     }).compileComponents();
   });
 

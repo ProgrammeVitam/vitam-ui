@@ -40,5 +40,6 @@ import { Component } from '@angular/core';
   selector: 'demo-icon-demo',
   templateUrl: './icon-demo.component.html',
   styleUrls: ['./icon-demo.component.scss'],
+  standalone: true,
 })
 export class IconDemoComponent {}

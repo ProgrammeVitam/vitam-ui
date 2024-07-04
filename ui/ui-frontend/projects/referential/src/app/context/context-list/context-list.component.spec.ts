@@ -61,7 +61,6 @@ describe('ContextListComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ContextListComponent],
       imports: [
         VitamUICommonTestModule,
         MatProgressSpinnerModule,
@@ -70,6 +69,7 @@ describe('ContextListComponent', () => {
         InjectorModule,
         LoggerModule.forRoot(),
         RouterTestingModule,
+        ContextListComponent,
       ],
       providers: [
         { provide: BASE_URL, useValue: '' },
@@ -78,7 +78,6 @@ describe('ContextListComponent', () => {
         { provide: ContextService, useValue: contextServiceMock },
         { provide: AuthService, useValue: authServiceMock },
         { provide: VitamUISnackBar, useValue: snackBarSpy },
-
         { provide: WINDOW_LOCATION, useValue: window.location },
       ],
       schemas: [NO_ERRORS_SCHEMA],

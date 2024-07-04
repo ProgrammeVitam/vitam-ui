@@ -37,13 +37,18 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 
 import { Subscription } from 'rxjs';
-import { AuthService, Event, isLevelAllowed, Profile, StartupService } from 'vitamui-library';
+import { AuthService, Event, isLevelAllowed, Profile, StartupService, VitamuiSidenavHeaderComponent, HistoryModule } from 'vitamui-library';
 import { HierarchyService } from '../hierarchy.service';
+import { TranslateModule } from '@ngx-translate/core';
+import { InformationTabComponent } from './information-tab/information-tab.component';
+import { MatLegacyTabsModule } from '@angular/material/legacy-tabs';
 
 @Component({
   selector: 'app-hierarchy-detail',
   templateUrl: './hierarchy-detail.component.html',
   styleUrls: ['./hierarchy-detail.component.scss'],
+  standalone: true,
+  imports: [VitamuiSidenavHeaderComponent, MatLegacyTabsModule, InformationTabComponent, HistoryModule, TranslateModule],
 })
 export class HierarchyDetailComponent implements OnInit, OnDestroy {
   @Input()

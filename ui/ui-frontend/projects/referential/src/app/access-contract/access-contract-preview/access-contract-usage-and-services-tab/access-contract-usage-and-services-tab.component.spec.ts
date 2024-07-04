@@ -88,8 +88,7 @@ describe('AccessContractUsageAndServicesTabComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, VitamUICommonTestModule],
-      declarations: [AccessContractUsageAndServicesTabComponent],
+      imports: [ReactiveFormsModule, VitamUICommonTestModule, AccessContractUsageAndServicesTabComponent],
       providers: [
         FormBuilder,
         { provide: AccessContractService, useValue: accessContractServiceMock },

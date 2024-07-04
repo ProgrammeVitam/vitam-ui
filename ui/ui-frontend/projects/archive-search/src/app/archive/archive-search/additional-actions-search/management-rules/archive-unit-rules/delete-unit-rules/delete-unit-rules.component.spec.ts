@@ -197,8 +197,8 @@ describe('DeleteUnitRulesComponent', () => {
         HttpClientTestingModule,
         RouterTestingModule,
         MatSnackBarModule,
+        DeleteUnitRulesComponent,
       ],
-      declarations: [DeleteUnitRulesComponent],
       providers: [
         FormBuilder,
         { provide: BASE_URL, useValue: '/fake-api' },

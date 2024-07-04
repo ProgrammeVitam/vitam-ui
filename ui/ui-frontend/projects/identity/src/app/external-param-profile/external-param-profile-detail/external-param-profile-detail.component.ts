@@ -36,14 +36,27 @@
  */
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { Event, ExternalParamProfile } from 'vitamui-library';
+import { Event, ExternalParamProfile, VitamuiSidenavHeaderComponent, HistoryModule } from 'vitamui-library';
 import { ExternalParamProfileService } from '../external-param-profile.service';
 import { SharedService } from '../shared.service';
+import { TranslateModule } from '@ngx-translate/core';
+import { ThresholdsTabComponent } from './thresholds-tab/thresholds-tab.component';
+import { InformationTabComponent } from './information-tab/information-tab.component';
+import { MatLegacyTabsModule } from '@angular/material/legacy-tabs';
 
 @Component({
   selector: 'app-external-param-profile-detail',
   templateUrl: './external-param-profile-detail.component.html',
   styleUrls: ['./external-param-profile-detail.component.css'],
+  standalone: true,
+  imports: [
+    VitamuiSidenavHeaderComponent,
+    MatLegacyTabsModule,
+    InformationTabComponent,
+    ThresholdsTabComponent,
+    HistoryModule,
+    TranslateModule,
+  ],
 })
 export class ExternalParamProfileDetailComponent implements OnInit, OnDestroy {
   @Input() externalParamProfile: ExternalParamProfile;

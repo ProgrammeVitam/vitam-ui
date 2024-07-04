@@ -102,7 +102,6 @@ describe('RuleCreateComponent', () => {
     });
 
     await TestBed.configureTestingModule({
-      declarations: [RuleCreateComponent],
       imports: [
         ReactiveFormsModule,
         NoopAnimationsModule,
@@ -113,6 +112,7 @@ describe('RuleCreateComponent', () => {
         MatProgressSpinnerModule,
         MatDialogModule,
         VitamUICommonTestModule,
+        RuleCreateComponent,
       ],
       providers: [
         { provide: RuleService, useValue: ruleServiceSpy },

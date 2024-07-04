@@ -1,11 +1,16 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormGroup } from '@angular/forms';
-import { AttachmentType, Logo, ThemeService } from 'vitamui-library';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { AttachmentType, Logo, ThemeService, VitamuiDragDropFileComponent } from 'vitamui-library';
+import { TranslateModule } from '@ngx-translate/core';
+import { CustomerColorsInputComponent } from '../../../../customer-create/customer-colors-input/customer-colors-input.component';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-graphic-identity-form',
   templateUrl: './graphic-identity-form.component.html',
   styleUrls: ['./graphic-identity-form.component.scss'],
+  standalone: true,
+  imports: [NgIf, ReactiveFormsModule, CustomerColorsInputComponent, VitamuiDragDropFileComponent, TranslateModule],
 })
 export class GraphicIdentityFormComponent implements OnInit {
   @Input()

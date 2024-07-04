@@ -35,14 +35,16 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, Inject, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
 import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
-import { BytesPipe, Logger, StartupService } from 'vitamui-library';
+import { BytesPipe, Logger, StartupService, CommonProgressBarComponent, DragAndDropDirective } from 'vitamui-library';
 
 import { VitamUISnackBarComponent } from '../../shared/vitamui-snack-bar/vitamui-snack-bar.component';
 import { IngestType } from './ingest-type.enum';
 import { UploadService } from './upload.service';
+import { TranslateModule } from '@ngx-translate/core';
+import { NgSwitch, NgSwitchCase, NgClass, NgIf, NgStyle } from '@angular/common';
 
 const LAST_STEP_INDEX = 1;
 
@@ -50,6 +52,18 @@ const LAST_STEP_INDEX = 1;
   selector: 'app-upload',
   templateUrl: './upload.component.html',
   styleUrls: ['./upload.component.scss'],
+  standalone: true,
+  imports: [
+    CommonProgressBarComponent,
+    ReactiveFormsModule,
+    NgSwitch,
+    NgSwitchCase,
+    DragAndDropDirective,
+    NgClass,
+    NgIf,
+    NgStyle,
+    TranslateModule,
+  ],
 })
 export class UploadComponent implements OnInit {
   IngestType = IngestType;

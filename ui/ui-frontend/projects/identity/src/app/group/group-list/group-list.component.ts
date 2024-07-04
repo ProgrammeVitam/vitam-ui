@@ -48,15 +48,42 @@ import {
   InfiniteScrollTable,
   PageRequest,
   rotateAnimation,
+  InfiniteScrollDirective,
+  TableFilterComponent,
+  OrderByButtonComponent,
+  EllipsisDirective,
+  PipesModule,
+  TableFilterOptionComponent,
+  TableFilterDirective,
+  TableFilterSearchComponent,
 } from 'vitamui-library';
 import { GroupService } from '../group.service';
 import { buildCriteriaFromGroupFilters } from './group-criteria-builder.util';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatLegacyProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
+import { NgFor, NgClass, NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-group-list',
   templateUrl: './group-list.component.html',
   styleUrls: ['./group-list.component.scss'],
   animations: [collapseAnimation, rotateAnimation],
+  standalone: true,
+  imports: [
+    InfiniteScrollDirective,
+    TableFilterComponent,
+    OrderByButtonComponent,
+    NgFor,
+    NgClass,
+    EllipsisDirective,
+    NgIf,
+    MatLegacyProgressSpinnerModule,
+    PipesModule,
+    TranslateModule,
+    TableFilterOptionComponent,
+    TableFilterDirective,
+    TableFilterSearchComponent,
+  ],
 })
 export class GroupListComponent extends InfiniteScrollTable<Group> implements OnDestroy, OnInit {
   @Output() groupClick = new EventEmitter<Group>();

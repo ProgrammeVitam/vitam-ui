@@ -9,7 +9,7 @@ describe('NodeComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [NodeComponent],
+      imports: [NodeComponent],
       providers: [],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();

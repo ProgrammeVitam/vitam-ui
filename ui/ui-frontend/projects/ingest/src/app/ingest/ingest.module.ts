@@ -43,13 +43,7 @@ import { MatLegacyDialogModule as MatDialogModule } from '@angular/material/lega
 import { MatLegacyMenuModule as MatMenuModule } from '@angular/material/legacy-menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatLegacyTooltipModule as MatTooltipModule } from '@angular/material/legacy-tooltip';
-import { SharedModule } from 'projects/identity/src/app/shared/shared.module';
 import { VitamUICommonModule } from 'vitamui-library';
-
-import { UploadModule } from '../core/common/upload.module';
-import { UploadTrackingModule } from '../shared/upload-tracking/upload-tracking.module';
-import { IngestListModule } from './ingest-list/ingest-list.module';
-import { IngestPreviewModule } from './ingest-preview/ingest-preview.module';
 import { IngestRoutingModule } from './ingest-routing.module';
 import { IngestComponent } from './ingest.component';
 import { TranslateModule } from '@ngx-translate/core';
@@ -62,17 +56,12 @@ import { TranslateModule } from '@ngx-translate/core';
     MatMenuModule,
     MatSidenavModule,
     IngestRoutingModule,
-    UploadModule,
-    UploadTrackingModule,
-    SharedModule,
-    IngestListModule,
-    IngestPreviewModule,
     ReactiveFormsModule,
     MatDatepickerModule,
     MatNativeDateModule,
     MatTooltipModule,
     TranslateModule,
+    IngestComponent,
   ],
-  declarations: [IngestComponent],
 })
 export class IngestModule {}

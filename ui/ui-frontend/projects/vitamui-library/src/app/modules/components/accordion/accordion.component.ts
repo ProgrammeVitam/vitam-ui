@@ -35,11 +35,14 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, Input } from '@angular/core';
+import { NgClass, NgIf } from '@angular/common';
 
 @Component({
   selector: 'vitamui-common-accordion',
   templateUrl: './accordion.component.html',
   styleUrls: ['./accordion.component.scss'],
+  standalone: true,
+  imports: [NgClass, NgIf],
 })
 export class AccordionComponent {
   @Input()

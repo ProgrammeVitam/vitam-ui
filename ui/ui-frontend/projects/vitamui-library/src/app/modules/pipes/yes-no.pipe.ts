@@ -42,6 +42,7 @@ import { TranslateService } from '@ngx-translate/core';
 
 @Pipe({
   name: 'yesNo',
+  standalone: true,
 })
 export class YesNoPipe implements PipeTransform {
   constructor(private translateService: TranslateService) {}

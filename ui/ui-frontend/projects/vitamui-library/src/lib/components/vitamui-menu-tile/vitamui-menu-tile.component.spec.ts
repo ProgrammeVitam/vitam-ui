@@ -43,6 +43,7 @@ import { Application, ApplicationId, BASE_URL, LoggerModule, StartupService, SUB
 @Directive({
   // eslint-disable-next-line @angular-eslint/directive-selector
   selector: '[libVitamuiCommonTooltip]',
+  standalone: true,
 })
 class TooltipStubDirective {
   @Input() libVitamuiCommonTooltip: any;
@@ -58,8 +59,7 @@ describe('UpdatedVitamUIMenuTileComponent', () => {
       getConfigStringValue: () => 'https://dev.vitamui.com/identity',
     };
     await TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, LoggerModule.forRoot()],
-      declarations: [UpdatedVitamUIMenuTileComponent, TooltipStubDirective],
+      imports: [HttpClientTestingModule, LoggerModule.forRoot(), UpdatedVitamUIMenuTileComponent, TooltipStubDirective],
       providers: [
         { provide: StartupService, useValue: startupServiceStub },
         { provide: BASE_URL, useValue: '/fake-api' },

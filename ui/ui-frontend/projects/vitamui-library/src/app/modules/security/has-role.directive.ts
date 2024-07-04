@@ -40,6 +40,7 @@ import { SecurityService } from './security.service';
 
 @Directive({
   selector: '[vitamuiCommonHasRole]',
+  standalone: true,
 })
 export class HasRoleDirective implements OnDestroy {
   roleSubscription: Subscription;

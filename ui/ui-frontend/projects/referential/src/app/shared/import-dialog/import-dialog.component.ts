@@ -3,14 +3,19 @@ import { MatLegacyDialogRef as MatDialogRef, MAT_LEGACY_DIALOG_DATA as MAT_DIALO
 import { FileTypes } from 'projects/vitamui-library/src/public-api';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { VitamUISnackBarService } from 'vitamui-library';
+import { VitamUISnackBarService, DragAndDropDirective } from 'vitamui-library';
 import { ImportDialogParam, ImportError } from './import-dialog-param.interface';
 import { ReferentialImportService } from './referential-import.service';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatLegacyProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
+import { NgIf, NgClass, NgFor } from '@angular/common';
 
 @Component({
   selector: 'app-import-dialog',
   templateUrl: './import-dialog.component.html',
   styleUrls: ['./import-dialog.component.scss'],
+  standalone: true,
+  imports: [NgIf, DragAndDropDirective, NgClass, NgFor, MatLegacyProgressSpinnerModule, TranslateModule],
 })
 export class ImportDialogComponent implements OnDestroy {
   public hasDropZoneOver = false;

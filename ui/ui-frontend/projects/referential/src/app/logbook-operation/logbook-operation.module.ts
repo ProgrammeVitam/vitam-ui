@@ -49,8 +49,8 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
 import { MatLegacyTabsModule as MatTabsModule } from '@angular/material/legacy-tabs';
 import { MatLegacyTooltipModule as MatTooltipModule } from '@angular/material/legacy-tooltip';
-import { TableFilterModule, VitamUICommonModule } from 'vitamui-library';
-import { PipesModule } from '../shared/pipes/pipes.module';
+import { TableFilterComponent, VitamUICommonModule } from 'vitamui-library';
+
 import { LogbookOperationDetailComponent } from './logbook-operation-detail/logbook-operation-detail.component';
 import { LogbookOperationPopupComponent } from './logbook-operation-detail/logbook-operation-popup.component';
 import { LogbookOperationListComponent } from './logbook-operation-list/logbook-operation-list.component';
@@ -60,7 +60,6 @@ import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { FR_DATE_FORMAT } from '../helpers/dates.constants';
 
 @NgModule({
-  declarations: [LogbookOperationComponent, LogbookOperationListComponent, LogbookOperationDetailComponent, LogbookOperationPopupComponent],
   imports: [
     CommonModule,
     MatSidenavModule,
@@ -75,11 +74,14 @@ import { FR_DATE_FORMAT } from '../helpers/dates.constants';
     LogbookOperationRoutingModule,
     MatMomentDateModule,
     MatSelectModule,
-    TableFilterModule,
+    TableFilterComponent,
     MatTooltipModule,
     MatFormFieldModule,
     MatInputModule,
-    PipesModule,
+    LogbookOperationComponent,
+    LogbookOperationListComponent,
+    LogbookOperationDetailComponent,
+    LogbookOperationPopupComponent,
   ],
   providers: [{ provide: MAT_DATE_FORMATS, useValue: FR_DATE_FORMAT }],
 })

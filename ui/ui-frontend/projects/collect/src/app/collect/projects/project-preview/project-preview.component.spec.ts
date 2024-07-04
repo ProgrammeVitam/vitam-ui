@@ -92,8 +92,15 @@ describe('ProjectPreviewComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      declarations: [ProjectPreviewComponent],
-      imports: [MatDialogModule, VitamUICommonTestModule, MatSnackBarModule, BrowserModule, BrowserAnimationsModule, MatButtonToggleModule],
+      imports: [
+        MatDialogModule,
+        VitamUICommonTestModule,
+        MatSnackBarModule,
+        BrowserModule,
+        BrowserAnimationsModule,
+        MatButtonToggleModule,
+        ProjectPreviewComponent,
+      ],
       providers: [
         FormBuilder,
         { provide: ProjectsService, useValue: projectServiceMock },

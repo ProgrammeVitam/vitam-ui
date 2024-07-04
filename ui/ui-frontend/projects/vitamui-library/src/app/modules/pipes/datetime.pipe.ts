@@ -29,6 +29,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
   name: 'dateTime',
+  standalone: true,
 })
 export class DateTimePipe implements PipeTransform {
   constructor(private datePipe: DatePipe) {}

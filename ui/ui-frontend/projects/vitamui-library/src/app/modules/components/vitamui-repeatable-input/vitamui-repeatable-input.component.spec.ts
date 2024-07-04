@@ -42,7 +42,7 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Observable, of } from 'rxjs';
 
 import { input } from '../../../../../testing/src/helpers';
-import { CommonTooltipModule } from '../common-tooltip/common-tooltip.module';
+import { CommonTooltipComponent } from '../common-tooltip/common-tooltip.component';
 import { VitamuiRepeatableInputComponent } from './vitamui-repeatable-input.component';
 
 let component: VitamuiRepeatableInputComponent;
@@ -69,8 +69,14 @@ function getInputs() {
 describe('VitamuiRepeatableInputComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FormsModule, NoopAnimationsModule, MatProgressSpinnerModule, TranslateModule.forRoot(), CommonTooltipModule],
-      declarations: [VitamuiRepeatableInputComponent],
+      imports: [
+        FormsModule,
+        NoopAnimationsModule,
+        MatProgressSpinnerModule,
+        TranslateModule.forRoot(),
+        CommonTooltipComponent,
+        VitamuiRepeatableInputComponent,
+      ],
       providers: [{ provide: TranslateService, useClass: TranslateServiceStub }],
     }).compileComponents();
   });

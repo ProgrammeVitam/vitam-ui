@@ -105,8 +105,7 @@ describe('SecurisationCheckTabComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, TranslateModule.forRoot()],
-      declarations: [SecurisationCheckTabComponent],
+      imports: [HttpClientTestingModule, TranslateModule.forRoot(), SecurisationCheckTabComponent],
       providers: [
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: AccessContractService, useValue: accessContractServiceMock },

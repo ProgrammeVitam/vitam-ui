@@ -8,6 +8,7 @@ import { PastisDialogConfirmComponent } from '../../shared/pastis-dialog/pastis-
   selector: 'duplicate-metadata',
   templateUrl: './duplicate-metadata.component.html',
   styleUrls: ['./duplicate-metadata.component.scss'],
+  standalone: true,
 })
 export class DuplicateMetadataComponent implements OnInit {
   dataToSend: string;

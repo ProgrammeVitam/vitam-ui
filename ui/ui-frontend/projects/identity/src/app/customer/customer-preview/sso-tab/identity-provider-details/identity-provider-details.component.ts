@@ -35,14 +35,33 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, Input } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { merge } from 'rxjs';
 import { debounceTime, filter, map, switchMap } from 'rxjs/operators';
 
 import { extend, isEmpty, isEqual, isObject, mapObject, omit } from 'underscore';
-import { AuthnRequestBindingEnum, IdentityProvider, newFile, VitamUISnackBarService } from 'vitamui-library';
+import {
+  AuthnRequestBindingEnum,
+  IdentityProvider,
+  newFile,
+  VitamUISnackBarService,
+  SlideToggleComponent,
+  EditableFieldComponent,
+  VitamUIFieldErrorComponent,
+  EditableToggleGroupComponent,
+  EditableButtonToggleComponent,
+  EditableInputComponent,
+  EditableFileComponent,
+  EditableSelectComponent,
+  EditableOptionComponent,
+} from 'vitamui-library';
 import { IdentityProviderService } from '../identity-provider.service';
 import JWS_ALGORITHMS, { ProtocoleType } from '../sso-tab-const';
+import { TranslateModule } from '@ngx-translate/core';
+import { EditableCustomParamsComponent } from '../../../../shared/editable-field/editable-custom-params/editable-custom-params.component';
+import { EditableKeystoreComponent } from '../../../../shared/editable-field/editable-keystore/editable-keystore.component';
+import { EditablePatternsComponent } from '../../../../shared/editable-field/editable-patterns/editable-patterns.component';
+import { NgIf, NgFor } from '@angular/common';
 
 const UPDATE_DEBOUNCE_TIME = 200;
 
@@ -50,6 +69,25 @@ const UPDATE_DEBOUNCE_TIME = 200;
   selector: 'app-identity-provider-details',
   templateUrl: './identity-provider-details.component.html',
   styleUrls: ['./identity-provider-details.component.scss'],
+  standalone: true,
+  imports: [
+    ReactiveFormsModule,
+    SlideToggleComponent,
+    NgIf,
+    EditableFieldComponent,
+    VitamUIFieldErrorComponent,
+    EditablePatternsComponent,
+    EditableKeystoreComponent,
+    EditableCustomParamsComponent,
+    NgFor,
+    TranslateModule,
+    EditableToggleGroupComponent,
+    EditableButtonToggleComponent,
+    EditableInputComponent,
+    EditableFileComponent,
+    EditableSelectComponent,
+    EditableOptionComponent,
+  ],
 })
 export class IdentityProviderDetailsComponent {
   @Input()

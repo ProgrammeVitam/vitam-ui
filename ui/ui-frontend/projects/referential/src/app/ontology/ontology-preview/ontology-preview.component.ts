@@ -40,16 +40,20 @@ import {
   MatLegacyTab as MatTab,
   MatLegacyTabGroup as MatTabGroup,
   MatLegacyTabHeader as MatTabHeader,
+  MatLegacyTabsModule,
 } from '@angular/material/legacy-tabs';
 import { Observable } from 'rxjs';
-import { ConfirmActionComponent, Ontology } from 'vitamui-library';
+import { ConfirmActionComponent, Ontology, VitamuiSidenavHeaderComponent, HistoryModule } from 'vitamui-library';
 import { OntologyService } from '../ontology.service';
 import { OntologyInformationTabComponent } from './ontology-information-tab/ontology-information-tab.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-ontology-preview',
   templateUrl: './ontology-preview.component.html',
   styleUrls: ['./ontology-preview.component.scss'],
+  standalone: true,
+  imports: [VitamuiSidenavHeaderComponent, MatLegacyTabsModule, OntologyInformationTabComponent, HistoryModule, TranslateModule],
 })
 export class OntologyPreviewComponent implements AfterViewInit {
   @Output()

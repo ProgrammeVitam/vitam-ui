@@ -37,14 +37,28 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { ActivatedRoute } from '@angular/router';
-import { GlobalEventService, Profile, SidenavPage } from 'vitamui-library';
+import { GlobalEventService, Profile, SidenavPage, VitamuiTitleBreadcrumbComponent, VitamuiCommonBannerComponent } from 'vitamui-library';
 import { HierarchyCreateComponent } from './hierarchy-create/hierarchy-create.component';
 import { HierarchyListComponent } from './hierarchy-list/hierarchy-list.component';
+import { TranslateModule } from '@ngx-translate/core';
+import { HierarchyDetailComponent } from './hierarchy-detail/hierarchy-detail.component';
+import { NgIf } from '@angular/common';
+import { MatSidenavModule } from '@angular/material/sidenav';
 
 @Component({
   selector: 'app-hierarchy',
   templateUrl: './hierarchy.component.html',
   styleUrls: ['./hierarchy.component.scss'],
+  standalone: true,
+  imports: [
+    MatSidenavModule,
+    NgIf,
+    HierarchyDetailComponent,
+    VitamuiTitleBreadcrumbComponent,
+    VitamuiCommonBannerComponent,
+    HierarchyListComponent,
+    TranslateModule,
+  ],
 })
 export class HierarchyComponent extends SidenavPage<Profile> implements OnInit {
   public profiles: Profile[];

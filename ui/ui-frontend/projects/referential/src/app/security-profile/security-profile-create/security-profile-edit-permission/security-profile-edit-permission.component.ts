@@ -36,8 +36,11 @@
  */
 
 import { Component, forwardRef, Input } from '@angular/core';
-import { ControlValueAccessor, FormBuilder, FormGroup, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { ControlValueAccessor, FormBuilder, FormGroup, NG_VALUE_ACCESSOR, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PermissionStructure, PermissionUtils } from '../permission.utils';
+import { TranslateModule } from '@ngx-translate/core';
+import { CommonTooltipComponent, SlideToggleComponent } from 'vitamui-library';
+import { NgIf, NgFor } from '@angular/common';
 
 export const PERMISSION_SELECT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -50,6 +53,8 @@ export const PERMISSION_SELECT_VALUE_ACCESSOR: any = {
   templateUrl: './security-profile-edit-permission.component.html',
   styleUrls: ['./security-profile-edit-permission.component.scss'],
   providers: [PERMISSION_SELECT_VALUE_ACCESSOR],
+  standalone: true,
+  imports: [NgIf, FormsModule, ReactiveFormsModule, NgFor, CommonTooltipComponent, SlideToggleComponent, TranslateModule],
 })
 export class SecurityProfileEditPermissionComponent implements ControlValueAccessor {
   permissions: PermissionStructure;

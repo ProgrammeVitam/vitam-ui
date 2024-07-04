@@ -34,20 +34,23 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { ConfirmDialogService, Owner, Tenant } from 'vitamui-library';
+import { ConfirmDialogService, Owner, Tenant, CommonProgressBarComponent, VitamUICommonInputComponent } from 'vitamui-library';
 
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
 
 import { Subscription } from 'rxjs';
 import { TenantService } from '../tenant.service';
 import { TenantFormValidators } from './tenant-form.validators';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-tenant-create',
   templateUrl: './tenant-create.component.html',
   styleUrls: ['./tenant-create.component.scss'],
+  standalone: true,
+  imports: [CommonProgressBarComponent, ReactiveFormsModule, VitamUICommonInputComponent, TranslateModule],
 })
 export class TenantCreateComponent implements OnInit, OnDestroy {
   form: FormGroup;

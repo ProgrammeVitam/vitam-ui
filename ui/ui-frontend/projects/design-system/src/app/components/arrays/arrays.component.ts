@@ -1,13 +1,39 @@
 import { Component } from '@angular/core';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
-import { collapseAnimation, Direction, Group, rotateAnimation } from 'vitamui-library';
+import {
+  collapseAnimation,
+  Direction,
+  Group,
+  rotateAnimation,
+  EllipsisDirective,
+  TableFilterComponent,
+  OrderByButtonComponent,
+  CollapseDirective,
+  TableFilterDirective,
+  TableFilterOptionComponent,
+} from 'vitamui-library';
 import { SampleDialogComponent } from '../miscellaneous/sample-dialog/sample-dialog.component';
+import { TranslateModule } from '@ngx-translate/core';
+import { NgFor, NgClass, NgIf } from '@angular/common';
 
 @Component({
   selector: 'design-system-arrays',
   templateUrl: './arrays.component.html',
   styleUrls: ['./arrays.component.scss'],
   animations: [collapseAnimation, rotateAnimation],
+  standalone: true,
+  imports: [
+    NgFor,
+    NgClass,
+    EllipsisDirective,
+    TableFilterComponent,
+    OrderByButtonComponent,
+    CollapseDirective,
+    NgIf,
+    TranslateModule,
+    TableFilterDirective,
+    TableFilterOptionComponent,
+  ],
 })
 export class ArraysComponent {
   public orderBy = 'name';

@@ -44,11 +44,26 @@ import { ApplicationId } from '../application-id.enum';
 import { Account } from '../models/account/account.interface';
 import { BreadCrumbData } from '../models/breadcrumb/breadcrumb.interface';
 import { AccountService } from './account.service';
+import { TranslateModule } from '@ngx-translate/core';
+import { AccountInformationTabComponent } from './account-information-tab/account-information-tab.component';
+import { MatLegacyTabsModule } from '@angular/material/legacy-tabs';
+import { NgIf } from '@angular/common';
+import { UserPhotoComponent } from '../components/header/user-photo/user-photo.component';
+import { VitamuiTitleBreadcrumbComponent } from '../components/vitamui-content-breadcrumb/vitamui-title-breadcrumb/vitamui-title-breadcrumb.component';
 
 @Component({
   selector: 'vitamui-common-account',
   templateUrl: './account.component.html',
   styleUrls: ['./account.component.scss'],
+  standalone: true,
+  imports: [
+    VitamuiTitleBreadcrumbComponent,
+    UserPhotoComponent,
+    NgIf,
+    MatLegacyTabsModule,
+    AccountInformationTabComponent,
+    TranslateModule,
+  ],
 })
 export class AccountComponent extends AppRootComponent implements OnInit, OnDestroy {
   public displayAppTab = false;

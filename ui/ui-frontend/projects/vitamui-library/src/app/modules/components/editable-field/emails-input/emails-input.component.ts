@@ -37,7 +37,13 @@
 
 import { ENTER } from '@angular/cdk/keycodes';
 import { Component, forwardRef, Input } from '@angular/core';
-import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR, Validators } from '@angular/forms';
+import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { MatLegacyProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
+import { NgIf, NgFor } from '@angular/common';
+import { MatLegacyInputModule } from '@angular/material/legacy-input';
+import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
 
 export const EMAILS_INPUT_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -50,6 +56,18 @@ export const EMAILS_INPUT_ACCESSOR: any = {
   templateUrl: './emails-input.component.html',
   styleUrls: ['./emails-input.component.scss'],
   providers: [EMAILS_INPUT_ACCESSOR],
+  standalone: true,
+  imports: [
+    MatLegacyFormFieldModule,
+    MatLegacyInputModule,
+    FormsModule,
+    ReactiveFormsModule,
+    NgIf,
+    MatLegacyProgressSpinnerModule,
+    MatLegacyButtonModule,
+    NgFor,
+    TranslateModule,
+  ],
 })
 export class EmailsInputComponent implements ControlValueAccessor {
   @Input() placeholder: string;

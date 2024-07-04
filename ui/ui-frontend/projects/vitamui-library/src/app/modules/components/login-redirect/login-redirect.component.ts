@@ -47,6 +47,7 @@ const LOGIN_REDIRECT_DELAY_MS = 5000;
   selector: 'vitamui-common-login-redirect',
   templateUrl: './login-redirect.component.html',
   styleUrls: ['./login-redirect.component.scss'],
+  standalone: true,
 })
 export class LoginRedirectComponent implements OnInit {
   redirectUrl: string;

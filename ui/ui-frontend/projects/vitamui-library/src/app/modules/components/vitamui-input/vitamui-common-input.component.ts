@@ -36,7 +36,9 @@
  */
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { AfterViewInit, Component, ElementRef, forwardRef, HostBinding, HostListener, Input, OnInit, ViewChild } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { MatLegacyProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
+import { NgIf } from '@angular/common';
 
 export const VITAMUI_COMMON_INPUT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -49,6 +51,8 @@ export const VITAMUI_COMMON_INPUT_VALUE_ACCESSOR: any = {
   templateUrl: './vitamui-common-input.component.html',
   styleUrls: ['./vitamui-common-input.component.scss'],
   providers: [VITAMUI_COMMON_INPUT_VALUE_ACCESSOR],
+  standalone: true,
+  imports: [NgIf, FormsModule, MatLegacyProgressSpinnerModule],
 })
 export class VitamUICommonInputComponent implements ControlValueAccessor, OnInit, AfterViewInit {
   @Input() type = 'text';

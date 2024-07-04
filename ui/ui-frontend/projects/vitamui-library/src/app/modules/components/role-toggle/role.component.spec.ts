@@ -46,8 +46,7 @@ describe('RoleComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FormsModule],
-      declarations: [RoleComponent, VitamUISlideToggleStubComponent],
+      imports: [FormsModule, RoleComponent, VitamUISlideToggleStubComponent],
     }).compileComponents();
   });
 

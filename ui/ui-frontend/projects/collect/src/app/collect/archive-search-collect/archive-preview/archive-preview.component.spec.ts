@@ -60,19 +60,27 @@ import {
 import { environment } from '../../../../environments/environment';
 import { ArchiveCollectService } from '../archive-collect.service';
 import { ArchivePreviewComponent } from './archive-preview.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { MatLegacySnackBarModule } from '@angular/material/legacy-snack-bar';
 
 describe('ArchivePreviewComponent', () => {
   let component: ArchivePreviewComponent;
   let fixture: ComponentFixture<ArchivePreviewComponent>;
 
-  @Pipe({ name: 'truncate' })
+  @Pipe({
+    name: 'truncate',
+    standalone: true,
+  })
   class MockTruncatePipe implements PipeTransform {
     transform(value: number): number {
       return value;
     }
   }
 
-  @Pipe({ name: 'unitI18n' })
+  @Pipe({
+    name: 'unitI18n',
+    standalone: true,
+  })
   class MockUnitI18nPipe implements PipeTransform {
     transform(value: number): number {
       return value;
@@ -99,8 +107,12 @@ describe('ArchivePreviewComponent', () => {
         MatIconModule,
         BrowserAnimationsModule,
         TranslateModule.forRoot(),
+        HttpClientTestingModule,
+        MatLegacySnackBarModule,
+        ArchivePreviewComponent,
+        MockTruncatePipe,
+        MockUnitI18nPipe,
       ],
-      declarations: [ArchivePreviewComponent, MockTruncatePipe, MockUnitI18nPipe],
       providers: [
         { provide: ArchiveCollectService, useValue: archiveServiceMock },
         { provide: BASE_URL, useValue: '/fake-api' },

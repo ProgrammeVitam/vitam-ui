@@ -90,8 +90,7 @@ describe('FileFormatInformationTabComponent', () => {
       getTenantIdentifier: () => '',
     };
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot(), ReactiveFormsModule, VitamUICommonTestModule],
-      declarations: [FileFormatInformationTabComponent],
+      imports: [TranslateModule.forRoot(), ReactiveFormsModule, VitamUICommonTestModule, FileFormatInformationTabComponent],
       providers: [
         { provide: StartupService, useValue: startupServiceStub },
         {

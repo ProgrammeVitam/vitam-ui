@@ -35,8 +35,13 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, ElementRef, forwardRef } from '@angular/core';
-import { NG_VALUE_ACCESSOR } from '@angular/forms';
+import { FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { EditableFieldComponent } from '../editable-field.component';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatLegacyProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
+import { EmailsInputComponent } from '../emails-input/emails-input.component';
+import { CdkConnectedOverlay, CdkOverlayOrigin } from '@angular/cdk/overlay';
+import { NgFor, NgIf, NgStyle } from '@angular/common';
 
 export const MULTIPLE_EMAIL_INPUT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -48,6 +53,19 @@ export const MULTIPLE_EMAIL_INPUT_VALUE_ACCESSOR: any = {
   selector: 'vitamui-common-multiple-email-input',
   templateUrl: './multiple-email-input.component.html',
   providers: [MULTIPLE_EMAIL_INPUT_VALUE_ACCESSOR],
+  standalone: true,
+  imports: [
+    NgIf,
+    CdkOverlayOrigin,
+    NgFor,
+    NgStyle,
+    EmailsInputComponent,
+    FormsModule,
+    ReactiveFormsModule,
+    MatLegacyProgressSpinnerModule,
+    CdkConnectedOverlay,
+    TranslateModule,
+  ],
 })
 export class MultipleEmailInputComponent extends EditableFieldComponent {
   private emailInputClicked = false;

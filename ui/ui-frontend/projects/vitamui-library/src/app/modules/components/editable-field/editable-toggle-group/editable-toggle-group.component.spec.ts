@@ -53,6 +53,8 @@ import { EditableToggleGroupComponent } from './editable-toggle-group.component'
       <vitamui-common-editable-button-toggle value="value3" content="Content 3"></vitamui-common-editable-button-toggle>
     </vitamui-common-editable-toggle-group>
   `,
+  standalone: true,
+  imports: [OverlayModule, FormsModule, ReactiveFormsModule, MatProgressSpinnerModule, MatButtonToggleModule],
 })
 class TesthostComponent {
   value: string;
@@ -69,8 +71,16 @@ describe('EditableSelectComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [OverlayModule, FormsModule, ReactiveFormsModule, MatProgressSpinnerModule, MatButtonToggleModule],
-      declarations: [TesthostComponent, EditableToggleGroupComponent, EditableButtonToggleComponent],
+      imports: [
+        OverlayModule,
+        FormsModule,
+        ReactiveFormsModule,
+        MatProgressSpinnerModule,
+        MatButtonToggleModule,
+        TesthostComponent,
+        EditableToggleGroupComponent,
+        EditableButtonToggleComponent,
+      ],
     }).compileComponents();
 
     inject([OverlayContainer], (oc: OverlayContainer) => {

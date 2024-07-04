@@ -50,8 +50,7 @@ describe('ProbativeValueListComponent', () => {
       search: () => of(null),
     };
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
-      declarations: [ProbativeValueListComponent],
+      imports: [TranslateModule.forRoot(), ProbativeValueListComponent],
       providers: [{ provide: ProbativeValueService, useValue: probativeValueServiceMock }],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();

@@ -41,9 +41,12 @@ import {
 } from '@angular/material/legacy-snack-bar';
 import { SubrogationApiService } from '../../api/subrogation-api.service';
 import { VitamUISnackBarService } from '../../components/vitamui-snack-bar/vitamui-snack-bar.service';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   templateUrl: './subrogation-snack-bar.component.html',
+  standalone: true,
+  imports: [TranslateModule],
 })
 export class SubrogationSnackBarComponent {
   constructor(

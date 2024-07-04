@@ -56,6 +56,8 @@ import { IdentityProviderDetailsComponent } from './identity-provider-details.co
       multi: true,
     },
   ],
+  standalone: true,
+  imports: [ReactiveFormsModule, VitamUICommonTestModule],
 })
 class EditableKeystoreStubComponent implements ControlValueAccessor {
   @Input() validator: Validator;
@@ -77,6 +79,8 @@ class EditableKeystoreStubComponent implements ControlValueAccessor {
       multi: true,
     },
   ],
+  standalone: true,
+  imports: [ReactiveFormsModule, VitamUICommonTestModule],
 })
 class EditablePatternStubComponent implements ControlValueAccessor {
   @Input() validator: Validator;
@@ -91,6 +95,8 @@ class EditablePatternStubComponent implements ControlValueAccessor {
   template: `
     <app-identity-provider-details [identityProvider]="provider" [domains]="domains" [readOnly]="readOnly"> </app-identity-provider-details>
   `,
+  standalone: true,
+  imports: [ReactiveFormsModule, VitamUICommonTestModule],
 })
 class TestHostComponent {
   @ViewChild(IdentityProviderDetailsComponent, { static: false }) component: IdentityProviderDetailsComponent;
@@ -133,8 +139,15 @@ xdescribe('IdentityProviderDetailsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, NoopAnimationsModule, VitamUICommonTestModule],
-      declarations: [IdentityProviderDetailsComponent, TestHostComponent, EditableKeystoreStubComponent, EditablePatternStubComponent],
+      imports: [
+        ReactiveFormsModule,
+        NoopAnimationsModule,
+        VitamUICommonTestModule,
+        IdentityProviderDetailsComponent,
+        TestHostComponent,
+        EditableKeystoreStubComponent,
+        EditablePatternStubComponent,
+      ],
       providers: [{ provide: IdentityProviderService, useValue: { patch: () => of(null), updateMetadataFile: () => of(null) } }],
     }).compileComponents();
   });

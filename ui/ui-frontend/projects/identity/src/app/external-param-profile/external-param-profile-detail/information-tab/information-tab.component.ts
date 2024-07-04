@@ -35,18 +35,48 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Observable, Subscription, of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
 import { extend, isEmpty } from 'underscore';
-import { AccessContract, ApplicationId, ExternalParamProfile, diff } from 'vitamui-library';
+import {
+  AccessContract,
+  ApplicationId,
+  ExternalParamProfile,
+  diff,
+  SlideToggleComponent,
+  EditableFieldComponent,
+  VitamUIFieldErrorComponent,
+  EditableInputComponent,
+} from 'vitamui-library';
 import { ExternalParamProfileService } from '../../external-param-profile.service';
 import { ExternalParamProfileValidators } from '../../external-param-profile.validators';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatLegacyOptionModule } from '@angular/material/legacy-core';
+import { MatLegacySelectModule } from '@angular/material/legacy-select';
+import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
+import { NgIf, NgStyle, NgFor, AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-information-tab',
   templateUrl: './information-tab.component.html',
   styleUrls: ['./information-tab.component.scss'],
+  standalone: true,
+  imports: [
+    ReactiveFormsModule,
+    SlideToggleComponent,
+    NgIf,
+    NgStyle,
+    EditableFieldComponent,
+    VitamUIFieldErrorComponent,
+    MatLegacyFormFieldModule,
+    MatLegacySelectModule,
+    NgFor,
+    MatLegacyOptionModule,
+    AsyncPipe,
+    TranslateModule,
+    EditableInputComponent,
+  ],
 })
 export class InformationTabComponent implements OnDestroy, OnInit, OnChanges {
   constructor(

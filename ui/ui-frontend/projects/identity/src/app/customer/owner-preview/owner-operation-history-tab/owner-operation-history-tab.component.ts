@@ -35,13 +35,19 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { AuthService, IEvent, LogbookService } from 'vitamui-library';
+import { AuthService, CollapseComponent, HistoryModule, IEvent, LogbookService } from 'vitamui-library';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatLegacyProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
+import { NgIf } from '@angular/common';
 
 const EVENT_LIMIT = 100;
+
 @Component({
   selector: 'app-owner-operation-history-tab',
   templateUrl: './owner-operation-history-tab.component.html',
   styleUrls: ['./owner-operation-history-tab.component.scss'],
+  standalone: true,
+  imports: [NgIf, MatLegacyProgressSpinnerModule, HistoryModule, TranslateModule, CollapseComponent],
 })
 export class OwnerOperationHistoryTabComponent implements OnChanges {
   @Input() id: string;

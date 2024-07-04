@@ -78,8 +78,14 @@ describe('IngestContractObjectTabComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, FormsModule, VitamUICommonTestModule, MatSelectModule, NoopAnimationsModule],
-      declarations: [IngestContractObjectTabComponent],
+      imports: [
+        ReactiveFormsModule,
+        FormsModule,
+        VitamUICommonTestModule,
+        MatSelectModule,
+        NoopAnimationsModule,
+        IngestContractObjectTabComponent,
+      ],
       providers: [FormBuilder, { provide: IngestContractService, useValue: {} }],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();

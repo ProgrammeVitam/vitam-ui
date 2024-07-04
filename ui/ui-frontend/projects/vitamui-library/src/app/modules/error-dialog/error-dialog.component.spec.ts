@@ -51,8 +51,7 @@ describe('ErrorDialogComponent', () => {
     const startupServiceStub = { getPortalUrl: () => {}, getLogo: () => {}, getAppLogoURL: () => {}, getCustomerLogoURL: () => {} };
 
     await TestBed.configureTestingModule({
-      imports: [LoggerModule.forRoot(), VitamUICommonTestModule],
-      declarations: [ErrorDialogComponent],
+      imports: [LoggerModule.forRoot(), VitamUICommonTestModule, ErrorDialogComponent],
       providers: [
         { provide: MatDialogRef, useValue: {} },
         { provide: StartupService, useValue: startupServiceStub },

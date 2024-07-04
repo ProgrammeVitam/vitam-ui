@@ -29,14 +29,37 @@ import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { ApplicationService, GlobalEventService, ManagementContract, SidenavPage } from 'vitamui-library';
+import {
+  ApplicationService,
+  GlobalEventService,
+  ManagementContract,
+  SidenavPage,
+  VitamuiTitleBreadcrumbComponent,
+  VitamuiCommonBannerComponent,
+} from 'vitamui-library';
 import { ManagementContractCreateComponent } from './management-contract-create/management-contract-create.component';
 import { ManagementContractListComponent } from './management-contract-list/management-contract-list.component';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { ManagementContractPreviewComponent } from './management-contract-preview/management-contract-preview.component';
+import { NgIf } from '@angular/common';
+import { MatSidenavModule } from '@angular/material/sidenav';
 
 @Component({
   selector: 'app-management-contract',
   templateUrl: './management-contract.component.html',
   styleUrls: ['./management-contract.component.scss'],
+  standalone: true,
+  imports: [
+    MatSidenavModule,
+    NgIf,
+    ManagementContractPreviewComponent,
+    VitamuiTitleBreadcrumbComponent,
+    VitamuiCommonBannerComponent,
+    MatLegacyTooltipModule,
+    ManagementContractListComponent,
+    TranslateModule,
+  ],
 })
 export class ManagementContractComponent extends SidenavPage<ManagementContract> implements OnInit, OnDestroy {
   @ViewChild(ManagementContractListComponent, { static: true }) managementContractListComponent: ManagementContractListComponent;

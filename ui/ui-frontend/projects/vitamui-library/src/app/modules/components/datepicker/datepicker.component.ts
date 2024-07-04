@@ -1,5 +1,7 @@
 import { Component, forwardRef, Input } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { NgClass } from '@angular/common';
 
 @Component({
   selector: 'vitamui-common-datepicker',
@@ -19,6 +21,8 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
       multi: true,
     },
   ],
+  standalone: true,
+  imports: [NgClass, MatDatepickerModule, FormsModule],
 })
 export class DatepickerComponent implements ControlValueAccessor {
   @Input() label!: string;

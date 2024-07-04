@@ -1,12 +1,18 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { debounceTime } from 'rxjs/operators';
+import { TranslateModule } from '@ngx-translate/core';
+import { DateTimePipe } from '../../pipes/datetime.pipe';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { NgIf, NgStyle } from '@angular/common';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'vitamui-interval-date-picker',
   templateUrl: './vitamui-interval-date-picker.component.html',
   styleUrls: ['./vitamui-interval-date-picker.component.scss'],
+  standalone: true,
+  imports: [FormsModule, ReactiveFormsModule, NgStyle, NgIf, MatDatepickerModule, DateTimePipe, TranslateModule],
 })
 export class VitamuiIntervalDatePickerComponent implements OnInit {
   constructor(private formBuilder: FormBuilder) {}

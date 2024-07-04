@@ -75,8 +75,7 @@ describe('IngestContractHeritageTabComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, VitamUICommonTestModule],
-      declarations: [IngestContractHeritageTabComponent],
+      imports: [ReactiveFormsModule, VitamUICommonTestModule, IngestContractHeritageTabComponent],
       providers: [FormBuilder, { provide: IngestContractService, useValue: {} }],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();

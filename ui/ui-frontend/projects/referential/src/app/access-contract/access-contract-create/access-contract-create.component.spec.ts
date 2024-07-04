@@ -120,8 +120,8 @@ describe('AccessContractCreateComponent', () => {
         VitamUICommonTestModule,
         TranslateModule.forRoot(),
         LoggerModule.forRoot(),
+        AccessContractCreateComponent,
       ],
-      declarations: [AccessContractCreateComponent],
       providers: [
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: BASE_URL, useValue: '/fake-api' },

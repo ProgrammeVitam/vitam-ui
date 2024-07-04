@@ -1,6 +1,11 @@
 import { Component, ElementRef, EventEmitter, forwardRef, Input, Output } from '@angular/core';
-import { NG_VALUE_ACCESSOR } from '@angular/forms';
+import { NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { EditableFieldComponent } from 'vitamui-library';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatLegacyProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
+import { CustomParamsComponent } from '../../custom-params/custom-params.component';
+import { CdkOverlayOrigin, CdkConnectedOverlay } from '@angular/cdk/overlay';
+import { NgIf, NgFor, KeyValuePipe } from '@angular/common';
 
 export const EDITABLE_DOMAIN_INPUT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -14,6 +19,18 @@ export const EDITABLE_DOMAIN_INPUT_VALUE_ACCESSOR: any = {
   selector: 'editable-custom-params',
   templateUrl: './editable-custom-params.component.html',
   providers: [EDITABLE_DOMAIN_INPUT_VALUE_ACCESSOR],
+  standalone: true,
+  imports: [
+    NgIf,
+    CdkOverlayOrigin,
+    NgFor,
+    CustomParamsComponent,
+    ReactiveFormsModule,
+    MatLegacyProgressSpinnerModule,
+    CdkConnectedOverlay,
+    KeyValuePipe,
+    TranslateModule,
+  ],
 })
 export class EditableCustomParamsComponent extends EditableFieldComponent {
   array: any[] = [];

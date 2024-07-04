@@ -52,9 +52,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
 import { MatLegacyTabsModule as MatTabsModule } from '@angular/material/legacy-tabs';
 import { RouterModule } from '@angular/router';
-import { RoleToggleModule, TableFilterModule, VitamUICommonModule } from 'vitamui-library';
-import { VitamUILibraryModule } from 'vitamui-library';
-import { GroupAttributionModule } from '../../../../identity/src/app/user/group-attribution/group-attribution.module';
+import { RoleToggleComponent, TableFilterComponent, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 // eslint-disable-next-line max-len
 import { AccessionRegisterAdvancedSearchComponent } from './accession-register-advanced-search/accession-register-advanced-search.component';
 import { AccessionRegisterFacetsComponent } from './accession-register-facets/accession-register-facets.component';
@@ -76,24 +74,21 @@ import { AccessionRegisterComponent } from './accession-register.component';
     MatDialogModule,
     MatSidenavModule,
     MatProgressSpinnerModule,
-    TableFilterModule,
+    TableFilterComponent,
     VitamUILibraryModule,
     AccessionRegisterRoutingModule,
     MatButtonToggleModule,
     MatSelectModule,
     ReactiveFormsModule,
-    GroupAttributionModule,
     MatProgressBarModule,
     MatTabsModule,
-    RoleToggleModule,
+    RoleToggleComponent,
     MatCheckboxModule,
     MatCardModule,
     MatPseudoCheckboxModule,
     MatDatepickerModule,
     VitamUICommonModule,
     MatRadioModule,
-  ],
-  declarations: [
     AccessionRegisterComponent,
     AccessionRegisterListComponent,
     AccessionRegisterFacetsComponent,

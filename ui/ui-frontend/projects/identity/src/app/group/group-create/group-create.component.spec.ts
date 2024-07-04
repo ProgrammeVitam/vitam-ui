@@ -36,7 +36,7 @@ import { TranslateModule } from '@ngx-translate/core';
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { EMPTY, of } from 'rxjs';
-import { AuthService, ConfirmDialogService, Group, LevelInputModule, ProfileService } from 'vitamui-library';
+import { AuthService, ConfirmDialogService, Group, LevelInputComponent, ProfileService } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 
 import { Component, forwardRef, Input, NO_ERRORS_SCHEMA } from '@angular/core';
@@ -60,6 +60,8 @@ import { GroupCreateComponent } from './group-create.component';
       multi: true,
     },
   ],
+  standalone: true,
+  imports: [MatProgressBarModule, ReactiveFormsModule, VitamUICommonTestModule, LevelInputComponent],
 })
 class ProfilesFormStubComponent implements ControlValueAccessor {
   @Input() level: string;
@@ -78,6 +80,8 @@ class ProfilesFormStubComponent implements ControlValueAccessor {
       multi: true,
     },
   ],
+  standalone: true,
+  imports: [MatProgressBarModule, ReactiveFormsModule, VitamUICommonTestModule, LevelInputComponent],
 })
 class UnitsFormStubComponent implements ControlValueAccessor {
   writeValue() {}
@@ -125,10 +129,12 @@ describe('GroupCreateComponent', () => {
         ReactiveFormsModule,
         NoopAnimationsModule,
         VitamUICommonTestModule,
-        LevelInputModule,
+        LevelInputComponent,
         TranslateModule.forRoot(),
+        ProfilesFormStubComponent,
+        UnitsFormStubComponent,
+        GroupCreateComponent,
       ],
-      declarations: [ProfilesFormStubComponent, UnitsFormStubComponent, GroupCreateComponent],
       providers: [
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MAT_DIALOG_DATA, useValue: {} },

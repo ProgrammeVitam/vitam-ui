@@ -51,8 +51,8 @@ describe('ManagementContractPreviewComponent', () => {
         RouterTestingModule,
         LoggerModule.forRoot(),
         MatDialogModule,
+        ManagementContractPreviewComponent,
       ],
-      declarations: [ManagementContractPreviewComponent],
       providers: [{ provide: WINDOW_LOCATION, useValue: window.location }],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();

@@ -10,7 +10,8 @@ describe('CardGroupComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [CardGroupComponent, CardComponent, MatCard],
+      imports: [CardGroupComponent, CardComponent],
+      declarations: [MatCard],
     }).compileComponents();
   });
 

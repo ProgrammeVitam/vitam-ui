@@ -44,17 +44,14 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
 import { MatLegacyTabsModule as MatTabsModule } from '@angular/material/legacy-tabs';
 import { RouterModule } from '@angular/router';
-import { TableFilterModule, VitamUICommonModule } from 'vitamui-library';
+import { TableFilterComponent, VitamUICommonModule } from 'vitamui-library';
 
-import { ImportDialogModule } from '../shared/import-dialog/import-dialog.module';
-import { IngestContractCreateModule } from './ingest-contract-create/ingest-contract-create.module';
 import { IngestContractListComponent } from './ingest-contract-list/ingest-contract-list.component';
-import { IngestContractPreviewModule } from './ingest-contract-preview/ingest-contract-preview.module';
+
 import { IngestContractRoutingModule } from './ingest-contract-routing.module';
 import { IngestContractComponent } from './ingest-contract.component';
 
 @NgModule({
-  declarations: [IngestContractComponent, IngestContractListComponent],
   imports: [
     CommonModule,
     RouterModule,
@@ -68,10 +65,9 @@ import { IngestContractComponent } from './ingest-contract.component';
     MatProgressSpinnerModule,
     MatTabsModule,
     IngestContractRoutingModule,
-    IngestContractPreviewModule,
-    IngestContractCreateModule,
-    TableFilterModule,
-    ImportDialogModule,
+    TableFilterComponent,
+    IngestContractComponent,
+    IngestContractListComponent,
   ],
 })
 export class IngestContractModule {}

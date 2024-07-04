@@ -56,6 +56,8 @@ import { EditablePatternsComponent } from './editable-patterns.component';
       multi: true,
     },
   ],
+  standalone: true,
+  imports: [FormsModule, ReactiveFormsModule, OverlayModule, MatProgressSpinnerModule, VitamUICommonTestModule],
 })
 class PatternStubComponent implements ControlValueAccessor {
   @Input() options: Array<{ value: string; disabled?: boolean }>;
@@ -70,6 +72,8 @@ class PatternStubComponent implements ControlValueAccessor {
 
 @Component({
   template: ` <app-editable-patterns [(ngModel)]="value" [label]="label" [options]="options"></app-editable-patterns> `,
+  standalone: true,
+  imports: [FormsModule, ReactiveFormsModule, OverlayModule, MatProgressSpinnerModule, VitamUICommonTestModule],
 })
 class TesthostComponent {
   value: string[];
@@ -91,8 +95,17 @@ describe('EditablePatternsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FormsModule, ReactiveFormsModule, OverlayModule, MatProgressSpinnerModule, NoopAnimationsModule, VitamUICommonTestModule],
-      declarations: [TesthostComponent, EditablePatternsComponent, PatternStubComponent],
+      imports: [
+        FormsModule,
+        ReactiveFormsModule,
+        OverlayModule,
+        MatProgressSpinnerModule,
+        NoopAnimationsModule,
+        VitamUICommonTestModule,
+        TesthostComponent,
+        EditablePatternsComponent,
+        PatternStubComponent,
+      ],
     }).compileComponents();
 
     inject([OverlayContainer], (oc: OverlayContainer) => {

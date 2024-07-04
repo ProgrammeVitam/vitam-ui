@@ -1,11 +1,16 @@
 import { AfterViewChecked, Component, OnDestroy, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { MatIconModule } from '@angular/material/icon';
+import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { NgClass } from '@angular/common';
 
 @Component({
   selector: 'vitamui-common-scroll-top',
   templateUrl: './scroll-top.component.html',
   styleUrls: ['./scroll-top.component.scss'],
+  standalone: true,
+  imports: [NgClass, MatLegacyButtonModule, MatIconModule],
 })
 export class ScrollTopComponent implements OnInit, AfterViewChecked, OnDestroy {
   public windowScrolled: boolean;

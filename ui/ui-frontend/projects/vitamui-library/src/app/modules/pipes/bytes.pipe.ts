@@ -37,7 +37,10 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { Logger } from '../logger/logger';
 
-@Pipe({ name: 'bytes' })
+@Pipe({
+  name: 'bytes',
+  standalone: true,
+})
 export class BytesPipe implements PipeTransform {
   private static NUMBER_OF_BYTES_IN_ONE_KB = 1024;
   private static DEFAULT_PRECISION = 2;

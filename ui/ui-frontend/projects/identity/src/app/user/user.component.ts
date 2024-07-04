@@ -53,17 +53,33 @@ import {
   SidenavPage,
   User,
   VitamUISnackBarService,
+  VitamuiTitleBreadcrumbComponent,
+  VitamuiCommonBannerComponent,
 } from 'vitamui-library';
 import { CustomerService } from '../core/customer.service';
 import { GroupService } from '../group/group.service';
 import { UserCreateComponent } from './user-create/user-create.component';
 import { UserListComponent } from './user-list/user-list.component';
 import { UserService } from './user.service';
+import { TranslateModule } from '@ngx-translate/core';
+import { UserPreviewComponent } from './user-preview/user-preview.component';
+import { NgIf } from '@angular/common';
+import { MatSidenavModule } from '@angular/material/sidenav';
 
 @Component({
   selector: 'app-user',
   templateUrl: './user.component.html',
   styleUrls: ['./user.component.scss'],
+  standalone: true,
+  imports: [
+    MatSidenavModule,
+    NgIf,
+    UserPreviewComponent,
+    VitamuiTitleBreadcrumbComponent,
+    VitamuiCommonBannerComponent,
+    UserListComponent,
+    TranslateModule,
+  ],
 })
 export class UserComponent extends SidenavPage<User> implements OnInit {
   public users: User[];

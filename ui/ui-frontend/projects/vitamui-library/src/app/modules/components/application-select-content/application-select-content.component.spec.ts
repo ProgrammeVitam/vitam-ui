@@ -45,6 +45,7 @@ import { ApplicationSelectContentComponent } from './application-select-content.
 @Component({
   selector: 'vitamui-common-menu-tile',
   template: '',
+  standalone: true,
 })
 class VitamUIMenuTileStubComponent {
   @Input() application: any;
@@ -57,7 +58,7 @@ describe('ApplicationSelectContentComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ApplicationSelectContentComponent, VitamUIMenuTileStubComponent],
+      imports: [ApplicationSelectContentComponent, VitamUIMenuTileStubComponent],
       providers: [
         { provide: WINDOW_LOCATION, useValue: {} },
         { provide: AuthService, useValue: {} },

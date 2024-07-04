@@ -53,8 +53,8 @@ describe('AccessionRegisterOperationsListComponent', () => {
         MatIconModule,
         BrowserAnimationsModule,
         TranslateModule.forRoot(),
+        AccessionRegisterOperationsListComponent,
       ],
-      declarations: [AccessionRegisterOperationsListComponent],
       providers: [],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();

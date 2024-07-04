@@ -81,8 +81,8 @@ describe('AdminDslComponent', () => {
         LoggerModule.forRoot(),
         MatSelectModule,
         NoopAnimationsModule,
+        AdminDslComponent,
       ],
-      declarations: [AdminDslComponent],
       providers: [
         FormBuilder,
         { provide: Router, useValue: {} },

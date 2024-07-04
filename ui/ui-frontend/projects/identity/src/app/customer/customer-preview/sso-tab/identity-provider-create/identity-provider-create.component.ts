@@ -35,17 +35,53 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
 import { Subscription } from 'rxjs';
-import { AuthnRequestBindingEnum, ConfirmDialogService, Customer, IdentityProvider } from 'vitamui-library';
+import {
+  AuthnRequestBindingEnum,
+  ConfirmDialogService,
+  Customer,
+  IdentityProvider,
+  CommonProgressBarComponent,
+  StepperComponent,
+  SlideToggleComponent,
+  VitamUICommonInputComponent,
+} from 'vitamui-library';
 import { IdentityProviderService } from '../identity-provider.service';
 import JWS_ALGORITHMS, { ProtocoleType } from '../sso-tab-const';
+import { TranslateModule } from '@ngx-translate/core';
+import { CustomParamsComponent } from '../../../../shared/custom-params/custom-params.component';
+import { MatLegacyOptionModule } from '@angular/material/legacy-core';
+import { MatLegacySelectModule } from '@angular/material/legacy-select';
+import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
+import { PatternComponent } from '../../../../shared/pattern/pattern.component';
+import { NgIf, NgFor } from '@angular/common';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { CdkStepperModule } from '@angular/cdk/stepper';
 
 @Component({
   selector: 'app-identity-provider-create',
   templateUrl: './identity-provider-create.component.html',
   styleUrls: ['./identity-provider-create.component.scss'],
+  standalone: true,
+  imports: [
+    CommonProgressBarComponent,
+    ReactiveFormsModule,
+    StepperComponent,
+    CdkStepperModule,
+    SlideToggleComponent,
+    MatButtonToggleModule,
+    VitamUICommonInputComponent,
+    NgIf,
+    PatternComponent,
+    MatLegacyFormFieldModule,
+    MatLegacySelectModule,
+    NgFor,
+    MatLegacyOptionModule,
+    CustomParamsComponent,
+    TranslateModule,
+  ],
 })
 export class IdentityProviderCreateComponent implements OnInit, OnDestroy {
   form: FormGroup;

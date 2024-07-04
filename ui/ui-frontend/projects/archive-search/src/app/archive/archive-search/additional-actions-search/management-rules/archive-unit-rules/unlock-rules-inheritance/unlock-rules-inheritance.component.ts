@@ -26,9 +26,9 @@
  */
 
 import { Component, EventEmitter, Input, OnDestroy, Output, TemplateRef, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
-import { TranslateService } from '@ngx-translate/core';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { MatLegacyDialog as MatDialog, MatLegacyDialogModule } from '@angular/material/legacy-dialog';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import { cloneDeep } from 'lodash-es';
 import { UpdateUnitManagementRuleService } from 'projects/archive-search/src/app/archive/common-services/update-unit-management-rule.service';
 import { ManagementRulesSharedDataService } from 'projects/archive-search/src/app/core/management-rules-shared-data.service';
@@ -43,11 +43,18 @@ import {
   RuleService,
   SearchCriteriaDto,
   SearchCriteriaEltDto,
+  EditableFieldComponent,
+  VitamUIFieldErrorComponent,
+  VitamUICommonInputComponent,
+  EditableInputComponent,
+  VitamUIInputErrorComponent,
 } from 'vitamui-library';
 import { ArchiveService } from '../../../../../archive.service';
 import { ArchiveSearchConstsEnum } from '../../../../../models/archive-search-consts-enum';
 import { ManagementRules, RuleAction, RuleActionsEnum, RuleCategoryAction } from '../../../../../models/ruleAction.interface';
 import { ManagementRulesValidatorService } from '../../../../../validators/management-rules-validator.service';
+import { MatLegacyProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
+import { NgIf } from '@angular/common';
 
 const ORIGIN_HAS_AT_LEAST_ONE = 'ORIGIN_HAS_AT_LEAST_ONE';
 const APPRAISAL_PREVENT_RULE_IDENTIFIER = 'APPRAISAL_PREVENT_RULE_IDENTIFIER';
@@ -57,6 +64,19 @@ const APPRAISAL_RULE_INHERITED_CRITERIA = 'APPRAISAL_RULE_INHERITED_CRITERIA';
   selector: 'app-unlock-rules-inheritance',
   templateUrl: './unlock-rules-inheritance.component.html',
   styleUrls: ['./unlock-rules-inheritance.component.css'],
+  standalone: true,
+  imports: [
+    ReactiveFormsModule,
+    EditableFieldComponent,
+    VitamUIFieldErrorComponent,
+    VitamUICommonInputComponent,
+    NgIf,
+    MatLegacyProgressSpinnerModule,
+    MatLegacyDialogModule,
+    TranslateModule,
+    EditableInputComponent,
+    VitamUIInputErrorComponent,
+  ],
 })
 export class UnlockRulesInheritanceComponent implements OnDestroy {
   @Output() delete = new EventEmitter<any>();

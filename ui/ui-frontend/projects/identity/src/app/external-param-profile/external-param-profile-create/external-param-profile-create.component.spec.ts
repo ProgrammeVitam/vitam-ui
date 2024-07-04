@@ -71,7 +71,6 @@ describe('ExternalParamProfileCreateComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ExternalParamProfileCreateComponent],
       imports: [
         ReactiveFormsModule,
         MatProgressBarModule,
@@ -82,6 +81,7 @@ describe('ExternalParamProfileCreateComponent', () => {
         FormsModule,
         MatSelectModule,
         BrowserAnimationsModule,
+        ExternalParamProfileCreateComponent,
       ],
       providers: [
         FormBuilder,

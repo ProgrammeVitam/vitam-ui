@@ -46,8 +46,7 @@ describe('ConfirmDialogComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MatDialogModule, VitamUICommonTestModule],
-      declarations: [ConfirmDialogComponent],
+      imports: [MatDialogModule, VitamUICommonTestModule, ConfirmDialogComponent],
     }).compileComponents();
   });
 

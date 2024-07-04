@@ -34,8 +34,7 @@ describe('CreateNoticeComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [CreateNoticeComponent],
-      imports: [HttpClientTestingModule, RouterTestingModule, LoggerModule.forRoot(), TranslateModule.forRoot()],
+      imports: [HttpClientTestingModule, RouterTestingModule, LoggerModule.forRoot(), TranslateModule.forRoot(), CreateNoticeComponent],
       providers: [
         FormBuilder,
         ProfileService,

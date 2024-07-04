@@ -35,12 +35,16 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, Input } from '@angular/core';
-import { Event } from 'vitamui-library';
+import { Event, EventTypeLabelComponent, PipesModule } from 'vitamui-library';
+import { DateTimePipe } from '../../../../../../vitamui-library/src/app/modules/pipes/datetime.pipe';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-audit-information-tab',
   templateUrl: './audit-information-tab.component.html',
   styleUrls: ['./audit-information-tab.component.scss'],
+  standalone: true,
+  imports: [EventTypeLabelComponent, PipesModule, TranslateModule, DateTimePipe],
 })
 export class AuditInformationTabComponent {
   @Input()

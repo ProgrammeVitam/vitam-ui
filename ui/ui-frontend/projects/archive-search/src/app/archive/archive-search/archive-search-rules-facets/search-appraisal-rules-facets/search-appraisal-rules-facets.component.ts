@@ -37,8 +37,8 @@
 
 import { DatePipe } from '@angular/common';
 import { Component, Input, OnChanges } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
-import { Colors, FacetDetails, RuleFacets } from 'vitamui-library';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
+import { Colors, FacetDetails, RuleFacets, VitamuiFacetComponent } from 'vitamui-library';
 import { ArchiveFacetsService } from '../../../common-services/archive-facets.service';
 import { ArchiveSearchConstsEnum } from '../../../models/archive-search-consts-enum';
 
@@ -46,6 +46,8 @@ import { ArchiveSearchConstsEnum } from '../../../models/archive-search-consts-e
   selector: 'app-search-appraisal-rules-facets',
   templateUrl: './search-appraisal-rules-facets.component.html',
   styleUrls: ['./search-appraisal-rules-facets.component.scss'],
+  standalone: true,
+  imports: [VitamuiFacetComponent, TranslateModule],
 })
 export class SearchAppraisalRulesFacetsComponent implements OnChanges {
   constructor(

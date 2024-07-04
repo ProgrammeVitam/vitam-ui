@@ -176,8 +176,8 @@ describe('ArchiveUnitRulesComponent', () => {
         }),
         HttpClientTestingModule,
         RouterTestingModule,
+        ArchiveUnitRulesComponent,
       ],
-      declarations: [ArchiveUnitRulesComponent],
       providers: [
         FormBuilder,
         { provide: BASE_URL, useValue: '/fake-api' },

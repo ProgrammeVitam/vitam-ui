@@ -39,11 +39,14 @@ import { startWith } from 'rxjs/operators';
 
 import { Direction } from '../../vitamui-table';
 import { OrderOptionComponent } from './order-option/order-option.component';
+import { CdkOverlayOrigin, CdkConnectedOverlay } from '@angular/cdk/overlay';
 
 @Component({
   selector: 'vitamui-common-order-dropdown',
   templateUrl: './order-dropdown.component.html',
   styleUrls: ['./order-dropdown.component.scss'],
+  standalone: true,
+  imports: [CdkOverlayOrigin, CdkConnectedOverlay],
 })
 export class OrderDropdownComponent implements AfterContentInit, OnChanges {
   @Input() orderBy: string;

@@ -34,15 +34,14 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
 import { MatLegacyTabsModule as MatTabsModule } from '@angular/material/legacy-tabs';
 import { RouterModule } from '@angular/router';
-import { TableFilterModule, VitamUICommonModule } from 'vitamui-library';
-import { ManagementContractCreateModule } from './management-contract-create/management-contract-create.module';
+import { TableFilterComponent, VitamUICommonModule } from 'vitamui-library';
+
 import { ManagementContractListComponent } from './management-contract-list/management-contract-list.component';
-import { ManagementContractPreviewModule } from './management-contract-preview/management-contract-preview.module';
+
 import { ManagementContractRoutingModule } from './management-contract-routing.module';
 import { ManagementContractComponent } from './management-contract.component';
 
 @NgModule({
-  declarations: [ManagementContractComponent, ManagementContractListComponent],
   imports: [
     CommonModule,
     RouterModule,
@@ -56,9 +55,9 @@ import { ManagementContractComponent } from './management-contract.component';
     MatProgressSpinnerModule,
     MatTabsModule,
     ManagementContractRoutingModule,
-    ManagementContractPreviewModule,
-    ManagementContractCreateModule,
-    TableFilterModule,
+    TableFilterComponent,
+    ManagementContractComponent,
+    ManagementContractListComponent,
   ],
 })
 export class ManagementContractModule {}

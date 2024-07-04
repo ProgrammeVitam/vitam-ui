@@ -72,8 +72,8 @@ describe('IngestContractComponent', () => {
         RouterTestingModule,
         InjectorModule,
         LoggerModule.forRoot(),
+        IngestContractComponent,
       ],
-      declarations: [IngestContractComponent],
       providers: [
         GlobalEventService,
         { provide: ApplicationService, useValue: applicationServiceMock },

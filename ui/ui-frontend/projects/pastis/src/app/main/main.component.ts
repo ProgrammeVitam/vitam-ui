@@ -46,11 +46,29 @@ import { FileNode, FileNodeInsertAttributeParams, FileNodeInsertParams } from '.
 import { ProfileDescription } from '../models/profile-description.model';
 import { ProfileResponse } from '../models/profile-response';
 import { EditProfileComponent } from '../profile/edit-profile/edit-profile.component';
+import { FileTreeMetadataComponent } from '../profile/edit-profile/file-tree-metadata/file-tree-metadata.component';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatIconModule } from '@angular/material/icon';
+import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { NgxUiLoaderModule } from 'ngx-ui-loader';
+import { MatLegacyProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-home',
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.scss'],
+  standalone: true,
+  imports: [
+    NgIf,
+    MatLegacyProgressSpinnerModule,
+    NgxUiLoaderModule,
+    MatLegacyButtonModule,
+    MatIconModule,
+    MatSidenavModule,
+    EditProfileComponent,
+    FileTreeMetadataComponent,
+  ],
 })
 export class MainComponent implements OnInit, OnDestroy {
   @ViewChild('treeSelector', { static: true }) tree: any;

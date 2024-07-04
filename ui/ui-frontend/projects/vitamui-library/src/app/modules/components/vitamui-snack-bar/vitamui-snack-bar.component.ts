@@ -41,11 +41,14 @@ import {
 } from '@angular/material/legacy-snack-bar';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { VitamuiSnackBarData } from './vitamui-snack-bar.interface';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'vitamui-common-vitamui-snack-bar',
   templateUrl: './vitamui-snack-bar.component.html',
   styleUrls: ['./vitamui-snack-bar.component.scss'],
+  standalone: true,
+  imports: [NgIf],
 })
 export class VitamUISnackBarComponent implements OnInit {
   public html: SafeHtml;

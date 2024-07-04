@@ -1,10 +1,19 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
-import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
+import {
+  MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA,
+  MatLegacyDialogRef as MatDialogRef,
+  MatLegacyDialogModule,
+} from '@angular/material/legacy-dialog';
+import { LangChangeEvent, TranslateService, TranslateModule } from '@ngx-translate/core';
 import { ProfileService } from '../../core/services/profile.service';
 import { ProfileDescription } from '../../models/profile-description.model';
 import { ProfileType } from '../../models/profile-type.enum';
 import { PastisDialogDataCreate } from '../save-profile/save-profile.component';
+import { MatLegacyOptionModule } from '@angular/material/legacy-core';
+import { MatLegacySelectModule } from '@angular/material/legacy-select';
+import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
+import { FormsModule } from '@angular/forms';
+import { NgIf, NgFor, NgStyle } from '@angular/common';
 
 const POPUP_CREATION_CHOICE_PATH = 'PROFILE.POP_UP_CREATION_NOTICE.CHOICE';
 
@@ -18,6 +27,18 @@ function constantToTranslate() {
   selector: 'select-notice',
   templateUrl: './select-notice.component.html',
   styleUrls: ['./select-notice.component.scss'],
+  standalone: true,
+  imports: [
+    MatLegacyDialogModule,
+    NgIf,
+    FormsModule,
+    MatLegacyFormFieldModule,
+    MatLegacySelectModule,
+    NgFor,
+    MatLegacyOptionModule,
+    NgStyle,
+    TranslateModule,
+  ],
 })
 export class SelectNoticeComponent implements OnInit {
   profiles: ProfileDescription[];

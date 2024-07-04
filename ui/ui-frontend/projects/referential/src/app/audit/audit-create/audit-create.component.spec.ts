@@ -45,7 +45,7 @@ xdescribe('AuditCreateComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [AuditCreateComponent],
+      imports: [AuditCreateComponent],
     }).compileComponents();
   });
 

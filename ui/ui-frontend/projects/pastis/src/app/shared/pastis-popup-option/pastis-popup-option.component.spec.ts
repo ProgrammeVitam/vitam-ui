@@ -21,7 +21,6 @@ describe('PastisPopupOptionComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [PastisPopupOptionComponent],
       imports: [
         HttpClientTestingModule,
         RouterTestingModule,
@@ -33,6 +32,7 @@ describe('PastisPopupOptionComponent', () => {
           closeButton: false,
           easeTime: 0,
         }),
+        PastisPopupOptionComponent,
       ],
       providers: [
         PastisConfiguration,

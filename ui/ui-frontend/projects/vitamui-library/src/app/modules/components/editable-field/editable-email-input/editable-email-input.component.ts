@@ -36,11 +36,15 @@
  */
 
 import { Component, ElementRef, forwardRef, Inject, Input, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { MatLegacySelect as MatSelect } from '@angular/material/legacy-select';
+import { FormBuilder, FormGroup, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
+import { MatLegacySelect as MatSelect, MatLegacySelectModule } from '@angular/material/legacy-select';
 
-import { DOCUMENT } from '@angular/common';
+import { DOCUMENT, NgFor, NgIf } from '@angular/common';
 import { EditableFieldComponent } from '../editable-field.component';
+import { MatLegacyProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
+import { MatLegacyOptionModule } from '@angular/material/legacy-core';
+import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
+import { CdkConnectedOverlay, CdkOverlayOrigin } from '@angular/cdk/overlay';
 
 export const EDITABLE_EMAIL_INPUT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -53,6 +57,19 @@ export const EDITABLE_EMAIL_INPUT_VALUE_ACCESSOR: any = {
   templateUrl: './editable-email-input.component.html',
   styleUrls: ['./editable-email-input.component.scss'],
   providers: [EDITABLE_EMAIL_INPUT_VALUE_ACCESSOR],
+  standalone: true,
+  imports: [
+    NgIf,
+    CdkOverlayOrigin,
+    FormsModule,
+    ReactiveFormsModule,
+    MatLegacyFormFieldModule,
+    MatLegacySelectModule,
+    NgFor,
+    MatLegacyOptionModule,
+    MatLegacyProgressSpinnerModule,
+    CdkConnectedOverlay,
+  ],
 })
 export class EditableEmailInputComponent extends EditableFieldComponent {
   @ViewChild('select') select: MatSelect;

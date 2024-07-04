@@ -62,7 +62,10 @@ import { TransactionsService } from '../transactions.service';
 import { CreateProjectComponent } from './create-project.component';
 import SpyObj = jasmine.SpyObj;
 
-@Pipe({ name: 'fileSize' })
+@Pipe({
+  name: 'fileSize',
+  standalone: true,
+})
 export class MockFileSizePipe implements PipeTransform {
   transform(value: string = ''): any {
     return value;
@@ -146,8 +149,9 @@ describe('CreateProjectComponent', () => {
         HttpClientTestingModule,
         MatSnackBarModule,
         LoggerModule.forRoot(),
+        CreateProjectComponent,
+        MockFileSizePipe,
       ],
-      declarations: [CreateProjectComponent, MockFileSizePipe],
       providers: [
         FormBuilder,
         { provide: BASE_URL, useValue: '/fake-api' },

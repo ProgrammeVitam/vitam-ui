@@ -37,14 +37,19 @@
 import { Component, OnInit } from '@angular/core';
 import { MatLegacyDialog as MatDialog, MatLegacyDialogConfig as MatDialogConfig } from '@angular/material/legacy-dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { GlobalEventService, SidenavPage } from 'vitamui-library';
+import { GlobalEventService, SidenavPage, VitamuiTitleBreadcrumbComponent, VitamuiCommonBannerComponent } from 'vitamui-library';
 import { IngestType } from '../core/common/ingest-type.enum';
 import { UploadComponent } from '../core/common/upload.component';
+import { TranslateModule } from '@ngx-translate/core';
+import { UploadTrackingComponent } from '../shared/upload-tracking/upload-tracking.component';
+import { MatSidenavModule } from '@angular/material/sidenav';
 
 @Component({
   selector: 'app-holding-filling-scheme',
   templateUrl: './holding-filling-scheme.component.html',
   styleUrls: ['./holding-filling-scheme.component.scss'],
+  standalone: true,
+  imports: [MatSidenavModule, VitamuiTitleBreadcrumbComponent, VitamuiCommonBannerComponent, UploadTrackingComponent, TranslateModule],
 })
 export class HoldingFillingSchemeComponent extends SidenavPage<any> implements OnInit {
   IngestType = IngestType;

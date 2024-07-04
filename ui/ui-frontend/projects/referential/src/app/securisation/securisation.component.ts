@@ -35,18 +35,47 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { ActivatedRoute } from '@angular/router';
-import { Event, GlobalEventService, SearchBarComponent, SidenavPage } from 'vitamui-library';
+import {
+  Event,
+  GlobalEventService,
+  SearchBarComponent,
+  SidenavPage,
+  VitamuiTitleBreadcrumbComponent,
+  VitamuiCommonBannerComponent,
+} from 'vitamui-library';
 
 import moment from 'moment';
 import { SecurisationListComponent } from './securisation-list/securisation-list.component';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatLegacyInputModule } from '@angular/material/legacy-input';
+import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
+import { SecurisationPreviewComponent } from './securisation-preview/securisation-preview.component';
+import { NgIf } from '@angular/common';
+import { MatSidenavModule } from '@angular/material/sidenav';
 
 @Component({
   selector: 'app-securisation',
   templateUrl: './securisation.component.html',
   styleUrls: ['./securisation.component.scss'],
+  standalone: true,
+  imports: [
+    MatSidenavModule,
+    NgIf,
+    SecurisationPreviewComponent,
+    VitamuiTitleBreadcrumbComponent,
+    VitamuiCommonBannerComponent,
+    FormsModule,
+    ReactiveFormsModule,
+    MatLegacyFormFieldModule,
+    MatLegacyInputModule,
+    MatDatepickerModule,
+    SecurisationListComponent,
+    TranslateModule,
+  ],
 })
 export class SecurisationComponent extends SidenavPage<Event> {
   search: string;

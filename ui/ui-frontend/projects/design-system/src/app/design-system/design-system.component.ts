@@ -5,5 +5,6 @@ import { Component } from '@angular/core';
   selector: 'design-system',
   templateUrl: './design-system.component.html',
   styleUrls: ['./design-system.component.scss'],
+  standalone: true,
 })
 export class DesignSystemComponent {}

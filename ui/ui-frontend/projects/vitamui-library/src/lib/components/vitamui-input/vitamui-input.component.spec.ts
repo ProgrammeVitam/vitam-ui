@@ -44,6 +44,8 @@ import { VitamUIInputComponent } from './vitamui-input.component';
 
 @Component({
   template: ` <vitamui-library-input [(ngModel)]="value"></vitamui-library-input> `,
+  standalone: true,
+  imports: [FormsModule, MatProgressSpinnerModule],
 })
 class TesthostComponent {
   @ViewChild(VitamUIInputComponent, { static: false }) vitamuiInputComponent: VitamUIInputComponent;
@@ -58,8 +60,7 @@ let fixture: ComponentFixture<TesthostComponent>;
 describe('VitamUIInputComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FormsModule, NoopAnimationsModule, MatProgressSpinnerModule],
-      declarations: [VitamUIInputComponent, TesthostComponent],
+      imports: [FormsModule, NoopAnimationsModule, MatProgressSpinnerModule, VitamUIInputComponent, TesthostComponent],
     }).compileComponents();
   });
 

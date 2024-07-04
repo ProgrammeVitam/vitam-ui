@@ -9,14 +9,12 @@ import { MatLegacyTabsModule as MatTabsModule } from '@angular/material/legacy-t
 import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { PipesModule } from '../../../pipes/pipes.module';
-import { SearchBarModule } from '../../search-bar/search-bar.module';
-import { ItemSelectModule } from '../item-select/item-select.module';
+
 import { MenuApplicationTileComponent } from './menu-application-tile/menu-application-tile.component';
 import { MenuOverlayService } from './menu-overlay.service';
 import { MenuComponent } from './menu.component';
 
 @NgModule({
-  declarations: [MenuComponent, MenuApplicationTileComponent],
   imports: [
     CommonModule,
     OverlayModule,
@@ -26,10 +24,10 @@ import { MenuComponent } from './menu.component';
     MatIconModule,
     MatListModule,
     A11yModule,
-    SearchBarModule,
     PipesModule,
     TranslateModule,
-    ItemSelectModule,
+    MenuComponent,
+    MenuApplicationTileComponent,
   ],
   providers: [MenuOverlayService],
   exports: [MenuComponent, MenuApplicationTileComponent],

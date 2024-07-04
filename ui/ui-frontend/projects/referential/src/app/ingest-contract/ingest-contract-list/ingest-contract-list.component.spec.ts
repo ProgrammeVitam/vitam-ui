@@ -58,8 +58,7 @@ describe('IngestContractListComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
-      declarations: [IngestContractListComponent],
+      imports: [TranslateModule.forRoot(), IngestContractListComponent],
       providers: [
         { provide: IngestContractService, useValue: ingestContractServiceMock },
         { provide: IngestContractService, useValue: ingestContractServiceSpy },

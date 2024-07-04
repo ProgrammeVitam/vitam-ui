@@ -27,12 +27,15 @@
 
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FacetDetails } from '../../models/operation/facet-details.interface';
+import { NgFor, NgStyle, NgClass } from '@angular/common';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'app-vitamui-facet',
   templateUrl: './vitamui-facet.component.html',
   styleUrls: ['./vitamui-facet.component.scss'],
+  standalone: true,
+  imports: [NgFor, NgStyle, NgClass],
 })
 export class VitamuiFacetComponent {
   /**

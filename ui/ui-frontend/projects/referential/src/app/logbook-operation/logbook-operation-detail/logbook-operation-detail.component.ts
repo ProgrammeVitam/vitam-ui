@@ -47,9 +47,19 @@ import {
   LogbookOperationTypeProc,
   LogbookService,
   VitamUISnackBarService,
+  VitamuiSidenavHeaderComponent,
+  EventTypeLabelComponent,
+  HistoryModule,
+  PipesModule,
 } from 'vitamui-library';
 import { IngestStatus } from '../../../../../ingest/src/app/models/logbook-event.interface';
 import { LogbookDownloadService } from '../logbook-download.service';
+import { TruncatePipe } from '../../../../../vitamui-library/src/app/modules/pipes/truncate.pipe';
+import { EventTypeBadgeClassPipe } from '../../shared/pipes/event-type-badge-class.pipe';
+import { LastEventPipe } from '../../shared/pipes/last-event.pipe';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatLegacyTabsModule } from '@angular/material/legacy-tabs';
+import { NgIf, SlicePipe } from '@angular/common';
 
 const msgForDownload: { [key: string]: string } = {
   EXPORT_DIP: 'LOGBOOK_OPERATION_DETAIL.DOWNLOAD_DIP',
@@ -63,6 +73,20 @@ const defaultDownloadButtonLabel = 'LOGBOOK_OPERATION_DETAIL.DOWNLOAD_REPORT';
   templateUrl: './logbook-operation-detail.component.html',
   styleUrls: ['./logbook-operation-detail.component.scss'],
   animations: [fadeInOutAnimation],
+  standalone: true,
+  imports: [
+    VitamuiSidenavHeaderComponent,
+    NgIf,
+    MatLegacyTabsModule,
+    EventTypeLabelComponent,
+    HistoryModule,
+    SlicePipe,
+    PipesModule,
+    TranslateModule,
+    LastEventPipe,
+    EventTypeBadgeClassPipe,
+    TruncatePipe,
+  ],
 })
 export class LogbookOperationDetailComponent implements OnInit, OnChanges, OnDestroy {
   @Input() eventId: string;

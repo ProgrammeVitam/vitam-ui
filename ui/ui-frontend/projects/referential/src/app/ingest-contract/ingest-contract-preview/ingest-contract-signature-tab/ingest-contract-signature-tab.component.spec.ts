@@ -51,8 +51,7 @@ describe('IngestContractSignatureTabComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, VitamUICommonTestModule, MatButtonToggleModule],
-      declarations: [IngestContractSignatureTabComponent],
+      imports: [ReactiveFormsModule, VitamUICommonTestModule, MatButtonToggleModule, IngestContractSignatureTabComponent],
       providers: [FormBuilder, { provide: IngestContractService, useValue: ingestContractServiceSpy }],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();

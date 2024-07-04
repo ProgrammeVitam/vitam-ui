@@ -86,6 +86,8 @@ let expectedCustomer: Customer = {
       multi: true,
     },
   ],
+  standalone: true,
+  imports: [ReactiveFormsModule, VitamUICommonTestModule, HttpClientTestingModule],
 })
 class EditableDomainInputStubComponent implements ControlValueAccessor {
   @Input() validator: Validator;
@@ -106,6 +108,8 @@ class EditableDomainInputStubComponent implements ControlValueAccessor {
       multi: true,
     },
   ],
+  standalone: true,
+  imports: [ReactiveFormsModule, VitamUICommonTestModule, HttpClientTestingModule],
 })
 class CustomerColorsInputStubComponent implements ControlValueAccessor {
   @Input() placeholder: string;
@@ -119,6 +123,8 @@ class CustomerColorsInputStubComponent implements ControlValueAccessor {
   template: `<app-information-tab [customer]="customer" [readOnly]="readOnly" [gdprReadOnlyStatus]="gdprReadOnlyStatus"
     >></app-information-tab
   >`,
+  standalone: true,
+  imports: [ReactiveFormsModule, VitamUICommonTestModule, HttpClientTestingModule],
 })
 class TestHostComponent {
   customer = expectedCustomer;
@@ -169,8 +175,17 @@ describe('Customer InformationTabComponent', () => {
     });
 
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, NoopAnimationsModule, VitamUICommonTestModule, HttpClientTestingModule, LoggerModule.forRoot()],
-      declarations: [InformationTabComponent, TestHostComponent, EditableDomainInputStubComponent, CustomerColorsInputStubComponent],
+      imports: [
+        ReactiveFormsModule,
+        NoopAnimationsModule,
+        VitamUICommonTestModule,
+        HttpClientTestingModule,
+        LoggerModule.forRoot(),
+        InformationTabComponent,
+        TestHostComponent,
+        EditableDomainInputStubComponent,
+        CustomerColorsInputStubComponent,
+      ],
       providers: [
         { provide: WINDOW_LOCATION, useValue: window.location },
         { provide: BASE_URL, useValue: '/fake-api' },

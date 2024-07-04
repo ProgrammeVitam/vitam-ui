@@ -2,17 +2,27 @@ import { Component } from '@angular/core';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { NavigationExtras, Router } from '@angular/router';
 import { combineLatest } from 'rxjs';
-import { ApiUnitObject, ApplicationId, BreadCrumbData, TenantSelectionService } from 'vitamui-library';
+import {
+  ApiUnitObject,
+  ApplicationId,
+  BreadCrumbData,
+  TenantSelectionService,
+  VitamuiTitleBreadcrumbComponent,
+  SearchBarComponent,
+} from 'vitamui-library';
 import { PurgedPersistentIdentifierDto } from '../../core/api/persistent-identifier-response-dto.interface';
 import { PERMANENT_IDENTIFIER } from '../archive-search/archive-search.component';
 import { PersistentIdentifierService } from '../persistent-identifier.service';
 import { FoundObjectModalComponent } from './found-object-modal/found-object-modal.component';
 import { PurgedPersistentIdentifierModalComponent } from './purged-persistent-identifier-modal/purged-persistent-identifier-modal.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-persistent-identifier-search',
   templateUrl: './persistent-identifier-search.component.html',
   styleUrls: ['./persistent-identifier-search.component.scss'],
+  standalone: true,
+  imports: [VitamuiTitleBreadcrumbComponent, SearchBarComponent, TranslateModule],
 })
 export class PersistentIdentifierSearchComponent {
   appsHierarchy: BreadCrumbData[] = [

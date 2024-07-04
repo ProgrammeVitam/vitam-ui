@@ -35,10 +35,14 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, ContentChildren, ElementRef, forwardRef, QueryList } from '@angular/core';
-import { NG_VALUE_ACCESSOR } from '@angular/forms';
+import { FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 
 import { EditableFieldComponent } from '../editable-field.component';
 import { EditableButtonToggleComponent } from './editable-button-toggle.component';
+import { MatLegacyProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { CdkConnectedOverlay, CdkOverlayOrigin } from '@angular/cdk/overlay';
+import { NgFor, NgIf } from '@angular/common';
 
 export const EDITABLE_TOGGLE_GROUP_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -51,6 +55,17 @@ export const EDITABLE_TOGGLE_GROUP_VALUE_ACCESSOR: any = {
   templateUrl: './editable-toggle-group.component.html',
   styleUrls: ['./editable-toggle-group.component.scss'],
   providers: [EDITABLE_TOGGLE_GROUP_VALUE_ACCESSOR],
+  standalone: true,
+  imports: [
+    NgIf,
+    CdkOverlayOrigin,
+    MatButtonToggleModule,
+    FormsModule,
+    ReactiveFormsModule,
+    NgFor,
+    MatLegacyProgressSpinnerModule,
+    CdkConnectedOverlay,
+  ],
 })
 export class EditableToggleGroupComponent extends EditableFieldComponent {
   @ContentChildren(EditableButtonToggleComponent) buttons: QueryList<EditableButtonToggleComponent>;

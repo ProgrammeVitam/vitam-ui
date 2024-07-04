@@ -36,8 +36,10 @@
  */
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { Component, forwardRef, Input } from '@angular/core';
-import { ControlValueAccessor, FormBuilder, FormGroup, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { ControlValueAccessor, FormBuilder, FormGroup, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import moment from 'moment';
+import { TranslateModule } from '@ngx-translate/core';
+import { VitamUICommonInputComponent } from '../vitamui-input/vitamui-common-input.component';
 
 export const VITAMUI_DURATION_INPUT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -50,6 +52,8 @@ export const VITAMUI_DURATION_INPUT_VALUE_ACCESSOR: any = {
   templateUrl: './vitamui-duration-input.component.html',
   styleUrls: ['./vitamui-duration-input.component.scss'],
   providers: [VITAMUI_DURATION_INPUT_VALUE_ACCESSOR],
+  standalone: true,
+  imports: [FormsModule, ReactiveFormsModule, VitamUICommonInputComponent, TranslateModule],
 })
 export class VitamUIDurationInputComponent implements ControlValueAccessor {
   public form: FormGroup;

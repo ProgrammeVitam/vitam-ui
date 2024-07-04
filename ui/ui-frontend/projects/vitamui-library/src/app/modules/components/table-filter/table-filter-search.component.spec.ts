@@ -50,6 +50,8 @@ import { TableFilterComponent } from './table-filter.component';
     <vitamui-common-table-filter-search [(filter)]="filter" [options]="options" (filterClose)="onClose()">
     </vitamui-common-table-filter-search>
   `,
+  standalone: true,
+  imports: [MatPseudoCheckboxModule, FormsModule],
 })
 export class TestHostComponent {
   filter: any;
@@ -69,8 +71,14 @@ describe('TableFilterSearchComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MatPseudoCheckboxModule, FormsModule],
-      declarations: [TestHostComponent, TableFilterSearchComponent, TableFilterComponent, TableFilterOptionComponent],
+      imports: [
+        MatPseudoCheckboxModule,
+        FormsModule,
+        TestHostComponent,
+        TableFilterSearchComponent,
+        TableFilterComponent,
+        TableFilterOptionComponent,
+      ],
     }).compileComponents();
   });
 

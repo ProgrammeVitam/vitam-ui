@@ -1,7 +1,10 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { ProfileDescription } from '../../../models/profile-description.model';
 
-@Pipe({ name: 'filterByStringName' })
+@Pipe({
+  name: 'filterByStringName',
+  standalone: true,
+})
 export class FilterByStringNamePipe implements PipeTransform {
   constructor() {}
   private listOfProfiles: ProfileDescription[];

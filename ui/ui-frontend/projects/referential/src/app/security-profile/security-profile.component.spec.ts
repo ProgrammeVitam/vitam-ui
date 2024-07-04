@@ -47,14 +47,24 @@ import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { of } from 'rxjs';
 import { SecurityProfileComponent } from './security-profile.component';
 
-@Component({ selector: 'app-SecurityProfile-preview', template: '' })
+@Component({
+  selector: 'app-SecurityProfile-preview',
+  template: '',
+  standalone: true,
+  imports: [VitamUICommonTestModule, RouterTestingModule, InjectorModule, MatSidenavModule, MatDialogModule],
+})
 // eslint-disable-next-line @angular-eslint/component-class-suffix
 class SecurityProfilePreviewStub {
   @Input()
   accessContract: any;
 }
 
-@Component({ selector: 'app-SecurityProfile-list', template: '' })
+@Component({
+  selector: 'app-SecurityProfile-list',
+  template: '',
+  standalone: true,
+  imports: [VitamUICommonTestModule, RouterTestingModule, InjectorModule, MatSidenavModule, MatDialogModule],
+})
 // eslint-disable-next-line @angular-eslint/component-class-suffix
 class SecurityProfileListStub {}
 
@@ -69,7 +79,6 @@ describe('SecurityProfileComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [SecurityProfileComponent, SecurityProfileListStub, SecurityProfilePreviewStub],
       imports: [
         VitamUICommonTestModule,
         RouterTestingModule,
@@ -78,6 +87,9 @@ describe('SecurityProfileComponent', () => {
         NoopAnimationsModule,
         MatSidenavModule,
         MatDialogModule,
+        SecurityProfileComponent,
+        SecurityProfileListStub,
+        SecurityProfilePreviewStub,
       ],
       providers: [{ provide: ApplicationService, useValue: applicationServiceMock }],
       schemas: [NO_ERRORS_SCHEMA],

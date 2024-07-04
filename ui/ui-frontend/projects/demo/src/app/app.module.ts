@@ -56,16 +56,15 @@ import {
 import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
 import { AppGuardDemoComponent } from './demo/app-guard-demo/app-guard-demo.component';
-import { AppGuardDemoModule } from './demo/app-guard-demo/app-guard-demo.module';
+
 import { GuardedPageComponent } from './demo/app-guard-demo/guarded-page.component';
 import { ComponentDemoComponent } from './demo/component-demo/component-demo.component';
-import { ComponentDemoModule } from './demo/component-demo/component-demo.module';
+
 import { ComponentsComponent } from './demo/component-demo/components/components.component';
 import { CssComponent } from './demo/component-demo/css/css.component';
 import { IconDemoComponent } from './demo/icon-demo/icon-demo.component';
-import { IconDemoModule } from './demo/icon-demo/icon-demo.module';
+
 import { SubrogationDemoComponent } from './demo/subrogation-demo/subrogation-demo.component';
-import { SubrogationDemoModule } from './demo/subrogation-demo/subrogation-demo.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -79,10 +78,6 @@ import { SubrogationDemoModule } from './demo/subrogation-demo/subrogation-demo.
     FormsModule,
     VitamUICommonModule.forRoot(),
     LoggerModule.forRoot(),
-    SubrogationDemoModule,
-    ComponentDemoModule,
-    IconDemoModule,
-    AppGuardDemoModule,
     LoggerModule.forRoot(),
     RouterModule.forRoot(
       [

@@ -41,11 +41,15 @@ import { ApplicationId } from '../../application-id.enum';
 import { AuthService } from '../../auth.service';
 import { Tenant } from '../../models';
 import { MenuOption } from '../navbar';
+import { TranslateModule } from '@ngx-translate/core';
+import { TenantSelectContentComponent } from '../tenant-select-content/tenant-select-content.component';
 
 @Component({
   selector: 'vitamui-common-tenant-select',
   templateUrl: './vitamui-tenant-select.component.html',
   styleUrls: ['./vitamui-tenant-select.component.scss'],
+  standalone: true,
+  imports: [TenantSelectContentComponent, TranslateModule],
 })
 export class VitamUITenantSelectComponent implements OnInit {
   appId: ApplicationId;

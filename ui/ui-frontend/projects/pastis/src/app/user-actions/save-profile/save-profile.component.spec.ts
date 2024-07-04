@@ -74,7 +74,6 @@ describe('UserActionOpenProfileComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [UserActionSaveProfileComponent],
       imports: [
         HttpClientTestingModule,
         RouterTestingModule,
@@ -87,6 +86,7 @@ describe('UserActionOpenProfileComponent', () => {
           closeButton: false,
           easeTime: 0,
         }),
+        UserActionSaveProfileComponent,
       ],
       providers: [
         ProfileService,

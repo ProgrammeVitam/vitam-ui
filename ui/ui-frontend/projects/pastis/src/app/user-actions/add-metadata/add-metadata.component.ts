@@ -35,7 +35,7 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
-import { Component, OnDestroy, OnInit, Pipe, PipeTransform, TemplateRef } from '@angular/core';
+import { Component, OnDestroy, OnInit, Pipe, PipeTransform, TemplateRef, forwardRef } from '@angular/core';
 import { MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
 import { Subscription } from 'rxjs';
 import { FileService } from '../../core/services/file.service';
@@ -48,12 +48,32 @@ import { SedaCardinalityConstants, SedaData, SedaElementConstants } from '../../
 import { PastisDialogData } from '../../shared/pastis-dialog/classes/pastis-dialog-data';
 import { PastisDialogConfirmComponent } from '../../shared/pastis-dialog/pastis-dialog-confirm/pastis-dialog-confirm.component';
 import { PastisPopupMetadataLanguageService } from '../../shared/pastis-popup-metadata-language/pastis-popup-metadata-language.service';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { FormsModule } from '@angular/forms';
+import { MatLegacyListModule } from '@angular/material/legacy-list';
+import { MatDividerModule } from '@angular/material/divider';
+import { NgIf, NgFor, NgStyle } from '@angular/common';
+import { VitamuiCommonBannerComponent } from 'vitamui-library';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'pastis-user-action-add-metadata',
   templateUrl: './add-metadata.component.html',
   styleUrls: ['./add-metadata.component.scss'],
+  standalone: true,
+  imports: [
+    VitamuiCommonBannerComponent,
+    NgIf,
+    NgFor,
+    MatDividerModule,
+    MatLegacyListModule,
+    NgStyle,
+    FormsModule,
+    MatLegacyTooltipModule,
+    TranslateModule,
+    forwardRef(() => FilterByNamePipe),
+  ],
 })
 export class UserActionAddMetadataComponent implements OnInit, OnDestroy {
   btnIsDisabled: boolean;
@@ -233,7 +253,10 @@ export class UserActionAddMetadataComponent implements OnInit, OnDestroy {
   }
 }
 
-@Pipe({ name: 'filterByName' })
+@Pipe({
+  name: 'filterByName',
+  standalone: true,
+})
 export class FilterByNamePipe implements PipeTransform {
   transform(listOfElements: SedaData[], nameToFilter: string, sedaLanguage: boolean): SedaData[] {
     if (!listOfElements) {

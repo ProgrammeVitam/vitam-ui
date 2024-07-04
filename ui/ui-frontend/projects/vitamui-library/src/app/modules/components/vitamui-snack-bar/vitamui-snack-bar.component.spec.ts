@@ -50,8 +50,7 @@ describe('VitamUISnackbarComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, TranslateModule.forRoot()],
-      declarations: [VitamUISnackBarComponent],
+      imports: [HttpClientTestingModule, TranslateModule.forRoot(), VitamUISnackBarComponent],
       providers: [
         { provide: WINDOW_LOCATION, useValue: {} },
         { provide: MAT_SNACK_BAR_DATA, useValue: {} },

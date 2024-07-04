@@ -35,20 +35,50 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { of, Subscription } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
 import { extend, isEmpty } from 'underscore';
 
-import { AuthService, buildValidators, diff, Profile, Role } from 'vitamui-library';
+import {
+  AuthService,
+  buildValidators,
+  diff,
+  Profile,
+  Role,
+  SlideToggleComponent,
+  EditableFieldComponent,
+  VitamUIFieldErrorComponent,
+  RoleToggleComponent,
+  EditableInputComponent,
+  EditableLevelInputComponent,
+  RoleComponent,
+} from 'vitamui-library';
 
 import { ProfileService } from '../../profile.service';
 import { ProfileValidators } from '../../profile.validators';
+import { TranslateModule } from '@ngx-translate/core';
+import { NgIf } from '@angular/common';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
 
 @Component({
   selector: 'app-information-tab',
   templateUrl: './information-tab.component.html',
   styleUrls: ['./information-tab.component.scss'],
+  standalone: true,
+  imports: [
+    ReactiveFormsModule,
+    SlideToggleComponent,
+    MatLegacyTooltipModule,
+    NgIf,
+    EditableFieldComponent,
+    VitamUIFieldErrorComponent,
+    RoleToggleComponent,
+    TranslateModule,
+    EditableInputComponent,
+    EditableLevelInputComponent,
+    RoleComponent,
+  ],
 })
 export class InformationTabComponent implements OnDestroy, OnInit, OnChanges {
   form: FormGroup;

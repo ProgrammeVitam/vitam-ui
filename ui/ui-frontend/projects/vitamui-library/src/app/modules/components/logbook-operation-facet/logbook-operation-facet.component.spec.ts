@@ -34,7 +34,7 @@ describe('LogbookOperationFacetteComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [LogbookOperationFacetComponent],
+      imports: [LogbookOperationFacetComponent],
     }).compileComponents();
   });
 

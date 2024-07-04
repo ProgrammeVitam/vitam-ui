@@ -48,8 +48,14 @@ import {
   Operators,
   PageRequest,
   Profile,
+  InfiniteScrollDirective,
+  EllipsisDirective,
+  PipesModule,
 } from 'vitamui-library';
 import { ProfileService } from '../profile.service';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatLegacyProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
+import { NgFor, NgClass, NgIf } from '@angular/common';
 
 const FILTER_DEBOUNCE_TIME_MS = 400;
 
@@ -57,6 +63,8 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
   selector: 'app-profile-list',
   templateUrl: './profile-list.component.html',
   styleUrls: ['./profile-list.component.scss'],
+  standalone: true,
+  imports: [InfiniteScrollDirective, NgFor, NgClass, EllipsisDirective, NgIf, MatLegacyProgressSpinnerModule, PipesModule, TranslateModule],
 })
 export class ProfileListComponent extends InfiniteScrollTable<Profile> implements OnDestroy, OnInit {
   @Input()

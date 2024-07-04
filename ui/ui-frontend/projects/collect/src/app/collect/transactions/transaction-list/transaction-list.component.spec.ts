@@ -109,7 +109,6 @@ describe('TransactionListComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [TransactionListComponent],
       imports: [
         InjectorModule,
         MatSidenavModule,
@@ -121,6 +120,7 @@ describe('TransactionListComponent', () => {
         TranslateModule.forRoot({
           loader: { provide: TranslateLoader, useClass: FakeLoader },
         }),
+        TransactionListComponent,
       ],
       providers: [
         DatePipe,

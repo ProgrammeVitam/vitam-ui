@@ -1,13 +1,18 @@
 import { Component, Input, ViewChild } from '@angular/core';
-import { MatLegacyTabGroup as MatTabGroup } from '@angular/material/legacy-tabs';
-import { Category } from 'vitamui-library';
+import { MatLegacyTabGroup as MatTabGroup, MatLegacyTabsModule } from '@angular/material/legacy-tabs';
+import { ApplicationCardComponent, Category } from 'vitamui-library';
 import { ContentTypeEnum } from './content.enum';
 import { Content } from './content.interface';
+import { TranslateModule } from '@ngx-translate/core';
+import { SvgIconComponent } from 'angular-svg-icon';
+import { KeyValuePipe, NgFor, NgIf, NgTemplateOutlet } from '@angular/common';
 
 @Component({
   selector: 'app-content-list',
   templateUrl: './content-list.component.html',
   styleUrls: ['./content-list.component.scss'],
+  standalone: true,
+  imports: [MatLegacyTabsModule, NgFor, NgIf, NgTemplateOutlet, SvgIconComponent, KeyValuePipe, TranslateModule, ApplicationCardComponent],
 })
 export class ContentListComponent {
   @Input() set content(content: Map<Category, Content>) {

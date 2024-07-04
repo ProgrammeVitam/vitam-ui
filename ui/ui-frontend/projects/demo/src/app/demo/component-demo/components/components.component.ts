@@ -37,7 +37,25 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { ApplicationId, ApplicationInfo, ApplicationService, ConfirmDialogService } from 'vitamui-library';
+import {
+  ApplicationId,
+  ApplicationInfo,
+  ApplicationService,
+  ConfirmDialogService,
+  NavbarModule,
+  VitamUICommonInputComponent,
+  SlideToggleComponent,
+  TooltipModule,
+  EditableFieldComponent,
+  StepperComponent,
+  ConfirmDialogComponent,
+  InfiniteScrollDirective,
+} from 'vitamui-library';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatLegacyProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
+import { CdkStepperModule } from '@angular/cdk/stepper';
+import { NgIf, NgFor, JsonPipe } from '@angular/common';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 const INFINITE_SCROLL_FAKE_DELAY_MS = 1500;
 
@@ -45,6 +63,25 @@ const INFINITE_SCROLL_FAKE_DELAY_MS = 1500;
   selector: 'demo-components',
   templateUrl: './components.component.html',
   styleUrls: ['./components.component.scss'],
+  standalone: true,
+  imports: [
+    NavbarModule,
+    VitamUICommonInputComponent,
+    ReactiveFormsModule,
+    FormsModule,
+    NgIf,
+    SlideToggleComponent,
+    TooltipModule,
+    EditableFieldComponent,
+    StepperComponent,
+    CdkStepperModule,
+    ConfirmDialogComponent,
+    InfiniteScrollDirective,
+    NgFor,
+    MatLegacyProgressSpinnerModule,
+    JsonPipe,
+    TranslateModule,
+  ],
 })
 export class ComponentsComponent implements OnInit {
   @ViewChild('confirmDialogTemplate', { static: true }) confirmDialogTemplate: TemplateRef<ComponentsComponent>;

@@ -37,11 +37,25 @@
 
 import { Component, EventEmitter, forwardRef, Input, OnInit, Output } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { AuthService, ContextPermission, Customer, Option, Tenant } from 'vitamui-library';
+import {
+  AuthService,
+  ContextPermission,
+  Customer,
+  Option,
+  Tenant,
+  CommonTooltipComponent,
+  VitamUISelectAllOptionComponent,
+  CommonTooltipDirective,
+} from 'vitamui-library';
 import { AccessContractService } from '../../../access-contract/access-contract.service';
 import { CustomerApiService } from '../../../core/api/customer-api.service';
 import { TenantApiService } from '../../../core/api/tenant-api.service';
 import { IngestContractService } from '../../../ingest-contract/ingest-contract.service';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatLegacyOptionModule } from '@angular/material/legacy-core';
+import { MatLegacySelectModule } from '@angular/material/legacy-select';
+import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
+import { NgFor, NgIf } from '@angular/common';
 
 export const CONTEXT_PERMISSION_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -54,6 +68,18 @@ export const CONTEXT_PERMISSION_VALUE_ACCESSOR: any = {
   templateUrl: './context-edit-permission.component.html',
   styleUrls: ['./context-edit-permission.component.scss'],
   providers: [CONTEXT_PERMISSION_VALUE_ACCESSOR],
+  standalone: true,
+  imports: [
+    CommonTooltipComponent,
+    NgFor,
+    NgIf,
+    MatLegacyFormFieldModule,
+    MatLegacySelectModule,
+    MatLegacyOptionModule,
+    VitamUISelectAllOptionComponent,
+    TranslateModule,
+    CommonTooltipDirective,
+  ],
 })
 export class ContextEditPermissionComponent implements ControlValueAccessor, OnInit {
   constructor(

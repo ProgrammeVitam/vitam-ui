@@ -38,11 +38,15 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { AuthService } from '../../auth.service';
 import { Application } from '../../models/application/application.interface';
 import { Category } from '../../models/application/category.interface';
+import { VitamUIMenuTileComponent } from '../vitamui-menu-tile/vitamui-menu-tile.component';
+import { NgFor, NgIf } from '@angular/common';
 
 @Component({
   selector: 'vitamui-common-application-select-content',
   templateUrl: './application-select-content.component.html',
   styleUrls: ['./application-select-content.component.scss'],
+  standalone: true,
+  imports: [NgFor, NgIf, VitamUIMenuTileComponent],
 })
 export class ApplicationSelectContentComponent {
   @Input() isModalMenu: boolean;

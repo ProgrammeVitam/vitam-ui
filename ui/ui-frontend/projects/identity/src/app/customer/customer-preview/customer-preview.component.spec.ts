@@ -49,26 +49,45 @@ import { CustomerService } from '../../core/customer.service';
 import { environment } from './../../../environments/environment';
 import { CustomerPreviewComponent } from './customer-preview.component';
 
-@Component({ selector: 'app-information-tab', template: '' })
+@Component({
+  selector: 'app-information-tab',
+  template: '',
+  standalone: true,
+  imports: [MatMenuModule, MatTabsModule, ReactiveFormsModule, VitamUICommonTestModule, HttpClientTestingModule],
+})
 export class InformationTabStubComponent {
   @Input() customer: Customer;
   @Input() readOnly: boolean;
   @Input() gdprReadOnlyStatus: boolean;
 }
 
-@Component({ selector: 'app-sso-tab', template: '' })
+@Component({
+  selector: 'app-sso-tab',
+  template: '',
+  standalone: true,
+  imports: [MatMenuModule, MatTabsModule, ReactiveFormsModule, VitamUICommonTestModule, HttpClientTestingModule],
+})
 export class SsoTabStubComponent {
   @Input() customer: Customer;
   @Input() readOnly: boolean;
 }
 
-@Component({ selector: 'app-graphic-identity-tab', template: '' })
+@Component({
+  selector: 'app-graphic-identity-tab',
+  template: '',
+  standalone: true,
+  imports: [MatMenuModule, MatTabsModule, ReactiveFormsModule, VitamUICommonTestModule, HttpClientTestingModule],
+})
 export class GraphicIdentityTabStubComponent {
   @Input() customer: Customer;
   @Input() readOnly: boolean;
 }
 
-@Component({ template: '<app-customer-preview [customer]="customer" [gdprReadOnlyStatus]="false"></app-customer-preview>' })
+@Component({
+  template: '<app-customer-preview [customer]="customer" [gdprReadOnlyStatus]="false"></app-customer-preview>',
+  standalone: true,
+  imports: [MatMenuModule, MatTabsModule, ReactiveFormsModule, VitamUICommonTestModule, HttpClientTestingModule],
+})
 class TestHostComponent {
   customer: any;
 
@@ -96,8 +115,6 @@ describe('CustomerPreviewComponent', () => {
         VitamUICommonTestModule,
         HttpClientTestingModule,
         LoggerModule.forRoot(),
-      ],
-      declarations: [
         TestHostComponent,
         CustomerPreviewComponent,
         InformationTabStubComponent,

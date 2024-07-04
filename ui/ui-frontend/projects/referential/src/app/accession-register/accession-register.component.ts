@@ -28,13 +28,41 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { AccessionRegisterDetail, ExternalParameters, ExternalParametersService, SidenavPage } from 'vitamui-library';
+import {
+  AccessionRegisterDetail,
+  ExternalParameters,
+  ExternalParametersService,
+  SidenavPage,
+  VitamuiTitleBreadcrumbComponent,
+  SearchBarWithSiblingButtonComponent,
+} from 'vitamui-library';
 import { AccessionRegistersService } from './accession-register.service';
+import { TranslateModule } from '@ngx-translate/core';
+import { AccessionRegisterListComponent } from './accession-register-list/accession-register-list.component';
+import { AccessionRegisterFacetsComponent } from './accession-register-facets/accession-register-facets.component';
+import { AccessionRegisterAdvancedSearchComponent } from './accession-register-advanced-search/accession-register-advanced-search.component';
+import { AccessionRegisterPreviewComponent } from './accession-register-preview/accession-register-preview.component';
+import { NgClass, NgIf, AsyncPipe } from '@angular/common';
+import { MatSidenavModule } from '@angular/material/sidenav';
 
 @Component({
   selector: 'app-accession-register',
   templateUrl: './accession-register.component.html',
   styleUrls: ['./accession-register.component.scss'],
+  standalone: true,
+  imports: [
+    MatSidenavModule,
+    NgClass,
+    NgIf,
+    AccessionRegisterPreviewComponent,
+    VitamuiTitleBreadcrumbComponent,
+    SearchBarWithSiblingButtonComponent,
+    AccessionRegisterAdvancedSearchComponent,
+    AccessionRegisterFacetsComponent,
+    AccessionRegisterListComponent,
+    AsyncPipe,
+    TranslateModule,
+  ],
 })
 export class AccessionRegisterComponent extends SidenavPage<AccessionRegisterDetail> implements OnInit, OnDestroy {
   search: string;

@@ -39,6 +39,7 @@ import { Directive, EventEmitter, Output } from '@angular/core';
 @Directive({
   selector: '[vitamuiCommonRowCollapse]',
   exportAs: 'vitamuiRowCollapse',
+  standalone: true,
 })
 export class RowCollapseDirective {
   @Output() expanded = new EventEmitter<any>();

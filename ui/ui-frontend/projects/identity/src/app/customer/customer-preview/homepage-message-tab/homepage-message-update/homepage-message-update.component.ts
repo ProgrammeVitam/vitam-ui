@@ -5,11 +5,15 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ConfirmDialogService, Customer } from 'vitamui-library';
 import { CustomerService } from '../../../../core/customer.service';
+import { TranslateModule } from '@ngx-translate/core';
+import { HomepageMessageComponent } from '../homepage-message/homepage-message.component';
 
 @Component({
   selector: 'app-homepage-message-update',
   templateUrl: './homepage-message-update.component.html',
   styleUrls: ['./homepage-message-update.component.scss'],
+  standalone: true,
+  imports: [HomepageMessageComponent, TranslateModule],
 })
 export class HomepageMessageUpdateComponent implements OnDestroy {
   private destroy = new Subject<void>();

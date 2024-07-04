@@ -37,23 +37,50 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ApplicationService, DownloadUtils, GlobalEventService, IngestContract, SecurityService, SidenavPage } from 'vitamui-library';
+import {
+  ApplicationService,
+  DownloadUtils,
+  GlobalEventService,
+  IngestContract,
+  SecurityService,
+  SidenavPage,
+  VitamuiTitleBreadcrumbComponent,
+  VitamuiCommonBannerComponent,
+  VitamuiMenuButtonComponent,
+} from 'vitamui-library';
 import { DownloadSnackBarService } from './../core/service/download-snack-bar.service';
 import { Observable, Subscription } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
 import { IngestContractCreateComponent } from './ingest-contract-create/ingest-contract-create.component';
 import { IngestContractListComponent } from './ingest-contract-list/ingest-contract-list.component';
 import { ImportDialogParam, ReferentialTypes } from '../shared/import-dialog/import-dialog-param.interface';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import { FileTypes } from 'projects/vitamui-library/src/lib/models/file-types.enum';
 import { ImportDialogComponent } from '../shared/import-dialog/import-dialog.component';
 import { IngestContractService } from './ingest-contract.service';
 import { HttpResponse } from '@angular/common/http';
+import { MatLegacyMenuModule } from '@angular/material/legacy-menu';
+import { IngestContractPreviewComponent } from './ingest-contract-preview/ingest-contract-preview.component';
+import { NgIf, AsyncPipe } from '@angular/common';
+import { MatSidenavModule } from '@angular/material/sidenav';
 
 @Component({
   selector: 'app-ingest-contract',
   templateUrl: './ingest-contract.component.html',
   styleUrls: ['./ingest-contract.component.scss'],
+  standalone: true,
+  imports: [
+    MatSidenavModule,
+    NgIf,
+    IngestContractPreviewComponent,
+    VitamuiTitleBreadcrumbComponent,
+    VitamuiCommonBannerComponent,
+    VitamuiMenuButtonComponent,
+    MatLegacyMenuModule,
+    IngestContractListComponent,
+    AsyncPipe,
+    TranslateModule,
+  ],
 })
 export class IngestContractComponent extends SidenavPage<IngestContract> implements OnInit {
   @ViewChild(IngestContractListComponent, { static: true }) ingestContractListComponent: IngestContractListComponent;

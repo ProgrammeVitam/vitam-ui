@@ -40,7 +40,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
 import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
-import { BASE_URL, ENVIRONMENT, FilingPlanModule, InjectorModule, LoggerModule, VitamUISnackBarService } from 'vitamui-library';
+import { BASE_URL, ENVIRONMENT, FilingPlanComponent, InjectorModule, LoggerModule, VitamUISnackBarService } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { environment } from './../../../../../environments/environment';
 
@@ -59,12 +59,12 @@ xdescribe('IngestContractNodeUpdateComponent', () => {
         ReactiveFormsModule,
         HttpClientTestingModule,
         VitamUICommonTestModule,
-        FilingPlanModule,
+        FilingPlanComponent,
         MatSnackBarModule,
         InjectorModule,
         LoggerModule.forRoot(),
+        IngestContractNodeUpdateComponent,
       ],
-      declarations: [IngestContractNodeUpdateComponent],
       providers: [
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         {

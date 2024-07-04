@@ -42,6 +42,7 @@ import { Direction } from '../../vitamui-table';
   selector: 'vitamui-common-order-by-button',
   templateUrl: './order-by-button.component.html',
   styleUrls: ['./order-by-button.component.scss'],
+  standalone: true,
 })
 export class OrderByButtonComponent {
   @Input() orderByKey: string;

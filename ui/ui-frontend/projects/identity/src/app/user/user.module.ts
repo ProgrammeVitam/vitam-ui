@@ -42,11 +42,6 @@ import { MatLegacyMenuModule as MatMenuModule } from '@angular/material/legacy-m
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { VitamUICommonModule } from 'vitamui-library';
 
-import { SharedModule } from '../shared/shared.module';
-import { GroupAttributionModule } from './group-attribution/group-attribution.module';
-import { UserCreateModule } from './user-create';
-import { UserListModule } from './user-list';
-import { UserPreviewModule } from './user-preview';
 import { UserRoutingModule } from './user-routing.module';
 import { UserComponent } from './user.component';
 
@@ -54,17 +49,12 @@ import { UserComponent } from './user.component';
   imports: [
     CommonModule,
     VitamUICommonModule,
-    SharedModule,
-    UserCreateModule,
-    UserListModule,
     MatDialogModule,
     MatMenuModule,
-    UserPreviewModule,
-    GroupAttributionModule,
     MatSidenavModule,
     FormsModule,
     UserRoutingModule,
+    UserComponent,
   ],
-  declarations: [UserComponent],
 })
 export class UserModule {}

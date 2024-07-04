@@ -3,7 +3,10 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ThemeColorType } from '../utils';
 
-@Pipe({ name: 'highlight' })
+@Pipe({
+  name: 'highlight',
+  standalone: true,
+})
 export class HighlightPipe implements PipeTransform {
   constructor(private sanitizer: DomSanitizer) {}
 

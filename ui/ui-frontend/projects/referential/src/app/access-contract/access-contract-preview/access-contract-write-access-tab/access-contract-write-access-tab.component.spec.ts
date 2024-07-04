@@ -48,8 +48,7 @@ xdescribe('AccessContractWriteAccessTabComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, VitamUICommonTestModule],
-      declarations: [AccessContractWriteAccessTabComponent],
+      imports: [ReactiveFormsModule, VitamUICommonTestModule, AccessContractWriteAccessTabComponent],
       providers: [FormBuilder, { provide: AccessContractService, useValue: {} }],
     }).compileComponents();
   });

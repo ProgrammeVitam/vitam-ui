@@ -53,8 +53,7 @@ describe('UserActionUploadComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-      declarations: [UserActionUploadProfileComponent],
+      imports: [HttpClientTestingModule, UserActionUploadProfileComponent],
       providers: [
         ProfileService,
         PastisConfiguration,

@@ -26,16 +26,20 @@
  */
 
 import { Component, Input, OnDestroy, TemplateRef, ViewChild } from '@angular/core';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatLegacyDialog as MatDialog, MatLegacyDialogModule } from '@angular/material/legacy-dialog';
 import { ManagementRulesSharedDataService } from 'projects/archive-search/src/app/core/management-rules-shared-data.service';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { ActionsRules, ManagementRules, RuleActionsEnum, RuleCategoryAction } from '../../../../../models/ruleAction.interface';
+import { TranslateModule } from '@ngx-translate/core';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-block-category-inheritance',
   templateUrl: './block-category-inheritance.component.html',
   styleUrls: ['./block-category-inheritance.component.css'],
+  standalone: true,
+  imports: [NgIf, MatLegacyDialogModule, TranslateModule],
 })
 export class BlockCategoryInheritanceComponent implements OnDestroy {
   @Input()

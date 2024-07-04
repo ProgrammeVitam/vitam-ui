@@ -40,6 +40,7 @@ import { RowCollapseDirective } from './row-collapse.directive';
 
 @Directive({
   selector: '[vitamuiCommonRowCollapseContainer]',
+  standalone: true,
 })
 export class RowCollapseContainerDirective implements AfterContentInit {
   @ContentChildren(RowCollapseDirective) collapseDirectives: QueryList<RowCollapseDirective>;

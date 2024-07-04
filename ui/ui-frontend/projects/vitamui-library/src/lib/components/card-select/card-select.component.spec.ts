@@ -9,7 +9,7 @@ describe('CardSelectComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [CardSelectComponent],
+      imports: [CardSelectComponent],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });

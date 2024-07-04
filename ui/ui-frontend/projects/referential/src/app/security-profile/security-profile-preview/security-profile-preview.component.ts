@@ -41,18 +41,29 @@ import {
   MatLegacyTab as MatTab,
   MatLegacyTabGroup as MatTabGroup,
   MatLegacyTabHeader as MatTabHeader,
+  MatLegacyTabsModule,
 } from '@angular/material/legacy-tabs';
 import { Observable } from 'rxjs';
-import { SecurityProfile } from 'vitamui-library';
+import { SecurityProfile, VitamuiSidenavHeaderComponent, HistoryModule } from 'vitamui-library';
 import { ConfirmActionComponent } from 'vitamui-library';
 import { SecurityProfileService } from '../security-profile.service';
 import { SecurityProfileInformationTabComponent } from './security-profile-information-tab/security-profile-information-tab.component';
 import { SecurityProfilePermissionsTabComponent } from './security-profile-permissions-tab/security-profile-permissions-tab.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-security-profile-preview',
   templateUrl: './security-profile-preview.component.html',
   styleUrls: ['./security-profile-preview.component.scss'],
+  standalone: true,
+  imports: [
+    VitamuiSidenavHeaderComponent,
+    MatLegacyTabsModule,
+    SecurityProfileInformationTabComponent,
+    SecurityProfilePermissionsTabComponent,
+    HistoryModule,
+    TranslateModule,
+  ],
 })
 export class SecurityProfilePreviewComponent implements AfterViewInit {
   @Output() previewClose: EventEmitter<any> = new EventEmitter();

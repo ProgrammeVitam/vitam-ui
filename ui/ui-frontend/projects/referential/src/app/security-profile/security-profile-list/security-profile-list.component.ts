@@ -48,8 +48,13 @@ import {
   PageRequest,
   Role,
   SecurityProfile,
+  InfiniteScrollDirective,
+  OrderByButtonComponent,
 } from 'vitamui-library';
 import { SecurityProfileService } from '../security-profile.service';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatLegacyProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
+import { NgFor, NgIf } from '@angular/common';
 
 const FILTER_DEBOUNCE_TIME_MS = 400;
 
@@ -57,6 +62,8 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
   selector: 'app-security-profile-list',
   templateUrl: './security-profile-list.component.html',
   styleUrls: ['./security-profile-list.component.scss'],
+  standalone: true,
+  imports: [InfiniteScrollDirective, OrderByButtonComponent, NgFor, NgIf, MatLegacyProgressSpinnerModule, TranslateModule],
 })
 export class SecurityProfileListComponent extends InfiniteScrollTable<SecurityProfile> implements OnDestroy, OnInit {
   // eslint-disable-next-line @angular-eslint/no-input-rename

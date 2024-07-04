@@ -1,14 +1,18 @@
 import { NestedTreeControl } from '@angular/cdk/tree';
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { MatTreeNestedDataSource } from '@angular/material/tree';
+import { MatTreeNestedDataSource, MatTreeModule } from '@angular/material/tree';
 import { LogbookOperation } from '../../../models/logbook-event.interface';
 import { Event } from '../event';
 import { EventDisplayHelperService } from '../event-display-helper.service';
+import { NgSwitch, NgSwitchCase, NgStyle, NgClass } from '@angular/common';
+import { MatLegacyButtonModule } from '@angular/material/legacy-button';
 
 @Component({
   selector: 'app-ingest-errors-details-tab',
   templateUrl: './ingest-errors-details-tab.component.html',
   styleUrls: ['./ingest-errors-details-tab.component.css'],
+  standalone: true,
+  imports: [MatTreeModule, MatLegacyButtonModule, NgSwitch, NgSwitchCase, NgStyle, NgClass],
 })
 export class IngestErrorsDetailsTabComponent implements OnInit, OnChanges {
   @Input() ingest: LogbookOperation;

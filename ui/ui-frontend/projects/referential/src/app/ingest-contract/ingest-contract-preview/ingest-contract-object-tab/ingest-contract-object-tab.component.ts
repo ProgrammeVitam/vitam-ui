@@ -35,18 +35,35 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
 import { extend, isEmpty } from 'underscore';
-import { IngestContract, Option, diff } from 'vitamui-library';
+import { IngestContract, Option, diff, SlideToggleComponent } from 'vitamui-library';
 
 import { IngestContractService } from '../../ingest-contract.service';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatLegacyOptionModule } from '@angular/material/legacy-core';
+import { MatLegacySelectModule } from '@angular/material/legacy-select';
+import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
+import { NgIf, NgFor } from '@angular/common';
 
 @Component({
   selector: 'app-ingest-contract-object-tab',
   templateUrl: './ingest-contract-object-tab.component.html',
   styleUrls: ['./ingest-contract-object-tab.component.scss'],
+  standalone: true,
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    SlideToggleComponent,
+    NgIf,
+    MatLegacyFormFieldModule,
+    MatLegacySelectModule,
+    NgFor,
+    MatLegacyOptionModule,
+    TranslateModule,
+  ],
 })
 export class IngestContractObjectTabComponent {
   @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();

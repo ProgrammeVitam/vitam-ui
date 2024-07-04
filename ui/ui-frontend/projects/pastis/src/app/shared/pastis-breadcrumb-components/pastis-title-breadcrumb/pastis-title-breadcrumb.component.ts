@@ -37,6 +37,7 @@
 
 import { Location } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { PastisBreadcrumbComponent } from '../pastis-breadcrumb/pastis-breadcrumb.component';
 
 //TODO: delete ?
 @Component({
@@ -44,6 +45,8 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   selector: 'pastis-title-breadcrumb',
   templateUrl: './pastis-title-breadcrumb.component.html',
   styleUrls: ['./pastis-title-breadcrumb.component.scss'],
+  standalone: true,
+  imports: [PastisBreadcrumbComponent],
 })
 export class PastisTitleBreadcrumbComponent {
   @Input()

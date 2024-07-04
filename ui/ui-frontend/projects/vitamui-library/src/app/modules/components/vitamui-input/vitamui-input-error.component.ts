@@ -43,6 +43,7 @@ import { slideDownAnimation } from '../../animations/vitamui-common-animations';
   template: `<ng-content></ng-content>`,
   styleUrls: ['./vitamui-input-error.component.scss'],
   animations: [slideDownAnimation],
+  standalone: true,
 })
 export class VitamUIInputErrorComponent {
   @HostBinding('@slideDownAnimation') slideDownAnimation = true;

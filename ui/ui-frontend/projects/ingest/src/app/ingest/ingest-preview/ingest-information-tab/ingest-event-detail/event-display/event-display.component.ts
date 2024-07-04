@@ -37,10 +37,15 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Event } from '../../../event';
 
+import { NgClass, NgFor } from '@angular/common';
+import { EventTypeLabelComponent } from 'vitamui-library';
+
 @Component({
   selector: 'app-vitam-event-display',
   templateUrl: './event-display.component.html',
   styleUrls: ['./event-display.component.scss'],
+  standalone: true,
+  imports: [EventTypeLabelComponent, NgClass, NgFor],
 })
 export class EventDisplayComponent implements OnInit {
   @Input() event: Event;

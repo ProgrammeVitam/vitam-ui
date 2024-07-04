@@ -34,9 +34,9 @@ The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import { merge } from 'rxjs';
 import { debounceTime, filter, map } from 'rxjs/operators';
 import {
@@ -49,11 +49,20 @@ import {
   SearchCriteriaEltDto,
   SearchCriteriaTypeEnum,
   diff,
+  EditableFieldComponent,
+  PipesModule,
+  EditableInputComponent,
 } from 'vitamui-library';
 import { ArchiveCollectService } from '../../../archive-collect.service';
 import { ArchiveSearchConstsEnum } from '../../models/archive-search-consts-enum';
 import { ArchiveSharedDataService } from '../../services/archive-shared-data.service';
 import { ManagementRulesSharedDataService } from '../../services/management-rules-shared-data.service';
+import { MatLegacyOptionModule } from '@angular/material/legacy-core';
+import { MatLegacySelectModule } from '@angular/material/legacy-select';
+import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { NgStyle, NgIf, NgFor } from '@angular/common';
 
 const FINAL_ACTION_TYPE = 'FINAL_ACTION_TYPE';
 const ARCHIVE_UNIT_WITH_OBJECTS = 'ARCHIVE_UNIT_WITH_OBJECTS';
@@ -64,6 +73,22 @@ const ALL_ARCHIVE_UNIT_TYPES = 'ALL_ARCHIVE_UNIT_TYPES';
   selector: 'app-simple-criteria-search',
   templateUrl: './simple-criteria-search.component.html',
   styleUrls: ['./simple-criteria-search.component.css'],
+  standalone: true,
+  imports: [
+    ReactiveFormsModule,
+    EditableFieldComponent,
+    NgStyle,
+    MatLegacyTooltipModule,
+    NgIf,
+    MatDatepickerModule,
+    MatLegacyFormFieldModule,
+    MatLegacySelectModule,
+    MatLegacyOptionModule,
+    NgFor,
+    PipesModule,
+    TranslateModule,
+    EditableInputComponent,
+  ],
 })
 export class SimpleCriteriaSearchComponent implements OnInit {
   simpleCriteriaForm: FormGroup;

@@ -25,13 +25,21 @@
  * accept its terms.
  */
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Observable, Subscription, of } from 'rxjs';
 import { mergeMap, tap } from 'rxjs/operators';
-import { ManagementContract, PersistentIdentifierPolicyTypeEnum } from 'vitamui-library';
+import { ManagementContract, PersistentIdentifierPolicyTypeEnum, VitamUICommonInputComponent } from 'vitamui-library';
 import { FormGroupToManagementContractConverterService } from '../../components/form-group-to-management-contract-converter.service';
 import { ManagementContractToFormGroupConverterService } from '../../components/management-contract-to-form-group-converter.service';
 import { ManagementContractService } from '../../management-contract.service';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatLegacyProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { UpdatePersistentIdentifierPolicyFormComponent } from '../../components/update-persistent-identifier-policy-form/update-persistent-identifier-policy-form.component';
+import { MatLegacyOptionModule } from '@angular/material/legacy-core';
+import { NgFor, NgIf } from '@angular/common';
+import { MatLegacySelectModule } from '@angular/material/legacy-select';
+import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
 
 interface PersistentIdentifierPolicyTypeOption {
   label: string;
@@ -43,6 +51,21 @@ interface PersistentIdentifierPolicyTypeOption {
   templateUrl: './management-contract-identification-tab.component.html',
   styleUrls: ['./management-contract-identification-tab.component.scss'],
   providers: [ManagementContractToFormGroupConverterService],
+  standalone: true,
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    MatLegacyFormFieldModule,
+    MatLegacySelectModule,
+    NgFor,
+    MatLegacyOptionModule,
+    NgIf,
+    VitamUICommonInputComponent,
+    UpdatePersistentIdentifierPolicyFormComponent,
+    MatLegacyTooltipModule,
+    MatLegacyProgressSpinnerModule,
+    TranslateModule,
+  ],
 })
 export class ManagementContractIdentificationTabComponent implements OnChanges {
   @Input() managementContract: ManagementContract;

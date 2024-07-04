@@ -29,7 +29,10 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FilingHoldingSchemeNode, UnitType } from '../../models';
 import { VitamuiTreeNodeComponent } from './vitamui-tree-node.component';
 
-@Pipe({ name: 'truncate' })
+@Pipe({
+  name: 'truncate',
+  standalone: true,
+})
 class MockTruncatePipe implements PipeTransform {
   transform(value: number): number {
     return value;
@@ -54,8 +57,7 @@ describe('VitamuiTreeNodeComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [],
-      declarations: [VitamuiTreeNodeComponent, MockTruncatePipe],
+      imports: [VitamuiTreeNodeComponent, MockTruncatePipe],
       providers: [],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();

@@ -34,17 +34,38 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, forwardRef, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { DisplayObject } from '../../models';
 import { internationalizedKeys } from '../../services/display-object-helper.service';
 import { FavoriteEntryService } from '../../services/favorite-entry.service';
 import { LayoutService } from '../../services/layout.service';
 import { DisplayObjectType } from '../../types';
+import { EmptyPipe } from '../../../pipes/empty.pipe';
+import { TranslateModule } from '@ngx-translate/core';
+import { PrimitiveComponent } from '../primitive/primitive.component';
+import { ListComponent } from '../list/list.component';
+import { AccordionComponent } from '../../../components/accordion/accordion.component';
+import { DataComponent } from '../../../components/data/data.component';
+import { NgFor, NgIf, NgSwitch, NgSwitchCase, NgTemplateOutlet } from '@angular/common';
 
 @Component({
   selector: 'vitamui-common-group',
   templateUrl: './group.component.html',
   styleUrls: ['./group.component.scss'],
+  standalone: true,
+  imports: [
+    NgIf,
+    NgFor,
+    DataComponent,
+    NgTemplateOutlet,
+    AccordionComponent,
+    NgSwitch,
+    NgSwitchCase,
+    forwardRef(() => ListComponent),
+    PrimitiveComponent,
+    TranslateModule,
+    EmptyPipe,
+  ],
 })
 export class GroupComponent implements OnChanges {
   @Input() displayObject: DisplayObject;

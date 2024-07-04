@@ -49,8 +49,7 @@ describe('TenantMenuComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MatDialogModule, VitamUICommonTestModule],
-      declarations: [TenantMenuComponent],
+      imports: [MatDialogModule, VitamUICommonTestModule, TenantMenuComponent],
       providers: [
         { provide: ActivatedRoute, useValue: { paramMap: EMPTY } },
         { provide: TenantMenuService, useValue: { getSelectedTenant: () => EMPTY } },

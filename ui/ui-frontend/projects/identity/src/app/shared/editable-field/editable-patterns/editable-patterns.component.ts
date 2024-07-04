@@ -35,11 +35,13 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, ElementRef, forwardRef, Inject, Input, ViewChild } from '@angular/core';
-import { NG_VALUE_ACCESSOR } from '@angular/forms';
+import { NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 
 import { EditableFieldComponent } from 'vitamui-library';
 import { PatternComponent } from '../../pattern/pattern.component';
-import { DOCUMENT } from '@angular/common';
+import { DOCUMENT, NgIf, NgFor } from '@angular/common';
+import { MatLegacyProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
+import { CdkOverlayOrigin, CdkConnectedOverlay } from '@angular/cdk/overlay';
 export const EDITABLE_PATTERNS_INPUT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
   // eslint-disable-next-line no-use-before-define
@@ -51,6 +53,8 @@ export const EDITABLE_PATTERNS_INPUT_VALUE_ACCESSOR: any = {
   selector: 'app-editable-patterns',
   templateUrl: './editable-patterns.component.html',
   providers: [EDITABLE_PATTERNS_INPUT_VALUE_ACCESSOR],
+  standalone: true,
+  imports: [NgIf, CdkOverlayOrigin, NgFor, PatternComponent, ReactiveFormsModule, MatLegacyProgressSpinnerModule, CdkConnectedOverlay],
 })
 export class EditablePatternsComponent extends EditableFieldComponent {
   @Input() options: Array<{ value: string; disabled: boolean }>;

@@ -45,6 +45,8 @@ import { VitamUICommonInputComponent } from './vitamui-common-input.component';
 
 @Component({
   template: ` <vitamui-common-input [(ngModel)]="value" #input="ngModel"></vitamui-common-input> `,
+  standalone: true,
+  imports: [FormsModule, MatProgressSpinnerModule],
 })
 class TesthostComponent {
   @ViewChild(VitamUICommonInputComponent) vitamuiInputComponent: VitamUICommonInputComponent;
@@ -59,8 +61,7 @@ let fixture: ComponentFixture<TesthostComponent>;
 describe('VitamUIInputComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FormsModule, NoopAnimationsModule, MatProgressSpinnerModule],
-      declarations: [VitamUICommonInputComponent, TesthostComponent],
+      imports: [FormsModule, NoopAnimationsModule, MatProgressSpinnerModule, VitamUICommonInputComponent, TesthostComponent],
     }).compileComponents();
   });
 

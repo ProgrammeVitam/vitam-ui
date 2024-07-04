@@ -35,21 +35,52 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatLegacyDialog as MatDialog, MatLegacyDialogModule } from '@angular/material/legacy-dialog';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { AdminUserProfile, AuthService, Customer, Group, isLevelAllowed, StartupService, User, UserInfo } from 'vitamui-library';
+import {
+  AdminUserProfile,
+  AuthService,
+  Customer,
+  Group,
+  isLevelAllowed,
+  StartupService,
+  User,
+  UserInfo,
+  VitamuiSidenavHeaderComponent,
+  VitamuiMenuButtonComponent,
+  HistoryModule,
+} from 'vitamui-library';
 import { UserInfoService } from './../user-info.service';
 
 import { UserApiService } from '../../core/api/user-api.service';
 import { GroupService } from '../../group/group.service';
 import { GroupSelection } from '../group-selection.interface';
 import { UserService } from '../user.service';
+import { TranslateModule } from '@ngx-translate/core';
+import { NgIf } from '@angular/common';
+import { UserGroupTabComponent } from './user-group-tab/user-group-tab.component';
+import { UserInfoTabComponent } from './user-information-tab/user-information-tab.component';
+import { MatLegacyTabsModule } from '@angular/material/legacy-tabs';
+import { MatLegacyMenuModule } from '@angular/material/legacy-menu';
 
 @Component({
   selector: 'app-user-preview',
   templateUrl: './user-preview.component.html',
   styleUrls: ['./user-preview.component.scss'],
+  standalone: true,
+  imports: [
+    VitamuiSidenavHeaderComponent,
+    VitamuiMenuButtonComponent,
+    MatLegacyMenuModule,
+    MatLegacyTabsModule,
+    UserInfoTabComponent,
+    UserGroupTabComponent,
+    NgIf,
+    HistoryModule,
+    MatLegacyDialogModule,
+    TranslateModule,
+  ],
 })
 export class UserPreviewComponent implements OnDestroy, OnInit {
   @Input() isPopup: boolean;

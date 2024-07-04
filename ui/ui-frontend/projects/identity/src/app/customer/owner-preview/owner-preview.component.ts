@@ -36,12 +36,24 @@
  */
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
-import { Owner, StartupService, Tenant } from 'vitamui-library';
+import { Owner, StartupService, Tenant, VitamuiSidenavHeaderComponent } from 'vitamui-library';
+import { TranslateModule } from '@ngx-translate/core';
+import { OwnerOperationHistoryTabComponent } from './owner-operation-history-tab/owner-operation-history-tab.component';
+import { InformationTabComponent } from './information-tab/information-tab.component';
+import { MatLegacyTabsModule } from '@angular/material/legacy-tabs';
 
 @Component({
   selector: 'app-owner-preview',
   templateUrl: './owner-preview.component.html',
   styleUrls: ['./owner-preview.component.scss'],
+  standalone: true,
+  imports: [
+    VitamuiSidenavHeaderComponent,
+    MatLegacyTabsModule,
+    InformationTabComponent,
+    OwnerOperationHistoryTabComponent,
+    TranslateModule,
+  ],
 })
 export class OwnerPreviewComponent {
   @Input() owner: Owner;

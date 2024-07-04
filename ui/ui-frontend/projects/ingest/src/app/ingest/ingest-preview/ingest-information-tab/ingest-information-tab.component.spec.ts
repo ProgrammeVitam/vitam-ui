@@ -47,8 +47,7 @@ describe('IngestInformationTabComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [IngestInformationTabComponent],
-      imports: [TranslateModule.forRoot(), VitamUICommonTestModule],
+      imports: [TranslateModule.forRoot(), VitamUICommonTestModule, IngestInformationTabComponent],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });

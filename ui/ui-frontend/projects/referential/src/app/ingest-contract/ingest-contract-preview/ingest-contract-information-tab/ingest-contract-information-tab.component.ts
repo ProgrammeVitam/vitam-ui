@@ -36,21 +36,54 @@
  */
 import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
 import { extend, isEmpty } from 'underscore';
-import { IngestContract, diff } from 'vitamui-library';
+import {
+  IngestContract,
+  diff,
+  SlideToggleComponent,
+  VitamUICommonInputComponent,
+  PipesModule,
+  VitamUIInputErrorComponent,
+  VitamUITextareaComponent,
+} from 'vitamui-library';
 
 import { ArchiveProfileApiService } from '../../../core/api/archive-profile-api.service';
 import { ManagementContractApiService } from '../../../core/api/management-contract-api.service';
 import { IngestContractCreateValidators } from '../../ingest-contract-create/ingest-contract-create.validators';
 import { IngestContractService } from '../../ingest-contract.service';
+import { DateTimePipe } from '../../../../../../vitamui-library/src/app/modules/pipes/datetime.pipe';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatLegacyInputModule } from '@angular/material/legacy-input';
+import { MatLegacyOptionModule } from '@angular/material/legacy-core';
+import { MatLegacySelectModule } from '@angular/material/legacy-select';
+import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
+import { NgIf, NgFor } from '@angular/common';
 
 @Component({
   selector: 'app-ingest-contract-information-tab',
   templateUrl: './ingest-contract-information-tab.component.html',
   styleUrls: ['./ingest-contract-information-tab.component.scss'],
+  standalone: true,
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    SlideToggleComponent,
+    VitamUICommonInputComponent,
+    NgIf,
+    MatLegacyFormFieldModule,
+    MatLegacySelectModule,
+    NgFor,
+    MatLegacyOptionModule,
+    MatLegacyInputModule,
+    PipesModule,
+    TranslateModule,
+    DateTimePipe,
+    VitamUIInputErrorComponent,
+    VitamUITextareaComponent,
+  ],
 })
 export class IngestContractInformationTabComponent implements OnInit {
   @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();

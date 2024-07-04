@@ -69,7 +69,6 @@ describe('AppraisalRuleSearchComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [AppraisalRuleSearchComponent],
       imports: [
         InjectorModule,
         VitamUICommonTestModule,
@@ -78,6 +77,7 @@ describe('AppraisalRuleSearchComponent', () => {
         TranslateModule.forRoot(),
         RouterTestingModule,
         BrowserAnimationsModule,
+        AppraisalRuleSearchComponent,
       ],
       providers: [
         FormBuilder,

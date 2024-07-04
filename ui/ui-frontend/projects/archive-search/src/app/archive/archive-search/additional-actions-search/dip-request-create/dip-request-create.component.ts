@@ -36,27 +36,53 @@
  */
 
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import * as uuid from 'uuid';
 import {
+  CommonProgressBarComponent,
   ConfirmDialogService,
   Logger,
   ObjectQualifierTypeList,
   ObjectQualifierTypeType,
   SearchCriteriaEltDto,
   StartupService,
+  StepperComponent,
   UsageVersionEnum,
+  VitamUICommonInputComponent,
 } from 'vitamui-library';
 import { ArchiveService } from '../../../archive.service';
 import { ExportDIPRequestDto, QualifierVersion } from '../../../models/dip.interface';
+import { MatLegacyRadioModule } from '@angular/material/legacy-radio';
+import { MatLegacyOptionModule } from '@angular/material/legacy-core';
+import { MatLegacySelectModule } from '@angular/material/legacy-select';
+import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { CdkStepperModule } from '@angular/cdk/stepper';
+import { NgIf, NgFor } from '@angular/common';
 
 @Component({
   selector: 'app-dip-request-create',
   templateUrl: './dip-request-create.component.html',
   styleUrls: ['./dip-request-create.component.scss'],
+  standalone: true,
+  imports: [
+    CommonProgressBarComponent,
+    NgIf,
+    StepperComponent,
+    CdkStepperModule,
+    ReactiveFormsModule,
+    VitamUICommonInputComponent,
+    MatButtonToggleModule,
+    NgFor,
+    MatLegacyFormFieldModule,
+    MatLegacySelectModule,
+    MatLegacyOptionModule,
+    MatLegacyRadioModule,
+    TranslateModule,
+  ],
 })
 export class DipRequestCreateComponent implements OnInit, OnDestroy {
   stepIndex = 0;

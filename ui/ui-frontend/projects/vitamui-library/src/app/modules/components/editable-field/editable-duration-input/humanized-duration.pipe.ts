@@ -39,6 +39,7 @@ import moment from 'moment';
 
 @Pipe({
   name: 'humanizedDuration',
+  standalone: true,
 })
 export class HumanizedDurationPipe implements PipeTransform {
   /**

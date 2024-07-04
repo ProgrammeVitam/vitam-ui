@@ -47,8 +47,7 @@ describe('TooltipComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [NoopAnimationsModule],
-      declarations: [TooltipComponent],
+      imports: [NoopAnimationsModule, TooltipComponent],
       providers: [{ provide: VITAMUI_TOOLTIP_MESSAGE, useValue: { tooltipClass: EMPTY } }],
     }).compileComponents();
   });

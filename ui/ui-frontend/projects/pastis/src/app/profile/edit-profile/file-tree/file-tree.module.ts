@@ -38,16 +38,15 @@ knowledge of the CeCILL-C license and that you accept its terms.
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { SharedModule } from '../../../shared/shared.module';
+
 import { UserActionsModule } from '../../../user-actions/user-actions.module';
 
 import { MatLegacyTableModule as MatTableModule } from '@angular/material/legacy-table';
-import { PastisMaterialModule } from '../../../material.module';
 
 import { MAT_RIPPLE_GLOBAL_OPTIONS } from '@angular/material/core';
 
 import { TranslateModule } from '@ngx-translate/core';
-import { EditableFieldModule, VitamUICommonModule } from 'vitamui-library';
+import { EditableFieldComponent, VitamUICommonModule } from 'vitamui-library';
 import { CoreModule } from '../../../core/core.module';
 import { AttributesPopupComponent } from '../file-tree-metadata/attributes/attributes.component';
 import { FileTreeMetadataComponent } from '../file-tree-metadata/file-tree-metadata.component';
@@ -57,19 +56,20 @@ import { FiletreeFilterPipe } from './pipes/file-tree-filter.pipe';
 @NgModule({
   imports: [
     CommonModule,
-    PastisMaterialModule,
     FormsModule,
     CoreModule,
     ReactiveFormsModule,
     MatTableModule,
-    SharedModule,
     UserActionsModule,
-    EditableFieldModule,
+    EditableFieldComponent,
     TranslateModule,
     VitamUICommonModule,
+    FileTreeMetadataComponent,
+    FileTreeComponent,
+    FiletreeFilterPipe,
+    AttributesPopupComponent,
   ],
   exports: [FileTreeComponent, FileTreeMetadataComponent],
   providers: [{ provide: MAT_RIPPLE_GLOBAL_OPTIONS, useValue: { disabled: true } }],
-  declarations: [FileTreeMetadataComponent, FileTreeComponent, FiletreeFilterPipe, AttributesPopupComponent],
 })
 export class FileTreeModule {}

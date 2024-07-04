@@ -96,8 +96,7 @@ describe('AuditInformationTabComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, VitamUICommonTestModule],
-      declarations: [AuditInformationTabComponent],
+      imports: [ReactiveFormsModule, VitamUICommonTestModule, AuditInformationTabComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
   });

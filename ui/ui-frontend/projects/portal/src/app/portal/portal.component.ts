@@ -59,6 +59,10 @@ import {
 } from 'vitamui-library';
 import { ContentTypeEnum } from '../components/content-list/content.enum';
 import { Content } from '../components/content-list/content.interface';
+import { MatLegacyProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
+import { NgIf } from '@angular/common';
+import { ContentListComponent } from '../components/content-list/content-list.component';
+import { WelcomeMessageComponent } from '../components/welcome-message/welcome-message.component';
 
 const APPLICATION_TRANSLATE_PATH = 'APPLICATION';
 
@@ -66,6 +70,8 @@ const APPLICATION_TRANSLATE_PATH = 'APPLICATION';
   selector: 'app-portal',
   templateUrl: './portal.component.html',
   styleUrls: ['./portal.component.scss'],
+  standalone: true,
+  imports: [WelcomeMessageComponent, ContentListComponent, NgIf, MatLegacyProgressSpinnerModule],
 })
 export class PortalComponent implements OnInit, OnDestroy {
   public content: Map<Category, Content> = new Map();

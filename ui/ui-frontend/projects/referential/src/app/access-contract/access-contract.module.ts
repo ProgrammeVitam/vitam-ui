@@ -45,12 +45,10 @@ import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/
 import { MatLegacyTabsModule as MatTabsModule } from '@angular/material/legacy-tabs';
 
 import { RouterModule } from '@angular/router';
-import { TableFilterModule, VitamUICommonModule } from 'vitamui-library';
-import { ImportDialogModule } from '../shared/import-dialog/import-dialog.module';
+import { TableFilterComponent, VitamUICommonModule } from 'vitamui-library';
 
-import { AccessContractCreateModule } from './access-contract-create';
 import { AccessContractListComponent } from './access-contract-list/access-contract-list.component';
-import { AccessContractPreviewModule } from './access-contract-preview/access-contract-preview.module';
+
 import { AccessContractRoutingModule } from './access-contract-routing.module';
 import { AccessContractComponent } from './access-contract.component';
 
@@ -68,11 +66,9 @@ import { AccessContractComponent } from './access-contract.component';
     MatProgressSpinnerModule,
     MatTabsModule,
     AccessContractRoutingModule,
-    AccessContractCreateModule,
-    AccessContractPreviewModule,
-    TableFilterModule,
-    ImportDialogModule,
+    TableFilterComponent,
+    AccessContractComponent,
+    AccessContractListComponent,
   ],
-  declarations: [AccessContractComponent, AccessContractListComponent],
 })
 export class AccessContractModule {}

@@ -35,19 +35,30 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { merge } from 'rxjs';
 import { debounceTime, filter, map } from 'rxjs/operators';
-import { CriteriaDataType, CriteriaOperator, CriteriaValue, diff, SearchCriteriaTypeEnum } from 'vitamui-library';
+import {
+  CriteriaDataType,
+  CriteriaOperator,
+  CriteriaValue,
+  diff,
+  SearchCriteriaTypeEnum,
+  EditableFieldComponent,
+  EditableInputComponent,
+} from 'vitamui-library';
 import { ArchiveSharedDataService } from '../../../core/archive-shared-data.service';
 import { ArchiveSearchConstsEnum } from '../../models/archive-search-consts-enum';
+import { TranslateModule } from '@ngx-translate/core';
 
 const TITLE_OR_DESCRIPTION = 'TITLE_OR_DESCRIPTION';
 
 @Component({
   selector: 'app-title-and-description-criteria-search',
   templateUrl: './title-and-description-criteria-search.component.html',
+  standalone: true,
+  imports: [ReactiveFormsModule, EditableFieldComponent, TranslateModule, EditableInputComponent],
 })
 export class TitleAndDescriptionCriteriaSearchComponent {
   quickSearchCriteriaForm: FormGroup;

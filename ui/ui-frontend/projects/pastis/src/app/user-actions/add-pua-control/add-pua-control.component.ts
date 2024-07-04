@@ -37,11 +37,16 @@ knowledge of the CeCILL-C license and that you accept its terms.
 */
 import { Component, OnInit } from '@angular/core';
 import { MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
-import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
+import { LangChangeEvent, TranslateService, TranslateModule } from '@ngx-translate/core';
 import { environment } from 'projects/pastis/src/environments/environment';
 import { PopupService } from '../../core/services/popup.service';
 import { PastisDialogData } from '../../shared/pastis-dialog/classes/pastis-dialog-data';
 import { PastisDialogConfirmComponent } from '../../shared/pastis-dialog/pastis-dialog-confirm/pastis-dialog-confirm.component';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { FormsModule } from '@angular/forms';
+import { MatLegacyListModule } from '@angular/material/legacy-list';
+import { MatDividerModule } from '@angular/material/divider';
+import { NgIf, NgFor, NgStyle } from '@angular/common';
 
 const ADD_PUA_CONTROL_TRANSLATE_PATH = 'USER_ACTION.ADD_PUA_CONTROL';
 
@@ -59,6 +64,8 @@ function constantToTranslate() {
   selector: 'pastis-user-action-add-metadata',
   templateUrl: './add-pua-control.component.html',
   styleUrls: ['./add-pua-control.component.scss'],
+  standalone: true,
+  imports: [NgIf, NgFor, MatDividerModule, MatLegacyListModule, NgStyle, FormsModule, MatLegacyTooltipModule, TranslateModule],
 })
 export class UserActionAddPuaControlComponent implements OnInit {
   btnIsDisabled: boolean;

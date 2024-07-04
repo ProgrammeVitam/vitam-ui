@@ -42,14 +42,13 @@ import { MatLegacyProgressSpinnerModule as MatProgressSpinnerModule } from '@ang
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
 import { RouterModule } from '@angular/router';
-import { TableFilterModule, VitamUICommonModule } from 'vitamui-library';
+import { TableFilterComponent, VitamUICommonModule } from 'vitamui-library';
 import { VitamUILibraryModule } from 'vitamui-library';
-import { FileFormatCreateModule } from './file-format-create';
+
 import { FileFormatListComponent } from './file-format-list/file-format-list.component';
-import { FileFormatPreviewModule } from './file-format-preview/file-format-preview.module';
+
 import { FileFormatRoutingModule } from './file-format-routing.module';
 import { FileFormatComponent } from './file-format.component';
-import { ImportDialogModule } from '../shared/import-dialog/import-dialog.module';
 
 @NgModule({
   imports: [
@@ -58,16 +57,14 @@ import { ImportDialogModule } from '../shared/import-dialog/import-dialog.module
     VitamUICommonModule,
     VitamUILibraryModule,
     FileFormatRoutingModule,
-    FileFormatCreateModule,
-    FileFormatPreviewModule,
-    ImportDialogModule,
     MatMenuModule,
     MatSnackBarModule,
     MatDialogModule,
     MatSidenavModule,
     MatProgressSpinnerModule,
-    TableFilterModule,
+    TableFilterComponent,
+    FileFormatComponent,
+    FileFormatListComponent,
   ],
-  declarations: [FileFormatComponent, FileFormatListComponent],
 })
 export class FileFormatModule {}

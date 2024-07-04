@@ -44,9 +44,8 @@ import { MatLegacyProgressSpinnerModule as MatProgressSpinnerModule } from '@ang
 import { MatLegacySelectModule as MatSelectModule } from '@angular/material/legacy-select';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatLegacyTabsModule as MatTabsModule } from '@angular/material/legacy-tabs';
-import { LevelInputModule, RoleToggleModule, VitamUICommonModule } from 'vitamui-library';
-import { SharedModule } from '../shared/shared.module';
-import { GroupAttributionModule } from '../user/group-attribution/group-attribution.module';
+import { LevelInputComponent, RoleToggleComponent, VitamUICommonModule } from 'vitamui-library';
+
 import { ExternalParamProfileCreateComponent } from './external-param-profile-create/external-param-profile-create.component';
 import { ExternalParamProfileDetailComponent } from './external-param-profile-detail/external-param-profile-detail.component';
 import { InformationTabComponent } from './external-param-profile-detail/information-tab/information-tab.component';
@@ -59,21 +58,17 @@ import { ExternalParamProfileComponent } from './external-param-profile.componen
   imports: [
     CommonModule,
     VitamUICommonModule,
-    SharedModule,
     MatButtonToggleModule,
     MatMenuModule,
     MatSelectModule,
     ReactiveFormsModule,
-    GroupAttributionModule,
-    LevelInputModule,
+    LevelInputComponent,
     MatSidenavModule,
     MatProgressSpinnerModule,
     ExternalParamProfileRoutingModule,
     MatProgressBarModule,
     MatTabsModule,
-    RoleToggleModule,
-  ],
-  declarations: [
+    RoleToggleComponent,
     ExternalParamProfileComponent,
     ExternalParamProfileListComponent,
     ExternalParamProfileCreateComponent,

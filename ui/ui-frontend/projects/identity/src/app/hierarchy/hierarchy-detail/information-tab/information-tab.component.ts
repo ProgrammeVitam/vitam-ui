@@ -35,14 +35,28 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, Input, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { merge, of, Subscription } from 'rxjs';
 import { catchError, debounceTime, filter, map, switchMap } from 'rxjs/operators';
 import { extend, isEmpty } from 'underscore';
 
-import { AuthService, buildValidators, diff, Profile } from 'vitamui-library';
+import {
+  AuthService,
+  buildValidators,
+  diff,
+  Profile,
+  SlideToggleComponent,
+  EditableFieldComponent,
+  VitamUIFieldErrorComponent,
+  EditableInputComponent,
+  EditableLevelInputComponent,
+  EditableTextareaComponent,
+} from 'vitamui-library';
 import { HierarchyService } from '../../hierarchy.service';
 import { ProfileValidators } from '../../profile.validators';
+import { TranslateModule } from '@ngx-translate/core';
+import { NgIf } from '@angular/common';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
 
 const DEBOUNCE_TIME = 400;
 
@@ -50,6 +64,19 @@ const DEBOUNCE_TIME = 400;
   selector: 'app-information-tab',
   templateUrl: './information-tab.component.html',
   styleUrls: ['./information-tab.component.scss'],
+  standalone: true,
+  imports: [
+    ReactiveFormsModule,
+    SlideToggleComponent,
+    MatLegacyTooltipModule,
+    NgIf,
+    EditableFieldComponent,
+    VitamUIFieldErrorComponent,
+    TranslateModule,
+    EditableInputComponent,
+    EditableLevelInputComponent,
+    EditableTextareaComponent,
+  ],
 })
 export class InformationTabComponent implements OnDestroy, OnChanges {
   form: FormGroup;

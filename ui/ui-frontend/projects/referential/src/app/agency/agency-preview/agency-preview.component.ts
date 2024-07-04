@@ -41,17 +41,21 @@ import {
   MatLegacyTab as MatTab,
   MatLegacyTabGroup as MatTabGroup,
   MatLegacyTabHeader as MatTabHeader,
+  MatLegacyTabsModule,
 } from '@angular/material/legacy-tabs';
 import { Observable } from 'rxjs';
-import { Agency } from 'vitamui-library';
+import { Agency, VitamuiSidenavHeaderComponent, HistoryModule } from 'vitamui-library';
 import { ConfirmActionComponent } from 'vitamui-library';
 import { AgencyService } from '../agency.service';
 import { AgencyInformationTabComponent } from './agency-information-tab/agency-information-tab.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-agency-preview',
   templateUrl: './agency-preview.component.html',
   styleUrls: ['./agency-preview.component.scss'],
+  standalone: true,
+  imports: [VitamuiSidenavHeaderComponent, MatLegacyTabsModule, AgencyInformationTabComponent, HistoryModule, TranslateModule],
 })
 export class AgencyPreviewComponent implements AfterViewInit {
   @Input() agency: Agency;

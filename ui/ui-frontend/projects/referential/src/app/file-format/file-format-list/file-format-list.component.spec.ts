@@ -49,8 +49,7 @@ describe('FileFormatListComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot(), HttpClientTestingModule],
-      declarations: [FileFormatListComponent],
+      imports: [TranslateModule.forRoot(), HttpClientTestingModule, FileFormatListComponent],
       providers: [
         { provide: BASE_URL, useValue: '' },
         FileFormatService,

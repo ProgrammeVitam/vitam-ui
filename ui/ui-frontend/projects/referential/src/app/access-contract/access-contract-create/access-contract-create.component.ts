@@ -35,7 +35,17 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, Inject, Input, OnDestroy, OnInit } from '@angular/core';
-import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  ValidationErrors,
+  ValidatorFn,
+  Validators,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
 import {
   AccessContract,
@@ -48,6 +58,16 @@ import {
   Status,
   VitamUISnackBarService,
   VitamuiAutocompleteMultiselectOptions,
+  CommonProgressBarComponent,
+  StepperComponent,
+  SlideToggleComponent,
+  VitamUICommonInputComponent,
+  CommonTooltipComponent,
+  VitamUIAutocompleteMultiSelectModule,
+  FilingPlanComponent,
+  VitamUIInputErrorComponent,
+  CommonTooltipDirective,
+  VitamUITextareaComponent,
 } from 'vitamui-library';
 import { AgencyService } from '../../agency/agency.service';
 import { RULE_TYPES } from '../../rule/rules.constants';
@@ -56,11 +76,41 @@ import { AccessContractCreateValidators } from './access-contract-create.validat
 
 import { Subject } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatLegacyOptionModule } from '@angular/material/legacy-core';
+import { MatLegacySelectModule } from '@angular/material/legacy-select';
+import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
+import { NgIf, NgFor } from '@angular/common';
+import { CdkStepperModule } from '@angular/cdk/stepper';
 
 @Component({
   selector: 'app-access-contract-create',
   templateUrl: './access-contract-create.component.html',
   styleUrls: ['./access-contract-create.component.scss'],
+  standalone: true,
+  imports: [
+    CommonProgressBarComponent,
+    FormsModule,
+    ReactiveFormsModule,
+    StepperComponent,
+    CdkStepperModule,
+    SlideToggleComponent,
+    VitamUICommonInputComponent,
+    NgIf,
+    CommonTooltipComponent,
+    MatLegacyFormFieldModule,
+    MatLegacySelectModule,
+    NgFor,
+    MatLegacyOptionModule,
+    VitamUIAutocompleteMultiSelectModule,
+    MatButtonToggleModule,
+    FilingPlanComponent,
+    TranslateModule,
+    VitamUIInputErrorComponent,
+    CommonTooltipDirective,
+    VitamUITextareaComponent,
+  ],
 })
 export class AccessContractCreateComponent implements OnInit, OnDestroy {
   @Input() tenantIdentifier: number;

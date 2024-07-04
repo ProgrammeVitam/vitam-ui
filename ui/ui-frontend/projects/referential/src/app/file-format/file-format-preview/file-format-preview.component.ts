@@ -40,16 +40,20 @@ import {
   MatLegacyTab as MatTab,
   MatLegacyTabGroup as MatTabGroup,
   MatLegacyTabHeader as MatTabHeader,
+  MatLegacyTabsModule,
 } from '@angular/material/legacy-tabs';
 import { Observable } from 'rxjs';
-import { ConfirmActionComponent, FileFormat } from 'vitamui-library';
+import { ConfirmActionComponent, FileFormat, VitamuiSidenavHeaderComponent, HistoryModule } from 'vitamui-library';
 import { FileFormatService } from '../file-format.service';
 import { FileFormatInformationTabComponent } from './file-format-information-tab/file-format-information-tab.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-file-format-preview',
   templateUrl: './file-format-preview.component.html',
   styleUrls: ['./file-format-preview.component.scss'],
+  standalone: true,
+  imports: [VitamuiSidenavHeaderComponent, MatLegacyTabsModule, FileFormatInformationTabComponent, HistoryModule, TranslateModule],
 })
 export class FileFormatPreviewComponent implements AfterViewInit {
   @Output() previewClose: EventEmitter<any> = new EventEmitter();

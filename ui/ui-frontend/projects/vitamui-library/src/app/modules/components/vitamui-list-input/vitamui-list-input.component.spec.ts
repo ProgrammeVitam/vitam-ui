@@ -47,7 +47,11 @@ import { input } from '../../../../../testing/src';
 import { WINDOW_LOCATION } from '../../injection-tokens';
 import { VitamUIListInputComponent } from './vitamui-list-input.component';
 
-@Component({ template: '<vitamui-common-list-input [(ngModel)]="values" [validator]="validators"></vitamui-common-list-input>' })
+@Component({
+  template: '<vitamui-common-list-input [(ngModel)]="values" [validator]="validators"></vitamui-common-list-input>',
+  standalone: true,
+  imports: [FormsModule, ReactiveFormsModule, MatProgressSpinnerModule, HttpClientTestingModule],
+})
 class TestHostComponent {
   @ViewChild(VitamUIListInputComponent) component: VitamUIListInputComponent;
   values: string[];
@@ -60,8 +64,15 @@ let fixture: ComponentFixture<TestHostComponent>;
 describe('VitamUIListInputComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FormsModule, ReactiveFormsModule, MatProgressSpinnerModule, HttpClientTestingModule, TranslateModule.forRoot()],
-      declarations: [TestHostComponent, VitamUIListInputComponent],
+      imports: [
+        FormsModule,
+        ReactiveFormsModule,
+        MatProgressSpinnerModule,
+        HttpClientTestingModule,
+        TranslateModule.forRoot(),
+        TestHostComponent,
+        VitamUIListInputComponent,
+      ],
       providers: [{ provide: WINDOW_LOCATION, useValue: {} }],
     }).compileComponents();
   });

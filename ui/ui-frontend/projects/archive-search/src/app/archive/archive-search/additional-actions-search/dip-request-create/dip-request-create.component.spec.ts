@@ -90,7 +90,6 @@ describe('DipRequestCreateComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [DipRequestCreateComponent],
       imports: [
         InjectorModule,
         TranslateModule.forRoot(),
@@ -98,6 +97,7 @@ describe('DipRequestCreateComponent', () => {
         HttpClientTestingModule,
         MatSnackBarModule,
         LoggerModule.forRoot(),
+        DipRequestCreateComponent,
       ],
       providers: [
         FormBuilder,

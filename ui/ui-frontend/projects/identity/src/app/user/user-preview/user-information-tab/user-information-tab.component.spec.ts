@@ -158,7 +158,10 @@ let expectedAdminUserProfile: AdminUserProfile = {
 };
 
 // eslint-disable-next-line @angular-eslint/directive-selector
-@Directive({ selector: '[matTooltip]' })
+@Directive({
+  selector: '[matTooltip]',
+  standalone: true,
+})
 class MatTooltipStubDirective {
   @Input() matTooltip: any;
   @Input() matTooltipDisabled: any;
@@ -173,6 +176,8 @@ class MatTooltipStubDirective {
     [readOnly]="readOnly"
     [adminUserProfile]="adminUserProfile"
   ></app-user-info-tab>`,
+  standalone: true,
+  imports: [ReactiveFormsModule, MatButtonToggleModule, VitamUICommonTestModule, HttpClientTestingModule],
 })
 class TestHostComponent {
   user = expectedUser;
@@ -296,8 +301,10 @@ describe('UserInfoTabComponent', () => {
         VitamUICommonTestModule,
         LoggerModule.forRoot(),
         HttpClientTestingModule,
+        UserInfoTabComponent,
+        TestHostComponent,
+        MatTooltipStubDirective,
       ],
-      declarations: [UserInfoTabComponent, TestHostComponent, MatTooltipStubDirective],
       providers: [
         { provide: WINDOW_LOCATION, useValue: window.location },
         { provide: BASE_URL, useValue: '/fake-api' },

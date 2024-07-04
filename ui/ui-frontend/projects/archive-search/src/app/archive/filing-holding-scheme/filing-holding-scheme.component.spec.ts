@@ -64,8 +64,8 @@ describe('FilingHoldingSchemeComponent', () => {
         LoggerModule.forRoot(),
         TranslateModule.forRoot(),
         RouterTestingModule,
+        FilingHoldingSchemeComponent,
       ],
-      declarations: [FilingHoldingSchemeComponent],
       providers: [
         { provide: ArchiveService, useValue: archiveServiceStub },
         { provide: ArchiveApiService, useValue: archiveServiceMock },

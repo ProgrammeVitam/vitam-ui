@@ -36,7 +36,7 @@
  */
 import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import { Subject, merge } from 'rxjs';
 import { debounceTime, filter, takeUntil } from 'rxjs/operators';
 import {
@@ -51,8 +51,16 @@ import {
   StartupService,
   User,
   VitamUISnackBarService,
+  InfiniteScrollDirective,
+  OrderByButtonComponent,
+  EllipsisDirective,
+  PipesModule,
+  HasRoleDirective,
 } from 'vitamui-library';
 import { FileFormatService } from '../file-format.service';
+import { DateTimePipe } from '../../../../../vitamui-library/src/app/modules/pipes/datetime.pipe';
+import { MatLegacyProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
+import { NgFor, NgIf } from '@angular/common';
 
 const FILTER_DEBOUNCE_TIME_MS = 400;
 
@@ -60,6 +68,19 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
   selector: 'app-file-format-list',
   templateUrl: './file-format-list.component.html',
   styleUrls: ['./file-format-list.component.scss'],
+  standalone: true,
+  imports: [
+    InfiniteScrollDirective,
+    OrderByButtonComponent,
+    NgFor,
+    EllipsisDirective,
+    NgIf,
+    MatLegacyProgressSpinnerModule,
+    PipesModule,
+    TranslateModule,
+    DateTimePipe,
+    HasRoleDirective,
+  ],
 })
 export class FileFormatListComponent extends InfiniteScrollTable<FileFormat> implements OnDestroy, OnInit {
   // eslint-disable-next-line @angular-eslint/no-input-rename

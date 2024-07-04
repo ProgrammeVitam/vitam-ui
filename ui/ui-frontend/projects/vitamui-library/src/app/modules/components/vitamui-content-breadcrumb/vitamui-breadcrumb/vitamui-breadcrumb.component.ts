@@ -40,11 +40,15 @@ import { ApplicationId } from '../../../application-id.enum';
 import { ApplicationService } from '../../../application.service';
 import { Application } from '../../../models';
 import { BreadCrumbData } from '../../../models/breadcrumb/breadcrumb.interface';
+import { TranslateModule } from '@ngx-translate/core';
+import { NgFor, NgSwitch, NgSwitchCase, NgSwitchDefault, NgIf, UpperCasePipe, LowerCasePipe, TitleCasePipe } from '@angular/common';
 
 @Component({
   selector: 'vitamui-common-breadcrumb',
   templateUrl: './vitamui-breadcrumb.component.html',
   styleUrls: ['./vitamui-breadcrumb.component.scss'],
+  standalone: true,
+  imports: [NgFor, NgSwitch, NgSwitchCase, NgSwitchDefault, NgIf, UpperCasePipe, LowerCasePipe, TitleCasePipe, TranslateModule],
 })
 export class VitamuiBreadcrumbComponent implements OnInit {
   @Input()

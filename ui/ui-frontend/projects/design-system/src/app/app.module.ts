@@ -53,6 +53,7 @@ import {
   BaseUserInfoApiService,
   ENVIRONMENT,
   LoggerModule,
+  SelectLanguageComponent,
   ThemeService,
   VitamUICommonModule,
   VitamuiMissingTranslationHandler,
@@ -60,19 +61,8 @@ import {
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { ArraysModule } from './components/arrays/arrays.module';
-import { BreadcrumbModule } from './components/breadcrumb/breadcrumb.module';
-import { ButtonsModule } from './components/buttons/buttons.module';
-import { ColorsModule } from './components/colors/colors.module';
-import { ElevationModule } from './components/elevations/elevations.module';
-import { IconsModule } from './components/icons/icons.module';
+
 import { InputsModule } from './components/inputs/inputs.module';
-import { MiscellaneousModule } from './components/miscellaneous/miscellaneous.module';
-import { ProgressBarModule } from './components/progress-bar/progress-bar.module';
-import { TooltipModule } from './components/tooltip/tooltip.module';
-import { TranslationModule } from './components/translation/translation.module';
-import { TypographyModule } from './components/typography/typography.module';
-import { DesignSystemModule } from './design-system/design-system.module';
 
 registerLocaleData(localeFr, 'fr');
 
@@ -87,24 +77,12 @@ export function httpLoaderFactory(httpClient: HttpClient): MultiTranslateHttpLoa
   declarations: [AppComponent],
   imports: [
     AppRoutingModule,
-    ArraysModule,
-    BreadcrumbModule,
     BrowserAnimationsModule,
     BrowserModule,
-    ButtonsModule,
-    ColorsModule,
-    ElevationModule,
-    IconsModule,
     InputsModule,
     LoggerModule.forRoot(),
     MatListModule,
     MatSidenavModule,
-    MiscellaneousModule,
-    ProgressBarModule,
-    DesignSystemModule,
-    TooltipModule,
-    TranslationModule,
-    TypographyModule,
     VitamUICommonModule,
     TranslateModule.forRoot({
       missingTranslationHandler: { provide: MissingTranslationHandler, useClass: VitamuiMissingTranslationHandler },
@@ -115,6 +93,7 @@ export function httpLoaderFactory(httpClient: HttpClient): MultiTranslateHttpLoa
         deps: [HttpClient],
       },
     }),
+    SelectLanguageComponent,
   ],
   providers: [
     Title,

@@ -1,19 +1,34 @@
 import { Component, EventEmitter, Input, OnDestroy, Output, TemplateRef, ViewChild } from '@angular/core';
-import { MatLegacyDialog as MatDialog, MatLegacyDialogConfig as MatDialogConfig } from '@angular/material/legacy-dialog';
+import {
+  MatLegacyDialog as MatDialog,
+  MatLegacyDialogConfig as MatDialogConfig,
+  MatLegacyDialogModule,
+} from '@angular/material/legacy-dialog';
 import { MatLegacySnackBar as MatSnackBar, MatLegacySnackBarConfig as MatSnackBarConfig } from '@angular/material/legacy-snack-bar';
 import { ActivatedRoute } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { filter, map, switchMap, tap } from 'rxjs/operators';
-import { ArchiveUnit, ArchiveUnitEditorComponent, JsonPatch, Logger, SpinnerOverlayService, StartupService } from 'vitamui-library';
+import {
+  ArchiveUnit,
+  ArchiveUnitEditorComponent,
+  JsonPatch,
+  Logger,
+  SpinnerOverlayService,
+  StartupService,
+  ArchiveUnitModule,
+} from 'vitamui-library';
 import { EditObject } from 'vitamui-library/app/modules/object-editor/models/edit-object.model';
 import { VitamUISnackBarComponent } from '../../shared/vitamui-snack-bar/vitamui-snack-bar.component';
 import { ArchiveUnitService } from './archive-unit.service';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-archive-unit-description-tab',
   templateUrl: './archive-unit-description-tab.component.html',
   styleUrls: ['./archive-unit-description-tab.component.scss'],
+  standalone: true,
+  imports: [NgIf, ArchiveUnitModule, MatLegacyDialogModule, TranslateModule],
 })
 export class ArchiveUnitDescriptionTabComponent implements OnDestroy {
   @Input() archiveUnit: ArchiveUnit;

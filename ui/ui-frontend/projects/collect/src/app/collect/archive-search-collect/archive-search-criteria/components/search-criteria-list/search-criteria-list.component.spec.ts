@@ -58,7 +58,10 @@ import { SearchCriteriaSaverService } from '../../services/search-criteria-saver
 import { SearchCriteriaListComponent } from './search-criteria-list.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-@Pipe({ name: 'truncate' })
+@Pipe({
+  name: 'truncate',
+  standalone: true,
+})
 class MockTruncatePipe implements PipeTransform {
   transform(value: number): number {
     return value;
@@ -102,8 +105,9 @@ describe('SearchCriteriaListComponent', () => {
           loader: { provide: TranslateLoader, useClass: FakeLoader },
         }),
         RouterTestingModule,
+        SearchCriteriaListComponent,
+        MockTruncatePipe,
       ],
-      declarations: [SearchCriteriaListComponent, MockTruncatePipe],
       providers: [
         ArchiveSharedDataService,
         DatePipe,

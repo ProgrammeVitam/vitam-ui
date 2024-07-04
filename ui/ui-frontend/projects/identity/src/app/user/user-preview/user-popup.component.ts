@@ -40,10 +40,13 @@ import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { CustomerService } from '../../core/customer.service';
+import { UserPreviewComponent } from './user-preview.component';
 
 @Component({
   selector: 'app-profile-group-popup',
   template: '<app-user-preview (previewClose)="closePopup()" [user]="user" [customer]="customer" [isPopup]="true"></app-user-preview>',
+  standalone: true,
+  imports: [UserPreviewComponent],
 })
 export class UserPopupComponent {
   user: User;

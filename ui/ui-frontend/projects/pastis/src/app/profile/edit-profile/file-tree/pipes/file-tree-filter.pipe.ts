@@ -39,6 +39,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
   name: 'filetreeFilter',
+  standalone: true,
 })
 export class FiletreeFilterPipe implements PipeTransform {
   transform(): any {

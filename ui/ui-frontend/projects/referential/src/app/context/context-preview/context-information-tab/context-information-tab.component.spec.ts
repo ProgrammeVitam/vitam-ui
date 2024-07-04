@@ -20,8 +20,7 @@ xdescribe('ContextInformationTabComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, VitamUICommonTestModule, MatSelectModule],
-      declarations: [ContextInformationTabComponent],
+      imports: [ReactiveFormsModule, VitamUICommonTestModule, MatSelectModule, ContextInformationTabComponent],
       providers: [
         FormBuilder,
         { provide: SecurityProfileService, useValue: securityProfileServiceMock },

@@ -35,13 +35,18 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, Input, OnInit } from '@angular/core';
-import { Group, Profile } from 'vitamui-library';
+import { Group, Profile, EllipsisDirective } from 'vitamui-library';
 import { GroupService } from '../../../group/group.service';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { NgFor, TitleCasePipe } from '@angular/common';
 
 @Component({
   selector: 'app-group-detail',
   templateUrl: './group-detail.component.html',
   styleUrls: ['./group-detail.component.scss'],
+  standalone: true,
+  imports: [EllipsisDirective, NgFor, MatLegacyTooltipModule, TitleCasePipe, TranslateModule],
 })
 export class GroupDetailComponent implements OnInit {
   @Input() group: Group;

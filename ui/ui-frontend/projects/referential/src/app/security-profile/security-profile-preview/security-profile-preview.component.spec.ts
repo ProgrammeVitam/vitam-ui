@@ -48,8 +48,7 @@ describe('SecurityProfilePreviewComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
-      declarations: [SecurityProfilePreviewComponent],
+      imports: [TranslateModule.forRoot(), SecurityProfilePreviewComponent],
       providers: [
         { provide: MatDialog, useValue: {} },
         { provide: SecurityProfileService, useValue: {} },

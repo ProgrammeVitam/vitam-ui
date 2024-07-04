@@ -8,7 +8,7 @@ describe('AllowAdditionalPropertiesComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [AllowAdditionalPropertiesComponent],
+      imports: [AllowAdditionalPropertiesComponent],
     }).compileComponents();
   });
 

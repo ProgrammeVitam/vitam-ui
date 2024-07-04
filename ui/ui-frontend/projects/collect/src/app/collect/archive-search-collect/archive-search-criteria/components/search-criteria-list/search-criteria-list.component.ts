@@ -35,20 +35,26 @@ knowledge of the CeCILL-C license and that you accept its terms.
 */
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import { Subject, Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { Direction, SearchCriteriaHistory } from 'vitamui-library';
+import { Direction, SearchCriteriaHistory, PipesModule } from 'vitamui-library';
 import { VitamUISnackBarComponent } from '../../../../shared/vitamui-snack-bar/vitamui-snack-bar.component';
 import { VitamUISnackBar } from '../../../../shared/vitamui-snack-bar/vitamui-snack-bar.service';
 import { ArchiveSharedDataService } from '../../services/archive-shared-data.service';
 import { SearchCriteriaSaverService } from '../../services/search-criteria-saver.service';
 import { ConfirmActionComponent } from './confirm-action/confirm-action.component';
+import { MatLegacyProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { MatLegacyMenuModule } from '@angular/material/legacy-menu';
+import { NgFor, NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-search-criteria-list',
   templateUrl: './search-criteria-list.component.html',
   styleUrls: ['./search-criteria-list.component.css'],
+  standalone: true,
+  imports: [NgFor, MatLegacyMenuModule, MatLegacyTooltipModule, NgIf, MatLegacyProgressSpinnerModule, PipesModule, TranslateModule],
 })
 export class SearchCriteriaListComponent implements OnInit {
   @Output()

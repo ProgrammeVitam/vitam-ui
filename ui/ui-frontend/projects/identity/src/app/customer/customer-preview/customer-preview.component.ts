@@ -37,13 +37,30 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import { Customer, StartupService } from 'vitamui-library';
+import { Customer, StartupService, VitamuiSidenavHeaderComponent, HistoryModule } from 'vitamui-library';
 import { CustomerService } from '../../core/customer.service';
+import { TranslateModule } from '@ngx-translate/core';
+import { HomepageMessageTabComponent } from './homepage-message-tab/homepage-message-tab.component';
+import { GraphicIdentityTabComponent } from './graphic-identity-tab/graphic-identity-tab.component';
+import { SsoTabComponent } from './sso-tab/sso-tab.component';
+import { InformationTabComponent } from './information-tab/information-tab.component';
+import { MatLegacyTabsModule } from '@angular/material/legacy-tabs';
 
 @Component({
   selector: 'app-customer-preview',
   templateUrl: './customer-preview.component.html',
   styleUrls: ['./customer-preview.component.scss'],
+  standalone: true,
+  imports: [
+    VitamuiSidenavHeaderComponent,
+    MatLegacyTabsModule,
+    InformationTabComponent,
+    SsoTabComponent,
+    GraphicIdentityTabComponent,
+    HomepageMessageTabComponent,
+    HistoryModule,
+    TranslateModule,
+  ],
 })
 export class CustomerPreviewComponent implements OnInit, OnDestroy {
   @Input() customer: Customer;

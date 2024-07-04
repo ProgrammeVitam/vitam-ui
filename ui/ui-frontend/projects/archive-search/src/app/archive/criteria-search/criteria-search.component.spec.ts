@@ -55,8 +55,8 @@ describe('CriteriaSearchComponent', () => {
         RouterTestingModule,
         TranslateModule.forRoot(),
         MatSnackBarModule,
+        CriteriaSearchComponent,
       ],
-      declarations: [CriteriaSearchComponent],
       providers: [
         { provide: WINDOW_LOCATION, useValue: window.location },
         { provide: BASE_URL, useValue: '/fake-api' },

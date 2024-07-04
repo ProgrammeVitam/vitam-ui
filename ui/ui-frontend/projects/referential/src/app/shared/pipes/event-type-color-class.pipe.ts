@@ -46,6 +46,7 @@ const colorClassMap: { [key: string]: string } = {
 
 @Pipe({
   name: 'eventTypeColorClass',
+  standalone: true,
 })
 export class EventTypeColorClassPipe implements PipeTransform {
   transform(event: Event): string {

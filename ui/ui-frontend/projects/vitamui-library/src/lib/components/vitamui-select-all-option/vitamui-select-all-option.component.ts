@@ -14,7 +14,7 @@ import {
   Output,
 } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
-import { MatPseudoCheckboxState } from '@angular/material/core';
+import { MatPseudoCheckboxState, MatPseudoCheckboxModule, MatRippleModule } from '@angular/material/core';
 import {
   MatLegacyOptgroup as MatOptgroup,
   MatLegacyOption as MatOption,
@@ -23,11 +23,14 @@ import {
 } from '@angular/material/legacy-core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { NgClass } from '@angular/common';
 
 @Component({
   selector: 'vitamui-select-all-option',
   templateUrl: './vitamui-select-all-option.component.html',
   styleUrls: ['./vitamui-select-all-option.component.scss'],
+  standalone: true,
+  imports: [MatPseudoCheckboxModule, NgClass, MatRippleModule],
 })
 export class VitamUISelectAllOptionComponent extends MatOption implements OnInit, OnDestroy {
   // You need to provide either a control or a model

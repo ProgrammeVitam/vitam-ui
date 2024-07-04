@@ -38,10 +38,13 @@ import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { Profile } from 'vitamui-library';
+import { ProfileDetailComponent } from './profile-detail.component';
 
 @Component({
   selector: 'app-profile-popup',
   template: '<app-profile-detail (profileClose)="closePopup()" [profile]="profile" [isPopup]="true"></app-profile-detail>',
+  standalone: true,
+  imports: [ProfileDetailComponent],
 })
 export class ProfilePopupComponent {
   profile: Profile;

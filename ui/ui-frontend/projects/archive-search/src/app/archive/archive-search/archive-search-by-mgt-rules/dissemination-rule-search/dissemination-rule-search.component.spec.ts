@@ -69,7 +69,6 @@ describe('DisseminationRuleSearchComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [DisseminationRuleSearchComponent],
       imports: [
         InjectorModule,
         VitamUICommonTestModule,
@@ -78,6 +77,7 @@ describe('DisseminationRuleSearchComponent', () => {
         TranslateModule.forRoot(),
         RouterTestingModule,
         BrowserAnimationsModule,
+        DisseminationRuleSearchComponent,
       ],
       providers: [
         FormBuilder,

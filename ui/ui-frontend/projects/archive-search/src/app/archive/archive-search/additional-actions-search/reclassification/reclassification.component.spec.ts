@@ -130,7 +130,6 @@ describe('ReclassificationComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ReclassificationComponent],
       imports: [
         InjectorModule,
         VitamUICommonTestModule,
@@ -140,6 +139,7 @@ describe('ReclassificationComponent', () => {
         RouterTestingModule,
         BrowserAnimationsModule,
         MatSnackBarModule,
+        ReclassificationComponent,
       ],
       providers: [
         FormBuilder,

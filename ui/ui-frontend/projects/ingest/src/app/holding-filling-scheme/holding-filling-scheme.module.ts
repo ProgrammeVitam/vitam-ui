@@ -42,11 +42,8 @@ import { MatLegacyDialogModule as MatDialogModule } from '@angular/material/lega
 import { MatLegacyMenuModule as MatMenuModule } from '@angular/material/legacy-menu';
 import { MatLegacyProgressBarModule as MatProgressBarModule } from '@angular/material/legacy-progress-bar';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { SharedModule } from 'projects/identity/src/app/shared/shared.module';
 import { VitamUICommonModule } from 'vitamui-library';
 
-import { UploadModule } from '../core/common/upload.module';
-import { UploadTrackingModule } from '../shared/upload-tracking/upload-tracking.module';
 import { HoldingFillingSchemeRoutingModule } from './holding-filling-scheme-routing.module';
 import { HoldingFillingSchemeComponent } from './holding-filling-scheme.component';
 import { TranslateModule } from '@ngx-translate/core';
@@ -58,15 +55,12 @@ import { TranslateModule } from '@ngx-translate/core';
     MatDialogModule,
     MatMenuModule,
     MatSidenavModule,
-    SharedModule,
     ReactiveFormsModule,
     MatNativeDateModule,
     HoldingFillingSchemeRoutingModule,
     MatProgressBarModule,
-    UploadModule,
-    UploadTrackingModule,
     TranslateModule,
+    HoldingFillingSchemeComponent,
   ],
-  declarations: [HoldingFillingSchemeComponent],
 })
 export class HoldingFillingSchemeModule {}

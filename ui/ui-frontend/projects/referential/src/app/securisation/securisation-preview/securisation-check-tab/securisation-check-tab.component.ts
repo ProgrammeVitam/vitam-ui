@@ -44,13 +44,19 @@ import {
   IEvent,
   LogbookApiService,
   VitamUISnackBarService,
+  HistoryModule,
+  CollapseComponent,
 } from 'vitamui-library';
 import { SecurisationService } from '../../securisation.service';
+import { TranslateModule } from '@ngx-translate/core';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-securisation-check-tab',
   templateUrl: './securisation-check-tab.component.html',
   styleUrls: ['./securisation-check-tab.component.scss'],
+  standalone: true,
+  imports: [NgIf, HistoryModule, TranslateModule, CollapseComponent],
 })
 export class SecurisationCheckTabComponent implements OnChanges, OnInit {
   @Input() id: string;

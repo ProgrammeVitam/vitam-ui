@@ -56,21 +56,30 @@ import {
 import { ArchiveService } from '../../archive.service';
 import { ArchiveUnitInformationTabComponent } from './archive-unit-information-tab.component';
 
-@Pipe({ name: 'dateTime' })
+@Pipe({
+  name: 'dateTime',
+  standalone: true,
+})
 export class MockDateTimePipe implements PipeTransform {
   transform(value: string = ''): any {
     return value;
   }
 }
 
-@Pipe({ name: 'truncate' })
+@Pipe({
+  name: 'truncate',
+  standalone: true,
+})
 class MockTruncatePipe implements PipeTransform {
   transform(value: number): number {
     return value;
   }
 }
 
-@Pipe({ name: 'unitI18n' })
+@Pipe({
+  name: 'unitI18n',
+  standalone: true,
+})
 class MockUnitI18nPipe implements PipeTransform {
   transform(value: number): number {
     return value;
@@ -120,8 +129,11 @@ describe('ArchiveUnitInformationTabComponent', () => {
         MatIconModule,
         BrowserAnimationsModule,
         TranslateModule.forRoot(),
+        ArchiveUnitInformationTabComponent,
+        MockTruncatePipe,
+        MockDateTimePipe,
+        MockUnitI18nPipe,
       ],
-      declarations: [ArchiveUnitInformationTabComponent, MockTruncatePipe, MockDateTimePipe, MockUnitI18nPipe],
       providers: [
         FormBuilder,
         { provide: ArchiveService, useValue: archiveServiceMock },

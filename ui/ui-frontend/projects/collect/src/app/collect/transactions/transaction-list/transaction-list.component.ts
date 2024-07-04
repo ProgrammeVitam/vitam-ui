@@ -27,15 +27,38 @@
 import { Component, OnInit } from '@angular/core';
 import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
 import { Router } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import { BehaviorSubject } from 'rxjs';
-import { Direction, InfiniteScrollTable, StartupService, Transaction, TransactionStatus } from 'vitamui-library';
+import {
+  Direction,
+  InfiniteScrollTable,
+  StartupService,
+  Transaction,
+  TransactionStatus,
+  InfiniteScrollDirective,
+  OrderByButtonComponent,
+  VitamuiMenuButtonComponent,
+} from 'vitamui-library';
 import { TransactionsService } from '../transactions.service';
+import { MatLegacyProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
+import { MatLegacyMenuModule } from '@angular/material/legacy-menu';
+import { NgIf, NgFor } from '@angular/common';
 
 @Component({
   selector: 'app-transaction-list',
   templateUrl: './transaction-list.component.html',
   styleUrls: ['./transaction-list.component.css'],
+  standalone: true,
+  imports: [
+    InfiniteScrollDirective,
+    NgIf,
+    OrderByButtonComponent,
+    NgFor,
+    VitamuiMenuButtonComponent,
+    MatLegacyMenuModule,
+    MatLegacyProgressSpinnerModule,
+    TranslateModule,
+  ],
 })
 export class TransactionListComponent extends InfiniteScrollTable<Transaction> implements OnInit {
   direction = Direction.DESCENDANT;

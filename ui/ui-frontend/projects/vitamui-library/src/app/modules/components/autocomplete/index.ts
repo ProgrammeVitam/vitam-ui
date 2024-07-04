@@ -39,4 +39,3 @@ export * from './utils/vitamui-autocomplete-multiselect-options.interface';
 export * from './vitamui-autocomplete-multi-select/vitamui-autocomplete-multi-select.component';
 export * from './vitamui-autocomplete-multi-select/vitamui-autocomplete-multi-select.module';
 export * from './vitamui-autocomplete/vitamui-autocomplete.component';
-export * from './vitamui-autocomplete/vitamui-autocomplete.module';

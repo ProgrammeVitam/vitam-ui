@@ -7,12 +7,16 @@ import { customTemplate } from '../../archive-unit-template';
 import { ArchiveUnit } from '../../models/archive-unit';
 import { JsonPatchDto } from '../../models/json-patch';
 import { ArchiveUnitEditorService } from './archive-unit-editor.service';
+import { AsyncPipe } from '@angular/common';
+import { ObjectEditorComponent } from '../../../object-editor/object-editor.component';
 
 @Component({
   selector: 'vitamui-common-archive-unit-editor',
   templateUrl: './archive-unit-editor.component.html',
   styleUrls: ['./archive-unit-editor.component.scss'],
   providers: [ArchiveUnitEditorService],
+  standalone: true,
+  imports: [ObjectEditorComponent, AsyncPipe],
 })
 export class ArchiveUnitEditorComponent implements OnInit, OnChanges, OnDestroy {
   @Input() data!: ArchiveUnit;

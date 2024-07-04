@@ -36,7 +36,8 @@
  */
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { Component, ElementRef, forwardRef, HostBinding, HostListener, Input, OnInit, ViewChild } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { NgIf } from '@angular/common';
 
 export const VITAMUI_INPUT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -49,6 +50,8 @@ export const VITAMUI_INPUT_VALUE_ACCESSOR: any = {
   templateUrl: './vitamui-input.component.html',
   styleUrls: ['./vitamui-input.component.scss'],
   providers: [VITAMUI_INPUT_VALUE_ACCESSOR],
+  standalone: true,
+  imports: [NgIf, FormsModule],
 })
 export class VitamUIInputComponent implements ControlValueAccessor, OnInit {
   @Input() type = 'text';

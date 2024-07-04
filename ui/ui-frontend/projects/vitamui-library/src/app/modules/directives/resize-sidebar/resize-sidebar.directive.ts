@@ -39,6 +39,7 @@ import { Directive, ElementRef, HostListener, Inject, Input, OnInit, Renderer2 }
 
 @Directive({
   selector: '[vitamuiCommonResizeSidebar]',
+  standalone: true,
 })
 export class ResizeSidebarDirective implements OnInit {
   /**

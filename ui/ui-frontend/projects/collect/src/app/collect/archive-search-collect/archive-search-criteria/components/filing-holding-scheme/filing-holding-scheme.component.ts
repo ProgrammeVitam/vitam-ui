@@ -41,17 +41,23 @@ import {
   SearchCriteriaTypeEnum,
   StartupService,
   Unit,
+  ResizeSidebarDirective,
 } from 'vitamui-library';
 import { isEmpty } from 'underscore';
 import { ArchiveCollectService } from '../../../archive-collect.service';
 import { NodeData } from '../../models/nodedata.interface';
 import { Pair } from '../../models/utils';
 import { ArchiveSharedDataService } from '../../services/archive-shared-data.service';
+import { LeavesTreeComponent } from './leaves-tree/leaves-tree.component';
+import { NgIf } from '@angular/common';
+import { ClassificationTreeComponent } from './classification-tree/classification-tree.component';
 
 @Component({
   selector: 'app-filing-holding-scheme',
   templateUrl: './filing-holding-scheme.component.html',
   styleUrls: ['./filing-holding-scheme.component.scss'],
+  standalone: true,
+  imports: [ClassificationTreeComponent, NgIf, ResizeSidebarDirective, LeavesTreeComponent],
 })
 export class FilingHoldingSchemeComponent implements OnInit, OnDestroy {
   @Input() transactionId: string;

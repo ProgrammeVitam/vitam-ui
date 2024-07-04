@@ -67,7 +67,7 @@ import { AdminDslComponent } from './admin-dsl.component';
     MatDatepickerModule,
     MatSelectModule,
     MatInputModule,
+    AdminDslComponent,
   ],
-  declarations: [AdminDslComponent],
 })
 export class AdminDslModule {}

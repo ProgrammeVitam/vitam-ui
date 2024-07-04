@@ -37,11 +37,16 @@
 import { Component, Input } from '@angular/core';
 
 import { IEvent } from '../../../models';
+import { DateTimePipe } from '../../../pipes/datetime.pipe';
+import { EventTypeLabelComponent } from '../../event-type-label/event-type-label.component';
+import { NgFor, NgIf } from '@angular/common';
 
 @Component({
   selector: 'vitamui-common-history-events',
   templateUrl: './history-events.component.html',
   styleUrls: ['./history-events.component.scss'],
+  standalone: true,
+  imports: [NgFor, NgIf, EventTypeLabelComponent, DateTimePipe],
 })
 export class HistoryEventsComponent {
   @Input() events: IEvent[];

@@ -36,11 +36,15 @@
  */
 import { Component, Input } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
+import { FormsModule } from '@angular/forms';
+import { SlideToggleComponent } from '../slide-toggle/slide-toggle.component';
 
 @Component({
   selector: 'vitamui-common-role',
   templateUrl: './role.component.html',
   styleUrls: ['./role.component.scss'],
+  standalone: true,
+  imports: [SlideToggleComponent, FormsModule],
 })
 export class RoleComponent {
   @Input() checked: boolean;

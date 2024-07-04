@@ -36,7 +36,9 @@
  */
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { Component, ElementRef, forwardRef, HostBinding, HostListener, Input, ViewChild } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { MatLegacyProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
+import { NgIf } from '@angular/common';
 
 export const VITAMUI_TEXTAREA_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -49,6 +51,8 @@ export const VITAMUI_TEXTAREA_VALUE_ACCESSOR: any = {
   templateUrl: './vitamui-textarea.component.html',
   styleUrls: ['./vitamui-textarea.component.scss'],
   providers: [VITAMUI_TEXTAREA_VALUE_ACCESSOR],
+  standalone: true,
+  imports: [NgIf, FormsModule, MatLegacyProgressSpinnerModule],
 })
 export class VitamUITextareaComponent implements ControlValueAccessor {
   @Input() maxlength: number;

@@ -46,14 +46,24 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { FileFormatComponent } from './file-format.component';
 import { TranslateModule } from '@ngx-translate/core';
 
-@Component({ selector: 'app-file-format-preview', template: '' })
+@Component({
+  selector: 'app-file-format-preview',
+  template: '',
+  standalone: true,
+  imports: [VitamUICommonTestModule, RouterTestingModule, InjectorModule, MatSidenavModule, MatDialogModule],
+})
 // eslint-disable-next-line @angular-eslint/component-class-suffix
 class AgencyPreviewStub {
   @Input()
   accessContract: any;
 }
 
-@Component({ selector: 'app-file-format-list', template: '' })
+@Component({
+  selector: 'app-file-format-list',
+  template: '',
+  standalone: true,
+  imports: [VitamUICommonTestModule, RouterTestingModule, InjectorModule, MatSidenavModule, MatDialogModule],
+})
 // eslint-disable-next-line @angular-eslint/component-class-suffix
 class AgencyListStub {}
 
@@ -63,7 +73,6 @@ describe('FileFormatComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [FileFormatComponent, AgencyListStub, AgencyPreviewStub],
       imports: [
         VitamUICommonTestModule,
         RouterTestingModule,
@@ -73,6 +82,9 @@ describe('FileFormatComponent', () => {
         MatSidenavModule,
         TranslateModule.forRoot(),
         MatDialogModule,
+        FileFormatComponent,
+        AgencyListStub,
+        AgencyPreviewStub,
       ],
       providers: [{ provide: WINDOW_LOCATION, useValue: window.location }],
       schemas: [NO_ERRORS_SCHEMA],

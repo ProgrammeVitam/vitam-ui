@@ -71,7 +71,10 @@ import { VitamUISnackBar } from '../shared/vitamui-snack-bar/vitamui-snack-bar.s
 import { ArchiveSearchComponent } from './archive-search.component';
 import { TransferAcknowledgmentComponent } from './transfer-acknowledgment/transfer-acknowledgment.component';
 
-@Pipe({ name: 'truncate' })
+@Pipe({
+  name: 'truncate',
+  standalone: true,
+})
 class MockTruncatePipe implements PipeTransform {
   transform(value: number): number {
     return value;
@@ -140,8 +143,9 @@ describe('ArchiveSearchComponent', () => {
         MatSnackBarModule,
         HttpClientTestingModule,
         RouterTestingModule,
+        ArchiveSearchComponent,
+        MockTruncatePipe,
       ],
-      declarations: [ArchiveSearchComponent, MockTruncatePipe],
       providers: [
         FormBuilder,
         ArchiveSharedDataService,

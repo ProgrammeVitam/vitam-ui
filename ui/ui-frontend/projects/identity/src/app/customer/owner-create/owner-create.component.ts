@@ -35,18 +35,41 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
 import { Subscription } from 'rxjs';
-import { ConfirmDialogService, Customer, Owner, Tenant } from 'vitamui-library';
+import {
+  ConfirmDialogService,
+  Customer,
+  Owner,
+  Tenant,
+  CommonProgressBarComponent,
+  StepperComponent,
+  VitamUICommonInputComponent,
+} from 'vitamui-library';
 import { OwnerService } from '../owner.service';
 import { TenantFormValidators } from '../tenant-create/tenant-form.validators';
 import { TenantService } from '../tenant.service';
+import { TranslateModule } from '@ngx-translate/core';
+import { NgIf } from '@angular/common';
+import { OwnerFormComponent } from '../owner-form/owner-form.component';
+import { CdkStepperModule } from '@angular/cdk/stepper';
 
 @Component({
   selector: 'app-owner-create',
   templateUrl: './owner-create.component.html',
   styleUrls: ['./owner-create.component.scss'],
+  standalone: true,
+  imports: [
+    CommonProgressBarComponent,
+    StepperComponent,
+    CdkStepperModule,
+    ReactiveFormsModule,
+    OwnerFormComponent,
+    VitamUICommonInputComponent,
+    NgIf,
+    TranslateModule,
+  ],
 })
 export class OwnerCreateComponent implements OnInit, OnDestroy {
   public ownerForm: FormGroup;

@@ -35,17 +35,46 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, Inject, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
 import { Subscription } from 'rxjs';
-import { ConfirmDialogService } from 'vitamui-library';
+import {
+  ConfirmDialogService,
+  CommonProgressBarComponent,
+  StepperComponent,
+  VitamUICommonInputComponent,
+  SlideToggleComponent,
+  CommonTooltipComponent,
+  VitamUIInputErrorComponent,
+  CommonTooltipDirective,
+} from 'vitamui-library';
 import { SecurityProfileService } from '../security-profile.service';
 import { SecurityProfileCreateValidators } from './security-profile-create.validators';
+import { TranslateModule } from '@ngx-translate/core';
+import { SecurityProfileEditPermissionComponent } from './security-profile-edit-permission/security-profile-edit-permission.component';
+import { CdkStepperModule } from '@angular/cdk/stepper';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-security-profile-create',
   templateUrl: './security-profile-create.component.html',
   styleUrls: ['./security-profile-create.component.scss'],
+  standalone: true,
+  imports: [
+    NgIf,
+    CommonProgressBarComponent,
+    FormsModule,
+    ReactiveFormsModule,
+    StepperComponent,
+    CdkStepperModule,
+    VitamUICommonInputComponent,
+    SlideToggleComponent,
+    CommonTooltipComponent,
+    SecurityProfileEditPermissionComponent,
+    TranslateModule,
+    VitamUIInputErrorComponent,
+    CommonTooltipDirective,
+  ],
 })
 export class SecurityProfileCreateComponent implements OnInit, OnDestroy {
   @Input() isSlaveMode: boolean;

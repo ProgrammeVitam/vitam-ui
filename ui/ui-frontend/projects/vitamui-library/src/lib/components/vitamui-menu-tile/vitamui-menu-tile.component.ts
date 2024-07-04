@@ -37,11 +37,16 @@
  */
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Application, StartupService } from '../../../app/modules';
+import { TooltipDirective } from '../../../app/modules/directives/tooltip/tooltip.directive';
+import { RouterLink } from '@angular/router';
+import { NgClass, NgIf, NgTemplateOutlet } from '@angular/common';
 
 @Component({
   selector: 'vitamui-common-menu-tile-updated',
   templateUrl: './vitamui-menu-tile.component.html',
   styleUrls: ['./vitamui-menu-tile.component.scss'],
+  standalone: true,
+  imports: [NgIf, NgTemplateOutlet, RouterLink, TooltipDirective, NgClass],
 })
 export class UpdatedVitamUIMenuTileComponent implements OnInit {
   sameApp = false;

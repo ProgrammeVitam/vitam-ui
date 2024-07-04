@@ -44,7 +44,7 @@ describe('AccountApplicationTabComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [AccountApplicationTabComponent],
+      imports: [AccountApplicationTabComponent],
     }).compileComponents();
   });
 

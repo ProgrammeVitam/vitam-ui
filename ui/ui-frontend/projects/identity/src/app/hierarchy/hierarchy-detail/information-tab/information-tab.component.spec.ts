@@ -41,13 +41,15 @@ import { AsyncValidator, ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsM
 import { of, Subject } from 'rxjs';
 
 import { AuthService, CountryService, Profile } from 'vitamui-library';
-import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { HierarchyService } from '../../hierarchy.service';
 import { ProfileValidators } from '../../profile.validators';
 import { InformationTabComponent } from './information-tab.component';
 
 // eslint-disable-next-line @angular-eslint/directive-selector
-@Directive({ selector: '[matTooltip]' })
+@Directive({
+  selector: '[matTooltip]',
+  standalone: true,
+})
 class MatTooltipStubDirective {
   @Input() matTooltip: any;
   @Input() matTooltipDisabled: any;
@@ -64,6 +66,8 @@ class MatTooltipStubDirective {
       multi: true,
     },
   ],
+  standalone: true,
+  imports: [ReactiveFormsModule],
 })
 class EditableTextAreaStubComponent implements ControlValueAccessor {
   @Input() validator: Validator;
@@ -78,6 +82,8 @@ class EditableTextAreaStubComponent implements ControlValueAccessor {
 
 @Component({
   template: ` <app-information-tab [profile]="profile" [readOnly]="readOnly"></app-information-tab> `,
+  standalone: true,
+  imports: [ReactiveFormsModule, InformationTabComponent],
 })
 class TestHostComponent {
   profile: Profile = {
@@ -121,8 +127,7 @@ describe('Hierarchy InformationTabComponent', () => {
     const authServiceMock = { user: { level: '' } };
 
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, VitamUICommonTestModule],
-      declarations: [InformationTabComponent, TestHostComponent, EditableTextAreaStubComponent, MatTooltipStubDirective],
+      imports: [ReactiveFormsModule, InformationTabComponent, TestHostComponent, EditableTextAreaStubComponent, MatTooltipStubDirective],
       providers: [
         { provide: HierarchyService, useValue: hierarchyServiceMock },
         { provide: ProfileValidators, useValue: profileValidatorsSpy },

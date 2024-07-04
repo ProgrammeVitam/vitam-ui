@@ -36,17 +36,31 @@
  */
 
 import { Component, Input, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { merge, of, Subscription } from 'rxjs';
 import { catchError, debounceTime, filter, map, switchMap } from 'rxjs/operators';
 import { extend, isEmpty } from 'underscore';
 
-import { AuthService, buildValidators, diff, Group } from 'vitamui-library';
+import {
+  AuthService,
+  buildValidators,
+  diff,
+  Group,
+  SlideToggleComponent,
+  EditableFieldComponent,
+  VitamUIFieldErrorComponent,
+  EditableInputComponent,
+  EditableTextareaComponent,
+  EditableLevelInputComponent,
+} from 'vitamui-library';
 
 import { GroupService } from '../../group.service';
 import { GroupValidators } from '../../group.validators';
 import { UnitsEditComponent } from './units-edit/units-edit.component';
+import { TranslateModule } from '@ngx-translate/core';
+import { NgIf, NgFor } from '@angular/common';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
 
 const DEBOUNCE_TIME = 200;
 
@@ -54,6 +68,20 @@ const DEBOUNCE_TIME = 200;
   selector: 'app-information-tab',
   templateUrl: './information-tab.component.html',
   styleUrls: ['./information-tab.component.scss'],
+  standalone: true,
+  imports: [
+    ReactiveFormsModule,
+    SlideToggleComponent,
+    MatLegacyTooltipModule,
+    NgIf,
+    EditableFieldComponent,
+    VitamUIFieldErrorComponent,
+    NgFor,
+    TranslateModule,
+    EditableInputComponent,
+    EditableTextareaComponent,
+    EditableLevelInputComponent,
+  ],
 })
 export class InformationTabComponent implements OnDestroy, OnChanges {
   form: FormGroup;

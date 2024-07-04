@@ -36,16 +36,39 @@
  */
 
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatLegacyDialog as MatDialog, MatLegacyDialogModule } from '@angular/material/legacy-dialog';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { OperationDetails } from '../../models/operation-response.interface';
 import { LogbookManagementOperationService } from '../logbook-management-operation.service';
+import { TruncatePipe } from '../../../../../vitamui-library/src/app/modules/pipes/truncate.pipe';
+import { DateTimePipe } from '../../../../../vitamui-library/src/app/modules/pipes/datetime.pipe';
+import { TranslateModule } from '@ngx-translate/core';
+import { NgClass } from '@angular/common';
+import { LogbookManagementOperationInformationTabComponent } from './logbook-management-operation-information-tab/logbook-management-operation-information-tab.component';
+import { MatLegacyTabsModule } from '@angular/material/legacy-tabs';
+import { MatLegacyMenuModule } from '@angular/material/legacy-menu';
+import { VitamuiSidenavHeaderComponent, VitamuiMenuButtonComponent, EventTypeLabelComponent, PipesModule } from 'vitamui-library';
 
 @Component({
   selector: 'app-logbook-management-operation-preview',
   templateUrl: './logbook-management-operation-preview.component.html',
   styleUrls: ['./logbook-management-operation-preview.component.scss'],
+  standalone: true,
+  imports: [
+    VitamuiSidenavHeaderComponent,
+    VitamuiMenuButtonComponent,
+    MatLegacyMenuModule,
+    MatLegacyTabsModule,
+    LogbookManagementOperationInformationTabComponent,
+    MatLegacyDialogModule,
+    EventTypeLabelComponent,
+    NgClass,
+    PipesModule,
+    TranslateModule,
+    DateTimePipe,
+    TruncatePipe,
+  ],
 })
 export class LogbookManagementOperationPreviewComponent implements OnInit, OnDestroy {
   @Input() operation: OperationDetails;

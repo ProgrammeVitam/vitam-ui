@@ -47,11 +47,16 @@ import { TenantApiService } from '../../../core/api/tenant-api.service';
 import { IngestContractService } from '../../../ingest-contract/ingest-contract.service';
 import { ContextEditComponent } from '../../context-edit/context-edit.component';
 import { ContextService } from '../../context.service';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatDividerModule } from '@angular/material/divider';
+import { NgIf, NgFor } from '@angular/common';
 
 @Component({
   selector: 'app-context-permission-tab',
   templateUrl: './context-permission-tab.component.html',
   styleUrls: ['./context-permission-tab.component.scss'],
+  standalone: true,
+  imports: [NgIf, NgFor, MatDividerModule, TranslateModule],
 })
 export class ContextPermissionTabComponent implements OnInit {
   @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();

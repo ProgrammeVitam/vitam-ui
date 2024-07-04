@@ -69,7 +69,6 @@ describe('ReuseRuleSearchComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ReuseRuleSearchComponent],
       imports: [
         InjectorModule,
         VitamUICommonTestModule,
@@ -78,6 +77,7 @@ describe('ReuseRuleSearchComponent', () => {
         TranslateModule.forRoot(),
         RouterTestingModule,
         BrowserAnimationsModule,
+        ReuseRuleSearchComponent,
       ],
       providers: [
         FormBuilder,

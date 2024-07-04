@@ -45,7 +45,7 @@ describe('CustomerSelectContentComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [CustomerSelectContentComponent],
+      imports: [CustomerSelectContentComponent],
       providers: [
         { provide: ActivatedRoute, useValue: {} },
         { provide: Router, useValue: {} },

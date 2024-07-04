@@ -52,25 +52,44 @@ import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { ProfileService } from '../profile.service';
 import { ProfileDetailComponent } from './profile-detail.component';
 
-@Component({ selector: 'app-information-tab', template: '' })
+@Component({
+  selector: 'app-information-tab',
+  template: '',
+  standalone: true,
+  imports: [MatMenuModule, MatTabsModule, HttpClientTestingModule, VitamUICommonTestModule],
+})
 class InformationTabStubComponent {
   @Input() profile: Profile;
   @Input() readOnly: boolean;
 }
 
-@Component({ selector: 'app-profile-group-tab', template: '' })
+@Component({
+  selector: 'app-profile-group-tab',
+  template: '',
+  standalone: true,
+  imports: [MatMenuModule, MatTabsModule, HttpClientTestingModule, VitamUICommonTestModule],
+})
 class ProfileGroupTabStubComponent {
   @Input() profile: Profile;
   @Input() readOnly: boolean;
 }
 
-@Component({ selector: 'app-side-panel', template: `<ng-content></ng-content>` })
+@Component({
+  selector: 'app-side-panel',
+  template: `<ng-content></ng-content>`,
+  standalone: true,
+  imports: [MatMenuModule, MatTabsModule, HttpClientTestingModule, VitamUICommonTestModule],
+})
 class SidePanelStubComponent {
   @Input() popup: boolean;
   @Input() popupUrl: string;
 }
 
-@Component({ template: '<app-profile-detail [profile]="profile" [isPopup]="isPopup"></app-profile-detail>' })
+@Component({
+  template: '<app-profile-detail [profile]="profile" [isPopup]="isPopup"></app-profile-detail>',
+  standalone: true,
+  imports: [MatMenuModule, MatTabsModule, HttpClientTestingModule, VitamUICommonTestModule],
+})
 class TestHostComponent {
   profile: any;
   isPopup = false;
@@ -130,8 +149,6 @@ describe('ProfileDetailComponent', () => {
         HttpClientTestingModule,
         LoggerModule.forRoot(),
         VitamUICommonTestModule,
-      ],
-      declarations: [
         TestHostComponent,
         ProfileDetailComponent,
         SidePanelStubComponent,

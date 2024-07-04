@@ -36,17 +36,20 @@
  */
 
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
 import { extend, isEmpty } from 'underscore';
-import { Option, SecurityProfile, diff } from 'vitamui-library';
+import { Option, SecurityProfile, diff, VitamUICommonInputComponent, SlideToggleComponent } from 'vitamui-library';
 import { SecurityProfileService } from '../../security-profile.service';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-security-profile-information-tab',
   templateUrl: './security-profile-information-tab.component.html',
   styleUrls: ['./security-profile-information-tab.component.scss'],
+  standalone: true,
+  imports: [FormsModule, ReactiveFormsModule, VitamUICommonInputComponent, SlideToggleComponent, TranslateModule],
 })
 export class SecurityProfileInformationTabComponent {
   @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();

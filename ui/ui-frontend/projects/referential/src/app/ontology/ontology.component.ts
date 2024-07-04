@@ -38,19 +38,32 @@ import { Component, ViewChild } from '@angular/core';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { ActivatedRoute } from '@angular/router';
 
-import { TranslateService } from '@ngx-translate/core';
-import { GlobalEventService, SidenavPage } from 'vitamui-library';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
+import { GlobalEventService, SidenavPage, VitamuiTitleBreadcrumbComponent, VitamuiCommonBannerComponent } from 'vitamui-library';
 import { Ontology } from 'vitamui-library';
 import { FileTypes } from 'vitamui-library';
 import { ImportDialogParam, ReferentialTypes } from '../shared/import-dialog/import-dialog-param.interface';
 import { ImportDialogComponent } from '../shared/import-dialog/import-dialog.component';
 import { OntologyCreateComponent } from './ontology-create/ontology-create.component';
 import { OntologyListComponent } from './ontology-list/ontology-list.component';
+import { OntologyPreviewComponent } from './ontology-preview/ontology-preview.component';
+import { NgIf } from '@angular/common';
+import { MatSidenavModule } from '@angular/material/sidenav';
 
 @Component({
   selector: 'app-ontology',
   templateUrl: './ontology.component.html',
   styleUrls: ['./ontology.component.scss'],
+  standalone: true,
+  imports: [
+    MatSidenavModule,
+    NgIf,
+    OntologyPreviewComponent,
+    VitamuiTitleBreadcrumbComponent,
+    VitamuiCommonBannerComponent,
+    OntologyListComponent,
+    TranslateModule,
+  ],
 })
 export class OntologyComponent extends SidenavPage<Ontology> {
   search = '';

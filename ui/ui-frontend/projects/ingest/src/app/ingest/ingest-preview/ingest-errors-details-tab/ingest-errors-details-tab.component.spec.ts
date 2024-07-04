@@ -11,8 +11,7 @@ describe('IngestErrorsDetailsTabComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [IngestErrorsDetailsTabComponent],
-      imports: [HttpClientTestingModule],
+      imports: [HttpClientTestingModule, IngestErrorsDetailsTabComponent],
       providers: [
         { provide: IngestService, useValue: {} },
         { provide: EventDisplayHelperService, useValue: {} },

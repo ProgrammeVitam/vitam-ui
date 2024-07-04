@@ -73,8 +73,8 @@ describe('AuditComponent', () => {
         MatFormFieldModule,
         MatInputModule,
         LoggerModule.forRoot(),
+        AuditComponent,
       ],
-      declarations: [AuditComponent],
       providers: [
         FormBuilder,
         GlobalEventService,

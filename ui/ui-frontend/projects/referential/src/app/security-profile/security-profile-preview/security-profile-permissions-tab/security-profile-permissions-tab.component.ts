@@ -36,17 +36,22 @@
  */
 
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
 import { extend, isEmpty } from 'underscore';
 import { Option, SecurityProfile, diff } from 'vitamui-library';
 import { SecurityProfileService } from '../../security-profile.service';
+import { TranslateModule } from '@ngx-translate/core';
+import { SecurityProfileEditPermissionComponent } from '../../security-profile-create/security-profile-edit-permission/security-profile-edit-permission.component';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-security-profile-permissions-tab',
   templateUrl: './security-profile-permissions-tab.component.html',
   styleUrls: ['./security-profile-permissions-tab.component.scss'],
+  standalone: true,
+  imports: [FormsModule, ReactiveFormsModule, NgIf, SecurityProfileEditPermissionComponent, TranslateModule],
 })
 export class SecurityProfilePermissionsTabComponent {
   @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();

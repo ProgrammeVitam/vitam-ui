@@ -35,13 +35,18 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, Input, OnInit } from '@angular/core';
-import { Event } from 'vitamui-library';
+import { Event, PipesModule } from 'vitamui-library';
 import { SecurisationService } from '../../securisation.service';
+import { FileSizePipe } from '../../../../../../vitamui-library/src/app/modules/pipes/filesize.pipe';
+import { DateTimePipe } from '../../../../../../vitamui-library/src/app/modules/pipes/datetime.pipe';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-securisation-information-tab',
   templateUrl: './securisation-information-tab.component.html',
   styleUrls: ['./securisation-information-tab.component.scss'],
+  standalone: true,
+  imports: [PipesModule, TranslateModule, DateTimePipe, FileSizePipe],
 })
 export class SecurisationInformationTabComponent implements OnInit {
   @Input()

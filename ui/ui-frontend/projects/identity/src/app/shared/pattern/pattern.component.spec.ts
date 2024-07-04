@@ -47,6 +47,8 @@ import { PatternComponent } from './pattern.component';
 
 @Component({
   template: `<app-pattern [(ngModel)]="patterns" [options]="options"></app-pattern>`,
+  standalone: true,
+  imports: [FormsModule, ReactiveFormsModule, MatSelectModule, VitamUICommonTestModule],
 })
 class TestHostComponent {
   patterns: string[];
@@ -66,8 +68,15 @@ describe('PatternComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FormsModule, ReactiveFormsModule, MatSelectModule, NoopAnimationsModule, VitamUICommonTestModule],
-      declarations: [PatternComponent, TestHostComponent],
+      imports: [
+        FormsModule,
+        ReactiveFormsModule,
+        MatSelectModule,
+        NoopAnimationsModule,
+        VitamUICommonTestModule,
+        PatternComponent,
+        TestHostComponent,
+      ],
     }).compileComponents();
   });
 

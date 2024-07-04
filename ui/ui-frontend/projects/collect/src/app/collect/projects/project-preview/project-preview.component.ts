@@ -1,10 +1,10 @@
 import { Component, EventEmitter, Input, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatLegacyDialog as MatDialog, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { MatLegacyDialog as MatDialog, MatLegacyDialogRef as MatDialogRef, MatLegacyDialogModule } from '@angular/material/legacy-dialog';
 import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
-import { MatLegacyTabGroup as MatTabGroup } from '@angular/material/legacy-tabs';
+import { MatLegacyTabGroup as MatTabGroup, MatLegacyTabsModule } from '@angular/material/legacy-tabs';
 import { ActivatedRoute, Router } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
 import { map, mergeMap } from 'rxjs/operators';
 import {
@@ -19,14 +19,48 @@ import {
   Workflow,
   getProjectIcon,
   getProjectWorkflow,
+  VitamuiSidenavHeaderComponent,
+  VitamuiMenuButtonComponent,
+  VitamUICommonInputComponent,
+  DataModule,
+  AccordionModule,
 } from 'vitamui-library';
 import { ProjectsApiService } from '../../core/api/project-api.service';
 import { ProjectsService } from '../projects.service';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatLegacyProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
+import { MatLegacyOptionModule } from '@angular/material/legacy-core';
+import { MatLegacySelectModule } from '@angular/material/legacy-select';
+import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
+import { MatLegacyMenuModule } from '@angular/material/legacy-menu';
+import { NgIf, NgClass, NgFor } from '@angular/common';
 
 @Component({
   selector: 'app-project-preview',
   templateUrl: './project-preview.component.html',
   styleUrls: ['./project-preview.component.scss'],
+  standalone: true,
+  imports: [
+    NgIf,
+    VitamuiSidenavHeaderComponent,
+    VitamuiMenuButtonComponent,
+    MatLegacyMenuModule,
+    ReactiveFormsModule,
+    MatLegacyTabsModule,
+    NgClass,
+    VitamUICommonInputComponent,
+    MatLegacyFormFieldModule,
+    MatLegacySelectModule,
+    NgFor,
+    MatLegacyOptionModule,
+    DataModule,
+    AccordionModule,
+    MatLegacyProgressSpinnerModule,
+    MatLegacyDialogModule,
+    MatButtonToggleModule,
+    FormsModule,
+    TranslateModule,
+  ],
 })
 export class ProjectPreviewComponent implements OnInit {
   @Output()

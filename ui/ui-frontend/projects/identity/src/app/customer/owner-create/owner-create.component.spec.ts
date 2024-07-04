@@ -59,6 +59,8 @@ import { OwnerCreateComponent } from './owner-create.component';
       multi: true,
     },
   ],
+  standalone: true,
+  imports: [MatProgressBarModule, ReactiveFormsModule, VitamUICommonTestModule],
 })
 class OwnerFormStubComponent implements ControlValueAccessor {
   @Input() customerId: any;
@@ -99,8 +101,14 @@ describe('OwnerCreateComponent', () => {
     const tenantServiceSpy = jasmine.createSpyObj('TenantService', { create: of({}) });
 
     await TestBed.configureTestingModule({
-      imports: [MatProgressBarModule, ReactiveFormsModule, NoopAnimationsModule, VitamUICommonTestModule],
-      declarations: [OwnerCreateComponent, OwnerFormStubComponent],
+      imports: [
+        MatProgressBarModule,
+        ReactiveFormsModule,
+        NoopAnimationsModule,
+        VitamUICommonTestModule,
+        OwnerCreateComponent,
+        OwnerFormStubComponent,
+      ],
       providers: [
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MAT_DIALOG_DATA, useValue: { customer: { id: '42', name: 'OwnerName' } } },

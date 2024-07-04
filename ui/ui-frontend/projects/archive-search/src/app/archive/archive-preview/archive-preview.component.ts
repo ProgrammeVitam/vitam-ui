@@ -41,16 +41,38 @@ import {
   MatLegacyTabChangeEvent as MatTabChangeEvent,
   MatLegacyTabGroup as MatTabGroup,
   MatLegacyTabHeader as MatTabHeader,
+  MatLegacyTabsModule,
 } from '@angular/material/legacy-tabs';
 import { ActivatedRoute } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
-import { Unit, unitToVitamuiIcon } from 'vitamui-library';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
+import { Unit, unitToVitamuiIcon, PipesModule, VitamuiSidenavHeaderComponent, VitamuiMenuButtonComponent } from 'vitamui-library';
 import { ArchiveUnitDescriptionTabComponent } from './archive-unit-description-tab/archive-unit-description-tab.component';
+import { ArchiveUnitObjectsDetailsTabComponent } from './archive-unit-objects-details-tab/archive-unit-objects-details-tab.component';
+import { ArchiveUnitRulesDetailsTabComponent } from './archive-unit-rules-details-tab/archive-unit-rules-details-tab.component';
+import { ArchiveUnitInformationTabComponent } from './archive-unit-information-tab/archive-unit-information-tab.component';
+import { NgClass } from '@angular/common';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { MatLegacyMenuModule } from '@angular/material/legacy-menu';
 
 @Component({
   selector: 'app-archive-preview',
   templateUrl: './archive-preview.component.html',
   styleUrls: ['./archive-preview.component.scss'],
+  standalone: true,
+  imports: [
+    VitamuiSidenavHeaderComponent,
+    VitamuiMenuButtonComponent,
+    MatLegacyMenuModule,
+    MatLegacyTooltipModule,
+    MatLegacyTabsModule,
+    NgClass,
+    ArchiveUnitInformationTabComponent,
+    ArchiveUnitDescriptionTabComponent,
+    ArchiveUnitRulesDetailsTabComponent,
+    ArchiveUnitObjectsDetailsTabComponent,
+    PipesModule,
+    TranslateModule,
+  ],
 })
 export class ArchivePreviewComponent implements OnChanges, AfterViewInit {
   @Input() archiveUnit: Unit;

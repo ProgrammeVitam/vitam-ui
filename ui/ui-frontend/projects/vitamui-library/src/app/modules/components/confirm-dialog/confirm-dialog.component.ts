@@ -35,11 +35,16 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, Input } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatLegacyDialogModule } from '@angular/material/legacy-dialog';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'vitamui-common-confirm-dialog',
   templateUrl: './confirm-dialog.component.html',
   styleUrls: ['./confirm-dialog.component.scss'],
+  standalone: true,
+  imports: [NgIf, MatLegacyDialogModule, TranslateModule],
 })
 export class ConfirmDialogComponent {
   @Input() dialogTitle: string;

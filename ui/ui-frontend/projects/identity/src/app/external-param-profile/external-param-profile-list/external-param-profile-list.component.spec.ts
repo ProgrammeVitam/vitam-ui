@@ -83,8 +83,8 @@ describe('ExternalParamProfileListComponent', () => {
         CollapseModule,
         MatButtonToggleModule,
         VitamUICommonTestModule,
+        ExternalParamProfileListComponent,
       ],
-      declarations: [ExternalParamProfileListComponent],
       providers: [
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: ExternalParamProfileService, useValue: externalParamListServiceSpy },

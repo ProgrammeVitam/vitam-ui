@@ -59,12 +59,19 @@ import { environment } from './../../../../environments/environment';
 import { ENVIRONMENT } from './../../injection-tokens';
 import { NavbarComponent } from './navbar.component';
 
-@Directive({ selector: '[vitamuiCommonTriggerFor]' })
+@Directive({
+  selector: '[vitamuiCommonTriggerFor]',
+  standalone: true,
+})
 class TriggerForStubDirective {
   @Input() appTriggerFor: any;
 }
 
-@Directive({ selector: '[vitamuiCommonDropdown]', exportAs: 'appDropdown' })
+@Directive({
+  selector: '[vitamuiCommonDropdown]',
+  exportAs: 'appDropdown',
+  standalone: true,
+})
 class DropdownStubDirective {
   @Input() appDropdown: any;
 }
@@ -72,6 +79,8 @@ class DropdownStubDirective {
 @Component({
   selector: 'vitamui-common-application-menu',
   template: '',
+  standalone: true,
+  imports: [MatMenuModule, HttpClientTestingModule, MatSnackBarModule, VitamUICommonTestModule],
 })
 export class ApplicationMenuStubComponent {
   @Input() appId: ApplicationId;
@@ -80,6 +89,8 @@ export class ApplicationMenuStubComponent {
 @Component({
   selector: 'vitamui-common-tenant-menu',
   template: '',
+  standalone: true,
+  imports: [MatMenuModule, HttpClientTestingModule, MatSnackBarModule, VitamUICommonTestModule],
 })
 export class TenantMenuStubComponent {
   @Input() appId: ApplicationId;
@@ -88,12 +99,17 @@ export class TenantMenuStubComponent {
 @Component({
   selector: 'vitamui-common-customer-menu',
   template: '',
+  standalone: true,
+  imports: [MatMenuModule, HttpClientTestingModule, MatSnackBarModule, VitamUICommonTestModule],
 })
 export class CustomerMenuStubComponent {
   @Input() customers: any;
 }
 
-@Directive({ selector: '[routerLink]' })
+@Directive({
+  selector: '[routerLink]',
+  standalone: true,
+})
 export class RouterLinkStubDirective {
   @Input() routerLink: any;
   navigatedTo: any = null;
@@ -120,8 +136,6 @@ describe('NavbarComponent', () => {
         MatSnackBarModule,
         LoggerModule.forRoot(),
         VitamUICommonTestModule,
-      ],
-      declarations: [
         DropdownStubDirective,
         NavbarComponent,
         TriggerForStubDirective,

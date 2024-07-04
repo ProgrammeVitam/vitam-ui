@@ -50,7 +50,10 @@ import { InformationTabComponent } from './information-tab.component';
 let expectedGroup: Group;
 
 // eslint-disable-next-line @angular-eslint/directive-selector
-@Directive({ selector: '[matTooltip]' })
+@Directive({
+  selector: '[matTooltip]',
+  standalone: true,
+})
 class MatTooltipStubDirective {
   @Input() matTooltip: any;
   @Input() matTooltipDisabled: any;
@@ -59,6 +62,8 @@ class MatTooltipStubDirective {
 
 @Component({
   template: `<app-information-tab [group]="group" [readOnly]="readOnly"></app-information-tab>`,
+  standalone: true,
+  imports: [ReactiveFormsModule, VitamUICommonTestModule, HttpClientTestingModule],
 })
 class TestHostComponent {
   group = expectedGroup;
@@ -93,8 +98,15 @@ describe('Profile Group InformationTabComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, VitamUICommonTestModule, LoggerModule.forRoot(), HttpClientTestingModule],
-      declarations: [InformationTabComponent, TestHostComponent, MatTooltipStubDirective],
+      imports: [
+        ReactiveFormsModule,
+        VitamUICommonTestModule,
+        LoggerModule.forRoot(),
+        HttpClientTestingModule,
+        InformationTabComponent,
+        TestHostComponent,
+        MatTooltipStubDirective,
+      ],
       providers: [
         { provide: WINDOW_LOCATION, useValue: window.location },
         { provide: BASE_URL, useValue: '/fake-api' },

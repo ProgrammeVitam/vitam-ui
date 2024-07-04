@@ -47,6 +47,7 @@ const classMap: { [key: string]: string } = {
 
 @Pipe({
   name: 'eventTypeBadgeClass',
+  standalone: true,
 })
 export class EventTypeBadgeClassPipe implements PipeTransform {
   transform(event: Event): string {

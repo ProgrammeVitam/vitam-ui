@@ -36,15 +36,39 @@
  */
 
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
-import { FilingPlanMode, IngestContract } from 'vitamui-library';
+import {
+  FilingPlanMode,
+  IngestContract,
+  CommonProgressBarComponent,
+  StepperComponent,
+  FilingPlanComponent,
+  CommonTooltipComponent,
+  CommonTooltipDirective,
+} from 'vitamui-library';
 import { IngestContractService } from '../../../ingest-contract.service';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { CdkStepperModule } from '@angular/cdk/stepper';
 
 @Component({
   selector: 'app-ingest-contract-node-update',
   templateUrl: './ingest-contract-node-update.component.html',
   styleUrls: ['./ingest-contract-node-update.component.scss'],
+  standalone: true,
+  imports: [
+    CommonProgressBarComponent,
+    FormsModule,
+    ReactiveFormsModule,
+    StepperComponent,
+    CdkStepperModule,
+    FilingPlanComponent,
+    MatButtonToggleModule,
+    CommonTooltipComponent,
+    TranslateModule,
+    CommonTooltipDirective,
+  ],
 })
 export class IngestContractNodeUpdateComponent implements OnInit {
   ingestContract: IngestContract;

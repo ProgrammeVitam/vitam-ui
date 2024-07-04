@@ -59,6 +59,8 @@ import { IdentityProviderCreateComponent } from './identity-provider-create.comp
       multi: true,
     },
   ],
+  standalone: true,
+  imports: [MatProgressBarModule, ReactiveFormsModule, MatButtonToggleModule, MatSelectModule, VitamUICommonTestModule],
 })
 class PatternStubComponent implements ControlValueAccessor {
   @Input() options: Array<{ value: string; disabled?: boolean }>;
@@ -91,8 +93,9 @@ describe('IdentityProviderCreateComponent', () => {
         MatSelectModule,
         NoopAnimationsModule,
         VitamUICommonTestModule,
+        IdentityProviderCreateComponent,
+        PatternStubComponent,
       ],
-      declarations: [IdentityProviderCreateComponent, PatternStubComponent],
       providers: [
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MAT_DIALOG_DATA, useValue: { customer: { id: '42', name: 'OwnerName' } } },

@@ -39,10 +39,19 @@ import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { MatLegacyTableDataSource as MatTableDataSource } from '@angular/material/legacy-table';
 import { ActivatedRoute, Router } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
-import { FileUploader } from 'ng2-file-upload';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
+import { FileUploader, FileUploadModule } from 'ng2-file-upload';
 import { Subscription } from 'rxjs';
-import { Direction, GlobalEventService, SidenavPage, StartupService } from 'vitamui-library';
+import {
+  Direction,
+  GlobalEventService,
+  SidenavPage,
+  StartupService,
+  InfiniteScrollDirective,
+  VitamuiTitleBreadcrumbComponent,
+  VitamuiCommonBannerComponent,
+  OrderByButtonComponent,
+} from 'vitamui-library';
 import { environment } from '../../../environments/environment';
 import { PastisConfiguration } from '../../core/classes/pastis-configuration';
 import { NoticeService } from '../../core/services/notice.service';
@@ -59,6 +68,16 @@ import { PastisDialogData } from '../../shared/pastis-dialog/classes/pastis-dial
 import { CreateProfileComponent } from '../create-profile/create-profile.component';
 import { ProfileInformationTabComponent } from '../profile-preview/profile-information-tab/profile-information-tab/profile-information-tab.component';
 import { ProfileType } from '../../models/profile-type.enum';
+import { FilterByTypePipe } from './pipes/filterByType.pipe';
+import { FilterByStringNamePipe } from './pipes/filterByStringName.pipe';
+import { MatLegacyMenuModule } from '@angular/material/legacy-menu';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { NgxUiLoaderModule } from 'ngx-ui-loader';
+import { PastisPopupOptionComponent } from '../../shared/pastis-popup-option/pastis-popup-option.component';
+import { ProfilePreviewComponent } from '../profile-preview/profile-preview.component';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatLegacyProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
+import { NgIf, NgClass, NgFor, DatePipe } from '@angular/common';
 
 const POPUP_CREATION_PATH = 'PROFILE.POP_UP_CREATION';
 
@@ -74,6 +93,28 @@ function constantToTranslate() {
   selector: 'pastis-list-profile',
   templateUrl: './list-profile.component.html',
   styleUrls: ['./list-profile.component.scss'],
+  standalone: true,
+  imports: [
+    NgIf,
+    MatLegacyProgressSpinnerModule,
+    MatSidenavModule,
+    ProfilePreviewComponent,
+    InfiniteScrollDirective,
+    VitamuiTitleBreadcrumbComponent,
+    VitamuiCommonBannerComponent,
+    FileUploadModule,
+    PastisPopupOptionComponent,
+    NgClass,
+    NgxUiLoaderModule,
+    OrderByButtonComponent,
+    NgFor,
+    MatLegacyTooltipModule,
+    MatLegacyMenuModule,
+    DatePipe,
+    TranslateModule,
+    FilterByStringNamePipe,
+    FilterByTypePipe,
+  ],
 })
 export class ListProfileComponent extends SidenavPage<ProfileDescription> implements OnInit, OnDestroy {
   @ViewChild(ProfileInformationTabComponent, { static: true }) profileInformationTabComponent: ProfileInformationTabComponent;

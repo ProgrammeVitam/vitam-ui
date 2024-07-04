@@ -51,8 +51,15 @@ import {
   PageRequest,
   Role,
   SecurityService,
+  InfiniteScrollDirective,
+  OrderByButtonComponent,
+  EllipsisDirective,
+  ConfirmDialogComponent,
 } from 'vitamui-library';
 import { AgencyService } from '../agency.service';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatLegacyProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
+import { NgFor, NgIf } from '@angular/common';
 
 const FILTER_DEBOUNCE_TIME_MS = 400;
 
@@ -60,6 +67,17 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
   selector: 'app-agency-list',
   templateUrl: './agency-list.component.html',
   styleUrls: ['./agency-list.component.scss'],
+  standalone: true,
+  imports: [
+    InfiniteScrollDirective,
+    OrderByButtonComponent,
+    NgFor,
+    EllipsisDirective,
+    NgIf,
+    MatLegacyProgressSpinnerModule,
+    ConfirmDialogComponent,
+    TranslateModule,
+  ],
 })
 export class AgencyListComponent extends InfiniteScrollTable<Agency> implements OnDestroy, OnInit {
   // eslint-disable-next-line @angular-eslint/no-input-rename

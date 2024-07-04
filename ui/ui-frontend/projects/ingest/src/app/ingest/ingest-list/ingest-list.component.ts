@@ -37,9 +37,20 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { Subject, merge } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
-import { DEFAULT_PAGE_SIZE, Direction, InfiniteScrollTable, PageRequest } from 'vitamui-library';
+import {
+  DEFAULT_PAGE_SIZE,
+  Direction,
+  InfiniteScrollTable,
+  PageRequest,
+  InfiniteScrollDirective,
+  OrderByButtonComponent,
+  PipesModule,
+} from 'vitamui-library';
 import { IngestStatus, LogbookOperation, ingestStatus, ingestStatusVisualColor } from '../../models/logbook-event.interface';
 import { IngestService } from '../ingest.service';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatLegacyProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
+import { NgFor, NgSwitch, NgSwitchCase, NgIf } from '@angular/common';
 
 const FILTER_DEBOUNCE_TIME_MS = 400;
 
@@ -52,6 +63,18 @@ export class IngestFilters {
   selector: 'app-ingest-list',
   templateUrl: './ingest-list.component.html',
   styleUrls: ['./ingest-list.component.scss'],
+  standalone: true,
+  imports: [
+    InfiniteScrollDirective,
+    OrderByButtonComponent,
+    NgFor,
+    NgSwitch,
+    NgSwitchCase,
+    NgIf,
+    MatLegacyProgressSpinnerModule,
+    PipesModule,
+    TranslateModule,
+  ],
 })
 export class IngestListComponent extends InfiniteScrollTable<any> implements OnDestroy, OnInit {
   IngestStatus = IngestStatus;

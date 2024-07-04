@@ -41,12 +41,15 @@ import {
   AbstractControl,
   ControlValueAccessor,
   FormControl,
+  FormsModule,
   NG_VALIDATORS,
   NG_VALUE_ACCESSOR,
+  ReactiveFormsModule,
   ValidationErrors,
   Validator,
 } from '@angular/forms';
 import {
+  MatLegacyAutocompleteModule,
   MatLegacyAutocompleteSelectedEvent as MatAutocompleteSelectedEvent,
   MatLegacyAutocompleteTrigger as MatAutocompleteTrigger,
 } from '@angular/material/legacy-autocomplete';
@@ -54,6 +57,13 @@ import { isEqual } from 'lodash-es';
 import { merge, Observable, Subject } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { Option } from '../utils/option.interface';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { EllipsisDirective } from '../../../directives/ellipsis/ellipsis.directive';
+import { MatLegacyOptionModule } from '@angular/material/legacy-core';
+import { AutocompletePositionDirective } from '../../../directives/autocomplete-position/autocomplete-position.directive';
+import { MatLegacyInputModule } from '@angular/material/legacy-input';
+import { AsyncPipe, NgFor, NgIf } from '@angular/common';
+import { CommonTooltipDirective } from '../../common-tooltip/common-tooltip.directive';
 
 export const VITAMUI_AUTOCOMPLETE_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -72,6 +82,21 @@ export const VITAMUI_AUTOCOMPLETE_NG_VALIDATORS: any = {
   templateUrl: './vitamui-autocomplete.component.html',
   styleUrls: ['./vitamui-autocomplete.component.scss'],
   providers: [VITAMUI_AUTOCOMPLETE_VALUE_ACCESSOR, VITAMUI_AUTOCOMPLETE_NG_VALIDATORS],
+  standalone: true,
+  imports: [
+    CommonTooltipDirective,
+    NgIf,
+    MatLegacyInputModule,
+    FormsModule,
+    MatLegacyAutocompleteModule,
+    ReactiveFormsModule,
+    AutocompletePositionDirective,
+    NgFor,
+    MatLegacyOptionModule,
+    EllipsisDirective,
+    MatLegacyTooltipModule,
+    AsyncPipe,
+  ],
 })
 export class VitamUIAutocompleteComponent implements ControlValueAccessor, OnInit, Validator, OnChanges {
   @ViewChild('input', { read: ElementRef, static: true }) inputElement: ElementRef;

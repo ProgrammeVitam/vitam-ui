@@ -86,8 +86,13 @@ describe('AccessContractNodesTabComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      declarations: [AccessContractNodesTabComponent],
-      imports: [MatSnackBarModule, HttpClientTestingModule, LoggerModule.forRoot(), TranslateModule.forRoot()],
+      imports: [
+        MatSnackBarModule,
+        HttpClientTestingModule,
+        LoggerModule.forRoot(),
+        TranslateModule.forRoot(),
+        AccessContractNodesTabComponent,
+      ],
       providers: [
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: ExternalParametersService, useValue: externalParametersServiceMock },

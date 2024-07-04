@@ -49,6 +49,8 @@ import { EditableKeystoreComponent } from './editable-keystore.component';
 
 @Component({
   template: ` <app-editable-keystore [identityProvider]="identityProvider" [disabled]="disabled"></app-editable-keystore> `,
+  standalone: true,
+  imports: [ReactiveFormsModule, OverlayModule, VitamUICommonTestModule],
 })
 class TesthostComponent {
   identityProvider: IdentityProvider = {
@@ -81,8 +83,14 @@ describe('EditableKeystoreComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, OverlayModule, VitamUICommonTestModule, NoopAnimationsModule],
-      declarations: [TesthostComponent, EditableKeystoreComponent],
+      imports: [
+        ReactiveFormsModule,
+        OverlayModule,
+        VitamUICommonTestModule,
+        NoopAnimationsModule,
+        TesthostComponent,
+        EditableKeystoreComponent,
+      ],
       providers: [{ provide: IdentityProviderService, useValue: { updateKeystore: () => of(null) } }],
     }).compileComponents();
 

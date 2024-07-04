@@ -35,12 +35,23 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
 import { AuthService } from '../../auth.service';
 import { VitamUISnackBarService } from '../../components/vitamui-snack-bar/vitamui-snack-bar.service';
 import { Subrogation } from '../../models';
 import { SubrogationService } from '../subrogation.service';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatLegacyProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
+import { MatLegacyOptionModule } from '@angular/material/legacy-core';
+import { MatLegacySelectModule } from '@angular/material/legacy-select';
+import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
+import { VitamUIInputErrorComponent } from '../../components/vitamui-input/vitamui-input-error.component';
+import { NgFor, NgIf } from '@angular/common';
+import { VitamUICommonInputComponent } from '../../components/vitamui-input/vitamui-common-input.component';
+import { CdkStepperModule } from '@angular/cdk/stepper';
+import { StepperComponent } from '../../components/stepper/stepper.component';
+import { CommonProgressBarComponent } from '../../components/common-progress-bar/common-progress-bar.component';
 
 const PROGRESS_BAR_MULTIPLICATOR = 100;
 
@@ -48,6 +59,23 @@ const PROGRESS_BAR_MULTIPLICATOR = 100;
   selector: 'vitamui-common-subrogation-modal',
   templateUrl: './subrogation-modal.component.html',
   styleUrls: ['./subrogation-modal.component.scss'],
+  standalone: true,
+  imports: [
+    CommonProgressBarComponent,
+    StepperComponent,
+    CdkStepperModule,
+    FormsModule,
+    ReactiveFormsModule,
+    VitamUICommonInputComponent,
+    NgIf,
+    VitamUIInputErrorComponent,
+    MatLegacyFormFieldModule,
+    MatLegacySelectModule,
+    NgFor,
+    MatLegacyOptionModule,
+    MatLegacyProgressSpinnerModule,
+    TranslateModule,
+  ],
 })
 export class SubrogationModalComponent implements OnInit {
   public stepIndex = 0;

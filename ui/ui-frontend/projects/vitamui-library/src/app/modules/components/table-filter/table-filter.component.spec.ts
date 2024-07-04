@@ -53,6 +53,8 @@ import { TableFilterComponent } from './table-filter.component';
       <vitamui-common-table-filter-option [value]="3">Option 3</vitamui-common-table-filter-option>
     </vitamui-common-table-filter>
   `,
+  standalone: true,
+  imports: [MatPseudoCheckboxModule, FormsModule],
 })
 export class TestHostComponent {
   filter: any;
@@ -68,8 +70,7 @@ describe('TableFilterComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MatPseudoCheckboxModule, FormsModule],
-      declarations: [TestHostComponent, TableFilterComponent, TableFilterOptionComponent],
+      imports: [MatPseudoCheckboxModule, FormsModule, TestHostComponent, TableFilterComponent, TableFilterOptionComponent],
     }).compileComponents();
   });
 

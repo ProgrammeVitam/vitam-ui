@@ -53,8 +53,19 @@ import { PathStrategyDisplayObjectService } from './services/path-strategy-displ
 import { SchemaElementToDisplayRuleService } from './services/schema-element-to-display-rule.service';
 
 @NgModule({
-  imports: [CommonModule, TranslateModule, PipesModule, MatTooltipModule, MatProgressSpinnerModule, AccordionModule, DataModule],
-  declarations: [ObjectViewerComponent, GroupComponent, ListComponent, PrimitiveComponent],
+  imports: [
+    CommonModule,
+    TranslateModule,
+    PipesModule,
+    MatTooltipModule,
+    MatProgressSpinnerModule,
+    AccordionModule,
+    DataModule,
+    ObjectViewerComponent,
+    GroupComponent,
+    ListComponent,
+    PrimitiveComponent,
+  ],
   providers: [
     DisplayObjectHelperService,
     DisplayRuleHelperService,

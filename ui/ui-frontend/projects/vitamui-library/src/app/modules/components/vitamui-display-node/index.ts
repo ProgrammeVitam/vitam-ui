@@ -35,4 +35,3 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 export * from './vitamui-display-node.component';
-export * from './vitamui-display-node.module';

@@ -29,10 +29,10 @@
 
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatLegacyOptionSelectionChange as MatOptionSelectionChange } from '@angular/material/legacy-core';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { MatLegacyOptionSelectionChange as MatOptionSelectionChange, MatLegacyOptionModule } from '@angular/material/legacy-core';
 import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import { intersection } from 'lodash-es';
 import { Subscription } from 'rxjs';
 import {
@@ -45,6 +45,8 @@ import {
   SearchCriteriaDto,
   SearchCriteriaTypeEnum,
   StartupService,
+  StepperComponent,
+  VitamUICommonInputComponent,
 } from 'vitamui-library';
 import { ArchiveSharedDataService } from '../../../../core/archive-shared-data.service';
 import { ArchiveService } from '../../../archive.service';
@@ -54,6 +56,13 @@ import {
   ReclassificationQueryActionType,
 } from '../../../models/reclassification-request.interface';
 import { ArchiveUnitValidatorService } from '../../../validators/archive-unit-validator.service';
+import { MatLegacySelectModule } from '@angular/material/legacy-select';
+import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
+import { MatLegacyProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { NgIf, NgFor, NgSwitch, NgSwitchCase } from '@angular/common';
+import { CdkStepperModule } from '@angular/cdk/stepper';
+import { MatLegacyProgressBarModule } from '@angular/material/legacy-progress-bar';
 
 const PROGRESS_BAR_MULTIPLICATOR = 100;
 const PULL = 'PULL';
@@ -63,6 +72,24 @@ const REPLACE = 'REPLACE';
   selector: 'reclassification',
   templateUrl: './reclassification.component.html',
   styleUrls: ['./reclassification.component.scss'],
+  standalone: true,
+  imports: [
+    MatLegacyProgressBarModule,
+    ReactiveFormsModule,
+    StepperComponent,
+    CdkStepperModule,
+    NgIf,
+    MatLegacyTooltipModule,
+    MatLegacyProgressSpinnerModule,
+    MatLegacyFormFieldModule,
+    MatLegacySelectModule,
+    NgFor,
+    MatLegacyOptionModule,
+    NgSwitch,
+    NgSwitchCase,
+    VitamUICommonInputComponent,
+    TranslateModule,
+  ],
 })
 export class ReclassificationComponent implements OnInit, OnDestroy {
   form: FormGroup;

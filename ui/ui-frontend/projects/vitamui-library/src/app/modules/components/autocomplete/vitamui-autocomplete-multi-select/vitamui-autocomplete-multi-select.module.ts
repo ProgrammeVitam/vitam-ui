@@ -49,11 +49,9 @@ import { MatLegacyListModule as MatListModule } from '@angular/material/legacy-l
 import { MatLegacySelectModule as MatSelectModule } from '@angular/material/legacy-select';
 import { MatLegacyTooltipModule as MatTooltipModule } from '@angular/material/legacy-tooltip';
 import { TranslateModule } from '@ngx-translate/core';
-import { AutocompletePositionDirectiveModule } from '../../../directives/autocomplete-position/autocomplete-position.directive.module';
-import { EllipsisDirectiveModule } from '../../../directives/ellipsis/ellipsis.directive.module';
+
 import { PipesModule } from '../../../pipes/pipes.module';
-import { CommonTooltipModule } from '../../common-tooltip/common-tooltip.module';
-import { SearchBarModule } from '../../search-bar';
+
 import { VitamUIAutocompleteMultiSelectComponent } from './vitamui-autocomplete-multi-select.component';
 
 @NgModule({
@@ -63,9 +61,6 @@ import { VitamUIAutocompleteMultiSelectComponent } from './vitamui-autocomplete-
     ReactiveFormsModule,
     MatTooltipModule,
     MatInputModule,
-    AutocompletePositionDirectiveModule,
-    CommonTooltipModule,
-    EllipsisDirectiveModule,
     MatFormFieldModule,
     MatAutocompleteModule,
     MatInputModule,
@@ -76,11 +71,10 @@ import { VitamUIAutocompleteMultiSelectComponent } from './vitamui-autocomplete-
     MatSelectModule,
     FormsModule,
     TranslateModule,
-    SearchBarModule,
     PipesModule,
     ScrollingModule,
+    VitamUIAutocompleteMultiSelectComponent,
   ],
-  declarations: [VitamUIAutocompleteMultiSelectComponent],
   exports: [VitamUIAutocompleteMultiSelectComponent],
 })
 export class VitamUIAutocompleteMultiSelectModule {}

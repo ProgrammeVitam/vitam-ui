@@ -58,6 +58,8 @@ import { UnitsEditComponent } from './units-edit.component';
       multi: true,
     },
   ],
+  standalone: true,
+  imports: [HttpClientTestingModule, MatProgressBarModule, ReactiveFormsModule, VitamUICommonTestModule],
 })
 class UnitsFormStubComponent {
   writeValue() {}
@@ -73,8 +75,15 @@ describe('UnitsEditComponent', () => {
     const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
 
     await TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, MatProgressBarModule, ReactiveFormsModule, NoopAnimationsModule, VitamUICommonTestModule],
-      declarations: [UnitsEditComponent, UnitsFormStubComponent],
+      imports: [
+        HttpClientTestingModule,
+        MatProgressBarModule,
+        ReactiveFormsModule,
+        NoopAnimationsModule,
+        VitamUICommonTestModule,
+        UnitsEditComponent,
+        UnitsFormStubComponent,
+      ],
       providers: [
         { provide: MAT_DIALOG_DATA, useValue: { group: { id: '42', name: 'Test', units: [] } } },
         { provide: MatDialogRef, useValue: matDialogRefSpy },

@@ -65,7 +65,6 @@ describe('SimpleCriteriaSearchComponent', () => {
     const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
     matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
     await TestBed.configureTestingModule({
-      declarations: [SimpleCriteriaSearchComponent],
       providers: [
         FormBuilder,
         { provide: ArchiveService, useValue: archiveServiceStub },
@@ -74,7 +73,7 @@ describe('SimpleCriteriaSearchComponent', () => {
         { provide: ManagementRulesSharedDataService, useValue: managementRulesSharedDataServiceMock },
         { provide: BASE_URL, useValue: '/fake-api' },
       ],
-      imports: [HttpClientTestingModule, InjectorModule, TranslateModule.forRoot()],
+      imports: [HttpClientTestingModule, InjectorModule, TranslateModule.forRoot(), SimpleCriteriaSearchComponent],
     }).compileComponents();
   });
 

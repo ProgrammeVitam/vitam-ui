@@ -49,7 +49,7 @@ xdescribe('AccessContractInformationTabComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [AccessContractInformationTabComponent],
+      imports: [AccessContractInformationTabComponent],
       providers: [
         FormBuilder,
         AccessContractCreateValidators,

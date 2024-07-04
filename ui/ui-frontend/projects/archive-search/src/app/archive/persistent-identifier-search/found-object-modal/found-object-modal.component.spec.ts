@@ -43,8 +43,8 @@ describe('ErrorResponseModalComponent', () => {
             deps: [HttpBackend],
           },
         }),
+        FoundObjectModalComponent,
       ],
-      declarations: [FoundObjectModalComponent],
       providers: [
         {
           provide: MatDialogRef,

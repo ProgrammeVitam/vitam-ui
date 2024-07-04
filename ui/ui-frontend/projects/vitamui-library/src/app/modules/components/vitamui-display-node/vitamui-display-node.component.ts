@@ -36,10 +36,15 @@
  */
 import { Component, Input } from '@angular/core';
 
+import { NgFor } from '@angular/common';
+import { EllipsisDirective } from '../../directives/ellipsis/ellipsis.directive';
+
 @Component({
   selector: 'vitamui-common-display-node',
   templateUrl: './vitamui-display-node.component.html',
   styleUrls: ['./vitamui-display-node.component.scss'],
+  standalone: true,
+  imports: [EllipsisDirective, NgFor],
 })
 export class VitamUIDisplayNodeComponent {
   @Input() node: any;

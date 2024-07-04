@@ -1,13 +1,26 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { FormControl } from '@angular/forms';
-import { ColorPickerDirective } from 'ngx-color-picker';
-import { hexToRgb, rgbToHsl } from 'vitamui-library';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { ColorPickerDirective, ColorPickerModule } from 'ngx-color-picker';
+import { hexToRgb, rgbToHsl, VitamUICommonInputComponent, PipesModule } from 'vitamui-library';
 import { ColorErrorEnum } from './color-error.enum';
+import { TranslateModule } from '@ngx-translate/core';
+import { NgIf, NgSwitch, NgSwitchCase } from '@angular/common';
 
 @Component({
   selector: 'app-input-color',
   templateUrl: './input-color.component.html',
   styleUrls: ['./input-color.component.scss'],
+  standalone: true,
+  imports: [
+    VitamUICommonInputComponent,
+    ReactiveFormsModule,
+    ColorPickerModule,
+    NgIf,
+    NgSwitch,
+    NgSwitchCase,
+    PipesModule,
+    TranslateModule,
+  ],
 })
 export class InputColorComponent implements OnInit {
   @Input() placeholder: string;

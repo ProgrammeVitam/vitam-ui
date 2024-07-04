@@ -48,7 +48,7 @@ describe('VitamUISnackbarComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [VitamUISnackBarComponent],
+      imports: [VitamUISnackBarComponent],
       providers: [
         { provide: MAT_SNACK_BAR_DATA, useValue: {} },
         { provide: MAT_DIALOG_DATA, useValue: {} },

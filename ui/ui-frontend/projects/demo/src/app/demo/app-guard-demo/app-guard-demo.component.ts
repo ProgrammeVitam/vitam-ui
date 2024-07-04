@@ -38,11 +38,14 @@ import { Component } from '@angular/core';
 
 import { AppGuard } from 'vitamui-library';
 import { CssComponent } from '../component-demo/css/css.component';
+import { RouterLink, RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'demo-app-guard-demo',
   templateUrl: './app-guard-demo.component.html',
   styleUrls: ['./app-guard-demo.component.scss'],
+  standalone: true,
+  imports: [RouterLink, RouterOutlet],
 })
 export class AppGuardDemoComponent {
   routeCodeExample = [

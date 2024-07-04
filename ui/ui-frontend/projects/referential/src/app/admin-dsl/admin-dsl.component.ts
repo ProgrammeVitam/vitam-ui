@@ -37,17 +37,45 @@
 
 import { Clipboard } from '@angular/cdk/clipboard';
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { AppRootComponent, DslQueryType, Option, VitamUISnackBarService } from 'vitamui-library';
+import {
+  AppRootComponent,
+  DslQueryType,
+  Option,
+  VitamUISnackBarService,
+  VitamuiTitleBreadcrumbComponent,
+  VitamUICommonInputComponent,
+} from 'vitamui-library';
 import { AccessContractService } from '../access-contract/access-contract.service';
 import { AdminDslService } from './admin-dsl.service';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatLegacyOptionModule } from '@angular/material/legacy-core';
+import { NgFor, NgIf, KeyValuePipe } from '@angular/common';
+import { MatLegacySelectModule } from '@angular/material/legacy-select';
+import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
+import { MatSidenavModule } from '@angular/material/sidenav';
 
 @Component({
   selector: 'app-admin-dsl',
   templateUrl: './admin-dsl.component.html',
   styleUrls: ['./admin-dsl.component.scss'],
+  standalone: true,
+  imports: [
+    MatSidenavModule,
+    VitamuiTitleBreadcrumbComponent,
+    FormsModule,
+    ReactiveFormsModule,
+    MatLegacyFormFieldModule,
+    MatLegacySelectModule,
+    NgFor,
+    MatLegacyOptionModule,
+    VitamUICommonInputComponent,
+    NgIf,
+    KeyValuePipe,
+    TranslateModule,
+  ],
 })
 export class AdminDslComponent extends AppRootComponent {
   tenantId: number;

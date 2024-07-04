@@ -45,8 +45,7 @@ describe('VitamUIDisplayNodeComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [VitamUIDisplayNodeComponent],
-      imports: [MatTooltipModule],
+      imports: [MatTooltipModule, VitamUIDisplayNodeComponent],
     }).compileComponents();
   });
 

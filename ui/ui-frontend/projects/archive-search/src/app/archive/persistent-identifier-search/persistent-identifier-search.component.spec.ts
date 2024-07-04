@@ -21,7 +21,6 @@ describe('PersistentIdentifierSearchComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [PersistentIdentifierSearchComponent],
       imports: [
         MatDialogModule,
         HttpClientTestingModule,
@@ -29,6 +28,7 @@ describe('PersistentIdentifierSearchComponent', () => {
         TranslateModule.forRoot({
           loader: { provide: TranslateLoader, useClass: FakeLoader },
         }),
+        PersistentIdentifierSearchComponent,
       ],
       providers: [{ provide: BASE_URL, useValue: '/fake-api' }],
     }).compileComponents();

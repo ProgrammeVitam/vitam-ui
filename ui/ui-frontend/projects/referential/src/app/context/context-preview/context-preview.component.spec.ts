@@ -41,8 +41,7 @@ describe('ContextPreviewComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
-      declarations: [ContextPreviewComponent],
+      imports: [TranslateModule.forRoot(), ContextPreviewComponent],
       providers: [
         { provide: MatDialog, useValue: {} },
         { provide: ContextService, useValue: {} },

@@ -65,13 +65,47 @@ import { environment } from '../../environments/environment';
 import { RuleComponent } from './rule.component';
 import { TranslateModule } from '@ngx-translate/core';
 
-@Component({ selector: 'app-rule-preview', template: '' })
+@Component({
+  selector: 'app-rule-preview',
+  template: '',
+  standalone: true,
+  imports: [
+    HttpClientTestingModule,
+    RouterTestingModule,
+    VitamUICommonTestModule,
+    ReactiveFormsModule,
+    MatMenuModule,
+    MatTabsModule,
+    MatOptionModule,
+    MatSelectModule,
+    MatSidenavModule,
+    MatDialogModule,
+    InjectorModule,
+  ],
+})
 class RulePreviewStubComponent {
   @Input()
   rule: Rule;
 }
 
-@Component({ selector: 'app-rule-list', template: '' })
+@Component({
+  selector: 'app-rule-list',
+  template: '',
+  standalone: true,
+  imports: [
+    HttpClientTestingModule,
+    RouterTestingModule,
+    VitamUICommonTestModule,
+    ReactiveFormsModule,
+    MatMenuModule,
+    MatTabsModule,
+    MatOptionModule,
+    MatSelectModule,
+    MatSidenavModule,
+    MatDialogModule,
+    InjectorModule,
+  ],
+})
 class RuleListStubComponent {
   @Input()
   search: string;
@@ -123,8 +157,10 @@ describe('RuleComponent', () => {
         InjectorModule,
         TranslateModule.forRoot(),
         LoggerModule.forRoot(),
+        RuleComponent,
+        RuleListStubComponent,
+        RulePreviewStubComponent,
       ],
-      declarations: [RuleComponent, RuleListStubComponent, RulePreviewStubComponent],
       providers: [
         GlobalEventService,
         { provide: ActivatedRoute, useValue: activatedRouteMock },

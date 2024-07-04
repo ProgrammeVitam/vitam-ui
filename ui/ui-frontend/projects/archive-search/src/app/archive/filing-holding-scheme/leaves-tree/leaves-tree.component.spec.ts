@@ -118,8 +118,8 @@ describe('LeavesTreeComponent', () => {
         MatSnackBarModule,
         HttpClientTestingModule,
         RouterTestingModule,
+        LeavesTreeComponent,
       ],
-      declarations: [LeavesTreeComponent],
       providers: [
         { provide: ArchiveService, useValue: archiveServiceStub },
         { provide: ArchiveSharedDataService, useValue: archiveSharedDataServiceStub },

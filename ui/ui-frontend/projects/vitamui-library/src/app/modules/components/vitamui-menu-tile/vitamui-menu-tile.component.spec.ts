@@ -47,6 +47,7 @@ import { VitamUIMenuTileComponent } from './vitamui-menu-tile.component';
 
 @Directive({
   selector: '[vitamuiCommonTooltip]',
+  standalone: true,
 })
 class TooltipStubDirective {
   @Input() vitamuiCommonTooltip: any;
@@ -62,8 +63,7 @@ describe('VitamUIMenuTileComponent', () => {
       getConfigStringValue: () => 'https://dev.vitamui.com/identity',
     };
     await TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, LoggerModule.forRoot()],
-      declarations: [VitamUIMenuTileComponent, TooltipStubDirective],
+      imports: [HttpClientTestingModule, LoggerModule.forRoot(), VitamUIMenuTileComponent, TooltipStubDirective],
       providers: [
         { provide: StartupService, useValue: startupServiceStub },
         { provide: BASE_URL, useValue: '/fake-api' },

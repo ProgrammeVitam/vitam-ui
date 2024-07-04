@@ -47,7 +47,12 @@ import { IdentityProviderService } from './identity-provider.service';
 import { ProviderApiService } from './provider-api.service';
 import { SsoTabComponent } from './sso-tab.component';
 
-@Component({ selector: 'app-identity-provider-details', template: '' })
+@Component({
+  selector: 'app-identity-provider-details',
+  template: '',
+  standalone: true,
+  imports: [VitamUICommonTestModule, HttpClientTestingModule],
+})
 class IdentityProviderDetailsStubComponent {
   @Input() identityProvider: IdentityProvider;
   @Input() domains: any;
@@ -55,7 +60,10 @@ class IdentityProviderDetailsStubComponent {
 }
 
 // eslint-disable-next-line @angular-eslint/directive-selector
-@Directive({ selector: '[matTooltip]' })
+@Directive({
+  selector: '[matTooltip]',
+  standalone: true,
+})
 class MatTooltipStubDirective {
   @Input() matTooltip: any;
   @Input() matTooltipDisabled: any;
@@ -64,6 +72,8 @@ class MatTooltipStubDirective {
 
 @Component({
   template: `<app-sso-tab [customer]="customer"></app-sso-tab>`,
+  standalone: true,
+  imports: [VitamUICommonTestModule, HttpClientTestingModule],
 })
 class TestHostComponent {
   customer: Customer = {
@@ -148,8 +158,14 @@ describe('SsoTabComponent', () => {
     matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
 
     await TestBed.configureTestingModule({
-      imports: [VitamUICommonTestModule, HttpClientTestingModule],
-      declarations: [SsoTabComponent, IdentityProviderDetailsStubComponent, TestHostComponent, MatTooltipStubDirective],
+      imports: [
+        VitamUICommonTestModule,
+        HttpClientTestingModule,
+        SsoTabComponent,
+        IdentityProviderDetailsStubComponent,
+        TestHostComponent,
+        MatTooltipStubDirective,
+      ],
       providers: [
         ProviderApiService,
         { provide: BASE_URL, useValue: '/fake-api' },

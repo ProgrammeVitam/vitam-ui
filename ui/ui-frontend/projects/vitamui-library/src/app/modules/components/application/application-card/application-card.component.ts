@@ -39,11 +39,15 @@ import { Router } from '@angular/router';
 import { ApplicationService } from '../../../application.service';
 import { Application } from '../../../models';
 import { StartupService } from '../../../startup.service';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatLegacyCardModule } from '@angular/material/legacy-card';
 
 @Component({
   selector: 'vitamui-common-application-card',
   templateUrl: './application-card.component.html',
   styleUrls: ['./application-card.component.scss'],
+  standalone: true,
+  imports: [MatLegacyCardModule, TranslateModule],
 })
 export class ApplicationCardComponent {
   @Input() application: Application;

@@ -80,8 +80,7 @@ describe('IngestContractFormatTabComponent', () => {
       getAllForTenant: () => of([]),
     };
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, VitamUICommonTestModule],
-      declarations: [IngestContractFormatTabComponent],
+      imports: [ReactiveFormsModule, VitamUICommonTestModule, IngestContractFormatTabComponent],
       providers: [
         { provide: IngestContractService, useValue: {} },
         { provide: FileFormatService, useValue: fileFormatServiceMock },

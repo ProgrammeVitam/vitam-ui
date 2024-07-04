@@ -39,12 +39,16 @@ import { TenantSelectionService } from 'vitamui-library';
 import { PastisConfiguration } from '../../../core/classes/pastis-configuration';
 import { BreadcrumbDataMetadata } from '../../../models/breadcrumb';
 import { PastisPopupMetadataLanguageService } from '../../pastis-popup-metadata-language/pastis-popup-metadata-language.service';
+import { TranslateModule } from '@ngx-translate/core';
+import { NgFor, NgIf } from '@angular/common';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'pastis-breadcrumb',
   templateUrl: './pastis-breadcrumb.component.html',
   styleUrls: ['./pastis-breadcrumb.component.scss'],
+  standalone: true,
+  imports: [NgFor, NgIf, TranslateModule],
 })
 export class PastisBreadcrumbComponent {
   @Input()

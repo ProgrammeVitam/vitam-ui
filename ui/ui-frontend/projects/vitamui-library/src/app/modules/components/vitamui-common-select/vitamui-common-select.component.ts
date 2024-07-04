@@ -36,11 +36,18 @@
  */
 
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatLegacyOptionModule } from '@angular/material/legacy-core';
+import { MatLegacySelectModule } from '@angular/material/legacy-select';
+import { NgIf, NgFor } from '@angular/common';
+import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
 
 @Component({
   selector: 'vitamui-common-select',
   templateUrl: './vitamui-common-select.component.html',
   styleUrls: ['./vitamui-common-select.component.scss'],
+  standalone: true,
+  imports: [MatLegacyFormFieldModule, NgIf, MatLegacySelectModule, NgFor, MatLegacyOptionModule, TranslateModule],
 })
 export class VitamuiCommonSelectComponent implements OnInit {
   @Input()

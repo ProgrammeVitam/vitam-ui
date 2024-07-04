@@ -36,14 +36,27 @@
  */
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { AuthService, Group, isLevelAllowed, StartupService } from 'vitamui-library';
+import { AuthService, Group, isLevelAllowed, StartupService, VitamuiSidenavHeaderComponent, HistoryModule } from 'vitamui-library';
 
 import { GroupService } from '../group.service';
+import { TranslateModule } from '@ngx-translate/core';
+import { ProfilesTabComponent } from './profiles-tab/profiles-tab.component';
+import { InformationTabComponent } from './information-tab/information-tab.component';
+import { MatLegacyTabsModule } from '@angular/material/legacy-tabs';
 
 @Component({
   selector: 'app-group-preview',
   templateUrl: './group-preview.component.html',
   styleUrls: ['./group-preview.component.scss'],
+  standalone: true,
+  imports: [
+    VitamuiSidenavHeaderComponent,
+    MatLegacyTabsModule,
+    InformationTabComponent,
+    ProfilesTabComponent,
+    HistoryModule,
+    TranslateModule,
+  ],
 })
 export class GroupPreviewComponent implements OnInit, OnDestroy, OnChanges {
   @Input() isPopup: boolean;

@@ -1,10 +1,27 @@
 import { Component } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatLegacyOptionModule } from '@angular/material/legacy-core';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { MatLegacySelectModule } from '@angular/material/legacy-select';
+import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
+import { NgFor, NgIf } from '@angular/common';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'design-system-icons',
   templateUrl: './icons.component.html',
   styleUrls: ['./icons.component.scss'],
+  standalone: true,
+  imports: [
+    NgFor,
+    MatLegacyFormFieldModule,
+    MatLegacySelectModule,
+    ReactiveFormsModule,
+    FormsModule,
+    MatLegacyOptionModule,
+    NgIf,
+    TranslateModule,
+  ],
 })
 export class IconsComponent {
   icons: (string | string[])[];

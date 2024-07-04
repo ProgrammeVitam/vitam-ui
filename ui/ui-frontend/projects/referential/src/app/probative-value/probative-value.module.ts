@@ -47,20 +47,17 @@ import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/
 import { RouterModule } from '@angular/router';
 import { VitamUICommonModule } from 'vitamui-library';
 
-import { ProbativeValueCreateModule } from './probative-value-create/probative-value-create.module';
-import { ProbativeValuePreviewModule } from './probative-value-preview/probative-value-preview.module';
 import { ProbativeValueRoutingModule } from './probative-value-routing.module';
 import { ProbativeValueComponent } from './probative-value.component';
 import { MatLegacyFormFieldModule as MatFormFieldModule } from '@angular/material/legacy-form-field';
 import { MatLegacyInputModule as MatInputModule } from '@angular/material/legacy-input';
-import { PipesModule } from '../shared/pipes/pipes.module';
+
 import { ProbativeValueListComponent } from './probative-value-list/probative-value-list.component';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { FR_DATE_FORMAT } from '../helpers/dates.constants';
 
 @NgModule({
-  declarations: [ProbativeValueComponent, ProbativeValueListComponent],
   imports: [
     CommonModule,
     RouterModule,
@@ -68,8 +65,6 @@ import { FR_DATE_FORMAT } from '../helpers/dates.constants';
     ReactiveFormsModule,
     VitamUICommonModule,
     ProbativeValueRoutingModule,
-    ProbativeValueCreateModule,
-    ProbativeValuePreviewModule,
     MatMenuModule,
     MatSnackBarModule,
     MatDialogModule,
@@ -79,8 +74,9 @@ import { FR_DATE_FORMAT } from '../helpers/dates.constants';
     MatSelectModule,
     MatFormFieldModule,
     MatInputModule,
-    PipesModule,
     MatMomentDateModule,
+    ProbativeValueComponent,
+    ProbativeValueListComponent,
   ],
   providers: [{ provide: MAT_DATE_FORMATS, useValue: FR_DATE_FORMAT }],
 })

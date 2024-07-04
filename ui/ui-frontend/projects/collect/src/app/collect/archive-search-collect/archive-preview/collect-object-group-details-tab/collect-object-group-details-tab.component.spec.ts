@@ -91,8 +91,8 @@ describe('CollectObjectGroupDetailsTabComponent', () => {
         RouterTestingModule,
         BrowserAnimationsModule,
         TranslateModule.forRoot(),
+        CollectObjectGroupDetailsTabComponent,
       ],
-      declarations: [CollectObjectGroupDetailsTabComponent],
       providers: [
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: ENVIRONMENT, useValue: environment },

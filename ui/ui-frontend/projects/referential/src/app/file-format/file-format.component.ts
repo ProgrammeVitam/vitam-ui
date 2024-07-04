@@ -38,19 +38,41 @@ import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { ActivatedRoute } from '@angular/router';
 
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import { Observable, Subscription } from 'rxjs';
-import { ApplicationId, GlobalEventService, Role, SecurityService, SidenavPage } from 'vitamui-library';
+import {
+  ApplicationId,
+  GlobalEventService,
+  Role,
+  SecurityService,
+  SidenavPage,
+  VitamuiTitleBreadcrumbComponent,
+  VitamuiCommonBannerComponent,
+} from 'vitamui-library';
 import { FileFormat, FileTypes } from 'vitamui-library';
 import { ImportDialogParam, ReferentialTypes } from '../shared/import-dialog/import-dialog-param.interface';
 import { ImportDialogComponent } from '../shared/import-dialog/import-dialog.component';
 import { FileFormatCreateComponent } from './file-format-create/file-format-create.component';
 import { FileFormatListComponent } from './file-format-list/file-format-list.component';
+import { FileFormatPreviewComponent } from './file-format-preview/file-format-preview.component';
+import { NgIf, AsyncPipe } from '@angular/common';
+import { MatSidenavModule } from '@angular/material/sidenav';
 
 @Component({
   selector: 'app-file-format',
   templateUrl: './file-format.component.html',
   styleUrls: ['./file-format.component.scss'],
+  standalone: true,
+  imports: [
+    MatSidenavModule,
+    NgIf,
+    FileFormatPreviewComponent,
+    VitamuiTitleBreadcrumbComponent,
+    VitamuiCommonBannerComponent,
+    FileFormatListComponent,
+    AsyncPipe,
+    TranslateModule,
+  ],
 })
 export class FileFormatComponent extends SidenavPage<FileFormat> implements OnInit, OnDestroy {
   search = '';

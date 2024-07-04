@@ -64,9 +64,15 @@ describe('ArchiveUnitViewerComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ArchiveUnitViewerComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      imports: [HttpClientTestingModule, ObjectViewerModule, ReactiveFormsModule, LoggerModule.forRoot(), TranslateModule.forRoot()],
+      imports: [
+        HttpClientTestingModule,
+        ObjectViewerModule,
+        ReactiveFormsModule,
+        LoggerModule.forRoot(),
+        TranslateModule.forRoot(),
+        ArchiveUnitViewerComponent,
+      ],
       providers: [
         SchemaService,
         { provide: BASE_URL, useValue: '/fake-api' },

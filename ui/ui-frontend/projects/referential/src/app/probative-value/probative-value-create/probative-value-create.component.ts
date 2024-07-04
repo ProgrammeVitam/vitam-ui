@@ -36,10 +36,10 @@
  */
 import { HttpHeaders } from '@angular/common/http';
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
 import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import {
@@ -49,14 +49,34 @@ import {
   Option,
   SearchResponse,
   SigningRoleType,
+  VitamUICommonInputComponent,
 } from 'vitamui-library';
 import { SearchUnitApiService } from '../../../../../vitamui-library/src/lib/api/search-unit-api.service';
 import { ProbativeValueService } from '../probative-value.service';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatLegacyOptionModule } from '@angular/material/legacy-core';
+import { MatLegacySelectModule } from '@angular/material/legacy-select';
+import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
+import { NgIf, NgTemplateOutlet, NgFor } from '@angular/common';
 
 @Component({
   selector: 'app-probative-value-create',
   templateUrl: './probative-value-create.component.html',
   styleUrls: ['./probative-value-create.component.scss'],
+  standalone: true,
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    VitamUICommonInputComponent,
+    NgIf,
+    NgTemplateOutlet,
+    MatLegacyFormFieldModule,
+    MatLegacySelectModule,
+    NgFor,
+    MatLegacyOptionModule,
+    MatButtonToggleModule,
+    TranslateModule,
+  ],
 })
 export class ProbativeValueCreateComponent implements OnInit, OnDestroy {
   public form: FormGroup;

@@ -37,7 +37,10 @@
 
 import { ENTER } from '@angular/cdk/keycodes';
 import { Component, EventEmitter, forwardRef, Input, Output } from '@angular/core';
-import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR, Validators } from '@angular/forms';
+import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR, Validators, ReactiveFormsModule } from '@angular/forms';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatLegacyProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
+import { NgIf, NgFor } from '@angular/common';
 
 export const DOMAINS_INPUT_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -51,6 +54,8 @@ export const DOMAINS_INPUT_ACCESSOR: any = {
   templateUrl: './domains-input.component.html',
   styleUrls: ['./domains-input.component.scss'],
   providers: [DOMAINS_INPUT_ACCESSOR],
+  standalone: true,
+  imports: [ReactiveFormsModule, NgIf, MatLegacyProgressSpinnerModule, NgFor, TranslateModule],
 })
 export class DomainsInputComponent implements ControlValueAccessor {
   @Input() placeholder: string;

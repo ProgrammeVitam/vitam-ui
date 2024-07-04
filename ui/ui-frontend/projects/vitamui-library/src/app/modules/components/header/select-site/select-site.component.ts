@@ -6,11 +6,15 @@ import { map, switchMap } from 'rxjs/operators';
 import { Operators } from '../../../vitamui-table';
 import { SiteApiService } from './../../../api/site-api.service';
 import { AuthService } from './../../../auth.service';
+import { NgFor } from '@angular/common';
+import { MatLegacyMenuModule } from '@angular/material/legacy-menu';
 
 @Component({
   selector: 'vitamui-common-select-site',
   templateUrl: './select-site.component.html',
   styleUrls: ['./select-site.component.scss'],
+  standalone: true,
+  imports: [MatLegacyMenuModule, NgFor],
 })
 export class SelectSiteComponent implements OnInit {
   public selectedSite: any;

@@ -46,13 +46,20 @@ import {
   GlobalEventService,
   MenuOption,
   SubrogationModalService,
+  VitamuiTitleBreadcrumbComponent,
+  VitamuiCommonBannerComponent,
 } from 'vitamui-library';
 import { CustomerSelectService } from '../customer-select.service';
+import { TranslateModule } from '@ngx-translate/core';
+import { SubrogateUserListComponent } from './subrogate-user-list/subrogate-user-list.component';
+import { MatSidenavModule } from '@angular/material/sidenav';
 
 @Component({
   selector: 'app-subrogate-user',
   templateUrl: './subrogate-user.component.html',
   styleUrls: ['./subrogate-user.component.scss'],
+  standalone: true,
+  imports: [MatSidenavModule, VitamuiTitleBreadcrumbComponent, VitamuiCommonBannerComponent, SubrogateUserListComponent, TranslateModule],
 })
 export class SubrogateUserComponent extends AppRootComponent implements OnInit, OnDestroy {
   public customer: Customer;

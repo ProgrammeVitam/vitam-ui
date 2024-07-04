@@ -54,7 +54,6 @@ describe('ObjectViewerComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ObjectViewerComponent, GroupComponent, ListComponent, PrimitiveComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       providers: [
         DataStructureService,
@@ -81,6 +80,10 @@ describe('ObjectViewerComponent', () => {
         }),
         PipesModule,
         LoggerModule.forRoot(),
+        ObjectViewerComponent,
+        GroupComponent,
+        ListComponent,
+        PrimitiveComponent,
       ],
     })
       .overrideComponent(ObjectViewerComponent, {

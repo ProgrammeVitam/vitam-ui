@@ -38,20 +38,46 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { ActivatedRoute } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import { FileTypes } from 'projects/vitamui-library/src/public-api';
 import { zip } from 'rxjs';
-import { Agency, ApplicationId, GlobalEventService, Role, SecurityService, SidenavPage } from 'vitamui-library';
+import {
+  Agency,
+  ApplicationId,
+  GlobalEventService,
+  Role,
+  SecurityService,
+  SidenavPage,
+  VitamuiTitleBreadcrumbComponent,
+  VitamuiCommonBannerComponent,
+  VitamuiMenuButtonComponent,
+} from 'vitamui-library';
 import { ImportDialogParam, ReferentialTypes } from '../shared/import-dialog/import-dialog-param.interface';
 import { ImportDialogComponent } from '../shared/import-dialog/import-dialog.component';
 import { AgencyCreateComponent } from './agency-create/agency-create.component';
 import { AgencyListComponent } from './agency-list/agency-list.component';
 import { AgencyService } from './agency.service';
+import { MatLegacyMenuModule } from '@angular/material/legacy-menu';
+import { AgencyPreviewComponent } from './agency-preview/agency-preview.component';
+import { NgIf } from '@angular/common';
+import { MatSidenavModule } from '@angular/material/sidenav';
 
 @Component({
   selector: 'app-agency',
   templateUrl: './agency.component.html',
   styleUrls: ['./agency.component.scss'],
+  standalone: true,
+  imports: [
+    MatSidenavModule,
+    NgIf,
+    AgencyPreviewComponent,
+    VitamuiTitleBreadcrumbComponent,
+    VitamuiCommonBannerComponent,
+    VitamuiMenuButtonComponent,
+    MatLegacyMenuModule,
+    AgencyListComponent,
+    TranslateModule,
+  ],
 })
 export class AgencyComponent extends SidenavPage<Agency> implements OnInit {
   @ViewChild(AgencyListComponent, { static: true }) agencyListComponent: AgencyListComponent;

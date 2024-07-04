@@ -66,7 +66,10 @@ import { ArchiveSharedDataService } from '../../services/archive-shared-data.ser
 import { SearchCriteriaSaverService } from '../../services/search-criteria-saver.service';
 import { SearchCriteriaSaverComponent } from './search-criteria-saver.component';
 
-@Pipe({ name: 'truncate' })
+@Pipe({
+  name: 'truncate',
+  standalone: true,
+})
 class MockTruncatePipe implements PipeTransform {
   transform(value: number): number {
     return value;
@@ -112,8 +115,9 @@ describe('SearchCriteriaSaverComponent', () => {
           loader: { provide: TranslateLoader, useClass: FakeLoader },
         }),
         RouterTestingModule,
+        SearchCriteriaSaverComponent,
+        MockTruncatePipe,
       ],
-      declarations: [SearchCriteriaSaverComponent, MockTruncatePipe],
       providers: [
         FormBuilder,
         HttpClientTestingModule,

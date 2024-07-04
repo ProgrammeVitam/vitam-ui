@@ -38,11 +38,14 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MenuOption } from '../navbar';
 import { TenantMenuService } from '../navbar/tenant-menu/tenant-menu.service';
+import { NgFor } from '@angular/common';
 
 @Component({
   selector: 'vitamui-common-tenant-select-content',
   templateUrl: './tenant-select-content.component.html',
   styleUrls: ['./tenant-select-content.component.scss'],
+  standalone: true,
+  imports: [NgFor],
 })
 export class TenantSelectContentComponent {
   @Input() tenants: MenuOption[];

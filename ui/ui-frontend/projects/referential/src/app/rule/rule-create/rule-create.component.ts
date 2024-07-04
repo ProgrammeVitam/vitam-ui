@@ -35,17 +35,48 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
 import { Subscription } from 'rxjs';
-import { ConfirmDialogService, ManagementRuleValidators, Rule, RuleService } from 'vitamui-library';
+import {
+  ConfirmDialogService,
+  ManagementRuleValidators,
+  Rule,
+  RuleService,
+  VitamUICommonInputComponent,
+  CommonTooltipComponent,
+  VitamUIInputErrorComponent,
+  CommonTooltipDirective,
+  VitamUITextareaComponent,
+} from 'vitamui-library';
 import { RULE_MEASUREMENTS, RULE_TYPES } from '../rules.constants';
 import { RuleCreateValidators } from './rule-create.validators';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatLegacyOptionModule } from '@angular/material/legacy-core';
+import { MatLegacySelectModule } from '@angular/material/legacy-select';
+import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
+import { NgIf, NgFor } from '@angular/common';
 
 @Component({
   selector: 'app-rule-create',
   templateUrl: './rule-create.component.html',
   styleUrls: ['./rule-create.component.scss'],
+  standalone: true,
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    VitamUICommonInputComponent,
+    NgIf,
+    CommonTooltipComponent,
+    MatLegacyFormFieldModule,
+    MatLegacySelectModule,
+    NgFor,
+    MatLegacyOptionModule,
+    TranslateModule,
+    VitamUIInputErrorComponent,
+    CommonTooltipDirective,
+    VitamUITextareaComponent,
+  ],
 })
 export class RuleCreateComponent implements OnInit, OnDestroy {
   form: FormGroup;

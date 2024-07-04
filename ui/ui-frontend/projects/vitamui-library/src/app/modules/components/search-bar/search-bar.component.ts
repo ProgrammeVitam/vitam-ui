@@ -35,11 +35,15 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { NgIf } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'vitamui-common-search-bar',
   templateUrl: './search-bar.component.html',
   styleUrls: ['./search-bar.component.scss'],
+  standalone: true,
+  imports: [FormsModule, NgIf],
 })
 export class SearchBarComponent {
   @Input() placeholder: string;

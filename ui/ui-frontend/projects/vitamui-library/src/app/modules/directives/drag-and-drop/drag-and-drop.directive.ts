@@ -40,6 +40,7 @@ import { Logger } from '../../logger/logger';
 
 @Directive({
   selector: '[vitamuiCommonDragAndDrop]',
+  standalone: true,
 })
 export class DragAndDropDirective {
   @Output() private fileToUploadEmitter: EventEmitter<File[]> = new EventEmitter();

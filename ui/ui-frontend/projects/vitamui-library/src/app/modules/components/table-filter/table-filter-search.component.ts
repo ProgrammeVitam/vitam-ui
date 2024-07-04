@@ -35,11 +35,16 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { TableFilterOptionComponent } from './table-filter-option/table-filter-option.component';
+import { NgIf, NgFor } from '@angular/common';
+import { TableFilterComponent } from './table-filter.component';
 
 @Component({
   selector: 'vitamui-common-table-filter-search',
   templateUrl: './table-filter-search.component.html',
   styleUrls: ['./table-filter-search.component.scss'],
+  standalone: true,
+  imports: [TableFilterComponent, NgIf, TableFilterOptionComponent, NgFor],
 })
 export class TableFilterSearchComponent {
   @Input() filter: any[];

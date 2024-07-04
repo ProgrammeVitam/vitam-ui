@@ -35,14 +35,42 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { ExternalParameters, ExternalParametersService, VitamUISnackBarService } from 'vitamui-library';
+import {
+  ExternalParameters,
+  ExternalParametersService,
+  VitamUISnackBarService,
+  VitamuiSidenavHeaderComponent,
+  HistoryModule,
+  PipesModule,
+} from 'vitamui-library';
 import { Event } from 'vitamui-library';
 import { SecurisationService } from '../securisation.service';
+import { TruncatePipe } from '../../../../../vitamui-library/src/app/modules/pipes/truncate.pipe';
+import { EventTypeBadgeClassPipe } from '../../shared/pipes/event-type-badge-class.pipe';
+import { TranslateModule } from '@ngx-translate/core';
+import { SecurisationCheckTabComponent } from './securisation-check-tab/securisation-check-tab.component';
+import { SecurisationInformationTabComponent } from './securisation-information-tab/securisation-information-tab.component';
+import { MatLegacyTabsModule } from '@angular/material/legacy-tabs';
+import { NgIf, SlicePipe } from '@angular/common';
 
 @Component({
   selector: 'app-securisation-preview',
   templateUrl: './securisation-preview.component.html',
   styleUrls: ['./securisation-preview.component.scss'],
+  standalone: true,
+  imports: [
+    VitamuiSidenavHeaderComponent,
+    NgIf,
+    MatLegacyTabsModule,
+    SecurisationInformationTabComponent,
+    SecurisationCheckTabComponent,
+    HistoryModule,
+    SlicePipe,
+    PipesModule,
+    TranslateModule,
+    EventTypeBadgeClassPipe,
+    TruncatePipe,
+  ],
 })
 export class SecurisationPreviewComponent implements OnInit {
   @Input() securisation: Event;

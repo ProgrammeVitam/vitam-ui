@@ -1,11 +1,14 @@
 import { NestedTreeControl } from '@angular/cdk/tree';
 import { Component, forwardRef, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { MatTreeNestedDataSource } from '@angular/material/tree';
+import { MatTreeModule, MatTreeNestedDataSource } from '@angular/material/tree';
 import { v4 as uuid } from 'uuid';
 
 import { Node } from '../../models/node.interface';
 import { FilingPlanMode, FilingPlanService } from './filing-plan.service';
+import { MatLegacyProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
+import { NgIf } from '@angular/common';
+import { NodeComponent } from './node.component';
 
 export const NODE_SELECT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -18,6 +21,8 @@ export const NODE_SELECT_VALUE_ACCESSOR: any = {
   templateUrl: './filing-plan.component.html',
   styleUrls: ['./filing-plan.component.scss'],
   providers: [NODE_SELECT_VALUE_ACCESSOR],
+  standalone: true,
+  imports: [MatTreeModule, NodeComponent, NgIf, MatLegacyProgressSpinnerModule],
 })
 export class FilingPlanComponent implements ControlValueAccessor, OnChanges {
   @Input() tenantIdentifier: number;

@@ -44,7 +44,14 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { MissingTranslationHandler, TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { QuicklinkModule } from 'ngx-quicklink';
 import { MultiTranslateHttpLoader } from 'ngx-translate-multi-http-loader';
-import { AuthenticationModule, VitamUICommonModule, VitamuiMissingTranslationHandler, WINDOW_LOCATION } from 'vitamui-library';
+import {
+  AuthenticationModule,
+  FooterComponent,
+  VitamuiBodyComponent,
+  VitamUICommonModule,
+  VitamuiMissingTranslationHandler,
+  WINDOW_LOCATION,
+} from 'vitamui-library';
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -79,6 +86,8 @@ registerLocaleData(localeFr, 'fr');
       },
     }),
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
+    VitamuiBodyComponent,
+    FooterComponent,
   ],
   providers: [Title, { provide: LOCALE_ID, useValue: 'fr' }, { provide: WINDOW_LOCATION, useValue: window.location }, DatePipe],
   bootstrap: [AppComponent],

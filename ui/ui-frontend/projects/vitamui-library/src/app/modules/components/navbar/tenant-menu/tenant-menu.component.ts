@@ -43,6 +43,8 @@ import { ApplicationId } from '../../../application-id.enum';
 import { CommonMenuComponent } from '../common-menu/common-menu.component';
 import { MenuType } from '../menu-type.enum';
 import { TenantMenuService } from './tenant-menu.service';
+import { TranslateModule } from '@ngx-translate/core';
+import { NgIf } from '@angular/common';
 
 interface Tenant {
   value: number;
@@ -53,6 +55,8 @@ interface Tenant {
   selector: 'vitamui-common-tenant-menu',
   templateUrl: './tenant-menu.component.html',
   styleUrls: ['./tenant-menu.component.scss'],
+  standalone: true,
+  imports: [NgIf, TranslateModule],
 })
 export class TenantMenuComponent implements OnInit, OnDestroy {
   @Input() appId: ApplicationId;

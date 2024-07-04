@@ -36,9 +36,14 @@
  */
 
 import { Component, ElementRef, EventEmitter, forwardRef, Input, Output } from '@angular/core';
-import { NG_VALUE_ACCESSOR } from '@angular/forms';
+import { NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 
 import { EditableFieldComponent } from 'vitamui-library';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatLegacyProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
+import { DomainsInputComponent } from '../../domains-input/domains-input.component';
+import { CdkOverlayOrigin, CdkConnectedOverlay } from '@angular/cdk/overlay';
+import { NgIf, NgFor, NgStyle } from '@angular/common';
 export const EDITABLE_DOMAIN_INPUT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
   // eslint-disable-next-line no-use-before-define
@@ -50,6 +55,18 @@ export const EDITABLE_DOMAIN_INPUT_VALUE_ACCESSOR: any = {
   selector: 'app-editable-domain-input',
   templateUrl: './editable-domain-input.component.html',
   providers: [EDITABLE_DOMAIN_INPUT_VALUE_ACCESSOR],
+  standalone: true,
+  imports: [
+    NgIf,
+    CdkOverlayOrigin,
+    NgFor,
+    NgStyle,
+    DomainsInputComponent,
+    ReactiveFormsModule,
+    MatLegacyProgressSpinnerModule,
+    CdkConnectedOverlay,
+    TranslateModule,
+  ],
 })
 export class EditableDomainInputComponent extends EditableFieldComponent {
   @Input()

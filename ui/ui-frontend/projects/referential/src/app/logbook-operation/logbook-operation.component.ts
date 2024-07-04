@@ -35,17 +35,39 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { ActivatedRoute } from '@angular/router';
-import { GlobalEventService, SidenavPage } from 'vitamui-library';
+import { GlobalEventService, SidenavPage, VitamuiTitleBreadcrumbComponent, VitamuiCommonBannerComponent } from 'vitamui-library';
 import { EventFilter } from './event-filter.interface';
 import { LogbookOperationListComponent } from './logbook-operation-list/logbook-operation-list.component';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatLegacyInputModule } from '@angular/material/legacy-input';
+import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
+import { LogbookOperationDetailComponent } from './logbook-operation-detail/logbook-operation-detail.component';
+import { NgIf } from '@angular/common';
+import { MatSidenavModule } from '@angular/material/sidenav';
 
 @Component({
   selector: 'app-logbook-operation',
   templateUrl: './logbook-operation.component.html',
   styleUrls: ['./logbook-operation.component.scss'],
+  standalone: true,
+  imports: [
+    MatSidenavModule,
+    NgIf,
+    LogbookOperationDetailComponent,
+    VitamuiTitleBreadcrumbComponent,
+    VitamuiCommonBannerComponent,
+    FormsModule,
+    ReactiveFormsModule,
+    MatLegacyFormFieldModule,
+    MatLegacyInputModule,
+    MatDatepickerModule,
+    LogbookOperationListComponent,
+    TranslateModule,
+  ],
 })
 export class LogbookOperationComponent extends SidenavPage<any> implements OnInit {
   @ViewChild(LogbookOperationListComponent, { static: true }) list: LogbookOperationListComponent;

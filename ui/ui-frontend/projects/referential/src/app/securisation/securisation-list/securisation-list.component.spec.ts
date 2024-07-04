@@ -44,7 +44,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { TableFilterModule } from 'vitamui-library';
+import { TableFilterComponent } from 'vitamui-library';
 
 describe('SecurisationListComponent', () => {
   let component: SecurisationListComponent;
@@ -56,8 +56,7 @@ describe('SecurisationListComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot(), VitamUICommonTestModule, ReactiveFormsModule, TableFilterModule],
-      declarations: [SecurisationListComponent],
+      imports: [TranslateModule.forRoot(), VitamUICommonTestModule, ReactiveFormsModule, TableFilterComponent, SecurisationListComponent],
       providers: [
         { provide: MatDialog, useValue: {} },
         { provide: SecurisationService, useValue: securisationServiceMock },

@@ -41,7 +41,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { StepperComponent } from './stepper.component';
-import { StepperModule } from './stepper.module';
+import { CdkStepperModule } from '@angular/cdk/stepper';
 
 @Component({
   template: `
@@ -51,6 +51,8 @@ import { StepperModule } from './stepper.module';
       <cdk-step></cdk-step>
     </vitamui-common-stepper>
   `,
+  standalone: true,
+  imports: [StepperComponent, CdkStepperModule],
 })
 class TesthostComponent {
   @ViewChild(StepperComponent) stepper: StepperComponent;
@@ -62,8 +64,7 @@ let fixture: ComponentFixture<TesthostComponent>;
 describe('StepperComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [StepperModule, NoopAnimationsModule],
-      declarations: [TesthostComponent],
+      imports: [StepperComponent, NoopAnimationsModule, TesthostComponent],
     }).compileComponents();
   });
 

@@ -39,16 +39,22 @@ import { NgModule } from '@angular/core';
 import { MatLegacyProgressSpinnerModule as MatProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
 import { TranslateModule } from '@ngx-translate/core';
 
-import { CollapseModule } from '../../components/collapse/collapse.module';
 import { PipesModule } from '../../pipes/pipes.module';
-import { EventTypeLabelModule } from '../event-type-label/event-type-label.module';
+
 import { HistoryEventsComponent } from './history-events/history-events.component';
 import { MultiOperationHistoryTabComponent } from './multi-operation-history-tab/multi-operation-history-tab.component';
 import { OperationHistoryTabComponent } from './operation-history-tab/operation-history-tab.component';
 
 @NgModule({
-  imports: [CommonModule, CollapseModule, MatProgressSpinnerModule, EventTypeLabelModule, TranslateModule, PipesModule],
-  declarations: [HistoryEventsComponent, OperationHistoryTabComponent, MultiOperationHistoryTabComponent],
+  imports: [
+    CommonModule,
+    MatProgressSpinnerModule,
+    TranslateModule,
+    PipesModule,
+    HistoryEventsComponent,
+    OperationHistoryTabComponent,
+    MultiOperationHistoryTabComponent,
+  ],
   exports: [HistoryEventsComponent, OperationHistoryTabComponent, MultiOperationHistoryTabComponent],
 })
 export class HistoryModule {}

@@ -197,8 +197,8 @@ describe('UpdateUnitRulesComponent', () => {
         HttpClientTestingModule,
         RouterTestingModule,
         MatSnackBarModule,
+        UpdateUnitRulesComponent,
       ],
-      declarations: [UpdateUnitRulesComponent],
       providers: [
         FormBuilder,
         { provide: BASE_URL, useValue: '/fake-api' },

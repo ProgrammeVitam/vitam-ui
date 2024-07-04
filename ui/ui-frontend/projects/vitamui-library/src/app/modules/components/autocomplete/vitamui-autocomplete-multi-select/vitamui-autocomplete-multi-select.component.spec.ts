@@ -9,8 +9,7 @@ describe('VitamuiAutocompleteMultiSelectComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [VitamUIAutocompleteMultiSelectComponent],
-      imports: [TranslateModule.forRoot()],
+      imports: [TranslateModule.forRoot(), VitamUIAutocompleteMultiSelectComponent],
     }).compileComponents();
   });
 

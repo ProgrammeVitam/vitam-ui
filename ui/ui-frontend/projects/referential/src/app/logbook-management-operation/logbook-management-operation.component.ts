@@ -36,17 +36,40 @@
  */
 
 import { Component, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { MatSidenav } from '@angular/material/sidenav';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
 import { ActivatedRoute } from '@angular/router';
-import { AuthService } from 'vitamui-library';
+import { AuthService, VitamuiTitleBreadcrumbComponent, VitamuiCommonBannerComponent, PipesModule } from 'vitamui-library';
 import { OperationDetails } from '../models/operation-response.interface';
 import { LogbookManagementOperationListComponent } from './logbook-management-operation-list/logbook-management-operation-list.component';
+import { DateTimePipe } from '../../../../vitamui-library/src/app/modules/pipes/datetime.pipe';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { LogbookManagementOperationPreviewComponent } from './logbook-management-operation-preview/logbook-management-operation-preview.component';
+import { NgIf, NgStyle } from '@angular/common';
 
 @Component({
   selector: 'app-logbook-management-operation',
   templateUrl: './logbook-management-operation.component.html',
   styleUrls: ['./logbook-management-operation.component.scss'],
+  standalone: true,
+  imports: [
+    MatSidenavModule,
+    NgIf,
+    LogbookManagementOperationPreviewComponent,
+    VitamuiTitleBreadcrumbComponent,
+    VitamuiCommonBannerComponent,
+    MatLegacyTooltipModule,
+    FormsModule,
+    ReactiveFormsModule,
+    NgStyle,
+    MatDatepickerModule,
+    LogbookManagementOperationListComponent,
+    PipesModule,
+    TranslateModule,
+    DateTimePipe,
+  ],
 })
 export class LogbookManagementOperationComponent {
   tenantIdentifier: number;

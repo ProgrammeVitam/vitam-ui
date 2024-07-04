@@ -39,17 +39,22 @@ import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
-import { Customer, Owner, Tenant } from 'vitamui-library';
+import { Customer, Owner, Tenant, EllipsisDirective } from 'vitamui-library';
 import { CustomerDataService } from '../../customer.data.service';
 import { OwnerCreateComponent } from '../../owner-create/owner-create.component';
 import { OwnerService } from '../../owner.service';
 import { TenantCreateComponent } from '../../tenant-create/tenant-create.component';
 import { TenantService } from '../../tenant.service';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { NgFor, NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-owner-list',
   templateUrl: './owner-list.component.html',
   styleUrls: ['./owner-list.component.scss'],
+  standalone: true,
+  imports: [NgFor, NgIf, EllipsisDirective, MatLegacyTooltipModule, TranslateModule],
 })
 export class OwnerListComponent implements OnDestroy, OnInit {
   @Input()

@@ -35,18 +35,38 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
 import { extend, isEmpty } from 'underscore';
-import { FileFormat, IngestContract, VitamuiAutocompleteMultiselectOptions, diff } from 'vitamui-library';
+import {
+  FileFormat,
+  IngestContract,
+  VitamuiAutocompleteMultiselectOptions,
+  diff,
+  SlideToggleComponent,
+  VitamUIAutocompleteMultiSelectModule,
+  VitamUICommonInputComponent,
+} from 'vitamui-library';
 import { FileFormatService } from '../../../file-format/file-format.service';
 import { IngestContractService } from '../../ingest-contract.service';
+import { TranslateModule } from '@ngx-translate/core';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-ingest-contract-format-tab',
   templateUrl: './ingest-contract-format-tab.component.html',
   styleUrls: ['./ingest-contract-format-tab.component.scss'],
+  standalone: true,
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    SlideToggleComponent,
+    NgIf,
+    VitamUIAutocompleteMultiSelectModule,
+    VitamUICommonInputComponent,
+    TranslateModule,
+  ],
 })
 export class IngestContractFormatTabComponent implements OnInit {
   @Input() tenantIdentifier: number;

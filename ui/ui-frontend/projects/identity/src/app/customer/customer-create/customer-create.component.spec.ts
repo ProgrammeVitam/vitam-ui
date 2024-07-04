@@ -71,6 +71,17 @@ import { CustomerCreateValidators } from './customer-create.validators';
       multi: true,
     },
   ],
+  standalone: true,
+  imports: [
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatButtonToggleModule,
+    MatProgressBarModule,
+    MatProgressSpinnerModule,
+    VitamUICommonTestModule,
+    HttpClientTestingModule,
+  ],
 })
 class DomainInputStubComponent implements ControlValueAccessor {
   @Input() placeholder: string;
@@ -93,6 +104,17 @@ class DomainInputStubComponent implements ControlValueAccessor {
       multi: true,
     },
   ],
+  standalone: true,
+  imports: [
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatButtonToggleModule,
+    MatProgressBarModule,
+    MatProgressSpinnerModule,
+    VitamUICommonTestModule,
+    HttpClientTestingModule,
+  ],
 })
 class OwnerFormStubComponent implements ControlValueAccessor {
   @Input() customerInfo: any;
@@ -110,6 +132,17 @@ class OwnerFormStubComponent implements ControlValueAccessor {
       useExisting: forwardRef(() => CustomerColorsInputStubComponent),
       multi: true,
     },
+  ],
+  standalone: true,
+  imports: [
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatButtonToggleModule,
+    MatProgressBarModule,
+    MatProgressSpinnerModule,
+    VitamUICommonTestModule,
+    HttpClientTestingModule,
   ],
 })
 class CustomerColorsInputStubComponent implements ControlValueAccessor {
@@ -199,8 +232,11 @@ describe('CustomerCreateComponent', () => {
         VitamUICommonTestModule,
         LoggerModule.forRoot(),
         HttpClientTestingModule,
+        CustomerCreateComponent,
+        OwnerFormStubComponent,
+        CustomerColorsInputStubComponent,
+        DomainInputStubComponent,
       ],
-      declarations: [CustomerCreateComponent, OwnerFormStubComponent, CustomerColorsInputStubComponent, DomainInputStubComponent],
       providers: [
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MAT_DIALOG_DATA, useValue: {} },

@@ -39,6 +39,7 @@ import { Component, Input } from '@angular/core';
 @Component({
   selector: 'vitamui-common-editable-button-toggle',
   template: '',
+  standalone: true,
 })
 export class EditableButtonToggleComponent {
   @Input() value: any;

@@ -39,11 +39,18 @@ import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from
 import { Observable, Subscription } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { Logger } from '../../../logger/logger';
+import { PluralPipe } from '../../../pipes/plural.pipe';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { MatLegacyProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'vitamui-common-archive-unit-count',
   templateUrl: './archive-unit-count.component.html',
   styleUrls: ['./archive-unit-count.component.scss'],
+  standalone: true,
+  imports: [NgIf, MatLegacyProgressSpinnerModule, MatLegacyTooltipModule, TranslateModule, PluralPipe],
 })
 export class ArchiveUnitCountComponent implements OnChanges {
   @Input() search: Observable<number>;

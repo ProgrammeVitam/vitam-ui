@@ -68,7 +68,7 @@ import { ClassificationTreeComponent } from './archive-search-criteria/component
 import { FilingHoldingSchemeComponent } from './archive-search-criteria/components/filing-holding-scheme/filing-holding-scheme.component';
 import { LeavesTreeComponent } from './archive-search-criteria/components/filing-holding-scheme/leaves-tree/leaves-tree.component';
 import { ReuseRuleSearchComponent } from './archive-search-criteria/components/reuse-rule-search/reuse-rule-search.component';
-import { ConfirmActionModule } from './archive-search-criteria/components/search-criteria-list/confirm-action/confirm-action.module';
+
 import { SearchCriteriaListComponent } from './archive-search-criteria/components/search-criteria-list/search-criteria-list.component';
 import { SearchCriteriaSaverComponent } from './archive-search-criteria/components/search-criteria-saver/search-criteria-saver.component';
 // eslint-disable-next-line max-len
@@ -76,7 +76,6 @@ import { SimpleCriteriaSearchComponent } from './archive-search-criteria/compone
 import { StorageRuleSearchComponent } from './archive-search-criteria/components/storage-rule-search/storage-rule-search.component';
 import { TitleAndDescriptionCriteriaSearchCollectComponent } from './archive-search-criteria/components/title-and-description-criteria-search-collect/title-and-description-criteria-search-collect.component';
 import { UpdateUnitsaMetadataComponent } from './update-units-metadata/update-units-metadata.component';
-import { VitamUISnackBarModule } from '../shared/vitamui-snack-bar/vitamui-snack-bar.module';
 
 @NgModule({
   imports: [
@@ -91,11 +90,7 @@ import { VitamUISnackBarModule } from '../shared/vitamui-snack-bar/vitamui-snack
     MatTabsModule,
     MatDatepickerModule,
     MatDialogModule,
-    ConfirmActionModule,
     MatTreeModule,
-    VitamUISnackBarModule,
-  ],
-  declarations: [
     AccessRuleSearchComponent,
     AppraisalRuleSearchComponent,
     ArchivePreviewComponent,

@@ -49,8 +49,7 @@ describe('CustomerMenuComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MatDialogModule, VitamUICommonTestModule],
-      declarations: [CustomerMenuComponent],
+      imports: [MatDialogModule, VitamUICommonTestModule, CustomerMenuComponent],
       providers: [
         { provide: ActivatedRoute, useValue: { paramMap: EMPTY } },
         { provide: CustomerSelectionService, useValue: { getSelectedCustomerId$: () => EMPTY } },

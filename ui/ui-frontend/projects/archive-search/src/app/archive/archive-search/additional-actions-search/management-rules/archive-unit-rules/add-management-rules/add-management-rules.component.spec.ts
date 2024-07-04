@@ -197,8 +197,8 @@ describe('AddManagementRulesComponent', () => {
         HttpClientTestingModule,
         RouterTestingModule,
         MatSnackBarModule,
+        AddManagementRulesComponent,
       ],
-      declarations: [AddManagementRulesComponent],
       providers: [
         FormBuilder,
         { provide: BASE_URL, useValue: '/fake-api' },

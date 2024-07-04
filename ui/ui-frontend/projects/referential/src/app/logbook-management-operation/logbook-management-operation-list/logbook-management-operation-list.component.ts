@@ -36,16 +36,49 @@
  */
 
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
-import { Colors, FacetDetails } from 'vitamui-library';
+import {
+  Colors,
+  FacetDetails,
+  LogbookOperationFacetComponent,
+  InfiniteScrollDirective,
+  TableFilterComponent,
+  EventTypeLabelComponent,
+  PipesModule,
+  TableFilterDirective,
+  TableFilterOptionComponent,
+} from 'vitamui-library';
 import { OperationCategory, OperationDetails, OperationsResults } from '../../models/operation-response.interface';
 import { LogbookManagementOperationService } from '../logbook-management-operation.service';
+import { TruncatePipe } from '../../../../../vitamui-library/src/app/modules/pipes/truncate.pipe';
+import { DateTimePipe } from '../../../../../vitamui-library/src/app/modules/pipes/datetime.pipe';
+import { MatLegacyProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { NgIf, NgFor, NgClass } from '@angular/common';
 
 @Component({
   selector: 'app-logbook-management-operation-list',
   templateUrl: './logbook-management-operation-list.component.html',
   styleUrls: ['./logbook-management-operation-list.component.scss'],
+  standalone: true,
+  imports: [
+    LogbookOperationFacetComponent,
+    NgIf,
+    InfiniteScrollDirective,
+    TableFilterComponent,
+    NgFor,
+    MatLegacyTooltipModule,
+    EventTypeLabelComponent,
+    NgClass,
+    MatLegacyProgressSpinnerModule,
+    PipesModule,
+    TranslateModule,
+    DateTimePipe,
+    TruncatePipe,
+    TableFilterDirective,
+    TableFilterOptionComponent,
+  ],
 })
 export class LogbookManagementOperationListComponent implements OnInit {
   elementInPage: number;

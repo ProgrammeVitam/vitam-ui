@@ -1,11 +1,16 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
-import { Color, ThemeColorType, ThemeService } from 'vitamui-library';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { Color, ThemeColorType, ThemeService, VitamuiCommonSelectComponent } from 'vitamui-library';
+import { TranslateModule } from '@ngx-translate/core';
+import { InputColorComponent } from './input-color/input-color.component';
+import { NgFor, NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-customer-colors-input',
   templateUrl: './customer-colors-input.component.html',
   styleUrls: ['./customer-colors-input.component.scss'],
+  standalone: true,
+  imports: [ReactiveFormsModule, NgFor, InputColorComponent, NgIf, VitamuiCommonSelectComponent, TranslateModule],
 })
 export class CustomerColorsInputComponent implements OnInit {
   @Input() formGroup: FormGroup;
