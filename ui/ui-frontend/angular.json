@@ -14,22 +14,23 @@
       },
       "architect": {
         "build": {
-          "builder": "@angular-builders/custom-webpack:browser",
+          "builder": "@angular-devkit/build-angular:application",
           "options": {
             "allowedCommonJsDependencies": [
-              "moment"
+              "moment",
+              "deepmerge"
             ],
-            "customWebpackConfig": {
-              "path": "./extra-webpack.config.js"
-            },
             "outputPath": "dist/identity",
             "index": "projects/identity/src/index.html",
-            "main": "projects/identity/src/main.ts",
+            "browser": "projects/identity/src/main.ts",
             "tsConfig": "projects/identity/tsconfig.app.json",
-            "polyfills": "projects/identity/src/polyfills.ts",
+            "polyfills": [
+              "projects/identity/src/polyfills.ts"
+            ],
             "assets": [
               "projects/identity/src/assets",
               "projects/identity/src/favicon.ico",
+              "projects/identity/src/manifest.webmanifest",
               {
                 "glob": "**/*",
                 "input": "projects/vitamui-library/src/assets",
@@ -44,27 +45,17 @@
                 "projects/vitamui-library/src/sass"
               ]
             },
-            "scripts": [],
-            "buildOptimizer": false,
-            "sourceMap": true
+            "scripts": []
           },
           "configurations": {
             "production": {
-              "optimization": true,
               "outputHashing": "all",
-              "sourceMap": false,
-              "namedChunks": false,
-              "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true,
               "fileReplacements": [
                 {
                   "replace": "projects/identity/src/environments/environment.ts",
                   "with": "projects/identity/src/environments/environment.prod.ts"
                 }
               ],
-              "serviceWorker": true,
-              "ngswConfigPath": "projects/identity/ngsw-config.json",
               "assets": [
                 {
                   "glob": "**/*",
@@ -80,20 +71,26 @@
                   "input": "projects/vitamui-library/src/assets",
                   "output": "/assets"
                 }
-              ]
+              ],
+              "serviceWorker": "projects/identity/ngsw-config.json"
+            },
+            "development": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true
             }
           }
         },
         "serve": {
-          "builder": "@angular-builders/custom-webpack:dev-server",
+          "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "identity:build",
+            "buildTarget": "identity:build",
             "host": "dev.vitamui.com",
             "port": 4201
           },
           "configurations": {
             "production": {
-              "browserTarget": "identity:build:production"
+              "buildTarget": "identity:build:production"
             }
           }
         },
@@ -121,7 +118,8 @@
             },
             "assets": [
               "projects/identity/src/assets",
-              "projects/identity/src/favicon.ico"
+              "projects/identity/src/favicon.ico",
+              "projects/identity/src/manifest.webmanifest"
             ]
           }
         },
@@ -149,22 +147,23 @@
       },
       "architect": {
         "build": {
-          "builder": "@angular-builders/custom-webpack:browser",
+          "builder": "@angular-devkit/build-angular:application",
           "options": {
             "allowedCommonJsDependencies": [
-              "moment"
+              "moment",
+              "deepmerge"
             ],
-            "customWebpackConfig": {
-              "path": "./extra-webpack.config.js"
-            },
             "outputPath": "dist/portal",
             "index": "projects/portal/src/index.html",
-            "main": "projects/portal/src/main.ts",
+            "browser": "projects/portal/src/main.ts",
             "tsConfig": "projects/portal/tsconfig.app.json",
-            "polyfills": "projects/portal/src/polyfills.ts",
+            "polyfills": [
+              "projects/portal/src/polyfills.ts"
+            ],
             "assets": [
               "projects/portal/src/assets",
               "projects/portal/src/favicon.ico",
+              "projects/portal/src/manifest.webmanifest",
               {
                 "glob": "**/*",
                 "input": "projects/vitamui-library/src/assets",
@@ -179,27 +178,17 @@
                 "projects/vitamui-library/src/sass"
               ]
             },
-            "scripts": [],
-            "buildOptimizer": false,
-            "sourceMap": true
+            "scripts": []
           },
           "configurations": {
             "production": {
-              "optimization": true,
               "outputHashing": "all",
-              "sourceMap": false,
-              "namedChunks": false,
-              "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true,
               "fileReplacements": [
                 {
                   "replace": "projects/portal/src/environments/environment.ts",
                   "with": "projects/portal/src/environments/environment.prod.ts"
                 }
               ],
-              "serviceWorker": true,
-              "ngswConfigPath": "projects/portal/ngsw-config.json",
               "assets": [
                 {
                   "glob": "**/*",
@@ -215,20 +204,26 @@
                   "input": "projects/vitamui-library/src/assets",
                   "output": "/assets"
                 }
-              ]
+              ],
+              "serviceWorker": "projects/portal/ngsw-config.json"
+            },
+            "development": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true
             }
           }
         },
         "serve": {
-          "builder": "@angular-builders/custom-webpack:dev-server",
+          "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "portal:build",
+            "buildTarget": "portal:build",
             "host": "dev.vitamui.com",
             "port": 4200
           },
           "configurations": {
             "production": {
-              "browserTarget": "portal:build:production"
+              "buildTarget": "portal:build:production"
             }
           }
         },
@@ -250,7 +245,8 @@
             },
             "assets": [
               "projects/portal/src/assets",
-              "projects/portal/src/favicon.ico"
+              "projects/portal/src/favicon.ico",
+              "projects/portal/src/manifest.webmanifest"
             ]
           }
         },
@@ -262,120 +258,6 @@
               "projects/portal/**/*.ts",
               "projects/portal/**/*.html"
             ]
-          }
-        }
-      }
-    },
-    "demo": {
-      "root": "projects/demo",
-      "sourceRoot": "projects/demo/src",
-      "projectType": "application",
-      "prefix": "demo",
-      "schematics": {
-        "@schematics/angular:component": {
-          "style": "scss"
-        }
-      },
-      "architect": {
-        "build": {
-          "builder": "@angular-builders/custom-webpack:browser",
-          "options": {
-            "allowedCommonJsDependencies": [
-              "moment"
-            ],
-            "customWebpackConfig": {
-              "path": "./extra-webpack.config.js"
-            },
-            "preserveSymlinks": true,
-            "outputPath": "dist/demo",
-            "index": "projects/demo/src/index.html",
-            "main": "projects/demo/src/main.ts",
-            "polyfills": "projects/demo/src/polyfills.ts",
-            "tsConfig": "projects/demo/tsconfig.app.json",
-            "assets": [
-              "projects/demo/src/favicon.ico",
-              "projects/demo/src/assets",
-              {
-                "glob": "**/*",
-                "input": "projects/vitamui-library/src/assets",
-                "output": "/assets"
-              }
-            ],
-            "styles": [
-              "projects/demo/src/styles.scss"
-            ],
-            "stylePreprocessorOptions": {
-              "includePaths": [
-                "projects/vitamui-library/src/sass"
-              ]
-            },
-            "scripts": [],
-            "buildOptimizer": false,
-            "sourceMap": true
-          },
-          "configurations": {
-            "production": {
-              "fileReplacements": [
-                {
-                  "replace": "projects/demo/src/environments/environment.ts",
-                  "with": "projects/demo/src/environments/environment.prod.ts"
-                }
-              ],
-              "optimization": true,
-              "outputHashing": "all",
-              "sourceMap": false,
-              "namedChunks": false,
-              "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true,
-              "assets": [
-                "projects/demo/src/favicon.ico",
-                {
-                  "glob": "**/*",
-                  "input": "projects/vitamui-library/src/assets",
-                  "output": "/assets"
-                }
-              ]
-            }
-          }
-        },
-        "serve": {
-          "builder": "@angular-builders/custom-webpack:dev-server",
-          "options": {
-            "browserTarget": "demo:build"
-          },
-          "configurations": {
-            "production": {
-              "browserTarget": "demo:build:production"
-            }
-          }
-        },
-        "extract-i18n": {
-          "builder": "@angular-devkit/build-angular:extract-i18n",
-          "options": {
-            "buildTarget": "demo:build"
-          }
-        },
-        "lint": {
-          "builder": "@angular-eslint/builder:lint",
-          "options": {
-            "cache": true,
-            "lintFilePatterns": [
-              "projects/demo/**/*.ts",
-              "projects/demo/**/*.html"
-            ]
-          }
-        },
-        "e2e": {
-          "builder": "@angular-devkit/build-angular:protractor",
-          "options": {
-            "protractorConfig": "projects/demo/e2e/protractor.conf.js",
-            "devServerTarget": "demo:serve"
-          },
-          "configurations": {
-            "production": {
-              "devServerTarget": "demo:serve:production"
-            }
           }
         }
       }
@@ -392,22 +274,23 @@
       },
       "architect": {
         "build": {
-          "builder": "@angular-builders/custom-webpack:browser",
+          "builder": "@angular-devkit/build-angular:application",
           "options": {
             "allowedCommonJsDependencies": [
-              "moment"
+              "moment",
+              "deepmerge"
             ],
-            "customWebpackConfig": {
-              "path": "./extra-webpack.config.js"
-            },
             "outputPath": "dist/referential",
             "index": "projects/referential/src/index.html",
-            "main": "projects/referential/src/main.ts",
-            "polyfills": "projects/referential/src/polyfills.ts",
+            "browser": "projects/referential/src/main.ts",
+            "polyfills": [
+              "projects/referential/src/polyfills.ts"
+            ],
             "tsConfig": "projects/referential/tsconfig.app.json",
             "assets": [
               "projects/referential/src/assets",
               "projects/referential/src/favicon.ico",
+              "projects/referential/src/manifest.webmanifest",
               {
                 "glob": "**/*",
                 "input": "projects/vitamui-library/src/assets",
@@ -422,27 +305,17 @@
                 "projects/vitamui-library/src/sass"
               ]
             },
-            "scripts": [],
-            "buildOptimizer": false,
-            "sourceMap": true
+            "scripts": []
           },
           "configurations": {
             "production": {
+              "outputHashing": "all",
               "fileReplacements": [
                 {
                   "replace": "projects/referential/src/environments/environment.ts",
                   "with": "projects/referential/src/environments/environment.prod.ts"
                 }
               ],
-              "serviceWorker": true,
-              "ngswConfigPath": "projects/referential/ngsw-config.json",
-              "optimization": true,
-              "outputHashing": "all",
-              "sourceMap": false,
-              "namedChunks": false,
-              "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true,
               "assets": [
                 {
                   "glob": "**/*",
@@ -458,20 +331,26 @@
                   "input": "projects/vitamui-library/src/assets",
                   "output": "/assets"
                 }
-              ]
+              ],
+              "serviceWorker": "projects/referential/ngsw-config.json"
+            },
+            "development": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true
             }
           }
         },
         "serve": {
-          "builder": "@angular-builders/custom-webpack:dev-server",
+          "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "referential:build",
+            "buildTarget": "referential:build",
             "host": "dev.vitamui.com",
             "port": 4202
           },
           "configurations": {
             "production": {
-              "browserTarget": "referential:build:production"
+              "buildTarget": "referential:build:production"
             }
           }
         },
@@ -490,7 +369,8 @@
             "karmaConfig": "karma.conf.ci.js",
             "assets": [
               "projects/referential/src/favicon.ico",
-              "projects/referential/src/assets"
+              "projects/referential/src/assets",
+              "projects/referential/src/manifest.webmanifest"
             ],
             "styles": [
               "projects/referential/src/sass/styles.scss"
@@ -511,18 +391,6 @@
               "projects/referential/**/*.ts",
               "projects/referential/**/*.html"
             ]
-          }
-        },
-        "e2e": {
-          "builder": "@angular-devkit/build-angular:protractor",
-          "options": {
-            "protractorConfig": "projects/referential/e2e/protractor.conf.js",
-            "devServerTarget": "referential:serve"
-          },
-          "configurations": {
-            "production": {
-              "devServerTarget": "referential:serve:production"
-            }
           }
         }
       }
@@ -581,19 +449,23 @@
       },
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular-devkit/build-angular:application",
           "options": {
             "allowedCommonJsDependencies": [
-              "moment"
+              "moment",
+              "deepmerge"
             ],
             "outputPath": "dist/design-system",
             "index": "projects/design-system/src/index.html",
-            "main": "projects/design-system/src/main.ts",
+            "browser": "projects/design-system/src/main.ts",
             "tsConfig": "projects/design-system/tsconfig.app.json",
-            "polyfills": "projects/design-system/src/polyfills.ts",
+            "polyfills": [
+              "projects/design-system/src/polyfills.ts"
+            ],
             "assets": [
               "projects/design-system/src/assets",
               "projects/design-system/src/favicon.ico",
+              "projects/design-system/src/manifest.webmanifest",
               {
                 "glob": "**/*",
                 "input": "projects/vitamui-library/src/assets",
@@ -608,30 +480,23 @@
                 "projects/vitamui-library/src/sass"
               ]
             },
-            "scripts": [],
-            "vendorChunk": true,
-            "extractLicenses": false,
-            "buildOptimizer": false,
-            "sourceMap": true,
-            "optimization": true,
-            "namedChunks": true
+            "scripts": []
           },
           "configurations": {
             "production": {
               "outputHashing": "all",
-              "sourceMap": false,
-              "namedChunks": false,
-              "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true,
               "fileReplacements": [
                 {
                   "replace": "projects/design-system/src/environments/environment.ts",
                   "with": "projects/design-system/src/environments/environment.prod.ts"
                 }
               ],
-              "serviceWorker": true,
-              "ngswConfigPath": "projects/design-system/ngsw-config.json"
+              "serviceWorker": "projects/design-system/ngsw-config.json"
+            },
+            "development": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true
             }
           },
           "defaultConfiguration": ""
@@ -667,7 +532,8 @@
             },
             "assets": [
               "projects/design-system/src/assets",
-              "projects/design-system/src/favicon.ico"
+              "projects/design-system/src/favicon.ico",
+              "projects/design-system/src/manifest.webmanifest"
             ]
           }
         },
@@ -695,22 +561,23 @@
       },
       "architect": {
         "build": {
-          "builder": "@angular-builders/custom-webpack:browser",
+          "builder": "@angular-devkit/build-angular:application",
           "options": {
             "allowedCommonJsDependencies": [
-              "moment"
+              "moment",
+              "deepmerge"
             ],
-            "customWebpackConfig": {
-              "path": "./extra-webpack.config.js"
-            },
             "outputPath": "dist/ingest",
             "index": "projects/ingest/src/index.html",
-            "main": "projects/ingest/src/main.ts",
+            "browser": "projects/ingest/src/main.ts",
             "tsConfig": "projects/ingest/tsconfig.app.json",
-            "polyfills": "projects/ingest/src/polyfills.ts",
+            "polyfills": [
+              "projects/ingest/src/polyfills.ts"
+            ],
             "assets": [
               "projects/ingest/src/favicon.ico",
               "projects/ingest/src/assets",
+              "projects/ingest/src/manifest.webmanifest",
               {
                 "glob": "**/*",
                 "input": "projects/vitamui-library/src/assets",
@@ -725,40 +592,36 @@
                 "projects/vitamui-library/src/sass"
               ]
             },
-            "scripts": [],
-            "buildOptimizer": false,
-            "sourceMap": true
+            "scripts": []
           },
           "configurations": {
             "production": {
-              "optimization": true,
               "outputHashing": "all",
-              "sourceMap": false,
-              "namedChunks": false,
-              "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true,
               "fileReplacements": [
                 {
                   "replace": "projects/ingest/src/environments/environment.ts",
                   "with": "projects/ingest/src/environments/environment.prod.ts"
                 }
               ],
-              "serviceWorker": true,
-              "ngswConfigPath": "projects/ingest/ngsw-config.json"
+              "serviceWorker": "projects/ingest/ngsw-config.json"
+            },
+            "development": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true
             }
           }
         },
         "serve": {
-          "builder": "@angular-builders/custom-webpack:dev-server",
+          "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "ingest:build",
+            "buildTarget": "ingest:build",
             "host": "dev.vitamui.com",
             "port": 4208
           },
           "configurations": {
             "production": {
-              "browserTarget": "ingest:build:production"
+              "buildTarget": "ingest:build:production"
             }
           }
         },
@@ -777,7 +640,8 @@
             "karmaConfig": "karma.conf.ci.js",
             "assets": [
               "projects/ingest/src/favicon.ico",
-              "projects/ingest/src/assets"
+              "projects/ingest/src/assets",
+              "projects/ingest/src/manifest.webmanifest"
             ],
             "styles": [
               "projects/ingest/src/sass/styles.scss"
@@ -813,22 +677,24 @@
       },
       "architect": {
         "build": {
-          "builder": "@angular-builders/custom-webpack:browser",
+          "builder": "@angular-devkit/build-angular:application",
           "options": {
             "allowedCommonJsDependencies": [
-              "moment"
+              "moment",
+              "fast-xml-parser",
+              "deepmerge"
             ],
-            "customWebpackConfig": {
-              "path": "./extra-webpack.config.js"
-            },
             "outputPath": "dist/archive-search",
             "index": "projects/archive-search/src/index.html",
-            "main": "projects/archive-search/src/main.ts",
+            "browser": "projects/archive-search/src/main.ts",
             "tsConfig": "projects/archive-search/tsconfig.app.json",
-            "polyfills": "projects/archive-search/src/polyfills.ts",
+            "polyfills": [
+              "projects/archive-search/src/polyfills.ts"
+            ],
             "assets": [
               "projects/archive-search/src/assets",
               "projects/archive-search/src/favicon.ico",
+              "projects/archive-search/src/manifest.webmanifest",
               {
                 "glob": "**/*",
                 "input": "projects/vitamui-library/src/assets",
@@ -844,39 +710,36 @@
               ]
             },
             "scripts": [],
-            "buildOptimizer": false,
             "sourceMap": true
           },
           "configurations": {
             "production": {
-              "optimization": true,
               "outputHashing": "all",
-              "sourceMap": false,
-              "namedChunks": false,
-              "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true,
               "fileReplacements": [
                 {
                   "replace": "projects/archive-search/src/environments/environment.ts",
                   "with": "projects/archive-search/src/environments/environment.prod.ts"
                 }
               ],
-              "serviceWorker": true,
-              "ngswConfigPath": "projects/archive-search/ngsw-config.json"
+              "serviceWorker": "projects/archive-search/ngsw-config.json"
+            },
+            "development": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true
             }
           }
         },
         "serve": {
-          "builder": "@angular-builders/custom-webpack:dev-server",
+          "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "archive-search:build",
+            "buildTarget": "archive-search:build",
             "host": "dev.vitamui.com",
             "port": 4209
           },
           "configurations": {
             "production": {
-              "browserTarget": "archive-search:build:production"
+              "buildTarget": "archive-search:build:production"
             }
           }
         },
@@ -904,7 +767,8 @@
             },
             "assets": [
               "projects/archive-search/src/assets",
-              "projects/archive-search/src/favicon.ico"
+              "projects/archive-search/src/favicon.ico",
+              "projects/archive-search/src/manifest.webmanifest"
             ]
           }
         },
@@ -931,23 +795,24 @@
       },
       "architect": {
         "build": {
-          "builder": "@angular-builders/custom-webpack:browser",
+          "builder": "@angular-devkit/build-angular:application",
           "options": {
             "allowedCommonJsDependencies": [
               "moment",
-              "jszip"
+              "jszip",
+              "deepmerge"
             ],
-            "customWebpackConfig": {
-              "path": "./extra-webpack.config.js"
-            },
             "outputPath": "dist/collect",
             "index": "projects/collect/src/index.html",
-            "main": "projects/collect/src/main.ts",
+            "browser": "projects/collect/src/main.ts",
             "tsConfig": "projects/collect/tsconfig.app.json",
-            "polyfills": "projects/collect/src/polyfills.ts",
+            "polyfills": [
+              "projects/collect/src/polyfills.ts"
+            ],
             "assets": [
               "projects/collect/src/assets",
               "projects/collect/src/favicon.ico",
+              "projects/collect/src/manifest.webmanifest",
               {
                 "glob": "**/*",
                 "input": "projects/vitamui-library/src/assets",
@@ -962,40 +827,36 @@
                 "projects/vitamui-library/src/sass"
               ]
             },
-            "scripts": [],
-            "buildOptimizer": false,
-            "sourceMap": true
+            "scripts": []
           },
           "configurations": {
             "production": {
-              "optimization": true,
               "outputHashing": "all",
-              "sourceMap": false,
-              "namedChunks": false,
-              "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true,
               "fileReplacements": [
                 {
                   "replace": "projects/collect/src/environments/environment.ts",
                   "with": "projects/collect/src/environments/environment.prod.ts"
                 }
               ],
-              "serviceWorker": true,
-              "ngswConfigPath": "projects/collect/ngsw-config.json"
+              "serviceWorker": "projects/collect/ngsw-config.json"
+            },
+            "development": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true
             }
           }
         },
         "serve": {
-          "builder": "@angular-builders/custom-webpack:dev-server",
+          "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "collect:build",
+            "buildTarget": "collect:build",
             "host": "dev.vitamui.com",
             "port": 4210
           },
           "configurations": {
             "production": {
-              "browserTarget": "collect:build:production"
+              "buildTarget": "collect:build:production"
             }
           }
         },
@@ -1023,7 +884,8 @@
             },
             "assets": [
               "projects/collect/src/assets",
-              "projects/collect/src/favicon.ico"
+              "projects/collect/src/favicon.ico",
+              "projects/collect/src/manifest.webmanifest"
             ]
           }
         },
@@ -1050,7 +912,7 @@
       },
       "architect": {
         "build": {
-          "builder": "@angular-builders/custom-webpack:browser",
+          "builder": "@angular-devkit/build-angular:application",
           "options": {
             "allowedCommonJsDependencies": [
               "moment",
@@ -1059,20 +921,20 @@
               "dayjs/plugin/isBetween",
               "dayjs/plugin/isSameOrAfter",
               "dayjs/plugin/isSameOrBefore",
-              "dayjs/plugin/isoWeek"
+              "dayjs/plugin/isoWeek",
+              "deepmerge"
             ],
-            "customWebpackConfig": {
-              "path": "./extra-webpack.config.js",
-              "preserveSymlinks": true
-            },
             "outputPath": "dist/pastis",
             "index": "projects/pastis/src/index.html",
-            "main": "projects/pastis/src/main.ts",
-            "polyfills": "projects/pastis/src/polyfills.ts",
+            "browser": "projects/pastis/src/main.ts",
+            "polyfills": [
+              "projects/pastis/src/polyfills.ts"
+            ],
             "tsConfig": "projects/pastis/tsconfig.app.json",
             "assets": [
               "projects/pastis/src/assets",
               "projects/pastis/src/favicon.ico",
+              "projects/pastis/src/manifest.webmanifest",
               {
                 "glob": "**/*",
                 "input": "projects/vitamui-library/src/assets",
@@ -1087,28 +949,23 @@
                 "projects/vitamui-library/src/sass"
               ]
             },
-            "scripts": [],
-            "optimization": false,
-            "buildOptimizer": false,
-            "sourceMap": true
+            "scripts": []
           },
           "configurations": {
             "production": {
+              "outputHashing": "all",
               "fileReplacements": [
                 {
                   "replace": "projects/pastis/src/environments/environment.ts",
                   "with": "projects/pastis/src/environments/environment.prod.ts"
                 }
               ],
-              "serviceWorker": true,
-              "ngswConfigPath": "projects/pastis/ngsw-config.json",
-              "optimization": true,
-              "outputHashing": "all",
-              "sourceMap": false,
-              "namedChunks": false,
-              "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true
+              "serviceWorker": "projects/pastis/ngsw-config.json"
+            },
+            "development": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true
             },
             "standalone": {
               "fileReplacements": [
@@ -1116,33 +973,23 @@
                   "replace": "projects/pastis/src/environments/environment.ts",
                   "with": "projects/pastis/src/environments/environment.standalone.ts"
                 }
-              ],
-              "serviceWorker": true,
-              "ngswConfigPath": "projects/pastis/ngsw-config.json",
-              "optimization": true,
-              "outputHashing": "all",
-              "sourceMap": false,
-              "namedChunks": true,
-              "extractLicenses": true,
-              "vendorChunk": true,
-              "buildOptimizer": false,
-              "aot": true
+              ]
             }
           }
         },
         "serve": {
-          "builder": "@angular-builders/custom-webpack:dev-server",
+          "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "pastis:build",
+            "buildTarget": "pastis:build",
             "host": "dev.vitamui.com",
             "port": 4251
           },
           "configurations": {
             "production": {
-              "browserTarget": "pastis:build:production"
+              "buildTarget": "pastis:build:production"
             },
             "standalone": {
-              "browserTarget": "pastis:build:standalone",
+              "buildTarget": "pastis:build:standalone",
               "host": "localhost",
               "port": 8097
             }
@@ -1163,7 +1010,8 @@
             "karmaConfig": "karma.conf.ci.js",
             "assets": [
               "projects/pastis/src/favicon.ico",
-              "projects/pastis/src/assets"
+              "projects/pastis/src/assets",
+              "projects/pastis/src/manifest.webmanifest"
             ],
             "styles": [
               "projects/pastis/src/sass/styles.scss"
@@ -1184,18 +1032,6 @@
               "projects/pastis/**/*.ts",
               "projects/pastis/**/*.html"
             ]
-          }
-        },
-        "e2e": {
-          "builder": "@angular-devkit/build-angular:protractor",
-          "options": {
-            "protractorConfig": "projects/pastis/e2e/protractor.conf.js",
-            "devServerTarget": "pastis:serve"
-          },
-          "configurations": {
-            "production": {
-              "devServerTarget": "pastis:serve:production"
-            }
           }
         }
       }

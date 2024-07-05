@@ -99,13 +99,18 @@ export function ApplicationSvgLoaderFactory(handler: HttpBackend, transferState:
         deps: [HttpBackend],
       },
     }),
-    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
     AngularSvgIconModule.forRoot({
       loader: {
         provide: SvgLoader,
         useFactory: ApplicationSvgLoaderFactory,
         deps: [HttpBackend, TransferState],
       },
+    }),
+    ServiceWorkerModule.register('ngsw-worker.js', {
+      enabled: environment.production,
+      // Register the ServiceWorker as soon as the application is stable
+      // or after 30 seconds (whichever comes first).
+      registrationStrategy: 'registerWhenStable:30000',
     }),
   ],
   providers: [

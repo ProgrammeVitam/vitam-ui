@@ -27,8 +27,8 @@ FPM_PACK_REMOVE_SCRIPTS     = --after-remove "$(TEMPLATE_TMP_DIR)/after-remove-r
 
 # variable used to copy
 NAME_WITHOUT_SUFFIX  := $(subst ui-,,$(NAME))
-RESSOURCE_DIR_ORIGIN := $(abspath $(STAGING_ROOT)/../../../ui/ui-frontend/dist/$(NAME_WITHOUT_SUFFIX)/)
-RESSOURCE_DIR_DEST   := $(abspath $(STAGING_ROOT)/vitamui/data/)
+RESSOURCE_DIR_ORIGIN := $(abspath $(STAGING_ROOT)/../../../ui/ui-frontend/dist/$(NAME_WITHOUT_SUFFIX)/browser/*)
+RESSOURCE_DIR_DEST   := $(abspath $(STAGING_ROOT)/vitamui/data/$(NAME_WITHOUT_SUFFIX)/)
 
 clean:
 	@rm -Rf $(TEMPLATE_TMP_DIR) $(STAGING_ROOT)

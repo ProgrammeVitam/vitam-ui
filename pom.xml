@@ -148,7 +148,6 @@
         <spring.test.version>5.3.18</spring.test.version>
         <spring-webmvc-pac4j.version>5.1.0</spring-webmvc-pac4j.version>
         <swagger.version>3.0.0</swagger.version>
-        <trang.version>20181222</trang.version>
         <vitam.version>8.0.0-SNAPSHOT</vitam.version>
         <xml.apis-version>2.0.2</xml.apis-version>
         <xml.resolver.version>1.2</xml.resolver.version>
@@ -1200,12 +1199,6 @@
                 <groupId>org.bouncycastle</groupId>
                 <artifactId>bcprov-jdk18on</artifactId>
                 <version>${bouncycastle.version}</version>
-            </dependency>
-            <!-- convert relaxng to xsd -->
-            <dependency>
-                <groupId>org.relaxng</groupId>
-                <artifactId>trang</artifactId>
-                <version>${trang.version}</version>
             </dependency>
             <!-- convert xsd to xml -->
             <dependency>

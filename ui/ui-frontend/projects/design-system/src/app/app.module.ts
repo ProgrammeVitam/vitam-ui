@@ -37,7 +37,7 @@
 import { registerLocaleData } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { default as localeFr } from '@angular/common/locales/fr';
-import { LOCALE_ID, NgModule } from '@angular/core';
+import { LOCALE_ID, NgModule, isDevMode } from '@angular/core';
 import { MatLegacyListModule as MatListModule } from '@angular/material/legacy-list';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { BrowserModule, Title } from '@angular/platform-browser';
@@ -73,6 +73,7 @@ import { TooltipModule } from './components/tooltip/tooltip.module';
 import { TranslationModule } from './components/translation/translation.module';
 import { TypographyModule } from './components/typography/typography.module';
 import { DesignSystemModule } from './design-system/design-system.module';
+import { ServiceWorkerModule } from '@angular/service-worker';
 
 registerLocaleData(localeFr, 'fr');
 
@@ -114,6 +115,12 @@ export function httpLoaderFactory(httpClient: HttpClient): MultiTranslateHttpLoa
         useFactory: httpLoaderFactory,
         deps: [HttpClient],
       },
+    }),
+    ServiceWorkerModule.register('ngsw-worker.js', {
+      enabled: !isDevMode(),
+      // Register the ServiceWorker as soon as the application is stable
+      // or after 30 seconds (whichever comes first).
+      registrationStrategy: 'registerWhenStable:30000',
     }),
   ],
   providers: [
