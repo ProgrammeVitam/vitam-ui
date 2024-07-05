@@ -79,6 +79,7 @@ public class TransactionConverter {
         externalDto.setCreationDate(collectTransactionDto.getCreationDate());
         externalDto.setLastUpdate(collectTransactionDto.getLastUpdate());
         externalDto.setName(collectTransactionDto.getName());
+        externalDto.setProjectId(collectTransactionDto.getProjectId());
         return externalDto;
     }
 
