@@ -8,13 +8,10 @@ db.applications.insertOne({
     "identifier" : "LOGBOOK_MANAGEMENT_OPERATION_APP",
 {% if vitamui.referential.base_url is defined %}
     "url": "{{ vitamui.referential.base_url }}/logbook-management-operation",
+    "serviceId": "^{{ vitamui.referential.base_url }}/.*",
 {% else %}
     "url": "{{ url_prefix }}/referential/logbook-management-operation",
-{% endif %}
-{% if vitamui.referential.base_url is defined %}
-	"serviceId": "^{{ vitamui.referential.base_url }}/.*",
-{% else %}
-	"serviceId": "^{{ url_prefix }}/referential/.*",
+    "serviceId": "^{{ url_prefix }}/referential/.*",
 {% endif %}
     "icon": "vitamui-icon vitamui-icon-logbook-operations",
     "name": "Gestion des Opérations",

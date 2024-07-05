@@ -32,7 +32,6 @@ localhost
 [zone_vitamui_ui:children]
 hosts_ui_identity
 hosts_ui_portal
-hosts_ui_search
 hosts_ui_ingest
 hosts_ui_archive_search
 hosts_ui_collect
@@ -61,10 +60,6 @@ localhost
 localhost
 
 [hosts_ui_portal]
-# EDIT: Mandatory
-localhost
-
-[hosts_ui_search]
 # EDIT: Mandatory
 localhost
 
