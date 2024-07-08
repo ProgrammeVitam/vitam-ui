@@ -92,7 +92,7 @@ export class OntologyInformationTabComponent implements OnInit {
   ) {
     this.form = this.formBuilder.group({
       identifier: [{ disabled: true }, Validators.required],
-      shortName: [{ disabled: true }, Validators.required],
+      shortName: [{ value: null, disabled: true }, Validators.required],
       type: [{ value: null, disabled: true }, Validators.required],
       typeDetail: [{ value: null, disabled: true }],
       stringSize: [{ value: null, disabled: true }],
