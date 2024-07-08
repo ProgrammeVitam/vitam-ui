@@ -45,7 +45,8 @@
                 "projects/vitamui-library/src/sass"
               ]
             },
-            "scripts": []
+            "scripts": [],
+            "sourceMap": true
           },
           "configurations": {
             "production": {
@@ -178,7 +179,8 @@
                 "projects/vitamui-library/src/sass"
               ]
             },
-            "scripts": []
+            "scripts": [],
+            "sourceMap": true
           },
           "configurations": {
             "production": {
@@ -305,7 +307,8 @@
                 "projects/vitamui-library/src/sass"
               ]
             },
-            "scripts": []
+            "scripts": [],
+            "sourceMap": true
           },
           "configurations": {
             "production": {
@@ -480,7 +483,8 @@
                 "projects/vitamui-library/src/sass"
               ]
             },
-            "scripts": []
+            "scripts": [],
+            "sourceMap": true
           },
           "configurations": {
             "production": {
@@ -592,7 +596,8 @@
                 "projects/vitamui-library/src/sass"
               ]
             },
-            "scripts": []
+            "scripts": [],
+            "sourceMap": true
           },
           "configurations": {
             "production": {
@@ -827,7 +832,8 @@
                 "projects/vitamui-library/src/sass"
               ]
             },
-            "scripts": []
+            "scripts": [],
+            "sourceMap": true
           },
           "configurations": {
             "production": {
@@ -949,7 +955,8 @@
                 "projects/vitamui-library/src/sass"
               ]
             },
-            "scripts": []
+            "scripts": [],
+            "sourceMap": true
           },
           "configurations": {
             "production": {
