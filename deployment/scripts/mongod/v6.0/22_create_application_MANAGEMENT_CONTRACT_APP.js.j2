@@ -8,13 +8,10 @@ db.applications.insertOne({
     "identifier" : "MANAGEMENT_CONTRACT_APP",
 {% if vitamui.referential.base_url is defined %}
     "url": "{{ vitamui.referential.base_url }}/management-contract",
-{% else %}
-    "url": "{{ url_prefix }}/referential/management-contract",
-{% endif %}
-{% if vitamui.referential.base_url is defined %}
 	"serviceId": "^{{ vitamui.referential.base_url }}/.*",
 {% else %}
-	"serviceId": "^{{ url_prefix }}/referential/.*",
+    "url": "{{ url_prefix }}/referential/management-contract",
+    "serviceId": "^{{ url_prefix }}/referential/.*",
 {% endif %}
     "icon" : "vitamui-icon vitamui-icon-ontologie",
     "name" : "Contrats de Gestion",

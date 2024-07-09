@@ -5,19 +5,6 @@ print("Start 07_insert_serviceid_to_applications_ref.js");
 // =============== INGEST ==========
 
 db.applications.updateOne({
-    "identifier" : "INGEST_MANAGEMENT_APP"
-}, {
-    $set: {
-       {% if vitamui.ingest.base_url is defined %}
-       	"serviceId2": "^{{ vitamui.ingest.base_url }}/.*",
-       {% else %}
-       	"serviceId2": "^{{ url_prefix }}/ingest/.*",
-       {% endif %}
-    },
-    }
-);
-
-db.applications.updateOne({
     "identifier" : "HOLDING_FILLING_SCHEME_APP",
 }, {
     $set: {

@@ -19,6 +19,6 @@
     - browser
 
 - hosts: reverse
-  gather_facts: no
+  gather_facts: yes
   roles:
     - merge_index_apache
