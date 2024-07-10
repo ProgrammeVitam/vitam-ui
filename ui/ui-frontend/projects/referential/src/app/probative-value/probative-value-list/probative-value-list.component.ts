@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { Subject, merge } from 'rxjs';
+import { merge, Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { DEFAULT_PAGE_SIZE, Direction, InfiniteScrollTable, PageRequest } from 'vitamui-library';
 
@@ -73,7 +73,7 @@ export class ProbativeValueListComponent extends InfiniteScrollTable<any> implem
 
   loaded = false;
 
-  orderBy = '#id';
+  orderBy = 'evDateTime';
   direction = Direction.ASCENDANT;
 
   private readonly searchChange = new Subject<string>();
