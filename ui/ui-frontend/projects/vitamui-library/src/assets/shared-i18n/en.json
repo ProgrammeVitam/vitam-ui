@@ -3676,7 +3676,7 @@
       "LOAD_MORE_UNITS": "Load more results",
       "ORPHANS_NODE": "Without attachment"
     },
-    "HIDE_SEARCH_CRITERIA": "HIDE SEARCH CRITERIA",
+    "HIDE_SEARCH_CRITERIA": "Hide search criteria",
     "LAUNCH_SEARCH_ACTION": "Launch the search",
     "MORE_THAN": "+ than ",
     "MORE_THAN_THRESHOLD": "+ than 10 000",
@@ -3685,7 +3685,7 @@
     "REMOVE_SEARCH_CRITERIA_BY_CATEGORY": "Delete rule criteria",
     "RESULT": "Result",
     "RESULTS": "Results",
-    "RETRIVE_EXACT_COUNT": "Load exact count",
+    "RETRIEVE_EXACT_COUNT": "Load exact count",
     "RULE": {
       "CODE_NOT_EXIST": "The rule code entered does not exist in this category",
       "WRONG_FORMAT": "Wrong rule format"
@@ -3849,8 +3849,7 @@
           "WAITING_TO_RE_CALCULATE_STORAGE_RULE": "Is waiting for rule recalculation"
         },
         "ORIGIN_WAITING_RECALCULATE": "Yes",
-        "OTHER_FIELD": "Another criteria",
-        "SELECT_OTHER_FIELD": "Select another criteria",
+        "OTHER_FIELDS": "Other criteria",
         "SP": "Originating agency",
         "SP_CODE": "Originating agency code",
         "SP_LABEL": "Originating agency name",
@@ -3957,7 +3956,7 @@
     },
     "SELECTED": "sélectionnés",
     "SHOW_MORE_RESULTS": "Show more results...",
-    "SHOW_SEARCH_CRITERIA": "SHOW SEARCH CRITERIA",
+    "SHOW_SEARCH_CRITERIA": "Show search criteria",
     "SHOW_TREES_PLANS": "Show trees and plans",
     "TITLE_SEARCH": "Search : ",
     "TITLE_SEARCH_AREA": "Searching an archive",
@@ -4201,7 +4200,7 @@
       "TREE_TITLE": "Trees and plans",
       "LOAD_MORE_UNITS": "Load more results"
     },
-    "HIDE_SEARCH_CRITERIA": "HIDE SEARCH CRITERIA",
+    "HIDE_SEARCH_CRITERIA": "Hide search criteria",
     "LAUNCH_SEARCH_ACTION": "Launch the search",
     "MORE_THAN": "+ de ",
     "MORE_THAN_THRESHOLD": "+ de 10 000",
@@ -4250,7 +4249,7 @@
     "REMOVE_SEARCH_CRITERIA_BY_CATEGORY": "Delete rule criteria",
     "RESULT": "result",
     "RESULTS": "results",
-    "RETRIVE_EXACT_COUNT": "Afficher le nombre exact",
+    "RETRIEVE_EXACT_COUNT": "Afficher le nombre exact",
     "RULE": {
       "CODE_NOT_EXIST": "The rule code entered does not exist in this category",
       "WRONG_FORMAT": "Wrong rule format"
@@ -4413,8 +4412,7 @@
           "WAITING_TO_RE_CALCULATE_STORAGE_RULE": "Is waiting for rule recalculation"
         },
         "ORIGIN_WAITING_RECALCULATE": "Yes",
-        "OTHER_FIELD": "Another criteria",
-        "SELECT_OTHER_FIELD": "Select another criteria",
+        "OTHER_FIELDS": "Other criteria",
         "SP": "Originating agency",
         "SP_CODE": "Originating agency code",
         "SP_LABEL": "Originating agency name",
@@ -4521,10 +4519,10 @@
     },
     "SELECTED": "selected",
     "SHOW_MORE_RESULTS": "Afficher plus de résultats...",
-    "SHOW_SEARCH_CRITERIA": "SHOW SEARCH CRITERIA",
+    "SHOW_SEARCH_CRITERIA": "Show search criteria",
     "SHOW_TREES_PLANS": "Show trees and plans",
     "TITLE_SEARCH": "Search : ",
-    "TITLE_SEARCH_AREA": "Searching by title or description",
+    "TITLE_SEARCH_AREA": "Searching an archive",
     "UNIT_OBJECT_QUALIFIER_TYPE": {
       "BinaryMaster": "Binary master",
       "Dissemination": "Dissemination",

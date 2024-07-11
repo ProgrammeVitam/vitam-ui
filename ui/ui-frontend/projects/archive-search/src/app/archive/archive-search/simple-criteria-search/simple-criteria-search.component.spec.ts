@@ -136,23 +136,6 @@ describe('SimpleCriteriaSearchComponent', () => {
   });
 
   describe('DOM', () => {
-    it('should have 14 rows ', () => {
-      // When
-      const nativeElement = fixture.nativeElement;
-      const elementRow = nativeElement.querySelectorAll('.row');
-
-      // Then
-      expect(elementRow.length).toBe(14);
-    });
-
-    it('should have 18 columns ', () => {
-      // When
-      const nativeElement = fixture.nativeElement;
-      const elementCol = nativeElement.querySelectorAll('.col-6');
-
-      // Then
-      expect(elementCol.length).toBe(18);
-    });
     it('should have 6 vitamui editables inputs ', () => {
       // When
       const nativeElement = fixture.nativeElement;

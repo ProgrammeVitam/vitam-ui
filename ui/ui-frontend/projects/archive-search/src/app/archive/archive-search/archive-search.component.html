@@ -95,7 +95,9 @@
     ></app-archive-search-rules-facets>
   </div>
   <div class="row" *ngIf="!pending">
-    <a class="hide-ink" *ngIf="!showCriteriaPanel" (click)="showHidePanel(true)">{{ 'ARCHIVE_SEARCH.SHOW_SEARCH_CRITERIA' | translate }}</a
+    <a class="hide-ink text uppercase" *ngIf="!showCriteriaPanel" (click)="showHidePanel(true)">{{
+      'ARCHIVE_SEARCH.SHOW_SEARCH_CRITERIA' | translate
+    }}</a
     ><a class="hide-ink" *ngIf="!pendingComputeFacets && !showingFacets && submited" (click)="showHideFacets(true)">{{
       'ARCHIVE_SEARCH.COMPUTE_RULES_FACETS' | translate
     }}</a>
@@ -271,7 +273,7 @@
     </mat-tab-group>
   </div>
   <div class="row justify-content-end text-on-right-side" *ngIf="showCriteriaPanel">
-    <a class="hide-ink" (click)="showHidePanel(false)">{{ 'ARCHIVE_SEARCH.HIDE_SEARCH_CRITERIA' | translate }}</a>
+    <a class="hide-ink text uppercase" (click)="showHidePanel(false)">{{ 'ARCHIVE_SEARCH.HIDE_SEARCH_CRITERIA' | translate }}</a>
   </div>
 </div>
 

@@ -30,7 +30,9 @@
 
   <mat-sidenav-content>
     <div class="vitamui-heading">
-      <vitamui-common-title-breadcrumb> {{ 'COLLECT.TITLE_SEARCH_AREA' | translate }} : {{ projectName }} </vitamui-common-title-breadcrumb>
+      <vitamui-common-title-breadcrumb>
+        {{ 'APPLICATION.COLLECT_APP.NAME' | translate }} : {{ projectName }}
+      </vitamui-common-title-breadcrumb>
     </div>
     <div class="vitamui-content" *ngIf="foundAccessContract">
       <div class="row row justify-content-around">
@@ -157,7 +159,9 @@
         </app-archive-search-rules-facets>
       </div>
       <div class="row" *ngIf="!pending">
-        <a class="hide-ink" *ngIf="!showCriteriaPanel" (click)="showHidePanel(true)">{{ 'COLLECT.SHOW_SEARCH_CRITERIA' | translate }}</a>
+        <a class="hide-ink text uppercase" *ngIf="!showCriteriaPanel" (click)="showHidePanel(true)">{{
+          'COLLECT.SHOW_SEARCH_CRITERIA' | translate
+        }}</a>
         <a class="hide-ink" *ngIf="!pendingComputeFacets && !showingFacets && submited" (click)="showHideFacets(true)">{{
           'COLLECT.COMPUTE_RULES_FACETS' | translate
         }}</a>
@@ -303,7 +307,7 @@
         </mat-tab-group>
       </div>
       <div class="row justify-content-end text-on-right-side" *ngIf="showCriteriaPanel">
-        <a class="hide-ink" (click)="showHidePanel(false)">{{ 'COLLECT.HIDE_SEARCH_CRITERIA' | translate }}</a>
+        <a class="hide-ink text uppercase" (click)="showHidePanel(false)">{{ 'COLLECT.HIDE_SEARCH_CRITERIA' | translate }}</a>
       </div>
 
       <!-- Show Units results -->

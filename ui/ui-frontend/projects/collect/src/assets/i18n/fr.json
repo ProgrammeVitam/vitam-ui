@@ -113,7 +113,6 @@
     "VALIDATE_TRANSACTION_VALIDATED": "La demande de versement du projet a été bien validée",
     "TRANSACTION_ABORTED": "La demande de versement du projet a été bien abandonné",
     "TRANSACTION_REOPENED": "La demande de versement du projet a été bien reouvert",
-    "ACCESS_CONTRACT_NOT_FOUND": "Aucun contrat d'accès n'est associé à l'utilisateur",
     "PROJECT_TRANSACTION_PREVIEW": {
       "ACTIONS": {
         "SHOW_TRANSACTIONS": "Accéder à la liste des versements du projet",
