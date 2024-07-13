@@ -24,7 +24,7 @@ of our environment trusted by the remote environment, to do that, we follow thes
 ```
 
 3. Download an external public certificate (external_pub.pem && external_key.pem) provided in this
-   path: https://webdav.dev.programmevitam.fr/webdav/Certificats_vitam/
+   path: https://rec.part.programmevitam.fr/
 4. Generate a keystore, for Vitam context, with this certificate. (example password: customer-password-ks , example in P12 format):
 
  ```shell script
