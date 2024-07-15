@@ -39,6 +39,8 @@ package fr.gouv.vitamui.cas.provider;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import org.pac4j.core.client.IndirectClient;
 
+import java.util.Objects;
+
 /**
  * Pac4j client identity provider.
  *
@@ -61,7 +63,7 @@ public class Pac4jClientIdentityProviderDto extends IdentityProviderDto {
         setIdentifierAttribute(dto.getIdentifierAttribute());
         setAutoProvisioningEnabled(dto.isAutoProvisioningEnabled());
         setProtocoleType(dto.getProtocoleType());
-        setPropagateLogout(dto.isPropagateLogout());
+        setPropagateLogout(Objects.isNull(dto.isPropagateLogout()) ? false : dto.isPropagateLogout());
 
         setKeystoreBase64(dto.getKeystoreBase64());
         setKeystorePassword(dto.getKeystorePassword());
@@ -70,8 +72,10 @@ public class Pac4jClientIdentityProviderDto extends IdentityProviderDto {
         setSpMetadata(dto.getSpMetadata());
         setMaximumAuthenticationLifetime(dto.getMaximumAuthenticationLifetime());
         setAuthnRequestBinding(dto.getAuthnRequestBinding());
-        setWantsAssertionsSigned(dto.getWantsAssertionsSigned());
-        setAuthnRequestSigned(dto.getAuthnRequestSigned());
+        setWantsAssertionsSigned(
+            Objects.isNull(dto.getWantsAssertionsSigned()) ? true : dto.getWantsAssertionsSigned()
+        );
+        setAuthnRequestSigned(Objects.isNull(dto.getAuthnRequestSigned()) ? true : dto.getAuthnRequestSigned());
 
         setClientId(dto.getClientId());
         setClientSecret(dto.getClientSecret());
