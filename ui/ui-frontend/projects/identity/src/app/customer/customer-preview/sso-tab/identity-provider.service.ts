@@ -60,8 +60,10 @@ export class IdentityProviderService {
       map((updatedIdp: IdentityProvider) => this.addSpMetadataUrl(updatedIdp)),
       tap(
         (newIDP: IdentityProvider) => {
+          let messageKey = newIDP.internal ? 'SHARED.SNACKBAR.PROVIDER_CREATE' : 'SHARED.SNACKBAR.PROVIDER_CREATE_RESTART_NEED';
+
           this.snackBarService.open({
-            message: 'SHARED.SNACKBAR.PROVIDER_CREATE',
+            message: messageKey,
             translateParams: {
               param1: newIDP.name,
             },
@@ -81,8 +83,9 @@ export class IdentityProviderService {
       tap((updatedIdp: IdentityProvider) => this.updated.next(updatedIdp)),
       tap(
         (updatedIdp: IdentityProvider) => {
+          let messageKey = updatedIdp.internal ? 'SHARED.SNACKBAR.PROVIDER_UPDATE' : 'SHARED.SNACKBAR.PROVIDER_UPDATE_RESTART_NEED';
           this.snackBarService.open({
-            message: 'SHARED.SNACKBAR.PROVIDER_UPDATE',
+            message: messageKey,
             translateParams: {
               param1: updatedIdp.name,
             },
@@ -102,8 +105,9 @@ export class IdentityProviderService {
       tap((updatedIdp: IdentityProvider) => this.updated.next(updatedIdp)),
       tap(
         (updatedIdp: IdentityProvider) => {
+          let messageKey = updatedIdp.internal ? 'SHARED.SNACKBAR.PROVIDER_UPDATE' : 'SHARED.SNACKBAR.PROVIDER_UPDATE_RESTART_NEED';
           this.snackBarService.open({
-            message: 'SHARED.SNACKBAR.PROVIDER_UPDATE',
+            message: messageKey,
             translateParams: {
               param1: updatedIdp.name,
             },
@@ -122,8 +126,9 @@ export class IdentityProviderService {
       tap((updatedIdp: IdentityProvider) => this.updated.next(updatedIdp)),
       tap(
         (updatedIdp: IdentityProvider) => {
+          let messageKey = updatedIdp.internal ? 'SHARED.SNACKBAR.PROVIDER_UPDATE' : 'SHARED.SNACKBAR.PROVIDER_UPDATE_RESTART_NEED';
           this.snackBarService.open({
-            message: 'SHARED.SNACKBAR.PROVIDER_UPDATE',
+            message: messageKey,
             translateParams: {
               param1: updatedIdp.name,
             },
@@ -135,27 +140,6 @@ export class IdentityProviderService {
       ),
     );
   }
-
-  updateSpMetadataFile(id: string, spMetadata: File): Observable<IdentityProvider> {
-    return this.providerApi.patchProviderSpMetadata(id, spMetadata).pipe(
-      map((updatedIdp: IdentityProvider) => this.addSpMetadataUrl(updatedIdp)),
-      tap((updatedIdp: IdentityProvider) => this.updated.next(updatedIdp)),
-      tap(
-        (updatedIdp: IdentityProvider) => {
-          this.snackBarService.open({
-            message: 'SHARED.SNACKBAR.PROVIDER_UPDATE',
-            translateParams: {
-              param1: updatedIdp.name,
-            },
-          });
-        },
-        (error) => {
-          this.snackBarService.open({ message: error.error.message, translate: false });
-        },
-      ),
-    );
-  }
-
   getAll(customerId?: string): Observable<IdentityProvider[]> {
     const criterionArray: Criterion[] = [];
     if (customerId) {

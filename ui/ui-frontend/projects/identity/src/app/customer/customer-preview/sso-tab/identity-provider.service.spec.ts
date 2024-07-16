@@ -49,6 +49,7 @@ describe('IdentityProviderService', () => {
   let httpTestingController: HttpTestingController;
   let identityProviderService: IdentityProviderService;
   let identityProviders: any[];
+  let externalIdentityProviders: any[];
   let keystore: File;
   let idpMetadata: File;
 
@@ -61,6 +62,19 @@ describe('IdentityProviderService', () => {
         customerId: '1234',
         name: 'Test IDP',
         internal: true,
+        keystorePassword: 'testpassword1234',
+        patterns: ['test.com', 'test.fr'],
+        enabled: true,
+        keystore,
+        idpMetadata,
+      },
+    ];
+    externalIdentityProviders = [
+      {
+        id: '44',
+        customerId: '1234',
+        name: 'Test IDP',
+        internal: false,
         keystorePassword: 'testpassword1234',
         patterns: ['test.com', 'test.fr'],
         enabled: true,
@@ -108,6 +122,23 @@ describe('IdentityProviderService', () => {
       req.flush(identityProviders[0]);
     });
 
+    it('should call /fake-api/providers and display a succes message to asking to restart service', () => {
+      const snackBar = TestBed.inject(VitamUISnackBarService);
+      identityProviderService.create(externalIdentityProviders[0]).subscribe((response: IdentityProvider) => {
+        expect(response).toEqual(externalIdentityProviders[0]);
+        expect(snackBar.open).toHaveBeenCalledTimes(1);
+        expect(snackBar.open).toHaveBeenCalledWith({
+          message: 'SHARED.SNACKBAR.PROVIDER_CREATE_RESTART_NEED',
+          translateParams: {
+            param1: externalIdentityProviders[0].name,
+          },
+        });
+      }, fail);
+      const req = httpTestingController.expectOne('/fake-api/providers');
+      expect(req.request.method).toEqual('POST');
+      req.flush(externalIdentityProviders[0]);
+    });
+
     it('should display an error message', () => {
       const snackBar = TestBed.inject(VitamUISnackBarService);
       identityProviderService.create(identityProviders[0]).subscribe(fail, () => {
@@ -153,6 +184,27 @@ describe('IdentityProviderService', () => {
       req.flush(identityProviders[0]);
     });
 
+    it('should call PATCH with specific message /fake-api/providers/44', () => {
+      const snackBar = TestBed.inject(VitamUISnackBarService);
+      identityProviderService.updated.subscribe(
+        (provider: IdentityProvider) => expect(provider).toEqual(externalIdentityProviders[0]),
+        fail,
+      );
+      identityProviderService.patch(externalIdentityProviders[0]).subscribe((provider: IdentityProvider) => {
+        expect(provider).toEqual(externalIdentityProviders[0]);
+        expect(snackBar.open).toHaveBeenCalledTimes(1);
+        expect(snackBar.open).toHaveBeenCalledWith({
+          message: 'SHARED.SNACKBAR.PROVIDER_UPDATE_RESTART_NEED',
+          translateParams: {
+            param1: externalIdentityProviders[0].name,
+          },
+        });
+      }, fail);
+      const req = httpTestingController.expectOne('/fake-api/providers/44');
+      expect(req.request.method).toEqual('PATCH');
+      expect(req.request.body).toEqual(externalIdentityProviders[0]);
+      req.flush(externalIdentityProviders[0]);
+    });
     it('should display an error message', () => {
       const snackBar = TestBed.inject(VitamUISnackBarService);
       identityProviderService.patch(identityProviders[0]).subscribe(fail, () => {
