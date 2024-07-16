@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsd:schema targetNamespace="fr:gouv:culture:archivesdefrance:seda:v2.1"
-    xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xlink="http://www.w3.org/1999/xlink"
-    xmlns="fr:gouv:culture:archivesdefrance:seda:v2.1" elementFormDefault="qualified"
-    attributeFormDefault="unqualified" version="1.0">
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns="fr:gouv:culture:archivesdefrance:seda:v2.1" elementFormDefault="qualified"
+            attributeFormDefault="unqualified" version="1.0">
     <xsd:include schemaLocation="seda-2.1-types.xsd"/>
     <xsd:include schemaLocation="seda-2.1-ontology.xsd"/>
     <!--
