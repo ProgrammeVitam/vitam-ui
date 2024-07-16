@@ -61,7 +61,16 @@
     "EDITABLE_LIST_DISABLED": "Editable list disabled",
     "AUTOCOMPLETE": "Auto-complete",
     "AUTOCOMPLETE_MULTI_SELECT": "Auto-complete multi select",
-    "AUTOCOMPLETE_MULTI_SELECT_TREE": "Auto-complete multi select with tree",
+    "AUTOCOMPLETE_MULTI_SELECT_TREE": {
+      "TITLE": "Auto-complete multi select with tree",
+      "PLACEHOLDER": {
+        "OPTIONAL": "Optional",
+        "MANDATORY": "Mandatory",
+        "NO_SEARCH": "No search",
+        "NO_SEARCH_NO_CART": "No search and no cart"
+      },
+      "SEARCH_BAR_PLACEHOLDER": "Enter the first few letters of your search"
+    },
     "SEARCH_PLACEHOLDER": "Search in countries",
     "TEXTAREA": "Textarea",
     "EDITABLE_TEXTAREA": "Editable textarea",

@@ -1,33 +1,28 @@
 @import '../../../../../sass/variables/colors';
+@import '../../../../../sass/mixins/elevation';
 
 $animation-time: 150ms;
 
-.container {
-  padding: 10px;
+.left-link {
+  margin-left: 10px;
+}
 
-  .header-option {
-    height: 7rem;
+.right-link {
+  margin-left: auto;
+  margin-right: 10px;
+}
+
+.search-bar {
+  margin: 10px;
+}
+
+.vitamui-mat-select-options {
+  & > .mat-option {
+    color: var(--vitamui-grey-900);
   }
 
-  .separator {
-    margin-right: -10px;
-    margin-left: -10px;
-  }
-
-  .right-link {
-    margin-left: auto;
-    margin-right: 0;
-    font-size: 12px;
-  }
-
-  .vitamui-mat-select-options {
-    & > .mat-option {
-      color: var(--vitamui-grey-900);
-    }
-
-    .hide {
-      display: none;
-    }
+  .hide {
+    display: none;
   }
 }
 
@@ -67,12 +62,21 @@ $animation-time: 150ms;
   }
 }
 
-::ng-deep .cdk-overlay-pane:has(.mat-select-panel-additional) {
+::ng-deep .cdk-overlay-pane:has(.vitamui-common-autocomplete-multi-select) {
   transform: translateX(-25px) translateY(30px) !important;
 }
 
-::ng-deep .mat-select-panel-additional {
-  max-height: none;
+::ng-deep .vitamui-common-autocomplete-multi-select {
+  max-height: none !important;
+  @include elevation-1-dark;
+  border-radius: 10px !important;
+  border: 1px solid var(--vitamui-grey-300);
+
+  vitamui-common-search-bar {
+    .search {
+      max-width: none;
+    }
+  }
 }
 
 .h-100 {

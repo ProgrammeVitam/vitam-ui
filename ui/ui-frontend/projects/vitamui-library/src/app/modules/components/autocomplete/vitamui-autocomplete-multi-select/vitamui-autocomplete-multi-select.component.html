@@ -5,95 +5,95 @@
     (openedChange)="openedChange($event)"
     [formControl]="control"
     multiple
-    panelClass="vitamui-mat-select-panel mat-select-panel-additional"
+    panelClass="mat-elevation-z vitamui-mat-select-panel vitamui-common-autocomplete-multi-select"
     #matSelect
   >
     <mat-select-trigger *ngIf="selectedOptions.length > 0">
       <span> {{ getSelectedOptionsCount() }} {{ getSelectedOptionsCount() | i18nPlural: nbSelectedItemsMap | translate }} </span>
     </mat-select-trigger>
 
-    <div class="container">
-      <div>
-        <div *ngIf="!showOnlySelectedOption" [style.height]="containerHeightInSearchView">
-          <cdk-virtual-scroll-viewport itemSize="48" #scrollViewport class="h-100" minBufferPx="240" maxBufferPx="480">
-            <button
-              *ngIf="enableDisplaySelected"
-              (click)="toggleShowOnlySelectedOption()"
-              [disabled]="selectedOptions.length === 0"
-              class="btn link right-link"
-            >
-              <i class="vitamui-icon vitamui-icon-chevron-right"></i>
-              <span> {{ 'MULTIPLE_SELECT_AUTOCOMPLETE.CONSULT_SELECTION' | translate }} ({{ getSelectedOptionsCount() }}) </span>
-            </button>
+    <ng-container *ngIf="!showOnlySelectedOption">
+      <button
+        *ngIf="enableDisplaySelected"
+        (click)="toggleShowOnlySelectedOption()"
+        [disabled]="selectedOptions.length === 0"
+        class="btn link small right-link"
+      >
+        <i class="vitamui-icon vitamui-icon-chevron-right"></i>
+        <span> {{ 'MULTIPLE_SELECT_AUTOCOMPLETE.CONSULT_SELECTION' | translate }} ({{ getSelectedOptionsCount() }}) </span>
+      </button>
 
-            <div *ngIf="enableSearch" class="search-bar mb-2">
-              <vitamui-common-search-bar
-                #searchBar
-                (clear)="resetSearchBar()"
-                (searchChanged)="onSearch($event)"
-                name="element-search"
-                placeholder="{{ searchBarPlaceHolder }}"
-              ></vitamui-common-search-bar>
-            </div>
-
-            <div class="vitamui-mat-select-options">
-              <ng-container *ngIf="enableSelectAll">
-                <mat-option [id]="0" (onSelectionChange)="toggleSelectAll($event)" [value]="SELECT_ALL_OPTIONS">
-                  <span class="text normal secondary bold">
-                    {{ 'MULTIPLE_SELECT_AUTOCOMPLETE.SELECT_ALL' | translate }}
-                  </span>
-                </mat-option>
-                <mat-divider></mat-divider>
-              </ng-container>
-
-              <ng-container *cdkVirtualFor="let option of displayedOptions; let last = last; let index = index">
-                <mat-option [id]="index + 1" [value]="option.key" (onSelectionChange)="onSelectionChange($event)">
-                  <span
-                    [innerHTML]="option.label | highlight: this.searchTextControl.value"
-                    vitamuiCommonEllipsis
-                    [isToolTipOnMouseEnter]="true"
-                  ></span>
-                </mat-option>
-                <mat-divider *ngIf="!last"></mat-divider>
-              </ng-container>
-            </div>
-          </cdk-virtual-scroll-viewport>
-        </div>
-
-        <div *ngIf="showOnlySelectedOption" [style.height]="containerHeightInSelectedItemsView">
-          <cdk-virtual-scroll-viewport itemSize="48" #scrollViewport class="h-100" minBufferPx="240" maxBufferPx="480">
-            <button (click)="toggleShowOnlySelectedOption()" class="btn link right-link">
-              <i class="vitamui-icon vitamui-icon-chevron-left"></i>
-              <span>
-                {{ 'MULTIPLE_SELECT_AUTOCOMPLETE.COMPLETE_SELECTION' | translate }}
-              </span>
-            </button>
-
-            <button (click)="clearAllSelectedOptions()" class="btn link small">
-              <i class="vitamui-icon vitamui-icon-delete"></i>
-              <span>
-                {{ 'MULTIPLE_SELECT_AUTOCOMPLETE.EMPTY_SELECTION' | translate }}
-              </span>
-            </button>
-
-            <mat-divider class="separator"></mat-divider>
-
-            <div class="vitamui-mat-select-options">
-              <ng-container *cdkVirtualFor="let option of selectedOptions; let last = last; let index = index">
-                <mat-option [id]="index" [value]="option.key" (onSelectionChange)="onSelectionChange($event)">
-                  <span
-                    [innerHTML]="option.label | highlight: this.searchTextControl.value"
-                    vitamuiCommonEllipsis
-                    [isToolTipOnMouseEnter]="true"
-                  ></span>
-                </mat-option>
-                <mat-divider *ngIf="!last"></mat-divider>
-              </ng-container>
-            </div>
-          </cdk-virtual-scroll-viewport>
-        </div>
+      <div *ngIf="enableSearch" class="search-bar mb-2">
+        <vitamui-common-search-bar
+          #searchBar
+          (clear)="resetSearchBar()"
+          (searchChanged)="onSearch($event)"
+          name="element-search"
+          [placeholder]="searchBarPlaceHolder"
+          searchButtonColor="primary"
+        ></vitamui-common-search-bar>
       </div>
-    </div>
+
+      <div [style.height]="containerHeightInSearchView">
+        <cdk-virtual-scroll-viewport itemSize="48" #scrollViewport class="h-100" minBufferPx="240" maxBufferPx="480">
+          <div class="vitamui-mat-select-options">
+            <ng-container *ngIf="enableSelectAll">
+              <mat-option [id]="0" (onSelectionChange)="toggleSelectAll($event)" [value]="SELECT_ALL_OPTIONS">
+                <span class="text normal secondary bold">
+                  {{ 'MULTIPLE_SELECT_AUTOCOMPLETE.SELECT_ALL' | translate }}
+                </span>
+              </mat-option>
+              <mat-divider></mat-divider>
+            </ng-container>
+
+            <ng-container *cdkVirtualFor="let option of displayedOptions; let last = last; let index = index">
+              <mat-option [id]="index + 1" [value]="option.key" (onSelectionChange)="onSelectionChange($event)">
+                <span
+                  [innerHTML]="option.label | highlight: this.searchTextControl.value"
+                  vitamuiCommonEllipsis
+                  [isToolTipOnMouseEnter]="true"
+                ></span>
+              </mat-option>
+              <mat-divider *ngIf="!last"></mat-divider>
+            </ng-container>
+          </div>
+        </cdk-virtual-scroll-viewport>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="showOnlySelectedOption">
+      <button (click)="toggleShowOnlySelectedOption()" class="btn link right-link">
+        <i class="vitamui-icon vitamui-icon-chevron-left"></i>
+        <span>
+          {{ 'MULTIPLE_SELECT_AUTOCOMPLETE.COMPLETE_SELECTION' | translate }}
+        </span>
+      </button>
+
+      <button (click)="clearAllSelectedOptions()" class="btn link small left-link">
+        <i class="vitamui-icon vitamui-icon-delete"></i>
+        <span>
+          {{ 'MULTIPLE_SELECT_AUTOCOMPLETE.EMPTY_SELECTION' | translate }}
+        </span>
+      </button>
+
+      <mat-divider class="separator"></mat-divider>
+      <div [style.height]="containerHeightInSelectedItemsView">
+        <cdk-virtual-scroll-viewport itemSize="48" #scrollViewport class="h-100" minBufferPx="240" maxBufferPx="480">
+          <div class="vitamui-mat-select-options">
+            <ng-container *cdkVirtualFor="let option of selectedOptions; let last = last; let index = index">
+              <mat-option [id]="index" [value]="option.key" (onSelectionChange)="onSelectionChange($event)">
+                <span
+                  [innerHTML]="option.label | highlight: this.searchTextControl.value"
+                  vitamuiCommonEllipsis
+                  [isToolTipOnMouseEnter]="true"
+                ></span>
+              </mat-option>
+              <mat-divider *ngIf="!last"></mat-divider>
+            </ng-container>
+          </div>
+        </cdk-virtual-scroll-viewport>
+      </div>
+    </ng-container>
   </mat-select>
 
   <div class="select-arrow">
