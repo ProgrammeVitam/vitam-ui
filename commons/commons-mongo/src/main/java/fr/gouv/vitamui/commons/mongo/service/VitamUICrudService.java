@@ -38,11 +38,11 @@ package fr.gouv.vitamui.commons.mongo.service;
 
 import fr.gouv.vitamui.commons.api.domain.BaseIdDocument;
 import fr.gouv.vitamui.commons.api.domain.IdDto;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.api.service.BaseCrudService;
 import fr.gouv.vitamui.commons.mongo.CustomSequencesConstants;
 import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
 
 import java.util.List;
@@ -58,7 +58,7 @@ public abstract class VitamUICrudService<D extends IdDto, E extends BaseIdDocume
     extends VitamUIReadService<D, E>
     implements BaseCrudService<D, E> {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(VitamUICrudService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(VitamUICrudService.class);
 
     private static final String NO_ENTITY_MESSAGE = ": no entity found with id: ";
 

@@ -43,8 +43,6 @@ import fr.gouv.vitamui.cas.util.Utils;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import fr.gouv.vitamui.iam.external.client.CasExternalRestClient;
@@ -53,6 +51,8 @@ import lombok.val;
 import org.apereo.cas.web.support.WebUtils;
 import org.pac4j.core.context.session.SessionStore;
 import org.pac4j.jee.context.JEEContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.webflow.action.AbstractAction;
 import org.springframework.webflow.core.collection.MutableAttributeMap;
 import org.springframework.webflow.execution.Event;
@@ -76,7 +76,7 @@ public class DispatcherAction extends AbstractAction {
     public static final String BAD_CONFIGURATION = "badConfiguration";
     public static final String TRANSITION_SELECT_CUSTOMER = "selectCustomer";
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(DispatcherAction.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DispatcherAction.class);
 
     private final ProvidersService providersService;
 

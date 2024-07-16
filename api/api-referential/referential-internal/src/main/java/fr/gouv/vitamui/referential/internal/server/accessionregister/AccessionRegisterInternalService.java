@@ -51,8 +51,6 @@ import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.utils.VitamUIUtils;
 import fr.gouv.vitamui.commons.vitam.api.administration.AgencyService;
 import fr.gouv.vitamui.commons.vitam.api.model.HitsDto;
@@ -65,6 +63,8 @@ import fr.gouv.vitamui.referential.common.dto.AccessionRegisterSummaryResponseDt
 import fr.gouv.vitamui.referential.common.dto.AgencyResponseDto;
 import fr.gouv.vitamui.referential.common.dto.ExportAccessionRegisterResultParam;
 import fr.gouv.vitamui.referential.common.service.AccessionRegisterService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
@@ -91,9 +91,7 @@ import java.util.stream.Collectors;
 @Service
 public class AccessionRegisterInternalService {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
-        AccessionRegisterInternalService.class
-    );
+    private static final Logger LOGGER = LoggerFactory.getLogger(AccessionRegisterInternalService.class);
 
     private final ObjectMapper objectMapper;
 

@@ -85,7 +85,6 @@
                     <artifactId>commons-io</artifactId>
                 </exclusion>
 
-
                 <!-- Log -->
                 <exclusion>
                     <groupId>org.slf4j</groupId>
@@ -106,18 +105,6 @@
                     <artifactId>junit-vintage-engine</artifactId>
                 </exclusion>
                 <exclusion>
-                    <groupId>org.easymock</groupId>
-                    <artifactId>easymock</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.powermock</groupId>
-                    <artifactId>powermock-api-easymock</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.powermock</groupId>
-                    <artifactId>powermock-module-junit4</artifactId>
-                </exclusion>
-                <exclusion>
                     <groupId>org.springframework.boot</groupId>
                     <artifactId>spring-boot-starter-test</artifactId>
                 </exclusion>
@@ -125,7 +112,6 @@
                     <groupId>org.springframework.boot</groupId>
                     <artifactId>spring-boot-configuration-processor</artifactId>
                 </exclusion>
-
                 <exclusion>
                     <groupId>org.owasp.antisamy</groupId>
                     <artifactId>antisamy</artifactId>

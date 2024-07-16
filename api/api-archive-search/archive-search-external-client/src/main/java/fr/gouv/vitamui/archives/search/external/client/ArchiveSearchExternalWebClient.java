@@ -27,10 +27,10 @@
 package fr.gouv.vitamui.archives.search.external.client;
 
 import fr.gouv.vitamui.archives.search.common.rest.RestApi;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.client.BaseWebClient;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.http.CacheControl;
@@ -42,7 +42,7 @@ import reactor.core.publisher.Mono;
 
 public class ArchiveSearchExternalWebClient extends BaseWebClient<ExternalHttpContext> {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ArchiveSearchExternalWebClient.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ArchiveSearchExternalWebClient.class);
 
     public ArchiveSearchExternalWebClient(final WebClient webClient, final String baseUrl) {
         super(webClient, baseUrl);

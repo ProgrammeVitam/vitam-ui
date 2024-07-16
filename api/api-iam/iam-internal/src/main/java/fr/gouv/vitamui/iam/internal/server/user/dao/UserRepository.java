@@ -42,6 +42,7 @@ import fr.gouv.vitamui.commons.mongo.repository.VitamUIRepository;
 import fr.gouv.vitamui.iam.internal.server.user.domain.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
@@ -49,6 +50,7 @@ import java.util.Optional;
 /**
  * MongoDB repository for the users.
  */
+@Repository
 public interface UserRepository extends VitamUIRepository<User, String> {
     Optional<User> findByIdAndCustomerId(String id, String customerId);
 

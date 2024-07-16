@@ -48,9 +48,7 @@ import fr.gouv.vitamui.collect.internal.server.service.converters.ProjectConvert
 import fr.gouv.vitamui.collect.internal.server.service.converters.TransactionConverter;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
-import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import fr.gouv.vitamui.commons.vitam.api.collect.CollectService;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -86,11 +84,6 @@ class ProjectInternalServiceTest {
     ObjectMapper objectMapper = new ObjectMapper();
 
     private static final String PROJECT_ID = "PROJECT_ID_FOR_LIFE";
-
-    @BeforeEach
-    public void beforeEach() {
-        ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
-    }
 
     @Test
     void shouldCreateProjectWithSuccess() throws VitamClientException, JsonProcessingException {

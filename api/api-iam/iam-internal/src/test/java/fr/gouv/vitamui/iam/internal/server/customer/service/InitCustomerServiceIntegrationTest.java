@@ -1,25 +1,16 @@
 package fr.gouv.vitamui.iam.internal.server.customer.service;
 
-import fr.gouv.vitam.access.external.client.AccessExternalClient;
-import fr.gouv.vitam.access.external.client.AdminExternalClient;
-import fr.gouv.vitam.access.external.client.v2.AccessExternalClientV2;
-import fr.gouv.vitam.ingest.external.client.IngestExternalClient;
-import fr.gouv.vitamui.commons.api.domain.AddressDto;
-import fr.gouv.vitamui.commons.api.domain.ExternalParametersDto;
-import fr.gouv.vitamui.commons.api.domain.LanguageDto;
-import fr.gouv.vitamui.commons.api.domain.OwnerDto;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.commons.api.domain.*;
 import fr.gouv.vitamui.commons.logbook.common.EventType;
 import fr.gouv.vitamui.commons.logbook.dao.EventRepository;
 import fr.gouv.vitamui.commons.logbook.domain.Event;
 import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
 import fr.gouv.vitamui.commons.mongo.domain.CustomSequence;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
+import fr.gouv.vitamui.commons.test.VitamClientTestConfig;
 import fr.gouv.vitamui.iam.common.dto.CustomerCreationFormData;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.iam.common.enums.OtpEnum;
-import fr.gouv.vitamui.iam.internal.server.TestMongoConfig;
 import fr.gouv.vitamui.iam.internal.server.common.ApiIamInternalConstants;
 import fr.gouv.vitamui.iam.internal.server.common.domain.MongoDbCollections;
 import fr.gouv.vitamui.iam.internal.server.common.domain.SequencesConstants;
@@ -35,25 +26,25 @@ import fr.gouv.vitamui.iam.internal.server.tenant.service.InitVitamTenantService
 import fr.gouv.vitamui.iam.internal.server.user.dao.UserRepository;
 import fr.gouv.vitamui.iam.internal.server.user.domain.User;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.AdditionalAnswers;
-import org.mockito.ArgumentMatchers;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
-import org.springframework.boot.autoconfigure.mongo.embedded.EmbeddedMongoAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.data.mongodb.MongoTransactionManager;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.testcontainers.containers.MongoDBContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,12 +55,24 @@ import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@RunWith(SpringRunner.class)
 @SpringBootTest
-@Import({ TestMongoConfig.class })
-@ActiveProfiles(value = "test")
-@ImportAutoConfiguration(exclude = EmbeddedMongoAutoConfiguration.class)
+@ExtendWith(SpringExtension.class)
+@ActiveProfiles("test")
+@Import(VitamClientTestConfig.class)
+@Testcontainers
 public class InitCustomerServiceIntegrationTest {
+
+    @Configuration
+    @ComponentScan({ "fr.gouv.vitamui.commons.logbook.dao", "fr.gouv.vitamui.commons.mongo.dao" })
+    private static class CommonRepositoriesConfig {}
+
+    @Container
+    private static final MongoDBContainer mongoDBContainer = new MongoDBContainer("mongo:7.0.8");
+
+    @DynamicPropertySource
+    static void setProperties(DynamicPropertyRegistry registry) {
+        registry.add("spring.data.mongodb.uri", mongoDBContainer::getReplicaSetUrl);
+    }
 
     private static final String PROFILE_NAME_1 = "profile1";
     private static final String PROFILE_NAME_2 = "profile2";
@@ -83,31 +86,24 @@ public class InitCustomerServiceIntegrationTest {
     private static final String DESCRIPTION_3 = "desc3";
     private static final String DESCRIPTION_4 = "desc4";
     private static final String APP_NAME_1 = "app1";
-
     private static final String APP_NAME_2 = "app2";
-
     private static final String ROLE_1 = "role_1";
-
     private static final String ROLE_2 = "role_2";
-
     private static final String ROLE_3 = "role_3";
-
     private static final String LAST_NAME = "LASTNAME";
-
     private static final String FIRST_NAME = "FirstName";
     private static final String EMAIl = "a@vitamui.com";
     private static final String CUSTOMER_CODE = "0123456";
-
     private static final Integer TENANT_IDENTIFIER = 10;
-
-    @Autowired
-    private CustomSequenceRepository sequenceRepository;
 
     @Autowired
     private CustomerInternalService customerInternalService;
 
     @Autowired
     private CustomerRepository customerRepository;
+
+    @Autowired
+    private CustomSequenceRepository sequenceRepository;
 
     @Autowired
     private EventRepository eventRepository;
@@ -122,18 +118,6 @@ public class InitCustomerServiceIntegrationTest {
     private UserRepository userRepository;
 
     @MockBean
-    private AdminExternalClient adminExternalClient;
-
-    @MockBean(name = "accessExternalClient")
-    private AccessExternalClient accessExternalClient;
-
-    @MockBean(name = "ingestExternalClient")
-    private IngestExternalClient ingestExternalClient;
-
-    @MockBean(name = "accessExternalClientV2")
-    private AccessExternalClientV2 accessExternalClientV2;
-
-    @MockBean
     private InternalSecurityService internalSecurityService;
 
     @Mock
@@ -143,26 +127,18 @@ public class InitCustomerServiceIntegrationTest {
     private TenantRepository tenantRepository;
 
     @MockBean
-    private MongoTransactionManager mongoTransactionManager;
-
-    @MockBean
     private InitVitamTenantService initVitamTenantService;
 
-    private static VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(InitCustomerServiceIntegrationTest.class);
-
-    @Before
+    @BeforeEach
     public void setup() {
-        MockitoAnnotations.initMocks(this);
-        customerInternalService.getUserInternalService().setMongoTransactionManager(null);
+        MockitoAnnotations.openMocks(this);
         Mockito.when(internalSecurityService.getHttpContext()).thenReturn(internalHttpContext);
         Mockito.when(internalSecurityService.userIsRootLevel()).thenReturn(true);
         Mockito.when(internalSecurityService.isLevelAllowed(ArgumentMatchers.any())).thenReturn(true);
         initSeq();
         final Tenant tenant = new Tenant();
         tenant.setIdentifier(10);
-        Mockito.when(tenantRepository.findOne(ArgumentMatchers.any(Query.class))).thenReturn(
-            Optional.ofNullable(tenant)
-        );
+        Mockito.when(tenantRepository.findOne(ArgumentMatchers.any(Query.class))).thenReturn(Optional.of(tenant));
         Mockito.when(tenantRepository.save(ArgumentMatchers.any())).thenReturn(tenant);
         Mockito.when(
             initVitamTenantService.init(
@@ -172,52 +148,6 @@ public class InitCustomerServiceIntegrationTest {
         ).thenAnswer(AdditionalAnswers.returnsFirstArg());
 
         customerRepository.deleteAll();
-    }
-
-    private void initSeq() {
-        final CustomSequence customSequence = new CustomSequence();
-        customSequence.setName(SequencesConstants.CUSTOMER_IDENTIFIER);
-        customSequence.setSequence(1);
-        sequenceRepository.save(customSequence);
-
-        final CustomSequence customSequence2 = new CustomSequence();
-        customSequence2.setSequence(1);
-        customSequence2.setName(SequencesConstants.IDP_IDENTIFIER);
-        sequenceRepository.save(customSequence2);
-
-        final CustomSequence customSequence3 = new CustomSequence();
-        customSequence3.setName(SequencesConstants.GROUP_IDENTIFIER);
-        sequenceRepository.save(customSequence3);
-
-        final CustomSequence customSequence4 = new CustomSequence();
-        customSequence4.setName(SequencesConstants.PROFILE_IDENTIFIER);
-        sequenceRepository.save(customSequence4);
-
-        final CustomSequence customSequence5 = new CustomSequence();
-        customSequence5.setName(SequencesConstants.OWNER_IDENTIFIER);
-        sequenceRepository.save(customSequence5);
-
-        final CustomSequence customSequence6 = new CustomSequence();
-        customSequence6.setName(SequencesConstants.USER_IDENTIFIER);
-        sequenceRepository.save(customSequence6);
-
-        final CustomSequence customSequence7 = new CustomSequence();
-        customSequence7.setName(SequencesConstants.TENANT_IDENTIFIER);
-        sequenceRepository.save(customSequence7);
-
-        final CustomSequence customSequence8 = new CustomSequence();
-        customSequence8.setName(SequencesConstants.USER_INFOS_IDENTIFIER);
-        sequenceRepository.save(customSequence8);
-
-        // retrieve sequences
-        customerInternalService.getNextSequenceId(SequencesConstants.CUSTOMER_IDENTIFIER);
-        customerInternalService.getNextSequenceId(SequencesConstants.IDP_IDENTIFIER);
-        customerInternalService.getNextSequenceId(SequencesConstants.GROUP_IDENTIFIER);
-        customerInternalService.getNextSequenceId(SequencesConstants.PROFILE_IDENTIFIER);
-        customerInternalService.getNextSequenceId(SequencesConstants.OWNER_IDENTIFIER);
-        customerInternalService.getNextSequenceId(SequencesConstants.USER_IDENTIFIER);
-        customerInternalService.getNextSequenceId(SequencesConstants.TENANT_IDENTIFIER);
-        customerInternalService.getNextSequenceId(SequencesConstants.USER_INFOS_IDENTIFIER);
     }
 
     @Test
@@ -296,7 +226,7 @@ public class InitCustomerServiceIntegrationTest {
         assertThat(profile1.getDescription()).isEqualTo(DESCRIPTION_1);
         assertThat(profile1.getLevel()).isEqualTo(LEVEL_1);
         assertThat(profile1.getApplicationName()).isEqualTo(APP_NAME_1);
-        assertThat(profile1.getRoles().stream().map(r -> r.getName()).collect(Collectors.toList())).contains(
+        assertThat(profile1.getRoles().stream().map(Role::getName).collect(Collectors.toList())).contains(
             ROLE_1,
             ROLE_2,
             ROLE_3
@@ -311,7 +241,7 @@ public class InitCustomerServiceIntegrationTest {
         assertThat(profile2.getDescription()).isEqualTo(DESCRIPTION_2);
         assertThat(profile2.getLevel()).isEqualTo(LEVEL_2);
         assertThat(profile2.getApplicationName()).isEqualTo(APP_NAME_2);
-        assertThat(profile2.getRoles().stream().map(r -> r.getName()).collect(Collectors.toList())).contains(
+        assertThat(profile2.getRoles().stream().map(Role::getName).collect(Collectors.toList())).contains(
             ROLE_2,
             ROLE_3
         );
@@ -325,7 +255,7 @@ public class InitCustomerServiceIntegrationTest {
         assertThat(profile3.getDescription()).isEqualTo(DESCRIPTION_4);
         assertThat(profile3.getLevel()).isEqualTo(LEVEL_1);
         assertThat(profile3.getApplicationName()).isEqualTo(APP_NAME_2);
-        assertThat(profile3.getRoles().stream().map(r -> r.getName()).collect(Collectors.toList())).contains(
+        assertThat(profile3.getRoles().stream().map(Role::getName).collect(Collectors.toList())).contains(
             ROLE_1,
             ROLE_2,
             ROLE_3
@@ -340,7 +270,7 @@ public class InitCustomerServiceIntegrationTest {
         assertThat(group).isNotNull();
         assertThat(group.getDescription()).isEqualTo(DESCRIPTION_3);
         assertThat(group.getLevel()).isEqualTo(LEVEL_1);
-        assertThat(group.getProfileIds().contains(profile1.getId()));
+        assertThat(group.getProfileIds()).contains(profile1.getId());
 
         final Group adminGroup = groupByName.get(ApiIamInternalConstants.ADMIN_CLIENT_ROOT + " " + CUSTOMER_CODE);
         assertThat(adminGroup).isNotNull();
@@ -351,7 +281,7 @@ public class InitCustomerServiceIntegrationTest {
         final Profile customProfileAdmin = profileByName.get(PROFILE_NAME_4 + " " + TENANT_IDENTIFIER);
         assertThat(customProfileAdmin).isNotNull();
         assertThat(customProfileAdmin.getApplicationName()).isEqualTo(APP_NAME_1);
-        assertThat(customProfileAdmin.getRoles().stream().map(r -> r.getName()).collect(Collectors.toList())).contains(
+        assertThat(customProfileAdmin.getRoles().stream().map(Role::getName).collect(Collectors.toList())).contains(
             ROLE_3
         );
 
@@ -385,5 +315,51 @@ public class InitCustomerServiceIntegrationTest {
         dto.setGdprAlertDelay(72);
         dto.setGdprAlert(false);
         return dto;
+    }
+
+    private void initSeq() {
+        final CustomSequence customSequence = new CustomSequence();
+        customSequence.setName(SequencesConstants.CUSTOMER_IDENTIFIER);
+        customSequence.setSequence(1);
+        sequenceRepository.save(customSequence);
+
+        final CustomSequence customSequence2 = new CustomSequence();
+        customSequence2.setSequence(1);
+        customSequence2.setName(SequencesConstants.IDP_IDENTIFIER);
+        sequenceRepository.save(customSequence2);
+
+        final CustomSequence customSequence3 = new CustomSequence();
+        customSequence3.setName(SequencesConstants.GROUP_IDENTIFIER);
+        sequenceRepository.save(customSequence3);
+
+        final CustomSequence customSequence4 = new CustomSequence();
+        customSequence4.setName(SequencesConstants.PROFILE_IDENTIFIER);
+        sequenceRepository.save(customSequence4);
+
+        final CustomSequence customSequence5 = new CustomSequence();
+        customSequence5.setName(SequencesConstants.OWNER_IDENTIFIER);
+        sequenceRepository.save(customSequence5);
+
+        final CustomSequence customSequence6 = new CustomSequence();
+        customSequence6.setName(SequencesConstants.USER_IDENTIFIER);
+        sequenceRepository.save(customSequence6);
+
+        final CustomSequence customSequence7 = new CustomSequence();
+        customSequence7.setName(SequencesConstants.TENANT_IDENTIFIER);
+        sequenceRepository.save(customSequence7);
+
+        final CustomSequence customSequence8 = new CustomSequence();
+        customSequence8.setName(SequencesConstants.USER_INFOS_IDENTIFIER);
+        sequenceRepository.save(customSequence8);
+
+        // retrieve sequences
+        customerInternalService.getNextSequenceId(SequencesConstants.CUSTOMER_IDENTIFIER);
+        customerInternalService.getNextSequenceId(SequencesConstants.IDP_IDENTIFIER);
+        customerInternalService.getNextSequenceId(SequencesConstants.GROUP_IDENTIFIER);
+        customerInternalService.getNextSequenceId(SequencesConstants.PROFILE_IDENTIFIER);
+        customerInternalService.getNextSequenceId(SequencesConstants.OWNER_IDENTIFIER);
+        customerInternalService.getNextSequenceId(SequencesConstants.USER_IDENTIFIER);
+        customerInternalService.getNextSequenceId(SequencesConstants.TENANT_IDENTIFIER);
+        customerInternalService.getNextSequenceId(SequencesConstants.USER_INFOS_IDENTIFIER);
     }
 }

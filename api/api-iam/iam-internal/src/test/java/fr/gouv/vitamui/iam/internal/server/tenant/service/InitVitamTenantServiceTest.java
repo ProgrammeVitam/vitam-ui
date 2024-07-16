@@ -12,7 +12,6 @@ import fr.gouv.vitamui.commons.api.domain.AccessContractModelDto;
 import fr.gouv.vitamui.commons.api.domain.ExternalParametersDto;
 import fr.gouv.vitamui.commons.api.domain.IngestContractDto;
 import fr.gouv.vitamui.commons.api.domain.TenantDto;
-import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import fr.gouv.vitamui.commons.vitam.api.administration.AccessContractService;
 import fr.gouv.vitamui.commons.vitam.api.administration.IngestContractService;
 import fr.gouv.vitamui.commons.vitam.api.dto.AccessContractResponseDto;
@@ -108,7 +107,6 @@ public class InitVitamTenantServiceTest {
             itemsIngestContract.getInputStream(),
             IngestContractDto.class
         );
-        ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
 
         initVitamTenantService.setContractResources(
             Map.of(

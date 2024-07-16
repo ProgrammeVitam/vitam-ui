@@ -1,7 +1,7 @@
 package fr.gouv.vitamui.iam.internal.server.user.service;
 
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -15,7 +15,7 @@ public class DateFormatService {
 
     private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("HH:mm:ss");
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(DateFormatService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DateFormatService.class);
 
     public String formatDate(String text) {
         return format(text, DAY_FORMATTER);

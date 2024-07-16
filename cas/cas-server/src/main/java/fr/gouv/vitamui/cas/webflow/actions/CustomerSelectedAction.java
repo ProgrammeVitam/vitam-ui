@@ -38,10 +38,10 @@ package fr.gouv.vitamui.cas.webflow.actions;
 
 import fr.gouv.vitamui.cas.model.CustomerModel;
 import fr.gouv.vitamui.cas.util.Constants;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.webflow.action.AbstractAction;
 import org.springframework.webflow.execution.Event;
 import org.springframework.webflow.execution.RequestContext;
@@ -57,7 +57,7 @@ import static fr.gouv.vitamui.cas.webflow.configurer.CustomLoginWebflowConfigure
 @RequiredArgsConstructor
 public class CustomerSelectedAction extends AbstractAction {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(CustomerSelectedAction.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(CustomerSelectedAction.class);
 
     @Override
     protected Event doExecute(final RequestContext requestContext) throws IOException {

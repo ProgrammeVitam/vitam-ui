@@ -44,8 +44,6 @@ import fr.gouv.vitamui.cas.x509.X509AttributeMapping;
 import fr.gouv.vitamui.commons.api.domain.ProfileDto;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.api.utils.CasJsonWrapper;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
@@ -70,6 +68,8 @@ import org.apereo.services.persondir.IPersonAttributeDao;
 import org.pac4j.core.context.session.SessionStore;
 import org.pac4j.core.util.CommonHelper;
 import org.pac4j.jee.context.JEEContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 import org.springframework.webflow.execution.RequestContextHolder;
@@ -136,7 +136,7 @@ public class UserPrincipalResolver implements PrincipalResolver {
     public static final String SUPER_USER_ID_ATTRIBUTE = "superUserId";
     public static final String COMPUTED_OTP = "computedOtp";
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(UserPrincipalResolver.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserPrincipalResolver.class);
     public static final String PROVIDER_PROTOCOL_TYPE_CERTIFICAT = "CERTIFICAT";
 
     private final PrincipalFactory principalFactory;

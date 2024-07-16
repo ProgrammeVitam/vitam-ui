@@ -37,8 +37,6 @@
 package fr.gouv.vitamui.referential.internal.server.rest;
 
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import fr.gouv.vitamui.referential.common.dto.AccessionRegisterDetailDto;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
@@ -46,6 +44,8 @@ import fr.gouv.vitamui.referential.internal.server.accessionregister.AccessionRe
 import fr.gouv.vitamui.referential.internal.server.common.rest.ApiReferentialControllerTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -93,8 +93,8 @@ class AccessionRegisterDetailInternalControllerTest extends ApiReferentialContro
     }
 
     @Override
-    protected VitamUILogger getLog() {
-        return VitamUILoggerFactory.getInstance(AccessionRegisterDetailInternalControllerTest.class);
+    protected Logger getLog() {
+        return LoggerFactory.getLogger(AccessionRegisterDetailInternalControllerTest.class);
     }
 
     @Override

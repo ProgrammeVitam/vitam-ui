@@ -42,8 +42,6 @@ import fr.gouv.vitamui.cas.pm.PmMessageToSend;
 import fr.gouv.vitamui.cas.provider.ProvidersService;
 import fr.gouv.vitamui.cas.util.Constants;
 import fr.gouv.vitamui.cas.util.Utils;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import lombok.val;
 import org.apache.commons.lang3.StringUtils;
@@ -64,6 +62,8 @@ import org.apereo.cas.ticket.TicketFactory;
 import org.apereo.cas.ticket.registry.TicketRegistry;
 import org.apereo.cas.web.support.WebUtils;
 import org.apereo.inspektr.audit.annotation.Audit;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.HierarchicalMessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.util.LinkedMultiValueMap;
@@ -79,9 +79,7 @@ import java.util.Objects;
  */
 public class I18NSendPasswordResetInstructionsAction extends SendPasswordResetInstructionsAction {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
-        I18NSendPasswordResetInstructionsAction.class
-    );
+    private static final Logger LOGGER = LoggerFactory.getLogger(I18NSendPasswordResetInstructionsAction.class);
 
     private final HierarchicalMessageSource messageSource;
 

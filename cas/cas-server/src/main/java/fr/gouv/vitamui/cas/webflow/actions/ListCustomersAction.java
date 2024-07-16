@@ -43,8 +43,6 @@ import fr.gouv.vitamui.cas.util.Utils;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.CustomerIdDto;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
@@ -54,6 +52,8 @@ import lombok.val;
 import org.apereo.cas.authentication.credential.UsernamePasswordCredential;
 import org.apereo.cas.web.support.WebUtils;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.webflow.action.AbstractAction;
 import org.springframework.webflow.core.collection.MutableAttributeMap;
 import org.springframework.webflow.execution.Event;
@@ -80,7 +80,7 @@ public class ListCustomersAction extends AbstractAction {
 
     public static final String BAD_CONFIGURATION = "badConfiguration";
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ListCustomersAction.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ListCustomersAction.class);
 
     private final ProvidersService providersService;
 

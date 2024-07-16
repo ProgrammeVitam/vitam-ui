@@ -1,10 +1,8 @@
 package fr.gouv.vitamui;
 
-import fr.gouv.vitamui.commons.api.identity.ServerIdentityConfiguration;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
-import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.config.YamlPropertiesFactoryBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,7 +14,7 @@ import org.springframework.core.io.ClassPathResource;
 @Configuration
 public class TestContextConfiguration {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(TestContextConfiguration.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(TestContextConfiguration.class);
 
     @Bean
     @DependsOn("serverIdentityConfiguration")
@@ -37,10 +35,5 @@ public class TestContextConfiguration {
         }
         propertySourcesPlaceholderConfigurer.setProperties(yaml.getObject());
         return propertySourcesPlaceholderConfigurer;
-    }
-
-    @Bean("serverIdentityConfiguration")
-    public ServerIdentityConfiguration serverIdentityConfiguration() {
-        return ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
     }
 }

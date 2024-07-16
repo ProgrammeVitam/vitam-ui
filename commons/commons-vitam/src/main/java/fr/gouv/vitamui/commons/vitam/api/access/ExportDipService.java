@@ -42,10 +42,10 @@ import fr.gouv.vitam.access.external.client.AccessExternalClient;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.model.RequestResponse;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
 import org.apache.http.HttpStatus;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.ws.rs.core.Response;
@@ -53,7 +53,7 @@ import javax.ws.rs.core.Response;
 public class ExportDipService {
 
     @SuppressWarnings("unused")
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ExportDipService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ExportDipService.class);
 
     private final AccessExternalClient accessExternalClient;
 

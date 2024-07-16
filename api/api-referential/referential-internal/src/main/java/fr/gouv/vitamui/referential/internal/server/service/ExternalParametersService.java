@@ -30,11 +30,11 @@ package fr.gouv.vitamui.referential.internal.server.service;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitamui.commons.api.domain.ExternalParametersDto;
 import fr.gouv.vitamui.commons.api.domain.ParameterDto;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.iam.internal.client.ExternalParametersInternalRestClient;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import org.apache.commons.collections4.CollectionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -47,7 +47,7 @@ import java.util.Optional;
 @Service
 public class ExternalParametersService {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ExternalParametersService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ExternalParametersService.class);
     public static final String PARAM_BULK_OPERATIONS_THRESHOLD_NAME = "PARAM_BULK_OPERATIONS_THRESHOLD";
     public static final String PARAM_ACCESS_CONTRACT_NAME = "PARAM_ACCESS_CONTRACT";
 

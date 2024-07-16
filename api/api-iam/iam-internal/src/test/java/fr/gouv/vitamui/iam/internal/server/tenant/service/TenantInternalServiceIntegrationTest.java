@@ -8,12 +8,11 @@ import fr.gouv.vitamui.commons.logbook.common.EventType;
 import fr.gouv.vitamui.commons.logbook.domain.Event;
 import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
 import fr.gouv.vitamui.commons.mongo.domain.CustomSequence;
-import fr.gouv.vitamui.commons.mongo.repository.impl.VitamUIRepositoryImpl;
 import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
+import fr.gouv.vitamui.commons.test.VitamClientTestConfig;
 import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
-import fr.gouv.vitamui.commons.vitam.api.administration.AccessContractService;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.iam.common.utils.IamDtoBuilder;
 import fr.gouv.vitamui.iam.internal.server.common.domain.MongoDbCollections;
@@ -27,7 +26,6 @@ import fr.gouv.vitamui.iam.internal.server.externalParameters.service.ExternalPa
 import fr.gouv.vitamui.iam.internal.server.group.converter.GroupConverter;
 import fr.gouv.vitamui.iam.internal.server.group.dao.GroupRepository;
 import fr.gouv.vitamui.iam.internal.server.group.service.GroupInternalService;
-import fr.gouv.vitamui.iam.internal.server.idp.service.SpMetadataGenerator;
 import fr.gouv.vitamui.iam.internal.server.logbook.service.AbstractLogbookIntegrationTest;
 import fr.gouv.vitamui.iam.internal.server.logbook.service.IamLogbookService;
 import fr.gouv.vitamui.iam.internal.server.owner.dao.OwnerRepository;
@@ -41,22 +39,23 @@ import fr.gouv.vitamui.iam.internal.server.tenant.converter.TenantConverter;
 import fr.gouv.vitamui.iam.internal.server.tenant.dao.TenantRepository;
 import fr.gouv.vitamui.iam.internal.server.tenant.domain.Tenant;
 import fr.gouv.vitamui.iam.internal.server.user.dao.UserRepository;
-import fr.gouv.vitamui.iam.internal.server.user.service.ConnectionHistoryService;
 import fr.gouv.vitamui.iam.internal.server.user.service.UserInternalService;
 import fr.gouv.vitamui.iam.internal.server.utils.IamServerUtilsTest;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.HashMap;
 import java.util.List;
@@ -71,12 +70,11 @@ import static org.mockito.Mockito.when;
 /**
  * Class for test InternalTenantService with a real repository
  */
-@RunWith(SpringRunner.class)
-@EnableMongoRepositories(
-    basePackageClasses = { TenantRepository.class, CustomSequenceRepository.class },
-    repositoryBaseClass = VitamUIRepositoryImpl.class
-)
-public class TenantInternalServiceIntegTest extends AbstractLogbookIntegrationTest {
+@SpringBootTest
+@ExtendWith(SpringExtension.class)
+@ActiveProfiles("test")
+@Import(VitamClientTestConfig.class)
+public class TenantInternalServiceIntegrationTest extends AbstractLogbookIntegrationTest {
 
     private static final String USER_TOKEN = "userToken";
 
@@ -94,36 +92,13 @@ public class TenantInternalServiceIntegTest extends AbstractLogbookIntegrationTe
 
     private TenantInternalService service;
 
+    private ProfileInternalService internalProfileService;
+
     @Autowired
     private TenantRepository repository;
 
-    @Mock
-    private CustomerInternalService internalCustomerService;
-
-    @Mock
-    private OwnerInternalService internalOwnerService;
-
-    private ProfileInternalService internalProfileService;
-
-    @Mock
-    private CustomerRepository customerRepository;
-
     @Autowired
     private CustomSequenceRepository sequenceRepository;
-
-    @MockBean
-    private GroupRepository groupRepository;
-
-    @MockBean
-    private ProfileRepository profileRepository;
-
-    private GroupInternalService internalGroupService;
-
-    @Mock
-    private UserInternalService internalUserService;
-
-    @Autowired
-    private IamLogbookService iamLogbookService;
 
     @Autowired
     private TenantConverter tenantConverter;
@@ -134,17 +109,32 @@ public class TenantInternalServiceIntegTest extends AbstractLogbookIntegrationTe
     @Autowired
     private ProfileConverter profileConverter;
 
+    @Autowired
+    private IamLogbookService iamLogbookService;
+
+    @Mock
+    private CustomerInternalService internalCustomerService;
+
+    @Mock
+    private OwnerInternalService internalOwnerService;
+
+    @Mock
+    private CustomerRepository customerRepository;
+
+    @MockBean
+    private GroupRepository groupRepository;
+
+    @MockBean
+    private ProfileRepository profileRepository;
+
+    @Mock
+    private UserInternalService internalUserService;
+
     @MockBean
     private OwnerRepository ownerRepository;
 
     @MockBean
-    private SpMetadataGenerator spMetadataGenerator;
-
-    @MockBean
     private UserRepository userRepository;
-
-    @MockBean
-    private AccessContractService accessContractService;
 
     @MockBean
     private InitVitamTenantService initVitamTenantService;
@@ -161,12 +151,9 @@ public class TenantInternalServiceIntegTest extends AbstractLogbookIntegrationTe
     @MockBean
     private ExternalParametersInternalService externalParametersInternalService;
 
-    @MockBean
-    private ConnectionHistoryService connectionHistoryService;
-
-    @Before
+    @BeforeEach
     public void setup() {
-        internalGroupService = new GroupInternalService(
+        GroupInternalService internalGroupService = new GroupInternalService(
             new SequenceGeneratorService(sequenceRepository),
             groupRepository,
             customerRepository,
@@ -190,7 +177,8 @@ public class TenantInternalServiceIntegTest extends AbstractLogbookIntegrationTe
             internalSecurityService,
             iamLogbookService,
             profileConverter,
-            null
+            null,
+            customerInitConfig
         );
 
         repository.deleteAll();
@@ -237,7 +225,7 @@ public class TenantInternalServiceIntegTest extends AbstractLogbookIntegrationTe
         service.getNextSequenceId(SequencesConstants.TENANT_IDENTIFIER);
     }
 
-    @After
+    @AfterEach
     public void cleanUp() {
         eventRepository.deleteAll();
     }
@@ -262,13 +250,13 @@ public class TenantInternalServiceIntegTest extends AbstractLogbookIntegrationTe
         repository.save(IamServerUtilsTest.buildTenant("id2", "test contains string", 2));
 
         QueryDto criteria = QueryDto.criteria("identifier", 1, CriterionOperator.EQUALS);
-        Assert.assertTrue(service.checkExist(criteria.toJson()));
+        Assertions.assertTrue(service.checkExist(criteria.toJson()));
 
         criteria = QueryDto.criteria("identifier", 2, CriterionOperator.EQUALS);
-        Assert.assertTrue(service.checkExist(criteria.toJson()));
+        Assertions.assertTrue(service.checkExist(criteria.toJson()));
 
         criteria = QueryDto.criteria("customerId", customer.getId(), CriterionOperator.EQUALS);
-        Assert.assertTrue(service.checkExist(criteria.toJson()));
+        Assertions.assertTrue(service.checkExist(criteria.toJson()));
     }
 
     @Test

@@ -55,11 +55,11 @@ import fr.gouv.vitamui.commons.api.exception.ConflictException;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.exception.UnavailableServiceException;
 import fr.gouv.vitamui.commons.api.exception.UnexpectedDataException;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.utils.VitamUIUtils;
 import fr.gouv.vitamui.commons.vitam.api.dto.AccessContractResponseDto;
 import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 
@@ -75,7 +75,7 @@ import java.util.stream.Collectors;
 
 public class AccessContractService {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(AccessContractService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AccessContractService.class);
 
     private final AdminExternalClient adminExternalClient;
 

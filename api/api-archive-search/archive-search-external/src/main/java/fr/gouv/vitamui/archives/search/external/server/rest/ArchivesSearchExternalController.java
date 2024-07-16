@@ -43,13 +43,13 @@ import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
 import fr.gouv.vitamui.commons.api.dtos.VitamUiOntologyDto;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.vitam.api.dto.PersistentIdentifierResponseDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
@@ -78,9 +78,7 @@ import java.util.List;
 @ResponseBody
 public class ArchivesSearchExternalController {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
-        ArchivesSearchExternalController.class
-    );
+    private static final Logger LOGGER = LoggerFactory.getLogger(ArchivesSearchExternalController.class);
 
     private static final String MANDATORY_QUERY = "The query is a mandatory parameter: ";
     private static final String MANDATORY_IDENTIFIER = "The Identifier is a mandatory parameter: ";

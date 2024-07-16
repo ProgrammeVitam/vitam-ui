@@ -2,7 +2,6 @@ package fr.gouv.vitamui.iam.external.client;
 
 import fr.gouv.vitamui.commons.api.domain.GroupDto;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
-import fr.gouv.vitamui.commons.test.utils.AbstractServerIdentityBuilder;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,7 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RunWith(MockitoJUnitRunner.class)
-public class GroupExternalRestClientTest extends AbstractServerIdentityBuilder {
+public class GroupExternalRestClientTest {
 
     private GroupExternalRestClient groupExternalRestClient;
 

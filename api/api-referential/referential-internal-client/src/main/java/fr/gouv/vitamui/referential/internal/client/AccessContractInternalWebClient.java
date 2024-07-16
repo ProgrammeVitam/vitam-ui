@@ -1,11 +1,11 @@
 package fr.gouv.vitamui.referential.internal.client;
 
 import fr.gouv.vitamui.commons.api.CommonConstants;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.client.BaseWebClient;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
@@ -18,7 +18,7 @@ import java.util.Optional;
 
 public class AccessContractInternalWebClient extends BaseWebClient<InternalHttpContext> {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(AccessContractInternalWebClient.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AccessContractInternalWebClient.class);
 
     public AccessContractInternalWebClient(final WebClient webClient, final String baseUrl) {
         super(webClient, baseUrl);

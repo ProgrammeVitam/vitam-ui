@@ -47,8 +47,6 @@ import fr.gouv.vitamui.cas.util.Utils;
 import fr.gouv.vitamui.cas.x509.X509AttributeMapping;
 import fr.gouv.vitamui.commons.api.identity.ServerIdentityAutoConfiguration;
 import fr.gouv.vitamui.commons.api.identity.ServerIdentityConfiguration;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.security.client.config.password.PasswordConfiguration;
 import fr.gouv.vitamui.commons.security.client.password.PasswordValidator;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
@@ -85,6 +83,8 @@ import org.apereo.cas.token.JwtBuilder;
 import org.apereo.cas.util.crypto.CipherExecutor;
 import org.pac4j.core.client.Clients;
 import org.pac4j.core.context.session.SessionStore;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -114,7 +114,7 @@ import java.util.EnumSet;
 @Import({ ServerIdentityAutoConfiguration.class })
 public class AppConfig extends BaseTicketCatalogConfigurer {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(AppConfig.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AppConfig.class);
 
     @Autowired
     private CasConfigurationProperties casProperties;

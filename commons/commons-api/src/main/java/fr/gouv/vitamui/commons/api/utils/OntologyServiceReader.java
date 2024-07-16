@@ -33,8 +33,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitamui.commons.api.dtos.VitamUiOntologyDto;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -47,7 +47,7 @@ import java.util.stream.Collectors;
 
 public class OntologyServiceReader {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(OntologyServiceReader.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(OntologyServiceReader.class);
 
     private static final Integer DEFAULT_TENANT_IDENTIFIER = 1;
 

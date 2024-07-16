@@ -32,10 +32,10 @@ import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 import io.swagger.annotations.Api;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
@@ -60,9 +60,7 @@ import static fr.gouv.vitamui.collect.common.rest.RestApi.COLLECT_PROJECT_OBJECT
 @ResponseBody
 public class ProjectObjectGroupExternalController {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
-        ProjectObjectGroupExternalController.class
-    );
+    private static final Logger LOGGER = LoggerFactory.getLogger(ProjectObjectGroupExternalController.class);
     private final ProjectObjectGroupExternalService projectObjectGroupExternalService;
     private static final String MANDATORY_IDENTIFIER = "The Identifier is a mandatory parameter: ";
 

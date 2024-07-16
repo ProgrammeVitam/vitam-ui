@@ -39,6 +39,7 @@ package fr.gouv.vitamui.iam.internal.server.profile.dao;
 import fr.gouv.vitamui.commons.mongo.repository.VitamUIRepository;
 import fr.gouv.vitamui.iam.internal.server.group.domain.Group;
 import fr.gouv.vitamui.iam.internal.server.profile.domain.Profile;
+import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
 import java.util.List;
@@ -49,6 +50,7 @@ import java.util.Optional;
  *
  *
  */
+@Repository
 public interface ProfileRepository extends VitamUIRepository<Profile, String> {
     Optional<Profile> findByIdAndCustomerIdAndTenantIdentifier(String id, String customerId, Integer tenantIdentifier);
 

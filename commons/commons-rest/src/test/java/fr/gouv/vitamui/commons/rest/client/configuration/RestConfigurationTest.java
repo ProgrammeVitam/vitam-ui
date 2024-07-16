@@ -1,8 +1,6 @@
 package fr.gouv.vitamui.commons.rest.client.configuration;
 
 import fr.gouv.vitamui.commons.rest.RestTestApplicationConfiguration;
-import fr.gouv.vitamui.commons.rest.StartRestTestApplication;
-import fr.gouv.vitamui.commons.rest.util.AbstractServerIdentityBuilder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,13 +16,11 @@ import static org.junit.Assert.assertTrue;
 
 /**
  * Test Rest Client Configuration.
- *
- *
  */
 
+@SpringBootTest
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = StartRestTestApplication.class)
-public class RestConfigurationTest extends AbstractServerIdentityBuilder {
+public class RestConfigurationTest {
 
     @Autowired
     RestTestApplicationConfiguration applicationConfiguration;

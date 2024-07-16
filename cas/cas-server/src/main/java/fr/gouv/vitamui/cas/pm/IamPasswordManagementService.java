@@ -47,8 +47,6 @@ import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
 import fr.gouv.vitamui.commons.api.exception.ConflictException;
 import fr.gouv.vitamui.commons.api.exception.VitamUIException;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.security.client.config.password.PasswordConfiguration;
 import fr.gouv.vitamui.commons.security.client.password.PasswordValidator;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
@@ -72,6 +70,8 @@ import org.apereo.cas.ticket.registry.TicketRegistry;
 import org.apereo.cas.util.crypto.CipherExecutor;
 import org.apereo.cas.web.support.WebUtils;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.util.Assert;
@@ -93,7 +93,7 @@ import static fr.gouv.vitamui.commons.api.CommonConstants.SUPER_USER_ATTRIBUTE;
 @Setter
 public class IamPasswordManagementService extends BasePasswordManagementService {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(IamPasswordManagementService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(IamPasswordManagementService.class);
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 

@@ -37,8 +37,6 @@
 package fr.gouv.vitamui.cas.provider;
 
 import fr.gouv.vitamui.cas.util.Utils;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.common.dto.common.ProviderEmbeddedOptions;
 import fr.gouv.vitamui.iam.common.utils.Pac4jClientBuilder;
@@ -49,11 +47,16 @@ import org.apache.commons.lang3.StringUtils;
 import org.pac4j.core.client.Client;
 import org.pac4j.core.client.Clients;
 import org.pac4j.core.client.IndirectClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.util.Assert;
 
 import javax.annotation.PostConstruct;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -65,7 +68,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ProvidersService {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ProvidersService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ProvidersService.class);
 
     private List<IdentityProviderDto> providers = new ArrayList<>();
 
@@ -100,7 +103,7 @@ public class ProvidersService {
             Optional.of(ProviderEmbeddedOptions.KEYSTORE + "," + ProviderEmbeddedOptions.IDPMETADATA)
         );
         // sort by identifier. This is needed in order to take the internal provider first.
-        Collections.sort(temporaryProviders, Comparator.comparing(IdentityProviderDto::getIdentifier));
+        temporaryProviders.sort(Comparator.comparing(IdentityProviderDto::getIdentifier));
         LOGGER.debug(
             "Reloaded {} providers: {}",
             temporaryProviders.size(),

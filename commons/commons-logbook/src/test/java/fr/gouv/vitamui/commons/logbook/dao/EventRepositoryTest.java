@@ -2,28 +2,25 @@ package fr.gouv.vitamui.commons.logbook.dao;
 
 import fr.gouv.vitam.access.external.client.AdminExternalClient;
 import fr.gouv.vitam.common.model.StatusCode;
-import fr.gouv.vitamui.commons.logbook.TestMongoConfig;
 import fr.gouv.vitamui.commons.logbook.common.EventType;
 import fr.gouv.vitamui.commons.logbook.common.EventTypeProc;
 import fr.gouv.vitamui.commons.logbook.domain.Event;
-import fr.gouv.vitamui.commons.mongo.repository.impl.VitamUIRepositoryImpl;
-import org.junit.After;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import fr.gouv.vitamui.commons.test.AbstractMongoTests;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Import;
-import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.OffsetDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@RunWith(SpringRunner.class)
-@Import({ TestMongoConfig.class })
-@EnableMongoRepositories(basePackageClasses = EventRepository.class, repositoryBaseClass = VitamUIRepositoryImpl.class)
-public class EventRepositoryTest {
+@SpringBootTest
+@ExtendWith(SpringExtension.class)
+public class EventRepositoryTest extends AbstractMongoTests {
 
     @MockBean
     private AdminExternalClient adminExternalClient;
@@ -31,7 +28,7 @@ public class EventRepositoryTest {
     @Autowired
     private EventRepository repository;
 
-    @After
+    @AfterEach
     public void cleanUp() {
         repository.deleteAll();
     }

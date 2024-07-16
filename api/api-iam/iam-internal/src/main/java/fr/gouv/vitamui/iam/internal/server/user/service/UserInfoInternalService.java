@@ -43,8 +43,6 @@ import fr.gouv.vitamui.commons.api.converter.Converter;
 import fr.gouv.vitamui.commons.api.domain.UserInfoDto;
 import fr.gouv.vitamui.commons.api.exception.ApplicationServerException;
 import fr.gouv.vitamui.commons.api.exception.NotFoundException;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.api.utils.CastUtils;
 import fr.gouv.vitamui.commons.logbook.dto.EventDiffDto;
 import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
@@ -61,6 +59,8 @@ import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
@@ -84,7 +84,7 @@ public class UserInfoInternalService extends VitamUICrudService<UserInfoDto, Use
 
     private LogbookService logbookService;
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(UserInfoInternalService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserInfoInternalService.class);
 
     @Autowired
     public UserInfoInternalService(

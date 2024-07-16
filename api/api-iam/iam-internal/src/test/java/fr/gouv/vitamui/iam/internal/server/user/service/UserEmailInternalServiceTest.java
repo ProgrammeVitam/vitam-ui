@@ -5,7 +5,6 @@ import fr.gouv.vitamui.commons.api.domain.UserInfoDto;
 import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
 import fr.gouv.vitamui.commons.api.enums.UserTypeEnum;
 import fr.gouv.vitamui.commons.rest.client.RestClientFactory;
-import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import fr.gouv.vitamui.iam.internal.server.idp.service.IdentityProviderInternalService;
@@ -73,7 +72,6 @@ public final class UserEmailInternalServiceTest {
         when(internalIdentityProviderService.getAll(Optional.empty(), Optional.empty())).thenReturn(providers);
         when(identityProviderHelper.identifierMatchProviderPattern(providers, EMAIL, CUSTOMER_ID)).thenReturn(true);
         when(userInfoInternalService.getOne(any())).thenReturn(buildUserInfoDto());
-        ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
     }
 
     @Test

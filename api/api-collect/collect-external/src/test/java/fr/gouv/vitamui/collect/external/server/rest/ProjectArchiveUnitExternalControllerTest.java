@@ -39,8 +39,6 @@ import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaEltDto;
 import fr.gouv.vitamui.commons.api.dtos.VitamUiOntologyDto;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts;
 import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 import org.junit.jupiter.api.Assertions;
@@ -49,6 +47,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
@@ -62,9 +62,7 @@ import static org.assertj.core.api.Assertions.assertThatCode;
 @WebMvcTest(controllers = { TransactionArchiveUnitExternalController.class })
 class ProjectArchiveUnitExternalControllerTest extends ApiCollectExternalControllerTest<IdDto> {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
-        ProjectArchiveUnitExternalControllerTest.class
-    );
+    private static final Logger LOGGER = LoggerFactory.getLogger(ProjectArchiveUnitExternalControllerTest.class);
 
     private static final String ANY_TRANSACTION_CODE = "ANY_TRANSACTION_CODE";
 
@@ -96,7 +94,7 @@ class ProjectArchiveUnitExternalControllerTest extends ApiCollectExternalControl
     }
 
     @Override
-    protected VitamUILogger getLog() {
+    protected Logger getLog() {
         return LOGGER;
     }
 

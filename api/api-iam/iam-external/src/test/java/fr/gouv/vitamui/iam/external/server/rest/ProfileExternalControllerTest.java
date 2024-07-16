@@ -4,14 +4,14 @@ import com.google.common.collect.ImmutableMap;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.ProfileDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.iam.common.rest.RestApi;
 import fr.gouv.vitamui.iam.external.server.service.ProfileExternalService;
 import fr.gouv.vitamui.iam.external.server.utils.ApiIamServerUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -27,7 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(controllers = { ProfileExternalController.class })
 public class ProfileExternalControllerTest extends ApiIamControllerTest<ProfileDto> {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ProfileExternalControllerTest.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ProfileExternalControllerTest.class);
 
     @MockBean
     private ProfileExternalService profileExternalService;
@@ -66,7 +66,7 @@ public class ProfileExternalControllerTest extends ApiIamControllerTest<ProfileD
     }
 
     @Override
-    protected VitamUILogger getLog() {
+    protected Logger getLog() {
         return LOGGER;
     }
 

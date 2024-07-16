@@ -40,12 +40,10 @@ import fr.gouv.vitam.access.external.client.AccessExternalClient;
 import fr.gouv.vitam.access.external.client.AdminExternalClient;
 import fr.gouv.vitam.ingest.external.client.IngestExternalClient;
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
-import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import fr.gouv.vitamui.iam.security.provider.InternalApiAuthenticationProvider;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import fr.gouv.vitamui.ingest.internal.server.service.IngestInternalService;
 import org.junit.Assert;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -78,11 +76,6 @@ public class IngestInternalControllerTest {
 
     @MockBean
     private RestExceptionHandler restExceptionHandler;
-
-    @BeforeClass
-    public static void setup() {
-        ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
-    }
 
     @Test
     public void testBasicIngest() {

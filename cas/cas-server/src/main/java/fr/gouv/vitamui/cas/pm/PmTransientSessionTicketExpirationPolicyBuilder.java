@@ -36,14 +36,14 @@
  */
 package fr.gouv.vitamui.cas.pm;
 
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import lombok.val;
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.configuration.support.Beans;
 import org.apereo.cas.ticket.ExpirationPolicy;
 import org.apereo.cas.ticket.expiration.HardTimeoutExpirationPolicy;
 import org.apereo.cas.ticket.expiration.builder.TransientSessionTicketExpirationPolicyBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.context.request.RequestContextHolder;
 
 /**
@@ -51,9 +51,7 @@ import org.springframework.web.context.request.RequestContextHolder;
  */
 public class PmTransientSessionTicketExpirationPolicyBuilder extends TransientSessionTicketExpirationPolicyBuilder {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
-        PmTransientSessionTicketExpirationPolicyBuilder.class
-    );
+    private static final Logger LOGGER = LoggerFactory.getLogger(PmTransientSessionTicketExpirationPolicyBuilder.class);
 
     public static final String PM_EXPIRATION_IN_MINUTES_ATTRIBUTE = "pmExpirationInMinutes";
 

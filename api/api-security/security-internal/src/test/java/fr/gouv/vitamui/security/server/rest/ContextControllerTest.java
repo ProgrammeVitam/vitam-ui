@@ -11,21 +11,22 @@ import fr.gouv.vitamui.security.server.certificate.dao.CertificateRepository;
 import fr.gouv.vitamui.security.server.context.dao.ContextRepository;
 import fr.gouv.vitamui.security.server.context.domain.Context;
 import fr.gouv.vitamui.security.server.context.service.ContextService;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
 import static org.mockito.Mockito.when;
 
 /**
  * Tests the {@link ContextController}.
- *
- *
  */
 public final class ContextControllerTest extends AbstractCrudControllerTest<ContextDto, Context> {
 
@@ -44,7 +45,7 @@ public final class ContextControllerTest extends AbstractCrudControllerTest<Cont
     private SequenceGeneratorService sequenceGeneratorService;
 
     @Override
-    @Before
+    @BeforeEach
     public void setup() {
         super.setup();
         final ContextService service = new ContextService(
@@ -55,23 +56,21 @@ public final class ContextControllerTest extends AbstractCrudControllerTest<Cont
         controller.setContextService(service);
     }
 
-    @Test(expected = NullPointerException.class)
-    public void testCreationFailsAsTheRoleIsNull() throws InvalidParseOperationException, PreconditionFailedException {
+    @Test
+    public void testCreationFailsAsTheRoleIsNull() throws PreconditionFailedException {
         final ContextDto dto = buildDto();
-        List list = Arrays.asList(null);
-        dto.setRoleNames(list);
-        getController().create(dto);
-        fail("should fail");
+        dto.setRoleNames(Collections.singletonList(null));
+
+        Assertions.assertThrows(IllegalArgumentException.class, () -> getController().create(dto));
     }
 
-    @Test(expected = NullPointerException.class)
-    public void testUpdateFailsAsTheRoleIsNull() throws InvalidParseOperationException, PreconditionFailedException {
+    @Test
+    public void testUpdateFailsAsTheRoleIsNull() throws PreconditionFailedException {
         final ContextDto dto = buildDto();
-        List list = Arrays.asList(null);
-        dto.setRoleNames(list);
+        dto.setRoleNames(Collections.singletonList(null));
         dto.setId(ID);
-        getController().update(ID, dto);
-        fail("should fail");
+
+        Assertions.assertThrows(IllegalArgumentException.class, () -> getController().update(ID, dto));
     }
 
     @Test
@@ -79,11 +78,11 @@ public final class ContextControllerTest extends AbstractCrudControllerTest<Cont
         try {
             final ContextDto dto = buildDto();
             final Map<String, String[]> map = new HashMap<>();
-            dto.setRoleNames(Arrays.asList("badRole"));
+            dto.setRoleNames(List.of("badRole"));
             getController().create(dto);
-            fail("should fail");
+            Assertions.fail("should fail");
         } catch (final IllegalArgumentException | InvalidParseOperationException e) {
-            assertEquals("Some of the rolenames: [badRole] are not allowed", e.getMessage());
+            Assertions.assertEquals("Some of the rolenames: [badRole] are not allowed", e.getMessage());
         } catch (PreconditionFailedException exception) {
             throw new PreconditionFailedException("The object is not valid " + exception);
         }
@@ -93,7 +92,7 @@ public final class ContextControllerTest extends AbstractCrudControllerTest<Cont
     public void testUpdateFailsAsTheRolesAreNotAllowed() {
         try {
             final ContextDto dto = buildDto();
-            dto.setRoleNames(Arrays.asList("badRole"));
+            dto.setRoleNames(List.of("badRole"));
             dto.setId(ID);
 
             final Context entity = new Context();
@@ -101,9 +100,9 @@ public final class ContextControllerTest extends AbstractCrudControllerTest<Cont
             when(contextRepository.findById(ID)).thenReturn(Optional.of(entity));
 
             getController().update(ID, dto);
-            fail("should fail");
+            Assertions.fail("should fail");
         } catch (final IllegalArgumentException | InvalidParseOperationException e) {
-            assertEquals("Some of the rolenames: [badRole] are not allowed", e.getMessage());
+            Assertions.assertEquals("Some of the rolenames: [badRole] are not allowed", e.getMessage());
         }
     }
 
@@ -117,9 +116,9 @@ public final class ContextControllerTest extends AbstractCrudControllerTest<Cont
     @Override
     protected ContextDto buildDto() {
         final ContextDto dto = new ContextDto();
-        dto.setTenants(Arrays.asList(1));
+        dto.setTenants(List.of(1));
         dto.setFullAccess(false);
-        dto.setRoleNames(Arrays.asList(ServicesData.ROLE_GET_USERS));
+        dto.setRoleNames(List.of(ServicesData.ROLE_GET_USERS));
         return dto;
     }
 

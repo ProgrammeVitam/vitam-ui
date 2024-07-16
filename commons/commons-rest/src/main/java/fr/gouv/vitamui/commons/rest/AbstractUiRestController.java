@@ -40,10 +40,10 @@ import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitamui.commons.api.exception.ApplicationServerException;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.exception.UnAuthorizedException;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -61,7 +61,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 public abstract class AbstractUiRestController {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(AbstractUiRestController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AbstractUiRestController.class);
 
     protected AbstractUiRestController() {
         // do nothing

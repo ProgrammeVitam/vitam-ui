@@ -6,7 +6,6 @@ import fr.gouv.vitamui.commons.api.domain.ProfileDto;
 import fr.gouv.vitamui.commons.api.domain.TenantDto;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
-import fr.gouv.vitamui.commons.test.utils.AbstractServerIdentityBuilder;
 import fr.gouv.vitamui.iam.internal.server.customer.dao.CustomerRepository;
 import fr.gouv.vitamui.iam.internal.server.customer.domain.Customer;
 import fr.gouv.vitamui.iam.internal.server.group.converter.GroupConverter;
@@ -35,7 +34,10 @@ import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
-import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 /**
@@ -43,9 +45,7 @@ import static org.mockito.Mockito.when;
  *
  *
  */
-public final class GroupInternalControllerTest
-    extends AbstractServerIdentityBuilder
-    implements InternalCrudControllerTest {
+public final class GroupInternalControllerTest implements InternalCrudControllerTest {
 
     private GroupInternalController controller;
 

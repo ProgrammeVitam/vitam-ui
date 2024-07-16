@@ -43,15 +43,15 @@ import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.model.ProbativeValueRequest;
 import fr.gouv.vitam.common.model.RequestResponse;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.ws.rs.core.Response;
 
 public class OperationService {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(OperationService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(OperationService.class);
 
     private final AdminExternalClient adminExternalClient;
 

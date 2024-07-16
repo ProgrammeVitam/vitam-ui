@@ -33,10 +33,10 @@ import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.dip.DataObjectVersions;
 import fr.gouv.vitam.common.model.export.transfer.TransferRequest;
 import fr.gouv.vitamui.archives.search.common.dto.TransferRequestDto;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.vitam.api.access.TransferAcknowledgmentService;
 import fr.gouv.vitamui.commons.vitam.api.access.TransferRequestService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
@@ -45,9 +45,7 @@ import java.io.InputStream;
 @Service
 public class TransferVitamOperationsInternalService {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
-        TransferVitamOperationsInternalService.class
-    );
+    private static final Logger LOGGER = LoggerFactory.getLogger(TransferVitamOperationsInternalService.class);
     public static final String OPERATION_IDENTIFIER = "itemId";
     private final TransferAcknowledgmentService transferAcknowledgmentService;
     private final TransferRequestService transferRequestService;

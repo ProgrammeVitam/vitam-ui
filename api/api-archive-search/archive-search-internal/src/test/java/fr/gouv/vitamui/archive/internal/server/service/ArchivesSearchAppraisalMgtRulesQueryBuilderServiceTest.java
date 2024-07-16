@@ -35,15 +35,13 @@ import fr.gouv.vitam.common.json.JsonHandler;
 import fr.gouv.vitamui.archive.internal.server.utils.FileReader;
 import fr.gouv.vitamui.commons.api.dtos.CriteriaValue;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaEltDto;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts;
-import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.skyscreamer.jsonassert.JSONAssert;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.io.IOException;
@@ -60,7 +58,7 @@ import static org.assertj.core.api.Assertions.assertThatCode;
 @ExtendWith(SpringExtension.class)
 public class ArchivesSearchAppraisalMgtRulesQueryBuilderServiceTest {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
+    private static final Logger LOGGER = LoggerFactory.getLogger(
         ArchivesSearchAppraisalMgtRulesQueryBuilderServiceTest.class
     );
 
@@ -95,11 +93,6 @@ public class ArchivesSearchAppraisalMgtRulesQueryBuilderServiceTest {
 
     public static String SEARCH_QUERY_WITH_APPRAISAL_INHERITANCE_AND_PREVENT_RULE_IDENTIFIER =
         "appraisal/expected-search-query-with-appraisal-inheritance-and-prevent-rule-identifier.txt";
-
-    @BeforeEach
-    public void setUp() {
-        ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
-    }
 
     @Test
     public void testFillQueryFromCriteriaListWhenNullCriteriaList() throws InvalidCreateOperationException {

@@ -169,13 +169,13 @@ un moteur logstash, parsant les messages VITAM
  un afficheur de rendu/aggrégation de données Kibana
 
 Pour créer un logger, on peut utiliser une propriété statique dans la classe avec :
-private static final VitamUILogger `LOGGER = VitamUILoggerFactory.getInstance(SAEApplication.class);`
+private static final Logger `LOGGER = LoggerFactory.getLogger(SAEApplication.class);`
 
 Attention : L’utilisation de Logger est assez restreinte. Le projet doit utiliser SpringBoot et le ServerIdentity doit être initialisé avant de pouvoir logger. Sinon une exception de type InternalServerException est levée.
 Il faut par conséquent faire attention à l’ordre d’initialisation des beans et des classes de configuration.
 
 Ajouter dans le code Java
-    private static final VitamUILogger `LOGGER = VitamUILoggerFactory.getInstance(SAEApplication.class);`
+    private static final Logger `LOGGER = LoggerFactory.getLogger(SAEApplication.class);`
 
 Ajouter dans `src/main/application.yml` les informations du server-identity à la racine
 

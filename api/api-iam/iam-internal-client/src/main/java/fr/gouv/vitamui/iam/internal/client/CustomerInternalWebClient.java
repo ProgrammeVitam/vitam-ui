@@ -37,8 +37,6 @@
 package fr.gouv.vitamui.iam.internal.client;
 
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.client.BaseWebClient;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
@@ -46,6 +44,8 @@ import fr.gouv.vitamui.iam.common.dto.CustomerCreationFormData;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.iam.common.dto.CustomerPatchFormData;
 import fr.gouv.vitamui.iam.common.rest.RestApi;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -63,7 +63,7 @@ import java.util.Optional;
  */
 public class CustomerInternalWebClient extends BaseWebClient<ExternalHttpContext> {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(CustomerInternalWebClient.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(CustomerInternalWebClient.class);
 
     public CustomerInternalWebClient(final WebClient webClient, final String baseUrl) {
         super(webClient, baseUrl);

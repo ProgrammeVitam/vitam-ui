@@ -36,14 +36,14 @@ import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.IdDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
@@ -54,7 +54,7 @@ import java.util.Optional;
 @WebMvcTest(controllers = { ProjectExternalController.class })
 public class ProjectExternalControllerTest extends ApiCollectExternalControllerTest<IdDto> {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ProjectExternalControllerTest.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ProjectExternalControllerTest.class);
 
     @MockBean
     private ProjectExternalService projectExternalService;
@@ -113,7 +113,7 @@ public class ProjectExternalControllerTest extends ApiCollectExternalControllerT
     }
 
     @Override
-    protected VitamUILogger getLog() {
+    protected Logger getLog() {
         return LOGGER;
     }
 

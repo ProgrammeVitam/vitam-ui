@@ -3,14 +3,13 @@ package fr.gouv.vitamui.iam.internal.server.rest;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitamui.commons.api.domain.ProfileDto;
 import fr.gouv.vitamui.commons.api.domain.Role;
-import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.domain.TenantDto;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.mongo.domain.CustomSequence;
 import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
-import fr.gouv.vitamui.commons.test.utils.AbstractServerIdentityBuilder;
-import fr.gouv.vitamui.commons.test.utils.FieldUtils;
+import fr.gouv.vitamui.commons.test.AbstractMongoTests;
+import fr.gouv.vitamui.commons.test.VitamClientTestConfig;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.iam.internal.server.customer.config.CustomerInitConfig;
 import fr.gouv.vitamui.iam.internal.server.customer.dao.CustomerRepository;
@@ -24,29 +23,36 @@ import fr.gouv.vitamui.iam.internal.server.tenant.domain.Tenant;
 import fr.gouv.vitamui.iam.internal.server.tenant.service.TenantInternalService;
 import fr.gouv.vitamui.iam.internal.server.utils.IamServerUtilsTest;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.InjectMocks;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
-import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.when;
 
 /**
  * Tests the {@link ProfileInternalService}.
- *
- *
  */
-public final class ProfileCrudControllerTest
-    extends AbstractServerIdentityBuilder
-    implements InternalCrudControllerTest {
+@SpringBootTest
+@ExtendWith(SpringExtension.class)
+@ActiveProfiles("test")
+@Import(VitamClientTestConfig.class)
+public final class ProfileCrudControllerTest extends AbstractMongoTests implements InternalCrudControllerTest {
 
     private static final String PROFILE_ID = "profileId";
 
@@ -54,7 +60,6 @@ public final class ProfileCrudControllerTest
 
     private ProfileInternalController controller;
 
-    @InjectMocks
     private ProfileInternalService internalProfileService;
 
     @Mock
@@ -78,22 +83,34 @@ public final class ProfileCrudControllerTest
     @Mock
     private IamLogbookService iamLogbookService;
 
-    @Mock
-    private ProfileConverter profileConverter;
+    @Autowired
+    private CustomerInitConfig customerInitConfig;
 
-    @Before
+    @BeforeEach
     public void setup() throws Exception {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
 
+        internalProfileService = new ProfileInternalService(
+            sequenceGeneratorService,
+            profileRepository,
+            customerRepository,
+            null,
+            tenantRepository,
+            null,
+            internalSecurityService,
+            iamLogbookService,
+            new ProfileConverter(),
+            null,
+            customerInitConfig
+        );
         controller = new ProfileInternalController(internalProfileService);
 
         final CustomSequence customSequence = new CustomSequence();
         customSequence.setSequence(1);
         when(sequenceGeneratorService.getNextSequenceId(any(), anyInt())).thenReturn(1);
-        FieldUtils.setFinalStatic(CustomerInitConfig.class.getDeclaredField("allRoles"), ServicesData.getAllRoles());
     }
 
-    protected void prepareServices() {
+    private void prepareServices() {
         final ProfileDto profileDto = buildProfileDto();
 
         when(customerRepository.findById(profileDto.getCustomerId())).thenReturn(
@@ -105,8 +122,7 @@ public final class ProfileCrudControllerTest
         when(internalSecurityService.getLevel()).thenReturn(buildAuthUserDto().getLevel());
         when(internalSecurityService.getCustomerId()).thenReturn(buildAuthUserDto().getCustomerId());
         when(internalSecurityService.isLevelAllowed(any())).thenReturn(true);
-        when(internalSecurityService.getCustomerId()).thenReturn(buildCustomerDto().getId());
-        when(profileRepository.findAll(anyList())).thenReturn(Arrays.asList(buildProfile()));
+        when(profileRepository.findAll(anyList())).thenReturn(List.of(buildProfile()));
         when(profileRepository.save(any())).thenReturn(buildProfile());
         when(profileRepository.exists(any(Criteria.class))).thenReturn(false);
     }
@@ -129,9 +145,9 @@ public final class ProfileCrudControllerTest
 
         try {
             controller.create(dto);
-            fail("should fail");
+            Assertions.fail("should fail");
         } catch (final IllegalArgumentException e) {
-            assertEquals("The DTO identifier must be null for creation.", e.getMessage());
+            Assertions.assertEquals("The DTO identifier must be null for creation.", e.getMessage());
         }
     }
 
@@ -145,9 +161,9 @@ public final class ProfileCrudControllerTest
 
         try {
             controller.create(dto);
-            fail("should fail");
+            Assertions.fail("should fail");
         } catch (final IllegalArgumentException e) {
-            assertEquals(
+            Assertions.assertEquals(
                 "Unable to create profile " + dto.getName() + ": customerId " + dto.getCustomerId() + " is not allowed",
                 e.getMessage()
             );
@@ -165,9 +181,9 @@ public final class ProfileCrudControllerTest
 
         try {
             controller.create(dto);
-            fail("should fail");
+            Assertions.fail("should fail");
         } catch (final IllegalArgumentException e) {
-            assertEquals(
+            Assertions.assertEquals(
                 "Unable to create profile profileName: The tenant " + TENANT_IDENTIFIER + " does not exist",
                 e.getMessage()
             );
@@ -185,9 +201,9 @@ public final class ProfileCrudControllerTest
 
         try {
             controller.create(dto);
-            fail("should fail");
+            Assertions.fail("should fail");
         } catch (final IllegalArgumentException e) {
-            assertEquals("Unable to create profile " + dto.getName() + ": no roles", e.getMessage());
+            Assertions.assertEquals("Unable to create profile " + dto.getName() + ": no roles", e.getMessage());
         }
     }
 
@@ -203,9 +219,9 @@ public final class ProfileCrudControllerTest
 
         try {
             controller.create(dto);
-            fail("should fail");
+            Assertions.fail("should fail");
         } catch (final IllegalArgumentException e) {
-            assertEquals(
+            Assertions.assertEquals(
                 "Unable to create profile " + dto.getName() + ": role " + role.getName() + " does not exist",
                 e.getMessage()
             );
@@ -220,40 +236,46 @@ public final class ProfileCrudControllerTest
 
         prepareServices();
         when(profileRepository.exists(any(Criteria.class))).thenReturn(true);
+        when(internalSecurityService.getCustomerId()).thenReturn("customerId");
+        Assertions.assertEquals(internalSecurityService.getCustomerId(), "customerId");
 
         try {
             controller.create(dto);
-            fail("should fail");
+            Assertions.fail("should fail");
         } catch (final IllegalArgumentException e) {
-            assertEquals("Unable to create profile " + dto.getName() + ": profile already exists", e.getMessage());
+            e.printStackTrace();
+            Assertions.assertEquals(
+                "Unable to create profile " + dto.getName() + ": profile already exists",
+                e.getMessage()
+            );
         }
     }
 
     @Override
-    @Test(expected = UnsupportedOperationException.class)
+    @Test
     public void testUpdateOK() {
         final ProfileDto dto = buildProfileDto();
-        controller.update(dto.getId(), dto);
+        Assertions.assertThrows(UnsupportedOperationException.class, () -> controller.update(dto.getId(), dto));
     }
 
     @Override
-    @Test(expected = UnsupportedOperationException.class)
+    @Test
     public void testUpdateFailsAsDtoIdAndPathIdAreDifferentOK() {
         final ProfileDto dto = buildProfileDto();
-        controller.update("Bad Id", dto);
+        Assertions.assertThrows(UnsupportedOperationException.class, () -> controller.update("Bad Id", dto));
     }
 
     @Override
-    @Test(expected = UnsupportedOperationException.class)
-    public void testUpdateFailsAsCustomerDoesNotExist() throws Exception {
+    @Test
+    public void testUpdateFailsAsCustomerDoesNotExist() {
         final ProfileDto dto = buildProfileDto();
-        controller.update("Bad Id", dto);
+        Assertions.assertThrows(UnsupportedOperationException.class, () -> controller.update("Bad Id", dto));
     }
 
-    @Test(expected = UnsupportedOperationException.class)
-    public void testCannotDelete() throws InvalidParseOperationException, PreconditionFailedException {
+    @Test
+    public void testCannotDelete() throws PreconditionFailedException {
         prepareServices();
-        controller.delete(PROFILE_ID);
+        Assertions.assertThrows(UnsupportedOperationException.class, () -> controller.delete(PROFILE_ID));
     }
 
     private AuthUserDto buildAuthUserDto() {

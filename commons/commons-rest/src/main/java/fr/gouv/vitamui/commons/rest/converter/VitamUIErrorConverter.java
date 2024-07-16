@@ -51,9 +51,9 @@ import fr.gouv.vitamui.commons.api.exception.TooManyRequestsException;
 import fr.gouv.vitamui.commons.api.exception.UnavailableServiceException;
 import fr.gouv.vitamui.commons.api.exception.UnexpectedSettingsException;
 import fr.gouv.vitamui.commons.api.exception.VitamUIException;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.dto.VitamUIError;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.http.HttpStatus;
 
@@ -62,7 +62,7 @@ import org.springframework.http.HttpStatus;
  */
 public class VitamUIErrorConverter implements Converter<VitamUIError, VitamUIException> {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(VitamUIErrorConverter.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(VitamUIErrorConverter.class);
 
     @Override
     public VitamUIException convert(final VitamUIError source) {

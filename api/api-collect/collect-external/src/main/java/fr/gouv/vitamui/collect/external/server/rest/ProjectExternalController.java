@@ -39,10 +39,10 @@ import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -76,7 +76,7 @@ import static fr.gouv.vitamui.commons.api.CommonConstants.PATH_ID;
 @ResponseBody
 public class ProjectExternalController {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ProjectExternalController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ProjectExternalController.class);
 
     private final ProjectExternalService projectExternalService;
 

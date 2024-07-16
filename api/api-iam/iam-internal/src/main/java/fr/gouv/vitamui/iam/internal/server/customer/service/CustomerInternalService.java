@@ -44,8 +44,6 @@ import fr.gouv.vitamui.commons.api.domain.OwnerDto;
 import fr.gouv.vitamui.commons.api.enums.AttachmentType;
 import fr.gouv.vitamui.commons.api.exception.InvalidFormatException;
 import fr.gouv.vitamui.commons.api.exception.NotFoundException;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.api.utils.CastUtils;
 import fr.gouv.vitamui.commons.api.utils.EnumUtils;
 import fr.gouv.vitamui.commons.logbook.dto.EventDiffDto;
@@ -72,6 +70,8 @@ import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ByteArrayResource;
@@ -104,7 +104,7 @@ import java.util.stream.Collectors;
 @Setter
 public class CustomerInternalService extends VitamUICrudService<CustomerDto, Customer> {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(CustomerInternalService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(CustomerInternalService.class);
 
     @Value("${gdpr_alert_readonly:true}")
     private boolean gdprAlertReadonly;

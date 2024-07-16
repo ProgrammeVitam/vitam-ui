@@ -1,7 +1,5 @@
 package fr.gouv.vitamui.cas.web;
 
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import lombok.val;
 import org.apereo.cas.oidc.OidcConfigurationContext;
 import org.apereo.cas.oidc.web.controllers.token.OidcRevocationEndpointController;
@@ -12,6 +10,8 @@ import org.apereo.cas.ticket.accesstoken.OAuth20AccessToken;
 import org.apereo.cas.ticket.refreshtoken.OAuth20RefreshToken;
 import org.apereo.cas.util.function.FunctionUtils;
 import org.jooq.lambda.Unchecked;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
@@ -23,9 +23,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class CustomOidcRevocationEndpointController extends OidcRevocationEndpointController {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
-        CustomOidcRevocationEndpointController.class
-    );
+    private static final Logger LOGGER = LoggerFactory.getLogger(CustomOidcRevocationEndpointController.class);
 
     public CustomOidcRevocationEndpointController(final OidcConfigurationContext configurationContext) {
         super(configurationContext);

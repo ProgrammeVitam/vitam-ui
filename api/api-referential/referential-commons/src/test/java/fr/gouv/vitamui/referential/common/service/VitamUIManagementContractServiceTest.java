@@ -36,44 +36,23 @@ import fr.gouv.vitam.common.json.JsonHandler;
 import fr.gouv.vitam.common.model.RequestResponseOK;
 import fr.gouv.vitam.common.model.administration.FileFormatModel;
 import fr.gouv.vitam.common.model.administration.ManagementContractModel;
-import fr.gouv.vitamui.commons.api.identity.ServerIdentityConfiguration;
-import org.easymock.EasyMock;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.powermock.api.easymock.PowerMock;
-import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.assertj.core.api.Assertions.assertThatCode;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.mock;
+import static org.mockito.Mockito.when;
 
-@RunWith(org.powermock.modules.junit4.PowerMockRunner.class)
-@PrepareForTest({ ServerIdentityConfiguration.class })
+@ExtendWith(MockitoExtension.class)
 public class VitamUIManagementContractServiceTest {
 
+    @Mock
     private AdminExternalClient adminExternalClient;
 
+    @InjectMocks
     private VitamUIManagementContractService vitamUIManagementContractService;
-
-    @Before
-    public void setUp() {
-        adminExternalClient = mock(AdminExternalClient.class);
-        vitamUIManagementContractService = new VitamUIManagementContractService(adminExternalClient);
-
-        // Mock server identity for Logs when not using spring
-        PowerMock.suppress(PowerMock.constructor(ServerIdentityConfiguration.class));
-        PowerMock.mockStatic(ServerIdentityConfiguration.class);
-        ServerIdentityConfiguration serverIdentityConfigurationMock = PowerMock.createMock(
-            ServerIdentityConfiguration.class
-        );
-        expect(ServerIdentityConfiguration.getInstance()).andReturn(serverIdentityConfigurationMock).anyTimes();
-        expect(serverIdentityConfigurationMock.getLoggerMessagePrepend())
-            .andReturn("LOG TESTS VitamUIAccessContractServiceTest - ")
-            .anyTimes();
-        PowerMock.replay(ServerIdentityConfiguration.class);
-        PowerMock.replay(serverIdentityConfigurationMock);
-    }
 
     @Test
     public void patchAccessContract_should_return_ok_when_vitamAdminExternalClient_ok()
@@ -82,10 +61,9 @@ public class VitamUIManagementContractServiceTest {
         String id = "id_0";
         JsonNode jsonNode = JsonHandler.createObjectNode();
 
-        expect(adminExternalClient.updateManagementContract(vitamSecurityProfile, id, jsonNode)).andReturn(
+        when(adminExternalClient.updateManagementContract(vitamSecurityProfile, id, jsonNode)).thenReturn(
             new RequestResponseOK<ManagementContractModel>().setHttpCode(200)
         );
-        EasyMock.replay(adminExternalClient);
 
         assertThatCode(
             () -> vitamUIManagementContractService.patchManagementContract(vitamSecurityProfile, id, jsonNode)
@@ -99,10 +77,9 @@ public class VitamUIManagementContractServiceTest {
         String id = "id_0";
         JsonNode jsonNode = JsonHandler.createObjectNode();
 
-        expect(adminExternalClient.updateManagementContract(vitamSecurityProfile, id, jsonNode)).andReturn(
+        when(adminExternalClient.updateManagementContract(vitamSecurityProfile, id, jsonNode)).thenReturn(
             new RequestResponseOK<FileFormatModel>().setHttpCode(400)
         );
-        EasyMock.replay(adminExternalClient);
 
         assertThatCode(
             () -> vitamUIManagementContractService.patchManagementContract(vitamSecurityProfile, id, jsonNode)
@@ -116,10 +93,9 @@ public class VitamUIManagementContractServiceTest {
         String id = "id_0";
         JsonNode jsonNode = JsonHandler.createObjectNode();
 
-        expect(adminExternalClient.updateManagementContract(vitamSecurityProfile, id, jsonNode)).andThrow(
+        when(adminExternalClient.updateManagementContract(vitamSecurityProfile, id, jsonNode)).thenThrow(
             new InvalidParseOperationException("Exception thrown by Vitam")
         );
-        EasyMock.replay(adminExternalClient);
 
         assertThatCode(
             () -> vitamUIManagementContractService.patchManagementContract(vitamSecurityProfile, id, jsonNode)
@@ -133,10 +109,9 @@ public class VitamUIManagementContractServiceTest {
         String id = "id_0";
         JsonNode jsonNode = JsonHandler.createObjectNode();
 
-        expect(adminExternalClient.updateManagementContract(vitamSecurityProfile, id, jsonNode)).andThrow(
+        when(adminExternalClient.updateManagementContract(vitamSecurityProfile, id, jsonNode)).thenThrow(
             new AccessExternalClientException("Exception thrown by Vitam")
         );
-        EasyMock.replay(adminExternalClient);
 
         assertThatCode(
             () -> vitamUIManagementContractService.patchManagementContract(vitamSecurityProfile, id, jsonNode)

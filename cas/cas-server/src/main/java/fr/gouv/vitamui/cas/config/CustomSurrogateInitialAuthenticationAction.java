@@ -1,14 +1,14 @@
 package fr.gouv.vitamui.cas.config;
 
 import fr.gouv.vitamui.cas.util.Constants;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import lombok.val;
 import org.apereo.cas.authentication.SurrogateUsernamePasswordCredential;
 import org.apereo.cas.authentication.credential.UsernamePasswordCredential;
 import org.apereo.cas.web.flow.action.SurrogateInitialAuthenticationAction;
 import org.apereo.cas.web.flow.actions.BaseCasWebflowAction;
 import org.apereo.cas.web.support.WebUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.webflow.core.collection.MutableAttributeMap;
 import org.springframework.webflow.execution.Event;
 import org.springframework.webflow.execution.RequestContext;
@@ -18,9 +18,7 @@ import org.springframework.webflow.execution.RequestContext;
  */
 public class CustomSurrogateInitialAuthenticationAction extends BaseCasWebflowAction {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
-        CustomSurrogateInitialAuthenticationAction.class
-    );
+    private static final Logger LOGGER = LoggerFactory.getLogger(CustomSurrogateInitialAuthenticationAction.class);
 
     @Override
     protected Event doExecute(RequestContext context) throws Exception {

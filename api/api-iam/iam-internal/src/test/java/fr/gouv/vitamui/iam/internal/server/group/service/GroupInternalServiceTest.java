@@ -1,10 +1,14 @@
 package fr.gouv.vitamui.iam.internal.server.group.service;
 
-import fr.gouv.vitamui.commons.api.domain.*;
+import fr.gouv.vitamui.commons.api.domain.CriterionOperator;
+import fr.gouv.vitamui.commons.api.domain.DirectionDto;
+import fr.gouv.vitamui.commons.api.domain.GroupDto;
+import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
+import fr.gouv.vitamui.commons.api.domain.ProfileDto;
+import fr.gouv.vitamui.commons.api.domain.QueryDto;
 import fr.gouv.vitamui.commons.api.exception.NotFoundException;
 import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
-import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import fr.gouv.vitamui.commons.test.utils.TestUtils;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.iam.common.dto.common.EmbeddedOptions;
@@ -35,11 +39,19 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.CriteriaDefinition;
 import org.springframework.data.mongodb.core.query.Query;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.when;
 
 public class GroupInternalServiceTest {
 
@@ -85,7 +97,6 @@ public class GroupInternalServiceTest {
         final Tenant tenant = new Tenant();
         tenant.setCustomerId("customerId");
         when(tenantRepository.findByIdentifier(any())).thenReturn(tenant);
-        ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
     }
 
     @Test

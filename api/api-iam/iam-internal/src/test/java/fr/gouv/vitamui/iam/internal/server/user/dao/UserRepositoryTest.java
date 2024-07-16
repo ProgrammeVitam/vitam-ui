@@ -3,16 +3,18 @@ package fr.gouv.vitamui.iam.internal.server.user.dao;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
 import fr.gouv.vitamui.commons.api.enums.UserTypeEnum;
-import fr.gouv.vitamui.commons.mongo.repository.impl.VitamUIRepositoryImpl;
-import fr.gouv.vitamui.iam.internal.server.TestMongoConfig;
+import fr.gouv.vitamui.commons.test.AbstractMongoTests;
+import fr.gouv.vitamui.commons.test.VitamClientTestConfig;
 import fr.gouv.vitamui.iam.internal.server.user.domain.User;
 import fr.gouv.vitamui.iam.internal.server.utils.IamServerUtilsTest;
 import org.apache.commons.lang.StringUtils;
 import org.assertj.core.groups.Tuple;
-import org.junit.After;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
@@ -20,31 +22,30 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
 /**
  * Tests for {@link UserRepository}
  */
 
-@RunWith(SpringRunner.class)
-@Import({ TestMongoConfig.class })
-@EnableMongoRepositories(basePackageClasses = UserRepository.class, repositoryBaseClass = VitamUIRepositoryImpl.class)
-public class UserRepositoryTest {
+@SpringBootTest
+@ExtendWith(SpringExtension.class)
+@ActiveProfiles("test")
+@Import(VitamClientTestConfig.class)
+public class UserRepositoryTest extends AbstractMongoTests {
 
     @Autowired
     private UserRepository repository;
 
     private static final String CUSTOMER_ID = "customerID";
 
-    @After
+    @AfterEach
     public void cleanUp() {
         repository.deleteAll();
     }
@@ -65,9 +66,9 @@ public class UserRepositoryTest {
 
         final User user = repository.findByEmailIgnoreCaseAndCustomerId(email1, customer1);
 
-        assertNotNull(user);
-        assertEquals(user.getEmail(), email1);
-        assertEquals(user.getCustomerId(), customer1);
+        Assertions.assertNotNull(user);
+        Assertions.assertEquals(user.getEmail(), email1);
+        Assertions.assertEquals(user.getCustomerId(), customer1);
     }
 
     @Test
@@ -85,7 +86,7 @@ public class UserRepositoryTest {
         repository.save(user2);
 
         final List<User> user = repository.findAllByEmailIgnoreCase(email1);
-        assertNotNull(user);
+        Assertions.assertNotNull(user);
         assertThat(user).hasSize(2);
         assertThat(user)
             .extracting(User::getEmail, User::getCustomerId)
@@ -105,7 +106,7 @@ public class UserRepositoryTest {
 
         final long result = repository.countByGroupId(profileToCount);
 
-        assertEquals(1, result);
+        Assertions.assertEquals(1, result);
     }
 
     @Test

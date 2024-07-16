@@ -1,20 +1,21 @@
 package fr.gouv.vitamui.iam.internal.server.profile.dao;
 
 import fr.gouv.vitamui.commons.api.CommonConstants;
-import fr.gouv.vitamui.commons.mongo.repository.impl.VitamUIRepositoryImpl;
-import fr.gouv.vitamui.iam.internal.server.TestMongoConfig;
+import fr.gouv.vitamui.commons.test.AbstractMongoTests;
+import fr.gouv.vitamui.commons.test.VitamClientTestConfig;
 import fr.gouv.vitamui.iam.internal.server.profile.domain.Profile;
 import fr.gouv.vitamui.iam.internal.server.user.dao.UserRepository;
 import fr.gouv.vitamui.iam.internal.server.utils.IamServerUtilsTest;
-import org.junit.After;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
-import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Arrays;
 import java.util.List;
@@ -26,18 +27,16 @@ import static org.assertj.core.api.Assertions.assertThat;
  *
  */
 
-@RunWith(SpringRunner.class)
-@Import({ TestMongoConfig.class })
-@EnableMongoRepositories(
-    basePackageClasses = ProfileRepository.class,
-    repositoryBaseClass = VitamUIRepositoryImpl.class
-)
-public class ProfileRepositoryTest {
+@SpringBootTest
+@ExtendWith(SpringExtension.class)
+@ActiveProfiles("test")
+@Import(VitamClientTestConfig.class)
+public class ProfileRepositoryTest extends AbstractMongoTests {
 
     @Autowired
     private ProfileRepository repository;
 
-    @After
+    @AfterEach
     public void cleanUp() {
         repository.deleteAll();
     }

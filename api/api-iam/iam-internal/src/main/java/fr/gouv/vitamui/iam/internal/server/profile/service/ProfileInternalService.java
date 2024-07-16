@@ -47,8 +47,6 @@ import fr.gouv.vitamui.commons.api.domain.ProfileDto;
 import fr.gouv.vitamui.commons.api.domain.Role;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.exception.NotFoundException;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.api.utils.CastUtils;
 import fr.gouv.vitamui.commons.logbook.dto.EventDiffDto;
 import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
@@ -77,6 +75,8 @@ import lombok.Setter;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.bson.Document;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.CriteriaDefinition;
@@ -100,7 +100,7 @@ import java.util.stream.Collectors;
 @Setter
 public class ProfileInternalService extends VitamUICrudService<ProfileDto, Profile> {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ProfileInternalService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ProfileInternalService.class);
 
     private final ProfileRepository profileRepository;
 
@@ -118,7 +118,9 @@ public class ProfileInternalService extends VitamUICrudService<ProfileDto, Profi
 
     private final ProfileConverter profileConverter;
 
-    private LogbookService logbookService;
+    private final LogbookService logbookService;
+
+    private final CustomerInitConfig customerInitConfig;
 
     @Autowired
     public ProfileInternalService(
@@ -131,7 +133,8 @@ public class ProfileInternalService extends VitamUICrudService<ProfileDto, Profi
         final InternalSecurityService internalSecurityService,
         final IamLogbookService iamLogbookService,
         final ProfileConverter profileConverter,
-        final LogbookService logbookService
+        final LogbookService logbookService,
+        final CustomerInitConfig customerInitConfig
     ) {
         super(sequenceGeneratorService);
         this.profileRepository = profileRepository;
@@ -143,6 +146,7 @@ public class ProfileInternalService extends VitamUICrudService<ProfileDto, Profi
         this.iamLogbookService = iamLogbookService;
         this.profileConverter = profileConverter;
         this.logbookService = logbookService;
+        this.customerInitConfig = customerInitConfig;
     }
 
     /**
@@ -371,9 +375,7 @@ public class ProfileInternalService extends VitamUICrudService<ProfileDto, Profi
 
     protected Role convertToRole(final Map<String, Object> patchEntry) {
         if (!patchEntry.containsKey("name")) {
-            throw new IllegalArgumentException(
-                "No property 'name' has been found for the role : " + patchEntry.toString()
-            );
+            throw new IllegalArgumentException("No property 'name' has been found for the role : " + patchEntry);
         }
         final Role role = new Role();
         role.setName(patchEntry.get("name").toString());
@@ -486,7 +488,7 @@ public class ProfileInternalService extends VitamUICrudService<ProfileDto, Profi
     private void checkRoles(final List<Role> roles, final String level, final String message) {
         Assert.isTrue(CollectionUtils.isNotEmpty(roles), message + ": no roles");
         final Integer tenantIdentifier = internalSecurityService.getTenantIdentifier();
-        final List<Role> allRoles = CustomerInitConfig.getAllRoles();
+        final List<Role> allRoles = customerInitConfig.getAllRoles();
         final List<Role> myRoles = InternalSecurityService.getRoles(
             internalSecurityService.getUser(),
             tenantIdentifier

@@ -35,14 +35,14 @@ import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.vitam.api.administration.ManagementContractService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class VitamUIManagementContractService {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ManagementContractService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ManagementContractService.class);
 
     private final AdminExternalClient adminExternalClient;
 

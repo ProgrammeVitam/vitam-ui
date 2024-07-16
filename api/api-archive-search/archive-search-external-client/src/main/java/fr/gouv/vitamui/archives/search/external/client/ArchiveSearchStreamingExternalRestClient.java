@@ -39,11 +39,11 @@ package fr.gouv.vitamui.archives.search.external.client;
 import fr.gouv.vitamui.archives.search.common.rest.RestApi;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.client.BasePaginatingAndSortingRestClient;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationDto;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
@@ -65,9 +65,7 @@ import java.util.List;
 public class ArchiveSearchStreamingExternalRestClient
     extends BasePaginatingAndSortingRestClient<LogbookOperationDto, ExternalHttpContext> {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
-        ArchiveSearchStreamingExternalRestClient.class
-    );
+    private static final Logger LOGGER = LoggerFactory.getLogger(ArchiveSearchStreamingExternalRestClient.class);
 
     public ArchiveSearchStreamingExternalRestClient(final RestTemplate restTemplate, final String baseUrl) {
         super(restTemplate, baseUrl);

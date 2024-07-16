@@ -34,15 +34,15 @@ import fr.gouv.vitamui.commons.api.dtos.JsonPatch;
 import fr.gouv.vitamui.commons.api.dtos.PatchCommand;
 import fr.gouv.vitamui.commons.api.dtos.PatchOperation;
 import fr.gouv.vitamui.commons.api.exception.DslQueryCreateException;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Service;
 
 @Service
 public class JsonPatchToUnsetActionConverter implements Converter<JsonPatch, UnsetAction> {
 
-    private static final VitamUILogger log = VitamUILoggerFactory.getInstance(JsonPatchToUnsetActionConverter.class);
+    private static final Logger log = LoggerFactory.getLogger(JsonPatchToUnsetActionConverter.class);
 
     @Override
     public UnsetAction convert(JsonPatch source) {

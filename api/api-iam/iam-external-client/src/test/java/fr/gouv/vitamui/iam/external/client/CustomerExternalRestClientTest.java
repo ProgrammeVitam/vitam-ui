@@ -2,7 +2,6 @@ package fr.gouv.vitamui.iam.external.client;
 
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
-import fr.gouv.vitamui.commons.test.utils.AbstractServerIdentityBuilder;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import org.apache.http.client.utils.URIBuilder;
 import org.junit.Before;
@@ -21,7 +20,7 @@ import org.springframework.web.client.RestTemplate;
 import java.net.URISyntaxException;
 
 @RunWith(MockitoJUnitRunner.class)
-public class CustomerExternalRestClientTest extends AbstractServerIdentityBuilder {
+public class CustomerExternalRestClientTest {
 
     private CustomerExternalRestClient customerExternalRestClient;
 

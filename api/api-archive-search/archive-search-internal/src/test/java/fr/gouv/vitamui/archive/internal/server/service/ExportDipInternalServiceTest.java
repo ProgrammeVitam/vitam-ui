@@ -39,9 +39,7 @@ import fr.gouv.vitam.common.model.administration.DataObjectVersionType;
 import fr.gouv.vitam.common.model.dip.QualifierVersion;
 import fr.gouv.vitam.common.model.export.dip.DipRequest;
 import fr.gouv.vitamui.archives.search.common.dto.ExportDipCriteriaDto;
-import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import fr.gouv.vitamui.commons.vitam.api.access.ExportDipV2Service;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -71,11 +69,6 @@ class ExportDipInternalServiceTest {
 
     @InjectMocks
     ExportDipInternalService exportDipInternalService;
-
-    @BeforeEach
-    public void beforeEach() {
-        ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
-    }
 
     @Test
     void dipExport_should_pass() throws Exception {

@@ -39,8 +39,6 @@ package fr.gouv.vitamui.iam.security.service;
 import fr.gouv.vitamui.commons.api.domain.ProfileDto;
 import fr.gouv.vitamui.commons.api.exception.InvalidFormatException;
 import fr.gouv.vitamui.commons.api.exception.NotFoundException;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.api.utils.ApiUtils;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
@@ -51,6 +49,8 @@ import fr.gouv.vitamui.security.client.ContextRestClient;
 import fr.gouv.vitamui.security.common.dto.ContextDto;
 import lombok.Getter;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 
@@ -69,7 +69,7 @@ import java.util.stream.Collectors;
 @Getter
 public class ExternalAuthentificationService {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ExternalAuthentificationService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ExternalAuthentificationService.class);
 
     private final UserInternalRestClient userInternalRestClient;
 

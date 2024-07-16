@@ -37,9 +37,9 @@
 package fr.gouv.vitamui.cas.config;
 
 import fr.gouv.vitamui.cas.util.Constants;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.web.servlet.ServletContextInitializer;
 
 import javax.servlet.ServletContext;
@@ -56,7 +56,7 @@ import java.nio.file.Paths;
 @RequiredArgsConstructor
 public class InitContextConfiguration implements ServletContextInitializer {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(InitContextConfiguration.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(InitContextConfiguration.class);
 
     private final String vitamuiLogoLargePath;
 

@@ -44,8 +44,6 @@ import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.util.RestUtils;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import fr.gouv.vitamui.referential.common.dto.FileFormatDto;
@@ -54,6 +52,8 @@ import fr.gouv.vitamui.referential.internal.server.fileformat.FileFormatInternal
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
@@ -93,7 +93,7 @@ import java.util.Optional;
 @Setter
 public class FileFormatInternalController {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(FileFormatInternalController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(FileFormatInternalController.class);
 
     @Autowired
     private FileFormatInternalService fileFormatInternalService;

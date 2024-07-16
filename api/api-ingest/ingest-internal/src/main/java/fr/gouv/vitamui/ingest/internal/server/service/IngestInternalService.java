@@ -47,8 +47,6 @@ import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.enums.AttachmentType;
 import fr.gouv.vitamui.commons.api.exception.IngestFileGenerationException;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
 import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsResponseDto;
@@ -60,6 +58,8 @@ import fr.gouv.vitamui.ingest.common.dsl.VitamQueryHelper;
 import fr.gouv.vitamui.ingest.common.dto.ArchiveUnitDto;
 import fr.gouv.vitamui.ingest.internal.server.rest.IngestInternalController;
 import org.odftoolkit.simple.TextDocument;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
@@ -84,7 +84,7 @@ import java.util.stream.Collectors;
  */
 public class IngestInternalService {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(IngestInternalController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(IngestInternalController.class);
 
     private static final String ILLEGAL_CHARACTERS = "[\uFEFF-\uFFFF]";
     private static final String SELECTED_ORIGINATING_AGENCIES = "SELECTED_ORIGINATING_AGENCIES";

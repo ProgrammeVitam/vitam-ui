@@ -16,6 +16,3 @@ server-identity:
   identityName: vitamui-dev
   identityRole: security-internal
   identityServerId: 1
-
-spring.data.mongodb.port: 0
-

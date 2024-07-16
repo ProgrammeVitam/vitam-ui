@@ -1,7 +1,6 @@
 package fr.gouv.vitamui.iam.internal.server.security;
 
 import fr.gouv.vitamui.commons.api.domain.UserDto;
-import fr.gouv.vitamui.commons.test.utils.AbstractServerIdentityBuilder;
 import fr.gouv.vitamui.iam.internal.server.subrogation.dao.SubrogationRepository;
 import fr.gouv.vitamui.iam.internal.server.token.dao.TokenRepository;
 import fr.gouv.vitamui.iam.internal.server.user.service.UserInternalService;
@@ -19,7 +18,7 @@ import static org.mockito.Mockito.when;
  *
  *
  */
-public final class IamApiAuthenticationProviderTest extends AbstractServerIdentityBuilder {
+public final class IamApiAuthenticationProviderTest {
 
     private static final String USER_TOKEN = "userToken";
 

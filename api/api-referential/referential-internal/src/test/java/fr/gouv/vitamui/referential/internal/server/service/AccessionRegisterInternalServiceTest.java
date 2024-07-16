@@ -34,6 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+
 package fr.gouv.vitamui.referential.internal.server.service;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -47,18 +48,18 @@ import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.RequestResponseOK;
+import fr.gouv.vitam.common.model.administration.AccessionRegisterDetailModel;
 import fr.gouv.vitam.common.model.administration.AgenciesModel;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.vitam.api.administration.AgencyService;
 import fr.gouv.vitamui.referential.common.dsl.VitamQueryHelper;
-import fr.gouv.vitamui.referential.common.dto.AccessionRegisterDetailResponseDto;
 import fr.gouv.vitamui.referential.common.service.AccessionRegisterService;
 import fr.gouv.vitamui.referential.internal.server.accessionregister.AccessionRegisterInternalService;
-import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.slf4j.Logger;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -74,6 +75,9 @@ import static org.mockito.Mockito.verify;
 
 class AccessionRegisterInternalServiceTest {
 
+    @InjectMocks
+    AccessionRegisterInternalService accessionRegisterInternalService;
+
     @Mock
     private AgencyService agencyService;
 
@@ -84,18 +88,14 @@ class AccessionRegisterInternalServiceTest {
     private AccessionRegisterService accessionRegisterService;
 
     @Mock
-    private VitamUILogger vitamUILogger;
+    private Logger log;
 
     private ObjectMapper objectMapper;
-
-    @InjectMocks
-    AccessionRegisterInternalService accessionRegisterInternalService;
 
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
-        objectMapper = new ObjectMapper();
-        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        objectMapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         accessionRegisterInternalService = new AccessionRegisterInternalService(
             objectMapper,
             adminExternalClient,
@@ -103,7 +103,7 @@ class AccessionRegisterInternalServiceTest {
             accessionRegisterService
         );
 
-        doNothing().when(vitamUILogger).info(any());
+        doNothing().when(log).info(any());
     }
 
     @Test
@@ -121,9 +121,8 @@ class AccessionRegisterInternalServiceTest {
             Optional.empty(),
             Optional.empty()
         );
-        doReturn(
-            buildResponseFrom("data/accession-register-details-mocked.json", AccessionRegisterDetailResponseDto.class)
-        )
+
+        doReturn(buildResponseFrom("data/accession-register-details-mocked.json", AccessionRegisterDetailModel.class))
             .when(adminExternalClient)
             .findAccessionRegisterDetails(vitamContext, query);
         doReturn(buildResponseFrom("data/agencies-mocked.json", AgenciesModel.class))

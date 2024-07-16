@@ -7,12 +7,9 @@ import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
 import fr.gouv.vitamui.commons.mongo.domain.CustomSequence;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
-import fr.gouv.vitamui.commons.test.utils.FieldUtils;
-import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import fr.gouv.vitamui.commons.utils.VitamUIUtils;
 import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
 import fr.gouv.vitamui.iam.common.utils.DtoFactory;
-import fr.gouv.vitamui.iam.internal.server.customer.config.CustomerInitConfig;
 import fr.gouv.vitamui.iam.internal.server.externalParameters.dao.ExternalParametersRepository;
 import fr.gouv.vitamui.iam.internal.server.externalParameters.domain.ExternalParameters;
 import fr.gouv.vitamui.iam.internal.server.externalParameters.service.ExternalParametersInternalService;
@@ -79,9 +76,6 @@ public class ExternalParamProfileInternalServiceTest {
             logbookService,
             profileConverter
         );
-
-        ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
-        FieldUtils.setFinalStatic(CustomerInitConfig.class.getDeclaredField("allRoles"), ServicesData.getAllRoles());
 
         final CustomSequence customSequence = new CustomSequence();
         customSequence.setSequence(1);

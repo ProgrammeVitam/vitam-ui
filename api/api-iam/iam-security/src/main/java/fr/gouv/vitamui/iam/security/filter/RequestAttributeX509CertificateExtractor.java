@@ -27,8 +27,8 @@
 
 package fr.gouv.vitamui.iam.security.filter;
 
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import java.security.cert.X509Certificate;
@@ -37,9 +37,7 @@ public class RequestAttributeX509CertificateExtractor implements X509Certificate
 
     public static final String REQUEST_X509_CERTIFICATE_ATTRIBUTE = "javax.servlet.request.X509Certificate";
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
-        RequestAttributeX509CertificateExtractor.class
-    );
+    private static final Logger LOGGER = LoggerFactory.getLogger(RequestAttributeX509CertificateExtractor.class);
 
     @Override
     public X509Certificate extract(final HttpServletRequest request) {

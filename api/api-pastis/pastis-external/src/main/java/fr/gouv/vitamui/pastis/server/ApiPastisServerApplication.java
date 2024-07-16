@@ -38,8 +38,8 @@ knowledge of the CeCILL-C license and that you accept its terms.
 
 package fr.gouv.vitamui.pastis.server;
 
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -52,7 +52,7 @@ import org.springframework.core.env.Environment;
 @EnableDiscoveryClient
 public class ApiPastisServerApplication implements CommandLineRunner {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ApiPastisServerApplication.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ApiPastisServerApplication.class);
 
     @Autowired
     private Environment env;

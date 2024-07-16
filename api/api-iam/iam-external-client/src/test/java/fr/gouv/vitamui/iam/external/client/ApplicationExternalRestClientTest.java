@@ -2,7 +2,6 @@ package fr.gouv.vitamui.iam.external.client;
 
 import fr.gouv.vitamui.commons.api.domain.ApplicationDto;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
-import fr.gouv.vitamui.commons.test.utils.AbstractServerIdentityBuilder;
 import fr.gouv.vitamui.iam.common.rest.RestApi;
 import org.apache.http.client.utils.URIBuilder;
 import org.junit.Before;
@@ -22,7 +21,7 @@ import java.util.Optional;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @RunWith(MockitoJUnitRunner.class)
-public class ApplicationExternalRestClientTest extends AbstractServerIdentityBuilder {
+public class ApplicationExternalRestClientTest {
 
     private ApplicationExternalRestClient applicationExternalRestClient;
 

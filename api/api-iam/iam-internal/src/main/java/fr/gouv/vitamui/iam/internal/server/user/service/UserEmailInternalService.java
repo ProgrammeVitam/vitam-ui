@@ -41,14 +41,14 @@ import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.api.domain.UserInfoDto;
 import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
 import fr.gouv.vitamui.commons.api.enums.UserTypeEnum;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.client.RestClientFactory;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import fr.gouv.vitamui.iam.internal.server.idp.service.IdentityProviderInternalService;
 import lombok.Getter;
 import lombok.Setter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
@@ -63,7 +63,7 @@ import java.util.Optional;
 @Setter
 public class UserEmailInternalService {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(UserEmailInternalService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserEmailInternalService.class);
 
     @Value("${cas.reset.password.url}")
     @NotNull

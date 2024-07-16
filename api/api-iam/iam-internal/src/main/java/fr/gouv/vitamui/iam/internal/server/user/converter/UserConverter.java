@@ -37,7 +37,11 @@
 package fr.gouv.vitamui.iam.internal.server.user.converter;
 
 import fr.gouv.vitamui.commons.api.converter.Converter;
-import fr.gouv.vitamui.commons.api.domain.*;
+import fr.gouv.vitamui.commons.api.domain.AddressDto;
+import fr.gouv.vitamui.commons.api.domain.AlertAnalyticsDto;
+import fr.gouv.vitamui.commons.api.domain.AnalyticsDto;
+import fr.gouv.vitamui.commons.api.domain.ApplicationAnalyticsDto;
+import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.api.utils.ApiUtils;
 import fr.gouv.vitamui.commons.logbook.util.LogbookUtils;
 import fr.gouv.vitamui.commons.utils.VitamUIUtils;

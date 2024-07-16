@@ -3,8 +3,6 @@ package fr.gouv.vitamui.iam.external.server.rest;
 import com.google.common.collect.ImmutableMap;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.domain.UserInfoDto;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.iam.common.rest.RestApi;
 import fr.gouv.vitamui.iam.external.server.service.UserInfoExternalService;
 import fr.gouv.vitamui.iam.external.server.utils.ApiIamServerUtils;
@@ -12,6 +10,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -23,7 +23,7 @@ import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBui
 @WebMvcTest(controllers = { UserInfoExternalController.class })
 class UserInfoExternalControllerTest extends ApiIamControllerTest<UserInfoDto> {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(UserInfoExternalControllerTest.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserInfoExternalControllerTest.class);
 
     @MockBean
     private UserInfoExternalService userExternalService;
@@ -50,7 +50,7 @@ class UserInfoExternalControllerTest extends ApiIamControllerTest<UserInfoDto> {
     }
 
     @Override
-    protected VitamUILogger getLog() {
+    protected Logger getLog() {
         return LOGGER;
     }
 

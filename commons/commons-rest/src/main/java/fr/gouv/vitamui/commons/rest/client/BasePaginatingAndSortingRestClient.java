@@ -43,12 +43,12 @@ import fr.gouv.vitamui.commons.api.domain.IdDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.domain.RequestParamDto;
 import fr.gouv.vitamui.commons.api.domain.ResultsDto;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.utils.ParameterizedTypeReferenceFactory;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.apache.http.client.utils.URIBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -68,9 +68,7 @@ import java.util.Optional;
 public abstract class BasePaginatingAndSortingRestClient<D extends IdDto, C extends AbstractHttpContext>
     extends BaseCrudRestClient<D, C> {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
-        BasePaginatingAndSortingRestClient.class
-    );
+    private static final Logger LOGGER = LoggerFactory.getLogger(BasePaginatingAndSortingRestClient.class);
 
     protected BasePaginatingAndSortingRestClient(final RestTemplate restTemplate, final String baseUrl) {
         super(restTemplate, baseUrl);

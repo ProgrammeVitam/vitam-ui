@@ -37,8 +37,6 @@
 package fr.gouv.vitamui.cas.webflow.actions;
 
 import fr.gouv.vitamui.cas.util.Utils;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.iam.external.client.CasExternalRestClient;
 import lombok.Getter;
@@ -70,6 +68,8 @@ import org.apereo.cas.ticket.registry.TicketRegistry;
 import org.apereo.cas.web.cookie.CasCookieBuilder;
 import org.apereo.cas.web.flow.logout.TerminateSessionAction;
 import org.apereo.cas.web.support.WebUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.webflow.execution.Action;
 import org.springframework.webflow.execution.Event;
@@ -77,9 +77,16 @@ import org.springframework.webflow.execution.RequestContext;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-import static fr.gouv.vitamui.commons.api.CommonConstants.*;
+import static fr.gouv.vitamui.commons.api.CommonConstants.AUTHTOKEN_ATTRIBUTE;
+import static fr.gouv.vitamui.commons.api.CommonConstants.EMAIL_ATTRIBUTE;
+import static fr.gouv.vitamui.commons.api.CommonConstants.SUPER_USER_ATTRIBUTE;
+import static fr.gouv.vitamui.commons.api.CommonConstants.SUPER_USER_CUSTOMER_ID_ATTRIBUTE;
 
 /**
  * Terminate session action with custom IAM logout and fallback mechanisms (to perform a general logout).
@@ -89,7 +96,7 @@ import static fr.gouv.vitamui.commons.api.CommonConstants.*;
 @Getter
 public class GeneralTerminateSessionAction extends TerminateSessionAction {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(GeneralTerminateSessionAction.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(GeneralTerminateSessionAction.class);
 
     private final Utils utils;
 

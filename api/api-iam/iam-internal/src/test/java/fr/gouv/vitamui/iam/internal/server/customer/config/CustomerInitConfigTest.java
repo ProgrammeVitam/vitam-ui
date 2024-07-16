@@ -1,16 +1,28 @@
 package fr.gouv.vitamui.iam.internal.server.customer.config;
 
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
-import org.junit.Before;
-import org.junit.Test;
+import fr.gouv.vitamui.commons.test.AbstractMongoTests;
+import fr.gouv.vitamui.commons.test.VitamClientTestConfig;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-public class CustomerInitConfigTest {
+@SpringBootTest
+@ExtendWith(SpringExtension.class)
+@ActiveProfiles("test")
+@Import(VitamClientTestConfig.class)
+public class CustomerInitConfigTest extends AbstractMongoTests {
 
     private static final String PROFILE_NAME_1 = "profile1";
     private static final String PROFILE_NAME_2 = "profile2";
@@ -32,31 +44,29 @@ public class CustomerInitConfigTest {
 
     private CustomerInitConfig customerInitConfig;
 
-    @Before
-    public void initCustomerInitConfig() {
+    @BeforeEach
+    public void setup() {
         customerInitConfig = new CustomerInitConfig();
     }
 
     @Test
-    public void testAfterPropertiesWithEmptyConfig() throws Exception {
+    public void testAfterPropertiesWithEmptyConfig() {
         customerInitConfig.afterPropertiesSet();
     }
 
     @Test
-    public void testAfterPropertiesWithValidConfig() throws Exception {
+    public void testAfterPropertiesWithValidConfig() {
         setValidGroupAndProfile();
         customerInitConfig.setUsers(
-            Arrays.asList(new CustomerInitConfig.UserInitConfig(LAST_NAME, FIRST_NAME, GROUP_NAME_1, EMAIl, LEVEL_2))
+            List.of(new CustomerInitConfig.UserInitConfig(LAST_NAME, FIRST_NAME, GROUP_NAME_1, EMAIl, LEVEL_2))
         );
         customerInitConfig.afterPropertiesSet();
     }
 
     @Test
     public void testAfterPropertiesWithEmptyProfileNameForProfile() {
-        customerInitConfig.setProfiles(
-            Arrays.asList(new CustomerInitConfig.ProfileInitConfig("", null, null, null, null))
-        );
-        assertThatThrownBy(() -> customerInitConfig.afterPropertiesSet())
+        customerInitConfig.setProfiles(List.of(new CustomerInitConfig.ProfileInitConfig("", null, null, null, null)));
+        assertThatThrownBy(customerInitConfig::afterPropertiesSet)
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("name cannot be empty for profile config");
     }
@@ -64,9 +74,9 @@ public class CustomerInitConfigTest {
     @Test
     public void testAfterPropertiesWithEmptyAppNameForProfile() {
         customerInitConfig.setProfiles(
-            Arrays.asList(new CustomerInitConfig.ProfileInitConfig(PROFILE_NAME_1, DESCRIPTION_1, LEVEL_1, "", null))
+            List.of(new CustomerInitConfig.ProfileInitConfig(PROFILE_NAME_1, DESCRIPTION_1, LEVEL_1, "", null))
         );
-        assertThatThrownBy(() -> customerInitConfig.afterPropertiesSet())
+        assertThatThrownBy(customerInitConfig::afterPropertiesSet)
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("app-name cannot be empty for profile config");
     }
@@ -74,7 +84,7 @@ public class CustomerInitConfigTest {
     @Test
     public void testAfterPropertiesWithEmptyRolesForProfile() {
         customerInitConfig.setProfiles(
-            Arrays.asList(
+            List.of(
                 new CustomerInitConfig.ProfileInitConfig(
                     PROFILE_NAME_1,
                     DESCRIPTION_1,
@@ -84,7 +94,7 @@ public class CustomerInitConfigTest {
                 )
             )
         );
-        assertThatThrownBy(() -> customerInitConfig.afterPropertiesSet())
+        assertThatThrownBy(customerInitConfig::afterPropertiesSet)
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("roles list cannot be empty for profile config");
     }
@@ -92,7 +102,7 @@ public class CustomerInitConfigTest {
     @Test
     public void testAfterPropertiesWithDuplicateRolesForProfile() {
         customerInitConfig.setProfiles(
-            Arrays.asList(
+            List.of(
                 new CustomerInitConfig.ProfileInitConfig(
                     PROFILE_NAME_1,
                     DESCRIPTION_1,
@@ -102,7 +112,7 @@ public class CustomerInitConfigTest {
                 )
             )
         );
-        assertThatThrownBy(() -> customerInitConfig.afterPropertiesSet())
+        assertThatThrownBy(customerInitConfig::afterPropertiesSet)
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("roles list must contains distinct roles for profile config");
     }
@@ -127,7 +137,7 @@ public class CustomerInitConfigTest {
                 )
             )
         );
-        assertThatThrownBy(() -> customerInitConfig.afterPropertiesSet())
+        assertThatThrownBy(customerInitConfig::afterPropertiesSet)
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("profiles list contains duplicate name for profile config");
     }
@@ -135,9 +145,9 @@ public class CustomerInitConfigTest {
     @Test
     public void testAfterPropertiesWithEmptyProfileNameForTenantProfile() {
         customerInitConfig.setTenantProfiles(
-            Arrays.asList(new CustomerInitConfig.ProfileInitConfig("", null, null, null, null))
+            List.of(new CustomerInitConfig.ProfileInitConfig("", null, null, null, null))
         );
-        assertThatThrownBy(() -> customerInitConfig.afterPropertiesSet())
+        assertThatThrownBy(customerInitConfig::afterPropertiesSet)
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("name cannot be empty for profile config");
     }
@@ -145,9 +155,9 @@ public class CustomerInitConfigTest {
     @Test
     public void testAfterPropertiesWithEmptyAppNameForTenantProfile() {
         customerInitConfig.setTenantProfiles(
-            Arrays.asList(new CustomerInitConfig.ProfileInitConfig(PROFILE_NAME_1, DESCRIPTION_1, LEVEL_1, "", null))
+            List.of(new CustomerInitConfig.ProfileInitConfig(PROFILE_NAME_1, DESCRIPTION_1, LEVEL_1, "", null))
         );
-        assertThatThrownBy(() -> customerInitConfig.afterPropertiesSet())
+        assertThatThrownBy(customerInitConfig::afterPropertiesSet)
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("app-name cannot be empty for profile config");
     }
@@ -155,7 +165,7 @@ public class CustomerInitConfigTest {
     @Test
     public void testAfterPropertiesWithEmptyRolesForTenantProfile() {
         customerInitConfig.setTenantProfiles(
-            Arrays.asList(
+            List.of(
                 new CustomerInitConfig.ProfileInitConfig(
                     PROFILE_NAME_1,
                     DESCRIPTION_1,
@@ -165,7 +175,7 @@ public class CustomerInitConfigTest {
                 )
             )
         );
-        assertThatThrownBy(() -> customerInitConfig.afterPropertiesSet())
+        assertThatThrownBy(customerInitConfig::afterPropertiesSet)
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("roles list cannot be empty for profile config");
     }
@@ -173,7 +183,7 @@ public class CustomerInitConfigTest {
     @Test
     public void testAfterPropertiesWithDuplicateRolesForTenantProfile() {
         customerInitConfig.setTenantProfiles(
-            Arrays.asList(
+            List.of(
                 new CustomerInitConfig.ProfileInitConfig(
                     PROFILE_NAME_1,
                     DESCRIPTION_1,
@@ -183,7 +193,7 @@ public class CustomerInitConfigTest {
                 )
             )
         );
-        assertThatThrownBy(() -> customerInitConfig.afterPropertiesSet())
+        assertThatThrownBy(customerInitConfig::afterPropertiesSet)
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("roles list must contains distinct roles for profile config");
     }
@@ -208,7 +218,7 @@ public class CustomerInitConfigTest {
                 )
             )
         );
-        assertThatThrownBy(() -> customerInitConfig.afterPropertiesSet())
+        assertThatThrownBy(customerInitConfig::afterPropertiesSet)
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("profiles list contains duplicate name for profile config");
     }
@@ -217,9 +227,9 @@ public class CustomerInitConfigTest {
     public void testAfterPropertiesWithEmptyProfileNameForGroup() {
         setValidProfiles();
         customerInitConfig.setProfilesGroups(
-            Arrays.asList(new CustomerInitConfig.ProfilesGroupInitConfig("", null, null, null))
+            List.of(new CustomerInitConfig.ProfilesGroupInitConfig("", null, null, null))
         );
-        assertThatThrownBy(() -> customerInitConfig.afterPropertiesSet())
+        assertThatThrownBy(customerInitConfig::afterPropertiesSet)
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("name cannot be empty for profiles-groups config");
     }
@@ -228,9 +238,9 @@ public class CustomerInitConfigTest {
     public void testAfterPropertiesWithEmptyProfilesForGroup() {
         setValidProfiles();
         customerInitConfig.setProfilesGroups(
-            Arrays.asList(new CustomerInitConfig.ProfilesGroupInitConfig(GROUP_NAME_1, DESCRIPTION_2, LEVEL_2, null))
+            List.of(new CustomerInitConfig.ProfilesGroupInitConfig(GROUP_NAME_1, DESCRIPTION_2, LEVEL_2, null))
         );
-        assertThatThrownBy(() -> customerInitConfig.afterPropertiesSet())
+        assertThatThrownBy(customerInitConfig::afterPropertiesSet)
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("profiles list cannot be empty for profiles-groups config");
     }
@@ -239,16 +249,16 @@ public class CustomerInitConfigTest {
     public void testAfterPropertiesWithUndefinedProfileForGroup() {
         setValidProfiles();
         customerInitConfig.setProfilesGroups(
-            Arrays.asList(
+            List.of(
                 new CustomerInitConfig.ProfilesGroupInitConfig(
                     GROUP_NAME_1,
                     DESCRIPTION_2,
                     LEVEL_2,
-                    Arrays.asList(PROFILE_NAME_3)
+                    List.of(PROFILE_NAME_3)
                 )
             )
         );
-        assertThatThrownBy(() -> customerInitConfig.afterPropertiesSet())
+        assertThatThrownBy(customerInitConfig::afterPropertiesSet)
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("profile '" + PROFILE_NAME_3 + "' is not defined in profile config");
     }
@@ -257,7 +267,7 @@ public class CustomerInitConfigTest {
     public void testAfterPropertiesWithDuplicateProfilesForGroup() {
         setValidProfiles();
         customerInitConfig.setProfilesGroups(
-            Arrays.asList(
+            List.of(
                 new CustomerInitConfig.ProfilesGroupInitConfig(
                     GROUP_NAME_1,
                     DESCRIPTION_2,
@@ -266,7 +276,7 @@ public class CustomerInitConfigTest {
                 )
             )
         );
-        assertThatThrownBy(() -> customerInitConfig.afterPropertiesSet())
+        assertThatThrownBy(customerInitConfig::afterPropertiesSet)
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("profiles list contains duplicate name for profiles-groups config");
     }
@@ -280,41 +290,41 @@ public class CustomerInitConfigTest {
                     GROUP_NAME_1,
                     DESCRIPTION_2,
                     LEVEL_2,
-                    Arrays.asList(PROFILE_NAME_1)
+                    List.of(PROFILE_NAME_1)
                 ),
                 new CustomerInitConfig.ProfilesGroupInitConfig(
                     GROUP_NAME_1,
                     DESCRIPTION_2,
                     LEVEL_2,
-                    Arrays.asList(PROFILE_NAME_1)
+                    List.of(PROFILE_NAME_1)
                 )
             )
         );
-        assertThatThrownBy(() -> customerInitConfig.afterPropertiesSet())
+        assertThatThrownBy(customerInitConfig::afterPropertiesSet)
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("profiles group list contains duplicate name for profiles-groups config");
     }
 
     private void setValidProfiles() {
         customerInitConfig.setProfiles(
-            Arrays.asList(
+            List.of(
                 new CustomerInitConfig.ProfileInitConfig(
                     PROFILE_NAME_1,
                     DESCRIPTION_1,
                     LEVEL_1,
                     APP_NAME_1,
-                    Arrays.asList(ROLE_2)
+                    List.of(ROLE_2)
                 )
             )
         );
         customerInitConfig.setTenantProfiles(
-            Arrays.asList(
+            List.of(
                 new CustomerInitConfig.ProfileInitConfig(
                     PROFILE_NAME_2,
                     DESCRIPTION_1,
                     LEVEL_1,
                     APP_NAME_1,
-                    Arrays.asList(ROLE_1)
+                    List.of(ROLE_1)
                 )
             )
         );
@@ -323,8 +333,8 @@ public class CustomerInitConfigTest {
     @Test
     public void testAfterPropertiesWithEmptyLastNameForUser() {
         setValidGroupAndProfile();
-        customerInitConfig.setUsers(Arrays.asList(new CustomerInitConfig.UserInitConfig("", null, null, null, null)));
-        assertThatThrownBy(() -> customerInitConfig.afterPropertiesSet())
+        customerInitConfig.setUsers(List.of(new CustomerInitConfig.UserInitConfig("", null, null, null, null)));
+        assertThatThrownBy(customerInitConfig::afterPropertiesSet)
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("last-name cannot be empty for users config");
     }
@@ -332,10 +342,8 @@ public class CustomerInitConfigTest {
     @Test
     public void testAfterPropertiesWithEmptyFirstNameForUser() {
         setValidGroupAndProfile();
-        customerInitConfig.setUsers(
-            Arrays.asList(new CustomerInitConfig.UserInitConfig(LAST_NAME, "", null, null, null))
-        );
-        assertThatThrownBy(() -> customerInitConfig.afterPropertiesSet())
+        customerInitConfig.setUsers(List.of(new CustomerInitConfig.UserInitConfig(LAST_NAME, "", null, null, null)));
+        assertThatThrownBy(customerInitConfig::afterPropertiesSet)
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("first-name cannot be empty for users config");
     }
@@ -344,9 +352,9 @@ public class CustomerInitConfigTest {
     public void testAfterPropertiesWithEmptyGroupNameForUser() {
         setValidGroupAndProfile();
         customerInitConfig.setUsers(
-            Arrays.asList(new CustomerInitConfig.UserInitConfig(LAST_NAME, FIRST_NAME, "", null, null))
+            List.of(new CustomerInitConfig.UserInitConfig(LAST_NAME, FIRST_NAME, "", null, null))
         );
-        assertThatThrownBy(() -> customerInitConfig.afterPropertiesSet())
+        assertThatThrownBy(customerInitConfig::afterPropertiesSet)
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("profiles-group-name cannot be null for users config");
     }
@@ -355,9 +363,9 @@ public class CustomerInitConfigTest {
     public void testAfterPropertiesWithUndefinedProfilesGroupForUser() {
         setValidGroupAndProfile();
         customerInitConfig.setUsers(
-            Arrays.asList(new CustomerInitConfig.UserInitConfig(LAST_NAME, FIRST_NAME, GROUP_NAME_2, "", null))
+            List.of(new CustomerInitConfig.UserInitConfig(LAST_NAME, FIRST_NAME, GROUP_NAME_2, "", null))
         );
-        assertThatThrownBy(() -> customerInitConfig.afterPropertiesSet())
+        assertThatThrownBy(customerInitConfig::afterPropertiesSet)
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("profiles group name is not defined in profile-groups config");
     }
@@ -366,9 +374,9 @@ public class CustomerInitConfigTest {
     public void testAfterPropertiesWithEmptyEmailForUser() {
         setValidGroupAndProfile();
         customerInitConfig.setUsers(
-            Arrays.asList(new CustomerInitConfig.UserInitConfig(LAST_NAME, FIRST_NAME, GROUP_NAME_1, "", LEVEL_2))
+            List.of(new CustomerInitConfig.UserInitConfig(LAST_NAME, FIRST_NAME, GROUP_NAME_1, "", LEVEL_2))
         );
-        assertThatThrownBy(() -> customerInitConfig.afterPropertiesSet())
+        assertThatThrownBy(customerInitConfig::afterPropertiesSet)
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("email cannot be empty for users config");
     }
@@ -382,22 +390,22 @@ public class CustomerInitConfigTest {
                 new CustomerInitConfig.UserInitConfig(LAST_NAME, FIRST_NAME, GROUP_NAME_1, EMAIl, LEVEL_2)
             )
         );
-        assertThatThrownBy(() -> customerInitConfig.afterPropertiesSet())
+        assertThatThrownBy(customerInitConfig::afterPropertiesSet)
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("users list contains duplicate email for users config");
     }
 
     @Test
-    public void testAfterPropertiesWithUnfoundOtherRoles() throws Exception {
+    public void testAfterPropertiesWithUnfoundOtherRoles() {
         setValidProfiles();
         customerInitConfig.setAdminProfiles(
-            Arrays.asList(
+            List.of(
                 new CustomerInitConfig.ProfileInitConfig(
                     PROFILE_NAME_3,
                     DESCRIPTION_3,
                     LEVEL_1,
                     APP_NAME_1,
-                    Arrays.asList(ROLE_3)
+                    List.of(ROLE_3)
                 )
             )
         );
@@ -406,21 +414,21 @@ public class CustomerInitConfigTest {
 
         customerInitConfig.afterPropertiesSet();
 
-        assertThat(CustomerInitConfig.getAllRoles()).isNotNull();
-        assertThat(CustomerInitConfig.getAllRoles().size()).isEqualTo(3 + adminRolesSize);
+        assertThat(customerInitConfig.getAllRoles()).isNotNull();
+        assertThat(customerInitConfig.getAllRoles().size()).isEqualTo(3 + adminRolesSize);
     }
 
     @Test
-    public void testAfterPropertiesWithOtherRoles() throws Exception {
+    public void testAfterPropertiesWithOtherRoles() {
         setValidProfiles();
         customerInitConfig.setAdminProfiles(
-            Arrays.asList(
+            List.of(
                 new CustomerInitConfig.ProfileInitConfig(
                     PROFILE_NAME_3,
                     DESCRIPTION_3,
                     LEVEL_1,
                     APP_NAME_1,
-                    Arrays.asList(ROLE_3)
+                    List.of(ROLE_3)
                 )
             )
         );
@@ -429,19 +437,19 @@ public class CustomerInitConfigTest {
 
         customerInitConfig.afterPropertiesSet();
 
-        assertThat(CustomerInitConfig.getAllRoles()).isNotNull();
-        assertThat(CustomerInitConfig.getAllRoles().size()).isEqualTo(5 + adminRolesSize);
+        assertThat(customerInitConfig.getAllRoles()).isNotNull();
+        assertThat(customerInitConfig.getAllRoles().size()).isEqualTo(5 + adminRolesSize);
     }
 
     private void setValidGroupAndProfile() {
         setValidProfiles();
         customerInitConfig.setProfilesGroups(
-            Arrays.asList(
+            List.of(
                 new CustomerInitConfig.ProfilesGroupInitConfig(
                     GROUP_NAME_1,
                     DESCRIPTION_2,
                     LEVEL_2,
-                    Arrays.asList(PROFILE_NAME_1)
+                    List.of(PROFILE_NAME_1)
                 )
             )
         );

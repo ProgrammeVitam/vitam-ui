@@ -1,48 +1,28 @@
 package fr.gouv.vitamui.iam.internal.server.config;
 
-import fr.gouv.vitam.access.external.client.AccessExternalClient;
-import fr.gouv.vitam.access.external.client.AdminExternalClient;
-import fr.gouv.vitam.access.external.client.v2.AccessExternalClientV2;
-import fr.gouv.vitam.ingest.external.client.IngestExternalClient;
 import fr.gouv.vitamui.commons.logbook.service.EventService;
 import fr.gouv.vitamui.commons.security.client.config.password.PasswordConfiguration;
 import fr.gouv.vitamui.commons.security.client.password.PasswordValidator;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import fr.gouv.vitamui.commons.test.AbstractMongoTests;
+import fr.gouv.vitamui.commons.test.VitamClientTestConfig;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
-import org.springframework.boot.autoconfigure.mongo.embedded.EmbeddedMongoAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.mongodb.MongoTransactionManager;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
+@ExtendWith(SpringExtension.class)
 @ActiveProfiles("test")
-@ImportAutoConfiguration(exclude = EmbeddedMongoAutoConfiguration.class)
-public class ApiIamServerConfigTest {
-
-    @MockBean
-    private AdminExternalClient adminExternalClient;
-
-    @MockBean(name = "accessExternalClient")
-    private AccessExternalClient accessExternalClient;
-
-    @MockBean(name = "ingestExternalClient")
-    private IngestExternalClient ingestExternalClient;
-
-    @MockBean(name = "accessExternalClientV2")
-    private AccessExternalClientV2 accessExternalClientV2;
+@Import(VitamClientTestConfig.class)
+public class ApiIamServerConfigTest extends AbstractMongoTests {
 
     @Autowired
     private EventService logbookService;
-
-    @MockBean
-    private MongoTransactionManager mongoTransactionManager;
 
     @Autowired
     private PasswordValidator passwordValidator;

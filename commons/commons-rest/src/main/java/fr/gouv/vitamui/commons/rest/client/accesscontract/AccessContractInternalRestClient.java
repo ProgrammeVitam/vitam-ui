@@ -38,10 +38,10 @@ package fr.gouv.vitamui.commons.rest.client.accesscontract;
 
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.AccessContractsDto;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.client.AbstractHttpContext;
 import fr.gouv.vitamui.commons.rest.client.BaseRestClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -57,7 +57,7 @@ import java.util.List;
  */
 public class AccessContractInternalRestClient<C extends AbstractHttpContext> extends BaseRestClient<C> {
 
-    static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(AccessContractInternalRestClient.class);
+    static final Logger LOGGER = LoggerFactory.getLogger(AccessContractInternalRestClient.class);
 
     public AccessContractInternalRestClient(final RestTemplate restTemplate, final String baseUrl) {
         super(restTemplate, baseUrl);

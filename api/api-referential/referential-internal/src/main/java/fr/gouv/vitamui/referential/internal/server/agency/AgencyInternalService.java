@@ -54,8 +54,6 @@ import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.exception.ConflictException;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.api.exception.VitamUIException;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
 import fr.gouv.vitamui.commons.vitam.api.administration.AgencyService;
 import fr.gouv.vitamui.referential.common.dsl.VitamQueryHelper;
@@ -63,6 +61,8 @@ import fr.gouv.vitamui.referential.common.dto.AgencyDto;
 import fr.gouv.vitamui.referential.common.dto.AgencyResponseDto;
 import fr.gouv.vitamui.referential.common.service.VitamAgencyService;
 import org.apache.commons.beanutils.BeanUtilsBean;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -75,7 +75,7 @@ import java.util.*;
 @Service
 public class AgencyInternalService {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(AgencyInternalService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AgencyInternalService.class);
 
     private AgencyService agencyService;
 

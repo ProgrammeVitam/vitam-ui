@@ -37,16 +37,16 @@ import fr.gouv.vitam.collect.external.client.CollectExternalClient;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.model.RequestResponse;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.core.Response;
 import java.io.InputStream;
 
 public class CollectService {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(CollectService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(CollectService.class);
 
     public static final String TRANSACTION_ID = "transactionId : {}";
     public static final String PROJECT_ID = "projectId : {}";

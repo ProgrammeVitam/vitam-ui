@@ -38,12 +38,12 @@ package fr.gouv.vitamui.commons.rest.client;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.converter.VitamUIErrorConverter;
 import fr.gouv.vitamui.commons.rest.dto.VitamUIError;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.web.client.DefaultResponseErrorHandler;
 
@@ -58,7 +58,7 @@ import java.nio.charset.StandardCharsets;
  */
 public class ErrorHandler extends DefaultResponseErrorHandler {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ErrorHandler.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ErrorHandler.class);
 
     @Override
     public void handleError(final ClientHttpResponse response) throws IOException {

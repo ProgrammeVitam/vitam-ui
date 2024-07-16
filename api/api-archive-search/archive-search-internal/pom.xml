@@ -144,7 +144,6 @@
             <artifactId>opentracing-spring-jaeger-web-starter</artifactId>
         </dependency>
 
-
         <!-- TESTS -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -181,12 +180,15 @@
             <type>test-jar</type>
         </dependency>
         <dependency>
-            <groupId>de.flapdoodle.embed</groupId>
-            <artifactId>de.flapdoodle.embed.mongo</artifactId>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>testcontainers</artifactId>
             <scope>test</scope>
         </dependency>
-
-
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>mongodb</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>

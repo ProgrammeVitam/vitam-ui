@@ -36,13 +36,13 @@
  */
 package fr.gouv.vitamui.security.client;
 
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.client.BaseCrudRestClient;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import fr.gouv.vitamui.security.common.dto.ContextDto;
 import fr.gouv.vitamui.security.common.rest.RestApi;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -62,7 +62,7 @@ import static fr.gouv.vitamui.security.common.rest.RestApi.ADD_TENANT_TO_CONTEXT
  */
 public class ContextRestClient extends BaseCrudRestClient<ContextDto, InternalHttpContext> {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ContextRestClient.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ContextRestClient.class);
 
     public ContextRestClient(final RestTemplate restTemplate, final String baseUrl) {
         super(restTemplate, baseUrl);

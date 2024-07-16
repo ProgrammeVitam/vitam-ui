@@ -33,10 +33,10 @@ import fr.gouv.vitamui.collect.common.dto.CollectTransactionDto;
 import fr.gouv.vitamui.collect.common.rest.RestApi;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.client.BasePaginatingAndSortingRestClient;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpEntity;
@@ -56,9 +56,7 @@ import static fr.gouv.vitamui.collect.common.rest.RestApi.UPDATE_UNITS_METADATA_
 public class UpdateUnitsMetadataExternalRestClient
     extends BasePaginatingAndSortingRestClient<CollectTransactionDto, ExternalHttpContext> {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
-        UpdateUnitsMetadataExternalRestClient.class
-    );
+    private static final Logger LOGGER = LoggerFactory.getLogger(UpdateUnitsMetadataExternalRestClient.class);
 
     public UpdateUnitsMetadataExternalRestClient(RestTemplate restTemplate, String baseUrl) {
         super(restTemplate, baseUrl);

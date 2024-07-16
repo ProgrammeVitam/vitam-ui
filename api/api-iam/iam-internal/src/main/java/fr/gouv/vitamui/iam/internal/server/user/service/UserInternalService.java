@@ -60,8 +60,6 @@ import fr.gouv.vitamui.commons.api.enums.UserTypeEnum;
 import fr.gouv.vitamui.commons.api.exception.ApplicationServerException;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.api.exception.NotFoundException;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.api.utils.CastUtils;
 import fr.gouv.vitamui.commons.api.utils.EnumUtils;
 import fr.gouv.vitamui.commons.logbook.common.EventType;
@@ -105,6 +103,8 @@ import lombok.Setter;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.bson.Document;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
@@ -208,7 +208,7 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
 
     private final UserExportService userExportService;
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(UserInternalService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserInternalService.class);
 
     private UserInfoInternalService userInfoInternalService;
 

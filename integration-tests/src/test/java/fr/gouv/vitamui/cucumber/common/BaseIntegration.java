@@ -13,8 +13,6 @@ import fr.gouv.vitamui.commons.api.domain.LanguageDto;
 import fr.gouv.vitamui.commons.api.domain.ParameterDto;
 import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
 import fr.gouv.vitamui.commons.api.enums.UserTypeEnum;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
 import fr.gouv.vitamui.commons.rest.client.configuration.SSLConfiguration;
@@ -37,6 +35,8 @@ import org.apache.commons.lang3.time.DateUtils;
 import org.bson.BsonDocument;
 import org.bson.BsonString;
 import org.bson.Document;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -72,7 +72,7 @@ public abstract class BaseIntegration {
 
     protected static final String SYSTEM_USER_ID = "admin_user";
 
-    protected static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(BaseIntegration.class);
+    protected static final Logger LOGGER = LoggerFactory.getLogger(BaseIntegration.class);
 
     protected static final String TEST_USER_EMAIL = "testuser@test.com";
 

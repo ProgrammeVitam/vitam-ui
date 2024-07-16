@@ -34,46 +34,44 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+
 package fr.gouv.vitamui.iam.internal.server.externalParameters.dao;
 
-import fr.gouv.vitamui.commons.mongo.repository.impl.VitamUIRepositoryImpl;
-import fr.gouv.vitamui.iam.internal.server.TestMongoConfig;
+import fr.gouv.vitamui.commons.test.AbstractMongoTests;
+import fr.gouv.vitamui.commons.test.VitamClientTestConfig;
 import fr.gouv.vitamui.iam.internal.server.externalParameters.domain.ExternalParameters;
-import org.junit.Test;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
 /**
  * Tests for {@link ExternalParametersRepository}
- *
  */
 
-@RunWith(SpringRunner.class)
-@Import({ TestMongoConfig.class })
-@EnableMongoRepositories(
-    basePackageClasses = ExternalParametersRepository.class,
-    repositoryBaseClass = VitamUIRepositoryImpl.class
-)
-public class ExternalParametersRepositoryTest {
+@SpringBootTest
+@ExtendWith(SpringExtension.class)
+@ActiveProfiles("test")
+@Import(VitamClientTestConfig.class)
+public class ExternalParametersRepositoryTest extends AbstractMongoTests {
+
+    private static final String EXTERNAL_PARAMETERS_ID = "external_param_default";
 
     @Autowired
     private ExternalParametersRepository repository;
 
-    private static final String EXTERNAL_PARAMETERS_ID = "external_param_default";
-
-    @AfterAll
+    @AfterEach
     public void cleanUp() {
         repository.deleteById(EXTERNAL_PARAMETERS_ID);
     }
@@ -89,13 +87,19 @@ public class ExternalParametersRepositoryTest {
 
     @Test
     public void testFindById() {
+        final ExternalParameters parameters = new ExternalParameters();
+        parameters.setId(EXTERNAL_PARAMETERS_ID);
+
+        final ExternalParameters created = repository.save(parameters);
+        assertThat(created.getId()).isEqualTo(EXTERNAL_PARAMETERS_ID);
+
         Query query = new Query();
         query.addCriteria(Criteria.where("id").is(EXTERNAL_PARAMETERS_ID));
 
         final Optional<ExternalParameters> externalParameters = repository.findOne(query);
 
-        assertNotNull(externalParameters);
-        assertNotNull(externalParameters.get());
-        assertEquals(externalParameters.get().getId(), EXTERNAL_PARAMETERS_ID);
+        Assertions.assertNotNull(externalParameters);
+        Assertions.assertNotNull(externalParameters.get());
+        Assertions.assertEquals(externalParameters.get().getId(), EXTERNAL_PARAMETERS_ID);
     }
 }

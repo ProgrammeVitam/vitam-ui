@@ -39,8 +39,6 @@ package fr.gouv.vitamui.iam.internal.server.externalParameters.service;
 import fr.gouv.vitamui.commons.api.converter.Converter;
 import fr.gouv.vitamui.commons.api.domain.ExternalParametersDto;
 import fr.gouv.vitamui.commons.api.domain.ProfileDto;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.logbook.dto.EventDiffDto;
 import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
 import fr.gouv.vitamui.commons.mongo.service.VitamUICrudService;
@@ -53,6 +51,8 @@ import fr.gouv.vitamui.iam.internal.server.logbook.service.IamLogbookService;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import lombok.Getter;
 import lombok.Setter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -63,9 +63,7 @@ import java.util.Optional;
 @Setter
 public class ExternalParametersInternalService extends VitamUICrudService<ExternalParametersDto, ExternalParameters> {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
-        ExternalParametersInternalService.class
-    );
+    private static final Logger LOGGER = LoggerFactory.getLogger(ExternalParametersInternalService.class);
 
     public static final String EXTERNAL_PARAMETER_IDENTIFIER_PREFIX = "DEFAULT_EXT_PARAM_";
     public static final String EXTERNAL_PARAMETER_NAME_PREFIX = "Liste des paramétrages externes du tenant ";

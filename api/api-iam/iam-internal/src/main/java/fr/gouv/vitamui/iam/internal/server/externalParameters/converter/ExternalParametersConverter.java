@@ -47,7 +47,10 @@ import fr.gouv.vitamui.iam.internal.server.externalParameters.domain.ExternalPar
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Getter

@@ -1,8 +1,6 @@
 package fr.gouv.vitamui.commons.test.rest;
 
-import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import org.apache.commons.io.IOUtils;
-import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,11 +23,6 @@ public abstract class AbstractSwaggerJsonFileGenerationTest {
 
     @Autowired
     protected MockMvc mockMvc;
-
-    @Before
-    public void setup() {
-        ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
-    }
 
     /**
      * Call to get and save the Swagger JSON file.

@@ -35,12 +35,12 @@ import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.client.BasePaginatingAndSortingRestClient;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 import org.apache.http.client.utils.URIBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -60,7 +60,7 @@ import static fr.gouv.vitamui.commons.api.CommonConstants.PATH_ID;
 public class CollectExternalRestClient
     extends BasePaginatingAndSortingRestClient<CollectProjectDto, ExternalHttpContext> {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(CollectExternalRestClient.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(CollectExternalRestClient.class);
 
     public CollectExternalRestClient(RestTemplate restTemplate, String baseUrl) {
         super(restTemplate, baseUrl);

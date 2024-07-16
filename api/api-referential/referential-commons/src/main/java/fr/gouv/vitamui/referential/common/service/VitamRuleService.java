@@ -61,14 +61,14 @@ import fr.gouv.vitamui.commons.api.exception.ConflictException;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.exception.UnavailableServiceException;
 import fr.gouv.vitamui.commons.api.exception.UnexpectedDataException;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.dto.RuleDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsResponseDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.RuleNodeResponseDto;
 import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
 import fr.gouv.vitamui.referential.common.dsl.VitamQueryHelper;
 import fr.gouv.vitamui.referential.common.dto.RuleCSVDto;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.multipart.MultipartFile;
@@ -83,7 +83,7 @@ import java.util.stream.Collectors;
 
 public class VitamRuleService {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(VitamRuleService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(VitamRuleService.class);
 
     private final AdminExternalClient adminExternalClient;
 
@@ -338,7 +338,10 @@ public class VitamRuleService {
                 ) {
                     LOGGER.error("Can't find the requested rule with identifier, this rule does not exist in VITAM");
                     throw new ConflictException(
-                        "Can't find the requested rule with identifier {}, this rule does not exist in VITAM",
+                        String.format(
+                            "Can't find the requested rule with identifier %s, this rule does not exist in VITAM",
+                            checkRule.getRuleId()
+                        ),
                         checkRule.getRuleId()
                     );
                 }

@@ -2,51 +2,37 @@ package fr.gouv.vitamui.iam.internal.server.externalParameters.service;
 
 import fr.gouv.vitamui.commons.api.domain.ExternalParametersDto;
 import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
-import fr.gouv.vitamui.commons.mongo.repository.impl.VitamUIRepositoryImpl;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
+import fr.gouv.vitamui.commons.test.VitamClientTestConfig;
 import fr.gouv.vitamui.iam.common.enums.Application;
 import fr.gouv.vitamui.iam.internal.server.externalParameters.converter.ExternalParametersConverter;
 import fr.gouv.vitamui.iam.internal.server.externalParameters.dao.ExternalParametersRepository;
 import fr.gouv.vitamui.iam.internal.server.externalParameters.domain.ExternalParameters;
-import fr.gouv.vitamui.iam.internal.server.group.dao.GroupRepository;
-import fr.gouv.vitamui.iam.internal.server.idp.service.SpMetadataGenerator;
 import fr.gouv.vitamui.iam.internal.server.logbook.service.AbstractLogbookIntegrationTest;
 import fr.gouv.vitamui.iam.internal.server.logbook.service.IamLogbookService;
-import fr.gouv.vitamui.iam.internal.server.owner.dao.OwnerRepository;
-import fr.gouv.vitamui.iam.internal.server.profile.dao.ProfileRepository;
-import fr.gouv.vitamui.iam.internal.server.tenant.dao.TenantRepository;
-import fr.gouv.vitamui.iam.internal.server.user.dao.UserRepository;
-import fr.gouv.vitamui.iam.internal.server.user.service.ConnectionHistoryService;
 import fr.gouv.vitamui.iam.internal.server.utils.IamServerUtilsTest;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Optional;
 
 import static org.mockito.Mockito.when;
 
-@RunWith(SpringRunner.class)
-@EnableMongoRepositories(
-    basePackageClasses = {
-        ExternalParametersRepository.class,
-        CustomSequenceRepository.class,
-        GroupRepository.class,
-        OwnerRepository.class,
-        ProfileRepository.class,
-        UserRepository.class,
-        TenantRepository.class,
-    },
-    repositoryBaseClass = VitamUIRepositoryImpl.class
-)
+@SpringBootTest
+@ExtendWith(SpringExtension.class)
+@ActiveProfiles("test")
+@Import(VitamClientTestConfig.class)
 public class ExternalParametersInternalServiceTest extends AbstractLogbookIntegrationTest {
 
     public static final String ANY_EXTERNAL_PARAM_ID = "ANY_EXTERNAL_PARAM_ID";
@@ -67,15 +53,9 @@ public class ExternalParametersInternalServiceTest extends AbstractLogbookIntegr
     @Autowired
     private IamLogbookService iamLogbookService;
 
-    @MockBean
-    private ConnectionHistoryService connectionHistoryService;
-
-    @MockBean
-    private SpMetadataGenerator spMetadataGenerator;
-
     private static final String ID = "ID";
 
-    @Before
+    @BeforeEach
     public void setup() {
         service = new ExternalParametersInternalService(
             sequenceRepository,
@@ -102,7 +82,7 @@ public class ExternalParametersInternalServiceTest extends AbstractLogbookIntegr
         when(internalSecurityService.getTenantIdentifier()).thenReturn(1);
 
         ExternalParametersDto res = this.service.getMyExternalParameters();
-        Assert.assertNotNull("ExternalParameters should be returned.", res);
-        Assert.assertTrue(res.getId().equals(ID));
+        Assertions.assertNotNull(res, "ExternalParameters should be returned.");
+        Assertions.assertEquals(ID, res.getId());
     }
 }

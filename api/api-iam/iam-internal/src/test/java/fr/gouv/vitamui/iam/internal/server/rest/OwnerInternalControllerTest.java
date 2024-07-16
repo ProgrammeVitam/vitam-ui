@@ -3,7 +3,6 @@ package fr.gouv.vitamui.iam.internal.server.rest;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitamui.commons.api.domain.OwnerDto;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
-import fr.gouv.vitamui.commons.test.utils.AbstractServerIdentityBuilder;
 import fr.gouv.vitamui.iam.internal.server.owner.service.OwnerInternalService;
 import fr.gouv.vitamui.iam.internal.server.utils.IamServerUtilsTest;
 import org.junit.Before;
@@ -19,7 +18,7 @@ import static org.junit.Assert.assertEquals;
  *
  *
  */
-public final class OwnerInternalControllerTest extends AbstractServerIdentityBuilder {
+public final class OwnerInternalControllerTest {
 
     @InjectMocks
     private OwnerInternalController controller;

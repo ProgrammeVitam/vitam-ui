@@ -41,14 +41,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.api.exception.ParseOperationException;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.converter.VitamUIErrorConverter;
 import fr.gouv.vitamui.commons.rest.dto.VitamUIError;
 import fr.gouv.vitamui.commons.rest.util.RestUtils;
 import fr.gouv.vitamui.commons.utils.SecurePathUtils;
 import lombok.ToString;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.core.io.buffer.DataBufferFactory;
@@ -91,7 +91,7 @@ public abstract class BaseWebClient<C extends AbstractHttpContext> extends BaseC
 
     protected static final DataBufferFactory BUFFER_FACTORY = new DefaultDataBufferFactory();
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(BaseWebClient.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(BaseWebClient.class);
 
     public BaseWebClient(final WebClient webClient, final String baseUrl) {
         super(baseUrl);

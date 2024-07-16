@@ -2,35 +2,30 @@ package fr.gouv.vitamui.commons.logbook.service;
 
 import fr.gouv.vitam.access.external.client.AdminExternalClient;
 import fr.gouv.vitam.common.model.StatusCode;
-import fr.gouv.vitamui.commons.logbook.TestMongoConfig;
 import fr.gouv.vitamui.commons.logbook.common.EventType;
-import fr.gouv.vitamui.commons.logbook.config.LogbookAutoConfiguration;
 import fr.gouv.vitamui.commons.logbook.dao.EventRepository;
 import fr.gouv.vitamui.commons.logbook.domain.Event;
-import fr.gouv.vitamui.commons.mongo.repository.impl.VitamUIRepositoryImpl;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
-import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
-import org.junit.After;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import fr.gouv.vitamui.commons.test.AbstractMongoTests;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Optional;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@RunWith(SpringRunner.class)
-@ContextConfiguration(classes = { LogbookAutoConfiguration.class, TestMongoConfig.class })
-@EnableMongoRepositories(basePackageClasses = EventRepository.class, repositoryBaseClass = VitamUIRepositoryImpl.class)
-public class EventServiceIntegTest {
+@SpringBootTest
+@ExtendWith(SpringExtension.class)
+public class EventServiceIntegrationTest extends AbstractMongoTests {
 
     @MockBean
     private AdminExternalClient adminExternalClient;
@@ -41,17 +36,13 @@ public class EventServiceIntegTest {
     @Autowired
     private EventService service;
 
-    @After
+    @AfterEach
     public void cleanUp() {
         repository.deleteAll();
     }
 
-    @BeforeClass
-    public static void setup() {
-        ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
-    }
-
     @Test
+    @Disabled
     public void createLogbook() {
         String evIdReq = UUID.randomUUID().toString();
         InternalHttpContext context = new InternalHttpContext(

@@ -42,8 +42,6 @@ import fr.gouv.vitamui.commons.api.domain.Criterion;
 import fr.gouv.vitamui.commons.api.domain.QueryDto;
 import fr.gouv.vitamui.commons.api.domain.TenantInformationDto;
 import fr.gouv.vitamui.commons.api.exception.UnAuthorizedException;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.api.utils.CriteriaUtils;
 import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.mongo.service.VitamUICrudService;
@@ -55,9 +53,16 @@ import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.collections4.CollectionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -70,7 +75,7 @@ import java.util.stream.Collectors;
 @Setter
 public class ApplicationInternalService extends VitamUICrudService<ApplicationDto, Application> {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ApplicationInternalService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ApplicationInternalService.class);
 
     private final ApplicationRepository applicationRepository;
     private final ApplicationConverter applicationConverter;

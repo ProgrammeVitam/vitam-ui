@@ -29,7 +29,6 @@
 
 package fr.gouv.vitamui.commons.api.utils;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -40,11 +39,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(SpringExtension.class)
 class OntologyServiceReaderTest {
-
-    @BeforeEach
-    public void setUp() {
-        ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
-    }
 
     @Test
     void testReadOntologiesWhenFileExist() throws IOException {

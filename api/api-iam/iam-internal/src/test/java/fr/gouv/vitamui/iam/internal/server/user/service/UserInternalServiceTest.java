@@ -17,7 +17,6 @@ import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
 import fr.gouv.vitamui.commons.api.exception.NotFoundException;
 import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
-import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import fr.gouv.vitamui.commons.utils.VitamUIUtils;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.iam.common.enums.OtpEnum;
@@ -167,7 +166,6 @@ public final class UserInternalServiceTest {
             connectionHistoryService
         );
         tokenRepository = mock(TokenRepository.class);
-        ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
     }
 
     @Test(expected = NotFoundException.class)

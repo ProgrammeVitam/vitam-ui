@@ -1,6 +1,5 @@
 package fr.gouv.vitamui.ingest.external.client;
 
-import fr.gouv.vitamui.commons.test.utils.AbstractServerIdentityBuilder;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -9,7 +8,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.web.client.RestTemplate;
 
 @RunWith(MockitoJUnitRunner.Silent.class)
-public class IngestExternalRestClientTest extends AbstractServerIdentityBuilder {
+public class IngestExternalRestClientTest {
 
     private IngestExternalRestClient ingestExternalRestClient;
 

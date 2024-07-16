@@ -24,7 +24,6 @@ import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.any;
@@ -122,7 +121,10 @@ public final class ProvidersServiceTest {
             service.loadData();
             fail("should fail");
         } catch (final NullPointerException e) {
-            assertNull(e.getMessage());
+            assertEquals(
+                "Cannot invoke \"java.util.List.sort(java.util.Comparator)\" because \"temporaryProviders\" is null",
+                e.getMessage()
+            );
         }
     }
 

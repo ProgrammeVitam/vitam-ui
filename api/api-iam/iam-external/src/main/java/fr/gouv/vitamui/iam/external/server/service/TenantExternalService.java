@@ -38,13 +38,15 @@ package fr.gouv.vitamui.iam.external.server.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
-import fr.gouv.vitamui.commons.api.domain.*;
+import fr.gouv.vitamui.commons.api.domain.Criterion;
+import fr.gouv.vitamui.commons.api.domain.CriterionOperator;
+import fr.gouv.vitamui.commons.api.domain.QueryDto;
+import fr.gouv.vitamui.commons.api.domain.ServicesData;
+import fr.gouv.vitamui.commons.api.domain.TenantDto;
 import fr.gouv.vitamui.commons.api.exception.ForbiddenException;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.api.exception.NoRightsException;
 import fr.gouv.vitamui.commons.api.exception.NotImplementedException;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.api.utils.ApiUtils;
 import fr.gouv.vitamui.commons.api.utils.CastUtils;
 import fr.gouv.vitamui.commons.utils.JsonUtils;
@@ -56,11 +58,19 @@ import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -73,7 +83,7 @@ import java.util.stream.Collectors;
 @Service
 public class TenantExternalService extends AbstractResourceClientService<TenantDto, TenantDto> {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(TenantExternalService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(TenantExternalService.class);
 
     private final TenantInternalRestClient tenantInternalRestClient;
 

@@ -47,7 +47,6 @@ import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.RequestResponseOK;
-import fr.gouv.vitamui.commons.test.utils.AbstractServerIdentityBuilder;
 import fr.gouv.vitamui.commons.vitam.api.access.UnitService;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
 import fr.gouv.vitamui.referential.common.service.VitamBatchReportService;
@@ -72,7 +71,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
-public class ProbativeValueInternalServiceTest extends AbstractServerIdentityBuilder {
+public class ProbativeValueInternalServiceTest {
 
     private ProbativeValueInternalService probativeValueInternalService;
 
@@ -118,7 +117,7 @@ public class ProbativeValueInternalServiceTest extends AbstractServerIdentityBui
         zipOutputStream.close();
 
         assertTrue(zip.exists());
-        FileSystem zipFs = FileSystems.newFileSystem(zip.toPath(), null);
+        FileSystem zipFs = FileSystems.newFileSystem(zip.toPath(), (ClassLoader) null);
         Path zipJsonFile = zipFs.getPath(operationId + ".json");
         assertTrue(Files.exists(zipJsonFile));
         Path zipPdfFile = zipFs.getPath(operationId + ".pdf");
@@ -166,7 +165,7 @@ public class ProbativeValueInternalServiceTest extends AbstractServerIdentityBui
         zipOutputStream.close();
 
         assertTrue(zip.exists());
-        FileSystem zipFs = FileSystems.newFileSystem(zip.toPath(), null);
+        FileSystem zipFs = FileSystems.newFileSystem(zip.toPath(), (ClassLoader) null);
         Path zipJsonFile = zipFs.getPath(operationId + ".json");
         assertTrue(Files.exists(zipJsonFile));
         Path zipPdfFile = zipFs.getPath(operationId + ".pdf");
@@ -205,7 +204,7 @@ public class ProbativeValueInternalServiceTest extends AbstractServerIdentityBui
         zipOutputStream.close();
 
         assertTrue(zip.exists());
-        FileSystem zipFs = FileSystems.newFileSystem(zip.toPath(), null);
+        FileSystem zipFs = FileSystems.newFileSystem(zip.toPath(), (ClassLoader) null);
         Path zipJsonFile = zipFs.getPath(operationId + ".json");
         assertTrue(Files.exists(zipJsonFile));
         Path zipPdfFile = zipFs.getPath(operationId + ".pdf");

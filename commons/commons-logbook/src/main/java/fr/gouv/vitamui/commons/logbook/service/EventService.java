@@ -41,8 +41,6 @@ import fr.gouv.vitam.common.guid.GUID;
 import fr.gouv.vitam.common.guid.GUIDFactory;
 import fr.gouv.vitam.common.model.StatusCode;
 import fr.gouv.vitamui.commons.api.exception.ApplicationServerException;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.logbook.common.EventLogable;
 import fr.gouv.vitamui.commons.logbook.common.EventMessages;
 import fr.gouv.vitamui.commons.logbook.common.EventStatus;
@@ -54,6 +52,8 @@ import fr.gouv.vitamui.commons.logbook.scheduler.SendEventToVitamTasks;
 import fr.gouv.vitamui.commons.logbook.util.LogbookUtils;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -71,7 +71,7 @@ public class EventService {
 
     private final EventMessages messages;
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(EventService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(EventService.class);
 
     @Autowired
     public EventService(final EventRepository repository, final EventMessages messages) {

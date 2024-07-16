@@ -2,8 +2,6 @@ package fr.gouv.vitamui.iam.external.server.rest;
 
 import fr.gouv.vitamui.commons.api.domain.IdDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.iam.common.dto.cas.LoginRequestDto;
 import fr.gouv.vitamui.iam.common.rest.RestApi;
 import fr.gouv.vitamui.iam.external.server.service.CasExternalService;
@@ -11,6 +9,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
@@ -29,7 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(controllers = { CasExternalController.class })
 public class CasExternalControllerTest extends ApiIamControllerTest<IdDto> {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(CasExternalControllerTest.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(CasExternalControllerTest.class);
 
     @MockBean
     private CasExternalService casExternalService;
@@ -95,7 +95,7 @@ public class CasExternalControllerTest extends ApiIamControllerTest<IdDto> {
     }
 
     @Override
-    protected VitamUILogger getLog() {
+    protected Logger getLog() {
         return LOGGER;
     }
 

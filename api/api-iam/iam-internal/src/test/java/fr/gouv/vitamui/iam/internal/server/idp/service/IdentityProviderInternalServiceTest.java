@@ -1,7 +1,6 @@
 package fr.gouv.vitamui.iam.internal.server.idp.service;
 
 import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
-import fr.gouv.vitamui.commons.test.utils.AbstractServerIdentityBuilder;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.internal.server.customer.dao.CustomerRepository;
 import fr.gouv.vitamui.iam.internal.server.customer.domain.Customer;
@@ -40,7 +39,7 @@ import static org.mockito.Mockito.when;
  *
  */
 
-public class IdentityProviderInternalServiceTest extends AbstractServerIdentityBuilder {
+public class IdentityProviderInternalServiceTest {
 
     private IdentityProviderInternalService service;
 

@@ -3,8 +3,6 @@ package fr.gouv.vitamui.iam.internal.server.rest;
 import com.google.common.collect.ImmutableMap;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.ProfileDto;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.iam.common.rest.RestApi;
 import fr.gouv.vitamui.iam.internal.server.common.rest.ApiIamControllerTest;
 import fr.gouv.vitamui.iam.internal.server.profile.service.ProfileInternalService;
@@ -13,6 +11,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -23,7 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(controllers = { ProfileInternalController.class })
 public class ProfileInternalControllerTest extends ApiIamControllerTest<ProfileDto> {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ProfileInternalControllerTest.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ProfileInternalControllerTest.class);
 
     @MockBean
     private ProfileInternalService profileInternalService;
@@ -59,7 +59,7 @@ public class ProfileInternalControllerTest extends ApiIamControllerTest<ProfileD
     }
 
     @Override
-    protected VitamUILogger getLog() {
+    protected Logger getLog() {
         return LOGGER;
     }
 

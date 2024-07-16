@@ -38,8 +38,6 @@ package fr.gouv.vitamui.iam.internal.server.rest;
 
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.domain.ApplicationDto;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.api.utils.EnumUtils;
 import fr.gouv.vitamui.iam.common.dto.common.EmbeddedOptions;
 import fr.gouv.vitamui.iam.common.rest.RestApi;
@@ -48,8 +46,14 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.Getter;
 import lombok.Setter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collection;
 import java.util.Optional;
@@ -66,7 +70,7 @@ import java.util.Optional;
 @Api(tags = "applications", value = "Applications Management", description = "Applications Management")
 public class ApplicationInternalController {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ApplicationInternalController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ApplicationInternalController.class);
 
     private ApplicationInternalService internalApplicationService;
 

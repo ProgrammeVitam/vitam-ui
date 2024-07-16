@@ -37,8 +37,6 @@
 package fr.gouv.vitamui.cas.util;
 
 import fr.gouv.vitamui.commons.api.CommonConstants;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
@@ -51,6 +49,8 @@ import org.apereo.cas.web.support.WebUtils;
 import org.pac4j.core.client.IndirectClient;
 import org.pac4j.core.util.CommonHelper;
 import org.pac4j.core.util.Pac4jConstants;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.webflow.context.ExternalContext;
@@ -74,7 +74,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class Utils {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(Utils.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(Utils.class);
 
     private static final int BROWSER_SESSION_LIFETIME = -1;
 

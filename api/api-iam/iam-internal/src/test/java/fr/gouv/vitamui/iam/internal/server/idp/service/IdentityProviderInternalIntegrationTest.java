@@ -2,41 +2,40 @@ package fr.gouv.vitamui.iam.internal.server.idp.service;
 
 import fr.gouv.vitamui.commons.logbook.common.EventType;
 import fr.gouv.vitamui.commons.logbook.domain.Event;
-import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
-import fr.gouv.vitamui.commons.mongo.repository.impl.VitamUIRepositoryImpl;
 import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
+import fr.gouv.vitamui.commons.test.VitamClientTestConfig;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.internal.server.common.domain.MongoDbCollections;
 import fr.gouv.vitamui.iam.internal.server.customer.dao.CustomerRepository;
 import fr.gouv.vitamui.iam.internal.server.customer.domain.Customer;
-import fr.gouv.vitamui.iam.internal.server.group.dao.GroupRepository;
 import fr.gouv.vitamui.iam.internal.server.idp.converter.IdentityProviderConverter;
 import fr.gouv.vitamui.iam.internal.server.idp.dao.IdentityProviderRepository;
 import fr.gouv.vitamui.iam.internal.server.logbook.service.AbstractLogbookIntegrationTest;
 import fr.gouv.vitamui.iam.internal.server.logbook.service.IamLogbookService;
-import fr.gouv.vitamui.iam.internal.server.owner.dao.OwnerRepository;
-import fr.gouv.vitamui.iam.internal.server.profile.dao.ProfileRepository;
 import fr.gouv.vitamui.iam.internal.server.tenant.dao.TenantRepository;
 import fr.gouv.vitamui.iam.internal.server.tenant.domain.Tenant;
 import fr.gouv.vitamui.iam.internal.server.user.dao.UserRepository;
 import fr.gouv.vitamui.iam.internal.server.user.service.ConnectionHistoryService;
 import fr.gouv.vitamui.iam.internal.server.utils.IamServerUtilsTest;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -44,18 +43,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 
-@RunWith(SpringRunner.class)
-@EnableMongoRepositories(
-    basePackageClasses = { IdentityProviderRepository.class, CustomSequenceRepository.class },
-    repositoryBaseClass = VitamUIRepositoryImpl.class
-)
+@SpringBootTest
+@ExtendWith(SpringExtension.class)
+@ActiveProfiles("test")
+@Import(VitamClientTestConfig.class)
 public class IdentityProviderInternalIntegrationTest extends AbstractLogbookIntegrationTest {
-
-    @MockBean
-    private ProfileRepository profileRepository;
-
-    @MockBean
-    private GroupRepository groupRepository;
 
     @Autowired
     private IdentityProviderRepository repository;
@@ -68,9 +60,6 @@ public class IdentityProviderInternalIntegrationTest extends AbstractLogbookInte
     @MockBean
     private SequenceGeneratorService sequenceGeneratorService;
 
-    @MockBean
-    private OwnerRepository ownerRepository;
-
     @Mock
     private InternalHttpContext internalHttpContext;
 
@@ -80,8 +69,6 @@ public class IdentityProviderInternalIntegrationTest extends AbstractLogbookInte
     @Autowired
     private IamLogbookService iamLogbookService;
 
-    private IdentityProviderConverter identityProviderConverter = new IdentityProviderConverter(spMetadataGenerator);
-
     private IdentityProviderInternalService service;
 
     @MockBean
@@ -90,9 +77,9 @@ public class IdentityProviderInternalIntegrationTest extends AbstractLogbookInte
     @MockBean
     private UserRepository userRepository;
 
-    @Before
+    @BeforeEach
     public void setup() {
-        identityProviderConverter = new IdentityProviderConverter(spMetadataGenerator);
+        IdentityProviderConverter identityProviderConverter = new IdentityProviderConverter(spMetadataGenerator);
         service = new IdentityProviderInternalService(
             sequenceGeneratorService,
             repository,
@@ -104,9 +91,7 @@ public class IdentityProviderInternalIntegrationTest extends AbstractLogbookInte
         repository.deleteAll();
         final Tenant tenant = new Tenant();
         tenant.setIdentifier(10);
-        Mockito.when(tenantRepository.findOne(ArgumentMatchers.any(Query.class))).thenReturn(
-            Optional.ofNullable(tenant)
-        );
+        Mockito.when(tenantRepository.findOne(ArgumentMatchers.any(Query.class))).thenReturn(Optional.of(tenant));
     }
 
     @Test
@@ -144,7 +129,7 @@ public class IdentityProviderInternalIntegrationTest extends AbstractLogbookInte
         service.patch(partialDto);
         partialDto.remove("internal");
 
-        partialDto.put("patterns", java.util.Arrays.asList(".*@vitamui.com"));
+        partialDto.put("patterns", List.of(".*@vitamui.com"));
         service.patch(partialDto);
         partialDto.remove("patterns");
 

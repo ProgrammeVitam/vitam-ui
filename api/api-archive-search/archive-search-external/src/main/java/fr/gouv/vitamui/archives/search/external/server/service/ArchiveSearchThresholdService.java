@@ -33,11 +33,11 @@ import fr.gouv.archive.internal.client.ArchiveInternalRestClient;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.commons.api.domain.ExternalParametersDto;
 import fr.gouv.vitamui.commons.api.domain.ParameterDto;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.iam.internal.client.ExternalParametersInternalRestClient;
 import fr.gouv.vitamui.iam.security.client.AbstractResourceClientService;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -50,7 +50,7 @@ import java.util.Optional;
 @Service
 public class ArchiveSearchThresholdService extends AbstractResourceClientService<ArchiveUnitsDto, ArchiveUnitsDto> {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ArchiveSearchThresholdService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ArchiveSearchThresholdService.class);
     public static final String PARAM_BULK_OPERATIONS_THRESHOLD_NAME = "PARAM_BULK_OPERATIONS_THRESHOLD";
 
     @Autowired

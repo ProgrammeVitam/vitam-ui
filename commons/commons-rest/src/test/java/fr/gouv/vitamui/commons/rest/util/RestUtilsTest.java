@@ -34,13 +34,11 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+
 package fr.gouv.vitamui.commons.rest.util;
 
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import org.apache.commons.lang3.ArrayUtils;
 import org.assertj.core.api.Assertions;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.core.io.InputStreamResource;
@@ -58,15 +56,8 @@ import java.util.Optional;
 @RunWith(SpringRunner.class)
 public class RestUtilsTest {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(RestUtilsTest.class);
-
-    @BeforeClass
-    public static void setup() {
-        ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
-    }
-
     @Test
-    public void testCheckResponseEntityWhenDowloadingEmptyResourcesThenOK() throws IOException {
+    public void testCheckResponseEntityWhenDownloadingEmptyResourcesThenOK() throws IOException {
         final HttpHeaders headers = new HttpHeaders();
         ResponseEntity<Resource> response = ResponseEntity.ok()
             .headers(headers)
@@ -86,7 +77,7 @@ public class RestUtilsTest {
     }
 
     @Test
-    public void testCheckResponseEntityWhenDowloadingNotEmptyResourcesThenGetAllBytes() throws IOException {
+    public void testCheckResponseEntityWhenDownloadingNotEmptyResourcesThenGetAllBytes() throws IOException {
         final HttpHeaders headers = new HttpHeaders();
         ResponseEntity<Resource> response = ResponseEntity.ok()
             .headers(headers)

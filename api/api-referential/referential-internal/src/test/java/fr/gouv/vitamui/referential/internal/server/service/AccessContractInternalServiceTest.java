@@ -34,6 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+
 package fr.gouv.vitamui.referential.internal.server.service;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -55,7 +56,6 @@ import fr.gouv.vitamui.commons.api.enums.ErrorImportFileMessage;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.ConflictException;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
-import fr.gouv.vitamui.commons.api.identity.ServerIdentityConfiguration;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
 import fr.gouv.vitamui.commons.vitam.api.administration.AccessContractService;
@@ -67,15 +67,15 @@ import fr.gouv.vitamui.referential.internal.server.accesscontract.AccessContract
 import fr.gouv.vitamui.referential.internal.server.accesscontract.AccessContractConverter;
 import fr.gouv.vitamui.referential.internal.server.accesscontract.AccessContractInternalService;
 import org.apache.commons.io.IOUtils;
-import org.easymock.EasyMock;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.powermock.api.easymock.PowerMock;
-import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -88,29 +88,35 @@ import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
-import static org.easymock.EasyMock.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.when;
 
-@RunWith(org.powermock.modules.junit4.PowerMockRunner.class)
-@PrepareForTest({ ServerIdentityConfiguration.class })
+@ExtendWith(SpringExtension.class)
 public class AccessContractInternalServiceTest {
 
+    @Mock
     private AccessContractService accessContractService;
+
+    @Mock
     private VitamUIAccessContractService vitamUIAccessContractService;
+
+    @Mock
     private LogbookService logbookService;
-    private AccessContractInternalService accessContractInternalService;
+
+    @Mock
     private ApplicationInternalRestClient applicationInternalRestClient;
+
+    @Mock
     private InternalSecurityService internalSecurityService;
 
-    @Before
+    @InjectMocks
+    private AccessContractInternalService accessContractInternalService;
+
+    @BeforeEach
     public void setUp() {
-        accessContractService = mock(AccessContractService.class);
-        vitamUIAccessContractService = mock(VitamUIAccessContractService.class);
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+        ObjectMapper objectMapper = new ObjectMapper().disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
         AccessContractConverter converter = new AccessContractConverter();
-        logbookService = mock(LogbookService.class);
-        applicationInternalRestClient = mock(ApplicationInternalRestClient.class);
-        internalSecurityService = mock(InternalSecurityService.class);
         accessContractInternalService = new AccessContractInternalService(
             accessContractService,
             vitamUIAccessContractService,
@@ -120,19 +126,6 @@ public class AccessContractInternalServiceTest {
             applicationInternalRestClient,
             internalSecurityService
         );
-
-        // Mock server identity for Logs when not using spring
-        PowerMock.suppress(PowerMock.constructor(ServerIdentityConfiguration.class));
-        PowerMock.mockStatic(ServerIdentityConfiguration.class);
-        ServerIdentityConfiguration serverIdentityConfigurationMock = PowerMock.createMock(
-            ServerIdentityConfiguration.class
-        );
-        expect(ServerIdentityConfiguration.getInstance()).andReturn(serverIdentityConfigurationMock).anyTimes();
-        expect(serverIdentityConfigurationMock.getLoggerMessagePrepend())
-            .andReturn("LOG TESTS AccessContractInternalServiceTest - ")
-            .anyTimes();
-        PowerMock.replay(ServerIdentityConfiguration.class);
-        PowerMock.replay(serverIdentityConfigurationMock);
     }
 
     @Test
@@ -140,14 +133,11 @@ public class AccessContractInternalServiceTest {
         VitamContext vitamContext = new VitamContext(0);
         String identifier = "id_0";
 
-        expect(accessContractService.findAccessContractById(isA(VitamContext.class), isA(String.class))).andReturn(
+        when(accessContractService.findAccessContractById(any(VitamContext.class), any(String.class))).thenReturn(
             new RequestResponseOK<AccessContractModel>().setHttpCode(200)
         );
-        EasyMock.replay(accessContractService);
 
-        assertThatCode(() -> {
-            accessContractInternalService.getOne(vitamContext, identifier);
-        }).doesNotThrowAnyException();
+        assertThatCode(() -> accessContractInternalService.getOne(vitamContext, identifier)).doesNotThrowAnyException();
     }
 
     @Test
@@ -155,14 +145,11 @@ public class AccessContractInternalServiceTest {
         VitamContext vitamContext = new VitamContext(0);
         String identifier = "id_0";
 
-        expect(accessContractService.findAccessContractById(isA(VitamContext.class), isA(String.class))).andReturn(
+        when(accessContractService.findAccessContractById(any(VitamContext.class), any(String.class))).thenReturn(
             new RequestResponseOK<AccessContractModel>().setHttpCode(400)
         );
-        EasyMock.replay(accessContractService);
 
-        assertThatCode(() -> {
-            accessContractInternalService.getOne(vitamContext, identifier);
-        }).doesNotThrowAnyException();
+        assertThatCode(() -> accessContractInternalService.getOne(vitamContext, identifier)).doesNotThrowAnyException();
     }
 
     @Test
@@ -171,42 +158,35 @@ public class AccessContractInternalServiceTest {
         VitamContext vitamContext = new VitamContext(0);
         String identifier = "id_0";
 
-        expect(accessContractService.findAccessContractById(vitamContext, identifier)).andThrow(
+        when(accessContractService.findAccessContractById(vitamContext, identifier)).thenThrow(
             new VitamClientException("Exception thrown by Vitam")
         );
-        EasyMock.replay(accessContractService);
 
-        assertThatCode(() -> {
-            accessContractInternalService.getOne(vitamContext, identifier);
-        }).isInstanceOf(InternalServerException.class);
+        assertThatCode(() -> accessContractInternalService.getOne(vitamContext, identifier)).isInstanceOf(
+            InternalServerException.class
+        );
     }
 
     @Test
     public void getAll_should_return_ok_when_vitamclient_ok() throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
 
-        expect(accessContractService.findAccessContracts(vitamContext, new Select().getFinalSelect())).andReturn(
+        when(accessContractService.findAccessContracts(vitamContext, new Select().getFinalSelect())).thenReturn(
             new RequestResponseOK<AccessContractModel>().setHttpCode(200)
         );
-        EasyMock.replay(accessContractService);
 
-        assertThatCode(() -> {
-            accessContractInternalService.getAll(vitamContext);
-        }).doesNotThrowAnyException();
+        assertThatCode(() -> accessContractInternalService.getAll(vitamContext)).doesNotThrowAnyException();
     }
 
     @Test
     public void getAll_should_return_ok_when_vitamclient_400() throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
 
-        expect(accessContractService.findAccessContracts(vitamContext, new Select().getFinalSelect())).andReturn(
+        when(accessContractService.findAccessContracts(vitamContext, new Select().getFinalSelect())).thenReturn(
             new RequestResponseOK<AccessContractModel>().setHttpCode(400)
         );
-        EasyMock.replay(accessContractService);
 
-        assertThatCode(() -> {
-            accessContractInternalService.getAll(vitamContext);
-        }).doesNotThrowAnyException();
+        assertThatCode(() -> accessContractInternalService.getAll(vitamContext)).doesNotThrowAnyException();
     }
 
     @Test
@@ -214,14 +194,13 @@ public class AccessContractInternalServiceTest {
         throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
 
-        expect(accessContractService.findAccessContracts(vitamContext, new Select().getFinalSelect())).andThrow(
+        when(accessContractService.findAccessContracts(vitamContext, new Select().getFinalSelect())).thenThrow(
             new VitamClientException("Exception thrown by Vitam")
         );
-        EasyMock.replay(accessContractService);
 
-        assertThatCode(() -> {
-            accessContractInternalService.getAll(vitamContext);
-        }).isInstanceOf(InternalServerException.class);
+        assertThatCode(() -> accessContractInternalService.getAll(vitamContext)).isInstanceOf(
+            InternalServerException.class
+        );
     }
 
     @Test
@@ -229,14 +208,11 @@ public class AccessContractInternalServiceTest {
         VitamContext vitamContext = new VitamContext(0);
         JsonNode query = JsonHandler.createObjectNode();
 
-        expect(accessContractService.findAccessContracts(vitamContext, query)).andReturn(
+        when(accessContractService.findAccessContracts(vitamContext, query)).thenReturn(
             new RequestResponseOK().setHttpCode(200)
         );
-        EasyMock.replay(accessContractService);
 
-        assertThatCode(() -> {
-            accessContractInternalService.findAll(vitamContext, query);
-        }).doesNotThrowAnyException();
+        assertThatCode(() -> accessContractInternalService.findAll(vitamContext, query)).doesNotThrowAnyException();
     }
 
     @Test
@@ -244,14 +220,11 @@ public class AccessContractInternalServiceTest {
         VitamContext vitamContext = new VitamContext(0);
         JsonNode query = JsonHandler.createObjectNode();
 
-        expect(accessContractService.findAccessContracts(vitamContext, query)).andReturn(
+        when(accessContractService.findAccessContracts(vitamContext, query)).thenReturn(
             new RequestResponseOK().setHttpCode(400)
         );
-        EasyMock.replay(accessContractService);
 
-        assertThatCode(() -> {
-            accessContractInternalService.findAll(vitamContext, query);
-        }).doesNotThrowAnyException();
+        assertThatCode(() -> accessContractInternalService.findAll(vitamContext, query)).doesNotThrowAnyException();
     }
 
     @Test
@@ -260,14 +233,13 @@ public class AccessContractInternalServiceTest {
         VitamContext vitamContext = new VitamContext(0);
         JsonNode query = JsonHandler.createObjectNode();
 
-        expect(accessContractService.findAccessContracts(vitamContext, query)).andThrow(
+        when(accessContractService.findAccessContracts(vitamContext, query)).thenThrow(
             new VitamClientException("Exception thrown by Vitam")
         );
-        EasyMock.replay(accessContractService);
 
-        assertThatCode(() -> {
-            accessContractInternalService.findAll(vitamContext, query);
-        }).isInstanceOf(InternalServerException.class);
+        assertThatCode(() -> accessContractInternalService.findAll(vitamContext, query)).isInstanceOf(
+            InternalServerException.class
+        );
     }
 
     @Test
@@ -277,14 +249,13 @@ public class AccessContractInternalServiceTest {
         AccessContractDto accessContractDto = new AccessContractDto();
         accessContractDto.setTenant(0);
 
-        expect(
-            accessContractService.checkAbilityToCreateAccessContractInVitam(isA(List.class), isA(String.class))
-        ).andReturn(0);
-        EasyMock.replay(accessContractService);
+        when(
+            accessContractService.checkAbilityToCreateAccessContractInVitam(any(List.class), any(String.class))
+        ).thenReturn(0);
 
-        assertThatCode(() -> {
-            accessContractInternalService.check(vitamContext, accessContractDto);
-        }).doesNotThrowAnyException();
+        assertThatCode(
+            () -> accessContractInternalService.check(vitamContext, accessContractDto)
+        ).doesNotThrowAnyException();
     }
 
     @Test
@@ -294,14 +265,13 @@ public class AccessContractInternalServiceTest {
         AccessContractDto accessContractDto = new AccessContractDto();
         accessContractDto.setTenant(0);
 
-        expect(
-            accessContractService.checkAbilityToCreateAccessContractInVitam(isA(List.class), isA(String.class))
-        ).andThrow(new ConflictException("Exception thrown by Vitam"));
-        EasyMock.replay(accessContractService);
+        when(
+            accessContractService.checkAbilityToCreateAccessContractInVitam(any(List.class), any(String.class))
+        ).thenThrow(new ConflictException("Exception thrown by Vitam"));
 
-        assertThatCode(() -> {
-            accessContractInternalService.check(vitamContext, accessContractDto);
-        }).doesNotThrowAnyException();
+        assertThatCode(
+            () -> accessContractInternalService.check(vitamContext, accessContractDto)
+        ).doesNotThrowAnyException();
     }
 
     @Test
@@ -312,14 +282,13 @@ public class AccessContractInternalServiceTest {
         AccessContractDto accessContractDto = new AccessContractDto();
         accessContractDto.setTenant(0);
 
-        expect(accessContractService.createAccessContracts(isA(VitamContext.class), isA(List.class))).andReturn(
+        when(accessContractService.createAccessContracts(any(VitamContext.class), any(List.class))).thenReturn(
             new RequestResponseOK().setHttpCode(200)
         );
-        EasyMock.replay(accessContractService);
 
-        assertThatCode(() -> {
-            accessContractInternalService.create(vitamContext, accessContractDto);
-        }).doesNotThrowAnyException();
+        assertThatCode(
+            () -> accessContractInternalService.create(vitamContext, accessContractDto)
+        ).doesNotThrowAnyException();
     }
 
     @Test
@@ -330,14 +299,13 @@ public class AccessContractInternalServiceTest {
         AccessContractDto accessContractDto = new AccessContractDto();
         accessContractDto.setTenant(0);
 
-        expect(accessContractService.createAccessContracts(isA(VitamContext.class), isA(List.class))).andReturn(
+        when(accessContractService.createAccessContracts(any(VitamContext.class), any(List.class))).thenReturn(
             new RequestResponseOK().setHttpCode(400)
         );
-        EasyMock.replay(accessContractService);
 
-        assertThatCode(() -> {
-            accessContractInternalService.create(vitamContext, accessContractDto);
-        }).isInstanceOf(BadRequestException.class);
+        assertThatCode(() -> accessContractInternalService.create(vitamContext, accessContractDto)).isInstanceOf(
+            BadRequestException.class
+        );
     }
 
     @Test
@@ -348,14 +316,13 @@ public class AccessContractInternalServiceTest {
         AccessContractDto accessContractDto = new AccessContractDto();
         accessContractDto.setTenant(0);
 
-        expect(accessContractService.createAccessContracts(isA(VitamContext.class), isA(List.class))).andThrow(
+        when(accessContractService.createAccessContracts(any(VitamContext.class), any(List.class))).thenThrow(
             new InvalidParseOperationException("Exception thrown by vitam")
         );
-        EasyMock.replay(accessContractService);
 
-        assertThatCode(() -> {
-            accessContractInternalService.create(vitamContext, accessContractDto);
-        }).isInstanceOf(InternalServerException.class);
+        assertThatCode(() -> accessContractInternalService.create(vitamContext, accessContractDto)).isInstanceOf(
+            InternalServerException.class
+        );
     }
 
     @Test
@@ -366,14 +333,13 @@ public class AccessContractInternalServiceTest {
         AccessContractDto accessContractDto = new AccessContractDto();
         accessContractDto.setTenant(0);
 
-        expect(accessContractService.createAccessContracts(isA(VitamContext.class), isA(List.class))).andThrow(
+        when(accessContractService.createAccessContracts(any(VitamContext.class), any(List.class))).thenThrow(
             new AccessExternalClientException("Exception thrown by vitam")
         );
-        EasyMock.replay(accessContractService);
 
-        assertThatCode(() -> {
-            accessContractInternalService.create(vitamContext, accessContractDto);
-        }).isInstanceOf(InternalServerException.class);
+        assertThatCode(() -> accessContractInternalService.create(vitamContext, accessContractDto)).isInstanceOf(
+            InternalServerException.class
+        );
     }
 
     @Test
@@ -384,14 +350,13 @@ public class AccessContractInternalServiceTest {
         AccessContractDto accessContractDto = new AccessContractDto();
         accessContractDto.setTenant(0);
 
-        expect(accessContractService.createAccessContracts(isA(VitamContext.class), isA(List.class))).andThrow(
+        when(accessContractService.createAccessContracts(any(VitamContext.class), any(List.class))).thenThrow(
             new IOException("Exception thrown by vitam")
         );
-        EasyMock.replay(accessContractService);
 
-        assertThatCode(() -> {
-            accessContractInternalService.create(vitamContext, accessContractDto);
-        }).isInstanceOf(InternalServerException.class);
+        assertThatCode(() -> accessContractInternalService.create(vitamContext, accessContractDto)).isInstanceOf(
+            InternalServerException.class
+        );
     }
 
     @Test
@@ -399,20 +364,14 @@ public class AccessContractInternalServiceTest {
         throws InvalidParseOperationException, AccessExternalClientException, VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
 
-        expect(vitamUIAccessContractService.patchAccessContract(anyObject(), anyObject(), anyObject())).andReturn(
+        when(vitamUIAccessContractService.patchAccessContract(any(), any(), any())).thenReturn(
             new RequestResponseOK<>()
         );
-        EasyMock.replay(vitamUIAccessContractService);
 
-        expect(accessContractService.findAccessContractById(anyObject(), anyObject())).andReturn(
-            new RequestResponseOK<>()
-        );
-        EasyMock.replay(accessContractService);
+        when(accessContractService.findAccessContractById(any(), any())).thenReturn(new RequestResponseOK<>());
 
         Map<String, Object> partialDto = new HashMap<>(Map.of("identifier", "value"));
-        assertThatCode(() -> {
-            accessContractInternalService.patch(vitamContext, partialDto);
-        }).doesNotThrowAnyException();
+        assertThatCode(() -> accessContractInternalService.patch(vitamContext, partialDto)).doesNotThrowAnyException();
     }
 
     @Test
@@ -420,43 +379,34 @@ public class AccessContractInternalServiceTest {
         throws InvalidParseOperationException, AccessExternalClientException, VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
 
-        expect(vitamUIAccessContractService.patchAccessContract(anyObject(), anyObject(), anyObject())).andReturn(
+        when(vitamUIAccessContractService.patchAccessContract(any(), any(), any())).thenReturn(
             new VitamError<>("BAD_REQUEST")
         );
-        EasyMock.replay(vitamUIAccessContractService);
 
-        expect(accessContractService.findAccessContractById(anyObject(), anyObject())).andReturn(
-            new RequestResponseOK<>()
-        );
-        EasyMock.replay(accessContractService);
+        when(accessContractService.findAccessContractById(any(), any())).thenReturn(new RequestResponseOK<>());
 
         Map<String, Object> partialDto = new HashMap<>(Map.of("identifier", "value"));
-        assertThatCode(() -> {
-            accessContractInternalService.patch(vitamContext, partialDto);
-        }).doesNotThrowAnyException();
+        assertThatCode(() -> accessContractInternalService.patch(vitamContext, partialDto)).doesNotThrowAnyException();
     }
 
     @Test
     public void patch_should_throw_InternalServerException_when_vitamclient_throws_InvalidParseOperationException()
         throws InvalidParseOperationException, AccessExternalClientException {
         VitamContext vitamContext = new VitamContext(0);
-        String id = "identifier";
         Map<String, Object> partialDto = new HashMap<>();
         partialDto.put("identifier", "identifier");
-        ObjectNode query = JsonHandler.createObjectNode();
 
-        expect(
+        when(
             vitamUIAccessContractService.patchAccessContract(
-                isA(VitamContext.class),
-                isA(String.class),
-                isA(ObjectNode.class)
+                any(VitamContext.class),
+                any(String.class),
+                any(ObjectNode.class)
             )
-        ).andThrow(new InvalidParseOperationException("Exception thrown by vitam"));
-        EasyMock.replay(vitamUIAccessContractService);
+        ).thenThrow(new InvalidParseOperationException("Exception thrown by vitam"));
 
-        assertThatCode(() -> {
-            accessContractInternalService.patch(vitamContext, partialDto);
-        }).isInstanceOf(InternalServerException.class);
+        assertThatCode(() -> accessContractInternalService.patch(vitamContext, partialDto)).isInstanceOf(
+            InternalServerException.class
+        );
     }
 
     @Test
@@ -466,18 +416,17 @@ public class AccessContractInternalServiceTest {
         Map<String, Object> partialDto = new HashMap<>();
         partialDto.put("identifier", "identifier");
 
-        expect(
+        when(
             vitamUIAccessContractService.patchAccessContract(
-                isA(VitamContext.class),
-                isA(String.class),
-                isA(ObjectNode.class)
+                any(VitamContext.class),
+                any(String.class),
+                any(ObjectNode.class)
             )
-        ).andThrow(new AccessExternalClientException("Exception thrown by vitam"));
-        EasyMock.replay(vitamUIAccessContractService);
+        ).thenThrow(new AccessExternalClientException("Exception thrown by vitam"));
 
-        assertThatCode(() -> {
-            accessContractInternalService.patch(vitamContext, partialDto);
-        }).isInstanceOf(InternalServerException.class);
+        assertThatCode(() -> accessContractInternalService.patch(vitamContext, partialDto)).isInstanceOf(
+            InternalServerException.class
+        );
     }
 
     @Test
@@ -485,14 +434,13 @@ public class AccessContractInternalServiceTest {
         VitamContext vitamContext = new VitamContext(0);
         String id = "identifier";
 
-        expect(logbookService.selectOperations(isA(JsonNode.class), isA(VitamContext.class))).andReturn(
+        when(logbookService.selectOperations(any(JsonNode.class), any(VitamContext.class))).thenReturn(
             new RequestResponseOK<LogbookOperation>().setHttpCode(200)
         );
-        EasyMock.replay(logbookService);
 
-        assertThatCode(() -> {
-            accessContractInternalService.findHistoryByIdentifier(vitamContext, id);
-        }).doesNotThrowAnyException();
+        assertThatCode(
+            () -> accessContractInternalService.findHistoryByIdentifier(vitamContext, id)
+        ).doesNotThrowAnyException();
     }
 
     @Test
@@ -501,14 +449,13 @@ public class AccessContractInternalServiceTest {
         VitamContext vitamContext = new VitamContext(0);
         String id = "identifier";
 
-        expect(logbookService.selectOperations(isA(JsonNode.class), isA(VitamContext.class))).andThrow(
+        when(logbookService.selectOperations(any(JsonNode.class), any(VitamContext.class))).thenThrow(
             new BadRequestException("Exception thrown by Vitam")
         );
-        EasyMock.replay(logbookService);
 
-        assertThatCode(() -> {
-            accessContractInternalService.findHistoryByIdentifier(vitamContext, id);
-        }).isInstanceOf(BadRequestException.class);
+        assertThatCode(() -> accessContractInternalService.findHistoryByIdentifier(vitamContext, id)).isInstanceOf(
+            BadRequestException.class
+        );
     }
 
     @Test
@@ -517,14 +464,13 @@ public class AccessContractInternalServiceTest {
         VitamContext vitamContext = new VitamContext(0);
         String id = "identifier";
 
-        expect(logbookService.selectOperations(isA(JsonNode.class), isA(VitamContext.class))).andThrow(
+        when(logbookService.selectOperations(any(JsonNode.class), any(VitamContext.class))).thenThrow(
             new VitamClientException("Exception thrown by vitam")
         );
-        EasyMock.replay(logbookService);
 
-        assertThatCode(() -> {
-            accessContractInternalService.findHistoryByIdentifier(vitamContext, id);
-        }).isInstanceOf(VitamClientException.class);
+        assertThatCode(() -> accessContractInternalService.findHistoryByIdentifier(vitamContext, id)).isInstanceOf(
+            VitamClientException.class
+        );
     }
 
     @Test
@@ -540,27 +486,24 @@ public class AccessContractInternalServiceTest {
             IOUtils.toByteArray(input)
         );
 
-        expect(internalSecurityService.getHttpContext()).andReturn(
+        when(internalSecurityService.getHttpContext()).thenReturn(
             new InternalHttpContext(0, "", "", "", "", "", "", "")
         );
-        EasyMock.replay(internalSecurityService);
 
-        expect(
+        when(
             applicationInternalRestClient.isApplicationExternalIdentifierEnabled(
-                isA(InternalHttpContext.class),
+                any(InternalHttpContext.class),
                 eq("ACCESS_CONTRACT")
             )
-        ).andReturn(new ResponseEntity<>(false, HttpStatus.OK));
-        EasyMock.replay(applicationInternalRestClient);
+        ).thenReturn(new ResponseEntity<>(false, HttpStatus.OK));
 
-        expect(accessContractService.createAccessContracts(isA(VitamContext.class), isA(InputStream.class))).andReturn(
+        when(accessContractService.createAccessContracts(any(VitamContext.class), any(InputStream.class))).thenReturn(
             new RequestResponseOK().setHttpCode(200)
         );
-        EasyMock.replay(accessContractService);
 
-        assertThatCode(() -> {
-            accessContractInternalService.importAccessContracts(vitamContext, multipartFile);
-        }).doesNotThrowAnyException();
+        assertThatCode(
+            () -> accessContractInternalService.importAccessContracts(vitamContext, multipartFile)
+        ).doesNotThrowAnyException();
     }
 
     @Test
@@ -576,23 +519,20 @@ public class AccessContractInternalServiceTest {
             IOUtils.toByteArray(input)
         );
 
-        expect(internalSecurityService.getHttpContext()).andReturn(
+        when(internalSecurityService.getHttpContext()).thenReturn(
             new InternalHttpContext(0, "", "", "", "", "", "", "")
         );
-        EasyMock.replay(internalSecurityService);
 
-        expect(
+        when(
             applicationInternalRestClient.isApplicationExternalIdentifierEnabled(
-                isA(InternalHttpContext.class),
+                any(InternalHttpContext.class),
                 eq("ACCESS_CONTRACT")
             )
-        ).andReturn(new ResponseEntity<>(false, HttpStatus.OK));
-        EasyMock.replay(applicationInternalRestClient);
+        ).thenReturn(new ResponseEntity<>(false, HttpStatus.OK));
 
-        expect(accessContractService.createAccessContracts(isA(VitamContext.class), isA(InputStream.class))).andReturn(
+        when(accessContractService.createAccessContracts(any(VitamContext.class), any(InputStream.class))).thenReturn(
             new RequestResponseOK().setHttpCode(400)
         );
-        EasyMock.replay(accessContractService);
 
         BadRequestException badRequestException = null;
 

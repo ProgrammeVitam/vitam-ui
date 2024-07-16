@@ -46,8 +46,6 @@ import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.StatusCode;
 import fr.gouv.vitam.common.model.logbook.LogbookOperation;
 import fr.gouv.vitamui.commons.api.exception.ApplicationServerException;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.logbook.dto.EventDiffDto;
 import fr.gouv.vitamui.commons.rest.ApiErrorGenerator;
 import fr.gouv.vitamui.commons.utils.JsonUtils;
@@ -55,6 +53,8 @@ import fr.gouv.vitamui.commons.vitam.api.dto.LogbookEventDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsResponseDto;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -69,7 +69,7 @@ public class LogbookUtils {
 
     private static final String DIFF_KEY_WORDS = "diff";
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(LogbookUtils.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(LogbookUtils.class);
 
     private static final ObjectMapper objectMapper;
 

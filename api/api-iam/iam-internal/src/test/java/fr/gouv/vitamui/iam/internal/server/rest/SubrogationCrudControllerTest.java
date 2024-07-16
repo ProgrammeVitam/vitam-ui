@@ -12,7 +12,6 @@ import fr.gouv.vitamui.iam.common.dto.SubrogationDto;
 import fr.gouv.vitamui.iam.common.enums.SubrogationStatusEnum;
 import fr.gouv.vitamui.iam.common.utils.IamDtoBuilder;
 import fr.gouv.vitamui.iam.internal.server.customer.dao.CustomerRepository;
-import fr.gouv.vitamui.iam.internal.server.customer.domain.Customer;
 import fr.gouv.vitamui.iam.internal.server.group.dao.GroupRepository;
 import fr.gouv.vitamui.iam.internal.server.group.service.GroupInternalService;
 import fr.gouv.vitamui.iam.internal.server.logbook.service.IamLogbookService;
@@ -20,45 +19,37 @@ import fr.gouv.vitamui.iam.internal.server.owner.domain.Owner;
 import fr.gouv.vitamui.iam.internal.server.profile.dao.ProfileRepository;
 import fr.gouv.vitamui.iam.internal.server.subrogation.converter.SubrogationConverter;
 import fr.gouv.vitamui.iam.internal.server.subrogation.dao.SubrogationRepository;
-import fr.gouv.vitamui.iam.internal.server.subrogation.domain.Subrogation;
 import fr.gouv.vitamui.iam.internal.server.subrogation.service.SubrogationInternalService;
 import fr.gouv.vitamui.iam.internal.server.user.dao.UserRepository;
 import fr.gouv.vitamui.iam.internal.server.user.domain.User;
 import fr.gouv.vitamui.iam.internal.server.user.service.UserInternalService;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.OffsetDateTime;
-import java.util.Optional;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 /**
  * Tests the {@link SubrogationInternalController}.
- *
- *
  */
+@ExtendWith(MockitoExtension.class)
 public final class SubrogationCrudControllerTest extends AbstractCrudControllerTest<SubrogationDto, Owner> {
 
     private static final String SURROGATE_EMAIL = "sub.roger@vitamui.com";
-
     private static final String SUPER_USER_EMAIL = "sub.rogateur@vitamui.com";
     private static final String SUPER_USER_CUSTOMER_ID = "systemCustomerId";
-
     private static final String SURROGATE_CREATE_EMAIL = "surrogate@test.fr";
     private static final String SURROGATE_CUSTOMER_ID = "customerId";
-
     private static final OffsetDateTime NOW = OffsetDateTime.now();
-
     private static final User SURROGATE;
-
     private static final User SURROGATE_CREATE;
-
     private static final User SUPERUSER;
 
     static {
@@ -117,16 +108,14 @@ public final class SubrogationCrudControllerTest extends AbstractCrudControllerT
     @Mock
     private SequenceGeneratorService sequenceGeneratorService;
 
-    private SubrogationConverter subrogationConverter;
-
     @Mock
     private IamLogbookService iamLogbookService;
 
     @Override
-    @Before
+    @BeforeEach
     public void setup() {
         super.setup();
-        subrogationConverter = new SubrogationConverter(userRepository);
+        SubrogationConverter subrogationConverter = new SubrogationConverter(userRepository);
         final SubrogationInternalService service = new SubrogationInternalService(
             sequenceGeneratorService,
             subrogationRepository,
@@ -163,18 +152,6 @@ public final class SubrogationCrudControllerTest extends AbstractCrudControllerT
 
     @Override
     protected void prepareServices() {
-        Mockito.when(
-            subrogationRepository.findOneBySurrogateAndSurrogateCustomerId(SURROGATE_EMAIL, SURROGATE_CUSTOMER_ID)
-        ).thenReturn(new Subrogation());
-        Mockito.when(
-            userRepository.findByEmailIgnoreCaseAndCustomerId(SURROGATE_EMAIL, SURROGATE_CUSTOMER_ID)
-        ).thenReturn(SURROGATE);
-        Mockito.when(
-            userRepository.findByEmailIgnoreCaseAndCustomerId(SUPER_USER_EMAIL, SUPER_USER_CUSTOMER_ID)
-        ).thenReturn(SUPERUSER);
-        final Customer customer = new Customer();
-        customer.setSubrogeable(true);
-        when(customerRepository.findById(any())).thenReturn(Optional.of(customer));
         super.prepareServices();
     }
 
@@ -186,57 +163,44 @@ public final class SubrogationCrudControllerTest extends AbstractCrudControllerT
         dto.setSuperUser(SUPER_USER_EMAIL);
         dto.setSuperUserCustomerId(SUPER_USER_CUSTOMER_ID);
         prepareServices();
-        Mockito.when(
+        when(
             userRepository.findByEmailIgnoreCaseAndCustomerId(SURROGATE_CREATE_EMAIL, SURROGATE_CUSTOMER_ID)
         ).thenReturn(SURROGATE_CREATE);
-        Mockito.when(
+        when(
             subrogationRepository.findOneBySurrogateAndSurrogateCustomerId(
                 SURROGATE_CREATE_EMAIL,
                 SURROGATE_CUSTOMER_ID
             )
         ).thenReturn(null);
-        Mockito.when(internalSecurityService.getUser()).thenReturn(
+        when(internalSecurityService.getUser()).thenReturn(
             IamDtoBuilder.buildAuthUserDto("id", SUPER_USER_EMAIL, SUPER_USER_CUSTOMER_ID)
         );
         getController().create(dto);
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void testCreationFailed() throws InvalidParseOperationException, PreconditionFailedException {
+    @Test
+    public void testCreationFailed() throws PreconditionFailedException {
         final SubrogationDto dto = buildDto();
         dto.setSurrogate(SURROGATE_CREATE_EMAIL);
         prepareServices();
-        Mockito.when(
-            userRepository.findByEmailIgnoreCaseAndCustomerId(SURROGATE_CREATE_EMAIL, SURROGATE_CUSTOMER_ID)
-        ).thenReturn(SURROGATE_CREATE);
-        Mockito.when(
-            subrogationRepository.findOneBySurrogateAndSurrogateCustomerId(
-                SURROGATE_CREATE_EMAIL,
-                SURROGATE_CUSTOMER_ID
-            )
-        ).thenReturn(null);
-        final Customer customer = new Customer();
-        customer.setSubrogeable(false);
-        when(customerRepository.findById(any())).thenReturn(Optional.of(customer));
-        getController().create(dto);
+        Assertions.assertThrows(IllegalArgumentException.class, () -> getController().create(dto));
     }
 
     @Override
-    @Test(expected = NotImplementedException.class)
-    public void testUpdateOK() throws InvalidParseOperationException, PreconditionFailedException {
+    @Test
+    public void testUpdateOK() throws PreconditionFailedException {
         final SubrogationDto dto = buildDto();
         dto.setId(ID);
         prepareServices();
-        getController().update(ID, dto);
+        Assertions.assertThrows(NotImplementedException.class, () -> getController().update(ID, dto));
     }
 
     @Override
-    @Test(expected = NotImplementedException.class)
-    public void testUpdateFailsAsDtoIdAndPathIdAreDifferentOK()
-        throws InvalidParseOperationException, PreconditionFailedException {
+    @Test
+    public void testUpdateFailsAsDtoIdAndPathIdAreDifferentOK() throws PreconditionFailedException {
         final SubrogationDto dto = buildDto();
         dto.setId("anotherId");
         prepareServices();
-        getController().update(ID, dto);
+        Assertions.assertThrows(NotImplementedException.class, () -> getController().update(ID, dto));
     }
 }

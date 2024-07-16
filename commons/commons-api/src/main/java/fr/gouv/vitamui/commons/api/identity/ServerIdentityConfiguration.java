@@ -34,14 +34,15 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+
 package fr.gouv.vitamui.commons.api.identity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
-import fr.gouv.vitamui.commons.api.exception.InternalServerException;
+import lombok.Getter;
 import lombok.ToString;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
 
 /**
  * Defines minimal common configurations for server identity configuration properties.
@@ -49,129 +50,74 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * Where name, role and platformID comes from a configuration file for instance.
  *
  * Inspired from fr.gouv.vitam.common.ServerIdentity
- *
- *
  */
-@ConfigurationProperties(prefix = "server-identity", ignoreUnknownFields = false)
+
 @ToString
-public final class ServerIdentityConfiguration {
-
-    private String identityName;
-
-    private int identityServerId;
-
-    private int identitySiteId;
-
-    private String identityRole;
+@Component
+@ConfigurationProperties(prefix = "server-identity", ignoreUnknownFields = false)
+public class ServerIdentityConfiguration {
 
     private final StringBuilder preMessage = new StringBuilder();
 
-    private String preMessageString;
-
+    @Getter
     private int globalPlatformId;
 
-    private static final ServerIdentityConfiguration serverIdentityConfiguration = new ServerIdentityConfiguration();
+    @Getter
+    private int identityServerId;
 
-    private ServerIdentityConfiguration() {
-        // do nothing
-    }
+    @Getter
+    private int identitySiteId;
 
-    /**
-     *
-     * @return a new instance of ServerIdentityConfiguration
-     */
-    public static ServerIdentityConfiguration getInstance() {
-        if (
-            StringUtils.isEmpty(serverIdentityConfiguration.getIdentityName()) ||
-            StringUtils.isEmpty(serverIdentityConfiguration.getIdentityRole())
-        ) {
-            throw new InternalServerException("ServerIdentityConfiguration is undefined.");
-        }
-        return serverIdentityConfiguration;
-    }
+    @Getter
+    private String identityName;
 
-    /**
-     * @return the identityName
-     */
-    public String getIdentityName() {
-        return serverIdentityConfiguration.identityName;
-    }
+    @Getter
+    private String identityRole;
+
+    private String preMessageString;
 
     /**
      * The name of the Server.
-     * @param name
-     *            the name of the Server to set
+     *
+     * @param name the name of the Server to set
      * @throws IllegalArgumentException
      */
     public void setIdentityName(final String name) {
         ParameterChecker.checkParameter("Name", name);
-        serverIdentityConfiguration.identityName = name;
+        identityName = name;
         initializeCommentFormat();
-    }
-
-    /**
-     * @return the identityRole
-     */
-    public String getIdentityRole() {
-        return serverIdentityConfiguration.identityRole;
     }
 
     /**
      * The role of the Server.
-     * @param role
-     *            the role of the Server to set
-     * @throws IllegalArgumentException
+     *
+     * @param role the role of the Server to set
      */
     public void setIdentityRole(final String role) {
         ParameterChecker.checkParameter("Role", role);
-        serverIdentityConfiguration.identityRole = role;
+        identityRole = role;
         initializeCommentFormat();
     }
 
     /**
-     * @return the identitySiteId
-     */
-    public int getIdentitySiteId() {
-        return serverIdentityConfiguration.identitySiteId;
-    }
-
-    /**
      * Site Id.
-     * @param siteId
-     *            the siteId to set
-     * @throws IllegalArgumentException
+     *
+     * @param siteId the siteId to set
      */
     public void setIdentitySiteId(final int siteId) {
         ParameterChecker.checkValue("siteID", siteId, 0);
-        serverIdentityConfiguration.identitySiteId = siteId;
-    }
-
-    /**
-     * @return the identityServerId
-     */
-    public int getIdentityServerId() {
-        return serverIdentityConfiguration.identityServerId;
+        identitySiteId = siteId;
     }
 
     /**
      * The PlatformId is a unique name per site.
      *
-     * @param serverId
-     *            the platformId of the VitamUI Platform to set
-     *
-     * @throws IllegalArgumentException
+     * @param serverId the platformId of the VitamUI Platform to set
      */
     public void setIdentityServerId(final int serverId) {
         ParameterChecker.checkValue("server", serverId, 0);
-        serverIdentityConfiguration.identityServerId = serverId;
+        identityServerId = serverId;
         calculateGlobalPlatformId();
-    }
-
-    /**
-     * @return the globalPlatformID.
-     */
-    public final int getGlobalPlatformId() {
-        return serverIdentityConfiguration.globalPlatformId;
     }
 
     /**
@@ -179,15 +125,14 @@ public final class ServerIdentityConfiguration {
      */
     @JsonIgnore
     public final String getLoggerMessagePrepend() {
-        return serverIdentityConfiguration.preMessageString;
+        return preMessageString;
     }
 
     /**
      * Calculate GlobaPlatformId.
      */
     private final void calculateGlobalPlatformId() {
-        serverIdentityConfiguration.globalPlatformId = ((getIdentityServerId() & 0x0F) << 27) +
-        (getIdentityServerId() & 0x07FFFFFF);
+        globalPlatformId = ((getIdentityServerId() & 0x0F) << 27) + (getIdentityServerId() & 0x07FFFFFF);
         initializeCommentFormat();
     }
 
@@ -195,8 +140,8 @@ public final class ServerIdentityConfiguration {
      * Initialize after each configuration change the Logger pre-message.
      */
     private void initializeCommentFormat() {
-        serverIdentityConfiguration.preMessage.setLength(0);
-        serverIdentityConfiguration.preMessage
+        preMessage.setLength(0);
+        preMessage
             .append('[')
             .append(getIdentityName())
             .append(':')
@@ -204,6 +149,6 @@ public final class ServerIdentityConfiguration {
             .append(':')
             .append(getGlobalPlatformId())
             .append("] ");
-        serverIdentityConfiguration.preMessageString = serverIdentityConfiguration.preMessage.toString();
+        preMessageString = preMessage.toString();
     }
 }

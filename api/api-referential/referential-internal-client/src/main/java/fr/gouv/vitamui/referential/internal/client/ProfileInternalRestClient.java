@@ -39,13 +39,13 @@ package fr.gouv.vitamui.referential.internal.client;
 import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.api.utils.ApiUtils;
 import fr.gouv.vitamui.commons.rest.client.BasePaginatingAndSortingRestClient;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import fr.gouv.vitamui.referential.common.dto.ProfileDto;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
@@ -64,7 +64,7 @@ import java.util.List;
 
 public class ProfileInternalRestClient extends BasePaginatingAndSortingRestClient<ProfileDto, InternalHttpContext> {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ProfileInternalRestClient.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ProfileInternalRestClient.class);
 
     public ProfileInternalRestClient(final RestTemplate restTemplate, final String baseUrl) {
         super(restTemplate, baseUrl);

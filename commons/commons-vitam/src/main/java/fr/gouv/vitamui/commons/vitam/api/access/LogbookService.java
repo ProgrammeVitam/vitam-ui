@@ -56,12 +56,12 @@ import fr.gouv.vitam.common.model.logbook.LogbookLifecycle;
 import fr.gouv.vitam.common.model.logbook.LogbookOperation;
 import fr.gouv.vitam.ingest.external.client.IngestExternalClient;
 import fr.gouv.vitamui.commons.api.exception.ApplicationServerException;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.enums.ContentDispositionType;
 import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsResponseDto;
 import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
 import org.apache.http.HttpStatus;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
@@ -76,7 +76,7 @@ import static fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils.responseMapp
 public class LogbookService {
 
     @SuppressWarnings("unused")
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(LogbookService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(LogbookService.class);
 
     private static final String DIP_REPORT = "dip";
     private static final String TRANSFER_REPORT = "transfersip";

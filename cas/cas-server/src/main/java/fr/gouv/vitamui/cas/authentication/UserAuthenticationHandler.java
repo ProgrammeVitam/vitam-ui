@@ -45,8 +45,6 @@ import fr.gouv.vitamui.commons.api.exception.InvalidAuthenticationException;
 import fr.gouv.vitamui.commons.api.exception.InvalidFormatException;
 import fr.gouv.vitamui.commons.api.exception.TooManyRequestsException;
 import fr.gouv.vitamui.commons.api.exception.VitamUIException;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.iam.external.client.CasExternalRestClient;
 import lombok.val;
 import org.apereo.cas.authentication.AuthenticationHandlerExecutionResult;
@@ -58,6 +56,8 @@ import org.apereo.cas.authentication.handler.support.AbstractUsernamePasswordAut
 import org.apereo.cas.authentication.principal.Principal;
 import org.apereo.cas.authentication.principal.PrincipalFactory;
 import org.apereo.cas.services.ServicesManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.webflow.execution.RequestContextHolder;
 
 import javax.security.auth.login.AccountException;
@@ -77,7 +77,7 @@ import java.util.Map;
  */
 public class UserAuthenticationHandler extends AbstractUsernamePasswordAuthenticationHandler {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(UserAuthenticationHandler.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserAuthenticationHandler.class);
 
     private final CasExternalRestClient casExternalRestClient;
 

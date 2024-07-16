@@ -41,16 +41,16 @@ import fr.gouv.vitamui.collect.common.dto.CollectTransactionDto;
 import fr.gouv.vitamui.collect.internal.server.service.converters.TransactionConverter;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.api.exception.RequestTimeOutException;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.vitam.api.collect.CollectService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.core.Response;
 import java.io.InputStream;
 
 public class TransactionInternalService {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(TransactionInternalService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(TransactionInternalService.class);
 
     private final CollectService collectService;
 

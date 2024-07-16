@@ -42,16 +42,16 @@ import fr.gouv.vitam.access.external.common.exception.AccessExternalClientExcept
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.model.RequestResponse;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.vitam.api.administration.AccessContractService;
 import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
 import fr.gouv.vitamui.referential.common.dto.AccessContractVitamDto;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class VitamUIAccessContractService {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(AccessContractService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AccessContractService.class);
 
     private final AdminExternalClient adminExternalClient;
 

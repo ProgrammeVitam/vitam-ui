@@ -33,12 +33,12 @@ import fr.gouv.vitamui.collect.common.rest.ArchiveUnitClient;
 import fr.gouv.vitamui.commons.api.dtos.JsonPatch;
 import fr.gouv.vitamui.commons.api.dtos.JsonPatchDto;
 import fr.gouv.vitamui.commons.api.dtos.MultiJsonPatchDto;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.client.AbstractHttpContext;
 import fr.gouv.vitamui.commons.rest.client.BaseRestClient;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import org.apache.http.client.utils.URIBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
@@ -53,7 +53,7 @@ import static org.springframework.http.HttpMethod.PATCH;
 public class ArchiveUnitClientImpl extends BaseRestClient<InternalHttpContext> implements ArchiveUnitClient {
 
     private static final String ARCHIVE_UNITS = "archive-units";
-    private static final VitamUILogger log = VitamUILoggerFactory.getInstance(ArchiveUnitClientImpl.class);
+    private static final Logger log = LoggerFactory.getLogger(ArchiveUnitClientImpl.class);
 
     public ArchiveUnitClientImpl(RestTemplate restTemplate, String baseUrl) {
         super(restTemplate, baseUrl);

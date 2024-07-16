@@ -40,8 +40,6 @@ import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.domain.QueryDto;
 import fr.gouv.vitamui.commons.api.exception.ApplicationServerException;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.api.utils.CriteriaUtils;
 import fr.gouv.vitamui.commons.rest.enums.ContentDispositionType;
 import org.apache.commons.fileupload.FileItemIterator;
@@ -50,6 +48,8 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ContentDisposition;
@@ -74,7 +74,7 @@ import java.util.Optional;
 
 public final class RestUtils {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(RestUtils.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(RestUtils.class);
 
     private static final String HTTPS_SCHEME = "https://";
 

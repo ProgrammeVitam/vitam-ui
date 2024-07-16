@@ -57,8 +57,6 @@ import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.dtos.VitamUiOntologyDto;
 import fr.gouv.vitamui.commons.api.exception.ConflictException;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.api.utils.OntologyServiceReader;
 import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
 import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
@@ -66,6 +64,8 @@ import fr.gouv.vitamui.referential.common.dsl.VitamQueryHelper;
 import fr.gouv.vitamui.referential.common.dto.OntologyDto;
 import fr.gouv.vitamui.referential.common.dto.OntologyResponseDto;
 import fr.gouv.vitamui.referential.common.service.OntologyService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -82,7 +82,7 @@ import java.util.stream.Collectors;
 @Service
 public class OntologyInternalService {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(OntologyInternalService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(OntologyInternalService.class);
 
     private OntologyService ontologyService;
 

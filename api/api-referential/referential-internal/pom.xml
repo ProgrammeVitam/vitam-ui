@@ -235,13 +235,6 @@
             <artifactId>iam-external-client</artifactId>
             <scope>test</scope>
         </dependency>
-
-        <dependency>
-            <groupId>de.flapdoodle.embed</groupId>
-            <artifactId>de.flapdoodle.embed.mongo</artifactId>
-            <scope>test</scope>
-        </dependency>
-
         <dependency>
             <groupId>fr.gouv.vitamui.commons</groupId>
             <artifactId>commons-test</artifactId>
@@ -258,21 +251,6 @@
             <artifactId>iam-commons</artifactId>
             <scope>test</scope>
             <type>test-jar</type>
-        </dependency>
-        <dependency>
-            <groupId>org.easymock</groupId>
-            <artifactId>easymock</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.powermock</groupId>
-            <artifactId>powermock-api-easymock</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.powermock</groupId>
-            <artifactId>powermock-module-junit4</artifactId>
-            <scope>test</scope>
         </dependency>
     </dependencies>
 

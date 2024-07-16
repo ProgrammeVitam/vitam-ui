@@ -9,7 +9,6 @@ import fr.gouv.vitamui.commons.api.domain.TenantDto;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
-import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.iam.internal.server.customer.config.CustomerInitConfig;
 import fr.gouv.vitamui.iam.internal.server.customer.dao.CustomerRepository;
@@ -122,7 +121,6 @@ public final class TenantCrudControllerTest implements InternalCrudControllerTes
 
     @Before
     public void setup() {
-        ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
         MockitoAnnotations.initMocks(this);
         Mockito.when(tenantConverter.convertDtoToEntity(ArgumentMatchers.any())).thenCallRealMethod();
         Mockito.when(tenantConverter.convertEntityToDto(ArgumentMatchers.any())).thenCallRealMethod();

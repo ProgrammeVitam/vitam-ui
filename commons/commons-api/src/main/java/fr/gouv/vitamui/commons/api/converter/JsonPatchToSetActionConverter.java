@@ -34,8 +34,8 @@ import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOper
 import fr.gouv.vitamui.commons.api.dtos.JsonPatch;
 import fr.gouv.vitamui.commons.api.dtos.PatchCommand;
 import fr.gouv.vitamui.commons.api.exception.DslQueryCreateException;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Service;
 
@@ -49,7 +49,7 @@ import static fr.gouv.vitamui.commons.api.dtos.PatchOperation.REPLACE;
 @Service
 public class JsonPatchToSetActionConverter implements Converter<JsonPatch, SetAction> {
 
-    private static final VitamUILogger log = VitamUILoggerFactory.getInstance(JsonPatchToSetActionConverter.class);
+    private static final Logger log = LoggerFactory.getLogger(JsonPatchToSetActionConverter.class);
 
     @Override
     public SetAction convert(JsonPatch source) {

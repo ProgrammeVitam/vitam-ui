@@ -27,10 +27,10 @@
 
 package fr.gouv.vitamui.iam.security.filter;
 
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.ByteArrayInputStream;
@@ -41,9 +41,7 @@ import java.util.Base64;
 
 public class RequestHeaderX509CertificateExtractor implements X509CertificateExtractor {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
-        RequestHeaderX509CertificateExtractor.class
-    );
+    private static final Logger LOGGER = LoggerFactory.getLogger(RequestHeaderX509CertificateExtractor.class);
 
     @Setter
     private String certificateHeaderName = "x-ssl-cert";

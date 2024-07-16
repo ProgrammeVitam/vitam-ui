@@ -7,7 +7,8 @@ import fr.gouv.vitamui.commons.api.domain.QueryDto;
 import fr.gouv.vitamui.commons.mongo.domain.Person;
 import fr.gouv.vitamui.commons.utils.ReflectionUtils;
 import org.bson.Document;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.CriteriaDefinition;
 
@@ -88,9 +89,12 @@ public class MongoUtilsTest {
         assertThat(ReflectionUtils.castTypeToClass(type)).isEqualTo(String.class);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testGetReturnTypeFielFieldUnknow() {
-        MongoUtils.getTypeOfField(Person.class, "unknowfield");
+        Assertions.assertThrows(
+            IllegalArgumentException.class,
+            () -> MongoUtils.getTypeOfField(Person.class, "unknowfield")
+        );
     }
 
     @Test

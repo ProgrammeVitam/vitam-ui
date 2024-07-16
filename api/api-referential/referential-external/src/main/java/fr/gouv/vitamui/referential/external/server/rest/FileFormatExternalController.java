@@ -46,8 +46,6 @@ import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.api.utils.ApiUtils;
 import fr.gouv.vitamui.commons.rest.util.RestUtils;
 import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsResponseDto;
@@ -57,6 +55,8 @@ import fr.gouv.vitamui.referential.external.server.service.FileFormatExternalSer
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
@@ -79,7 +79,7 @@ import java.util.Optional;
 @Setter
 public class FileFormatExternalController {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(FileFormatExternalController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(FileFormatExternalController.class);
 
     @Autowired
     private FileFormatExternalService fileFormatExternalService;

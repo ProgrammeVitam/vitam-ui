@@ -42,7 +42,10 @@ import org.apereo.cas.authentication.Authentication;
 import org.apereo.cas.authentication.principal.Principal;
 import org.apereo.cas.authentication.principal.Service;
 import org.apereo.cas.services.ServicesManager;
-import org.apereo.cas.ticket.*;
+import org.apereo.cas.ticket.ExpirationPolicyBuilder;
+import org.apereo.cas.ticket.TicketGrantingTicket;
+import org.apereo.cas.ticket.TicketGrantingTicketImpl;
+import org.apereo.cas.ticket.UniqueTicketIdGenerator;
 import org.apereo.cas.ticket.expiration.HardTimeoutExpirationPolicy;
 import org.apereo.cas.ticket.factory.DefaultTicketGrantingTicketFactory;
 import org.apereo.cas.util.crypto.CipherExecutor;
@@ -51,7 +54,8 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-import static fr.gouv.vitamui.commons.api.CommonConstants.*;
+import static fr.gouv.vitamui.commons.api.CommonConstants.SUPER_USER_ATTRIBUTE;
+import static fr.gouv.vitamui.commons.api.CommonConstants.TYPE_ATTRIBUTE;
 
 /**
  * Dynamic TGT factory.

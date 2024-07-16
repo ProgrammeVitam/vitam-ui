@@ -42,11 +42,11 @@ import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.InvalidTypeException;
 import fr.gouv.vitamui.commons.api.exception.RequestEntityTooLargeException;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -79,9 +79,7 @@ import static fr.gouv.vitamui.commons.api.utils.MetadataSearchCriteriaUtils.clea
 @Service
 public class ArchiveSearchUnitExportCsvInternalService {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
-        ArchiveSearchUnitExportCsvInternalService.class
-    );
+    private static final Logger LOGGER = LoggerFactory.getLogger(ArchiveSearchUnitExportCsvInternalService.class);
 
     private static final Integer EXPORT_ARCHIVE_UNITS_MAX_ELEMENTS = 10000;
     public static final String FILING_UNIT = "FILING_UNIT";

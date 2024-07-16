@@ -34,7 +34,6 @@ import fr.gouv.vitamui.collect.internal.client.UpdateUnitsMetadataInternalRestCl
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
-import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import org.apache.commons.collections4.CollectionUtils;
 import org.junit.jupiter.api.BeforeEach;
@@ -72,7 +71,7 @@ class TransactionExternalServiceTest {
     public void setup() {
         final String userCustomerId = "customerIdAllowed";
         mockSecurityContext(externalSecurityService, userCustomerId, 10);
-        ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
+
         transactionExternalService = new TransactionExternalService(
             externalSecurityService,
             collectTransactionInternalRestClient,

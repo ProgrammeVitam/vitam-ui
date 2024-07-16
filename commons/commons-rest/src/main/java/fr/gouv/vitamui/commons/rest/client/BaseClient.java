@@ -39,11 +39,11 @@ package fr.gouv.vitamui.commons.rest.client;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.exception.ApplicationServerException;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.apache.http.client.utils.URIBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.Assert;
 import org.springframework.util.LinkedMultiValueMap;
@@ -64,7 +64,7 @@ import java.util.List;
 @ToString
 public abstract class BaseClient<C extends AbstractHttpContext> implements RestClient {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(BaseClient.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(BaseClient.class);
 
     protected String baseUrl;
 

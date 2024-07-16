@@ -47,8 +47,6 @@ import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.domain.TenantDto;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
 import fr.gouv.vitamui.commons.vitam.api.dto.LogbookLifeCycleResponseDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsResponseDto;
@@ -57,6 +55,8 @@ import fr.gouv.vitamui.iam.internal.server.tenant.service.TenantInternalService;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
@@ -91,7 +91,7 @@ import java.util.Objects;
 @Api(tags = "logbooks", value = "Logbooks Management", description = "logbooks Management")
 public class LogbookInternalController {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(LogbookInternalController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(LogbookInternalController.class);
 
     protected final InternalSecurityService securityService;
 

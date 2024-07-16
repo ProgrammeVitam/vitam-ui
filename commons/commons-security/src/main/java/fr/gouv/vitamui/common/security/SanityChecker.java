@@ -265,7 +265,9 @@ public class SanityChecker {
         } catch (PreconditionFailedException exception) {
             throw new PreconditionFailedException("The object is not valid ", exception);
         } catch (InvalidParseOperationException exception) {
-            throw new InvalidSanitizeCriteriaException(INVALID_CRITERIA, exception.getMessage());
+            throw new InvalidSanitizeCriteriaException(
+                INVALID_CRITERIA + exception.getMessage() + '[' + jsonNode.toString() + ']'
+            );
         }
     }
 

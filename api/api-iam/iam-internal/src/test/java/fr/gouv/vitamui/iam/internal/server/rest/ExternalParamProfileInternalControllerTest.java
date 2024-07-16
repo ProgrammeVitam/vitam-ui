@@ -1,8 +1,6 @@
 package fr.gouv.vitamui.iam.internal.server.rest;
 
 import fr.gouv.vitamui.commons.api.domain.ExternalParamProfileDto;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.iam.common.rest.RestApi;
 import fr.gouv.vitamui.iam.internal.server.common.rest.ApiIamControllerTest;
 import fr.gouv.vitamui.iam.internal.server.externalParameters.service.ExternalParametersInternalService;
@@ -10,6 +8,8 @@ import fr.gouv.vitamui.iam.internal.server.externalparamprofile.service.External
 import fr.gouv.vitamui.iam.internal.server.utils.IamServerUtilsTest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -18,9 +18,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 @WebMvcTest(controllers = { ExternalParamProfileInternalController.class })
 public class ExternalParamProfileInternalControllerTest extends ApiIamControllerTest<ExternalParamProfileDto> {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
-        ExternalParamProfileInternalControllerTest.class
-    );
+    private static final Logger LOGGER = LoggerFactory.getLogger(ExternalParamProfileInternalControllerTest.class);
 
     @MockBean
     private ExternalParametersInternalService externalParametersInternalService;
@@ -52,7 +50,7 @@ public class ExternalParamProfileInternalControllerTest extends ApiIamController
     }
 
     @Override
-    protected VitamUILogger getLog() {
+    protected Logger getLog() {
         return LOGGER;
     }
 

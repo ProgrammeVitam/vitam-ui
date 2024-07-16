@@ -47,18 +47,17 @@ import fr.gouv.vitam.common.json.JsonHandler;
 import fr.gouv.vitam.common.model.RequestResponseOK;
 import fr.gouv.vitam.common.model.administration.ContextModel;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
-import fr.gouv.vitamui.commons.api.identity.ServerIdentityConfiguration;
 import fr.gouv.vitamui.referential.common.dto.ContextDto;
 import fr.gouv.vitamui.referential.common.dto.ContextVitamDto;
 import fr.gouv.vitamui.referential.common.dto.PermissionDto;
 import fr.gouv.vitamui.referential.common.dto.converter.ContextDtoConverterUtil;
 import fr.gouv.vitamui.referential.common.utils.ReferentialDtoBuilder;
-import org.easymock.EasyMock;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.powermock.api.easymock.PowerMock;
-import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Collections;
 import java.util.List;
@@ -66,34 +65,24 @@ import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
-import static org.easymock.EasyMock.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
-@RunWith(org.powermock.modules.junit4.PowerMockRunner.class)
-@PrepareForTest({ ServerIdentityConfiguration.class })
+@ExtendWith(MockitoExtension.class)
 public class VitamContextServiceTest {
 
+    @Mock
     private AdminExternalClient adminExternalClient;
-    private VitamContextService vitamContextService;
+
     private ObjectMapper objectMapper;
 
-    @Before
-    public void setUp() {
-        adminExternalClient = mock(AdminExternalClient.class);
-        vitamContextService = new VitamContextService(adminExternalClient, objectMapper);
-        objectMapper = new ObjectMapper();
+    private VitamContextService vitamContextService;
 
-        // Mock server identity for Logs when not using spring
-        PowerMock.suppress(PowerMock.constructor(ServerIdentityConfiguration.class));
-        PowerMock.mockStatic(ServerIdentityConfiguration.class);
-        ServerIdentityConfiguration serverIdentityConfigurationMock = PowerMock.createMock(
-            ServerIdentityConfiguration.class
-        );
-        expect(ServerIdentityConfiguration.getInstance()).andReturn(serverIdentityConfigurationMock).anyTimes();
-        expect(serverIdentityConfigurationMock.getLoggerMessagePrepend())
-            .andReturn("LOG TESTS VitamContextServiceTest - ")
-            .anyTimes();
-        PowerMock.replay(ServerIdentityConfiguration.class);
-        PowerMock.replay(serverIdentityConfigurationMock);
+    @BeforeEach
+    public void setUp() {
+        MockitoAnnotations.openMocks(VitamContextServiceTest.class);
+        objectMapper = new ObjectMapper();
+        vitamContextService = new VitamContextService(adminExternalClient, objectMapper);
     }
 
     @Test
@@ -103,14 +92,11 @@ public class VitamContextServiceTest {
         final String id = "0";
         JsonNode jsonNode = JsonHandler.createObjectNode();
 
-        expect(
-            adminExternalClient.updateContext(isA(VitamContext.class), isA(String.class), isA(JsonNode.class))
-        ).andReturn(new RequestResponseOK().setHttpCode(200));
-        EasyMock.replay(adminExternalClient);
+        when(
+            adminExternalClient.updateContext(any(VitamContext.class), any(String.class), any(JsonNode.class))
+        ).thenReturn(new RequestResponseOK().setHttpCode(200));
 
-        assertThatCode(() -> {
-            vitamContextService.patchContext(vitamContext, id, jsonNode);
-        }).doesNotThrowAnyException();
+        assertThatCode(() -> vitamContextService.patchContext(vitamContext, id, jsonNode)).doesNotThrowAnyException();
     }
 
     @Test
@@ -120,14 +106,11 @@ public class VitamContextServiceTest {
         final String id = "0";
         JsonNode jsonNode = JsonHandler.createObjectNode();
 
-        expect(
-            adminExternalClient.updateContext(isA(VitamContext.class), isA(String.class), isA(JsonNode.class))
-        ).andReturn(new RequestResponseOK().setHttpCode(400));
-        EasyMock.replay(adminExternalClient);
+        when(
+            adminExternalClient.updateContext(any(VitamContext.class), any(String.class), any(JsonNode.class))
+        ).thenReturn(new RequestResponseOK().setHttpCode(400));
 
-        assertThatCode(() -> {
-            vitamContextService.patchContext(vitamContext, id, jsonNode);
-        }).doesNotThrowAnyException();
+        assertThatCode(() -> vitamContextService.patchContext(vitamContext, id, jsonNode)).doesNotThrowAnyException();
     }
 
     @Test
@@ -137,14 +120,13 @@ public class VitamContextServiceTest {
         final String id = "0";
         JsonNode jsonNode = JsonHandler.createObjectNode();
 
-        expect(
-            adminExternalClient.updateContext(isA(VitamContext.class), isA(String.class), isA(JsonNode.class))
-        ).andThrow(new AccessExternalClientException("Exception thrown by Vitam"));
-        EasyMock.replay(adminExternalClient);
+        when(
+            adminExternalClient.updateContext(any(VitamContext.class), any(String.class), any(JsonNode.class))
+        ).thenThrow(new AccessExternalClientException("Exception thrown by Vitam"));
 
-        assertThatCode(() -> {
-            vitamContextService.patchContext(vitamContext, id, jsonNode);
-        }).isInstanceOf(AccessExternalClientException.class);
+        assertThatCode(() -> vitamContextService.patchContext(vitamContext, id, jsonNode)).isInstanceOf(
+            AccessExternalClientException.class
+        );
     }
 
     @Test
@@ -154,14 +136,13 @@ public class VitamContextServiceTest {
         final String id = "0";
         JsonNode jsonNode = JsonHandler.createObjectNode();
 
-        expect(
-            adminExternalClient.updateContext(isA(VitamContext.class), isA(String.class), isA(JsonNode.class))
-        ).andThrow(new InvalidParseOperationException("Exception thrown by Vitam"));
-        EasyMock.replay(adminExternalClient);
+        when(
+            adminExternalClient.updateContext(any(VitamContext.class), any(String.class), any(JsonNode.class))
+        ).thenThrow(new InvalidParseOperationException("Exception thrown by Vitam"));
 
-        assertThatCode(() -> {
-            vitamContextService.patchContext(vitamContext, id, jsonNode);
-        }).isInstanceOf(InvalidParseOperationException.class);
+        assertThatCode(() -> vitamContextService.patchContext(vitamContext, id, jsonNode)).isInstanceOf(
+            InvalidParseOperationException.class
+        );
     }
 
     @Test
@@ -169,14 +150,11 @@ public class VitamContextServiceTest {
         VitamContext vitamContext = new VitamContext(0);
         JsonNode jsonNode = JsonHandler.createObjectNode();
 
-        expect(adminExternalClient.findContexts(isA(VitamContext.class), isA(JsonNode.class))).andReturn(
+        when(adminExternalClient.findContexts(any(VitamContext.class), any(JsonNode.class))).thenReturn(
             new RequestResponseOK<ContextModel>().setHttpCode(200)
         );
-        EasyMock.replay(adminExternalClient);
 
-        assertThatCode(() -> {
-            vitamContextService.findContexts(vitamContext, jsonNode);
-        }).doesNotThrowAnyException();
+        assertThatCode(() -> vitamContextService.findContexts(vitamContext, jsonNode)).doesNotThrowAnyException();
     }
 
     @Test
@@ -185,14 +163,13 @@ public class VitamContextServiceTest {
         VitamContext vitamContext = new VitamContext(0);
         JsonNode jsonNode = JsonHandler.createObjectNode();
 
-        expect(adminExternalClient.findContexts(isA(VitamContext.class), isA(JsonNode.class))).andReturn(
+        when(adminExternalClient.findContexts(any(VitamContext.class), any(JsonNode.class))).thenReturn(
             new RequestResponseOK<ContextModel>().setHttpCode(400)
         );
-        EasyMock.replay(adminExternalClient);
 
-        assertThatCode(() -> {
-            vitamContextService.findContexts(vitamContext, jsonNode);
-        }).isInstanceOf(BadRequestException.class);
+        assertThatCode(() -> vitamContextService.findContexts(vitamContext, jsonNode)).isInstanceOf(
+            BadRequestException.class
+        );
     }
 
     @Test
@@ -201,14 +178,13 @@ public class VitamContextServiceTest {
         VitamContext vitamContext = new VitamContext(0);
         JsonNode jsonNode = JsonHandler.createObjectNode();
 
-        expect(adminExternalClient.findContexts(isA(VitamContext.class), isA(JsonNode.class))).andThrow(
+        when(adminExternalClient.findContexts(any(VitamContext.class), any(JsonNode.class))).thenThrow(
             new VitamClientException("Exception thrown by Vitam")
         );
-        EasyMock.replay(adminExternalClient);
 
-        assertThatCode(() -> {
-            vitamContextService.findContexts(vitamContext, jsonNode);
-        }).isInstanceOf(VitamClientException.class);
+        assertThatCode(() -> vitamContextService.findContexts(vitamContext, jsonNode)).isInstanceOf(
+            VitamClientException.class
+        );
     }
 
     @Test
@@ -216,14 +192,11 @@ public class VitamContextServiceTest {
         VitamContext vitamContext = new VitamContext(0);
         String contextId = "CId_0";
 
-        expect(adminExternalClient.findContextById(isA(VitamContext.class), isA(String.class))).andReturn(
+        when(adminExternalClient.findContextById(any(VitamContext.class), any(String.class))).thenReturn(
             new RequestResponseOK<ContextModel>().setHttpCode(200)
         );
-        EasyMock.replay(adminExternalClient);
 
-        assertThatCode(() -> {
-            vitamContextService.findContextById(vitamContext, contextId);
-        }).doesNotThrowAnyException();
+        assertThatCode(() -> vitamContextService.findContextById(vitamContext, contextId)).doesNotThrowAnyException();
     }
 
     @Test
@@ -232,14 +205,13 @@ public class VitamContextServiceTest {
         VitamContext vitamContext = new VitamContext(0);
         String contextId = "CId_0";
 
-        expect(adminExternalClient.findContextById(isA(VitamContext.class), isA(String.class))).andReturn(
+        when(adminExternalClient.findContextById(any(VitamContext.class), any(String.class))).thenReturn(
             new RequestResponseOK<ContextModel>().setHttpCode(400)
         );
-        EasyMock.replay(adminExternalClient);
 
-        assertThatCode(() -> {
-            vitamContextService.findContextById(vitamContext, contextId);
-        }).isInstanceOf(BadRequestException.class);
+        assertThatCode(() -> vitamContextService.findContextById(vitamContext, contextId)).isInstanceOf(
+            BadRequestException.class
+        );
     }
 
     @Test
@@ -248,14 +220,13 @@ public class VitamContextServiceTest {
         VitamContext vitamContext = new VitamContext(0);
         String contextId = "CId_0";
 
-        expect(adminExternalClient.findContextById(isA(VitamContext.class), isA(String.class))).andThrow(
+        when(adminExternalClient.findContextById(any(VitamContext.class), any(String.class))).thenThrow(
             new VitamClientException("Exception thrown by Vitam")
         );
-        EasyMock.replay(adminExternalClient);
 
-        assertThatCode(() -> {
-            vitamContextService.findContextById(vitamContext, contextId);
-        }).isInstanceOf(VitamClientException.class);
+        assertThatCode(() -> vitamContextService.findContextById(vitamContext, contextId)).isInstanceOf(
+            VitamClientException.class
+        );
     }
 
     @Test

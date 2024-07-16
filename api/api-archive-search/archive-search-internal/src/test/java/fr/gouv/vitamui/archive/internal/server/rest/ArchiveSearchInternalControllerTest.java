@@ -31,10 +31,8 @@ import fr.gouv.vitam.access.external.client.AdminExternalClient;
 import fr.gouv.vitam.ingest.external.client.IngestExternalClient;
 import fr.gouv.vitamui.archive.internal.server.service.ArchiveSearchInternalService;
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
-import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import fr.gouv.vitamui.iam.security.provider.InternalApiAuthenticationProvider;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -68,11 +66,6 @@ public class ArchiveSearchInternalControllerTest {
 
     @MockBean
     private ArchiveSearchInternalService archiveSearchInternalService;
-
-    @BeforeAll
-    public static void setup() {
-        ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
-    }
 
     @Test
     public void testBasicArchive() {}

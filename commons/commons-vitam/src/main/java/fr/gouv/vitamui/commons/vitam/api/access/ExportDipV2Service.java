@@ -43,15 +43,15 @@ import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.export.dip.DipRequest;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
 import org.apache.http.HttpStatus;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ExportDipV2Service {
 
     @SuppressWarnings("unused")
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ExportDipV2Service.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ExportDipV2Service.class);
 
     private final AccessExternalClientV2 accessExternalClientV2;
 

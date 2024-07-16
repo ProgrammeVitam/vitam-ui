@@ -45,42 +45,30 @@ import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.json.JsonHandler;
 import fr.gouv.vitam.common.model.RequestResponseOK;
 import fr.gouv.vitam.common.model.administration.FileFormatModel;
-import fr.gouv.vitamui.commons.api.identity.ServerIdentityConfiguration;
-import org.easymock.EasyMock;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.powermock.api.easymock.PowerMock;
-import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.assertj.core.api.Assertions.assertThatCode;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.mock;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.when;
 
-@RunWith(org.powermock.modules.junit4.PowerMockRunner.class)
-@PrepareForTest({ ServerIdentityConfiguration.class })
+@ExtendWith(MockitoExtension.class)
 public class VitamUIAccessContractServiceTest {
 
+    @Mock
     private AdminExternalClient adminExternalClient;
+
+    @InjectMocks
     private VitamUIAccessContractService vitamUIAccessContractService;
 
-    @Before
-    public void setUp() {
-        adminExternalClient = mock(AdminExternalClient.class);
-        vitamUIAccessContractService = new VitamUIAccessContractService(adminExternalClient);
-
-        // Mock server identity for Logs when not using spring
-        PowerMock.suppress(PowerMock.constructor(ServerIdentityConfiguration.class));
-        PowerMock.mockStatic(ServerIdentityConfiguration.class);
-        ServerIdentityConfiguration serverIdentityConfigurationMock = PowerMock.createMock(
-            ServerIdentityConfiguration.class
-        );
-        expect(ServerIdentityConfiguration.getInstance()).andReturn(serverIdentityConfigurationMock).anyTimes();
-        expect(serverIdentityConfigurationMock.getLoggerMessagePrepend())
-            .andReturn("LOG TESTS VitamUIAccessContractServiceTest - ")
-            .anyTimes();
-        PowerMock.replay(ServerIdentityConfiguration.class);
-        PowerMock.replay(serverIdentityConfigurationMock);
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.openMocks(VitamUIAccessContractServiceTest.class);
     }
 
     @Test
@@ -90,14 +78,13 @@ public class VitamUIAccessContractServiceTest {
         String id = "id_0";
         JsonNode jsonNode = JsonHandler.createObjectNode();
 
-        expect(adminExternalClient.updateAccessContract(vitamSecurityProfile, id, jsonNode)).andReturn(
+        when(adminExternalClient.updateAccessContract(vitamSecurityProfile, id, jsonNode)).thenReturn(
             new RequestResponseOK<FileFormatModel>().setHttpCode(200)
         );
-        EasyMock.replay(adminExternalClient);
 
-        assertThatCode(() -> {
-            vitamUIAccessContractService.patchAccessContract(vitamSecurityProfile, id, jsonNode);
-        }).doesNotThrowAnyException();
+        assertThatCode(
+            () -> vitamUIAccessContractService.patchAccessContract(vitamSecurityProfile, id, jsonNode)
+        ).doesNotThrowAnyException();
     }
 
     @Test
@@ -107,14 +94,13 @@ public class VitamUIAccessContractServiceTest {
         String id = "id_0";
         JsonNode jsonNode = JsonHandler.createObjectNode();
 
-        expect(adminExternalClient.updateAccessContract(vitamSecurityProfile, id, jsonNode)).andReturn(
+        when(adminExternalClient.updateAccessContract(vitamSecurityProfile, id, jsonNode)).thenReturn(
             new VitamError("ERR_VITAM").setHttpCode(400).setMessage("DSL malformated")
         );
-        EasyMock.replay(adminExternalClient);
 
-        assertThatCode(() -> {
-            vitamUIAccessContractService.patchAccessContract(vitamSecurityProfile, id, jsonNode);
-        }).hasMessageContaining("DSL malformated");
+        assertThatCode(
+            () -> vitamUIAccessContractService.patchAccessContract(vitamSecurityProfile, id, jsonNode)
+        ).hasMessageContaining("DSL malformated");
     }
 
     @Test
@@ -124,14 +110,13 @@ public class VitamUIAccessContractServiceTest {
         String id = "id_0";
         JsonNode jsonNode = JsonHandler.createObjectNode();
 
-        expect(adminExternalClient.updateAccessContract(vitamSecurityProfile, id, jsonNode)).andThrow(
+        when(adminExternalClient.updateAccessContract(vitamSecurityProfile, id, jsonNode)).thenThrow(
             new InvalidParseOperationException("Exception thrown by Vitam")
         );
-        EasyMock.replay(adminExternalClient);
 
-        assertThatCode(() -> {
-            vitamUIAccessContractService.patchAccessContract(vitamSecurityProfile, id, jsonNode);
-        }).isInstanceOf(InvalidParseOperationException.class);
+        assertThatCode(
+            () -> vitamUIAccessContractService.patchAccessContract(vitamSecurityProfile, id, jsonNode)
+        ).isInstanceOf(InvalidParseOperationException.class);
     }
 
     @Test
@@ -141,13 +126,12 @@ public class VitamUIAccessContractServiceTest {
         String id = "id_0";
         JsonNode jsonNode = JsonHandler.createObjectNode();
 
-        expect(adminExternalClient.updateAccessContract(vitamSecurityProfile, id, jsonNode)).andThrow(
+        when(adminExternalClient.updateAccessContract(eq(vitamSecurityProfile), eq(id), eq(jsonNode))).thenThrow(
             new AccessExternalClientException("Exception thrown by Vitam")
         );
-        EasyMock.replay(adminExternalClient);
 
-        assertThatCode(() -> {
-            vitamUIAccessContractService.patchAccessContract(vitamSecurityProfile, id, jsonNode);
-        }).isInstanceOf(AccessExternalClientException.class);
+        assertThatCode(
+            () -> vitamUIAccessContractService.patchAccessContract(vitamSecurityProfile, id, jsonNode)
+        ).isInstanceOf(AccessExternalClientException.class);
     }
 }

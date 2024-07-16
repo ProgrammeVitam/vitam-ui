@@ -46,46 +46,32 @@ import fr.gouv.vitam.common.json.JsonHandler;
 import fr.gouv.vitam.common.model.RequestResponseOK;
 import fr.gouv.vitam.common.model.administration.OntologyModel;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
-import fr.gouv.vitamui.commons.api.identity.ServerIdentityConfiguration;
-import org.easymock.EasyMock;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.powermock.api.easymock.PowerMock;
-import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThatCode;
-import static org.easymock.EasyMock.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.when;
 
-@RunWith(org.powermock.modules.junit4.PowerMockRunner.class)
-@PrepareForTest({ ServerIdentityConfiguration.class })
 public class OntologyServiceTest {
 
+    @Mock
     private AdminExternalClient adminExternalClient;
+
+    @InjectMocks
     private OntologyService ontologyService;
 
-    @Before
+    @BeforeEach
     public void setUp() {
-        adminExternalClient = mock(AdminExternalClient.class);
-        ontologyService = new OntologyService(adminExternalClient);
-
-        // Mock server identity for Logs when not using spring
-        PowerMock.suppress(PowerMock.constructor(ServerIdentityConfiguration.class));
-        PowerMock.mockStatic(ServerIdentityConfiguration.class);
-        ServerIdentityConfiguration serverIdentityConfigurationMock = PowerMock.createMock(
-            ServerIdentityConfiguration.class
-        );
-        expect(ServerIdentityConfiguration.getInstance()).andReturn(serverIdentityConfigurationMock).anyTimes();
-        expect(serverIdentityConfigurationMock.getLoggerMessagePrepend())
-            .andReturn("LOG TESTS OntologyServiceTest - ")
-            .anyTimes();
-        PowerMock.replay(ServerIdentityConfiguration.class);
-        PowerMock.replay(serverIdentityConfigurationMock);
+        MockitoAnnotations.openMocks(this);
     }
 
     @Test
@@ -93,10 +79,9 @@ public class OntologyServiceTest {
         VitamContext vitamContext = new VitamContext(0);
         String identifier = "0";
 
-        expect(adminExternalClient.findOntologyById(isA(VitamContext.class), isA(String.class))).andReturn(
+        when(adminExternalClient.findOntologyById(any(VitamContext.class), eq(identifier))).thenReturn(
             new RequestResponseOK<OntologyModel>().setHttpCode(200)
         );
-        EasyMock.replay(adminExternalClient);
 
         assertThatCode(() -> {
             ontologyService.findOntologyById(vitamContext, identifier);
@@ -108,10 +93,9 @@ public class OntologyServiceTest {
         VitamContext vitamContext = new VitamContext(1);
         String identifier = "1";
 
-        expect(adminExternalClient.findOntologyById(isA(VitamContext.class), isA(String.class))).andReturn(
+        when(adminExternalClient.findOntologyById(any(VitamContext.class), eq(identifier))).thenReturn(
             new RequestResponseOK<OntologyModel>().setHttpCode(400)
         );
-        EasyMock.replay(adminExternalClient);
 
         assertThatCode(() -> {
             ontologyService.findOntologyById(vitamContext, identifier);
@@ -124,10 +108,9 @@ public class OntologyServiceTest {
         VitamContext vitamContext = new VitamContext(1);
         String identifier = "1";
 
-        expect(adminExternalClient.findOntologyById(isA(VitamContext.class), isA(String.class))).andThrow(
+        when(adminExternalClient.findOntologyById(any(VitamContext.class), eq(identifier))).thenThrow(
             new VitamClientException("Exception thrown by Vitam")
         );
-        EasyMock.replay(adminExternalClient);
 
         assertThatCode(() -> {
             ontologyService.findOntologyById(vitamContext, identifier);
@@ -139,10 +122,9 @@ public class OntologyServiceTest {
         VitamContext vitamContext = new VitamContext(0);
         JsonNode jsonNode = JsonHandler.createObjectNode();
 
-        expect(adminExternalClient.findOntologies(isA(VitamContext.class), isA(JsonNode.class))).andReturn(
+        when(adminExternalClient.findOntologies(any(VitamContext.class), any(JsonNode.class))).thenReturn(
             new RequestResponseOK<OntologyModel>().setHttpCode(200)
         );
-        EasyMock.replay(adminExternalClient);
 
         assertThatCode(() -> {
             ontologyService.findOntologies(vitamContext, jsonNode);
@@ -154,10 +136,9 @@ public class OntologyServiceTest {
         VitamContext vitamContext = new VitamContext(1);
         JsonNode jsonNode = JsonHandler.createObjectNode();
 
-        expect(adminExternalClient.findOntologies(isA(VitamContext.class), isA(JsonNode.class))).andReturn(
+        when(adminExternalClient.findOntologies(any(VitamContext.class), any(JsonNode.class))).thenReturn(
             new RequestResponseOK<OntologyModel>().setHttpCode(400)
         );
-        EasyMock.replay(adminExternalClient);
 
         assertThatCode(() -> {
             ontologyService.findOntologies(vitamContext, jsonNode);
@@ -170,99 +151,90 @@ public class OntologyServiceTest {
         VitamContext vitamContext = new VitamContext(2);
         JsonNode jsonNode = JsonHandler.createObjectNode();
 
-        expect(adminExternalClient.findOntologies(isA(VitamContext.class), isA(JsonNode.class))).andThrow(
+        when(adminExternalClient.findOntologies(any(VitamContext.class), any(JsonNode.class))).thenThrow(
             new VitamClientException("Exception thrown by Vitam")
         );
-        EasyMock.replay(adminExternalClient);
 
         assertThatCode(() -> {
             ontologyService.findOntologies(vitamContext, jsonNode);
         }).isInstanceOf(VitamClientException.class);
     }
 
-    @Ignore
     @Test
     public void importOntologies_should_return_ok_when_vitamclient_ok()
         throws InvalidParseOperationException, AccessExternalClientException {
         VitamContext vitamContext = new VitamContext(0);
-        List<OntologyModel> ontologies = new ArrayList<OntologyModel>();
+        List<OntologyModel> ontologies = new ArrayList<>();
         OntologyModel ontologyModel = new OntologyModel();
         ontologyModel.setIdentifier("identifier");
         ontologyModel.setId("1");
         ontologyModel.setTenant(0);
         ontologies.add(ontologyModel);
 
-        expect(
+        when(
             adminExternalClient.importOntologies(
-                isA(Boolean.class),
-                isA(VitamContext.class),
-                isA(ByteArrayInputStream.class)
+                any(Boolean.class),
+                any(VitamContext.class),
+                any(ByteArrayInputStream.class)
             )
-        ).andReturn(new RequestResponseOK<>().setHttpCode(200));
-        EasyMock.replay(adminExternalClient);
+        ).thenReturn(new RequestResponseOK<>().setHttpCode(200));
 
         assertThatCode(() -> {
             ontologyService.importOntologies(vitamContext, ontologies);
         }).doesNotThrowAnyException();
     }
 
-    @Ignore
     @Test
     public void importOntologies_should_return_ok_when_vitamclient_400()
         throws InvalidParseOperationException, AccessExternalClientException {
         VitamContext vitamContext = new VitamContext(0);
-        List<OntologyModel> ontologies = new ArrayList<OntologyModel>();
+        List<OntologyModel> ontologies = new ArrayList<>();
 
-        expect(
+        when(
             adminExternalClient.importOntologies(
-                isA(Boolean.class),
-                isA(VitamContext.class),
-                isA(ByteArrayInputStream.class)
+                any(Boolean.class),
+                any(VitamContext.class),
+                any(ByteArrayInputStream.class)
             )
-        ).andReturn(new RequestResponseOK<>().setHttpCode(400));
-        EasyMock.replay(adminExternalClient);
+        ).thenReturn(new RequestResponseOK<>().setHttpCode(400));
 
         assertThatCode(() -> {
             ontologyService.importOntologies(vitamContext, ontologies);
         }).doesNotThrowAnyException();
     }
 
-    @Ignore
     @Test
     public void importOntologies_should_throw_InvalidParseOperationException_when_vitamclient_throws_InvalidParseOperationException()
         throws InvalidParseOperationException, AccessExternalClientException {
         VitamContext vitamContext = new VitamContext(0);
-        List<OntologyModel> ontologies = new ArrayList<OntologyModel>();
+        List<OntologyModel> ontologies = new ArrayList<>();
 
-        expect(
+        when(
             adminExternalClient.importOntologies(
-                isA(Boolean.class),
-                isA(VitamContext.class),
-                isA(ByteArrayInputStream.class)
+                any(Boolean.class),
+                any(VitamContext.class),
+                any(ByteArrayInputStream.class)
             )
-        ).andThrow(new InvalidParseOperationException("Exception thrown by Vitam"));
-        EasyMock.replay(adminExternalClient);
+        ).thenThrow(new InvalidParseOperationException("Exception thrown by Vitam"));
 
         assertThatCode(() -> {
             ontologyService.importOntologies(vitamContext, ontologies);
         }).isInstanceOf(InvalidParseOperationException.class);
     }
 
-    @Ignore
     @Test
     public void importOntologies_should_throw_AccessExternalClientException_when_vitamclient_throws_AccessExternalClientException()
         throws InvalidParseOperationException, AccessExternalClientException {
         VitamContext vitamContext = new VitamContext(0);
-        List<OntologyModel> ontologies = new ArrayList<OntologyModel>();
+        List<OntologyModel> ontologies = new ArrayList<>();
 
-        expect(
+        when(
             adminExternalClient.importOntologies(
-                isA(Boolean.class),
-                isA(VitamContext.class),
-                isA(ByteArrayInputStream.class)
+                any(Boolean.class),
+                any(VitamContext.class),
+                any(ByteArrayInputStream.class)
             )
-        ).andThrow(new AccessExternalClientException("Exception thrown by Vitam"));
-        EasyMock.replay(adminExternalClient);
+        ).thenThrow(new AccessExternalClientException("Exception thrown by Vitam"));
 
         assertThatCode(() -> {
             ontologyService.importOntologies(vitamContext, ontologies);

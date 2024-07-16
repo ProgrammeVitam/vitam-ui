@@ -2,7 +2,6 @@ package fr.gouv.vitamui.iam.internal.client;
 
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
-import fr.gouv.vitamui.commons.test.utils.AbstractServerIdentityBuilder;
 import fr.gouv.vitamui.iam.common.rest.RestApi;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,7 +16,7 @@ import java.net.URI;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class CasInternalRestClientTest extends AbstractServerIdentityBuilder {
+public class CasInternalRestClientTest {
 
     private CasInternalRestClient client;
 

@@ -39,8 +39,6 @@ package fr.gouv.vitamui.cas.authentication;
 import fr.gouv.vitamui.cas.util.Constants;
 import fr.gouv.vitamui.cas.util.Utils;
 import fr.gouv.vitamui.commons.api.exception.VitamUIException;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.iam.common.enums.SubrogationStatusEnum;
 import fr.gouv.vitamui.iam.external.client.CasExternalRestClient;
 import lombok.val;
@@ -48,6 +46,8 @@ import org.apereo.cas.authentication.principal.Principal;
 import org.apereo.cas.authentication.principal.Service;
 import org.apereo.cas.authentication.surrogate.BaseSurrogateAuthenticationService;
 import org.apereo.cas.services.ServicesManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
 import org.springframework.webflow.execution.RequestContextHolder;
 
@@ -59,9 +59,7 @@ import java.util.Optional;
  */
 public class IamSurrogateAuthenticationService extends BaseSurrogateAuthenticationService {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
-        IamSurrogateAuthenticationService.class
-    );
+    private static final Logger LOGGER = LoggerFactory.getLogger(IamSurrogateAuthenticationService.class);
 
     private final CasExternalRestClient casExternalRestClient;
 

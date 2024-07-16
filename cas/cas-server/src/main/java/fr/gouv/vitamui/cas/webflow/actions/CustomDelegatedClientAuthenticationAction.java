@@ -40,8 +40,6 @@ import fr.gouv.vitamui.cas.provider.Pac4jClientIdentityProviderDto;
 import fr.gouv.vitamui.cas.provider.ProvidersService;
 import fr.gouv.vitamui.cas.util.Constants;
 import fr.gouv.vitamui.cas.util.Utils;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import fr.gouv.vitamui.iam.external.client.CasExternalRestClient;
@@ -57,6 +55,8 @@ import org.apereo.cas.web.flow.DelegatedClientAuthenticationConfigurationContext
 import org.apereo.cas.web.flow.DelegatedClientAuthenticationWebflowManager;
 import org.apereo.cas.web.flow.actions.DelegatedClientAuthenticationAction;
 import org.apereo.cas.web.support.WebUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.webflow.execution.Event;
 import org.springframework.webflow.execution.RequestContext;
 
@@ -76,9 +76,7 @@ public class CustomDelegatedClientAuthenticationAction extends DelegatedClientAu
 
     public static final Pattern CUSTOMER_ID_VALIDATION_PATTERN = Pattern.compile("^[_a-z0-9]+$");
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
-        CustomDelegatedClientAuthenticationAction.class
-    );
+    private static final Logger LOGGER = LoggerFactory.getLogger(CustomDelegatedClientAuthenticationAction.class);
 
     private final IdentityProviderHelper identityProviderHelper;
 

@@ -3,13 +3,11 @@ package fr.gouv.vitamui.commons.api.domain;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
-import fr.gouv.vitamui.commons.api.utils.ServerIdentityConfigurationBuilder;
 import fr.gouv.vitamui.commons.utils.JsonUtils;
 import org.assertj.core.api.Assertions;
-import org.junit.Before;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
@@ -20,12 +18,7 @@ import java.io.IOException;
  */
 public class QueryDtoTest {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(QueryDto.class);
-
-    @Before
-    public void setup() {
-        ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
-    }
+    private static final Logger LOGGER = LoggerFactory.getLogger(QueryDto.class);
 
     @Test
     public void testToString() {

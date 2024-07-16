@@ -34,8 +34,8 @@ import fr.gouv.vitam.common.database.builder.query.action.UpdateActionHelper;
 import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOperationException;
 import fr.gouv.vitam.common.database.builder.request.multiple.UpdateMultiQuery;
 import fr.gouv.vitamui.archives.search.common.dto.UpdateArchiveUnitDto;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Service;
 
@@ -45,9 +45,7 @@ import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.GUID;
 public class UpdateArchiveUnitDtoToUpdateMultiQueryConverter
     implements Converter<UpdateArchiveUnitDto, UpdateMultiQuery> {
 
-    private static final VitamUILogger log = VitamUILoggerFactory.getInstance(
-        UpdateArchiveUnitDtoToUpdateMultiQueryConverter.class
-    );
+    private static final Logger log = LoggerFactory.getLogger(UpdateArchiveUnitDtoToUpdateMultiQueryConverter.class);
 
     @Override
     public UpdateMultiQuery convert(UpdateArchiveUnitDto source) {

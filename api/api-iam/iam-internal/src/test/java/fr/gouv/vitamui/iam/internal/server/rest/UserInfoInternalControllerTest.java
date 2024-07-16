@@ -1,14 +1,14 @@
 package fr.gouv.vitamui.iam.internal.server.rest;
 
 import fr.gouv.vitamui.commons.api.domain.UserInfoDto;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.iam.common.rest.RestApi;
 import fr.gouv.vitamui.iam.internal.server.common.rest.ApiIamControllerTest;
 import fr.gouv.vitamui.iam.internal.server.user.service.UserInfoInternalService;
 import fr.gouv.vitamui.iam.internal.server.utils.IamServerUtilsTest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -17,7 +17,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 @WebMvcTest(controllers = { UserInfoInternalController.class })
 public class UserInfoInternalControllerTest extends ApiIamControllerTest<UserInfoDto> {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(UserInfoInternalControllerTest.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserInfoInternalControllerTest.class);
 
     @MockBean
     private UserInfoInternalService userInfoInternalService;
@@ -46,7 +46,7 @@ public class UserInfoInternalControllerTest extends ApiIamControllerTest<UserInf
     }
 
     @Override
-    protected VitamUILogger getLog() {
+    protected Logger getLog() {
         return LOGGER;
     }
 

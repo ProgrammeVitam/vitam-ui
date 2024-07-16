@@ -13,10 +13,10 @@ import fr.gouv.vitamui.commons.logbook.common.EventType;
 import fr.gouv.vitamui.commons.logbook.common.EventTypeProc;
 import fr.gouv.vitamui.commons.logbook.dao.EventRepository;
 import fr.gouv.vitamui.commons.logbook.domain.Event;
-import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import org.apache.commons.lang.StringUtils;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -44,12 +44,12 @@ public class SendEventToVitamTasksTest {
     @Mock
     private AdminExternalClient adminExternalClient;
 
-    @Before
+    @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);
         sendEventToVitamTasks = new SendEventToVitamTasks(eventRepository, adminExternalClient);
         sendEventToVitamTasks = Mockito.spy(sendEventToVitamTasks);
-        ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
+
         sendEventToVitamTasks.setRetryErrorEventInMinutes(60L);
     }
 
@@ -141,7 +141,7 @@ public class SendEventToVitamTasksTest {
         LogbookOperationParameters op = sendEventToVitamTasks.convertEventToMaster(event);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void convertEventToMaster_when_eventIsMalFormed_then_throws_IllegalArgumentException()
         throws IllegalArgumentException, IOException {
         Event event = new Event();
@@ -155,7 +155,11 @@ public class SendEventToVitamTasksTest {
         event.setOutMessg("outMessg");
         event.setEvDetData("");
         event.setEvDateTime(OffsetDateTime.now().toString());
-        LogbookOperationParameters op = sendEventToVitamTasks.convertEventToMaster(event);
+
+        Assertions.assertThrows(
+            IllegalArgumentException.class,
+            () -> sendEventToVitamTasks.convertEventToMaster(event)
+        );
     }
 
     @Test
@@ -186,13 +190,19 @@ public class SendEventToVitamTasksTest {
         sendEventToVitamTasks.addDateInformation("{}", OffsetDateTime.now().toString());
     }
 
-    @Test(expected = IOException.class)
+    @Test
     public void addDateInformation_when_evDetDataFormatIsNotValid_then_IOException() throws IOException {
-        sendEventToVitamTasks.addDateInformation("{,,}", OffsetDateTime.now().toString());
+        Assertions.assertThrows(
+            IOException.class,
+            () -> sendEventToVitamTasks.addDateInformation("{,,}", OffsetDateTime.now().toString())
+        );
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void addDateInformation_when_evDetDataIsNull_then_ok() throws IOException {
-        sendEventToVitamTasks.addDateInformation(null, OffsetDateTime.now().toString());
+        Assertions.assertThrows(
+            IllegalArgumentException.class,
+            () -> sendEventToVitamTasks.addDateInformation(null, OffsetDateTime.now().toString())
+        );
     }
 }

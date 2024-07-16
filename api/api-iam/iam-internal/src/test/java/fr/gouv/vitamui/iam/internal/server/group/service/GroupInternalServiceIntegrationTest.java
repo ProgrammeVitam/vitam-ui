@@ -8,11 +8,10 @@ import fr.gouv.vitamui.commons.logbook.common.EventType;
 import fr.gouv.vitamui.commons.logbook.domain.Event;
 import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
 import fr.gouv.vitamui.commons.mongo.domain.CustomSequence;
-import fr.gouv.vitamui.commons.mongo.repository.impl.VitamUIRepositoryImpl;
 import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
-import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
+import fr.gouv.vitamui.commons.test.VitamClientTestConfig;
 import fr.gouv.vitamui.iam.common.utils.IamDtoBuilder;
 import fr.gouv.vitamui.iam.internal.server.common.ApiIamInternalConstants;
 import fr.gouv.vitamui.iam.internal.server.common.domain.MongoDbCollections;
@@ -21,28 +20,26 @@ import fr.gouv.vitamui.iam.internal.server.customer.dao.CustomerRepository;
 import fr.gouv.vitamui.iam.internal.server.customer.domain.Customer;
 import fr.gouv.vitamui.iam.internal.server.group.converter.GroupConverter;
 import fr.gouv.vitamui.iam.internal.server.group.dao.GroupRepository;
-import fr.gouv.vitamui.iam.internal.server.idp.service.SpMetadataGenerator;
 import fr.gouv.vitamui.iam.internal.server.logbook.service.AbstractLogbookIntegrationTest;
-import fr.gouv.vitamui.iam.internal.server.owner.dao.OwnerRepository;
-import fr.gouv.vitamui.iam.internal.server.profile.dao.ProfileRepository;
 import fr.gouv.vitamui.iam.internal.server.profile.service.ProfileInternalService;
 import fr.gouv.vitamui.iam.internal.server.tenant.dao.TenantRepository;
 import fr.gouv.vitamui.iam.internal.server.tenant.domain.Tenant;
 import fr.gouv.vitamui.iam.internal.server.user.dao.UserRepository;
-import fr.gouv.vitamui.iam.internal.server.user.service.ConnectionHistoryService;
 import fr.gouv.vitamui.iam.internal.server.utils.IamServerUtilsTest;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -55,30 +52,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 
-@RunWith(SpringRunner.class)
-@EnableMongoRepositories(
-    basePackageClasses = { GroupRepository.class, CustomSequenceRepository.class },
-    repositoryBaseClass = VitamUIRepositoryImpl.class
-)
+@SpringBootTest
+@ExtendWith(SpringExtension.class)
+@ActiveProfiles("test")
+@Import(VitamClientTestConfig.class)
 public class GroupInternalServiceIntegrationTest extends AbstractLogbookIntegrationTest {
-
-    private GroupInternalService service;
-
-    @MockBean
-    private ProfileRepository profileRepository;
-
-    @Autowired
-    private GroupRepository repository;
-
-    private final CustomerRepository customerRepository = mock(CustomerRepository.class);
-
-    private final ProfileInternalService internalProfileService = mock(ProfileInternalService.class);
-
-    @MockBean
-    private UserRepository userRepository;
-
-    @MockBean
-    private ConnectionHistoryService connectionHistoryService;
 
     private static final String ID = "ID";
 
@@ -86,25 +64,31 @@ public class GroupInternalServiceIntegrationTest extends AbstractLogbookIntegrat
 
     private static final String LEVEL = "LEVEL";
 
+    private GroupInternalService service;
+
+    private final CustomerRepository customerRepository = mock(CustomerRepository.class);
+
+    private final ProfileInternalService internalProfileService = mock(ProfileInternalService.class);
+
+    @Autowired
+    private GroupRepository repository;
+
+    @Autowired
+    private GroupConverter groupConverter;
+
     @Autowired
     private CustomSequenceRepository sequenceRepository;
 
     @MockBean
-    private OwnerRepository ownerRepository;
-
-    @Autowired
-    private GroupConverter groupConverter;
+    private UserRepository userRepository;
 
     @Mock
     private InternalHttpContext internalHttpContext;
 
     @MockBean
-    private SpMetadataGenerator spMetadataGenerator;
-
-    @MockBean
     private TenantRepository tenantRepository;
 
-    @Before
+    @BeforeEach
     public void setup() {
         service = new GroupInternalService(
             new SequenceGeneratorService(sequenceRepository),
@@ -121,10 +105,8 @@ public class GroupInternalServiceIntegrationTest extends AbstractLogbookIntegrat
         );
 
         repository.deleteAll();
-        ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
-        Mockito.when(tenantRepository.findOne(ArgumentMatchers.any(Query.class))).thenReturn(
-            Optional.ofNullable(new Tenant())
-        );
+
+        Mockito.when(tenantRepository.findOne(ArgumentMatchers.any(Query.class))).thenReturn(Optional.of(new Tenant()));
 
         final CustomSequence customSequence = new CustomSequence();
         customSequence.setName(SequencesConstants.GROUP_IDENTIFIER);
@@ -345,7 +327,7 @@ public class GroupInternalServiceIntegrationTest extends AbstractLogbookIntegrat
         Mockito.when(internalSecurityService.getCustomerId()).thenReturn(customerId);
         Mockito.when(internalSecurityService.getHttpContext()).thenReturn(internalHttpContext);
         Mockito.when(internalProfileService.getMany(ArgumentMatchers.any(), ArgumentMatchers.any())).thenReturn(
-            Arrays.asList(profile)
+            List.of(profile)
         );
         Mockito.when(tenantRepository.findByIdentifier(ArgumentMatchers.any())).thenReturn(tenant);
 

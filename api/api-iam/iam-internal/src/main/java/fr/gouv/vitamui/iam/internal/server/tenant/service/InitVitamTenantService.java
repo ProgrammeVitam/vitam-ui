@@ -53,8 +53,6 @@ import fr.gouv.vitamui.commons.api.domain.IngestContractDto;
 import fr.gouv.vitamui.commons.api.domain.ParameterDto;
 import fr.gouv.vitamui.commons.api.domain.TenantDto;
 import fr.gouv.vitamui.commons.api.exception.ApplicationServerException;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.vitam.api.administration.AccessContractService;
 import fr.gouv.vitamui.commons.vitam.api.administration.IngestContractService;
 import fr.gouv.vitamui.commons.vitam.api.dto.AccessContractResponseDto;
@@ -66,6 +64,8 @@ import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 
@@ -126,7 +126,7 @@ public class InitVitamTenantService {
 
     private static final String STATUS = "ACTIVE";
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(InitVitamTenantService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(InitVitamTenantService.class);
 
     public InitVitamTenantService(
         final AccessContractService accessContractService,

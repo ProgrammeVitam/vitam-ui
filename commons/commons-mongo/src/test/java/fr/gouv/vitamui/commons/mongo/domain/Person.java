@@ -43,6 +43,7 @@ public class Person extends IdDocument {
         this.lastName = lastName;
         this.age = age;
         this.emails = emails;
+        this.lastConnection = lastConnection;
     }
 
     @Override

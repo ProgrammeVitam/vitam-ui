@@ -37,13 +37,13 @@
 package fr.gouv.vitamui.commons.security.client.config;
 
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.commons.security.client.logout.CasLogoutUrl;
 import fr.gouv.vitamui.commons.security.client.util.TrustedHttpURLConnectionFactory;
 import org.jasig.cas.client.authentication.AttributePrincipal;
 import org.jasig.cas.client.validation.Cas30ServiceTicketValidator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.cas.ServiceProperties;
@@ -71,7 +71,7 @@ import java.security.KeyStore;
  */
 public abstract class BaseCasSecurityConfigurer extends WebSecurityConfigurerAdapter {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(BaseCasSecurityConfigurer.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(BaseCasSecurityConfigurer.class);
 
     private static final String LOGIN_ENDPOINT = "login";
 

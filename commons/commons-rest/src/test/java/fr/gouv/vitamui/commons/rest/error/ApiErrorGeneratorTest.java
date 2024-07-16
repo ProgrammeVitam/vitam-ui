@@ -5,14 +5,9 @@ import fr.gouv.vitamui.commons.rest.ApiErrorGenerator;
 import fr.gouv.vitamui.commons.rest.ErrorsConstants;
 import org.junit.Assert;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.powermock.modules.junit4.PowerMockRunner;
-import org.springframework.context.annotation.Import;
 
 import java.io.IOException;
 
-@RunWith(PowerMockRunner.class)
-@Import(ApiErrorGenerator.class)
 public class ApiErrorGeneratorTest {
 
     @Test

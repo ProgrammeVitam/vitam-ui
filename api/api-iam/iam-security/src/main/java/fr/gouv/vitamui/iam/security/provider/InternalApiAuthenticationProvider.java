@@ -36,12 +36,12 @@
  */
 package fr.gouv.vitamui.iam.security.provider;
 
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.iam.security.authentication.InternalAuthentication;
 import fr.gouv.vitamui.iam.security.service.InternalAuthentificationService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -56,9 +56,7 @@ import org.springframework.security.web.authentication.preauth.PreAuthenticatedA
 
 public class InternalApiAuthenticationProvider implements AuthenticationProvider {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
-        InternalApiAuthenticationProvider.class
-    );
+    private static final Logger LOGGER = LoggerFactory.getLogger(InternalApiAuthenticationProvider.class);
 
     private final InternalAuthentificationService internalAuthentificationService;
 

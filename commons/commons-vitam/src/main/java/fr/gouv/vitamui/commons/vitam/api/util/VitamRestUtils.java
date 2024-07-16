@@ -50,10 +50,10 @@ import fr.gouv.vitamui.commons.api.exception.NotFoundException;
 import fr.gouv.vitamui.commons.api.exception.UnexpectedDataException;
 import fr.gouv.vitamui.commons.api.exception.UnexpectedSettingsException;
 import fr.gouv.vitamui.commons.api.exception.VitamUIException;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.utils.JsonUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.InvalidMediaTypeException;
 import org.springframework.http.MediaType;
@@ -73,7 +73,7 @@ public class VitamRestUtils {
 
     public static final String PARSING_ERROR_MSG = "Error while parsing Vitam response";
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(VitamRestUtils.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(VitamRestUtils.class);
 
     private static final ObjectMapper mapper = new ObjectMapper();
 

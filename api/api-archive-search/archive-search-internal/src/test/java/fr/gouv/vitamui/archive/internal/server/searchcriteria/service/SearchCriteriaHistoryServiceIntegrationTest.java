@@ -36,61 +36,46 @@
  */
 package fr.gouv.vitamui.archive.internal.server.searchcriteria.service;
 
-import fr.gouv.vitamui.archive.internal.server.TestMongoConfig;
 import fr.gouv.vitamui.archive.internal.server.config.ConverterConfig;
 import fr.gouv.vitamui.archive.internal.server.searchcriteria.converter.SearchCriteriaHistoryConverter;
 import fr.gouv.vitamui.archive.internal.server.searchcriteria.dao.SearchCriteriaHistoryRepository;
 import fr.gouv.vitamui.archive.internal.server.searchcriteria.domain.SearchCriteriaHistory;
 import fr.gouv.vitamui.archive.internal.server.utils.Utils;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaHistoryDto;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
-import fr.gouv.vitamui.commons.mongo.repository.impl.VitamUIRepositoryImpl;
-import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
-import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
+import fr.gouv.vitamui.commons.test.AbstractMongoTests;
+import fr.gouv.vitamui.commons.test.VitamClientTestConfig;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 
+@SpringBootTest
 @ExtendWith(SpringExtension.class)
-@Import({ TestMongoConfig.class, ConverterConfig.class })
-@EnableMongoRepositories(
-    basePackageClasses = { SearchCriteriaHistoryRepository.class },
-    repositoryBaseClass = VitamUIRepositoryImpl.class
-)
-public class SearchCriteriaHistoryServiceIntegTest {
+@Import({ ConverterConfig.class, VitamClientTestConfig.class })
+@ActiveProfiles("test")
+public class SearchCriteriaHistoryServiceIntegrationTest extends AbstractMongoTests {
 
     private SearchCriteriaHistoryInternalService service;
 
-    @MockBean
-    protected InternalSecurityService internalSecurityService;
-
-    @Autowired
-    private SearchCriteriaHistoryRepository rrepository;
-
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
-        SearchCriteriaHistoryServiceIntegTest.class
-    );
-
     private final CustomSequenceRepository sequenceRepository = mock(CustomSequenceRepository.class);
 
-    private final InternalHttpContext internalHttpContext = mock(InternalHttpContext.class);
+    @Autowired
+    private SearchCriteriaHistoryRepository repository;
 
     @Autowired
     private SearchCriteriaHistoryConverter searchCriteriaHistoryConverter;
@@ -98,10 +83,8 @@ public class SearchCriteriaHistoryServiceIntegTest {
     @Autowired
     private MongoTemplate mongoTemplate;
 
-    @BeforeAll
-    public static void beforeClass() {
-        ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
-    }
+    @MockBean
+    protected InternalSecurityService internalSecurityService;
 
     @BeforeEach
     public void setup() throws Exception {
@@ -109,11 +92,11 @@ public class SearchCriteriaHistoryServiceIntegTest {
 
         service = new SearchCriteriaHistoryInternalService(
             sequenceRepository,
-            rrepository,
+            repository,
             searchCriteriaHistoryConverter,
             internalSecurityService
         );
-        rrepository.deleteAll();
+        repository.deleteAll();
 
         final AuthUserDto user = Utils.buildAuthUserDto();
 
@@ -122,7 +105,7 @@ public class SearchCriteriaHistoryServiceIntegTest {
 
     @AfterEach
     public void cleanUp() {
-        rrepository.deleteAll();
+        repository.deleteAll();
     }
 
     @Test
@@ -134,7 +117,7 @@ public class SearchCriteriaHistoryServiceIntegTest {
 
         assertThat(searchCriteriaHistoryDto.getName()).isNotBlank();
         searchCriteriaHistory.setUserId("code");
-        rrepository.save(searchCriteriaHistory);
+        repository.save(searchCriteriaHistory);
 
         assertThat(service.getSearchCriteriaHistoryDtos()).hasSize(1);
     }

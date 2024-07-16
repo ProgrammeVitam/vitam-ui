@@ -39,9 +39,9 @@ package fr.gouv.vitamui.commons.rest.client;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.IdDto;
 import fr.gouv.vitamui.commons.api.exception.NotFoundException;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import org.apache.http.client.utils.URIBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -60,7 +60,7 @@ import java.util.Optional;
  */
 public abstract class BaseCrudWebClient<C extends AbstractHttpContext, D extends IdDto> extends BaseWebClient<C> {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(BaseCrudWebClient.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(BaseCrudWebClient.class);
 
     private static final String CRITERIA_QUERY_PARAM = "criteria";
 
@@ -214,5 +214,5 @@ public abstract class BaseCrudWebClient<C extends AbstractHttpContext, D extends
 
     protected abstract Class<D> getDtoClass();
 
-    protected abstract VitamUILogger getLogger();
+    protected abstract Logger getLogger();
 }

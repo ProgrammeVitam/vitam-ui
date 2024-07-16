@@ -61,8 +61,6 @@ import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
 import fr.gouv.vitamui.referential.common.dsl.VitamQueryHelper;
 import fr.gouv.vitamui.referential.common.dto.LogbookOperationDto;
@@ -70,6 +68,8 @@ import fr.gouv.vitamui.referential.common.dto.LogbookOperationsResponseDto;
 import fr.gouv.vitamui.referential.common.dto.ReportType;
 import fr.gouv.vitamui.referential.common.service.OperationService;
 import fr.gouv.vitamui.referential.internal.server.service.ExternalParametersService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -87,7 +87,7 @@ import static fr.gouv.vitam.common.database.builder.query.QueryHelper.eq;
 @Service
 public class OperationInternalService {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(OperationInternalService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(OperationInternalService.class);
 
     private final OperationService operationService;
 

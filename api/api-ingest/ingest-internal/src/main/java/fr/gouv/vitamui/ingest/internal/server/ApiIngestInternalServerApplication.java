@@ -36,8 +36,8 @@
  */
 package fr.gouv.vitamui.ingest.internal.server;
 
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -53,9 +53,7 @@ public class ApiIngestInternalServerApplication implements CommandLineRunner {
     @Autowired
     private Environment env;
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
-        ApiIngestInternalServerApplication.class
-    );
+    private static final Logger LOGGER = LoggerFactory.getLogger(ApiIngestInternalServerApplication.class);
 
     public static void main(final String[] args) {
         final SpringApplication app = new SpringApplicationBuilder(ApiIngestInternalServerApplication.class).build();

@@ -12,7 +12,6 @@ import fr.gouv.vitam.common.model.logbook.LogbookOperation;
 import fr.gouv.vitam.ingest.external.client.IngestExternalClient;
 import fr.gouv.vitam.ingest.external.client.IngestExternalClientFactory;
 import fr.gouv.vitamui.commons.api.exception.ApplicationServerException;
-import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
 import org.apache.commons.io.IOUtils;
 import org.assertj.core.api.Assertions;
@@ -50,8 +49,6 @@ public class LogbookServiceTest {
 
     @Before
     public void setup() {
-        ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
-
         accessExternalClient = AccessExternalClientFactory.getInstance()
             .setVitamClientType(VitamClientFactoryInterface.VitamClientType.MOCK)
             .getClient();

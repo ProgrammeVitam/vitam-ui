@@ -34,11 +34,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.vitam.api.collect.CollectService;
 import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.core.Response;
 
@@ -46,9 +46,7 @@ public class ProjectObjectGroupInternalService {
 
     private final CollectService collectService;
     private final ObjectMapper objectMapper;
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
-        ProjectObjectGroupInternalService.class
-    );
+    private static final Logger LOGGER = LoggerFactory.getLogger(ProjectObjectGroupInternalService.class);
 
     private static final String RESULTS = "$results";
 

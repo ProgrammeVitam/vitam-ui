@@ -38,5 +38,7 @@ package fr.gouv.vitamui.commons.logbook.dao;
 
 import fr.gouv.vitamui.commons.logbook.domain.Event;
 import fr.gouv.vitamui.commons.mongo.repository.VitamUIRepository;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface EventRepository extends VitamUIRepository<Event, String> {}

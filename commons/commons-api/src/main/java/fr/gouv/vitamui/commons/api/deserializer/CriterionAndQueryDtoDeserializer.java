@@ -43,17 +43,15 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import fr.gouv.vitamui.commons.api.domain.Criterion;
 import fr.gouv.vitamui.commons.api.domain.QueryDto;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.utils.JsonUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
 public class CriterionAndQueryDtoDeserializer extends StdDeserializer<Object> {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
-        CriterionAndQueryDtoDeserializer.class
-    );
+    private static final Logger LOGGER = LoggerFactory.getLogger(CriterionAndQueryDtoDeserializer.class);
 
     public CriterionAndQueryDtoDeserializer() {
         this(null);

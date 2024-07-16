@@ -42,15 +42,15 @@ import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.database.builder.request.multiple.SelectMultiQuery;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.model.RequestResponse;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @RequiredArgsConstructor
 public class PersistentIdentifierService {
 
     @SuppressWarnings("unused")
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(PersistentIdentifierService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(PersistentIdentifierService.class);
 
     private final AccessExternalClient accessExternalClient;
 

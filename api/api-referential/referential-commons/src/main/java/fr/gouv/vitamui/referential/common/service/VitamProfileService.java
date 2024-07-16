@@ -48,9 +48,9 @@ import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.administration.ProfileModel;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -64,7 +64,7 @@ import java.util.List;
 
 public class VitamProfileService {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(VitamProfileService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(VitamProfileService.class);
 
     private final AdminExternalClient adminExternalClient;
 

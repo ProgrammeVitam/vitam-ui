@@ -1,22 +1,20 @@
 package fr.gouv.vitamui.security.server;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import fr.gouv.vitamui.commons.test.AbstractMongoTests;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
-import org.springframework.boot.autoconfigure.mongo.embedded.EmbeddedMongoAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.env.Environment;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@RunWith(SpringRunner.class)
 @SpringBootTest
 @ActiveProfiles("test")
-@ImportAutoConfiguration(exclude = EmbeddedMongoAutoConfiguration.class)
-public class ApiSecurityApplicationTest {
+@ExtendWith(SpringExtension.class)
+public class ApiSecurityApplicationTest extends AbstractMongoTests {
 
     @Autowired
     private Environment env;

@@ -38,8 +38,6 @@ package fr.gouv.vitamui.commons.rest.client;
 
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.exception.ApplicationServerException;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.client.configuration.HttpPoolConfiguration;
 import fr.gouv.vitamui.commons.rest.client.configuration.ProxyProperties;
 import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
@@ -60,6 +58,8 @@ import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.ssl.SSLContextBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.client.BufferingClientHttpRequestFactory;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
@@ -94,7 +94,7 @@ import java.util.UUID;
 
 public class BaseRestClientFactory implements RestClientFactory {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(BaseRestClientFactory.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(BaseRestClientFactory.class);
 
     private final RestTemplate restTemplate;
 

@@ -41,11 +41,8 @@ import fr.gouv.vitamui.archive.internal.server.searchcriteria.dao.SearchCriteria
 import fr.gouv.vitamui.archive.internal.server.searchcriteria.domain.SearchCriteriaHistory;
 import fr.gouv.vitamui.archive.internal.server.utils.Utils;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaHistoryDto;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
-import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import fr.gouv.vitamui.commons.utils.VitamUIUtils;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import org.junit.jupiter.api.Assertions;
@@ -53,6 +50,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.UUID;
 
@@ -70,9 +69,7 @@ public class SearchCriteriaHistoryServiceTest {
 
     private final InternalSecurityService internalSecurityService = mock(InternalSecurityService.class);
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
-        SearchCriteriaHistoryServiceTest.class
-    );
+    private static final Logger LOGGER = LoggerFactory.getLogger(SearchCriteriaHistoryServiceTest.class);
 
     private final CustomSequenceRepository sequenceRepository = mock(CustomSequenceRepository.class);
 
@@ -86,8 +83,6 @@ public class SearchCriteriaHistoryServiceTest {
             searchCriteriaHistoryConverter,
             internalSecurityService
         );
-
-        ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
     }
 
     @Test

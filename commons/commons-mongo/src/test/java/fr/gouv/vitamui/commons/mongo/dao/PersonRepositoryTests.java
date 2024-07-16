@@ -5,15 +5,17 @@ import fr.gouv.vitamui.commons.api.domain.Criterion;
 import fr.gouv.vitamui.commons.api.domain.CriterionOperator;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
-import fr.gouv.vitamui.commons.mongo.TestMongoConfig;
 import fr.gouv.vitamui.commons.mongo.domain.Person;
 import fr.gouv.vitamui.commons.mongo.repository.impl.VitamUIRepositoryImpl;
 import fr.gouv.vitamui.commons.mongo.utils.MongoUtils;
-import org.junit.After;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import fr.gouv.vitamui.commons.test.AbstractMongoTests;
+import org.hamcrest.MatcherAssert;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Import;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
@@ -22,7 +24,7 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.CriteriaDefinition;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -35,26 +37,16 @@ import java.util.Optional;
 import java.util.regex.Pattern;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
 
-/**
- * PersonRepositoryTest.
- *
- *
- */
-@RunWith(SpringRunner.class)
-@Import({ TestMongoConfig.class })
+@SpringBootTest
+@ExtendWith(SpringExtension.class)
 @EnableMongoRepositories(basePackageClasses = PersonRepository.class, repositoryBaseClass = VitamUIRepositoryImpl.class)
-public class PersonRepositoryTests {
+public class PersonRepositoryTests extends AbstractMongoTests {
 
     @Autowired
     private PersonRepository repository;
 
-    @After
+    @AfterEach
     public void cleanUp() {
         repository.deleteAll();
     }
@@ -62,16 +54,16 @@ public class PersonRepositoryTests {
     @Test
     public void readFirstPageCorrectly() {
         final Page<Person> persons = repository.findAll(PageRequest.of(0, 10));
-        assertThat(persons.isFirst(), is(true));
+        MatcherAssert.assertThat(persons.isFirst(), is(true));
     }
 
     @Test
     public void readEmptyCollection() {
         Iterable<Person> persons = repository.findAll();
-        assertThat(persons.iterator().hasNext(), is(false));
+        MatcherAssert.assertThat(persons.iterator().hasNext(), is(false));
         repository.deleteAll();
         persons = repository.findAll();
-        assertThat(persons.iterator().hasNext(), is(false));
+        MatcherAssert.assertThat(persons.iterator().hasNext(), is(false));
     }
 
     @Test
@@ -80,7 +72,7 @@ public class PersonRepositoryTests {
         repository.save(new Person("Alice", "Smith", 20, new ArrayList<>(), OffsetDateTime.now()));
         repository.save(new Person("Makhtar", "Diagne", 20, new ArrayList<>(), OffsetDateTime.now()));
         final List<Person> persons = convertIterableToList(repository.findAll());
-        assertEquals("Incorrect number of persons in database.", 2, persons.size());
+        Assertions.assertEquals(2, persons.size(), "Incorrect number of persons in database.");
     }
 
     @Test
@@ -89,11 +81,11 @@ public class PersonRepositoryTests {
         repository.save(new Person("Moctar", "Diagne", 20, new ArrayList<>(), OffsetDateTime.now()));
         repository.save(new Person("Makhtar", "Diagne", 20, new ArrayList<>(), OffsetDateTime.now()));
         List<Person> persons = repository.findByFirstName("Moctar");
-        assertEquals("Incorrect number of persons in database.", 1, persons.size());
+        Assertions.assertEquals(1, persons.size(), "Incorrect number of persons in database.");
 
         repository.save(new Person("Moctar", "Diagne", 20, new ArrayList<>(), OffsetDateTime.now()));
         persons = repository.findByFirstName("Moctar");
-        assertEquals("Incorrect number of persons in database.", 2, persons.size());
+        Assertions.assertEquals(2, persons.size(), "Incorrect number of persons in database.");
     }
 
     @Test
@@ -103,10 +95,10 @@ public class PersonRepositoryTests {
         repository.save(new Person("Makhtar", "Diagne", 20, new ArrayList<>(), OffsetDateTime.now()));
 
         boolean exist = repository.exists(MongoUtils.buildCriteriaEquals("firstName", "MOCTAR", true));
-        assertTrue("Nobody is found", exist);
+        Assertions.assertTrue(exist, "Nobody is found");
 
         exist = repository.exists(MongoUtils.buildCriteriaEquals("firstName", "MOCTAR", false));
-        assertFalse("A body is found", exist);
+        Assertions.assertFalse(exist, "A body is found");
     }
 
     @Test
@@ -115,7 +107,7 @@ public class PersonRepositoryTests {
         final Person p = repository.save(new Person("Moctar", "Diagne", 20, new ArrayList<>(), OffsetDateTime.now()));
 
         final Optional<Person> person = repository.findOne(Query.query(Criteria.where("id").is(p.getId())));
-        assertTrue("Nobody is found", person.isPresent());
+        Assertions.assertTrue(person.isPresent(), "Nobody is found");
     }
 
     @Test
@@ -123,7 +115,7 @@ public class PersonRepositoryTests {
         // save a person
         final Person p = repository.save(new Person("Moctar", "Diagne", 20, new ArrayList<>(), OffsetDateTime.now()));
         final boolean exists = repository.exists(Criteria.where("id").is(p.getId()));
-        assertTrue("Entity should be find by id criteria", exists);
+        Assertions.assertTrue(exists, "Entity should be find by id criteria");
     }
 
     @Test
@@ -140,19 +132,19 @@ public class PersonRepositoryTests {
         );
 
         boolean exists = repository.exists(Criteria.where("emails").in("moctar@vitamui.com"));
-        assertTrue("Entity should be find by emails criteria", exists);
+        Assertions.assertTrue(exists, "Entity should be find by emails criteria");
 
         exists = repository.exists(Criteria.where("emails").in("makhtar@vitamui.com"));
-        assertTrue("Entity should be find by emails criteria", exists);
+        Assertions.assertTrue(exists, "Entity should be find by emails criteria");
 
         exists = repository.exists(Criteria.where("emails").in("makhtar@vitamui.com", "moctar@vitamui.com"));
-        assertTrue("Entity should be find by emails criteria", exists);
+        Assertions.assertTrue(exists, "Entity should be find by emails criteria");
 
         exists = repository.exists(Criteria.where("emails").regex("^" + Pattern.quote("Mocta") + ".*$", "i"));
-        assertTrue("Entity should be find by emails criteria", exists);
+        Assertions.assertTrue(exists, "Entity should be find by emails criteria");
 
         exists = repository.exists(Criteria.where("emails").in("unknow@vitamui.com"));
-        assertFalse("Entity should not be find by emails criteria", exists);
+        Assertions.assertFalse(exists, "Entity should not be find by emails criteria");
     }
 
     @Test
@@ -164,7 +156,7 @@ public class PersonRepositoryTests {
         final Criterion c = new Criterion("lastName", Arrays.asList("Diagne", "toto"), CriterionOperator.NOTIN);
         final CriteriaDefinition criteria = MongoUtils.getCriteriaDefinitionFromEntityClass(c, Person.class);
         final List<Person> persons = repository.findAll(criteria);
-        assertEquals("Incorrect number of persons in database.", 0, persons.size());
+        Assertions.assertEquals(0, persons.size(), "Incorrect number of persons in database.");
     }
 
     @Test
@@ -173,11 +165,11 @@ public class PersonRepositoryTests {
         repository.save(new Person("Moctar", "Diagne", 20, new ArrayList<>(), OffsetDateTime.now()));
         repository.save(new Person("Makhtar", "D", 20, new ArrayList<>(), OffsetDateTime.now()));
         List<Person> persons = repository.findByLastName("Diagne");
-        assertEquals("Incorrect number of persons in database.", 1, persons.size());
+        Assertions.assertEquals(1, persons.size(), "Incorrect number of persons in database.");
 
         repository.save(new Person("M", "Diagne", 20, new ArrayList<>(), OffsetDateTime.now()));
         persons = repository.findByLastName("Diagne");
-        assertEquals("Incorrect number of persons in database.", 2, persons.size());
+        Assertions.assertEquals(2, persons.size(), "Incorrect number of persons in database.");
     }
 
     @Test
@@ -188,7 +180,7 @@ public class PersonRepositoryTests {
         person.setLastConnection(dateTime);
         repository.save(person);
         final List<Person> persons = repository.findByLastName("Diagne");
-        assertEquals("Incorrect number of persons in database.", 1, persons.size());
+        Assertions.assertEquals(1, persons.size(), "Incorrect number of persons in database.");
     }
 
     @Test
@@ -203,7 +195,7 @@ public class PersonRepositoryTests {
             ExampleMatcher.matching().withIgnoreNullValues().withIgnorePaths("age")
         );
         final boolean exist = repository.exists(example);
-        assertEquals("Invalid matcher.", true, exist);
+        Assertions.assertEquals(true, exist, "Invalid matcher.");
     }
 
     @Test
@@ -212,10 +204,10 @@ public class PersonRepositoryTests {
         final Person person = new Person("Moctar", "Diagne", 20, new ArrayList<>(), OffsetDateTime.now());
         repository.save(person);
         boolean exist = repository.exists(Criteria.where("lastName").is("Diagne"));
-        assertEquals("Invalid matcher.", true, exist);
+        Assertions.assertEquals(true, exist, "Invalid matcher.");
 
         exist = repository.exists(Criteria.where("lastName").is("unknow"));
-        assertEquals("Invalid matcher.", false, exist);
+        Assertions.assertEquals(false, exist, "Invalid matcher.");
     }
 
     @Test
@@ -229,7 +221,7 @@ public class PersonRepositoryTests {
         final boolean exist = repository.exists(
             MongoUtils.buildAndOperator(criteria.toArray(new Criteria[criteria.size()]))
         );
-        assertEquals("Invalid matcher.", true, exist);
+        Assertions.assertEquals(true, exist, "Invalid matcher.");
     }
 
     @Test
@@ -245,12 +237,12 @@ public class PersonRepositoryTests {
         repository.save(new Person("Makhtar", "Diagne", 20, new ArrayList<>(), OffsetDateTime.now()));
 
         List<Person> persons = repository.findByEmailsContainsIgnoreCase(emailVitamUIMoctar);
-        assertEquals("Incorrect number of persons in database.", 1, persons.size());
+        Assertions.assertEquals(1, persons.size(), "Incorrect number of persons in database.");
 
         persons = repository.findByEmailsContainsIgnoreCase(emailOuidouMoctar.toLowerCase());
-        assertEquals("Incorrect number of persons in database.", 1, persons.size());
+        Assertions.assertEquals(1, persons.size(), "Incorrect number of persons in database.");
 
-        assertThat(persons.get(0).getFirstName(), is("Moctar"));
+        MatcherAssert.assertThat(persons.get(0).getFirstName(), is("Moctar"));
     }
 
     @Test
@@ -265,11 +257,11 @@ public class PersonRepositoryTests {
             Optional.of("firstName"),
             Optional.of(DirectionDto.ASC)
         );
-        assertEquals("Incorrect page num.", 1, persons.getPageNum());
-        assertEquals("Incorrect page size.", 1, persons.getPageSize());
-        assertNotNull("Incorrect values.", persons.getValues());
-        assertEquals("Incorrect values size.", 1, persons.getValues().size());
-        assertThat("We have more data in database.", persons.isHasMore(), is(false));
+        Assertions.assertEquals(1, persons.getPageNum(), "Incorrect page num.");
+        Assertions.assertEquals(1, persons.getPageSize(), "Incorrect page size.");
+        Assertions.assertNotNull(persons.getValues(), "Incorrect values.");
+        Assertions.assertEquals(1, persons.getValues().size(), "Incorrect values size.");
+        MatcherAssert.assertThat("We have more data in database.", persons.isHasMore(), is(false));
     }
 
     @Test
@@ -286,12 +278,12 @@ public class PersonRepositoryTests {
             Optional.of("firstName"),
             Optional.of(DirectionDto.ASC)
         );
-        assertEquals("Incorrect page num.", 0, persons.getPageNum());
-        assertEquals("Incorrect page size.", 1, persons.getPageSize());
-        assertNotNull("Incorrect values.", persons.getValues());
-        assertEquals("Incorrect values size.", 1, persons.getValues().size());
-        assertTrue("Incorrect person find", persons.getValues().contains(moctar));
-        assertThat("We have more data in database.", persons.isHasMore(), is(false));
+        Assertions.assertEquals(0, persons.getPageNum(), "Incorrect page num.");
+        Assertions.assertEquals(1, persons.getPageSize(), "Incorrect page size.");
+        Assertions.assertNotNull(persons.getValues(), "Incorrect values.");
+        Assertions.assertEquals(1, persons.getValues().size(), "Incorrect values size.");
+        Assertions.assertTrue(persons.getValues().contains(moctar), "Incorrect person find");
+        MatcherAssert.assertThat("We have more data in database.", persons.isHasMore(), is(false));
     }
 
     @Test
@@ -308,11 +300,11 @@ public class PersonRepositoryTests {
             Optional.of("firstName"),
             Optional.of(DirectionDto.ASC)
         );
-        assertEquals("Incorrect page num.", 0, persons.getPageNum());
-        assertEquals("Incorrect page size.", 1, persons.getPageSize());
-        assertNotNull("Incorrect values.", persons.getValues());
-        assertEquals("Incorrect values size.", 1, persons.getValues().size());
-        assertThat("We have more data in database.", persons.isHasMore(), is(false));
+        Assertions.assertEquals(0, persons.getPageNum(), "Incorrect page num.");
+        Assertions.assertEquals(1, persons.getPageSize(), "Incorrect page size.");
+        Assertions.assertNotNull(persons.getValues(), "Incorrect values.");
+        Assertions.assertEquals(1, persons.getValues().size(), "Incorrect values size.");
+        MatcherAssert.assertThat("We have more data in database.", persons.isHasMore(), is(false));
     }
 
     @Test
@@ -329,11 +321,11 @@ public class PersonRepositoryTests {
             Optional.of("firstName"),
             Optional.of(DirectionDto.ASC)
         );
-        assertEquals("Incorrect page num.", 0, persons.getPageNum());
-        assertEquals("Incorrect page size.", 1, persons.getPageSize());
-        assertNotNull("Incorrect values.", persons.getValues());
-        assertEquals("Incorrect values size.", 1, persons.getValues().size());
-        assertThat("We have more data in database.", persons.isHasMore(), is(false));
+        Assertions.assertEquals(0, persons.getPageNum(), "Incorrect page num.");
+        Assertions.assertEquals(1, persons.getPageSize(), "Incorrect page size.");
+        Assertions.assertNotNull(persons.getValues(), "Incorrect values.");
+        Assertions.assertEquals(1, persons.getValues().size(), "Incorrect values size.");
+        MatcherAssert.assertThat("We have more data in database.", persons.isHasMore(), is(false));
     }
 
     @Test
@@ -351,11 +343,11 @@ public class PersonRepositoryTests {
             Optional.of("firstName"),
             Optional.of(DirectionDto.ASC)
         );
-        assertEquals("Incorrect page num.", 0, persons.getPageNum());
-        assertEquals("Incorrect page size.", 1, persons.getPageSize());
-        assertNotNull("Incorrect values.", persons.getValues());
-        assertEquals("Incorrect values size.", 1, persons.getValues().size());
-        assertThat("We have more data in database.", persons.isHasMore(), is(false));
+        Assertions.assertEquals(0, persons.getPageNum(), "Incorrect page num.");
+        Assertions.assertEquals(1, persons.getPageSize(), "Incorrect page size.");
+        Assertions.assertNotNull(persons.getValues(), "Incorrect values.");
+        Assertions.assertEquals(1, persons.getValues().size(), "Incorrect values size.");
+        MatcherAssert.assertThat("We have more data in database.", persons.isHasMore(), is(false));
     }
 
     @Test
@@ -374,12 +366,12 @@ public class PersonRepositoryTests {
             Optional.of("firstName"),
             Optional.of(DirectionDto.ASC)
         );
-        assertEquals("Incorrect page num.", 0, persons.getPageNum());
-        assertEquals("Incorrect page size.", 1, persons.getPageSize());
-        assertNotNull("Incorrect values.", persons.getValues());
-        assertEquals("Incorrect values size.", 1, persons.getValues().size());
-        assertTrue("Incorrect person find", persons.getValues().contains(moctar));
-        assertThat("We have more data in database.", persons.isHasMore(), is(false));
+        Assertions.assertEquals(0, persons.getPageNum(), "Incorrect page num.");
+        Assertions.assertEquals(1, persons.getPageSize(), "Incorrect page size.");
+        Assertions.assertNotNull(persons.getValues(), "Incorrect values.");
+        Assertions.assertEquals(1, persons.getValues().size(), "Incorrect values size.");
+        Assertions.assertTrue(persons.getValues().contains(moctar), "Incorrect person find");
+        MatcherAssert.assertThat("We have more data in database.", persons.isHasMore(), is(false));
     }
 
     @Test
@@ -399,53 +391,37 @@ public class PersonRepositoryTests {
             Optional.of("firstName"),
             Optional.of(DirectionDto.ASC)
         );
-        assertEquals("Incorrect page num.", 0, persons.getPageNum());
-        assertEquals("Incorrect page size.", 2, persons.getPageSize());
-        assertNotNull("Incorrect values.", persons.getValues());
-        assertEquals("Incorrect values size.", 2, persons.getValues().size());
-        assertTrue(
-            "Incorrect person find",
-            persons.getValues().contains(moctar) && persons.getValues().contains(makhtar)
+        Assertions.assertEquals(0, persons.getPageNum(), "Incorrect page num.");
+        Assertions.assertEquals(2, persons.getPageSize(), "Incorrect page size.");
+        Assertions.assertNotNull(persons.getValues(), "Incorrect values.");
+        Assertions.assertEquals(2, persons.getValues().size(), "Incorrect values size.");
+        Assertions.assertTrue(
+            persons.getValues().contains(moctar) && persons.getValues().contains(makhtar),
+            "Incorrect person find"
         );
-        assertThat("We have more data in database.", persons.isHasMore(), is(false));
+        MatcherAssert.assertThat("We have more data in database.", persons.isHasMore(), is(false));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testBuildPaginatedValuesWithoutOrderBy() {
         // save a couple of persons
         repository.save(new Person("Moctar", "Diagne", 20, new ArrayList<>(), OffsetDateTime.now()));
         repository.save(new Person("Makhtar", "D", 20, new ArrayList<>(), OffsetDateTime.now()));
-        final PaginatedValuesDto<Person> persons = repository.getPaginatedValues(
-            1,
-            1,
-            Optional.empty(),
-            Optional.empty(),
-            Optional.of(DirectionDto.ASC)
+        Assertions.assertThrows(
+            IllegalArgumentException.class,
+            () -> repository.getPaginatedValues(1, 1, Optional.empty(), Optional.empty(), Optional.of(DirectionDto.ASC))
         );
-        assertEquals("Incorrect page num.", 1, persons.getPageNum());
-        assertEquals("Incorrect page size.", 1, persons.getPageSize());
-        assertNotNull("Incorrect values.", persons.getValues());
-        assertEquals("Incorrect values size.", 1, persons.getValues().size());
-        assertThat("We have more data in database.", persons.isHasMore(), is(false));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testBuildPaginatedValuesWithOrderByEmpty() {
         // save a couple of persons
         repository.save(new Person("Moctar", "Diagne", 20, new ArrayList<>(), OffsetDateTime.now()));
         repository.save(new Person("Makhtar", "D", 20, new ArrayList<>(), OffsetDateTime.now()));
-        final PaginatedValuesDto<Person> persons = repository.getPaginatedValues(
-            1,
-            1,
-            Optional.empty(),
-            Optional.empty(),
-            Optional.of(DirectionDto.ASC)
+        Assertions.assertThrows(
+            IllegalArgumentException.class,
+            () -> repository.getPaginatedValues(1, 1, Optional.empty(), Optional.empty(), Optional.of(DirectionDto.ASC))
         );
-        assertEquals("Incorrect page num.", 1, persons.getPageNum());
-        assertEquals("Incorrect page size.", 1, persons.getPageSize());
-        assertNotNull("Incorrect values.", persons.getValues());
-        assertEquals("Incorrect values size.", 1, persons.getValues().size());
-        assertThat("We have more data in database.", persons.isHasMore(), is(false));
     }
 
     @Test
@@ -460,11 +436,11 @@ public class PersonRepositoryTests {
             Optional.of("firstName"),
             Optional.empty()
         );
-        assertEquals("Incorrect page num.", 1, persons.getPageNum());
-        assertEquals("Incorrect page size.", 1, persons.getPageSize());
-        assertNotNull("Incorrect values.", persons.getValues());
-        assertEquals("Incorrect values size.", 1, persons.getValues().size());
-        assertThat("We have more data in database.", persons.isHasMore(), is(false));
+        Assertions.assertEquals(1, persons.getPageNum(), "Incorrect page num.");
+        Assertions.assertEquals(1, persons.getPageSize(), "Incorrect page size.");
+        Assertions.assertNotNull(persons.getValues(), "Incorrect values.");
+        Assertions.assertEquals(1, persons.getValues().size(), "Incorrect values size.");
+        MatcherAssert.assertThat("We have more data in database.", persons.isHasMore(), is(false));
     }
 
     @Test
@@ -479,11 +455,11 @@ public class PersonRepositoryTests {
             Optional.of("firstName"),
             Optional.empty()
         );
-        assertEquals("Incorrect page num.", 1, persons.getPageNum());
-        assertEquals("Incorrect page size.", 1, persons.getPageSize());
-        assertNotNull("Incorrect values.", persons.getValues());
-        assertEquals("Incorrect values size.", 1, persons.getValues().size());
-        assertThat("We have more data in database.", persons.isHasMore(), is(false));
+        Assertions.assertEquals(1, persons.getPageNum(), "Incorrect page num.");
+        Assertions.assertEquals(1, persons.getPageSize(), "Incorrect page size.");
+        Assertions.assertNotNull(persons.getValues(), "Incorrect values.");
+        Assertions.assertEquals(1, persons.getValues().size(), "Incorrect values size.");
+        MatcherAssert.assertThat("We have more data in database.", persons.isHasMore(), is(false));
     }
 
     @Test
@@ -500,19 +476,19 @@ public class PersonRepositoryTests {
             Optional.of("firstName"),
             Optional.of(DirectionDto.ASC)
         );
-        assertEquals("Incorrect page num.", 0, persons.getPageNum());
-        assertEquals("Incorrect page size.", 4, persons.getPageSize());
-        assertNotNull("Incorrect values.", persons.getValues());
-        assertEquals("Incorrect values size.", 2, persons.getValues().size());
-        assertTrue("Incorrect person find", persons.getValues().contains(cakhtar));
-        assertThat("We have more data in database.", persons.isHasMore(), is(false));
+        Assertions.assertEquals(0, persons.getPageNum(), "Incorrect page num.");
+        Assertions.assertEquals(4, persons.getPageSize(), "Incorrect page size.");
+        Assertions.assertNotNull(persons.getValues(), "Incorrect values.");
+        Assertions.assertEquals(2, persons.getValues().size(), "Incorrect values size.");
+        Assertions.assertTrue(persons.getValues().contains(cakhtar), "Incorrect person find");
+        MatcherAssert.assertThat("We have more data in database.", persons.isHasMore(), is(false));
         final Iterator<Person> it = persons.getValues().iterator();
         final Person firstPerson = it.next();
-        assertNotNull("Incorrect result: person is null.", firstPerson);
-        assertEquals("Incorrect order.", abakhtar.getFirstName(), firstPerson.getFirstName());
+        Assertions.assertNotNull(firstPerson, "Incorrect result: person is null.");
+        Assertions.assertEquals(abakhtar.getFirstName(), firstPerson.getFirstName(), "Incorrect order.");
         final Person secondPerson = it.next();
-        assertNotNull("Incorrect result: person is null.", secondPerson);
-        assertEquals("Incorrect order.", cakhtar.getFirstName(), secondPerson.getFirstName());
+        Assertions.assertNotNull(secondPerson, "Incorrect result: person is null.");
+        Assertions.assertEquals(cakhtar.getFirstName(), secondPerson.getFirstName(), "Incorrect order.");
     }
 
     @Test
@@ -530,12 +506,12 @@ public class PersonRepositoryTests {
             Optional.of("firstName"),
             Optional.of(DirectionDto.ASC)
         );
-        assertEquals("Incorrect page num.", 0, persons.getPageNum());
-        assertEquals("Incorrect page size.", 1, persons.getPageSize());
-        assertNotNull("Incorrect values.", persons.getValues());
-        assertEquals("Incorrect values size.", 1, persons.getValues().size());
-        assertTrue("Incorrect person find", persons.getValues().contains(moctar));
-        assertThat("We have more data in database.", persons.isHasMore(), is(false));
+        Assertions.assertEquals(0, persons.getPageNum(), "Incorrect page num.");
+        Assertions.assertEquals(1, persons.getPageSize(), "Incorrect page size.");
+        Assertions.assertNotNull(persons.getValues(), "Incorrect values.");
+        Assertions.assertEquals(1, persons.getValues().size(), "Incorrect values size.");
+        Assertions.assertTrue(persons.getValues().contains(moctar), "Incorrect person find");
+        MatcherAssert.assertThat("We have more data in database.", persons.isHasMore(), is(false));
     }
 
     @Test
@@ -551,7 +527,7 @@ public class PersonRepositoryTests {
 
         final Query query = Query.query(criteria);
         final List<Person> persons = repository.findAll(query);
-        assertEquals("Incorrect values size.", 1, persons.size());
+        Assertions.assertEquals(1, persons.size(), "Incorrect values size.");
     }
 
     @Test
@@ -569,11 +545,11 @@ public class PersonRepositoryTests {
             Optional.of("firstName"),
             Optional.of(DirectionDto.ASC)
         );
-        assertNotNull(result);
-        assertEquals(result.size(), 1);
-        assertTrue(result.keySet().containsAll(fields));
-        assertTrue(((List) result.get("firstName")).contains("Moctar"));
-        assertTrue(((List) result.get("firstName")).contains("Julien"));
+        Assertions.assertNotNull(result);
+        Assertions.assertEquals(result.size(), 1);
+        Assertions.assertTrue(result.keySet().containsAll(fields));
+        Assertions.assertTrue(((List) result.get("firstName")).contains("Moctar"));
+        Assertions.assertTrue(((List) result.get("firstName")).contains("Julien"));
     }
 
     @Test
@@ -592,12 +568,14 @@ public class PersonRepositoryTests {
             Optional.of("firstName"),
             Optional.of(DirectionDto.DESC)
         );
-        assertNotNull(result);
-        assertEquals(result.size(), 3);
-        assertTrue(result.keySet().containsAll(fields));
-        assertTrue(((List) result.get("firstName")).containsAll(Arrays.asList("Makhtar", "Moctar", "Julien")));
-        assertTrue(((List) result.get("lastName")).containsAll(Arrays.asList("Diagne", "Cornille")));
-        assertTrue(((List) result.get("age")).containsAll(Arrays.asList(19, 20)));
+        Assertions.assertNotNull(result);
+        Assertions.assertEquals(result.size(), 3);
+        Assertions.assertTrue(result.keySet().containsAll(fields));
+        Assertions.assertTrue(
+            ((List) result.get("firstName")).containsAll(Arrays.asList("Makhtar", "Moctar", "Julien"))
+        );
+        Assertions.assertTrue(((List) result.get("lastName")).containsAll(Arrays.asList("Diagne", "Cornille")));
+        Assertions.assertTrue(((List) result.get("age")).containsAll(Arrays.asList(19, 20)));
     }
 
     @Test
@@ -616,17 +594,17 @@ public class PersonRepositoryTests {
             Optional.of("firstName"),
             Optional.of(DirectionDto.ASC)
         );
-        assertNotNull(result);
-        assertEquals(result.size(), 3);
-        assertTrue(result.keySet().containsAll(fields));
-        assertEquals(1, result.get("age"));
-        assertEquals(2, result.get("lastName"));
-        assertEquals(3, result.get("firstName"));
+        Assertions.assertNotNull(result);
+        Assertions.assertEquals(result.size(), 3);
+        Assertions.assertTrue(result.keySet().containsAll(fields));
+        Assertions.assertEquals(1, result.get("age"));
+        Assertions.assertEquals(2, result.get("lastName"));
+        Assertions.assertEquals(3, result.get("firstName"));
     }
 
     protected List<Person> convertIterableToList(final Iterable<Person> it) {
         final List<Person> list = new ArrayList<>();
-        it.forEach(i -> list.add(i));
+        it.forEach(list::add);
         return list;
     }
 }
