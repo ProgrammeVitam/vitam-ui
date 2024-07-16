@@ -59,7 +59,7 @@ jobs:
       - uses: actions/setup-java@v4
         with:
           distribution: "temurin"
-          java-version: "17"
+          java-version: "21"
       - name: Restore maven cache # We're not using cache feature from actions/setup-java as it's not allowing to fine-tune it (in particular, we can't use restore-keys to load a previous cache if cache name mismatches)
         uses: actions/cache@v4
         with:
