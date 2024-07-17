@@ -47,6 +47,7 @@ import {
   SchemaElement,
   SchemaService,
   SearchCriteriaAddAction,
+  searchCriteriaConfigs,
   SearchCriteriaEltDto,
   SearchCriteriaTypeEnum,
 } from 'vitamui-library';
@@ -59,50 +60,6 @@ const FINAL_ACTION_TYPE = 'FINAL_ACTION_TYPE';
 const ARCHIVE_UNIT_WITH_OBJECTS = 'ARCHIVE_UNIT_WITH_OBJECTS';
 const ARCHIVE_UNIT_WITHOUT_OBJECTS = 'ARCHIVE_UNIT_WITHOUT_OBJECTS';
 const ALL_ARCHIVE_UNIT_TYPES = 'ALL_ARCHIVE_UNIT_TYPES';
-
-const searchCriteriaConfigs: { [key: string]: Partial<SearchCriteriaAddAction> } = {
-  title: {
-    keyElt: 'TITLE',
-    keyTranslated: true,
-  },
-  description: {
-    keyElt: 'DESCRIPTION',
-    keyTranslated: true,
-  },
-  beginDt: {
-    keyElt: 'START_DATE',
-    keyTranslated: true,
-    operator: CriteriaOperator.GTE,
-    dataType: CriteriaDataType.DATE,
-  },
-  endDt: {
-    keyElt: 'END_DATE',
-    keyTranslated: true,
-    operator: CriteriaOperator.LTE,
-    dataType: CriteriaDataType.DATE,
-  },
-  serviceProdCode: {
-    keyElt: 'SP_CODE',
-    keyTranslated: true,
-  },
-  serviceProdLabel: {
-    keyElt: 'SP_LABEL',
-    keyTranslated: true,
-  },
-  guid: {
-    keyElt: 'GUID',
-    keyTranslated: true,
-  },
-  guidopi: {
-    keyElt: 'GUID_OPI',
-    keyTranslated: true,
-    operator: CriteriaOperator.IN,
-  },
-};
-searchCriteriaConfigs.Title = searchCriteriaConfigs.title;
-searchCriteriaConfigs.Description = searchCriteriaConfigs.description;
-searchCriteriaConfigs.StartDate = searchCriteriaConfigs.beginDt;
-searchCriteriaConfigs.EndDate = searchCriteriaConfigs.endDt;
 
 @Component({
   selector: 'app-simple-criteria-search',
@@ -205,8 +162,6 @@ export class SimpleCriteriaSearchComponent implements OnInit {
             .split(',')
             .forEach((v) => this.addCriteriaFromObject({ guid: v }));
         } else if (typeof value === 'string' || value instanceof Date) {
-          console.log(`Handle ${key}: ${value}`);
-
           const criteriaValue = value instanceof Date ? value.toISOString() : value.trim();
           const defaultSearchCriteriaAddAction: Partial<SearchCriteriaAddAction> = {
             valueElt: { value: criteriaValue, id: criteriaValue },
@@ -226,7 +181,6 @@ export class SimpleCriteriaSearchComponent implements OnInit {
             ...searchCriteriaAddAction,
             valueTranslated: this.isValueTranslated(searchCriteriaAddAction.keyElt),
           };
-          console.log(searchCriteria);
           this.archiveExchangeDataService.addSimpleSearchCriteriaSubject(searchCriteria);
         } else if (typeof value === 'object' && Object.entries(value).length) {
           this.addCriteriaFromObject(value);
