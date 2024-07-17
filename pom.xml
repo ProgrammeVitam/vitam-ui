@@ -122,7 +122,7 @@
         <jakarta.mail.version>1.6.5</jakarta.mail.version>
         <juli.to.slf4j.version>1.1.1</juli.to.slf4j.version>
         <jquery.ui.version>1.13.2</jquery.ui.version>
-        <micrometer.version>1.7.3</micrometer.version>
+        <micrometer.version>1.9.17</micrometer.version>
         <mapstruct.version>1.3.0.Final</mapstruct.version>
         <mockito.version>4.11.0</mockito.version>
         <nio.multipart.parser.version>1.1.0</nio.multipart.parser.version>
