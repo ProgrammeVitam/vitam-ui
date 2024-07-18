@@ -2,7 +2,6 @@ package fr.gouv.vitamui.cas.authentication;
 
 import fr.gouv.vitamui.cas.util.Constants;
 import fr.gouv.vitamui.cas.util.Utils;
-import fr.gouv.vitamui.commons.api.identity.ServerIdentityAutoConfiguration;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.iam.common.dto.SubrogationDto;
 import fr.gouv.vitamui.iam.common.enums.SubrogationStatusEnum;
@@ -37,7 +36,7 @@ import static org.mockito.Mockito.when;
  * Tests {@link IamSurrogateAuthenticationService}.
  */
 @RunWith(SpringRunner.class)
-@ContextConfiguration(classes = ServerIdentityAutoConfiguration.class)
+@ContextConfiguration(classes = IamSurrogateAuthenticationServiceTest.class)
 @TestPropertySource(locations = "classpath:/application-test.properties")
 public final class IamSurrogateAuthenticationServiceTest {
 

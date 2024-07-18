@@ -15,11 +15,6 @@ spring:
     description: This API is used to manage pastis
     version: v1
 
-
-server-identity:
-  identityName: vitamui-test
-  identityRole: pastis-commons
-  identityServerId: 1
 json.template.file: rng/AUP_default_PASTIS.json
 rng.base.directory: rng/
 rng.base.file: rng/Profil_seda_pastis_mvp.rng

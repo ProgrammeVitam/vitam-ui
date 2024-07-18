@@ -37,7 +37,6 @@
 package fr.gouv.vitamui.referential.internal.server.common.rest;
 
 import fr.gouv.vitamui.commons.api.domain.IdDto;
-import fr.gouv.vitamui.commons.api.identity.ServerIdentityConfiguration;
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
 import fr.gouv.vitamui.referential.internal.server.security.WebSecurityConfig;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -45,7 +44,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.test.context.TestPropertySource;
 
-@Import(value = { WebSecurityConfig.class, ServerIdentityConfiguration.class })
+@Import(value = { WebSecurityConfig.class })
 @TestPropertySource(properties = { "spring.config.name=referential-internal-application" })
 public abstract class ApiReferentialControllerTest<T extends IdDto> extends ApiCrudControllerTest<T> {
 

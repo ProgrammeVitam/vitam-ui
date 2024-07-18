@@ -11,11 +11,6 @@ spring:
         tags: {{ consul_tags }}
         instanceId: {{ vitamui_struct.vitamui_component }}-${server.port}-${spring.cloud.client.hostname}
 
-server-identity:
-  identityName: {{ vitamui_site_name if groups['hosts_vitamui_consul_server'] | default([]) | length > 0 else vitam_site_name }}
-  identityRole: vitamui-{{ vitamui_struct.vitamui_component }}
-  identityServerId: 1
-
 server:
   address: {{ ip_service }}
   port: {{ vitamui_struct.port_service }}

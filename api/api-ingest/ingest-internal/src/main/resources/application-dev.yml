@@ -18,11 +18,6 @@ spring:
     mongodb:
       uri: mongodb://mongod_dbuser_iam:mongod_dbpwd_iam@localhost:27018/iam?connectTimeoutMS=2000
 
-server-identity:
-  identityName: vitamui-dev
-  identityRole: ingest-internal
-  identityServerId: 1
-
 server:
   host:
   port: 7088

@@ -3,7 +3,7 @@
 
 spring:
   application:
-    name: ${server-identity.identityRole}
+    name: archive-search-external
   api:
     name: API Archive External
     description: This API is used to manage Vitam's archives
@@ -18,7 +18,7 @@ spring:
 management:
   endpoints:
     jmx:
-      domain: ${server-identity.identityRole}
+      domain: archive-search-external
       unique-names: true
       web.exposure.include: info,health,prometheus
   endpoint:

@@ -16,11 +16,6 @@ spring:
       max-file-size: -1
       max-request-size: -1
 
-server-identity:
-  identityName: vitamui-dev
-  identityRole: referential-internal
-  identityServerId: 1
-
 server:
   host:
   port: 7087

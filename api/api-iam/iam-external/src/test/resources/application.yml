@@ -23,11 +23,6 @@ iam-external:
     server-port: 7083
     secure: false
 
-server-identity:
-  identityName: vitamui-test
-  identityRole: iam
-  identityServerId: 1
-
 swagger:
   layer: api-external
 

@@ -22,7 +22,11 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 
 import java.security.cert.X509Certificate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Base64;
+import java.util.Collection;
+import java.util.List;
 
 import static fr.gouv.vitamui.commons.api.CommonConstants.APPLICATION_ID;
 import static org.junit.Assert.assertEquals;

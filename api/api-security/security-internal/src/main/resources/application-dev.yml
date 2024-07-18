@@ -11,11 +11,6 @@ spring:
     mongodb:
       uri: mongodb://mongod_dbuser_security:mongod_dbpwd_security@localhost:27018/security?connectTimeoutMS=2000
 
-server-identity:
-  identityName: vitamui-dev
-  identityRole: security-internal
-  identityServerId: 1
-
 server:
   port: 8084
   error:

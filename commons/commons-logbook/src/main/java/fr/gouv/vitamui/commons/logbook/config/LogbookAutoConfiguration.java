@@ -37,13 +37,11 @@
 
 package fr.gouv.vitamui.commons.logbook.config;
 
-import fr.gouv.vitamui.commons.api.identity.ServerIdentityAutoConfiguration;
 import fr.gouv.vitamui.commons.logbook.common.EventMessages;
 import fr.gouv.vitamui.commons.logbook.dao.EventRepository;
 import fr.gouv.vitamui.commons.logbook.service.EventService;
 import fr.gouv.vitamui.commons.mongo.config.MongoConfig;
 import fr.gouv.vitamui.commons.mongo.repository.impl.VitamUIRepositoryImpl;
-import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -53,7 +51,6 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
 @Configuration
-@AutoConfigureAfter({ ServerIdentityAutoConfiguration.class })
 @PropertySource(
     value = { "classpath:/logbook_messages.properties", "classpath:/application.properties" },
     encoding = "UTF-8"

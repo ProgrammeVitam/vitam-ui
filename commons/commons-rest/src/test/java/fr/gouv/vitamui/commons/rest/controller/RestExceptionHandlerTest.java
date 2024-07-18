@@ -1,6 +1,17 @@
 package fr.gouv.vitamui.commons.rest.controller;
 
-import fr.gouv.vitamui.commons.api.exception.*;
+import fr.gouv.vitamui.commons.api.exception.ApplicationServerException;
+import fr.gouv.vitamui.commons.api.exception.BadRequestException;
+import fr.gouv.vitamui.commons.api.exception.ForbiddenException;
+import fr.gouv.vitamui.commons.api.exception.InternalServerException;
+import fr.gouv.vitamui.commons.api.exception.InvalidAuthenticationException;
+import fr.gouv.vitamui.commons.api.exception.InvalidFormatException;
+import fr.gouv.vitamui.commons.api.exception.NoRightsException;
+import fr.gouv.vitamui.commons.api.exception.ParseOperationException;
+import fr.gouv.vitamui.commons.api.exception.RequestTimeOutException;
+import fr.gouv.vitamui.commons.api.exception.RouteNotFoundException;
+import fr.gouv.vitamui.commons.api.exception.UnAuthorizedException;
+import fr.gouv.vitamui.commons.api.exception.ValidationException;
 import fr.gouv.vitamui.commons.rest.ApiErrorGenerator;
 import fr.gouv.vitamui.commons.rest.RestTestApplication;
 import fr.gouv.vitamui.commons.rest.dto.VitamUIError;

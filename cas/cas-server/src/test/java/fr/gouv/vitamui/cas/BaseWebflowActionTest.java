@@ -1,12 +1,10 @@
 package fr.gouv.vitamui.cas;
 
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
-import fr.gouv.vitamui.commons.api.identity.ServerIdentityAutoConfiguration;
 import lombok.val;
 import org.apereo.cas.authentication.principal.WebApplicationService;
 import org.junit.Before;
 import org.junit.runner.RunWith;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.webflow.context.servlet.ServletExternalContext;
@@ -34,7 +32,6 @@ import static org.mockito.Mockito.when;
  *
  */
 @RunWith(SpringRunner.class)
-@ContextConfiguration(classes = ServerIdentityAutoConfiguration.class)
 @TestPropertySource(locations = "classpath:/application-test.properties")
 public abstract class BaseWebflowActionTest {
 

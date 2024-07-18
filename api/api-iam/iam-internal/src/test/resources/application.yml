@@ -24,11 +24,6 @@ security:
   host: xxx
   port: 8080
 
-server-identity:
-  identityName: vitamui-test
-  identityRole: iam
-  identityServerId: 1
-
 login.attempts.maximum.failures: 5
 login.attempts.time.interval: 20
 

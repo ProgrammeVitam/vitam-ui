@@ -1,7 +1,6 @@
 package fr.gouv.vitamui.cas.webflow.actions;
 
 import fr.gouv.vitamui.cas.BaseWebflowActionTest;
-import fr.gouv.vitamui.commons.api.identity.ServerIdentityAutoConfiguration;
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.logout.LogoutManager;
 import org.apereo.cas.services.RegexRegisteredService;
@@ -23,7 +22,7 @@ import static org.mockito.Mockito.when;
  *
  */
 @RunWith(SpringRunner.class)
-@ContextConfiguration(classes = ServerIdentityAutoConfiguration.class)
+@ContextConfiguration(classes = GeneralTerminateSessionActionTest.class)
 @TestPropertySource(locations = "classpath:/application-test.properties")
 public final class GeneralTerminateSessionActionTest extends BaseWebflowActionTest {
 

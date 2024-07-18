@@ -36,7 +36,6 @@
  */
 package fr.gouv.vitamui.cas.pm;
 
-import fr.gouv.vitamui.commons.api.identity.ServerIdentityAutoConfiguration;
 import fr.gouv.vitamui.commons.security.client.config.password.PasswordConfiguration;
 import org.junit.Assert;
 import org.junit.Test;
@@ -47,7 +46,7 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
-@ContextConfiguration(classes = { ServerIdentityAutoConfiguration.class, PasswordConfiguration.class })
+@ContextConfiguration(classes = { PasswordConfiguration.class })
 @TestPropertySource(properties = { "spring.config.location=classpath:cas-server-application-test.properties" })
 public final class PasswordConfigurationTest {
 

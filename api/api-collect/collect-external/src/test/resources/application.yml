@@ -34,10 +34,5 @@ collect-external:
     read-time-out: 240000  #4 minutes
     write-time-out: 240000 #4 minutes
 
-server-identity:
-  identityName: vitamui-test
-  identityRole: iam
-  identityServerId: 1
-
 swagger:
   layer: api-external

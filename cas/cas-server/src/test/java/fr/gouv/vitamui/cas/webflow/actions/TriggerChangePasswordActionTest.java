@@ -3,7 +3,6 @@ package fr.gouv.vitamui.cas.webflow.actions;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitamui.cas.BaseWebflowActionTest;
 import fr.gouv.vitamui.cas.util.Utils;
-import fr.gouv.vitamui.commons.api.identity.ServerIdentityAutoConfiguration;
 import lombok.val;
 import org.apereo.cas.authentication.principal.Principal;
 import org.apereo.cas.ticket.registry.TicketRegistrySupport;
@@ -24,7 +23,7 @@ import static org.mockito.Mockito.when;
  * Tests {@link TriggerChangePasswordAction}.
  */
 @RunWith(SpringRunner.class)
-@ContextConfiguration(classes = ServerIdentityAutoConfiguration.class)
+@ContextConfiguration(classes = TriggerChangePasswordActionTest.class)
 @TestPropertySource(locations = "classpath:/application-test.properties")
 public class TriggerChangePasswordActionTest extends BaseWebflowActionTest {
 

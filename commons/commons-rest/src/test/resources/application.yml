@@ -2,7 +2,7 @@ debug: false
 
 spring:
   application:
-    name: ${server-identity.identityRole}
+    name: commons-rest
   jmx:
     default-domain: test-app # Need to change endpoints bean name when there is multiple instance of spring boot
   cloud:
@@ -13,11 +13,6 @@ spring:
   jackson:
     serialization:
       write-dates-as-timestamps: true
-
-server-identity:
-  identityName: vitamui
-  identityRole: vitam-vitamui-test-app
-  identityServerId: 1
 
 vitam-ingest-client:
   config-path: "@project.build.testOutputDirectory@/"

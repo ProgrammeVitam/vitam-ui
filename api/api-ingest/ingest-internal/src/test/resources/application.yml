@@ -21,12 +21,6 @@ security:
   host: xxx
   port: 8088
 
-server-identity:
-  identityName: vitamui-test
-  identityRole: ingest
-  identityServerId: 1
-
-
 tmp_folder_path: "src/main/resources"
 
 logbook.scheduling.sendEventToVitamTasks.enabled: false

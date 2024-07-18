@@ -37,7 +37,6 @@
 package fr.gouv.vitamui.iam.internal.server.config;
 
 import fr.gouv.vitamui.commons.api.application.AbstractContextConfiguration;
-import fr.gouv.vitamui.commons.api.identity.ServerIdentityConfiguration;
 import fr.gouv.vitamui.commons.mongo.config.MongoConfig;
 import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
 import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
@@ -141,10 +140,6 @@ import org.springframework.web.reactive.function.client.WebClient;
 )
 @EnableConfigurationProperties({ PasswordConfiguration.class })
 public class ApiIamServerConfig extends AbstractContextConfiguration {
-
-    @SuppressWarnings("unused")
-    @Autowired
-    private ServerIdentityConfiguration serverIdentityConfiguration;
 
     @Bean
     public MultipartResolver multipartResolver() {

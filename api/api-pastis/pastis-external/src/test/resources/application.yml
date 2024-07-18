@@ -21,8 +21,4 @@ security:
   host: xxx
   port: 8080
 
-server-identity:
-  identityName: vitamui-test
-  identityRole: pastis-external
-  identityServerId: 1
 logbook.scheduling.sendEventToVitamTasks.enabled: false

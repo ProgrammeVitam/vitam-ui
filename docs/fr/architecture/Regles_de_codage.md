@@ -154,42 +154,32 @@ Nos classes de Service ou Controllers doivent se baser sur ApiErrorGenerator  po
 
 Les modules qui n’ont pas SpringBoot peuvent lever directement une exception sans passer par cette classe utilitaire. Les modules SpringBoot qui utilisent ces modules de base vont gérer automatiquement le format de la réponse correspondante à l’exception.
 
-## Gestion des  Logs
+## Gestion des logs
 
-La gestion des logs est assez similaire à Vitam pour être cohérent à la solution globale.
-Chaque composant ou application ou module SpringBoot doit être identifié clairement avec un nom(identityRole), un nom et un identifiant de serveur sur lequel tourne cette application (identityName et identitySiteId). Cette identification correspond à un ServerIdentity.
-Via de l’auto-configuration et des données de configuration de l’application, le ServerIdentity est créé et adossé au Logger.
-
-Le Logger que nous utilisons est Logback. Logback via un rsyslog va envoyer les logs dans l’ELK de VItam.
+Le Logger que nous utilisons est Logback. Logback via un filebeat va envoyer les logs dans l’ELK de Vitam.
 Un format de logs a été créé et est similaire au format de Logs de Vitam. Le fichier logback.xml contient les configurations du log avec des fichiers tournant et le format de log.
-Un rsyslog est déployé sur les machines hébergeant les composants VITAMUI  et envoie les logs applicatifs syslog vers un serveur de centralisation de logs (via facility local0)
 Un serveur de centralisation de logs est utilisé et ce serveur se base sur l’ELK Vitam:
 un mono-noeud (au minimum, ou multi-noeuds) Elasticsearch
 un moteur logstash, parsant les messages VITAM
  un afficheur de rendu/aggrégation de données Kibana
 
 Pour créer un logger, on peut utiliser une propriété statique dans la classe avec :
-private static final Logger `LOGGER = LoggerFactory.getLogger(SAEApplication.class);`
 
-Attention : L’utilisation de Logger est assez restreinte. Le projet doit utiliser SpringBoot et le ServerIdentity doit être initialisé avant de pouvoir logger. Sinon une exception de type InternalServerException est levée.
-Il faut par conséquent faire attention à l’ordre d’initialisation des beans et des classes de configuration.
-
-Ajouter dans le code Java
-    private static final Logger `LOGGER = LoggerFactory.getLogger(SAEApplication.class);`
-
-Ajouter dans `src/main/application.yml` les informations du server-identity à la racine
-
-```yml
-server-identity:
-  identityName: vitamui
-  identityRole: sae-app
+```java
+private static final Logger log = LoggerFactory.getLogger(SAEApplication.class);
 ```
 
-Ajouter dans `src/main/config/application-dev.yml` les informations du server-identity à la racine
+ou bien à l'aide de l'annotation Lombok
 
-```yml
-server-identity:
-  identityServerId: 1
+```java
+@Slf4j
+public class MaClasse {
+    // ...
+    
+    private void maMethod() {
+        log.debug("mon information à logger: {}", 1234);
+    }
+}
 ```
 
 ## FIXME & TODO

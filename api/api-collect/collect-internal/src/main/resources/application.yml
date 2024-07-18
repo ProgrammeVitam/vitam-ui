@@ -3,7 +3,7 @@
 
 spring:
   application:
-    name: ${server-identity.identityRole}
+    name: collect-internal
   api:
     name: API Collect
     description: This API is used to collect archives
@@ -18,7 +18,7 @@ spring:
 management:
   endpoints:
     jmx:
-      domain: ${server-identity.identityRole}
+      domain: collect-internal
       unique-names: true
     web.exposure.include: info,health,prometheus
   endpoint:

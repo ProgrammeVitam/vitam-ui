@@ -176,11 +176,6 @@ cas.authn.oauth.access-token.max-time-to-live-in-seconds: 28800
 cas.authn.oidc.core.issuer: ${cas.server.prefix}/oidc
 cas.authn.oidc.jwks.file-system.jwks-file: "file:{{ vitamui_defaults.folder.root_path | default('/vitamui') }}/conf/{{ vitamui_struct.vitamui_component }}/keystore.jwks"
 
-server-identity:
-  identityName: {{ vitamui_site_name if groups['hosts_vitamui_consul_server'] | default([]) | length > 0 else vitam_site_name }}
-  identityRole: {{ vitamui_struct.vitamui_component }}
-  identityServerId: 1
-
 # Example to override theme colors, logo, favicon, platform name ...
 theme:
   vitamui-platform-name: {{ vitamui_platform_informations.platform_name }}

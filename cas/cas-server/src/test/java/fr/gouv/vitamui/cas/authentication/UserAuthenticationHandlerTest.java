@@ -8,7 +8,6 @@ import fr.gouv.vitamui.commons.api.enums.UserTypeEnum;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.InvalidAuthenticationException;
 import fr.gouv.vitamui.commons.api.exception.TooManyRequestsException;
-import fr.gouv.vitamui.commons.api.identity.ServerIdentityAutoConfiguration;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.iam.external.client.CasExternalRestClient;
 import lombok.val;
@@ -50,7 +49,7 @@ import static org.mockito.Mockito.when;
  * Tests {@link UserAuthenticationHandler}.
  */
 @RunWith(SpringRunner.class)
-@ContextConfiguration(classes = ServerIdentityAutoConfiguration.class)
+@ContextConfiguration(classes = UserAuthenticationHandlerTest.class)
 @TestPropertySource(locations = "classpath:/application-test.properties")
 public final class UserAuthenticationHandlerTest {
 

@@ -6,7 +6,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.config.YamlPropertiesFactoryBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.ClassPathResource;
@@ -17,7 +16,6 @@ public class TestContextConfiguration {
     private static final Logger LOGGER = LoggerFactory.getLogger(TestContextConfiguration.class);
 
     @Bean
-    @DependsOn("serverIdentityConfiguration")
     public static PropertySourcesPlaceholderConfigurer properties(final Environment env) throws Exception {
         final String configProperty = "spring.config.additional-location";
         final String defaultConfigValue = "application-dev.yml";

@@ -28,7 +28,6 @@ package fr.gouv.vitamui.collect.internal.client;
 
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaHistoryDto;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
-import fr.gouv.vitamui.commons.test.extension.ServerIdentityExtension;
 import org.apache.commons.lang3.tuple.Pair;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -65,7 +64,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class SearchCriteriaHistoryInternalRestClientTest extends ServerIdentityExtension {
+public class SearchCriteriaHistoryInternalRestClientTest {
 
     private SearchCriteriaHistoryInternalRestClient searchCriteriaHistoryInternalRestClient;
 

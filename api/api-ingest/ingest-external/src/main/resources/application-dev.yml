@@ -13,11 +13,6 @@ spring:
         enabled: false
         register: false
 
-server-identity:
-  identityName: vitamui-dev
-  identityRole: ingest-external
-  identityServerId: 1
-
 server:
   host:
   port: 8088

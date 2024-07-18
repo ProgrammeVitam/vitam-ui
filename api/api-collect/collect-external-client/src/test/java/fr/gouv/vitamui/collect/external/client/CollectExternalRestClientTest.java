@@ -27,7 +27,6 @@
 package fr.gouv.vitamui.collect.external.client;
 
 import fr.gouv.vitamui.collect.common.rest.RestApi;
-import fr.gouv.vitamui.commons.test.extension.ServerIdentityExtension;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -35,7 +34,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.client.RestTemplate;
 
 @ExtendWith(MockitoExtension.class)
-public class CollectExternalRestClientTest extends ServerIdentityExtension {
+public class CollectExternalRestClientTest {
 
     private CollectExternalRestClient collectExternalRestClient;
 

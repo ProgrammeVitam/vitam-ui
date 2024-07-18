@@ -5,9 +5,11 @@ import fr.gouv.vitamui.cas.util.Constants;
 import org.apereo.cas.authentication.SurrogateUsernamePasswordCredential;
 import org.apereo.cas.authentication.credential.UsernamePasswordCredential;
 import org.junit.Test;
+import org.springframework.test.context.ContextConfiguration;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@ContextConfiguration(classes = CustomSurrogateInitialAuthenticationActionTest.class)
 public class CustomSurrogateInitialAuthenticationActionTest extends BaseWebflowActionTest {
 
     private static final String USER = "user@domain.com";

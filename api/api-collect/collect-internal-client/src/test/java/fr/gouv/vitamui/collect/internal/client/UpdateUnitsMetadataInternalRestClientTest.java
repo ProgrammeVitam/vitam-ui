@@ -30,7 +30,6 @@
 package fr.gouv.vitamui.collect.internal.client;
 
 import fr.gouv.vitamui.collect.common.rest.RestApi;
-import fr.gouv.vitamui.commons.test.extension.ServerIdentityExtension;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -42,7 +41,7 @@ import org.springframework.web.client.RestTemplate;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @ExtendWith(MockitoExtension.class)
-public class UpdateUnitsMetadataInternalRestClientTest extends ServerIdentityExtension {
+public class UpdateUnitsMetadataInternalRestClientTest {
 
     @Mock
     private RestTemplate restTemplate;
