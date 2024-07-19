@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { Collection, Schema, SchemaElement } from '../models';
-import { SchemaService } from './schema.service';
+import { ProfiledSchemaElement } from '../object-viewer/models';
+import { Control } from '../models/schema/control.model';
+import { EffectiveCardinality } from '../object-viewer/types';
+import { ItemNode } from '../components/autocomplete';
+import { map } from 'rxjs/operators';
 
 @Injectable()
-export class MockSchemaService extends SchemaService {
-  constructor() {
-    super(null);
-  }
-
-  private schema: SchemaElement[] = [
+export class MockSchemaService {
+  private schema: ProfiledSchemaElement[] = [
     {
       id: null,
       Path: 'AcquiredDate',
@@ -2185,11 +2185,9 @@ export class MockSchemaService extends SchemaService {
       StringSize: null,
       Cardinality: 'ONE_REQUIRED',
       FieldName: 'DescriptionLevel',
-      ShortName: 'Niveau de description *',
       Description: 'Mapping : unit-es-mapping.json',
       CreationDate: null,
       LastUpdate: null,
-      SedaField: 'DescriptionLevel',
       ApiField: 'DescriptionLevel',
       Type: 'KEYWORD',
       Origin: 'INTERNAL',
@@ -2198,6 +2196,8 @@ export class MockSchemaService extends SchemaService {
       Category: 'DESCRIPTION',
       ApiPath: 'DescriptionLevel',
       DataType: 'STRING',
+      SedaField: 'DescriptionLevel',
+      ShortName: 'Niveau de description',
     },
     {
       id: null,
@@ -3046,7 +3046,7 @@ export class MockSchemaService extends SchemaService {
       StringSize: 'SHORT',
       Cardinality: 'ONE',
       FieldName: 'PersistentIdentifierType',
-      ShortName: 'Type*',
+      ShortName: 'Type',
       Description: 'Persistent Identifier Type',
       CreationDate: null,
       LastUpdate: null,
@@ -6575,7 +6575,7 @@ export class MockSchemaService extends SchemaService {
       StringSize: null,
       Cardinality: 'ONE_REQUIRED',
       FieldName: 'ValidationTime',
-      ShortName: 'Date de validation *',
+      ShortName: 'Date de validation',
       Description: 'Mapping : unit-es-mapping.json. Date de la validation de la signature.',
       CreationDate: null,
       LastUpdate: null,
@@ -7990,7 +7990,7 @@ export class MockSchemaService extends SchemaService {
       StringSize: null,
       Cardinality: 'ONE_REQUIRED',
       FieldName: 'ValidationTime',
-      ShortName: 'Date de validation *',
+      ShortName: 'Date de validation',
       Description: 'Mapping : unit-es-mapping.json. Date de la validation de la signature.',
       CreationDate: null,
       LastUpdate: null,
@@ -8273,7 +8273,7 @@ export class MockSchemaService extends SchemaService {
       StringSize: 'MEDIUM',
       Cardinality: 'ONE',
       FieldName: 'Title',
-      ShortName: 'Intitulé *',
+      ShortName: 'Intitulé',
       Description: 'Mapping : unit-es-mapping.json',
       CreationDate: null,
       LastUpdate: null,
@@ -13179,7 +13179,7 @@ export class MockSchemaService extends SchemaService {
       StringSize: 'MEDIUM',
       Cardinality: 'ONE_REQUIRED',
       FieldName: '_sp',
-      ShortName: "Service producteur responsable de l'entrée(*)",
+      ShortName: "Service producteur responsable de l'entrée",
       Description:
         'Mapping : unit-es-mapping.json. Service producteur d’origine déclaré lors de la prise en charge de l’unité archivistique par la solution logicielle Vitam.',
       CreationDate: null,
@@ -13486,5 +13486,148 @@ export class MockSchemaService extends SchemaService {
 
   getSchemas(_collections: Collection[]): Observable<Schema[]> {
     return of([this.schema]);
+  }
+
+  public getDescriptiveSchemaTree(): Observable<ItemNode<SchemaElement>[]> {
+    const recursiveSort = (node: ItemNode<SchemaElement>) => {
+      node.children.sort((n1, n2) =>
+        n1.children.length && !n2.children.length
+          ? 1
+          : !n1.children.length && n2.children.length
+            ? -1
+            : n1.item.ShortName.localeCompare(n2.item.ShortName),
+      );
+      node.children.forEach((n) => recursiveSort(n));
+    };
+
+    const removeLeavesWithTypeObject = (node: ItemNode<SchemaElement>) => {
+      node.children = node.children.filter((child) => !(child.item.Type === 'OBJECT' && !child.children.length));
+      node.children.forEach((child) => removeLeavesWithTypeObject(child));
+    };
+
+    return this.getSchema(Collection.ARCHIVE_UNIT).pipe(
+      map((schema) => {
+        const rootNode = schema
+          .filter((e) => e.Category === 'DESCRIPTION' || e.Origin === 'EXTERNAL')
+          .reduce(
+            (acc, element) => {
+              const path = element.Path.split('.').slice(0, -1);
+              const parentNode = path.reduce((currentItem, p) => currentItem.children.find((n) => n.item.FieldName === p), acc) || acc;
+              parentNode.children.push({
+                item: element,
+                children: [],
+              });
+              return acc;
+            },
+            { children: [] } as ItemNode<SchemaElement>,
+          );
+
+        removeLeavesWithTypeObject(rootNode);
+
+        recursiveSort(rootNode);
+        return rootNode.children;
+      }),
+    );
+  }
+
+  public getArchiveUnitProfileSchema(archiveUnitProfileId: string): Observable<Schema> {
+    if (!archiveUnitProfileId) return of([]);
+
+    let archiveUnitProfileSchema: Schema = JSON.parse(JSON.stringify(this.schema));
+
+    archiveUnitProfileSchema = this.requiredConstraints(archiveUnitProfileSchema);
+    archiveUnitProfileSchema = this.monoValuedConstraints(archiveUnitProfileSchema);
+    archiveUnitProfileSchema = this.enumsConstraints(archiveUnitProfileSchema);
+    archiveUnitProfileSchema = this.regexConstraints(archiveUnitProfileSchema);
+    archiveUnitProfileSchema = this.cardinalityZeroConstrains(archiveUnitProfileSchema);
+
+    return of(archiveUnitProfileSchema);
+  }
+
+  private applyConstraints = (schema: Schema, path: string, control: Control, cardinality?: EffectiveCardinality) => {
+    const index = schema.findIndex((e) => e.Path === path);
+
+    if (index < 0) return schema;
+
+    const element = schema[index];
+    const next: ProfiledSchemaElement = {
+      ...element,
+      Control: control,
+      EffectiveCardinality: cardinality || element.Cardinality,
+    };
+
+    return [...schema.slice(0, index), next, ...schema.slice(index + 1)];
+  };
+
+  // C1 - https://assistance.programmevitam.fr/plugins/tracker/?aid=13004
+  private requiredConstraints = (schema: Schema): Schema => {
+    schema = this.applyConstraints(schema, 'Addressee', null, 'ONE_REQUIRED');
+    schema = this.applyConstraints(schema, 'Addressee.BirthPlace', null, 'ONE_REQUIRED');
+    schema = this.applyConstraints(schema, 'Addressee.FirstName', null, 'ONE_REQUIRED');
+
+    schema = this.applyConstraints(schema, 'Agent', null, 'MANY_REQUIRED');
+    return schema;
+  };
+
+  // C2 - https://assistance.programmevitam.fr/plugins/tracker/?aid=13004
+  private monoValuedConstraints(schema: Schema): Schema {
+    schema = this.applyConstraints(schema, 'Description', null, 'ONE_REQUIRED');
+    schema = this.applyConstraints(schema, 'Writer', null, 'ONE');
+    schema = this.applyConstraints(schema, 'Writer.Identifier', null, 'ONE');
+
+    return schema;
+  }
+
+  // C3 - https://assistance.programmevitam.fr/plugins/tracker/?aid=13004
+  private enumsConstraints(schema: Schema): Schema {
+    schema = this.applyConstraints(schema, 'DescriptionLevel', {
+      Type: 'SELECT',
+      Values: ['Fonds', 'Subfonds', 'Class', 'Collection', 'Series', 'Subseries', 'RecordGrp', 'SubGrp', 'File', 'Item'],
+    });
+
+    schema = this.applyConstraints(
+      schema,
+      'Tag',
+      {
+        Type: 'SELECT',
+        Values: ['Titi', 'Toto'],
+        Comment: 'Titi ou Toto',
+      },
+      'ONE_REQUIRED',
+    );
+
+    schema = this.applyConstraints(schema, 'SigningInformation.SigningRole', {
+      Type: 'SELECT',
+      Values: ['SignedDocument', 'Timestamp', 'Signature', 'AdditionalProof'],
+    });
+
+    return schema;
+  }
+
+  // C4 - https://assistance.programmevitam.fr/plugins/tracker/?aid=13004
+  private regexConstraints(schema: Schema): Schema {
+    schema = this.applyConstraints(schema, 'Title', {
+      Type: 'REGEX',
+      Value: '^Fichier.*',
+      Comment: "Doit commencer par 'Fichier'",
+    });
+    schema = this.applyConstraints(schema, 'Writer.Function', {
+      Type: 'REGEX',
+      Value: '^FN_.*',
+      Comment: "Doit commencer par 'FN_'",
+    });
+
+    return schema;
+  }
+
+  // C7 - https://assistance.programmevitam.fr/plugins/tracker/?aid=13004
+  private cardinalityZeroConstrains(schema: Schema): Schema {
+    schema = this.applyConstraints(schema, 'Sender', null, 'ZERO');
+    schema = this.applyConstraints(schema, 'Writer.BirthPlace', null, 'ZERO');
+    schema = this.applyConstraints(schema, 'Writer.Nationality', null, 'ZERO');
+    schema = this.applyConstraints(schema, 'Writer.FirstName', null, 'ZERO');
+    schema = this.applyConstraints(schema, 'Writer.BirthName', null, 'ZERO');
+
+    return schema;
   }
 }

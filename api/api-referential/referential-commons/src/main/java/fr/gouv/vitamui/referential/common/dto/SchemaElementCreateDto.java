@@ -34,6 +34,7 @@ import fr.gouv.vitam.common.model.administration.schema.SchemaType;
 import fr.gouv.vitamui.referential.common.model.Cardinality;
 import fr.gouv.vitamui.referential.common.model.Collection;
 import fr.gouv.vitamui.referential.common.model.DataType;
+import fr.gouv.vitamui.referential.common.model.EffectiveCardinality;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -102,4 +103,10 @@ public class SchemaElementCreateDto {
 
     @JsonProperty("DataType")
     private DataType dataType;
+
+    @JsonProperty("Control")
+    private ControlDto control;
+
+    @JsonProperty("EffectiveCardinality")
+    private EffectiveCardinality effectiveCardinality;
 }

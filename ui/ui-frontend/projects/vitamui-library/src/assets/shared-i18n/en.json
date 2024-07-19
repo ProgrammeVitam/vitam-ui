@@ -4770,5 +4770,12 @@
   "DRAG_AND_DROP_FILE": {
     "FILE_IS_NOT_AN_IMAGE": "The file you are trying to upload is not an image",
     "WRONG_FILE_SIZE": "The dimensions of the file you are trying to upload are larger than {{width}} * {{height}}px"
+  },
+  "ERRORS": {
+    "required": "This field is required.",
+    "minlength": "Minimum length is {{ requiredLength }} characters.",
+    "maxlength": "Maximum length is {{ requiredLength }} characters.",
+    "email": "Invalid email address.",
+    "pattern": "Expected format : {{ message }}."
   }
 }

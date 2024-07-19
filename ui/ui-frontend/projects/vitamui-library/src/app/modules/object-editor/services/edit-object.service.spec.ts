@@ -1,9 +1,9 @@
 import { inject, TestBed, waitForAsync } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
-import { EMPTY } from 'rxjs';
+import { EMPTY, from, mergeMap, toArray } from 'rxjs';
 import { LoggerModule } from '../../logger';
-import { Collection, Schema } from '../../models';
+import { Collection, ProfiledSchemaElement, Schema } from '../../models';
 import { DisplayRule } from '../../object-viewer/models';
 import { DisplayRuleHelperService } from '../../object-viewer/services/display-rule-helper.service';
 import { SchemaElementToDisplayRuleService } from '../../object-viewer/services/schema-element-to-display-rule.service';
@@ -13,6 +13,9 @@ import { EditObject } from '../models/edit-object.model';
 import { EditObjectService } from './edit-object.service';
 import { SchemaService } from './schema.service';
 import { TemplateService } from './template.service';
+import { Control } from '../../models/schema/control.model';
+import { Cardinality, EffectiveCardinality } from '../../object-viewer/types';
+import { filter, map } from 'rxjs/operators';
 
 describe('EditObjectService', () => {
   let service: EditObjectService;
@@ -577,6 +580,492 @@ describe('EditObjectService', () => {
     });
   });
 
+  describe('Controls and cardinality modifiers', () => {
+    describe('Required', () => {
+      it('should primitive be required when its schema has one required cardinality modifier', waitForAsync(
+        inject([MockSchemaService], (schemaService: MockSchemaService) => {
+          const path = 'Description';
+          const kind = 'primitive';
+          const cardinality: Cardinality = 'ONE';
+          const effectiveCardinality = 'ONE_REQUIRED';
+
+          schemaService
+            .getSchema(Collection.ARCHIVE_UNIT)
+            .pipe(
+              map((schema) => applyConstraints(schema, path, null, effectiveCardinality)),
+              mergeMap((schema) =>
+                from(schema).pipe(
+                  filter((element) => element.Path === path),
+                  filter((element) => element.Cardinality === cardinality),
+                  toArray(),
+                  map((schema) => {
+                    if (schema.length > 0) return schema;
+
+                    throw new Error('No element in schema after filtering');
+                  }),
+                ),
+              ),
+              map((schema) => service.editObject('', {}, [], schema)),
+            )
+            .subscribe({
+              next: (editObject) => {
+                expect(editObject).toBeTruthy();
+                expect(editObject.children).toEqual(
+                  jasmine.arrayContaining([jasmine.objectContaining({ path, kind, cardinality: effectiveCardinality, required: true })]),
+                );
+              },
+            });
+        }),
+      ));
+
+      it('should primitive-array be required when its schema has one required cardinality modifier', waitForAsync(
+        inject([MockSchemaService], (schemaService: MockSchemaService) => {
+          const path = 'Tag';
+          const kind = 'primitive-array';
+          const cardinality: Cardinality = 'MANY';
+          const effectiveCardinality = 'ONE_REQUIRED';
+
+          schemaService
+            .getSchema(Collection.ARCHIVE_UNIT)
+            .pipe(
+              map((schema) => applyConstraints(schema, path, null, effectiveCardinality)),
+              mergeMap((schema) =>
+                from(schema).pipe(
+                  filter((element) => element.Path === path),
+                  filter((element) => element.Cardinality === cardinality),
+                  toArray(),
+                  map((schema) => {
+                    if (schema.length > 0) return schema;
+
+                    throw new Error('No element in schema after filtering');
+                  }),
+                ),
+              ),
+              map((schema) => service.editObject('', {}, [], schema)),
+            )
+            .subscribe({
+              next: (editObject) => {
+                expect(editObject).toBeTruthy();
+                expect(editObject.children).toEqual(
+                  jasmine.arrayContaining([jasmine.objectContaining({ path, kind, cardinality: effectiveCardinality, required: true })]),
+                );
+              },
+            });
+        }),
+      ));
+
+      it('should primitive-array be required when its schema has many required cardinality modifier', waitForAsync(
+        inject([MockSchemaService], (schemaService: MockSchemaService) => {
+          const path = 'Tag';
+          const kind = 'primitive-array';
+          const cardinality: Cardinality = 'MANY';
+          const effectiveCardinality = 'MANY_REQUIRED';
+
+          schemaService
+            .getSchema(Collection.ARCHIVE_UNIT)
+            .pipe(
+              map((schema) => applyConstraints(schema, path, null, effectiveCardinality)),
+              mergeMap((schema) =>
+                from(schema).pipe(
+                  filter((element) => element.Path === path),
+                  filter((element) => element.Cardinality === cardinality),
+                  toArray(),
+                  map((schema) => {
+                    if (schema.length > 0) return schema;
+
+                    throw new Error('No element in schema after filtering');
+                  }),
+                ),
+              ),
+              map((schema) => service.editObject('', {}, [], schema)),
+            )
+            .subscribe({
+              next: (editObject) => {
+                expect(editObject).toBeTruthy();
+                expect(editObject.children).toEqual(
+                  jasmine.arrayContaining([jasmine.objectContaining({ path, kind, cardinality: effectiveCardinality, required: true })]),
+                );
+              },
+            });
+        }),
+      ));
+
+      it('should object-array be required when its schema has one required cardinality modifier', waitForAsync(
+        inject([MockSchemaService], (schemaService: MockSchemaService) => {
+          const path = 'Writer';
+          const kind = 'object-array';
+          const cardinality: Cardinality = 'MANY';
+          const effectiveCardinality = 'ONE_REQUIRED';
+
+          schemaService
+            .getSchema(Collection.ARCHIVE_UNIT)
+            .pipe(
+              map((schema) => applyConstraints(schema, path, null, effectiveCardinality)),
+              mergeMap((schema) =>
+                from(schema).pipe(
+                  filter((element) => element.Path === path),
+                  filter((element) => element.Cardinality === cardinality),
+                  toArray(),
+                  map((schema) => {
+                    if (schema.length > 0) return schema;
+
+                    throw new Error('No element in schema after filtering');
+                  }),
+                ),
+              ),
+              map((schema) => service.editObject('', {}, [], schema)),
+            )
+            .subscribe({
+              next: (editObject) => {
+                expect(editObject).toBeTruthy();
+                expect(editObject.children).toEqual(
+                  jasmine.arrayContaining([jasmine.objectContaining({ path, kind, cardinality: effectiveCardinality, required: true })]),
+                );
+              },
+            });
+        }),
+      ));
+
+      it('should object-array be required when its schema has many required cardinality modifier', waitForAsync(
+        inject([MockSchemaService], (schemaService: MockSchemaService) => {
+          const path = 'Writer';
+          const kind = 'object-array';
+          const cardinality: Cardinality = 'MANY';
+          const effectiveCardinality = 'MANY_REQUIRED';
+
+          schemaService
+            .getSchema(Collection.ARCHIVE_UNIT)
+            .pipe(
+              map((schema) => applyConstraints(schema, path, null, effectiveCardinality)),
+              mergeMap((schema) =>
+                from(schema).pipe(
+                  filter((element) => element.Path === path),
+                  filter((element) => element.Cardinality === cardinality),
+                  toArray(),
+                  map((schema) => {
+                    if (schema.length > 0) return schema;
+
+                    throw new Error('No element in schema after filtering');
+                  }),
+                ),
+              ),
+              map((schema) => service.editObject('', {}, [], schema)),
+            )
+            .subscribe({
+              next: (editObject) => {
+                expect(editObject).toBeTruthy();
+                expect(editObject.children).toEqual(
+                  jasmine.arrayContaining([jasmine.objectContaining({ path, kind, cardinality: effectiveCardinality, required: true })]),
+                );
+              },
+            });
+        }),
+      ));
+    });
+
+    describe('Pattern', () => {
+      it('should primitive have pattern when its schema has set regex control modifier', waitForAsync(
+        inject([MockSchemaService], (schemaService: MockSchemaService) => {
+          const path = 'Title';
+          const kind = 'primitive';
+          const cardinality: Cardinality = 'ONE';
+          const effectiveCardinality = 'ONE';
+          const control: Control = {
+            Type: 'REGEX',
+            Value: '^DCP14_[A-Z]{4}$',
+          };
+
+          schemaService
+            .getSchema(Collection.ARCHIVE_UNIT)
+            .pipe(
+              map((schema) => applyConstraints(schema, path, control, effectiveCardinality)),
+              mergeMap((schema) =>
+                from(schema).pipe(
+                  filter((element) => element.Path === path),
+                  filter((element) => element.Cardinality === cardinality),
+                  toArray(),
+                  map((schema) => {
+                    if (schema.length > 0) return schema;
+
+                    throw new Error('No element in schema after filtering');
+                  }),
+                ),
+              ),
+              map((schema) => service.editObject('', {}, [], schema)),
+            )
+            .subscribe({
+              next: (editObject) => {
+                expect(editObject).toBeTruthy();
+                expect(editObject.children).toEqual(
+                  jasmine.arrayContaining([
+                    jasmine.objectContaining({ path, kind, pattern: control.Value, cardinality: effectiveCardinality }),
+                  ]),
+                );
+              },
+            });
+        }),
+      ));
+
+      it('should primitive-array have pattern when its schema has set regex control modifier', waitForAsync(
+        inject([MockSchemaService], (schemaService: MockSchemaService) => {
+          const path = 'Tag';
+          const kind = 'primitive-array';
+          const cardinality: Cardinality = 'MANY';
+          const effectiveCardinality = 'MANY';
+          const control: Control = {
+            Type: 'REGEX',
+            Value: '^DCP14_[A-Z]{4}$',
+          };
+
+          schemaService
+            .getSchema(Collection.ARCHIVE_UNIT)
+            .pipe(
+              map((schema) => applyConstraints(schema, path, control, effectiveCardinality)),
+              mergeMap((schema) =>
+                from(schema).pipe(
+                  filter((element) => element.Path === path),
+                  filter((element) => element.Cardinality === cardinality),
+                  toArray(),
+                  map((schema) => {
+                    if (schema.length > 0) return schema;
+
+                    throw new Error('No element in schema after filtering');
+                  }),
+                ),
+              ),
+              map((schema) => service.editObject('', {}, [], schema)),
+            )
+            .subscribe({
+              next: (editObject) => {
+                expect(editObject).toBeTruthy();
+                expect(editObject.children).toEqual(
+                  jasmine.arrayContaining([
+                    jasmine.objectContaining({ path, kind, pattern: control.Value, cardinality: effectiveCardinality }),
+                  ]),
+                );
+              },
+            });
+        }),
+      ));
+    });
+
+    describe('Options', () => {
+      it('should primitive have options when its schema has set select control modifier', waitForAsync(
+        inject([MockSchemaService], (schemaService: MockSchemaService) => {
+          const path = 'Title';
+          const kind = 'primitive';
+          const cardinality: Cardinality = 'ONE';
+          const effectiveCardinality = 'ONE';
+          const control: Control = {
+            Type: 'SELECT',
+            Values: ['A', 'B'],
+          };
+
+          schemaService
+            .getSchema(Collection.ARCHIVE_UNIT)
+            .pipe(
+              map((schema) => applyConstraints(schema, path, control, effectiveCardinality)),
+              mergeMap((schema) =>
+                from(schema).pipe(
+                  filter((element) => element.Path === path),
+                  filter((element) => element.Cardinality === cardinality),
+                  toArray(),
+                  map((schema) => {
+                    if (schema.length > 0) return schema;
+
+                    throw new Error('No element in schema after filtering');
+                  }),
+                ),
+              ),
+              map((schema) => service.editObject('', {}, [], schema)),
+            )
+            .subscribe({
+              next: (editObject) => {
+                expect(editObject).toBeTruthy();
+                expect(editObject.children).toEqual(
+                  jasmine.arrayContaining([
+                    jasmine.objectContaining({ path, kind, options: control.Values, cardinality: effectiveCardinality }),
+                  ]),
+                );
+              },
+            });
+        }),
+      ));
+
+      it('should primitive-array have options when its schema has set select control modifier', waitForAsync(
+        inject([MockSchemaService], (schemaService: MockSchemaService) => {
+          const path = 'Tag';
+          const kind = 'primitive-array';
+          const cardinality: Cardinality = 'MANY';
+          const effectiveCardinality = 'MANY';
+          const control: Control = {
+            Type: 'SELECT',
+            Values: ['A', 'B'],
+          };
+
+          schemaService
+            .getSchema(Collection.ARCHIVE_UNIT)
+            .pipe(
+              map((schema) => applyConstraints(schema, path, control, effectiveCardinality)),
+              mergeMap((schema) =>
+                from(schema).pipe(
+                  filter((element) => element.Path === path),
+                  filter((element) => element.Cardinality === cardinality),
+                  toArray(),
+                  map((schema) => {
+                    if (schema.length > 0) return schema;
+
+                    throw new Error('No element in schema after filtering');
+                  }),
+                ),
+              ),
+              map((schema) => service.editObject('', {}, [], schema)),
+            )
+            .subscribe({
+              next: (editObject) => {
+                expect(editObject).toBeTruthy();
+                expect(editObject.children).toEqual(
+                  jasmine.arrayContaining([
+                    jasmine.objectContaining({ path, kind, options: control.Values, cardinality: effectiveCardinality }),
+                  ]),
+                );
+              },
+            });
+        }),
+      ));
+    });
+
+    describe('Cardinality zero', () => {
+      it('should primitive have inconsistent value when its schema has zero cardinality modifier', waitForAsync(
+        inject([MockSchemaService, TemplateService], (schemaService: MockSchemaService, templateService: TemplateService) => {
+          const path = 'Description';
+          const kind = 'primitive';
+          const cardinality: Cardinality = 'ONE';
+          const effectiveCardinality = 'ZERO';
+
+          schemaService
+            .getSchema(Collection.ARCHIVE_UNIT)
+            .pipe(
+              map((schema) => applyConstraints(schema, path, null, effectiveCardinality)),
+              mergeMap((schema) =>
+                from(schema).pipe(
+                  filter((element) => element.Path === path),
+                  filter((element) => element.Cardinality === cardinality),
+                  toArray(),
+                  map((schema) => {
+                    if (schema.length > 0) return schema;
+
+                    throw new Error('No element in schema after filtering');
+                  }),
+                ),
+              ),
+              map((schema) => {
+                const data = {
+                  Description: 'test',
+                };
+                const template = templateService.template(schema);
+
+                return service.editObject('', data, template, schema);
+              }),
+            )
+            .subscribe({
+              next: (editObject) => {
+                expect(editObject).toBeTruthy();
+                expect(editObject.children).toEqual(
+                  jasmine.arrayContaining([jasmine.objectContaining({ path, kind, cardinality: effectiveCardinality })]),
+                );
+                editObject.children.filter((eo) => eo.path === path).forEach((eo) => expect(eo.control.value).toBeNull());
+              },
+            });
+        }),
+      ));
+
+      it('should primitive-array have inconsistent value when its schema has zero cardinality modifier', waitForAsync(
+        inject([MockSchemaService, TemplateService], (schemaService: MockSchemaService, templateService: TemplateService) => {
+          const path = 'Tag';
+          const kind = 'primitive-array';
+          const cardinality: Cardinality = 'MANY';
+          const effectiveCardinality = 'ZERO';
+
+          schemaService
+            .getSchema(Collection.ARCHIVE_UNIT)
+            .pipe(
+              map((schema) => applyConstraints(schema, path, null, effectiveCardinality)),
+              mergeMap((schema) =>
+                from(schema).pipe(
+                  filter((element) => element.Path === path),
+                  filter((element) => element.Cardinality === cardinality),
+                  toArray(),
+                  map((schema) => {
+                    if (schema.length > 0) return schema;
+
+                    throw new Error('No element in schema after filtering');
+                  }),
+                ),
+              ),
+              map((schema) => {
+                const data = {
+                  Tag: ['High', 'Medium', 'Low'],
+                };
+                const template = templateService.template(schema);
+
+                return service.editObject('', data, template, schema);
+              }),
+            )
+            .subscribe({
+              next: (editObject) => {
+                expect(editObject).toBeTruthy();
+                expect(editObject.children).toEqual(
+                  jasmine.arrayContaining([jasmine.objectContaining({ path, kind, cardinality: effectiveCardinality })]),
+                );
+                editObject.children.filter((eo) => eo.path === path).forEach((eo) => expect(eo.control.value).toEqual([]));
+              },
+            });
+        }),
+      ));
+
+      it('should object-array have inconsistent value when its schema has zero cardinality modifier', waitForAsync(
+        inject([MockSchemaService, TemplateService], (schemaService: MockSchemaService, templateService: TemplateService) => {
+          const path = 'Writer';
+          const cardinality: Cardinality = 'MANY';
+          const effectiveCardinality = 'ZERO';
+
+          schemaService
+            .getSchema(Collection.ARCHIVE_UNIT)
+            .pipe(
+              map((schema) => applyConstraints(schema, path, null, effectiveCardinality)),
+              mergeMap((schema) =>
+                from(schema).pipe(
+                  filter((element) => element.Path === path),
+                  filter((element) => element.Cardinality === cardinality),
+                  toArray(),
+                  map((schema) => {
+                    if (schema.length > 0) return schema;
+
+                    throw new Error('No element in schema after filtering');
+                  }),
+                ),
+              ),
+              map((schema) => {
+                const data = {
+                  Writer: [{ FirstName: 'John' }],
+                };
+                const template = templateService.template(schema);
+
+                return service.editObject('', data, template, schema);
+              }),
+            )
+            .subscribe({
+              next: (editObject) => {
+                expect(editObject).toBeTruthy();
+                expect(editObject.children).toEqual([]);
+              },
+            });
+        }),
+      ));
+    });
+  });
+
   it('should template schema be same as schema when template does not move data', waitForAsync(
     inject([MockSchemaService], (schemaService: MockSchemaService) => {
       schemaService.getSchema(Collection.ARCHIVE_UNIT).subscribe((schema) => {
@@ -655,3 +1144,18 @@ describe('EditObjectService', () => {
     }),
   ));
 });
+
+const applyConstraints = (schema: Schema, path: string, control: Control, cardinality?: EffectiveCardinality) => {
+  const index = schema.findIndex((e) => e.Path === path);
+
+  if (index < 0) return schema;
+
+  const element = schema[index];
+  const next: ProfiledSchemaElement = {
+    ...element,
+    Control: control,
+    EffectiveCardinality: cardinality || element.Cardinality,
+  };
+
+  return [...schema.slice(0, index), next, ...schema.slice(index + 1)];
+};

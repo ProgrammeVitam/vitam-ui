@@ -25,36 +25,32 @@
  * accept its terms.
  */
 
-package fr.gouv.vitamui.referential.external.server.service;
+import { Component, Input } from '@angular/core';
+import { AbstractControl } from '@angular/forms';
+import { TranslateModule } from '@ngx-translate/core';
+import { VitamUICommonInputModule } from '../vitamui-input/vitamui-common-input.module';
 
-import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
-import fr.gouv.vitamui.referential.common.dto.SchemaDto;
-import fr.gouv.vitamui.referential.common.model.Collection;
-import fr.gouv.vitamui.referential.internal.client.SchemaClient;
-import org.springframework.stereotype.Service;
-
-import java.net.URISyntaxException;
-import java.util.List;
-import java.util.Set;
-
-@Service
-public class SchemaService {
-
-    private final SchemaClient client;
-
-    public SchemaService(SchemaClient client) {
-        this.client = client;
+@Component({
+  selector: 'vitamui-form-error-display',
+  template: `
+    @for (errorKey of errorKeys; track errorKey) {
+      <vitamui-common-input-error>
+        <i class="vitamui-icon vitamui-icon-anomalie"></i>
+        <span>{{ 'ERRORS.' + errorKey | translate: getErrorParams(errorKey) }}</span>
+      </vitamui-common-input-error>
     }
+  `,
+  imports: [TranslateModule, VitamUICommonInputModule],
+  standalone: true,
+})
+export class FormErrorDisplayComponent {
+  @Input() control: AbstractControl;
 
-    public List<SchemaDto> getSchemas(final InternalHttpContext internalHttpContext, final Set<Collection> collections)
-        throws URISyntaxException {
-        return client.getSchemas(internalHttpContext, collections);
-    }
+  get errorKeys(): string[] {
+    return this.control ? Object.keys(this.control.errors || {}) : [];
+  }
 
-    public SchemaDto getArchiveUnitProfileSchema(
-        final InternalHttpContext internalHttpContext,
-        final String archiveUnitProfileId
-    ) throws URISyntaxException {
-        return client.getArchiveUnitProfileSchema(internalHttpContext, archiveUnitProfileId);
-    }
+  getErrorParams(errorKey: string): any {
+    return this.control.errors[errorKey];
+  }
 }

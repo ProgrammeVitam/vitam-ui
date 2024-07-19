@@ -1,32 +1,36 @@
-<ng-container *ngIf="editObject?.control">
+<ng-container *ngIf="editObject?.control && editObject.cardinality !== 'ZERO'">
   <ng-container [ngSwitch]="uiComponent">
-    <vitamui-common-input
+    <vitamui-editor-input
       *ngSwitchCase="'textfield'"
-      [formControl]="editObject.control"
-      [placeholder]="editObject.displayRule.ui.label | translate | empty | appendStar: editObject.required"
-      class="w-100"
-    >
-    </vitamui-common-input>
-    <vitamui-common-input
-      *ngSwitchCase="'select'"
-      [formControl]="editObject.control"
-      [placeholder]="editObject.displayRule.ui.label | translate | empty | appendStar: editObject.required"
-      class="w-100"
-    >
-    </vitamui-common-input>
-    <vitamui-common-textarea
+      [control]="editObject.control"
+      [label]="editObject.displayRule?.ui?.label"
+      [hint]="editObject.hint"
+      [required]="editObject.required"
+    ></vitamui-editor-input>
+    <vitamui-editor-textarea
       *ngSwitchCase="'textarea'"
-      [formControl]="editObject.control"
-      [placeholder]="editObject.displayRule.ui.label | translate | empty | appendStar: editObject.required"
-      class="w-100"
-    >
-    </vitamui-common-textarea>
+      [control]="editObject.control"
+      [label]="editObject.displayRule?.ui?.label"
+      [hint]="editObject.hint"
+      [required]="editObject.required"
+    ></vitamui-editor-textarea>
+    <vitamui-editor-select
+      *ngSwitchCase="'select'"
+      [control]="editObject.control"
+      [label]="editObject.displayRule?.ui?.label"
+      [options]="editObject.options"
+      [hint]="editObject.hint"
+      [multiple]="editObject.cardinality.includes('MANY')"
+      [required]="editObject.required"
+    ></vitamui-editor-select>
     <vitamui-common-datepicker
       *ngSwitchCase="'datepicker'"
       [formControl]="editObject.control"
       [label]="editObject.displayRule.ui.label | translate | empty | appendStar: editObject.required"
       [onlyDate]="true"
     >
+      <vitamui-editor-hint [control]="editObject.control" [hint]="editObject.hint"></vitamui-editor-hint>
+      <vitamui-form-error-display [control]="editObject.control"></vitamui-form-error-display>
     </vitamui-common-datepicker>
     <vitamui-common-datepicker
       *ngSwitchCase="'datetime'"
@@ -34,6 +38,8 @@
       [label]="editObject.displayRule.ui.label | translate | empty | appendStar: editObject.required"
       [onlyDate]="true"
     >
+      <vitamui-editor-hint [control]="editObject.control" [hint]="editObject.hint"></vitamui-editor-hint>
+      <vitamui-form-error-display [control]="editObject.control"></vitamui-form-error-display>
     </vitamui-common-datepicker>
   </ng-container>
 </ng-container>

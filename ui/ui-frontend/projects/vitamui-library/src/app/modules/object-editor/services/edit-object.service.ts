@@ -5,8 +5,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { BehaviorSubject } from 'rxjs';
 import { orderedFields } from '../../archive-unit/archive-unit-fields';
 import { Logger } from '../../logger/logger';
-import { Schema, SchemaElement } from '../../models';
-import { DisplayRule } from '../../object-viewer/models';
+import { Schema } from '../../models';
+import { DisplayRule, ProfiledSchemaElement, SchemaElement } from '../../object-viewer/models';
 import { Template } from '../../object-viewer/models/template.model';
 import { DataStructureService } from '../../object-viewer/services/data-structure.service';
 import { TypeService } from '../../object-viewer/services/type.service';
@@ -14,6 +14,7 @@ import { ComponentType, DisplayObjectType } from '../../object-viewer/types';
 import { Action, EditObject } from '../models/edit-object.model';
 import { PathService } from './path.service';
 import { SchemaOptions, SchemaService } from './schema.service';
+import { patternValidator } from '../pattern.validator';
 
 const ADD_ACTION_LABEL = 'ARCHIVE_UNIT.ACTIONS.ADD';
 const REMOVE_ACTION_LABEL = 'ARCHIVE_UNIT.ACTIONS.REMOVE';
@@ -74,8 +75,13 @@ export class EditObjectService {
     this.sort(editObject, orderedFields);
 
     if (editObject.displayRule?.ui?.disabled) control.disable({ onlySelf: true, emitEvent: false });
-    if (editObject.required) control.setValidators([Validators.required]);
+    if (editObject.required) control.addValidators(Validators.required);
+    if (editObject.pattern) control.addValidators(patternValidator(editObject.pattern, editObject.hint));
+    if (['primitive-array', 'object-array'].includes(editObject.kind) && editObject.cardinality === 'ONE_REQUIRED')
+      control.addValidators(Validators.maxLength(1));
     if (editObject.kind === 'object-array' && editObject.children.length === 0) editObject.actions.add.handler();
+
+    this.removeCardinalityZero(editObject);
 
     return editObject;
   }
@@ -157,13 +163,13 @@ export class EditObjectService {
     }
   }
 
-  public sort(editObject: EditObject, ordenedFields: string[]): void {
-    editObject?.children?.forEach((child) => this.sort(child, ordenedFields));
+  public sort(editObject: EditObject, orderedFields: string[]): void {
+    editObject?.children?.forEach((child) => this.sort(child, orderedFields));
 
     if (editObject.kind !== 'object') return;
 
-    const ordenedChildPaths = this.pathService.children(this.schemaService.normalize(editObject.path), ordenedFields);
-    const ordenedChildren = ordenedChildPaths.reduce((acc, childPath) => {
+    const orderedChildPaths = this.pathService.children(this.schemaService.normalize(editObject.path), orderedFields);
+    const orderedChildren = orderedChildPaths.reduce((acc, childPath) => {
       const child = editObject.children.find((child) => this.schemaService.normalize(child.path) === childPath);
 
       if (child) return acc.concat([child]);
@@ -174,15 +180,27 @@ export class EditObjectService {
     }, []);
     const unmatchedChildren = editObject.children.filter(
       (child) =>
-        !ordenedChildren.some(
-          (ordenedChild) => this.schemaService.normalize(ordenedChild.path) === this.schemaService.normalize(child.path),
+        !orderedChildren.some(
+          (orderedChild) => this.schemaService.normalize(orderedChild.path) === this.schemaService.normalize(child.path),
         ),
     );
-    const sortedChildren = ordenedChildren.concat(unmatchedChildren);
+    const sortedChildren = orderedChildren.concat(unmatchedChildren);
 
     // Ici, on met à jour la référence car ça nous évite de recalculer les actions pour chaque editObject.
     editObject.children.splice(0, editObject.children.length);
     sortedChildren.forEach((item) => editObject.children.push(item));
+  }
+
+  private removeCardinalityZero(editObject: EditObject) {
+    editObject?.children?.forEach((child) => this.removeCardinalityZero(child));
+
+    if (editObject.cardinality !== 'ZERO') return;
+
+    if (['object-array', 'object'].includes(editObject.kind)) editObject?.actions?.remove?.handler();
+    else {
+      editObject.displayRule = { ...editObject.displayRule, ui: { ...editObject.displayRule.ui, display: false } };
+      editObject.control.setValue(editObject.kind === 'primitive-array' ? [] : null);
+    }
   }
 
   private baseEditObject(
@@ -201,9 +219,7 @@ export class EditObjectService {
     const displayRule = template.find((rule) => rule.ui.Path === schemaPath);
     const component: ComponentType =
       displayRule?.ui?.component || (['object', 'object-array', 'primitive-array'].includes(kind) ? 'group' : 'textfield');
-    const schemaElement = this.schemaService.find(schemaPath, schema);
-
-    return {
+    const partialEditObject: Partial<EditObject> = {
       key,
       path,
       kind,
@@ -214,9 +230,35 @@ export class EditObjectService {
       displayRule,
       open: true,
       favoriteKeys: [],
-      required: Boolean(schemaElement?.Cardinality.includes('REQUIRED')),
-      virtual: Boolean(schemaElement?.Origin === 'VIRTUAL'),
+      required: true,
+      virtual: false,
       childrenChange: new BehaviorSubject<EditObject[]>([]),
+    };
+
+    if (isRoot) return partialEditObject;
+
+    const schemaElement = this.schemaService.find(schemaPath, schema);
+
+    if (!schemaElement) return partialEditObject;
+
+    const profiledSchemaElement: ProfiledSchemaElement = schemaElement;
+    const { Control, EffectiveCardinality } = profiledSchemaElement;
+
+    // Have currently 2 types of controls REGEX or SELECT.
+    // Value or Values field is sufficient to determine the kind of control.
+    const pattern = Control?.Value;
+    const options = Control?.Values;
+    const hint = Control?.Comment;
+    const cardinality = EffectiveCardinality || schemaElement.Cardinality;
+
+    return {
+      ...partialEditObject,
+      required: this.schemaService.isRequired(schemaElement as ProfiledSchemaElement),
+      virtual: this.schemaService.isVirtual(schemaElement),
+      pattern,
+      options,
+      hint,
+      cardinality,
     };
   }
 
@@ -272,18 +314,24 @@ export class EditObjectService {
             const defaultValue = this.schemaService.data(this.schemaService.normalize(editObject.path), schema);
             const fullData = defaultValue ? this.dataService.deepMerge(defaultValue, data) : data;
             const eo = this.editObject(`${editObject.path}[${editObject.children.length}]`, fullData, template, schema);
+            const canAdd =
+              Boolean(editObject.cardinality !== 'ZERO') &&
+              (Boolean(['ONE', 'ONE_REQUIRED'].includes(editObject.cardinality) && editObject.children.length < 1) ||
+                Boolean(['MANY', 'MANY_REQUIRED'].includes(editObject.cardinality)));
 
-            (editObject.control as FormArray).push(eo.control);
-            (editObject.control as FormArray).markAsDirty();
-            editObject.children.push(eo);
-            this.sort(editObject as EditObject, orderedFields);
-            editObject.childrenChange.next(editObject.children);
+            if (canAdd) {
+              (editObject.control as FormArray).push(eo.control);
+              (editObject.control as FormArray).markAsDirty();
+              editObject.children.push(eo);
+              this.sort(editObject as EditObject, orderedFields);
+              editObject.childrenChange.next(editObject.children);
 
-            this.computeChildrenRemoveActions(editObject).forEach((action, i) => {
-              editObject.children[i].actions.remove = action;
-            });
+              this.computeChildrenRemoveActions(editObject).forEach((action, i) => {
+                editObject.children[i].actions.remove = action;
+              });
 
-            eo.actions.add = add;
+              eo.actions.add = add;
+            }
           },
         };
 

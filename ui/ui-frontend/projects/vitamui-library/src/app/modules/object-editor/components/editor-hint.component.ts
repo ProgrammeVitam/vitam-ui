@@ -25,36 +25,29 @@
  * accept its terms.
  */
 
-package fr.gouv.vitamui.referential.external.server.service;
+import { Component, Input } from '@angular/core';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { AbstractControl } from '@angular/forms';
 
-import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
-import fr.gouv.vitamui.referential.common.dto.SchemaDto;
-import fr.gouv.vitamui.referential.common.model.Collection;
-import fr.gouv.vitamui.referential.internal.client.SchemaClient;
-import org.springframework.stereotype.Service;
-
-import java.net.URISyntaxException;
-import java.util.List;
-import java.util.Set;
-
-@Service
-public class SchemaService {
-
-    private final SchemaClient client;
-
-    public SchemaService(SchemaClient client) {
-        this.client = client;
+@Component({
+  selector: 'vitamui-editor-hint',
+  template: `
+    @if (hint && control.valid) {
+      <mat-hint class="d-flex align-items-center">
+        <i class="vitamui-icon vitamui-icon-info mr-1"></i>
+        <span>{{ hint }}</span>
+      </mat-hint>
     }
-
-    public List<SchemaDto> getSchemas(final InternalHttpContext internalHttpContext, final Set<Collection> collections)
-        throws URISyntaxException {
-        return client.getSchemas(internalHttpContext, collections);
+  `,
+  styles: `
+    i {
+      font-size: 1rem;
     }
-
-    public SchemaDto getArchiveUnitProfileSchema(
-        final InternalHttpContext internalHttpContext,
-        final String archiveUnitProfileId
-    ) throws URISyntaxException {
-        return client.getArchiveUnitProfileSchema(internalHttpContext, archiveUnitProfileId);
-    }
+  `,
+  standalone: true,
+  imports: [MatFormFieldModule],
+})
+export class EditorHintComponent {
+  @Input({ required: true }) control!: AbstractControl;
+  @Input() hint?: string;
 }

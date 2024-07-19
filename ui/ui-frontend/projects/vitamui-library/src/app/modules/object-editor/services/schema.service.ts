@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Logger } from '../../logger/logger';
-import { Collection, Schema, SchemaElement } from '../../models';
+import { Collection, ProfiledSchemaElement, Schema, SchemaElement } from '../../models';
 import { internationalizedKeys } from '../../object-viewer/services/display-object-helper.service';
 import { SedaVersion } from '../../object-viewer/types';
 import { PathService } from './path.service';
@@ -145,6 +145,14 @@ export class SchemaService {
     }
 
     return { element, messages };
+  }
+
+  public isRequired(element: ProfiledSchemaElement): boolean {
+    return (element?.EffectiveCardinality || element?.Cardinality)?.includes('REQUIRED') || false;
+  }
+
+  public isVirtual(element: SchemaElement) {
+    return Boolean(element?.Origin === 'VIRTUAL');
   }
 
   private isArray(element: SchemaElement): boolean {

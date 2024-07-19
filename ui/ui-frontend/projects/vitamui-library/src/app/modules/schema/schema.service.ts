@@ -49,6 +49,10 @@ export class SchemaService {
     return this.api.getSchema(collection);
   }
 
+  public getArchiveUnitProfileSchema(archiveUnitProfileId: string) {
+    return this.api.getArchiveUnitProfileSchema(archiveUnitProfileId);
+  }
+
   public getDescriptiveSchemaTree(): Observable<ItemNode<SchemaElement>[]> {
     const recursiveSort = (node: ItemNode<SchemaElement>) => {
       node.children.sort((n1, n2) =>

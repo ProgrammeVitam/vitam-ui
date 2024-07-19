@@ -25,36 +25,37 @@
  * accept its terms.
  */
 
-package fr.gouv.vitamui.referential.external.server.service;
+import { Component, Input } from '@angular/core';
+import { AppendStarPipe } from '../required.pipe';
+import { EditorHintComponent } from './editor-hint.component';
+import { FormErrorDisplayComponent } from '../../components/form-error-display/form-error-display.component';
+import { PipesModule } from '../../pipes/pipes.module';
+import { TranslateModule } from '@ngx-translate/core';
+import { VitamUICommonInputModule } from '../../components/vitamui-input/vitamui-common-input.module';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 
-import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
-import fr.gouv.vitamui.referential.common.dto.SchemaDto;
-import fr.gouv.vitamui.referential.common.model.Collection;
-import fr.gouv.vitamui.referential.internal.client.SchemaClient;
-import org.springframework.stereotype.Service;
-
-import java.net.URISyntaxException;
-import java.util.List;
-import java.util.Set;
-
-@Service
-public class SchemaService {
-
-    private final SchemaClient client;
-
-    public SchemaService(SchemaClient client) {
-        this.client = client;
-    }
-
-    public List<SchemaDto> getSchemas(final InternalHttpContext internalHttpContext, final Set<Collection> collections)
-        throws URISyntaxException {
-        return client.getSchemas(internalHttpContext, collections);
-    }
-
-    public SchemaDto getArchiveUnitProfileSchema(
-        final InternalHttpContext internalHttpContext,
-        final String archiveUnitProfileId
-    ) throws URISyntaxException {
-        return client.getArchiveUnitProfileSchema(internalHttpContext, archiveUnitProfileId);
-    }
+@Component({
+  selector: 'vitamui-editor-input',
+  template: `
+    <vitamui-common-input [formControl]="control" [placeholder]="label | translate | empty | appendStar: required" class="w-100">
+      <vitamui-editor-hint [control]="control" [hint]="hint"></vitamui-editor-hint>
+      <vitamui-form-error-display [control]="control"></vitamui-form-error-display>
+    </vitamui-common-input>
+  `,
+  standalone: true,
+  imports: [
+    AppendStarPipe,
+    EditorHintComponent,
+    FormErrorDisplayComponent,
+    PipesModule,
+    TranslateModule,
+    VitamUICommonInputModule,
+    ReactiveFormsModule,
+  ],
+})
+export class EditorInputComponent {
+  @Input({ required: true }) control!: FormControl;
+  @Input() label?: string;
+  @Input() hint?: string;
+  @Input() required: boolean = false;
 }

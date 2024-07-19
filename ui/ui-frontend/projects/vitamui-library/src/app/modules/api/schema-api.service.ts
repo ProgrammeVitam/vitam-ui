@@ -51,4 +51,8 @@ export class SchemaApiService extends BaseHttpClient<Ontology> {
   public getSchema(collection: Collection): Observable<Schema> {
     return this.getSchemas([collection]).pipe(map((schemas) => schemas[0]));
   }
+
+  public getArchiveUnitProfileSchema(archiveUnitProfileId: string): Observable<Schema> {
+    return this.http.get<Schema>(`${this.apiUrl}/archive-unit-profile/${archiveUnitProfileId}`);
+  }
 }

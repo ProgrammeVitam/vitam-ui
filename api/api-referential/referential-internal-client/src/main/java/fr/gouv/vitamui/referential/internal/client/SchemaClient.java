@@ -74,6 +74,21 @@ public class SchemaClient extends BaseRestClient<InternalHttpContext> {
         return Arrays.asList(Objects.requireNonNull(responseEntity.getBody()));
     }
 
+    public SchemaDto getArchiveUnitProfileSchema(final InternalHttpContext internalHttpContext, final String id)
+        throws URISyntaxException {
+        final URI uri = new URIBuilder(getBaseUrl())
+            .setPath(CommonConstants.ARCHIVE_UNIT_PROFILE_SCHEMAS + "/" + id)
+            .build();
+        final ResponseEntity<SchemaDto> responseEntity = restTemplate.exchange(
+            uri,
+            GET,
+            generateHeaders(internalHttpContext),
+            SchemaDto.class
+        );
+
+        return Objects.requireNonNull(responseEntity.getBody());
+    }
+
     private HttpEntity<?> generateHeaders(final AbstractHttpContext abstractHttpContext) {
         return new HttpEntity<>(buildHeaders(abstractHttpContext));
     }

@@ -33,6 +33,10 @@
   &:focus-within {
     border: solid 1px var(--vitamui-primary);
   }
+
+  &.ng-invalid.ng-touched {
+    border: 1px solid $red;
+  }
 }
 
 input {

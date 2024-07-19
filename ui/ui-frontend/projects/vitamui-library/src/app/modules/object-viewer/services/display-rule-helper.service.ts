@@ -1,15 +1,11 @@
 import { Injectable } from '@angular/core';
 import { DisplayRule, Ui } from '../models';
 import { DisplayObjectType } from '../types';
-import { DataStructureService } from './data-structure.service';
 import { TypeService } from './type.service';
 
 @Injectable()
 export class DisplayRuleHelperService {
-  constructor(
-    private typeService: TypeService,
-    private dataStructureService: DataStructureService,
-  ) {}
+  constructor(private typeService: TypeService) {}
 
   private isUndefinedOrNull(path: any): boolean {
     return path === undefined || path === null;
@@ -56,18 +52,6 @@ export class DisplayRuleHelperService {
     return sourceRules.filter((sourceRule) => targetRules.every((targetRule) => !this.arePathsEqual(targetRule.Path, sourceRule.Path)));
   }
 
-  public mergeDisplayRulesByPath(sourceRules: DisplayRule[], targetRules: DisplayRule[]): DisplayRule[] {
-    return targetRules.map((targetRule) => {
-      const sourceRule = sourceRules.find((rule) => rule.Path === targetRule.Path);
-
-      if (sourceRule) {
-        this.dataStructureService.deepMerge(sourceRule, targetRule);
-      }
-
-      return targetRule;
-    });
-  }
-
   public prioritizeAndMergeDisplayRules(sourceRuleMap: { [key: string]: DisplayRule }, targetRules: DisplayRule[]): DisplayRule[] {
     return targetRules.map((targetRule) =>
       sourceRuleMap[targetRule.Path] ? this.mergeDisplayRules(sourceRuleMap[targetRule.Path], targetRule) : targetRule,
@@ -77,12 +61,7 @@ export class DisplayRuleHelperService {
   private mergeDisplayRules(sourceRule: DisplayRule, targetRule: DisplayRule): DisplayRule {
     if (sourceRule.Path !== targetRule.Path) throw new Error('Rules with different paths cannot by merged');
 
-    const ui: Ui = Array.from(new Set(Object.keys(sourceRule.ui).concat(Object.keys(targetRule.ui)))).reduce(
-      (acc, key: keyof Ui) => {
-        return { ...acc, [key]: targetRule.ui[key] || sourceRule.ui[key] };
-      },
-      { Path: undefined, component: undefined },
-    );
+    const ui: Ui = { ...sourceRule.ui, ...targetRule.ui };
 
     return { ...sourceRule, ui };
   }

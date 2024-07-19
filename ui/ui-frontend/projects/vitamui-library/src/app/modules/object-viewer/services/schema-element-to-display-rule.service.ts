@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-import { DisplayRule } from '../models';
+import { DisplayRule, ProfiledSchemaElement, SchemaElement } from '../models';
 import { LayoutSize } from '../types';
-import { SchemaElement } from '../../models';
 
 type ComponentName =
   | 'balise-n1'
@@ -183,6 +182,10 @@ export class SchemaElementToDisplayRuleService {
         const isUnique = schemaElement.Cardinality.includes('ONE');
         const isMultiple = !isUnique;
         const isSpecial = schemaElement.Path.includes('_.');
+        const isSelect = (schemaElement as ProfiledSchemaElement).Control?.Type === 'SELECT' || false;
+
+        if (isSelect && isUnique) return 'select-mono';
+        if (isSelect && isMultiple) return 'select-multi';
 
         if (isSpecial) {
           if (isUnique && schemaElement.StringSize === 'SHORT') {
@@ -219,21 +222,6 @@ export class SchemaElementToDisplayRuleService {
         if (isMultiple && schemaElement.StringSize === 'LARGE') {
           return 'textfield-large-multi';
         }
-
-        // Rules for enums not represented in schemas
-        // if (schemaElement.Type === 'TEXT') {
-        //   const isUnique = schemaElement.Cardinality.includes('ONE');
-        //   const isMultiple = !isUnique;
-
-        //   if (isUnique) {
-        //     return 'select-mono';
-        //   }
-        //   if (isMultiple) {
-        //     return 'select-multi';
-        //   }
-
-        //   return defaultComponent;
-        // }
 
         return defaultComponent;
       case 'DATETIME':

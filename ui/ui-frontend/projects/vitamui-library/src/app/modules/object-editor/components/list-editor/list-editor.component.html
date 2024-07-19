@@ -36,10 +36,38 @@
       </div>
     </div>
   </ng-container>
-  <vitamui-common-repeatable-input
-    *ngIf="editObject?.kind === 'primitive-array'"
-    [placeholder]="editObject.displayRule.ui.label | translate | empty | appendStar: editObject.required"
-    [textarea]="editObject.displayRule.ui.layout.size === 'large'"
-    [formControl]="editObject.control"
-  ></vitamui-common-repeatable-input>
+
+  @if (
+    editObject?.kind === 'primitive-array' &&
+    editObject?.cardinality.includes('MANY') &&
+    ['textfield', 'textarea'].includes(editObject?.displayRule?.ui?.component)
+  ) {
+    <vitamui-common-repeatable-input
+      [placeholder]="editObject.displayRule.ui.label | translate | empty | appendStar: editObject.required"
+      [textarea]="editObject.displayRule.ui.layout.size === 'large'"
+      [formControl]="editObject.control"
+    >
+    </vitamui-common-repeatable-input>
+    <vitamui-form-error-display [control]="editObject.control"></vitamui-form-error-display>
+  }
+
+  @if (
+    editObject?.kind === 'primitive-array' &&
+    editObject?.cardinality.includes('ONE') &&
+    ['textfield'].includes(editObject?.displayRule?.ui?.component)
+  ) {
+    <vitamui-editor-list-input [editObject]="editObject"></vitamui-editor-list-input>
+  }
+
+  @if (
+    editObject?.kind === 'primitive-array' &&
+    editObject?.cardinality.includes('ONE') &&
+    ['textarea'].includes(editObject?.displayRule?.ui?.component)
+  ) {
+    <vitamui-editor-list-textarea [editObject]="editObject"></vitamui-editor-list-textarea>
+  }
+
+  @if (editObject?.kind === 'primitive-array' && editObject?.displayRule?.ui?.component === 'select') {
+    <vitamui-editor-list-select [editObject]="editObject"></vitamui-editor-list-select>
+  }
 </ng-template>

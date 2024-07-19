@@ -34,6 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+export * from '../../models/schema/schema-element.model';
 export * from './configuration.model';
 export * from './display-object-service';
 export * from './display-object.model';

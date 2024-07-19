@@ -25,36 +25,14 @@
  * accept its terms.
  */
 
-package fr.gouv.vitamui.referential.external.server.service;
+import { AbstractControl, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 
-import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
-import fr.gouv.vitamui.referential.common.dto.SchemaDto;
-import fr.gouv.vitamui.referential.common.model.Collection;
-import fr.gouv.vitamui.referential.internal.client.SchemaClient;
-import org.springframework.stereotype.Service;
+export function patternValidator(pattern: string | RegExp, message?: string): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    const error = Validators.pattern(pattern)(control);
 
-import java.net.URISyntaxException;
-import java.util.List;
-import java.util.Set;
+    if (error) return { pattern: { ...error.pattern, message: message || error.pattern.requiredPattern } };
 
-@Service
-public class SchemaService {
-
-    private final SchemaClient client;
-
-    public SchemaService(SchemaClient client) {
-        this.client = client;
-    }
-
-    public List<SchemaDto> getSchemas(final InternalHttpContext internalHttpContext, final Set<Collection> collections)
-        throws URISyntaxException {
-        return client.getSchemas(internalHttpContext, collections);
-    }
-
-    public SchemaDto getArchiveUnitProfileSchema(
-        final InternalHttpContext internalHttpContext,
-        final String archiveUnitProfileId
-    ) throws URISyntaxException {
-        return client.getArchiveUnitProfileSchema(internalHttpContext, archiveUnitProfileId);
-    }
+    return null;
+  };
 }
