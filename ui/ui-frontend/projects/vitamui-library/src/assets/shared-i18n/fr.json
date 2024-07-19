@@ -125,7 +125,7 @@
       "TOOLTIP": "Paramétrer les groupes de profils de droits des utilisateurs"
     },
     "PROFILES_APP": {
-      "NAME": "Profils APP Utilisateurs",
+      "NAME": "Profils APP utilisateurs",
       "TOOLTIP": "Paramétrer les profils de droits des administrateurs gérant les comptes des utilisateurs"
     },
     "SUBROGATIONS_APP": {
@@ -138,7 +138,7 @@
     },
     "ACCOUNTS_APP": {
       "NAME": "Mon compte",
-      "TOOLTIP": "Consulter mes informations, Choisir la langue de l'interface"
+      "TOOLTIP": "Consulter mes informations, choisir la langue de l'interface"
     },
     "INGEST_APP": {
       "NAME": "Contrats d'entrée",
@@ -202,11 +202,11 @@
       "TOOLTIP": "Déposer un lot de documents"
     },
     "MY_ACTIVITY_V2_APP": {
-      "NAME": "Mon Activité",
+      "NAME": "Mon activité",
       "TOOLTIP": "Consulter mes actions et ordres : versements, bordereaux de sorties..."
     },
     "MY_OPERATOR_ACTIVITY_APP": {
-      "NAME": "Mon Activité Opérateur",
+      "NAME": "Mon activité opérateur",
       "TOOLTIP": "Consulter mes actions concernant les bordereaux de toutes les organisations"
     },
     "FILE_INGEST_ITEM_CUSTOMER_SUPERVISION_APP": {
@@ -230,7 +230,7 @@
       "TOOLTIP": "Valider ou refuser les versements dans un coffre par les autorités désignées par l'organisation"
     },
     "RECORD_MANAGEMENT_APP": {
-      "NAME": "Référentiel Records Management",
+      "NAME": "Référentiel records management",
       "TOOLTIP": "Paramétrer le référentiel de règles de gestion du cycle de vie des archives pour un coffre"
     },
     "ARCHIVE_TYPE_APP": {
@@ -242,8 +242,8 @@
       "TOOLTIP": "Paramétrer les coffres d'une organisation : plan de classement, métadonnées d'indexation, autorités de validation..."
     },
     "ARCHIVE_PROFILE_APP": {
-      "NAME": "Profils APP Archives",
-      "TOOLTIP": "Paramétrer les profils de droits des utilisateurs pour accéder aux archives dans un coffre et utiliser les fonctions de l'APP Archives (déposer, consulter, télécharger, ...)"
+      "NAME": "Profils APP archives",
+      "TOOLTIP": "Paramétrer les profils de droits des utilisateurs pour accéder aux archives dans un coffre et utiliser les fonctions de l'APP archives (déposer, consulter, télécharger, ...)"
     },
     "ADMIN_FLOWS_APP": {
       "NAME": "Flux",
@@ -262,8 +262,8 @@
       "TOOLTIP": "Gestion des archives physiques"
     },
     "ARCHIVE_ROOM_PROFILE_APP": {
-      "NAME": "Profils APP Salle d'archives",
-      "TOOLTIP": "Paramétrer des profils d’accès pour l’APP Salle d’archives"
+      "NAME": "Profils APP salle d'archives",
+      "TOOLTIP": "Paramétrer des profils d’accès pour l’APP salle d’archives"
     },
     "BARCODES_APP": {
       "NAME": "Etiquettes",
@@ -282,7 +282,7 @@
       "TOOLTIP": "Consulter les rapports et les statistiques"
     },
     "ITEM_SUPERVISION_PROFILE_APP": {
-      "NAME": "Profils APP Supervision des bordereaux",
+      "NAME": "Profils APP supervision des bordereaux",
       "TOOLTIP": "Paramétrer des profils de supervision pour l'APP de supervision des bordereaux"
     },
     "ARCHIVE_SEARCH_MANAGEMENT_APP": {
@@ -323,7 +323,7 @@
       "TOOLTIP": "Gérer les opérations en cours ou en erreur"
     },
     "EXTERNAL_PARAM_PROFILE_APP": {
-      "NAME": "Profil APP Paramétrages externes",
+      "NAME": "Profil APP paramétrages externes",
       "TOOLTIP": "Paramétrer les profils de droits des utilisateurs pour l'application des paramètres externes"
     },
     "UNITS_APP": {
@@ -396,7 +396,7 @@
     "ingests": "Suivi des versements",
     "lastusedapps": "Dernières utilisées",
     "ingest_and_consultation": "Versement & consultation",
-    "supervision_and_audits": "Supervision & Audits",
+    "supervision_and_audits": "Supervision & audits",
     "security_and_application_rights": "Sécurité & droits applicatifs",
     "organization_and_user_rights": "Organisation & droits utilisateurs",
     "USER_ALERTS": "Mes actions",
@@ -545,11 +545,11 @@
     "MESSAGE": "Une erreur interne s'est produite. Veuillez contacter un administrateur si le problème persiste."
   },
   "EVENT_TYPE_LABEL": {
-    "ACCESSION_REGISTRATION.ALREADY_EXECUTED": "Action déjà exécutée : Pas d'alimentation du Registre des Fonds",
-    "ACCESSION_REGISTRATION.FATAL": "Erreur technique lors de l'alimentation du Registre des Fonds",
-    "ACCESSION_REGISTRATION.KO": "Échec de l'alimentation du Registre des Fonds",
-    "ACCESSION_REGISTRATION.OK": "Succès de l'alimentation du Registre des Fonds",
-    "ACCESSION_REGISTRATION": "Alimentation du Registre des Fonds",
+    "ACCESSION_REGISTRATION.ALREADY_EXECUTED": "Action déjà exécutée : Pas d'alimentation du registre des fonds",
+    "ACCESSION_REGISTRATION.FATAL": "Erreur technique lors de l'alimentation du registre des fonds",
+    "ACCESSION_REGISTRATION.KO": "Échec de l'alimentation du registre des Fonds",
+    "ACCESSION_REGISTRATION.OK": "Succès de l'alimentation du registre des Fonds",
+    "ACCESSION_REGISTRATION": "Alimentation du registre des fonds",
     "AGENCIES_REPORT.FATAL": "Erreur technique lors du processus de génération du rapport d'import du référentiel des services agents",
     "AGENCIES_REPORT.KO": "Échec du processus de génération du rapport d'import du référentiel des services agents",
     "AGENCIES_REPORT.OK": "Succès du processus de génération du rapport d'import du référentiel des services agents",
