@@ -3,15 +3,10 @@ import { CUSTOM_ELEMENTS_SCHEMA, SimpleChange } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { SchemaApiService } from '../../../api/schema-api.service';
 import { BASE_URL } from '../../../injection-tokens';
 import { LoggerModule } from '../../../logger';
-import { Schema, Unit, UnitType } from '../../../models';
+import { Unit, UnitType } from '../../../models';
 import { ObjectViewerModule } from '../../../object-viewer/object-viewer.module';
-import { SchemaService } from '../../../schema';
-import { MockSchemaService } from '../../../schema/mock-schema.service';
 import { ArchiveUnitViewerComponent } from './archive-unit-viewer.component';
 import { DescriptionLevel } from '../../../models/units/description-level.enum';
 
@@ -67,22 +62,7 @@ describe('ArchiveUnitViewerComponent', () => {
       declarations: [ArchiveUnitViewerComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       imports: [HttpClientTestingModule, ObjectViewerModule, ReactiveFormsModule, LoggerModule.forRoot(), TranslateModule.forRoot()],
-      providers: [
-        SchemaService,
-        { provide: BASE_URL, useValue: '/fake-api' },
-        { provide: SchemaService, useClass: MockSchemaService },
-        {
-          provide: SchemaApiService,
-          use: () => ({
-            getSchemas: (): Observable<Schema[]> => {
-              return new MockSchemaService().getSchema().pipe(map((schema) => [schema]));
-            },
-            getSchema: (): Observable<Schema> => {
-              return new MockSchemaService().getSchema();
-            },
-          }),
-        },
-      ],
+      providers: [{ provide: BASE_URL, useValue: '/fake-api' }],
     }).compileComponents();
   });
 

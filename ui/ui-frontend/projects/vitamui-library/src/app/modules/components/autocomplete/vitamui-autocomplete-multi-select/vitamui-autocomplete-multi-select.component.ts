@@ -101,8 +101,8 @@ export class VitamUIAutocompleteMultiSelectComponent implements ControlValueAcce
   public readonly SELECT_ALL_OPTIONS = 'SELECT_ALL_OPTIONS';
 
   private visibleItemsInSearchView = 4;
-  private initialHeightInSearchView = 160;
-  private initialHeightInSelectedItemsView = 105;
+  private initialHeightInSearchView = 1;
+  private initialHeightInSelectedItemsView = 1;
   private preselectedOptionKeys: string[] = [];
   private customSorting: (a: Option, b: Option) => number;
   private _enableSelectAll = true;
@@ -199,6 +199,31 @@ export class VitamUIAutocompleteMultiSelectComponent implements ControlValueAcce
         this.updateSelectAll();
       },
     );
+
+    this.searchBar?.searchInput?.nativeElement?.addEventListener('keydown', this.onKeydown.bind(this), { capture: true });
+    this.matSelect._elementRef.nativeElement.addEventListener('keydown', this.onKeydown.bind(this), { capture: true });
+  }
+
+  private onKeydown(event: KeyboardEvent) {
+    if (event.key === 'a' && event.ctrlKey) {
+      // Prevent mat-select to select/deselect everything with CTRL+A shortcut
+      event.stopImmediatePropagation();
+    }
+    const focusInSearchInput = [this.searchBar?.searchInput?.nativeElement].includes(event.target);
+    if (focusInSearchInput) {
+      if (['ArrowDown'].includes(event.code)) {
+        // Get out of searchInput if arrow down
+        this.matSelect._elementRef.nativeElement.focus();
+      }
+      if (['Enter'].includes(event.code)) {
+        // Trigger search
+        this.onSearch(this.searchBar.searchValue);
+      }
+      if (!['ArrowDown', 'ArrowUp', 'Escape'].includes(event.code)) {
+        // Prevent most keyboard keypress to be interpreted by the mat-select, otherwise it would "search" in options or open/close toggles
+        event.stopPropagation();
+      }
+    }
   }
 
   ngAfterViewChecked(): void {
@@ -327,6 +352,7 @@ export class VitamUIAutocompleteMultiSelectComponent implements ControlValueAcce
   }
 
   public onSelectClosed(): void {
+    this.onTouched();
     this.showOnlySelectedOption = false;
     if (this.searchBar && this.enableSearch) {
       this.searchBar.reset();
@@ -402,7 +428,7 @@ export class VitamUIAutocompleteMultiSelectComponent implements ControlValueAcce
   private resizeContainerHeightInSearchView(): void {
     this.containerHeightInSearchView = this.calculateContainerHeight(
       this.initialHeightInSearchView,
-      this.displayedOptions.length,
+      this.displayedOptions.length + 1,
       this.visibleItemsInSearchView,
     );
     this.checkViewportSize();
@@ -417,11 +443,11 @@ export class VitamUIAutocompleteMultiSelectComponent implements ControlValueAcce
     this.checkViewportSize();
   }
 
-  private calculateContainerHeight(initialHeight: number, optionLenght: number, visibleItems: number): string {
+  private calculateContainerHeight(initialHeight: number, optionLength: number, visibleItems: number): string {
     const itemHeight = 48;
 
-    if (optionLenght <= visibleItems) {
-      return `${initialHeight + itemHeight * optionLenght}px`;
+    if (optionLength <= visibleItems) {
+      return `${initialHeight + itemHeight * optionLength}px`;
     }
 
     return `${initialHeight + itemHeight * visibleItems}px`;

@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { DisplayRule } from './display-rule.model';
-import { SchemaElement } from './schema-element.model';
+import { SchemaElement } from '../../models/schema/schema-element.model';
 
 export interface Configuration {
   readonly schemaElement: SchemaElement;

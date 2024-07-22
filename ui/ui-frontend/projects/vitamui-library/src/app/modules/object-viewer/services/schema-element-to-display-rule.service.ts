@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { DisplayRule, SchemaElement } from '../models';
+import { DisplayRule } from '../models';
 import { LayoutSize } from '../types';
+import { SchemaElement } from '../../models';
 
 type ComponentName =
   | 'balise-n1'

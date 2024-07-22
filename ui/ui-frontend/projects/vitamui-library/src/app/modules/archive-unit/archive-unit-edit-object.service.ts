@@ -36,11 +36,11 @@
  */
 import { Injectable } from '@angular/core';
 import { Logger } from '../logger/logger';
-import { Schema } from '../models';
+import { Schema, SchemaElement } from '../models';
 import { EditObject } from '../object-editor/models/edit-object.model';
 import { EditObjectService } from '../object-editor/services/edit-object.service';
 import { TemplateService } from '../object-editor/services/template.service';
-import { DisplayObject, DisplayRule, SchemaElement } from '../object-viewer/models';
+import { DisplayObject, DisplayRule } from '../object-viewer/models';
 import { DisplayRuleHelperService } from '../object-viewer/services/display-rule-helper.service';
 import { TypeService } from '../object-viewer/services/type.service';
 import { DisplayObjectType } from '../object-viewer/types';

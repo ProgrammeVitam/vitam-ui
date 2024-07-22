@@ -5,7 +5,7 @@
     "declaration": true,
     "inlineSources": true,
     "types": [],
-    "lib": ["dom", "es2018"]
+    "lib": ["dom", "ES2022"]
   },
   "angularCompilerOptions": {
     "annotateForClosureCompiler": true,

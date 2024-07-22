@@ -40,9 +40,9 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatLegacyAutocompleteModule as MatAutocompleteModule } from '@angular/material/legacy-autocomplete';
 
+import { MatExpansionModule } from '@angular/material/expansion';
 import { MatLegacyCheckboxModule as MatCheckboxModule } from '@angular/material/legacy-checkbox';
 import { MatLegacyOptionModule as MatOptionModule } from '@angular/material/legacy-core';
-import { MatExpansionModule } from '@angular/material/expansion';
 import { MatLegacyFormFieldModule as MatFormFieldModule } from '@angular/material/legacy-form-field';
 import { MatLegacyInputModule as MatInputModule } from '@angular/material/legacy-input';
 import { MatLegacyListModule as MatListModule } from '@angular/material/legacy-list';
@@ -54,7 +54,9 @@ import { EllipsisDirectiveModule } from '../../../directives/ellipsis/ellipsis.d
 import { PipesModule } from '../../../pipes/pipes.module';
 import { CommonTooltipModule } from '../../common-tooltip/common-tooltip.module';
 import { SearchBarModule } from '../../search-bar/search-bar.module';
-import { VitamUIAutocompleteMultiSelectComponent } from './vitamui-autocomplete-multi-select.component';
+import { VitamUiAutocompleteMultiSelectTreeComponent } from './vitamui-autocomplete-multi-select-tree.component';
+import { AccordionModule } from '../../accordion/accordion.module';
+import { MatTreeModule } from '@angular/material/tree';
 
 @NgModule({
   imports: [
@@ -79,8 +81,10 @@ import { VitamUIAutocompleteMultiSelectComponent } from './vitamui-autocomplete-
     SearchBarModule,
     PipesModule,
     ScrollingModule,
+    AccordionModule,
+    MatTreeModule,
   ],
-  declarations: [VitamUIAutocompleteMultiSelectComponent],
-  exports: [VitamUIAutocompleteMultiSelectComponent],
+  declarations: [VitamUiAutocompleteMultiSelectTreeComponent],
+  exports: [VitamUiAutocompleteMultiSelectTreeComponent],
 })
-export class VitamUIAutocompleteMultiSelectModule {}
+export class VitamUIAutocompleteMultiSelectTreeModule {}

@@ -48,6 +48,8 @@ export class SearchBarComponent {
 
   @Input() disabled = false;
 
+  @Input() searchButtonColor: 'primary' | 'secondary' = 'secondary';
+
   @Output() search = new EventEmitter<string>();
 
   @Output() searchChanged = new EventEmitter<string>();

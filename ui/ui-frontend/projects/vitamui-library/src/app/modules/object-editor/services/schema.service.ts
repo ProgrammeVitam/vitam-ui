@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Logger } from '../../logger/logger';
-import { Collection, Schema } from '../../models';
-import { SchemaElement } from '../../object-viewer/models';
+import { Collection, Schema, SchemaElement } from '../../models';
 import { internationalizedKeys } from '../../object-viewer/services/display-object-helper.service';
 import { SedaVersion } from '../../object-viewer/types';
 import { PathService } from './path.service';
@@ -29,7 +28,7 @@ export class SchemaService {
 
     if (options.collection) subschema = subschema.filter((schemaElement) => schemaElement.Collection === options.collection);
     if (options.versions)
-      subschema = subschema.filter((schemaElement) => schemaElement.SedaVersions.some((version) => options.versions.includes(version)));
+      subschema = subschema.filter((schemaElement) => schemaElement.SedaVersions?.some((version) => options.versions.includes(version)));
 
     return subschema;
   }

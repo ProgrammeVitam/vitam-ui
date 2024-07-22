@@ -36,8 +36,8 @@
  */
 import { Injectable } from '@angular/core';
 import { Logger } from '../logger/logger';
-import { Schema } from '../models';
-import { DisplayObject, DisplayRule, SchemaElement } from '../object-viewer/models';
+import { Schema, SchemaElement } from '../models';
+import { DisplayObject, DisplayRule } from '../object-viewer/models';
 import { DisplayObjectHelperService } from '../object-viewer/services/display-object-helper.service';
 import { DisplayRuleHelperService } from '../object-viewer/services/display-rule-helper.service';
 import { SchemaElementToDisplayRuleService } from '../object-viewer/services/schema-element-to-display-rule.service';

@@ -5,8 +5,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { BehaviorSubject } from 'rxjs';
 import { orderedFields } from '../../archive-unit/archive-unit-fields';
 import { Logger } from '../../logger/logger';
-import { Schema } from '../../models';
-import { DisplayRule, SchemaElement } from '../../object-viewer/models';
+import { Schema, SchemaElement } from '../../models';
+import { DisplayRule } from '../../object-viewer/models';
 import { Template } from '../../object-viewer/models/template.model';
 import { DataStructureService } from '../../object-viewer/services/data-structure.service';
 import { TypeService } from '../../object-viewer/services/type.service';
@@ -103,7 +103,6 @@ export class EditObjectService {
           Type: 'OBJECT',
           DataType: 'OBJECT',
           Origin: 'VIRTUAL',
-          Indexed: false,
           StringSize: 'MEDIUM',
           Cardinality: 'ONE',
           SedaVersions: options.versions || [],

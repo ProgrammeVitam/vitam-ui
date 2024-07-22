@@ -29,3 +29,4 @@
 
 export * from './collection.enum';
 export * from './schema.interface';
+export * from './schema-element.model';

@@ -1,39 +1,39 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
-import { DomSanitizer } from '@angular/platform-browser';
-import { ThemeColorType } from '../utils';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import DOMPurify from 'dompurify';
 
 @Pipe({ name: 'highlight' })
 export class HighlightPipe implements PipeTransform {
   constructor(private sanitizer: DomSanitizer) {}
 
-  transform(value: any, args: any): any {
+  transform(value?: string, args?: string): SafeHtml | string {
     if (!args) {
-      return value;
+      return DOMPurify.sanitize(value);
     }
 
-    const originalStringToSearchWitoutAccent = this.withoutAcent(args);
-    const searchInWithoutAccent = this.withoutAcent(value);
+    const originalStringToSearchWithoutAccent = this.withoutAccent(args);
+    const searchInWithoutAccent = this.withoutAccent(value);
 
-    const regex = new RegExp(originalStringToSearchWitoutAccent, 'gi');
+    const regex = new RegExp(originalStringToSearchWithoutAccent, 'gi');
     let result = '';
     let startIndex = 0;
 
     while (regex.exec(searchInWithoutAccent) !== null) {
       const matchedStringIndex = regex.lastIndex - args.length;
-      // eslint-disable-next-line max-len
-      const coloredString = `<span style='color: var(--${ThemeColorType.VITAMUI_PRIMARY});font-weight: bold;'>${value.substring(matchedStringIndex, regex.lastIndex)}</span>`;
-      result = result.concat(value.toString().substring(startIndex, matchedStringIndex), coloredString);
+      result = result.concat(
+        value.substring(startIndex, matchedStringIndex),
+        `<span class="highlight-pipe">${value.substring(matchedStringIndex, regex.lastIndex)}</span>`,
+      );
       startIndex = regex.lastIndex;
     }
 
-    if (startIndex > 0) {
-      result = result.concat(value.substr(startIndex));
-    }
-    return this.sanitizer.bypassSecurityTrustHtml(result);
+    return startIndex > 0
+      ? this.sanitizer.bypassSecurityTrustHtml(DOMPurify.sanitize(result.concat(value.substring(startIndex))))
+      : DOMPurify.sanitize(value);
   }
 
-  private withoutAcent(val: string): string {
-    return val.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  private withoutAccent(val?: string): string {
+    return val?.normalize('NFD')?.replace(/[\u0300-\u036f]/g, '');
   }
 }

@@ -1,23 +1,27 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TranslateModule } from '@ngx-translate/core';
-import { VitamUIAutocompleteMultiSelectComponent } from './vitamui-autocomplete-multi-select.component';
+import { VitamUiAutocompleteMultiSelectTreeComponent } from './vitamui-autocomplete-multi-select-tree.component';
 import { MatLegacySelectModule as MatSelectModule } from '@angular/material/legacy-select';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
-describe('VitamuiAutocompleteMultiSelectComponent', () => {
-  let component: VitamUIAutocompleteMultiSelectComponent;
-  let fixture: ComponentFixture<VitamUIAutocompleteMultiSelectComponent>;
+class Item {
+  value: string;
+}
+
+describe('VitamUiAutocompleteMultiSelectTreeComponent', () => {
+  let component: VitamUiAutocompleteMultiSelectTreeComponent<Item>;
+  let fixture: ComponentFixture<VitamUiAutocompleteMultiSelectTreeComponent<Item>>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [VitamUIAutocompleteMultiSelectComponent],
+      declarations: [VitamUiAutocompleteMultiSelectTreeComponent],
       imports: [NoopAnimationsModule, TranslateModule.forRoot(), MatSelectModule],
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(VitamUIAutocompleteMultiSelectComponent);
+    fixture = TestBed.createComponent(VitamUiAutocompleteMultiSelectTreeComponent<Item>);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

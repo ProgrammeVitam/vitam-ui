@@ -61,6 +61,16 @@
     "EDITABLE_LIST_DISABLED": "Liste éditable désactivée",
     "AUTOCOMPLETE": "Auto-complete",
     "AUTOCOMPLETE_MULTI_SELECT": "Auto-complete à sélection multiple",
+    "AUTOCOMPLETE_MULTI_SELECT_TREE": {
+      "TITLE": "Auto-complete à sélection multiple avec arborescence",
+      "PLACEHOLDER": {
+        "OPTIONAL": "Non obligatoire",
+        "MANDATORY": "Obligatoire",
+        "NO_SEARCH": "Sans recherche",
+        "NO_SEARCH_NO_CART": "Sans recherche ni consultation de la sélection"
+      },
+      "SEARCH_BAR_PLACEHOLDER": "Entrer les premières lettres de votre recherche"
+    },
     "SEARCH_PLACEHOLDER": "Rechercher dans les pays",
     "TEXTAREA": "Zone de texte",
     "EDITABLE_TEXTAREA": "Zone de texte éditable",
