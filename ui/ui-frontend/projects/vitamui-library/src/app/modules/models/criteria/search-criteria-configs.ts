@@ -34,10 +34,50 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-export * from './criteria.enums';
-export * from './criteria.interface';
-export * from './criterion.interface';
-export * from './search-criteria-history.interface';
-export * from './search-criteria.interface';
-export * from './search-response.interface';
-export * from './search-criteria-configs';
+
+import { SearchCriteriaAddAction } from './search-criteria.interface';
+import { CriteriaDataType, CriteriaOperator } from './criteria.enums';
+
+export const searchCriteriaConfigs: { [key: string]: Partial<SearchCriteriaAddAction> } = {
+  title: {
+    keyElt: 'TITLE',
+    keyTranslated: true,
+  },
+  description: {
+    keyElt: 'DESCRIPTION',
+    keyTranslated: true,
+  },
+  beginDt: {
+    keyElt: 'START_DATE',
+    keyTranslated: true,
+    operator: CriteriaOperator.GTE,
+    dataType: CriteriaDataType.DATE,
+  },
+  endDt: {
+    keyElt: 'END_DATE',
+    keyTranslated: true,
+    operator: CriteriaOperator.LTE,
+    dataType: CriteriaDataType.DATE,
+  },
+  serviceProdCode: {
+    keyElt: 'SP_CODE',
+    keyTranslated: true,
+  },
+  serviceProdLabel: {
+    keyElt: 'SP_LABEL',
+    keyTranslated: true,
+  },
+  guid: {
+    keyElt: 'GUID',
+    keyTranslated: true,
+  },
+  guidopi: {
+    keyElt: 'GUID_OPI',
+    keyTranslated: true,
+    operator: CriteriaOperator.IN,
+  },
+};
+searchCriteriaConfigs.Title = searchCriteriaConfigs.title;
+searchCriteriaConfigs.Description = searchCriteriaConfigs.description;
+searchCriteriaConfigs.StartDate = searchCriteriaConfigs.beginDt;
+searchCriteriaConfigs.EndDate = searchCriteriaConfigs.endDt;

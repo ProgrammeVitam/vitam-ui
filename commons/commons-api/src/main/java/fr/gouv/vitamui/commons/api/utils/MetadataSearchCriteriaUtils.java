@@ -75,7 +75,7 @@ import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.CriteriaOper
 import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.DEFAULT_DEPTH;
 import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.FACETS_COMPUTE_RULES_AU_NUMBER;
 import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.FACETS_COUNT_BY_NODE;
-import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.FACET_SIZE_MILTIPLIER;
+import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.FACET_SIZE_MULTIPLIER;
 import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.FILING_UNIT_TYPE;
 import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.HOLDING_UNIT_TYPE;
 import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.ID;
@@ -1659,7 +1659,7 @@ public final class MetadataSearchCriteriaUtils {
             FacetHelper.terms(
                 FACETS_COUNT_BY_NODE,
                 ALL_UNIT_UPS,
-                (nodesCriteriaList.size() + 1) * FACET_SIZE_MILTIPLIER,
+                (nodesCriteriaList.size() + 1) * FACET_SIZE_MULTIPLIER,
                 FacetOrder.ASC
             )
         );

@@ -35,25 +35,26 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { TranslateService } from '@ngx-translate/core';
-import { merge } from 'rxjs';
-import { debounceTime, filter, map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 import {
   ActionOnCriteria,
   CriteriaDataType,
   CriteriaOperator,
   CriteriaValue,
-  IOntology,
-  OntologyService,
+  ItemNode,
+  SchemaElement,
+  SchemaService,
+  SearchCriteriaAddAction,
+  searchCriteriaConfigs,
   SearchCriteriaEltDto,
   SearchCriteriaTypeEnum,
-  diff,
 } from 'vitamui-library';
 import { ArchiveSharedDataService } from '../../../core/archive-shared-data.service';
 import { ManagementRulesSharedDataService } from '../../../core/management-rules-shared-data.service';
-import { ArchiveService } from '../../archive.service';
+import { debounceTime } from 'rxjs/operators';
 import { ArchiveSearchConstsEnum } from '../../models/archive-search-consts-enum';
 
 const FINAL_ACTION_TYPE = 'FINAL_ACTION_TYPE';
@@ -70,38 +71,8 @@ const ALL_ARCHIVE_UNIT_TYPES = 'ALL_ARCHIVE_UNIT_TYPES';
 })
 export class SimpleCriteriaSearchComponent implements OnInit {
   simpleCriteriaForm: FormGroup;
-  otherCriteriaValueEnabled = false;
-  otherCriteriaValueType = 'DATE';
-  selectedValueOntolonogy: any;
-  ontologies: IOntology[] = [];
   criteriaSearchListToSave: SearchCriteriaEltDto[] = [];
 
-  previousSimpleCriteriaValue: {
-    title: '';
-    identifier: '';
-    description: '';
-    guidopi: '';
-    guid: '';
-    beginDt: '';
-    endDt: '';
-    serviceProdLabel: '';
-    serviceProdCode: '';
-    otherCriteria: '';
-    otherCriteriaValue: '';
-  };
-  emptySimpleCriteriaForm = {
-    title: '',
-    identifier: '',
-    description: '',
-    guidopi: '',
-    guid: '',
-    beginDt: '',
-    endDt: '',
-    serviceProdLabel: '',
-    serviceProdCode: '',
-    otherCriteria: '',
-    otherCriteriaValue: '',
-  };
   archiveUnitTypesCriteria: Map<any, boolean> = new Map<any, boolean>([
     [ARCHIVE_UNIT_FILING_UNIT, false],
     [ARCHIVE_UNIT_HOLDING_UNIT, false],
@@ -109,27 +80,19 @@ export class SimpleCriteriaSearchComponent implements OnInit {
     [ARCHIVE_UNIT_WITHOUT_OBJECTS, true],
   ]);
 
+  otherCriteriaOptions$: Observable<ItemNode<SchemaElement>[]>;
+  getOtherCriteriaDisplayValue = (element: SchemaElement) =>
+    `${element.Origin === 'EXTERNAL' ? 'EXT-' : ''}${element.ShortName} - ${element.FieldName}`;
+
   constructor(
     private formBuilder: FormBuilder,
-    private archiveService: ArchiveService,
     private archiveExchangeDataService: ArchiveSharedDataService,
     public dialog: MatDialog,
     private managementRulesSharedDataService: ManagementRulesSharedDataService,
     private translateService: TranslateService,
-    private ontologyService: OntologyService,
+    private schemaService: SchemaService,
   ) {
-    this.ontologyService.getInternalOntologyFieldsList().subscribe((data) => {
-      this.ontologies.push(...data);
-      this.ontologies.sort((a: any, b: any) => {
-        const shortNameA = a.Identifier;
-        const shortNameB = b.Identifier;
-        return shortNameA < shortNameB ? -1 : shortNameA > shortNameB ? 1 : 0;
-      });
-    });
-
-    this.archiveService.getExternalOntologiesList().subscribe((data) => {
-      this.ontologies.push(...data);
-    });
+    this.otherCriteriaOptions$ = this.schemaService.getDescriptiveSchemaTree();
 
     this.translateService.onLangChange.subscribe(() => {
       if (this.archiveUnitTypesCriteria.get(ARCHIVE_UNIT_WITH_OBJECTS)) {
@@ -141,42 +104,47 @@ export class SimpleCriteriaSearchComponent implements OnInit {
       }
     });
 
-    this.previousSimpleCriteriaValue = {
-      title: '',
-      identifier: '',
-      description: '',
-      guidopi: '',
-      guid: '',
-      beginDt: '',
-      endDt: '',
-      serviceProdLabel: '',
-      serviceProdCode: '',
-      otherCriteria: '',
-      otherCriteriaValue: '',
-    };
+    const otherCriteriaListControl = this.formBuilder.control<SchemaElement[]>([]);
+    const otherCriteriaControl = this.formBuilder.group({});
 
     this.simpleCriteriaForm = this.formBuilder.group({
       title: ['', []],
       description: ['', []],
       guidopi: ['', []],
       guid: ['', [Validators.pattern('^[a-z0-9_, ]+')]],
-      beginDt: ['', []],
-      endDt: ['', []],
       serviceProdLabel: ['', []],
       serviceProdCode: ['', []],
-      otherCriteria: ['', []],
-      otherCriteriaValue: ['', []],
+      beginDt: ['', []],
+      endDt: ['', []],
+      otherCriteriaList: otherCriteriaListControl,
+      otherCriteria: otherCriteriaControl,
     });
-    merge(this.simpleCriteriaForm.statusChanges, this.simpleCriteriaForm.valueChanges)
-      .pipe(
-        debounceTime(ArchiveSearchConstsEnum.UPDATE_DEBOUNCE_TIME),
-        filter(() => this.simpleCriteriaForm.valid),
-        map(() => this.simpleCriteriaForm.value),
-        map(() => diff(this.simpleCriteriaForm.value, this.previousSimpleCriteriaValue)),
-        filter((formData) => this.isNotEmpty(formData)),
-      )
-      .subscribe(() => {
-        this.resetSimpleCriteriaForm();
+
+    otherCriteriaListControl.valueChanges.subscribe((schemaElements) => {
+      schemaElements.forEach((schemaElement) => {
+        const path = schemaElement.Path;
+        if (!otherCriteriaControl.get(path)) {
+          const control = formBuilder.control(undefined);
+          otherCriteriaControl.addControl(path, control);
+        }
+      });
+      const paths = schemaElements.map((se) => se.Path);
+      Object.keys(otherCriteriaControl.controls).forEach((path) => {
+        if (!paths.includes(path)) {
+          otherCriteriaControl.removeControl(path);
+        }
+      });
+    });
+
+    Object.entries(this.simpleCriteriaForm.controls)
+      .filter(([key, _value]) => !['otherCriteriaList'].includes(key))
+      .forEach(([key, control]) => {
+        control.valueChanges.pipe(debounceTime(ArchiveSearchConstsEnum.UPDATE_DEBOUNCE_TIME)).subscribe((value) => {
+          if (value) {
+            this.addCriteriaFromObject({ [key]: value });
+            control.reset(undefined, { emitEvent: false });
+          }
+        });
       });
 
     this.archiveExchangeDataService.receiveRemoveFromChildSearchCriteriaSubject().subscribe((criteria) => {
@@ -190,146 +158,42 @@ export class SimpleCriteriaSearchComponent implements OnInit {
     });
   }
 
-  isNotEmpty(formData: any): boolean {
-    if (!formData) {
-      return false;
-    }
+  addCriteriaFromObject(object: any) {
+    Object.entries(object)
+      .filter(([_key, value]) => !!value)
+      .forEach(([key, value]) => {
+        if (key === 'guid' && value.toString().includes(',')) {
+          value
+            .toString()
+            .split(',')
+            .forEach((v) => this.addCriteriaFromObject({ guid: v }));
+        } else if (typeof value === 'string' || value instanceof Date) {
+          const criteriaValue = value instanceof Date ? value.toISOString() : value.trim();
+          const defaultSearchCriteriaAddAction: Partial<SearchCriteriaAddAction> = {
+            valueElt: { value: criteriaValue, id: criteriaValue },
+            labelElt: criteriaValue,
+            keyTranslated: false,
+            operator: CriteriaOperator.EQ,
+            category: SearchCriteriaTypeEnum.FIELDS,
+            dataType: value instanceof Date ? CriteriaDataType.DATE : CriteriaDataType.STRING,
+          };
 
-    if (formData.title) {
-      this.addCriteria(
-        'TITLE',
-        { value: formData.title.trim(), id: formData.title.trim() },
-        formData.title.trim(),
-        true,
-        CriteriaOperator.EQ,
-        false,
-        CriteriaDataType.STRING,
-      );
-      return true;
-    }
-    if (formData.description) {
-      this.addCriteria(
-        'DESCRIPTION',
-        { value: formData.description.trim(), id: formData.description.trim() },
-        formData.description.trim(),
-        true,
-        CriteriaOperator.EQ,
-        false,
-        CriteriaDataType.STRING,
-      );
-      return true;
-    }
-    if (formData.beginDt) {
-      this.addCriteria(
-        'START_DATE',
-        { value: this.simpleCriteriaForm.value.beginDt, id: this.simpleCriteriaForm.value.beginDt },
-        this.simpleCriteriaForm.value.beginDt,
-        true,
-        CriteriaOperator.GTE,
-        false,
-        CriteriaDataType.DATE,
-      );
-      return true;
-    }
-    if (formData.endDt) {
-      this.addCriteria(
-        'END_DATE',
-        { value: this.simpleCriteriaForm.value.endDt, id: this.simpleCriteriaForm.value.endDt },
-        this.simpleCriteriaForm.value.endDt,
-        true,
-        CriteriaOperator.LTE,
-        false,
-        CriteriaDataType.DATE,
-      );
-      return true;
-    }
-    if (formData.serviceProdCode) {
-      this.addCriteria(
-        'SP_CODE',
-        { value: formData.serviceProdCode.trim(), id: formData.serviceProdCode.trim() },
-        formData.serviceProdCode.trim(),
-        true,
-        CriteriaOperator.EQ,
-        false,
-        CriteriaDataType.STRING,
-      );
-      return true;
-    }
-    if (formData.serviceProdLabel) {
-      this.addCriteria(
-        'SP_LABEL',
-        { value: formData.serviceProdLabel.trim(), id: formData.serviceProdLabel.trim() },
-        formData.serviceProdLabel.trim(),
-        true,
-        CriteriaOperator.EQ,
-        false,
-        CriteriaDataType.STRING,
-      );
-      return true;
-    }
-    if (formData.guid) {
-      const splittedGuids = formData.guid.split(',');
-      splittedGuids.forEach((guidElt: string) => {
-        if (guidElt && guidElt.trim() !== '') {
-          this.addCriteria(
-            'GUID',
-            { value: guidElt.trim(), id: guidElt.trim() },
-            guidElt.trim(),
-            true,
-            CriteriaOperator.EQ,
-            false,
-            CriteriaDataType.STRING,
-          );
+          const searchCriteriaAddAction: SearchCriteriaAddAction = {
+            ...defaultSearchCriteriaAddAction,
+            ...(searchCriteriaConfigs[key] || { keyElt: key }),
+          } as SearchCriteriaAddAction;
+
+          const searchCriteria = {
+            ...searchCriteriaAddAction,
+            valueTranslated: this.isValueTranslated(searchCriteriaAddAction.keyElt),
+          };
+          this.archiveExchangeDataService.addSimpleSearchCriteriaSubject(searchCriteria);
+        } else if (typeof value === 'object' && Object.entries(value).length) {
+          this.addCriteriaFromObject(value);
+        } else {
+          console.error(`Unhandled case`, object, key, value);
         }
       });
-      return true;
-    }
-    if (formData.guidopi) {
-      this.addCriteria(
-        'GUID_OPI',
-        { value: formData.guidopi, id: formData.guidopi },
-        formData.guidopi,
-        true,
-        'IN',
-        false,
-        CriteriaDataType.STRING,
-      );
-      return true;
-    }
-    if (formData.otherCriteriaValue) {
-      const ontologyElt = this.ontologies.find((ontoElt) => ontoElt.ApiField === formData.otherCriteria);
-      if (this.otherCriteriaValueType === CriteriaDataType.DATE) {
-        const theDay = this.simpleCriteriaForm.value.otherCriteriaValue;
-        this.addCriteria(
-          ontologyElt.ApiField,
-          {
-            id: theDay,
-            value: theDay,
-          },
-          theDay,
-          false,
-          CriteriaOperator.EQ,
-          false,
-          CriteriaDataType.DATE,
-        );
-      } else {
-        this.addCriteria(
-          ontologyElt.ApiField,
-          { value: formData.otherCriteriaValue.trim(), id: formData.otherCriteriaValue.trim() },
-          formData.otherCriteriaValue.trim(),
-          false,
-          CriteriaOperator.EQ,
-          false,
-          CriteriaDataType.STRING,
-        );
-      }
-      return true;
-    }
-    return false;
-  }
-
-  private resetSimpleCriteriaForm() {
-    this.simpleCriteriaForm.reset(this.emptySimpleCriteriaForm);
   }
 
   isValueTranslated(criteria: string) {
@@ -362,22 +226,12 @@ export class SimpleCriteriaSearchComponent implements OnInit {
     });
   }
 
-  onSelectOtherCriteria() {
-    this.simpleCriteriaForm.get('otherCriteria').valueChanges.subscribe((selectedcriteria) => {
-      if (selectedcriteria === '') {
-        this.otherCriteriaValueEnabled = false;
-        this.selectedValueOntolonogy = null;
-      } else {
-        this.simpleCriteriaForm.controls.otherCriteriaValue.setValue('');
-        this.otherCriteriaValueEnabled = true;
-        const selectedValueOntolonogyValue = this.simpleCriteriaForm.get('otherCriteria').value;
-        const selectedValueOntolonogyElt = this.ontologies.find((ontoElt) => ontoElt.ApiField === selectedValueOntolonogyValue);
-        if (selectedValueOntolonogyElt) {
-          this.selectedValueOntolonogy = selectedValueOntolonogyElt.Identifier;
-          this.otherCriteriaValueType = selectedValueOntolonogyElt.Type;
-        }
-      }
-    });
+  getCriteriaName(criteria: SchemaElement, otherCriteriaOptions: ItemNode<SchemaElement>[]) {
+    const path = criteria.Path.split('.').slice(0, -1);
+    const parent = path.reduce((acc, p) => acc.children.find((o) => o.item.FieldName === p), {
+      children: otherCriteriaOptions,
+    } as ItemNode<SchemaElement>);
+    return `${criteria.ShortName}${parent?.item ? ` (${parent.item.ShortName})` : ''}`;
   }
 
   addCriteria(
@@ -548,11 +402,7 @@ export class SimpleCriteriaSearchComponent implements OnInit {
     return this.simpleCriteriaForm.controls.serviceProdCode;
   }
 
-  get otherCriteria() {
-    return this.simpleCriteriaForm.controls.otherCriteria;
-  }
-
-  get otherCriteriaValue() {
-    return this.simpleCriteriaForm.controls.otherCriteriaValue;
+  get otherCriteriaList(): AbstractControl<SchemaElement[]> {
+    return this.simpleCriteriaForm.controls.otherCriteriaList;
   }
 }

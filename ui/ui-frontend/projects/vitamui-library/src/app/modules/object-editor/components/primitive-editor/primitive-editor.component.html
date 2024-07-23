@@ -25,12 +25,14 @@
       *ngSwitchCase="'datepicker'"
       [formControl]="editObject.control"
       [label]="editObject.displayRule.ui.label | translate | empty | appendStar: editObject.required"
+      [onlyDate]="true"
     >
     </vitamui-common-datepicker>
     <vitamui-common-datepicker
       *ngSwitchCase="'datetime'"
       [formControl]="editObject.control"
       [label]="editObject.displayRule.ui.label | translate | empty | appendStar: editObject.required"
+      [onlyDate]="true"
     >
     </vitamui-common-datepicker>
   </ng-container>

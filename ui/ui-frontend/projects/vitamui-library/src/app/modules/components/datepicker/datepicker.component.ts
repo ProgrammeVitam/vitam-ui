@@ -10,6 +10,9 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
       <i class="vitamui-icon vitamui-icon-calendar primary"></i>
       <mat-datepicker #picker></mat-datepicker>
     </div>
+    <div class="vitamui-input-errors">
+      <ng-content select="vitamui-common-field-error"></ng-content>
+    </div>
   `,
   styleUrls: ['./datepicker.component.scss'],
   providers: [
@@ -23,7 +26,15 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 export class DatepickerComponent implements ControlValueAccessor {
   @Input() label!: string;
   @Input() value: string;
-  @Input() onlyDate = true;
+  /**
+   * When true:
+   * - do not display time
+   * - emits the date as a ISOString (without the time part)
+   * When false:
+   * - displays date and time
+   * - emits a Date object (with time)
+   */
+  @Input() onlyDate = false;
   disabled = false;
 
   propagateChange = (_: any) => {};
@@ -55,10 +66,10 @@ export class DatepickerComponent implements ControlValueAccessor {
 
     if (this.onlyDate) {
       this.value = isoDatetime && isoDatetime.split('T')[0];
+      this.propagateChange(this.value);
     } else {
       this.value = isoDatetime;
+      this.propagateChange(date);
     }
-
-    this.propagateChange(this.value);
   }
 }

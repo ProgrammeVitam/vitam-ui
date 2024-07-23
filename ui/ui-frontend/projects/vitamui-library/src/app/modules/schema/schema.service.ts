@@ -50,7 +50,7 @@ export class SchemaService {
   }
 
   public getDescriptiveSchemaTree(): Observable<ItemNode<SchemaElement>[]> {
-    const recursiveSort = function (node: ItemNode<SchemaElement>) {
+    const recursiveSort = (node: ItemNode<SchemaElement>) => {
       node.children.sort((n1, n2) =>
         n1.children.length && !n2.children.length
           ? 1
@@ -61,10 +61,15 @@ export class SchemaService {
       node.children.forEach((n) => recursiveSort(n));
     };
 
+    const removeLeavesWithTypeObject = (node: ItemNode<SchemaElement>) => {
+      node.children = node.children.filter((child) => !(child.item.Type === 'OBJECT' && !child.children.length));
+      node.children.forEach((child) => removeLeavesWithTypeObject(child));
+    };
+
     return this.getSchema(Collection.ARCHIVE_UNIT).pipe(
       map((schema) => {
         const rootNode = schema
-          .filter((e) => e.Category === 'DESCRIPTION')
+          .filter((e) => e.Category === 'DESCRIPTION' || e.Origin === 'EXTERNAL')
           .reduce(
             (acc, element) => {
               const path = element.Path.split('.').slice(0, -1);
@@ -77,6 +82,8 @@ export class SchemaService {
             },
             { children: [] } as ItemNode<SchemaElement>,
           );
+
+        removeLeavesWithTypeObject(rootNode);
 
         recursiveSort(rootNode);
         return rootNode.children;

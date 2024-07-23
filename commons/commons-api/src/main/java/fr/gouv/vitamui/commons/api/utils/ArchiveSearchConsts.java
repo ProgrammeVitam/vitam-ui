@@ -245,7 +245,7 @@ public class ArchiveSearchConsts {
         "StartDate",
         "END_DATE",
         "EndDate",
-        "SP_LABEL",
+        ORIGINATING_AGENCY_LABEL_FIELD,
         "originating_agency_label",
         "ARCHIVE_UNIT_HOLDING_UNIT",
         "#unitType",
@@ -254,7 +254,7 @@ public class ArchiveSearchConsts {
     );
 
     public static final int DEFAULT_DEPTH = 10;
-    public static final int FACET_SIZE_MILTIPLIER = 100;
+    public static final int FACET_SIZE_MULTIPLIER = 100;
 
     /* Query fields */
     public static final String IDENTIFIER = "Identifier";

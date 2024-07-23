@@ -45,7 +45,7 @@ const routes: Route[] = [
     component: ArchiveSearchCollectComponent,
   },
   {
-    path: '/{transactionId}',
+    path: ':transactionId',
     component: ArchiveSearchCollectComponent,
   },
 ];
