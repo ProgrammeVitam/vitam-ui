@@ -44,25 +44,25 @@
                   matTooltip="{{ isUpdateValidActions || isUpdateValidActionsWithProperty ? messageNotUpdate : '' }}"
                   matTooltipClass="vitamui-tooltip-rules"
                 >
-                  {{ 'RULES.ACTIONS.UPDATE_RULE' | translate }}</mat-option
-                >
+                  {{ 'RULES.ACTIONS.UPDATE_RULE' | translate }}
+                </mat-option>
                 <mat-option
                   [disabled]="!isRuleCategorySelected || isDeleteValidActions || isDeleteValidActionsWithProperty"
                   matTooltip="{{ isDeleteValidActions || isDeleteValidActionsWithProperty ? messageNotDelete : '' }}"
                   matTooltipClass="vitamui-tooltip-rules"
                   (click)="onSelectAction('DELETE_RULES')"
                 >
-                  {{ 'RULES.ACTIONS.DELETE_RULE' | translate }}</mat-option
-                >
+                  {{ 'RULES.ACTIONS.DELETE_RULE' | translate }}
+                </mat-option>
                 <mat-option [disabled]="!isRuleCategorySelected || isAddValidActions" (click)="onSelectAction('BLOCK_RULE_INHERITANCE')">
-                  {{ 'RULES.ACTIONS.BLOCK_RULE_INHERITANCE' | translate }}</mat-option
-                >
+                  {{ 'RULES.ACTIONS.BLOCK_RULE_INHERITANCE' | translate }}
+                </mat-option>
                 <mat-option
                   [disabled]="isUnlockRulesInheritanceDisabled || isDeleteValidActions || !isRuleCategorySelected"
                   (click)="onSelectAction('UNLOCK_RULE_INHERITANCE')"
                 >
-                  {{ 'RULES.ACTIONS.DELETE_BLOCK_RULE_INHERITANCE' | translate }}</mat-option
-                >
+                  {{ 'RULES.ACTIONS.DELETE_BLOCK_RULE_INHERITANCE' | translate }}
+                </mat-option>
               </mat-select>
               <div class="select-arrow">
                 <i class="vitamui-icon vitamui-row-icon"></i>
@@ -88,31 +88,30 @@
                 matTooltip="{{ isAddPropertyValidActions ? messageNotAddProperty : isAddValidActions ? messageNotAdd : '' }}"
                 matTooltipClass="vitamui-tooltip-rules "
               >
-                {{ 'RULES.MORE_ACTIONS.UPDATE_PROPERTY' | translate }}</mat-option
-              >
-
+                {{ 'RULES.MORE_ACTIONS.UPDATE_PROPERTY' | translate }}
+              </mat-option>
               <mat-option
                 [disabled]="isDeletePropertyDisabled || isStorageRuleActionDisabled"
                 matTooltip="{{ isDeletePropertyDisabled ? messageNotToDeleteProperty : '' }}"
                 matTooltipClass="vitamui-tooltip-rules "
                 (click)="onSelectAction('DELETE_PROPERTY')"
               >
-                {{ 'RULES.MORE_ACTIONS.DELETE_PROPERTY' | translate }}</mat-option
-              >
+                {{ 'RULES.MORE_ACTIONS.DELETE_PROPERTY' | translate }}
+              </mat-option>
               <mat-option
                 [disabled]="isBlockInheritanceCategoryDisabled || isUnlockInheritanceCategoryDisabled"
                 (click)="onSelectAction('BLOCK_CATEGORY_INHERITANCE')"
               >
-                {{ 'RULES.MORE_ACTIONS.BLOCK_PROPERTY_INHERITANCE' | translate }}</mat-option
-              >
+                {{ 'RULES.MORE_ACTIONS.BLOCK_PROPERTY_INHERITANCE' | translate }}
+              </mat-option>
               <mat-option
                 [disabled]="isUnlockInheritanceCategoryDisabled || isBlockInheritanceCategoryDisabled"
                 (click)="onSelectAction('UNLOCK_CATEGORY_INHERITANCE')"
                 matTooltip="{{ 'RULES.MORE_ACTIONS.DELETE_BLOCK_PROPERTY_INHERITANCE' | translate }}"
                 matTooltipClass="vitamui-tooltip-rules "
               >
-                {{ 'RULES.MORE_ACTIONS.DELETE_BLOCK_PROPERTY_INHERITANCE' | translate }}</mat-option
-              >
+                {{ 'RULES.MORE_ACTIONS.DELETE_BLOCK_PROPERTY_INHERITANCE' | translate }}
+              </mat-option>
             </mat-select>
 
             <div class="select-arrow">
@@ -137,7 +136,7 @@
                   </span>
                 </div>
                 <div class="col-5">
-                  <button class="btn primary" [disabled]="!isAllActionsValid() || ruleActions.length === 0" (click)="submitUpdates()">
+                  <button class="btn primary" [disabled]="ruleActionsAbsentOrInvalid()" (click)="submitUpdates()">
                     {{ 'RULES.EXECUTE_RULE_UPDATE' | translate }}
                   </button>
                 </div>

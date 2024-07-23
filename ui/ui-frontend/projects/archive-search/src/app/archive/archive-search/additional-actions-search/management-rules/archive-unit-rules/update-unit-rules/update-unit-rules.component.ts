@@ -35,15 +35,23 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, Output, TemplateRef, ViewChild } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { TranslateService } from '@ngx-translate/core';
-import { cloneDeep } from 'lodash';
-import { Subscription, merge } from 'rxjs';
+import { cloneDeep } from 'lodash-es';
+import { merge, Subscription } from 'rxjs';
 import { debounceTime, filter, map } from 'rxjs/operators';
-import { CriteriaDataType, CriteriaOperator, Rule, RuleService, SearchCriteriaDto, SearchCriteriaEltDto, diff } from 'ui-frontend-common';
-import { ManagementRuleValidators } from 'vitamui-library';
+import {
+  CriteriaDataType,
+  CriteriaOperator,
+  diff,
+  ManagementRuleValidators,
+  Rule,
+  RuleService,
+  SearchCriteriaDto,
+  SearchCriteriaEltDto,
+} from 'vitamui-library';
 import { ManagementRulesSharedDataService } from '../../../../../../core/management-rules-shared-data.service';
 import { ArchiveService } from '../../../../../archive.service';
 import { UpdateUnitManagementRuleService } from '../../../../../common-services/update-unit-management-rule.service';
@@ -77,14 +85,18 @@ const LocalValidators = {
   templateUrl: './update-unit-rules.component.html',
   styleUrls: ['./update-unit-rules.component.css'],
 })
-export class UpdateUnitRulesComponent implements OnInit, OnDestroy {
+export class UpdateUnitRulesComponent implements OnDestroy {
+  @ViewChild('confirmDeleteUpdateRuleDialog', { static: true }) confirmDeleteUpdateRuleDialog: TemplateRef<UpdateUnitRulesComponent>;
+
   @Output() delete = new EventEmitter<any>();
   @Output() confirmStep = new EventEmitter<any>();
   @Output() cancelStep = new EventEmitter<any>();
+
   @Input() accessContract: string;
   @Input() selectedItem: number;
   @Input() ruleCategory: string;
   @Input() hasExactCount: boolean;
+
   ruleDetailsForm: FormGroup;
   isShowCheckButton = true;
   isStartDateDisabled = true;
@@ -102,32 +114,19 @@ export class UpdateUnitRulesComponent implements OnInit, OnDestroy {
     ruleUpdated: boolean;
     startDateUpdated: boolean;
   };
-
   oldRule: Rule;
-  getOldRuleSuscription: Subscription;
   newRule: Rule;
-  getNewRuleSuscription: Subscription;
-
-  showConfirmDeleteUpdateRuleSuscription: Subscription;
-  searchArchiveUnitsByCriteriaSubscription: Subscription;
-
   criteriaSearchDSLQuery: SearchCriteriaDto;
-  criteriaSearchDSLQuerySuscription: Subscription;
-
   selectedStartDate: any;
   isDateValidated = true;
-
   itemsWithSameRule: string;
   itemsToUpdate: string;
-  showMessages = false;
   lastRuleId: string;
-
   managementRules: ManagementRules[] = [];
-  managementRulesSubscription: Subscription;
   disabledControl = true;
   resultNumberToShow: string;
 
-  @ViewChild('confirmDeleteUpdateRuleDialog', { static: true }) confirmDeleteUpdateRuleDialog: TemplateRef<UpdateUnitRulesComponent>;
+  private subscriptions: Subscription = new Subscription();
 
   constructor(
     private archiveService: ArchiveService,
@@ -205,15 +204,8 @@ export class UpdateUnitRulesComponent implements OnInit, OnDestroy {
       });
   }
 
-  ngOnInit() {}
-
   ngOnDestroy() {
-    this.showConfirmDeleteUpdateRuleSuscription?.unsubscribe();
-    this.showConfirmDeleteUpdateRuleSuscription?.unsubscribe();
-    this.getOldRuleSuscription?.unsubscribe();
-    this.getNewRuleSuscription?.unsubscribe();
-    this.criteriaSearchDSLQuerySuscription?.unsubscribe();
-    this.searchArchiveUnitsByCriteriaSubscription?.unsubscribe();
+    this.subscriptions.unsubscribe();
   }
 
   isEmpty(formData: any): boolean {
@@ -233,11 +225,13 @@ export class UpdateUnitRulesComponent implements OnInit, OnDestroy {
 
     if (formData.oldRule) {
       this.cancelStep.emit();
-      this.getOldRuleSuscription = this.ruleService.get(formData.oldRule.trim()).subscribe((ruleResponse) => {
-        this.oldRule = ruleResponse;
-        this.ruleDetailsForm.patchValue({ oldRuleName: ruleResponse.ruleValue });
-        this.ruleDetailsForm.patchValue({ endDate: null });
-      });
+      this.subscriptions.add(
+        this.ruleService.get(formData.oldRule.trim()).subscribe((ruleResponse) => {
+          this.oldRule = ruleResponse;
+          this.ruleDetailsForm.patchValue({ oldRuleName: ruleResponse.ruleValue });
+          this.ruleDetailsForm.patchValue({ endDate: null });
+        }),
+      );
       this.ruleDetailsForm.controls.startDateUpdated.enable();
       this.ruleDetailsForm.controls.ruleUpdated.enable();
       this.isShowCheckButton = true;
@@ -246,11 +240,13 @@ export class UpdateUnitRulesComponent implements OnInit, OnDestroy {
 
     if (formData.newRule) {
       this.cancelStep.emit();
-      this.getNewRuleSuscription = this.ruleService.get(formData.newRule.trim()).subscribe((ruleResponse) => {
-        this.newRule = ruleResponse;
-        this.ruleDetailsForm.patchValue({ newRuleName: ruleResponse.ruleValue });
-        this.ruleDetailsForm.patchValue({ endDate: null });
-      });
+      this.subscriptions.add(
+        this.ruleService.get(formData.newRule.trim()).subscribe((ruleResponse) => {
+          this.newRule = ruleResponse;
+          this.ruleDetailsForm.patchValue({ newRuleName: ruleResponse.ruleValue });
+          this.ruleDetailsForm.patchValue({ endDate: null });
+        }),
+      );
       this.isShowCheckButton = true;
       return true;
     }
@@ -287,9 +283,11 @@ export class UpdateUnitRulesComponent implements OnInit, OnDestroy {
       oldRule: this.ruleDetailsForm.get('oldRule').value,
     };
 
-    this.managementRulesSubscription = this.managementRulesSharedDataService.getManagementRules().subscribe((data) => {
-      this.managementRules = data;
-    });
+    this.subscriptions.add(
+      this.managementRulesSharedDataService.getManagementRules().subscribe((data) => {
+        this.managementRules = data;
+      }),
+    );
 
     if (
       this.managementRules.findIndex(
@@ -332,12 +330,14 @@ export class UpdateUnitRulesComponent implements OnInit, OnDestroy {
     const dialogToOpen = this.confirmDeleteUpdateRuleDialog;
     const dialogRef = this.dialog.open(dialogToOpen, { panelClass: 'vitamui-dialog' });
 
-    this.showConfirmDeleteUpdateRuleSuscription = dialogRef
-      .afterClosed()
-      .pipe(filter((result) => !!result))
-      .subscribe(() => {
-        this.delete.emit(this.ruleDetailsForm.get('oldRule').value);
-      });
+    this.subscriptions.add(
+      dialogRef
+        .afterClosed()
+        .pipe(filter((result) => !!result))
+        .subscribe(() => {
+          this.delete.emit(this.ruleDetailsForm.get('oldRule').value);
+        }),
+    );
   }
 
   addStartDate() {
@@ -374,9 +374,11 @@ export class UpdateUnitRulesComponent implements OnInit, OnDestroy {
   }
 
   initDSLQuery() {
-    this.criteriaSearchDSLQuerySuscription = this.managementRulesSharedDataService.getCriteriaSearchDSLQuery().subscribe((response) => {
-      this.criteriaSearchDSLQuery = cloneDeep(response);
-    });
+    this.subscriptions.add(
+      this.managementRulesSharedDataService.getCriteriaSearchDSLQuery().subscribe((response) => {
+        this.criteriaSearchDSLQuery = cloneDeep(response);
+      }),
+    );
   }
 
   addRuleToQuery() {
@@ -403,17 +405,19 @@ export class UpdateUnitRulesComponent implements OnInit, OnDestroy {
     this.criteriaSearchDSLQuery.criteriaList.push(onlyManagementRules);
 
     if (this.hasExactCount) {
-      this.searchArchiveUnitsByCriteriaSubscription = this.archiveService
-        .getTotalTrackHitsByCriteria(this.criteriaSearchDSLQuery.criteriaList)
-        .subscribe((resultsNumber) => {
+      this.archiveService.getTotalTrackHitsByCriteria(this.criteriaSearchDSLQuery.criteriaList).subscribe(
+        (resultsNumber) => {
           this.itemsWithSameRule = resultsNumber.toString();
           this.itemsToUpdate = (this.selectedItem - resultsNumber).toString();
           this.isLoading = false;
-        });
+        },
+        (_error) => {
+          this.isLoading = false;
+        },
+      );
     } else {
-      this.searchArchiveUnitsByCriteriaSubscription = this.archiveService
-        .searchArchiveUnitsByCriteria(this.criteriaSearchDSLQuery)
-        .subscribe((data) => {
+      this.archiveService.searchArchiveUnitsByCriteria(this.criteriaSearchDSLQuery).subscribe(
+        (data) => {
           this.itemsWithSameRule = data.totalResults.toString();
           this.itemsToUpdate =
             data.totalResults === ArchiveSearchConstsEnum.RESULTS_MAX_NUMBER
@@ -423,7 +427,11 @@ export class UpdateUnitRulesComponent implements OnInit, OnDestroy {
                 : (this.selectedItem - data.totalResults).toString();
 
           this.isLoading = false;
-        });
+        },
+        (_error) => {
+          this.isLoading = false;
+        },
+      );
     }
   }
 

@@ -55,24 +55,23 @@ import {
 } from '../../../models/ruleAction.interface';
 
 const ARCHIVE_UNIT_HOLDING_UNIT = 'ARCHIVE_UNIT_HOLDING_UNIT';
+
 @Component({
   selector: 'app-management-rules',
   templateUrl: './management-rules.component.html',
   styleUrls: ['./management-rules.component.css'],
 })
 export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
+  @ViewChild('confirmRuleActionsDialog', { static: true }) confirmRuleActionsDialog: TemplateRef<ManagementRulesComponent>;
+  @ViewChild('confirmLeaveRuleActionsDialog', { static: true }) confirmLeaveRuleActionsDialog: TemplateRef<ManagementRulesComponent>;
+
   criteriaSearchListToSave: SearchCriteriaEltDto[] = [];
-  criteriaSearchListToSaveSuscription: Subscription;
   criteriaSearchDSLQuery: SearchCriteriaDto;
-  criteriaSearchDSLQuerySuscription: Subscription;
   accessContract: string;
   accessContractSubscription: Subscription;
   tenantIdentifier: string;
-  tenantIdentifierSubscription: Subscription;
-  hasExactCountSubscription: Subscription;
   selectedItem: number;
   selectedItemToShow: string;
-  selectedItemSubscription: Subscription;
   ruleActions: ActionsRules[] = [];
   actionsSelected: string[] = [];
   private ruleCategoryDuaActionsToAdd: RuleCategoryAction = {
@@ -89,7 +88,11 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
 
   rulesCatygories: { id: string; name: string; isDisabled: boolean }[] = [
     { id: 'StorageRule', name: this.translateService.instant('RULES.CATEGORIES_NAME.STORAGE_RULE'), isDisabled: false },
-    { id: 'AppraisalRule', name: this.translateService.instant('RULES.CATEGORIES_NAME.APPRAISAL_RULE'), isDisabled: false },
+    {
+      id: 'AppraisalRule',
+      name: this.translateService.instant('RULES.CATEGORIES_NAME.APPRAISAL_RULE'),
+      isDisabled: false,
+    },
     { id: 'HoldRule', name: this.translateService.instant('RULES.CATEGORIES_NAME.HOLD_RULE'), isDisabled: true },
     { id: 'AccessRule', name: this.translateService.instant('RULES.CATEGORIES_NAME.ACCESS_RULE'), isDisabled: false },
     {
@@ -107,8 +110,6 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
 
   rulesCatygoriesToShow: { id: string; name: string; isDisabled: boolean }[] = [];
   indexOfSelectedCategory = 0;
-
-  ruleSearchCriteriaDto: RuleSearchCriteriaDto;
 
   isRuleCategorySelected = false;
   isAddValidActions = false;
@@ -136,10 +137,7 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
   hasExactCount: boolean;
   resultNumberToShow: string;
 
-  @ViewChild('confirmRuleActionsDialog', { static: true }) confirmRuleActionsDialog: TemplateRef<ManagementRulesComponent>;
-  showConfirmRuleActionsDialogSuscription: Subscription;
-  @ViewChild('confirmLeaveRuleActionsDialog', { static: true }) confirmLeaveRuleActionsDialog: TemplateRef<ManagementRulesComponent>;
-  showConfirmLeaveRuleActionsDialogSuscription: Subscription;
+  private subscriptions = new Subscription();
 
   constructor(
     private archiveService: ArchiveService,
@@ -155,75 +153,78 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   applyChanges() {
-    this.managementRulesSharedDataService.getManagementRules().subscribe((data) => {
-      this.isUpdateValidActions =
-        data.filter(
-          (rule) =>
-            rule.category === this.ruleCategorySelected &&
-            (rule.actionType === RuleActionsEnum.ADD_RULES || rule.actionType === RuleActionsEnum.DELETE_RULES),
-        ).length !== 0;
-      this.isUpdateValidActionsWithProperty =
-        data.filter(
-          (rule) =>
-            rule.category === this.ruleCategorySelected &&
-            rule.actionType === RuleActionsEnum.ADD_RULES &&
-            rule.ruleCategoryAction.rules?.length === 0 &&
-            rule.ruleCategoryAction.preventRulesIdToAdd?.length === 0,
-        ).length !== 0;
+    this.subscriptions.add(
+      this.managementRulesSharedDataService.getManagementRules().subscribe((managementRules) => {
+        this.isUpdateValidActions =
+          managementRules.filter(
+            (rule) =>
+              rule.category === this.ruleCategorySelected &&
+              (rule.actionType === RuleActionsEnum.ADD_RULES || rule.actionType === RuleActionsEnum.DELETE_RULES),
+          ).length !== 0;
+        this.isUpdateValidActionsWithProperty =
+          managementRules.filter(
+            (rule) =>
+              rule.category === this.ruleCategorySelected &&
+              rule.actionType === RuleActionsEnum.ADD_RULES &&
+              rule.ruleCategoryAction.rules?.length === 0 &&
+              rule.ruleCategoryAction.preventRulesIdToAdd?.length === 0,
+          ).length !== 0;
 
-      this.isUpdateValidActionsWithFinalAction =
-        data.filter(
-          (rule) =>
-            rule.category === this.ruleCategorySelected &&
-            rule.ruleCategoryAction.finalAction &&
-            rule.actionType === RuleActionsEnum.ADD_RULES,
-        ).length !== 0;
+        this.isUpdateValidActionsWithFinalAction =
+          managementRules.filter(
+            (rule) =>
+              rule.category === this.ruleCategorySelected &&
+              rule.ruleCategoryAction.finalAction &&
+              rule.actionType === RuleActionsEnum.ADD_RULES,
+          ).length !== 0;
 
-      this.isAddValidActions =
-        data.filter(
-          (rule) =>
-            rule.category === this.ruleCategorySelected &&
-            (rule.actionType === RuleActionsEnum.UPDATE_RULES || rule.actionType === RuleActionsEnum.DELETE_RULES),
-        ).length !== 0;
-      this.isAddPropertyValidActions =
-        data.filter(
-          (rule) =>
-            rule.category === this.ruleCategorySelected &&
-            rule.ruleCategoryAction.rules &&
-            rule.ruleCategoryAction.rules.length !== 0 &&
-            rule.actionType === RuleActionsEnum.ADD_RULES,
-        ).length !== 0;
-      this.isDeleteValidActions =
-        data.filter(
-          (rule) =>
-            rule.category === this.ruleCategorySelected &&
-            rule.ruleCategoryAction.rules?.length !== 0 &&
-            (rule.actionType === RuleActionsEnum.ADD_RULES || rule.actionType === RuleActionsEnum.UPDATE_RULES),
-        ).length !== 0;
+        this.isAddValidActions =
+          managementRules.filter(
+            (rule) =>
+              rule.category === this.ruleCategorySelected &&
+              (rule.actionType === RuleActionsEnum.UPDATE_RULES || rule.actionType === RuleActionsEnum.DELETE_RULES),
+          ).length !== 0;
+        this.isAddPropertyValidActions =
+          managementRules.filter(
+            (rule) =>
+              rule.category === this.ruleCategorySelected &&
+              rule.ruleCategoryAction.rules &&
+              rule.ruleCategoryAction.rules.length !== 0 &&
+              rule.actionType === RuleActionsEnum.ADD_RULES,
+          ).length !== 0;
+        this.isDeleteValidActions =
+          managementRules.filter(
+            (rule) =>
+              rule.category === this.ruleCategorySelected &&
+              rule.ruleCategoryAction.rules?.length !== 0 &&
+              (rule.actionType === RuleActionsEnum.ADD_RULES || rule.actionType === RuleActionsEnum.UPDATE_RULES),
+          ).length !== 0;
 
-      this.isDeleteValidActionsWithProperty =
-        data.filter(
-          (rule) =>
-            rule.category === this.ruleCategorySelected &&
-            rule.ruleCategoryAction.rules?.length === 0 &&
-            rule.actionType === RuleActionsEnum.ADD_RULES,
-        ).length !== 0;
+        this.isDeleteValidActionsWithProperty =
+          managementRules.filter(
+            (rule) =>
+              rule.category === this.ruleCategorySelected &&
+              rule.ruleCategoryAction.rules?.length === 0 &&
+              rule.actionType === RuleActionsEnum.ADD_RULES,
+          ).length !== 0;
 
-      this.isBlockInheritanceCategoryDisabled =
-        data.filter((rule) => rule.category === this.ruleCategorySelected && rule.actionType === RuleActionsEnum.BLOCK_CATEGORY_INHERITANCE)
-          .length !== 0;
-      this.isUnlockInheritanceCategoryDisabled =
-        data.filter(
-          (rule) => rule.category === this.ruleCategorySelected && rule.actionType === RuleActionsEnum.UNLOCK_CATEGORY_INHERITANCE,
-        ).length !== 0;
+        this.isBlockInheritanceCategoryDisabled =
+          managementRules.filter(
+            (rule) => rule.category === this.ruleCategorySelected && rule.actionType === RuleActionsEnum.BLOCK_CATEGORY_INHERITANCE,
+          ).length !== 0;
+        this.isUnlockInheritanceCategoryDisabled =
+          managementRules.filter(
+            (rule) => rule.category === this.ruleCategorySelected && rule.actionType === RuleActionsEnum.UNLOCK_CATEGORY_INHERITANCE,
+          ).length !== 0;
 
-      this.isUnlockRulesInheritanceDisabled =
-        data.filter(
-          (rule) =>
-            rule.category === this.ruleCategorySelected &&
-            (rule.actionType === RuleActionsEnum.ADD_RULES || rule.actionType === RuleActionsEnum.UPDATE_RULES),
-        ).length !== 0;
-    });
+        this.isUnlockRulesInheritanceDisabled =
+          managementRules.filter(
+            (rule) =>
+              rule.category === this.ruleCategorySelected &&
+              (rule.actionType === RuleActionsEnum.ADD_RULES || rule.actionType === RuleActionsEnum.UPDATE_RULES),
+          ).length !== 0;
+      }),
+    );
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -325,9 +326,18 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnInit() {
-    this.tenantIdentifierSubscription = this.route.params.subscribe((params) => {
-      this.tenantIdentifier = params.tenantIdentifier;
-    });
+    this.subscriptions.add(
+      this.route.params.subscribe((params) => {
+        this.tenantIdentifier = params.tenantIdentifier;
+      }),
+    );
+    this.subscriptions.add(
+      this.managementRulesSharedDataService.getRuleActions().subscribe((data) => {
+        this.ruleActions = data;
+      }),
+    );
+
+    this.applyChanges();
     this.loadAccessContract();
     this.loadSelectedItem();
     this.loadCriteriaSearchListToSave();
@@ -444,13 +454,7 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.selectedItemSubscription?.unsubscribe();
-    this.criteriaSearchListToSaveSuscription?.unsubscribe();
-    this.criteriaSearchDSLQuerySuscription?.unsubscribe();
-    this.showConfirmRuleActionsDialogSuscription?.unsubscribe();
-    this.showConfirmLeaveRuleActionsDialogSuscription?.unsubscribe();
-    this.tenantIdentifierSubscription?.unsubscribe();
-    this.hasExactCountSubscription?.unsubscribe();
+    this.subscriptions.unsubscribe();
   }
 
   selectRule(rule: any) {
@@ -473,21 +477,25 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   loadCriteriaSearchDSLQuery() {
-    this.criteriaSearchDSLQuerySuscription = this.managementRulesSharedDataService.getCriteriaSearchDSLQuery().subscribe((response) => {
-      this.criteriaSearchDSLQuery = {
-        criteriaList: response?.criteriaList.filter((criteriaSearch) => criteriaSearch.criteria !== ARCHIVE_UNIT_HOLDING_UNIT),
-        pageNumber: response?.pageNumber,
-        size: response?.size,
-        sortingCriteria: response?.sortingCriteria,
-        language: response?.language,
-      };
-    });
+    this.subscriptions.add(
+      this.managementRulesSharedDataService.getCriteriaSearchDSLQuery().subscribe((response) => {
+        this.criteriaSearchDSLQuery = {
+          criteriaList: response?.criteriaList.filter((criteriaSearch) => criteriaSearch.criteria !== ARCHIVE_UNIT_HOLDING_UNIT),
+          pageNumber: response?.pageNumber,
+          size: response?.size,
+          sortingCriteria: response?.sortingCriteria,
+          language: response?.language,
+        };
+      }),
+    );
   }
 
   loadCriteriaSearchListToSave() {
-    this.criteriaSearchListToSaveSuscription = this.managementRulesSharedDataService.getCriteriaSearchListToSave().subscribe((response) => {
-      this.criteriaSearchListToSave = response;
-    });
+    this.subscriptions.add(
+      this.managementRulesSharedDataService.getCriteriaSearchListToSave().subscribe((response) => {
+        this.criteriaSearchListToSave = response;
+      }),
+    );
   }
 
   loadAccessContract() {
@@ -497,17 +505,21 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   loadSelectedItem() {
-    this.selectedItemSubscription = this.managementRulesSharedDataService.getselectedItems().subscribe((response) => {
-      this.selectedItem = response;
-      this.resultNumberToShow = this.translateService.instant('ARCHIVE_SEARCH.MORE_THAN_THRESHOLD');
-      this.selectedItemToShow = response === ArchiveSearchConstsEnum.RESULTS_MAX_NUMBER ? this.resultNumberToShow : response.toString();
-    });
+    this.subscriptions.add(
+      this.managementRulesSharedDataService.getselectedItems().subscribe((response) => {
+        this.selectedItem = response;
+        this.resultNumberToShow = this.translateService.instant('ARCHIVE_SEARCH.MORE_THAN_THRESHOLD');
+        this.selectedItemToShow = response === ArchiveSearchConstsEnum.RESULTS_MAX_NUMBER ? this.resultNumberToShow : response.toString();
+      }),
+    );
   }
 
   loadHasExactCount() {
-    this.hasExactCountSubscription = this.managementRulesSharedDataService.getHasExactCount().subscribe((paramater) => {
-      this.hasExactCount = paramater;
-    });
+    this.subscriptions.add(
+      this.managementRulesSharedDataService.getHasExactCount().subscribe((paramater) => {
+        this.hasExactCount = paramater;
+      }),
+    );
   }
 
   prepareActionToAdd(rule: string) {
@@ -538,9 +550,21 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
         stepValid: false,
       });
 
-      this.ruleActions.push({ ruleType: this.ruleCategorySelected, actionType: rule, id: idToAdd + 2, ruleId: '', stepValid: false });
+      this.ruleActions.push({
+        ruleType: this.ruleCategorySelected,
+        actionType: rule,
+        id: idToAdd + 2,
+        ruleId: '',
+        stepValid: false,
+      });
     } else {
-      this.ruleActions.push({ ruleType: this.ruleCategorySelected, actionType: rule, id: idToAdd + 1, ruleId: '', stepValid: false });
+      this.ruleActions.push({
+        ruleType: this.ruleCategorySelected,
+        actionType: rule,
+        id: idToAdd + 1,
+        ruleId: '',
+        stepValid: false,
+      });
     }
     if (this.actionsSelected.filter((action) => action === rule).length === 0) {
       this.actionsSelected.push(rule);
@@ -613,21 +637,21 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   returnToArchiveSearchPage() {
-    const dialogToOpen = this.confirmLeaveRuleActionsDialog;
-    const dialogRef = this.dialog.open(dialogToOpen, { panelClass: 'vitamui-dialog' });
+    const dialogRef = this.dialog.open(this.confirmLeaveRuleActionsDialog, { panelClass: 'vitamui-dialog' });
 
-    this.showConfirmLeaveRuleActionsDialogSuscription = dialogRef
-      .afterClosed()
-      .pipe(filter((result) => !!result))
-      .subscribe(() => {
-        this.initializeParameters();
-        this.router.navigate(['/archive-search/tenant/', this.tenantIdentifier]);
-      });
+    this.subscriptions.add(
+      dialogRef
+        .afterClosed()
+        .pipe(filter((result) => !!result))
+        .subscribe(() => {
+          this.initializeParameters();
+          this.router.navigate(['/archive-search/tenant/', this.tenantIdentifier]);
+        }),
+    );
   }
 
   submitUpdates() {
-    const dialogToOpen = this.confirmRuleActionsDialog;
-    const dialogRef = this.dialog.open(dialogToOpen, { panelClass: 'vitamui-dialog' });
+    const dialogRef = this.dialog.open(this.confirmRuleActionsDialog, { panelClass: 'vitamui-dialog' });
     const actionAddOnRules: any = {};
     const actionUpdateOnRules: any = {};
     const actionDeleteOnRules: any = {};
@@ -644,140 +668,152 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
       delete: this.objectToArray(actionDeleteOnRules),
     };
 
-    this.showConfirmRuleActionsDialogSuscription = dialogRef
-      .afterClosed()
-      .pipe(filter((result) => !!result))
-      .subscribe(() => {
-        this.criteriaSearchDSLQuery.trackTotalHits = this.hasExactCount;
-        const ruleSearchCriteriaDto: RuleSearchCriteriaDto = {
-          searchCriteriaDto: this.criteriaSearchDSLQuery,
-          ruleActions: allRuleActions,
-        };
+    this.subscriptions.add(
+      dialogRef
+        .afterClosed()
+        .pipe(filter((result) => !!result))
+        .subscribe(() => {
+          this.criteriaSearchDSLQuery.trackTotalHits = this.hasExactCount;
+          const ruleSearchCriteriaDto: RuleSearchCriteriaDto = {
+            searchCriteriaDto: this.criteriaSearchDSLQuery,
+            ruleActions: allRuleActions,
+          };
 
-        this.archiveService.updateUnitsRules(ruleSearchCriteriaDto).subscribe(
-          (response) => {
-            const ruleActions: ActionsRules[] = [];
-            this.managementRulesSharedDataService.emitRuleActions(ruleActions);
-            this.managementRulesSharedDataService.emitManagementRules([]);
+          this.archiveService.updateUnitsRules(ruleSearchCriteriaDto).subscribe(
+            (response) => {
+              const ruleActions: ActionsRules[] = [];
+              this.managementRulesSharedDataService.emitRuleActions(ruleActions);
+              this.managementRulesSharedDataService.emitManagementRules([]);
 
-            const serviceUrl =
-              this.startupService.getReferentialUrl() + '/logbook-operation/tenant/' + this.tenantIdentifier + '?guid=' + response;
+              const serviceUrl =
+                this.startupService.getReferentialUrl() + '/logbook-operation/tenant/' + this.tenantIdentifier + '?guid=' + response;
 
-            this.archiveService.openSnackBarForWorkflow(this.translateService.instant('RULES.EXECUTE_RULE_UPDATE_MESSAGE'), serviceUrl);
-          },
-          (error: any) => {
-            this.logger.error('Error message :', error);
-          },
-        );
-      });
+              this.archiveService.openSnackBarForWorkflow(this.translateService.instant('RULES.EXECUTE_RULE_UPDATE_MESSAGE'), serviceUrl);
+            },
+            (error: any) => {
+              this.logger.error('Error message :', error);
+            },
+          );
+        }),
+    );
   }
 
   isAllActionsValid(): boolean {
-    this.managementRulesSharedDataService.getRuleActions().subscribe((data) => {
-      this.ruleActions = data;
-    });
-
     if (this.ruleActions.length === 0) {
+      // NO RULES
       return true;
-    } else {
-      return !(this.ruleActions.filter((action) => action.stepValid === false).length !== 0);
     }
+    // NO INVALID STEP RULES
+    return this.ruleActions.filter((action) => action.stepValid === false).length === 0;
+  }
+
+  ruleActionsAbsentOrInvalid() {
+    if (this.ruleActions.length === 0) {
+      // NO RULE ACTIONS -> nothing to update
+      return true;
+    }
+    // OR INVALID RULE ACTION STEP
+    return this.ruleActions.filter((action) => action.stepValid === false).length !== 0;
   }
 
   prepareAppraisalRuleActionsObject(actionAddOnRules: any, actionUpdateOnRules: any, actionDeleteOnRules: any) {
-    this.managementRulesSharedDataService.getManagementRules().subscribe((data) => {
-      const preventInheritance: boolean = data.find(
-        (managementRule) =>
-          managementRule.category === RuleTypeEnum.APPRAISALRULE &&
-          (managementRule.actionType === RuleActionsEnum.BLOCK_CATEGORY_INHERITANCE ||
-            managementRule.actionType === RuleActionsEnum.UNLOCK_CATEGORY_INHERITANCE),
-      )?.ruleCategoryAction.preventInheritance;
+    this.subscriptions.add(
+      this.managementRulesSharedDataService.getManagementRules().subscribe((data) => {
+        const preventInheritance: boolean = data.find(
+          (managementRule) =>
+            managementRule.category === RuleTypeEnum.APPRAISALRULE &&
+            (managementRule.actionType === RuleActionsEnum.BLOCK_CATEGORY_INHERITANCE ||
+              managementRule.actionType === RuleActionsEnum.UNLOCK_CATEGORY_INHERITANCE),
+        )?.ruleCategoryAction.preventInheritance;
 
-      const preventRulesIdToAdd: string[] = data.find(
-        (managementRule) =>
-          managementRule.category === RuleTypeEnum.APPRAISALRULE && managementRule.actionType === RuleActionsEnum.ADD_RULES,
-      )?.ruleCategoryAction?.preventRulesIdToAdd;
+        const preventRulesIdToAdd: string[] = data.find(
+          (managementRule) =>
+            managementRule.category === RuleTypeEnum.APPRAISALRULE && managementRule.actionType === RuleActionsEnum.ADD_RULES,
+        )?.ruleCategoryAction?.preventRulesIdToAdd;
 
-      const preventRulesIdToRemove: string[] = data.find(
-        (managementRule) =>
-          managementRule.category === RuleTypeEnum.APPRAISALRULE && managementRule.actionType === RuleActionsEnum.DELETE_RULES,
-      )?.ruleCategoryAction?.preventRulesIdToRemove;
+        const preventRulesIdToRemove: string[] = data.find(
+          (managementRule) =>
+            managementRule.category === RuleTypeEnum.APPRAISALRULE && managementRule.actionType === RuleActionsEnum.DELETE_RULES,
+        )?.ruleCategoryAction?.preventRulesIdToRemove;
 
-      if (data.findIndex((rule) => rule.category === RuleTypeEnum.APPRAISALRULE && rule.actionType === RuleActionsEnum.ADD_RULES) !== -1) {
-        this.ruleCategoryDuaActionsToAdd = data.find(
-          (rule) => rule.category === RuleTypeEnum.APPRAISALRULE && rule.actionType === RuleActionsEnum.ADD_RULES,
-        )?.ruleCategoryAction;
+        if (
+          data.findIndex((rule) => rule.category === RuleTypeEnum.APPRAISALRULE && rule.actionType === RuleActionsEnum.ADD_RULES) !== -1
+        ) {
+          this.ruleCategoryDuaActionsToAdd = data.find(
+            (rule) => rule.category === RuleTypeEnum.APPRAISALRULE && rule.actionType === RuleActionsEnum.ADD_RULES,
+          )?.ruleCategoryAction;
 
-        if (this.ruleCategoryDuaActionsToAdd?.rules?.length !== 0 && this.ruleCategoryDuaActionsToAdd?.finalAction !== null) {
-          actionAddOnRules.AppraisalRule = {
-            rules: this.ruleCategoryDuaActionsToAdd?.rules,
-            finalAction: this.ruleCategoryDuaActionsToAdd?.finalAction,
-            preventInheritance: preventInheritance ? preventInheritance : false,
-            preventRulesIdToAdd,
-          };
+          if (this.ruleCategoryDuaActionsToAdd?.rules?.length !== 0 && this.ruleCategoryDuaActionsToAdd?.finalAction !== null) {
+            actionAddOnRules.AppraisalRule = {
+              rules: this.ruleCategoryDuaActionsToAdd?.rules,
+              finalAction: this.ruleCategoryDuaActionsToAdd?.finalAction,
+              preventInheritance: preventInheritance ? preventInheritance : false,
+              preventRulesIdToAdd,
+            };
+          }
+          if (this.ruleCategoryDuaActionsToAdd?.rules?.length === 0 && this.ruleCategoryDuaActionsToAdd?.finalAction !== null) {
+            actionAddOnRules.AppraisalRule = {
+              finalAction: this.ruleCategoryDuaActionsToAdd?.finalAction,
+              preventInheritance: preventInheritance ? preventInheritance : false,
+              preventRulesIdToAdd,
+            };
+          }
         }
-        if (this.ruleCategoryDuaActionsToAdd?.rules?.length === 0 && this.ruleCategoryDuaActionsToAdd?.finalAction !== null) {
-          actionAddOnRules.AppraisalRule = {
-            finalAction: this.ruleCategoryDuaActionsToAdd?.finalAction,
-            preventInheritance: preventInheritance ? preventInheritance : false,
-            preventRulesIdToAdd,
-          };
-        }
-      }
 
-      if (
-        data.findIndex((rule) => rule.category === RuleTypeEnum.APPRAISALRULE && rule.actionType === RuleActionsEnum.UPDATE_RULES) !== -1
-      ) {
-        this.ruleCategoryDuaActionsToUpdate = data.find(
-          (rule) => rule.category === RuleTypeEnum.APPRAISALRULE && rule.actionType === RuleActionsEnum.UPDATE_RULES,
-        )?.ruleCategoryAction;
-        if (this.ruleCategoryDuaActionsToUpdate?.rules.length !== 0) {
-          actionUpdateOnRules.AppraisalRule = {
-            rules: this.ruleCategoryDuaActionsToUpdate?.rules,
+        if (
+          data.findIndex((rule) => rule.category === RuleTypeEnum.APPRAISALRULE && rule.actionType === RuleActionsEnum.UPDATE_RULES) !== -1
+        ) {
+          this.ruleCategoryDuaActionsToUpdate = data.find(
+            (rule) => rule.category === RuleTypeEnum.APPRAISALRULE && rule.actionType === RuleActionsEnum.UPDATE_RULES,
+          )?.ruleCategoryAction;
+          if (this.ruleCategoryDuaActionsToUpdate?.rules.length !== 0) {
+            actionUpdateOnRules.AppraisalRule = {
+              rules: this.ruleCategoryDuaActionsToUpdate?.rules,
+              preventInheritance,
+            };
+          }
+        }
+
+        if (
+          data.findIndex((rule) => rule.category === RuleTypeEnum.APPRAISALRULE && rule.actionType === RuleActionsEnum.DELETE_RULES) !== -1
+        ) {
+          this.ruleCategoryDuaActionsToDelete = data.find(
+            (rule) => rule.category === RuleTypeEnum.APPRAISALRULE && rule.actionType === RuleActionsEnum.DELETE_RULES,
+          )?.ruleCategoryAction;
+          if (this.ruleCategoryDuaActionsToDelete?.rules.length !== 0) {
+            actionDeleteOnRules.AppraisalRule = {
+              rules: this.ruleCategoryDuaActionsToDelete?.rules,
+              preventInheritance: preventInheritance ? preventInheritance : false,
+              preventRulesIdToRemove,
+            };
+          } else {
+            actionDeleteOnRules.AppraisalRule = {
+              rules: undefined,
+              preventInheritance: preventInheritance ? preventInheritance : false,
+              preventRulesIdToRemove,
+            };
+          }
+        }
+        if (actionAddOnRules.AppraisalRule && actionAddOnRules.AppraisalRule.preventRulesIdToAdd) {
+          actionAddOnRules.AppraisalRule.preventRulesIdToAdd = preventRulesIdToAdd;
+        }
+        if (actionDeleteOnRules.AppraisalRule && actionDeleteOnRules.AppraisalRule.preventRulesIdToRemove) {
+          actionDeleteOnRules.AppraisalRule.preventRulesIdToRemove = preventRulesIdToRemove;
+        }
+
+        const listOfActionTypes: string[] = data.map((rule) => rule.actionType);
+        if (
+          preventInheritance !== undefined &&
+          listOfActionTypes.length === 1 &&
+          (listOfActionTypes[0] === RuleActionsEnum.BLOCK_CATEGORY_INHERITANCE ||
+            listOfActionTypes[0] === RuleActionsEnum.UNLOCK_CATEGORY_INHERITANCE)
+        ) {
+          actionAddOnRules.AppraisalRule = {
             preventInheritance,
           };
         }
-      }
-
-      if (
-        data.findIndex((rule) => rule.category === RuleTypeEnum.APPRAISALRULE && rule.actionType === RuleActionsEnum.DELETE_RULES) !== -1
-      ) {
-        this.ruleCategoryDuaActionsToDelete = data.find(
-          (rule) => rule.category === RuleTypeEnum.APPRAISALRULE && rule.actionType === RuleActionsEnum.DELETE_RULES,
-        )?.ruleCategoryAction;
-        if (this.ruleCategoryDuaActionsToDelete?.rules.length !== 0) {
-          actionDeleteOnRules.AppraisalRule = {
-            rules: this.ruleCategoryDuaActionsToDelete?.rules,
-            preventInheritance: preventInheritance ? preventInheritance : false,
-            preventRulesIdToRemove,
-          };
-        } else {
-          actionDeleteOnRules.AppraisalRule = {
-            rules: undefined,
-            preventInheritance: preventInheritance ? preventInheritance : false,
-            preventRulesIdToRemove,
-          };
-        }
-      }
-      if (actionAddOnRules.AppraisalRule && actionAddOnRules.AppraisalRule.preventRulesIdToAdd) {
-        actionAddOnRules.AppraisalRule.preventRulesIdToAdd = preventRulesIdToAdd;
-      }
-      if (actionDeleteOnRules.AppraisalRule && actionDeleteOnRules.AppraisalRule.preventRulesIdToRemove) {
-        actionDeleteOnRules.AppraisalRule.preventRulesIdToRemove = preventRulesIdToRemove;
-      }
-
-      const listOfActionTypes: string[] = data.map((rule) => rule.actionType);
-      if (
-        preventInheritance !== undefined &&
-        listOfActionTypes.length === 1 &&
-        (listOfActionTypes[0] === RuleActionsEnum.BLOCK_CATEGORY_INHERITANCE ||
-          listOfActionTypes[0] === RuleActionsEnum.UNLOCK_CATEGORY_INHERITANCE)
-      ) {
-        actionAddOnRules.AppraisalRule = {
-          preventInheritance,
-        };
-      }
-    });
+      }),
+    );
   }
 
   prepareStorageRuleActionsObject(actionAddOnRules: any, actionUpdateOnRules: any, actionDeleteOnRules: any) {
