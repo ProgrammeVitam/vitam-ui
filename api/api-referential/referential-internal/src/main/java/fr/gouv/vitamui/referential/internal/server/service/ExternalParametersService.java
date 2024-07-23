@@ -70,14 +70,14 @@ public class ExternalParametersService {
      * @return access contract throws IllegalArgumentException
      */
     public String retrieveAccessContractFromExternalParam() {
-        ExternalParametersDto myExternalParameter = externalParametersInternalRestClient.getMyExternalParameters(
+        final ExternalParametersDto myExternalParameter = externalParametersInternalRestClient.getMyExternalParameters(
             securityService.getHttpContext()
         );
         if (myExternalParameter == null || CollectionUtils.isEmpty(myExternalParameter.getParameters())) {
             throw new IllegalArgumentException("No external profile defined for access contract defined");
         }
 
-        ParameterDto parameterAccessContract = myExternalParameter
+        final ParameterDto parameterAccessContract = myExternalParameter
             .getParameters()
             .stream()
             .filter(parameter -> PARAM_ACCESS_CONTRACT_NAME.equals(parameter.getKey()))

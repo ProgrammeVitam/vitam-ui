@@ -40,7 +40,6 @@ import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
-import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import io.swagger.annotations.Api;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -71,17 +70,14 @@ public class ProjectObjectGroupInternalController {
     private final ProjectObjectGroupInternalService projectObjectGroupInternalService;
     private final ExternalParametersService externalParametersService;
 
-    private final InternalSecurityService securityService;
     private static final String IDENTIFIER_MANDATORY = "The identifier is mandatory parameter: ";
 
     public ProjectObjectGroupInternalController(
         ProjectObjectGroupInternalService projectObjectGroupInternalService,
-        final ExternalParametersService externalParametersService,
-        InternalSecurityService securityService
+        final ExternalParametersService externalParametersService
     ) {
         this.projectObjectGroupInternalService = projectObjectGroupInternalService;
         this.externalParametersService = externalParametersService;
-        this.securityService = securityService;
     }
 
     @GetMapping(
@@ -97,9 +93,7 @@ public class ProjectObjectGroupInternalController {
         SanityChecker.checkSecureParameter(id, usage);
         LOGGER.debug("Download Archive Unit Object with id {}", id);
 
-        VitamContext vitamContext = new VitamContext(securityService.getTenantIdentifier())
-            .setAccessContract(externalParametersService.retrieveAccessContractFromExternalParam())
-            .setApplicationSessionId(securityService.getApplicationId());
+        VitamContext vitamContext = externalParametersService.buildVitamContextFromExternalParam();
 
         return Mono.<Resource>fromCallable(() -> {
             Response response = projectObjectGroupInternalService.downloadObjectFromUnit(
