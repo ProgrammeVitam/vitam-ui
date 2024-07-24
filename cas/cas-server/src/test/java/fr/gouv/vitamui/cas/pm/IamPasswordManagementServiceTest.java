@@ -46,7 +46,6 @@ import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
 import fr.gouv.vitamui.commons.api.enums.UserTypeEnum;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.InvalidAuthenticationException;
-import fr.gouv.vitamui.commons.api.identity.ServerIdentityAutoConfiguration;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.commons.security.client.config.password.PasswordConfiguration;
 import fr.gouv.vitamui.commons.security.client.password.PasswordValidator;
@@ -102,7 +101,7 @@ import static org.mockito.Mockito.when;
  * Tests {@link IamPasswordManagementService}.
  */
 @RunWith(SpringRunner.class)
-@ContextConfiguration(classes = { ServerIdentityAutoConfiguration.class, PasswordConfiguration.class })
+@ContextConfiguration(classes = { PasswordConfiguration.class })
 @TestPropertySource(locations = "classpath:/application-test.properties")
 public final class IamPasswordManagementServiceTest extends BaseWebflowActionTest {
 

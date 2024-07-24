@@ -21,12 +21,6 @@ security:
   host: xxx
   port: 8080
 
-server-identity:
-  identityName: vitamui-test
-  identityRole: iam
-  identityServerId: 1
-
-
 logbook.scheduling.sendEventToVitamTasks.enabled: false
 
 # internal ontology fields file path

@@ -3,7 +3,7 @@
 
 spring:
   application:
-    name: ${server-identity.identityRole}
+    name: archive-search-internal
   api:
     name: API Archive Search
     description: This API is used to manage archives searching
@@ -18,7 +18,7 @@ spring:
 management:
   endpoints:
     jmx:
-      domain: ${server-identity.identityRole}
+      domain: archive-search-internal
       unique-names: true
     web.exposure.include: info,health,prometheus
   endpoint:

@@ -37,7 +37,9 @@
 package fr.gouv.vitamui.iam.security.config;
 
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
-import fr.gouv.vitamui.iam.security.filter.*;
+import fr.gouv.vitamui.iam.security.filter.ExternalRequestHeadersAuthenticationFilter;
+import fr.gouv.vitamui.iam.security.filter.TokenExtractor;
+import fr.gouv.vitamui.iam.security.filter.X509CertificateExtractor;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.core.env.Environment;

@@ -2,7 +2,6 @@ package fr.gouv.vitamui.cas.webflow.actions;
 
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitamui.cas.BaseWebflowActionTest;
-import fr.gouv.vitamui.commons.api.identity.ServerIdentityAutoConfiguration;
 import lombok.val;
 import org.apereo.cas.mfa.simple.CasSimpleMultifactorTokenCredential;
 import org.apereo.cas.mfa.simple.ticket.CasSimpleMultifactorAuthenticationTicket;
@@ -26,7 +25,7 @@ import static org.mockito.Mockito.when;
  * Tests {@link CheckMfaTokenAction}.
  */
 @RunWith(SpringRunner.class)
-@ContextConfiguration(classes = ServerIdentityAutoConfiguration.class)
+@ContextConfiguration(classes = CheckMfaTokenActionTest.class)
 @TestPropertySource(locations = "classpath:/application-test.properties")
 public class CheckMfaTokenActionTest extends BaseWebflowActionTest {
 

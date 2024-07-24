@@ -45,8 +45,6 @@ import fr.gouv.vitamui.cas.ticket.CustomOAuth20DefaultAccessTokenFactory;
 import fr.gouv.vitamui.cas.ticket.DynamicTicketGrantingTicketFactory;
 import fr.gouv.vitamui.cas.util.Utils;
 import fr.gouv.vitamui.cas.x509.X509AttributeMapping;
-import fr.gouv.vitamui.commons.api.identity.ServerIdentityAutoConfiguration;
-import fr.gouv.vitamui.commons.api.identity.ServerIdentityConfiguration;
 import fr.gouv.vitamui.commons.security.client.config.password.PasswordConfiguration;
 import fr.gouv.vitamui.commons.security.client.password.PasswordValidator;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
@@ -96,7 +94,6 @@ import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.core.Ordered;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -111,7 +108,6 @@ import java.util.EnumSet;
 @EnableConfigurationProperties(
     { CasConfigurationProperties.class, IamClientConfigurationProperties.class, PasswordConfiguration.class }
 )
-@Import({ ServerIdentityAutoConfiguration.class })
 public class AppConfig extends BaseTicketCatalogConfigurer {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AppConfig.class);
@@ -136,10 +132,6 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
 
     @Autowired
     private IamClientConfigurationProperties iamClientProperties;
-
-    // needed to allow a proper creation of the IamExternalRestClientFactory
-    @Autowired
-    private ServerIdentityConfiguration serverIdentityConfiguration;
 
     @Autowired
     @Qualifier("registeredServiceAccessStrategyEnforcer")

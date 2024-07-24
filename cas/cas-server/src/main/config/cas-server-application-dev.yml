@@ -172,12 +172,6 @@ cas.authn.oidc.core.issuer: ${cas.server.prefix}/oidc
 
 cas.authn.oidc.jwks.file-system.jwks-file: file:./src/main/config/keystore.jwks
 
-server-identity:
-  identityName: CAS
-  identityRole: SSO
-  identityServerId: 1
-
-
 # Example to override theme colors, logo, favicon, platform name ...
 theme:
   #  vitamui-platform-name: VITAM-UI

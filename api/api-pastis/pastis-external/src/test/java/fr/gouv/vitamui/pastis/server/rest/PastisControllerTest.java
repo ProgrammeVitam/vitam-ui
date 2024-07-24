@@ -3,7 +3,6 @@ package fr.gouv.vitamui.pastis.server.rest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableMap;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
-import fr.gouv.vitamui.commons.api.identity.ServerIdentityConfiguration;
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import fr.gouv.vitamui.pastis.common.dto.ElementProperties;
@@ -34,7 +33,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(controllers = PastisController.class)
-@Import(value = { WebSecurityConfig.class, ServerIdentityConfiguration.class, RestExceptionHandler.class })
+@Import(value = { WebSecurityConfig.class, RestExceptionHandler.class })
 public class PastisControllerTest extends ControllerTest {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PastisControllerTest.class);

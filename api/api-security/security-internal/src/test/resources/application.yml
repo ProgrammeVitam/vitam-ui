@@ -11,8 +11,3 @@ spring:
       discovery:
         enabled: false
         register: false
-
-server-identity:
-  identityName: vitamui-dev
-  identityRole: security-internal
-  identityServerId: 1

@@ -1,6 +1,5 @@
 package fr.gouv.vitamui.commons.rest;
 
-import fr.gouv.vitamui.commons.api.identity.ServerIdentityConfiguration;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,14 +17,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class RestApplicationTest {
 
     @Autowired
-    ServerIdentityConfiguration serverIdentityConfiguration;
-
-    @Autowired
     RestTestApplicationConfiguration applicationConfiguration;
 
     @Test
     public void testContextLoads() {
-        assertThat(serverIdentityConfiguration).isNotNull();
         assertThat(applicationConfiguration).isNotNull();
     }
 }

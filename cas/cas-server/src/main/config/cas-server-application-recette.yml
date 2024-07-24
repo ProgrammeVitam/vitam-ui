@@ -140,11 +140,6 @@ cas.authn.oauth.access-token.max-time-to-live-in-seconds: 28800
 
 cas.authn.oidc.core.issuer: ${cas.server.prefix}/oidc
 
-server-identity:
-  identityName: CAS
-  identityRole: SSO
-  identityServerId: 1
-
 theme:
   primary: '#ff4a54'
   secondary: '#241f63'

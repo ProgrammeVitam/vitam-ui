@@ -1,7 +1,6 @@
 package fr.gouv.vitamui.cas.provider;
 
 import fr.gouv.vitamui.cas.util.Utils;
-import fr.gouv.vitamui.commons.api.identity.ServerIdentityAutoConfiguration;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.common.dto.common.ProviderEmbeddedOptions;
@@ -35,7 +34,7 @@ import static org.mockito.Mockito.when;
  * Tests {@link ProvidersService}.
  */
 @RunWith(SpringRunner.class)
-@ContextConfiguration(classes = ServerIdentityAutoConfiguration.class)
+@ContextConfiguration(classes = ProvidersServiceTest.class)
 @TestPropertySource(locations = "classpath:/application-test.properties")
 public final class ProvidersServiceTest {
 

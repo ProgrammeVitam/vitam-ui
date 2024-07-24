@@ -2,11 +2,6 @@
 # Back runners configuration
 ##########################################
 
-server-identity:
-  identityName: vitamui-dev
-  identityRole: integration-tests
-  identityServerId: 1
-
 certs-folder: certs/local/
 generic-cert: ${certs-folder}/generic-it.jks
 jks-password: changeme

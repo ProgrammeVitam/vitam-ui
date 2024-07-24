@@ -3,7 +3,7 @@
 
 spring:
   application:
-    name: ${server-identity.identityRole}
+    name: pastis-standalone
   api:
     name: API Pastis
     description: This API is used to manage Vitam's profile
@@ -34,15 +34,11 @@ json.template.fileVitam: profiles_new/AUP_default_VITAM.json
 
 #PORT
 server.port: 8096
-server-identity:
-  identityName: vitamui-dev
-  identityRole: pastis-standalone
-  identityServerId: 1
 
 management:
   endpoints:
     jmx:
-      domain: ${server-identity.identityRole}
+      domain: pastis-standalone
       unique-names: true
       web.exposure.include: info,health,prometheus
   endpoint:

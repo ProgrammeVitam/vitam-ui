@@ -38,7 +38,6 @@ package fr.gouv.vitamui.ingest.internal.server.doc;
 
 import fr.gouv.vitam.access.external.client.AccessExternalClient;
 import fr.gouv.vitam.access.external.client.AdminExternalClient;
-import fr.gouv.vitamui.commons.api.identity.ServerIdentityConfiguration;
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
 import fr.gouv.vitamui.commons.rest.configuration.SwaggerConfiguration;
 import fr.gouv.vitamui.commons.test.rest.AbstractSwaggerJsonFileGenerationTest;
@@ -60,7 +59,7 @@ import org.springframework.test.context.junit4.SpringRunner;
  */
 @RunWith(SpringRunner.class)
 @WebMvcTest
-@Import(value = { ServerIdentityConfiguration.class, SwaggerConfiguration.class })
+@Import(value = { SwaggerConfiguration.class })
 @TestPropertySource(properties = { "spring.config.name=ingest-internal-application" })
 @ActiveProfiles("test, swagger")
 public class SwaggerJsonFileGenerationTest extends AbstractSwaggerJsonFileGenerationTest {

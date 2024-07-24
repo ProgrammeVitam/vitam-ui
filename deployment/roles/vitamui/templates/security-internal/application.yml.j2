@@ -14,11 +14,6 @@ spring:
     mongodb:
       uri: "mongodb://{{ mongodb.security.user }}:{{ mongodb.security.password }}@{{ mongodb.host }}:{{ mongodb.mongod_port }}/{{ mongodb.security.db }}?replicaSet={{ mongod_replicaset_name }}&connectTimeoutMS={{ mongod_client_connect_timeout_ms }}"
 
-server-identity:
-  identityName: {{ vitamui_site_name if groups['hosts_vitamui_consul_server'] | default([]) | length > 0 else vitam_site_name }}
-  identityRole: vitamui-{{ vitamui_struct.vitamui_component }}
-  identityServerId: 1
-
 logging:
   config: {{ vitamui_folder_conf }}/logback.xml
 

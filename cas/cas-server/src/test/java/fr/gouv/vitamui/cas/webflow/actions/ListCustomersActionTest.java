@@ -6,7 +6,6 @@ import fr.gouv.vitamui.cas.provider.ProvidersService;
 import fr.gouv.vitamui.cas.util.Constants;
 import fr.gouv.vitamui.cas.util.Utils;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
-import fr.gouv.vitamui.commons.api.identity.ServerIdentityAutoConfiguration;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
@@ -35,7 +34,7 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 
 @RunWith(SpringRunner.class)
-@ContextConfiguration(classes = ServerIdentityAutoConfiguration.class)
+@ContextConfiguration(classes = ListCustomersActionTest.class)
 @TestPropertySource(locations = "classpath:/application-test.properties")
 public class ListCustomersActionTest extends BaseWebflowActionTest {
 

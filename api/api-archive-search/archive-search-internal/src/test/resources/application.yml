@@ -21,11 +21,6 @@ security:
   host: xxx
   port: 8089
 
-server-identity:
-  identityName: vitamui-test
-  identityRole: archive
-  identityServerId: 1
-
 logbook.scheduling.sendEventToVitamTasks.enabled: false
 
 # external ontologie file path

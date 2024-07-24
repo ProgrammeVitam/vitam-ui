@@ -3,7 +3,7 @@
 
 spring:
   application:
-    name: ${server-identity.identityRole}
+    name: iam-external
   api:
     name: API IAM (Identity Access Management) External
     description: This API is used to manage customers, tenants, identity providers, users with their profiles and their profiles groups.
@@ -18,7 +18,7 @@ spring:
 management:
   endpoints:
     jmx:
-      domain: ${server-identity.identityRole}
+      domain: iam-external
       unique-names: true
     web.exposure.include: '*'
   endpoint:

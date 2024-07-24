@@ -28,14 +28,13 @@ package fr.gouv.vitamui.archives.search.external.server.rest;
 
 import fr.gouv.vitamui.archives.search.external.server.security.WebSecurityConfig;
 import fr.gouv.vitamui.commons.api.domain.IdDto;
-import fr.gouv.vitamui.commons.api.identity.ServerIdentityConfiguration;
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
 import fr.gouv.vitamui.iam.security.provider.ExternalApiAuthenticationProvider;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.TestPropertySource;
 
-@Import(value = { WebSecurityConfig.class, ServerIdentityConfiguration.class, RestExceptionHandler.class })
+@Import(value = { WebSecurityConfig.class, RestExceptionHandler.class })
 @TestPropertySource(properties = { "spring.config.name=archive-search-external-application" })
 public abstract class ApiArchivesSearchExternalControllerTest<T extends IdDto>
     extends ArchivesSearchApiControllerTest<IdDto> {

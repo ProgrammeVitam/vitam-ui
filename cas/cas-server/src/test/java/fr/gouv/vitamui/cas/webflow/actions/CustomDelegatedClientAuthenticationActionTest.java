@@ -5,7 +5,6 @@ import fr.gouv.vitamui.cas.BaseWebflowActionTest;
 import fr.gouv.vitamui.cas.provider.ProvidersService;
 import fr.gouv.vitamui.cas.util.Constants;
 import fr.gouv.vitamui.cas.util.Utils;
-import fr.gouv.vitamui.commons.api.identity.ServerIdentityAutoConfiguration;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import fr.gouv.vitamui.iam.external.client.CasExternalRestClient;
@@ -40,7 +39,7 @@ import static org.mockito.Mockito.when;
  * Tests {@link CustomDelegatedClientAuthenticationAction}.
  */
 @RunWith(SpringRunner.class)
-@ContextConfiguration(classes = ServerIdentityAutoConfiguration.class)
+@ContextConfiguration(classes = CustomDelegatedClientAuthenticationActionTest.class)
 @TestPropertySource(locations = "classpath:/application-test.properties")
 public final class CustomDelegatedClientAuthenticationActionTest extends BaseWebflowActionTest {
 

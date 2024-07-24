@@ -30,7 +30,6 @@ import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.archives.search.common.rest.RestApi;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
-import fr.gouv.vitamui.commons.test.extension.ServerIdentityExtension;
 import fr.gouv.vitamui.commons.vitam.api.dto.PersistentIdentifierResponseDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
 import org.junit.jupiter.api.Assertions;
@@ -59,7 +58,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class ArchiveInternalRestClientTest extends ServerIdentityExtension {
+public class ArchiveInternalRestClientTest {
 
     String baseUrl = "https://tests" + RestApi.ARCHIVE_SEARCH_PATH;
     InternalHttpContext defaultContext = new InternalHttpContext(9, "", "", "", "", "", "", "");

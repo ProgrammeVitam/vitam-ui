@@ -31,7 +31,6 @@ import fr.gouv.vitam.access.external.client.AdminExternalClient;
 import fr.gouv.vitamui.archive.internal.server.searchcriteria.service.SearchCriteriaHistoryInternalService;
 import fr.gouv.vitamui.archive.internal.server.service.ArchiveSearchAgenciesInternalService;
 import fr.gouv.vitamui.archive.internal.server.service.ArchiveSearchInternalService;
-import fr.gouv.vitamui.commons.api.identity.ServerIdentityConfiguration;
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
 import fr.gouv.vitamui.commons.rest.configuration.SwaggerConfiguration;
 import fr.gouv.vitamui.commons.test.rest.AbstractSwaggerJsonFileGenerationJunit5;
@@ -50,7 +49,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
  */
 @ExtendWith(SpringExtension.class)
 @WebMvcTest
-@Import(value = { ServerIdentityConfiguration.class, SwaggerConfiguration.class })
+@Import(value = { SwaggerConfiguration.class })
 @ActiveProfiles("test, swagger")
 public class SwaggerJsonFileGenerationTest extends AbstractSwaggerJsonFileGenerationJunit5 {
 

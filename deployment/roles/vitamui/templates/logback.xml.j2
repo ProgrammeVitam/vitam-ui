@@ -21,8 +21,6 @@
   <!-- end of api-gateway access-logs configuration -->
 {% endif %}
 
-  <springProperty name="server-identity.identityRole" source="server-identity.identityRole"/>
-
   <!-- <appender name="FILE" class="ch.qos.logback.core.FileAppender"> -->
   <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
     <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">

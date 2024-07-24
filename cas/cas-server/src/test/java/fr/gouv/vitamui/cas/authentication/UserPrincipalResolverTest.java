@@ -13,7 +13,6 @@ import fr.gouv.vitamui.commons.api.domain.ProfileDto;
 import fr.gouv.vitamui.commons.api.domain.Role;
 import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
 import fr.gouv.vitamui.commons.api.enums.UserTypeEnum;
-import fr.gouv.vitamui.commons.api.identity.ServerIdentityAutoConfiguration;
 import fr.gouv.vitamui.commons.api.utils.CasJsonWrapper;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
@@ -61,7 +60,7 @@ import static org.mockito.Mockito.when;
  * Tests {@link UserPrincipalResolver}.
  */
 @RunWith(SpringRunner.class)
-@ContextConfiguration(classes = ServerIdentityAutoConfiguration.class)
+@ContextConfiguration(classes = UserPrincipalResolverTest.class)
 @TestPropertySource(locations = "classpath:/application-test.properties")
 public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
 

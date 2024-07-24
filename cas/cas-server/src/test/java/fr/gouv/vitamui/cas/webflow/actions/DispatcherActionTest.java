@@ -8,7 +8,6 @@ import fr.gouv.vitamui.cas.util.Constants;
 import fr.gouv.vitamui.cas.util.Utils;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
-import fr.gouv.vitamui.commons.api.identity.ServerIdentityAutoConfiguration;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
@@ -38,7 +37,7 @@ import static org.mockito.Mockito.when;
  * Tests {@link DispatcherAction}.
  */
 @RunWith(SpringRunner.class)
-@ContextConfiguration(classes = ServerIdentityAutoConfiguration.class)
+@ContextConfiguration(classes = DispatcherActionTest.class)
 @TestPropertySource(locations = "classpath:/application-test.properties")
 public final class DispatcherActionTest extends BaseWebflowActionTest {
 

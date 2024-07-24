@@ -1,6 +1,10 @@
 package fr.gouv.vitamui.iam.internal.server.customer.service;
 
-import fr.gouv.vitamui.commons.api.domain.*;
+import fr.gouv.vitamui.commons.api.domain.AddressDto;
+import fr.gouv.vitamui.commons.api.domain.ExternalParametersDto;
+import fr.gouv.vitamui.commons.api.domain.LanguageDto;
+import fr.gouv.vitamui.commons.api.domain.OwnerDto;
+import fr.gouv.vitamui.commons.api.domain.Role;
 import fr.gouv.vitamui.commons.logbook.common.EventType;
 import fr.gouv.vitamui.commons.logbook.dao.EventRepository;
 import fr.gouv.vitamui.commons.logbook.domain.Event;
@@ -29,7 +33,11 @@ import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.*;
+import org.mockito.AdditionalAnswers;
+import org.mockito.ArgumentMatchers;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
