@@ -201,12 +201,12 @@
           <th *matHeaderCellDef class="pastis-font-table-header pastis-col" mat-header-cell></th>
           <td *matCellDef="let element; index as i" class="pastis-metadata-table-col-small" mat-cell>
             <button
-              (click)="onButtonClicked(element.id, $event)"
+              (click)="onButtonClicked(element.id)"
               *ngIf="isRowHovered(element.id)"
-              [center-mat-menu]="menuTrigger"
+              [matMenuTriggerFor]="menu"
               [ngClass]="{
-                'pastis-btn-metadata-options-active': isButtonClicked(element.id, matDataSource.data[rowIndex]),
-                'pastis-btn-metadata-options': !isButtonClicked(element.id, matDataSource.data[rowIndex]),
+                'pastis-btn-metadata-options-active': isButtonClicked(element.id),
+                'pastis-btn-metadata-options': !isButtonClicked(element.id),
               }"
               disableRipple="true"
               id="menuBtn"
@@ -214,135 +214,133 @@
             >
               <mat-icon
                 [ngClass]="{
-                  'pastis-ico-menu-active': isButtonClicked(element.id, matDataSource.data[rowIndex]),
-                  'pastis-ico-menu-inactive': !isButtonClicked(element.id, matDataSource.data[rowIndex]),
+                  'pastis-ico-menu-active': isButtonClicked(element.id),
+                  'pastis-ico-menu-inactive': !isButtonClicked(element.id),
                 }"
               >
-                {{ isButtonClicked(element.id, matDataSource.data[rowIndex]) ? 'close' : 'more_horiz' }}
+                {{ isButtonClicked(element.id) ? 'close' : 'more_horiz' }}
               </mat-icon>
             </button>
 
-            <div #menuTrigger="matMenuTrigger" (menuClosed)="rowIndex = 100" (menuOpened)="rowIndex = i" [matMenuTriggerFor]="menu">
-              <mat-menu #menu="matMenu" [overlapTrigger]="false" class="pastis-menu-item-vitam">
-                <!-- Dupliquer-->
-                <mat-divider
-                  *ngIf="isDuplicated(element.nomDuChamp) && this.profileService.profileMode === 'PA'"
-                  style="border-top-color: #e0e0e0"
-                >
-                </mat-divider>
-                <button
-                  (click)="onDuplicateNode(element.id)"
-                  *ngIf="isDuplicated(element.nomDuChamp) && this.profileService.profileMode === 'PA'"
-                  mat-menu-item
-                >
-                  <mat-icon style="color: #757575">filter_none</mat-icon>
-                  <span class="text normal">{{ 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.DUPLIQUER' | translate }}</span>
-                </button>
-                <!-- @Attributs-->
-                <mat-divider
-                  *ngIf="hasAttributes(element.nomDuChamp) && this.profileService.profileMode === 'PA'"
-                  style="border-top-color: #e0e0e0"
-                ></mat-divider>
-                <button
-                  (click)="onEditAttributesClick(element.id)"
-                  *ngIf="hasAttributes(element.nomDuChamp) && this.profileService.profileMode === 'PA'"
-                  mat-menu-item
-                >
-                  <span class="text normal">{{ 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.ATTRIBUT_METADONNEE' | translate }}</span>
-                </button>
+            <mat-menu #menu="matMenu" (closed)="buttonClickedId = undefined" [overlapTrigger]="false" class="pastis-menu-item-vitam">
+              <!-- Dupliquer-->
+              <mat-divider
+                *ngIf="isDuplicated(element.nomDuChamp) && this.profileService.profileMode === 'PA'"
+                style="border-top-color: #e0e0e0"
+              >
+              </mat-divider>
+              <button
+                (click)="onDuplicateNode(element.id)"
+                *ngIf="isDuplicated(element.nomDuChamp) && this.profileService.profileMode === 'PA'"
+                mat-menu-item
+              >
+                <mat-icon style="color: #757575">filter_none</mat-icon>
+                <span class="text normal">{{ 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.DUPLIQUER' | translate }}</span>
+              </button>
+              <!-- @Attributs-->
+              <mat-divider
+                *ngIf="hasAttributes(element.nomDuChamp) && this.profileService.profileMode === 'PA'"
+                style="border-top-color: #e0e0e0"
+              ></mat-divider>
+              <button
+                (click)="onEditAttributesClick(element.id)"
+                *ngIf="hasAttributes(element.nomDuChamp) && this.profileService.profileMode === 'PA'"
+                mat-menu-item
+              >
+                <span class="text normal">{{ 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.ATTRIBUT_METADONNEE' | translate }}</span>
+              </button>
 
-                <!-- Autoriser la présence de métadonnées non déclarées-->
-                <mat-divider
-                  *ngIf="
-                    isElementComplex(element.nomDuChamp) &&
-                    this.profileService.profileMode === 'PUA' &&
-                    isElementNameNotContentManagement(element.nomDuChamp)
-                  "
-                  style="border-top-color: #e0e0e0"
+              <!-- Autoriser la présence de métadonnées non déclarées-->
+              <mat-divider
+                *ngIf="
+                  isElementComplex(element.nomDuChamp) &&
+                  this.profileService.profileMode === 'PUA' &&
+                  isElementNameNotContentManagement(element.nomDuChamp)
+                "
+                style="border-top-color: #e0e0e0"
+              >
+              </mat-divider>
+              <mat-checkbox
+                *ngIf="
+                  isElementComplex(element.nomDuChamp) &&
+                  this.profileService.profileMode === 'PUA' &&
+                  isElementNameNotContentManagement(element.nomDuChamp)
+                "
+                class="mat-menu-item"
+                (click)="toggleAutorisation(element)"
+                [checked]="getNodeAdditionalProperties(element)"
+              >
+                <span class="allow_presence_text"
+                  >Autoriser la presence de <br />
+                  métadonnées non déclarées</span
                 >
-                </mat-divider>
-                <mat-checkbox
-                  *ngIf="
-                    isElementComplex(element.nomDuChamp) &&
-                    this.profileService.profileMode === 'PUA' &&
-                    isElementNameNotContentManagement(element.nomDuChamp)
-                  "
-                  class="mat-menu-item"
-                  (change)="changeAutorisation($event, element)"
-                  [checked]="getNodeAdditionalProperties(element)"
-                >
-                  <span class="allow_presence_text"
-                    >Autoriser la presence de <br />
-                    métadonnées non déclarées</span
-                  >
-                  <div class="placement-tooltip">
-                    <i
-                      class="vitamui-icon vitamui-icon-info primary clickable"
-                      matTooltip="Permet de modifier l’autorisation dans le manifeste de la présence de métadonnées non déclarées dans le PUA"
-                      matTooltipClass="vitamui-tooltip"
-                      style="font-size: 1.5em"
-                    ></i>
-                  </div>
-                </mat-checkbox>
+                <div class="placement-tooltip">
+                  <i
+                    class="vitamui-icon vitamui-icon-info primary clickable"
+                    matTooltip="Permet de modifier l’autorisation dans le manifeste de la présence de métadonnées non déclarées dans le PUA"
+                    matTooltipClass="vitamui-tooltip"
+                    style="font-size: 1.5em"
+                  ></i>
+                </div>
+              </mat-checkbox>
 
-                <!-- @Supprimer-->
-                <mat-divider *ngIf="isDeltable(element.nomDuChamp)" style="border-top-color: #e0e0e0"> </mat-divider>
-                <button (click)="onDeleteNode(element.id)" *ngIf="isDeltable(element.nomDuChamp)" mat-menu-item>
-                  <mat-icon style="color: #757575">delete</mat-icon>
-                  <span class="text normal">{{ 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.SUPPRIMER' | translate }}</span>
-                </button>
+              <!-- @Supprimer-->
+              <mat-divider *ngIf="isDeltable(element.nomDuChamp)" style="border-top-color: #e0e0e0"> </mat-divider>
+              <button (click)="onDeleteNode(element.id)" *ngIf="isDeltable(element.nomDuChamp)" mat-menu-item>
+                <mat-icon style="color: #757575">delete</mat-icon>
+                <span class="text normal">{{ 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.SUPPRIMER' | translate }}</span>
+              </button>
 
-                <!-- Contrôle de métadonées => PUA -->
-                <mat-divider
-                  *ngIf="
-                    this.profileService.profileMode === 'PUA' &&
-                    !isElementComplex(element.nomDuChamp) &&
-                    element.id === clickedNode.id &&
-                    !isAppliedControl(element.id)
-                  "
-                  style="border-top-color: #e0e0e0"
-                >
-                </mat-divider>
-                <button
-                  (click)="onControlClick(element.id)"
-                  *ngIf="
-                    this.profileService.profileMode === 'PUA' &&
-                    !isElementComplex(element.nomDuChamp) &&
-                    element.id === clickedNode.id &&
-                    !isAppliedControl(element.id)
-                  "
-                  mat-menu-item
-                >
-                  <mat-icon style="color: #757575"><i class="vitamui-icon vitamui-icon-ic24-PUA"></i></mat-icon>
-                  <span class="text normal">{{ 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.CONTROLE_METADONNEE' | translate }}</span>
-                </button>
+              <!-- Contrôle de métadonées => PUA -->
+              <mat-divider
+                *ngIf="
+                  this.profileService.profileMode === 'PUA' &&
+                  !isElementComplex(element.nomDuChamp) &&
+                  element.id === clickedNode.id &&
+                  !isAppliedControl(element.id)
+                "
+                style="border-top-color: #e0e0e0"
+              >
+              </mat-divider>
+              <button
+                (click)="onControlClick(element.id)"
+                *ngIf="
+                  this.profileService.profileMode === 'PUA' &&
+                  !isElementComplex(element.nomDuChamp) &&
+                  element.id === clickedNode.id &&
+                  !isAppliedControl(element.id)
+                "
+                mat-menu-item
+              >
+                <mat-icon style="color: #757575"><i class="vitamui-icon vitamui-icon-ic24-PUA"></i></mat-icon>
+                <span class="text normal">{{ 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.CONTROLE_METADONNEE' | translate }}</span>
+              </button>
 
-                <!-- Edition des contres de nétadonnées -->
-                <mat-divider
-                  *ngIf="
-                    this.profileService.profileMode === 'PUA' &&
-                    !isElementComplex(element.nomDuChamp) &&
-                    element.id === clickedNode.id &&
-                    isAppliedControl(element.id)
-                  "
-                  style="border-top-color: #e0e0e0"
-                >
-                </mat-divider>
-                <button
-                  (click)="onEditControlClick(element.id)"
-                  *ngIf="
-                    this.profileService.profileMode === 'PUA' &&
-                    !isElementComplex(element.nomDuChamp) &&
-                    element.id === clickedNode.id &&
-                    isAppliedControl(element.id)
-                  "
-                  mat-menu-item
-                >
-                  <mat-icon style="color: #757575"><i class="vitamui-icon vitamui-icon-ic24-PUA"></i></mat-icon>
-                  <span class="text normal">{{ 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.EDITION_CONTROLE' | translate }}</span>
-                </button>
-              </mat-menu>
-            </div>
+              <!-- Edition des contres de nétadonnées -->
+              <mat-divider
+                *ngIf="
+                  this.profileService.profileMode === 'PUA' &&
+                  !isElementComplex(element.nomDuChamp) &&
+                  element.id === clickedNode.id &&
+                  isAppliedControl(element.id)
+                "
+                style="border-top-color: #e0e0e0"
+              >
+              </mat-divider>
+              <button
+                (click)="onEditControlClick(element.id)"
+                *ngIf="
+                  this.profileService.profileMode === 'PUA' &&
+                  !isElementComplex(element.nomDuChamp) &&
+                  element.id === clickedNode.id &&
+                  isAppliedControl(element.id)
+                "
+                mat-menu-item
+              >
+                <mat-icon style="color: #757575"><i class="vitamui-icon vitamui-icon-ic24-PUA"></i></mat-icon>
+                <span class="text normal">{{ 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.EDITION_CONTROLE' | translate }}</span>
+              </button>
+            </mat-menu>
           </td>
         </ng-container>
 

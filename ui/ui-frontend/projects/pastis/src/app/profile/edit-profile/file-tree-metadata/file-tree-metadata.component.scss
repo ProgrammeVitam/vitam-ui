@@ -426,6 +426,11 @@ dp-day-calendar .dp-day-calendar-container {
   padding-bottom: 30px;
 }
 
+.cdk-overlay-connected-position-bounding-box:has(.pastis-menu-item-vitam) {
+  width: fit-content !important;
+  transform: translateX(calc(-50% + 20px));
+}
+
 .pastis-menu-item-vitam {
   @extend .vitamui-menu-panel;
   .mat-menu-item:hover:not([disabled]),

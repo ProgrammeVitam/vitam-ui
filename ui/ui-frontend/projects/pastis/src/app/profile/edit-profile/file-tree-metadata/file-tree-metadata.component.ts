@@ -29,7 +29,6 @@
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 import { Component, EventEmitter, OnDestroy, OnInit, Output, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatLegacyCheckboxChange as MatCheckboxChange } from '@angular/material/legacy-checkbox';
 import { MatLegacyTableDataSource as MatTableDataSource } from '@angular/material/legacy-table';
 import { Router } from '@angular/router';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
@@ -49,9 +48,9 @@ import {
   FileNode,
   FileNodeInsertAttributeParams,
   FileNodeInsertParams,
+  nodeNameToLabel,
   TypeConstants,
   ValueOrDataConstants,
-  nodeNameToLabel,
 } from '../../../models/file-node';
 import { CardinalityValues, MetadataHeaders } from '../../../models/models';
 import { ProfileType } from '../../../models/profile-type.enum';
@@ -221,6 +220,7 @@ export class FileTreeMetadataComponent implements OnInit, OnDestroy {
   commentaire: string;
   enumeration: string[];
   additionalPropertiesMetadonnee: boolean;
+  buttonClickedId?: number;
 
   constructor(
     private fileService: FileService,
@@ -748,18 +748,15 @@ export class FileTreeMetadataComponent implements OnInit, OnDestroy {
 
   onButtonClicked(elementId: number) {
     this.hoveredElementId = elementId;
+    this.buttonClickedId = elementId;
   }
 
-  isButtonClicked(elementId: number, data: MetadataHeaders) {
-    if (data) {
-      this.hoveredElementId = elementId;
-      this.buttonIsClicked = true;
-      return data.id === this.hoveredElementId;
-    }
+  isButtonClicked(elementId: number) {
+    return this.buttonClickedId === elementId;
   }
 
   isRowHovered(elementId: number) {
-    return this.hoveredElementId === elementId;
+    return this.hoveredElementId === elementId || this.buttonClickedId === elementId;
   }
 
   onMouseOver(row: MetadataHeaders) {
@@ -1013,9 +1010,8 @@ export class FileTreeMetadataComponent implements OnInit, OnDestroy {
     return !(nomDuChamp === 'Content');
   }
 
-  changeAutorisation($event: MatCheckboxChange, element: any) {
-    console.log($event.checked + 'test' + element.nomDuChamp);
-    this.additionalPropertiesMetadonnee = $event.checked;
+  toggleAutorisation(element: any) {
+    this.additionalPropertiesMetadonnee = !this.getNodeAdditionalProperties(element);
     this.setNodeAdditionalPropertiesChange(this.additionalPropertiesMetadonnee, element);
   }
 

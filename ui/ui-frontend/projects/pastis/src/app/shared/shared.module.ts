@@ -44,7 +44,6 @@ import { MatLegacyTooltipModule as MatTooltipModule } from '@angular/material/le
 import { TranslateModule } from '@ngx-translate/core';
 import { VitamUICommonModule } from 'vitamui-library';
 import { PastisMaterialModule } from '../material.module';
-import { CenterMatmenuDirective } from '../profile/edit-profile/file-tree-metadata/center-matmenu.directive';
 import { ModifyTextButtonComponent } from './modify-text-button/modify-text-button.component';
 import { PastisBreadcrumbComponent } from './pastis-breadcrumb-components/pastis-breadcrumb/pastis-breadcrumb.component';
 import { PastisTitleBreadcrumbComponent } from './pastis-breadcrumb-components/pastis-title-breadcrumb/pastis-title-breadcrumb.component';
@@ -57,7 +56,6 @@ import { PastisUnderConstructionComponent } from './pastis-under-construction/pa
 @NgModule({
   declarations: [
     PastisUnderConstructionComponent,
-    CenterMatmenuDirective,
     PastisPopupMetadataLanguageComponent,
     PastisDialogConfirmComponent,
     PastisBreadcrumbComponent,
@@ -81,7 +79,6 @@ import { PastisUnderConstructionComponent } from './pastis-under-construction/pa
     MatTooltipModule,
     PastisMaterialModule,
     PastisDialogConfirmComponent,
-    CenterMatmenuDirective,
     PastisPopupMetadataLanguageComponent,
     PastisBreadcrumbComponent,
     PastisTitleBreadcrumbComponent,
