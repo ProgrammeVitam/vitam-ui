@@ -1,2 +1,2 @@
-Identifier;Name*;Description;Status;ArchiveProfiles;CheckParentLink;CheckParentId;LinkParentId;FormatUnidentifiedAuthorized;EveryFormatType;FormatType;ManagementContractId;ComputedInheritedRulesAtIngest;MasterMandatory;EveryDataObjectVersion;DataObjectVersion
-;;Not all text is created equal. Some is missing bytes. ðŸŒ;toto;abdc | efgh;toto;abdc | efgh;abdc | efgh;toto;toto;abdc | efgh;abdc;toto;toto;toto;toto
+Identifier;Name*;Description;Status;ArchiveProfiles;CheckParentLink;CheckParentId;LinkParentId;FormatUnidentifiedAuthorized;EveryFormatType;FormatType;ManagementContractId;ComputedInheritedRulesAtIngest;MasterMandatory;EveryDataObjectVersion;DataObjectVersion;SignedDocument;SigningRole
+;;Not all text is created equal. Some is missing bytes. ðŸŒ;toto;abdc | efgh;toto;abdc | efgh;abdc | efgh;toto;toto;abdc | efgh;abdc;toto;toto;toto;toto;toto;toto

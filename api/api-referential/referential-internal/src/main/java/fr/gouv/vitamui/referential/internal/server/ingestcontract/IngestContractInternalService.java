@@ -69,6 +69,7 @@ import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import fr.gouv.vitamui.referential.common.dsl.VitamQueryHelper;
 import fr.gouv.vitamui.referential.common.dto.IngestContractDto;
 import fr.gouv.vitamui.referential.common.dto.IngestContractResponseDto;
+import fr.gouv.vitamui.referential.common.dto.SignaturePolicyDto;
 import fr.gouv.vitamui.referential.common.service.IngestContractService;
 import fr.gouv.vitamui.referential.internal.server.utils.ExportCSVUtils;
 import fr.gouv.vitamui.referential.internal.server.utils.ImportCSVUtils;
@@ -508,6 +509,9 @@ public class IngestContractInternalService {
         final var deactivationDate = ingestContract.getDeactivationDate() == null
             ? null
             : df.format(LocalDateUtil.getDate(ingestContract.getDeactivationDate()));
+        final SignaturePolicyDto signaturePolicyDto = Optional.ofNullable(ingestContract.getSignaturePolicy()).orElse(
+            new SignaturePolicyDto()
+        );
 
         return new String[] {
             ingestContract.getIdentifier(),
@@ -526,6 +530,8 @@ public class IngestContractInternalService {
             String.valueOf(ingestContract.isMasterMandatory()),
             String.valueOf(ingestContract.isEveryDataObjectVersion()),
             dataObjectVersion,
+            signaturePolicyDto.getSignedDocument().name(),
+            signaturePolicyDto.getSigningRole(),
             activationDate,
             deactivationDate,
         };

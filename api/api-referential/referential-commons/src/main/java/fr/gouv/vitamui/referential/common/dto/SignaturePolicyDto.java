@@ -28,16 +28,73 @@
 
 package fr.gouv.vitamui.referential.common.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.opencsv.bean.CsvBindByName;
 import fr.gouv.vitam.common.model.administration.SignaturePolicy;
 import lombok.Data;
 import lombok.experimental.Accessors;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Accessors(chain = true)
 public class SignaturePolicyDto {
 
-    private SignaturePolicy.SignedDocumentPolicyEnum signedDocument;
+    public static final String SIGNING_ROLE_SEPARATOR = "|";
+    public static final String SIGNING_ROLE_SEPARATOR_REGEX = "\\|";
+    public static final String SIGNING_ROLE_DECLARED_SIGNATURE = "DeclaredSignature";
+    public static final String SIGNING_ROLE_DECLARED_TIMESTAMP = "DeclaredTimestamp";
+    public static final String SIGNING_ROLE_DECLARED_ADDITIONAL_PROOF = "DeclaredAdditionalProof";
+
+    @CsvBindByName(column = "SignedDocument")
+    private SignaturePolicy.SignedDocumentPolicyEnum signedDocument = SignaturePolicy.SignedDocumentPolicyEnum.ALLOWED;
+
     private Boolean declaredSignature;
     private Boolean declaredTimestamp;
     private Boolean declaredAdditionalProof;
+
+    /**
+     * This field is only used by OpenCSV
+     */
+    @JsonIgnore
+    @CsvBindByName(column = "SigningRole")
+    private String signingRole;
+
+    /**
+     * Used by OpenCSV only
+     */
+    public String getSigningRole() {
+        List<String> roles = new ArrayList<>();
+        if (Boolean.TRUE.equals(declaredSignature)) {
+            roles.add(SIGNING_ROLE_DECLARED_SIGNATURE);
+        }
+        if (Boolean.TRUE.equals(declaredTimestamp)) {
+            roles.add(SIGNING_ROLE_DECLARED_TIMESTAMP);
+        }
+        if (Boolean.TRUE.equals(declaredAdditionalProof)) {
+            roles.add(SIGNING_ROLE_DECLARED_ADDITIONAL_PROOF);
+        }
+        return String.join(SIGNING_ROLE_SEPARATOR, roles);
+    }
+
+    /**
+     * Used by OpenCSV only
+     */
+    public void setSigningRole(String signingRole) {
+        String[] roles = signingRole.split(SIGNING_ROLE_SEPARATOR_REGEX);
+        for (String role : roles) {
+            switch (role) {
+                case SIGNING_ROLE_DECLARED_SIGNATURE:
+                    declaredSignature = true;
+                    break;
+                case SIGNING_ROLE_DECLARED_TIMESTAMP:
+                    declaredTimestamp = true;
+                    break;
+                case SIGNING_ROLE_DECLARED_ADDITIONAL_PROOF:
+                    declaredAdditionalProof = true;
+                    break;
+            }
+        }
+    }
 }

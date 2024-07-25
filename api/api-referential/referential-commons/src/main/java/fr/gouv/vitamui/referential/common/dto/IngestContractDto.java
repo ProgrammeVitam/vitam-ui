@@ -39,6 +39,7 @@ package fr.gouv.vitamui.referential.common.dto;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.opencsv.bean.CsvBindAndSplitByName;
 import com.opencsv.bean.CsvBindByName;
+import com.opencsv.bean.CsvRecurse;
 import fr.gouv.vitam.common.model.administration.ActivationStatus;
 import fr.gouv.vitamui.commons.api.domain.IdDto;
 import lombok.Getter;
@@ -115,5 +116,6 @@ public class IngestContractDto extends IdDto implements Serializable {
     @CsvBindByName(column = "ComputedInheritedRulesAtIngest")
     private boolean computeInheritedRulesAtIngest = false;
 
+    @CsvRecurse
     private SignaturePolicyDto signaturePolicy;
 }
