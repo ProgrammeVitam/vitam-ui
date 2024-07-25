@@ -108,7 +108,7 @@ export class AccessContractService extends SearchService<AccessContract> {
     );
   }
 
-  create(accessContract: AccessContract) {
+  create(accessContract: AccessContract): Observable<AccessContract> {
     return this.accessContractApi.create(accessContract).pipe(
       tap(
         (response: AccessContract) => {

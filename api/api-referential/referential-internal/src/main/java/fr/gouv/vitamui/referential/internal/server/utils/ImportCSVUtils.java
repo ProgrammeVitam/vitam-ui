@@ -134,6 +134,7 @@ public class ImportCSVUtils {
                 )
             );
         }
+
         if (headersLine.length != expectedColumns.size()) {
             throw new BadRequestException(
                 "The headers length in the file does not match with the expected",

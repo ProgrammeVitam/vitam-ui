@@ -50,7 +50,7 @@ import {
   FilingHoldingSchemeHandler,
   FilingHoldingSchemeNode,
   getUnitI18nAttribute,
-  IAccessContract,
+  AccessContract,
   IOntology,
   JsonPatchDto,
   MultiJsonPatchDto,
@@ -246,7 +246,7 @@ export class ArchiveService extends SearchService<any> implements SearchArchiveU
     return this.archiveApiService.updateUnitsRules(ruleSearchCriteriaDto, headers);
   }
 
-  getAccessContractById(accessContract: string): Observable<IAccessContract> {
+  getAccessContractById(accessContract: string): Observable<AccessContract> {
     const headers = new HttpHeaders().append('Content-Type', 'application/json');
 
     return this.accessContractApiService.getAccessContractById(accessContract, headers);

@@ -48,16 +48,18 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
 import { MatLegacyTabsModule as MatTabsModule } from '@angular/material/legacy-tabs';
 import { RouterModule } from '@angular/router';
-import { VitamUICommonModule } from 'vitamui-library';
-import { VitamUILibraryModule } from 'vitamui-library';
+import { VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 
 import { AccessContractInformationTabComponent } from './access-contract-information-tab/access-contract-information-tab.component';
 import { AccessContractNodesTabComponent } from './access-contract-nodes-tab/access-contract-nodes-tab.component';
 import { AccessContractNodeUpdateComponent } from './access-contract-nodes-tab/access-contract-nodes-update/access-contract-node-update.component';
 import { AccessContractPreviewComponent } from './access-contract-preview.component';
-import { AccessContractUsageAndServicesTabComponent } from './access-contract-usage-and-services-tab/access-contract-usage-and-services-tab.component';
+import { AccessContractAuthorizationsTabComponent } from './access-contract-authorizations-tab/access-contract-authorizations-tab.component';
 import { AccessContractWriteAccessTabComponent } from './access-contract-write-access-tab/access-contract-write-access-tab.component';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { TranslateModule } from '@ngx-translate/core';
+import { AccessContractAuthorizationsUpdateComponent } from './access-contract-authorizations-tab/access-contract-authorizations-update/access-contract-authorizations-update.component';
+import { MatRadioModule } from '@angular/material/radio';
 
 @NgModule({
   imports: [
@@ -78,15 +80,18 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
     MatFormFieldModule,
     MatInputModule,
     MatButtonToggleModule,
+    TranslateModule,
+    MatRadioModule,
   ],
   declarations: [
     AccessContractPreviewComponent,
     AccessContractInformationTabComponent,
-    AccessContractUsageAndServicesTabComponent,
+    AccessContractAuthorizationsTabComponent,
     AccessContractWriteAccessTabComponent,
     AccessContractNodesTabComponent,
     AccessContractNodeUpdateComponent,
+    AccessContractAuthorizationsUpdateComponent,
   ],
-  exports: [AccessContractPreviewComponent],
+  exports: [AccessContractPreviewComponent, AccessContractAuthorizationsUpdateComponent],
 })
 export class AccessContractPreviewModule {}

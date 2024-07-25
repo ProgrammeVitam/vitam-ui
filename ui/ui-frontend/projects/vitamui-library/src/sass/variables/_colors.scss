@@ -19,6 +19,11 @@ $orange: #bf511f;
 $green: #27740a;
 $mustard-yellow: #ffa610;
 $black: black;
+$ligthly-purple: #f6f3fb;
+
+:root {
+  --vitamui-lightly-purple: $ligthly-purple; // équivaut à --vitamui-background ??
+}
 
 /** DEPRECATED colors : Use color chart with declinations var(--vitamui-grey-XXX) **/
 $charcoal-grey-two: #474d4a;

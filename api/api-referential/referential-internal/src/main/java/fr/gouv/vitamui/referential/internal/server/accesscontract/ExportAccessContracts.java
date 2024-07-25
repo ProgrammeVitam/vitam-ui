@@ -4,27 +4,9 @@ import fr.gouv.vitamui.referential.internal.server.utils.ExportCSVParams;
 
 import java.util.List;
 
-public class ExportAccessContracts extends ExportCSVParams {
+import static fr.gouv.vitamui.referential.internal.server.accesscontract.AccessContractCSVUtils.*;
 
-    //Export access contracts CSV headers
-    private static final String NAME = "Name";
-    private static final String IDENTIFIER = "Identifier";
-    private static final String DESCRIPTION = "Description";
-    private static final String STATUS = "Status";
-    private static final String WRITING_PERMISSION = "WritingPermission";
-    private static final String EVERY_ORIGINATING_AGENCY = "EveryOriginatingAgency";
-    private static final String ORIGINATING_AGENCIES = "OriginatingAgencies";
-    private static final String EVERY_DATA_OBJECT_VERSION = "EveryDataObjectVersion";
-    private static final String DATA_OBJECT_VERSION = "DataObjectVersion";
-    private static final String ROOT_UNITS = "RootUnits";
-    private static final String EXCLUDED_ROOT_UNITS = "ExcludedRootUnits";
-    private static final String ACCESS_LOG = "AccessLog";
-    private static final String RULE_CATEGORY_TO_FILTER = "RuleCategoryToFilter";
-    private static final String WRITING_RESTRICTED_DESC = "WritingRestrictedDesc";
-    private static final String CREATION_DATE = "CreationDate";
-    private static final String LAST_UPDATE = "LastUpdate";
-    private static final String ACTIVATION_DATE = "ActivationDate";
-    private static final String DESACTIVATION_DATE = "DesactivationDate";
+public class ExportAccessContracts extends ExportCSVParams {
 
     public ExportAccessContracts() {
         List<String> headers = List.of(
@@ -45,7 +27,9 @@ public class ExportAccessContracts extends ExportCSVParams {
             CREATION_DATE,
             LAST_UPDATE,
             ACTIVATION_DATE,
-            DESACTIVATION_DATE
+            DESACTIVATION_DATE,
+            RULE_CATEGORY_TO_FILTER_FOR_THE_OTHER_ORIGINATING_AGENCIES,
+            DO_NOT_FILTER_FILING_SCHEMES
         );
         this.setHeaders(headers);
     }

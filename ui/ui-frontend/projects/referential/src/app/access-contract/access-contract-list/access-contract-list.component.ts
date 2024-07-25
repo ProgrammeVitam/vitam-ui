@@ -35,15 +35,15 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { Subject, merge } from 'rxjs';
+import { finalize, merge, Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 import {
   AccessContract,
+  collapseAnimation,
   DEFAULT_PAGE_SIZE,
   Direction,
   InfiniteScrollTable,
   PageRequest,
-  collapseAnimation,
   rotateAnimation,
 } from 'vitamui-library';
 
@@ -85,13 +85,15 @@ export class AccessContractListComponent extends InfiniteScrollTable<AccessContr
   ngOnInit() {
     this.pending = true;
     const searchCriteriaChange = merge(this.searchChange, this.filterChange, this.orderChange).pipe(debounceTime(FILTER_DEBOUNCE_TIME_MS));
-    this.accessContractService.search(new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, Direction.ASCENDANT)).subscribe(
-      (data: AccessContract[]) => {
-        this.dataSource = data;
-      },
-      () => {},
-      () => (this.pending = false),
-    );
+    this.accessContractService
+      .search(new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, Direction.ASCENDANT))
+      .pipe(finalize(() => (this.pending = false)))
+      .subscribe({
+        next: (data: AccessContract[]) => {
+          this.dataSource = data;
+        },
+        error: (e) => console.error(e),
+      });
 
     searchCriteriaChange.subscribe(() => {
       const query: any = this.buildAccessContractCriteriaFromSearch();

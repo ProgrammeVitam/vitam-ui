@@ -38,7 +38,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { BASE_URL } from '../injection-tokens';
-import { IAccessContract } from '../models/access-contract';
+import { AccessContract } from '../../../lib/models/access-contract.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -57,8 +57,8 @@ export class AccessContractApiService {
     return this.http.get<any>(`${this.apiUrl}`, { params, headers });
   }
 
-  getAccessContractById(accessContractId: string, headers?: HttpHeaders): Observable<IAccessContract> {
+  getAccessContractById(accessContractId: string, headers?: HttpHeaders): Observable<AccessContract> {
     const params = new HttpParams();
-    return this.http.get<IAccessContract>(this.apiUrl + '/' + accessContractId, { params, headers });
+    return this.http.get<AccessContract>(this.apiUrl + '/' + accessContractId, { params, headers });
   }
 }

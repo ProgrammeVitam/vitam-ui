@@ -40,7 +40,7 @@ import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators }
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { cloneDeep } from 'lodash-es';
-import { merge, Subscription } from 'rxjs';
+import { finalize, merge, Subscription } from 'rxjs';
 import { debounceTime, filter, map } from 'rxjs/operators';
 import {
   CriteriaDataType,
@@ -399,30 +399,34 @@ export class UpdateUnitRulesComponent implements OnDestroy {
     this.criteriaSearchDSLQuery.criteriaList.push(onlyManagementRules);
     this.ruleDetailsForm.markAsUntouched();
     if (this.hasExactCount) {
-      this.archiveService.getTotalTrackHitsByCriteria(this.criteriaSearchDSLQuery.criteriaList).subscribe({
-        next: (resultsNumber) => {
-          this.itemsWithSameRule = resultsNumber.toString();
-          this.itemsToUpdate = (this.selectedItem - resultsNumber).toString();
-        },
-        error: (e) => console.error(e),
-        complete: () => (this.isLoading = false),
-      });
+      this.archiveService
+        .getTotalTrackHitsByCriteria(this.criteriaSearchDSLQuery.criteriaList)
+        .pipe(finalize(() => (this.isLoading = false)))
+        .subscribe({
+          next: (resultsNumber) => {
+            this.itemsWithSameRule = resultsNumber.toString();
+            this.itemsToUpdate = (this.selectedItem - resultsNumber).toString();
+          },
+          error: (e) => console.error(e),
+        });
     } else {
-      this.archiveService.searchArchiveUnitsByCriteria(this.criteriaSearchDSLQuery).subscribe({
-        next: (data) => {
-          this.itemsWithSameRule = data.totalResults.toString();
-          if (
-            data.totalResults === ArchiveSearchConstsEnum.RESULTS_MAX_NUMBER ||
-            this.selectedItem === ArchiveSearchConstsEnum.RESULTS_MAX_NUMBER
-          ) {
-            this.itemsToUpdate = this.resultNumberToShow;
-          } else {
-            this.itemsToUpdate = (this.selectedItem - data.totalResults).toString();
-          }
-        },
-        error: (e) => console.error(e),
-        complete: () => (this.isLoading = false),
-      });
+      this.archiveService
+        .searchArchiveUnitsByCriteria(this.criteriaSearchDSLQuery)
+        .pipe(finalize(() => (this.isLoading = false)))
+        .subscribe({
+          next: (data) => {
+            this.itemsWithSameRule = data.totalResults.toString();
+            if (
+              data.totalResults === ArchiveSearchConstsEnum.RESULTS_MAX_NUMBER ||
+              this.selectedItem === ArchiveSearchConstsEnum.RESULTS_MAX_NUMBER
+            ) {
+              this.itemsToUpdate = this.resultNumberToShow;
+            } else {
+              this.itemsToUpdate = (this.selectedItem - data.totalResults).toString();
+            }
+          },
+          error: (e) => console.error(e),
+        });
     }
   }
 

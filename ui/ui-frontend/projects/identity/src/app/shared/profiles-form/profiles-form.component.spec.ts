@@ -194,7 +194,7 @@ describe('ProfilesFormComponent', () => {
 
   describe('DOM', () => {
     it('should have 3 select inputs', () => {
-      const elInputs = fixture.nativeElement.querySelectorAll('vitamui-common-vitamui-autocomplete');
+      const elInputs = fixture.nativeElement.querySelectorAll('vitamui-common-autocomplete');
       expect(elInputs.length).toBe(3);
     });
 

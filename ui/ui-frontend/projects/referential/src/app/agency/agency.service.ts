@@ -36,9 +36,9 @@
  */
 import { HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
-import { tap } from 'rxjs/operators';
-import { Agency, DownloadUtils, SearchService, VitamUISnackBarService } from 'vitamui-library';
+import { from, mergeMap, Observable, of, Subject, toArray } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
+import { Agency, DownloadUtils, Option, SearchService, VitamUISnackBarService } from 'vitamui-library';
 
 import { AgencyApiService } from '../core/api/agency-api.service';
 
@@ -62,6 +62,27 @@ export class AgencyService extends SearchService<Agency> {
   getAll(): Observable<Agency[]> {
     const params = new HttpParams().set('embedded', 'ALL');
     return this.agencyApiService.getAllByParams(params);
+  }
+
+  originatingAgenciesOptions: Option[];
+
+  getOriginatingAgenciesAsOptions(): Observable<Option[]> {
+    if (this.originatingAgenciesOptions && this.originatingAgenciesOptions.length > 0) {
+      return of(this.originatingAgenciesOptions);
+    }
+    return this.getAll().pipe(
+      mergeMap((agencies) => from(agencies)),
+      map((agency) => this.toOption(agency)),
+      toArray(),
+      tap((agencies) => (this.originatingAgenciesOptions = agencies)),
+    );
+  }
+
+  private toOption(agency: Agency): Option {
+    return {
+      label: agency.identifier + ' - ' + agency.name,
+      key: agency.identifier,
+    };
   }
 
   existsProperties(properties: { name?: string; identifier?: string }): Observable<any> {

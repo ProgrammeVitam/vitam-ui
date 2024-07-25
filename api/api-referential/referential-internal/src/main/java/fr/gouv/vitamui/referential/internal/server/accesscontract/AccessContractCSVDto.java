@@ -33,7 +33,7 @@ public class AccessContractCSVDto {
     private Boolean everyOriginatingAgency;
 
     @CsvBindAndSplitByName(
-        column = AccessContractCSVUtils.ORIGINATING_AGENCY,
+        column = AccessContractCSVUtils.ORIGINATING_AGENCIES,
         elementType = String.class,
         splitOn = "[ |]+"
     )
@@ -71,4 +71,14 @@ public class AccessContractCSVDto {
 
     @CsvBindByName(column = AccessContractCSVUtils.WRITING_RESTRICTED_DESC)
     private Boolean writingRestrictedDesc;
+
+    @CsvBindAndSplitByName(
+        column = AccessContractCSVUtils.RULE_CATEGORY_TO_FILTER_FOR_THE_OTHER_ORIGINATING_AGENCIES,
+        elementType = String.class,
+        splitOn = "[ |]+"
+    )
+    private Set<String> ruleCategoryToFilterForTheOtherOriginatingAgencies;
+
+    @CsvBindByName(column = AccessContractCSVUtils.DO_NOT_FILTER_FILING_SCHEMES)
+    private Boolean doNotFilterFilingSchemes;
 }

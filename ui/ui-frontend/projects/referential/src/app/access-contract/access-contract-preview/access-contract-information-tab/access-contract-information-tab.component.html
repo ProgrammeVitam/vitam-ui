@@ -1,100 +1,83 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
-  <vitamui-common-slide-toggle class="w-100" [formControl]="statusControl">
-    <span>{{ 'ACCESS_CONTRACT.TAB.INFORMATION.ACTIVE_CONTRACT' | translate }}</span>
-  </vitamui-common-slide-toggle>
+  <div class="mt-4 mb-4">
+    <vitamui-common-slide-toggle class="w-100" [formControl]="statusControl">
+      <span>{{ 'ACCESS_CONTRACT.TAB.INFORMATION.ACTIVE_CONTRACT' | translate }}</span>
+    </vitamui-common-slide-toggle>
 
-  <vitamui-common-input
-    class="w-100"
-    formControlName="name"
-    placeholder="{{ 'ACCESS_CONTRACT.TAB.INFORMATION.NAME' | translate }}"
-    required
-  >
-    <ng-container *ngIf="form.get('name')?.touched">
-      <vitamui-common-input-error *ngIf="!!form.get('name')?.errors?.required"
-        >{{ 'COMMON.REQUIRED' | translate }}
-      </vitamui-common-input-error>
-      <vitamui-common-input-error *ngIf="!!form?.get('name')?.errors?.nameExists">
-        {{ 'COMMON.NAME_ALREADY_EXISTS' | translate }}
-      </vitamui-common-input-error>
-    </ng-container>
-  </vitamui-common-input>
-
-  <vitamui-common-textarea
-    class="w-100"
-    formControlName="description"
-    placeholder="{{ 'ACCESS_CONTRACT.TAB.INFORMATION.DESCRIPTION' | translate }}"
-  >
-    <ng-container *ngIf="form.get('description')?.touched">
-      <vitamui-common-input-error *ngIf="!!form.get('description')?.errors?.required">
-        {{ 'COMMON.REQUIRED' | translate }}
-      </vitamui-common-input-error>
-    </ng-container>
-  </vitamui-common-textarea>
-
-  <vitamui-common-slide-toggle class="w-100 mt-3" [formControl]="accessLogControl">
-    <span>{{ 'ACCESS_CONTRACT.TAB.INFORMATION.ACCESS_LOGS' | translate }}</span>
-  </vitamui-common-slide-toggle>
-
-  <vitamui-common-slide-toggle class="w-100" [formControl]="ruleFilter">
-    <span>{{ 'ACCESS_CONTRACT.TAB.INFORMATION.RULES_FILTERS' | translate }}</span>
-  </vitamui-common-slide-toggle>
-
-  <mat-form-field class="vitamui-mat-select w-100 mb-3" *ngIf="!!ruleFilter.value">
-    <mat-select
-      formControlName="ruleCategoryToFilter"
-      placeholder="{{ 'ACCESS_CONTRACT.TAB.INFORMATION.SELECT_RULES' | translate }}"
-      panelclass="vitamui-mat-select"
-      multiple
+    <vitamui-common-input
+      class="w-100"
+      formControlName="name"
+      placeholder="{{ 'ACCESS_CONTRACT.TAB.INFORMATION.NAME' | translate }}"
+      required
     >
-      <mat-option *ngFor="let rule of rules" [value]="rule.key">{{ rule.label }}</mat-option>
-    </mat-select>
+      <ng-container *ngIf="form.get('name')?.touched">
+        <vitamui-common-input-error *ngIf="!!form.get('name')?.errors?.required"
+          >{{ 'COMMON.REQUIRED' | translate }}
+        </vitamui-common-input-error>
+        <vitamui-common-input-error *ngIf="!!form?.get('name')?.errors?.nameExists">
+          {{ 'COMMON.NAME_ALREADY_EXISTS' | translate }}
+        </vitamui-common-input-error>
+      </ng-container>
+    </vitamui-common-input>
 
-    <div class="select-arrow">
-      <i class="material-icons">keyboard_arrow_down</i>
-    </div>
-  </mat-form-field>
+    <vitamui-common-textarea
+      class="w-100"
+      formControlName="description"
+      placeholder="{{ 'ACCESS_CONTRACT.TAB.INFORMATION.DESCRIPTION' | translate }}"
+    >
+      <ng-container *ngIf="form.get('description')?.touched">
+        <vitamui-common-input-error *ngIf="!!form.get('description')?.errors?.required">
+          {{ 'COMMON.REQUIRED' | translate }}
+        </vitamui-common-input-error>
+      </ng-container>
+    </vitamui-common-textarea>
 
-  <mat-form-field class="vitamui-input vitamui-date w-100" disabled>
-    <input
-      placeholder="{{ 'ACCESS_CONTRACT.TAB.INFORMATION.CREATION_DATE' | translate }}"
-      [value]="accessContract?.creationDate | dateTime: 'dd/MM/yyyy'"
-      disabled
-      matInput
-    />
-  </mat-form-field>
+    <vitamui-common-slide-toggle class="w-100 mt-3" [formControl]="accessLogControl">
+      <span>{{ 'ACCESS_CONTRACT.TAB.INFORMATION.ACCESS_LOGS' | translate }}</span>
+    </vitamui-common-slide-toggle>
 
-  <mat-form-field class="vitamui-input vitamui-date w-100 mt-3" disabled>
-    <input
-      placeholder="{{ 'ACCESS_CONTRACT.TAB.INFORMATION.LAST_MODIFICATION_DATE' | translate }}"
-      [value]="accessContract?.lastUpdate | dateTime: 'dd/MM/yyyy'"
-      disabled
-      matInput
-    />
-  </mat-form-field>
+    <mat-form-field class="vitamui-input vitamui-date w-100" disabled>
+      <input
+        placeholder="{{ 'ACCESS_CONTRACT.TAB.INFORMATION.CREATION_DATE' | translate }}"
+        [value]="accessContract?.creationDate | dateTime: 'dd/MM/yyyy'"
+        disabled
+        matInput
+      />
+    </mat-form-field>
 
-  <mat-form-field class="vitamui-input vitamui-date w-100 mt-3" disabled>
-    <input
-      placeholder="{{ 'ACCESS_CONTRACT.TAB.INFORMATION.ACTIVATION_DATE' | translate }}"
-      [value]="
-        accessContract?.status === 'ACTIVE' && accessContract?.activationDate
-          ? (accessContract.activationDate | dateTime: 'dd/MM/yyyy')
-          : '-'
-      "
-      disabled
-      matInput
-    />
-  </mat-form-field>
+    <mat-form-field class="vitamui-input vitamui-date w-100 mt-3" disabled>
+      <input
+        placeholder="{{ 'ACCESS_CONTRACT.TAB.INFORMATION.LAST_MODIFICATION_DATE' | translate }}"
+        [value]="accessContract?.lastUpdate | dateTime: 'dd/MM/yyyy'"
+        disabled
+        matInput
+      />
+    </mat-form-field>
 
-  <mat-form-field class="vitamui-input vitamui-date w-100 mt-3" disabled>
-    <input
-      placeholder="{{ 'ACCESS_CONTRACT.TAB.INFORMATION.DEACTIVATION_DATE' | translate }}"
-      [value]="accessContract?.deactivationDate ? (accessContract.deactivationDate | dateTime: 'dd/MM/yyyy') : '-'"
-      disabled
-      matInput
-    />
-  </mat-form-field>
+    <mat-form-field class="vitamui-input vitamui-date w-100 mt-3" disabled>
+      <input
+        placeholder="{{ 'ACCESS_CONTRACT.TAB.INFORMATION.ACTIVATION_DATE' | translate }}"
+        [value]="
+          accessContract?.status === 'ACTIVE' && accessContract?.activationDate
+            ? (accessContract.activationDate | dateTime: 'dd/MM/yyyy')
+            : '-'
+        "
+        disabled
+        matInput
+      />
+    </mat-form-field>
 
-  <button type="submit" class="btn primary mt-4" [disabled]="isInvalid() || unChanged() || submited">
-    {{ 'COMMON.SAVE' | translate }}
-  </button>
+    <mat-form-field class="vitamui-input vitamui-date w-100 mt-3" disabled>
+      <input
+        placeholder="{{ 'ACCESS_CONTRACT.TAB.INFORMATION.DEACTIVATION_DATE' | translate }}"
+        [value]="accessContract?.deactivationDate ? (accessContract.deactivationDate | dateTime: 'dd/MM/yyyy') : '-'"
+        disabled
+        matInput
+      />
+    </mat-form-field>
+
+    <button type="submit" class="btn primary mt-4" [disabled]="isInvalid() || unChanged() || submited">
+      {{ 'COMMON.SAVE' | translate }}
+    </button>
+  </div>
 </form>

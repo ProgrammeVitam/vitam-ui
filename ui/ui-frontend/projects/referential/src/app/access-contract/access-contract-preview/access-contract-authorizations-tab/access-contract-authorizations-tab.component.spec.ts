@@ -34,30 +34,22 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
-import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
-import { TranslateModule } from '@ngx-translate/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ReactiveFormsModule } from '@angular/forms';
 import { of } from 'rxjs';
-import {
-  AccessContract,
-  BASE_URL,
-  ExternalParameters,
-  ExternalParametersService,
-  LoggerModule,
-  SearchUnitApiService,
-  Status,
-} from 'vitamui-library';
-import { AccessContractNodesTabComponent } from './access-contract-nodes-tab.component';
+import { VitamUICommonTestModule } from 'vitamui-library/testing';
+import { AgencyService } from '../../../agency/agency.service';
+import { AccessContractAuthorizationsTabComponent } from './access-contract-authorizations-tab.component';
+import { MatLegacyDialog as MatDialog, MatLegacyDialogModule } from '@angular/material/legacy-dialog';
+import { AccessContract, Status } from 'vitamui-library';
 
-describe('AccessContractNodesTabComponent', () => {
-  let component: AccessContractNodesTabComponent;
-  let fixture: ComponentFixture<AccessContractNodesTabComponent>;
+describe('AccessContractUsageAndServicesTabComponent', () => {
+  let component: AccessContractAuthorizationsTabComponent;
+  let fixture: ComponentFixture<AccessContractAuthorizationsTabComponent>;
 
-  const accessContractValue: AccessContract = {
+  const accessContract: AccessContract = {
     tenant: 0,
     version: 1,
     description: 'desc',
@@ -78,40 +70,34 @@ describe('AccessContractNodesTabComponent', () => {
     accessLog: Status.INACTIVE,
     ruleFilter: true,
     ruleCategoryToFilter: ['rule'],
-    rootUnits: [''],
-    excludedRootUnits: [''],
-    ruleCategoryToFilterForTheOtherOriginatingAgencies: [],
-    doNotFilterFilingSchemes: false,
+    rootUnits: [],
+    excludedRootUnits: [],
+  } as AccessContract;
+
+  const agencyServiceMock = {
+    getAll: () => of([]),
+    getOriginatingAgenciesAsOptions: () => of([]),
   };
 
   beforeEach(async () => {
-    const parameters: Map<string, string> = new Map<string, string>();
-    parameters.set(ExternalParameters.PARAM_ACCESS_CONTRACT, '1');
-    const externalParametersServiceMock = {
-      getUserExternalParameters: () => of(parameters),
-    };
-
-    const unitValueMock = {
-      getByDsl: () => of({}),
-    };
-
     await TestBed.configureTestingModule({
-      declarations: [AccessContractNodesTabComponent],
-      imports: [MatSnackBarModule, HttpClientTestingModule, LoggerModule.forRoot(), TranslateModule.forRoot()],
+      imports: [ReactiveFormsModule, VitamUICommonTestModule, MatLegacyDialogModule],
+      declarations: [AccessContractAuthorizationsTabComponent],
       providers: [
-        { provide: BASE_URL, useValue: '/fake-api' },
-        { provide: ExternalParametersService, useValue: externalParametersServiceMock },
-        { provide: SearchUnitApiService, useValue: unitValueMock },
-        { provide: MatDialog, useValue: {} },
+        {
+          provide: MatDialog,
+          useValue: {},
+        },
+        { provide: AgencyService, useValue: agencyServiceMock },
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AccessContractNodesTabComponent);
+    fixture = TestBed.createComponent(AccessContractAuthorizationsTabComponent);
     component = fixture.componentInstance;
-    component.accessContract = accessContractValue;
+    component.accessContract = accessContract;
     fixture.detectChanges();
   });
 

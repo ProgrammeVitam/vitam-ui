@@ -1,0 +1,105 @@
+<div class="mt-4 mb-4">
+  <button type="submit" class="btn primary" (click)="openModalCreateAccessContractStep2Only()">
+    {{ 'COMMON.UPDATE' | translate }}
+  </button>
+
+  <div class="title-text medium bold mt-4">
+    {{ 'ACCESS_CONTRACT.TAB.USAGE.AUTHORIZATION_PERIMETER' | translate }}
+  </div>
+  <div>
+    @switch (accessContract.accessRightType) {
+      @case (AccessRightType.ACCESS_FULL) {
+        {{ 'ACCESS_CONTRACT.CREATE_DIALOG.AUTHORISATION_PERIMETER.ACCESS_FULL' | translate }}
+      }
+      @case (AccessRightType.ACCESS_BY_PRODUCERS) {
+        {{ 'ACCESS_CONTRACT.CREATE_DIALOG.AUTHORISATION_PERIMETER.ACCESS_BY_PRODUCERS' | translate }}
+        <div class="pl-3 pr-3">
+          <div class="text medium bold primary mt-4">
+            {{ 'ACCESS_CONTRACT.TAB.USAGE.PRODUCERS_SELECTED' | translate }}
+          </div>
+          <ul class="mt-1">
+            @for (originatingAgency of accessContract.originatingAgencies; track originatingAgency) {
+              <li>
+                {{ originatingAgencyName(originatingAgency) }}
+              </li>
+            } @empty {}
+          </ul>
+        </div>
+      }
+      @case (AccessRightType.ACCESS_BY_EXPIRED_MANAGEMENT_RULES) {
+        {{ 'ACCESS_CONTRACT.CREATE_DIALOG.AUTHORISATION_PERIMETER.ACCESS_BY_EXPIRED_MANAGEMENT_RULES' | translate }}
+        <div class="pl-3 pr-3">
+          <div class="text medium bold primary mt-4">
+            {{ 'ACCESS_CONTRACT.TAB.USAGE.MANAGEMENT_RULES_SELECTED' | translate }}
+          </div>
+          <ul class="mt-1 no-bullet">
+            @for (managementRule of accessContract.ruleCategoryToFilter; track managementRule) {
+              <li>
+                {{ managementRule }}
+              </li>
+            } @empty {}
+          </ul>
+        </div>
+      }
+      @case (AccessRightType.ACCESS_BY_PRODUCERS_OR_EXPIRED_MANAGEMENT_RULES) {
+        {{ 'ACCESS_CONTRACT.CREATE_DIALOG.AUTHORISATION_PERIMETER.ACCESS_BY_PRODUCERS_OR_EXPIRED_MANAGEMENT_RULES' | translate }}
+        <div class="pl-3 pr-3">
+          <div class="text medium bold primary mt-4">
+            {{ 'ACCESS_CONTRACT.TAB.USAGE.PRODUCERS_SELECTED' | translate }}
+          </div>
+          <ul class="mt-1">
+            @for (originatingAgency of accessContract.originatingAgencies; track originatingAgency) {
+              <li>
+                {{ originatingAgencyName(originatingAgency) }}
+              </li>
+            } @empty {}
+          </ul>
+          <div class="text medium bold primary mt-4">
+            {{ 'ACCESS_CONTRACT.TAB.USAGE.MANAGEMENT_RULES_SELECTED_FOR_OTHER_PRODUCERS' | translate }}
+          </div>
+          <ul class="mt-1 no-bullet">
+            @for (managementRule of accessContract.ruleCategoryToFilterForTheOtherOriginatingAgencies; track managementRule) {
+              <li>
+                {{ managementRule }}
+              </li>
+            } @empty {}
+          </ul>
+        </div>
+      }
+      @case (AccessRightType.ACCESS_BY_PRODUCERS_AND_EXPIRED_MANAGEMENT_RULES) {
+        {{ 'ACCESS_CONTRACT.CREATE_DIALOG.AUTHORISATION_PERIMETER.ACCESS_BY_PRODUCERS_AND_EXPIRED_MANAGEMENT_RULES' | translate }}
+        <div class="pl-3 pr-3">
+          <div class="text medium bold primary mt-4">
+            {{ 'ACCESS_CONTRACT.TAB.USAGE.PRODUCERS_SELECTED' | translate }}
+          </div>
+          <ul class="mt-1">
+            @for (originatingAgency of accessContract.originatingAgencies; track originatingAgency) {
+              <li>
+                {{ originatingAgencyName(originatingAgency) }}
+              </li>
+            } @empty {}
+          </ul>
+          <div class="text medium bold primary mt-4">
+            {{ 'ACCESS_CONTRACT.TAB.USAGE.MANAGEMENT_RULES_SELECTED_FOR_PRODUCERS' | translate }}
+          </div>
+          <ul class="mt-1 no-bullet">
+            @for (managementRule of accessContract.ruleCategoryToFilter; track managementRule) {
+              <li>
+                {{ managementRule }}
+              </li>
+            } @empty {}
+          </ul>
+        </div>
+      }
+      @default {
+        <div>UNKNOW ACCESS RIGHT</div>
+      }
+    }
+    @if (accessContract.accessRightType !== AccessRightType.ACCESS_FULL) {
+      <div class="text medium bold primary mt-4">
+        {{ 'ACCESS_CONTRACT.TAB.USAGE.FILING_SCHEME_ACCESS' | translate }}
+      </div>
+      {{ accessContract.doNotFilterFilingSchemes ? 'COMMON.YES' : ('COMMON.NO' | translate) }}
+    }
+  </div>
+</div>

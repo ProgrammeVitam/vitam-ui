@@ -6,3 +6,22 @@
     display: none;
   }
 }
+
+mat-radio-button {
+  display: flex;
+  flex-direction: row;
+  margin-top: 15px;
+
+  div,
+  .mdc-form-field {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+
+    label {
+      display: flex;
+      cursor: pointer;
+      align-items: center;
+    }
+  }
+}

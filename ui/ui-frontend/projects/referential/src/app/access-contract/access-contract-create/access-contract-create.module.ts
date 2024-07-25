@@ -43,11 +43,13 @@ import { MatLegacyInputModule as MatInputModule } from '@angular/material/legacy
 import { MatLegacyProgressBarModule as MatProgressBarModule } from '@angular/material/legacy-progress-bar';
 import { MatLegacySelectModule as MatSelectModule } from '@angular/material/legacy-select';
 import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
-import { VitamUIAutocompleteMultiSelectModule, VitamUICommonModule } from 'vitamui-library';
-import { VitamUILibraryModule } from 'vitamui-library';
+import { VitamUIAutocompleteMultiSelectModule, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 
 import { SharedModule } from 'projects/identity/src/app/shared/shared.module';
 import { AccessContractCreateComponent } from './access-contract-create.component';
+import { MatRadioModule } from '@angular/material/radio';
+import { TranslateModule } from '@ngx-translate/core';
+import { AccessContractPreviewModule } from '../access-contract-preview/access-contract-preview.module';
 
 @NgModule({
   imports: [
@@ -59,10 +61,13 @@ import { AccessContractCreateComponent } from './access-contract-create.componen
     MatProgressBarModule,
     MatSelectModule,
     MatSnackBarModule,
+    MatRadioModule,
     ReactiveFormsModule,
     VitamUICommonModule,
     VitamUILibraryModule,
     VitamUIAutocompleteMultiSelectModule,
+    TranslateModule,
+    AccessContractPreviewModule,
   ],
   declarations: [AccessContractCreateComponent],
 })

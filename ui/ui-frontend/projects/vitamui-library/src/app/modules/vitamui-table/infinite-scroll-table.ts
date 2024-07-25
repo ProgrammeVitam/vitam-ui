@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Subject } from 'rxjs';
+import { finalize, Subject } from 'rxjs';
 
 import { Id } from '../';
 import { Direction } from './direction.enum';
@@ -82,16 +82,19 @@ export class InfiniteScrollTable<T extends Id> {
       this.pending = true;
       this.dataSource = [];
       this.updatedData.next();
-      this.searchService.search(pageRequest).subscribe(
-        (data: T[]) => {
-          this.dataSource = data;
-          if (!this.overridePendingChange) {
-            this.pending = false;
-          }
-          this.updatedData.next();
-        },
-        () => (this.pending = false),
-      );
+      this.searchService
+        .search(pageRequest)
+        .pipe(finalize(() => (this.pending = false)))
+        .subscribe({
+          next: (data: T[]) => {
+            this.dataSource = data;
+            if (!this.overridePendingChange) {
+              this.pending = false;
+            }
+            this.updatedData.next();
+          },
+          error: (e) => console.error(e),
+        });
     }
   }
 

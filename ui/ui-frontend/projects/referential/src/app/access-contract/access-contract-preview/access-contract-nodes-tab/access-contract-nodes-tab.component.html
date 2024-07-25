@@ -1,19 +1,21 @@
-<button class="btn primary" [disabled]="!searchAccessContractId" (click)="openUpdateSelectedNodes()">
-  {{ 'COMMON.EDIT' | translate }}
-</button>
+<div class="mt-4 mb-4">
+  <button class="btn primary" [disabled]="!searchAccessContractId" (click)="openUpdateSelectedNodes()">
+    {{ 'COMMON.EDIT' | translate }}
+  </button>
 
-<div class="w-100 mt-4">
-  <div class="text normal bold">{{ 'ACCESS_CONTRACT.TAB.POSITIONS.CONSULTATION_POSITIONS' | translate }}</div>
-  <ng-container *ngIf="isAllRootUnitsSelected; else listPosition">
-    <li class="text normal px-3">{{ 'ACCESS_CONTRACT.TAB.POSITIONS.ALL_POSITIONS' | translate }}</li>
-  </ng-container>
-</div>
+  <div class="w-100 mt-4">
+    <div class="text normal bold">{{ 'ACCESS_CONTRACT.TAB.POSITIONS.CONSULTATION_POSITIONS' | translate }}</div>
+    <ng-container *ngIf="isAllRootUnitsSelected; else listPosition">
+      <li class="text normal px-3">{{ 'ACCESS_CONTRACT.TAB.POSITIONS.ALL_POSITIONS' | translate }}</li>
+    </ng-container>
+  </div>
 
-<div class="w-100 mt-2">
-  <div class="text normal bold">{{ 'ACCESS_CONTRACT.TAB.POSITIONS.EXCLUDED_POSITIONS' | translate }}</div>
-  <ng-container *ngIf="!accessContract.excludedRootUnits || accessContract.excludedRootUnits.length === 0; else excludedPosition">
-    <li class="text normal px-3">{{ 'ACCESS_CONTRACT.TAB.POSITIONS.NO_EXCLUDED_POSITION' | translate }}</li>
-  </ng-container>
+  <div class="w-100 mt-2">
+    <div class="text normal bold">{{ 'ACCESS_CONTRACT.TAB.POSITIONS.EXCLUDED_POSITIONS' | translate }}</div>
+    <ng-container *ngIf="!accessContract.excludedRootUnits || accessContract.excludedRootUnits.length === 0; else excludedPosition">
+      <li class="text normal px-3">{{ 'ACCESS_CONTRACT.TAB.POSITIONS.NO_EXCLUDED_POSITION' | translate }}</li>
+    </ng-container>
+  </div>
 </div>
 
 <ng-template #listPosition>
