@@ -96,17 +96,14 @@ public class ProjectExternalController {
         @RequestParam(required = false) final Optional<String> orderBy,
         @RequestParam(required = false) final Optional<DirectionDto> direction
     ) throws PreconditionFailedException {
-        direction.ifPresent(directionDto -> {
-            SanityChecker.sanitizeCriteria(directionDto);
-        });
-        if (orderBy.isPresent()) {
-            SanityChecker.checkSecureParameter(orderBy.get());
-        }
+        direction.ifPresent(SanityChecker::sanitizeCriteria);
+        orderBy.ifPresent(SanityChecker::checkSecureParameter);
         SanityChecker.sanitizeCriteria(criteria);
         LOGGER.debug(
             "getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}",
             page,
             size,
+            criteria,
             orderBy,
             direction
         );
@@ -127,14 +124,13 @@ public class ProjectExternalController {
         SanityChecker.checkSecureParameter(projectId);
         SanityChecker.sanitizeCriteria(direction);
         SanityChecker.sanitizeCriteria(criteria);
-        if (orderBy.isPresent()) {
-            SanityChecker.checkSecureParameter(orderBy.get());
-        }
+        orderBy.ifPresent(SanityChecker::checkSecureParameter);
 
         LOGGER.debug(
             "getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}",
             page,
             size,
+            criteria,
             orderBy,
             direction
         );

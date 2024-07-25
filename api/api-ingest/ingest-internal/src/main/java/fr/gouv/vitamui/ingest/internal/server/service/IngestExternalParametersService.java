@@ -29,8 +29,8 @@ package fr.gouv.vitamui.ingest.internal.server.service;
 
 import fr.gouv.vitamui.commons.api.domain.ExternalParametersDto;
 import fr.gouv.vitamui.commons.api.domain.ParameterDto;
-import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import fr.gouv.vitamui.iam.internal.client.ExternalParametersInternalRestClient;
+import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -45,13 +45,16 @@ public class IngestExternalParametersService {
 
     public static final String PARAM_ACCESS_CONTRACT_NAME = "PARAM_ACCESS_CONTRACT";
 
-    @Autowired
     private final ExternalParametersInternalRestClient externalParametersInternalRestClient;
+    private final InternalSecurityService securityService;
 
+    @Autowired
     public IngestExternalParametersService(
-        final ExternalParametersInternalRestClient externalParametersInternalRestClient
+        final ExternalParametersInternalRestClient externalParametersInternalRestClient,
+        InternalSecurityService securityService
     ) {
         this.externalParametersInternalRestClient = externalParametersInternalRestClient;
+        this.securityService = securityService;
     }
 
     /**
@@ -59,13 +62,13 @@ public class IngestExternalParametersService {
      *
      * @return Optional of access contract otherwise Optional.empty
      */
-    public Optional<String> retrieveProfilAccessContract(InternalHttpContext internalHttpContext) {
+    public Optional<String> retrieveProfilAccessContract() {
         Optional<String> accessContractOpt = Optional.empty();
-        ExternalParametersDto myExternalParameter = externalParametersInternalRestClient.getMyExternalParameters(
-            internalHttpContext
+        final ExternalParametersDto myExternalParameter = externalParametersInternalRestClient.getMyExternalParameters(
+            securityService.getHttpContext()
         );
         if (myExternalParameter != null && CollectionUtils.isNotEmpty(myExternalParameter.getParameters())) {
-            ParameterDto parameterAccessContract = myExternalParameter
+            final ParameterDto parameterAccessContract = myExternalParameter
                 .getParameters()
                 .stream()
                 .filter(parameter -> PARAM_ACCESS_CONTRACT_NAME.equals(parameter.getKey()))

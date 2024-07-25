@@ -34,6 +34,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import fr.gouv.vitam.collect.common.dto.CriteriaProjectDto;
 import fr.gouv.vitam.collect.common.dto.ProjectDto;
 import fr.gouv.vitam.collect.common.dto.TransactionDto;
 import fr.gouv.vitam.common.client.VitamContext;
@@ -69,6 +70,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 
 @ExtendWith(SpringExtension.class)
 class ProjectInternalServiceTest {
@@ -78,6 +80,9 @@ class ProjectInternalServiceTest {
 
     @Mock
     CollectService collectService;
+
+    @Mock
+    ExternalParametersService externalParametersService;
 
     final PodamFactory factory = new PodamFactoryImpl();
     final VitamContext vitamContext = new VitamContext(1);
@@ -199,7 +204,7 @@ class ProjectInternalServiceTest {
     }
 
     @Test
-    void shouldGetAllPaginatedProjectsWithoutCrietria() throws VitamClientException, JsonProcessingException {
+    void shouldGetAllPaginatedProjectsWithoutCriteria() throws VitamClientException, JsonProcessingException {
         // GIVEN
         final List<ProjectDto> projects = factory.manufacturePojo(ArrayList.class, ProjectDto.class);
         RequestResponseOK<ProjectDto> responseFromVitam = new RequestResponseOK<>();
@@ -209,9 +214,11 @@ class ProjectInternalServiceTest {
         RequestResponse<JsonNode> mockResponse = RequestResponse.parseFromResponse(
             Response.ok(objectMapper.writeValueAsString(responseFromVitam)).build()
         );
-        Mockito.when(collectService.getProjects(vitamContext)).thenReturn(mockResponse);
+        Mockito.when(collectService.searchProject(eq(vitamContext), any(CriteriaProjectDto.class))).thenReturn(
+            mockResponse
+        );
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        projectInternalService = new ProjectInternalService(collectService, objectMapper);
+        projectInternalService = new ProjectInternalService(collectService, objectMapper, externalParametersService);
 
         // WHEN
         PaginatedValuesDto<CollectProjectDto> paginatedProjects = projectInternalService.getAllProjectsPaginated(
@@ -229,7 +236,7 @@ class ProjectInternalServiceTest {
     }
 
     @Test
-    void shouldGetAllPaginatedProjectsWithCrietria()
+    void shouldGetAllPaginatedProjectsWithCriteria()
         throws VitamClientException, JsonProcessingException, InvalidParseOperationException {
         // GIVEN
         final List<ProjectDto> projects = factory.manufacturePojo(ArrayList.class, ProjectDto.class);
@@ -243,7 +250,7 @@ class ProjectInternalServiceTest {
         Mockito.when(collectService.searchProject(any(), any())).thenReturn(mockResponse);
         ObjectNode criteriaNode = JsonHandler.createObjectNode().put("testKey", "testValue");
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        projectInternalService = new ProjectInternalService(collectService, objectMapper);
+        projectInternalService = new ProjectInternalService(collectService, objectMapper, externalParametersService);
 
         // WHEN
         PaginatedValuesDto<CollectProjectDto> paginatedProjects = projectInternalService.getAllProjectsPaginated(
@@ -263,16 +270,7 @@ class ProjectInternalServiceTest {
     @Test
     void shouldThrowExceptionWhenGetAllPaginatedProjects() throws VitamClientException, JsonProcessingException {
         // GIVEN
-        RequestResponse<ProjectDto> responseFromVitam = new RequestResponse<>() {
-            @Override
-            public Response toResponse() {
-                return null;
-            }
-        };
-        RequestResponse<JsonNode> mockResponse = RequestResponse.parseFromResponse(
-            Response.ok(objectMapper.writeValueAsString(responseFromVitam)).build()
-        );
-        Mockito.when(collectService.getProjects(vitamContext)).thenReturn(mockResponse);
+        Mockito.when(externalParametersService.retrieveAccessContract()).thenThrow(VitamClientException.class);
 
         // WHEN
         assertThrows(
@@ -475,7 +473,7 @@ class ProjectInternalServiceTest {
         );
         Mockito.when(collectService.getTransactionsByProject(PROJECT_ID, vitamContext)).thenReturn(mockResponse);
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        projectInternalService = new ProjectInternalService(collectService, objectMapper);
+        projectInternalService = new ProjectInternalService(collectService, objectMapper, externalParametersService);
 
         // WHEN
         PaginatedValuesDto<CollectTransactionDto> fakePaginatedTransactions =
@@ -534,7 +532,7 @@ class ProjectInternalServiceTest {
             Response.ok(objectMapper.writeValueAsString(responseFromVitam)).build()
         );
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        projectInternalService = new ProjectInternalService(collectService, objectMapper);
+        projectInternalService = new ProjectInternalService(collectService, objectMapper, externalParametersService);
 
         Mockito.when(collectService.getLastTransactionForProjectId(vitamContext, PROJECT_ID)).thenReturn(mockResponse);
 
@@ -558,7 +556,7 @@ class ProjectInternalServiceTest {
     void shouldThrowExceptionWhenGetLastTransactionByProjectId() throws VitamClientException, JsonProcessingException {
         // GIVEN
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        projectInternalService = new ProjectInternalService(collectService, objectMapper);
+        projectInternalService = new ProjectInternalService(collectService, objectMapper, externalParametersService);
 
         Mockito.when(collectService.getLastTransactionForProjectId(vitamContext, PROJECT_ID)).thenThrow(
             VitamClientException.class

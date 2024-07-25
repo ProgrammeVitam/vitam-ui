@@ -84,6 +84,7 @@ public class ProjectInternalController {
         this.externalParametersService = externalParametersService;
     }
 
+    // FIXME: page, size, orderBy and direction are not used!
     @GetMapping(params = { "page", "size" })
     public PaginatedValuesDto<CollectProjectDto> getAllProjectsPaginated(
         @RequestParam final Integer page,
@@ -212,6 +213,7 @@ public class ProjectInternalController {
         );
     }
 
+    // FIXME: page, size, orderBy and direction are not used!
     @ApiOperation(value = "Get transactions by project paginated")
     @GetMapping(params = { "page", "size" }, value = PATH_ID + TRANSACTIONS)
     public PaginatedValuesDto<CollectTransactionDto> getTransactionsByProjectPaginated(

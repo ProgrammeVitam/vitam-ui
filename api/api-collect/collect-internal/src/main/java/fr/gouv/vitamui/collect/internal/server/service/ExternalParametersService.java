@@ -27,15 +27,23 @@
 
 package fr.gouv.vitamui.collect.internal.server.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import fr.gouv.vitam.common.client.VitamContext;
+import fr.gouv.vitam.common.exception.VitamClientException;
+import fr.gouv.vitam.common.model.RequestResponse;
+import fr.gouv.vitam.common.model.RequestResponseOK;
+import fr.gouv.vitam.common.model.administration.AccessContractModel;
 import fr.gouv.vitamui.commons.api.domain.ExternalParametersDto;
 import fr.gouv.vitamui.commons.api.domain.ParameterDto;
+import fr.gouv.vitamui.commons.vitam.api.administration.AccessContractService;
 import fr.gouv.vitamui.iam.internal.client.ExternalParametersInternalRestClient;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.Objects;
 
 /**
@@ -48,14 +56,17 @@ public class ExternalParametersService {
 
     private final ExternalParametersInternalRestClient externalParametersInternalRestClient;
     private final InternalSecurityService securityService;
+    private final AccessContractService accessContractService;
 
     @Autowired
     public ExternalParametersService(
         final ExternalParametersInternalRestClient externalParametersInternalRestClient,
-        final InternalSecurityService securityService
+        final InternalSecurityService securityService,
+        AccessContractService accessContractService
     ) {
         this.externalParametersInternalRestClient = externalParametersInternalRestClient;
         this.securityService = securityService;
+        this.accessContractService = accessContractService;
     }
 
     /**
@@ -63,7 +74,7 @@ public class ExternalParametersService {
      *
      * @return access contract throws IllegalArgumentException
      */
-    public String retrieveAccessContractFromExternalParam() {
+    private @Nonnull String retrieveAccessContractFromExternalParam() {
         ExternalParametersDto myExternalParameter = externalParametersInternalRestClient.getMyExternalParameters(
             securityService.getHttpContext()
         );
@@ -81,6 +92,20 @@ public class ExternalParametersService {
             throw new IllegalArgumentException("No access contract defined");
         }
         return parameterAccessContract.getValue();
+    }
+
+    public @Nullable AccessContractModel retrieveAccessContract() throws VitamClientException, JsonProcessingException {
+        final RequestResponse<AccessContractModel> response = accessContractService.findAccessContractById(
+            buildVitamContextFromExternalParam(),
+            retrieveAccessContractFromExternalParam()
+        );
+        return (
+                response != null &&
+                response.isOk() &&
+                CollectionUtils.isNotEmpty(((RequestResponseOK<?>) response).getResults())
+            )
+            ? (AccessContractModel) ((RequestResponseOK<?>) response).getResults().get(0)
+            : null;
     }
 
     /**

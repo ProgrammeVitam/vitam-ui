@@ -163,15 +163,13 @@ public class IngestInternalService {
         VitamContext vitamContext,
         Optional<String> criteria
     ) {
-        Optional<String> accessContractdOpt = ingestExternalParametersService.retrieveProfilAccessContract(
-            internalSecurityService.getHttpContext()
-        );
+        Optional<String> accessContractOpt = ingestExternalParametersService.retrieveProfilAccessContract();
         Set<String> originatingAgencies = new HashSet<>();
         Boolean everyOriginatingAgency = false;
-        if (accessContractdOpt.isPresent()) {
+        if (accessContractOpt.isPresent()) {
             Optional<AccessContractDto> accessContractDtoOpt = accessContractInternalService.getOne(
                 vitamContext,
-                accessContractdOpt.get()
+                accessContractOpt.get()
             );
             if (accessContractDtoOpt.isPresent()) {
                 originatingAgencies = accessContractDtoOpt.get().getOriginatingAgencies();
@@ -184,7 +182,7 @@ public class IngestInternalService {
         try {
             LOGGER.info(" All ingests EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
             if (criteria.isPresent()) {
-                TypeReference<HashMap<String, Object>> typRef = new TypeReference<HashMap<String, Object>>() {};
+                TypeReference<HashMap<String, Object>> typRef = new TypeReference<>() {};
                 vitamCriteria = objectMapper.readValue(criteria.get(), typRef);
                 if (!everyOriginatingAgency) {
                     vitamCriteria.put(

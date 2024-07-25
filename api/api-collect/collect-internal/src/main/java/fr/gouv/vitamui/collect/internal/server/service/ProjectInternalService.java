@@ -42,6 +42,7 @@ import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.json.JsonHandler;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.RequestResponseOK;
+import fr.gouv.vitam.common.model.administration.AccessContractModel;
 import fr.gouv.vitamui.collect.common.dto.CollectProjectDto;
 import fr.gouv.vitamui.collect.common.dto.CollectTransactionDto;
 import fr.gouv.vitamui.collect.internal.server.service.converters.ProjectConverter;
@@ -57,6 +58,7 @@ import org.slf4j.LoggerFactory;
 import javax.ws.rs.core.Response;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
@@ -74,11 +76,17 @@ public class ProjectInternalService {
     public static final String UNABLE_TO_RETRIEVE_PROJECT = "Unable to retrieve project";
     private final CollectService collectService;
     private final ObjectMapper objectMapper;
+    private final ExternalParametersService externalParametersService;
     private static final Logger LOGGER = LoggerFactory.getLogger(ProjectInternalService.class);
 
-    public ProjectInternalService(CollectService collectService, ObjectMapper objectMapper) {
+    public ProjectInternalService(
+        CollectService collectService,
+        ObjectMapper objectMapper,
+        ExternalParametersService externalParametersService
+    ) {
         this.collectService = collectService;
         this.objectMapper = objectMapper;
+        this.externalParametersService = externalParametersService;
     }
 
     public CollectProjectDto createProject(CollectProjectDto collectProjectDto, VitamContext vitamContext) {
@@ -91,15 +99,15 @@ public class ProjectInternalService {
             }
             return toVitamuiCollectProjectDto(
                 JsonHandler.getFromString(
-                    ((RequestResponseOK) requestResponse).getFirstResult().toString(),
+                    ((RequestResponseOK<?>) requestResponse).getFirstResult().toString(),
                     ProjectDto.class
                 )
             );
         } catch (VitamClientException e) {
-            LOGGER.debug(UNABLE_TO_CREATE_PROJECT + ": {}", e);
+            LOGGER.debug(UNABLE_TO_CREATE_PROJECT, e);
             throw new InternalServerException(UNABLE_TO_CREATE_PROJECT, e);
         } catch (InvalidParseOperationException e) {
-            LOGGER.debug(UNABLE_TO_PROCESS_RESPONSE + ": {}", e);
+            LOGGER.debug(UNABLE_TO_PROCESS_RESPONSE, e);
             throw new InternalServerException(UNABLE_TO_PROCESS_RESPONSE, e);
         }
     }
@@ -109,7 +117,7 @@ public class ProjectInternalService {
         String projectId,
         VitamContext vitamContext
     ) {
-        LOGGER.debug("CollectTransactionDto: ", collectTransactionDto);
+        LOGGER.debug("CollectTransactionDto: {}", collectTransactionDto);
         try {
             SanityChecker.checkSecureParameter(projectId);
             TransactionDto transactionDto = TransactionConverter.toVitamDto(collectTransactionDto);
@@ -124,15 +132,15 @@ public class ProjectInternalService {
             }
             return TransactionConverter.toVitamUiDto(
                 JsonHandler.getFromString(
-                    ((RequestResponseOK) requestResponse).getFirstResult().toString(),
+                    ((RequestResponseOK<?>) requestResponse).getFirstResult().toString(),
                     TransactionDto.class
                 )
             );
         } catch (VitamClientException e) {
-            LOGGER.debug(UNABLE_TO_CREATE_TRANSACTION + ": {}", e);
+            LOGGER.debug(UNABLE_TO_CREATE_TRANSACTION, e);
             throw new InternalServerException(UNABLE_TO_CREATE_TRANSACTION, e);
         } catch (InvalidParseOperationException e) {
-            LOGGER.debug(UNABLE_TO_PROCESS_RESPONSE + ": {}", e);
+            LOGGER.debug(UNABLE_TO_PROCESS_RESPONSE, e);
             throw new InternalServerException(UNABLE_TO_PROCESS_RESPONSE, e);
         }
     }
@@ -145,26 +153,39 @@ public class ProjectInternalService {
         Optional<String> criteria,
         VitamContext vitamContext
     ) {
-        LOGGER.debug("Page: ", page);
-        LOGGER.debug("Size: ", size);
-        LOGGER.debug("OrderBy: ", orderBy.orElse(null));
-        LOGGER.debug("Direction: ", direction.orElse(null));
-        LOGGER.debug("Criteria: ", criteria.orElse(null));
+        // FIXME: page, size, orderBy and direction are not used!
+        LOGGER.debug("Page: {}", page);
+        LOGGER.debug("Size: {}", size);
+        LOGGER.debug("OrderBy: {}", orderBy.orElse(null));
+        LOGGER.debug("Direction: {}", direction.orElse(null));
+        LOGGER.debug("Criteria: {}", criteria.orElse(null));
         try {
-            RequestResponse<JsonNode> requestResponse;
+            final CriteriaProjectDto criteriaProjectDto = new CriteriaProjectDto();
+
+            final AccessContractModel accessContractModel = externalParametersService.retrieveAccessContract();
+            if (accessContractModel == null) {
+                return new PaginatedValuesDto<>(Collections.emptyList(), 0, 0, false);
+            }
+            final ArrayList<String> originatingAgencies = Optional.of(accessContractModel)
+                .filter(accessContract -> !accessContract.getEveryOriginatingAgency())
+                .map(accessContract -> new ArrayList<>(accessContract.getOriginatingAgencies()))
+                .orElse(null);
+            criteriaProjectDto.setOriginatingAgencies(originatingAgencies);
+
             if (criteria.isPresent()) {
-                HashMap<String, String> vitamCriteria = objectMapper.readValue(
+                final HashMap<String, String> vitamCriteria = objectMapper.readValue(
                     criteria.get(),
                     new TypeReference<>() {}
                 );
-                CriteriaProjectDto criteriaProjectDto = new CriteriaProjectDto();
                 criteriaProjectDto.setQuery(vitamCriteria.get("query"));
-                requestResponse = collectService.searchProject(vitamContext, criteriaProjectDto);
-            } else {
-                requestResponse = collectService.getProjects(vitamContext);
             }
 
-            if (!requestResponse.isOk()) {
+            final RequestResponse<JsonNode> requestResponse = collectService.searchProject(
+                vitamContext,
+                criteriaProjectDto
+            );
+
+            if (requestResponse == null || !requestResponse.isOk()) {
                 throw new VitamClientException("Error occurs when retrieving projects!");
             }
             final List<JsonNode> results = ((RequestResponseOK<JsonNode>) requestResponse).getResults();
@@ -175,10 +196,10 @@ public class ProjectInternalService {
             List<CollectProjectDto> collectProjectDtos = ProjectConverter.toVitamuiCollectProjectDtos(projectDtos);
             return new PaginatedValuesDto<>(collectProjectDtos, 1, MAX_RESULTS, false);
         } catch (VitamClientException e) {
-            LOGGER.debug(UNABLE_TO_RETRIEVE_PROJECT + ": {}", e);
+            LOGGER.debug(UNABLE_TO_RETRIEVE_PROJECT, e);
             throw new InternalServerException(UNABLE_TO_RETRIEVE_PROJECT, e);
         } catch (JsonProcessingException e) {
-            LOGGER.debug(UNABLE_TO_PROCESS_RESPONSE + ": {}", e);
+            LOGGER.debug(UNABLE_TO_PROCESS_RESPONSE, e);
             throw new InternalServerException(UNABLE_TO_PROCESS_RESPONSE, e);
         }
     }
@@ -189,19 +210,19 @@ public class ProjectInternalService {
         String originalFileName,
         VitamContext vitamContext
     ) {
-        LOGGER.debug("TransactionId: ", transactionId);
-        LOGGER.debug("OriginalFileName: ", originalFileName);
+        LOGGER.debug("TransactionId: {}", transactionId);
+        LOGGER.debug("OriginalFileName: {}", originalFileName);
         try {
             collectService.uploadProjectZip(vitamContext, transactionId, inputStream);
         } catch (VitamClientException e) {
-            LOGGER.debug(UNABLE_TO_UPLOAD_PROJECT_ZIP_FILE + ": {}", e);
+            LOGGER.debug(UNABLE_TO_UPLOAD_PROJECT_ZIP_FILE, e);
             throw new InternalServerException(UNABLE_TO_UPLOAD_PROJECT_ZIP_FILE, e);
         }
     }
 
     public CollectProjectDto update(String id, CollectProjectDto collectProjectDto, VitamContext vitamContext) {
-        LOGGER.debug("Id: ", id);
-        LOGGER.debug("CollectProjectDto: ", collectProjectDto);
+        LOGGER.debug("Id: {}", id);
+        LOGGER.debug("CollectProjectDto: {}", collectProjectDto);
         try {
             ProjectDto projectDto = ProjectConverter.toVitamProjectDto(collectProjectDto);
             RequestResponse<JsonNode> requestResponse = collectService.updateProject(vitamContext, projectDto);
@@ -209,15 +230,15 @@ public class ProjectInternalService {
                 throw new VitamClientException("Error occurs when updating project!");
             }
             ProjectDto responseProjectDto = JsonHandler.getFromString(
-                ((RequestResponseOK) requestResponse).getFirstResult().toString(),
+                ((RequestResponseOK<?>) requestResponse).getFirstResult().toString(),
                 ProjectDto.class
             );
             return toVitamuiCollectProjectDto(responseProjectDto);
         } catch (VitamClientException e) {
-            LOGGER.debug(UNABLE_TO_UPDATE_PROJECT + ": {}", e);
+            LOGGER.debug(UNABLE_TO_UPDATE_PROJECT, e);
             throw new InternalServerException(UNABLE_TO_UPDATE_PROJECT, e);
         } catch (InvalidParseOperationException e) {
-            LOGGER.debug(UNABLE_TO_PROCESS_RESPONSE + ": {}", e);
+            LOGGER.debug(UNABLE_TO_PROCESS_RESPONSE, e);
             throw new InternalServerException(UNABLE_TO_PROCESS_RESPONSE, e);
         }
     }
@@ -230,7 +251,7 @@ public class ProjectInternalService {
             }
             return toVitamuiCollectProjectDto(
                 JsonHandler.getFromString(
-                    ((RequestResponseOK) requestResponse).getFirstResult().toString(),
+                    ((RequestResponseOK<?>) requestResponse).getFirstResult().toString(),
                     ProjectDto.class
                 )
             );
@@ -258,10 +279,11 @@ public class ProjectInternalService {
         Optional<DirectionDto> direction,
         VitamContext vitamContext
     ) throws VitamClientException {
-        LOGGER.debug("Page: ", page);
-        LOGGER.debug("Size: ", size);
-        LOGGER.debug("OrderBy: ", orderBy.orElse(null));
-        LOGGER.debug("Direction: ", direction.orElse(null));
+        // FIXME: page, size, orderBy and direction are not used!
+        LOGGER.debug("Page: {}", page);
+        LOGGER.debug("Size: {}", size);
+        LOGGER.debug("OrderBy: {}", orderBy.orElse(null));
+        LOGGER.debug("Direction: {}", direction.orElse(null));
         try {
             RequestResponse<JsonNode> requestResponse = collectService.getTransactionsByProject(
                 projectId,
@@ -296,7 +318,7 @@ public class ProjectInternalService {
                 throw new VitamClientException("Error occurs when getting last transaction by project!");
             }
             List<TransactionDto> transactionDtos = objectMapper.readValue(
-                ((RequestResponseOK) requestResponse).getResults().toString(),
+                ((RequestResponseOK<?>) requestResponse).getResults().toString(),
                 new TypeReference<>() {}
             );
             List<CollectTransactionDto> collectTransactionDtos = TransactionConverter.toVitamuiDtos(transactionDtos);
