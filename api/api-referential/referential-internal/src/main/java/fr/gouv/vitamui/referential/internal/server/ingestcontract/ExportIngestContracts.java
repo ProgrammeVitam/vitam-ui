@@ -46,10 +46,10 @@ public class ExportIngestContracts extends ExportCSVParams {
             MASTER_MANDATORY,
             EVERY_DATA_OBJECT_VERSION,
             DATA_OBJECT_VERSION,
-            ACTIVATION_DATE,
-            DESACTIVATION_DATE,
             SIGNED_DOCUMENT,
-            SIGNING_ROLE
+            SIGNING_ROLE,
+            ACTIVATION_DATE,
+            DESACTIVATION_DATE
         );
         this.setHeaders(headers);
     }
