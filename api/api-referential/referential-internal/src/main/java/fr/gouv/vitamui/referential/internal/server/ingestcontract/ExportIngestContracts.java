@@ -25,6 +25,8 @@ public class ExportIngestContracts extends ExportCSVParams {
     private static final String DATA_OBJECT_VERSION = "DataObjectVersion";
     private static final String ACTIVATION_DATE = "ActivationDate";
     private static final String DESACTIVATION_DATE = "DesactivationDate";
+    private static final String SIGNED_DOCUMENT = "SignedDocument";
+    private static final String SIGNING_ROLE = "SigningRole";
 
     public ExportIngestContracts() {
         List<String> headers = List.of(
@@ -45,7 +47,9 @@ public class ExportIngestContracts extends ExportCSVParams {
             EVERY_DATA_OBJECT_VERSION,
             DATA_OBJECT_VERSION,
             ACTIVATION_DATE,
-            DESACTIVATION_DATE
+            DESACTIVATION_DATE,
+            SIGNED_DOCUMENT,
+            SIGNING_ROLE
         );
         this.setHeaders(headers);
     }

@@ -61,6 +61,7 @@ import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
 import fr.gouv.vitamui.iam.internal.client.ApplicationInternalRestClient;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import fr.gouv.vitamui.referential.common.dto.IngestContractDto;
+import fr.gouv.vitamui.referential.common.dto.SignaturePolicyDto;
 import fr.gouv.vitamui.referential.common.service.IngestContractService;
 import fr.gouv.vitamui.referential.internal.server.ingestcontract.IngestContractConverter;
 import fr.gouv.vitamui.referential.internal.server.ingestcontract.IngestContractInternalService;
@@ -541,6 +542,7 @@ public class IngestContractInternalServiceTest {
         ingestContract.setMasterMandatory(true);
         ingestContract.setEveryDataObjectVersion(true);
         ingestContract.setDataObjectVersion(Set.of("PhysicalMaster"));
+        ingestContract.setSignaturePolicy(new SignaturePolicyDto());
         ingestContract.setActivationDate("2023-12-31");
         ingestContract.setDeactivationDate("2023-12-31");
         List<IngestContractDto> ingestContracts = List.of(ingestContract);
@@ -563,8 +565,8 @@ public class IngestContractInternalServiceTest {
         //Then
         String result = asString(exportFile);
         String whened =
-            "\uFEFF\"Identifier\";\"Name\";\"Description\";\"Status\";\"ArchiveProfiles\";\"CheckParentLink\";\"CheckParentId\";\"LinkParentId\";\"FormatUnidentifiedAuthorized\";\"EveryFormatType\";\"FormatType\";\"ManagementContractId\";\"ComputedInheritedRulesAtIngest\";\"MasterMandatory\";\"EveryDataObjectVersion\";\"DataObjectVersion\";\"ActivationDate\";\"DesactivationDate\"\n" +
-            "\"IC-000001\";\"Name\";\"Description\";\"ACTIVE\";\"PR-000001\";\"AUTHORIZED\";\"CheckParentId\";\"LinkParentId\";\"true\";\"true\";\"FormatType\";\"ManagementContractId\";\"true\";\"true\";\"true\";\"PhysicalMaster\";\"31/12/2023\";\"31/12/2023\"\n";
+            "\uFEFF\"Identifier\";\"Name\";\"Description\";\"Status\";\"ArchiveProfiles\";\"CheckParentLink\";\"CheckParentId\";\"LinkParentId\";\"FormatUnidentifiedAuthorized\";\"EveryFormatType\";\"FormatType\";\"ManagementContractId\";\"ComputedInheritedRulesAtIngest\";\"MasterMandatory\";\"EveryDataObjectVersion\";\"DataObjectVersion\";\"ActivationDate\";\"DesactivationDate\";\"SignedDocument\";\"SigningRole\"\n" +
+            "\"IC-000001\";\"Name\";\"Description\";\"ACTIVE\";\"PR-000001\";\"AUTHORIZED\";\"CheckParentId\";\"LinkParentId\";\"true\";\"true\";\"FormatType\";\"ManagementContractId\";\"true\";\"true\";\"true\";\"PhysicalMaster\";\"ALLOWED\";\"\";\"31/12/2023\";\"31/12/2023\"\n";
         assertThat(result).isEqualTo(whened);
     }
 

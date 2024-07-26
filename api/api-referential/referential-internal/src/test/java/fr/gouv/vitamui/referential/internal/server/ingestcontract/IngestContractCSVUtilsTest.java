@@ -120,6 +120,22 @@ class IngestContractCSVUtilsTest {
                     .error(ErrorImportFileMessage.NOT_ALLOWED_VALUE)
                     .data("toto")
                     .build()
+            ),
+            ImportCSVUtils.errorToJson(
+                ErrorImportFile.builder()
+                    .line(2)
+                    .column('Q')
+                    .error(ErrorImportFileMessage.NOT_ALLOWED_VALUE)
+                    .data("toto")
+                    .build()
+            ),
+            ImportCSVUtils.errorToJson(
+                ErrorImportFile.builder()
+                    .line(2)
+                    .column('R')
+                    .error(ErrorImportFileMessage.NOT_ALLOWED_VALUE)
+                    .data("toto")
+                    .build()
             )
         );
 

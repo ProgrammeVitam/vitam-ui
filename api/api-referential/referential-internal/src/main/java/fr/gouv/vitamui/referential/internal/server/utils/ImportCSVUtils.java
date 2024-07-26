@@ -9,11 +9,13 @@ import com.opencsv.exceptions.CsvException;
 import fr.gouv.vitam.common.model.administration.ContextStatus;
 import fr.gouv.vitam.common.model.administration.DataObjectVersionType;
 import fr.gouv.vitam.common.model.administration.RuleType;
+import fr.gouv.vitam.common.model.administration.SignaturePolicy;
 import fr.gouv.vitamui.commons.api.dtos.ErrorImportFile;
 import fr.gouv.vitamui.commons.api.enums.ErrorImportFileMessage;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.utils.JsonUtils;
+import fr.gouv.vitamui.referential.common.dto.SignaturePolicyDto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -54,6 +56,8 @@ public class ImportCSVUtils {
         RULE_TYPE,
         DATA_OBJECT_VERSION_TYPE,
         CHECK_PARENT_LINK_TYPE,
+        SIGNED_DOCUMENT_TYPE,
+        SIGNING_ROLE_TYPE,
     }
 
     protected static void checkImportFile(MultipartFile file, List<ColumnDetails> expectedColumns) {
@@ -325,6 +329,43 @@ public class ImportCSVUtils {
                     .error(ErrorImportFileMessage.NOT_ALLOWED_VALUE)
                     .build()
             );
+        }
+
+        if (
+            !StringUtils.isBlank(value) &&
+            columnDetails.getColumnType().equals(ColumnType.SIGNED_DOCUMENT_TYPE) &&
+            !EnumUtils.isValidEnum(SignaturePolicy.SignedDocumentPolicyEnum.class, value)
+        ) {
+            lineErrors.add(
+                ErrorImportFile.builder()
+                    .column(numberToLetter(rowNumber))
+                    .line(lineNumber)
+                    .data(value)
+                    .error(ErrorImportFileMessage.NOT_ALLOWED_VALUE)
+                    .build()
+            );
+        }
+
+        if (!StringUtils.isBlank(value) && columnDetails.getColumnType().equals(ColumnType.SIGNING_ROLE_TYPE)) {
+            String[] roles = value.split(SignaturePolicyDto.SIGNING_ROLE_SEPARATOR_REGEX);
+            for (String role : roles) {
+                switch (role) {
+                    case SignaturePolicyDto.SIGNING_ROLE_DECLARED_SIGNATURE:
+                    case SignaturePolicyDto.SIGNING_ROLE_DECLARED_TIMESTAMP:
+                    case SignaturePolicyDto.SIGNING_ROLE_DECLARED_ADDITIONAL_PROOF:
+                        continue;
+                    default:
+                        lineErrors.add(
+                            ErrorImportFile.builder()
+                                .column(numberToLetter(rowNumber))
+                                .line(lineNumber)
+                                .data(role)
+                                .error(ErrorImportFileMessage.NOT_ALLOWED_VALUE)
+                                .build()
+                        );
+                        break;
+                }
+            }
         }
     }
 

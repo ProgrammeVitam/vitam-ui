@@ -26,6 +26,8 @@ public class IngestContractCSVUtils extends ImportCSVUtils {
     public static final String MASTER_MANDATORY = "MasterMandatory";
     public static final String EVERY_DATA_OBJECT_VERSION = "EveryDataObjectVersion";
     public static final String DATA_OBJECT_VERSION = "DataObjectVersion";
+    public static final String SIGNED_DOCUMENT = "SignedDocument";
+    public static final String SIGNING_ROLE = "SigningRole";
 
     public static void checkImportFile(MultipartFile ingestContractFile, boolean isIdentifierMandatory) {
         checkImportFile(ingestContractFile, buildIngestContractColumns(isIdentifierMandatory));
@@ -153,6 +155,22 @@ public class IngestContractCSVUtils extends ImportCSVUtils {
                 .index(15)
                 .columnName(DATA_OBJECT_VERSION)
                 .columnType(ColumnType.DATA_OBJECT_VERSION_TYPE)
+                .mandatory(false)
+                .build()
+        );
+        expectedColumns.add(
+            ColumnDetails.builder()
+                .index(16)
+                .columnName(SIGNED_DOCUMENT)
+                .columnType(ColumnType.SIGNED_DOCUMENT_TYPE)
+                .mandatory(false)
+                .build()
+        );
+        expectedColumns.add(
+            ColumnDetails.builder()
+                .index(17)
+                .columnName(SIGNING_ROLE)
+                .columnType(ColumnType.SIGNING_ROLE_TYPE)
                 .mandatory(false)
                 .build()
         );
