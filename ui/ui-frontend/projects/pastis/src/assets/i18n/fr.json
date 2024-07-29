@@ -197,6 +197,7 @@
         "FORMAT_ENUMERATION_AUTORISES": "Format(s) de date autorisé(s) pour cette métadonnée",
         "FORMATAGE_PREDEFINI": "Utiliser un formatage prédéfini",
         "SAISIR_EXPRESSION": "Saisir une expression régulière",
+        "PATTERN_COMMENT": "Message/commentaire explicatif",
         "EXPRESSION_CONTROLE": "Contrôle de type \"Expression régulière\"",
         "ATTRIBUT_METADONNEE": "Attributs de métadonnée",
         "INFO_EXPRESSION": "Définir une expression régulière pour la valeur de la métadonnée",

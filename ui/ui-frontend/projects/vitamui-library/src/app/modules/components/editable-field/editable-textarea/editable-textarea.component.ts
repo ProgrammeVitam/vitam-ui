@@ -38,6 +38,7 @@ import { Component, ElementRef, forwardRef, Input, ViewChild } from '@angular/co
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 
 import { EditableFieldComponent } from '../editable-field.component';
+import { coerceBooleanProperty } from '@angular/cdk/coercion';
 
 export const EDITABLE_TEXTAREA_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -53,6 +54,7 @@ export const EDITABLE_TEXTAREA_VALUE_ACCESSOR: any = {
 })
 export class EditableTextareaComponent extends EditableFieldComponent {
   @Input() maxlength: number;
+  @Input({ transform: coerceBooleanProperty }) required = false;
   @ViewChild('input') private input: ElementRef;
 
   constructor(elementRef: ElementRef) {

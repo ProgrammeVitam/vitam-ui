@@ -96,8 +96,8 @@
           {
             "additionalProperties": false,
             "pattern": null,
-            "minLenght": null,
-            "maxLenght": null,
+            "minLength": null,
+            "maxLength": null,
             "minimum": null,
             "maximum": null,
             "exclusiveMinimum": null,
@@ -145,8 +145,8 @@
               {
                 "additionalProperties": null,
                 "pattern": null,
-                "minLenght": null,
-                "maxLenght": null,
+                "minLength": null,
+                "maxLength": null,
                 "minimum": null,
                 "maximum": null,
                 "exclusiveMinimum": null,
@@ -270,8 +270,8 @@
               {
                 "additionalProperties": false,
                 "pattern": null,
-                "minLenght": null,
-                "maxLenght": null,
+                "minLength": null,
+                "maxLength": null,
                 "minimum": null,
                 "maximum": null,
                 "exclusiveMinimum": null,
@@ -322,8 +322,8 @@
               {
                 "additionalProperties": false,
                 "pattern": null,
-                "minLenght": null,
-                "maxLenght": null,
+                "minLength": null,
+                "maxLength": null,
                 "minimum": null,
                 "maximum": null,
                 "exclusiveMinimum": null,

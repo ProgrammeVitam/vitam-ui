@@ -77,8 +77,8 @@ public class PuaFromJSON {
         // 4. Check if tree contains Management metadata
         addPatternPropertiesForManagement(elementProperties, controlSchema);
         List<ElementProperties> elementsForTree = puaPastisValidator.ignoreMetadata(elementProperties);
-        List<String> rerquiredElements = puaPastisValidator.getHeadRequired(elementsForTree);
-        if (CollectionUtils.isNotEmpty(rerquiredElements)) {
+        List<String> requiredElements = puaPastisValidator.getHeadRequired(elementsForTree);
+        if (CollectionUtils.isNotEmpty(requiredElements)) {
             controlSchema.put(PuaPastisValidator.REQUIRED, puaPastisValidator.getHeadRequired(elementsForTree));
         }
 

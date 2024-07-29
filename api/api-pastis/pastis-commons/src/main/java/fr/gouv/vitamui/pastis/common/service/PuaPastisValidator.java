@@ -1049,14 +1049,7 @@ public class PuaPastisValidator {
         if (el.getCardinality() != null && puaMetadataDetails.getType().equals("array")) {
             getMinAndMAxItems(el, puaMetadataDetails);
         }
-        if (
-            !sedaElement.getElement().equals(COMPLEX) && el.getPuaData() != null && el.getPuaData().getPattern() != null
-        ) {
-            puaMetadataDetails.setPattern(el.getPuaData().getPattern());
-        }
-        if (el.getPuaData() != null && el.getPuaData().getPattern() != null) {
-            puaMetadataDetails.setPattern(el.getPuaData().getPattern());
-        }
+        Optional.ofNullable(el.getPuaData()).map(PuaData::getPattern).ifPresent(puaMetadataDetails::setPattern);
         if (el.getPuaData() != null && el.getPuaData().getEnum() != null) {
             puaMetadataDetails.setEnums(el.getPuaData().getEnum());
         } else {

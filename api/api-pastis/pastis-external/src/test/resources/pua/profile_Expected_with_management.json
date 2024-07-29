@@ -143,8 +143,8 @@
                 "exclusiveMinimum": null,
                 "pattern": null,
                 "enum": null,
-                "minLenght": null,
-                "maxLenght": null
+                "minLength": null,
+                "maxLength": null
               }
             }
           ],
@@ -198,8 +198,8 @@
                   "Item",
                   "OtherLevel"
                 ],
-                "minLenght": null,
-                "maxLenght": null
+                "minLength": null,
+                "maxLength": null
               }
             },
             {
@@ -289,8 +289,8 @@
                 "exclusiveMinimum": null,
                 "pattern": null,
                 "enum": null,
-                "minLenght": null,
-                "maxLenght": null
+                "minLength": null,
+                "maxLength": null
               }
             },
             {
@@ -332,8 +332,8 @@
                 "exclusiveMinimum": null,
                 "pattern": null,
                 "enum": null,
-                "minLenght": null,
-                "maxLenght": null
+                "minLength": null,
+                "maxLength": null
               }
             }
           ],
