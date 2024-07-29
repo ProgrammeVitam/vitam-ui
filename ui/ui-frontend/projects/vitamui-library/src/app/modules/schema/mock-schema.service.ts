@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { Collection, SchemaElement } from '../models';
-import { SchemaService } from 'vitamui-library';
+import { Collection, Schema, SchemaElement } from '../models';
+import { SchemaService } from './schema.service';
 
 @Injectable()
 export class MockSchemaService extends SchemaService {
@@ -13480,11 +13480,11 @@ export class MockSchemaService extends SchemaService {
     },
   ];
 
-  getSchema(): Observable<SchemaElement[]> {
+  getSchema(_collection: Collection): Observable<Schema> {
     return of(this.schema);
   }
 
-  getSchemas(): Observable<SchemaElement[][]> {
+  getSchemas(_collections: Collection[]): Observable<Schema[]> {
     return of([this.schema]);
   }
 }

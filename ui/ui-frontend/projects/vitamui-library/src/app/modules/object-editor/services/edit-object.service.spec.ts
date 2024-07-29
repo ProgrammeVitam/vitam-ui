@@ -38,7 +38,7 @@ describe('EditObjectService', () => {
   describe('EditObject', () => {
     it('should create simple editObject', waitForAsync(
       inject([MockSchemaService], (schemaService: MockSchemaService) => {
-        schemaService.getSchema().subscribe((schema) => {
+        schemaService.getSchema(Collection.ARCHIVE_UNIT).subscribe((schema) => {
           const path = '';
           const data = { Title: 'Hello' };
           const template: DisplayRule[] = [{ Path: 'Title', ui: { Path: 'Title', component: 'textfield' } }];
@@ -84,7 +84,7 @@ describe('EditObjectService', () => {
 
     it('should create nested editObject', waitForAsync(
       inject([MockSchemaService], (schemaService: MockSchemaService) => {
-        schemaService.getSchema().subscribe((schema) => {
+        schemaService.getSchema(Collection.ARCHIVE_UNIT).subscribe((schema) => {
           const path = '';
           const data = {
             Title: 'Hello',
@@ -146,7 +146,7 @@ describe('EditObjectService', () => {
 
     it('should create projected nested object', waitForAsync(
       inject([MockSchemaService, TemplateService, SchemaService], (schemaService: MockSchemaService, templetaService: TemplateService) => {
-        schemaService.getSchema().subscribe((schema) => {
+        schemaService.getSchema(Collection.ARCHIVE_UNIT).subscribe((schema) => {
           const path = '';
           const originalData = {
             Title: 'Hello',
@@ -210,7 +210,7 @@ describe('EditObjectService', () => {
 
     it('should create projected nested object and add new items', waitForAsync(
       inject([MockSchemaService, TemplateService, SchemaService], (schemaService: MockSchemaService, templetaService: TemplateService) => {
-        schemaService.getSchema().subscribe((schema) => {
+        schemaService.getSchema(Collection.ARCHIVE_UNIT).subscribe((schema) => {
           const path = '';
           const originalData = {
             Title: 'Hello',
@@ -282,7 +282,7 @@ describe('EditObjectService', () => {
 
     it('should create projected nested object and remove an item', waitForAsync(
       inject([MockSchemaService, TemplateService, SchemaService], (schemaService: MockSchemaService, templetaService: TemplateService) => {
-        schemaService.getSchema().subscribe((schema) => {
+        schemaService.getSchema(Collection.ARCHIVE_UNIT).subscribe((schema) => {
           const path = '';
           const originalData = {
             Title: 'Hello',
@@ -354,7 +354,7 @@ describe('EditObjectService', () => {
 
     it('should create projected nested object and do complexe operations on arrays', waitForAsync(
       inject([MockSchemaService, TemplateService, SchemaService], (schemaService: MockSchemaService, templetaService: TemplateService) => {
-        schemaService.getSchema().subscribe((schema) => {
+        schemaService.getSchema(Collection.ARCHIVE_UNIT).subscribe((schema) => {
           const path = '';
           const originalData = {
             Title: 'Hello',
@@ -439,7 +439,7 @@ describe('EditObjectService', () => {
 
     it('should create with empty data', waitForAsync(
       inject([MockSchemaService, TemplateService, SchemaService], (schemaService: MockSchemaService, templetaService: TemplateService) => {
-        schemaService.getSchema().subscribe((schema) => {
+        schemaService.getSchema(Collection.ARCHIVE_UNIT).subscribe((schema) => {
           const path = '';
           const originalData = {};
           const template: DisplayRule[] = [];
@@ -579,7 +579,7 @@ describe('EditObjectService', () => {
 
   it('should template schema be same as schema when template does not move data', waitForAsync(
     inject([MockSchemaService], (schemaService: MockSchemaService) => {
-      schemaService.getSchema().subscribe((schema) => {
+      schemaService.getSchema(Collection.ARCHIVE_UNIT).subscribe((schema) => {
         const template: DisplayRule[] = [{ Path: 'Title', ui: { Path: 'Title', component: 'textfield' } }];
         const subschema = schema
           .filter((element) => element.Category === 'DESCRIPTION')
@@ -605,7 +605,7 @@ describe('EditObjectService', () => {
 
   it('should template schema add only one node when moves a primitive from schema into a group a root level', waitForAsync(
     inject([MockSchemaService], (schemaService: MockSchemaService) => {
-      schemaService.getSchema().subscribe((schema) => {
+      schemaService.getSchema(Collection.ARCHIVE_UNIT).subscribe((schema) => {
         const template: DisplayRule[] = [
           { Path: null, ui: { Path: 'Generalities', component: 'group' } },
           { Path: 'Title', ui: { Path: 'Generalities.Title', component: 'textfield' } },
@@ -627,7 +627,7 @@ describe('EditObjectService', () => {
 
   it('should template schema add only concerned nodes when moves an object array from schema into a group a root level', waitForAsync(
     inject([MockSchemaService], (schemaService: MockSchemaService) => {
-      schemaService.getSchema().subscribe((schema) => {
+      schemaService.getSchema(Collection.ARCHIVE_UNIT).subscribe((schema) => {
         const template: DisplayRule[] = [
           { Path: null, ui: { Path: 'Generalities', component: 'group' } },
           { Path: 'Addressee', ui: { Path: 'Generalities.Addressee', component: 'group' } },

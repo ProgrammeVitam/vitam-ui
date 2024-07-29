@@ -20,7 +20,7 @@ describe('SchemaService', () => {
   describe('Subschema', () => {
     it('should get archive unit schema subschema', waitForAsync(
       inject([MockSchemaService], (schemaService: MockSchemaService) => {
-        schemaService.getSchema().subscribe((schema) => {
+        schemaService.getSchema(Collection.ARCHIVE_UNIT).subscribe((schema) => {
           const subschema = service.subschema(schema, { collection: Collection.ARCHIVE_UNIT, versions: ['2.1'], pathKey: 'ApiPath' });
 
           expect(subschema.every((element) => element.SedaVersions.includes('2.1'))).toBeTruthy();
@@ -33,7 +33,7 @@ describe('SchemaService', () => {
   describe('Data', () => {
     it('should create simple data according schema', waitForAsync(
       inject([MockSchemaService], (schemaService: MockSchemaService) => {
-        schemaService.getSchema().subscribe((schema) => {
+        schemaService.getSchema(Collection.ARCHIVE_UNIT).subscribe((schema) => {
           const path = '';
           const data = service.data(path, schema, { collection: Collection.ARCHIVE_UNIT, versions: ['2.1'], pathKey: 'ApiPath' });
 
@@ -48,7 +48,7 @@ describe('SchemaService', () => {
 
     it('should create data with all root level keys according schema', waitForAsync(
       inject([MockSchemaService, PathService], (schemaService: MockSchemaService, pathService: PathService) => {
-        schemaService.getSchema().subscribe((schema) => {
+        schemaService.getSchema(Collection.ARCHIVE_UNIT).subscribe((schema) => {
           const path = '';
           const options: SchemaOptions = { collection: Collection.ARCHIVE_UNIT, versions: ['2.1'], pathKey: 'ApiPath' };
           const subschema = service.subschema(schema, options);
@@ -64,7 +64,7 @@ describe('SchemaService', () => {
 
     it('should create archive unit addressee block according schema', waitForAsync(
       inject([MockSchemaService, PathService], (schemaService: MockSchemaService, pathService: PathService) => {
-        schemaService.getSchema().subscribe((schema) => {
+        schemaService.getSchema(Collection.ARCHIVE_UNIT).subscribe((schema) => {
           const path = 'Addressee';
           const options: SchemaOptions = { collection: Collection.ARCHIVE_UNIT, versions: ['2.1'], pathKey: 'ApiPath' };
           const subschema = service.subschema(schema, options);
@@ -85,7 +85,7 @@ describe('SchemaService', () => {
 
     it('should create archive unit addressee birth place block according schema', waitForAsync(
       inject([MockSchemaService, PathService], (schemaService: MockSchemaService, pathService: PathService) => {
-        schemaService.getSchema().subscribe((schema) => {
+        schemaService.getSchema(Collection.ARCHIVE_UNIT).subscribe((schema) => {
           const path = 'Addressee.BirthPlace';
           const options: SchemaOptions = { collection: Collection.ARCHIVE_UNIT, versions: ['2.1'], pathKey: 'ApiPath' };
           const subschema = service.subschema(schema, options);
@@ -109,7 +109,7 @@ describe('SchemaService', () => {
 
     it('should work when a primitive node is provided', waitForAsync(
       inject([MockSchemaService, PathService], (schemaService: MockSchemaService) => {
-        schemaService.getSchema().subscribe((schema) => {
+        schemaService.getSchema(Collection.ARCHIVE_UNIT).subscribe((schema) => {
           const path = 'AcquiredDate';
           const options: SchemaOptions = { collection: Collection.ARCHIVE_UNIT, versions: ['2.1'], pathKey: 'ApiPath' };
           const subschema = service.subschema(schema, options);
@@ -123,7 +123,7 @@ describe('SchemaService', () => {
 
     it('should work when a primitive array node is provided', waitForAsync(
       inject([MockSchemaService], (schemaService: MockSchemaService) => {
-        schemaService.getSchema().subscribe((schema) => {
+        schemaService.getSchema(Collection.ARCHIVE_UNIT).subscribe((schema) => {
           const path = 'Tag';
           const options: SchemaOptions = { collection: Collection.ARCHIVE_UNIT, versions: ['2.1'], pathKey: 'ApiPath' };
           const subschema = service.subschema(schema, options);
