@@ -391,11 +391,11 @@ public class JsonFromPUA {
                         break;
                     case MIN_LENGTH:
                         addPuaDataToElementIfNotPresent(childProfile);
-                        childProfile.getPuaData().setMinLenght(childPua.getInt(k));
+                        childProfile.getPuaData().setMinLength(childPua.getInt(k));
                         break;
                     case MAX_LENGTH:
                         addPuaDataToElementIfNotPresent(childProfile);
-                        childProfile.getPuaData().setMaxLenght(childPua.getInt(k));
+                        childProfile.getPuaData().setMaxLength(childPua.getInt(k));
                         break;
                     case MINIMUM:
                         addPuaDataToElementIfNotPresent(childProfile);

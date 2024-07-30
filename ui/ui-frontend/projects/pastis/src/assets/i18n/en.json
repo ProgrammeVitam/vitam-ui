@@ -198,6 +198,7 @@
         "INFO_ENNUMERATION": "Mention allowed values",
         "FORMATAGE_PREDEFINI": "Use predefined formatting",
         "SAISIR_EXPRESSION": "Enter a regular expression",
+        "PATTERN_COMMENT": "Explaining message/comment",
         "EXPRESSION_CONTROLE": "\"Regular expression\" type control",
         "ATTRIBUT_METADONNEE": "Metadata attributes",
         "SUPPRIMER": "Remove",

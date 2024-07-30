@@ -26,7 +26,7 @@
           class="panel-buttons"
           matTooltip="{{ 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.ADDITIONAL_PROPERTIES_TOOLTIP' | translate }}"
         >
-          <allow-additional-properties [checked]="rootAdditionalProperties" (stateToggleButton)="changeStatusAditionalProperties($event)">
+          <allow-additional-properties [checked]="rootAdditionalProperties" (stateToggleButton)="changeStatusAdditionalProperties($event)">
           </allow-additional-properties>
         </div>
         <!--Button save-->
@@ -178,7 +178,7 @@
           </td>
         </ng-container>
 
-        <!-- Commnent Column -->
+        <!-- Comment Column -->
         <ng-container matColumnDef="commentaire">
           <th *matHeaderCellDef class="pastis-font-table-header pastis-col" mat-header-cell>
             {{ 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.COMMENTAIRE' | translate }}
@@ -190,6 +190,7 @@
                 [maxlength]="120"
                 [ngModel]="element.commentaire"
                 class="commentaire-pastis"
+                [required]="hasCustomRegex(element)"
               >
               </vitamui-common-editable-textarea>
             </div>
@@ -291,7 +292,7 @@
                 <span class="text normal">{{ 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.SUPPRIMER' | translate }}</span>
               </button>
 
-              <!-- Contrôle de métadonées => PUA -->
+              <!-- Contrôle de métadonnées => PUA -->
               <mat-divider
                 *ngIf="
                   this.profileService.profileMode === 'PUA' &&
@@ -316,7 +317,7 @@
                 <span class="text normal">{{ 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.CONTROLE_METADONNEE' | translate }}</span>
               </button>
 
-              <!-- Edition des contres de nétadonnées -->
+              <!-- Edition des contres de métadonnées -->
               <mat-divider
                 *ngIf="
                   this.profileService.profileMode === 'PUA' &&
@@ -392,8 +393,8 @@
             </p>
           </div>
         </div>
-        <div *ngIf="enumsControlSeleted?.length > 0" class="pastis-container-selected-items mt-5">
-          <div *ngFor="let item of enumsControlSeleted; let i = index" style="display: inline-flex">
+        <div *ngIf="enumsControlSelected?.length > 0" class="pastis-container-selected-items mt-5">
+          <div *ngFor="let item of enumsControlSelected; let i = index" style="display: inline-flex">
             <div class="selected-items-box">
               <span style="padding: 12px">
                 <span class="item-text">{{ item }}</span>
@@ -428,21 +429,22 @@
           </div>
         </div>
         <mat-radio-group [(ngModel)]="radioExpressionReguliere">
-          <div class="ml-5">
+          <div class="container">
             <div class="row">
-              <div>
+              <div class="col-auto">
                 <mat-radio-button value="select" class="text-text-normal pastis-radio">
                   {{ 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.FORMATAGE_PREDEFINI' | translate }}:
                 </mat-radio-button>
               </div>
-              <div>
-                <div>
+              <div class="row col">
+                <div class="col-auto">
                   <mat-form-field class="ml-3 vitamui-mat-select">
                     <mat-select
-                      *ngIf="availableRegex.length > 1; else valueUnique"
+                      *ngIf="availableRegex?.length > 1; else valueUnique"
                       disableRipple="true"
                       panelClass="vitamui-mat-select"
                       [(value)]="regex"
+                      (selectionChange)="radioExpressionReguliere = 'select'"
                     >
                       <mat-option *ngFor="let predefiniElement of availableRegex" [value]="predefiniElement.value">
                         {{ predefiniElement.label }}
@@ -466,18 +468,32 @@
             </div>
           </div>
 
-          <div class="ml-5 mt-4">
-            <div class="row">
-              <div>
+          <div class="container mt-4">
+            <div class="row no-gutters">
+              <div class="col-auto">
                 <mat-radio-button value="input" [disabled]="isNotRegexCustomisable()"> </mat-radio-button>
               </div>
-              <div class="col-6">
-                <vitamui-common-textarea
-                  [disabled]="isNotRegexCustomisable()"
-                  [placeholder]="'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.SAISIR_EXPRESSION' | translate"
-                  [(ngModel)]="customRegex"
-                >
-                </vitamui-common-textarea>
+              <div class="row col">
+                <div class="col-6">
+                  <vitamui-common-textarea
+                    [disabled]="isNotRegexCustomisable()"
+                    [placeholder]="'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.SAISIR_EXPRESSION' | translate"
+                    [(ngModel)]="customRegex"
+                    (ngModelChange)="radioExpressionReguliere = 'input'"
+                    [required]="true"
+                  >
+                  </vitamui-common-textarea>
+                </div>
+                <div class="col-6">
+                  <vitamui-common-textarea
+                    [disabled]="isNotRegexCustomisable()"
+                    [placeholder]="'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.PATTERN_COMMENT' | translate"
+                    [(ngModel)]="commentaire"
+                    [required]="true"
+                    [maxlength]="120"
+                  >
+                  </vitamui-common-textarea>
+                </div>
               </div>
             </div>
           </div>
@@ -489,7 +505,10 @@
         <div class="row mt-3">
           <button
             *ngIf="(enumerationControl || expressionControl) && clickedControl.name === clickedNode.name"
-            [disabled]="this.enumsControlSeleted.length <= 0 && regex === null && customRegex === null"
+            [disabled]="
+              (this.enumsControlSelected.length <= 0 && regex === null && customRegex === null) ||
+              (radioExpressionReguliere === 'input' && (!customRegex || !commentaire))
+            "
             class="btn primary ml-5"
             style="text-transform: uppercase"
             (click)="onSubmitControls()"

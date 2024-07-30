@@ -5,7 +5,7 @@
         <label>{{ label }}</label>
         <span class="editable-field-text-content display-all">{{ control?.value }}</span>
         <div class="editable-field-control">
-          <textarea [formControl]="control" [maxlength]="maxlength" rows="3" #input></textarea>
+          <textarea [formControl]="control" [maxlength]="maxlength" [required]="required" rows="3" #input></textarea>
         </div>
       </div>
       <i *ngIf="!showSpinner && !editMode" class="material-icons edit-icon">edit</i>

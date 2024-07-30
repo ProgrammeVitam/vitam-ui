@@ -156,8 +156,8 @@
               "puaData": {
                 "additionalProperties": false,
                 "pattern": null,
-                "minLenght": null,
-                "maxLenght": null,
+                "minLength": null,
+                "maxLength": null,
                 "minimum": null,
                 "maximum": null,
                 "exclusiveMinimum": null,
@@ -203,8 +203,8 @@
               "puaData": {
                 "additionalProperties": null,
                 "pattern": null,
-                "minLenght": null,
-                "maxLenght": null,
+                "minLength": null,
+                "maxLength": null,
                 "minimum": null,
                 "maximum": null,
                 "exclusiveMinimum": null,
@@ -316,8 +316,8 @@
               "puaData": {
                 "additionalProperties": false,
                 "pattern": null,
-                "minLenght": null,
-                "maxLenght": null,
+                "minLength": null,
+                "maxLength": null,
                 "minimum": null,
                 "maximum": null,
                 "exclusiveMinimum": null,
@@ -363,8 +363,8 @@
               "puaData": {
                 "additionalProperties": false,
                 "pattern": null,
-                "minLenght": null,
-                "maxLenght": null,
+                "minLength": null,
+                "maxLength": null,
                 "minimum": null,
                 "maximum": null,
                 "exclusiveMinimum": null,

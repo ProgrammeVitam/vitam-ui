@@ -45,7 +45,6 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.skyscreamer.jsonassert.JSONAssert;
 import org.skyscreamer.jsonassert.JSONCompareMode;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -53,6 +52,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+
+import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
 
 @RunWith(SpringRunner.class)
 @TestPropertySource(locations = "/application-test.yml")
@@ -72,7 +73,7 @@ public class JsonFromPuaTest {
         InputStream inputStreamExpected = getClass().getClassLoader().getResourceAsStream("pua/profile_Expected.json");
         tokener = new JSONTokener(inputStreamExpected);
         JSONObject fileNodeJSONExpected = new JSONObject(tokener);
-        JSONAssert.assertEquals(fileNodeJSONActual, fileNodeJSONExpected, JSONCompareMode.STRICT);
+        assertEquals(fileNodeJSONExpected, fileNodeJSONActual, JSONCompareMode.STRICT);
     }
 
     @Test
@@ -90,7 +91,7 @@ public class JsonFromPuaTest {
             .getResourceAsStream("pua/profile_Expected_with_management.json");
         tokener = new JSONTokener(inputStreamExpected);
         JSONObject fileNodeJSONExpected = new JSONObject(tokener);
-        JSONAssert.assertEquals(fileNodeJSONActual, fileNodeJSONExpected, JSONCompareMode.STRICT);
+        assertEquals(fileNodeJSONExpected, fileNodeJSONActual, JSONCompareMode.STRICT);
     }
 
     @Test
