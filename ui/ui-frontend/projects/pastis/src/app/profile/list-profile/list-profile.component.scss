@@ -17,13 +17,6 @@
   border-radius: 10px;
 }
 
-::ng-deep {
-  .mat-drawer-container {
-    height: fit-content;
-    overflow: initial;
-  }
-}
-
 ::ng-deep .vitamui-spinner.mat-progress-spinner circle,
 .vitamui-spinner .mat-spinner circle {
   stroke: var(--vitamui-primary) !important;
