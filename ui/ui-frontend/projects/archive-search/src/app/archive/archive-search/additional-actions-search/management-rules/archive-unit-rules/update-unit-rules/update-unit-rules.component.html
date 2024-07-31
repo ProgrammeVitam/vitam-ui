@@ -11,8 +11,8 @@
       >
         <vitamui-common-field-error errorKey="required">{{ 'COMMON.REQUIRED' | translate }}</vitamui-common-field-error>
         <vitamui-common-field-error errorKey="uniqueRuleId">
-          {{ 'RULES.APRAISAL_RULES.SAME_RULE_ID' | translate }}</vitamui-common-field-error
-        >
+          {{ 'RULES.APRAISAL_RULES.SAME_RULE_ID' | translate }}
+        </vitamui-common-field-error>
         <vitamui-common-field-error errorKey="ruleIdPattern"
           >{{ 'ARCHIVE_SEARCH.RULE.WRONG_FORMAT' | translate }}
         </vitamui-common-field-error>
@@ -75,8 +75,8 @@
       >
         <vitamui-common-input-error
           *ngIf="ruleDetailsForm?.get('oldRuleame')?.touched && ruleDetailsForm?.get('newRuleName')?.hasError('required')"
-          >{{ 'COMMON.REQUIRED' | translate }}</vitamui-common-input-error
-        >
+          >{{ 'COMMON.REQUIRED' | translate }}
+        </vitamui-common-input-error>
       </vitamui-common-input>
     </div>
     <label class="title-text"> {{ 'RULES.APRAISAL_RULES.TARGET_START_DATE' | translate }}</label>
@@ -112,7 +112,7 @@
             height: '30',
             position: 'absolute',
             right: '20px',
-            bottom: '35px'
+            bottom: '35px',
           }"
           *ngIf="ruleDetailsForm.get('startDate').value && isShowCheckButton"
           type="button"
@@ -132,8 +132,9 @@
       >
         <vitamui-common-input-error
           *ngIf="ruleDetailsForm?.get('endDate')?.touched && ruleDetailsForm?.get('endDate')?.hasError('required')"
-          >{{ 'COMMON.REQUIRED' | translate }}</vitamui-common-input-error
         >
+          {{ 'COMMON.REQUIRED' | translate }}
+        </vitamui-common-input-error>
       </vitamui-common-input>
     </div>
 
@@ -146,8 +147,8 @@
       <div class="d-flex col align-items-center">
         <i class="material-icons">error</i>
         <span class="ml-1">
-          {{ 'RULES.APRAISAL_RULES.SAME_TARGET_RULE' | translate: { value: ruleDetailsForm.errors?.sameTargetRule?.value } }}</span
-        >
+          {{ 'RULES.APRAISAL_RULES.SAME_TARGET_RULE' | translate: { value: ruleDetailsForm.errors?.sameTargetRule?.value } }}
+        </span>
       </div>
     </vitamui-common-input-error>
 
@@ -162,7 +163,12 @@
     </vitamui-common-input-error>
 
     <div class="d-flex mt-4 padding-btm-style">
-      <button type="submit" class="btn primary mr-4" [disabled]="disabledControl || !ruleDetailsForm.valid" (click)="submit()">
+      <button
+        type="submit"
+        class="btn primary mr-4"
+        [disabled]="ruleDetailsForm.untouched || (ruleDetailsForm.dirty && ruleDetailsForm.errors?.mustUpdateRuleOrStartDate)"
+        (click)="submit()"
+      >
         {{ 'RULES.COMMON.CONTROL' | translate }}
       </button>
       <button type="button" class="btn link cancel" (click)="onDelete()">{{ 'RULES.COMMON.UNDO' | translate }}</button>
