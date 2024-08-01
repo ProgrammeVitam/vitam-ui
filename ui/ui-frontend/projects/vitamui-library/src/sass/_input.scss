@@ -25,6 +25,13 @@ $anim-timing: 150ms ease-out;
 
   &.disabled {
     border: none !important;
+    label {
+      color: var(--vitamui-grey-700) !important;
+    }
+
+    mat-datepicker-toggle mat-icon {
+      color: var(--vitamui-grey) !important;
+    }
   }
 
   @include input-elevation-dark;
@@ -105,12 +112,12 @@ $anim-timing: 150ms ease-out;
   }
 
   &.disabled {
-    background-color: var(--vitamui-grey-300);
+    background-color: var(--vitamui-grey-200);
     border: none;
   }
 
   &.disabled > * {
-    cursor: no-drop;
+    color: var(--vitamui-grey-700);
 
     input {
       color: var(--vitamui-grey-900);
@@ -122,7 +129,13 @@ $anim-timing: 150ms ease-out;
   border: solid 1px var(--vitamui-primary);
 }
 
+.vitamui-input:focus-within,
+.focused .vitamui-input {
+  outline: solid 1px var(--vitamui-primary);
+}
+
 .vitamui-focused .vitamui-input,
+.vitamui-input:focus-within,
 .vitamui-float .vitamui-input {
   label:first-of-type {
     transform: scale((12 / 14)) translateY(-12px);

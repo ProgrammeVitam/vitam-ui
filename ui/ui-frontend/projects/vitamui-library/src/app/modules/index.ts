@@ -88,6 +88,7 @@ export * from './components/collapse/collapse.module';
 export * from './components/confirm-dialog/index';
 export * from './components/data/data.component';
 export * from './components/datepicker/datepicker.component';
+export * from './components/multiple-options-datepicker/multiple-options-datepicker.component';
 export * from './components/download-snack-bar/index';
 export * from './components/editable-field/index';
 export * from './components/header/select-tenant-dialog/index';

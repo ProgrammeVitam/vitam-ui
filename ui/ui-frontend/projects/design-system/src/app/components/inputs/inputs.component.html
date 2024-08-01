@@ -374,6 +374,58 @@
       </mat-form-field>
     </div>
 
+    <div class="d-flex mt-4">
+      <vitamui-common-multiple-options-datepicker
+        [formControl]="datepickerYear"
+        class="mr-4 focused"
+        pickerType="year"
+      ></vitamui-common-multiple-options-datepicker>
+      <vitamui-common-multiple-options-datepicker
+        [formControl]="datepickerMonth"
+        class="mr-4"
+        pickerType="month"
+      ></vitamui-common-multiple-options-datepicker>
+      <vitamui-common-multiple-options-datepicker
+        [formControl]="datepickerDay"
+        [required]="true"
+        pickerType="day"
+      ></vitamui-common-multiple-options-datepicker>
+    </div>
+
+    <div class="d-flex mt-4">
+      <vitamui-common-multiple-options-datepicker
+        [formControl]="datepickerYearWrongFormat"
+        class="mr-4"
+        pickerType="year"
+      ></vitamui-common-multiple-options-datepicker>
+      <vitamui-common-multiple-options-datepicker
+        [formControl]="datepickerMonthWrongFormat"
+        class="mr-4"
+        pickerType="month"
+      ></vitamui-common-multiple-options-datepicker>
+      <vitamui-common-multiple-options-datepicker
+        [formControl]="datepickerDayEmptyButRequired"
+        pickerType="day"
+      ></vitamui-common-multiple-options-datepicker>
+    </div>
+
+    <div class="d-flex mt-4">
+      <vitamui-common-multiple-options-datepicker
+        [formControl]="datepickerYearDisabledAndEmpty()"
+        class="mr-4"
+        pickerType="year"
+      ></vitamui-common-multiple-options-datepicker>
+      <vitamui-common-multiple-options-datepicker
+        [formControl]="datepickerMonthDisabledAndFilled()"
+        class="mr-4"
+        pickerType="month"
+      ></vitamui-common-multiple-options-datepicker>
+      <vitamui-common-multiple-options-datepicker
+        [formControl]="datepickerDayDisabledAndFilled()"
+        pickerType="day"
+      ></vitamui-common-multiple-options-datepicker>
+    </div>
+
     <h4>Duration</h4>
     <div class="d-flex flex-column">
       <div class="row m-0 mt-4 pl-3">

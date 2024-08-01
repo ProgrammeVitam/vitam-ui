@@ -63,6 +63,7 @@ import { ConfirmDialogModule } from './components/confirm-dialog/confirm-dialog.
 import { CustomerSelectContentModule } from './components/customer-select-content/customer-select-content.module';
 import { DataModule } from './components/data/data.module';
 import { DatepickerModule } from './components/datepicker/datepicker.module';
+import { MultipleOptionsDatepickerModule } from './components/multiple-options-datepicker/multiple-options-datepicker.module';
 import { DownloadSnackBarModule } from './components/download-snack-bar/download-snack-bar.module';
 import { EditableFieldModule } from './components/editable-field/editable-field.module';
 import { FooterModule } from './components/footer/footer.module';
@@ -162,6 +163,7 @@ export function startupServiceFactory(startupService: StartupService, authServic
     CustomerSelectContentModule,
     DataModule,
     DatepickerModule,
+    MultipleOptionsDatepickerModule,
     DownloadSnackBarModule,
     DragAndDropModule,
     EditableFieldModule,
@@ -234,6 +236,7 @@ export function startupServiceFactory(startupService: StartupService, authServic
     ConfirmDialogModule,
     DataModule,
     DatepickerModule,
+    MultipleOptionsDatepickerModule,
     DragAndDropModule,
     EditableFieldModule,
     EllipsisDirectiveModule,
