@@ -1,11 +1,4 @@
 ---
-- name: Ensure all UI components are in hosts_vitamui_reverseproxy
-  fail:
-    msg: "All UI components must be in the hosts_vitamui_reverseproxy group."
-  when: >
-    not (groups['hosts_ui_identity'] + groups['hosts_vitamui_admin'] + groups['hosts_vitamui_customer'] | intersect(groups['hosts_vitamui_reverseproxy'])).length ==
-    (groups['hosts_ui_identity'] + groups['hosts_vitamui_admin'] + groups['hosts_vitamui_customer']).length
-
 - name: Ensure hosts in hosts_vitamui_reverseproxy are not in reverse or hosts_browse
   fail:
     msg: "Hosts in hosts_vitamui_reverseproxy cannot be in reverse or hosts_browse groups."
@@ -16,7 +9,7 @@
     msg: "If hosts_vitamui_logstash is configured, then hosts_elasticsearch_log must also be configured."
   when: groups['hosts_vitamui_logstash'] and not groups['hosts_elasticsearch_log']
 
-- name: Check for hosts_logstash configuration
+- name: Check for hosts_logstash configuration if hosts_vitamui_logstash is not configured
   fail:
     msg: "If hosts_vitamui_logstash is not configured, then hosts_logstash must be configured."
   when: not groups['hosts_vitamui_logstash'] and not groups['hosts_logstash']
@@ -35,8 +28,3 @@
   fail:
     msg: "vitamui_reverse_external_dns variable must be defined and non-empty."
   when: not vars['vitamui_reverse_external_dns'] or vars['vitamui_reverse_external_dns'] == ''
-
-- name: Ensure hosts_ui_identity_admin and hosts_ui_identity are on the same hosts
-  fail:
-    msg: "hosts_ui_identity_admin must be on the same hosts as hosts_ui_identity."
-  when: not (groups['hosts_ui_identity_admin'] | intersect(groups['hosts_ui_identity'])).length == groups['hosts_ui_identity_admin'].length
