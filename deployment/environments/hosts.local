@@ -38,7 +38,6 @@ hosts_ui_collect
 hosts_ui_referential
 hosts_ui_pastis
 hosts_ui_design_system
-hosts_check_vitamui
 
 [hosts_ui_identity]
 # EDIT: Mandatory
