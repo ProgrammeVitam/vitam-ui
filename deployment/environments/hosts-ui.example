@@ -229,7 +229,7 @@ vitam_site_name=prod-dc1
 vitamui_site_name="{{ vitam_site_name }}-ui"
 
 consul_domain=consul
-#vitam_reverse_external_dns=my-env.default-domain.fr
+vitam_reverse_external_dns=my-env.default-domain.fr
 vitamui_reverse_external_dns=my-env-ui.default-domain.fr
 
 ansible_become=true
