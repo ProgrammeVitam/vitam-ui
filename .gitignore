@@ -206,6 +206,7 @@ deployment/.vagrant
 # Angular Common #
 ##################
 ui/angular-commons/*.tgz
+.angular/
 
 ##################
 # Deloyment tmp  #
