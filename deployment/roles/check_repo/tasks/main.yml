@@ -3,8 +3,8 @@
   fail:
     msg: "All UI components must be in the hosts_vitamui_reverseproxy group."
   when: >
-    not (groups['hosts_ui_identity'] + groups['hosts_ui_admin'] + groups['hosts_ui_customer'] | intersect(groups['hosts_vitamui_reverseproxy'])).length ==
-    (groups['hosts_ui_identity'] + groups['hosts_ui_admin'] + groups['hosts_ui_customer']).length
+    not (groups['hosts_ui_identity'] + groups['hosts_vitamui_admin'] + groups['hosts_vitamui_customer'] | intersect(groups['hosts_vitamui_reverseproxy'])).length ==
+    (groups['hosts_ui_identity'] + groups['hosts_vitamui_admin'] + groups['hosts_vitamui_customer']).length
 
 - name: Ensure hosts in hosts_vitamui_reverseproxy are not in reverse or hosts_browse
   fail:
