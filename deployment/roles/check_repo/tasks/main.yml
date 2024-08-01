@@ -1,0 +1,40 @@
+---
+- name: Ensure all UI components are in hosts_vitamui_reverseproxy
+  fail:
+    msg: "All UI components must be in the hosts_vitamui_reverseproxy group."
+  when: not (groups['hosts_ui_*'] | intersect(groups['hosts_vitamui_reverseproxy'])).length == groups['hosts_ui_*'].length
+
+- name: Ensure hosts in hosts_vitamui_reverseproxy are not in reverse or hosts_browse
+  fail:
+    msg: "Hosts in hosts_vitamui_reverseproxy cannot be in reverse or hosts_browse groups."
+  when: groups['hosts_vitamui_reverseproxy'] | intersect(groups['reverse'] + groups['hosts_browse'])
+
+- name: Check hosts_vitamui_logstash and hosts_elasticsearch_log configuration
+  fail:
+    msg: "If hosts_vitamui_logstash is configured, then hosts_elasticsearch_log must also be configured."
+  when: groups['hosts_vitamui_logstash'] and not groups['hosts_elasticsearch_log']
+
+- name: Check for hosts_logstash configuration
+  fail:
+    msg: "If hosts_vitamui_logstash is not configured, then hosts_logstash must be configured."
+  when: not groups['hosts_vitamui_logstash'] and not groups['hosts_logstash']
+
+- name: Ensure reverse group machines are different from hosts_vitamui_reverseproxy
+  fail:
+    msg: "Machines in reverse group must be different from machines in hosts_vitamui_reverseproxy."
+  when: groups['reverse'] | intersect(groups['hosts_vitamui_reverseproxy'])
+
+- name: Ensure vitam_reverse_external_dns is configured if reverse group is defined
+  fail:
+    msg: "vitam_reverse_external_dns variable must be configured if reverse group is defined."
+  when: groups['reverse'] and (not vars['vitam_reverse_external_dns'] or vars['vitam_reverse_external_dns'] == '')
+
+- name: Ensure vitamui_reverse_external_dns is defined and non-empty
+  fail:
+    msg: "vitamui_reverse_external_dns variable must be defined and non-empty."
+  when: not vars['vitamui_reverse_external_dns'] or vars['vitamui_reverse_external_dns'] == ''
+
+- name: Ensure hosts_ui_identity_admin and hosts_ui_identity are on the same hosts
+  fail:
+    msg: "hosts_ui_identity_admin must be on the same hosts as hosts_ui_identity."
+  when: not (groups['hosts_ui_identity_admin'] | intersect(groups['hosts_ui_identity'])).length == groups['hosts_ui_identity_admin'].length

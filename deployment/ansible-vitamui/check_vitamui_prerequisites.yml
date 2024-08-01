@@ -1,0 +1,5 @@
+---
+- name: Check VitamUI Prerequisites
+  gather_facts: false
+  roles:
+    - check_repo
