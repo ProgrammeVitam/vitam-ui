@@ -1,5 +1,6 @@
 ---
 - name: Check VitamUI Prerequisites
+  hosts: hosts_check_vitamui
   gather_facts: false
   roles:
     - check_repo
