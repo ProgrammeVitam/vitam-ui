@@ -2,6 +2,10 @@ print("START 60_update_cas_create_user_email_customerid_index");
 
 db = db.getSiblingDB('iam');
 
+//Drop old index base on user email Only
+db.users.dropIndex("idx_user_email");
+
+//Create a new index base on user email with userId for multi domain feature
 db.users.createIndex(
     {
         "email": 1,
