@@ -442,7 +442,7 @@
                 <div>
                   <mat-form-field class="ml-3 vitamui-mat-select">
                     <mat-select
-                      *ngIf="availableRegex.length > 1; else valueUnique"
+                      *ngIf="availableRegex?.length > 1; else valueUnique"
                       disableRipple="true"
                       panelClass="vitamui-mat-select"
                       [(value)]="regex"
