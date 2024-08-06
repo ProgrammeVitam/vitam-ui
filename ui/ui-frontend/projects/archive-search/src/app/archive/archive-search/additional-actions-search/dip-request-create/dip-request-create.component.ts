@@ -109,6 +109,7 @@ export class DipRequestCreateComponent implements OnInit, OnDestroy {
       this.fb.group({
         includeLifeCycleLogs: [false],
         sedaVersion: ['2.2'],
+        exportWithTree: false,
         includeObjects: [UsageVersionEnum.ALL],
         usages: this.fb.array([
           this.fb.group({
@@ -188,6 +189,7 @@ export class DipRequestCreateComponent implements OnInit, OnDestroy {
       lifeCycleLogs: step2Values.includeLifeCycleLogs,
       withoutObjects: step2Values.includeObjects === UsageVersionEnum.NONE,
       sedaVersion: step2Values.sedaVersion,
+      exportWithTree: step2Values.exportWithTree,
     };
 
     this.archiveService.exportDIPService(exportDIPRequestDto).subscribe(

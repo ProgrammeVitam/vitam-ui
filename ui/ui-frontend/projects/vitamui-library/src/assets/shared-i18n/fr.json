@@ -4881,6 +4881,8 @@
       "LOGS": "Présence des journaux de cycle de vie",
       "SEDA_VERSION": "Version du SEDA à appliquer",
       "INCLUDE_OBJECTS": "Présence des objets",
+      "EXPORT_FORMAT": "Format de l'export",
+      "EXPORT_FORMAT_MESSAGE": "Formater le DIP pour une exploitation sur un poste bureautique",
       "TARGET_USAGE_#": "Usage cible {{i}}",
       "INCLUDE": "Inclure",
       "EXCLUDE": "Exclure",

@@ -36,6 +36,7 @@ export interface ExportDIPRequestDto {
   dataObjectVersionsPatterns: { [key in ObjectQualifierTypeType]: QualifierVersion[] };
   lifeCycleLogs: boolean;
   withoutObjects: boolean;
+  exportWithTree: boolean;
   sedaVersion: DIPSedaVersion;
 }
 
