@@ -81,6 +81,7 @@ public class ExportDipInternalService {
             dipRequest.setDataObjectVersionToExport(dataObjectVersionToExport);
             dipRequest.setDipRequestParameters(exportDipCriteriaDto.getDipRequestParameters());
             dipRequest.setSedaVersion(exportDipCriteriaDto.getSedaVersion());
+            dipRequest.setExportWithTree(exportDipCriteriaDto.isExportWithTree());
         }
         return dipRequest;
     }

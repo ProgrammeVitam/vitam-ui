@@ -3427,6 +3427,8 @@
       "LOGS": "Lifecycle logs presence",
       "SEDA_VERSION": "SEDA version to apply",
       "INCLUDE_OBJECTS": "Objects presence",
+      "EXPORT_FORMAT": "Export format",
+      "EXPORT_FORMAT_MESSAGE": "Format the DIP for use on an office workstation",
       "TARGET_USAGE_#": "Target usage #{{i}}",
       "INCLUDE": "Include",
       "EXCLUDE": "Exclude",
