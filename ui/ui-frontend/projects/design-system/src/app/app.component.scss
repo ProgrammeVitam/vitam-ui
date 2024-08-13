@@ -3,14 +3,72 @@
     margin: 3rem 5rem;
   }
 
-  mat-list-item {
-    cursor: pointer;
-    &:focus {
-      color: white;
-      background-color: var(--vitamui-primary);
-      outline: none;
+  .mat-list-base {
+    overflow-y: auto;
+    height: 100%;
+    max-width: 250px;
+  }
+
+  mat-expansion-panel {
+    mat-expansion-panel-header {
+      &.mat-expanded {
+        height: var(--mat-expansion-header-collapsed-state-height);
+      }
+
       &:hover {
-        background-color: var(--vitamui-primary-700);
+        background-color: var(--mat-expansion-header-hover-state-layer-color);
+      }
+
+      ::ng-deep .mat-content {
+        justify-content: center;
+        font-weight: bold;
+      }
+    }
+
+    &:focus,
+    &.active {
+      mat-expansion-panel-header {
+        color: white;
+        background-color: var(--vitamui-primary);
+        outline: none;
+
+        ::ng-deep .mat-expansion-indicator::after {
+          color: white;
+        }
+
+        &:hover {
+          background-color: var(--vitamui-primary-700);
+        }
+      }
+    }
+
+    ::ng-deep .mat-expansion-panel-body {
+      padding: 0;
+      ul {
+        font-size: 80%;
+        list-style: none;
+        padding: 0 0 0 1rem;
+        li a {
+          height: 2rem;
+          padding: 0 1rem;
+          display: inline-block;
+          cursor: pointer;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          line-height: 2rem;
+          width: 100%;
+          box-sizing: border-box;
+          overflow: hidden;
+
+          &:hover {
+            background: var(--mat-expansion-header-hover-state-layer-color);
+          }
+        }
+      }
+      > ul {
+        margin: 0;
+        padding: 0;
+        font-size: 100%;
       }
     }
   }
@@ -18,14 +76,6 @@
   ::ng-deep {
     .mat-drawer-container {
       height: 100%;
-    }
-
-    .mat-list-item-content {
-      justify-content: center;
-    }
-
-    h4 {
-      margin: 1rem 0;
     }
   }
 }
