@@ -125,7 +125,7 @@
       "TOOLTIP": "Set up user rights profile groups"
     },
     "PROFILES_APP": {
-      "NAME": "APP User Profiles",
+      "NAME": "APP user profiles",
       "TOOLTIP": "Configure the rights profiles of administrators managing user accounts"
     },
     "SUBROGATIONS_APP": {
@@ -205,7 +205,7 @@
       "TOOLTIP": "Access to Docuware"
     },
     "RECORD_MANAGEMENT_APP": {
-      "NAME": "Records Management",
+      "NAME": "Records management",
       "TOOLTIP": "Organize the repository of management rules and manage the archive life cycle"
     },
     "ARCHIVE_BATCH_INGEST_APP": {
@@ -213,7 +213,7 @@
       "TOOLTIP": "Index and deposit batches of physical or electronic archives"
     },
     "API_SUPERVISION_APP": {
-      "NAME": "API Supervision",
+      "NAME": "API supervision",
       "TOOLTIP": "Supervise APIs"
     },
     "ARCHIVE_TYPE_APP": {
@@ -335,7 +335,7 @@
       "TOOLTIP": "Set up membership units"
     },
     "ACCESSION_REGISTER_APP": {
-      "NAME": "Accession Register",
+      "NAME": "Accession register",
       "TOOLTIP": "View all of the accession register data"
     },
     "MANAGEMENT_CONTRACT_APP": {
@@ -391,7 +391,7 @@
     "ingests": "Ingests monitoring",
     "lastusedapps": "Lastly used",
     "ingest_and_consultation": "Ingest & consultation",
-    "supervision_and_audits": "Supervision & Audits",
+    "supervision_and_audits": "Supervision & audits",
     "security_and_application_rights": "Security & application rights",
     "organization_and_user_rights": "Organization & user rights",
     "USER_ALERTS": "My actions"

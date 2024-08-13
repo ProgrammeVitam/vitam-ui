@@ -8,12 +8,6 @@
     "techadmin": "Administration technique",
     "lastusedapps": "Dernières utilisées"
   },
-  "APPLICATION": {
-    "ARCHIVAL_PROFILE_APP": {
-      "NAME": "Profiles d'archives",
-      "TOOLTIP": "Paramétrer les profile d'archivage"
-    }
-  },
   "NOTICE": {
     "ONGLET_NOTICE_TITLE": "NOTICE",
     "ONGLET_NOTICE_TYPE": "Type",

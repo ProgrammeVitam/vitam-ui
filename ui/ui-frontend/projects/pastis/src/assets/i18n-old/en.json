@@ -11,12 +11,6 @@
   "PASTIS_LIST": {
     "SEARCH": "Search for a profile by its title"
   },
-  "APPLICATION": {
-    "ARCHIVAL_PROFILE_APP": {
-      "NAME": "Archival Profiles",
-      "TOOLTIP": "Params Archival Profiles"
-    }
-  },
   "NOTICE": {
     "ONGLET_NOTICE_TITLE": "NOTICE",
     "ONGLET_NOTICE_TYPE": "Type",

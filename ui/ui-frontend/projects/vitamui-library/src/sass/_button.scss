@@ -45,8 +45,8 @@
       color: $button-color;
     }
 
-    &:hover,
-    &:focus {
+    &:focus-visible,
+    &:hover {
       background-color: $background-color-hover;
       border: 1px solid $border-color-hover;
       color: $button-color-hover;
