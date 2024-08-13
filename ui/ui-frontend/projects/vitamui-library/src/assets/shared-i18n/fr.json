@@ -37,9 +37,20 @@
     }
   },
   "DATE": {
+    "DATE": "Date",
     "DAYS": "Jours",
     "HOURS": "Heures",
-    "MINUTES": "Minutes"
+    "MINUTES": "Minutes",
+    "EXPECTED_FORMAT": "Format attendu : {{ format }}",
+    "FORMAT": {
+      "DAY": "AAAA-MM-JJ",
+      "MONTH": "AAAA-MM",
+      "YEAR": "AAAA"
+    },
+    "ERROR": {
+      "REQUIRED_FIELD": "Ce champ est obligatoire",
+      "INCORRECT_FORMAT": "Le format saisi est incorrect"
+    }
   },
   "EXCEPTIONS": {
     "HTTP_INTERCEPTOR": {

@@ -76,6 +76,7 @@ export * from './app/modules/components/common-tooltip/common-tooltip.directive'
 export * from './app/modules/components/common-tooltip/common-tooltip.module';
 export * from './app/modules/components/data/data.module';
 export * from './app/modules/components/datepicker/datepicker.module';
+export * from './app/modules/components/multiple-options-datepicker/multiple-options-datepicker.module';
 export * from './app/modules/components/footer/footer.component';
 export * from './app/modules/components/footer/footer.module';
 export * from './app/modules/components/header/header.component';

@@ -78,6 +78,30 @@ export class InputsComponent implements OnInit, OnDestroy {
   public autoCompleteMultiSelectTree = new FormControl();
   public autoCompleteMultiSelectTree2 = new FormControl();
 
+  public datepickerYear = new FormControl('2022');
+  public datepickerMonth = new FormControl('2018-05');
+  public datepickerDay = new FormControl('2022-06-16');
+
+  public datepickerYearWrongFormat = new FormControl('202255');
+  public datepickerMonthWrongFormat = new FormControl('13-2018');
+  public datepickerDayEmptyButRequired = new FormControl('', Validators.required);
+
+  public datepickerYearDisabledAndEmpty = () => {
+    const fc = new FormControl('');
+    fc.disable();
+    return fc;
+  };
+  public datepickerMonthDisabledAndFilled = () => {
+    const fc = new FormControl('2019-02');
+    fc.disable();
+    return fc;
+  };
+  public datepickerDayDisabledAndFilled = () => {
+    const fc = new FormControl('2024-01-01');
+    fc.disable();
+    return fc;
+  };
+
   public editablePatterns = new FormControl();
   public editablePatternsOptions = [
     { value: 'value 1', disabled: false },
@@ -89,7 +113,7 @@ export class InputsComponent implements OnInit, OnDestroy {
   constructor(
     private countryService: CountryService,
     private translateService: TranslateService,
-    private schemaService: SchemaService,
+    // private schemaService: SchemaService,
   ) {}
 
   onChange = (_: any) => {};
@@ -105,7 +129,7 @@ export class InputsComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.initMultiselectOptions();
-    this.initSchemaOptions();
+    // this.initSchemaOptions();
     this.translateService.onLangChange.pipe(takeUntil(this.destroyer$)).subscribe(() => {
       this.updateCountryTranslation();
     });
@@ -140,16 +164,16 @@ export class InputsComponent implements OnInit, OnDestroy {
     });
   }
 
-  private initSchemaOptions(): void {
-    this.schemaService.getDescriptiveSchemaTree().subscribe((schemaOptions) => {
-      this.schemaOptions = schemaOptions;
-
-      this.autoCompleteMultiSelectTree2.setValue([
-        schemaOptions.find((o) => o.item.FieldName === 'TextContent').item,
-        schemaOptions.find((o) => o.item.FieldName === 'RegisteredDate').item,
-        schemaOptions.find((o) => o.item.FieldName === 'Agent').children.find((o) => o.item.FieldName === 'Activity').item,
-        schemaOptions.find((o) => o.item.FieldName === 'Agent').children.find((o) => o.item.FieldName === 'DeathDate').item,
-      ]);
-    });
-  }
+  // private initSchemaOptions(): void {
+  //   this.schemaService.getDescriptiveSchemaTree().subscribe((schemaOptions) => {
+  //     this.schemaOptions = schemaOptions;
+  //
+  //     this.autoCompleteMultiSelectTree2.setValue([
+  //       schemaOptions.find((o) => o.item.FieldName === 'TextContent').item,
+  //       schemaOptions.find((o) => o.item.FieldName === 'RegisteredDate').item,
+  //       schemaOptions.find((o) => o.item.FieldName === 'Agent').children.find((o) => o.item.FieldName === 'Activity').item,
+  //       schemaOptions.find((o) => o.item.FieldName === 'Agent').children.find((o) => o.item.FieldName === 'DeathDate').item,
+  //     ]);
+  //   });
+  // }
 }

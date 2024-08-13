@@ -1,0 +1,115 @@
+@import '../../../../sass/variables/colors';
+
+:host {
+  &.ng-invalid:not(.ng-pristine) .vitamui-input {
+    outline: 1px solid $red;
+  }
+}
+
+.vitamui-input,
+.vitamui-input label {
+  cursor: text;
+}
+
+.hidden-input {
+  visibility: hidden;
+  position: absolute;
+  pointer-events: none;
+}
+
+mat-datepicker-toggle mat-icon {
+  vertical-align: unset;
+  font-size: 18px;
+  color: var(--vitamui-primary);
+}
+
+::ng-deep .mat-datepicker-content {
+  box-shadow:
+    0 0.2px 0.6px 0 rgba(117, 117, 117, 1),
+    0 0.6px 2px 0 rgba(33, 33, 33, 0.2) !important;
+
+  .mat-calendar {
+    height: fit-content !important;
+
+    .mat-calendar-header {
+      .mat-calendar-period-button {
+        font-weight: bold;
+      }
+
+      .mat-calendar-previous-button,
+      .mat-calendar-next-button {
+        color: var(--vitamui-primary);
+      }
+    }
+
+    .mat-calendar-content {
+      .mat-calendar-table {
+        tbody > tr:not(.no-hover):hover {
+          background-color: transparent;
+        }
+
+        tr {
+          th:first-child:not(.no-first-cell-padding) {
+            padding-left: 0;
+          }
+
+          td:first-child:not(.no-first-cell-padding) {
+            padding-left: 15px;
+          }
+
+          td,
+          th {
+            &:not(.no-border):before {
+              border: none;
+            }
+          }
+        }
+      }
+
+      .mat-calendar-body-cell-content:hover,
+      .mat-calendar-body-active .mat-calendar-body-cell-content {
+        background: var(--vitamui-grey-300) !important;
+      }
+
+      .mat-calendar-body-today {
+        border-color: var(--vitamui-primary);
+      }
+
+      .mat-calendar-body-selected.mat-calendar-body-today {
+        box-shadow: none;
+      }
+
+      .mat-calendar-body-selected {
+        background: var(--vitamui-primary);
+
+        &:hover {
+          color: var(--vitamui-primary);
+        }
+      }
+
+      .mat-calendar-body-active .mat-calendar-body-selected {
+        color: var(--vitamui-primary);
+      }
+    }
+  }
+}
+
+.hint-area {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 5px;
+  color: var(--vitamui-grey-700);
+  font-size: 12px;
+  padding-top: 5px;
+
+  .info i,
+  .info mat-hint {
+    color: var(--vitamui-grey-700);
+  }
+
+  .error i,
+  .error mat-hint {
+    color: $red;
+  }
+}
