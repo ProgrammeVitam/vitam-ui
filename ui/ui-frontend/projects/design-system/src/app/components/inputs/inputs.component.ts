@@ -78,29 +78,55 @@ export class InputsComponent implements OnInit, OnDestroy {
   public autoCompleteMultiSelectTree = new FormControl();
   public autoCompleteMultiSelectTree2 = new FormControl();
 
+  public datepickerYearEmpty = new FormControl();
+  public datepickerMonthEmpty = new FormControl();
+  public datepickerDayEmpty = new FormControl();
+
   public datepickerYear = new FormControl('2022');
   public datepickerMonth = new FormControl('2018-05');
   public datepickerDay = new FormControl('2022-06-16');
 
-  public datepickerYearWrongFormat = new FormControl('202255');
-  public datepickerMonthWrongFormat = new FormControl('13-2018');
-  public datepickerDayEmptyButRequired = new FormControl('', Validators.required);
-
-  public datepickerYearDisabledAndEmpty = () => {
+  public datepickerDisabledEmpty = (() => {
     const fc = new FormControl('');
     fc.disable();
     return fc;
-  };
-  public datepickerMonthDisabledAndFilled = () => {
+  })();
+  public datepickerDisabledYear = (() => {
+    const fc = new FormControl('2022');
+    fc.disable();
+    return fc;
+  })();
+  public datepickerDisabledMonth = (() => {
     const fc = new FormControl('2019-02');
     fc.disable();
     return fc;
-  };
-  public datepickerDayDisabledAndFilled = () => {
+  })();
+  public datepickerDisabledDay = (() => {
     const fc = new FormControl('2024-01-01');
     fc.disable();
     return fc;
-  };
+  })();
+
+  public datepickerEmptyError = (() => {
+    const fc = new FormControl(null, Validators.required);
+    fc.markAsDirty();
+    return fc;
+  })();
+  public datepickerErrorYear = (() => {
+    const fc = new FormControl('202255');
+    fc.markAsDirty();
+    return fc;
+  })();
+  public datepickerErrorMonth = (() => {
+    const fc = new FormControl('2018-13');
+    fc.markAsDirty();
+    return fc;
+  })();
+  public datepickerErrorDay = (() => {
+    const fc = new FormControl('2024-02-30');
+    fc.markAsDirty();
+    return fc;
+  })();
 
   public editablePatterns = new FormControl();
   public editablePatternsOptions = [
@@ -113,7 +139,7 @@ export class InputsComponent implements OnInit, OnDestroy {
   constructor(
     private countryService: CountryService,
     private translateService: TranslateService,
-    // private schemaService: SchemaService,
+    private schemaService: SchemaService,
   ) {}
 
   onChange = (_: any) => {};
@@ -129,7 +155,7 @@ export class InputsComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.initMultiselectOptions();
-    // this.initSchemaOptions();
+    this.initSchemaOptions();
     this.translateService.onLangChange.pipe(takeUntil(this.destroyer$)).subscribe(() => {
       this.updateCountryTranslation();
     });
@@ -164,16 +190,16 @@ export class InputsComponent implements OnInit, OnDestroy {
     });
   }
 
-  // private initSchemaOptions(): void {
-  //   this.schemaService.getDescriptiveSchemaTree().subscribe((schemaOptions) => {
-  //     this.schemaOptions = schemaOptions;
-  //
-  //     this.autoCompleteMultiSelectTree2.setValue([
-  //       schemaOptions.find((o) => o.item.FieldName === 'TextContent').item,
-  //       schemaOptions.find((o) => o.item.FieldName === 'RegisteredDate').item,
-  //       schemaOptions.find((o) => o.item.FieldName === 'Agent').children.find((o) => o.item.FieldName === 'Activity').item,
-  //       schemaOptions.find((o) => o.item.FieldName === 'Agent').children.find((o) => o.item.FieldName === 'DeathDate').item,
-  //     ]);
-  //   });
-  // }
+  private initSchemaOptions(): void {
+    this.schemaService.getDescriptiveSchemaTree().subscribe((schemaOptions) => {
+      this.schemaOptions = schemaOptions;
+
+      this.autoCompleteMultiSelectTree2.setValue([
+        schemaOptions.find((o) => o.item.FieldName === 'TextContent').item,
+        schemaOptions.find((o) => o.item.FieldName === 'RegisteredDate').item,
+        schemaOptions.find((o) => o.item.FieldName === 'Agent').children.find((o) => o.item.FieldName === 'Activity').item,
+        schemaOptions.find((o) => o.item.FieldName === 'Agent').children.find((o) => o.item.FieldName === 'DeathDate').item,
+      ]);
+    });
+  }
 }

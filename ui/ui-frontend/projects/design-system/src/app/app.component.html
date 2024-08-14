@@ -1,22 +1,53 @@
-<mat-sidenav-container>
+<mat-sidenav-container autosize>
   <mat-sidenav mode="side" opened fixedInViewport>
     <mat-list>
       <mat-list-item class="d-flex justify-content-center">
         <vitamui-common-select-language></vitamui-common-select-language>
       </mat-list-item>
-      <mat-list-item class="mt-3" routerLink="/arrays">Arrays</mat-list-item>
-      <mat-list-item routerLink="/buttons">Buttons</mat-list-item>
-      <mat-list-item routerLink="/inputs">Inputs</mat-list-item>
-      <mat-list-item routerLink="/breadcrumbs">Breadcrumb</mat-list-item>
-      <mat-list-item routerLink="/progress-bar">Progress Bar</mat-list-item>
-      <mat-list-item routerLink="/tooltip">Tooltip</mat-list-item>
-      <mat-list-item routerLink="/miscellaneous">Miscellaneous</mat-list-item>
-      <mat-list-item routerLink="/typography">Typography</mat-list-item>
-      <mat-list-item routerLink="/colors">Colors</mat-list-item>
-      <mat-list-item routerLink="/icons">Icons</mat-list-item>
-      <mat-list-item routerLink="/elevations">Elevations</mat-list-item>
-      <mat-list-item routerLink="/translation">Translations</mat-list-item>
-      <mat-list-item routerLink=""><i class="material-icons">help</i></mat-list-item>
+      <mat-expansion-panel class="mt-3" routerLink="/arrays" routerLinkActive="active">
+        <mat-expansion-panel-header>Arrays</mat-expansion-panel-header>
+      </mat-expansion-panel>
+      <mat-expansion-panel routerLink="/buttons" routerLinkActive="active">
+        <mat-expansion-panel-header>Buttons</mat-expansion-panel-header>
+      </mat-expansion-panel>
+      <mat-expansion-panel routerLink="/inputs" routerLinkActive="active">
+        <mat-expansion-panel-header>Inputs</mat-expansion-panel-header>
+      </mat-expansion-panel>
+      <mat-expansion-panel routerLink="/breadcrumbs" routerLinkActive="active">
+        <mat-expansion-panel-header>Breadcrumb</mat-expansion-panel-header>
+      </mat-expansion-panel>
+      <mat-expansion-panel routerLink="/progress-bar" routerLinkActive="active">
+        <mat-expansion-panel-header>Progress Bar</mat-expansion-panel-header>
+      </mat-expansion-panel>
+      <mat-expansion-panel routerLink="/tooltip" routerLinkActive="active">
+        <mat-expansion-panel-header>Tooltip</mat-expansion-panel-header>
+      </mat-expansion-panel>
+      <mat-expansion-panel routerLink="/miscellaneous" routerLinkActive="active" [expanded]="isActive('/miscellaneous')">
+        <mat-expansion-panel-header>Miscellaneous</mat-expansion-panel-header>
+      </mat-expansion-panel>
+      <mat-expansion-panel routerLink="/typography" routerLinkActive="active">
+        <mat-expansion-panel-header>Typography</mat-expansion-panel-header>
+      </mat-expansion-panel>
+      <mat-expansion-panel routerLink="/colors" routerLinkActive="active">
+        <mat-expansion-panel-header>Colors</mat-expansion-panel-header>
+      </mat-expansion-panel>
+      <mat-expansion-panel routerLink="/icons" routerLinkActive="active">
+        <mat-expansion-panel-header>Icons</mat-expansion-panel-header>
+      </mat-expansion-panel>
+      <mat-expansion-panel routerLink="/elevations" routerLinkActive="active">
+        <mat-expansion-panel-header>Elevations</mat-expansion-panel-header>
+      </mat-expansion-panel>
+      <mat-expansion-panel routerLink="/translation" routerLinkActive="active">
+        <mat-expansion-panel-header>Translations</mat-expansion-panel-header>
+      </mat-expansion-panel>
+      <mat-expansion-panel
+        routerLink=""
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+        [expanded]="isActive('/translation')"
+      >
+        <mat-expansion-panel-header><i class="material-icons">help</i></mat-expansion-panel-header>
+      </mat-expansion-panel>
     </mat-list>
   </mat-sidenav>
   <mat-sidenav-content>

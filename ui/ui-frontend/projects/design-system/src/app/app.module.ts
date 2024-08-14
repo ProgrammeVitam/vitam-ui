@@ -74,6 +74,7 @@ import { TranslationModule } from './components/translation/translation.module';
 import { TypographyModule } from './components/typography/typography.module';
 import { DesignSystemModule } from './design-system/design-system.module';
 import { ServiceWorkerModule } from '@angular/service-worker';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 registerLocaleData(localeFr, 'fr');
 
@@ -94,15 +95,16 @@ export function httpLoaderFactory(httpClient: HttpClient): MultiTranslateHttpLoa
     BrowserModule,
     ButtonsModule,
     ColorsModule,
+    DesignSystemModule,
     ElevationModule,
     IconsModule,
     InputsModule,
     LoggerModule.forRoot(),
+    MatExpansionModule,
     MatListModule,
     MatSidenavModule,
     MiscellaneousModule,
     ProgressBarModule,
-    DesignSystemModule,
     TooltipModule,
     TranslationModule,
     TypographyModule,

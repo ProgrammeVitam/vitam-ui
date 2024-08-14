@@ -34,13 +34,81 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component } from '@angular/core';
+import { AfterViewInit, Component, ViewChildren } from '@angular/core';
+import { NavigationEnd, Router } from '@angular/router';
+import { filter, merge } from 'rxjs';
+import { TranslateService } from '@ngx-translate/core';
+import { MatExpansionPanel } from '@angular/material/expansion';
 
 @Component({
   selector: 'design-system-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
-export class AppComponent {
+export class AppComponent implements AfterViewInit {
   title = 'Design system App';
+
+  @ViewChildren(MatExpansionPanel) expansionPanels: MatExpansionPanel[];
+
+  constructor(
+    private router: Router,
+    translateService: TranslateService,
+  ) {
+    merge(
+      this.router.events.pipe(filter((event) => event instanceof NavigationEnd)),
+      translateService.onDefaultLangChange,
+      translateService.onLangChange,
+    ).subscribe(() => setTimeout(() => this.refreshAnchorMenu()));
+  }
+
+  ngAfterViewInit() {
+    setTimeout(() => this.refreshAnchorMenu());
+  }
+
+  isActive(url: string): boolean {
+    return this.router.isActive(url, {
+      paths: 'subset',
+      fragment: 'ignored',
+      queryParams: 'ignored',
+      matrixParams: 'ignored',
+    });
+  }
+
+  private refreshAnchorMenu() {
+    document.querySelectorAll(`mat-expansion-panel:not(.active) .mat-expansion-panel-body`).forEach((el) => (el.innerHTML = ''));
+    const panelBody = document.querySelector(`mat-expansion-panel.active .mat-expansion-panel-body`);
+    if (panelBody) {
+      const headings: HTMLElement[] = Array.from(document.querySelectorAll('h2, h3, h4, h5, h6'));
+
+      const list = headings.map((heading, index) => {
+        const currentDepth = this.computeDepth(heading);
+        const previousDepth = index ? this.computeDepth(headings[index - 1]) : 0;
+
+        return `
+          ${currentDepth > previousDepth ? [...Array(currentDepth - previousDepth).keys()].map(() => `<ul>`).join('') : ''}
+          ${currentDepth < previousDepth ? [...Array(previousDepth - currentDepth).keys()].map(() => `</ul>`).join('') : ''}
+          <li>
+            <a onClick="document.querySelectorAll('h2, h3, h4, h5, h6')[${index}].scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start',
+                        inline: 'nearest',
+                      });"
+                title="${heading.textContent}"
+            >
+              ${heading.textContent}
+            </a>
+          </li>`;
+      });
+
+      panelBody.innerHTML = `<ul>${list.join('')}</ul>`;
+      this.expansionPanels.forEach((expansionPanel) => {
+        expansionPanel.hideToggle = true;
+        expansionPanel.open();
+      });
+    }
+  }
+
+  private computeDepth(heading: HTMLElement) {
+    return Number.parseInt(heading.tagName.replace(/\D/, '')) - 2;
+  }
 }

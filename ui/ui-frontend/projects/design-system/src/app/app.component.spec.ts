@@ -41,11 +41,12 @@ import { TestBed } from '@angular/core/testing';
 import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Router } from '@angular/router';
-import { of } from 'rxjs';
+import { EMPTY, of } from 'rxjs';
 import { BASE_URL } from 'vitamui-library';
 import { AuthService, InjectorModule, LoggerModule, StartupService } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { AppComponent } from './app.component';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({ selector: 'router-outlet', template: '' })
 class RouterOutletStubComponent {}
@@ -73,8 +74,9 @@ describe('AppComponent', () => {
       providers: [
         { provide: StartupService, useValue: startupServiceStub },
         { provide: AuthService, useValue: { userLoaded: of(null) } },
-        { provide: Router, useValue: { navigate: () => {} } },
+        { provide: Router, useValue: { navigate: () => {}, events: of(), isActive: () => false } },
         { provide: BASE_URL, useValue: '/fake-api' },
+        { provide: TranslateService, useValue: { instant: () => EMPTY } },
       ],
     }).compileComponents();
   });
