@@ -1,14 +1,7 @@
 <mat-icon [class.disabled]="disabled" *ngIf="imageUrl && canDelete" (click)="onDelete()" class="delete pointer">clear</mat-icon>
 <div [class.disabled]="disabled">
-  <div
-    class="drag-and-drop-area"
-    [ngClass]="{ 'on-over': hasDropZoneOver }"
-    vitamuiCommonDragAndDrop
-    (fileToUploadEmitter)="onImageDropped($event)"
-    (fileDragOverEmitter)="onImageDragOver($event)"
-    (fileDragLeaveEmitter)="onImageDragLeave($event)"
-  >
-    <input type="file" #fileSearch class="d-none" (change)="handleFileInput($event.target.files)" />
+  <div class="drag-and-drop-area" vitamuiCommonDragAndDrop (fileToUploadEmitter)="handleImage($event)">
+    <input type="file" #fileSearch class="d-none" (change)="handleImage($event.target.files)" />
     <div class="image-area d-flex flex-column justify-content-center align-items-center">
       <div *ngIf="!imageUrl && messContent" class="">
         <h5>

@@ -45,7 +45,6 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class VitamuiDragDropFileComponent {
   private IMAGE_TYPE_PREFIX = 'image';
-  public hasDropZoneOver = false;
   private imageToUpload: File = null;
   private lastImageUploaded: File = null;
   public hasError = true;
@@ -94,16 +93,15 @@ export class VitamuiDragDropFileComponent {
 
   constructor(private translateService: TranslateService) {}
 
-  public onImageDropped(files: File[]): void {
-    this.hasDropZoneOver = false;
-    this.handleImage(files);
+  private isFileList(files: FileList | File[]): files is FileList {
+    return files instanceof FileList;
   }
 
-  private handleImage(files: File[]): void {
+  handleImage(files: FileList | File[]): void {
     this.hasError = false;
     this.lastImageUploaded = this.imageToUpload;
     this.message = null;
-    this.imageToUpload = files[0];
+    this.imageToUpload = this.isFileList(files) ? files.item(0) : files[0];
     if (this.imageToUpload.type.split('/')[0] !== this.IMAGE_TYPE_PREFIX) {
       this.message = this.translateService.instant('DRAG_AND_DROP_FILE.FILE_IS_NOT_AN_IMAGE');
       this.hasError = true;
@@ -129,14 +127,6 @@ export class VitamuiDragDropFileComponent {
       };
     };
     reader.readAsDataURL(this.imageToUpload);
-  }
-
-  public onImageDragOver(inDropZone: boolean): void {
-    this.hasDropZoneOver = inDropZone;
-  }
-
-  public onImageDragLeave(inDropZone: boolean): void {
-    this.hasDropZoneOver = inDropZone;
   }
 
   public addLogo(): void {
@@ -147,41 +137,5 @@ export class VitamuiDragDropFileComponent {
     this.imageToUpload = null;
     this.imageUrl = null;
     this.delete.next();
-  }
-
-  public handleFileInput(files: FileList): void {
-    this.handleImageList(files);
-  }
-
-  private handleImageList(files: FileList): void {
-    this.hasError = false;
-    this.lastImageUploaded = this.imageToUpload;
-    this.message = null;
-    this.imageToUpload = files.item(0);
-    if (this.imageToUpload.type.split('/')[0] !== this.IMAGE_TYPE_PREFIX) {
-      this.message = this.translateService.instant('DRAG_AND_DROP_FILE.FILE_IS_NOT_AN_IMAGE');
-      this.hasError = true;
-      return;
-    }
-    const reader = new FileReader();
-    const logoImage = new Image();
-    reader.onload = () => {
-      const logoUrl = reader.result;
-      logoImage.src = logoUrl as string;
-      logoImage.onload = () => {
-        if (logoImage.width > this.logoSize.width || logoImage.height > this.logoSize.height) {
-          this.imageToUpload = this.lastImageUploaded;
-          // eslint-disable-next-line max-len
-          this.message = this.translateService.instant('DRAG_AND_DROP_FILE.WRONG_FILE_SIZE', {
-            width: this.logoSize.width,
-            height: this.logoSize.height,
-          });
-          this.hasError = true;
-        } else {
-          this.imageUrl = logoUrl as string;
-        }
-      };
-    };
-    reader.readAsDataURL(this.imageToUpload);
   }
 }

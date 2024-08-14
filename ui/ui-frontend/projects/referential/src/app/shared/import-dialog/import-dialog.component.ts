@@ -13,7 +13,6 @@ import { ReferentialImportService } from './referential-import.service';
   styleUrls: ['./import-dialog.component.scss'],
 })
 export class ImportDialogComponent implements OnDestroy {
-  public hasDropZoneOver = false;
   public fileToUpload: File;
   public hasWrongFormat = false;
   public isLoading = false;
@@ -62,19 +61,6 @@ export class ImportDialogComponent implements OnDestroy {
     this.dialogRef.close();
   }
 
-  public onFileDropped(files: File[]): void {
-    this.hasDropZoneOver = false;
-    this.handleFiles(files);
-  }
-
-  public onFileDragOver(inDropZone: boolean): void {
-    this.hasDropZoneOver = inDropZone;
-  }
-
-  public onFileDragLeave(inDropZone: boolean): void {
-    this.hasDropZoneOver = inDropZone;
-  }
-
   public handleFiles(files: File[]): void {
     if (!files.length) {
       return;
@@ -88,10 +74,6 @@ export class ImportDialogComponent implements OnDestroy {
     } else {
       this.hasWrongFormat = true;
     }
-  }
-
-  public calculateFileSize(file: File): string {
-    return (file.size / 1024).toFixed(0);
   }
 
   public removeFile(): void {

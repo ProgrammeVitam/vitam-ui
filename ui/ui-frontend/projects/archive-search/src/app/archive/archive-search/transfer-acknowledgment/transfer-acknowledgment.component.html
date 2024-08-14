@@ -171,14 +171,7 @@
 
 <ng-template #dragAndDropArea>
   <div class="d-flex">
-    <div
-      class="drag-and-drop-area"
-      [ngClass]="{ 'on-over': hasDropZoneOver }"
-      vitamuiCommonDragAndDrop
-      (fileToUploadEmitter)="onDropped($event)"
-      (fileDragOverEmitter)="onDragOver($event)"
-      (fileDragLeaveEmitter)="onDragLeave($event)"
-    >
+    <div class="drag-and-drop-area" vitamuiCommonDragAndDrop (fileToUploadEmitter)="handleFile($event)">
       <div *ngIf="fileName && fileSize > 0 && fileSizeString" class="drag-container">
         <div class="file-info-class">
           {{ fileName }}
@@ -205,7 +198,7 @@
         </div>
       </div>
 
-      <input type="file" #atrXmlFile class="input-file" (change)="handleFileInput($event.target.files)" />
+      <input type="file" #atrXmlFile class="input-file" (change)="handleFile($event.target.files)" />
 
       <div class="drop-area">
         <div class="atr-drop">{{ 'ARCHIVE_SEARCH.TRANSFER_ACKNOWLEDGMENT.DRAG_AND_DROP' | translate }}<br /></div>

@@ -274,7 +274,7 @@
             <input #fileSearch (change)="handleFile($event)" class="input-file" directory multiple type="file" webkitdirectory />
             <div class="drop-area">
               <div class="sip-drop">
-                <span (click)="addFolder()" class="url-select">
+                <span (click)="fileSearch.click()" class="url-select">
                   {{ 'COLLECT.UPLOAD.DRAG_AND_DROP_OR_BROWSE' | translate }}
                 </span>
                 <span class="sip-drop-small">{{ 'COLLECT.UPLOAD.ADD_FILE_DESCRIPTION' | translate }}</span>

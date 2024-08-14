@@ -35,23 +35,18 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
-import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { MatLegacyTableDataSource as MatTableDataSource } from '@angular/material/legacy-table';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { FileUploader } from 'ng2-file-upload';
-import { filter, Subscription, switchMap } from 'rxjs';
+import { filter, of, Subscription, switchMap } from 'rxjs';
 import { Direction, GlobalEventService, SidenavPage, StartupService } from 'vitamui-library';
 import { environment } from '../../../environments/environment';
 import { PastisConfiguration } from '../../core/classes/pastis-configuration';
-import { NoticeService } from '../../core/services/notice.service';
 import { ProfileService } from '../../core/services/profile.service';
 import { ToggleSidenavService } from '../../core/services/toggle-sidenav.service';
-import { ArchivalProfileUnit } from '../../models/archival-profile-unit';
 import { BreadcrumbDataTop } from '../../models/breadcrumb';
-import { MetadataHeaders } from '../../models/models';
-import { Profile } from '../../models/profile';
 import { ProfileDescription } from '../../models/profile-description.model';
 import { ProfileResponse } from '../../models/profile-response';
 import { DataGeneriquePopupService } from '../../shared/data-generique-popup.service';
@@ -59,16 +54,14 @@ import { PastisDialogData } from '../../shared/pastis-dialog/classes/pastis-dial
 import { CreateProfileComponent, CreateProfileFormResult } from '../create-profile/create-profile.component';
 import { ProfileInformationTabComponent } from '../profile-preview/profile-information-tab/profile-information-tab/profile-information-tab.component';
 import { ProfileType } from '../../models/profile-type.enum';
+import { LoadProfileComponent, LoadProfileConfig } from './load-profile/load-profile.component';
+import { Profile } from '../../models/profile';
+import { ArchivalProfileUnit } from '../../models/archival-profile-unit';
+import { NoticeService } from '../../core/services/notice.service';
 import { MatDialogConfig } from '@angular/material/dialog';
 
 const POPUP_CREATION_PATH = 'PROFILE.POP_UP_CREATION';
-
-function constantToTranslate() {
-  this.popupCreationCancelLabel = this.translated('.POPUP_CREATION_CANCEL_LABEL');
-  this.popupCreationTitleDialog = this.translated('.POPUP_CREATION_TITLE_DIALOG');
-  this.popupCreationSubTitleDialog = this.translated('.POPUP_CREATION_SUBTITLE_DIALOG');
-  this.popupCreationOkLabel = this.translated('.POPUP_CREATION_OK_LABEL');
-}
+const POPUP_UPLOAD_PATH = 'PROFILE.POP_UP_UPLOAD_FILE';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
@@ -79,8 +72,7 @@ function constantToTranslate() {
 export class ListProfileComponent extends SidenavPage<ProfileDescription> implements OnInit, OnDestroy {
   @ViewChild(ProfileInformationTabComponent, { static: true }) profileInformationTabComponent: ProfileInformationTabComponent;
 
-  @Input()
-  uploader: FileUploader = new FileUploader({ url: '' });
+  @ViewChild('confirmReplacement') confirmReplacement: TemplateRef<any>;
 
   retrievedProfiles: ProfileDescription[] = [];
 
@@ -92,15 +84,9 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
 
   totalProfileNum: number;
 
-  hoveredElementId: number;
-
-  buttonIsClicked: boolean;
-
   search: string;
 
   numProfilesFiltered: ProfileDescription[];
-
-  profilModel: ProfileDescription;
 
   filterType: string;
 
@@ -123,7 +109,7 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
 
   promise: Promise<any>;
 
-  expanded: boolean;
+  expanded: number;
 
   pending: boolean;
 
@@ -131,10 +117,17 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
 
   public breadcrumbDataTop: Array<BreadcrumbDataTop>;
 
-  popupCreationCancelLabel: string;
-  popupCreationTitleDialog: string;
-  popupCreationSubTitleDialog: string;
-  popupCreationOkLabel: string;
+  protected translations = {
+    popupCreationCancelLabel: 'ANNULER',
+    popupCreationTitleDialog: 'Choix du type de profil',
+    popupCreationSubTitleDialog: "Création d'un profil",
+    popupCreationOkLabel: 'VALIDER',
+    popupUploadTitle: 'Charger un profil',
+    popupUploadSubTitle: 'Téléchargement du profil',
+    popupUploadCancelLabel: 'ANNULER',
+    popupUploadOkLabel: 'CONFIRMER',
+  };
+
   profilesChargees = false;
 
   constructor(
@@ -151,7 +144,6 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
     private toggleService: ToggleSidenavService,
   ) {
     super(route, globalEventService);
-    this.expanded = false;
     this.pendingSub = this.toggleService.isPending.subscribe((status) => {
       this.pending = status;
     });
@@ -159,13 +151,7 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
 
   ngOnInit() {
     if (!this.isStandalone) {
-      constantToTranslate.call(this);
-      this.translatedOnChange();
-    } else if (this.isStandalone) {
-      this.popupCreationCancelLabel = 'Annuler';
-      this.popupCreationTitleDialog = 'Choix du type de profil';
-      this.popupCreationSubTitleDialog = "Création d'un profil";
-      this.popupCreationOkLabel = 'VALIDER';
+      this.loadTranslations();
     }
     this.dataGeneriquePopupService.currentDonnee.subscribe((donnees) => (this.donnees = donnees));
     this.breadcrumbDataTop = [
@@ -181,13 +167,15 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
     this.subscriptions.push(this.subscription1$);
   }
 
-  private isEditable(profileDescription: ProfileDescription): boolean {
-    return (
-      (profileDescription.type === ProfileType.PA && !profileDescription.path && profileDescription.status === 'ACTIVE') ||
-      (profileDescription.type === ProfileType.PUA &&
-        profileDescription.status === 'ACTIVE' &&
-        (!profileDescription.controlSchema || profileDescription.controlSchema === '{}'))
-    );
+  private loadTranslations() {
+    this.loadTranslation('popupCreationCancelLabel', `${POPUP_CREATION_PATH}.POPUP_CREATION_CANCEL_LABEL`);
+    this.loadTranslation('popupCreationTitleDialog', `${POPUP_CREATION_PATH}.POPUP_CREATION_TITLE_DIALOG`);
+    this.loadTranslation('popupCreationSubTitleDialog', `${POPUP_CREATION_PATH}.POPUP_CREATION_SUBTITLE_DIALOG`);
+    this.loadTranslation('popupCreationOkLabel', `${POPUP_CREATION_PATH}.POPUP_CREATION_OK_LABEL`);
+    this.loadTranslation('popupUploadTitle', `${POPUP_UPLOAD_PATH}.POPUP_UPLOAD_TITLE_LABEL`);
+    this.loadTranslation('popupUploadSubTitle', `${POPUP_UPLOAD_PATH}.POPUP_UPLOAD_SUBTITLE_LABEL`);
+    this.loadTranslation('popupUploadCancelLabel', `${POPUP_UPLOAD_PATH}.POPUP_UPLOAD_CANCEL_LABEL`);
+    this.loadTranslation('popupUploadOkLabel', `${POPUP_UPLOAD_PATH}.POPUP_UPLOAD_OK_LABEL`);
   }
 
   private refreshListProfiles() {
@@ -196,9 +184,6 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
     return this.profileService.retrievedProfiles.subscribe((profileList: ProfileDescription[]) => {
       if (profileList) {
         this.retrievedProfiles = profileList;
-        this.retrievedProfiles.forEach((profileDescription) => {
-          profileDescription.isEditable = this.isEditable(profileDescription);
-        });
         this.profilesChargees = true;
         this.toggleService.hidePending();
       }
@@ -209,15 +194,8 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
     });
   }
 
-  translatedOnChange(): void {
-    this.translateService.onLangChange.subscribe(() => {
-      constantToTranslate.call(this);
-      // console.log(event.lang);
-    });
-  }
-
-  translated(nameOfFieldToTranslate: string): string {
-    return this.translateService.instant(POPUP_CREATION_PATH + nameOfFieldToTranslate);
+  private loadTranslation(key: keyof typeof this.translations, nameOfFieldToTranslate: string) {
+    this.translateService.get(nameOfFieldToTranslate).subscribe((t) => (this.translations[key] = t));
   }
 
   retrievePAorPUA(term: string, filter: boolean): number {
@@ -262,12 +240,12 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
       width: '800px',
       panelClass: 'pastis-popup-modal-box',
       data: {
-        titleDialog: this.popupCreationTitleDialog,
-        subTitleDialog: this.popupCreationSubTitleDialog,
+        titleDialog: this.translations.popupCreationTitleDialog,
+        subTitleDialog: this.translations.popupCreationSubTitleDialog,
         width: '800px',
         height: '800px',
-        okLabel: this.popupCreationOkLabel,
-        cancelLabel: this.popupCreationCancelLabel,
+        okLabel: this.translations.popupCreationOkLabel,
+        cancelLabel: this.translations.popupCreationCancelLabel,
       },
     };
     const dialogRef = this.dialog.open(CreateProfileComponent, createProfileDialogConfig);
@@ -302,21 +280,6 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
     this.numPUA = profileDescriptions.filter((profile: ProfileDescription) => profile.type === ProfileType.PUA).length;
   }
 
-  isRowHovered(elementId: number) {
-    return this.hoveredElementId === elementId;
-  }
-
-  onMouseOver(row: MetadataHeaders) {
-    this.buttonIsClicked = false;
-    this.hoveredElementId = row.id;
-  }
-
-  onMouseLeave() {
-    if (!this.buttonIsClicked) {
-      this.hoveredElementId = 0;
-    }
-  }
-
   changeType(type: string) {
     if (type !== undefined) {
       this.filterType = type;
@@ -336,43 +299,54 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
     }
   }
 
-  updateProfileNotice(profileDescription: ProfileDescription, files: File[]) {
-    const fileToUpload: File = files[0];
-    let profile: Profile;
-    let archivalProfileUnit: ArchivalProfileUnit;
-    if (profileDescription.type === ProfileType.PA) {
-      profile = this.noticeService.profileDescriptionToPaProfile(profileDescription);
-      this.profileService.updateProfileFilePa(profile, fileToUpload).subscribe(() => {
-        this.expanded = !this.expanded;
-        this.refreshListProfiles();
-      });
-    }
-    if (profileDescription.type === ProfileType.PUA) {
-      if (fileToUpload) {
-        let jsonObj: ProfileDescription;
-        const fileReader = new FileReader();
-        fileReader.readAsText(fileToUpload, 'UTF-8');
-        fileReader.onload = () => {
-          // console.log(fileReader.result.toString());
-          jsonObj = JSON.parse(fileReader.result.toString());
-          // console.log(jsonObj.controlSchema);
-          profileDescription.controlSchema = jsonObj.controlSchema;
-          archivalProfileUnit = this.noticeService.profileDescriptionToPuaProfile(profileDescription);
-          this.profileService.updateProfilePua(archivalProfileUnit).subscribe(() => {
-            this.expanded = !this.expanded;
-            this.refreshListProfiles();
-          });
-        };
-        fileReader.onerror = (error) => {
-          console.error(error);
-        };
-      }
-    }
+  private isProfilAttached(inputProfile: ProfileDescription): boolean {
+    return !!((inputProfile.controlSchema && inputProfile.controlSchema.length !== 2) || inputProfile.path);
   }
 
-  changeExpand(element: ProfileDescription) {
-    if (element.isEditable) {
-      this.expanded = !this.expanded;
-    }
+  async updateProfileNotice(profileDescription: ProfileDescription) {
+    const extensionsByType: Map<ProfileType, string[]> = new Map([
+      [ProfileType.PA, ['.rng']],
+      [ProfileType.PUA, ['.json']],
+    ]);
+
+    (this.isProfilAttached(profileDescription) ? this.dialog.open(this.confirmReplacement).afterClosed() : of(true))
+      .pipe(
+        filter((confirmed) => confirmed),
+        switchMap(() =>
+          this.dialog
+            .open<LoadProfileComponent, LoadProfileConfig>(LoadProfileComponent, {
+              panelClass: 'vitamui-modal',
+              data: {
+                title: this.translations.popupUploadTitle,
+                subTitle: this.translations.popupUploadSubTitle,
+                okLabel: this.translations.popupUploadOkLabel,
+                cancelLabel: this.translations.popupUploadCancelLabel,
+                extensions: extensionsByType.get(profileDescription.type as ProfileType) || [],
+                multipleFiles: false,
+              },
+            })
+            .afterClosed(),
+        ),
+      )
+      .subscribe((files) => {
+        if (files) {
+          const fileToUpload: File = files[0];
+          if (profileDescription.type === ProfileType.PA) {
+            const profile: Profile = this.noticeService.profileDescriptionToPaProfile(profileDescription);
+            this.profileService.updateProfileFilePa(profile, fileToUpload).subscribe(() => this.refreshListProfiles());
+          }
+          if (profileDescription.type === ProfileType.PUA && fileToUpload) {
+            const fileReader = new FileReader();
+            fileReader.readAsText(fileToUpload, 'UTF-8');
+            fileReader.onload = () => {
+              const jsonObj: ProfileDescription = JSON.parse(fileReader.result.toString());
+              profileDescription.controlSchema = jsonObj.controlSchema;
+              const archivalProfileUnit: ArchivalProfileUnit = this.noticeService.profileDescriptionToPuaProfile(profileDescription);
+              this.profileService.updateProfilePua(archivalProfileUnit).subscribe(() => this.refreshListProfiles());
+            };
+            fileReader.onerror = (error) => console.error(error);
+          }
+        }
+      });
   }
 }

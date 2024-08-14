@@ -37,9 +37,10 @@ import {
 import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { Observable, of } from 'rxjs';
-import { BASE_URL, InjectorModule, LoggerModule, Transaction, TransactionStatus, WINDOW_LOCATION } from 'vitamui-library';
-import { UpdateUnitsaMetadataComponent } from './update-units-metadata.component';
+import { BASE_URL, BytesPipe, InjectorModule, LoggerModule, Transaction, TransactionStatus, WINDOW_LOCATION } from 'vitamui-library';
+import { UpdateUnitsMetadataComponent } from './update-units-metadata.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { DecimalPipe } from '@angular/common';
 
 const translations: any = { TEST: 'Mock translate test' };
 class FakeLoader implements TranslateLoader {
@@ -65,8 +66,8 @@ const selectedTransaction: Transaction = {
 };
 
 describe('UpdateUaMetadataComponent', () => {
-  let component: UpdateUnitsaMetadataComponent;
-  let fixture: ComponentFixture<UpdateUnitsaMetadataComponent>;
+  let component: UpdateUnitsMetadataComponent;
+  let fixture: ComponentFixture<UpdateUnitsMetadataComponent>;
 
   const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
   const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
@@ -83,19 +84,21 @@ describe('UpdateUaMetadataComponent', () => {
         MatSnackBarModule,
         HttpClientTestingModule,
       ],
-      declarations: [UpdateUnitsaMetadataComponent],
+      declarations: [UpdateUnitsMetadataComponent],
       providers: [
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MatDialog, useValue: matDialogSpy },
         { provide: MAT_DIALOG_DATA, useValue: { tenantIdentifier: '15', selectedTransaction } },
         { provide: WINDOW_LOCATION, useValue: window.location },
+        DecimalPipe,
+        BytesPipe,
       ],
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(UpdateUnitsaMetadataComponent);
+    fixture = TestBed.createComponent(UpdateUnitsMetadataComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -161,7 +164,7 @@ describe('UpdateUaMetadataComponent', () => {
       const blob = new Blob([contents], { type: 'text/plain' });
       const file = new File([blob], 'csvFile.csv', { type: 'text/csv' });
       component.fileToUpload = file;
-      spyOn(component, 'handleFileInput');
+      spyOn(component, 'handleFile');
       const nativeElement = fixture.nativeElement;
       const checkBox = nativeElement.querySelector('input[type=file]');
 
@@ -170,7 +173,7 @@ describe('UpdateUaMetadataComponent', () => {
       fixture.detectChanges();
 
       // Then
-      expect(component.handleFileInput).toHaveBeenCalledTimes(1);
+      expect(component.handleFile).toHaveBeenCalledTimes(1);
     });
 
     it('should have 2 buttons ', () => {

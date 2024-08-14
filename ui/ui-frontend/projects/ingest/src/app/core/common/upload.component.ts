@@ -38,7 +38,7 @@ import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
 import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
-import { BytesPipe, Logger, StartupService } from 'vitamui-library';
+import { BytesPipe, StartupService } from 'vitamui-library';
 
 import { VitamUISnackBarComponent } from '../../shared/vitamui-snack-bar/vitamui-snack-bar.component';
 import { IngestType } from './ingest-type.enum';
@@ -56,7 +56,6 @@ export class UploadComponent implements OnInit {
 
   sipForm: FormGroup;
   hasSip: boolean;
-  hasDropZoneOver = false;
   fileToUpload: File = null;
   hasError = false;
   message: string;
@@ -79,7 +78,7 @@ export class UploadComponent implements OnInit {
     private uploadService: UploadService,
     private snackBar: MatSnackBar,
     private startupService: StartupService,
-    public logger: Logger,
+    private bytesPipe: BytesPipe,
   ) {
     this.sipForm = this.formBuilder.group({
       hasSip: null,
@@ -95,50 +94,20 @@ export class UploadComponent implements OnInit {
     this.hasSip = this.sipForm.get('hasSip').value;
   }
 
-  onDragOver(inDropZone: boolean) {
-    this.hasDropZoneOver = inDropZone;
+  private isFileList(files: FileList | File[]): files is FileList {
+    return files instanceof FileList;
   }
 
-  onDragLeave(inDropZone: boolean) {
-    this.hasDropZoneOver = inDropZone;
-  }
-
-  onDropped(files: File[]) {
-    this.hasDropZoneOver = false;
-    this.handleFile(files);
-  }
-
-  handleFile(files: File[]) {
+  handleFile(files: FileList | File[]) {
     this.isDisabled = false;
     this.hasError = false;
     this.message = null;
-    this.fileToUpload = files[0];
+    this.fileToUpload = this.isFileList(files) ? files.item(0) : files[0];
 
     this.fileName = this.fileToUpload.name;
     this.fileSize = this.fileToUpload.size;
 
-    const transformer = new BytesPipe(this.logger);
-    this.fileSizeString = transformer.transform(this.fileSize);
-
-    if (!this.checkFileExtension(this.fileName)) {
-      this.message = "Le fichier déposé n'est pas au bon format";
-      this.hasError = true;
-      return;
-    }
-    this.stepIndex = LAST_STEP_INDEX;
-  }
-
-  handleFileList(files: FileList) {
-    this.isDisabled = false;
-    this.hasError = false;
-    this.message = null;
-    this.fileToUpload = files.item(0);
-
-    this.fileName = this.fileToUpload.name;
-    this.fileSize = this.fileToUpload.size;
-
-    const transformer = new BytesPipe(this.logger);
-    this.fileSizeString = transformer.transform(this.fileSize);
+    this.fileSizeString = this.bytesPipe.transform(this.fileSize);
 
     if (!this.checkFileExtension(this.fileName)) {
       this.message = "Le fichier déposé n'est pas au bon format";
@@ -150,10 +119,6 @@ export class UploadComponent implements OnInit {
 
   addSip() {
     this.fileSearch.nativeElement.click();
-  }
-
-  handleFileInput(files: FileList) {
-    this.handleFileList(files);
   }
 
   upload() {

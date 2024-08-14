@@ -1,33 +1,56 @@
 <div>
-  <h2>Banner with searchbar & button</h2>
-  <vitamui-common-banner [searchbarPlaceholder]="'CUSTOMER.HOME.TITLE_PLACEHOLDER' | translate" [disableSearchBar]="true">
-    <button class="btn primary ml-5">
-      <span>Action1</span>
-    </button>
-  </vitamui-common-banner>
+  <h2>Drag and drop</h2>
+
+  <h3>Default template</h3>
+  <vitamui-file-selector [extensions]="['.json', '.rng']" [multipleFiles]="true" [maxSizeInBytes]="25 * 1024 * 1024">
+  </vitamui-file-selector>
+
+  <h3>Custom template</h3>
+  <vitamui-file-selector #fs [multipleFiles]="true">
+    <ng-template #fileList>
+      <ul style="margin: 0 auto">
+        <li *ngFor="let file of fs.files">{{ file.name }} ({{ file.size | bytes }})</li>
+      </ul>
+    </ng-template>
+    <ng-template #content>
+      <h4 (click)="fs.openFileSelectorOSDialog()" class="text link primary text-center">Click me (or drag & drop)!</h4>
+    </ng-template>
+  </vitamui-file-selector>
 </div>
 
 <div>
-  <h2>Banner with searchbar & buttons</h2>
-  <vitamui-common-banner [searchbarPlaceholder]="'CUSTOMER.HOME.TITLE_PLACEHOLDER' | translate" [disableSearchBar]="true">
-    <button class="btn primary ml-5">
-      <span>Action1</span>
-    </button>
-    <button class="btn primary ml-5">
-      <span>Action2</span>
-    </button>
-    <button class="btn primary ml-5">
-      <span>Action3</span>
-    </button>
-  </vitamui-common-banner>
-</div>
+  <h2>Banner</h2>
+  <div>
+    <h3>Banner with searchbar & button</h3>
+    <vitamui-common-banner [searchbarPlaceholder]="'CUSTOMER.HOME.TITLE_PLACEHOLDER' | translate" [disableSearchBar]="true">
+      <button class="btn primary ml-5">
+        <span>Action1</span>
+      </button>
+    </vitamui-common-banner>
+  </div>
 
-<div>
-  <h2>Banner with searchbar only</h2>
-  <vitamui-common-banner
-    [searchbarPlaceholder]="'CUSTOMER.HOME.TITLE_PLACEHOLDER' | translate"
-    [disableSearchBar]="true"
-  ></vitamui-common-banner>
+  <div>
+    <h3>Banner with searchbar & buttons</h3>
+    <vitamui-common-banner [searchbarPlaceholder]="'CUSTOMER.HOME.TITLE_PLACEHOLDER' | translate" [disableSearchBar]="true">
+      <button class="btn primary ml-5">
+        <span>Action1</span>
+      </button>
+      <button class="btn primary ml-5">
+        <span>Action2</span>
+      </button>
+      <button class="btn primary ml-5">
+        <span>Action3</span>
+      </button>
+    </vitamui-common-banner>
+  </div>
+
+  <div>
+    <h3>Banner with searchbar only</h3>
+    <vitamui-common-banner
+      [searchbarPlaceholder]="'CUSTOMER.HOME.TITLE_PLACEHOLDER' | translate"
+      [disableSearchBar]="true"
+    ></vitamui-common-banner>
+  </div>
 </div>
 
 <div>

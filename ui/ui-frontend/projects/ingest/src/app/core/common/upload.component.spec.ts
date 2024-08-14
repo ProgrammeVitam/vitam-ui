@@ -41,10 +41,11 @@ import { MatLegacyProgressBarModule as MatProgressBarModule } from '@angular/mat
 import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
 import { TranslateModule } from '@ngx-translate/core';
 import { EMPTY, of } from 'rxjs';
-import { ConfirmDialogService, LoggerModule, StartupService } from 'vitamui-library';
+import { BytesPipe, ConfirmDialogService, LoggerModule, StartupService } from 'vitamui-library';
 
 import { UploadComponent } from './upload.component';
 import { UploadService } from './upload.service';
+import { DecimalPipe } from '@angular/common';
 
 describe('UploadComponent', () => {
   let component: UploadComponent;
@@ -66,6 +67,8 @@ describe('UploadComponent', () => {
         { provide: ConfirmDialogService, useValue: { listenToEscapeKeyPress: () => EMPTY } },
         { provide: UploadService, useValue: uploadServiceSpy },
         { provide: StartupService, useValue: { getReferentialUrl: () => '' } },
+        DecimalPipe,
+        BytesPipe,
       ],
     }).compileComponents();
   });

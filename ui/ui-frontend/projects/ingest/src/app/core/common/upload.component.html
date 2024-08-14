@@ -22,14 +22,7 @@
       </ng-container>
     </ng-container>
     <div class="d-flex">
-      <div
-        class="drag-and-drop-area"
-        [ngClass]="{ 'on-over': hasDropZoneOver }"
-        vitamuiCommonDragAndDrop
-        (fileToUploadEmitter)="onDropped($event)"
-        (fileDragOverEmitter)="onDragOver($event)"
-        (fileDragLeaveEmitter)="onDragLeave($event)"
-      >
+      <div class="drag-and-drop-area" vitamuiCommonDragAndDrop (fileToUploadEmitter)="handleFile($event)">
         <div *ngIf="fileName && fileSize > 0 && fileSizeString" class="drag-container">
           <div class="file-info-class">
             {{ fileName }}
@@ -42,7 +35,7 @@
           </div>
         </div>
 
-        <input type="file" #fileSearch class="input-file" (change)="handleFileInput($event.target.files)" />
+        <input type="file" #fileSearch class="input-file" (change)="handleFile($event.target.files)" />
 
         <div class="drop-area">
           <div *ngIf="!fileSize || !hasSip" class="sip-drop">{{ 'INGEST_UPLOAD.ADD_FILE' | translate }} <br /></div>

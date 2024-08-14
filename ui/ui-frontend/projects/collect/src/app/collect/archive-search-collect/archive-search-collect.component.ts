@@ -66,7 +66,7 @@ import { SearchCriteriaSaverComponent } from './archive-search-criteria/componen
 import { ArchiveFacetsService } from './archive-search-criteria/services/archive-facets.service';
 import { ArchiveSearchHelperService } from './archive-search-criteria/services/archive-search-helper.service';
 import { ArchiveSharedDataService } from './archive-search-criteria/services/archive-shared-data.service';
-import { UpdateUnitsaMetadataComponent } from './update-units-metadata/update-units-metadata.component';
+import { UpdateUnitsMetadataComponent } from './update-units-metadata/update-units-metadata.component';
 
 const PAGE_SIZE = 10;
 const ELIMINATION_TECHNICAL_ID = 'ELIMINATION_TECHNICAL_ID';
@@ -1011,7 +1011,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
   // Udpate archive units metadata
 
   openUpdateUnitsForm() {
-    const dialogRef = this.dialog.open(UpdateUnitsaMetadataComponent, {
+    const dialogRef = this.dialog.open(UpdateUnitsMetadataComponent, {
       panelClass: 'vitamui-modal',
       disableClose: true,
       data: {

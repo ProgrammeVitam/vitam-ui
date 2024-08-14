@@ -37,7 +37,7 @@
  *
  */
 
-import { CommonModule, DatePipe } from '@angular/common';
+import { CommonModule, DatePipe, DecimalPipe } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { BytesPipe } from './bytes.pipe';
 import { DateTimePipe } from './datetime.pipe';
@@ -69,6 +69,6 @@ const pipes = [
   imports: [CommonModule],
   declarations: pipes,
   exports: pipes,
-  providers: [DatePipe],
+  providers: [DatePipe, DecimalPipe],
 })
 export class PipesModule {}
