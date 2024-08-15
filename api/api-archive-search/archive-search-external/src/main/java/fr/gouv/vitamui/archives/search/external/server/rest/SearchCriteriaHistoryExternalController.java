@@ -36,7 +36,6 @@
  */
 package fr.gouv.vitamui.archives.search.external.server.rest;
 
-import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitamui.archives.search.common.rest.RestApi;
 import fr.gouv.vitamui.archives.search.external.server.service.SearchCriteriaHistoryExternalService;
 import fr.gouv.vitamui.common.security.SanityChecker;
@@ -47,8 +46,6 @@ import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaHistoryDto;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import lombok.Getter;
-import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,14 +68,12 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(RestApi.SEARCH_CRITERIA_HISTORY)
-@Getter
-@Setter
-@Api(tags = "searchCriteriaHistory", value = "Search Criteria History")
+@Api(tags = "searchCriteriaHistory", value = "Search Criteria History management")
 public class SearchCriteriaHistoryExternalController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SearchCriteriaHistoryExternalController.class);
 
-    private SearchCriteriaHistoryExternalService searchCriteriaHistoryExternalService;
+    private final SearchCriteriaHistoryExternalService searchCriteriaHistoryExternalService;
 
     @Autowired
     public SearchCriteriaHistoryExternalController(
@@ -88,25 +83,24 @@ public class SearchCriteriaHistoryExternalController {
     }
 
     @GetMapping
-    @Secured(ServicesData.ROLE_GET_ALL_ARCHIVE)
+    @Secured(ServicesData.ARCHIVE_SEARCH_GET_ARCHIVE_SEARCH_ROLE)
     public List<SearchCriteriaHistoryDto> getSearchCriteriaHistory() {
         LOGGER.debug("getSearchCriteriaHistory archive external");
         return searchCriteriaHistoryExternalService.getSearchCriteriaHistory();
     }
 
     @PostMapping
-    @Secured(ServicesData.ROLE_CREATE_ARCHIVE)
-    public SearchCriteriaHistoryDto create(final @Valid @RequestBody SearchCriteriaHistoryDto dto)
-        throws InvalidParseOperationException, PreconditionFailedException {
+    @Secured(ServicesData.ARCHIVE_SEARCH_GET_ARCHIVE_SEARCH_ROLE)
+    public SearchCriteriaHistoryDto createSearchCriteriaHistory(final @Valid @RequestBody SearchCriteriaHistoryDto dto)
+        throws PreconditionFailedException {
         SanityChecker.sanitizeCriteria(dto);
         LOGGER.debug("Create SearchCriteriaHistory {}", dto);
         return searchCriteriaHistoryExternalService.create(dto);
     }
 
     @DeleteMapping(CommonConstants.PATH_ID)
-    @Secured(ServicesData.ROLE_GET_ARCHIVE)
-    public void delete(final @PathVariable("id") String id)
-        throws PreconditionFailedException, InvalidParseOperationException {
+    @Secured(ServicesData.ARCHIVE_SEARCH_GET_ARCHIVE_SEARCH_ROLE)
+    public void deleteSearchCriteriaHistory(final @PathVariable("id") String id) throws PreconditionFailedException {
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Delete SearchCriteriaHistory with id :{}", id);
         searchCriteriaHistoryExternalService.delete(id);
@@ -114,9 +108,9 @@ public class SearchCriteriaHistoryExternalController {
 
     @ApiOperation(value = "Update Search criteria history")
     @PutMapping(CommonConstants.PATH_ID)
-    @Secured(ServicesData.ROLE_CREATE_ARCHIVE)
-    public void update(@RequestBody final SearchCriteriaHistoryDto entity)
-        throws PreconditionFailedException, InvalidParseOperationException {
+    @Secured(ServicesData.ARCHIVE_SEARCH_GET_ARCHIVE_SEARCH_ROLE)
+    public void updateSearchCriteriaHistory(@RequestBody final SearchCriteriaHistoryDto entity)
+        throws PreconditionFailedException {
         SanityChecker.sanitizeCriteria(entity);
         ParameterChecker.checkParameter("Identifier is mandatory : ", entity.getId());
         LOGGER.debug("Update SearchCriteriaHistory with id :{}", entity.getId());

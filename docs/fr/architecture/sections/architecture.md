@@ -1047,10 +1047,7 @@ La liste de profils crées par défaut pour chaque tenant :
         Description: Profil pour la recherche et consultation des archives dans Vitam sans mises à jour des règles, sans export DIP et sans élimination
         Application: ARCHIVE_SEARCH_MANAGEMENT_APP
         Rôles:
-            - ROLE_CREATE_ARCHIVE_SEARCH
-            - ROLE_GET_ARCHIVE_SEARCH
-            - ROLE_GET_ALL_ARCHIVE_SEARCH
-            - ROLE_SEARCH_WITH_RULES
+            - ROLE_ARCHIVE_SEARCH_GET_ARCHIVE_SEARCH
             - ROLE_GET_ACCESS_CONTRACTS
             - ROLE_GET_RULES
 
@@ -1058,11 +1055,8 @@ La liste de profils crées par défaut pour chaque tenant :
         Description: Profil pour la recherche et consultation des archives dans Vitam sans mises à jour des règles de gestion, avec export DIP et sans élimination
         Application: ARCHIVE_SEARCH_MANAGEMENT_APP
         Rôles:
-            - ROLE_CREATE_ARCHIVE_SEARCH
-            - ROLE_GET_ARCHIVE_SEARCH
-            - ROLE_GET_ALL_ARCHIVE_SEARCH
+            - ROLE_ARCHIVE_SEARCH_GET_ARCHIVE_SEARCH
             - ROLE_EXPORT_DIP
-            - ROLE_SEARCH_WITH_RULES
             - ROLE_GET_ACCESS_CONTRACTS
             - ROLE_GET_RULES
 
@@ -1070,17 +1064,13 @@ La liste de profils crées par défaut pour chaque tenant :
         Description: Profil pour la recherche et consultation des archives dans Vitam avec mise à jour des règles, export DIP, opérations d'élimination, reclassement, demande de transfert et acquittement de transfert
         Application: ARCHIVE_SEARCH_MANAGEMENT_APP
         Rôles:
-            - ROLE_CREATE_ARCHIVE_SEARCH
-            - ROLE_GET_ARCHIVE_SEARCH
-            - ROLE_GET_ALL_ARCHIVE_SEARCH
-            - ROLE_SEARCH_WITH_RULES
+            - ROLE_ARCHIVE_SEARCH_GET_ARCHIVE_SEARCH
             - ROLE_EXPORT_DIP
             - ROLE_ELIMINATION
-            - ROLE_UPDATE_MANAGEMENT_RULES
             - ROLE_COMPUTED_INHERITED_RULES
             - ROLE_GET_ACCESS_CONTRACTS
             - ROLE_RECLASSIFICATION
-            - ROLE_UPDATE_UNIT_DESC_METADATA
+            - ROLE_ARCHIVE_SEARCH_UPDATE_ARCHIVE_UNIT
             - ROLE_TRANSFER_REQUEST
             - ROLE_TRANSFER_ACKNOWLEDGMENT
             - ROLE_GET_RULES
@@ -1114,7 +1104,6 @@ La liste de profils crées par défaut pour chaque tenant :
             - ROLE_GET_PROJECTS
             - ROLE_CREATE_PROJECTS
             - ROLE_UPDATE_PROJECTS
-            - ROLE_GET_FILLING_PLAN_ACCESS
             - ROLE_GET_ACCESS_CONTRACTS
             - ROLE_GET_RULES
             - ROLE_SEND_TRANSACTIONS
@@ -1125,8 +1114,7 @@ La liste de profils crées par défaut pour chaque tenant :
             - ROLE_GET_TRANSACTIONS
             - ROLE_CREATE_TRANSACTIONS
             - ROLE_UPDATE_TRANSACTIONS
-            - ROLE_DELETE_TRANSACTIONS
-            - ROLE_UPDATE_UNIT_DESC_METADATA
+            - ROLE_ARCHIVE_SEARCH_UPDATE_ARCHIVE_UNIT
 ```
 
 ## Application avec plusieurs profils
@@ -1150,7 +1138,7 @@ Au niveau Angular on peut utiliser la directive : **HasRoleDirective** prend com
 - L'identifiant du tenant (de type number).
 - Le role en question (une liste des roles est initialisée au niveau de l'enum ***VitamuiRoles***).
 
-- Exemple pour afficher un composant pour les users qui ont le role ROLE_SEARCH_WITH_RULES
+- Exemple pour afficher un composant pour les users qui ont le role ARCHIVE_SEARCH_ROLE_GET_ARCHIVES
   
   ```html
   <ng-template [vitamuiCommonHasRole]="dataToSearchWithRules">
@@ -1164,7 +1152,7 @@ Au niveau du fichier ts :
 dataToSearchWithRules = {
 appId: "ApplicationId",
 tenantIdentifier: 1,
-role: 'ROLE_SEARCH_WITH_RULES',
+role: 'ARCHIVE_SEARCH_ROLE_GET_ARCHIVES',
 };
 ```
 

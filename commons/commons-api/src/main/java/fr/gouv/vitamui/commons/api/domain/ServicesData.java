@@ -423,28 +423,32 @@ public class ServicesData {
     //------------------------------------ INGESTS -----------------------------------------
 
     public static final String SERVICE_INGEST = "INGEST";
+    public static final String ROLE_CREATE_INGEST = "ROLE_CREATE_INGEST";
+    public static final String ROLE_GET_INGEST = "ROLE_GET_INGEST";
+    public static final String ROLE_GET_ALL_INGEST = "ROLE_GET_ALL_INGEST";
 
-    public static final String ROLE_CREATE_INGEST = CREATE_ROLE_PREFIX + SERVICE_INGEST;
-    public static final String ROLE_GET_INGEST = GET_ROLE_PREFIX + SERVICE_INGEST;
-    public static final String ROLE_GET_ALL_INGEST = GET_ROLE_PREFIX + "ALL_" + SERVICE_INGEST;
-
-    //------------------------------------ ARCHIVE SEARCH -----------------------------------------
+    //------------------------------------ ARCHIVE SEARCH Roles -----------------------------------------
 
     public static final String SERVICE_ARCHIVE = "ARCHIVE_SEARCH";
 
-    public static final String ROLE_CREATE_ARCHIVE = CREATE_ROLE_PREFIX + SERVICE_ARCHIVE;
-    public static final String ROLE_GET_ARCHIVE = GET_ROLE_PREFIX + SERVICE_ARCHIVE;
-    public static final String ROLE_GET_ALL_ARCHIVE = GET_ROLE_PREFIX + "ALL_" + SERVICE_ARCHIVE;
-    public static final String ROLE_SEARCH_WITH_RULES = ROLE_PREFIX + "SEARCH_WITH_RULES";
+    public static final String ARCHIVE_SEARCH_UPDATE_ARCHIVE_UNIT_ROLE = "ROLE_ARCHIVE_SEARCH_UPDATE_ARCHIVE_UNIT";
+    public static final String ARCHIVE_SEARCH_GET_ARCHIVE_SEARCH_ROLE = "ROLE_ARCHIVE_SEARCH_GET_ARCHIVE_SEARCH";
+    public static final String ARCHIVE_SEARCH_ROLE_GET_ARCHIVE_BINARY = "ROLE_ARCHIVE_SEARCH_GET_ARCHIVE_BINARY";
     public static final String ROLE_EXPORT_DIP = ROLE_PREFIX + "EXPORT_DIP";
     public static final String ROLE_TRANSFER_REQUEST = ROLE_PREFIX + "TRANSFER_REQUEST";
     public static final String ROLE_ELIMINATION = ROLE_PREFIX + "ELIMINATION";
-    public static final String ROLE_UPDATE_MANAGEMENT_RULES = UPDATE_ROLE_PREFIX + "MANAGEMENT_RULES";
     public static final String ROLE_COMPUTED_INHERITED_RULES = ROLE_PREFIX + "COMPUTED_INHERITED_RULES";
     public static final String ROLE_RECLASSIFICATION = ROLE_PREFIX + "RECLASSIFICATION";
-    public static final String ROLE_UPDATE_UNIT_DESC_METADATA = ROLE_PREFIX + "UPDATE_UNIT_DESC_METADATA";
-
     public static final String ROLE_TRANSFER_ACKNOWLEDGMENT = ROLE_PREFIX + "TRANSFER_ACKNOWLEDGMENT";
+
+    //------------------------------------ Collect  Roles -----------------------------------------
+
+    public static final String COLLECT_UPDATE_BULK_ARCHIVE_UNIT_ROLE = "ROLE_COLLECT_UPDATE_BULK_ARCHIVE_UNIT";
+    public static final String COLLECT_UPDATE_UNITARY_ARCHIVE_UNIT_ROLE = "ROLE_COLLECT_UPDATE_UNITARY_ARCHIVE_UNIT";
+
+    public static final String COLLECT_GET_ARCHIVE_SEARCH_ROLE = "ROLE_COLLECT_GET_ARCHIVE_SEARCH";
+
+    public static final String COLLECT_ROLE_GET_ARCHIVE_BINARY = "ROLE_COLLECT_GET_ARCHIVE_BINARY";
 
     //------------------------------------ API TREES & PLANS -----------------------------------------
 
@@ -621,14 +625,10 @@ public class ServicesData {
 
         ROLE_LOGBOOKS,
 
-        ROLE_GET_ALL_ARCHIVE,
-        ROLE_GET_ARCHIVE,
-        ROLE_CREATE_ARCHIVE,
-        ROLE_SEARCH_WITH_RULES,
+        ARCHIVE_SEARCH_GET_ARCHIVE_SEARCH_ROLE,
         ROLE_EXPORT_DIP,
         ROLE_TRANSFER_REQUEST,
         ROLE_ELIMINATION,
-        ROLE_UPDATE_MANAGEMENT_RULES,
         ROLE_COMPUTED_INHERITED_RULES,
         ROLE_TRANSFER_ACKNOWLEDGMENT,
 
@@ -651,7 +651,7 @@ public class ServicesData {
 
         ROLE_GET_ACCESSION_REGISTER_DETAIL,
         ROLE_RECLASSIFICATION,
-        ROLE_UPDATE_UNIT_DESC_METADATA,
+
         ROLE_GET_ACCESSION_REGISTER_DETAIL,
 
         ROLE_GET_MANAGEMENT_CONTRACT,
@@ -662,7 +662,7 @@ public class ServicesData {
         ROLE_GET_ACCESSION_REGISTER_DETAIL,
 
         ROLE_RECLASSIFICATION,
-        ROLE_UPDATE_UNIT_DESC_METADATA,
+
 
         ROLE_GET_PROJECTS,
         ROLE_CREATE_PROJECTS,
@@ -675,7 +675,8 @@ public class ServicesData {
         ROLE_GET_TRANSACTIONS,
         ROLE_DELETE_PROJECTS,
         ROLE_SEND_TRANSACTIONS,
-        ROLE_UPDATE_UNITS_METADATA
+        COLLECT_UPDATE_BULK_ARCHIVE_UNIT_ROLE,
+        COLLECT_UPDATE_UNITARY_ARCHIVE_UNIT_ROLE
     );
 
     /**
@@ -797,14 +798,10 @@ public class ServicesData {
         ROLE_CREATE_INGEST,
         ROLE_LOGBOOKS,
 
-        ROLE_GET_ALL_ARCHIVE,
-        ROLE_GET_ARCHIVE,
-        ROLE_CREATE_ARCHIVE,
-        ROLE_SEARCH_WITH_RULES,
+        ARCHIVE_SEARCH_GET_ARCHIVE_SEARCH_ROLE,
         ROLE_EXPORT_DIP,
         ROLE_TRANSFER_REQUEST,
         ROLE_ELIMINATION,
-        ROLE_UPDATE_MANAGEMENT_RULES,
         ROLE_COMPUTED_INHERITED_RULES,
         ROLE_TRANSFER_ACKNOWLEDGMENT,
 
@@ -827,12 +824,11 @@ public class ServicesData {
 
         ROLE_GET_ACCESSION_REGISTER_DETAIL,
         ROLE_RECLASSIFICATION,
-        ROLE_UPDATE_UNIT_DESC_METADATA,
+
         ROLE_CREATE_TRANSACTIONS,
         ROLE_UPDATE_TRANSACTIONS,
         ROLE_GET_TRANSACTIONS,
         ROLE_DELETE_PROJECTS,
-        ROLE_UPDATE_UNIT_DESC_METADATA,
 
         ROLE_GET_PROJECTS,
         ROLE_CREATE_PROJECTS,
@@ -851,7 +847,7 @@ public class ServicesData {
 
         ROLE_GET_ACCESSION_REGISTER_DETAIL,
         ROLE_RECLASSIFICATION,
-        ROLE_UPDATE_UNIT_DESC_METADATA
+        ARCHIVE_SEARCH_UPDATE_ARCHIVE_UNIT_ROLE
 
             );
 

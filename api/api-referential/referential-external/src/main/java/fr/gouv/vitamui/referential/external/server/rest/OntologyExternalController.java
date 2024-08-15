@@ -202,7 +202,7 @@ public class OntologyExternalController {
     }
 
     @GetMapping(CommonConstants.INTERNAL_ONTOLOGY_LIST)
-    @Secured(ServicesData.ROLE_GET_ARCHIVE)
+    @Secured(ServicesData.ROLE_GET_ONTOLOGIES)
     public List<VitamUiOntologyDto> getInternalOntologiesList() {
         LOGGER.debug("[EXTERNAL] : Get default internal ontology fields list");
         return ontologyExternalService.getInternalOntologyList();

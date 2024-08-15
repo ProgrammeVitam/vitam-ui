@@ -69,16 +69,32 @@
                   <button mat-menu-item (click)="searchArchiveUnitsByTransaction(transaction)">
                     {{ 'COLLECT.PROJECT_UNIT_PREVIEW.ACTIONS.SHOW_PROJECT_ARCHIVE_UNITS' | translate }}
                   </button>
-                  <button mat-menu-item [disabled]="!transactionIsOpen(transaction)" (click)="validateTransaction(transaction)">
+                  <button
+                    mat-menu-item
+                    [disabled]="!transactionIsOpen(transaction) || !hasCloseTransactionRole"
+                    (click)="validateTransaction(transaction)"
+                  >
                     {{ 'COLLECT.VALIDATE_ACTION' | translate }}
                   </button>
-                  <button mat-menu-item [disabled]="!transactionIsReady(transaction)" (click)="sendTransaction(transaction)">
+                  <button
+                    mat-menu-item
+                    [disabled]="!transactionIsReady(transaction) || !hasSendTransactionRole"
+                    (click)="sendTransaction(transaction)"
+                  >
                     {{ 'COLLECT.INGEST_ACTION' | translate }}
                   </button>
-                  <button mat-menu-item [disabled]="!transactionIsEditable(transaction)" (click)="editTransaction(transaction)">
+                  <button
+                    mat-menu-item
+                    [disabled]="!transactionIsEditable(transaction) || !hasEditTransactionRole"
+                    (click)="editTransaction(transaction)"
+                  >
                     {{ 'COLLECT.EDIT_ACTION' | translate }}
                   </button>
-                  <button mat-menu-item [disabled]="!transactionIsAbortable(transaction)" (click)="abortTransaction(transaction)">
+                  <button
+                    mat-menu-item
+                    [disabled]="!transactionIsAbortable(transaction) || !hasAbortTransactionRole"
+                    (click)="abortTransaction(transaction)"
+                  >
                     {{ 'COLLECT.ABORT_ACTION' | translate }}
                   </button>
                 </vitamui-common-menu-button>

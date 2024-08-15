@@ -27,7 +27,6 @@
 package fr.gouv.vitamui.archives.search.external.server.rest;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitamui.archives.search.common.dto.ExportDipCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.ReclassificationCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.RuleSearchCriteriaDto;
@@ -91,7 +90,7 @@ public class ArchivesSearchExternalController {
     }
 
     @PostMapping(RestApi.SEARCH_PATH)
-    @Secured(ServicesData.ROLE_GET_ARCHIVE)
+    @Secured(ServicesData.ARCHIVE_SEARCH_GET_ARCHIVE_SEARCH_ROLE)
     public VitamUIArchiveUnitResponseDto searchArchiveUnitsByCriteria(final @RequestBody SearchCriteriaDto query) {
         ParameterChecker.checkParameter(MANDATORY_QUERY, query);
         SanityChecker.sanitizeCriteria(query);
@@ -100,7 +99,7 @@ public class ArchivesSearchExternalController {
     }
 
     @GetMapping(RestApi.FILING_HOLDING_SCHEME_PATH)
-    @Secured(ServicesData.ROLE_GET_ARCHIVE)
+    @Secured(ServicesData.ARCHIVE_SEARCH_GET_ARCHIVE_SEARCH_ROLE)
     public VitamUISearchResponseDto getFillingHoldingScheme() {
         return archivesSearchExternalService.getFilingHoldingScheme();
     }
@@ -109,12 +108,12 @@ public class ArchivesSearchExternalController {
         value = RestApi.DOWNLOAD_ARCHIVE_UNIT + CommonConstants.PATH_ID,
         produces = MediaType.APPLICATION_OCTET_STREAM_VALUE
     )
-    @Secured(ServicesData.ROLE_GET_ARCHIVE)
+    @Secured(ServicesData.ARCHIVE_SEARCH_ROLE_GET_ARCHIVE_BINARY)
     public Mono<ResponseEntity<Resource>> downloadObjectFromUnit(
         final @PathVariable("id") String id,
         final @RequestParam(value = "usage", required = false) String usage,
         final @RequestParam(value = "version", required = false) Integer version
-    ) throws InvalidParseOperationException, PreconditionFailedException {
+    ) throws PreconditionFailedException {
         ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Download the Archive Unit Object with id {} ", id);
@@ -122,9 +121,9 @@ public class ArchivesSearchExternalController {
     }
 
     @GetMapping(RestApi.ARCHIVE_UNIT_INFO + CommonConstants.PATH_ID)
-    @Secured(ServicesData.ROLE_GET_ARCHIVE)
+    @Secured(ServicesData.ARCHIVE_SEARCH_GET_ARCHIVE_SEARCH_ROLE)
     public ResponseEntity<ResultsDto> findUnitById(final @PathVariable("id") String id)
-        throws InvalidParseOperationException, PreconditionFailedException {
+        throws PreconditionFailedException {
         ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("the UA by id {} ", id);
@@ -132,9 +131,9 @@ public class ArchivesSearchExternalController {
     }
 
     @GetMapping(RestApi.OBJECTGROUP + CommonConstants.PATH_ID)
-    @Secured(ServicesData.ROLE_GET_ARCHIVE)
+    @Secured(ServicesData.ARCHIVE_SEARCH_GET_ARCHIVE_SEARCH_ROLE)
     public ResponseEntity<ResultsDto> findObjectById(final @PathVariable("id") String id)
-        throws InvalidParseOperationException, PreconditionFailedException {
+        throws PreconditionFailedException {
         ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Find a ObjectGroup by id {} ", id);
@@ -142,9 +141,9 @@ public class ArchivesSearchExternalController {
     }
 
     @PostMapping(RestApi.EXPORT_CSV_SEARCH_PATH)
-    @Secured(ServicesData.ROLE_GET_ARCHIVE)
+    @Secured(ServicesData.ARCHIVE_SEARCH_GET_ARCHIVE_SEARCH_ROLE)
     public Resource exportCsvArchiveUnitsByCriteria(final @RequestBody SearchCriteriaDto query)
-        throws InvalidParseOperationException, PreconditionFailedException {
+        throws PreconditionFailedException {
         ParameterChecker.checkParameter(MANDATORY_QUERY, query);
         SanityChecker.sanitizeCriteria(query);
         LOGGER.debug("Calling export to csv search archive Units By Criteria {} ", query);
@@ -154,7 +153,7 @@ public class ArchivesSearchExternalController {
     @PostMapping(RestApi.EXPORT_DIP)
     @Secured(ServicesData.ROLE_EXPORT_DIP)
     public String exportDIPByCriteria(final @RequestBody ExportDipCriteriaDto exportDipCriteriaDto)
-        throws InvalidParseOperationException, PreconditionFailedException {
+        throws PreconditionFailedException {
         ParameterChecker.checkParameter(MANDATORY_QUERY, exportDipCriteriaDto);
         SanityChecker.sanitizeCriteria(exportDipCriteriaDto);
         LOGGER.debug("Calling export DIP By Criteria {} ", exportDipCriteriaDto);
@@ -164,7 +163,7 @@ public class ArchivesSearchExternalController {
     @PostMapping(RestApi.TRANSFER_REQUEST)
     @Secured(ServicesData.ROLE_TRANSFER_REQUEST)
     public String transferRequest(final @RequestBody TransferRequestDto transferRequestDto)
-        throws InvalidParseOperationException, PreconditionFailedException {
+        throws PreconditionFailedException {
         ParameterChecker.checkParameter(MANDATORY_QUERY, transferRequestDto);
         SanityChecker.sanitizeCriteria(transferRequestDto);
         LOGGER.debug("Calling transfer request {} ", transferRequestDto);
@@ -174,7 +173,7 @@ public class ArchivesSearchExternalController {
     @PostMapping(RestApi.ELIMINATION_ANALYSIS)
     @Secured(ServicesData.ROLE_ELIMINATION)
     public ResponseEntity<JsonNode> startEliminationAnalysis(final @RequestBody SearchCriteriaDto query)
-        throws InvalidParseOperationException, PreconditionFailedException {
+        throws PreconditionFailedException {
         ParameterChecker.checkParameter(MANDATORY_QUERY, query);
         SanityChecker.sanitizeCriteria(query);
         LOGGER.debug("Calling elimination analysis by criteria {} ", query);
@@ -184,7 +183,7 @@ public class ArchivesSearchExternalController {
     @PostMapping(RestApi.ELIMINATION_ACTION)
     @Secured(ServicesData.ROLE_ELIMINATION)
     public ResponseEntity<JsonNode> startEliminationAction(final @RequestBody SearchCriteriaDto query)
-        throws InvalidParseOperationException, PreconditionFailedException {
+        throws PreconditionFailedException {
         ParameterChecker.checkParameter(MANDATORY_QUERY, query);
         SanityChecker.sanitizeCriteria(query);
         LOGGER.debug("Calling elimination action by criteria {} ", query);
@@ -192,9 +191,9 @@ public class ArchivesSearchExternalController {
     }
 
     @PostMapping(RestApi.MASS_UPDATE_UNITS_RULES)
-    @Secured(ServicesData.ROLE_UPDATE_MANAGEMENT_RULES)
+    @Secured(ServicesData.ARCHIVE_SEARCH_UPDATE_ARCHIVE_UNIT_ROLE)
     public String updateArchiveUnitsRules(final @RequestBody RuleSearchCriteriaDto ruleSearchCriteriaDto)
-        throws InvalidParseOperationException, PreconditionFailedException {
+        throws PreconditionFailedException {
         ParameterChecker.checkParameter(MANDATORY_QUERY, ruleSearchCriteriaDto);
         SanityChecker.sanitizeCriteria(ruleSearchCriteriaDto);
         LOGGER.debug("Calling Update Archive Units Rules By Criteria {} ", ruleSearchCriteriaDto);
@@ -204,7 +203,7 @@ public class ArchivesSearchExternalController {
     @PostMapping(RestApi.COMPUTED_INHERITED_RULES)
     @Secured(ServicesData.ROLE_COMPUTED_INHERITED_RULES)
     public String computedInheritedRules(final @RequestBody SearchCriteriaDto searchCriteriaDto)
-        throws InvalidParseOperationException, PreconditionFailedException {
+        throws PreconditionFailedException {
         ParameterChecker.checkParameter(MANDATORY_QUERY, searchCriteriaDto);
         SanityChecker.sanitizeCriteria(searchCriteriaDto);
         LOGGER.debug("Calling computed inherited rules By Criteria {} ", searchCriteriaDto);
@@ -212,9 +211,9 @@ public class ArchivesSearchExternalController {
     }
 
     @PostMapping(RestApi.UNIT_WITH_INHERITED_RULES)
-    @Secured(ServicesData.ROLE_GET_ARCHIVE)
+    @Secured(ServicesData.ARCHIVE_SEARCH_GET_ARCHIVE_SEARCH_ROLE)
     public ResultsDto selectUnitWithInheritedRules(final @RequestBody SearchCriteriaDto query)
-        throws InvalidParseOperationException, PreconditionFailedException {
+        throws PreconditionFailedException {
         ParameterChecker.checkParameter(MANDATORY_QUERY, query);
         SanityChecker.sanitizeCriteria(query);
         LOGGER.debug("Calling select Unit With Inherited Rules By Criteria {} ", query);
@@ -224,23 +223,23 @@ public class ArchivesSearchExternalController {
     @PostMapping(RestApi.RECLASSIFICATION)
     @Secured(ServicesData.ROLE_RECLASSIFICATION)
     public String reclassification(@RequestBody final ReclassificationCriteriaDto reclassificationCriteriaDto)
-        throws InvalidParseOperationException, PreconditionFailedException {
+        throws PreconditionFailedException {
         ParameterChecker.checkParameter(MANDATORY_QUERY, reclassificationCriteriaDto);
         SanityChecker.sanitizeCriteria(reclassificationCriteriaDto);
         LOGGER.debug("Reclassification query {}", reclassificationCriteriaDto);
         return archivesSearchExternalService.reclassification(reclassificationCriteriaDto);
     }
 
-    @Secured(ServicesData.ROLE_TRANSFER_ACKNOWLEDGMENT)
     @ApiOperation(
         value = "Upload an ATR file for the transfer acknowledgment",
         consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE
     )
+    @Secured(ServicesData.ROLE_TRANSFER_ACKNOWLEDGMENT)
     @PostMapping(value = RestApi.TRANSFER_ACKNOWLEDGMENT, consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     public String transferAcknowledgment(
         InputStream inputStream,
         @RequestHeader(value = CommonConstants.X_ORIGINAL_FILENAME_HEADER) final String originalFileName
-    ) throws InvalidParseOperationException, PreconditionFailedException {
+    ) throws PreconditionFailedException {
         LOGGER.debug("[EXTERNAL] : Transfer Acknowledgment Operation");
         ParameterChecker.checkParameter("The  fileName is mandatory parameter : ", originalFileName);
         SanityChecker.checkSecureParameter(originalFileName);
@@ -251,13 +250,14 @@ public class ArchivesSearchExternalController {
     }
 
     @GetMapping(CommonConstants.EXTERNAL_ONTOLOGIES_LIST)
-    @Secured(ServicesData.ROLE_GET_ARCHIVE)
+    @Secured(ServicesData.ARCHIVE_SEARCH_GET_ARCHIVE_SEARCH_ROLE)
     public List<VitamUiOntologyDto> getExternalOntologiesList() {
         LOGGER.debug("[EXTERNAL] : Get External ontologies list");
         return archivesSearchExternalService.getExternalOntologiesList();
     }
 
     @GetMapping(RestApi.UNITS_PERSISTENT_IDENTIFIER)
+    @Secured(ServicesData.ARCHIVE_SEARCH_GET_ARCHIVE_SEARCH_ROLE)
     public PersistentIdentifierResponseDto findUnitsByPersistentIdentifier(
         final @RequestParam(value = "id") String arkId
     ) {
@@ -269,6 +269,7 @@ public class ArchivesSearchExternalController {
     }
 
     @GetMapping(RestApi.OBJECTS_PERSISTENT_IDENTIFIER)
+    @Secured(ServicesData.ARCHIVE_SEARCH_ROLE_GET_ARCHIVE_BINARY)
     public PersistentIdentifierResponseDto findObjectsByPersistentIdentifier(
         final @RequestParam(value = "id") String arkId
     ) {

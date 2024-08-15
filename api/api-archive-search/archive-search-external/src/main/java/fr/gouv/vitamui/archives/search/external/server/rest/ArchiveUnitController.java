@@ -34,6 +34,7 @@ import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.dtos.JsonPatch;
 import fr.gouv.vitamui.commons.api.dtos.JsonPatchDto;
 import fr.gouv.vitamui.commons.api.dtos.MultiJsonPatchDto;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -54,17 +55,22 @@ import static javax.ws.rs.core.MediaType.APPLICATION_JSON_PATCH_JSON;
 
 @RestController
 @RequestMapping("/archive-units")
+@Api(tags = "ArchiveUnitController", value = "Archive Search units management")
 public class ArchiveUnitController {
 
+    private final ArchiveUnitService archiveUnitService;
+
     @Autowired
-    ArchiveUnitService archiveUnitService;
+    public ArchiveUnitController(ArchiveUnitService archiveUnitService) {
+        this.archiveUnitService = archiveUnitService;
+    }
 
     @PatchMapping
     @Consumes(APPLICATION_JSON)
     @Produces(APPLICATION_JSON)
-    @Secured(ServicesData.ROLE_UPDATE_UNIT_DESC_METADATA)
+    @Secured(ServicesData.ARCHIVE_SEARCH_UPDATE_ARCHIVE_UNIT_ROLE)
     @ApiOperation("Updates several archive units asynchronously by passing partial changes to apply to an archive unit")
-    public ResponseEntity<OperationIdDto> update(
+    public ResponseEntity<OperationIdDto> updateMultipleArchiveUnits(
         @RequestBody @Validated final Set<UpdateArchiveUnitDto> updateArchiveUnitDtoSet
     ) {
         return ResponseEntity.ok(archiveUnitService.update(updateArchiveUnitDtoSet));
@@ -73,31 +79,33 @@ public class ArchiveUnitController {
     @PatchMapping("/{archiveUnitId}")
     @Consumes(APPLICATION_JSON_PATCH_JSON)
     @Produces(APPLICATION_JSON)
-    @Secured(ServicesData.ROLE_UPDATE_UNIT_DESC_METADATA)
+    @Secured(ServicesData.ARCHIVE_SEARCH_UPDATE_ARCHIVE_UNIT_ROLE)
     @ApiOperation("Updates one archive unit asynchronously by passing a list of operation to do on an archive unit")
-    public ResponseEntity<OperationIdDto> update(
+    public ResponseEntity<OperationIdDto> updateArchiveUnitById(
         @RequestBody @Validated final JsonPatch jsonPatch,
         @RequestParam String archiveUnitId
     ) {
         final JsonPatchDto jsonPatchDto = new JsonPatchDto().setId(archiveUnitId).setJsonPatch(jsonPatch);
-        return update(jsonPatchDto);
+        return updateArchiveUnit(jsonPatchDto);
     }
 
     @PatchMapping("/update/single")
     @Consumes(APPLICATION_JSON)
     @Produces(APPLICATION_JSON)
-    @Secured(ServicesData.ROLE_UPDATE_UNIT_DESC_METADATA)
+    @Secured(ServicesData.ARCHIVE_SEARCH_UPDATE_ARCHIVE_UNIT_ROLE)
     @ApiOperation("Updates one archive unit asynchronously by passing a list of operation to do on this one")
-    public ResponseEntity<OperationIdDto> update(@RequestBody @Validated final JsonPatchDto jsonPatchDto) {
+    public ResponseEntity<OperationIdDto> updateArchiveUnit(@RequestBody @Validated final JsonPatchDto jsonPatchDto) {
         return ResponseEntity.ok(archiveUnitService.update(jsonPatchDto));
     }
 
     @PatchMapping("/update/multiple")
     @Consumes(APPLICATION_JSON)
     @Produces(APPLICATION_JSON)
-    @Secured(ServicesData.ROLE_UPDATE_UNIT_DESC_METADATA)
+    @Secured(ServicesData.ARCHIVE_SEARCH_UPDATE_ARCHIVE_UNIT_ROLE)
     @ApiOperation("Updates several archive units asynchronously by passing a list of operation to do on these ones")
-    public ResponseEntity<OperationIdDto> update(@RequestBody @Validated final MultiJsonPatchDto multiJsonPatchDto) {
+    public ResponseEntity<OperationIdDto> updateArchiveUnit(
+        @RequestBody @Validated final MultiJsonPatchDto multiJsonPatchDto
+    ) {
         return ResponseEntity.ok(archiveUnitService.update(multiJsonPatchDto));
     }
 }

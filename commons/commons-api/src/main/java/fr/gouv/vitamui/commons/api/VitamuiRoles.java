@@ -29,9 +29,5 @@ package fr.gouv.vitamui.commons.api;
 
 public class VitamuiRoles {
 
-    public static final String ROLE_GET_ALL_ARCHIVE = "ROLE_GET_ALL_ARCHIVE";
-    public static final String ROLE_GET_ARCHIVE = "ROLE_GET_ARCHIVE";
-    public static final String ROLE_CREATE_ARCHIVE = "ROLE_CREATE_ARCHIVE";
-    public static final String ROLE_SEARCH_WITH_RULES = "ROLE_SEARCH_WITH_RULES";
     public static final String ROLE_EXPORT_DIP = "ROLE_EXPORT_DIP";
 }

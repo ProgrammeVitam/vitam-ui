@@ -51,8 +51,8 @@ public class ApiArchiveSearchSearchCriteriaHistoryCoupleOfCheckSteps extends Com
     private List<SearchCriteriaHistoryDto> searchCriteriaHistoryDtos;
     private SearchCriteriaHistoryDto searchCriteriaHistoryDto;
 
-    @When("^l'utilisateur avec le rôle ROLE_GET_ALL_ARCHIVE_SEARCH récupère tous les critères enregistrés$")
-    public void un_utilisateur_avec_le_rôle_ROLE_GET_ACCESS_CONTRACT_récupère_tous_les_criteres_enregistres_en_utilisant_un_certificat_full_access_avec_le_rôle_ROLE_GET_ALL_ARCHIVE_SEARCH() {
+    @When("^l'utilisateur avec le rôle ROLE_ARCHIVE_SEARCH_GET_ARCHIVE_SEARCH récupère tous les critères enregistrés$")
+    public void un_utilisateur_avec_le_rôle_ROLE_GET_ACCESS_CONTRACT_récupère_tous_les_criteres_enregistres_en_utilisant_un_certificat_full_access_avec_le_rôle_ROLE_ARCHIVE_SEARCH_GET_ARCHIVE_SEARCH() {
         searchCriteriaHistoryDtos = getSearchCriteriaHistoryExternalRestClient()
             .getSearchCriteriaHistory(getSystemTenantUserAdminContext());
     }

@@ -223,17 +223,13 @@ customer-init:
       app-name: ARCHIVE_SEARCH_MANAGEMENT_APP
       level:
       roles:
-        - ROLE_CREATE_ARCHIVE_SEARCH
-        - ROLE_GET_ARCHIVE_SEARCH
-        - ROLE_GET_ALL_ARCHIVE_SEARCH
-        - ROLE_SEARCH_WITH_RULES
+        - ROLE_ARCHIVE_SEARCH_GET_ARCHIVE_SEARCH
+        - ROLE_ARCHIVE_SEARCH_UPDATE_ARCHIVE_UNIT
         - ROLE_EXPORT_DIP
         - ROLE_ELIMINATION
-        - ROLE_UPDATE_MANAGEMENT_RULES
         - ROLE_COMPUTED_INHERITED_RULES
         - ROLE_GET_ACCESS_CONTRACTS
         - ROLE_RECLASSIFICATION
-        - ROLE_UPDATE_UNIT_DESC_METADATA
         - ROLE_TRANSFER_REQUEST
         - ROLE_GET_RULES
         - ROLE_TRANSFER_ACKNOWLEDGMENT
@@ -244,11 +240,20 @@ customer-init:
       app-name: ARCHIVE_SEARCH_MANAGEMENT_APP
       level:
       roles:
-        - ROLE_CREATE_ARCHIVE_SEARCH
-        - ROLE_GET_ARCHIVE_SEARCH
-        - ROLE_GET_ALL_ARCHIVE_SEARCH
-        - ROLE_SEARCH_WITH_RULES
+        - ROLE_ARCHIVE_SEARCH_GET_ARCHIVE_SEARCH
         - ROLE_GET_ACCESS_CONTRACTS
+        - ROLE_GET_RULES
+        - ROLE_GET_SCHEMAS
+
+    - name: Archiviste
+      description: Profil pour la recherche et consultation des archives dans Vitam sans mises à jour des règles de gestion, avec export DIP et sans élimination
+      app-name: ARCHIVE_SEARCH_MANAGEMENT_APP
+      level:
+      roles:
+        - ROLE_ARCHIVE_SEARCH_GET_ARCHIVE_SEARCH
+        - ROLE_EXPORT_DIP
+        - ROLE_GET_ACCESS_CONTRACTS
+        - ARCHIVE_SEARCH_UPDATE_ARCHIVE_UNIT_ROLE
         - ROLE_GET_RULES
         - ROLE_GET_SCHEMAS
 
@@ -262,23 +267,33 @@ customer-init:
         - ROLE_UPDATE_PASTIS
         - ROLE_DELETE_PASTIS
 
-    - name: Archiviste
-      description: Profil pour la recherche et consultation des archives dans Vitam sans mises à jour des règles de gestion, avec export DIP et sans élimination
-      app-name: ARCHIVE_SEARCH_MANAGEMENT_APP
+    - name: Archiviste - Administrateur
+      description: Profil de supervision des projets de versement ayant tous les droits dans l'APP Collecte dont celui permettant d'annuler une transaction
+      app-name: COLLECT_APP
       level:
       roles:
-        - ROLE_CREATE_ARCHIVE_SEARCH
-        - ROLE_GET_ARCHIVE_SEARCH
-        - ROLE_GET_ALL_ARCHIVE_SEARCH
-        - ROLE_EXPORT_DIP
-        - ROLE_SEARCH_WITH_RULES
+        - ROLE_GET_PROJECTS
+        - ROLE_CREATE_PROJECTS
+        - ROLE_UPDATE_PROJECTS
         - ROLE_GET_ACCESS_CONTRACTS
-        - ROLE_UPDATE_UNIT_DESC_METADATA
         - ROLE_GET_RULES
+        - ROLE_SEND_TRANSACTIONS
+        - ROLE_CLOSE_TRANSACTIONS
+        - ROLE_REOPEN_TRANSACTIONS
+        - ROLE_ABORT_TRANSACTIONS
+        - ROLE_GET_TRANSACTIONS
+        - ROLE_CREATE_TRANSACTIONS
+        - ROLE_UPDATE_TRANSACTIONS
+        - ROLE_COLLECT_GET_ARCHIVE_SEARCH
+        - ROLE_COLLECT_UPDATE_BULK_ARCHIVE_UNIT
+        - ROLE_COLLECT_UPDATE_UNITARY_ARCHIVE_UNIT
         - ROLE_GET_SCHEMAS
+        - ROLE_GET_ONTOLOGIES
+        - ROLE_GET_FILLING_PLAN_ACCESS
 
-    - name: Collecte
-      description: Collecte de données, Application de préparation de versements
+
+    - name: Archiviste - gestion et collecte
+      description: Profil de collecte et préparation des versements avec droit de transmettre les archives au SAE
       app-name: COLLECT_APP
       level:
       roles:
@@ -290,14 +305,34 @@ customer-init:
         - ROLE_GET_RULES
         - ROLE_SEND_TRANSACTIONS
         - ROLE_CLOSE_TRANSACTIONS
-        - ROLE_UPDATE_UNITS_METADATA
         - ROLE_REOPEN_TRANSACTIONS
-        - ROLE_ABORT_TRANSACTIONS
         - ROLE_GET_TRANSACTIONS
         - ROLE_CREATE_TRANSACTIONS
         - ROLE_UPDATE_TRANSACTIONS
-        - ROLE_DELETE_TRANSACTIONS
-        - ROLE_UPDATE_UNIT_DESC_METADATA
+        - ROLE_COLLECT_GET_ARCHIVE_SEARCH
+        - ROLE_COLLECT_UPDATE_BULK_ARCHIVE_UNIT
+        - ROLE_COLLECT_UPDATE_UNITARY_ARCHIVE_UNIT
+        - ROLE_GET_SCHEMAS
+        - ROLE_GET_ONTOLOGIES
+
+    - name: Service producteur
+      description: Profil de préparation des versements des archives sans possibilité de transmettre les archives au SAE
+      app-name: COLLECT_APP
+      level:
+      roles:
+        - ROLE_GET_PROJECTS
+        - ROLE_CREATE_PROJECTS
+        - ROLE_UPDATE_PROJECTS
+        - ROLE_GET_ACCESS_CONTRACTS
+        - ROLE_GET_RULES
+        - ROLE_GET_TRANSACTIONS
+        - ROLE_CREATE_TRANSACTIONS
+        - ROLE_CLOSE_TRANSACTIONS
+        - ROLE_COLLECT_GET_ARCHIVE_SEARCH
+        - ROLE_COLLECT_UPDATE_UNITARY_ARCHIVE_UNIT
+        - ROLE_GET_SCHEMAS
+        - ROLE_GET_ONTOLOGIES
+        - ROLE_GET_FILLING_PLAN_ACCESS
 
     - name: Pastis-Gestion des profils documentaires
       description: Pastis-Gestion des profils documentaires

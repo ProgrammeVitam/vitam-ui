@@ -26,11 +26,11 @@
  */
 package fr.gouv.vitamui.collect.external.server.rest;
 
-import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitamui.collect.external.server.service.ProjectObjectGroupExternalService;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
+import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 import io.swagger.annotations.Api;
@@ -40,6 +40,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -73,12 +74,13 @@ public class ProjectObjectGroupExternalController {
         value = DOWNLOAD_ARCHIVE_UNIT + CommonConstants.PATH_ID,
         produces = MediaType.APPLICATION_OCTET_STREAM_VALUE
     )
+    @Secured(ServicesData.COLLECT_ROLE_GET_ARCHIVE_BINARY)
     public Mono<ResponseEntity<Resource>> downloadObjectFromUnit(
         final @PathVariable("id") String id,
         final @RequestParam("objectId") String objectId,
         final @RequestParam(value = "usage", required = false) String usage,
         final @RequestParam(value = "version", required = false) Integer version
-    ) throws InvalidParseOperationException, PreconditionFailedException {
+    ) throws PreconditionFailedException {
         ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
         SanityChecker.checkSecureParameter(id);
         ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, objectId);
@@ -88,8 +90,9 @@ public class ProjectObjectGroupExternalController {
     }
 
     @GetMapping(CommonConstants.PATH_ID)
+    @Secured(ServicesData.COLLECT_ROLE_GET_ARCHIVE_BINARY)
     public ResponseEntity<ResultsDto> findObjectById(final @PathVariable("id") String id)
-        throws InvalidParseOperationException, PreconditionFailedException {
+        throws PreconditionFailedException {
         ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Find an ObjectGroup by id {} ", id);

@@ -1,0 +1,92 @@
+db = db.getSiblingDB('iam')
+
+print("START_005_create_new_collect_profiles_for_exist_customers.js");
+
+
+// Get sequence for profiles
+var maxIdProfile = db.getCollection('sequences').findOne({ '_id': 'profile_identifier' }).sequence;
+
+// For each tenants (except cas tenant)
+db.tenants.find({ "identifier": { $gte: 0 } }).forEach(function (tenant) {
+
+    //CREATE NEW PROFILES FOR COLLECT_APP except Archiviste - Administrateur (replace the default profile already created)
+
+    // Archiviste - gestion et collecte
+    db.profiles.insertOne({
+        "_id": "PROFIL_" + tenant.identifier + "-COLLECT_APP-ARCHIVISTE_COLLECT_MANAGEMENT",
+        "identifier": NumberInt(maxIdProfile++),
+        "name": "Archiviste-gestion et collecte",
+        "description": "Profil de collecte et préparation des versements avec droit de transmettre les archives au SAE",
+        "tenantIdentifier": NumberInt(tenant.identifier),
+        "applicationName": "COLLECT_APP",
+        "level": "",
+        "enabled": true,
+        "readonly": false,
+        "customerId": tenant.customerId,
+        "roles": [
+                {"name": "ROLE_GET_PROJECTS"},
+                {"name": "ROLE_CREATE_PROJECTS"},
+                {"name": "ROLE_UPDATE_PROJECTS"},
+                {"name": "ROLE_GET_TRANSACTIONS"},
+                {"name": "ROLE_UPDATE_TRANSACTIONS"},
+                {"name": "ROLE_CREATE_TRANSACTIONS"},
+                {"name": "ROLE_SEND_TRANSACTIONS"},
+                {"name": "ROLE_REOPEN_TRANSACTIONS"},
+                {"name": "ROLE_CLOSE_TRANSACTIONS"},
+                {"name": "ROLE_COLLECT_UPDATE_BULK_ARCHIVE_UNIT"},
+                {"name": "ROLE_COLLECT_UPDATE_UNITARY_ARCHIVE_UNIT"},
+                {"name": "ROLE_COLLECT_GET_ARCHIVE_BINARY"},
+                {"name": "ROLE_COLLECT_GET_ARCHIVE_SEARCH"},
+                {"name": "ROLE_GET_ACCESS_CONTRACTS"},
+                {"name": "ROLE_GET_RULES"},
+                {"name": "ROLE_GET_SCHEMAS"},
+                {"name": "ROLE_GET_FILLING_PLAN_ACCESS"},
+                {"name": "ROLE_GET_ONTOLOGIES"}
+        ]
+    });
+
+    // COLLECT_APP : Service producteur
+    db.profiles.insertOne({
+        "_id": "PROFIL_" + tenant.identifier + "-COLLECT_APP-ORIGINATING_AGENCY",
+        "identifier": NumberInt(maxIdProfile++),
+        "name": "Service producteur",
+        "description": "Profil de préparation des versements des archives sans possibilité de transmettre les archives au SAE",
+        "tenantIdentifier": NumberInt(tenant.identifier),
+        "applicationName": "COLLECT_APP",
+        "level": "",
+        "enabled": true,
+        "readonly": false,
+        "customerId": tenant.customerId,
+        "roles": [
+                {"name": "ROLE_GET_PROJECTS"},
+                {"name": "ROLE_CREATE_PROJECTS"},
+                {"name": "ROLE_UPDATE_PROJECTS"},
+                {"name": "ROLE_CLOSE_TRANSACTIONS"},
+                {"name": "ROLE_GET_TRANSACTIONS"},
+                {"name": "ROLE_CREATE_TRANSACTIONS"},
+                {"name": "ROLE_COLLECT_UPDATE_UNITARY_ARCHIVE_UNIT"},
+                {"name": "ROLE_COLLECT_GET_ARCHIVE_BINARY"},
+                {"name": "ROLE_COLLECT_GET_ARCHIVE_SEARCH"},
+                {"name": "ROLE_GET_ACCESS_CONTRACTS"},
+                {"name": "ROLE_GET_RULES"},
+                {"name": "ROLE_GET_SCHEMAS"},
+                {"name": "ROLE_GET_FILLING_PLAN_ACCESS"},
+                {"name": "ROLE_GET_ONTOLOGIES"}
+        ]
+    });
+});
+
+
+// Update sequence
+db.sequences.updateOne({
+    "_id": "profile_identifier"
+}, {
+    $set: {
+        "sequence": NumberInt(maxIdProfile)
+    }
+});
+
+
+
+
+print("END_005_create_new_collect_profiles_for_exist_customers.js");

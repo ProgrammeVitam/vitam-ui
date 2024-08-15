@@ -31,6 +31,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { BehaviorSubject } from 'rxjs';
 import { Direction, InfiniteScrollTable, StartupService, Transaction, TransactionStatus } from 'vitamui-library';
 import { TransactionsService } from '../transactions.service';
+import { ArchiveCollectService } from '../../archive-search-collect/archive-collect.service';
 
 @Component({
   selector: 'app-transaction-list',
@@ -42,10 +43,15 @@ export class TransactionListComponent extends InfiniteScrollTable<Transaction> i
   orderBy = 'archivalAgreement';
   orderChange = new BehaviorSubject<string>(this.orderBy);
   tenantIdentifier: string;
+  hasAbortTransactionRole = false;
+  hasEditTransactionRole = false;
+  hasSendTransactionRole = false;
+  hasCloseTransactionRole = false;
 
   constructor(
     private snackBar: MatSnackBar,
     private transactionService: TransactionsService,
+    private archiveCollectService: ArchiveCollectService,
     private translateService: TranslateService,
     private router: Router,
     private startupService: StartupService,
@@ -55,6 +61,7 @@ export class TransactionListComponent extends InfiniteScrollTable<Transaction> i
 
   ngOnInit(): void {
     this.tenantIdentifier = this.startupService.getTenantIdentifier();
+    this.checkTransactionsPermissions();
     super.search(null);
   }
 
@@ -152,5 +159,20 @@ export class TransactionListComponent extends InfiniteScrollTable<Transaction> i
     return (
       [TransactionStatus.OPEN, TransactionStatus.READY, TransactionStatus.ACK_KO, TransactionStatus.KO].indexOf(transaction.status) !== -1
     );
+  }
+
+  private checkTransactionsPermissions() {
+    this.archiveCollectService.hasCollectRole('ROLE_ABORT_TRANSACTIONS', Number(this.tenantIdentifier)).subscribe((result) => {
+      this.hasAbortTransactionRole = result;
+    });
+    this.archiveCollectService.hasCollectRole('ROLE_SEND_TRANSACTIONS', Number(this.tenantIdentifier)).subscribe((result) => {
+      this.hasSendTransactionRole = result;
+    });
+    this.archiveCollectService.hasCollectRole('ROLE_UPDATE_TRANSACTIONS', Number(this.tenantIdentifier)).subscribe((result) => {
+      this.hasEditTransactionRole = result;
+    });
+    this.archiveCollectService.hasCollectRole('ROLE_CLOSE_TRANSACTIONS', Number(this.tenantIdentifier)).subscribe((result) => {
+      this.hasCloseTransactionRole = result;
+    });
   }
 }
