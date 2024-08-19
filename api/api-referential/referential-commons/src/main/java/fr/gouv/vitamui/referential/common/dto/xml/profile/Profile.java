@@ -37,6 +37,7 @@
 package fr.gouv.vitamui.referential.common.dto.xml.profile;
 
 import fr.gouv.vitam.common.model.administration.ProfileFormat;
+import fr.gouv.vitam.common.model.administration.ProfileSedaVersion;
 import fr.gouv.vitam.common.model.administration.ProfileStatus;
 import lombok.Getter;
 import lombok.Setter;
@@ -72,6 +73,9 @@ public class Profile implements Serializable {
 
     @XmlElement(name = "Status")
     private ProfileStatus status;
+
+    @XmlElement(name = "SedaVersion")
+    private ProfileSedaVersion sedaVersion;
 
     @XmlElement(name = "Path")
     private String path;

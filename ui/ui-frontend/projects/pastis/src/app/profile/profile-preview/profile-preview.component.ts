@@ -138,9 +138,11 @@ export class ProfilePreviewComponent implements AfterViewInit {
       this.profileService.getProfile(inputProfile).subscribe((retrievedData) => {
         const profileResponse = retrievedData as ProfileResponse;
         this.fileNode.push(profileResponse.profile);
-        this.profileService.uploadFile(this.fileNode, profileResponse.notice, inputProfile.type).subscribe((data) => {
-          this.downloadFile(data, inputProfile.type, inputProfile);
-        });
+        this.profileService
+          .uploadFile(this.fileNode, profileResponse.notice, inputProfile.type, inputProfile.sedaVersion)
+          .subscribe((data) => {
+            this.downloadFile(data, inputProfile.type, inputProfile);
+          });
       });
     }
   }

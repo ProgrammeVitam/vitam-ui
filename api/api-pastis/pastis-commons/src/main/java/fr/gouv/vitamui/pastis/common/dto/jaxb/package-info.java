@@ -40,7 +40,6 @@ knowledge of the CeCILL-C license and that you accept its terms.
     xmlns = {
         @XmlNs(prefix = "a", namespaceURI = "http://relaxng.org/ns/compatibility/annotations/1.0"),
         @XmlNs(prefix = "rng", namespaceURI = "http://relaxng.org/ns/structure/1.0"),
-        @XmlNs(prefix = "seda", namespaceURI = "fr:gouv:culture:archivesdefrance:seda:v2.1"),
         @XmlNs(prefix = "xlink", namespaceURI = "http://www.w3.org/1999/xlink"),
         @XmlNs(prefix = "xsd", namespaceURI = "http://www.w3.org/2001/XMLSchema"),
     },

@@ -115,8 +115,8 @@ export class AttributesPopupComponent implements OnInit, OnDestroy {
     for (const index in this.matDataSource.data) {
       const fileNode = this.dialogReceivedData.fileNode;
       const att = this.matDataSource.data[index];
-      const attSedaData = fileNode.sedaData.Children.find((child: { Name: string }) => child.Name === att.nomDuChamp);
-      if (attSedaData.Cardinality === CardinalityConstants.Obligatoire) {
+      const attSedaData = fileNode.sedaData.children.find((child: { name: string }) => child.name === att.nomDuChamp);
+      if (attSedaData.cardinality === CardinalityConstants.Obligatoire) {
         this.matDataSource.data[index].selected = true;
       } else {
         this.matDataSource.data[index].selected = att.selected;
@@ -163,10 +163,10 @@ export class AttributesPopupComponent implements OnInit, OnDestroy {
     if (attribute) {
       const popUpData = this.popUpService.getPopUpDataOnOpen() as PastisDialogData;
       if (popUpData) {
-        const popSendSedaNodeFilted = popUpData.fileNode.sedaData.Children.find(
-          (child: { Name: string }) => child.Name === attribute.nomDuChamp,
+        const popSendSedaNodeFilted = popUpData.fileNode.sedaData.children.find(
+          (child: { name: string }) => child.name === attribute.nomDuChamp,
         );
-        return popSendSedaNodeFilted.Cardinality.startsWith('1');
+        return popSendSedaNodeFilted.cardinality.startsWith('1');
       }
     }
     return;
@@ -207,9 +207,9 @@ export class AttributesPopupComponent implements OnInit, OnDestroy {
         attributeFileNode.children = [];
         attributeFileNode.dataType =
           DataTypeConstants[
-            fileNode.sedaData.Children.find(
-              (child) => child.Name === attributeData.nomDuChamp,
-            ).Type.toString() as keyof typeof DataTypeConstants
+            fileNode.sedaData.children
+              .find((child) => child.name === attributeData.nomDuChamp)
+              .type.toString() as keyof typeof DataTypeConstants
           ];
         attributeFileNode.documentation = attributeData.commentaire ? attributeData.commentaire : null;
         attributeFileNode.level = fileNode.level + 1;
@@ -236,11 +236,11 @@ export class AttributesPopupComponent implements OnInit, OnDestroy {
     const attributeDataList: AttributeData[] = [];
     // Loop on all the attributes available for the node in the seda definition
     // Maps all the attributes node to AttributesData object
-    this.sedaService.getAttributes(sedaNode, sedaNode.Collection).forEach((sedaAttribute) => {
+    this.sedaService.getAttributes(sedaNode, sedaNode.collection).forEach((sedaAttribute) => {
       const attributeData: AttributeData = {} as AttributeData;
 
-      attributeData.nomDuChamp = sedaAttribute.Name;
-      attributeData.type = sedaAttribute.Element;
+      attributeData.nomDuChamp = sedaAttribute.name;
+      attributeData.type = sedaAttribute.element;
 
       // Check if the attribute is already added to the current node
       const fileAttribute = fileNode.children.find((child) => child.name === attributeData.nomDuChamp) as FileNode;
@@ -254,7 +254,7 @@ export class AttributesPopupComponent implements OnInit, OnDestroy {
         attributeData.commentaire = fileAttribute.documentation;
         attributeData.cardinalities = this.fileTreeMetadataService.allowedCardinality.get(fileAttribute.cardinality);
         attributeData.selectedCardinality = fileAttribute.cardinality;
-        attributeData.enumeration = sedaAttribute.Enumeration;
+        attributeData.enumeration = sedaAttribute.enumeration;
         attributeData.valeurFixe = fileAttribute.value;
       } else {
         // If the attribute is not present, we fill in defaults values
@@ -262,9 +262,9 @@ export class AttributesPopupComponent implements OnInit, OnDestroy {
         attributeData.selected = false;
         attributeData.commentaire = null;
         attributeData.id = window.crypto.getRandomValues(new Uint32Array(10))[0];
-        attributeData.cardinalities = this.fileTreeMetadataService.allowedCardinality.get(sedaAttribute.Cardinality);
+        attributeData.cardinalities = this.fileTreeMetadataService.allowedCardinality.get(sedaAttribute.cardinality);
         attributeData.selectedCardinality = null;
-        attributeData.enumeration = sedaAttribute.Enumeration;
+        attributeData.enumeration = sedaAttribute.enumeration;
       }
       attributeDataList.push(attributeData);
     });
@@ -281,9 +281,9 @@ export class AttributesPopupComponent implements OnInit, OnDestroy {
 
   getSedaDefinition(elementName: string) {
     if (this.dialogReceivedData.fileNode.sedaData) {
-      for (const node of this.dialogReceivedData.fileNode.sedaData.Children) {
-        if (node.Name === elementName) {
-          return node.Definition;
+      for (const node of this.dialogReceivedData.fileNode.sedaData.children) {
+        if (node.name === elementName) {
+          return node.definition;
         }
       }
     }
@@ -292,15 +292,15 @@ export class AttributesPopupComponent implements OnInit, OnDestroy {
 
   onResolveName(elementName: string): string {
     if (this.dialogReceivedData.fileNode.sedaData) {
-      for (const node of this.dialogReceivedData.fileNode.sedaData.Children) {
-        if (node.Name === elementName) {
+      for (const node of this.dialogReceivedData.fileNode.sedaData.children) {
+        if (node.name === elementName) {
           if (this.sedaLanguage) {
-            return node.Name;
+            return node.name;
           } else {
-            if (node.NameFr) {
-              return node.NameFr;
+            if (node.nameFr) {
+              return node.nameFr;
             }
-            return node.Name;
+            return node.name;
           }
         }
       }

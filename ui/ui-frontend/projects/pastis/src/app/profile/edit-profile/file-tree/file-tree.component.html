@@ -8,7 +8,7 @@
   <!-- Nested tree node-->
   <mat-nested-tree-node *matTreeNodeDef="let node; when: hasNestedChild">
     <div
-      *ngIf="node.name === rootElementName && activeTabIndex === 2 && this.profileService.profileMode === 'PA'"
+      *ngIf="node.name === rootElementName && activeTabIndex === 2 && this.profileService.profileType === 'PA'"
       class="pastis-btn-container-add-ua"
     >
       <button (click)="addArchiveUnit(node)" class="btn primary">
@@ -22,7 +22,7 @@
         [ngClass]="{ 'list-item': !selectedItem(node), 'list-item-select': selectedItem(node) }"
       >
         <!--Root node name-->
-        <span *ngIf="node.name === rootElementName && this.profileService.profileMode === 'PA'" class="pastis-tree-node-root-name">
+        <span *ngIf="node.name === rootElementName && this.profileService.profileType === 'PA'" class="pastis-tree-node-root-name">
           <span [ngStyle]="{ 'margin-left': calculateNodePosition(node) + 'px' }">
             {{ rootElementShowName }}
           </span>
@@ -70,11 +70,11 @@
                 *ngIf="node.nonEditFileNode || node.name === 'ArchiveUnit'; else elseBlock"
               >
                 <modify-text-button
-                  *ngIf="this.profileService.profileMode === 'PA'"
+                  *ngIf="this.profileService.profileType === 'PA'"
                   (textEdit)="changeFileNode($event, node)"
                   [node]="node"
                 ></modify-text-button>
-                {{ this.profileService.profileMode === 'PUA' ? onResolveName(node) : '' }}
+                {{ this.profileService.profileType === 'PUA' ? onResolveName(node) : '' }}
               </span>
               <ng-template #elseBlock>{{ onResolveName(node) }}</ng-template>
               <span
@@ -84,7 +84,7 @@
                 style="float: right"
               >
                 <!--Button plus-->
-                <button (click)="addArchiveUnit(node)" *ngIf="this.profileService.profileMode === 'PA'" class="pastis-btn-add-ua">
+                <button (click)="addArchiveUnit(node)" *ngIf="this.profileService.profileType === 'PA'" class="pastis-btn-add-ua">
                   <i class="vitamui-icon vitamui-icon-add" style="color: var(--vitamui-primary)"></i>
                   <span class="pastis-btn-add-ua-text">{{ 'PROFILE.EDIT_PROFILE.FILE_TREE.AJOUTER_UA_ICON' | translate }}</span>
                 </button>

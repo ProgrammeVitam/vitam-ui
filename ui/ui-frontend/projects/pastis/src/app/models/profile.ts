@@ -1,4 +1,5 @@
 import { ProfileCommon } from './profile-common-models';
+import { ProfileVersion } from './profile-version.enum';
 
 export interface Profile extends ProfileCommon {
   format: string;
@@ -19,4 +20,5 @@ export class ProfileModel implements Profile {
   deactivationDate: string;
   format: string;
   path: string;
+  sedaVersion: ProfileVersion;
 }

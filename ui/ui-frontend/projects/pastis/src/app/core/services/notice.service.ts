@@ -41,6 +41,7 @@ import { Notice } from '../../models/notice.model';
 import { Profile, ProfileModel } from '../../models/profile';
 import { ProfileDescription, ProfileDescriptionModel } from '../../models/profile-description.model';
 import { FileService } from './file.service';
+import { ProfileVersion } from '../../models/profile-version.enum';
 
 @Injectable({
   providedIn: 'root',
@@ -62,24 +63,25 @@ export class NoticeService {
     );
   }
 
-  puaNotice(retour: any): ArchivalProfileUnit {
+  puaNotice(retour: any, sedaVersion: ProfileVersion): ArchivalProfileUnit {
     const profileDescription = new ArchivalProfileUnitModel();
     profileDescription.identifier = retour.identifier;
     profileDescription.name = retour.intitule;
     profileDescription.description = retour.description;
     profileDescription.status = retour.selectedStatus;
     profileDescription.controlSchema = '{}';
-
+    profileDescription.sedaVersion = sedaVersion;
     return profileDescription;
   }
 
-  paNotice(retour: any, create: boolean): Profile {
+  paNotice(retour: any, sedaVersion: ProfileVersion, create: boolean): Profile {
     const profile = new ProfileModel();
     profile.identifier = retour.identifier;
     profile.name = retour.intitule;
     profile.description = retour.description;
     profile.status = retour.selectedStatus;
     profile.format = create ? 'RNG' : retour.format;
+    profile.sedaVersion = sedaVersion;
     return profile;
   }
 

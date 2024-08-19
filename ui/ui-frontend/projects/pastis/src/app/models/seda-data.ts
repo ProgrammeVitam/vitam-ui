@@ -72,15 +72,15 @@ export enum SedaCollections {
 
 export interface SedaData {
   [key: string]: any;
-  Name: string;
-  NameFr: string;
-  Type: string;
-  Element: string;
-  Cardinality: string;
-  Definition: string;
-  Extensible: boolean;
-  Choice: boolean;
-  Children: SedaData[];
-  Enumeration: string[];
-  Collection: SedaCollections;
+  name: string;
+  nameFr: string;
+  type: string;
+  element: string;
+  cardinality: string;
+  definition: string;
+  extensible: boolean;
+  choice: boolean;
+  children: SedaData[];
+  enumeration: string[];
+  collection: SedaCollections;
 }

@@ -30,6 +30,7 @@
 package fr.gouv.vitamui.pastis.server.service;
 
 import fr.gouv.vitamui.pastis.common.dto.profiles.ProfileType;
+import fr.gouv.vitamui.pastis.common.dto.profiles.ProfileVersion;
 import fr.gouv.vitamui.pastis.common.exception.TechnicalException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -50,7 +51,7 @@ class PastisServiceTest {
         Resource resource = new ClassPathResource("profiles/test-xxe.xml");
         Assertions.assertThrows(
             TechnicalException.class,
-            () -> pastisService.createProfileByType(resource, ProfileType.PA)
+            () -> pastisService.createProfileByType(resource, ProfileType.PA, ProfileVersion.VERSION_2_1)
         );
     }
 }

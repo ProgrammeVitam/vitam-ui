@@ -26,19 +26,19 @@
  *
  */
 
-import { Id } from 'vitamui-library';
-import { ProfileVersion } from './profile-version.enum';
-
-export interface ProfileCommon extends Id {
-  identifier: string;
-  name: string;
-  description: string;
-  status: string;
-  tenant: number;
-  version: number;
-  creationDate: string;
-  lastUpdate: string;
-  activationDate: string;
-  deactivationDate: string;
-  sedaVersion: ProfileVersion;
+export interface ProfileVersionOption {
+  version: ProfileVersion;
+  label: string;
 }
+
+export enum ProfileVersion {
+  VERSION_2_1 = 'v2.1',
+  VERSION_2_2 = 'v2.2',
+  VERSION_2_3 = 'v2.3',
+}
+
+export const ProfileVersionOptions: ProfileVersionOption[] = [
+  { version: ProfileVersion.VERSION_2_1, label: 'SEDA 2.1' },
+  { version: ProfileVersion.VERSION_2_2, label: 'SEDA 2.2' },
+  { version: ProfileVersion.VERSION_2_3, label: 'SEDA 2.3' },
+];

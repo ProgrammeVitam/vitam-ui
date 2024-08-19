@@ -38,6 +38,7 @@ package fr.gouv.vitamui.referential.common.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import fr.gouv.vitam.common.model.administration.ProfileFormat;
+import fr.gouv.vitam.common.model.administration.ProfileSedaVersion;
 import fr.gouv.vitam.common.model.administration.ProfileStatus;
 import fr.gouv.vitamui.commons.api.domain.IdDto;
 import lombok.Getter;
@@ -63,6 +64,9 @@ public class ProfileDto extends IdDto {
 
     @NotNull
     private ProfileStatus status;
+
+    @NotNull
+    private ProfileSedaVersion sedaVersion;
 
     @NotNull
     private ProfileFormat format;

@@ -7,6 +7,8 @@ import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import fr.gouv.vitamui.pastis.common.dto.ElementProperties;
 import fr.gouv.vitamui.pastis.common.dto.profiles.ProfileResponse;
+import fr.gouv.vitamui.pastis.common.dto.profiles.ProfileType;
+import fr.gouv.vitamui.pastis.common.dto.profiles.ProfileVersion;
 import fr.gouv.vitamui.pastis.common.exception.TechnicalException;
 import fr.gouv.vitamui.pastis.common.rest.RestApi;
 import fr.gouv.vitamui.pastis.server.security.WebSecurityConfig;
@@ -58,7 +60,7 @@ public class PastisControllerTest extends ControllerTest {
     public void testGetArchiveProfile_should_return_ok() throws IOException, TechnicalException {
         UriComponentsBuilder uriBuilder = getUriBuilder("/archiveprofile");
 
-        Mockito.when(service.getArchiveProfile(any(ElementProperties.class))).thenReturn("");
+        Mockito.when(service.getArchiveProfile(any(ElementProperties.class), any(ProfileVersion.class))).thenReturn("");
 
         InputStream jsonInputStream = getClass().getClassLoader().getResourceAsStream("rng/ProfileJson.json");
         ObjectMapper objectMapper = new ObjectMapper();
@@ -69,7 +71,9 @@ public class PastisControllerTest extends ControllerTest {
 
     @Test
     public void testCreate() throws TechnicalException, NoSuchAlgorithmException {
-        Mockito.when(service.createProfile(any(String.class), any(Boolean.class))).thenReturn(new ProfileResponse());
+        Mockito.when(
+            service.createProfile(any(ProfileType.class), any(ProfileVersion.class), any(Boolean.class))
+        ).thenReturn(new ProfileResponse());
         super.performGet("/profile", ImmutableMap.of("type", "PUA"), status().isOk());
     }
 

@@ -73,24 +73,30 @@ export class FileService implements OnDestroy {
   sedaDataArchiveUnit: SedaData;
 
   private _profileServiceGetProfileSubscription: Subscription;
+  private sedaRules: SedaData;
 
   constructor(
     private profileService: ProfileService,
     private fileMetadataService: FileTreeMetadataService,
     private dialog: MatDialog,
     private sedaService: SedaService,
-  ) {}
+  ) {
+    this.sedaService.sedaRules$.subscribe((value) => {
+      this.sedaRules = value;
+    });
+  }
 
   /**
    * Update the tree with the profile provided
    * @param profileResponse profileResponse sent from backend
    */
   updateTreeWithProfile(profileResponse: ProfileResponse) {
-    this.profileService.profileMode = profileResponse.type;
+    this.profileService.profileType = profileResponse.type;
+    this.profileService.profileVersion = profileResponse.sedaVersion;
     this.profileService.profileName = profileResponse.name;
     this.profileService.profileId = profileResponse.id;
 
-    const sedaDataArray: SedaData[] = [this.sedaService.sedaRules[0]];
+    const sedaDataArray: SedaData[] = [this.sedaRules];
     this.linkFileNodeToSedaData(null, [profileResponse.profile], sedaDataArray);
     this.currentTree.next([profileResponse.profile]);
     this.currentTreeLoaded = true;
@@ -135,7 +141,7 @@ export class FileService implements OnDestroy {
           sedaDataMatch = this.sedaDataArchiveUnit;
         } else {
           // Sinon on recherche la définition SEDA dans l'arbre
-          sedaDataMatch = sedaData.find((seda) => seda.Name === nodeName);
+          sedaDataMatch = sedaData.find((seda) => seda.name === nodeName);
           // sedaDataMatch = this.sedaService.getSedaNodeRecursively(sedaData[0],nodeName)
         }
         if (!sedaDataMatch) {
@@ -151,16 +157,16 @@ export class FileService implements OnDestroy {
           }
         } else {
           // Si le node en cours est l'achive ArchiveUnit mère, on la sauvegarde pour l'utiliser pour les ArchivesUnit enfants
-          if (sedaDataMatch.Name === 'ArchiveUnit' && this.sedaDataArchiveUnit === undefined) {
+          if (sedaDataMatch.name === 'ArchiveUnit' && this.sedaDataArchiveUnit === undefined) {
             this.sedaDataArchiveUnit = sedaDataMatch;
             // On introduit la récursivité sur les ArchivesUnit
-            this.sedaDataArchiveUnit.Children.find((c: { Name: string }) => c.Name === 'ArchiveUnit').Children =
-              this.sedaDataArchiveUnit.Children;
+            this.sedaDataArchiveUnit.children.find((c: { name: string }) => c.name === 'ArchiveUnit').children =
+              this.sedaDataArchiveUnit.children;
           }
         }
         node.sedaData = sedaDataMatch;
         if (node.children.length > 0) {
-          this.linkFileNodeToSedaData(node, node.children, node.sedaData?.Children);
+          this.linkFileNodeToSedaData(node, node.children, node.sedaData?.children);
         }
       }
     });
@@ -369,15 +375,15 @@ export class FileService implements OnDestroy {
 
   getComplexSedaChildrenAsFileNode(sedaElement: SedaData): FileNode[] {
     // Insert all children of complex elements based on SEDA definition
-    if (sedaElement.Element === SedaElementConstants.complex && sedaElement.Children.length > 0) {
+    if (sedaElement.element === SedaElementConstants.complex && sedaElement.children.length > 0) {
       const fileNodeComplexChildren: FileNode[] = [];
-      sedaElement.Children.forEach((child: { Cardinality: string; Name: string; Type: string }) => {
-        if (child.Cardinality === SedaCardinalityConstants.one || child.Cardinality === SedaCardinalityConstants.oreOrMore) {
+      sedaElement.children.forEach((child: { cardinality: string; name: string; type: string }) => {
+        if (child.cardinality === SedaCardinalityConstants.one || child.cardinality === SedaCardinalityConstants.oreOrMore) {
           const aFileNode: FileNode = {} as FileNode;
-          aFileNode.name = child.Name;
-          aFileNode.cardinality = child.Cardinality;
+          aFileNode.name = child.name;
+          aFileNode.cardinality = child.cardinality;
           aFileNode.children = [];
-          aFileNode.type = TypeConstants[child.Type as keyof typeof TypeConstants];
+          aFileNode.type = TypeConstants[child.type as keyof typeof TypeConstants];
           fileNodeComplexChildren.push(aFileNode);
         }
       });
@@ -394,9 +400,9 @@ export class FileService implements OnDestroy {
     const dataTable = this.fileMetadataService.fillDataTable(node.sedaData, node, tabChildrenToInclude, tabChildrenToExclude);
     const hasAtLeastOneComplexChild = node.children.some((el) => el.type === TypeConstants.element);
 
-    if (node.sedaData.Element === SedaElementConstants.complex) {
+    if (node.sedaData.element === SedaElementConstants.complex) {
       this.fileMetadataService.shouldLoadMetadataTable.next(hasAtLeastOneComplexChild);
-      // console.log('The the current tab root node is : ', node);
+      // console.log('The current tab root node is : ', node);
       this.sedaService.selectedSedaNode.next(node.sedaData);
       // console.log('Filled data on table : ', dataTable, '...should load : '
       //    , this.fileMetadataService.shouldLoadMetadataTable.getValue());

@@ -120,7 +120,7 @@ export class EditProfileComponent implements OnDestroy, AfterViewInit {
   }
 
   initAll() {
-    this.puaMode = this.profileService.profileMode !== ProfileType.PA;
+    this.puaMode = this.profileService.profileType !== ProfileType.PA;
     if (!this.isStandalone) {
       this.entete = 'PROFILE.EDIT_PROFILE.ENTETE';
       this.regles = 'PROFILE.EDIT_PROFILE.REGLES';
@@ -192,7 +192,9 @@ export class EditProfileComponent implements OnDestroy, AfterViewInit {
       console.log('Init file tree node on file tree : %o', this.dataChange.getValue());
     });
 
-    this.sedaParentNode = this.sedaService.sedaRules[0];
+    this.sedaService.sedaRules$.subscribe((value) => {
+      this.sedaParentNode = value;
+    });
   }
 
   translated(nameOfFieldToTranslate: string): string {
@@ -200,7 +202,7 @@ export class EditProfileComponent implements OnDestroy, AfterViewInit {
   }
 
   initActiveTabAndProfileMode() {
-    this.profileService.profileMode === ProfileType.PA ? (this.activeTabIndex = 0) : (this.activeTabIndex = 2);
+    this.profileService.profileType === ProfileType.PA ? (this.activeTabIndex = 0) : (this.activeTabIndex = 2);
   }
 
   loadProfile(event: MatTabChangeEvent) {
@@ -209,10 +211,10 @@ export class EditProfileComponent implements OnDestroy, AfterViewInit {
   }
 
   setTabsAndMetadataRules(tabIndex: number) {
-    this.collectionName = this.profileService.profileMode === ProfileType.PA ? this.collectionNames[tabIndex] : this.collectionNames[2];
-    this.rootTabMetadataName = this.profileService.profileMode === ProfileType.PA ? this.rootNames[tabIndex] : this.rootNames[2];
+    this.collectionName = this.profileService.profileType === ProfileType.PA ? this.collectionNames[tabIndex] : this.collectionNames[2];
+    this.rootTabMetadataName = this.profileService.profileType === ProfileType.PA ? this.rootNames[tabIndex] : this.rootNames[2];
     this.elementRules =
-      this.profileService.profileMode === ProfileType.PA ? this.tabShowElementRules[tabIndex] : this.tabShowElementRules[2];
+      this.profileService.profileType === ProfileType.PA ? this.tabShowElementRules[tabIndex] : this.tabShowElementRules[2];
   }
 
   loadProfileData(tabindex: number) {
@@ -236,7 +238,7 @@ export class EditProfileComponent implements OnDestroy, AfterViewInit {
 
   getFilteredData(rootTreeMetadataName: string): FileNode[] {
     if (this.nodeToSend) {
-      const nodeNameToFilter = this.profileService.profileMode === ProfileType.PA ? rootTreeMetadataName : this.nodeToSend.name;
+      const nodeNameToFilter = this.profileService.profileType === ProfileType.PA ? rootTreeMetadataName : this.nodeToSend.name;
       const currentNode = this.fileService.getFileNodeByName(this.fileService.allData.getValue()[0], nodeNameToFilter);
       const filteredData = [];
       filteredData.push(currentNode);
@@ -252,7 +254,7 @@ export class EditProfileComponent implements OnDestroy, AfterViewInit {
   }
 
   canShowOnPuaMode(tabIndex: number) {
-    return this.profileService.profileMode === ProfileType.PUA ? tabIndex === 3 : true;
+    return this.profileService.profileType === ProfileType.PUA ? tabIndex === 3 : true;
   }
 
   ngOnDestroy() {

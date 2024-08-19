@@ -39,7 +39,10 @@ knowledge of the CeCILL-C license and that you accept its terms.
 package fr.gouv.vitamui.pastis.server.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.json.JsonMapper;
+import fr.gouv.vitam.common.model.administration.ArchiveUnitProfileSedaVersion;
 import fr.gouv.vitamui.pastis.common.dto.ElementProperties;
 import fr.gouv.vitamui.pastis.common.dto.jaxb.AnnotationXML;
 import fr.gouv.vitamui.pastis.common.dto.jaxb.AnyNameXML;
@@ -62,6 +65,8 @@ import fr.gouv.vitamui.pastis.common.dto.profiles.PastisProfile;
 import fr.gouv.vitamui.pastis.common.dto.profiles.ProfileNotice;
 import fr.gouv.vitamui.pastis.common.dto.profiles.ProfileResponse;
 import fr.gouv.vitamui.pastis.common.dto.profiles.ProfileType;
+import fr.gouv.vitamui.pastis.common.dto.profiles.ProfileVersion;
+import fr.gouv.vitamui.pastis.common.dto.seda.SedaNode;
 import fr.gouv.vitamui.pastis.common.exception.TechnicalException;
 import fr.gouv.vitamui.pastis.common.service.JsonFromPUA;
 import fr.gouv.vitamui.pastis.common.service.PuaFromJSON;
@@ -150,13 +155,18 @@ public class PastisService {
         this.puaFromJSON = puaFromJSON;
     }
 
-    public String getArchiveProfile(final ElementProperties json) throws TechnicalException {
+    public String getArchiveProfile(final ElementProperties json, ProfileVersion version) throws TechnicalException {
         // Recover a statically generated BaliseXML by buildBaliseXMLTree
         json.initTree(json);
         BaliseXML.buildBaliseXMLTree(json, 0, null);
         // Add Recip struct to xml balises tree
         BaliseXML.addRecipTags();
         BaliseXML eparentRng = BaliseXML.getBaliseXMLStatic();
+        // Change namespaces to match seda version
+        if (eparentRng instanceof GrammarXML grammarXML) {
+            grammarXML.ns = GrammarXML.SEDA_PREFIX + version.getVersion();
+            grammarXML.xmlns = GrammarXML.SEDA_PREFIX + version.getVersion();
+        }
         String response;
         try (
             ByteArrayOutputStream os = new ByteArrayOutputStream();
@@ -222,13 +232,13 @@ public class PastisService {
         return new ClassPathResource(rngLocation + filename + ".rng");
     }
 
-    public ProfileResponse createProfile(String type, boolean standalone)
+    public ProfileResponse createProfile(ProfileType type, ProfileVersion version, boolean standalone)
         throws TechnicalException, NoSuchAlgorithmException {
         Resource resource;
         ProfileResponse profileResponse = null;
-        if (type != null && !type.isEmpty()) {
-            ProfileType profileType = ProfileType.valueOf(type);
-            if (type.equals(ProfileType.PA.getType())) {
+        // All of this below is terrible code, but I don't have time to refactor it at the moment...
+        if (type != null) {
+            if (type == ProfileType.PA) {
                 resource = new ClassPathResource(rngFile);
             } else {
                 if (standalone) resource = new ClassPathResource(jsonFileStandalone);
@@ -236,7 +246,7 @@ public class PastisService {
                     resource = new ClassPathResource(jsonFileVitam);
                 }
             }
-            profileResponse = createProfileByType(resource, profileType);
+            profileResponse = createProfileByType(resource, type, version);
         }
         return profileResponse;
     }
@@ -321,8 +331,11 @@ public class PastisService {
         return xmlReader;
     }
 
-    public ProfileResponse createProfileByType(Resource resource, ProfileType profileType)
-        throws TechnicalException, NoSuchAlgorithmException {
+    public ProfileResponse createProfileByType(
+        Resource resource,
+        ProfileType profileType,
+        ProfileVersion profileVersion
+    ) throws TechnicalException, NoSuchAlgorithmException {
         PastisSAX2Handler handler = new PastisSAX2Handler();
         PastisGetXmlJsonTree getJson = new PastisGetXmlJsonTree();
         ProfileResponse profileResponse = new ProfileResponse();
@@ -331,6 +344,7 @@ public class PastisService {
 
         try {
             profileResponse.setType(profileType);
+            profileResponse.setSedaVersion(profileVersion);
             profileResponse.setName(resource.getFilename());
 
             InputStream fileInputStream = resource.getInputStream();
@@ -346,7 +360,10 @@ public class PastisService {
                 JSONObject profileJson = new JSONObject(tokener);
                 puaPastisValidator.validatePUA(profileJson, false);
                 profileResponse.setProfile(jsonFromPUA.getProfileFromPUA(profileJson));
-                profileResponse.setNotice(NoticeUtils.getNoticeFromPUA(profileJson));
+                // Get default PUA model and apply the seda version to it
+                Notice noticeFromPUA = NoticeUtils.getNoticeFromPUA(profileJson);
+                noticeFromPUA.setSedaVersion(ArchiveUnitProfileSedaVersion.forVersion(profileVersion.getVersion()));
+                profileResponse.setNotice(noticeFromPUA);
                 LOGGER.info("Starting editing Archive Unit Profile with name : {}", resource.getFilename());
             }
         } catch (SAXException | IOException e) {
@@ -412,5 +429,14 @@ public class PastisService {
             throw new TechnicalException("Resource Loader could not retrieve resource", e);
         }
         return notices;
+    }
+
+    public SedaNode getMetaModel(ProfileVersion profileVersion) throws IOException {
+        String resourcePath = "metamodel/metamodel-" + profileVersion.getVersion() + ".json";
+        InputStream inputStream = getClass().getClassLoader().getResourceAsStream(resourcePath);
+        JsonMapper jsonMapper = JsonMapper.builder()
+            .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true)
+            .build();
+        return jsonMapper.readValue(inputStream, SedaNode.class);
     }
 }

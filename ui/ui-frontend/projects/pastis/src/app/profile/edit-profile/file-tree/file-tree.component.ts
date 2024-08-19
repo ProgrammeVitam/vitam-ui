@@ -1,4 +1,3 @@
-import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 /*
 Copyright © CINES - Centre Informatique National pour l'Enseignement Supérieur (2020)
 
@@ -36,6 +35,7 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
+import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 import { TranslateService } from '@ngx-translate/core';
 import { BehaviorSubject, Subscription, throwError } from 'rxjs';
@@ -221,9 +221,11 @@ export class FileTreeComponent implements OnInit, OnDestroy {
         console.log(error);
       },
     );
-    this.sedaData = this.sedaService.sedaRules[0];
-    this.sedaService.selectedSedaNode.next(this.sedaService.sedaRules[0]);
-    this.sedaService.selectedSedaNodeParent.next(this.sedaData);
+    this.sedaService.sedaRules$.subscribe((value) => {
+      this.sedaData = value;
+      this.sedaService.selectedSedaNode.next(value);
+      this.sedaService.selectedSedaNodeParent.next(value);
+    });
     // console.log('Init seda node on file tree : %o', this.sedaService.selectedSedaNode.getValue(), ' on tab : ', this.rootElementName);
 
     this._fileServiceTabChildrenRulesChange = this.fileService.tabChildrenRulesChange.subscribe((rules) => {
@@ -272,7 +274,7 @@ export class FileTreeComponent implements OnInit, OnDestroy {
     dataToSendToPopUp.component = UserActionAddMetadataComponent;
     dataToSendToPopUp.disableBtnOuiOnInit = true;
     const elementsToAdd = (await this.fileService.openPopup(dataToSendToPopUp)) as SedaData[];
-    const names: string[] = elementsToAdd.map((e) => e.Name);
+    const names: string[] = elementsToAdd.map((e) => e.name);
     if (elementsToAdd) {
       // this.sedaService.selectedSedaNode.next(sedaNode);
       this.insertItem(node, names);
@@ -287,8 +289,8 @@ export class FileTreeComponent implements OnInit, OnDestroy {
     console.log('After data is : %o', this.fileTreeService.nestedDataSource.data);
     const elementsToAddFromSeda: SedaData[] = [];
     for (const element of elementsToAdd) {
-      parent.sedaData.Children.forEach((child) => {
-        if (child.Name === element) {
+      parent.sedaData.children.forEach((child) => {
+        if (child.name === element) {
           elementsToAddFromSeda.push(child);
         }
       });
@@ -298,8 +300,8 @@ export class FileTreeComponent implements OnInit, OnDestroy {
       this.insertItemIterate(elementsToAddFromSeda, insertItemDuplicate, node, parent);
       // 4. Order elements according to seda definition
       const sedaChildrenName: string[] = [];
-      parent.sedaData.Children.forEach((child: { Name: string }) => {
-        sedaChildrenName.push(child.Name);
+      parent.sedaData.children.forEach((child: { name: string }) => {
+        sedaChildrenName.push(child.name);
       });
       parent.children.sort((a, b) => {
         return sedaChildrenName.indexOf(a.name) - sedaChildrenName.indexOf(b.name);
@@ -322,7 +324,7 @@ export class FileTreeComponent implements OnInit, OnDestroy {
       const sedaChild = element;
 
       // 1.2. New node type is defined acording to the seda element type
-      sedaChild.Element === SedaElementConstants.attribute
+      sedaChild.element === SedaElementConstants.attribute
         ? (newNode.type = TypeConstants.attribute)
         : (newNode.type = TypeConstants.element);
       // 1.3. Fill the missing new node data
@@ -332,12 +334,12 @@ export class FileTreeComponent implements OnInit, OnDestroy {
         newNode.documentation = node.documentation;
         newNode.type = node.type;
       } else {
-        newNode.cardinality = Object.values(CardinalityConstants).find((c) => c.valueOf() === sedaChild.Cardinality);
+        newNode.cardinality = Object.values(CardinalityConstants).find((c) => c.valueOf() === sedaChild.cardinality);
       }
-      newNode.name = element.Name;
+      newNode.name = element.name;
       newNode.id = newId;
       newNode.level = parent.level + 1;
-      newNode.dataType = DataTypeConstants[sedaChild.Type as keyof typeof DataTypeConstants];
+      newNode.dataType = DataTypeConstants[sedaChild.type as keyof typeof DataTypeConstants];
       newNode.parentId = parent.id;
       newNode.parent = parent;
       newNode.children = [];
@@ -352,14 +354,14 @@ export class FileTreeComponent implements OnInit, OnDestroy {
       // 1.4. Update parent->children relashionship
       parent.children.push(newNode);
       this.parentNodeMap.set(newNode, parent);
-      console.log('Seda children and file children: ', parent.sedaData.Children, parent.children);
+      console.log('Seda children and file children: ', parent.sedaData.children, parent.children);
 
       // 2. Insert all children of complex elements based on SEDA definition
-      if (sedaChild.Element === SedaElementConstants.complex) {
+      if (sedaChild.element === SedaElementConstants.complex) {
         const childrenOfComplexElement: string[] = [];
-        sedaChild.Children.forEach((child: { Cardinality: any; Name: string }) => {
-          if (child.Cardinality === SedaCardinalityConstants.one || child.Cardinality === SedaCardinalityConstants.oreOrMore) {
-            childrenOfComplexElement.push(child.Name);
+        sedaChild.children.forEach((child: { cardinality: any; name: string }) => {
+          if (child.cardinality === SedaCardinalityConstants.one || child.cardinality === SedaCardinalityConstants.oreOrMore) {
+            childrenOfComplexElement.push(child.name);
           }
         });
         if (insertItemDuplicate) {
@@ -372,27 +374,27 @@ export class FileTreeComponent implements OnInit, OnDestroy {
       }
 
       // 3. Insert all olbigatory attributes of the added node, if there is
-      if (sedaChild.Children.some((child: { Element: any }) => child.Element === SedaElementConstants.attribute)) {
+      if (sedaChild.children.some((child: { element: any }) => child.element === SedaElementConstants.attribute)) {
         const attributes: FileNode[] = [];
-        sedaChild.Children.filter((c: { Element: any }) => c.Element === SedaElementConstants.attribute).forEach(
-          (child: { Name: string; Element: any; Cardinality: any }) => {
-            const isAttributeAlreadyIncluded = newNode.children.some((nodeChild) => nodeChild.name.includes(child.Name));
+        sedaChild.children
+          .filter((c: { element: any }) => c.element === SedaElementConstants.attribute)
+          .forEach((child: { name: string; element: any; cardinality: any }) => {
+            const isAttributeAlreadyIncluded = newNode.children.some((nodeChild) => nodeChild.name.includes(child.name));
             // If the added node contains an obligatory attribute,
             // on its seda definition and the attribute is not already part of the node,
             // we then, build an attribute node based on the seda atribute defintion
             if (
-              child.Element === SedaElementConstants.attribute &&
-              child.Cardinality === SedaCardinalityConstants.one &&
+              child.element === SedaElementConstants.attribute &&
+              child.cardinality === SedaCardinalityConstants.one &&
               !isAttributeAlreadyIncluded
             ) {
               const childAttribute = {} as FileNode;
-              childAttribute.name = child.Name;
-              childAttribute.cardinality = child.Cardinality === SedaCardinalityConstants.one ? '1' : null;
+              childAttribute.name = child.name;
+              childAttribute.cardinality = child.cardinality === SedaCardinalityConstants.one ? '1' : null;
               childAttribute.sedaData = sedaChild;
               attributes.push(childAttribute);
             }
-          },
-        );
+          });
         this.insertAttributes(newNode, attributes);
       }
     }
@@ -405,7 +407,7 @@ export class FileTreeComponent implements OnInit, OnDestroy {
     newAttributeNode.id = newId;
     newAttributeNode.level = parent.level + 1;
     newAttributeNode.type = TypeConstants.attribute;
-    newAttributeNode.dataType = DataTypeConstants[attribute.sedaData.Type as keyof typeof DataTypeConstants];
+    newAttributeNode.dataType = DataTypeConstants[attribute.sedaData.type as keyof typeof DataTypeConstants];
     newAttributeNode.parentId = parent.id;
     newAttributeNode.children = [];
     newAttributeNode.cardinality = !attribute.cardinality ? '1' : attribute.cardinality;
@@ -496,7 +498,7 @@ export class FileTreeComponent implements OnInit, OnDestroy {
     const dataTable = this.fileMetadataService.fillDataTable(node.sedaData, node, tabChildrenToInclude, tabChildrenToExclude);
     const hasAtLeastOneComplexChild = node.children.some((el) => el.type === TypeConstants.element);
 
-    if (node.sedaData.Element === SedaElementConstants.complex) {
+    if (node.sedaData.element === SedaElementConstants.complex) {
       this.fileMetadataService.shouldLoadMetadataTable.next(hasAtLeastOneComplexChild);
       console.log('Filled data on table : ', dataTable, '...should load : ', this.fileMetadataService.shouldLoadMetadataTable.getValue());
       this.fileMetadataService.dataSource.next(dataTable);
@@ -524,15 +526,15 @@ export class FileTreeComponent implements OnInit, OnDestroy {
   }
 
   isElementComplex(node: FileNode) {
-    return node.sedaData.Element === SedaElementConstants.complex;
+    return node.sedaData.element === SedaElementConstants.complex;
   }
 
   onResolveName(node: FileNode) {
     if (this.sedaLanguage) {
       return node.name;
     } else {
-      if (node.sedaData && node.sedaData.NameFr) {
-        return node.sedaData.NameFr;
+      if (node.sedaData && node.sedaData.nameFr) {
+        return node.sedaData.nameFr;
       }
     }
     return node.name;
@@ -541,19 +543,19 @@ export class FileTreeComponent implements OnInit, OnDestroy {
   async remove(node: FileNode) {
     const dataToSendToPopUp = {} as PastisDialogData;
     const nodeType =
-      node.sedaData.Element === SedaElementConstants.attribute
+      node.sedaData.element === SedaElementConstants.attribute
         ? this.popupRemoveSedaElementAttribut
         : this.popupRemoveSedaElementMetadonnee;
     dataToSendToPopUp.titleDialog = this.popupRemoveTitre + ' ' + nodeType + ' "' + this.onResolveName(node) + '" ?';
     dataToSendToPopUp.subTitleDialog =
-      node.sedaData.Element === SedaElementConstants.attribute ? this.popupRemoveSousTitreAttribut : this.popupRemoveSousTitreMetadonnee;
+      node.sedaData.element === SedaElementConstants.attribute ? this.popupRemoveSousTitreAttribut : this.popupRemoveSousTitreMetadonnee;
     dataToSendToPopUp.fileNode = node;
     dataToSendToPopUp.component = UserActionRemoveMetadataComponent;
 
     const popUpAnswer = (await this.fileService.openPopup(dataToSendToPopUp)) as FileNode;
     if (popUpAnswer) {
       const deleteTypeText =
-        node.sedaData.Element === SedaElementConstants.attribute ? this.popupRemoveDeleteTypeTextM : this.popupRemoveDeleteTypeTextF;
+        node.sedaData.element === SedaElementConstants.attribute ? this.popupRemoveDeleteTypeTextM : this.popupRemoveDeleteTypeTextF;
       this.removeItem(node, this.fileService.nodeChange.getValue());
       this.loggingService.showSuccess(
         nodeType + node.name + this.notificationRemoveSuccessOne + deleteTypeText + this.notificationRemoveSuccessTwo,
@@ -564,12 +566,12 @@ export class FileTreeComponent implements OnInit, OnDestroy {
   async duplicate(node: FileNode) {
     const dataToSendToPopUp = {} as PastisDialogData;
     const nodeType =
-      node.sedaData.Element === SedaElementConstants.attribute
+      node.sedaData.element === SedaElementConstants.attribute
         ? this.popupDuplicateSedaElementAttribut
         : this.popupDuplicateSedaElementMetadonnee;
     dataToSendToPopUp.titleDialog = this.popupDuplicateTitre + ' ' + nodeType + ' "' + node.name + ' ' + this.popupDuplicateTitreTwo;
     dataToSendToPopUp.subTitleDialog =
-      node.sedaData.Element === SedaElementConstants.attribute
+      node.sedaData.element === SedaElementConstants.attribute
         ? this.popupDuplicateSousTitreAttribut
         : this.popupDuplicateSousTitreMetadonnee;
     dataToSendToPopUp.fileNode = node;
@@ -578,7 +580,7 @@ export class FileTreeComponent implements OnInit, OnDestroy {
     const elementToDuplicate = (await this.fileService.openPopup(dataToSendToPopUp)) as string;
     if (elementToDuplicate) {
       const duplicateTypeText =
-        node.sedaData.Element === SedaElementConstants.attribute ? this.popupDuplicateDeleteTypeTextM : this.popupDuplicateDeleteTypeTextF;
+        node.sedaData.element === SedaElementConstants.attribute ? this.popupDuplicateDeleteTypeTextM : this.popupDuplicateDeleteTypeTextF;
       const addedItems: string[] = [];
       addedItems.push(elementToDuplicate);
       this.insertItem(node.parent, addedItems, node, true);
@@ -590,9 +592,9 @@ export class FileTreeComponent implements OnInit, OnDestroy {
 
   isSedaNodeObligatory(nodeName: string): boolean {
     if (this.sedaData) {
-      for (const child of this.sedaData.Children) {
-        if (child.Name === nodeName) {
-          return child.Cardinality !== '1';
+      for (const child of this.sedaData.children) {
+        if (child.name === nodeName) {
+          return child.cardinality !== '1';
         }
       }
     }
@@ -679,7 +681,7 @@ export class FileTreeComponent implements OnInit, OnDestroy {
     if (!node.sedaData) {
       return false;
     }
-    return this.collectionName === node.sedaData.Collection.valueOf();
+    return this.collectionName === node.sedaData.collection.valueOf();
   }
 
   shouldBeOnTab(node: FileNode): boolean {

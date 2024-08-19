@@ -36,6 +36,7 @@ export class PastisConfiguration {
   updateProfileById: string;
   updateArchivalProfileUnitById: string;
   importProfileInExistingNotice: string;
+  metaModelUrl: string;
 
   constructor(private pastisApi: PastisApiService) {}
 

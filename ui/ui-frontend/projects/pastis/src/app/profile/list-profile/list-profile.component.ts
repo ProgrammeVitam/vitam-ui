@@ -41,7 +41,7 @@ import { MatLegacyTableDataSource as MatTableDataSource } from '@angular/materia
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { FileUploader } from 'ng2-file-upload';
-import { Subscription } from 'rxjs';
+import { filter, Subscription, switchMap } from 'rxjs';
 import { Direction, GlobalEventService, SidenavPage, StartupService } from 'vitamui-library';
 import { environment } from '../../../environments/environment';
 import { PastisConfiguration } from '../../core/classes/pastis-configuration';
@@ -56,9 +56,10 @@ import { ProfileDescription } from '../../models/profile-description.model';
 import { ProfileResponse } from '../../models/profile-response';
 import { DataGeneriquePopupService } from '../../shared/data-generique-popup.service';
 import { PastisDialogData } from '../../shared/pastis-dialog/classes/pastis-dialog-data';
-import { CreateProfileComponent } from '../create-profile/create-profile.component';
+import { CreateProfileComponent, CreateProfileFormResult } from '../create-profile/create-profile.component';
 import { ProfileInformationTabComponent } from '../profile-preview/profile-information-tab/profile-information-tab/profile-information-tab.component';
 import { ProfileType } from '../../models/profile-type.enum';
+import { MatDialogConfig } from '@angular/material/dialog';
 
 const POPUP_CREATION_PATH = 'PROFILE.POP_UP_CREATION';
 
@@ -115,7 +116,6 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
   newProfileUrl: string = this.pastisConfig.pastisNewProfile;
 
   subscription1$: Subscription;
-  subscription2$: Subscription;
   _uploadProfileSub: Subscription;
   subscriptions: Subscription[] = [];
 
@@ -257,34 +257,33 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
     }
   }
 
-  async createProfile() {
-    const dataToSendToPopUp = {} as PastisDialogData;
-    dataToSendToPopUp.titleDialog = this.popupCreationTitleDialog;
-    dataToSendToPopUp.subTitleDialog = this.popupCreationSubTitleDialog;
-    dataToSendToPopUp.width = '800px';
-    dataToSendToPopUp.height = '800px';
-    dataToSendToPopUp.okLabel = this.popupCreationOkLabel;
-    dataToSendToPopUp.cancelLabel = this.popupCreationCancelLabel;
-    const dialogRef = this.dialog.open(CreateProfileComponent, {
+  createProfile() {
+    const createProfileDialogConfig: MatDialogConfig<PastisDialogData> = {
       width: '800px',
       panelClass: 'pastis-popup-modal-box',
-      data: dataToSendToPopUp,
-    });
-    this.subscription2$ = dialogRef.afterClosed().subscribe((result) => {
-      if (result.success) {
-        // console.log(result.action + ' PA ou PUA ?');
-        if (result.action === ProfileType.PA || result.action === ProfileType.PUA) {
-          this.profileService
-            .createProfile(this.pastisConfig.createProfileByTypeUrl, result.action)
-            .subscribe((response: ProfileResponse) => {
-              if (response) {
-                this.router.navigate([this.pastisConfig.pastisNewProfile], { state: response, relativeTo: this.route });
-              }
-            });
-        }
-      }
-    });
-    this.subscriptions.push(this.subscription2$);
+      data: {
+        titleDialog: this.popupCreationTitleDialog,
+        subTitleDialog: this.popupCreationSubTitleDialog,
+        width: '800px',
+        height: '800px',
+        okLabel: this.popupCreationOkLabel,
+        cancelLabel: this.popupCreationCancelLabel,
+      },
+    };
+    const dialogRef = this.dialog.open(CreateProfileComponent, createProfileDialogConfig);
+    const subscription = dialogRef
+      .afterClosed()
+      .pipe(
+        filter<CreateProfileFormResult>((result) => Boolean(result)),
+        switchMap((result) =>
+          this.profileService.createProfile(this.pastisConfig.createProfileByTypeUrl, result.profileType, result.profileVersion),
+        ),
+        filter<ProfileResponse>((profileResponse) => Boolean(profileResponse)),
+      )
+      .subscribe((profileResponse) =>
+        this.router.navigate([this.pastisConfig.pastisNewProfile], { state: profileResponse, relativeTo: this.route }),
+      );
+    this.subscriptions.push(subscription);
   }
 
   public onSearchSubmit(search: string): void {

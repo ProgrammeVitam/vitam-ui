@@ -119,7 +119,7 @@ export class MainComponent implements OnInit, OnDestroy {
   }
 
   insertionItem($event: FileNodeInsertParams) {
-    const names: string[] = $event.elementsToAdd.map((e) => e.Name);
+    const names: string[] = $event.elementsToAdd.map((e) => e.name);
     this.editProfileComponent.fileTreeComponent.insertItem($event.node, names);
     console.log('Params : ', $event);
   }

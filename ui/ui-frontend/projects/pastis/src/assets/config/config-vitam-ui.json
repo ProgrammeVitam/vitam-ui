@@ -26,5 +26,6 @@
   "getArchivalProfileUnitById": "/archival-profile/{{identifier}}",
   "updateArchivalProfileUnitById": "/archival-profile/{{id}}",
   "createArchivalProfileUnit": "/archival-profile",
-  "importArchivalProfileUnit": "/archival-profile/import"
+  "importArchivalProfileUnit": "/archival-profile/import",
+  "metaModelUrl": "/pastis/metamodel"
 }

@@ -43,6 +43,8 @@ import fr.gouv.vitamui.pastis.common.dto.ElementProperties;
 import fr.gouv.vitamui.pastis.common.dto.profiles.Notice;
 import fr.gouv.vitamui.pastis.common.dto.profiles.ProfileNotice;
 import fr.gouv.vitamui.pastis.common.dto.profiles.ProfileResponse;
+import fr.gouv.vitamui.pastis.common.dto.profiles.ProfileType;
+import fr.gouv.vitamui.pastis.common.dto.profiles.ProfileVersion;
 import fr.gouv.vitamui.pastis.common.exception.TechnicalException;
 import fr.gouv.vitamui.pastis.common.rest.RestApi;
 import fr.gouv.vitamui.pastis.server.service.PastisService;
@@ -66,6 +68,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
+import java.util.Objects;
 
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 
@@ -110,8 +113,14 @@ class PastisController {
         consumes = APPLICATION_JSON_UTF8,
         produces = MediaType.APPLICATION_XML_VALUE
     )
-    ResponseEntity<String> getArchiveProfile(@RequestBody final ElementProperties json) throws TechnicalException {
-        final String pa = profileService.getArchiveProfile(json);
+    ResponseEntity<String> getArchiveProfile(
+        @RequestParam(name = "version") String profileVersion,
+        @RequestBody final ElementProperties json
+    ) throws TechnicalException {
+        ProfileVersion version = Objects.isNull(profileVersion)
+            ? ProfileVersion.VERSION_2_1
+            : ProfileVersion.fromVersionString(profileVersion);
+        final String pa = profileService.getArchiveProfile(json, version);
 
         if (pa == null) {
             throw new ResponseStatusException(INTERNAL_SERVER_ERROR, ErrorMessage.NO_ARCHIVE_PROFILE.toString());
@@ -146,9 +155,16 @@ class PastisController {
         tags = { "pastis" }
     )
     @GetMapping(value = RestApi.PASTIS_CREATE_PROFILE)
-    ResponseEntity<ProfileResponse> createProfile(@RequestParam(name = "type") String profileType)
-        throws NoSuchAlgorithmException, TechnicalException {
-        final ProfileResponse profileResponse = profileService.createProfile(profileType, IS_STANDALONE);
+    ResponseEntity<ProfileResponse> createProfile(
+        @RequestParam(name = "type") String profileType,
+        @RequestParam(name = "version") String profileVersion
+    ) throws NoSuchAlgorithmException, TechnicalException {
+        ProfileType type = Objects.isNull(profileType) ? null : ProfileType.valueOf(profileType);
+        ProfileVersion version = Objects.isNull(profileVersion)
+            ? null
+            : ProfileVersion.fromVersionString(profileVersion);
+
+        final ProfileResponse profileResponse = profileService.createProfile(type, version, IS_STANDALONE);
 
         if (profileResponse == null) {
             throw new ResponseStatusException(INTERNAL_SERVER_ERROR, ErrorMessage.NO_PROFILE_RESPONSE.toString());

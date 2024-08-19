@@ -52,6 +52,8 @@ import { PastisApiService } from '../api/api.pastis.service';
 import { PastisConfiguration } from '../classes/pastis-configuration';
 import { ArchivalProfileUnitApiService } from './archival-profile-unit-api.service';
 import { ArchiveProfileApiService } from './archive-profile-api.service';
+import { ProfileVersion } from '../../models/profile-version.enum';
+import { SedaData } from '../../models/seda-data';
 
 @Injectable({
   providedIn: 'root',
@@ -63,7 +65,8 @@ export class ProfileService implements OnDestroy {
   public direction: string;
   public criteria?: string;
 
-  public profileMode: ProfileType;
+  public profileType: ProfileType;
+  public profileVersion: ProfileVersion;
   public profileName: string;
   public profileId: string;
   protected pageRequest: PageRequest;
@@ -168,8 +171,8 @@ export class ProfileService implements OnDestroy {
 
   // Send the modified tree as post,
   // Expects a RNG or a JSON file depending on the profile type
-  uploadFile(file: FileNode[], notice: ProfileDescription, profileType: string): Observable<Blob> {
-    const httpOptions = {
+  uploadFile(file: FileNode[], notice: ProfileDescription, profileType: ProfileType, profileVersion: ProfileVersion): Observable<Blob> {
+    const httpOptions: any = {
       headers: new HttpHeaders({
         'Content-type': 'application/json',
       }),
@@ -182,6 +185,8 @@ export class ProfileService implements OnDestroy {
 
     if (profileType === ProfileType.PUA) {
       profile = { elementProperties: profile, notice };
+    } else {
+      httpOptions.params = new HttpParams().set('version', profileVersion);
     }
 
     return this.apiService.post(endPointUrl, profile, httpOptions);
@@ -276,8 +281,8 @@ export class ProfileService implements OnDestroy {
     return this.paService.check(profile, headers);
   }
 
-  createProfile(path: string, type: string): Observable<ProfileResponse> {
-    const params = new HttpParams().set('type', type);
+  createProfile(path: string, type: ProfileType, version: ProfileVersion): Observable<ProfileResponse> {
+    const params = new HttpParams().set('type', type).set('version', version);
     return this.apiService.get<ProfileResponse>(path, { params });
   }
 
@@ -305,5 +310,10 @@ export class ProfileService implements OnDestroy {
 
   downloadProfilePaVitam(id: string) {
     return this.paService.download(id);
+  }
+
+  getMetaModel(version: ProfileVersion): Observable<SedaData> {
+    const params = new HttpParams().set('version', version);
+    return this.apiService.get<SedaData>(this.pastisConfig.metaModelUrl, { params });
   }
 }

@@ -36,6 +36,7 @@
  */
 package fr.gouv.vitamui.referential.common.dto.xml.archivalprofileunit;
 
+import fr.gouv.vitam.common.model.administration.ArchiveUnitProfileSedaVersion;
 import fr.gouv.vitam.common.model.administration.ArchiveUnitProfileStatus;
 import lombok.Getter;
 import lombok.Setter;
@@ -69,6 +70,9 @@ public class ArchivalProfileUnit implements Serializable {
 
     @XmlElement(name = "Status")
     private ArchiveUnitProfileStatus status;
+
+    @XmlElement(name = "SedaVersion")
+    private ArchiveUnitProfileSedaVersion sedaVersion;
 
     @XmlElement(name = "Tenant")
     private Integer tenant;

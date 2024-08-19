@@ -94,41 +94,43 @@ export class UserActionAddMetadataComponent implements OnInit, OnDestroy {
     this.fileService.nodeChange.subscribe((fileNode) => {
       this.fileNode = fileNode;
     });
-    this.sedaData = this.sedaService.sedaRules[0];
+    this.sedaService.sedaRules$.subscribe((value) => {
+      this.sedaData = value;
+    });
 
     this.sedaNodeFound = this.fileNode.sedaData;
 
-    if (this.profileService.profileMode === ProfileType.PA) {
+    if (this.profileService.profileType === ProfileType.PA) {
       this.allowedChildren = this.sedaService
         .findSelectableElementList(this.sedaNodeFound, this.fileNode)
-        .filter((e) => e.Element !== SedaElementConstants.attribute);
-    } else if (this.profileService.profileMode === ProfileType.PUA) {
+        .filter((e) => e.element !== SedaElementConstants.attribute);
+    } else if (this.profileService.profileType === ProfileType.PUA) {
       if (this.fileNode.name === 'ArchiveUnit') {
         if (this.fileNode.children.map((nodeChildren: FileNode) => nodeChildren.name).includes('ArchiveUnitProfile')) {
           this.allowedChildren = this.sedaService
             .findSelectableElementList(this.sedaNodeFound, this.fileNode)
-            .filter((e) => e.Element !== SedaElementConstants.attribute)
-            .filter((e) => e.Name === 'Management');
+            .filter((e) => e.element !== SedaElementConstants.attribute)
+            .filter((e) => e.name === 'Management');
         } else {
           this.allowedChildren = this.sedaService
             .findSelectableElementList(this.sedaNodeFound, this.fileNode)
-            .filter((e) => e.Element !== SedaElementConstants.attribute)
-            .filter((e) => e.Name === 'Management' || e.Name === 'ArchiveUnitProfile');
+            .filter((e) => e.element !== SedaElementConstants.attribute)
+            .filter((e) => e.name === 'Management' || e.name === 'ArchiveUnitProfile');
         }
       } else {
-        this.allowedChildren = this.sedaNodeFound.Children.filter((e: SedaData) => e.Name !== 'id');
-        if (this.fileNode.sedaData.Children.filter((e: SedaData) => e.Name.endsWith('Rule')).length > 0) {
+        this.allowedChildren = this.sedaNodeFound.children.filter((e: SedaData) => e.name !== 'id');
+        if (this.fileNode.sedaData.children.filter((e: SedaData) => e.name.endsWith('Rule')).length > 0) {
           if (this.fileNode.children.filter((e: FileNode) => e.name === 'PreventInheritance').length > 0) {
-            this.allowedChildren = this.allowedChildren.filter((e: SedaData) => e.Name !== 'RefNonRuleId');
+            this.allowedChildren = this.allowedChildren.filter((e: SedaData) => e.name !== 'RefNonRuleId');
           }
           if (this.fileNode.children.filter((e: FileNode) => e.name === 'RefNonRuleId').length > 0) {
-            this.allowedChildren = this.allowedChildren.filter((e: SedaData) => e.Name !== 'PreventInheritance');
+            this.allowedChildren = this.allowedChildren.filter((e: SedaData) => e.name !== 'PreventInheritance');
           }
         }
       }
       this.fileNode.children.forEach((child: FileNode) => {
         if (child.cardinality.endsWith('1')) {
-          this.allowedChildren = this.allowedChildren.filter((e: SedaData) => e.Name !== child.name);
+          this.allowedChildren = this.allowedChildren.filter((e: SedaData) => e.name !== child.name);
         }
       });
     }
@@ -156,7 +158,7 @@ export class UserActionAddMetadataComponent implements OnInit, OnDestroy {
     if (indexOfElement >= 0) {
       this.addedItems.splice(indexOfElement, 1);
     }
-    if (element.Cardinality !== (SedaCardinalityConstants.zeroOrMore || SedaCardinalityConstants.oreOrMore)) {
+    if (element.cardinality !== (SedaCardinalityConstants.zeroOrMore || SedaCardinalityConstants.oreOrMore)) {
       this.allowedChildren.push(element);
       this.allowedChildren = this.allowedChildren.slice(0, this.allowedChildren.length);
     }
@@ -171,16 +173,16 @@ export class UserActionAddMetadataComponent implements OnInit, OnDestroy {
   onAddSelectedElement(element: SedaData) {
     this.addedItems.push(element);
 
-    if (element.Cardinality.endsWith('1')) {
+    if (element.cardinality.endsWith('1')) {
       this.allowedChildren = this.allowedChildren.filter((e) => e !== element);
     }
 
-    if (this.fileNode.sedaData.Children.filter((e: SedaData) => e.Name.endsWith('Rule')).length > 0) {
-      if (element.Name === 'PreventInheritance') {
-        this.allowedChildren = this.allowedChildren.filter((e: SedaData) => e.Name !== 'RefNonRuleId');
+    if (this.fileNode.sedaData.children.filter((e: SedaData) => e.name.endsWith('Rule')).length > 0) {
+      if (element.name === 'PreventInheritance') {
+        this.allowedChildren = this.allowedChildren.filter((e: SedaData) => e.name !== 'RefNonRuleId');
       }
-      if (element.Name === 'RefNonRuleId') {
-        this.allowedChildren = this.allowedChildren.filter((e: SedaData) => e.Name !== 'PreventInheritance');
+      if (element.name === 'RefNonRuleId') {
+        this.allowedChildren = this.allowedChildren.filter((e: SedaData) => e.name !== 'PreventInheritance');
       }
     }
 
@@ -199,12 +201,12 @@ export class UserActionAddMetadataComponent implements OnInit, OnDestroy {
 
   isElementComplex(element: SedaData) {
     if (element) {
-      return element.Element === SedaElementConstants.complex;
+      return element.element === SedaElementConstants.complex;
     }
   }
 
   getDefinition(element: SedaData): string {
-    return element ? element.Definition : '';
+    return element ? element.definition : '';
   }
 
   onNoClick(): void {
@@ -217,13 +219,13 @@ export class UserActionAddMetadataComponent implements OnInit, OnDestroy {
 
   onResolveName(element: SedaData): string {
     if (this.sedaLanguage) {
-      return element.Name;
+      return element.name;
     } else {
-      if (element.NameFr) {
-        return element.NameFr;
+      if (element.nameFr) {
+        return element.nameFr;
       }
     }
-    return element.Name;
+    return element.name;
   }
 
   ngOnDestroy(): void {
@@ -244,12 +246,12 @@ export class FilterByNamePipe implements PipeTransform {
     }
     if (sedaLanguage) {
       return listOfElements
-        .filter((element) => element.Name !== undefined)
-        .filter((element) => element.Name.toLowerCase().indexOf(nameToFilter.toLowerCase()) >= 0);
+        .filter((element) => element.name !== undefined)
+        .filter((element) => element.name.toLowerCase().indexOf(nameToFilter.toLowerCase()) >= 0);
     } else {
       return listOfElements
-        .filter((element) => element.NameFr !== undefined)
-        .filter((element) => element.NameFr.toLowerCase().indexOf(nameToFilter.toLowerCase()) >= 0);
+        .filter((element) => element.nameFr !== undefined)
+        .filter((element) => element.nameFr.toLowerCase().indexOf(nameToFilter.toLowerCase()) >= 0);
     }
   }
 }

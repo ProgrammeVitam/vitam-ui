@@ -143,7 +143,7 @@ export class UserActionAddPuaControlComponent implements OnInit {
     if (element) {
       this.addedItems = [element];
       this.allowedChildren = [];
-    } else if (this.dialogData.fileNode.sedaData.Enumeration.length > 0) {
+    } else if (this.dialogData.fileNode.sedaData.enumeration.length > 0) {
       this.allowedChildren = [this.enumerationsLabel];
       this.addedItems = [];
     } else {

@@ -1,17 +1,10 @@
 debug: false
+
 # Pastis Rest APi
 rng:
   base:
     file: profiles_new/Profil_seda_pastis_mvp.rng
     directory: rng/
-json:
-  base:
-    file: profiles_new/ProfileJson.json
-  template:
-    file: profiles_new/AUP_default_PASTIS.json
-pua:
-  definitions:
-    file: pua_validation/ProfileJson.json
 
 spring:
   config:
