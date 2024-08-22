@@ -101,7 +101,7 @@ export class OidcAuthenticatorService implements AuthenticatorService {
   }
 
   public logout(): void {
-    this.oAuthService.revokeTokenAndLogout();
+    this.oAuthService.logOut();
   }
 
   public logoutSubrogationAndRedirectToLoginPage(username: string) {
@@ -109,7 +109,7 @@ export class OidcAuthenticatorService implements AuthenticatorService {
     const separator = this.getUrlSeparator(oldPostLogoutRedirectUri);
     const usernamePayload = 'username=' + username;
     this.oAuthService.postLogoutRedirectUri = oldPostLogoutRedirectUri + separator + usernamePayload;
-    this.oAuthService.revokeTokenAndLogout();
+    this.oAuthService.logOut();
   }
 
   public initSubrogationFlow(superUser: string, superUserCustomerId: string, surrogate: string, surrogateCustomerId: string) {
@@ -126,7 +126,7 @@ export class OidcAuthenticatorService implements AuthenticatorService {
       '&surrogateCustomerId=' +
       surrogateCustomerId;
     this.oAuthService.postLogoutRedirectUri = oldPostLogoutRedirectUri + separator + subrogationPayload;
-    this.oAuthService.revokeTokenAndLogout();
+    this.oAuthService.logOut();
   }
 
   public redirectToLoginPage(): void {
