@@ -461,12 +461,12 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
           this.searchHasResults = !isEmpty(pagedResult.results);
           this.archiveSearchResultFacets.nodesFacets = this.archiveFacetsService.extractNodesFacetsResults(pagedResult.facets);
           this.totalResults = pagedResult.totalResults;
-          this.filterAttachementUnit();
           this.archiveExchangeDataService.emitTotalResults(this.totalResults);
           this.archiveExchangeDataService.emitFacets(this.archiveSearchResultFacets.nodesFacets);
         } else if (pagedResult.results) {
           pagedResult.results.forEach((elt) => this.archiveUnits.push(elt));
         }
+        this.filterAttachementUnit();
         this.pageNumbers = pagedResult.pageNumbers;
         this.waitingToGetFixedCount = this.totalResults === this.DEFAULT_RESULT_THRESHOLD;
         if (this.isAllChecked) {
