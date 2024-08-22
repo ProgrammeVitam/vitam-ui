@@ -31,7 +31,7 @@ import { MatLegacyDialog as MatDialog, MatLegacyDialogConfig as MatDialogConfig 
 import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { BehaviorSubject, Observable, Subject, Subscription, merge } from 'rxjs';
+import { BehaviorSubject, merge, Observable, Subject, Subscription } from 'rxjs';
 import { debounceTime, map, mergeMap, tap } from 'rxjs/operators';
 import { isEmpty } from 'underscore';
 import {
@@ -461,12 +461,12 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
           this.searchHasResults = !isEmpty(pagedResult.results);
           this.archiveSearchResultFacets.nodesFacets = this.archiveFacetsService.extractNodesFacetsResults(pagedResult.facets);
           this.totalResults = pagedResult.totalResults;
-          this.filterAttachementUnit();
           this.archiveExchangeDataService.emitTotalResults(this.totalResults);
           this.archiveExchangeDataService.emitFacets(this.archiveSearchResultFacets.nodesFacets);
         } else if (pagedResult.results) {
           pagedResult.results.forEach((elt) => this.archiveUnits.push(elt));
         }
+        this.filterAttachementUnit();
         this.pageNumbers = pagedResult.pageNumbers;
         this.waitingToGetFixedCount = this.totalResults === this.DEFAULT_RESULT_THRESHOLD;
         if (this.isAllChecked) {
