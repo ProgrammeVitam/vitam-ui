@@ -20,6 +20,11 @@
        th:text="#{screen.logout.security}">
     For security reasons, exit your web browser.
   </div>
+  <script>
+    $(document).ready(function() {
+        window.sessionStorage.clear();
+    });
+  </script>
 </div>
 
 
