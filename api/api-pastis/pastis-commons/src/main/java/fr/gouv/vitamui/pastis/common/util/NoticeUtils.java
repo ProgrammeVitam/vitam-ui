@@ -72,6 +72,7 @@ public class NoticeUtils {
         try {
             profileResponse.setId(notice.getId());
             profileResponse.setType(getFileType(notice));
+            profileResponse.setSedaVersion(notice.getSedaVersion());
             profileResponse.setName(notice.getIdentifier());
             profileResponse.setNotice(getNoticeFromPUA(new JSONObject(notice.serialiseString())));
         } catch (IOException e) {
