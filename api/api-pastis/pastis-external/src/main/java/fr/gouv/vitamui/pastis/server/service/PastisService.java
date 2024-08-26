@@ -42,7 +42,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
-import fr.gouv.vitam.common.model.administration.ArchiveUnitProfileSedaVersion;
 import fr.gouv.vitamui.pastis.common.dto.ElementProperties;
 import fr.gouv.vitamui.pastis.common.dto.jaxb.AnnotationXML;
 import fr.gouv.vitamui.pastis.common.dto.jaxb.AnyNameXML;
@@ -362,7 +361,7 @@ public class PastisService {
                 profileResponse.setProfile(jsonFromPUA.getProfileFromPUA(profileJson));
                 // Get default PUA model and apply the seda version to it
                 Notice noticeFromPUA = NoticeUtils.getNoticeFromPUA(profileJson);
-                noticeFromPUA.setSedaVersion(ArchiveUnitProfileSedaVersion.forVersion(profileVersion.getVersion()));
+                noticeFromPUA.setSedaVersion(profileVersion);
                 profileResponse.setNotice(noticeFromPUA);
                 LOGGER.info("Starting editing Archive Unit Profile with name : {}", resource.getFilename());
             }

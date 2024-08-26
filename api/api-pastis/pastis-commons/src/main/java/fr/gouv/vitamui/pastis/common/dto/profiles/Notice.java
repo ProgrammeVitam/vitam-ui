@@ -44,7 +44,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.module.afterburner.AfterburnerModule;
-import fr.gouv.vitam.common.model.administration.ArchiveUnitProfileSedaVersion;
 import fr.gouv.vitam.common.model.administration.ArchiveUnitProfileStatus;
 import fr.gouv.vitam.common.model.administration.ProfileFormat;
 import fr.gouv.vitamui.commons.api.domain.IdDto;
@@ -78,7 +77,7 @@ public class Notice extends IdDto {
     private ArchiveUnitProfileStatus status;
 
     @JsonProperty("sedaVersion")
-    private ArchiveUnitProfileSedaVersion sedaVersion;
+    private ProfileVersion sedaVersion;
 
     @JsonProperty("creationDate")
     private String creationDate;
@@ -131,7 +130,7 @@ public class Notice extends IdDto {
         }
         this.setId(id);
         this.status = ArchiveUnitProfileStatus.ACTIVE;
-        this.sedaVersion = ArchiveUnitProfileSedaVersion.VERSION_2_1;
+        this.sedaVersion = ProfileVersion.VERSION_2_1;
         this.lastUpdate = new Timestamp(updateDate).toString();
         this.deactivationDate = new Timestamp(updateDate).toString();
         this.activationDate = new Timestamp(updateDate).toString();
