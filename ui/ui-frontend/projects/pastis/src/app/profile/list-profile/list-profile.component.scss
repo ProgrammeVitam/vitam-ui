@@ -6,15 +6,22 @@
 @import 'icons/vitamui-icons';
 
 .pastis-vitamui-option-container {
-  margin-top: 40px;
-  margin-left: 40px;
-  width: 200px;
-  height: 50px;
+  margin-top: 45px;
   position: absolute;
   background: #ffffff;
   border: 1px solid #bdbdbd;
   box-sizing: border-box;
   border-radius: 10px;
+
+  button {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  i {
+    font-size: 24px;
+  }
 }
 
 ::ng-deep .vitamui-spinner.mat-progress-spinner circle,

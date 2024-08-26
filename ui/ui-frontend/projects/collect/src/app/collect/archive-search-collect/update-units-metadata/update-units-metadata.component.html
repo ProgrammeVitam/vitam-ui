@@ -40,27 +40,20 @@
 
 <ng-template #dragAndDropArea>
   <div class="d-flex">
-    <div
-      class="drag-and-drop-area"
-      [ngClass]="{ 'on-over': hasDropZoneOver }"
-      vitamuiCommonDragAndDrop
-      (fileToUploadEmitter)="onDropped($event)"
-      (fileDragOverEmitter)="onDragOver($event)"
-      (fileDragLeaveEmitter)="onDragLeave($event)"
-    >
+    <div class="drag-and-drop-area" vitamuiCommonDragAndDrop (fileToUploadEmitter)="handleFile($event)">
       <div *ngIf="fileName && fileSize > 0 && fileSizeString" class="drag-container">
         <div class="file-info-class">
           {{ fileName }}
           <span class="text-grey"> | {{ fileSizeString }} </span>
           <i class="material-icons success-icon" *ngIf="!hasError">check_circle</i>
           <div>
-            <span class="text-red">{{ erroeMessage }} </span>
+            <span class="text-red">{{ errorMessage }} </span>
             <i class="material-icons error-icon" *ngIf="hasError">cancel </i>
           </div>
         </div>
       </div>
 
-      <input type="file" #updateMetadataCSVFile class="input-file" (change)="handleFileInput($event.target.files)" />
+      <input type="file" #updateMetadataCSVFile class="input-file" (change)="handleFile($event.target.files)" />
 
       <div class="drop-csv-file-area">
         <div class="csv-drop">{{ 'COLLECT.UPDATE_UNITS_METADATA.ADD_FILE' | translate }}<br /></div>

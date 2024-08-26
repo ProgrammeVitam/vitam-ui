@@ -88,7 +88,6 @@ export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewCheck
   hasError = false;
   uploadFiles$: Observable<CollectUploadFile[]>;
   zippedFile$: Observable<CollectZippedUploadFile>;
-  @ViewChild('fileSearch', { static: false }) fileSearch: any;
   tenantIdentifier: number;
   ontologies: IOntology[];
 
@@ -207,6 +206,8 @@ export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewCheck
     this.stepIndex = this.stepIndex - 1;
   }
 
+  // FIXME: use vitamuiCommonDragAndDrop directive?
+
   onDragOver(event: any) {
     event.preventDefault();
     this.hasDropZoneOver = true;
@@ -238,10 +239,6 @@ export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewCheck
       return;
     }
     await this.uploadService.handleUpload(items);
-  }
-
-  addFolder() {
-    this.fileSearch.nativeElement.click();
   }
 
   removeFolder(file: CollectUploadFile) {

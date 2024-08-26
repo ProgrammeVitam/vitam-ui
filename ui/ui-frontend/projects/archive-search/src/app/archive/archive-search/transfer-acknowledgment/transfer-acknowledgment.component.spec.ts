@@ -38,9 +38,10 @@ import {
 import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { Observable, of } from 'rxjs';
-import { BASE_URL, InjectorModule, LoggerModule, StartupService, WINDOW_LOCATION } from 'vitamui-library';
+import { BASE_URL, BytesPipe, InjectorModule, LoggerModule, StartupService, WINDOW_LOCATION } from 'vitamui-library';
 import { ArchiveService } from '../../archive.service';
 import { TransferAcknowledgmentComponent } from './transfer-acknowledgment.component';
+import { DecimalPipe } from '@angular/common';
 
 const translations: any = { TEST: 'Mock translate test' };
 class FakeLoader implements TranslateLoader {
@@ -95,6 +96,8 @@ describe('TransferAcknowledgmentComponent', () => {
         { provide: WINDOW_LOCATION, useValue: window.location },
         { provide: StartupService, useValue: startupServiceStub },
         { provide: ArchiveService, useValue: archiveSearchServiceStub },
+        DecimalPipe,
+        BytesPipe,
       ],
     }).compileComponents();
   });
@@ -258,7 +261,7 @@ describe('TransferAcknowledgmentComponent', () => {
       const blob = new Blob([contents], { type: 'text/plain' });
       const file = new File([blob], 'atrFile.xml', { type: 'text/plain' });
       component.fileToUpload = file;
-      spyOn(component, 'handleFileInput');
+      spyOn(component, 'handleFile');
       const nativeElement = fixture.nativeElement;
       const checkBox = nativeElement.querySelector('input[type=file]');
 
@@ -267,7 +270,7 @@ describe('TransferAcknowledgmentComponent', () => {
       fixture.detectChanges();
 
       // Then
-      expect(component.handleFileInput).toHaveBeenCalled();
+      expect(component.handleFile).toHaveBeenCalled();
     });
 
     it('should have 8 buttons ', () => {

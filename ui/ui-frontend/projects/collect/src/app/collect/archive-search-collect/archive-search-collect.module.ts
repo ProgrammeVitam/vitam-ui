@@ -75,7 +75,7 @@ import { SearchCriteriaSaverComponent } from './archive-search-criteria/componen
 import { SimpleCriteriaSearchComponent } from './archive-search-criteria/components/simple-criteria-search/simple-criteria-search.component';
 import { StorageRuleSearchComponent } from './archive-search-criteria/components/storage-rule-search/storage-rule-search.component';
 import { TitleAndDescriptionCriteriaSearchCollectComponent } from './archive-search-criteria/components/title-and-description-criteria-search-collect/title-and-description-criteria-search-collect.component';
-import { UpdateUnitsaMetadataComponent } from './update-units-metadata/update-units-metadata.component';
+import { UpdateUnitsMetadataComponent } from './update-units-metadata/update-units-metadata.component';
 import { VitamUISnackBarModule } from '../shared/vitamui-snack-bar/vitamui-snack-bar.module';
 
 @NgModule({
@@ -124,7 +124,7 @@ import { VitamUISnackBarModule } from '../shared/vitamui-snack-bar/vitamui-snack
     SimpleCriteriaSearchComponent,
     StorageRuleSearchComponent,
     TitleAndDescriptionCriteriaSearchCollectComponent,
-    UpdateUnitsaMetadataComponent,
+    UpdateUnitsMetadataComponent,
   ],
 })
 export class ArchiveSearchCollectModule {}

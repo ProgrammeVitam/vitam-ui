@@ -102,10 +102,10 @@ import { VitamuiSidenavHeaderModule } from './components/vitamui-sidenav-header/
 import { VitamUISnackBarModule } from './components/vitamui-snack-bar/vitamui-snack-bar.module';
 import { VitamUITenantSelectModule } from './components/vitamui-tenant-select/vitamui-tenant-select.module';
 import { VitamuiTreeNodeModule } from './components/vitamui-tree-node';
+import { FileSelectorComponent } from './components/file-selector/file-selector.component';
 import { ConfigService } from './config.service';
 import { AutocompletePositionDirectiveModule } from './directives/autocomplete-position/autocomplete-position.directive.module';
 import { CollapseDirectiveModule } from './directives/collapse/collapse.directive.module';
-import { DragAndDropModule } from './directives/drag-and-drop/drag-and-drop.module';
 import { EllipsisDirectiveModule } from './directives/ellipsis/ellipsis.directive.module';
 import { InfiniteScrollModule } from './directives/infinite-scroll/infinite-scroll.module';
 import { ResizeSidebarModule } from './directives/resize-sidebar/resize-sidebar.module';
@@ -122,6 +122,7 @@ import { SecurityModule } from './security/security.module';
 import { StartupService } from './startup.service';
 import { SubrogationModule } from './subrogation/subrogation.module';
 import { VitamUIHttpInterceptor } from './vitamui-http-interceptor';
+import { DragAndDropDirective } from './directives/drag-and-drop/drag-and-drop.directive';
 
 export function loadConfigFactory(configService: ConfigService, environment: any) {
   const p = () => configService.load(environment.configUrls).toPromise();
@@ -165,7 +166,7 @@ export function startupServiceFactory(startupService: StartupService, authServic
     DatepickerModule,
     MultipleOptionsDatepickerModule,
     DownloadSnackBarModule,
-    DragAndDropModule,
+    DragAndDropDirective,
     EditableFieldModule,
     EllipsisDirectiveModule,
     FooterModule,
@@ -220,6 +221,7 @@ export function startupServiceFactory(startupService: StartupService, authServic
     VitamuiSidenavHeaderModule,
     VitamUISnackBarModule,
     VitamUITenantSelectModule,
+    FileSelectorComponent,
   ],
   exports: [
     AccordionModule,
@@ -237,7 +239,7 @@ export function startupServiceFactory(startupService: StartupService, authServic
     DataModule,
     DatepickerModule,
     MultipleOptionsDatepickerModule,
-    DragAndDropModule,
+    DragAndDropDirective,
     EditableFieldModule,
     EllipsisDirectiveModule,
     FooterModule,
@@ -291,6 +293,7 @@ export function startupServiceFactory(startupService: StartupService, authServic
     VitamUISnackBarModule,
     VitamUITenantSelectModule,
     VitamuiTreeNodeModule,
+    FileSelectorComponent,
   ],
 })
 export class VitamUICommonModule {

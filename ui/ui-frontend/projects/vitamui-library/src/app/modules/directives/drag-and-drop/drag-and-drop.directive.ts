@@ -35,46 +35,55 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { Directive, EventEmitter, HostListener, Input, Output } from '@angular/core';
+import { Directive, ElementRef, EventEmitter, HostListener, Input, Output } from '@angular/core';
 import { Logger } from '../../logger/logger';
 
 @Directive({
+  standalone: true,
   selector: '[vitamuiCommonDragAndDrop]',
 })
 export class DragAndDropDirective {
   @Output() private fileToUploadEmitter: EventEmitter<File[]> = new EventEmitter();
-  @Output() private fileDragOverEmitter: EventEmitter<boolean> = new EventEmitter();
-  @Output() private fileDragLeaveEmitter: EventEmitter<boolean> = new EventEmitter();
+  @Output() private fileDragHover: EventEmitter<boolean> = new EventEmitter();
 
   // Disable dropping on the body of the document.
   // This prevents the browser from loading the dropped files
   // using it's default behaviour if the user misses the drop zone.
   // Set this input to false if you want the browser default behaviour.
   @Input() preventBodyDrop = true;
-
   @Input() enableFileDragAndDrop = true;
-
   @Input() enableFolderDragAndDrop = false;
+  @Input() hoverClass = 'on-over';
 
-  constructor(public logger: Logger) {}
+  constructor(
+    private elementRef: ElementRef<HTMLElement>,
+    private logger: Logger,
+  ) {}
 
-  @HostListener('dragover', ['$event']) public onDragOver(dragOverEvent: any) {
-    dragOverEvent.preventDefault();
-    dragOverEvent.stopPropagation();
-    this.fileDragOverEmitter.emit(true);
+  @HostListener('dragenter', ['$event']) public onDragEnter(event: DragEvent) {
+    event.preventDefault();
+    event.stopPropagation();
+    if (this.elementRef.nativeElement.contains(event.target as HTMLElement)) {
+      this.fileDragHover.emit(true);
+      this.elementRef.nativeElement.classList.add(this.hoverClass);
+    }
   }
 
-  @HostListener('dragleave', ['$event']) public onDragLeave(dragLeaveEvent: any) {
-    dragLeaveEvent.preventDefault();
-    dragLeaveEvent.stopPropagation();
-    this.fileDragLeaveEmitter.emit(false);
+  @HostListener('dragleave', ['$event']) public onDragLeave(event: DragEvent) {
+    event.preventDefault();
+    event.stopPropagation();
+    if (!event.relatedTarget || !this.elementRef.nativeElement.contains(event.relatedTarget as HTMLElement)) {
+      this.fileDragHover.emit(false);
+      this.elementRef.nativeElement.classList.remove(this.hoverClass);
+    }
   }
 
-  @HostListener('drop', ['$event']) public async onDrop(dropEvent: any) {
-    dropEvent.preventDefault();
-    dropEvent.stopPropagation();
+  @HostListener('drop', ['$event']) public async onDrop(event: DragEvent) {
+    event.preventDefault();
+    event.stopPropagation();
+    this.elementRef.nativeElement.classList.remove(this.hoverClass);
 
-    let fileEntries = await this.getAllFileEntries(dropEvent.dataTransfer.items);
+    let fileEntries = await this.getAllFileEntries(event.dataTransfer.items);
     // Filter files
     if (!this.enableFileDragAndDrop) {
       fileEntries = fileEntries.filter((fileEntry) => fileEntry.fullPath.split('/').length - 1 !== 1);
@@ -96,8 +105,8 @@ export class DragAndDropDirective {
     ).then((files) => {
       this.fileToUploadEmitter.emit(files);
     });
-    dropEvent.stopPropagation();
-    dropEvent.preventDefault();
+    event.stopPropagation();
+    event.preventDefault();
   }
 
   @HostListener('body:dragover', ['$event'])

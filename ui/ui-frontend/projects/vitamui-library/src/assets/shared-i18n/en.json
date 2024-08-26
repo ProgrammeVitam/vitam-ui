@@ -490,6 +490,11 @@
       "PLURAL": "selected elements"
     }
   },
+  "FILE_SELECTOR": {
+    "DRAG_AND_DROP_OR_BROWSE": "Drag and drop or browse",
+    "ALLOWED_FORMATS": "Allowed formats: {{formats}}",
+    "MAX_SIZE": "Max size: {{size}}"
+  },
   "COMMON_SELECT": {
     "DEFAULT_LABEL": "(Default)"
   },

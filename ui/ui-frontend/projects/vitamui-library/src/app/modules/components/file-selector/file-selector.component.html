@@ -1,0 +1,41 @@
+<div class="drag-and-drop-area" vitamuiCommonDragAndDrop (fileToUploadEmitter)="handleFiles($event)">
+  <input #inputFiles type="file" (change)="handleFiles($event.target.files)" [accept]="extensions?.join(',')" [multiple]="multipleFiles" />
+
+  @if (fileList) {
+    <ng-container *ngTemplateOutlet="fileList"></ng-container>
+  } @else {
+    <ng-container *ngTemplateOutlet="defaultFileList"></ng-container>
+  }
+
+  @if (content) {
+    <ng-container *ngTemplateOutlet="content"></ng-container>
+  } @else {
+    <ng-container *ngTemplateOutlet="defaultContent"></ng-container>
+  }
+</div>
+
+<ng-template #defaultFileList>
+  <div class="vitamui-chip-list">
+    <div *ngFor="let file of files" class="vitamui-chip">
+      <div [title]="file.name" class="vitamui-chip-content">
+        {{ file.name }}
+        <span class="file-size">{{ file.size | bytes }}</span>
+      </div>
+      <div (click)="removeFile(file)" class="vitamui-remove-chip">
+        <i class="material-icons">clear</i>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #defaultContent>
+  <h4 (click)="openFileSelectorOSDialog()" class="text-center text primary link">
+    {{ 'FILE_SELECTOR.DRAG_AND_DROP_OR_BROWSE' | translate }}
+  </h4>
+  <div *ngIf="extensions" class="text-center text primary">
+    {{ 'FILE_SELECTOR.ALLOWED_FORMATS' | translate: { formats: extensions.join(', ') } }}
+  </div>
+  <div *ngIf="maxSizeInBytes" class="text-center text primary">
+    {{ 'FILE_SELECTOR.MAX_SIZE' | translate: { size: maxSizeInBytes | bytes: 0 } }}
+  </div>
+</ng-template>

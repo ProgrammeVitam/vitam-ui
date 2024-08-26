@@ -124,7 +124,8 @@
           </div>
           <div class="vitamui-table-body">
             <div
-              *ngFor="let element of retrievedProfiles | filterByType: filterType | filterByStringName: search"
+              *ngFor="let element of retrievedProfiles | filterByType: filterType | filterByStringName: search; let i = index"
+              (mouseleave)="expanded = undefined"
               class="vitamui-table-rows"
             >
               <div class="vitamui-row d-flex align-items-center">
@@ -159,28 +160,16 @@
                     </button>
 
                     <button
-                      (click)="changeExpand(element)"
+                      (click)="expanded = expanded === i ? undefined : i"
                       class="btn btn-circle outlin outline-primary mr-3"
-                      [disabled]="!element.isEditable"
                       *ngIf="!isStandalone"
                     >
                       <i [style.fontSize.px]="25" class="vitamui-icon vitamui-icon-more-horiz"></i>
                     </button>
-                    <div *ngIf="expanded && element.isEditable" class="pastis-vitamui-option-container">
-                      <button mat-menu-item (click)="fileInput.click()">
+                    <div *ngIf="expanded === i" class="pastis-vitamui-option-container">
+                      <button mat-menu-item (click)="updateProfileNotice(element)">
                         <i class="vitamui-icon vitamui-icon-download"></i>
-                        &nbsp;&nbsp;&nbsp;
                         <span class="text normal">{{ 'PROFILE.LIST_PROFILE.LOAD_PROFILE' | translate }}</span>
-                        <input
-                          #fileInput
-                          (change)="updateProfileNotice(element, $event.target.files)"
-                          [uploader]="uploader"
-                          accept=".json, .rng"
-                          class="buttons"
-                          ng2FileSelect
-                          style="display: none"
-                          type="file"
-                        />
                       </button>
                     </div>
                   </div>
@@ -195,3 +184,13 @@
     </div>
   </mat-sidenav-content>
 </mat-sidenav-container>
+
+<ng-template #confirmReplacement>
+  <vitamui-common-confirm-dialog
+    [dialogTitle]="translations.popupUploadTitle"
+    [confirmLabel]="'PROFILE.POP_UP_UPLOAD_FILE.POPUP_UPLOAD_OK_LABEL' | translate"
+    [cancelLabel]="'PROFILE.POP_UP_UPLOAD_FILE.POPUP_UPLOAD_CANCEL_LABEL' | translate"
+  >
+    <h5>{{ 'PROFILE.POP_UP_UPLOAD_FILE.CONFIRM_REPLACEMENT' | translate }}</h5>
+  </vitamui-common-confirm-dialog>
+</ng-template>

@@ -1,0 +1,22 @@
+@import 'variables/colors';
+
+.title {
+  margin-bottom: 5px;
+}
+.subtitle {
+  margin-top: 5px;
+}
+
+.content {
+  padding: 30px 60px !important;
+  width: 800px;
+}
+
+.actions {
+  margin-top: 20px;
+  display: flex;
+}
+
+.actions > button:not(:last-child) {
+  margin-right: 20px;
+}

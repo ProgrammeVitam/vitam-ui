@@ -52,7 +52,6 @@ export class TransferAcknowledgmentComponent implements OnInit, OnDestroy {
   public stepCount = 3;
   fileSize = 0;
 
-  hasDropZoneOver = false;
   isAtrNotValid = false;
   isDisabled = true;
   hasFileSizeError = false;
@@ -90,6 +89,7 @@ export class TransferAcknowledgmentComponent implements OnInit, OnDestroy {
     private archiveSearchService: ArchiveService,
     private startupService: StartupService,
     private translateService: TranslateService,
+    private bytesPipe: BytesPipe,
   ) {}
 
   async parseXmlToTransferDetails(xmlFileContent: string) {
@@ -151,26 +151,37 @@ export class TransferAcknowledgmentComponent implements OnInit, OnDestroy {
     this.dialogRef.close(true);
   }
 
-  initializeFileToUpload(files: File[]) {
-    if (files) {
-      this.fileToUpload = files[0];
+  initializeParameters() {
+    this.isDisabled = false;
+    this.hasError = false;
+    this.hasFileSizeError = false;
+    this.message = null;
+    this.isAtrNotValid = false;
+    this.transfertDetails = {};
+    this.transfertDetailsCode = null;
+  }
 
+  private isFileList(files: FileList | File[]): files is FileList {
+    return files instanceof FileList;
+  }
+
+  private initializeFileToUpload(files: FileList | File[]) {
+    if (files) {
+      this.fileToUpload = this.isFileList(files) ? files.item(0) : files[0];
       this.fileName = this.fileToUpload.name;
       this.fileSize = this.fileToUpload.size;
     }
   }
 
-  handleFile(files: File[]) {
+  handleFile(files: FileList | File[]) {
     this.initializeParameters();
     this.initializeFileToUpload(files);
 
-    const transformer = new BytesPipe(this.logger);
-    this.fileSizeString = transformer.transform(this.fileSize);
+    this.fileSizeString = this.bytesPipe.transform(this.fileSize);
 
     if (!this.checkFileExtension(this.fileName)) {
       this.message = this.translateService.instant('ARCHIVE_SEARCH.TRANSFER_ACKNOWLEDGMENT.FILE_BAD_FORMAT');
       this.hasError = true;
-      return;
     } else {
       if (this.fileSize > FILE_MAX_SIZE) {
         this.logger.error(this.translateService.instant('ARCHIVE_SEARCH.TRANSFER_ACKNOWLEDGMENT.AUTHORIZED_SIZE'));
@@ -179,52 +190,8 @@ export class TransferAcknowledgmentComponent implements OnInit, OnDestroy {
     }
   }
 
-  initializeFileListToUpload(files: FileList) {
-    if (files) {
-      this.fileToUpload = files.item(0);
-
-      this.fileName = this.fileToUpload.name;
-      this.fileSize = this.fileToUpload.size;
-    }
-  }
-
-  handleFileList(files: FileList) {
-    this.initializeParameters();
-    this.initializeFileListToUpload(files);
-
-    const transformer = new BytesPipe(this.logger);
-    this.fileSizeString = transformer.transform(this.fileSize);
-
-    if (!this.checkFileExtension(this.fileName)) {
-      this.message = this.translateService.instant('ARCHIVE_SEARCH.TRANSFER_ACKNOWLEDGMENT.FILE_BAD_FORMAT');
-      this.hasError = true;
-      return;
-    } else {
-      if (this.fileSize > FILE_MAX_SIZE) {
-        this.logger.error(this.translateService.instant('ARCHIVE_SEARCH.TRANSFER_ACKNOWLEDGMENT.AUTHORIZED_SIZE'));
-        this.hasFileSizeError = true;
-      }
-    }
-  }
   addTransferAtrFile() {
     this.atrXmlFile.nativeElement.click();
-  }
-
-  handleFileInput(files: FileList) {
-    this.handleFileList(files);
-  }
-
-  onDragOver(inDropZone: boolean) {
-    this.hasDropZoneOver = inDropZone;
-  }
-
-  onDragLeave(inDropZone: boolean) {
-    this.hasDropZoneOver = inDropZone;
-  }
-
-  onDropped(files: File[]) {
-    this.hasDropZoneOver = false;
-    this.handleFile(files);
   }
 
   checkFileExtension(fileName: string): boolean {
@@ -234,16 +201,6 @@ export class TransferAcknowledgmentComponent implements OnInit, OnDestroy {
   goToNextStep() {
     this.stepIndex = this.stepIndex + 1;
     this.transfertDetailsCode = this.transfertDetails.archiveTransferReply.replace(/(\r\n|\n|\r)/gm, '').trim();
-  }
-
-  initializeParameters() {
-    this.isDisabled = false;
-    this.hasError = false;
-    this.hasFileSizeError = false;
-    this.message = null;
-    this.isAtrNotValid = false;
-    this.transfertDetails = {};
-    this.transfertDetailsCode = null;
   }
 
   // Step 1 :

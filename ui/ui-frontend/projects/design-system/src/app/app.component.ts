@@ -54,6 +54,20 @@ export class AppComponent implements AfterViewInit {
     private router: Router,
     translateService: TranslateService,
   ) {
+    // Create a function that lists headings but not the ones inside our vitamui lib components
+    (document as any).findHeadings =
+      (document as any).findHeadings ||
+      (() =>
+        Array.from(document.querySelectorAll('h2, h3, h4, h5, h6')).filter((element) => {
+          while (element.parentElement) {
+            element = element.parentElement;
+            if (element.tagName.startsWith('VITAMUI-')) {
+              return false;
+            }
+          }
+          return true;
+        }));
+
     merge(
       this.router.events.pipe(filter((event) => event instanceof NavigationEnd)),
       translateService.onDefaultLangChange,
@@ -78,7 +92,7 @@ export class AppComponent implements AfterViewInit {
     document.querySelectorAll(`mat-expansion-panel:not(.active) .mat-expansion-panel-body`).forEach((el) => (el.innerHTML = ''));
     const panelBody = document.querySelector(`mat-expansion-panel.active .mat-expansion-panel-body`);
     if (panelBody) {
-      const headings: HTMLElement[] = Array.from(document.querySelectorAll('h2, h3, h4, h5, h6'));
+      const headings: HTMLElement[] = (document as any).findHeadings();
 
       const list = headings.map((heading, index) => {
         const currentDepth = this.computeDepth(heading);
@@ -88,7 +102,7 @@ export class AppComponent implements AfterViewInit {
           ${currentDepth > previousDepth ? [...Array(currentDepth - previousDepth).keys()].map(() => `<ul>`).join('') : ''}
           ${currentDepth < previousDepth ? [...Array(previousDepth - currentDepth).keys()].map(() => `</ul>`).join('') : ''}
           <li>
-            <a onClick="document.querySelectorAll('h2, h3, h4, h5, h6')[${index}].scrollIntoView({
+            <a onClick="document.findHeadings()[${index}].scrollIntoView({
                         behavior: 'smooth',
                         block: 'start',
                         inline: 'nearest',

@@ -48,13 +48,12 @@ const VITAMUI_SNACK_BAR = 'vitamui-snack-bar';
   templateUrl: './update-units-metadata.component.html',
   styleUrls: ['./update-units-metadata.component.scss'],
 })
-export class UpdateUnitsaMetadataComponent implements OnDestroy {
+export class UpdateUnitsMetadataComponent implements OnDestroy {
   public stepIndex = 0;
   public stepCount = 1;
 
   fileSize = 0;
 
-  hasDropZoneOver = false;
   isAtrNotValid = false;
   isDisabled = true;
   hasFileSizeError = false;
@@ -63,15 +62,14 @@ export class UpdateUnitsaMetadataComponent implements OnDestroy {
   isLoadingData = false;
 
   fileToUpload: File = null;
-  transfertDetails: any = {};
 
-  erroeMessage: string;
+  errorMessage: string;
   fileName: string;
 
   subscriptions: Subscription;
 
   @ViewChild('confirmDeleteUpdateUnitsMetadataDialog', { static: true })
-  confirmDeleteUpdateUnitsMetadataDialog: TemplateRef<UpdateUnitsaMetadataComponent>;
+  confirmDeleteUpdateUnitsMetadataDialog: TemplateRef<UpdateUnitsMetadataComponent>;
 
   @ViewChild('updateMetadataCSVFile', { static: false }) updateMetadataCSVFile: any;
 
@@ -84,18 +82,15 @@ export class UpdateUnitsaMetadataComponent implements OnDestroy {
     private logger: Logger,
     private dialog: MatDialog,
     private snackBar: MatSnackBar,
-    private dialogRef: MatDialogRef<UpdateUnitsaMetadataComponent>,
-    private dialogRefToClose: MatDialogRef<UpdateUnitsaMetadataComponent>,
+    private dialogRef: MatDialogRef<UpdateUnitsMetadataComponent>,
+    private dialogRefToClose: MatDialogRef<UpdateUnitsMetadataComponent>,
     private translateService: TranslateService,
     private archiveCollectService: ArchiveCollectService,
+    private bytesPipe: BytesPipe,
   ) {}
 
   ngOnDestroy(): void {
     this.subscriptions?.unsubscribe();
-  }
-
-  updateUAMetadatas() {
-    this.stepIndex = this.stepIndex + 1;
   }
 
   addUpdateMetadataCSVFile() {
@@ -136,42 +131,8 @@ export class UpdateUnitsaMetadataComponent implements OnDestroy {
       );
   }
 
-  handleFileInput(files: FileList) {
-    this.handleFileList(files);
-  }
-
-  onDragOver(inDropZone: boolean) {
-    this.hasDropZoneOver = inDropZone;
-  }
-
-  onDragLeave(inDropZone: boolean) {
-    this.hasDropZoneOver = inDropZone;
-  }
-
-  onDropped(files: File[]) {
-    this.hasDropZoneOver = false;
-    this.handleFile(files);
-  }
-
   checkFileExtension(fileName: string): boolean {
     return fileName.endsWith(CSV_EXTENSION);
-  }
-
-  initializeFileToUpload(files: File[]) {
-    if (files) {
-      this.fileToUpload = files[0];
-
-      this.fileName = this.fileToUpload.name;
-      this.fileSize = this.fileToUpload.size;
-    }
-  }
-
-  initializeFileListToUpload(files: FileList) {
-    if (files) {
-      this.fileToUpload = files.item(0);
-      this.fileName = this.fileToUpload.name;
-      this.fileSize = this.fileToUpload.size;
-    }
   }
 
   onCancel() {
@@ -188,37 +149,34 @@ export class UpdateUnitsaMetadataComponent implements OnDestroy {
     this.dialogRef.close(true);
   }
 
-  initializeParameters() {
+  private initializeParameters() {
     this.isDisabled = false;
     this.hasError = false;
     this.hasFileSizeError = false;
-    this.erroeMessage = null;
+    this.errorMessage = null;
     this.isAtrNotValid = false;
   }
 
-  handleFile(files: File[]) {
-    this.initializeParameters();
-    this.initializeFileToUpload(files);
+  private isFileList(files: FileList | File[]): files is FileList {
+    return files instanceof FileList;
+  }
 
-    const transformer = new BytesPipe(this.logger);
-    this.fileSizeString = transformer.transform(this.fileSize);
-
-    if (!this.checkFileExtension(this.fileName)) {
-      this.erroeMessage = this.translateService.instant('COLLECT.UPDATE_UNITS_METADATA.FILE_BAD_FORMAT');
-      this.hasError = true;
-      return;
+  private initializeFileToUpload(files: FileList | File[]) {
+    if (files) {
+      this.fileToUpload = this.isFileList(files) ? files.item(0) : files[0];
+      this.fileName = this.fileToUpload.name;
+      this.fileSize = this.fileToUpload.size;
     }
   }
 
-  handleFileList(files: FileList) {
+  handleFile(files: FileList | File[]) {
     this.initializeParameters();
-    this.initializeFileListToUpload(files);
+    this.initializeFileToUpload(files);
 
-    const transformer = new BytesPipe(this.logger);
-    this.fileSizeString = transformer.transform(this.fileSize);
+    this.fileSizeString = this.bytesPipe.transform(this.fileSize);
 
     if (!this.checkFileExtension(this.fileName)) {
-      this.erroeMessage = this.translateService.instant('COLLECT.UPDATE_UNITS_METADATA.FILE_BAD_FORMAT');
+      this.errorMessage = this.translateService.instant('COLLECT.UPDATE_UNITS_METADATA.FILE_BAD_FORMAT');
       this.hasError = true;
       return;
     }
