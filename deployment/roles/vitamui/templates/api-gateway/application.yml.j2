@@ -215,7 +215,7 @@ spring:
               /archive-search-api/security-profile/**,
               /archive-search-api/ontology/**,
               /archive-search-api/rules/**,
-              /archive-search-api/schemas,
+              /archive-search-api/schemas/**,
 
               /pastis-api/archival-profile$,
               /pastis-api/archival-profile/**,
@@ -225,7 +225,7 @@ spring:
               /collect-api/ontology/**,
               /collect-api/search/**,
               /collect-api/rules/**,
-              /collect-api/schemas
+              /collect-api/schemas/**
 
           filters:
             - RewritePath=/referential-api/fileformat(?<segment>.*),/referential/v1/fileformats$\{segment}
@@ -237,7 +237,7 @@ spring:
             - RewritePath=/referential-api(?<segment>.*),/referential/v1$\{segment}
 
             # Archive Search Referential API
-            - RewritePath=/archive-search-api/schemas,/schemas
+            - RewritePath=/archive-search-api/schemas(?<segment>.*),/schemas$\{segment}
             - RewritePath=/archive-search-api(?<segment>.*),/referential/v1$\{segment}
 
             # Pastis to Referential API
@@ -245,7 +245,7 @@ spring:
             - RewritePath=/pastis-api/profile(?<segment>.*),/referential/v1/profile$\{segment}
 
             # Collect Referential API
-            - RewritePath=/collect-api/schemas,/schemas
+            - RewritePath=/collect-api/schemas(?<segment>.*),/schemas$\{segment}
             - RewritePath=/collect-api/search/units(?<segment>.*),/units$\{segment}
             - RewritePath=/collect-api/search/filingplan(?<segment>.*),/units/filingplan$\{segment}
             - RewritePath=/collect-api(?<segment>.*),/referential/v1$\{segment}

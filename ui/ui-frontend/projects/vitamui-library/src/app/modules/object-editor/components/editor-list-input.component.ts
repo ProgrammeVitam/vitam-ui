@@ -25,36 +25,52 @@
  * accept its terms.
  */
 
-package fr.gouv.vitamui.referential.external.server.service;
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { EditObject } from '../models/edit-object.model';
+import { FormControl, Validators } from '@angular/forms';
+import { Subscription } from 'rxjs';
+import { EditorInputComponent } from './editor-input.component';
 
-import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
-import fr.gouv.vitamui.referential.common.dto.SchemaDto;
-import fr.gouv.vitamui.referential.common.model.Collection;
-import fr.gouv.vitamui.referential.internal.client.SchemaClient;
-import org.springframework.stereotype.Service;
+@Component({
+  selector: 'vitamui-editor-list-input',
+  template: `
+    <vitamui-editor-input
+      [control]="control"
+      [label]="editObject.displayRule?.ui?.label"
+      [hint]="editObject.hint"
+      [required]="editObject.required"
+    ></vitamui-editor-input>
+  `,
+  imports: [EditorInputComponent],
+  standalone: true,
+})
+export class EditorListInputComponent implements OnInit, OnDestroy {
+  @Input({ required: true }) editObject!: EditObject;
 
-import java.net.URISyntaxException;
-import java.util.List;
-import java.util.Set;
+  control: FormControl;
 
-@Service
-public class SchemaService {
+  private subscriptions = new Subscription();
 
-    private final SchemaClient client;
+  ngOnInit() {
+    const values: any[] = this.editObject.control.value as any[];
+    const firstValue = values.shift();
+    const validators = Object.keys(this.editObject).reduce((acc, key) => {
+      if (key === 'required' && this.editObject[key]) acc.push(Validators.required);
+      if (key === 'pattern' && this.editObject[key]) acc.push(Validators.pattern(this.editObject[key]));
 
-    public SchemaService(SchemaClient client) {
-        this.client = client;
-    }
+      return acc;
+    }, []);
 
-    public List<SchemaDto> getSchemas(final InternalHttpContext internalHttpContext, final Set<Collection> collections)
-        throws URISyntaxException {
-        return client.getSchemas(internalHttpContext, collections);
-    }
+    this.control = new FormControl(firstValue, validators);
+    this.subscriptions.add(
+      this.control.valueChanges.subscribe((value) => {
+        this.editObject.control.setValue(value ? [value] : []);
+        this.editObject.control.markAsDirty();
+      }),
+    );
+  }
 
-    public SchemaDto getArchiveUnitProfileSchema(
-        final InternalHttpContext internalHttpContext,
-        final String archiveUnitProfileId
-    ) throws URISyntaxException {
-        return client.getArchiveUnitProfileSchema(internalHttpContext, archiveUnitProfileId);
-    }
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
+  }
 }

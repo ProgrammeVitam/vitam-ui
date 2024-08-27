@@ -32,6 +32,7 @@ import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.RequestResponseOK;
+import fr.gouv.vitam.common.model.administration.CombinedSchemaModel;
 import fr.gouv.vitam.common.model.administration.schema.SchemaResponse;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import fr.gouv.vitamui.referential.common.dto.SchemaDto;
@@ -69,7 +70,7 @@ public class SchemaService {
             final List<SchemaResponse> schemaModels = ((RequestResponseOK<SchemaResponse>) payload).getResults();
             final SchemaModelToSchemaElementDtoConverter converter = new SchemaModelToSchemaElementDtoConverter();
             final SchemaDto schemaDto = new SchemaDto();
-            schemaDto.addAll(schemaModels.stream().map(converter::convert).collect(Collectors.toList()));
+            schemaDto.addAll(schemaModels.stream().map(converter::convert).toList());
             return Optional.of(schemaDto);
         } catch (VitamClientException e) {
             throw new SchemaLoadingException(e);
@@ -83,6 +84,20 @@ public class SchemaService {
             .filter(Optional::isPresent)
             .map(Optional::get)
             .collect(Collectors.toList());
+    }
+
+    public SchemaDto getArchiveUnitProfileSchema(final String archiveUnitProfileId) throws VitamClientException {
+        final VitamContext vitamContext = internalSecurityService.getVitamContext();
+        final RequestResponse<CombinedSchemaModel> payload = adminExternalClient.getArchiveUnitProfileSchema(
+            vitamContext,
+            archiveUnitProfileId
+        );
+        final List<CombinedSchemaModel> schemaModels = ((RequestResponseOK<CombinedSchemaModel>) payload).getResults();
+        final CombinedSchemaModelToSchemaElementDtoConverter converter =
+            new CombinedSchemaModelToSchemaElementDtoConverter();
+        final SchemaDto schemaDto = new SchemaDto();
+        schemaDto.addAll(schemaModels.stream().map(converter::convert).toList());
+        return schemaDto;
     }
 
     private Optional<RequestResponse<SchemaResponse>> getSchemaModels(Collection collection)

@@ -25,36 +25,28 @@
  * accept its terms.
  */
 
-package fr.gouv.vitamui.referential.external.server.service;
+package fr.gouv.vitamui.referential.common.dto;
 
-import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
-import fr.gouv.vitamui.referential.common.dto.SchemaDto;
-import fr.gouv.vitamui.referential.common.model.Collection;
-import fr.gouv.vitamui.referential.internal.client.SchemaClient;
-import org.springframework.stereotype.Service;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import fr.gouv.vitamui.referential.common.model.ControlType;
+import lombok.Data;
 
-import java.net.URISyntaxException;
+import javax.validation.constraints.NotBlank;
 import java.util.List;
-import java.util.Set;
 
-@Service
-public class SchemaService {
+@Data
+public class ControlDto {
 
-    private final SchemaClient client;
+    @NotBlank
+    @JsonProperty("Type")
+    private ControlType type;
 
-    public SchemaService(SchemaClient client) {
-        this.client = client;
-    }
+    @JsonProperty("Value")
+    private String value;
 
-    public List<SchemaDto> getSchemas(final InternalHttpContext internalHttpContext, final Set<Collection> collections)
-        throws URISyntaxException {
-        return client.getSchemas(internalHttpContext, collections);
-    }
+    @JsonProperty("Values")
+    private List<String> values;
 
-    public SchemaDto getArchiveUnitProfileSchema(
-        final InternalHttpContext internalHttpContext,
-        final String archiveUnitProfileId
-    ) throws URISyntaxException {
-        return client.getArchiveUnitProfileSchema(internalHttpContext, archiveUnitProfileId);
-    }
+    @JsonProperty("Comment")
+    private String comment;
 }

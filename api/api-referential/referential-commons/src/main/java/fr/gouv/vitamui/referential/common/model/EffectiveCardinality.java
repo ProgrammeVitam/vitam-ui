@@ -25,36 +25,40 @@
  * accept its terms.
  */
 
-package fr.gouv.vitamui.referential.external.server.service;
+package fr.gouv.vitamui.referential.common.model;
 
-import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
-import fr.gouv.vitamui.referential.common.dto.SchemaDto;
-import fr.gouv.vitamui.referential.common.model.Collection;
-import fr.gouv.vitamui.referential.internal.client.SchemaClient;
-import org.springframework.stereotype.Service;
+import java.util.Arrays;
+import java.util.Objects;
 
-import java.net.URISyntaxException;
-import java.util.List;
-import java.util.Set;
+public enum EffectiveCardinality {
+    ZERO("0"),
+    ONE("0-1"),
+    MANY("0-N"),
+    ONE_REQUIRED("1-1"),
+    MANY_REQUIRED("1-N");
 
-@Service
-public class SchemaService {
+    private final String cardinality;
 
-    private final SchemaClient client;
-
-    public SchemaService(SchemaClient client) {
-        this.client = client;
+    EffectiveCardinality(final String cardinality) {
+        this.cardinality = cardinality;
     }
 
-    public List<SchemaDto> getSchemas(final InternalHttpContext internalHttpContext, final Set<Collection> collections)
-        throws URISyntaxException {
-        return client.getSchemas(internalHttpContext, collections);
+    public String getValue() {
+        return cardinality;
     }
 
-    public SchemaDto getArchiveUnitProfileSchema(
-        final InternalHttpContext internalHttpContext,
-        final String archiveUnitProfileId
-    ) throws URISyntaxException {
-        return client.getArchiveUnitProfileSchema(internalHttpContext, archiveUnitProfileId);
+    public boolean isMandatory() {
+        return this.cardinality.contains("1");
+    }
+
+    public boolean isMultiple() {
+        return this.cardinality.contains("N");
+    }
+
+    public static EffectiveCardinality of(final String cardinality) {
+        return Arrays.stream(EffectiveCardinality.values())
+            .filter(c -> Objects.equals(c.getValue(), cardinality))
+            .findFirst()
+            .orElseThrow();
     }
 }

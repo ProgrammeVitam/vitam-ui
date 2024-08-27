@@ -36,7 +36,7 @@
  */
 import { Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { BehaviorSubject, combineLatest } from 'rxjs';
+import { BehaviorSubject, combineLatest, Observable, switchMap } from 'rxjs';
 import { Logger } from '../../../logger/logger';
 import { Collection, Schema, SchemaElement } from '../../../models';
 import { EditObject } from '../../../object-editor/models/edit-object.model';
@@ -52,20 +52,21 @@ import { ArchiveUnitEditObjectService } from '../../archive-unit-edit-object.ser
 import { ArchiveUnitTemplateService } from '../../archive-unit-template.service';
 import { ArchiveUnit } from '../../models/archive-unit';
 import { JsonPatch, JsonPatchDto } from '../../models/json-patch';
+import { filter } from 'rxjs/operators';
 
 @Injectable()
 export class ArchiveUnitEditorService {
   private collection = new BehaviorSubject<Collection>(Collection.ARCHIVE_UNIT);
   private sedaVersions = new BehaviorSubject<SedaVersion[]>(['INTERNE', '2.3']);
   private category = new BehaviorSubject<SchemaElement['Category']>('DESCRIPTION');
-  private data = new BehaviorSubject<any>(null);
+  private data$ = new BehaviorSubject<ArchiveUnit>(null);
   private editObject = new BehaviorSubject<EditObject>(null);
   private customTemplate = new BehaviorSubject<DisplayRule[]>([]);
 
   private template = new BehaviorSubject<DisplayRule[]>([]);
-  private schema = new BehaviorSubject<Schema>([]);
 
   editObject$ = this.editObject.asObservable();
+  schema$: Observable<Schema>;
 
   constructor(
     private logger: Logger,
@@ -73,44 +74,51 @@ export class ArchiveUnitEditorService {
     private templateService: TemplateService,
     private schemaUtils: SchemaUtils,
     private archiveUnitTemplateService: ArchiveUnitTemplateService,
-    private archiveUnitEditObject: ArchiveUnitEditObjectService,
+    private archiveUnitEditObjectService: ArchiveUnitEditObjectService,
     private editObjectService: EditObjectService,
   ) {
-    combineLatest([this.data, this.customTemplate, this.schemaService.getSchema(this.collection.value)]).subscribe(
-      ([data, customTemplate, schema]) => {
-        if (data === null) return this.editObject.next(null);
-
-        this.schemaUtils.validate(schema, { passive: true });
-
-        const paths = schema.map((element) => element.Path);
-        const schemaErrors = schema.map((element) => this.schemaUtils.collectSchemaElementErrors(element, schema, paths));
-        const subschema: Schema = schema
-          .filter(
-            (element) =>
-              element.Category === this.category.value || element.Origin === 'EXTERNAL' || internationalizedKeys.includes(element.Path),
-          ) // External elements are categorized as OTHER by default by schema API
-          .filter((element) => {
-            if (element?.SedaVersions?.length) return element.SedaVersions.some((version) => this.sedaVersions.value.includes(version));
-
-            // No seda version for external elements, we should allow these elements
-            return true;
-          })
-          .filter(
-            (element) => !schemaErrors.some((schemaError) => schemaError.element.Path === element.Path && schemaError.messages.length > 0),
-          );
-
-        const editObject: EditObject = this.computeEditObject(data, customTemplate, subschema);
-
-        this.editObject.next(editObject);
-      },
-      (error) => {
-        this.logger.error(this, 'Error in observable', error);
-      },
+    this.schema$ = this.data$.asObservable().pipe(
+      filter((archiveUnit) => Boolean(archiveUnit)),
+      switchMap((archiveUnit) => this.getArchiveUnitProfileSchemaOrDefault(archiveUnit)),
     );
+    combineLatest([this.data$, this.customTemplate, this.schema$])
+      .pipe(filter(([data, _customTemplate, schema]) => Boolean(data) && Boolean(schema)))
+      .subscribe({
+        next: ([data, customTemplate, schema]) => {
+          if (data === null) return this.editObject.next(null);
+
+          this.schemaUtils.validate(schema, { passive: true });
+
+          const paths = schema.map((element) => element.Path);
+          const schemaErrors = schema.map((element) => this.schemaUtils.collectSchemaElementErrors(element, schema, paths));
+          const subschema: Schema = schema
+            .filter(
+              (element) =>
+                element.Category === this.category.value || element.Origin === 'EXTERNAL' || internationalizedKeys.includes(element.Path),
+            ) // External elements are categorized as OTHER by default by schema API
+            .filter((element) => {
+              if (element?.SedaVersions?.length) return element.SedaVersions.some((version) => this.sedaVersions.value.includes(version));
+
+              // No seda version for external elements, we should allow these elements
+              return true;
+            })
+            .filter(
+              (element) =>
+                !schemaErrors.some((schemaError) => schemaError.element.Path === element.Path && schemaError.messages.length > 0),
+            );
+
+          const editObject: EditObject = this.computeEditObject(data, customTemplate, subschema);
+
+          this.editObject.next(editObject);
+        },
+        error: (error) => {
+          this.logger.error(this, 'Error in observable', error);
+        },
+      });
   }
 
   public setData(data: any): void {
-    this.data.next(data);
+    this.data$.next(data);
   }
 
   public setTemplate(template: DisplayRule[]): void {
@@ -118,18 +126,19 @@ export class ArchiveUnitEditorService {
   }
 
   private computeEditObject(data: any, customTemplate: DisplayRule[], schema: Schema): EditObject {
-    this.template.next(this.archiveUnitTemplateService.computeTemplate(data, customTemplate, schema));
-    this.schema.next(this.editObjectService.createTemplateSchema(this.template.value, schema));
+    const template = this.archiveUnitTemplateService.computeTemplate(data, customTemplate, schema);
+    this.template.next(template);
 
-    const editObject = this.archiveUnitEditObject.computeEditObject(data, this.template.value, this.schema.value);
+    const templateSchema = this.editObjectService.createTemplateSchema(this.template.value, schema);
+    const editObject = this.archiveUnitEditObjectService.computeEditObject(data, this.template.value, templateSchema);
 
-    this.archiveUnitEditObject.setMissingTypes(editObject); // TODO: Idealement utiliser soit type ou kind pour les ngIf des composants
-    this.archiveUnitEditObject.setMissingDisplayRules(editObject);
-    this.archiveUnitEditObject.displayAll(editObject);
-    this.archiveUnitEditObject.collapseAll(editObject);
-    this.archiveUnitEditObject.expand('', editObject);
-    this.archiveUnitEditObject.expand('Generalities', editObject);
-    this.archiveUnitEditObject.hideSpsFieldWithOneValue(editObject);
+    this.archiveUnitEditObjectService.setMissingTypes(editObject); // TODO: Idealement utiliser soit type ou kind pour les ngIf des composants
+    this.archiveUnitEditObjectService.setMissingDisplayRules(editObject);
+    this.archiveUnitEditObjectService.displayAll(editObject);
+    this.archiveUnitEditObjectService.collapseAll(editObject);
+    this.archiveUnitEditObjectService.expand('', editObject);
+    this.archiveUnitEditObjectService.expand('Generalities', editObject);
+    this.archiveUnitEditObjectService.hideSpsFieldWithOneValue(editObject);
 
     return editObject;
   }
@@ -149,24 +158,20 @@ export class ArchiveUnitEditorService {
 
   public getValue(): ArchiveUnit {
     const projectedValue = (this.editObject.value.control as FormGroup).getRawValue();
-    const updatedValue = this.templateService.toOriginal(projectedValue, this.template.value);
-
-    return updatedValue;
+    return this.templateService.toOriginal(projectedValue, this.template.value);
   }
 
   public getOriginalValue(): ArchiveUnit {
-    const projectedValue = this.templateService.toProjected(this.data.value, this.template.value);
-    const originalValue = this.templateService.toOriginal(projectedValue, this.template.value);
-
-    return originalValue;
+    const projectedValue = this.templateService.toProjected(this.data$.value, this.template.value);
+    return this.templateService.toOriginal(projectedValue, this.template.value);
   }
 
   public toJsonPatch(): JsonPatch {
     const originalValue = this.getOriginalValue();
     const updatedValue = this.getValue();
-    const criterias = [undefined, null, [], {}, ''];
-    const consistentOriginalValue = this.filterByCriteria(originalValue, criterias);
-    const consistentUpdatedValue = this.filterByCriteria(updatedValue, criterias);
+    const criteria = [undefined, null, [], {}, ''];
+    const consistentOriginalValue = this.filterByCriteria(originalValue, criteria);
+    const consistentUpdatedValue = this.filterByCriteria(updatedValue, criteria);
 
     const changes = diff(consistentUpdatedValue, consistentOriginalValue);
     const replaceEntries = Object.entries(changes);
@@ -189,7 +194,7 @@ export class ArchiveUnitEditorService {
 
   public toJsonPatchDto(): JsonPatchDto {
     return {
-      id: this.data.value['#id'],
+      id: this.data$.value['#id'],
       jsonPatch: this.toJsonPatch(),
     };
   }
@@ -213,5 +218,13 @@ export class ArchiveUnitEditorService {
     }
     // Pour tout autre type de valeur, renvoyer directement la valeur
     return input;
+  }
+
+  private getArchiveUnitProfileSchemaOrDefault(archiveUnit: ArchiveUnit): Observable<Schema> {
+    const archiveUnitProfileId = archiveUnit?.ArchiveUnitProfile;
+
+    if (archiveUnitProfileId) return this.schemaService.getArchiveUnitProfileSchema(archiveUnitProfileId);
+
+    return this.schemaService.getSchema(this.collection.value);
   }
 }

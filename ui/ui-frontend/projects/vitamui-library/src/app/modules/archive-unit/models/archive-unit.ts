@@ -30,7 +30,7 @@ export interface ArchiveUnit extends ManagementMetadata, SystemMetadata, Descrip
 }
 
 export interface ManagementMetadata {
-  '#management'?: any;
+  ArchiveUnitProfile?: string;
 }
 
 export interface SystemMetadata {

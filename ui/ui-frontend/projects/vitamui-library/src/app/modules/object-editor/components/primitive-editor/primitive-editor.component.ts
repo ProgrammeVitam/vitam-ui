@@ -3,6 +3,7 @@ import { Logger } from '../../../logger/logger';
 import { DateDisplayService } from '../../../object-viewer/services/date-display.service';
 import { ComponentType } from '../../../object-viewer/types';
 import { EditObject } from '../../models/edit-object.model';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'vitamui-common-primitive-editor',
@@ -27,4 +28,6 @@ export class PrimitiveEditorComponent implements OnInit {
     this.uiComponent = this.editObject.displayRule?.ui?.component;
     this.dateFormat = this.dateDisplayService.getFormat(this.uiComponent);
   }
+
+  protected readonly FormControl = FormControl;
 }

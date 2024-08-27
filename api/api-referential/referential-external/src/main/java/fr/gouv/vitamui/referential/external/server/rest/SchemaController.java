@@ -39,10 +39,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.constraints.NotNull;
 import javax.ws.rs.Produces;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -77,6 +79,19 @@ public class SchemaController {
             schemaService.getSchemas(
                 InternalHttpContext.buildFromExternalHttpContext(externalSecurityService.getHttpContext()),
                 collections
+            )
+        );
+    }
+
+    @GetMapping("/archive-unit-profile/{id}")
+    @Produces(APPLICATION_JSON)
+    @Secured(ROLE_GET_SCHEMAS)
+    public ResponseEntity<SchemaDto> getArchiveUnitProfileSchema(@PathVariable @NotNull String id)
+        throws URISyntaxException {
+        return ResponseEntity.ok(
+            schemaService.getArchiveUnitProfileSchema(
+                InternalHttpContext.buildFromExternalHttpContext(externalSecurityService.getHttpContext()),
+                id
             )
         );
     }

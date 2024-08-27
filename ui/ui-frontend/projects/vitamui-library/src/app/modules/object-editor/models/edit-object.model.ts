@@ -1,7 +1,7 @@
 import { AbstractControl } from '@angular/forms';
 import { BehaviorSubject } from 'rxjs';
 import { DisplayObject } from '../../object-viewer/models';
-import { DisplayObjectType } from '../../object-viewer/types';
+import { DisplayObjectType, EffectiveCardinality } from '../../object-viewer/types';
 
 export interface Actions {
   [key: string]: Action;
@@ -24,4 +24,8 @@ export interface EditObject extends DisplayObject {
   required?: boolean;
   virtual?: boolean;
   childrenChange: BehaviorSubject<EditObject[]>;
+  pattern?: string;
+  options?: string[];
+  hint?: string;
+  cardinality: EffectiveCardinality;
 }

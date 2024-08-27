@@ -22,9 +22,20 @@ import { ListEditorComponent } from './components/list-editor/list-editor.compon
 import { PrimitiveEditorComponent } from './components/primitive-editor/primitive-editor.component';
 import { ObjectEditorComponent } from './object-editor.component';
 import { AppendStarPipe } from './required.pipe';
+import { MatLegacyOptionModule } from '@angular/material/legacy-core';
+import { MatLegacySelectModule } from '@angular/material/legacy-select';
+import { EditorListInputComponent } from './components/editor-list-input.component';
+import { EditorListTextareaComponent } from './components/editor-list-textarea.component';
+import { FormErrorDisplayComponent } from '../components/form-error-display/form-error-display.component';
+import { EditorListSelectComponent } from './components/editor-list-select.component';
+import { EditorHintComponent } from './components/editor-hint.component';
+import { EditorInputComponent } from './components/editor-input.component';
+import { EditorTextareaComponent } from './components/editor-textarea.component';
+import { EditorSelectComponent } from './components/editor-select.component';
+import { MultipleOptionsDatepickerModule } from '../components/multiple-options-datepicker/multiple-options-datepicker.module';
 
 @NgModule({
-  declarations: [ObjectEditorComponent, GroupEditorComponent, ListEditorComponent, PrimitiveEditorComponent, AppendStarPipe],
+  declarations: [ObjectEditorComponent, GroupEditorComponent, ListEditorComponent, PrimitiveEditorComponent],
   providers: [{ provide: DisplayObjectService, useClass: PathStrategyDisplayObjectService }],
   imports: [
     CommonModule,
@@ -44,6 +55,18 @@ import { AppendStarPipe } from './required.pipe';
     MatProgressSpinnerModule,
     MatDialogModule,
     VitamuiRepeatableInputModule,
+    MatLegacyOptionModule,
+    MatLegacySelectModule,
+    EditorListInputComponent,
+    EditorListTextareaComponent,
+    FormErrorDisplayComponent,
+    AppendStarPipe,
+    EditorListSelectComponent,
+    EditorHintComponent,
+    EditorInputComponent,
+    EditorTextareaComponent,
+    EditorSelectComponent,
+    MultipleOptionsDatepickerModule,
   ],
   exports: [ObjectEditorComponent, GroupEditorComponent, ListEditorComponent, PrimitiveEditorComponent],
 })

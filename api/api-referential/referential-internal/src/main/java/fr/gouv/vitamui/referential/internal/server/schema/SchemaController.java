@@ -27,6 +27,7 @@
 
 package fr.gouv.vitamui.referential.internal.server.schema;
 
+import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.referential.common.dto.SchemaDto;
 import fr.gouv.vitamui.referential.common.exception.NoCollectionException;
@@ -35,10 +36,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.constraints.NotNull;
 import javax.ws.rs.Produces;
 import java.util.List;
 import java.util.Set;
@@ -65,5 +68,12 @@ public class SchemaController {
         }
 
         return ResponseEntity.ok(schemaService.getSchemas(collections));
+    }
+
+    @GetMapping("/archive-unit-profile/{id}")
+    @Produces(APPLICATION_JSON)
+    public ResponseEntity<SchemaDto> getArchiveUnitProfileSchema(@PathVariable @NotNull String id)
+        throws VitamClientException {
+        return ResponseEntity.ok(schemaService.getArchiveUnitProfileSchema(id));
     }
 }

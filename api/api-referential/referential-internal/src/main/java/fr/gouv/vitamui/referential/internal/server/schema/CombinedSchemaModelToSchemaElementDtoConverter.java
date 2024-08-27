@@ -28,28 +28,31 @@
 package fr.gouv.vitamui.referential.internal.server.schema;
 
 import com.fasterxml.jackson.databind.util.StdConverter;
-import fr.gouv.vitam.common.model.administration.schema.SchemaResponse;
+import fr.gouv.vitam.common.model.administration.CombinedSchemaModel;
 import fr.gouv.vitam.common.model.administration.schema.SchemaStringSizeType;
-import fr.gouv.vitam.common.model.administration.schema.SchemaType;
+import fr.gouv.vitamui.referential.common.dto.ControlDto;
 import fr.gouv.vitamui.referential.common.dto.SchemaElementDto;
 import fr.gouv.vitamui.referential.common.model.Cardinality;
 import fr.gouv.vitamui.referential.common.model.Collection;
+import fr.gouv.vitamui.referential.common.model.ControlType;
 import fr.gouv.vitamui.referential.common.model.DataType;
+import fr.gouv.vitamui.referential.common.model.EffectiveCardinality;
 
 import java.util.Objects;
 import java.util.Optional;
 
 import static java.util.Objects.isNull;
 
-public class SchemaModelToSchemaElementDtoConverter extends StdConverter<SchemaResponse, SchemaElementDto> {
+public class CombinedSchemaModelToSchemaElementDtoConverter
+    extends StdConverter<CombinedSchemaModel, SchemaElementDto> {
 
     @Override
-    public SchemaElementDto convert(SchemaResponse schemaModel) {
-        final SchemaStringSizeType stringTypeSize = schemaModel.getStringSize();
+    public SchemaElementDto convert(CombinedSchemaModel schemaModel) {
+        final SchemaStringSizeType stringTypeSize = SchemaStringSizeType.fromValue(schemaModel.getStringSize().name());
         final SchemaElementDto schemaElementDto = (SchemaElementDto) new SchemaElementDto()
             .setPath(schemaModel.getPath())
             .setStringSize(Optional.ofNullable(stringTypeSize).map(SchemaStringSizeType::value).orElse(null))
-            .setCardinality(Cardinality.of(schemaModel.getCardinality().value()))
+            .setCardinality(Cardinality.of(schemaModel.getCardinality().name()))
             .setFieldName(schemaModel.getFieldName())
             .setShortName(schemaModel.getShortName())
             .setDescription(schemaModel.getDescription())
@@ -61,29 +64,42 @@ public class SchemaModelToSchemaElementDtoConverter extends StdConverter<SchemaR
             .setSedaVersions(schemaModel.getSedaVersions())
             .setCategory(schemaModel.getCategory())
             .setApiPath(Optional.ofNullable(schemaModel.getApiPath()).orElse(schemaModel.getPath()))
-            .setDataType(convertFromIndexationType(schemaModel.getType()));
+            .setDataType(convertFromIndexationType(schemaModel.getType().name()));
+
+        if (schemaModel.getControl() != null) {
+            final ControlDto controlDto = new ControlDto();
+
+            controlDto.setType(ControlType.valueOf(schemaModel.getControl().getType()));
+            controlDto.setValue(schemaModel.getControl().getValue());
+            controlDto.setValues(schemaModel.getControl().getValues());
+            controlDto.setComment(schemaModel.getControl().getComment());
+
+            schemaElementDto.setControl(controlDto);
+        }
+
+        schemaElementDto.setEffectiveCardinality(EffectiveCardinality.valueOf(schemaModel.getEffectiveCardinality()));
 
         return schemaElementDto;
     }
 
-    private DataType convertFromIndexationType(SchemaType indexationType) {
+    private DataType convertFromIndexationType(String indexationType) {
         switch (indexationType) {
-            case KEYWORD:
-            case ENUM:
-            case TEXT:
+            case "KEYWORD":
+            case "ENUM":
+            case "TEXT":
                 return DataType.STRING;
-            case DATE:
+            case "DATE":
                 return DataType.DATETIME;
-            case OBJECT:
-            case LONG:
-            case DOUBLE:
-            case BOOLEAN:
-                return DataType.valueOf(indexationType.getType());
+            case "OBJECT":
+            case "LONG":
+            case "DOUBLE":
+            case "BOOLEAN":
+                return DataType.valueOf(indexationType);
         }
         return null;
     }
 
-    private Collection mapCollections(final SchemaResponse schemaResponse) {
+    private Collection mapCollections(final CombinedSchemaModel schemaResponse) {
         if (isNull(schemaResponse.getCollection())) {
             return null;
         }

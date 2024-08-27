@@ -98,7 +98,6 @@ export const customTemplate: DisplayRule[] = [
     Path: 'DescriptionLevel',
     ui: {
       Path: 'Generalities.DescriptionLevel',
-      component: 'select',
       layout: {
         columns: 1,
         size: 'small',
@@ -153,11 +152,6 @@ export const customTemplate: DisplayRule[] = [
     Path: 'Tag',
     ui: {
       Path: 'Generalities.Tag',
-      component: 'textfield',
-      layout: {
-        columns: 1,
-        size: 'small',
-      },
     },
   },
   {

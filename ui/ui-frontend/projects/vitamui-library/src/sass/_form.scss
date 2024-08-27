@@ -51,10 +51,17 @@
 
 .vitamui-input-errors {
   width: 100%;
-  padding: 4px 30px;
   font-size: 12px;
   font-weight: 400;
   color: $red;
+  display: flex;
+  align-items: center;
+  padding: 5px 0 0 0;
+
+  i {
+    font-size: 12px;
+    margin-right: 5px;
+  }
 }
 
 input[type='text'].vitamui-input,

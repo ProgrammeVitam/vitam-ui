@@ -34,9 +34,10 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Collection } from '../index';
-import { Cardinality, SedaVersion } from '../../object-viewer/types';
 import { WithPath } from '../../object-viewer/models';
+import { Cardinality, EffectiveCardinality, SedaVersion } from '../../object-viewer/types';
+import { Collection } from '../index';
+import { Control } from './control.model';
 
 export interface SchemaElement extends WithPath {
   readonly id?: string;
@@ -57,4 +58,9 @@ export interface SchemaElement extends WithPath {
   readonly Collection: Collection;
   readonly ApiPath: string;
   readonly Category: 'DESCRIPTION' | 'MANAGEMENT' | 'OTHER';
+}
+
+export interface ProfiledSchemaElement extends SchemaElement {
+  readonly Control?: Control;
+  readonly EffectiveCardinality?: EffectiveCardinality;
 }
