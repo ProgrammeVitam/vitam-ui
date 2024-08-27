@@ -273,8 +273,7 @@ export class UpdateUnitRulesComponent implements OnDestroy {
   submit() {
     this.disabledControl = true;
     this.showText = true;
-    this.isLoading = !this.isLoading;
-
+    this.isLoading = true;
     const rule: RuleAction = {
       rule: this.ruleDetailsForm.get('newRule').value,
       startDate: this.ruleDetailsForm.get('startDate').value,
@@ -288,7 +287,6 @@ export class UpdateUnitRulesComponent implements OnDestroy {
         this.managementRules = data;
       }),
     );
-
     if (
       this.managementRules.findIndex(
         (managementRule) => managementRule.category === this.ruleCategory && managementRule.actionType === RuleActionsEnum.UPDATE_RULES,
@@ -319,9 +317,8 @@ export class UpdateUnitRulesComponent implements OnDestroy {
       };
       this.managementRules.push(managementRule);
     }
-
     this.managementRulesSharedDataService.emitManagementRules(this.managementRules);
-    this.addRuleToQuery();
+    this.addRuleToQueryAndMakeRequest();
     this.confirmStep.emit();
     this.lastRuleId = this.ruleDetailsForm.get('oldRule').value;
   }
@@ -381,10 +378,9 @@ export class UpdateUnitRulesComponent implements OnDestroy {
     );
   }
 
-  addRuleToQuery() {
+  addRuleToQueryAndMakeRequest() {
     this.isLoading = true;
     this.initDSLQuery();
-
     const onlyManagementRules: SearchCriteriaEltDto = {
       category: this.updateUnitManagementRuleService.getRuleManagementCategory(this.ruleCategory),
       criteria: ORIGIN_HAS_AT_LEAST_ONE,
@@ -392,7 +388,6 @@ export class UpdateUnitRulesComponent implements OnDestroy {
       operator: CriteriaOperator.EQ,
       values: [{ id: 'true', value: 'true' }],
     };
-
     const criteriaWithId: SearchCriteriaEltDto = {
       criteria: MANAGEMENT_RULE_IDENTIFIER,
       values: [{ id: this.ruleDetailsForm.get('oldRule').value, value: this.ruleDetailsForm.get('oldRule').value }],
@@ -400,38 +395,34 @@ export class UpdateUnitRulesComponent implements OnDestroy {
       operator: CriteriaOperator.EQ,
       dataType: CriteriaDataType.STRING,
     };
-
     this.criteriaSearchDSLQuery.criteriaList.push(criteriaWithId);
     this.criteriaSearchDSLQuery.criteriaList.push(onlyManagementRules);
-
+    this.ruleDetailsForm.markAsUntouched();
     if (this.hasExactCount) {
-      this.archiveService.getTotalTrackHitsByCriteria(this.criteriaSearchDSLQuery.criteriaList).subscribe(
-        (resultsNumber) => {
+      this.archiveService.getTotalTrackHitsByCriteria(this.criteriaSearchDSLQuery.criteriaList).subscribe({
+        next: (resultsNumber) => {
           this.itemsWithSameRule = resultsNumber.toString();
           this.itemsToUpdate = (this.selectedItem - resultsNumber).toString();
-          this.isLoading = false;
         },
-        (_error) => {
-          this.isLoading = false;
-        },
-      );
+        error: (e) => console.error(e),
+        complete: () => (this.isLoading = false),
+      });
     } else {
-      this.archiveService.searchArchiveUnitsByCriteria(this.criteriaSearchDSLQuery).subscribe(
-        (data) => {
+      this.archiveService.searchArchiveUnitsByCriteria(this.criteriaSearchDSLQuery).subscribe({
+        next: (data) => {
           this.itemsWithSameRule = data.totalResults.toString();
-          this.itemsToUpdate =
-            data.totalResults === ArchiveSearchConstsEnum.RESULTS_MAX_NUMBER
-              ? this.resultNumberToShow
-              : this.selectedItem === ArchiveSearchConstsEnum.RESULTS_MAX_NUMBER
-                ? this.resultNumberToShow
-                : (this.selectedItem - data.totalResults).toString();
-
-          this.isLoading = false;
+          if (
+            data.totalResults === ArchiveSearchConstsEnum.RESULTS_MAX_NUMBER ||
+            this.selectedItem === ArchiveSearchConstsEnum.RESULTS_MAX_NUMBER
+          ) {
+            this.itemsToUpdate = this.resultNumberToShow;
+          } else {
+            this.itemsToUpdate = (this.selectedItem - data.totalResults).toString();
+          }
         },
-        (_error) => {
-          this.isLoading = false;
-        },
-      );
+        error: (e) => console.error(e),
+        complete: () => (this.isLoading = false),
+      });
     }
   }
 
