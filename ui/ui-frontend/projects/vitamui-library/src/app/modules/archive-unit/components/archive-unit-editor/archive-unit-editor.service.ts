@@ -139,6 +139,7 @@ export class ArchiveUnitEditorService {
     this.archiveUnitEditObjectService.expand('', editObject);
     this.archiveUnitEditObjectService.expand('Generalities', editObject);
     this.archiveUnitEditObjectService.hideSpsFieldWithOneValue(editObject);
+    this.archiveUnitEditObjectService.hideCardinalityZero(editObject);
 
     return editObject;
   }
