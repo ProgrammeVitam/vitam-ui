@@ -37,22 +37,29 @@ import fr.gouv.vitamui.referential.common.model.Collection;
 import fr.gouv.vitamui.referential.common.model.ControlType;
 import fr.gouv.vitamui.referential.common.model.DataType;
 import fr.gouv.vitamui.referential.common.model.EffectiveCardinality;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.Objects;
 import java.util.Optional;
 
 import static java.util.Objects.isNull;
 
+@Slf4j
 public class CombinedSchemaModelToSchemaElementDtoConverter
     extends StdConverter<CombinedSchemaModel, SchemaElementDto> {
 
     @Override
     public SchemaElementDto convert(CombinedSchemaModel schemaModel) {
-        final SchemaStringSizeType stringTypeSize = SchemaStringSizeType.fromValue(schemaModel.getStringSize().name());
+        SchemaStringSizeType stringTypeSize = null;
+
+        if (schemaModel.getStringSize() != null) {
+            stringTypeSize = SchemaStringSizeType.fromValue(schemaModel.getStringSize().name());
+        }
+
         final SchemaElementDto schemaElementDto = (SchemaElementDto) new SchemaElementDto()
             .setPath(schemaModel.getPath())
             .setStringSize(Optional.ofNullable(stringTypeSize).map(SchemaStringSizeType::value).orElse(null))
-            .setCardinality(Cardinality.of(schemaModel.getCardinality().name()))
+            .setCardinality(Cardinality.valueOf(schemaModel.getCardinality().name()))
             .setFieldName(schemaModel.getFieldName())
             .setShortName(schemaModel.getShortName())
             .setDescription(schemaModel.getDescription())
@@ -66,18 +73,19 @@ public class CombinedSchemaModelToSchemaElementDtoConverter
             .setApiPath(Optional.ofNullable(schemaModel.getApiPath()).orElse(schemaModel.getPath()))
             .setDataType(convertFromIndexationType(schemaModel.getType().name()));
 
-        if (schemaModel.getControl() != null) {
-            final ControlDto controlDto = new ControlDto();
-
-            controlDto.setType(ControlType.valueOf(schemaModel.getControl().getType()));
-            controlDto.setValue(schemaModel.getControl().getValue());
-            controlDto.setValues(schemaModel.getControl().getValues());
-            controlDto.setComment(schemaModel.getControl().getComment());
-
-            schemaElementDto.setControl(controlDto);
-        }
-
         schemaElementDto.setEffectiveCardinality(EffectiveCardinality.valueOf(schemaModel.getEffectiveCardinality()));
+
+        if (schemaModel.getControl() == null) return schemaElementDto;
+
+        final ControlDto controlDto = new ControlDto();
+        if (schemaModel.getControl().getType() != null) {
+            controlDto.setType(ControlType.valueOf(schemaModel.getControl().getType()));
+        }
+        controlDto.setValue(schemaModel.getControl().getValue());
+        controlDto.setValues(schemaModel.getControl().getValues());
+        controlDto.setComment(schemaModel.getControl().getComment());
+
+        schemaElementDto.setControl(controlDto);
 
         return schemaElementDto;
     }

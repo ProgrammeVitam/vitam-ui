@@ -37,8 +37,6 @@ import fr.gouv.vitam.common.model.administration.schema.SchemaResponse;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import fr.gouv.vitamui.referential.common.dto.SchemaDto;
 import fr.gouv.vitamui.referential.common.model.Collection;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -51,7 +49,6 @@ import java.util.stream.Collectors;
 @Service
 public class SchemaService {
 
-    private static final Logger log = LoggerFactory.getLogger(SchemaService.class);
     private final InternalSecurityService internalSecurityService;
     private final AdminExternalClient adminExternalClient;
 
