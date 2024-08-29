@@ -189,6 +189,14 @@ export class ArchiveUnitEditObjectService {
     }
   }
 
+  public hideCardinalityZero(editObject: EditObject): void {
+    if (editObject.cardinality === 'ZERO') {
+      editObject.displayRule = { ...editObject.displayRule, ui: { ...editObject.displayRule.ui, display: false } };
+    }
+
+    editObject.children.forEach((child) => this.hideCardinalityZero(child));
+  }
+
   public setMissingTypes(editObject: EditObject): void {
     const { kind } = editObject;
 
