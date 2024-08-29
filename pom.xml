@@ -73,7 +73,7 @@
         <apache.pdfbox.xmpbox.version>2.0.16</apache.pdfbox.xmpbox.version>
         <asciidoctorj.pdf.version>1.5.4</asciidoctorj.pdf.version>
         <assertj.version>3.25.3</assertj.version>
-        <bouncycastle.version>1.77</bouncycastle.version>
+        <bouncycastle.version>1.78</bouncycastle.version>
         <cas.version>6.6.12</cas.version>
         <commons.beanutils.version>1.9.4</commons.beanutils.version>
         <commons.collections4.version>4.4</commons.collections4.version>
