@@ -75,6 +75,7 @@ import { TypographyModule } from './components/typography/typography.module';
 import { DesignSystemModule } from './design-system/design-system.module';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { ChipsModule } from './components/chips/chips.module';
 
 registerLocaleData(localeFr, 'fr');
 
@@ -94,6 +95,7 @@ export function httpLoaderFactory(httpClient: HttpClient): MultiTranslateHttpLoa
     BrowserAnimationsModule,
     BrowserModule,
     ButtonsModule,
+    ChipsModule,
     ColorsModule,
     DesignSystemModule,
     ElevationModule,

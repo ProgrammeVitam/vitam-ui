@@ -68,6 +68,7 @@ export * from './app/modules/archive-unit/components/archive-unit-count/archive-
 export * from './app/modules/archive-unit/components/archive-unit-viewer/archive-unit-viewer.component';
 export * from './app/modules/archive-unit/components/physical-archive-viewer/physical-archive-viewer.component';
 export * from './app/modules/components/accordion/accordion.module';
+export * from './app/modules/components/chip/chip.component';
 export * from './app/modules/components/collapse/collapse.component';
 export * from './app/modules/components/common-progress-bar/common-progress-bar.component';
 export * from './app/modules/components/common-progress-bar/common-progress-bar.module';
@@ -76,7 +77,7 @@ export * from './app/modules/components/common-tooltip/common-tooltip.directive'
 export * from './app/modules/components/common-tooltip/common-tooltip.module';
 export * from './app/modules/components/data/data.module';
 export * from './app/modules/components/datepicker/datepicker.module';
-export * from './app/modules/components/multiple-options-datepicker/multiple-options-datepicker.module';
+export * from './app/modules/components/file-selector/file-selector.component';
 export * from './app/modules/components/footer/footer.component';
 export * from './app/modules/components/footer/footer.module';
 export * from './app/modules/components/header/header.component';
@@ -87,6 +88,7 @@ export * from './app/modules/components/header/user-photo/user-photo.component';
 export * from './app/modules/components/header/user-photo/user-photo.module';
 export * from './app/modules/components/logbook-operation-facet/logbook-operation-facet.component';
 export * from './app/modules/components/logbook-operation-facet/logbook-operation-facet.module';
+export * from './app/modules/components/multiple-options-datepicker/multiple-options-datepicker.module';
 export * from './app/modules/components/navbar/application-menu/application-menu.component';
 export * from './app/modules/components/navbar/common-menu/common-menu.component';
 export * from './app/modules/components/navbar/customer-menu/customer-menu.component';
@@ -131,7 +133,6 @@ export * from './app/modules/components/vitamui-sidenav-header/vitamui-sidenav-h
 export * from './app/modules/components/vitamui-sidenav-header/vitamui-sidenav-header.module';
 export * from './app/modules/components/vitamui-snack-bar/vitamui-snack-bar.component';
 export * from './app/modules/components/vitamui-snack-bar/vitamui-snack-bar.module';
-export * from './app/modules/components/file-selector/file-selector.component';
 export * from './app/modules/directives/autocomplete-position/autocomplete-position.directive';
 export * from './app/modules/directives/autocomplete-position/autocomplete-position.directive.module';
 export * from './app/modules/directives/ellipsis/ellipsis.directive';

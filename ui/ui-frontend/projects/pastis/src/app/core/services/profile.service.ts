@@ -38,9 +38,8 @@ knowledge of the CeCILL-C license and that you accept its terms.
 import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable, OnDestroy } from '@angular/core';
 import { cloneDeep } from 'lodash-es';
-import { BehaviorSubject, Observable, Subscription } from 'rxjs';
+import { BehaviorSubject, combineLatest, filter, from, mergeMap, Observable, pipe, Subscription, toArray } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { PageRequest, PaginatedResponse } from 'vitamui-library';
 import { environment } from '../../../environments/environment';
 import { ArchivalProfileUnit } from '../../models/archival-profile-unit';
 import { FileNode } from '../../models/file-node';
@@ -48,37 +47,31 @@ import { Profile } from '../../models/profile';
 import { ProfileDescription } from '../../models/profile-description.model';
 import { ProfileResponse } from '../../models/profile-response';
 import { ProfileType } from '../../models/profile-type.enum';
+import { ProfileVersion, ProfileVersionOptions } from '../../models/profile-version.enum';
+import { SedaData } from '../../models/seda-data';
 import { PastisApiService } from '../api/api.pastis.service';
 import { PastisConfiguration } from '../classes/pastis-configuration';
 import { ArchivalProfileUnitApiService } from './archival-profile-unit-api.service';
 import { ArchiveProfileApiService } from './archive-profile-api.service';
-import { ProfileVersion } from '../../models/profile-version.enum';
-import { SedaData } from '../../models/seda-data';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProfileService implements OnDestroy {
-  public page: number;
-  public size: number;
-  public orderBy: string;
-  public direction: string;
-  public criteria?: string;
-
   public profileType: ProfileType;
   public profileVersion: ProfileVersion;
   public profileName: string;
   public profileId: string;
-  protected pageRequest: PageRequest;
   public retrievedProfiles = new BehaviorSubject<ProfileDescription[]>(null);
   protected data: ProfileDescription[];
-  protected hasMore: boolean;
 
-  subscription1$: Subscription;
-  subscription2$: Subscription;
-  subscription3$: Subscription;
-  subscription4$: Subscription;
-  subscriptions: Subscription[] = [];
+  private subscriptions = new Subscription();
+  private setProfileTypeOperator = pipe(
+    filter((profiles: ProfileDescription[]) => Boolean(profiles)),
+    mergeMap((profiles) => from(profiles)),
+    map((profile) => ({ ...profile, type: profile.controlSchema ? ProfileType.PUA : ProfileType.PA })),
+    toArray(),
+  );
 
   constructor(
     private apiService: PastisApiService,
@@ -88,15 +81,13 @@ export class ProfileService implements OnDestroy {
   ) {}
 
   ngOnDestroy(): void {
-    this.subscriptions.forEach((subscriptions) => subscriptions.unsubscribe());
+    this.subscriptions.unsubscribe();
   }
 
   getAllProfiles(): void {
-    if (environment.standalone) {
-      this.getAllProfilesStandalone();
-    } else {
-      this.getAllProfilesVitam();
-    }
+    if (environment.standalone) return this.getAllProfilesStandalone();
+
+    return this.getAllProfilesVitam();
   }
 
   refreshListProfiles(): void {
@@ -104,59 +95,43 @@ export class ProfileService implements OnDestroy {
   }
 
   getStandaloneProfiles(): Observable<ProfileDescription[]> {
-    return this.apiService.get(this.pastisConfig.getAllProfilesUrl);
+    return this.apiService.get<ProfileDescription[]>(this.pastisConfig.getAllProfilesUrl).pipe(this.setProfileTypeOperator);
   }
 
   getAllProfilesPA(profileVersion?: ProfileVersion): Observable<ProfileDescription[]> {
-    let allProfilesPA: any;
-    let params = new HttpParams().set('embedded', 'ALL');
-    if (profileVersion) params = params.set('criteria', JSON.stringify({ SedaVersion: profileVersion }));
-    allProfilesPA = this.apiService.get(this.pastisConfig.getAllArchivalProfileUrl, { params });
-    return allProfilesPA;
+    const options = {
+      params: new HttpParams().set('embedded', 'ALL'),
+    };
+
+    if (profileVersion) options.params.set('criteria', JSON.stringify({ SedaVersion: profileVersion }));
+
+    return this.apiService.get<ProfileDescription[]>(this.pastisConfig.getAllArchivalProfileUrl, options).pipe(this.setProfileTypeOperator);
   }
 
   getAllProfilesPUA(profileVersion?: ProfileVersion): Observable<ProfileDescription[]> {
-    let allProfilesPUA: any;
-    let params = new HttpParams().set('embedded', 'ALL');
-    if (profileVersion) params = params.set('criteria', JSON.stringify({ SedaVersion: profileVersion }));
-    allProfilesPUA = this.apiService.get(this.pastisConfig.getArchivalProfileUnitUrl, { params });
-    return allProfilesPUA;
+    const options = {
+      params: new HttpParams().set('embedded', 'ALL'),
+    };
+
+    if (profileVersion) options.params.set('criteria', JSON.stringify({ SedaVersion: profileVersion }));
+
+    return this.apiService
+      .get<ProfileDescription[]>(this.pastisConfig.getArchivalProfileUnitUrl, options)
+      .pipe(this.setProfileTypeOperator);
   }
 
   getAllProfilesStandalone(): void {
-    this.getStandaloneProfiles().subscribe((profiles: ProfileDescription[]) => {
-      if (profiles) {
-        for (const profile of profiles) {
-          if (profile.controlSchema) {
-            profile.type = ProfileType.PUA;
-          } else {
-            profile.type = ProfileType.PA;
-          }
-        }
-        this.retrievedProfiles.next(profiles);
-      }
-    });
+    this.getStandaloneProfiles()
+      .pipe(this.setProfileTypeOperator)
+      .subscribe((profiles: ProfileDescription[]) => this.retrievedProfiles.next(profiles));
   }
 
   getAllProfilesVitam(): void {
-    const profiles: ProfileDescription[] = [];
-    this.subscription3$ = this.getAllProfilesPUA().subscribe((profileListPUA: ProfileDescription[]) => {
-      if (profileListPUA) {
-        profileListPUA.forEach((p) => {
-          p.type = ProfileType.PUA;
-          profiles.push(p);
-        });
-        this.subscription4$ = this.getAllProfilesPA().subscribe((profileListPA: ProfileDescription[]) => {
-          if (profileListPA) {
-            profileListPA.forEach((p) => {
-              p.type = ProfileType.PA;
-              profiles.push(p);
-            });
-            this.retrievedProfiles.next(profiles);
-          }
-        });
-      }
-    });
+    this.subscriptions.add(
+      combineLatest([this.getAllProfilesPUA(), this.getAllProfilesPA()])
+        .pipe(map(([archiveUnitProfiles, archivalProfiles]: ProfileDescription[][]) => [...archiveUnitProfiles, ...archivalProfiles]))
+        .subscribe((profiles) => this.retrievedProfiles.next(profiles)),
+    );
   }
 
   getProfile(element: ProfileDescription): Observable<ProfileResponse> {
@@ -200,81 +175,8 @@ export class ProfileService implements OnDestroy {
     });
   }
 
-  // @ts-ignore
-  getAllProfilesPAPaginated(pageRequest: PageRequest): Observable<ProfileDescription[]> {
-    this.page = pageRequest.page;
-    this.size = pageRequest.size;
-    this.direction = pageRequest.direction;
-
-    const params = new HttpParams().set('page', this.page.toString()).set('size', this.size.toString()).set('direction', this.direction);
-    let allProfilesPA: any;
-    allProfilesPA = this.apiService.get(this.pastisConfig.getProfilePaginatedUrl, { params }).pipe(
-      map((paginated: PaginatedResponse<ProfileDescription>) => {
-        this.data = paginated.values;
-        this.page = paginated.pageNum;
-        this.hasMore = paginated.hasMore;
-        return this.data;
-      }),
-    );
-    return allProfilesPA;
-  }
-
-  // @ts-ignore
-  getAllProfilesPUAPaginated(pageRequest: PageRequest): Observable<ProfileDescription[]> {
-    this.page = pageRequest.page;
-    this.size = pageRequest.size;
-    this.direction = pageRequest.direction;
-
-    const params = new HttpParams().set('page', this.page.toString()).set('size', this.size.toString()).set('direction', this.direction);
-    let allProfilesPUA: any;
-    allProfilesPUA = this.apiService.get(this.pastisConfig.getArchivalProfileUnitPaginatedUrl, { params }).pipe(
-      map((paginated: PaginatedResponse<ProfileDescription>) => {
-        this.data = paginated.values;
-        this.page = paginated.pageNum;
-        this.hasMore = paginated.hasMore;
-
-        return this.data;
-      }),
-    );
-    return allProfilesPUA;
-  }
-
-  getAllProfilesPaginated(pageRequest: PageRequest): Observable<ProfileDescription[]> {
-    const tabVide: ProfileDescription[] = [];
-
-    this.subscription2$ = this.getAllProfilesPAPaginated(pageRequest).subscribe((data: ProfileDescription[]) => {
-      if (data) {
-        data.forEach((p) => (p.type = ProfileType.PA));
-        data.forEach((p) => tabVide.push(p));
-        this.retrievedProfiles.next(data);
-      }
-    });
-
-    this.subscription1$ = this.getAllProfilesPUAPaginated(pageRequest).subscribe((data: ProfileDescription[]) => {
-      // @ts-ignore
-      if (data) {
-        data.forEach((p) => (p.type = ProfileType.PUA));
-        this.retrievedProfiles.next(data);
-      }
-    });
-
-    this.subscriptions.push(this.subscription1$);
-    this.subscriptions.push(this.subscription2$);
-
-    // console.log(this.retrievedProfiles + ' tableau gell all profiles Paginated');
-    return this.retrievedProfiles;
-  }
-
-  getPuaProfile(id: string, headers?: HttpHeaders): Observable<ArchivalProfileUnit> {
-    return this.puaService.getOne(id, headers);
-  }
-
   checkPuaProfile(profile: ArchivalProfileUnit, headers?: HttpHeaders): Observable<boolean> {
     return this.puaService.check(profile, headers);
-  }
-
-  getPaProfile(id: string, headers?: HttpHeaders): Observable<Profile> {
-    return this.paService.getOne(id, headers);
   }
 
   checkPaProfile(profile: Profile, headers?: HttpHeaders): Observable<boolean> {
@@ -315,5 +217,11 @@ export class ProfileService implements OnDestroy {
   getMetaModel(version: ProfileVersion): Observable<SedaData> {
     const params = new HttpParams().set('version', version);
     return this.apiService.get<SedaData>(this.pastisConfig.metaModelUrl, { params });
+  }
+
+  getSedaVersionLabel(): string | undefined {
+    return ProfileVersionOptions.filter((profileVersionOption) => profileVersionOption.version === this.profileVersion)
+      .map((profileVersionOption) => profileVersionOption.label)
+      .shift();
   }
 }

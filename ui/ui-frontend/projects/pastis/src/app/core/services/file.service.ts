@@ -35,7 +35,6 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
-import { ComponentType } from '@angular/cdk/portal';
 import { Injectable, OnDestroy } from '@angular/core';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { BehaviorSubject, ReplaySubject, Subscription } from 'rxjs';
@@ -43,7 +42,7 @@ import { FileNode, TypeConstants } from '../../models/file-node';
 import { Notice } from '../../models/notice.model';
 import { ProfileDescription } from '../../models/profile-description.model';
 import { ProfileResponse } from '../../models/profile-response';
-import { SedaCardinalityConstants, SedaData, SedaElementConstants } from '../../models/seda-data';
+import { SedaData, SedaElementConstants } from '../../models/seda-data';
 import { FileTreeMetadataService } from '../../profile/edit-profile/file-tree-metadata/file-tree-metadata.service';
 import { PastisDialogData } from '../../shared/pastis-dialog/classes/pastis-dialog-data';
 import { PastisDialogConfirmComponent } from '../../shared/pastis-dialog/pastis-dialog-confirm/pastis-dialog-confirm.component';
@@ -108,13 +107,11 @@ export class FileService implements OnDestroy {
 
   /**
    * Get profile from backend with id
-   * @param id id of profile to get
    */
   getProfileAndUpdateTree(element: ProfileDescription) {
-    this._profileServiceGetProfileSubscription = this.profileService.getProfile(element).subscribe((response) => {
-      console.error('================================  ' + response);
-      this.updateTreeWithProfile(response);
-    });
+    this._profileServiceGetProfileSubscription = this.profileService
+      .getProfile(element)
+      .subscribe((response) => this.updateTreeWithProfile(response));
   }
 
   /**
@@ -185,10 +182,6 @@ export class FileService implements OnDestroy {
     }
   }
 
-  sendNode(node: FileNode) {
-    this.nodeChange.next(node);
-  }
-
   openPopup(popData: PastisDialogData) {
     const dialogConfirmRef = this.dialog.open(PastisDialogConfirmComponent, {
       width: popData.width,
@@ -202,17 +195,6 @@ export class FileService implements OnDestroy {
         // console.log('The confirm dialog was closed with data : ', data);
       }, reject);
     });
-  }
-
-  findChild(nodeName: string, node: FileNode): FileNode {
-    if (nodeName === node.name) {
-      return node;
-    }
-    for (const child of node.children) {
-      if (child.name === nodeName) {
-        return child;
-      }
-    }
   }
 
   findChildById(nodeId: number, node: FileNode): FileNode {
@@ -234,21 +216,8 @@ export class FileService implements OnDestroy {
     this.rootTabMetadataName.next(rootTabMetadataName);
   }
 
-  openDialogWithTemplateRef(templateRef: ComponentType<unknown>) {
-    this.dialog.open(templateRef);
-  }
-
   setNewChildrenRules(rules: string[][]) {
     this.tabChildrenRulesChange.next(rules);
-  }
-
-  /**
-   * Get one attribute of the node by its name
-   * @param fileNode The concerned node
-   * @param attributeName The name of the attribute we want to get
-   */
-  getAttributeByName(fileNode: FileNode, attributeName: string): FileNode {
-    return fileNode.children.find((c) => c.name === attributeName);
   }
 
   /**
@@ -279,43 +248,6 @@ export class FileService implements OnDestroy {
     // console.log('No nodes will be deleted');
   }
 
-  /** Find a parent tree node */
-  findParent(id: number, node: FileNode): FileNode {
-    // console.log('On findParent with parent node id : ', id , ' and node : ', node);
-    if (node && node.id === id) {
-      return node;
-    } else {
-      // console.log('ELSE ' + JSON.stringify(node.children));
-      if (node.children && id) {
-        for (let element = 0; node.children.length; element++) {
-          // console.log('Recursive ' + JSON.stringify(node.children[element].children));
-          // console.error("Node here : ", node.children[element], element)
-          if (element && node.children && node.children.length > 0 && node.children[element].children.length > 0) {
-            return this.findParent(id, node.children[element]);
-          } else {
-            continue;
-          }
-        }
-      }
-    }
-  }
-
-  sendNodeMetadata(node: FileNode) {
-    const rulesFromService = this.tabChildrenRulesChange.getValue();
-    const tabChildrenToInclude = rulesFromService[0];
-    const tabChildrenToExclude = rulesFromService[1];
-    // console.log('Node clicked : ', node, '...with tab rules from service : ', rulesFromService);
-    // console.log('The found node on filetree : ', node.sedaData);
-    this.sedaService.selectedSedaNode.next(node.sedaData);
-    this.currentTree.next([node]);
-    this.sendNode(node);
-    const dataTable = this.fileMetadataService.fillDataTable(node.sedaData, node, tabChildrenToInclude, tabChildrenToExclude);
-    // console.log('Data revtried on click : ', dataTable);
-    // console.log('Node seda %s in filetree is ready to be edited with seda data %o'
-    //   ,node.name, this.sedaService.selectedSedaNode.getValue());
-    this.fileMetadataService.dataSource.next(dataTable);
-  }
-
   getFileNodeByName(fileTree: FileNode, nodeNameToFind: string): FileNode {
     if (fileTree) {
       if (fileTree.name === nodeNameToFind) {
@@ -341,53 +273,6 @@ export class FileService implements OnDestroy {
           return res;
         }
       }
-    }
-  }
-
-  getFileNodeLocally(currentNode: FileNode, nameNode: string): FileNode {
-    // console.log("Node on this.findSedaNode : %o", currentNode)
-    if (currentNode) {
-      let i: number;
-      let currentChild: FileNode;
-      if (nameNode === currentNode.name) {
-        return currentNode;
-      } else {
-        // Use a for loop instead of forEach to avoid nested functions
-        // Otherwise "return" will not work properly
-        if (currentNode.children) {
-          for (i = 0; i < currentNode.children.length; i += 1) {
-            currentChild = currentNode.children[i];
-            // Search in the current child
-            const result = this.getFileNodeLocally(currentChild, nameNode);
-            // Return the result if the node has been found
-            if (result) {
-              return result;
-            }
-          }
-        } else {
-          // The node has not been found and we have no more options
-          console.log('No SEDA nodes could be found for ', nameNode);
-          return;
-        }
-      }
-    }
-  }
-
-  getComplexSedaChildrenAsFileNode(sedaElement: SedaData): FileNode[] {
-    // Insert all children of complex elements based on SEDA definition
-    if (sedaElement.element === SedaElementConstants.complex && sedaElement.children.length > 0) {
-      const fileNodeComplexChildren: FileNode[] = [];
-      sedaElement.children.forEach((child: { cardinality: string; name: string; type: string }) => {
-        if (child.cardinality === SedaCardinalityConstants.one || child.cardinality === SedaCardinalityConstants.oreOrMore) {
-          const aFileNode: FileNode = {} as FileNode;
-          aFileNode.name = child.name;
-          aFileNode.cardinality = child.cardinality;
-          aFileNode.children = [];
-          aFileNode.type = TypeConstants[child.type as keyof typeof TypeConstants];
-          fileNodeComplexChildren.push(aFileNode);
-        }
-      });
-      return fileNodeComplexChildren;
     }
   }
 

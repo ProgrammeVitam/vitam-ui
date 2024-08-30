@@ -4,9 +4,12 @@
   </div>
 
   <div class="pastis-edit-profile-header-name">
-    <p class="text large bold primary">
-      <ng-container>{{ this.profileService.profileName }}</ng-container>
-    </p>
+    <div class="text large bold primary">
+      {{ this.profileService.profileName }}
+    </div>
+    <div>
+      <vitamui-chip [text]="sedaVersionLabel"></vitamui-chip>
+    </div>
   </div>
   <div *ngIf="this.profileService.profileId !== null" class="pastis-edit-profile-header-id">
     <p class="text medium light">{{ 'PROFILE.EDIT_PROFILE.PROFILE_ID' | translate }} : {{ this.profileService.profileId }}</p>
