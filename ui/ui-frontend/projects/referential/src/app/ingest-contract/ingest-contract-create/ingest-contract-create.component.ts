@@ -302,6 +302,6 @@ export class IngestContractCreateComponent implements OnInit, OnDestroy {
   }
 
   signedDocumentPolicyIsDisabled(): boolean {
-    return this.signaturePolicy?.value?.signedDocument === SignedDocumentPolicyEnum.FORBIDDEN;
+    return this.signaturePolicy?.value?.signedDocument === SignedDocumentPolicyEnum.FORBIDDEN ? true : null;
   }
 }
