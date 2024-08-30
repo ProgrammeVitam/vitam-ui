@@ -35,11 +35,11 @@ export class SelectNoticeComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.data.profileType === ProfileType.PUA) {
-      this.profilService.getAllProfilesPUA().subscribe((profileListPUA: ProfileDescription[]) => {
+      this.profilService.getAllProfilesPUA(this.data.profileVersion).subscribe((profileListPUA: ProfileDescription[]) => {
         this.profiles = profileListPUA;
       });
     } else if (this.data.profileType === ProfileType.PA) {
-      this.profilService.getAllProfilesPA().subscribe((profileListPUA: ProfileDescription[]) => {
+      this.profilService.getAllProfilesPA(this.data.profileVersion).subscribe((profileListPUA: ProfileDescription[]) => {
         this.profiles = profileListPUA;
       });
     }

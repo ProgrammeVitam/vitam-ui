@@ -99,7 +99,7 @@ public class ArchivalProfileUnitInternalController {
         SanityChecker.sanitizeCriteria(criteria);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
         LOGGER.debug("context={}", vitamContext);
-        return archivalProfileUnitInternalService.getAll(vitamContext);
+        return archivalProfileUnitInternalService.getAll(vitamContext, criteria);
     }
 
     @GetMapping(params = { "page", "size" })

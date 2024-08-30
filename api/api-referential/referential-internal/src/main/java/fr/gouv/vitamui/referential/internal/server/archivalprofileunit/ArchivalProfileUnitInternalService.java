@@ -9,7 +9,6 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import fr.gouv.vitam.access.external.common.exception.AccessExternalClientException;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOperationException;
-import fr.gouv.vitam.common.database.builder.request.single.Select;
 import fr.gouv.vitam.common.error.VitamError;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
@@ -91,21 +90,27 @@ public class ArchivalProfileUnitInternalService {
         }
     }
 
-    public List<ArchivalProfileUnitDto> getAll(VitamContext vitamContext) {
+    public List<ArchivalProfileUnitDto> getAll(VitamContext vitamContext, Optional<String> criteria) {
         final RequestResponse<ArchiveUnitProfileModel> requestResponse;
         LOGGER.debug("Get ALL Archival Unit Profiles !");
+        Map<String, Object> vitamCriteria = new HashMap<>();
+        JsonNode query;
         try {
             LOGGER.info("All Archival Profiles EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
-            requestResponse = vitamArchivalProfileUnitService.findArchivalProfiles(
-                vitamContext,
-                new Select().getFinalSelect()
-            );
+            if (criteria.isPresent()) {
+                TypeReference<HashMap<String, Object>> typRef = new TypeReference<HashMap<String, Object>>() {};
+                vitamCriteria = objectMapper.readValue(criteria.get(), typRef);
+            }
+            query = VitamQueryHelper.createQueryDSL(vitamCriteria);
+            requestResponse = vitamArchivalProfileUnitService.findArchivalProfiles(vitamContext, query);
             LOGGER.debug("Response: {}", requestResponse);
             final ArchivalProfileUnitResponseDto archivalProfileUnitResponseDto = objectMapper.treeToValue(
                 requestResponse.toJsonNode(),
                 ArchivalProfileUnitResponseDto.class
             );
             return converter.convertVitamsToDtos(archivalProfileUnitResponseDto.getResults());
+        } catch (InvalidParseOperationException | InvalidCreateOperationException e) {
+            throw new InternalServerException("Unable to find archival profiles with criteria", e);
         } catch (VitamClientException | JsonProcessingException e) {
             throw new InternalServerException("Unable to find archival unit Profiles", e);
         }

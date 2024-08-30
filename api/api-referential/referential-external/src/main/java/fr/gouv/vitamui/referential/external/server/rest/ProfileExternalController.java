@@ -95,7 +95,7 @@ public class ProfileExternalController {
 
     @GetMapping
     @Secured(ServicesData.ROLE_GET_ARCHIVE_PROFILES)
-    public Collection<ProfileDto> getAll(final Optional<String> criteria) {
+    public Collection<ProfileDto> getAll(@RequestParam final Optional<String> criteria) {
         LOGGER.debug("get all profile criteria={}", criteria);
         SanityChecker.sanitizeCriteria(criteria);
         return profileExternalService.getAll(criteria);
