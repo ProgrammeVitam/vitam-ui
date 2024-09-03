@@ -32,9 +32,9 @@ export interface ProfileVersionOption {
 }
 
 export enum ProfileVersion {
-  VERSION_2_1 = 'v2.1',
-  VERSION_2_2 = 'v2.2',
-  VERSION_2_3 = 'v2.3',
+  VERSION_2_1 = '2.1',
+  VERSION_2_2 = '2.2',
+  VERSION_2_3 = '2.3',
 }
 
 export const ProfileVersionOptions: ProfileVersionOption[] = [
