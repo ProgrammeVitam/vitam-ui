@@ -47,7 +47,6 @@ import fr.gouv.vitam.access.external.common.exception.AccessExternalClientServer
 import fr.gouv.vitam.access.external.common.exception.AccessExternalNotFoundException;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOperationException;
-import fr.gouv.vitam.common.database.builder.request.single.Select;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.json.JsonHandler;
@@ -106,17 +105,25 @@ public class ProfileInternalService {
         this.vitamProfileService = vitamProfileService;
     }
 
-    public List<ProfileDto> getAll(VitamContext vitamContext) {
+    public List<ProfileDto> getAll(VitamContext vitamContext, Optional<String> criteria) {
         final RequestResponse<ProfileModel> requestResponse;
+        LOGGER.info("All Profiles EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
+        Map<String, Object> vitamCriteria = new HashMap<>();
+        JsonNode query;
         try {
-            LOGGER.info("All Profiles EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
-            requestResponse = vitamProfileService.findArchivalProfiles(vitamContext, new Select().getFinalSelect());
+            if (criteria.isPresent()) {
+                TypeReference<HashMap<String, Object>> typRef = new TypeReference<HashMap<String, Object>>() {};
+                vitamCriteria = objectMapper.readValue(criteria.get(), typRef);
+            }
+            query = VitamQueryHelper.createQueryDSL(vitamCriteria);
+            requestResponse = vitamProfileService.findArchivalProfiles(vitamContext, query);
             final ProfileResponseDto profileResponseDto = objectMapper.treeToValue(
                 requestResponse.toJsonNode(),
                 ProfileResponseDto.class
             );
-
             return converter.convertVitamsToDtos(profileResponseDto.getResults());
+        } catch (InvalidParseOperationException | InvalidCreateOperationException e) {
+            throw new InternalServerException("Unable to find profiles with criteria", e);
         } catch (VitamClientException | JsonProcessingException e) {
             throw new InternalServerException("Unable to find Profiles", e);
         }

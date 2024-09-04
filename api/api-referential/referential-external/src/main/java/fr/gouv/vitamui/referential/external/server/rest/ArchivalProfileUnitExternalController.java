@@ -94,7 +94,7 @@ public class ArchivalProfileUnitExternalController {
 
     @GetMapping
     @Secured(ServicesData.ROLE_GET_ARCHIVE_PROFILES_UNIT)
-    public Collection<ArchivalProfileUnitDto> getAll(final Optional<String> criteria) {
+    public Collection<ArchivalProfileUnitDto> getAll(@RequestParam final Optional<String> criteria) {
         LOGGER.debug("get all archival unit profiles criteria={}", criteria);
         SanityChecker.sanitizeCriteria(criteria);
         return archivalProfileUnitExternalService.getAll(criteria);

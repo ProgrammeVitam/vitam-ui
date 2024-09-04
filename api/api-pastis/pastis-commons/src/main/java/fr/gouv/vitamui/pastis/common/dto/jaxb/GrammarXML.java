@@ -45,7 +45,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name = "rng:grammar")
 public class GrammarXML extends BaliseXML {
 
-    public static final String SEDA_PREFIX = "fr:gouv:culture:archivesdefrance:seda:";
+    public static final String SEDA_PREFIX = "fr:gouv:culture:archivesdefrance:seda:v";
 
     StartXML start;
 

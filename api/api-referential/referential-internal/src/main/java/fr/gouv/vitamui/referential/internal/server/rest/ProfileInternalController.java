@@ -105,7 +105,7 @@ public class ProfileInternalController {
         LOGGER.debug("get all archive profiles criteria={}", criteria);
         SanityChecker.sanitizeCriteria(criteria);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
-        return profileInternalService.getAll(vitamContext);
+        return profileInternalService.getAll(vitamContext, criteria);
     }
 
     @GetMapping(params = { "page", "size" })

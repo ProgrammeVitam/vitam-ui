@@ -107,18 +107,18 @@ export class ProfileService implements OnDestroy {
     return this.apiService.get(this.pastisConfig.getAllProfilesUrl);
   }
 
-  getAllProfilesPA(): Observable<ProfileDescription[]> {
+  getAllProfilesPA(profileVersion?: ProfileVersion): Observable<ProfileDescription[]> {
     let allProfilesPA: any;
-    const params = new HttpParams().set('embedded', 'ALL');
-    // @ts-ignore
+    let params = new HttpParams().set('embedded', 'ALL');
+    if (profileVersion) params = params.set('criteria', JSON.stringify({ SedaVersion: profileVersion }));
     allProfilesPA = this.apiService.get(this.pastisConfig.getAllArchivalProfileUrl, { params });
     return allProfilesPA;
   }
 
-  getAllProfilesPUA(): Observable<ProfileDescription[]> {
+  getAllProfilesPUA(profileVersion?: ProfileVersion): Observable<ProfileDescription[]> {
     let allProfilesPUA: any;
-    const params = new HttpParams().set('embedded', 'ALL');
-
+    let params = new HttpParams().set('embedded', 'ALL');
+    if (profileVersion) params = params.set('criteria', JSON.stringify({ SedaVersion: profileVersion }));
     allProfilesPUA = this.apiService.get(this.pastisConfig.getArchivalProfileUnitUrl, { params });
     return allProfilesPUA;
   }

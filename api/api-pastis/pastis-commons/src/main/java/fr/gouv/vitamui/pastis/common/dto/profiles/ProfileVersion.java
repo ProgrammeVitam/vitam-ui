@@ -7,9 +7,9 @@ import java.util.Map;
 import java.util.Optional;
 
 public enum ProfileVersion {
-    VERSION_2_1("v2.1"),
-    VERSION_2_2("v2.2"),
-    VERSION_2_3("v2.3");
+    VERSION_2_1("2.1"),
+    VERSION_2_2("2.2"),
+    VERSION_2_3("2.3");
 
     private final String version;
 

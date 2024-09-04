@@ -47,7 +47,12 @@ import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.and;
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.eq;
@@ -82,6 +87,7 @@ public class VitamQueryHelper {
     private static final String EV_DATE_TIME_END = "evDateTime_End";
     private static final String OPI = "Opi";
     private static final String ORIGINATING_AGENCY = "OriginatingAgency";
+    private static final String SEDAVERSION = "SedaVersion";
 
     public static final Collection<String> staticAcquisitionInformations = List.of(
         "Versement",
@@ -111,6 +117,19 @@ public class VitamQueryHelper {
      * @throws InvalidParseOperationException
      * @throws InvalidCreateOperationException
      */
+    public static JsonNode createQueryDSL(Map<String, Object> searchCriteriaMap)
+        throws InvalidParseOperationException, InvalidCreateOperationException {
+        return createQueryDSL(searchCriteriaMap, null, null, Optional.empty(), Optional.empty());
+    }
+
+    /**
+     * create a valid VITAM DSL Query from a map of criteria
+     *
+     * @param searchCriteriaMap the input criteria. Should match pattern Map(FieldName, SearchValue)
+     * @return The JsonNode required by VITAM external API for a DSL query
+     * @throws InvalidParseOperationException
+     * @throws InvalidCreateOperationException
+     */
     public static JsonNode createQueryDSL(
         Map<String, Object> searchCriteriaMap,
         final Integer pageNumber,
@@ -125,7 +144,9 @@ public class VitamQueryHelper {
         boolean haveOrParameters = false;
 
         manageFilters(orderBy, direction, select);
-        select.setLimitFilter(pageNumber * size, size);
+        if (pageNumber != null && size != null) {
+            select.setLimitFilter(pageNumber * size, size);
+        }
 
         // Manage Query
         if (!searchCriteriaMap.isEmpty()) {
@@ -141,6 +162,7 @@ public class VitamQueryHelper {
                     case IDENTIFIER:
                     case ID:
                     case PUID:
+                    case SEDAVERSION:
                         // string equals operation
                         final String stringValue = (String) entry.getValue();
                         queryOr.add(eq(searchKey, stringValue));
