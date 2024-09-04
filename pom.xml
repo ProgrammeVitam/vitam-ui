@@ -103,7 +103,7 @@
         <jaxb.version>2.4.0-b180830.0359</jaxb.version>
         <jaxb.core.version>2.3.0.1</jaxb.core.version>
         <jaxb.impl.version>3.0.0-M1</jaxb.impl.version>
-        <json.version>20180813</json.version>
+        <json.version>20240303</json.version>
         <jaxp-api.version>1.4.5</jaxp-api.version>
         <jackson-xml-databind.version>0.6.2</jackson-xml-databind.version>
         <thaiopensource.jing.version>20220510</thaiopensource.jing.version>
