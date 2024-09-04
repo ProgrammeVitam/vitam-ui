@@ -20,6 +20,12 @@
        th:text="#{screen.logout.security}">
     For security reasons, exit your web browser.
   </div>
+
+  <script>
+    // ideally, we should perform the logout in the angular application by using a redirect to an insecure logout page
+    window.sessionStorage.clear();
+  </script>
+
 </div>
 
 
