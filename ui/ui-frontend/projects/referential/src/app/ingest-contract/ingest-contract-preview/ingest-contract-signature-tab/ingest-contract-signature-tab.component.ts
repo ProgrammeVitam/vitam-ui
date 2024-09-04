@@ -135,13 +135,20 @@ export class IngestContractSignatureTabComponent implements OnChanges {
         declaredAdditionalProof: false,
       });
     }
+    const isDisabled = this.signedDocumentPolicyIsDisabled();
+    if (isDisabled) {
+      this.form.get('declaredSignature').disable();
+      this.form.get('declaredTimestamp').disable();
+      this.form.get('declaredAdditionalProof').disable();
+    } else {
+      this.form.get('declaredSignature').enable();
+      this.form.get('declaredTimestamp').enable();
+      this.form.get('declaredAdditionalProof').enable();
+    }
   }
 
   signedDocumentPolicyIsDisabled(): boolean {
-    if (this.form.value.signedDocument === SignedDocumentPolicyEnum.FORBIDDEN) {
-      return true;
-    }
-    return null;
+    return this.form.value.signedDocument === SignedDocumentPolicyEnum.FORBIDDEN;
   }
 
   resetForm(ingestContract: IngestContract) {

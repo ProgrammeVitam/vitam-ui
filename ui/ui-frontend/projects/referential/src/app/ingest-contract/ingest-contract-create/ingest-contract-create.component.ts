@@ -299,9 +299,19 @@ export class IngestContractCreateComponent implements OnInit, OnDestroy {
         declaredAdditionalProof: null,
       });
     }
+    const isDisabled = this.signedDocumentPolicyIsDisabled();
+    if (isDisabled) {
+      this.signaturePolicy.get('declaredSignature').disable();
+      this.signaturePolicy.get('declaredTimestamp').disable();
+      this.signaturePolicy.get('declaredAdditionalProof').disable();
+    } else {
+      this.signaturePolicy.get('declaredSignature').enable();
+      this.signaturePolicy.get('declaredTimestamp').enable();
+      this.signaturePolicy.get('declaredAdditionalProof').enable();
+    }
   }
 
   signedDocumentPolicyIsDisabled(): boolean {
-    return this.signaturePolicy?.value?.signedDocument === SignedDocumentPolicyEnum.FORBIDDEN ? true : null;
+    return this.signaturePolicy?.value?.signedDocument === SignedDocumentPolicyEnum.FORBIDDEN;
   }
 }

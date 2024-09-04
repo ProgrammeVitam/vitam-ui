@@ -31,29 +31,19 @@
     <div class="col">
       <div class="criteria-checkbox-choice">
         <label [ngClass]="{ disabled: signedDocumentPolicyIsDisabled() }">
-          <input
-            type="checkbox"
-            id="declaredSignature"
-            formControlName="declaredSignature"
-            [attr.disabled]="signedDocumentPolicyIsDisabled()"
-          />
+          <input type="checkbox" id="declaredSignature" formControlName="declaredSignature" />
           <span>{{ 'INGEST_CONTRACT.ELEMENT_TO_CHECK.SIGNATURE' | translate }}</span>
         </label>
       </div>
       <div class="criteria-checkbox-choice">
         <label [ngClass]="{ disabled: signedDocumentPolicyIsDisabled() }">
-          <input type="checkbox" id="TIMESTAMP" formControlName="declaredTimestamp" [attr.disabled]="signedDocumentPolicyIsDisabled()" />
+          <input type="checkbox" id="TIMESTAMP" formControlName="declaredTimestamp" />
           <span>{{ 'INGEST_CONTRACT.ELEMENT_TO_CHECK.TIMESTAMP' | translate }}</span>
         </label>
       </div>
       <div class="criteria-checkbox-choice">
         <label [ngClass]="{ disabled: signedDocumentPolicyIsDisabled() }">
-          <input
-            type="checkbox"
-            id="ADDITIONAL_EVIDENCES"
-            formControlName="declaredAdditionalProof"
-            [attr.disabled]="signedDocumentPolicyIsDisabled()"
-          />
+          <input type="checkbox" id="ADDITIONAL_EVIDENCES" formControlName="declaredAdditionalProof" />
           <span>{{ 'INGEST_CONTRACT.ELEMENT_TO_CHECK.ADDITIONAL_EVIDENCES' | translate }}</span>
         </label>
       </div>
