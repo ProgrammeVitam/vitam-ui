@@ -127,12 +127,6 @@
             <scope>runtime</scope>
         </dependency>
 
-        <!-- convert relaxng to xsd -->
-        <dependency>
-            <groupId>org.relaxng</groupId>
-            <artifactId>trang</artifactId>
-        </dependency>
-
         <!-- convert xsd to xml -->
         <dependency>
             <groupId>in.jlibs</groupId>

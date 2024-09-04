@@ -71,7 +71,6 @@
         <dependency>
             <groupId>org.pac4j</groupId>
             <artifactId>pac4j-jwt</artifactId>
-            <version>${pac4j.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>

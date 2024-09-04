@@ -11,24 +11,55 @@
     <name>VITAMUI CAS Server</name>
 
     <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <java.version>17</java.version>
+        <java.release>17</java.release>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <maven.compiler.release>17</maven.compiler.release>
+
+        <cas.version>6.6.12</cas.version>
+
+        <!--Dependencies-->
         <assertj-core.version>3.11.1</assertj-core.version>
-        <jackson.version>2.17.0</jackson.version>
-        <lombok.version>1.18.24</lombok.version>
+        <font-awesome.version>6.5.1</font-awesome.version>
+        <jib.skip>true</jib.skip>
+        <jquery-ui.version>1.13.2</jquery-ui.version>
+        <junit-vintage-engine.version>5.7.2</junit-vintage-engine.version>
         <micrometer.version>1.9.3</micrometer.version>
         <mockito.version>3.12.1</mockito.version>
+        <mongo.version>4.7.1</mongo.version>
+        <rpm.jar-file>${project.build.finalName}.war</rpm.jar-file>
+        <rpm.skip>false</rpm.skip>
+        <spring-webmvc-pac4j.version>6.0.3</spring-webmvc-pac4j.version>
         <spring.boot.version>2.7.3</spring.boot.version>
         <spring.cloud.consul.version>3.1.1</spring.cloud.consul.version>
-        <spring.security.version>5.7.3</spring.security.version>
         <spring.test.version>5.3.22</spring.test.version>
         <spring.version>5.3.22</spring.version>
         <swagger.version>2.2.2</swagger.version>
-        <mongo.version>4.7.1</mongo.version>
-        <spring-webmvc-pac4j.version>6.0.3</spring-webmvc-pac4j.version>
         <thymeleaf-spring5.version>3.0.15.RELEASE</thymeleaf-spring5.version>
-        <jib.skip>true</jib.skip>
-        <rpm.skip>false</rpm.skip>
-        <rpm.jar-file>${project.build.finalName}.war</rpm.jar-file>
+
+        <!--Plugins-->
+        <jib-maven-plugin.version>3.4.2</jib-maven-plugin.version>
+        <libsass-maven-plugin.version>0.3.1</libsass-maven-plugin.version>
+        <maven-war-plugin.version>3.2.0</maven-war-plugin.version>
+        <spotless-maven-plugin.version>2.43.0</spotless-maven-plugin.version>
+        <spotless-maven-plugin.prettier.version>3.2.4</spotless-maven-plugin.prettier.version>
+        <spotless-maven-plugin.prettier-plugin-java.version>2.6.0</spotless-maven-plugin.prettier-plugin-java.version>
     </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>fr.gouv.vitamui</groupId>
+                <artifactId>bom</artifactId>
+                <version>${project.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <dependencies>
         <!-- VITAMUI -->
@@ -57,6 +88,14 @@
                     <artifactId>slf4j-simple</artifactId>
                 </exclusion>
             </exclusions>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-autoconfigure</artifactId>
+            <version>${spring.boot.version}</version>
+            <scope>provided</scope>
         </dependency>
 
         <!-- Consul -->
@@ -164,42 +203,34 @@
         <dependency>
             <groupId>org.pac4j</groupId>
             <artifactId>pac4j-jee</artifactId>
-            <version>${pac4j.version}</version>
         </dependency>
         <dependency>
             <groupId>org.pac4j</groupId>
             <artifactId>pac4j-javaee</artifactId>
-            <version>${pac4j.version}</version>
         </dependency>
         <dependency>
             <groupId>org.pac4j</groupId>
             <artifactId>pac4j-http</artifactId>
-            <version>${pac4j.version}</version>
         </dependency>
         <dependency>
             <groupId>org.pac4j</groupId>
             <artifactId>pac4j-config</artifactId>
-            <version>${pac4j.version}</version>
         </dependency>
         <dependency>
             <groupId>org.pac4j</groupId>
             <artifactId>pac4j-cas</artifactId>
-            <version>${pac4j.version}</version>
         </dependency>
         <dependency>
             <groupId>org.pac4j</groupId>
             <artifactId>pac4j-oauth</artifactId>
-            <version>${pac4j.version}</version>
         </dependency>
         <dependency>
             <groupId>org.pac4j</groupId>
             <artifactId>pac4j-core</artifactId>
-            <version>${pac4j.version}</version>
         </dependency>
         <dependency>
             <groupId>org.pac4j</groupId>
             <artifactId>spring-webmvc-pac4j</artifactId>
-            <version>${spring-webmvc-pac4j.version}</version>
         </dependency>
         <dependency>
             <groupId>org.pac4j</groupId>
@@ -224,7 +255,6 @@
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
-            <version>2.11.0</version>
         </dependency>
 
         <!-- X509 authentication -->
@@ -387,7 +417,6 @@
         <dependency>
             <groupId>com.sun.mail</groupId>
             <artifactId>jakarta.mail</artifactId>
-            <version>1.6.5</version>
         </dependency>
 
         <!-- OAuth support -->
@@ -470,33 +499,20 @@
 
         <!-- logs -->
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-logging</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.apache.logging.log4j</groupId>
-                    <artifactId>log4j-to-slf4j</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>jcl-over-slf4j</artifactId>
-            <version>${slf4j.version}</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>jul-to-slf4j</artifactId>
-            <version>${slf4j.version}</version>
         </dependency>
         <dependency>
             <groupId>org.gandon.tomcat</groupId>
             <artifactId>juli-to-slf4j</artifactId>
-            <version>1.1.1</version>
         </dependency>
 
         <!-- UTIL -->
@@ -512,28 +528,29 @@
         <dependency>
             <groupId>commons-codec</groupId>
             <artifactId>commons-codec</artifactId>
-            <version>1.15</version>
         </dependency>
         <dependency>
             <groupId>org.webjars</groupId>
             <artifactId>jquery-ui</artifactId>
-            <version>1.13.2</version>
+            <version>${jquery-ui.version}</version>
         </dependency>
         <dependency>
             <groupId>org.webjars</groupId>
             <artifactId>font-awesome</artifactId>
-            <version>6.5.1</version>
+            <version>${font-awesome.version}</version>
         </dependency>
 
         <!-- TEST -->
         <dependency>
             <groupId>org.junit.vintage</groupId>
             <artifactId>junit-vintage-engine</artifactId>
+            <version>${junit-vintage-engine.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-inline</artifactId>
+            <version>${mockito.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -562,12 +579,55 @@
         </resources>
 
         <finalName>${project.artifactId}</finalName>
+
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>com.diffplug.spotless</groupId>
+                    <artifactId>spotless-maven-plugin</artifactId>
+                    <version>${spotless-maven-plugin.version}</version>
+                    <configuration>
+                        <java>
+                            <includes>
+                                <include>src/main/java/**/*.java</include>
+                                <include>src/test/java/**/*.java</include>
+                            </includes>
+                            <prettier>
+                                <devDependencies>
+                                    <prettier>${spotless-maven-plugin.prettier.version}</prettier>
+                                    <prettier-plugin-java>${spotless-maven-plugin.prettier-plugin-java.version}
+                                    </prettier-plugin-java>
+                                </devDependencies>
+                                <config>
+                                    <printWidth>120</printWidth>
+                                    <tabWidth>4</tabWidth>
+                                    <parser>java</parser>
+                                    <plugins>prettier-plugin-java</plugins>
+                                </config>
+                            </prettier>
+                            <importOrder>
+                                <order>,javax|java,\#</order>
+                            </importOrder>
+                            <removeUnusedImports/>
+                        </java>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>check</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
+                <version>${maven-war-plugin.version}</version>
                 <configuration>
-                    <warName>${project.artifactId}</warName>
                     <failOnMissingWebXml>false</failOnMissingWebXml>
                     <recompressZippedFiles>false</recompressZippedFiles>
                     <archive>
@@ -582,25 +642,27 @@
                             <artifactId>cas-server-webapp-tomcat</artifactId>
                             <excludes>
                                 <exclude>WEB-INF/classes/services/*.json</exclude>
+                                <exclude>WEB-INF/lib/cas-server-core-logging-api-*.jar</exclude>
+                                <exclude>WEB-INF/lib/commons-io-*.jar</exclude>
+                                <exclude>WEB-INF/lib/jackson-*.jar</exclude>
+                                <exclude>WEB-INF/lib/jcl-over-slf4j-*.jar</exclude>
+                                <exclude>WEB-INF/lib/json-20160810.jar</exclude>
+                                <exclude>WEB-INF/lib/jul-to-slf4j-*.jar</exclude>
                                 <exclude>WEB-INF/lib/log4j-api-*.jar</exclude>
-                                <exclude>WEB-INF/lib/log4j-jul-*.jar</exclude>
                                 <exclude>WEB-INF/lib/log4j-core-*.jar</exclude>
                                 <exclude>WEB-INF/lib/log4j-jcl-*.jar</exclude>
-                                <exclude>WEB-INF/lib/log4j-web-*.jar</exclude>
+                                <exclude>WEB-INF/lib/log4j-jul-*.jar</exclude>
+                                <exclude>WEB-INF/lib/log4j-layout-template-json-*.jar</exclude>
                                 <exclude>WEB-INF/lib/log4j-slf4j-impl-*.jar</exclude>
                                 <exclude>WEB-INF/lib/log4j-slf4j18-impl-*.jar</exclude>
-                                <exclude>WEB-INF/lib/log4j-layout-template-json-*.jar</exclude>
-                                <exclude>WEB-INF/lib/spring-boot-starter-log4j2-*.jar</exclude>
-                                <exclude>WEB-INF/lib/slf4j-api-*.jar</exclude>
-                                <exclude>WEB-INF/lib/jcl-over-slf4j-*.jar</exclude>
-                                <exclude>WEB-INF/lib/jul-to-slf4j-*.jar</exclude>
-                                <exclude>WEB-INF/lib/jackson-*.jar</exclude>
-                                <exclude>WEB-INF/lib/cas-server-core-logging-api-*.jar</exclude>
-                                <exclude>WEB-INF/lib/slf4j-api-*.jar</exclude>
+                                <exclude>WEB-INF/lib/log4j-web-*.jar</exclude>
                                 <exclude>WEB-INF/lib/oauth2-oidc-sdk-*.jar</exclude>
                                 <exclude>WEB-INF/lib/pac4j-*.jar</exclude>
-                                <exclude>WEB-INF/lib/spring-webmvc-pac4j-*.jar</exclude>
+                                <exclude>WEB-INF/lib/slf4j-api-*.jar</exclude>
+                                <exclude>WEB-INF/lib/slf4j-api-*.jar</exclude>
+                                <exclude>WEB-INF/lib/spring-boot-starter-log4j2-*.jar</exclude>
                                 <exclude>WEB-INF/lib/spring-expression-*.jar</exclude>
+                                <exclude>WEB-INF/lib/spring-webmvc-pac4j-*.jar</exclude>
                             </excludes>
                         </overlay>
                     </overlays>
@@ -633,6 +695,7 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${spring.boot.version}</version>
                 <configuration>
                     <mainClass>org.apereo.cas.web.CasWebApplication</mainClass>
                     <excludes>
@@ -659,7 +722,7 @@
             <plugin>
                 <groupId>com.gitlab.haynes</groupId>
                 <artifactId>libsass-maven-plugin</artifactId>
-                <version>0.3.1</version>
+                <version>${libsass-maven-plugin.version}</version>
                 <executions>
                     <execution>
                         <phase>generate-resources</phase>
@@ -678,6 +741,7 @@
             <plugin>
                 <groupId>com.google.cloud.tools</groupId>
                 <artifactId>jib-maven-plugin</artifactId>
+                <version>${jib-maven-plugin.version}</version>
                 <configuration>
                     <to>
                         <image>${env.SERVICE_DOCKER_PUSH_URL}/vitamui/cas-server</image>
@@ -691,18 +755,91 @@
                             </path>
                         </paths>
                     </extraDirectories>
-                <container>
-                    <entrypoint>java,-jar,/app/cas-server.war</entrypoint>
-                </container>
-                    <ignoreErrors>
-                        <error>
-                            <errorCode>ERROR_UNKNOWN_BLOB</errorCode>
-                            <errorType>push</errorType>
-                        </error>
-                    </ignoreErrors>
+                    <container>
+                        <entrypoint>java,-jar,/app/cas-server.war</entrypoint>
+                    </container>
                 </configuration>
             </plugin>
         </plugins>
     </build>
 
+    <profiles>
+        <!-- This profile is used to build rpm package.-->
+        <profile>
+            <id>rpm</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>rpm-package</id>
+                                <phase>install</phase>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                                <configuration>
+                                    <executable>make</executable>
+                                    <workingDirectory>target</workingDirectory>
+                                    <skip>${rpm.skip}</skip>
+                                    <arguments>
+                                        <argument>-f</argument>
+                                        <argument>${project.basedir}/../../tools/packaging/Makefile</argument>
+                                        <argument>rpm</argument>
+                                        <argument>NAME=${project.artifactId}</argument>
+                                        <argument>VERSION=${project.version}</argument>
+                                        <argument>JAR_FILE=${rpm.jar-file}</argument>
+                                        <!-- If you want to changes default dependencies (only
+                                        systemd),
+                                        define them as a comma separated list of packages -->
+                                        <argument>DEPENDENCIES=systemd,java-17-openjdk</argument>
+                                    </arguments>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <!-- TEST DEB WITH FPM -->
+        <profile>
+            <id>deb</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>deb-package</id>
+                                <phase>install</phase>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                                <configuration>
+                                    <executable>make</executable>
+                                    <workingDirectory>target</workingDirectory>
+                                    <skip>${rpm.skip}</skip>
+                                    <arguments>
+                                        <argument>-f</argument>
+                                        <argument>${project.basedir}/../../tools/packaging/Makefile</argument>
+                                        <argument>deb</argument>
+                                        <argument>NAME=${project.artifactId}</argument>
+                                        <argument>VERSION=${project.version}</argument>
+                                        <argument>JAR_FILE=${rpm.jar-file}</argument>
+                                        <!-- If you want to changes default dependencies (only
+                                        systemd),
+                                        define them as a comma separated list of packages -->
+                                        <argument>DEPENDENCIES=systemd</argument>
+                                    </arguments>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>

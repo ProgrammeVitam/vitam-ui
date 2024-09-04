@@ -52,8 +52,6 @@ import org.apereo.cas.notifications.CommunicationsManager;
 import org.apereo.cas.pm.PasswordManagementQuery;
 import org.apereo.cas.pm.PasswordManagementService;
 import org.apereo.cas.pm.PasswordResetUrlBuilder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.HierarchicalMessageSource;
 import org.springframework.util.LinkedMultiValueMap;
@@ -73,8 +71,6 @@ import java.util.Locale;
 @RequiredArgsConstructor
 @Slf4j
 public class ResetPasswordController {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(ResetPasswordController.class);
 
     private final CasConfigurationProperties casProperties;
 
