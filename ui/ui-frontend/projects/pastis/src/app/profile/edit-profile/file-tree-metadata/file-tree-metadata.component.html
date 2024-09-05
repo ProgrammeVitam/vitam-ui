@@ -6,16 +6,20 @@
     <div class="pastis-metadata-option-container">
       <!-- Top left panel container -->
       <div class="pastis-metadata-option-entete-1">
-        <h5>
-          <i class="vitamui-icon vitamui-icon-ic40-dossier-physique"></i>
-          <ng-container *ngIf="this.profileService.profileType === 'PUA'">
-            {{ 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.PUA' | translate }}
-          </ng-container>
-          <ng-container *ngIf="this.profileService.profileType === 'PA'">
-            {{ 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.PA' | translate }}
-          </ng-container>
-        </h5>
-        <pastis-breadcrumb (selected)="navigateMetadata($event)" [data]="breadcrumbDataMetadata"> </pastis-breadcrumb>
+        <div class="header">
+          <h5>
+            <i class="vitamui-icon vitamui-icon-ic40-dossier-physique"></i>
+            <span>{{ 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.' + this.profileService.profileType | translate }}</span>
+          </h5>
+          <div class="chip-container">
+            <vitamui-chip [text]="sedaVersionLabel"></vitamui-chip>
+          </div>
+        </div>
+        @if (breadcrumbDataMetadata) {
+          <div class="breadcrumb-container">
+            <pastis-breadcrumb (selected)="navigateMetadata($event)" [data]="breadcrumbDataMetadata"></pastis-breadcrumb>
+          </div>
+        }
       </div>
 
       <!--Top right panel container-->
@@ -23,31 +27,20 @@
         <!--Toggle button allow additional properties-->
         <div
           *ngIf="this.profileService.profileType === 'PUA' && this.isStandalone"
-          class="panel-buttons"
           matTooltip="{{ 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.ADDITIONAL_PROPERTIES_TOOLTIP' | translate }}"
         >
           <allow-additional-properties [checked]="rootAdditionalProperties" (stateToggleButton)="changeStatusAdditionalProperties($event)">
           </allow-additional-properties>
         </div>
         <!--Button save-->
-        <div
-          class="panel-buttons"
-          placement="top"
-          show-delay="0"
-          matTooltip="{{ 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.ENREGISTRER_PROFIL_TOOLTIP' | translate }}"
-        >
+        <div matTooltip="{{ 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.ENREGISTRER_PROFIL_TOOLTIP' | translate }}">
           <pastis-user-action-save-profile></pastis-user-action-save-profile>
         </div>
         <!--Button setting-->
-        <div
-          class="panel-buttons"
-          matTooltip="{{ 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.TELECHARGER_MANUEL_TOOLTIP' | translate }}"
-          placement="top"
-          show-delay="0"
-        >
+        <div matTooltip="{{ 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.TELECHARGER_MANUEL_TOOLTIP' | translate }}">
           <pastis-user-action-download-doc (click)="openChoicePopup()"></pastis-user-action-download-doc>
           <div class="vitamui-pastis-choice-language">
-            <pastis-popup-metadata-language (click)="changeSedaLanguage()" *ngIf="languagePopup"> </pastis-popup-metadata-language>
+            <pastis-popup-metadata-language (click)="changeSedaLanguage()" *ngIf="languagePopup"></pastis-popup-metadata-language>
           </div>
         </div>
       </div>
@@ -286,7 +279,7 @@
               </mat-checkbox>
 
               <!-- @Supprimer-->
-              <mat-divider *ngIf="isDeltable(element.nomDuChamp)" style="border-top-color: #e0e0e0"> </mat-divider>
+              <mat-divider *ngIf="isDeltable(element.nomDuChamp)" style="border-top-color: #e0e0e0"></mat-divider>
               <button (click)="onDeleteNode(element.id)" *ngIf="isDeltable(element.nomDuChamp)" mat-menu-item>
                 <mat-icon style="color: #757575">delete</mat-icon>
                 <span class="text normal">{{ 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.SUPPRIMER' | translate }}</span>
@@ -471,7 +464,7 @@
           <div class="container mt-4">
             <div class="row no-gutters">
               <div class="col-auto">
-                <mat-radio-button value="input" [disabled]="isNotRegexCustomisable()"> </mat-radio-button>
+                <mat-radio-button value="input" [disabled]="isNotRegexCustomisable()"></mat-radio-button>
               </div>
               <div class="row col">
                 <div class="col-6">

@@ -56,6 +56,7 @@ import {
 } from './components/autocomplete';
 import { BlankComponent } from './components/blank/blank.component';
 import { CancelledSnackBarModule } from './components/cancelled-snack-bar/cancelled-snack-bar.module';
+import { ChipComponent } from './components/chip/chip.component';
 import { CollapseModule } from './components/collapse/collapse.module';
 import { CommonProgressBarModule } from './components/common-progress-bar/common-progress-bar.module';
 import { CommonTooltipModule } from './components/common-tooltip/common-tooltip.module';
@@ -63,15 +64,16 @@ import { ConfirmDialogModule } from './components/confirm-dialog/confirm-dialog.
 import { CustomerSelectContentModule } from './components/customer-select-content/customer-select-content.module';
 import { DataModule } from './components/data/data.module';
 import { DatepickerModule } from './components/datepicker/datepicker.module';
-import { MultipleOptionsDatepickerModule } from './components/multiple-options-datepicker/multiple-options-datepicker.module';
 import { DownloadSnackBarModule } from './components/download-snack-bar/download-snack-bar.module';
 import { EditableFieldModule } from './components/editable-field/editable-field.module';
+import { FileSelectorComponent } from './components/file-selector/file-selector.component';
 import { FooterModule } from './components/footer/footer.module';
 import { HeaderModule } from './components/header/header.module';
 import { SelectLanguageModule } from './components/header/select-language/select-language.module';
 import { SelectTenantDialogModule } from './components/header/select-tenant-dialog/select-tenant-dialog.module';
 import { UserPhotoModule } from './components/header/user-photo/user-photo.module';
 import { LogbookOperationFacetModule } from './components/logbook-operation-facet/logbook-operation-facet.module';
+import { MultipleOptionsDatepickerModule } from './components/multiple-options-datepicker/multiple-options-datepicker.module';
 import { NavbarModule } from './components/navbar/navbar.module';
 import { OrderByButtonModule } from './components/order-by-button/order-by-button.module';
 import { OrderDropdownModule } from './components/order-dropdown/order-dropdown.module';
@@ -102,10 +104,10 @@ import { VitamuiSidenavHeaderModule } from './components/vitamui-sidenav-header/
 import { VitamUISnackBarModule } from './components/vitamui-snack-bar/vitamui-snack-bar.module';
 import { VitamUITenantSelectModule } from './components/vitamui-tenant-select/vitamui-tenant-select.module';
 import { VitamuiTreeNodeModule } from './components/vitamui-tree-node';
-import { FileSelectorComponent } from './components/file-selector/file-selector.component';
 import { ConfigService } from './config.service';
 import { AutocompletePositionDirectiveModule } from './directives/autocomplete-position/autocomplete-position.directive.module';
 import { CollapseDirectiveModule } from './directives/collapse/collapse.directive.module';
+import { DragAndDropDirective } from './directives/drag-and-drop/drag-and-drop.directive';
 import { EllipsisDirectiveModule } from './directives/ellipsis/ellipsis.directive.module';
 import { InfiniteScrollModule } from './directives/infinite-scroll/infinite-scroll.module';
 import { ResizeSidebarModule } from './directives/resize-sidebar/resize-sidebar.module';
@@ -122,7 +124,6 @@ import { SecurityModule } from './security/security.module';
 import { StartupService } from './startup.service';
 import { SubrogationModule } from './subrogation/subrogation.module';
 import { VitamUIHttpInterceptor } from './vitamui-http-interceptor';
-import { DragAndDropDirective } from './directives/drag-and-drop/drag-and-drop.directive';
 
 export function loadConfigFactory(configService: ConfigService, environment: any) {
   const p = () => configService.load(environment.configUrls).toPromise();
@@ -222,6 +223,7 @@ export function startupServiceFactory(startupService: StartupService, authServic
     VitamUISnackBarModule,
     VitamUITenantSelectModule,
     FileSelectorComponent,
+    ChipComponent,
   ],
   exports: [
     AccordionModule,
@@ -294,6 +296,7 @@ export function startupServiceFactory(startupService: StartupService, authServic
     VitamUITenantSelectModule,
     VitamuiTreeNodeModule,
     FileSelectorComponent,
+    ChipComponent,
   ],
 })
 export class VitamUICommonModule {

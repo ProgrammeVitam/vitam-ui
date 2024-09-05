@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnDestroy, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 /*
 Copyright © CINES - Centre Informatique National pour l'Enseignement Supérieur (2020)
 
@@ -66,7 +66,8 @@ export interface UploadedProfileResponse {
   templateUrl: './edit-profile.component.html',
   styleUrls: ['./edit-profile.component.scss'],
 })
-export class EditProfileComponent implements OnDestroy, AfterViewInit {
+export class EditProfileComponent implements OnInit, OnDestroy, AfterViewInit {
+  sedaVersionLabel: string;
   nodeToSend: FileNode;
   sedaParentNode: SedaData;
   selectedIndex: number;
@@ -117,6 +118,10 @@ export class EditProfileComponent implements OnDestroy, AfterViewInit {
     private translateService: TranslateService,
   ) {
     this.selectedIndex = 0;
+  }
+
+  ngOnInit() {
+    this.sedaVersionLabel = this.profileService.getSedaVersionLabel();
   }
 
   initAll() {

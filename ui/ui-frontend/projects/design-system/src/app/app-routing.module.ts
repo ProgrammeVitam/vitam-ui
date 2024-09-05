@@ -51,6 +51,7 @@ import { TooltipComponent } from './components/tooltip/tooltip.component';
 import { TranslationComponent } from './components/translation/translation.component';
 import { TypographyComponent } from './components/typography/typography.component';
 import { DesignSystemComponent } from './design-system/design-system.component';
+import { ChipsComponent } from './components/chips/chips.component';
 
 const routes: Routes = [
   { path: '', component: DesignSystemComponent, data: { appId: ApplicationId.DESIGN_SYSTEM_APP } },
@@ -59,6 +60,7 @@ const routes: Routes = [
   { path: 'inputs', component: InputsComponent, data: { appId: ApplicationId.DESIGN_SYSTEM_APP } },
   { path: 'breadcrumbs', component: BreadcrumbComponent, data: { appId: ApplicationId.DESIGN_SYSTEM_APP } },
   { path: 'buttons', component: ButtonsComponent, data: { appId: ApplicationId.DESIGN_SYSTEM_APP } },
+  { path: 'chips', component: ChipsComponent, data: { appId: ApplicationId.DESIGN_SYSTEM_APP } },
   { path: 'progress-bar', component: ProgressBarComponent, data: { appId: ApplicationId.DESIGN_SYSTEM_APP } },
   { path: 'tooltip', component: TooltipComponent, data: { appId: ApplicationId.DESIGN_SYSTEM_APP } },
   { path: 'miscellaneous', component: MiscellaneousComponent, data: { appId: ApplicationId.DESIGN_SYSTEM_APP } },

@@ -107,6 +107,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
 @Getter
@@ -117,6 +118,7 @@ public class PastisService {
     private static final Logger LOGGER = LoggerFactory.getLogger(PastisService.class);
 
     private static final String APPLICATION_JSON_UTF8 = "application/json; charset=utf-8";
+    public static final String DEFAULT_SEDA_VERSION = "2.3";
     private final ResourceLoader resourceLoader;
 
     @Value("${rng.base.file}")
@@ -259,6 +261,7 @@ public class PastisService {
             profileResponse.setId(notice.getId());
             profileResponse.setType(fileType);
             profileResponse.setName(notice.getIdentifier());
+            profileResponse.setSedaVersion(notice.getSedaVersion());
             String s = notice.serialiseString();
             JSONObject profileJson = new JSONObject(s);
 
@@ -381,10 +384,9 @@ public class PastisService {
         this.rand = SecureRandom.getInstanceStrong();
 
         try {
-            String originalFileName = fileName;
-            if (originalFileName != null) {
-                String fileExtension = originalFileName.split("\\.")[1];
-                String profileName = originalFileName.split("\\.(?=[^\\.]+$)")[0];
+            if (fileName != null) {
+                String fileExtension = fileName.split("\\.")[1];
+                String profileName = fileName.split("\\.(?=[^\\.]+$)")[0];
                 profileResponse.setType(fileExtension.equals("rng") ? ProfileType.PA : ProfileType.PUA);
                 profileResponse.setName(profileName);
             }
@@ -395,6 +397,10 @@ public class PastisService {
                 XMLReader xmlReader = createXmlReader(handler);
                 xmlReader.parse(inputSource);
                 profileResponse.setProfile(getJson.getJsonParsedTree(handler.getElementRNGRoot()));
+
+                final String sedaVersion = Optional.ofNullable(handler.getSedaVersion()).orElse(DEFAULT_SEDA_VERSION);
+                final ProfileVersion profileVersion = ProfileVersion.fromVersionString(sedaVersion);
+                profileResponse.setSedaVersion(profileVersion);
                 LOGGER.info("Starting editing Archive Profile from file : {}", fileName);
             } else {
                 JSONTokener tokener = new JSONTokener(new InputStreamReader(fileInputStream));
@@ -402,6 +408,11 @@ public class PastisService {
                 puaPastisValidator.validatePUA(profileJson, standalone);
                 profileResponse.setProfile(jsonFromPUA.getProfileFromPUA(profileJson));
                 profileResponse.setNotice(NoticeUtils.getNoticeFromPUA(profileJson));
+
+                final ProfileVersion profileVersion = Optional.ofNullable(profileResponse.getNotice())
+                    .map(Notice::getSedaVersion)
+                    .orElse(ProfileVersion.fromVersionString(DEFAULT_SEDA_VERSION));
+                profileResponse.setSedaVersion(profileVersion);
                 LOGGER.info("Starting editing Archive Unit Profile with name : {}", file.getOriginalFilename());
             }
         } catch (SAXException | IOException e) {

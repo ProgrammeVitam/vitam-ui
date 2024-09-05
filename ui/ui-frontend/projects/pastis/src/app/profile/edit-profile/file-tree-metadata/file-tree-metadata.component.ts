@@ -60,6 +60,7 @@ import { FileTreeComponent } from '../file-tree/file-tree.component';
 import { FileTreeService } from '../file-tree/file-tree.service';
 import { AttributesPopupComponent } from './attributes/attributes.component';
 import { FileTreeMetadataService } from './file-tree-metadata.service';
+import { tap } from 'rxjs/operators';
 
 const FILE_TREE_METADATA_TRANSLATE_PATH = 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA';
 const ADD_PUA_CONTROL_TRANSLATE_PATH = 'USER_ACTION.ADD_PUA_CONTROL';
@@ -81,7 +82,6 @@ function constantToTranslate() {
   this.popupValider = this.translated('.POPUP_VALIDER');
   this.popupAnnuler = this.translated('.POPUP_ANNULER');
   this.popupControlOkLabel = this.translated('.POPUP_CONTROL_OK_BUTTON_LABEL');
-  this.popupControlSuAppComponentbTitleDialog = this.translated('.POPUP_CONTROL_SUB_TITLE_DIALOG');
   this.popupControlTitleDialog = this.translated('.POPUP_CONTROL_TITLE_DIALOG');
 }
 
@@ -95,6 +95,7 @@ function constantToTranslate() {
   encapsulation: ViewEncapsulation.None,
 })
 export class FileTreeMetadataComponent implements OnInit, OnDestroy {
+  sedaVersionLabel: string;
   rootAdditionalProperties: boolean;
   dataType = Object.values(DataTypeConstants);
   selected = -1;
@@ -242,37 +243,40 @@ export class FileTreeMetadataComponent implements OnInit, OnDestroy {
         console.error(error);
       },
     );
-    this._fileServiceSubscriptionNodeChange = this.fileService.nodeChange.subscribe((node) => {
-      this.clickedNode = node;
-      // BreadCrumb for navigation through metadatas
-      if (node) {
-        const breadCrumbNodeLabel: string = node.name;
-        this.fileService.tabRootNode.subscribe((tabRootNode) => {
-          if (tabRootNode) {
-            const tabLabel = (nodeNameToLabel as any)[tabRootNode.name];
-            this.breadcrumbDataMetadata = [{ label: tabLabel, node: tabRootNode }];
-            if (tabRootNode.name !== breadCrumbNodeLabel) {
-              if (node.parent) {
-                if (node.parent.name !== tabRootNode.name) {
-                  if (node.parent.parent) {
-                    if (node.parent.parent.name !== tabRootNode.name) {
-                      this.breadcrumbDataMetadata = this.breadcrumbDataMetadata.concat([{ label: '...' }]);
+    this._fileServiceSubscriptionNodeChange = this.fileService.nodeChange
+      .pipe(tap((_node) => (this.sedaVersionLabel = this.profileService.getSedaVersionLabel())))
+      .subscribe((node) => {
+        this.clickedNode = node;
+        // BreadCrumb for navigation through metadatas
+        if (node) {
+          const breadCrumbNodeLabel: string = node.name;
+          this.fileService.tabRootNode.subscribe((tabRootNode) => {
+            if (tabRootNode) {
+              const tabLabel = (nodeNameToLabel as any)[tabRootNode.name];
+              this.breadcrumbDataMetadata = [{ label: tabLabel, node: tabRootNode }];
+              if (tabRootNode.name !== breadCrumbNodeLabel) {
+                if (node.parent) {
+                  if (node.parent.name !== tabRootNode.name) {
+                    if (node.parent.parent) {
+                      if (node.parent.parent.name !== tabRootNode.name) {
+                        this.breadcrumbDataMetadata = this.breadcrumbDataMetadata.concat([{ label: '...' }]);
+                      }
                     }
+                    this.breadcrumbDataMetadata = this.breadcrumbDataMetadata.concat([
+                      {
+                        label: node.parent.name,
+                        node: node.parent,
+                      },
+                    ]);
                   }
-                  this.breadcrumbDataMetadata = this.breadcrumbDataMetadata.concat([
-                    {
-                      label: node.parent.name,
-                      node: node.parent,
-                    },
-                  ]);
+                  this.breadcrumbDataMetadata = this.breadcrumbDataMetadata.concat([{ label: breadCrumbNodeLabel, node }]);
                 }
-                this.breadcrumbDataMetadata = this.breadcrumbDataMetadata.concat([{ label: breadCrumbNodeLabel, node }]);
               }
             }
-          }
-        });
-      }
-    });
+          });
+        }
+      });
+    this.sedaVersionLabel = this.profileService.getSedaVersionLabel();
     // BreadCrump Top for navigation
     this.profileModeLabel =
       this.profileService.profileType === ProfileType.PUA
@@ -288,34 +292,36 @@ export class FileTreeMetadataComponent implements OnInit, OnDestroy {
       { label: this.profileModeLabel },
     ];
 
-    this._fileServiceSubscription = this.fileService.currentTree.subscribe((fileTree) => {
-      if (fileTree) {
-        this.clickedNode = fileTree[0];
-        this.fileService.allData.next(fileTree);
-        // Subscription to sedaRules
-        if (this.clickedNode) {
-          const rulesFromService = this.fileService.tabChildrenRulesChange.getValue();
-          const tabChildrenToInclude = rulesFromService[0];
-          const tabChildrenToExclude = rulesFromService[1];
-          this.sedaService.sedaRules$.subscribe((value) => {
-            this.sedaService.selectedSedaNode.next(value);
-            this.selectedSedaNode = value;
-          });
-          this.fileService.nodeChange.next(this.clickedNode);
-          const filteredData = this.fileService.filteredNode.getValue();
-          // Initial data for metadata table based on rules defined by tabChildrenRulesChange
-          if (filteredData) {
-            const dataTable = this.fileMetadataService.fillDataTable(
-              this.selectedSedaNode,
-              filteredData,
-              tabChildrenToInclude,
-              tabChildrenToExclude,
-            );
-            this.matDataSource = new MatTableDataSource<MetadataHeaders>(dataTable);
+    this._fileServiceSubscription = this.fileService.currentTree
+      .pipe(tap((_node) => (this.sedaVersionLabel = this.profileService.getSedaVersionLabel())))
+      .subscribe((fileTree) => {
+        if (fileTree) {
+          this.clickedNode = fileTree[0];
+          this.fileService.allData.next(fileTree);
+          // Subscription to sedaRules
+          if (this.clickedNode) {
+            const rulesFromService = this.fileService.tabChildrenRulesChange.getValue();
+            const tabChildrenToInclude = rulesFromService[0];
+            const tabChildrenToExclude = rulesFromService[1];
+            this.sedaService.sedaRules$.subscribe((value) => {
+              this.sedaService.selectedSedaNode.next(value);
+              this.selectedSedaNode = value;
+            });
+            this.fileService.nodeChange.next(this.clickedNode);
+            const filteredData = this.fileService.filteredNode.getValue();
+            // Initial data for metadata table based on rules defined by tabChildrenRulesChange
+            if (filteredData) {
+              const dataTable = this.fileMetadataService.fillDataTable(
+                this.selectedSedaNode,
+                filteredData,
+                tabChildrenToInclude,
+                tabChildrenToExclude,
+              );
+              this.matDataSource = new MatTableDataSource<MetadataHeaders>(dataTable);
+            }
           }
         }
-      }
-    });
+      });
 
     this._fileMetadataServiceSubscriptionSelectedCardinalities = this.fileMetadataService.selectedCardinalities.subscribe((cards) => {
       this.selectedCardinalities = cards;
