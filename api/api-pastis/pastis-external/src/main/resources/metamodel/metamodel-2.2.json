@@ -3879,58 +3879,51 @@
                       "children": []
                     },
                     {
-                      "Name": "LinkingAgentIdentifier",
-                      "Element": "Complex",
-                      "Cardinality": "0-1",
-                      "Type": "null",
-                      "Choice": "no",
-                      "Extensible": "no",
-                      "Enumeration": [
-                      ],
-                      "Definition": "Agent.",
-                      "Collection": "Arborescence",
-                      "Children": [
+                      "name": "LinkingAgentIdentifier",
+                      "element": "Complex",
+                      "cardinality": "0-1",
+                      "type": "null",
+                      "choice": "no",
+                      "extensible": "no",
+                      "enumeration": [],
+                      "definition": "Agent.",
+                      "collection": "Arborescence",
+                      "children": [
                         {
-                          "Name": "LinkingAgentIdentifierType",
-                          "Element": "Simple",
-                          "Cardinality": "0-1",
-                          "Type": "token",
-                          "Choice": "no",
-                          "Extensible": "no",
-                          "Enumeration": [
-                          ],
-                          "Definition": "Identifiant.",
-                          "Collection": "Arborescence",
-                          "Children": [
-                          ]
+                          "name": "LinkingAgentIdentifierType",
+                          "element": "Simple",
+                          "cardinality": "0-1",
+                          "type": "token",
+                          "choice": "no",
+                          "extensible": "no",
+                          "enumeration": [],
+                          "definition": "Identifiant.",
+                          "collection": "Arborescence",
+                          "children": []
                         },
                         {
-                          "Name": "LinkingAgentIdentifierValue",
-                          "Element": "Simple",
-                          "Cardinality": "0-1",
-                          "Type": "token",
-                          "Choice": "no",
-                          "Extensible": "no",
-                          "Enumeration": [
-                          ],
-                          "Definition": "Valeur.",
-                          "Collection": "Arborescence",
-                          "Children": [
-                          ]
+                          "name": "LinkingAgentIdentifierValue",
+                          "element": "Simple",
+                          "cardinality": "0-1",
+                          "type": "token",
+                          "choice": "no",
+                          "extensible": "no",
+                          "enumeration": [],
+                          "definition": "Valeur.",
+                          "collection": "Arborescence",
+                          "children": []
                         },
                         {
-                          "Name": "LinkingAgentRole",
-                          "Element": "Simple",
-                          "Cardinality": "0-1",
-                          "Type": "token",
-                          "Choice": "no",
-                          "Extensible": "no",
-                          "Enumeration": [
-                          ],
-                          "Definition": "Rôle.",
-                          "Collection": "Arborescence",
-                          "Children": [
-                          ]
+                          "name": "LinkingAgentRole",
+                          "element": "Simple",
+                          "cardinality": "0-1",
+                          "type": "token",
+                          "choice": "no",
+                          "extensible": "no",
+                          "enumeration": [],
+                          "definition": "Rôle.",
+                          "collection": "Arborescence",
+                          "children": []
                         }
                       ]
                     },
@@ -5480,7 +5473,7 @@
                       "choice": "no",
                       "extensible": "no",
                       "enumeration": [],
-                      "definition": "Gestion de la durée d\u2019utilité administrative.",
+                      "definition": "Gestion de la durée d’utilité administrative.",
                       "collection": "Unités d'archives",
                       "children": [
                         {
@@ -6005,7 +5998,7 @@
                           "choice": "no",
                           "extensible": "no",
                           "enumeration": [],
-                          "definition": "Propriétaire de la classification. Service émetteur au sens de l\u2019IGI 1300.",
+                          "definition": "Propriétaire de la classification. Service émetteur au sens de l’IGI 1300.",
                           "collection": "Unités d'archives",
                           "children": []
                         },
@@ -13472,6 +13465,139 @@
                                   ]
                                 }
                               ]
+                            },
+                            {
+                              "name": "AdditionalProof",
+                              "children": [
+                                {
+                                  "name": "AdditionalProofInformation",
+                                  "children": [],
+                                  "nameFr": "AdditionalProofInformation",
+                                  "element": "Simple",
+                                  "cardinality": "0-1",
+                                  "type": "string",
+                                  "choice": "no",
+                                  "extensible": "no",
+                                  "enumeration": [],
+                                  "definition": "ArchiveTransfer.DataObjectPackage.DescriptiveMetadata.ArchiveUnit.Content.SigningInformation.AdditionalProof.AdditionalProofInformation",
+                                  "collection": "Unités d'archives"
+                                }
+                              ],
+                              "nameFr": "AdditionalProof",
+                              "element": "Complex",
+                              "cardinality": "0-N",
+                              "type": "null",
+                              "choice": "no",
+                              "extensible": "no",
+                              "enumeration": [],
+                              "definition": "ArchiveTransfer.DataObjectPackage.DescriptiveMetadata.ArchiveUnit.Content.SigningInformation.AdditionalProof",
+                              "collection": "Unités d'archives"
+                            },
+                            {
+                              "name": "DetachedSigningRole",
+                              "children": [],
+                              "nameFr": "DetachedSigningRole",
+                              "element": "Simple",
+                              "cardinality": "0-N",
+                              "type": "string",
+                              "choice": "no",
+                              "extensible": "no",
+                              "enumeration": [
+                                "Timestamp",
+                                "Signature",
+                                "AdditionalProof"
+                              ],
+                              "definition": "ArchiveTransfer.DataObjectPackage.DescriptiveMetadata.ArchiveUnit.Content.SigningInformation.DetachedSigningRole",
+                              "collection": "Unités d'archives"
+                            },
+                            {
+                              "name": "Extended",
+                              "children": [],
+                              "nameFr": "Extended",
+                              "element": "Simple",
+                              "cardinality": "0-1",
+                              "type": "object",
+                              "choice": "no",
+                              "extensible": "no",
+                              "enumeration": [],
+                              "definition": "ArchiveTransfer.DataObjectPackage.DescriptiveMetadata.ArchiveUnit.Content.SigningInformation.Extended",
+                              "collection": "Unités d'archives"
+                            },
+                            {
+                              "name": "SignatureDescription",
+                              "children": [
+                                {
+                                  "name": "SigningType",
+                                  "children": [],
+                                  "nameFr": "SigningType",
+                                  "element": "Simple",
+                                  "cardinality": "0-1",
+                                  "type": "string",
+                                  "choice": "no",
+                                  "extensible": "no",
+                                  "enumeration": [],
+                                  "definition": "ArchiveTransfer.DataObjectPackage.DescriptiveMetadata.ArchiveUnit.Content.SigningInformation.SignatureDescription.SigningType",
+                                  "collection": "Unités d'archives"
+                                }
+                              ]
+                            },
+                            {
+                              "name": "SigningRole",
+                              "children": [],
+                              "nameFr": "SigningRole",
+                              "element": "Simple",
+                              "cardinality": "1-N",
+                              "type": "string",
+                              "choice": "no",
+                              "extensible": "no",
+                              "enumeration": [
+                                "SignedDocument",
+                                "Timestamp",
+                                "Signature",
+                                "AdditionalProof"
+                              ],
+                              "definition": "ArchiveTransfer.DataObjectPackage.DescriptiveMetadata.ArchiveUnit.Content.SigningInformation.SigningRole",
+                              "collection": "Unités d'archives"
+                            },
+                            {
+                              "name": "TimestampingInformation",
+                              "children": [
+                                {
+                                  "name": "AdditionalTimestampingInformation",
+                                  "children": [],
+                                  "nameFr": "AdditionalTimestampingInformation",
+                                  "element": "Simple",
+                                  "cardinality": "0-1",
+                                  "type": "string",
+                                  "choice": "no",
+                                  "extensible": "no",
+                                  "enumeration": [],
+                                  "definition": "ArchiveTransfer.DataObjectPackage.DescriptiveMetadata.ArchiveUnit.Content.SigningInformation.TimestampingInformation.AdditionalTimestampingInformation",
+                                  "collection": "Unités d'archives"
+                                },
+                                {
+                                  "name": "TimeStamp",
+                                  "children": [],
+                                  "nameFr": "TimeStamp",
+                                  "element": "Simple",
+                                  "cardinality": "0-1",
+                                  "type": "date",
+                                  "choice": "no",
+                                  "extensible": "no",
+                                  "enumeration": [],
+                                  "definition": "ArchiveTransfer.DataObjectPackage.DescriptiveMetadata.ArchiveUnit.Content.SigningInformation.TimestampingInformation.TimeStamp",
+                                  "collection": "Unités d'archives"
+                                }
+                              ],
+                              "nameFr": "TimestampingInformation",
+                              "element": "Complex",
+                              "cardinality": "0-N",
+                              "type": "null",
+                              "choice": "no",
+                              "extensible": "no",
+                              "enumeration": [],
+                              "definition": "ArchiveTransfer.DataObjectPackage.DescriptiveMetadata.ArchiveUnit.Content.SigningInformation.TimestampingInformation",
+                              "collection": "Unités d'archives"
                             }
                           ]
                         }
@@ -14816,7 +14942,7 @@
                   "choice": "no",
                   "extensible": "no",
                   "enumeration": [],
-                  "definition": "Propriétaire de la classification. Service émetteur au sens de l\u2019IGI 1300.",
+                  "definition": "Propriétaire de la classification. Service émetteur au sens de l’IGI 1300.",
                   "collection": "Règles",
                   "children": []
                 },

@@ -3678,7 +3678,16 @@
                       "type": "decimal",
                       "choice": "no",
                       "extensible": "no",
-                      "enumeration": ["microgram", "MC", "milligram", "MGM", "gram", "GRM", "kilogram", "KGM"],
+                      "enumeration": [
+                        "microgram",
+                        "MC",
+                        "milligram",
+                        "MGM",
+                        "gram",
+                        "GRM",
+                        "kilogram",
+                        "KGM"
+                      ],
                       "definition": "Métadonnée de dimension physique : poids du document.",
                       "collection": "Objets",
                       "children": [
@@ -5080,7 +5089,16 @@
                   "type": "decimal",
                   "choice": "no",
                   "extensible": "no",
-                  "enumeration": ["microgram", "MC", "milligram", "MGM", "gram", "GRM", "kilogram", "KGM"],
+                  "enumeration": [
+                    "microgram",
+                    "MC",
+                    "milligram",
+                    "MGM",
+                    "gram",
+                    "GRM",
+                    "kilogram",
+                    "KGM"
+                  ],
                   "definition": "Métadonnée de dimension physique : poids du document.",
                   "collection": "Objets",
                   "children": [
@@ -5343,7 +5361,10 @@
                           "type": "boolean",
                           "choice": "yes",
                           "extensible": "no",
-                          "enumeration": ["false", "true"],
+                          "enumeration": [
+                            "false",
+                            "true"
+                          ],
                           "definition": "Indique si les règles de gestion héritées des ArchiveUnit parents doivent être ignorées pour l'ArchiveUnit concerné.",
                           "collection": "Unités d'archives",
                           "children": []
@@ -5383,7 +5404,11 @@
                           "type": "token",
                           "choice": "no",
                           "extensible": "no",
-                          "enumeration": ["RestrictAccess", "Transfer", "Copy"],
+                          "enumeration": [
+                            "RestrictAccess",
+                            "Transfer",
+                            "Copy"
+                          ],
                           "definition": "Action à mettre en œuvre au terme de la durée de gestion.",
                           "collection": "Unités d'archives",
                           "children": []
@@ -5399,7 +5424,7 @@
                       "choice": "no",
                       "extensible": "no",
                       "enumeration": [],
-                      "definition": "Gestion de la durée d\u2019utilité administrative.",
+                      "definition": "Gestion de la durée d’utilité administrative.",
                       "collection": "Unités d'archives",
                       "children": [
                         {
@@ -5450,7 +5475,10 @@
                           "type": "boolean",
                           "choice": "yes",
                           "extensible": "no",
-                          "enumeration": ["false", "true"],
+                          "enumeration": [
+                            "false",
+                            "true"
+                          ],
                           "definition": "Indique si les règles de gestion héritées des ArchiveUnit parents doivent être ignorées pour l'ArchiveUnit concerné.",
                           "collection": "Unités d'archives",
                           "children": []
@@ -5490,7 +5518,10 @@
                           "type": "token",
                           "choice": "no",
                           "extensible": "no",
-                          "enumeration": ["Keep", "Destroy"],
+                          "enumeration": [
+                            "Keep",
+                            "Destroy"
+                          ],
                           "definition": "Action à mettre en œuvre au terme de la durée de gestion.",
                           "collection": "Unités d'archives",
                           "children": []
@@ -5557,7 +5588,10 @@
                           "type": "boolean",
                           "choice": "yes",
                           "extensible": "no",
-                          "enumeration": ["false", "true"],
+                          "enumeration": [
+                            "false",
+                            "true"
+                          ],
                           "definition": "Indique si les règles de gestion héritées des ArchiveUnit parents doivent être ignorées pour l'ArchiveUnit concerné.",
                           "collection": "Unités d'archives",
                           "children": []
@@ -5651,7 +5685,10 @@
                           "type": "boolean",
                           "choice": "yes",
                           "extensible": "no",
-                          "enumeration": ["false", "true"],
+                          "enumeration": [
+                            "false",
+                            "true"
+                          ],
                           "definition": "Indique si les règles de gestion héritées des ArchiveUnit parents doivent être ignorées pour l'ArchiveUnit concerné.",
                           "collection": "Unités d'archives",
                           "children": []
@@ -5745,7 +5782,10 @@
                           "type": "boolean",
                           "choice": "yes",
                           "extensible": "no",
-                          "enumeration": ["false", "true"],
+                          "enumeration": [
+                            "false",
+                            "true"
+                          ],
                           "definition": "Indique si les règles de gestion héritées des ArchiveUnit parents doivent être ignorées pour l'ArchiveUnit concerné.",
                           "collection": "Unités d'archives",
                           "children": []
@@ -5852,7 +5892,10 @@
                           "type": "boolean",
                           "choice": "yes",
                           "extensible": "no",
-                          "enumeration": ["false", "true"],
+                          "enumeration": [
+                            "false",
+                            "true"
+                          ],
                           "definition": "Indique si les règles de gestion héritées des ArchiveUnit parents doivent être ignorées pour l'ArchiveUnit concerné.",
                           "collection": "Unités d'archives",
                           "children": []
@@ -5906,7 +5949,7 @@
                           "choice": "no",
                           "extensible": "no",
                           "enumeration": [],
-                          "definition": "Propriétaire de la classification. Service émetteur au sens de l\u2019IGI 1300.",
+                          "definition": "Propriétaire de la classification. Service émetteur au sens de l’IGI 1300.",
                           "collection": "Unités d'archives",
                           "children": []
                         },
@@ -5931,7 +5974,10 @@
                           "type": "boolean",
                           "choice": "no",
                           "extensible": "no",
-                          "enumeration": ["true", "false"],
+                          "enumeration": [
+                            "true",
+                            "false"
+                          ],
                           "definition": "Indique si une autorisation humaine est nécessaire pour réévaluer la classification.",
                           "collection": "Unités d'archives",
                           "children": []
@@ -6105,7 +6151,10 @@
                       "type": "boolean",
                       "choice": "no",
                       "extensible": "no",
-                      "enumeration": ["true", "false"],
+                      "enumeration": [
+                        "true",
+                        "false"
+                      ],
                       "definition": "Indique si une autorisation humaine est nécessaire pour vérifier ou valider les opérations de gestion des ArchiveUnit.",
                       "collection": "Unités d'archives",
                       "children": []
@@ -12362,7 +12411,11 @@
               "type": "token",
               "choice": "no",
               "extensible": "no",
-              "enumeration": ["Public Archive", "Private Archive", "Public and Private Archive"],
+              "enumeration": [
+                "Public Archive",
+                "Private Archive",
+                "Public and Private Archive"
+              ],
               "definition": "Statut des archives échangées.",
               "collection": "Règles",
               "children": []
@@ -12637,7 +12690,10 @@
                   "type": "boolean",
                   "choice": "yes",
                   "extensible": "no",
-                  "enumeration": ["false", "true"],
+                  "enumeration": [
+                    "false",
+                    "true"
+                  ],
                   "definition": "Indique si les règles de gestion héritées des ArchiveUnit parents doivent être ignorées pour l'ArchiveUnit concerné.",
                   "collection": "Règles",
                   "children": []
@@ -12677,7 +12733,11 @@
                   "type": "token",
                   "choice": "no",
                   "extensible": "no",
-                  "enumeration": ["RestrictAccess", "Transfer", "Copy"],
+                  "enumeration": [
+                    "RestrictAccess",
+                    "Transfer",
+                    "Copy"
+                  ],
                   "definition": "Action à mettre en œuvre au terme de la durée de gestion.",
                   "collection": "Règles",
                   "children": []
@@ -12744,7 +12804,10 @@
                   "type": "boolean",
                   "choice": "yes",
                   "extensible": "no",
-                  "enumeration": ["false", "true"],
+                  "enumeration": [
+                    "false",
+                    "true"
+                  ],
                   "definition": "Indique si les règles de gestion héritées des ArchiveUnit parents doivent être ignorées pour l'ArchiveUnit concerné.",
                   "collection": "Règles",
                   "children": []
@@ -12784,7 +12847,10 @@
                   "type": "token",
                   "choice": "no",
                   "extensible": "no",
-                  "enumeration": ["Keep", "Destroy"],
+                  "enumeration": [
+                    "Keep",
+                    "Destroy"
+                  ],
                   "definition": "Action à mettre en œuvre au terme de la durée de gestion.",
                   "collection": "Règles",
                   "children": []
@@ -12851,7 +12917,10 @@
                   "type": "boolean",
                   "choice": "yes",
                   "extensible": "no",
-                  "enumeration": ["false", "true"],
+                  "enumeration": [
+                    "false",
+                    "true"
+                  ],
                   "definition": "Indique si les règles de gestion héritées des ArchiveUnit parents doivent être ignorées pour l'ArchiveUnit concerné.",
                   "collection": "Règles",
                   "children": []
@@ -12945,7 +13014,10 @@
                   "type": "boolean",
                   "choice": "yes",
                   "extensible": "no",
-                  "enumeration": ["false", "true"],
+                  "enumeration": [
+                    "false",
+                    "true"
+                  ],
                   "definition": "Indique si les règles de gestion héritées des ArchiveUnit parents doivent être ignorées pour l'ArchiveUnit concerné.",
                   "collection": "Règles",
                   "children": []
@@ -13039,7 +13111,10 @@
                   "type": "boolean",
                   "choice": "yes",
                   "extensible": "no",
-                  "enumeration": ["false", "true"],
+                  "enumeration": [
+                    "false",
+                    "true"
+                  ],
                   "definition": "Indique si les règles de gestion héritées des ArchiveUnit parents doivent être ignorées pour l'ArchiveUnit concerné.",
                   "collection": "Règles",
                   "children": []
@@ -13146,7 +13221,10 @@
                   "type": "boolean",
                   "choice": "yes",
                   "extensible": "no",
-                  "enumeration": ["false", "true"],
+                  "enumeration": [
+                    "false",
+                    "true"
+                  ],
                   "definition": "Indique si les règles de gestion héritées des ArchiveUnit parents doivent être ignorées pour l'ArchiveUnit concerné.",
                   "collection": "Règles",
                   "children": []
@@ -13200,7 +13278,7 @@
                   "choice": "no",
                   "extensible": "no",
                   "enumeration": [],
-                  "definition": "Propriétaire de la classification. Service émetteur au sens de l\u2019IGI 1300.",
+                  "definition": "Propriétaire de la classification. Service émetteur au sens de l’IGI 1300.",
                   "collection": "Règles",
                   "children": []
                 },
@@ -13225,7 +13303,10 @@
                   "type": "boolean",
                   "choice": "no",
                   "extensible": "no",
-                  "enumeration": ["true", "false"],
+                  "enumeration": [
+                    "true",
+                    "false"
+                  ],
                   "definition": "Indique si une autorisation humaine est nécessaire pour réévaluer la classification.",
                   "collection": "Règles",
                   "children": []
@@ -13399,7 +13480,10 @@
               "type": "boolean",
               "choice": "no",
               "extensible": "no",
-              "enumeration": ["true", "false"],
+              "enumeration": [
+                "true",
+                "false"
+              ],
               "definition": "Indique si une autorisation humaine est nécessaire pour vérifier ou valider les opérations de gestion des ArchiveUnit.",
               "collection": "Règles",
               "children": []
