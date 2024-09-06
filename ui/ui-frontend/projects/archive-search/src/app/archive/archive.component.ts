@@ -177,6 +177,7 @@ export class ArchiveComponent extends SidenavPage<any> implements OnInit, OnDest
 
   showPreviewArchiveUnit(item: Unit) {
     this.openPanel(item);
+    this.archiveSharedDataService.emitSelectedUnit(item);
   }
   showExtendedLateralPanel() {
     this.isLPExtended = true;

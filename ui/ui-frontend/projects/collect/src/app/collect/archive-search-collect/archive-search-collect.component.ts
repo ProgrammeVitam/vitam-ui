@@ -553,6 +553,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
 
   showPreviewArchiveUnit(item: Unit) {
     this.openPanel(item);
+    this.archiveExchangeDataService.emitSelectedUnit(item);
   }
 
   // Manage criteria filters methods

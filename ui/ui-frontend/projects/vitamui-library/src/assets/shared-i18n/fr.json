@@ -4696,7 +4696,7 @@
       "SHOW_TREE_PARENT": "Afficher seulement les résultats",
       "TREE_TITLE": "Arbres et plans",
       "TREE_LEAVES_TITLE": "Position(s) de rattachement",
-      "LOAD_MORE_UNITS": "Charger plus d'éléments"
+      "LOAD_MORE": "Charger plus"
     },
     "RETRIEVE_EXACT_COUNT": "Afficher le nombre exact",
     "MORE_THAN": "+ de ",
@@ -5395,7 +5395,7 @@
       "SHOW_TREE_PARENT": "Afficher seulement les résultats",
       "TREE_TITLE": "Arbres et plans",
       "TREE_LEAVES_TITLE": "Position(s) de rattachement",
-      "LOAD_MORE_UNITS": "Charger plus d'éléments",
+      "LOAD_MORE": "Charger plus",
       "ORPHANS_NODE": "Sans rattachement"
     },
     "RETRIEVE_EXACT_COUNT": "Afficher le nombre exact",

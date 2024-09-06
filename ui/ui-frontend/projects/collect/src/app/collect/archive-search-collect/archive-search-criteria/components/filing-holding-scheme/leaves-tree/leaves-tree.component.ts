@@ -39,6 +39,7 @@ import {
   ResultFacet,
   SearchCriteriaDto,
   UnitType,
+  Unit,
 } from 'vitamui-library';
 import { ArchiveCollectService } from '../../../../archive-collect.service';
 import { Pair } from '../../../models/utils';
@@ -64,6 +65,9 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
   @Output() showNodeDetail: EventEmitter<Pair> = new EventEmitter();
   @Output() switchView: EventEmitter<void> = new EventEmitter();
 
+  unitId: string = '';
+  allunitups: string[] = [];
+
   nestedTreeControlLeaves: NestedTreeControl<FilingHoldingSchemeNode> = new NestedTreeControl<FilingHoldingSchemeNode>(
     (node) => node.children,
   );
@@ -82,6 +86,7 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnInit(): void {
     this.subscribeOnSearchCriteriasUpdate();
+    this.subscribeOnSelectedNode();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -238,11 +243,50 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
     return nodeToVitamuiIcon(filingholdingscheme);
   }
 
+  isNodeUnitSelected(nodeId: string, withVisualMarker: boolean = false) {
+    let cssId = 'filing-holding-scheme-tree-node-selected';
+    if (withVisualMarker) cssId = cssId.concat(' selected-node');
+    return this.unitId && this.unitId === nodeId ? cssId : 'filing-holding-scheme-tree-node';
+  }
+
+  isAncestorMustBeColored(nodeId: string) {
+    return this.allunitups && this.allunitups.includes(nodeId) ? 'filing-holding-scheme-tree-node-selected' : '';
+  }
+
+  isExpandedNodeMustBeColored(node: FilingHoldingSchemeNode) {
+    return this.allunitups && this.allunitups.includes(node.id) && !this.nestedTreeControlLeaves.isExpanded(node) ? 'selected-node' : '';
+  }
+
+  isOrphanNodeMustBeColored(node: FilingHoldingSchemeNode) {
+    return node.children && node.children.some((node) => node.id === this.unitId || this.allunitups.includes(node.id))
+      ? 'filing-holding-scheme-tree-node-selected'
+      : 'filing-holding-scheme-tree-node';
+  }
+
+  isOrphanNeedsVisualMarker(node: FilingHoldingSchemeNode) {
+    return node.children &&
+      node.children.some((node) => node.id === this.unitId || this.allunitups.includes(node.id)) &&
+      !this.nestedTreeControlLeaves.isExpanded(node)
+      ? 'selected-node'
+      : '';
+  }
+
   private subscribeOnSearchCriteriasUpdate() {
     this.subscriptions.add(
       this.archiveSharedDataService.getSearchCriterias().subscribe((searchCriteriaDto: SearchCriteriaDto) => {
         this.leavesTreeService.setSearchCriterias(searchCriteriaDto);
         this.searchCriterias = searchCriteriaDto;
+      }),
+    );
+  }
+
+  private subscribeOnSelectedNode() {
+    this.subscriptions.add(
+      this.archiveSharedDataService.selectedUnit$.subscribe((selectedUnit: Unit) => {
+        if (selectedUnit && selectedUnit['#id']) {
+          this.unitId = selectedUnit['#id'];
+          this.allunitups = selectedUnit['#allunitups'];
+        }
       }),
     );
   }
