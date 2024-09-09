@@ -246,6 +246,7 @@
       "NAME": "Name",
       "SOCIAL_REASON": "Company name",
       "INTERNAL_CODE": "Internal code",
+      "TENANT_ID": "Select the tenant",
       "SAFE_CODE": "Safe code",
       "SAFE_NAME": "Safe name",
       "ACCESS_CONTRACT": "Access contract",

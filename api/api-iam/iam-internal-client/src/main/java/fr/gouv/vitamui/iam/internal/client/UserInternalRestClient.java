@@ -62,8 +62,6 @@ import java.util.Optional;
 
 /**
  * A REST client to check existence, read, create, update and delete the users.
- *
- *
  */
 public class UserInternalRestClient extends BasePaginatingAndSortingRestClient<UserDto, InternalHttpContext> {
 

@@ -4,6 +4,7 @@ import fr.gouv.vitamui.commons.api.domain.CriterionOperator;
 import fr.gouv.vitamui.commons.api.domain.OwnerDto;
 import fr.gouv.vitamui.commons.api.domain.QueryDto;
 import fr.gouv.vitamui.commons.api.domain.TenantDto;
+import fr.gouv.vitamui.commons.api.domain.VitamConfigurationDto;
 import fr.gouv.vitamui.commons.logbook.common.EventType;
 import fr.gouv.vitamui.commons.logbook.domain.Event;
 import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
@@ -17,6 +18,7 @@ import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.iam.common.utils.IamDtoBuilder;
 import fr.gouv.vitamui.iam.internal.server.common.domain.MongoDbCollections;
 import fr.gouv.vitamui.iam.internal.server.common.domain.SequencesConstants;
+import fr.gouv.vitamui.iam.internal.server.configuration.ConfigurationInternalService;
 import fr.gouv.vitamui.iam.internal.server.customer.config.CustomerInitConfig;
 import fr.gouv.vitamui.iam.internal.server.customer.dao.CustomerRepository;
 import fr.gouv.vitamui.iam.internal.server.customer.service.CustomerInternalService;
@@ -151,6 +153,9 @@ public class TenantInternalServiceIntegrationTest extends AbstractLogbookIntegra
     @MockBean
     private ExternalParametersInternalService externalParametersInternalService;
 
+    @MockBean
+    private ConfigurationInternalService configurationInternalService;
+
     @BeforeEach
     public void setup() {
         GroupInternalService internalGroupService = new GroupInternalService(
@@ -201,7 +206,8 @@ public class TenantInternalServiceIntegrationTest extends AbstractLogbookIntegra
             logbookService,
             customerInitConfig,
             externalParametersRepository,
-            externalParametersInternalService
+            externalParametersInternalService,
+            configurationInternalService
         );
 
         Mockito.reset(internalCustomerService);
@@ -292,16 +298,23 @@ public class TenantInternalServiceIntegrationTest extends AbstractLogbookIntegra
         when(externalParametersRepository.findByIdentifier(Mockito.anyString())).thenReturn(
             Optional.of(buildExternalParameter())
         );
+        Integer someTenantId = 10001;
 
         final Tenant tenantProof = new Tenant();
         tenantProof.setCustomerId(IamServerUtilsTest.CUSTOMER_ID);
-        tenantProof.setIdentifier(10001);
+        tenantProof.setIdentifier(someTenantId);
         tenantProof.setEnabled(true);
         tenantProof.setProof(true);
         tenantProof.setName("proof tenant");
         repository.save(tenantProof);
+
+        VitamConfigurationDto vitamConfigurationDto = new VitamConfigurationDto();
+        vitamConfigurationDto.setTenants(List.of(someTenantId + 1));
+        Mockito.when(configurationInternalService.getVitamPublicConfigurations()).thenReturn(vitamConfigurationDto);
+
         TenantDto tenant = IamServerUtilsTest.buildTenantDto();
         tenant.setId(null);
+        tenant.setIdentifier(someTenantId + 1);
 
         tenant = service.create(tenant);
 

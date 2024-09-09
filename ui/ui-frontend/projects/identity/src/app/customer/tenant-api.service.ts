@@ -38,7 +38,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { BaseHttpClient, BASE_URL, Tenant } from 'vitamui-library';
+import { BASE_URL, BaseHttpClient, Tenant } from 'vitamui-library';
 
 @Injectable({
   providedIn: 'root',
@@ -66,5 +66,9 @@ export class TenantApiService extends BaseHttpClient<Tenant> {
 
   checkExistsByParam(params: Array<{ key: string; value: string }>): Observable<boolean> {
     return super.checkExistsByParam(params);
+  }
+
+  getAvailableTenants(): Observable<number[]> {
+    return this.http.get<number[]>(this.apiUrl + '/available');
   }
 }

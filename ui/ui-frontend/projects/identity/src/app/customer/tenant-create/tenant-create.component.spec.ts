@@ -47,6 +47,8 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { TenantService } from '../tenant.service';
 import { TenantCreateComponent } from './tenant-create.component';
 import { TenantFormValidators } from './tenant-form.validators';
+import { MatLegacySelectModule as MatSelectModule } from '@angular/material/legacy-select';
+import { MatLegacyOptionModule } from '@angular/material/legacy-core';
 
 describe('TenantCreateComponent', () => {
   let component: TenantCreateComponent;
@@ -54,17 +56,30 @@ describe('TenantCreateComponent', () => {
 
   beforeEach(async () => {
     const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
-    const tenantServiceSpy = jasmine.createSpyObj('TenantService', { create: of({}) });
+    const tenantServiceSpy = jasmine.createSpyObj('TenantService', {
+      create: of({}),
+      getAvailableTenants: of([2, 3, 4]),
+    });
     const tenantFormValidatorsSpy = jasmine.createSpyObj('TenantFormValidators', {
       uniqueName: () => of(null),
     });
 
     await TestBed.configureTestingModule({
-      imports: [MatProgressBarModule, NoopAnimationsModule, ReactiveFormsModule, VitamUICommonTestModule],
+      imports: [
+        MatSelectModule,
+        MatLegacyOptionModule,
+        MatProgressBarModule,
+        NoopAnimationsModule,
+        ReactiveFormsModule,
+        VitamUICommonTestModule,
+      ],
       declarations: [TenantCreateComponent],
       providers: [
         { provide: MatDialogRef, useValue: matDialogRefSpy },
-        { provide: MAT_DIALOG_DATA, useValue: { owner: { id: '42', name: 'OwnerName', customerId: '424242', enabled: true } } },
+        {
+          provide: MAT_DIALOG_DATA,
+          useValue: { owner: { id: '42', name: 'OwnerName', customerId: '424242', enabled: true } },
+        },
         { provide: TenantService, useValue: tenantServiceSpy },
         { provide: TenantFormValidators, useValue: tenantFormValidatorsSpy },
         { provide: ConfirmDialogService, useValue: { listenToEscapeKeyPress: () => EMPTY } },
@@ -94,6 +109,7 @@ describe('TenantCreateComponent', () => {
       customerId: '424242',
       ownerId: '42',
       enabled: true,
+      identifier: 2,
     };
     const tenantServiceSpy = TestBed.inject(TenantService);
     component.form.setValue(tenant);
@@ -105,6 +121,7 @@ describe('TenantCreateComponent', () => {
         customerId: tenant.customerId,
         ownerId: tenant.ownerId,
         enabled: tenant.enabled,
+        identifier: tenant.identifier,
       } as Tenant,
       'OwnerName',
     );

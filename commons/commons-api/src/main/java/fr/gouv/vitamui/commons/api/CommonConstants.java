@@ -68,6 +68,7 @@ public class CommonConstants {
     public static final String GDPR_STATUS = "/gdpr-status";
 
     public static final String PATH_ANALYTICS = "/analytics";
+    public static final String PATH_AVAILABLE_TENANTS = "/available";
 
     public static final String X_TENANT_ID_HEADER = "X-Tenant-Id";
 

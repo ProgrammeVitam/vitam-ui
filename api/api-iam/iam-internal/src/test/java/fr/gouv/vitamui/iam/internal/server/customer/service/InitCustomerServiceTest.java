@@ -6,6 +6,7 @@ import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.iam.common.utils.IamDtoBuilder;
 import fr.gouv.vitamui.iam.internal.server.common.converter.AddressConverter;
+import fr.gouv.vitamui.iam.internal.server.configuration.ConfigurationInternalService;
 import fr.gouv.vitamui.iam.internal.server.customer.config.CustomerInitConfig;
 import fr.gouv.vitamui.iam.internal.server.customer.dao.CustomerRepository;
 import fr.gouv.vitamui.iam.internal.server.externalParameters.service.ExternalParametersInternalService;
@@ -50,6 +51,7 @@ import static org.mockito.Mockito.times;
 public class InitCustomerServiceTest {
 
     private static final String TENANT_NAME = "TENANT_NAME";
+    private static final Integer TENANT_ID = 10;
 
     private static final String APP_NAME = "APP_NAME";
 
@@ -89,6 +91,9 @@ public class InitCustomerServiceTest {
 
     @Mock
     private UserInfoInternalService userInfoInternalService;
+
+    @Mock
+    private ConfigurationInternalService configurationInternalService;
 
     @Mock
     private ProfileInternalService internalProfileService;
@@ -159,7 +164,7 @@ public class InitCustomerServiceTest {
         given(userInfoInternalService.create(any())).willReturn(new UserInfoDto());
 
         // When
-        initCustomerService.initCustomer(TENANT_NAME, customer, List.of(owner));
+        initCustomerService.initCustomer(TENANT_ID, TENANT_NAME, customer, List.of(owner));
 
         // Then
         ArgumentCaptor<Profile> profileCaptor = ArgumentCaptor.forClass(Profile.class);

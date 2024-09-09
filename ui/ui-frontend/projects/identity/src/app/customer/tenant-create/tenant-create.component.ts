@@ -53,6 +53,8 @@ export class TenantCreateComponent implements OnInit, OnDestroy {
   form: FormGroup;
 
   private keyPressSubscription: Subscription;
+  availableTenants: number[];
+  defaultSelectedTenantId: number;
 
   constructor(
     public dialogRef: MatDialogRef<TenantCreateComponent>,
@@ -68,7 +70,14 @@ export class TenantCreateComponent implements OnInit, OnDestroy {
       ownerId: [this.data.owner.id],
       customerId: [this.data.owner.customerId],
       name: [null, [Validators.required], this.tenantFormValidators.uniqueName()],
+      identifier: [null, [Validators.required]],
       enabled: [true, Validators.required],
+    });
+    this.tenantService.getAvailableTenants().subscribe((availableTenants) => {
+      this.availableTenants = availableTenants.sort((tenantI1: number, tenantI2: number) => tenantI1 - tenantI2);
+      if (this.availableTenants && this.availableTenants.length > 0) {
+        this.form.patchValue({ identifier: this.availableTenants[0] });
+      }
     });
     this.keyPressSubscription = this.confirmDialogService.listenToEscapeKeyPress(this.dialogRef).subscribe(() => this.onCancel());
   }

@@ -42,13 +42,14 @@ import {
   MatLegacyDialog as MatDialog,
   MatLegacyDialogRef as MatDialogRef,
 } from '@angular/material/legacy-dialog';
-import { Observable, Subject, merge } from 'rxjs';
+import { merge, Observable, Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 import { ConfirmDialogService, CountryOption, CountryService, Customer, Logo, OtpState, StartupService } from 'vitamui-library';
 import { CustomerService } from '../../core/customer.service';
 import { TenantFormValidators } from '../tenant-create/tenant-form.validators';
 import { CustomerAlertingComponent } from './customer-alerting/customer-alerting.component';
 import { ALPHA_NUMERIC_REGEX, CUSTOMER_CODE_MAX_LENGTH, CustomerCreateValidators } from './customer-create.validators';
+import { TenantService } from '../tenant.service';
 
 interface CustomerInfo {
   code: string;
@@ -75,28 +76,36 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
     name: null,
     companyName: null,
   };
+
   public get customerForm(): FormGroup {
     return this._customerForm;
   }
+
   public set customerForm(form: FormGroup) {
     this._customerForm = form;
   }
+
   public logos: Logo[];
   public countries: CountryOption[];
   public portalTitles: { [language: string]: string };
   public portalMessages: { [language: string]: string };
+
   public get homepageMessageForm(): FormGroup {
     return this._homepageMessageForm;
   }
+
   public set homepageMessageForm(form: FormGroup) {
     this._homepageMessageForm = form;
   }
+
   gdprReadOnlyStatus: boolean;
   private destroy = new Subject<void>();
   private _homepageMessageForm: FormGroup;
   private _customerForm: FormGroup;
 
   customer: Customer;
+  availableTenants: number[];
+  defaultSelectedTenantId: number;
 
   constructor(
     public dialogRef: MatDialogRef<CustomerCreateComponent>,
@@ -108,6 +117,7 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
     private tenantFormValidators: TenantFormValidators,
     private countryService: CountryService,
     private startupService: StartupService,
+    private tenantService: TenantService,
     private matDialog: MatDialog,
   ) {
     this.maxStreetLength = this.startupService.getConfigNumberValue('MAX_STREET_LENGTH');
@@ -140,6 +150,7 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
       portalTitles: [null],
       owners: this.formBuilder.array([this.formBuilder.control(null, Validators.required)]),
       tenantName: [null, [Validators.required], this.tenantFormValidators.uniqueName()],
+      tenantId: [null, [Validators.required]],
     });
 
     if (this.data) {
@@ -158,7 +169,12 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
     this.customerService.getMyCustomer().subscribe((customerDetails) => {
       this.customer = customerDetails;
     });
-
+    this.tenantService.getAvailableTenants().subscribe((tenantsList) => {
+      this.availableTenants = tenantsList.sort((tenantI1: number, tenantI2: number) => tenantI1 - tenantI2);
+      if (this.availableTenants && this.availableTenants.length > 0) {
+        this.form.patchValue({ tenantId: this.availableTenants[0] });
+      }
+    });
     this.confirmDialogService
       .listenToEscapeKeyPress(this.dialogRef)
       .pipe(takeUntil(this.destroy))
@@ -210,7 +226,6 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
     }
     this.creating = true;
     const customer: Customer = this.getCustomerFromForm();
-
     this.customerService
       .create(customer, this.logos)
       .pipe(takeUntil(this.destroy))
@@ -248,7 +263,6 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
         },
       };
     }
-
     return customer;
   }
 

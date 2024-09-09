@@ -71,7 +71,12 @@ export class CustomerApiService extends BaseHttpClient<Customer> {
   createCustomer(customer: Customer, logos?: Logo[], headers?: HttpHeaders): Observable<Customer> {
     const formData: FormData = new FormData();
     const customerTmp = Object.assign({}, customer);
+    let tenantId = customerTmp.tenantId;
+    delete customerTmp.tenantId;
     formData.append('tenantName', customerTmp.tenantName);
+    if (tenantId) {
+      formData.append('tenantId', tenantId.toString());
+    }
     customerTmp.tenantName = undefined;
     formData.append('customerDto', JSON.stringify(customerTmp));
 
@@ -83,7 +88,14 @@ export class CustomerApiService extends BaseHttpClient<Customer> {
     return super.getHttp().post<any>(super.getApiUrl(), formData, { headers });
   }
 
-  patchCustomer(partialCustomer: { id: string; [key: string]: any }, logos?: Logo[], headers?: HttpHeaders): Observable<Customer> {
+  patchCustomer(
+    partialCustomer: {
+      id: string;
+      [key: string]: any;
+    },
+    logos?: Logo[],
+    headers?: HttpHeaders,
+  ): Observable<Customer> {
     const formData: FormData = new FormData();
     formData.append(
       'partialCustomerDto',
@@ -124,7 +136,10 @@ export class CustomerApiService extends BaseHttpClient<Customer> {
   }
 
   public getLogo(id: string, type: AttachmentType): Observable<HttpResponse<Blob>> {
-    return super.getHttp().get(super.getApiUrl() + '/' + id + '/logo?type=' + type, { observe: 'response', responseType: 'blob' });
+    return super.getHttp().get(super.getApiUrl() + '/' + id + '/logo?type=' + type, {
+      observe: 'response',
+      responseType: 'blob',
+    });
   }
 
   getGdprSettingStatus(): Observable<boolean> {

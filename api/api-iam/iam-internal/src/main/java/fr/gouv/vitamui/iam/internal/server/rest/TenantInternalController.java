@@ -72,13 +72,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 /**
  * The controller to check existence, create, read, update and delete the tenants.
- *
- *
  */
 @RestController
 @RequestMapping(RestApi.V1_TENANTS_URL)
@@ -109,6 +108,7 @@ public class TenantInternalController implements CrudController<TenantDto> {
 
     /**
      * GetOne with criteria, item id.
+     *
      * @param id
      * @param criteria
      * @return
@@ -191,5 +191,11 @@ public class TenantInternalController implements CrudController<TenantDto> {
         SanityChecker.checkSecureParameter(id);
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         return internalTenantService.findHistoryById(id);
+    }
+
+    @GetMapping(CommonConstants.PATH_AVAILABLE_TENANTS)
+    public List<Integer> getAvailableTenants() {
+        LOGGER.debug("Retrieve Vitam available tenants  ");
+        return internalTenantService.getAvailableTenantsIds();
     }
 }

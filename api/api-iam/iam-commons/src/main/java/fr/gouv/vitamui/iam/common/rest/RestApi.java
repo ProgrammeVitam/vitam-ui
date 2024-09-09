@@ -38,8 +38,6 @@ package fr.gouv.vitamui.iam.common.rest;
 
 /**
  * The URLs of the REST API.
- *
- *
  */
 public abstract class RestApi {
 

@@ -47,6 +47,7 @@ import fr.gouv.vitamui.commons.api.domain.OwnerDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.domain.TenantDto;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
+import fr.gouv.vitamui.commons.api.domain.VitamConfigurationDto;
 import fr.gouv.vitamui.commons.api.exception.ApplicationServerException;
 import fr.gouv.vitamui.commons.api.exception.NotFoundException;
 import fr.gouv.vitamui.commons.api.utils.CastUtils;
@@ -60,6 +61,7 @@ import fr.gouv.vitamui.iam.internal.server.common.ApiIamInternalConstants;
 import fr.gouv.vitamui.iam.internal.server.common.domain.MongoDbCollections;
 import fr.gouv.vitamui.iam.internal.server.common.domain.SequencesConstants;
 import fr.gouv.vitamui.iam.internal.server.common.utils.EntityFactory;
+import fr.gouv.vitamui.iam.internal.server.configuration.ConfigurationInternalService;
 import fr.gouv.vitamui.iam.internal.server.customer.config.CustomerInitConfig;
 import fr.gouv.vitamui.iam.internal.server.customer.dao.CustomerRepository;
 import fr.gouv.vitamui.iam.internal.server.customer.domain.Customer;
@@ -83,6 +85,7 @@ import fr.gouv.vitamui.iam.internal.server.user.service.UserInternalService;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -141,6 +144,8 @@ public class TenantInternalService extends VitamUICrudService<TenantDto, Tenant>
 
     private final ExternalParametersInternalService externalParametersInternalService;
 
+    private final ConfigurationInternalService configurationInternalService;
+
     private static final Logger LOGGER = LoggerFactory.getLogger(TenantInternalService.class);
 
     @Autowired
@@ -163,7 +168,8 @@ public class TenantInternalService extends VitamUICrudService<TenantDto, Tenant>
         final LogbookService logbookService,
         final CustomerInitConfig customerInitConfig,
         final ExternalParametersRepository externalParametersRepository,
-        final ExternalParametersInternalService externalParametersInternalService
+        final ExternalParametersInternalService externalParametersInternalService,
+        final ConfigurationInternalService configurationInternalService
     ) {
         super(sequenceGeneratorService);
         this.tenantRepository = tenantRepository;
@@ -184,6 +190,7 @@ public class TenantInternalService extends VitamUICrudService<TenantDto, Tenant>
         this.customerInitConfig = customerInitConfig;
         this.externalParametersRepository = externalParametersRepository;
         this.externalParametersInternalService = externalParametersInternalService;
+        this.configurationInternalService = configurationInternalService;
     }
 
     /**
@@ -241,10 +248,10 @@ public class TenantInternalService extends VitamUICrudService<TenantDto, Tenant>
         checkIdentifier(tenantDto.getIdentifier(), message);
         checkOwner(tenantDto, message);
         checkProof(tenantDto.isProof(), tenantDto.getCustomerId(), message);
+        this.checkIfTenantIdIsAvailable(tenantDto.getIdentifier());
         if (!tenantDto.isProof()) {
             checkSetReadonly(tenantDto.isReadonly(), message);
         }
-        tenantDto.setIdentifier(generateTenantIdentifier());
         ExternalParametersDto fullAccessContract = initFullAccessContractExternalParameter(
             customer.getIdentifier(),
             tenantDto.getName()
@@ -547,20 +554,6 @@ public class TenantInternalService extends VitamUICrudService<TenantDto, Tenant>
         );
     }
 
-    private ExternalParametersDto checkAndGetExternalParameterByIdentifier(
-        final String externalParameterIdentifier,
-        final String message
-    ) {
-        final Optional<ExternalParameters> optExternalParameter = externalParametersRepository.findByIdentifier(
-            externalParameterIdentifier
-        );
-        Assert.isTrue(
-            optExternalParameter.isPresent(),
-            message + ": External Parameter with identifier" + externalParameterIdentifier + " does not exist"
-        );
-        return externalParametersInternalService.internalConvertFromEntityToDto(optExternalParameter.get());
-    }
-
     public TenantDto findByIdentifier(final Integer identifier) {
         return convertFromEntityToDto(tenantRepository.findByIdentifier(identifier));
     }
@@ -640,13 +633,6 @@ public class TenantInternalService extends VitamUICrudService<TenantDto, Tenant>
             .toJsonNode();
     }
 
-    private int generateTenantIdentifier() {
-        return getNextSequenceId(
-            SequencesConstants.TENANT_IDENTIFIER,
-            CustomSequencesConstants.DEFAULT_SEQUENCE_INCREMENT_VALUE
-        );
-    }
-
     @Override
     protected Tenant internalConvertFromDtoToEntity(final TenantDto dto) {
         return super.internalConvertFromDtoToEntity(dto);
@@ -722,5 +708,29 @@ public class TenantInternalService extends VitamUICrudService<TenantDto, Tenant>
             ExternalParametersInternalService.EXTERNAL_PARAMETER_NAME_PREFIX + customerIdentifier + "_" + tenantName
         );
         return fullAccessContract;
+    }
+
+    public List<Integer> extractUnusedTenants(List<Integer> currentTenants, List<Integer> availableTenants) {
+        List<Integer> copyList = new ArrayList<>(availableTenants);
+        copyList.removeAll(currentTenants);
+        return copyList;
+    }
+
+    public List<Integer> getAvailableTenantsIds() {
+        LOGGER.debug("Retrieve free tenant list ");
+        VitamConfigurationDto vitamConfigurationDto = configurationInternalService.getVitamPublicConfigurations();
+        List<Integer> tenantsList = vitamConfigurationDto.getTenants();
+        List<TenantDto> currentUsedTenants = this.getAll(Optional.empty());
+        List<Integer> tenantCouldNotUse = new ArrayList<>(vitamConfigurationDto.getAdminTenant());
+        tenantCouldNotUse.addAll(currentUsedTenants.stream().map(TenantDto::getIdentifier).toList());
+        return extractUnusedTenants(tenantCouldNotUse, tenantsList);
+    }
+
+    public void checkIfTenantIdIsAvailable(Integer tenantId) {
+        List<Integer> availableTenantsId = getAvailableTenantsIds();
+        Assert.isTrue(
+            CollectionUtils.isNotEmpty(availableTenantsId) && availableTenantsId.contains(tenantId),
+            "The tenant " + tenantId + ": is already used "
+        );
     }
 }

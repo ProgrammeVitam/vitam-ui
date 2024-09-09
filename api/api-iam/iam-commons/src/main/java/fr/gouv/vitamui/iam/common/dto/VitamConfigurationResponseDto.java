@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
  *
@@ -34,27 +34,9 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
-import { MatLegacyProgressBarModule as MatProgressBarModule } from '@angular/material/legacy-progress-bar';
+package fr.gouv.vitamui.iam.common.dto;
 
-import { VitamUICommonModule } from 'vitamui-library';
-import { TenantCreateComponent } from './tenant-create.component';
-import { MatLegacyOptionModule } from '@angular/material/legacy-core';
-import { MatLegacySelectModule } from '@angular/material/legacy-select';
-import { TranslateModule } from '@ngx-translate/core';
+import fr.gouv.vitamui.commons.api.domain.VitamConfigurationDto;
+import fr.gouv.vitamui.commons.vitam.api.dto.AbstractVitamUIResponseDto;
 
-@NgModule({
-  imports: [
-    CommonModule,
-    MatProgressBarModule,
-    ReactiveFormsModule,
-    VitamUICommonModule,
-    MatLegacyOptionModule,
-    MatLegacySelectModule,
-    TranslateModule,
-  ],
-  declarations: [TenantCreateComponent],
-})
-export class TenantCreateModule {}
+public class VitamConfigurationResponseDto extends AbstractVitamUIResponseDto<VitamConfigurationDto> {}

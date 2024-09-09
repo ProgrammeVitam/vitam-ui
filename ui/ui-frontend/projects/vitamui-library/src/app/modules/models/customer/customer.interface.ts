@@ -62,4 +62,5 @@ export interface Customer extends Id {
   gdprAlert: boolean;
   gdprAlertDelay: number;
   tenantName?: string;
+  tenantId?: number;
 }
