@@ -23,7 +23,7 @@
       [archiveUnit]="openedItem"
       (backToNormalLateralPanel)="backToNormalLateralPanel()"
       [accessContractAllowUpdating]="accessContractAllowUpdating"
-      [hasUpdateDescriptiveUnitMetadataRole]="hasUpdateDescriptiveUnitMetadataRole"
+      [hasUnitaryUpdateUnitRole]="hasUnitaryUpdateUnitRole"
       [transactionId]="transaction.id"
     ></app-archive-preview>
   </mat-sidenav>
@@ -72,13 +72,21 @@
             matTooltip="{{ 'COLLECT.OTHER_ACTION' | translate }}"
             matTooltipClass="vitamui-tooltip"
           >
-            <button mat-menu-item [disabled]="updateUnitsMetadataDisabled() || isArchiveUnitsEmpty()" (click)="openUpdateUnitsForm()">
+            <button
+              mat-menu-item
+              [disabled]="updateUnitsMetadataDisabled() || isArchiveUnitsEmpty() || !hasBulkUpdateUnitRole"
+              (click)="openUpdateUnitsForm()"
+            >
               {{ 'COLLECT.UPDATE_UNITS_METADATA.ACTION_UPDATE' | translate }}
             </button>
-            <button mat-menu-item (click)="validateTransaction()" [disabled]="isArchiveUnitsEmpty() || (isNotOpen$ | async)">
+            <button
+              mat-menu-item
+              (click)="validateTransaction() || !hasCloseTransactionRole"
+              [disabled]="isArchiveUnitsEmpty() || (isNotOpen$ | async)"
+            >
               {{ 'COLLECT.VALIDATE_ACTION' | translate }}
             </button>
-            <button mat-menu-item (click)="sendTransaction()" [disabled]="isNotReady$ | async">
+            <button mat-menu-item (click)="sendTransaction() || !hasSendTransactionRole" [disabled]="isNotReady$ | async">
               {{ 'COLLECT.INGEST_ACTION' | translate }}
             </button>
           </vitamui-common-menu-button>

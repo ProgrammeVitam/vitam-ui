@@ -26,7 +26,6 @@
  */
 package fr.gouv.vitamui.collect.external.server.rest;
 
-import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitamui.collect.common.dto.CollectProjectDto;
 import fr.gouv.vitamui.collect.common.dto.CollectTransactionDto;
 import fr.gouv.vitamui.collect.common.rest.RestApi;
@@ -112,6 +111,7 @@ public class ProjectExternalController {
 
     @ApiOperation(value = "Get transactions by project paginated")
     @GetMapping(params = { "page", "size" }, value = "/{id}" + TRANSACTIONS)
+    @Secured(ServicesData.ROLE_GET_TRANSACTIONS)
     public PaginatedValuesDto<CollectTransactionDto> getTransactionsByProjectPaginated(
         @RequestParam final Integer page,
         @RequestParam final Integer size,
@@ -119,7 +119,7 @@ public class ProjectExternalController {
         @RequestParam(required = false) final Optional<String> orderBy,
         @RequestParam(required = false) final Optional<DirectionDto> direction,
         @PathVariable("id") String projectId
-    ) throws InvalidParseOperationException, PreconditionFailedException {
+    ) throws PreconditionFailedException {
         ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, projectId);
         SanityChecker.checkSecureParameter(projectId);
         SanityChecker.sanitizeCriteria(direction);
@@ -147,7 +147,7 @@ public class ProjectExternalController {
     @Secured(ServicesData.ROLE_CREATE_PROJECTS)
     @PostMapping
     public CollectProjectDto createProject(@RequestBody CollectProjectDto collectProjectDto)
-        throws InvalidParseOperationException, PreconditionFailedException {
+        throws PreconditionFailedException {
         SanityChecker.sanitizeCriteria(collectProjectDto);
         LOGGER.debug("Project to create : {}", collectProjectDto);
         return projectExternalService.createProject(collectProjectDto);
@@ -158,7 +158,7 @@ public class ProjectExternalController {
     public CollectTransactionDto createTransactionForProject(
         final @PathVariable("id") String id,
         @RequestBody CollectTransactionDto collectTransactionDto
-    ) throws InvalidParseOperationException, PreconditionFailedException {
+    ) throws PreconditionFailedException {
         SanityChecker.checkSecureParameter(id);
         SanityChecker.sanitizeCriteria(collectTransactionDto);
         LOGGER.debug("Transaction to create : {}", collectTransactionDto);
@@ -173,7 +173,7 @@ public class ProjectExternalController {
         @RequestHeader(value = CommonConstants.X_TRANSACTION_ID_HEADER) final String transactionId,
         @RequestHeader(value = CommonConstants.X_ORIGINAL_FILENAME_HEADER) final String originalFileName,
         @RequestHeader Map<String, String> headers
-    ) throws InvalidParseOperationException, PreconditionFailedException {
+    ) throws PreconditionFailedException {
         ParameterChecker.checkParameter("The transaction ID is a mandatory parameter: ", transactionId);
         SanityChecker.checkSecureParameter(transactionId);
         SanityChecker.isValidFileName(originalFileName);
@@ -187,7 +187,7 @@ public class ProjectExternalController {
     public CollectProjectDto updateProject(
         final @PathVariable("id") String id,
         @RequestBody CollectProjectDto collectProjectDto
-    ) throws InvalidParseOperationException, PreconditionFailedException {
+    ) throws PreconditionFailedException {
         ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
         SanityChecker.checkSecureParameter(id);
         SanityChecker.sanitizeCriteria(collectProjectDto);
@@ -197,8 +197,7 @@ public class ProjectExternalController {
 
     @Secured(ServicesData.ROLE_GET_PROJECTS)
     @GetMapping(PATH_ID)
-    public CollectProjectDto findProjectById(final @PathVariable("id") String id)
-        throws InvalidParseOperationException, PreconditionFailedException {
+    public CollectProjectDto findProjectById(final @PathVariable("id") String id) throws PreconditionFailedException {
         ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("The project id {} ", id);
@@ -207,8 +206,7 @@ public class ProjectExternalController {
 
     @Secured(ServicesData.ROLE_DELETE_PROJECTS)
     @DeleteMapping(PATH_ID)
-    public void deleteProjectById(final @PathVariable("id") String id)
-        throws InvalidParseOperationException, PreconditionFailedException {
+    public void deleteProjectById(final @PathVariable("id") String id) throws PreconditionFailedException {
         ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("The project id {} ", id);
@@ -218,7 +216,7 @@ public class ProjectExternalController {
     @Secured(ServicesData.ROLE_GET_TRANSACTIONS)
     @GetMapping(PATH_ID + LAST_TRANSACTION_PATH)
     public CollectTransactionDto findLastTransactionByProjectId(final @PathVariable("id") String id)
-        throws InvalidParseOperationException, PreconditionFailedException {
+        throws PreconditionFailedException {
         ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Find the transaction by project with ID {}", id);

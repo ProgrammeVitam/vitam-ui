@@ -104,9 +104,12 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
   foundAccessContract = false;
   accessContractAllowUpdating = false;
   accessContractUpdatingRestrictedDesc: boolean;
-  hasUpdateDescriptiveUnitMetadataRole = false;
+  hasUnitaryUpdateUnitRole = false;
+  hasBulkUpdateUnitRole = false;
   isLPExtended = false;
   show = true;
+  hasSendTransactionRole = false;
+  hasCloseTransactionRole = false;
 
   searchCriteriaKeys: string[];
   searchCriterias: Map<string, CriteriaSearchCriteria>;
@@ -315,12 +318,27 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
       }),
     );
 
-    this.hasUpdateUnitDescriptiveMetadataPermission();
+    this.checkUpdateUnitPermissions();
   }
 
-  private hasUpdateUnitDescriptiveMetadataPermission() {
-    this.archiveUnitCollectService.hasCollectRole('ROLE_UPDATE_UNIT_DESC_METADATA', Number(this.tenantIdentifier)).subscribe((result) => {
-      this.hasUpdateDescriptiveUnitMetadataRole = result;
+  private checkUpdateUnitPermissions() {
+    this.archiveUnitCollectService
+      .hasCollectRole('ROLE_COLLECT_UPDATE_UNITARY_ARCHIVE_UNIT', Number(this.tenantIdentifier))
+      .subscribe((result) => {
+        this.hasUnitaryUpdateUnitRole = result;
+      });
+    this.archiveUnitCollectService
+      .hasCollectRole('ROLE_COLLECT_UPDATE_BULK_ARCHIVE_UNIT', Number(this.tenantIdentifier))
+      .subscribe((result) => {
+        this.hasBulkUpdateUnitRole = result;
+      });
+
+    this.archiveUnitCollectService.hasCollectRole('ROLE_SEND_TRANSACTIONS', Number(this.tenantIdentifier)).subscribe((result) => {
+      this.hasSendTransactionRole = result;
+    });
+
+    this.archiveUnitCollectService.hasCollectRole('ROLE_CLOSE_TRANSACTIONS', Number(this.tenantIdentifier)).subscribe((result) => {
+      this.hasCloseTransactionRole = result;
     });
   }
 

@@ -1,0 +1,108 @@
+db = db.getSiblingDB('iam')
+
+print("START_004_create_new_collect_profiles.js");
+
+// -------- COLLECT PROFILE : system archiviste gestion et collecte -----
+
+print("START_004_create profile system_archiviste_gestion_et_collecte");
+
+var maxIdProfile = db.getCollection('sequences').findOne({ '_id': 'profile_identifier' }).sequence;
+
+db.profiles.insertOne({
+   "_id":"system_archiviste_gestion_et_collecte",
+   "identifier": NumberInt(maxIdProfile++),
+   "name":"Archiviste - gestion et collecte",
+   "description":"Profil de collecte et préparation des versements avec droit de transmettre les archives au SAE",
+   "tenantIdentifier":NumberInt({{ vitamui_platform_informations.proof_tenant }}),
+   "applicationName":"COLLECT_APP",
+   "level":"",
+   "enabled":true,
+   "readonly":false,
+   "customerId":"system_customer",
+    "roles":[
+         {"name": "ROLE_GET_PROJECTS"},
+         {"name": "ROLE_CREATE_PROJECTS"},
+         {"name": "ROLE_UPDATE_PROJECTS"},
+         {"name": "ROLE_GET_ACCESS_CONTRACTS"},
+         {"name": "ROLE_GET_RULES"},
+         {"name": "ROLE_SEND_TRANSACTIONS"},
+         {"name": "ROLE_CLOSE_TRANSACTIONS"},
+         {"name": "ROLE_REOPEN_TRANSACTIONS"},
+         {"name": "ROLE_GET_TRANSACTIONS"},
+         {"name": "ROLE_CREATE_TRANSACTIONS"},
+         {"name": "ROLE_UPDATE_TRANSACTIONS"},
+         {"name": "ROLE_COLLECT_UPDATE_BULK_ARCHIVE_UNIT"},
+         {"name": "ROLE_COLLECT_UPDATE_UNITARY_ARCHIVE_UNIT"},
+         {"name": "ROLE_COLLECT_GET_ARCHIVE_BINARY"},
+         {"name": "ROLE_COLLECT_GET_ARCHIVE_SEARCH"},
+         {"name": "ROLE_GET_SCHEMAS"},
+         {"name": "ROLE_GET_ONTOLOGIES"},
+         {"name": "ROLE_GET_FILLING_PLAN_ACCESS"}
+      ]
+});
+
+
+// -------- COLLECT PROFILE : system Profil de préparation des versements des archives sans possibilité de transmettre les archives au SAE-----
+
+print("START_004_create profile system_collect_service_producteur");
+
+db.profiles.insertOne({
+   "_id":"system_collect_service_producteur",
+   "identifier": NumberInt(maxIdProfile++),
+   "name":"Profile Service producteur",
+   "description":"Profil de préparation des versements des archives sans possibilité de transmettre les archives au SAE",
+   "tenantIdentifier":NumberInt({{ vitamui_platform_informations.proof_tenant }}),
+   "applicationName":"COLLECT_APP",
+   "level":"",
+   "enabled":true,
+   "readonly":false,
+   "customerId":"system_customer",
+    "roles": [
+                 {"name": "ROLE_GET_PROJECTS"},
+                 {"name": "ROLE_CREATE_PROJECTS"},
+                 {"name": "ROLE_UPDATE_PROJECTS"},
+                 {"name": "ROLE_GET_ACCESS_CONTRACTS"},
+                 {"name": "ROLE_GET_RULES"},
+                 {"name": "ROLE_CLOSE_TRANSACTIONS"},
+                 {"name": "ROLE_GET_TRANSACTIONS"},
+                 {"name": "ROLE_CREATE_TRANSACTIONS"},
+                 {"name": "ROLE_COLLECT_UPDATE_UNITARY_ARCHIVE_UNIT"},
+                 {"name": "ROLE_COLLECT_GET_ARCHIVE_BINARY"},
+                 {"name": "ROLE_COLLECT_GET_ARCHIVE_SEARCH"},
+                 {"name": "ROLE_GET_SCHEMAS"},
+                 {"name": "ROLE_GET_ONTOLOGIES"},
+                 {"name": "ROLE_GET_FILLING_PLAN_ACCESS"}
+    ]
+});
+
+
+//Update admin group to add new profiles
+
+print("START_004_create update admin_group with new profiles");
+
+db.groups.updateOne({
+	"_id": "admin_group"
+}, {
+	$addToSet: {
+		"profileIds": {
+			$each: [
+              "system_collect_service_producteur",
+              "system_archiviste_gestion_et_collecte"
+			]
+		}
+	}
+});
+
+// Update sequence
+
+print("START_004_create update sequences");
+
+db.sequences.updateOne({
+    "_id": "profile_identifier"
+}, {
+    $set: {
+        "sequence": NumberInt(maxIdProfile)
+    }
+});
+
+print("END_004_create_new_collect_profiles");

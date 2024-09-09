@@ -112,10 +112,6 @@ public class SearchCriteriaHistoryExternalControllerTest
 
     @Override
     protected String[] getServices() {
-        return new String[] {
-            ServicesData.ROLE_GET_ALL_ARCHIVE,
-            ServicesData.ROLE_CREATE_ARCHIVE,
-            ServicesData.ROLE_GET_ARCHIVE,
-        };
+        return new String[] { ServicesData.ARCHIVE_SEARCH_GET_ARCHIVE_SEARCH_ROLE };
     }
 }

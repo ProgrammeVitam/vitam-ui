@@ -26,7 +26,6 @@
  */
 package fr.gouv.vitamui.collect.external.server.rest;
 
-import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitamui.collect.common.dto.CollectTransactionDto;
 import fr.gouv.vitamui.collect.common.rest.RestApi;
 import fr.gouv.vitamui.collect.external.server.service.TransactionExternalService;
@@ -83,8 +82,7 @@ public class TransactionExternalController {
 
     @Secured(ServicesData.ROLE_SEND_TRANSACTIONS)
     @PutMapping(CommonConstants.PATH_ID + SEND_PATH)
-    public void sendTransaction(final @PathVariable("id") String id)
-        throws InvalidParseOperationException, PreconditionFailedException {
+    public void sendTransaction(final @PathVariable("id") String id) throws PreconditionFailedException {
         ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug(TRANSACTION_ID, id);
@@ -93,8 +91,7 @@ public class TransactionExternalController {
 
     @Secured(ServicesData.ROLE_REOPEN_TRANSACTIONS)
     @PutMapping(CommonConstants.PATH_ID + REOPEN_PATH)
-    public void reopenTransaction(final @PathVariable("id") String id)
-        throws InvalidParseOperationException, PreconditionFailedException {
+    public void reopenTransaction(final @PathVariable("id") String id) throws PreconditionFailedException {
         ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug(TRANSACTION_ID, id);
@@ -103,8 +100,7 @@ public class TransactionExternalController {
 
     @Secured(ServicesData.ROLE_ABORT_TRANSACTIONS)
     @PutMapping(CommonConstants.PATH_ID + ABORT_PATH)
-    public void abortTransaction(final @PathVariable("id") String id)
-        throws InvalidParseOperationException, PreconditionFailedException {
+    public void abortTransaction(final @PathVariable("id") String id) throws PreconditionFailedException {
         ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug(TRANSACTION_ID, id);
@@ -113,8 +109,7 @@ public class TransactionExternalController {
 
     @Secured(ServicesData.ROLE_CLOSE_TRANSACTIONS)
     @PutMapping(CommonConstants.PATH_ID + VALIDATE_PATH)
-    public void validateTransaction(final @PathVariable("id") String id)
-        throws InvalidParseOperationException, PreconditionFailedException {
+    public void validateTransaction(final @PathVariable("id") String id) throws PreconditionFailedException {
         ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug(TRANSACTION_ID, id);
@@ -122,9 +117,10 @@ public class TransactionExternalController {
     }
 
     @ApiOperation(value = "Get transaction by id")
+    @Secured(ServicesData.ROLE_GET_TRANSACTIONS)
     @GetMapping(CommonConstants.PATH_ID)
     public CollectTransactionDto getTransactionById(final @PathVariable("id") String id)
-        throws InvalidParseOperationException, PreconditionFailedException {
+        throws PreconditionFailedException {
         ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Find the Transactions with project Id {}", id);
@@ -134,7 +130,7 @@ public class TransactionExternalController {
     @Secured(ServicesData.ROLE_UPDATE_TRANSACTIONS)
     @PutMapping
     public CollectTransactionDto updateTransaction(@RequestBody CollectTransactionDto transactionDto)
-        throws InvalidParseOperationException, PreconditionFailedException {
+        throws PreconditionFailedException {
         ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, transactionDto.getId());
         SanityChecker.checkSecureParameter(transactionDto.getId());
         SanityChecker.sanitizeCriteria(transactionDto);
@@ -142,7 +138,7 @@ public class TransactionExternalController {
         return transactionExternalService.updateTransaction(transactionDto);
     }
 
-    @Secured(ServicesData.ROLE_UPDATE_UNITS_METADATA)
+    @Secured(ServicesData.COLLECT_UPDATE_BULK_ARCHIVE_UNIT_ROLE)
     @ApiOperation(
         value = "Upload on streaming metadata file and update archive units",
         consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE
@@ -155,7 +151,7 @@ public class TransactionExternalController {
         final @PathVariable("transactionId") String transactionId,
         InputStream inputStream,
         @RequestHeader(value = CommonConstants.X_ORIGINAL_FILENAME_HEADER) final String originalFileName
-    ) throws InvalidParseOperationException, PreconditionFailedException {
+    ) throws PreconditionFailedException {
         ParameterChecker.checkParameter(" [External] The transactionId is a mandatory parameter: ", transactionId);
         SanityChecker.checkSecureParameter(transactionId);
         SanityChecker.isValidFileName(originalFileName);

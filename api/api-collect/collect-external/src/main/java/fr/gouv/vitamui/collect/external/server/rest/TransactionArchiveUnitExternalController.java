@@ -26,7 +26,6 @@
  */
 package fr.gouv.vitamui.collect.external.server.rest;
 
-import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitamui.archives.search.common.dto.VitamUIArchiveUnitResponseDto;
 import fr.gouv.vitamui.archives.search.common.rest.RestApi;
 import fr.gouv.vitamui.collect.external.server.service.TransactionArchiveUnitExternalService;
@@ -93,7 +92,7 @@ public class TransactionArchiveUnitExternalController {
     public VitamUIArchiveUnitResponseDto searchArchiveUnits(
         final @PathVariable("transactionId") String transactionId,
         @RequestBody final SearchCriteriaDto searchQuery
-    ) throws InvalidParseOperationException, PreconditionFailedException {
+    ) throws PreconditionFailedException {
         ParameterChecker.checkParameter(
             "The Query and the transactionId are mandatories parameters: ",
             transactionId,
@@ -107,10 +106,11 @@ public class TransactionArchiveUnitExternalController {
     }
 
     @PostMapping("/{transactionId}" + ARCHIVE_UNITS + EXPORT_CSV_SEARCH_PATH)
+    @Secured(ServicesData.COLLECT_GET_ARCHIVE_SEARCH_ROLE)
     public Resource exportCsvArchiveUnitsByCriteria(
         final @PathVariable("transactionId") String transactionId,
         final @RequestBody SearchCriteriaDto query
-    ) throws InvalidParseOperationException, PreconditionFailedException {
+    ) throws PreconditionFailedException {
         ParameterChecker.checkParameter(MANDATORY_QUERY, query);
         SanityChecker.checkSecureParameter(transactionId);
         SanityChecker.sanitizeCriteria(query);
@@ -119,9 +119,9 @@ public class TransactionArchiveUnitExternalController {
     }
 
     @GetMapping(RestApi.ARCHIVE_UNIT_INFO + CommonConstants.PATH_ID)
-    @Secured(ServicesData.ROLE_GET_ARCHIVE)
+    @Secured(ServicesData.COLLECT_GET_ARCHIVE_SEARCH_ROLE)
     public ResponseEntity<ResultsDto> findUnitById(final @PathVariable("id") String id)
-        throws InvalidParseOperationException, PreconditionFailedException {
+        throws PreconditionFailedException {
         ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("the UA by id {} ", id);
@@ -129,9 +129,9 @@ public class TransactionArchiveUnitExternalController {
     }
 
     @GetMapping(CommonConstants.OBJECTS_PATH + CommonConstants.PATH_ID)
-    @Secured(ServicesData.ROLE_GET_ARCHIVE)
+    @Secured(ServicesData.COLLECT_GET_ARCHIVE_SEARCH_ROLE)
     public ResponseEntity<ResultsDto> getObjectGroupById(final @PathVariable("id") String objectId)
-        throws InvalidParseOperationException, PreconditionFailedException {
+        throws PreconditionFailedException {
         ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, objectId);
         SanityChecker.checkSecureParameter(objectId);
         LOGGER.debug("[EXTERNAL] : Get ObjectGroup By id : {}", objectId);
@@ -139,18 +139,18 @@ public class TransactionArchiveUnitExternalController {
     }
 
     @GetMapping(CommonConstants.EXTERNAL_ONTOLOGIES_LIST)
-    @Secured(ServicesData.ROLE_GET_ARCHIVE)
+    @Secured(ServicesData.COLLECT_GET_ARCHIVE_SEARCH_ROLE)
     public List<VitamUiOntologyDto> getExternalOntologiesList() {
         LOGGER.debug("[EXTERNAL] : Get external ontologies list");
         return transactionArchiveUnitExternalService.getExternalOntologiesList();
     }
 
     @PostMapping("/{transactionId}" + RestApi.UNIT_WITH_INHERITED_RULES)
-    @Secured(ServicesData.ROLE_GET_ARCHIVE)
+    @Secured(ServicesData.COLLECT_GET_ARCHIVE_SEARCH_ROLE)
     public ResultsDto selectUnitWithInheritedRules(
         final @PathVariable("transactionId") String transactionId,
         final @RequestBody SearchCriteriaDto query
-    ) throws InvalidParseOperationException, PreconditionFailedException {
+    ) throws PreconditionFailedException {
         ParameterChecker.checkParameter(MANDATORY_QUERY, query);
         SanityChecker.checkSecureParameter(transactionId);
         SanityChecker.sanitizeCriteria(query);

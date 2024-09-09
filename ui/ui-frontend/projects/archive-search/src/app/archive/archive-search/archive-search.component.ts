@@ -373,7 +373,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
     this.checkUserHasRole(VitamuiRoles.ROLE_EXPORT_DIP, +this.tenantIdentifier);
     this.checkUserHasRole(VitamuiRoles.ROLE_TRANSFER_REQUEST, +this.tenantIdentifier);
     this.checkUserHasRole(VitamuiRoles.ROLE_ELIMINATION, +this.tenantIdentifier);
-    this.checkUserHasRole(VitamuiRoles.ROLE_UPDATE_MANAGEMENT_RULES, +this.tenantIdentifier);
+    this.checkUserHasRole(VitamuiRoles.ROLE_ARCHIVE_SEARCH_UPDATE_ARCHIVE_UNIT, +this.tenantIdentifier);
     this.checkUserHasRole(VitamuiRoles.ROLE_COMPUTED_INHERITED_RULES, +this.tenantIdentifier);
     this.checkUserHasRole(VitamuiRoles.ROLE_RECLASSIFICATION, +this.tenantIdentifier);
     this.checkUserHasRole(VitamuiRoles.ROLE_TRANSFER_ACKNOWLEDGMENT, +this.tenantIdentifier);
@@ -987,7 +987,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
         case VitamuiRoles.ROLE_ELIMINATION:
           this.hasEliminationAnalysisOrActionRole = result;
           break;
-        case VitamuiRoles.ROLE_UPDATE_MANAGEMENT_RULES:
+        case VitamuiRoles.ROLE_ARCHIVE_SEARCH_UPDATE_ARCHIVE_UNIT:
           this.hasUpdateManagementRuleRole = result;
           break;
         case VitamuiRoles.ROLE_COMPUTED_INHERITED_RULES:
