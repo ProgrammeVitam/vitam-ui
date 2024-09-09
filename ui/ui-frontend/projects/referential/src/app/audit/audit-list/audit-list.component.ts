@@ -73,8 +73,8 @@ export class AuditListComponent extends InfiniteScrollTable<any> implements OnDe
   @Output() auditClick = new EventEmitter<any>();
 
   public loaded = false;
-  public orderBy = '#id';
-  public direction = Direction.ASCENDANT;
+  public orderBy = 'evDateTime';
+  public direction = Direction.DESCENDANT;
   public filterMap: { [key: string]: any[] } = { type: null };
 
   private readonly searchChange = new Subject<string>();
@@ -87,7 +87,7 @@ export class AuditListComponent extends InfiniteScrollTable<any> implements OnDe
 
   ngOnInit() {
     this.auditService
-      .search(new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, Direction.ASCENDANT, JSON.stringify(this.buildCriteriaFromSearch())))
+      .search(new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, this.direction, JSON.stringify(this.buildCriteriaFromSearch())))
       .subscribe((data: any[]) => (this.dataSource = data));
 
     const searchCriteriaChange = merge(this.searchChange, this.filterChange, this.orderChange).pipe(debounceTime(FILTER_DEBOUNCE_TIME_MS));
