@@ -150,7 +150,7 @@ export class AuditService extends SearchService<Event> {
     criteria.evType = ['EVIDENCE_AUDIT'];
     criteria['#id'] = evidenceAuditId;
 
-    const pageRequest = new PageRequest(0, DEFAULT_PAGE_SIZE, '#id', Direction.ASCENDANT, JSON.stringify(criteria));
+    const pageRequest = new PageRequest(0, DEFAULT_PAGE_SIZE, 'evDateTime', Direction.DESCENDANT, JSON.stringify(criteria));
 
     return this.search(pageRequest).pipe(map((res) => res.length === 0));
   }
