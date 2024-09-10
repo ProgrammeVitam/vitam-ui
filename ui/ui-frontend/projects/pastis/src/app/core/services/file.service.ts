@@ -37,7 +37,7 @@ knowledge of the CeCILL-C license and that you accept its terms.
 */
 import { Injectable, OnDestroy } from '@angular/core';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
-import { BehaviorSubject, ReplaySubject, Subscription } from 'rxjs';
+import { BehaviorSubject, mergeMap, ReplaySubject, Subscription } from 'rxjs';
 import { FileNode, TypeConstants } from '../../models/file-node';
 import { Notice } from '../../models/notice.model';
 import { ProfileDescription } from '../../models/profile-description.model';
@@ -48,6 +48,7 @@ import { PastisDialogData } from '../../shared/pastis-dialog/classes/pastis-dial
 import { PastisDialogConfirmComponent } from '../../shared/pastis-dialog/pastis-dialog-confirm/pastis-dialog-confirm.component';
 import { ProfileService } from './profile.service';
 import { SedaService } from './seda.service';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -72,18 +73,13 @@ export class FileService implements OnDestroy {
   sedaDataArchiveUnit: SedaData;
 
   private _profileServiceGetProfileSubscription: Subscription;
-  private sedaRules: SedaData;
 
   constructor(
     private profileService: ProfileService,
     private fileMetadataService: FileTreeMetadataService,
     private dialog: MatDialog,
     private sedaService: SedaService,
-  ) {
-    this.sedaService.sedaRules$.subscribe((value) => {
-      this.sedaRules = value;
-    });
-  }
+  ) {}
 
   /**
    * Update the tree with the profile provided
@@ -95,8 +91,6 @@ export class FileService implements OnDestroy {
     this.profileService.profileName = profileResponse.name;
     this.profileService.profileId = profileResponse.id;
 
-    const sedaDataArray: SedaData[] = [this.sedaRules];
-    this.linkFileNodeToSedaData(null, [profileResponse.profile], sedaDataArray);
     this.currentTree.next([profileResponse.profile]);
     this.currentTreeLoaded = true;
     if (profileResponse.notice) {
@@ -111,7 +105,21 @@ export class FileService implements OnDestroy {
   getProfileAndUpdateTree(element: ProfileDescription) {
     this._profileServiceGetProfileSubscription = this.profileService
       .getProfile(element)
-      .subscribe((response) => this.updateTreeWithProfile(response));
+      .pipe(
+        mergeMap((profile) =>
+          this.profileService.getMetaModel(profile.sedaVersion).pipe(
+            map((metaModel) => ({
+              profile,
+              metaModel,
+            })),
+          ),
+        ),
+      )
+      .subscribe(({ profile, metaModel }) => {
+        this.sedaService.setMetaModel(metaModel);
+        this.linkFileNodeToSedaData(null, [profile.profile], [metaModel]);
+        this.updateTreeWithProfile(profile);
+      });
   }
 
   /**

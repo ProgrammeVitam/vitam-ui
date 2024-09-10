@@ -36,48 +36,34 @@ The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, shareReplay } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { CardinalityConstants, FileNode } from '../../models/file-node';
-import { CardinalityValues } from '../../models/models';
 import { SedaData } from '../../models/seda-data';
-import { ProfileService } from './profile.service';
-import { ProfileVersion } from '../../models/profile-version.enum';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SedaService {
+  private sedaNode = new BehaviorSubject<SedaData>(null);
+  sedaRules$ = this.sedaNode.asObservable();
+
   selectedSedaNode = new BehaviorSubject<SedaData>(null);
   selectedSedaNodeParent = new BehaviorSubject<SedaData>(null);
-  sedaTabNodeRootToSearch = new BehaviorSubject<SedaData>(null);
-  public sedaRules$: Observable<SedaData> = this.profileService.getMetaModel(ProfileVersion.VERSION_2_3).pipe(shareReplay(1));
 
-  constructor(private profileService: ProfileService) {}
+  setMetaModel(metaModel: SedaData): void {
+    this.sedaNode.next(metaModel);
+  }
 
-  getSedaNode(currentNode: SedaData, nameNode: string): SedaData {
-    if (currentNode && nameNode) {
-      let i: number;
-      let currentChild: SedaData;
-      if (nameNode === currentNode.name) {
-        return currentNode;
-      } else {
-        // Use a for loop instead of forEach to avoid nested functions
-        // Otherwise "return" will not work properly
-        if (currentNode.children) {
-          for (i = 0; i < currentNode.children.length; i += 1) {
-            currentChild = currentNode.children[i];
-            // Search in the current child
-            const result = this.getSedaNode(currentChild, nameNode);
-            // Return the result if the node has been found
-            if (result) {
-              return result;
-            }
-          }
-        }
-        // The node has not been found and we have no more options
-        return;
-      }
-    }
+  getSedaNode(currentNode: SedaData, nodeName: string): SedaData | null {
+    if (!(currentNode && nodeName)) return null;
+    if (!currentNode.children) return null;
+    if (nodeName === currentNode.name) return currentNode;
+
+    return currentNode.children.reduce((node: SedaData | null, child: SedaData) => {
+      if (node == null) node = this.getSedaNode(child, nodeName);
+
+      return node;
+    }, null);
   }
 
   getSedaNodeRecursively(currentNode: SedaData, nameNode: string): SedaData {
@@ -106,26 +92,6 @@ export class SedaService {
     return resultNode;
   }
 
-  // Get the seda node based on collection name and a node name.
-  // Since the SEDA 2.1 model does not contain unique names,
-  // the function will search the whole file and return a single metadata based on
-  // a node name and a collection name;
-  getSedaNodeCollection(sedaNode: SedaData, nodeName: string, collectionName: string): SedaData {
-    let resultNode: SedaData;
-    if (sedaNode) {
-      if (sedaNode.collection === collectionName && sedaNode.name === nodeName) {
-        resultNode = sedaNode;
-      }
-      for (const child of sedaNode.children) {
-        const nodeFound = this.getSedaNodeCollection(child, nodeName, collectionName);
-        if (nodeFound) {
-          resultNode = nodeFound;
-        }
-      }
-    }
-    return resultNode;
-  }
-
   // For all correspondent values beetween seda and tree elements,
   // return a SedaData array of elements that does not have
   // an optional (0-1) or an obligatory (1) cardinality.
@@ -141,14 +107,6 @@ export class SedaService {
             x.cardinality === CardinalityConstants['One Or More'].valueOf())),
     );
     return allowedSelectableList;
-  }
-
-  findCardinalityName(clickedNode: FileNode, cardlinalityValues: CardinalityValues[]): string {
-    if (!clickedNode.cardinality) {
-      return '1';
-    } else {
-      return cardlinalityValues.find((c) => c.value === clickedNode.cardinality).value;
-    }
   }
 
   /**
@@ -203,25 +161,5 @@ export class SedaService {
     }
     const childFound = sedaNode.children.find((c) => c.name === nodeName);
     return childFound ? childFound : null;
-  }
-
-  setSedaTabNodeRoot(sedaNodeName: string): void {
-    const sedaRootNodeSearch = this.getSedaNodeRecursively(this.selectedSedaNode.getValue(), sedaNodeName);
-    this.sedaTabNodeRootToSearch.next(sedaRootNodeSearch);
-  }
-
-  // Returns a list of cardinalities of a given a fileNode's children
-  // If an attributte child doesn't not have a cardinality
-  // then the seda child's cardinality will be added by default;
-  getCardinalitiesOfSedaChildrenAttributes(fileNode: FileNode, sedaNode: SedaData): string[] {
-    const cardinalities: string[] = [];
-    for (const fileChild of fileNode.children) {
-      for (const sedaChild of sedaNode.children) {
-        if (fileChild.name === sedaChild.name) {
-          fileChild.cardinality ? cardinalities.push(fileChild.cardinality) : cardinalities.push(sedaChild.cardinality);
-        }
-      }
-    }
-    return cardinalities;
   }
 }

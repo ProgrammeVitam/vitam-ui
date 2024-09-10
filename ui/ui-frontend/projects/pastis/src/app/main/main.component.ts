@@ -46,6 +46,8 @@ import { FileNode, FileNodeInsertAttributeParams, FileNodeInsertParams } from '.
 import { ProfileDescription } from '../models/profile-description.model';
 import { ProfileResponse } from '../models/profile-response';
 import { EditProfileComponent } from '../profile/edit-profile/edit-profile.component';
+import { ProfileService } from '../core/services/profile.service';
+import { SedaService } from '../core/services/seda.service';
 
 @Component({
   selector: 'app-home',
@@ -75,6 +77,8 @@ export class MainComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private sideNavService: ToggleSidenavService,
     private toastrService: ToastrService,
+    private profileService: ProfileService,
+    private sedaService: SedaService,
     public fileService: FileService,
     private router: Router,
   ) {
@@ -107,7 +111,12 @@ export class MainComponent implements OnInit, OnDestroy {
         // Otherwise we must have an user uploaded profile
         this.uploadedProfileResponse.id = null;
         this.uploadedProfileResponse.name = 'Nouveau Profil';
-        this.fileService.updateTreeWithProfile(this.uploadedProfileResponse);
+
+        this.profileService.getMetaModel(this.uploadedProfileResponse.sedaVersion).subscribe((metaModel) => {
+          this.sedaService.setMetaModel(metaModel);
+          this.fileService.linkFileNodeToSedaData(null, [this.uploadedProfileResponse.profile], [metaModel]);
+          this.fileService.updateTreeWithProfile(this.uploadedProfileResponse);
+        });
       }
     });
     this.opened = true;

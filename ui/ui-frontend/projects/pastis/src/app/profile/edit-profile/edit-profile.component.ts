@@ -39,7 +39,6 @@ knowledge of the CeCILL-C license and that you accept its terms.
 import { NestedTreeControl } from '@angular/cdk/tree';
 import { MatLegacyTabChangeEvent as MatTabChangeEvent } from '@angular/material/legacy-tabs';
 import { MatTreeNestedDataSource } from '@angular/material/tree';
-import { TranslateService } from '@ngx-translate/core';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { environment } from '../../../environments/environment';
@@ -52,13 +51,6 @@ import { ProfileType } from '../../models/profile-type.enum';
 import { SedaData } from '../../models/seda-data';
 import { FileTreeComponent } from './file-tree/file-tree.component';
 import { FileTreeService } from './file-tree/file-tree.service';
-
-const EDIT_PROFILE_TRANSLATE_PATH = 'PROFILE.EDIT_PROFILE';
-
-export interface UploadedProfileResponse {
-  profile: FileNode[];
-  id: number;
-}
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
@@ -115,7 +107,6 @@ export class EditProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     public profileService: ProfileService,
     private loaderService: NgxUiLoaderService,
     private fileTreeService: FileTreeService,
-    private translateService: TranslateService,
   ) {
     this.selectedIndex = 0;
   }
@@ -200,10 +191,6 @@ export class EditProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     this.sedaService.sedaRules$.subscribe((value) => {
       this.sedaParentNode = value;
     });
-  }
-
-  translated(nameOfFieldToTranslate: string): string {
-    return this.translateService.instant(EDIT_PROFILE_TRANSLATE_PATH + nameOfFieldToTranslate);
   }
 
   initActiveTabAndProfileMode() {

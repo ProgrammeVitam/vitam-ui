@@ -39,6 +39,9 @@ import { Component, Input } from '@angular/core';
 import { FileUploader } from 'ng2-file-upload';
 import { FileService } from '../../core/services/file.service';
 import { ProfileService } from '../../core/services/profile.service';
+import { filter, mergeMap } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { SedaService } from '../../core/services/seda.service';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
@@ -54,6 +57,7 @@ export class UserActionUploadProfileComponent {
   constructor(
     private profileService: ProfileService,
     private fileService: FileService,
+    private sedaService: SedaService,
   ) {}
 
   handleFileInput(files: FileList) {
@@ -66,12 +70,24 @@ export class UserActionUploadProfileComponent {
     if (this.fileToUpload) {
       const formData = new FormData();
       formData.append('file', this.fileToUpload, this.fileToUpload.name);
-      this.profileService.uploadProfile(formData).subscribe((fileData) => {
-        if (fileData) {
-          // console.log('File submited! : ', fileData);
-          this.fileService.updateTreeWithProfile(fileData);
-        }
-      });
+      this.profileService
+        .uploadProfile(formData)
+        .pipe(
+          mergeMap((profile) =>
+            this.profileService.getMetaModel(profile.sedaVersion).pipe(
+              map((metaModel) => ({
+                profile,
+                metaModel,
+              })),
+            ),
+          ),
+          filter(({ profile, metaModel }) => Boolean(profile) && Boolean(metaModel)),
+        )
+        .subscribe(({ profile, metaModel }) => {
+          this.sedaService.setMetaModel(metaModel);
+          this.fileService.linkFileNodeToSedaData(null, [profile.profile], [metaModel]);
+          this.fileService.updateTreeWithProfile(profile);
+        });
     }
   }
 }

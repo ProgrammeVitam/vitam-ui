@@ -140,22 +140,13 @@ export class FileTreeMetadataService {
   }
 
   getSedaNode(elementName: string, sedaChild: SedaData): SedaData {
-    for (const node of sedaChild.children) {
-      if (node.name === elementName) {
-        return node;
-      }
-    }
-    return null;
+    return sedaChild?.children.find((child) => child.name === elementName) || null;
   }
+
   onResolveName(elementName: string, sedaChild: SedaData) {
     const node = this.getSedaNode(elementName, sedaChild);
-    if (node != null) {
-      if (node.nameFr) {
-        return node.nameFr;
-      }
-      return node.name;
-    }
-    return elementName;
+
+    return node?.nameFr || node?.name || elementName;
   }
 
   findSedaAllowedCardinalityList(sedaNode: SedaData, fileNode: FileNode): string[] {
@@ -166,28 +157,20 @@ export class FileTreeMetadataService {
     if (sedaNode.name === fileNode.name) {
       allowedCardinalityListResult = this.allowedCardinality.get(sedaNode.cardinality);
     }
-    if (sedaNode.children.length > 0) {
-      // Search the sedaNode children to find the correnpondent cardinality list
-      for (const child of sedaNode.children) {
-        if (child.name === fileNode.name) {
-          // Used in the case we wish to "correct" the node's cardinality, since
-          // the seda cardinality wont include the cardinality retrieved by node's rng file.
-          // In this case, the condition will return the rng file cardinality list
-          // instead of node's cardinality list in accordance with the SEDA specification.
-          allowedCardinalityListResult = this.allowedCardinality.get(child.cardinality);
-          resultList.push(allowedCardinalityListResult);
-          this.allowedSedaCardinalities.next(resultList);
-        }
-      }
-    } /*else {
-      for (const [card, cardlist] of this.allowedCardinality) {
-        if (card === fileNode.cardinality) {
-          !fileNode.cardinality ? allowedCardinalityListResult.push('1') : allowedCardinalityListResult = cardlist;
-          resultList.push(cardlist);
-          this.allowedSedaCardinalities.next(resultList);
-        }
-      }
-    }*/
+
+    // Search the sedaNode children to find the correnpondent cardinality list
+    sedaNode.children
+      .filter((child) => child.name === fileNode.name)
+      .forEach((child) => {
+        // Used in the case we wish to "correct" the node's cardinality, since
+        // the seda cardinality wont include the cardinality retrieved by node's rng file.
+        // In this case, the condition will return the rng file cardinality list
+        // instead of node's cardinality list in accordance with the SEDA specification.
+        allowedCardinalityListResult = this.allowedCardinality.get(child.cardinality);
+        resultList.push(allowedCardinalityListResult);
+        this.allowedSedaCardinalities.next(resultList);
+      });
+
     this.allowedSedaCardinalities.next(resultList);
     if (allowedCardinalityListResult.length < 1) {
       allowedCardinalityListResult = this.allowedCardinality.get(fileNode.cardinality);
@@ -217,27 +200,5 @@ export class FileTreeMetadataService {
       !clickedNode.cardinality ? childrenCardMap.set(clickedNode.id, '1') : childrenCardMap.set(clickedNode.id, clickedNode.cardinality);
     }
     return Array.from(childrenCardMap.values());
-  }
-
-  /**
-   * Find the children of sedaParent and return the 'Enumeration' property
-   * @param sedaParent the seda parent of the node we want to find
-   * @param childName the name of the seda node we want to find
-   */
-  getEnumerationFromSedaNodeChildren(sedaParent: SedaData, childName: string): string[] {
-    if (sedaParent.name === childName) {
-      return sedaParent.enumeration;
-    }
-    const sedaNode: SedaData = sedaParent.children.find((c: { name: string }) => c.name === childName);
-    if (sedaNode) {
-      return sedaNode.enumeration;
-    }
-    return [];
-  }
-  shouldLoadTable() {
-    return this.shouldLoadMetadataTable.getValue();
-  }
-  enableAttributeOption(nodeType: string) {
-    return nodeType === TypeConstants.attribute;
   }
 }
