@@ -52,7 +52,7 @@ export class EditorListInputComponent implements OnInit, OnDestroy {
   private subscriptions = new Subscription();
 
   ngOnInit() {
-    const values: any[] = this.editObject.control.value as any[];
+    const values: any[] = [...this.editObject.control.value] as any[];
     const firstValue = values.shift();
     const validators = Object.keys(this.editObject).reduce((acc, key) => {
       if (key === 'required' && this.editObject[key]) acc.push(Validators.required);

@@ -292,4 +292,33 @@ describe('DataStructureService', () => {
     expect(service.deepValue(unflattened, 'nested.information')).toEqual('information');
     expect(service.deepValue(unflattened, 'cpus[0].cores')).toEqual(4);
   });
+
+  it('should merge arrays', () => {
+    const defaultValue: any = {
+      ArchivalAgencyArchiveUnitIdentifier: [],
+      FilePlanPosition: [],
+      OriginatingAgencyArchiveUnitIdentifier: [],
+      OriginatingSystemId: [],
+      SystemId: [],
+      TransferringAgencyArchiveUnitIdentifier: [],
+    };
+    const data = {
+      OriginatingSystemId: ['MC127858'],
+      OriginatingAgencyArchiveUnitIdentifier: ['MC127858'],
+      TransferringAgencyArchiveUnitIdentifier: ['TS99'],
+      ArchivalAgencyArchiveUnitIdentifier: ['P-36'],
+      FilePlanPosition: ['Dis0008'],
+    };
+    const mergedData = service.deepMerge(defaultValue, data);
+    const expected: any = {
+      ArchivalAgencyArchiveUnitIdentifier: ['P-36'],
+      OriginatingAgencyArchiveUnitIdentifier: ['MC127858'],
+      FilePlanPosition: ['Dis0008'],
+      OriginatingSystemId: ['MC127858'],
+      SystemId: [],
+      TransferringAgencyArchiveUnitIdentifier: ['TS99'],
+    };
+
+    expect(mergedData).toEqual(expected);
+  });
 });
