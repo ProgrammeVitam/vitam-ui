@@ -41,6 +41,7 @@ import { map } from 'rxjs/operators';
 import { BASE_URL, BaseHttpClient, PageRequest, PaginatedResponse } from 'vitamui-library';
 import { Profile } from '../../models/profile';
 import { PastisConfiguration } from '../classes/pastis-configuration';
+import { SKIP_ERROR_NOTIFICATION } from 'vitamui-library';
 
 const HTTP_STATUS_OK = 200;
 
@@ -74,10 +75,12 @@ export class ArchiveProfileApiService extends BaseHttpClient<Profile> {
     return super.getHttp().get(super.getApiUrl() + this.pastisConfig.downloadProfile + '/' + id, { responseType: 'blob', headers });
   }
 
-  uploadProfileArchivageFile(id: string, profile: FormData, headers?: HttpHeaders): Observable<any> {
-    return super
-      .getHttp()
-      .put(this.apiUrl + this.pastisConfig.importProfileInExistingNotice + '/' + id, profile, { responseType: 'json', headers });
+  uploadProfileArchivageFile(id: string, profile: FormData, headers: HttpHeaders = new HttpHeaders()): Observable<any> {
+    const allHeaders = headers.set(SKIP_ERROR_NOTIFICATION, '1');
+    return super.getHttp().put(this.apiUrl + this.pastisConfig.importProfileInExistingNotice + '/' + id, profile, {
+      responseType: 'json',
+      headers: allHeaders,
+    });
   }
 
   updateProfilePa(profile: Profile, headers?: HttpHeaders): Observable<Profile> {

@@ -59,6 +59,7 @@ import { Profile } from '../../models/profile';
 import { ArchivalProfileUnit } from '../../models/archival-profile-unit';
 import { NoticeService } from '../../core/services/notice.service';
 import { MatDialogConfig } from '@angular/material/dialog';
+import { NotificationService } from '../../core/services/notification.service';
 
 const POPUP_CREATION_PATH = 'PROFILE.POP_UP_CREATION';
 const POPUP_UPLOAD_PATH = 'PROFILE.POP_UP_UPLOAD_FILE';
@@ -142,6 +143,7 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
     private dataGeneriquePopupService: DataGeneriquePopupService,
     private translateService: TranslateService,
     private toggleService: ToggleSidenavService,
+    private notificationService: NotificationService,
   ) {
     super(route, globalEventService);
     this.pendingSub = this.toggleService.isPending.subscribe((status) => {
@@ -333,16 +335,28 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
           const fileToUpload: File = files[0];
           if (profileDescription.type === ProfileType.PA) {
             const profile: Profile = this.noticeService.profileDescriptionToPaProfile(profileDescription);
-            this.profileService.updateProfileFilePa(profile, fileToUpload).subscribe(() => this.refreshListProfiles());
+            this.profileService.updateProfileFilePa(profile, fileToUpload).subscribe(
+              () => this.refreshListProfiles(),
+              () =>
+                this.notificationService.showError(
+                  this.translateService.instant('PROFILE.LIST_PROFILE.PROFILE_PREVIEW.MODIFICATION_ERROR_SEDA_VERSION'),
+                ),
+            );
           }
           if (profileDescription.type === ProfileType.PUA && fileToUpload) {
             const fileReader = new FileReader();
             fileReader.readAsText(fileToUpload, 'UTF-8');
             fileReader.onload = () => {
               const jsonObj: ProfileDescription = JSON.parse(fileReader.result.toString());
-              profileDescription.controlSchema = jsonObj.controlSchema;
-              const archivalProfileUnit: ArchivalProfileUnit = this.noticeService.profileDescriptionToPuaProfile(profileDescription);
-              this.profileService.updateProfilePua(archivalProfileUnit).subscribe(() => this.refreshListProfiles());
+              if (jsonObj.sedaVersion !== profileDescription.sedaVersion) {
+                this.notificationService.showError(
+                  this.translateService.instant('PROFILE.LIST_PROFILE.PROFILE_PREVIEW.MODIFICATION_ERROR_SEDA_VERSION'),
+                );
+              } else {
+                profileDescription.controlSchema = jsonObj.controlSchema;
+                const archivalProfileUnit: ArchivalProfileUnit = this.noticeService.profileDescriptionToPuaProfile(profileDescription);
+                this.profileService.updateProfilePua(archivalProfileUnit).subscribe(() => this.refreshListProfiles());
+              }
             };
             fileReader.onerror = (error) => console.error(error);
           }

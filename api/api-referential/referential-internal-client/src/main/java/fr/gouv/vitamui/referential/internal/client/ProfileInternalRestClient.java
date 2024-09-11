@@ -137,7 +137,14 @@ public class ProfileInternalRestClient extends BasePaginatingAndSortingRestClien
         bodyMap.add("file", new FileSystemResource(profileFile.getBytes(), profileFile.getOriginalFilename()));
 
         final HttpEntity<MultiValueMap<String, Object>> request = new HttpEntity<>(bodyMap, buildHeaders(context));
-        return restTemplate.exchange(uriBuilder.build(id), HttpMethod.PUT, request, JsonNode.class);
+        ResponseEntity<JsonNode> response = restTemplate.exchange(
+            uriBuilder.build(id),
+            HttpMethod.PUT,
+            request,
+            JsonNode.class
+        );
+        checkResponse(response);
+        return response;
     }
 
     public static class FileSystemResource extends ByteArrayResource {

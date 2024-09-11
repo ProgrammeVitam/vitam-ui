@@ -41,6 +41,7 @@ import { map } from 'rxjs/operators';
 import { BASE_URL, BaseHttpClient, PageRequest, PaginatedResponse } from 'vitamui-library';
 import { ArchivalProfileUnit } from '../../models/archival-profile-unit';
 import { PastisConfiguration } from '../classes/pastis-configuration';
+import { SKIP_ERROR_NOTIFICATION } from 'vitamui-library';
 
 const HTTP_STATUS_OK = 200;
 
@@ -66,8 +67,9 @@ export class ArchivalProfileUnitApiService extends BaseHttpClient<ArchivalProfil
     return super.getOne(id, headers);
   }
 
-  updateProfilePua(archivalUnitProfile: ArchivalProfileUnit, headers?: HttpHeaders): Observable<ArchivalProfileUnit> {
-    return this.http.put<ArchivalProfileUnit>(this.apiUrl + archivalUnitProfile.id, archivalUnitProfile, { headers });
+  updateProfilePua(archivalUnitProfile: ArchivalProfileUnit, headers: HttpHeaders = new HttpHeaders()): Observable<ArchivalProfileUnit> {
+    const allHeaders = headers.set(SKIP_ERROR_NOTIFICATION, '1');
+    return this.http.put<ArchivalProfileUnit>(this.apiUrl + archivalUnitProfile.id, archivalUnitProfile, { headers: allHeaders });
   }
 
   patch(partialAgency: { id: string; [key: string]: any }, headers?: HttpHeaders) {

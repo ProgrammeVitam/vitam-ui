@@ -103,7 +103,9 @@ export class ProfileService implements OnDestroy {
       params: new HttpParams().set('embedded', 'ALL'),
     };
 
-    if (profileVersion) options.params.set('criteria', JSON.stringify({ SedaVersion: profileVersion }));
+    if (profileVersion) {
+      options.params = options.params.set('criteria', JSON.stringify({ SedaVersion: profileVersion }));
+    }
 
     return this.apiService.get<ProfileDescription[]>(this.pastisConfig.getAllArchivalProfileUrl, options).pipe(this.setProfileTypeOperator);
   }
@@ -113,7 +115,9 @@ export class ProfileService implements OnDestroy {
       params: new HttpParams().set('embedded', 'ALL'),
     };
 
-    if (profileVersion) options.params.set('criteria', JSON.stringify({ SedaVersion: profileVersion }));
+    if (profileVersion) {
+      options.params = options.params.set('criteria', JSON.stringify({ SedaVersion: profileVersion }));
+    }
 
     return this.apiService
       .get<ProfileDescription[]>(this.pastisConfig.getArchivalProfileUnitUrl, options)
