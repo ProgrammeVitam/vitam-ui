@@ -127,7 +127,7 @@
       "POPUP_CREATION_OK_LABEL": "VALIDER"
     },
     "POP_UP_UPLOAD_FILE": {
-      "CONFIRM_REPLACEMENT": "Vous êtes sur le point de remplacer un profil documentaire",
+      "CONFIRM_REPLACEMENT": "Vous êtes sur le point de remplacer un profil documentaire par un nouveau",
       "POPUP_UPLOAD_TITLE_LABEL": "Charger un profil",
       "POPUP_UPLOAD_SUBTITLE_LABEL": "Téléchargement du profil",
       "POPUP_UPLOAD_OK_LABEL": "Confirmer",
