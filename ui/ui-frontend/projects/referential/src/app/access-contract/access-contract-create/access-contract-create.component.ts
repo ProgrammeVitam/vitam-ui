@@ -172,7 +172,7 @@ export class AccessContractCreateComponent implements OnInit, OnDestroy {
       this.form.get('thirdStep.everyDataObjectVersion').setValue(val === 'ALL', { emitEvent: false });
 
       if (val !== 'SELECTION') {
-        this.form.get('thirdStep.dataObjectVersion').setValue(null);
+        this.form.get('thirdStep.dataObjectVersion').setValue([], { emitEvent: false });
       }
     });
     this.onWritingRestrictedDescChanges();
