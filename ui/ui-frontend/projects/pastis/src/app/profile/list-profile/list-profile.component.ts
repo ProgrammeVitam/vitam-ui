@@ -309,7 +309,10 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
       [ProfileType.PUA, ['.json']],
     ]);
 
-    (this.isProfilAttached(profileDescription) ? this.dialog.open(this.confirmReplacement).afterClosed() : of(true))
+    (this.isProfilAttached(profileDescription)
+      ? this.dialog.open(this.confirmReplacement, { panelClass: 'vitamui-confirm-dialog' }).afterClosed()
+      : of(true)
+    )
       .pipe(
         filter((confirmed) => confirmed),
         switchMap(() =>

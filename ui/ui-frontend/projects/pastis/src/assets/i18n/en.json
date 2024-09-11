@@ -126,7 +126,7 @@
       "POPUP_CREATION_OK_LABEL": "CONFIRM"
     },
     "POP_UP_UPLOAD_FILE": {
-      "CONFIRM_REPLACEMENT": "You are going to replace a profile",
+      "CONFIRM_REPLACEMENT": "You are going to replace a profile by a new one",
       "POPUP_UPLOAD_TITLE_LABEL": "Load profile",
       "POPUP_UPLOAD_SUBTITLE_LABEL": "Uploading profile",
       "POPUP_UPLOAD_OK_LABEL": "Confirm",

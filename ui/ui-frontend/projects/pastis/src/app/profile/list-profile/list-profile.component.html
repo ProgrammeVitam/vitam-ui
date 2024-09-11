@@ -187,10 +187,10 @@
 
 <ng-template #confirmReplacement>
   <vitamui-common-confirm-dialog
-    [dialogTitle]="translations.popupUploadTitle"
+    [dialogTitle]="'PROFILE.POP_UP_UPLOAD_FILE.CONFIRM_REPLACEMENT' | translate"
+    [dialogSubTitle]="translations.popupUploadTitle"
     [confirmLabel]="'PROFILE.POP_UP_UPLOAD_FILE.POPUP_UPLOAD_OK_LABEL' | translate"
     [cancelLabel]="'PROFILE.POP_UP_UPLOAD_FILE.POPUP_UPLOAD_CANCEL_LABEL' | translate"
   >
-    <h5>{{ 'PROFILE.POP_UP_UPLOAD_FILE.CONFIRM_REPLACEMENT' | translate }}</h5>
   </vitamui-common-confirm-dialog>
 </ng-template>
