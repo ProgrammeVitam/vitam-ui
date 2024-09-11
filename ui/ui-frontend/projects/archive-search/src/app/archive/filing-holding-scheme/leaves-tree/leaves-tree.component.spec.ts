@@ -101,6 +101,7 @@ describe('LeavesTreeComponent', () => {
   };
   const archiveSharedDataServiceStub = {
     getSearchCriterias: () => of(),
+    selectedUnit$: of(),
   };
 
   beforeEach(async () => {

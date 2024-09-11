@@ -10,7 +10,11 @@
 <div class="tree-filing-scheme">
   <mat-tree [dataSource]="nestedDataSourceLeaves" [treeControl]="nestedTreeControlLeaves" class="filing-holding-scheme-tree">
     <mat-nested-tree-node *matTreeNodeDef="let node; when: nodeIsUAWithChildren">
-      <div *ngIf="nodeHasResultOrShowAll(node)" class="mat-tree-node filing-holding-scheme-tree-node flex-row">
+      <div
+        *ngIf="nodeHasResultOrShowAll(node)"
+        [ngClass]="[isNodeUnitSelected(node.id, true), isAncestorMustBeColored(node.id), isExpandedNodeMustBeColored(node)]"
+        class="mat-tree-node flex-row"
+      >
         <vitamui-tree-node
           [node]="node"
           [icon]="getNodeUnitIcon(node)"
@@ -35,14 +39,14 @@
         </div>
         <div *ngIf="canLoadMoreUAForNode(node) && nestedTreeControlLeaves.isExpanded(node)">
           <a class="load-more-ua" (click)="toggleLoadMore(node)">
-            {{ 'ARCHIVE_SEARCH.FILING_SCHEMA.LOAD_MORE_UNITS' | translate }}
+            {{ 'ARCHIVE_SEARCH.FILING_SCHEMA.LOAD_MORE' | translate }}
           </a>
         </div>
       </div>
     </mat-nested-tree-node>
 
     <mat-tree-node *matTreeNodeDef="let node; when: nodeIsUAWithoutChildren">
-      <div *ngIf="nodeHasResultOrShowAll(node)" class="mat-tree-node filing-holding-scheme-tree-node flex-row">
+      <div *ngIf="nodeHasResultOrShowAll(node)" [ngClass]="[isNodeUnitSelected(node.id, true)]" class="mat-tree-node flex-row">
         <div class="tree-text">
           <vitamui-tree-node
             disabled
@@ -61,7 +65,11 @@
     </mat-tree-node>
 
     <mat-nested-tree-node *matTreeNodeDef="let node; when: nodeIsOrphansNode">
-      <div *ngIf="nodeHasResultOrShowAll(node)" class="mat-tree-node filing-holding-scheme-tree-node flex-row">
+      <div
+        *ngIf="nodeHasResultOrShowAll(node)"
+        [ngClass]="[isOrphanNodeMustBeColored(node), isOrphanNeedsVisualMarker(node)]"
+        class="mat-tree-node flex-row"
+      >
         <vitamui-tree-node
           [node]="node"
           (checkboxClick)="addToSearchCriteriaList(node)"
@@ -84,14 +92,18 @@
         </div>
         <div *ngIf="canLoadMoreUAForNode(node) && nestedTreeControlLeaves.isExpanded(node)">
           <a class="load-more-ua" (click)="toggleLoadMoreOrphans(node)">
-            {{ 'ARCHIVE_SEARCH.FILING_SCHEMA.LOAD_MORE_UNITS' | translate }}
+            {{ 'ARCHIVE_SEARCH.FILING_SCHEMA.LOAD_MORE' | translate }}
           </a>
         </div>
       </div>
     </mat-nested-tree-node>
 
     <mat-nested-tree-node *matTreeNodeDef="let node">
-      <div *ngIf="nodeHasResultOrShowAll(node)" class="mat-tree-node filing-holding-scheme-tree-node">
+      <div
+        *ngIf="nodeHasResultOrShowAll(node)"
+        [ngClass]="[isNodeUnitSelected(node.id), isAncestorMustBeColored(node.id)]"
+        class="mat-tree-node"
+      >
         <vitamui-tree-node
           [node]="node"
           [icon]="getNodeUnitIcon(node)"
@@ -116,7 +128,7 @@
         </div>
         <div *ngIf="canLoadMoreUAForNode(node) && nestedTreeControlLeaves.isExpanded(node)">
           <a class="load-more-ua" (click)="toggleLoadMore(node)">
-            {{ 'ARCHIVE_SEARCH.FILING_SCHEMA.LOAD_MORE_UNITS' | translate }}
+            {{ 'ARCHIVE_SEARCH.FILING_SCHEMA.LOAD_MORE' | translate }}
           </a>
         </div>
       </div>

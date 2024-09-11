@@ -3691,7 +3691,7 @@
       "SHOW_TREE_PARENT": "Show only result",
       "TREE_LEAVES_TITLE": "Attachment position(s)",
       "TREE_TITLE": "Trees and plans",
-      "LOAD_MORE_UNITS": "Load more results",
+      "LOAD_MORE": "Load more",
       "ORPHANS_NODE": "Without attachment"
     },
     "HIDE_SEARCH_CRITERIA": "Hide search criteria",
@@ -4216,7 +4216,7 @@
       "SHOW_TREE_PARENT": "Show only results",
       "TREE_LEAVES_TITLE": "Attachment position",
       "TREE_TITLE": "Trees and plans",
-      "LOAD_MORE_UNITS": "Load more results"
+      "LOAD_MORE": "Load more"
     },
     "HIDE_SEARCH_CRITERIA": "Hide search criteria",
     "LAUNCH_SEARCH_ACTION": "Launch the search",

@@ -80,6 +80,7 @@ describe('LeavesTreeComponent', () => {
     archiveFacetsServicStube = {};
 
     archiveSharedDataServiceStub.getSearchCriterias.and.returnValue(of(searchCriteria));
+    archiveSharedDataServiceStub.selectedUnit$ = of();
 
     await TestBed.configureTestingModule({
       imports: [BrowserAnimationsModule, TranslateModule.forRoot()],

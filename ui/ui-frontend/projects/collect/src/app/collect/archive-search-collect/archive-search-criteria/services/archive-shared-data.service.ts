@@ -53,6 +53,7 @@ import { NodeData } from '../models/nodedata.interface';
 export class ArchiveSharedDataService {
   private sourceNode = new BehaviorSubject<NodeData>(new NodeData());
   private filingHoldingNodesSubject = new BehaviorSubject<FilingHoldingSchemeNode[]>(null);
+  private selectedUnitSubject = new BehaviorSubject<Unit>(null);
   private targetNode = new BehaviorSubject<string>('');
   private facetsSubject = new BehaviorSubject<ResultFacet[]>([]);
   private totalResultsSubject = new BehaviorSubject<number>(null);
@@ -86,6 +87,8 @@ export class ArchiveSharedDataService {
   private actionSubject = new BehaviorSubject<string>('');
 
   private ruleCategory = new BehaviorSubject<string>('');
+
+  public selectedUnit$ = this.selectedUnitSubject.asObservable();
 
   currentNode = this.sourceNode.asObservable();
   facetsObservable = this.facetsSubject.asObservable();
@@ -131,6 +134,10 @@ export class ArchiveSharedDataService {
 
   getFilingHoldingNodes(): Observable<FilingHoldingSchemeNode[]> {
     return this.filingHoldingNodesSubject.asObservable();
+  }
+
+  emitSelectedUnit(node: Unit) {
+    this.selectedUnitSubject.next(node);
   }
 
   emitNode(node: NodeData) {
