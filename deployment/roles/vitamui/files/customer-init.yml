@@ -74,7 +74,7 @@ customer-init:
         - ROLE_GET_UNITS
         - ROLE_GET_EXTERNAL_PARAMS
 
-    - name:  Profil gestion des services agents
+    - name: Profil gestion des services agents
       description: Profil de gestion du référentiel des services agent avec possibilité de mise à jour
       app-name: AGENCIES_APP
       level:
@@ -286,6 +286,7 @@ customer-init:
         - ROLE_GET_SCHEMAS
         - ROLE_GET_ONTOLOGIES
         - ROLE_COLLECT_GET_ARCHIVE_SEARCH
+        - ROLE_COLLECT_GET_ARCHIVE_BINARY
         - ROLE_GET_FILLING_PLAN_ACCESS
 
 
@@ -310,6 +311,7 @@ customer-init:
         - ROLE_GET_SCHEMAS
         - ROLE_GET_ONTOLOGIES
         - ROLE_COLLECT_GET_ARCHIVE_SEARCH
+        - ROLE_COLLECT_GET_ARCHIVE_BINARY
         - ROLE_GET_FILLING_PLAN_ACCESS
 
     - name: Service producteur
@@ -329,6 +331,7 @@ customer-init:
         - ROLE_GET_SCHEMAS
         - ROLE_GET_ONTOLOGIES
         - ROLE_COLLECT_GET_ARCHIVE_SEARCH
+        - ROLE_COLLECT_GET_ARCHIVE_BINARY
         - ROLE_GET_FILLING_PLAN_ACCESS
 
     - name: Profil pour les contrats de gestion

@@ -11,7 +11,14 @@ db.profiles.updateMany({
 $set: {
     "description": "Profil de supervision des projets de versement ayant tous les droits dans l'APP Collecte dont celui permettant d'annuler une transaction",
     "name": "Archiviste - Administrateur"
-},
+}
+});
+
+
+db.profiles.updateMany({
+        "applicationName": "COLLECT_APP"
+      },
+      {
 $addToSet:{
     "roles":{
          "name":"ROLE_COLLECT_UPDATE_BULK_ARCHIVE_UNIT",
