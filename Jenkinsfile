@@ -2,7 +2,7 @@ def IMPORTANT_BRANCH_OR_TAG = (env.BRANCH_NAME =~ /(develop|master_.*)/).matches
 
 pipeline {
     agent {
-        label 'java11'
+        label 'java21'
     }
 
     environment {
@@ -18,7 +18,7 @@ pipeline {
 
         PUPPETEER_DOWNLOAD_HOST="${SERVICE_NEXUS_URL}repository/puppeteer-chrome"
 
-        JAVA_HOME="/usr/lib/jvm/java-17-openjdk-amd64"
+        JAVA_HOME="/usr/lib/jvm/java-21-openjdk-amd64"
     }
 
     options {

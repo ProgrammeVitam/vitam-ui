@@ -1,7 +1,7 @@
 /* groovylint-disable LineLength */
 pipeline {
     agent {
-        label 'java11'
+        label 'java21'
     }
 
     environment {

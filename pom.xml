@@ -61,11 +61,11 @@
         <maven.build.timestamp.format>yyyyMMdd_HHmm</maven.build.timestamp.format>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <java.version>17</java.version>
-        <java.release>17</java.release>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
-        <maven.compiler.release>17</maven.compiler.release>
+        <java.version>21</java.version>
+        <java.release>21</java.release>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
+        <maven.compiler.release>21</maven.compiler.release>
 
         <!-- Dependencies version -->
         <apache.commons.codec.version>1.16.1</apache.commons.codec.version>
@@ -118,11 +118,11 @@
         <jruby.complete.version>9.2.13.0</jruby.complete.version>
         <jsonassert.version>1.5.0</jsonassert.version>
         <logback.version>1.2.13</logback.version>
-        <lombok.version>1.18.20</lombok.version>
+        <lombok.version>1.18.30</lombok.version>
         <jakarta.mail.version>1.6.5</jakarta.mail.version>
         <juli.to.slf4j.version>1.1.1</juli.to.slf4j.version>
         <jquery.ui.version>1.13.2</jquery.ui.version>
-        <micrometer.version>1.7.3</micrometer.version>
+        <micrometer.version>1.9.17</micrometer.version>
         <mapstruct.version>1.3.0.Final</mapstruct.version>
         <mockito.version>4.11.0</mockito.version>
         <nio.multipart.parser.version>1.1.0</nio.multipart.parser.version>
@@ -137,13 +137,13 @@
         <serenity.spring.version>3.3.10</serenity.spring.version>
         <serenity.version>3.3.10</serenity.version>
         <slf4j.version>1.7.30</slf4j.version>
-        <spring.boot.version>2.5.15</spring.boot.version>
+        <spring.boot.version>2.7.18</spring.boot.version>
         <reactor.version>3.4.18</reactor.version>
-        <spring.version>5.3.20</spring.version>
-        <spring.cloud.consul.version>3.0.3</spring.cloud.consul.version>
-        <spring-cloud.version>2020.0.6</spring-cloud.version>
+        <spring.version>5.3.37</spring.version>
+        <spring.cloud.consul.version>3.1.5</spring.cloud.consul.version>
+        <spring-cloud.version>2021.0.9</spring-cloud.version>
         <spring.security.version>5.5.3</spring.security.version>
-        <spring.test.version>5.3.18</spring.test.version>
+        <spring.test.version>5.3.37</spring.test.version>
         <spring-webmvc-pac4j.version>5.1.0</spring-webmvc-pac4j.version>
         <swagger.version>3.0.0</swagger.version>
         <vitam.version>8.0.0-SNAPSHOT</vitam.version>
@@ -1624,7 +1624,7 @@
                     <configuration>
                         <from>
                           <!--<image>gcr.io/distroless/java11-debian11</image>-->
-                          <image>gcr.io/distroless/java17</image>
+                          <image>gcr.io/distroless/java21</image>
                         </from>
                         <allowInsecureRegistries>true</allowInsecureRegistries>
                         <container>
@@ -2065,7 +2065,7 @@
                                         <!-- If you want to changes default dependencies (only
                                         systemd),
                                         define them as a comma separated list of packages -->
-                                        <argument>DEPENDENCIES=systemd,java-17-openjdk</argument>
+                                        <argument>DEPENDENCIES=systemd,java-21-openjdk</argument>
                                     </arguments>
                                 </configuration>
                             </execution>
