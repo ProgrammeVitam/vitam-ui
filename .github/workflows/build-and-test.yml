@@ -34,7 +34,7 @@ jobs:
         working-directory: ui/ui-frontend
         run: npm run ci:test
       - name: Save JUnit report as artifact
-        uses: mikepenz/action-junit-report@v4
+        uses: mikepenz/action-junit-report@v4.3.1
         if: success() || failure() # always run even if the previous step fails
         with:
           report_paths: |
@@ -95,7 +95,7 @@ jobs:
           CI_USR: ${{ secrets.CI_USR }}
           CI_PSW: ${{ secrets.CI_PSW }}
       - name: Save JUnit report as artifact
-        uses: mikepenz/action-junit-report@v4
+        uses: mikepenz/action-junit-report@v4.3.1
         if: success() || failure() # always run even if the previous step fails
         with:
           report_paths: |
@@ -149,12 +149,12 @@ jobs:
         with:
           name: backend-generated-classes
       - name: SonarCloud Scan
-        uses: sonarsource/sonarcloud-github-action@master
+        uses: sonarsource/sonarcloud-github-action@v3.0.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       - name: Delete temporary artifact
-        uses: geekyeggo/delete-artifact@v5
+        uses: geekyeggo/delete-artifact@v5.1.0
         if: success() || failure() # always run even if the previous step fails
         with:
           name: backend-generated-classes
