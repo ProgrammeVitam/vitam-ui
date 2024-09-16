@@ -51,6 +51,7 @@ import fr.gouv.vitamui.iam.common.enums.Application;
 import fr.gouv.vitamui.iam.internal.server.common.ApiIamInternalConstants;
 import fr.gouv.vitamui.iam.internal.server.common.domain.SequencesConstants;
 import fr.gouv.vitamui.iam.internal.server.common.utils.EntityFactory;
+import fr.gouv.vitamui.iam.internal.server.configuration.ConfigurationInternalService;
 import fr.gouv.vitamui.iam.internal.server.customer.config.CustomerInitConfig;
 import fr.gouv.vitamui.iam.internal.server.customer.dao.CustomerRepository;
 import fr.gouv.vitamui.iam.internal.server.externalParameters.service.ExternalParametersInternalService;
@@ -158,10 +159,18 @@ public class InitCustomerService {
     @Autowired
     private ExternalParametersInternalService externalParametersInternalService;
 
+    @Autowired
+    private ConfigurationInternalService configurationInternalService;
+
     private static final Logger LOGGER = LoggerFactory.getLogger(InitCustomerService.class);
 
     @Transactional
-    public void initCustomer(final String tenantName, final CustomerDto customerDto, final List<OwnerDto> owners) {
+    public void initCustomer(
+        final Integer tenantId,
+        final String tenantName,
+        final CustomerDto customerDto,
+        final List<OwnerDto> owners
+    ) {
         final List<OwnerDto> ownerDtos = owners;
         final List<OwnerDto> createdOwnerDtos = createOwners(ownerDtos, customerDto.getId());
 
@@ -177,6 +186,7 @@ public class InitCustomerService {
         );
 
         final Tenant proofTenantDto = createProofTenant(
+            tenantId,
             tenantName,
             createdOwnerDtos.get(0).getId(),
             customerDto.getId(),
@@ -287,24 +297,21 @@ public class InitCustomerService {
     }
 
     private Tenant createProofTenant(
+        final Integer tenantId,
         final String tenantName,
         final String ownerId,
         final String customerId,
         final ExternalParametersDto fullAccessContractDto
     ) {
+        internalTenantService.checkIfTenantIdIsAvailable(tenantId);
         final Tenant tenant = new Tenant();
         tenant.setCustomerId(customerId);
         tenant.setName(tenantName);
         tenant.setProof(true);
+        tenant.setIdentifier(tenantId);
         tenant.setOwnerId(ownerId);
         tenant.setEnabled(true);
         tenant.setReadonly(false);
-        tenant.setIdentifier(
-            internalTenantService.getNextSequenceId(
-                SequencesConstants.TENANT_IDENTIFIER,
-                CustomSequencesConstants.DEFAULT_SEQUENCE_INCREMENT_VALUE
-            )
-        );
         Tenant createdTenant = initVitamTenantService.init(tenant, fullAccessContractDto);
         externalParametersInternalService.create(fullAccessContractDto);
         return saveTenant(createdTenant);

@@ -36,6 +36,8 @@
  */
 package fr.gouv.vitamui.iam.internal.server.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import fr.gouv.vitam.access.external.client.AdminExternalClient;
 import fr.gouv.vitamui.commons.api.application.AbstractContextConfiguration;
 import fr.gouv.vitamui.commons.mongo.config.MongoConfig;
 import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
@@ -59,6 +61,7 @@ import fr.gouv.vitamui.iam.internal.server.application.service.ApplicationIntern
 import fr.gouv.vitamui.iam.internal.server.application.service.ExternalIdentifierConfiguration;
 import fr.gouv.vitamui.iam.internal.server.cas.service.CasInternalService;
 import fr.gouv.vitamui.iam.internal.server.common.service.AddressService;
+import fr.gouv.vitamui.iam.internal.server.configuration.ConfigurationInternalService;
 import fr.gouv.vitamui.iam.internal.server.customer.config.CustomerInitConfig;
 import fr.gouv.vitamui.iam.internal.server.customer.converter.CustomerConverter;
 import fr.gouv.vitamui.iam.internal.server.customer.dao.CustomerRepository;
@@ -337,7 +340,8 @@ public class ApiIamServerConfig extends AbstractContextConfiguration {
         final LogbookService logbookService,
         final CustomerInitConfig customerInitConfig,
         final ExternalParametersRepository externalParametersRepository,
-        final ExternalParametersInternalService externalParametersInternalService
+        final ExternalParametersInternalService externalParametersInternalService,
+        final ConfigurationInternalService configurationInternalService
     ) {
         return new TenantInternalService(
             sequenceGeneratorService,
@@ -358,7 +362,8 @@ public class ApiIamServerConfig extends AbstractContextConfiguration {
             logbookService,
             customerInitConfig,
             externalParametersRepository,
-            externalParametersInternalService
+            externalParametersInternalService,
+            configurationInternalService
         );
     }
 
@@ -620,5 +625,14 @@ public class ApiIamServerConfig extends AbstractContextConfiguration {
     @Bean
     ExternalParamProfileRepository externalParamProfileRepository(MongoOperations mongoOperations) {
         return new ExternalParamProfileRepository(mongoOperations);
+    }
+
+    @Bean
+    public ConfigurationInternalService configurationInternalService(
+        final InternalSecurityService internalSecurityService,
+        final AdminExternalClient adminExternalClient,
+        final ObjectMapper objectMapper
+    ) {
+        return new ConfigurationInternalService(internalSecurityService, adminExternalClient, objectMapper);
     }
 }

@@ -59,6 +59,9 @@ public class CustomerCreationFormData {
     @NotNull
     private String tenantName;
 
+    @NotNull
+    private Integer tenantId;
+
     @JsonIgnore
     private Optional<MultipartFile> header;
 

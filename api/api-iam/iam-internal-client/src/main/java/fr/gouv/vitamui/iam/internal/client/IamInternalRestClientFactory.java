@@ -46,8 +46,6 @@ import org.springframework.boot.web.client.RestTemplateBuilder;
 
 /**
  * A Rest client factory to create specialized IAM Rest clients
- *
- *
  */
 
 public class IamInternalRestClientFactory extends BaseRestClientFactory {

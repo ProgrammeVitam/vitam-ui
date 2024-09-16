@@ -10,15 +10,15 @@
 
         <vitamui-common-input class="col-6 pl-0" formControlName="code" required [placeholder]="'CUSTOMER.INFORMATIONS.CODE' | translate">
           <ng-container *ngIf="form.get('code')?.touched">
-            <vitamui-common-input-error *ngIf="!!form?.get('code')?.errors?.required">{{
-              'COMMON.ERROR.REQUIRED' | translate
-            }}</vitamui-common-input-error>
-            <vitamui-common-input-error *ngIf="!!form?.get('code')?.errors?.pattern">{{
-              'COMMON.ERROR.WRONG_FORMAT' | translate
-            }}</vitamui-common-input-error>
-            <vitamui-common-input-error *ngIf="!!form?.get('code')?.errors?.maxlength">{{
-              'COMMON.ERROR.STRING_MAX_LENGTH' | translate: { max: customerCodeMaxLength }
-            }}</vitamui-common-input-error>
+            <vitamui-common-input-error *ngIf="!!form?.get('code')?.errors?.required"
+              >{{ 'COMMON.ERROR.REQUIRED' | translate }}
+            </vitamui-common-input-error>
+            <vitamui-common-input-error *ngIf="!!form?.get('code')?.errors?.pattern"
+              >{{ 'COMMON.ERROR.WRONG_FORMAT' | translate }}
+            </vitamui-common-input-error>
+            <vitamui-common-input-error *ngIf="!!form?.get('code')?.errors?.maxlength"
+              >{{ 'COMMON.ERROR.STRING_MAX_LENGTH' | translate: { max: customerCodeMaxLength } }}
+            </vitamui-common-input-error>
             <vitamui-common-input-error *ngIf="!!form?.get('code')?.errors?.uniqueCode"
               >{{ 'CUSTOMER.INFORMATIONS.MODAL.CODE_ALREADY_EXIST' | translate }}
             </vitamui-common-input-error>
@@ -119,7 +119,7 @@
           <label for="alerte" class="inline-label label-alerte">
             Alerte pour les utilisateurs inactifs <span class="required-marker">*</span><br />
           </label>
-          <vitamui-common-slide-toggle formControlName="gdprAlert" [disabled]="gdprReadOnlyStatus"> </vitamui-common-slide-toggle>
+          <vitamui-common-slide-toggle formControlName="gdprAlert" [disabled]="gdprReadOnlyStatus"></vitamui-common-slide-toggle>
           <label for="duréealerte" class="inline-label label-alertDelay">
             Durée d'alerte sur les utilisateurs inactifs (par mois) <span class="required-marker">*</span>
           </label>
@@ -190,9 +190,9 @@
               [placeholder]="'CUSTOMER.INFORMATIONS.PASSWORDS_DURATION' | translate"
               panelClass="vitamui-mat-select"
             >
-              <mat-option [value]="3">{{ 'CUSTOMER.INFORMATIONS.MODAL.PWD_REVOCATION_THREE' | translate }} </mat-option>
-              <mat-option [value]="6">{{ 'CUSTOMER.INFORMATIONS.MODAL.PWD_REVOCATION_SIX' | translate }} </mat-option>
-              <mat-option [value]="9">{{ 'CUSTOMER.INFORMATIONS.MODAL.PWD_REVOCATION_NINE' | translate }} </mat-option>
+              <mat-option [value]="3">{{ 'CUSTOMER.INFORMATIONS.MODAL.PWD_REVOCATION_THREE' | translate }}</mat-option>
+              <mat-option [value]="6">{{ 'CUSTOMER.INFORMATIONS.MODAL.PWD_REVOCATION_SIX' | translate }}</mat-option>
+              <mat-option [value]="9">{{ 'CUSTOMER.INFORMATIONS.MODAL.PWD_REVOCATION_NINE' | translate }}</mat-option>
               <mat-option [value]="12">{{ 'CUSTOMER.INFORMATIONS.MODAL.PWD_REVOCATION_TWELVE' | translate }} </mat-option>
             </mat-select>
             <div class="select-arrow">
@@ -294,14 +294,30 @@
     <cdk-step>
       <div class="content">
         <div class="text large bold">{{ 'CUSTOMER.OWNER.MODAL.SAFE_TITLE' | translate }} "{{ getOwnerName() }}"</div>
-        <vitamui-common-input formControlName="tenantName" required [placeholder]="'CUSTOMER.OWNER.SAFE_NAME' | translate">
-          <vitamui-common-input-error *ngIf="form?.get('tenantName')?.touched && form?.get('tenantName')?.hasError('required')"
-            >{{ 'COMMON.ERROR.REQUIRED' | translate }}
-          </vitamui-common-input-error>
-          <vitamui-common-input-error *ngIf="form?.get('tenantName')?.touched && form?.get('tenantName')?.hasError('uniqueName')"
-            >{{ 'CUSTOMER.OWNER.MODAL.NAME_ALREADY_EXIST' | translate }}
-          </vitamui-common-input-error>
-        </vitamui-common-input>
+        <div class="row">
+          <vitamui-common-input formControlName="tenantName" required [placeholder]="'CUSTOMER.OWNER.SAFE_NAME' | translate">
+            <vitamui-common-input-error *ngIf="form?.get('tenantName')?.touched && form?.get('tenantName')?.hasError('required')"
+              >{{ 'COMMON.ERROR.REQUIRED' | translate }}
+            </vitamui-common-input-error>
+            <vitamui-common-input-error *ngIf="form?.get('tenantName')?.touched && form?.get('tenantName')?.hasError('uniqueName')"
+              >{{ 'CUSTOMER.OWNER.MODAL.NAME_ALREADY_EXIST' | translate }}
+            </vitamui-common-input-error>
+          </vitamui-common-input>
+        </div>
+
+        <div class="row">
+          <mat-form-field class="col-6" class="vitamui-mat-select">
+            <mat-select formControlName="tenantId" [placeholder]="'CUSTOMER.OWNER.TENANT_ID' | translate" panelClass="vitamui-mat-select">
+              <mat-option *ngFor="let availableTenantId of availableTenants" [value]="availableTenantId">
+                {{ availableTenantId }}
+              </mat-option>
+            </mat-select>
+            <div class="select-arrow">
+              <i class="material-icons">keyboard_arrow_up</i>
+              <i class="material-icons">keyboard_arrow_down</i>
+            </div>
+          </mat-form-field>
+        </div>
         <div class="actions">
           <button type="submit" class="btn primary" [disabled]="form.pending || form.invalid">{{ 'COMMON.SUBMIT' | translate }}</button>
           <ng-container *ngTemplateOutlet="cancel"></ng-container>

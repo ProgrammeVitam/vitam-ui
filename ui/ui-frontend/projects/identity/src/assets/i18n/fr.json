@@ -244,6 +244,7 @@
       "SOCIAL_REASON": "Raison sociale",
       "INTERNAL_CODE": "Code interne",
       "SAFE_CODE": "Code coffre",
+      "TENANT_ID": "Sélectionner le numéro du tenant",
       "SAFE_NAME": "Nom du coffre",
       "ACCESS_CONTRACT": "Contrat d'accès pour l'arbre",
       "INGEST_CONTRACT": "Contrat d'entrée pour l'arbre",

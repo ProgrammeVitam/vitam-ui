@@ -5,9 +5,23 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
   <div class="content">
     <div class="text large bold">{{ 'CUSTOMER.OWNER.MODAL.SAFE_TITLE' | translate }} "{{ data?.owner?.name }}"</div>
+    <div class="row">
+      <vitamui-common-input formControlName="name" required [placeholder]="'CUSTOMER.OWNER.SAFE_NAME' | translate"></vitamui-common-input>
+    </div>
 
-    <vitamui-common-input formControlName="name" required [placeholder]="'CUSTOMER.OWNER.SAFE_NAME' | translate"></vitamui-common-input>
-
+    <div class="row">
+      <mat-form-field class="col-6" class="vitamui-mat-select">
+        <mat-select formControlName="identifier" [placeholder]="'CUSTOMER.OWNER.TENANT_ID' | translate" panelClass="vitamui-mat-select">
+          <mat-option *ngFor="let availableTenantId of availableTenants" [value]="availableTenantId">
+            {{ availableTenantId }}
+          </mat-option>
+        </mat-select>
+        <div class="select-arrow">
+          <i class="material-icons">keyboard_arrow_up</i>
+          <i class="material-icons">keyboard_arrow_down</i>
+        </div>
+      </mat-form-field>
+    </div>
     <div class="actions">
       <button type="submit" class="btn primary" [disabled]="form.pending || form.invalid">{{ 'COMMON.SUBMIT' | translate }}</button>
       <button type="button" class="btn cancel link" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>

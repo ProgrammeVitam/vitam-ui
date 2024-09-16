@@ -36,22 +36,29 @@
  */
 package fr.gouv.vitamui.iam.internal.client;
 
+import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.domain.TenantDto;
 import fr.gouv.vitamui.commons.rest.client.BasePaginatingAndSortingRestClient;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import fr.gouv.vitamui.iam.common.rest.RestApi;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
 
 /**
  * A REST client to check existence, read, create, update and delete the tenants.
- *
- *
  */
 public class TenantInternalRestClient extends BasePaginatingAndSortingRestClient<TenantDto, InternalHttpContext> {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(TenantInternalRestClient.class);
 
     public TenantInternalRestClient(final RestTemplate restTemplate, final String baseUrl) {
         super(restTemplate, baseUrl);
@@ -75,5 +82,22 @@ public class TenantInternalRestClient extends BasePaginatingAndSortingRestClient
     @Override
     protected ParameterizedTypeReference<PaginatedValuesDto<TenantDto>> getDtoPaginatedClass() {
         return new ParameterizedTypeReference<PaginatedValuesDto<TenantDto>>() {};
+    }
+
+    public List<Integer> getAvailableTenants(final InternalHttpContext context) {
+        LOGGER.debug("find vitam available tenants");
+
+        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(
+            getUrl() + CommonConstants.PATH_AVAILABLE_TENANTS
+        );
+        final HttpEntity<List<Integer>> request = new HttpEntity<>(buildHeaders(context));
+        final ResponseEntity<List<Integer>> response = restTemplate.exchange(
+            uriBuilder.toUriString(),
+            HttpMethod.GET,
+            request,
+            new ParameterizedTypeReference<>() {}
+        );
+        checkResponse(response);
+        return response.getBody();
     }
 }

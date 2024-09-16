@@ -48,6 +48,8 @@ import { OwnerService } from '../owner.service';
 import { TenantFormValidators } from '../tenant-create/tenant-form.validators';
 import { TenantService } from '../tenant.service';
 import { OwnerCreateComponent } from './owner-create.component';
+import { MatLegacySelectModule as MatSelectModule, MatLegacySelectModule } from '@angular/material/legacy-select';
+import { MatLegacyOptionModule } from '@angular/material/legacy-core';
 
 @Component({
   selector: 'app-owner-form',
@@ -62,8 +64,11 @@ import { OwnerCreateComponent } from './owner-create.component';
 })
 class OwnerFormStubComponent implements ControlValueAccessor {
   @Input() customerId: any;
+
   writeValue() {}
+
   registerOnChange() {}
+
   registerOnTouched() {}
 }
 
@@ -96,10 +101,22 @@ describe('OwnerCreateComponent', () => {
     const tenantFormValidatorsSpy = jasmine.createSpyObj('TenantFormValidators', {
       uniqueName: () => of(null),
     });
-    const tenantServiceSpy = jasmine.createSpyObj('TenantService', { create: of({}) });
+    const tenantServiceSpy = jasmine.createSpyObj('TenantService', {
+      create: of({}),
+      getAvailableTenants: of([2, 3, 4]),
+    });
 
     await TestBed.configureTestingModule({
-      imports: [MatProgressBarModule, ReactiveFormsModule, NoopAnimationsModule, VitamUICommonTestModule],
+      imports: [
+        MatSelectModule,
+        MatLegacyOptionModule,
+        MatProgressBarModule,
+        ReactiveFormsModule,
+        NoopAnimationsModule,
+        VitamUICommonTestModule,
+        MatLegacySelectModule,
+        MatLegacyOptionModule,
+      ],
       declarations: [OwnerCreateComponent, OwnerFormStubComponent],
       providers: [
         { provide: MatDialogRef, useValue: matDialogRefSpy },
@@ -155,11 +172,17 @@ describe('OwnerCreateComponent', () => {
     const tenantService = TestBed.inject(TenantService);
     const matDialogRef = TestBed.inject(MatDialogRef);
     component.ownerForm.setValue({ owner });
-    const tenant = { name: 'tenant name', ownerId: owner.id, customerId: '42', enabled: true };
+    const tenant = { identifier: 2, name: 'tenant name', ownerId: owner.id, customerId: '42', enabled: true };
     component.tenantForm.setValue(tenant);
     component.onTenantSubmit();
     expect(tenantService.create).toHaveBeenCalledWith(
-      { name: tenant.name, ownerId: tenant.ownerId, customerId: tenant.customerId, enabled: tenant.enabled } as Tenant,
+      {
+        identifier: tenant.identifier,
+        name: tenant.name,
+        ownerId: tenant.ownerId,
+        customerId: tenant.customerId,
+        enabled: tenant.enabled,
+      } as Tenant,
       owner.name,
     );
     expect(matDialogRef.close).toHaveBeenCalledTimes(1);

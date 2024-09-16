@@ -58,8 +58,6 @@ import java.util.Optional;
 
 /**
  * Internal WebClient for Customer operations.
- *
- *
  */
 public class CustomerInternalWebClient extends BaseWebClient<ExternalHttpContext> {
 
@@ -72,6 +70,7 @@ public class CustomerInternalWebClient extends BaseWebClient<ExternalHttpContext
     /**
      * Create a customer using a {@link CustomerCreationFormData} object. The logo is optional.
      * A {@link CustomerDto} object is provided in the data and a {@link MultipartFile} is there's a graphical identity for this customer.
+     *
      * @param context
      * @param customerCreationFormData
      * @return
@@ -93,7 +92,9 @@ public class CustomerInternalWebClient extends BaseWebClient<ExternalHttpContext
                 "customerDto",
                 customerCreationFormData.getCustomerDto(),
                 "tenantName",
-                customerCreationFormData.getTenantName()
+                customerCreationFormData.getTenantName(),
+                "tenantId",
+                customerCreationFormData.getTenantId()
             ),
             customerCreationFormData.getHeader().isPresent()
                 ? Optional.of(new AbstractMap.SimpleEntry<>("header", customerCreationFormData.getHeader().get()))
@@ -110,6 +111,7 @@ public class CustomerInternalWebClient extends BaseWebClient<ExternalHttpContext
 
     /**
      * Create a customer using a {@link CustomerDto} object and a Path to a image file is there's a graphical identity for this customer.
+     *
      * @param context
      * @param dto
      * @param multipartFile
@@ -143,6 +145,7 @@ public class CustomerInternalWebClient extends BaseWebClient<ExternalHttpContext
 
     /**
      * Patch a customer using a {@link Map<String, Object>} object and a Path to a image file is there's a graphical identity for this customer.
+     *
      * @param context
      * @param customerPatchFormData
      * @return

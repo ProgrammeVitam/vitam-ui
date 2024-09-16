@@ -42,9 +42,21 @@ import { MatLegacyProgressBarModule as MatProgressBarModule } from '@angular/mat
 import { VitamUICommonModule } from 'vitamui-library';
 import { OwnerFormModule } from '../owner-form/owner-form.module';
 import { OwnerCreateComponent } from './owner-create.component';
+import { MatLegacyOptionModule } from '@angular/material/legacy-core';
+import { MatLegacySelectModule } from '@angular/material/legacy-select';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
-  imports: [CommonModule, MatProgressBarModule, ReactiveFormsModule, OwnerFormModule, VitamUICommonModule],
+  imports: [
+    CommonModule,
+    MatProgressBarModule,
+    ReactiveFormsModule,
+    OwnerFormModule,
+    VitamUICommonModule,
+    MatLegacyOptionModule,
+    MatLegacySelectModule,
+    TranslateModule,
+  ],
   declarations: [OwnerCreateComponent],
 })
 export class OwnerCreateModule {}

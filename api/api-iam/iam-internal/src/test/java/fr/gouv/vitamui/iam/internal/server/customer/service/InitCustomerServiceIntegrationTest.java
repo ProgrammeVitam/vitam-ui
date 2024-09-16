@@ -5,6 +5,8 @@ import fr.gouv.vitamui.commons.api.domain.ExternalParametersDto;
 import fr.gouv.vitamui.commons.api.domain.LanguageDto;
 import fr.gouv.vitamui.commons.api.domain.OwnerDto;
 import fr.gouv.vitamui.commons.api.domain.Role;
+import fr.gouv.vitamui.commons.api.domain.TenantDto;
+import fr.gouv.vitamui.commons.api.domain.VitamConfigurationDto;
 import fr.gouv.vitamui.commons.logbook.common.EventType;
 import fr.gouv.vitamui.commons.logbook.dao.EventRepository;
 import fr.gouv.vitamui.commons.logbook.domain.Event;
@@ -18,6 +20,7 @@ import fr.gouv.vitamui.iam.common.enums.OtpEnum;
 import fr.gouv.vitamui.iam.internal.server.common.ApiIamInternalConstants;
 import fr.gouv.vitamui.iam.internal.server.common.domain.MongoDbCollections;
 import fr.gouv.vitamui.iam.internal.server.common.domain.SequencesConstants;
+import fr.gouv.vitamui.iam.internal.server.configuration.ConfigurationInternalService;
 import fr.gouv.vitamui.iam.internal.server.customer.dao.CustomerRepository;
 import fr.gouv.vitamui.iam.internal.server.customer.domain.Customer;
 import fr.gouv.vitamui.iam.internal.server.group.dao.GroupRepository;
@@ -132,6 +135,9 @@ public class InitCustomerServiceIntegrationTest {
     private InternalHttpContext internalHttpContext;
 
     @MockBean
+    private ConfigurationInternalService configurationInternalService;
+
+    @MockBean
     private TenantRepository tenantRepository;
 
     @MockBean
@@ -160,8 +166,19 @@ public class InitCustomerServiceIntegrationTest {
 
     @Test
     public void testCreateCustomer() {
+        Integer someTenantId = 2;
         final CustomerCreationFormData customerDta = new CustomerCreationFormData(buildCustomerDto());
+        VitamConfigurationDto vitamConfigurationDto = new VitamConfigurationDto();
+        vitamConfigurationDto.setTenants(List.of(someTenantId));
+        TenantDto tenantDto = new TenantDto();
+        tenantDto.setName("Some name");
+        tenantDto.setIdentifier(someTenantId);
+
+        Mockito.when(configurationInternalService.getVitamPublicConfigurations()).thenReturn(vitamConfigurationDto);
+        Mockito.when(internalSecurityService.getTenant(ArgumentMatchers.any())).thenReturn(tenantDto);
+
         customerDta.setTenantName("tenantName");
+        customerDta.setTenantId(2);
         customerInternalService.create(customerDta);
 
         Criteria criteria = Criteria.where("obId")

@@ -6,9 +6,11 @@ import fr.gouv.vitamui.commons.api.domain.ProfileDto;
 import fr.gouv.vitamui.commons.api.domain.QueryDto;
 import fr.gouv.vitamui.commons.api.domain.TenantDto;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
+import fr.gouv.vitamui.commons.api.domain.VitamConfigurationDto;
 import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.test.utils.TestUtils;
 import fr.gouv.vitamui.commons.vitam.api.administration.AccessContractService;
+import fr.gouv.vitamui.iam.internal.server.configuration.ConfigurationInternalService;
 import fr.gouv.vitamui.iam.internal.server.customer.config.CustomerInitConfig;
 import fr.gouv.vitamui.iam.internal.server.customer.dao.CustomerRepository;
 import fr.gouv.vitamui.iam.internal.server.customer.service.CustomerInternalService;
@@ -37,6 +39,7 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -104,6 +107,9 @@ public class TenantInternalServiceTest {
     private ExternalParametersRepository externalParametersRepository;
 
     @Mock
+    private ConfigurationInternalService configurationInternalService;
+
+    @Mock
     private ExternalParametersInternalService externalParametersInternalService;
 
     @Before
@@ -158,10 +164,17 @@ public class TenantInternalServiceTest {
     @Test
     public void createTenant_searchProfileCreated() {
         final TenantDto tenantDto = buildTenantDto();
+        Integer someTenantId = 2;
         tenantDto.setId(null);
-
+        tenantDto.setIdentifier(someTenantId);
         when(profileRepository.save(any())).thenReturn(IamServerUtilsTest.buildProfile());
 
+        VitamConfigurationDto vitamConfigurationDto = new VitamConfigurationDto();
+        vitamConfigurationDto.setTenants(List.of(someTenantId));
+
+        when(profileRepository.save(any())).thenReturn(IamServerUtilsTest.buildProfile());
+        Mockito.when(configurationInternalService.getVitamPublicConfigurations()).thenReturn(vitamConfigurationDto);
+        Mockito.when(internalSecurityService.getTenant(ArgumentMatchers.any())).thenReturn(tenantDto);
         prepareServices();
         internalTenantService.create(tenantDto);
     }

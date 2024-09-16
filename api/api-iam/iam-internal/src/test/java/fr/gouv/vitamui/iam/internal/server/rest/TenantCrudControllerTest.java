@@ -7,9 +7,11 @@ import fr.gouv.vitamui.commons.api.domain.ProfileDto;
 import fr.gouv.vitamui.commons.api.domain.QueryDto;
 import fr.gouv.vitamui.commons.api.domain.TenantDto;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
+import fr.gouv.vitamui.commons.api.domain.VitamConfigurationDto;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
+import fr.gouv.vitamui.iam.internal.server.configuration.ConfigurationInternalService;
 import fr.gouv.vitamui.iam.internal.server.customer.config.CustomerInitConfig;
 import fr.gouv.vitamui.iam.internal.server.customer.dao.CustomerRepository;
 import fr.gouv.vitamui.iam.internal.server.customer.service.CustomerInternalService;
@@ -40,6 +42,7 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
@@ -76,6 +79,9 @@ public final class TenantCrudControllerTest implements InternalCrudControllerTes
 
     @Mock
     protected SequenceGeneratorService sequenceGeneratorService;
+
+    @Mock
+    private ConfigurationInternalService configurationInternalService;
 
     @Mock
     private OwnerRepository ownerRepository;
@@ -201,8 +207,13 @@ public final class TenantCrudControllerTest implements InternalCrudControllerTes
                 }
             )
         );
-        when(profileRepository.save(any())).thenReturn(IamServerUtilsTest.buildProfile());
 
+        VitamConfigurationDto vitamConfigurationDto = new VitamConfigurationDto();
+        vitamConfigurationDto.setTenants(List.of(dto.getIdentifier()));
+
+        when(profileRepository.save(any())).thenReturn(IamServerUtilsTest.buildProfile());
+        Mockito.when(configurationInternalService.getVitamPublicConfigurations()).thenReturn(vitamConfigurationDto);
+        Mockito.when(internalSecurityService.getTenant(ArgumentMatchers.any())).thenReturn(dto);
         prepareServices();
         controller.create(dto);
         verify(profileRepository, times(3)).save(any());

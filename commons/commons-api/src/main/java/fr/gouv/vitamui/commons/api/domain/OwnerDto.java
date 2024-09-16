@@ -46,8 +46,6 @@ import javax.validation.constraints.NotNull;
 
 /**
  * The DTO v1 for an owner of a customer.
- *
- *
  */
 @Getter
 @Setter

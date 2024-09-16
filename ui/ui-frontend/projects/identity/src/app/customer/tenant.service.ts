@@ -36,7 +36,7 @@
  */
 import { Observable, Subject } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { Criterion, Operators, CriteriaSearchQuery, Tenant, VitamUISnackBarService } from 'vitamui-library';
+import { CriteriaSearchQuery, Criterion, Operators, Tenant, VitamUISnackBarService } from 'vitamui-library';
 
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
@@ -123,5 +123,9 @@ export class TenantService {
     const params = [{ key: 'criteria', value: JSON.stringify(query) }];
 
     return this.tenantApi.checkExistsByParam(params);
+  }
+
+  getAvailableTenants(): Observable<number[]> {
+    return this.tenantApi.getAvailableTenants();
   }
 }

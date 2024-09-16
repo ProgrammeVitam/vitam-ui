@@ -80,9 +80,12 @@ class DomainInputStubComponent implements ControlValueAccessor {
   @Output() selectedChange = new EventEmitter<string>();
 
   writeValue() {}
+
   registerOnChange() {}
+
   registerOnTouched() {}
 }
+
 @Component({
   selector: 'app-owner-form',
   template: '',
@@ -96,8 +99,11 @@ class DomainInputStubComponent implements ControlValueAccessor {
 })
 class OwnerFormStubComponent implements ControlValueAccessor {
   @Input() customerInfo: any;
+
   writeValue() {}
+
   registerOnChange() {}
+
   registerOnTouched() {}
 }
 
@@ -115,8 +121,11 @@ class OwnerFormStubComponent implements ControlValueAccessor {
 class CustomerColorsInputStubComponent implements ControlValueAccessor {
   @Input() placeholder: string;
   @Input() spinnerDiameter = 25;
+
   writeValue() {}
+
   registerOnChange() {}
+
   registerOnTouched() {}
 }
 
@@ -157,6 +166,7 @@ const expectedCustomer = {
   portalMessages: {},
   portalTitles: {},
   tenantName: 'tenantName',
+  tenantId: 2,
 };
 
 let component: CustomerCreateComponent;
@@ -166,6 +176,7 @@ class Page {
   get submit() {
     return fixture.nativeElement.querySelector('button[type=submit]');
   }
+
   control(name: string) {
     return fixture.nativeElement.querySelector('[formControlName=' + name + ']');
   }
@@ -183,7 +194,10 @@ describe('CustomerCreateComponent', () => {
     });
     const ownerServiceSpy = jasmine.createSpyObj('OwnerService', { create: of({}) });
     const ownerFormValidatorsSpy = jasmine.createSpyObj('OwnerFormValidators', { uniqueCode: () => of(null) });
-    const tenantServiceSpy = jasmine.createSpyObj('TenantService', { getTenantsByCustomerIds: of([]) });
+    const tenantServiceSpy = jasmine.createSpyObj('TenantService', {
+      getTenantsByCustomerIds: of([]),
+      getAvailableTenants: of([2, 3, 4]),
+    });
     const tenantFormValidatorsSpy = jasmine.createSpyObj('TenantFormValidators', {
       uniqueName: () => of(null),
     });

@@ -75,8 +75,6 @@ import java.util.stream.Collectors;
 
 /**
  * The service to read, create, update and delete the tenants.
- *
- *
  */
 @Getter
 @Setter
@@ -163,6 +161,7 @@ public class TenantExternalService extends AbstractResourceClientService<TenantD
 
     /**
      * Method allowing to check if a current user can update the tenant with the following customer.
+     *
      * @param customerId Identifier of the customer.
      * @return true if the action is allowed, false otherwise.
      */
@@ -175,6 +174,7 @@ public class TenantExternalService extends AbstractResourceClientService<TenantD
 
     /**
      * Check if a current user can access the tenant.
+     *
      * @param tenantIdentifier Identifier of the tenant.
      * @return true if the action is allowed, false otherwise.
      */
@@ -245,6 +245,7 @@ public class TenantExternalService extends AbstractResourceClientService<TenantD
 
     /**
      * Method allowing to check the content of the criterion for the field "identifier"
+     *
      * @param identifierCriterion Criterion linked to the identifier to check.
      */
     protected void checkIdentifierCriteria(final Criterion identifierCriterion) {
@@ -292,6 +293,10 @@ public class TenantExternalService extends AbstractResourceClientService<TenantD
         if (tenantDto == null) {
             throw new ForbiddenException(String.format("Unable to access tenant with id: %s", id));
         }
+    }
+
+    public List<Integer> getAvailableTenants() {
+        return getClient().getAvailableTenants(getInternalHttpContext());
     }
 
     @Override

@@ -72,6 +72,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -80,8 +81,6 @@ import java.util.Optional;
  *
  * Endpoints of this controller have cross-customers  only if user has a GET_ALL_TENANTS role
  * and cross-tenant capacities when user has the GET_TENANTS role.
- *
- *
  */
 @RestController
 @RequestMapping(RestApi.V1_TENANTS_URL)
@@ -174,5 +173,12 @@ public class TenantExternalController implements CrudController<TenantDto> {
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("get logbook for tenant with id :{}", id);
         return tenantExternalService.findHistoryById(id);
+    }
+
+    @GetMapping(CommonConstants.PATH_AVAILABLE_TENANTS)
+    @Secured({ ServicesData.ROLE_GET_TENANTS, ServicesData.ROLE_GET_ALL_TENANTS })
+    public List<Integer> getAvailableTenants() {
+        LOGGER.debug("Retrieve Vitam available tenants  ");
+        return tenantExternalService.getAvailableTenants();
     }
 }
