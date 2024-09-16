@@ -100,10 +100,15 @@ function resourceLoadedSuccessfully() {
   });
 }
 
-
 function displayMainFormSubmitButton() {
   $(document).ready(function () {
     $("#main-form-submit").css("display", "flex");
+  });
+}
+
+function displayMainFormValidateButton() {
+  $(document).ready(function () {
+    $("#main-form-validate").css("display", "flex");
   });
 }
 
