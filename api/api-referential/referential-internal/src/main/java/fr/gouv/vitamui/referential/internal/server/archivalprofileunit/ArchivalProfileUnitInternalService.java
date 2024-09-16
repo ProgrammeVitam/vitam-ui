@@ -259,6 +259,10 @@ public class ArchivalProfileUnitInternalService {
         if (dto.getControlSchema() != null) {
             propertiesToUpdate.put("ControlSchema", dto.getControlSchema());
         }
+
+        if (dto.getSedaVersion() != null) {
+            propertiesToUpdate.put("SedaVersion", dto.getSedaVersion().getVersion());
+        }
         return propertiesToUpdate;
     }
 

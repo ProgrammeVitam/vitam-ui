@@ -197,7 +197,11 @@ public class ProfileInternalService {
         throws AccessExternalClientException {
         try {
             LOGGER.info("Upload Profile File EvIdAppSession : {} ", context.getApplicationSessionId());
-            return vitamProfileService.updateProfileFile(context, id, file).toJsonNode();
+            RequestResponse requestResponse = vitamProfileService.updateProfileFile(context, id, file);
+            if (!requestResponse.isOk()) {
+                throw new BadRequestException("Error uploading profile file");
+            }
+            return requestResponse.toJsonNode();
         } catch (AccessExternalClientServerException | InvalidParseOperationException | IOException e) {
             throw new InternalServerException("Unable to Upload profile file", e);
         }

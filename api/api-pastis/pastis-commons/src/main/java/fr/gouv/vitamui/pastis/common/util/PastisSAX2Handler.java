@@ -43,6 +43,7 @@ import org.xml.sax.Attributes;
 import org.xml.sax.helpers.DefaultHandler;
 
 import java.util.Arrays;
+import java.util.Optional;
 import java.util.Stack;
 
 public class PastisSAX2Handler extends DefaultHandler {
@@ -112,6 +113,8 @@ public class PastisSAX2Handler extends DefaultHandler {
             if (sedaVersion == null && namespace != null) sedaVersion = Arrays.stream(namespace.split(":"))
                 .reduce((first, second) -> second)
                 .orElse(null);
+            // Remove the initial 'v'
+            sedaVersion = Optional.ofNullable(sedaVersion).map(v -> v.substring(1)).orElse(null);
         }
     }
 

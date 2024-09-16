@@ -244,7 +244,8 @@
       "LOAD_PROFILE": "Charger un profil",
       "PROFILE_PREVIEW": {
         "MODIFICATION_SUCCESS": "La modification du profil a bien été effectué",
-        "MODIFICATION_ERROR": "Echec de la modification du profil"
+        "MODIFICATION_ERROR": "Echec de la modification du profil",
+        "MODIFICATION_ERROR_SEDA_VERSION": "La version SEDA du profil importé doit être identique à celle de la notice"
       }
     },
     "CREATE_PROFILE": {

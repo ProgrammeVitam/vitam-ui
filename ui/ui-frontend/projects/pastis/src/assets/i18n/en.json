@@ -243,7 +243,8 @@
       "LOAD_PROFILE": "Load a profile",
       "PROFILE_PREVIEW": {
         "MODIFICATION_SUCCESS": "The modification of the profile has been carried out successfully ",
-        "MODIFICATION_ERROR": "Failed to edit profile"
+        "MODIFICATION_ERROR": "Failed to edit profile",
+        "MODIFICATION_ERROR_SEDA_VERSION": "The SEDA version of the imported profile must be the same as the one defined for the notice"
       }
     },
     "CREATE_PROFILE": {
