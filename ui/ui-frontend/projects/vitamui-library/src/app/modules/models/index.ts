@@ -35,7 +35,6 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-export * from './access-contract/index';
 export * from './access-register/index';
 // export * from './agency/agency.interface';
 export * from './app.configuration.interface';

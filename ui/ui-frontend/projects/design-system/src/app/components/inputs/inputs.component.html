@@ -340,7 +340,7 @@
 
       <h3>{{ 'INPUT.AUTOCOMPLETE' | translate }}</h3>
       <div class="d-flex justify-content-around">
-        <vitamui-common-vitamui-autocomplete
+        <vitamui-common-autocomplete
           [options]="countries"
           [formControl]="autoCompleteSelect"
           [placeholder]="'COMMON.ADRESS.COUNTRY' | translate"
@@ -352,15 +352,15 @@
           <vitamui-common-input-error *ngIf="autoCompleteSelect.touched && autoCompleteSelect.hasError('match')"
             >{{ 'COMMON.INCORRECT_VALUE' | translate }}
           </vitamui-common-input-error>
-        </vitamui-common-vitamui-autocomplete>
+        </vitamui-common-autocomplete>
 
-        <vitamui-common-vitamui-autocomplete
+        <vitamui-common-autocomplete
           [options]="countries"
           [formControl]="autoCompleteSelectDisabled"
           [placeholder]="'COMMON.ADRESS.COUNTRY' | translate"
           disable="true"
         >
-        </vitamui-common-vitamui-autocomplete>
+        </vitamui-common-autocomplete>
       </div>
 
       <h3>{{ 'INPUT.TEXTAREA' | translate }}</h3>

@@ -92,7 +92,7 @@ let page: Page;
 describe('AccessContractCreateComponent', () => {
   beforeEach(async () => {
     const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
-    const agencyServiceSpy = jasmine.createSpyObj('AgencyService', { getAll: of([]) });
+    const agencyServiceSpy = jasmine.createSpyObj('AgencyService', { getOriginatingAgenciesAsOptions: of([]) });
     const accessContractServiceSpy = jasmine.createSpyObj('AccessContractService', { create: of({}), getAll: of([]) });
     const accessContractCreateValidatorsSpy = jasmine.createSpyObj('AccessContractCreateValidators', {
       uniqueName: () => of(null),

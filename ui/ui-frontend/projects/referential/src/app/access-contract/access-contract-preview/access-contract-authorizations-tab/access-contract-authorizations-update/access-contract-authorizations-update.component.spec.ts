@@ -34,76 +34,48 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { AccessContract, Status } from 'projects/vitamui-library/src/public-api';
-import { of } from 'rxjs';
+import { FormBuilder } from '@angular/forms';
+import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
+import { InjectorModule, LoggerModule } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
-import { AgencyService } from '../../../agency/agency.service';
-import { AccessContractService } from '../../access-contract.service';
-import { AccessContractUsageAndServicesTabComponent } from './access-contract-usage-and-services-tab.component';
 
-describe('AccessContractUsageAndServicesTabComponent', () => {
-  let component: AccessContractUsageAndServicesTabComponent;
-  let fixture: ComponentFixture<AccessContractUsageAndServicesTabComponent>;
+import { AccessContractService } from '../../../access-contract.service';
+import { AccessContractAuthorizationsUpdateComponent } from './access-contract-authorizations-update.component';
+import { of } from 'rxjs';
+import { AgencyService } from '../../../../agency/agency.service';
 
-  const accessContractValue = {
-    everyOriginatingAgency: true,
-    originatingAgencies: ['test'],
-  };
+describe('AccessContractAuthorizationsUpdateComponent', () => {
+  let component: AccessContractAuthorizationsUpdateComponent;
+  let fixture: ComponentFixture<AccessContractAuthorizationsUpdateComponent>;
 
-  const previousValue: AccessContract = {
-    tenant: 0,
-    version: 1,
-    description: 'desc',
-    status: 'ACTIVE',
-    id: 'vitam_id',
-    name: 'Name',
-    identifier: 'SP-000001',
-    everyOriginatingAgency: true,
-    originatingAgencies: ['test'],
-    everyDataObjectVersion: true,
-    dataObjectVersion: ['test'],
-    creationDate: '01-01-20',
-    lastUpdate: '01-01-20',
-    activationDate: '01-01-20',
-    deactivationDate: '01-01-20',
-    writingPermission: true,
-    writingRestrictedDesc: true,
-    accessLog: Status.INACTIVE,
-    ruleFilter: true,
-    ruleCategoryToFilter: ['rule'],
-    rootUnits: [],
-    excludedRootUnits: [],
-  };
-
-  const agencyServiceMock = {
-    getAll: () => of([]),
-  };
   const accessContractServiceMock = {
     patch: (_data: any) => of(null),
   };
+  const agencyServiceMock = {
+    getOriginatingAgenciesAsOptions: () => of([]),
+  };
 
   beforeEach(async () => {
+    const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
+
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, VitamUICommonTestModule],
-      declarations: [AccessContractUsageAndServicesTabComponent],
+      imports: [HttpClientTestingModule, VitamUICommonTestModule, InjectorModule, LoggerModule.forRoot()],
+      declarations: [AccessContractAuthorizationsUpdateComponent],
       providers: [
+        { provide: MatDialogRef, useValue: matDialogRefSpy },
         FormBuilder,
         { provide: AccessContractService, useValue: accessContractServiceMock },
         { provide: AgencyService, useValue: agencyServiceMock },
+        { provide: MAT_DIALOG_DATA, useValue: {} },
       ],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AccessContractUsageAndServicesTabComponent);
+    fixture = TestBed.createComponent(AccessContractAuthorizationsUpdateComponent);
     component = fixture.componentInstance;
-    component.form.setValue(accessContractValue);
-    component.previousValue = (): AccessContract => previousValue;
     fixture.detectChanges();
   });
 

@@ -42,12 +42,12 @@ import { VitamUISnackBarComponent } from '../shared/vitamui-snack-bar/vitamui-sn
 import { Observable, of, throwError, TimeoutError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import {
+  AccessContract,
   AccessContractApiService,
   ApiUnitObject,
   FilingHoldingSchemeHandler,
   FilingHoldingSchemeNode,
   getUnitI18nAttribute,
-  IAccessContract,
   IOntology,
   PagedResult,
   SearchArchiveUnitsInterface,
@@ -155,7 +155,7 @@ export class ArchiveCollectService extends SearchService<any> implements SearchA
     return title.substring(0, 218);
   }
 
-  getAccessContractById(accessContract: string): Observable<IAccessContract> {
+  getAccessContractById(accessContract: string): Observable<AccessContract> {
     const headers = new HttpHeaders().append('Content-Type', 'application/json');
 
     return this.accessContractApiService.getAccessContractById(accessContract, headers);

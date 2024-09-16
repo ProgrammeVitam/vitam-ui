@@ -1,0 +1,174 @@
+<form [formGroup]="form">
+  <div class="content mt-3" [ngClass]="{ 'mt-4': updateMode }">
+    <div class="text medium light">{{ 'ACCESS_CONTRACT.CREATE_DIALOG.TITLE' | translate }}</div>
+    <div class="text large bold mb-3">{{ 'ACCESS_CONTRACT.CREATE_DIALOG.AUTHORISATION_PERIMETER.TITLE' | translate }}</div>
+
+    <div class="d-flex flex-column">
+      <div class="text medium bold primary">
+        {{ 'ACCESS_CONTRACT.CREATE_DIALOG.AUTHORISATION_PERIMETER.SELECT_TITLE' | translate }}
+      </div>
+
+      <mat-radio-group [formControl]="accessRightSelected">
+        <!-- ACCESS_FULL -->
+        <mat-radio-button class="text-text-normal" [value]="AccessRightType.ACCESS_FULL">
+          {{ 'ACCESS_CONTRACT.CREATE_DIALOG.AUTHORISATION_PERIMETER.ACCESS_FULL' | translate }}
+        </mat-radio-button>
+        <!-- ACCESS_BY_PRODUCERS -->
+        <mat-radio-button class="text-text-normal" [value]="AccessRightType.ACCESS_BY_PRODUCERS">
+          {{ 'ACCESS_CONTRACT.CREATE_DIALOG.AUTHORISATION_PERIMETER.ACCESS_BY_PRODUCERS' | translate }}
+        </mat-radio-button>
+        @if (accessRightSelected.value === AccessRightType.ACCESS_BY_PRODUCERS) {
+          <div class="under-radio">
+            <vitamui-common-autocomplete-multi-select
+              formControlName="originatingAgencies"
+              [multiSelectOptions]="originatingAgenciesOptions"
+              [placeholder]="'ACCESS_CONTRACT.CREATE_DIALOG.EVERY_ORIGINATING_AGENCY_PLACEHOLDER' | translate"
+              [searchBarPlaceHolder]="'ACCESS_CONTRACT.CREATE_DIALOG.SELECT_PRODUCERS' | translate"
+              [required]="true"
+            >
+              @if (form.get('originatingAgencies').touched && form.get('originatingAgencies').errors?.required) {
+                <vitamui-common-input-error>
+                  {{ 'ACCESS_CONTRACT.TAB.USAGE.NO_AGENCY_SELECTED' | translate }}
+                </vitamui-common-input-error>
+              }
+            </vitamui-common-autocomplete-multi-select>
+          </div>
+        }
+        <!-- ACCESS_BY_EXPIRED_MANAGEMENT_RULES -->
+        <mat-radio-button class="text-text-normal" [value]="AccessRightType.ACCESS_BY_EXPIRED_MANAGEMENT_RULES">
+          {{ 'ACCESS_CONTRACT.CREATE_DIALOG.AUTHORISATION_PERIMETER.ACCESS_BY_EXPIRED_MANAGEMENT_RULES' | translate }}
+        </mat-radio-button>
+        @if (accessRightSelected.value === AccessRightType.ACCESS_BY_EXPIRED_MANAGEMENT_RULES) {
+          <div class="under-radio">
+            <vitamui-common-autocomplete-multi-select
+              formControlName="ruleCategoryToFilter"
+              [multiSelectOptions]="ruleTypesOptions"
+              [placeholder]="'ACCESS_CONTRACT.CREATE_DIALOG.AUTHORISATION_PERIMETER.SELECT_RULES' | translate"
+              [required]="true"
+              required
+            >
+              @if (form.get('ruleCategoryToFilter').touched && form.get('ruleCategoryToFilter').hasError('required')) {
+                <vitamui-common-input-error>{{ 'COMMON.REQUIRED' | translate }}</vitamui-common-input-error>
+              } @else if (form.get('ruleCategoryToFilter').touched && form.get('ruleCategoryToFilter').hasError('match')) {
+                <vitamui-common-input-error>{{ 'COMMON.INCORRECT_VALUE' | translate }}</vitamui-common-input-error>
+              }
+            </vitamui-common-autocomplete-multi-select>
+          </div>
+        }
+        <!-- ACCESS_BY_PRODUCERS_OR_EXPIRED_MANAGEMENT_RULES -->
+        <mat-radio-button class="text-text-normal" [value]="AccessRightType.ACCESS_BY_PRODUCERS_OR_EXPIRED_MANAGEMENT_RULES">
+          {{ 'ACCESS_CONTRACT.CREATE_DIALOG.AUTHORISATION_PERIMETER.ACCESS_BY_PRODUCERS_OR_EXPIRED_MANAGEMENT_RULES' | translate }}
+        </mat-radio-button>
+        @if (accessRightSelected.value === AccessRightType.ACCESS_BY_PRODUCERS_OR_EXPIRED_MANAGEMENT_RULES) {
+          <div class="under-radio">
+            <div class="text medium bold primary mb-2">
+              {{ 'ACCESS_CONTRACT.CREATE_DIALOG.AUTHORISATION_PERIMETER.PRODUCERS_LIST' | translate }}
+            </div>
+            <vitamui-common-autocomplete-multi-select
+              formControlName="originatingAgencies"
+              [multiSelectOptions]="originatingAgenciesOptions"
+              [placeholder]="'ACCESS_CONTRACT.CREATE_DIALOG.EVERY_ORIGINATING_AGENCY_PLACEHOLDER' | translate"
+              [searchBarPlaceHolder]="'ACCESS_CONTRACT.CREATE_DIALOG.SELECT_PRODUCERS' | translate"
+              [required]="true"
+            >
+              @if (form.get('originatingAgencies').touched && form.get('originatingAgencies').errors?.required) {
+                <vitamui-common-input-error>
+                  {{ 'ACCESS_CONTRACT.TAB.USAGE.NO_AGENCY_SELECTED' | translate }}
+                </vitamui-common-input-error>
+              }
+            </vitamui-common-autocomplete-multi-select>
+            <div class="text medium bold primary mb-2">
+              {{ 'ACCESS_CONTRACT.CREATE_DIALOG.AUTHORISATION_PERIMETER.MANAGMENT_RULES' | translate }}
+            </div>
+            <vitamui-common-autocomplete-multi-select
+              formControlName="ruleCategoryToFilterForTheOtherOriginatingAgencies"
+              [multiSelectOptions]="ruleTypesOptions"
+              [placeholder]="'ACCESS_CONTRACT.CREATE_DIALOG.AUTHORISATION_PERIMETER.SELECT_RULES' | translate"
+              [required]="true"
+              required
+            >
+              @if (
+                form.get('ruleCategoryToFilterForTheOtherOriginatingAgencies').touched &&
+                form.get('ruleCategoryToFilterForTheOtherOriginatingAgencies').hasError('required')
+              ) {
+                <vitamui-common-input-error>{{ 'COMMON.REQUIRED' | translate }}</vitamui-common-input-error>
+              } @else if (
+                form.get('ruleCategoryToFilterForTheOtherOriginatingAgencies').touched &&
+                form.get('ruleCategoryToFilterForTheOtherOriginatingAgencies').hasError('match')
+              ) {
+                <vitamui-common-input-error>{{ 'COMMON.INCORRECT_VALUE' | translate }}</vitamui-common-input-error>
+              }
+            </vitamui-common-autocomplete-multi-select>
+          </div>
+        }
+        <!-- ACCESS_BY_PRODUCERS_AND_EXPIRED_MANAGEMENT_RULES -->
+        <mat-radio-button class="text-text-normal" [value]="AccessRightType.ACCESS_BY_PRODUCERS_AND_EXPIRED_MANAGEMENT_RULES">
+          {{ 'ACCESS_CONTRACT.CREATE_DIALOG.AUTHORISATION_PERIMETER.ACCESS_BY_PRODUCERS_AND_EXPIRED_MANAGEMENT_RULES' | translate }}
+        </mat-radio-button>
+        @if (accessRightSelected.value === AccessRightType.ACCESS_BY_PRODUCERS_AND_EXPIRED_MANAGEMENT_RULES) {
+          <div class="under-radio">
+            <vitamui-common-autocomplete-multi-select
+              formControlName="originatingAgencies"
+              [multiSelectOptions]="originatingAgenciesOptions"
+              [placeholder]="'ACCESS_CONTRACT.CREATE_DIALOG.EVERY_ORIGINATING_AGENCY_PLACEHOLDER' | translate"
+              [searchBarPlaceHolder]="'ACCESS_CONTRACT.CREATE_DIALOG.SELECT_PRODUCERS' | translate"
+              [required]="true"
+            >
+              @if (form.get('originatingAgencies').touched && form.get('originatingAgencies').errors?.required) {
+                <vitamui-common-input-error>
+                  {{ 'ACCESS_CONTRACT.TAB.USAGE.NO_AGENCY_SELECTED' | translate }}
+                </vitamui-common-input-error>
+              }
+            </vitamui-common-autocomplete-multi-select>
+            <vitamui-common-autocomplete-multi-select
+              formControlName="ruleCategoryToFilter"
+              [multiSelectOptions]="ruleTypesOptions"
+              [placeholder]="'ACCESS_CONTRACT.CREATE_DIALOG.AUTHORISATION_PERIMETER.SELECT_RULES' | translate"
+              [required]="true"
+              required
+            >
+              @if (form.get('ruleCategoryToFilter').touched && form.get('ruleCategoryToFilter').hasError('required')) {
+                <vitamui-common-input-error>{{ 'COMMON.REQUIRED' | translate }}</vitamui-common-input-error>
+              } @else if (form.get('ruleCategoryToFilter').touched && form.get('ruleCategoryToFilter').hasError('match')) {
+                <vitamui-common-input-error>{{ 'COMMON.INCORRECT_VALUE' | translate }}</vitamui-common-input-error>
+              }
+            </vitamui-common-autocomplete-multi-select>
+          </div>
+        }
+      </mat-radio-group>
+    </div>
+
+    <div class="text medium bold primary mt-5 mb-2">
+      {{ 'ACCESS_CONTRACT.CREATE_DIALOG.AUTHORISATION_PERIMETER.ACCESS_TO_PLAN' | translate }}
+    </div>
+    <vitamui-common-slide-toggle formControlName="doNotFilterFilingSchemes">
+      {{ 'ACCESS_CONTRACT.CREATE_DIALOG.AUTHORISATION_PERIMETER.ACCESS_TO_PLAN_AUTHORIZATION' | translate }}
+      <i
+        class="vitamui-icon vitamui-icon-info align-middle primary"
+        vitamuiCommonToolTip="{{
+          'ACCESS_CONTRACT.CREATE_DIALOG.AUTHORISATION_PERIMETER.ACCESS_TO_PLAN_AUTHORIZATION_TOOLTIP' | translate
+        }}"
+      ></i>
+    </vitamui-common-slide-toggle>
+
+    @if (updateMode) {
+      <div class="actions">
+        <button type="button" class="btn primary" [disabled]="form.errors" (click)="onValidate()">
+          {{ 'COMMON.SAVE' | translate }}
+        </button>
+        <button type="button" class="btn cancel" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
+      </div>
+    } @else {
+      <div class="actions">
+        <button type="button" class="btn primary" [disabled]="form.errors" cdkStepperNext (click)="onValidate()">
+          {{ 'COMMON.NEXT' | translate }}
+        </button>
+        <button type="button" class="btn cancel" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
+      </div>
+      <button type="button" class="btn link">
+        <i class="vitamui-icon vitamui-icon-chevron-left"></i>
+        <span class="underline">{{ 'COMMON.BACK' | translate }}</span>
+      </button>
+    }
+  </div>
+</form>

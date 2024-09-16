@@ -4777,5 +4777,126 @@
     "maxlength": "Maximum length is {{ requiredLength }} characters.",
     "email": "Invalid email address.",
     "pattern": "Expected format : {{ message }}."
+  },
+  "ACCESS_CONTRACT": {
+    "HOME": {
+      "TITLE": "Access contracts",
+      "SEARCH_PLACEHOLDER": "Name, ID",
+      "CREATE_ACCESS_CONTRACT": "Create access contract",
+      "IMPORT": "Import",
+      "EXPORT": "Export",
+      "DOWNLOAD_MODEL": "Download Model",
+      "ARRAY": {
+        "NAME": "Name",
+        "IDENTIFIER": "Identifier",
+        "CREATION_DATE": "Creation date",
+        "ACTIVE": "Active",
+        "INACTIVE": "Inactive"
+      }
+    },
+    "TAB": {
+      "INFORMATION": {
+        "TITLE": "Information",
+        "ACTIVE_CONTRACT": "Active contract",
+        "NAME": "Name",
+        "DESCRIPTION": "Description",
+        "ACCESS_LOGS": "Access logging",
+        "SELECT_RULES": "Select Rules",
+        "CREATION_DATE": "Creation date",
+        "LAST_MODIFICATION_DATE": "Last modification date",
+        "ACTIVATION_DATE": "Activation date",
+        "DEACTIVATION_DATE": "Deactivation date"
+      },
+      "USAGE": {
+        "TITLE": "Authorization",
+        "AUTHORIZATION_PERIMETER": "Périmètre des autorisations",
+        "ALL_AGENCIES": "All producer services",
+        "SELECT_AGENCY": "Producer(s) service",
+        "SELECT_AGENCY_SEARCH": "Type producer service ID or name",
+        "NO_AGENCY_SELECTED": "Please select at least one service",
+        "ALL_USAGES": "All uses",
+        "SELECT_USAGES": "Select usages",
+        "NO_USAGE_SELECTED": "Please select at least one usage",
+        "PRODUCERS_SELECTED": "Selected producer service(s)",
+        "MANAGEMENT_RULES_SELECTED": "Selected management rule(s)",
+        "MANAGEMENT_RULES_SELECTED_FOR_OTHER_PRODUCERS": "Management rule(s) applied for other producing services",
+        "MANAGEMENT_RULES_SELECTED_FOR_PRODUCERS": "Management rule(s) applied to the selected producer service(s)",
+        "FILING_SCHEME_ACCESS": "Access to all filing scheme"
+      },
+      "WRITE_RIGHTS": {
+        "TITLE": "Write rights",
+        "WRITING_RESTRICTION": "Editing restriction to description metadata",
+        "WRITE_RIGHT": "Write rights"
+      },
+      "POSITIONS": {
+        "TITLE": "Positions",
+        "CONSULTATION_POSITIONS": "Consultation positions:",
+        "EXCLUDED_POSITIONS": "Excluded Positions:",
+        "ALL_POSITIONS": "All positions",
+        "NO_EXCLUDED_POSITION": "No position excluded"
+      },
+      "HISTORY": {
+        "TITLE": "History"
+      }
+    },
+    "CREATE_DIALOG": {
+      "AUTHORISATION_PERIMETER": {
+        "TITLE": "Select the scope of authorizations",
+        "SELECT_TITLE": "Select the scope of authorizations",
+        "ACCESS_FULL": "Access to all archives without restrictions on producer services or management rules",
+        "ACCESS_BY_PRODUCERS": "Access to archives by producer service(s)",
+        "ACCESS_BY_EXPIRED_MANAGEMENT_RULES": "Access to archives by expired management rule(s)",
+        "ACCESS_BY_PRODUCERS_OR_EXPIRED_MANAGEMENT_RULES": "Access to the archives of a list of producer services and, for other services, access by management rule(s) that have expired",
+        "ACCESS_BY_PRODUCERS_AND_EXPIRED_MANAGEMENT_RULES": "Access to the archives of a list of producer services by applying a filter by expired management rule(s)",
+        "SELECT_PRODUCERS": "Select producer services",
+        "SELECT_RULES": "Select management rules",
+        "PRODUCERS_LIST": "List of selected producer services",
+        "MANAGMENT_RULES": "Management rule(s) to be applied for other producing services",
+        "ACCESS_TO_PLAN": "Access to classification plans",
+        "ACCESS_TO_PLAN_AUTHORIZATION": "Allow access to all classification plans",
+        "ACCESS_TO_PLAN_AUTHORIZATION_TOOLTIP": "Do not apply previously defined filters on filing plan type archival units"
+      },
+      "TITLE": "Creation of an access contract",
+      "SUBTITLE": "Information",
+      "STATUS": "Active access contract",
+      "NAME": "Name",
+      "IDENTIFIER": "ID",
+      "DESCRIPTION": "Description",
+      "ACCESS_LOG": "Access logging",
+      "ACCESS_LOG_TOOLTIP": "Right to log access to objects",
+      "RULE_FILTER": "Filter by business rules",
+      "RULE_FILTER_TOOLTIP": "Filter access based on expired business rules",
+      "RULE_FILTER_PLACEHOLDER": "Select Rules",
+      "RULE_FILTER_SELECT_TOOLTIP": "Choose the management rules",
+      "SERVICES": "Services",
+      "EVERY_ORIGINATING_AGENCY": "All producer services",
+      "EVERY_ORIGINATING_AGENCY_TOOLTIP": "Producer service associated with the contract and accessing the archives",
+      "EVERY_ORIGINATING_AGENCY_PLACEHOLDER": "Select producer services",
+      "EVERY_ORIGINATING_AGENCY_SELECT_TOOLTIP": "Choose from one to several producer services",
+      "EVERY_DATA_OBJECT_VERSION": "All uses",
+      "EVERY_DATA_OBJECT_VERSION_TOOLTIP": "Use to which the access contract gives the right",
+      "EVERY_DATA_OBJECT_VERSION_SELECT_PLACEHOLDER": "Select uses",
+      "EVERY_DATA_OBJECT_VERSION_SELECT_TOOLTIP": "Choose from one to several uses",
+      "WRITING_PERMISSION_TITLE": "Writing and downloading rights",
+      "WRITE_PERMISSION_AUTHORIZE": "Authorize write permissions",
+      "AUTHORIZE_DESCRIPTIVE_METADATA_WRITE": "Authorize write on descriptive metadata",
+      "AUTHORIZE_MANAGEMENT_METADATA_WRITE": "Authorize write on management metadata",
+      "AUTHORIZE_OBJECT_DOWNLOAD": "Authorize object download",
+      "OBJECT_TYPE": "Object type",
+      "ALL": "All",
+      "NONE": "None",
+      "SELECTION": "Selection",
+      "WRITING_RESTRICTED_DESC": "Restriction of modification to descriptive metadata",
+      "POSITIONS_TITLE": "Consulting Positions",
+      "ALL_POSITIONS": "All Positions",
+      "ALL_POSITIONS_TOOLTIP": "Choice of the positions to which one wishes to give access in consultation",
+      "NAME_ALREADY_EXISTS": "Name already in use",
+      "IDENTIFIER_ALREADY_EXISTS": "Identifier already in use",
+      "SELECT_AGENCY_SEARCH": "Type producer service ID or name"
+    },
+    "UPDATE_NODE_DIALOG": {
+      "TITLE": "Change of consultation positions",
+      "ALL_POSITIONS_INFO": "Choice of positions to which you wish to give access during consultation"
+    }
   }
 }

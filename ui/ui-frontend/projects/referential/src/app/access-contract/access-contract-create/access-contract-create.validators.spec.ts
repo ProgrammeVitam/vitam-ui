@@ -101,6 +101,8 @@ describe('AccessContract Create Validators', () => {
       originatingAgencies: [],
       rootUnits: [],
       excludedRootUnits: [],
+      ruleCategoryToFilterForTheOtherOriginatingAgencies: [],
+      doNotFilterFilingSchemes: false,
     });
 
     it('should return null', fakeAsync(() => {

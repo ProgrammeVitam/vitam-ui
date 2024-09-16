@@ -68,7 +68,7 @@ export const VITAMUI_AUTOCOMPLETE_NG_VALIDATORS: any = {
 };
 
 @Component({
-  selector: 'vitamui-common-vitamui-autocomplete',
+  selector: 'vitamui-common-autocomplete',
   templateUrl: './vitamui-autocomplete.component.html',
   styleUrls: ['./vitamui-autocomplete.component.scss'],
   providers: [VITAMUI_AUTOCOMPLETE_VALUE_ACCESSOR, VITAMUI_AUTOCOMPLETE_NG_VALIDATORS],

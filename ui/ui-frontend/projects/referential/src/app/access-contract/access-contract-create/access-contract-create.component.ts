@@ -39,23 +39,23 @@ import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors,
 import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
 import {
   AccessContract,
-  Agency,
+  AccessRightType,
   ConfirmDialogService,
   ExternalParameters,
   ExternalParametersService,
   FilingPlanMode,
   Option,
   Status,
-  VitamUISnackBarService,
   VitamuiAutocompleteMultiselectOptions,
+  VitamUISnackBarService,
 } from 'vitamui-library';
 import { AgencyService } from '../../agency/agency.service';
 import { RULE_TYPES } from '../../rule/rules.constants';
 import { AccessContractService } from '../access-contract.service';
 import { AccessContractCreateValidators } from './access-contract-create.validators';
 
-import { Subject } from 'rxjs';
-import { map, takeUntil } from 'rxjs/operators';
+import { finalize, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-access-contract-create',
@@ -63,14 +63,16 @@ import { map, takeUntil } from 'rxjs/operators';
   styleUrls: ['./access-contract-create.component.scss'],
 })
 export class AccessContractCreateComponent implements OnInit, OnDestroy {
+  protected readonly AccessRightType = AccessRightType;
+  protected readonly FILLING_PLAN_MODE = FilingPlanMode;
   @Input() tenantIdentifier: number;
   @Input() isSlaveMode: boolean;
 
   form: FormGroup;
-  FILLING_PLAN_MODE = FilingPlanMode;
 
   stepIndex = 0;
   stepCount = 4;
+  accessRightSelected: AccessRightType = AccessRightType.ACCESS_FULL;
 
   private unsubscribe = new Subject<void>();
 
@@ -79,12 +81,10 @@ export class AccessContractCreateComponent implements OnInit, OnDestroy {
   selectNodesControl = new FormControl({ included: [], excluded: [] });
   accessContractSelect = new FormControl(null, Validators.required);
 
+  isLoading = false;
+
   originatingAgenciesOptions: VitamuiAutocompleteMultiselectOptions = { options: [] };
-
-  isDisabledButton = false;
-
-  rules: Option[] = RULE_TYPES;
-
+  ruleTypesOptions: VitamuiAutocompleteMultiselectOptions = { options: RULE_TYPES };
   // FIXME: Get list from common var ?
   usages: Option[] = [
     { key: 'BinaryMaster', label: 'Archives numériques originales', info: '' },
@@ -93,6 +93,7 @@ export class AccessContractCreateComponent implements OnInit, OnDestroy {
     { key: 'TextContent', label: 'Contenu textuel', info: '' },
     { key: 'PhysicalMaster', label: 'Archives physiques', info: '' },
   ];
+  private secondStepData: AccessContract;
 
   constructor(
     public dialogRef: MatDialogRef<AccessContractCreateComponent>,
@@ -107,70 +108,12 @@ export class AccessContractCreateComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.externalParameterService
-      .getUserExternalParameters()
-      .pipe(takeUntil(this.unsubscribe))
-      .subscribe((parameters) => {
-        const accessContractId: string = parameters.get(ExternalParameters.PARAM_ACCESS_CONTRACT);
-        if (accessContractId && accessContractId.length > 0) {
-          this.accessContractSelect.setValue(accessContractId);
-        } else {
-          this.vitamUISnackBarService.open({
-            message: 'SNACKBAR.NO_ACCESS_CONTRACT_LINKED',
-          });
-        }
-      });
-
-    this.agencyService
-      .getAll()
-      .pipe(
-        map((agencies: Agency[]) => {
-          const options: Option[] = agencies.map((x) => ({ label: x.identifier + ' - ' + x.name, key: x.identifier }));
-          return { options };
-        }),
-      )
-      .subscribe((options: VitamuiAutocompleteMultiselectOptions) => {
-        this.originatingAgenciesOptions = options;
-      });
-
-    this.form = this.formBuilder.group({
-      identifier: [null, Validators.required, this.accessContractCreateValidators.uniqueIdentifier()],
-      status: [false],
-      name: [null, [Validators.required], this.accessContractCreateValidators.uniqueName()],
-      description: [null],
-      accessLog: [false],
-      ruleCategoryToFilter: [new Array<string>(), Validators.required],
-      /* <- step 2 -> */
-      secondStep: this.formBuilder.group(
-        {
-          everyOriginatingAgency: [true],
-          originatingAgencies: [[]],
-        },
-        {
-          validators: [this.secondStepValidator()],
-        },
-      ),
-      /* <- step 3 -> */
-      thirdStep: this.formBuilder.group(
-        {
-          writingPermission: [false],
-          downloadChoose: ['ALL'],
-          everyDataObjectVersion: [true],
-          dataObjectVersion: [new Array<string>()],
-          writingAuthorizedDesc: [false],
-        },
-        {
-          validators: [this.thirdStepValidator()],
-        },
-      ),
-      /* <- step 4 -> */
-      rootUnits: [[], Validators.required],
-      excludedRootUnits: [[]],
-    });
+    this.loadAccessContract();
+    this.agencyService.getOriginatingAgenciesAsOptions().subscribe((options: Option[]) => (this.originatingAgenciesOptions = { options }));
+    this.initForm();
 
     this.form.get('thirdStep.downloadChoose').valueChanges.subscribe((val) => {
       this.form.get('thirdStep.everyDataObjectVersion').setValue(val === 'ALL', { emitEvent: false });
-
       if (val !== 'SELECTION') {
         this.form.get('thirdStep.dataObjectVersion').setValue([], { emitEvent: false });
       }
@@ -206,27 +149,65 @@ export class AccessContractCreateComponent implements OnInit, OnDestroy {
     }
   }
 
+  private loadAccessContract(): void {
+    this.externalParameterService
+      .getUserExternalParameters()
+      .pipe(takeUntil(this.unsubscribe))
+      .subscribe((parameters) => {
+        const accessContractId: string = parameters.get(ExternalParameters.PARAM_ACCESS_CONTRACT);
+        if (accessContractId && accessContractId.length > 0) {
+          this.accessContractSelect.setValue(accessContractId);
+        } else {
+          this.vitamUISnackBarService.open({
+            message: 'SNACKBAR.NO_ACCESS_CONTRACT_LINKED',
+          });
+        }
+      });
+  }
+
+  private initForm(): void {
+    this.form = this.formBuilder.group({
+      identifier: [null, Validators.required, this.accessContractCreateValidators.uniqueIdentifier()],
+      status: [false],
+      name: [null, [Validators.required], this.accessContractCreateValidators.uniqueName()],
+      description: [null],
+      accessLog: [false],
+      /* <- step 3 -> */
+      thirdStep: this.formBuilder.group(
+        {
+          writingPermission: [false],
+          downloadChoose: ['ALL'],
+          everyDataObjectVersion: [true],
+          dataObjectVersion: [new Array<string>()],
+          writingAuthorizedDesc: [false],
+        },
+        {
+          validators: [this.thirdStepValidator()],
+        },
+      ),
+      /* <- step 4 -> */
+      rootUnits: [[], Validators.required],
+      excludedRootUnits: [[]],
+    });
+  }
+
   onSubmit(): void {
     if (this.lastStepInvalid()) {
-      this.isDisabledButton = true;
       return;
     }
-    this.isDisabledButton = true;
+    this.isLoading = true;
     const accessContract: AccessContract = this.mapToAccessContract(this.form);
     accessContract.status === 'ACTIVE'
       ? (accessContract.activationDate = new Date().toISOString())
       : (accessContract.deactivationDate = new Date().toISOString());
 
-    this.accessContractService.create(accessContract).subscribe(
-      () => {
-        this.isDisabledButton = false;
-        this.dialogRef.close(true);
-      },
-      (error) => {
-        this.isDisabledButton = false;
-        console.error(error);
-      },
-    );
+    this.accessContractService
+      .create(accessContract)
+      .pipe(finalize(() => (this.isLoading = false)))
+      .subscribe({
+        next: (_accessContract) => this.dialogRef.close(true),
+        error: (e) => console.error(e),
+      });
   }
 
   public firstStepInvalid(): boolean {
@@ -245,13 +226,16 @@ export class AccessContractCreateComponent implements OnInit, OnDestroy {
     );
   }
 
+  public saveSecondStepData(accessContract: AccessContract): void {
+    this.secondStepData = accessContract;
+  }
+
   onWritingRestrictedDescChanges(): void {
     this.form.get('thirdStep.writingAuthorizedDesc').valueChanges.subscribe((val) => {
       if (val) {
         this.form.get('thirdStep.writingPermission').setValue(true, { emitEvent: false });
       }
     });
-
     this.form.get('thirdStep.writingPermission').valueChanges.subscribe((val) => {
       if (!val) {
         this.form.get('thirdStep.writingAuthorizedDesc').setValue(false, { emitEvent: false });
@@ -270,15 +254,6 @@ export class AccessContractCreateComponent implements OnInit, OnDestroy {
     };
   }
 
-  private secondStepValidator(): ValidatorFn {
-    return (form: FormGroup): ValidationErrors | null => {
-      if (form.get('everyOriginatingAgency').value == false && form.get('originatingAgencies').value.length == 0) {
-        return { originatingAgencies: true };
-      }
-      return null;
-    };
-  }
-
   public lastStepInvalid(): boolean {
     return (
       this.allNodes.invalid ||
@@ -290,8 +265,7 @@ export class AccessContractCreateComponent implements OnInit, OnDestroy {
   private mapToAccessContract(form: FormGroup): AccessContract {
     return {
       ...form.value,
-      everyOriginatingAgency: this.getControl(form, 'secondStep.everyOriginatingAgency').value,
-      originatingAgencies: this.getControl(form, 'secondStep.originatingAgencies').value,
+      ...this.secondStepData,
       writingPermission: this.getControl(form, 'thirdStep.writingPermission').value,
       downloadChoose: this.getControl(form, 'thirdStep.downloadChoose').value,
       everyDataObjectVersion: this.getControl(form, 'thirdStep.everyDataObjectVersion').value,

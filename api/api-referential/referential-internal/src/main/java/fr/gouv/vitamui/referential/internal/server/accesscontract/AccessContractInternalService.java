@@ -254,9 +254,9 @@ public class AccessContractInternalService {
     }
 
     public AccessContractDto patch(VitamContext vitamContext, final Map<String, Object> partialDto) {
-        String id = (String) partialDto.get("identifier");
-        if (id == null) {
-            throw new BadRequestException("id must be one the the update criteria");
+        String identifier = (String) partialDto.get("identifier");
+        if (identifier == null) {
+            throw new BadRequestException("identifier must be one of the update criteria");
         }
         partialDto.remove("id");
         partialDto.remove("identifier");
@@ -284,8 +284,8 @@ public class AccessContractInternalService {
 
             LOGGER.debug("Send AccessContract update request: {}", query);
 
-            vitamUIAccessContractService.patchAccessContract(vitamContext, id, query);
-            return getOne(vitamContext, id);
+            vitamUIAccessContractService.patchAccessContract(vitamContext, identifier, query);
+            return getOne(vitamContext, identifier);
         } catch (InvalidParseOperationException | AccessExternalClientException e) {
             throw new InternalServerException("Can't patch access contract", e);
         }
@@ -415,6 +415,10 @@ public class AccessContractInternalService {
         final String ruleCategoryToFilter = accessContract.getRuleCategoryToFilter() == null
             ? null
             : String.join(arrayJoinStr, accessContract.getRuleCategoryToFilter());
+        final String ruleCategoryToFilterForTheOtherOriginatingAgencies =
+            accessContract.getRuleCategoryToFilterForTheOtherOriginatingAgencies() == null
+                ? null
+                : String.join(arrayJoinStr, accessContract.getRuleCategoryToFilterForTheOtherOriginatingAgencies());
 
         final var creationDate = accessContract.getCreationDate() == null
             ? null
@@ -428,6 +432,9 @@ public class AccessContractInternalService {
         final var deactivationDate = accessContract.getDeactivationDate() == null
             ? null
             : df.format(LocalDateUtil.getDate(accessContract.getDeactivationDate()));
+        final var doNotFilterFilingSchemes = accessContract.getDoNotFilterFilingSchemes() == null
+            ? "false"
+            : accessContract.getDoNotFilterFilingSchemes().toString();
 
         return new String[] {
             accessContract.getIdentifier(),
@@ -435,14 +442,17 @@ public class AccessContractInternalService {
             accessContract.getDescription(),
             accessContract.getStatus(),
             accessContract.getWritingPermission().toString(),
+            // accessRights :
             accessContract.getEveryOriginatingAgency().toString(),
             originatingAgencies,
+            ruleCategoryToFilter,
+            ruleCategoryToFilterForTheOtherOriginatingAgencies,
+            doNotFilterFilingSchemes,
             accessContract.getEveryDataObjectVersion().toString(),
             dataObjectVersions,
             rootUnits,
             excludedRootUnits,
             accessContract.getAccessLog(),
-            ruleCategoryToFilter,
             accessContract.getWritingRestrictedDesc().toString(),
             creationDate,
             lastUpdateDate,

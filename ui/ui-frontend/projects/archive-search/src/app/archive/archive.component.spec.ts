@@ -88,6 +88,8 @@ describe('ArchiveComponent', () => {
     accessLog: Status.ACTIVE,
     ruleFilter: true,
     ruleCategoryToFilter: ['rule'],
+    ruleCategoryToFilterForTheOtherOriginatingAgencies: [],
+    doNotFilterFilingSchemes: false,
     excludedRootUnits: [],
     deactivationDate: 'date',
     dataObjectVersion: [],

@@ -5625,5 +5625,126 @@
     "maxlength": "La longueur maximale est de {{ requiredLength }} caractères.",
     "email": "Adresse e-mail invalide.",
     "pattern": "Format attendu : {{ message }}."
+  },
+  "ACCESS_CONTRACT": {
+    "HOME": {
+      "TITLE": "Contrats d'accès",
+      "SEARCH_PLACEHOLDER": "Nom, identifiant",
+      "CREATE_ACCESS_CONTRACT": "Créer un contrat d'accès",
+      "IMPORT": "Importer",
+      "EXPORT": "Exporter",
+      "DOWNLOAD_MODEL": "Télécharger le modèle",
+      "ARRAY": {
+        "NAME": "Nom",
+        "IDENTIFIER": "Identifiant",
+        "CREATION_DATE": "Date de création",
+        "ACTIVE": "Actif",
+        "INACTIVE": "Inactif"
+      }
+    },
+    "TAB": {
+      "INFORMATION": {
+        "TITLE": "Informations",
+        "ACTIVE_CONTRACT": "Contrat actif",
+        "NAME": "Nom",
+        "DESCRIPTION": "Description",
+        "ACCESS_LOGS": "Journalisation des accès",
+        "SELECT_RULES": "Sélectionnez les règles",
+        "CREATION_DATE": "Date de création",
+        "LAST_MODIFICATION_DATE": "Date de dernière modification",
+        "ACTIVATION_DATE": "Date d'activation",
+        "DEACTIVATION_DATE": "Date de désactivation"
+      },
+      "USAGE": {
+        "TITLE": "Autorisations",
+        "AUTHORIZATION_PERIMETER": "Périmètre des autorisations",
+        "ALL_AGENCIES": "Tous les services producteurs",
+        "SELECT_AGENCY": "Service(s) producteur",
+        "SELECT_AGENCY_SEARCH": "Taper l'ID ou le nom de service producteur",
+        "NO_AGENCY_SELECTED": "Veuillez sélectionner au moins un service",
+        "ALL_USAGES": "Tous les usages",
+        "SELECT_USAGES": "Sélectionnez les usages",
+        "NO_USAGE_SELECTED": "Veuillez sélectionner au moins un usage",
+        "PRODUCERS_SELECTED": "Service(s) producteur(s) sélectionné(s)",
+        "MANAGEMENT_RULES_SELECTED": "Règle(s) de gestion sélectionnée(s)",
+        "MANAGEMENT_RULES_SELECTED_FOR_OTHER_PRODUCERS": "Règle(s) de gestion appliquée(s) pour les autres services producteurs",
+        "MANAGEMENT_RULES_SELECTED_FOR_PRODUCERS": "Règle(s) de gestion appliquée(s) au(x) service(s) producteur(s) sélectionné(s)",
+        "FILING_SCHEME_ACCESS": "Accès à tous les plans de classement"
+      },
+      "WRITE_RIGHTS": {
+        "TITLE": "Droits",
+        "WRITING_RESTRICTION": "Restriction de modification aux métadonnées descriptives",
+        "WRITE_RIGHT": "Droits d'écriture"
+      },
+      "POSITIONS": {
+        "TITLE": "Positions",
+        "CONSULTATION_POSITIONS": "Positions de consultation :",
+        "EXCLUDED_POSITIONS": "Positions exclues :",
+        "ALL_POSITIONS": "Toutes les positions",
+        "NO_EXCLUDED_POSITION": "Aucune position exclue"
+      },
+      "HISTORY": {
+        "TITLE": "Historique"
+      }
+    },
+    "CREATE_DIALOG": {
+      "AUTHORISATION_PERIMETER": {
+        "TITLE": "Sélectionner le périmètre des autorisations",
+        "SELECT_TITLE": "Sélectionner le périmètre des autorisations",
+        "ACCESS_FULL": "Accès à toutes les archives sans restriction sur les services producteurs ou les règles de gestion",
+        "ACCESS_BY_PRODUCERS": "Accès aux archives par service(s) producteur(s)",
+        "ACCESS_BY_EXPIRED_MANAGEMENT_RULES": "Accès aux archives par règle(s) de gestion arrivée(s) à échéance",
+        "ACCESS_BY_PRODUCERS_OR_EXPIRED_MANAGEMENT_RULES": "Accès aux archives d’une liste de services producteurs et, pour les autres services, accès par règle(s) de gestion arrivée(s) à échéance",
+        "ACCESS_BY_PRODUCERS_AND_EXPIRED_MANAGEMENT_RULES": "Accès aux archives d’une liste de services producteurs en appliquant un filtre par règle(s) de gestion arrivée(s) à échéance",
+        "SELECT_PRODUCERS": "Sélectionner les services producteurs",
+        "SELECT_RULES": "Sélectionner les règles de gestion",
+        "PRODUCERS_LIST": "Liste des services producteurs sélectionnés",
+        "MANAGMENT_RULES": "Règle(s) de gestion à appliquer pour les autres services producteurs",
+        "ACCESS_TO_PLAN": "Accès aux plans de classement",
+        "ACCESS_TO_PLAN_AUTHORIZATION": "Autoriser l’accès à tous les plans de classement",
+        "ACCESS_TO_PLAN_AUTHORIZATION_TOOLTIP": "Ne pas appliquer les filtres définis précédemment sur les unités archivistiques de type plan de classement"
+      },
+      "TITLE": "Création d'un contrat d'accès",
+      "SUBTITLE": "Informations",
+      "STATUS": "Contrat d'accès actif",
+      "NAME": "Nom",
+      "IDENTIFIER": "Identifiant",
+      "DESCRIPTION": "Description",
+      "ACCESS_LOG": "Journalisation des accès",
+      "ACCESS_LOG_TOOLTIP": "Droit d'enregistrer les accès sur les objets",
+      "RULE_FILTER": "Filtrer par règle de gestion",
+      "RULE_FILTER_TOOLTIP": "Filtrer les accès en fonction des règles de gestion arrivées à échéance",
+      "RULE_FILTER_PLACEHOLDER": "Sélectionnez les règles",
+      "RULE_FILTER_SELECT_TOOLTIP": "Choisir les règles de gestion",
+      "SERVICES": "Services",
+      "EVERY_ORIGINATING_AGENCY": "Tous les services producteurs",
+      "EVERY_ORIGINATING_AGENCY_TOOLTIP": "Service producteur associé au contrat et accédant aux archives",
+      "EVERY_ORIGINATING_AGENCY_PLACEHOLDER": "Sélectionnez les services producteurs",
+      "EVERY_ORIGINATING_AGENCY_SELECT_TOOLTIP": "Choisir de un à plusieurs services producteur",
+      "EVERY_DATA_OBJECT_VERSION": "Tous les usages",
+      "EVERY_DATA_OBJECT_VERSION_TOOLTIP": "Usage auquel donne droit le contrat d'accès",
+      "EVERY_DATA_OBJECT_VERSION_SELECT_PLACEHOLDER": "Sélectionnez les usages",
+      "EVERY_DATA_OBJECT_VERSION_SELECT_TOOLTIP": "Choisir de un à plusieurs usages",
+      "WRITING_PERMISSION_TITLE": "Droits en écriture et en téléchargement",
+      "WRITE_PERMISSION_AUTHORIZE": "Autoriser les droits d'écriture",
+      "AUTHORIZE_DESCRIPTIVE_METADATA_WRITE": "Autoriser l’écriture sur les métadonnées descriptives",
+      "AUTHORIZE_MANAGEMENT_METADATA_WRITE": "Autoriser l’écriture sur les métadonnées de gestion",
+      "AUTHORIZE_OBJECT_DOWNLOAD": "Autoriser le téléchargement d’objets",
+      "OBJECT_TYPE": "Type d’objet",
+      "ALL": "Tous",
+      "NONE": "Aucun",
+      "SELECTION": "Sélection",
+      "WRITING_RESTRICTED_DESC": "Restriction de modification aux métadonnées descriptives",
+      "POSITIONS_TITLE": "Positions de consultation",
+      "ALL_POSITIONS": "Toutes les positions",
+      "ALL_POSITIONS_TOOLTIP": "Choix des positions auxquelles on souhaite donner accès en consultation",
+      "NAME_ALREADY_EXISTS": "Nom déjà utilisé",
+      "IDENTIFIER_ALREADY_EXISTS": "Identifiant déjà utilisé",
+      "SELECT_AGENCY_SEARCH": "Taper l'ID ou le nom de service producteur"
+    },
+    "UPDATE_NODE_DIALOG": {
+      "TITLE": "Modification des positions de consultation",
+      "ALL_POSITIONS_INFO": "Choix des positions auquelles on souhaite donner accès en consultation"
+    }
   }
 }

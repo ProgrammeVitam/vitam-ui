@@ -1,0 +1,17 @@
+:host {
+  display: inline-block;
+  max-width: 800px;
+
+  .under-radio {
+    background-color: var(--vitamui-background);
+    margin-top: 10px;
+    margin-left: 35px;
+    padding-top: 20px;
+    padding-left: 30px;
+
+    vitamui-common-autocomplete-multi-select {
+      display: inline-block;
+      width: 382px;
+    }
+  }
+}

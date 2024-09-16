@@ -42,11 +42,10 @@ import {
   MatLegacyTabHeader as MatTabHeader,
 } from '@angular/material/legacy-tabs';
 import { Observable } from 'rxjs';
-import { AccessContract } from 'vitamui-library';
-import { ConfirmActionComponent } from 'vitamui-library';
+import { AccessContract, ConfirmActionComponent } from 'vitamui-library';
 import { AccessContractService } from '../access-contract.service';
 import { AccessContractInformationTabComponent } from './access-contract-information-tab/access-contract-information-tab.component';
-import { AccessContractUsageAndServicesTabComponent } from './access-contract-usage-and-services-tab/access-contract-usage-and-services-tab.component';
+import { AccessContractAuthorizationsTabComponent } from './access-contract-authorizations-tab/access-contract-authorizations-tab.component';
 import { AccessContractWriteAccessTabComponent } from './access-contract-write-access-tab/access-contract-write-access-tab.component';
 
 @Component({
@@ -67,7 +66,7 @@ export class AccessContractPreviewComponent implements AfterViewInit {
 
   @ViewChild('tabs', { static: false }) tabs: MatTabGroup;
   @ViewChild('infoTab', { static: false }) infoTab: AccessContractInformationTabComponent;
-  @ViewChild('usageTab', { static: false }) usageTab: AccessContractUsageAndServicesTabComponent;
+  @ViewChild('authorizationsTab', { static: false }) authorizationsTab: AccessContractAuthorizationsTabComponent;
   @ViewChild('writeTab', { static: false }) writeTab: AccessContractWriteAccessTabComponent;
 
   constructor(
@@ -78,7 +77,7 @@ export class AccessContractPreviewComponent implements AfterViewInit {
   ngAfterViewInit() {
     this.tabs._handleClick = this.interceptTabChange.bind(this);
     this.tabLinks[0] = this.infoTab;
-    this.tabLinks[1] = this.usageTab;
+    this.tabLinks[1] = this.authorizationsTab;
     this.tabLinks[2] = this.writeTab;
   }
 

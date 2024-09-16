@@ -1,10 +1,10 @@
-Identifier;Name*;Description;Status;WritingPermission;EveryOriginatingAgency;OriginatingAgencies;EveryDataObjectVersion;DataObjectVersion;RootUnits;ExcludedRootUnits;AccessLog;RuleCategoryToFilter;WritingRestrictedDesc
-;Contrats d'accès Full accès 0;;;;;;;;;;;;
-;Contrats d'accès Full accès 1;;;;;;;;;;;;
-;Contrats d'accès RH;Autorisation RH et Finances. Exclusion contrats (RH);INACTIVE;true;true;IdArcDLab | IdArcCommerce;true;PhysicalMaster|BinaryMaster;;;ACTIVE;;true
-;Contrats d'accès Full hors santé;Exclusion Santé;ACTIVE;false;false;IdArcCommerce;false;PhysicalMaster|BinaryMaster;;;INACTIVE;AppraisalRule|AccessRule;false
-;Contrats d'accès Numéro 4;;ACTIVE;true;false;IdArcCommerce;true;;;;ACTIVE;AccessRule | DisseminationRule | ReuseRule | StorageRule | AppraisalRule | ClassificationRule | HoldRule;
-;Contrats d'accès Finances;"Autorisation finance avec exclusion ""Facturation client""";INACTIVE;false;true;;false;PhysicalMaster|BinaryMaster | Dissemination |Thumbnail | TextContent;;;ACTIVE;AccessRule | StorageRule | AppraisalRule | ClassificationRule | HoldRule;true
-;Contrats d'accès Numéro 6;Lorem ipsum dolor sit amet;INACTIVE;true;true;;;PhysicalMaster | Dissemination |Thumbnail | TextContent;;;ACTIVE;AccessRule | StorageRule | AppraisalRule |HoldRule;false
-;Contrats d'accès Numéro 7;;;;;;false;PhysicalMaster | Dissemination |Thumbnail | TextContent;;;INACTIVE;AppraisalRule|AccessRule;
-;Contrats d'accès Numéro 8;;ACTIVE;true;false;IdArcDLab | IdArcCommerce |IdProdDLab;false;Dissemination |Thumbnail | TextContent;;;ACTIVE;AppraisalRule;
+Identifier;Name*;Description;Status;WritingPermission;EveryOriginatingAgency;OriginatingAgencies;EveryDataObjectVersion;DataObjectVersion;RootUnits;ExcludedRootUnits;AccessLog;RuleCategoryToFilter;WritingRestrictedDesc;RuleCategoryToFilterForTheOtherOriginatingAgencies;DoNotFilterFilingSchemes
+;Contrats d'accès Full accès 0;;;;;;;;;;;;;;
+;Contrats d'accès Full accès 1;;;;;;;;;;;;;;
+;Contrats d'accès RH;Autorisation RH et Finances. Exclusion contrats (RH);INACTIVE;true;true;IdArcDLab | IdArcCommerce;true;PhysicalMaster|BinaryMaster;;;ACTIVE;;true;;
+;Contrats d'accès Full hors santé;Exclusion Santé;ACTIVE;false;false;IdArcCommerce;false;PhysicalMaster|BinaryMaster;;;INACTIVE;AppraisalRule|AccessRule;false;;
+;Contrats d'accès Numéro 4;;ACTIVE;true;false;IdArcCommerce;true;;;;ACTIVE;AccessRule | DisseminationRule | ReuseRule | StorageRule | AppraisalRule | ClassificationRule | HoldRule;;;
+;Contrats d'accès Finances;"Autorisation finance avec exclusion ""Facturation client""";INACTIVE;false;true;;false;PhysicalMaster|BinaryMaster | Dissemination |Thumbnail | TextContent;;;ACTIVE;AccessRule | StorageRule | AppraisalRule | ClassificationRule | HoldRule;true;;
+;Contrats d'accès Numéro 6;Lorem ipsum dolor sit amet;INACTIVE;true;true;;;PhysicalMaster | Dissemination |Thumbnail | TextContent;;;ACTIVE;AccessRule | StorageRule | AppraisalRule |HoldRule;false;;
+;Contrats d'accès Numéro 7;;;;;;false;PhysicalMaster | Dissemination |Thumbnail | TextContent;;;INACTIVE;AppraisalRule|AccessRule;;;
+;Contrats d'accès Numéro 8;;ACTIVE;true;false;IdArcDLab | IdArcCommerce |IdProdDLab;false;Dissemination |Thumbnail | TextContent;;;ACTIVE;AppraisalRule;;;
