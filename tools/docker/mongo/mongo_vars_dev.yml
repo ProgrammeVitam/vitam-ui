@@ -82,7 +82,6 @@ vitamui_platform_informations:
     country: change-it
   proof_tenant: 1
   cas_tenant: -1
-  first_customer_tenant: 9
   platform_name: VITAM-UI
 
 # ----------------------------------------------------------------------------------------------------------------------

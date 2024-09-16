@@ -106,12 +106,6 @@ db.providers.insertOne({
 // ========================================= SEQUENCES =========================================
 
 db.sequences.insertOne({
-  "_id": "tenant_identifier",
-  "name": "tenantIdentifier",
-  "sequence": NumberInt({{ vitamui_platform_informations.first_customer_tenant }})
-});
-
-db.sequences.insertOne({
   "_id": "user_identifier",
   "name": "userIdentifier",
   "sequence": NumberInt(100)

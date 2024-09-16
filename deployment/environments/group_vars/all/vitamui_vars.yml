@@ -206,7 +206,6 @@ vitamui_platform_informations:
     max_street_length: 250
   proof_tenant: 1
   cas_tenant: -1
-  first_customer_tenant: 1 # The real first one will be +1 (= 2)
   portal_message: "Pour gérer vos archives, profitez d'un portail d'applications proposé par le Programme Vitam et ses contributeurs."
   portal_title: "Portail des applications Vitam"
   theme:

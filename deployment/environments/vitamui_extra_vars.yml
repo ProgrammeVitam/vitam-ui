@@ -29,7 +29,6 @@ vitamui_platform_informations:
     zip_code: 10000
     city: Paris
     country: France
-  first_customer_tenant: 1
 
 ###
 # repositories.yml
