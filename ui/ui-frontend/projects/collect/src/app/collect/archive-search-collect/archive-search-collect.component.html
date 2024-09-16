@@ -81,12 +81,12 @@
             </button>
             <button
               mat-menu-item
-              (click)="validateTransaction() || !hasCloseTransactionRole"
-              [disabled]="isArchiveUnitsEmpty() || (isNotOpen$ | async)"
+              (click)="validateTransaction()"
+              [disabled]="!hasCloseTransactionRole || isArchiveUnitsEmpty() || (isNotOpen$ | async)"
             >
               {{ 'COLLECT.VALIDATE_ACTION' | translate }}
             </button>
-            <button mat-menu-item (click)="sendTransaction() || !hasSendTransactionRole" [disabled]="isNotReady$ | async">
+            <button mat-menu-item (click)="sendTransaction()" [disabled]="!hasSendTransactionRole || (isNotReady$ | async)">
               {{ 'COLLECT.INGEST_ACTION' | translate }}
             </button>
           </vitamui-common-menu-button>

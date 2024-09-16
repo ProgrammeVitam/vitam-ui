@@ -57,7 +57,7 @@
       </div>
       <button
         class="download-button"
-        [disabled]="versionWithQualifier?.Size === 0"
+        [disabled]="versionWithQualifier?.Size === 0 || !hasDownloadDocumentRole"
         (click)="onClickDownloadObject($event, versionWithQualifier)"
       >
         <i class="vitamui-icon vitamui-icon-telecharger"></i>
@@ -280,7 +280,7 @@
     <div class="object-details-group download-object">
       <button
         class="btn primary download-btn"
-        [disabled]="versionWithQualifier?.Size === 0"
+        [disabled]="versionWithQualifier?.Size === 0 || !hasDownloadDocumentRole"
         (click)="onClickDownloadObject($event, versionWithQualifier)"
       >
         <i class="vitamui-icon vitamui-icon-telecharger"></i>

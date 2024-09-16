@@ -14,22 +14,23 @@ $set: {
 }
 });
 
-
-db.profiles.updateMany({
-        "applicationName": "COLLECT_APP"
-      },
-      {
-$addToSet:{
-    "roles":{
-         "name":"ROLE_COLLECT_UPDATE_BULK_ARCHIVE_UNIT",
-         "name":"ROLE_COLLECT_UPDATE_UNITARY_ARCHIVE_UNIT",
-         "name":"ROLE_COLLECT_GET_ARCHIVE_BINARY",
-         "name":"ROLE_COLLECT_GET_ARCHIVE_SEARCH",
-         "name":"ROLE_GET_ONTOLOGIES",
-         "name":"ROLE_GET_FILLING_PLAN_ACCESS"
-         }
-}
-});
+db.profiles.updateMany(
+  { "applicationName": "COLLECT_APP" },
+  {
+    $addToSet: {
+      "roles": {
+        $each: [
+          { "name": "ROLE_COLLECT_UPDATE_BULK_ARCHIVE_UNIT" },
+          { "name": "ROLE_COLLECT_UPDATE_UNITARY_ARCHIVE_UNIT" },
+          { "name": "ROLE_COLLECT_GET_ARCHIVE_BINARY" },
+          { "name": "ROLE_COLLECT_GET_ARCHIVE_SEARCH" },
+          { "name": "ROLE_GET_ONTOLOGIES" },
+          { "name": "ROLE_GET_FILLING_PLAN_ACCESS" }
+        ]
+      }
+    }
+  }
+);
 
 //Remove unused roles
 
