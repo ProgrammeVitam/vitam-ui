@@ -171,8 +171,12 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
     });
     this.tenantService.getAvailableTenants().subscribe((tenantsList) => {
       this.availableTenants = tenantsList.sort((tenantI1: number, tenantI2: number) => tenantI1 - tenantI2);
+
       if (this.availableTenants && this.availableTenants.length > 0) {
-        this.form.patchValue({ tenantId: this.availableTenants[0] });
+        const tenantIdToSelect =
+          this.availableTenants[0] === 0 && this.availableTenants.length > 1 ? this.availableTenants[1] : this.availableTenants[0];
+        // To select as default tenant the first one other than 0
+        this.form.patchValue({ tenantId: tenantIdToSelect });
       }
     });
     this.confirmDialogService
