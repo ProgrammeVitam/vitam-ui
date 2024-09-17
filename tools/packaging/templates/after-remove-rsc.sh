@@ -1,1 +1,1 @@
-rm -R /vitamui/data/__NAME__/
+systemctl daemon-reload #>/dev/null 2>&1 || :
