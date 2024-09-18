@@ -78,7 +78,11 @@ public class AccessContractModelDto {
 
     private Set<String> ruleCategoryToFilter;
 
+    private Set<String> ruleCategoryToFilterForTheOtherOriginatingAgencies;
+
     private Set<String> originatingAgencies;
+
+    private Boolean doNotFilterFilingSchemes;
 
     private Set<String> dataObjectVersion;
 
@@ -176,9 +180,21 @@ public class AccessContractModelDto {
         this.ruleCategoryToFilter = ruleCategoryToFilter;
     }
 
+    @JsonProperty("RuleCategoryToFilterForTheOtherOriginatingAgencies")
+    public void setRuleCategoryToFilterForTheOtherOriginatingAgencies(
+        Set<String> ruleCategoryToFilterForTheOtherOriginatingAgencies
+    ) {
+        this.ruleCategoryToFilterForTheOtherOriginatingAgencies = ruleCategoryToFilterForTheOtherOriginatingAgencies;
+    }
+
     @JsonProperty("OriginatingAgencies")
     public void setOriginatingAgencies(Set<String> originatingAgencies) {
         this.originatingAgencies = originatingAgencies;
+    }
+
+    @JsonProperty("DoNotFilterFilingSchemes")
+    public void setDoNotFilterFilingSchemes(Boolean doNotFilterFilingSchemes) {
+        this.doNotFilterFilingSchemes = doNotFilterFilingSchemes;
     }
 
     @JsonProperty("DataObjectVersion")
@@ -281,9 +297,19 @@ public class AccessContractModelDto {
         return ruleCategoryToFilter;
     }
 
+    @JsonProperty("ruleCategoryToFilterForTheOtherOriginatingAgencies")
+    public Set<String> getRuleCategoryToFilterForTheOtherOriginatingAgencies() {
+        return ruleCategoryToFilterForTheOtherOriginatingAgencies;
+    }
+
     @JsonProperty("originatingAgencies")
     public Set<String> getOriginatingAgencies() {
         return originatingAgencies;
+    }
+
+    @JsonProperty("doNotFilterFilingSchemes")
+    public Boolean getDoNotFilterFilingSchemes() {
+        return doNotFilterFilingSchemes;
     }
 
     @JsonProperty("dataObjectVersion")
