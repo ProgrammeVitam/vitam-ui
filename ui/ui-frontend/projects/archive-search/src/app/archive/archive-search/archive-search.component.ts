@@ -177,6 +177,8 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   bulkOperationsThreshold = -1;
   hasTransferAcknowledgmentRole = false;
 
+  selectedArchive$: Observable<Unit>;
+
   @ViewChild('confirmSecondActionBigNumberOfResultsActionDialog', { static: true })
   confirmSecondActionBigNumberOfResultsActionDialog: TemplateRef<ArchiveSearchComponent>;
   @ViewChild('updateArchiveUnitAlerteMessageDialog', { static: true })
@@ -260,6 +262,8 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
     this.subscriptions.add(
       this.archiveSharedDataService.receiveSimpleSearchCriteriaSubject().subscribe((criteria) => this.searchCriteriaAddAction(criteria)),
     );
+
+    this.selectedArchive$ = archiveSharedDataService.selectedUnit$;
 
     this.archiveSharedDataService
       .receiveRemoveFromChildSearchCriteriaSubject()
@@ -541,6 +545,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   }
 
   submit() {
+    this.archiveSharedDataService.emitSelectedUnit(null);
     this.initializeSelectionParams();
     this.archiveHelperService.buildNodesListForQUery(this.searchCriterias, this.criteriaSearchList);
     this.archiveHelperService.buildFieldsCriteriaListForQUery(this.searchCriterias, this.criteriaSearchList);

@@ -162,6 +162,8 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
   tenantIdentifier: string;
   projectName: string;
 
+  selectedArchive$: Observable<Unit>;
+
   search$: Observable<number>;
 
   constructor(
@@ -252,6 +254,8 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
         }
       }
     });
+
+    this.selectedArchive$ = archiveExchangeDataService.selectedUnit$;
   }
 
   public ngOnDestroy(): void {
@@ -432,6 +436,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
   }
 
   submit() {
+    this.archiveExchangeDataService.emitSelectedUnit(null);
     this.submited = true;
     this.initializeSelectionParams();
     this.archiveHelperService.buildNodesListForQUery(this.searchCriterias, this.criteriaSearchList);
