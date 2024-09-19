@@ -92,7 +92,7 @@ export class AccessContractAuthorizationsTabComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe((accessContract: any) => {
       if (accessContract) {
-        this._accessContract = accessContract;
+        this.accessContract = accessContract;
       }
     });
   }
