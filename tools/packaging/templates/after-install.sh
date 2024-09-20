@@ -1,4 +1,4 @@
-echo "__NAME__ : $0" >> /root/package-history.log
+echo "__NAME__-__VERSION__ : (after-install.sh)" >> /root/package-history.log
 # After first install
 #if [ $1 -eq 1 ] ; then
         # Ensure rights for vitamui service file system

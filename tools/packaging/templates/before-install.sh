@@ -1,4 +1,4 @@
-echo "__NAME__ : $0" >> /root/package-history.log
+echo "__NAME__-__VERSION__ : (before-install.sh)" >> /root/package-history.log
 # Init vitamui system group
 getent group vitamui >/dev/null || groupadd -g 4000 vitamui
 

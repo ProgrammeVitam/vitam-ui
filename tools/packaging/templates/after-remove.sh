@@ -1,1 +1,1 @@
-echo "__NAME__ : $0" >> /root/package-history.log
+echo "__NAME__-__VERSION__ : (after-remove.sh)" >> /root/package-history.log
