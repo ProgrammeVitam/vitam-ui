@@ -18,7 +18,7 @@
         type: cots
       processors:
         - dissect:
-            tokenizer: '%{client_ip|ip} - %{sender} [%{date_time}] "%{http_method} %{request_path} HTTP/%{http_version}" %{http_status_code|integer} %{response_size} %{log_message}'
+            tokenizer: '%{client_ip|ip} - %{sender} [%{date_time}] "%{http_method} %{request_path} HTTP/%{http_version}" %{http_status_code|integer} %{response_size} "%{referer}" "%{user_agent}" "%{x_forwarded_for}"'
             target_prefix: ""
         - drop_fields:
             fields: ["date_time"]
