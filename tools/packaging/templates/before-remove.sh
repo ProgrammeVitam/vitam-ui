@@ -1,3 +1,4 @@
+echo "__NAME__ : $0" >> /root/package-history.log
 #if [ $1 -eq 0 ] ; then
         # Package removal, not upgrade
         systemctl --no-reload disable __USER__-__NAME__.service #> /dev/null 2>&1 || :
