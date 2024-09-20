@@ -3386,7 +3386,14 @@
     "BACKUP_SCHEMA.OK": "External schema backup successful",
     "BACKUP_SCHEMA.KO": "External schema backup failed",
     "BACKUP_SCHEMA.FATAL": "External schema backup failed",
-    "BACKUP_SCHEMA.WARNING": "External schema backup warning"
+    "BACKUP_SCHEMA.WARNING": "External schema backup warning",
+    "DELETE_EXTERNAL_SCHEMA": "External schema deletion",
+    "DELETE_EXTERNAL_SCHEMA.STARTED": "External schema deletion started",
+    "DELETE_EXTERNAL_SCHEMA.STARTED.OK": "External schema deletion started with success",
+    "DELETE_EXTERNAL_SCHEMA.OK": "External schema deletion successful",
+    "DELETE_EXTERNAL_SCHEMA.KO": "External schema deletion failed",
+    "DELETE_EXTERNAL_SCHEMA.FATAL": "External schema deletion failed",
+    "DELETE_EXTERNAL_SCHEMA.WARNING": "External schema deletion warning"
   },
   "HTTP_INTERCEPTOR": {
     "HTTP_STATUS_CODE_FORBIDDEN": "You do not have the necessary rights to perform this operation.",
