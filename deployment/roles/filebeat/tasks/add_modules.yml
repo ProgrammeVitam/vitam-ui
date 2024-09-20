@@ -31,4 +31,16 @@
     src: modules/system.yml.j2
     dest: /etc/filebeat/modules.d/system.yml
     mode: 0644
+  when:
+    - filebeat.system.enable_log | bool or
+      filebeat.system.enable_auth | bool
+  notify: "filebeat - restart service"
+
+- name: Disable system filebeat module
+  file:
+    path: /etc/filebeat/modules.d/system.yml
+    state: absent
+  when:
+    - filebeat.system.enable_log | bool == false
+    - filebeat.system.enable_auth | bool == false
   notify: "filebeat - restart service"
