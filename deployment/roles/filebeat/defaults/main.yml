@@ -13,17 +13,6 @@ filebeat_log:
   filename: filebeat.log
   keepfiles: 30
 
-items_to_exclude:
-  - hosts
-  - browse
-  - vitamui
-  - ui_search
-  - zone_admin
-  - zone_cas
-  - zone_data
-  - zone_ui
-  - zone_app
-
 filebeat:
   system:
     enable_log: false
@@ -42,3 +31,7 @@ filebeat:
       enable_ingress: false
     mongodb:
       enable_log: true
+  services:
+    vitamui:
+      api_gateway:
+        enable_management: false
