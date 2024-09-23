@@ -12,7 +12,7 @@
     <div class="col-10 form-control" *ngIf="externalIdentifierEnabled">
       <vitamui-common-input
         [disabled]="editNotice"
-        (change)="checkIdentifier(modePUA)"
+        (ngModelChange)="checkIdentifier(modePUA)"
         [(ngModel)]="notice.identifier"
         class="col-9 px-0"
         placeholder="{{ 'PROFILE.POP_UP_CREATION_NOTICE.IDENTIFIER' | translate }}"
@@ -26,7 +26,7 @@
     <div class="col-10 form-control">
       <vitamui-common-input
         [(ngModel)]="notice.name"
-        (change)="checkIntitule()"
+        (ngModelChange)="checkIntitule()"
         class="col-9 px-0"
         formControlName="intitule"
         placeholder="{{ 'PROFILE.POP_UP_CREATION_NOTICE.INTITULE' | translate }} "
