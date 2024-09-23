@@ -7,20 +7,7 @@
   {% if filebeat.services.vitamui[vitamui_service].enable_access | default(true) | bool %}
 - type: filestream
   id: {{ vitam_site_name }}-{{ vitamui_component }}-access
-  enabled: {{ {'iam_internal': filebeat.services.vitamui.iam_internal.enable_access,
-    'ingest_internal': filebeat.services.vitamui.ingest_internal.enable_access,
-    'referential_internal': filebeat.services.vitamui.referential_internal.enable_access,
-    'archive_search_internal': filebeat.services.vitamui.archive_search_internal.enable_access,
-    'security_internal': filebeat.services.vitamui.security_internal.enable_access,
-    'collect_internal': filebeat.services.vitamui.collect_internal.enable_access,
-    'cas_server': filebeat.services.vitamui.cas_server.enable_access,
-    'iam_external': filebeat.services.vitamui.iam_external.enable_access,
-    'ingest_external': filebeat.services.vitamui.ingest_external.enable_access,
-    'referential_external': filebeat.services.vitamui.referential_external.enable_access,
-    'archive_search_external': filebeat.services.vitamui.archive_search_external.enable_access,
-    'collect_external': filebeat.services.vitamui.collect_external.enable_access,
-    'pastis_external': filebeat.services.vitamui.pastis_external.enable_access,
-    'api_gateway': filebeat.services.vitamui.api_gateway.enable_access} [vitamui_service] | default(true) | bool | lower }}
+  enabled: true
   paths:
     - "{{ vitamui_defaults.folder.root_path }}/log/{{ vitamui_component }}/accesslog-{{ vitamui_component }}.*.log"
   fields_under_root: true
@@ -45,25 +32,12 @@
             - equals:
                 request_path: "/actuator/health"
     {% endif %}
-  {% endif %}
 
+  {% endif %}
   {% if filebeat.services.vitamui[vitamui_service].enable_management | default(true) | bool %}
 - type: filestream
   id: {{ vitam_site_name }}-{{ vitamui_component }}-management
-  enabled: {{ {'iam_internal': filebeat.services.vitamui.iam_internal.enable_management,
-    'ingest_internal': filebeat.services.vitamui.ingest_internal.enable_management,
-    'referential_internal': filebeat.services.vitamui.referential_internal.enable_management,
-    'archive_search_internal': filebeat.services.vitamui.archive_search_internal.enable_management,
-    'security_internal': filebeat.services.vitamui.security_internal.enable_management,
-    'collect_internal': filebeat.services.vitamui.collect_internal.enable_management,
-    'cas_server': filebeat.services.vitamui.cas_server.enable_management,
-    'iam_external': filebeat.services.vitamui.iam_external.enable_management,
-    'ingest_external': filebeat.services.vitamui.ingest_external.enable_management,
-    'referential_external': filebeat.services.vitamui.referential_external.enable_management,
-    'archive_search_external': filebeat.services.vitamui.archive_search_external.enable_management,
-    'collect_external': filebeat.services.vitamui.collect_external.enable_management,
-    'pastis_external': filebeat.services.vitamui.pastis_external.enable_management,
-    'api_gateway': filebeat.services.vitamui.api_gateway.enable_management} [vitamui_service] | default(true) | bool | lower }}
+  enabled: true
   paths:
     - "{{ vitamui_defaults.folder.root_path }}/log/{{ vitamui_component }}/management_accesslog-{{ vitamui_component }}.*.log"
   fields_under_root: true
@@ -88,25 +62,12 @@
             - equals:
                 request_path: "/actuator/health"
     {% endif %}
-  {% endif %}
 
+  {% endif %}
   {% if filebeat.services.vitamui[vitamui_service].enable_log | default(true) | bool %}
 - type: filestream
   id: {{ vitam_site_name }}-{{ vitamui_component }}-log
-  enabled: {{ {'iam_internal': filebeat.services.vitamui.iam_internal.enable_log,
-    'ingest_internal': filebeat.services.vitamui.ingest_internal.enable_log,
-    'referential_internal': filebeat.services.vitamui.referential_internal.enable_log,
-    'archive_search_internal': filebeat.services.vitamui.archive_search_internal.enable_log,
-    'security_internal': filebeat.services.vitamui.security_internal.enable_log,
-    'collect_internal': filebeat.services.vitamui.collect_internal.enable_log,
-    'cas_server': filebeat.services.vitamui.cas_server.enable_log,
-    'iam_external': filebeat.services.vitamui.iam_external.enable_log,
-    'ingest_external': filebeat.services.vitamui.ingest_external.enable_log,
-    'referential_external': filebeat.services.vitamui.referential_external.enable_log,
-    'archive_search_external': filebeat.services.vitamui.archive_search_external.enable_log,
-    'collect_external': filebeat.services.vitamui.collect_external.enable_log,
-    'pastis_external': filebeat.services.vitamui.pastis_external.enable_log,
-    'api_gateway': filebeat.services.vitamui.api_gateway.enable_log} [vitamui_service] | default(true) | bool | lower }}
+  enabled: true
   paths:
     - "{{ vitamui_defaults.folder.root_path }}/log/{{ vitamui_component }}/{{ vitamui_component }}.*.log"
   fields_under_root: true
@@ -128,5 +89,6 @@
         pattern: '^\d{4}-\d{2}-\d{2}\s+\d{2}:\d{2}:\d{2},\d{3}'
         negate: true
         match: after
+
   {% endif %}
 {% endfor %}

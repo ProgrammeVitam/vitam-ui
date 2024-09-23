@@ -8,18 +8,15 @@
   notify: "filebeat - restart service"
 
 - set_fact:
-    services_on_vm: "{{ group_names | regex_replace('hosts_', '') | regex_replace('hosts_vitamui_', '') | regex_replace('vitamui_', '') }}"
-
-- set_fact:
-    services_on_vm: "{{ services_on_vm | difference(items_to_exclude) }}"
+    services_on_vm: "{{ group_names | regex_replace('hosts_', '') | regex_replace('vitamui_', '') }}"
 
 - block:
 
   - set_fact:
-      vitamui_service_list: "{{ vitamui.keys() | list }}"
+      vitamui_keys: "{{ vitamui.keys() | list }}"
 
   - set_fact:
-      vitamui_service_list: "{{ services_on_vm | intersect(vitamui_service_list) | regex_replace('_', '-') }}"
+      vitamui_service_list: "{{ services_on_vm | intersect(vitamui_keys) }}"
 
   - name: Add VitamUI filebeat inputs
     template:
