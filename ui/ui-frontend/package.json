@@ -171,7 +171,6 @@
     "lint-staged": "13.2.3",
     "ng-packagr": "^17.3.0",
     "prettier": "3.3.2",
-    "puppeteer": "~19.6.3",
     "ts-node": "~7.0.1",
     "typescript": "~5.4.5"
   },
