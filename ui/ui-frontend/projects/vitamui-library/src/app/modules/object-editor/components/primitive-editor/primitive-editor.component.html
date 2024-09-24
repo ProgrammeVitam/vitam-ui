@@ -23,23 +23,23 @@
       [multiple]="editObject.cardinality.includes('MANY')"
       [required]="editObject.required"
     ></vitamui-editor-select>
-    <vitamui-common-datepicker
+    <vitamui-common-multiple-options-datepicker
       *ngSwitchCase="'datepicker'"
       [formControl]="editObject.control"
       [label]="editObject.displayRule.ui.label | translate | empty | appendStar: editObject.required"
-      [onlyDate]="true"
+      pickerType="day"
     >
       <vitamui-editor-hint [control]="editObject.control" [hint]="editObject.hint"></vitamui-editor-hint>
       <vitamui-form-error-display [control]="editObject.control"></vitamui-form-error-display>
-    </vitamui-common-datepicker>
-    <vitamui-common-datepicker
+    </vitamui-common-multiple-options-datepicker>
+    <vitamui-common-multiple-options-datepicker
       *ngSwitchCase="'datetime'"
       [formControl]="editObject.control"
       [label]="editObject.displayRule.ui.label | translate | empty | appendStar: editObject.required"
-      [onlyDate]="true"
+      pickerType="day"
     >
       <vitamui-editor-hint [control]="editObject.control" [hint]="editObject.hint"></vitamui-editor-hint>
       <vitamui-form-error-display [control]="editObject.control"></vitamui-form-error-display>
-    </vitamui-common-datepicker>
+    </vitamui-common-multiple-options-datepicker>
   </ng-container>
 </ng-container>
