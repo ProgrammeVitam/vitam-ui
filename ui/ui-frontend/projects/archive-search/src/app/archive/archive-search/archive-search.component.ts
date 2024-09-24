@@ -111,7 +111,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   search$: Observable<number>;
 
   direction = Direction.ASCENDANT;
-  @Input() accessContract: string;
+  @Input() accessContractId: string;
   @Input() accessContractAllowUpdating: boolean;
   @Input() accessContractUpdatingRestrictedDesc: boolean;
   @Output() archiveUnitClick = new EventEmitter<any>();
@@ -1168,7 +1168,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
         this.archiveUnitDipService.launchExportDipModal(
           this.listOfUACriteriaSearch,
           this.shouldReadSelectedItemCount(),
-          this.accessContract,
+          this.accessContractId,
           this.tenantIdentifier,
           this.selectedItemCount,
           this.currentPage,
@@ -1185,7 +1185,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
         this.archiveUnitDipService.launchTransferRequestModal(
           this.listOfUACriteriaSearch,
           this.shouldReadSelectedItemCount(),
-          this.accessContract,
+          this.accessContractId,
           this.tenantIdentifier,
           this.selectedItemCount,
           this.currentPage,
@@ -1220,7 +1220,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
       panelClass: 'vitamui-modal',
       disableClose: true,
       data: {
-        accessContract: this.accessContract,
+        accessContract: this.accessContractId,
         tenantIdentifier: this.tenantIdentifier.toString(),
       },
     });

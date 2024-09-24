@@ -113,7 +113,7 @@ export class PhysicalArchiveViewerComponent implements OnInit {
   private translateMeasurementDisplayValue(displayValue: DisplayValue): DisplayValue {
     const { originalValue } = displayValue;
 
-    if (this.isMeasurement(originalValue)) {
+    if (originalValue && this.isMeasurement(originalValue)) {
       const plural = (this.measurementDisplayMode === 'NAME' && originalValue.value) > 1 ? 's' : '';
       const translatedKey = this.translateService.instant(`SEDA.MEASUREMENT_TYPE.${originalValue.name}`);
       const translatedUnit = this.translateService.instant(`SEDA.MEASUREMENT_UNIT.${originalValue.unit}.${this.measurementDisplayMode}`);
@@ -155,8 +155,7 @@ export class PhysicalArchiveViewerComponent implements OnInit {
 
     return sectionKeys.map((key: string): DisplayValue => {
       const value = section[key];
-
-      if (typeof value === 'object') {
+      if (value && typeof value === 'object') {
         const { dvalue, unit } = value;
         const measurement = {
           name: key,

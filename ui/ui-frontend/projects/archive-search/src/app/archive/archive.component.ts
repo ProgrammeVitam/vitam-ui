@@ -66,8 +66,9 @@ export class ArchiveComponent extends SidenavPage<any> implements OnInit, OnDest
   show = true;
   tenantIdentifier: string;
   foundAccessContract = false;
-  accessContract: string;
+  accessContractId: string;
   bulkOperationsThreshold: number;
+  accessContractSub: Subscription;
   errorMessageSub: Subscription;
   isLPExtended = false;
   accessContractAllowUpdating = false;
@@ -113,15 +114,16 @@ export class ArchiveComponent extends SidenavPage<any> implements OnInit, OnDest
   }
 
   ngOnDestroy() {
+    this.accessContractSub.unsubscribe();
     if (this.errorMessageSub) {
       this.errorMessageSub.unsubscribe();
     }
   }
 
   fetchUserExternalParameters() {
-    this.accessContractService.currentAccessContractId$.subscribe((accessContractId) => {
+    this.accessContractSub = this.accessContractService.currentAccessContractId$.subscribe((accessContractId: string) => {
       if (accessContractId && accessContractId.length > 0) {
-        this.accessContract = accessContractId;
+        this.accessContractId = accessContractId;
         this.foundAccessContract = true;
         this.managementRulesSharedDataService.emitAccessContract(accessContractId);
         this.fetchVitamAccessContract();
@@ -147,20 +149,20 @@ export class ArchiveComponent extends SidenavPage<any> implements OnInit, OnDest
   }
 
   fetchVitamAccessContract() {
-    this.archiveService.getAccessContractById(this.accessContract).subscribe(
-      (ac: AccessContract) => {
+    this.archiveService.getAccessContractById(this.accessContractId).subscribe({
+      next: (ac: AccessContract) => {
         this.accessContractAllowUpdating = ac.writingPermission;
         this.accessContractUpdatingRestrictedDesc = ac.writingRestrictedDesc;
       },
-      (error: any) => {
+      error: (error: any) => {
         this.loggerService.error('error message', error);
         const message = this.translateService.instant('ARCHIVE_SEARCH.ACCESS_CONTRACT_NOT_FOUND_IN_VITAM');
-        this.snackBar.open(message + ': ' + this.accessContract, null, {
+        this.snackBar.open(message + ': ' + this.accessContractId, null, {
           panelClass: 'vitamui-snack-bar',
           duration: 10000,
         });
       },
-    );
+    });
   }
 
   hiddenTreeBlock(hidden: boolean): void {
@@ -174,9 +176,11 @@ export class ArchiveComponent extends SidenavPage<any> implements OnInit, OnDest
   showPreviewArchiveUnit(item: Unit) {
     this.openPanel(item);
   }
+
   showExtendedLateralPanel() {
     this.isLPExtended = true;
   }
+
   backToNormalLateralPanel() {
     this.isLPExtended = false;
   }
