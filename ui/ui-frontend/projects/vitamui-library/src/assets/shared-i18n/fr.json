@@ -4915,7 +4915,7 @@
       "OBJECT_GROUPS": "Groupes d'objets :",
       "DIP_REQUEST_MESSAGE": "Votre demande d'export DIP a bien été prise en compte",
       "TRANSFER_REQUEST_MESSAGE": "Votre demande de transfert d'archives a bien été prise en compte",
-      "TRANSFER_REQUEST_WARNING_MESSAGE": "Attention, vous n’avez pas intégré d’objets à votre demande de transfert.",
+      "TRANSFER_REQUEST_WARNING_MESSAGE": "Attention, vous n’avez pas intégré d’originaux numériques à votre demande de transfert.",
       "TO_OPERATION_APP": "VOIR LE JOURNAL DES OPÉRATIONS",
       "EXPORT_LIMITS": "Le transfert d'archive ne peut être réalisé. Merci de restreindre votre sélection à 10 000 unités archivistiques maximum.",
       "NEXT": "Suivant",
