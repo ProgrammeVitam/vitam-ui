@@ -28,7 +28,14 @@ import { animate, AUTO_STYLE, state, style, transition, trigger } from '@angular
 import { Clipboard } from '@angular/cdk/clipboard';
 import { HttpHeaders } from '@angular/common/http';
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { ApiUnitObject, DescriptionLevel, qualifiersToVersionsWithQualifier, Unit, VersionWithQualifierDto } from 'vitamui-library';
+import {
+  ApiUnitObject,
+  DescriptionLevel,
+  qualifiersToVersionsWithQualifier,
+  TenantSelectionService,
+  Unit,
+  VersionWithQualifierDto,
+} from 'vitamui-library';
 import { ArchiveService } from '../../archive.service';
 
 @Component({
@@ -49,13 +56,16 @@ export class ArchiveUnitObjectsDetailsTabComponent implements OnChanges {
   @Input() accessContract: string;
   unitObject: ApiUnitObject;
   versionsWithQualifiersOrdered: Array<VersionWithQualifierDto>;
+  hasDownloadDocumentRole = false;
 
   constructor(
     private archiveService: ArchiveService,
     private clipboard: Clipboard,
+    private tenantSelectionService: TenantSelectionService,
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
+    this.checkDownloadPermissions();
     if (changes.archiveUnit) {
       this.unitObject = null;
       this.versionsWithQualifiersOrdered = null;
@@ -99,5 +109,13 @@ export class ArchiveUnitObjectsDetailsTabComponent implements OnChanges {
 
   openClose(versionWithQualifier: VersionWithQualifierDto) {
     versionWithQualifier.opened = !versionWithQualifier.opened;
+  }
+
+  private checkDownloadPermissions() {
+    this.archiveService
+      .hasArchiveSearchRole('ROLE_ARCHIVE_SEARCH_GET_ARCHIVE_BINARY', this.tenantSelectionService.getSelectedTenant().identifier)
+      .subscribe((result) => {
+        this.hasDownloadDocumentRole = result;
+      });
   }
 }

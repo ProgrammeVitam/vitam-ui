@@ -30,7 +30,14 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
-import { ApiUnitObject, DescriptionLevel, ObjectQualifierType, Unit, VersionWithQualifierDto } from 'vitamui-library';
+import {
+  ApiUnitObject,
+  DescriptionLevel,
+  ObjectQualifierType,
+  TenantSelectionService,
+  Unit,
+  VersionWithQualifierDto,
+} from 'vitamui-library';
 import { ArchiveService } from '../../archive.service';
 import { ArchiveUnitObjectsDetailsTabComponent } from './archive-unit-objects-details-tab.component';
 import createSpyObj = jasmine.createSpyObj;
@@ -42,12 +49,29 @@ describe('ArchiveUnitObjectsDetailsTabComponent tests', () => {
   const clipboardSpy = createSpyObj<Clipboard>('Clipboard', ['copy']);
   const archiveServiceSpy = createSpyObj<ArchiveService>('ArchiveService', ['downloadObjectFromUnit', 'getObjectById']);
 
+  const tenantSelectionServiceSpy = jasmine.createSpyObj('TenantSelectionService', {
+    getSelectedTenant: {
+      name: 'tenantName',
+      identifier: 2,
+      ownerId: 'owner',
+      customerId: 'customer',
+      enabled: true,
+      proof: false,
+      readonly: true,
+      ingestContractHoldingIdentifier: 'string',
+      itemIngestContractIdentifier: 'string',
+      accessContractHoldingIdentifier: 'string',
+      accessContractLogbookIdentifier: 'string',
+    },
+  });
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
       declarations: [ArchiveUnitObjectsDetailsTabComponent],
       providers: [
         { provide: ArchiveService, useValue: archiveServiceSpy },
+        { provide: TenantSelectionService, useValue: tenantSelectionServiceSpy },
         { provide: Clipboard, useValue: clipboardSpy },
       ],
       schemas: [NO_ERRORS_SCHEMA],

@@ -34,6 +34,7 @@ import {
   FileInfoDto,
   FormatIdentificationDto,
   qualifiersToVersionsWithQualifier,
+  TenantSelectionService,
   Unit,
   VersionWithQualifierDto,
 } from 'vitamui-library';
@@ -56,13 +57,17 @@ export class CollectObjectGroupDetailsTabComponent implements OnChanges {
   @Input() archiveUnit: Unit;
   unitObject: ApiUnitObject;
   versionsWithQualifiersOrdered: Array<VersionWithQualifierDto>;
+  hasDownloadDocumentRole = false;
 
   constructor(
     private archiveCollectService: ArchiveCollectService,
     private clipboard: Clipboard,
+    private tenantSelectionService: TenantSelectionService,
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
+    this.checkDownloadPermissions();
+
     if (changes.archiveUnit) {
       this.unitObject = null;
       this.versionsWithQualifiersOrdered = null;
@@ -111,15 +116,19 @@ export class CollectObjectGroupDetailsTabComponent implements OnChanges {
   getFormatLitteral(formatIdentificationDto: FormatIdentificationDto): string {
     return formatIdentificationDto ? formatIdentificationDto.FormatLitteral : null;
   }
+
   getMimeType(formatIdentificationDto: FormatIdentificationDto): string {
     return formatIdentificationDto ? formatIdentificationDto.MimeType : null;
   }
+
   getFormatId(formatIdentificationDto: FormatIdentificationDto): string {
     return formatIdentificationDto ? formatIdentificationDto.FormatId : null;
   }
+
   getEncoding(formatIdentificationDto: FormatIdentificationDto): string {
     return formatIdentificationDto ? formatIdentificationDto.Encoding : null;
   }
+
   getFileName(fileInfoDto: FileInfoDto): string {
     return fileInfoDto ? fileInfoDto.Filename : null;
   }
@@ -127,19 +136,32 @@ export class CollectObjectGroupDetailsTabComponent implements OnChanges {
   getLastModified(fileInfoDto: FileInfoDto): string {
     return fileInfoDto ? fileInfoDto.LastModified : null;
   }
+
   getDateCreatedByApplication(fileInfoDto: FileInfoDto): string {
     return fileInfoDto ? fileInfoDto.DateCreatedByApplication : null;
   }
+
   getCreatingOsVersion(fileInfoDto: FileInfoDto): string {
     return fileInfoDto ? fileInfoDto.CreatingOsVersion : null;
   }
+
   getCreatingOs(fileInfoDto: FileInfoDto): string {
     return fileInfoDto ? fileInfoDto.CreatingOs : null;
   }
+
   getCreatingApplicationVersion(fileInfoDto: FileInfoDto): string {
     return fileInfoDto ? fileInfoDto.CreatingApplicationVersion : null;
   }
+
   getCreatingApplicationName(fileInfoDto: FileInfoDto): string {
     return fileInfoDto ? fileInfoDto.CreatingApplicationName : null;
+  }
+
+  private checkDownloadPermissions() {
+    this.archiveCollectService
+      .hasCollectRole('ROLE_COLLECT_GET_ARCHIVE_BINARY', this.tenantSelectionService.getSelectedTenant().identifier)
+      .subscribe((result) => {
+        this.hasDownloadDocumentRole = result;
+      });
   }
 }

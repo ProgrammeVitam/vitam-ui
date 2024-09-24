@@ -45,6 +45,7 @@ import {
   InjectorModule,
   LoggerModule,
   ObjectQualifierType,
+  TenantSelectionService,
   Unit,
   UnitType,
   VersionWithQualifierDto,
@@ -63,6 +64,21 @@ describe('CollectObjectGroupDetailsTabComponent', () => {
     'getObjectGroupDetailsById',
   ]);
 
+  const tenantSelectionServiceSpy = jasmine.createSpyObj('TenantSelectionService', {
+    getSelectedTenant: {
+      name: 'tenantName',
+      identifier: 2,
+      ownerId: 'owner',
+      customerId: 'customer',
+      enabled: true,
+      proof: false,
+      readonly: true,
+      ingestContractHoldingIdentifier: 'string',
+      itemIngestContractIdentifier: 'string',
+      accessContractHoldingIdentifier: 'string',
+      accessContractLogbookIdentifier: 'string',
+    },
+  });
   const formatIdentificationDto: FormatIdentificationDto = {
     FormatLitteral: 'FormatLitteral',
     MimeType: 'MimeType',
@@ -99,6 +115,7 @@ describe('CollectObjectGroupDetailsTabComponent', () => {
         { provide: WINDOW_LOCATION, useValue: window.location },
         { provide: ArchiveCollectService, useValue: archiveCollectServiceSpy },
         { provide: Clipboard, useValue: clipboardSpy },
+        { provide: TenantSelectionService, useValue: tenantSelectionServiceSpy },
       ],
     }).compileComponents();
   });
