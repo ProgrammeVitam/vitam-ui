@@ -105,7 +105,6 @@
         <jaxb.impl.version>3.0.0-M1</jaxb.impl.version>
         <json.version>20240303</json.version>
         <jaxp-api.version>1.4.5</jaxp-api.version>
-        <jackson-xml-databind.version>0.6.2</jackson-xml-databind.version>
         <thaiopensource.jing.version>20220510</thaiopensource.jing.version>
         <thaiopensource.trang.version>20220510</thaiopensource.trang.version>
         <xercesImpl-xsd11.version>2.12-beta-r1667115</xercesImpl-xsd11.version>
@@ -485,12 +484,6 @@
                 <artifactId>xercesImpl-xsd11</artifactId>
                 <version>${xercesImpl-xsd11.version}</version>
             </dependency>
-            <dependency>
-                <groupId>com.fasterxml</groupId>
-                <artifactId>jackson-xml-databind</artifactId>
-                <version>${jackson-xml-databind.version}</version>
-            </dependency>
-
 
             <dependency>
                 <groupId>org.relaxng</groupId>
