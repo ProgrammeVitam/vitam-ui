@@ -1,5 +1,5 @@
 <div class="vitamui-input" [class.disabled]="date.disabled">
-  <label> {{ 'DATE.DATE' | translate }} </label>
+  <label> {{ label | translate }} </label>
   <input class="hidden-input" [matDatepicker]="datepicker" [value]="datePickerValue" (dateChange)="setYearMonthAndDay($event.value)" />
   <input
     #vitamUIInput
