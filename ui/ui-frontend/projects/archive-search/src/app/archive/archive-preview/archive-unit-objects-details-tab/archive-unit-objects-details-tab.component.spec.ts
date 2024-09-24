@@ -31,6 +31,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import {
+  AccessContract,
   ApiUnitObject,
   DescriptionLevel,
   ObjectQualifierType,
@@ -47,8 +48,15 @@ describe('ArchiveUnitObjectsDetailsTabComponent tests', () => {
   let component: ArchiveUnitObjectsDetailsTabComponent;
   let fixture: ComponentFixture<ArchiveUnitObjectsDetailsTabComponent>;
   const clipboardSpy = createSpyObj<Clipboard>('Clipboard', ['copy']);
-  const archiveServiceSpy = createSpyObj<ArchiveService>('ArchiveService', ['downloadObjectFromUnit', 'getObjectById']);
+  const archiveServiceSpy = createSpyObj<ArchiveService>('ArchiveService', [
+    'downloadObjectFromUnit',
+    'getObjectById',
+    'getAccessContractById',
+    'hasArchiveSearchRole',
+  ]);
 
+  archiveServiceSpy.getAccessContractById.and.returnValue(of({} as AccessContract));
+  archiveServiceSpy.hasArchiveSearchRole.and.returnValue(of(true));
   const tenantSelectionServiceSpy = jasmine.createSpyObj('TenantSelectionService', {
     getSelectedTenant: {
       name: 'tenantName',
@@ -81,7 +89,7 @@ describe('ArchiveUnitObjectsDetailsTabComponent tests', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ArchiveUnitObjectsDetailsTabComponent);
     component = fixture.componentInstance;
-    const archiveUnit: Unit = {
+    component.archiveUnit = {
       '#allunitups': [],
       '#id': 'archiveUnitTestID',
       '#object': '',
@@ -91,7 +99,6 @@ describe('ArchiveUnitObjectsDetailsTabComponent tests', () => {
       Title_: { fr: 'Teste', en: 'Test' },
       Description_: { fr: 'DescriptionFr', en: 'DescriptionEn' },
     };
-    component.archiveUnit = archiveUnit;
     fixture.detectChanges();
   });
 
@@ -114,10 +121,10 @@ describe('ArchiveUnitObjectsDetailsTabComponent tests', () => {
     expect(preventDefaultSpy).toHaveBeenCalled();
   });
 
-  it('sendCalls', () => {
+  it('getObjectVersionsWithQualifiers', () => {
     const unit = newUnit('zertyuhtfrc');
     archiveServiceSpy.getObjectById.and.returnValue(of(newApiUnitObject()));
-    component.sendCalls(unit);
+    component.getObjectVersionsWithQualifiers(unit);
     expect(archiveServiceSpy.getObjectById).toHaveBeenCalled();
     expect(archiveServiceSpy.getObjectById).toHaveBeenCalledWith(unit['#id'], anything());
   });

@@ -60,7 +60,11 @@
       <div class="line shrink object-type">
         {{ versionWithQualifier?.FormatIdentification?.FormatLitteral || ('ARCHIVE_SEARCH.NO_LITTERAL_FORMAT_MSG' | translate) }}
       </div>
-      <button class="download-button" [disabled]="!hasDownloadDocumentRole" (click)="onClickDownloadObject($event, versionWithQualifier)">
+      <button
+        class="btn btn-circle primary small"
+        [disabled]="!hasDownloadDocumentRole || !versionWithQualifier.downloadAllowed"
+        (click)="onClickDownloadObject($event, versionWithQualifier)"
+      >
         <i class="vitamui-icon vitamui-icon-telecharger"></i>
       </button>
     </div>
@@ -275,7 +279,7 @@
     <div class="object-details-group download-object">
       <button
         class="btn primary download-btn"
-        [disabled]="!hasDownloadDocumentRole"
+        [disabled]="!hasDownloadDocumentRole || !versionWithQualifier.downloadAllowed"
         (click)="onClickDownloadObject($event, versionWithQualifier)"
       >
         <i class="vitamui-icon vitamui-icon-telecharger"></i>

@@ -47,7 +47,7 @@ import { ArchiveService } from '../../archive.service';
 })
 export class ArchiveUnitInformationTabComponent implements OnInit, OnChanges {
   @Input() archiveUnit: Unit;
-  @Input() accessContract: string;
+  @Input() accessContractId: string;
   @Input() tenantIdentifier: number;
 
   @Output() showNormalPanel = new EventEmitter<any>();

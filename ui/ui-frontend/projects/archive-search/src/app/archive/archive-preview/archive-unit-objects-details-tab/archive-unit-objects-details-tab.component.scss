@@ -101,21 +101,6 @@
     .open-close-icon {
       padding-right: 5px;
     }
-
-    .download-button {
-      border: none;
-      border-radius: 50%;
-      background-color: var(--vitamui-primary);
-      width: 30px;
-      height: 30px;
-      font-size: medium;
-      color: var(--vitamui-primary-font);
-      cursor: pointer;
-
-      &:hover {
-        background-color: var(--vitamui-primary-800);
-      }
-    }
   }
 
   .object-details {
