@@ -70,4 +70,8 @@
   @if (editObject?.kind === 'primitive-array' && editObject?.displayRule?.ui?.component === 'select') {
     <vitamui-editor-list-select [editObject]="editObject"></vitamui-editor-list-select>
   }
+
+  @if (editObject?.kind === 'primitive-array' && editObject?.displayRule?.ui?.component === 'datetime') {
+    <vitamui-editor-list-date [editObject]="editObject"></vitamui-editor-list-date>
+  }
 </ng-template>
