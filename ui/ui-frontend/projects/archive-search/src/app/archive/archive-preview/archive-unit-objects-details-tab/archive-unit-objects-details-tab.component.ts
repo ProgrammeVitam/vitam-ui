@@ -27,9 +27,18 @@
 import { animate, AUTO_STYLE, state, style, transition, trigger } from '@angular/animations';
 import { Clipboard } from '@angular/cdk/clipboard';
 import { HttpHeaders } from '@angular/common/http';
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { ApiUnitObject, DescriptionLevel, qualifiersToVersionsWithQualifier, Unit, VersionWithQualifierDto } from 'ui-frontend-common';
+import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import {
+  AccessContract,
+  AccessContractService,
+  DescriptionLevel,
+  qualifiersToVersionsWithQualifier,
+  Unit,
+  VersionWithQualifierDto,
+} from 'ui-frontend-common';
 import { ArchiveService } from '../../archive.service';
+import { Subscription } from 'rxjs';
+import { ArchiveSharedDataService } from '../../../core/archive-shared-data.service';
 
 @Component({
   selector: 'app-archive-unit-objects-details-tab',
@@ -44,26 +53,45 @@ import { ArchiveService } from '../../archive.service';
     ]),
   ],
 })
-export class ArchiveUnitObjectsDetailsTabComponent implements OnChanges {
+export class ArchiveUnitObjectsDetailsTabComponent implements OnChanges, OnInit, OnDestroy {
   @Input() archiveUnit: Unit;
-  @Input() accessContract: string;
-  @Input() tenantIdentifier: number;
-  unitObject: ApiUnitObject;
-  versionsWithQualifiersOrdered: Array<VersionWithQualifierDto>;
+  //todo: replace by service
+  @Input() accessContractId: string;
+
+  private accessContract: AccessContract;
+  private subscription: Subscription;
 
   constructor(
     private archiveService: ArchiveService,
     private clipboard: Clipboard,
+    private accessContractService: AccessContractService,
+    private archiveSharedDataService: ArchiveSharedDataService,
   ) {}
+
+  ngOnInit() {
+    this.getAccessContract();
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.archiveUnit) {
-      this.unitObject = null;
-      this.versionsWithQualifiersOrdered = null;
-      if (this.unitHasObject()) {
-        this.sendCalls(this.archiveUnit);
+      if (!this.archiveUnit.objectsGroup && this.unitHasObject()) {
+        this.getObjectVersionsWithQualifiers(this.archiveUnit);
       }
     }
+  }
+
+  private getAccessContract() {
+    this.subscription = this.accessContractService.currentAccessContract$.subscribe({
+      next: (accessContract: AccessContract) => {
+        this.accessContract = accessContract;
+        this.setDownloadableOnVersionsWithQualifiers();
+      },
+      error: (e) => console.error(e),
+    });
   }
 
   unitHasObject(): boolean {
@@ -72,30 +100,53 @@ export class ArchiveUnitObjectsDetailsTabComponent implements OnChanges {
 
   onClickDownloadObject(event: Event, versionWithQualifier: VersionWithQualifierDto) {
     event.stopPropagation();
-    return this.archiveService.launchDownloadObjectFromUnit(
+    return this.archiveService.downloadObjectFromUnit(
       this.archiveUnit['#id'],
-      this.tenantIdentifier,
       versionWithQualifier.qualifier,
       versionWithQualifier.version,
-    );
+    ).subscribe();
   }
 
   copyToClipboard(text: string) {
     this.clipboard.copy(text);
   }
 
-  sendCalls(archiveUnit: Unit) {
-    const headers = new HttpHeaders().append('Content-Type', 'application/json').append('X-Access-Contract-Id', this.accessContract);
-    this.archiveService.getObjectById(archiveUnit['#id'], headers).subscribe((unitObject) => {
-      this.unitObject = unitObject;
-      this.versionsWithQualifiersOrdered = qualifiersToVersionsWithQualifier(this.unitObject['#qualifiers']);
-      this.setFirstVersionWithQualifierOpen();
+  getObjectVersionsWithQualifiers(archiveUnit: Unit) {
+    const headers = new HttpHeaders().append('Content-Type', 'application/json').append('X-Access-Contract-Id', this.accessContractId);
+    this.archiveService.getObjectById(archiveUnit['#id'], headers).subscribe({
+      next: (unitObject) => {
+        this.archiveUnit.objectGroup = unitObject;
+        this.archiveUnit.objectGroup.versionsWithQualifiers = qualifiersToVersionsWithQualifier(unitObject['#qualifiers']);
+        this.archiveSharedDataService.unitUpdatedWithComputedObjectGroup.next(this.archiveUnit);
+        this.setDownloadableOnVersionsWithQualifiers();
+        this.setFirstVersionWithQualifierOpen();
+      },
+      error: (e) => console.error(e),
     });
   }
 
+  private setDownloadableOnVersionsWithQualifiers() {
+    if (!this.archiveUnit?.objectGroup?.versionsWithQualifiers) {
+      return;
+    }
+    this.archiveUnit.objectGroup.versionsWithQualifiers.forEach((versionWithQualifier) => {
+      versionWithQualifier.downloadAllowed = this.accessContractAllowDownloadFor(versionWithQualifier);
+    });
+  }
+
+  private accessContractAllowDownloadFor(versionWithQualifier: VersionWithQualifierDto): boolean {
+    if (this.accessContract.everyDataObjectVersion) {
+      return true;
+    }
+    if (!this.accessContract.dataObjectVersion) {
+      return false;
+    }
+    return this.accessContract.dataObjectVersion.includes(versionWithQualifier.qualifier);
+  }
+
   setFirstVersionWithQualifierOpen() {
-    if (this.versionsWithQualifiersOrdered && this.versionsWithQualifiersOrdered.length > 0) {
-      this.versionsWithQualifiersOrdered[0].opened = true;
+    if (this.archiveUnit.objectGroup.versionsWithQualifiers?.length > 0) {
+      this.archiveUnit.objectGroup.versionsWithQualifiers[0].opened = true;
     }
   }
 

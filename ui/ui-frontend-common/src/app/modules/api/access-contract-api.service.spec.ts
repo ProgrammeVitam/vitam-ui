@@ -36,8 +36,11 @@
  */
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { AccessContractApiService, BASE_URL, ENVIRONMENT, InjectorModule, LoggerModule } from 'ui-frontend-common';
 import { environment } from './../../../environments/environment';
+import { InjectorModule } from '../helper/injector.module';
+import { LoggerModule } from '../logger';
+import { BASE_URL, ENVIRONMENT } from '../injection-tokens';
+import { AccessContractApiService } from './access-contract-api.service';
 
 describe('AccessContractApiService', () => {
   beforeEach(() =>

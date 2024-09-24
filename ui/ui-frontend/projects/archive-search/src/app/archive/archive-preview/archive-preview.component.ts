@@ -48,7 +48,7 @@ import { Unit, unitToVitamuiIcon } from 'ui-frontend-common';
 })
 export class ArchivePreviewComponent implements OnInit, OnChanges {
   @Input() archiveUnit: Unit;
-  @Input() accessContract: string;
+  @Input() accessContractId: string;
   @Input() isPopup: boolean;
   @Input() accessContractAllowUpdating: boolean;
   @Input() hasUpdateDescriptiveUnitMetadataRole: boolean;

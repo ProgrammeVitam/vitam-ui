@@ -1,5 +1,5 @@
 /*
- * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
+ * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2022)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
  *
  * contact@programmevitam.fr
@@ -34,28 +34,46 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
-import { tap } from 'rxjs/operators';
-import { AccessContract, AccessContractApiService, SearchService, VitamUISnackBarService } from 'ui-frontend-common';
+import { map, shareReplay, switchMap, tap } from 'rxjs/operators';
+import { AccessContractApiService } from '../api/access-contract-api.service';
+import { SearchService } from '../vitamui-table';
+import { VitamUISnackBarService } from '../components/vitamui-snack-bar';
+import { ExternalParametersService } from '../externalParameters.service';
+import { ExternalParameters } from '../externalParameters.enum';
+import { AccessContract } from '../models';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AccessContractService extends SearchService<AccessContract> {
+  /** Observable of current access contract ID */
+  currentAccessContractId$: Observable<string> = this.externalParameterService.getUserExternalParameters().pipe(
+    map((parameters) => parameters.get(ExternalParameters.PARAM_ACCESS_CONTRACT)),
+    shareReplay(1), //cached
+  );
+  /** Observable of current access contract */
+  currentAccessContract$: Observable<AccessContract> = this.currentAccessContractId$.pipe(
+    switchMap((accessContractId) => this.get(accessContractId)),
+    shareReplay(1), //cached
+  );
+
   updated = new Subject<AccessContract>();
 
   constructor(
     private accessContractApi: AccessContractApiService,
     private snackBarService: VitamUISnackBarService,
+    private externalParameterService: ExternalParametersService,
     http: HttpClient,
   ) {
     super(http, accessContractApi, 'ALL');
   }
 
   get(id: string): Observable<AccessContract> {
-    return this.accessContractApi.getOne(encodeURI(id));
+    const headers = new HttpHeaders().append('Content-Type', 'application/json');
+    return this.accessContractApi.getOne(encodeURI(id), headers);
   }
 
   getAll(): Observable<AccessContract[]> {
@@ -91,26 +109,32 @@ export class AccessContractService extends SearchService<AccessContract> {
   patch(data: { id: string; [key: string]: any }): Observable<AccessContract> {
     return this.accessContractApi.patch(data).pipe(
       tap((response) => this.updated.next(response)),
-      tap(
-        () => {
+      tap({
+        next: (response) => {
           this.snackBarService.open({
             message: 'SNACKBAR.ACCESS_CONTRACT_UPDATED',
+            translateParams: {
+              name: response.name,
+            },
             icon: 'vitamui-icon-contrat',
           });
         },
-        (error) => {
+        error: (error) => {
           this.snackBarService.open({ message: error.error.message, translate: false });
         },
-      ),
+      }),
     );
   }
 
-  create(accessContract: AccessContract) {
+  create(accessContract: AccessContract): Observable<AccessContract> {
     return this.accessContractApi.create(accessContract).pipe(
       tap(
-        () => {
+        (response: AccessContract) => {
           this.snackBarService.open({
             message: 'SNACKBAR.ACCESS_CONTRACT_CREATED',
+            translateParams: {
+              name: response.name,
+            },
             icon: 'vitamui-icon-contrat',
           });
         },

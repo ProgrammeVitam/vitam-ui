@@ -203,7 +203,7 @@ describe('ArchiveSearchComponent', () => {
     expect(archiveServiceStub.hasArchiveSearchRole).toHaveBeenCalled();
   });
   it('should open a modal with TransferAcknowledgmentComponent', () => {
-    component.accessContract = 'accessContract';
+    component.accessContractId = 'accessContract';
     component.showAcknowledgmentTransferForm();
     expect(matDialogSpy.open).toHaveBeenCalledWith(TransferAcknowledgmentComponent, {
       panelClass: 'vitamui-modal',

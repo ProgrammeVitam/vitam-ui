@@ -1,5 +1,5 @@
 /*
- * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
+ * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2022)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
  *
  * contact@programmevitam.fr
@@ -34,17 +34,11 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
-import { TranslateService } from '@ngx-translate/core';
-import { Observable, of, Subscription } from 'rxjs';
-import { catchError, filter, map, switchMap } from 'rxjs/operators';
-import { diff, Logger, Option, StartupService, Unit } from 'ui-frontend-common';
-import { extend, isEmpty } from 'underscore';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Observable, Subscription } from 'rxjs';
+import { AccessContract, AccessContractService, ObjectQualifierType, Unit, VersionWithQualifierDto } from 'ui-frontend-common';
 import { ArchiveService } from '../../archive.service';
-import { UnitDescriptiveMetadataDto } from '../../models/unitDescriptiveMetadata.interface';
+import { ArchiveSharedDataService } from '../../../core/archive-shared-data.service';
 
 @Component({
   selector: 'app-archive-unit-information-tab',
@@ -52,454 +46,97 @@ import { UnitDescriptiveMetadataDto } from '../../models/unitDescriptiveMetadata
   styleUrls: ['./archive-unit-information-tab.component.css'],
 })
 export class ArchiveUnitInformationTabComponent implements OnInit, OnChanges, OnDestroy {
-  @Input()
-  archiveUnit: Unit;
-  @Input()
-  accessContract: string;
-  @Input()
-  tenantIdentifier: number;
+  @Input() archiveUnit: Unit;
+
+  @Output() showNormalPanel = new EventEmitter<any>();
+
   uaPath$: Observable<{ fullPath: string; resumePath: string }>;
-
-  @Input()
-  updateStarted = false;
-  form: FormGroup;
-  unsetAction: string[] = [];
-  hasTitle = false;
-  hasFrTitle = false;
-  hasEnTitle = false;
-
-  previousValue: {
-    title: string;
-    description: string;
-    descriptionLevel: string;
-    startDate: Date;
-    endDate: Date;
-  };
-  hasDescription = false;
-  hasFrDescription = false;
-  hasEnDescription = false;
-  hasNoDescription = false;
-  updateFormSub: Subscription;
-  @Output()
-  showNormalPanel = new EventEmitter<any>();
-  @ViewChild('updateArchiveUnitDescMetadataAlerteMessageDialog', { static: true })
-  updateArchiveUnitDescMetadataAlerteMessageDialog: TemplateRef<ArchiveUnitInformationTabComponent>;
-  updateArchiveUnitDescMetadataAlerteMessageDialogSubscription: Subscription;
-
-  @ViewChild('updateArchiveUnitDescMetadataAlerteFormCancelDialog', { static: true })
-  updateArchiveUnitDescMetadataAlerteFormCancelDialog: TemplateRef<ArchiveUnitInformationTabComponent>;
-  updateArchiveUnitDescMetadataAlerteFormCancelDialogSubscription: Subscription;
-
   fullPath = false;
+  hasDownloadDocumentRole = false;
+  downloadableVersionWithQualifier: VersionWithQualifierDto = null;
+
+  private accessContract: AccessContract;
+  private subscriptions = new Subscription();
 
   constructor(
     private archiveService: ArchiveService,
-    private formBuilder: FormBuilder,
-    private dialog: MatDialog,
-    private startupService: StartupService,
-    private translateService: TranslateService,
-    private logger: Logger,
+    private accessContractService: AccessContractService,
+    private archiveSharedDataService: ArchiveSharedDataService,
   ) {}
 
-  descriptionLevels: Option[] = [
-    { key: 'Item', label: this.translateService.instant('UNIT_UPDATE.ITEM') },
-    { key: 'File', label: this.translateService.instant('UNIT_UPDATE.FILE') },
-    { key: 'SubGrp', label: this.translateService.instant('UNIT_UPDATE.SUBGRP') },
-    { key: 'RecordGrp', label: this.translateService.instant('UNIT_UPDATE.RECORDGRP') },
-    { key: 'Subseries', label: this.translateService.instant('UNIT_UPDATE.SUBSERIES') },
-    { key: 'Series', label: this.translateService.instant('UNIT_UPDATE.SERIES') },
-    { key: 'Collection', label: this.translateService.instant('UNIT_UPDATE.COLLECTION') },
-    { key: 'Class', label: this.translateService.instant('UNIT_UPDATE.CLASS') },
-    { key: 'Subfonds', label: this.translateService.instant('UNIT_UPDATE.SUBFONDS') },
-    { key: 'Fonds', label: this.translateService.instant('UNIT_UPDATE.FONDS') },
-    { key: 'OtherLevel', label: this.translateService.instant('UNIT_UPDATE.OTHERLEVEL') },
-  ];
-
   ngOnInit() {
-    this.initTitleAndDescriptionsFlagValues(this.archiveUnit);
+    this.getAccessContract();
     this.uaPath$ = this.archiveService.buildArchiveUnitPath(this.archiveUnit);
-
-    this.form = this.formBuilder.group({
-      title: [null, [Validators.required]],
-      description: [null],
-      descriptionLevel: [null, [Validators.required]],
-      startDate: [this.archiveUnit.StartDate],
-      endDate: [this.archiveUnit.EndDate],
-    });
-
-    this.previousValue = {
-      title: this.getAuTitle(this.archiveUnit),
-      description: this.getAuDescription(this.archiveUnit),
-      descriptionLevel: this.archiveUnit.DescriptionLevel,
-      startDate: this.archiveUnit.StartDate,
-      endDate: this.archiveUnit.EndDate,
-    };
-
-    this.form.get('startDate').valueChanges.subscribe(() => {
-      if (this.unsetAction.length > 0) {
-        this.unsetAction = this.unsetAction.filter((el) => el !== 'StartDate');
-      }
-    });
-
-    this.form.get('endDate').valueChanges.subscribe(() => {
-      if (this.unsetAction.length > 0) {
-        this.unsetAction = this.unsetAction.filter((el) => el !== 'EndDate');
-      }
-    });
-
-    this.form.get('description').valueChanges.subscribe((desc) => {
-      this.cleanUnsetDescription('Description');
-      this.cleanUnsetDescription('Description_.fr');
-      this.cleanUnsetDescription('Description_.en');
-      this.cleanUnsetDescription('Description_');
-
-      if (desc !== undefined && desc !== null && desc.length === 0 && this.hasDescription && !this.unsetAction.includes('Description')) {
-        this.unsetAction.push('Description');
-      }
-
-      if (
-        desc !== undefined &&
-        desc !== null &&
-        desc.length === 0 &&
-        this.hasFrDescription &&
-        !this.unsetAction.includes('Description_.fr')
-      ) {
-        this.unsetAction.push('Description_.fr');
-      }
-      if (
-        desc !== undefined &&
-        desc !== null &&
-        desc.length === 0 &&
-        this.hasEnDescription &&
-        !this.unsetAction.includes('Description_.en')
-      ) {
-        this.unsetAction.push('Description_.en');
-      }
-    });
+    this.subscriptions.add(
+      this.archiveSharedDataService.unitUpdatedWithComputedObjectGroup
+        .asObservable()
+        .subscribe((_value) => this.findDownloadableObjectWithAccessContract()),
+    );
   }
 
-  cleanUnsetDescription(key: string) {
-    const index = this.unsetAction.indexOf(key, 0);
-    if (index > -1) {
-      this.unsetAction.splice(index, 1);
-    }
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.updateStarted && changes.updateStarted.currentValue) {
-      this.previousValue = {
-        title: this.getAuTitle(this.archiveUnit),
-        description: this.getAuDescription(this.archiveUnit),
-        descriptionLevel: this.archiveUnit.DescriptionLevel,
-        startDate: this.archiveUnit.StartDate,
-        endDate: this.archiveUnit.EndDate,
-      };
-      this.form.get('title').setValue(this.getAuTitle(this.archiveUnit));
-      this.form.get('description').setValue(this.getAuDescription(this.archiveUnit));
-      this.form.get('descriptionLevel').setValue(this.archiveUnit.DescriptionLevel);
-      this.form.get('startDate').setValue(this.previousValue.startDate);
-      this.form.get('endDate').setValue(this.previousValue.endDate);
-      this.previousValue = this.form.value;
-      this.initListenersOnFormsValuesChanges();
-    }
-
     if (changes.archiveUnit?.currentValue['#id']) {
-      this.initTitleAndDescriptionsFlagValues(changes.archiveUnit.currentValue);
       this.uaPath$ = this.archiveService.buildArchiveUnitPath(this.archiveUnit);
-      this.form?.reset();
-      this.previousValue = {
-        title: this.getAuTitle(changes.archiveUnit.currentValue),
-        description: this.getAuDescription(changes.archiveUnit.currentValue),
-        descriptionLevel: changes.archiveUnit.currentValue.DescriptionLevel,
-        startDate: changes.archiveUnit.currentValue.StartDate,
-        endDate: changes.archiveUnit.currentValue.EndDate,
-      };
+      this.findDownloadableObjectWithAccessContract();
     }
     this.fullPath = false;
   }
 
-  initTitleAndDescriptionsFlagValues(archiveUnit: Unit) {
-    if (archiveUnit?.Title) {
-      this.hasTitle = true;
-    } else if (archiveUnit?.Title_?.fr) {
-      this.hasFrTitle = this.hasTitle ? false : true;
-    } else {
-      this.hasEnTitle = this.hasFrTitle ? false : true;
-    }
-
-    if (archiveUnit.Description === undefined) {
-      this.hasNoDescription = true;
-    }
-
-    if (archiveUnit?.Description) {
-      this.hasDescription = true;
-    } else if (archiveUnit?.Description_?.fr) {
-      this.hasFrDescription = this.hasDescription ? false : true;
-    } else if (archiveUnit?.Description_?.en) {
-      this.hasEnDescription = this.hasFrDescription ? false : true;
-    }
-  }
-
-  updateMetadataDesc() {
-    this.previousValue = {
-      title: this.getAuTitle(this.archiveUnit),
-      description: this.getAuDescription(this.archiveUnit),
-      descriptionLevel: this.archiveUnit.DescriptionLevel,
-      startDate: this.archiveUnit.StartDate,
-      endDate: this.archiveUnit.EndDate,
-    };
-    this.form.get('title').setValue(this.getAuTitle(this.archiveUnit));
-    this.form.get('description').setValue(this.getAuDescription(this.archiveUnit));
-    this.form.get('descriptionLevel').setValue(this.archiveUnit.DescriptionLevel);
-    this.form.get('startDate').setValue(this.previousValue.startDate);
-    this.form.get('endDate').setValue(this.previousValue.endDate);
-    this.previousValue = this.form.value;
-    this.initListenersOnFormsValuesChanges();
-  }
-
-  private initListenersOnFormsValuesChanges() {
-    this.updateFormSub = this.form.valueChanges
-      .pipe(
-        map(() => {
-          diff(this.form.value, this.previousValue);
-        }),
-        filter((formData) => !isEmpty(formData)),
-        map((formData) =>
-          extend(
-            {
-              id: this.archiveUnit['#id'],
-              title: this.previousValue.title,
-              description: this.previousValue.description,
-              descriptionLevel: this.previousValue.descriptionLevel,
-              startDate: this.getStartDate(this.previousValue.startDate),
-              endDate: this.getStartDate(this.previousValue.endDate),
-            },
-            formData,
-          ),
-        ),
-        switchMap((formData) => of(formData)),
-        catchError((error) => of(error)),
-      )
-      .subscribe((formData: any) => this.logger.info('value au = ', formData));
-  }
-
-  private formHasValidTitle(): boolean {
-    const title = this.form.get('title');
-    return title != null && !title.invalid && !title.pending;
-  }
-
-  private formHasValidDescription(): boolean {
-    const description = this.form.get('description');
-    return !description.invalid && !description.pending;
-  }
-
-  private formHasValidDescriptionLevel(): boolean {
-    const descriptionLevel = this.form.get('descriptionLevel');
-    return !descriptionLevel.invalid && !descriptionLevel.pending;
-  }
-
-  private formDescriptionHasChanged() {
-    const formVal = this.form.get('description').value;
-    const previousVal = this.previousValue.description;
-    if ((formVal == undefined || formVal == '') && (previousVal == undefined || previousVal == '')) {
-      return false;
-    }
-    return formVal != previousVal;
-  }
-
-  private formHasChanges() {
-    return (
-      this.form.get('title').value != this.previousValue.title ||
-      this.formDescriptionHasChanged() ||
-      this.form.get('descriptionLevel').value != this.previousValue.descriptionLevel ||
-      this.getStartDate(this.form.get('startDate').value) != this.getStartDate(this.previousValue.startDate) ||
-      this.getStartDate(this.form.get('endDate').value) != this.getStartDate(this.previousValue.endDate)
+  private getAccessContract() {
+    this.subscriptions.add(
+      this.accessContractService.currentAccessContract$.subscribe({
+        next: (accessContract: AccessContract) => {
+          this.accessContract = accessContract;
+          this.findDownloadableObjectWithAccessContract();
+        },
+        error: (e) => console.error(e),
+      }),
     );
   }
 
-  private formIsValid() {
-    return this.formHasValidTitle() && this.formHasValidDescription() && this.formHasValidDescriptionLevel();
-  }
-
-  formHasChangesAndIsValid(): boolean {
-    return this.formIsValid() && this.formHasChanges();
-  }
-
-  launchUpdate() {
-    const dialogToOpen = this.updateArchiveUnitDescMetadataAlerteMessageDialog;
-    const dialogRef = this.dialog.open(dialogToOpen, { panelClass: 'vitamui-dialog' });
-    this.updateArchiveUnitDescMetadataAlerteMessageDialogSubscription = dialogRef
-      .afterClosed()
-      .pipe(filter((result) => !!result))
-      .subscribe(() => {
-        let metadataToUpdate: UnitDescriptiveMetadataDto;
-        const dif = diff(this.form.value, this.previousValue);
-        let startDate = null;
-        let endDate = null;
-        if (
-          dif.startDate != undefined &&
-          dif.startDate != null &&
-          this.getStartDate(this.form.get('startDate').value) !== this.getStartDate(this.previousValue.startDate)
-        ) {
-          startDate = this.getStartDate(this.form.get('startDate').value);
-        }
-        if (
-          dif.endDate != undefined &&
-          dif.endDate != null &&
-          this.getStartDate(this.form.get('endDate').value) !== this.getStartDate(this.previousValue.endDate)
-        ) {
-          endDate = this.getStartDate(this.form.get('endDate').value);
-        }
-
-        let desc = null;
-        if (this.hasNoDescription || (dif?.description?.length > 0 && !this.hasFrDescription && !this.hasEnDescription)) {
-          desc = dif.description;
-        }
-
-        metadataToUpdate = {
-          id: null,
-          Title: this.hasTitle ? dif?.title : null,
-          DescriptionLevel: dif?.descriptionLevel,
-          'Title_.fr': this.hasFrTitle ? dif?.title : null,
-          'Title_.en': this.hasEnTitle ? dif?.title : null,
-          Description: desc,
-          'Description_.fr': this.hasFrDescription ? (dif?.description?.length === 0 ? null : dif?.description) : null,
-          'Description_.en': this.hasEnDescription ? (dif?.description?.length === 0 ? null : dif?.description) : null,
-          StartDate: startDate != null ? this.getStartDate(this.form.get('startDate').value) : null,
-          EndDate: endDate != null ? this.getStartDate(this.form.get('endDate').value) : null,
-
-          unsetAction: this.unsetAction,
-        };
-        this.updateUnit(this.archiveUnit, metadataToUpdate);
-      });
-  }
-
-  cancelUpdate() {
-    if (this.form.dirty) {
-      const dialogToOpen = this.updateArchiveUnitDescMetadataAlerteFormCancelDialog;
-      const dialogRef = this.dialog.open(dialogToOpen, { panelClass: 'vitamui-dialog' });
-      this.updateArchiveUnitDescMetadataAlerteFormCancelDialogSubscription = dialogRef
-        .afterClosed()
-        .pipe(filter((result) => !!result))
-        .subscribe(() => {
-          this.updateStarted = false;
-          this.previousValue = null;
-          this.form.reset();
-          this.showNormalPanel.emit();
-        });
-    } else {
-      this.updateStarted = false;
-      this.previousValue = null;
-      this.form.reset();
-      this.showNormalPanel.emit();
+  private findDownloadableObjectWithAccessContract(): void {
+    this.downloadableVersionWithQualifier = null;
+    if (!this.archiveUnit || !this.accessContract) {
+      return;
     }
-  }
-
-  clearDate(date: 'startDate' | 'endDate') {
-    if (date === 'startDate') {
-      if (this.archiveUnit && this.archiveUnit.StartDate) {
-        this.unsetAction.push('StartDate');
-      }
-      this.form.get(date).reset(null, { emitEvent: false });
-    } else if (date === 'endDate') {
-      if (this.archiveUnit && this.archiveUnit.EndDate) {
-        this.unsetAction.push('EndDate');
-      }
-      this.form.get(date).reset(null, { emitEvent: false });
-    } else {
-      this.logger.error('clearDate() error: unknown date ' + date);
+    if (!this.archiveUnit?.objectGroup?.versionsWithQualifiers) {
+      return; // nothing to download
     }
-  }
-
-  updateUnit(archiveUnit: Unit, metadataToUpdate: UnitDescriptiveMetadataDto) {
-    this.archiveService.updateUnit(archiveUnit['#id'], this.tenantIdentifier, metadataToUpdate).subscribe(
-      (response) => {
-        this.updateStarted = false;
-        this.showNormalPanel.emit();
-
-        if (this.hasTitle) {
-          this.archiveUnit.Title = this.form.get('title').value;
-        } else if (this.hasFrTitle) {
-          this.archiveUnit.Title_.fr = this.form.get('title').value;
-        } else {
-          this.archiveUnit.Title_.en = this.form.get('title').value;
-        }
-
-        if (this.hasDescription) {
-          this.archiveUnit.Description = this.form.get('description').value;
-        } else if (this.hasFrDescription) {
-          this.archiveUnit.Description_.fr = this.form.get('description').value;
-        } else if (this.hasEnDescription) {
-          this.archiveUnit.Description_.en = this.form.get('description').value;
-        } else {
-          this.archiveUnit.Description = this.form.get('description').value;
-        }
-
-        this.archiveUnit.DescriptionLevel = this.form.get('descriptionLevel').value;
-        this.archiveUnit.StartDate = this.form.get('startDate').value;
-        this.archiveUnit.EndDate = this.form.get('endDate').value;
-        const serviceUrl =
-          this.startupService.getReferentialUrl() + '/logbook-operation/tenant/' + this.tenantIdentifier + '?guid=' + response;
-
-        this.archiveService.openSnackBarForWorkflow(this.translateService.instant('UNIT_UPDATE.EXECUTE_UNIT_UPDATE_MESSAGE'), serviceUrl);
-      },
-      (error: any) => {
-        this.logger.error('Error message :', error);
-      },
+    if (!this.accessContract.everyDataObjectVersion && !this.accessContract.dataObjectVersion) {
+      return; // no rights to download
+    }
+    let firstQualifierDownloadable = this.archiveUnit.objectGroup.versionsWithQualifiers[0];
+    if (!this.accessContract.everyDataObjectVersion) {
+      firstQualifierDownloadable = this.archiveUnit.objectGroup.versionsWithQualifiers.find((versionWithQualifier) =>
+        this.accessContract.dataObjectVersion.includes(versionWithQualifier.qualifier),
+      );
+    }
+    if (firstQualifierDownloadable.qualifier === ObjectQualifierType.PHYSICALMASTER) {
+      return; // PhysicalMasters are not downloadable
+    }
+    const downloadableQualifiers = this.archiveUnit.objectGroup.versionsWithQualifiers.filter(
+      (versionWithQualifier) => versionWithQualifier.qualifier === firstQualifierDownloadable.qualifier,
     );
+    // lastest version
+    this.downloadableVersionWithQualifier = downloadableQualifiers[downloadableQualifiers.length - 1];
   }
 
-  private getStartDate(originStartDate: Date): string {
-    if (originStartDate) {
-      const startDate =
-        this.getDay(new Date(originStartDate).getDate()) +
-        '/' +
-        this.getMonth(new Date(originStartDate).getMonth() + 1) +
-        '/' +
-        new Date(originStartDate).getFullYear().toString();
-      return startDate;
+  onDownloadObjectFromUnit() {
+    if (!this.downloadableVersionWithQualifier) {
+      throw new Error('Download forbidden');
     }
-  }
-
-  private getMonth(num: number): string {
-    if (num > 9) {
-      return num.toString();
-    } else {
-      return '0' + num.toString();
-    }
-  }
-
-  private getDay(day: number): string {
-    if (day > 9) {
-      return day.toString();
-    } else {
-      return '0' + day.toString();
-    }
-  }
-
-  private getAuTitle(unit: any) {
-    return unit?.Title ? unit?.Title : unit?.Title_ ? (unit?.Title_?.fr ? unit?.Title_?.fr : unit?.Title_?.en) : unit?.Title_?.en;
-  }
-
-  private getAuDescription(unit: any) {
-    return unit?.Description
-      ? unit?.Description
-      : unit.Description_
-        ? unit.Description_?.fr
-          ? unit.Description_?.fr
-          : unit.Description_?.en
-        : unit.Description_?.en;
-  }
-
-  onDownloadObjectFromUnit(archiveUnit: Unit) {
-    return this.archiveService.launchDownloadObjectFromUnit(archiveUnit['#id'], this.tenantIdentifier);
+    return this.archiveService.downloadObjectFromUnit(
+      this.archiveUnit['#id'],
+      this.downloadableVersionWithQualifier.qualifier,
+      this.downloadableVersionWithQualifier.version,
+    ).subscribe();
   }
 
   showArchiveUniteFullPath() {
     this.fullPath = true;
-  }
-
-  ngOnDestroy() {
-    this.updateFormSub?.unsubscribe();
   }
 }

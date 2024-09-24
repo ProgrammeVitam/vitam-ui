@@ -27,6 +27,7 @@
  */
 import { DescriptionLevel } from './description-level.enum';
 import { UnitType } from './unit-type.enum';
+import { ApiUnitObject } from './object-group.interface';
 
 export interface Unit {
   '#id': string;
@@ -34,6 +35,8 @@ export interface Unit {
   '#allunitups': string[];
   '#unitType': UnitType;
   '#object'?: string;
+  // computed data from #object
+  objectGroup?: ApiUnitObject;
   '#opi': string;
   '#version'?: string;
   '#approximate_creation_date'?: string;

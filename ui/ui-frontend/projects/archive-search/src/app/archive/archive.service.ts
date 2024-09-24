@@ -169,8 +169,8 @@ export class ArchiveService extends SearchService<any> implements SearchArchiveU
     );
   }
 
-  launchDownloadObjectFromUnit(unitId: string, tenantIdentifier: number, qualifier?: string, version?: number) {
-    this.downloadFile(this.archiveApiService.getDownloadObjectFromUnitUrl(unitId, tenantIdentifier, qualifier, version));
+  downloadObjectFromUnit(unitId: string, qualifier?: string, version?: number) {
+    return this.archiveApiService.downloadObjectFromUnit(unitId, qualifier, version);
   }
 
   private buildPagedResults(response: SearchResponse): PagedResult {
