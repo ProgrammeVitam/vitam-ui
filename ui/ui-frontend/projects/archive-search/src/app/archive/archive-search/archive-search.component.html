@@ -417,7 +417,10 @@
 
     <div class="vitamui-table-body">
       <div class="vitamui-table-rows" *ngFor="let archiveUnit of archiveUnits; trackBy: trackBy">
-        <div class="vitamui-row d-flex align-items-center">
+        <div
+          [class.vitamui-row-selected]="(selectedArchive$ | async)?.['#id'] === archiveUnit['#id']"
+          class="vitamui-row d-flex align-items-center"
+        >
           <div class="col-1 d-flex align-items-center">
             <input
               class="criteria-choice-input"

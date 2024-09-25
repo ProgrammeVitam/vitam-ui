@@ -1,6 +1,5 @@
-.btn-validate {
-  background-color: #155724;
-}
+@import 'variables/colors';
+
 .text-title {
   font-family: Mulish;
   font-style: normal;
@@ -77,4 +76,12 @@
   padding: 10px 10px;
   font-size: large;
   font-weight: bold;
+}
+
+.vitamui-row-selected {
+  background: $light-primary;
+
+  &:hover {
+    background: $light-primary;
+  }
 }

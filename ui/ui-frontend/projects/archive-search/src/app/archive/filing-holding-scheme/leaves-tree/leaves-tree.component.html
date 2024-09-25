@@ -12,7 +12,7 @@
     <mat-nested-tree-node *matTreeNodeDef="let node; when: nodeIsUAWithChildren">
       <div
         *ngIf="nodeHasResultOrShowAll(node)"
-        [ngClass]="[isNodeUnitSelected(node.id, true), isAncestorMustBeColored(node.id), isExpandedNodeMustBeColored(node)]"
+        [ngClass]="[highlightSelectedNodeUnit(node, true), isAncestorMustBeColored(node.id), isExpandedNodeMustBeColored(node)]"
         class="mat-tree-node flex-row"
       >
         <vitamui-tree-node
@@ -46,7 +46,7 @@
     </mat-nested-tree-node>
 
     <mat-tree-node *matTreeNodeDef="let node; when: nodeIsUAWithoutChildren">
-      <div *ngIf="nodeHasResultOrShowAll(node)" [ngClass]="[isNodeUnitSelected(node.id, true)]" class="mat-tree-node flex-row">
+      <div *ngIf="nodeHasResultOrShowAll(node)" [ngClass]="[highlightSelectedNodeUnit(node, true)]" class="mat-tree-node flex-row">
         <div class="tree-text">
           <vitamui-tree-node
             disabled
@@ -67,7 +67,7 @@
     <mat-nested-tree-node *matTreeNodeDef="let node; when: nodeIsOrphansNode">
       <div
         *ngIf="nodeHasResultOrShowAll(node)"
-        [ngClass]="[isOrphanNodeMustBeColored(node), isOrphanNeedsVisualMarker(node)]"
+        [ngClass]="[isOrphanNodeMustBeColored(node), isOrphanNeedsVisualMarker(node), colorOrphanNode(node)]"
         class="mat-tree-node flex-row"
       >
         <vitamui-tree-node
@@ -101,7 +101,7 @@
     <mat-nested-tree-node *matTreeNodeDef="let node">
       <div
         *ngIf="nodeHasResultOrShowAll(node)"
-        [ngClass]="[isNodeUnitSelected(node.id), isAncestorMustBeColored(node.id)]"
+        [ngClass]="[highlightSelectedNodeUnit(node), isAncestorMustBeColored(node.id), selectNonOprhanNodeAtTop(node)]"
         class="mat-tree-node"
       >
         <vitamui-tree-node

@@ -60,6 +60,9 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
 
   unitId: string = '';
   allunitups: string[] = [];
+  allNonOrphanNodes: FilingHoldingSchemeNode[] = [];
+  nonOrphanNodeSelected = false;
+  nonOrphanChildNodeSelected = false;
 
   nestedTreeControlLeaves: NestedTreeControl<FilingHoldingSchemeNode> = new NestedTreeControl<FilingHoldingSchemeNode>(
     (node) => node.children,
@@ -76,6 +79,7 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.allNonOrphanNodes = this.nestedDataSourceLeaves.data.filter((node) => node.id !== 'ORPHANS_NODE');
     this.subscribeOnSearchCriteriasUpdate();
     this.subscribeOnSelectedNode();
   }
@@ -226,10 +230,10 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
     return nodeToVitamuiIcon(filingholdingscheme);
   }
 
-  isNodeUnitSelected(nodeId: string, withVisualMarker: boolean = false) {
+  highlightSelectedNodeUnit(node: FilingHoldingSchemeNode, withVisualMarker: boolean = false) {
     let cssId = 'filing-holding-scheme-tree-node-selected';
     if (withVisualMarker) cssId = cssId.concat(' selected-node');
-    return this.unitId && this.unitId === nodeId ? cssId : 'filing-holding-scheme-tree-node';
+    return this.unitId && this.unitId === node.id ? cssId : 'filing-holding-scheme-tree-node';
   }
 
   isAncestorMustBeColored(nodeId: string) {
@@ -238,6 +242,13 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
 
   isExpandedNodeMustBeColored(node: FilingHoldingSchemeNode) {
     return this.allunitups && this.allunitups.includes(node.id) && !this.nestedTreeControlLeaves.isExpanded(node) ? 'selected-node' : '';
+  }
+
+  selectNonOprhanNodeAtTop(node: FilingHoldingSchemeNode) {
+    return this.unitId === node.id ||
+      (this.allunitups && this.allunitups.includes(node.id) && !this.nestedTreeControlLeaves.isExpanded(node))
+      ? 'selected-node'
+      : '';
   }
 
   isOrphanNodeMustBeColored(node: FilingHoldingSchemeNode) {
@@ -254,6 +265,12 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
       : '';
   }
 
+  colorOrphanNode(node: FilingHoldingSchemeNode) {
+    const expanded = this.nestedTreeControlLeaves.isExpanded(node);
+    const cssId = `filing-holding-scheme-tree-node-selected${expanded ? '' : ' selected-node'}`;
+    return this.unitId !== null && !this.nonOrphanNodeSelected && !this.nonOrphanChildNodeSelected ? cssId : '';
+  }
+
   private subscribeOnSearchCriteriasUpdate() {
     this.subscriptions.add(
       this.archiveSharedDataService.getSearchCriterias().subscribe((searchCriteriaDto: SearchCriteriaDto) => {
@@ -268,7 +285,12 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
         if (selectedUnit) {
           this.unitId = selectedUnit['#id'];
           this.allunitups = selectedUnit['#allunitups'];
+        } else {
+          this.unitId = null;
+          this.allunitups = [];
         }
+        this.nonOrphanNodeSelected = this.allNonOrphanNodes.some((node) => node.id === this.unitId);
+        this.nonOrphanChildNodeSelected = this.allNonOrphanNodes.some((node) => this.allunitups.includes(node.id));
       }),
     );
   }
