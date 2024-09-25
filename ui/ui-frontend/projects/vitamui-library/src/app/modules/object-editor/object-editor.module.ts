@@ -33,6 +33,7 @@ import { EditorInputComponent } from './components/editor-input.component';
 import { EditorTextareaComponent } from './components/editor-textarea.component';
 import { EditorSelectComponent } from './components/editor-select.component';
 import { MultipleOptionsDatepickerModule } from '../components/multiple-options-datepicker/multiple-options-datepicker.module';
+import { EditorListDateComponent } from './components/editor-list-date.component';
 
 @NgModule({
   declarations: [ObjectEditorComponent, GroupEditorComponent, ListEditorComponent, PrimitiveEditorComponent],
@@ -66,6 +67,7 @@ import { MultipleOptionsDatepickerModule } from '../components/multiple-options-
     EditorInputComponent,
     EditorTextareaComponent,
     EditorSelectComponent,
+    EditorListDateComponent,
     MultipleOptionsDatepickerModule,
   ],
   exports: [ObjectEditorComponent, GroupEditorComponent, ListEditorComponent, PrimitiveEditorComponent],

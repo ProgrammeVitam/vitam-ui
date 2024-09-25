@@ -8,18 +8,21 @@
           [ngClass]="clazz"
           [formControl]="error ? datepickerEmptyError : disabled ? datepickerDisabledEmpty : datepickerYearEmpty"
           pickerType="year"
+          label="Date - AAAA"
         ></vitamui-common-multiple-options-datepicker>
         <vitamui-common-multiple-options-datepicker
           class="col-4"
           [ngClass]="clazz"
           [formControl]="error ? datepickerEmptyError : disabled ? datepickerDisabledEmpty : datepickerMonthEmpty"
           pickerType="month"
+          label="Date - AAAA/MM"
         ></vitamui-common-multiple-options-datepicker>
         <vitamui-common-multiple-options-datepicker
           class="col-4"
           [ngClass]="clazz"
           [formControl]="error ? datepickerEmptyError : disabled ? datepickerDisabledEmpty : datepickerDayEmpty"
           pickerType="day"
+          label="Date - AAAA/MM/JJ"
         ></vitamui-common-multiple-options-datepicker>
 
         <vitamui-common-multiple-options-datepicker
@@ -27,18 +30,21 @@
           class="col-4"
           [ngClass]="clazz"
           pickerType="year"
+          label="Date - AAAA"
         ></vitamui-common-multiple-options-datepicker>
         <vitamui-common-multiple-options-datepicker
           [formControl]="error ? datepickerErrorMonth : disabled ? datepickerDisabledMonth : datepickerMonth"
           class="col-4"
           [ngClass]="clazz"
           pickerType="month"
+          label="Date - AAAA/MM"
         ></vitamui-common-multiple-options-datepicker>
         <vitamui-common-multiple-options-datepicker
           [formControl]="error ? datepickerErrorDay : disabled ? datepickerDisabledDay : datepickerDay"
           class="col-4"
           [ngClass]="clazz"
           pickerType="day"
+          label="Date - AAAA/MM/JJ"
         ></vitamui-common-multiple-options-datepicker>
       </div>
     </ng-template>

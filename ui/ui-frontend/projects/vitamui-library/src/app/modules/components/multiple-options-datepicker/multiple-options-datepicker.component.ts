@@ -26,6 +26,7 @@ export class MultipleOptionsDatepickerComponent implements ControlValueAccessor,
   @Input() pickerType: PickerType = 'day';
   @Input() startView: MatDatepicker<Date>['startView'];
   @Input() required = false;
+  @Input() label = 'DATE.DATE';
 
   date: FormControl;
   // We store a value specific for the datepicker in order to store a Date object and not a String for datepicker to keep the currently selected value

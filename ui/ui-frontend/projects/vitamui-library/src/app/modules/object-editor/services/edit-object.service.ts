@@ -10,7 +10,7 @@ import { DisplayRule, ProfiledSchemaElement, SchemaElement } from '../../object-
 import { Template } from '../../object-viewer/models/template.model';
 import { DataStructureService } from '../../object-viewer/services/data-structure.service';
 import { TypeService } from '../../object-viewer/services/type.service';
-import { ComponentType, DisplayObjectType } from '../../object-viewer/types';
+import { Cardinality, ComponentType, DisplayObjectType } from '../../object-viewer/types';
 import { Action, EditObject } from '../models/edit-object.model';
 import { PathService } from './path.service';
 import { SchemaOptions, SchemaService } from './schema.service';
@@ -137,19 +137,6 @@ export class EditObjectService {
     return next;
   }
 
-  public valueToType(data: any): DisplayObjectType {
-    switch (this.kind(data)) {
-      case 'object':
-        return DisplayObjectType.GROUP;
-      case 'object-array':
-      case 'primitive-array':
-        return DisplayObjectType.LIST;
-      case 'primitive':
-      default:
-        return DisplayObjectType.PRIMITIVE;
-    }
-  }
-
   public kindToType(kind: EditObject['kind']): DisplayObjectType {
     switch (kind) {
       case 'object':
@@ -213,8 +200,7 @@ export class EditObjectService {
   ): Partial<EditObject> {
     const key = path.split('.').pop();
     const isRoot = path === '';
-    const isObject = /\[\d+\]$/gm.test(path);
-    const kind = isRoot || isObject ? this.kind(value) : this.schemaService.kind(schemaPath, schema);
+    const kind = this.computeKind(value, path, schemaPath, schema);
     const type = this.kindToType(kind);
     const displayRule = template.find((rule) => rule.ui.Path === schemaPath);
     const component: ComponentType =
@@ -233,6 +219,7 @@ export class EditObjectService {
       required: true,
       virtual: false,
       childrenChange: new BehaviorSubject<EditObject[]>([]),
+      cardinality: this.computeCardinality(kind, schemaPath, schema),
     };
 
     if (isRoot) return partialEditObject;
@@ -260,6 +247,26 @@ export class EditObjectService {
       hint,
       cardinality,
     };
+  }
+
+  private computeCardinality(kind: EditObject['kind'], schemaPath: string, schema: Schema): Cardinality {
+    const element = this.schemaService.find(schemaPath, schema);
+
+    if (element) return element.Cardinality;
+    if (['object-array', 'primitive-array'].includes(kind)) return 'MANY';
+
+    return 'ONE';
+  }
+
+  private computeKind(value: any, path: string, schemaPath: string, schema: Schema): EditObject['kind'] {
+    const isRoot = path === '';
+    const isObject = /\[\d+\]$/gm.test(path);
+    const element = this.schemaService.find(schemaPath, schema);
+    const kind = this.schemaService.kind(schemaPath, schema);
+
+    if (isRoot || isObject || kind === 'unknown' || element.Origin === 'EXTERNAL') return this.kind(value);
+
+    return kind;
   }
 
   private computeChildrenRemoveActions = (editObject: Partial<EditObject>): Action[] => {
