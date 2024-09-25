@@ -17,8 +17,8 @@ Current version of VitamUI depends on Ansible version 2.7.0 in order to run inst
 In order not to interfere with more recent Ansible version, deploy a Python VirtualEnv
 in which you install Ansible 2.7.0:
 * Check that VirtualEnv executable is installed: `apt-get install python-virtualenv`
-* In a directory of your choice, create the virtual environment: `virtualenv vitamUI-ansible`
-* Activate the environment: `vitamUI-ansible/bin/activate`
+* In a directory of your choice, create the virtual environment: `virtualenv --python=python2.7 vitamUI-ansible`
+* Activate the environment: `source vitamUI-ansible/bin/activate`
 
 #### Without VirtualEnv
 * First remove older versions of Ansible before re-installing it:

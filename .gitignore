@@ -252,3 +252,4 @@ tools/docker/mongo/mongo-entrypoint
 #####################
 
 .virtualenvs
+vitamUI-ansible
