@@ -54,7 +54,7 @@ import { ArchiveUnitDescriptionTabComponent } from './archive-unit-description-t
 })
 export class ArchivePreviewComponent implements OnChanges, AfterViewInit {
   @Input() archiveUnit: Unit;
-  @Input() accessContract: string;
+  @Input() accessContractId: string;
   @Input() isPopup: boolean;
   @Input() accessContractAllowUpdating: boolean;
   @Input() hasUpdateDescriptiveUnitMetadataRole: boolean;

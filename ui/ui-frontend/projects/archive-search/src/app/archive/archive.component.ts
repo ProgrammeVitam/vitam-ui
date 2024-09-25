@@ -65,7 +65,7 @@ export class ArchiveComponent extends SidenavPage<any> implements OnInit, OnDest
   show = true;
   tenantIdentifier: string;
   foundAccessContract = false;
-  accessContract: string;
+  accessContractId: string;
   bulkOperationsThreshold: number;
   accessContractSub: Subscription;
   errorMessageSub: Subscription;
@@ -125,7 +125,7 @@ export class ArchiveComponent extends SidenavPage<any> implements OnInit, OnDest
       const accessConctractId: string = parameters.get(ExternalParameters.PARAM_ACCESS_CONTRACT);
 
       if (accessConctractId && accessConctractId.length > 0) {
-        this.accessContract = accessConctractId;
+        this.accessContractId = accessConctractId;
         this.foundAccessContract = true;
         this.managementRulesSharedDataService.emitAccessContract(accessConctractId);
         this.fetchVitamAccessContract();
@@ -151,20 +151,20 @@ export class ArchiveComponent extends SidenavPage<any> implements OnInit, OnDest
   }
 
   fetchVitamAccessContract() {
-    this.archiveService.getAccessContractById(this.accessContract).subscribe(
-      (ac: AccessContract) => {
+    this.archiveService.getAccessContractById(this.accessContractId).subscribe({
+      next: (ac: AccessContract) => {
         this.accessContractAllowUpdating = ac.writingPermission;
         this.accessContractUpdatingRestrictedDesc = ac.writingRestrictedDesc;
       },
-      (error: any) => {
+      error: (error: any) => {
         this.loggerService.error('error message', error);
         const message = this.translateService.instant('ARCHIVE_SEARCH.ACCESS_CONTRACT_NOT_FOUND_IN_VITAM');
-        this.snackBar.open(message + ': ' + this.accessContract, null, {
+        this.snackBar.open(message + ': ' + this.accessContractId, null, {
           panelClass: 'vitamui-snack-bar',
           duration: 10000,
         });
       },
-    );
+    });
   }
 
   hiddenTreeBlock(hidden: boolean): void {
@@ -179,9 +179,11 @@ export class ArchiveComponent extends SidenavPage<any> implements OnInit, OnDest
     this.openPanel(item);
     this.archiveSharedDataService.emitSelectedUnit(item);
   }
+
   showExtendedLateralPanel() {
     this.isLPExtended = true;
   }
+
   backToNormalLateralPanel() {
     this.isLPExtended = false;
   }

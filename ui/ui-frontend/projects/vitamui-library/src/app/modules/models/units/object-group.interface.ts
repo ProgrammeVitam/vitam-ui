@@ -84,7 +84,8 @@ export interface PersistentIdentifierInfo {
 export interface VersionWithQualifierDto extends VersionDto {
   qualifier: ObjectQualifierType;
   version: number;
-  opened: boolean;
+  opened?: boolean;
+  downloadAllowed?: boolean;
 }
 
 export interface MetadataDto {
