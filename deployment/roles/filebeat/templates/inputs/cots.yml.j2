@@ -2,11 +2,10 @@
 #
 # Consul
 #
-# Disabled by default because of a bug with spring.cloud.consul when calling consul (too many error logs).
 {% if filebeat.cots.consul.enable_log | bool %}
 - type: filestream
   id: {{ vitam_site_name }}-consul
-  enabled: {{ filebeat.cots.consul.enable_log | bool | lower }}
+  enabled: true
   paths:
     - "{{ vitam_defaults.folder.root_path }}/log/consul/consul*.log"
   fields_under_root: true

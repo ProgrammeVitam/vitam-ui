@@ -39,7 +39,7 @@
     <syslogHost>localhost</syslogHost>
     <facility>local0</facility>
     <port>514</port>
-    <suffixPattern>vitam-vitamui-{{ vitamui_struct.vitamui_component }}: %d{ISO8601} [[%thread]] [%X{X-Request-Id}] %-5level %logger - %replace(%caller{1..2}){'Caller\+1     at |\n',''} : %msg %rootException%n</suffixPattern>
+    <suffixPattern>vitamui-{{ vitamui_struct.vitamui_component }}: %d{ISO8601} [[%thread]] [%X{X-Request-Id}] %-5level %logger - %replace(%caller{1..2}){'Caller\+1     at |\n',''} : %msg %rootException%n</suffixPattern>
   </appender>
 
   <root level="{{ vitamui_struct.log.root_log_level | default(log.root_log_level) }}">
