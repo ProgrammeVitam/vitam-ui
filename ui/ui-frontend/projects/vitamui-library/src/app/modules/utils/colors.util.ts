@@ -135,7 +135,7 @@ export function convertToDarkColor(color: string, lightModificator: number = 10)
   return '#' + toHex(darkRGBvalue.r) + toHex(darkRGBvalue.g) + toHex(darkRGBvalue.b);
 }
 
-function toHex(componentValue: number) {
+export function toHex(componentValue: number) {
   const hex = componentValue.toString(16);
   return hex.length === 1 ? '0' + hex : hex;
 }
