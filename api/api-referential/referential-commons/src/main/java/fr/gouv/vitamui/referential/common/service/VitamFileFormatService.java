@@ -271,7 +271,7 @@ public class VitamFileFormatService {
 
         /* Set root element with file formats */
         FileFormatXMLRootDto root = new FileFormatXMLRootDto();
-        root.setVersion(101); // What version should we put ? Could we put nothing ?
+        root.setVersion(109); // What version should we put ? Could we put nothing ?
         root.setCreatedDate(new Date()); // Date format ? Should we put string ?
         FileFormatCollection fileCollection = new FileFormatCollection();
         fileCollection.setFileFormats(fileFormats);
