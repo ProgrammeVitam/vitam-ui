@@ -43,12 +43,11 @@ import { MatLegacySelectModule as MatSelectModule } from '@angular/material/lega
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { TranslateService } from '@ngx-translate/core';
 import { EMPTY, of } from 'rxjs';
-import { ConfirmDialogService, ExternalParametersService } from 'vitamui-library';
+import { ConfirmDialogService, ExternalParametersService, SearchUnitApiService } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatLegacySnackBar as MatSnackBar, MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
-import { SearchUnitApiService } from '../../../../../vitamui-library/src/lib/api/search-unit-api.service';
 import { ProbativeValueService } from '../probative-value.service';
 import { ProbativeValueCreateComponent } from './probative-value-create.component';
 

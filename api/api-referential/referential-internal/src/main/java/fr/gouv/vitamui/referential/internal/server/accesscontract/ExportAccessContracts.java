@@ -24,12 +24,12 @@ public class ExportAccessContracts extends ExportCSVParams {
             ACCESS_LOG,
             RULE_CATEGORY_TO_FILTER,
             WRITING_RESTRICTED_DESC,
+            RULE_CATEGORY_TO_FILTER_FOR_THE_OTHER_ORIGINATING_AGENCIES,
+            DO_NOT_FILTER_FILING_SCHEMES,
             CREATION_DATE,
             LAST_UPDATE,
             ACTIVATION_DATE,
-            DESACTIVATION_DATE,
-            RULE_CATEGORY_TO_FILTER_FOR_THE_OTHER_ORIGINATING_AGENCIES,
-            DO_NOT_FILTER_FILING_SCHEMES
+            DESACTIVATION_DATE
         );
         this.setHeaders(headers);
     }

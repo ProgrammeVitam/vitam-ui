@@ -36,7 +36,7 @@
  */
 import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ValidationErrors, ValidatorFn } from '@angular/forms';
-import { AccessContract, AccessRightType, Option, VitamuiAutocompleteMultiselectOptions } from 'vitamui-library';
+import { AccessContract, AccessRightType, Option, VitamuiAutocompleteMultiselectOptions, AccessContractDisplay } from 'vitamui-library';
 import { AccessContractService } from '../../../access-contract.service';
 import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
 import { AgencyService } from '../../../../agency/agency.service';
@@ -59,7 +59,7 @@ export class AccessContractAuthorizationsUpdateComponent implements OnInit {
   form: FormGroup;
   updateMode = false;
 
-  accessRightSelected: FormControl = new FormControl(AccessRightType.ACCESS_FULL);
+  accessRightSelected: FormControl = new FormControl();
 
   constructor(
     public dialogRef: MatDialogRef<AccessContractAuthorizationsUpdateComponent>,
@@ -68,7 +68,7 @@ export class AccessContractAuthorizationsUpdateComponent implements OnInit {
     private agencyService: AgencyService,
     @Inject(MAT_DIALOG_DATA)
     public data: {
-      accessContract: AccessContract;
+      accessContract: AccessContractDisplay;
     },
   ) {
     this.form = this.formBuilder.group(
@@ -83,15 +83,25 @@ export class AccessContractAuthorizationsUpdateComponent implements OnInit {
         validators: [this.checkFormValidity()],
       },
     );
+    this.accessRightSelected.valueChanges.subscribe((value: AccessRightType) => {
+      const doNotFilterFilingSchemesControl = this.form.controls.doNotFilterFilingSchemes;
+      if (value === AccessRightType.ACCESS_FULL) {
+        doNotFilterFilingSchemesControl.setValue(true);
+        doNotFilterFilingSchemesControl.disable({ onlySelf: true });
+      } else {
+        doNotFilterFilingSchemesControl.enable({ onlySelf: true });
+      }
+    });
+    this.form.controls.accessRightSelected.setValue(AccessRightType.ACCESS_FULL);
     if (data && data.accessContract) {
       this.updateMode = true;
-      this.form.get('accessRightSelected').setValue(data.accessContract.accessRightType);
-      this.form.get('originatingAgencies').setValue(data.accessContract.originatingAgencies || []);
-      this.form.get('ruleCategoryToFilter').setValue(data.accessContract.ruleCategoryToFilter || []);
-      this.form
-        .get('ruleCategoryToFilterForTheOtherOriginatingAgencies')
-        .setValue(data.accessContract.ruleCategoryToFilterForTheOtherOriginatingAgencies || []);
-      this.form.get('doNotFilterFilingSchemes').setValue(data.accessContract.doNotFilterFilingSchemes);
+      this.form.controls.accessRightSelected.setValue(data.accessContract.accessRightType);
+      this.form.controls.originatingAgencies.setValue(data.accessContract.originatingAgencies || []);
+      this.form.controls.ruleCategoryToFilter.setValue(data.accessContract.ruleCategoryToFilter || []);
+      this.form.controls.ruleCategoryToFilterForTheOtherOriginatingAgencies.setValue(
+        data.accessContract.ruleCategoryToFilterForTheOtherOriginatingAgencies || [],
+      );
+      this.form.controls.doNotFilterFilingSchemes.setValue(data.accessContract.doNotFilterFilingSchemes);
     }
   }
 
@@ -145,7 +155,7 @@ export class AccessContractAuthorizationsUpdateComponent implements OnInit {
         accessContract.doNotFilterFilingSchemes = this.form.get('doNotFilterFilingSchemes').value;
         break;
       case AccessRightType.ACCESS_BY_EXPIRED_MANAGEMENT_RULES:
-        accessContract.everyOriginatingAgency = false;
+        accessContract.everyOriginatingAgency = true;
         accessContract.originatingAgencies = [];
         accessContract.ruleCategoryToFilter = this.form.get('ruleCategoryToFilter').value;
         accessContract.ruleCategoryToFilterForTheOtherOriginatingAgencies = [];
