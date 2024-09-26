@@ -474,6 +474,7 @@
                     [(ngModel)]="customRegex"
                     (ngModelChange)="radioExpressionReguliere = 'input'"
                     [required]="true"
+                    [maxlength]="115"
                   >
                   </vitamui-common-textarea>
                 </div>
@@ -483,7 +484,7 @@
                     [placeholder]="'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.PATTERN_COMMENT' | translate"
                     [(ngModel)]="commentaire"
                     [required]="true"
-                    [maxlength]="120"
+                    [maxlength]="115"
                   >
                   </vitamui-common-textarea>
                 </div>
