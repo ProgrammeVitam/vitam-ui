@@ -45,6 +45,7 @@ import fr.gouv.vitamui.pastis.common.dto.profiles.ProfileNotice;
 import fr.gouv.vitamui.pastis.common.dto.profiles.ProfileResponse;
 import fr.gouv.vitamui.pastis.common.dto.profiles.ProfileType;
 import fr.gouv.vitamui.pastis.common.dto.profiles.ProfileVersion;
+import fr.gouv.vitamui.pastis.common.dto.seda.SedaNode;
 import fr.gouv.vitamui.pastis.common.exception.TechnicalException;
 import fr.gouv.vitamui.pastis.common.rest.RestApi;
 import fr.gouv.vitamui.pastis.server.service.PastisService;
@@ -66,6 +67,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Objects;
@@ -239,6 +241,21 @@ class PastisController {
         } else {
             return new ResponseEntity<>(INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @Operation(
+        summary = "Get meta-model by type and version",
+        description = "Get meta-model by type and version",
+        tags = { "pastis" }
+    )
+    @GetMapping(value = RestApi.PASTIS_METAMODEL)
+    ResponseEntity<SedaNode> getMetaModel(@RequestParam(name = "version") String version) throws IOException {
+        ProfileVersion profileVersion = ProfileVersion.fromVersionString(version);
+        SedaNode sedaNode = profileService.getMetaModel(profileVersion);
+        if (sedaNode == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(sedaNode);
     }
 
     enum ErrorMessage {
