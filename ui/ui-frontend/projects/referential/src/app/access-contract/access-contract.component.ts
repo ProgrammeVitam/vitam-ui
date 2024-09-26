@@ -109,7 +109,7 @@ export class AccessContractComponent extends SidenavPage<AccessContract> impleme
       title: this.translateService.instant('IMPORT_DIALOG.TITLE'),
       subtitle: this.translateService.instant('IMPORT_DIALOG.ACCESS_CONTRACT_SUBTITLE'),
       fileFormatDetailInfo: this.translateService.instant('IMPORT_DIALOG.FILE_FORMAT_DETAIL_INFO'),
-      allowedFiles: [FileTypes.CSV],
+      allowedFiles: [FileTypes.CSV, FileTypes.VND],
       referential: ReferentialTypes.ACCESS_CONTRACT,
       successMessage: 'SNACKBAR.ACCESS_CONTRACT_IMPORTED',
       iconMessage: 'vitamui-icon-user',
