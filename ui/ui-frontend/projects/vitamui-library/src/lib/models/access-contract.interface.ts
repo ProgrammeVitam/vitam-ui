@@ -32,9 +32,13 @@ export interface AccessContract extends Id {
   ruleCategoryToFilterForTheOtherOriginatingAgencies: string[];
   /** authoriser l'acces à tous les plan de classement */
   doNotFilterFilingSchemes: boolean;
-
+}
+export interface AccessContractDisplay extends AccessContract {
   /** front uniquement - calculé une seule fois */
   accessRightType?: AccessRightType;
+  originatingAgenciesLabels?: string[];
+  ruleCategoryToFilterLabels?: string[];
+  ruleCategoryToFilterForTheOtherOriginatingAgenciesLabels?: string[];
 }
 
 export enum Status {
@@ -51,7 +55,11 @@ export enum AccessRightType {
 }
 
 export function accessRightTypeOf(accessContract: AccessContract): AccessRightType {
-  if (accessContract.everyOriginatingAgency) {
+  if (
+    accessContract.everyOriginatingAgency &&
+    isEmpty(accessContract.ruleCategoryToFilter) &&
+    isEmpty(accessContract.ruleCategoryToFilterForTheOtherOriginatingAgencies)
+  ) {
     return AccessRightType.ACCESS_FULL;
   }
   if (

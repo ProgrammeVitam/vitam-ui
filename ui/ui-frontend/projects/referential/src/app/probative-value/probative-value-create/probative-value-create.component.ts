@@ -48,9 +48,9 @@ import {
   ExternalParametersService,
   Option,
   SearchResponse,
+  SearchUnitApiService,
   SigningRoleType,
 } from 'vitamui-library';
-import { SearchUnitApiService } from '../../../../../vitamui-library/src/lib/api/search-unit-api.service';
 import { ProbativeValueService } from '../probative-value.service';
 
 @Component({

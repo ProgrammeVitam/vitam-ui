@@ -69,14 +69,14 @@ describe('AccessContractUsageAndServicesTabComponent', () => {
     writingRestrictedDesc: true,
     accessLog: Status.INACTIVE,
     ruleFilter: true,
-    ruleCategoryToFilter: ['rule'],
+    ruleCategoryToFilter: [],
     rootUnits: [],
     excludedRootUnits: [],
   } as AccessContract;
 
   const agencyServiceMock = {
     getAll: () => of([]),
-    getOriginatingAgenciesAsOptions: () => of([]),
+    getOriginatingAgenciesAsOptions: () => of([{ key: 'test', label: 'test' }]),
   };
 
   beforeEach(async () => {

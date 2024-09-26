@@ -36,11 +36,18 @@
  */
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { AccessContract, Option, VitamuiAutocompleteMultiselectOptions } from 'vitamui-library';
+import {
+  AccessContract,
+  AccessContractDisplay,
+  AccessRightType,
+  accessRightTypeOf,
+  Option,
+  VitamuiAutocompleteMultiselectOptions,
+} from 'vitamui-library';
 import { AgencyService } from '../../../agency/agency.service';
-import { AccessRightType, accessRightTypeOf } from '../../../../../../vitamui-library/src/lib/models/access-contract.interface';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { AccessContractAuthorizationsUpdateComponent } from './access-contract-authorizations-update/access-contract-authorizations-update.component';
+import { RULE_TYPES } from '../../../rule/rules.constants';
 
 @Component({
   selector: 'app-access-contract-authorizations-tab',
@@ -56,9 +63,9 @@ export class AccessContractAuthorizationsTabComponent implements OnInit {
   public form: FormGroup;
   public isLoading = false;
   public originatingAgenciesOptions: VitamuiAutocompleteMultiselectOptions;
-  public _accessContract: AccessContract;
+  public _accessContract: AccessContractDisplay;
 
-  get accessContract(): AccessContract {
+  get accessContract(): AccessContractDisplay {
     return this._accessContract;
   }
 
@@ -69,7 +76,11 @@ export class AccessContractAuthorizationsTabComponent implements OnInit {
     this._accessContract = {
       ...accessContract,
       accessRightType: accessRightTypeOf(accessContract),
-      originatingAgencies: accessContract.originatingAgencies?.sort(),
+      originatingAgenciesLabels: accessContract.originatingAgencies?.map((agency) => this.originatingAgencyName(agency)).sort(),
+      ruleCategoryToFilterLabels: accessContract.ruleCategoryToFilter?.map((rule) => this.managementRuleName(rule)),
+      ruleCategoryToFilterForTheOtherOriginatingAgenciesLabels: accessContract.ruleCategoryToFilterForTheOtherOriginatingAgencies?.map(
+        (rule) => this.managementRuleName(rule),
+      ),
     };
   }
 
@@ -97,7 +108,11 @@ export class AccessContractAuthorizationsTabComponent implements OnInit {
     });
   }
 
-  originatingAgencyName(originatingAgency: string): string {
-    return this.originatingAgenciesOptions?.options.filter((opt) => opt.key === originatingAgency).at(0).label;
+  private originatingAgencyName(originatingAgency: string): string {
+    return this.originatingAgenciesOptions?.options.find((opt) => opt.key === originatingAgency)?.label;
+  }
+
+  private managementRuleName(managementRule: string): string {
+    return RULE_TYPES.find((opt) => opt.key === managementRule)?.label;
   }
 }

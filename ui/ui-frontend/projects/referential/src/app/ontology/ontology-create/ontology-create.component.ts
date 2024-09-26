@@ -38,10 +38,9 @@ import { Component, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
 import { Subscription } from 'rxjs';
-import { ConfirmDialogService, Option } from 'vitamui-library';
+import { ConfirmDialogService, Option, setTypeDetailAndStringSize } from 'vitamui-library';
 import { OntologyService } from '../ontology.service';
 import { OntologyCreateValidators } from './ontology-create.validators';
-import { setTypeDetailAndStringSize } from '../../../../../vitamui-library/src/app/modules/models/ontology/ontology.utils';
 
 @Component({
   selector: 'app-ontology-create',

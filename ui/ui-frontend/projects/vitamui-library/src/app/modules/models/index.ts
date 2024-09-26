@@ -53,6 +53,7 @@ export * from './logbook/index';
 export * from './managementContract/management-contract.interface';
 export * from './nodes/index';
 export * from './ontology/ontology.interface';
+export * from './ontology/ontology.utils';
 export * from './operation/index';
 export * from './position/index';
 export * from './profile/index';

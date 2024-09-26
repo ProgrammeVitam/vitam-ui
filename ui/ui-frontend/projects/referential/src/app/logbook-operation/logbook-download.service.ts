@@ -37,8 +37,14 @@
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
-import { DownloadUtils, LogbookApiService, LogbookOperationReportState, SearchService, VitamUISnackBarService } from 'vitamui-library';
-import { IEvent } from '../../../../vitamui-library/src/app/modules';
+import {
+  DownloadUtils,
+  LogbookApiService,
+  LogbookOperationReportState,
+  SearchService,
+  VitamUISnackBarService,
+  IEvent,
+} from 'vitamui-library';
 
 const DOWNLOAD_TYPE_TRANSFER_SIP = 'transfersip';
 const DOWNLOAD_TYPE_DIP = 'dip';

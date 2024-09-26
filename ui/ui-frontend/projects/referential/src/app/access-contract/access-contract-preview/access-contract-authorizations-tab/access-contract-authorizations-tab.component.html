@@ -17,10 +17,10 @@
           <div class="text medium bold primary mt-4">
             {{ 'ACCESS_CONTRACT.TAB.USAGE.PRODUCERS_SELECTED' | translate }}
           </div>
-          <ul class="mt-1">
-            @for (originatingAgency of accessContract.originatingAgencies; track originatingAgency) {
+          <ul class="mt-1" [ngClass]="{ 'no-bullet': accessContract.originatingAgenciesLabels.length < 2 }">
+            @for (originatingAgencyLabel of accessContract.originatingAgenciesLabels; track originatingAgencyLabel) {
               <li>
-                {{ originatingAgencyName(originatingAgency) }}
+                {{ originatingAgencyLabel }}
               </li>
             } @empty {}
           </ul>
@@ -32,10 +32,10 @@
           <div class="text medium bold primary mt-4">
             {{ 'ACCESS_CONTRACT.TAB.USAGE.MANAGEMENT_RULES_SELECTED' | translate }}
           </div>
-          <ul class="mt-1 no-bullet">
-            @for (managementRule of accessContract.ruleCategoryToFilter; track managementRule) {
+          <ul class="mt-1" [ngClass]="{ 'no-bullet': accessContract.ruleCategoryToFilterLabels.length < 2 }">
+            @for (managementRuleLabel of accessContract.ruleCategoryToFilterLabels; track managementRuleLabel) {
               <li>
-                {{ managementRule }}
+                {{ managementRuleLabel }}
               </li>
             } @empty {}
           </ul>
@@ -47,20 +47,23 @@
           <div class="text medium bold primary mt-4">
             {{ 'ACCESS_CONTRACT.TAB.USAGE.PRODUCERS_SELECTED' | translate }}
           </div>
-          <ul class="mt-1">
-            @for (originatingAgency of accessContract.originatingAgencies; track originatingAgency) {
+          <ul class="mt-1" [ngClass]="{ 'no-bullet': accessContract.originatingAgenciesLabels.length < 2 }">
+            @for (originatingAgencyLabel of accessContract.originatingAgenciesLabels; track originatingAgencyLabel) {
               <li>
-                {{ originatingAgencyName(originatingAgency) }}
+                {{ originatingAgencyLabel }}
               </li>
             } @empty {}
           </ul>
           <div class="text medium bold primary mt-4">
             {{ 'ACCESS_CONTRACT.TAB.USAGE.MANAGEMENT_RULES_SELECTED_FOR_OTHER_PRODUCERS' | translate }}
           </div>
-          <ul class="mt-1 no-bullet">
-            @for (managementRule of accessContract.ruleCategoryToFilterForTheOtherOriginatingAgencies; track managementRule) {
+          <ul class="mt-1" [ngClass]="{ 'no-bullet': accessContract.ruleCategoryToFilterForTheOtherOriginatingAgenciesLabels.length < 2 }">
+            @for (
+              managementRuleLabel of accessContract.ruleCategoryToFilterForTheOtherOriginatingAgenciesLabels;
+              track managementRuleLabel
+            ) {
               <li>
-                {{ managementRule }}
+                {{ managementRuleLabel }}
               </li>
             } @empty {}
           </ul>
@@ -72,20 +75,20 @@
           <div class="text medium bold primary mt-4">
             {{ 'ACCESS_CONTRACT.TAB.USAGE.PRODUCERS_SELECTED' | translate }}
           </div>
-          <ul class="mt-1">
-            @for (originatingAgency of accessContract.originatingAgencies; track originatingAgency) {
+          <ul class="mt-1" [ngClass]="{ 'no-bullet': accessContract.originatingAgenciesLabels.length < 2 }">
+            @for (originatingAgencyLabel of accessContract.originatingAgenciesLabels; track originatingAgencyLabel) {
               <li>
-                {{ originatingAgencyName(originatingAgency) }}
+                {{ originatingAgencyLabel }}
               </li>
             } @empty {}
           </ul>
           <div class="text medium bold primary mt-4">
             {{ 'ACCESS_CONTRACT.TAB.USAGE.MANAGEMENT_RULES_SELECTED_FOR_PRODUCERS' | translate }}
           </div>
-          <ul class="mt-1 no-bullet">
-            @for (managementRule of accessContract.ruleCategoryToFilter; track managementRule) {
+          <ul class="mt-1" [ngClass]="{ 'no-bullet': accessContract.ruleCategoryToFilterLabels.length < 2 }">
+            @for (managementRuleLabel of accessContract.ruleCategoryToFilterLabels; track managementRuleLabel) {
               <li>
-                {{ managementRule }}
+                {{ managementRuleLabel }}
               </li>
             } @empty {}
           </ul>
@@ -99,7 +102,7 @@
       <div class="text medium bold primary mt-4">
         {{ 'ACCESS_CONTRACT.TAB.USAGE.FILING_SCHEME_ACCESS' | translate }}
       </div>
-      {{ accessContract.doNotFilterFilingSchemes ? 'COMMON.YES' : ('COMMON.NO' | translate) }}
+      {{ (accessContract.doNotFilterFilingSchemes ? 'COMMON.YES' : 'COMMON.NO') | translate }}
     }
   </div>
 </div>
