@@ -36,7 +36,7 @@
  */
 package fr.gouv.vitamui.referential.common.dto;
 
-import fr.gouv.vitam.common.model.administration.ProfileModel;
+import fr.gouv.vitam.common.model.administration.profile.ProfileModel;
 import fr.gouv.vitamui.commons.vitam.api.dto.AbstractVitamUIResponseDto;
 
 public class ProfileResponseDto extends AbstractVitamUIResponseDto<ProfileModel> {}

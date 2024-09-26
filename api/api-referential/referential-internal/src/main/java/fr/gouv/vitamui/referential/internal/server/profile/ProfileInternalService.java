@@ -52,7 +52,7 @@ import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.json.JsonHandler;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.RequestResponseOK;
-import fr.gouv.vitam.common.model.administration.ProfileModel;
+import fr.gouv.vitam.common.model.administration.profile.ProfileModel;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
