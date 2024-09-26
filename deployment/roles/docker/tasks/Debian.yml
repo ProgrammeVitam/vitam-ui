@@ -23,6 +23,11 @@
   environment:
     https_proxy: "{{ http_proxy_environnement }}"
     http_proxy:  "{{ http_proxy_environnement }}"
+  when: http_proxy_environnement is defined and http_proxy_environnement != ""
+
+- name: add GPG docker repo key
+  shell: "curl -fsSL https://download.docker.com/linux/debian/gpg | sudo apt-key add -"
+  when: http_proxy_environnement is not defined or http_proxy_environnement == ""
 
 - name: install apt-transport-https as Docker repository is https
   package:
