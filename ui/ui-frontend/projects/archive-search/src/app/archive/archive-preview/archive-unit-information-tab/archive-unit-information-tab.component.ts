@@ -54,10 +54,12 @@ export class ArchiveUnitInformationTabComponent implements OnInit, OnChanges {
 
   uaPath$: Observable<{ fullPath: string; resumePath: string }>;
   fullPath = false;
+  hasDownloadDocumentRole = false;
 
   constructor(private archiveService: ArchiveService) {}
 
   ngOnInit() {
+    this.checkDownloadPermissions();
     this.uaPath$ = this.archiveService.buildArchiveUnitPath(this.archiveUnit);
   }
 
@@ -74,5 +76,13 @@ export class ArchiveUnitInformationTabComponent implements OnInit, OnChanges {
 
   showArchiveUniteFullPath() {
     this.fullPath = true;
+  }
+
+  private checkDownloadPermissions() {
+    this.archiveService
+      .hasArchiveSearchRole('ROLE_ARCHIVE_SEARCH_GET_ARCHIVE_BINARY', Number(this.tenantIdentifier))
+      .subscribe((result) => {
+        this.hasDownloadDocumentRole = result;
+      });
   }
 }
