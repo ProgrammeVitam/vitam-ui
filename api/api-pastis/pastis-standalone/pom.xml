@@ -239,7 +239,7 @@
             <build>
                 <resources>
                     <resource>
-                        <directory>target/www/</directory>
+                        <directory>target/www/browser/</directory>
                         <targetPath>static/</targetPath>
                     </resource>
                     <resource>
