@@ -12,7 +12,7 @@
     <button (click)="lookupUnit()" class="btn primary" type="button" [disabled]="downloading">
       {{ 'PERSISTENT_IDENTIFIER_SEARCH.MODAL.LOOKUP_ARCHIVAL_UNIT' | translate }}
     </button>
-    <button (click)="downloadObject()" class="btn primary" type="button" [disabled]="downloading">
+    <button (click)="downloadObject()" class="btn primary" type="button" [disabled]="downloading || isPhysicalMaster">
       {{ 'PERSISTENT_IDENTIFIER_SEARCH.MODAL.DOWNLOAD_OBJECT' | translate }}
     </button>
   </div>
