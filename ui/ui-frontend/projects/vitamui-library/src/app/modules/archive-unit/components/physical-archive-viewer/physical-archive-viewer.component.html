@@ -77,7 +77,7 @@
   </div>
 
   <div class="object-details-group">
-    <div class="row title">{{ section.name | translate }}</div>
+    <div *ngIf="section.rows.length" class="row title">{{ section.name | translate }}</div>
     <div *ngFor="let row of section.rows" class="row">
       <div *ngFor="let column of row" class="col">
         <div class="read-only-field">
@@ -85,6 +85,14 @@
           <div>{{ column.display.value }}</div>
         </div>
       </div>
+    </div>
+  </div>
+
+  <div *ngFor="let persistentIdentifierInfo of archive.PersistentIdentifier" class="object-details-group">
+    <div class="row title">{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.PERSISTENT_IDENTIFIER' | translate | uppercase }}</div>
+    <div class="read-only-field">
+      <label>{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.PERSISTENT_IDENTIFIER_CONTENT' | translate }}</label>
+      <div>{{ persistentIdentifierInfo.PersistentIdentifierContent }}</div>
     </div>
   </div>
 </div>

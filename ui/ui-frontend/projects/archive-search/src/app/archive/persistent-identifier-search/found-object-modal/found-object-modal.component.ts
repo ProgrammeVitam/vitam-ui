@@ -1,7 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
 import { NavigationExtras, Router } from '@angular/router';
-import { ApiUnitObject, QualifierDto, TenantSelectionService } from 'vitamui-library';
+import { ApiUnitObject, VersionDto, TenantSelectionService, ObjectQualifierType } from 'vitamui-library';
 import { PurgedPersistentIdentifierDto } from '../../../core/api/persistent-identifier-response-dto.interface';
 import { ArchiveService } from '../../archive.service';
 
@@ -17,6 +17,7 @@ export class FoundObjectModalComponent {
   private readonly qualifierVersion: number;
   private readonly unitId: string;
   downloading = false;
+  isPhysicalMaster = false;
 
   constructor(
     private dialogRef: MatDialogRef<PurgedPersistentIdentifierDto>,
@@ -28,15 +29,16 @@ export class FoundObjectModalComponent {
     this.ark = data.ark;
     this.unitId = data.object['#unitups'][0];
 
-    const qualifier: QualifierDto = data.object['#qualifiers'].find((qualifier) =>
-      qualifier.versions.find((version) =>
-        version.PersistentIdentifier.find((persistentId) => persistentId.PersistentIdentifierContent === data.ark),
-      ),
-    );
-    if (qualifier) {
-      this.qualifier = qualifier.qualifier;
-      this.qualifierVersion = Number.parseInt(qualifier['#nbc']);
-      this.usageVersion = `${this.qualifier}_${this.qualifierVersion}`;
+    const version: VersionDto = data.object['#qualifiers']
+      .flatMap((qualifier) => qualifier.versions)
+      .find((version) => version.PersistentIdentifier.some((persistentId) => persistentId.PersistentIdentifierContent === data.ark));
+
+    if (version) {
+      const fragments = version.DataObjectVersion.split('_');
+      this.usageVersion = version.DataObjectVersion;
+      this.qualifier = fragments[0];
+      this.qualifierVersion = Number.parseInt(fragments[1]);
+      this.isPhysicalMaster = this.qualifier === ObjectQualifierType.PHYSICALMASTER;
     }
   }
 
