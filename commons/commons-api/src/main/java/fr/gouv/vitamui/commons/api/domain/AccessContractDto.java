@@ -79,7 +79,11 @@ public class AccessContractDto implements Serializable {
 
     private Set<String> ruleCategoryToFilter;
 
+    private Set<String> ruleCategoryToFilterForTheOtherOriginatingAgencies;
+
     private Set<String> originatingAgencies;
+
+    private Boolean doNotFilterFilingSchemes;
 
     private Set<String> dataObjectVersion;
 
@@ -167,9 +171,21 @@ public class AccessContractDto implements Serializable {
         this.ruleCategoryToFilter = ruleCategoryToFilter;
     }
 
+    @JsonProperty("ruleCategoryToFilterForTheOtherOriginatingAgencies")
+    public void setRuleCategoryToFilterForTheOtherOriginatingAgencies(
+        Set<String> ruleCategoryToFilterForTheOtherOriginatingAgencies
+    ) {
+        this.ruleCategoryToFilterForTheOtherOriginatingAgencies = ruleCategoryToFilterForTheOtherOriginatingAgencies;
+    }
+
     @JsonProperty("originatingAgencies")
     public void setOriginatingAgencies(Set<String> originatingAgencies) {
         this.originatingAgencies = originatingAgencies;
+    }
+
+    @JsonProperty("doNotFilterFilingSchemes")
+    public void setDoNotFilterFilingSchemes(Boolean doNotFilterFilingSchemes) {
+        this.doNotFilterFilingSchemes = doNotFilterFilingSchemes;
     }
 
     @JsonProperty("dataObjectVersion")
@@ -262,9 +278,19 @@ public class AccessContractDto implements Serializable {
         return ruleCategoryToFilter;
     }
 
+    @JsonProperty("RuleCategoryToFilterForTheOtherOriginatingAgencies")
+    public Set<String> getRuleCategoryToFilterForTheOtherOriginatingAgencies() {
+        return ruleCategoryToFilterForTheOtherOriginatingAgencies;
+    }
+
     @JsonProperty("OriginatingAgencies")
     public Set<String> getOriginatingAgencies() {
         return originatingAgencies;
+    }
+
+    @JsonProperty("doNotFilterFilingSchemes")
+    public Boolean getDoNotFilterFilingSchemes() {
+        return doNotFilterFilingSchemes;
     }
 
     @JsonProperty("DataObjectVersion")

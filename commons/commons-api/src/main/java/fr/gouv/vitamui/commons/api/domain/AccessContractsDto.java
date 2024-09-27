@@ -80,7 +80,11 @@ public class AccessContractsDto extends IdDto implements Serializable {
 
     private Set<String> ruleCategoryToFilter;
 
+    private Set<String> ruleCategoryToFilterForTheOtherOriginatingAgencies;
+
     private Set<String> originatingAgencies;
+
+    private Boolean doNotFilterFilingSchemes;
 
     private Set<String> dataObjectVersion;
 
