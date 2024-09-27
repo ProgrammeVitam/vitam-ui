@@ -69,8 +69,6 @@ export class ImportDialogComponent implements OnDestroy {
     this.errorsDuringImport = [];
 
     const file = files[0];
-    console.log(file);
-    console.log(file.type);
     if (this.isAllowedFileType(file.type)) {
       this.fileToUpload = file;
     } else {

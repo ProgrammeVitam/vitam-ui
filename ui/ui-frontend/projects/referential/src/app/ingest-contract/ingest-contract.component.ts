@@ -145,7 +145,7 @@ export class IngestContractComponent extends SidenavPage<IngestContract> impleme
       title: this.translateService.instant('IMPORT_DIALOG.TITLE'),
       subtitle: this.translateService.instant('IMPORT_DIALOG.INGEST_CONTRACT_SUBTITLE'),
       fileFormatDetailInfo: this.translateService.instant('IMPORT_DIALOG.FILE_FORMAT_DETAIL_INFO'),
-      allowedFiles: [FileTypes.CSV],
+      allowedFiles: [FileTypes.CSV, FileTypes.VND],
       referential: ReferentialTypes.INGEST_CONTRACT,
       successMessage: 'SNACKBAR.INGEST_CONTRACT_IMPORTED',
       iconMessage: 'vitamui-icon-user',
