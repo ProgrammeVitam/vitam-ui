@@ -106,7 +106,7 @@ export class AgencyComponent extends SidenavPage<Agency> implements OnInit {
     const params: ImportDialogParam = {
       title: this.translateService.instant('IMPORT_DIALOG.TITLE'),
       subtitle: this.translateService.instant('IMPORT_DIALOG.AGENCY_SUBTITLE'),
-      allowedFiles: [FileTypes.CSV],
+      allowedFiles: [FileTypes.CSV, FileTypes.VND],
       referential: ReferentialTypes.AGENCY,
       successMessage: 'SNACKBAR.AGENCY_CONTRACT_IMPORTED',
       errorMessage: 'SNACKBAR.AGENCY_CONTRACT_IMPORT_FAIL',

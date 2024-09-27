@@ -40,11 +40,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { ApplicationId, GlobalEventService, Role, Rule, RuleService, SecurityService, SidenavPage } from 'vitamui-library';
-import { FileTypes } from 'vitamui-library';
 import { ImportDialogParam, ReferentialTypes } from '../shared/import-dialog/import-dialog-param.interface';
 import { ImportDialogComponent } from '../shared/import-dialog/import-dialog.component';
 import { RuleCreateComponent } from './rule-create/rule-create.component';
 import { RuleListComponent } from './rule-list/rule-list.component';
+import { FileTypes } from 'vitamui-library';
 
 @Component({
   selector: 'app-rules',
@@ -131,7 +131,7 @@ export class RuleComponent extends SidenavPage<Rule> implements OnInit {
     const params: ImportDialogParam = {
       title: this.translateService.instant('IMPORT_DIALOG.TITLE'),
       subtitle: this.translateService.instant('IMPORT_DIALOG.RULES_SUBTITLE'),
-      allowedFiles: [FileTypes.CSV],
+      allowedFiles: [FileTypes.CSV, FileTypes.VND],
       referential: ReferentialTypes.RULE,
       successMessage: 'SNACKBAR.IMPORT_REFERENTIAL_SUCCESSED',
       errorMessage: 'SNACKBAR.IMPORT_REFERENTIAL_FAILED',
