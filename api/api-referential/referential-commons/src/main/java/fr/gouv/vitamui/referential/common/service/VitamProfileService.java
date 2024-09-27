@@ -47,7 +47,7 @@ import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.model.RequestResponse;
-import fr.gouv.vitam.common.model.administration.ProfileModel;
+import fr.gouv.vitam.common.model.administration.profile.ProfileModel;
 import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

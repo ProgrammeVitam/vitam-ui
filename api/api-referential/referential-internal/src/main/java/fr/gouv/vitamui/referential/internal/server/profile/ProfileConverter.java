@@ -36,7 +36,7 @@
  */
 package fr.gouv.vitamui.referential.internal.server.profile;
 
-import fr.gouv.vitam.common.model.administration.ProfileModel;
+import fr.gouv.vitam.common.model.administration.profile.ProfileModel;
 import fr.gouv.vitamui.commons.utils.VitamUIUtils;
 import fr.gouv.vitamui.referential.common.dto.ProfileDto;
 
@@ -46,17 +46,15 @@ import java.util.stream.Collectors;
 public class ProfileConverter {
 
     public ProfileModel convertDtoToVitam(final ProfileDto dto) {
-        final ProfileModel Profile = VitamUIUtils.copyProperties(dto, new ProfileModel());
-
-        return Profile;
+        return VitamUIUtils.copyProperties(dto, new ProfileModel());
     }
 
     public ProfileDto convertVitamToDto(final ProfileModel profile) {
         final ProfileDto dto = VitamUIUtils.copyProperties(profile, new ProfileDto());
-        dto.setActivationDate(profile.getActivationdate());
-        dto.setCreationDate(profile.getCreationdate());
-        dto.setDeactivationDate(profile.getDeactivationdate());
-        dto.setLastUpdate(profile.getLastupdate());
+        dto.setActivationDate(profile.getActivationDate());
+        dto.setCreationDate(profile.getCreationDate());
+        dto.setDeactivationDate(profile.getDeactivationDate());
+        dto.setLastUpdate(profile.getLastUpdate());
         return dto;
     }
 
