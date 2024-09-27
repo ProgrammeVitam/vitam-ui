@@ -310,7 +310,9 @@
           </vitamui-common-input-error>
         </vitamui-common-input>
         <div class="actions">
-          <button type="submit" class="btn primary" [disabled]="form.pending || form.invalid">{{ 'COMMON.SUBMIT' | translate }}</button>
+          <button type="submit" class="btn primary" [disabled]="form.pending || form.invalid || isLoading">
+            {{ 'COMMON.SUBMIT' | translate }}
+          </button>
           <ng-container *ngTemplateOutlet="cancel"></ng-container>
         </div>
         <ng-container *ngTemplateOutlet="back"></ng-container>
