@@ -103,6 +103,7 @@ public class SanityChecker {
         "$limit",
         "$orderby",
         "$eq",
+        "$match",
         "$offset",
         "events.agIdExt.TransferringAgency",
         "events.agIdExt.originatingAgency",
