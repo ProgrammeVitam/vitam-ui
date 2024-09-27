@@ -71,6 +71,7 @@
     "start:identity": "npm run start -- identity",
     "start:ingest": "npm run start -- ingest",
     "start:pastis": "npm run start -- pastis",
+    "start:pastis-standalone": "npm run start -- pastis --configuration=standalone",
     "start:portal": "npm run start -- portal",
     "start:referential": "npm run start -- referential",
     "start:vitamui-library": "ng build vitamui-library --watch",

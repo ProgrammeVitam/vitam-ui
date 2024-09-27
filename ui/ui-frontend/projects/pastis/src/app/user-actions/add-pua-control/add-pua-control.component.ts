@@ -106,7 +106,7 @@ export class UserActionAddPuaControlComponent implements OnInit {
       }
     }
     this.addedItems.length > 0 ? (this.atLeastOneIsSelected = true) : (this.atLeastOneIsSelected = false);
-    this.upateButtonStatusAndDataToSend();
+    this.updateButtonStatusAndDataToSend();
   }
 
   onAddSelectedElement(element: string) {
@@ -117,10 +117,10 @@ export class UserActionAddPuaControlComponent implements OnInit {
       this.allowedChildren = this.allowedChildren.filter((e) => e !== element);
     }
     this.addedItems.length > 0 ? (this.atLeastOneIsSelected = true) : (this.atLeastOneIsSelected = false);
-    this.upateButtonStatusAndDataToSend();
+    this.updateButtonStatusAndDataToSend();
   }
 
-  upateButtonStatusAndDataToSend() {
+  updateButtonStatusAndDataToSend() {
     this.popUpService.setPopUpDataOnClose(this.addedItems);
     this.popUpService.disableYesButton(!this.atLeastOneIsSelected);
   }

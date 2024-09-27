@@ -42,21 +42,18 @@ import { SedaData } from './seda-data';
  * Json node data with nested structure. Each node has a name and a value or a list of children
  */
 export enum TypeConstants {
-  element = 'element',
-  attribute = 'attribute',
+  ELEMENT = 'element',
+  ATTRIBUTE = 'attribute',
 }
 
 /**
  * Json node data with nested structure. Each node has a name and a value or a list of children
  */
-/**
- * Json node data with nested structure. Each node has a name and a value or a list of children
- */
 export enum CardinalityConstants {
-  'Zero or More' = '0-N',
-  'One Or More' = '1-N',
-  'Optional' = '0-1',
-  'Obligatoire' = '1',
+  MANY = '0-N',
+  MANY_REQUIRED = '1-N',
+  ONE = '0-1',
+  ONE_REQUIRED = '1',
 }
 
 /**
@@ -157,10 +154,10 @@ export interface FileNodeInsertAttributeParams {
   elementsToAdd: FileNode[];
 }
 
-export enum nodeNameToLabel {
-  'notice' = 'PROFILE.EDIT_PROFILE.NOTICE_TAB',
-  'ArchiveTransfer' = 'PROFILE.EDIT_PROFILE.ENTETE',
-  'ManagementMetadata' = 'PROFILE.EDIT_PROFILE.REGLES',
-  'DescriptiveMetadata' = 'PROFILE.EDIT_PROFILE.UNITES_ARCHIVES',
-  'DataObjectPackage' = 'PROFILE.EDIT_PROFILE.OBJETS',
-}
+export const nodeLabelMap: { [key: string]: string } = {
+  notice: 'PROFILE.EDIT_PROFILE.NOTICE_TAB',
+  ArchiveTransfer: 'PROFILE.EDIT_PROFILE.ENTETE',
+  ManagementMetadata: 'PROFILE.EDIT_PROFILE.REGLES',
+  DescriptiveMetadata: 'PROFILE.EDIT_PROFILE.UNITES_ARCHIVES',
+  DataObjectPackage: 'PROFILE.EDIT_PROFILE.OBJETS',
+};

@@ -39,35 +39,23 @@ knowledge of the CeCILL-C license and that you accept its terms.
 // Seda elelemtns can be attributes, simple or complex elements
 
 export enum SedaElementConstants {
-  attribute = 'Attribute',
-  simple = 'Simple',
-  complex = 'Complex',
-}
-
-// Seda choice constants : can be yes or no
-export enum SedaChoiceConstants {
-  yes = 'yes',
-  no = 'no',
-}
-
-// Seda Extensible constants : can be yes or no
-export enum SedaExtensibleConstants {
-  yes = 'yes',
-  no = 'no',
+  ATTRIBUTE = 'Attribute',
+  SIMPLE = 'Simple',
+  COMPLEX = 'Complex',
 }
 
 export enum SedaCardinalityConstants {
-  'zeroOrOne' = '0-1',
-  'one' = '1',
-  'oreOrMore' = '1-N',
-  'zeroOrMore' = '0-N',
+  ONE = '0-1',
+  ONE_REQUIRED = '1',
+  MANY = '0-N',
+  MANY_REQUIRED = '1-N',
 }
 
 export enum SedaCollections {
-  'object' = 'Objets',
-  'header' = 'Entete',
-  'rules' = 'Regles',
-  'arborescent' = 'Aborescence',
+  OBJECT = 'Objets',
+  HEADER = 'Entete',
+  RULE = 'Regles',
+  TREE = 'Aborescence',
 }
 
 export interface SedaData {

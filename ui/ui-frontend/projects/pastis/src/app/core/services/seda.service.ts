@@ -54,44 +54,6 @@ export class SedaService {
     this.sedaNode.next(metaModel);
   }
 
-  getSedaNode(currentNode: SedaData, nodeName: string): SedaData | null {
-    if (!(currentNode && nodeName)) return null;
-    if (!currentNode.children) return null;
-    if (nodeName === currentNode.name) return currentNode;
-
-    return currentNode.children.reduce((node: SedaData | null, child: SedaData) => {
-      if (node == null) node = this.getSedaNode(child, nodeName);
-
-      return node;
-    }, null);
-  }
-
-  getSedaNodeRecursively(currentNode: SedaData, nameNode: string): SedaData {
-    let i: number;
-    let currentChild: SedaData;
-    let resultNode: SedaData;
-    if (currentNode) {
-      if (nameNode === currentNode.name) {
-        resultNode = currentNode;
-      } else {
-        // Use a for loop instead of forEach to avoid nested functions
-        // Otherwise "return" will not work properly
-        if (currentNode.children) {
-          for (i = 0; i < currentNode.children.length; i += 1) {
-            currentChild = currentNode.children[i];
-            // Search in the current child
-            const result = this.getSedaNodeRecursively(currentChild, nameNode);
-            // Return the result if the node has been found
-            if (result) {
-              resultNode = result;
-            }
-          }
-        }
-      }
-    }
-    return resultNode;
-  }
-
   // For all correspondent values beetween seda and tree elements,
   // return a SedaData array of elements that does not have
   // an optional (0-1) or an obligatory (1) cardinality.
@@ -99,14 +61,13 @@ export class SedaService {
   // aways be included in the list
   findSelectableElementList(sedaNode: SedaData, fileNode: FileNode): SedaData[] {
     const fileNodesNames = fileNode.children.map((e) => e.name);
-    const allowedSelectableList = sedaNode.children.filter(
+
+    return sedaNode.children.filter(
       (x: SedaData) =>
-        (!fileNodesNames.includes(x.name) && x.cardinality !== CardinalityConstants.Obligatoire.valueOf()) ||
+        (!fileNodesNames.includes(x.name) && x.cardinality !== CardinalityConstants.ONE_REQUIRED.valueOf()) ||
         (fileNodesNames.includes(x.name) &&
-          (x.cardinality === CardinalityConstants['Zero or More'].valueOf() ||
-            x.cardinality === CardinalityConstants['One Or More'].valueOf())),
+          (x.cardinality === CardinalityConstants.MANY.valueOf() || x.cardinality === CardinalityConstants.MANY_REQUIRED.valueOf())),
     );
-    return allowedSelectableList;
   }
 
   /**
@@ -118,17 +79,10 @@ export class SedaService {
     return sedaNode.children.filter((children: SedaData) => children.element === 'Attribute' && sedaNode.collection === collection);
   }
 
-  isSedaNodeObligatory(nodeName: string, sedaParent: SedaData): boolean {
-    if (sedaParent.name === nodeName) {
-      return sedaParent.cardinality.startsWith('1');
-    }
-    if (sedaParent) {
-      for (const child of sedaParent.children) {
-        if (child.name === nodeName) {
-          return child.cardinality.startsWith('1');
-        }
-      }
-    }
+  isMandatory(nodeName: string, sedaNode: SedaData = this.sedaNode.value): boolean {
+    if (nodeName === sedaNode.name) return sedaNode.cardinality.startsWith('1');
+
+    return sedaNode.children.some((child) => this.isMandatory(nodeName, child));
   }
 
   isDuplicated(fieldName: string, sedaParent: SedaData) {
@@ -161,5 +115,11 @@ export class SedaService {
     }
     const childFound = sedaNode.children.find((c) => c.name === nodeName);
     return childFound ? childFound : null;
+  }
+
+  public findSedaNode(nodeName: string, node = this.sedaNode.value): SedaData {
+    if (node.name === nodeName) return node;
+
+    return node.children.reduce((acc, cur) => acc || this.findSedaNode(nodeName, cur), null);
   }
 }

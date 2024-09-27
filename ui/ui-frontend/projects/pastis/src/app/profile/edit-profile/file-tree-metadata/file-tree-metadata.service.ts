@@ -82,7 +82,7 @@ export class FileTreeMetadataService {
       for (const child of clickedNode.children) {
         // There are cases where there are no childrenToExclude declared
         // So we must check if it exists to avoid and undefined of includes error
-        if (childrenToExclude && !childrenToExclude.includes(child.name) && child.type !== TypeConstants.attribute) {
+        if (childrenToExclude && !childrenToExclude.includes(child.name) && child.type !== TypeConstants.ATTRIBUTE) {
           data.push({
             nomDuChampEdit: child.editName,
             id: child.id,
@@ -94,7 +94,7 @@ export class FileTreeMetadataService {
             type: child.dataType,
             enumeration: child.sedaData.enumeration,
           });
-        } else if (!childrenToExclude && child.type !== TypeConstants.attribute) {
+        } else if (!childrenToExclude && child.type !== TypeConstants.ATTRIBUTE) {
           data.push({
             nomDuChampEdit: child.editName,
             id: child.id,
@@ -106,7 +106,7 @@ export class FileTreeMetadataService {
             type: child.dataType,
             enumeration: child.sedaData.enumeration,
           });
-        } else if (clickedNode.type === TypeConstants.element && sedaChild.element === SedaElementConstants.simple) {
+        } else if (clickedNode.type === TypeConstants.ELEMENT && sedaChild.element === SedaElementConstants.SIMPLE) {
           data.push({
             nomDuChampEdit: child.editName,
             id: clickedNode.id,

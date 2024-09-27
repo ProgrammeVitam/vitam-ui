@@ -37,48 +37,42 @@ knowledge of the CeCILL-C license and that you accept its terms.
 */
 import { Injectable, OnDestroy } from '@angular/core';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
-import { BehaviorSubject, mergeMap, ReplaySubject, Subscription } from 'rxjs';
+import { BehaviorSubject, finalize, mergeMap, Observable, Subscription } from 'rxjs';
 import { FileNode, TypeConstants } from '../../models/file-node';
 import { Notice } from '../../models/notice.model';
 import { ProfileDescription } from '../../models/profile-description.model';
 import { ProfileResponse } from '../../models/profile-response';
-import { SedaData, SedaElementConstants } from '../../models/seda-data';
-import { FileTreeMetadataService } from '../../profile/edit-profile/file-tree-metadata/file-tree-metadata.service';
 import { PastisDialogData } from '../../shared/pastis-dialog/classes/pastis-dialog-data';
 import { PastisDialogConfirmComponent } from '../../shared/pastis-dialog/pastis-dialog-confirm/pastis-dialog-confirm.component';
 import { ProfileService } from './profile.service';
 import { SedaService } from './seda.service';
-import { map } from 'rxjs/operators';
+import { filter, map, tap } from 'rxjs/operators';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
 
 @Injectable({
   providedIn: 'root',
 })
 export class FileService implements OnDestroy {
-  currentTree = new ReplaySubject<FileNode[]>();
+  currentTree = new BehaviorSubject<FileNode[]>([]);
+  tree$ = this.currentTree.asObservable();
+
   notice = new BehaviorSubject<ProfileDescription>(null);
   noticeEditable = new BehaviorSubject<Notice>(null);
   nodeChange = new BehaviorSubject<FileNode>(null);
-  allData = new BehaviorSubject<FileNode[]>([]);
+  filteredNode = new BehaviorSubject<FileNode>(null);
 
   currentTreeLoaded = false;
-
-  collectionName = new BehaviorSubject<string>(null);
-  rootTabMetadataName = new BehaviorSubject<string>(null);
-  tabRootNode = new BehaviorSubject<FileNode>(null);
-
-  filteredNode = new BehaviorSubject<FileNode>(null);
-  tabChildrenRulesChange = new BehaviorSubject<string[][]>([]);
-
   parentNodeMap = new Map<FileNode, FileNode>();
-  sedaDataArchiveUnit: SedaData;
 
   private _profileServiceGetProfileSubscription: Subscription;
 
+  public tabChildrenRulesChange = new BehaviorSubject<string[][]>([]);
+
   constructor(
     private profileService: ProfileService,
-    private fileMetadataService: FileTreeMetadataService,
     private dialog: MatDialog,
     private sedaService: SedaService,
+    private loaderService: NgxUiLoaderService,
   ) {}
 
   /**
@@ -103,6 +97,7 @@ export class FileService implements OnDestroy {
    * Get profile from backend with id
    */
   getProfileAndUpdateTree(element: ProfileDescription) {
+    this.loaderService.start();
     this._profileServiceGetProfileSubscription = this.profileService
       .getProfile(element)
       .pipe(
@@ -114,12 +109,14 @@ export class FileService implements OnDestroy {
             })),
           ),
         ),
+        tap(({ profile, metaModel }) => {
+          this.sedaService.setMetaModel(metaModel);
+          this.linkFileNodeToSedaData(null, [profile.profile]);
+          this.updateTreeWithProfile(profile);
+        }),
+        finalize(() => this.loaderService.stop()),
       )
-      .subscribe(({ profile, metaModel }) => {
-        this.sedaService.setMetaModel(metaModel);
-        this.linkFileNodeToSedaData(null, [profile.profile], [metaModel]);
-        this.updateTreeWithProfile(profile);
-      });
+      .subscribe();
   }
 
   /**
@@ -128,52 +125,13 @@ export class FileService implements OnDestroy {
    * Les nodes correspondant aux ArchivesUnit
    * se réfèrent à la définition SEDA de l'ArchiveUnit mère (ils sont récursifs...)
    */
-  linkFileNodeToSedaData(parent: FileNode, nodes: FileNode[], sedaData: SedaData[]) {
-    if (!sedaData) {
-      sedaData = [];
-    }
-    Array.prototype.forEach.call(nodes, (node: FileNode) => {
-      if (parent) {
-        node.parent = parent;
-      }
-      const nodeName: string = node.name === 'xml:id' ? 'id' : node.name;
-      if (nodeName) {
-        let sedaDataMatch: SedaData;
+  linkFileNodeToSedaData(parent: FileNode, nodes: FileNode[] = []) {
+    nodes.forEach((node: FileNode) => {
+      if (parent) node.parent = parent;
 
-        // Si le node en cours est une ArchiveUnit, lui même enfant d'une ArchiveUnit...
-        if (nodeName === 'ArchiveUnit' && this.sedaDataArchiveUnit !== undefined) {
-          // Alors on utilise la définition SEDA de l'ArchiveUnit mère..
-          sedaDataMatch = this.sedaDataArchiveUnit;
-        } else {
-          // Sinon on recherche la définition SEDA dans l'arbre
-          sedaDataMatch = sedaData.find((seda) => seda.name === nodeName);
-          // sedaDataMatch = this.sedaService.getSedaNodeRecursively(sedaData[0],nodeName)
-        }
-        if (!sedaDataMatch) {
-          // Sometimes,the sedaData has no property children, but many siblings (e.g. elements on the same level of the tree)
-          // In this case, the recursivity must be used on each symbling since the service getSedaNodeRecursively
-          // expects a tree root element with Children key
-          for (const element of sedaData) {
-            const resultRecursity = this.sedaService.getSedaNodeRecursively(element, nodeName);
-            if (resultRecursity) {
-              sedaDataMatch = resultRecursity;
-              break;
-            }
-          }
-        } else {
-          // Si le node en cours est l'achive ArchiveUnit mère, on la sauvegarde pour l'utiliser pour les ArchivesUnit enfants
-          if (sedaDataMatch.name === 'ArchiveUnit' && this.sedaDataArchiveUnit === undefined) {
-            this.sedaDataArchiveUnit = sedaDataMatch;
-            // On introduit la récursivité sur les ArchivesUnit
-            this.sedaDataArchiveUnit.children.find((c: { name: string }) => c.name === 'ArchiveUnit').children =
-              this.sedaDataArchiveUnit.children;
-          }
-        }
-        node.sedaData = sedaDataMatch;
-        if (node.children.length > 0) {
-          this.linkFileNodeToSedaData(node, node.children, node.sedaData?.children);
-        }
-      }
+      const nodeName = node.name === 'xml:id' ? 'id' : node.name;
+      node.sedaData = parent?.sedaData ? this.sedaService.findSedaNode(nodeName, parent.sedaData) : this.sedaService.findSedaNode(nodeName);
+      this.linkFileNodeToSedaData(node, node.children);
     });
   }
 
@@ -190,19 +148,16 @@ export class FileService implements OnDestroy {
     }
   }
 
-  openPopup(popData: PastisDialogData) {
-    const dialogConfirmRef = this.dialog.open(PastisDialogConfirmComponent, {
-      width: popData.width,
-      height: popData.height,
-      data: popData,
-      panelClass: 'pastis-popup-modal-box',
-    });
-    return new Promise((resolve, reject) => {
-      dialogConfirmRef.afterClosed().subscribe((data) => {
-        resolve(data);
-        // console.log('The confirm dialog was closed with data : ', data);
-      }, reject);
-    });
+  openDialog(popData: PastisDialogData): Observable<any> {
+    return this.dialog
+      .open(PastisDialogConfirmComponent, {
+        width: popData.width,
+        height: popData.height,
+        data: popData,
+        panelClass: 'pastis-popup-modal-box',
+      })
+      .afterClosed()
+      .pipe(filter((data: any) => Boolean(data)));
   }
 
   findChildById(nodeId: number, node: FileNode): FileNode {
@@ -216,14 +171,6 @@ export class FileService implements OnDestroy {
     }
   }
 
-  setCollectionName(collectionName: string) {
-    this.collectionName.next(collectionName);
-  }
-
-  setTabRootMetadataName(rootTabMetadataName: string) {
-    this.rootTabMetadataName.next(rootTabMetadataName);
-  }
-
   setNewChildrenRules(rules: string[][]) {
     this.tabChildrenRulesChange.next(rules);
   }
@@ -233,7 +180,7 @@ export class FileService implements OnDestroy {
    * @param fileNode The concerned FileNode
    */
   deleteAllAttributes(fileNode: FileNode): void {
-    fileNode.children = fileNode.children.filter((c) => c.type !== TypeConstants.attribute);
+    fileNode.children = fileNode.children.filter((c) => c.type !== TypeConstants.ATTRIBUTE);
   }
 
   removeItem(nodesToBeDeleted: FileNode[], root: FileNode) {
@@ -256,54 +203,29 @@ export class FileService implements OnDestroy {
     // console.log('No nodes will be deleted');
   }
 
-  getFileNodeByName(fileTree: FileNode, nodeNameToFind: string): FileNode {
-    if (fileTree) {
-      if (fileTree.name === nodeNameToFind) {
-        return fileTree;
-      }
-      for (const child of fileTree.children) {
-        const res = this.getFileNodeByName(child, nodeNameToFind);
-        if (res) {
-          return res;
-        }
-      }
-    }
+  getFileNodeByName(fileTree: FileNode, nodeNameToFind: string): FileNode | undefined {
+    return this.getFileNodeByPredicate(fileTree, (node) => node.name === nodeNameToFind);
   }
 
-  getFileNodeById(fileTree: FileNode, nodeIdToFind: number): any {
-    if (fileTree) {
-      if (fileTree.id === nodeIdToFind) {
-        return fileTree;
-      }
-      for (const child of fileTree.children) {
-        const res = this.getFileNodeById(child, nodeIdToFind);
-        if (res) {
-          return res;
-        }
-      }
-    }
+  getFileNodeById(fileTree: FileNode, nodeIdToFind: number): FileNode | undefined {
+    return this.getFileNodeByPredicate(fileTree, (node) => node.id === nodeIdToFind);
   }
 
-  updateMedataTable(node: FileNode) {
-    // let isNodeComplex = this.sedaService.checkSedaElementType(node.name,this.sedaService.selectedSedaNodeParent.getValue())
-    const rulesFromService = this.tabChildrenRulesChange.getValue();
-    const tabChildrenToInclude = rulesFromService[0];
-    const tabChildrenToExclude = rulesFromService[1];
-    this.sedaService.selectedSedaNode.next(node.sedaData);
-    const dataTable = this.fileMetadataService.fillDataTable(node.sedaData, node, tabChildrenToInclude, tabChildrenToExclude);
-    const hasAtLeastOneComplexChild = node.children.some((el) => el.type === TypeConstants.element);
+  getFileNodeByPredicate(fileTree: FileNode, predicate: (node: FileNode) => boolean): FileNode | undefined {
+    if (!fileTree) return undefined;
 
-    if (node.sedaData.element === SedaElementConstants.complex) {
-      this.fileMetadataService.shouldLoadMetadataTable.next(hasAtLeastOneComplexChild);
-      // console.log('The current tab root node is : ', node);
-      this.sedaService.selectedSedaNode.next(node.sedaData);
-      // console.log('Filled data on table : ', dataTable, '...should load : '
-      //    , this.fileMetadataService.shouldLoadMetadataTable.getValue());
-      this.fileMetadataService.dataSource.next(dataTable);
-    } else {
-      this.fileMetadataService.shouldLoadMetadataTable.next(true);
-      this.fileMetadataService.dataSource.next(dataTable);
+    if (predicate(fileTree)) {
+      return fileTree;
     }
+
+    for (const child of fileTree.children) {
+      const result = this.getFileNodeByPredicate(child, predicate);
+      if (result) {
+        return result;
+      }
+    }
+
+    return undefined;
   }
 
   setNotice(inverse: boolean) {
@@ -333,9 +255,12 @@ export class FileService implements OnDestroy {
   }
 
   ngOnDestroy() {
-    // console.log('fileService.currentTreeLoaded2 ' + this.currentTreeLoaded);
     if (this._profileServiceGetProfileSubscription != null) {
       this._profileServiceGetProfileSubscription.unsubscribe();
     }
+  }
+
+  getTree(name: string): FileNode {
+    return this.getFileNodeByName(this.currentTree.value[0], name);
   }
 }

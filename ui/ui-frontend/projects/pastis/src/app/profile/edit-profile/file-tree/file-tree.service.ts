@@ -38,18 +38,40 @@ knowledge of the CeCILL-C license and that you accept its terms.
 import { NestedTreeControl } from '@angular/cdk/tree';
 import { Injectable } from '@angular/core';
 import { MatTreeNestedDataSource } from '@angular/material/tree';
-import { Subject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { FileNode } from '../../../models/file-node';
+import { Logger } from 'vitamui-library';
 
 @Injectable({
   providedIn: 'root',
 })
 export class FileTreeService {
-  updateMedataTable: Subject<FileNode>;
-  nestedDataSource: MatTreeNestedDataSource<FileNode>;
-  nestedTreeControl: NestedTreeControl<FileNode>;
+  private nestedDataSource = new MatTreeNestedDataSource<FileNode>();
 
-  constructor() {
-    this.updateMedataTable = new Subject<FileNode>();
+  updateMetadataTable = new Subject<FileNode>();
+  nestedTreeControl = new NestedTreeControl<FileNode>((dataNode) => dataNode.children);
+
+  private data = new BehaviorSubject<FileNode[]>([]);
+  data$ = this.data.asObservable();
+
+  private selectedNode = new BehaviorSubject<FileNode>(null);
+  selectedNode$ = this.selectedNode.asObservable();
+
+  constructor(private logger: Logger) {}
+
+  public setNestedDataSourceData(nodes: FileNode[]) {
+    const [node] = nodes;
+    this.logger.log(this, 'File tree updated', nodes, node?.name);
+    this.nestedDataSource.data = nodes;
+    this.nestedTreeControl.dataNodes = nodes;
+    this.data.next(nodes);
+  }
+
+  public getNestedDataSource(): MatTreeNestedDataSource<FileNode> {
+    return this.nestedDataSource;
+  }
+
+  public selectNode(node: FileNode): void {
+    this.selectedNode.next(node);
   }
 }
