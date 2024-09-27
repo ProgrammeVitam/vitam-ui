@@ -110,7 +110,7 @@ public class SanityChecker {
         "authorizationRequestReplyIdentifier",
         "$limit",
         "$orderby",
-        "$eq",
+        "$match",
         "$offset",
         "events.agIdExt.TransferringAgency",
         "events.agIdExt.originatingAgency",
