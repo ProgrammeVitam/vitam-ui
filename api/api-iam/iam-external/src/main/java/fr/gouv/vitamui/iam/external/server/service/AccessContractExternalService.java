@@ -36,7 +36,7 @@
  */
 package fr.gouv.vitamui.iam.external.server.service;
 
-import fr.gouv.vitamui.commons.api.domain.AccessContractsDto;
+import fr.gouv.vitamui.commons.api.domain.AccessContractDto;
 import fr.gouv.vitamui.commons.rest.client.BaseRestClient;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import fr.gouv.vitamui.commons.rest.client.accesscontract.AccessContractInternalRestClient;
@@ -65,11 +65,11 @@ public class AccessContractExternalService extends AbstractInternalClientService
         this.accessContractInternalRestClient = accessContractInternalRestClient;
     }
 
-    public List<AccessContractsDto> getAll() {
+    public List<AccessContractDto> getAll() {
         return accessContractInternalRestClient.getAll(getInternalHttpContext());
     }
 
-    public AccessContractsDto getAccessContractById(String identifier) {
+    public AccessContractDto getAccessContractById(String identifier) {
         return accessContractInternalRestClient.getAccessContractById(getInternalHttpContext(), identifier);
     }
 

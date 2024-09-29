@@ -58,6 +58,8 @@ import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.json.JsonHandler;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.administration.AccessContractModel;
+import fr.gouv.vitamui.commons.api.converter.AccessContractConverter;
+import fr.gouv.vitamui.commons.api.domain.AccessContractDto;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.dtos.ErrorImportFile;
@@ -67,11 +69,10 @@ import fr.gouv.vitamui.commons.api.exception.ConflictException;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
 import fr.gouv.vitamui.commons.vitam.api.administration.AccessContractService;
+import fr.gouv.vitamui.commons.vitam.api.dto.AccessContractResponseDto;
 import fr.gouv.vitamui.iam.internal.client.ApplicationInternalRestClient;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import fr.gouv.vitamui.referential.common.dsl.VitamQueryHelper;
-import fr.gouv.vitamui.referential.common.dto.AccessContractDto;
-import fr.gouv.vitamui.referential.common.dto.AccessContractResponseDto;
 import fr.gouv.vitamui.referential.common.service.VitamUIAccessContractService;
 import fr.gouv.vitamui.referential.internal.server.utils.ExportCSVUtils;
 import fr.gouv.vitamui.referential.internal.server.utils.ImportCSVUtils;
@@ -94,7 +95,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -114,8 +115,6 @@ public class AccessContractInternalService {
 
     private final ObjectMapper objectMapper;
 
-    private final AccessContractConverter converter;
-
     private final LogbookService logbookService;
 
     private final ApplicationInternalRestClient applicationInternalRestClient;
@@ -127,7 +126,6 @@ public class AccessContractInternalService {
         AccessContractService accessContractService,
         VitamUIAccessContractService vitamUIAccessContractService,
         ObjectMapper objectMapper,
-        AccessContractConverter converter,
         LogbookService logbookService,
         ApplicationInternalRestClient applicationInternalRestClient,
         InternalSecurityService internalSecurityService
@@ -135,7 +133,6 @@ public class AccessContractInternalService {
         this.accessContractService = accessContractService;
         this.vitamUIAccessContractService = vitamUIAccessContractService;
         this.objectMapper = objectMapper;
-        this.converter = converter;
         this.logbookService = logbookService;
         this.applicationInternalRestClient = applicationInternalRestClient;
         this.internalSecurityService = internalSecurityService;
@@ -155,7 +152,7 @@ public class AccessContractInternalService {
             if (accessContractResponseDto.getResults().isEmpty()) {
                 return null;
             } else {
-                return converter.convertVitamToDto(accessContractResponseDto.getResults().get(0));
+                return AccessContractConverter.convertVitamToDto(accessContractResponseDto.getResults().get(0));
             }
         } catch (VitamClientException | JsonProcessingException e) {
             throw new InternalServerException("Unable to get Access Contract", e);
@@ -172,7 +169,7 @@ public class AccessContractInternalService {
                 AccessContractResponseDto.class
             );
 
-            return converter.convertVitamsToDtos(accessContractResponseDto.getResults());
+            return AccessContractConverter.convertVitamsToDtos(accessContractResponseDto.getResults());
         } catch (VitamClientException | JsonProcessingException e) {
             throw new InternalServerException("Unable to get Access Contracts", e);
         }
@@ -200,7 +197,7 @@ public class AccessContractInternalService {
             AccessContractResponseDto results = this.findAll(vitamContext, query);
             boolean hasMore = pageNumber * size + results.getHits().getSize() < results.getHits().getTotal();
 
-            final List<AccessContractDto> valuesDto = converter.convertVitamsToDtos(results.getResults());
+            final List<AccessContractDto> valuesDto = AccessContractConverter.convertVitamsToDtos(results.getResults());
             return new PaginatedValuesDto<>(valuesDto, pageNumber, results.getHits().getSize(), hasMore);
         } catch (InvalidParseOperationException | InvalidCreateOperationException ioe) {
             throw new InternalServerException("Can't create dsl query to get paginated access contracts", ioe);
@@ -224,7 +221,7 @@ public class AccessContractInternalService {
         try {
             LOGGER.debug("Access Contract Check EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
             Integer accessContractCheckedTenant = accessContractService.checkAbilityToCreateAccessContractInVitam(
-                converter.convertDtosToVitams(Arrays.asList(accessContractDto)),
+                AccessContractConverter.convertDtosToVitams(Collections.singletonList(accessContractDto)),
                 vitamContext.getApplicationSessionId()
             );
             return !vitamContext.getTenantId().equals(accessContractCheckedTenant);
@@ -239,7 +236,7 @@ public class AccessContractInternalService {
         try {
             requestResponse = accessContractService.createAccessContracts(
                 vitamContext,
-                converter.convertDtosToVitams(List.of(accessContractDto))
+                AccessContractConverter.convertDtosToVitams(List.of(accessContractDto))
             );
         } catch (InvalidParseOperationException | AccessExternalClientException | IOException e) {
             throw new InternalServerException("Can't create access contract", e);
@@ -274,7 +271,7 @@ public class AccessContractInternalService {
             }
 
             ArrayNode actions = JsonHandler.createArrayNode();
-            JsonNode fieldsUpdated = converter.convertToUpperCaseFields(partialDto);
+            JsonNode fieldsUpdated = AccessContractConverter.convertToUpperCaseFields(partialDto);
             ObjectNode action = JsonHandler.createObjectNode();
             action.set("$set", fieldsUpdated);
             actions.add(action);

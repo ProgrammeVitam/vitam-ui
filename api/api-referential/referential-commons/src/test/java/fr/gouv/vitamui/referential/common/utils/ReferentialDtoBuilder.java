@@ -38,8 +38,8 @@ package fr.gouv.vitamui.referential.common.utils;
 
 import fr.gouv.vitam.common.model.administration.ActivationStatus;
 import fr.gouv.vitam.common.model.administration.ContextStatus;
+import fr.gouv.vitamui.commons.api.domain.AccessContractDto;
 import fr.gouv.vitamui.commons.rest.dto.RuleDto;
-import fr.gouv.vitamui.referential.common.dto.AccessContractDto;
 import fr.gouv.vitamui.referential.common.dto.ContextDto;
 import fr.gouv.vitamui.referential.common.dto.IngestContractDto;
 import fr.gouv.vitamui.referential.common.dto.PermissionDto;

@@ -51,6 +51,7 @@ import fr.gouv.vitam.common.json.JsonHandler;
 import fr.gouv.vitam.common.model.RequestResponseOK;
 import fr.gouv.vitam.common.model.administration.AccessContractModel;
 import fr.gouv.vitam.common.model.logbook.LogbookOperation;
+import fr.gouv.vitamui.commons.api.domain.AccessContractDto;
 import fr.gouv.vitamui.commons.api.dtos.ErrorImportFile;
 import fr.gouv.vitamui.commons.api.enums.ErrorImportFileMessage;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
@@ -61,10 +62,8 @@ import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
 import fr.gouv.vitamui.commons.vitam.api.administration.AccessContractService;
 import fr.gouv.vitamui.iam.internal.client.ApplicationInternalRestClient;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
-import fr.gouv.vitamui.referential.common.dto.AccessContractDto;
 import fr.gouv.vitamui.referential.common.service.VitamUIAccessContractService;
 import fr.gouv.vitamui.referential.internal.server.accesscontract.AccessContractCSVUtils;
-import fr.gouv.vitamui.referential.internal.server.accesscontract.AccessContractConverter;
 import fr.gouv.vitamui.referential.internal.server.accesscontract.AccessContractInternalService;
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.BeforeEach;
@@ -116,12 +115,10 @@ public class AccessContractInternalServiceTest {
     @BeforeEach
     public void setUp() {
         ObjectMapper objectMapper = new ObjectMapper().disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-        AccessContractConverter converter = new AccessContractConverter();
         accessContractInternalService = new AccessContractInternalService(
             accessContractService,
             vitamUIAccessContractService,
             objectMapper,
-            converter,
             logbookService,
             applicationInternalRestClient,
             internalSecurityService

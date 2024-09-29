@@ -1,6 +1,7 @@
 package fr.gouv.vitamui.referential.internal.server.accesscontract;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import fr.gouv.vitamui.commons.api.converter.AccessContractConverter;
 import lombok.SneakyThrows;
 import org.junit.Test;
 
@@ -13,13 +14,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class AccessContractConverterTest {
 
-    private final AccessContractConverter accessContractConverter = new AccessContractConverter();
-
     @Test
     @SneakyThrows
     public void should_convert_empty_access_contract() {
         Map<String, Object> emptyAccessContract = Map.of();
-        JsonNode mapped = accessContractConverter.convertToUpperCaseFields(emptyAccessContract);
+        JsonNode mapped = AccessContractConverter.convertToUpperCaseFields(emptyAccessContract);
         assertThat(mapped).hasToString("{}");
     }
 
@@ -27,7 +26,7 @@ public class AccessContractConverterTest {
     @SneakyThrows
     public void should_convert_partial_access_contract() {
         Map<String, Object> partialDto = givenPartialAccessContract();
-        JsonNode mapped = accessContractConverter.convertToUpperCaseFields(partialDto);
+        JsonNode mapped = AccessContractConverter.convertToUpperCaseFields(partialDto);
         String expected =
             "{\"DeactivationDate\":\"deactivationDate\",\"EveryDataObjectVersion\":true,\"OriginatingAgencies\":[\"r3\",\"r4\"],\"Description\":\"description\",\"CreationDate\":\"creationDate\",\"AccessLog\":\"accessLog\",\"RootUnits\":[\"r1\",\"r2\"],\"DataObjectVersion\":[\"v1\",\"v2\"],\"WritingRestrictedDesc\":true,\"ExcludedRootUnits\":[\"r3\",\"r4\"],\"LastUpdate\":\"lastUpdate\",\"Name\":\"name\",\"RuleCategoryToFilter\":[\"r3\",\"r4\"],\"EveryOriginatingAgency\":false,\"WritingPermission\":true,\"ActivationDate\":\"activationDate\",\"Status\":\"status\"}";
         assertThat(mapped).hasToString(expected);

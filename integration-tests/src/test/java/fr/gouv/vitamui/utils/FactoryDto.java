@@ -1,5 +1,6 @@
 package fr.gouv.vitamui.utils;
 
+import fr.gouv.vitamui.commons.api.domain.AccessContractDto;
 import fr.gouv.vitamui.commons.api.domain.ExternalParametersDto;
 import fr.gouv.vitamui.commons.api.domain.GroupDto;
 import fr.gouv.vitamui.commons.api.domain.OwnerDto;
@@ -13,7 +14,6 @@ import fr.gouv.vitamui.commons.rest.dto.RuleDto;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.common.utils.IamDtoBuilder;
-import fr.gouv.vitamui.referential.common.dto.AccessContractDto;
 import fr.gouv.vitamui.referential.common.dto.ContextDto;
 import fr.gouv.vitamui.referential.common.dto.IngestContractDto;
 import fr.gouv.vitamui.referential.common.dto.SecurityProfileDto;

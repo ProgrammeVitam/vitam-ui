@@ -37,7 +37,7 @@
 package fr.gouv.vitamui.commons.rest.client.accesscontract;
 
 import fr.gouv.vitamui.commons.api.CommonConstants;
-import fr.gouv.vitamui.commons.api.domain.AccessContractsDto;
+import fr.gouv.vitamui.commons.api.domain.AccessContractDto;
 import fr.gouv.vitamui.commons.rest.client.AbstractHttpContext;
 import fr.gouv.vitamui.commons.rest.client.BaseRestClient;
 import org.slf4j.Logger;
@@ -73,10 +73,10 @@ public class AccessContractInternalRestClient<C extends AbstractHttpContext> ext
      *
      * @param context rest context
      */
-    public List<AccessContractsDto> getAll(final C context) {
+    public List<AccessContractDto> getAll(final C context) {
         final MultiValueMap<String, String> headers = buildHeaders(context);
         final HttpEntity<Void> request = new HttpEntity<>(headers);
-        final ResponseEntity<List<AccessContractsDto>> response = restTemplate.exchange(
+        final ResponseEntity<List<AccessContractDto>> response = restTemplate.exchange(
             getUrl() + "/accesscontracts",
             HttpMethod.GET,
             request,
@@ -86,13 +86,13 @@ public class AccessContractInternalRestClient<C extends AbstractHttpContext> ext
         return response.getBody();
     }
 
-    public AccessContractsDto getAccessContractById(final C context, String identifier) {
+    public AccessContractDto getAccessContractById(final C context, String identifier) {
         final HttpEntity<Void> request = new HttpEntity<>(buildHeaders(context));
-        final ResponseEntity<AccessContractsDto> response = restTemplate.exchange(
+        final ResponseEntity<AccessContractDto> response = restTemplate.exchange(
             getUrl() + "/accesscontracts/" + identifier,
             HttpMethod.GET,
             request,
-            AccessContractsDto.class
+            AccessContractDto.class
         );
         checkResponse(response);
         return response.getBody();

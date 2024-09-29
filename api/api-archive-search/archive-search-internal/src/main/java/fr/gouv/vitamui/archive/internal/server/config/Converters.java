@@ -37,16 +37,13 @@
 package fr.gouv.vitamui.archive.internal.server.config;
 
 import fr.gouv.vitamui.archive.internal.server.searchcriteria.converter.SearchCriteriaHistoryConverter;
-import fr.gouv.vitamui.archive.internal.server.service.AccessContractConverter;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-// TODO Commonize it with iam-internal in api-commons
+// TODO Commonize it with iam-internal in api-commons // can be deleted ?
 @Getter
 @AllArgsConstructor
 public class Converters {
-
-    private AccessContractConverter accessContractConverter;
 
     private SearchCriteriaHistoryConverter searchCriteriaHistoryConverter;
 }

@@ -37,7 +37,6 @@
 package fr.gouv.vitamui.iam.internal.server.config;
 
 import fr.gouv.vitamui.iam.internal.server.application.converter.ApplicationConverter;
-import fr.gouv.vitamui.iam.internal.server.common.converter.AccessContractConverter;
 import fr.gouv.vitamui.iam.internal.server.common.converter.AddressConverter;
 import fr.gouv.vitamui.iam.internal.server.customer.converter.CustomerConverter;
 import fr.gouv.vitamui.iam.internal.server.externalParameters.converter.ExternalParametersConverter;
@@ -154,11 +153,6 @@ public class ConverterConfig {
             externalParametersConverter,
             externalParamProfileConverter
         );
-    }
-
-    @Bean
-    public AccessContractConverter accessContractConverter() {
-        return new AccessContractConverter();
     }
 
     @Bean

@@ -44,11 +44,11 @@ import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.administration.AccessContractModel;
 import fr.gouv.vitamui.commons.api.CommonConstants;
-import fr.gouv.vitamui.commons.api.domain.AccessContractsDto;
+import fr.gouv.vitamui.commons.api.converter.AccessContractConverter;
+import fr.gouv.vitamui.commons.api.domain.AccessContractDto;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.vitam.api.administration.AccessContractService;
-import fr.gouv.vitamui.iam.common.dto.AccessContractsResponseDto;
-import fr.gouv.vitamui.iam.internal.server.common.converter.AccessContractConverter;
+import fr.gouv.vitamui.commons.vitam.api.dto.AccessContractResponseDto;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import io.swagger.annotations.Api;
 import org.slf4j.Logger;
@@ -76,46 +76,43 @@ public class AccessContractInternalController {
     protected final InternalSecurityService securityService;
     private final AccessContractService accessContractService;
     private final ObjectMapper objectMapper;
-    private final AccessContractConverter converter;
 
     @Autowired
     public AccessContractInternalController(
         InternalSecurityService securityService,
         AccessContractService accessContractService,
-        AccessContractConverter converter,
         ObjectMapper objectMapper
     ) {
         this.securityService = securityService;
         this.accessContractService = accessContractService;
         this.objectMapper = objectMapper;
-        this.converter = converter;
     }
 
     @GetMapping("/accesscontracts")
-    public List<AccessContractsDto> getAll() {
+    public List<AccessContractDto> getAll() {
         final RequestResponse<AccessContractModel> requestResponse;
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
 
         try {
             requestResponse = accessContractService.findAccessContracts(vitamContext, new Select().getFinalSelect());
-            final AccessContractsResponseDto accessContractResponseDto = objectMapper.treeToValue(
+            final AccessContractResponseDto accessContractResponseDto = objectMapper.treeToValue(
                 requestResponse.toJsonNode(),
-                AccessContractsResponseDto.class
+                AccessContractResponseDto.class
             );
 
-            return converter.convertVitamsToDtos(accessContractResponseDto.getResults());
+            return AccessContractConverter.convertVitamsToDtos(accessContractResponseDto.getResults());
         } catch (VitamClientException | JsonProcessingException e) {
             throw new InternalServerException("Unable to get Access Contrats", e);
         }
     }
 
     @GetMapping(path = "/accesscontracts/{identifier:.+}")
-    public AccessContractsDto getAccessContractById(final @PathVariable("identifier") String identifier)
+    public AccessContractDto getAccessContractById(final @PathVariable("identifier") String identifier)
         throws UnsupportedEncodingException {
         LOGGER.debug(
             "get accessContract identifier={} / {}",
             identifier,
-            URLDecoder.decode(identifier, StandardCharsets.UTF_8.toString())
+            URLDecoder.decode(identifier, StandardCharsets.UTF_8)
         );
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
 
@@ -125,14 +122,14 @@ public class AccessContractInternalController {
                 vitamContext,
                 identifier
             );
-            final AccessContractsResponseDto accessContractResponseDto = objectMapper.treeToValue(
+            final AccessContractResponseDto accessContractResponseDto = objectMapper.treeToValue(
                 requestResponse.toJsonNode(),
-                AccessContractsResponseDto.class
+                AccessContractResponseDto.class
             );
-            if (accessContractResponseDto.getResults().size() == 0) {
+            if (accessContractResponseDto.getResults().isEmpty()) {
                 return null;
             } else {
-                return converter.convertVitamToDto(accessContractResponseDto.getResults().get(0));
+                return AccessContractConverter.convertVitamToDto(accessContractResponseDto.getResults().get(0));
             }
         } catch (VitamClientException | JsonProcessingException e) {
             throw new InternalServerException("Unable to get Access Contrat", e);

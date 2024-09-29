@@ -34,31 +34,43 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-package fr.gouv.vitamui.archive.internal.server.service;
+package fr.gouv.vitamui.commons.api.converter;
 
-import fr.gouv.vitamui.archives.search.common.dto.AccessContractDto;
-import fr.gouv.vitamui.archives.search.common.dto.AccessContractVitamDto;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import fr.gouv.vitam.common.json.JsonHandler;
+import fr.gouv.vitamui.commons.api.domain.AccessContractDto;
 import fr.gouv.vitamui.commons.api.domain.AccessContractModelDto;
 import fr.gouv.vitamui.commons.utils.VitamUIUtils;
+import lombok.experimental.UtilityClass;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
+@UtilityClass
 public class AccessContractConverter {
 
-    public AccessContractVitamDto convertDtoToVitam(final AccessContractDto dto) {
-        return VitamUIUtils.copyProperties(dto, new AccessContractVitamDto());
+    public AccessContractModelDto convertDtoToVitam(final AccessContractDto dto) {
+        return VitamUIUtils.copyProperties(dto, new AccessContractModelDto());
     }
 
-    public AccessContractDto convertVitamToDto(final AccessContractVitamDto accessContract) {
+    public AccessContractDto convertVitamToDto(final AccessContractModelDto accessContract) {
         return VitamUIUtils.copyProperties(accessContract, new AccessContractDto());
     }
 
     public List<AccessContractModelDto> convertDtosToVitams(final List<AccessContractDto> dtos) {
-        return dtos.stream().map(this::convertDtoToVitam).collect(Collectors.toList());
+        return dtos.stream().map(AccessContractConverter::convertDtoToVitam).collect(Collectors.toList());
     }
 
-    public List<AccessContractDto> convertVitamsToDtos(final List<AccessContractVitamDto> accessContracts) {
-        return accessContracts.stream().map(this::convertVitamToDto).collect(Collectors.toList());
+    public List<AccessContractDto> convertVitamsToDtos(final List<AccessContractModelDto> accessContracts) {
+        return accessContracts.stream().map(AccessContractConverter::convertVitamToDto).collect(Collectors.toList());
+    }
+
+    public JsonNode convertToUpperCaseFields(Map<String, Object> partialDto) {
+        ObjectNode propertiesToUpdate = JsonHandler.createObjectNode();
+        partialDto.forEach((fieldName, value) -> propertiesToUpdate.putPOJO(StringUtils.capitalize(fieldName), value));
+        return propertiesToUpdate;
     }
 }

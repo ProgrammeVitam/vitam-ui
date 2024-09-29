@@ -45,7 +45,7 @@ import java.util.Set;
 
 @ToString
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class AccessContractDto implements Serializable {
+public class AccessContractDto extends IdDto implements Serializable {
 
     private Integer tenant;
 
@@ -71,25 +71,35 @@ public class AccessContractDto implements Serializable {
 
     private Boolean writingRestrictedDesc;
 
-    private Boolean everyOriginatingAgency;
-
     private Boolean everyDataObjectVersion;
 
     private String accessLog;
-
-    private Set<String> ruleCategoryToFilter;
-
-    private Set<String> ruleCategoryToFilterForTheOtherOriginatingAgencies;
-
-    private Set<String> originatingAgencies;
-
-    private Boolean doNotFilterFilingSchemes;
 
     private Set<String> dataObjectVersion;
 
     private Set<String> rootUnits;
 
     private Set<String> excludedRootUnits;
+    /**
+     * all originating agencies are concerned - means originatingAgencies is empty.
+     */
+    private Boolean everyOriginatingAgency;
+    /**
+     * the originating agencies concerned
+     */
+    private Set<String> originatingAgencies;
+    /**
+     * the management rules to be applied for the originating agencies concerned
+     */
+    private Set<String> ruleCategoryToFilter;
+    /**
+     * the management rules to be applied for all the other originating agencies (the ones that are not mentionned above)
+     */
+    private Set<String> ruleCategoryToFilterForTheOtherOriginatingAgencies;
+    /**
+     * if set : filing plans are not affected by filtering rules mentionned above
+     */
+    private Boolean doNotFilterFilingSchemes;
 
     @JsonProperty("tenant")
     public void setTenant(Integer tenant) {

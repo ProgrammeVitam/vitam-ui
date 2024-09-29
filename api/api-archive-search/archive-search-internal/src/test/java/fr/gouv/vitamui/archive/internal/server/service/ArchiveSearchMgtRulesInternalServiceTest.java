@@ -58,7 +58,6 @@ import fr.gouv.vitamui.commons.vitam.api.access.UnitService;
 import fr.gouv.vitamui.commons.vitam.api.administration.AccessContractService;
 import fr.gouv.vitamui.commons.vitam.api.dto.AccessContractResponseDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
-import fr.gouv.vitamui.iam.common.dto.AccessContractsResponseDto;
 import fr.gouv.vitamui.iam.common.dto.AccessContractsVitamDto;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -305,13 +304,13 @@ public class ArchiveSearchMgtRulesInternalServiceTest {
         return accessContractModel;
     }
 
-    AccessContractsResponseDto createAccessContractsResponseDto(
+    AccessContractResponseDto createAccessContractsResponseDto(
         String identifier,
         String name,
         Integer tenant,
         Boolean writingPermission
     ) {
-        AccessContractsResponseDto accessContractModel = new AccessContractsResponseDto();
+        AccessContractResponseDto accessContractModel = new AccessContractResponseDto();
         accessContractModel.setResults(
             List.of(createAccessContractsVitamDto(identifier, name, tenant, writingPermission))
         );

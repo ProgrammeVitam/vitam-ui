@@ -36,8 +36,8 @@
  */
 package fr.gouv.vitamui.referential.external.server.rest;
 
+import fr.gouv.vitamui.commons.api.domain.AccessContractDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
-import fr.gouv.vitamui.referential.common.dto.AccessContractDto;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
 import fr.gouv.vitamui.referential.external.server.service.AccessContractExternalService;
 import org.junit.Test;

@@ -42,9 +42,9 @@ import fr.gouv.vitam.access.external.common.exception.AccessExternalClientExcept
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.model.RequestResponse;
+import fr.gouv.vitamui.commons.api.domain.AccessContractModelDto;
 import fr.gouv.vitamui.commons.vitam.api.administration.AccessContractService;
 import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
-import fr.gouv.vitamui.referential.common.dto.AccessContractVitamDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,14 +60,14 @@ public class VitamUIAccessContractService {
         this.adminExternalClient = adminExternalClient;
     }
 
-    public RequestResponse<AccessContractVitamDto> patchAccessContract(
+    public RequestResponse<AccessContractModelDto> patchAccessContract(
         final VitamContext vitamContext,
         final String id,
         JsonNode jsonNode
     ) throws InvalidParseOperationException, AccessExternalClientException {
         LOGGER.debug("patch: {}, {}", id, jsonNode);
         LOGGER.debug("Access Contract EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
-        RequestResponse<AccessContractVitamDto> response = adminExternalClient.updateAccessContract(
+        RequestResponse<AccessContractModelDto> response = adminExternalClient.updateAccessContract(
             vitamContext,
             id,
             jsonNode
