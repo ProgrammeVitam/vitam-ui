@@ -73,7 +73,7 @@ export class SchemaService {
     return this.getSchema(Collection.ARCHIVE_UNIT).pipe(
       map((schema) => {
         const rootNode = schema
-          .filter((e) => e.Category === 'DESCRIPTION' || e.Origin === 'EXTERNAL')
+          .filter((e) => (e.Category === 'DESCRIPTION' || e.Origin === 'EXTERNAL') && e.FieldName !== '_sp' && e.FieldName !== '_sps')
           .reduce(
             (acc, element) => {
               const path = element.Path.split('.').slice(0, -1);
