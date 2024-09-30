@@ -9,7 +9,7 @@
       <maxHistory>{{ vitamui_struct.access_retention_days | default(access_retention_days) }}</maxHistory>
     </rollingPolicy>
     <encoder>
-      <pattern>%msg%n</pattern>
+      <pattern>[%d{ISO8601}] %msg%n</pattern>
     </encoder>
   </appender>
   <appender name="async-accessLog" class="ch.qos.logback.classic.AsyncAppender">
