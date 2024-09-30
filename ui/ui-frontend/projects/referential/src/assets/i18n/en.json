@@ -1089,6 +1089,7 @@
     "ONTOLOGY_UPDATED": "The ontology has been updated successfully",
     "ONTOLOGY_DELETED": "Ontology has been successfully deleted",
     "VOCABULARY_DELETED": "Vocabulary has been successfully deleted",
+    "VOCABULARY_DELETION_FAILED": "Vocabulary deletion failed. Please consult the details in the operations log",
     "AUDIT_RUN": "The audit \"{{type}}\" has been launched",
     "PROBATIVE_VALUE_RUN": "The probative value statement has been launched",
     "FORMAT_INVALID": "Invalid request format",

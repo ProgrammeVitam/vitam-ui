@@ -222,7 +222,7 @@ public class OntologyInternalService {
     public void delete(VitamContext context, String identifier) {
         List<OntologyDto> ontologies = getAll(context);
         try {
-            ontologyService.importOntologies(
+            RequestResponse<?> requestResponse = ontologyService.importOntologies(
                 context,
                 converter.convertDtosToVitams(
                     ontologies
@@ -235,6 +235,7 @@ public class OntologyInternalService {
                         .collect(Collectors.toList())
                 )
             );
+            VitamRestUtils.checkResponse(requestResponse);
         } catch (InvalidParseOperationException | AccessExternalClientException | IOException e) {
             throw new InternalServerException("Unable to delete ontology", e);
         }
