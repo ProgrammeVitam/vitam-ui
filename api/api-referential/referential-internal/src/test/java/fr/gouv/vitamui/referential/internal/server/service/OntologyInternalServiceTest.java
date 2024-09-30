@@ -340,7 +340,7 @@ public class OntologyInternalServiceTest {
     }
 
     @Test
-    public void delete_should_return_ok_when_vitamclient_400()
+    public void delete_should_throw_exception_when_vitamclient_400()
         throws AccessExternalClientException, IOException, InvalidParseOperationException, VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         String identifier = "identifier";
@@ -353,7 +353,9 @@ public class OntologyInternalServiceTest {
             new RequestResponseOK().setHttpCode(400)
         );
 
-        assertThatCode(() -> ontologyInternalService.delete(vitamContext, identifier)).doesNotThrowAnyException();
+        assertThatCode(() -> {
+            ontologyInternalService.delete(vitamContext, identifier);
+        }).isInstanceOf(BadRequestException.class);
     }
 
     @Test
@@ -431,7 +433,7 @@ public class OntologyInternalServiceTest {
     }
 
     @Test
-    public void updateOntology_should_return_ok_when_vitamclient_400()
+    public void updateOntology_should_throw_exception_when_vitamclient_400()
         throws AccessExternalClientException, IOException, InvalidParseOperationException, VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         String identifier = "identifier";
@@ -444,7 +446,9 @@ public class OntologyInternalServiceTest {
             new RequestResponseOK().setHttpCode(400)
         );
 
-        assertThatCode(() -> ontologyInternalService.delete(vitamContext, identifier)).doesNotThrowAnyException();
+        assertThatCode(() -> ontologyInternalService.delete(vitamContext, identifier)).isInstanceOf(
+            BadRequestException.class
+        );
     }
 
     @Test

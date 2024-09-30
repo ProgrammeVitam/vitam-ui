@@ -113,8 +113,11 @@ export class OntologyService extends SearchService<Ontology> {
             icon: 'vitamui-icon-ontologie',
           });
         },
-        (error) => {
-          this.snackBarService.open({ message: error.error.message, translate: false });
+        () => {
+          this.snackBarService.open({
+            message: 'SNACKBAR.VOCABULARY_DELETION_FAILED',
+            icon: 'vitamui-icon-ontologie',
+          });
         },
       ),
     );
