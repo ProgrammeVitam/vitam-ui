@@ -17,12 +17,19 @@
     source: vitamui
     type: application
   processors:
+    {% if vitamui_service == 'api_gateway' %}
     - dissect:
-        tokenizer: '%{client_ip|ip} - - [%{date_time}] "%{http_method} %{request_path} HTTP/%{http_version}" %{http_status_code|integer} %{response_size}'
+        tokenizer: '[%{date_time}] %{client_ip|ip} - - [%{misformated_date_time}] "%{http_method} %{request_path} HTTP/%{http_version}" %{http_status_code|integer} %{response_size}'
         target_prefix: ""
+    - timestamp:
+        field: date_time
+        layouts:
+          - '2006-01-02 15:04:05,000'
+        test:
+          - '2024-09-30 13:46:37,298'
     - drop_fields:
-        fields: ["date_time"]
-    {% if vitamui_service == 'api_gateway' and filebeat.drop_health_checks_logs | default(true) | bool %}
+        fields: ["date_time", "misformated_date_time"]
+      {% if filebeat.drop_health_checks_logs | default(true) | bool %}
     # Drop health checks
     - drop_event:
         when:
@@ -31,6 +38,19 @@
                 http_status_code: 200
             - equals:
                 request_path: "/actuator/health"
+      {% endif %}
+    {% else %}
+    - dissect:
+        tokenizer: '%{client_ip|ip} - - [%{date_time}] "%{http_method} %{request_path} HTTP/%{http_version}" %{http_status_code|integer} %{response_size}'
+        target_prefix: ""
+    - timestamp:
+        field: date_time
+        layouts:
+          - '02/Jan/2006:15:04:05 -0700'
+        test:
+          - '30/Sep/2024:13:46:37 +0200'
+    - drop_fields:
+        fields: ["date_time"]
     {% endif %}
 
   {% endif %}
@@ -50,6 +70,12 @@
     - dissect:
         tokenizer: '%{client_ip|ip} - - [%{date_time}] "%{http_method} %{request_path} HTTP/%{http_version}" %{http_status_code|integer} %{response_size}'
         target_prefix: ""
+    - timestamp:
+        field: date_time
+        layouts:
+          - '02/Jan/2006:15:04:05 -0700'
+        test:
+          - '30/Sep/2024:13:46:37 +0200'
     - drop_fields:
         fields: ["date_time"]
     {% if filebeat.drop_health_checks_logs | default(true) | bool %}
@@ -81,6 +107,12 @@
         tokenizer: '%{date_time} [[%{thread}]] [%{request_id}] %{log_level} %{logger} - %{log_message}'
         target_prefix: ""
         trim_values: all
+    - timestamp:
+        field: date_time
+        layouts:
+          - '2006-01-02 15:04:05,000'
+        test:
+          - '2024-09-30 13:46:37,298'
     - drop_fields:
         fields: ["date_time"]
   parsers:
