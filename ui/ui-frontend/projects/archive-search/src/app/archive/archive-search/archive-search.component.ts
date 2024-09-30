@@ -937,6 +937,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   }
 
   checkChildrenBoxChange(id: string, event: any) {
+    event.stopPropagation();
     const action = event.target.checked;
 
     if (this.isAllChecked && !action) {

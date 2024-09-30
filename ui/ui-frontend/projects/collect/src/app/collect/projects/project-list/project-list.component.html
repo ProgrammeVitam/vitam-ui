@@ -67,17 +67,22 @@
 
         <div class="vitamui-table-body">
           <div *ngFor="let project of dataSource" class="vitamui-table-rows">
-            <div class="vitamui-row d-flex align-items-center clickable">
+            <div class="vitamui-row d-flex align-items-center clickable" (click)="showProjectDetails(project.id)">
               <div class="col-1">
                 <i class="vitamui-icon {{ getProjectIcon(project) }}"></i>
               </div>
-              <div class="col-2" (click)="showProjectDetails(project.id)">{{ project.messageIdentifier }}</div>
-              <div class="col-2" (click)="showProjectDetails(project.id)">{{ project.submissionAgencyIdentifier }}</div>
-              <div class="col-2" (click)="showProjectDetails(project.id)">{{ project.createdOn | date: 'dd/MM/yyyy' | empty }}</div>
-              <div class="col-2" (click)="showProjectDetails(project.id)">{{ project.lastModifyOn | date: 'dd/MM/yyyy' | empty }}</div>
-              <div class="col-2" (click)="showProjectDetails(project.id)">{{ project.status }}</div>
+              <div class="col-2">{{ project.messageIdentifier }}</div>
+              <div class="col-2">{{ project.submissionAgencyIdentifier }}</div>
+              <div class="col-2">{{ project.createdOn | date: 'dd/MM/yyyy' | empty }}</div>
+              <div class="col-2">{{ project.lastModifyOn | date: 'dd/MM/yyyy' | empty }}</div>
+              <div class="col-2">{{ project.status }}</div>
               <div class="col-1">
-                <vitamui-common-menu-button [overlayPos]="'end'" [icon]="'vitamui-icon-more-horiz'" menuButtonSize="medium">
+                <vitamui-common-menu-button
+                  [overlayPos]="'end'"
+                  [icon]="'vitamui-icon-more-horiz'"
+                  menuButtonSize="medium"
+                  (click)="stopPropagation($event)"
+                >
                   <button mat-menu-item (click)="searchArchiveUnitsByProject(project)">
                     {{ 'COLLECT.PROJECT_UNIT_PREVIEW.ACTIONS.SHOW_PROJECT_ARCHIVE_UNITS' | translate }}
                   </button>
