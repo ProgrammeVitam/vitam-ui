@@ -103,7 +103,7 @@
     "@ngx-translate/http-loader": "^8.0.0",
     "angular-oauth2-oidc": "^17.0.0",
     "angular-svg-icon": "^17.0.0",
-    "bootstrap": "^4.5.0",
+    "bootstrap": "^5.0.0",
     "colors": "1.4.0",
     "d3": "^7.9.0",
     "d3-svg-legend": "^2.25.6",
