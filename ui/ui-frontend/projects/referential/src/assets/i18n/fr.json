@@ -1009,6 +1009,7 @@
     "ONTOLOGY_UPDATED": "L'ontologie a bien été mis à jour",
     "ONTOLOGY_DELETED": "L'ontologie a bien été supprimé",
     "VOCABULARY_DELETED": "Le vocabulaire a été supprimé avec succès",
+    "VOCABULARY_DELETION_FAILED": "Le vocabulaire n'a pas pu être supprimé. Veuillez-consulter le détail dans le journal des opérations",
     "AUDIT_RUN": "L'audit \"{{type}}\" a bien été lancé",
     "PROBATIVE_VALUE_RUN": "Le relevé de valeur probante a été lancé",
     "FORMAT_INVALID": "Format de la requête invalide",
