@@ -16,8 +16,6 @@ pipeline {
         SERVICE_REPO_SSHURL = credentials("repository-connection-string")
         SERVICE_REPOSITORY_URL=credentials("service-repository-url")
 
-        PUPPETEER_DOWNLOAD_HOST="${SERVICE_NEXUS_URL}repository/puppeteer-chrome"
-
         JAVA_HOME="/usr/lib/jvm/java-17-openjdk-amd64"
     }
 
