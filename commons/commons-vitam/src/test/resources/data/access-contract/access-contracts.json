@@ -1,0 +1,48 @@
+[
+  {
+    "#id": "id",
+    "#version": 12,
+    "Name": "name",
+    "Identifier": "identifier",
+    "Description": "description",
+    "Status": "INACTIVE",
+    "DataObjectVersion": [
+      "dataObjectVersion"
+    ],
+    "OriginatingAgencies": [
+      "originatingAgencies"
+    ],
+    "WritingPermission": true,
+    "WritingRestrictedDesc": true,
+    "EveryOriginatingAgency": true,
+    "EveryDataObjectVersion": true,
+    "RootUnits": [
+      "rootUnits"
+    ],
+    "ExcludedRootUnits": [
+      "excludedRootUnits"
+    ],
+    "AccessLog": "ACTIVE",
+    "RuleCategoryToFilter": [
+      "AppraisalRule"
+    ],
+    "RuleCategoryToFilterForTheOtherOriginatingAgencies": [
+      "DisseminationRule"
+    ],
+    "DoNotFilterFilingSchemes": true
+  },
+  {
+    "#id": "idesr",
+    "#version": 1442,
+    "Name": "namdrtdrte",
+    "Identifier": "identifdrtbdrtier",
+    "Description": "descriptbsrttion",
+    "Status": "ACTIVE",
+    "WritingPermission": false,
+    "WritingRestrictedDesc": false,
+    "EveryOriginatingAgency": false,
+    "EveryDataObjectVersion": false,
+    "AccessLog": "INACTIVE",
+    "DoNotFilterFilingSchemes": false
+  }
+]

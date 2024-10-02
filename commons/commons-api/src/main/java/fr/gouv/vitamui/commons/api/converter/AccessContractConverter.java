@@ -39,8 +39,8 @@ package fr.gouv.vitamui.commons.api.converter;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import fr.gouv.vitam.common.json.JsonHandler;
+import fr.gouv.vitam.common.model.administration.AccessContractModel;
 import fr.gouv.vitamui.commons.api.domain.AccessContractDto;
-import fr.gouv.vitamui.commons.api.domain.AccessContractModelDto;
 import fr.gouv.vitamui.commons.utils.VitamUIUtils;
 import lombok.experimental.UtilityClass;
 import org.apache.commons.lang3.StringUtils;
@@ -52,19 +52,25 @@ import java.util.stream.Collectors;
 @UtilityClass
 public class AccessContractConverter {
 
-    public AccessContractModelDto convertDtoToVitam(final AccessContractDto dto) {
-        return VitamUIUtils.copyProperties(dto, new AccessContractModelDto());
+    public AccessContractModel convertDtoToVitam(final AccessContractDto source) {
+        source.setCreationDate(null);
+        source.setLastUpdate(null);
+        source.setActivationDate(null);
+        source.setDeactivationDate(null);
+        AccessContractModel target = new AccessContractModel();
+        return VitamUIUtils.copyProperties(source, target);
     }
 
-    public AccessContractDto convertVitamToDto(final AccessContractModelDto accessContract) {
-        return VitamUIUtils.copyProperties(accessContract, new AccessContractDto());
+    public AccessContractDto convertVitamToDto(final AccessContractModel source) {
+        AccessContractDto target = new AccessContractDto();
+        return VitamUIUtils.copyProperties(source, target);
     }
 
-    public List<AccessContractModelDto> convertDtosToVitams(final List<AccessContractDto> dtos) {
+    public List<AccessContractModel> convertDtosToVitams(final List<AccessContractDto> dtos) {
         return dtos.stream().map(AccessContractConverter::convertDtoToVitam).collect(Collectors.toList());
     }
 
-    public List<AccessContractDto> convertVitamsToDtos(final List<AccessContractModelDto> accessContracts) {
+    public List<AccessContractDto> convertVitamsToDtos(final List<AccessContractModel> accessContracts) {
         return accessContracts.stream().map(AccessContractConverter::convertVitamToDto).collect(Collectors.toList());
     }
 

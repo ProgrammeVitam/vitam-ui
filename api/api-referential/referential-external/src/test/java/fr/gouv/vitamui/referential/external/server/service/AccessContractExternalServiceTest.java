@@ -89,7 +89,6 @@ public class AccessContractExternalServiceTest extends ExternalServiceTest {
     public void getAll_should_return_AccessContractDtoList_when_accessContractInternalRestClient_return_AccessContractDtoList() {
         List<AccessContractDto> list = new ArrayList<>();
         AccessContractDto accessContractDto = new AccessContractDto();
-        accessContractDto.setTenant(1);
         accessContractDto.setDescription("description");
         list.add(accessContractDto);
 
@@ -105,7 +104,6 @@ public class AccessContractExternalServiceTest extends ExternalServiceTest {
     @Test
     public void create_should_return_AccessContractDto_when_accessContractInternalRestClient_return_AccessContractDtoList() {
         AccessContractDto accessContractDto = new AccessContractDto();
-        accessContractDto.setTenant(1);
 
         when(
             accessContractInternalRestClient.create(any(InternalHttpContext.class), any(AccessContractDto.class))
@@ -118,9 +116,6 @@ public class AccessContractExternalServiceTest extends ExternalServiceTest {
 
     @Test
     public void check_should_return_boolean_when_accessContractInternalRestClient_return_boolean() {
-        AccessContractDto accessContractDto = new AccessContractDto();
-        accessContractDto.setTenant(1);
-
         when(
             accessContractInternalRestClient.check(any(InternalHttpContext.class), any(AccessContractDto.class))
         ).thenReturn(true);

@@ -77,6 +77,7 @@ import fr.gouv.vitamui.referential.common.service.VitamUIAccessContractService;
 import fr.gouv.vitamui.referential.internal.server.utils.ExportCSVUtils;
 import fr.gouv.vitamui.referential.internal.server.utils.ImportCSVUtils;
 import org.apache.commons.io.input.BOMInputStream;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -220,11 +221,11 @@ public class AccessContractInternalService {
     public Boolean check(VitamContext vitamContext, AccessContractDto accessContractDto) {
         try {
             LOGGER.debug("Access Contract Check EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
-            Integer accessContractCheckedTenant = accessContractService.checkAbilityToCreateAccessContractInVitam(
-                AccessContractConverter.convertDtosToVitams(Collections.singletonList(accessContractDto)),
-                vitamContext.getApplicationSessionId()
+            accessContractService.checkAbilityToCreateAccessContractInVitam(
+                vitamContext,
+                AccessContractConverter.convertDtosToVitams(Collections.singletonList(accessContractDto))
             );
-            return !vitamContext.getTenantId().equals(accessContractCheckedTenant);
+            return false;
         } catch (ConflictException e) {
             return true;
         }
@@ -234,6 +235,7 @@ public class AccessContractInternalService {
         LOGGER.debug("Creating Access Contract EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
         RequestResponse requestResponse;
         try {
+            accessContractDto.setId(null);
             requestResponse = accessContractService.createAccessContracts(
                 vitamContext,
                 AccessContractConverter.convertDtosToVitams(List.of(accessContractDto))
@@ -314,18 +316,18 @@ public class AccessContractInternalService {
         AccessContractCSVUtils.checkImportFile(file, isIdentifierMandatory);
         LOGGER.debug("access contracts file {} has been validated before parsing it", file.getOriginalFilename());
 
-        List<AccessContractCSVDto> accessContract = convertCsvFileToAccessContractsDto(file);
+        List<AccessContractCSVDto> accessContractCSVDtos = convertCsvFileToAccessContractsDto(file);
         LOGGER.debug("access contracts file {} has been parsed in accessContract List", file.getOriginalFilename());
 
         Gson gson = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE).create();
-        String jsonString = gson.toJson(accessContract);
+        String accessContractCSVDtosJson = gson.toJson(accessContractCSVDtos);
         LOGGER.debug("access contracts file {} has been parsed in JSON String", file.getOriginalFilename());
 
         RequestResponse<?> result;
         try {
             result = accessContractService.createAccessContracts(
                 context,
-                new ByteArrayInputStream(jsonString.getBytes())
+                new ByteArrayInputStream(accessContractCSVDtosJson.getBytes())
             );
             LOGGER.debug("access contracts file {} has been send to VITAM", file.getOriginalFilename());
         } catch (InvalidParseOperationException | AccessExternalClientException e) {
@@ -409,13 +411,12 @@ public class AccessContractInternalService {
         final String excludedRootUnits = accessContract.getExcludedRootUnits() == null
             ? null
             : String.join(arrayJoinStr, accessContract.getExcludedRootUnits());
-        final String ruleCategoryToFilter = accessContract.getRuleCategoryToFilter() == null
-            ? null
-            : String.join(arrayJoinStr, accessContract.getRuleCategoryToFilter());
-        final String ruleCategoryToFilterForTheOtherOriginatingAgencies =
-            accessContract.getRuleCategoryToFilterForTheOtherOriginatingAgencies() == null
-                ? null
-                : String.join(arrayJoinStr, accessContract.getRuleCategoryToFilterForTheOtherOriginatingAgencies());
+
+        final String ruleCategoryToFilter = StringUtils.join(accessContract.getRuleCategoryToFilter(), arrayJoinStr);
+        final String ruleCategoryToFilterForTheOtherOriginatingAgencies = StringUtils.join(
+            accessContract.getRuleCategoryToFilterForTheOtherOriginatingAgencies(),
+            arrayJoinStr
+        );
 
         final var creationDate = accessContract.getCreationDate() == null
             ? null
@@ -437,7 +438,7 @@ public class AccessContractInternalService {
             accessContract.getIdentifier(),
             accessContract.getName(),
             accessContract.getDescription(),
-            accessContract.getStatus(),
+            accessContract.getStatus().name(),
             accessContract.getWritingPermission().toString(),
             accessContract.getEveryOriginatingAgency().toString(),
             originatingAgencies,
@@ -445,7 +446,7 @@ public class AccessContractInternalService {
             dataObjectVersions,
             rootUnits,
             excludedRootUnits,
-            accessContract.getAccessLog(),
+            accessContract.getAccessLog().name(),
             ruleCategoryToFilter,
             accessContract.getWritingRestrictedDesc().toString(),
             ruleCategoryToFilterForTheOtherOriginatingAgencies,

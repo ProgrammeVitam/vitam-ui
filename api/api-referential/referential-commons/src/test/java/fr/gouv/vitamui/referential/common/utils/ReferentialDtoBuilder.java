@@ -88,7 +88,7 @@ public class ReferentialDtoBuilder {
         accessContractDto.setId(id);
         accessContractDto.setIdentifier("identifier");
         accessContractDto.setName("name");
-        accessContractDto.setStatus(ActivationStatus.ACTIVE.toString());
+        accessContractDto.setStatus(ActivationStatus.ACTIVE);
 
         return accessContractDto;
     }

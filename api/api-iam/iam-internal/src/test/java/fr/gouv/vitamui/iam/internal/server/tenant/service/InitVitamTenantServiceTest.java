@@ -8,7 +8,6 @@ import fr.gouv.vitam.common.json.JsonHandler;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.administration.AccessContractModel;
 import fr.gouv.vitam.common.model.administration.IngestContractModel;
-import fr.gouv.vitamui.commons.api.domain.AccessContractModelDto;
 import fr.gouv.vitamui.commons.api.domain.ExternalParametersDto;
 import fr.gouv.vitamui.commons.api.domain.IngestContractDto;
 import fr.gouv.vitamui.commons.api.domain.TenantDto;
@@ -64,11 +63,11 @@ public class InitVitamTenantServiceTest {
 
     private final Resource holdingAccessContract = new ClassPathResource("data/tenant/access-contract/holding.json");
 
-    private AccessContractModelDto fullAccessAccessContractDto;
+    private AccessContractModel fullAccessAccessContractDto;
 
-    private AccessContractModelDto logbookAccessContractDto;
+    private AccessContractModel logbookAccessContractDto;
 
-    private AccessContractModelDto holdingAccessContractDto;
+    private AccessContractModel holdingAccessContractDto;
 
     private IngestContractDto ingestContractHoldingDto;
 
@@ -89,15 +88,15 @@ public class InitVitamTenantServiceTest {
         Mockito.when(tenantConverter.convertDtoToEntity(ArgumentMatchers.any())).thenCallRealMethod();
         fullAccessAccessContractDto = JsonHandler.getFromInputStream(
             fullAccessAccessContract.getInputStream(),
-            AccessContractModelDto.class
+            AccessContractModel.class
         );
         logbookAccessContractDto = JsonHandler.getFromInputStream(
             logbookAccessContract.getInputStream(),
-            AccessContractModelDto.class
+            AccessContractModel.class
         );
         holdingAccessContractDto = JsonHandler.getFromInputStream(
             holdingAccessContract.getInputStream(),
-            AccessContractModelDto.class
+            AccessContractModel.class
         );
         ingestContractHoldingDto = JsonHandler.getFromInputStream(
             ingestContractHolding.getInputStream(),
@@ -144,7 +143,7 @@ public class InitVitamTenantServiceTest {
         Mockito.when(
             accessContractService.findAccessContracts(ArgumentMatchers.any(), ArgumentMatchers.any())
         ).thenReturn(requestResponse);
-        List<AccessContractModelDto> results = List.of(
+        List<AccessContractModel> results = List.of(
             holdingAccessContractDto,
             logbookAccessContractDto,
             fullAccessAccessContractDto

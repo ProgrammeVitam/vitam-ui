@@ -48,14 +48,11 @@ import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.administration.AccessContractModel;
-import fr.gouv.vitamui.commons.api.domain.AccessContractDto;
-import fr.gouv.vitamui.commons.api.domain.AccessContractModelDto;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.ConflictException;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.exception.UnavailableServiceException;
 import fr.gouv.vitamui.commons.api.exception.UnexpectedDataException;
-import fr.gouv.vitamui.commons.utils.VitamUIUtils;
 import fr.gouv.vitamui.commons.vitam.api.dto.AccessContractResponseDto;
 import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
 import org.slf4j.Logger;
@@ -67,10 +64,8 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class AccessContractService {
@@ -110,113 +105,77 @@ public class AccessContractService {
 
     public RequestResponse createAccessContracts(
         final VitamContext vitamContext,
-        final List<AccessContractModelDto> accessContractModels
+        final List<AccessContractModel> accessContractModels
     ) throws InvalidParseOperationException, AccessExternalClientException, IOException {
         try (ByteArrayInputStream byteArrayInputStream = serializeAccessContracts(accessContractModels)) {
             return adminExternalClient.createAccessContracts(vitamContext, byteArrayInputStream);
         }
     }
 
-    public RequestResponse<?> createAccessContracts(final VitamContext vitamContext, final InputStream accessContract)
-        throws InvalidParseOperationException, AccessExternalClientException {
-        return adminExternalClient.createAccessContracts(vitamContext, accessContract);
-    }
-
-    private ByteArrayInputStream serializeAccessContracts(final List<AccessContractModelDto> accessContractModels)
+    ByteArrayInputStream serializeAccessContracts(final List<AccessContractModel> accessContractModels)
         throws IOException {
-        final List<AccessContractDto> listOfAC = convertAccessContractsToModelOfCreation(accessContractModels);
         final ObjectMapper mapper = new ObjectMapper();
-        final JsonNode node = mapper.convertValue(listOfAC, JsonNode.class);
+        final JsonNode node = mapper.convertValue(accessContractModels, JsonNode.class);
         LOGGER.debug("The json for creation access contract, sent to Vitam {}", node);
-
         try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream()) {
             mapper.writeValue(byteArrayOutputStream, node);
             return new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
         }
     }
 
-    private List<AccessContractDto> convertAccessContractsToModelOfCreation(
-        final List<AccessContractModelDto> accessContractModels
-    ) {
-        final List<AccessContractDto> listOfAC = new ArrayList<>();
-        for (final AccessContractModelDto acModel : accessContractModels) {
-            final AccessContractDto ac = new AccessContractDto();
-            // we don't want to inculde the tenant field in the json sent to vitam
-            acModel.setTenant(null);
-            listOfAC.add(VitamUIUtils.copyProperties(acModel, ac));
-        }
-        return listOfAC;
+    public RequestResponse<?> createAccessContracts(final VitamContext vitamContext, final InputStream accessContracts)
+        throws InvalidParseOperationException, AccessExternalClientException {
+        return adminExternalClient.createAccessContracts(vitamContext, accessContracts);
     }
 
     /**
      * check if all conditions are Ok to create an access contract in the tenant
+     *
      * @param accessContracts : access Contracts to verify existence
-     * @return
-     * the tenant where the access contract will be created
+     * @return the tenant where the access contract will be created
      */
-    public Integer checkAbilityToCreateAccessContractInVitam(
-        final List<AccessContractModelDto> accessContracts,
-        final String applicationSessionId
+    public void checkAbilityToCreateAccessContractInVitam(
+        final VitamContext vitamContext,
+        final List<AccessContractModel> accessContracts
     ) {
-        if (accessContracts != null && !accessContracts.isEmpty()) {
-            // check if tenant is ok in the request body
-            final Optional<AccessContractModelDto> accessContract = accessContracts.stream().findFirst();
-            final Integer tenantIdentifier = accessContract.isPresent() ? accessContract.get().getTenant() : null;
-            if (tenantIdentifier != null) {
-                final boolean sameTenant = accessContracts
-                    .stream()
-                    .allMatch(ac -> tenantIdentifier.equals(ac.getTenant()));
-                if (!sameTenant) {
-                    final String msg = "All the access contracts must have the same tenant identifier";
-                    LOGGER.error(msg);
-                    throw new BadRequestException(msg);
-                }
-            } else {
-                final String msg = "The tenant identifier must be present in the request body";
-                LOGGER.error(msg);
-                throw new BadRequestException(msg);
-            }
-
-            try {
-                // check if tenant exist in Vitam
-                final VitamContext vitamContext = new VitamContext(tenantIdentifier).setApplicationSessionId(
-                    applicationSessionId
-                );
-                final JsonNode select = new Select().getFinalSelect();
-                final RequestResponse<AccessContractModel> response = findAccessContracts(vitamContext, select);
-                if (response.getStatus() == HttpStatus.UNAUTHORIZED.value()) {
-                    final String msg =
-                        "Can't create access contracts for the tenant : " + tenantIdentifier + " not found in Vitam";
-                    LOGGER.error(msg);
-                    throw new PreconditionFailedException(msg);
-                } else if (response.getStatus() != HttpStatus.OK.value()) {
-                    final String msg =
-                        "Can't create access contracts for this tenant, Vitam response code : " + response.getStatus();
-                    LOGGER.error(msg);
-                    throw new UnavailableServiceException(msg);
-                }
-
-                verifyAccessContractExistence(accessContracts, response);
-            } catch (final VitamClientException e) {
+        if (accessContracts == null || accessContracts.isEmpty()) {
+            final String msg = "The body is not found";
+            LOGGER.error(msg);
+            throw new BadRequestException(msg);
+        }
+        try {
+            final JsonNode select = new Select().getFinalSelect();
+            final RequestResponse<AccessContractModel> response = findAccessContracts(vitamContext, select);
+            if (response.getStatus() == HttpStatus.UNAUTHORIZED.value()) {
                 final String msg =
-                    "Can't create access contracts for this tenant, error while calling Vitam : " + e.getMessage();
+                    "Can't create access contracts for the tenant : " +
+                    vitamContext.getTenantId() +
+                    " not found in Vitam";
+                LOGGER.error(msg);
+                throw new PreconditionFailedException(msg);
+            } else if (response.getStatus() != HttpStatus.OK.value()) {
+                final String msg =
+                    "Can't create access contracts for this tenant, Vitam response code : " + response.getStatus();
                 LOGGER.error(msg);
                 throw new UnavailableServiceException(msg);
             }
-            return tenantIdentifier;
+            verifyAccessContractExistence(accessContracts, response);
+        } catch (final VitamClientException e) {
+            final String msg =
+                "Can't create access contracts for this tenant, error while calling Vitam : " + e.getMessage();
+            LOGGER.error(msg);
+            throw new UnavailableServiceException(msg);
         }
-        final String msg = "The body is not found";
-        LOGGER.error(msg);
-        throw new BadRequestException(msg);
     }
 
     /**
      * Check if access contract is not already created in Vitam.
+     *
      * @param accessContracts : access Contracts to verify existence
      * @param response : list of access Contracts in vitam
      */
     private void verifyAccessContractExistence(
-        final List<AccessContractModelDto> accessContracts,
+        final List<AccessContractModel> accessContracts,
         final RequestResponse<AccessContractModel> response
     ) {
         try {
@@ -228,7 +187,7 @@ public class AccessContractService {
             );
             final List<String> accessContractsNames = accessContracts
                 .stream()
-                .map(AccessContractModelDto::getName)
+                .map(AccessContractModel::getName)
                 .filter(Objects::nonNull)
                 .map(String::strip)
                 .collect(Collectors.toList());
@@ -244,7 +203,7 @@ public class AccessContractService {
 
             final List<String> accessContractsIdentifiers = accessContracts
                 .stream()
-                .map(AccessContractModelDto::getIdentifier)
+                .map(AccessContractModel::getIdentifier)
                 .filter(Objects::nonNull)
                 .map(String::strip)
                 .collect(Collectors.toList());

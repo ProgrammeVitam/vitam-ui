@@ -47,7 +47,6 @@ import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.administration.AccessContractModel;
 import fr.gouv.vitam.common.model.administration.IngestContractModel;
-import fr.gouv.vitamui.commons.api.domain.AccessContractModelDto;
 import fr.gouv.vitamui.commons.api.domain.ExternalParametersDto;
 import fr.gouv.vitamui.commons.api.domain.IngestContractDto;
 import fr.gouv.vitamui.commons.api.domain.ParameterDto;
@@ -268,12 +267,12 @@ public class InitVitamTenantService {
         final VitamContext vitamContext
     ) throws InvalidParseOperationException, AccessExternalClientException, IOException {
         try {
-            Optional<AccessContractModelDto> accessContract = retrieveAccessContractByName(
+            Optional<AccessContractModel> accessContract = retrieveAccessContractByName(
                 vitamContext,
                 accessContractName
             );
 
-            if (!accessContract.isPresent() || !StringUtils.equals(accessContract.get().getStatus(), STATUS)) {
+            if (!accessContract.isPresent() || !StringUtils.equals(accessContract.get().getStatus().name(), STATUS)) {
                 final RequestResponse<?> responseAccessContract = accessContractService.createAccessContracts(
                     vitamContext,
                     contractResources.get(accessContractName).getInputStream()
@@ -295,7 +294,7 @@ public class InitVitamTenantService {
         }
     }
 
-    private Optional<AccessContractModelDto> retrieveAccessContractByName(
+    private Optional<AccessContractModel> retrieveAccessContractByName(
         final VitamContext vitamContext,
         final String Name
     ) throws VitamClientException, JsonProcessingException {
@@ -310,7 +309,7 @@ public class InitVitamTenantService {
         return accessContractResponseDto
             .getResults()
             .stream()
-            .filter(a -> StringUtils.equals(a.getName(), Name) && StringUtils.equals(a.getStatus(), STATUS))
+            .filter(a -> StringUtils.equals(a.getName(), Name) && StringUtils.equals(a.getStatus().name(), STATUS))
             .findFirst();
     }
 

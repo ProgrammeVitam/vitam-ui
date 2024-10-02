@@ -135,7 +135,6 @@ public class AccessContractInternalController {
     ) {
         LOGGER.debug("check exist accessContract={}", accessContractDto);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
-        accessContractDto.setTenant(tenant);
         final boolean exist = accessContractInternalService.check(vitamContext, accessContractDto);
         return RestUtils.buildBooleanResponse(exist);
     }
@@ -147,7 +146,6 @@ public class AccessContractInternalController {
     ) {
         LOGGER.debug("create accessContract={}", accessContractDto);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
-        accessContractDto.setTenant(tenant);
         return accessContractInternalService.create(vitamContext, accessContractDto);
     }
 
