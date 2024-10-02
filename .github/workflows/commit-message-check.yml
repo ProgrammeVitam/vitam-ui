@@ -1,7 +1,7 @@
 name: Check commit message
 run-name: Checking commit message on branch ${{ github.ref }}
 on:
-  pull_request: # run on every pull request  TEST
+  pull_request: # run on every pull request
 jobs:
   commit-message-check:
     runs-on: ubuntu-latest
