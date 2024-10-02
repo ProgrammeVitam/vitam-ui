@@ -1,0 +1,35 @@
+name: Check commit message
+run-name: Checking commit message on branch ${{ github.ref }}
+on:
+  pull_request: # run on every pull request
+
+jobs:
+  commit-message-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Fetch all commits in the pull request
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const commits = await github.paginate(github.rest.pulls.listCommits, {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.payload.pull_request.number
+            });
+
+            const commitPattern = /#[0-9]{4,5}/;
+            let invalidCommits = [];
+
+            for (const commit of commits) {
+              const message = commit.commit.message;
+              console.log(`Checking commit: ${message}`);
+              if (!commitPattern.test(message)) {
+                invalidCommits.push(commit.sha);
+              }
+            }
+
+            if (invalidCommits.length > 0) {
+              core.setFailed(`Invalid commit messages in the following commits: ${invalidCommits.join(', ')}. Commit messages must include a Tuleap ticket number (e.g., #12345).`);
+            }
