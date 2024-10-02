@@ -225,6 +225,9 @@
         <!--we can choose to execute Karma tests or not-->
         <skipAllFrontendTests>true</skipAllFrontendTests>
         <itCoverageAgent></itCoverageAgent>
+
+        <cveUrlBase>${env.SERVICE_REPOSITORY_URL}/nist/nvdcve-1.1-%d.json.gz</cveUrlBase>
+        <cveUrlModified>${env.SERVICE_REPOSITORY_URL}/nist/nvdcve-1.1-modified.json.gz</cveUrlModified>
     </properties>
 
     <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
@@ -1447,8 +1450,6 @@
                 <version>${maven.dependencycheck.version}</version>
                 <inherited>false</inherited>
                 <configuration>
-                    <cveUrlModified>${env.SERVICE_REPOSITORY_URL}/nist/nvdcve-1.1-modified.json.gz</cveUrlModified>
-                    <cveUrlBase>${env.SERVICE_REPOSITORY_URL}/nist/nvdcve-1.1-%d.json.gz</cveUrlBase>
                     <assemblyAnalyzerEnabled>false</assemblyAnalyzerEnabled>
                     <retireJsAnalyzerEnabled>false</retireJsAnalyzerEnabled>
                     <failOnError>false</failOnError>
@@ -1877,6 +1878,13 @@
     </reporting>
 
     <profiles>
+        <profile>
+            <id>no-cve-proxy</id>
+            <properties>
+                <cveUrlBase>https://nvd.nist.gov/feeds/json/cve/1.1/nvdcve-1.1-%d.json.gz</cveUrlBase>
+                <cveUrlModified>https://nvd.nist.gov/feeds/json/cve/1.1/nvdcve-1.1-modified.json.gz</cveUrlModified>
+            </properties>
+        </profile>
 
         <!-- This profile is used to build frontend project for dev purposes. -->
         <profile>
