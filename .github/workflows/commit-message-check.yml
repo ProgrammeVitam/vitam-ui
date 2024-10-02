@@ -23,7 +23,7 @@ jobs:
 
             for (const commit of commits) {
               const message = commit.commit.message;
-              console.log(`Checking commit: ${message}`);
+              console.log(`Checking commit ${commit.sha}: ${message}`);
               if (!commitPattern.test(message)) {
                 invalidCommits.push(`${commit.sha}: ${commit.commit.message}`);
               }
