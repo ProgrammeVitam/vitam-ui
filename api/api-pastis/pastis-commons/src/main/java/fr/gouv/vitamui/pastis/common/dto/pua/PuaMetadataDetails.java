@@ -69,6 +69,24 @@ public class PuaMetadataDetails {
     public String serialiseString() throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new AfterburnerModule());
-        return mapper.writeValueAsString(this);
+        String result = mapper.writeValueAsString(this);
+        // This whole method of generating the JSON Schema should really be completely rewritten. This is unreadable
+        // and not maintainable. Here we manage the correct generation of the "array" type having enum or pattern...
+        if ("array".equals(type) && (pattern != null || (enums != null && !enums.isEmpty()))) {
+            JSONObject jsonObject = new JSONObject(result);
+            JSONObject items = new JSONObject();
+            jsonObject.put("items", items);
+            items.put("type", "string");
+            if (enums != null && !enums.isEmpty()) {
+                items.put("enum", jsonObject.getJSONArray("enum"));
+                jsonObject.remove("enum");
+            }
+            if (pattern != null) {
+                items.put("pattern", jsonObject.getString("pattern"));
+                jsonObject.remove("pattern");
+            }
+            result = jsonObject.toString();
+        }
+        return result;
     }
 }
