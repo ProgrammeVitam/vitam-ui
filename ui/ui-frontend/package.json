@@ -25,6 +25,7 @@
     "start:collect": "ng serve collect --proxy-config proxy.conf.json --disable-host-check --ssl --ssl-key $npm_package_pki_path/$npm_package_pki_asset.key --ssl-cert $npm_package_pki_path/$npm_package_pki_asset.crt",
     "build": "ng build --prod --i18n-locale fr --build-optimizer=false --optimization=false",
     "postinstall": "ngcc",
+    "build:allModules": "concurrently --max-processes 4 'npm:build:portal' 'npm:build:identity' 'npm:build:referential' 'npm:build:archive-search' 'npm:build:pastis' 'npm:build:collect' 'npm:build:ingest'",
     "build:prod": "export NODE_OPTIONS=--max_old_space_size=8192; ng build --prod --output-path ../../../target/www",
     "build:dev": "ng build --prod --i18n-locale fr --build-optimizer=false --optimization=false",
     "build:fr": "ng build --prod --i18n-locale fr --output-path ../../../target/www/fr",
