@@ -93,6 +93,7 @@ describe('ArchiveUnitInformationTabComponent', () => {
     buildArchiveUnitPath: () => of({ resumePath: '', fullPath: '' }),
     receiveDownloadProgressSubject: () => of(true),
     updateUnit: () => of({}),
+    hasArchiveSearchRole: () => of({}),
     openSnackBarForWorkflow: () => of({}),
     downloadObjectFromUnit: () => of({}),
   };
