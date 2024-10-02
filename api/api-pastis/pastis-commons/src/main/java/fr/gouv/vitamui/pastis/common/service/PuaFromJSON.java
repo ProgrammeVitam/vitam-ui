@@ -90,8 +90,8 @@ public class PuaFromJSON {
         JSONArray allElements = puaPastisValidator.getJSONObjectFromAllTree(elementsForTree);
         JSONObject sortedElements = getJSONObjectsFromJSonArray(allElements);
         controlSchema.put("properties", sortedElements);
-        // 7. Remove excessive backslashes from mapping strings to objects and vice-versa
-        return controlSchema.toString().replaceAll("[\\\\]+", "");
+        // 7. Return string representation
+        return controlSchema.toString();
     }
 
     public String getDefinitions() {
