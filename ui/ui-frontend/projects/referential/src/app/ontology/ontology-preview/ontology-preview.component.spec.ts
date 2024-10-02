@@ -40,14 +40,15 @@ import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 
 import { OntologyService } from '../ontology.service';
 import { OntologyPreviewComponent } from './ontology-preview.component';
+import { TranslateModule } from '@ngx-translate/core';
 
-// TODO : fix test
-xdescribe('OntologyPreviewComponent', () => {
+describe('OntologyPreviewComponent', () => {
   let component: OntologyPreviewComponent;
   let fixture: ComponentFixture<OntologyPreviewComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      imports: [TranslateModule.forRoot()],
       declarations: [OntologyPreviewComponent],
       providers: [
         { provide: MatDialog, useValue: {} },
