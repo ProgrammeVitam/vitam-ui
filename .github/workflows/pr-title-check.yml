@@ -1,0 +1,25 @@
+name: Check PR title
+run-name: Checking PR title on branch ${{ github.ref }}
+on:
+  pull_request:
+    types:
+      - opened
+      - edited # Triggers on PR title or description changes
+jobs:
+  check-pr-title:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check PR title
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const commitPattern = /#[0-9]{4,5}/;
+
+            const pullRequest = context.payload.pull_request;
+
+            // Check the pull request title
+            const prTitle = pullRequest.title;
+            console.log(`Checking PR title: ${prTitle}`);
+            if (!commitPattern.test(prTitle)) {
+              core.setFailed(`Invalid PR title. PR title must include a Tuleap ticket number (e.g., #12345). Title: "${prTitle}"`);
+            }
