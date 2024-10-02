@@ -1,0 +1,42 @@
+name: Lint
+run-name: Linting branch ${{ github.ref }}
+on: [push]
+jobs:
+  lint-frontend:
+    name: Lint Frontend
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '14.15.1'
+      - name: Check missing icon in icomoon
+        run: ./tools/check_icomoon.sh
+      # Only install prettier globally (with same version as in package.json)
+      - name: Install Prettier
+        working-directory: ui/ui-frontend
+        run: npm i -g prettier@$(jq -r '.devDependencies.prettier' package.json)
+      - name: Lint ui-frontend with Prettier
+        working-directory: ui/ui-frontend # We only run Prettier linting and not TSLint in that GitHub Action because it would require to install project's dependencies. TSLint is run in "build-and-test" GitHub Action
+        run: npm run prettier:ci
+      - name: Lint ui-frontend-common with Prettier
+        working-directory: ui/ui-frontend-common # We only run Prettier linting and not TSLint in that GitHub Action because it would require to install project's dependencies. TSLint is run in "build-and-test" GitHub Action
+        run: npm run prettier:ci
+  lint-backend:
+    name: Lint Backend
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version: "11"
+      - name: Restore maven cache # We're not using cache feature from actions/setup-java as it could conflict with other GitHub Actions maven caches (our cache doesn't include all Vitam dependencies: it is limited to spotless and its dependencies)
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.m2/repository
+            **/target/spotless-prettier-node-modules-*
+          key: maven-spotless-${{ runner.os }}-${{ hashFiles('**/pom.xml') }} # We invalidate cache if pom.xml change to detect spotless version update or new maven modules
+      - name: Lint Java
+        run: mvn -T1C spotless:check
