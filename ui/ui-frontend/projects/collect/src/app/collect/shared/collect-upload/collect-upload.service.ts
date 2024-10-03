@@ -237,30 +237,18 @@ export class CollectUploadService {
   }
 
   private parseFileEntry(fileEntry: any): Promise<any> {
-    return new Promise((resolve, reject) => {
-      fileEntry.file(
-        (file: any) => {
-          resolve(file);
-        },
-        (err: any) => {
-          reject(err);
-        },
-      );
-    });
+    return new Promise((resolve, reject) => fileEntry.file(resolve, reject));
   }
 
-  private parseDirectoryEntry(directoryEntry: any): Promise<any[]> {
+  private async parseDirectoryEntry(directoryEntry: any): Promise<any[]> {
     const directoryReader = directoryEntry.createReader();
-    return new Promise((resolve, reject) => {
-      directoryReader.readEntries(
-        (entries: any) => {
-          resolve(entries);
-        },
-        (err: any) => {
-          reject(err);
-        },
-      );
-    });
+    const entries = [];
+    let batch;
+    // We have to call readEntries several times until it returns an empty list to make sure we read all entries (otherwise it is limited to 100 entries)
+    while ((batch = await new Promise<any[]>((resolve, reject) => directoryReader.readEntries(resolve, reject))).length) {
+      entries.push(...batch);
+    }
+    return entries;
   }
 
   private uploadInfo(uploadFile: CollectUploadFile) {
