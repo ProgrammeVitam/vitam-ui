@@ -37,7 +37,7 @@
 
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Unit } from 'ui-frontend-common';
+import { TenantSelectionService, Unit } from 'ui-frontend-common';
 import { ArchiveCollectService } from '../../archive-collect.service';
 
 @Component({
@@ -52,8 +52,12 @@ export class ArchiveUnitInformationTabComponent implements OnInit, OnChanges {
 
   uaPath$: Observable<{ fullPath: string; resumePath: string }>;
   fullPath = false;
+  hasDownloadDocumentRole = false;
 
-  constructor(private archiveService: ArchiveCollectService) {}
+  constructor(
+    private archiveService: ArchiveCollectService,
+    private tenantSelectionService: TenantSelectionService,
+  ) {}
 
   ngOnInit() {
     // TODO : Créer Web service de création du chemin d'archive
@@ -61,6 +65,7 @@ export class ArchiveUnitInformationTabComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    this.checkDownloadPermissions();
     if (changes.archiveUnit?.currentValue['#id']) {
       // TODO : Créer Web service de création du chemin d'archive
       // this.uaPath$ = this.archiveService.buildArchiveUnitPath(this.archiveUnit, this.accessContract);
@@ -74,5 +79,13 @@ export class ArchiveUnitInformationTabComponent implements OnInit, OnChanges {
 
   showArchiveUniteFullPath() {
     this.fullPath = true;
+  }
+
+  private checkDownloadPermissions() {
+    this.archiveService
+      .hasCollectRole('ROLE_COLLECT_GET_ARCHIVE_BINARY', this.tenantSelectionService.getSelectedTenant().identifier)
+      .subscribe((result) => {
+        this.hasDownloadDocumentRole = result;
+      });
   }
 }
