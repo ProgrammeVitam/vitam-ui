@@ -90,7 +90,12 @@ export class AccessContractAuthorizationsTabComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.agencyService.getOriginatingAgenciesAsOptions().subscribe((options: Option[]) => (this.originatingAgenciesOptions = { options }));
+    this.agencyService.getOriginatingAgenciesAsOptions().subscribe((options: Option[]) => {
+      this.originatingAgenciesOptions = { options };
+      this._accessContract.originatingAgenciesLabels = this._accessContract.originatingAgencies
+        ?.map((agency) => this.originatingAgencyName(agency))
+        .sort();
+    });
   }
 
   public openModalCreateAccessContractStep2Only() {
