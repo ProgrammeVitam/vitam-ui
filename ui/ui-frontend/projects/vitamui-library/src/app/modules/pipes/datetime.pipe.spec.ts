@@ -27,7 +27,7 @@
 import { DatePipe } from '@angular/common';
 import { DateTimePipe } from './datetime.pipe';
 
-xdescribe('DatePipe', () => {
+describe('DatePipe', () => {
   const fake = {
     transform: (_value: any, _format?: string, timezone?: string) => {
       return timezone;
@@ -35,6 +35,7 @@ xdescribe('DatePipe', () => {
   };
 
   beforeEach(() => {
+    jasmine.clock().uninstall();
     jasmine.clock().install();
   });
 
