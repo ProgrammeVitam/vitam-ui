@@ -288,7 +288,7 @@ public class AccessContractDto implements Serializable {
         return originatingAgencies;
     }
 
-    @JsonProperty("doNotFilterFilingSchemes")
+    @JsonProperty("DoNotFilterFilingSchemes")
     public Boolean getDoNotFilterFilingSchemes() {
         return doNotFilterFilingSchemes;
     }
