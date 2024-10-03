@@ -1,0 +1,194 @@
+name: Build and test
+run-name: Building and testing branch ${{ github.ref }}
+on:
+  pull_request: # run on every pull request
+  push:
+    branches: # run only on protected branches (develop & master_*)
+      - develop
+      - master_*
+jobs:
+  build-frontend:
+    name: Build Frontend
+    runs-on: ubuntu-latest
+    steps:
+      - uses: szenius/set-timezone@v2.0
+        with:
+          timezoneLinux: "Europe/Paris" # we set the timezone for Unit Tests to pass (we shouldn't need to, but it's currently required)
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "14.15.1"
+          cache: "npm"
+          cache-dependency-path: |
+            ui/ui-frontend-common/package-lock.json
+            ui/ui-frontend/package-lock.json
+      - name: Install ui-frontend-common dependencies
+        working-directory: ui/ui-frontend-common
+        run: npm install
+# Linting is disabled. In this branch, we were using deprecated TSLint. We backport features from more recent branches that conform to new ESLint linter which rules are not identical to TSLint ones. So, we have to disable linting.
+#      - name: Lint ui-frontend-common with TSLint # We run TSLint in that GitHub Action because it requires to install project's dependencies (Prettier is run in "lint" GitHub Action)
+#        working-directory: ui/ui-frontend-common
+#        run: npm run lint
+      - name: Build ui-frontend-common
+        working-directory: ui/ui-frontend-common
+        run: npm run build:prod
+      - name: Package ui-frontend-common
+        working-directory: ui/ui-frontend-common
+        run: npm run packagr:tar
+      - name: Run tests on ui-frontend-common
+        working-directory: ui/ui-frontend-common
+        run: npm run test:conf-ci
+      - name: Install ui-frontend dependencies
+        working-directory: ui/ui-frontend
+        run: npm install ui-frontend-common --legacy-peer-deps --loglevel warn
+# Linting is disabled. In this branch, we were using deprecated TSLint. We backport features from more recent branches that conform to new ESLint linter which rules are not identical to TSLint ones. So, we have to disable linting.
+#      - name: Lint ui-frontend with TSLint # We run TSLint in that GitHub Action because it requires to install project's dependencies (Prettier is run in "lint" GitHub Action)
+#        working-directory: ui/ui-frontend
+#        run: npm run lint
+      - name: Build vitamui-library
+        working-directory: ui/ui-frontend
+        run: npm run build:vitamui-library
+      - name: Copy vitamui-library SCSS
+        working-directory: ui/ui-frontend
+        run: npm run copy-scss:vitamui-library
+      - name: Build ui-frontend apps
+        working-directory: ui/ui-frontend
+        run: npm run build:allModules
+# Disabled on 6.x as tests are KO...
+#      - name: Run tests on ui-frontend apps
+#        working-directory: ui/ui-frontend
+#        run: npm run test:conf-ci
+      - name: Save JUnit report as artifact
+        uses: mikepenz/action-junit-report@v4.3.1
+        if: success() || failure() # always run even if the previous step fails
+        with:
+          report_paths: |
+            **/target/junit/*.xml
+          check_name: Frontend Test Report
+      - name: Save test & coverage reports as artifact
+        if: success() || failure() # always run even if the previous step fails
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-test-reports
+          path: |
+            **/target/junit/*.xml
+            **/target/coverage/*
+  build-backend:
+    name: Build Backend
+    runs-on: ubuntu-latest
+    steps:
+      - uses: szenius/set-timezone@v2.0
+        with:
+          timezoneLinux: "Europe/Paris" # we set the timezone for Unit Tests to pass (we shouldn't need to, but it's currently required)
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version: "11"
+      - name: Restore maven cache # We're not using cache feature from actions/setup-java as it's not allowing to fine-tune it (in particular, we can't use restore-keys to load a previous cache if cache name mismatches)
+        uses: actions/cache@v4
+        with:
+          # See https://github.com/actions/toolkit/issues/713 for why we use */*/* to be able to exclude dependency-check-data from the cache
+          path: |
+            ~/.m2/repository/*/*/*
+            !~/.m2/repository/org/owasp/dependency-check-data
+          key: maven-${{ runner.os }}-${{ hashFiles('**/pom.xml') }}
+          restore-keys: maven-${{ runner.os }}-${{ github.ref_protected && hashFiles('**/pom.xml') || '' }} # If the key doesn't exist, tries to find a previous cache to speedup build, except for protected branches (to make sure we have a clean cache)
+      - name: Get today's date
+        id: get-date
+        run: |
+          echo "today=$(/bin/date -u "+%Y-%m-%d")" >> $GITHUB_OUTPUT
+        shell: bash
+      - name: Restore latest owasp-dependency-check cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2/repository/org/owasp/dependency-check-data
+          key: owasp-dependency-check-${{ steps.get-date.outputs.today }} # The key changes every day
+          restore-keys: owasp-dependency-check- # If the key doesn't exist, tries to find a previous cache
+      - name: Build and test
+        run: >
+          mvn --settings .ci/github-actions-settings.xml
+          -Pvitam,no-cve-proxy
+          -Dspotless.check.skip=true
+          --batch-mode --errors -U
+          --projects '!cots/vitamui-mongo-express'
+          --projects '!ui'
+          --projects '!ui/ui-archive-search'
+          --projects '!ui/ui-collect'
+          --projects '!ui/ui-commons'
+          --projects '!ui/ui-frontend'
+          --projects '!ui/ui-frontend-common'
+          --projects '!ui/ui-identity'
+          --projects '!ui/ui-ingest'
+          --projects '!ui/ui-pastis'
+          --projects '!ui/ui-portal'
+          --projects '!ui/ui-referential'
+          verify
+        env:
+          SERVICE_NEXUS_URL: ${{ secrets.SERVICE_NEXUS_URL }}
+          CI_USR: ${{ secrets.CI_USR }}
+          CI_PSW: ${{ secrets.CI_PSW }}
+      - name: Save JUnit report as artifact
+        uses: mikepenz/action-junit-report@v4.3.1
+        if: success() || failure() # always run even if the previous step fails
+        with:
+          report_paths: |
+            **/target/surefire-reports/*.xml
+          check_name: Backend Test Report
+      - name: Save test & coverage reports as artifact
+        if: success() || failure() # always run even if the previous step fails
+        uses: actions/upload-artifact@v4
+        with:
+          name: backend-test-reports
+          path: |
+            **/target/surefire-reports/*.xml
+            **/target/site/jacoco/jacoco.xml
+      - name: Save generated classes as (temporary) artifact for SonarCloud analysis
+        if: ${{ github.event_name == 'push' && github.ref_protected }} # only save generated classes when executing SonarCloud analysis
+        uses: actions/upload-artifact@v4
+        with:
+          name: backend-generated-classes
+          path: |
+            **/target/classes/**/*
+            **/target/test-classes/**/*
+  sonarcloud:
+    name: Run SonarCloud analysis
+    needs: [build-frontend, build-backend]
+    if: ${{ github.event_name == 'push' && github.ref_protected }} # only run SonarCloud analysis on protected branches
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Restore maven cache # We need maven cache for Sonar to have access to java libraries code
+        uses: actions/cache/restore@v4
+        with:
+          fail-on-cache-miss: true
+          path: |
+            ~/.m2/repository/*/*/*
+            !~/.m2/repository/org/owasp/dependency-check-data
+          key: maven-${{ runner.os }}-${{ hashFiles('**/pom.xml') }}
+      - name: Copy m2 repository in workspace "lib" directory to make it available from SonarCloud docker container # If not copied in the source code folder, it's not visible by the docker container
+        run: cp -r ~/.m2/repository ${{ github.workspace }}/lib
+      - name: Download frontend test reports
+        uses: actions/download-artifact@v4
+        with:
+          name: frontend-test-reports
+      - name: Download backend test reports
+        uses: actions/download-artifact@v4
+        with:
+          name: backend-test-reports
+      - name: Download backend target directories
+        uses: actions/download-artifact@v4
+        with:
+          name: backend-generated-classes
+      - name: SonarCloud Scan
+        uses: sonarsource/sonarcloud-github-action@v3.0.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      - name: Delete temporary artifact
+        uses: geekyeggo/delete-artifact@v5.1.0
+        if: success() || failure() # always run even if the previous step fails
+        with:
+          name: backend-generated-classes
