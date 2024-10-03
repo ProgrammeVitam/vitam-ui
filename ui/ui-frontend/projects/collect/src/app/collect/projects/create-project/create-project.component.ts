@@ -218,7 +218,7 @@ export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewCheck
     this.hasDropZoneOver = false;
   }
 
-  async onDropped(event: any) {
+  async onDropped(event: DragEvent) {
     this.hasDropZoneOver = false;
     event.preventDefault();
     const items = event.dataTransfer.items;
@@ -232,7 +232,7 @@ export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewCheck
 
   async handleFile(event: any) {
     event.preventDefault();
-    const items = event.target.files;
+    const items: FileList = event.target.files;
     const exists = this.uploadService.directoryExistInZipFile(items, false);
     if (exists) {
       this.snackBar.open(this.translationService.instant('COLLECT.UPLOAD_FILE_ALREADY_IMPORTED'), null, { duration: 3000 });
