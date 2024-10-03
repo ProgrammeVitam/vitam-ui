@@ -108,7 +108,7 @@
   <div class="col-12">
     <button
       class="btn primary download-btn"
-      [disabled]="archiveUnit['#object'] === null || !hasDownloadDocumentRole"
+      [disabled]="!archiveUnit['#object'] || !hasDownloadDocumentRole"
       (click)="onDownloadObjectFromUnit(archiveUnit)"
     >
       <span>{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.DOWNLOAD_DOC' | translate }}</span>
