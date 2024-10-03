@@ -1,0 +1,25 @@
+name: Check PR milestone
+run-name: Checking PR milestone on branch ${{ github.ref }}
+on:
+  pull_request:
+    types:
+      - opened
+      - milestoned   # Triggers when a milestone is added
+      - demilestoned # Triggers when a milestone is removed
+jobs:
+  check-pr-milestone:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check PR milestone
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const pullRequest = context.payload.pull_request;
+
+            // Check if a milestone is set
+            const milestone = pullRequest.milestone;
+            if (!milestone) {
+              core.setFailed("Milestone is not set for the pull request.");
+            } else {
+              console.log(`Milestone is set: ${milestone.title}`);
+            }
