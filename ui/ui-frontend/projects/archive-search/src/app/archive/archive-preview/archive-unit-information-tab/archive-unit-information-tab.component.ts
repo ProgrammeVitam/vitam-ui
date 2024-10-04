@@ -37,7 +37,7 @@
 
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Unit } from 'ui-frontend-common';
+import { TenantSelectionService, Unit } from 'ui-frontend-common';
 import { ArchiveService } from '../../archive.service';
 
 @Component({
@@ -48,7 +48,6 @@ import { ArchiveService } from '../../archive.service';
 export class ArchiveUnitInformationTabComponent implements OnInit, OnChanges {
   @Input() archiveUnit: Unit;
   @Input() accessContract: string;
-  @Input() tenantIdentifier: number;
 
   @Output() showNormalPanel = new EventEmitter<any>();
 
@@ -56,7 +55,10 @@ export class ArchiveUnitInformationTabComponent implements OnInit, OnChanges {
   fullPath = false;
   hasDownloadDocumentRole = false;
 
-  constructor(private archiveService: ArchiveService) {}
+  constructor(
+    private archiveService: ArchiveService,
+    private tenantSelectionService: TenantSelectionService,
+  ) {}
 
   ngOnInit() {
     this.checkDownloadPermissions();
@@ -80,7 +82,7 @@ export class ArchiveUnitInformationTabComponent implements OnInit, OnChanges {
 
   private checkDownloadPermissions() {
     this.archiveService
-      .hasArchiveSearchRole('ROLE_ARCHIVE_SEARCH_GET_ARCHIVE_BINARY', Number(this.tenantIdentifier))
+      .hasArchiveSearchRole('ROLE_ARCHIVE_SEARCH_GET_ARCHIVE_BINARY', this.tenantSelectionService.getSelectedTenant().identifier)
       .subscribe((result) => {
         this.hasDownloadDocumentRole = result;
       });

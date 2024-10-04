@@ -52,9 +52,11 @@ import {
   Unit,
   UnitType,
   WINDOW_LOCATION,
+  TenantSelectionService,
 } from 'ui-frontend-common';
 import { ArchiveService } from '../../archive.service';
 import { ArchiveUnitInformationTabComponent } from './archive-unit-information-tab.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @Pipe({ name: 'dateTime' })
 export class MockDateTimePipe implements PipeTransform {
@@ -98,6 +100,10 @@ describe('ArchiveUnitInformationTabComponent', () => {
     downloadObjectFromUnit: () => of({}),
   };
 
+  const tenantServiceMock = {
+    getSelectedTenant: () => of({ identifier: 1 }),
+  };
+
   const startUpServiceMock = {
     getPortalUrl: () => '',
     setTenantIdentifier: () => {},
@@ -116,6 +122,7 @@ describe('ArchiveUnitInformationTabComponent', () => {
         MatProgressSpinnerModule,
         MatSidenavModule,
         InjectorModule,
+        HttpClientModule,
         LoggerModule.forRoot(),
         RouterTestingModule,
         MatIconModule,
@@ -126,6 +133,7 @@ describe('ArchiveUnitInformationTabComponent', () => {
       providers: [
         FormBuilder,
         { provide: ArchiveService, useValue: archiveServiceMock },
+        { provide: TenantSelectionService, useValue: tenantServiceMock },
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: ActivatedRoute, useValue: activatedRouteMock },
         { provide: ENVIRONMENT, useValue: environment },
