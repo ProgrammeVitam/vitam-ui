@@ -52,6 +52,7 @@
     "package:pastis": "mkdir -p dist/pastis/ && cp projects/pastis/package.json dist/pastis/browser/package.json && npm pack dist/pastis/browser/",
     "package:portal": "mkdir -p dist/portal/ && cp projects/portal/package.json dist/portal/browser/package.json && npm pack dist/portal/browser/",
     "package:referential": "mkdir -p dist/referential/ && cp projects/referential/package.json dist/referential/browser/package.json && npm pack dist/referential/browser/",
+    "postinstall": "patch-package",
     "prepare": "cd ../../ && husky install ui/ui-frontend/.husky",
     "prettier:ci": "prettier --check --ignore-unknown .",
     "prettier": "prettier --write --ignore-unknown .",
@@ -169,6 +170,7 @@
     "karma-spec-reporter": "0.0.36",
     "lint-staged": "13.2.3",
     "ng-packagr": "^17.3.0",
+    "patch-package": "^8.0.0",
     "prettier": "3.3.2",
     "ts-node": "~7.0.1",
     "typescript": "~5.4.5"

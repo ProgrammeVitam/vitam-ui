@@ -1,0 +1,13 @@
+diff --git a/node_modules/@angular-devkit/build-angular/src/builders/dev-server/vite-server.js b/node_modules/@angular-devkit/build-angular/src/builders/dev-server/vite-server.js
+index c0eddfa..1402af3 100755
+--- a/node_modules/@angular-devkit/build-angular/src/builders/dev-server/vite-server.js
++++ b/node_modules/@angular-devkit/build-angular/src/builders/dev-server/vite-server.js
+@@ -334,7 +334,7 @@ async function setupServer(serverOptions, outputFiles, assets, preserveSymlinks,
+         ...(await Promise.resolve().then(() => __importStar(require('node:module')))).builtinModules,
+         ...externalMetadata.explicit,
+     ];
+-    const cacheDir = (0, node_path_1.join)(serverOptions.cacheOptions.path, 'vite');
++    const cacheDir = (0, node_path_1.join)(serverOptions.cacheOptions.path, serverOptions.buildTarget.project, 'vite');
+     const configuration = {
+         configFile: false,
+         envFile: false,
