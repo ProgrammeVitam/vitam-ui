@@ -49,7 +49,7 @@ export class CollectUploadService {
     this.zipFile = new JSZip();
   }
 
-  private static uploadFilesInfo(files: any) {
+  private static uploadFilesInfo(files: FileList) {
     let size = 0;
     for (let i = 0; i < files.length; i++) {
       size += files[i].size;
@@ -58,7 +58,7 @@ export class CollectUploadService {
     return { name, size, dragged: false } as CollectUploadFile;
   }
 
-  private static uploadFilesDirectoryName(files: any) {
+  private static uploadFilesDirectoryName(files: FileList) {
     let name = files[0].webkitRelativePath;
     if (name.indexOf('/') !== -1) {
       name = name.split('/')[0];
@@ -66,7 +66,7 @@ export class CollectUploadService {
     return name;
   }
 
-  private static dragAndDropUploadFilesDirectoryName(files: any) {
+  private static dragAndDropUploadFilesDirectoryName(files: DataTransferItemList) {
     return files[0].webkitGetAsEntry().fullPath.substring(1);
   }
 
@@ -89,12 +89,12 @@ export class CollectUploadService {
     this.uploadingFiles$.next(this.filesToUpload);
   }
 
-  directoryExistInZipFile(files: any, dragged: boolean) {
+  directoryExistInZipFile(files: DataTransferItemList | FileList, dragged: boolean) {
     let name: string;
     if (dragged) {
-      name = CollectUploadService.dragAndDropUploadFilesDirectoryName(files);
+      name = CollectUploadService.dragAndDropUploadFilesDirectoryName(files as DataTransferItemList);
     } else {
-      name = CollectUploadService.uploadFilesDirectoryName(files);
+      name = CollectUploadService.uploadFilesDirectoryName(files as FileList);
     }
     const indexName = Object.values(this.zipFile.files)
       .filter((f) => f.dir)
@@ -147,7 +147,7 @@ export class CollectUploadService {
     this.uploadingFiles$.next(this.filesToUpload);
   }
 
-  async handleUpload(files: any) {
+  async handleUpload(files: FileList) {
     if (files.length === 0) {
       return;
     }
@@ -158,9 +158,9 @@ export class CollectUploadService {
     }
   }
 
-  async handleDragAndDropUpload(files: any[]) {
-    const [uploadFile] = await Promise.all([this.dragAndDropUploadFilesInfo(files), this.buildAsyncZip(files)]);
-    this.uploadInfo(uploadFile);
+  async handleDragAndDropUpload(files: DataTransferItemList) {
+    const [filesInfo] = await Promise.all([this.dragAndDropUploadFilesInfo(files), this.buildAsyncZip(files)]);
+    this.uploadInfo(filesInfo);
   }
 
   /*** Private methods ***/
@@ -186,7 +186,7 @@ export class CollectUploadService {
     this.watchZippedFile$.next(this.zippedFile);
   }
 
-  private async buildAsyncZip(files: any) {
+  private async buildAsyncZip(files: DataTransferItemList) {
     for (let i = 0; i < files.length; i++) {
       const item = files[i].webkitGetAsEntry();
       if (item) {
@@ -195,7 +195,7 @@ export class CollectUploadService {
     }
   }
 
-  private async dragAndDropUploadFilesInfo(files: any) {
+  private async dragAndDropUploadFilesInfo(files: DataTransferItemList) {
     const name = CollectUploadService.dragAndDropUploadFilesDirectoryName(files);
     let size = 0;
     for (let i = 0; i < files.length; i++) {
@@ -207,23 +207,23 @@ export class CollectUploadService {
     return { name, size, dragged: true } as CollectUploadFile;
   }
 
-  private async calcDragAndDropUploadFilesSize(item: any) {
+  private async calcDragAndDropUploadFilesSize(item: FileSystemEntry) {
     if (item.isDirectory) {
       let size = 0;
-      const dirEntries: any[] = await this.parseDirectoryEntry(item);
+      const dirEntries: FileSystemEntry[] = await this.parseDirectoryEntry(item as FileSystemDirectoryEntry);
       for (const entry of dirEntries) {
         size += await this.calcDragAndDropUploadFilesSize(entry);
       }
       return size;
     } else {
-      const f = await this.parseFileEntry(item);
+      const f = await this.parseFileEntry(item as FileSystemFileEntry);
       return f.size;
     }
   }
 
-  private async parse(zip: JSZip, item: any) {
+  private async parse(zip: JSZip, item: FileSystemEntry) {
     if (item.isDirectory) {
-      const dirEntries: any[] = await this.parseDirectoryEntry(item);
+      const dirEntries: any[] = await this.parseDirectoryEntry(item as FileSystemDirectoryEntry);
       if (dirEntries.length === 0) {
         zip.folder(item.fullPath.substring(1));
       }
@@ -231,36 +231,24 @@ export class CollectUploadService {
         await this.parse(zip, entry);
       }
     } else {
-      const f = await this.parseFileEntry(item);
+      const f = await this.parseFileEntry(item as FileSystemFileEntry);
       zip.file(item.fullPath.substring(1), f);
     }
   }
 
-  private parseFileEntry(fileEntry: any): Promise<any> {
-    return new Promise((resolve, reject) => {
-      fileEntry.file(
-        (file: any) => {
-          resolve(file);
-        },
-        (err: any) => {
-          reject(err);
-        },
-      );
-    });
+  private parseFileEntry(fileEntry: FileSystemFileEntry): Promise<File> {
+    return new Promise((resolve, reject) => fileEntry.file(resolve, reject));
   }
 
-  private parseDirectoryEntry(directoryEntry: any): Promise<any[]> {
+  private async parseDirectoryEntry(directoryEntry: FileSystemDirectoryEntry): Promise<FileSystemEntry[]> {
     const directoryReader = directoryEntry.createReader();
-    return new Promise((resolve, reject) => {
-      directoryReader.readEntries(
-        (entries: any) => {
-          resolve(entries);
-        },
-        (err: any) => {
-          reject(err);
-        },
-      );
-    });
+    const entries: FileSystemEntry[] = [];
+    let batch;
+    // We have to call readEntries several times until it returns an empty list to make sure we read all entries (otherwise it is limited to 100 entries)
+    while ((batch = await new Promise<FileSystemEntry[]>((resolve, reject) => directoryReader.readEntries(resolve, reject))).length) {
+      entries.push(...batch);
+    }
+    return entries;
   }
 
   private uploadInfo(uploadFile: CollectUploadFile) {
