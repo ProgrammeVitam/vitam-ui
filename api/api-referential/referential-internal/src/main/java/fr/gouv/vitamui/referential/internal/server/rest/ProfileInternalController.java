@@ -200,7 +200,6 @@ public class ProfileInternalController {
         SanityChecker.sanitizeCriteria(archivalProfile);
         LOGGER.debug("create profile={}", archivalProfile);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
-        archivalProfile.setTenant(vitamContext.getTenantId());
         return profileInternalService.create(vitamContext, archivalProfile);
     }
 
