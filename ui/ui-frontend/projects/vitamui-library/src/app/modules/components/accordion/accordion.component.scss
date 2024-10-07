@@ -28,9 +28,7 @@
 }
 
 .header {
-  box-shadow:
-    0 0 2px 0 rgba(33, 33, 33, 0.2),
-    0 1px 4px 0 rgba(33, 33, 33, 0.05);
+  @include shadow-2dp-dark;
   min-height: 50px;
   padding: 0px 16px;
   border-radius: 5px;

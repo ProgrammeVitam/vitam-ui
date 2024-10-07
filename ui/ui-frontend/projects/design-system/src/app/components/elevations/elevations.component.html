@@ -1,45 +1,15 @@
 <h2>{{ 'ELEVATIONS.TITLE' | translate }}</h2>
 
-<h3>{{ 'ELEVATIONS.DARK' | translate }}</h3>
-<div class="d-flex mb-5">
-  <div class="elevation-box elevation dark-1">2dp-dark</div>
-  <div class="elevation-box elevation dark-2">4dp-dark</div>
-  <div class="elevation-box elevation dark-3">8dp-dark</div>
-  <div class="elevation-box elevation dark-4">16dp-dark</div>
-  <div class="elevation-box elevation dark-5">32dp-dark</div>
-  <div class="elevation-box elevation dark-6">64p-dark</div>
-  <div class="elevation-box elevation dark-7">128dp-dark</div>
-</div>
-
-<h3>{{ 'ELEVATIONS.PRIMARY' | translate }}</h3>
-<div class="d-flex mb-5">
-  <div class="elevation-box elevation primary-1">2dp-primary</div>
-  <div class="elevation-box elevation primary-2">4dp-primary</div>
-  <div class="elevation-box elevation primary-3">8dp-primary</div>
-  <div class="elevation-box elevation primary-4">16dp-primary</div>
-  <div class="elevation-box elevation primary-5">32dp-primary</div>
-  <div class="elevation-box elevation primary-6">64dp-primary</div>
-  <div class="elevation-box elevation primary-7">128dp-primary</div>
-</div>
-
-<h3>{{ 'ELEVATIONS.SECONDARY' | translate }}</h3>
-<div class="d-flex mb-5">
-  <div class="elevation-box elevation secondary-1">2dp-secondary</div>
-  <div class="elevation-box elevation secondary-2">4dp-secondary</div>
-  <div class="elevation-box elevation secondary-3">8dp-secondary</div>
-  <div class="elevation-box elevation secondary-4">16dp-secondary</div>
-  <div class="elevation-box elevation secondary-5">32dp-secondary</div>
-  <div class="elevation-box elevation secondary-6">64dp-secondary</div>
-  <div class="elevation-box elevation secondary-7">128dp-secondary</div>
-</div>
-
-<h3>{{ 'ELEVATIONS.TERTIARY' | translate }}</h3>
-<div class="d-flex mb-5">
-  <div class="elevation-box elevation tertiary-1">2dp-tertiary</div>
-  <div class="elevation-box elevation tertiary-2">4dp-tertiary</div>
-  <div class="elevation-box elevation tertiary-3">8dp-tertiary</div>
-  <div class="elevation-box elevation tertiary-4">16dp-tertiary</div>
-  <div class="elevation-box elevation tertiary-5">32dp-tertiary</div>
-  <div class="elevation-box elevation tertiary-6">64dp-tertiary</div>
-  <div class="elevation-box elevation tertiary-7">128dp-tertiary</div>
-</div>
+@for (color of colors; track color) {
+  <h3>{{ 'ELEVATIONS.' + (color | uppercase) | translate }}</h3>
+  <div class="d-flex mb-5 overflow-auto">
+    @for (elevation of elevations; track elevation) {
+      <div #element class="elevation-box elevation {{ color }}-{{ elevation }}">
+        <strong>{{ name(elevation, color) }}</strong>
+        @for (part of getBoxShadow(element); track part) {
+          <div class="text-nowrap">{{ part }}</div>
+        }
+      </div>
+    }
+  </div>
+}

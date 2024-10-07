@@ -5,9 +5,21 @@ div {
   padding: 20px;
 }
 
+.overflow-auto {
+  overflow: auto;
+}
+
+.text-nowrap {
+  text-wrap: nowrap;
+}
+
 .elevation-box {
   border-radius: 10px;
-  margin-right: 20px;
+  margin: 50px;
+
+  div {
+    padding: 0;
+  }
 
   &.dark-1 {
     @include elevation-1-dark;

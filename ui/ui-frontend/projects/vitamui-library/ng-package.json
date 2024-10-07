@@ -4,6 +4,7 @@
   "assets": ["./src/sass"],
   "lib": {
     "entryFile": "src/public-api.ts",
-    "cssUrl": "inline"
+    "cssUrl": "inline",
+    "styleIncludePaths": ["src/sass"]
   }
 }
