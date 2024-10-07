@@ -41,10 +41,12 @@ import {
   AppConfiguration,
   AuthUser,
   Color,
-  convertLighten,
+  convertToDarkColor,
+  convertToLightColor,
   getColorFromMaps,
   hexToRgb,
   hexToRgbString,
+  setLuminosity,
   ThemeColorType,
 } from 'vitamui-library';
 
@@ -52,10 +54,14 @@ export interface Theme {
   colors: { [colorId: string]: string };
 }
 
+const DEFAULT_PRIMARY = '#9C31B5';
+
 @Injectable({
   providedIn: 'root',
 })
 export class StandaloneThemeService {
+  private luminosityStep = 10;
+
   public get defaultTheme(): Theme {
     return this._defaultTheme;
   }
@@ -80,13 +86,13 @@ export class StandaloneThemeService {
 
   // Default theme
   defaultMap: { [colordId in ThemeColorType]: string } = {
-    [ThemeColorType.VITAMUI_PRIMARY]: '#604379',
+    [ThemeColorType.VITAMUI_PRIMARY]: DEFAULT_PRIMARY,
     [ThemeColorType.VITAMUI_GREY]: '#9E9E9E',
     [ThemeColorType.VITAMUI_ADDITIONAL]: '#9AA0FF',
-    [ThemeColorType.VITAMUI_SECONDARY]: '#65B2E4',
-    [ThemeColorType.VITAMUI_TERTIARY]: '#E7304D',
+    [ThemeColorType.VITAMUI_SECONDARY]: '#296EBC',
+    [ThemeColorType.VITAMUI_TERTIARY]: '#C22A40',
     [ThemeColorType.VITAMUI_HEADER_FOOTER]: '#604379',
-    [ThemeColorType.VITAMUI_BACKGROUND]: '#F5F7FC',
+    [ThemeColorType.VITAMUI_BACKGROUND]: StandaloneThemeService.getPrimaryLight(DEFAULT_PRIMARY),
     /* DEPRECATED colors : Use color chart with declinations var(--vitamui-primary-XXX),
     var(--vitamui-secondary-XXX) and var(--vitamui-grey-XXX) */
     [ThemeColorType.VITAMUI_PRIMARY_LIGHT]: '',
@@ -104,11 +110,15 @@ export class StandaloneThemeService {
     { class: 'Foncé', value: '#0F0D2D' },
     { class: 'Blanc', value: '#FFFFFF' },
     { class: 'Clair', value: '#F5F5F5' },
-    { class: 'Bleu clair', value: '#F5F7FC' },
+    { class: 'Primaire clair', value: StandaloneThemeService.getPrimaryLight(DEFAULT_PRIMARY), isPrimaryLight: true },
   ];
 
   public get backgroundChoice(): Color[] {
     return this._backgroundChoice;
+  }
+
+  public static getPrimaryLight(primary: string): string {
+    return setLuminosity(primary, 98).toUpperCase();
   }
 
   public getBaseColors(): { [colorId in ThemeColorType]?: string } {
@@ -121,6 +131,7 @@ export class StandaloneThemeService {
 
   public init(conf: AppConfiguration, customerColorMap: { [colorId: string]: string }): void {
     this.applicationColorMap = conf.THEME_COLORS;
+    this.luminosityStep = conf.THEME_COLORS_LUMINOSITY_STEP || this.luminosityStep;
 
     this.overrideTheme(customerColorMap);
     if (conf) {
@@ -130,7 +141,7 @@ export class StandaloneThemeService {
 
       // init default background
       const defaultBackground = this.backgroundChoice.find(
-        (color: Color) => color.value === conf.THEME_COLORS[ThemeColorType.VITAMUI_BACKGROUND],
+        (color: Color) => color.value?.toLowerCase() === conf.THEME_COLORS[ThemeColorType.VITAMUI_BACKGROUND]?.toLowerCase(),
       );
       if (defaultBackground) {
         defaultBackground.isDefault = true;
@@ -161,8 +172,7 @@ export class StandaloneThemeService {
   }
 
   private add10Declinations(key: string, colors: { [key: string]: string }, customerColors: { [colorId: string]: string }): void {
-    const map: { [key: string]: string } = { ...this.defaultMap, ...this.applicationColorMap, ...customerColors };
-    const rgbValue = hexToRgb(map[key]);
+    const mergedMap: { [key: string]: string } = { ...this.defaultMap, ...this.applicationColorMap, ...customerColors };
     // consider hs-L from color key as 500
 
     if (key === ThemeColorType.VITAMUI_GREY) {
@@ -176,23 +186,23 @@ export class StandaloneThemeService {
       colors[key + '-100'] = '#F5F5F5';
       colors[key + '-50'] = '#FAFAFA';
     } else {
-      colors[key + '-900'] = convertLighten(rgbValue, -32);
-      colors[key + '-800'] = convertLighten(rgbValue, -24);
-      colors[key + '-700'] = convertLighten(rgbValue, -16);
-      colors[key + '-600'] = convertLighten(rgbValue, -8);
+      colors[key + '-900'] = convertToDarkColor(mergedMap[key], 4 * this.luminosityStep);
+      colors[key + '-800'] = convertToDarkColor(mergedMap[key], 3 * this.luminosityStep);
+      colors[key + '-700'] = convertToDarkColor(mergedMap[key], 2 * this.luminosityStep);
+      colors[key + '-600'] = convertToDarkColor(mergedMap[key], this.luminosityStep);
       // The color declination 500 is the base version (we use var(--vitamui-primary) instead of var(--vitamui-primary-500))
-      colors[key + '-400'] = convertLighten(rgbValue, 8);
-      colors[key + '-300'] = convertLighten(rgbValue, 16);
-      colors[key + '-200'] = convertLighten(rgbValue, 24);
-      colors[key + '-100'] = convertLighten(rgbValue, 32);
-      colors[key + '-50'] = convertLighten(rgbValue, 40);
+      colors[key + '-400'] = convertToLightColor(mergedMap[key], this.luminosityStep);
+      colors[key + '-300'] = convertToLightColor(mergedMap[key], 2 * this.luminosityStep);
+      colors[key + '-200'] = convertToLightColor(mergedMap[key], 3 * this.luminosityStep);
+      colors[key + '-100'] = convertToLightColor(mergedMap[key], 4 * this.luminosityStep);
+      colors[key + '-50'] = convertToLightColor(mergedMap[key], 5 * this.luminosityStep);
     }
 
     colors[key + '-900-font'] = this.calculateFontColor(colors[key + '-900']);
     colors[key + '-800-font'] = this.calculateFontColor(colors[key + '-800']);
     colors[key + '-700-font'] = this.calculateFontColor(colors[key + '-700']);
     colors[key + '-600-font'] = this.calculateFontColor(colors[key + '-600']);
-    colors[key + '-font'] = this.calculateFontColor(map[key]); // primary/secondary/tertiary
+    colors[key + '-font'] = this.calculateFontColor(mergedMap[key]); // primary/secondary/tertiary
     colors[key + '-400-font'] = this.calculateFontColor(colors[key + '-400']);
     colors[key + '-300-font'] = this.calculateFontColor(colors[key + '-300']);
     colors[key + '-200-font'] = this.calculateFontColor(colors[key + '-200']);
@@ -207,26 +217,23 @@ export class StandaloneThemeService {
    */
   public getThemeColors(customerColors: { [colorId: string]: string } = null): { [colorId: string]: string } {
     const colors: { [key: string]: string } = {};
-
     for (const key in this.defaultMap) {
       if (this.defaultMap.hasOwnProperty(key)) {
         if (([ThemeColorType.VITAMUI_PRIMARY, ThemeColorType.VITAMUI_SECONDARY, ThemeColorType.VITAMUI_GREY] as string[]).includes(key)) {
           this.add10Declinations(key, colors, customerColors);
         } else if (key === ThemeColorType.VITAMUI_HEADER_FOOTER) {
-          const map = { ...this.defaultMap, ...this.applicationColorMap, ...customerColors };
-          colors[key + '-font'] = this.calculateFontColor(map[key]);
+          const mergedMap = { ...this.defaultMap, ...this.applicationColorMap, ...customerColors };
+          colors[key + '-font'] = this.calculateFontColor(mergedMap[key]);
         }
         colors[key] = getColorFromMaps(key, this.defaultMap, this.applicationColorMap, customerColors);
       }
     }
-
     return colors;
   }
 
-  public overrideTheme(customerThemeMap: { [key: string]: string }, selector = 'body'): void {
+  public overrideTheme(customerThemeMap: { [colorId: string]: string }, selector = 'body'): void {
     const element: HTMLElement = document.querySelector(selector);
     const themeColors = this.getThemeColors(customerThemeMap);
-
     for (const key in themeColors) {
       if (themeColors.hasOwnProperty(key)) {
         element.style.setProperty('--' + key, themeColors[key]);

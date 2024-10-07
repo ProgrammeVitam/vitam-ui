@@ -44,6 +44,7 @@ export interface AppConfiguration {
   LOGOUT_REDIRECT_UI_URL: string;
   SEARCH_URL?: string;
   THEME_COLORS: any;
+  THEME_COLORS_LUMINOSITY_STEP?: number;
   PORTAL_MESSAGE: string;
   PORTAL_TITLE: string;
   PORTAL_LOGO: string;

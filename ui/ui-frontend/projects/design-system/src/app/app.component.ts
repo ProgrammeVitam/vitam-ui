@@ -76,7 +76,7 @@ export class AppComponent implements AfterViewInit {
   }
 
   ngAfterViewInit() {
-    setTimeout(() => this.refreshAnchorMenu());
+    setTimeout(() => this.refreshAnchorMenu(), 100);
   }
 
   isActive(url: string): boolean {

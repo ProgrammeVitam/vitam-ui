@@ -6,26 +6,26 @@
 ul {
   display: flex;
   list-style: none;
-  justify-content: left;
-  padding-left: 0px !important;
+  justify-content: space-between;
+  padding-left: 0 !important;
 }
 .color {
   width: auto;
-  height: 240px;
+  height: 150px;
   border-radius: 8px;
-  max-width: 1060px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .shade {
   width: 90px;
   height: 90px;
   border-radius: 4px;
-  margin-right: 18px;
 }
 
 .shade-text {
   text-align: center;
-  margin-right: 18px;
-  margin-top: 10px;
+  margin-top: 0.5rem;
 }
 
 .red {

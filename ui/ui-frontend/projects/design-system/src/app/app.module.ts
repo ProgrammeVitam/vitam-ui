@@ -145,10 +145,10 @@ export class AppModule {
         {
           USER_LOGO: userLogo,
           THEME_COLORS: {
-            'vitamui-primary': '#702382',
-            'vitamui-secondary': '#2563A9',
+            'vitamui-primary': '#9C31B5',
+            'vitamui-secondary': '#296EBC',
             'vitamui-tertiary': '#C22A40',
-            'vitamui-background': '#F5F7FC',
+            'vitamui-background': '#FCF7FD',
             'vitamui-header-footer': '#ffffff',
           },
         } as AppConfiguration,
