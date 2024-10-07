@@ -1437,7 +1437,7 @@
           ]
         },
         {
-          "name": "type",
+          "name": "Type",
           "nameFr": "Type OAIS",
           "element": "Simple",
           "cardinality": "0-1",
