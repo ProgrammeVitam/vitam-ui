@@ -39,12 +39,11 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { RouterTestingModule } from '@angular/router/testing';
-import { ApplicationService, InjectorModule, LoggerModule, WINDOW_LOCATION } from 'ui-frontend-common';
+import { ApplicationService, InjectorModule, LoggerModule, WINDOW_LOCATION, AccessContractService } from 'ui-frontend-common';
 import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { AccessContractComponent } from './access-contract.component';
-import { AccessContractService } from './access-contract.service';
 
 import { of } from 'rxjs';
 import { TranslateModule } from '@ngx-translate/core';

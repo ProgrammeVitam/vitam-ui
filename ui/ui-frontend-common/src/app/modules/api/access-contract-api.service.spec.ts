@@ -36,23 +36,26 @@
  */
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { BASE_URL, ENVIRONMENT, InjectorModule, LoggerModule } from 'ui-frontend-common';
 import { environment } from './../../../environments/environment';
 import { AccessContractApiService } from './access-contract-api.service';
+import { InjectorModule } from '../helper/injector.module';
+import { LoggerModule } from '../logger';
+import { BASE_URL, ENVIRONMENT } from '../injection-tokens';
 
 describe('AccessContractApiService', () => {
-  beforeEach(() =>
+  let service: AccessContractApiService;
+  beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, InjectorModule, LoggerModule.forRoot()],
+      imports: [InjectorModule, LoggerModule.forRoot(), HttpClientTestingModule],
       providers: [
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: ENVIRONMENT, useValue: environment },
       ],
-    }),
-  );
+    });
+    service = TestBed.inject(AccessContractApiService);
+  });
 
   it('should be created', () => {
-    const service: AccessContractApiService = TestBed.inject(AccessContractApiService);
     expect(service).toBeTruthy();
   });
 });

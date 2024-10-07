@@ -42,7 +42,7 @@ import { AccessContract, Status } from 'projects/vitamui-library/src/public-api'
 import { of } from 'rxjs';
 import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 import { AgencyService } from '../../../agency/agency.service';
-import { AccessContractService } from '../../access-contract.service';
+import { AccessContractService } from 'ui-frontend-common';
 import { AccessContractUsageAndServicesTabComponent } from './access-contract-usage-and-services-tab.component';
 
 describe('AccessContractUsageAndServicesTabComponent', () => {

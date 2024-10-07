@@ -57,7 +57,7 @@ Les services génèrent les logs techniques dans la solution de log centralisée
 
   Le service de référentiel externe est composé de plusieurs points d'APIs:
 
-    * API des contrats d'accès (/referential/accesscontract)
+    * API des contrats d'accès (/referential/accesscontracts)
     * API des contrats d'entrées (/referential/ingestcontract)
     * API des contrats de gestion (/referential/managementcontract)
     * API des services agents (/referential/agency)
@@ -205,7 +205,7 @@ Les services génèrent les logs techniques dans la solution de log centralisée
 
   Le service de référentiel interne est composé de plusieurs points d'APIs:
 
-  * API des contrats d'accès (/referential/accesscontract)
+  * API des contrats d'accès (/referential/accesscontracts)
   * API des contrats d'entrées (/referential/ingestcontract)
   * API des contrats de gestion (/referential/managementcontract)
   * API des services agents (/referential/agency)

@@ -47,11 +47,10 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { EMPTY, of } from 'rxjs';
-import { BASE_URL, ConfirmDialogService, ExternalParametersService, LoggerModule } from 'ui-frontend-common';
+import { BASE_URL, ConfirmDialogService, ExternalParametersService, LoggerModule, AccessContractService } from 'ui-frontend-common';
 import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 
 import { AgencyService } from '../../agency/agency.service';
-import { AccessContractService } from '../access-contract.service';
 import { AccessContractCreateComponent } from './access-contract-create.component';
 import { AccessContractCreateValidators } from './access-contract-create.validators';
 import { HttpClientTestingModule } from '@angular/common/http/testing';

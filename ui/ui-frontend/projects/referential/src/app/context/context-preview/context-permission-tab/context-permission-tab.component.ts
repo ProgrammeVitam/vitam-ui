@@ -39,9 +39,18 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Observable, forkJoin, of } from 'rxjs';
 import { catchError, filter, map, switchMap, tap } from 'rxjs/operators';
-import { AccessContract, AuthService, Context, ContextPermission, Customer, IngestContract, Tenant, diff } from 'ui-frontend-common';
+import {
+  AccessContract,
+  AuthService,
+  Context,
+  ContextPermission,
+  Customer,
+  IngestContract,
+  Tenant,
+  diff,
+  AccessContractService,
+} from 'ui-frontend-common';
 import { extend, isEmpty } from 'underscore';
-import { AccessContractService } from '../../../access-contract/access-contract.service';
 import { CustomerApiService } from '../../../core/api/customer-api.service';
 import { TenantApiService } from '../../../core/api/tenant-api.service';
 import { IngestContractService } from '../../../ingest-contract/ingest-contract.service';

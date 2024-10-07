@@ -157,8 +157,7 @@ export class ArchiveCollectService extends SearchService<any> implements SearchA
 
   getAccessContractById(accessContract: string): Observable<AccessContract> {
     const headers = new HttpHeaders().append('Content-Type', 'application/json');
-
-    return this.accessContractApiService.getAccessContractById(accessContract, headers);
+    return this.accessContractApiService.getOne(accessContract, headers);
   }
 
   openSnackBarForWorkflow(message: string, serviceUrl?: string) {

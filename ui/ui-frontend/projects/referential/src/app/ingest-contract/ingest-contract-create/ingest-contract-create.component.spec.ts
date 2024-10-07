@@ -42,9 +42,15 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { EMPTY, of } from 'rxjs';
-import { BASE_URL, ConfirmDialogService, ExternalParameters, ExternalParametersService, LoggerModule } from 'ui-frontend-common';
+import {
+  BASE_URL,
+  ConfirmDialogService,
+  ExternalParameters,
+  ExternalParametersService,
+  LoggerModule,
+  AccessContractService,
+} from 'ui-frontend-common';
 import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
-import { AccessContractService } from '../../access-contract/access-contract.service';
 import { ArchiveProfileApiService } from '../../core/api/archive-profile-api.service';
 import { ManagementContractApiService } from '../../core/api/management-contract-api.service';
 import { FileFormatService } from '../../file-format/file-format.service';

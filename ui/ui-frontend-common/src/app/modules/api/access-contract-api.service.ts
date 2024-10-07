@@ -34,33 +34,71 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { BASE_URL } from '../injection-tokens';
+import { map } from 'rxjs/operators';
+import { BaseHttpClient } from '../base-http-client';
 import { AccessContract } from '../models/access-contract';
+
+import { BASE_URL } from '../injection-tokens';
+import { PageRequest, PaginatedResponse } from '../vitamui-table';
+
+const HTTP_STATUS_OK = 200;
 
 @Injectable({
   providedIn: 'root',
 })
-export class AccessContractApiService {
-  private readonly apiUrl: string;
-  private readonly baseUrl: string;
-
+export class AccessContractApiService extends BaseHttpClient<AccessContract> {
   constructor(
-    private http: HttpClient,
-    @Inject(BASE_URL) baseUrl: string,
+    http: HttpClient,
+    @Inject(BASE_URL) private baseUrl: string,
   ) {
-    this.apiUrl = baseUrl + '/accesscontracts';
-    this.baseUrl = baseUrl;
+    super(http, baseUrl + '/accesscontracts');
   }
 
-  getAllAccessContracts(params: HttpParams, headers?: HttpHeaders): Observable<any[]> {
-    return this.http.get<any>(`${this.apiUrl}`, { params, headers });
+  getAllByParams(params: HttpParams, headers?: HttpHeaders) {
+    return super.getAllByParams(params, headers);
   }
 
-  getAccessContractById(accessContractId: string, headers?: HttpHeaders): Observable<AccessContract> {
-    const params = new HttpParams();
-    return this.http.get<AccessContract>(this.apiUrl + '/' + accessContractId, { params, headers });
+  getAllPaginated(pageRequest: PageRequest, embedded?: string, headers?: HttpHeaders): Observable<PaginatedResponse<AccessContract>> {
+    return super.getAllPaginated(pageRequest, embedded, headers);
+  }
+
+  getOne(id: string, headers?: HttpHeaders): Observable<AccessContract> {
+    return super.getOne(id, headers);
+  }
+
+  checkExistsByParam(params: Array<{ key: string; value: string }>, headers?: HttpHeaders): Observable<boolean> {
+    return super.checkExistsByParam(params, headers);
+  }
+
+  create(accessContract: AccessContract, headers?: HttpHeaders): Observable<AccessContract> {
+    return super.getHttp().post<any>(super.getApiUrl(), accessContract, { headers });
+  }
+
+  check(accessContract: AccessContract, headers?: HttpHeaders): Observable<boolean> {
+    return super
+      .getHttp()
+      .post<any>(super.getApiUrl() + '/check', accessContract, { observe: 'response', headers })
+      .pipe(map((response: HttpResponse<void>) => response.status === HTTP_STATUS_OK));
+  }
+
+  patch(partialAccessContract: { id: string; [key: string]: any }, headers?: HttpHeaders): Observable<AccessContract> {
+    return super.patch(partialAccessContract, headers);
+  }
+
+  public getImportAccessContractFileModel(): Observable<HttpResponse<Blob>> {
+    return this.http.get(this.baseUrl + '/static/import-access-contracts-model.csv', {
+      observe: 'response',
+      responseType: 'blob',
+    });
+  }
+
+  public exportAccessContracts(): Observable<HttpResponse<Blob>> {
+    return this.http.get(super.getApiUrl() + '/export-csv', {
+      observe: 'response',
+      responseType: 'blob',
+    });
   }
 }

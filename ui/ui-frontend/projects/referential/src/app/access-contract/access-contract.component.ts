@@ -40,7 +40,14 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { FileTypes } from 'projects/vitamui-library/src/lib/models/file-types.enum';
-import { AccessContract, ApplicationService, DownloadUtils, GlobalEventService, SidenavPage } from 'ui-frontend-common';
+import {
+  AccessContract,
+  ApplicationService,
+  DownloadUtils,
+  GlobalEventService,
+  SidenavPage,
+  AccessContractService,
+} from 'ui-frontend-common';
 import { ImportDialogParam, ReferentialTypes } from '../shared/import-dialog/import-dialog-param.interface';
 import { ImportDialogComponent } from '../shared/import-dialog/import-dialog.component';
 
@@ -48,7 +55,6 @@ import { Subject, Subscription } from 'rxjs';
 import { DownloadSnackBarService } from '../core/service/download-snack-bar.service';
 import { AccessContractCreateComponent } from './access-contract-create/access-contract-create.component';
 import { AccessContractListComponent } from './access-contract-list/access-contract-list.component';
-import { AccessContractService } from './access-contract.service';
 
 @Component({
   selector: 'app-access',

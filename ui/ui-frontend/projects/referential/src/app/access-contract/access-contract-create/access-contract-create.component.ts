@@ -46,11 +46,11 @@ import {
   Option,
   VitamUISnackBarService,
   VitamuiAutocompleteMultiselectOptions,
+  AccessContractService,
 } from 'ui-frontend-common';
 import { FilingPlanMode, Status } from 'vitamui-library';
 import { AgencyService } from '../../agency/agency.service';
 import { RULE_TYPES } from '../../rule/rules.constants';
-import { AccessContractService } from '../access-contract.service';
 import { AccessContractCreateValidators } from './access-contract-create.validators';
 
 import { Subject } from 'rxjs';
