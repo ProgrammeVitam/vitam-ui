@@ -72,10 +72,12 @@ export class ManagementRulesSharedDataService {
     return this.ruleCategory.asObservable();
   }
 
+  //TODO: switch to accessContractService
   emitAccessContract(accessContract: string) {
     this.accessContract.next(accessContract);
   }
 
+  //TODO: switch to accessContractService
   getAccessContract(): Observable<string> {
     return this.accessContract.asObservable();
   }

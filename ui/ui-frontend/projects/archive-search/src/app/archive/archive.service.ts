@@ -41,7 +41,7 @@ import { saveAs } from 'file-saver-es';
 import { Observable, of, throwError, TimeoutError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import {
-  AccessContractApiService,
+  AccessContractService,
   ApiUnitObject,
   ArchiveUnit,
   CriteriaDataType,
@@ -79,7 +79,7 @@ export class ArchiveService extends SearchService<any> implements SearchArchiveU
     @Inject(LOCALE_ID) private locale: string,
     private snackBar: MatSnackBar,
     private securityService: SecurityService,
-    private accessContractApiService: AccessContractApiService,
+    private accessContractService: AccessContractService,
   ) {
     super(archiveApiService, 'ALL');
   }
@@ -247,9 +247,7 @@ export class ArchiveService extends SearchService<any> implements SearchArchiveU
   }
 
   getAccessContractById(accessContract: string): Observable<AccessContract> {
-    const headers = new HttpHeaders().append('Content-Type', 'application/json');
-
-    return this.accessContractApiService.getAccessContractById(accessContract, headers);
+    return this.accessContractService.get(accessContract);
   }
 
   openSnackBarForWorkflow(message: string, serviceUrl?: string) {

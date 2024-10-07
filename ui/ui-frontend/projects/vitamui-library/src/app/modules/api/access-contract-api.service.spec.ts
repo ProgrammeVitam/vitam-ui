@@ -36,23 +36,25 @@
  */
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { BASE_URL, ENVIRONMENT, InjectorModule, LoggerModule } from 'vitamui-library';
-import { environment } from './../../../environments/environment';
+import { InjectorModule, LoggerModule } from 'vitamui-library';
+import { BASE_URL, ENVIRONMENT } from '../injection-tokens';
+import { environment } from '../../../environments/environment';
 import { AccessContractApiService } from './access-contract-api.service';
 
 describe('AccessContractApiService', () => {
-  beforeEach(() =>
+  let service: AccessContractApiService;
+  beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, InjectorModule, LoggerModule.forRoot()],
+      imports: [InjectorModule, LoggerModule.forRoot(), HttpClientTestingModule],
       providers: [
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: ENVIRONMENT, useValue: environment },
       ],
-    }),
-  );
+    });
+    service = TestBed.inject(AccessContractApiService);
+  });
 
   it('should be created', () => {
-    const service: AccessContractApiService = TestBed.inject(AccessContractApiService);
     expect(service).toBeTruthy();
   });
 });

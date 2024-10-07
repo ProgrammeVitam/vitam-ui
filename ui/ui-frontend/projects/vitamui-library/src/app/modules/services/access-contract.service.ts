@@ -36,26 +36,43 @@
  */
 import { HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
-import { tap } from 'rxjs/operators';
-import { AccessContract, SearchService, VitamUISnackBarService } from 'vitamui-library';
-import { AccessContractApiService } from '../core/api/access-contract-api.service';
+import { Observable, Subject, switchMap } from 'rxjs';
+import { map, shareReplay, tap } from 'rxjs/operators';
+import { AccessContractApiService } from '../api/access-contract-api.service';
+import { AccessContract } from '../../../lib/models/access-contract.interface';
+import { SearchService } from '../vitamui-table';
+import { VitamUISnackBarService } from '../components/vitamui-snack-bar';
+import { ExternalParametersService } from '../externalParameters.service';
+import { ExternalParameters } from '../externalParameters.enum';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AccessContractService extends SearchService<AccessContract> {
+  /** Observable of current access contract ID */
+  currentAccessContractId$: Observable<string> = this.externalParameterService.getUserExternalParameters().pipe(
+    map((parameters) => parameters.get(ExternalParameters.PARAM_ACCESS_CONTRACT)),
+    shareReplay(1), //cached
+  );
+  /** Observable of current access contract */
+  currentAccessContract$: Observable<AccessContract> = this.currentAccessContractId$.pipe(
+    switchMap((accessContractId) => this.get(accessContractId)),
+    shareReplay(1), //cached
+  );
+
   updated = new Subject<AccessContract>();
 
   constructor(
     private accessContractApi: AccessContractApiService,
     private snackBarService: VitamUISnackBarService,
+    private externalParameterService: ExternalParametersService,
   ) {
     super(accessContractApi, 'ALL');
   }
 
   get(id: string): Observable<AccessContract> {
-    return this.accessContractApi.getOne(encodeURI(id));
+    const headers = new HttpHeaders().append('Content-Type', 'application/json');
+    return this.accessContractApi.getOne(encodeURI(id), headers);
   }
 
   getAll(): Observable<AccessContract[]> {
@@ -91,8 +108,8 @@ export class AccessContractService extends SearchService<AccessContract> {
   patch(data: { id: string; [key: string]: any }): Observable<AccessContract> {
     return this.accessContractApi.patch(data).pipe(
       tap((response) => this.updated.next(response)),
-      tap(
-        (response) => {
+      tap({
+        next: (response) => {
           this.snackBarService.open({
             message: 'SNACKBAR.ACCESS_CONTRACT_UPDATED',
             translateParams: {
@@ -101,10 +118,10 @@ export class AccessContractService extends SearchService<AccessContract> {
             icon: 'vitamui-icon-contrat',
           });
         },
-        (error) => {
+        error: (error) => {
           this.snackBarService.open({ message: error.error.message, translate: false });
         },
-      ),
+      }),
     );
   }
 

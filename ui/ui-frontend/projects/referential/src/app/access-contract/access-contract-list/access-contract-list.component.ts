@@ -45,9 +45,8 @@ import {
   InfiniteScrollTable,
   PageRequest,
   rotateAnimation,
+  AccessContractService,
 } from 'vitamui-library';
-
-import { AccessContractService } from '../access-contract.service';
 
 const FILTER_DEBOUNCE_TIME_MS = 400;
 

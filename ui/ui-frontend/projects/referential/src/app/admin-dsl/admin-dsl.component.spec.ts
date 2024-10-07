@@ -42,9 +42,8 @@ import { MatLegacySelectModule as MatSelectModule } from '@angular/material/lega
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute, Router } from '@angular/router';
 import { of } from 'rxjs';
-import { DslQueryType, InjectorModule, LoggerModule, VitamUISnackBarService } from 'vitamui-library';
+import { DslQueryType, InjectorModule, LoggerModule, VitamUISnackBarService, AccessContractService } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
-import { AccessContractService } from '../access-contract/access-contract.service';
 import { AdminDslComponent } from './admin-dsl.component';
 import { AdminDslService } from './admin-dsl.service';
 

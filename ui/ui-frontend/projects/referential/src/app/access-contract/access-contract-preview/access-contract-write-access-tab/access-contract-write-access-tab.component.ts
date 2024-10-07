@@ -39,8 +39,7 @@ import { FormBuilder, FormGroup, ValidationErrors, ValidatorFn } from '@angular/
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
 import { extend, isEmpty } from 'underscore';
-import { AccessContract, diff, Option } from 'vitamui-library';
-import { AccessContractService } from '../../access-contract.service';
+import { AccessContract, diff, Option, AccessContractService } from 'vitamui-library';
 
 @Component({
   selector: 'app-access-contract-write-access-tab',

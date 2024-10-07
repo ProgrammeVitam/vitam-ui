@@ -1,7 +1,15 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
 import { NavigationExtras, Router } from '@angular/router';
-import { ApiUnitObject, VersionDto, TenantSelectionService, ObjectQualifierType } from 'vitamui-library';
+import {
+  AccessContract,
+  AccessContractService,
+  ApiUnitObject,
+  ObjectQualifierType,
+  qualifiersToVersionsWithQualifier,
+  TenantSelectionService,
+  VersionWithQualifierDto,
+} from 'vitamui-library';
 import { PurgedPersistentIdentifierDto } from '../../../core/api/persistent-identifier-response-dto.interface';
 import { ArchiveService } from '../../archive.service';
 
@@ -18,27 +26,31 @@ export class FoundObjectModalComponent {
   private readonly unitId: string;
   downloading = false;
   isPhysicalMaster = false;
+  versionWithQualifier: VersionWithQualifierDto;
 
   constructor(
     private dialogRef: MatDialogRef<PurgedPersistentIdentifierDto>,
     private router: Router,
     private tenantSelectionService: TenantSelectionService,
     private archiveService: ArchiveService,
+    private accessContractService: AccessContractService,
     @Inject(MAT_DIALOG_DATA) data: { ark: string; object: ApiUnitObject },
   ) {
     this.ark = data.ark;
     this.unitId = data.object['#unitups'][0];
+    this.versionWithQualifier = qualifiersToVersionsWithQualifier(data.object['#qualifiers']).find((version) =>
+      version.PersistentIdentifier.some((persistentId) => persistentId.PersistentIdentifierContent === data.ark),
+    );
 
-    const version: VersionDto = data.object['#qualifiers']
-      .flatMap((qualifier) => qualifier.versions)
-      .find((version) => version.PersistentIdentifier.some((persistentId) => persistentId.PersistentIdentifierContent === data.ark));
-
-    if (version) {
-      const fragments = version.DataObjectVersion.split('_');
-      this.usageVersion = version.DataObjectVersion;
+    if (this.versionWithQualifier) {
+      const fragments = this.versionWithQualifier.DataObjectVersion.split('_');
+      this.usageVersion = this.versionWithQualifier.DataObjectVersion;
       this.qualifier = fragments[0];
       this.qualifierVersion = Number.parseInt(fragments[1]);
       this.isPhysicalMaster = this.qualifier === ObjectQualifierType.PHYSICALMASTER;
+      this.accessContractService.currentAccessContract$.subscribe(
+        (accessContract: AccessContract) => (this.versionWithQualifier.downloadAllowed = this.accessContractAllowDownload(accessContract)),
+      );
     }
   }
 
@@ -50,6 +62,16 @@ export class FoundObjectModalComponent {
     };
     this.closeDialog();
     this.router.navigate(['/archive-search/tenant/', this.tenantSelectionService.getSelectedTenant().identifier], extras);
+  }
+
+  accessContractAllowDownload(accessContract: AccessContract): boolean {
+    if (accessContract.everyDataObjectVersion) {
+      return true;
+    }
+    if (!accessContract.dataObjectVersion) {
+      return false;
+    }
+    return accessContract.dataObjectVersion.includes(this.versionWithQualifier.qualifier);
   }
 
   async downloadObject() {

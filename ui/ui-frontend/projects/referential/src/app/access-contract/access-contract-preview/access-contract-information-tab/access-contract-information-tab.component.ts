@@ -40,10 +40,9 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
 import { extend, isEmpty } from 'underscore';
-import { AccessContract, Option, diff } from 'vitamui-library';
+import { AccessContract, Option, diff, AccessContractService } from 'vitamui-library';
 import { RULE_TYPES } from '../../../rule/rules.constants';
 import { AccessContractCreateValidators } from '../../access-contract-create/access-contract-create.validators';
-import { AccessContractService } from '../../access-contract.service';
 
 @Component({
   selector: 'app-access-contract-information-tab',

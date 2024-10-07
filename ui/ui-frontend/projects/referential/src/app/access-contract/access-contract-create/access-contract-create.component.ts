@@ -48,10 +48,10 @@ import {
   Status,
   VitamuiAutocompleteMultiselectOptions,
   VitamUISnackBarService,
+  AccessContractService,
 } from 'vitamui-library';
 import { AgencyService } from '../../agency/agency.service';
 import { RULE_TYPES } from '../../rule/rules.constants';
-import { AccessContractService } from '../access-contract.service';
 import { AccessContractCreateValidators } from './access-contract-create.validators';
 
 import { finalize, Subject } from 'rxjs';
