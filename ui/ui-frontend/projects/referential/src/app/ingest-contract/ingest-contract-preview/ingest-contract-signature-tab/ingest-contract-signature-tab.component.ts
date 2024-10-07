@@ -153,18 +153,28 @@ export class IngestContractSignatureTabComponent implements OnChanges {
 
   resetForm(ingestContract: IngestContract) {
     if (ingestContract.signaturePolicy) {
+      const disabledCheckbox = this._ingestContract.signaturePolicy.signedDocument == SignedDocumentPolicyEnum.FORBIDDEN || this.readOnly;
       this.form = this.formBuilder.group({
-        signedDocument: [this._ingestContract.signaturePolicy.signedDocument],
-        declaredSignature: [this._ingestContract.signaturePolicy.declaredSignature],
-        declaredTimestamp: [this._ingestContract.signaturePolicy.declaredTimestamp],
-        declaredAdditionalProof: [this._ingestContract.signaturePolicy.declaredAdditionalProof],
+        signedDocument: { value: this._ingestContract.signaturePolicy.signedDocument, disabled: this.readOnly },
+        declaredSignature: {
+          value: this._ingestContract.signaturePolicy.declaredSignature,
+          disabled: disabledCheckbox,
+        },
+        declaredTimestamp: {
+          value: this._ingestContract.signaturePolicy.declaredTimestamp,
+          disabled: disabledCheckbox,
+        },
+        declaredAdditionalProof: {
+          value: this._ingestContract.signaturePolicy.declaredAdditionalProof,
+          disabled: disabledCheckbox,
+        },
       });
     } else {
       this.form = this.formBuilder.group({
-        signedDocument: [SignedDocumentPolicyEnum.ALLOWED],
-        declaredSignature: [false],
-        declaredTimestamp: [false],
-        declaredAdditionalProof: [false],
+        signedDocument: { value: SignedDocumentPolicyEnum.ALLOWED, disabled: this.readOnly },
+        declaredSignature: { value: false, disabled: this.readOnly },
+        declaredTimestamp: { value: false, disabled: this.readOnly },
+        declaredAdditionalProof: { value: false, disabled: this.readOnly },
       });
     }
   }

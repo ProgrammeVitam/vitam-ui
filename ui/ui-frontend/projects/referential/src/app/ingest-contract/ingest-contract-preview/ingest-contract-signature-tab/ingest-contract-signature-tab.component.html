@@ -7,18 +7,21 @@
       <mat-button-toggle
         value="{{ SignedDocumentPolicyEnum.ALLOWED }}"
         (click)="changeSignedDocumentPolicy(SignedDocumentPolicyEnum.ALLOWED)"
+        [disabled]="readOnly"
       >
         {{ 'INGEST_CONTRACT.SIGNED_DOCUMENT_TYPE.' + SignedDocumentPolicyEnum.ALLOWED | translate }}
       </mat-button-toggle>
       <mat-button-toggle
         value="{{ SignedDocumentPolicyEnum.MANDATORY }}"
         (click)="changeSignedDocumentPolicy(SignedDocumentPolicyEnum.MANDATORY)"
+        [disabled]="readOnly"
       >
         {{ 'INGEST_CONTRACT.SIGNED_DOCUMENT_TYPE.' + SignedDocumentPolicyEnum.MANDATORY | translate }}
       </mat-button-toggle>
       <mat-button-toggle
         value="{{ SignedDocumentPolicyEnum.FORBIDDEN }}"
         (click)="changeSignedDocumentPolicy(SignedDocumentPolicyEnum.FORBIDDEN)"
+        [disabled]="readOnly"
       >
         {{ 'INGEST_CONTRACT.SIGNED_DOCUMENT_TYPE.' + SignedDocumentPolicyEnum.FORBIDDEN | translate }}
       </mat-button-toggle>
