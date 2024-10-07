@@ -45,7 +45,6 @@ import { SedaService } from '../../core/services/seda.service';
 import { FileNode } from '../../models/file-node';
 import { ProfileType } from '../../models/profile-type.enum';
 import { SedaCardinalityConstants, SedaData, SedaElementConstants } from '../../models/seda-data';
-import { PastisDialogData } from '../../shared/pastis-dialog/classes/pastis-dialog-data';
 import { PastisDialogConfirmComponent } from '../../shared/pastis-dialog/pastis-dialog-confirm/pastis-dialog-confirm.component';
 import { PastisPopupMetadataLanguageService } from '../../shared/pastis-popup-metadata-language/pastis-popup-metadata-language.service';
 
@@ -61,12 +60,9 @@ export class UserActionAddMetadataComponent implements OnInit, OnDestroy {
   sedaData: SedaData;
   allowedChildren: SedaData[];
   filterName: string;
-  namesFiltered: any = [];
   sedaNodeFound: SedaData;
   selectedSedaNode: SedaData;
   addedItems: SedaData[] = [];
-  dialogData: PastisDialogData;
-
   atLeastOneIsSelected: boolean;
   customTemplate: TemplateRef<any>;
   fileNode: FileNode;
@@ -83,14 +79,14 @@ export class UserActionAddMetadataComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.sedaLanguageSub = this.sedaLanguageService.sedaLanguage.subscribe(
-      (value: boolean) => {
+    this.sedaLanguageSub = this.sedaLanguageService.sedaLanguage.subscribe({
+      next: (value: boolean) => {
         this.sedaLanguage = value;
       },
-      (error) => {
+      error: (error) => {
         console.log(error);
       },
-    );
+    });
     this.fileService.nodeChange.subscribe((fileNode) => {
       this.fileNode = fileNode;
     });
@@ -103,18 +99,18 @@ export class UserActionAddMetadataComponent implements OnInit, OnDestroy {
     if (this.profileService.profileType === ProfileType.PA) {
       this.allowedChildren = this.sedaService
         .findSelectableElementList(this.sedaNodeFound, this.fileNode)
-        .filter((e) => e.element !== SedaElementConstants.attribute);
+        .filter((e) => e.element !== SedaElementConstants.ATTRIBUTE);
     } else if (this.profileService.profileType === ProfileType.PUA) {
       if (this.fileNode.name === 'ArchiveUnit') {
         if (this.fileNode.children.map((nodeChildren: FileNode) => nodeChildren.name).includes('ArchiveUnitProfile')) {
           this.allowedChildren = this.sedaService
             .findSelectableElementList(this.sedaNodeFound, this.fileNode)
-            .filter((e) => e.element !== SedaElementConstants.attribute)
+            .filter((e) => e.element !== SedaElementConstants.ATTRIBUTE)
             .filter((e) => e.name === 'Management');
         } else {
           this.allowedChildren = this.sedaService
             .findSelectableElementList(this.sedaNodeFound, this.fileNode)
-            .filter((e) => e.element !== SedaElementConstants.attribute)
+            .filter((e) => e.element !== SedaElementConstants.ATTRIBUTE)
             .filter((e) => e.name === 'Management' || e.name === 'ArchiveUnitProfile');
         }
       } else {
@@ -134,6 +130,7 @@ export class UserActionAddMetadataComponent implements OnInit, OnDestroy {
         }
       });
     }
+
     // Subscribe observer to button status and
     // set the inital state of the ok button to disabled
     this.popUpService.btnYesShoudBeDisabled.subscribe((status) => {
@@ -142,15 +139,9 @@ export class UserActionAddMetadataComponent implements OnInit, OnDestroy {
   }
 
   selectSedaElement(selectedElements: string[]) {
-    if (selectedElements.length) {
-      this.selectedSedaNode = this.sedaService.getSedaNode(this.sedaData, selectedElements[0]);
-    }
-  }
+    const [first] = selectedElements;
 
-  isElementSelected(element: SedaData) {
-    if (this.addedItems) {
-      return this.addedItems.includes(element);
-    }
+    if (first) this.selectedSedaNode = this.sedaService.findSedaNode(first, this.sedaData);
   }
 
   onRemoveSelectedElement(element: SedaData) {
@@ -158,7 +149,7 @@ export class UserActionAddMetadataComponent implements OnInit, OnDestroy {
     if (indexOfElement >= 0) {
       this.addedItems.splice(indexOfElement, 1);
     }
-    if (element.cardinality !== (SedaCardinalityConstants.zeroOrMore || SedaCardinalityConstants.oreOrMore)) {
+    if (element.cardinality !== (SedaCardinalityConstants.MANY || SedaCardinalityConstants.MANY_REQUIRED)) {
       this.allowedChildren.push(element);
       this.allowedChildren = this.allowedChildren.slice(0, this.allowedChildren.length);
     }
@@ -167,7 +158,7 @@ export class UserActionAddMetadataComponent implements OnInit, OnDestroy {
       return orderedNames.indexOf(a) - orderedNames.indexOf(b);
     });
     this.addedItems.length > 0 ? (this.atLeastOneIsSelected = true) : (this.atLeastOneIsSelected = false);
-    this.upateButtonStatusAndDataToSend();
+    this.updateButtonStatusAndDataToSend();
   }
 
   onAddSelectedElement(element: SedaData) {
@@ -187,21 +178,17 @@ export class UserActionAddMetadataComponent implements OnInit, OnDestroy {
     }
 
     this.addedItems.length > 0 ? (this.atLeastOneIsSelected = true) : (this.atLeastOneIsSelected = false);
-    this.upateButtonStatusAndDataToSend();
+    this.updateButtonStatusAndDataToSend();
   }
 
-  upateButtonStatusAndDataToSend() {
+  updateButtonStatusAndDataToSend() {
     this.popUpService.setPopUpDataOnClose(this.addedItems);
     this.popUpService.disableYesButton(!this.atLeastOneIsSelected);
   }
 
-  onAllItemsAdded() {
-    return this.allowedChildren.length === this.addedItems.length;
-  }
-
   isElementComplex(element: SedaData) {
     if (element) {
-      return element.element === SedaElementConstants.complex;
+      return element.element === SedaElementConstants.COMPLEX;
     }
   }
 
@@ -209,29 +196,16 @@ export class UserActionAddMetadataComponent implements OnInit, OnDestroy {
     return element ? element.definition : '';
   }
 
-  onNoClick(): void {
-    this.dialogRef.close();
-  }
-
   public onSearchSubmit(search: string): void {
     this.filterName = search;
   }
 
   onResolveName(element: SedaData): string {
-    if (this.sedaLanguage) {
-      return element.name;
-    } else {
-      if (element.nameFr) {
-        return element.nameFr;
-      }
-    }
-    return element.name;
+    return this.sedaLanguage ? element.name : element.nameFr ?? element.name;
   }
 
   ngOnDestroy(): void {
-    if (this.sedaLanguageSub != null) {
-      this.sedaLanguageSub.unsubscribe();
-    }
+    this.sedaLanguageSub?.unsubscribe();
   }
 }
 

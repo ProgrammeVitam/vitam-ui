@@ -39,9 +39,10 @@ import { Component, Input } from '@angular/core';
 import { FileUploader } from 'ng2-file-upload';
 import { FileService } from '../../core/services/file.service';
 import { ProfileService } from '../../core/services/profile.service';
-import { filter, mergeMap } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { filter, finalize, mergeMap } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
 import { SedaService } from '../../core/services/seda.service';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
@@ -58,6 +59,7 @@ export class UserActionUploadProfileComponent {
     private profileService: ProfileService,
     private fileService: FileService,
     private sedaService: SedaService,
+    private loaderService: NgxUiLoaderService,
   ) {}
 
   handleFileInput(files: FileList) {
@@ -70,6 +72,7 @@ export class UserActionUploadProfileComponent {
     if (this.fileToUpload) {
       const formData = new FormData();
       formData.append('file', this.fileToUpload, this.fileToUpload.name);
+      this.loaderService.start();
       this.profileService
         .uploadProfile(formData)
         .pipe(
@@ -82,12 +85,14 @@ export class UserActionUploadProfileComponent {
             ),
           ),
           filter(({ profile, metaModel }) => Boolean(profile) && Boolean(metaModel)),
+          tap(({ profile, metaModel }) => {
+            this.sedaService.setMetaModel(metaModel);
+            this.fileService.linkFileNodeToSedaData(null, [profile.profile]);
+            this.fileService.updateTreeWithProfile(profile);
+          }),
+          finalize(() => this.loaderService.stop()),
         )
-        .subscribe(({ profile, metaModel }) => {
-          this.sedaService.setMetaModel(metaModel);
-          this.fileService.linkFileNodeToSedaData(null, [profile.profile], [metaModel]);
-          this.fileService.updateTreeWithProfile(profile);
-        });
+        .subscribe();
     }
   }
 }

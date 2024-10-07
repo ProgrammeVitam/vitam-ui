@@ -39,7 +39,7 @@ import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastContainerDirective, ToastrService } from 'ngx-toastr';
-import { BehaviorSubject, ReplaySubject, Subscription } from 'rxjs';
+import { finalize, Subscription } from 'rxjs';
 import { FileService } from '../core/services/file.service';
 import { ToggleSidenavService } from '../core/services/toggle-sidenav.service';
 import { FileNode, FileNodeInsertAttributeParams, FileNodeInsertParams } from '../models/file-node';
@@ -48,6 +48,8 @@ import { ProfileResponse } from '../models/profile-response';
 import { EditProfileComponent } from '../profile/edit-profile/edit-profile.component';
 import { ProfileService } from '../core/services/profile.service';
 import { SedaService } from '../core/services/seda.service';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
+import { tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-home',
@@ -74,12 +76,13 @@ export class MainComponent implements OnInit, OnDestroy {
   private _routeParamsSubscription: Subscription;
 
   constructor(
+    public fileService: FileService,
     private route: ActivatedRoute,
     private sideNavService: ToggleSidenavService,
     private toastrService: ToastrService,
     private profileService: ProfileService,
     private sedaService: SedaService,
-    public fileService: FileService,
+    private loaderService: NgxUiLoaderService,
     private router: Router,
   ) {
     this.uploadedProfileResponse = this.router.getCurrentNavigation().extras.state as ProfileResponse;
@@ -95,8 +98,6 @@ export class MainComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.fileService.currentTreeLoaded = false;
-    this.fileService.currentTree = new ReplaySubject<FileNode[]>();
-    this.fileService.allData = new BehaviorSubject<FileNode[]>([]);
     this.toastrService.overlayContainer = this.toastContainer;
     this._routeParamsSubscription = this.route.params.subscribe((params) => {
       const profileId = params.id;
@@ -112,11 +113,18 @@ export class MainComponent implements OnInit, OnDestroy {
         this.uploadedProfileResponse.id = null;
         this.uploadedProfileResponse.name = 'Nouveau Profil';
 
-        this.profileService.getMetaModel(this.uploadedProfileResponse.sedaVersion).subscribe((metaModel) => {
-          this.sedaService.setMetaModel(metaModel);
-          this.fileService.linkFileNodeToSedaData(null, [this.uploadedProfileResponse.profile], [metaModel]);
-          this.fileService.updateTreeWithProfile(this.uploadedProfileResponse);
-        });
+        this.loaderService.start();
+        this.profileService
+          .getMetaModel(this.uploadedProfileResponse.sedaVersion)
+          .pipe(
+            tap((metaModel) => {
+              this.sedaService.setMetaModel(metaModel);
+              this.fileService.linkFileNodeToSedaData(null, [this.uploadedProfileResponse.profile]);
+              this.fileService.updateTreeWithProfile(this.uploadedProfileResponse);
+            }),
+            finalize(() => this.loaderService.stop()),
+          )
+          .subscribe();
       }
     });
     this.opened = true;
@@ -134,7 +142,7 @@ export class MainComponent implements OnInit, OnDestroy {
   }
 
   addNode($event: FileNode) {
-    this.editProfileComponent.fileTreeComponent.addNewItem($event);
+    this.editProfileComponent.fileTreeComponent.add($event);
   }
 
   insertAttribute($event: FileNodeInsertAttributeParams) {

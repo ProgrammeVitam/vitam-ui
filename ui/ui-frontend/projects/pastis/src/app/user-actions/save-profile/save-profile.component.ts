@@ -126,7 +126,6 @@ export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
 
   profileDescription: ProfileDescription;
   isSlaveMode: boolean;
-  fileRng: File;
 
   // eslint-disable-next-line @angular-eslint/no-output-native
   @Output() close = new EventEmitter();
@@ -180,7 +179,7 @@ export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
 
   saveProfileToFile() {
     // Retrieve the current file tree data as a JSON
-    this.data = this.fileService.allData.getValue();
+    this.data = this.fileService.currentTree.getValue();
     if (this.isStandalone) {
       this.downloadProfiles(true);
       return;

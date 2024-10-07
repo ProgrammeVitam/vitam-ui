@@ -81,10 +81,12 @@
   margin-left: 40px;
   margin-right: 40px;
 }
+
 .list-item-select {
   @extend .list-item;
   border-left: solid var(--vitamui-primary);
 }
+
 .list-item:hover {
   background: #f6f3fb;
 }
@@ -98,6 +100,7 @@
 .text-medium-normal {
   @extend .text-text-medium;
 }
+
 .text-medium-primary {
   @extend .text-text-medium;
   color: var(--vitamui-primary);

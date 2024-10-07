@@ -1,12 +1,6 @@
-<mat-tree
-  #treeSelector
-  *ngIf="fileTreeService.nestedTreeControl && fileTreeService.nestedDataSource"
-  [dataSource]="fileTreeService.nestedDataSource"
-  [treeControl]="fileTreeService.nestedTreeControl"
-  class="pastis-tree"
->
+<mat-tree *ngIf="!updating" [dataSource]="dataSource" [treeControl]="fileTreeService.nestedTreeControl" class="pastis-tree">
   <!-- Nested tree node-->
-  <mat-nested-tree-node *matTreeNodeDef="let node; when: hasNestedChild">
+  <mat-nested-tree-node *matTreeNodeDef="let node; when: hasChild">
     <div
       *ngIf="node.name === rootElementName && activeTabIndex === 2 && this.profileService.profileType === 'PA'"
       class="pastis-btn-container-add-ua"
@@ -17,8 +11,7 @@
     </div>
     <ng-container *ngIf="!isAttribute(node) && shouldBeOnTab(node) && node">
       <mat-list-item
-        (click)="updateMedataTable(node); fileTreeService.nestedTreeControl.expand(node)"
-        (mouseover)="hover = node.children.length"
+        (click)="updateMetadataTable(node); fileTreeService.nestedTreeControl.expand(node)"
         [ngClass]="{ 'list-item': !selectedItem(node), 'list-item-select': selectedItem(node) }"
       >
         <!--Root node name-->
@@ -31,7 +24,7 @@
 
         <!--Root children without children-->
         <span
-          (click)="updateMedataTable(node); $event.stopPropagation()"
+          (click)="updateMetadataTable(node); $event.stopPropagation()"
           *ngIf="
             !node.children.length && node.name !== rootElementName && isPartOfCollection(node) && shouldBeOnTab(node) && !isAttribute(node)
           "
@@ -50,7 +43,7 @@
           "
         >
           <div
-            (click)="expendChildren(node); $event.stopPropagation()"
+            (click)="expandChildren(node); $event.stopPropagation()"
             [ngStyle]="{ 'margin-left': calculateNodePosition(node) + 'px', width: '360px' }"
           >
             <span

@@ -116,7 +116,7 @@ export class AttributesPopupComponent implements OnInit, OnDestroy {
       const fileNode = this.dialogReceivedData.fileNode;
       const att = this.matDataSource.data[index];
       const attSedaData = fileNode.sedaData.children.find((child: { name: string }) => child.name === att.nomDuChamp);
-      if (attSedaData.cardinality === CardinalityConstants.Obligatoire) {
+      if (attSedaData.cardinality === CardinalityConstants.ONE_REQUIRED) {
         this.matDataSource.data[index].selected = true;
       } else {
         this.matDataSource.data[index].selected = att.selected;
@@ -215,7 +215,7 @@ export class AttributesPopupComponent implements OnInit, OnDestroy {
         attributeFileNode.level = fileNode.level + 1;
         attributeFileNode.name = attributeData.nomDuChamp;
         attributeFileNode.parentId = fileNode.id;
-        attributeFileNode.type = TypeConstants.attribute;
+        attributeFileNode.type = TypeConstants.ATTRIBUTE;
         attributeFileNode.value = attributeData.valeurFixe ? attributeData.valeurFixe : null;
         attributeFileNode.valueOrData = ValueOrDataConstants.value;
         // Add the attribute to the filenode

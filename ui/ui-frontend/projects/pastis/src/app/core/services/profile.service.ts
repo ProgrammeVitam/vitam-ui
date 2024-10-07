@@ -228,4 +228,8 @@ export class ProfileService implements OnDestroy {
       .map((profileVersionOption) => profileVersionOption.label)
       .shift();
   }
+
+  isMode(mode: ProfileType): boolean {
+    return this.profileType === mode;
+  }
 }
