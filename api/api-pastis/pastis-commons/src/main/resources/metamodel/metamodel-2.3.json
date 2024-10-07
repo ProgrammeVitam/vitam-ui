@@ -2563,8 +2563,8 @@
                       "children": []
                     },
                     {
-                      "name": "type",
-                      "nameFr": "type",
+                      "name": "Type",
+                      "nameFr": "Type",
                       "element": "Attribute",
                       "cardinality": "1",
                       "type": "token",
@@ -3319,8 +3319,8 @@
                       "children": []
                     },
                     {
-                      "name": "type",
-                      "nameFr": "type",
+                      "name": "Type",
+                      "nameFr": "Type",
                       "element": "Attribute",
                       "cardinality": "1",
                       "type": "token",
@@ -4155,8 +4155,8 @@
                   "children": []
                 },
                 {
-                  "name": "type",
-                  "nameFr": "type",
+                  "name": "Type",
+                  "nameFr": "Type",
                   "element": "Attribute",
                   "cardinality": "1",
                   "type": "token",
@@ -4845,8 +4845,8 @@
                   "children": []
                 },
                 {
-                  "name": "type",
-                  "nameFr": "type",
+                  "name": "Type",
+                  "nameFr": "Type",
                   "element": "Attribute",
                   "cardinality": "1",
                   "type": "token",
@@ -6619,7 +6619,7 @@
                       ]
                     },
                     {
-                      "name": "type",
+                      "name": "Type",
                       "nameFr": "Type OAIS",
                       "element": "Simple",
                       "cardinality": "0-1",
