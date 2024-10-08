@@ -16,7 +16,7 @@ ExecStart=/usr/bin/docker run --rm --net=host -e 'CONSUL_ALLOW_PRIVILEGED_PORTS=
         -v "/vitam/script/consul:/vitam/script/consul" \
         -v "/vitam/data/consul:/consul/data" \
         -v "/vitam/tmp/consul:/vitam/tmp/consul" \
-        {{ container_repository.registry_url }}/vitam-external/hashicorp/consul:{{ consul_version }}
+        {{ container_repository.registry_url }}/vitam-external/hashicorp/consul:{{ consul_version }} {{ 'agent ' if inventory_hostname not in groups['hosts_vitamui_consul_server'] }}
 
 ExecStop=/usr/bin/docker stop -t 85 vitam-consul
 ExecRestart=/usr/bin/docker restart -t 85 vitam-consul
