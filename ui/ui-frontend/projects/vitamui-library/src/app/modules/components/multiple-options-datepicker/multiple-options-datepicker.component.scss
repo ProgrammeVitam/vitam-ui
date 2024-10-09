@@ -1,4 +1,5 @@
 @import '../../../../sass/variables/colors';
+@import '../../../../sass/mixins/elevation';
 
 :host {
   &.ng-invalid:not(.ng-pristine) .vitamui-input {
@@ -24,9 +25,7 @@ mat-datepicker-toggle mat-icon {
 }
 
 ::ng-deep .mat-datepicker-content {
-  box-shadow:
-    0 0.2px 0.6px 0 rgba(117, 117, 117, 1),
-    0 0.6px 2px 0 rgba(33, 33, 33, 0.2) !important;
+  @include shadow-8dp-dark;
 
   .mat-calendar {
     height: fit-content !important;
