@@ -36,8 +36,14 @@
  */
 import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ValidationErrors, ValidatorFn } from '@angular/forms';
-import { AccessContract, AccessRightType, Option, VitamuiAutocompleteMultiselectOptions, AccessContractDisplay } from 'vitamui-library';
-import { AccessContractService } from '../../../access-contract.service';
+import {
+  AccessContract,
+  AccessRightType,
+  Option,
+  VitamuiAutocompleteMultiselectOptions,
+  AccessContractDisplay,
+  AccessContractService,
+} from 'vitamui-library';
 import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
 import { AgencyService } from '../../../../agency/agency.service';
 import { RULE_TYPES } from '../../../../rule/rules.constants';

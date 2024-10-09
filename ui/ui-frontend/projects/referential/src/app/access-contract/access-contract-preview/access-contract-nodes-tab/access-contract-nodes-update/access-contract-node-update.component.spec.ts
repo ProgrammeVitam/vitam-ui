@@ -38,11 +38,19 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
-import { BASE_URL, Customer, ENVIRONMENT, InjectorModule, LoggerModule, OtpState, VitamUISnackBarService } from 'vitamui-library';
+import {
+  BASE_URL,
+  Customer,
+  ENVIRONMENT,
+  InjectorModule,
+  LoggerModule,
+  OtpState,
+  VitamUISnackBarService,
+  AccessContractService,
+} from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
-import { environment } from './../../../../../environments/environment';
+import { environment } from '../../../../../environments/environment';
 
-import { AccessContractService } from '../../../access-contract.service';
 import { AccessContractNodeUpdateComponent } from './access-contract-node-update.component';
 
 const expectedCustomer: Customer = {

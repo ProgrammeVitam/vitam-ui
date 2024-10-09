@@ -44,9 +44,15 @@ import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogRef as MatDia
 import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
 import { TranslateModule } from '@ngx-translate/core';
 import { EMPTY, of } from 'rxjs';
-import { BASE_URL, ConfirmDialogService, ExternalParameters, ExternalParametersService, LoggerModule } from 'vitamui-library';
+import {
+  BASE_URL,
+  ConfirmDialogService,
+  ExternalParameters,
+  ExternalParametersService,
+  LoggerModule,
+  AccessContractService,
+} from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
-import { AccessContractService } from '../../access-contract/access-contract.service';
 import { ArchiveProfileApiService } from '../../core/api/archive-profile-api.service';
 import { ManagementContractApiService } from '../../core/api/management-contract-api.service';
 import { FileFormatService } from '../../file-format/file-format.service';

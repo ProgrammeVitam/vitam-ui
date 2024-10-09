@@ -43,6 +43,7 @@ import { Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import {
   AccessContract,
+  AccessContractService,
   Collection,
   ExternalParameters,
   ExternalParametersService,
@@ -67,7 +68,6 @@ export class ArchiveComponent extends SidenavPage<any> implements OnInit, OnDest
   foundAccessContract = false;
   accessContractId: string;
   bulkOperationsThreshold: number;
-  accessContractSub: Subscription;
   errorMessageSub: Subscription;
   isLPExtended = false;
   accessContractAllowUpdating = false;
@@ -87,6 +87,7 @@ export class ArchiveComponent extends SidenavPage<any> implements OnInit, OnDest
     private archiveService: ArchiveService,
     private loggerService: Logger,
     private schemaService: SchemaService,
+    private accessContractService: AccessContractService,
   ) {
     super(route, globalEventService);
     this.schemaService.getSchema(Collection.ARCHIVE_UNIT);
@@ -114,20 +115,18 @@ export class ArchiveComponent extends SidenavPage<any> implements OnInit, OnDest
   }
 
   ngOnDestroy() {
-    this.accessContractSub.unsubscribe();
     if (this.errorMessageSub) {
       this.errorMessageSub.unsubscribe();
     }
   }
 
   fetchUserExternalParameters() {
-    this.accessContractSub = this.externalParameterService.getUserExternalParameters().subscribe((parameters) => {
-      const accessConctractId: string = parameters.get(ExternalParameters.PARAM_ACCESS_CONTRACT);
-
-      if (accessConctractId && accessConctractId.length > 0) {
-        this.accessContractId = accessConctractId;
+    this.accessContractService.currentAccessContractId$.subscribe((accessContractId) => {
+      if (accessContractId && accessContractId.length > 0) {
+        //TODO(remove): switch to accessContractService.currentAccessContractId$
+        this.accessContractId = accessContractId;
         this.foundAccessContract = true;
-        this.managementRulesSharedDataService.emitAccessContract(accessConctractId);
+        this.managementRulesSharedDataService.emitAccessContract(accessContractId);
         this.fetchVitamAccessContract();
       } else {
         this.errorMessageSub = this.translateService
@@ -142,9 +141,9 @@ export class ArchiveComponent extends SidenavPage<any> implements OnInit, OnDest
           )
           .subscribe();
       }
-
+    });
+    this.externalParameterService.getUserExternalParameters().subscribe((parameters) => {
       const threshold = Number(parameters.get(ExternalParameters.PARAM_BULK_OPERATIONS_THRESHOLD) || -1);
-
       this.bulkOperationsThreshold = threshold;
       this.managementRulesSharedDataService.emitBulkOperationsThreshold(threshold);
     });

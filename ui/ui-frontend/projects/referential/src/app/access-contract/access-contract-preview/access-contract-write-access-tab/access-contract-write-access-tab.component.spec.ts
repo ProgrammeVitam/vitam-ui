@@ -38,7 +38,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
-import { AccessContractService } from '../../access-contract.service';
+import { AccessContractService } from 'vitamui-library';
 import { AccessContractWriteAccessTabComponent } from './access-contract-write-access-tab.component';
 
 // TODO fix test

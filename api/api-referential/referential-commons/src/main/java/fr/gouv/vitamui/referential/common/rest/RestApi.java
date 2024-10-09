@@ -53,7 +53,7 @@ public abstract class RestApi {
 
     public static final String PATH_REFERENTIAL_ID = "/{identifier:.+}";
 
-    public static final String ACCESS_CONTRACTS_URL = PREFIX + "/accesscontract";
+    public static final String ACCESS_CONTRACTS_URL = PREFIX + "/accesscontracts";
 
     public static final String INGEST_CONTRACTS_URL = PREFIX + "/ingestcontract";
 

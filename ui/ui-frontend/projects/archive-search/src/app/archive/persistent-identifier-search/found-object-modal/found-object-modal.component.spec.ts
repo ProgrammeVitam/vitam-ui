@@ -6,7 +6,7 @@ import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/
 import { RouterTestingModule } from '@angular/router/testing';
 import { MissingTranslationHandler, TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { Observable, of } from 'rxjs';
-import { BASE_URL, VitamuiMissingTranslationHandler } from 'vitamui-library';
+import { BASE_URL, LoggerModule, ObjectQualifierType, VitamuiMissingTranslationHandler } from 'vitamui-library';
 import { FoundObjectModalComponent } from './found-object-modal.component';
 
 class FakeTranslateLoader implements TranslateLoader {
@@ -31,6 +31,7 @@ describe('ErrorResponseModalComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
+        LoggerModule.forRoot(),
         HttpClientTestingModule,
         RouterTestingModule,
         MatSnackBarModule,
@@ -54,7 +55,7 @@ describe('ErrorResponseModalComponent', () => {
         {
           provide: MAT_DIALOG_DATA,
           useValue: {
-            ark: '',
+            ark: 'ark_identifier_for_test',
             object: {
               '#id': '',
               '#tenant': '',
@@ -67,7 +68,23 @@ describe('ErrorResponseModalComponent', () => {
               '#storage': {},
               '#nbobjects': {},
               FileInfo: {},
-              '#qualifiers': [{ qualifier: '', '#nbc': 0, versions: [] }],
+              '#qualifiers': [
+                {
+                  qualifier: ObjectQualifierType.BINARYMASTER,
+                  '#nbc': 0,
+                  versions: [
+                    {
+                      '#id': 'version_1',
+                      DataObjectVersion: 'BinaryMaster_1',
+                      PersistentIdentifier: [
+                        {
+                          PersistentIdentifierContent: 'ark_identifier_for_test',
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
               '#approximate_creation_date': '',
               '#approximate_update_date': '',
             },

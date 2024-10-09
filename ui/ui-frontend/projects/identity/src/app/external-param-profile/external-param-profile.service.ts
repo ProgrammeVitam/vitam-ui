@@ -72,7 +72,7 @@ export class ExternalParamProfileService extends SearchService<ExternalParamProf
     const params = new HttpParams();
     const headers = new HttpHeaders().append('X-Tenant-Id', tenantIdentifier);
     return this.accessContractApiService
-      .getAllAccessContracts(params, headers)
+      .getAllByParams(params, headers)
       .pipe(map((accessContracts) => accessContracts.filter((accessContract) => accessContract.status === 'ACTIVE')));
   }
 

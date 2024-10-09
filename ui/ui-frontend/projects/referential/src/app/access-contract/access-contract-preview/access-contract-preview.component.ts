@@ -42,8 +42,7 @@ import {
   MatLegacyTabHeader as MatTabHeader,
 } from '@angular/material/legacy-tabs';
 import { Observable } from 'rxjs';
-import { AccessContract, ConfirmActionComponent } from 'vitamui-library';
-import { AccessContractService } from '../access-contract.service';
+import { AccessContract, ConfirmActionComponent, AccessContractService } from 'vitamui-library';
 import { AccessContractInformationTabComponent } from './access-contract-information-tab/access-contract-information-tab.component';
 import { AccessContractAuthorizationsTabComponent } from './access-contract-authorizations-tab/access-contract-authorizations-tab.component';
 import { AccessContractWriteAccessTabComponent } from './access-contract-write-access-tab/access-contract-write-access-tab.component';
