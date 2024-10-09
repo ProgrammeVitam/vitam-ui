@@ -74,7 +74,7 @@ export class CustomerApiService extends BaseHttpClient<Customer> {
     let tenantId = customerTmp.tenantId;
     delete customerTmp.tenantId;
     formData.append('tenantName', customerTmp.tenantName);
-    if (tenantId) {
+    if (tenantId != null) {
       formData.append('tenantId', tenantId.toString());
     }
     customerTmp.tenantName = undefined;
