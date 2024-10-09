@@ -6,10 +6,8 @@
     <div>
       <div #color class="color" [ngClass]="colorInfo.className" style="background-color: var({{ colorInfo.varName }})">
         <div class="shade-text">
-          <div class="text medium">{{ colorToHex(color.computedStyleMap().get('background-color').toString()) }}</div>
-          <div class="text medium" *ngFor="let kv of colorToHsl(color.computedStyleMap().get('background-color').toString()) | keyvalue">
-            {{ kv.key }} : {{ kv.value }}
-          </div>
+          <div class="text medium">{{ colorToHex(color) }}</div>
+          <div class="text medium" *ngFor="let kv of colorToHsl(color) | keyvalue">{{ kv.key }} : {{ kv.value }}</div>
         </div>
       </div>
 
@@ -20,13 +18,8 @@
               <div #hue class="shade" style="background-color: var({{ colorInfo.varName }}{{ hueId === 500 ? '' : '-' + hueId }})"></div>
               <div class="shade-text">
                 <div class="text medium">{{ hueId === 500 ? '(' + hueId + ')' : hueId }}</div>
-                <div class="text medium">{{ colorToHex(hue.computedStyleMap().get('background-color').toString()) }}</div>
-                <div
-                  class="text medium"
-                  *ngFor="let kv of colorToHsl(hue.computedStyleMap().get('background-color').toString()) | keyvalue"
-                >
-                  {{ kv.key }} : {{ kv.value }}
-                </div>
+                <div class="text medium">{{ colorToHex(hue) }}</div>
+                <div class="text medium" *ngFor="let kv of colorToHsl(hue) | keyvalue">{{ kv.key }} : {{ kv.value }}</div>
               </div>
             </li>
           }

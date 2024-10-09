@@ -1,80 +1,69 @@
 <h2>Titles</h2>
 <div class="mb-5">
-  <h1>H1 Headline (96)</h1>
-  <h2>H2 Headline (60)</h2>
-  <h3>H3 Headline (48)</h3>
-  <h4>H4 Headline (30)</h4>
-  <h5>H5 Headline (24)</h5>
+  <div class="d-flex align-items-center">
+    <h1 #h1>H1 Headline</h1>
+    {{ info(h1) }}
+  </div>
+  <div class="d-flex align-items-center">
+    <h2 #h2>H2 Headline</h2>
+    {{ info(h2) }}
+  </div>
+  <div class="d-flex align-items-center">
+    <h3 #h3>H3 Headline</h3>
+    {{ info(h3) }}
+  </div>
+  <div class="d-flex align-items-center">
+    <h4 #h4>H4 Headline</h4>
+    {{ info(h4) }}
+  </div>
+  <div class="d-flex align-items-center">
+    <h5 #h5>H5 Headline</h5>
+    {{ info(h5) }}
+  </div>
+</div>
+
+<h2>Button</h2>
+<div class="d-flex mb-5">
+  @for (textButtonFlavor of textButtonFlavors; track textButtonFlavor) {
+    <div>
+      @for (textButtonSize of textButtonSizes; track textButtonSize) {
+        <div class="d-flex align-items-center">
+          <p #el [ngClass]="['button-' + textButtonSize, textButtonFlavor]">Button {{ textButtonSize }} {{ textButtonFlavor }}</p>
+          {{ info(el) }}
+        </div>
+      }
+    </div>
+  }
 </div>
 
 <h2>Text</h2>
 <div class="d-flex mb-5">
-  <div>
-    <p class="text large">Large Text Regular (20)</p>
-    <p class="text medium">Medium Text (16)</p>
-    <p class="text normal">Normal Text (14)</p>
-    <p class="text caption">Caption (12)</p>
-  </div>
-
-  <div class="ml-5">
-    <p class="text large bold">Large Text Bold (20)</p>
-    <p class="text medium bold">Medium Text Bold (16)</p>
-    <p class="text normal bold">Normal Text Bold (14)</p>
-    <p class="text caption bold">Caption Bold (12)</p>
-  </div>
-
-  <div class="ml-5">
-    <p class="text link medium">Link Bold large (16)</p>
-    <p class="text link normal">Link Bold Medium (14)</p>
-    <p class="text link caption">Link Bold normal (12)</p>
-  </div>
+  @for (textFlavor of textFlavors; track textFlavor) {
+    <div>
+      @for (textSize of textSizes; track textSize) {
+        <div class="d-flex align-items-center">
+          <p #el class="text" [ngClass]="[textFlavor, textSize]">{{ textSize }} text {{ textFlavor }}</p>
+          {{ info(el) }}
+        </div>
+      }
+    </div>
+  }
 </div>
 
 <h2>Colors</h2>
 <div class="d-flex mb-5">
-  <div>
-    <p class="text large light">Large Text Regular Light (20)</p>
-    <p class="text medium light">Medium Text Light (16)</p>
-    <p class="text normal light">Normal Text Light (14)</p>
-    <p class="text caption light">Caption Light (12)</p>
-  </div>
-
-  <div>
-    <p class="text large primary">Large Text Regular Primary (20)</p>
-    <p class="text medium primary">Medium Text Primary (16)</p>
-    <p class="text normal primary">Normal Text Primary (14)</p>
-    <p class="text caption primary">Caption Primary (12)</p>
-  </div>
-
-  <div>
-    <p class="text large secondary">Large Text Regular Secondary (20)</p>
-    <p class="text medium secondary">Medium Text Secondary (16)</p>
-    <p class="text normal secondary">Normal Text Secondary (14)</p>
-    <p class="text caption secondary">Caption Secondary (12)</p>
-  </div>
-
-  <div>
-    <p class="text large danger">Large Text Regular Red (20)</p>
-    <p class="text medium danger">Medium Text Red (16)</p>
-    <p class="text normal danger">Normal Text Red (14)</p>
-    <p class="text caption danger">Caption Red (12)</p>
-  </div>
+  @for (textColor of textColors; track textColor) {
+    <div>
+      <p #el class="text" [class]="textColor">{{ textColor }}</p>
+      {{ color(el) }}
+    </div>
+  }
 </div>
 
 <h2>Others</h2>
 <div class="d-flex mb-5">
   <div>
-    <p class="text large light spaced">Large Text Regular Light spaced (20)</p>
-    <p class="text medium light spaced">Medium Text Light spaced (16)</p>
-    <p class="text normal light spaced">Normal Text Light spaced (14)</p>
-    <p class="text caption light spaced">Caption Light spaced (12)</p>
-  </div>
-
-  <div>
-    <p class="text large light uppercase">Large Text Regular Light uppercase (20)</p>
-    <p class="text medium light uppercase">Medium Text Light uppercase (16)</p>
-    <p class="text normal light uppercase">Normal Text Light uppercase (14)</p>
-    <p class="text caption light uppercase">Caption Light uppercase (12)</p>
+    <p class="text">Use "text uppercase" class to make it <span class="text uppercase">uppercase</span></p>
   </div>
 </div>
 

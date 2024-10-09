@@ -2,10 +2,6 @@
 @import 'theme';
 @import 'fonts/font-styles';
 
-$grid-gutter-width: 20px;
-
-@import 'bootstrap/scss/bootstrap-grid';
-
 @import 'form';
 @import 'login';
 @import 'sidepanel';

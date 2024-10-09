@@ -1,0 +1,23 @@
+<h2>{{ 'SPACING.PADDING' | translate }}</h2>
+<div class="d-flex flex-column">
+  @for (padding of paddings; track padding) {
+    <strong>p-{{ padding }}</strong>
+    <div #el class="outer p-{{ padding }}">
+      <div class="inner">
+        {{ getPadding(el) }}
+      </div>
+    </div>
+  }
+</div>
+
+<h2>{{ 'SPACING.MARGIN' | translate }}</h2>
+<div class="d-flex flex-column">
+  @for (margin of margins; track margin) {
+    <strong>m-{{ margin }}</strong>
+    <div class="outer">
+      <div #el class="inner m-{{ margin }}">
+        {{ getMargin(el) }}
+      </div>
+    </div>
+  }
+</div>
