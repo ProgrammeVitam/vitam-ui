@@ -8,25 +8,31 @@ import { rgbToHsl, toHex } from '../../../../../vitamui-library/src/app/modules'
   styleUrls: ['./colors.component.scss'],
 })
 export class ColorsComponent {
+  private hueIds = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900];
   colors = [
-    { key: 'PRIMARY', value: '--vitamui-primary' },
-    { key: 'SECONDARY', value: '--vitamui-secondary' },
-    { key: 'GREY', value: '--vitamui-grey' },
-    { key: 'ADDITIONAL', value: '--vitamui-additional' },
+    { key: 'PRIMARY', varName: '--vitamui-primary', hueIds: this.hueIds },
+    { key: 'SECONDARY', varName: '--vitamui-secondary', hueIds: this.hueIds },
+    { key: 'GREY', varName: '--vitamui-grey', hueIds: this.hueIds },
+    { key: 'ADDITIONAL', varName: '--vitamui-additional', hueIds: this.hueIds },
+    { key: 'PRIMARY_LIGHT', varName: '--vitamui-background' },
+    { key: 'RED', className: 'red' },
+    { key: 'ORANGE', className: 'orange' },
+    { key: 'GREEN', className: 'green' },
   ];
-  hueIds = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900];
 
   private colorToRGB(color: string) {
-    const [_, r, g, b] = /rgb\((\d+), (\d+), (\d+)\)/.exec(color.toString());
+    const [_, r, g, b] = /rgba?\((\d+), (\d+), (\d+)(, \d+)?\)/.exec(color.toString());
     return { r: Number.parseInt(r), g: Number.parseInt(g), b: Number.parseInt(b) };
   }
 
-  colorToHex(color: string): string {
+  colorToHex(color?: string): string {
+    if (!color) return color;
     const { r, g, b } = this.colorToRGB(color);
     return `#${toHex(r)}${toHex(g)}${toHex(b)}`.toUpperCase();
   }
 
-  colorToHsl(color: string): { S: number; H: number; L: number } {
+  colorToHsl(color?: string): { S?: number; H?: number; L?: number } {
+    if (!color) return {};
     const { h, s, l } = rgbToHsl(this.colorToRGB(color));
     return { H: Math.round(360 * h), S: s, L: l };
   }

@@ -1,48 +1,37 @@
-<div *ngFor="let colorKV of colors" class="container">
-  <div>
-    <h2>{{ 'COLORS.' + colorKV.key | translate }}</h2>
-  </div>
-  <div>
-    <div class="color" style="background-color: var({{ colorKV.value }})"></div>
-
-    <ul>
-      <li *ngFor="let hueId of hueIds">
-        <div #hue class="shade" style="background-color: var({{ colorKV.value }}{{ hueId === 500 ? '' : '-' + hueId }})"></div>
+@for (colorInfo of colors; track colorInfo.key) {
+  <div class="container">
+    <div>
+      <h2>{{ 'COLORS.' + colorInfo.key | translate }}</h2>
+    </div>
+    <div>
+      <div #color class="color" [ngClass]="colorInfo.className" style="background-color: var({{ colorInfo.varName }})">
         <div class="shade-text">
-          <div class="text medium">{{ hueId === 500 ? '(' + hueId + ')' : hueId }}</div>
-          <div class="text medium">{{ colorToHex(hue.computedStyleMap().get('background-color').toString()) }}</div>
-          <div class="text medium" *ngFor="let kv of colorToHsl(hue.computedStyleMap().get('background-color').toString()) | keyvalue">
+          <div class="text medium">{{ colorToHex(color.computedStyleMap().get('background-color').toString()) }}</div>
+          <div class="text medium" *ngFor="let kv of colorToHsl(color.computedStyleMap().get('background-color').toString()) | keyvalue">
             {{ kv.key }} : {{ kv.value }}
           </div>
         </div>
-      </li>
-    </ul>
-  </div>
-</div>
+      </div>
 
-<div class="container">
-  <div>
-    <h2>{{ 'COLORS.RED' | translate }}</h2>
+      @if (colorInfo.hueIds) {
+        <ul>
+          @for (hueId of colorInfo.hueIds; track hueId) {
+            <li>
+              <div #hue class="shade" style="background-color: var({{ colorInfo.varName }}{{ hueId === 500 ? '' : '-' + hueId }})"></div>
+              <div class="shade-text">
+                <div class="text medium">{{ hueId === 500 ? '(' + hueId + ')' : hueId }}</div>
+                <div class="text medium">{{ colorToHex(hue.computedStyleMap().get('background-color').toString()) }}</div>
+                <div
+                  class="text medium"
+                  *ngFor="let kv of colorToHsl(hue.computedStyleMap().get('background-color').toString()) | keyvalue"
+                >
+                  {{ kv.key }} : {{ kv.value }}
+                </div>
+              </div>
+            </li>
+          }
+        </ul>
+      }
+    </div>
   </div>
-  <div>
-    <div class="color red"></div>
-  </div>
-</div>
-
-<div class="container">
-  <div>
-    <h2>{{ 'COLORS.ORANGE' | translate }}</h2>
-  </div>
-  <div>
-    <div class="color orange"></div>
-  </div>
-</div>
-
-<div class="container">
-  <div>
-    <h2>{{ 'COLORS.GREEN' | translate }}</h2>
-  </div>
-  <div>
-    <div class="color green"></div>
-  </div>
-</div>
+}

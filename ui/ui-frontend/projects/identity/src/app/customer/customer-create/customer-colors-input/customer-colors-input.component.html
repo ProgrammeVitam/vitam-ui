@@ -41,8 +41,8 @@
     [disabled]="disabled"
     [data]="backgroundColors"
     [messages]="{ unselected: 'COLOR.BACKGROUND' | translate, selected: 'COLOR.BACKGROUND' | translate }"
-    [selected]="formGroup.get(THEME_COLORS.VITAMUI_BACKGROUND).value"
-    (selectedChange)="formGroup.get(THEME_COLORS.VITAMUI_BACKGROUND).setValue($event)"
+    [selected]="selectedBgColor"
+    (selectedChange)="updateBackgroundColor($event)"
   >
   </vitamui-common-select>
 </ng-container>

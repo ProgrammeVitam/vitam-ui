@@ -6,11 +6,11 @@
   "INGEST_URL": "https://dev.vitamui.com:4208/ingest",
   "PORTAL_TITLE": "Portail des applications de l'archivage",
   "THEME_COLORS": {
-    "vitamui-primary": "#702382",
-    "vitamui-secondary": "#2563A9",
+    "vitamui-primary": "#9C31B5",
+    "vitamui-secondary": "#296EBC",
     "vitamui-tertiary": "#C22A40",
     "vitamui-header-footer": "#ffffff",
-    "vitamui-background": "#F5F7FC"
+    "vitamui-background": "#FCF7FD"
   },
   "PORTAL_MESSAGE": "Profitez d'un portail unique pour rechercher dans les archives de vos coffres, pour déposer des éléments en toute sécurité et pour imprimer des étiquettes en quelques clics.",
   "UI_URL": "https://dev.vitamui.com:4202",

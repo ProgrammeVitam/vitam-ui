@@ -81,11 +81,30 @@ function getColorFromMap(colorName: string, colorMap: any) {
 }
 
 /**
+ * Set the luminosity of the color.
+ * @param color the base color. Must be hex color with #fff or #ffffff format
+ * @param luminosity the target luminosity
+ */
+export function setLuminosity(color: string, luminosity: number) {
+  if (!color) {
+    return color;
+  }
+
+  const rgbValue: RGB = hexToRgb(color);
+  const hslValue: HSL = rgbToHsl(rgbValue);
+
+  hslValue.l = Math.min(Math.max(0, luminosity), 100);
+  const lightRGBvalue: RGB = hslToRgb(hslValue);
+
+  return '#' + toHex(lightRGBvalue.r) + toHex(lightRGBvalue.g) + toHex(lightRGBvalue.b);
+}
+
+/**
  * Apply a +X to the color lightness.
  * @param color the color to lighten. Must be hex color with #fff or #ffffff format
  * @param lightModificator the value of lighten operation. Default value to 10 if not set
  */
-function convertToLightColor(color: string, lightModificator: number = 10) {
+export function convertToLightColor(color: string, lightModificator: number = 10) {
   if (!color) {
     return color;
   }
@@ -94,22 +113,7 @@ function convertToLightColor(color: string, lightModificator: number = 10) {
   const hslValue: HSL = rgbToHsl(rgbValue);
 
   // lighten
-  hslValue.l = Math.min(hslValue.l + lightModificator, 100);
-  const lightRGBvalue: RGB = hslToRgb(hslValue);
-
-  return '#' + toHex(lightRGBvalue.r) + toHex(lightRGBvalue.g) + toHex(lightRGBvalue.b);
-}
-
-export function convertLighten(rgbValue: RGB, lightModificator: number) {
-  const hslValue: HSL = rgbToHsl(rgbValue);
-
-  // lighten
-  hslValue.l = hslValue.l + lightModificator;
-  if (hslValue.l > 100) {
-    hslValue.l = 100;
-  } else if (hslValue.l < 0) {
-    hslValue.l = 0;
-  }
+  hslValue.l = Math.min(Math.max(0, hslValue.l + lightModificator), 100);
   const lightRGBvalue: RGB = hslToRgb(hslValue);
 
   return '#' + toHex(lightRGBvalue.r) + toHex(lightRGBvalue.g) + toHex(lightRGBvalue.b);
@@ -121,18 +125,7 @@ export function convertLighten(rgbValue: RGB, lightModificator: number) {
  * @param lightModificator the value of darken  operation. Default value to 10 if not set
  */
 export function convertToDarkColor(color: string, lightModificator: number = 10) {
-  if (!color) {
-    return color;
-  }
-
-  const rgbValue: RGB = hexToRgb(color);
-  const hslValue: HSL = rgbToHsl(rgbValue);
-
-  // darken
-  hslValue.l = Math.max(hslValue.l - lightModificator, 0);
-  const darkRGBvalue: RGB = hslToRgb(hslValue);
-
-  return '#' + toHex(darkRGBvalue.r) + toHex(darkRGBvalue.g) + toHex(darkRGBvalue.b);
+  return convertToLightColor(color, -lightModificator);
 }
 
 export function toHex(componentValue: number) {

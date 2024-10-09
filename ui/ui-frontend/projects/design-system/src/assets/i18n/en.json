@@ -89,6 +89,7 @@
     "Secondary": "Color secondary",
     "Grey": "Color grey",
     "Additional": "Color additional",
+    "PRIMARY_LIGHT": "Color \"primary-light\"",
     "Red": "Color red",
     "Orange": "Color orange",
     "Green": "Color green"
