@@ -14,7 +14,7 @@ import { Cardinality, ComponentType, DisplayObjectType } from '../../object-view
 import { Action, EditObject } from '../models/edit-object.model';
 import { PathService } from './path.service';
 import { SchemaOptions, SchemaService } from './schema.service';
-import { patternValidator } from '../pattern.validator';
+import { CustomValidators } from '../pattern.validator';
 
 const ADD_ACTION_LABEL = 'ARCHIVE_UNIT.ACTIONS.ADD';
 const REMOVE_ACTION_LABEL = 'ARCHIVE_UNIT.ACTIONS.REMOVE';
@@ -76,7 +76,7 @@ export class EditObjectService {
 
     if (editObject.displayRule?.ui?.disabled) control.disable({ onlySelf: true, emitEvent: false });
     if (editObject.required) control.addValidators(Validators.required);
-    if (editObject.pattern) control.addValidators(patternValidator(editObject.pattern, editObject.hint));
+    if (editObject.pattern) control.addValidators(CustomValidators.pattern(editObject.pattern, editObject.hint));
     if (['primitive-array', 'object-array'].includes(editObject.kind) && editObject.cardinality === 'ONE_REQUIRED')
       control.addValidators(Validators.maxLength(1));
     if (editObject.kind === 'object-array' && editObject.children.length === 0) editObject.actions.add.handler();

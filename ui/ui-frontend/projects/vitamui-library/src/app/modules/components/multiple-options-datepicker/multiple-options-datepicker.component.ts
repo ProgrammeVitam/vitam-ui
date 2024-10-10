@@ -1,20 +1,15 @@
 import { Component, ElementRef, forwardRef, HostBinding, HostListener, Injector, Input, OnInit, ViewChild } from '@angular/core';
-import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR, NgControl, Validators } from '@angular/forms';
+import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR, NgControl } from '@angular/forms';
 import { PickerType } from './multiple-options-datepicker.interface';
 import { DatePipe } from '@angular/common';
 import { MatDatepicker } from '@angular/material/datepicker';
+import { CustomValidators, DatePattern } from '../../object-editor/pattern.validator';
 
 export const MULTIPLE_OPTIONS_DATEPICKER_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => MultipleOptionsDatepickerComponent),
   multi: true,
 };
-
-const startViewMapping: Map<PickerType, MatDatepicker<Date>['startView']> = new Map([
-  ['year', 'multi-year'],
-  ['month', 'year'],
-  ['day', 'month'],
-]);
 
 @Component({
   selector: 'vitamui-common-multiple-options-datepicker',
@@ -41,9 +36,6 @@ export class MultipleOptionsDatepickerComponent implements ControlValueAccessor,
   @ViewChild('datepicker') private datepicker: MatDatepicker<Date>;
   @ViewChild('hintArea') private hintArea: ElementRef;
 
-  monthYearRegExp = new RegExp('^([1-9]\\d{3})-(0[1-9]|1[0-2]$)');
-  yearRegExp = new RegExp('^([1-9]\\d{3})$');
-
   onChange = (_: any) => {};
   onTouched = () => {};
 
@@ -54,49 +46,28 @@ export class MultipleOptionsDatepickerComponent implements ControlValueAccessor,
     }
   }
 
+  private startViewMapping: Map<PickerType, MatDatepicker<Date>['startView']> = new Map([
+    ['year', 'multi-year'],
+    ['month', 'year'],
+    ['day', 'month'],
+  ]);
+
+  private datePatternMapping = new Map<PickerType, DatePattern>([
+    ['year', DatePattern.YEAR],
+    ['month', DatePattern.YEAR_MONTH],
+    ['day', DatePattern.YEAR_MONTH_DAY],
+  ]);
+
   constructor(
     private datePipe: DatePipe,
-    public injector: Injector,
+    private injector: Injector,
   ) {}
 
   ngOnInit() {
     const ngControl: NgControl = this.injector.get(NgControl);
     this.date = ngControl.control as FormControl;
-
-    if (!this.startView) this.startView = startViewMapping.get(this.pickerType);
-
-    if (this.pickerType === 'year') {
-      this.date.addValidators(Validators.pattern(this.yearRegExp));
-    } else if (this.pickerType === 'month') {
-      this.date.addValidators(Validators.pattern(this.monthYearRegExp));
-    } else {
-      this.date.addValidators((control) => {
-        function isValidDate(dateString: string) {
-          if (!/^\d*-\d*-\d*$/.test(dateString)) {
-            return false; // Invalid format
-          }
-
-          // Step 1: Split the string into components
-          const parts = dateString.split('-');
-
-          // Step 2: Convert to integers
-          const year = parseInt(parts[0], 10);
-          const month = parseInt(parts[1], 10) - 1; // Months are zero-based (0 = January, 11 = December)
-          const day = parseInt(parts[2], 10);
-
-          // Step 3: Create a Date object
-          const date = new Date(year, month, day);
-
-          // Step 4: Check for validity
-          if (date.getFullYear() !== year || date.getMonth() !== month || date.getDate() !== day) {
-            return false; // The date is not valid
-          }
-
-          return true; // The date is valid
-        }
-        return isValidDate(control.value) ? null : { pattern: true };
-      });
-    }
+    if (!this.startView) this.startView = this.startViewMapping.get(this.pickerType);
+    this.date.addValidators(CustomValidators.date(this.datePatternMapping.get(this.pickerType)));
   }
 
   writeValue(value: string) {

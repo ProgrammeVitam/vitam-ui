@@ -4590,6 +4590,7 @@
     "EDITOR_BANNER": {
       "TITLE": "EDIT MODE (MODIFICATION AND COMPLETION) - VERSION {{sedaVersion}} SEDA"
     },
+    "INVALID_FORM": "The following metadata are invalid: {{invalidLeavesMessage}}",
     "ACTIONS": {
       "ADD": "Add a new metadata bloc",
       "REMOVE": "Remove the metadata bloc"

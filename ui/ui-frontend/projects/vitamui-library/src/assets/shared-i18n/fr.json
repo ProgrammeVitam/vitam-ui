@@ -4846,6 +4846,7 @@
     "EDITOR_BANNER": {
       "TITLE": "MODE EDITION (MODIFICATION ET COMPLÉTION) - VERSION {{sedaVersion}} SEDA"
     },
+    "INVALID_FORM": "Les métadonnées suivantes sont invalides: {{invalidLeavesMessage}}",
     "ACTIONS": {
       "ADD": "Ajouter un nouveau bloc de métadonnées",
       "REMOVE": "Supprimer le bloc de métadonnées"

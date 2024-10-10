@@ -3,7 +3,7 @@ import { MatLegacyDialog as MatDialog, MatLegacyDialogConfig as MatDialogConfig 
 import { MatLegacySnackBar as MatSnackBar, MatLegacySnackBarConfig as MatSnackBarConfig } from '@angular/material/legacy-snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { Subscription } from 'rxjs';
+import { Observable, pipe, Subscription, UnaryFunction } from 'rxjs';
 import { filter, map, switchMap, tap } from 'rxjs/operators';
 import { ArchiveUnit, ArchiveUnitEditorComponent, JsonPatch, Logger, SpinnerOverlayService, StartupService } from 'vitamui-library';
 import { EditObject } from 'vitamui-library/app/modules/object-editor/models/edit-object.model';
@@ -36,6 +36,40 @@ export class ArchiveUnitDescriptionTabComponent implements OnDestroy {
     duration: 100000,
   };
 
+  private notifyFormInvalidityOrContinue: UnaryFunction<Observable<unknown>, Observable<boolean>> = pipe(
+    map(() => {
+      // Skip validation check when haven't archive unit profile.
+      if (!this.archiveUnit.ArchiveUnitProfile) return true;
+      // Skip error collect when haven't invalid fields.
+      if (this.archiveUnitEditor.editObject$.value.control.valid) return true;
+
+      const invalidLeafErrorsMap = this.collectInvalidNode(this.archiveUnitEditor.editObject$.value)
+        .filter((node) => node.children?.length === 0)
+        .map((node) => ({
+          path: node.path,
+          errors: node.control.errors,
+        }));
+
+      const isValid = invalidLeafErrorsMap.length === 0;
+      if (!isValid) {
+        this.logger.warn(this, 'Current form data contains errors', invalidLeafErrorsMap);
+
+        const invalidLeavesMessage = invalidLeafErrorsMap.map((node) => node.path).join(', ');
+        const message = this.translateService.instant('ARCHIVE_UNIT.INVALID_FORM', { invalidLeavesMessage });
+        this.snackBar.open(message, 'close', this.snackBarConfig);
+      }
+
+      return isValid;
+    }),
+    filter((isValid) => isValid),
+  );
+
+  private updateArchiveUnit: UnaryFunction<Observable<unknown>, Observable<{ operationId: String }>> = pipe(
+    map(() => this.archiveUnitEditor.getJsonPatch()),
+    tap(() => this.spinnerOverlayService.open()),
+    switchMap((jsonPatchDto) => this.archiveUnitService.asyncPartialUpdateArchiveUnitByCommands(jsonPatchDto)),
+  );
+
   constructor(
     private logger: Logger,
     private dialog: MatDialog,
@@ -52,40 +86,53 @@ export class ArchiveUnitDescriptionTabComponent implements OnDestroy {
   }
 
   @ViewChild(ArchiveUnitEditorComponent) set editor(editor: ArchiveUnitEditorComponent) {
-    if (editor) {
-      this.archiveUnitEditor = editor;
+    if (!editor) return;
 
-      const subscription = this.archiveUnitEditor?.editObject$.subscribe((editObject) => {
-        this.editObject = editObject;
-      });
+    this.archiveUnitEditor = editor;
 
-      if (subscription) this.subscriptions.add(subscription);
-    }
+    const subscription = this.archiveUnitEditor?.editObject$.subscribe((editObject) => {
+      this.editObject = editObject;
+    });
+
+    if (subscription) this.subscriptions.add(subscription);
   }
 
   isModified(): boolean {
-    return this.editMode && !this.editObject?.control?.pristine;
+    return this.editMode && this.editObject?.control?.dirty;
   }
 
-  async onCancel() {
-    if (!this.isModified()) {
-      this.backToDisplayMode();
-    } else {
-      await this.dialog
+  collectInvalidNode(editObject: EditObject): EditObject[] {
+    let collectedNodes: EditObject[] = [];
+
+    if (editObject.control.invalid) {
+      collectedNodes.push(editObject);
+    }
+
+    // Utilise `reduce` pour accumuler les nœuds invalides des enfants
+    collectedNodes = collectedNodes.concat(editObject.children.reduce((acc, child) => acc.concat(this.collectInvalidNode(child)), []));
+
+    return collectedNodes;
+  }
+
+  onCancel() {
+    if (!this.isModified()) return this.backToDisplayMode();
+    this.subscriptions.add(
+      this.dialog
         .open(this.cancelDialog, this.dialogConfig)
         .afterClosed()
         .pipe(
-          map((result) => {
-            if (result) return this.archiveUnitEditor.getJsonPatch();
-            throw new Error(result);
-          }),
-          tap(() => this.spinnerOverlayService.open()),
-          switchMap((jsonPatchDto) => this.archiveUnitService.asyncPartialUpdateArchiveUnitByCommands(jsonPatchDto)),
+          filter((shouldUpdate: boolean) => Boolean(shouldUpdate || this.backToDisplayMode())),
+          this.notifyFormInvalidityOrContinue,
+          this.updateArchiveUnit,
         )
-        .toPromise()
-        .then(({ operationId }) => this.handleUpdateSuccess({ operationId }))
-        .catch(() => this.backToDisplayMode());
-    }
+        .subscribe({
+          next: ({ operationId }) => this.handleUpdateSuccess({ operationId }),
+          error: (err) => {
+            this.logger.error(this, err);
+            this.backToDisplayMode();
+          },
+        }),
+    );
   }
 
   onSave(): void {
@@ -94,18 +141,17 @@ export class ArchiveUnitDescriptionTabComponent implements OnDestroy {
         .open(this.updateDialog, this.dialogConfig)
         .afterClosed()
         .pipe(
-          filter((result) => !!result),
-          map(() => this.archiveUnitEditor.getJsonPatch()),
-          tap(
-            () => this.spinnerOverlayService.open(),
-            (err) => this.logger.error(this, err),
-          ),
-          switchMap((jsonPatchDto) => this.archiveUnitService.asyncPartialUpdateArchiveUnitByCommands(jsonPatchDto)),
+          filter((result: boolean) => result),
+          this.notifyFormInvalidityOrContinue,
+          this.updateArchiveUnit,
         )
-        .subscribe(
-          ({ operationId }) => this.handleUpdateSuccess({ operationId }),
-          () => this.spinnerOverlayService.close(),
-        ),
+        .subscribe({
+          next: ({ operationId }) => this.handleUpdateSuccess({ operationId }),
+          error: (err) => {
+            this.logger.error(this, err);
+            this.spinnerOverlayService.close();
+          },
+        }),
     );
   }
 
