@@ -24,7 +24,7 @@ public final class IdentityProviderHelperTest {
     private static final String PATTERN = ".*@vitamui\\.com";
 
     private static final String GOOD_EMAIL = "jerome.leleu@vitamui.com";
-
+    private static final String GOOD_UPPERCASE_EMAIL = "useR1@Vitamui.Com";
     private static final String BAD_EMAIL = "jerome.leleu@test.com";
 
     private static final String NAME = "idp007";
@@ -34,6 +34,30 @@ public final class IdentityProviderHelperTest {
         final List<IdentityProviderDto> providers = buildProviders(true);
 
         final Optional<IdentityProviderDto> result = helper.findByUserIdentifier(providers, GOOD_EMAIL);
+
+        assertEquals(providers.get(0), result.get());
+    }
+
+    @Test
+    public void testFindByUserIdentifierOkWhenEmailWithDifferentCase() {
+        final List<IdentityProviderDto> providers = buildProviders(true);
+
+        final List<IdentityProviderDto> result = helper.findAllProvidersByUserIdentifier(
+            providers,
+            GOOD_UPPERCASE_EMAIL
+        );
+        assertEquals(providers.get(0), result.get(0));
+    }
+
+    @Test
+    public void testFindByUserIdentifierOkWhenEmailUpperCase() {
+        final List<IdentityProviderDto> providers = buildProviders(true);
+
+        final Optional<IdentityProviderDto> result = helper.findByUserIdentifierAndCustomerId(
+            providers,
+            GOOD_UPPERCASE_EMAIL,
+            CUSTOMER_ID_1
+        );
 
         assertEquals(providers.get(0), result.get());
     }

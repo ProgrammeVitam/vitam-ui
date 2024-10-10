@@ -45,8 +45,6 @@ import java.util.regex.Pattern;
 
 /**
  * Helper to work with identity providers.
- *
- *
  */
 public class IdentityProviderHelper {
 
@@ -68,7 +66,7 @@ public class IdentityProviderHelper {
     ) {
         for (final IdentityProviderDto provider : providers) {
             for (final String pattern : provider.getPatterns()) {
-                if (Pattern.compile(pattern).matcher(identifier).matches()) {
+                if (Pattern.compile(pattern, Pattern.CASE_INSENSITIVE).matcher(identifier).matches()) {
                     return Optional.of(provider);
                 }
             }

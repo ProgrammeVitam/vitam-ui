@@ -39,7 +39,13 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.io.FileNotFoundException;
 import java.security.Principal;
 import java.security.cert.X509Certificate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 import static fr.gouv.vitamui.commons.api.CommonConstants.IDENTIFIER_ATTRIBUTE;
 import static fr.gouv.vitamui.commons.api.CommonConstants.SUPER_USER_ATTRIBUTE;
@@ -53,8 +59,6 @@ import static org.mockito.Mockito.when;
 
 /**
  * Tests {@link UserPrincipalResolver}.
- *
- *
  */
 @RunWith(SpringRunner.class)
 @ContextConfiguration(classes = ServerIdentityAutoConfiguration.class)
@@ -65,13 +69,16 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
     private static final String MAIL = "mail";
     private static final String IDENTIFIER = "identifier";
 
-    private static final String USERNAME = "jleleu@test.com";
+    private static final String USERNAME = "user@test.com";
+    private static final String USERNAME_EMAIL_WITH_OTHER_CASE = "USER@test.com";
+    private static final String CUSTOMER_ID = "customerId";
     private static final String ADMIN = "admin@test.com";
+    private static final String ADMIN_CUSTOMER_ID = "customer_admin";
     private static final String IDENTIFIER_VALUE = "007";
 
     private static final String PWD = "password";
 
-    private static final String USERNAME_ID = "jleleu";
+    private static final String USERNAME_ID = "userId";
     private static final String ADMIN_ID = "admin";
 
     private static final String ROLE_NAME = "role1";
@@ -175,6 +182,52 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
         final Map<String, List<Object>> attributes = principal.getAttributes();
         assertEquals(USERNAME, attributes.get(CommonConstants.EMAIL_ATTRIBUTE).get(0));
         assertEquals(Arrays.asList(ROLE_NAME), attributes.get(CommonConstants.ROLES_ATTRIBUTE));
+        assertNull(attributes.get(SUPER_USER_ATTRIBUTE));
+    }
+
+    @Test
+    public void testResolveX509CaseInsensitive() {
+        val provider = new IdentityProviderDto();
+        provider.setId(PROVIDER_ID);
+        provider.setCustomerId(CUSTOMER_ID);
+        provider.setPatterns(List.of(".*@TesT.com"));
+
+        when(providersService.getProviders()).thenReturn(List.of(provider));
+
+        when(
+            identityProviderHelper.identifierMatchProviderPattern(
+                providersService.getProviders(),
+                USERNAME_EMAIL_WITH_OTHER_CASE
+            )
+        ).thenReturn(true);
+
+        when(
+            casExternalRestClient.getUser(
+                any(ExternalHttpContext.class),
+                eq(USERNAME_EMAIL_WITH_OTHER_CASE),
+                eq(PROVIDER_ID),
+                eq(Optional.of(IDENTIFIER)),
+                eq(Optional.of(CommonConstants.AUTH_TOKEN_PARAMETER))
+            )
+        ).thenReturn(userProfile(UserStatusEnum.ENABLED));
+        val cert = mock(X509Certificate.class);
+        val subjectDn = mock(java.security.Principal.class);
+        when(subjectDn.getName()).thenReturn(USERNAME_EMAIL_WITH_OTHER_CASE);
+        when(cert.getSubjectDN()).thenReturn(subjectDn);
+        val issuerDn = mock(java.security.Principal.class);
+        when(issuerDn.getName()).thenReturn(IDENTIFIER);
+        when(cert.getIssuerDN()).thenReturn(issuerDn);
+
+        val principal = resolver.resolve(
+            new X509CertificateCredential(new X509Certificate[] { cert }),
+            Optional.of(principalFactory.createPrincipal(USERNAME)),
+            Optional.empty()
+        );
+
+        assertEquals(USERNAME_ID, principal.getId());
+        final Map<String, List<Object>> attributes = principal.getAttributes();
+        assertEquals(USERNAME_EMAIL_WITH_OTHER_CASE, attributes.get(CommonConstants.EMAIL_ATTRIBUTE).get(0));
+        assertEquals(List.of(ROLE_NAME), attributes.get(CommonConstants.ROLES_ATTRIBUTE));
         assertNull(attributes.get(SUPER_USER_ATTRIBUTE));
     }
 
