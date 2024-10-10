@@ -1,0 +1,17 @@
+@use '../../../../sass/base/typography';
+@import '../../../../sass/variables/colors';
+
+:host {
+  @extend .text;
+  @extend .caption;
+  width: 100%;
+  color: $red;
+  display: flex;
+  align-items: center;
+  padding: 5px 0 0 0;
+  i {
+    @extend .text;
+    @extend .caption;
+    margin-right: 5px;
+  }
+}

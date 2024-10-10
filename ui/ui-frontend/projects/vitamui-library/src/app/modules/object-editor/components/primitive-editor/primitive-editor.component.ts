@@ -4,6 +4,7 @@ import { DateDisplayService } from '../../../object-viewer/services/date-display
 import { ComponentType } from '../../../object-viewer/types';
 import { EditObject } from '../../models/edit-object.model';
 import { FormControl } from '@angular/forms';
+import { DatePatternConstants } from '../../../dates.constants';
 
 @Component({
   selector: 'vitamui-common-primitive-editor',
@@ -30,4 +31,17 @@ export class PrimitiveEditorComponent implements OnInit {
   }
 
   protected readonly FormControl = FormControl;
+
+  getPickerType(editObject: EditObject) {
+    if (editObject.pattern) {
+      if (editObject.pattern === DatePatternConstants.YEAR) {
+        return 'year';
+      } else if (editObject.pattern === DatePatternConstants.YEAR_MONTH_DAY) {
+        return 'day';
+      } else if (editObject.pattern === DatePatternConstants.YEAR_MONTH) {
+        return 'month';
+      }
+    }
+    return 'day';
+  }
 }

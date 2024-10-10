@@ -172,3 +172,4 @@ export * from './app/modules/subrogation/subrogation-banner/subrogation-banner.c
 export * from './app/modules/subrogation/subrogation.module';
 export * from './app/modules/object-viewer/services/type.service';
 export * from './app/modules/object-editor/pattern.validator';
+export * from './app/modules/dates.constants';
