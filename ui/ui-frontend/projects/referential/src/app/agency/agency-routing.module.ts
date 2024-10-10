@@ -44,6 +44,7 @@ const routes: Route[] = [
   {
     path: '',
     redirectTo: 'tenant',
+    pathMatch: 'full',
   },
   {
     path: 'tenant',
