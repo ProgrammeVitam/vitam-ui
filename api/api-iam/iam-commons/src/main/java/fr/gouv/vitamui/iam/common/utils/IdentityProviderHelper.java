@@ -62,13 +62,21 @@ public class IdentityProviderHelper {
         return Optional.empty();
     }
 
-    public List<IdentityProviderDto> findAllByUserIdentifier(
+    public List<IdentityProviderDto> findAllProvidersByUserIdentifier(
         final List<IdentityProviderDto> providers,
         final String identifier
     ) {
         return providers
             .stream()
-            .filter(provider -> provider.getPatterns().stream().anyMatch(identifier::matches))
+            .filter(
+                provider ->
+                    provider
+                        .getPatterns()
+                        .stream()
+                        .anyMatch(
+                            pattern -> Pattern.compile(pattern, Pattern.CASE_INSENSITIVE).matcher(identifier).matches()
+                        )
+            )
             .collect(Collectors.toList());
     }
 
@@ -87,7 +95,10 @@ public class IdentityProviderHelper {
                     provider
                         .getPatterns()
                         .stream()
-                        .anyMatch(pattern -> Pattern.compile(pattern).matcher(userIdentifier).matches())
+                        .anyMatch(
+                            pattern ->
+                                Pattern.compile(pattern, Pattern.CASE_INSENSITIVE).matcher(userIdentifier).matches()
+                        )
             )
             .findFirst();
     }

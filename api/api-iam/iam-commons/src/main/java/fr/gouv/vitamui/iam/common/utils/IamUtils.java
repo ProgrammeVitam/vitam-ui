@@ -42,7 +42,7 @@ import java.util.Optional;
 public final class IamUtils {
 
     public static final String EMAIL_VALID_REGEXP =
-        "^[_a-z0-9]+(((\\.|-)[_a-z0-9]+))*@[a-z0-9-]+(\\.[a-z0-9-]+)*(\\.[a-z]{2,})$";
+        "^[_A-Za-z0-9]+(((\\.|-)[_A-Za-z0-9]+))*@[A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";
 
     private IamUtils() {}
 
@@ -51,6 +51,7 @@ public final class IamUtils {
      * "field_1, field_2, field_3".
      *
      * Returns an empty string if the given enum array is empty.
+     *
      * @param embeddedField
      * @return
      */
@@ -64,6 +65,7 @@ public final class IamUtils {
      * "field_1, field_2, field_3".
      *
      * Returns an empty string if the given enum array is empty.
+     *
      * @param embeddedField
      * @return
      */
@@ -84,6 +86,7 @@ public final class IamUtils {
      * "field_1, field_2, field_3".
      *
      * Returns an empty string if the given list is empty.
+     *
      * @param embeddedFieldList
      * @return
      */
@@ -96,6 +99,7 @@ public final class IamUtils {
      * "field_1, field_2, field_3".
      *
      * Returns an empty string if the given list is empty.
+     *
      * @param embeddedFieldList
      * @return
      */
