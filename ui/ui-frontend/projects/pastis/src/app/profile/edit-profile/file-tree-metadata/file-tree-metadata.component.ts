@@ -62,6 +62,7 @@ import { FileTreeMetadataService } from './file-tree-metadata.service';
 import { filter, map, tap } from 'rxjs/operators';
 import { Logger } from 'vitamui-library';
 import { BreadcrumbService } from '../../../core/services/breadcrumb.service';
+import { DatePatternConstants } from '../../../../../../vitamui-library/src/app/modules/dates.constants';
 
 const FILE_TREE_METADATA_TRANSLATE_PATH = 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA';
 const ADD_PUA_CONTROL_TRANSLATE_PATH = 'USER_ACTION.ADD_PUA_CONTROL';
@@ -125,10 +126,10 @@ export class FileTreeMetadataComponent implements OnInit, OnDestroy {
   regex: string;
   customRegex: string;
   private formatagePredefini: Array<{ label: string; value: string }> = [
-    { label: 'AAAA-MM-JJ', value: '^[0-9]{4}-[0-9]{2}-[0-9]{2}$' },
-    { label: 'AAAA-MM-JJTHH:MM:SS', value: '^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}$' },
-    { label: 'AAAA', value: '^[0-9]{4}$' },
-    { label: 'AAAA-MM', value: '^[0-9]{4}-[0-9]{2}$' },
+    { label: 'AAAA-MM-JJ', value: DatePatternConstants.YEAR_MONTH_DAY.toString() },
+    { label: 'AAAA-MM-JJTHH:MM:SS', value: DatePatternConstants.FULL_DATE.toString() },
+    { label: 'AAAA', value: DatePatternConstants.YEAR.toString() },
+    { label: 'AAAA-MM', value: DatePatternConstants.YEAR_MONTH.toString() },
   ];
   availableRegex: Array<{ label: string; value: string }>;
   public breadcrumbDataTop: Array<BreadcrumbDataTop>;
