@@ -1,3 +1,5 @@
+@import './mixins/elevation';
+
 @mixin disabled($background-color: var(--vitamui-grey-300), $color: var(--vitamui-grey-700), $border-color: var(--vitamui-grey-300)) {
   cursor: no-drop;
   background-color: $background-color;
@@ -26,7 +28,7 @@
   &.link,
   &:disabled,
   &.btn-search {
-    box-shadow: none !important;
+    @include elevation-0;
   }
 
   &:not(:disabled) {

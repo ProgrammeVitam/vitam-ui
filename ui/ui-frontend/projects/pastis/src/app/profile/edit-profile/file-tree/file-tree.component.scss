@@ -1,6 +1,7 @@
 @import '../../../../assets/css/mixins';
 @import '../../../../assets/css/layout';
 @import '../../../../assets/css/colors';
+@import 'mixins/elevation';
 
 .pastis-btn-container-add-ua {
   background-color: #f6f3fb;
@@ -11,7 +12,7 @@
 .primary {
   @extend .primary;
   background-color: var(--vitamui-primary) !important;
-  box-shadow: none !important;
+  @include elevation-0;
 }
 
 .pastis-tree-node-root-name {

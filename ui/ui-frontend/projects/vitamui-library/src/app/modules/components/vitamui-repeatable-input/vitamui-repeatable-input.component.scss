@@ -51,7 +51,7 @@ input {
   height: 44px !important;
   border-radius: 0 !important;
   background-color: transparent !important;
-  box-shadow: none !important;
+  @include elevation-0;
 
   &.first {
     height: 60px !important;

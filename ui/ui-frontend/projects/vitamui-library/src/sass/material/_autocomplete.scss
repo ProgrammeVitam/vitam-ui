@@ -1,3 +1,5 @@
+@import '../mixins/elevation';
+
 .vitamui-autocomplete-panel {
   border-bottom-left-radius: 5px !important;
   border-bottom-right-radius: 5px !important;
@@ -37,7 +39,7 @@
 }
 
 .mat-autocomplete-panel.mat-autocomplete-visible {
-  box-shadow: none !important;
+  @include elevation-0;
   width: 90%;
   left: 5%;
 }
