@@ -114,9 +114,6 @@ public final class ApiIamExternalConstants {
     public static final String HIERARCHY_PROFILE_DESCRIPTION =
         "Profil de l'application de gestion des hiérarchies de profils";
 
-    public static final String EMAIL_VALID_REGEXP =
-        "^[_a-z0-9]+(((\\.|-)[_a-z0-9]+))*@[a-z0-9-]+(\\.[a-z0-9-]+)*(\\.[a-z]{2,})$";
-
     public static final String PHONE_NUMBER_VALID_REGEXP = "^[+]{1}[0-9]{11,12}$";
 
     private ApiIamExternalConstants() {

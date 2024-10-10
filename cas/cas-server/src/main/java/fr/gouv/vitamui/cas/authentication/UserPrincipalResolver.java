@@ -131,7 +131,7 @@ import static fr.gouv.vitamui.commons.api.CommonConstants.USER_INFO_ID;
 public class UserPrincipalResolver implements PrincipalResolver {
 
     public static final Pattern EMAIL_VALID_REGEXP = Pattern.compile(
-        "^[_a-z0-9]+(((\\.|-)[_a-z0-9]+))*@[a-z0-9-]+(\\.[a-z0-9-]+)*(\\.[a-z]{2,})$"
+        "^[_A-Za-z0-9]+(((\\.|-)[_A-Za-z0-9]+))*@[A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$"
     );
     public static final String SUPER_USER_ID_ATTRIBUTE = "superUserId";
     public static final String COMPUTED_OTP = "computedOtp";
@@ -211,7 +211,7 @@ public class UserPrincipalResolver implements PrincipalResolver {
             }
 
             // Certificate authn mode does not support multi-domain. Ensure a single provider matches user email.
-            val availableProvidersForUserDomain = identityProviderHelper.findAllByUserIdentifier(
+            val availableProvidersForUserDomain = identityProviderHelper.findAllProvidersByUserIdentifier(
                 providersService.getProviders(),
                 userDomain
             );
