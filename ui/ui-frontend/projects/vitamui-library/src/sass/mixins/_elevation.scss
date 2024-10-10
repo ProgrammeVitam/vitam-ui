@@ -224,8 +224,7 @@
 }
 
 @mixin input-elevation-dark {
-  &:not(.disabled),
-  &:not(:disabled) {
+  &:not(.disabled):not(:disabled) {
     @include elevation-2-dark;
   }
   &.disabled,
@@ -235,8 +234,7 @@
 }
 
 @mixin btn-elevation-dark {
-  &:not(.disabled),
-  &:not(:disabled) {
+  &:not(.disabled):not(:disabled) {
     @include elevation-3-dark;
 
     &:hover {
@@ -255,8 +253,7 @@
 }
 
 @mixin btn-elevation-primary {
-  &:not(.disabled),
-  &:not(:disabled) {
+  &:not(.disabled):not(:disabled) {
     @include elevation-3-primary;
 
     &:hover {
@@ -275,8 +272,7 @@
 }
 
 @mixin btn-elevation-secondary {
-  &:not(.disabled),
-  &:not(:disabled) {
+  &:not(.disabled):not(:disabled) {
     @include elevation-3-secondary;
 
     &:hover {
@@ -295,8 +291,7 @@
 }
 
 @mixin dialog-elevation-dark {
-  &:not(.disabled),
-  &:not(:disabled) {
+  &:not(.disabled):not(:disabled) {
     @include elevation-1-dark;
 
     &:hover {
@@ -310,8 +305,7 @@
 }
 
 @mixin dialog-elevation-primary {
-  &:not(.disabled),
-  &:not(:disabled) {
+  &:not(.disabled):not(:disabled) {
     @include elevation-1-primary;
 
     &:hover {
@@ -325,8 +319,7 @@
 }
 
 @mixin dialog-elevation-secondary {
-  &:not(.disabled),
-  &:not(:disabled) {
+  &:not(.disabled):not(:disabled) {
     @include elevation-1-secondary;
 
     &:hover {
@@ -342,8 +335,7 @@
 @mixin btn-dialog-elevation-dark {
   @include dialog-elevation-dark;
 
-  &:not(.disabled),
-  &:not(:disabled) {
+  &:not(.disabled):not(:disabled) {
     &:focus,
     .active {
       @include elevation-0;
@@ -354,8 +346,7 @@
 @mixin btn-dialog-elevation-primary {
   @include dialog-elevation-primary;
 
-  &:not(.disabled),
-  &:not(:disabled) {
+  &:not(.disabled):not(:disabled) {
     &:focus,
     .active {
       @include elevation-0;
@@ -366,8 +357,7 @@
 @mixin btn-dialog-elevation-secondary {
   @include dialog-elevation-secondary;
 
-  &:not(.disabled),
-  &:not(:disabled) {
+  &:not(.disabled):not(:disabled) {
     &:focus,
     .active {
       @include elevation-0;
