@@ -1,3 +1,5 @@
+@import 'mixins/elevation';
+
 button {
   &.save {
     background-color: white;
@@ -7,7 +9,7 @@ button {
   &.cancel {
     background-color: transparent;
     color: white;
-    box-shadow: none;
+    @include elevation-0;
     border: none;
   }
 }

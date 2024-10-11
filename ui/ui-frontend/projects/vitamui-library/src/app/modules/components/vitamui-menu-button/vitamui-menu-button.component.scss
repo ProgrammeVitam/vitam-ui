@@ -1,7 +1,9 @@
+@import '../../../../sass/mixins/elevation';
+
 ::ng-deep {
   .more-action-menu.mat-menu-panel {
     background: none;
-    box-shadow: none;
+    @include elevation-0;
 
     .mat-menu-content {
       align-items: flex-end;

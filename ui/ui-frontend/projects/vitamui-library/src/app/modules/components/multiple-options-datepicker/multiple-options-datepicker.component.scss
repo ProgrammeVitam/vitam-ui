@@ -25,7 +25,7 @@ mat-datepicker-toggle mat-icon {
 }
 
 ::ng-deep .mat-datepicker-content {
-  @include shadow-8dp-dark;
+  @include shadow-8dp-dark('!important');
 
   .mat-calendar {
     height: fit-content !important;
@@ -75,7 +75,7 @@ mat-datepicker-toggle mat-icon {
       }
 
       .mat-calendar-body-selected.mat-calendar-body-today {
-        box-shadow: none;
+        @include elevation-0;
       }
 
       .mat-calendar-body-selected {

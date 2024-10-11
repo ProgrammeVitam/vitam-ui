@@ -112,9 +112,8 @@ vitamui-common-header-extra-select {
 
   mat-form-field {
     background-color: transparent !important;
-    box-shadow: none !important;
+    @include elevation-0;
     height: 100% !important;
-    padding-left: 0 1rem !important;
     border: none !important;
     border-radius: 0 !important;
     padding: 0 1rem !important;

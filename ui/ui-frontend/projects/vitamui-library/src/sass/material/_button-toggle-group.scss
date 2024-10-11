@@ -1,7 +1,8 @@
 @import '../variables/colors';
+@import '../mixins/elevation';
 
 .vitamui-button-toggle-group.mat-button-toggle-group {
-  box-shadow: none;
+  @include elevation-0;
   border-radius: 5px;
   background-color: $white;
   border: solid 1px var(--vitamui-primary);

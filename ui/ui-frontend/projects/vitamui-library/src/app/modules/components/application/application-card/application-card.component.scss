@@ -1,8 +1,8 @@
-@import '../../../../../sass//mixins/elevation';
+@import '../../../../../sass/mixins/elevation';
 
 mat-card {
   cursor: pointer;
-  box-shadow: none !important;
+  @include elevation-0;
   background-color: transparent;
 
   a {

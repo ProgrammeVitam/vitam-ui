@@ -1,3 +1,5 @@
+@import '../mixins/elevation';
+
 .vitamui-menu-panel.mat-menu-panel {
   border-radius: 10px;
   background: transparent;
@@ -61,7 +63,7 @@
 // DEPRECATED : REMOVE AT THE END OF THE REDESIGN
 .vitamui-more-action-menu.mat-menu-panel {
   background: none;
-  box-shadow: none;
+  @include elevation-0;
   overflow: visible;
   border-radius: 10px;
   max-width: none;
