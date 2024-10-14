@@ -71,13 +71,12 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * Ingest Internal service communication with VITAM.
@@ -163,11 +162,11 @@ public class IngestInternalService {
         VitamContext vitamContext,
         Optional<String> criteria
     ) {
-        Optional<String> accessContractOpt = ingestExternalParametersService.retrieveProfilAccessContract();
-        Set<String> originatingAgencies = new HashSet<>();
+        final Optional<String> accessContractOpt = ingestExternalParametersService.retrieveProfilAccessContract();
+        Set<String> originatingAgencies = null;
         Boolean everyOriginatingAgency = false;
         if (accessContractOpt.isPresent()) {
-            Optional<AccessContractDto> accessContractDtoOpt = accessContractInternalService.getOne(
+            final Optional<AccessContractDto> accessContractDtoOpt = accessContractInternalService.getOne(
                 vitamContext,
                 accessContractOpt.get()
             );
@@ -184,11 +183,8 @@ public class IngestInternalService {
             if (criteria.isPresent()) {
                 TypeReference<HashMap<String, Object>> typRef = new TypeReference<>() {};
                 vitamCriteria = objectMapper.readValue(criteria.get(), typRef);
-                if (!everyOriginatingAgency) {
-                    vitamCriteria.put(
-                        SELECTED_ORIGINATING_AGENCIES,
-                        originatingAgencies.stream().collect(Collectors.toList())
-                    );
+                if (!everyOriginatingAgency && originatingAgencies != null) {
+                    vitamCriteria.put(SELECTED_ORIGINATING_AGENCIES, new ArrayList<>(originatingAgencies));
                 }
             }
             query = VitamQueryHelper.createQueryDSL(vitamCriteria, pageNumber, size, orderBy, direction);
