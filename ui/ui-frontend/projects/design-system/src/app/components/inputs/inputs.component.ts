@@ -13,6 +13,8 @@ import {
   SchemaElement,
   SchemaService,
   VitamuiAutocompleteMultiselectOptions,
+  CustomValidators,
+  DatePattern,
 } from 'vitamui-library';
 
 @Component({
@@ -113,17 +115,17 @@ export class InputsComponent implements OnInit, OnDestroy {
     return fc;
   })();
   public datepickerErrorYear = (() => {
-    const fc = new FormControl('202255');
+    const fc = new FormControl('202255', [Validators.required, CustomValidators.date(DatePattern.YEAR)]);
     fc.markAsDirty();
     return fc;
   })();
   public datepickerErrorMonth = (() => {
-    const fc = new FormControl('2018-13');
+    const fc = new FormControl('2018-13', [Validators.required, CustomValidators.date(DatePattern.YEAR_MONTH)]);
     fc.markAsDirty();
     return fc;
   })();
   public datepickerErrorDay = (() => {
-    const fc = new FormControl('2024-02-30');
+    const fc = new FormControl('2024-02-30', [Validators.required, CustomValidators.date(DatePattern.YEAR_MONTH_DAY)]);
     fc.markAsDirty();
     return fc;
   })();

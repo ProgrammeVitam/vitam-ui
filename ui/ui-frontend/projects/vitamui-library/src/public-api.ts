@@ -170,3 +170,5 @@ export * from './app/modules/security/has-role.directive';
 export * from './app/modules/security/security.module';
 export * from './app/modules/subrogation/subrogation-banner/subrogation-banner.component';
 export * from './app/modules/subrogation/subrogation.module';
+export * from './app/modules/object-viewer/services/type.service';
+export * from './app/modules/object-editor/pattern.validator';

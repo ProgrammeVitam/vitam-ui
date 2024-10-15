@@ -27,12 +27,50 @@
 
 import { AbstractControl, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 
-export function patternValidator(pattern: string | RegExp, message?: string): ValidatorFn {
-  return (control: AbstractControl): ValidationErrors | null => {
-    const error = Validators.pattern(pattern)(control);
+export enum DatePattern {
+  YEAR = '([1-9]\\d{1,})',
+  YEAR_MONTH = `${DatePattern.YEAR}-(0[1-9]|1[0-2])`,
+  YEAR_MONTH_DAY = '...',
+}
 
-    if (error) return { pattern: { ...error.pattern, message: message || error.pattern.requiredPattern } };
+export class CustomValidators {
+  static pattern(pattern: string | RegExp, message?: string): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      if (!control.value) return null;
 
-    return null;
-  };
+      const error = Validators.pattern(pattern)(control);
+      if (error) return { pattern: { ...error.pattern, message: message || error.pattern.requiredPattern } };
+
+      return null;
+    };
+  }
+
+  static date(pattern: DatePattern): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      if (!control.value) return null;
+      if (pattern === DatePattern.YEAR_MONTH_DAY) return this.isValidYearMonthDay(control.value) ? null : { pattern: true };
+
+      return Validators.pattern(pattern)(control);
+    };
+  }
+
+  private static isValidYearMonthDay(dateString: string) {
+    if (!/^\d*-\d*-\d*$/.test(dateString)) {
+      return false; // Invalid format
+    }
+
+    // Step 1: Split the string into components
+    const parts = dateString.split('-');
+
+    // Step 2: Convert to integers
+    const year = parseInt(parts[0], 10);
+    const month = parseInt(parts[1], 10) - 1; // Months are zero-based (0 = January, 11 = December)
+    const day = parseInt(parts[2], 10);
+
+    // Step 3: Create a Date object
+    const date = new Date(year, month, day);
+
+    // Step 4: Check for validity
+    return !(date.getFullYear() !== year || date.getMonth() !== month || date.getDate() !== day);
+  }
 }

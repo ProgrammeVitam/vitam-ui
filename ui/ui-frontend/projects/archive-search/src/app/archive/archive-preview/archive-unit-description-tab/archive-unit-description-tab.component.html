@@ -26,7 +26,9 @@
     <button [matDialogClose]="true" [disabled]="!isModified()" class="btn primary btn-confirm-dialog margin-btn">
       {{ 'ARCHIVE_UNIT.DIALOGS.SAVE.BUTTONS.CONFIRM' | translate }}
     </button>
-    <button matDialogClose class="btn link cancel cancel-popup">{{ 'ARCHIVE_UNIT.DIALOGS.SAVE.BUTTONS.CANCEL' | translate }}</button>
+    <button [matDialogClose]="false" class="btn link cancel cancel-popup">
+      {{ 'ARCHIVE_UNIT.DIALOGS.SAVE.BUTTONS.CANCEL' | translate }}
+    </button>
   </mat-dialog-actions>
   <br />
 </ng-template>
@@ -45,7 +47,9 @@
     <button [matDialogClose]="true" [disabled]="!isModified()" class="btn primary btn-confirm-dialog margin-btn">
       {{ 'ARCHIVE_UNIT.DIALOGS.CANCEL.BUTTONS.CONFIRM' | translate }}
     </button>
-    <button matDialogClose class="btn link cancel cancel-popup">{{ 'ARCHIVE_UNIT.DIALOGS.CANCEL.BUTTONS.CANCEL' | translate }}</button>
+    <button [matDialogClose]="false" class="btn link cancel cancel-popup">
+      {{ 'ARCHIVE_UNIT.DIALOGS.CANCEL.BUTTONS.CANCEL' | translate }}
+    </button>
   </mat-dialog-actions>
   <br />
 </ng-template>
