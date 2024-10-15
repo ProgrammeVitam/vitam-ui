@@ -258,6 +258,19 @@ public final class MongoUtils {
         return getCriteria(c.getKey(), c.getValue(), c.getOperator());
     }
 
+    private static final String SPECIAL_REGEX_CHARACTERS = "[](){}.*+?^$\\|";
+
+    private static String escapeRegex(String input) {
+        StringBuilder escaped = new StringBuilder();
+        for (char c : input.toCharArray()) {
+            if (SPECIAL_REGEX_CHARACTERS.indexOf(c) != -1) {
+                escaped.append("\\");
+            }
+            escaped.append(c);
+        }
+        return escaped.toString();
+    }
+
     public static Criteria getCriteria(final String key, final Object val, final CriterionOperator operator) {
         if (operator == null) {
             throw new InvalidFormatException("No operator defined");
@@ -270,8 +283,7 @@ public final class MongoUtils {
                     (StringUtils.contains((String) val, "*") || StringUtils.contains((String) val, ".*"))
                 ) {
                     final String valueToSearch = "^" + val.toString().replaceAll("(?<!\\.)\\*", ".*") + "$";
-                    final StringBuilder options = new StringBuilder();
-                    criteria = Criteria.where(key).regex(valueToSearch, options.toString());
+                    criteria = Criteria.where(key).regex(valueToSearch, "");
                 } else {
                     criteria = Criteria.where(key).is(val);
                 }
@@ -280,9 +292,13 @@ public final class MongoUtils {
                 criteria = Criteria.where(key).ne(val);
                 break;
             case EQUALSIGNORECASE:
-                final StringBuilder options = new StringBuilder("i");
-                final String valueToSearch = "^" + val.toString().replaceAll("(?<!\\.)\\*", ".*") + "$";
-                criteria = Criteria.where(key).regex(valueToSearch, options.toString());
+                final String valueToSearch;
+                if (val instanceof String && !((String) val).contains("*")) {
+                    valueToSearch = "^" + escapeRegex(val.toString()) + "$";
+                } else {
+                    valueToSearch = "^" + val.toString().replaceAll("(?<!\\.)\\*", ".*") + "$";
+                }
+                criteria = Criteria.where(key).regex(valueToSearch, "i");
                 break;
             case GREATER:
                 criteria = Criteria.where(key).gt(val);
