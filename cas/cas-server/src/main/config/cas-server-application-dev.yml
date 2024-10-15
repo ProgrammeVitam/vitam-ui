@@ -109,7 +109,7 @@ cas.authn.pm.reset.mail.text: "Changez de mot de passe via le lien: %s"
 cas.authn.pm.reset.mail.from: serveur-cas@noreply.com
 # 1 Day : 24 * 60 Minutes to reset password
 cas.authn.pm.reset.expiration: PT1440M
-cas.authn.pm.reset.number-of-uses: 2
+cas.authn.pm.reset.number-of-uses: 1
 cas.authn.pm.reset.mail.attribute-name: email
 cas.authn.pm.reset.security-questions-enabled: false
 cas.authn.pm.reset.include-server-ip-address: false
