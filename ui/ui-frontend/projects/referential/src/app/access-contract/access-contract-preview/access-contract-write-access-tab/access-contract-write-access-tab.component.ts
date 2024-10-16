@@ -38,9 +38,8 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
-import { AccessContract, diff } from 'ui-frontend-common';
+import { AccessContract, diff, AccessContractService } from 'ui-frontend-common';
 import { extend, isEmpty } from 'underscore';
-import { AccessContractService } from '../../access-contract.service';
 
 @Component({
   selector: 'app-access-contract-write-access-tab',

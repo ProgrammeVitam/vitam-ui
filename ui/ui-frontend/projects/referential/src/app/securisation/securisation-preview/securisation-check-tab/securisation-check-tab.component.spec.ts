@@ -37,8 +37,7 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { of } from 'rxjs';
-import { ExternalParameters, ExternalParametersService } from 'ui-frontend-common';
-import { AccessContractService } from '../../../access-contract/access-contract.service';
+import { AccessContractService, ExternalParameters, ExternalParametersService } from 'ui-frontend-common';
 import { SecurisationService } from '../../securisation.service';
 import { SecurisationCheckTabComponent } from './securisation-check-tab.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';

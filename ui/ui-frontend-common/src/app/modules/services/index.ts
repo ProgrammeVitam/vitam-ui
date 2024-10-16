@@ -34,7 +34,8 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+export * from './access-contract.service';
+export * from './leaves-tree-api.service';
+export * from './leaves-tree.service';
 export * from './profile.service';
 export * from './search-archive-units.interface';
-export * from './leaves-tree.service';
-export * from './leaves-tree-api.service';

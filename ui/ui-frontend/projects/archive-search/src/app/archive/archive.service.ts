@@ -38,16 +38,17 @@ import { HttpErrorResponse, HttpHeaders, HttpResponse } from '@angular/common/ht
 import { Inject, Injectable, LOCALE_ID } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { saveAs } from 'file-saver';
-import { Observable, TimeoutError, of, throwError } from 'rxjs';
+import { Observable, of, throwError, TimeoutError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import {
   AccessContract,
-  AccessContractApiService,
+  AccessContractService,
   ApiUnitObject,
   CriteriaDataType,
   CriteriaOperator,
   FilingHoldingSchemeHandler,
   FilingHoldingSchemeNode,
+  getUnitI18nAttribute,
   Ontology,
   PagedResult,
   SearchArchiveUnitsInterface,
@@ -59,7 +60,6 @@ import {
   SearchService,
   SecurityService,
   Unit,
-  getUnitI18nAttribute,
 } from 'ui-frontend-common';
 import { ArchiveUnit } from 'ui-frontend-common/app/modules/archive-unit/models/archive-unit';
 import { JsonPatchDto, MultiJsonPatchDto } from 'ui-frontend-common/app/modules/archive-unit/models/json-patch';
@@ -78,7 +78,7 @@ export class ArchiveService extends SearchService<any> implements SearchArchiveU
     @Inject(LOCALE_ID) private locale: string,
     private snackBar: MatSnackBar,
     private securityService: SecurityService,
-    private accessContractApiService: AccessContractApiService,
+    private accessContractService: AccessContractService,
   ) {
     super(archiveApiService, 'ALL');
   }
@@ -246,9 +246,7 @@ export class ArchiveService extends SearchService<any> implements SearchArchiveU
   }
 
   getAccessContractById(accessContract: string): Observable<AccessContract> {
-    const headers = new HttpHeaders().append('Content-Type', 'application/json');
-
-    return this.accessContractApiService.getAccessContractById(accessContract, headers);
+    return this.accessContractService.get(accessContract);
   }
 
   openSnackBarForWorkflow(message: string, serviceUrl?: string) {

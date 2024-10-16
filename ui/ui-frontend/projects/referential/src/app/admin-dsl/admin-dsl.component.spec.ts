@@ -42,9 +42,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute, Router } from '@angular/router';
 import { of } from 'rxjs';
-import { DslQueryType, InjectorModule, LoggerModule, VitamUISnackBarService } from 'ui-frontend-common';
+import { DslQueryType, InjectorModule, LoggerModule, VitamUISnackBarService, AccessContractService } from 'ui-frontend-common';
 import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
-import { AccessContractService } from '../access-contract/access-contract.service';
 import { AdminDslComponent } from './admin-dsl.component';
 import { AdminDslService } from './admin-dsl.service';
 
