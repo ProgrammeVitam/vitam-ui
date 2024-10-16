@@ -11,27 +11,36 @@ h5 {
 
 h1 {
   font-size: 96px;
+  line-height: 112px;
   font-weight: 800;
+  letter-spacing: -2.5px;
 }
 
 h2 {
   font-size: 60px;
+  line-height: 72px;
   font-weight: 900;
+  letter-spacing: -1px;
 }
 
 h3 {
   font-size: 42px;
+  line-height: 42px;
   font-weight: 800;
+  letter-spacing: -0.5px;
 }
 
 h4 {
   font-size: 30px;
-  font-weight: 600;
+  line-height: 36px;
+  font-weight: 700;
 }
 
 h5 {
   font-size: 24px;
+  line-height: 32px;
   font-weight: 800;
+  letter-spacing: -0.5px;
 }
 
 .text {
@@ -40,18 +49,31 @@ h5 {
 
   &.large {
     font-size: 20px;
+    line-height: 28px;
   }
 
   &.medium {
     font-size: 16px;
+    line-height: 24px;
   }
 
   &.normal {
     font-size: 14px;
+    line-height: 22px;
+    letter-spacing: 0.1px;
   }
 
   &.caption {
     font-size: 12px;
+    line-height: 16px;
+    letter-spacing: -0.2px;
+  }
+
+  &.subcaption {
+    font-size: 9px;
+    line-height: 13px;
+    letter-spacing: -0.2px;
+    font-weight: bold; // Subcaption only exists in bold
   }
 
   &.bold {
@@ -63,15 +85,51 @@ h5 {
     cursor: pointer;
   }
 
-  &.spaced {
-    letter-spacing: 0.8px;
-  }
-
   &.uppercase {
     text-transform: uppercase;
   }
 
   @include text-colors;
+}
+
+@mixin button {
+  @extend .text;
+  @extend .bold;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.button {
+  &-large {
+    @include button;
+    @extend .medium;
+    line-height: 20px;
+
+    &-under {
+      text-decoration-line: underline;
+    }
+  }
+  &-medium {
+    @include button;
+    @extend .normal;
+    line-height: 18px;
+
+    &-under {
+      text-decoration-line: underline;
+    }
+  }
+  &-small {
+    @include button;
+    @extend .caption;
+
+    &-under {
+      text-decoration-line: underline;
+    }
+  }
+}
+
+.no-wrap {
+  white-space: nowrap;
 }
 
 .text-ellipsis {
