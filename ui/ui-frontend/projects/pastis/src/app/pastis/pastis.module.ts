@@ -53,7 +53,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatLegacyTabsModule as MatTabsModule } from '@angular/material/legacy-tabs';
 import { MatLegacyTooltipModule as MatTooltipModule } from '@angular/material/legacy-tooltip';
 import { MatTreeModule } from '@angular/material/tree';
-import { AuthenticationModule, TableFilterModule, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
+import { TableFilterModule, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 import { CoreModule } from '../core/core.module';
 import { MainComponent } from '../main/main.component';
 import { FileTreeModule } from '../profile/edit-profile/file-tree/file-tree.module';
@@ -67,7 +67,6 @@ import { PastisRoutingModule } from './pastis-routing.module';
 
 @NgModule({
   imports: [
-    AuthenticationModule.forRoot(),
     CoreModule,
     ProfileModule,
     SharedModule,
