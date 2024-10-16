@@ -7,22 +7,22 @@
 
   <div *ngIf="userGroup">
     <div class="mb-3">
-      <p class="text normal spaced light mb-1">{{ 'USER.GROUP.GROUP' | translate }}</p>
+      <p class="text normal light mb-1">{{ 'USER.GROUP.GROUP' | translate }}</p>
       <p class="text medium bold m-0">{{ userGroup?.name }}</p>
     </div>
 
     <div class="mb-3">
-      <p class="text normal spaced light mb-1">{{ 'USER.GROUP.LEVEL' | translate }}</p>
+      <p class="text normal light mb-1">{{ 'USER.GROUP.LEVEL' | translate }}</p>
       <p class="text medium bold m-0">{{ userGroup?.level }}</p>
     </div>
 
     <div class="mb-3">
-      <p class="text normal spaced light mb-1">{{ 'USER.GROUP.DESCRIPTION' | translate }}</p>
+      <p class="text normal light mb-1">{{ 'USER.GROUP.DESCRIPTION' | translate }}</p>
       <p class="text medium bold m-0">{{ userGroup?.description }}</p>
     </div>
   </div>
 
-  <p class="text normal spaced light mt-5">{{ 'USER.GROUP.PROFILE' | translate }}</p>
+  <p class="text normal light mt-5">{{ 'USER.GROUP.PROFILE' | translate }}</p>
   <div class="d-flex justify-content-between align-items-center p-3 mb-2 vitamui-profile-list" *ngFor="let profile of groupProfiles">
     <div>
       <div class="text medium">{{ profile?.name }}</div>
