@@ -269,10 +269,10 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
         String loginEmailFromFlowScope = null;
         String loginCustomerIdFromFlowScope = null;
         if (flowScope != null) {
-            loginEmailFromFlowScope = (String) flowScope.get(Constants.FLOW_LOGIN_EMAIL);
-            loginCustomerIdFromFlowScope = (String) flowScope.get(Constants.FLOW_LOGIN_CUSTOMER_ID);
+            loginEmailFromFlowScope = flowScope.getString(Constants.FLOW_LOGIN_EMAIL);
+            loginCustomerIdFromFlowScope = flowScope.getString(Constants.FLOW_LOGIN_CUSTOMER_ID);
         }
-        if (StringUtils.isNoneBlank(loginEmailFromFlowScope, loginEmailFromFlowScope)) {
+        if (StringUtils.isNoneBlank(loginEmailFromFlowScope, loginCustomerIdFromFlowScope)) {
             // User customerId already in the scope ==> We came from password expired flow
             Assert.isTrue(
                 Objects.equals(loginEmailFromFlowScope, username),
