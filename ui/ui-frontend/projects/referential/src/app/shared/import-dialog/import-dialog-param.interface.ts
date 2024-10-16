@@ -13,7 +13,7 @@ export interface ImportDialogParam {
 
 export enum ReferentialTypes {
   AGENCY = 'agency',
-  ACCESS_CONTRACT = 'accesscontract',
+  ACCESS_CONTRACTS = 'accesscontracts',
   INGEST_CONTRACT = 'ingestcontract',
   FILE_FORMAT = 'fileformat',
   ONTOLOGY = 'ontology',

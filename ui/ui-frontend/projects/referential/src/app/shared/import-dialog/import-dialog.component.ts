@@ -1,7 +1,7 @@
 import { Component, Inject, OnDestroy } from '@angular/core';
-import { MatLegacyDialogRef as MatDialogRef, MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA } from '@angular/material/legacy-dialog';
+import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
 import { FileTypes } from 'projects/vitamui-library/src/public-api';
-import { Subject } from 'rxjs';
+import { finalize, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { VitamUISnackBarService } from 'vitamui-library';
 import { ImportDialogParam, ImportError } from './import-dialog-param.interface';
@@ -33,18 +33,16 @@ export class ImportDialogComponent implements OnDestroy {
     this.referentialImportService
       .importReferential(this.dialogParams.referential, this.fileToUpload)
       .pipe(takeUntil(this.destroy))
-      .subscribe(
-        () => {
+      .pipe(finalize(() => (this.isLoading = false)))
+      .subscribe({
+        next: () => {
           this.snackBarService.open({ message: this.dialogParams.successMessage, icon: this.dialogParams.iconMessage });
           this.dialogRef.close({ successfulImport: true });
         },
-        (error) => {
-          this.isLoading = false;
-
+        error: (error) => {
           if (this.dialogParams.errorMessage) {
             this.snackBarService.open({ message: this.dialogParams.errorMessage, icon: this.dialogParams.iconMessage });
           }
-
           if (error.error) {
             const errorJson = JSON.parse(error.error);
             if (errorJson.args) {
@@ -54,7 +52,7 @@ export class ImportDialogComponent implements OnDestroy {
             }
           }
         },
-      );
+      });
   }
 
   public cancel(): void {
