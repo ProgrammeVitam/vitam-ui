@@ -32,10 +32,11 @@ import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.administration.AccessContractModel;
+import fr.gouv.vitamui.commons.api.converter.AccessContractConverter;
 import fr.gouv.vitamui.commons.api.domain.AccessContractDto;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.vitam.api.administration.AccessContractService;
-import fr.gouv.vitamui.ingest.common.dto.AccessContractResponseDto;
+import fr.gouv.vitamui.commons.vitam.api.dto.AccessContractResponseDto;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,17 +54,10 @@ public class AccessContractInternalService {
 
     private ObjectMapper objectMapper;
 
-    private AccessContractConverter converter;
-
     @Autowired
-    public AccessContractInternalService(
-        AccessContractService accessContractService,
-        ObjectMapper objectMapper,
-        AccessContractConverter converter
-    ) {
+    public AccessContractInternalService(AccessContractService accessContractService, ObjectMapper objectMapper) {
         this.accessContractService = accessContractService;
         this.objectMapper = objectMapper;
-        this.converter = converter;
     }
 
     public Optional<AccessContractDto> getOne(VitamContext vitamContext, String identifier) {
@@ -80,7 +74,9 @@ public class AccessContractInternalService {
             if (CollectionUtils.isEmpty(accessContractResponseDto.getResults())) {
                 return Optional.empty();
             } else {
-                return Optional.of(converter.convertVitamToDto(accessContractResponseDto.getResults().get(0)));
+                return Optional.of(
+                    AccessContractConverter.convertVitamToDto(accessContractResponseDto.getResults().get(0))
+                );
             }
         } catch (VitamClientException | JsonProcessingException e) {
             throw new InternalServerException("Unable to get Access Contrat", e);

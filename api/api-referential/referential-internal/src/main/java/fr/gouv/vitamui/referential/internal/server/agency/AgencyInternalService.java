@@ -105,14 +105,14 @@ public class AgencyInternalService {
     public AgencyDto getOne(VitamContext vitamContext, String identifier) {
         try {
             RequestResponse<AgenciesModel> requestResponse = agencyService.findAgencyById(vitamContext, identifier);
-            final AgencyResponseDto accessContractResponseDto = objectMapper.treeToValue(
+            final AgencyResponseDto agencyResponseDto = objectMapper.treeToValue(
                 requestResponse.toJsonNode(),
                 AgencyResponseDto.class
             );
-            if (accessContractResponseDto.getResults().size() == 0) {
+            if (agencyResponseDto.getResults().size() == 0) {
                 return null;
             } else {
-                return converter.convertVitamToDto(accessContractResponseDto.getResults().get(0));
+                return converter.convertVitamToDto(agencyResponseDto.getResults().get(0));
             }
         } catch (VitamClientException | JsonProcessingException e) {
             throw new InternalServerException("Unable to get Agency", e);
@@ -198,17 +198,17 @@ public class AgencyInternalService {
         }
     }
 
-    public AgencyDto create(VitamContext vitamContext, AgencyDto accessContractDto) {
+    public AgencyDto create(VitamContext vitamContext, AgencyDto agencyDto) {
         try {
             RequestResponse<?> requestResponse = vitamAgencyService.create(
                 vitamContext,
-                converter.convertDtoToVitam(accessContractDto)
+                converter.convertDtoToVitam(agencyDto)
             );
-            final AgencyModelDto accessContractVitamDto = objectMapper.treeToValue(
+            final AgencyModelDto agencyModelDto = objectMapper.treeToValue(
                 requestResponse.toJsonNode(),
                 AgencyModelDto.class
             );
-            return converter.convertVitamToDto(accessContractVitamDto);
+            return converter.convertVitamToDto(agencyModelDto);
         } catch (
             InvalidParseOperationException | AccessExternalClientException | IOException | VitamClientException e
         ) {
@@ -217,29 +217,29 @@ public class AgencyInternalService {
     }
 
     public AgencyDto patch(VitamContext vitamContext, final Map<String, Object> partialDto) {
-        final AgencyDto accessContractDto = this.getOne(vitamContext, (String) partialDto.get("identifier"));
+        final AgencyDto agencyDto = this.getOne(vitamContext, (String) partialDto.get("identifier"));
 
         partialDto.forEach((key, value) -> {
             if (!"id".equals(key)) {
                 try {
-                    BeanUtilsBean.getInstance().copyProperty(accessContractDto, key, value);
+                    BeanUtilsBean.getInstance().copyProperty(agencyDto, key, value);
                 } catch (InvocationTargetException | IllegalAccessException e) {
                     LOGGER.warn(e.getMessage());
                 }
             }
         });
-        AgencyModelDto accessContractVitam = converter.convertDtoToVitam(accessContractDto);
+        AgencyModelDto agencyModelDto = converter.convertDtoToVitam(agencyDto);
         try {
             RequestResponse<?> requestResponse = vitamAgencyService.patchAgency(
                 vitamContext,
                 (String) partialDto.get("id"),
-                accessContractVitam
+                agencyModelDto
             );
-            final AgencyModelDto accessContractVitamDto = objectMapper.treeToValue(
+            final AgencyModelDto agencyModelDtoResult = objectMapper.treeToValue(
                 requestResponse.toJsonNode(),
                 AgencyModelDto.class
             );
-            return converter.convertVitamToDto(accessContractVitamDto);
+            return converter.convertVitamToDto(agencyModelDtoResult);
         } catch (
             InvalidParseOperationException | AccessExternalClientException | VitamClientException | IOException e
         ) {

@@ -36,8 +36,8 @@
  */
 package fr.gouv.vitamui.cucumber.back.steps.referential.accesscontract;
 
+import fr.gouv.vitamui.commons.api.domain.AccessContractDto;
 import fr.gouv.vitamui.cucumber.common.CommonSteps;
-import fr.gouv.vitamui.referential.common.dto.AccessContractDto;
 import fr.gouv.vitamui.utils.TestConstants;
 import io.cucumber.java.en.When;
 

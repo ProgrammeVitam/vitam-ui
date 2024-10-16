@@ -111,8 +111,8 @@ public class AgencyExternalService extends AbstractResourceClientService<AgencyD
         return super.patch(partialDto);
     }
 
-    public AgencyDto create(final AgencyDto accessContractDto) {
-        return agencyInternalRestClient.create(getInternalHttpContext(), accessContractDto);
+    public AgencyDto create(final AgencyDto agencyDto) {
+        return agencyInternalRestClient.create(getInternalHttpContext(), agencyDto);
     }
 
     public boolean checkExists(final String criteria) {
@@ -134,8 +134,8 @@ public class AgencyExternalService extends AbstractResourceClientService<AgencyD
         }
     }
 
-    public boolean check(AgencyDto accessContractDto) {
-        return agencyInternalRestClient.check(getInternalHttpContext(), accessContractDto);
+    public boolean check(AgencyDto agencyDto) {
+        return agencyInternalRestClient.check(getInternalHttpContext(), agencyDto);
     }
 
     public ResponseEntity<Boolean> deleteWithResponse(final String id) {

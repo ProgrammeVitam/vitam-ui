@@ -37,7 +37,7 @@
 package fr.gouv.vitamui.iam.external.server.rest;
 
 import fr.gouv.vitamui.commons.api.CommonConstants;
-import fr.gouv.vitamui.commons.api.domain.AccessContractsDto;
+import fr.gouv.vitamui.commons.api.domain.AccessContractDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.iam.external.server.service.AccessContractExternalService;
 import io.swagger.annotations.Api;
@@ -76,14 +76,14 @@ public class AccessContractExternalController {
     @ApiOperation(value = "Get all access contracts")
     @GetMapping("/accesscontracts")
     @Secured(ServicesData.ROLE_GET_ACCESS_CONTRACT_EXTERNAL_PARAM_PROFILE)
-    public List<AccessContractsDto> getAll() {
+    public List<AccessContractDto> getAll() {
         return accessContractExternalService.getAll();
     }
 
     @ApiOperation(value = "Get access contract by ID")
     @GetMapping(path = "/accesscontracts/{identifier:.+}")
     @Secured(ServicesData.ROLE_GET_ACCESS_CONTRACTS)
-    public AccessContractsDto getById(final @PathVariable("identifier") String identifier)
+    public AccessContractDto getById(final @PathVariable("identifier") String identifier)
         throws UnsupportedEncodingException {
         LOGGER.debug(
             "get access contract by id {} / {}",

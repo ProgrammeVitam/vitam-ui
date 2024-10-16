@@ -577,6 +577,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
   }
 
   checkChildrenBoxChange(id: string, event: any) {
+    event.stopPropagation();
     const action = event.target.checked;
 
     if (this.isAllChecked && !action) {

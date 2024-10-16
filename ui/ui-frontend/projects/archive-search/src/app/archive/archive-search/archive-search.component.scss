@@ -12,6 +12,7 @@
 
   color: #757575;
 }
+
 .margin-btn {
   margin-right: 140px;
 }
@@ -24,6 +25,7 @@
 ::ng-deep.mat-menu-panel {
   max-width: fit-content !important;
 }
+
 .link-without-underline {
   cursor: pointer;
   color: #702382;
@@ -46,6 +48,7 @@
   font-size: 50px;
   line-height: 5px;
 }
+
 .vertical-line {
   border-left: 2px solid red;
   display: block;
@@ -56,6 +59,7 @@
 .disabled-div {
   pointer-events: none;
 }
+
 .enabled-div {
   pointer-events: painted;
 }

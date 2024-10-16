@@ -44,7 +44,7 @@ import fr.gouv.vitamui.commons.api.exception.ForbiddenException;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.vitam.api.access.UnitService;
 import fr.gouv.vitamui.commons.vitam.api.administration.AccessContractService;
-import fr.gouv.vitamui.iam.common.dto.AccessContractsResponseDto;
+import fr.gouv.vitamui.commons.vitam.api.dto.AccessContractResponseDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -132,13 +132,13 @@ public class ArchiveSearchMgtRulesInternalService {
 
     private boolean checkAccessContractWritePermission(final VitamContext vitamContext) {
         LOGGER.debug("Check access contract writing permissions : {}", vitamContext.getAccessContract());
-        AccessContractsResponseDto accessContractResponseDto;
+        AccessContractResponseDto accessContractResponseDto;
         try {
             RequestResponse<AccessContractModel> response =
                 this.accessContractService.findAccessContractById(vitamContext, vitamContext.getAccessContract());
             accessContractResponseDto = objectMapper.treeToValue(
                 response.toJsonNode(),
-                AccessContractsResponseDto.class
+                AccessContractResponseDto.class
             );
         } catch (VitamClientException | JsonProcessingException e) {
             throw new InternalServerException("Error while parsing Vitam response", e);

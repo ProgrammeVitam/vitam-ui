@@ -78,9 +78,9 @@ public class AgencyExternalRestClient extends BasePaginatingAndSortingRestClient
         return new ParameterizedTypeReference<List<AgencyDto>>() {};
     }
 
-    public boolean check(ExternalHttpContext context, AgencyDto accessContractDto) {
+    public boolean check(ExternalHttpContext context, AgencyDto agencyDto) {
         final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl() + CommonConstants.PATH_CHECK);
-        final HttpEntity<AgencyDto> request = new HttpEntity<>(accessContractDto, buildHeaders(context));
+        final HttpEntity<AgencyDto> request = new HttpEntity<>(agencyDto, buildHeaders(context));
         final ResponseEntity<Boolean> response = restTemplate.exchange(
             uriBuilder.toUriString(),
             HttpMethod.POST,

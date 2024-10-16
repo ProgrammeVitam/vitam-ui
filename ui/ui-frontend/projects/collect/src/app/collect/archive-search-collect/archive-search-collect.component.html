@@ -350,13 +350,15 @@
 
           <div class="vitamui-table-head">
             <div class="col-1 d-flex align-items-center">
-              <input
-                class="criteria-choice-input"
-                type="checkbox"
-                [checked]="isAllChecked"
-                [indeterminate]="isIndeterminate"
-                (change)="checkParentBoxChange($event)"
-              />
+              <label class="vitamui-checkbox clickable">
+                <input
+                  class="criteria-choice-input clickable"
+                  type="checkbox"
+                  [checked]="isAllChecked"
+                  [indeterminate]="isIndeterminate"
+                  (change)="checkParentBoxChange($event)"
+                />
+              </label>
             </div>
 
             <div class="col-1 d-flex align-items-center">
@@ -422,20 +424,21 @@
           </div>
 
           <div class="vitamui-table-body">
-            <div class="vitamui-table-rows" *ngFor="let archiveUnit of archiveUnits; trackBy: trackBy">
+            <div
+              class="vitamui-table-rows clickable"
+              *ngFor="let archiveUnit of archiveUnits; trackBy: trackBy"
+              (click)="showPreviewArchiveUnit(archiveUnit)"
+            >
               <div
                 [class.vitamui-row-selected]="(selectedArchive$ | async)?.['#id'] === archiveUnit['#id']"
                 class="vitamui-row d-flex align-items-center"
               >
                 <div class="col-1 d-flex align-items-center">
-                  <input
-                    class="criteria-choice-input"
-                    type="checkbox"
-                    (click)="checkChildrenBoxChange(archiveUnit['#id'], $event)"
-                    [checked]="isAllChecked"
-                  />
+                  <label class="vitamui-checkbox clickable" (click)="checkChildrenBoxChange(archiveUnit['#id'], $event)">
+                    <input class="criteria-choice-input clickable" type="checkbox" [checked]="isAllChecked" />
+                  </label>
                 </div>
-                <div class="col-1 d-flex align-items-center clickable" (click)="showPreviewArchiveUnit(archiveUnit)">
+                <div class="col-1 d-flex align-items-center">
                   <span class="table-filter-icon" [ngSwitch]="getArchiveUnitType(archiveUnit)">
                     <ng-container *ngSwitchCase="UnitType.INGEST">
                       <span class="table-filter-icon">
@@ -455,19 +458,19 @@
                     </ng-container>
                   </span>
                 </div>
-                <div class="col-4 d-flex align-items-center clickable" (click)="showPreviewArchiveUnit(archiveUnit)">
+                <div class="col-4 d-flex align-items-center">
                   <p matTooltip="{{ archiveUnit | unitI18n: 'Description' }}" matTooltipClass="vitamui-tooltip" [matTooltipShowDelay]="300">
                     <b> {{ archiveUnit | unitI18n: 'Title' }}</b> <br />
                     {{ archiveUnit | unitI18n: 'Description' | truncate: 100 }}
                   </p>
                 </div>
-                <div class="col-2 d-flex align-items-center clickable" (click)="showPreviewArchiveUnit(archiveUnit)">
+                <div class="col-2 d-flex align-items-center">
                   {{ archiveUnit.StartDate | dateTime: 'dd/MM/yyyy' }}
                 </div>
-                <div class="col-2 d-flex align-items-center clickable" (click)="showPreviewArchiveUnit(archiveUnit)">
+                <div class="col-2 d-flex align-items-center">
                   {{ archiveUnit.EndDate | dateTime: 'dd/MM/yyyy' }}
                 </div>
-                <div class="col-2 d-flex align-items-center clickable" (click)="showPreviewArchiveUnit(archiveUnit)">
+                <div class="col-2 d-flex align-items-center">
                   <p
                     matTooltip="{{ archiveUnit['#originating_agency'] }}   ({{ archiveUnit['#originating_agencies'] }})"
                     matTooltipClass="vitamui-tooltip"
@@ -479,6 +482,7 @@
               </div>
             </div>
           </div>
+
           <div class="vitamui-table-footer">
             <mat-spinner *ngIf="pending" diameter="50" color="accent"></mat-spinner>
             <button *ngIf="!pending && canLoadMore" (click)="loadMore()" class="btn">

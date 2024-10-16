@@ -56,7 +56,6 @@ import fr.gouv.vitamui.iam.security.provider.InternalApiAuthenticationProvider;
 import fr.gouv.vitamui.iam.security.service.InternalAuthentificationService;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import fr.gouv.vitamui.ingest.internal.server.security.WebSecurityConfig;
-import fr.gouv.vitamui.ingest.internal.server.service.AccessContractConverter;
 import fr.gouv.vitamui.ingest.internal.server.service.AccessContractInternalService;
 import fr.gouv.vitamui.ingest.internal.server.service.IngestExternalParametersService;
 import fr.gouv.vitamui.ingest.internal.server.service.IngestGeneratorODTFile;
@@ -155,11 +154,6 @@ public class ApiIngestInternalServerConfig extends AbstractContextConfiguration 
         final IamInternalRestClientFactory iamInternalRestClientFactory
     ) {
         return iamInternalRestClientFactory.getExternalParametersInternalRestClient();
-    }
-
-    @Bean
-    public AccessContractConverter accessContractConverter() {
-        return new AccessContractConverter();
     }
 
     @Bean

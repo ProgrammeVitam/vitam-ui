@@ -41,11 +41,11 @@ import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.api.domain.AccessContractDto;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.rest.util.RestUtils;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
-import fr.gouv.vitamui.referential.common.dto.AccessContractDto;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
 import fr.gouv.vitamui.referential.internal.server.accesscontract.AccessContractInternalService;
 import io.swagger.annotations.ApiOperation;
@@ -135,7 +135,6 @@ public class AccessContractInternalController {
     ) {
         LOGGER.debug("check exist accessContract={}", accessContractDto);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
-        accessContractDto.setTenant(tenant);
         final boolean exist = accessContractInternalService.check(vitamContext, accessContractDto);
         return RestUtils.buildBooleanResponse(exist);
     }
@@ -147,7 +146,6 @@ public class AccessContractInternalController {
     ) {
         LOGGER.debug("create accessContract={}", accessContractDto);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
-        accessContractDto.setTenant(tenant);
         return accessContractInternalService.create(vitamContext, accessContractDto);
     }
 

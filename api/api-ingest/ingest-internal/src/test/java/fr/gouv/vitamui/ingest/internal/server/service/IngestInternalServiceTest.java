@@ -41,9 +41,6 @@ public class IngestInternalServiceTest {
     private AccessContractInternalService accessContractInternalService;
 
     @Spy
-    private AccessContractConverter accessContractConverter;
-
-    @Spy
     private ObjectMapper objectMapper = new ObjectMapper();
 
     @InjectMocks
@@ -52,11 +49,7 @@ public class IngestInternalServiceTest {
     @BeforeEach
     public void beforeEach() {
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        accessContractInternalService = new AccessContractInternalService(
-            accessContractService,
-            objectMapper,
-            accessContractConverter
-        );
+        accessContractInternalService = new AccessContractInternalService(accessContractService, objectMapper);
     }
 
     /**

@@ -98,4 +98,8 @@ export class ProjectListComponent extends InfiniteScrollTable<Project> implement
   showProjectDetails(projectId: string) {
     this.previewProjectDetailsPanel.emit(projectId);
   }
+
+  stopPropagation(event: Event) {
+    event.stopPropagation();
+  }
 }

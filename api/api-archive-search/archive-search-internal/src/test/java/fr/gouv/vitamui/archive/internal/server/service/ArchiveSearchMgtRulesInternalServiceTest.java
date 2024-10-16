@@ -49,7 +49,6 @@ import fr.gouv.vitam.common.model.RequestResponseOK;
 import fr.gouv.vitam.common.model.administration.AccessContractModel;
 import fr.gouv.vitamui.archive.internal.server.rulesupdate.converter.RuleOperationsConverter;
 import fr.gouv.vitamui.archives.search.common.dto.RuleSearchCriteriaDto;
-import fr.gouv.vitamui.commons.api.domain.AccessContractModelDto;
 import fr.gouv.vitamui.commons.api.dtos.CriteriaValue;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaEltDto;
@@ -58,8 +57,6 @@ import fr.gouv.vitamui.commons.vitam.api.access.UnitService;
 import fr.gouv.vitamui.commons.vitam.api.administration.AccessContractService;
 import fr.gouv.vitamui.commons.vitam.api.dto.AccessContractResponseDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
-import fr.gouv.vitamui.iam.common.dto.AccessContractsResponseDto;
-import fr.gouv.vitamui.iam.common.dto.AccessContractsVitamDto;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -171,7 +168,7 @@ public class ArchiveSearchMgtRulesInternalServiceTest {
         Mockito.when(
             accessContractService.findAccessContracts(ArgumentMatchers.any(), ArgumentMatchers.any())
         ).thenReturn(requestResponse);
-        List<AccessContractModelDto> results = List.of(
+        List<AccessContractModel> results = List.of(
             createAccessContractModelDto("contratTNR", "contrat d acces", 0, true)
         );
         JsonHandler.toJsonNode(results);
@@ -243,7 +240,7 @@ public class ArchiveSearchMgtRulesInternalServiceTest {
         Mockito.when(
             accessContractService.findAccessContracts(ArgumentMatchers.any(), ArgumentMatchers.any())
         ).thenReturn(requestResponse);
-        List<AccessContractModelDto> results = List.of(
+        List<AccessContractModel> results = List.of(
             createAccessContractModelDto("contratTNR", "contrat d acces", 0, false)
         );
         JsonHandler.toJsonNode(results);
@@ -305,26 +302,26 @@ public class ArchiveSearchMgtRulesInternalServiceTest {
         return accessContractModel;
     }
 
-    AccessContractsResponseDto createAccessContractsResponseDto(
+    AccessContractResponseDto createAccessContractsResponseDto(
         String identifier,
         String name,
         Integer tenant,
         Boolean writingPermission
     ) {
-        AccessContractsResponseDto accessContractModel = new AccessContractsResponseDto();
+        AccessContractResponseDto accessContractModel = new AccessContractResponseDto();
         accessContractModel.setResults(
             List.of(createAccessContractsVitamDto(identifier, name, tenant, writingPermission))
         );
         return accessContractModel;
     }
 
-    AccessContractsVitamDto createAccessContractsVitamDto(
+    AccessContractModel createAccessContractsVitamDto(
         String identifier,
         String name,
         Integer tenant,
         Boolean writingPermission
     ) {
-        AccessContractsVitamDto accessContractModel = new AccessContractsVitamDto();
+        AccessContractModel accessContractModel = new AccessContractModel();
         accessContractModel.setIdentifier(identifier);
         accessContractModel.setName(name);
         accessContractModel.setTenant(tenant);
@@ -332,13 +329,13 @@ public class ArchiveSearchMgtRulesInternalServiceTest {
         return accessContractModel;
     }
 
-    AccessContractModelDto createAccessContractModelDto(
+    AccessContractModel createAccessContractModelDto(
         String identifier,
         String name,
         Integer tenant,
         Boolean writingPermission
     ) {
-        AccessContractModelDto accessContractModel = new AccessContractModelDto();
+        AccessContractModel accessContractModel = new AccessContractModel();
         accessContractModel.setIdentifier(identifier);
         accessContractModel.setName(name);
         accessContractModel.setTenant(tenant);

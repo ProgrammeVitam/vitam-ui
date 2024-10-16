@@ -133,7 +133,7 @@ public class AgencyExternalController {
     ) throws InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.sanitizeCriteria(agencyDto);
         ApiUtils.checkValidity(agencyDto);
-        LOGGER.debug("check exist accessContract={}", agencyDto);
+        LOGGER.debug("check exist agency={}", agencyDto);
         final boolean exist = agencyExternalService.check(agencyDto);
         return RestUtils.buildBooleanResponse(exist);
     }
@@ -170,7 +170,7 @@ public class AgencyExternalController {
         throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
         SanityChecker.checkSecureParameter(id);
-        LOGGER.debug("get logbook for accessContract with id :{}", id);
+        LOGGER.debug("get logbook for agency with id :{}", id);
         return agencyExternalService.findHistoryById(id);
     }
 

@@ -78,9 +78,9 @@ public class SecurityProfileInternalRestClient
         return new ParameterizedTypeReference<List<SecurityProfileDto>>() {};
     }
 
-    public boolean check(InternalHttpContext context, SecurityProfileDto accessContractDto) {
+    public boolean check(InternalHttpContext context, SecurityProfileDto securityProfileDto) {
         final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl() + CommonConstants.PATH_CHECK);
-        final HttpEntity<SecurityProfileDto> request = new HttpEntity<>(accessContractDto, buildHeaders(context));
+        final HttpEntity<SecurityProfileDto> request = new HttpEntity<>(securityProfileDto, buildHeaders(context));
         final ResponseEntity<Boolean> response = restTemplate.exchange(
             uriBuilder.toUriString(),
             HttpMethod.POST,

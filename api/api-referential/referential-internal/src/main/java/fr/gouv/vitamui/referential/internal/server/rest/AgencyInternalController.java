@@ -141,25 +141,25 @@ public class AgencyInternalController {
 
     @PostMapping(CommonConstants.PATH_CHECK)
     public ResponseEntity<Void> checkExist(
-        @RequestBody AgencyDto accessContractDto,
+        @RequestBody AgencyDto agencyDto,
         @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant
     ) {
-        LOGGER.debug("check exist accessContract={}", accessContractDto);
+        LOGGER.debug("check exist agency={}", agencyDto);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
-        accessContractDto.setTenant(tenant);
-        final boolean exist = agencyInternalService.check(vitamContext, accessContractDto);
+        agencyDto.setTenant(tenant);
+        final boolean exist = agencyInternalService.check(vitamContext, agencyDto);
         return RestUtils.buildBooleanResponse(exist);
     }
 
     @PostMapping
     public AgencyDto create(
-        @Valid @RequestBody AgencyDto accessContractDto,
+        @Valid @RequestBody AgencyDto agencyDto,
         @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant
     ) {
-        LOGGER.debug("create accessContract={}", accessContractDto);
+        LOGGER.debug("create agency={}", agencyDto);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
-        accessContractDto.setTenant(tenant);
-        return agencyInternalService.create(vitamContext, accessContractDto);
+        agencyDto.setTenant(tenant);
+        return agencyInternalService.create(vitamContext, agencyDto);
     }
 
     @PatchMapping(CommonConstants.PATH_ID)

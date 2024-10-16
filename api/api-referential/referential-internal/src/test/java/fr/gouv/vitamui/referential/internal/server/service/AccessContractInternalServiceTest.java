@@ -42,6 +42,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import fr.gouv.vitam.access.external.common.exception.AccessExternalClientException;
+import fr.gouv.vitam.common.PropertiesUtils;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.database.builder.request.single.Select;
 import fr.gouv.vitam.common.error.VitamError;
@@ -50,7 +51,10 @@ import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.json.JsonHandler;
 import fr.gouv.vitam.common.model.RequestResponseOK;
 import fr.gouv.vitam.common.model.administration.AccessContractModel;
+import fr.gouv.vitam.common.model.administration.ActivationStatus;
+import fr.gouv.vitam.common.model.administration.RuleType;
 import fr.gouv.vitam.common.model.logbook.LogbookOperation;
+import fr.gouv.vitamui.commons.api.domain.AccessContractDto;
 import fr.gouv.vitamui.commons.api.dtos.ErrorImportFile;
 import fr.gouv.vitamui.commons.api.enums.ErrorImportFileMessage;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
@@ -61,10 +65,8 @@ import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
 import fr.gouv.vitamui.commons.vitam.api.administration.AccessContractService;
 import fr.gouv.vitamui.iam.internal.client.ApplicationInternalRestClient;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
-import fr.gouv.vitamui.referential.common.dto.AccessContractDto;
 import fr.gouv.vitamui.referential.common.service.VitamUIAccessContractService;
 import fr.gouv.vitamui.referential.internal.server.accesscontract.AccessContractCSVUtils;
-import fr.gouv.vitamui.referential.internal.server.accesscontract.AccessContractConverter;
 import fr.gouv.vitamui.referential.internal.server.accesscontract.AccessContractInternalService;
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.BeforeEach;
@@ -72,6 +74,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockMultipartFile;
@@ -82,14 +86,18 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
@@ -116,12 +124,10 @@ public class AccessContractInternalServiceTest {
     @BeforeEach
     public void setUp() {
         ObjectMapper objectMapper = new ObjectMapper().disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-        AccessContractConverter converter = new AccessContractConverter();
         accessContractInternalService = new AccessContractInternalService(
             accessContractService,
             vitamUIAccessContractService,
             objectMapper,
-            converter,
             logbookService,
             applicationInternalRestClient,
             internalSecurityService
@@ -247,11 +253,10 @@ public class AccessContractInternalServiceTest {
         VitamContext vitamContext = new VitamContext(0);
         vitamContext.setApplicationSessionId("ASId_0");
         AccessContractDto accessContractDto = new AccessContractDto();
-        accessContractDto.setTenant(0);
 
-        when(
-            accessContractService.checkAbilityToCreateAccessContractInVitam(any(List.class), any(String.class))
-        ).thenReturn(0);
+        doNothing()
+            .when(accessContractService)
+            .checkAbilityToCreateAccessContractInVitam(eq(vitamContext), any(List.class));
 
         assertThatCode(
             () -> accessContractInternalService.check(vitamContext, accessContractDto)
@@ -263,11 +268,9 @@ public class AccessContractInternalServiceTest {
         VitamContext vitamContext = new VitamContext(0);
         vitamContext.setApplicationSessionId("ASId_0");
         AccessContractDto accessContractDto = new AccessContractDto();
-        accessContractDto.setTenant(0);
-
-        when(
-            accessContractService.checkAbilityToCreateAccessContractInVitam(any(List.class), any(String.class))
-        ).thenThrow(new ConflictException("Exception thrown by Vitam"));
+        doThrow(new ConflictException("Exception thrown by Vitam"))
+            .when(accessContractService)
+            .checkAbilityToCreateAccessContractInVitam(eq(vitamContext), any(List.class));
 
         assertThatCode(
             () -> accessContractInternalService.check(vitamContext, accessContractDto)
@@ -280,7 +283,6 @@ public class AccessContractInternalServiceTest {
         VitamContext vitamContext = new VitamContext(0);
         vitamContext.setApplicationSessionId("ASId_0");
         AccessContractDto accessContractDto = new AccessContractDto();
-        accessContractDto.setTenant(0);
 
         when(accessContractService.createAccessContracts(any(VitamContext.class), any(List.class))).thenReturn(
             new RequestResponseOK().setHttpCode(200)
@@ -297,7 +299,6 @@ public class AccessContractInternalServiceTest {
         VitamContext vitamContext = new VitamContext(0);
         vitamContext.setApplicationSessionId("ASId_0");
         AccessContractDto accessContractDto = new AccessContractDto();
-        accessContractDto.setTenant(0);
 
         when(accessContractService.createAccessContracts(any(VitamContext.class), any(List.class))).thenReturn(
             new RequestResponseOK().setHttpCode(400)
@@ -314,7 +315,6 @@ public class AccessContractInternalServiceTest {
         VitamContext vitamContext = new VitamContext(0);
         vitamContext.setApplicationSessionId("ASId_0");
         AccessContractDto accessContractDto = new AccessContractDto();
-        accessContractDto.setTenant(0);
 
         when(accessContractService.createAccessContracts(any(VitamContext.class), any(List.class))).thenThrow(
             new InvalidParseOperationException("Exception thrown by vitam")
@@ -331,7 +331,6 @@ public class AccessContractInternalServiceTest {
         VitamContext vitamContext = new VitamContext(0);
         vitamContext.setApplicationSessionId("ASId_0");
         AccessContractDto accessContractDto = new AccessContractDto();
-        accessContractDto.setTenant(0);
 
         when(accessContractService.createAccessContracts(any(VitamContext.class), any(List.class))).thenThrow(
             new AccessExternalClientException("Exception thrown by vitam")
@@ -348,7 +347,6 @@ public class AccessContractInternalServiceTest {
         VitamContext vitamContext = new VitamContext(0);
         vitamContext.setApplicationSessionId("ASId_0");
         AccessContractDto accessContractDto = new AccessContractDto();
-        accessContractDto.setTenant(0);
 
         when(accessContractService.createAccessContracts(any(VitamContext.class), any(List.class))).thenThrow(
             new IOException("Exception thrown by vitam")
@@ -553,5 +551,58 @@ public class AccessContractInternalServiceTest {
                 )
             )
         );
+    }
+
+    @Test
+    public void exportAccessContracts() throws Exception {
+        VitamContext vitamContext = new VitamContext(0);
+        when(accessContractService.findAccessContracts(vitamContext, new Select().getFinalSelect())).thenReturn(
+            new RequestResponseOK<AccessContractModel>()
+                .setHttpCode(200)
+                .addAllResults(
+                    List.of(
+                        newAccessContractModel("access_contract_01"),
+                        newAccessContractModel("access_contract_02"),
+                        newAccessContractModel("access_contract_03")
+                    )
+                )
+        );
+
+        Resource resource = accessContractInternalService.exportAccessContracts(vitamContext);
+        byte[] bytes = ((ByteArrayResource) resource).getByteArray();
+        String csv = new String(bytes, StandardCharsets.UTF_8);
+        //remove BOM
+        csv = csv.replace("\uFEFF", "");
+        assertThat(csv).isEqualTo(
+            PropertiesUtils.getResourceAsString("access-contract/expected-access-contracts-exported.csv")
+        );
+    }
+
+    private AccessContractModel newAccessContractModel(String id) {
+        return (AccessContractModel) new AccessContractModel()
+            .setDataObjectVersion(Set.of("DataObjectVersion"))
+            .setOriginatingAgencies(Set.of("OriginatingAgencies"))
+            .setWritingPermission(true)
+            .setWritingRestrictedDesc(true)
+            .setEveryOriginatingAgency(true)
+            .setEveryDataObjectVersion(true)
+            .setRootUnits(Set.of("RootUnits"))
+            .setExcludedRootUnits(Set.of("ExcludedRootUnits"))
+            .setAccessLog(ActivationStatus.ACTIVE)
+            .setRuleCategoryToFilterForTheOtherOriginatingAgencies(Set.of(RuleType.DisseminationRule))
+            .setSkipFilingSchemeRuleCategoryFilter(true)
+            .setDoNotFilterFilingSchemes(true)
+            //AbstractContractModel
+            .setId(id)
+            .setTenant(12)
+            .setVersion(14)
+            .setName("Name")
+            .setIdentifier(id)
+            .setDescription("Description")
+            .setStatus(ActivationStatus.ACTIVE)
+            .setCreationDate("2024-06-24")
+            .setLastUpdate("2024-06-25")
+            .setActivationDate("2024-06-26")
+            .setDeactivationDate("2024-06-27");
     }
 }

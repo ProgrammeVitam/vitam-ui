@@ -42,7 +42,7 @@ import {
   MatLegacyDialog as MatDialog,
   MatLegacyDialogRef as MatDialogRef,
 } from '@angular/material/legacy-dialog';
-import { merge, Observable, Subject } from 'rxjs';
+import { finalize, merge, Observable, Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 import { ConfirmDialogService, CountryOption, CountryService, Customer, Logo, OtpState, StartupService } from 'vitamui-library';
 import { CustomerService } from '../../core/customer.service';
@@ -70,7 +70,7 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
   public form: FormGroup;
   public hasError = true;
   public message: string;
-  public creating = false;
+  public isLoading = false;
   public customerInfo: CustomerInfo = {
     code: null,
     name: null,
@@ -228,20 +228,16 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
     if (this.lastStepIsInvalid() || this.stepIndex !== this.stepCount - 1) {
       return;
     }
-    this.creating = true;
+    this.isLoading = true;
     const customer: Customer = this.getCustomerFromForm();
     this.customerService
       .create(customer, this.logos)
+      .pipe(finalize(() => (this.isLoading = false)))
       .pipe(takeUntil(this.destroy))
-      .subscribe(
-        () => {
-          this.dialogRef.close(true);
-        },
-        (error) => {
-          this.creating = false;
-          console.error(error);
-        },
-      );
+      .subscribe({
+        next: () => this.dialogRef.close(true),
+        error: (error) => console.error(error),
+      });
   }
 
   public getCustomerFromForm(): Customer {
@@ -332,6 +328,6 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
 
   lastStepIsInvalid(): boolean {
     const invalid = this.firstStepInvalid() || this.secondStepInvalid() || !this.thirdStepValid() || !this.fourthStepValid();
-    return this.form.pending || this.form.invalid || invalid || this.creating;
+    return this.form.pending || this.form.invalid || invalid || this.isLoading;
   }
 }

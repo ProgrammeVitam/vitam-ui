@@ -38,278 +38,94 @@ package fr.gouv.vitamui.commons.api.domain;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.ToString;
+import fr.gouv.vitam.common.model.administration.ActivationStatus;
+import fr.gouv.vitam.common.model.administration.RuleType;
+import lombok.Data;
+import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 import java.util.Set;
 
-@ToString
+@Data
+@Accessors(chain = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class AccessContractDto implements Serializable {
-
-    private Integer tenant;
-
-    private Integer version;
-
-    private String name;
-
-    private String identifier;
-
-    private String description;
-
-    private String status;
-
-    private String creationDate;
-
-    private String lastUpdate;
-
-    private String activationDate;
-
-    private String deactivationDate;
-
-    private Boolean writingPermission;
-
-    private Boolean writingRestrictedDesc;
-
-    private Boolean everyOriginatingAgency;
-
-    private Boolean everyDataObjectVersion;
-
-    private String accessLog;
-
-    private Set<String> ruleCategoryToFilter;
-
-    private Set<String> ruleCategoryToFilterForTheOtherOriginatingAgencies;
-
-    private Set<String> originatingAgencies;
-
-    private Boolean doNotFilterFilingSchemes;
-
-    private Set<String> dataObjectVersion;
-
-    private Set<String> rootUnits;
-
-    private Set<String> excludedRootUnits;
-
-    @JsonProperty("tenant")
-    public void setTenant(Integer tenant) {
-        this.tenant = tenant;
-    }
+public class AccessContractDto extends IdDto implements Serializable {
 
     @JsonProperty("version")
-    public void setVersion(Integer version) {
-        this.version = version;
-    }
+    private Integer version;
 
     @JsonProperty("name")
-    public void setName(String name) {
-        this.name = name;
-    }
+    private String name;
 
     @JsonProperty("identifier")
-    public void setIdentifier(String identifier) {
-        this.identifier = identifier;
-    }
+    private String identifier;
 
     @JsonProperty("description")
-    public void setDescription(String description) {
-        this.description = description;
-    }
+    private String description;
 
     @JsonProperty("status")
-    public void setStatus(String status) {
-        this.status = status;
-    }
+    private ActivationStatus status;
 
     @JsonProperty("creationDate")
-    public void setCreationDate(String creationDate) {
-        this.creationDate = creationDate;
-    }
+    private String creationDate;
 
     @JsonProperty("lastUpdate")
-    public void setLastUpdate(String lastUpdate) {
-        this.lastUpdate = lastUpdate;
-    }
+    private String lastUpdate;
 
     @JsonProperty("activationDate")
-    public void setActivationDate(String activationDate) {
-        this.activationDate = activationDate;
-    }
+    private String activationDate;
 
     @JsonProperty("deactivationDate")
-    public void setDeactivationDate(String deactivationDate) {
-        this.deactivationDate = deactivationDate;
-    }
+    private String deactivationDate;
 
     @JsonProperty("writingPermission")
-    public void setWritingPermission(Boolean writingPermission) {
-        this.writingPermission = writingPermission;
-    }
-
-    @JsonProperty("everyOriginatingAgency")
-    public void setEveryOriginatingAgency(Boolean everyOriginatingAgency) {
-        this.everyOriginatingAgency = everyOriginatingAgency;
-    }
-
-    @JsonProperty("everyDataObjectVersion")
-    public void setEveryDataObjectVersion(Boolean everyDataObjectVersion) {
-        this.everyDataObjectVersion = everyDataObjectVersion;
-    }
+    private Boolean writingPermission;
 
     @JsonProperty("writingRestrictedDesc")
-    public void setWritingRestrictedDesc(Boolean writingRestrictedDesc) {
-        this.writingRestrictedDesc = writingRestrictedDesc;
-    }
+    private Boolean writingRestrictedDesc;
 
-    @JsonProperty("accessLog ")
-    public void setAccessLog(String accessLog) {
-        this.accessLog = accessLog;
-    }
+    @JsonProperty("everyDataObjectVersion")
+    private Boolean everyDataObjectVersion;
 
-    @JsonProperty("ruleCategoryToFilter")
-    public void setRuleCategoryToFilter(Set<String> ruleCategoryToFilter) {
-        this.ruleCategoryToFilter = ruleCategoryToFilter;
-    }
-
-    @JsonProperty("ruleCategoryToFilterForTheOtherOriginatingAgencies")
-    public void setRuleCategoryToFilterForTheOtherOriginatingAgencies(
-        Set<String> ruleCategoryToFilterForTheOtherOriginatingAgencies
-    ) {
-        this.ruleCategoryToFilterForTheOtherOriginatingAgencies = ruleCategoryToFilterForTheOtherOriginatingAgencies;
-    }
-
-    @JsonProperty("originatingAgencies")
-    public void setOriginatingAgencies(Set<String> originatingAgencies) {
-        this.originatingAgencies = originatingAgencies;
-    }
-
-    @JsonProperty("doNotFilterFilingSchemes")
-    public void setDoNotFilterFilingSchemes(Boolean doNotFilterFilingSchemes) {
-        this.doNotFilterFilingSchemes = doNotFilterFilingSchemes;
-    }
+    @JsonProperty("accessLog")
+    private ActivationStatus accessLog;
 
     @JsonProperty("dataObjectVersion")
-    public void setDataObjectVersion(Set<String> dataObjectVersion) {
-        this.dataObjectVersion = dataObjectVersion;
-    }
+    private Set<String> dataObjectVersion;
 
     @JsonProperty("rootUnits")
-    public void setRootUnits(Set<String> rootUnits) {
-        this.rootUnits = rootUnits;
-    }
+    private Set<String> rootUnits;
 
     @JsonProperty("excludedRootUnits")
-    public void setExcludedRootUnits(Set<String> excludedRootUnits) {
-        this.excludedRootUnits = excludedRootUnits;
-    }
+    private Set<String> excludedRootUnits;
 
-    @JsonProperty("#tenant")
-    public Integer getTenant() {
-        return tenant;
-    }
+    /**
+     * all originating agencies are concerned - means originatingAgencies is empty.
+     */
+    @JsonProperty("everyOriginatingAgency")
+    private Boolean everyOriginatingAgency;
 
-    @JsonProperty("#version")
-    public Integer getVersion() {
-        return version;
-    }
+    /**
+     * the originating agencies concerned
+     */
+    @JsonProperty("originatingAgencies")
+    private Set<String> originatingAgencies;
 
-    @JsonProperty("Name")
-    public String getName() {
-        return name;
-    }
+    /**
+     * the management rules to be applied for the originating agencies concerned
+     */
+    @JsonProperty("ruleCategoryToFilter")
+    private Set<RuleType> ruleCategoryToFilter;
 
-    @JsonProperty("Identifier")
-    public String getIdentifier() {
-        return identifier;
-    }
+    /**
+     * the management rules to be applied for all the other originating agencies (the ones that are not mentionned above)
+     */
+    @JsonProperty("ruleCategoryToFilterForTheOtherOriginatingAgencies")
+    private Set<RuleType> ruleCategoryToFilterForTheOtherOriginatingAgencies;
 
-    @JsonProperty("Description")
-    public String getDescription() {
-        return description;
-    }
-
-    @JsonProperty("Status")
-    public String getStatus() {
-        return status;
-    }
-
-    @JsonProperty("CreationDate")
-    public String getCreationDate() {
-        return creationDate;
-    }
-
-    @JsonProperty("LastUpdate")
-    public String getLastUpdate() {
-        return lastUpdate;
-    }
-
-    @JsonProperty("ActivationDate")
-    public String getActivationDate() {
-        return activationDate;
-    }
-
-    @JsonProperty("DeactivationDate")
-    public String getDeactivationDate() {
-        return deactivationDate;
-    }
-
-    @JsonProperty("WritingPermission")
-    public Boolean getWritingPermission() {
-        return writingPermission;
-    }
-
-    @JsonProperty("EveryOriginatingAgency")
-    public Boolean getEveryOriginatingAgency() {
-        return everyOriginatingAgency;
-    }
-
-    @JsonProperty("EveryDataObjectVersion")
-    public Boolean getEveryDataObjectVersion() {
-        return everyDataObjectVersion;
-    }
-
-    @JsonProperty("AccessLog")
-    public String getAccessLog() {
-        return accessLog;
-    }
-
-    @JsonProperty("RuleCategoryToFilter")
-    public Set<String> getRuleCategoryToFilter() {
-        return ruleCategoryToFilter;
-    }
-
-    @JsonProperty("RuleCategoryToFilterForTheOtherOriginatingAgencies")
-    public Set<String> getRuleCategoryToFilterForTheOtherOriginatingAgencies() {
-        return ruleCategoryToFilterForTheOtherOriginatingAgencies;
-    }
-
-    @JsonProperty("OriginatingAgencies")
-    public Set<String> getOriginatingAgencies() {
-        return originatingAgencies;
-    }
-
-    @JsonProperty("DoNotFilterFilingSchemes")
-    public Boolean getDoNotFilterFilingSchemes() {
-        return doNotFilterFilingSchemes;
-    }
-
-    @JsonProperty("DataObjectVersion")
-    public Set<String> getDataObjectVersion() {
-        return dataObjectVersion;
-    }
-
-    @JsonProperty("RootUnits")
-    public Set<String> getRootUnits() {
-        return rootUnits;
-    }
-
-    @JsonProperty("ExcludedRootUnits")
-    public Set<String> getExcludedRootUnits() {
-        return excludedRootUnits;
-    }
-
-    @JsonProperty("WritingRestrictedDesc")
-    public Boolean getWritingRestrictedDesc() {
-        return writingRestrictedDesc;
-    }
+    /**
+     * if set : filing plans are not affected by filtering rules mentionned above
+     */
+    @JsonProperty("doNotFilterFilingSchemes")
+    private Boolean doNotFilterFilingSchemes;
 }

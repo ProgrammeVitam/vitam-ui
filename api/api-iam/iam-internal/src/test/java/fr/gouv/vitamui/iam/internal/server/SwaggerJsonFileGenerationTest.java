@@ -10,7 +10,6 @@ import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
 import fr.gouv.vitamui.commons.vitam.api.administration.AccessContractService;
 import fr.gouv.vitamui.iam.internal.server.application.service.ApplicationInternalService;
 import fr.gouv.vitamui.iam.internal.server.cas.service.CasInternalService;
-import fr.gouv.vitamui.iam.internal.server.common.converter.AccessContractConverter;
 import fr.gouv.vitamui.iam.internal.server.customer.service.CustomerInternalService;
 import fr.gouv.vitamui.iam.internal.server.externalParameters.service.ExternalParametersInternalService;
 import fr.gouv.vitamui.iam.internal.server.externalparamprofile.service.ExternalParamProfileInternalService;
@@ -38,7 +37,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 /**
  * Swagger JSON Generation.
  * With this test class, we can generate the swagger json file without launching a full SpringBoot app.
- *
  */
 @RunWith(SpringRunner.class)
 @WebMvcTest
@@ -117,9 +115,6 @@ public class SwaggerJsonFileGenerationTest extends AbstractSwaggerJsonFileGenera
 
     @MockBean
     private AccessContractService accessContractService;
-
-    @MockBean
-    private AccessContractConverter accessContractConverter;
 
     @MockBean
     private ExternalParamProfileInternalService externalParamProfileInternalService;
