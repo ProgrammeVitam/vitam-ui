@@ -139,5 +139,9 @@
   },
   "MISCELLANEOUS": {
     "INFINITE_SCROLL": "Infinite scroll"
+  },
+  "SPACING": {
+    "PADDING": "Padding",
+    "MARGIN": "Margin"
   }
 }

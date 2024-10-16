@@ -52,6 +52,7 @@ import { TranslationComponent } from './components/translation/translation.compo
 import { TypographyComponent } from './components/typography/typography.component';
 import { DesignSystemComponent } from './design-system/design-system.component';
 import { ChipsComponent } from './components/chips/chips.component';
+import { SpacingComponent } from './components/spacing/spacing.component';
 
 const routes: Routes = [
   { path: '', component: DesignSystemComponent, data: { appId: ApplicationId.DESIGN_SYSTEM_APP } },
@@ -68,6 +69,7 @@ const routes: Routes = [
   { path: 'colors', component: ColorsComponent, data: { appId: ApplicationId.DESIGN_SYSTEM_APP } },
   { path: 'icons', component: IconsComponent, data: { appId: ApplicationId.DESIGN_SYSTEM_APP } },
   { path: 'elevations', component: ElevationComponent, data: { appId: ApplicationId.DESIGN_SYSTEM_APP } },
+  { path: 'spacing', component: SpacingComponent, data: { appId: ApplicationId.DESIGN_SYSTEM_APP } },
   { path: 'translation', component: TranslationComponent, data: { appId: ApplicationId.DESIGN_SYSTEM_APP } },
   { path: '**', redirectTo: '' },
 ];

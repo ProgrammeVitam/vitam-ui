@@ -15,10 +15,8 @@ export class ElevationComponent {
   name = (elevation: number, color: string) => `${Math.pow(2, elevation)}dp-${color}`;
 
   getBoxShadow(element: HTMLElement) {
-    return element
-      .computedStyleMap()
-      .get('box-shadow')
-      .toString()
-      .match(/rgba([^)]+)[^,]+/g);
+    return getComputedStyle(element)
+      .boxShadow.toString()
+      .match(/rgba?([^)]+)[^,]+/g);
   }
 }

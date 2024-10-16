@@ -63,14 +63,12 @@ import { AppComponent } from './app.component';
 import { ArraysModule } from './components/arrays/arrays.module';
 import { BreadcrumbModule } from './components/breadcrumb/breadcrumb.module';
 import { ButtonsModule } from './components/buttons/buttons.module';
-import { ColorsModule } from './components/colors/colors.module';
 import { IconsModule } from './components/icons/icons.module';
 import { InputsModule } from './components/inputs/inputs.module';
 import { MiscellaneousModule } from './components/miscellaneous/miscellaneous.module';
 import { ProgressBarModule } from './components/progress-bar/progress-bar.module';
 import { TooltipModule } from './components/tooltip/tooltip.module';
 import { TranslationModule } from './components/translation/translation.module';
-import { TypographyModule } from './components/typography/typography.module';
 import { DesignSystemModule } from './design-system/design-system.module';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { MatExpansionModule } from '@angular/material/expansion';
@@ -95,7 +93,6 @@ export function httpLoaderFactory(httpClient: HttpClient): MultiTranslateHttpLoa
     BrowserModule,
     ButtonsModule,
     ChipsModule,
-    ColorsModule,
     DesignSystemModule,
     IconsModule,
     InputsModule,
@@ -107,7 +104,6 @@ export function httpLoaderFactory(httpClient: HttpClient): MultiTranslateHttpLoa
     ProgressBarModule,
     TooltipModule,
     TranslationModule,
-    TypographyModule,
     VitamUICommonModule,
     TranslateModule.forRoot({
       missingTranslationHandler: { provide: MissingTranslationHandler, useClass: VitamuiMissingTranslationHandler },

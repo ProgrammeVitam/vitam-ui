@@ -1,4 +1,8 @@
-div {
-  background-color: white;
+:host > div {
+  background-color: var(--vitamui-background);
   padding: 20px;
+}
+
+.d-flex {
+  gap: 1rem;
 }
