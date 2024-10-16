@@ -43,6 +43,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.module.afterburner.AfterburnerModule;
+import fr.gouv.vitam.common.model.administration.ArchiveUnitProfileSedaVersion;
 import fr.gouv.vitamui.pastis.common.dto.ElementProperties;
 import fr.gouv.vitamui.pastis.common.dto.PuaData;
 import fr.gouv.vitamui.pastis.common.dto.pua.PuaMetadataDetails;
@@ -126,14 +127,35 @@ public class PuaPastisValidator {
 
     private SedaNode getArchiveUnitSeda() throws IOException {
         if (PuaPastisValidator.getArchiveUnitSedaMember() == null) {
-            InputStream inputStream = getClass()
-                .getClassLoader()
-                .getResourceAsStream("pua_validation/archiveUnitSeda.json");
-            ObjectMapper objectMapper = new ObjectMapper();
-            objectMapper.configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true);
-            PuaPastisValidator.setArchiveUnitSedaMember(objectMapper.readValue(inputStream, SedaNode.class));
+            SedaNode archiveUnitSedaNode = PuaPastisValidator.getArchiveUnitSedaNode();
+            PuaPastisValidator.setArchiveUnitSedaMember(archiveUnitSedaNode);
         }
         return PuaPastisValidator.getArchiveUnitSedaMember();
+    }
+
+    public static SedaNode getArchiveUnitSedaNode() throws IOException {
+        String resourcePath = "metamodel/metamodel-" + ArchiveUnitProfileSedaVersion.VERSION_2_3.getVersion() + ".json";
+        InputStream inputStream = PuaPastisValidator.class.getClassLoader().getResourceAsStream(resourcePath);
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true);
+        SedaNode rootSedaNode = objectMapper.readValue(inputStream, SedaNode.class);
+        SedaNode archiveUnitNode = rootSedaNode
+            .getChildren()
+            .stream()
+            .filter(n -> n.getName().equals("DataObjectPackage"))
+            .findFirst()
+            .get()
+            .getChildren()
+            .stream()
+            .filter(n -> n.getName().equals("DescriptiveMetadata"))
+            .findFirst()
+            .get()
+            .getChildren()
+            .stream()
+            .filter(n -> n.getName().equals("ArchiveUnit"))
+            .findFirst()
+            .get();
+        return archiveUnitNode;
     }
 
     private static SedaNode getArchiveUnitSedaMember() {

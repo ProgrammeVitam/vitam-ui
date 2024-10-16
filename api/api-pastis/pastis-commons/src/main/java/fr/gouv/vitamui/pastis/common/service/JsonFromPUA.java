@@ -38,8 +38,6 @@ knowledge of the CeCILL-C license and that you accept its terms.
 
 package fr.gouv.vitamui.pastis.common.service;
 
-import com.fasterxml.jackson.databind.MapperFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitamui.pastis.common.dto.ElementProperties;
 import fr.gouv.vitamui.pastis.common.dto.PuaAttributes;
 import fr.gouv.vitamui.pastis.common.dto.PuaData;
@@ -49,7 +47,6 @@ import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -92,7 +89,7 @@ public class JsonFromPUA {
         id.setValueOrData("data");
         id.setDataType(String.valueOf(RNGConstants.DataType.ID));
 
-        SedaNode sedaNode = getArchiveUnitSedaNode();
+        SedaNode sedaNode = PuaPastisValidator.getArchiveUnitSedaNode();
 
         buildProfile(controlSchema, sedaNode, archiveUnit);
 
@@ -144,15 +141,6 @@ public class JsonFromPUA {
             );
         }
         return required;
-    }
-
-    private SedaNode getArchiveUnitSedaNode() throws IOException {
-        InputStream inputStream = getClass()
-            .getClassLoader()
-            .getResourceAsStream("pua_validation/archiveUnitSeda.json");
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true);
-        return objectMapper.readValue(inputStream, SedaNode.class);
     }
 
     /**
