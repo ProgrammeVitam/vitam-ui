@@ -181,12 +181,19 @@ export class EditObjectService {
   private removeCardinalityZero(editObject: EditObject) {
     editObject?.children?.forEach((child) => this.removeCardinalityZero(child));
 
-    if (editObject.cardinality !== 'ZERO') return;
+    if (editObject.cardinality !== 'ZERO') {
+      if (editObject.virtual) {
+        if (!editObject.children.every((ele) => ele.cardinality === 'ZERO')) {
+          return;
+        }
+        editObject.cardinality = 'ZERO';
+      }
 
-    if (['object-array', 'object'].includes(editObject.kind)) editObject?.actions?.remove?.handler();
-    else {
-      editObject.displayRule = { ...editObject.displayRule, ui: { ...editObject.displayRule.ui, display: false } };
-      editObject.control.setValue(editObject.kind === 'primitive-array' ? [] : null);
+      if (['object-array', 'object'].includes(editObject.kind)) editObject?.actions?.remove?.handler();
+      else {
+        editObject.displayRule = { ...editObject.displayRule, ui: { ...editObject.displayRule.ui, display: false } };
+        editObject.control.setValue(editObject.kind === 'primitive-array' ? [] : null);
+      }
     }
   }
 
