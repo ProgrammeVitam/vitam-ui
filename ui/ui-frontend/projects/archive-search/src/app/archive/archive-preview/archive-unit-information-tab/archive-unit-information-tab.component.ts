@@ -37,7 +37,7 @@
 
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { Observable } from 'rxjs';
-import { TenantSelectionService, Unit } from 'ui-frontend-common';
+import { Unit } from 'ui-frontend-common';
 import { ArchiveService } from '../../archive.service';
 
 @Component({
@@ -53,15 +53,10 @@ export class ArchiveUnitInformationTabComponent implements OnInit, OnChanges {
 
   uaPath$: Observable<{ fullPath: string; resumePath: string }>;
   fullPath = false;
-  hasDownloadDocumentRole = false;
 
-  constructor(
-    private archiveService: ArchiveService,
-    private tenantSelectionService: TenantSelectionService,
-  ) {}
+  constructor(private archiveService: ArchiveService) {}
 
   ngOnInit() {
-    this.checkDownloadPermissions();
     this.uaPath$ = this.archiveService.buildArchiveUnitPath(this.archiveUnit);
   }
 
@@ -78,13 +73,5 @@ export class ArchiveUnitInformationTabComponent implements OnInit, OnChanges {
 
   showArchiveUniteFullPath() {
     this.fullPath = true;
-  }
-
-  private checkDownloadPermissions() {
-    this.archiveService
-      .hasArchiveSearchRole('ROLE_ARCHIVE_SEARCH_GET_ARCHIVE_BINARY', this.tenantSelectionService.getSelectedTenant().identifier)
-      .subscribe((result) => {
-        this.hasDownloadDocumentRole = result;
-      });
   }
 }
