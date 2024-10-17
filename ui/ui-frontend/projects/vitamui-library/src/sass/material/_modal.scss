@@ -14,11 +14,14 @@ $footer-height: 100px !default;
   @extend %mat-dialog-container;
 
   .header {
-    padding: 30px 60px 20px 60px;
+    @extend .pt-5;
+    @extend .pb-4;
+    @extend .px-8;
   }
 
   .content {
-    padding: 0 60px 30px 60px;
+    @extend .px-6;
+    @extend .pb-6;
 
     // dialog title
     > .text.large:first-of-type {
@@ -26,8 +29,8 @@ $footer-height: 100px !default;
     }
 
     .actions:last-of-type {
+      @extend .mt-6;
       display: flex;
-      margin-top: 35px;
     }
 
     .actions:last-of-type > button:not(:last-child) {
@@ -35,6 +38,7 @@ $footer-height: 100px !default;
     }
 
     .main-content {
+      @extend .mt-5;
       min-height: 25vh;
     }
   }

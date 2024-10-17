@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { CdkStepper } from '@angular/cdk/stepper';
-import { Component } from '@angular/core';
+import { Component, ElementRef, HostListener, inject, Input } from '@angular/core';
 import { transitionAnimation } from '../../animations/vitamui-common-animations';
 
 @Component({
@@ -47,4 +47,19 @@ import { transitionAnimation } from '../../animations/vitamui-common-animations'
   providers: [{ provide: CdkStepper, useExisting: StepperComponent }],
   animations: [transitionAnimation],
 })
-export class StepperComponent extends CdkStepper {}
+export class StepperComponent extends CdkStepper {
+  private elementRef = inject<ElementRef<HTMLElement>>(ElementRef);
+  @Input() disableScrollToTop = false;
+
+  // Automatically scroll to the top of the stepper after changing step (inspired by https://github.com/angular/components/issues/8881)
+  @HostListener('selectionChange')
+  selectionChanged() {
+    if (!this.disableScrollToTop) {
+      this.elementRef.nativeElement.scrollIntoView({
+        block: 'start',
+        inline: 'nearest',
+        behavior: 'smooth',
+      });
+    }
+  }
+}

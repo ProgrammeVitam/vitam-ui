@@ -1,4 +1,10 @@
+@use 'bootstrap/scss/bootstrap-grid';
 @import 'variables/colors';
+
+.header {
+  @extend .pt-5;
+  @extend .px-5;
+}
 
 .content {
   .main-content {
@@ -20,19 +26,6 @@
       margin-right: 20px;
     }
   }
-}
-
-h2 {
-  font-size: 23px;
-  line-height: 46px;
-  margin-top: 10px;
-}
-
-h4 {
-  font-size: 19px;
-  line-height: 26px;
-  margin-top: 7px;
-  margin-bottom: 7px;
 }
 
 .drag-and-drop-area {
@@ -236,6 +229,10 @@ h4 {
   }
 }
 
+.row {
+  width: 100%;
+}
+
 .col {
   display: flex;
   flex-direction: column;
@@ -249,7 +246,6 @@ h4 {
 }
 
 .toggle-right {
-  margin-top: 7px;
   align-items: end;
   justify-content: center;
 }
