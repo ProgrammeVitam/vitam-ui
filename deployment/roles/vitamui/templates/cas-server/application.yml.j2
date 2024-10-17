@@ -91,7 +91,7 @@ cas.server.prefix: {{ url_prefix }}/cas
 {% endif %}
 login.url: ${cas.server.prefix}/login
 
-cas.service-registry.mongo.client-uri: "mongodb://{{ mongodb.cas.user }}:{{ mongodb.cas.password }}@{{ mongodb.host }}:{{ mongodb.mongod_port | default(27017) }}/{{ mongodb.cas.db }}?replicaSet={{ mongod_replicaset_name }}&connectTimeoutMS={{ mongod_client_connect_timeout_ms }}"
+cas.service-registry.mongo.client-uri: "mongodb://{{ mongodb.cas.user }}:{{ mongodb.cas.password }}@{{ mongod_uri }}/{{ mongodb.cas.db }}?replicaSet={{ mongod_replicaset_name }}&connectTimeoutMS={{ mongod_client_connect_timeout_ms }}"
 cas.service-registry.mongo.collection: services
 cas.service-registry.mongo.user-id: {{ mongodb.cas.user }}
 cas.service-registry.mongo.password: {{ mongodb.cas.password }}
