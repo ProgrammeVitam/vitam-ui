@@ -5697,7 +5697,7 @@
     },
     "CREATE_DIALOG": {
       "AUTHORISATION_PERIMETER": {
-        "TITLE": "Sélectionner le périmètre des autorisations",
+        "TITLE": "Autorisations d'accès aux archives",
         "SELECT_TITLE": "Sélectionner le périmètre des autorisations",
         "ACCESS_FULL": "Accès à toutes les archives sans restriction sur les services producteurs ou les règles de gestion",
         "ACCESS_BY_PRODUCERS": "Accès aux archives par service(s) producteur(s)",

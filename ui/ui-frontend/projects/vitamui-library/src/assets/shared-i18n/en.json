@@ -4849,7 +4849,7 @@
     },
     "CREATE_DIALOG": {
       "AUTHORISATION_PERIMETER": {
-        "TITLE": "Select the scope of authorizations",
+        "TITLE": "Archive access permissions",
         "SELECT_TITLE": "Select the scope of authorizations",
         "ACCESS_FULL": "Access to all archives without restrictions on producer services or management rules",
         "ACCESS_BY_PRODUCERS": "Access to archives by producer service(s)",
