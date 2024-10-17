@@ -66,7 +66,6 @@ import { ButtonsModule } from './components/buttons/buttons.module';
 import { IconsModule } from './components/icons/icons.module';
 import { InputsModule } from './components/inputs/inputs.module';
 import { MiscellaneousModule } from './components/miscellaneous/miscellaneous.module';
-import { ProgressBarModule } from './components/progress-bar/progress-bar.module';
 import { TooltipModule } from './components/tooltip/tooltip.module';
 import { TranslationModule } from './components/translation/translation.module';
 import { DesignSystemModule } from './design-system/design-system.module';
@@ -101,7 +100,6 @@ export function httpLoaderFactory(httpClient: HttpClient): MultiTranslateHttpLoa
     MatListModule,
     MatSidenavModule,
     MiscellaneousModule,
-    ProgressBarModule,
     TooltipModule,
     TranslationModule,
     VitamUICommonModule,
