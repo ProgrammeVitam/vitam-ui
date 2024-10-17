@@ -44,3 +44,9 @@
   when:
     - install_mode == "container"
     - container_repository is defined
+
+- name: Make sure net.ipv4.ip_unprivileged_port_start is disabled
+  sysctl:
+    name: net.ipv4.ip_unprivileged_port_start
+    sysctl_set: yes
+    value: '0'
