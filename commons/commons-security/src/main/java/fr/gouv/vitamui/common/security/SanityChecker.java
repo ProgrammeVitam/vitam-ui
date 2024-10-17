@@ -65,10 +65,11 @@ public class SanityChecker {
 
     private static final String INVALID_CRITERIA = "Criteria failed when sanitizing, it may contains insecure data : ";
     private static final String JSON_IS_NOT_VALID_FROM_SANITIZE_CHECK = "Json is not valid from Sanitize check";
-    private static final int DEFAULT_LIMIT_PARAMETER_SIZE = 5000;
-    private static final int DEFAULT_LIMIT_FIELD_SIZE = 10000000;
-    private static final int DEFAULT_LIMIT_JSON_SIZE = 16000000;
-    private static final long DEFAULT_LIMIT_FILE_SIZE = 8000000000L;
+    private static final int DEFAULT_LIMIT_PARAMETER_SIZE = 5_000;
+    private static final int DEFAULT_LIMIT_FIELD_SIZE = 10_000_000;
+    private static final int DEFAULT_LIMIT_JSON_SIZE = 16_000_000;
+    private static final long DEFAULT_LIMIT_FILE_SIZE = 8_000_000_000L;
+    private static final int DEFAULT_LIMIT_FIELD_NUMBER = 100_000;
 
     public static final String HTTP_PARAMETER_VALUE = "HTTPParameterValue";
 
@@ -83,6 +84,10 @@ public class SanityChecker {
      * max size of Json or Xml value field
      */
     private static int limitFieldSize = DEFAULT_LIMIT_FIELD_SIZE;
+    /**
+     * max number of Json fields
+     */
+    private static int limitFieldNumber = DEFAULT_LIMIT_FIELD_NUMBER;
     /**
      * max size of parameter value field (low)
      */
@@ -423,7 +428,8 @@ public class SanityChecker {
             }
         } else {
             final Iterator<Map.Entry<String, JsonNode>> fields = json.fields();
-            while (fields.hasNext()) {
+            int i = 0;
+            while (i++ < limitFieldNumber && fields.hasNext()) {
                 final Map.Entry<String, JsonNode> entry = fields.next();
                 final String key = entry.getKey();
                 if (isValidParameter(key)) {
@@ -450,6 +456,11 @@ public class SanityChecker {
                 } else {
                     validateJSONField(value);
                 }
+            }
+            if (fields.hasNext()) {
+                throw new PreconditionFailedException(
+                    String.format("Invalid JSON. Too many fields (>%s)", limitFieldNumber)
+                );
             }
         }
     }
@@ -505,5 +516,19 @@ public class SanityChecker {
      */
     public static void setLimitParamSize(int limitParamSize) {
         SanityChecker.limitParamSize = limitParamSize;
+    }
+
+    /**
+     * @return the limit number of fields of a Json
+     */
+    public static int getLimitFieldNumber() {
+        return limitFieldNumber;
+    }
+
+    /**
+     * @param limitFieldNumber the limit number of fields of a Json
+     */
+    public static void setLimitFieldNumber(int limitFieldNumber) {
+        SanityChecker.limitFieldNumber = limitFieldNumber;
     }
 }

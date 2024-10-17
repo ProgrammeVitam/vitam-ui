@@ -62,6 +62,17 @@ public class SanityCheckerTest {
     }
 
     @Test
+    public void givenJsonWhenFieldNumberIsTooBig() throws InvalidParseOperationException, PreconditionFailedException {
+        final int initialLimitFieldNumber = SanityChecker.getLimitFieldNumber();
+        final JsonNode json = JsonHandler.getFromString("{\"1\":1,\"2\":2,\"3\":3,\"4\":4,\"5\":5}");
+        SanityChecker.setLimitFieldNumber(5);
+        assertThatCode(() -> SanityChecker.checkJsonSanity(json)).doesNotThrowAnyException();
+        SanityChecker.setLimitFieldNumber(4);
+        assertThatCode(() -> SanityChecker.checkJsonSanity(json)).isInstanceOf(PreconditionFailedException.class);
+        SanityChecker.setLimitFieldNumber(initialLimitFieldNumber);
+    }
+
+    @Test
     public void givenJsonWhenValueIsTooBigORContainXMLTagUsingAll() throws InvalidParseOperationException, IOException {
         final File file = PropertiesUtils.findFile(TEST_BAD_JSON);
         final JsonNode json = JsonHandler.getFromFile(file);
