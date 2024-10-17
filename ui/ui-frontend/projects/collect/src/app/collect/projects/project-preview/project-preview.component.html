@@ -48,7 +48,7 @@
                 formControlName="messageIdentifier"
                 required
                 placeholder="{{ 'COLLECT.PROJECT_UNIT_PREVIEW.FIELDS.NAME' | translate }}"
-                class="col-8 px-0 mr-4"
+                class="col-12 px-0 mr-4"
               >
               </vitamui-common-input>
             </div>
@@ -70,17 +70,16 @@
                 </ng-container>
               </div>
             </div>
-            <div class="form-control read-only-field" class="col-8 px-0" *ngIf="updateStarted">
+            <div class="form-control read-only-field col-12 px-0" *ngIf="updateStarted">
               <vitamui-common-textarea
                 formControlName="comment"
                 placeholder="{{ 'COLLECT.PROJECT_UNIT_PREVIEW.FIELDS.DESCRIPTION' | translate }}"
               >
               </vitamui-common-textarea>
-              <div class="col-4"></div>
             </div>
 
             <vitamui-common-input
-              class="col-4 px-0"
+              class="col-6 px-0"
               formControlName="originatingAgencyIdentifier"
               placeholder="{{ 'COLLECT.PROJECT_UNIT_PREVIEW.FIELDS.SP_ID' | translate }} "
               required
@@ -90,13 +89,13 @@
 
             <vitamui-common-input
               [disabled]="true"
-              class="ml-2 col-4"
+              class="col-6"
               placeholder="{{ 'COLLECT.PROJECT_UNIT_PREVIEW.FIELDS.SP_ID' | translate }} "
               *ngIf="updateStarted"
             >
             </vitamui-common-input>
             <vitamui-common-input
-              class="col-4 px-0"
+              class="col-6 px-0"
               formControlName="submissionAgencyIdentifier"
               placeholder="{{ 'COLLECT.PROJECT_UNIT_PREVIEW.FIELDS.SV_ID' | translate }} "
               *ngIf="updateStarted"
@@ -105,7 +104,7 @@
             </vitamui-common-input>
             <vitamui-common-input
               [disabled]="true"
-              class="ml-2 col-4"
+              class="col-6"
               placeholder="{{ 'COLLECT.PROJECT_UNIT_PREVIEW.FIELDS.SV_ID' | translate }} "
               *ngIf="updateStarted"
             >
@@ -191,10 +190,10 @@
               </div>
             </div>
 
-            <div class="col-8 mr-4" *ngIf="updateStarted">
+            <div class="col-12 mr-4" *ngIf="updateStarted">
               <div class="form-control read-only-field">
                 <vitamui-common-input
-                  class="col-5"
+                  class="col-6"
                   formControlName="archivalAgencyIdentifier"
                   placeholder="{{ 'COLLECT.PROJECT_CONTEXT_ARCHIVAL_AGENCY' | translate }}"
                   required
@@ -203,14 +202,14 @@
 
                 <vitamui-common-input
                   [disabled]="true"
-                  class="col-6 offset-1"
+                  class="col-6"
                   placeholder="{{ 'COLLECT.PROJECT_CONTEXT_ARCHIVAL_AGENCY' | translate }}"
                 >
                 </vitamui-common-input>
               </div>
               <div class="form-control read-only-field">
                 <vitamui-common-input
-                  class="col-5"
+                  class="col-6"
                   formControlName="transferringAgencyIdentifier"
                   placeholder="{{ 'COLLECT.PROJECT_CONTEXT_TRANSFERRING_AGENCY' | translate }}"
                   required
@@ -218,14 +217,14 @@
                 </vitamui-common-input>
                 <vitamui-common-input
                   [disabled]="true"
-                  class="col-6 offset-1"
+                  class="col-6"
                   placeholder="{{ 'COLLECT.PROJECT_CONTEXT_TRANSFERRING_AGENCY' | translate }}"
                 >
                 </vitamui-common-input>
               </div>
               <div class="form-control read-only-field">
                 <vitamui-common-input
-                  class="col-5 mr-7"
+                  class="col-6 mr-7"
                   formControlName="archivalAgreement"
                   placeholder="{{ 'COLLECT.PROJECT_CONTEXT_ARCHIVAL_AGREEMENT' | translate }}"
                   required
@@ -234,7 +233,7 @@
               </div>
               <div class="form-control read-only-field">
                 <vitamui-common-input
-                  class="col-5 mr-7"
+                  class="col-6 mr-7"
                   formControlName="archiveProfile"
                   placeholder="{{ 'COLLECT.PROJECT_CONTEXT_ARCHIVE_PROFILE' | translate }}"
                 >
@@ -242,7 +241,7 @@
               </div>
 
               <div class="form-control read-only-field">
-                <mat-form-field appearance="outline" class="col-5 mr-7" id="acquisition-informations">
+                <mat-form-field appearance="outline" class="col-6 mr-7" id="acquisition-informations">
                   <label for="acquisition-informations">
                     <span class="pb-3">{{ 'COLLECT.PROJECT_CONTEXT_ACQUISITION_INFORMATION' | translate }}</span>
                   </label>
@@ -254,7 +253,7 @@
                 </mat-form-field>
               </div>
               <div class="form-control read-only-field">
-                <mat-form-field appearance="outline" class="col-5 mr-7" id="legal-status">
+                <mat-form-field appearance="outline" class="col-6 mr-7" id="legal-status">
                   <label for="legal-status">
                     <span class="pb-3">{{ 'COLLECT.PROJECT_CONTEXT_LEGAL_STATUS' | translate }}</span>
                   </label>
