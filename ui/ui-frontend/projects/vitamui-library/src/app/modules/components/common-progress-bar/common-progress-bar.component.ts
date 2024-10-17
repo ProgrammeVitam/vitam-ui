@@ -37,7 +37,7 @@
 
 import { Component, Input } from '@angular/core';
 
-const PROGRESS_BAR_MULTIPLICATOR = 100;
+const PROGRESS_BAR_MULTIPLIER = 100;
 
 @Component({
   selector: 'vitamui-common-progress-bar',
@@ -49,7 +49,7 @@ export class CommonProgressBarComponent {
 
   @Input() set index(val: number) {
     this._index = val;
-    this.progressValue = this.getProgressValue(this._index, this._count);
+    this.percent = this.getProgressValue(this._index, this._count);
   }
   get index(): number {
     return this._index;
@@ -57,19 +57,19 @@ export class CommonProgressBarComponent {
 
   @Input() set count(val: number) {
     this._count = val;
-    this.progressValue = this.getProgressValue(this._index, this._count);
+    this.percent = this.getProgressValue(this._index, this._count);
   }
 
   get count(): number {
     return this._count;
   }
 
-  public progressValue: number;
+  @Input() percent: number;
 
   private _count: number;
   private _index: number;
 
   getProgressValue(index: number, count: number): number {
-    return (index / count) * PROGRESS_BAR_MULTIPLICATOR;
+    return ((index + 1) / count) * PROGRESS_BAR_MULTIPLIER;
   }
 }

@@ -51,7 +51,7 @@
       "ATR_NOT_VALID": "Le fichier déposé n'est pas un atr de transfert valide",
       "DRAG_AND_DROP": "Glisser ou déposer",
       "BROWSE": "Ou parcourir",
-      "ACCEPTED_FORMAT": "Format accépté : xml",
+      "ACCEPTED_FORMAT": "format accepté : xml",
       "MAX_SIZE": "Taille maximale conseillée: 10 GB",
       "TRANSFER_REPLY_OPERATION": "Acquittement d'une opération de transfert",
       "OPERATION_MESSAGE_IDENTIFIER": "Identifiant de la demande de transfert d'origine",
@@ -70,7 +70,7 @@
       "CONFIRM_FAILURE_TRANSFER": "Voulez-vous confirmer l’ÉCHEC du transfert ? Aucune élimination ne sera réalisée à ce stade.",
       "REPLY_TRANSFER": "Acquitter le transfert",
       "ACKNOWLEDGMENT_TRANSFER": "Acquittement de transfert",
-      "CANCEL_TRANSFER_OPERATION": "Êtes-vous sur de vouloir annuler l'opération d'acquittement du transfert ?",
+      "CANCEL_TRANSFER_OPERATION": "Êtes-vous sûr de vouloir annuler l'opération d'acquittement du transfert ?",
       "TRANSFER_CONFIRM": "Confirmer",
       "REQUEST_MESSAGE": "Votre demande d'acquittement de transfert a bien été prise en compte  "
     },
@@ -323,9 +323,9 @@
     },
     "DIALOG_MESSAGE": {
       "UPDATE_CONFIRM_TITLE_MESSAGE": "Validation de changement(s) de règle(s)",
-      "DELETE_COMPONENT": "Êtes-vous sur de vouloir supprimer ce bloc de mise à jour des règles ?",
+      "DELETE_COMPONENT": "Êtes-vous sûr de vouloir supprimer ce bloc de mise à jour des règles ?",
       "UPDATE_CONFIRM_MESSAGE": "Attention, vous êtes sur le point de valider les changements de règle(s) sur l'ensemble des unités archivistiques prises en compte dans la mise à jour demandée. Confirmez-vous cette mise à jour ?",
-      "EXIT_CONFIRM_MESSAGE": "Êtes-vous sur de vouloir quitter la mise à jour des règles de gestion sur les {{ua_selected}} unités archivistiques sélectionnées ?"
+      "EXIT_CONFIRM_MESSAGE": "Êtes-vous sûr de vouloir quitter la mise à jour des règles de gestion sur les {{ua_selected}} unités archivistiques sélectionnées ?"
     },
     "CATEGORIES_NAME": {
       "STORAGE_RULE": "Durée d'utilité courante (DUC)",

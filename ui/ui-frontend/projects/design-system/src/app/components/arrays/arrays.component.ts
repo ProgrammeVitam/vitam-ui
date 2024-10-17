@@ -10,6 +10,12 @@ import { SampleDialogComponent } from '../miscellaneous/sample-dialog/sample-dia
   animations: [collapseAnimation, rotateAnimation],
 })
 export class ArraysComponent {
+  tableDataSource = [
+    { zipName: 'Cabinet Douillet_Martin', size: '30 Go', compression: 100, loading: 20 },
+    { zipName: 'Cabinet Douillet_Martin 2', size: '12 Go', compression: 80, loading: 0 },
+  ];
+  displayedColumns: string[] = ['zipName', 'size', 'compression', 'loading'];
+
   public orderBy = 'name';
   public direction = Direction.ASCENDANT;
   public levelFilterOptions: Array<{ value: string; label: string }> = [];

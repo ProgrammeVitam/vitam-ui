@@ -12,16 +12,22 @@
           {{ 'COLLECT.UPDATE_UNITS_METADATA.ACTION_SUB_TITLE' | translate }}
           <i
             class="vitamui-icon vitamui-icon-info"
-            matTooltip=" {{ 'COLLECT.UPDATE_UNITS_METADATA.ACTION_DESCRIPTION' | translate }} "
-            matTooltipClass="vitamui-tooltip"
+            [vitamuiCommonToolTip]="'COLLECT.UPDATE_UNITS_METADATA.ACTION_DESCRIPTION' | translate"
           ></i>
         </h4>
       </div>
 
-      <div *ngIf="isLoadingData; then loadingMode; else dragAndDropArea"></div>
+      @if (isLoadingData) {
+        <div class="vitamui-min-content">
+          <mat-spinner class="vitamui-spinner large"></mat-spinner>
+        </div>
+      } @else {
+        <vitamui-file-selector [extensions]="['.csv']" [multipleFiles]="false" (filesChanged)="handleFiles($event)">
+        </vitamui-file-selector>
+      }
 
       <div class="actions">
-        <button (click)="updateUnitsMetadata()" [disabled]="isDisabled || hasError || isLoadingData" class="btn primary" type="button">
+        <button (click)="updateUnitsMetadata()" [disabled]="!fileToUpload || isLoadingData" class="btn primary" type="button">
           {{ 'COLLECT.UPDATE_UNITS_METADATA.UPDATE_CONFIRM' | translate }}
         </button>
         <button (click)="onCancel()" class="btn link" [disabled]="isLoadingData" type="button">
@@ -31,60 +37,3 @@
     </div>
   </cdk-step>
 </vitamui-common-stepper>
-
-<ng-template #loadingMode>
-  <div class="vitamui-min-content">
-    <mat-spinner class="vitamui-spinner large"></mat-spinner>
-  </div>
-</ng-template>
-
-<ng-template #dragAndDropArea>
-  <div class="d-flex">
-    <div class="drag-and-drop-area" vitamuiCommonDragAndDrop (fileToUploadEmitter)="handleFile($event)">
-      <div *ngIf="fileName && fileSize > 0 && fileSizeString" class="drag-container">
-        <div class="file-info-class">
-          {{ fileName }}
-          <span class="text-grey"> | {{ fileSizeString }} </span>
-          <i class="material-icons success-icon" *ngIf="!hasError">check_circle</i>
-          <div>
-            <span class="text-red">{{ errorMessage }} </span>
-            <i class="material-icons error-icon" *ngIf="hasError">cancel </i>
-          </div>
-        </div>
-      </div>
-
-      <input type="file" #updateMetadataCSVFile class="input-file" (change)="handleFile($event.target.files)" />
-
-      <div class="drop-csv-file-area">
-        <div class="csv-drop">{{ 'COLLECT.UPDATE_UNITS_METADATA.ADD_FILE' | translate }}<br /></div>
-
-        <div class="csv-drop">
-          <div class="upload">
-            <span class="url-select" (click)="addUpdateMetadataCSVFile()"> {{ 'COLLECT.UPDATE_UNITS_METADATA.BROWSE' | translate }}</span>
-          </div>
-        </div>
-        <div class="csv-drop-small">
-          <span> {{ 'COLLECT.UPDATE_UNITS_METADATA.ACCEPTED_FORMAT' | translate }}</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</ng-template>
-
-<ng-template #confirmDeleteUpdateUnitsMetadataDialog>
-  <mat-dialog-content>
-    <div class="text-title">{{ 'COLLECT.UPDATE_UNITS_METADATA.ACTION_TITLE' | translate }}</div>
-    <br />
-
-    <div class="text large bold">{{ 'COLLECT.UPDATE_UNITS_METADATA.CANCEL_UPDATE_TO_CONFIRM' | translate }}</div>
-  </mat-dialog-content>
-  <br />
-  <mat-dialog-actions>
-    <button (click)="onConfirmAction()" class="btn primary btn-confirm-dialog margin-btn">
-      {{ 'COLLECT.UPDATE_UNITS_METADATA.CONFIRM' | translate }}
-    </button>
-    <button type="button" (click)="onCloseAction()" class="btn cancel">
-      {{ 'COLLECT.UPDATE_UNITS_METADATA.UPDATE_CANCEL' | translate }}
-    </button>
-  </mat-dialog-actions>
-</ng-template>

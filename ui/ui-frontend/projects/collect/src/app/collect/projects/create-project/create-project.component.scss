@@ -258,50 +258,6 @@
   text-overflow: ellipsis;
 }
 
-.new-design-table {
-  font-family: 'Mulish', sans-serif;
-  font-size: 15px;
-  display: flex;
-  flex-direction: column;
-
-  .new-design-head {
-    box-shadow: 0 4px 2px -2px var(--vitamui-grey-300);
-    font-weight: bold;
-  }
-
-  .new-design-row {
-    border: 1px solid var(--vitamui-grey-300);
-    border-radius: 5px;
-    display: flex;
-    flex-direction: row;
-    padding: 8px 14px;
-    margin-bottom: 3px;
-
-    div {
-      display: flex;
-      flex-direction: column;
-      flex-shrink: 0;
-      flex-basis: auto;
-    }
-
-    .name {
-      flex-grow: 2;
-    }
-
-    .size {
-      flex-grow: 1;
-    }
-
-    .compression {
-      flex-grow: 2;
-    }
-
-    .upload {
-      flex-grow: 2;
-    }
-  }
-}
-
 @mixin gap($gap) {
   display: flex;
   gap: $gap;
