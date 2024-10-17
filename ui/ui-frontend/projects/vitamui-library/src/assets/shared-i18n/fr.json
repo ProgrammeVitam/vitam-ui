@@ -4857,7 +4857,7 @@
     "MESSAGE": "Voulez-vous confirmer la mise à jour des métadonnées de cette unité archivistique ?",
     "HINT": "Validation de mise à jour",
     "NO_PERMISSION": "Votre contrat d'accès n'autorise pas cette action",
-    "UPDATE_DESC_METADATA": "Modifier les metadonnées descriptives",
+    "UPDATE_DESC_METADATA": "Modifier les métadonnées descriptives",
     "CLOSE": "FERMER",
     "CONFIRM_CLOSE": "Les données modifiées ne seront pas sauvegardées. Êtes-vous sûr de vouloir fermer la fenêtre ?",
     "CLOSE_WINDOW_HINT": "Quitter la mise à jour",
