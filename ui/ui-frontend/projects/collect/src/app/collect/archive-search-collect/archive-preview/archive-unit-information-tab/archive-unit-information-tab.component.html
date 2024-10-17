@@ -106,11 +106,7 @@
 
 <div class="row">
   <div class="col-12">
-    <button
-      class="btn primary download-btn"
-      [disabled]="!archiveUnit['#object'] || !hasDownloadDocumentRole"
-      (click)="onDownloadObjectFromUnit(archiveUnit)"
-    >
+    <button class="btn primary download-btn" [disabled]="!archiveUnit['#object']" (click)="onDownloadObjectFromUnit(archiveUnit)">
       <span>{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.DOWNLOAD_DOC' | translate }}</span>
       <i class="vitamui-icon vitamui-icon-deposit"></i>
     </button>
