@@ -2512,6 +2512,19 @@
                   "children": []
                 },
                 {
+                  "name": "DataObjectProfile",
+                  "nameFr": "Référence à une partie d'un profil d’archivage applicable à un objet technique en particulier",
+                  "element": "Simple",
+                  "cardinality": "0-1",
+                  "type": "token",
+                  "choice": "no",
+                  "extensible": "no",
+                  "enumeration": [],
+                  "definition": "Référence à une partie d'un profil d’archivage applicable à un objet technique en particulier.",
+                  "collection": "Objets",
+                  "children": []
+                },
+                {
                   "name": "DataObjectSystemId",
                   "nameFr": "Identifiant de l'Objet de données du SAE",
                   "element": "Simple",
@@ -3202,6 +3215,19 @@
                   "children": []
                 },
                 {
+                  "name": "DataObjectProfile",
+                  "nameFr": "Référence à une partie d'un profil d’archivage applicable à un objet technique en particulier",
+                  "element": "Simple",
+                  "cardinality": "0-1",
+                  "type": "token",
+                  "choice": "no",
+                  "extensible": "no",
+                  "enumeration": [],
+                  "definition": "Référence à une partie d'un profil d’archivage applicable à un objet technique en particulier.",
+                  "collection": "Objets",
+                  "children": []
+                },
+                {
                   "name": "DataObjectSystemId",
                   "nameFr": "Identifiant de l'Objet de données du SAE",
                   "element": "Simple",
@@ -3887,7 +3913,7 @@
                       "extensible": "no",
                       "enumeration": [],
                       "definition": "Agent.",
-                      "collection": "Arborescence",
+                      "collection": "Objets",
                       "children": [
                         {
                           "name": "LinkingAgentIdentifierType",
@@ -3898,7 +3924,7 @@
                           "extensible": "no",
                           "enumeration": [],
                           "definition": "Identifiant.",
-                          "collection": "Arborescence",
+                          "collection": "Objets",
                           "children": []
                         },
                         {
@@ -3910,7 +3936,7 @@
                           "extensible": "no",
                           "enumeration": [],
                           "definition": "Valeur.",
-                          "collection": "Arborescence",
+                          "collection": "Objets",
                           "children": []
                         },
                         {
@@ -3922,7 +3948,7 @@
                           "extensible": "no",
                           "enumeration": [],
                           "definition": "Rôle.",
-                          "collection": "Arborescence",
+                          "collection": "Objets",
                           "children": []
                         }
                       ]
@@ -6187,6 +6213,55 @@
                               "definition": "Message technique détaillant l'événement.",
                               "collection": "Unités d'archives",
                               "children": []
+                            },
+                            {
+                              "name": "LinkingAgentIdentifier",
+                              "element": "Complex",
+                              "cardinality": "0-1",
+                              "type": "null",
+                              "choice": "no",
+                              "extensible": "no",
+                              "enumeration": [],
+                              "definition": "Agent.",
+                              "collection": "Unités d'archives",
+                              "children": [
+                                {
+                                  "name": "LinkingAgentIdentifierType",
+                                  "element": "Simple",
+                                  "cardinality": "0-1",
+                                  "type": "token",
+                                  "choice": "no",
+                                  "extensible": "no",
+                                  "enumeration": [],
+                                  "definition": "Identifiant.",
+                                  "collection": "Unités d'archives",
+                                  "children": []
+                                },
+                                {
+                                  "name": "LinkingAgentIdentifierValue",
+                                  "element": "Simple",
+                                  "cardinality": "0-1",
+                                  "type": "token",
+                                  "choice": "no",
+                                  "extensible": "no",
+                                  "enumeration": [],
+                                  "definition": "Valeur.",
+                                  "collection": "Unités d'archives",
+                                  "children": []
+                                },
+                                {
+                                  "name": "LinkingAgentRole",
+                                  "element": "Simple",
+                                  "cardinality": "0-1",
+                                  "type": "token",
+                                  "choice": "no",
+                                  "extensible": "no",
+                                  "enumeration": [],
+                                  "definition": "Rôle.",
+                                  "collection": "Unités d'archives",
+                                  "children": []
+                                }
+                              ]
                             }
                           ]
                         }
@@ -6207,6 +6282,212 @@
                       "definition": "Indique si une autorisation humaine est nécessaire pour vérifier ou valider les opérations de gestion des ArchiveUnit.",
                       "collection": "Unités d'archives",
                       "children": []
+                    },
+                    {
+                      "name": "HoldRule",
+                      "nameFr": "Gestion de la durée de gel",
+                      "element": "Complex",
+                      "cardinality": "0-1",
+                      "type": "null",
+                      "choice": "no",
+                      "extensible": "no",
+                      "enumeration": [],
+                      "definition": "Gestion de la durée de gel.",
+                      "collection": "Unités d'archives",
+                      "children": [
+                        {
+                          "name": "Rules",
+                          "nameFr": "Règles",
+                          "element": "Complex",
+                          "cardinality": "0-N",
+                          "type": "null",
+                          "choice": "no",
+                          "extensible": "no",
+                          "enumeration": [],
+                          "definition": "Règles.",
+                          "collection": "Unités d'archives",
+                          "children": [
+                            {
+                              "name": "Rule",
+                              "nameFr": "Règle de gestion",
+                              "element": "Simple",
+                              "cardinality": "0-N",
+                              "type": "token",
+                              "choice": "no",
+                              "extensible": "no",
+                              "enumeration": [],
+                              "definition": "Règle de gestion.",
+                              "collection": "Unités d'archives",
+                              "children": [
+                                {
+                                  "name": "id",
+                                  "nameFr": "id",
+                                  "element": "Attribute",
+                                  "cardinality": "0-1",
+                                  "type": "ID",
+                                  "choice": "no",
+                                  "extensible": "no",
+                                  "enumeration": [],
+                                  "definition": "Identifiant de la métadonnée",
+                                  "collection": "Unités d'archives",
+                                  "children": []
+                                }
+                              ]
+                            },
+                            {
+                              "name": "StartDate",
+                              "nameFr": "Date de début",
+                              "element": "Simple",
+                              "cardinality": "0-1",
+                              "type": "DateType",
+                              "choice": "no",
+                              "extensible": "no",
+                              "enumeration": [],
+                              "definition": "Date de début de gel",
+                              "collection": "Unités d'archives",
+                              "children": []
+                            },
+                            {
+                              "name": "EndDate",
+                              "nameFr": "Date de fin",
+                              "element": "Simple",
+                              "cardinality": "0-1",
+                              "type": "DateType",
+                              "choice": "no",
+                              "extensible": "no",
+                              "enumeration": [],
+                              "definition": "Date de fin.",
+                              "collection": "Unités d'archives",
+                              "children": []
+                            },
+                            {
+                              "name": "HoldEndDate",
+                              "nameFr": "Date de fin de gel",
+                              "element": "Simple",
+                              "cardinality": "0-1",
+                              "type": "DateType",
+                              "choice": "no",
+                              "extensible": "no",
+                              "enumeration": [],
+                              "definition": "Date de fin de gel.",
+                              "collection": "Unités d'archives",
+                              "children": []
+                            },
+                            {
+                              "name": "HoldOwner",
+                              "nameFr": "Propriétaire de la demande de gel",
+                              "element": "Simple",
+                              "cardinality": "0-1",
+                              "type": "token",
+                              "choice": "no",
+                              "extensible": "no",
+                              "enumeration": [],
+                              "definition": "Propriétaire de la demande de gel.",
+                              "collection": "Unités d'archives",
+                              "children": []
+                            },
+                            {
+                              "name": "HoldReason",
+                              "nameFr": "Motif de gel",
+                              "element": "Simple",
+                              "cardinality": "0-1",
+                              "type": "string",
+                              "choice": "no",
+                              "extensible": "no",
+                              "enumeration": [],
+                              "definition": "Motif de gel.",
+                              "collection": "Unités d'archives",
+                              "children": []
+                            },
+                            {
+                              "name": "HoldReassessingDate",
+                              "nameFr": "Date de réévaluation",
+                              "element": "Simple",
+                              "cardinality": "0-1",
+                              "type": "DateType",
+                              "choice": "no",
+                              "extensible": "no",
+                              "enumeration": [],
+                              "definition": "Date de réévaluation.",
+                              "collection": "Unités d'archives",
+                              "children": []
+                            },
+                            {
+                              "name": "PreventRearrangement",
+                              "nameFr": "Blocage de la reclassification",
+                              "element": "Simple",
+                              "cardinality": "0-1",
+                              "type": "boolean",
+                              "choice": "yes",
+                              "extensible": "no",
+                              "enumeration": [
+                                "false",
+                                "true"
+                              ],
+                              "definition": "Blocage de la reclassification.",
+                              "collection": "Unités d'archives",
+                              "children": []
+                            }
+                          ]
+                        },
+                        {
+                          "name": "Inheritance",
+                          "nameFr": "Règles d'héritage",
+                          "element": "Complex",
+                          "cardinality": "0-1",
+                          "type": "null",
+                          "choice": "no",
+                          "extensible": "no",
+                          "enumeration": [],
+                          "definition": "Règles d'héritage.",
+                          "collection": "Unités d'archives",
+                          "children": [
+                            {
+                              "name": "PreventInheritance",
+                              "nameFr": "Héritage dans le nœud courant",
+                              "element": "Simple",
+                              "cardinality": "0-1",
+                              "type": "boolean",
+                              "choice": "yes",
+                              "extensible": "no",
+                              "enumeration": [
+                                "false",
+                                "true"
+                              ],
+                              "definition": "Indique si les règles de gestion héritées des ArchiveUnit parents doivent être ignorées pour l'ArchiveUnit concerné.",
+                              "collection": "Unités d'archives",
+                              "children": []
+                            },
+                            {
+                              "name": "RefNonRuleId",
+                              "nameFr": "Arrêt de l’héritage dans le nœud courant",
+                              "element": "Simple",
+                              "cardinality": "0-N",
+                              "type": "token",
+                              "choice": "yes",
+                              "extensible": "no",
+                              "enumeration": [],
+                              "definition": "L'identifiant de la règle spécifiée pourra être retirée de l'héritage dans ce noeud.",
+                              "collection": "Unités d'archives",
+                              "children": [
+                                {
+                                  "name": "id",
+                                  "nameFr": "id",
+                                  "element": "Attribute",
+                                  "cardinality": "0-1",
+                                  "type": "ID",
+                                  "choice": "no",
+                                  "extensible": "no",
+                                  "enumeration": [],
+                                  "definition": "Identifiant de la métadonnée",
+                                  "collection": "Unités d'archives",
+                                  "children": []
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
                     }
                   ]
                 },
@@ -6351,6 +6632,55 @@
                       "definition": "Identifiant attribué à l'ArchiveUnit par le service versant.",
                       "collection": "Unités d'archives",
                       "children": []
+                    },
+                    {
+                      "name": "LinkingAgentIdentifier",
+                      "element": "Complex",
+                      "cardinality": "0-1",
+                      "type": "null",
+                      "choice": "no",
+                      "extensible": "no",
+                      "enumeration": [],
+                      "definition": "Agent.",
+                      "collection": "Unités d'archives",
+                      "children": [
+                        {
+                          "name": "LinkingAgentIdentifierType",
+                          "element": "Simple",
+                          "cardinality": "0-1",
+                          "type": "token",
+                          "choice": "no",
+                          "extensible": "no",
+                          "enumeration": [],
+                          "definition": "Identifiant.",
+                          "collection": "Unités d'archives",
+                          "children": []
+                        },
+                        {
+                          "name": "LinkingAgentIdentifierValue",
+                          "element": "Simple",
+                          "cardinality": "0-1",
+                          "type": "token",
+                          "choice": "no",
+                          "extensible": "no",
+                          "enumeration": [],
+                          "definition": "Valeur.",
+                          "collection": "Unités d'archives",
+                          "children": []
+                        },
+                        {
+                          "name": "LinkingAgentRole",
+                          "element": "Simple",
+                          "cardinality": "0-1",
+                          "type": "token",
+                          "choice": "no",
+                          "extensible": "no",
+                          "enumeration": [],
+                          "definition": "Rôle.",
+                          "collection": "Unités d'archives",
+                          "children": []
+                        }
+                      ]
                     },
                     {
                       "name": "Description",
@@ -11336,6 +11666,55 @@
                           "definition": "Message technique détaillant l'événement.",
                           "collection": "Unités d'archives",
                           "children": []
+                        },
+                        {
+                          "name": "LinkingAgentIdentifier",
+                          "element": "Complex",
+                          "cardinality": "0-1",
+                          "type": "null",
+                          "choice": "no",
+                          "extensible": "no",
+                          "enumeration": [],
+                          "definition": "Agent.",
+                          "collection": "Unités d'archives",
+                          "children": [
+                            {
+                              "name": "LinkingAgentIdentifierType",
+                              "element": "Simple",
+                              "cardinality": "0-1",
+                              "type": "token",
+                              "choice": "no",
+                              "extensible": "no",
+                              "enumeration": [],
+                              "definition": "Identifiant.",
+                              "collection": "Unités d'archives",
+                              "children": []
+                            },
+                            {
+                              "name": "LinkingAgentIdentifierValue",
+                              "element": "Simple",
+                              "cardinality": "0-1",
+                              "type": "token",
+                              "choice": "no",
+                              "extensible": "no",
+                              "enumeration": [],
+                              "definition": "Valeur.",
+                              "collection": "Unités d'archives",
+                              "children": []
+                            },
+                            {
+                              "name": "LinkingAgentRole",
+                              "element": "Simple",
+                              "cardinality": "0-1",
+                              "type": "token",
+                              "choice": "no",
+                              "extensible": "no",
+                              "enumeration": [],
+                              "definition": "Rôle.",
+                              "collection": "Unités d'archives",
+                              "children": []
+                            }
+                          ]
                         }
                       ]
                     },
@@ -12491,1119 +12870,6 @@
                       ]
                     },
                     {
-                      "name": "SigningInformation",
-                      "nameFr": "Informations sur la signature",
-                      "element": "Complex",
-                      "cardinality": "0-1",
-                      "type": "null",
-                      "choice": "no",
-                      "extensible": "no",
-                      "enumeration": [],
-                      "definition": "Informations sur la signature.",
-                      "collection": "Unités d'archives",
-                      "children": [
-                        {
-                          "name": "SignatureDescription",
-                          "nameFr": "Description de la signature",
-                          "element": "Complex",
-                          "cardinality": "0-1",
-                          "type": "null",
-                          "choice": "no",
-                          "extensible": "no",
-                          "enumeration": [],
-                          "definition": "Description de la signature.",
-                          "collection": "Unités d'archives",
-                          "children": [
-                            {
-                              "name": "Signer",
-                              "nameFr": "Signataire",
-                              "element": "Complex",
-                              "cardinality": "0-1",
-                              "type": "null",
-                              "choice": "no",
-                              "extensible": "no",
-                              "enumeration": [],
-                              "definition": "Signataire.",
-                              "collection": "Unités d'archives",
-                              "children": [
-                                {
-                                  "name": "SigningTime",
-                                  "nameFr": "Date de signature",
-                                  "element": "Simple",
-                                  "cardinality": "1",
-                                  "type": "DateType",
-                                  "choice": "no",
-                                  "extensible": "no",
-                                  "enumeration": [],
-                                  "definition": "Date de signature.",
-                                  "collection": "Règles",
-                                  "children": []
-                                },
-                                {
-                                  "name": "FirstName",
-                                  "nameFr": "Prénom",
-                                  "element": "Simple",
-                                  "cardinality": "0-1",
-                                  "type": "string",
-                                  "choice": "no",
-                                  "extensible": "no",
-                                  "enumeration": [],
-                                  "definition": "Prénom d'une personne.",
-                                  "collection": "Unités d'archives",
-                                  "children": []
-                                },
-                                {
-                                  "name": "BirthName",
-                                  "nameFr": "Nom de naissance",
-                                  "element": "Simple",
-                                  "cardinality": "0-1",
-                                  "type": "string",
-                                  "choice": "no",
-                                  "extensible": "no",
-                                  "enumeration": [],
-                                  "definition": "Nom de naissance d'une personne.",
-                                  "collection": "Unités d'archives",
-                                  "children": []
-                                },
-                                {
-                                  "name": "FullName",
-                                  "nameFr": "Nom complet",
-                                  "element": "Simple",
-                                  "cardinality": "0-1",
-                                  "type": "string",
-                                  "choice": "no",
-                                  "extensible": "no",
-                                  "enumeration": [],
-                                  "definition": "Nom complet d'une personne.",
-                                  "collection": "Unités d'archives",
-                                  "children": []
-                                },
-                                {
-                                  "name": "GivenName",
-                                  "nameFr": "Nom d'usage",
-                                  "element": "Simple",
-                                  "cardinality": "0-1",
-                                  "type": "string",
-                                  "choice": "no",
-                                  "extensible": "no",
-                                  "enumeration": [],
-                                  "definition": "Nom d'usage d'une personne.",
-                                  "collection": "Unités d'archives",
-                                  "children": []
-                                },
-                                {
-                                  "name": "Gender",
-                                  "nameFr": "Sexe",
-                                  "element": "Simple",
-                                  "cardinality": "0-1",
-                                  "type": "string",
-                                  "choice": "no",
-                                  "extensible": "no",
-                                  "enumeration": [],
-                                  "definition": "Sexe de la personne.",
-                                  "collection": "Unités d'archives",
-                                  "children": []
-                                },
-                                {
-                                  "name": "BirthDate",
-                                  "nameFr": "Date de naissance",
-                                  "element": "Simple",
-                                  "cardinality": "0-1",
-                                  "type": "date",
-                                  "choice": "no",
-                                  "extensible": "no",
-                                  "enumeration": [],
-                                  "definition": "Date de naissance de la personne.",
-                                  "collection": "Unités d'archives",
-                                  "children": []
-                                },
-                                {
-                                  "name": "BirthPlace",
-                                  "nameFr": "Lieu de naissance",
-                                  "element": "Complex",
-                                  "cardinality": "0-1",
-                                  "type": "null",
-                                  "choice": "no",
-                                  "extensible": "no",
-                                  "enumeration": [],
-                                  "definition": "Lieu de naissance de la personne.",
-                                  "collection": "Unités d'archives",
-                                  "children": [
-                                    {
-                                      "name": "Geogname",
-                                      "nameFr": "Nom géographique",
-                                      "element": "Simple",
-                                      "cardinality": "0-1",
-                                      "type": "string",
-                                      "choice": "no",
-                                      "extensible": "no",
-                                      "enumeration": [],
-                                      "definition": "Nom géographique associé à la description d'une personne ou d'une entité. Références : ead.geogname",
-                                      "collection": "Unités d'archives",
-                                      "children": []
-                                    },
-                                    {
-                                      "name": "Address",
-                                      "nameFr": "Addresse",
-                                      "element": "Simple",
-                                      "cardinality": "0-1",
-                                      "type": "string",
-                                      "choice": "no",
-                                      "extensible": "no",
-                                      "enumeration": [],
-                                      "definition": "Adresse associée à la description d'une personne ou d'une entité. Références : ead.address",
-                                      "collection": "Unités d'archives",
-                                      "children": []
-                                    },
-                                    {
-                                      "name": "PostalCode",
-                                      "nameFr": "Code postal",
-                                      "element": "Simple",
-                                      "cardinality": "0-1",
-                                      "type": "string",
-                                      "choice": "no",
-                                      "extensible": "no",
-                                      "enumeration": [],
-                                      "definition": "Code postal associé à la description d'une personne ou d'une entité.",
-                                      "collection": "Unités d'archives",
-                                      "children": []
-                                    },
-                                    {
-                                      "name": "City",
-                                      "nameFr": "Ville",
-                                      "element": "Simple",
-                                      "cardinality": "0-1",
-                                      "type": "string",
-                                      "choice": "no",
-                                      "extensible": "no",
-                                      "enumeration": [],
-                                      "definition": "Ville associée à la description d'une personne ou d'une entité.",
-                                      "collection": "Unités d'archives",
-                                      "children": []
-                                    },
-                                    {
-                                      "name": "Region",
-                                      "nameFr": "Région",
-                                      "element": "Simple",
-                                      "cardinality": "0-1",
-                                      "type": "string",
-                                      "choice": "no",
-                                      "extensible": "no",
-                                      "enumeration": [],
-                                      "definition": "Région associée à la description d'une personne ou d'une entité.",
-                                      "collection": "Unités d'archives",
-                                      "children": []
-                                    },
-                                    {
-                                      "name": "Country",
-                                      "nameFr": "Pays",
-                                      "element": "Simple",
-                                      "cardinality": "0-1",
-                                      "type": "string",
-                                      "choice": "no",
-                                      "extensible": "no",
-                                      "enumeration": [],
-                                      "definition": "Pays associé à la description d'une personne ou d'une entité.",
-                                      "collection": "Unités d'archives",
-                                      "children": []
-                                    }
-                                  ]
-                                },
-                                {
-                                  "name": "DeathDate",
-                                  "nameFr": "Date de décès",
-                                  "element": "Simple",
-                                  "cardinality": "0-1",
-                                  "type": "date",
-                                  "choice": "no",
-                                  "extensible": "no",
-                                  "enumeration": [],
-                                  "definition": "Date de décès d'une personne.",
-                                  "collection": "Unités d'archives",
-                                  "children": []
-                                },
-                                {
-                                  "name": "DeathPlace",
-                                  "nameFr": "Lieu de décès",
-                                  "element": "Complex",
-                                  "cardinality": "0-1",
-                                  "type": "null",
-                                  "choice": "no",
-                                  "extensible": "no",
-                                  "enumeration": [],
-                                  "definition": "Lieu de décès d'une personne.",
-                                  "collection": "Unités d'archives",
-                                  "children": [
-                                    {
-                                      "name": "Geogname",
-                                      "nameFr": "Nom géographique",
-                                      "element": "Simple",
-                                      "cardinality": "0-1",
-                                      "type": "string",
-                                      "choice": "no",
-                                      "extensible": "no",
-                                      "enumeration": [],
-                                      "definition": "Nom géographique associé à la description d'une personne ou d'une entité. Références : ead.geogname",
-                                      "collection": "Unités d'archives",
-                                      "children": []
-                                    },
-                                    {
-                                      "name": "Address",
-                                      "nameFr": "Adresse",
-                                      "element": "Simple",
-                                      "cardinality": "0-1",
-                                      "type": "string",
-                                      "choice": "no",
-                                      "extensible": "no",
-                                      "enumeration": [],
-                                      "definition": "Adresse associée à la description d'une personne ou d'une entité. Références : ead.address",
-                                      "collection": "Unités d'archives",
-                                      "children": []
-                                    },
-                                    {
-                                      "name": "PostalCode",
-                                      "nameFr": "Code postal",
-                                      "element": "Simple",
-                                      "cardinality": "0-1",
-                                      "type": "string",
-                                      "choice": "no",
-                                      "extensible": "no",
-                                      "enumeration": [],
-                                      "definition": "Code postal associé à la description d'une personne ou d'une entité.",
-                                      "collection": "Unités d'archives",
-                                      "children": []
-                                    },
-                                    {
-                                      "name": "City",
-                                      "nameFr": "Ville",
-                                      "element": "Simple",
-                                      "cardinality": "0-1",
-                                      "type": "string",
-                                      "choice": "no",
-                                      "extensible": "no",
-                                      "enumeration": [],
-                                      "definition": "Ville associée à la description d'une personne ou d'une entité.",
-                                      "collection": "Unités d'archives",
-                                      "children": []
-                                    },
-                                    {
-                                      "name": "Region",
-                                      "nameFr": "Région",
-                                      "element": "Simple",
-                                      "cardinality": "0-1",
-                                      "type": "string",
-                                      "choice": "no",
-                                      "extensible": "no",
-                                      "enumeration": [],
-                                      "definition": "Région associée à la description d'une personne ou d'une entité.",
-                                      "collection": "Unités d'archives",
-                                      "children": []
-                                    },
-                                    {
-                                      "name": "Country",
-                                      "nameFr": "Pays",
-                                      "element": "Simple",
-                                      "cardinality": "0-1",
-                                      "type": "string",
-                                      "choice": "no",
-                                      "extensible": "no",
-                                      "enumeration": [],
-                                      "definition": "Pays associé à la description d'une personne ou d'une entité.",
-                                      "collection": "Unités d'archives",
-                                      "children": []
-                                    }
-                                  ]
-                                },
-                                {
-                                  "name": "Nationality",
-                                  "nameFr": "Nationalité",
-                                  "element": "Simple",
-                                  "cardinality": "0-N",
-                                  "type": "string",
-                                  "choice": "no",
-                                  "extensible": "no",
-                                  "enumeration": [],
-                                  "definition": "Nationalité d'une personne.",
-                                  "collection": "Unités d'archives",
-                                  "children": []
-                                },
-                                {
-                                  "name": "Corpname",
-                                  "nameFr": "Nom d'une entité",
-                                  "element": "Simple",
-                                  "cardinality": "0-1",
-                                  "type": "string",
-                                  "choice": "no",
-                                  "extensible": "no",
-                                  "enumeration": [],
-                                  "definition": "Nom d'une entité.",
-                                  "collection": "Unités d'archives",
-                                  "children": []
-                                },
-                                {
-                                  "name": "Identifier",
-                                  "nameFr": "Identifiant",
-                                  "element": "Simple",
-                                  "cardinality": "0-N",
-                                  "type": "string",
-                                  "choice": "no",
-                                  "extensible": "no",
-                                  "enumeration": [],
-                                  "definition": "Identifiant de la personne (par exemple, le numéro matricule) ou de l'entité.",
-                                  "collection": "Unités d'archives",
-                                  "children": []
-                                },
-                                {
-                                  "name": "Function",
-                                  "nameFr": "Fonction",
-                                  "element": "Simple",
-                                  "cardinality": "0-N",
-                                  "type": "string",
-                                  "choice": "no",
-                                  "extensible": "no",
-                                  "enumeration": [],
-                                  "definition": "Fonction de la personne ou de l'entité",
-                                  "collection": "Unités d'archives",
-                                  "children": [
-                                    {
-                                      "name": "xml:lang",
-                                      "nameFr": "Langue",
-                                      "element": "Attribute",
-                                      "cardinality": "0-1",
-                                      "type": "language",
-                                      "choice": "no",
-                                      "extensible": "no",
-                                      "enumeration": [],
-                                      "definition": "Langue du document de la métadonnée",
-                                      "collection": "Unités d'archives",
-                                      "children": []
-                                    }
-                                  ]
-                                },
-                                {
-                                  "name": "Activity",
-                                  "nameFr": "Activité",
-                                  "element": "Simple",
-                                  "cardinality": "0-N",
-                                  "type": "string",
-                                  "choice": "no",
-                                  "extensible": "no",
-                                  "enumeration": [],
-                                  "definition": "Activité de la personne ou de l'entité",
-                                  "collection": "Unités d'archives",
-                                  "children": [
-                                    {
-                                      "name": "xml:lang",
-                                      "nameFr": "Langue",
-                                      "element": "Attribute",
-                                      "cardinality": "0-1",
-                                      "type": "language",
-                                      "choice": "no",
-                                      "extensible": "no",
-                                      "enumeration": [],
-                                      "definition": "Langue du document de la métadonnée",
-                                      "collection": "Unités d'archives",
-                                      "children": []
-                                    }
-                                  ]
-                                },
-                                {
-                                  "name": "Position",
-                                  "nameFr": "Intitulé du poste de travail",
-                                  "element": "Simple",
-                                  "cardinality": "0-N",
-                                  "type": "string",
-                                  "choice": "no",
-                                  "extensible": "no",
-                                  "enumeration": [],
-                                  "definition": "Intitulé du poste de travail occupé par la personne.",
-                                  "collection": "Unités d'archives",
-                                  "children": [
-                                    {
-                                      "name": "xml:lang",
-                                      "nameFr": "Langue",
-                                      "element": "Attribute",
-                                      "cardinality": "0-1",
-                                      "type": "language",
-                                      "choice": "no",
-                                      "extensible": "no",
-                                      "enumeration": [],
-                                      "definition": "Langue du document de la métadonnée",
-                                      "collection": "Unités d'archives",
-                                      "children": []
-                                    }
-                                  ]
-                                },
-                                {
-                                  "name": "Role",
-                                  "nameFr": "Droits dans une application",
-                                  "element": "Simple",
-                                  "cardinality": "0-N",
-                                  "type": "string",
-                                  "choice": "no",
-                                  "extensible": "no",
-                                  "enumeration": [],
-                                  "definition": "Droits avec lesquels un utilisateur a réalisé une opération, notamment dans une application. Références : moreq.role",
-                                  "collection": "Unités d'archives",
-                                  "children": [
-                                    {
-                                      "name": "xml:lang",
-                                      "nameFr": "Langue",
-                                      "element": "Attribute",
-                                      "cardinality": "0-1",
-                                      "type": "language",
-                                      "choice": "no",
-                                      "extensible": "no",
-                                      "enumeration": [],
-                                      "definition": "Langue du document de la métadonnée",
-                                      "collection": "Unités d'archives",
-                                      "children": []
-                                    }
-                                  ]
-                                },
-                                {
-                                  "name": "Mandate",
-                                  "nameFr": "Mandat",
-                                  "element": "Simple",
-                                  "cardinality": "0-N",
-                                  "type": "string",
-                                  "choice": "no",
-                                  "extensible": "no",
-                                  "enumeration": [],
-                                  "definition": "Mandat octroyé à la personne. Ex.: statut d’un organisme, contrat de cession de droits en termes de propriété intellectuelle et artistique sur une archive",
-                                  "collection": "Unités d'archives",
-                                  "children": [
-                                    {
-                                      "name": "xml:lang",
-                                      "nameFr": "Langue",
-                                      "element": "Attribute",
-                                      "cardinality": "0-1",
-                                      "type": "language",
-                                      "choice": "no",
-                                      "extensible": "no",
-                                      "enumeration": [],
-                                      "definition": "Langue du document de la métadonnée",
-                                      "collection": "Unités d'archives",
-                                      "children": []
-                                    }
-                                  ]
-                                }
-                              ]
-                            },
-                            {
-                              "name": "Validator",
-                              "nameFr": "Validateur",
-                              "element": "Complex",
-                              "cardinality": "0-1",
-                              "type": "null",
-                              "choice": "no",
-                              "extensible": "no",
-                              "enumeration": [],
-                              "definition": "Validateur.",
-                              "collection": "Unités d'archives",
-                              "children": [
-                                {
-                                  "name": "ValidationTime",
-                                  "nameFr": "Date de validation",
-                                  "element": "Simple",
-                                  "cardinality": "1",
-                                  "type": "DateType",
-                                  "choice": "no",
-                                  "extensible": "no",
-                                  "enumeration": [],
-                                  "definition": "Date de validation.",
-                                  "collection": "Règles",
-                                  "children": []
-                                },
-                                {
-                                  "name": "FirstName",
-                                  "nameFr": "Prénom",
-                                  "element": "Simple",
-                                  "cardinality": "0-1",
-                                  "type": "string",
-                                  "choice": "no",
-                                  "extensible": "no",
-                                  "enumeration": [],
-                                  "definition": "Prénom d'une personne.",
-                                  "collection": "Unités d'archives",
-                                  "children": []
-                                },
-                                {
-                                  "name": "BirthName",
-                                  "nameFr": "Nom de naissance",
-                                  "element": "Simple",
-                                  "cardinality": "0-1",
-                                  "type": "string",
-                                  "choice": "no",
-                                  "extensible": "no",
-                                  "enumeration": [],
-                                  "definition": "Nom de naissance d'une personne.",
-                                  "collection": "Unités d'archives",
-                                  "children": []
-                                },
-                                {
-                                  "name": "FullName",
-                                  "nameFr": "Nom complet",
-                                  "element": "Simple",
-                                  "cardinality": "0-1",
-                                  "type": "string",
-                                  "choice": "no",
-                                  "extensible": "no",
-                                  "enumeration": [],
-                                  "definition": "Nom complet d'une personne.",
-                                  "collection": "Unités d'archives",
-                                  "children": []
-                                },
-                                {
-                                  "name": "GivenName",
-                                  "nameFr": "Nom d'usage",
-                                  "element": "Simple",
-                                  "cardinality": "0-1",
-                                  "type": "string",
-                                  "choice": "no",
-                                  "extensible": "no",
-                                  "enumeration": [],
-                                  "definition": "Nom d'usage d'une personne.",
-                                  "collection": "Unités d'archives",
-                                  "children": []
-                                },
-                                {
-                                  "name": "Gender",
-                                  "nameFr": "Sexe",
-                                  "element": "Simple",
-                                  "cardinality": "0-1",
-                                  "type": "string",
-                                  "choice": "no",
-                                  "extensible": "no",
-                                  "enumeration": [],
-                                  "definition": "Sexe de la personne.",
-                                  "collection": "Unités d'archives",
-                                  "children": []
-                                },
-                                {
-                                  "name": "BirthDate",
-                                  "nameFr": "Date de naissance",
-                                  "element": "Simple",
-                                  "cardinality": "0-1",
-                                  "type": "date",
-                                  "choice": "no",
-                                  "extensible": "no",
-                                  "enumeration": [],
-                                  "definition": "Date de naissance de la personne.",
-                                  "collection": "Unités d'archives",
-                                  "children": []
-                                },
-                                {
-                                  "name": "BirthPlace",
-                                  "nameFr": "Lieu de naissance",
-                                  "element": "Complex",
-                                  "cardinality": "0-1",
-                                  "type": "null",
-                                  "choice": "no",
-                                  "extensible": "no",
-                                  "enumeration": [],
-                                  "definition": "Lieu de naissance de la personne.",
-                                  "collection": "Unités d'archives",
-                                  "children": [
-                                    {
-                                      "name": "Geogname",
-                                      "nameFr": "Nom géographique",
-                                      "element": "Simple",
-                                      "cardinality": "0-1",
-                                      "type": "string",
-                                      "choice": "no",
-                                      "extensible": "no",
-                                      "enumeration": [],
-                                      "definition": "Nom géographique associé à la description d'une personne ou d'une entité. Références : ead.geogname",
-                                      "collection": "Unités d'archives",
-                                      "children": []
-                                    },
-                                    {
-                                      "name": "Address",
-                                      "nameFr": "Addresse",
-                                      "element": "Simple",
-                                      "cardinality": "0-1",
-                                      "type": "string",
-                                      "choice": "no",
-                                      "extensible": "no",
-                                      "enumeration": [],
-                                      "definition": "Adresse associée à la description d'une personne ou d'une entité. Références : ead.address",
-                                      "collection": "Unités d'archives",
-                                      "children": []
-                                    },
-                                    {
-                                      "name": "PostalCode",
-                                      "nameFr": "Code postal",
-                                      "element": "Simple",
-                                      "cardinality": "0-1",
-                                      "type": "string",
-                                      "choice": "no",
-                                      "extensible": "no",
-                                      "enumeration": [],
-                                      "definition": "Code postal associé à la description d'une personne ou d'une entité.",
-                                      "collection": "Unités d'archives",
-                                      "children": []
-                                    },
-                                    {
-                                      "name": "City",
-                                      "nameFr": "Ville",
-                                      "element": "Simple",
-                                      "cardinality": "0-1",
-                                      "type": "string",
-                                      "choice": "no",
-                                      "extensible": "no",
-                                      "enumeration": [],
-                                      "definition": "Ville associée à la description d'une personne ou d'une entité.",
-                                      "collection": "Unités d'archives",
-                                      "children": []
-                                    },
-                                    {
-                                      "name": "Region",
-                                      "nameFr": "Région",
-                                      "element": "Simple",
-                                      "cardinality": "0-1",
-                                      "type": "string",
-                                      "choice": "no",
-                                      "extensible": "no",
-                                      "enumeration": [],
-                                      "definition": "Région associée à la description d'une personne ou d'une entité.",
-                                      "collection": "Unités d'archives",
-                                      "children": []
-                                    },
-                                    {
-                                      "name": "Country",
-                                      "nameFr": "Pays",
-                                      "element": "Simple",
-                                      "cardinality": "0-1",
-                                      "type": "string",
-                                      "choice": "no",
-                                      "extensible": "no",
-                                      "enumeration": [],
-                                      "definition": "Pays associé à la description d'une personne ou d'une entité.",
-                                      "collection": "Unités d'archives",
-                                      "children": []
-                                    }
-                                  ]
-                                },
-                                {
-                                  "name": "DeathDate",
-                                  "nameFr": "Date de décès",
-                                  "element": "Simple",
-                                  "cardinality": "0-1",
-                                  "type": "date",
-                                  "choice": "no",
-                                  "extensible": "no",
-                                  "enumeration": [],
-                                  "definition": "Date de décès d'une personne.",
-                                  "collection": "Unités d'archives",
-                                  "children": []
-                                },
-                                {
-                                  "name": "DeathPlace",
-                                  "nameFr": "Lieu de décès",
-                                  "element": "Complex",
-                                  "cardinality": "0-1",
-                                  "type": "null",
-                                  "choice": "no",
-                                  "extensible": "no",
-                                  "enumeration": [],
-                                  "definition": "Lieu de décès d'une personne.",
-                                  "collection": "Unités d'archives",
-                                  "children": [
-                                    {
-                                      "name": "Geogname",
-                                      "nameFr": "Nom géographique",
-                                      "element": "Simple",
-                                      "cardinality": "0-1",
-                                      "type": "string",
-                                      "choice": "no",
-                                      "extensible": "no",
-                                      "enumeration": [],
-                                      "definition": "Nom géographique associé à la description d'une personne ou d'une entité. Références : ead.geogname",
-                                      "collection": "Unités d'archives",
-                                      "children": []
-                                    },
-                                    {
-                                      "name": "Address",
-                                      "nameFr": "Adresse",
-                                      "element": "Simple",
-                                      "cardinality": "0-1",
-                                      "type": "string",
-                                      "choice": "no",
-                                      "extensible": "no",
-                                      "enumeration": [],
-                                      "definition": "Adresse associée à la description d'une personne ou d'une entité. Références : ead.address",
-                                      "collection": "Unités d'archives",
-                                      "children": []
-                                    },
-                                    {
-                                      "name": "PostalCode",
-                                      "nameFr": "Code postal",
-                                      "element": "Simple",
-                                      "cardinality": "0-1",
-                                      "type": "string",
-                                      "choice": "no",
-                                      "extensible": "no",
-                                      "enumeration": [],
-                                      "definition": "Code postal associé à la description d'une personne ou d'une entité.",
-                                      "collection": "Unités d'archives",
-                                      "children": []
-                                    },
-                                    {
-                                      "name": "City",
-                                      "nameFr": "Ville",
-                                      "element": "Simple",
-                                      "cardinality": "0-1",
-                                      "type": "string",
-                                      "choice": "no",
-                                      "extensible": "no",
-                                      "enumeration": [],
-                                      "definition": "Ville associée à la description d'une personne ou d'une entité.",
-                                      "collection": "Unités d'archives",
-                                      "children": []
-                                    },
-                                    {
-                                      "name": "Region",
-                                      "nameFr": "Région",
-                                      "element": "Simple",
-                                      "cardinality": "0-1",
-                                      "type": "string",
-                                      "choice": "no",
-                                      "extensible": "no",
-                                      "enumeration": [],
-                                      "definition": "Région associée à la description d'une personne ou d'une entité.",
-                                      "collection": "Unités d'archives",
-                                      "children": []
-                                    },
-                                    {
-                                      "name": "Country",
-                                      "nameFr": "Pays",
-                                      "element": "Simple",
-                                      "cardinality": "0-1",
-                                      "type": "string",
-                                      "choice": "no",
-                                      "extensible": "no",
-                                      "enumeration": [],
-                                      "definition": "Pays associé à la description d'une personne ou d'une entité.",
-                                      "collection": "Unités d'archives",
-                                      "children": []
-                                    }
-                                  ]
-                                },
-                                {
-                                  "name": "Nationality",
-                                  "nameFr": "Nationalité",
-                                  "element": "Simple",
-                                  "cardinality": "0-N",
-                                  "type": "string",
-                                  "choice": "no",
-                                  "extensible": "no",
-                                  "enumeration": [],
-                                  "definition": "Nationalité d'une personne.",
-                                  "collection": "Unités d'archives",
-                                  "children": []
-                                },
-                                {
-                                  "name": "Corpname",
-                                  "nameFr": "Nom d'une entité",
-                                  "element": "Simple",
-                                  "cardinality": "0-1",
-                                  "type": "string",
-                                  "choice": "no",
-                                  "extensible": "no",
-                                  "enumeration": [],
-                                  "definition": "Nom d'une entité.",
-                                  "collection": "Unités d'archives",
-                                  "children": []
-                                },
-                                {
-                                  "name": "Identifier",
-                                  "nameFr": "Identifiant",
-                                  "element": "Simple",
-                                  "cardinality": "0-N",
-                                  "type": "string",
-                                  "choice": "no",
-                                  "extensible": "no",
-                                  "enumeration": [],
-                                  "definition": "Identifiant de la personne (par exemple, le numéro matricule) ou de l'entité.",
-                                  "collection": "Unités d'archives",
-                                  "children": []
-                                },
-                                {
-                                  "name": "Function",
-                                  "nameFr": "Fonction",
-                                  "element": "Simple",
-                                  "cardinality": "0-N",
-                                  "type": "string",
-                                  "choice": "no",
-                                  "extensible": "no",
-                                  "enumeration": [],
-                                  "definition": "Fonction de la personne ou de l'entité",
-                                  "collection": "Unités d'archives",
-                                  "children": [
-                                    {
-                                      "name": "xml:lang",
-                                      "nameFr": "Langue",
-                                      "element": "Attribute",
-                                      "cardinality": "0-1",
-                                      "type": "language",
-                                      "choice": "no",
-                                      "extensible": "no",
-                                      "enumeration": [],
-                                      "definition": "Langue du document de la métadonnée",
-                                      "collection": "Unités d'archives",
-                                      "children": []
-                                    }
-                                  ]
-                                },
-                                {
-                                  "name": "Activity",
-                                  "nameFr": "Activité",
-                                  "element": "Simple",
-                                  "cardinality": "0-N",
-                                  "type": "string",
-                                  "choice": "no",
-                                  "extensible": "no",
-                                  "enumeration": [],
-                                  "definition": "Activité de la personne ou de l'entité",
-                                  "collection": "Unités d'archives",
-                                  "children": [
-                                    {
-                                      "name": "xml:lang",
-                                      "nameFr": "Langue",
-                                      "element": "Attribute",
-                                      "cardinality": "0-1",
-                                      "type": "language",
-                                      "choice": "no",
-                                      "extensible": "no",
-                                      "enumeration": [],
-                                      "definition": "Langue du document de la métadonnée",
-                                      "collection": "Unités d'archives",
-                                      "children": []
-                                    }
-                                  ]
-                                },
-                                {
-                                  "name": "Position",
-                                  "nameFr": "Intitulé du poste de travail",
-                                  "element": "Simple",
-                                  "cardinality": "0-N",
-                                  "type": "string",
-                                  "choice": "no",
-                                  "extensible": "no",
-                                  "enumeration": [],
-                                  "definition": "Intitulé du poste de travail occupé par la personne.",
-                                  "collection": "Unités d'archives",
-                                  "children": [
-                                    {
-                                      "name": "xml:lang",
-                                      "nameFr": "Langue",
-                                      "element": "Attribute",
-                                      "cardinality": "0-1",
-                                      "type": "language",
-                                      "choice": "no",
-                                      "extensible": "no",
-                                      "enumeration": [],
-                                      "definition": "Langue du document de la métadonnée",
-                                      "collection": "Unités d'archives",
-                                      "children": []
-                                    }
-                                  ]
-                                },
-                                {
-                                  "name": "Role",
-                                  "nameFr": "Droits dans une application",
-                                  "element": "Simple",
-                                  "cardinality": "0-N",
-                                  "type": "string",
-                                  "choice": "no",
-                                  "extensible": "no",
-                                  "enumeration": [],
-                                  "definition": "Droits avec lesquels un utilisateur a réalisé une opération, notamment dans une application. Références : moreq.role",
-                                  "collection": "Unités d'archives",
-                                  "children": [
-                                    {
-                                      "name": "xml:lang",
-                                      "nameFr": "Langue",
-                                      "element": "Attribute",
-                                      "cardinality": "0-1",
-                                      "type": "language",
-                                      "choice": "no",
-                                      "extensible": "no",
-                                      "enumeration": [],
-                                      "definition": "Langue du document de la métadonnée",
-                                      "collection": "Unités d'archives",
-                                      "children": []
-                                    }
-                                  ]
-                                },
-                                {
-                                  "name": "Mandate",
-                                  "nameFr": "Mandat",
-                                  "element": "Simple",
-                                  "cardinality": "0-N",
-                                  "type": "string",
-                                  "choice": "no",
-                                  "extensible": "no",
-                                  "enumeration": [],
-                                  "definition": "Mandat octroyé à la personne. Ex.: statut d’un organisme, contrat de cession de droits en termes de propriété intellectuelle et artistique sur une archive",
-                                  "collection": "Unités d'archives",
-                                  "children": [
-                                    {
-                                      "name": "xml:lang",
-                                      "nameFr": "Langue",
-                                      "element": "Attribute",
-                                      "cardinality": "0-1",
-                                      "type": "language",
-                                      "choice": "no",
-                                      "extensible": "no",
-                                      "enumeration": [],
-                                      "definition": "Langue du document de la métadonnée",
-                                      "collection": "Unités d'archives",
-                                      "children": []
-                                    }
-                                  ]
-                                }
-                              ]
-                            },
-                            {
-                              "name": "AdditionalProof",
-                              "children": [
-                                {
-                                  "name": "AdditionalProofInformation",
-                                  "children": [],
-                                  "nameFr": "AdditionalProofInformation",
-                                  "element": "Simple",
-                                  "cardinality": "0-1",
-                                  "type": "string",
-                                  "choice": "no",
-                                  "extensible": "no",
-                                  "enumeration": [],
-                                  "definition": "ArchiveTransfer.DataObjectPackage.DescriptiveMetadata.ArchiveUnit.Content.SigningInformation.AdditionalProof.AdditionalProofInformation",
-                                  "collection": "Unités d'archives"
-                                }
-                              ],
-                              "nameFr": "AdditionalProof",
-                              "element": "Complex",
-                              "cardinality": "0-N",
-                              "type": "null",
-                              "choice": "no",
-                              "extensible": "no",
-                              "enumeration": [],
-                              "definition": "ArchiveTransfer.DataObjectPackage.DescriptiveMetadata.ArchiveUnit.Content.SigningInformation.AdditionalProof",
-                              "collection": "Unités d'archives"
-                            },
-                            {
-                              "name": "DetachedSigningRole",
-                              "children": [],
-                              "nameFr": "DetachedSigningRole",
-                              "element": "Simple",
-                              "cardinality": "0-N",
-                              "type": "string",
-                              "choice": "no",
-                              "extensible": "no",
-                              "enumeration": [
-                                "Timestamp",
-                                "Signature",
-                                "AdditionalProof"
-                              ],
-                              "definition": "ArchiveTransfer.DataObjectPackage.DescriptiveMetadata.ArchiveUnit.Content.SigningInformation.DetachedSigningRole",
-                              "collection": "Unités d'archives"
-                            },
-                            {
-                              "name": "Extended",
-                              "children": [],
-                              "nameFr": "Extended",
-                              "element": "Simple",
-                              "cardinality": "0-1",
-                              "type": "object",
-                              "choice": "no",
-                              "extensible": "no",
-                              "enumeration": [],
-                              "definition": "ArchiveTransfer.DataObjectPackage.DescriptiveMetadata.ArchiveUnit.Content.SigningInformation.Extended",
-                              "collection": "Unités d'archives"
-                            },
-                            {
-                              "name": "SignatureDescription",
-                              "children": [
-                                {
-                                  "name": "SigningType",
-                                  "children": [],
-                                  "nameFr": "SigningType",
-                                  "element": "Simple",
-                                  "cardinality": "0-1",
-                                  "type": "string",
-                                  "choice": "no",
-                                  "extensible": "no",
-                                  "enumeration": [],
-                                  "definition": "ArchiveTransfer.DataObjectPackage.DescriptiveMetadata.ArchiveUnit.Content.SigningInformation.SignatureDescription.SigningType",
-                                  "collection": "Unités d'archives"
-                                }
-                              ]
-                            },
-                            {
-                              "name": "SigningRole",
-                              "children": [],
-                              "nameFr": "SigningRole",
-                              "element": "Simple",
-                              "cardinality": "1-N",
-                              "type": "string",
-                              "choice": "no",
-                              "extensible": "no",
-                              "enumeration": [
-                                "SignedDocument",
-                                "Timestamp",
-                                "Signature",
-                                "AdditionalProof"
-                              ],
-                              "definition": "ArchiveTransfer.DataObjectPackage.DescriptiveMetadata.ArchiveUnit.Content.SigningInformation.SigningRole",
-                              "collection": "Unités d'archives"
-                            },
-                            {
-                              "name": "TimestampingInformation",
-                              "children": [
-                                {
-                                  "name": "AdditionalTimestampingInformation",
-                                  "children": [],
-                                  "nameFr": "AdditionalTimestampingInformation",
-                                  "element": "Simple",
-                                  "cardinality": "0-1",
-                                  "type": "string",
-                                  "choice": "no",
-                                  "extensible": "no",
-                                  "enumeration": [],
-                                  "definition": "ArchiveTransfer.DataObjectPackage.DescriptiveMetadata.ArchiveUnit.Content.SigningInformation.TimestampingInformation.AdditionalTimestampingInformation",
-                                  "collection": "Unités d'archives"
-                                },
-                                {
-                                  "name": "TimeStamp",
-                                  "children": [],
-                                  "nameFr": "TimeStamp",
-                                  "element": "Simple",
-                                  "cardinality": "0-1",
-                                  "type": "date",
-                                  "choice": "no",
-                                  "extensible": "no",
-                                  "enumeration": [],
-                                  "definition": "ArchiveTransfer.DataObjectPackage.DescriptiveMetadata.ArchiveUnit.Content.SigningInformation.TimestampingInformation.TimeStamp",
-                                  "collection": "Unités d'archives"
-                                }
-                              ],
-                              "nameFr": "TimestampingInformation",
-                              "element": "Complex",
-                              "cardinality": "0-N",
-                              "type": "null",
-                              "choice": "no",
-                              "extensible": "no",
-                              "enumeration": [],
-                              "definition": "ArchiveTransfer.DataObjectPackage.DescriptiveMetadata.ArchiveUnit.Content.SigningInformation.TimestampingInformation",
-                              "collection": "Unités d'archives"
-                            }
-                          ]
-                        }
-                      ]
-                    },
-                    {
                       "name": "Gps",
                       "nameFr": "Coordonnées géographiques",
                       "element": "Complex",
@@ -13738,7 +13004,7 @@
                       "name": "TextContent",
                       "nameFr": "Contenu",
                       "element": "Simple",
-                      "cardinality": "0-1",
+                      "cardinality": "0-N",
                       "type": "string",
                       "choice": "no",
                       "extensible": "no",
@@ -14716,6 +13982,212 @@
               ]
             },
             {
+              "name": "HoldRule",
+              "nameFr": "Gestion de la durée de gel",
+              "element": "Complex",
+              "cardinality": "0-1",
+              "type": "null",
+              "choice": "no",
+              "extensible": "no",
+              "enumeration": [],
+              "definition": "Gestion de la durée de gel.",
+              "collection": "Règles",
+              "children": [
+                {
+                  "name": "Rules",
+                  "nameFr": "Règles",
+                  "element": "Complex",
+                  "cardinality": "0-N",
+                  "type": "null",
+                  "choice": "no",
+                  "extensible": "no",
+                  "enumeration": [],
+                  "definition": "Règles.",
+                  "collection": "Règles",
+                  "children": [
+                    {
+                      "name": "Rule",
+                      "nameFr": "Règle de gestion",
+                      "element": "Simple",
+                      "cardinality": "0-N",
+                      "type": "token",
+                      "choice": "no",
+                      "extensible": "no",
+                      "enumeration": [],
+                      "definition": "Règle de gestion.",
+                      "collection": "Règles",
+                      "children": [
+                        {
+                          "name": "id",
+                          "nameFr": "id",
+                          "element": "Attribute",
+                          "cardinality": "0-1",
+                          "type": "ID",
+                          "choice": "no",
+                          "extensible": "no",
+                          "enumeration": [],
+                          "definition": "Identifiant de la métadonnée",
+                          "collection": "Règles",
+                          "children": []
+                        }
+                      ]
+                    },
+                    {
+                      "name": "StartDate",
+                      "nameFr": "Date de début",
+                      "element": "Simple",
+                      "cardinality": "0-1",
+                      "type": "DateType",
+                      "choice": "no",
+                      "extensible": "no",
+                      "enumeration": [],
+                      "definition": "Date de début de gel",
+                      "collection": "Règles",
+                      "children": []
+                    },
+                    {
+                      "name": "EndDate",
+                      "nameFr": "Date de fin",
+                      "element": "Simple",
+                      "cardinality": "0-1",
+                      "type": "DateType",
+                      "choice": "no",
+                      "extensible": "no",
+                      "enumeration": [],
+                      "definition": "Date de fin.",
+                      "collection": "Règles",
+                      "children": []
+                    },
+                    {
+                      "name": "HoldEndDate",
+                      "nameFr": "Date de fin de gel",
+                      "element": "Simple",
+                      "cardinality": "0-1",
+                      "type": "DateType",
+                      "choice": "no",
+                      "extensible": "no",
+                      "enumeration": [],
+                      "definition": "Date de fin de gel.",
+                      "collection": "Règles",
+                      "children": []
+                    },
+                    {
+                      "name": "HoldOwner",
+                      "nameFr": "Propriétaire de la demande de gel",
+                      "element": "Simple",
+                      "cardinality": "0-1",
+                      "type": "token",
+                      "choice": "no",
+                      "extensible": "no",
+                      "enumeration": [],
+                      "definition": "Propriétaire de la demande de gel.",
+                      "collection": "Règles",
+                      "children": []
+                    },
+                    {
+                      "name": "HoldReason",
+                      "nameFr": "Motif de gel",
+                      "element": "Simple",
+                      "cardinality": "0-1",
+                      "type": "string",
+                      "choice": "no",
+                      "extensible": "no",
+                      "enumeration": [],
+                      "definition": "Motif de gel.",
+                      "collection": "Règles",
+                      "children": []
+                    },
+                    {
+                      "name": "HoldReassessingDate",
+                      "nameFr": "Date de réévaluation",
+                      "element": "Simple",
+                      "cardinality": "0-1",
+                      "type": "DateType",
+                      "choice": "no",
+                      "extensible": "no",
+                      "enumeration": [],
+                      "definition": "Date de réévaluation.",
+                      "collection": "Règles",
+                      "children": []
+                    },
+                    {
+                      "name": "PreventRearrangement",
+                      "nameFr": "Blocage de la reclassification",
+                      "element": "Simple",
+                      "cardinality": "0-1",
+                      "type": "boolean",
+                      "choice": "yes",
+                      "extensible": "no",
+                      "enumeration": [
+                        "false",
+                        "true"
+                      ],
+                      "definition": "Blocage de la reclassification.",
+                      "collection": "Règles",
+                      "children": []
+                    }
+                  ]
+                },
+                {
+                  "name": "Inheritance",
+                  "nameFr": "Règles d'héritage",
+                  "element": "Complex",
+                  "cardinality": "0-1",
+                  "type": "null",
+                  "choice": "no",
+                  "extensible": "no",
+                  "enumeration": [],
+                  "definition": "Règles d'héritage.",
+                  "collection": "Règles",
+                  "children": [
+                    {
+                      "name": "PreventInheritance",
+                      "nameFr": "Héritage dans le nœud courant",
+                      "element": "Simple",
+                      "cardinality": "0-1",
+                      "type": "boolean",
+                      "choice": "yes",
+                      "extensible": "no",
+                      "enumeration": [
+                        "false",
+                        "true"
+                      ],
+                      "definition": "Indique si les règles de gestion héritées des ArchiveUnit parents doivent être ignorées pour l'ArchiveUnit concerné.",
+                      "collection": "Règles",
+                      "children": []
+                    },
+                    {
+                      "name": "RefNonRuleId",
+                      "nameFr": "Arrêt de l’héritage dans le nœud courant",
+                      "element": "Simple",
+                      "cardinality": "0-N",
+                      "type": "token",
+                      "choice": "yes",
+                      "extensible": "no",
+                      "enumeration": [],
+                      "definition": "L'identifiant de la règle spécifiée pourra être retirée de l'héritage dans ce noeud.",
+                      "collection": "Règles",
+                      "children": [
+                        {
+                          "name": "id",
+                          "nameFr": "id",
+                          "element": "Attribute",
+                          "cardinality": "0-1",
+                          "type": "ID",
+                          "choice": "no",
+                          "extensible": "no",
+                          "enumeration": [],
+                          "definition": "Identifiant de la métadonnée",
+                          "collection": "Règles",
+                          "children": []
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
               "name": "ReuseRule",
               "nameFr": "Réutilisation",
               "element": "Complex",
@@ -15131,6 +14603,55 @@
                       "definition": "Message technique détaillant l'événement.",
                       "collection": "Règles",
                       "children": []
+                    },
+                    {
+                      "name": "LinkingAgentIdentifier",
+                      "element": "Complex",
+                      "cardinality": "0-1",
+                      "type": "null",
+                      "choice": "no",
+                      "extensible": "no",
+                      "enumeration": [],
+                      "definition": "Agent.",
+                      "collection": "Règles",
+                      "children": [
+                        {
+                          "name": "LinkingAgentIdentifierType",
+                          "element": "Simple",
+                          "cardinality": "0-1",
+                          "type": "token",
+                          "choice": "no",
+                          "extensible": "no",
+                          "enumeration": [],
+                          "definition": "Identifiant.",
+                          "collection": "Règles",
+                          "children": []
+                        },
+                        {
+                          "name": "LinkingAgentIdentifierValue",
+                          "element": "Simple",
+                          "cardinality": "0-1",
+                          "type": "token",
+                          "choice": "no",
+                          "extensible": "no",
+                          "enumeration": [],
+                          "definition": "Valeur.",
+                          "collection": "Règles",
+                          "children": []
+                        },
+                        {
+                          "name": "LinkingAgentRole",
+                          "element": "Simple",
+                          "cardinality": "0-1",
+                          "type": "token",
+                          "choice": "no",
+                          "extensible": "no",
+                          "enumeration": [],
+                          "definition": "Rôle.",
+                          "collection": "Règles",
+                          "children": []
+                        }
+                      ]
                     }
                   ]
                 }

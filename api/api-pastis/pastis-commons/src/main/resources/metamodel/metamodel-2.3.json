@@ -2512,6 +2512,19 @@
                   "children": []
                 },
                 {
+                  "name": "DataObjectProfile",
+                  "nameFr": "Référence à une partie d'un profil d’archivage applicable à un objet technique en particulier",
+                  "element": "Simple",
+                  "cardinality": "0-1",
+                  "type": "token",
+                  "choice": "no",
+                  "extensible": "no",
+                  "enumeration": [],
+                  "definition": "Référence à une partie d'un profil d’archivage applicable à un objet technique en particulier.",
+                  "collection": "Objets",
+                  "children": []
+                },
+                {
                   "name": "DataObjectSystemId",
                   "nameFr": "Identifiant de l'Objet de données du SAE",
                   "element": "Simple",
@@ -2620,7 +2633,7 @@
                   "name": "PersistentIdentifier",
                   "nameFr": "Identifiant pérenne",
                   "element": "Complex",
-                  "cardinality": "0-1",
+                  "cardinality": "0-N",
                   "type": "null",
                   "choice": "no",
                   "extensible": "no",
@@ -3268,6 +3281,19 @@
                   "children": []
                 },
                 {
+                  "name": "DataObjectProfile",
+                  "nameFr": "Référence à une partie d'un profil d’archivage applicable à un objet technique en particulier",
+                  "element": "Simple",
+                  "cardinality": "0-1",
+                  "type": "token",
+                  "choice": "no",
+                  "extensible": "no",
+                  "enumeration": [],
+                  "definition": "Référence à une partie d'un profil d’archivage applicable à un objet technique en particulier.",
+                  "collection": "Objets",
+                  "children": []
+                },
+                {
                   "name": "DataObjectSystemId",
                   "nameFr": "Identifiant de l'Objet de données du SAE",
                   "element": "Simple",
@@ -3376,7 +3402,7 @@
                   "name": "PersistentIdentifier",
                   "nameFr": "Identifiant pérenne",
                   "element": "Complex",
-                  "cardinality": "0-1",
+                  "cardinality": "0-N",
                   "type": "null",
                   "choice": "no",
                   "extensible": "no",
@@ -4019,7 +4045,7 @@
                       "extensible": "no",
                       "enumeration": [],
                       "definition": "Agent.",
-                      "collection": "Arborescence",
+                      "collection": "Objets",
                       "children": [
                         {
                           "name": "LinkingAgentIdentifierType",
@@ -4030,7 +4056,7 @@
                           "extensible": "no",
                           "enumeration": [],
                           "definition": "Identifiant.",
-                          "collection": "Arborescence",
+                          "collection": "Objets",
                           "children": []
                         },
                         {
@@ -4042,7 +4068,7 @@
                           "extensible": "no",
                           "enumeration": [],
                           "definition": "Valeur.",
-                          "collection": "Arborescence",
+                          "collection": "Objets",
                           "children": []
                         },
                         {
@@ -4054,7 +4080,7 @@
                           "extensible": "no",
                           "enumeration": [],
                           "definition": "Rôle.",
-                          "collection": "Arborescence",
+                          "collection": "Objets",
                           "children": []
                         }
                       ]
@@ -6319,6 +6345,55 @@
                               "definition": "Message technique détaillant l'événement.",
                               "collection": "Unités d'archives",
                               "children": []
+                            },
+                            {
+                              "name": "LinkingAgentIdentifier",
+                              "element": "Complex",
+                              "cardinality": "0-1",
+                              "type": "null",
+                              "choice": "no",
+                              "extensible": "no",
+                              "enumeration": [],
+                              "definition": "Agent.",
+                              "collection": "Unités d'archives",
+                              "children": [
+                                {
+                                  "name": "LinkingAgentIdentifierType",
+                                  "element": "Simple",
+                                  "cardinality": "0-1",
+                                  "type": "token",
+                                  "choice": "no",
+                                  "extensible": "no",
+                                  "enumeration": [],
+                                  "definition": "Identifiant.",
+                                  "collection": "Unités d'archives",
+                                  "children": []
+                                },
+                                {
+                                  "name": "LinkingAgentIdentifierValue",
+                                  "element": "Simple",
+                                  "cardinality": "0-1",
+                                  "type": "token",
+                                  "choice": "no",
+                                  "extensible": "no",
+                                  "enumeration": [],
+                                  "definition": "Valeur.",
+                                  "collection": "Unités d'archives",
+                                  "children": []
+                                },
+                                {
+                                  "name": "LinkingAgentRole",
+                                  "element": "Simple",
+                                  "cardinality": "0-1",
+                                  "type": "token",
+                                  "choice": "no",
+                                  "extensible": "no",
+                                  "enumeration": [],
+                                  "definition": "Rôle.",
+                                  "collection": "Unités d'archives",
+                                  "children": []
+                                }
+                              ]
                             }
                           ]
                         }
@@ -6339,6 +6414,212 @@
                       "definition": "Indique si une autorisation humaine est nécessaire pour vérifier ou valider les opérations de gestion des ArchiveUnit.",
                       "collection": "Unités d'archives",
                       "children": []
+                    },
+                    {
+                      "name": "HoldRule",
+                      "nameFr": "Gestion de la durée de gel",
+                      "element": "Complex",
+                      "cardinality": "0-1",
+                      "type": "null",
+                      "choice": "no",
+                      "extensible": "no",
+                      "enumeration": [],
+                      "definition": "Gestion de la durée de gel.",
+                      "collection": "Unités d'archives",
+                      "children": [
+                        {
+                          "name": "Rules",
+                          "nameFr": "Règles",
+                          "element": "Complex",
+                          "cardinality": "0-N",
+                          "type": "null",
+                          "choice": "no",
+                          "extensible": "no",
+                          "enumeration": [],
+                          "definition": "Règles.",
+                          "collection": "Unités d'archives",
+                          "children": [
+                            {
+                              "name": "Rule",
+                              "nameFr": "Règle de gestion",
+                              "element": "Simple",
+                              "cardinality": "0-N",
+                              "type": "token",
+                              "choice": "no",
+                              "extensible": "no",
+                              "enumeration": [],
+                              "definition": "Règle de gestion.",
+                              "collection": "Unités d'archives",
+                              "children": [
+                                {
+                                  "name": "id",
+                                  "nameFr": "id",
+                                  "element": "Attribute",
+                                  "cardinality": "0-1",
+                                  "type": "ID",
+                                  "choice": "no",
+                                  "extensible": "no",
+                                  "enumeration": [],
+                                  "definition": "Identifiant de la métadonnée",
+                                  "collection": "Unités d'archives",
+                                  "children": []
+                                }
+                              ]
+                            },
+                            {
+                              "name": "StartDate",
+                              "nameFr": "Date de début",
+                              "element": "Simple",
+                              "cardinality": "0-1",
+                              "type": "DateType",
+                              "choice": "no",
+                              "extensible": "no",
+                              "enumeration": [],
+                              "definition": "Date de début de gel",
+                              "collection": "Unités d'archives",
+                              "children": []
+                            },
+                            {
+                              "name": "EndDate",
+                              "nameFr": "Date de fin",
+                              "element": "Simple",
+                              "cardinality": "0-1",
+                              "type": "DateType",
+                              "choice": "no",
+                              "extensible": "no",
+                              "enumeration": [],
+                              "definition": "Date de fin.",
+                              "collection": "Unités d'archives",
+                              "children": []
+                            },
+                            {
+                              "name": "HoldEndDate",
+                              "nameFr": "Date de fin de gel",
+                              "element": "Simple",
+                              "cardinality": "0-1",
+                              "type": "DateType",
+                              "choice": "no",
+                              "extensible": "no",
+                              "enumeration": [],
+                              "definition": "Date de fin de gel.",
+                              "collection": "Unités d'archives",
+                              "children": []
+                            },
+                            {
+                              "name": "HoldOwner",
+                              "nameFr": "Propriétaire de la demande de gel",
+                              "element": "Simple",
+                              "cardinality": "0-1",
+                              "type": "token",
+                              "choice": "no",
+                              "extensible": "no",
+                              "enumeration": [],
+                              "definition": "Propriétaire de la demande de gel.",
+                              "collection": "Unités d'archives",
+                              "children": []
+                            },
+                            {
+                              "name": "HoldReason",
+                              "nameFr": "Motif de gel",
+                              "element": "Simple",
+                              "cardinality": "0-1",
+                              "type": "string",
+                              "choice": "no",
+                              "extensible": "no",
+                              "enumeration": [],
+                              "definition": "Motif de gel.",
+                              "collection": "Unités d'archives",
+                              "children": []
+                            },
+                            {
+                              "name": "HoldReassessingDate",
+                              "nameFr": "Date de réévaluation",
+                              "element": "Simple",
+                              "cardinality": "0-1",
+                              "type": "DateType",
+                              "choice": "no",
+                              "extensible": "no",
+                              "enumeration": [],
+                              "definition": "Date de réévaluation.",
+                              "collection": "Unités d'archives",
+                              "children": []
+                            },
+                            {
+                              "name": "PreventRearrangement",
+                              "nameFr": "Blocage de la reclassification",
+                              "element": "Simple",
+                              "cardinality": "0-1",
+                              "type": "boolean",
+                              "choice": "yes",
+                              "extensible": "no",
+                              "enumeration": [
+                                "false",
+                                "true"
+                              ],
+                              "definition": "Blocage de la reclassification.",
+                              "collection": "Unités d'archives",
+                              "children": []
+                            }
+                          ]
+                        },
+                        {
+                          "name": "Inheritance",
+                          "nameFr": "Règles d'héritage",
+                          "element": "Complex",
+                          "cardinality": "0-1",
+                          "type": "null",
+                          "choice": "no",
+                          "extensible": "no",
+                          "enumeration": [],
+                          "definition": "Règles d'héritage.",
+                          "collection": "Unités d'archives",
+                          "children": [
+                            {
+                              "name": "PreventInheritance",
+                              "nameFr": "Héritage dans le nœud courant",
+                              "element": "Simple",
+                              "cardinality": "0-1",
+                              "type": "boolean",
+                              "choice": "yes",
+                              "extensible": "no",
+                              "enumeration": [
+                                "false",
+                                "true"
+                              ],
+                              "definition": "Indique si les règles de gestion héritées des ArchiveUnit parents doivent être ignorées pour l'ArchiveUnit concerné.",
+                              "collection": "Unités d'archives",
+                              "children": []
+                            },
+                            {
+                              "name": "RefNonRuleId",
+                              "nameFr": "Arrêt de l’héritage dans le nœud courant",
+                              "element": "Simple",
+                              "cardinality": "0-N",
+                              "type": "token",
+                              "choice": "yes",
+                              "extensible": "no",
+                              "enumeration": [],
+                              "definition": "L'identifiant de la règle spécifiée pourra être retirée de l'héritage dans ce noeud.",
+                              "collection": "Unités d'archives",
+                              "children": [
+                                {
+                                  "name": "id",
+                                  "nameFr": "id",
+                                  "element": "Attribute",
+                                  "cardinality": "0-1",
+                                  "type": "ID",
+                                  "choice": "no",
+                                  "extensible": "no",
+                                  "enumeration": [],
+                                  "definition": "Identifiant de la métadonnée",
+                                  "collection": "Unités d'archives",
+                                  "children": []
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
                     }
                   ]
                 },
@@ -6483,6 +6764,55 @@
                       "definition": "Identifiant attribué à l'ArchiveUnit par le service versant.",
                       "collection": "Unités d'archives",
                       "children": []
+                    },
+                    {
+                      "name": "LinkingAgentIdentifier",
+                      "element": "Complex",
+                      "cardinality": "0-1",
+                      "type": "null",
+                      "choice": "no",
+                      "extensible": "no",
+                      "enumeration": [],
+                      "definition": "Agent.",
+                      "collection": "Unités d'archives",
+                      "children": [
+                        {
+                          "name": "LinkingAgentIdentifierType",
+                          "element": "Simple",
+                          "cardinality": "0-1",
+                          "type": "token",
+                          "choice": "no",
+                          "extensible": "no",
+                          "enumeration": [],
+                          "definition": "Identifiant.",
+                          "collection": "Unités d'archives",
+                          "children": []
+                        },
+                        {
+                          "name": "LinkingAgentIdentifierValue",
+                          "element": "Simple",
+                          "cardinality": "0-1",
+                          "type": "token",
+                          "choice": "no",
+                          "extensible": "no",
+                          "enumeration": [],
+                          "definition": "Valeur.",
+                          "collection": "Unités d'archives",
+                          "children": []
+                        },
+                        {
+                          "name": "LinkingAgentRole",
+                          "element": "Simple",
+                          "cardinality": "0-1",
+                          "type": "token",
+                          "choice": "no",
+                          "extensible": "no",
+                          "enumeration": [],
+                          "definition": "Rôle.",
+                          "collection": "Unités d'archives",
+                          "children": []
+                        }
+                      ]
                     },
                     {
                       "name": "Description",
@@ -11468,6 +11798,55 @@
                           "definition": "Message technique détaillant l'événement.",
                           "collection": "Unités d'archives",
                           "children": []
+                        },
+                        {
+                          "name": "LinkingAgentIdentifier",
+                          "element": "Complex",
+                          "cardinality": "0-1",
+                          "type": "null",
+                          "choice": "no",
+                          "extensible": "no",
+                          "enumeration": [],
+                          "definition": "Agent.",
+                          "collection": "Unités d'archives",
+                          "children": [
+                            {
+                              "name": "LinkingAgentIdentifierType",
+                              "element": "Simple",
+                              "cardinality": "0-1",
+                              "type": "token",
+                              "choice": "no",
+                              "extensible": "no",
+                              "enumeration": [],
+                              "definition": "Identifiant.",
+                              "collection": "Unités d'archives",
+                              "children": []
+                            },
+                            {
+                              "name": "LinkingAgentIdentifierValue",
+                              "element": "Simple",
+                              "cardinality": "0-1",
+                              "type": "token",
+                              "choice": "no",
+                              "extensible": "no",
+                              "enumeration": [],
+                              "definition": "Valeur.",
+                              "collection": "Unités d'archives",
+                              "children": []
+                            },
+                            {
+                              "name": "LinkingAgentRole",
+                              "element": "Simple",
+                              "cardinality": "0-1",
+                              "type": "token",
+                              "choice": "no",
+                              "extensible": "no",
+                              "enumeration": [],
+                              "definition": "Rôle.",
+                              "collection": "Unités d'archives",
+                              "children": []
+                            }
+                          ]
                         }
                       ]
                     },
@@ -12638,7 +13017,7 @@
                           "name": "SignatureDescription",
                           "nameFr": "Description de la signature",
                           "element": "Complex",
-                          "cardinality": "0-1",
+                          "cardinality": "0-N",
                           "type": "null",
                           "choice": "no",
                           "extensible": "no",
@@ -13597,6 +13976,107 @@
                                   ]
                                 }
                               ]
+                            },
+                            {
+                              "name": "DetachedSigningRole",
+                              "children": [],
+                              "nameFr": "DetachedSigningRole",
+                              "element": "Simple",
+                              "cardinality": "0-N",
+                              "type": "string",
+                              "choice": "no",
+                              "extensible": "no",
+                              "enumeration": [
+                                "Timestamp",
+                                "Signature",
+                                "AdditionalProof"
+                              ],
+                              "definition": "ArchiveTransfer.DataObjectPackage.DescriptiveMetadata.ArchiveUnit.Content.SigningInformation.DetachedSigningRole",
+                              "collection": "Unités d'archives"
+                            },
+                            {
+                              "name": "Extended",
+                              "children": [],
+                              "nameFr": "Extended",
+                              "element": "Simple",
+                              "cardinality": "0-1",
+                              "type": "object",
+                              "choice": "no",
+                              "extensible": "no",
+                              "enumeration": [],
+                              "definition": "ArchiveTransfer.DataObjectPackage.DescriptiveMetadata.ArchiveUnit.Content.SigningInformation.Extended",
+                              "collection": "Unités d'archives"
+                            },
+                            {
+                              "name": "SigningType",
+                              "children": [],
+                              "nameFr": "SigningType",
+                              "element": "Simple",
+                              "cardinality": "0-1",
+                              "type": "string",
+                              "choice": "no",
+                              "extensible": "no",
+                              "enumeration": [],
+                              "definition": "ArchiveTransfer.DataObjectPackage.DescriptiveMetadata.ArchiveUnit.Content.SigningInformation.SignatureDescription.SigningType",
+                              "collection": "Unités d'archives"
+                            },
+                            {
+                              "name": "SigningRole",
+                              "children": [],
+                              "nameFr": "SigningRole",
+                              "element": "Simple",
+                              "cardinality": "1-N",
+                              "type": "string",
+                              "choice": "no",
+                              "extensible": "no",
+                              "enumeration": [
+                                "SignedDocument",
+                                "Timestamp",
+                                "Signature",
+                                "AdditionalProof"
+                              ],
+                              "definition": "ArchiveTransfer.DataObjectPackage.DescriptiveMetadata.ArchiveUnit.Content.SigningInformation.SigningRole",
+                              "collection": "Unités d'archives"
+                            },
+                            {
+                              "name": "TimestampingInformation",
+                              "children": [
+                                {
+                                  "name": "AdditionalTimestampingInformation",
+                                  "children": [],
+                                  "nameFr": "AdditionalTimestampingInformation",
+                                  "element": "Simple",
+                                  "cardinality": "0-1",
+                                  "type": "string",
+                                  "choice": "no",
+                                  "extensible": "no",
+                                  "enumeration": [],
+                                  "definition": "ArchiveTransfer.DataObjectPackage.DescriptiveMetadata.ArchiveUnit.Content.SigningInformation.TimestampingInformation.AdditionalTimestampingInformation",
+                                  "collection": "Unités d'archives"
+                                },
+                                {
+                                  "name": "TimeStamp",
+                                  "children": [],
+                                  "nameFr": "TimeStamp",
+                                  "element": "Simple",
+                                  "cardinality": "0-1",
+                                  "type": "date",
+                                  "choice": "no",
+                                  "extensible": "no",
+                                  "enumeration": [],
+                                  "definition": "ArchiveTransfer.DataObjectPackage.DescriptiveMetadata.ArchiveUnit.Content.SigningInformation.TimestampingInformation.TimeStamp",
+                                  "collection": "Unités d'archives"
+                                }
+                              ],
+                              "nameFr": "TimestampingInformation",
+                              "element": "Complex",
+                              "cardinality": "0-N",
+                              "type": "null",
+                              "choice": "no",
+                              "extensible": "no",
+                              "enumeration": [],
+                              "definition": "ArchiveTransfer.DataObjectPackage.DescriptiveMetadata.ArchiveUnit.Content.SigningInformation.TimestampingInformation",
+                              "collection": "Unités d'archives"
                             }
                           ]
                         },
@@ -13625,112 +14105,6 @@
                           "extensible": "no",
                           "enumeration": [],
                           "definition": "ArchiveTransfer.DataObjectPackage.DescriptiveMetadata.ArchiveUnit.Content.SigningInformation.AdditionalProof",
-                          "collection": "Unités d'archives"
-                        },
-                        {
-                          "name": "DetachedSigningRole",
-                          "children": [],
-                          "nameFr": "DetachedSigningRole",
-                          "element": "Simple",
-                          "cardinality": "0-N",
-                          "type": "string",
-                          "choice": "no",
-                          "extensible": "no",
-                          "enumeration": [
-                            "Timestamp",
-                            "Signature",
-                            "AdditionalProof"
-                          ],
-                          "definition": "ArchiveTransfer.DataObjectPackage.DescriptiveMetadata.ArchiveUnit.Content.SigningInformation.DetachedSigningRole",
-                          "collection": "Unités d'archives"
-                        },
-                        {
-                          "name": "Extended",
-                          "children": [],
-                          "nameFr": "Extended",
-                          "element": "Simple",
-                          "cardinality": "0-1",
-                          "type": "object",
-                          "choice": "no",
-                          "extensible": "no",
-                          "enumeration": [],
-                          "definition": "ArchiveTransfer.DataObjectPackage.DescriptiveMetadata.ArchiveUnit.Content.SigningInformation.Extended",
-                          "collection": "Unités d'archives"
-                        },
-                        {
-                          "name": "SignatureDescription",
-                          "children": [
-                            {
-                              "name": "SigningType",
-                              "children": [],
-                              "nameFr": "SigningType",
-                              "element": "Simple",
-                              "cardinality": "0-1",
-                              "type": "string",
-                              "choice": "no",
-                              "extensible": "no",
-                              "enumeration": [],
-                              "definition": "ArchiveTransfer.DataObjectPackage.DescriptiveMetadata.ArchiveUnit.Content.SigningInformation.SignatureDescription.SigningType",
-                              "collection": "Unités d'archives"
-                            }
-                          ]
-                        },
-                        {
-                          "name": "SigningRole",
-                          "children": [],
-                          "nameFr": "SigningRole",
-                          "element": "Simple",
-                          "cardinality": "1-N",
-                          "type": "string",
-                          "choice": "no",
-                          "extensible": "no",
-                          "enumeration": [
-                            "SignedDocument",
-                            "Timestamp",
-                            "Signature",
-                            "AdditionalProof"
-                          ],
-                          "definition": "ArchiveTransfer.DataObjectPackage.DescriptiveMetadata.ArchiveUnit.Content.SigningInformation.SigningRole",
-                          "collection": "Unités d'archives"
-                        },
-                        {
-                          "name": "TimestampingInformation",
-                          "children": [
-                            {
-                              "name": "AdditionalTimestampingInformation",
-                              "children": [],
-                              "nameFr": "AdditionalTimestampingInformation",
-                              "element": "Simple",
-                              "cardinality": "0-1",
-                              "type": "string",
-                              "choice": "no",
-                              "extensible": "no",
-                              "enumeration": [],
-                              "definition": "ArchiveTransfer.DataObjectPackage.DescriptiveMetadata.ArchiveUnit.Content.SigningInformation.TimestampingInformation.AdditionalTimestampingInformation",
-                              "collection": "Unités d'archives"
-                            },
-                            {
-                              "name": "TimeStamp",
-                              "children": [],
-                              "nameFr": "TimeStamp",
-                              "element": "Simple",
-                              "cardinality": "0-1",
-                              "type": "date",
-                              "choice": "no",
-                              "extensible": "no",
-                              "enumeration": [],
-                              "definition": "ArchiveTransfer.DataObjectPackage.DescriptiveMetadata.ArchiveUnit.Content.SigningInformation.TimestampingInformation.TimeStamp",
-                              "collection": "Unités d'archives"
-                            }
-                          ],
-                          "nameFr": "TimestampingInformation",
-                          "element": "Complex",
-                          "cardinality": "0-N",
-                          "type": "null",
-                          "choice": "no",
-                          "extensible": "no",
-                          "enumeration": [],
-                          "definition": "ArchiveTransfer.DataObjectPackage.DescriptiveMetadata.ArchiveUnit.Content.SigningInformation.TimestampingInformation",
                           "collection": "Unités d'archives"
                         }
                       ]
@@ -13870,7 +14244,7 @@
                       "name": "TextContent",
                       "nameFr": "Contenu",
                       "element": "Simple",
-                      "cardinality": "0-1",
+                      "cardinality": "0-N",
                       "type": "string",
                       "choice": "no",
                       "extensible": "no",
@@ -14914,6 +15288,212 @@
               ]
             },
             {
+              "name": "HoldRule",
+              "nameFr": "Gestion de la durée de gel",
+              "element": "Complex",
+              "cardinality": "0-1",
+              "type": "null",
+              "choice": "no",
+              "extensible": "no",
+              "enumeration": [],
+              "definition": "Gestion de la durée de gel.",
+              "collection": "Règles",
+              "children": [
+                {
+                  "name": "Rules",
+                  "nameFr": "Règles",
+                  "element": "Complex",
+                  "cardinality": "0-N",
+                  "type": "null",
+                  "choice": "no",
+                  "extensible": "no",
+                  "enumeration": [],
+                  "definition": "Règles.",
+                  "collection": "Règles",
+                  "children": [
+                    {
+                      "name": "Rule",
+                      "nameFr": "Règle de gestion",
+                      "element": "Simple",
+                      "cardinality": "0-N",
+                      "type": "token",
+                      "choice": "no",
+                      "extensible": "no",
+                      "enumeration": [],
+                      "definition": "Règle de gestion.",
+                      "collection": "Règles",
+                      "children": [
+                        {
+                          "name": "id",
+                          "nameFr": "id",
+                          "element": "Attribute",
+                          "cardinality": "0-1",
+                          "type": "ID",
+                          "choice": "no",
+                          "extensible": "no",
+                          "enumeration": [],
+                          "definition": "Identifiant de la métadonnée",
+                          "collection": "Règles",
+                          "children": []
+                        }
+                      ]
+                    },
+                    {
+                      "name": "StartDate",
+                      "nameFr": "Date de début",
+                      "element": "Simple",
+                      "cardinality": "0-1",
+                      "type": "DateType",
+                      "choice": "no",
+                      "extensible": "no",
+                      "enumeration": [],
+                      "definition": "Date de début de gel",
+                      "collection": "Règles",
+                      "children": []
+                    },
+                    {
+                      "name": "EndDate",
+                      "nameFr": "Date de fin",
+                      "element": "Simple",
+                      "cardinality": "0-1",
+                      "type": "DateType",
+                      "choice": "no",
+                      "extensible": "no",
+                      "enumeration": [],
+                      "definition": "Date de fin.",
+                      "collection": "Règles",
+                      "children": []
+                    },
+                    {
+                      "name": "HoldEndDate",
+                      "nameFr": "Date de fin de gel",
+                      "element": "Simple",
+                      "cardinality": "0-1",
+                      "type": "DateType",
+                      "choice": "no",
+                      "extensible": "no",
+                      "enumeration": [],
+                      "definition": "Date de fin de gel.",
+                      "collection": "Règles",
+                      "children": []
+                    },
+                    {
+                      "name": "HoldOwner",
+                      "nameFr": "Propriétaire de la demande de gel",
+                      "element": "Simple",
+                      "cardinality": "0-1",
+                      "type": "token",
+                      "choice": "no",
+                      "extensible": "no",
+                      "enumeration": [],
+                      "definition": "Propriétaire de la demande de gel.",
+                      "collection": "Règles",
+                      "children": []
+                    },
+                    {
+                      "name": "HoldReason",
+                      "nameFr": "Motif de gel",
+                      "element": "Simple",
+                      "cardinality": "0-1",
+                      "type": "string",
+                      "choice": "no",
+                      "extensible": "no",
+                      "enumeration": [],
+                      "definition": "Motif de gel.",
+                      "collection": "Règles",
+                      "children": []
+                    },
+                    {
+                      "name": "HoldReassessingDate",
+                      "nameFr": "Date de réévaluation",
+                      "element": "Simple",
+                      "cardinality": "0-1",
+                      "type": "DateType",
+                      "choice": "no",
+                      "extensible": "no",
+                      "enumeration": [],
+                      "definition": "Date de réévaluation.",
+                      "collection": "Règles",
+                      "children": []
+                    },
+                    {
+                      "name": "PreventRearrangement",
+                      "nameFr": "Blocage de la reclassification",
+                      "element": "Simple",
+                      "cardinality": "0-1",
+                      "type": "boolean",
+                      "choice": "yes",
+                      "extensible": "no",
+                      "enumeration": [
+                        "false",
+                        "true"
+                      ],
+                      "definition": "Blocage de la reclassification.",
+                      "collection": "Règles",
+                      "children": []
+                    }
+                  ]
+                },
+                {
+                  "name": "Inheritance",
+                  "nameFr": "Règles d'héritage",
+                  "element": "Complex",
+                  "cardinality": "0-1",
+                  "type": "null",
+                  "choice": "no",
+                  "extensible": "no",
+                  "enumeration": [],
+                  "definition": "Règles d'héritage.",
+                  "collection": "Règles",
+                  "children": [
+                    {
+                      "name": "PreventInheritance",
+                      "nameFr": "Héritage dans le nœud courant",
+                      "element": "Simple",
+                      "cardinality": "0-1",
+                      "type": "boolean",
+                      "choice": "yes",
+                      "extensible": "no",
+                      "enumeration": [
+                        "false",
+                        "true"
+                      ],
+                      "definition": "Indique si les règles de gestion héritées des ArchiveUnit parents doivent être ignorées pour l'ArchiveUnit concerné.",
+                      "collection": "Règles",
+                      "children": []
+                    },
+                    {
+                      "name": "RefNonRuleId",
+                      "nameFr": "Arrêt de l’héritage dans le nœud courant",
+                      "element": "Simple",
+                      "cardinality": "0-N",
+                      "type": "token",
+                      "choice": "yes",
+                      "extensible": "no",
+                      "enumeration": [],
+                      "definition": "L'identifiant de la règle spécifiée pourra être retirée de l'héritage dans ce noeud.",
+                      "collection": "Règles",
+                      "children": [
+                        {
+                          "name": "id",
+                          "nameFr": "id",
+                          "element": "Attribute",
+                          "cardinality": "0-1",
+                          "type": "ID",
+                          "choice": "no",
+                          "extensible": "no",
+                          "enumeration": [],
+                          "definition": "Identifiant de la métadonnée",
+                          "collection": "Règles",
+                          "children": []
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
               "name": "ReuseRule",
               "nameFr": "Réutilisation",
               "element": "Complex",
@@ -15329,6 +15909,55 @@
                       "definition": "Message technique détaillant l'événement.",
                       "collection": "Règles",
                       "children": []
+                    },
+                    {
+                      "name": "LinkingAgentIdentifier",
+                      "element": "Complex",
+                      "cardinality": "0-1",
+                      "type": "null",
+                      "choice": "no",
+                      "extensible": "no",
+                      "enumeration": [],
+                      "definition": "Agent.",
+                      "collection": "Règles",
+                      "children": [
+                        {
+                          "name": "LinkingAgentIdentifierType",
+                          "element": "Simple",
+                          "cardinality": "0-1",
+                          "type": "token",
+                          "choice": "no",
+                          "extensible": "no",
+                          "enumeration": [],
+                          "definition": "Identifiant.",
+                          "collection": "Règles",
+                          "children": []
+                        },
+                        {
+                          "name": "LinkingAgentIdentifierValue",
+                          "element": "Simple",
+                          "cardinality": "0-1",
+                          "type": "token",
+                          "choice": "no",
+                          "extensible": "no",
+                          "enumeration": [],
+                          "definition": "Valeur.",
+                          "collection": "Règles",
+                          "children": []
+                        },
+                        {
+                          "name": "LinkingAgentRole",
+                          "element": "Simple",
+                          "cardinality": "0-1",
+                          "type": "token",
+                          "choice": "no",
+                          "extensible": "no",
+                          "enumeration": [],
+                          "definition": "Rôle.",
+                          "collection": "Règles",
+                          "children": []
+                        }
+                      ]
                     }
                   ]
                 }
