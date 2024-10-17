@@ -1,3 +1,51 @@
+<h2>Tableau</h2>
+<h3>table</h3>
+<table>
+  <thead>
+    <tr>
+      <th>Nom du ZIP</th>
+      <th>Poids</th>
+      <th>Compression</th>
+      <th>Chargement</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let row of tableDataSource">
+      <td>{{ row.zipName }}</td>
+      <td>{{ row.size }}</td>
+      <td><mat-progress-bar [value]="row.compression" class="stepper-progress-bar" mode="determinate"> </mat-progress-bar></td>
+      <td><mat-progress-bar [value]="row.loading" class="stepper-progress-bar" mode="determinate"> </mat-progress-bar></td>
+    </tr>
+  </tbody>
+</table>
+
+<h3>mat-table</h3>
+<table mat-table [dataSource]="tableDataSource">
+  <ng-container matColumnDef="zipName">
+    <th mat-header-cell *matHeaderCellDef>Nom du ZIP</th>
+    <td mat-cell *matCellDef="let element">{{ element.zipName }}</td>
+  </ng-container>
+  <ng-container matColumnDef="size">
+    <th mat-header-cell *matHeaderCellDef>Poids</th>
+    <td mat-cell *matCellDef="let element">{{ element.size }}</td>
+  </ng-container>
+  <ng-container matColumnDef="compression">
+    <th mat-header-cell *matHeaderCellDef>Compression</th>
+    <td mat-cell *matCellDef="let element">
+      <mat-progress-bar [value]="element.compression" class="stepper-progress-bar" mode="determinate"> </mat-progress-bar>
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="loading">
+    <th mat-header-cell *matHeaderCellDef>Chargement</th>
+    <td mat-cell *matCellDef="let element">
+      <mat-progress-bar [value]="element.loading" class="stepper-progress-bar" mode="determinate"> </mat-progress-bar>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+</table>
+
 <div>
   <h2>{{ 'ARRAY.BASIC_TITLE' | translate }}</h2>
   <div class="vitamui-table">

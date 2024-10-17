@@ -503,29 +503,28 @@
         <div class="text medium light">{{ 'COLLECT.MODAL.TITLE' | translate }}</div>
         <div class="text large bold">{{ 'COLLECT.MODAL.UPLOAD_FILES' | translate }}</div>
         <div class="main-content">
-          <div class="new-design-table">
-            <div class="new-design-row new-design-head">
-              <div class="name">{{ 'COLLECT.UPLOAD.ZIP_NAME' | translate }}</div>
-              <div class="size">{{ 'COLLECT.UPLOAD.WEIGHT' | translate }}</div>
-              <div class="compression">{{ 'COLLECT.UPLOAD.ZIP_TRACKING_TITLE' | translate }}</div>
-              <div class="upload">{{ 'COLLECT.UPLOAD.STATUS' | translate }}</div>
-            </div>
-
-            <div class="new-design-row">
-              <div class="name">{{ (zippedFile$ | async)?.name }}</div>
-              <div class="size">{{ (zippedFile$ | async)?.size | fileSize }}</div>
-              <div class="compression">
-                <span class="purcent">{{ (zippedFile$ | async)?.currentFileUploadedSize | number: '1.0-0' }} %</span>
-                <mat-progress-bar [value]="(zippedFile$ | async)?.currentFileUploadedSize" class="stepper-progress-bar" mode="determinate">
-                </mat-progress-bar>
-              </div>
-              <div class="upload">
-                <span class="purcent">{{ (zippedFile$ | async)?.uploadedSize | number: '1.0-0' }} %</span>
-                <mat-progress-bar [value]="(zippedFile$ | async)?.uploadedSize" class="stepper-progress-bar" mode="determinate">
-                </mat-progress-bar>
-              </div>
-            </div>
-          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>{{ 'COLLECT.UPLOAD.ZIP_NAME' | translate }}</th>
+                <th>{{ 'COLLECT.UPLOAD.WEIGHT' | translate }}</th>
+                <th>{{ 'COLLECT.UPLOAD.ZIP_TRACKING_TITLE' | translate }}</th>
+                <th>{{ 'COLLECT.UPLOAD.STATUS' | translate }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngIf="zippedFile$ | async as zippedFile">
+                <td>{{ zippedFile?.name }}</td>
+                <td>{{ zippedFile?.size | fileSize }}</td>
+                <td>
+                  <vitamui-common-progress-bar [percent]="zippedFile?.currentFileUploadedSize"></vitamui-common-progress-bar>
+                </td>
+                <td>
+                  <vitamui-common-progress-bar [percent]="zippedFile?.uploadedSize"></vitamui-common-progress-bar>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
         <div class="actions">
           <button (click)="close()" [disabled]="pending" class="btn primary" type="button">

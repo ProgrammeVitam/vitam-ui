@@ -1,3 +1,5 @@
+@import './mixins/elevation';
+
 table.vitamui-table {
   color: var(--vitamui-grey-700);
   font-size: 14px;
@@ -159,8 +161,8 @@ td .vitamui-row-icon {
   color: #b7b7b7;
 }
 
-tbody > tr:not(.no-hover):hover {
-  background-color: rgba(var(--vitamui-primary-rgb), 0.15);
+table:not(.no-hover) tbody > tr:not(.no-hover):hover {
+  background-color: var(--vitamui-background);
 }
 
 .vitamui-table-row {
@@ -517,5 +519,44 @@ $row-padding: 0.8rem;
   .profile-value {
     font-size: 16px;
     color: var(--vitamui-grey-900);
+  }
+}
+
+table,
+table.cdk-table {
+  border-spacing: 0 5px;
+  background-color: transparent;
+  width: 100%;
+
+  thead,
+  tbody {
+    background: $white;
+    tr {
+      @include shadow-2dp-dark;
+      border-radius: 5px;
+
+      th,
+      td {
+        @extend .pl-3;
+        @extend .pr-3;
+        @extend .py-3;
+        @extend .text;
+        @extend .normal;
+      }
+
+      th:first-child,
+      td:first-child {
+        @extend .pl-4;
+      }
+
+      th:last-child,
+      td:last-child {
+        @extend .pr-4;
+      }
+
+      th {
+        @extend .bold;
+      }
+    }
   }
 }

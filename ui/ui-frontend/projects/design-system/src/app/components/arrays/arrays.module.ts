@@ -9,6 +9,7 @@ import { ArraysComponent } from './arrays.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { VitamUILibraryModule } from 'vitamui-library';
 import { MatLegacyDialogModule as MatDialogModule } from '@angular/material/legacy-dialog';
+import { MatTableModule } from '@angular/material/table';
 
 @NgModule({
   declarations: [ArraysComponent],
@@ -22,6 +23,7 @@ import { MatLegacyDialogModule as MatDialogModule } from '@angular/material/lega
     SharedModule,
     TranslateModule,
     MatDialogModule,
+    MatTableModule,
   ],
   exports: [ArraysComponent],
 })
