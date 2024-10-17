@@ -90,7 +90,7 @@ export class UserService extends SearchService<User> {
 
   exists(email: string): Observable<any> {
     const criterionArray: Criterion[] = [];
-    criterionArray.push({ key: 'email', value: email, operator: Operators.equalsIgnoreCase });
+    criterionArray.push({ key: 'email', value: email.toLowerCase(), operator: Operators.equals });
     const query: CriteriaSearchQuery = { criteria: criterionArray };
 
     const params = [{ key: 'criteria', value: JSON.stringify(query) }];
