@@ -2238,6 +2238,7 @@ export class MockSchemaService {
       Category: 'DESCRIPTION',
       ApiPath: 'DocumentType',
       DataType: 'STRING',
+      EffectiveCardinality: 'ZERO',
     },
     {
       id: null,
@@ -8982,6 +8983,7 @@ export class MockSchemaService {
       Category: 'DESCRIPTION',
       ApiPath: 'Type',
       DataType: 'STRING',
+      EffectiveCardinality: 'ZERO',
     },
     {
       id: null,

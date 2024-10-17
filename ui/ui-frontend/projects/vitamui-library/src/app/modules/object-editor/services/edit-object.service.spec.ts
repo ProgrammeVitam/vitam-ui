@@ -3,7 +3,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { EMPTY, from, mergeMap, toArray } from 'rxjs';
 import { LoggerModule } from '../../logger';
-import { Collection, ProfiledSchemaElement, Schema } from '../../models';
+import { Collection, ProfiledSchemaElement, Schema, SchemaElement } from '../../models';
 import { DisplayRule } from '../../object-viewer/models';
 import { DisplayRuleHelperService } from '../../object-viewer/services/display-rule-helper.service';
 import { SchemaElementToDisplayRuleService } from '../../object-viewer/services/schema-element-to-display-rule.service';
@@ -226,12 +226,49 @@ describe('EditObjectService', () => {
             { Path: 'Agent', ui: { Path: 'Actors.Agent', component: 'group' } },
             { Path: 'Transmitter', ui: { Path: 'Actors.Transmitter', component: 'group' } },
             { Path: 'Writer', ui: { Path: 'Actors.Writer', component: 'group' } },
+            {
+              Path: null,
+              ui: {
+                Path: 'Characteristics',
+                component: 'group',
+                open: false,
+                layout: {
+                  columns: 2,
+                  size: 'medium',
+                },
+                label: 'Caractéristique(s)',
+              },
+            },
+            {
+              Path: 'Type',
+              ui: {
+                Path: 'Characteristics.Type',
+                component: 'textfield',
+                layout: {
+                  columns: 1,
+                  size: 'small',
+                },
+              },
+            },
+            {
+              Path: 'DocumentType',
+              ui: {
+                Path: 'Characteristics.DocumentType',
+                component: 'textfield',
+                layout: {
+                  columns: 1,
+                  size: 'small',
+                },
+              },
+            },
           ];
           const projectedData = templetaService.toProjected(originalData, template);
           const subschema = schema.filter((element) => element.Category === 'DESCRIPTION');
           const templatedSchema = service.createTemplateSchema(template, subschema);
           const editObject: EditObject = service.editObject(path, projectedData, template, templatedSchema);
 
+          const elementOfSchemaTemplate: SchemaElement = templatedSchema.find((schema) => schema.ApiPath === 'Characteristics');
+          expect(elementOfSchemaTemplate.Cardinality).toEqual('ZERO');
           expect(editObject).toBeTruthy();
           expect(editObject.children.length).toEqual(47);
           expect(editObject.children).toEqual(
