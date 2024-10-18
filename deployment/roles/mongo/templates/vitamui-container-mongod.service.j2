@@ -21,8 +21,8 @@ ExecStart=/usr/bin/docker run --rm --net=host --name vitamui-mongod --user 1003:
 
 ExecStop=/usr/bin/docker stop -t 85 vitamui-mongod
 ExecReload=/usr/bin/docker restart -t 85 vitamui-mongod
-TimeoutStartSec=60
-TimeoutStopSec=30
+TimeoutStartSec=120
+TimeoutStopSec=60
 StartLimitBurst=6
 
 [Install]
