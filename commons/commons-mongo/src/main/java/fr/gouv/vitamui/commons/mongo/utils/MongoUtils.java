@@ -280,9 +280,13 @@ public final class MongoUtils {
                 criteria = Criteria.where(key).ne(val);
                 break;
             case EQUALSIGNORECASE:
-                final StringBuilder options = new StringBuilder("i");
-                final String valueToSearch = "^" + val.toString().replaceAll("(?<!\\.)\\*", ".*") + "$";
-                criteria = Criteria.where(key).regex(valueToSearch, options.toString());
+                if (val instanceof String && !((String) val).contains("*")) {
+                    criteria = Criteria.where(key).regex("^" + Pattern.quote((String) val) + "$", "i");
+                } else {
+                    final StringBuilder options = new StringBuilder("i");
+                    final String valueToSearch = "^" + val.toString().replaceAll("(?<!\\.)\\*", ".*") + "$";
+                    criteria = Criteria.where(key).regex(valueToSearch, options.toString());
+                }
                 break;
             case GREATER:
                 criteria = Criteria.where(key).gt(val);
