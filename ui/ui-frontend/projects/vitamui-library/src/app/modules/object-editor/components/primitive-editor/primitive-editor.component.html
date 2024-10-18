@@ -27,7 +27,7 @@
       *ngSwitchCase="'datepicker'"
       [formControl]="editObject.control"
       [label]="editObject.displayRule.ui.label | translate | empty | appendStar: editObject.required"
-      pickerType="day"
+      [pickerType]="getPickerType(editObject)"
     >
       <vitamui-editor-hint [control]="editObject.control" [hint]="editObject.hint"></vitamui-editor-hint>
       <vitamui-form-error-display [control]="editObject.control"></vitamui-form-error-display>
@@ -36,7 +36,7 @@
       *ngSwitchCase="'datetime'"
       [formControl]="editObject.control"
       [label]="editObject.displayRule.ui.label | translate | empty | appendStar: editObject.required"
-      pickerType="day"
+      [pickerType]="getPickerType(editObject)"
     >
       <vitamui-editor-hint [control]="editObject.control" [hint]="editObject.hint"></vitamui-editor-hint>
       <vitamui-form-error-display [control]="editObject.control"></vitamui-form-error-display>

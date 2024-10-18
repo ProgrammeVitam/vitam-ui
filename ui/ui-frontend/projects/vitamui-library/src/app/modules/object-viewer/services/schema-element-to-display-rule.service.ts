@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { DisplayRule, ProfiledSchemaElement, SchemaElement } from '../models';
 import { LayoutSize } from '../types';
+import { DatePatternConstants } from '../../dates.constants';
 
 type ComponentName =
   | 'balise-n1'
@@ -183,6 +184,25 @@ export class SchemaElementToDisplayRuleService {
         const isMultiple = !isUnique;
         const isSpecial = schemaElement.Path.includes('_.');
         const isSelect = (schemaElement as ProfiledSchemaElement).Control?.Type === 'SELECT' || false;
+
+        const control = (schemaElement as ProfiledSchemaElement).Control;
+
+        if (schemaElement.FieldName === 'Version') {
+          if (control) {
+            if (
+              control.Type === 'REGEX' &&
+              [
+                DatePatternConstants.YEAR.toString(),
+                DatePatternConstants.YEAR_MONTH.toString(),
+                DatePatternConstants.YEAR_MONTH_DAY.toString(),
+              ].includes(control.Value)
+            ) {
+              return 'datepicker-date';
+            } else {
+              return defaultComponent;
+            }
+          }
+        }
 
         if (isSelect && isUnique) return 'select-mono';
         if (isSelect && isMultiple) return 'select-multi';
