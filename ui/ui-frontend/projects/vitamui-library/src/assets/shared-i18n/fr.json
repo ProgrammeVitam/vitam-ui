@@ -4254,58 +4254,58 @@
     "ARCHIVE_UNIT_RULES_DETAILS": {
       "RULES_FINAL_ACTION": {
         "KEEP": "Conservation",
-        "DESTROY": "Elimination",
-        "CONFLICT": "Conflict",
-        "INHERITED": "Inherited",
-        "CARRIED": "Carried",
-        "COPY": "Copy",
-        "TRANSFER": "Transfer",
-        "RESTRICTACCESS": "Restrict access"
+        "DESTROY": "Élimination",
+        "CONFLICT": "Conflit",
+        "INHERITED": "Hérité",
+        "CARRIED": "Transféré",
+        "COPY": "Copie",
+        "TRANSFER": "Transfert",
+        "RESTRICTACCESS": "Restriction d'accès"
       },
       "RULE_STATUS": {
-        "INHERITED": "Inherited",
-        "CARRIED": "Carried",
-        "BLOCKED": "Blocked"
+        "INHERITED": "Hérité",
+        "CARRIED": "Transféré",
+        "BLOCKED": "Bloqué"
       },
       "RULE": {
-        "IDENTIFIER": "Identifier",
-        "START_DATE": "Start",
-        "END_DATE": "End",
-        "STATUS": "Status"
+        "IDENTIFIER": "Identifiant",
+        "START_DATE": "Date de début",
+        "END_DATE": "Date de fin",
+        "STATUS": "Statut"
       },
       "FINAL_ACTION": {
-        "VALUE": "Value",
-        "STATUS": "Status",
-        "PROPERTY": "Property"
+        "VALUE": "Valeur",
+        "STATUS": "Statut",
+        "PROPERTY": "Propriété"
       },
-      "PROPERTIES": "Properties",
+      "PROPERTIES": "Propriétés",
       "FINAL_ACTION_VALUE": "Sort final",
-      "INHERITANCE_BLOCKED": "Category inheritance blocked",
+      "INHERITANCE_BLOCKED": "Blocage de l'héritage de catégorie",
       "CATEGORY_NAME": {
         "APPRAISALRULE": "DUA",
         "STORAGERULE": "DUC",
-        "HOLDRULE": "Freeze",
-        "ACCESSRULE": "Communicability",
-        "DISSEMINATIONRULE": "Dissemination",
-        "REUSERULE": "Reuse",
+        "HOLDRULE": "Gel",
+        "ACCESSRULE": "Communicabilité",
+        "DISSEMINATIONRULE": "Diffusion",
+        "REUSERULE": "Réutilisation",
         "CLASSIFICATIONRULE": "Classification"
       },
       "CLASSIFICATION_RULE_PROPERTIES": {
-        "CLASSIFICATIONLEVEL": "Classification level",
-        "CLASSIFICATIONOWNER": "Owner",
-        "CLASSIFICATIONAUDIENCE": "Broadcast scope limitation",
-        "CLASSIFICATIONREASSESSINGDATE": "Reassessment date",
-        "NEEDREASSESSINGAUTHORIZATION": "Need for re-evaluation authorization"
+        "CLASSIFICATIONLEVEL": "Niveau de classification",
+        "CLASSIFICATIONOWNER": "Propriétaire",
+        "CLASSIFICATIONAUDIENCE": "Limitation de la portée de diffusion",
+        "CLASSIFICATIONREASSESSINGDATE": "Date de réévaluation",
+        "NEEDREASSESSINGAUTHORIZATION": "Besoin d'autorisation pour réévaluation"
       },
       "HOLD_RULE_PROPERTIES": {
         "HOLDREASON": "Motif de la règle de gel",
         "HOLDOWNER": "Propriétaire",
-        "PREVENTREARRANGEMENT": "Blocage de reclassement",
+        "PREVENTREARRANGEMENT": "Blocage du reclassement",
         "HOLDREASSESSINGDATE": "Date de réévaluation",
         "HOLDENDDATE": "Date de fin de gel"
       },
-      "COMMON_YES": "Yes",
-      "COMMON_NO": "No"
+      "COMMON_YES": "Oui",
+      "COMMON_NO": "Non"
     },
     "ACCESS_CONTRACT_NOT_FOUND_IN_VITAM": "Le contrat d'accès n'est pas trouvé dans vitam",
     "ACCESS_CONTRACT_NOT_FOUND": "Aucun contrat d'accès n'est associé à l'utilisateur",
