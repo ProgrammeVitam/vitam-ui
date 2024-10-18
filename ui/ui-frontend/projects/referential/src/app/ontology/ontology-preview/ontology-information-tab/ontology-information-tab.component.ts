@@ -59,7 +59,7 @@ export class OntologyInformationTabComponent implements OnInit {
       this._inputOntology.collections = [];
     }
 
-    this.sizeFieldVisible = this._inputOntology.type === 'TEXT';
+    this.sizeFieldVisible = ['TEXT', 'GEO_POINT', 'KEYWORD'].includes(this._inputOntology.type);
 
     this.resetForm(this.inputOntology);
     this.updated.emit(false);
