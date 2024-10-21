@@ -1,18 +1,21 @@
 <ng-container [formGroup]="form">
   <vitamui-common-input class="col-6 pl-0" maxlength="20" required formControlName="code" [placeholder]="'CUSTOMER.OWNER.CODE' | translate">
     <ng-container *ngIf="form.get('code')?.touched">
-      <vitamui-common-input-error *ngIf="!!form?.get('code')?.errors?.required">{{
-        'COMMON.ERROR.REQUIRED' | translate
-      }}</vitamui-common-input-error>
-      <vitamui-common-input-error *ngIf="!!form?.get('code')?.errors?.pattern">{{
-        'COMMON.ERROR.WRONG_FORMAT' | translate
-      }}</vitamui-common-input-error>
-      <vitamui-common-input-error *ngIf="!!form?.get('code')?.errors?.maxlength">{{
-        'COMMON.ERROR.STRING_MAX_LENGTH' | translate: { max: ownerCodeMaxLength }
-      }}</vitamui-common-input-error>
-      <vitamui-common-input-error *ngIf="!!form?.get('code')?.errors?.uniqueCode">{{
-        'CUSTOMER.OWNER.MODAL.CODE_ALREADY_EXIST' | translate
-      }}</vitamui-common-input-error>
+      <vitamui-common-input-error *ngIf="!!form?.get('code')?.errors?.required"
+        >{{ 'COMMON.ERROR.REQUIRED' | translate }}
+      </vitamui-common-input-error>
+      <vitamui-common-input-error *ngIf="!!form?.get('code')?.errors?.pattern"
+        >{{ 'COMMON.ERROR.WRONG_FORMAT' | translate }}
+      </vitamui-common-input-error>
+      <vitamui-common-input-error *ngIf="!!form?.get('code')?.errors?.maxlength"
+        >{{ 'COMMON.ERROR.STRING_MAX_LENGTH' | translate: { max: ownerCodeMaxLength } }}
+      </vitamui-common-input-error>
+      <vitamui-common-input-error *ngIf="!!form?.get('code')?.errors?.uniqueCode"
+        >{{ 'CUSTOMER.OWNER.MODAL.CODE_ALREADY_EXIST' | translate }}
+      </vitamui-common-input-error>
+      <vitamui-common-input-error *ngIf="!!form?.get('code')?.errors?.minlength"
+        >{{ 'COMMON.ERROR.STRING_MIN_LENGTH' | translate: { max: ownerCodeMinLength } }}
+      </vitamui-common-input-error>
     </ng-container>
   </vitamui-common-input>
 
@@ -24,11 +27,13 @@
       required
       [placeholder]="'CUSTOMER.OWNER.NAME' | translate"
     >
-      <vitamui-common-input-error *ngIf="form.get('name')?.touched && !!form.get('name')?.errors?.required">{{
-        'COMMON.ERROR.REQUIRED' | translate
-      }}</vitamui-common-input-error>
+      <vitamui-common-input-error *ngIf="form.get('name')?.touched && !!form.get('name')?.errors?.required"
+        >{{ 'COMMON.ERROR.REQUIRED' | translate }}
+      </vitamui-common-input-error>
+      <vitamui-common-input-error *ngIf="!!form?.get('name')?.errors?.maxlength"
+        >{{ 'COMMON.ERROR.STRING_MAX_LENGTH' | translate: { max: ownerNameMaxLength } }}
+      </vitamui-common-input-error>
     </vitamui-common-input>
-
     <vitamui-common-input
       class="col-6"
       formControlName="companyName"
@@ -36,9 +41,12 @@
       required
       [placeholder]="'CUSTOMER.OWNER.SOCIAL_REASON' | translate"
     >
-      <vitamui-common-input-error *ngIf="form.get('companyName')?.touched && !!form.get('companyName')?.errors?.required">{{
-        'COMMON.ERROR.REQUIRED' | translate
-      }}</vitamui-common-input-error>
+      <vitamui-common-input-error *ngIf="form.get('companyName')?.touched && !!form.get('companyName')?.errors?.required"
+        >{{ 'COMMON.ERROR.REQUIRED' | translate }}
+      </vitamui-common-input-error>
+      <vitamui-common-input-error *ngIf="!!form?.get('companyName')?.errors?.maxlength"
+        >{{ 'COMMON.ERROR.STRING_MAX_LENGTH' | translate: { max: ownerCompanyNameMaxLength } }}
+      </vitamui-common-input-error>
     </vitamui-common-input>
   </div>
 
