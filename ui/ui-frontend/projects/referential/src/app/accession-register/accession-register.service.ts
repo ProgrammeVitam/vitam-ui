@@ -37,7 +37,7 @@
 import { HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
+import { BehaviorSubject, Observable, of, scan, Subject } from 'rxjs';
 import { catchError, map, withLatestFrom } from 'rxjs/operators';
 import {
   AccessionRegisterDetail,
@@ -45,8 +45,6 @@ import {
   AccessionRegisterStatus,
   BytesPipe,
   Colors,
-  ExternalParameters,
-  ExternalParametersService,
   FacetDetails,
   SearchService,
   VitamUISnackBarService,
@@ -72,10 +70,39 @@ export class AccessionRegistersService extends SearchService<AccessionRegisterDe
   private advancedFormHaveChanged$ = new BehaviorSubject<boolean>(false);
   private globalResetEvent$ = new BehaviorSubject<boolean>(false);
 
+  stats$ = this.optionalValues.asObservable().pipe(
+    map((map: { [key: string]: any }): AccessionRegisterStats => (map ? map['stats'] : null)),
+    scan(
+      (acc: AccessionRegisterStats, cur: AccessionRegisterStats) => {
+        if (cur) {
+          acc.objectSizes += cur.objectSizes;
+          acc.totalObjects += cur.totalObjects;
+          acc.totalUnits += cur.totalUnits;
+          acc.totalObjectsGroups += cur.totalObjectsGroups;
+
+          return acc;
+        }
+
+        return {
+          objectSizes: 0,
+          totalObjects: 0,
+          totalUnits: 0,
+          totalObjectsGroups: 0,
+        };
+      },
+      {
+        objectSizes: 0,
+        totalObjects: 0,
+        totalUnits: 0,
+        totalObjectsGroups: 0,
+      },
+    ),
+    map((stats) => this.toFacetDetails(stats)),
+  );
+
   constructor(
     private accessionRegisterApiService: AccessionRegisterDetailApiService,
     private translateService: TranslateService,
-    private externalParameterService: ExternalParametersService,
     private bytesPipe: BytesPipe,
     private snackBarService: VitamUISnackBarService,
   ) {
@@ -133,69 +160,6 @@ export class AccessionRegistersService extends SearchService<AccessionRegisterDe
     );
   }
 
-  private sortByLabel(locale: string): (a: { label: string }, b: { label: string }) => number {
-    return (a: { label: string }, b: { label: string }) => a.label.localeCompare(b.label, locale);
-  }
-
-  fetchUserAccessContract(): Observable<string> {
-    return this.externalParameterService
-      .getUserExternalParameters()
-      .pipe(map((parameters) => parameters.get(ExternalParameters.PARAM_ACCESS_CONTRACT)));
-  }
-
-  getStats(): Observable<FacetDetails[]> {
-    return this.optionalValues.asObservable().pipe(
-      map((m: any) => {
-        if (m === undefined || m['stats'] === undefined) {
-          return [];
-        }
-        const accessionRegisterStats: AccessionRegisterStats = m['stats'] as AccessionRegisterStats;
-        return this.fetchFacetDetails(accessionRegisterStats);
-      }),
-    );
-  }
-
-  public fetchFacetDetails(accessionRegisterStats: AccessionRegisterStats): FacetDetails[] {
-    const stateFacetDetails: FacetDetails[] = [];
-    stateFacetDetails.push({
-      title: this.translateService.instant('ACCESSION_REGISTER.FACETS.TOTAL_OPERATION_ENTRIES'),
-      totalResults: this.totalElements.toString(),
-      clickable: false,
-      color: Colors.BLACK,
-      backgroundColor: Colors.DISABLED,
-    });
-    stateFacetDetails.push({
-      title: this.translateService.instant('ACCESSION_REGISTER.FACETS.TOTAL_UNITS'),
-      totalResults: accessionRegisterStats.totalUnits.toString(),
-      clickable: false,
-      color: Colors.BLACK,
-      backgroundColor: Colors.DISABLED,
-    });
-    stateFacetDetails.push({
-      title: this.translateService.instant('ACCESSION_REGISTER.FACETS.TOTAL_OBJECTS_GROUP'),
-      totalResults: accessionRegisterStats.totalObjectsGroups.toString(),
-      clickable: false,
-      color: Colors.BLACK,
-      backgroundColor: Colors.DISABLED,
-    });
-    stateFacetDetails.push({
-      title: this.translateService.instant('ACCESSION_REGISTER.FACETS.TOTAL_OBJECTS'),
-      totalResults: accessionRegisterStats.totalObjects.toString(),
-      clickable: false,
-      color: Colors.BLACK,
-      backgroundColor: Colors.DISABLED,
-    });
-    stateFacetDetails.push({
-      title: this.translateService.instant('ACCESSION_REGISTER.FACETS.TOTAL_SIZE'),
-      totalResults: this.bytesPipe.transform(accessionRegisterStats.objectSizes),
-      clickable: false,
-      color: Colors.BLACK,
-      backgroundColor: Colors.DISABLED,
-    });
-
-    return stateFacetDetails;
-  }
-
   notifyFilterChange(value: Map<string, Array<string>>) {
     this.statusFilterChange$.next(value);
     this.globalSearchButtonEvent$.next(true);
@@ -212,10 +176,6 @@ export class AccessionRegistersService extends SearchService<AccessionRegisterDe
 
   getDateIntervalChanges(): BehaviorSubject<{ endDateMin: string; endDateMax: string }> {
     return this.dateIntervalChange$;
-  }
-
-  getSearchTextChange(): BehaviorSubject<string> {
-    return this.searchTextChange$;
   }
 
   toggleOpenAdvancedSearchPanel() {
@@ -278,5 +238,59 @@ export class AccessionRegistersService extends SearchService<AccessionRegisterDe
 
   notifyOrderChange() {
     this.globalSearchButtonEvent$.next(true);
+  }
+
+  resetFacets(): void {
+    this.optionalValues.next(null);
+  }
+
+  private toFacetDetails(accessionRegisterStats: AccessionRegisterStats): FacetDetails[] {
+    if (!accessionRegisterStats) return [];
+
+    const details = {
+      clickable: false,
+      color: Colors.BLACK,
+      backgroundColor: Colors.DISABLED,
+    };
+
+    const facetDetails = [
+      {
+        title: this.translateService.instant('ACCESSION_REGISTER.FACETS.TOTAL_UNITS'),
+        totalResults: accessionRegisterStats.totalUnits.toString(),
+        ...details,
+      },
+      {
+        title: this.translateService.instant('ACCESSION_REGISTER.FACETS.TOTAL_OBJECTS_GROUP'),
+        totalResults: accessionRegisterStats.totalObjectsGroups.toString(),
+        ...details,
+      },
+      {
+        title: this.translateService.instant('ACCESSION_REGISTER.FACETS.TOTAL_OBJECTS'),
+        totalResults: accessionRegisterStats.totalObjects.toString(),
+        ...details,
+      },
+      {
+        title: this.translateService.instant('ACCESSION_REGISTER.FACETS.TOTAL_SIZE'),
+        totalResults: this.bytesPipe.transform(accessionRegisterStats.objectSizes),
+        ...details,
+      },
+    ];
+
+    if (this.totalElements) {
+      return [
+        {
+          title: this.translateService.instant('ACCESSION_REGISTER.FACETS.TOTAL_OPERATION_ENTRIES'),
+          totalResults: this.totalElements.toString(),
+          ...details,
+        },
+        ...facetDetails,
+      ];
+    }
+
+    return facetDetails;
+  }
+
+  private sortByLabel(locale: string): (a: { label: string }, b: { label: string }) => number {
+    return (a: { label: string }, b: { label: string }) => a.label.localeCompare(b.label, locale);
   }
 }

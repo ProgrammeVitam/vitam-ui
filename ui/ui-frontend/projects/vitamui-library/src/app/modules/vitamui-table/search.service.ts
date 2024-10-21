@@ -48,7 +48,7 @@ export class SearchService<T extends Id> {
   totalElements: number;
   protected hasMore: boolean;
   protected data: T[];
-  protected optionalValues: BehaviorSubject<Map<string, any>> = new BehaviorSubject(new Map());
+  protected optionalValues: BehaviorSubject<{ [key: string]: any } | null> = new BehaviorSubject(null);
 
   constructor(
     protected paginatedApi: PaginatedApi<T>,
