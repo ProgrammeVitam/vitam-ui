@@ -37,14 +37,14 @@
 import { ComponentType } from '@angular/cdk/portal';
 import { Component, Inject, OnDestroy, OnInit, TemplateRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { finalize, merge, Observable, Subject } from 'rxjs';
-import { filter, takeUntil } from 'rxjs/operators';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { merge, Observable, Subscription } from 'rxjs';
+import { filter, finalize } from 'rxjs/operators';
 import { ConfirmDialogService, CountryOption, CountryService, Customer, Logo, OtpState, StartupService } from 'ui-frontend-common';
 import { CustomerService } from '../../core/customer.service';
 import { TenantFormValidators } from '../tenant-create/tenant-form.validators';
 import { CustomerAlertingComponent } from './customer-alerting/customer-alerting.component';
-import { ALPHA_NUMERIC_REGEX, CustomerCreateValidators, CUSTOMER_CODE_MAX_LENGTH } from './customer-create.validators';
+import { ALPHA_NUMERIC_REGEX, CUSTOMER_CODE_MAX_LENGTH, CustomerCreateValidators } from './customer-create.validators';
 
 interface CustomerInfo {
   code: string;
@@ -94,7 +94,7 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
   }
 
   gdprReadOnlyStatus: boolean;
-  private destroy = new Subject();
+  private subscription: Subscription;
   // tslint:disable-next-line: variable-name
   private _homepageMessageForm: FormGroup;
   // tslint:disable-next-line: variable-name
@@ -163,10 +163,7 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
       this.customer = customerDetails;
     });
 
-    this.confirmDialogService
-      .listenToEscapeKeyPress(this.dialogRef)
-      .pipe(takeUntil(this.destroy))
-      .subscribe(() => this.onCancel());
+    this.subscription = this.confirmDialogService.listenToEscapeKeyPress(this.dialogRef).subscribe(() => this.onCancel());
 
     this.countryService.getAvailableCountries().subscribe((values: CountryOption[]) => {
       this.countries = values;
@@ -174,7 +171,7 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.destroy.next();
+    this.subscription.unsubscribe();
   }
 
   onChanges() {
@@ -218,13 +215,11 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
     this.customerService
       .create(customer, this.logos)
       .pipe(finalize(() => (this.isLoading = false)))
-      .pipe(takeUntil(this.destroy))
       .subscribe(
         () => {
           this.dialogRef.close(true);
         },
         (error) => {
-          this.creating = false;
           console.error(error);
         },
       );

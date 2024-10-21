@@ -11,10 +11,10 @@
         <app-owner-form formControlName="owner" [customerId]="data?.customer?.id"></app-owner-form>
 
         <div class="actions">
-          <button type="button" class="btn primary" cdkStepperNext [disabled]="ownerForm.pending || ownerForm.invalid">
+          <button type="button" class="btn primary" cdkStepperNext [disabled]="isLoading || ownerForm.pending || ownerForm.invalid">
             {{ 'CUSTOMER.OWNER.MODAL.ACTION_BUTTON' | translate }}
           </button>
-          <button type="submit" class="btn primary" [disabled]="ownerForm.pending || ownerForm.invalid">
+          <button type="submit" class="btn primary" [disabled]="isLoading || ownerForm.pending || ownerForm.invalid">
             {{ 'COMMON.SUBMIT' | translate }}
           </button>
           <button type="button" class="btn cancel link" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
@@ -38,7 +38,7 @@
         </vitamui-common-input>
 
         <div class="actions">
-          <button type="submit" class="btn primary" [disabled]="tenantForm.pending || tenantForm.invalid">
+          <button type="submit" class="btn primary" [disabled]="isLoading || tenantForm.pending || tenantForm.invalid">
             {{ 'COMMON.SUBMIT' | translate }}
           </button>
           <button type="button" class="btn cancel link" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
