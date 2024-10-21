@@ -38,10 +38,15 @@ import { Component, forwardRef, Input, OnDestroy, OnInit } from '@angular/core';
 import { ControlValueAccessor, FormBuilder, FormGroup, NG_VALUE_ACCESSOR, Validators } from '@angular/forms';
 import { merge } from 'rxjs';
 import { distinctUntilChanged, map } from 'rxjs/operators';
-import { CountryOption, CountryService, Customer, StartupService } from 'vitamui-library';
-
-import { Owner } from 'vitamui-library';
-import { ALPHA_NUMERIC_REGEX, OWNER_CODE_MAX_LENGTH, OwnerFormValidators } from './owner-form.validators';
+import { CountryOption, CountryService, Customer, Owner, StartupService } from 'vitamui-library';
+import {
+  ALPHA_NUMERIC_REGEX,
+  OWNER_CODE_MAX_LENGTH,
+  OWNER_CODE_MIN_LENGTH,
+  OWNER_COMPANY_NAME_MAX_LENGTH,
+  OWNER_NAME_MAX_LENGTH,
+  OwnerFormValidators,
+} from './owner-form.validators';
 
 export const OWNER_FORM_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -60,6 +65,9 @@ export class OwnerFormComponent implements ControlValueAccessor, OnDestroy, OnIn
   public form: FormGroup;
   public maxStreetLength: number;
   public ownerCodeMaxLength = OWNER_CODE_MAX_LENGTH;
+  public ownerCodeMinLength = OWNER_CODE_MIN_LENGTH;
+  public ownerCompanyNameMaxLength = OWNER_COMPANY_NAME_MAX_LENGTH;
+  public ownerNameMaxLength = OWNER_NAME_MAX_LENGTH;
   public countries: CountryOption[];
 
   private sub: any;
@@ -94,6 +102,7 @@ export class OwnerFormComponent implements ControlValueAccessor, OnDestroy, OnIn
   get customerInfo() {
     return this._customerInfo;
   }
+
   private _customerInfo: any;
 
   constructor(
@@ -109,11 +118,16 @@ export class OwnerFormComponent implements ControlValueAccessor, OnDestroy, OnIn
       identifier: null,
       code: [
         null,
-        [Validators.required, Validators.pattern(ALPHA_NUMERIC_REGEX), Validators.maxLength(this.ownerCodeMaxLength)],
+        [
+          Validators.required,
+          Validators.pattern(ALPHA_NUMERIC_REGEX),
+          Validators.maxLength(this.ownerCodeMaxLength),
+          Validators.minLength(this.ownerCodeMinLength),
+        ],
         this.ownerFormValidators.uniqueCode(),
       ],
-      name: [null, Validators.required],
-      companyName: [null, Validators.required],
+      name: [null, Validators.required, Validators.maxLength(this.ownerNameMaxLength)],
+      companyName: [null, [Validators.required, Validators.maxLength(this.ownerCompanyNameMaxLength)]],
       internalCode: [null],
       address: this.formBuilder.group({
         street: [null, Validators.maxLength(this.maxStreetLength)],
