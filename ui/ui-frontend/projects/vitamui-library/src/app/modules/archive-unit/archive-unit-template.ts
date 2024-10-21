@@ -428,7 +428,6 @@ export const customTemplate: DisplayRule[] = [
     Path: 'Version',
     ui: {
       Path: 'Generalities.Characteristics.Version',
-      component: 'textfield',
       layout: {
         columns: 1,
         size: 'small',
