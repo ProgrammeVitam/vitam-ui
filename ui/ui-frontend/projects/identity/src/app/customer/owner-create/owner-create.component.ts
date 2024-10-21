@@ -37,11 +37,12 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Subscription } from 'rxjs';
+import { concatMap, finalize, Observable, Subscription } from 'rxjs';
 import { ConfirmDialogService, Customer, Owner, Tenant } from 'ui-frontend-common';
 import { OwnerService } from '../owner.service';
 import { TenantFormValidators } from '../tenant-create/tenant-form.validators';
 import { TenantService } from '../tenant.service';
+import { map, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-owner-create',
@@ -54,6 +55,7 @@ export class OwnerCreateComponent implements OnInit, OnDestroy {
   public stepIndex = 0;
 
   private keyPressSubscription: Subscription;
+  isLoading = false;
 
   constructor(
     public dialogRef: MatDialogRef<OwnerCreateComponent>,
@@ -94,36 +96,46 @@ export class OwnerCreateComponent implements OnInit, OnDestroy {
     if (this.ownerForm.pending || this.ownerForm.invalid) {
       return;
     }
-    this.ownerService.create(this.ownerForm.value.owner).subscribe(
-      (newOwner: Owner) => this.dialogRef.close({ owner: newOwner }),
-      (error) => {
-        // TODO
-        console.error(error);
-      },
-    );
+    this.isLoading = true;
+    this.ownerCreation()
+      .pipe(finalize(() => (this.isLoading = false)))
+      .subscribe(
+        (newOwner: Owner) => this.dialogRef.close({ owner: newOwner }),
+        (error) => {
+          // TODO
+          console.error(error);
+        },
+      );
+  }
+
+  private ownerCreation(): Observable<Owner> {
+    return this.ownerService.create(this.ownerForm.value.owner);
   }
 
   onTenantSubmit() {
     if (this.ownerForm.pending || this.ownerForm.invalid || this.tenantForm.pending || this.tenantForm.invalid) {
       return;
     }
-    this.ownerService.create(this.ownerForm.value.owner).subscribe(
-      (newOwner) => {
-        this.tenantForm.get('ownerId').setValue(newOwner.id);
-        this.tenantService.create(this.tenantForm.value, newOwner.name).subscribe(
-          (newTenant: Tenant) => {
-            this.dialogRef.close({ owner: newOwner, tenant: newTenant });
-          },
-          (error) => {
-            console.error(error);
-            this.dialogRef.close();
-          },
-        );
-      },
-      (error) => {
-        // TODO
-        console.error(error);
-      },
-    );
+    this.isLoading = true;
+    this.ownerCreation()
+      .pipe(
+        finalize(() => (this.isLoading = false)),
+        tap((newOwner: Owner) => this.tenantForm.get('ownerId').setValue(newOwner.id)),
+        concatMap((newOwner: Owner) =>
+          this.tenantService.create(this.tenantForm.value, newOwner.name).pipe(
+            map((newTenant: Tenant) => {
+              return { owner: newOwner, tenant: newTenant };
+            }),
+          ),
+        ),
+      )
+      .subscribe(
+        (ownerAndTenant) => {
+          this.dialogRef.close(ownerAndTenant);
+        },
+        (error) => {
+          console.error(error);
+        },
+      );
   }
 }

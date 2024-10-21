@@ -94,7 +94,7 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
   }
 
   gdprReadOnlyStatus: boolean;
-  private destroy = new Subject();
+  private subscription: Subscription;
   // tslint:disable-next-line: variable-name
   private _homepageMessageForm: FormGroup;
   // tslint:disable-next-line: variable-name
@@ -163,10 +163,7 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
       this.customer = customerDetails;
     });
 
-    this.confirmDialogService
-      .listenToEscapeKeyPress(this.dialogRef)
-      .pipe(takeUntil(this.destroy))
-      .subscribe(() => this.onCancel());
+    this.subscription = this.confirmDialogService.listenToEscapeKeyPress(this.dialogRef).subscribe(() => this.onCancel());
 
     this.countryService.getAvailableCountries().subscribe((values: CountryOption[]) => {
       this.countries = values;
@@ -174,7 +171,7 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.destroy.next();
+    this.subscription.unsubscribe();
   }
 
   onChanges() {
@@ -218,13 +215,11 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
     this.customerService
       .create(customer, this.logos)
       .pipe(finalize(() => (this.isLoading = false)))
-      .pipe(takeUntil(this.destroy))
       .subscribe(
         () => {
           this.dialogRef.close(true);
         },
         (error) => {
-          this.creating = false;
           console.error(error);
         },
       );
