@@ -1,4 +1,4 @@
-import { Component, ContentChild, ElementRef, Input, TemplateRef, ViewChild } from '@angular/core';
+import { Component, ContentChild, ElementRef, EventEmitter, Input, Output, TemplateRef, ViewChild } from '@angular/core';
 import { DragAndDropDirective } from '../../directives/drag-and-drop/drag-and-drop.directive';
 import { TranslateModule } from '@ngx-translate/core';
 import { NgForOf, NgIf, NgTemplateOutlet } from '@angular/common';
@@ -24,6 +24,8 @@ export class FileSelectorComponent {
   @ContentChild('fileList') fileList: TemplateRef<any>;
   @ContentChild('content') content: TemplateRef<any>;
 
+  @Output() filesChanged = new EventEmitter<File[]>();
+
   protected files: File[] = [];
 
   protected handleFiles(files: FileList | File[]) {
@@ -31,10 +33,11 @@ export class FileSelectorComponent {
 
     // Filter to keep only the ones matching extension list (useful for drag & drop and to make sure no other type has been selected)
     this.files.push(
-      ...Array.from(files).filter(
-        (file) => !this.extensions?.length || this.extensions.some((ext) => file.name.toLowerCase().endsWith(ext.toLowerCase())),
-      ),
+      ...Array.from(files)
+        .filter((file) => !this.extensions?.length || this.extensions.some((ext) => file.name.toLowerCase().endsWith(ext.toLowerCase())))
+        .slice(0, this.multipleFiles ? undefined : 1),
     );
+    this.filesChanged.emit(this.files);
   }
 
   openFileSelectorOSDialog() {
@@ -43,5 +46,6 @@ export class FileSelectorComponent {
 
   removeFile(file: File) {
     this.files.splice(this.files.indexOf(file), 1);
+    this.filesChanged.emit(this.files);
   }
 }

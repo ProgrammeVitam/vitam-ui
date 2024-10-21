@@ -34,13 +34,11 @@ import {
   MatLegacyDialogRef as MatDialogRef,
 } from '@angular/material/legacy-dialog';
 import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
-import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
-import { BytesPipe, Logger, Transaction } from 'vitamui-library';
+import { Logger, Transaction } from 'vitamui-library';
 import { VitamUISnackBarComponent } from '../../shared/vitamui-snack-bar/vitamui-snack-bar.component';
 import { ArchiveCollectService } from '../archive-collect.service';
 
-const CSV_EXTENSION = '.csv';
 const VITAMUI_SNACK_BAR = 'vitamui-snack-bar';
 
 @Component({
@@ -52,19 +50,9 @@ export class UpdateUnitsMetadataComponent implements OnDestroy {
   public stepIndex = 0;
   public stepCount = 1;
 
-  fileSize = 0;
-
-  isAtrNotValid = false;
-  isDisabled = true;
-  hasFileSizeError = false;
-  hasError = false;
-  fileSizeString: string;
   isLoadingData = false;
 
-  fileToUpload: File = null;
-
-  errorMessage: string;
-  fileName: string;
+  fileToUpload: File = undefined;
 
   subscriptions: Subscription;
 
@@ -84,17 +72,11 @@ export class UpdateUnitsMetadataComponent implements OnDestroy {
     private snackBar: MatSnackBar,
     private dialogRef: MatDialogRef<UpdateUnitsMetadataComponent>,
     private dialogRefToClose: MatDialogRef<UpdateUnitsMetadataComponent>,
-    private translateService: TranslateService,
     private archiveCollectService: ArchiveCollectService,
-    private bytesPipe: BytesPipe,
   ) {}
 
   ngOnDestroy(): void {
     this.subscriptions?.unsubscribe();
-  }
-
-  addUpdateMetadataCSVFile() {
-    this.updateMetadataCSVFile.nativeElement.click();
   }
 
   updateUnitsMetadata() {
@@ -108,7 +90,7 @@ export class UpdateUnitsMetadataComponent implements OnDestroy {
     });
 
     this.subscriptions = this.archiveCollectService
-      .updateUnitsAMetadata(this.data.tenantIdentifier, this.fileToUpload, this.fileName, this.data.selectedTransaction.id)
+      .updateUnitsAMetadata(this.data.tenantIdentifier, this.fileToUpload, this.fileToUpload.name, this.data.selectedTransaction.id)
       .subscribe(
         (data) => {
           this.isLoadingData = false;
@@ -131,10 +113,6 @@ export class UpdateUnitsMetadataComponent implements OnDestroy {
       );
   }
 
-  checkFileExtension(fileName: string): boolean {
-    return fileName.endsWith(CSV_EXTENSION);
-  }
-
   onCancel() {
     const dialogToOpen = this.confirmDeleteUpdateUnitsMetadataDialog;
     this.dialogRefToClose = this.dialog.open(dialogToOpen, { panelClass: 'vitamui-dialog' });
@@ -149,36 +127,7 @@ export class UpdateUnitsMetadataComponent implements OnDestroy {
     this.dialogRef.close(true);
   }
 
-  private initializeParameters() {
-    this.isDisabled = false;
-    this.hasError = false;
-    this.hasFileSizeError = false;
-    this.errorMessage = null;
-    this.isAtrNotValid = false;
-  }
-
-  private isFileList(files: FileList | File[]): files is FileList {
-    return files instanceof FileList;
-  }
-
-  private initializeFileToUpload(files: FileList | File[]) {
-    if (files) {
-      this.fileToUpload = this.isFileList(files) ? files.item(0) : files[0];
-      this.fileName = this.fileToUpload.name;
-      this.fileSize = this.fileToUpload.size;
-    }
-  }
-
-  handleFile(files: FileList | File[]) {
-    this.initializeParameters();
-    this.initializeFileToUpload(files);
-
-    this.fileSizeString = this.bytesPipe.transform(this.fileSize);
-
-    if (!this.checkFileExtension(this.fileName)) {
-      this.errorMessage = this.translateService.instant('COLLECT.UPDATE_UNITS_METADATA.FILE_BAD_FORMAT');
-      this.hasError = true;
-      return;
-    }
+  handleFiles(files: File[]) {
+    this.fileToUpload = files?.length ? files[0] : undefined;
   }
 }

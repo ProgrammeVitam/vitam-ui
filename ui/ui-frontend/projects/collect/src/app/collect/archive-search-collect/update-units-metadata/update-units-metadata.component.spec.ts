@@ -107,33 +107,6 @@ describe('UpdateUaMetadataComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('Should return false when the file extension is not csv ', () => {
-    // Given
-    const fileName = 'SIP-recherche-perf.zip';
-    // When
-    const response: boolean = component.checkFileExtension(fileName);
-    // Then
-    expect(response).toBeFalsy();
-  });
-
-  it('Should return true when the file extension is csv ', () => {
-    // Given
-    const fileName = 'project-metadat.csv';
-
-    // When
-    const response: boolean = component.checkFileExtension(fileName);
-
-    // Then
-    expect(response).toBeTruthy();
-  });
-
-  it('Should return true if the extension file is csv ', () => {
-    const contents = 'text to update a list of archive units';
-    const blob = new Blob([contents], { type: 'text/plain' });
-    const file = new File([blob], 'updateFileExample.csv', { type: 'text/plain' });
-    expect(component.checkFileExtension(file.name)).toBeTruthy();
-  });
-
   describe('DOM', () => {
     it('should have 1 cdk step', () => {
       const elementCdkStep = fixture.nativeElement.querySelectorAll('cdk-step');
@@ -146,34 +119,16 @@ describe('UpdateUaMetadataComponent', () => {
       expect(matDialogSpyTest.close).toHaveBeenCalled();
     });
 
-    it('should have an input file', () => {
+    it('should have an vitamui-file-selector', () => {
       const nativeElement = fixture.nativeElement;
-      const elInput = nativeElement.querySelector('input[type=file]');
-      expect(elInput).toBeTruthy();
+      const el = nativeElement.querySelector('vitamui-file-selector');
+      expect(el).toBeTruthy();
     });
 
     it('should call MatDialogRef.close', () => {
       const matDialogSpyTest = TestBed.inject(MatDialogRef);
       component.onCloseAction();
       expect(matDialogSpyTest.close).toHaveBeenCalled();
-    });
-
-    it('should emit handleFileInput function when a file is added ', () => {
-      // Given
-      const contents = '<a>test</a>';
-      const blob = new Blob([contents], { type: 'text/plain' });
-      const file = new File([blob], 'csvFile.csv', { type: 'text/csv' });
-      component.fileToUpload = file;
-      spyOn(component, 'handleFile');
-      const nativeElement = fixture.nativeElement;
-      const checkBox = nativeElement.querySelector('input[type=file]');
-
-      // When
-      checkBox.dispatchEvent(new Event('change'));
-      fixture.detectChanges();
-
-      // Then
-      expect(component.handleFile).toHaveBeenCalledTimes(1);
     });
 
     it('should have 2 buttons ', () => {
