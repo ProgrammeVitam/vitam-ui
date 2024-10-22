@@ -93,6 +93,7 @@ public class ArchiveSearchInternalService {
     private static final String HISTORY = "$history";
     public static final String DSL_QUERY_PROJECTION = "$projection";
     public static final String DSL_QUERY_FILTER = "$filter";
+    public static final String DSL_QUERY_THRESHOLD = "$threshold";
     public static final String DSL_QUERY_FACETS = "$facets";
     public static final String OPERATION_IDENTIFIER = "itemId";
 
@@ -388,9 +389,9 @@ public class ArchiveSearchInternalService {
         JsonNode dslQuery = mapRequestToDslQuery(reclassificationCriteriaDto.getSearchCriteriaDto());
         ArrayNode array = JsonHandler.createArrayNode();
         ((ObjectNode) dslQuery).putPOJO(ACTION, reclassificationCriteriaDto.getAction());
-        Arrays.stream(new String[] { DSL_QUERY_PROJECTION, DSL_QUERY_FILTER, DSL_QUERY_FACETS }).forEach(
-            ((ObjectNode) dslQuery)::remove
-        );
+        Arrays.stream(
+            new String[] { DSL_QUERY_PROJECTION, DSL_QUERY_FILTER, DSL_QUERY_FACETS, DSL_QUERY_THRESHOLD }
+        ).forEach(((ObjectNode) dslQuery)::remove);
         array.add(dslQuery);
         LOGGER.debug("Reclassification query : {}", array);
         RequestResponse<JsonNode> jsonNodeRequestResponse = unitService.reclassification(vitamContext, array);
