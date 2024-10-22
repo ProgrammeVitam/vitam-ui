@@ -1,3 +1,5 @@
+@use 'bootstrap/scss/bootstrap-grid';
+
 :host {
   display: flex;
   flex-direction: column;
@@ -13,12 +15,10 @@
     border-radius: 5px;
     margin-bottom: 8px;
   }
+}
 
-  .vitamui-table-head {
-    div {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-    }
-  }
+.vitamui-icon {
+  @extend .mr-2;
+  color: var(--vitamui-grey-700);
+  font-size: 30px;
 }

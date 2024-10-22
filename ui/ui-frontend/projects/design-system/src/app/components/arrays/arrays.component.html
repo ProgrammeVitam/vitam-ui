@@ -1,20 +1,58 @@
+<ng-template #zipName>
+  <span>
+    Nom du ZIP
+    <vitamui-common-order-by-button [(direction)]="direction" [(orderBy)]="orderBy" orderByKey="zipName"></vitamui-common-order-by-button>
+  </span>
+</ng-template>
+<ng-template #size>
+  <span>
+    Poids
+    <vitamui-common-order-by-button [(direction)]="direction" [(orderBy)]="orderBy" orderByKey="size"></vitamui-common-order-by-button>
+  </span>
+</ng-template>
+<ng-template #compression>
+  <span>
+    Compression
+    <vitamui-common-order-by-button [(direction)]="direction" [(orderBy)]="orderBy" orderByKey="compression">
+    </vitamui-common-order-by-button>
+  </span>
+</ng-template>
+<ng-template #loading>
+  <span>
+    Chargement
+    <vitamui-common-order-by-button [(direction)]="direction" [(orderBy)]="orderBy" orderByKey="loading"></vitamui-common-order-by-button>
+  </span>
+</ng-template>
+
 <h2>Tableau</h2>
 <h3>table</h3>
 <table>
   <thead>
     <tr>
-      <th>Nom du ZIP</th>
-      <th>Poids</th>
-      <th>Compression</th>
-      <th>Chargement</th>
+      <th>
+        <ng-container *ngTemplateOutlet="zipName"></ng-container>
+      </th>
+      <th>
+        <ng-container *ngTemplateOutlet="size"></ng-container>
+      </th>
+      <th>
+        <ng-container *ngTemplateOutlet="compression"></ng-container>
+      </th>
+      <th>
+        <ng-container *ngTemplateOutlet="loading"></ng-container>
+      </th>
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let row of tableDataSource">
+    <tr *ngFor="let row of tableDataSource" class="clickable" [class.selected]="row === selectedRow" (click)="selectedRow = row">
       <td>{{ row.zipName }}</td>
       <td>{{ row.size }}</td>
-      <td><mat-progress-bar [value]="row.compression" class="stepper-progress-bar" mode="determinate"> </mat-progress-bar></td>
-      <td><mat-progress-bar [value]="row.loading" class="stepper-progress-bar" mode="determinate"> </mat-progress-bar></td>
+      <td>
+        <mat-progress-bar [value]="row.compression" class="stepper-progress-bar" mode="determinate"></mat-progress-bar>
+      </td>
+      <td>
+        <mat-progress-bar [value]="row.loading" class="stepper-progress-bar" mode="determinate"></mat-progress-bar>
+      </td>
     </tr>
   </tbody>
 </table>
@@ -22,28 +60,42 @@
 <h3>mat-table</h3>
 <table mat-table [dataSource]="tableDataSource">
   <ng-container matColumnDef="zipName">
-    <th mat-header-cell *matHeaderCellDef>Nom du ZIP</th>
+    <th mat-header-cell *matHeaderCellDef>
+      <ng-container *ngTemplateOutlet="zipName"></ng-container>
+    </th>
     <td mat-cell *matCellDef="let element">{{ element.zipName }}</td>
   </ng-container>
   <ng-container matColumnDef="size">
-    <th mat-header-cell *matHeaderCellDef>Poids</th>
+    <th mat-header-cell *matHeaderCellDef>
+      <ng-container *ngTemplateOutlet="size"></ng-container>
+    </th>
     <td mat-cell *matCellDef="let element">{{ element.size }}</td>
   </ng-container>
   <ng-container matColumnDef="compression">
-    <th mat-header-cell *matHeaderCellDef>Compression</th>
+    <th mat-header-cell *matHeaderCellDef>
+      <ng-container *ngTemplateOutlet="compression"></ng-container>
+    </th>
     <td mat-cell *matCellDef="let element">
-      <mat-progress-bar [value]="element.compression" class="stepper-progress-bar" mode="determinate"> </mat-progress-bar>
+      <mat-progress-bar [value]="element.compression" class="stepper-progress-bar" mode="determinate"></mat-progress-bar>
     </td>
   </ng-container>
   <ng-container matColumnDef="loading">
-    <th mat-header-cell *matHeaderCellDef>Chargement</th>
+    <th mat-header-cell *matHeaderCellDef>
+      <ng-container *ngTemplateOutlet="loading"></ng-container>
+    </th>
     <td mat-cell *matCellDef="let element">
-      <mat-progress-bar [value]="element.loading" class="stepper-progress-bar" mode="determinate"> </mat-progress-bar>
+      <mat-progress-bar [value]="element.loading" class="stepper-progress-bar" mode="determinate"></mat-progress-bar>
     </td>
   </ng-container>
 
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-  <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  <tr
+    mat-row
+    *matRowDef="let row; columns: displayedColumns"
+    class="clickable"
+    [class.selected]="row === selectedRow"
+    (click)="selectedRow = row"
+  ></tr>
 </table>
 
 <div>
@@ -144,7 +196,7 @@
 
       <div class="col-3 d-flex align-items-center">
         <span>{{ 'ARRAY.COLUMN.GROUP_NAME' | translate }}</span>
-        <vitamui-common-order-by-button orderByKey="name" [(orderBy)]="orderBy" [(direction)]="direction"> </vitamui-common-order-by-button>
+        <vitamui-common-order-by-button orderByKey="name" [(orderBy)]="orderBy" [(direction)]="direction"></vitamui-common-order-by-button>
       </div>
 
       <div class="col-2 d-flex align-items-center">

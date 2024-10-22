@@ -63,6 +63,8 @@ export class AccessionRegisterListComponent extends InfiniteScrollTable<Accessio
   searchSub: Subscription;
   advancedSearchSub: Subscription;
 
+  selectedRow: AccessionRegisterDetail;
+
   constructor(
     public accessionRegistersService: AccessionRegistersService,
     @Inject(LOCALE_ID) private locale: string,
@@ -178,6 +180,7 @@ export class AccessionRegisterListComponent extends InfiniteScrollTable<Accessio
   }
 
   onSelectRow(accessionRegisterDetail: AccessionRegisterDetail) {
+    this.selectedRow = accessionRegisterDetail;
     this.accessionRegisterClick.emit(accessionRegisterDetail);
   }
 }

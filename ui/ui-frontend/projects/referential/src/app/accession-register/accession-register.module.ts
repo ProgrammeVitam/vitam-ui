@@ -60,7 +60,6 @@ import { AccessionRegisterAdvancedSearchComponent } from './accession-register-a
 import { AccessionRegisterFacetsComponent } from './accession-register-facets/accession-register-facets.component';
 import { AccessionRegisterListComponent } from './accession-register-list/accession-register-list.component';
 import { AccessionRegisterDetailComponent } from './accession-register-preview/accession-register-detail/accession-register-detail.component';
-import { AccessionRegisterOperationComponent } from './accession-register-preview/accession-register-operations-list/accession-register-operation/accession-register-operation.component';
 import { AccessionRegisterOperationsListComponent } from './accession-register-preview/accession-register-operations-list/accession-register-operations-list.component';
 import { AccessionRegisterPreviewComponent } from './accession-register-preview/accession-register-preview.component';
 import { AccessionRegisterRoutingModule } from './accession-register-routing.module';
@@ -101,7 +100,6 @@ import { AccessionRegisterComponent } from './accession-register.component';
     AccessionRegisterPreviewComponent,
     AccessionRegisterDetailComponent,
     AccessionRegisterOperationsListComponent,
-    AccessionRegisterOperationComponent,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
