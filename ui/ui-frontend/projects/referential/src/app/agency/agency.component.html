@@ -5,6 +5,7 @@
       (previewClose)="closePanel()"
       [agency]="openedItem"
       [tenantIdentifier]="tenantIdentifier"
+      [readOnly]="hasUpdateRole === false"
     ></app-agency-preview>
   </mat-sidenav>
 

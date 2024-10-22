@@ -53,6 +53,7 @@ import { switchMap } from 'rxjs/operators';
 export class RulePreviewComponent implements AfterViewInit {
   @Output() previewClose: EventEmitter<any> = new EventEmitter();
   @Input() rule: Rule;
+  @Input() readOnly: boolean;
 
   tabUpdated: boolean[] = [false, false];
   @ViewChild('tabs', { static: false }) tabs: MatTabGroup;

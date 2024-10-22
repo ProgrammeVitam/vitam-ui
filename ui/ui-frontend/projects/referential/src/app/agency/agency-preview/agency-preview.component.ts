@@ -56,6 +56,7 @@ import { AgencyInformationTabComponent } from './agency-information-tab/agency-i
 export class AgencyPreviewComponent implements AfterViewInit {
   @Input() agency: Agency;
   @Input() tenantIdentifier: number;
+  @Input() readOnly: boolean;
 
   @Output() previewClose = new EventEmitter<void>();
 

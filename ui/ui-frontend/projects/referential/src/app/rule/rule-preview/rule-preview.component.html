@@ -4,7 +4,8 @@
 <div class="vitamui-sidepanel-body">
   <mat-tab-group class="preview-tab-group" #tabs>
     <mat-tab [label]="'RULES_APP.TAB.INFORMATION.TITLE' | translate">
-      <app-rule-information-tab [rule]="rule" (updated)="updatedChange($event, 0)" #infoTab> </app-rule-information-tab>
+      <app-rule-information-tab [rule]="rule" [readOnly]="readOnly" (updated)="updatedChange($event, 0)" #infoTab>
+      </app-rule-information-tab>
     </mat-tab>
 
     <mat-tab [label]="'RULES_APP.TAB.HISTORY.TITLE' | translate">

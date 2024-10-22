@@ -1,6 +1,11 @@
 <mat-sidenav-container [autosize]="true" [hasBackdrop]="false">
   <mat-sidenav #panel mode="side" position="end" [fixedInViewport]="true">
-    <app-rule-preview *ngIf="openedItem" (previewClose)="closePanel()" [rule]="openedItem"></app-rule-preview>
+    <app-rule-preview
+      *ngIf="openedItem"
+      (previewClose)="closePanel()"
+      [rule]="openedItem"
+      [readOnly]="(checkUpdateRole | async) !== true"
+    ></app-rule-preview>
   </mat-sidenav>
 
   <mat-sidenav-content>
