@@ -69,24 +69,19 @@ customer-init:
   #   profiles:
   #     - profileName
   #  ...
+
   # Default users for each customer created
   users:
   #- last-name: lastName
   #   first-name: firstName
   #   profiles-group-name: group1
   #   level: 1
-  #   email-prefix: a@mail.com
+  #   email-prefix: email.local-part
+
   # Default profiles for each tenant created
   # If you add multiple profiles on the same app, put first in this list the admin profile.
   # Only the first profile by app will be added to the admin's group
   tenant-profiles:
-    - name: Registre des fonds
-      description: Visualisation de l'ensemble des données du registre des fonds
-      app-name: ACCESSION_REGISTER_APP
-      level:
-      roles:
-        - ROLE_GET_ACCESSION_REGISTER_DETAIL
-
     - name: Profil pour la gestion des contrats d'accès
       description: Gestion des contrats d'accès dans Vitam
       app-name: ACCESS_APP
@@ -112,6 +107,7 @@ customer-init:
         - ROLE_GET_UNITS
         - ROLE_GET_EXTERNAL_PARAMS
 
+
     - name: Profil consultation des contrats d'entrée
       description: Profil pour la consultation des contrats d'entrée dans Vitam sans mises à jour des contrats
       app-name: INGEST_APP
@@ -125,7 +121,7 @@ customer-init:
         - ROLE_GET_UNITS
         - ROLE_GET_EXTERNAL_PARAMS
 
-    - name: Profil pour les services agents
+    - name: Profil gestion des services agents
       description: Profil de gestion du référentiel des services agent avec possibilité de mise à jour
       app-name: AGENCIES_APP
       level:
@@ -143,7 +139,7 @@ customer-init:
       roles:
         - ROLE_GET_AGENCIES
 
-    - name: Profil pour la gestion des Audits
+    - name: Profil pour la gestion des audits
       description: Gestion des audits dans Vitam
       app-name: AUDIT_APP
       level:
@@ -152,7 +148,7 @@ customer-init:
         - ROLE_RUN_AUDITS
         - ROLE_GET_OPERATIONS
 
-    - name: Profil Journal des Opérations
+    - name: Profil journal des opérations
       description: Gestion des applications des Journaux des Opérations
       app-name: LOGBOOK_OPERATION_APP
       level:
@@ -169,8 +165,8 @@ customer-init:
         - ROLE_GET_ALL_INGEST
         - ROLE_LOGBOOKS
 
-    - name: Profil Arbres et Plans
-      description: Gestion des application d'import d'arbres de positionnement et plans de classement
+    - name: Profil arbres et plans
+      description: Gestion des applications d'import d'arbres de positionnement et plans de classement
       app-name: HOLDING_FILLING_SCHEME_APP
       level:
       roles:
@@ -219,20 +215,20 @@ customer-init:
         - ROLE_LOGBOOKS
 
     - name: Archiviste administrateur
-      description: Profil pour la recherche et consultation des archives dans Vitam avec mises à jour des règles, requête et aquittement de transfert, export DIP et opérations d'élimination
+      description: Profil pour la recherche et consultation des archives dans Vitam avec mise à jour des règles, export DIP, opérations d'élimination, reclassement, demande de transfert et acquittement de transfert
       app-name: ARCHIVE_SEARCH_MANAGEMENT_APP
       level:
       roles:
         - ROLE_ARCHIVE_SEARCH_GET_ARCHIVE_SEARCH
-        - ROLE_ARCHIVE_SEARCH_UPDATE_ARCHIVE_UNIT
         - ROLE_EXPORT_DIP
         - ROLE_ELIMINATION
         - ROLE_COMPUTED_INHERITED_RULES
         - ROLE_GET_ACCESS_CONTRACTS
         - ROLE_RECLASSIFICATION
+        - ROLE_ARCHIVE_SEARCH_UPDATE_ARCHIVE_UNIT
         - ROLE_TRANSFER_REQUEST
-        - ROLE_GET_RULES
         - ROLE_TRANSFER_ACKNOWLEDGMENT
+        - ROLE_GET_RULES
         - ROLE_GET_SCHEMAS
 
     - name: Consultation
@@ -251,11 +247,18 @@ customer-init:
       level:
       roles:
         - ROLE_ARCHIVE_SEARCH_GET_ARCHIVE_SEARCH
+        - ARCHIVE_SEARCH_UPDATE_ARCHIVE_UNIT_ROLE
         - ROLE_EXPORT_DIP
         - ROLE_GET_ACCESS_CONTRACTS
-        - ARCHIVE_SEARCH_UPDATE_ARCHIVE_UNIT_ROLE
         - ROLE_GET_RULES
         - ROLE_GET_SCHEMAS
+
+    - name: Registre des fonds
+      description: Visualisation de l'ensemble des données du registre des fonds
+      app-name: ACCESSION_REGISTER_APP
+      level:
+      roles:
+        - ROLE_GET_ACCESSION_REGISTER_DETAIL
 
     - name: Profil pour la gestion des pua/pa de pastis
       description: Gestion de Pastis dans Vitam
@@ -284,12 +287,12 @@ customer-init:
         - ROLE_GET_TRANSACTIONS
         - ROLE_CREATE_TRANSACTIONS
         - ROLE_UPDATE_TRANSACTIONS
-        - ROLE_COLLECT_GET_ARCHIVE_SEARCH
-        - ROLE_COLLECT_GET_ARCHIVE_BINARY
         - ROLE_COLLECT_UPDATE_BULK_ARCHIVE_UNIT
         - ROLE_COLLECT_UPDATE_UNITARY_ARCHIVE_UNIT
         - ROLE_GET_SCHEMAS
         - ROLE_GET_ONTOLOGIES
+        - ROLE_COLLECT_GET_ARCHIVE_SEARCH
+        - ROLE_COLLECT_GET_ARCHIVE_BINARY
         - ROLE_GET_FILLING_PLAN_ACCESS
 
 
@@ -301,7 +304,6 @@ customer-init:
         - ROLE_GET_PROJECTS
         - ROLE_CREATE_PROJECTS
         - ROLE_UPDATE_PROJECTS
-        - ROLE_GET_FILLING_PLAN_ACCESS
         - ROLE_GET_ACCESS_CONTRACTS
         - ROLE_GET_RULES
         - ROLE_SEND_TRANSACTIONS
@@ -310,12 +312,13 @@ customer-init:
         - ROLE_GET_TRANSACTIONS
         - ROLE_CREATE_TRANSACTIONS
         - ROLE_UPDATE_TRANSACTIONS
-        - ROLE_COLLECT_GET_ARCHIVE_SEARCH
-        - ROLE_COLLECT_GET_ARCHIVE_BINARY
         - ROLE_COLLECT_UPDATE_BULK_ARCHIVE_UNIT
         - ROLE_COLLECT_UPDATE_UNITARY_ARCHIVE_UNIT
         - ROLE_GET_SCHEMAS
         - ROLE_GET_ONTOLOGIES
+        - ROLE_COLLECT_GET_ARCHIVE_SEARCH
+        - ROLE_COLLECT_GET_ARCHIVE_BINARY
+        - ROLE_GET_FILLING_PLAN_ACCESS
 
     - name: Service producteur
       description: Profil de préparation des versements des archives sans possibilité de transmettre les archives au SAE
@@ -330,11 +333,11 @@ customer-init:
         - ROLE_GET_TRANSACTIONS
         - ROLE_CREATE_TRANSACTIONS
         - ROLE_CLOSE_TRANSACTIONS
-        - ROLE_COLLECT_GET_ARCHIVE_SEARCH
-        - ROLE_COLLECT_GET_ARCHIVE_BINARY
         - ROLE_COLLECT_UPDATE_UNITARY_ARCHIVE_UNIT
         - ROLE_GET_SCHEMAS
         - ROLE_GET_ONTOLOGIES
+        - ROLE_COLLECT_GET_ARCHIVE_SEARCH
+        - ROLE_COLLECT_GET_ARCHIVE_BINARY
         - ROLE_GET_FILLING_PLAN_ACCESS
 
     - name: Pastis-Gestion des profils documentaires
