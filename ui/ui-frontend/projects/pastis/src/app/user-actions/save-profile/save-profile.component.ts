@@ -245,7 +245,7 @@ export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
           const profile: Profile = this.noticeService.paNotice(createNoticeDialogParams, profileVersion, true);
           if (!this.editProfile) {
             // CREER NOTICE PUIS ASSIGNER LE PROFIL A LA NOTICE
-            this.profile = { ...profile, ...this.profile };
+            this.profile = { ...this.profile, ...profile };
             this.profileDescription = {
               ...this.noticeService.profileFromNotice(createNoticeDialogParams, this.editProfile, false),
               ...this.profileDescription,
@@ -334,14 +334,26 @@ export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
 
   saveArchiveProfile(): Observable<Profile> {
     if (this.editProfile) {
-      return this.archiveProfileSaverService
-        .update(this.profile, this.profileDescription, this.data)
-        .pipe(tap(() => this.success('La modification du profil a bien été effectué')));
+      return this.archiveProfileSaverService.update(this.profile, this.profileDescription, this.data).pipe(
+        tap({
+          next: () => this.success('La modification du profil a bien été effectué'),
+          error: (error) => {
+            const message = error?.error?.message || error?.message || 'raison inconnue';
+            this.notificationService.showError(`La modification du profil a échoué (${message})`);
+          },
+        }),
+      );
     }
 
-    return this.archiveProfileSaverService
-      .create(this.profile, this.profileDescription, this.data)
-      .pipe(tap(() => this.success('La création du profil a bien été effectué')));
+    return this.archiveProfileSaverService.create(this.profile, this.profileDescription, this.data).pipe(
+      tap({
+        next: () => this.success('La création du profil a bien été effectué'),
+        error: (error) => {
+          const message = error?.error?.message || error?.message || 'raison inconnue';
+          this.notificationService.showError(`La création du profil a échoué (${message})`);
+        },
+      }),
+    );
   }
 
   saveArchiveUnitProfile(profileDescription: ProfileDescription, data: FileNode[]): Observable<ArchivalProfileUnit> {

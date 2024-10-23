@@ -34,6 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+
 package fr.gouv.vitamui.referential.internal.server.rest;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -41,6 +42,7 @@ import fr.gouv.vitam.access.external.common.exception.AccessExternalClientExcept
 import fr.gouv.vitam.access.external.common.exception.AccessExternalNotFoundException;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
+import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitamui.common.security.SafeFileChecker;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
@@ -48,6 +50,7 @@ import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
+import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.rest.util.RestUtils;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
@@ -71,7 +74,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -133,18 +135,15 @@ public class ProfileInternalController {
         LOGGER.debug(
             "get profile identifier={} / {}",
             identifier,
-            URLDecoder.decode(identifier, StandardCharsets.UTF_8.toString())
+            URLDecoder.decode(identifier, StandardCharsets.UTF_8)
         );
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
-        return profileInternalService.getOne(
-            vitamContext,
-            URLDecoder.decode(identifier, StandardCharsets.UTF_8.toString())
-        );
+        return profileInternalService.getOne(vitamContext, URLDecoder.decode(identifier, StandardCharsets.UTF_8));
     }
 
     @GetMapping(RestApi.DOWNLOAD_PROFILE + CommonConstants.PATH_ID)
     public ResponseEntity<Resource> downloadByMetadataIdentifier(final @PathVariable("id") String id)
-        throws AccessExternalNotFoundException, AccessExternalClientException, InvalidParseOperationException, PreconditionFailedException {
+        throws AccessExternalNotFoundException, AccessExternalClientException, PreconditionFailedException {
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         SanityChecker.checkSecureParameter(id);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
@@ -167,18 +166,18 @@ public class ProfileInternalController {
      */
     @PutMapping(value = RestApi.UPDATE_PROFILE_FILE + CommonConstants.PATH_ID)
     public JsonNode updateProfileFile(final @PathVariable("id") String id, @RequestParam("file") MultipartFile file)
-        throws AccessExternalClientException, InvalidParseOperationException, PreconditionFailedException {
+        throws AccessExternalClientException, PreconditionFailedException {
         ParameterChecker.checkParameter("profileFile stream is a mandatory parameter: ", file);
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         SanityChecker.checkSecureParameter(id);
-        LOGGER.debug("Update {}  profile file with id :{}", id);
+        LOGGER.debug("Update {}  profile file with id :{}", file.getName(), id);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
         return profileInternalService.updateProfileFile(vitamContext, id, file);
     }
 
     @PutMapping(CommonConstants.PATH_ID)
     public JsonNode updateProfile(final @PathVariable("id") String id, final @Valid @RequestBody ProfileDto dto)
-        throws PreconditionFailedException, InvalidParseOperationException {
+        throws PreconditionFailedException {
         ParameterChecker.checkParameter("Identifier is mandatory : ", id);
         SanityChecker.checkSecureParameter(id);
         SanityChecker.sanitizeCriteria(dto);
@@ -193,10 +192,13 @@ public class ProfileInternalController {
     }
 
     @PostMapping
-    public ProfileDto create(
-        @Valid @RequestBody ProfileDto archivalProfile,
-        @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant
-    ) throws InvalidParseOperationException {
+    public ProfileDto create(@Valid @RequestBody ProfileDto archivalProfile)
+        throws InvalidParseOperationException, VitamClientException {
+        try {
+            SanityChecker.checkSecureParameter(archivalProfile.getIdentifier());
+        } catch (PreconditionFailedException e) {
+            throw new BadRequestException("Identifier contains invalid characters");
+        }
         SanityChecker.sanitizeCriteria(archivalProfile);
         LOGGER.debug("create profile={}", archivalProfile);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
@@ -216,10 +218,7 @@ public class ProfileInternalController {
 
     @Secured({ ServicesData.ROLE_GET_PASTIS })
     @PostMapping(CommonConstants.PATH_CHECK)
-    public ResponseEntity<Void> checkProfileIdExist(
-        @RequestBody ProfileDto profileDto,
-        @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant
-    ) throws InvalidParseOperationException {
+    public ResponseEntity<Void> checkProfileIdExist(@RequestBody ProfileDto profileDto) {
         SanityChecker.sanitizeCriteria(profileDto);
         LOGGER.debug("check if profile exist with id : {}", profileDto.getIdentifier());
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());

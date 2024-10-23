@@ -58,7 +58,6 @@ import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.api.exception.NotFoundException;
-import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import fr.gouv.vitamui.referential.common.dsl.VitamQueryHelper;
 import fr.gouv.vitamui.referential.common.dto.ProfileDto;
 import fr.gouv.vitamui.referential.common.dto.ProfileResponseDto;
@@ -86,13 +85,11 @@ public class ProfileInternalService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ProfileInternalService.class);
 
-    private ObjectMapper objectMapper;
+    private final ObjectMapper objectMapper;
 
-    private ProfileConverter converter;
+    private final ProfileConverter converter;
 
-    private VitamProfileService vitamProfileService;
-
-    private InternalSecurityService internalSecurityService;
+    private final VitamProfileService vitamProfileService;
 
     @Autowired
     public ProfileInternalService(
@@ -112,7 +109,7 @@ public class ProfileInternalService {
         JsonNode query;
         try {
             if (criteria.isPresent()) {
-                TypeReference<HashMap<String, Object>> typRef = new TypeReference<HashMap<String, Object>>() {};
+                TypeReference<HashMap<String, Object>> typRef = new TypeReference<>() {};
                 vitamCriteria = objectMapper.readValue(criteria.get(), typRef);
             }
             query = VitamQueryHelper.createQueryDSL(vitamCriteria);
@@ -140,7 +137,7 @@ public class ProfileInternalService {
                 requestResponse.toJsonNode(),
                 ProfileResponseDto.class
             );
-            if (profileResponseDto.getResults().size() == 0) {
+            if (profileResponseDto.getResults().isEmpty()) {
                 return null;
             } else {
                 return converter.convertVitamToDto(profileResponseDto.getResults().get(0));
@@ -163,7 +160,7 @@ public class ProfileInternalService {
         JsonNode query;
         try {
             if (criteria.isPresent()) {
-                TypeReference<HashMap<String, Object>> typRef = new TypeReference<HashMap<String, Object>>() {};
+                TypeReference<HashMap<String, Object>> typRef = new TypeReference<>() {};
                 vitamCriteria = objectMapper.readValue(criteria.get(), typRef);
             }
 
@@ -197,7 +194,7 @@ public class ProfileInternalService {
         throws AccessExternalClientException {
         try {
             LOGGER.info("Upload Profile File EvIdAppSession : {} ", context.getApplicationSessionId());
-            RequestResponse requestResponse = vitamProfileService.updateProfileFile(context, id, file);
+            RequestResponse<?> requestResponse = vitamProfileService.updateProfileFile(context, id, file);
             if (!requestResponse.isOk()) {
                 throw new BadRequestException("Error uploading profile file");
             }
@@ -222,7 +219,7 @@ public class ProfileInternalService {
         query.set("$action", actions);
         try {
             RequestResponse<?> requestResponse = vitamProfileService.updateProfile(vitamContext, id, query);
-            List results = ((RequestResponseOK) requestResponse).getResults();
+            List<?> results = ((RequestResponseOK<?>) requestResponse).getResults();
             if (CollectionUtils.isNotEmpty(results)) {
                 Object firstResult = results.get(0);
                 if (Objects.nonNull(firstResult)) {
@@ -268,7 +265,7 @@ public class ProfileInternalService {
         return propertiesToUpdate;
     }
 
-    public ProfileDto create(VitamContext context, ProfileDto archivalProfileDto) {
+    public ProfileDto create(VitamContext context, ProfileDto archivalProfileDto) throws VitamClientException {
         LOGGER.debug("Try to create profile {} {}", archivalProfileDto, context);
         try {
             LOGGER.info("Create Profile EvIdAppSession : {} ", context.getApplicationSessionId());
@@ -284,7 +281,7 @@ public class ProfileInternalService {
                 );
                 return converter.convertVitamToDto(archivalProfileVitamDto);
             } else {
-                return null;
+                throw new VitamClientException(requestResponse.toString()); // Required because the client don't play its role...
             }
         } catch (
             InvalidParseOperationException
@@ -293,9 +290,10 @@ public class ProfileInternalService {
             | IOException
             | JAXBException exception
         ) {
-            LOGGER.error("Error while creating archive Profile", exception);
+            final String message = "Fail to create archive profile";
+            LOGGER.error(message, exception);
+            throw new VitamClientException(message, exception); // Required because the client don't play its role...
         }
-        return null;
     }
 
     public ResponseEntity<JsonNode> importProfile(VitamContext vitamContext, String fileName, MultipartFile file) {
