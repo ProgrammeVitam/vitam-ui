@@ -13110,7 +13110,7 @@
                                   "extensible": "no",
                                   "enumeration": [],
                                   "definition": "Date de signature.",
-                                  "collection": "Règles",
+                                  "collection": "Unités d'archives",
                                   "children": []
                                 },
                                 {
@@ -13586,7 +13586,7 @@
                                   "extensible": "no",
                                   "enumeration": [],
                                   "definition": "Date de validation.",
-                                  "collection": "Règles",
+                                  "collection": "Unités d'archives",
                                   "children": []
                                 },
                                 {
