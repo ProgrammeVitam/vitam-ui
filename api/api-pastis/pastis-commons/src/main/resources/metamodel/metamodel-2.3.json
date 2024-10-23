@@ -13028,6 +13028,54 @@
                       "collection": "Unités d'archives",
                       "children": [
                         {
+                          "name": "SigningRole",
+                          "children": [],
+                          "nameFr": "SigningRole",
+                          "element": "Simple",
+                          "cardinality": "1-N",
+                          "type": "string",
+                          "choice": "no",
+                          "extensible": "no",
+                          "enumeration": [
+                            "SignedDocument",
+                            "Timestamp",
+                            "Signature",
+                            "AdditionalProof"
+                          ],
+                          "definition": "ArchiveTransfer.DataObjectPackage.DescriptiveMetadata.ArchiveUnit.Content.SigningInformation.SigningRole",
+                          "collection": "Unités d'archives"
+                        },
+                        {
+                          "name": "DetachedSigningRole",
+                          "children": [],
+                          "nameFr": "DetachedSigningRole",
+                          "element": "Simple",
+                          "cardinality": "0-N",
+                          "type": "string",
+                          "choice": "no",
+                          "extensible": "no",
+                          "enumeration": [
+                            "Timestamp",
+                            "Signature",
+                            "AdditionalProof"
+                          ],
+                          "definition": "ArchiveTransfer.DataObjectPackage.DescriptiveMetadata.ArchiveUnit.Content.SigningInformation.DetachedSigningRole",
+                          "collection": "Unités d'archives"
+                        },
+                        {
+                          "name": "SignedDocumentReferenceId",
+                          "nameFr": "SignedDocumentReferenceId",
+                          "element": "Simple",
+                          "cardinality": "0-N",
+                          "type": "token",
+                          "choice": "no",
+                          "extensible": "no",
+                          "enumeration": [],
+                          "definition": "Relation technique à l'unité d'archives racine décrivant le document signé à partir des unités d'archives encapsulées contenant les autres rôles d'un contexte de signature.",
+                          "collection": "Unités d'archives",
+                          "children": []
+                        },
+                        {
                           "name": "SignatureDescription",
                           "nameFr": "Description de la signature",
                           "element": "Complex",
@@ -13992,36 +14040,6 @@
                               ]
                             },
                             {
-                              "name": "DetachedSigningRole",
-                              "children": [],
-                              "nameFr": "DetachedSigningRole",
-                              "element": "Simple",
-                              "cardinality": "0-N",
-                              "type": "string",
-                              "choice": "no",
-                              "extensible": "no",
-                              "enumeration": [
-                                "Timestamp",
-                                "Signature",
-                                "AdditionalProof"
-                              ],
-                              "definition": "ArchiveTransfer.DataObjectPackage.DescriptiveMetadata.ArchiveUnit.Content.SigningInformation.DetachedSigningRole",
-                              "collection": "Unités d'archives"
-                            },
-                            {
-                              "name": "Extended",
-                              "children": [],
-                              "nameFr": "Extended",
-                              "element": "Simple",
-                              "cardinality": "0-1",
-                              "type": "object",
-                              "choice": "no",
-                              "extensible": "no",
-                              "enumeration": [],
-                              "definition": "ArchiveTransfer.DataObjectPackage.DescriptiveMetadata.ArchiveUnit.Content.SigningInformation.Extended",
-                              "collection": "Unités d'archives"
-                            },
-                            {
                               "name": "SigningType",
                               "children": [],
                               "nameFr": "SigningType",
@@ -14033,66 +14051,48 @@
                               "enumeration": [],
                               "definition": "ArchiveTransfer.DataObjectPackage.DescriptiveMetadata.ArchiveUnit.Content.SigningInformation.SignatureDescription.SigningType",
                               "collection": "Unités d'archives"
-                            },
+                            }
+                          ]
+                        },
+                        {
+                          "name": "TimestampingInformation",
+                          "children": [
                             {
-                              "name": "SigningRole",
+                              "name": "AdditionalTimestampingInformation",
                               "children": [],
-                              "nameFr": "SigningRole",
+                              "nameFr": "AdditionalTimestampingInformation",
                               "element": "Simple",
-                              "cardinality": "1-N",
+                              "cardinality": "0-1",
                               "type": "string",
                               "choice": "no",
                               "extensible": "no",
-                              "enumeration": [
-                                "SignedDocument",
-                                "Timestamp",
-                                "Signature",
-                                "AdditionalProof"
-                              ],
-                              "definition": "ArchiveTransfer.DataObjectPackage.DescriptiveMetadata.ArchiveUnit.Content.SigningInformation.SigningRole",
+                              "enumeration": [],
+                              "definition": "ArchiveTransfer.DataObjectPackage.DescriptiveMetadata.ArchiveUnit.Content.SigningInformation.TimestampingInformation.AdditionalTimestampingInformation",
                               "collection": "Unités d'archives"
                             },
                             {
-                              "name": "TimestampingInformation",
-                              "children": [
-                                {
-                                  "name": "AdditionalTimestampingInformation",
-                                  "children": [],
-                                  "nameFr": "AdditionalTimestampingInformation",
-                                  "element": "Simple",
-                                  "cardinality": "0-1",
-                                  "type": "string",
-                                  "choice": "no",
-                                  "extensible": "no",
-                                  "enumeration": [],
-                                  "definition": "ArchiveTransfer.DataObjectPackage.DescriptiveMetadata.ArchiveUnit.Content.SigningInformation.TimestampingInformation.AdditionalTimestampingInformation",
-                                  "collection": "Unités d'archives"
-                                },
-                                {
-                                  "name": "TimeStamp",
-                                  "children": [],
-                                  "nameFr": "TimeStamp",
-                                  "element": "Simple",
-                                  "cardinality": "0-1",
-                                  "type": "date",
-                                  "choice": "no",
-                                  "extensible": "no",
-                                  "enumeration": [],
-                                  "definition": "ArchiveTransfer.DataObjectPackage.DescriptiveMetadata.ArchiveUnit.Content.SigningInformation.TimestampingInformation.TimeStamp",
-                                  "collection": "Unités d'archives"
-                                }
-                              ],
-                              "nameFr": "TimestampingInformation",
-                              "element": "Complex",
-                              "cardinality": "0-N",
-                              "type": "null",
+                              "name": "TimeStamp",
+                              "children": [],
+                              "nameFr": "TimeStamp",
+                              "element": "Simple",
+                              "cardinality": "0-1",
+                              "type": "date",
                               "choice": "no",
                               "extensible": "no",
                               "enumeration": [],
-                              "definition": "ArchiveTransfer.DataObjectPackage.DescriptiveMetadata.ArchiveUnit.Content.SigningInformation.TimestampingInformation",
+                              "definition": "ArchiveTransfer.DataObjectPackage.DescriptiveMetadata.ArchiveUnit.Content.SigningInformation.TimestampingInformation.TimeStamp",
                               "collection": "Unités d'archives"
                             }
-                          ]
+                          ],
+                          "nameFr": "TimestampingInformation",
+                          "element": "Complex",
+                          "cardinality": "0-N",
+                          "type": "null",
+                          "choice": "no",
+                          "extensible": "no",
+                          "enumeration": [],
+                          "definition": "ArchiveTransfer.DataObjectPackage.DescriptiveMetadata.ArchiveUnit.Content.SigningInformation.TimestampingInformation",
+                          "collection": "Unités d'archives"
                         },
                         {
                           "name": "AdditionalProof",
@@ -14119,6 +14119,19 @@
                           "extensible": "no",
                           "enumeration": [],
                           "definition": "ArchiveTransfer.DataObjectPackage.DescriptiveMetadata.ArchiveUnit.Content.SigningInformation.AdditionalProof",
+                          "collection": "Unités d'archives"
+                        },
+                        {
+                          "name": "Extended",
+                          "children": [],
+                          "nameFr": "Extended",
+                          "element": "Simple",
+                          "cardinality": "0-1",
+                          "type": "object",
+                          "choice": "no",
+                          "extensible": "no",
+                          "enumeration": [],
+                          "definition": "ArchiveTransfer.DataObjectPackage.DescriptiveMetadata.ArchiveUnit.Content.SigningInformation.Extended",
                           "collection": "Unités d'archives"
                         }
                       ]
