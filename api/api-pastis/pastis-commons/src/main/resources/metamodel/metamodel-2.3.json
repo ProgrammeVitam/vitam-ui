@@ -2630,6 +2630,32 @@
                   "children": []
                 },
                 {
+                  "name": "DataObjectUse",
+                  "nameFr": "Usage d’un objet donné",
+                  "element": "Simple",
+                  "cardinality": "0-1",
+                  "type": "token",
+                  "choice": "no",
+                  "extensible": "no",
+                  "enumeration": [],
+                  "definition": "Usage d’un objet donné (par exemple : original papier, conservation, diffusion, vignette, txt, ...).",
+                  "collection": "Objets",
+                  "children": []
+                },
+                {
+                  "name": "DataObjectNumber",
+                  "nameFr": "Version d'un objet donné pour un usage donné",
+                  "element": "Simple",
+                  "cardinality": "0-1",
+                  "type": "int",
+                  "choice": "no",
+                  "extensible": "no",
+                  "enumeration": [],
+                  "definition": "Version d'un objet donné pour un usage donné",
+                  "collection": "Objets",
+                  "children": []
+                },
+                {
                   "name": "PersistentIdentifier",
                   "nameFr": "Identifiant pérenne",
                   "element": "Complex",
@@ -3395,6 +3421,32 @@
                   "extensible": "no",
                   "enumeration": [],
                   "definition": "Version d'un objet-données (par exemple : original papier, conservation, diffusion, vignette, txt, ...).",
+                  "collection": "Objets",
+                  "children": []
+                },
+                {
+                  "name": "DataObjectUse",
+                  "nameFr": "Usage d’un objet donné",
+                  "element": "Simple",
+                  "cardinality": "0-1",
+                  "type": "token",
+                  "choice": "no",
+                  "extensible": "no",
+                  "enumeration": [],
+                  "definition": "Usage d’un objet donné (par exemple : original papier, conservation, diffusion, vignette, txt, ...).",
+                  "collection": "Objets",
+                  "children": []
+                },
+                {
+                  "name": "DataObjectNumber",
+                  "nameFr": "Version d'un objet donné pour un usage donné",
+                  "element": "Simple",
+                  "cardinality": "0-1",
+                  "type": "int",
+                  "choice": "no",
+                  "extensible": "no",
+                  "enumeration": [],
+                  "definition": "Version d'un objet donné pour un usage donné",
                   "collection": "Objets",
                   "children": []
                 },
@@ -4235,6 +4287,32 @@
               "children": []
             },
             {
+              "name": "DataObjectUse",
+              "nameFr": "Usage d’un objet donné",
+              "element": "Simple",
+              "cardinality": "0-1",
+              "type": "token",
+              "choice": "no",
+              "extensible": "no",
+              "enumeration": [],
+              "definition": "Usage d’un objet donné (par exemple : original papier, conservation, diffusion, vignette, txt, ...).",
+              "collection": "Objets",
+              "children": []
+            },
+            {
+              "name": "DataObjectNumber",
+              "nameFr": "Version d'un objet donné pour un usage donné",
+              "element": "Simple",
+              "cardinality": "0-1",
+              "type": "int",
+              "choice": "no",
+              "extensible": "no",
+              "enumeration": [],
+              "definition": "Version d'un objet donné pour un usage donné",
+              "collection": "Objets",
+              "children": []
+            },
+            {
               "name": "Attachment",
               "nameFr": "Objet attaché",
               "element": "Simple",
@@ -4921,6 +4999,32 @@
               "extensible": "no",
               "enumeration": [],
               "definition": "Version d'un objet-données (par exemple : original papier, conservation, diffusion, vignette, txt, ...).",
+              "collection": "Objets",
+              "children": []
+            },
+            {
+              "name": "DataObjectUse",
+              "nameFr": "Usage d’un objet donné",
+              "element": "Simple",
+              "cardinality": "0-1",
+              "type": "token",
+              "choice": "no",
+              "extensible": "no",
+              "enumeration": [],
+              "definition": "Usage d’un objet donné (par exemple : original papier, conservation, diffusion, vignette, txt, ...).",
+              "collection": "Objets",
+              "children": []
+            },
+            {
+              "name": "DataObjectNumber",
+              "nameFr": "Version d'un objet donné pour un usage donné",
+              "element": "Simple",
+              "cardinality": "0-1",
+              "type": "int",
+              "choice": "no",
+              "extensible": "no",
+              "enumeration": [],
+              "definition": "Version d'un objet donné pour un usage donné",
               "collection": "Objets",
               "children": []
             },
