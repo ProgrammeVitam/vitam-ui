@@ -13033,7 +13033,7 @@
                           "nameFr": "SigningRole",
                           "element": "Simple",
                           "cardinality": "1-N",
-                          "type": "string",
+                          "type": "token",
                           "choice": "no",
                           "extensible": "no",
                           "enumeration": [
@@ -13051,12 +13051,13 @@
                           "nameFr": "DetachedSigningRole",
                           "element": "Simple",
                           "cardinality": "0-N",
-                          "type": "string",
+                          "type": "token",
                           "choice": "no",
                           "extensible": "no",
                           "enumeration": [
-                            "Timestamp",
+                            "SignedDocument",
                             "Signature",
+                            "Timestamp",
                             "AdditionalProof"
                           ],
                           "definition": "ArchiveTransfer.DataObjectPackage.DescriptiveMetadata.ArchiveUnit.Content.SigningInformation.DetachedSigningRole",
