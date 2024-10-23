@@ -263,7 +263,7 @@ public abstract class CommonSteps extends BaseIntegration {
     protected void writeSubrogation(final SubrogationDto subrogationDto) {
         final String id = subrogationDto.getId() != null ? subrogationDto.getId() : "subrogationId";
         subrogationDto.setId(id);
-        final Date sDate = Date.from(subrogationDto.getDate().toInstant());
+        final Date sDate = Date.from(subrogationDto.getDate());
         getSubrogationsCollection().deleteOne(eq("_id", id));
         final Document subrogation = new Document("_id", id)
             .append("status", subrogationDto.getStatus().toString())
