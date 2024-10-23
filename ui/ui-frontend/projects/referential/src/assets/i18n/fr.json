@@ -546,7 +546,7 @@
         "TITLE": "Informations",
         "IDENTIFIER": "Identifiant",
         "NAME": "Nom",
-        "TYPE": "Type",
+        "TYPE": "Mode d'indexation",
         "FIELD_SIZE": "Taille du champ",
         "COLLECTION": "Collection",
         "DESCRIPTION": "Description",
