@@ -100,4 +100,6 @@ export class AccessionRegisterOperationsListComponent implements OnChanges {
     this.operationsProcessed = this.operations.filter((a) => selectedFilters.includes(a.OpType));
     this.sortTable();
   }
+
+  protected readonly RegisterValueEventType = RegisterValueEventType;
 }

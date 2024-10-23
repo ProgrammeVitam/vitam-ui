@@ -11,130 +11,137 @@
           <i (click)="exportAccessionRegisterCsv()" class="vitamui-icon vitamui-icon-import-csv vitamui-row-icon clickable"></i>
         </div>
       </div>
-      <div class="vitamui-table-head">
-        <div class="col-1">
-          <span>{{ 'ACCESSION_REGISTER.LIST.DATE' | translate }}</span>
-          <vitamui-common-order-by-button
-            orderByKey="EndDate"
-            [(orderBy)]="orderBy"
-            [(direction)]="direction"
-            (orderChange)="emitOrderChange($event)"
-          ></vitamui-common-order-by-button>
-        </div>
-        <div class="col-3">
-          <span>{{ 'ACCESSION_REGISTER.LIST.OPERATION_IDENTIFIER' | translate }}</span>
-        </div>
-        <div class="col-1">
-          <span>{{ 'ACCESSION_REGISTER.LIST.ORIGINATING_AGENCY' | translate }}</span>
-          <vitamui-common-order-by-button
-            orderByKey="OriginatingAgency"
-            [(orderBy)]="orderBy"
-            [(direction)]="direction"
-            (orderChange)="emitOrderChange($event)"
-          ></vitamui-common-order-by-button>
-        </div>
-        <div class="col-1">
-          <span>{{ 'ACCESSION_REGISTER.LIST.ARCHIVAL_AGREEMENT' | translate }}</span>
-          <vitamui-common-order-by-button
-            orderByKey="ArchivalAgreement"
-            [(orderBy)]="orderBy"
-            [(direction)]="direction"
-            (orderChange)="emitOrderChange($event)"
-          ></vitamui-common-order-by-button>
-        </div>
-        <div class="col-1">
-          <span>{{ 'ACCESSION_REGISTER.LIST.ACQUISITION_INFORMATION' | translate }}</span>
-        </div>
-        <div class="col-1">
-          <span>{{ 'ACCESSION_REGISTER.LIST.TOTAL_UNITS' | translate }}</span>
-        </div>
-        <div class="col-1">
-          <span>{{ 'ACCESSION_REGISTER.LIST.TOTAL_OBJECTS_GROUPS' | translate }}</span>
-        </div>
-        <div class="col-1">
-          <span>{{ 'ACCESSION_REGISTER.LIST.TOTAL_OBJECTS' | translate }}</span>
-        </div>
-        <div class="col-1">
-          <span>{{ 'ACCESSION_REGISTER.LIST.OBJECT_SIZE_INGESTED' | translate }}</span>
-        </div>
-        <div class="col-1">
-          <span>{{ 'ACCESSION_REGISTER.LIST.STATUS' | translate }}</span>
-          <button
-            class="vitamui-filter-button ml-1"
-            [vitamuiCommonTableFilter]="statusFilterTemplate"
-            [class.active]="filterMap.get('Status') && filterMap.get('Status').length > 0"
-            #statusFilterTrigger="vitamuiCommonTableFilter"
-          >
-            <em class="material-icons vitamui-row-icon">filter_list</em>
-          </button>
-          <ng-template #statusFilterTemplate>
-            <vitamui-common-table-filter-search
-              [(filter)]="filterMap['Status']"
-              [options]="statusFilterOptions$ | async"
-              (filterChange)="onFilterChange('Status', $event)"
-              (filterClose)="statusFilterTrigger?.close()"
-            >
-            </vitamui-common-table-filter-search>
-          </ng-template>
-        </div>
-      </div>
 
-      <div class="vitamui-table-body">
-        <div class="vitamui-table-rows" *ngFor="let accessionRegisterDetail of dataSource" (click)="onSelectRow(accessionRegisterDetail)">
-          <div class="vitamui-row d-flex align-items-center clickable">
-            <div class="col-1">{{ accessionRegisterDetail.endDate | dateTime: 'dd/MM/yyyy' }}</div>
-            <div class="col-3">{{ accessionRegisterDetail.obIdIn }}</div>
-            <div class="col-1">
-              <p
-                matTooltip="{{ accessionRegisterDetail.originatingAgencyLabel }}"
-                matTooltipClass="vitamui-tooltip"
-                [matTooltipShowDelay]="300"
-              >
+      <table>
+        <thead>
+          <tr>
+            <th>
+              <span>
+                {{ 'ACCESSION_REGISTER.LIST.DATE' | translate }}
+                <vitamui-common-order-by-button
+                  orderByKey="EndDate"
+                  [(orderBy)]="orderBy"
+                  [(direction)]="direction"
+                  (orderChange)="emitOrderChange($event)"
+                ></vitamui-common-order-by-button>
+              </span>
+            </th>
+            <th>
+              <span>{{ 'ACCESSION_REGISTER.LIST.OPERATION_IDENTIFIER' | translate }}</span>
+            </th>
+            <th>
+              <span
+                >{{ 'ACCESSION_REGISTER.LIST.ORIGINATING_AGENCY' | translate }}
+                <vitamui-common-order-by-button
+                  orderByKey="OriginatingAgency"
+                  [(orderBy)]="orderBy"
+                  [(direction)]="direction"
+                  (orderChange)="emitOrderChange($event)"
+                ></vitamui-common-order-by-button>
+              </span>
+            </th>
+            <th>
+              <span
+                >{{ 'ACCESSION_REGISTER.LIST.ARCHIVAL_AGREEMENT' | translate }}
+                <vitamui-common-order-by-button
+                  orderByKey="ArchivalAgreement"
+                  [(orderBy)]="orderBy"
+                  [(direction)]="direction"
+                  (orderChange)="emitOrderChange($event)"
+                ></vitamui-common-order-by-button>
+              </span>
+            </th>
+            <th>
+              <span>{{ 'ACCESSION_REGISTER.LIST.ACQUISITION_INFORMATION' | translate }}</span>
+            </th>
+            <th>
+              <span>{{ 'ACCESSION_REGISTER.LIST.TOTAL_UNITS' | translate }}</span>
+            </th>
+            <th>
+              <span>{{ 'ACCESSION_REGISTER.LIST.TOTAL_OBJECTS_GROUPS' | translate }}</span>
+            </th>
+            <th>
+              <span>{{ 'ACCESSION_REGISTER.LIST.TOTAL_OBJECTS' | translate }}</span>
+            </th>
+            <th>
+              <span>{{ 'ACCESSION_REGISTER.LIST.OBJECT_SIZE_INGESTED' | translate }}</span>
+            </th>
+            <th>
+              <span
+                >{{ 'ACCESSION_REGISTER.LIST.STATUS' | translate }}
+                <button
+                  class="vitamui-filter-button ml-1"
+                  [vitamuiCommonTableFilter]="statusFilterTemplate"
+                  [class.active]="filterMap.get('Status') && filterMap.get('Status').length > 0"
+                  #statusFilterTrigger="vitamuiCommonTableFilter"
+                >
+                  <em class="material-icons vitamui-row-icon">filter_list</em>
+                </button>
+              </span>
+              <ng-template #statusFilterTemplate>
+                <vitamui-common-table-filter-search
+                  [(filter)]="filterMap['Status']"
+                  [options]="statusFilterOptions$ | async"
+                  (filterChange)="onFilterChange('Status', $event)"
+                  (filterClose)="statusFilterTrigger?.close()"
+                >
+                </vitamui-common-table-filter-search>
+              </ng-template>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            *ngFor="let accessionRegisterDetail of dataSource"
+            class="clickable"
+            [class.selected]="accessionRegisterDetail === selectedRow"
+            (click)="onSelectRow(accessionRegisterDetail)"
+          >
+            <td>{{ accessionRegisterDetail.endDate | dateTime: 'dd/MM/yyyy' }}</td>
+            <td>{{ accessionRegisterDetail.obIdIn }}</td>
+            <td>
+              <p [vitamuiCommonToolTip]="accessionRegisterDetail.originatingAgencyLabel">
                 {{ accessionRegisterDetail.originatingAgency | truncate: 12 }}
               </p>
-            </div>
-            <div class="col-1">
-              <p matTooltip="{{ accessionRegisterDetail.archivalAgreement }}" matTooltipClass="vitamui-tooltip" [matTooltipShowDelay]="300">
+            </td>
+            <td>
+              <p [vitamuiCommonToolTip]="accessionRegisterDetail.archivalAgreement">
                 {{ accessionRegisterDetail.archivalAgreement | truncate: 12 }}
               </p>
-            </div>
-            <div class="col-1">{{ accessionRegisterDetail.acquisitionInformation }}</div>
-            <div class="col-1">{{ accessionRegisterDetail.totalUnits?.ingested }}</div>
-            <div class="col-1">{{ accessionRegisterDetail.totalObjectsGroups?.ingested }}</div>
-            <div class="col-1">{{ accessionRegisterDetail.totalObjects?.ingested }}</div>
-            <div class="col-1">{{ accessionRegisterDetail.objectSize?.ingested | bytes }}</div>
-            <div class="col-1">
-              <p
-                matTooltip="{{ 'ACCESSION_REGISTER.STATUS.' + accessionRegisterDetail.status | translate }}"
-                matTooltipClass="vitamui-tooltip"
-                [matTooltipShowDelay]="300"
-              >
+            </td>
+            <td>{{ accessionRegisterDetail.acquisitionInformation }}</td>
+            <td>{{ accessionRegisterDetail.totalUnits?.ingested }}</td>
+            <td>{{ accessionRegisterDetail.totalObjectsGroups?.ingested }}</td>
+            <td>{{ accessionRegisterDetail.totalObjects?.ingested }}</td>
+            <td>{{ accessionRegisterDetail.objectSize?.ingested | bytes }}</td>
+            <td>
+              <p [vitamuiCommonToolTip]="'ACCESSION_REGISTER.STATUS.' + accessionRegisterDetail.status | translate">
                 {{ 'ACCESSION_REGISTER.STATUS.' + accessionRegisterDetail.status | translate | truncate: 12 }}
               </p>
-            </div>
-          </div>
-        </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div *ngIf="!dataSource || pending; then loadingSpinner"></div>
+      <div *ngIf="!pending && dataSource?.length === 0; then noResults"></div>
+      <div *ngIf="infiniteScrollDisabled && accessionRegistersService.canLoadMore && !pending; then loadMore"></div>
+    </div>
+
+    <ng-template #noResults>
+      <div class="vitamui-min-content vitamui-table-message">{{ 'ACCESSION_REGISTER.LIST.NO_RESULT' | translate }}</div>
+    </ng-template>
+
+    <ng-template #loadMore>
+      <div class="vitamui-min-content vitamui-table-message" (click)="accessionRegistersService.loadMore()">
+        <span class="clickable">{{ 'ACCESSION_REGISTER.LIST.LOAD_MORE_RESULTS' | translate }}</span>
       </div>
-    </div>
+    </ng-template>
 
-    <div *ngIf="!dataSource || pending; then loadingSpinner"></div>
-    <div *ngIf="!pending && dataSource?.length === 0; then noResults"></div>
-    <div *ngIf="infiniteScrollDisabled && accessionRegistersService.canLoadMore && !pending; then loadMore"></div>
+    <ng-template #loadingSpinner>
+      <div class="vitamui-min-content">
+        <mat-spinner class="vitamui-spinner medium"></mat-spinner>
+      </div>
+    </ng-template>
   </div>
-
-  <ng-template #noResults>
-    <div class="vitamui-min-content vitamui-table-message">{{ 'ACCESSION_REGISTER.LIST.NO_RESULT' | translate }}</div>
-  </ng-template>
-
-  <ng-template #loadMore>
-    <div class="vitamui-min-content vitamui-table-message" (click)="accessionRegistersService.loadMore()">
-      <span class="clickable">{{ 'ACCESSION_REGISTER.LIST.LOAD_MORE_RESULTS' | translate }}</span>
-    </div>
-  </ng-template>
-
-  <ng-template #loadingSpinner>
-    <div class="vitamui-min-content">
-      <mat-spinner class="vitamui-spinner medium"></mat-spinner>
-    </div>
-  </ng-template>
 </div>

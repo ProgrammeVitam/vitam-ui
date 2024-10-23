@@ -161,10 +161,6 @@ td .vitamui-row-icon {
   color: #b7b7b7;
 }
 
-table:not(.no-hover) tbody > tr:not(.no-hover):hover {
-  background-color: var(--vitamui-background);
-}
-
 .vitamui-table-row {
   .actions {
     white-space: nowrap;
@@ -528,6 +524,10 @@ table.cdk-table {
   background-color: transparent;
   width: 100%;
 
+  &:not(.no-hover) tbody > tr:not(.no-hover):not(.selected):hover {
+    background-color: var(--vitamui-background);
+  }
+
   thead,
   tbody {
     background: $white;
@@ -542,6 +542,12 @@ table.cdk-table {
         @extend .py-3;
         @extend .text;
         @extend .normal;
+
+        span {
+          white-space: normal;
+          display: flex;
+          align-items: center;
+        }
       }
 
       th:first-child,
@@ -556,6 +562,10 @@ table.cdk-table {
 
       th {
         @extend .bold;
+      }
+
+      &.selected {
+        background: var(--vitamui-primary-50);
       }
     }
   }

@@ -11,85 +11,112 @@
   </div>
 </div>
 
-<div class="vitamui-table">
-  <div class="vitamui-table-head">
-    <div class="col-3">
-      {{ 'ACCESSION_REGISTER.PREVIEW.OPERATIONS.FILTER_BY_OPERATIONS' | translate }}
-      <button
-        class="vitamui-filter-button ml-1"
-        [vitamuiCommonTableFilter]="statusFilterTemplate"
-        [class.active]="availableOperationsType.length > 0"
-      >
-        <em class="material-icons vitamui-row-icon">filter_list</em>
-      </button>
-      <ng-template #statusFilterTemplate>
-        <vitamui-common-table-filter [(filter)]="selectedFilters" (filterChange)="changeFilter($event)">
-          <vitamui-common-table-filter-option *ngFor="let operationType of availableOperationsType" value="{{ operationType.name }}">
-            <div class="table-filter-icon">{{ operationType.translation }}</div>
-          </vitamui-common-table-filter-option>
-        </vitamui-common-table-filter>
-      </ng-template>
-    </div>
-    <div class="col-2">
-      {{ 'ACCESSION_REGISTER.PREVIEW.OPERATIONS.ORDER_BY_CREATION_DATE' | translate }}
-      <vitamui-common-order-by-button
-        [orderByKey]="orderKeyOperationCreationDate"
-        [orderBy]="orderColumn"
-        [direction]="orderDirection"
-        (directionChange)="changeOrderDirection($event)"
-        (orderByChange)="changeOrderColumn($event)"
-        (orderChange)="sortTable()"
-      ></vitamui-common-order-by-button>
-    </div>
-    <div class="col-1">
-      {{ 'ACCESSION_REGISTER.PREVIEW.OPERATIONS.ORDER_BY_UNITS' | translate }}
-      <vitamui-common-order-by-button
-        [orderByKey]="orderKeyOperationUnits"
-        [orderBy]="orderColumn"
-        [direction]="orderDirection"
-        (directionChange)="changeOrderDirection($event)"
-        (orderByChange)="changeOrderColumn($event)"
-        (orderChange)="sortTable()"
-      ></vitamui-common-order-by-button>
-    </div>
-    <div class="col-1">
-      {{ 'ACCESSION_REGISTER.PREVIEW.OPERATIONS.ORDER_BY_OBJECTS' | translate }}
-      <vitamui-common-order-by-button
-        [orderByKey]="orderKeyOperationObjects"
-        [orderBy]="orderColumn"
-        [direction]="orderDirection"
-        (directionChange)="changeOrderDirection($event)"
-        (orderByChange)="changeOrderColumn($event)"
-        (orderChange)="sortTable()"
-      ></vitamui-common-order-by-button>
-    </div>
-    <div class="col-1">
-      {{ 'ACCESSION_REGISTER.PREVIEW.OPERATIONS.ORDER_BY_GOTS' | translate }}
-      <vitamui-common-order-by-button
-        [orderByKey]="orderKeyOperationGots"
-        [orderBy]="orderColumn"
-        [direction]="orderDirection"
-        (directionChange)="changeOrderDirection($event)"
-        (orderByChange)="changeOrderColumn($event)"
-        (orderChange)="sortTable()"
-      ></vitamui-common-order-by-button>
-    </div>
-    <div class="col-1">
-      {{ 'ACCESSION_REGISTER.PREVIEW.OPERATIONS.ORDER_BY_OBJ_SIZE' | translate }}
-      <vitamui-common-order-by-button
-        [orderByKey]="orderKeyOperationObjSize"
-        [orderBy]="orderColumn"
-        [direction]="orderDirection"
-        (directionChange)="changeOrderDirection($event)"
-        (orderByChange)="changeOrderColumn($event)"
-        (orderChange)="sortTable()"
-      ></vitamui-common-order-by-button>
-    </div>
-    <div class="col-1"></div>
-  </div>
-
-  <div class="vitamui-table-body vitamui-table-rows">
-    <app-accession-register-operation class="vitamui-row row" *ngFor="let operation of operationsProcessed" [operation]="operation">
-    </app-accession-register-operation>
-  </div>
-</div>
+<table>
+  <thead>
+    <tr>
+      <th>
+        <span>
+          {{ 'ACCESSION_REGISTER.PREVIEW.OPERATIONS.FILTER_BY_OPERATIONS' | translate }}
+          <button
+            class="vitamui-filter-button ml-1"
+            [vitamuiCommonTableFilter]="statusFilterTemplate"
+            [class.active]="availableOperationsType.length > 0"
+          >
+            <em class="material-icons vitamui-row-icon">filter_list</em>
+          </button>
+        </span>
+        <ng-template #statusFilterTemplate>
+          <vitamui-common-table-filter [(filter)]="selectedFilters" (filterChange)="changeFilter($event)">
+            <vitamui-common-table-filter-option *ngFor="let operationType of availableOperationsType" value="{{ operationType.name }}">
+              <div class="table-filter-icon">{{ operationType.translation }}</div>
+            </vitamui-common-table-filter-option>
+          </vitamui-common-table-filter>
+        </ng-template>
+      </th>
+      <th>
+        <span>
+          {{ 'ACCESSION_REGISTER.PREVIEW.OPERATIONS.ORDER_BY_CREATION_DATE' | translate }}
+          <vitamui-common-order-by-button
+            [orderByKey]="orderKeyOperationCreationDate"
+            [orderBy]="orderColumn"
+            [direction]="orderDirection"
+            (directionChange)="changeOrderDirection($event)"
+            (orderByChange)="changeOrderColumn($event)"
+            (orderChange)="sortTable()"
+          ></vitamui-common-order-by-button>
+        </span>
+      </th>
+      <th>
+        <span>
+          {{ 'ACCESSION_REGISTER.PREVIEW.OPERATIONS.ORDER_BY_UNITS' | translate }}
+          <vitamui-common-order-by-button
+            [orderByKey]="orderKeyOperationUnits"
+            [orderBy]="orderColumn"
+            [direction]="orderDirection"
+            (directionChange)="changeOrderDirection($event)"
+            (orderByChange)="changeOrderColumn($event)"
+            (orderChange)="sortTable()"
+          ></vitamui-common-order-by-button>
+        </span>
+      </th>
+      <th>
+        <span
+          >{{ 'ACCESSION_REGISTER.PREVIEW.OPERATIONS.ORDER_BY_OBJECTS' | translate }}
+          <vitamui-common-order-by-button
+            [orderByKey]="orderKeyOperationObjects"
+            [orderBy]="orderColumn"
+            [direction]="orderDirection"
+            (directionChange)="changeOrderDirection($event)"
+            (orderByChange)="changeOrderColumn($event)"
+            (orderChange)="sortTable()"
+          ></vitamui-common-order-by-button>
+        </span>
+      </th>
+      <th>
+        <span>
+          {{ 'ACCESSION_REGISTER.PREVIEW.OPERATIONS.ORDER_BY_GOTS' | translate }}
+          <vitamui-common-order-by-button
+            [orderByKey]="orderKeyOperationGots"
+            [orderBy]="orderColumn"
+            [direction]="orderDirection"
+            (directionChange)="changeOrderDirection($event)"
+            (orderByChange)="changeOrderColumn($event)"
+            (orderChange)="sortTable()"
+          ></vitamui-common-order-by-button>
+        </span>
+      </th>
+      <th>
+        <span
+          >{{ 'ACCESSION_REGISTER.PREVIEW.OPERATIONS.ORDER_BY_OBJ_SIZE' | translate }}
+          <vitamui-common-order-by-button
+            [orderByKey]="orderKeyOperationObjSize"
+            [orderBy]="orderColumn"
+            [direction]="orderDirection"
+            (directionChange)="changeOrderDirection($event)"
+            (orderByChange)="changeOrderColumn($event)"
+            (orderChange)="sortTable()"
+          ></vitamui-common-order-by-button
+        ></span>
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let operation of operationsProcessed">
+      <td>
+        <span [ngSwitch]="operation.OpType">
+          <i class="vitamui-icon vitamui-icon-archive-ingest" *ngSwitchCase="RegisterValueEventType.INGEST"></i>
+          <i class="vitamui-icon vitamui-icon-ic24-prservation" *ngSwitchCase="RegisterValueEventType.PRESERVATION"></i>
+          <i class="vitamui-icon vitamui-icon-ic24-user-transfer" *ngSwitchCase="RegisterValueEventType.TRANSFER_REPLY"></i>
+          <i class="vitamui-icon vitamui-icon-ic24-limination" *ngSwitchCase="RegisterValueEventType.ELIMINATION"></i>
+          <i class="vitamui-icon vitamui-icon-question-mark" *ngSwitchDefault></i>
+          {{ 'ACCESSION_REGISTER.PREVIEW.OPERATIONS.TYPE.' + operation.OpType | translate }}
+        </span>
+      </td>
+      <td>{{ operation.CreationDate | date: 'dd/MM/yyyy' }}</td>
+      <td>{{ operation.Units }}</td>
+      <td>{{ operation.Objects }}</td>
+      <td>{{ operation.Gots }}</td>
+      <td>{{ operation.ObjSize }}</td>
+    </tr>
+  </tbody>
+</table>

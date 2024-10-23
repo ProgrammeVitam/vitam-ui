@@ -15,6 +15,7 @@ export class ArraysComponent {
     { zipName: 'Cabinet Douillet_Martin 2', size: '12 Go', compression: 80, loading: 0 },
   ];
   displayedColumns: string[] = ['zipName', 'size', 'compression', 'loading'];
+  selectedRow = this.tableDataSource[0];
 
   public orderBy = 'name';
   public direction = Direction.ASCENDANT;
