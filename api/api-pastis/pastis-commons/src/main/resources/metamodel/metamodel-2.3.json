@@ -14257,7 +14257,7 @@
                       "name": "PersistentIdentifier",
                       "nameFr": "Identifiant pérenne",
                       "element": "Complex",
-                      "cardinality": "0-1",
+                      "cardinality": "0-N",
                       "type": "null",
                       "choice": "no",
                       "extensible": "no",
