@@ -2513,14 +2513,14 @@
                 },
                 {
                   "name": "DataObjectProfile",
-                  "nameFr": "Référence à une partie d'un profil d’archivage applicable à un objet technique en particulier",
+                  "nameFr": "Profil d'objet",
                   "element": "Simple",
                   "cardinality": "0-1",
                   "type": "token",
                   "choice": "no",
                   "extensible": "no",
                   "enumeration": [],
-                  "definition": "Référence à une partie d'un profil d’archivage applicable à un objet technique en particulier.",
+                  "definition": "Profil d'objet",
                   "collection": "Objets",
                   "children": []
                 },
@@ -3308,14 +3308,14 @@
                 },
                 {
                   "name": "DataObjectProfile",
-                  "nameFr": "Référence à une partie d'un profil d’archivage applicable à un objet technique en particulier",
+                  "nameFr": "Profil d'objet",
                   "element": "Simple",
                   "cardinality": "0-1",
                   "type": "token",
                   "choice": "no",
                   "extensible": "no",
                   "enumeration": [],
-                  "definition": "Référence à une partie d'un profil d’archivage applicable à un objet technique en particulier.",
+                  "definition": "Profil d'objet",
                   "collection": "Objets",
                   "children": []
                 },
