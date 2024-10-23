@@ -20,6 +20,7 @@ import fr.gouv.vitamui.iam.common.dto.SubrogationDto;
 import fr.gouv.vitamui.iam.common.enums.OtpEnum;
 import fr.gouv.vitamui.iam.common.enums.SubrogationStatusEnum;
 
+import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -201,7 +202,7 @@ public class IamDtoBuilder {
     ) {
         final SubrogationDto subrogation = new SubrogationDto();
         subrogation.setId(id);
-        subrogation.setDate(OffsetDateTime.now());
+        subrogation.setDate(Instant.now());
         subrogation.setStatus(SubrogationStatusEnum.CREATED);
         subrogation.setSurrogate(surrogate);
         subrogation.setSurrogateCustomerId(surrogateCustomerId);

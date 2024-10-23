@@ -76,7 +76,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import javax.validation.constraints.NotNull;
-import java.time.OffsetDateTime;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.Optional;
 
@@ -193,7 +194,7 @@ public class SubrogationInternalService extends VitamUICrudService<SubrogationDt
         } else {
             ttlInMinutes = subrogationTtl;
         }
-        final OffsetDateTime nowPlusXMinutes = OffsetDateTime.now().plusMinutes(ttlInMinutes);
+        final Instant nowPlusXMinutes = Instant.now().plus(ttlInMinutes, ChronoUnit.MINUTES);
         dto.setDate(nowPlusXMinutes);
 
         checkSubrogationAlreadyExist(dto.getSurrogate(), dto.getSurrogateCustomerId());

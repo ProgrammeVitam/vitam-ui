@@ -34,7 +34,6 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import * as moment_ from 'moment';
 import { filter } from 'rxjs/operators';
 
 import { Component, OnInit } from '@angular/core';
@@ -42,8 +41,6 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../auth.service';
 import { AuthUser, Subrogation } from '../../models';
 import { SubrogationService } from '../subrogation.service';
-
-const moment = moment_;
 
 @Component({
   selector: 'vitamui-common-subrogation-banner',
@@ -72,7 +69,7 @@ export class SubrogationBannerComponent implements OnInit {
           if (!this.subrogation) {
             this.subrogation = data;
             this.show = true;
-            this.endDate = moment(this.subrogation.date).toDate();
+            this.endDate = new Date(this.subrogation.date);
             this.subrogationTTL = this.endDate.getTime() - new Date().getTime();
             this.surrogateCustomerCode = this.subrogation.surrogateCustomerCode;
             this.surrogateCustomerName = this.subrogation.surrogateCustomerName;
