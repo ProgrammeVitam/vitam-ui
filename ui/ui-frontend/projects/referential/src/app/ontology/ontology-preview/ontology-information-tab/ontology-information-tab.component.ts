@@ -2,9 +2,10 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { catchError, switchMap } from 'rxjs/operators';
-import { Ontology, Option, diff, setTypeDetailAndStringSize } from 'vitamui-library';
+import { Ontology, diff, setTypeDetailAndStringSize } from 'vitamui-library';
 import { RULE_TYPES } from '../../../rule/rules.constants';
 import { OntologyService } from '../../ontology.service';
+import { collections, types, sizes } from '../../ontology-form-options';
 
 @Component({
   selector: 'app-ontology-information-tab',
@@ -14,36 +15,12 @@ import { OntologyService } from '../../ontology.service';
 export class OntologyInformationTabComponent implements OnInit {
   @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();
   form: FormGroup;
-
   isInternal = true;
-
-  submited = false;
-
+  submitted = false;
   sizeFieldVisible = false;
-
-  // FIXME: Get list from common var ?
-  types: Option[] = [
-    { key: 'DATE', label: 'Date', info: '' },
-    { key: 'TEXT', label: 'Texte', info: '' },
-    { key: 'KEYWORD', label: 'Mot clé', info: '' },
-    { key: 'BOOLEAN', label: 'Boolean', info: '' },
-    { key: 'LONG', label: 'Long', info: '' },
-    { key: 'DOUBLE', label: 'Double', info: '' },
-    { key: 'ENUM', label: 'Énumérer', info: '' },
-    { key: 'GEO_POINT', label: 'Point Géographique', info: '' },
-  ];
-
-  // FIXME: Get list from common var ?
-  collections: Option[] = [
-    { key: 'Unit', label: 'Unité Archivistique', info: '' },
-    { key: 'ObjectGroup', label: "Groupe d'objet", info: '' },
-  ];
-
-  sizes: Option[] = [
-    { key: 'SHORT', label: 'Court', info: '' },
-    { key: 'MEDIUM', label: 'Moyen', info: '' },
-    { key: 'LARGE', label: 'Long', info: '' },
-  ];
+  types = types;
+  collections = collections;
+  sizes = sizes;
 
   @Input()
   set inputOntology(ontology: Ontology) {
@@ -116,7 +93,7 @@ export class OntologyInformationTabComponent implements OnInit {
 
   onIndexingModeChange(key: string) {
     if (!this.isInternal) {
-      this.sizeFieldVisible = key === 'TEXT';
+      this.sizeFieldVisible = ['TEXT', 'GEO_POINT', 'KEYWORD'].includes(key);
     }
 
     setTypeDetailAndStringSize(key, this.form);
@@ -133,17 +110,17 @@ export class OntologyInformationTabComponent implements OnInit {
   }
 
   onSubmit() {
-    this.submited = true;
+    this.submitted = true;
     this.prepareSubmit().subscribe(
       () => {
         this.ontologyService.get(this._inputOntology.identifier).subscribe((response) => {
-          this.submited = false;
+          this.submitted = false;
           this.inputOntology = response;
           this.ontologyService.updated.next(this.inputOntology);
         });
       },
       () => {
-        this.submited = false;
+        this.submitted = false;
       },
     );
   }
