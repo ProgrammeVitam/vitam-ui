@@ -61,6 +61,7 @@ export class AgencyComponent extends SidenavPage<Agency> implements OnInit {
   hasCreateRole = false;
   hasImportRole = false;
   hasExportRole = false;
+  hasUpdateRole = false;
 
   constructor(
     public dialog: MatDialog,
@@ -82,10 +83,12 @@ export class AgencyComponent extends SidenavPage<Agency> implements OnInit {
       this.securityService.hasRole(ApplicationId.AGENCIES_APP, this.tenantIdentifier, Role.ROLE_CREATE_AGENCIES),
       this.securityService.hasRole(ApplicationId.AGENCIES_APP, this.tenantIdentifier, Role.ROLE_IMPORT_AGENCIES),
       this.securityService.hasRole(ApplicationId.AGENCIES_APP, this.tenantIdentifier, Role.ROLE_EXPORT_AGENCIES),
-    ).subscribe((values: [boolean, boolean, boolean]) => {
+      this.securityService.hasRole(ApplicationId.AGENCIES_APP, this.tenantIdentifier, Role.ROLE_UPDATE_AGENCIES),
+    ).subscribe((values: [boolean, boolean, boolean, boolean]) => {
       this.hasCreateRole = values[0];
       this.hasImportRole = values[1];
       this.hasExportRole = values[2];
+      this.hasUpdateRole = values[3];
     });
   }
 

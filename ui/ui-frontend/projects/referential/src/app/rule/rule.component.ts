@@ -59,6 +59,7 @@ export class RuleComponent extends SidenavPage<Rule> implements OnInit {
   tenantId: number;
 
   checkCreateRole = new Observable<boolean>();
+  checkUpdateRole = new Observable<boolean>();
   checkImportRole = new Observable<boolean>();
   checkExportRole = new Observable<boolean>();
 
@@ -117,6 +118,7 @@ export class RuleComponent extends SidenavPage<Rule> implements OnInit {
     this.checkCreateRole = this.securityService.hasRole(ApplicationId.RULES_APP, this.tenantId, Role.ROLE_CREATE_RULES);
     this.checkImportRole = this.securityService.hasRole(ApplicationId.RULES_APP, this.tenantId, Role.ROLE_IMPORT_RULES);
     this.checkExportRole = this.securityService.hasRole(ApplicationId.RULES_APP, this.tenantId, Role.ROLE_EXPORT_RULES);
+    this.checkUpdateRole = this.securityService.hasRole(ApplicationId.RULES_APP, this.tenantId, Role.ROLE_UPDATE_RULES);
   }
 
   showRule(item: Rule) {
