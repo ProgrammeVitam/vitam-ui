@@ -6829,55 +6829,6 @@
                       "children": []
                     },
                     {
-                      "name": "LinkingAgentIdentifier",
-                      "element": "Complex",
-                      "cardinality": "0-1",
-                      "type": "null",
-                      "choice": "no",
-                      "extensible": "no",
-                      "enumeration": [],
-                      "definition": "Agent.",
-                      "collection": "Unités d'archives",
-                      "children": [
-                        {
-                          "name": "LinkingAgentIdentifierType",
-                          "element": "Simple",
-                          "cardinality": "0-1",
-                          "type": "token",
-                          "choice": "no",
-                          "extensible": "no",
-                          "enumeration": [],
-                          "definition": "Identifiant.",
-                          "collection": "Unités d'archives",
-                          "children": []
-                        },
-                        {
-                          "name": "LinkingAgentIdentifierValue",
-                          "element": "Simple",
-                          "cardinality": "0-1",
-                          "type": "token",
-                          "choice": "no",
-                          "extensible": "no",
-                          "enumeration": [],
-                          "definition": "Valeur.",
-                          "collection": "Unités d'archives",
-                          "children": []
-                        },
-                        {
-                          "name": "LinkingAgentRole",
-                          "element": "Simple",
-                          "cardinality": "0-1",
-                          "type": "token",
-                          "choice": "no",
-                          "extensible": "no",
-                          "enumeration": [],
-                          "definition": "Rôle.",
-                          "collection": "Unités d'archives",
-                          "children": []
-                        }
-                      ]
-                    },
-                    {
                       "name": "Description",
                       "nameFr": "Description",
                       "element": "Simple",
