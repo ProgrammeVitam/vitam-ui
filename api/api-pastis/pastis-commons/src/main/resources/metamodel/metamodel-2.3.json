@@ -6523,7 +6523,7 @@
                       "name": "HoldRule",
                       "nameFr": "Gestion de la durée de gel",
                       "element": "Complex",
-                      "cardinality": "0-N",
+                      "cardinality": "0-1",
                       "type": "null",
                       "choice": "no",
                       "extensible": "no",
@@ -6535,7 +6535,7 @@
                           "name": "Rule",
                           "nameFr": "Règle de gestion",
                           "element": "Simple",
-                          "cardinality": "0-1",
+                          "cardinality": "0-N",
                           "type": "token",
                           "choice": "no",
                           "extensible": "no",
@@ -6563,7 +6563,7 @@
                           "nameFr": "Date de début",
                           "element": "Simple",
                           "cardinality": "0-1",
-                          "type": "DateType",
+                          "type": "date",
                           "choice": "no",
                           "extensible": "no",
                           "enumeration": [],
@@ -13055,7 +13055,6 @@
                           "choice": "no",
                           "extensible": "no",
                           "enumeration": [
-                            "SignedDocument",
                             "Signature",
                             "Timestamp",
                             "AdditionalProof"
@@ -14938,7 +14937,7 @@
                   "nameFr": "Date de départ",
                   "element": "Simple",
                   "cardinality": "0-1",
-                  "type": "token",
+                  "type": "date",
                   "choice": "no",
                   "extensible": "no",
                   "enumeration": [],
@@ -15052,7 +15051,7 @@
                   "nameFr": "Date de départ",
                   "element": "Simple",
                   "cardinality": "0-1",
-                  "type": "token",
+                  "type": "date",
                   "choice": "no",
                   "extensible": "no",
                   "enumeration": [],
@@ -15165,7 +15164,7 @@
                   "nameFr": "Date de départ",
                   "element": "Simple",
                   "cardinality": "0-1",
-                  "type": "token",
+                  "type": "date",
                   "choice": "no",
                   "extensible": "no",
                   "enumeration": [],
@@ -15262,7 +15261,7 @@
                   "nameFr": "Date de départ",
                   "element": "Simple",
                   "cardinality": "0-1",
-                  "type": "token",
+                  "type": "date",
                   "choice": "no",
                   "extensible": "no",
                   "enumeration": [],
@@ -15273,171 +15272,6 @@
                 {
                   "name": "PreventInheritance",
                   "nameFr": "Héritage  dans  le  nœud courant",
-                  "element": "Simple",
-                  "cardinality": "0-1",
-                  "type": "boolean",
-                  "choice": "yes",
-                  "extensible": "no",
-                  "enumeration": [
-                    "false",
-                    "true"
-                  ],
-                  "definition": "Indique si les règles de gestion héritées des ArchiveUnit parents doivent être ignorées pour l'ArchiveUnit concerné.",
-                  "collection": "Règles",
-                  "children": []
-                },
-                {
-                  "name": "RefNonRuleId",
-                  "nameFr": "Arrêt de l’héritage dans le nœud courant",
-                  "element": "Simple",
-                  "cardinality": "0-N",
-                  "type": "token",
-                  "choice": "yes",
-                  "extensible": "no",
-                  "enumeration": [],
-                  "definition": "L'identifiant de la règle spécifiée pourra être retirée de l'héritage dans ce noeud.",
-                  "collection": "Règles",
-                  "children": [
-                    {
-                      "name": "id",
-                      "nameFr": "id",
-                      "element": "Attribute",
-                      "cardinality": "0-1",
-                      "type": "ID",
-                      "choice": "no",
-                      "extensible": "no",
-                      "enumeration": [],
-                      "definition": "Identifiant de la métadonnée",
-                      "collection": "Règles",
-                      "children": []
-                    }
-                  ]
-                }
-              ]
-            },
-            {
-              "name": "HoldRule",
-              "nameFr": "Gestion de la durée de gel",
-              "element": "Complex",
-              "cardinality": "0-N",
-              "type": "null",
-              "choice": "no",
-              "extensible": "no",
-              "enumeration": [],
-              "definition": "Gestion de la durée de gel.",
-              "collection": "Règles",
-              "children": [
-                {
-                  "name": "Rule",
-                  "nameFr": "Règle de gestion",
-                  "element": "Simple",
-                  "cardinality": "0-1",
-                  "type": "token",
-                  "choice": "no",
-                  "extensible": "no",
-                  "enumeration": [],
-                  "definition": "Règle de gestion.",
-                  "collection": "Règles",
-                  "children": [
-                    {
-                      "name": "id",
-                      "nameFr": "id",
-                      "element": "Attribute",
-                      "cardinality": "0-1",
-                      "type": "ID",
-                      "choice": "no",
-                      "extensible": "no",
-                      "enumeration": [],
-                      "definition": "Identifiant de la métadonnée",
-                      "collection": "Règles",
-                      "children": []
-                    }
-                  ]
-                },
-                {
-                  "name": "StartDate",
-                  "nameFr": "Date de début",
-                  "element": "Simple",
-                  "cardinality": "0-1",
-                  "type": "DateType",
-                  "choice": "no",
-                  "extensible": "no",
-                  "enumeration": [],
-                  "definition": "Date de début de gel",
-                  "collection": "Règles",
-                  "children": []
-                },
-                {
-                  "name": "HoldReason",
-                  "nameFr": "Motif de gel",
-                  "element": "Simple",
-                  "cardinality": "0-1",
-                  "type": "string",
-                  "choice": "no",
-                  "extensible": "no",
-                  "enumeration": [],
-                  "definition": "Motif de gel.",
-                  "collection": "Règles",
-                  "children": []
-                },
-                {
-                  "name": "HoldEndDate",
-                  "nameFr": "Date de fin de gel",
-                  "element": "Simple",
-                  "cardinality": "0-1",
-                  "type": "DateType",
-                  "choice": "no",
-                  "extensible": "no",
-                  "enumeration": [],
-                  "definition": "Date de fin de gel.",
-                  "collection": "Règles",
-                  "children": []
-                },
-                {
-                  "name": "HoldReassessingDate",
-                  "nameFr": "Date de réévaluation",
-                  "element": "Simple",
-                  "cardinality": "0-1",
-                  "type": "DateType",
-                  "choice": "no",
-                  "extensible": "no",
-                  "enumeration": [],
-                  "definition": "Date de réévaluation.",
-                  "collection": "Règles",
-                  "children": []
-                },
-                {
-                  "name": "HoldOwner",
-                  "nameFr": "Propriétaire de la demande de gel",
-                  "element": "Simple",
-                  "cardinality": "0-1",
-                  "type": "token",
-                  "choice": "no",
-                  "extensible": "no",
-                  "enumeration": [],
-                  "definition": "Propriétaire de la demande de gel.",
-                  "collection": "Règles",
-                  "children": []
-                },
-                {
-                  "name": "PreventRearrangement",
-                  "nameFr": "Blocage de la reclassification",
-                  "element": "Simple",
-                  "cardinality": "0-1",
-                  "type": "boolean",
-                  "choice": "yes",
-                  "extensible": "no",
-                  "enumeration": [
-                    "false",
-                    "true"
-                  ],
-                  "definition": "Blocage de la reclassification.",
-                  "collection": "Règles",
-                  "children": []
-                },
-                {
-                  "name": "PreventInheritance",
-                  "nameFr": "Héritage dans le nœud courant",
                   "element": "Simple",
                   "cardinality": "0-1",
                   "type": "boolean",
@@ -15524,7 +15358,7 @@
                   "nameFr": "Date de départ",
                   "element": "Simple",
                   "cardinality": "0-1",
-                  "type": "token",
+                  "type": "date",
                   "choice": "no",
                   "extensible": "no",
                   "enumeration": [],
@@ -15621,7 +15455,7 @@
                   "nameFr": "Date de départ",
                   "element": "Simple",
                   "cardinality": "0-1",
-                  "type": "token",
+                  "type": "date",
                   "choice": "no",
                   "extensible": "no",
                   "enumeration": [],
@@ -15965,6 +15799,172 @@
               "definition": "Indique si une autorisation humaine est nécessaire pour vérifier ou valider les opérations de gestion des ArchiveUnit.",
               "collection": "Règles",
               "children": []
+            },
+
+            {
+              "name": "HoldRule",
+              "nameFr": "Gestion de la durée de gel",
+              "element": "Complex",
+              "cardinality": "0-1",
+              "type": "null",
+              "choice": "no",
+              "extensible": "no",
+              "enumeration": [],
+              "definition": "Gestion de la durée de gel.",
+              "collection": "Règles",
+              "children": [
+                {
+                  "name": "Rule",
+                  "nameFr": "Règle de gestion",
+                  "element": "Simple",
+                  "cardinality": "0-N",
+                  "type": "token",
+                  "choice": "no",
+                  "extensible": "no",
+                  "enumeration": [],
+                  "definition": "Règle de gestion.",
+                  "collection": "Règles",
+                  "children": [
+                    {
+                      "name": "id",
+                      "nameFr": "id",
+                      "element": "Attribute",
+                      "cardinality": "0-1",
+                      "type": "ID",
+                      "choice": "no",
+                      "extensible": "no",
+                      "enumeration": [],
+                      "definition": "Identifiant de la métadonnée",
+                      "collection": "Règles",
+                      "children": []
+                    }
+                  ]
+                },
+                {
+                  "name": "StartDate",
+                  "nameFr": "Date de début",
+                  "element": "Simple",
+                  "cardinality": "0-1",
+                  "type": "date",
+                  "choice": "no",
+                  "extensible": "no",
+                  "enumeration": [],
+                  "definition": "Date de début de gel",
+                  "collection": "Règles",
+                  "children": []
+                },
+                {
+                  "name": "HoldReason",
+                  "nameFr": "Motif de gel",
+                  "element": "Simple",
+                  "cardinality": "0-1",
+                  "type": "string",
+                  "choice": "no",
+                  "extensible": "no",
+                  "enumeration": [],
+                  "definition": "Motif de gel.",
+                  "collection": "Règles",
+                  "children": []
+                },
+                {
+                  "name": "HoldEndDate",
+                  "nameFr": "Date de fin de gel",
+                  "element": "Simple",
+                  "cardinality": "0-1",
+                  "type": "DateType",
+                  "choice": "no",
+                  "extensible": "no",
+                  "enumeration": [],
+                  "definition": "Date de fin de gel.",
+                  "collection": "Règles",
+                  "children": []
+                },
+                {
+                  "name": "HoldReassessingDate",
+                  "nameFr": "Date de réévaluation",
+                  "element": "Simple",
+                  "cardinality": "0-1",
+                  "type": "DateType",
+                  "choice": "no",
+                  "extensible": "no",
+                  "enumeration": [],
+                  "definition": "Date de réévaluation.",
+                  "collection": "Règles",
+                  "children": []
+                },
+                {
+                  "name": "HoldOwner",
+                  "nameFr": "Propriétaire de la demande de gel",
+                  "element": "Simple",
+                  "cardinality": "0-1",
+                  "type": "token",
+                  "choice": "no",
+                  "extensible": "no",
+                  "enumeration": [],
+                  "definition": "Propriétaire de la demande de gel.",
+                  "collection": "Règles",
+                  "children": []
+                },
+                {
+                  "name": "PreventRearrangement",
+                  "nameFr": "Blocage de la reclassification",
+                  "element": "Simple",
+                  "cardinality": "0-1",
+                  "type": "boolean",
+                  "choice": "yes",
+                  "extensible": "no",
+                  "enumeration": [
+                    "false",
+                    "true"
+                  ],
+                  "definition": "Blocage de la reclassification.",
+                  "collection": "Règles",
+                  "children": []
+                },
+                {
+                  "name": "PreventInheritance",
+                  "nameFr": "Héritage dans le nœud courant",
+                  "element": "Simple",
+                  "cardinality": "0-1",
+                  "type": "boolean",
+                  "choice": "yes",
+                  "extensible": "no",
+                  "enumeration": [
+                    "false",
+                    "true"
+                  ],
+                  "definition": "Indique si les règles de gestion héritées des ArchiveUnit parents doivent être ignorées pour l'ArchiveUnit concerné.",
+                  "collection": "Règles",
+                  "children": []
+                },
+                {
+                  "name": "RefNonRuleId",
+                  "nameFr": "Arrêt de l’héritage dans le nœud courant",
+                  "element": "Simple",
+                  "cardinality": "0-N",
+                  "type": "token",
+                  "choice": "yes",
+                  "extensible": "no",
+                  "enumeration": [],
+                  "definition": "L'identifiant de la règle spécifiée pourra être retirée de l'héritage dans ce noeud.",
+                  "collection": "Règles",
+                  "children": [
+                    {
+                      "name": "id",
+                      "nameFr": "id",
+                      "element": "Attribute",
+                      "cardinality": "0-1",
+                      "type": "ID",
+                      "choice": "no",
+                      "extensible": "no",
+                      "enumeration": [],
+                      "definition": "Identifiant de la métadonnée",
+                      "collection": "Règles",
+                      "children": []
+                    }
+                  ]
+                }
+              ]
             }
           ]
         }
