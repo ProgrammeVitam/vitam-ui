@@ -18,7 +18,7 @@
     </div>
     <div class="row">
       <div class="col">
-        <app-logbook-operation-facet [facetDetails]="stateFacetDetails$ | async"></app-logbook-operation-facet>
+        <app-logbook-operation-facet [facetDetails]="accessionRegistersService.stats$ | async"></app-logbook-operation-facet>
       </div>
     </div>
   </div>
