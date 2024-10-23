@@ -867,29 +867,7 @@
                 <artifactId>common-database-public</artifactId>
                 <version>${vitam.version}</version>
             </dependency>
-            <dependency>
-                <groupId>fr.gouv.vitam</groupId>
-                <artifactId>common-private</artifactId>
-                <version>${vitam.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>io.prometheus</groupId>
-                        <artifactId>simpleclient_common</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>io.prometheus</groupId>
-                        <artifactId>simpleclient_dropwizard</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>io.prometheus</groupId>
-                        <artifactId>simpleclient_hotspot</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>io.prometheus</groupId>
-                        <artifactId>simpleclient</artifactId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
+
             <dependency>
                 <groupId>fr.gouv.vitam</groupId>
                 <artifactId>logbook-common</artifactId>
