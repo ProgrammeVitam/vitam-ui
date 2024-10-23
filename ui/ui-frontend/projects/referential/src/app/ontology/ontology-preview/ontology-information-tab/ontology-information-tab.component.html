@@ -76,7 +76,7 @@
   <mat-form-field class="w-100 vitamui-input vitamui-date mt-4" disabled>
     <input
       matInput
-      [value]="form.get('creationDate').value | dateTime: 'dd/MM/yyyy'"
+      [value]="form.get('creationDate').value | appendZIfNoTimezone | date: 'dd/MM/yyyy'"
       [placeholder]="'ONTOLOGY.TAB.INFORMATION.CREATION_DATE' | translate"
       disabled
     />

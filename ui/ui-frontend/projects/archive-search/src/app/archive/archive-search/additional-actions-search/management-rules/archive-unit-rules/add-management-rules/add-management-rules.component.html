@@ -47,7 +47,9 @@
           >
 
           <ng-template #showStartDate
-            ><span (click)="pickerSatrDate.open()">{{ ruleDetailsForm.get('startDate').value | dateTime: 'dd/MM/yyyy' }} </span>
+            ><span (click)="pickerSatrDate.open()"
+              >{{ ruleDetailsForm.get('startDate').value | appendZIfNoTimezone | date: 'dd/MM/yyyy' }}
+            </span>
           </ng-template>
           <input class="hidden" size="0" [matDatepicker]="pickerSatrDate" formControlName="startDate" />
           <mat-datepicker #pickerSatrDate></mat-datepicker>

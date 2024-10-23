@@ -5,5 +5,5 @@
   cancelLabel="ANNULER"
 >
   <h5>{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_SAVER.SAVE_DELETE_CRITERIA_MESSGE' | translate }}</h5>
-  <strong> {{ objectName }} - {{ objectDate | dateTime: 'dd/MM/yyyy' }}</strong>
+  <strong> {{ objectName }} - {{ objectDate | appendZIfNoTimezone | date: 'dd/MM/yyyy' }}</strong>
 </vitamui-common-confirm-dialog>

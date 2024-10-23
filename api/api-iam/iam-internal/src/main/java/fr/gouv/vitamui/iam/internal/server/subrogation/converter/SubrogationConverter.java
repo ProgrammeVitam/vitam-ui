@@ -44,11 +44,10 @@ import fr.gouv.vitamui.iam.internal.server.subrogation.domain.Subrogation;
 import fr.gouv.vitamui.iam.internal.server.user.dao.UserRepository;
 import fr.gouv.vitamui.iam.internal.server.user.domain.User;
 
-import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 public class SubrogationConverter implements Converter<SubrogationDto, Subrogation> {
 
@@ -79,9 +78,7 @@ public class SubrogationConverter implements Converter<SubrogationDto, Subrogati
     public Subrogation convertDtoToEntity(final SubrogationDto dto) {
         final Subrogation entity = new Subrogation();
         VitamUIUtils.copyProperties(dto, entity);
-        if (dto != null && dto.getDate() != null) {
-            entity.setDate(Date.from(dto.getDate().toInstant()));
-        }
+        Optional.ofNullable(dto).map(SubrogationDto::getDate).map(Date::from).ifPresent(entity::setDate);
         return entity;
     }
 
@@ -89,9 +86,7 @@ public class SubrogationConverter implements Converter<SubrogationDto, Subrogati
     public SubrogationDto convertEntityToDto(final Subrogation entity) {
         final SubrogationDto dto = new SubrogationDto();
         VitamUIUtils.copyProperties(entity, dto);
-        if (entity != null && entity.getDate() != null) {
-            dto.setDate(OffsetDateTime.ofInstant(entity.getDate().toInstant(), ZoneOffset.UTC));
-        }
+        Optional.ofNullable(entity).map(Subrogation::getDate).map(Date::toInstant).ifPresent(dto::setDate);
         return dto;
     }
 }

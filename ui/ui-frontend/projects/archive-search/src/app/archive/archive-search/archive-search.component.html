@@ -468,10 +468,10 @@
             </span>
           </div>
           <div class="col-2 d-flex align-items-center">
-            {{ archiveUnit?.StartDate | dateTime: 'dd/MM/yyyy' }}
+            {{ archiveUnit?.StartDate | appendZIfNoTimezone | date: 'dd/MM/yyyy' }}
           </div>
           <div class="col-2 d-flex align-items-center" (click)="archiveUnitClick.emit(archiveUnit)">
-            {{ archiveUnit?.EndDate | dateTime: 'dd/MM/yyyy' }}
+            {{ archiveUnit?.EndDate | appendZIfNoTimezone | date: 'dd/MM/yyyy' }}
           </div>
           <div class="col-2 d-flex align-items-center" (click)="archiveUnitClick.emit(archiveUnit)">
             <p

@@ -349,8 +349,8 @@ export class TranslateStubPipe implements PipeTransform {
   }
 }
 
-@Pipe({ name: 'dateTime' })
-export class DateTimeStubPipe implements PipeTransform {
+@Pipe({ name: 'appendZIfNoTimezone' })
+export class AppendZIfNoTimezoneStubPipe implements PipeTransform {
   transform(value: string = ''): any {
     return value;
   }
@@ -409,7 +409,7 @@ export class RowCollapseTriggerForStubDirective {
     StrongifyStubPipe,
     TruncateStubPipe,
     TranslateStubPipe,
-    DateTimeStubPipe,
+    AppendZIfNoTimezoneStubPipe,
   ],
   exports: [
     ApplicationSelectContentStubComponent,
@@ -441,7 +441,7 @@ export class RowCollapseTriggerForStubDirective {
     StrongifyStubPipe,
     TruncateStubPipe,
     TranslateStubPipe,
-    DateTimeStubPipe,
+    AppendZIfNoTimezoneStubPipe,
   ],
 })
 export class VitamUICommonTestModule {}

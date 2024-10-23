@@ -49,8 +49,8 @@
     <div class="col-12 mb-3">
       <label>{{ 'CONTRACT_MANAGEMENT.PREVIEW.INFORMATION.CREATION_DATE' | translate }}</label>
       <div>
-        {{ inputManagementContract?.creationDate | dateTime: 'dd/MM/yyyy' }}
-        <span class="date-hms">{{ inputManagementContract?.creationDate | dateTime: 'HH:mm:ss' }}</span>
+        {{ inputManagementContract?.creationDate | appendZIfNoTimezone | date: 'dd/MM/yyyy' }}
+        <span class="date-hms">{{ inputManagementContract?.creationDate | appendZIfNoTimezone | date: 'HH:mm:ss' }}</span>
       </div>
     </div>
   </div>
@@ -59,8 +59,8 @@
     <div class="col-12 mb-3">
       <label>{{ 'CONTRACT_MANAGEMENT.PREVIEW.INFORMATION.LAST_UPDATE_DATE' | translate }}</label>
       <div>
-        {{ inputManagementContract?.lastUpdate | dateTime: 'dd/MM/yyyy' }}
-        <span class="date-hms">{{ inputManagementContract?.lastUpdate | dateTime: 'HH:mm:ss' }}</span>
+        {{ inputManagementContract?.lastUpdate | appendZIfNoTimezone | date: 'dd/MM/yyyy' }}
+        <span class="date-hms">{{ inputManagementContract?.lastUpdate | appendZIfNoTimezone | date: 'HH:mm:ss' }}</span>
       </div>
     </div>
   </div>

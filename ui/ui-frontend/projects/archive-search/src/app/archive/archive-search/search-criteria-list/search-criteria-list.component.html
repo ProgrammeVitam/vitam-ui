@@ -10,7 +10,7 @@
       <div class="grid-container">
         <div class="criteria-name-date">
           <span class="criteria-name">{{ criteria.name | truncate: 30 }}</span> -
-          <span class="criteria-date">{{ criteria.savingDate | dateTime: 'dd/MM/yyyy' }}</span>
+          <span class="criteria-date">{{ criteria.savingDate | appendZIfNoTimezone | date: 'dd/MM/yyyy' }}</span>
         </div>
         <div>
           <i class="material-icons btn-delete" (click)="deleteSearchCriteriaHistory(criteria)">delete</i>

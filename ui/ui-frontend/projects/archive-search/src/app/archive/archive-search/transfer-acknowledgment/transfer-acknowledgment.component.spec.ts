@@ -28,7 +28,6 @@
  */
 
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { Pipe, PipeTransform } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import {
   MatLegacyDialog as MatDialog,
@@ -38,7 +37,15 @@ import {
 import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { Observable, of } from 'rxjs';
-import { BASE_URL, BytesPipe, InjectorModule, LoggerModule, StartupService, WINDOW_LOCATION } from 'vitamui-library';
+import {
+  AppendZIfNoTimezonePipe,
+  BASE_URL,
+  BytesPipe,
+  InjectorModule,
+  LoggerModule,
+  StartupService,
+  WINDOW_LOCATION,
+} from 'vitamui-library';
 import { ArchiveService } from '../../archive.service';
 import { TransferAcknowledgmentComponent } from './transfer-acknowledgment.component';
 import { DecimalPipe } from '@angular/common';
@@ -47,13 +54,6 @@ const translations: any = { TEST: 'Mock translate test' };
 class FakeLoader implements TranslateLoader {
   getTranslation(): Observable<any> {
     return of(translations);
-  }
-}
-
-@Pipe({ name: 'dateTime' })
-export class MockDateTimePipe implements PipeTransform {
-  transform(value: string = ''): any {
-    return value;
   }
 }
 
@@ -87,7 +87,7 @@ describe('TransferAcknowledgmentComponent', () => {
         HttpClientTestingModule,
       ],
 
-      declarations: [TransferAcknowledgmentComponent, MockDateTimePipe],
+      declarations: [TransferAcknowledgmentComponent, AppendZIfNoTimezonePipe],
       providers: [
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: MatDialogRef, useValue: matDialogRefSpy },

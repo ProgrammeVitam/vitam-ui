@@ -40,7 +40,9 @@
                     'LOGBOOK_OPERATION_PAGE.OPERATION_DATE' | translate
                   }}</span>
                   <ng-template #showStartDateMin>
-                    <span (click)="pickerStart.open()"> {{ dateRangeFilterForm.get('startDateMin').value | dateTime: 'dd/MM/yyyy' }}</span>
+                    <span (click)="pickerStart.open()">
+                      {{ dateRangeFilterForm.get('startDateMin').value | appendZIfNoTimezone | date: 'dd/MM/yyyy' }}</span
+                    >
                     <i class="material-icons clear-date-icon clickable" (click)="clearDate('startDateMin')">clear</i>
                   </ng-template>
                   <input
@@ -68,7 +70,9 @@
                     'LOGBOOK_OPERATION_PAGE.OPERATION_DATE' | translate
                   }}</span>
                   <ng-template #showstartDateMax
-                    ><span (click)="pickerEnd.open()">{{ dateRangeFilterForm.get('startDateMax').value | dateTime: 'dd/MM/yyyy' }} </span>
+                    ><span (click)="pickerEnd.open()"
+                      >{{ dateRangeFilterForm.get('startDateMax').value | appendZIfNoTimezone | date: 'dd/MM/yyyy' }}
+                    </span>
                     <i class="material-icons clear-date-icon clickable" (click)="clearDate('startDateMax')">clear</i>
                   </ng-template>
                   <input

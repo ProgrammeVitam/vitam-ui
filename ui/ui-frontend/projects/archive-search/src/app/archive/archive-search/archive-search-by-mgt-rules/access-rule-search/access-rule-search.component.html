@@ -59,7 +59,7 @@
           >
           <ng-template #showBeginDtAccessRule
             ><span (click)="pickerBeginAccessRule.open()"
-              >{{ accessRuleCriteriaForm.get('accessRuleStartDate').value | dateTime: 'dd/MM/yyyy' }}
+              >{{ accessRuleCriteriaForm.get('accessRuleStartDate').value | appendZIfNoTimezone | date: 'dd/MM/yyyy' }}
             </span>
           </ng-template>
           <input
@@ -98,7 +98,7 @@
           >
           <ng-template #showEndDtAccessRule
             ><span (click)="pickerEndAccessRule.open()"
-              >{{ accessRuleCriteriaForm.get('accessRuleEndDate').value | dateTime: 'dd/MM/yyyy' }}
+              >{{ accessRuleCriteriaForm.get('accessRuleEndDate').value | appendZIfNoTimezone | date: 'dd/MM/yyyy' }}
             </span>
           </ng-template>
           <input

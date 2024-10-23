@@ -45,13 +45,13 @@
         </div>
 
         <div class="col-1">
-          <div>{{ event?.dateTime | dateTime: 'dd/MM/yyyy' }}</div>
-          <div class="text normal light">{{ event?.dateTime | dateTime: 'HH:mm:ss' }}</div>
+          <div>{{ event?.dateTime | appendZIfNoTimezone | date: 'dd/MM/yyyy' }}</div>
+          <div class="text normal light">{{ event?.dateTime | appendZIfNoTimezone | date: 'HH:mm:ss' }}</div>
         </div>
 
         <div class="col-1">
-          <div>{{ (event | lastEvent)?.dateTime | dateTime: 'dd/MM/yyyy' }}</div>
-          <div class="text normal light">{{ (event | lastEvent)?.dateTime | dateTime: 'HH:mm:ss' }}</div>
+          <div>{{ (event | lastEvent)?.dateTime | appendZIfNoTimezone | date: 'dd/MM/yyyy' }}</div>
+          <div class="text normal light">{{ (event | lastEvent)?.dateTime | appendZIfNoTimezone | date: 'HH:mm:ss' }}</div>
         </div>
 
         <div class="col-1" vitamuiCommonEllipsis [vitamuiCommonEllipsisLines]="2">{{ (event | lastEvent)?.outcome }}</div>

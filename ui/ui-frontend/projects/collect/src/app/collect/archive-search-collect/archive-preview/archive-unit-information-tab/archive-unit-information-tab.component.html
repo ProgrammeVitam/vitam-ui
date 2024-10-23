@@ -90,7 +90,7 @@
     <div class="read-only-field">
       <label>{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.START_DATE' | translate }} :</label>
       <div>
-        {{ archiveUnit?.StartDate | dateTime: 'dd/MM/yyyy' }}
+        {{ archiveUnit?.StartDate | appendZIfNoTimezone | date: 'dd/MM/yyyy' }}
       </div>
     </div>
   </div>
@@ -98,7 +98,7 @@
     <div class="read-only-field">
       <label>{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.END_DATE' | translate }} :</label>
       <div>
-        {{ archiveUnit?.EndDate | dateTime: 'dd/MM/yyyy' }}
+        {{ archiveUnit?.EndDate | appendZIfNoTimezone | date: 'dd/MM/yyyy' }}
       </div>
     </div>
   </div>

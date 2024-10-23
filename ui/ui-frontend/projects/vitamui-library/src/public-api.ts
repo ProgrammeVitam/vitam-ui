@@ -157,7 +157,7 @@ export * from './app/modules/object-viewer/components/list/list.component';
 export * from './app/modules/object-viewer/components/primitive/primitive.component';
 export * from './app/modules/object-viewer/object-viewer.component';
 export * from './app/modules/object-viewer/object-viewer.module';
-export * from './app/modules/pipes/datetime.pipe';
+export * from './app/modules/pipes/append-z-if-no-timezone.pipe';
 export * from './app/modules/pipes/empty.pipe';
 export * from './app/modules/pipes/filesize.pipe';
 export * from './app/modules/pipes/pipes.module';

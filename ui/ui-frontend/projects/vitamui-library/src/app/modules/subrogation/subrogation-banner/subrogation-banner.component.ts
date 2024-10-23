@@ -35,7 +35,6 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, OnInit } from '@angular/core';
-import moment from 'moment';
 import { filter } from 'rxjs/operators';
 
 import { AuthService } from '../../auth.service';
@@ -69,7 +68,7 @@ export class SubrogationBannerComponent implements OnInit {
           if (!this.subrogation) {
             this.subrogation = data;
             this.show = true;
-            this.endDate = moment(this.subrogation.date).toDate();
+            this.endDate = new Date(this.subrogation.date);
             this.subrogationTTL = this.endDate.getTime() - new Date().getTime();
             this.surrogateCustomerCode = this.subrogation.surrogateCustomerCode;
             this.surrogateCustomerName = this.subrogation.surrogateCustomerName;

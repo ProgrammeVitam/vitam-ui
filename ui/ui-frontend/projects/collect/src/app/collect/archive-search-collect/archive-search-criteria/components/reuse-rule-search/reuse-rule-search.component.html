@@ -55,7 +55,7 @@
           >
           <ng-template #showBeginDtReuseRule
             ><span (click)="pickerBeginReuseRule.open()"
-              >{{ reuseRuleCriteriaForm.get('reuseRuleStartDate').value | dateTime: 'dd/MM/yyyy' }}
+              >{{ reuseRuleCriteriaForm.get('reuseRuleStartDate').value | appendZIfNoTimezone | date: 'dd/MM/yyyy' }}
             </span>
           </ng-template>
           <input
@@ -94,7 +94,7 @@
           >
           <ng-template #showEndDtReuseRule
             ><span (click)="pickerEndReuseRule.open()"
-              >{{ reuseRuleCriteriaForm.get('reuseRuleEndDate').value | dateTime: 'dd/MM/yyyy' }}
+              >{{ reuseRuleCriteriaForm.get('reuseRuleEndDate').value | appendZIfNoTimezone | date: 'dd/MM/yyyy' }}
             </span>
           </ng-template>
           <input

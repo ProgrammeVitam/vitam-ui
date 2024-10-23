@@ -50,7 +50,7 @@
           </div>
           <div class="col-3" vitamuiCommonEllipsis>{{ accessContract.identifier }}</div>
           <div class="col-4" vitamuiCommonEllipsis>{{ accessContract.name }}</div>
-          <div class="col-4" vitamuiCommonEllipsis>{{ accessContract.creationDate | dateTime: 'dd/MM/yyyy' }}</div>
+          <div class="col-4" vitamuiCommonEllipsis>{{ accessContract.creationDate | appendZIfNoTimezone | date: 'dd/MM/yyyy' }}</div>
         </div>
       </div>
     </div>

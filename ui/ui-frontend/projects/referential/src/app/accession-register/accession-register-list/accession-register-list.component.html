@@ -97,7 +97,7 @@
             [class.selected]="accessionRegisterDetail === selectedRow"
             (click)="onSelectRow(accessionRegisterDetail)"
           >
-            <td>{{ accessionRegisterDetail.endDate | dateTime: 'dd/MM/yyyy' }}</td>
+            <td>{{ accessionRegisterDetail.endDate | appendZIfNoTimezone | date: 'dd/MM/yyyy' }}</td>
             <td>{{ accessionRegisterDetail.obIdIn }}</td>
             <td>
               <p [vitamuiCommonToolTip]="accessionRegisterDetail.originatingAgencyLabel">

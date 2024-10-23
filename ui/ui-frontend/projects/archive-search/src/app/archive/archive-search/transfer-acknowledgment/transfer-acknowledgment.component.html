@@ -49,7 +49,7 @@
         <p class="detail-text">
           {{ 'ARCHIVE_SEARCH.TRANSFER_ACKNOWLEDGMENT.TRANSFER_REALISATION_DATE' | translate }}
         </p>
-        <p>{{ transfertDetails.date | dateTime: 'dd/MM/yyyy' }}</p>
+        <p>{{ transfertDetails.date | appendZIfNoTimezone | date: 'dd/MM/yyyy' }}</p>
       </div>
 
       <div>

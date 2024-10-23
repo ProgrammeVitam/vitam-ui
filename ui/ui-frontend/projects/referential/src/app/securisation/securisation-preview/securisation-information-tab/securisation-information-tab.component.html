@@ -9,7 +9,7 @@
   <div class="read-only-field mr-5">
     <label>{{ 'SECURE.TAB.INFORMATIONS.RELEASE_DATE' | translate }}</label>
     <div class="word-break">
-      {{ securisation?.dateTime | dateTime: 'dd/MM/yyyy' }}
+      {{ securisation?.dateTime | appendZIfNoTimezone | date: 'dd/MM/yyyy' }}
     </div>
   </div>
   <div class="read-only-field">
@@ -24,13 +24,13 @@
   <div class="read-only-field mr-5">
     <label>{{ 'SECURE.TAB.INFORMATIONS.START_DATE' | translate }}</label>
     <div class="word-break">
-      {{ securisation?.parsedData?.StartDate | dateTime: 'dd/MM/yyyy' }}
+      {{ securisation?.parsedData?.StartDate | appendZIfNoTimezone | date: 'dd/MM/yyyy' }}
     </div>
   </div>
   <div class="read-only-field">
     <label>{{ 'SECURE.TAB.INFORMATIONS.END_DATE' | translate }}</label>
     <div class="word-break">
-      {{ securisation?.parsedData?.EndDate | dateTime: 'dd/MM/yyyy' }}
+      {{ securisation?.parsedData?.EndDate | appendZIfNoTimezone | date: 'dd/MM/yyyy' }}
     </div>
   </div>
 </div>
@@ -66,7 +66,7 @@
   <div class="read-only-field">
     <label>{{ 'SECURE.TAB.INFORMATIONS.STAMP_DATE' | translate }}</label>
     <div class="word-break">
-      {{ timestamp?.genTime | dateTime: 'dd/MM/yyyy' }}
+      {{ timestamp?.genTime | appendZIfNoTimezone | date: 'dd/MM/yyyy' }}
     </div>
   </div>
 </div>

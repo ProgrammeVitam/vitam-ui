@@ -59,7 +59,7 @@
           >
           <ng-template #showBeginDtDua
             ><span (click)="pickerBeginDua.open()"
-              >{{ storageRuleCriteriaForm.get('storageRuleStartDate').value | dateTime: 'dd/MM/yyyy' }}
+              >{{ storageRuleCriteriaForm.get('storageRuleStartDate').value | appendZIfNoTimezone | date: 'dd/MM/yyyy' }}
             </span>
           </ng-template>
           <input
@@ -98,7 +98,7 @@
           >
           <ng-template #showEndDtDua
             ><span (click)="pickerEndDua.open()"
-              >{{ storageRuleCriteriaForm.get('storageRuleEndDate').value | dateTime: 'dd/MM/yyyy' }}
+              >{{ storageRuleCriteriaForm.get('storageRuleEndDate').value | appendZIfNoTimezone | date: 'dd/MM/yyyy' }}
             </span>
           </ng-template>
           <input
