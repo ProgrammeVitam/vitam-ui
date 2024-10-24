@@ -105,6 +105,7 @@ export class AccessionRegisterListComponent extends InfiniteScrollTable<Accessio
   searchRequest() {
     const query: AccessionRegisterSearchDto = this.constructQuery();
     const pageRequest = new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, this.direction, JSON.stringify(query));
+    this.accessionRegistersService.resetFacets();
     super.search(pageRequest);
   }
 
@@ -150,14 +151,13 @@ export class AccessionRegisterListComponent extends InfiniteScrollTable<Accessio
   }
 
   addCriteriaFromDateFilters(query: AccessionRegisterSearchDto) {
-    const dateInterval: { endDateMin: string; endDateMax: string } = this.accessionRegistersService.getDateIntervalChanges().getValue();
+    const dateInterval: {
+      endDateMin: string;
+      endDateMax: string;
+    } = this.accessionRegistersService.getDateIntervalChanges().getValue();
     if (dateInterval !== null && (dateInterval.endDateMin !== null || dateInterval.endDateMax !== null)) {
       query.endDateInterval = dateInterval;
     }
-  }
-
-  addCriteriaFromFilters(query: AccessionRegisterSearchDto) {
-    query.filters = this.filterMap;
   }
 
   addCriteriaFromSearch(query: AccessionRegisterSearchDto) {
