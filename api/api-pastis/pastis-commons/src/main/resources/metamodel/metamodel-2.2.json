@@ -3906,6 +3906,7 @@
                     },
                     {
                       "name": "LinkingAgentIdentifier",
+                      "nameFr": "Agent",
                       "element": "Complex",
                       "cardinality": "0-1",
                       "type": "null",
@@ -3917,6 +3918,7 @@
                       "children": [
                         {
                           "name": "LinkingAgentIdentifierType",
+                          "nameFr": "Identifiant",
                           "element": "Simple",
                           "cardinality": "0-1",
                           "type": "token",
@@ -3929,6 +3931,7 @@
                         },
                         {
                           "name": "LinkingAgentIdentifierValue",
+                          "nameFr": "Valeur",
                           "element": "Simple",
                           "cardinality": "0-1",
                           "type": "token",
@@ -3941,6 +3944,7 @@
                         },
                         {
                           "name": "LinkingAgentRole",
+                          "nameFr": "Rôle",
                           "element": "Simple",
                           "cardinality": "0-1",
                           "type": "token",
@@ -6216,6 +6220,7 @@
                             },
                             {
                               "name": "LinkingAgentIdentifier",
+                              "nameFr": "Agent",
                               "element": "Complex",
                               "cardinality": "0-1",
                               "type": "null",
@@ -6227,6 +6232,7 @@
                               "children": [
                                 {
                                   "name": "LinkingAgentIdentifierType",
+                                  "nameFr": "Identifiant",
                                   "element": "Simple",
                                   "cardinality": "0-1",
                                   "type": "token",
@@ -6239,6 +6245,7 @@
                                 },
                                 {
                                   "name": "LinkingAgentIdentifierValue",
+                                  "nameFr": "Valeur",
                                   "element": "Simple",
                                   "cardinality": "0-1",
                                   "type": "token",
@@ -6251,6 +6258,7 @@
                                 },
                                 {
                                   "name": "LinkingAgentRole",
+                                  "nameFr": "Rôle",
                                   "element": "Simple",
                                   "cardinality": "0-1",
                                   "type": "token",
@@ -11579,6 +11587,7 @@
                         },
                         {
                           "name": "LinkingAgentIdentifier",
+                          "nameFr": "Agent",
                           "element": "Complex",
                           "cardinality": "0-1",
                           "type": "null",
@@ -11590,6 +11599,7 @@
                           "children": [
                             {
                               "name": "LinkingAgentIdentifierType",
+                              "nameFr": "Identifiant",
                               "element": "Simple",
                               "cardinality": "0-1",
                               "type": "token",
@@ -11602,6 +11612,7 @@
                             },
                             {
                               "name": "LinkingAgentIdentifierValue",
+                              "nameFr": "Valeur",
                               "element": "Simple",
                               "cardinality": "0-1",
                               "type": "token",
@@ -11614,6 +11625,7 @@
                             },
                             {
                               "name": "LinkingAgentRole",
+                              "nameFr": "Rôle",
                               "element": "Simple",
                               "cardinality": "0-1",
                               "type": "token",
@@ -14310,6 +14322,7 @@
                     },
                     {
                       "name": "LinkingAgentIdentifier",
+                      "nameFr": "Agent",
                       "element": "Complex",
                       "cardinality": "0-1",
                       "type": "null",
@@ -14321,6 +14334,7 @@
                       "children": [
                         {
                           "name": "LinkingAgentIdentifierType",
+                          "nameFr": "Identifiant",
                           "element": "Simple",
                           "cardinality": "0-1",
                           "type": "token",
@@ -14333,6 +14347,7 @@
                         },
                         {
                           "name": "LinkingAgentIdentifierValue",
+                          "nameFr": "Valeur",
                           "element": "Simple",
                           "cardinality": "0-1",
                           "type": "token",
@@ -14345,6 +14360,7 @@
                         },
                         {
                           "name": "LinkingAgentRole",
+                          "nameFr": "Rôle",
                           "element": "Simple",
                           "cardinality": "0-1",
                           "type": "token",
