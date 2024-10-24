@@ -46,6 +46,7 @@ describe('AccessionRegisterListComponent', () => {
     getAccessionRegisterStatus: () => Observable<any>;
     getDateIntervalChanges: () => BehaviorSubject<any>;
     getAdvancedSearchData: () => BehaviorSubject<any>;
+    resetFacets: () => void;
   };
   let searchService: { search: () => Observable<{}> };
 
@@ -54,6 +55,7 @@ describe('AccessionRegisterListComponent', () => {
       getAccessionRegisterStatus: () => of({}),
       getDateIntervalChanges: () => new BehaviorSubject<any>({}),
       getAdvancedSearchData: () => new BehaviorSubject<any>({}),
+      resetFacets: () => {},
     };
     searchService = {
       search: () => of({}),
