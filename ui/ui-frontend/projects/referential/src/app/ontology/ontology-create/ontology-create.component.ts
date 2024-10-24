@@ -38,9 +38,10 @@ import { Component, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
 import { Subscription } from 'rxjs';
-import { ConfirmDialogService, Option, setTypeDetailAndStringSize } from 'vitamui-library';
+import { ConfirmDialogService, setTypeDetailAndStringSize } from 'vitamui-library';
 import { OntologyService } from '../ontology.service';
 import { OntologyCreateValidators } from './ontology-create.validators';
+import { types, collections, sizes } from '../ontology-form-options';
 
 @Component({
   selector: 'app-ontology-create',
@@ -55,35 +56,15 @@ export class OntologyCreateComponent implements OnInit, OnDestroy {
   message: string;
   isDisabledButton = false;
   sizeFieldVisible = false;
+  types = types;
+  collections = collections;
+  sizes = sizes;
 
   // stepCount is the total number of steps and is used to calculate the advancement of the progress bar.
   // We could get the number of steps using ViewChildren(StepComponent) but this triggers a
   // "Expression has changed after it was checked" error so we instead manually define the value.
   // Make sure to update this value whenever you add or remove a step from the  template.
   private keyPressSubscription: Subscription;
-
-  // FIXME: Get list from common var ?
-  types: Option[] = [
-    { key: 'DATE', label: 'Date', info: '' },
-    { key: 'TEXT', label: 'Texte', info: '' },
-    { key: 'KEYWORD', label: 'Mot clé', info: '' },
-    { key: 'BOOLEAN', label: 'Boolean', info: '' },
-    { key: 'LONG', label: 'Long', info: '' },
-    { key: 'DOUBLE', label: 'Double', info: '' },
-    { key: 'ENUM', label: 'Énumérer', info: '' },
-    { key: 'GEO_POINT', label: 'Point Géographique', info: '' },
-  ];
-
-  collections: Option[] = [
-    { key: 'Unit', label: 'Unité Archivistique', info: '' },
-    { key: 'ObjectGroup', label: "Groupe d'objet", info: '' },
-  ];
-
-  sizes: Option[] = [
-    { key: 'SHORT', label: 'Court', info: '' },
-    { key: 'MEDIUM', label: 'Moyen', info: '' },
-    { key: 'LARGE', label: 'Long', info: '' },
-  ];
 
   @ViewChild('fileSearch', { static: false }) fileSearch: any;
 
@@ -124,7 +105,7 @@ export class OntologyCreateComponent implements OnInit, OnDestroy {
   }
 
   onIndexingModeChange(key: string) {
-    this.sizeFieldVisible = key === 'TEXT';
+    this.sizeFieldVisible = ['TEXT', 'GEO_POINT', 'KEYWORD'].includes(key);
     setTypeDetailAndStringSize(key, this.form);
   }
 
