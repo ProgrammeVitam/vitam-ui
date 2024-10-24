@@ -383,7 +383,7 @@ export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
         const { data, notice } = payload;
         const type = this.profileService.isMode(ProfileType.PA) ? 'application/xml' : 'application/json';
         const extension = this.profileService.isMode(ProfileType.PA) ? 'rng' : 'json';
-        const normalizedNoticeName = notice.name.toLowerCase().replace(/ /gm, '_');
+        const normalizedNoticeName = notice?.name?.toLowerCase().replace(/ /gm, '_') || 'pastis_profile';
         const filename = `${normalizedNoticeName}.${extension}`;
         const href = window.URL.createObjectURL(new Blob([data], { type }));
         const link = document.createElement('a');
