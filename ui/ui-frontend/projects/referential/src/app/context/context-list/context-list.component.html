@@ -50,7 +50,7 @@
           </div>
           <div class="col-3" vitamuiCommonEllipsis>{{ context?.identifier }}</div>
           <div class="col-4" vitamuiCommonEllipsis>{{ context?.name }}</div>
-          <div class="col-4" vitamuiCommonEllipsis>{{ context?.creationDate | dateTime: 'dd/MM/yyyy' }}</div>
+          <div class="col-4" vitamuiCommonEllipsis>{{ context?.creationDate | appendZIfNoTimezone | date: 'dd/MM/yyyy' }}</div>
         </div>
       </div>
     </div>

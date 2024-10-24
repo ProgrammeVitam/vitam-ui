@@ -6,7 +6,7 @@
       <p class="status-warning" *ngIf="user?.status === 'BLOCKED'">
         {{ 'USER.INFORMATIONS.BLOCKED_ACCOUNT' | translate }}
         <ng-container *ngIf="user?.lastConnection"
-          >({{ 'USER.INFORMATIONS.BLOCKED_ACCOUNT_SINCE' | translate }} {{ user?.lastConnection | dateTime: 'medium' }})
+          >({{ 'USER.INFORMATIONS.BLOCKED_ACCOUNT_SINCE' | translate }} {{ user?.lastConnection | appendZIfNoTimezone | date: 'medium' }})
         </ng-container>
       </p>
       <p class="status-warning" *ngIf="user?.status === 'ANONYM'">

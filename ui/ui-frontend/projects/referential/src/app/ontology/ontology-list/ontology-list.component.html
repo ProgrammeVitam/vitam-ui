@@ -46,7 +46,7 @@
           <div class="col-3">{{ ontology?.identifier }}</div>
           <div class="col-2">{{ ontology?.shortName }}</div>
           <div class="col-3">{{ ontology?.description }}</div>
-          <div class="col-2">{{ ontology?.creationDate | dateTime: 'dd/MM/yyyy' }}</div>
+          <div class="col-2">{{ ontology?.creationDate | appendZIfNoTimezone | date: 'dd/MM/yyyy' }}</div>
           <div class="col-1 actions">
             <div *ngIf="ontology.origin === 'EXTERNAL'">
               <button class="btn btn-circle primary" (click)="$event.stopPropagation(); deleteOntologyDialog(ontology)">

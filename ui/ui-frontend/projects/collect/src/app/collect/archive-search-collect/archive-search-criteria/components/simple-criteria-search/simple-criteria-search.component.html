@@ -53,7 +53,7 @@
                 'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.START_DATE_SEARCH' | translate
               }}</span>
               <ng-template #showBeginDt
-                ><span (click)="pickerBegin.open()">{{ beginDt.value | dateTime: 'dd/MM/yyyy' }} </span>
+                ><span (click)="pickerBegin.open()">{{ beginDt.value | appendZIfNoTimezone | date: 'dd/MM/yyyy' }} </span>
               </ng-template>
               <input class="hidden" size="0" [matDatepicker]="pickerBegin" formControlName="beginDt" [min]="beginDt.value" />
               <mat-datepicker #pickerBegin></mat-datepicker>
@@ -66,7 +66,7 @@
                 'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.END_DATE_SEARCH' | translate
               }}</span>
               <ng-template #showEndDt
-                ><span (click)="pickerEnd.open()">{{ endDt.value | dateTime: 'dd/MM/yyyy' }} </span>
+                ><span (click)="pickerEnd.open()">{{ endDt.value | appendZIfNoTimezone | date: 'dd/MM/yyyy' }} </span>
               </ng-template>
               <input class="hidden" size="0" [matDatepicker]="pickerEnd" formControlName="endDt" [min]="endDt.value" />
               <mat-datepicker #pickerEnd></mat-datepicker>

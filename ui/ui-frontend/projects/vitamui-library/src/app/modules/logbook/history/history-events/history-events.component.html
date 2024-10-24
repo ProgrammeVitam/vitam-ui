@@ -6,10 +6,10 @@
   >
     <div class="history-event-date">
       <ng-container *ngIf="event.parsedData && event.parsedData['Date d\'opération']">
-        {{ event.parsedData["Date d'opération"] | dateTime: 'dd/MM/yyyy | HH:mm:ss' }}
+        {{ event.parsedData["Date d'opération"] | appendZIfNoTimezone | date: 'dd/MM/yyyy | HH:mm:ss' }}
       </ng-container>
       <ng-container *ngIf="!event.parsedData || !event.parsedData['Date d\'opération']">
-        {{ event.dateTime | dateTime: 'dd/MM/yyyy | HH:mm:ss' }}
+        {{ event.dateTime | appendZIfNoTimezone | date: 'dd/MM/yyyy | HH:mm:ss' }}
       </ng-container>
     </div>
     <div class="history-event-title">

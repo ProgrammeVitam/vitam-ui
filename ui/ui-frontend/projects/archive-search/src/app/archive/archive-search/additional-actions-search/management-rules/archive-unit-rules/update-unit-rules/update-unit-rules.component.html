@@ -99,7 +99,7 @@
 
           <ng-template #showStartDate
             ><span (click)="isStartDateDisabled ? null : pickerSatrDate.open()"
-              >{{ ruleDetailsForm.get('startDate').value | dateTime: 'dd/MM/yyyy' }}
+              >{{ ruleDetailsForm.get('startDate').value | appendZIfNoTimezone | date: 'dd/MM/yyyy' }}
             </span>
           </ng-template>
           <input class="hidden" size="0" [matDatepicker]="pickerSatrDate" formControlName="startDate" />

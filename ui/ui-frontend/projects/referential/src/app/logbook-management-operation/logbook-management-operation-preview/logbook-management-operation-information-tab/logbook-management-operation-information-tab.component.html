@@ -18,16 +18,16 @@
 <div class="row">
   <div class="col-6 mb-3">
     <label> {{ 'LOGBOOK_OPERATION_INFORMATIONS.OPERATION_DATE' | translate }}</label>
-    <div>{{ operation?.processDate | dateTime: 'dd/MM/yyyy' }}</div>
+    <div>{{ operation?.processDate | appendZIfNoTimezone | date: 'dd/MM/yyyy' }}</div>
     <span class="date">
-      {{ operation?.processDate | dateTime: 'HH:mm:ss' }}
+      {{ operation?.processDate | appendZIfNoTimezone | date: 'HH:mm:ss' }}
     </span>
   </div>
   <div class="col-6 mb-3">
     <label> {{ 'LOGBOOK_OPERATION_INFORMATIONS.FINAL_DATE' | translate }}</label>
-    <div>{{ getEventEndDate(event)?.dateTime | dateTime: 'dd/MM/yyyy' }}</div>
+    <div>{{ getEventEndDate(event)?.dateTime | appendZIfNoTimezone | date: 'dd/MM/yyyy' }}</div>
     <span class="date">
-      {{ getEventEndDate(event)?.dateTime | dateTime: 'HH:mm:ss' }}
+      {{ getEventEndDate(event)?.dateTime | appendZIfNoTimezone | date: 'HH:mm:ss' }}
     </span>
   </div>
 </div>

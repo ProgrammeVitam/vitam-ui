@@ -47,7 +47,7 @@
           <div class="col-2" vitamuiCommonEllipsis>
             <vitamui-common-event-type-label [key]="value?.type"> </vitamui-common-event-type-label>
           </div>
-          <div class="col-2" vitamuiCommonEllipsis>{{ value.dateTime | dateTime: 'dd/MM/yyyy' }}</div>
+          <div class="col-2" vitamuiCommonEllipsis>{{ value.dateTime | appendZIfNoTimezone | date: 'dd/MM/yyyy' }}</div>
           <div class="col-1" vitamuiCommonEllipsis [ngClass]="value | eventTypeColorClass">
             {{ (value | lastEvent).outcome }}
           </div>

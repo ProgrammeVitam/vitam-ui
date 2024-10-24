@@ -47,15 +47,15 @@
           </div>
           <div class="col-5">{{ ingest?.obIdIn }}</div>
           <div class="col-2">
-            <div>{{ ingest?.evDateTime | dateTime: 'dd/MM/yyyy' }}</div>
+            <div>{{ ingest?.evDateTime | appendZIfNoTimezone | date: 'dd/MM/yyyy' }}</div>
             <span class="date">
-              {{ ingest?.evDateTime | dateTime: 'HH:mm:ss' }}
+              {{ ingest?.evDateTime | appendZIfNoTimezone | date: 'HH:mm:ss' }}
             </span>
           </div>
           <div class="col-2">
-            <div>{{ ingestEndDate(ingest) | dateTime: 'dd/MM/yyyy' }}</div>
+            <div>{{ ingestEndDate(ingest) | appendZIfNoTimezone | date: 'dd/MM/yyyy' }}</div>
             <span class="date">
-              {{ ingestEndDate(ingest) | dateTime: 'HH:mm:ss' }}
+              {{ ingestEndDate(ingest) | appendZIfNoTimezone | date: 'HH:mm:ss' }}
             </span>
           </div>
           <div class="col-2">

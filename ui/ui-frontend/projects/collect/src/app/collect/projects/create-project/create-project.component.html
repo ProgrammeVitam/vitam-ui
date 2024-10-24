@@ -447,7 +447,7 @@
                           </span>
                           <ng-template #showOtherCriteria>
                             <span (click)="pickerOtherCriteria.open()">
-                              {{ ruleParamForm.value.metadataValue | dateTime: 'dd/MM/yyyy' }}
+                              {{ ruleParamForm.value.metadataValue | appendZIfNoTimezone | date: 'dd/MM/yyyy' }}
                             </span>
                           </ng-template>
                           <input class="hidden" size="0" [matDatepicker]="pickerOtherCriteria" formControlName="metadataValue" />

@@ -310,7 +310,7 @@ public final class CasControllerTest {
         assertEquals(1, subrogations.size());
         final SubrogationDto dto = subrogations.get(0);
         assertEquals(subrogation.getId(), dto.getId());
-        assertEquals(subrogation.getDate(), Date.from(dto.getDate().toInstant()));
+        assertEquals(subrogation.getDate(), Date.from(dto.getDate()));
         assertEquals(subrogation.getSuperUser(), dto.getSuperUser());
         assertEquals(subrogation.getSurrogate(), dto.getSurrogate());
         assertEquals(subrogation.getStatus(), dto.getStatus());
@@ -330,7 +330,7 @@ public final class CasControllerTest {
         assertEquals(1, subrogations.size());
         final SubrogationDto dto = subrogations.get(0);
         assertEquals(subrogation.getId(), dto.getId());
-        assertEquals(subrogation.getDate(), Date.from(dto.getDate().toInstant()));
+        assertEquals(subrogation.getDate(), Date.from(dto.getDate()));
         assertEquals(subrogation.getSuperUser(), dto.getSuperUser());
         assertEquals(subrogation.getSurrogate(), dto.getSurrogate());
         assertEquals(subrogation.getStatus(), dto.getStatus());

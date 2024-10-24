@@ -29,7 +29,7 @@
 
 <div class="read-only-field">
   <label>{{ 'AUDIT.TAB.INFORMATIONS.ASSIGMENT_DATE' | translate }}</label>
-  <div class="word-break">{{ audit?.dateTime | dateTime: 'dd/MM/yyyy' }}</div>
+  <div class="word-break">{{ audit?.dateTime | appendZIfNoTimezone | date: 'dd/MM/yyyy' }}</div>
 </div>
 
 <div class="read-only-field">

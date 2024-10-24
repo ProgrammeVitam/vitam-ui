@@ -55,7 +55,7 @@
   <mat-form-field class="vitamui-input vitamui-date w-100 mt-3" disabled>
     <input
       placeholder="{{ 'INGEST_CONTRACT.TAB.INFORMATION.CREATION_DATE' | translate }}"
-      [value]="ingestContract.creationDate ? (ingestContract.creationDate | dateTime: 'dd/MM/yyyy') : '-'"
+      [value]="ingestContract.creationDate ? (ingestContract.creationDate | appendZIfNoTimezone | date: 'dd/MM/yyyy') : '-'"
       disabled
       matInput
     />
@@ -64,7 +64,7 @@
   <mat-form-field class="vitamui-input vitamui-date w-100 mt-3" disabled>
     <input
       placeholder="{{ 'INGEST_CONTRACT.TAB.INFORMATION.LAST_MODIFICATION_DATE' | translate }}"
-      [value]="ingestContract.lastUpdate ? (ingestContract.lastUpdate | dateTime: 'dd/MM/yyyy') : '-'"
+      [value]="ingestContract.lastUpdate ? (ingestContract.lastUpdate | appendZIfNoTimezone | date: 'dd/MM/yyyy') : '-'"
       disabled
       matInput
     />
@@ -75,7 +75,7 @@
       placeholder="{{ 'INGEST_CONTRACT.TAB.INFORMATION.ACTIVATION_DATE' | translate }}"
       [value]="
         ingestContract?.status === 'ACTIVE' && ingestContract?.activationDate
-          ? (ingestContract.activationDate | dateTime: 'dd/MM/yyyy')
+          ? (ingestContract.activationDate | appendZIfNoTimezone | date: 'dd/MM/yyyy')
           : '-'
       "
       disabled
@@ -86,7 +86,7 @@
   <mat-form-field class="vitamui-input vitamui-date w-100 mt-3" disabled>
     <input
       placeholder="{{ 'INGEST_CONTRACT.TAB.INFORMATION.DEACTIVATION_DATE' | translate }}"
-      [value]="ingestContract?.deactivationDate ? (ingestContract.deactivationDate | dateTime: 'dd/MM/yyyy') : '-'"
+      [value]="ingestContract?.deactivationDate ? (ingestContract.deactivationDate | appendZIfNoTimezone | date: 'dd/MM/yyyy') : '-'"
       disabled
       matInput
     />

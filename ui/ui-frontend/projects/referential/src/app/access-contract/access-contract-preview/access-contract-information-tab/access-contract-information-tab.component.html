@@ -39,7 +39,7 @@
     <mat-form-field class="vitamui-input vitamui-date w-100" disabled>
       <input
         placeholder="{{ 'ACCESS_CONTRACT.TAB.INFORMATION.CREATION_DATE' | translate }}"
-        [value]="accessContract?.creationDate | dateTime: 'dd/MM/yyyy'"
+        [value]="accessContract?.creationDate | appendZIfNoTimezone | date: 'dd/MM/yyyy'"
         disabled
         matInput
       />
@@ -48,7 +48,7 @@
     <mat-form-field class="vitamui-input vitamui-date w-100 mt-3" disabled>
       <input
         placeholder="{{ 'ACCESS_CONTRACT.TAB.INFORMATION.LAST_MODIFICATION_DATE' | translate }}"
-        [value]="accessContract?.lastUpdate | dateTime: 'dd/MM/yyyy'"
+        [value]="accessContract?.lastUpdate | appendZIfNoTimezone | date: 'dd/MM/yyyy'"
         disabled
         matInput
       />
@@ -59,7 +59,7 @@
         placeholder="{{ 'ACCESS_CONTRACT.TAB.INFORMATION.ACTIVATION_DATE' | translate }}"
         [value]="
           accessContract?.status === 'ACTIVE' && accessContract?.activationDate
-            ? (accessContract.activationDate | dateTime: 'dd/MM/yyyy')
+            ? (accessContract.activationDate | appendZIfNoTimezone | date: 'dd/MM/yyyy')
             : '-'
         "
         disabled
@@ -70,7 +70,7 @@
     <mat-form-field class="vitamui-input vitamui-date w-100 mt-3" disabled>
       <input
         placeholder="{{ 'ACCESS_CONTRACT.TAB.INFORMATION.DEACTIVATION_DATE' | translate }}"
-        [value]="accessContract?.deactivationDate ? (accessContract.deactivationDate | dateTime: 'dd/MM/yyyy') : '-'"
+        [value]="accessContract?.deactivationDate ? (accessContract.deactivationDate | appendZIfNoTimezone | date: 'dd/MM/yyyy') : '-'"
         disabled
         matInput
       />

@@ -59,7 +59,7 @@
           >
           <ng-template #showBeginDtDua
             ><span (click)="pickerBeginDua.open()"
-              >{{ appraisalRuleCriteriaForm.get('appraisalRuleStartDate').value | dateTime: 'dd/MM/yyyy' }}
+              >{{ appraisalRuleCriteriaForm.get('appraisalRuleStartDate').value | appendZIfNoTimezone | date: 'dd/MM/yyyy' }}
             </span>
           </ng-template>
           <input
@@ -98,7 +98,7 @@
           >
           <ng-template #showEndDtDua
             ><span (click)="pickerEndDua.open()"
-              >{{ appraisalRuleCriteriaForm.get('appraisalRuleEndDate').value | dateTime: 'dd/MM/yyyy' }}
+              >{{ appraisalRuleCriteriaForm.get('appraisalRuleEndDate').value | appendZIfNoTimezone | date: 'dd/MM/yyyy' }}
             </span>
           </ng-template>
           <input

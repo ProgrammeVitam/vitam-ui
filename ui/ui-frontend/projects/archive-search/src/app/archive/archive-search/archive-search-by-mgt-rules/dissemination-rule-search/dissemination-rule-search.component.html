@@ -59,7 +59,7 @@
           >
           <ng-template #showBeginDtDisseminationRule
             ><span (click)="pickerBeginDisseminationRule.open()"
-              >{{ disseminationRuleCriteriaForm.get('disseminationRuleStartDate').value | dateTime: 'dd/MM/yyyy' }}
+              >{{ disseminationRuleCriteriaForm.get('disseminationRuleStartDate').value | appendZIfNoTimezone | date: 'dd/MM/yyyy' }}
             </span>
           </ng-template>
           <input
@@ -98,7 +98,7 @@
           >
           <ng-template #showEndDtDisseminationRule
             ><span (click)="pickerEndDisseminationRule.open()"
-              >{{ disseminationRuleCriteriaForm.get('disseminationRuleEndDate').value | dateTime: 'dd/MM/yyyy' }}
+              >{{ disseminationRuleCriteriaForm.get('disseminationRuleEndDate').value | appendZIfNoTimezone | date: 'dd/MM/yyyy' }}
             </span>
           </ng-template>
           <input

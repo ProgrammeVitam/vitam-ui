@@ -43,6 +43,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { environment } from 'projects/archive-search/src/environments/environment';
 import { of } from 'rxjs';
 import {
+  AppendZIfNoTimezonePipe,
   BASE_URL,
   DescriptionLevel,
   ENVIRONMENT,
@@ -55,13 +56,6 @@ import {
 } from 'vitamui-library';
 import { ArchiveService } from '../../archive.service';
 import { ArchiveUnitInformationTabComponent } from './archive-unit-information-tab.component';
-
-@Pipe({ name: 'dateTime' })
-export class MockDateTimePipe implements PipeTransform {
-  transform(value: string = ''): any {
-    return value;
-  }
-}
 
 @Pipe({ name: 'truncate' })
 class MockTruncatePipe implements PipeTransform {
@@ -122,7 +116,7 @@ describe('ArchiveUnitInformationTabComponent', () => {
         BrowserAnimationsModule,
         TranslateModule.forRoot(),
       ],
-      declarations: [ArchiveUnitInformationTabComponent, MockTruncatePipe, MockDateTimePipe, MockUnitI18nPipe],
+      declarations: [ArchiveUnitInformationTabComponent, MockTruncatePipe, AppendZIfNoTimezonePipe, MockUnitI18nPipe],
       providers: [
         FormBuilder,
         { provide: ArchiveService, useValue: archiveServiceMock },

@@ -41,7 +41,7 @@
           <div class="col-3" vitamuiCommonEllipsis>{{ format?.puid }}</div>
           <div class="col-4" vitamuiCommonEllipsis>{{ format?.name }}</div>
           <div class="col-4 actions">
-            <span>{{ format?.createdDate | dateTime: 'dd/MM/yyyy' }}</span>
+            <span>{{ format?.createdDate | appendZIfNoTimezone | date: 'dd/MM/yyyy' }}</span>
             <div *ngIf="!isInternal(format)">
               <button
                 class="btn btn-circle primary"

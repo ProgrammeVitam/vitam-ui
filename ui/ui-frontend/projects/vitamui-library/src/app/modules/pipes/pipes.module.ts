@@ -40,7 +40,6 @@
 import { CommonModule, DatePipe, DecimalPipe } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { BytesPipe } from './bytes.pipe';
-import { DateTimePipe } from './datetime.pipe';
 import { EmptyPipe } from './empty.pipe';
 import { FileSizePipe } from './filesize.pipe';
 import { HighlightPipe } from './highlight.pipe';
@@ -50,10 +49,11 @@ import { StrongifyPipe } from './strongify.pipe';
 import { TruncatePipe } from './truncate.pipe';
 import { UnitI18nPipe } from './unitI18n.pipe';
 import { YesNoPipe } from './yes-no.pipe';
+import { AppendZIfNoTimezonePipe } from './append-z-if-no-timezone.pipe';
 
 const pipes = [
+  AppendZIfNoTimezonePipe,
   BytesPipe,
-  DateTimePipe,
   EmptyPipe,
   FileSizePipe,
   HighlightPipe,
