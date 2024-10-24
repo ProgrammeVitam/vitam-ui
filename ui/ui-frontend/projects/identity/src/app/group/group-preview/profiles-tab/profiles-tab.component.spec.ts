@@ -276,9 +276,7 @@ describe('ProfilesTabComponent', () => {
     expect(elRows.length).toBe(3);
     testhost.group.profiles.forEach((profile: any, index: number) => {
       const elDetails = elRows[index];
-      expect(elDetails.textContent).toContain(
-        profile.tenantName + ' : ' + profile.name.charAt(0).toUpperCase() + profile.name.substr(1).toLowerCase(),
-      );
+      expect(elDetails.textContent).toContain(profile.tenantName + ' : ' + profile.name);
     });
   });
 });

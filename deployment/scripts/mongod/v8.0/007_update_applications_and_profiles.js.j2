@@ -1,0 +1,68 @@
+db = db.getSiblingDB('iam')
+
+print("START_007_update_applications_and_profiles.js");
+
+// APPLICATIONS: updating names to remove extra capital letters
+db.profiles.updatemany({ "name" : "Arbres et Plans" }, { $set: { "name": "Arbres et plans" } });
+db.profiles.updatemany({ "name" : "Contrats de Gestion" }, { $set: { "name": "Contrats de gestion" } });
+db.profiles.updatemany({ "name" : "Gestion des Opérations" }, { $set: { "name": "Gestion des opérations" } });
+db.profiles.updatemany({ "name" : "Hiérarchisation des Profils" }, { $set: { "name": "Hiérarchisation des profils" } });
+db.profiles.updatemany({ "name" : "Journal des Opérations" }, { $set: { "name": "Journal des opérations" } });
+db.profiles.updatemany({ "name" : "Profil APP Paramétrages externes" }, { $set: { "name": "Profil APP paramétrages externes" } });
+db.profiles.updatemany({ "name" : "Profils APP Utilisateurs" }, { $set: { "name": "Profils APP utilisateurs" } });
+db.profiles.updatemany({ "name" : "Profils Documentaires" }, { $set: { "name": "Profils documentaires" } });
+db.profiles.updatemany({ "name" : "Services Agent" }, { $set: { "name": "Services agent" } });
+
+// FIXME: should we also update APPLICATIONS.tooltip to remove extra capital letters?
+
+
+// PROFILES: updating names to remove extra capital letters
+db.profiles.updatemany({ "name" : "ACCOUNTS 102" }, { $set: { "name": "Accounts 102" } });
+db.profiles.updatemany({ "name" : "ACCOUNTS 105" }, { $set: { "name": "Accounts 105" } });
+db.profiles.updatemany({ "name" : "Accession register Profile" }, { $set: { "name": "Accession register profile" } });
+db.profiles.updatemany({ "name" : "Account Profile" }, { $set: { "name": "Account profile" } });
+db.profiles.updatemany({ "name" : "Account Profile Support" }, { $set: { "name": "Account profile support" } });
+db.profiles.updatemany({ "name" : "Agencies Profile" }, { $set: { "name": "Agencies profile" } });
+db.profiles.updatemany({ "name" : "Arbres et Plans" }, { $set: { "name": "Arbres et plans" } });
+db.profiles.updatemany({ "name" : "Archiviste - Administrateur" }, { $set: { "name": "Archiviste - administrateur" } });
+db.profiles.updatemany({ "name" : "Audit Profile" }, { $set: { "name": "Audit profile" } });
+db.profiles.updatemany({ "name" : "Cas Profile" }, { $set: { "name": "Cas profile" } });
+db.profiles.updatemany({ "name" : "Cas System Profile" }, { $set: { "name": "Cas system profile" } });
+db.profiles.updatemany({ "name" : "Context Profile" }, { $set: { "name": "Context profile" } });
+db.profiles.updatemany({ "name" : "Customer Profile" }, { $set: { "name": "Customer profile" } });
+db.profiles.updatemany({ "name" : "File Formats Profile" }, { $set: { "name": "File formats profile" } });
+db.profiles.updatemany({ "name" : "GROUPS 102" }, { $set: { "name": "Groups 102" } });
+db.profiles.updatemany({ "name" : "GROUPS 105" }, { $set: { "name": "Groups 105" } });
+db.profiles.updatemany({ "name" : "Gestion des Logbook Opérations" }, { $set: { "name": "Gestion des logbook opérations" } });
+db.profiles.updatemany({ "name" : "Group Profile" }, { $set: { "name": "Group profile" } });
+db.profiles.updatemany({ "name" : "Hierarchy Profiles 102" }, { $set: { "name": "Hierarchy profiles 102" } });
+db.profiles.updatemany({ "name" : "Hierarchy Profiles 103" }, { $set: { "name": "Hierarchy profiles 103" } });
+db.profiles.updatemany({ "name" : "Hierarchy Profiles 104" }, { $set: { "name": "Hierarchy profiles 104" } });
+db.profiles.updatemany({ "name" : "Hierarchy Profiles 105" }, { $set: { "name": "Hierarchy profiles 105" } });
+db.profiles.updatemany({ "name" : "Hierarchy Profiles 106" }, { $set: { "name": "Hierarchy profiles 106" } });
+db.profiles.updatemany({ "name" : "Hierarchy Profiles 9" }, { $set: { "name": "Hierarchy profiles 9" } });
+db.profiles.updatemany({ "name" : "Ingest Profile" }, { $set: { "name": "Ingest profile" } });
+db.profiles.updatemany({ "name" : "Journal des Opérations" }, { $set: { "name": "Journal des opérations" } });
+db.profiles.updatemany({ "name" : "Ontology Profile" }, { $set: { "name": "Ontology profile" } });
+db.profiles.updatemany({ "name" : "PROFILES 102" }, { $set: { "name": "Profiles 102" } });
+db.profiles.updatemany({ "name" : "PROFILES 105" }, { $set: { "name": "Profiles 105" } });
+db.profiles.updatemany({ "name" : "Pastis Profile" }, { $set: { "name": "Pastis profile" } });
+db.profiles.updatemany({ "name" : "Pastis-Gestion des profils documentaires" }, { $set: { "name": "Pastis-gestion des profils documentaires" } });
+db.profiles.updatemany({ "name" : "Probative Value Profile" }, { $set: { "name": "Probative value profile" } });
+db.profiles.updatemany({ "name" : "Profil Admin France" }, { $set: { "name": "Profil admin France" } });
+db.profiles.updatemany({ "name" : "Profil Admin Italie" }, { $set: { "name": "Profil admin Italie" } });
+db.profiles.updatemany({ "name" : "Profile Service producteur" }, { $set: { "name": "Profile service producteur" } });
+db.profiles.updatemany({ "name" : "Profile System" }, { $set: { "name": "Profile system" } });
+db.profiles.updatemany({ "name" : "Rules Profile" }, { $set: { "name": "Rules profile" } });
+db.profiles.updatemany({ "name" : "Secure Profile" }, { $set: { "name": "Secure profile" } });
+db.profiles.updatemany({ "name" : "Security Profiles Profile" }, { $set: { "name": "Security profiles profile" } });
+db.profiles.updatemany({ "name" : "Surrogate Profile" }, { $set: { "name": "Surrogate profile" } });
+db.profiles.updatemany({ "name" : "Surrogate Profile Support" }, { $set: { "name": "Surrogate profile support" } });
+db.profiles.updatemany({ "name" : "USERS 102" }, { $set: { "name": "Users 102" } });
+db.profiles.updatemany({ "name" : "USERS 105" }, { $set: { "name": "Users 105" } });
+db.profiles.updatemany({ "name" : "User Profile" }, { $set: { "name": "User profile" } });
+
+// FIXME: should we also update PROFILES.description to remove extra capital letters?
+// FIXME: should we set a PROFILES.applicationName for CAS?
+
+print("END_007_update_applications_and_profiles.js");

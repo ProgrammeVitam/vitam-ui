@@ -93,7 +93,7 @@ customer-init:
       roles:
         - ROLE_GET_AGENCIES
 
-    - name: Profil pour la gestion des Audits
+    - name: Profil pour la gestion des audits
       description: Gestion des audits dans Vitam
       app-name: AUDIT_APP
       level:
@@ -124,7 +124,7 @@ customer-init:
       roles:
         - ROLE_GET_FILE_FORMATS
 
-    - name: Profil Journal des Opérations
+    - name: Profil journal des opérations
       description: Gestion des applications des Journaux des Opérations
       app-name: LOGBOOK_OPERATION_APP
       level:
@@ -141,7 +141,7 @@ customer-init:
         - ROLE_GET_ALL_INGEST
         - ROLE_LOGBOOKS
 
-    - name: Profil Arbres et Plans
+    - name: Profil arbres et plans
       description: Gestion des applications d'import d'arbres de positionnement et plans de classement
       app-name: HOLDING_FILLING_SCHEME_APP
       level:
@@ -250,7 +250,7 @@ customer-init:
       app-name: PASTIS_APP
       level:
       roles:
-        - ROL_GET_PASTIS
+        - ROLE_GET_PASTIS
         - ROLE_GET_ARCHIVE_PROFILES_UNIT
         - ROLE_UPDATE_ARCHIVE_PROFILES_UNIT
         - ROLE_CREATE_ARCHIVE_PROFILES_UNIT
