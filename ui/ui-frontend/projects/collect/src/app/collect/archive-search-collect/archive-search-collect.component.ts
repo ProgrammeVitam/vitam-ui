@@ -713,7 +713,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
         });
       }
       this.searchCriterias.forEach((val, key) => {
-        if (SearchCriteriaTypeEnum[val.category] === category) {
+        if (SearchCriteriaTypeEnum[val.category] === category || key === 'WAITING_RECALCULATE') {
           val.values.forEach((value) => {
             this.removeCriteria(key, value.value, true);
           });
