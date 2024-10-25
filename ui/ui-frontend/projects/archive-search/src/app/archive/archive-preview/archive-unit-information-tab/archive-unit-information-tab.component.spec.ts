@@ -43,11 +43,15 @@ import { TranslateModule } from '@ngx-translate/core';
 import { environment } from 'projects/archive-search/src/environments/environment';
 import { of } from 'rxjs';
 import {
+  AccessContract,
+  AccessContractService,
+  ApiUnitObject,
   BASE_URL,
   DescriptionLevel,
   ENVIRONMENT,
   InjectorModule,
   LoggerModule,
+  ObjectQualifierType,
   StartupService,
   Unit,
   UnitType,
@@ -98,6 +102,12 @@ describe('ArchiveUnitInformationTabComponent', () => {
     downloadObjectFromUnit: () => of({}),
   };
 
+  const accessContractServiceMock = {
+    currentAccessContract$: of({
+      dataObjectVersion: [ObjectQualifierType.BINARYMASTER],
+    } as AccessContract),
+  };
+
   const startUpServiceMock = {
     getPortalUrl: () => '',
     setTenantIdentifier: () => {},
@@ -131,6 +141,7 @@ describe('ArchiveUnitInformationTabComponent', () => {
         { provide: ENVIRONMENT, useValue: environment },
         { provide: WINDOW_LOCATION, useValue: window.location },
         { provide: StartupService, useValue: startUpServiceMock },
+        { provide: AccessContractService, useValue: accessContractServiceMock },
         { provide: MatDialog, useValue: matDialogSpy },
       ],
       schemas: [NO_ERRORS_SCHEMA],
@@ -182,10 +193,19 @@ describe('ArchiveUnitInformationTabComponent', () => {
 
   it('should call downloadObjectFromUnit of archiveService ', () => {
     // Given
-    const unit: Unit = {
+    component.archiveUnit = {
       '#allunitups': [],
       '#id': 'id',
-      '#object': '',
+      '#object': 'object_group_id',
+      objectGroup: {
+        '#id': 'object_group_id',
+        versionsWithQualifiers: [
+          {
+            qualifier: ObjectQualifierType.BINARYMASTER,
+            version: 1,
+          },
+        ],
+      } as ApiUnitObject,
       '#unitType': UnitType.INGEST,
       '#unitups': [],
       '#opi': '',
@@ -195,7 +215,7 @@ describe('ArchiveUnitInformationTabComponent', () => {
     spyOn(archiveServiceMock, 'downloadObjectFromUnit').and.callThrough();
 
     // When
-    component.onDownloadObjectFromUnit(unit);
+    component.onDownloadObjectFromUnit();
 
     // Then
     expect(archiveServiceMock.downloadObjectFromUnit).toHaveBeenCalled();
