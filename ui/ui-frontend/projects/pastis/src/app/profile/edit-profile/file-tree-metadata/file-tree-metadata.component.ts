@@ -730,9 +730,9 @@ export class FileTreeMetadataComponent implements OnInit, OnDestroy {
     return false;
   }
 
-  isDeletable(name: string): boolean {
-    const node = this.fileService.getFileNodeByName(this.clickedNode, name);
-    return !this.sedaService.isMandatory(name) || node.parent.children.filter((child) => child.name === name).length > 1;
+  isDeletable(element: SedaData): boolean {
+    const node = this.fileService.getFileNodeById(this.clickedNode, element.id);
+    return !this.sedaService.isMandatory(element.name) || node.parent.children.filter((child) => child.name === element.name).length > 1;
   }
 
   getSedaDefinition(elementName: string) {
