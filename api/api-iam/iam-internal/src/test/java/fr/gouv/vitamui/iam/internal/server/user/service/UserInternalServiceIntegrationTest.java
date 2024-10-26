@@ -41,6 +41,7 @@ import fr.gouv.vitamui.iam.internal.server.user.converter.UserConverter;
 import fr.gouv.vitamui.iam.internal.server.user.dao.UserRepository;
 import fr.gouv.vitamui.iam.internal.server.user.domain.User;
 import fr.gouv.vitamui.iam.internal.server.utils.IamServerUtilsTest;
+import org.apache.commons.lang.time.DateUtils;
 import org.bson.Document;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -61,6 +62,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -74,7 +76,6 @@ import static org.mockito.Mockito.when;
 
 /**
  * Class.
- *
  */
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
@@ -92,6 +93,7 @@ public final class UserInternalServiceIntegrationTest extends AbstractLogbookInt
 
     private static final String GROUP_ID = "groupId";
 
+    private static int ttlInMinutes = 30;
     private UserInternalService internalUserService;
 
     private CustomerRepository customerRepository;
@@ -198,8 +200,11 @@ public final class UserInternalServiceIntegrationTest extends AbstractLogbookInt
     public void testGetUserProfileByToken() {
         final Token token = new Token();
         token.setId(TOKEN_VALUE);
-        token.setCreatedDate(Calendar.getInstance().getTime());
-        token.setUpdatedDate(Calendar.getInstance().getTime());
+
+        Date currentDate = Calendar.getInstance().getTime();
+        final Date nowPlusXMinutes = DateUtils.addMinutes(currentDate, ttlInMinutes);
+        token.setCreatedDate(currentDate);
+        token.setUpdatedDate(nowPlusXMinutes);
         token.setRefId(USER_ID);
         tokenRepository.save(token);
 
@@ -230,6 +235,49 @@ public final class UserInternalServiceIntegrationTest extends AbstractLogbookInt
         final UserDto userProfile = iamAuthentificationService.getUserFromHttpContext(internalHttpContext);
 
         assertEquals(USER_ID, userProfile.getId());
+    }
+
+    @Test
+    public void testGetUserProfileByExpiredTokenShouldThrowUnauthorizedException() {
+        final Token token = new Token();
+        token.setId(TOKEN_VALUE);
+
+        Date currentDate = Calendar.getInstance().getTime();
+        final Date nowMinusXMinutes = DateUtils.addMinutes(currentDate, (-1) * ttlInMinutes);
+        token.setCreatedDate(currentDate);
+        token.setUpdatedDate(nowMinusXMinutes);
+        token.setRefId(USER_ID);
+        tokenRepository.save(token);
+
+        final User user = IamServerUtilsTest.buildUser(USER_ID, "test@vitamui.com", GROUP_ID, CUSTOMER_ID, LEVEL);
+
+        userRepository.save(user);
+
+        when(groupInternalService.getOne(ArgumentMatchers.anyString(), any(), ArgumentMatchers.any())).thenReturn(
+            new GroupDto()
+        );
+        when(groupInternalService.getMany(any(String.class))).thenReturn(Arrays.asList(new GroupDto()));
+        Mockito.when(internalSecurityService.userIsRootLevel()).thenReturn(true);
+
+        final Customer customer = IamServerUtilsTest.buildCustomer();
+        customer.setId(CUSTOMER_ID);
+        final Tenant tenant = new Tenant();
+        tenant.setId("id");
+        tenant.setIdentifier(10);
+        tenant.setEnabled(true);
+        tenant.setProof(true);
+        when(customerRepository.findById(CUSTOMER_ID)).thenReturn(Optional.of(customer));
+        when(tenantRepository.findByCustomerId(CUSTOMER_ID)).thenReturn(Arrays.asList(tenant));
+
+        when(internalSecurityService.getLevel()).thenReturn(LEVEL);
+        when(groupInternalService.getMany(GROUP_ID)).thenReturn(Arrays.asList(buildGroupDto()));
+        when(groupInternalService.getOneByPassSecurity(GROUP_ID, Optional.empty())).thenReturn(buildGroupDto());
+        when(internalHttpContext.getUserToken()).thenReturn(TOKEN_VALUE);
+
+        Assertions.assertThrows(
+            BadCredentialsException.class,
+            () -> iamAuthentificationService.getUserFromHttpContext(internalHttpContext)
+        );
     }
 
     @Test
