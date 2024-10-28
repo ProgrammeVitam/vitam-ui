@@ -48,6 +48,6 @@ export class IngestErrorsDetailsTabComponent implements OnInit, OnChanges {
   }
 
   getEvDetData(event: Event) {
-    return event.eventData?.evDetData ? JSON.stringify({ evDetTechData: JSON.parse(event.eventData.evDetData).evDetTechData }) : null;
+    return event.eventData?.evDetData ? JSON.stringify({ evDetTechData: JSON.parse(event.eventData.evDetData) }) : null;
   }
 }
