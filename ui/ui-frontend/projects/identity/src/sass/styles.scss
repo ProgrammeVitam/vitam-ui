@@ -2,10 +2,6 @@
 @import '~ui-frontend-common/sass/theme';
 @import '~ui-frontend-common/sass/fonts/font-styles.css';
 
-$grid-gutter-width: 20px;
-
-@import '~bootstrap/scss/bootstrap-grid';
-
 @import 'form';
 @import 'login';
 @import 'sidepanel';
