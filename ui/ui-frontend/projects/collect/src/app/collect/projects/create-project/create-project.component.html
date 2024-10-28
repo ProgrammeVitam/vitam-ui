@@ -11,10 +11,10 @@
     <!-- ########## stepIndex 1 : workflow 1-2-3 , step 1/6 : Choix du type de projet ########## -->
     <cdk-step>
       <div class="content">
-        <h4>{{ 'COLLECT.MODAL.TITLE' | translate }}</h4>
-        <h2>{{ 'COLLECT.MODAL.WORKFLOW_CHOICE' | translate }}</h2>
+        <div class="text medium light">{{ 'COLLECT.MODAL.TITLE' | translate }}</div>
+        <div class="text large bold">{{ 'COLLECT.MODAL.WORKFLOW_CHOICE' | translate }}</div>
         <div class="main-content">
-          <mat-button-toggle-group formControlName="selectedWorkflow" #group="matButtonToggleGroup" class="vitamui-button-toggle-group">
+          <mat-button-toggle-group class="vitamui-button-toggle-group">
             <mat-button-toggle value="{{ Workflow.MANUAL }}" (click)="setWorkflow(Workflow.MANUAL)" [checked]="true">
               {{ 'COLLECT.MODAL.MANUAL_WORKFLOW' | translate }}
             </mat-button-toggle>
@@ -39,8 +39,8 @@
     <!-- ########## stepIndex 2 : workflow 1-2-3 , step 2/6 : Description du versement ########## -->
     <cdk-step>
       <div class="content">
-        <h4>{{ 'COLLECT.MODAL.TITLE' | translate }}</h4>
-        <h2>{{ 'COLLECT.PROJECT_DESCRIPTION_SUB_TITLE' | translate }}</h2>
+        <div class="text medium light">{{ 'COLLECT.MODAL.TITLE' | translate }}</div>
+        <div class="text large bold">{{ 'COLLECT.PROJECT_DESCRIPTION_SUB_TITLE' | translate }}</div>
         <div class="main-content">
           <div class="row">
             <vitamui-common-input
@@ -62,7 +62,7 @@
 
           <div class="row">
             <div class="col">
-              <h4>{{ 'COLLECT.PROJECT_DESCRIPTION_SERVICES' | translate }}</h4>
+              <div class="text medium light">{{ 'COLLECT.PROJECT_DESCRIPTION_SERVICES' | translate }}</div>
             </div>
             <div class="col toggle-right">
               <vitamui-common-slide-toggle
@@ -78,7 +78,7 @@
 
           <div class="row">
             <vitamui-common-input
-              class="col"
+              class="col-5"
               formControlName="originatingAgencyIdentifier"
               placeholder="{{ 'COLLECT.PROJECT_DESCRIPTION_ORIGINATING_AGENCY' | translate }}"
               required
@@ -86,14 +86,14 @@
             </vitamui-common-input>
             <vitamui-common-input
               [disabled]="true"
-              class="col offset-1"
+              class="col"
               placeholder="{{ 'COLLECT.PROJECT_DESCRIPTION_ORIGINATING_AGENCY' | translate }}"
             >
             </vitamui-common-input>
           </div>
           <div class="row">
             <vitamui-common-input
-              class="col"
+              class="col-5"
               formControlName="submissionAgencyIdentifier"
               placeholder="{{ 'COLLECT.PROJECT_DESCRIPTION_SUBMISSION_AGENCY' | translate }}"
               required
@@ -101,7 +101,7 @@
             </vitamui-common-input>
             <vitamui-common-input
               [disabled]="true"
-              class="col offset-1"
+              class="col"
               placeholder="{{ 'COLLECT.PROJECT_DESCRIPTION_SUBMISSION_AGENCY' | translate }}"
             >
             </vitamui-common-input>
@@ -127,10 +127,10 @@
     <!-- ########## stepIndex 3 : workflow 1-2-3 , step 3/6 : Contexte du versement ########## -->
     <cdk-step>
       <div class="content">
-        <h4>{{ 'COLLECT.MODAL.TITLE' | translate }}</h4>
+        <div class="text medium light">{{ 'COLLECT.MODAL.TITLE' | translate }}</div>
         <div class="row">
           <div class="col">
-            <h2>{{ 'COLLECT.PROJECT_CONTEXT_SUB_TITLE' | translate }}</h2>
+            <div class="text large bold">{{ 'COLLECT.PROJECT_CONTEXT_SUB_TITLE' | translate }}</div>
           </div>
           <div class="col toggle-right">
             <vitamui-common-slide-toggle
@@ -146,22 +146,18 @@
         <div class="main-content">
           <div class="row">
             <vitamui-common-input
-              class="col"
+              class="col-5"
               formControlName="archivalAgencyIdentifier"
               placeholder="{{ 'COLLECT.PROJECT_CONTEXT_ARCHIVAL_AGENCY' | translate }}"
               required
             >
             </vitamui-common-input>
-            <vitamui-common-input
-              [disabled]="true"
-              class="col offset-1"
-              placeholder="{{ 'COLLECT.PROJECT_CONTEXT_ARCHIVAL_AGENCY' | translate }}"
-            >
+            <vitamui-common-input [disabled]="true" class="col" placeholder="{{ 'COLLECT.PROJECT_CONTEXT_ARCHIVAL_AGENCY' | translate }}">
             </vitamui-common-input>
           </div>
           <div class="row">
             <vitamui-common-input
-              class="col"
+              class="col-5"
               formControlName="transferringAgencyIdentifier"
               placeholder="{{ 'COLLECT.PROJECT_CONTEXT_TRANSFERRING_AGENCY' | translate }}"
               required
@@ -169,14 +165,14 @@
             </vitamui-common-input>
             <vitamui-common-input
               [disabled]="true"
-              class="col offset-1"
+              class="col"
               placeholder="{{ 'COLLECT.PROJECT_CONTEXT_TRANSFERRING_AGENCY' | translate }}"
             >
             </vitamui-common-input>
           </div>
           <div class="row">
             <vitamui-common-input
-              class="col"
+              class="col-5"
               formControlName="archivalAgreement"
               placeholder="{{ 'COLLECT.PROJECT_CONTEXT_ARCHIVAL_AGREEMENT' | translate }}"
               required
@@ -184,23 +180,19 @@
             </vitamui-common-input>
             <vitamui-common-input
               [disabled]="true"
-              class="col offset-1"
+              class="col"
               placeholder="{{ 'COLLECT.PROJECT_CONTEXT_ARCHIVAL_AGREEMENT' | translate }}"
             >
             </vitamui-common-input>
           </div>
           <div class="row">
             <vitamui-common-input
-              class="col"
+              class="col-5"
               formControlName="archiveProfile"
               placeholder="{{ 'COLLECT.PROJECT_CONTEXT_ARCHIVE_PROFILE' | translate }}"
             >
             </vitamui-common-input>
-            <vitamui-common-input
-              [disabled]="true"
-              class="col offset-1"
-              placeholder="{{ 'COLLECT.PROJECT_CONTEXT_ARCHIVE_PROFILE' | translate }}"
-            >
+            <vitamui-common-input [disabled]="true" class="col" placeholder="{{ 'COLLECT.PROJECT_CONTEXT_ARCHIVE_PROFILE' | translate }}">
             </vitamui-common-input>
           </div>
           <div class="row">
@@ -246,8 +238,8 @@
     <!-- ########## stepIndex 4 : workflow 1     , step 4/6 : Upload fichiers ########## -->
     <cdk-step *ngIf="selectedWorkflow === Workflow.MANUAL">
       <div class="content">
-        <h4>{{ 'COLLECT.MODAL.TITLE' | translate }}</h4>
-        <h2>{{ 'COLLECT.MODAL.UPLOAD_SUB_TITLE' | translate }}</h2>
+        <div class="text medium light">{{ 'COLLECT.MODAL.TITLE' | translate }}</div>
+        <div class="text large bold">{{ 'COLLECT.MODAL.UPLOAD_SUB_TITLE' | translate }}</div>
         <div class="main-content">
           <div
             class="drag-and-drop-area"
@@ -302,10 +294,10 @@
     <!-- stepIndex 5 : workflow 2-3   , step 4/6 : Choisir le type de rattachement -->
     <cdk-step *ngIf="selectedWorkflow === Workflow.FLOW">
       <div class="content">
-        <h4>{{ 'COLLECT.MODAL.TITLE' | translate }}</h4>
-        <h2>{{ 'COLLECT.MODAL.FLOW_WORKFLOW_TYPE_CHOICE' | translate }}</h2>
-        <div class="main-content">
-          <mat-button-toggle-group formControlName="selectedFlowType" #group="matButtonToggleGroup" class="vitamui-button-toggle-group">
+        <div class="text medium light">{{ 'COLLECT.MODAL.TITLE' | translate }}</div>
+        <div class="text large bold">{{ 'COLLECT.MODAL.FLOW_WORKFLOW_TYPE_CHOICE' | translate }}</div>
+        <div class="main-content gap-20">
+          <mat-button-toggle-group class="vitamui-button-toggle-group">
             <mat-button-toggle value="{{ FlowType.FIX }}" (click)="setFlowType(FlowType.FIX)" [checked]="true">
               {{ 'COLLECT.MODAL.FIX_FLOW_WORKFLOW' | translate }}
             </mat-button-toggle>
@@ -334,8 +326,8 @@
     <!-- stepIndex 6 : workflow 1-2   , step 5/6 : Définir la position fixe de rattachement -->
     <cdk-step *ngIf="selectedWorkflow === Workflow.MANUAL || selectedFlowType === FlowType.FIX">
       <div class="content">
-        <h4>{{ 'COLLECT.MODAL.TITLE' | translate }}</h4>
-        <h2>{{ 'COLLECT.MODAL.ARCHIVE_POSITION_SUB_TITLE' | translate }}</h2>
+        <div class="text medium light">{{ 'COLLECT.MODAL.TITLE' | translate }}</div>
+        <div class="text large bold">{{ 'COLLECT.MODAL.ARCHIVE_POSITION_SUB_TITLE' | translate }}</div>
         <div class="main-content">
           <div class="form-group">
             <vitamui-library-filing-plan
@@ -367,8 +359,8 @@
     <!-- stepIndex 7 : workflow 3     , step 5/6 : Parametrer les regles de rattachement -->
     <cdk-step *ngIf="selectedWorkflow === Workflow.FLOW && selectedFlowType === FlowType.RULES">
       <div class="content">
-        <h4>{{ 'COLLECT.MODAL.TITLE' | translate }}</h4>
-        <h2>{{ 'COLLECT.MODAL.RULES_TITLE' | translate }}</h2>
+        <div class="text medium light">{{ 'COLLECT.MODAL.TITLE' | translate }}</div>
+        <div class="text large bold">{{ 'COLLECT.MODAL.RULES_TITLE' | translate }}</div>
         <div class="main-content">
           <ng-container formArrayName="rulesParams">
             <div class="object-container" *ngFor="let ruleParamForm of rulesParams.controls; let index = index">
@@ -497,8 +489,8 @@
     <!-- stepIndex 8 : workflow 1     , step 6/6     : Upload fichiers -->
     <cdk-step *ngIf="selectedWorkflow === Workflow.MANUAL">
       <div class="content">
-        <h4>{{ 'COLLECT.MODAL.TITLE' | translate }}</h4>
-        <h2>{{ 'COLLECT.MODAL.UPLOAD_FILES' | translate }}</h2>
+        <div class="text medium light">{{ 'COLLECT.MODAL.TITLE' | translate }}</div>
+        <div class="text large bold">{{ 'COLLECT.MODAL.UPLOAD_FILES' | translate }}</div>
         <div class="main-content">
           <div class="new-design-table">
             <div class="new-design-row new-design-head">
@@ -535,8 +527,8 @@
     <!-- workflow 2-3 step 6/6   : Projet de versement cree -->
     <cdk-step *ngIf="selectedWorkflow === Workflow.FLOW">
       <div class="content">
-        <h4>{{ 'COLLECT.MODAL.TITLE' | translate }}</h4>
-        <h2>{{ 'COLLECT.MODAL.PROJECT_CREATED' | translate }}</h2>
+        <div class="text medium light">{{ 'COLLECT.MODAL.TITLE' | translate }}</div>
+        <div class="text large bold">{{ 'COLLECT.MODAL.PROJECT_CREATED' | translate }}</div>
         <div class="main-content"></div>
         <div class="actions">
           <button (click)="close()" [disabled]="pending" class="btn primary" type="button">
