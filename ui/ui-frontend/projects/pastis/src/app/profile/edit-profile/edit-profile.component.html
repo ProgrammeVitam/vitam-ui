@@ -5,7 +5,9 @@
 
   <div class="pastis-edit-profile-header-name">
     <p class="text large bold primary">
-      <ng-container>{{ this.profileService.profileName }}</ng-container>
+      <ng-container>{{
+        this.profileService.profileId ? this.profileService.profileName : ('PROFILE.EDIT_PROFILE.NEW_PROFILE' | translate)
+      }}</ng-container>
     </p>
   </div>
   <div *ngIf="this.profileService.profileId !== null" class="pastis-edit-profile-header-id">

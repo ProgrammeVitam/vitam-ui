@@ -250,13 +250,13 @@ export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
                           if (!this.editProfile) {
                             this.profileService.createArchivalUnitProfile(this.archivalProfileUnit).subscribe(() => {
                               this.toggleService.hidePending();
-                              this.success('La création du profil a bien été effectué');
+                              this.success(this.translateService.instant('PROFILE.LIST_PROFILE.PROFILE_PREVIEW.CREATION_SUCCESS'));
                             });
                           } else {
                             this.profileService.updateProfilePua(this.archivalProfileUnit).subscribe(
                               () => {
                                 this.toggleService.hidePending();
-                                this.success('La modification du profil a bien été effectué');
+                                this.success(this.translateService.instant('PROFILE.LIST_PROFILE.PROFILE_PREVIEW.MODIFICATION_SUCCESS'));
                               },
                               (error) => {
                                 this.toggleService.hidePending();
@@ -323,7 +323,7 @@ export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
                           this.profileService.updateProfilePua(this.archivalProfileUnit).subscribe(
                             () => {
                               this.toggleService.hidePending();
-                              this.success('La modification du profil a bien été effectué');
+                              this.success(this.translateService.instant('PROFILE.LIST_PROFILE.PROFILE_PREVIEW.MODIFICATION_SUCCESS'));
                             },
                             (_) => {
                               this.toggleService.hidePending();
@@ -340,7 +340,7 @@ export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
                       .updateProfileFilePa(this.noticeService.paNotice(profileDescription, false), myFile)
                       .subscribe(() => {
                         this.toggleService.hidePending();
-                        this.success('La modification du profil a bien été effectué');
+                        this.success(this.translateService.instant('PROFILE.LIST_PROFILE.PROFILE_PREVIEW.MODIFICATION_SUCCESS'));
                       });
                   });
                 }
@@ -385,7 +385,7 @@ export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
             const myFile = this.blobToFile(retrievedData, 'file');
             this.profileService.updateProfileFilePa(createdProfile, myFile).subscribe(() => {
               this.toggleService.hidePending();
-              this.success('La création du profil a bien été effectué');
+              this.success(this.translateService.instant('PROFILE.LIST_PROFILE.PROFILE_PREVIEW.CREATION_SUCCESS'));
             });
           });
         }
@@ -397,7 +397,7 @@ export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
           const myFile = this.blobToFile(retrievedData, 'file');
           this.profileService.updateProfileFilePa(this.noticeService.paNotice(this.profileDescription, false), myFile).subscribe(() => {
             this.toggleService.hidePending();
-            this.success('La modification du profil a bien été effectué');
+            this.success(this.translateService.instant('PROFILE.LIST_PROFILE.PROFILE_PREVIEW.MODIFICATION_SUCCESS'));
           });
         });
       });
