@@ -304,7 +304,7 @@ export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
           return action;
         }),
         tap({
-          next: () => this.success('La modification du profil a bien été effectué'),
+          next: () => this.success(this.translateService.instant('PROFILE.LIST_PROFILE.PROFILE_PREVIEW.MODIFICATION_SUCCESS')),
           error: (error) => this.displaySnackBar(error),
         }),
       );
@@ -336,7 +336,7 @@ export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
     if (this.editProfile) {
       return this.archiveProfileSaverService.update(this.profile, this.profileDescription, this.data).pipe(
         tap({
-          next: () => this.success('La modification du profil a bien été effectué'),
+          next: () => this.success(this.translateService.instant('PROFILE.LIST_PROFILE.PROFILE_PREVIEW.MODIFICATION_SUCCESS')),
           error: (error) => {
             const message = error?.error?.message || error?.message || 'raison inconnue';
             this.notificationService.showError(`La modification du profil a échoué (${message})`);
@@ -347,7 +347,7 @@ export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
 
     return this.archiveProfileSaverService.create(this.profile, this.profileDescription, this.data).pipe(
       tap({
-        next: () => this.success('La création du profil a bien été effectué'),
+        next: () => this.success(this.translateService.instant('PROFILE.LIST_PROFILE.PROFILE_PREVIEW.CREATION_SUCCESS')),
         error: (error) => {
           const message = error?.error?.message || error?.message || 'raison inconnue';
           this.notificationService.showError(`La création du profil a échoué (${message})`);
@@ -360,7 +360,7 @@ export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
     if (this.editProfile) {
       return this.archiveUnitProfileSaverService.update(profileDescription, data).pipe(
         tap({
-          next: () => this.success('La modification du profil a bien été effectué'),
+          next: () => this.success(this.translateService.instant('PROFILE.LIST_PROFILE.PROFILE_PREVIEW.MODIFICATION_SUCCESS')),
           error: (error) => this.displaySnackBar(error),
         }),
       );
@@ -368,7 +368,7 @@ export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
 
     return this.archiveUnitProfileSaverService.create(profileDescription, data).pipe(
       tap({
-        next: () => this.success('La création du profil a bien été effectué'),
+        next: () => this.success(this.translateService.instant('PROFILE.LIST_PROFILE.PROFILE_PREVIEW.CREATION_SUCCESS')),
         error: (error) => this.displaySnackBar(error),
       }),
     );

@@ -111,7 +111,6 @@ export class MainComponent implements OnInit, OnDestroy {
       } else {
         // Otherwise we must have an user uploaded profile
         this.uploadedProfileResponse.id = null;
-        this.uploadedProfileResponse.name = 'Nouveau Profil';
 
         this.loaderService.start();
         this.profileService

@@ -5,7 +5,7 @@
 
   <div class="pastis-edit-profile-header-name">
     <div class="text large bold primary">
-      {{ this.profileService.profileName }}
+      {{ this.profileService.profileId ? this.profileService.profileName : ('PROFILE.EDIT_PROFILE.NEW_PROFILE' | translate) }}
     </div>
     <div>
       <vitamui-chip [text]="sedaVersionLabel"></vitamui-chip>
