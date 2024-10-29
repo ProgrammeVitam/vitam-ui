@@ -51,7 +51,7 @@ server:
   tomcat:
     connection-timeout: {{ vitamui_struct.server_connection_timeout }}
     accesslog:
-        enabled: "{{ vitamui_struct.accesslogs | default(accesslogs) | lower }}"
+        enabled: {{ vitamui_struct.accesslogs | default(accesslogs) | lower }}
         directory: "{{ vitamui_folder_log }}"
 
 management:
