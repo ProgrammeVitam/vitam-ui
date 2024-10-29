@@ -35,8 +35,12 @@ export class DateTimePipe implements PipeTransform {
 
   transform(value: any, format?: string, local?: string): any {
     if (value) {
-      value = this.formatDateTime(value);
-      return this.datePipe.transform(value, format, this.getTimezone(), local);
+      if (typeof value === 'string') {
+        value = this.formatDateTime(value);
+        return this.datePipe.transform(value, format, this.getTimezone(), local);
+      } else if (typeof value === 'number') {
+        return this.datePipe.transform(value * 1000, format, this.getTimezone(), local);
+      }
     }
   }
 
