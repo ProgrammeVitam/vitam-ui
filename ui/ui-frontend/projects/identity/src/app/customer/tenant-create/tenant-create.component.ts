@@ -38,9 +38,10 @@ import { ConfirmDialogService, Owner, Tenant } from 'ui-frontend-common';
 
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
+
+import { finalize } from 'rxjs/operators';
 import { TenantService } from '../tenant.service';
 import { TenantFormValidators } from './tenant-form.validators';
 
@@ -53,6 +54,7 @@ export class TenantCreateComponent implements OnInit, OnDestroy {
   form: FormGroup;
 
   private keyPressSubscription: Subscription;
+  isLoading = false;
 
   constructor(
     public dialogRef: MatDialogRef<TenantCreateComponent>,
@@ -89,14 +91,18 @@ export class TenantCreateComponent implements OnInit, OnDestroy {
     if (this.form.pending || this.form.invalid) {
       return;
     }
-    this.tenantService.create(this.form.value, this.data.owner.name).subscribe(
-      (newTenant: Tenant) => {
-        this.dialogRef.close(newTenant);
-      },
-      (error) => {
-        console.error(error);
-        this.dialogRef.close(null);
-      },
-    );
+    this.isLoading = true;
+    this.tenantService
+      .create(this.form.value, this.data.owner.name)
+      .pipe(finalize(() => (this.isLoading = false)))
+      .subscribe(
+        (newTenant: Tenant) => {
+          this.dialogRef.close(newTenant);
+        },
+        (error) => {
+          console.error(error);
+          this.dialogRef.close(null);
+        },
+      );
   }
 }
