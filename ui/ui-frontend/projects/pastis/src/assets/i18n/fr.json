@@ -30,7 +30,8 @@
   "PASTIS_POPUP_OPTION": {
     "OPEN_PROFIL": "Ouvrir un profil depuis mon poste",
     "CREATE_NOTICE": "Créer une notice de profil",
-    "SEDAVIEW": "Visualiser la structure du SEDA 2.1"
+    "SEDAVIEW": "Visualiser la structure du SEDA 2.1",
+    "CREATION_SUCCESS": "La création de notice a bien été effectuée"
   },
   "SHARED": {
     "PASTIS_POP_UP_METADATA_LANGUAGE": {
@@ -134,6 +135,7 @@
       "POPUP_UPLOAD_CANCEL_LABEL": "Annuler"
     },
     "EDIT_PROFILE": {
+      "NEW_PROFILE": "Nouveau profil",
       "NOTICE_TAB": "Notice",
       "ENTETE": "Entête",
       "REGLES": "Règles",
@@ -182,8 +184,8 @@
         "POPUP_DUPLICATE_TITRE_TWO": "son contenu et son paramétrage (cardinalités et commentaire)"
       },
       "FILE_TREE_METADATA": {
-        "PUA": "Profil d'Unité Archivistique",
-        "PA": "Profil d'Archivage",
+        "PUA": "Profil d'unité archivistique",
+        "PA": "Profil d'archivage",
         "SEARCH_PLACEHOLDER": "Rechercher une métadonnée dans le tableau",
         "NOTIFICATION_AJOUT_METADONNEE": "La métadonnée ArchiveUnit a été ajoutée",
         "BOUTON_AJOUT_METADONNEE": "Ajouter une métadonnée",
@@ -243,7 +245,8 @@
       "MODIFIER_PROFIL_TOOLTIP": "Modifier le profil",
       "LOAD_PROFILE": "Charger un profil",
       "PROFILE_PREVIEW": {
-        "MODIFICATION_SUCCESS": "La modification du profil a bien été effectué",
+        "CREATION_SUCCESS": "La création du profil a bien été effectuée",
+        "MODIFICATION_SUCCESS": "La modification du profil a bien été effectuée",
         "MODIFICATION_ERROR": "Echec de la modification du profil",
         "MODIFICATION_ERROR_SEDA_VERSION": "La version SEDA du profil importé doit être identique à celle de la notice"
       }
