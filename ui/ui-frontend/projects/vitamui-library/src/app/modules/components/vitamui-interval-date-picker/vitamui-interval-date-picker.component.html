@@ -12,7 +12,7 @@
           </span>
           <ng-template #showMin>
             <span (click)="pickerStart.open()">
-              {{ dateRangeFilterForm.get('dateMin').value | dateTime: 'dd/MM/yyyy' }}
+              {{ searchCriteria.dateMin }}
             </span>
             <i class="material-icons clear-date-icon clickable" (click)="clearDate('dateMin')">clear</i>
           </ng-template>
@@ -44,7 +44,7 @@
           </span>
           <ng-template #showMax>
             <span (click)="pickerEnd.open()">
-              {{ dateRangeFilterForm.get('dateMax').value | dateTime: 'dd/MM/yyyy' }}
+              {{ searchCriteria.dateMax }}
             </span>
             <i class="material-icons clear-date-icon clickable" (click)="clearDate('dateMax')">clear</i>
           </ng-template>

@@ -33,72 +33,37 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class DateTimePipe implements PipeTransform {
   constructor(private datePipe: DatePipe) {}
 
-  transform(value: any, format?: string, local?: string): any {
-    if (value) {
-      value = this.formatDateTime(value);
-      return this.datePipe.transform(value, format, this.getTimezone(), local);
-    }
+  /**
+   * Handles different kind of values:
+   * - number: when the API sends a date of the form "1730279849.983" representing a timestamp with ms in decimal part (this should never happen because we explicitly configured Jackson to format a date as an ISO string, but in practice, it happens)
+   * - string: a date in ISO format (with or without timezone)
+   * - Date: a JavaScript date instance
+   */
+  transform(value?: number | string | Date | undefined, format?: string): string | null {
+    return this.datePipe.transform(this.appendZIfNoTimezone(this.transformTimestampToDate(value)), format);
   }
 
-  private getTimezone(): string {
-    const hours = (new Date().getTimezoneOffset() / 60) * -1;
-    let timezone = 'UTC';
-
-    if (hours < 0) {
-      timezone = 'UTC' + hours;
-    } else if (hours > 0) {
-      timezone = 'UTC+' + hours;
-    }
-    return timezone;
-  }
-
-  formatDateTime(value: any): string {
-    const day = this.getDay(new Date(value).getDate());
-    const year = new Date(value).getFullYear();
-    const month = this.getMonth(new Date(value).getMonth() + 1);
-    const hour = this.getHour(new Date(value).getHours());
-    const minutes = this.getMinutes(new Date(value).getMinutes());
-    const seconds = this.getSeconds(new Date(value).getSeconds());
-    return year.toString() + '-' + month + '-' + day + 'T' + hour + ':' + minutes + ':' + seconds + '.000Z';
-  }
-
-  getMonth(num: number): string {
-    if (num > 9) {
-      return num.toString();
+  /**
+   * If the value is a number, it is interpreted as a timestamp in seconds and converted to a Date. Otherwise, it returns the original value.
+   */
+  private transformTimestampToDate(value?: number | string | Date | undefined): string | Date | null {
+    if (typeof value === 'number') {
+      const timestampMs = value * 1000; // We're expecting timestamp in seconds (with ms in decimal), so we convert in ms
+      return new Date(timestampMs);
     } else {
-      return '0' + num.toString();
+      return value;
     }
   }
 
-  getDay(day: number): string {
-    if (day > 9) {
-      return day.toString();
-    } else {
-      return '0' + day.toString();
-    }
-  }
-
-  getHour(hour: number): string {
-    if (hour > 9) {
-      return hour.toString();
-    } else {
-      return '0' + hour.toString();
-    }
-  }
-
-  getSeconds(seconds: number): string {
-    if (seconds > 9) {
-      return seconds.toString();
-    } else {
-      return '0' + seconds.toString();
-    }
-  }
-
-  getMinutes(minutes: number): string {
-    if (minutes > 9) {
-      return minutes.toString();
-    } else {
-      return '0' + minutes.toString();
-    }
+  /**
+   * If the value is a Date instance, returns a String expressed in timezone Z.
+   * If the value is a String, appends a Z (UTC) timezone if it has no timezone already.
+   * This pipe is useful for "dates" that are instances of String and with no defined timezone. When Vitam API sends that kind of date, it should be interpreted in the UTC timezone.
+   */
+  private appendZIfNoTimezone(value?: string | Date | undefined): string | null | undefined {
+    if (!value) return value as string;
+    if (value instanceof Date) return value.toISOString();
+    const hasTimezone = /Z$|[+-]\d{2}:\d{2}$|GMT[+-]\d{4}$/.test(value);
+    return hasTimezone ? value : value + 'Z';
   }
 }
