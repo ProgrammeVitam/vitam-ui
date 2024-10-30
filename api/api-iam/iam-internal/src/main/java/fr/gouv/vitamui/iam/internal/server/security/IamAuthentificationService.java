@@ -57,13 +57,12 @@ import java.util.Date;
 
 /**
  * External authentication service
- *
- *
  */
 @Getter
 @Setter
 public class IamAuthentificationService {
 
+    public static final String INTERNAL_CAS_USER_NAME = "casuser";
     private final TokenRepository tokenRepository;
 
     private final UserInternalService internalUserService;
@@ -90,6 +89,7 @@ public class IamAuthentificationService {
 
     /**
      * Return the User profile and check security data.
+     *
      * @param httpContext HTTP Context.
      * @return
      */
@@ -111,7 +111,10 @@ public class IamAuthentificationService {
             Date tokenMaxExpirationDate = DateUtils.addMinutes(token.getCreatedDate(), tokenMaxTtl);
             Date currentTokenExpirationDate = token.getUpdatedDate();
             Date newTokenExpirationDate = DateUtils.addMinutes(new Date(), tokenAdditionalTtl);
-            final LocalDate currentTokenExpirationLocalDate = convertToLocalDate(currentTokenExpirationDate);
+
+            if (!token.getRefId().equals(INTERNAL_CAS_USER_NAME) && currentTokenExpirationDate.before(new Date())) {
+                throw new BadCredentialsException("Expired token  usertoken: " + userToken);
+            }
             if (
                 currentTokenExpirationDate.before(newTokenExpirationDate) &&
                 newTokenExpirationDate.before(tokenMaxExpirationDate)
