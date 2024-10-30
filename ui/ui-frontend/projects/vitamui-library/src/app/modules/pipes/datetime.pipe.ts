@@ -33,8 +33,26 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class DateTimePipe implements PipeTransform {
   constructor(private datePipe: DatePipe) {}
 
-  transform(value?: string | Date | undefined, format?: string): string | null {
-    return this.datePipe.transform(this.appendZIfNoTimezone(value), format);
+  /**
+   * Handles different kind of values:
+   * - number: when the API sends a date of the form "1730279849.983" representing a timestamp with ms in decimal part (this should never happen because we explicitly configured Jackson to format a date as an ISO string, but in practice, it happens)
+   * - string: a date in ISO format (with or without timezone)
+   * - Date: a JavaScript date instance
+   */
+  transform(value?: number | string | Date | undefined, format?: string): string | null {
+    return this.datePipe.transform(this.appendZIfNoTimezone(this.transformTimestampToDate(value)), format);
+  }
+
+  /**
+   * If the value is a number, it is interpreted as a timestamp in seconds and converted to a Date. Otherwise, it returns the original value.
+   */
+  private transformTimestampToDate(value?: number | string | Date | undefined): string | Date | null {
+    if (typeof value === 'number') {
+      const timestampMs = value * 1000; // We're expecting timestamp in seconds (with ms in decimal), so we convert in ms
+      return new Date(timestampMs);
+    } else {
+      return value;
+    }
   }
 
   /**

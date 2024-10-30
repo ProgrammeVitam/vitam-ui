@@ -53,6 +53,8 @@ describe('DateTimePipe', () => {
       expect(pipe.transform('2024-10-24T00:00:00.000Z', 'HH:mm:ss')).toBe('00:00:00');
       expect(pipe.transform('2024-10-24T23:59:59.999Z', 'HH:mm:ss')).toBe('23:59:59');
       expect(pipe.transform('2024-10-24T14:02:36.000', 'HH:mm:ss')).toBe('14:02:36'); // No timezone (defaults to 'Z')
+
+      expect(pipe.transform(1729728000.0, 'dd/MM/yyyy')).toBe('24/10/2024');
     });
   });
 
@@ -80,6 +82,8 @@ describe('DateTimePipe', () => {
       expect(pipe.transform('2024-10-24T00:00:00.000Z', 'HH:mm:ss')).toBe('02:00:00');
       expect(pipe.transform('2024-10-24T23:59:59.999Z', 'HH:mm:ss')).toBe('01:59:59');
       expect(pipe.transform('2024-10-24T14:02:36.000', 'HH:mm:ss')).toBe('16:02:36'); // No timezone (defaults to 'Z')
+
+      expect(pipe.transform(1729728000.0, 'dd/MM/yyyy')).toBe('24/10/2024');
     });
   });
 
@@ -107,6 +111,8 @@ describe('DateTimePipe', () => {
       expect(pipe.transform('2024-10-24T00:00:00.000Z', 'HH:mm:ss')).toBe('22:00:00');
       expect(pipe.transform('2024-10-24T23:59:59.999Z', 'HH:mm:ss')).toBe('21:59:59');
       expect(pipe.transform('2024-10-24T14:02:36.000', 'HH:mm:ss')).toBe('12:02:36'); // No timezone (defaults to 'Z')
+
+      expect(pipe.transform(1729728000.0, 'dd/MM/yyyy')).toBe('23/10/2024');
     });
   });
 });
