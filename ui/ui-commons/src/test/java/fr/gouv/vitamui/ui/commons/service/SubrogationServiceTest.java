@@ -12,7 +12,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.time.OffsetDateTime;
+import java.time.Instant;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -85,7 +85,7 @@ public class SubrogationServiceTest extends ServiceTest<SubrogationDto> {
     @Override
     protected SubrogationDto buildDto(final String id) {
         final SubrogationDto dto = new SubrogationDto();
-        dto.setDate(OffsetDateTime.now());
+        dto.setDate(Instant.now());
         dto.setStatus(SubrogationStatusEnum.CREATED);
         dto.setSuperUser("superuser@vitamui.com");
         dto.setSurrogate("surrogate@vitamui.com");

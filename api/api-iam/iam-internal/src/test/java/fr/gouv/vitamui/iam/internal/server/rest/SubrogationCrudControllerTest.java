@@ -32,7 +32,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 
-import java.time.OffsetDateTime;
+import java.time.Instant;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -51,8 +51,7 @@ public final class SubrogationCrudControllerTest extends AbstractCrudControllerT
 
     private static final String SURROGATE_CREATE_EMAIL = "surrogate@test.fr";
 
-    private static final OffsetDateTime NOW = OffsetDateTime.now();
-
+    private static final Instant NOW = Instant.now();
     private static final User SURROGATE;
 
     private static final User SURROGATE_CREATE;
