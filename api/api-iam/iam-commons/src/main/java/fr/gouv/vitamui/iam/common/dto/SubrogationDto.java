@@ -46,7 +46,7 @@ import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
-import java.time.OffsetDateTime;
+import java.time.Instant;
 
 /**
  * The DTO v1 for a subrogation.
@@ -65,7 +65,7 @@ public class SubrogationDto extends IdDto {
     @NotNull
     private SubrogationStatusEnum status;
 
-    private OffsetDateTime date;
+    private Instant date;
 
     @NotNull
     @Length(min = 4, max = 100)
