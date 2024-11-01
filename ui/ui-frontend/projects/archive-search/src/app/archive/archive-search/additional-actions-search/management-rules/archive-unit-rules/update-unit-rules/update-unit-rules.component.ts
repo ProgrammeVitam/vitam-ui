@@ -91,7 +91,6 @@ export class UpdateUnitRulesComponent implements OnDestroy {
   @Output() confirmStep = new EventEmitter<any>();
   @Output() cancelStep = new EventEmitter<any>();
 
-  @Input() accessContract: string;
   @Input() selectedItem: number;
   @Input() ruleCategory: string;
   @Input() hasExactCount: boolean;

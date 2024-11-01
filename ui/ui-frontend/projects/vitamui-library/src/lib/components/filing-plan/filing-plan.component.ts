@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { NestedTreeControl } from '@angular/cdk/tree';
-import { Component, forwardRef, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, forwardRef, Input, OnInit } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { MatTreeNestedDataSource } from '@angular/material/tree';
 import { v4 as uuid } from 'uuid';
@@ -55,10 +55,8 @@ export const NODE_SELECT_VALUE_ACCESSOR: any = {
   styleUrls: ['./filing-plan.component.scss'],
   providers: [NODE_SELECT_VALUE_ACCESSOR],
 })
-export class FilingPlanComponent implements ControlValueAccessor, OnChanges {
+export class FilingPlanComponent implements ControlValueAccessor, OnInit {
   @Input() tenantIdentifier: number;
-  /** @deprecated should be removed */
-  @Input() accessContract: string;
   @Input() mode: FilingPlanMode;
   @Input() componentId: string = uuid();
 
@@ -82,17 +80,15 @@ export class FilingPlanComponent implements ControlValueAccessor, OnChanges {
   }
 
   initFiningTree() {
-    this.filingPlanService.loadTree(this.tenantIdentifier, this.accessContract, this.componentId).subscribe((nodes) => {
+    this.filingPlanService.loadTree(this.tenantIdentifier, this.componentId).subscribe((nodes) => {
       this.nestedDataSource.data = nodes;
       this.nestedTreeControl.dataNodes = nodes;
       this.initCheckedNodes(this.selectedNodes, nodes);
     });
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes.accessContract) {
-      this.initFiningTree();
-    }
+  ngOnInit(): void {
+    this.initFiningTree();
   }
 
   hasNestedChild = (_: number, node: any) => node.children && node.children.length;

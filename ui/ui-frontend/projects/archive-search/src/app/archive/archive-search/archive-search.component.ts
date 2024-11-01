@@ -40,7 +40,6 @@ import {
   ChangeDetectorRef,
   Component,
   EventEmitter,
-  Input,
   OnChanges,
   OnDestroy,
   OnInit,
@@ -53,9 +52,11 @@ import { MatLegacyDialog as MatDialog, MatLegacyDialogConfig as MatDialogConfig 
 import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { Observable, Subject, Subscription, merge } from 'rxjs';
+import { merge, Observable, Subject, Subscription } from 'rxjs';
 import { debounceTime, filter, map } from 'rxjs/operators';
 import {
+  AccessContract,
+  AccessContractService,
   ArchiveSearchResultFacets,
   CriteriaDataType,
   CriteriaOperator,
@@ -120,9 +121,9 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   search$: Observable<number>;
 
   direction = Direction.ASCENDANT;
-  @Input() accessContractId: string;
-  @Input() accessContractAllowUpdating: boolean;
-  @Input() accessContractUpdatingRestrictedDesc: boolean;
+  accessContractId: string;
+  accessContractAllowUpdating: boolean;
+  accessContractUpdatingRestrictedDesc: boolean;
   @Output() archiveUnitClick = new EventEmitter<any>();
 
   tenantIdentifier: number;
@@ -218,6 +219,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
     private archiveUnitEliminationService: ArchiveUnitEliminationService,
     private computeInheritedRulesService: ComputeInheritedRulesService,
     private archiveUnitDipService: ArchiveUnitDipService,
+    private accessContractService: AccessContractService,
     private cdr: ChangeDetectorRef,
   ) {
     this.subscriptions.add(
@@ -363,6 +365,10 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   }
 
   ngOnInit() {
+    this.accessContractService.currentAccessContract$.subscribe((ac: AccessContract) => {
+      this.accessContractAllowUpdating = ac.writingPermission;
+      this.accessContractUpdatingRestrictedDesc = ac.writingRestrictedDesc;
+    });
     this.additionalSearchCriteriaCategoryIndex = 0;
     this.additionalSearchCriteriaCategories = [];
     this.route.params.subscribe((params) => {

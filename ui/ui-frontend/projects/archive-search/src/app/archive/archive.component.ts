@@ -42,13 +42,11 @@ import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import {
-  AccessContract,
   AccessContractService,
   Collection,
   ExternalParameters,
   ExternalParametersService,
   GlobalEventService,
-  Logger,
   SchemaService,
   SidenavPage,
   Unit,
@@ -66,12 +64,9 @@ export class ArchiveComponent extends SidenavPage<any> implements OnInit, OnDest
   show = true;
   tenantIdentifier: string;
   foundAccessContract = false;
-  accessContractId: string;
   bulkOperationsThreshold: number;
   errorMessageSub: Subscription;
   isLPExtended = false;
-  accessContractAllowUpdating = false;
-  accessContractUpdatingRestrictedDesc = false;
   hasUpdateDescriptiveUnitMetadataRole = false;
 
   constructor(
@@ -85,7 +80,6 @@ export class ArchiveComponent extends SidenavPage<any> implements OnInit, OnDest
     private snackBar: MatSnackBar,
     private managementRulesSharedDataService: ManagementRulesSharedDataService,
     private archiveService: ArchiveService,
-    private loggerService: Logger,
     private schemaService: SchemaService,
     private accessContractService: AccessContractService,
   ) {
@@ -123,11 +117,8 @@ export class ArchiveComponent extends SidenavPage<any> implements OnInit, OnDest
   fetchUserExternalParameters() {
     this.accessContractService.currentAccessContractId$.subscribe((accessContractId) => {
       if (accessContractId && accessContractId.length > 0) {
-        //TODO(remove): switch to accessContractService.currentAccessContractId$
-        this.accessContractId = accessContractId;
         this.foundAccessContract = true;
         this.managementRulesSharedDataService.emitAccessContract(accessContractId);
-        this.fetchVitamAccessContract();
       } else {
         this.errorMessageSub = this.translateService
           .get('ARCHIVE_SEARCH.ACCESS_CONTRACT_NOT_FOUND')
@@ -146,23 +137,6 @@ export class ArchiveComponent extends SidenavPage<any> implements OnInit, OnDest
       const threshold = Number(parameters.get(ExternalParameters.PARAM_BULK_OPERATIONS_THRESHOLD) || -1);
       this.bulkOperationsThreshold = threshold;
       this.managementRulesSharedDataService.emitBulkOperationsThreshold(threshold);
-    });
-  }
-
-  fetchVitamAccessContract() {
-    this.archiveService.getAccessContractById(this.accessContractId).subscribe({
-      next: (ac: AccessContract) => {
-        this.accessContractAllowUpdating = ac.writingPermission;
-        this.accessContractUpdatingRestrictedDesc = ac.writingRestrictedDesc;
-      },
-      error: (error: any) => {
-        this.loggerService.error('error message', error);
-        const message = this.translateService.instant('ARCHIVE_SEARCH.ACCESS_CONTRACT_NOT_FOUND_IN_VITAM');
-        this.snackBar.open(message + ': ' + this.accessContractId, null, {
-          panelClass: 'vitamui-snack-bar',
-          duration: 10000,
-        });
-      },
     });
   }
 

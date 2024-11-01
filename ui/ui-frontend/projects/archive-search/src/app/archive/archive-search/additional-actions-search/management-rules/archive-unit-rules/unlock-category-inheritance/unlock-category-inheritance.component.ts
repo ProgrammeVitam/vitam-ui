@@ -58,8 +58,6 @@ export class UnlockCategoryInheritanceComponent implements OnDestroy {
   @Input()
   ruleCategory: string;
   @Input()
-  accessContract: string;
-  @Input()
   hasExactCount: boolean;
   @Input()
   selectedItem: number;

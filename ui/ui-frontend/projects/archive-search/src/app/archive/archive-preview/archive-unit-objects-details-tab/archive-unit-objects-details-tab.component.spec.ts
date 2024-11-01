@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Clipboard } from '@angular/cdk/clipboard';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { NO_ERRORS_SCHEMA, SimpleChange } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
@@ -139,14 +139,29 @@ describe('ArchiveUnitObjectsDetailsTabComponent tests', () => {
   });
 
   it('getObjectVersionsWithQualifiers', () => {
-    const unit = newUnit('zertyuhtfrc');
+    const unit = {
+      '#allunitups': [],
+      '#id': 'archiveUnitTestID',
+      '#object': 'objectId',
+      '#unitType': null,
+      '#unitups': [],
+      '#opi': '',
+      '#tenant': 1,
+      DescriptionLevel: DescriptionLevel.ITEM,
+      Title_: { fr: 'Teste', en: 'Test' },
+      Description_: { fr: 'DescriptionFr', en: 'DescriptionEn' },
+    } as Unit;
     archiveServiceSpy.getObjectById.and.returnValue(of(newApiUnitObject()));
-    component.getObjectVersionsWithQualifiers(unit);
+    component.archiveUnit = unit;
+    component.ngOnChanges({
+      archiveUnit: new SimpleChange(null, unit, true),
+    });
+    component.getObjectVersionsWithQualifiers();
     expect(archiveServiceSpy.getObjectById).toHaveBeenCalled();
-    expect(archiveServiceSpy.getObjectById).toHaveBeenCalledWith(unit['#id'], anything());
+    expect(archiveServiceSpy.getObjectById).toHaveBeenCalledWith(component.archiveUnit['#id'], anything());
   });
 
-  it('should return true', () => {
+  it('unitHasObject should return true', () => {
     // Given
     component.archiveUnit = {
       '#allunitups': [],
@@ -168,12 +183,11 @@ describe('ArchiveUnitObjectsDetailsTabComponent tests', () => {
     expect(response).toBeTruthy();
   });
 
-  it('should return false', () => {
+  it('unitHasObject should return false', () => {
     // Given
     component.archiveUnit = {
       '#allunitups': [],
       '#id': 'archiveUnitTestID',
-      '#object': 'objectId',
       '#unitType': null,
       '#unitups': [],
       '#opi': '',
@@ -190,33 +204,8 @@ describe('ArchiveUnitObjectsDetailsTabComponent tests', () => {
     expect(response).toBeFalsy();
   });
 
-  it('should return true', () => {
-    // Given
-    component.archiveUnit = {
-      '#allunitups': [],
-      '#id': 'archiveUnitTestID',
-      '#unitType': null,
-      '#unitups': [],
-      '#opi': '',
-      '#tenant': 1,
-      DescriptionLevel: DescriptionLevel.ITEM,
-      Title_: { fr: 'Teste', en: 'Test' },
-      Description_: { fr: 'DescriptionFr', en: 'DescriptionEn' },
-    };
-
-    // When
-    const response = component.unitHasObject();
-
-    // Then
-    expect(response).toBeFalsy();
-  });
-
   function newVersionWithQualifier(qualifier: ObjectQualifierType, version: number): VersionWithQualifierDto {
     return { qualifier, version } as VersionWithQualifierDto;
-  }
-
-  function newUnit(id: string): Unit {
-    return { '#id': id } as Unit;
   }
 
   function newApiUnitObject(): ApiUnitObject {

@@ -298,7 +298,6 @@
           <vitamui-library-filing-plan
             [formControl]="linkParentIdControl"
             [tenantIdentifier]="tenantIdentifier"
-            [accessContract]="accessContractSelect.value"
             [mode]="FilingPlanMode.SOLO"
           ></vitamui-library-filing-plan>
         </div>
@@ -386,7 +385,6 @@
           <vitamui-library-filing-plan
             [formControl]="checkParentIdControl"
             [tenantIdentifier]="tenantIdentifier"
-            [accessContract]="accessContractSelect.value"
             [mode]="FilingPlanMode.INCLUDE_ONLY"
             [required]="checkParentIdControl.value === 'REQUIRED'"
           ></vitamui-library-filing-plan>

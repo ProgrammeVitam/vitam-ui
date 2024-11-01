@@ -180,10 +180,6 @@ describe('ManagementRulesComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('Should have an accessContract ', () => {
-    expect(component.accessContract).not.toBeNull();
-  });
-
   it('items Selected should be grather than 0 ', () => {
     expect(component.selectedItem).toBeGreaterThan(0);
   });

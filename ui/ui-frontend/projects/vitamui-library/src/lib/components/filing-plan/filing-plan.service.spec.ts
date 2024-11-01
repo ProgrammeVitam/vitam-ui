@@ -38,19 +38,36 @@
 
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { Type } from '@angular/core';
-import { TestBed, inject } from '@angular/core/testing';
-import { Node } from 'vitamui-library';
+import { inject, TestBed } from '@angular/core/testing';
+import { LoggerModule, Node } from 'vitamui-library';
 import { FilingPlanService } from './filing-plan.service';
-import { BASE_URL, FileType, UnitType } from '../../../app/modules';
+import {
+  AccessContractService,
+  BASE_URL,
+  FileType,
+  InjectorModule,
+  UnitType,
+  VitamUICommonModule,
+  VitamUISnackBarService,
+} from '../../../app/modules';
 import { DescriptionLevel } from '../../models/description-level.enum';
+import { EMPTY, of } from 'rxjs';
 
 describe('FilingPlanService', () => {
   let httpTestingController: HttpTestingController;
+  const accessContractServiceMock = {
+    currentAccessContractId$: of('access_contract_id'),
+  };
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-      providers: [FilingPlanService, { provide: BASE_URL, useValue: '/fake-api' }],
+      imports: [HttpClientTestingModule, VitamUICommonModule, InjectorModule, LoggerModule.forRoot()],
+      providers: [
+        FilingPlanService,
+        { provide: BASE_URL, useValue: '/fake-api' },
+        { provide: VitamUISnackBarService, useValue: { instant: () => EMPTY } },
+        { provide: AccessContractService, useValue: accessContractServiceMock },
+      ],
     });
 
     httpTestingController = TestBed.inject(HttpTestingController as Type<HttpTestingController>);
@@ -110,7 +127,7 @@ describe('FilingPlanService', () => {
     };
     children[1].children.push(subChild);
 
-    service.loadTree(42, 'access-contract', 'prefix').subscribe((tree) => {
+    service.loadTree(42, 'prefix').subscribe((tree) => {
       console.log('Result: ', tree);
       console.log('Expected: ', rootNode);
       expect(tree).toEqual(rootNode);
@@ -149,7 +166,7 @@ describe('FilingPlanService', () => {
   }));
 
   it('should return an empty tree if an error occurs', inject([FilingPlanService], (service: FilingPlanService) => {
-    service.loadTree(42, '', '').subscribe((tree) => {
+    service.loadTree(42, '').subscribe((tree) => {
       expect(tree).toEqual([]);
     });
 

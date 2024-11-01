@@ -66,13 +66,11 @@ import { ArchiveSharedDataService } from '../../../core/archive-shared-data.serv
 })
 export class ArchiveUnitObjectsDetailsTabComponent implements OnChanges, OnInit, OnDestroy {
   @Input() archiveUnit: Unit;
-  //todo: replace by service
-  @Input() accessContractId: string;
 
-  private accessContract: AccessContract;
   hasDownloadDocumentRole = false;
 
-  private subscription: Subscription;
+  private accessContract: AccessContract;
+  private subscription = new Subscription();
 
   constructor(
     private archiveService: ArchiveService,
@@ -83,7 +81,6 @@ export class ArchiveUnitObjectsDetailsTabComponent implements OnChanges, OnInit,
   ) {}
 
   ngOnInit() {
-    this.getAccessContract();
     this.checkDownloadPermissions();
   }
 
@@ -93,20 +90,24 @@ export class ArchiveUnitObjectsDetailsTabComponent implements OnChanges, OnInit,
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.archiveUnit) {
-      if (!this.archiveUnit.objectsGroup && this.unitHasObject()) {
-        this.getObjectVersionsWithQualifiers(this.archiveUnit);
+      if (!this.accessContract) {
+        this.getAccessContract();
+      } else {
+        this.getObjectVersionsWithQualifiers();
       }
     }
   }
 
   private getAccessContract() {
-    this.subscription = this.accessContractService.currentAccessContract$.subscribe({
-      next: (accessContract: AccessContract) => {
-        this.accessContract = accessContract;
-        this.setDownloadableOnVersionsWithQualifiers();
-      },
-      error: (e) => console.error(e),
-    });
+    this.subscription.add(
+      this.accessContractService.currentAccessContract$.subscribe({
+        next: (accessContract: AccessContract) => {
+          this.accessContract = accessContract;
+          this.getObjectVersionsWithQualifiers();
+        },
+        error: (e) => console.error(e),
+      }),
+    );
   }
 
   unitHasObject(): boolean {
@@ -126,9 +127,12 @@ export class ArchiveUnitObjectsDetailsTabComponent implements OnChanges, OnInit,
     this.clipboard.copy(text);
   }
 
-  getObjectVersionsWithQualifiers(archiveUnit: Unit) {
-    const headers = new HttpHeaders().append('Content-Type', 'application/json').append('X-Access-Contract-Id', this.accessContractId);
-    this.archiveService.getObjectById(archiveUnit['#id'], headers).subscribe({
+  getObjectVersionsWithQualifiers() {
+    if (this.archiveUnit.objectGroup || !this.unitHasObject()) {
+      return;
+    }
+    const headers = new HttpHeaders().append('Content-Type', 'application/json').append('X-Access-Contract-Id', this.accessContract.id);
+    this.archiveService.getObjectById(this.archiveUnit['#id'], headers).subscribe({
       next: (unitObject) => {
         this.archiveUnit.objectGroup = unitObject;
         this.archiveUnit.objectGroup.versionsWithQualifiers = qualifiersToVersionsWithQualifier(unitObject['#qualifiers']);

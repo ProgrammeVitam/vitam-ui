@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { NestedTreeControl } from '@angular/cdk/tree';
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { MatTreeNestedDataSource } from '@angular/material/tree';
 import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
@@ -61,7 +61,6 @@ import { NodeData } from '../models/nodedata.interface';
   styleUrls: ['./filing-holding-scheme.component.scss'],
 })
 export class FilingHoldingSchemeComponent implements OnInit, OnDestroy {
-  @Input() accessContract: string;
   @Output() showArchiveUnitDetails = new EventEmitter<Unit>();
   @Output() switchView: EventEmitter<void> = new EventEmitter();
   private subscriptions = new Subscription();

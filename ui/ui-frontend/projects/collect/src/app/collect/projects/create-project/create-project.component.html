@@ -332,7 +332,6 @@
         <div class="main-content">
           <div class="form-group">
             <vitamui-library-filing-plan
-              [accessContract]="accessContractSelect.value"
               [formControl]="linkParentIdControl"
               [mode]="FilingPlanMode.SOLO"
               [tenantIdentifier]="tenantIdentifier"
@@ -450,7 +449,6 @@
                         <label>{{ 'COLLECT.MODAL.ATTACH_POSITION' | translate }}</label>
                         <vitamui-library-filing-plan
                           [formControl]="asFormControl(ruleParamForm.get('unitUp'))"
-                          [accessContract]="accessContractSelect.value"
                           [mode]="FilingPlanMode.SOLO"
                           [tenantIdentifier]="tenantIdentifier"
                         >
