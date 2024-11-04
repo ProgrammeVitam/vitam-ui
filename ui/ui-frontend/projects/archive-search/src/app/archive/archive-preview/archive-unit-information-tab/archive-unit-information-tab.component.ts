@@ -35,9 +35,9 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
-import { Observable } from 'rxjs';
-import { Unit } from 'vitamui-library';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Observable, Subscription } from 'rxjs';
+import { AccessContract, AccessContractService, Unit, VersionWithQualifierDto } from 'vitamui-library';
 import { ArchiveService } from '../../archive.service';
 
 @Component({
@@ -45,9 +45,8 @@ import { ArchiveService } from '../../archive.service';
   templateUrl: './archive-unit-information-tab.component.html',
   styleUrls: ['./archive-unit-information-tab.component.css'],
 })
-export class ArchiveUnitInformationTabComponent implements OnInit, OnChanges {
+export class ArchiveUnitInformationTabComponent implements OnInit, OnChanges, OnDestroy {
   @Input() archiveUnit: Unit;
-  @Input() accessContractId: string;
   @Input() tenantIdentifier: number;
 
   @Output() showNormalPanel = new EventEmitter<any>();
@@ -55,23 +54,84 @@ export class ArchiveUnitInformationTabComponent implements OnInit, OnChanges {
   uaPath$: Observable<{ fullPath: string; resumePath: string }>;
   fullPath = false;
   hasDownloadDocumentRole = false;
+  private accessContractAllowDownloadData: boolean = null;
 
-  constructor(private archiveService: ArchiveService) {}
+  private accessContract: AccessContract;
+  private subscription: Subscription;
+
+  constructor(
+    private archiveService: ArchiveService,
+    private accessContractService: AccessContractService,
+  ) {}
 
   ngOnInit() {
+    this.getAccessContract();
     this.checkDownloadPermissions();
     this.uaPath$ = this.archiveService.buildArchiveUnitPath(this.archiveUnit);
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.archiveUnit?.currentValue['#id']) {
       this.uaPath$ = this.archiveService.buildArchiveUnitPath(this.archiveUnit);
+      this.accessContractAllowDownloadData = null;
     }
     this.fullPath = false;
   }
 
-  onDownloadObjectFromUnit(archiveUnit: Unit) {
-    return this.archiveService.downloadObjectFromUnit(archiveUnit['#id']);
+  private getAccessContract() {
+    this.subscription = this.accessContractService.currentAccessContract$.subscribe({
+      next: (accessContract: AccessContract) => {
+        this.accessContract = accessContract;
+        this.accessContractAllowDownload();
+      },
+      error: (e) => console.error(e),
+    });
+  }
+
+  accessContractAllowDownload(): boolean {
+    if (this.accessContractAllowDownloadData) {
+      return this.accessContractAllowDownloadData;
+    }
+    if (!this.archiveUnit?.objectGroup?.versionsWithQualifiers) {
+      return false;
+    }
+    this.accessContractAllowDownloadData = this.accessContractAllowDownloadFor(this.archiveUnit);
+    return this.accessContractAllowDownloadData;
+  }
+
+  private accessContractAllowDownloadFor(unit: Unit): boolean {
+    if (this.accessContract.everyDataObjectVersion) {
+      return true;
+    }
+    if (!this.accessContract.dataObjectVersion) {
+      return false;
+    }
+    return unit.objectGroup.versionsWithQualifiers.some((versionWithQualifier) =>
+      this.accessContract.dataObjectVersion.includes(versionWithQualifier.qualifier),
+    );
+  }
+
+  private getFirstQualifierDownloadableWithLatestVersion(unit: Unit): VersionWithQualifierDto {
+    const firstVersionWithQualifierDownloadable = unit.objectGroup.versionsWithQualifiers.find((e) =>
+      this.accessContract.dataObjectVersion.includes(e.qualifier),
+    );
+    const downloadableQualifiers = unit.objectGroup.versionsWithQualifiers.filter(
+      (e) => e.qualifier === firstVersionWithQualifierDownloadable.qualifier,
+    );
+    return downloadableQualifiers[downloadableQualifiers.length - 1];
+  }
+
+  onDownloadObjectFromUnit() {
+    const lastVersionOfFirstQualifierDownloadable = this.getFirstQualifierDownloadableWithLatestVersion(this.archiveUnit);
+    return this.archiveService.downloadObjectFromUnit(
+      this.archiveUnit['#id'],
+      lastVersionOfFirstQualifierDownloadable.qualifier,
+      lastVersionOfFirstQualifierDownloadable.version,
+    );
   }
 
   showArchiveUniteFullPath() {

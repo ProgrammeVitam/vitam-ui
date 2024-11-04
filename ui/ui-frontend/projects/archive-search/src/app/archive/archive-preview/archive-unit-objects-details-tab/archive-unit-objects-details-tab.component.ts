@@ -27,10 +27,10 @@
 import { animate, AUTO_STYLE, state, style, transition, trigger } from '@angular/animations';
 import { Clipboard } from '@angular/cdk/clipboard';
 import { HttpHeaders } from '@angular/common/http';
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import {
   AccessContract,
-  ApiUnitObject,
+  AccessContractService,
   DescriptionLevel,
   qualifiersToVersionsWithQualifier,
   TenantSelectionService,
@@ -38,6 +38,7 @@ import {
   VersionWithQualifierDto,
 } from 'vitamui-library';
 import { ArchiveService } from '../../archive.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-archive-unit-objects-details-tab',
@@ -52,19 +53,21 @@ import { ArchiveService } from '../../archive.service';
     ]),
   ],
 })
-export class ArchiveUnitObjectsDetailsTabComponent implements OnChanges, OnInit {
+export class ArchiveUnitObjectsDetailsTabComponent implements OnChanges, OnInit, OnDestroy {
   @Input() archiveUnit: Unit;
+  //todo: replace by service
   @Input() accessContractId: string;
 
   private accessContract: AccessContract;
-  unitObject: ApiUnitObject;
-  versionsWithQualifiersOrdered: Array<VersionWithQualifierDto>;
   hasDownloadDocumentRole = false;
+
+  private subscription: Subscription;
 
   constructor(
     private archiveService: ArchiveService,
     private clipboard: Clipboard,
     private tenantSelectionService: TenantSelectionService,
+    private accessContractService: AccessContractService,
   ) {}
 
   ngOnInit() {
@@ -72,19 +75,24 @@ export class ArchiveUnitObjectsDetailsTabComponent implements OnChanges, OnInit 
     this.checkDownloadPermissions();
   }
 
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+  }
+
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.archiveUnit) {
-      this.unitObject = null;
-      this.versionsWithQualifiersOrdered = null;
-      if (this.unitHasObject()) {
+      if (!this.archiveUnit.objectsGroup && this.unitHasObject()) {
         this.getObjectVersionsWithQualifiers(this.archiveUnit);
       }
     }
   }
 
-  getAccessContract() {
-    this.archiveService.getAccessContractById(this.accessContractId).subscribe({
-      next: (accessContract: AccessContract) => (this.accessContract = accessContract),
+  private getAccessContract() {
+    this.subscription = this.accessContractService.currentAccessContract$.subscribe({
+      next: (accessContract: AccessContract) => {
+        this.accessContract = accessContract;
+        this.setDownloadableOnVersionsWithQualifiers();
+      },
       error: (e) => console.error(e),
     });
   }
@@ -110,8 +118,9 @@ export class ArchiveUnitObjectsDetailsTabComponent implements OnChanges, OnInit 
     const headers = new HttpHeaders().append('Content-Type', 'application/json').append('X-Access-Contract-Id', this.accessContractId);
     this.archiveService.getObjectById(archiveUnit['#id'], headers).subscribe({
       next: (unitObject) => {
-        this.unitObject = unitObject;
-        this.versionsWithQualifiersOrdered = qualifiersToVersionsWithQualifier(this.unitObject['#qualifiers']);
+        this.archiveUnit.objectGroup = unitObject;
+        this.archiveUnit.objectGroup.versionsWithQualifiers = qualifiersToVersionsWithQualifier(unitObject['#qualifiers']);
+
         this.setDownloadableOnVersionsWithQualifiers();
         this.setFirstVersionWithQualifierOpen();
       },
@@ -119,17 +128,16 @@ export class ArchiveUnitObjectsDetailsTabComponent implements OnChanges, OnInit 
     });
   }
 
-  setDownloadableOnVersionsWithQualifiers() {
-    if (!this.accessContract) {
-      console.error('no access contract');
+  private setDownloadableOnVersionsWithQualifiers() {
+    if (!this.archiveUnit?.objectGroup?.versionsWithQualifiers) {
       return;
     }
-    this.versionsWithQualifiersOrdered.forEach((versionWithQualifier) => {
-      versionWithQualifier.downloadAllowed = this.accessContractAllowDownload(versionWithQualifier);
+    this.archiveUnit.objectGroup.versionsWithQualifiers.forEach((versionWithQualifier) => {
+      versionWithQualifier.downloadAllowed = this.accessContractAllowDownloadFor(versionWithQualifier);
     });
   }
 
-  accessContractAllowDownload(versionWithQualifier: VersionWithQualifierDto): boolean {
+  private accessContractAllowDownloadFor(versionWithQualifier: VersionWithQualifierDto): boolean {
     if (this.accessContract.everyDataObjectVersion) {
       return true;
     }
@@ -140,8 +148,8 @@ export class ArchiveUnitObjectsDetailsTabComponent implements OnChanges, OnInit 
   }
 
   setFirstVersionWithQualifierOpen() {
-    if (this.versionsWithQualifiersOrdered && this.versionsWithQualifiersOrdered.length > 0) {
-      this.versionsWithQualifiersOrdered[0].opened = true;
+    if (this.archiveUnit.objectGroup.versionsWithQualifiers?.length > 0) {
+      this.archiveUnit.objectGroup.versionsWithQualifiers[0].opened = true;
     }
   }
 

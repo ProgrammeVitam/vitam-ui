@@ -32,6 +32,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import {
   AccessContract,
+  AccessContractService,
   ApiUnitObject,
   DescriptionLevel,
   ObjectQualifierType,
@@ -73,6 +74,12 @@ describe('ArchiveUnitObjectsDetailsTabComponent tests', () => {
     },
   });
 
+  const accessContractServiceMock = {
+    currentAccessContract$: of({
+      dataObjectVersion: [ObjectQualifierType.BINARYMASTER],
+    } as AccessContract),
+  };
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
@@ -81,6 +88,7 @@ describe('ArchiveUnitObjectsDetailsTabComponent tests', () => {
         { provide: ArchiveService, useValue: archiveServiceSpy },
         { provide: TenantSelectionService, useValue: tenantSelectionServiceSpy },
         { provide: Clipboard, useValue: clipboardSpy },
+        { provide: AccessContractService, useValue: accessContractServiceMock },
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
