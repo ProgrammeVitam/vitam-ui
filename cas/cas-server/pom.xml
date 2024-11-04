@@ -578,16 +578,17 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
+<!--                FIXME-->
+                <version>3.2.0</version>
                 <configuration>
                     <warName>${project.artifactId}</warName>
                     <failOnMissingWebXml>false</failOnMissingWebXml>
                     <recompressZippedFiles>false</recompressZippedFiles>
                     <archive>
                         <compress>false</compress>
-<!--                        FIXME-->
-<!--                        <manifestFile>-->
-<!--                            ${project.build.directory}/war/work/org.apereo.cas/cas-server-webapp-tomcat/META-INF/MANIFEST.MF-->
-<!--                        </manifestFile>-->
+                        <manifestFile>
+                            ${project.build.directory}/war/work/org.apereo.cas/cas-server-webapp-tomcat/META-INF/MANIFEST.MF
+                        </manifestFile>
                     </archive>
                     <overlays>
                         <overlay>
