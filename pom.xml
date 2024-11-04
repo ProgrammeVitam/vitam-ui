@@ -1393,6 +1393,38 @@
             <plugin>
                 <groupId>com.diffplug.spotless</groupId>
                 <artifactId>spotless-maven-plugin</artifactId>
+                <version>${spotless-maven-plugin.version}</version>
+                <configuration>
+                    <java>
+                        <includes>
+                            <include>src/main/java/**/*.java</include>
+                            <include>src/test/java/**/*.java</include>
+                        </includes>
+                        <prettier>
+                            <devDependencies>
+                                <prettier>${spotless-maven-plugin.prettier.version}</prettier>
+                                <prettier-plugin-java>${spotless-maven-plugin.prettier-plugin-java.version}</prettier-plugin-java>
+                            </devDependencies>
+                            <config>
+                                <printWidth>120</printWidth>
+                                <tabWidth>4</tabWidth>
+                                <parser>java</parser>
+                                <plugins>prettier-plugin-java</plugins>
+                            </config>
+                        </prettier>
+                        <importOrder>
+                            <order>,javax|java,\#</order>
+                        </importOrder>
+                        <removeUnusedImports/>
+                    </java>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <groupId>org.jacoco</groupId>
@@ -1680,42 +1712,6 @@
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>jaxb2-maven-plugin</artifactId>
                     <version>${maven.jaxb2.plugin.version}</version>
-                </plugin>
-                <plugin>
-                    <groupId>com.diffplug.spotless</groupId>
-                    <artifactId>spotless-maven-plugin</artifactId>
-                    <version>${spotless-maven-plugin.version}</version>
-                    <configuration>
-                        <java>
-                            <includes>
-                                <include>src/main/java/**/*.java</include>
-                                <include>src/test/java/**/*.java</include>
-                            </includes>
-                            <prettier>
-                                <devDependencies>
-                                    <prettier>${spotless-maven-plugin.prettier.version}</prettier>
-                                    <prettier-plugin-java>${spotless-maven-plugin.prettier-plugin-java.version}</prettier-plugin-java>
-                                </devDependencies>
-                                <config>
-                                    <printWidth>120</printWidth>
-                                    <tabWidth>4</tabWidth>
-                                    <parser>java</parser>
-                                    <plugins>prettier-plugin-java</plugins>
-                                </config>
-                            </prettier>
-                            <importOrder>
-                                <order>,javax|java,\#</order>
-                            </importOrder>
-                            <removeUnusedImports/>
-                        </java>
-                    </configuration>
-                    <executions>
-                        <execution>
-                            <goals>
-                                <goal>check</goal>
-                            </goals>
-                        </execution>
-                    </executions>
                 </plugin>
             </plugins>
         </pluginManagement>

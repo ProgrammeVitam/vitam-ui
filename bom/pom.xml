@@ -131,9 +131,6 @@
         <launch4j-maven-plugin.version>2.4.1</launch4j-maven-plugin.version>
         <opencsv.version>5.4</opencsv.version>
         <podam.version>7.2.5.RELEASE</podam.version>
-        <spotless-maven-plugin.version>2.43.0</spotless-maven-plugin.version>
-        <spotless-maven-plugin.prettier.version>3.2.4</spotless-maven-plugin.prettier.version>
-        <spotless-maven-plugin.prettier-plugin-java.version>2.6.0</spotless-maven-plugin.prettier-plugin-java.version>
 
         <!-- Profile properties -->
         <angular.additional.test.informations></angular.additional.test.informations>
@@ -1186,4 +1183,16 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>com.diffplug.spotless</groupId>
+                <artifactId>spotless-maven-plugin</artifactId>
+                <configuration>
+                    <spotless.skip>true</spotless.skip>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>
