@@ -64,6 +64,7 @@ describe('FileTreeMetadataComponent', () => {
     'LegalStatus',
     'DescriptionLevel',
     'KeywordType',
+    'PreventRearrangement',
     'PreventInheritance',
     'FinalAction',
     'NeedReassessingAuthorization',
