@@ -30,6 +30,7 @@
     "ERROR": {
       "WRONG_FORMAT": "Wrong format",
       "STRING_MAX_LENGTH": "{{max}} characters maximum",
+      "STRING_MIN_LENGTH": "{{min}} characters minimum",
       "NAME_ALREADY_EXISTS": "Name already exists",
       "REQUIRED": "Required field"
     }
