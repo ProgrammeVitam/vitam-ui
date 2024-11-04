@@ -49,7 +49,9 @@ import { OwnerService } from '../owner.service';
 import { OwnerFormComponent } from './owner-form.component';
 import { OwnerFormValidators } from './owner-form.validators';
 
-@Component({ template: `<app-owner-form [customerId]="customerId" [(ngModel)]="owner"></app-owner-form>` })
+@Component({
+  template: ` <app-owner-form [customerId]="customerId" [(ngModel)]="owner"></app-owner-form>`,
+})
 class TesthostComponent {
   owner: Owner = null;
   customerId = '4242';
@@ -137,6 +139,33 @@ describe('OwnerFormComponent', () => {
       identifier: null,
       customerId: '4242',
       code: 'invalid-code',
+      name: 'Toto',
+      companyName: 'Toto & Co.',
+      address: {
+        street: 'Street name',
+        zipCode: '2134',
+        city: 'Paris',
+        country: 'FR',
+      },
+      readonly: false,
+    };
+
+    testhost.ownerFormComponent.form.get('code').setValue(owner.code);
+    testhost.ownerFormComponent.form.get('name').setValue(owner.name);
+    testhost.ownerFormComponent.form.get('companyName').setValue(owner.companyName);
+    testhost.ownerFormComponent.form.get('address.street').setValue(owner.address.street);
+    testhost.ownerFormComponent.form.get('address.zipCode').setValue(owner.address.zipCode);
+    testhost.ownerFormComponent.form.get('address.city').setValue(owner.address.city);
+    testhost.ownerFormComponent.form.get('address.country').setValue(owner.address.country);
+    expect(testhost.owner).toBe(null);
+  });
+
+  it('should set owner to null when the code is short ', () => {
+    const owner: Owner = {
+      id: null,
+      identifier: null,
+      customerId: '4242',
+      code: '135', //short code
       name: 'Toto',
       companyName: 'Toto & Co.',
       address: {
