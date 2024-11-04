@@ -65,12 +65,7 @@
               <div class="text medium light">{{ 'COLLECT.PROJECT_DESCRIPTION_SERVICES' | translate }}</div>
             </div>
             <div class="col toggle-right">
-              <vitamui-common-slide-toggle
-                class="fields-padding d-flex"
-                [disabled]="true"
-                formControlName="referentialCheckup"
-                matTooltipPosition="below"
-              >
+              <vitamui-common-slide-toggle class="fields-padding d-flex" [checked]="false" [disabled]="true" matTooltipPosition="below">
                 {{ 'COLLECT.PROJECT_DESCRIPTION_REFERENTIAL_CHECKUP' | translate }}
               </vitamui-common-slide-toggle>
             </div>
@@ -133,12 +128,7 @@
             <div class="text large bold">{{ 'COLLECT.PROJECT_CONTEXT_SUB_TITLE' | translate }}</div>
           </div>
           <div class="col toggle-right">
-            <vitamui-common-slide-toggle
-              class="fields-padding"
-              [disabled]="true"
-              formControlName="referentialCheckup"
-              matTooltipPosition="below"
-            >
+            <vitamui-common-slide-toggle class="fields-padding" [checked]="false" [disabled]="true" matTooltipPosition="below">
               {{ 'COLLECT.PROJECT_DESCRIPTION_REFERENTIAL_CHECKUP' | translate }}
             </vitamui-common-slide-toggle>
           </div>
