@@ -70,6 +70,7 @@ const PA_MANDATORY_ENUM_FIELDS = [
   'LegalStatus',
   'DescriptionLevel',
   'KeywordType',
+  'PreventRearrangement',
   'PreventInheritance',
   'FinalAction',
   'NeedReassessingAuthorization',
