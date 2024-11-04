@@ -4,81 +4,19 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.5.15</version>
-        <relativePath/> <!-- lookup parent from repository -->
-    </parent>
-
     <groupId>fr.gouv.vitamui</groupId>
-    <artifactId>parent</artifactId>
+    <artifactId>bom</artifactId>
     <version>8.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <name>VITAMUI</name>
+    <name>VITAMUI BOM</name>
     <description>${project.artifactId}</description>
 
-    <organization>
-        <name>VITAMUI Team</name>
-    </organization>
-
-    <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
-    <!-- Modules -->
-    <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
-
-    <modules>
-        <module>bom</module>
-        <module>commons</module>
-        <module>api</module>
-        <module>cas</module>
-        <module>integration-tests</module>
-        <module>deployment</module>
-        <module>packaging</module>
-        <module>cots</module>
-        <module>ui</module>
-    </modules>
-
-    <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
-    <!-- Définition des SCM, ciManagement -->
-    <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
-
-    <!-- Définition de l'url du gestionnaire de source Ã utiliser -->
-    <scm>
-        <connection>scm:git:https://github.com/vitam-prg/vitamUI.git</connection>
-        <developerConnection>scm:git:https://github.com/vitam-prg/vitamUI.git</developerConnection>
-        <url>https://github.com/vitam-prg/vitamUI.git</url>
-        <tag>HEAD</tag>
-    </scm>
-
-    <repositories>
-        <!-- <id>vitam</id> to be defined in Profiles -->
-    </repositories>
-    <distributionManagement>
-        <!-- <id>vitam</id> to be defined in Profiles -->
-    </distributionManagement>
-
-    <!-- Définition de l'url de l'intégration continue du projet -->
-    <!-- <ciManagement> <system>jenkins</system> <url>https://dev.vitamui.com/jenkins/</url>
-    </ciManagement> -->
-
-    <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
-    <!-- Définition des properties -->
-    <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
     <properties>
-        <!-- Global Properties -->
-        <maven.build.timestamp.format>yyyyMMdd_HHmm</maven.build.timestamp.format>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>17</java.version>
-        <java.release>17</java.release>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
-        <maven.compiler.release>17</maven.compiler.release>
 
         <!-- Dependencies version -->
         <apache.commons.codec.version>1.16.1</apache.commons.codec.version>
         <apache.pdfbox.version>2.0.31</apache.pdfbox.version>
-        <apache.pdfbox.xmpbox.version>2.0.16</apache.pdfbox.xmpbox.version>
         <asciidoctorj.pdf.version>1.5.4</asciidoctorj.pdf.version>
         <assertj.version>3.25.3</assertj.version>
         <bouncycastle.version>1.78</bouncycastle.version>
@@ -92,7 +30,6 @@
         <commons.text.version>1.11.0</commons.text.version>
         <cucumber.version>5.6.0</cucumber.version>
         <fake.sftp.server.rule.version>2.0.1</fake.sftp.server.rule.version>
-        <font.awesome.version>5.11.2</font.awesome.version>
         <glassfish.javax.el.version>2.2.6</glassfish.javax.el.version>
         <gson.version>2.10.1</gson.version>
         <http.client.version>4.5.14</http.client.version>
@@ -111,12 +48,10 @@
         <jaxb.version>2.4.0-b180830.0359</jaxb.version>
         <jaxb.core.version>2.3.0.1</jaxb.core.version>
         <jaxb.impl.version>3.0.0-M1</jaxb.impl.version>
-        <json.version>20240303</json.version>
         <jaxp-api.version>1.4.5</jaxp-api.version>
-        <thaiopensource.jing.version>20220510</thaiopensource.jing.version>
+        <jackson-xml-databind.version>0.6.2</jackson-xml-databind.version>
         <thaiopensource.trang.version>20220510</thaiopensource.trang.version>
         <xercesImpl-xsd11.version>2.12-beta-r1667115</xercesImpl-xsd11.version>
-        <xml-resolver.version>1.2</xml-resolver.version>
         <jlibs.version>3.0.1</jlibs.version>
 <!--        <junit.version>4.13.1</junit.version>-->
 <!--        <junit.jupiter.version>5.10.3</junit.jupiter.version>-->
@@ -143,16 +78,8 @@
         <serenity-spring.version>3.3.10</serenity-spring.version>
         <serenity.version>3.3.10</serenity.version>
         <slf4j.version>1.7.30</slf4j.version>
-        <spring.boot.version>2.5.15</spring.boot.version>
         <spring-cloud-dependencies.version>2020.0.6</spring-cloud-dependencies.version>
         <spring-security-cas.version>5.5.3</spring-security-cas.version>
-<!--        <reactor.version>3.4.18</reactor.version>-->
-<!--        <spring.version>5.3.20</spring.version>-->
-<!--        <spring-expression.version>5.3.39</spring-expression.version>-->
-<!--        <spring.cloud.consul.version>3.0.3</spring.cloud.consul.version>-->
-<!--        <spring-cloud.version>2020.0.6</spring-cloud.version>-->
-<!--        <spring.security.version>5.6.12</spring.security.version>-->
-        <spring.test.version>5.3.18</spring.test.version>
         <spring-webmvc-pac4j.version>5.1.0</spring-webmvc-pac4j.version>
         <swagger.version>3.0.0</swagger.version>
         <vitam.version>8.0.0-SNAPSHOT</vitam.version>
@@ -166,7 +93,6 @@
         <json-sanitize.version>1.2.3</json-sanitize.version>
         <freemarker.upgraded.version>2.3.30</freemarker.upgraded.version>
         <mongo.driver.sync.version>4.6.1</mongo.driver.sync.version>
-        <snakeyaml.version>1.32</snakeyaml.version>
         <testcontainers.version>1.19.8</testcontainers.version>
 
         <!-- Web Pack -->
@@ -175,12 +101,14 @@
 
         <!--Plugins
         version -->
+        <maven.antrun.plugin.version>1.8</maven.antrun.plugin.version>
         <maven.asciidoctor.plugin.version>2.0.0</maven.asciidoctor.plugin.version>
         <maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>
         <maven.dependencycheck.version>6.1.1</maven.dependencycheck.version>
         <maven.deploy.plugin.version>2.8.2</maven.deploy.plugin.version>
         <maven.exec.plugin.version>1.6.0</maven.exec.plugin.version>
         <maven.directory.plugin.version>0.1</maven.directory.plugin.version>
+        <maven.failsafe.plugin.version>2.21.0</maven.failsafe.plugin.version>
         <maven.filtering.plugin.version>1.3</maven.filtering.plugin.version>
         <maven.spotbugs.plugin.version>4.0.4</maven.spotbugs.plugin.version>
         <maven.frontend.plugin.version>1.6</maven.frontend.plugin.version>
@@ -189,16 +117,23 @@
         <maven.javadoc.plugin.version>3.0.0</maven.javadoc.plugin.version>
         <maven.jaxb2.plugin.version>2.5.0</maven.jaxb2.plugin.version>
         <maven.lombok.plugin.version>1.18.20.0</maven.lombok.plugin.version>
+        <maven.pmd.plugin.version>3.13.0</maven.pmd.plugin.version>
+        <maven.project.info.reports.plugin.version>3.0.0</maven.project.info.reports.plugin.version>
         <maven.release.plugin.version>2.5.3</maven.release.plugin.version>
         <maven.resources.plugin.version>2.7</maven.resources.plugin.version>
+        <maven.site.plugin.version>3.9.1</maven.site.plugin.version>
         <maven.sonar.plugin.version>3.4.0.905</maven.sonar.plugin.version>
         <maven.source.plugin.version>3.0.1</maven.source.plugin.version>
+        <maven.surefire.plugin.version>2.22.2</maven.surefire.plugin.version>
         <maven.swagger2markup.plugin.version>1.3.3</maven.swagger2markup.plugin.version>
-        <maven.assembly.version>3.2.0</maven.assembly.version>
+        <maven.war.plugin.version>3.2.0</maven.war.plugin.version>
+<!--        <maven.assembly.version>3.2.0</maven.assembly.version>-->
         <launch4j-maven-plugin.version>2.4.1</launch4j-maven-plugin.version>
         <opencsv.version>5.4</opencsv.version>
-        <spring.data.mongo.version>3.3.5</spring.data.mongo.version>
         <podam.version>7.2.5.RELEASE</podam.version>
+        <spotless-maven-plugin.version>2.43.0</spotless-maven-plugin.version>
+        <spotless-maven-plugin.prettier.version>3.2.4</spotless-maven-plugin.prettier.version>
+        <spotless-maven-plugin.prettier-plugin-java.version>2.6.0</spotless-maven-plugin.prettier-plugin-java.version>
 
         <!-- Profile properties -->
         <angular.additional.test.informations></angular.additional.test.informations>
@@ -221,7 +156,6 @@
         <skipAllFrontend>true</skipAllFrontend>
         <!--we can choose to execute Karma tests or not-->
         <skipAllFrontendTests>true</skipAllFrontendTests>
-        <itCoverageAgent></itCoverageAgent>
 
         <cveUrlBase>${env.SERVICE_REPOSITORY_URL}/nist/nvdcve-1.1-%d.json.gz</cveUrlBase>
         <cveUrlModified>${env.SERVICE_REPOSITORY_URL}/nist/nvdcve-1.1-modified.json.gz</cveUrlModified>
@@ -232,13 +166,6 @@
     <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
     <dependencyManagement>
         <dependencies>
-            <dependency>
-                <groupId>fr.gouv.vitamui</groupId>
-                <artifactId>bom</artifactId>
-                <version>${project.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
 
             <!-- VitamUI -->
             <dependency>
@@ -490,6 +417,12 @@
                 <artifactId>xercesImpl-xsd11</artifactId>
                 <version>${xercesImpl-xsd11.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.fasterxml</groupId>
+                <artifactId>jackson-xml-databind</artifactId>
+                <version>${jackson-xml-databind.version}</version>
+            </dependency>
+
 
             <dependency>
                 <groupId>org.relaxng</groupId>
@@ -771,17 +704,6 @@
                 <groupId>org.odftoolkit</groupId>
                 <artifactId>odfdom-java</artifactId>
                 <version>${org.odftoolkit.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <artifactId>tools</artifactId>
-                        <groupId>com.sun</groupId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.odftoolkit</groupId>
-                <artifactId>simple-odf</artifactId>
-                <version>${org.apache.odftoolkit.version}</version>
                 <exclusions>
                     <exclusion>
                         <artifactId>tools</artifactId>
@@ -1264,952 +1186,87 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-
     <build>
-        <plugins>
-            <plugin>
-                <!-- Security check for dependencies -->
-                <groupId>org.owasp</groupId>
-                <artifactId>dependency-check-maven</artifactId>
-                <version>${maven.dependencycheck.version}</version>
-                <inherited>false</inherited>
-                <configuration>
-                    <assemblyAnalyzerEnabled>false</assemblyAnalyzerEnabled>
-                    <retireJsAnalyzerEnabled>false</retireJsAnalyzerEnabled>
-                    <failOnError>false</failOnError>
-                </configuration>
-
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>check</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>com.mycila</groupId>
-                <artifactId>license-maven-plugin</artifactId>
-                <version>3.0</version>
-                <inherited>false</inherited>
-                <configuration>
-                    <header>LICENSE.txt</header>
-                    <properties>
-                        <owner>VITAM UI</owner>
-                        <email>contact@programmevitam.fr</email>
-                    </properties>
-                    <includes>
-                        <include>**/src/main/java/**</include>
-                        <include>**/*.ts</include>
-                    </includes>
-                    <excludes>
-                        <exclude>**/org/apereo/cas/**</exclude>
-                        <exclude>**/node_modules/**</exclude>
-                        <exclude>**/target/**</exclude>
-                        <exclude>**/dist/**</exclude>
-                        <exclude>**/.directory/**</exclude>
-                        <exclude>**/cas-server/src/main/resources/**</exclude>
-                    </excludes>
-                    <mapping>
-                        <ts>SLASHSTAR_STYLE</ts>
-                    </mapping>
-                </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>check</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-source-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>attach-sources</id>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-release-plugin</artifactId>
-                <version>${maven.release.plugin.version}</version>
-                <configuration>
-                    <tagNameFormat>@{project.version}</tagNameFormat>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-resources-plugin</artifactId>
-                <version>${maven.resources.plugin.version}</version>
-                <configuration>
-                    <nonFilteredFileExtensions>
-                        <nonFilteredFileExtension>jks</nonFilteredFileExtension>
-                        <nonFilteredFileExtension>p12</nonFilteredFileExtension>
-                        <nonFilteredFileExtension>pem</nonFilteredFileExtension>
-                    </nonFilteredFileExtensions>
-                </configuration>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.apache.maven.shared</groupId>
-                        <artifactId>maven-filtering</artifactId>
-                        <version>${maven.filtering.plugin.version}</version>
-                    </dependency>
-                </dependencies>
-            </plugin>
-            <!-- Directory plugin to find parent root directory absolute path -->
-            <plugin>
-                <groupId>org.commonjava.maven.plugins</groupId>
-                <artifactId>directory-maven-plugin</artifactId>
-                <version>${maven.directory.plugin.version}</version>
-                <executions>
-                    <execution>
-                        <id>directories</id>
-                        <goals>
-                            <goal>highest-basedir</goal>
-                        </goals>
-                        <phase>initialize</phase>
-                        <configuration>
-                            <property>main.basedir</property>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>com.diffplug.spotless</groupId>
-                <artifactId>spotless-maven-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.jacoco</groupId>
-                <artifactId>jacoco-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
         <pluginManagement>
             <plugins>
                 <plugin>
-                    <groupId>com.google.cloud.tools</groupId>
-                    <artifactId>jib-maven-plugin</artifactId>
-                    <version>3.4.2</version>
+                    <groupId>com.diffplug.spotless</groupId>
+                    <artifactId>spotless-maven-plugin</artifactId>
+                    <version>${spotless-maven-plugin.version}</version>
                     <configuration>
-                        <from>
-                          <!--<image>gcr.io/distroless/java11-debian11</image>-->
-                          <image>gcr.io/distroless/java17</image>
-                        </from>
-                        <allowInsecureRegistries>true</allowInsecureRegistries>
-                        <container>
-                            <jvmFlags>
-                                <jvmFlag>-XX:MaxRAMPercentage=75.0</jvmFlag>
-                                <jvmFlag>-XX:MinRAMPercentage=50.0</jvmFlag>
-                                <jvmFlag>-XX:+ExitOnOutOfMemoryError</jvmFlag>
-                            </jvmFlags>
-                            <labels>
-                            <!--  <git.commit.id>${git.commit.id}</git.commit.id>-->
-                                <mvn.build.version>${project.version}</mvn.build.version>
-                            </labels>
-                        </container>
-                        <ignoreErrors>
-                            <error>
-                                <errorCode>ERROR_UNKNOWN_BLOB</errorCode>
-                                <errorType>push</errorType>
-                            </error>
-                        </ignoreErrors>
+                        <java>
+                            <includes>
+                                <include>src/main/java/**/*.java</include>
+                                <include>src/test/java/**/*.java</include>
+                            </includes>
+                            <prettier>
+                                <devDependencies>
+                                    <prettier>${spotless-maven-plugin.prettier.version}</prettier>
+                                    <prettier-plugin-java>${spotless-maven-plugin.prettier-plugin-java.version}</prettier-plugin-java>
+                                </devDependencies>
+                                <config>
+                                    <printWidth>120</printWidth>
+                                    <tabWidth>4</tabWidth>
+                                    <parser>java</parser>
+                                    <plugins>prettier-plugin-java</plugins>
+                                </config>
+                            </prettier>
+                            <importOrder>
+                                <order>,javax|java,\#</order>
+                            </importOrder>
+                            <removeUnusedImports/>
+                        </java>
                     </configuration>
                     <executions>
                         <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>build</goal>
-                        </goals>
-                    </execution>
-                    </executions>
-                </plugin>
-                <plugin>
-                    <artifactId>maven-source-plugin</artifactId>
-                    <version>${maven.source.plugin.version}</version>
-                </plugin>
-                <plugin>
-                    <artifactId>maven-compiler-plugin</artifactId>
-                    <version>${maven.compiler.plugin.version}</version>
-                    <configuration>
-                        <source>${java.version}</source>
-                        <target>${java.version}</target>
-                        <forceJavacCompilerUse>true</forceJavacCompilerUse>
-                        <annotationProcessorPaths>
-                            <path>
-                                <groupId>org.projectlombok</groupId>
-                                <artifactId>lombok</artifactId>
-                                <version>${lombok.version}</version>
-                            </path>
-                        </annotationProcessorPaths>
-                    </configuration>
-                </plugin>
-                <plugin>
-                    <artifactId>maven-javadoc-plugin</artifactId>
-                    <version>${maven.javadoc.plugin.version}</version>
-                </plugin>
-                <plugin>
-                    <artifactId>maven-deploy-plugin</artifactId>
-                    <version>${maven.deploy.plugin.version}</version>
-                </plugin>
-                <!-- find bugs in current project -->
-                <plugin>
-                    <groupId>com.github.spotbugs</groupId>
-                    <artifactId>spotbugs-maven-plugin</artifactId>
-                    <version>${maven.spotbugs.plugin.version}</version>
-                </plugin>
-
-                <plugin>
-                    <artifactId>maven-jar-plugin</artifactId>
-                    <version>${maven.jar.plugin.version}</version>
-                    <configuration>
-                     <!-- Supprimer l'option classifier -->
-                    <classifier></classifier>
-                    </configuration>
-                </plugin>
-
-                <plugin>
-                    <groupId>com.github.eirslett</groupId>
-                    <artifactId>frontend-maven-plugin</artifactId>
-                    <version>${maven.frontend.plugin.version}</version>
-                    <configuration>
-                        <workingDirectory>${main.basedir}/ui/ui-frontend</workingDirectory>
-                        <installDirectory>${main.basedir}/ui/ui-frontend</installDirectory>
-                        <skip>${skipAllFrontend}</skip>
-                    </configuration>
-                    <executions>
-                        <execution>
-                            <id>install node and npm</id>
                             <goals>
-                                <goal>install-node-and-npm</goal>
-                            </goals>
-                            <phase>initialize</phase>
-                            <configuration>
-                                <skip>${skipAllFrontend}</skip>
-                                <nodeVersion>${node.version}</nodeVersion>
-                                <npmVersion>${npm.version}</npmVersion>
-                            </configuration>
-                        </execution>
-                        <execution>
-                            <id>npm install</id>
-                            <goals>
-                                <goal>npm</goal>
-                            </goals>
-                            <phase>generate-sources</phase>
-                            <configuration>
-                                <skip>${skipAllFrontend}</skip>
-                                <arguments>ci</arguments>
-                            </configuration>
-                        </execution>
-                        <execution>
-                            <id>npm run prettier:ci</id>
-                            <goals>
-                                <goal>npm</goal>
-                            </goals>
-                            <phase>process-sources</phase>
-                            <configuration>
-                                <skip>${skipAllFrontend}</skip>
-                                <arguments>run prettier:ci</arguments>
-                            </configuration>
-                        </execution>
-                        <execution>
-                            <id>npm run build</id>
-                            <goals>
-                                <goal>npm</goal>
-                            </goals>
-                            <phase>process-sources</phase>
-                            <configuration>
-                                <skip>${skipAllFrontend}</skip>
-                                <arguments>run build${angular.build.profile} --
-                                    --project=${angular.build.project}
-                                    --output-path=${project.basedir}/target/www
-                                    --base-href=${angular.base.href}
-                                    --deploy-url=${angular.base.href}
-                                </arguments>
-                            </configuration>
-                        </execution>
-                        <execution>
-                            <id>npm test</id>
-                            <phase>test</phase>
-                            <goals>
-                                <goal>npm</goal>
-                            </goals>
-                            <configuration>
-                                <skip>${skipAllFrontendTests}</skip>
-                                <arguments>run test${angular.test.profile} --
-                                    --project=${angular.build.project}
-                                    ${angular.additional.test.informations}
-                                </arguments>
-                            </configuration>
-                        </execution>
-                    </executions>
-                </plugin>
-                <plugin>
-                    <!-- The Surefire Report Plugin parses the generated TEST-*.xml files
-                         under ${basedir}/target/surefire-reports and renders them to DOXIA which
-                        creates the web interface version of the test results. -->
-                    <artifactId>maven-surefire-report-plugin</artifactId>
-                </plugin>
-
-                <plugin>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-maven-plugin</artifactId>
-                    <configuration>
-                        <addResources>false</addResources>
-                        <jvmArguments>-Xmx512m</jvmArguments>
-                        <additionalProperties>
-                            <version.release>${project.version}</version.release>
-                        </additionalProperties>
-                    </configuration>
-                </plugin>
-
-                <plugin>
-                    <groupId>org.projectlombok</groupId>
-                    <artifactId>lombok-maven-plugin</artifactId>
-                    <version>${maven.lombok.plugin.version}</version>
-                    <executions>
-                        <execution>
-                            <phase>generate-sources</phase>
-                            <goals>
-                                <goal>delombok</goal>
+                                <goal>check</goal>
                             </goals>
                         </execution>
                     </executions>
                 </plugin>
                 <plugin>
-                    <groupId>org.sonarsource.scanner.maven</groupId>
-                    <artifactId>sonar-maven-plugin</artifactId>
-                    <version>${maven.sonar.plugin.version}</version>
-                    <executions>
-                        <execution>
-                            <phase>verify</phase>
-                            <goals>
-                                <goal>sonar</goal>
-                            </goals>
-                        </execution>
-                    </executions>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-pmd-plugin</artifactId>
+                    <version>${maven.pmd.plugin.version}</version>
+                    <configuration>
+                        <failOnViolation>false</failOnViolation>
+                    </configuration>
                 </plugin>
                 <plugin>
-                    <groupId>org.jacoco</groupId>
-                    <artifactId>jacoco-maven-plugin</artifactId>
-                    <version>${maven.jacoco.plugin.version}</version>
-                    <executions>
-                        <execution>
-                            <id>default-prepare-agent</id>
-                            <goals>
-                                <goal>prepare-agent</goal>
-                            </goals>
-                        </execution>
-                        <execution>
-                            <id>jacoco-site</id>
-                            <phase>verify</phase>
-                            <goals>
-                                <goal>report</goal>
-                            </goals>
-                        </execution>
-                    </executions>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-war-plugin</artifactId>
+                    <configuration>
+                        <failOnMissingWebXml>false</failOnMissingWebXml>
+                    </configuration>
+                    <version>${maven.war.plugin.version}</version>
                 </plugin>
                 <plugin>
-                    <groupId>org.codehaus.mojo</groupId>
-                    <artifactId>exec-maven-plugin</artifactId>
-                    <version>${maven.exec.plugin.version}</version>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-site-plugin</artifactId>
+                    <version>${maven.site.plugin.version}</version>
                 </plugin>
                 <plugin>
-                    <groupId>net.serenity-bdd.maven.plugins</groupId>
-                    <artifactId>serenity-maven-plugin</artifactId>
-                    <version>${serenity.maven.plugin}</version>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-project-info-reports-plugin</artifactId>
+                    <version>${maven.project.info.reports.plugin.version}</version>
                 </plugin>
                 <plugin>
-                    <groupId>org.codehaus.mojo</groupId>
-                    <artifactId>jaxb2-maven-plugin</artifactId>
-                    <version>${maven.jaxb2.plugin.version}</version>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>${maven.surefire.plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-failsafe-plugin</artifactId>
+                    <version>${maven.failsafe.plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-antrun-plugin</artifactId>
+                    <version>${maven.antrun.plugin.version}</version>
                 </plugin>
             </plugins>
         </pluginManagement>
     </build>
-
-    <reporting>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-site-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-project-info-reports-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-pmd-plugin</artifactId>
-                <configuration>
-                    <rulesets>
-                        <ruleset>${maven.multiModuleProjectDirectory}/pmd-rulesets.xml</ruleset>
-                    </rulesets>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>com.github.spotbugs</groupId>
-                <artifactId>spotbugs-maven-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.jacoco</groupId>
-                <artifactId>jacoco-maven-plugin</artifactId>
-                <reportSets>
-                    <reportSet>
-                        <reports>
-                            <!-- select non-aggregate reports -->
-                            <report>report</report>
-                        </reports>
-                    </reportSet>
-                </reportSets>
-            </plugin>
-        </plugins>
-    </reporting>
-
-    <profiles>
-        <profile>
-            <id>no-cve-proxy</id>
-            <properties>
-                <cveUrlBase>https://nvd.nist.gov/feeds/json/cve/1.1/nvdcve-1.1-%d.json.gz</cveUrlBase>
-                <cveUrlModified>https://nvd.nist.gov/feeds/json/cve/1.1/nvdcve-1.1-modified.json.gz</cveUrlModified>
-            </properties>
-        </profile>
-
-        <!-- This profile is used to build frontend project for dev purposes. -->
-        <profile>
-            <id>dev</id>
-            <properties>
-                <angular.build.profile>:dev</angular.build.profile>
-                <angular.test.profile>:conf-ci</angular.test.profile>
-            </properties>
-            <build>
-                <resources>
-                    <resource>
-                        <directory>src/main/resources</directory>
-                    </resource>
-                    <resource>
-                        <directory>target/www/</directory>
-                        <targetPath>static/</targetPath>
-                    </resource>
-                </resources>
-                <plugins>
-                    <plugin>
-                        <groupId>com.github.eirslett</groupId>
-                        <artifactId>frontend-maven-plugin</artifactId>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-
-        <!-- This profile is used to build frontend project for prod purposes. -->
-        <profile>
-            <id>prod</id>
-            <properties>
-                <angular.build.profile>:prod</angular.build.profile>
-                <angular.test.profile>:conf-ci</angular.test.profile>
-                <rpm.publication.env>stable</rpm.publication.env>
-            </properties>
-            <build>
-                <resources>
-                    <resource>
-                        <directory>src/main/resources</directory>
-                        <excludes>
-                            <!-- Vitam configuration files -->
-                            <exclude>*.conf</exclude>
-                            <exclude>/dev/</exclude>
-                            <exclude>application-*.yml</exclude>
-                        </excludes>
-                    </resource>
-                    <resource>
-                        <directory>target/www/</directory>
-                        <targetPath>static/</targetPath>
-                    </resource>
-                </resources>
-                <plugins>
-                    <plugin>
-                        <groupId>com.github.eirslett</groupId>
-                        <artifactId>frontend-maven-plugin</artifactId>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-
-        <!-- This profile is used to build & test & push npm packages to repo. -->
-        <profile>
-            <id>npm-publish</id>
-            <properties>
-                <angular.build.profile></angular.build.profile>
-                <angular.test.profile>:conf-ci</angular.test.profile>
-            </properties>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>com.github.eirslett</groupId>
-                        <artifactId>frontend-maven-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <id>npm publish</id>
-                                <phase>install</phase>
-                                <goals>
-                                    <goal>npm</goal>
-                                </goals>
-                                <configuration>
-                                    <arguments>run publish --loglevel warn</arguments>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-        <!-- This profile is used to build rpm package.-->
-        <profile>
-            <id>rpm</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>exec-maven-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <id>rpm-package</id>
-                                <phase>install</phase>
-                                <goals>
-                                    <goal>exec</goal>
-                                </goals>
-                                <configuration>
-                                    <executable>make</executable>
-                                    <workingDirectory>target</workingDirectory>
-                                    <skip>${rpm.skip}</skip>
-                                    <arguments>
-                                        <argument>-f</argument>
-                                        <argument>${main.basedir}/tools/packaging/Makefile</argument>
-                                        <argument>rpm</argument>
-                                        <argument>NAME=${project.artifactId}</argument>
-                                        <argument>VERSION=${project.version}</argument>
-                                        <argument>JAR_FILE=${rpm.jar-file}</argument>
-                                        <!-- If you want to changes default dependencies (only
-                                        systemd),
-                                        define them as a comma separated list of packages -->
-                                        <argument>DEPENDENCIES=systemd,java-17-openjdk</argument>
-                                    </arguments>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-
-                </plugins>
-            </build>
-        </profile>
-
-        <!-- TEST DEB WITH FPM -->
-        <profile>
-            <id>deb</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>exec-maven-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <id>deb-package</id>
-                                <phase>install</phase>
-                                <goals>
-                                    <goal>exec</goal>
-                                </goals>
-                                <configuration>
-                                    <executable>make</executable>
-                                    <workingDirectory>target</workingDirectory>
-                                    <skip>${rpm.skip}</skip>
-                                    <arguments>
-                                        <argument>-f</argument>
-                                        <argument>${main.basedir}/tools/packaging/Makefile</argument>
-                                        <argument>deb</argument>
-                                        <argument>NAME=${project.artifactId}</argument>
-                                        <argument>VERSION=${project.version}</argument>
-                                        <argument>JAR_FILE=${rpm.jar-file}</argument>
-                                        <!-- If you want to changes default dependencies (only
-                                        systemd),
-                                        define them as a comma separated list of packages -->
-                                        <argument>DEPENDENCIES=systemd</argument>
-                                    </arguments>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-        <!-- This profile is used to define skipTests value for Karma when -DskipTests is used
-        during maven process. -->
-        <profile>
-            <id>skipTestsRun</id>
-            <activation>
-                <property>
-                    <name>skipTests</name>
-                </property>
-            </activation>
-            <properties>
-                <skipAllFrontendTests>true</skipAllFrontendTests>
-            </properties>
-        </profile>
-
-        <!-- This profile is used to define skipTests value for Karma when -DskipAllFrontend is used
-        during maven process. -->
-        <profile>
-            <id>skipAllFrontendTestsRun</id>
-            <activation>
-                <property>
-                    <name>skipAllFrontend</name>
-                </property>
-            </activation>
-            <properties>
-                <skipAllFrontendTests>true</skipAllFrontendTests>
-            </properties>
-        </profile>
-
-        <!-- This profile is used to generate sonar-metrics sonar informations.-->
-        <profile>
-            <id>sonar-metrics</id>
-            <build>
-                <resources>
-                    <resource>
-                        <directory>src/main/resources</directory>
-                    </resource>
-                    <resource>
-                        <directory>target/www/</directory>
-                        <targetPath>static/</targetPath>
-                    </resource>
-                </resources>
-                <plugins>
-                    <plugin>
-                        <groupId>com.github.eirslett</groupId>
-                        <artifactId>frontend-maven-plugin</artifactId>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-surefire-plugin</artifactId>
-                        <configuration>
-                            <argLine>@{argLine}</argLine>
-                        </configuration>
-                    </plugin>
-                    <plugin>
-                        <groupId>com.github.spotbugs</groupId>
-                        <artifactId>spotbugs-maven-plugin</artifactId>
-                        <version>${maven.spotbugs.plugin.version}</version>
-                        <configuration>
-                            <failOnError>false</failOnError>
-                        </configuration>
-                        <executions>
-                            <execution>
-                                <id>check</id>
-                                <phase>test</phase>
-                                <goals>
-                                    <goal>check</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-pmd-plugin</artifactId>
-                        <configuration>
-                            <rulesets>
-                                <ruleset>${main.basedir}/pmd-rulesets.xml</ruleset>
-                            </rulesets>
-                        </configuration>
-                        <executions>
-                            <execution>
-                                <id>check</id>
-                                <phase>test</phase>
-                                <goals>
-                                    <goal>check</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.jacoco</groupId>
-                        <artifactId>jacoco-maven-plugin</artifactId>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.owasp</groupId>
-                        <artifactId>dependency-check-maven</artifactId>
-                        <version>${maven.dependencycheck.version}</version>
-                        <configuration>
-                            <formats>
-                                <format>XML</format>
-                                <format>HTML</format>
-                                <format>JSON</format>
-                            </formats>
-                        </configuration>
-                        <executions>
-                            <execution>
-                                <id>default-cli</id>
-                                <goals>
-                                    <goal>aggregate</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-            <properties>
-                <angular.build.profile></angular.build.profile>
-                <angular.test.profile>:sonar</angular.test.profile>
-                <!-- Set project configuration file for test coverage -->
-                <angular.additional.test.informations>
-                    --karma-config=${main.basedir}/ui/ui-frontend/projects/${angular.build.project}/karma.conf.ci.js
-                </angular.additional.test.informations>
-                <maven.test.failure.ignore>true</maven.test.failure.ignore>
-            </properties>
-        </profile>
-        <!-- This profile is used to update sonar informations.-->
-        <profile>
-            <id>sonar</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.sonarsource.scanner.maven</groupId>
-                        <artifactId>sonar-maven-plugin</artifactId>
-                    </plugin>
-                </plugins>
-            </build>
-            <properties>
-                <sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
-                <sonar.coverage.exclusions>**/*Dto.java, **/domain/*.java, **/vitam/seda/*.java,
-                    **/*spec.ts, **/*.scss,
-                    **/*.css
-                </sonar.coverage.exclusions>
-                <sonar.cpd.exclusions>**/*Dto.java, **/domain/*.java, **/*spec.ts</sonar.cpd.exclusions>
-                <sonar.exclusions>**/node_modules/**, **/sass/**</sonar.exclusions>
-                <sonar.java.spotbugs.reportPaths>./target/spotbugsXml.xml</sonar.java.spotbugs.reportPaths>
-                <sonar.java.pmd.reportPaths>./target/pmd.xml</sonar.java.pmd.reportPaths>
-                <sonar.dependencyCheck.htmlReportPath>./target/dependency-check-report.html
-                </sonar.dependencyCheck.htmlReportPath>
-                <sonar.dependencyCheck.jsonReportPath>./target/dependency-check-report.json
-                </sonar.dependencyCheck.jsonReportPath>
-                <sonar.dependencyCheck.xmlReportPath>./target/dependency-check-report.xml
-                </sonar.dependencyCheck.xmlReportPath>
-                <!-- TODO: This properties need to bo specify by the user who execute
-                the report (ex: Jenkins or developper) -->
-                <sonar.host.url/>
-                <!-- TODO: This properties need to bo specify by the user who execute
-                the report (ex: Jenkins or developper) -->
-                <sonar.login/>
-                <sonar.typescript.lcov.reportPaths>
-                    ${main.basedir}/ui/ui-frontend/target/coverage/commons/lcov.info,${main.basedir}/ui/ui-frontend/target/coverage/flow/lcov.info,${main.basedir}/ui/ui-frontend/target/coverage/identity/lcov.info,${main.basedir}/ui/ui-frontend/target/coverage/portal/lcov.info
-                </sonar.typescript.lcov.reportPaths>
-            </properties>
-
-        </profile>
-
-        <!-- This profile is used to generate swagger documentation. -->
-        <profile>
-            <id>swagger</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-surefire-plugin</artifactId>
-                        <configuration>
-                            <test>SwaggerJsonFileGenerationTest.java</test>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-
-        <!-- This profile is used to generate swagger documentation. -->
-        <profile>
-            <id>swagger-docs</id>
-            <build>
-                <plugins>
-
-                    <plugin>
-                        <groupId>io.github.swagger2markup</groupId>
-                        <artifactId>swagger2markup-maven-plugin</artifactId>
-                        <version>${maven.swagger2markup.plugin.version}</version>
-                        <dependencies>
-                            <dependency>
-                                <groupId>io.github.swagger2markup</groupId>
-                                <artifactId>swagger2markup-import-files-ext</artifactId>
-                                <version>${maven.swagger2markup.plugin.version}</version>
-                            </dependency>
-                            <dependency>
-                                <groupId>io.github.swagger2markup</groupId>
-                                <artifactId>swagger2markup-spring-restdocs-ext</artifactId>
-                                <version>${maven.swagger2markup.plugin.version}</version>
-                            </dependency>
-                        </dependencies>
-                        <configuration>
-                            <swaggerInput>
-                                ${main.basedir}/tools/swagger/docs/${swagger.dir}/${project.artifactId}/swagger.json
-                            </swaggerInput>
-                            <outputDir>${project.build.directory}/generated-sources/swagger/</outputDir>
-                            <config>
-                                <swagger2markup.markupLanguage>ASCIIDOC</swagger2markup.markupLanguage>
-                                <swagger2markup.outputLanguage>FR</swagger2markup.outputLanguage>
-                                <swagger2markup.generatedExamplesEnabled>TRUE</swagger2markup.generatedExamplesEnabled>
-                                <swagger2markup.pathsGroupedBy>TAGS</swagger2markup.pathsGroupedBy>
-                            </config>
-                            <skip>${swagger.skip}</skip>
-                        </configuration>
-                        <executions>
-                            <execution>
-                                <phase>generate-resources</phase>
-                                <goals>
-                                    <goal>convertSwagger2markup</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.asciidoctor</groupId>
-                        <artifactId>asciidoctor-maven-plugin</artifactId>
-                        <version>${maven.asciidoctor.plugin.version}</version>
-                        <dependencies>
-                            <dependency>
-                                <groupId>org.asciidoctor</groupId>
-                                <artifactId>asciidoctorj-pdf</artifactId>
-                                <version>${asciidoctorj.pdf.version}</version>
-                            </dependency>
-                            <dependency>
-                                <groupId>org.jruby</groupId>
-                                <artifactId>jruby-complete</artifactId>
-                                <version>${jruby.complete.version}</version>
-                            </dependency>
-                        </dependencies>
-                        <configuration>
-                            <sourceDirectory>${main.basedir}/tools/swagger/config/</sourceDirectory>
-                            <sourceDocumentName>index.adoc</sourceDocumentName>
-                            <backend>html5</backend>
-                            <outputDirectory>
-                                ${main.basedir}/tools/swagger/docs/${swagger.dir}/${project.artifactId}
-                            </outputDirectory>
-                            <attributes>
-                                <toc>left</toc>
-                                <toclevels>3</toclevels>
-                                <numbered></numbered>
-                                <hardbreaks></hardbreaks>
-                                <sectlinks></sectlinks>
-                                <sectanchors></sectanchors>
-                                <generated>${project.build.directory}/generated-sources/swagger/</generated>
-                            </attributes>
-                            <skip>${swagger.skip}</skip>
-                        </configuration>
-                        <executions>
-                            <execution>
-                                <id>output-html</id>
-                                <phase>generate-resources</phase>
-                                <goals>
-                                    <goal>process-asciidoc</goal>
-                                </goals>
-                            </execution>
-                            <execution>
-                                <id>output-pdf</id>
-                                <phase>generate-resources</phase>
-                                <goals>
-                                    <goal>process-asciidoc</goal>
-                                </goals>
-                                <configuration>
-                                    <backend>pdf</backend>
-                                    <outputDirectory>
-                                        ${main.basedir}/tools/swagger/docs/${swagger.dir}/${project.artifactId}
-                                    </outputDirectory>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-            <!-- Repositories used for swagger doc generation  -->
-            <pluginRepositories>
-                <pluginRepository>
-                    <id>jcenter-snapshots</id>
-                    <name>jcenter</name>
-                    <url>https://oss.jfrog.org/artifactory/oss-snapshot-local/</url>
-                </pluginRepository>
-                <pluginRepository>
-                    <snapshots>
-                        <enabled>false</enabled>
-                    </snapshots>
-                    <id>jcenter-releases</id>
-                    <name>jcenter</name>
-                    <url>https://jcenter.bintray.com</url>
-                </pluginRepository>
-            </pluginRepositories>
-        </profile>
-
-        <profile>
-            <!-- Profile to use for all Vitam internal developers -->
-            <id>vitam</id>
-            <activation>
-                <activeByDefault>false</activeByDefault>
-            </activation>
-            <!-- Dépôts Maven privés -->
-            <distributionManagement>
-                <repository>
-                    <id>vitam-releases</id>
-                    <name>Vitam release repository</name>
-                    <url>${env.SERVICE_NEXUS_URL}/repository/maven-releases/</url>
-                </repository>
-                <snapshotRepository>
-                    <id>vitam-snapshots</id>
-                    <name>Vitam SNAPSHOT repository</name>
-                    <url>${env.SERVICE_NEXUS_URL}/repository/maven-snapshots/</url>
-                </snapshotRepository>
-                <site>
-                    <id>${project.artifactId}-site</id>
-                    <url>${project.baseUri}</url>
-                </site>
-            </distributionManagement>
-
-            <repositories>
-                <repository>
-                    <id>vitam-releases</id>
-                    <name>Vitam release repository</name>
-                    <releases><enabled>true</enabled></releases>
-                    <snapshots><enabled>false</enabled></snapshots>
-                    <url>${env.SERVICE_NEXUS_URL}/repository/maven-releases/</url>
-                </repository>
-                <repository>
-                    <id>vitam-snapshots</id>
-                    <name>Vitam SNAPSHOT repository</name>
-                    <releases><enabled>false</enabled></releases>
-                    <snapshots><enabled>true</enabled></snapshots>
-                    <url>${env.SERVICE_NEXUS_URL}/repository/maven-snapshots/</url>
-                </repository>
-            </repositories>
-
-            <properties>
-                <serverId>vitam</serverId>
-                <downloadRoot>${env.SERVICE_NEXUS_URL}/repository/node-distrib/</downloadRoot>
-            </properties>
-        </profile>
-
-        <profile>
-            <!-- Profile to use for all Vitam internal developers -->
-            <id>vitam-external</id>
-            <activation>
-                <activeByDefault>false</activeByDefault>
-            </activation>
-            <!-- Dépôts publics de releases -->
-            <repositories>
-                <repository>
-                    <id>public-vitam-releases</id>
-                    <url>http://download.programmevitam.fr/vitam_repository/${vitam.version}/mvn_repo/</url>
-                    <releases><enabled>true</enabled></releases>
-                    <snapshots><enabled>false</enabled></snapshots>
-                </repository>
-            </repositories>
-
-        </profile>
-
-    </profiles>
-
 </project>
