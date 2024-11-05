@@ -85,8 +85,9 @@
         <asciidoctorj.pdf.version>1.5.4</asciidoctorj.pdf.version>
         <jruby.complete.version>9.2.13.0</jruby.complete.version>
         <launch4j-maven-plugin.version>2.4.1</launch4j-maven-plugin.version>
+        <license-maven-plugin.version>3.0</license-maven-plugin.version>
         <lombok.version>1.18.20</lombok.version>
-
+        <jib-maven-plugin.version>3.4.2</jib-maven-plugin.version>
         <maven.antrun.plugin.version>1.8</maven.antrun.plugin.version>
         <maven.asciidoctor.plugin.version>2.0.0</maven.asciidoctor.plugin.version>
         <maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>
@@ -186,7 +187,7 @@
             <plugin>
                 <groupId>com.mycila</groupId>
                 <artifactId>license-maven-plugin</artifactId>
-                <version>3.0</version>
+                <version>${license-maven-plugin.version}</version>
                 <inherited>false</inherited>
                 <configuration>
                     <header>LICENSE.txt</header>
@@ -322,7 +323,7 @@
                 <plugin>
                     <groupId>com.google.cloud.tools</groupId>
                     <artifactId>jib-maven-plugin</artifactId>
-                    <version>3.4.2</version>
+                    <version>${jib-maven-plugin.version}</version>
                     <configuration>
                         <from>
                           <!--<image>gcr.io/distroless/java11-debian11</image>-->

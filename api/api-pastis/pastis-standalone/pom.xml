@@ -125,7 +125,7 @@
         <dependency>
             <groupId>com.sun.xml.bind</groupId>
             <artifactId>jaxb-impl</artifactId>
-            <version>2.3.1</version>
+            <!--FIXME: version was 2.3.1, now it's inherited from bom (3.0.0-M1). Could it break something?-->
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>

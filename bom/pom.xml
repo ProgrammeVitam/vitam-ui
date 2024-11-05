@@ -37,6 +37,7 @@
         <hibernate.validatior.version>6.1.7.Final</hibernate.validatior.version>
         <http.client.version>4.5.14</http.client.version>
         <http.core.version>4.4.16</http.core.version>
+        <istack-commons-runtime.version>4.0.0-M2</istack-commons-runtime.version>
         <jackson.version>2.17.0</jackson.version>
         <jaeger.tracing.version>3.3.1</jaeger.tracing.version>
         <jakarta.el.version>5.0.1</jakarta.el.version>
@@ -1048,7 +1049,7 @@
             <dependency>
                 <groupId>org.testcontainers</groupId>
                 <artifactId>junit-jupiter</artifactId>
-                <version>1.19.8</version>
+                <version>${testcontainers.version}</version>
                 <scope>test</scope>
             </dependency>
 
@@ -1140,6 +1141,12 @@
                 <artifactId>podam</artifactId>
                 <version>${podam.version}</version>
                 <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>com.sun.istack</groupId>
+                <artifactId>istack-commons-runtime</artifactId>
+                <version>${istack-commons-runtime.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

@@ -207,7 +207,6 @@
         <dependency>
             <groupId>com.sun.istack</groupId>
             <artifactId>istack-commons-runtime</artifactId>
-            <version>4.0.0-M2</version>
         </dependency>
 
         <!--End of Jaxb API and it's implementation and dependencies- Java11-->
