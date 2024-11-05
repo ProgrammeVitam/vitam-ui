@@ -50,6 +50,7 @@ import {
 } from 'vitamui-library';
 import { IngestStatus } from '../../../../../ingest/src/app/models/logbook-event.interface';
 import { LogbookDownloadService } from '../logbook-download.service';
+import { LogbookOperation } from '../logbook-operation.enum';
 
 const msgForDownload: { [key: string]: string } = {
   EXPORT_DIP: 'LOGBOOK_OPERATION_DETAIL.DOWNLOAD_DIP',
@@ -152,7 +153,9 @@ export class LogbookOperationDetailComponent implements OnInit, OnChanges, OnDes
     this.showDownloadButton =
       logbookOperationReportState === LogbookOperationReportState.IN_PROGRESS ||
       logbookOperationReportState === LogbookOperationReportState.DOWNLOADABLE;
-    this.disableDownloadButton = !(logbookOperationReportState === LogbookOperationReportState.DOWNLOADABLE && this.hasAccessContractId);
+    this.disableDownloadButton =
+      !(logbookOperationReportState === LogbookOperationReportState.DOWNLOADABLE && this.hasAccessContractId) ||
+      this.operationOfDIPOrTransferFailed();
   }
 
   private updateReportFilename() {
@@ -199,6 +202,15 @@ export class LogbookOperationDetailComponent implements OnInit, OnChanges, OnDes
   private ingestIsFinish(): boolean {
     const eventStatus = this.eventStatus(this.event);
     return eventStatus !== IngestStatus.STARTED && eventStatus !== IngestStatus.IN_PROGRESS;
+  }
+
+  private operationOfDIPOrTransferFailed(): boolean {
+    const eventStatus = this.eventStatus(this.event);
+
+    const isDIPOrTransfer = ([LogbookOperation.EXPORT_DIP, LogbookOperation.ARCHIVE_TRANSFER] as string[]).includes(this.event.typeProc);
+    const isFailedStatus = ([IngestStatus.KO, IngestStatus.FATAL] as IngestStatus[]).includes(eventStatus);
+
+    return isDIPOrTransfer && isFailedStatus;
   }
 
   // refacto: mettre en commun avec logbook-event.interface.ts
