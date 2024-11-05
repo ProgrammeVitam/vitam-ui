@@ -92,4 +92,53 @@
 		</dependencies>
 	</dependencyManagement>
 
+    <profiles>
+        <profile>
+            <!-- Profile to use for all Vitam internal developers -->
+            <id>vitam</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <!-- Dépôts Maven privés -->
+            <distributionManagement>
+                <repository>
+                    <id>vitam-releases</id>
+                    <name>Vitam release repository</name>
+                    <url>${env.SERVICE_NEXUS_URL}/repository/maven-releases/</url>
+                </repository>
+                <snapshotRepository>
+                    <id>vitam-snapshots</id>
+                    <name>Vitam SNAPSHOT repository</name>
+                    <url>${env.SERVICE_NEXUS_URL}/repository/maven-snapshots/</url>
+                </snapshotRepository>
+                <site>
+                    <id>${project.artifactId}-site</id>
+                    <url>${project.baseUri}</url>
+                </site>
+            </distributionManagement>
+
+            <repositories>
+                <repository>
+                    <id>vitam-releases</id>
+                    <name>Vitam release repository</name>
+                    <releases><enabled>true</enabled></releases>
+                    <snapshots><enabled>false</enabled></snapshots>
+                    <url>${env.SERVICE_NEXUS_URL}/repository/maven-releases/</url>
+                </repository>
+                <repository>
+                    <id>vitam-snapshots</id>
+                    <name>Vitam SNAPSHOT repository</name>
+                    <releases><enabled>false</enabled></releases>
+                    <snapshots><enabled>true</enabled></snapshots>
+                    <url>${env.SERVICE_NEXUS_URL}/repository/maven-snapshots/</url>
+                </repository>
+            </repositories>
+
+            <properties>
+                <serverId>vitam</serverId>
+                <downloadRoot>${env.SERVICE_NEXUS_URL}/repository/node-distrib/</downloadRoot>
+            </properties>
+        </profile>
+    </profiles>
+
 </project>
