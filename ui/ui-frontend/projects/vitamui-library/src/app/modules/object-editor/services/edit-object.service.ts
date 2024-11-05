@@ -209,13 +209,24 @@ export class EditObjectService {
   }
 
   private removeCardinalityZero(editObject: EditObject) {
+    // Recursively process each child
     editObject?.children?.forEach((child) => this.removeCardinalityZero(child));
 
-    if (editObject.cardinality !== 'ZERO') return;
+    if (editObject.virtual && editObject.children.every((child) => child.cardinality === 'ZERO')) {
+      editObject.cardinality = 'ZERO';
+    }
 
-    if (['object-array', 'object'].includes(editObject.kind)) editObject?.actions?.remove?.handler();
-    else {
-      editObject.displayRule = { ...editObject.displayRule, ui: { ...editObject.displayRule.ui, display: false } };
+    if (editObject.cardinality !== 'ZERO') {
+      return;
+    }
+
+    if (['object-array', 'object'].includes(editObject.kind)) {
+      editObject?.actions?.remove?.handler();
+    } else {
+      editObject.displayRule = {
+        ...editObject.displayRule,
+        ui: { ...editObject.displayRule.ui, display: false },
+      };
       editObject.control.setValue(editObject.kind === 'primitive-array' ? [] : null);
     }
   }
