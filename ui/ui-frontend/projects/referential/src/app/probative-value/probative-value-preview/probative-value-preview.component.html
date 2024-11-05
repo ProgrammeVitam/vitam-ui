@@ -7,7 +7,7 @@
   [toolTipTitleDuration]="300"
   [actionsBelowTitle]="true"
 >
-  <button class="btn primary ml-1" (click)="downloadReport()" [disabled]="!hasAccessContract">
+  <button class="btn primary ml-1" (click)="downloadReport()" [disabled]="isLoading || !hasAccessContract">
     {{ 'PROBATIVE_VALUE.PREVIEW_PANEL.DOWNLOAD' | translate }}
   </button>
 </vitamui-common-sidenav-header>

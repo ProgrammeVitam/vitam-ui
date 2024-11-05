@@ -38,7 +38,7 @@ import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angu
 import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { Subject } from 'rxjs';
+import { finalize, Subject } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
 import { ExternalParameters, ExternalParametersService } from 'vitamui-library';
 import { ProbativeValueService } from '../probative-value.service';
@@ -58,6 +58,7 @@ export class ProbativeValuePreviewComponent implements OnInit, OnDestroy {
 
   private destroyer$ = new Subject<void>();
 
+  isLoading = false;
   constructor(
     private probativeValueService: ProbativeValueService,
     private externalParameterService: ExternalParametersService,
@@ -110,6 +111,12 @@ export class ProbativeValuePreviewComponent implements OnInit, OnDestroy {
   }
 
   public downloadReport() {
-    this.probativeValueService.export(this.probativeValue.id, this.accessContract);
+    this.isLoading = true;
+    this.probativeValueService
+      .export(this.probativeValue.id, this.accessContract)
+      .pipe(finalize(() => (this.isLoading = false)))
+      .subscribe({
+        error: (e) => console.error(e),
+      });
   }
 }

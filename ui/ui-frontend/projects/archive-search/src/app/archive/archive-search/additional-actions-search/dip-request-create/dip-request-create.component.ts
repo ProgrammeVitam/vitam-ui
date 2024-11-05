@@ -39,7 +39,7 @@ import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
 import { TranslateService } from '@ngx-translate/core';
-import { Subscription } from 'rxjs';
+import { finalize, Subscription } from 'rxjs';
 import * as uuid from 'uuid';
 import {
   ConfirmDialogService,
@@ -62,6 +62,7 @@ export class DipRequestCreateComponent implements OnInit, OnDestroy {
   stepIndex = 0;
   stepCount = 2;
   formGroups: FormGroup[];
+  isLoading = false;
 
   constructor(
     private translate: TranslateService,
@@ -138,7 +139,13 @@ export class DipRequestCreateComponent implements OnInit, OnDestroy {
   }
 
   listUsages(i: number): string[] {
-    const otherUsages = (this.usages.value as { usage: string }[]).filter((_, index) => i !== index).map((v) => v.usage);
+    const otherUsages = (
+      this.usages.value as {
+        usage: string;
+      }[]
+    )
+      .filter((_, index) => i !== index)
+      .map((v) => v.usage);
     return this.dataObjectVersions.filter((usage) => !otherUsages.includes(usage));
   }
 
@@ -171,6 +178,7 @@ export class DipRequestCreateComponent implements OnInit, OnDestroy {
     if (this.formGroups.some((fg) => fg.invalid)) {
       return;
     }
+    this.isLoading = true;
 
     const step1Values = this.formGroups[0].getRawValue();
     const step2Values = this.formGroups[1].getRawValue();
@@ -191,19 +199,20 @@ export class DipRequestCreateComponent implements OnInit, OnDestroy {
       sedaVersion: step2Values.sedaVersion,
       exportWithTree: step2Values.exportWithTree,
     };
-
-    this.archiveService.exportDIPService(exportDIPRequestDto).subscribe(
-      (response) => {
-        this.dialogRef.close(true);
-        const serviceUrl = `${this.startupService.getReferentialUrl()}/logbook-operation/tenant/${
-          this.data.tenantIdentifier
-        }?guid=${response}`;
-
-        this.archiveService.openSnackBarForWorkflow(this.translate.instant('ARCHIVE_SEARCH.DIP.DIP_REQUEST_MESSAGE'), serviceUrl);
-      },
-      (error: any) => {
-        this.logger.error('Error message :', error);
-      },
-    );
+    this.archiveService
+      .exportDIPService(exportDIPRequestDto)
+      .pipe(finalize(() => (this.isLoading = false)))
+      .subscribe({
+        next: (response) => {
+          this.dialogRef.close(true);
+          const serviceUrl = `${this.startupService.getReferentialUrl()}/logbook-operation/tenant/${
+            this.data.tenantIdentifier
+          }?guid=${response}`;
+          this.archiveService.openSnackBarForWorkflow(this.translate.instant('ARCHIVE_SEARCH.DIP.DIP_REQUEST_MESSAGE'), serviceUrl);
+        },
+        error: (error: any) => {
+          this.logger.error('Error message :', error);
+        },
+      });
   }
 }
