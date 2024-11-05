@@ -1,15 +1,11 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-<!--	<parent>-->
-<!--		<groupId>fr.gouv.vitamui</groupId>-->
-<!--		<artifactId>parent</artifactId>-->
-<!--    	<version>8.0.0-SNAPSHOT</version>-->
-<!--	</parent>-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
     <groupId>fr.gouv.vitamui</groupId>
     <version>8.0.0-SNAPSHOT</version>
-	<artifactId>cas</artifactId>
-	<packaging>pom</packaging>
-	<name>VITAMUI CAS</name>
+    <artifactId>cas</artifactId>
+    <packaging>pom</packaging>
+    <name>VITAMUI CAS</name>
 
     <properties>
         <java.version>17</java.version>
@@ -27,9 +23,9 @@
         <spotless-maven-plugin.prettier-plugin-java.version>2.6.0</spotless-maven-plugin.prettier-plugin-java.version>
     </properties>
 
-	<modules>
+    <modules>
         <module>cas-server</module>
-	</modules>
+    </modules>
 
 
     <build>
@@ -48,7 +44,8 @@
                             <prettier>
                                 <devDependencies>
                                     <prettier>${spotless-maven-plugin.prettier.version}</prettier>
-                                    <prettier-plugin-java>${spotless-maven-plugin.prettier-plugin-java.version}</prettier-plugin-java>
+                                    <prettier-plugin-java>${spotless-maven-plugin.prettier-plugin-java.version}
+                                    </prettier-plugin-java>
                                 </devDependencies>
                                 <config>
                                     <printWidth>120</printWidth>
@@ -75,13 +72,13 @@
         </pluginManagement>
     </build>
 
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>fr.gouv.vitamui.iam</groupId>
-				<artifactId>iam-common</artifactId>
-				<version>${project.version}</version>
-			</dependency>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>fr.gouv.vitamui.iam</groupId>
+                <artifactId>iam-common</artifactId>
+                <version>${project.version}</version>
+            </dependency>
             <dependency>
                 <groupId>fr.gouv.vitamui</groupId>
                 <artifactId>bom</artifactId>
@@ -89,8 +86,8 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-		</dependencies>
-	</dependencyManagement>
+        </dependencies>
+    </dependencyManagement>
 
     <profiles>
         <profile>
@@ -121,15 +118,23 @@
                 <repository>
                     <id>vitam-releases</id>
                     <name>Vitam release repository</name>
-                    <releases><enabled>true</enabled></releases>
-                    <snapshots><enabled>false</enabled></snapshots>
+                    <releases>
+                        <enabled>true</enabled>
+                    </releases>
+                    <snapshots>
+                        <enabled>false</enabled>
+                    </snapshots>
                     <url>${env.SERVICE_NEXUS_URL}/repository/maven-releases/</url>
                 </repository>
                 <repository>
                     <id>vitam-snapshots</id>
                     <name>Vitam SNAPSHOT repository</name>
-                    <releases><enabled>false</enabled></releases>
-                    <snapshots><enabled>true</enabled></snapshots>
+                    <releases>
+                        <enabled>false</enabled>
+                    </releases>
+                    <snapshots>
+                        <enabled>true</enabled>
+                    </snapshots>
                     <url>${env.SERVICE_NEXUS_URL}/repository/maven-snapshots/</url>
                 </repository>
             </repositories>
