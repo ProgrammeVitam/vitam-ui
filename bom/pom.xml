@@ -339,7 +339,6 @@
                 <version>${project.version}</version>
             </dependency>
 
-
             <dependency>
                 <groupId>org.opengis.cite.xerces</groupId>
                 <artifactId>xercesImpl-xsd11</artifactId>
@@ -413,12 +412,17 @@
                 <version>${jaeger.tracing.version}</version>
             </dependency>
             <dependency>
+                <groupId>org.freemarker</groupId>
+                <artifactId>freemarker</artifactId>
+                <version>${freemarker.upgraded.version}</version>
+            </dependency>
+
+            <!-- Security -->
+            <dependency>
                 <groupId>org.pac4j</groupId>
                 <artifactId>spring-webmvc-pac4j</artifactId>
                 <version>${spring-webmvc-pac4j.version}</version>
             </dependency>
-
-            <!-- Security -->
             <dependency>
                 <groupId>org.pac4j</groupId>
                 <artifactId>pac4j-saml</artifactId>
@@ -435,12 +439,6 @@
                 </exclusions>
             </dependency>
             <dependency>
-                <groupId>org.freemarker</groupId>
-                <artifactId>freemarker</artifactId>
-                <version>${freemarker.upgraded.version}</version>
-            </dependency>
-
-            <dependency>
                 <groupId>org.pac4j</groupId>
                 <artifactId>pac4j-oidc</artifactId>
                 <version>${pac4j.version}</version>
@@ -448,6 +446,41 @@
             <dependency>
                 <groupId>org.pac4j</groupId>
                 <artifactId>pac4j-jwt</artifactId>
+                <version>${pac4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.pac4j</groupId>
+                <artifactId>pac4j-jee</artifactId>
+                <version>${pac4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.pac4j</groupId>
+                <artifactId>pac4j-javaee</artifactId>
+                <version>${pac4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.pac4j</groupId>
+                <artifactId>pac4j-http</artifactId>
+                <version>${pac4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.pac4j</groupId>
+                <artifactId>pac4j-config</artifactId>
+                <version>${pac4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.pac4j</groupId>
+                <artifactId>pac4j-cas</artifactId>
+                <version>${pac4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.pac4j</groupId>
+                <artifactId>pac4j-oauth</artifactId>
+                <version>${pac4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.pac4j</groupId>
+                <artifactId>pac4j-core</artifactId>
                 <version>${pac4j.version}</version>
             </dependency>
             <dependency>
@@ -499,6 +532,16 @@
                 <version>${slf4j.version}</version>
             </dependency>
             <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>jcl-over-slf4j</artifactId>
+                <version>${slf4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>jul-to-slf4j</artifactId>
+                <version>${slf4j.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>ch.qos.logback</groupId>
                 <artifactId>logback-classic</artifactId>
                 <version>${logback.version}</version>
@@ -527,7 +570,6 @@
             </dependency>
 
             <!-- Mongo-Driver -->
-
             <dependency>
                 <groupId>org.mongodb</groupId>
                 <artifactId>mongodb-driver-sync</artifactId>
