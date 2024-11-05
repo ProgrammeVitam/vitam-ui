@@ -7,7 +7,7 @@ After=docker.service
 ExecStartPre=-/usr/bin/docker pull {{ container_repository.registry_url }}/vitam-external/mongodb/mongodb-community-server:7.0.8-ubuntu2204
 ExecStartPre=-/usr/bin/docker stop vitamui-mongod
 ExecStartPre=-/usr/bin/docker rm vitamui-mongod
-ExecStart=/usr/bin/docker run --rm --net=host --name vitamui-mongod --user 1003:1003 \
+ExecStart=/usr/bin/docker run --rm --net=host --name vitamui-mongod --user {{ getent_passwd[vitamui_defaults.users.vitamuidb | default('vitamuidb')].1 }}:{{ getent_passwd[vitamui_defaults.users.vitamuidb | default('vitamuidb')].2 }} \
         -v "/vitamui/conf/mongod:/vitamui/conf/mongod:rw" \
         -v "/vitamui/log/mongod:/vitamui/log/mongod:rw" \
         -v "/vitamui/script/mongod:/vitamui/script/mongod:rw" \
