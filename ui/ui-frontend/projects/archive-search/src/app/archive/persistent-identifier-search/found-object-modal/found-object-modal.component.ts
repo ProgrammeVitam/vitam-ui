@@ -39,7 +39,7 @@ export class FoundObjectModalComponent {
     this.ark = data.ark;
     this.unitId = data.object['#unitups'][0];
     this.versionWithQualifier = qualifiersToVersionsWithQualifier(data.object['#qualifiers']).find((version) =>
-      version.PersistentIdentifier.some((persistentId) => persistentId.PersistentIdentifierContent === data.ark),
+      version.PersistentIdentifier?.some((persistentId) => persistentId.PersistentIdentifierContent === data.ark),
     );
 
     if (this.versionWithQualifier) {
