@@ -5,7 +5,7 @@ After=docker.service
 
 [Service]
 ExecStartPre=-/usr/bin/docker pull {{ container_repository.registry_url }}/vitamui/{{ vitamui_struct.vitamui_component }}:latest
-ExecStart=/usr/bin/docker run --rm --network host --name {{ vitamui_struct.vitamui_component }} --user 1002:1003 \
+ExecStart=/usr/bin/docker run --rm --network host --name {{ vitamui_struct.vitamui_component }} --user {{ getent_passwd[vitamui_defaults.users.vitamui | default('vitamui')].1 }}:{{ getent_passwd[vitamui_defaults.users.vitamui | default('vitamui')].2 }} \
                               -e "JAVA_TOOL_OPTIONS={{ vitamui_struct.jvm_opts.gc | default(jvm_opts.gc) }} -XX:MaxRAMPercentage=75.0 -XX:MinRAMPercentage=50.0 -XX:+ExitOnOutOfMemoryError -Dlogback.configurationFile={{ vitamui_folder_conf }}/logback.xml -Dvitam.config.folder={{ vitamui_folder_conf }} -Dvitam.data.folder={{ vitamui_folder_data }} -Dvitam.tmp.folder={{ vitamui_folder_tmp }} -Dvitam.log.folder={{ vitamui_folder_log }} -Djava.security.properties={{ vitamui_folder_conf }}/java.security -XX:+HeapDumpOnOutOfMemoryError -Djava.net.preferIPv4Stack=true -Djava.net.preferIPv4Addresses=true -XX:HeapDumpPath={{ vitamui_folder_log }}" \
                               -e "SPRING_CONFIG_ADDITIONAL_LOCATION={{ vitamui_folder_conf }}/application.yml" \
                               -e "SPRING_APPLICATION_NAME={{ vitamui_struct.vitamui_component }}" \

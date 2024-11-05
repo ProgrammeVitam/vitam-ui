@@ -91,6 +91,11 @@
     - restart service
   when: install_mode != "container"
 
+- name: get passwd for vitamui
+  getent:
+    database: passwd
+    key: "{{ vitamui_defaults.users.vitamui | default('vitamui') }}"
+
 - name: Deploy systemd service file
   template:
     src: vitamui-container-componentid.service.j2
