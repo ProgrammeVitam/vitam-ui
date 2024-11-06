@@ -37,3 +37,21 @@
     </div>
   </cdk-step>
 </vitamui-common-stepper>
+
+<ng-template #confirmDeleteUpdateUnitsMetadataDialog>
+  <mat-dialog-content>
+    <div class="text-title">{{ 'COLLECT.UPDATE_UNITS_METADATA.ACTION_TITLE' | translate }}</div>
+    <br />
+
+    <div class="text large bold">{{ 'COLLECT.UPDATE_UNITS_METADATA.CANCEL_UPDATE_TO_CONFIRM' | translate }}</div>
+  </mat-dialog-content>
+  <br />
+  <mat-dialog-actions>
+    <button (click)="onConfirmAction()" class="btn primary btn-confirm-dialog margin-btn">
+      {{ 'COLLECT.UPDATE_UNITS_METADATA.CONFIRM' | translate }}
+    </button>
+    <button type="button" (click)="onCloseAction()" class="btn cancel">
+      {{ 'COLLECT.UPDATE_UNITS_METADATA.UPDATE_CANCEL' | translate }}
+    </button>
+  </mat-dialog-actions>
+</ng-template>
