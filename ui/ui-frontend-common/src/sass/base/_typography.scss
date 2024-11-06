@@ -81,7 +81,7 @@ h5 {
     font-weight: bold;
   }
 
-  &.link {
+  &.link:not(.btn) {
     text-decoration: underline;
     cursor: pointer;
   }
