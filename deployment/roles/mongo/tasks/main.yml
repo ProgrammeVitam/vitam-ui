@@ -19,6 +19,11 @@
     enabled: no
   when: install_mode != "container"
 
+- name: get passwd for vitamuidb
+  getent:
+    database: passwd
+    key: "{{ vitamui_defaults.users.vitamuidb | default('vitamuidb') }}"
+
 - name: Deploy systemd service file for vitamui-mongod
   template:
     src: "vitamui-{{ 'container-' if install_mode == 'container' else '' }}mongod.service.j2"
