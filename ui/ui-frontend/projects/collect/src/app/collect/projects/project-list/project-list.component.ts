@@ -26,7 +26,7 @@
  */
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
-import { BehaviorSubject, Subscription } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import { DEFAULT_PAGE_SIZE, Direction, getProjectIcon, InfiniteScrollTable, PageRequest, Project } from 'vitamui-library';
 import { ProjectsService } from '../projects.service';
 
@@ -36,18 +36,18 @@ import { ProjectsService } from '../projects.service';
   styleUrls: ['./project-list.component.css'],
 })
 export class ProjectListComponent extends InfiniteScrollTable<Project> implements OnDestroy, OnInit {
-  @Input()
-  tenantIdentifier: string;
-  direction = Direction.DESCENDANT;
-  orderBy = 'archivalAgreement';
-  orderChange = new BehaviorSubject<string>(this.orderBy);
-
-  @Output()
-  previewProjectDetailsPanel: EventEmitter<any> = new EventEmitter();
-
+  @Input() tenantIdentifier: string;
+  @Output() previewProjectDetailsPanel: EventEmitter<any> = new EventEmitter();
+  selectedProjectId$: Subject<string> = this.projectsService.selectedProjectId$;
   projectUpdated: Subscription;
-
   getProjectIcon = getProjectIcon;
+  // sort columns :
+  messageIdentifier: keyof Project = 'messageIdentifier';
+  submissionAgencyIdentifier: keyof Project = 'submissionAgencyIdentifier';
+  createdOn: keyof Project = 'createdOn';
+  lastModifyOn: keyof Project = 'lastModifyOn';
+  column = this.messageIdentifier;
+  direction = Direction.DESCENDANT;
 
   constructor(
     public projectsService: ProjectsService,
@@ -72,17 +72,28 @@ export class ProjectListComponent extends InfiniteScrollTable<Project> implement
     this.projectUpdated.unsubscribe();
   }
 
+  changeDirection(direction: Direction) {
+    this.direction = direction;
+  }
+
+  changeColumn(column: string) {
+    this.column = column as keyof Project;
+  }
+
+  sortTable() {
+    const direction: number = this.direction === Direction.ASCENDANT ? -1 : 1;
+    this.dataSource.sort((a, b) => {
+      return a[this.column] === b[this.column] ? 0 : a[this.column] > b[this.column] ? direction : -direction;
+    });
+  }
+
   searchProject() {
-    const pageRequest = new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, this.direction);
+    const pageRequest = new PageRequest(0, DEFAULT_PAGE_SIZE, this.column, this.direction);
     super.search(pageRequest);
   }
 
   onScroll() {
     this.loadMore();
-  }
-
-  emitOrderChange(event: string) {
-    this.orderChange.next(event);
   }
 
   searchArchiveUnitsByProject(project: Project) {
@@ -96,6 +107,7 @@ export class ProjectListComponent extends InfiniteScrollTable<Project> implement
   }
 
   showProjectDetails(projectId: string) {
+    this.selectedProjectId$.next(projectId);
     this.previewProjectDetailsPanel.emit(projectId);
   }
 

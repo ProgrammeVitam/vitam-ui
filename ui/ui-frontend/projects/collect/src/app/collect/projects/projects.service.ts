@@ -39,6 +39,8 @@ export class ProjectsService extends SearchService<Project> {
   customerEvent = new Subject<string>();
 
   projectUpdated$ = new BehaviorSubject<Project>(null);
+  /** project selected from the project list */
+  selectedProjectId$: Subject<string> = new Subject();
 
   acquisitionInformationsList = [
     this.translationService.instant('ACQUISITION_INFORMATION.PAYMENT'),
