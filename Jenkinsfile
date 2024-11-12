@@ -6,8 +6,6 @@ pipeline {
     }
 
     environment {
-        MVN_BASE = "mvn --settings ${pwd()}/.ci/settings.xml"
-        MVN_COMMAND = "${MVN_BASE} --show-version --batch-mode --errors --fail-at-end -DinstallAtEnd=true -DdeployAtEnd=true "
         M2_REPO = "${HOME}/.m2"
         CI = credentials("app-jenkins")
 
@@ -30,10 +28,8 @@ pipeline {
     }
 
     parameters {
-        booleanParam(name: 'DO_BUILD_AND_TEST', defaultValue: true, description: 'Run Stage Build and test')
-        booleanParam(name: 'DO_DEPLOY', defaultValue: IMPORTANT_BRANCH_OR_TAG, description: 'Run Stage Deploy to Nexus')
-        booleanParam(name: 'DO_DEPLOY_PASTIS_STANDALONE', defaultValue: IMPORTANT_BRANCH_OR_TAG, description: 'Run build stage Deploy PASTIS standalone')
-        booleanParam(name: 'DO_PUBLISH', defaultValue: IMPORTANT_BRANCH_OR_TAG, description: 'Run Stage Publish to repository.')
+        choice(name: 'GOAL', choices: ['publish', 'deploy', 'build'], description: '- "build" only builds the artifacts\n- "deploy" builds and pushes the artifacts in Nexus\n- "publish" deploys and pushes the .deb/.rpm to the repository')
+        booleanParam(name: 'DO_CHECKS_AND_TESTS', defaultValue: IMPORTANT_BRANCH_OR_TAG, description: 'Tick the box to run checks and tests')
     }
 
     tools {
@@ -44,37 +40,60 @@ pipeline {
     stages {
         stage('Ask for build execution (when parameters are not defined)') {
             agent none
-            when { expression { env.DO_BUILD_AND_TEST == null } }
+            when { expression { env.DO_CHECKS_AND_TESTS == null } }
             steps {
                 script {
-                    INPUT_PARAMS = input message: 'Check boxes to select what you want to execute ?',
-                    parameters: [
-                        booleanParam(name: 'DO_BUILD_AND_TEST', defaultValue: true, description: 'Run Stage Build and test'),
-                        booleanParam(name: 'DO_DEPLOY', defaultValue: IMPORTANT_BRANCH_OR_TAG, description: 'Run Stage Deploy to Nexus'),
-                        booleanParam(name: 'DO_DEPLOY_PASTIS_STANDALONE', defaultValue: IMPORTANT_BRANCH_OR_TAG, description: 'Run build stage Deploy PASTIS standalone'),
-                        booleanParam(name: 'DO_PUBLISH', defaultValue: IMPORTANT_BRANCH_OR_TAG, description: 'Run Stage Publish to repository.'),
-                    ]
-                    env.DO_BUILD_AND_TEST = INPUT_PARAMS.DO_BUILD_AND_TEST
-                    env.DO_DEPLOY = INPUT_PARAMS.DO_DEPLOY
-                    env.DO_DEPLOY_PASTIS_STANDALONE = INPUT_PARAMS.DO_DEPLOY_PASTIS_STANDALONE
-                    env.DO_PUBLISH = INPUT_PARAMS.DO_PUBLISH
+                    INPUT_PARAMS = input message: 'Configure your build',
+                        parameters: [
+                            choice(name: 'GOAL', choices: 'publish\ndeploy\nbuild', defaultValue: 'publish', description: '- "build" only builds the artifacts\n- "deploy" builds and pushes the artifacts in Nexus\n- "publish" deploys and pushes the .deb/.rpm to the repository'),
+                            booleanParam(name: 'DO_CHECKS_AND_TESTS', defaultValue: IMPORTANT_BRANCH_OR_TAG, description: 'Tick the box to run checks and tests'),
+                        ]
+
+                    env.GOAL = INPUT_PARAMS.GOAL
+                    env.DO_CHECKS_AND_TESTS = INPUT_PARAMS.DO_CHECKS_AND_TESTS
                 }
             }
         }
 
-        stage('Show options') {
+        stage('Show Configuration') {
             steps {
-                echo "IMPORTANT_BRANCH_OR_TAG = ${IMPORTANT_BRANCH_OR_TAG}"
-                echo "DO_BUILD_AND_TEST = ${env.DO_BUILD_AND_TEST}"
-                echo "DO_DEPLOY = ${env.DO_DEPLOY}"
-                echo "DO_DEPLOY_PASTIS_STANDALONE = ${env.DO_DEPLOY_PASTIS_STANDALONE}"
-                echo "DO_PUBLISH = ${env.DO_PUBLISH}"
+                script {
+                    if (env.GOAL == 'build') {
+                        // If the goal is only to build, we only run "mvn verify" (includes running tests, except if explicitely skipped)
+                        env.MVN_GOAL = 'verify'
+                    } else {
+                        // Otherwise, we run "mvn deploy" to generate the artifact and upload it to Nexus
+                        env.MVN_GOAL = 'deploy'
+                    }
+
+                    env.MVN_COMMAND = "/usr/local/maven/bin/mvn --settings ${pwd()}/.ci/settings.xml --show-version --batch-mode --errors -DdeployAtEnd=true"
+                    if (env.DO_CHECKS_AND_TESTS == 'false') {
+                        // If checks and tests are disabled:
+                        // - "-T1C" builds modules in parallel
+                        // - "-Dspotless.check.skip=true" skips executing spotless
+                        // - "-Dmaven.test.skip" skips executing tests
+                        // - "-Dlicense.skip" skips checking license headers
+                        env.MVN_COMMAND = "${env.MVN_COMMAND} -T1C -Dspotless.check.skip=true -Dmaven.test.skip -Dlicense.skip=true"
+                    }
+
+                    def pom = readMavenPom file: 'pom.xml'
+                    env.POM_VERSION = pom.version
+                }
+                echo "IMPORTANT_BRANCH_OR_TAG = ${env.IMPORTANT_BRANCH_OR_TAG}"
+                echo "GOAL = ${env.GOAL}"
+                echo "MVN_GOAL = ${env.MVN_GOAL}"
+                echo "DO_CHECKS_AND_TESTS = ${env.DO_CHECKS_AND_TESTS}"
+                echo "MVN_COMMAND = ${env.MVN_COMMAND}"
+                echo "POM_VERSION = ${env.POM_VERSION}"
             }
         }
 
         stage('Upgrade build context') {
             steps {
-                sh 'sudo apt install -y build-essential make ruby ruby-dev rubygems jq'
+                // TODO: install nvm and choose the node/npm version
+                sh 'sudo apt install -y nodejs npm node-npmrc build-essential make ruby ruby-dev rubygems jq'
+                sh 'sudo rm -f /usr/local/bin/node /usr/local/bin/npm'
+                sh 'node -v;npm -v'
                 sh 'sudo timedatectl set-timezone Europe/Paris'
                 sh 'sudo gem install fpm'
                 nvm('v18.20.3') { // We're installing correct Node version through NVM then update the path to make it available. Do NOT wrap your code in `nvm('...') {}` as it would override the whole PATH and then break tools (jdk, maven) configurations
@@ -86,137 +105,93 @@ pipeline {
             }
         }
 
-        stage('Build and test') {
-            when {
-                environment(name: 'DO_BUILD_AND_TEST', value: 'true')
-            }
+        stage('Parallel') {
             parallel {
                 stage('Check icomoon') {
+                    when {
+                        environment(name: 'DO_CHECKS_AND_TESTS', value: 'true')
+                    }
                     steps {
                         sh './tools/check_icomoon.sh'
                     }
                 }
-                stage('Build Frontend') {
+                stage('Frontend') {
                     steps {
-                        sh '''
-                            $MVN_COMMAND clean verify -U -Pvitam \
-                                --projects 'ui/ui-frontend'
-                        '''
+                        dir('ui/ui-frontend') {
+                            script {
+                                sh 'npm ci'
+                                if (env.DO_CHECKS_AND_TESTS == 'true') {
+                                    sh 'npm run lint'
+                                }
+                                sh 'npm run build:vitamui-library'
+                                sh 'npm run build:allModules'
+                                if (env.DO_CHECKS_AND_TESTS == 'true') {
+                                    sh 'npm run ci:test'
+                                }
+                                if (env.GOAL == 'publish') {
+                                    // If the goal is to publish, we also generate .deb/.rpm
+                                    sh '../../tools/packaging/package-fronts.sh ui-identity,ui-archive-search,ui-portal,ui-pastis,ui-collect,ui-referential,ui-ingest,ui-design-system ${POM_VERSION}'
+                                }
+                            }
+                        }
                     }
                 }
-                stage('Build Backend') {
+                stage('Backend') {
+                    tools {
+                        jdk 'java17' // java11 || java17 || java21
+                        maven 'maven-3.9' // maven-3.8 || maven-3.9
+                    }
                     steps {
-                        sh '''
-                            $MVN_COMMAND clean verify -U -Pvitam \
-                                --projects '!cots/vitamui-mongo-express' \
-                                --projects '!ui' \
-                                --projects '!ui/ui-frontend'
-                        '''
+                        // TODO: generate .deb/.rpm by running Makefile directly in the Jenkinsfile instead of being run by a maven plugin
+                        sh '${MVN_COMMAND} clean ${MVN_GOAL} -U -Pvitam,deb,rpm'
                     }
                 }
             }
             post {
                 always {
-                    junit '**/target/surefire-reports/*.xml'
-                    junit '**/target/junit/*.xml'
-                }
-            }
-        }
-
-        stage('Package and push to repository') {
-           when {
-                   environment(name: 'DO_DEPLOY', value: 'true')
-           }
-            parallel {
-                stage('Package back packages') {
-                    steps {
-                        sh '''
-                           $MVN_COMMAND deploy -Pvitam,deb,rpm -DskipTests -DskipAllFrontend=true -DskipAllFrontendTests=true -Dlicense.skip=true --projects '!cots/vitamui-mongo-express'
-                       '''
-                    }
-                }
-                stage('Package Frontend') {
-                    steps {
-                         script {
-                                sh '''
-                                   POM_VERSION=$(xpath -e '/project/version/text()' pom.xml 2>/dev/null)
-                                  ./tools/packaging/package-fronts.sh ui-identity,ui-archive-search,ui-portal,ui-pastis,ui-collect,ui-referential,ui-ingest,ui-design-system ${POM_VERSION}
-                                  '''
-                               }
+                    script {
+                        if (env.DO_CHECKS_AND_TESTS == 'true') {
+                            junit '**/target/surefire-reports/*.xml'
+                            junit '**/target/junit/*.xml'
+                        }
                     }
                 }
             }
         }
 
-
-        stage('Deploy to Nexus') {
+        // If in "deploy" or "publish" mode, build pastis front in "standalone" mode & run maven goal to package the .exe/.zip
+        stage("Pastis standalone") {
             when {
-                environment(name: 'DO_DEPLOY', value: 'true')
-            }
-            steps {
-                sh '''
-                    $MVN_COMMAND deploy -Pvitam,deb,rpm -DskipTests -DskipAllFrontend=true -DskipAllFrontendTests=true -Dlicense.skip=true --projects '!cots/vitamui-mongo-express'
-                '''
-            }
-        }
-
-        stage('Deploy PASTIS standalone') {
-            when {
-                environment(name: 'DO_DEPLOY_PASTIS_STANDALONE', value: 'true')
-            }
-            steps {
-                sh '''
-                    $MVN_COMMAND install \
-                        -D skipTests \
-                        -P vitam
-                '''
-                sh '''
-                    $MVN_COMMAND deploy \
-                        -D skipTests \
-                        -P standalone \
-                        --projects 'api/api-pastis/pastis-standalone'
-                '''
-            }
-        }
-
-        stage('Build COTS') {
-            when {
-                environment(name: 'DO_DEPLOY', value: 'true')
-            }
-            steps {
-                dir('cots/') {
-                    sh '''
-                        $MVN_COMMAND deploy -Pvitam,deb,rpm -DskipTests -Dlicense.skip=true
-                    '''
+                anyOf {
+                    environment(name: 'GOAL', value: 'deploy')
+                    environment(name: 'GOAL', value: 'publish')
                 }
             }
-        }
-
-        stage("Get publishing scripts") {
-            when {
-                environment(name: 'DO_PUBLISH', value: 'true')
-                environment(name: 'DO_DEPLOY', value: 'true')
-            }
             steps {
-                checkout([$class: 'GitSCM',
-                    branches: [[name: 'scaleway_j11']],
-                    doGenerateSubmoduleConfigurations: false,
-                    extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'vitam-build.git']],
-                    submoduleCfg: [],
-                    userRemoteConfigs: [[credentialsId: 'app-jenkins', url: "$SERVICE_GIT_URL"]]
-                ])
+                dir('ui/ui-frontend') {
+                    sh 'npm run build:pastis-standalone'
+                }
+                sh '${MVN_COMMAND} deploy -Pstandalone --projects "api/api-pastis/pastis-standalone" -Dspotless.check.skip=true -Dmaven.test.skip -Dlicense.skip=true'
             }
         }
 
-        stage("Publish rpm and deb") {
+        stage("Publish") {
             when {
-                environment(name: 'DO_PUBLISH', value: 'true')
-                environment(name: 'DO_DEPLOY', value: 'true')
+                environment(name: 'GOAL', value: 'publish')
             }
             steps {
-                sshagent (credentials: ['jenkins_sftp_to_repository']) {
-                    sh 'vitam-build.git/push_vitamui_repo.sh contrib $SERVICE_REPO_SSHURL rpm'
-                    sh 'vitam-build.git/push_vitamui_repo.sh contrib $SERVICE_REPO_SSHURL deb'
+                script {
+                    checkout([$class                           : 'GitSCM',
+                              branches                         : [[name: 'scaleway_j11']],
+                              doGenerateSubmoduleConfigurations: false,
+                              extensions                       : [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'vitam-build.git']],
+                              submoduleCfg                     : [],
+                              userRemoteConfigs                : [[credentialsId: 'app-jenkins', url: "$SERVICE_GIT_URL"]]
+                    ])
+                    sshagent(credentials: ['jenkins_sftp_to_repository']) {
+                        sh 'vitam-build.git/push_vitamui_repo.sh contrib ${SERVICE_REPO_SSHURL} rpm'
+                        sh 'vitam-build.git/push_vitamui_repo.sh contrib ${SERVICE_REPO_SSHURL} deb'
+                    }
                 }
             }
         }
@@ -228,12 +203,11 @@ pipeline {
                     branch "master_*"
                     tag pattern: "^[1-9]+(\\.rc)?(\\.[0-9]+)?\\.[0-9]+(-.*)?", comparator: "REGEXP"
                 }
-                environment(name: 'DO_PUBLISH', value: 'true')
-                environment(name: 'DO_DEPLOY', value: 'true')
+                environment(name: 'GOAL', value: 'publish')
             }
             steps {
-                sshagent (credentials: ['jenkins_sftp_to_repository']) {
-                    sh 'vitam-build.git/push_symlink_repo.sh contrib $SERVICE_REPO_SSHURL'
+                sshagent(credentials: ['jenkins_sftp_to_repository']) {
+                    sh 'vitam-build.git/push_symlink_repo.sh contrib ${SERVICE_REPO_SSHURL}'
                 }
             }
         }

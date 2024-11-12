@@ -8,8 +8,8 @@ Inspecter le DOM pour voir les classes .scss et/ou composants utilisées.
 
 ## Lancement
 
-1. Démarer le projet front design-system
+1. Démarrer le projet front design-system
 
-   > vitam-ui/ui/ui-frontend$ npm run start:design-system
+   > vitam-ui/ui$ npm run start:design-system
 
 2. Aller sur l'URL du design-system [https://dev.vitamui.com:4201/](https://dev.vitamui.com:4201/)

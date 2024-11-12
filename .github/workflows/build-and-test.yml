@@ -90,8 +90,6 @@ jobs:
           -Dspotless.check.skip=true
           --batch-mode --errors -U
           --projects '!cots/vitamui-mongo-express'
-          --projects '!ui'
-          --projects '!ui/ui-frontend'
           verify
         env:
           SERVICE_NEXUS_URL: ${{ secrets.SERVICE_NEXUS_URL }}
