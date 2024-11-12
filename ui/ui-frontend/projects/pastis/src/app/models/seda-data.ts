@@ -107,4 +107,5 @@ export interface SedaData {
   children: SedaData[];
   enumeration: string[];
   collection: SedaCollections;
+  external: boolean;
 }

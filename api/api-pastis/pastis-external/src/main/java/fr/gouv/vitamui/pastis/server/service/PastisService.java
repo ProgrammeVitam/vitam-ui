@@ -39,9 +39,7 @@ knowledge of the CeCILL-C license and that you accept its terms.
 package fr.gouv.vitamui.pastis.server.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.json.JsonMapper;
 import fr.gouv.vitamui.pastis.common.dto.ElementProperties;
 import fr.gouv.vitamui.pastis.common.dto.jaxb.AnnotationXML;
 import fr.gouv.vitamui.pastis.common.dto.jaxb.AnyNameXML;
@@ -117,8 +115,9 @@ public class PastisService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PastisService.class);
 
-    private static final String APPLICATION_JSON_UTF8 = "application/json; charset=utf-8";
     public static final String DEFAULT_SEDA_VERSION = "2.3";
+    private final MetaModelService metaModelService;
+    private ObjectMapper objectMapper;
     private final ResourceLoader resourceLoader;
 
     @Value("${rng.base.file}")
@@ -138,6 +137,7 @@ public class PastisService {
     private final JsonFromPUA jsonFromPUA;
 
     private final PuaFromJSON puaFromJSON;
+
     private List<PastisProfile> pastisProfiles = new ArrayList<>();
     private List<Notice> notices = new ArrayList<>();
 
@@ -145,15 +145,19 @@ public class PastisService {
 
     @Autowired
     public PastisService(
+        ObjectMapper objectMapper,
         ResourceLoader resourceLoader,
         PuaPastisValidator puaPastisValidator,
         JsonFromPUA jsonFromPUA,
-        PuaFromJSON puaFromJSON
+        PuaFromJSON puaFromJSON,
+        MetaModelService metaModelService
     ) {
+        this.objectMapper = objectMapper;
         this.resourceLoader = resourceLoader;
         this.puaPastisValidator = puaPastisValidator;
         this.jsonFromPUA = jsonFromPUA;
         this.puaFromJSON = puaFromJSON;
+        this.metaModelService = metaModelService;
     }
 
     public String getArchiveProfile(final ElementProperties json, ProfileVersion version) throws TechnicalException {
@@ -212,7 +216,8 @@ public class PastisService {
         }
         String controlSchema;
         try {
-            controlSchema = puaFromJSON.getControlSchemaFromElementProperties(json.getElementProperties());
+            SedaNode sedaTree = metaModelService.getArchiveUnitMetaModelForVersion(ProfileVersion.VERSION_2_3);
+            controlSchema = puaFromJSON.getControlSchemaFromElementProperties(sedaTree, json.getElementProperties());
         } catch (IOException e) {
             throw new TechnicalException(
                 "Problems when deserializing using Jackson with Element Properties of AUP json to have ControlsShema",
@@ -242,8 +247,9 @@ public class PastisService {
             if (type == ProfileType.PA) {
                 resource = new ClassPathResource(rngFile);
             } else {
-                if (standalone) resource = new ClassPathResource(jsonFileStandalone);
-                else {
+                if (standalone) {
+                    resource = new ClassPathResource(jsonFileStandalone);
+                } else {
                     resource = new ClassPathResource(jsonFileVitam);
                 }
             }
@@ -276,7 +282,8 @@ public class PastisService {
                 LOGGER.info("Starting editing Archive Profile with id : {}", notice.getId());
             } else if (fileType.equals(ProfileType.PUA)) {
                 puaPastisValidator.validatePUA(profileJson, false);
-                profileResponse.setProfile(jsonFromPUA.getProfileFromPUA(profileJson));
+                SedaNode sedaTree = metaModelService.getArchiveUnitMetaModelForVersion(notice.getSedaVersion());
+                profileResponse.setProfile(jsonFromPUA.getProfileFromPUA(sedaTree, profileJson));
             }
             profileResponse.setNotice(NoticeUtils.getNoticeFromPUA(profileJson));
         } catch (SAXException | IOException e) {
@@ -361,7 +368,8 @@ public class PastisService {
                 JSONTokener tokener = new JSONTokener(new InputStreamReader(fileInputStream));
                 JSONObject profileJson = new JSONObject(tokener);
                 puaPastisValidator.validatePUA(profileJson, false);
-                profileResponse.setProfile(jsonFromPUA.getProfileFromPUA(profileJson));
+                SedaNode sedaTree = metaModelService.getArchiveUnitMetaModelForVersion(profileVersion);
+                profileResponse.setProfile(jsonFromPUA.getProfileFromPUA(sedaTree, profileJson));
                 // Get default PUA model and apply the seda version to it
                 Notice noticeFromPUA = NoticeUtils.getNoticeFromPUA(profileJson);
                 noticeFromPUA.setSedaVersion(profileVersion);
@@ -406,13 +414,13 @@ public class PastisService {
                 JSONTokener tokener = new JSONTokener(new InputStreamReader(fileInputStream));
                 JSONObject profileJson = new JSONObject(tokener);
                 puaPastisValidator.validatePUA(profileJson, standalone);
-                profileResponse.setProfile(jsonFromPUA.getProfileFromPUA(profileJson));
-                profileResponse.setNotice(NoticeUtils.getNoticeFromPUA(profileJson));
-
                 final ProfileVersion profileVersion = Optional.ofNullable(profileResponse.getNotice())
                     .map(Notice::getSedaVersion)
                     .orElse(ProfileVersion.fromVersionString(DEFAULT_SEDA_VERSION));
                 profileResponse.setSedaVersion(profileVersion);
+                SedaNode sedaTree = metaModelService.getArchiveUnitMetaModelForVersion(profileVersion);
+                profileResponse.setProfile(jsonFromPUA.getProfileFromPUA(sedaTree, profileJson));
+                profileResponse.setNotice(NoticeUtils.getNoticeFromPUA(profileJson));
                 LOGGER.info("Starting editing Archive Unit Profile with name : {}", file.getOriginalFilename());
             }
         } catch (SAXException | IOException e) {
@@ -442,11 +450,6 @@ public class PastisService {
     }
 
     public SedaNode getMetaModel(ProfileVersion profileVersion) throws IOException {
-        String resourcePath = "metamodel/metamodel-" + profileVersion.getVersion() + ".json";
-        InputStream inputStream = getClass().getClassLoader().getResourceAsStream(resourcePath);
-        JsonMapper jsonMapper = JsonMapper.builder()
-            .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true)
-            .build();
-        return jsonMapper.readValue(inputStream, SedaNode.class);
+        return metaModelService.getMetaModelForVersion(profileVersion);
     }
 }

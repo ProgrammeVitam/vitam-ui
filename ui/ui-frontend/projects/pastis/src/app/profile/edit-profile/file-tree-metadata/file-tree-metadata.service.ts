@@ -129,6 +129,7 @@ export class FileTreeMetadataService {
             commentaire: child.documentation,
             type: child.dataType,
             enumeration: child.sedaData.enumeration,
+            external: child.external,
           });
         } else if (!childrenToExclude && child.type !== TypeConstants.ATTRIBUTE) {
           data.push({
@@ -141,6 +142,7 @@ export class FileTreeMetadataService {
             commentaire: child.documentation,
             type: child.dataType,
             enumeration: child.sedaData.enumeration,
+            external: child.external,
           });
         } else if (clickedNode.type === TypeConstants.ELEMENT && sedaChild.element === SedaElementConstants.SIMPLE) {
           data.push({
@@ -153,6 +155,7 @@ export class FileTreeMetadataService {
             commentaire: clickedNode.documentation,
             type: clickedNode.dataType,
             enumeration: clickedNode.sedaData.enumeration,
+            external: clickedNode.external,
           });
           break;
         }
@@ -168,6 +171,7 @@ export class FileTreeMetadataService {
         commentaire: clickedNode.documentation,
         type: clickedNode.dataType,
         enumeration: clickedNode.sedaData.enumeration,
+        external: clickedNode.external,
       });
     }
     this.allowedSedaCardinalities.next(allowedCardList);

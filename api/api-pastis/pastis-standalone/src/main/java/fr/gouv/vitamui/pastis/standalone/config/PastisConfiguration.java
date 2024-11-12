@@ -38,10 +38,13 @@ knowledge of the CeCILL-C license and that you accept its terms.
 
 package fr.gouv.vitamui.pastis.standalone.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitamui.pastis.common.service.JsonFromPUA;
 import fr.gouv.vitamui.pastis.common.service.PuaFromJSON;
 import fr.gouv.vitamui.pastis.common.service.PuaPastisValidator;
+import fr.gouv.vitamui.pastis.server.service.MetaModelService;
 import fr.gouv.vitamui.pastis.server.service.PastisService;
+import fr.gouv.vitamui.pastis.standalone.service.ExternalSchemaServiceStandaloneImpl;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.web.servlet.error.ErrorViewResolver;
 import org.springframework.context.annotation.Bean;
@@ -76,7 +79,15 @@ public class PastisConfiguration {
 
     @Bean
     public PastisService pastisService() {
-        return new PastisService(null, puaPastisValidator(), jsonFromPUA(), puaFromJSON());
+        ObjectMapper objectMapper = new ObjectMapper();
+        return new PastisService(
+            objectMapper,
+            null,
+            puaPastisValidator(),
+            jsonFromPUA(),
+            puaFromJSON(),
+            new MetaModelService(new ExternalSchemaServiceStandaloneImpl(objectMapper))
+        );
     }
 
     @Bean

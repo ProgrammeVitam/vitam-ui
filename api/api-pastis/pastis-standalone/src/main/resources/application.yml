@@ -16,6 +16,8 @@ spring:
     max-file-size: 10MB
     max-request-size: 11MB
     enabled: true
+  profiles:
+    active: 'standalone'
 
 #Spring docs swagger
 springdoc:

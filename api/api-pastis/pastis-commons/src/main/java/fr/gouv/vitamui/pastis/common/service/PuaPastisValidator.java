@@ -40,10 +40,8 @@ package fr.gouv.vitamui.pastis.common.service;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.module.afterburner.AfterburnerModule;
-import fr.gouv.vitam.common.model.administration.ArchiveUnitProfileSedaVersion;
 import fr.gouv.vitamui.pastis.common.dto.ElementProperties;
 import fr.gouv.vitamui.pastis.common.dto.PuaData;
 import fr.gouv.vitamui.pastis.common.dto.pua.PuaMetadataDetails;
@@ -86,8 +84,6 @@ public class PuaPastisValidator {
 
     private static JSONObject profileJsonExpected;
 
-    private static SedaNode archiveUnitSeda;
-
     private static final String CONTROLSCHEMA = "controlSchema";
     private static final String DEFINITIONS = "definitions";
     private static final String PROPERTIES = "properties";
@@ -123,47 +119,6 @@ public class PuaPastisValidator {
 
     private static void setProfileJsonExpected(JSONObject jsonObject) {
         profileJsonExpected = jsonObject;
-    }
-
-    private SedaNode getArchiveUnitSeda() throws IOException {
-        if (PuaPastisValidator.getArchiveUnitSedaMember() == null) {
-            SedaNode archiveUnitSedaNode = PuaPastisValidator.getArchiveUnitSedaNode();
-            PuaPastisValidator.setArchiveUnitSedaMember(archiveUnitSedaNode);
-        }
-        return PuaPastisValidator.getArchiveUnitSedaMember();
-    }
-
-    public static SedaNode getArchiveUnitSedaNode() throws IOException {
-        String resourcePath = "metamodel/metamodel-" + ArchiveUnitProfileSedaVersion.VERSION_2_3.getVersion() + ".json";
-        InputStream inputStream = PuaPastisValidator.class.getClassLoader().getResourceAsStream(resourcePath);
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true);
-        SedaNode rootSedaNode = objectMapper.readValue(inputStream, SedaNode.class);
-        SedaNode archiveUnitNode = rootSedaNode
-            .getChildren()
-            .stream()
-            .filter(n -> n.getName().equals("DataObjectPackage"))
-            .findFirst()
-            .get()
-            .getChildren()
-            .stream()
-            .filter(n -> n.getName().equals("DescriptiveMetadata"))
-            .findFirst()
-            .get()
-            .getChildren()
-            .stream()
-            .filter(n -> n.getName().equals("ArchiveUnit"))
-            .findFirst()
-            .get();
-        return archiveUnitNode;
-    }
-
-    private static SedaNode getArchiveUnitSedaMember() {
-        return archiveUnitSeda;
-    }
-
-    private static void setArchiveUnitSedaMember(SedaNode sedaNode) {
-        archiveUnitSeda = sedaNode;
     }
 
     /**
@@ -245,9 +200,13 @@ public class PuaPastisValidator {
      * @param name
      * @return the seda type of an element
      */
-    private String getPUAMetadataType(String elementName, String name, ElementProperties elementProperties)
-        throws IOException {
-        SedaNode sedaElement = getSedaMetadata(elementName, name);
+    private String getPUAMetadataType(
+        SedaNode sedaTree,
+        String elementName,
+        String name,
+        ElementProperties elementProperties
+    ) throws IOException {
+        SedaNode sedaElement = getSedaMetadata(sedaTree, elementName, name);
 
         if (sedaElement != null) {
             return resolvePuaType(sedaElement, elementProperties);
@@ -311,42 +270,12 @@ public class PuaPastisValidator {
     }
 
     /**
-     * Find and create a single JSONObject based on a given ElementProperties tree if it contains a Management metadata
-     *
-     * @param elementProperties an ElementProperties object containing Management as root element
-     * @return a JSONObject containing a PUA representation of a Management metadata
-     */
-    private JSONObject getJSONObjectFromMetadata(ElementProperties elementProperties) throws IOException {
-        JSONObject puaJSONObject = new JSONObject();
-        SedaNode sedaElement = getSedaMetadata(MANAGEMENT, null);
-
-        ElementProperties elementFound = elementProperties
-            .flattened()
-            .filter(childName -> childName.getName().equals(MANAGEMENT) && childName.getType().equals("element"))
-            .findAny()
-            .orElse(null);
-
-        if (elementFound != null && sedaElement != null) {
-            PuaMetadataDetails puaMetadataDetails = new PuaMetadataDetails();
-            // get pua type
-            puaMetadataDetails.setType(resolvePuaType(sedaElement, elementProperties));
-            puaMetadataDetails.setDescription((elementFound.getDocumentation()));
-            // Create a Map<PuaElementName,PuaElementDetails>
-            Map<String, String> puaMap = new HashMap<>();
-            puaMap.put(MANAGEMENT, puaMetadataDetails.serialiseString());
-            puaJSONObject.put(PROPERTIES, puaMap);
-            return puaJSONObject;
-        }
-        return puaJSONObject;
-    }
-
-    /**
      * Recursively generates a tree of JSON objects based on a given ElementProperties object type
      *
      * @param elementsFromTree an ElementProperties List
      * @return a JSONArray representing all PUA elements of an ArchiveUnitProfile and its siblings
      */
-    public JSONArray getJSONObjectFromAllTree(List<ElementProperties> elementsFromTree) {
+    public JSONArray getJSONObjectFromAllTree(SedaNode sedaTree, List<ElementProperties> elementsFromTree) {
         JSONArray jsonArray = sortedJSONArray();
         List<String> rulesToIgnore = Arrays.asList(
             "StorageRule",
@@ -362,13 +291,13 @@ public class PuaPastisValidator {
             setMetadataName(el);
             try {
                 if (el.getName().equals(MANAGEMENT) && !el.getChildren().isEmpty()) {
-                    JSONObject management = getJSONFromManagement(el);
+                    JSONObject management = getJSONFromManagement(sedaTree, el);
                     jsonArray.put(management);
                 }
                 if (jsonArray.length() > 0 && jsonArray.toString().contains(el.getName())) {
                     ElementProperties element = getElementById(elementsFromTree, el.getParentId());
                     if (element != null && element.getName().equals(CONTENT)) {
-                        JSONObject notManagementMapElement = getJSONObjectFromElement(el);
+                        JSONObject notManagementMapElement = getJSONObjectFromElement(sedaTree, el);
                         jsonArray.put(notManagementMapElement);
                     }
                 } else if (
@@ -377,7 +306,7 @@ public class PuaPastisValidator {
                     !el.getName().equals(MANAGEMENT) &&
                     !managementMetadata.contains(el.getName())
                 ) {
-                    JSONObject notManagementMapElement = getJSONObjectFromElement(el);
+                    JSONObject notManagementMapElement = getJSONObjectFromElement(sedaTree, el);
                     jsonArray.put(notManagementMapElement);
                 }
             } catch (IOException e) {
@@ -393,7 +322,7 @@ public class PuaPastisValidator {
      * @param element an ElementProperties object
      * @return a JSONArray representing all PUA elements of an Management metadata and its specific rules
      */
-    public JSONObject getJSONFromManagement(ElementProperties element) throws IOException {
+    private JSONObject getJSONFromManagement(SedaNode sedaTree, ElementProperties element) throws IOException {
         List<String> rulesMetadata = Arrays.asList(
             "StorageRule",
             "AppraisalRule",
@@ -414,8 +343,15 @@ public class PuaPastisValidator {
         }
 
         // JSON Object representing all PUA elements of an Management metadata and its specific rules
-        retrieveAccumalatedJsonManagaementProperties(element, rulesMetadata, childrenToEncapsulate, rulesFound, pua);
-        List<String> requiredProperties = getRequiredProperties(element);
+        retrieveAccumalatedJsonManagaementProperties(
+            sedaTree,
+            element,
+            rulesMetadata,
+            childrenToEncapsulate,
+            rulesFound,
+            pua
+        );
+        List<String> requiredProperties = getRequiredProperties(sedaTree, element);
         if (isNotEmpty(requiredProperties)) {
             pua.put(REQUIRED, requiredProperties);
         }
@@ -437,6 +373,7 @@ public class PuaPastisValidator {
      * @throws IOException
      */
     private void retrieveAccumalatedJsonManagaementProperties(
+        SedaNode sedaTree,
         ElementProperties element,
         List<String> rulesMetadata,
         List<String> childrenToEncapsulate,
@@ -457,11 +394,11 @@ public class PuaPastisValidator {
 
             PuaMetadataDetails ruleTypeMetadataDetails = new PuaMetadataDetails();
 
-            SedaNode sedaElement = getSedaMetadata(childElement.getName(), null);
+            SedaNode sedaElement = getSedaMetadata(sedaTree, childElement.getName(), null);
 
             // 1. Check special cases
             if (checkSpecialCases(rulesMetadata, rulesFound, childElement, sedaElement)) {
-                JSONObject jsonObjectFromElement = getJSONObjectFromElement(childElement);
+                JSONObject jsonObjectFromElement = getJSONObjectFromElement(sedaTree, childElement);
                 pua.accumulate(PROPERTIES, jsonObjectFromElement);
                 continue;
             }
@@ -475,7 +412,7 @@ public class PuaPastisValidator {
             // 2. If special cases have children, encapsulate them into "Rules : { items : {childName : { ..."
             if (!childElement.getChildren().isEmpty()) {
                 for (ElementProperties grandChild : childElement.getChildren()) {
-                    SedaNode node = getSedaMetadata(grandChild.getName(), childElement.getName());
+                    SedaNode node = getSedaMetadata(sedaTree, grandChild.getName(), childElement.getName());
                     if (childrenToEncapsulate.contains(grandChild.getName())) {
                         childrenContainsGrandChildName(
                             grandChildrenOfRule,
@@ -524,9 +461,9 @@ public class PuaPastisValidator {
                         ElementProperties el = elOpt.get();
                         preventRulesId.setDescription(el.getDocumentation());
                         if (el.getCardinality().equals(CARDINALITY_0_1)) {
-                            getMinAndMAxItems(el, preventRulesId);
+                            getMinAndMaxItems(el, preventRulesId);
                         } else if (el.getCardinality().equals(CARDINALITY_1)) {
-                            getMinAndMAxItems(el, preventRulesId);
+                            getMinAndMaxItems(el, preventRulesId);
                         }
                         if (null != el.getPuaData()) {
                             if (null != el.getPuaData().getPattern()) {
@@ -707,7 +644,7 @@ public class PuaPastisValidator {
      * @param pua is JSONObjet that contains Management section of PUA
      * Convert it into a JSONObject and put it into a #mangagement key
      */
-    public JSONObject retrieveAccumulatedJsonManagementProperties(JSONObject pua) {
+    private JSONObject retrieveAccumulatedJsonManagementProperties(JSONObject pua) {
         JSONObject managementAsJSONObject = new JSONObject();
         if (pua.keySet().contains(PROPERTIES)) {
             JSONObject properties = pua;
@@ -738,9 +675,7 @@ public class PuaPastisValidator {
      * @param elementName the name of the seda element to be found
      * @return a SedaNode object representation of a given seda element
      */
-
-    private SedaNode getSedaMetadata(String elementName, String parentName) throws IOException {
-        SedaNode sedaTree = getArchiveUnitSeda();
+    private SedaNode getSedaMetadata(SedaNode sedaTree, String elementName, String parentName) throws IOException {
         SedaNode result;
         if (null != parentName) {
             result = sedaTree
@@ -748,11 +683,7 @@ public class PuaPastisValidator {
                 .filter(childName -> childName.getName().equals(parentName))
                 .findAny()
                 .orElse(null)
-                .getChildren()
-                .stream()
-                .filter(childName -> childName.getName().equals(elementName))
-                .findAny()
-                .orElse(null);
+                .getChild(elementName);
         } else {
             result = sedaTree.flattened().filter(e -> e.getName().equals(elementName)).findAny().orElse(null);
         }
@@ -793,12 +724,13 @@ public class PuaPastisValidator {
      *
      * @return a HashMap containing a tree of Pua metadata and its children
      */
-    public JSONObject getJSONObjectFromElement(ElementProperties elementProperties) throws IOException {
-        SedaNode sedaElement = getSedaMetadata(elementProperties.getName(), null);
+    private JSONObject getJSONObjectFromElement(SedaNode sedaTree, ElementProperties elementProperties)
+        throws IOException {
+        SedaNode sedaElement = getSedaMetadata(sedaTree, elementProperties.getName(), null);
         PuaMetadataDetails puaMetadataDetails = new PuaMetadataDetails();
         getMetaDataFromSeda(elementProperties, puaMetadataDetails, sedaElement);
         if (isNotEmpty(elementProperties.getChildren())) {
-            List<String> requiredProperties = getRequiredProperties(elementProperties);
+            List<String> requiredProperties = getRequiredProperties(sedaTree, elementProperties);
             if (isNotEmpty(requiredProperties)) {
                 puaMetadataDetails.setRequired(requiredProperties);
             }
@@ -824,12 +756,14 @@ public class PuaPastisValidator {
                 }
 
                 getJSONObjectFromElement(
+                    sedaTree,
                     elementProperties,
                     json.getJSONObject(elementProperties.getName()).getJSONObject(ITEMS).getJSONObject(PROPERTIES)
                 );
             } else {
                 json.getJSONObject(elementProperties.getName()).put(PROPERTIES, new JSONObject());
                 getJSONObjectFromElement(
+                    sedaTree,
                     elementProperties,
                     json.getJSONObject(elementProperties.getName()).getJSONObject(PROPERTIES)
                 );
@@ -838,11 +772,12 @@ public class PuaPastisValidator {
         return json;
     }
 
-    public void getJSONObjectFromElement(ElementProperties elementProperties, JSONObject json) throws IOException {
+    private void getJSONObjectFromElement(SedaNode sedaTree, ElementProperties elementProperties, JSONObject json)
+        throws IOException {
         if (!elementProperties.getChildren().isEmpty()) {
             for (ElementProperties el : elementProperties.getChildren()) {
                 PuaMetadataDetails puaMetadataDetails = new PuaMetadataDetails();
-                puaMetadataDetails.setType(getPUAMetadataType(el.getName(), elementProperties.getName(), el));
+                puaMetadataDetails.setType(getPUAMetadataType(sedaTree, el.getName(), elementProperties.getName(), el));
                 puaMetadataDetails.setDescription(el.getDocumentation());
                 if (null != el.getPuaData() && null != el.getPuaData().getEnum()) {
                     puaMetadataDetails.setEnums(el.getPuaData().getEnum());
@@ -851,11 +786,11 @@ public class PuaPastisValidator {
                     puaMetadataDetails.setPattern(el.getPuaData().getPattern());
                 }
                 if (puaMetadataDetails.getType().equals("array")) {
-                    getMinAndMAxItems(el, puaMetadataDetails);
+                    getMinAndMaxItems(el, puaMetadataDetails);
                 }
                 setMetadataName(el);
                 if (isNotEmpty(el.getChildren())) {
-                    List<String> requiredProperties = getRequiredProperties(el);
+                    List<String> requiredProperties = getRequiredProperties(sedaTree, el);
                     if (isNotEmpty(requiredProperties)) {
                         puaMetadataDetails.setRequired(requiredProperties);
                     }
@@ -894,12 +829,17 @@ public class PuaPastisValidator {
                         }
 
                         getJSONObjectFromElement(
+                            sedaTree,
                             el,
                             json.getJSONObject(el.getName()).getJSONObject(ITEMS).getJSONObject(PROPERTIES)
                         );
                     } else {
                         json.getJSONObject(el.getName()).put(PROPERTIES, new JSONObject());
-                        getJSONObjectFromElement(el, json.getJSONObject(el.getName()).getJSONObject(PROPERTIES));
+                        getJSONObjectFromElement(
+                            sedaTree,
+                            el,
+                            json.getJSONObject(el.getName()).getJSONObject(PROPERTIES)
+                        );
                     }
                 } else {
                     if (puaMetadataDetails.getType().equals("array")) {
@@ -993,13 +933,13 @@ public class PuaPastisValidator {
         json.put(el.getName(), new JSONObject(puaMetadataDetails.serialiseString()));
     }
 
-    public List<String> getRequiredProperties(ElementProperties elementProperties) {
+    private List<String> getRequiredProperties(SedaNode sedaTree, ElementProperties elementProperties) {
         List<String> listRequired = new ArrayList<>();
         elementProperties
             .getChildren()
             .forEach(child -> {
                 try {
-                    SedaNode sedaElement = getSedaMetadata(child.getName(), elementProperties.getName());
+                    SedaNode sedaElement = getSedaMetadata(sedaTree, child.getName(), elementProperties.getName());
                     if (
                         (child.getCardinality().equals(CARDINALITY_1_N) &&
                             (sedaElement.getCardinality().equals(CARDINALITY_0_N) ||
@@ -1027,11 +967,11 @@ public class PuaPastisValidator {
             .collect(toList());
     }
 
-    public List<String> getHeadRequired(List<ElementProperties> elementsFromTree) {
+    public List<String> getHeadRequired(SedaNode sedaTree, List<ElementProperties> elementsFromTree) {
         List<String> list = new ArrayList<>();
         elementsFromTree.forEach(element -> {
             try {
-                SedaNode sedaElement = getSedaMetadata(element.getName(), null);
+                SedaNode sedaElement = getSedaMetadata(sedaTree, element.getName(), null);
                 ElementProperties parent = getElementById(elementsFromTree, element.getParentId());
                 if (
                     ((parent != null &&
@@ -1057,7 +997,11 @@ public class PuaPastisValidator {
         return list;
     }
 
-    public void getMetaDataFromSeda(ElementProperties el, PuaMetadataDetails puaMetadataDetails, SedaNode sedaElement) {
+    private void getMetaDataFromSeda(
+        ElementProperties el,
+        PuaMetadataDetails puaMetadataDetails,
+        SedaNode sedaElement
+    ) {
         // get pua type
         puaMetadataDetails.setType(resolvePuaType(sedaElement, el));
         puaMetadataDetails.setDescription((el.getDocumentation()));
@@ -1069,7 +1013,7 @@ public class PuaPastisValidator {
             puaMetadataDetails.setAdditionalProperties(el.getPuaData().getAdditionalProperties());
         }
         if (el.getCardinality() != null && puaMetadataDetails.getType().equals("array")) {
-            getMinAndMAxItems(el, puaMetadataDetails);
+            getMinAndMaxItems(el, puaMetadataDetails);
         }
         Optional.ofNullable(el.getPuaData()).map(PuaData::getPattern).ifPresent(puaMetadataDetails::setPattern);
         if (el.getPuaData() != null && el.getPuaData().getEnum() != null) {
@@ -1083,7 +1027,7 @@ public class PuaPastisValidator {
         }
     }
 
-    private void getMinAndMAxItems(ElementProperties el, PuaMetadataDetails puaMetadataDetails) {
+    private void getMinAndMaxItems(ElementProperties el, PuaMetadataDetails puaMetadataDetails) {
         switch (el.getCardinality()) {
             case CARDINALITY_1: {
                 puaMetadataDetails.setMinItems(1);
@@ -1104,7 +1048,7 @@ public class PuaPastisValidator {
         }
     }
 
-    public ElementProperties getElementById(List<ElementProperties> elementProperties, Long id) {
+    private ElementProperties getElementById(List<ElementProperties> elementProperties, Long id) {
         for (ElementProperties el : elementProperties) {
             Long elementId = el.getId();
             if (elementId != null && elementId.equals(id)) return el;
@@ -1117,7 +1061,7 @@ public class PuaPastisValidator {
      *
      * @return an ordered JSONArray
      */
-    public JSONArray sortedJSONArray() {
+    private JSONArray sortedJSONArray() {
         JSONArray jsonArray = new JSONArray();
         try {
             Field changeMap = jsonArray.getClass().getDeclaredField("map");

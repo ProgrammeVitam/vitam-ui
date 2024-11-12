@@ -86,4 +86,5 @@ export interface MetadataHeaders {
   cardinalite: string[];
   commentaire: string;
   enumeration: string[];
+  external: boolean;
 }

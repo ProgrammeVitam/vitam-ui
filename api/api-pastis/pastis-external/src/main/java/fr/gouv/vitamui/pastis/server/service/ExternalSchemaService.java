@@ -36,34 +36,12 @@ The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
 
-package fr.gouv.vitamui.pastis.common.dto.seda;
+package fr.gouv.vitamui.pastis.server.service;
 
-import lombok.Data;
+import fr.gouv.vitam.common.model.administration.schema.SchemaResponse;
 
 import java.util.List;
-import java.util.stream.Stream;
 
-@Data
-public class SedaNode {
-
-    private String name;
-    private String nameFr;
-    private String element;
-    private String cardinality;
-    private String type;
-    private String choice;
-    private String extensible;
-    private List<String> enumeration;
-    private String definition;
-    private String collection;
-    private List<SedaNode> children;
-    private boolean external;
-
-    public Stream<SedaNode> flattened() {
-        return Stream.concat(Stream.of(this), children.stream().flatMap(SedaNode::flattened));
-    }
-
-    public SedaNode getChild(String childName) {
-        return this.getChildren().stream().filter(child -> child.getName().equals(childName)).findFirst().orElse(null);
-    }
+public interface ExternalSchemaService {
+    List<SchemaResponse> getExternalSchemaModels();
 }

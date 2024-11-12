@@ -349,6 +349,7 @@ export class FileTreeComponent implements OnInit, OnDestroy {
         newNode.cardinality = Object.values(CardinalityConstants).find((c) => c.valueOf() === sedaChild.cardinality);
       }
       newNode.name = element.name;
+      newNode.external = element.external;
       newNode.id = newId;
       newNode.level = parent.level + 1;
       newNode.dataType = DataTypeConstants[sedaChild.type as keyof typeof DataTypeConstants];
@@ -432,6 +433,7 @@ export class FileTreeComponent implements OnInit, OnDestroy {
       groupOrChoice: null,
       valueOrData: undefined,
       children: [],
+      external: false,
     };
   }
 

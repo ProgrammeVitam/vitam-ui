@@ -241,6 +241,7 @@ api/api-referential/referential-internal/src/main/resources/dev/vitam/
 api/api-iam/iam-internal/src/main/resources/dev/vitam/
 api/api-collect/collect-internal/src/main/resources/dev/vitam/
 api/api-collect/collect-internal/src/main/resources/ontology/
+api/api-pastis/pastis-standalone/external-schema-definition.json
 
 ##########################################
 # Mongo workspace entry-point #

@@ -42,6 +42,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import fr.gouv.vitamui.pastis.common.util.RNGConstants;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,6 +62,7 @@ public class ElementProperties {
     private String value;
     private String documentation;
     private String editName;
+    private boolean external;
 
     @JsonIgnore
     private Object sedaData;
@@ -70,6 +72,7 @@ public class ElementProperties {
     private Long parentId;
 
     @JsonIgnore
+    @ToString.Exclude
     private ElementProperties parent;
 
     private List<ElementProperties> choices = new ArrayList<>();

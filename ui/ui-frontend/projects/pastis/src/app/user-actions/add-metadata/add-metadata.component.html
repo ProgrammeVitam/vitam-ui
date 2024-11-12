@@ -34,6 +34,7 @@
     <mat-selection-list (ngModelChange)="selectSedaElement($event)" [disableRipple]="true" [ngModel]="addedItems" class="list-box">
       <mat-list *ngFor="let element of allowedChildren | filterByName: filterName : sedaLanguage" class="list-item">
         <span class="list-box-content">
+          <span *ngIf="element.external">EXT-</span>
           <span
             [matTooltipShowDelay]="0"
             class="text medium"

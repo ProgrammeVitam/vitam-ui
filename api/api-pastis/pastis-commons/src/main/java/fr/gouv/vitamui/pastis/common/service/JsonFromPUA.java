@@ -66,7 +66,7 @@ public class JsonFromPUA {
      * @param jsonPUA the JSON Object representing the PUA
      * @return
      */
-    public ElementProperties getProfileFromPUA(JSONObject jsonPUA) throws IOException {
+    public ElementProperties getProfileFromPUA(SedaNode sedaTree, JSONObject jsonPUA) throws IOException {
         String controlSchemaString = (String) jsonPUA.get("controlSchema");
         JSONObject controlSchema = new JSONObject(controlSchemaString);
 
@@ -89,11 +89,9 @@ public class JsonFromPUA {
         id.setValueOrData("data");
         id.setDataType(String.valueOf(RNGConstants.DataType.ID));
 
-        SedaNode sedaNode = PuaPastisValidator.getArchiveUnitSedaNode();
+        buildProfile(controlSchema, sedaTree, archiveUnit);
 
-        buildProfile(controlSchema, sedaNode, archiveUnit);
-
-        sortTreeWithSeda(archiveUnit, sedaNode);
+        sortTreeWithSeda(archiveUnit, sedaTree);
 
         return root;
     }
@@ -141,18 +139,6 @@ public class JsonFromPUA {
             );
         }
         return required;
-    }
-
-    /**
-     * Get children definition of node by name
-     *
-     * @param sedaNode node to look for children
-     * @param name name of children to look for
-     * @return
-     */
-    private SedaNode getChildrenSedaNode(SedaNode sedaNode, String name) {
-        String realName = sanitizeNodeName(name);
-        return sedaNode.getChildren().stream().filter(c -> c.getName().equals(realName)).findAny().orElse(null);
     }
 
     private String sanitizeNodeName(String name) {
@@ -293,13 +279,14 @@ public class JsonFromPUA {
     ) {
         childrensNames.forEach(childName -> {
             JSONObject childPua = propertiesNew.getJSONObject(childName);
-            SedaNode childrenSedaNode = getChildrenSedaNode(sedaNode, childName);
+            String sanitizedChildName = sanitizeNodeName(childName);
+            SedaNode childrenSedaNode = sedaNode.getChild(sanitizedChildName);
 
             ElementProperties childrenParent;
             // In a PUA the Content node in ArchiveUnit node is omitted.
             // So if we are in the ArchiveUnit Node, then we must check for the children in Content Node as well
             if (childrenSedaNode == null && parent.getName().equals("ArchiveUnit")) {
-                childrenSedaNode = getChildrenSedaNode(getChildrenSedaNode(sedaNode, CONTENT), childName);
+                childrenSedaNode = sedaNode.getChild(CONTENT).getChild(childName);
                 if (
                     childPua.optString("type").equals("string") &&
                     null != childrenSedaNode &&
@@ -347,6 +334,7 @@ public class JsonFromPUA {
         ElementProperties childProfile = createChildren(parent, key);
         childProfile.setType(RNGConstants.getTypeElement().get(sedaNode.getElement()));
         childProfile.setDataType(sedaNode.getType());
+        childProfile.setExternal(sedaNode.isExternal());
 
         Integer minItems = null;
         Integer maxItems = null;
