@@ -1,5 +1,5 @@
 /*
- * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
+ * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2022)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
  *
  * contact@programmevitam.fr
@@ -26,7 +26,6 @@
  * that may mean  that it is complicated to manipulate,  and  that  also
  * therefore means  that it is reserved for developers  and  experienced
  * professionals having in-depth computer knowledge. Users are therefore
- * encouraged to load and test the software's suitability as regards their
  * encouraged to load and test the software's suitability as regards their
  * requirements in conditions enabling the security of their systems and/or
  * data to be ensured and,  more generally, to use and operate it in the
