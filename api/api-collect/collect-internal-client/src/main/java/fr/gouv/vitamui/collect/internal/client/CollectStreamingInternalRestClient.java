@@ -47,6 +47,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.InputStream;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Collect Streaming Internal REST Client.
@@ -84,6 +85,7 @@ public class CollectStreamingInternalRestClient
         final InternalHttpContext context,
         InputStream inputStream,
         String transactionId,
+        String attachmentId,
         String originalFileName
     ) {
         LOGGER.debug("Calling upload using streaming process");
@@ -92,6 +94,9 @@ public class CollectStreamingInternalRestClient
         final MultiValueMap<String, String> headersList = new HttpHeaders();
         headersList.addAll(buildHeaders(context));
         headersList.add(CommonConstants.X_TRANSACTION_ID_HEADER, transactionId);
+        if (Objects.nonNull(attachmentId)) {
+            headersList.add(CommonConstants.X_ATTACHMENT_ID_HEADER, attachmentId);
+        }
         headersList.add(CommonConstants.X_ORIGINAL_FILENAME_HEADER, originalFileName);
 
         HttpHeaders headersParams = new HttpHeaders();

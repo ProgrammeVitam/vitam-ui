@@ -106,6 +106,7 @@ public class CollectStreamingInternalRestClientTest {
                     params.getKey(),
                     zipContent,
                     TRANSACTION_ID,
+                    null,
                     ORIGINAL_FILENAME
                 )
         );

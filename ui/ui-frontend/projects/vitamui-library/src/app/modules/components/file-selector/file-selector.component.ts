@@ -53,6 +53,8 @@ export class FileSelectorComponent {
    */
   @Input() extensions?: string[];
   @Input() multipleFiles = false;
+  /** only a directory can be chosen */
+  @Input() directoryMode = false;
   @Input() maxSizeInBytes: number; // TODO: do some control on the file size?
 
   @ViewChild('inputFiles') inputFiles: ElementRef;
@@ -62,18 +64,34 @@ export class FileSelectorComponent {
 
   @Output() filesChanged = new EventEmitter<File[]>();
 
-  protected files: File[] = [];
+  private files: File[] = [];
+  protected displayFiles: File[] = [];
 
-  protected handleFiles(files: FileList | File[]) {
-    if (!this.multipleFiles && this.files.length > 0) return;
-
+  protected handleFilesSelection(files: FileList | File[]) {
+    if (!this.multipleFiles && this.files.length > 0) {
+      return;
+    }
     // Filter to keep only the ones matching extension list (useful for drag & drop and to make sure no other type has been selected)
-    this.files.push(
-      ...Array.from(files)
-        .filter((file) => !this.extensions?.length || this.extensions.some((ext) => file.name.toLowerCase().endsWith(ext.toLowerCase())))
-        .slice(0, this.multipleFiles ? undefined : 1),
-    );
+    const filteredFiles = Array.from(files)
+      .filter((file) => !this.extensions?.length || this.extensions.some((ext) => file.name.toLowerCase().endsWith(ext.toLowerCase())))
+      .slice(0, this.multipleFiles ? undefined : 1);
+    this.files.push(...filteredFiles);
+    const directory = this.getDirectory(files);
+    if (this.directoryMode && directory) {
+      this.displayFiles.push(directory);
+    } else {
+      this.displayFiles.push(...filteredFiles);
+    }
     this.filesChanged.emit(this.files);
+  }
+
+  private getDirectory(files: FileList | File[]): File {
+    let path = files[0].webkitRelativePath;
+    if (path.indexOf('/') !== -1) {
+      path = path.split('/')[0];
+      return new File([], path);
+    }
+    return null;
   }
 
   openFileSelectorOSDialog() {

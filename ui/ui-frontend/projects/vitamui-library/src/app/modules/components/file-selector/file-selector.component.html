@@ -1,5 +1,17 @@
-<div class="drag-and-drop-area" vitamuiCommonDragAndDrop (fileToUploadEmitter)="handleFiles($event)">
-  <input #inputFiles type="file" (change)="handleFiles($event.target.files)" [accept]="extensions?.join(',')" [multiple]="multipleFiles" />
+<div
+  class="drag-and-drop-area"
+  vitamuiCommonDragAndDrop
+  [enableFolderDragAndDrop]="directoryMode"
+  (fileToUploadEmitter)="handleFilesSelection($event)"
+>
+  <input
+    #inputFiles
+    type="file"
+    (change)="handleFilesSelection($event.target.files)"
+    [accept]="extensions?.join(',')"
+    [multiple]="multipleFiles"
+    [attr.webkitdirectory]="directoryMode ? '' : null"
+  />
 
   @if (fileList) {
     <ng-container *ngTemplateOutlet="fileList"></ng-container>
@@ -16,7 +28,7 @@
 
 <ng-template #defaultFileList>
   <div class="vitamui-chip-list">
-    <div *ngFor="let file of files" class="vitamui-chip">
+    <div *ngFor="let file of displayFiles" class="vitamui-chip">
       <div [title]="file.name" class="vitamui-chip-content">
         {{ file.name }}
         <span class="file-size">{{ file.size | bytes }}</span>

@@ -35,10 +35,19 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpEvent, HttpHeaders, HttpRequest, HttpResponse } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { BASE_URL, BaseHttpClient, PageRequest, PaginatedResponse, Project, SearchCriteriaHistory, Transaction } from 'vitamui-library';
+import {
+  BASE_URL,
+  BaseHttpClient,
+  PageRequest,
+  PaginatedResponse,
+  Project,
+  SearchCriteriaHistory,
+  Transaction,
+  VitamuiHttpHeaders,
+} from 'vitamui-library';
 
 @Injectable({
   providedIn: 'root',
@@ -106,6 +115,24 @@ export class ProjectsApiService extends BaseHttpClient<any> {
     return this.http.post<SearchCriteriaHistory>(`${this.apiUrl}/archive-units/searchcriteriahistory`, searchCriteriaHistory);
   }
 
+  uploadZip(content: Blob, transactionId: string, filename: string, attachmentId?: string): Observable<HttpEvent<any>> {
+    let headers = new HttpHeaders()
+      .set(VitamuiHttpHeaders.X_TRANSACTION_ID, transactionId)
+      .set(VitamuiHttpHeaders.X_ORIGINAL_FILENAME, filename)
+      .set('Content-Type', 'application/octet-stream')
+      .set('reportProgress', 'true')
+      .set('ngsw-bypass', 'true');
+    if (attachmentId) {
+      headers = headers.set(VitamuiHttpHeaders.X_ATTACHEMENT_ID, attachmentId);
+    }
+    const options: Object = {
+      headers: headers,
+      responseType: 'text',
+      reportProgress: true,
+    };
+    return this.http.request<Transaction>(new HttpRequest('POST', `${this.apiUrl}/upload`, content, options));
+  }
+
   deleteSearchCriteriaHistory(id: string): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/archive-units/searchcriteriahistory/${id}`);
   }
@@ -127,7 +154,10 @@ export class ProjectsApiService extends BaseHttpClient<any> {
     headers?: HttpHeaders,
   ): Observable<PaginatedResponse<Transaction>> {
     const params = pageRequest.httpParams;
-    return this.http.get<PaginatedResponse<Transaction>>(`${this.apiUrl}/${projectId}/transactions`, { params, headers });
+    return this.http.get<PaginatedResponse<Transaction>>(`${this.apiUrl}/${projectId}/transactions`, {
+      params,
+      headers,
+    });
   }
 
   validateTransaction(id: string) {

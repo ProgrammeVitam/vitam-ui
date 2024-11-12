@@ -42,6 +42,7 @@ import { v4 as uuid } from 'uuid';
 
 import { Node } from '../../models/node.interface';
 import { FilingPlanMode, FilingPlanService } from './filing-plan.service';
+import { Unit } from '../../../app/modules';
 
 export const NODE_SELECT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -56,6 +57,8 @@ export const NODE_SELECT_VALUE_ACCESSOR: any = {
   providers: [NODE_SELECT_VALUE_ACCESSOR],
 })
 export class FilingPlanComponent implements ControlValueAccessor, OnInit {
+  @Input() dataSource: Unit[];
+  /** @deprecated should be removed - see VitamUIHttpInterceptor */
   @Input() tenantIdentifier: number;
   @Input() mode: FilingPlanMode;
   @Input() componentId: string = uuid();
@@ -79,16 +82,21 @@ export class FilingPlanComponent implements ControlValueAccessor, OnInit {
     this.nestedDataSource = new MatTreeNestedDataSource();
   }
 
-  initFiningTree() {
-    this.filingPlanService.loadTree(this.tenantIdentifier, this.componentId).subscribe((nodes) => {
-      this.nestedDataSource.data = nodes;
-      this.nestedTreeControl.dataNodes = nodes;
-      this.initCheckedNodes(this.selectedNodes, nodes);
-    });
+  ngOnInit(): void {
+    if (this.dataSource) {
+      const nodes = this.filingPlanService.loadTreeFromDataSource(this.dataSource, this.componentId);
+      this.setNodes(nodes);
+    } else {
+      this.filingPlanService.loadTree(this.componentId).subscribe((nodes) => {
+        this.setNodes(nodes);
+      });
+    }
   }
 
-  ngOnInit(): void {
-    this.initFiningTree();
+  setNodes(nodes: Node[]) {
+    this.nestedDataSource.data = nodes;
+    this.nestedTreeControl.dataNodes = nodes;
+    this.initCheckedNodes(this.selectedNodes, nodes);
   }
 
   hasNestedChild = (_: number, node: any) => node.children && node.children.length;

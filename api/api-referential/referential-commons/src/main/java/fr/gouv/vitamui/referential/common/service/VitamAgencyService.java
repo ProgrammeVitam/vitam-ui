@@ -79,7 +79,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class VitamAgencyService {
@@ -245,45 +244,43 @@ public class VitamAgencyService {
         final List<AgenciesModel> agencies,
         final String applicationSessionId
     ) {
-        if (agencies != null && !agencies.isEmpty()) {
-            // check if tenant is ok in the request body
-            final Optional<AgenciesModel> agency = agencies.stream().findFirst();
-            final Integer tenantIdentifier = agency.isPresent() ? agency.get().getTenant() : null;
-            if (tenantIdentifier != null) {
-                final boolean sameTenant = agencies.stream().allMatch(ac -> tenantIdentifier.equals(ac.getTenant()));
-                if (!sameTenant) {
-                    throw new BadRequestException("All the agencies contracts must have the same tenant identifier");
-                }
-            } else {
-                throw new BadRequestException("The tenant identifier must be present in the request body");
-            }
-
-            try {
-                // check if tenant exist in Vitam
-                final VitamContext vitamContext = new VitamContext(tenantIdentifier).setApplicationSessionId(
-                    applicationSessionId
-                );
-                final JsonNode select = new Select().getFinalSelect();
-                final RequestResponse<AgenciesModel> response = agencyService.findAgencies(vitamContext, select);
-                if (response.getStatus() == HttpStatus.UNAUTHORIZED.value()) {
-                    throw new PreconditionFailedException(
-                        "Can't create agencies for the tenant : " + tenantIdentifier + " not found in Vitam"
-                    );
-                } else if (response.getStatus() != HttpStatus.OK.value()) {
-                    throw new UnavailableServiceException(
-                        "Can't create agencies for this tenant, Vitam response code : " + response.getStatus()
-                    );
-                }
-
-                verifyAgencyExistence(agencies, response);
-            } catch (final VitamClientException e) {
-                throw new UnavailableServiceException(
-                    "Can't create agencies for this tenant, error while calling Vitam : " + e.getMessage()
-                );
-            }
-            return tenantIdentifier;
+        if (agencies == null || agencies.isEmpty()) {
+            throw new BadRequestException("The body is not found");
         }
-        throw new BadRequestException("The body is not found");
+        // check if tenant is ok in the request body
+        final Integer tenantIdentifier = agencies.stream().findFirst().map(AgenciesModel::getTenant).orElse(null);
+        if (tenantIdentifier == null) {
+            throw new BadRequestException("The tenant identifier must be present in the request body");
+        }
+        final boolean sameTenant = agencies.stream().allMatch(ac -> tenantIdentifier.equals(ac.getTenant()));
+        if (!sameTenant) {
+            throw new BadRequestException("All the agencies contracts must have the same tenant identifier");
+        }
+
+        try {
+            // check if tenant exist in Vitam
+            final VitamContext vitamContext = new VitamContext(tenantIdentifier).setApplicationSessionId(
+                applicationSessionId
+            );
+            final JsonNode select = new Select().getFinalSelect();
+            final RequestResponse<AgenciesModel> response = agencyService.findAgencies(vitamContext, select);
+            if (response.getStatus() == HttpStatus.UNAUTHORIZED.value()) {
+                throw new PreconditionFailedException(
+                    "Can't create agencies for the tenant : " + tenantIdentifier + " not found in Vitam"
+                );
+            } else if (response.getStatus() != HttpStatus.OK.value()) {
+                throw new UnavailableServiceException(
+                    "Can't create agencies for this tenant, Vitam response code : " + response.getStatus()
+                );
+            }
+
+            verifyAgencyExistence(agencies, response);
+        } catch (final VitamClientException e) {
+            throw new UnavailableServiceException(
+                "Can't create agencies for this tenant, error while calling Vitam : " + e.getMessage()
+            );
+        }
+        return tenantIdentifier;
     }
 
     /**

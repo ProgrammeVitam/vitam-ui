@@ -127,7 +127,7 @@ describe('FilingPlanService', () => {
     };
     children[1].children.push(subChild);
 
-    service.loadTree(42, 'prefix').subscribe((tree) => {
+    service.loadTree('prefix').subscribe((tree) => {
       console.log('Result: ', tree);
       console.log('Expected: ', rootNode);
       expect(tree).toEqual(rootNode);
@@ -166,7 +166,7 @@ describe('FilingPlanService', () => {
   }));
 
   it('should return an empty tree if an error occurs', inject([FilingPlanService], (service: FilingPlanService) => {
-    service.loadTree(42, '').subscribe((tree) => {
+    service.loadTree('').subscribe((tree) => {
       expect(tree).toEqual([]);
     });
 

@@ -98,12 +98,14 @@ public class ProjectExternalService extends AbstractResourceClientService<Collec
     public ResponseEntity<Void> streamingUpload(
         InputStream inputStream,
         String transactionId,
+        String attachmentId,
         String originalFileName
     ) {
         return collectStreamingInternalRestClient.streamingUpload(
             getInternalHttpContext(),
             inputStream,
             transactionId,
+            attachmentId,
             originalFileName
         );
     }

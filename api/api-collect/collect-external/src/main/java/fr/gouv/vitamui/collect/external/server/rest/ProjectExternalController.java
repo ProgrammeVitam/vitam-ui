@@ -171,15 +171,16 @@ public class ProjectExternalController {
     public ResponseEntity<Void> streamingUpload(
         InputStream inputStream,
         @RequestHeader(value = CommonConstants.X_TRANSACTION_ID_HEADER) final String transactionId,
+        @RequestHeader(value = CommonConstants.X_ATTACHMENT_ID_HEADER, required = false) final String attachmentId,
         @RequestHeader(value = CommonConstants.X_ORIGINAL_FILENAME_HEADER) final String originalFileName,
         @RequestHeader Map<String, String> headers
     ) throws PreconditionFailedException {
         ParameterChecker.checkParameter("The transaction ID is a mandatory parameter: ", transactionId);
-        SanityChecker.checkSecureParameter(transactionId);
+        SanityChecker.checkSecureParameter(transactionId, attachmentId);
         SanityChecker.isValidFileName(originalFileName);
         SafeFileChecker.checkSafeFilePath(originalFileName);
         LOGGER.debug("[External] upload collect zip file : {}", originalFileName);
-        return projectExternalService.streamingUpload(inputStream, transactionId, originalFileName);
+        return projectExternalService.streamingUpload(inputStream, transactionId, attachmentId, originalFileName);
     }
 
     @Secured(ServicesData.ROLE_UPDATE_PROJECTS)

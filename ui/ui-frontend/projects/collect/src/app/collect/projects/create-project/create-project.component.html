@@ -514,7 +514,7 @@
           </table>
         </div>
         <div class="actions">
-          <button (click)="close()" [disabled]="pending" class="btn primary" type="button">
+          <button (click)="close()" [disabled]="isLoading" class="btn primary" type="button">
             {{ 'COMMON.CLOSE' | translate }}
           </button>
         </div>
@@ -528,7 +528,7 @@
         <div class="text large bold">{{ 'COLLECT.MODAL.PROJECT_CREATED' | translate }}</div>
         <div class="main-content"></div>
         <div class="actions">
-          <button (click)="close()" [disabled]="pending" class="btn primary" type="button">
+          <button (click)="close()" [disabled]="isLoading" class="btn primary" type="button">
             {{ 'COMMON.CLOSE' | translate }}
           </button>
         </div>

@@ -105,6 +105,7 @@ public class CommonConstants {
     public static final String X_PROJECT_ID_HEADER = "X-Project-Id";
 
     public static final String X_TRANSACTION_ID_HEADER = "X-Transaction-Id";
+    public static final String X_ATTACHMENT_ID_HEADER = "X-Attachment-Id";
 
     public static final String ROLE_PREFIX = "ROLE_";
 

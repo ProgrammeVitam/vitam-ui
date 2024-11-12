@@ -290,7 +290,7 @@ class ProjectInternalServiceTest {
     @Test
     void shouldStreamUploadWithSuccess() throws VitamClientException {
         // GIVEN
-        Mockito.when(collectService.uploadProjectZip(any(), any(), any())).thenReturn(new RequestResponseOK());
+        Mockito.when(collectService.uploadProjectZip(any(), any(), any(), any())).thenReturn(new RequestResponseOK());
         InputStream csvFileInputStream =
             ProjectInternalService.class.getClassLoader()
                 .getResourceAsStream("data/updateCollectArchiveUnits/collect_metadata.csv");
@@ -301,6 +301,7 @@ class ProjectInternalServiceTest {
                 projectInternalService.streamingUpload(
                     csvFileInputStream,
                     "FAKE_TRANSACTION_ID",
+                    null,
                     "FAKE_VALUE",
                     vitamContext
                 )
@@ -310,7 +311,7 @@ class ProjectInternalServiceTest {
     @Test
     void shouldThrowExceptionWhenStreamUpload() throws VitamClientException {
         // GIVEN
-        Mockito.when(collectService.uploadProjectZip(any(), any(), any())).thenThrow(VitamClientException.class);
+        Mockito.when(collectService.uploadProjectZip(any(), any(), any(), any())).thenThrow(VitamClientException.class);
         InputStream csvFileInputStream =
             ProjectInternalService.class.getClassLoader()
                 .getResourceAsStream("data/updateCollectArchiveUnits/collect_metadata.csv");
@@ -322,6 +323,7 @@ class ProjectInternalServiceTest {
                 projectInternalService.streamingUpload(
                     csvFileInputStream,
                     "FAKE_TRANSACTION_ID",
+                    null,
                     "FAKE_VALUE",
                     vitamContext
                 )

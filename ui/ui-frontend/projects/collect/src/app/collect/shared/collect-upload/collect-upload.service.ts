@@ -45,12 +45,11 @@ import { CollectUploadFile, CollectZippedUploadFile } from './collect-upload-fil
   providedIn: 'root',
 })
 export class CollectUploadService {
-  private static X_TENANT_KEY = 'X-Tenant-Id';
   private static X_TRANSACTION_ID_KEY = 'X-Transaction-Id';
   private static X_ORIGINAL_FILENAME_HEADER = 'X-Original-Filename';
   private static COLLECT_UPLOAD_URL = './collect-api/projects/upload';
   zipFile: JSZip;
-  private uploadingFiles$: BehaviorSubject<CollectUploadFile[]> = new BehaviorSubject<CollectUploadFile[]>([]);
+  private filesToUploadSubject$: BehaviorSubject<CollectUploadFile[]> = new BehaviorSubject<CollectUploadFile[]>([]);
   private filesToUpload: CollectUploadFile[] = [];
   private zippedFile: CollectZippedUploadFile = null;
   private watchZippedFile$: BehaviorSubject<CollectZippedUploadFile> = new BehaviorSubject<CollectZippedUploadFile>(null);
@@ -59,16 +58,16 @@ export class CollectUploadService {
     this.zipFile = new JSZip();
   }
 
-  private static uploadFilesInfo(files: FileList) {
+  private static convertToCollectUploadFile(files: FileList) {
     let size = 0;
     for (let i = 0; i < files.length; i++) {
       size += files[i].size;
     }
-    const name = CollectUploadService.uploadFilesDirectoryName(files);
+    const name = CollectUploadService.directoryNameOfFirstFile(files);
     return { name, size, dragged: false } as CollectUploadFile;
   }
 
-  private static uploadFilesDirectoryName(files: FileList) {
+  private static directoryNameOfFirstFile(files: FileList) {
     let name = files[0].webkitRelativePath;
     if (name.indexOf('/') !== -1) {
       name = name.split('/')[0];
@@ -76,13 +75,13 @@ export class CollectUploadService {
     return name;
   }
 
-  private static dragAndDropUploadFilesDirectoryName(files: DataTransferItemList) {
+  private static directoryNameOfFirstFileDropped(files: DataTransferItemList) {
     return files[0].webkitGetAsEntry().fullPath.substring(1);
   }
 
   /*** Public methods ***/
   getUploadingFiles(): Observable<CollectUploadFile[]> {
-    return this.uploadingFiles$.asObservable();
+    return this.filesToUploadSubject$.asObservable();
   }
 
   getZipFile(): Observable<CollectZippedUploadFile> {
@@ -96,15 +95,15 @@ export class CollectUploadService {
     }
     this.zipFile.remove(uploadFile.name);
     this.filesToUpload.splice(index, 1);
-    this.uploadingFiles$.next(this.filesToUpload);
+    this.filesToUploadSubject$.next(this.filesToUpload);
   }
 
   directoryExistInZipFile(files: DataTransferItemList | FileList, dragged: boolean) {
     let name: string;
     if (dragged) {
-      name = CollectUploadService.dragAndDropUploadFilesDirectoryName(files as DataTransferItemList);
+      name = CollectUploadService.directoryNameOfFirstFileDropped(files as DataTransferItemList);
     } else {
-      name = CollectUploadService.uploadFilesDirectoryName(files as FileList);
+      name = CollectUploadService.directoryNameOfFirstFile(files as FileList);
     }
     const indexName = Object.values(this.zipFile.files)
       .filter((f) => f.dir)
@@ -113,7 +112,7 @@ export class CollectUploadService {
     return indexName !== -1;
   }
 
-  uploadZip(tenantIdentifier: number, transactionId: string) {
+  uploadZip(transactionId: string) {
     this.zippedFile = {
       name: `${transactionId}.zip`,
       size: this.filesToUpload.map((f) => f.size).reduce((prev, cur) => prev + cur, 0),
@@ -121,7 +120,6 @@ export class CollectUploadService {
     };
     this.watchZippedFile$.next(this.zippedFile);
     let headers = new HttpHeaders();
-    headers = headers.set(CollectUploadService.X_TENANT_KEY, tenantIdentifier.toString());
     headers = headers.set(CollectUploadService.X_TRANSACTION_ID_KEY, transactionId);
     headers = headers.set(CollectUploadService.X_ORIGINAL_FILENAME_HEADER, this.zippedFile.name);
     headers = headers.set('Content-Type', 'application/octet-stream');
@@ -133,6 +131,7 @@ export class CollectUploadService {
       responseType: 'text' as 'text',
       reportProgress: true,
     };
+
     return this.zipFile
       .generateInternalStream({ type: 'blob' })
       .accumulate((metadata) => {
@@ -149,19 +148,20 @@ export class CollectUploadService {
         );
       });
   }
+
   reinitializeZip() {
     for (const file of this.filesToUpload) {
       this.zipFile.remove(file.name);
     }
     this.filesToUpload = [];
-    this.uploadingFiles$.next(this.filesToUpload);
+    this.filesToUploadSubject$.next(this.filesToUpload);
   }
 
   async handleUpload(files: FileList) {
     if (files.length === 0) {
       return;
     }
-    this.uploadInfo(CollectUploadService.uploadFilesInfo(files));
+    this.addToFilesToUpload(CollectUploadService.convertToCollectUploadFile(files));
     for (let i = 0; i < files.length; i++) {
       const item = files[i];
       this.zipFile.file(item.webkitRelativePath, item);
@@ -170,7 +170,7 @@ export class CollectUploadService {
 
   async handleDragAndDropUpload(files: DataTransferItemList) {
     const [filesInfo] = await Promise.all([this.dragAndDropUploadFilesInfo(files), this.buildAsyncZip(files)]);
-    this.uploadInfo(filesInfo);
+    this.addToFilesToUpload(filesInfo);
   }
 
   /*** Private methods ***/
@@ -206,7 +206,7 @@ export class CollectUploadService {
   }
 
   private async dragAndDropUploadFilesInfo(files: DataTransferItemList) {
-    const name = CollectUploadService.dragAndDropUploadFilesDirectoryName(files);
+    const name = CollectUploadService.directoryNameOfFirstFileDropped(files);
     let size = 0;
     for (let i = 0; i < files.length; i++) {
       const item = files[i].webkitGetAsEntry();
@@ -261,8 +261,8 @@ export class CollectUploadService {
     return entries;
   }
 
-  private uploadInfo(uploadFile: CollectUploadFile) {
+  private addToFilesToUpload(uploadFile: CollectUploadFile) {
     this.filesToUpload.push(uploadFile);
-    this.uploadingFiles$.next(this.filesToUpload);
+    this.filesToUploadSubject$.next(this.filesToUpload);
   }
 }
