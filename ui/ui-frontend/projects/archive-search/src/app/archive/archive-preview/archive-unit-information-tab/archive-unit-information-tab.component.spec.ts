@@ -34,7 +34,8 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { NO_ERRORS_SCHEMA, Pipe, PipeTransform } from '@angular/core';
+
+import { NO_ERRORS_SCHEMA, Pipe, PipeTransform, SimpleChange } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
@@ -108,12 +109,11 @@ describe('ArchiveUnitInformationTabComponent', () => {
     openSnackBarForWorkflow: () => of({}),
     downloadObjectFromUnit: () => of({}),
   };
-
   const accessContractServiceMock = {
     currentAccessContract$: of({
       dataObjectVersion: [ObjectQualifierType.BINARYMASTER],
     } as AccessContract),
-  };
+  } as AccessContractService;
 
   const startUpServiceMock = {
     getPortalUrl: () => '',
@@ -200,7 +200,7 @@ describe('ArchiveUnitInformationTabComponent', () => {
 
   it('should call downloadObjectFromUnit of archiveService ', () => {
     // Given
-    component.archiveUnit = {
+    const archiveUnit = {
       '#allunitups': [],
       '#id': 'id',
       '#object': 'object_group_id',
@@ -218,9 +218,18 @@ describe('ArchiveUnitInformationTabComponent', () => {
       '#opi': '',
       Title: 'test tets',
       Description_: { fr: 'DescriptionFr', en: 'DescriptionEn' },
-    };
-    spyOn(archiveServiceMock, 'downloadObjectFromUnit').and.callThrough();
+    } as Unit;
+    const accessContractEveryObject = {
+      everyDataObjectVersion: true,
+      dataObjectVersion: [],
+    } as AccessContract;
 
+    spyOn(archiveServiceMock, 'downloadObjectFromUnit').and.callThrough();
+    spyOn<AccessContractService, any>(accessContractServiceMock, 'currentAccessContract$').and.returnValue(of(accessContractEveryObject));
+    component.archiveUnit = archiveUnit;
+    component.ngOnChanges({
+      archiveUnit: new SimpleChange(null, archiveUnit, true),
+    });
     // When
     component.onDownloadObjectFromUnit();
 
