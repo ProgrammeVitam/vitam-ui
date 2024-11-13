@@ -116,11 +116,18 @@ export class ArchiveUnitInformationTabComponent implements OnInit, OnChanges, On
   }
 
   private getFirstQualifierDownloadableWithLatestVersion(unit: Unit): VersionWithQualifierDto {
-    const firstVersionWithQualifierDownloadable = unit.objectGroup.versionsWithQualifiers.find((e) =>
-      this.accessContract.dataObjectVersion.includes(e.qualifier),
-    );
+    let firstVersionWithQualifierDownloadable: VersionWithQualifierDto;
+    if (this.accessContract.everyDataObjectVersion) {
+      firstVersionWithQualifierDownloadable = unit.objectGroup.versionsWithQualifiers[0];
+    } else if (!this.accessContract.dataObjectVersion) {
+      throw new Error('Download forbidden');
+    } else {
+      firstVersionWithQualifierDownloadable = unit.objectGroup.versionsWithQualifiers.find((versionWithQualifier) =>
+        this.accessContract.dataObjectVersion.includes(versionWithQualifier.qualifier),
+      );
+    }
     const downloadableQualifiers = unit.objectGroup.versionsWithQualifiers.filter(
-      (e) => e.qualifier === firstVersionWithQualifierDownloadable.qualifier,
+      (versionWithQualifier) => versionWithQualifier.qualifier === firstVersionWithQualifierDownloadable.qualifier,
     );
     return downloadableQualifiers[downloadableQualifiers.length - 1];
   }
