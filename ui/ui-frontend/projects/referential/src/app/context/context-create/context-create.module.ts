@@ -43,7 +43,6 @@ import { MatLegacyInputModule as MatInputModule } from '@angular/material/legacy
 import { MatLegacyProgressBarModule as MatProgressBarModule } from '@angular/material/legacy-progress-bar';
 import { MatLegacySelectModule as MatSelectModule } from '@angular/material/legacy-select';
 import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
-import { MatLegacyTooltipModule as MatTooltipModule } from '@angular/material/legacy-tooltip';
 
 import { VitamUICommonModule, VitamUIFieldErrorModule } from 'vitamui-library';
 import { SharedModule } from '../../../../../identity/src/app/shared/shared.module';
@@ -60,7 +59,6 @@ import { ContextCreateComponent } from './context-create.component';
     MatProgressBarModule,
     MatSelectModule,
     MatSnackBarModule,
-    MatTooltipModule,
     ReactiveFormsModule,
     VitamUICommonModule,
     VitamUIFieldErrorModule,

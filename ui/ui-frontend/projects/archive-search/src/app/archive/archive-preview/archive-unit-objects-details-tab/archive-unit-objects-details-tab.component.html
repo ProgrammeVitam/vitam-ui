@@ -196,9 +196,8 @@
                 <div
                   class="button-copy"
                   (click)="copyToClipboard(versionWithQualifier.MessageDigest)"
-                  matTooltip="{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.COPY' | translate }}"
-                  matTooltipClass="vitamui-tooltip"
-                  [matTooltipShowDelay]="300"
+                  [vitamuiCommonToolTip]="'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.COPY' | translate"
+                  [vitamuiCommonToolTipShowDelay]="300"
                 >
                   <i class="vitamui-icon vitamui-icon-content-copy"></i>
                 </div>

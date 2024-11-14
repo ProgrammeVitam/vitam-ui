@@ -48,7 +48,6 @@ import { MatLegacySelectModule as MatSelectModule } from '@angular/material/lega
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
 import { MatLegacyTabsModule as MatTabsModule } from '@angular/material/legacy-tabs';
-import { MatLegacyTooltipModule as MatTooltipModule } from '@angular/material/legacy-tooltip';
 import { TableFilterModule, VitamUICommonModule } from 'vitamui-library';
 import { PipesModule } from '../shared/pipes/pipes.module';
 import { LogbookOperationDetailComponent } from './logbook-operation-detail/logbook-operation-detail.component';
@@ -76,7 +75,6 @@ import { FR_DATE_FORMAT } from '../helpers/dates.constants';
     MatMomentDateModule,
     MatSelectModule,
     TableFilterModule,
-    MatTooltipModule,
     MatFormFieldModule,
     MatInputModule,
     PipesModule,

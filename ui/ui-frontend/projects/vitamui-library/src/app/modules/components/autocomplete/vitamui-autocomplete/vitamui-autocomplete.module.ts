@@ -40,7 +40,6 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatLegacyAutocompleteModule as MatAutocompleteModule } from '@angular/material/legacy-autocomplete';
 
 import { MatLegacyInputModule as MatInputModule } from '@angular/material/legacy-input';
-import { MatLegacyTooltipModule as MatTooltipModule } from '@angular/material/legacy-tooltip';
 import { AutocompletePositionDirectiveModule } from '../../../directives/autocomplete-position/autocomplete-position.directive.module';
 import { EllipsisDirectiveModule } from '../../../directives/ellipsis/ellipsis.directive.module';
 import { CommonTooltipModule } from '../../common-tooltip/common-tooltip.module';
@@ -51,7 +50,6 @@ import { VitamUIAutocompleteComponent } from './vitamui-autocomplete.component';
     CommonModule,
     MatAutocompleteModule,
     ReactiveFormsModule,
-    MatTooltipModule,
     MatInputModule,
     AutocompletePositionDirectiveModule,
     CommonTooltipModule,

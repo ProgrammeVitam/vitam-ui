@@ -22,13 +22,13 @@
 }
 
 .scroll::-webkit-scrollbar-track {
-  background: #f7ebfa;
+  background: var(--vitamui-primary-50);
 }
 
 .scroll::-webkit-scrollbar-thumb {
-  background-color: #9c31b5;
+  background-color: var(--vitamui-primary);
   border-radius: 20px;
-  border: 3px solid #f7ebfa;
+  border: 3px solid var(--vitamui-primary-50);
 }
 
 .pad {
@@ -38,7 +38,7 @@
 }
 
 .rectangle {
-  background: #eeeeee;
+  background: var(--vitamui-grey-200);
 }
 
 .actif-filters {
@@ -85,8 +85,7 @@
   right: 0;
   top: 0;
   bottom: 0;
-  background: #ffffff;
-  border: 1px solid #bdbdbd;
+  border: 1px solid var(--vitamui-grey-400);
   box-sizing: border-box;
   border-radius: 10px;
   margin-top: 17px;
@@ -97,7 +96,7 @@
   width: 107%;
   padding-left: 25px;
   overflow-y: scroll;
-  scrollbar-color: var(--vitamui-primary-light) #f7ebfa;
+  scrollbar-color: var(--vitamui-primary-light) var(--vitamui-primary-50);
   scrollbar-width: thin;
 }
 
@@ -106,13 +105,13 @@
 }
 
 .scroll-results::-webkit-scrollbar-track {
-  background: #ffffff;
+  background: var(--vitamui-white);
 }
 
 .scroll-results::-webkit-scrollbar-thumb {
   background-color: var(--vitamui-primary-light);
   border-radius: 20px;
-  border: 3px solid #ffffff;
+  border: 3px solid var(--vitamui-white);
 }
 
 .btn-create {
@@ -120,7 +119,7 @@
 }
 
 .pink-color {
-  background: #f6f3fb;
+  background: var(--vitamui-primary-50);
 }
 
 .boutton:focus {
@@ -128,7 +127,7 @@
 }
 
 .ko-icon {
-  color: red;
+  color: var(--vitamui-red);
   right: 5px;
 }
 
@@ -137,7 +136,7 @@
 }
 
 .save-icon {
-  color: #9d9d9d;
+  color: var(--vitamui-grey);
   font-size: 35px;
 }
 
@@ -151,18 +150,15 @@
   color: white;
   max-width: 10%;
   top: 134px;
-  border: 28px solid #eeeeee;
-  border-top-color: transparent;
-  border-right-color: transparent;
-  border-bottom-color: transparent;
-  border-left-color: #eeeeee;
+  border: 28px solid transparent;
+  border-left-color: var(--vitamui-grey-200);
 }
 
 .scroll-filters {
   height: 470px;
   overflow-y: scroll;
   overflow-x: hidden;
-  scrollbar-color: var(--vitamui-primary-light) #f7ebfa;
+  scrollbar-color: var(--vitamui-primary-light) var(--vitamui-primary-50);
   scrollbar-width: thin;
 }
 
@@ -171,13 +167,13 @@
 }
 
 .scroll-filters::-webkit-scrollbar-track {
-  background: #f7ebfa;
+  background: var(--vitamui-primary-50);
 }
 
 .scroll-filters::-webkit-scrollbar-thumb {
   background-color: var(--vitamui-primary-light);
   border-radius: 20px;
-  border: 3px solid #f7ebfa;
+  border: 3px solid var(--vitamui-primary-50);
 }
 
 .results-message {
@@ -193,7 +189,7 @@
   font-weight: normal;
   font-size: 14px;
   line-height: 22px;
-  color: #616161;
+  color: var(--vitamui-grey-700);
 }
 
 .div-update {
@@ -219,12 +215,12 @@
 }
 
 .hover-div:hover {
-  background: rgb(236 234 241);
+  background: var(--vitamui-grey-200);
   border-radius: 10px;
 }
 
 .btn-result-update:hover {
-  background: rgb(236 234 241);
+  background: var(--vitamui-grey-200);
 }
 
 .btn-no-result {
@@ -240,7 +236,6 @@
   font-size: 13px;
   line-height: 16px;
   letter-spacing: -0.2px;
-  color: #000000;
 }
 
 .no-scroll-results {

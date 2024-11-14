@@ -18,7 +18,7 @@
   }
 
   &.mat-form-field-invalid .mat-form-field-label {
-    color: $red;
+    color: var(--vitamui-red);
   }
 
   .mat-form-field-label {
@@ -26,7 +26,7 @@
     font-weight: 400;
 
     .mat-form-field-required-marker {
-      color: $red;
+      color: var(--vitamui-red);
     }
   }
 

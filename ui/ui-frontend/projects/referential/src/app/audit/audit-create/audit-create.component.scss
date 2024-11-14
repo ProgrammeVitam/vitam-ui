@@ -23,11 +23,6 @@ label {
   .required-marker {
     color: var(--vitamui-primary);
   }
-
-  small {
-    color: #a5a5a5;
-    font-size: inherit;
-  }
 }
 
 .underline {
@@ -51,9 +46,4 @@ button > small {
   display: block;
   font-size: 12px;
   font-weight: 400;
-}
-
-.hint {
-  color: #a5a5a5;
-  font-size: 15px;
 }

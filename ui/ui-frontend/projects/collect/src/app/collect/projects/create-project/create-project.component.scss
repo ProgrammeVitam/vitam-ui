@@ -33,8 +33,7 @@
   height: 25vh;
   border: 2px dashed var(--vitamui-primary);
   border-radius: 6px;
-  box-shadow: 0 0 80px rgba(255, 255, 249, 0.3);
-  background: $white;
+  background: var(--vitamui-white);
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -72,14 +71,14 @@
   height: 300px;
 
   p {
-    color: $white;
+    color: var(--vitamui-white);
   }
 
   .drop-area {
     height: 100%;
-    background: #5cbaa9;
+    background: var(--vitamui-grey-400);
     opacity: 0.9;
-    color: $white;
+    color: var(--vitamui-white);
     overflow: hidden;
   }
 }
@@ -121,7 +120,7 @@
   }
 
   .file-size {
-    color: #888888;
+    color: var(--vitamui-grey-600);
     margin-left: 15px;
   }
 }
@@ -203,7 +202,7 @@
     .delete-button {
       border: 1px solid var(--vitamui-primary);
       border-radius: 50%;
-      background-color: #ffffff;
+      background-color: var(--vitamui-white);
       width: 30px;
       height: 30px;
       font-size: medium;
@@ -256,26 +255,4 @@
   flex-shrink: 1;
   overflow: hidden;
   text-overflow: ellipsis;
-}
-
-@mixin gap($gap) {
-  display: flex;
-  gap: $gap;
-  flex-direction: column;
-  align-items: flex-start;
-}
-
-@mixin hgap($gap) {
-  display: flex;
-  gap: $gap;
-  flex-direction: row;
-  align-items: center;
-}
-
-.gap-20 {
-  @include gap(20px);
-}
-
-.hgap-10 {
-  @include hgap(10px);
 }

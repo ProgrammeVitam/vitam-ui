@@ -21,10 +21,10 @@
   }
 
   &.hasError {
-    border: 1px dashed $red;
+    border: 1px dashed var(--vitamui-red);
 
     * {
-      color: $red !important;
+      color: var(--vitamui-red) !important;
     }
   }
 }
@@ -50,7 +50,7 @@
 }
 
 .red {
-  color: $red;
+  color: var(--vitamui-red);
 }
 
 .text-center {

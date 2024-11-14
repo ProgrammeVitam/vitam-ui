@@ -58,11 +58,11 @@
     <div class="col-12 mb-3">
       <label>{{ 'INGEST_DETAIL.MESSAGE' | translate }}</label>
       <div class="vitamui-snack-bar-content" [ngSwitch]="getIngestStatus(ingest)">
-        <div *ngSwitchCase="'OK'" class="text-green">{{ ingestMessage(ingest) }}</div>
-        <div *ngSwitchCase="'WARNING'" class="text-orange">{{ ingestMessage(ingest) }}</div>
-        <div *ngSwitchCase="'KO'" class="text-red">{{ ingestMessage(ingest) }}</div>
-        <div *ngSwitchCase="'FATAL'" class="text-black">{{ ingestMessage(ingest) }}</div>
-        <div *ngSwitchCase="'En cours'" class="text-grey status">{{ ingestMessage(ingest) }}</div>
+        <div *ngSwitchCase="'OK'" class="text success bold">{{ ingestMessage(ingest) }}</div>
+        <div *ngSwitchCase="'WARNING'" class="text warning bold">{{ ingestMessage(ingest) }}</div>
+        <div *ngSwitchCase="'KO'" class="text danger bold">{{ ingestMessage(ingest) }}</div>
+        <div *ngSwitchCase="'FATAL'" class="text danger bold">{{ ingestMessage(ingest) }}</div>
+        <div *ngSwitchCase="'En cours'" class="text light bold">{{ ingestMessage(ingest) }}</div>
       </div>
     </div>
   </div>

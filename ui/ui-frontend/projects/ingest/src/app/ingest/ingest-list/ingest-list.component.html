@@ -61,29 +61,29 @@
           <div class="col-2">
             <ng-container [ngSwitch]="getIngestStatus(ingest)">
               <div *ngSwitchCase="IngestStatus.OK">
-                <span class="status">{{ 'INGEST_LIST.RESULT_STATUS.FINISHED' | translate }}</span>
+                <span class="text success bold">{{ 'INGEST_LIST.RESULT_STATUS.FINISHED' | translate }}</span>
                 <br />
-                <span class="text-green">{{ 'INGEST_LIST.RESULT.OK' | translate }}</span>
+                <span class="text success">{{ 'INGEST_LIST.RESULT.OK' | translate }}</span>
               </div>
               <div *ngSwitchCase="IngestStatus.IN_PROGRESS">
                 <span class="status">{{ 'INGEST_LIST.RESULT.STARTED' | translate }}</span>
                 <br />
-                <span class="text-grey">....</span>
+                <span class="text light bold">....</span>
               </div>
               <div *ngSwitchCase="IngestStatus.WARNING">
-                <span class="status">{{ 'INGEST_LIST.RESULT_STATUS.FINISHED' | translate }}</span>
+                <span class="text warning bold">{{ 'INGEST_LIST.RESULT_STATUS.FINISHED' | translate }}</span>
                 <br />
-                <span class="text-orange">{{ 'INGEST_LIST.RESULT.WARNING' | translate }}</span>
+                <span class="text warning">{{ 'INGEST_LIST.RESULT.WARNING' | translate }}</span>
               </div>
               <div *ngSwitchCase="IngestStatus.FATAL">
-                <span class="status">{{ 'INGEST_LIST.RESULT_STATUS.BREAK' | translate }}</span>
+                <span class="text danger bold">{{ 'INGEST_LIST.RESULT_STATUS.BREAK' | translate }}</span>
                 <br />
-                <span class="text-red">{{ 'INGEST_LIST.RESULT.FATAL' | translate }}</span>
+                <span class="text danger">{{ 'INGEST_LIST.RESULT.FATAL' | translate }}</span>
               </div>
               <div *ngSwitchCase="IngestStatus.KO">
-                <span class="status">{{ 'INGEST_LIST.RESULT_STATUS.FINISHED' | translate }}</span>
+                <span class="text danger bold">{{ 'INGEST_LIST.RESULT_STATUS.FINISHED' | translate }}</span>
                 <br />
-                <span class="text-red">{{ 'INGEST_LIST.RESULT.KO' | translate }}</span>
+                <span class="text danger">{{ 'INGEST_LIST.RESULT.KO' | translate }}</span>
               </div>
             </ng-container>
           </div>

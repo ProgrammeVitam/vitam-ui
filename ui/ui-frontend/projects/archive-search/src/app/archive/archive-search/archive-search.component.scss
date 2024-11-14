@@ -10,7 +10,7 @@
   display: flex;
   align-items: center;
 
-  color: #757575;
+  color: var(--vitamui-grey-600);
 }
 
 .margin-btn {
@@ -28,7 +28,7 @@
 
 .link-without-underline {
   cursor: pointer;
-  color: #702382;
+  color: var(--vitamui-primary);
   font-weight: bold;
   margin-top: 10px;
   margin-bottom: 10px;
@@ -39,7 +39,7 @@
 }
 
 .red-text {
-  color: red;
+  color: var(--vitamui-red);
   font-size: x-large;
   font-weight: bold;
 }
@@ -47,13 +47,6 @@
 .icon-style {
   font-size: 50px;
   line-height: 5px;
-}
-
-.vertical-line {
-  border-left: 2px solid red;
-  display: block;
-  height: 100%;
-  margin: 0 22px;
 }
 
 .disabled-div {
@@ -74,7 +67,7 @@
   float: right;
   cursor: pointer;
   width: 40px;
-  border: 1px solid #bdbdbd;
+  border: 1px solid var(--vitamui-grey-400);
   box-sizing: border-box;
   border-radius: 20px;
   padding: 10px 10px;
@@ -83,9 +76,13 @@
 }
 
 .vitamui-row-selected {
-  background: $light-primary;
+  background: var(--vitamui-primary-50);
 
   &:hover {
-    background: $light-primary;
+    background: var(--vitamui-primary-50);
   }
+}
+
+:host ::ng-deep .mat-tab-disabled .mat-tab-label-content {
+  color: var(--vitamui-grey-600);
 }

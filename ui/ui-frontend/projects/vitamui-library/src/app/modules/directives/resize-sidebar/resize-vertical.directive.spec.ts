@@ -50,7 +50,7 @@ import { ResizeVerticalDirective } from './resize-vertical.directive';
   styles: [
     `
       .vitamui-sidepanel-resize-sidebar {
-        border-top: 4px solid rgb(112, 35, 130);
+        border-top: 4px solid var(--vitamui-primary);
         height: 0;
         padding: 0;
         margin: 0;

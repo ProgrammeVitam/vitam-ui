@@ -42,7 +42,6 @@ import { MatLegacyDialogModule as MatDialogModule } from '@angular/material/lega
 import { MatLegacyFormFieldModule as MatFormFieldModule } from '@angular/material/legacy-form-field';
 import { MatLegacyInputModule as MatInputModule } from '@angular/material/legacy-input';
 import { MatLegacyProgressSpinnerModule as MatProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
-import { MatLegacyTooltipModule as MatTooltipModule } from '@angular/material/legacy-tooltip';
 import { TranslateModule } from '@ngx-translate/core';
 import { AccordionModule } from '../components/accordion/accordion.module';
 import { DatepickerModule } from '../components/datepicker/datepicker.module';
@@ -88,7 +87,6 @@ import { EditorListDateComponent } from './components/editor-list-date.component
     MatDatepickerModule,
     MatFormFieldModule,
     MatInputModule,
-    MatTooltipModule,
     MatProgressSpinnerModule,
     MatDialogModule,
     VitamuiRepeatableInputModule,

@@ -3,7 +3,7 @@
 
 :host {
   &.ng-invalid:not(.ng-pristine) .vitamui-input {
-    outline: 1px solid $red;
+    outline: 1px solid var(--vitamui-red);
   }
 }
 
@@ -109,6 +109,6 @@ mat-datepicker-toggle mat-icon {
 
   .error i,
   .error mat-hint {
-    color: $red;
+    color: var(--vitamui-red);
   }
 }

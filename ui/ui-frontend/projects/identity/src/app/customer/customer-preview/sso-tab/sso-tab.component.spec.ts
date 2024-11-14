@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Directive, Input, ViewChild } from '@angular/core';
+import { Component, Input, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { of, Subject } from 'rxjs';
@@ -51,14 +51,6 @@ class IdentityProviderDetailsStubComponent {
   @Input() identityProvider: IdentityProvider;
   @Input() domains: any;
   @Input() readOnly: boolean;
-}
-
-// eslint-disable-next-line @angular-eslint/directive-selector
-@Directive({ selector: '[matTooltip]' })
-class MatTooltipStubDirective {
-  @Input() matTooltip: any;
-  @Input() matTooltipDisabled: any;
-  @Input() matTooltipClass: any;
 }
 
 @Component({
@@ -148,7 +140,7 @@ describe('SsoTabComponent', () => {
 
     await TestBed.configureTestingModule({
       imports: [VitamUICommonTestModule, HttpClientTestingModule],
-      declarations: [SsoTabComponent, IdentityProviderDetailsStubComponent, TestHostComponent, MatTooltipStubDirective],
+      declarations: [SsoTabComponent, IdentityProviderDetailsStubComponent, TestHostComponent],
       providers: [
         ProviderApiService,
         { provide: BASE_URL, useValue: '/fake-api' },

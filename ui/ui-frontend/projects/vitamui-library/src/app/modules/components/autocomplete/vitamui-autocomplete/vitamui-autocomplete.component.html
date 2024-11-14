@@ -36,7 +36,7 @@
   <ng-container *ngFor="let option of filteredOptions | async">
     <mat-option [value]="option.key">
       <span vitamuiCommonEllipsis [isToolTipOnMouseEnter]="true">{{ option.label }}</span>
-      <i class="material-icons" *ngIf="option.info" [matTooltip]="option.info" matTooltipClass="vitamui-tooltip">info_outline</i>
+      <i class="material-icons" *ngIf="option.info" [vitamuiCommonToolTip]="option.info">info_outline</i>
     </mat-option>
   </ng-container>
 </mat-autocomplete>

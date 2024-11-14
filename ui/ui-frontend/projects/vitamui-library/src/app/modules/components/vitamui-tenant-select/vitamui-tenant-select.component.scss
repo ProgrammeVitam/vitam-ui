@@ -36,13 +36,13 @@ $input-height: 70px;
   align-items: center;
   font-size: 16px;
   font-weight: 500;
-  background: $white;
+  background: var(--vitamui-white);
   border-radius: 10px;
   padding-top: 22px;
   padding-bottom: 29px;
   padding-left: 23px;
   margin-bottom: 24px;
-  color: #474747;
+  color: var(--vitamui-grey-800);
   transition: box-shadow 240ms ease-out;
 
   @include input-elevation-dark;

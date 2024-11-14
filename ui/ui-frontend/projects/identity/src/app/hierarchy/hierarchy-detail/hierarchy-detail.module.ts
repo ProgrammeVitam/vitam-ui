@@ -39,7 +39,6 @@ import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatLegacyMenuModule as MatMenuModule } from '@angular/material/legacy-menu';
 import { MatLegacyTabsModule as MatTabsModule } from '@angular/material/legacy-tabs';
-import { MatLegacyTooltipModule as MatTooltipModule } from '@angular/material/legacy-tooltip';
 import { VitamUICommonModule } from 'vitamui-library';
 import { SharedModule } from '../../shared/shared.module';
 import { HierarchyDetailComponent } from './hierarchy-detail.component';
@@ -47,7 +46,7 @@ import { HierarchyPopupComponent } from './hierarchy-popup.component';
 import { InformationTabComponent } from './information-tab/information-tab.component';
 
 @NgModule({
-  imports: [CommonModule, SharedModule, MatMenuModule, MatTabsModule, MatTooltipModule, ReactiveFormsModule, VitamUICommonModule],
+  imports: [CommonModule, SharedModule, MatMenuModule, MatTabsModule, ReactiveFormsModule, VitamUICommonModule],
   declarations: [HierarchyPopupComponent, HierarchyDetailComponent, InformationTabComponent],
   exports: [HierarchyDetailComponent],
 })

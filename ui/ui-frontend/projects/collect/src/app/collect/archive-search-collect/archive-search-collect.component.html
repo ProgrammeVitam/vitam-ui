@@ -42,9 +42,8 @@
             type="button"
             class="btn secondary right-arround left-not-arround"
             (click)="hiddenTreeBlock(show)"
-            matTooltip="{{ 'COLLECT.SHOW_TREES_PLANS' | translate }}"
-            matTooltipClass="vitamui-tooltip"
-            [matTooltipShowDelay]="300"
+            [vitamuiCommonToolTip]="'COLLECT.SHOW_TREES_PLANS' | translate"
+            [vitamuiCommonToolTipShowDelay]="300"
           >
             <i class="material-icons">chevron_right</i>
           </button>
@@ -69,8 +68,7 @@
           <vitamui-common-menu-button
             [overlayPos]="'end'"
             [icon]="'vitamui-icon-more-horiz'"
-            matTooltip="{{ 'COLLECT.OTHER_ACTION' | translate }}"
-            matTooltipClass="vitamui-tooltip"
+            [vitamuiCommonToolTip]="'COLLECT.OTHER_ACTION' | translate"
           >
             <button
               mat-menu-item
@@ -109,11 +107,9 @@
           </div>
         </div>
         <div class="col-1">
-          <div class="d-flex justify-content-end button-space">
-            <button [matMenuTriggerFor]="menu" class="mat-boutton">
-              <button type="button" class="circle editable-field-cancel clickable">
-                <i class="material-icons primary-save-icon">save</i>
-              </button>
+          <div class="d-flex justify-content-end pt-4">
+            <button [matMenuTriggerFor]="menu" type="button" class="btn btn-circle secondary large">
+              <i class="material-icons primary-save-icon">save</i>
             </button>
 
             <mat-menu #menu="matMenu" class="my-menu">
@@ -128,11 +124,9 @@
               </button>
               <app-search-criteria-list (storedSearchCriteriaHistory)="showStoredSearchCriteria($event)"></app-search-criteria-list>
             </mat-menu>
-            <div *ngIf="searchCriterias && searchCriterias.size > 0" class="d-flex justify-content-end div-btn-delete">
-              <button class="mat-boutton">
-                <button type="button" class="circle editable-field-cancel clickable" (click)="clearCriterias()">
-                  <i class="material-icons primary-save-icon">delete</i>
-                </button>
+            <div *ngIf="searchCriterias && searchCriterias.size > 0" class="d-flex justify-content-end div-btn-delete ml-4">
+              <button type="button" class="btn btn-circle secondary large" (click)="clearCriteria()">
+                <i class="material-icons primary-save-icon">delete</i>
               </button>
             </div>
           </div>
@@ -187,9 +181,7 @@
               <span (click)="sendRuleCategorySelected(category.name)">
                 {{ 'COLLECT.CRITERIA_CATEGORY_SHORT_NAME.' + category.name | translate }}
               </span>
-              <button class="mat-boutton clickable" (click)="removeCriteriaCategory(category.name)">
-                <i class="vitamui-icon vitamui-icon-cross vitamui-row-icon"></i>
-              </button>
+              <i class="vitamui-icon vitamui-icon-cross vitamui-row-icon ml-2" (click)="removeCriteriaCategory(category.name)"></i>
             </ng-template>
 
             <ng-container>
@@ -251,10 +243,10 @@
 
           <mat-tab disabled>
             <ng-template mat-tab-label>
-              <button [matMenuTriggerFor]="menuTabs" class="mat-boutton clickable">
+              <span [matMenuTriggerFor]="menuTabs" class="clickable">
                 {{ 'COLLECT.CRITERIA_CATEGORY.ADD' | translate }}
-                <i class="vitamui-icon vitamui-icon-plus vitamui-row-icon"></i>
-              </button>
+                <i class="vitamui-icon vitamui-icon-add vitamui-row-icon"></i>
+              </span>
             </ng-template>
           </mat-tab>
 
@@ -453,7 +445,7 @@
                   </span>
                 </div>
                 <div class="col-4 d-flex align-items-center">
-                  <p matTooltip="{{ archiveUnit | unitI18n: 'Description' }}" matTooltipClass="vitamui-tooltip" [matTooltipShowDelay]="300">
+                  <p [vitamuiCommonToolTip]="archiveUnit | unitI18n: 'Description'" [vitamuiCommonToolTipShowDelay]="300">
                     <b> {{ archiveUnit | unitI18n: 'Title' }}</b> <br />
                     {{ archiveUnit | unitI18n: 'Description' | truncate: 100 }}
                   </p>
@@ -466,9 +458,8 @@
                 </div>
                 <div class="col-2 d-flex align-items-center">
                   <p
-                    matTooltip="{{ archiveUnit['#originating_agency'] }}   ({{ archiveUnit['#originating_agencies'] }})"
-                    matTooltipClass="vitamui-tooltip"
-                    [matTooltipShowDelay]="300"
+                    [vitamuiCommonToolTip]="archiveUnit['#originating_agency'] + ' (' + archiveUnit['#originating_agencies'] + ')'"
+                    [vitamuiCommonToolTipShowDelay]="300"
                   >
                     {{ archiveUnit['#originating_agency'] }}
                   </p>

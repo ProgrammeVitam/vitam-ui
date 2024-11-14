@@ -3,7 +3,7 @@
 
 :host::ng-deep {
   --width: 900px;
-  color: #747272;
+  color: var(--vitamui-grey-600);
   --headerHeight: 72px;
   font-weight: 400;
   font-size: 16px;
@@ -36,7 +36,7 @@
   }
 
   .mat-list-single-selected-option {
-    background-color: $white;
+    background-color: var(--vitamui-white);
   }
 
   .mat-tab-label.mat-tab-label-active {
@@ -111,7 +111,7 @@
   }
 
   .container {
-    background: $white;
+    background: var(--vitamui-white);
     width: var(--width);
     height: auto;
     @include elevation-7-dark;

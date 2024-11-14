@@ -105,24 +105,6 @@ tr {
   th {
     position: relative;
     height: 60px;
-
-    &:not(.no-border):before {
-      content: '';
-      display: block;
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      border-top: 1px solid $white-three;
-    }
-  }
-}
-
-tr.row-expanded {
-  background: white;
-
-  &:not(.no-hover):hover {
-    background-color: #e7f5f2;
   }
 }
 
@@ -148,17 +130,13 @@ tr.sub-table {
   }
 }
 
-.caret {
-  color: $white-four;
-}
-
 .vitamui-row-icon {
   font-size: 24px;
   vertical-align: middle;
 }
 
 td .vitamui-row-icon {
-  color: #b7b7b7;
+  color: var(--vitamui-grey-400);
 }
 
 .vitamui-table-row {
@@ -187,24 +165,6 @@ td .vitamui-row-icon {
     th {
       position: relative;
       height: 60px;
-
-      &:not(.no-border):before {
-        content: '';
-        display: block;
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        border-top: 1px solid $white-three;
-      }
-    }
-  }
-
-  tr.row-expanded {
-    background: white;
-
-    &:not(.no-hover):hover {
-      background-color: #e7f5f2;
     }
   }
 
@@ -230,17 +190,13 @@ td .vitamui-row-icon {
     }
   }
 
-  .caret {
-    color: $white-four;
-  }
-
   .vitamui-row-icon {
     font-size: 24px;
     vertical-align: middle;
   }
 
   td .vitamui-row-icon {
-    color: #b7b7b7;
+    color: var(--vitamui-grey-400);
   }
 
   tbody > tr:not(.no-hover):hover {
@@ -297,7 +253,7 @@ td .vitamui-row-icon {
   justify-content: center;
   width: 30px;
   height: 30px;
-  color: #d8d8d8;
+  color: var(--vitamui-grey-300);
   transition: color 200ms ease-out;
 
   &.active {
@@ -319,7 +275,7 @@ td .vitamui-row-icon {
   padding: 0;
   cursor: pointer;
   margin-right: 10px;
-  color: $greyish;
+  color: var(--vitamui-grey);
 
   &.active {
     color: var(--vitamui-primary);
@@ -541,7 +497,7 @@ table.cdk-table {
 
   thead,
   tbody {
-    background: $white;
+    background: var(--vitamui-white);
     tr {
       @include shadow-2dp-dark;
       border-radius: 5px;

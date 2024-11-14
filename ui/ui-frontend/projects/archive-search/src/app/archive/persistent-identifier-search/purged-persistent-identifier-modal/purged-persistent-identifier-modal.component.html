@@ -1,13 +1,11 @@
 <div class="header"></div>
 
 <div class="content">
-  <h2 class="title">{{ 'PERSISTENT_IDENTIFIER_SEARCH.MODAL.SEARCH_BY_ID' | translate }}</h2>
-  <h4 class="subtitle">
+  <div class="text medium light">{{ 'PERSISTENT_IDENTIFIER_SEARCH.MODAL.SEARCH_BY_ID' | translate }}</div>
+  <span class="text large bold">
     {{ messageKey | translate: { ark: data.ark, date: data.purgedPersistentIdentifier.operationLastPersistentDate | date: 'dd/MM/yyyy' }
     }}<br />
-  </h4>
-
-  <div class="main-content"></div>
+  </span>
 
   <div class="actions">
     <button (click)="closeDialog()" class="btn primary" type="button">

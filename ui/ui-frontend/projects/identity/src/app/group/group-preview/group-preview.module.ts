@@ -40,7 +40,6 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatLegacyMenuModule as MatMenuModule } from '@angular/material/legacy-menu';
 import { MatLegacyProgressBarModule as MatProgressBarModule } from '@angular/material/legacy-progress-bar';
 import { MatLegacyTabsModule as MatTabsModule } from '@angular/material/legacy-tabs';
-import { MatLegacyTooltipModule as MatTooltipModule } from '@angular/material/legacy-tooltip';
 import { RouterModule } from '@angular/router';
 
 import { VitamUICommonModule } from 'vitamui-library';
@@ -60,7 +59,6 @@ import { ProfilesTabComponent } from './profiles-tab/profiles-tab.component';
     RouterModule,
     MatMenuModule,
     MatTabsModule,
-    MatTooltipModule,
     MatProgressBarModule,
     ReactiveFormsModule,
     VitamUICommonModule,

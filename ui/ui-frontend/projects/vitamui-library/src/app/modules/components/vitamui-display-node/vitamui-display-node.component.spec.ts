@@ -35,7 +35,6 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatLegacyTooltipModule as MatTooltipModule } from '@angular/material/legacy-tooltip';
 
 import { VitamUIDisplayNodeComponent } from './vitamui-display-node.component';
 
@@ -46,7 +45,6 @@ describe('VitamUIDisplayNodeComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [VitamUIDisplayNodeComponent],
-      imports: [MatTooltipModule],
     }).compileComponents();
   });
 

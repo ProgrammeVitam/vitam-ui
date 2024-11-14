@@ -12,7 +12,7 @@
   line-height: 24px;
   display: flex;
   align-items: center;
-  color: #757575;
+  color: var(--vitamui-grey-600);
 }
 .text-action {
   font-family: Mulish;
@@ -22,18 +22,5 @@
   line-height: 28px;
   display: flex;
   align-items: center;
-  color: #212121;
-}
-
-.text-orange {
-  color: orange;
-}
-.text-green {
-  color: #27740a;
-}
-.text-red {
-  color: red;
-}
-.text-red-fatal {
-  color: #c10000;
+  color: var(--vitamui-grey-900);
 }

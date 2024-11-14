@@ -38,18 +38,16 @@ import { getColorFromMaps } from './colors.util';
 
 describe('Colors', () => {
   const defaultMap = {
-    defaultColor: '#123',
-    appColor: '#123',
-    bothColor: '#123',
+    defaultColor: '#9E9E9E',
+    appColor: '#9E9E9E',
+    bothColor: '#9E9E9E',
   };
-
   const appColorMap = {
-    appColor: '#234',
-    bothColor: '#ABC',
+    appColor: '#9C31B5',
+    bothColor: '#9C31B5',
   };
   const customerColorMap = {
-    bothColor: '#DEF',
-    custom: '#5cbaa9',
+    bothColor: '#296EBC',
   };
 
   it('should return null if the color name does not exist', () => {
@@ -57,27 +55,27 @@ describe('Colors', () => {
   });
 
   it('should take default value if no app/custom defined', () => {
-    expect(getColorFromMaps('defaultColor', defaultMap, appColorMap, customerColorMap)).toEqual('#123');
+    expect(getColorFromMaps('defaultColor', defaultMap, appColorMap, customerColorMap)).toEqual('#9E9E9E');
   });
 
   it('should take applicationColor if defined', () => {
-    expect(getColorFromMaps('appColor', defaultMap, appColorMap, customerColorMap)).toEqual('#234');
+    expect(getColorFromMaps('appColor', defaultMap, appColorMap, customerColorMap)).toEqual('#9C31B5');
   });
 
   it('should take customColor if both are defined', () => {
-    expect(getColorFromMaps('bothColor', defaultMap, appColorMap, customerColorMap)).toEqual('#DEF');
+    expect(getColorFromMaps('bothColor', defaultMap, appColorMap, customerColorMap)).toEqual('#296EBC');
   });
 
   it('should compute lighten from app color', () => {
-    expect(getColorFromMaps('appColor-light', defaultMap, appColorMap, customerColorMap)).toEqual('#334d66');
+    expect(getColorFromMaps('appColor-light', defaultMap, appColorMap, customerColorMap)).toEqual('#b54bce');
   });
 
   it('should compute darken from custom color', () => {
-    expect(getColorFromMaps('bothColor-dark', defaultMap, appColorMap, customerColorMap)).toEqual('#a8d4ff');
+    expect(getColorFromMaps('bothColor-dark', defaultMap, appColorMap, customerColorMap)).toEqual('#205692');
   });
 
   it('should compute darker color', () => {
-    expect(getColorFromMaps('appColor-light-50', defaultMap, appColorMap, customerColorMap)).toEqual('#99b3cc');
+    expect(getColorFromMaps('appColor-light-50', defaultMap, appColorMap, customerColorMap)).toEqual('#f7ebfa');
   });
 
   it('should not overflow white color', () => {

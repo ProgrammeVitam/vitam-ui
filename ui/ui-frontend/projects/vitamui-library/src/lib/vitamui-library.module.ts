@@ -36,9 +36,6 @@
  */
 import { NgModule } from '@angular/core';
 
-import { CardGroupModule } from './components/card-group/card-group.module';
-import { CardSelectModule } from './components/card-select/card-select.module';
-import { CardModule } from './components/card/card.module';
 import { ConfirmActionModule } from './components/confirm-action/confirm-action.module';
 import { FilingPlanModule } from './components/filing-plan/filing-plan.module';
 import { VitamUIInputModule } from './components/vitamui-input/vitamui-input.module';
@@ -49,9 +46,6 @@ import { VitamUISelectAllOptionModule } from './components/vitamui-select-all-op
 @NgModule({
   declarations: [],
   imports: [
-    CardGroupModule,
-    CardModule,
-    CardSelectModule,
     ConfirmActionModule,
     FilingPlanModule,
     VitamUIInputModule,
@@ -60,9 +54,6 @@ import { VitamUISelectAllOptionModule } from './components/vitamui-select-all-op
     VitamUISelectAllOptionModule,
   ],
   exports: [
-    CardGroupModule,
-    CardModule,
-    CardSelectModule,
     ConfirmActionModule,
     FilingPlanModule,
     VitamUIInputModule,

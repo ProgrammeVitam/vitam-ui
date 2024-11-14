@@ -21,3 +21,29 @@
     </div>
   }
 </div>
+
+<h2>{{ 'SPACING.GAP' | translate }}</h2>
+<div class="d-flex flex-column">
+  @for (gap of gaps; track gap) {
+    <strong>hgap-{{ gap }} ({{ getGap(el) }})</strong>
+    <div #el class="outer hgap-{{ gap }}">
+      <div class="inner"></div>
+      <div class="inner"></div>
+      <div class="inner"></div>
+      <div class="inner"></div>
+      <div class="inner"></div>
+    </div>
+  }
+</div>
+
+<div class="d-flex flex-row justify-content-between">
+  @for (gap of gaps; track gap) {
+    <div class="d-flex flex-column">
+      <strong>gap-{{ gap }} ({{ getGap(el) }})</strong>
+      <div #el class="outer gap-{{ gap }}">
+        <div class="inner"></div>
+        <div class="inner"></div>
+      </div>
+    </div>
+  }
+</div>

@@ -172,15 +172,6 @@ cas.authn.oidc.core.issuer: ${cas.server.prefix}/oidc
 
 cas.authn.oidc.jwks.file-system.jwks-file: file:./src/main/config/keystore.jwks
 
-# Example to override theme colors, logo, favicon, platform name ...
-theme:
-  #  vitamui-platform-name: VITAM-UI
-  #  vitamui-favicon: /path/to/favicon
-  #  vitamui-logo-large: /path/to/logo
-  primary: '#9C31B5'
-  secondary: '#2563A9'
-  background: '#F6F3FB'
-
 # Jaeger
 opentracing:
   jaeger:

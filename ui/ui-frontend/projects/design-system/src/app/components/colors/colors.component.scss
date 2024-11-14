@@ -16,6 +16,10 @@ ul {
   display: flex;
   align-items: center;
   justify-content: center;
+
+  &.border {
+    border: 1px solid black;
+  }
 }
 .shade {
   width: 90px;
@@ -29,13 +33,13 @@ ul {
 }
 
 .red {
-  background-color: $red;
+  background-color: var(--vitamui-red);
 }
 
 .orange {
-  background-color: $orange;
+  background-color: var(--vitamui-orange);
 }
 
 .green {
-  background-color: $green;
+  background-color: var(--vitamui-green);
 }

@@ -52,12 +52,13 @@ export class ColorsComponent {
   colors = [
     { key: 'PRIMARY', varName: '--vitamui-primary', hueIds: this.hueIds },
     { key: 'SECONDARY', varName: '--vitamui-secondary', hueIds: this.hueIds },
+    { key: 'RED', varName: '--vitamui-red', hueIds: this.hueIds },
+    { key: 'ORANGE', varName: '--vitamui-orange', hueIds: this.hueIds },
+    { key: 'GREEN', varName: '--vitamui-green', hueIds: this.hueIds },
     { key: 'GREY', varName: '--vitamui-grey', hueIds: this.hueIds },
     { key: 'ADDITIONAL', varName: '--vitamui-additional', hueIds: this.hueIds },
+    { key: 'WHITE', varName: '--vitamui-white', border: true },
     { key: 'PRIMARY_LIGHT', varName: '--vitamui-background' },
-    { key: 'RED', className: 'red' },
-    { key: 'ORANGE', className: 'orange' },
-    { key: 'GREEN', className: 'green' },
   ];
 
   private colorToRGB(color: string) {

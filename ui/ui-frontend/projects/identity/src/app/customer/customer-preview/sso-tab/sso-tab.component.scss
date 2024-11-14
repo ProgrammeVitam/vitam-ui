@@ -77,7 +77,7 @@ button.btn {
     text-align: right;
 
     &.active {
-      color: $green;
+      color: var(--vitamui-green);
     }
   }
 }

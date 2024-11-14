@@ -51,7 +51,6 @@ import { MatLegacyProgressSpinnerModule as MatProgressSpinnerModule } from '@ang
 import { MatLegacySelectModule as MatSelectModule } from '@angular/material/legacy-select';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatLegacyTabsModule as MatTabsModule } from '@angular/material/legacy-tabs';
-import { MatLegacyTooltipModule as MatTooltipModule } from '@angular/material/legacy-tooltip';
 import { MatTreeModule } from '@angular/material/tree';
 import { TableFilterModule, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 import { CoreModule } from '../core/core.module';
@@ -72,7 +71,6 @@ import { PastisRoutingModule } from './pastis-routing.module';
     SharedModule,
     UserActionsModule,
     FileTreeModule,
-    MatTooltipModule,
     CommonModule,
     VitamUICommonModule,
     MatDialogModule,

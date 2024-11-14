@@ -62,7 +62,7 @@
       border-width: 1px 1px 1px 1px;
 
       &:hover:not(:disabled) {
-        background-color: #f4f4f4;
+        background-color: var(--vitamui-grey-100);
       }
     }
   }

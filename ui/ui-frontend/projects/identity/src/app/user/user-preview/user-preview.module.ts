@@ -41,7 +41,6 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatLegacyDialogModule as MatDialogModule } from '@angular/material/legacy-dialog';
 import { MatLegacyMenuModule as MatMenuModule } from '@angular/material/legacy-menu';
 import { MatLegacyTabsModule as MatTabsModule } from '@angular/material/legacy-tabs';
-import { MatLegacyTooltipModule as MatTooltipModule } from '@angular/material/legacy-tooltip';
 import { RouterModule } from '@angular/router';
 
 import { VitamUICommonModule } from 'vitamui-library';
@@ -59,7 +58,6 @@ import { UserPreviewComponent } from './user-preview.component';
     MatButtonToggleModule,
     MatMenuModule,
     MatTabsModule,
-    MatTooltipModule,
     ReactiveFormsModule,
     MatDialogModule,
     VitamUICommonModule,

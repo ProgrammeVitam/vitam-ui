@@ -1,43 +1,48 @@
 .center-spinner {
-    text-align: -webkit-center;
+  text-align: -webkit-center;
 }
 
 .btn-delete {
-    color: #BDBDBD;
-    float: right;
-    padding-top: 9px;
-    font-size: 30px;
+  color: var(--vitamui-grey-400);
+  float: right;
+  padding-top: 9px;
+  font-size: 30px;
 }
 
 .btn-delete:hover {
-    color: #9C31B5;
+  color: var(--vitamui-primary);
 }
-.list-div{
-    max-width: 380px;
-}
-.grid-container {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-gap: 1px;
-}
-.criteria-name-date {
-    width: 320px;
-}
-.criteria-date {
-font-size: 13px;
-line-height: 16px;
-align-items: center;
-letter-spacing: -0.2px;
 
-color: #757575;
+.list-div {
+  max-width: 380px;
 }
+
+.grid-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 1px;
+}
+
+.criteria-name-date {
+  width: 320px;
+}
+
+.criteria-date {
+  font-size: 13px;
+  line-height: 16px;
+  align-items: center;
+  letter-spacing: -0.2px;
+
+  color: var(--vitamui-grey-600);
+}
+
 .criteria-name {
-    font-family: Mulish;
-font-style: normal;
-font-weight: normal;
-font-size: 15px;
-line-height: 22px;
-align-items: center;
-letter-spacing: 0.1px;
-color: #212121;
+  font-family: Mulish;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 15px;
+  line-height: 22px;
+  align-items: center;
+  letter-spacing: 0.1px;
+  color: var(--vitamui-grey-900);
 }

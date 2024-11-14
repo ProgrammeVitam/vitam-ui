@@ -39,7 +39,6 @@ import { NgModule } from '@angular/core';
 import { MatRippleModule } from '@angular/material/core';
 import { MatLegacyDialogModule as MatDialogModule } from '@angular/material/legacy-dialog';
 import { MatLegacyProgressSpinnerModule as MatProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
-import { MatLegacyTooltipModule as MatTooltipModule } from '@angular/material/legacy-tooltip';
 import { RouterModule } from '@angular/router';
 import { VitamUICommonModule } from 'vitamui-library';
 
@@ -48,16 +47,7 @@ import { CustomerListComponent } from './customer-list.component';
 import { OwnerListComponent } from './owner-list/owner-list.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    SharedModule,
-    RouterModule,
-    MatRippleModule,
-    MatDialogModule,
-    MatProgressSpinnerModule,
-    MatTooltipModule,
-    VitamUICommonModule,
-  ],
+  imports: [CommonModule, SharedModule, RouterModule, MatRippleModule, MatDialogModule, MatProgressSpinnerModule, VitamUICommonModule],
   declarations: [CustomerListComponent, OwnerListComponent],
   exports: [CustomerListComponent],
 })

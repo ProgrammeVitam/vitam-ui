@@ -51,7 +51,7 @@ $animation-time: 150ms;
 
     .required-marker {
       padding-left: 5px;
-      color: $red;
+      color: var(--vitamui-red);
     }
   }
 
@@ -96,8 +96,9 @@ $animation-time: 150ms;
     }
 
     &:hover,
-    &:focus {
-      background: #0000000a;
+    &:focus,
+    .mat-option.mat-active {
+      background: var(--vitamui-background);
     }
 
     .mat-option:hover,

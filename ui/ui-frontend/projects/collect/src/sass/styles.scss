@@ -3,13 +3,7 @@
 
 @import 'fonts/font-styles';
 
-@import 'form';
-@import 'login';
 @import 'sidepanel';
-@import 'profile-tag';
-@import 'vitamui-tab-group';
-@import 'tooltip';
-@import 'tooltip-rules';
 @import 'common-archive';
 
 .mat-drawer-container {
@@ -30,7 +24,7 @@
 }
 .search-select-access-contract {
   width: 100%;
-  background-color: #ffffff;
+  background-color: var(--vitamui-white);
   font-size: 14px;
   font-weight: 700;
   color: var(--vitamui-primary);
@@ -39,25 +33,6 @@
   white-space: nowrap;
   transform-origin: left;
   transition: transform 150ms ease-out;
-}
-.search-date-filter {
-  height: 50px;
-  border: solid 1px var(--vitamui-secondary);
-  border-radius: 25px;
-  text-align: center;
-  color: var(--vitamui-secondary);
-  border-radius: 25px;
-  border: solid 1px #f0f0f0;
-  background-color: #ffffff;
-  padding: 7px 45px 7px 25px;
-  transition: border-color 150ms ease-out;
-  vertical-align: top;
-  cursor: pointer;
-  outline: none;
-  box-shadow:
-    0px 1px 3px rgba(0, 0, 0, 0.2),
-    0px 2px 2px rgba(0, 0, 0, 0.12),
-    0px 0px 2px rgba(0, 0, 0, 0.14);
 }
 
 .mat-select-content {
@@ -83,8 +58,8 @@
   transition: transform 150ms ease-out;
 }
 .card-criteria {
-  background: #ffffff;
-  border: 1px solid #bdbdbd;
+  background: var(--vitamui-white);
+  border: 1px solid var(--vitamui-grey-400);
   box-sizing: border-box;
   border-radius: 5px;
   margin-bottom: 5px;
@@ -96,17 +71,16 @@
   padding-bottom: 15px;
 }
 .after-search-launched-button {
-  color: #fff;
-  background-color: #2c76c9;
-  border: 1px solid #9d9d9d;
+  color: var(--vitamui-white);
+  background-color: var(--vitamui-secondary);
+  border: 1px solid var(--vitamui-grey);
   box-sizing: border-box;
   border-top-left-radius: 0px;
   border-bottom-left-radius: 0px;
 }
 .before-search-launched-button {
-  border: 1px solid #9d9d9d;
   box-sizing: border-box;
-  border: 1px solid #9d9d9d;
+  border: 1px solid var(--vitamui-grey);
   border-left: 0px;
 }
 .criteria-group {
@@ -115,13 +89,13 @@
 .left-arround {
   border-top-left-radius: 5px;
   border-bottom-left-radius: 5px;
-  border: 1px solid #9d9d9d;
+  border: 1px solid var(--vitamui-grey);
 }
 
 .left-not-arround {
   border-top-left-radius: 0px;
   border-bottom-left-radius: 0px;
-  border: 1px solid #9d9d9d;
+  border: 1px solid var(--vitamui-grey);
 }
 
 .right-arround {
@@ -129,14 +103,14 @@
   border-bottom-right-radius: 5px;
   border-top-left-radius: 0px;
   border-bottom-left-radius: 0px;
-  border: 1px solid #9d9d9d;
+  border: 1px solid var(--vitamui-grey);
   border-left: 0px;
 }
 
 .right-button {
   border-top-right-radius: 0px;
   border-bottom-right-radius: 0px;
-  border: 1px solid #9d9d9d;
+  border: 1px solid var(--vitamui-grey);
   border-left: 0px;
 }
 
@@ -158,25 +132,21 @@
   max-width: 400px;
   font-weight: bold;
   height: 60px;
-  border: 1px solid #9d9d9d;
+  border: 1px solid var(--vitamui-grey);
 }
 
-.vitamui-chip-list .button-criteria {
-  background: #ffffff !important;
-  border: px solid #bdbdbd !important;
-}
 .button-remove {
   padding-left: 4px;
   padding-right: 0px;
   border-left-width: 1px;
   height: 60px;
   font-weight: bold;
-  border: 1px solid #9d9d9d;
+  border: 1px solid var(--vitamui-grey);
 }
 
 .hide-ink {
   cursor: pointer;
-  color: #702382;
+  color: var(--vitamui-primary);
   text-decoration: underline;
   font-weight: bold;
   margin-top: 10px;
@@ -187,7 +157,7 @@
 .launch-search-btn {
   width: 218px;
   height: 50px;
-  background: #702382;
+  background: var(--vitamui-primary);
   border-radius: 100px;
   color: white;
   font-size: 14px;
@@ -210,7 +180,7 @@
 }
 
 .area-criteria {
-  padding-top: 0px;
+  @extend .hgap-4;
   display: -webkit-flex;
   display: flex;
   -webkit-flex-direction: row;
@@ -284,34 +254,12 @@
   color: white;
 }
 
-.mat-boutton {
-  border: none;
-  background: #f5f7fc;
-}
-.mat-boutton:hover .mat-boutton:focus {
-  background: #f5f7fc;
-  border: none;
-}
-
-.mat-boutton:focus {
-  background: #f5f7fc;
-  border: none;
-  outline: -webkit-focus-ring-color auto 0px;
-  outline-color: -webkit-focus-ring-color;
-  outline-style: auto;
-  outline-width: 0px;
-}
-
-.mat-boutton:active {
-  background: #f5f7fc;
-  border: none;
-}
 .div-btn-delete {
   width: 78px;
 }
 
 .btn-add {
-  color: #757575;
+  color: var(--vitamui-grey-600);
   font-size: 37x;
 }
 
@@ -364,7 +312,7 @@
   -moz-appearance: none;
   -o-appearance: none;
   appearance: none;
-  border: 1px solid #34495e;
+  border: 1px solid var(--vitamui-grey-700);
   border-radius: 4px;
   outline: none;
   transition-duration: 0.3s;

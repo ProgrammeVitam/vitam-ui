@@ -8,7 +8,7 @@ $anim-timing: 150ms ease-out;
   display: inline-block;
 
   &.ng-invalid:not(.ng-untouched) .vitamui-input {
-    border: 1px solid $red;
+    border: 1px solid var(--vitamui-red);
   }
 
   &.ng-pending .vitamui-input mat-spinner {

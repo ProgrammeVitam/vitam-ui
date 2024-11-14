@@ -42,7 +42,7 @@ import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { EMPTY, of } from 'rxjs';
 
-import { NavbarStubComponent, VitamUICommonTestModule } from '../../../../testing/src/public_api';
+import { VitamUICommonTestModule } from '../../../../testing/src/public_api';
 import { environment } from '../../../environments/environment';
 import { BaseUserInfoApiService } from '../api/base-user-info-api.service';
 import { InjectorModule } from '../helper/injector.module';
@@ -72,7 +72,7 @@ describe('AccountComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [InjectorModule, MatTabsModule, NoopAnimationsModule, LoggerModule.forRoot(), VitamUICommonTestModule],
-      declarations: [AccountComponent, InformationTabStubComponent, NavbarStubComponent],
+      declarations: [AccountComponent, InformationTabStubComponent],
       providers: [
         { provide: TranslateService, useValue: { instant: () => EMPTY } },
         { provide: AccountService, useValue: accountServiceSpy },

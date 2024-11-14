@@ -35,15 +35,15 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 export enum Colors {
-  DEFAULT = '#757575',
-  DISABLED = '#eaeaea',
-  FATAL_COLOR = '#c10000',
-  KO_COLOR = 'red',
-  WARNING_COLOR = 'orange',
-  OK_COLOR = '#27740a',
-  BLACK = '#000000',
-  GRAY = 'gray',
-  ORANGE = 'orange',
-  RED = 'red',
-  GREEN = 'green',
+  DEFAULT = 'var(--vitamui-grey-600)',
+  DISABLED = 'var(--vitamui-grey-200)',
+  FATAL_COLOR = 'var(--vitamui-red-600)', // TODO: change to red-900?
+  KO_COLOR = 'var(--vitamui-red)',
+  WARNING_COLOR = 'var(--vitamui-orange)',
+  OK_COLOR = 'var(--vitamui-green)',
+  BLACK = 'var(--vitamui-grey-900)',
+  GRAY = 'var(--vitamui-grey-600)',
+  ORANGE = 'var(--vitamui-orange)',
+  RED = 'var(--vitamui-red)',
+  GREEN = 'var(--vitamui-green)',
 }

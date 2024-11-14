@@ -24,7 +24,7 @@
 
   &:after {
     content: '';
-    background-color: $warm-grey;
+    background-color: var(--vitamui-grey);
     position: absolute;
     left: 0;
     right: 0;
@@ -39,7 +39,7 @@
   min-height: 60px;
   max-width: 250px;
   border-radius: 10px;
-  background-color: rgba(255, 255, 255, 0.85);
+  background-color: rgba(var(--vitamui-white-rgb), 0.85);
   padding: 0 20px 0 20px;
 
   font-size: 16px;

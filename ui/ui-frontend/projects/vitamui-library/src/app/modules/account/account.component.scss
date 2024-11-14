@@ -20,7 +20,7 @@ h2 {
     border-top-right-radius: var(--radius);
     border-bottom-right-radius: var(--radius);
     border-bottom-left-radius: var(--radius);
-    background-color: $white;
+    background-color: var(--vitamui-white);
     border: 1px solid var(--vitamui-grey-400);
     margin-top: -1px;
   }
@@ -47,7 +47,7 @@ h2 {
 
   &.mat-tab-label-active,
   &.mat-tab-label-active:not(.mat-tab-disabled):focus {
-    background-color: $white;
+    background-color: var(--vitamui-white);
     font-weight: bold;
     color: var(--vitamui-grey-700);
     opacity: 1;

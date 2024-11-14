@@ -1,4 +1,3 @@
-@import '../../../../../assets/css/colors';
 @import '../../../../../assets/css/dropdown';
 @import '../../../../../assets/css/layout';
 
@@ -72,21 +71,6 @@ td {
   span {
     font-size: 14px;
     color: var(--vitamui-grey-900);
-  }
-
-  .mat-checkbox:checked {
-    background: yellow;
-    margin: 0px;
-    position: relative;
-
-    &:before {
-      font-family: Mulish;
-      content: '\f00c';
-      display: block;
-      color: #a61717;
-      font-size: 13px;
-      position: absolute;
-    }
   }
 }
 

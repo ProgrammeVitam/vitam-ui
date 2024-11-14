@@ -1,6 +1,6 @@
 .container {
     border-radius: 10px;
-    background-color: #ffffff;
+    background-color: var(--vitamui-white);
     font-style: Mulish;
     font-weight: 800;
     line-height: 32px;
@@ -10,11 +10,11 @@
     margin-right: 300px;
 }
 .message-text-ok {
-    color: green;
+    color: var(--vitamui-green);
     padding-bottom: 15px;
 }
 
 .message-text-ko {
-    color: #bf511f;
+    color: var(--vitamui-orange);
     padding-bottom: 10px;
 }

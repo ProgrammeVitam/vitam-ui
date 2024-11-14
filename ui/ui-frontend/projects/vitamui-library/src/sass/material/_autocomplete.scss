@@ -3,7 +3,7 @@
 .vitamui-autocomplete-panel {
   border-bottom-left-radius: 5px !important;
   border-bottom-right-radius: 5px !important;
-  background-color: $white;
+  background-color: var(--vitamui-white);
   border: solid 1px var(--vitamui-grey-400);
 
   .mat-option {

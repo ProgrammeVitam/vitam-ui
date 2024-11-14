@@ -90,21 +90,6 @@
   flex-grow: 1;
 }
 
-::ng-deep .custom-tooltip {
-  white-space: pre-line;
-  letter-spacing: 0.1px !important;
-  text-justify: auto !important;
-  margin-left: 5%;
-  margin-right: 40px;
-  margin-bottom: 0;
-  font-family: Mulish;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 12px;
-  /* Secondary/Secondary-900 */
-  color: #050c15;
-}
-
 .actions {
   display: flex;
   gap: 1.5rem;

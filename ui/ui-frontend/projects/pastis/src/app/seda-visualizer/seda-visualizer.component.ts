@@ -148,14 +148,19 @@ export class SedaVisualizerComponent implements OnInit {
       .attr('viewBox', [-marginLeft, -marginTop, width, dx].join(' '))
       .attr('style', 'max-width: 100%; height: auto; font: 10px sans-serif; user-select: none;');
 
-    const gLink = svg.append('g').attr('fill', 'none').attr('stroke', '#555').attr('stroke-opacity', 0.4).attr('stroke-width', 2);
+    const gLink = svg
+      .append('g')
+      .attr('fill', 'none')
+      .attr('stroke', 'var(--vitamui-grey-800)')
+      .attr('stroke-opacity', 0.4)
+      .attr('stroke-width', 2);
     const gNode = svg.append('g').attr('cursor', 'pointer').attr('pointer-events', 'all');
 
     const cardinalityColor = (data: SedaData): string => {
-      if (data.cardinality === '1-N') return '#2A9DF4';
-      if (data.cardinality === '1') return '#1167B1';
-      if (data.cardinality === '0-1') return '#555555';
-      if (data.cardinality === '0-N') return '#adb7bd';
+      if (data.cardinality === '1-N') return 'var(--vitamui-secondary-300)';
+      if (data.cardinality === '1') return 'var(--vitamui-secondary)';
+      if (data.cardinality === '0-1') return 'var(--vitamui-grey-800)';
+      if (data.cardinality === '0-N') return 'var(--vitamui-grey)';
 
       return 'black';
     };
@@ -222,9 +227,9 @@ export class SedaVisualizerComponent implements OnInit {
       nodeEnter
         .append('circle')
         .attr('r', circleRadius)
-        .style('stroke', '#604379')
+        .style('stroke', 'var(--vitamui-primary)')
         .style('stroke-width', '2px')
-        .style('fill', (d: any) => (d.children || d._children ? '#604379' : '#fff'));
+        .style('fill', (d: any) => (d.children || d._children ? 'var(--vitamui-primary)' : 'var(--vitamui-white)'));
 
       nodeEnter
         .append('text') // Setup text near the circle
@@ -236,7 +241,7 @@ export class SedaVisualizerComponent implements OnInit {
         .attr('stroke-width', 3)
         .attr('stroke', 'white')
         .attr('paint-order', 'stroke')
-        .attr('stroke', '#65B2E4')
+        .attr('stroke', 'var(--vitamui-secondary)')
         .attr('stroke-width', '1px')
         .style('font-size', `${fontSize}px`);
 
@@ -246,7 +251,7 @@ export class SedaVisualizerComponent implements OnInit {
         .attr('text-anchor', (d: any) => (d.children || d._children ? 'end' : 'start'))
         .attr('dy', '.35em')
         .attr('dx', '.05em')
-        .attr('stroke', (d: any) => (d.children || d._children ? '#fff' : '#65B2E4'))
+        .attr('stroke', (d: any) => (d.children || d._children ? 'var(--vitamui-white)' : 'var(--vitamui-secondary)'))
         .attr('stroke-width', '1px')
         .style('font-size', `${fontSize}px`)
         .text((d: any) => {
@@ -339,14 +344,14 @@ export class SedaVisualizerComponent implements OnInit {
       .attr('cy', 30)
       .attr('r', 6)
       .attr('r', 12)
-      .style('stroke', '#604379')
+      .style('stroke', 'var(--vitamui-primary)')
       .style('stroke-width', '2px')
-      .style('fill', '#fff');
+      .style('fill', 'var(--vitamui-white)');
     svg_legend
       .append('text')
       .attr('x', '15')
       .attr('dy', '35')
-      .attr('stroke', '#65B2E4')
+      .attr('stroke', 'var(--vitamui-secondary)')
       .text('C')
       .style('fill-opacity', 1e-6)
       .style('font', '12px sans-serif');
@@ -357,14 +362,14 @@ export class SedaVisualizerComponent implements OnInit {
       .attr('cy', 30)
       .attr('r', 6)
       .attr('r', 12)
-      .style('stroke', '#604379')
+      .style('stroke', 'var(--vitamui-primary)')
       .style('stroke-width', '2px')
-      .style('fill', '#fff');
+      .style('fill', 'var(--vitamui-white)');
     svg_legend
       .append('text')
       .attr('x', '176')
       .attr('dy', '35')
-      .attr('stroke', '#65B2E4')
+      .attr('stroke', 'var(--vitamui-secondary)')
       .text('S')
       .style('fill-opacity', 1e-6)
       .style('font', '12px sans-serif');
@@ -375,14 +380,14 @@ export class SedaVisualizerComponent implements OnInit {
       .attr('cy', 30)
       .attr('r', 6)
       .attr('r', 12)
-      .style('stroke', '#604379')
+      .style('stroke', 'var(--vitamui-primary)')
       .style('stroke-width', '2px')
-      .style('fill', '#fff');
+      .style('fill', 'var(--vitamui-white)');
     svg_legend
       .append('text')
       .attr('x', '326')
       .attr('dy', '35')
-      .attr('stroke', '#65B2E4')
+      .attr('stroke', 'var(--vitamui-secondary)')
       .text('A')
       .style('fill-opacity', 1e-6)
       .style('font', '12px sans-serif');
@@ -395,7 +400,7 @@ export class SedaVisualizerComponent implements OnInit {
       .attr('y1', 70)
       .attr('x2', 90)
       .attr('y2', 70)
-      .style('stroke', '#1167B1')
+      .style('stroke', 'var(--vitamui-secondary)')
       .style('stroke-width', '2.5');
     svg_legend.append('text').attr('x', '100').attr('dy', '70').text('1').style('font-size', '15px').attr('alignment-baseline', 'middle');
     // 1-N
@@ -405,7 +410,7 @@ export class SedaVisualizerComponent implements OnInit {
       .attr('y1', 70)
       .attr('x2', 180)
       .attr('y2', 70)
-      .style('stroke', '#2A9DF4')
+      .style('stroke', 'var(--vitamui-secondary-300)')
       .style('stroke-width', '2.5');
     // eslint-disable-next-line max-len
     svg_legend.append('text').attr('x', '190').attr('dy', '70').text('1-N').style('font-size', '15px').attr('alignment-baseline', 'middle');
@@ -416,7 +421,7 @@ export class SedaVisualizerComponent implements OnInit {
       .attr('y1', 70)
       .attr('x2', 270)
       .attr('y2', 70)
-      .style('stroke', '#555555')
+      .style('stroke', 'var(--vitamui-grey-800)')
       .style('stroke-width', '2.5');
     // eslint-disable-next-line max-len
     svg_legend.append('text').attr('x', '280').attr('dy', '70').text('0-1').style('font-size', '15px').attr('alignment-baseline', 'middle');
@@ -427,7 +432,7 @@ export class SedaVisualizerComponent implements OnInit {
       .attr('y1', 70)
       .attr('x2', 350)
       .attr('y2', 70)
-      .style('stroke', '#adb7bd')
+      .style('stroke', 'var(--vitamui-grey)')
       .style('stroke-width', '2.5');
     // eslint-disable-next-line max-len
     svg_legend.append('text').attr('x', '360').attr('dy', '70').text('0-N').style('font-size', '15px').attr('alignment-baseline', 'middle');

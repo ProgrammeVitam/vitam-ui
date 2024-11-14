@@ -23,7 +23,7 @@
     white-space: normal;
 
     &:not(:first-child) {
-      border-top: 1px solid rgba(151, 151, 151, 0.2);
+      border-top: 1px solid var(--vitamui-grey-300);
     }
 
     .vitamui-icon {
@@ -56,97 +56,6 @@
     > .vitamui-icon {
       font-size: 24px;
       margin-right: 16px;
-    }
-  }
-}
-
-// DEPRECATED : REMOVE AT THE END OF THE REDESIGN
-.vitamui-more-action-menu.mat-menu-panel {
-  background: none;
-  @include elevation-0;
-  overflow: visible;
-  border-radius: 10px;
-  max-width: none;
-
-  > .mat-menu-content {
-    padding: 0;
-    position: relative;
-
-    &:before {
-      content: '';
-      display: block;
-      width: 100%;
-      position: absolute;
-      top: 40px;
-      left: 0;
-      bottom: 0;
-      right: 0;
-      border-radius: 10px 0 10px 10px;
-      @include elevation-7-dark;
-    }
-  }
-
-  .mat-menu-item.menu-cancel-button {
-    width: 40px;
-    border-radius: 10px 10px 0 0;
-    padding: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 40px;
-    float: right;
-    border-top: none;
-
-    > i {
-      font-size: 18px;
-    }
-
-    &:hover:not([disabled]),
-    &.cdk-program-focused:not([disabled]),
-    &.cdk-keyboard-focused:not([disabled]),
-    &.mat-menu-item-highlighted:not([disabled]) {
-      background-color: var(--vitamui-primary);
-    }
-  }
-
-  .menu-cancel-button + .mat-menu-item {
-    border-top-left-radius: 10px;
-    border-top: none;
-  }
-
-  .mat-menu-item:last-child {
-    border-bottom-left-radius: 10px;
-    border-bottom-right-radius: 10px;
-  }
-
-  .mat-menu-item {
-    background-color: var(--vitamui-primary);
-    color: white;
-    transition: background-color 200ms ease-out;
-    font-size: 15px;
-    padding: 0 30px;
-    width: 100%;
-  }
-
-  .mat-menu-item {
-    border-top: 1px solid var(--vitamui-primary);
-  }
-
-  .mat-menu-item:hover:not([disabled]):not(.menu-cancel-button) {
-    background-color: var(--vitamui-primary-light);
-  }
-
-  .mat-menu-item[disabled] {
-    color: rgba(255, 255, 255, 0.4);
-  }
-
-  .more-action-divider {
-    height: 10px;
-    width: 100%;
-    background-color: var(--vitamui-primary-light-8);
-
-    + .mat-menu-item {
-      border-top-color: transparent;
     }
   }
 }

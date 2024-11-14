@@ -54,7 +54,7 @@
   }
 
   &:after {
-    color: $white;
+    color: var(--vitamui-white);
     top: 4px;
     left: 3px;
   }

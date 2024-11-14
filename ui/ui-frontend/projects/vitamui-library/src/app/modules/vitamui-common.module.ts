@@ -73,7 +73,6 @@ import { UserPhotoModule } from './components/header/user-photo/user-photo.modul
 import { LogbookOperationFacetModule } from './components/logbook-operation-facet/logbook-operation-facet.module';
 import { MultipleOptionsDatepickerModule } from './components/multiple-options-datepicker/multiple-options-datepicker.module';
 import { OrderByButtonModule } from './components/order-by-button/order-by-button.module';
-import { OrderDropdownModule } from './components/order-dropdown/order-dropdown.module';
 import { ScrollTopModule } from './components/scroll-top/scroll-top.module';
 import { SearchBarWithSiblingButtonModule } from './components/search-bar-with-sibling-button/search-bar-with-sibling-button.module';
 import { SearchBarModule } from './components/search-bar/search-bar.module';
@@ -98,7 +97,6 @@ import { VitamuiMultiInputsModule } from './components/vitamui-multi-inputs/vita
 import { VitamuiRepeatableInputModule } from './components/vitamui-repeatable-input/vitamui-repeatable-input.module';
 import { VitamuiSidenavHeaderModule } from './components/vitamui-sidenav-header/vitamui-sidenav-header.module';
 import { VitamUISnackBarModule } from './components/vitamui-snack-bar/vitamui-snack-bar.module';
-import { VitamUITenantSelectModule } from './components/vitamui-tenant-select/vitamui-tenant-select.module';
 import { VitamuiTreeNodeModule } from './components/vitamui-tree-node';
 import { ConfigService } from './config.service';
 import { AutocompletePositionDirectiveModule } from './directives/autocomplete-position/autocomplete-position.directive.module';
@@ -177,7 +175,6 @@ export function startupServiceFactory(startupService: StartupService, authServic
     ObjectEditorModule,
     ObjectViewerModule,
     OrderByButtonModule,
-    OrderDropdownModule,
     PipesModule,
     ReactiveFormsModule,
     ResizeSidebarModule,
@@ -212,7 +209,6 @@ export function startupServiceFactory(startupService: StartupService, authServic
     VitamuiRepeatableInputModule,
     VitamuiSidenavHeaderModule,
     VitamUISnackBarModule,
-    VitamUITenantSelectModule,
     FileSelectorComponent,
     ChipComponent,
   ],
@@ -242,7 +238,6 @@ export function startupServiceFactory(startupService: StartupService, authServic
     ObjectEditorModule,
     ObjectViewerModule,
     OrderByButtonModule,
-    OrderDropdownModule,
     PipesModule,
     ResizeSidebarModule,
     RowCollapseModule,
@@ -279,7 +274,6 @@ export function startupServiceFactory(startupService: StartupService, authServic
     VitamuiRepeatableInputModule,
     VitamuiSidenavHeaderModule,
     VitamUISnackBarModule,
-    VitamUITenantSelectModule,
     VitamuiTreeNodeModule,
     FileSelectorComponent,
     ChipComponent,

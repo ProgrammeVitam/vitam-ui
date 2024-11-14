@@ -10,14 +10,14 @@
   font-size: 17px;
   font-style: medium;
   font-weight: 500;
-  background: $white;
+  background: var(--vitamui-white);
   box-sizing: border-box;
   border-radius: 10px;
   padding-top: 25px;
   padding-bottom: 26px;
   padding-left: 23px;
   margin-bottom: 24px;
-  color: #474747;
+  color: var(--vitamui-grey-800);
   transition: box-shadow 240ms ease-out;
 
   i {
@@ -48,10 +48,10 @@
 
 .archive-tile {
   background-color: var(--vitamui-primary);
-  color: $white;
+  color: var(--vitamui-white);
 
   i {
-    color: $white;
+    color: var(--vitamui-white);
   }
 }
 

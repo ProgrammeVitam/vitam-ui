@@ -114,7 +114,7 @@
         >
         </vitamui-common-input>
 
-        <div class="hgap-20">
+        <div class="hgap-4">
           <button type="button" class="btn primary" [disabled]="formGroups[0].invalid" cdkStepperNext>
             {{ 'ARCHIVE_SEARCH.DIP.NEXT' | translate }}
           </button>
@@ -126,9 +126,9 @@
     </cdk-step>
     <cdk-step>
       <form [formGroup]="formGroups[1]" (ngSubmit)="onSubmit()">
-        <div class="gap-40">
-          <div class="gap-20">
-            <div class="gap-10">
+        <div class="gap-6">
+          <div class="gap-4">
+            <div class="gap-2">
               <div class="text-text-medium-bold primary">{{ 'ARCHIVE_SEARCH.DIP.LOGS' | translate }}</div>
               <mat-button-toggle-group
                 formControlName="includeLifeCycleLogs"
@@ -140,7 +140,7 @@
               </mat-button-toggle-group>
             </div>
 
-            <div class="gap-10">
+            <div class="gap-2">
               <div class="text-text-medium-bold primary">{{ 'ARCHIVE_SEARCH.DIP.SEDA_VERSION' | translate }}</div>
               <mat-button-toggle-group formControlName="sedaVersion" class="vitamui-button-toggle-group">
                 <mat-button-toggle value="2.1">SEDA 2.1</mat-button-toggle>
@@ -149,8 +149,8 @@
               </mat-button-toggle-group>
             </div>
 
-            <div class="gap-30">
-              <div class="gap-10">
+            <div class="gap-5">
+              <div class="gap-2">
                 <div class="text-text-medium-bold primary">{{ 'ARCHIVE_SEARCH.DIP.INCLUDE_OBJECTS' | translate }}</div>
                 <mat-button-toggle-group formControlName="includeObjects" class="vitamui-button-toggle-group">
                   <mat-button-toggle [value]="UsageVersionEnum.ALL">{{ 'ARCHIVE_SEARCH.DIP.ALL' | translate }} </mat-button-toggle>
@@ -161,9 +161,9 @@
                 </mat-button-toggle-group>
               </div>
 
-              <div class="gap-10" *ngIf="formGroups[1].get('includeObjects').value === UsageVersionEnum.SELECTION" formArrayName="usages">
-                <div *ngFor="let usage of usages.controls; let i = index" class="hgap-40">
-                  <div class="hgap-20" [formGroupName]="i">
+              <div class="gap-2" *ngIf="formGroups[1].get('includeObjects').value === UsageVersionEnum.SELECTION" formArrayName="usages">
+                <div *ngFor="let usage of usages.controls; let i = index" class="hgap-6">
+                  <div class="hgap-4" [formGroupName]="i">
                     <mat-form-field class="vitamui-mat-select usage">
                       <mat-select
                         placeholder="{{ 'ARCHIVE_SEARCH.DIP.TARGET_USAGE_#' | translate: { i: i + 1 } }}"
@@ -179,16 +179,16 @@
                         <i class="material-icons">keyboard_arrow_down</i>
                       </div>
                     </mat-form-field>
-                    <div class="gap-10">
+                    <div class="gap-2">
                       <label class="caption-caption-bold primary"> {{ 'ARCHIVE_SEARCH.DIP.USAGE_VERSION' | translate }}</label>
-                      <mat-radio-group class="hgap-10" formControlName="version">
+                      <mat-radio-group class="hgap-2" formControlName="version">
                         <mat-radio-button value="FIRST">{{ 'ARCHIVE_SEARCH.DIP.USAGE_VERSIONS.FIRST' | translate }} </mat-radio-button>
                         <mat-radio-button value="ALL">{{ 'ARCHIVE_SEARCH.DIP.USAGE_VERSIONS.ALL' | translate }} </mat-radio-button>
                         <mat-radio-button value="LAST">{{ 'ARCHIVE_SEARCH.DIP.USAGE_VERSIONS.LAST' | translate }} </mat-radio-button>
                       </mat-radio-group>
                     </div>
                   </div>
-                  <button *ngIf="i > 0" class="delete-button" type="button" (click)="removeUsage(i)">
+                  <button *ngIf="i > 0" class="btn btn-circle outline-primary small" type="button" (click)="removeUsage(i)">
                     <i class="vitamui-icon vitamui-icon-delete"></i>
                   </button>
                 </div>
@@ -200,7 +200,7 @@
               </div>
             </div>
 
-            <div class="text large text-red bold" *ngIf="showWarning()">
+            <div class="text large danger bold" *ngIf="showWarning()">
               <div class="icon-container">
                 <i class="vitamui-icon vitamui-icon-anomalie"></i>
               </div>
@@ -208,8 +208,8 @@
             </div>
           </div>
 
-          <div class="gap-20">
-            <div class="hgap-20">
+          <div class="gap-4">
+            <div class="hgap-4">
               <button type="submit" class="btn primary mr-4" [disabled]="formGroups[1].invalid">
                 {{ 'ARCHIVE_SEARCH.DIP.EXPORT_SIP_TRANSFER_REQUEST' | translate }}
               </button>

@@ -1,13 +1,10 @@
 @import '../../../../assets/css/mixins';
 @import '../../../../assets/css/layout';
-@import '../../../../assets/css/colors';
 @import '../../../../assets/css/font';
-@import '../../../../assets/css/buttons';
 @import '../../../../assets/css/input';
 @import 'mixins/elevation';
 @import 'material/menu';
 @import 'icons/vitamui-icons';
-@import 'variables/colors';
 @import 'editable-field';
 @import '../../../user-actions/add-metadata/add-metadata.component.scss';
 
@@ -39,7 +36,6 @@ td {
 // Inital content
 .pastis-table-container .mat-select {
   @extend .dropdown;
-  @extend .pastis-dropdown-border-button1-enabled;
   max-height: 50px;
 }
 
@@ -80,44 +76,12 @@ td {
 .pastis-table-container .mat-select-placeholder {
   //styleName: Text/Text-medium;
   @extend .text-text-medium;
-  color: #757575;
+  color: var(--vitamui-grey-600);
 }
 
 // Overhide mat-select-panel default min-size : calc(100%) + 32px;
 .mat-select-panel {
   min-width: 100% !important;
-}
-
-// Hover on select
-.cardinality-dropdown .mat-select-panel {
-  left: 0;
-  right: 0;
-  top: 10%;
-  bottom: 0;
-  max-height: 205px;
-  max-width: 100px;
-}
-
-// The select dropdown box
-.cardinality-dropdown {
-  border: 1px solid #65b2e4;
-  margin-left: 20px;
-}
-
-// The selected option
-.cardinality-dropdown .mat-option.mat-selected:not(.mat-option-disabled) {
-  @extend .pastis-font-roboto-regular;
-  @extend .pastis-black-medium;
-  background: url(../../../../assets/svg/icons/check.svg) no-repeat 100% 50%;
-  //background:yellow;
-  background-position: 10px 12px;
-}
-
-//The hovered option
-.cardinality-dropdown .mat-option:hover {
-  @extend .pastis-bg-secondary-200;
-  @extend .pastis-font-roboto-regular;
-  @extend .pastis-black-height;
 }
 
 // The text on dropdown
@@ -129,7 +93,7 @@ td {
 .value-text-area {
   padding: 10px 15px 10px 15px;
   width: 140px;
-  color: #212121;
+  color: var(--vitamui-grey-900);
   height: 50px;
   @extend .pastis-table-input-border;
   display: flex;
@@ -234,7 +198,7 @@ table {
 .pastis-indication {
   font-size: 16px;
   font-family: 'Mulish', sans-serif;
-  color: #212121;
+  color: var(--vitamui-grey-900);
   font-weight: 400;
   vertical-align: middle;
 }
@@ -243,19 +207,6 @@ table {
   width: 210px;
   float: left;
   height: 50px;
-  @extend .pastis-btn-primary-enabled;
-}
-
-.pastis-btn-add-tag:hover {
-  @extend .pastis-btn-primary-hover;
-}
-
-.pastis-btn-add-tag:disabled {
-  @extend .pastis-btn-primary-disabled;
-}
-
-.pastis-btn-add-tag:active {
-  @extend .pastis-btn-primary-focus;
 }
 
 thead {
@@ -276,7 +227,6 @@ tr:hover .pastis-btn-appear {
 }
 
 .pastis-btn-metadata-options {
-  @extend .pastis-btn-rounded-mini-neutral-enabled;
   border: 1px solid var(--vitamui-primary-700) !important;
   width: 40px;
   height: 40px;
@@ -284,7 +234,6 @@ tr:hover .pastis-btn-appear {
 }
 
 .pastis-btn-metadata-options-active {
-  @extend .pastis-btn-rounded-mini-neutral-enabled;
   background: var(--vitamui-primary-100);
   width: 40px;
   height: 40px;
@@ -322,7 +271,7 @@ tr:hover .pastis-btn-appear {
   margin-left: 74px;
   margin-right: 120px;
   height: fit-content;
-  background-color: #fafafa;
+  background-color: var(--vitamui-grey-50);
   padding-bottom: 30px;
 }
 
@@ -375,7 +324,7 @@ tr:hover .pastis-btn-appear {
 }
 
 .pastis-ico-arrow-back {
-  @extend .pastis-white-highlight;
+  color: var(--vitamui-white);
   cursor: pointer;
   font-size: 24px;
   margin-left: -5px;
@@ -402,14 +351,6 @@ tr:hover .pastis-btn-appear {
 
 dp-date-picker {
   display: flex !important;
-}
-
-dp-day-calendar .dp-day-calendar-container {
-  border-radius: 20px !important;
-  box-shadow:
-    0 11px 15px rgba(0, 0, 0, 0.1),
-    0 9px 46px rgba(0, 0, 0, 0.06),
-    0 24px 38px rgba(0, 0, 0, 0.07) !important;
 }
 
 .dp-selected {
@@ -461,7 +402,7 @@ dp-day-calendar .dp-day-calendar-container {
   .mat-menu-item.cdk-keyboard-focused:not([disabled]),
   .mat-menu-item-highlighted:not([disabled]) {
     color: white;
-    background-color: map-get($colors, 'ligthly-purple') !important;
+    background-color: var(--vitamui-background) !important;
   }
 }
 
@@ -500,7 +441,7 @@ button.delete {
 .allow_presence_text {
   font-size: 11px !important;
   font-family: 'Mulish', sans-serif !important;
-  color: #212121 !important;
+  color: var(--vitamui-grey-900) !important;
   font-weight: 400;
 }
 

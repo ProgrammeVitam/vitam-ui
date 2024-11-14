@@ -45,7 +45,6 @@ import { MatLegacyProgressBarModule as MatProgressBarModule } from '@angular/mat
 import { MatLegacyRadioModule as MatRadioModule } from '@angular/material/legacy-radio';
 import { MatLegacySelectModule as MatSelectModule } from '@angular/material/legacy-select';
 import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
-import { MatLegacyTooltipModule as MatTooltipModule } from '@angular/material/legacy-tooltip';
 import { SharedModule } from 'projects/identity/src/app/shared/shared.module';
 import { VitamUICommonModule } from 'vitamui-library';
 import { VitamUILibraryModule } from 'vitamui-library';
@@ -64,7 +63,6 @@ import { UpdatePersistentIdentifierPolicyFormComponent } from './update-persiste
     MatProgressBarModule,
     MatSelectModule,
     MatSnackBarModule,
-    MatTooltipModule,
     MatCheckboxModule,
     MatRadioModule,
     VitamUICommonModule,

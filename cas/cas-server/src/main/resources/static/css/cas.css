@@ -285,17 +285,30 @@
     See the License for the specific language governing permissions and
     limitations under the License.
  */
-.Grey-600 {
-  color: #757575; }
+:root {
+  --vitamui-grey-900: #212121;
+  --vitamui-grey-900-rgb: 33, 33, 33;
+  --vitamui-grey-800: #424242;
+  --vitamui-grey-700: #616161;
+  --vitamui-grey-600: #757575;
+  --vitamui-grey: #9E9E9E;
+  --vitamui-grey-400: #BDBDBD;
+  --vitamui-grey-300: #E0E0E0;
+  --vitamui-grey-200: #EEEEEE;
+  --vitamui-grey-100: #F5F5F5;
+  --vitamui-grey-50: #FAFAFA;
+  --vitamui-red: #C10000;
+  --vitamui-green: #27740A;
+  --vitamui-white: #FFFFFF; }
 
-.Red-500 {
-  color: #C10000; }
+.Grey-600 {
+  color: var(--vitamui-grey-600); }
 
 h1, h2, h3, h4, h5 {
-  color: #212121;
+  color: var(--vitamui-grey-900);
   margin: 10px 0; }
   h1.light, h2.light, h3.light, h4.light, h5.light {
-    color: #757575; }
+    color: var(--vitamui-grey-600); }
 
 h1, .Headline-1 {
   font-size: 96px;
@@ -444,12 +457,11 @@ button.Button {
   align-items: center;
   font-size: 15px;
   font-weight: 500;
-  color: #ffffff;
+  color: var(--vitamui-white);
   border: none;
   height: 50px;
   border-radius: 25px;
   background-color: var(--vitamui-primary);
-  box-shadow: 20px 20px 40px 0 rgba(214, 208, 208, 0.5);
   padding: 0 30px;
   transition: opacity 200ms ease-in-out;
   border: 1px solid var(--vitamui-primary); }
@@ -506,7 +518,7 @@ button.Button {
       .step-password-reset .password-helper .password-helper-line i {
         display: none; }
       .step-password-reset .password-helper .password-helper-line.valid {
-        color: #27740A; }
+        color: var(--vitamui-green); }
         .step-password-reset .password-helper .password-helper-line.valid i {
           display: flex; }
     .step-password-reset .password-helper ul {
@@ -577,8 +589,8 @@ button, textarea, input {
   box-sizing: border-box;
   width: 820px;
   border-radius: 20px;
-  background-color: #ffffff;
-  box-shadow: 0px 8px 32px rgba(33, 33, 33, 0.2), 0px 16px 64px rgba(33, 33, 33, 0.05); }
+  background-color: var(--vitamui-white);
+  box-shadow: 0 2px 8px rgba(var(--vitamui-grey-900-rgb), 0.2), 0 4px 16px rgba(var(--vitamui-grey-900-rgb), 0.05); }
   .vitamui-card .vitamui-icon {
     width: 24px;
     height: 24px; }
@@ -594,7 +606,7 @@ button, textarea, input {
     outline: none;
     border: 1px solid transparent;
     border-radius: 5px;
-    box-shadow: 0 0 2px rgba(33, 33, 33, 0.2), 0 1px 4px rgba(33, 33, 33, 0.05);
+    box-shadow: 0 0 2px rgba(var(--vitamui-grey-900-rgb), 0.2), 0 1px 4px rgba(var(--vitamui-grey-900-rgb), 0.05);
     transition: border-color 200ms ease-out;
     height: 50px;
     padding: 0 30px;
@@ -603,17 +615,17 @@ button, textarea, input {
     .vitamui-card input[type=email]:focus,
     .vitamui-card input[type=password]:focus,
     .vitamui-card select:focus {
-      border-color: #a6a6a6; }
+      border-color: var(--vitamui-grey); }
     .vitamui-card input[type=text].ng-valid.ng-touched,
     .vitamui-card input[type=email].ng-valid.ng-touched,
     .vitamui-card input[type=password].ng-valid.ng-touched,
     .vitamui-card select.ng-valid.ng-touched {
-      border-color: #27740A; }
+      border-color: var(--vitamui-green); }
     .vitamui-card input[type=text].ng-invalid.ng-touched,
     .vitamui-card input[type=email].ng-invalid.ng-touched,
     .vitamui-card input[type=password].ng-invalid.ng-touched,
     .vitamui-card select.ng-invalid.ng-touched {
-      border-color: #C10000; }
+      border-color: var(--vitamui-red); }
     .vitamui-card input[type=text][disabled],
     .vitamui-card input[type=email][disabled],
     .vitamui-card input[type=password][disabled],
@@ -624,7 +636,7 @@ button, textarea, input {
     align-items: start;
     margin: 5px 0 0 15px;
     min-height: 24px;
-    color: #C10000; }
+    color: var(--vitamui-red); }
     .vitamui-card .warning .element {
       min-height: 24px;
       align-items: center; }

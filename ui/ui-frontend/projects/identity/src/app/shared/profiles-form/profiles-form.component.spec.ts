@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Directive, Input, NO_ERRORS_SCHEMA, ViewChild } from '@angular/core';
+import { Component, NO_ERRORS_SCHEMA, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatLegacyProgressSpinnerModule as MatProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
@@ -139,14 +139,6 @@ const expectedApp = {
   CATEGORY_CONFIGURATION: {},
 };
 
-// eslint-disable-next-line @angular-eslint/directive-selector
-@Directive({ selector: '[matTooltip]' })
-class MatTooltipStubDirective {
-  @Input() matTooltip: any;
-  @Input() matTooltipDisabled: any;
-  @Input() matTooltipClass: any;
-}
-
 @Component({
   template: ` <app-profiles-form [(ngModel)]="profiles"></app-profiles-form> `,
 })
@@ -171,7 +163,7 @@ describe('ProfilesFormComponent', () => {
         VitamUIAutocompleteModule,
         VitamUICommonTestModule,
       ],
-      declarations: [ProfilesFormComponent, TesthostComponent, MatTooltipStubDirective],
+      declarations: [ProfilesFormComponent, TesthostComponent],
       providers: [
         { provide: ProfileService, useValue: { list: () => of(expectedProfiles) } },
         { provide: ApplicationApiService, useValue: { getAllByParams: () => of(expectedApp) } },

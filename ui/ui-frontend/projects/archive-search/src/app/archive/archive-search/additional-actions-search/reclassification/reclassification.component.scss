@@ -30,15 +30,6 @@ label {
   line-height: normal;
   margin-bottom: 10px;
   display: block;
-
-  .required-marker {
-    color: var(--vitamui-primary);
-  }
-
-  small {
-    color: #a5a5a5;
-    font-size: inherit;
-  }
 }
 
 .underline {
@@ -89,32 +80,6 @@ button.back {
   margin-top: 60px;
 }
 
-button > small {
-  display: block;
-  font-size: 12px;
-  font-weight: 400;
-}
-
-.hint {
-  color: #a5a5a5;
-  font-size: 15px;
-}
-
-.drag-and-drop-area {
-  margin-left: 10%;
-  width: 300px;
-  height: 120px;
-  border: 2px dashed var(--vitamui-secondary);
-  border-radius: 6px;
-  box-shadow: 0px 0px 80px rgba(163, 163, 163, 0.3);
-  background: white;
-  margin-bottom: 60px;
-
-  p {
-    padding-top: 20px;
-  }
-}
-
 .on-over {
   border: 2px solid var(--vitamui-secondary);
 
@@ -155,28 +120,6 @@ button > small {
   height: 116px;
 }
 
-.upload-text {
-  padding-top: 5%;
-  font-size: 15px;
-  line-height: 18px;
-  color: #a5a5a5;
-
-  .upload {
-    color: var(--vitamui-secondary);
-  }
-}
-
-.logo-drop {
-  font-size: 14px;
-  line-height: 20px;
-  color: var(--vitamui-grey-900);
-  text-align: center;
-
-  small {
-    color: #a5a5a5;
-  }
-}
-
 .text-title {
   font-family: Mulish;
   font-style: normal;
@@ -187,7 +130,7 @@ button > small {
   display: flex;
   align-items: center;
 
-  color: #757575;
+  color: var(--vitamui-grey-600);
 }
 
 .badge {
@@ -205,8 +148,8 @@ button > small {
   margin-top: 2%;
 }
 .badge-secondary {
-  color: #fffcfc;
-  background-color: #b00808;
+  color: var(--vitamui-white);
+  background-color: var(--vitamui-red);
 }
 
 .choice-top {
@@ -234,7 +177,7 @@ button > small {
   max-height: 134px;
   overflow-y: scroll;
   overflow-x: hidden;
-  scrollbar-color: var(--vitamui-primary-light) #f7ebfa;
+  scrollbar-color: var(--vitamui-primary-light) var(--vitamui-primary-50);
   scrollbar-width: thin;
   width: 152%;
   padding-left: 5px;
@@ -246,13 +189,13 @@ button > small {
 }
 
 .parant-div::-webkit-scrollbar-track {
-  background: #f7ebfa;
+  background: var(--vitamui-primary-50);
 }
 
 .parant-div::-webkit-scrollbar-thumb {
   background-color: var(--vitamui-primary-light);
   border-radius: 20px;
-  border: 3px solid #f7ebfa;
+  border: 3px solid var(--vitamui-primary-50);
 }
 
 .target-parent {

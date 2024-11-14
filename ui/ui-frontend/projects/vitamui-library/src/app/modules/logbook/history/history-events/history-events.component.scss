@@ -11,7 +11,7 @@
     .history-event-outmessage,
     .history-event-details,
     .history-event-type {
-      color: #ea0101;
+      color: var(--vitamui-red);
     }
   }
 
@@ -22,7 +22,7 @@
     .history-event-outmessage,
     .history-event-details,
     .history-event-type {
-      color: #ffa610;
+      color: var(--vitamui-orange);
     }
   }
 
@@ -82,14 +82,14 @@
     top: 0;
     width: 16px;
     height: 16px;
-    background: $white;
+    background: var(--vitamui-white);
     border: 2px solid var(--vitamui-grey-400);
     border-radius: 50%;
   }
 
   &.event-error:after {
-    background: #ea0101;
-    border-color: #ea0101;
+    background: var(--vitamui-red);
+    border-color: var(--vitamui-red);
     color: white;
     font-size: 8px;
     padding-top: 2px;

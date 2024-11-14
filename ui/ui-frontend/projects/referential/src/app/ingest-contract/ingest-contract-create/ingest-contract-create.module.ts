@@ -44,7 +44,6 @@ import { MatLegacyProgressBarModule as MatProgressBarModule } from '@angular/mat
 import { MatLegacyRadioModule as MatRadioModule } from '@angular/material/legacy-radio';
 import { MatLegacySelectModule as MatSelectModule } from '@angular/material/legacy-select';
 import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
-import { MatLegacyTooltipModule as MatTooltipModule } from '@angular/material/legacy-tooltip';
 import { VitamUICommonModule } from 'vitamui-library';
 import { VitamUILibraryModule } from 'vitamui-library';
 
@@ -62,7 +61,6 @@ import { IngestContractCreateComponent } from './ingest-contract-create.componen
     MatSelectModule,
     MatSnackBarModule,
     MatRadioModule,
-    MatTooltipModule,
     ReactiveFormsModule,
     VitamUICommonModule,
     VitamUILibraryModule,

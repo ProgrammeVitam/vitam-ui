@@ -2,9 +2,8 @@
 <ng-container *ngIf="!pending">
   <a
     *ngIf="canLoadExactCount"
-    matTooltip="{{ 'ARCHIVE_SEARCH.RETRIEVE_EXACT_COUNT' | translate }}"
-    matTooltipClass="vitamui-tooltip"
-    matTooltipShowDelay="300"
+    [vitamuiCommonToolTip]="'ARCHIVE_SEARCH.RETRIEVE_EXACT_COUNT' | translate"
+    [vitamuiCommonToolTipShowDelay]="300"
     class="link-without-underline"
     (click)="loadExactCount()"
     >{{ 'ARCHIVE_SEARCH.MORE_THAN' | translate }} {{ threshold }}

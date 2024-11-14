@@ -8,7 +8,7 @@
   <div class="col-9 read-only-field">
     <label>{{ 'ACCESSION_REGISTER.PREVIEW.ORIGINATING_AGENCY' | translate }}</label>
     <div>
-      <p matTooltip="{{ accessionRegisterDetail.originatingAgencyLabel }}" matTooltipClass="vitamui-tooltip" [matTooltipShowDelay]="300">
+      <p [vitamuiCommonToolTip]="accessionRegisterDetail.originatingAgencyLabel" [vitamuiCommonToolTipShowDelay]="300">
         {{ accessionRegisterDetail.originatingAgency }}
       </p>
     </div>
@@ -59,7 +59,7 @@
     <div class="col-6 read-only-field">
       <label>{{ 'ACCESSION_REGISTER.PREVIEW.SUBMISSION_AGENCY' | translate }}</label>
       <div>
-        <p matTooltip="{{ accessionRegisterDetail.submissionAgencyLabel }}" matTooltipClass="vitamui-tooltip" [matTooltipShowDelay]="300">
+        <p [vitamuiCommonToolTip]="accessionRegisterDetail.submissionAgencyLabel" [vitamuiCommonToolTipShowDelay]="300">
           {{ accessionRegisterDetail.submissionAgency }}
         </p>
       </div>

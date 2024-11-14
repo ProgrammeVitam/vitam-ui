@@ -17,6 +17,7 @@
     bottom: 0px;
     max-width: 200px;
     word-wrap: break-word;
+    white-space: pre-line;
 
     &:before {
       content: '';

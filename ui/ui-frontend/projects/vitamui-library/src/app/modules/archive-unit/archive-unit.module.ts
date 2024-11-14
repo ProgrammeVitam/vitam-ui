@@ -39,7 +39,6 @@ import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatLegacyProgressSpinnerModule as MatProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
 import { MatLegacySelectModule as MatSelectModule } from '@angular/material/legacy-select';
-import { MatLegacyTooltipModule as MatTooltipModule } from '@angular/material/legacy-tooltip';
 import { TranslateModule } from '@ngx-translate/core';
 import { ObjectEditorModule } from '../object-editor/object-editor.module';
 import { ObjectViewerModule } from '../object-viewer/object-viewer.module';
@@ -50,6 +49,7 @@ import { ArchiveUnitEditorService } from './components/archive-unit-editor/archi
 import { EditorBannerComponent } from './components/archive-unit-editor/components/editor-banner/editor-banner.component';
 import { ArchiveUnitViewerComponent } from './components/archive-unit-viewer/archive-unit-viewer.component';
 import { PhysicalArchiveViewerComponent } from './components/physical-archive-viewer/physical-archive-viewer.component';
+import { CommonTooltipModule } from '../components/common-tooltip/common-tooltip.module';
 
 @NgModule({
   imports: [
@@ -58,10 +58,10 @@ import { PhysicalArchiveViewerComponent } from './components/physical-archive-vi
     PipesModule,
     ReactiveFormsModule,
     MatSelectModule,
-    MatTooltipModule,
     MatProgressSpinnerModule,
     ObjectViewerModule,
     ObjectEditorModule,
+    CommonTooltipModule,
   ],
   providers: [ArchiveUnitEditorService],
   declarations: [

@@ -15,12 +15,7 @@
         {{ 'LOGBOOK_OPERATION_PAGE.TITLE' | translate }}
       </vitamui-common-title-breadcrumb>
       <vitamui-common-banner [searchbarPlaceholder]="'LOGBOOK_OPERATION_PAGE.SEARCH' | translate" (search)="onSearchSubmit($event)">
-        <button
-          class="btn secondary"
-          (click)="refresh()"
-          matTooltip="{{ 'LOGBOOK_OPERATION_PAGE.ToolTip_Refresh' | translate }}"
-          matTooltipClass="vitamui-tooltip"
-        >
+        <button class="btn secondary" (click)="refresh()" [vitamuiCommonToolTip]="'LOGBOOK_OPERATION_PAGE.ToolTip_Refresh' | translate">
           <i class="vitamui-icon vitamui-icon-refresh"></i>
           <span>{{ 'LOGBOOK_OPERATION_PAGE.REFRESH' | translate }}</span>
         </button>
@@ -59,7 +54,7 @@
               </div>
 
               <div class="col-2 filter-text" *ngIf="!showStartDateMax" (click)="showIntervalDate(true)">
-                <span class="clickable" [ngStyle]="{ color: '#9c31b5' }">{{ 'LOGBOOK_OPERATION_PAGE.ADD_INTREVAL' | translate }} </span>
+                <span class="clickable text primary bold">{{ 'LOGBOOK_OPERATION_PAGE.ADD_INTREVAL' | translate }} </span>
               </div>
 
               <div class="col-2" *ngIf="showStartDateMax">
@@ -83,7 +78,7 @@
               </div>
 
               <div class="col-2 filter-text" *ngIf="showStartDateMax" (click)="showIntervalDate(false)">
-                <span class="clickable" [ngStyle]="{ color: '#9c31b5' }">{{ 'LOGBOOK_OPERATION_PAGE.DELETE_INTERVAL' | translate }}</span>
+                <span class="clickable text primary bold">{{ 'LOGBOOK_OPERATION_PAGE.DELETE_INTERVAL' | translate }}</span>
               </div>
             </div>
           </div>
