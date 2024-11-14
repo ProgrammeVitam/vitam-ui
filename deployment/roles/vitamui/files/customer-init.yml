@@ -344,6 +344,12 @@ customer-init:
         - ROLE_UPDATE_MANAGEMENT_CONTRACT
         - ROLE_DELETE_MANAGEMENT_CONTRACT
 
+    - name: Profil pour la gestion des ontologies
+      description: Gestion des ontologies dans Vitam
+      app-name: ONTOLOGY_APP
+      level:
+      roles:
+        - ROLE_GET_ONTOLOGIES
 
   # Other Default profiles for admin group
   admin-profiles:
