@@ -41,7 +41,6 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import fr.gouv.vitam.common.LocalDateUtil;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.json.JsonHandler;
-import fr.gouv.vitam.common.model.AuditOptions;
 import fr.gouv.vitam.common.model.ProbativeValueRequest;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
@@ -55,6 +54,7 @@ import fr.gouv.vitamui.commons.api.utils.EnumUtils;
 import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsResponseDto;
 import fr.gouv.vitamui.referential.common.dto.LogbookOperationDto;
 import fr.gouv.vitamui.referential.common.dto.ReportType;
+import fr.gouv.vitamui.referential.common.model.AuditCreateOptions;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
 import fr.gouv.vitamui.referential.external.server.service.OperationExternalService;
 import lombok.Getter;
@@ -146,12 +146,12 @@ public class OperationExternalController {
     @Secured(ServicesData.ROLE_RUN_AUDITS)
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public boolean create(final @Valid @RequestBody AuditOptions auditOptions)
+    public boolean create(final @Valid @RequestBody AuditCreateOptions auditCreateOptions)
         throws InvalidParseOperationException, PreconditionFailedException {
-        ParameterChecker.checkParameter("Audit Options is mandatory parameter : ", auditOptions);
-        SanityChecker.sanitizeCriteria(auditOptions);
-        LOGGER.debug("Create {}", auditOptions);
-        return operationExternalService.runAudit(auditOptions);
+        ParameterChecker.checkParameter("Audit Options is mandatory parameter : ", auditCreateOptions);
+        SanityChecker.sanitizeCriteria(auditCreateOptions);
+        LOGGER.debug("Create {}", auditCreateOptions);
+        return operationExternalService.runAudit(auditCreateOptions);
     }
 
     @PostMapping(value = "/timestamp")

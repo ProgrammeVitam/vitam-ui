@@ -38,7 +38,6 @@ package fr.gouv.vitamui.referential.external.server.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
-import fr.gouv.vitam.common.model.AuditOptions;
 import fr.gouv.vitam.common.model.ProbativeValueRequest;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
@@ -53,6 +52,7 @@ import fr.gouv.vitamui.iam.security.client.AbstractResourceClientService;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import fr.gouv.vitamui.referential.common.dto.LogbookOperationDto;
 import fr.gouv.vitamui.referential.common.dto.ReportType;
+import fr.gouv.vitamui.referential.common.model.AuditCreateOptions;
 import fr.gouv.vitamui.referential.internal.client.OperationInternalRestClient;
 import lombok.Getter;
 import lombok.Setter;
@@ -106,8 +106,8 @@ public class OperationExternalService extends AbstractResourceClientService<Logb
         );
     }
 
-    public boolean runAudit(final AuditOptions auditOptions) {
-        return operationInternalRestClient.runAudit(getInternalHttpContext(), auditOptions);
+    public boolean runAudit(final AuditCreateOptions auditCreateOptions) {
+        return operationInternalRestClient.runAudit(getInternalHttpContext(), auditCreateOptions);
     }
 
     @Override

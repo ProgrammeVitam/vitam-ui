@@ -41,16 +41,18 @@ import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogRef as MatDia
 import { EMPTY, Subject } from 'rxjs';
 import { map, switchMap, take, takeUntil } from 'rxjs/operators';
 import {
+  AccessContractService,
   AccessionRegisterSummary,
   ConfirmDialogService,
   ExternalParameters,
   ExternalParametersService,
   FilingPlanMode,
+  Option,
   StartupService,
+  VitamuiAutocompleteMultiselectOptions,
   VitamUISnackBarService,
-  AccessContractService,
 } from 'vitamui-library';
-import { AuditAction, AuditType } from '../../models/audit.interface';
+import { AuditAction, AuditPerimeter } from '../../models/audit.interface';
 import { AuditService } from '../audit.service';
 import { AuditCreateValidators } from './audit-create-validator';
 
@@ -66,11 +68,15 @@ export class AuditCreateComponent implements OnInit, OnDestroy {
   public form: FormGroup;
   public stepIndex = 0;
   public stepCount = 2;
-  public allProducerServices = new FormControl(true);
+  public allProducerServices = new FormControl(false);
   public allNodes = new FormControl(true);
   public selectedNodes = new FormControl({ included: [], excluded: [] });
+  public producerServicesMultiSelect = new FormControl();
+  public ingestOperationsEntries = new FormControl();
   public accessContractId: string = null;
   public accessionRegisterSummaries: AccessionRegisterSummary[];
+  public producerServicesOptions: Option[] = [];
+  public producerServicesMultiSelectOptions: VitamuiAutocompleteMultiselectOptions;
   public isDisabledButton = false;
   public FILLING_PLAN_MODE_INCLUDE = FilingPlanMode.INCLUDE_ONLY;
 
@@ -91,11 +97,13 @@ export class AuditCreateComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.form = this.formBuilder.group({
-      auditActions: [AuditAction.AUDIT_FILE_EXISTING, Validators.required],
-      auditType: ['tenant', Validators.required],
+      auditActions: [AuditAction.AUDIT_FILE_INTEGRITY, Validators.required],
+      auditPerimeter: [null, Validators.required],
       evidenceAudit: [null, null, this.auditCreateValidator.checkEvidenceAuditId()],
       objectId: [this.startupService.getTenantIdentifier()],
-      query: [this.getRootQuery(null)],
+      originatingAgencyIds: [[]],
+      ingestOperationIds: [[]],
+      attachmentPositionIds: [[]],
     });
 
     this.externalParameterService
@@ -105,6 +113,14 @@ export class AuditCreateComponent implements OnInit, OnDestroy {
       .subscribe((accessContractAndRegisterSummary) => {
         this.accessContractId = accessContractAndRegisterSummary.accessContractId;
         this.accessionRegisterSummaries = accessContractAndRegisterSummary.accessionRegisterSummaries;
+        this.producerServicesOptions = this.accessionRegisterSummaries.map((summary) => ({
+          key: summary.originatingAgency,
+          label: summary.originatingAgency,
+        }));
+        this.producerServicesMultiSelectOptions = {
+          options: this.producerServicesOptions,
+          customSorting: this.sortAlphabetically,
+        };
       });
 
     this.confirmDialogService
@@ -116,11 +132,25 @@ export class AuditCreateComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroyer$))
       .subscribe((auditActions) => this.changeDefaultOnActionSelection(auditActions));
 
+    this.form.controls.auditPerimeter.valueChanges
+      .pipe(takeUntil(this.destroyer$))
+      .subscribe((value) => this.updateFieldsOnAuditPerimeterChange(value));
+
     this.allProducerServices.valueChanges
       .pipe(takeUntil(this.destroyer$))
       .subscribe((value) => this.updateFieldsOnAllProducerServicesChange(value));
 
-    this.selectedNodes.valueChanges.pipe(takeUntil(this.destroyer$)).subscribe((value) => this.changeQueryOnNodesSelection(value));
+    this.selectedNodes.valueChanges
+      .pipe(takeUntil(this.destroyer$))
+      .subscribe((value) => this.updateAttachmentPositionIdsOnSelectionNodesChange(value));
+
+    this.producerServicesMultiSelect.valueChanges
+      .pipe(takeUntil(this.destroyer$))
+      .subscribe((value) => this.updateOriginatingAgencyIdsOnChange(value));
+
+    this.ingestOperationsEntries.valueChanges
+      .pipe(takeUntil(this.destroyer$))
+      .subscribe((value) => this.updateIngestOperationsEntriesOnChange(value));
 
     this.form.controls.evidenceAudit.valueChanges.pipe(takeUntil(this.destroyer$)).subscribe((value) => {
       if (this.form.get('auditActions').value === AuditAction.AUDIT_FILE_RECTIFICATION) {
@@ -138,9 +168,30 @@ export class AuditCreateComponent implements OnInit, OnDestroy {
     return Object.keys(AuditAction);
   }
 
+  public getAuditPerimeters(): String[] {
+    return Object.keys(AuditPerimeter);
+  }
+
+  moveToNextStep() {
+    this.stepIndex = this.stepIndex + 1;
+  }
+
+  backToPreviousStep() {
+    this.stepIndex = this.stepIndex - 1;
+  }
+
+  private sortAlphabetically = (a: Option, b: Option): number => {
+    return a.label.toLocaleLowerCase() > b.label.toLocaleLowerCase() ? 1 : -1;
+  };
+
   public showProducerToggle(): boolean {
     const selectedAuditAction = this.form.get('auditActions').value;
-    return selectedAuditAction === AuditAction.AUDIT_FILE_EXISTING || selectedAuditAction === AuditAction.AUDIT_FILE_INTEGRITY;
+    return selectedAuditAction !== AuditAction.AUDIT_FILE_RECTIFICATION;
+  }
+
+  public showAuditPerimeter(): boolean {
+    const selectedAuditAction = this.form.get('auditActions').value;
+    return selectedAuditAction !== AuditAction.AUDIT_FILE_RECTIFICATION;
   }
 
   public showAllNodesToggle(): boolean {
@@ -158,7 +209,7 @@ export class AuditCreateComponent implements OnInit, OnDestroy {
   }
 
   public getStepCount(): number {
-    return this.allNodes.value ? 1 : 2;
+    return this.form.get('auditActions').value === AuditAction.AUDIT_FILE_RECTIFICATION ? 1 : 2;
   }
 
   private extractAccesContractIdAndGetAccessionRegisterSummaries(params: Map<string, string>) {
@@ -176,43 +227,89 @@ export class AuditCreateComponent implements OnInit, OnDestroy {
   private changeDefaultOnActionSelection(auditActions: AuditAction): void {
     // Update the validators
     if (auditActions === AuditAction.AUDIT_FILE_RECTIFICATION) {
-      this.allProducerServices.setValue(false);
       this.form.get('evidenceAudit').setValidators(Validators.required);
+      this.form.get('originatingAgencyIds').clearValidators();
+      this.form.get('auditPerimeter').clearValidators();
     } else {
-      this.allProducerServices.setValue(true);
       this.form.get('evidenceAudit').clearValidators();
       this.form.get('evidenceAudit').setValue(null);
       this.form.get('evidenceAudit').markAsUntouched();
+      this.form.get('originatingAgencyIds').clearValidators();
+      this.form.get('originatingAgencyIds').setValue([]);
+      this.form.get('originatingAgencyIds').markAsUntouched();
+      this.form.get('ingestOperationIds').clearValidators();
+      this.form.get('ingestOperationIds').setValue([]);
+      this.form.get('ingestOperationIds').markAsUntouched();
+      this.form.get('attachmentPositionIds').clearValidators();
+      this.form.get('attachmentPositionIds').setValue([]);
+      this.form.get('attachmentPositionIds').markAsUntouched();
+      this.form.get('auditPerimeter').setValidators(Validators.required);
     }
 
+    this.allProducerServices.setValue(false);
     this.allNodes.setValue(true);
     this.form.get('evidenceAudit').updateValueAndValidity();
+    this.form.get('originatingAgencyIds').updateValueAndValidity();
+    this.form.get('ingestOperationIds').updateValueAndValidity();
+    this.form.get('auditPerimeter').updateValueAndValidity();
     this.updateObjectIdValidators();
     this.form.updateValueAndValidity();
-
-    // Update the audit type
-    if (auditActions === AuditAction.AUDIT_FILE_EXISTING || auditActions === AuditAction.AUDIT_FILE_INTEGRITY) {
-      this.form.controls.auditType.setValue(this.allProducerServices.value ? AuditType.tenant : AuditType.originatingagency);
-    } else {
-      this.form.controls.auditType.setValue(AuditType.dsl);
-    }
-  }
-
-  private changeQueryOnNodesSelection(value: { included: Array<string>; excluded: Array<string> }): void {
-    if (value && value.included && value.included.length > 0) {
-      this.form.controls.query.setValue(this.getRootQuery(value.included));
-    } else {
-      this.form.controls.query.setValue(this.getRootQuery(null));
-    }
   }
 
   private updateFieldsOnAllProducerServicesChange(allProducerServices: boolean): void {
     if (this.form.controls.auditActions.value !== AuditAction.AUDIT_FILE_RECTIFICATION) {
-      this.form.controls.auditType.setValue(allProducerServices ? AuditType.tenant : AuditType.originatingagency);
+      const allOptions = this.producerServicesOptions.map((option) => option.key);
+      this.form.controls.originatingAgencyIds.setValue(allOptions);
     }
     this.form.controls.objectId.setValue(allProducerServices ? this.startupService.getTenantIdentifier() : null);
+    this.form.get('originatingAgencyIds').updateValueAndValidity();
     this.updateObjectIdValidators();
     this.form.updateValueAndValidity();
+  }
+
+  private updateFieldsOnAuditPerimeterChange(auditPerimeter: AuditPerimeter) {
+    if (auditPerimeter === AuditPerimeter.AUDIT_PERIMETER_ORIGINATING_AGENCY) {
+      this.form.get('originatingAgencyIds').setValidators(Validators.required);
+      this.form.get('ingestOperationIds').clearValidators();
+      this.form.get('attachmentPositionIds').clearValidators();
+    } else if (auditPerimeter === AuditPerimeter.AUDIT_PERIMETER_INGEST_OPERATION) {
+      this.form.get('ingestOperationIds').setValidators(Validators.required);
+      this.form.get('originatingAgencyIds').clearValidators();
+      this.form.get('originatingAgencyIds').setValue([]);
+      this.form.get('originatingAgencyIds').markAsUntouched();
+      this.form.get('attachmentPositionIds').clearValidators();
+    } else if (auditPerimeter === AuditPerimeter.AUDIT_PERIMETER_ATTACHMENT_POSITION) {
+      this.form.get('attachmentPositionIds').setValidators(Validators.required);
+      this.form.get('originatingAgencyIds').clearValidators();
+      this.form.get('originatingAgencyIds').setValue([]);
+      this.form.get('originatingAgencyIds').markAsUntouched();
+      this.form.get('attachmentPositionIds').clearValidators();
+      this.form.get('ingestOperationIds').clearValidators();
+    }
+    this.form.get('ingestOperationIds').updateValueAndValidity();
+    this.form.get('attachmentPositionIds').updateValueAndValidity();
+    this.form.updateValueAndValidity();
+  }
+
+  private updateIngestOperationsEntriesOnChange(value: string) {
+    if (value.length > 0) {
+      const values = value.split(',');
+      this.form.controls.ingestOperationIds.setValue(values);
+    } else {
+      this.form.controls.ingestOperationIds.setValue([]);
+    }
+  }
+
+  private updateOriginatingAgencyIdsOnChange(values: Array<string>) {
+    this.form.controls.originatingAgencyIds.setValue(values);
+  }
+
+  private updateAttachmentPositionIdsOnSelectionNodesChange(value: { included: Array<string>; excluded: Array<string> }) {
+    if (value && value.included && value.included.length > 0) {
+      this.form.controls.attachmentPositionIds.setValue(value.included);
+    } else {
+      this.form.controls.attachmentPositionIds.setValue([]);
+    }
   }
 
   /**
@@ -222,13 +319,39 @@ export class AuditCreateComponent implements OnInit, OnDestroy {
     if (
       !this.allProducerServices.value &&
       this.accessionRegisterSummaries &&
-      (this.form.value.auditActions === AuditAction.AUDIT_FILE_EXISTING ||
-        this.form.value.auditActions === AuditAction.AUDIT_FILE_INTEGRITY)
+      this.form.value.auditActions !== AuditAction.AUDIT_FILE_RECTIFICATION
     ) {
       this.form.get('objectId').setValidators(Validators.required);
     } else {
       this.form.get('objectId').clearValidators();
     }
+  }
+
+  isStepOneValid(): boolean {
+    if (this.form.value.auditActions === AuditAction.AUDIT_FILE_RECTIFICATION) {
+      return !this.form.get('evidenceAudit').invalid && !this.form.get('evidenceAudit').pending && this.accessContractId != null;
+    }
+    return !this.form.get('auditPerimeter').invalid && !this.form.get('auditPerimeter').pending;
+  }
+
+  isStepTwoValid(): boolean {
+    const isOriginatingAgencyValid =
+      this.form.value.auditPerimeter === AuditPerimeter.AUDIT_PERIMETER_ORIGINATING_AGENCY &&
+      this.accessContractId != null &&
+      (this.allProducerServices.value || (this.producerServicesMultiSelect.value && this.producerServicesMultiSelect.value.length > 0));
+
+    const isIngestOperationValid =
+      this.form.value.auditPerimeter === AuditPerimeter.AUDIT_PERIMETER_INGEST_OPERATION &&
+      this.accessContractId != null &&
+      !this.form.get('ingestOperationIds').invalid &&
+      !this.form.get('ingestOperationIds').pending;
+
+    const isAttachmentPositionValid =
+      this.form.value.auditPerimeter === AuditPerimeter.AUDIT_PERIMETER_ATTACHMENT_POSITION &&
+      this.accessContractId != null &&
+      this.selectedNodes.value.included.length > 0;
+
+    return isAttachmentPositionValid || isIngestOperationValid || isOriginatingAgencyValid;
   }
 
   isStepValid(): boolean {
@@ -242,8 +365,6 @@ export class AuditCreateComponent implements OnInit, OnDestroy {
       (this.form.value.auditActions === AuditAction.AUDIT_FILE_INTEGRITY ||
         this.form.value.auditActions === AuditAction.AUDIT_FILE_EXISTING) &&
       this.accessContractId != null &&
-      !this.form.get('auditType').invalid &&
-      !this.form.get('auditType').pending &&
       !this.form.get('objectId').invalid &&
       !this.form.get('objectId').pending;
     return isEvidenceAuditValid || isRectificationAuditValid || isOtherAuditValid;
@@ -273,29 +394,5 @@ export class AuditCreateComponent implements OnInit, OnDestroy {
         this.dialogRef.close({ success: false, action: 'none' });
       },
     );
-  }
-
-  getRootQuery(includedRoots: string[]) {
-    if (includedRoots === null) {
-      return {
-        $query: [
-          {
-            $or: [{ $exists: '#id' }],
-          },
-        ],
-        $filter: {},
-        $projection: {},
-      };
-    }
-
-    return {
-      $query: [
-        {
-          $or: [{ $in: { '#allunitups': includedRoots } }],
-        },
-      ],
-      $filter: {},
-      $projection: {},
-    };
   }
 }

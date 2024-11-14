@@ -1,5 +1,5 @@
-/*
- * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2022)
+/**
+ * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
  *
  * contact@programmevitam.fr
@@ -34,34 +34,30 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-export interface AuditOptions {
-  auditActions: AuditAction;
-  auditType: AuditType;
-  objectId: string;
-  query: any;
-}
+package fr.gouv.vitamui.referential.common.model;
 
-export enum AuditAction {
-  AUDIT_FILE_EXISTING = 'AUDIT_FILE_EXISTING',
-  AUDIT_FILE_INTEGRITY = 'AUDIT_FILE_INTEGRITY',
-  AUDIT_FILE_CONSISTENCY = 'AUDIT_FILE_CONSISTENCY',
-  AUDIT_FILE_RECTIFICATION = 'AUDIT_FILE_RECTIFICATION',
-}
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.Getter;
+import lombok.Setter;
 
-export enum AuditPerimeter {
-  AUDIT_PERIMETER_ORIGINATING_AGENCY = 'AUDIT_PERIMETER_ORIGINATING_AGENCY',
-  AUDIT_PERIMETER_INGEST_OPERATION = 'AUDIT_PERIMETER_INGEST_OPERATION',
-  AUDIT_PERIMETER_ATTACHMENT_POSITION = 'AUDIT_PERIMETER_ATTACHMENT_POSITION',
-}
+@Setter
+@Getter
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class AuditCreateOptions {
 
-export enum AuditType {
-  tenant = 'tenant',
-  originatingagency = 'originatingagency',
-  dsl = 'dsl',
-}
+    private String auditActions;
 
-export enum AuditOperation {
-  PROCESS_AUDIT = 'PROCESS_AUDIT',
-  EVIDENCE_AUDIT = 'EVIDENCE_AUDIT',
-  RECTIFICATION_AUDIT = 'RECTIFICATION_AUDIT',
+    private String auditPerimeter;
+
+    private String auditType;
+
+    private String objectId;
+
+    private String[] originatingAgencyIds;
+
+    private String[] ingestOperationIds;
+
+    private String[] attachmentPositionIds;
+
+    public AuditCreateOptions() {}
 }

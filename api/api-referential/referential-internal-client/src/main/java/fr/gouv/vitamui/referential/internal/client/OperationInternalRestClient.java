@@ -45,6 +45,7 @@ import fr.gouv.vitamui.commons.rest.client.BasePaginatingAndSortingRestClient;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import fr.gouv.vitamui.referential.common.dto.LogbookOperationDto;
 import fr.gouv.vitamui.referential.common.dto.ReportType;
+import fr.gouv.vitamui.referential.common.model.AuditCreateOptions;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.io.Resource;
@@ -83,9 +84,9 @@ public class OperationInternalRestClient
         return new ParameterizedTypeReference<List<LogbookOperationDto>>() {};
     }
 
-    public boolean runAudit(InternalHttpContext context, AuditOptions auditOptions) {
+    public boolean runAudit(InternalHttpContext context, AuditCreateOptions auditCreateOptions) {
         final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl());
-        final HttpEntity<AuditOptions> request = new HttpEntity<>(auditOptions, buildHeaders(context));
+        final HttpEntity<AuditCreateOptions> request = new HttpEntity<>(auditCreateOptions, buildHeaders(context));
         final ResponseEntity<Boolean> response = restTemplate.exchange(
             uriBuilder.toUriString(),
             HttpMethod.POST,
