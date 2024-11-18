@@ -51,7 +51,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.apereo.cas.authentication.credential.UsernamePasswordCredential;
 import org.apereo.cas.web.support.WebUtils;
-import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.webflow.action.AbstractAction;
@@ -59,6 +58,7 @@ import org.springframework.webflow.core.collection.MutableAttributeMap;
 import org.springframework.webflow.execution.Event;
 import org.springframework.webflow.execution.RequestContext;
 
+import javax.validation.constraints.NotNull;
 import java.io.IOException;
 import java.util.Comparator;
 import java.util.List;

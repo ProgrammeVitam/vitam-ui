@@ -1,26 +1,85 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<groupId>fr.gouv.vitamui</groupId>
-		<artifactId>parent</artifactId>
-    	<version>8.1.0-SNAPSHOT</version>
-	</parent>
-	<artifactId>cas</artifactId>
-	<packaging>pom</packaging>
-	<name>VITAMUI CAS</name>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>fr.gouv.vitamui</groupId>
+    <version>8.1.0-SNAPSHOT</version>
+    <artifactId>cas</artifactId>
+    <packaging>pom</packaging>
+    <name>VITAMUI CAS</name>
 
-	<modules>
+    <properties>
+        <spotless-maven-plugin.version>2.43.0</spotless-maven-plugin.version>
+        <spotless.check.skip>true</spotless.check.skip>
+    </properties>
+
+    <modules>
         <module>cas-server</module>
-	</modules>
+    </modules>
 
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>fr.gouv.vitamui.iam</groupId>
-				<artifactId>iam-common</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>com.diffplug.spotless</groupId>
+                <artifactId>spotless-maven-plugin</artifactId>
+                <version>${spotless-maven-plugin.version}</version>
+            </plugin>
+        </plugins>
+    </build>
 
+    <profiles>
+        <profile>
+            <!-- Profile to use for all Vitam internal developers -->
+            <id>vitam</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <!-- Dépôts Maven privés -->
+            <distributionManagement>
+                <repository>
+                    <id>vitam-releases</id>
+                    <name>Vitam release repository</name>
+                    <url>${env.SERVICE_NEXUS_URL}/repository/maven-releases/</url>
+                </repository>
+                <snapshotRepository>
+                    <id>vitam-snapshots</id>
+                    <name>Vitam SNAPSHOT repository</name>
+                    <url>${env.SERVICE_NEXUS_URL}/repository/maven-snapshots/</url>
+                </snapshotRepository>
+                <site>
+                    <id>${project.artifactId}-site</id>
+                    <url>${project.baseUri}</url>
+                </site>
+            </distributionManagement>
+
+            <repositories>
+                <repository>
+                    <id>vitam-releases</id>
+                    <name>Vitam release repository</name>
+                    <releases>
+                        <enabled>true</enabled>
+                    </releases>
+                    <snapshots>
+                        <enabled>false</enabled>
+                    </snapshots>
+                    <url>${env.SERVICE_NEXUS_URL}/repository/maven-releases/</url>
+                </repository>
+                <repository>
+                    <id>vitam-snapshots</id>
+                    <name>Vitam SNAPSHOT repository</name>
+                    <releases>
+                        <enabled>false</enabled>
+                    </releases>
+                    <snapshots>
+                        <enabled>true</enabled>
+                    </snapshots>
+                    <url>${env.SERVICE_NEXUS_URL}/repository/maven-snapshots/</url>
+                </repository>
+            </repositories>
+
+            <properties>
+                <serverId>vitam</serverId>
+                <downloadRoot>${env.SERVICE_NEXUS_URL}/repository/node-distrib/</downloadRoot>
+            </properties>
+        </profile>
+    </profiles>
 </project>

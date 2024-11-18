@@ -292,67 +292,44 @@ La surcharge faite sur CAS nous empêche de lancer avec le plugin spring-boot
 │   ├── cas-server: './run.sh'
 ```
 
-## Scénario 1 : utilisation en dev
+## Utilisation en dev
 
-### 9a - Lancement de l'application SpringBoot correspondant au back de UI-Portal
-
-```
-└── ui
-    └── ui-portal: 'mvn clean spring-boot:run [-Puse-profile-here]'
-```
-
-**NB:** Profile should be `vitam` for Vitam internal developers to resolve dependency issues.
-
-### 9b - Lancement de l'application Angular UI-Portal
+### 9 - Lancement de l'application Angular UI-Portal
 
 ```
 └── ui
     ├── ui-frontend: 'npm run start:portal'
 ```
 
-### 10a - Lancement de l'application SpringBoot correspondant au back de UI-Identity
-
-```
-└── ui
-    └── ui-identity: 'mvn clean spring-boot:run [-Puse-profile-here]'
-```
-
-### 10b - Lancement de l'application Angular UI-Identity
+### 10 - Lancement de l'application Angular UI-Identity
 
 ```
 └── ui
     ├── ui-frontend: 'npm run start:identity'
 ```
 
-### 11a - Lancement de l'application SpringBoot correspondant au back de UI-Ingest
-
-```
-└── ui
-    └── ui-ingest: 'mvn clean spring-boot:run'
-```
-
-### 11b - Lancement de l'application Angular UI-Ingest
+### 11 - Lancement de l'application Angular UI-Ingest
 
 ```
 └── ui
     ├── ui-frontend: 'npm run start:ingest'
 ```
 
-### 12b - Lancement de l'application Angular UI-Archive-Search
+### 12 - Lancement de l'application Angular UI-Archive-Search
 
 ```
 └── ui
     ├── ui-frontend: 'npm run start:archive-search'
 ```
 
-### 13b - Lancement de l'application Angular UI-Collect
+### 13 - Lancement de l'application Angular UI-Collect
 
 ```
 └── ui
     ├── ui-frontend: 'npm run start:collect'
 ```
 
-### 14b - Lancement de l'application Angular UI-Pastis
+### 14 - Lancement de l'application Angular UI-Pastis
 
 ```
 └── ui
@@ -360,56 +337,6 @@ La surcharge faite sur CAS nous empêche de lancer avec le plugin spring-boot
 ```
 
 
-## Scénario 2 : utilisation en mode recette
-Une compilation avec `-Pwebpack` a été effectuée.
-
-**Attention les JAR doivent contenir les pages et scripts de la partie UI Frontend générés avec `ng build`.**
-
-### 9 - Lancement de l'application SpringBoot correspondant au back de UI-Portal
-
-```
-└── ui
-    └── ui-portal: './run.sh'
-```
-
-### 10 - Lancement de l'application SpringBoot correspondant au back de UI-Identity
-
-```
-└── ui
-    └── ui-identity : './run.sh'
-```
-
-### 11 - Lancement de l'application SpringBoot correspondant au back de UI-Ingest
-
-```
-└── ui
-    └── ui-ingest : './run.sh'
-```
-
-### 12 - Lancement de l'application SpringBoot correspondant au back de UI-Archive-Search
-
-```
-└── ui
-    └── ui-archive-search : './run.sh'
-```
-
-### 13 - Lancement de l'application SpringBoot correspondant au back de UI-Collect
-
-```
-
-└── ui
-    └── ui-collect : './run.sh'
-```
-
-### 14 - Lancement de l'application SpringBoot correspondant au back de UI-Pastis
-
-```
-
-└── ui
-    └── ui-pastis : './run.sh'
-```
-
-    
 ## 15 - Les certificats sont auto-signés, il faut les accepter dans le navigateur pour :
 - UI-Frontend
     - https://dev.vitamui.com:4200

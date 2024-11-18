@@ -207,7 +207,6 @@
         <dependency>
             <groupId>com.sun.istack</groupId>
             <artifactId>istack-commons-runtime</artifactId>
-            <version>4.0.0-M2</version>
         </dependency>
 
         <!--End of Jaxb API and it's implementation and dependencies- Java11-->
@@ -215,37 +214,11 @@
         <dependency>
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
-            <version>${json.version}</version>
         </dependency>
 
         <dependency>
             <groupId>javax.xml.parsers</groupId>
             <artifactId>jaxp-api</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.relaxng</groupId>
-            <artifactId>jing</artifactId>
-            <version>${thaiopensource.jing.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>xml-apis</groupId>
-                    <artifactId>xml-apis</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>net.sf.saxon</groupId>
-                    <artifactId>saxon</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>xerces</groupId>
-                    <artifactId>xercesImpl</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-
-        <dependency>
-            <groupId>org.relaxng</groupId>
-            <artifactId>trang</artifactId>
         </dependency>
 
         <dependency>
@@ -256,7 +229,6 @@
         <dependency>
             <groupId>xml-resolver</groupId>
             <artifactId>xml-resolver</artifactId>
-            <version>${xml-resolver.version}</version>
         </dependency>
         <dependency>
             <groupId>org.skyscreamer</groupId>
@@ -298,6 +270,7 @@
                     </execution>
                 </executions>
                 <configuration>
+                    <layout>JAR</layout>
                     <executable>true</executable>
                     <attach>false</attach> <!-- Need to use the original jar for integration-tests -->
                     <mainClass>fr.gouv.vitamui.pastis.server.ApiPastisServerApplication</mainClass>
