@@ -337,6 +337,17 @@ td .vitamui-row-icon {
 $row-padding: 0.8rem;
 
 // table css
+.sup-header {
+  display: flex;
+  height: 60px;
+  padding: 10px 20px;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 5px;
+  border: 1px solid var(--vitamui-grey-400);
+  background-color: white;
+}
+
 .vitamui-table {
   background-color: var(--vitamui-background);
   border-radius: 5px;

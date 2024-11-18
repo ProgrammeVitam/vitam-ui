@@ -41,11 +41,13 @@ import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack
 import { MatLegacyTabGroup as MatTabGroup } from '@angular/material/legacy-tabs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
+import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import { map, mergeMap } from 'rxjs/operators';
 import {
   DEFAULT_PAGE_SIZE,
   Direction,
+  getProjectIcon,
+  getProjectWorkflow,
   LegalStatus,
   PageRequest,
   PaginatedResponse,
@@ -53,8 +55,6 @@ import {
   Transaction,
   TransactionStatus,
   Workflow,
-  getProjectIcon,
-  getProjectWorkflow,
 } from 'vitamui-library';
 import { ProjectsApiService } from '../../core/api/project-api.service';
 import { ProjectsService } from '../projects.service';
@@ -146,6 +146,7 @@ export class ProjectPreviewComponent implements OnInit {
     this.previewClose.emit();
     this.backToNormalLateralPanel.emit();
     this.selectedTabIndex = 0;
+    this.projectService.selectedProjectId$.next(null);
   }
 
   showNormalPanel() {

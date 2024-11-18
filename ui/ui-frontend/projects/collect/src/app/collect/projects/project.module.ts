@@ -38,7 +38,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { TableFilterModule, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
+import { PipesModule, TableFilterModule, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
@@ -76,6 +76,7 @@ import { ProjectsComponent } from './projects.component';
     MatTabsModule,
     MatButtonToggleModule,
     FormsModule,
+    PipesModule,
   ],
   providers: [{ provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: { useUtc: true } }],
   declarations: [ProjectsComponent, ProjectListComponent, CreateProjectComponent, ProjectPreviewComponent],
