@@ -35,7 +35,7 @@ pipeline {
     stages {
         stage('Ask for build execution (when parameters are not defined)') {
             agent none
-            when { expression { env.GOAL == null } }
+            when { expression { env.DO_CHECKS_AND_TESTS == null } }
             steps {
                 script {
                     INPUT_PARAMS = input message: 'Configure your build',
