@@ -52,9 +52,6 @@ Il est possible que l'ajout du lien vers ansible dans le PATH et/ou qu'un redém
 # Maven profiles
 Without a profile, only Java projects are build.
 
-## Global Maven profiles
-In order to build and package UI projects (i.e. Java backend & Angular frontend altogether), we use the plugin `frontend-maven-plugin` provided by `com.github.eirslett`.
-
 ### dev
 This profile is used to build the entire project for dev purposes, backend & frontend included.
 * UI modules are packaged with both Java & Angular.
@@ -66,9 +63,6 @@ This profile is used to build the entire project for prod purposes, backend/fron
 * UI modules are packaged with both Java & Angular.
 * Angular projects are built with optimization.
 * Jasmine Karma tests are launched with the headless chrome.
-
-### npm-publish
-This profile is used to build, test & push npm packages to the npm repository.
 
 ### rpm
 This profile is used to build rpm packages.
