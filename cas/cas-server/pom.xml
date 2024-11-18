@@ -33,7 +33,7 @@
         <rpm.jar-file>${project.build.finalName}.war</rpm.jar-file>
         <rpm.skip>false</rpm.skip>
         <spring-webmvc-pac4j.version>6.0.3</spring-webmvc-pac4j.version>
-        <spring.boot.version>2.7.3</spring.boot.version>
+        <spring.boot.version>2.7.12</spring.boot.version>
         <spring.cloud.consul.version>3.1.1</spring.cloud.consul.version>
         <spring.test.version>5.3.22</spring.test.version>
         <spring.version>5.3.22</spring.version>
