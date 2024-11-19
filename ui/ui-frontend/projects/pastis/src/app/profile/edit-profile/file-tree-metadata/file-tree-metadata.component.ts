@@ -82,6 +82,8 @@ const PA_MANDATORY_ENUM_FIELDS = [
   'PreventInheritance',
   'FinalAction',
   'NeedReassessingAuthorization',
+  'SigningRole',
+  'DetachedSigningRole',
 ];
 
 function constantToTranslate() {
