@@ -350,14 +350,8 @@
 
           <div class="vitamui-table-head">
             <div class="col-1 d-flex align-items-center">
-              <label class="vitamui-checkbox clickable">
-                <input
-                  class="criteria-choice-input clickable"
-                  type="checkbox"
-                  [checked]="isAllChecked"
-                  [indeterminate]="isIndeterminate"
-                  (change)="checkParentBoxChange($event)"
-                />
+              <label class="vitamui-checkbox wide">
+                <input type="checkbox" [checked]="isAllChecked" [indeterminate]="isIndeterminate" (change)="checkParentBoxChange($event)" />
               </label>
             </div>
 
@@ -434,8 +428,8 @@
                 class="vitamui-row d-flex align-items-center"
               >
                 <div class="col-1 d-flex align-items-center">
-                  <label class="vitamui-checkbox clickable" (click)="checkChildrenBoxChange(archiveUnit['#id'], $event)">
-                    <input class="criteria-choice-input clickable" type="checkbox" [checked]="isAllChecked" />
+                  <label class="vitamui-checkbox wide" (click)="checkChildrenBoxChange(archiveUnit['#id'], $event)">
+                    <input type="checkbox" [checked]="isAllChecked" />
                   </label>
                 </div>
                 <div class="col-1 d-flex align-items-center">
