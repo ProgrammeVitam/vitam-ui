@@ -66,8 +66,10 @@ import fr.gouv.vitamui.referential.common.dsl.VitamQueryHelper;
 import fr.gouv.vitamui.referential.common.dto.LogbookOperationDto;
 import fr.gouv.vitamui.referential.common.dto.LogbookOperationsResponseDto;
 import fr.gouv.vitamui.referential.common.dto.ReportType;
+import fr.gouv.vitamui.referential.common.model.AuditCreateOptions;
 import fr.gouv.vitamui.referential.common.service.OperationService;
 import fr.gouv.vitamui.referential.internal.server.service.ExternalParametersService;
+import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,6 +85,10 @@ import java.util.Optional;
 
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.and;
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.eq;
+import static fr.gouv.vitam.common.database.builder.query.QueryHelper.or;
+import static fr.gouv.vitam.common.model.objectgroup.ObjectGroupResponse.ALL_UNIT_UPS;
+import static fr.gouv.vitam.common.model.objectgroup.ObjectGroupResponse.OPERATIONS;
+import static fr.gouv.vitam.common.model.objectgroup.ObjectGroupResponse.ORIGINATING_AGENCY;
 
 @Service
 public class OperationInternalService {
@@ -162,43 +168,54 @@ public class OperationInternalService {
         }
     }
 
-    public void runAudit(VitamContext context, AuditOptions auditOptions) {
+    public void runAudit(VitamContext context, AuditCreateOptions auditCreateOptions) {
         ObjectMapper mapper = new ObjectMapper();
+        AuditOptions auditOptions;
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
         try {
             Optional<Long> thresholdOpt = externalParametersService.retrieveProfilThreshold();
             LOGGER.info("All Operations Audit EvIdAppSession : {} ", context.getApplicationSessionId());
-            updateAuditDslQuery(auditOptions, thresholdOpt);
-            auditOptions.setAuditType("dsl");
 
-            if (AUDIT_FILE_CONSISTENCY.equals(auditOptions.getAuditActions())) {
-                operationService.lauchEvidenceAudit(context, auditOptions.getQuery());
-            } else if (AUDIT_FILE_RECTIFICATION.equals(auditOptions.getAuditActions())) {
-                operationService.launchRectificationAudit(context, auditOptions.getAuditType());
+            if (AUDIT_FILE_RECTIFICATION.equals(auditCreateOptions.getAuditActions())) {
+                operationService.launchRectificationAudit(context, auditCreateOptions.getObjectId());
             } else {
-                operationService.runAudit(context, mapper.valueToTree(auditOptions));
+                auditOptions = updateAuditDslQuery(auditCreateOptions, thresholdOpt);
+                if (AUDIT_FILE_CONSISTENCY.equals(auditOptions.getAuditActions())) {
+                    operationService.lauchEvidenceAudit(context, auditOptions.getQuery());
+                } else {
+                    operationService.runAudit(context, mapper.valueToTree(auditOptions));
+                }
             }
         } catch (AccessExternalClientServerException | VitamClientException | BadRequestException e) {
             throw new InternalServerException("Unable to run audit", e);
         }
     }
 
-    public void updateAuditDslQuery(AuditOptions auditOptions, Optional<Long> thresholdOpt) {
+    public AuditOptions updateAuditDslQuery(AuditCreateOptions auditCreateOptions, Optional<Long> thresholdOpt) {
         SelectMultiQuery multiQuery = new SelectMultiQuery();
+        AuditOptions auditOptions = new AuditOptions();
+        auditOptions.setAuditType(auditCreateOptions.getAuditType());
+        auditOptions.setAuditActions(auditCreateOptions.getAuditActions());
+        auditOptions.setObjectId(auditCreateOptions.getObjectId());
+        auditOptions.setAuditType("dsl");
+
         try {
-            if (
-                !List.of("originatingagency", "tenant", "dsl").contains(auditOptions.getAuditType()) ||
-                null == thresholdOpt
-            ) {
+            if (!"dsl".equals(auditOptions.getAuditType()) || null == thresholdOpt) {
                 throw new InvalidCreateOperationException("Invalid audit query");
             }
-            if (("originatingagency").equals(auditOptions.getAuditType())) {
-                multiQuery.setQuery(QueryHelper.eq("#originating_agency", auditOptions.getObjectId()));
-                auditOptions.setQuery(multiQuery.getFinalSelect());
-            } else if (("tenant").equals(auditOptions.getAuditType())) {
-                multiQuery.setQuery(QueryHelper.eq("#tenant", auditOptions.getObjectId()));
-                auditOptions.setQuery(multiQuery.getFinalSelect());
+            BooleanQuery or = or();
+            if (CollectionUtils.isNotEmpty(Arrays.stream(auditCreateOptions.getOriginatingAgencyIds()).toList())) {
+                or.add(QueryHelper.in(ORIGINATING_AGENCY, auditCreateOptions.getOriginatingAgencyIds()));
             }
+            if (CollectionUtils.isNotEmpty(Arrays.stream(auditCreateOptions.getAttachmentPositionIds()).toList())) {
+                or.add(QueryHelper.in(ALL_UNIT_UPS, auditCreateOptions.getAttachmentPositionIds()));
+            }
+            if (CollectionUtils.isNotEmpty(Arrays.stream(auditCreateOptions.getIngestOperationIds()).toList())) {
+                or.add(QueryHelper.in(OPERATIONS, auditCreateOptions.getIngestOperationIds()));
+            }
+            multiQuery.setQuery(or);
+            auditOptions.setQuery(multiQuery.getFinalSelect());
+
             if (thresholdOpt.isPresent()) {
                 ObjectNode previousDslQuery = (ObjectNode) auditOptions.getQuery();
                 previousDslQuery.put("$threshold", thresholdOpt.get());
@@ -208,6 +225,7 @@ public class OperationInternalService {
             Arrays.stream(new String[] { DSL_QUERY_PROJECTION, DSL_QUERY_FILTER, DSL_QUERY_FACETS }).forEach(
                 ((ObjectNode) auditOptions.getQuery())::remove
             );
+
             if (!AUDITS_WITHOUT_PROJECTION.contains(auditOptions.getAuditActions())) {
                 ObjectNode dslQueryProjection = (ObjectNode) auditOptions.getQuery();
                 dslQueryProjection.put(DSL_QUERY_PROJECTION, objectMapper.readTree("{}"));
@@ -223,6 +241,7 @@ public class OperationInternalService {
             LOGGER.error(e.getMessage());
             throw new BadRequestException(e.getMessage());
         }
+        return auditOptions;
     }
 
     public Response export(VitamContext context, String id, ReportType type) {

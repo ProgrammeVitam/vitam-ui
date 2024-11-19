@@ -39,7 +39,6 @@ package fr.gouv.vitamui.referential.internal.server.rest;
 import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
-import fr.gouv.vitam.common.model.AuditOptions;
 import fr.gouv.vitam.common.model.ProbativeValueRequest;
 import fr.gouv.vitamui.common.security.SafeFileChecker;
 import fr.gouv.vitamui.common.security.SanityChecker;
@@ -52,6 +51,7 @@ import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import fr.gouv.vitamui.referential.common.dto.LogbookOperationDto;
 import fr.gouv.vitamui.referential.common.dto.ReportType;
+import fr.gouv.vitamui.referential.common.model.AuditCreateOptions;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
 import fr.gouv.vitamui.referential.internal.server.operation.OperationInternalService;
 import fr.gouv.vitamui.referential.internal.server.probativevalue.ProbativeValueInternalService;
@@ -123,16 +123,16 @@ public class OperationInternalController {
 
     @PostMapping
     public void create(
-        @Valid @RequestBody AuditOptions auditOptions,
+        @Valid @RequestBody AuditCreateOptions auditCreateOptions,
         @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant,
         @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) String accessContractId
     ) {
-        LOGGER.debug("run audit ={}", auditOptions);
+        LOGGER.debug("run audit ={}", auditCreateOptions);
         final VitamContext vitamContext = securityService.buildVitamContext(
             securityService.getTenantIdentifier(),
             accessContractId
         );
-        operationInternalService.runAudit(vitamContext, auditOptions);
+        operationInternalService.runAudit(vitamContext, auditCreateOptions);
     }
 
     @GetMapping(CommonConstants.PATH_ID + "/download/{type}")

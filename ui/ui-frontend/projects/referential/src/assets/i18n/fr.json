@@ -965,20 +965,35 @@
       }
     },
     "CREATE_DIALOG": {
-      "TITLE": "Lancement d’un audit",
-      "SUBTITLE": "Informations",
+      "TITLE": "Paramétrer un audit",
+      "SUBTITLE": "Choisir le type d'audit",
+      "AUDIT_PERIMETER": "Périmètre d'audit",
+      "CHOOSE_AUDIT_PERIMETER": "Choisir le périmètre de l'audit",
+      "ENTER_CONCERNED_CONSISTENCY_AUDIT_IDENTIFIER": "Saisir l'identifiant de l'audit de cohérence concerné",
       "AUDIT_TYPE": "Type d'audit",
-      "ALL_PRODUCERS": "Tous les services producteurs",
+      "PRODUCERS": "Service(s) producteur",
+      "SELECT_ALL_PRODUCERS": "Sélectionner tous les services producteurs",
       "ALL_PRODUCERS_PLACEHOLDER": "Sélectionnez le service producteur",
+      "ALL_PRODUCERS_SEARCHBAR_PLACEHOLDER": "Taper l'ID ou le nom de service producteur...",
       "ALL_NODES": "Toutes les positions de rattachement ",
       "NODES": "Positions de rattachement",
-      "EVIDENCE_AUDIT_IDENTIFIER": "Identifiant d’audit de cohérence",
+      "EVIDENCE_AUDIT_IDENTIFIER": "Identifiant de l’audit de cohérence",
+      "CHOOSE_ATTACHMENT_POSITION": "Choisir une position de rattachement",
+      "ENTER_INGEST_OPERATIONS_IDENTIFIERS": "Saisir le(s) identifiant(s) d'opération d'entrée",
+      "ENTER_INGEST_OPERATIONS_IDENTIFIERS_PLACEHOLDER": "Identifiant(s) d'opération d'entrée séparés par des virgules",
+      "CHOOSE_ORIGINATING_AGENCY": "Choisir le(s) service(s) producteur",
       "EVIDENCE_AUDIT_NOT_FOUND": "L'identifiant d'audit de cohérence saisi n'existe pas",
+      "START_AUDIT": "Lancer l'audit",
       "OPERATIONS_CATEGORIES": {
         "AUDIT_FILE_EXISTING": "Existence",
         "AUDIT_FILE_INTEGRITY": "Integrité",
         "AUDIT_FILE_CONSISTENCY": "Cohérence",
         "AUDIT_FILE_RECTIFICATION": "Correctif"
+      },
+      "PERIMETERS": {
+        "AUDIT_PERIMETER_ORIGINATING_AGENCY": "Par service(s) producteur(s)",
+        "AUDIT_PERIMETER_INGEST_OPERATION": "Par opération(s) d'entrée",
+        "AUDIT_PERIMETER_ATTACHMENT_POSITION": "Par position(s) de rattachement"
       }
     }
   },

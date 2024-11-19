@@ -965,20 +965,35 @@
       }
     },
     "CREATE_DIALOG": {
-      "TITLE": "Starting an audit",
-      "SUBTITLE": "Information",
+      "TITLE": "Configure an audit",
+      "SUBTITLE": "Choose audit type",
+      "AUDIT_PERIMETER": "Audit perimeter",
+      "CHOOSE_AUDIT_PERIMETER": "Choose audit perimeter",
+      "ENTER_CONCERNED_CONSISTENCY_AUDIT_IDENTIFIER": "Enter concerned consistency audit identifier",
       "AUDIT_TYPE": "Audit type",
-      "ALL_PRODUCERS": "All producing services",
+      "PRODUCERS": "Producer service(s)",
+      "SELECT_ALL_PRODUCERS": "Select all producing services",
       "ALL_PRODUCERS_PLACEHOLDER": "Select producing service",
+      "ALL_PRODUCERS_SEARCHBAR_PLACEHOLDER": "Enter ID or producer service name...",
       "ALL_NODES": "All home positions",
       "NODES": "Home positions",
       "EVIDENCE_AUDIT_IDENTIFIER": "Consistency audit identifier",
+      "CHOOSE_ATTACHMENT_POSITION": "Choose attachment position",
+      "ENTER_INGEST_OPERATIONS_IDENTIFIERS": "Enter ingest operations identifiers",
+      "ENTER_INGEST_OPERATIONS_IDENTIFIERS_PLACEHOLDER": "Comma-separated ingest operations identifiers",
+      "CHOOSE_ORIGINATING_AGENCY": "Choose producer services",
       "EVIDENCE_AUDIT_NOT_FOUND": "The consistency audit identifier entered does not exist",
+      "START_AUDIT": "Start audit",
       "OPERATIONS_CATEGORIES": {
         "AUDIT_FILE_EXISTING": "Existence",
         "AUDIT_FILE_INTEGRITY": "Integrity",
         "AUDIT_FILE_CONSISTENCY": "Consistency",
         "AUDIT_FILE_RECTIFICATION": "Fix"
+      },
+      "PERIMETERS": {
+        "AUDIT_PERIMETER_ORIGINATING_AGENCY": "By producers service",
+        "AUDIT_PERIMETER_INGEST_OPERATION": "By ingest operation",
+        "AUDIT_PERIMETER_ATTACHMENT_POSITION": "By attachment position"
       }
     }
   },
