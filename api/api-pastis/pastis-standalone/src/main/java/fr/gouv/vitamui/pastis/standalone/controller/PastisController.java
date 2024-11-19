@@ -97,8 +97,8 @@ class PastisController {
     private final PastisService profileService;
 
     @Autowired
-    public PastisController(final PastisService profileService) {
-        this.profileService = profileService;
+    public PastisController(final PastisService pastisService) {
+        this.profileService = pastisService;
     }
 
     private static boolean isInvalidFilename(String fileName) {

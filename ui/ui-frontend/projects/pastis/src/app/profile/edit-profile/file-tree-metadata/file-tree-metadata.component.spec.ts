@@ -64,6 +64,7 @@ describe('FileTreeMetadataComponent', () => {
     cardinalite: [],
     commentaire: '',
     enumeration: [],
+    external: false,
   };
   const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['open', 'close']);
   const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open', 'close']);

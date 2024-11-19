@@ -80,6 +80,7 @@ public class BaliseXML {
     private static AnnotationXML annotationCommentXML;
     private static DocumentationXML documentationCommentXML;
 
+    // TODO: This class is a singleton that we use to generate RNG. This is wrong and may lead to inconsistent results
     public static BaliseXML getBaliseXMLStatic() {
         return baliseXMLStatic;
     }
@@ -147,6 +148,14 @@ public class BaliseXML {
         ) {
             dataRNG = new DataXML();
             dataRNG.setDataType(RNGConstants.getTypesMap().get(node.getName()).getLabel());
+        }
+
+        if (
+            (node.getName() != null && presenceChildrenNode && null == node.getValue()) &&
+            (valueRNG == null && !RNGConstants.getTypesMap().containsKey(node.getName()))
+        ) {
+            dataRNG = new DataXML();
+            dataRNG.setDataType(node.getDataType());
         }
 
         // Sets the type of data (if value or data)

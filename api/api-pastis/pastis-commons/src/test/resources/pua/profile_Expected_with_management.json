@@ -13,6 +13,7 @@
   "id": 0,
   "parentId": null,
   "choices": [],
+  "external": false,
   "children": [
     {
       "additionalProperties": false,
@@ -29,6 +30,7 @@
       "id": 1,
       "parentId": 0,
       "choices": [],
+      "external": false,
       "children": [
         {
           "additionalProperties": false,
@@ -45,6 +47,7 @@
           "id": 2,
           "parentId": 1,
           "choices": [],
+          "external": false,
           "children": [],
           "puaData": null
         },
@@ -63,6 +66,7 @@
           "id": 17,
           "parentId": 1,
           "choices": [],
+          "external": false,
           "children": [],
           "puaData": null
         },
@@ -81,6 +85,7 @@
           "id": 12,
           "parentId": 1,
           "choices": [],
+          "external": false,
           "children": [
             {
               "additionalProperties": false,
@@ -97,6 +102,7 @@
               "id": 13,
               "parentId": 12,
               "choices": [],
+              "external": false,
               "children": [
                 {
                   "additionalProperties": false,
@@ -113,6 +119,7 @@
                   "id": 16,
                   "parentId": 13,
                   "choices": [],
+                  "external": false,
                   "children": [],
                   "puaData": null
                 },
@@ -131,6 +138,7 @@
                   "id": 15,
                   "parentId": 13,
                   "choices": [],
+                  "external": false,
                   "children": [],
                   "puaData": null
                 },
@@ -149,6 +157,7 @@
                   "id": 14,
                   "parentId": 13,
                   "choices": [],
+                  "external": false,
                   "children": [],
                   "puaData": null
                 }
@@ -183,6 +192,7 @@
           "id": 3,
           "parentId": 1,
           "choices": [],
+          "external": false,
           "children": [
             {
               "additionalProperties": false,
@@ -196,9 +206,10 @@
               "documentation": "DescriptionLevel : cardinalité 0-1",
               "editName": null,
               "level": 3,
-              "id": 5,
+              "id": 4,
               "parentId": 3,
               "choices": [],
+              "external": false,
               "children": [],
               "puaData": {
                 "additionalProperties": null,
@@ -236,9 +247,10 @@
               "documentation": "Title : cardinalité 0-N / valeur au choix",
               "editName": null,
               "level": 3,
-              "id": 4,
+              "id": 8,
               "parentId": 3,
               "choices": [],
+              "external": false,
               "children": [],
               "puaData": null
             },
@@ -254,9 +266,10 @@
               "documentation": "FilePlanPosition : cardinalité 0-N / valeur au choix",
               "editName": null,
               "level": 3,
-              "id": 8,
+              "id": 7,
               "parentId": 3,
               "choices": [],
+              "external": false,
               "children": [],
               "puaData": null
             },
@@ -275,6 +288,7 @@
               "id": 11,
               "parentId": 3,
               "choices": [],
+              "external": false,
               "children": [],
               "puaData": null
             },
@@ -290,9 +304,10 @@
               "documentation": "Keyword : cardinalité 0-N / valeur au choix",
               "editName": null,
               "level": 3,
-              "id": 6,
+              "id": 5,
               "parentId": 3,
               "choices": [],
+              "external": false,
               "children": [
                 {
                   "additionalProperties": false,
@@ -306,9 +321,10 @@
                   "documentation": "Identifier : cardinalité 1 / valeur au choix",
                   "editName": null,
                   "level": 4,
-                  "id": 7,
-                  "parentId": 6,
+                  "id": 6,
+                  "parentId": 5,
                   "choices": [],
+                  "external": false,
                   "children": [],
                   "puaData": null
                 }
@@ -340,6 +356,7 @@
               "id": 9,
               "parentId": 3,
               "choices": [],
+              "external": false,
               "children": [
                 {
                   "additionalProperties": false,
@@ -356,6 +373,7 @@
                   "id": 10,
                   "parentId": 9,
                   "choices": [],
+                  "external": false,
                   "children": [],
                   "puaData": null
                 }

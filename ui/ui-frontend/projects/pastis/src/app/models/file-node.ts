@@ -151,6 +151,7 @@ export interface FileNode {
   sedaData: SedaData;
   nonEditFileNode?: boolean;
   puaData?: PuaData;
+  external: boolean;
 }
 
 // for debug purpose

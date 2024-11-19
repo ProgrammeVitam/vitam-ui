@@ -65,7 +65,7 @@
     <!--Metatada table container-->
     <div class="pastis-table-container">
       <table
-        *ngIf="shouldLoadMetadataTable(); else complexElementWithouChild"
+        *ngIf="shouldLoadMetadataTable(); else complexElementWithoutChild"
         [dataSource]="matDataSource"
         class="list-profile-table"
         mat-table
@@ -86,6 +86,7 @@
               matTooltipClass="pastis-matTooltipClass"
               placement="right"
             >
+              <span *ngIf="element.external">EXT-</span>
               <span *ngIf="isElementEdit(element); else nonEdit">{{ element.nomDuChampEdit }}</span>
               <ng-template #nonEdit> {{ onResolveName(element.nomDuChamp) }}</ng-template>
 
@@ -523,7 +524,7 @@
       </div>
     </div>
 
-    <ng-template #complexElementWithouChild>
+    <ng-template #complexElementWithoutChild>
       <div class="complex-element-no-child">
         {{ 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.MESSAGE_METADONNEE_SANS_FILLES.PARTIEUN' | translate }}
         {{ clickedNode.name }} {{ 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.MESSAGE_METADONNEE_SANS_FILLES.PARTIEDEUX' | translate }}

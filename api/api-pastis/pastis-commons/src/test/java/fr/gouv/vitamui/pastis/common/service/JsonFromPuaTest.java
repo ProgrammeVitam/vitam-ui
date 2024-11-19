@@ -40,7 +40,9 @@ package fr.gouv.vitamui.pastis.common.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitamui.pastis.common.dto.ElementProperties;
+import fr.gouv.vitamui.pastis.common.dto.seda.SedaNode;
 import fr.gouv.vitamui.pastis.common.util.NoticeUtils;
+import fr.gouv.vitamui.pastis.common.util.SedaNodeUtils;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 import org.junit.Test;
@@ -66,7 +68,7 @@ public class JsonFromPuaTest {
         InputStream inputStreamPua = getClass().getClassLoader().getResourceAsStream("pua/pua_OK.json");
         JSONTokener tokener = new JSONTokener(new InputStreamReader(inputStreamPua));
         JSONObject profileJson = new JSONObject(tokener);
-        ElementProperties profileActual = jsonFromPUA.getProfileFromPUA(profileJson);
+        ElementProperties profileActual = jsonFromPUA.getProfileFromPUA(getSedaTree(), profileJson);
         ObjectMapper mapper = new ObjectMapper();
         String fileNodeActual = mapper.writeValueAsString(profileActual);
         JSONObject fileNodeJSONActual = new JSONObject(fileNodeActual);
@@ -82,7 +84,7 @@ public class JsonFromPuaTest {
 
         JSONTokener tokener = new JSONTokener(new InputStreamReader(inputStreamPua));
         JSONObject profileJson = new JSONObject(tokener);
-        ElementProperties profileActual = jsonFromPUA.getProfileFromPUA(profileJson);
+        ElementProperties profileActual = jsonFromPUA.getProfileFromPUA(getSedaTree(), profileJson);
         ObjectMapper mapper = new ObjectMapper();
         String fileNodeActual = mapper.writeValueAsString(profileActual);
         JSONObject fileNodeJSONActual = new JSONObject(fileNodeActual);
@@ -102,7 +104,7 @@ public class JsonFromPuaTest {
 
         JSONTokener tokener = new JSONTokener(new InputStreamReader(inputStreamPua));
         JSONObject profileJson = new JSONObject(tokener);
-        ElementProperties profile = jsonFromPUA.getProfileFromPUA(profileJson);
+        ElementProperties profile = jsonFromPUA.getProfileFromPUA(getSedaTree(), profileJson);
         ObjectMapper mapper = new ObjectMapper();
         mapper.writeValueAsString(profile);
         NoticeUtils.getNoticeFromPUA(profileJson);
@@ -116,7 +118,7 @@ public class JsonFromPuaTest {
 
         JSONTokener tokener = new JSONTokener(new InputStreamReader(inputStreamPua));
         JSONObject profileJson = new JSONObject(tokener);
-        ElementProperties profile = jsonFromPUA.getProfileFromPUA(profileJson);
+        ElementProperties profile = jsonFromPUA.getProfileFromPUA(getSedaTree(), profileJson);
         ObjectMapper mapper = new ObjectMapper();
         mapper.writeValueAsString(profile);
         NoticeUtils.getNoticeFromPUA(profileJson);
@@ -130,7 +132,7 @@ public class JsonFromPuaTest {
 
         JSONTokener tokener = new JSONTokener(new InputStreamReader(inputStreamPua));
         JSONObject profileJson = new JSONObject(tokener);
-        ElementProperties profile = jsonFromPUA.getProfileFromPUA(profileJson);
+        ElementProperties profile = jsonFromPUA.getProfileFromPUA(getSedaTree(), profileJson);
         ObjectMapper mapper = new ObjectMapper();
         mapper.writeValueAsString(profile);
         NoticeUtils.getNoticeFromPUA(profileJson);
@@ -144,9 +146,15 @@ public class JsonFromPuaTest {
 
         JSONTokener tokener = new JSONTokener(new InputStreamReader(inputStreamPua));
         JSONObject profileJson = new JSONObject(tokener);
-        ElementProperties profile = jsonFromPUA.getProfileFromPUA(profileJson);
+        ElementProperties profile = jsonFromPUA.getProfileFromPUA(getSedaTree(), profileJson);
         ObjectMapper mapper = new ObjectMapper();
         mapper.writeValueAsString(profile);
         NoticeUtils.getNoticeFromPUA(profileJson);
+    }
+
+    private SedaNode getSedaTree() throws IOException {
+        String resourcePath = "metamodel/metamodel-2.3.json";
+        SedaNode sedaNode = SedaNodeUtils.parseSedaNodeFromResource(resourcePath);
+        return sedaNode.getChild("DataObjectPackage").getChild("DescriptiveMetadata").getChild("ArchiveUnit");
     }
 }

@@ -453,6 +453,7 @@ export class FileTreeMetadataComponent implements OnInit, OnDestroy {
         children: null,
         enumeration: null,
         collection: null,
+        external: null,
       });
       const params: FileNodeInsertParams = {
         node: this.clickedNode,

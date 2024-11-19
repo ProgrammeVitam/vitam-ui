@@ -31,6 +31,7 @@
           [ngStyle]="{ 'margin-left': calculateNodePosition(node) + 'px' }"
           class="pastis-tree-node-name"
         >
+          <span *ngIf="node.external">EXT-</span>
           <span class="text text-medium">{{ onResolveName(node) }}</span>
           <mat-divider class="pastis-divider"></mat-divider>
         </span>
@@ -57,6 +58,7 @@
             </span>
             <button [id]="'child' + node.id" [ngStyle]="{ display: 'none' }" mat-icon-button matTreeNodeToggle></button>
             <span class="pastis-tree-node-name">
+              <span *ngIf="node.external">EXT-</span>
               <span
                 [ngClass]="{ 'text-medium-normal': !selectedItem(node), 'text-medium-primary': selectedItem(node) }"
                 class="text text-medium"

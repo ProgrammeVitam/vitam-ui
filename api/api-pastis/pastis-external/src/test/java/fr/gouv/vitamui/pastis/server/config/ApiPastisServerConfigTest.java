@@ -39,6 +39,9 @@ package fr.gouv.vitamui.pastis.server.config;
 
 import fr.gouv.vitam.access.external.client.AccessExternalClient;
 import fr.gouv.vitam.access.external.client.AdminExternalClient;
+import fr.gouv.vitam.access.external.client.v2.AccessExternalClientV2;
+import fr.gouv.vitam.collect.external.client.CollectExternalClient;
+import fr.gouv.vitam.ingest.external.client.IngestExternalClient;
 import fr.gouv.vitamui.commons.api.application.AbstractContextConfiguration;
 import fr.gouv.vitamui.pastis.common.service.JsonFromPUA;
 import fr.gouv.vitamui.pastis.common.service.PuaFromJSON;
@@ -64,6 +67,15 @@ public class ApiPastisServerConfigTest extends AbstractContextConfiguration {
 
     @MockBean(name = "accessExternalClient")
     private AccessExternalClient accessExternalClient;
+
+    @MockBean(name = "accessExternalClientV2")
+    private AccessExternalClientV2 accessExternalClientV2;
+
+    @MockBean(name = "ingestExternalClient")
+    private IngestExternalClient ingestExternalClient;
+
+    @MockBean(name = "collectExternalClient")
+    private CollectExternalClient collectExternalClient;
 
     @MockBean
     private PastisService pastisService;

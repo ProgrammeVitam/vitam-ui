@@ -39,6 +39,7 @@ knowledge of the CeCILL-C license and that you accept its terms.
 package fr.gouv.vitamui.pastis.common.service;
 
 import fr.gouv.vitamui.pastis.common.dto.ElementProperties;
+import fr.gouv.vitamui.pastis.common.dto.seda.SedaNode;
 import org.apache.commons.collections4.CollectionUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -63,7 +64,8 @@ public class PuaFromJSON {
         this.puaPastisValidator = puaPastisValidator;
     }
 
-    public String getControlSchemaFromElementProperties(ElementProperties elementProperties) throws IOException {
+    public String getControlSchemaFromElementProperties(SedaNode sedaTree, ElementProperties elementProperties)
+        throws IOException {
         // We use a JSONObject instead of POJO, since Jackson and Gson will add unnecessary
         // backslashes during mapping string object values back to string
 
@@ -77,9 +79,12 @@ public class PuaFromJSON {
         // 4. Check if tree contains Management metadata
         addPatternPropertiesForManagement(elementProperties, controlSchema);
         List<ElementProperties> elementsForTree = puaPastisValidator.ignoreMetadata(elementProperties);
-        List<String> requiredElements = puaPastisValidator.getHeadRequired(elementsForTree);
+        List<String> requiredElements = puaPastisValidator.getHeadRequired(sedaTree, elementsForTree);
         if (CollectionUtils.isNotEmpty(requiredElements)) {
-            controlSchema.put(PuaPastisValidator.REQUIRED, puaPastisValidator.getHeadRequired(elementsForTree));
+            controlSchema.put(
+                PuaPastisValidator.REQUIRED,
+                puaPastisValidator.getHeadRequired(sedaTree, elementsForTree)
+            );
         }
 
         // 5. Add definitions _ not used actually
@@ -87,7 +92,7 @@ public class PuaFromJSON {
             controlSchema.put("definitions", definitionsFromBasePua);*/
         // 6. Add ArchiveUnitProfile and the rest of the tree
 
-        JSONArray allElements = puaPastisValidator.getJSONObjectFromAllTree(elementsForTree);
+        JSONArray allElements = puaPastisValidator.getJSONObjectFromAllTree(sedaTree, elementsForTree);
         JSONObject sortedElements = getJSONObjectsFromJSonArray(allElements);
         controlSchema.put("properties", sortedElements);
         // 7. Return string representation

@@ -41,6 +41,7 @@ package fr.gouv.vitamui.pastis.server.config;
 import fr.gouv.vitamui.commons.api.application.AbstractContextConfiguration;
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
 import fr.gouv.vitamui.commons.rest.configuration.SwaggerConfiguration;
+import fr.gouv.vitamui.commons.vitam.api.config.VitamAccessConfig;
 import fr.gouv.vitamui.iam.internal.client.IamInternalRestClientFactory;
 import fr.gouv.vitamui.iam.internal.client.UserInternalRestClient;
 import fr.gouv.vitamui.iam.security.provider.ExternalApiAuthenticationProvider;
@@ -64,7 +65,14 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import java.util.Arrays;
 
 @Configuration
-@Import({ RestExceptionHandler.class, SwaggerConfiguration.class, HttpMessageConvertersAutoConfiguration.class })
+@Import(
+    {
+        RestExceptionHandler.class,
+        SwaggerConfiguration.class,
+        HttpMessageConvertersAutoConfiguration.class,
+        VitamAccessConfig.class,
+    }
+)
 public class ApiPastisServerConfig extends AbstractContextConfiguration {
 
     @Bean
