@@ -83,7 +83,9 @@ export class IngestErrorsDetailsTabComponent implements OnInit, OnChanges {
     return event.eventData.outcome === 'OK';
   }
 
-  getEvDetData(event: Event) {
-    return event.eventData?.evDetData ? JSON.stringify({ evDetTechData: JSON.parse(event.eventData.evDetData) }) : null;
+  getEvDetData(event: Event): string {
+    return event.eventData?.evDetData && event.eventData?.evDetData !== '{}'
+      ? JSON.stringify({ evDetData: JSON.parse(event.eventData.evDetData) })
+      : '';
   }
 }
