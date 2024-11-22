@@ -36,8 +36,13 @@
  */
 package fr.gouv.vitamui.commons.api.domain;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.ToString;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @ToString
 public class AgencyModelDto {
@@ -112,5 +117,17 @@ public class AgencyModelDto {
     @JsonProperty("description")
     public String getDescription() {
         return description;
+    }
+
+    private Map<String, Object> additionalProperties = new HashMap<>();
+
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return additionalProperties;
+    }
+
+    @JsonAnySetter
+    public void setAdditionalProperties(String key, Object value) {
+        additionalProperties.put(key, value);
     }
 }

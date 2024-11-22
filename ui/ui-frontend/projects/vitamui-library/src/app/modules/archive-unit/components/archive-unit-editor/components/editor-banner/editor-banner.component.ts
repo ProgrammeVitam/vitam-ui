@@ -42,5 +42,5 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./editor-banner.component.scss'],
 })
 export class EditorBannerComponent {
-  @Input() title!: string;
+  @Input() title: string;
 }

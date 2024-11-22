@@ -1,5 +1,5 @@
-/**
- * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
+/*
+ * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2022)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
  *
  * contact@programmevitam.fr
@@ -34,45 +34,47 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-package fr.gouv.vitamui.referential.common.dto;
+import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { Agency, ApplicationId, BreadCrumbData, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
+import { template } from '../agency.template';
+import { of, switchMap } from 'rxjs';
+import { AgencyService } from '../agency.service';
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import fr.gouv.vitamui.commons.api.domain.IdDto;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+@Component({
+  selector: 'app-view-agency',
+  templateUrl: 'view-agency.component.html',
+  imports: [CommonModule, RouterModule, VitamUICommonModule, VitamUILibraryModule],
+  standalone: true,
+})
+export class ViewAgencyComponent implements OnInit {
+  readonly template = template;
+  breadcrumbData: BreadCrumbData[] = [{ identifier: ApplicationId.PORTAL_APP }, { identifier: ApplicationId.AGENCIES_APP }];
+  agency: Agency;
 
-import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    private agencyService: AgencyService,
+  ) {
+    this.agency = this.router.getCurrentNavigation()?.extras?.state?.agency;
+  }
 
-@ToString
-@JsonInclude(JsonInclude.Include.NON_NULL)
-@Getter
-@Setter
-public class AgencyDto extends IdDto implements Serializable {
+  ngOnInit() {
+    of(this.agency)
+      .pipe(
+        switchMap((agency: Agency) => {
+          if (agency) return of(agency);
 
-    private Integer tenant;
-
-    private Integer version;
-
-    private String name;
-
-    private String identifier;
-
-    private String description;
-
-    private Map<String, Object> additionalProperties = new HashMap<>();
-
-    @JsonAnyGetter
-    public Map<String, Object> getAdditionalProperties() {
-        return additionalProperties;
-    }
-
-    @JsonAnySetter
-    public void setAdditionalProperties(String key, Object value) {
-        additionalProperties.put(key, value);
-    }
+          return this.route.params.pipe(switchMap((params) => this.agencyService.get(params?.agencyIdentifier)));
+        }),
+      )
+      .subscribe({
+        next: (agency: Agency) => {
+          this.agency = agency;
+          this.breadcrumbData.push({ label: this.agency.identifier });
+        },
+      });
+  }
 }

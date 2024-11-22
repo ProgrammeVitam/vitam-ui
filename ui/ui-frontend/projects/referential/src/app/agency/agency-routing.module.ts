@@ -39,6 +39,9 @@ import { NgModule } from '@angular/core';
 import { Route, RouterModule } from '@angular/router';
 import { ActiveTenantGuard, TenantSelectionGuard, VitamUITenantSelectComponent } from 'vitamui-library';
 import { AgencyComponent } from './agency.component';
+import { EditAgencyComponent } from './edit-agency/edit-agency.component';
+import { ViewAgencyComponent } from './view-agency/view-agency.component';
+import { EditAgencyGuard } from './agency.guard';
 
 const routes: Route[] = [
   {
@@ -55,6 +58,16 @@ const routes: Route[] = [
     path: 'tenant/:tenantIdentifier',
     component: AgencyComponent,
     canActivate: [ActiveTenantGuard],
+  },
+  {
+    path: 'tenant/:tenantIdentifier/agencies/:agencyIdentifier',
+    component: ViewAgencyComponent,
+    canActivate: [ActiveTenantGuard],
+  },
+  {
+    path: 'tenant/:tenantIdentifier/agencies/:agencyIdentifier/edit',
+    component: EditAgencyComponent,
+    canActivate: [ActiveTenantGuard, EditAgencyGuard],
   },
 ];
 

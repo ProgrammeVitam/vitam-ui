@@ -52,7 +52,7 @@ interface SchemaError {
   readonly messages: string[];
 }
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class SchemaService {
   constructor(
     private pathService: PathService,

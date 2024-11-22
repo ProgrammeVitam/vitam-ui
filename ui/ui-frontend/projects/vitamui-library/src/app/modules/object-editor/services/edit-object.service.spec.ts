@@ -52,6 +52,7 @@ import { TemplateService } from './template.service';
 import { Control } from '../../models/schema/control.model';
 import { Cardinality, EffectiveCardinality } from '../../object-viewer/types';
 import { filter, map } from 'rxjs/operators';
+import { PathService } from './path.service';
 
 describe('EditObjectService', () => {
   let service: EditObjectService;
@@ -64,6 +65,10 @@ describe('EditObjectService', () => {
         MockSchemaService,
         SchemaElementToDisplayRuleService,
         DisplayRuleHelperService,
+        EditObjectService,
+        PathService,
+        SchemaService,
+        TemplateService,
         { provide: TranslateService, useValue: { instant: () => EMPTY } },
       ],
     });

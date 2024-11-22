@@ -45,7 +45,7 @@ describe('SchemaService', () => {
   let service: SchemaService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({ imports: [LoggerModule.forRoot()], providers: [MockSchemaService] });
+    TestBed.configureTestingModule({ imports: [LoggerModule.forRoot()], providers: [MockSchemaService, SchemaService, PathService] });
     service = TestBed.inject(SchemaService);
   });
 

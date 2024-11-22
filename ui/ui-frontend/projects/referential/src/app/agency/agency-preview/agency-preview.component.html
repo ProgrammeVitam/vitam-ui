@@ -4,6 +4,18 @@
   [icon]="'vitamui-icon-agent'"
   (onclose)="emitClose()"
 >
+  <vitamui-common-menu-button [overlayPos]="'end'" [icon]="'vitamui-icon-more-horiz'">
+    <button
+      mat-menu-item
+      [vitamuiCommonToolTip]="'AGENCY.ACTION.EDIT' | translate"
+      [vitamuiCommonToolTipShowDelay]="300"
+      [disabled]="false"
+      [routerLink]="'agencies/' + agency.identifier + '/edit'"
+      [state]="{ agency: agency }"
+    >
+      {{ 'AGENCY.ACTION.EDIT' | translate }}
+    </button>
+  </vitamui-common-menu-button>
 </vitamui-common-sidenav-header>
 
 <div class="vitamui-sidepanel-body">

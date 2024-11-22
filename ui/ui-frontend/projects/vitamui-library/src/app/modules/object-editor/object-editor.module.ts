@@ -69,10 +69,20 @@ import { EditorTextareaComponent } from './components/editor-textarea.component'
 import { EditorSelectComponent } from './components/editor-select.component';
 import { MultipleOptionsDatepickerModule } from '../components/multiple-options-datepicker/multiple-options-datepicker.module';
 import { EditorListDateComponent } from './components/editor-list-date.component';
+import { EditObjectService } from './services/edit-object.service';
+import { PathService } from './services/path.service';
+import { SchemaService } from './services/schema.service';
+import { TemplateService } from './services/template.service';
 
 @NgModule({
   declarations: [ObjectEditorComponent, GroupEditorComponent, ListEditorComponent, PrimitiveEditorComponent],
-  providers: [{ provide: DisplayObjectService, useClass: PathStrategyDisplayObjectService }],
+  providers: [
+    { provide: DisplayObjectService, useClass: PathStrategyDisplayObjectService },
+    EditObjectService,
+    PathService,
+    SchemaService,
+    TemplateService,
+  ],
   imports: [
     CommonModule,
     TranslateModule,

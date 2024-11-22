@@ -105,7 +105,7 @@ export class PathStrategyDisplayObjectService implements DisplayObjectService {
 
   private populateLabels(displayObject: DisplayObject) {
     displayObject.children?.forEach((child) => this.populateLabels(child));
-    displayObject.displayRule.ui.label = displayObject.key;
+    displayObject.displayRule.ui.label = displayObject.displayRule.ui.label || displayObject.key;
   }
 
   setData(object: any): void {

@@ -37,6 +37,7 @@
 import { Component, Input } from '@angular/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { AbstractControl } from '@angular/forms';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'vitamui-editor-hint',
@@ -44,7 +45,7 @@ import { AbstractControl } from '@angular/forms';
     @if (hint && control.valid) {
       <mat-hint class="d-flex align-items-center">
         <i class="vitamui-icon vitamui-icon-info mr-1"></i>
-        <span>{{ hint }}</span>
+        <span>{{ hint | translate }}</span>
       </mat-hint>
     }
   `,
@@ -54,7 +55,7 @@ import { AbstractControl } from '@angular/forms';
     }
   `,
   standalone: true,
-  imports: [MatFormFieldModule],
+  imports: [MatFormFieldModule, TranslateModule],
 })
 export class EditorHintComponent {
   @Input({ required: true }) control!: AbstractControl;

@@ -655,7 +655,7 @@
   },
   "AGENCY": {
     "HOME": {
-      "TITLE": "Agent services",
+      "TITLE": "Agent services repository",
       "TITLE_PLACEHOLDER": "Name, Identifier",
       "ACTION_BUTTON": "Create agent service",
       "ACTION_IMPORT": "Import the referential",
@@ -686,6 +686,40 @@
       "HISTORY": "History",
       "NAME": "Name",
       "DESCRIPTION": "Description"
+    },
+    "ACTION": {
+      "EDIT": "Access the notice"
+    },
+    "LABEL": {
+      "IDENTIFICATION": "Identification",
+      "IDENTIFIER": "Identifier",
+      "NAME": "Name",
+      "ENTITY_TYPE": "Entity type",
+      "NAME_ENTRY_PARALLEL": "Parallel forms of name",
+      "AUTHORIZED_FORM": "Standardized forms of name according to other rules",
+      "ALTERNATIVE_FORM": "Other forms of name",
+      "ENTITY_ID": "Identifiers for corporate bodies",
+      "DESCRIPTION": "Description",
+      "FROM_DATE": "Start date",
+      "TO_DATE": "End date",
+      "FUNCTIONS": "Functions, occupations and activities",
+      "BIOGHIST": "History",
+      "PLACES": "Places",
+      "LEGAL_STATUSES": "Legal statuses",
+      "MANDATES": "Mandates/Authority sources",
+      "STRUCTURE_OR_GENEALOGY": "Internal structures/Genealogy",
+      "GENERAL_CONTEXT": "General context",
+      "CONTROL": "Control",
+      "CREATION_DATE": "Creation date",
+      "UPDATE_DATE": "Revision date",
+      "MAINTENANCE_STATUS": "Status",
+      "LOCAL_STATUS": "Detail level",
+      "SOURCES": "Sources",
+      "EVENT_DESCRIPTION": "Maintenance notes"
+    },
+    "HINT": {
+      "MAX_LENGTH_50": "Limited to 50 characters",
+      "MAX_LENGTH_5000": "Limited to 5000 characters"
     }
   },
   "LOGBOOK": {
