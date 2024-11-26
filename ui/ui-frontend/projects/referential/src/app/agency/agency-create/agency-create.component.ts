@@ -37,7 +37,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
-import { ConfirmDialogService } from 'vitamui-library';
+import { Agency, ConfirmDialogService } from 'vitamui-library';
 import { AgencyService } from '../agency.service';
 import { AgencyCreateValidators } from './agency-create.validators';
 
@@ -92,16 +92,22 @@ export class AgencyCreateComponent implements OnInit {
     );
   }
 
-  public onSubmitAndCreate(): void {
+  public submitAndEdit(): void {
+    const agency: Partial<Agency> = {
+      name: this.form.controls.name.value,
+      identifier: this.form.controls.identifier.value,
+      description: this.form.controls.description.value,
+    };
+
     this.isLoading = true;
-    this.agencyService.create(this.form.value).subscribe(
-      () => {
-        this.dialogRef.close({ success: true, action: 'restart' });
+    this.agencyService.create(agency as Agency).subscribe({
+      next: () => {
+        this.dialogRef.close({ success: true, action: 'edit', agency });
       },
-      (error: any) => {
+      error: (error: any) => {
         this.isLoading = false;
         console.error(error);
       },
-    );
+    });
   }
 }

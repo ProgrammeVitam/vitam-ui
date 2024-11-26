@@ -36,7 +36,7 @@
  */
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { FileTypes } from 'projects/vitamui-library/src/public-api';
 import { zip } from 'rxjs';
@@ -69,6 +69,7 @@ export class AgencyComponent extends SidenavPage<Agency> implements OnInit {
     private securityService: SecurityService,
     private agencyService: AgencyService,
     private translateService: TranslateService,
+    private router: Router,
   ) {
     super(route, globalEventService);
   }
@@ -98,8 +99,8 @@ export class AgencyComponent extends SidenavPage<Agency> implements OnInit {
       if (result?.success) {
         this.refreshList();
       }
-      if (result?.action === 'restart') {
-        this.openCreateAgencyDialog();
+      if (result?.action === 'edit') {
+        this.router.navigateByUrl(`/agency/tenant/${this.tenantIdentifier}/agencies/${result?.agency?.identifier}/edit`);
       }
     });
   }
