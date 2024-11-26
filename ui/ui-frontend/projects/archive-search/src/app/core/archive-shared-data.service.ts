@@ -110,6 +110,8 @@ export class ArchiveSharedDataService {
 
   removeFromApraisalSearchCriteriaObservable = this.searchCriteriaRemoveFromChildSubject.asObservable();
 
+  unitUpdatedWithComputedObjectGroup = new BehaviorSubject<Unit>(null);
+
   constructor() {}
 
   emitRuleCategory(ruleCategory: string) {

@@ -41,6 +41,7 @@ import { saveAs } from 'file-saver-es';
 import { Observable, of, throwError, TimeoutError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import {
+  AccessContract,
   AccessContractService,
   ApiUnitObject,
   ArchiveUnit,
@@ -50,7 +51,6 @@ import {
   FilingHoldingSchemeHandler,
   FilingHoldingSchemeNode,
   getUnitI18nAttribute,
-  AccessContract,
   IOntology,
   JsonPatchDto,
   MultiJsonPatchDto,
