@@ -45,6 +45,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @ToString
+//TODO(delete): replace with AgenciesModel
 public class AgencyModelDto {
 
     private String id;
@@ -127,7 +128,12 @@ public class AgencyModelDto {
     }
 
     @JsonAnySetter
-    public void setAdditionalProperties(String key, Object value) {
+    public void addAdditionalProperties(String key, Object value) {
         additionalProperties.put(key, value);
+    }
+
+    public AgencyModelDto setAdditionalProperties(Map<String, Object> map) {
+        additionalProperties = Map.copyOf(map);
+        return this;
     }
 }

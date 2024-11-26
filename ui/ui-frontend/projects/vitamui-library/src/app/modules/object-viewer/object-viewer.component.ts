@@ -37,6 +37,7 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { Logger } from '../logger/logger';
 import { DisplayObjectService, DisplayRule } from './models';
+import { Mode } from './models/display-object.enum';
 
 @Component({
   selector: 'vitamui-common-object-viewer',
@@ -46,7 +47,7 @@ import { DisplayObjectService, DisplayRule } from './models';
 export class ObjectViewerComponent implements OnInit, OnChanges {
   @Input() data!: any;
   @Input() template!: DisplayRule[];
-  @Input() mode = 'template-driven';
+  @Input() mode: Mode = Mode.TEMPLATE_DRIVEN;
 
   constructor(
     private logger: Logger,

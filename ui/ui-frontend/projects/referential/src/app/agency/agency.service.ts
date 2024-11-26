@@ -114,20 +114,20 @@ export class AgencyService extends SearchService<Agency> {
     );
   }
 
-  patch(data: { id: string; [key: string]: any }): Observable<Agency> {
+  patch(data: Agency): Observable<Agency> {
     return this.agencyApiService.patch(data).pipe(
-      tap((response) => this.updated.next(response)),
-      tap(
-        () => {
+      tap({
+        next: () => {
+          this.updated.next(data);
           this.snackBarService.open({
             message: 'SNACKBAR.AGENCY_CONTRACT_UPDATED',
             icon: 'vitamui-icon-agent',
           });
         },
-        (error) => {
+        error: (error) => {
           this.snackBarService.open({ message: error.error.message, translate: false });
         },
-      ),
+      }),
     );
   }
 

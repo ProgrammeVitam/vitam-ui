@@ -29,7 +29,9 @@
     "COMMON_NO": "Non",
     "UNDO_MODAL": {
       "TITLE": "Fermer la fenêtre",
-      "UNDO_MESSAGE": "Les données modifiées ne seront pas sauvegardées. Êtes-vous sûr de vouloir fermer la fenêtre ?"
+      "CANCEL_TITLE": "Annuler les modifications en cours",
+      "UNDO_MESSAGE": "Les données modifiées ne seront pas sauvegardées. Êtes-vous sûr de vouloir fermer la fenêtre ?",
+      "CONTINUE_MODIFICATION": "Continuer les modifications"
     },
     "HISTORY": {
       "NO_HISTORY": "Aucun historique",

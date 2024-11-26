@@ -29,5 +29,9 @@
   <vitamui-common-title-breadcrumb [data]="breadcrumbData">
     {{ 'AGENCY.HOME.TITLE' | translate }}
   </vitamui-common-title-breadcrumb>
-  <vitamui-common-object-viewer [data]="agency" [template]="template" mode="template-driven"></vitamui-common-object-viewer>
+  <vitamui-common-object-viewer [data]="agency" [template]="agencyTemplate" mode="template-driven"></vitamui-common-object-viewer>
+  <button type="button" (click)="back()" class="btn link back">
+    <i class="vitamui-icon vitamui-icon-chevron-left"></i>
+    <span>{{ 'COMMON.BACK' | translate }}</span>
+  </button>
 </div>

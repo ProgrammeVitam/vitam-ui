@@ -46,7 +46,6 @@ import fr.gouv.vitam.common.model.administration.AccessionRegisterDetailModel;
 import fr.gouv.vitam.common.model.administration.AccessionRegisterSummaryModel;
 import fr.gouv.vitam.common.model.administration.AgenciesModel;
 import fr.gouv.vitamui.commons.api.domain.AccessionRegisterSearchDto;
-import fr.gouv.vitamui.commons.api.domain.AgencyModelDto;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
@@ -369,7 +368,7 @@ public class AccessionRegisterInternalService {
 
     private Map<String, String> findAgencies(VitamContext vitamContext, AccessionRegisterDetailResponseDto results) {
         JsonNode agencyQuery;
-        List<AgencyModelDto> agencies;
+        List<AgenciesModel> agencies;
         try {
             agencyQuery = buildAgencyProjectionQuery(results);
             RequestResponse<AgenciesModel> requestResponse = agencyService.findAgencies(vitamContext, agencyQuery);
@@ -382,7 +381,7 @@ public class AccessionRegisterInternalService {
             throw new InternalServerException("Invalid Select vitam query", e);
         }
 
-        return agencies.stream().collect(Collectors.toMap(AgencyModelDto::getIdentifier, AgencyModelDto::getName));
+        return agencies.stream().collect(Collectors.toMap(AgenciesModel::getIdentifier, AgenciesModel::getName));
     }
 
     private JsonNode buildAgencyProjectionQuery(AccessionRegisterDetailResponseDto results)

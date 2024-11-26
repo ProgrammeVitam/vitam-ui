@@ -42,6 +42,7 @@ import { GlobalEventService } from './global-event.service';
 import { Tenant } from './models';
 import { TenantsByApplication } from './models/user/tenants-by-application.interface';
 import { StartupService } from './startup.service';
+import { TenantSelectionService } from './tenant-selection.service';
 
 @Injectable({
   providedIn: 'root',
@@ -50,6 +51,7 @@ export class ActiveTenantGuard {
   constructor(
     private authService: AuthService,
     private startupService: StartupService,
+    private tenantSelectionService: TenantSelectionService,
     private globalEventService: GlobalEventService,
     private router: Router,
   ) {}
@@ -70,6 +72,7 @@ export class ActiveTenantGuard {
       if (result) {
         // set tenant Identifier whenever a tenant is selected
         this.startupService.setTenantIdentifier(tenantIdentifier);
+        this.tenantSelectionService.setLastTenantIdentifier(+tenantIdentifier);
         // emit tenant change event
         this.globalEventService.tenantEvent.next(tenantIdentifier);
 

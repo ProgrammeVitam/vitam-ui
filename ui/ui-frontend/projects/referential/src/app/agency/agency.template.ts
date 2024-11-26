@@ -36,7 +36,7 @@
  */
 import { DisplayRule } from 'vitamui-library';
 
-export const template: DisplayRule[] = [
+export const agencyTemplate: DisplayRule[] = [
   {
     Path: '',
     ui: {
@@ -94,7 +94,21 @@ export const template: DisplayRule[] = [
     },
   },
   {
-    Path: 'EntityType',
+    Path: 'description',
+    ui: {
+      Path: 'Description',
+      component: 'textfield',
+      open: true,
+      display: false,
+      layout: {
+        columns: 1,
+        size: 'medium',
+      },
+      label: 'AGENCY.LABEL.DESCRIPTION',
+    },
+  },
+  {
+    Path: 'entityType',
     ui: {
       Path: 'Identification.EntityType',
       component: 'textfield',
@@ -108,7 +122,7 @@ export const template: DisplayRule[] = [
     },
   },
   {
-    Path: 'NameEntryParallel',
+    Path: 'nameEntryParallel',
     ui: {
       Path: 'Identification.NameEntryParallel',
       component: 'textfield',
@@ -122,7 +136,7 @@ export const template: DisplayRule[] = [
     },
   },
   {
-    Path: 'AuthorizedForm',
+    Path: 'authorizedForm',
     ui: {
       Path: 'Identification.AuthorizedForm',
       component: 'textfield',
@@ -136,7 +150,7 @@ export const template: DisplayRule[] = [
     },
   },
   {
-    Path: 'AlternativeForm',
+    Path: 'alternativeForm',
     ui: {
       Path: 'Identification.AlternativeForm',
       component: 'textfield',
@@ -150,7 +164,7 @@ export const template: DisplayRule[] = [
     },
   },
   {
-    Path: 'EntityId',
+    Path: 'entityId',
     ui: {
       Path: 'Identification.EntityId',
       component: 'textfield',
@@ -178,7 +192,7 @@ export const template: DisplayRule[] = [
     },
   },
   {
-    Path: 'FromDate',
+    Path: 'fromDate',
     ui: {
       Path: 'Description.FromDate',
       component: 'datepicker',
@@ -192,7 +206,7 @@ export const template: DisplayRule[] = [
     },
   },
   {
-    Path: 'ToDate',
+    Path: 'toDate',
     ui: {
       Path: 'Description.ToDate',
       component: 'datepicker',
@@ -206,7 +220,7 @@ export const template: DisplayRule[] = [
     },
   },
   {
-    Path: 'Functions',
+    Path: 'functions',
     ui: {
       Path: 'Description.Functions',
       component: 'textfield',
@@ -220,7 +234,7 @@ export const template: DisplayRule[] = [
     },
   },
   {
-    Path: 'BiogHist',
+    Path: 'biogHist',
     ui: {
       Path: 'Description.BiogHist',
       component: 'textarea',
@@ -234,7 +248,7 @@ export const template: DisplayRule[] = [
     },
   },
   {
-    Path: 'Places',
+    Path: 'places',
     ui: {
       Path: 'Description.Places',
       component: 'textfield',
@@ -248,7 +262,7 @@ export const template: DisplayRule[] = [
     },
   },
   {
-    Path: 'LegalStatuses',
+    Path: 'legalStatuses',
     ui: {
       Path: 'Description.LegalStatuses',
       component: 'textfield',
@@ -262,7 +276,7 @@ export const template: DisplayRule[] = [
     },
   },
   {
-    Path: 'Mandates',
+    Path: 'mandates',
     ui: {
       Path: 'Description.Mandates',
       component: 'textarea',
@@ -276,7 +290,7 @@ export const template: DisplayRule[] = [
     },
   },
   {
-    Path: 'StructureOrGenealogy',
+    Path: 'structureOrGenealogy',
     ui: {
       Path: 'Description.StructureOrGenealogy',
       component: 'textarea',
@@ -290,7 +304,7 @@ export const template: DisplayRule[] = [
     },
   },
   {
-    Path: 'GeneralContext',
+    Path: 'generalContext',
     ui: {
       Path: 'Description.GeneralContext',
       component: 'textarea',
@@ -318,7 +332,7 @@ export const template: DisplayRule[] = [
     },
   },
   {
-    Path: 'CreationDate',
+    Path: 'creationDate',
     ui: {
       Path: 'Control.CreationDate',
       component: 'datepicker',
@@ -333,7 +347,7 @@ export const template: DisplayRule[] = [
     },
   },
   {
-    Path: 'UpdateDate',
+    Path: 'updateDate',
     ui: {
       Path: 'Control.UpdateDate',
       component: 'datepicker',
@@ -348,7 +362,7 @@ export const template: DisplayRule[] = [
     },
   },
   {
-    Path: 'MaintenanceStatus',
+    Path: 'maintenanceStatus',
     ui: {
       Path: 'Control.MaintenanceStatus',
       component: 'textfield',
@@ -362,7 +376,7 @@ export const template: DisplayRule[] = [
     },
   },
   {
-    Path: 'LocalStatus',
+    Path: 'localStatus',
     ui: {
       Path: 'Control.LocalStatus',
       component: 'textfield',
@@ -376,7 +390,7 @@ export const template: DisplayRule[] = [
     },
   },
   {
-    Path: 'Sources',
+    Path: 'sources',
     ui: {
       Path: 'Control.Sources',
       component: 'textarea',
@@ -390,7 +404,7 @@ export const template: DisplayRule[] = [
     },
   },
   {
-    Path: 'EventDescription',
+    Path: 'eventDescription',
     ui: {
       Path: 'Control.EventDescription',
       component: 'textarea',

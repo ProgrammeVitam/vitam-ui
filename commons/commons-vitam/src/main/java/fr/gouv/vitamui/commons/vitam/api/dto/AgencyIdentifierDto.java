@@ -34,34 +34,18 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-package fr.gouv.vitamui.referential.internal.server.agency;
+package fr.gouv.vitamui.commons.vitam.api.dto;
 
-import fr.gouv.vitamui.commons.api.domain.AgencyModelDto;
-import fr.gouv.vitamui.commons.utils.VitamUIUtils;
-import fr.gouv.vitamui.referential.common.dto.AgencyDto;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
-import java.util.List;
-import java.util.stream.Collectors;
+@Getter
+@Setter
+@ToString
+public class AgencyIdentifierDto {
 
-public class AgencyConverter {
-
-    public AgencyModelDto convertDtoToVitam(final AgencyDto dto) {
-        final AgencyModelDto Agency = VitamUIUtils.copyProperties(dto, new AgencyModelDto());
-
-        return Agency;
-    }
-
-    public AgencyDto convertVitamToDto(final AgencyModelDto Agency) {
-        final AgencyDto dto = VitamUIUtils.copyProperties(Agency, new AgencyDto());
-
-        return dto;
-    }
-
-    public List<AgencyModelDto> convertDtosToVitams(final List<AgencyDto> dtos) {
-        return dtos.stream().map(this::convertDtoToVitam).collect(Collectors.toList());
-    }
-
-    public List<AgencyDto> convertVitamsToDtos(final List<AgencyModelDto> agencies) {
-        return agencies.stream().map(this::convertVitamToDto).collect(Collectors.toList());
-    }
+    @JsonProperty("Identifier")
+    private String identifier;
 }
