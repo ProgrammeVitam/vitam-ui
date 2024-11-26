@@ -1,0 +1,9 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Multirun: archive-search" type="Multirun" separateTabs="false" reuseTabsWithFailures="false" startOneByOne="true" markFailedProcess="true" hideSuccessProcess="false" delayTime="0.0">
+    <runConfiguration name="Multirun: common" type="Multirun" />
+    <runConfiguration name="archive-search internal" type="Spring Boot" />
+    <runConfiguration name="archive-search external" type="Spring Boot" />
+    <runConfiguration name="Angular: archive-search" type="npm" />
+    <method v="2" />
+  </configuration>
+</component>

@@ -1,0 +1,12 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="API gateway" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+    <option name="ACTIVE_PROFILES" value="dev" />
+    <module name="api-gateway" />
+    <option name="SPRING_BOOT_MAIN_CLASS" value="fr.gouv.vitamui.gateway.ApiGatewayServerApplication" />
+    <option name="VM_PARAMETERS" value="-Xmx100m" />
+    <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$/api/api-gateway" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
