@@ -1,0 +1,8 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Multirun: pastis" type="Multirun" separateTabs="false" reuseTabsWithFailures="false" startOneByOne="true" markFailedProcess="true" hideSuccessProcess="false" delayTime="0.0">
+    <runConfiguration name="Multirun: common" type="Multirun" />
+    <runConfiguration name="pastis" type="Spring Boot" />
+    <runConfiguration name="Angular: pastis" type="npm" />
+    <method v="2" />
+  </configuration>
+</component>

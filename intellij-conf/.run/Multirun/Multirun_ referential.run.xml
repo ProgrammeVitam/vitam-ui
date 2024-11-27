@@ -1,0 +1,7 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Multirun: referential" type="Multirun" separateTabs="false" reuseTabsWithFailures="false" startOneByOne="true" markFailedProcess="true" hideSuccessProcess="false" delayTime="0.0">
+    <runConfiguration name="Multirun: common" type="Multirun" />
+    <runConfiguration name="Angular: referential" type="npm" />
+    <method v="2" />
+  </configuration>
+</component>
