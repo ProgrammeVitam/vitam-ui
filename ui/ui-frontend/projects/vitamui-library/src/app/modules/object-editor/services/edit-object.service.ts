@@ -297,10 +297,9 @@ export class EditObjectService {
   private computeKind(value: any, path: string, schemaPath: string, schema: Schema): EditObject['kind'] {
     const isRoot = path === '';
     const isObject = /\[\d+\]$/gm.test(path);
-    const element = this.schemaService.find(schemaPath, schema);
     const kind = this.schemaService.kind(schemaPath, schema);
 
-    if (isRoot || isObject || kind === 'unknown' || element.Origin === 'EXTERNAL') return this.kind(value);
+    if (isRoot || isObject || kind === 'unknown') return this.kind(value);
 
     return kind;
   }
