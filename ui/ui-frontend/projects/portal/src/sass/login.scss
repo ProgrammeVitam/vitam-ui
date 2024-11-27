@@ -10,7 +10,6 @@
   width: 800px;
   margin: 120px auto;
   padding: 48px 80px;
-  @include vitamui-modal;
 
   h1 {
     @include login-title;

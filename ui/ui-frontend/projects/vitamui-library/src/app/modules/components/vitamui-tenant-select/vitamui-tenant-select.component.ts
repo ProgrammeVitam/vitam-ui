@@ -40,7 +40,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ApplicationId } from '../../application-id.enum';
 import { AuthService } from '../../auth.service';
 import { Tenant } from '../../models';
-import { MenuOption } from '../navbar';
+import { MenuOption } from '../navbar/customer-menu/menu-option.interface';
 
 @Component({
   selector: 'vitamui-common-tenant-select',

@@ -36,8 +36,8 @@
  */
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MenuOption } from '../navbar';
 import { TenantMenuService } from '../navbar/tenant-menu/tenant-menu.service';
+import { MenuOption } from '../navbar/customer-menu/menu-option.interface';
 
 @Component({
   selector: 'vitamui-common-tenant-select-content',

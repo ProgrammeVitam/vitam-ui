@@ -60,10 +60,10 @@ import { Category } from '../../../models';
 import { Application } from '../../../models/application/application.interface';
 import { StartupService } from '../../../startup.service';
 import { TenantSelectionService } from '../../../tenant-selection.service';
-import { MenuOption } from '../../navbar';
 import { SearchBarComponent } from '../../search-bar/search-bar.component';
 import { Tenant } from './../../../models/customer/tenant.interface';
 import { MenuOverlayRef } from './menu-overlay-ref';
+import { MenuOption } from '../../navbar/customer-menu/menu-option.interface';
 
 const APPLICATION_TRANSLATE_PATH = 'APPLICATION';
 
