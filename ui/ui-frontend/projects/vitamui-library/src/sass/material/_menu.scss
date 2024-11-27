@@ -3,7 +3,7 @@
 .vitamui-menu-panel.mat-menu-panel {
   border-radius: 10px;
   background: transparent;
-  @include elevation-5-dark;
+  @include shadow-32dp-dark;
 
   .mat-menu-content {
     padding-top: 0;

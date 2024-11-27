@@ -44,3 +44,10 @@ jobs:
       - uses: actions/checkout@v4
       - name: Check colors
         run: ./tools/check-colors.sh
+  check-shadows:
+    name: Check shadows
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check shadows
+        run: ./tools/check-shadows.sh

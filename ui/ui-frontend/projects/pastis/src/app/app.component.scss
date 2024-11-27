@@ -25,9 +25,7 @@
   bottom: 0;
   width: 100%;
   margin-top: 50px;
-  box-shadow:
-    0 4px 16px rgba(var(--vitamui-primary-rgb), 0.4),
-    0 8px 32px rgba(var(--vitamui-primary-rgb), 0.2);
+  @include shadow-16dp-primary;
   background-color: var(--vitamui-primary-600);
 }
 

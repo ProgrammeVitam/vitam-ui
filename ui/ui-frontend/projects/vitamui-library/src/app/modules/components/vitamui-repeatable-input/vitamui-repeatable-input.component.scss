@@ -2,7 +2,7 @@
 @import '../../../../sass/mixins/elevation';
 
 :host {
-  @include elevation-1-dark;
+  @include shadow-2dp-dark;
   cursor: text;
   border-radius: 5px;
   border: solid 1px var(--vitamui-grey-300);
@@ -51,7 +51,8 @@ input {
   height: 44px !important;
   border-radius: 0 !important;
   background-color: transparent !important;
-  @include elevation-0;
+  @include shadow-0;
+  border: none;
 
   &.first {
     height: 60px !important;

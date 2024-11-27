@@ -39,7 +39,7 @@
 }
 
 .mat-autocomplete-panel.mat-autocomplete-visible {
-  @include elevation-0;
+  @include shadow-0;
   width: 90%;
   left: 5%;
 }

@@ -47,7 +47,7 @@ mat-chip span {
 
   &:not(.disabled),
   &:not(:disabled) {
-    @include elevation-0;
+    @include shadow-0;
   }
 }
 

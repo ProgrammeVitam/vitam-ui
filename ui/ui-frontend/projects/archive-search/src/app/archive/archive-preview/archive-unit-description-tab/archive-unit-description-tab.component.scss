@@ -15,7 +15,7 @@ button {
   &.cancel {
     background-color: transparent;
     color: white;
-    @include elevation-0;
+    @include shadow-0;
     border: none;
   }
 }

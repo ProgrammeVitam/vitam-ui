@@ -35,9 +35,7 @@ label {
   display: flex;
   align-items: center;
   background-color: var(--vitamui-grey);
-  transition:
-    background-color 100ms ease-in-out,
-    box-shadow 200ms ease-out;
+  transition: background-color 100ms ease-in-out;
 
   // ON ENABLED
   &.slide-toggle-on {

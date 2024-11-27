@@ -291,6 +291,7 @@
   --vitamui-grey-800: #424242;
   --vitamui-grey-700: #616161;
   --vitamui-grey-600: #757575;
+  --vitamui-grey-600-rgb: 117, 117, 117;
   --vitamui-grey: #9E9E9E;
   --vitamui-grey-400: #BDBDBD;
   --vitamui-grey-300: #E0E0E0;
@@ -590,7 +591,7 @@ button, textarea, input {
   width: 820px;
   border-radius: 20px;
   background-color: var(--vitamui-white);
-  box-shadow: 0 2px 8px rgba(var(--vitamui-grey-900-rgb), 0.2), 0 4px 16px rgba(var(--vitamui-grey-900-rgb), 0.05); }
+  box-shadow: 0 0 2px rgba(var(--vitamui-grey-900-rgb), 0.2), 0 1px 4px rgba(var(--vitamui-grey-900-rgb), 0.05) ; }
   .vitamui-card .vitamui-icon {
     width: 24px;
     height: 24px; }
@@ -606,7 +607,7 @@ button, textarea, input {
     outline: none;
     border: 1px solid transparent;
     border-radius: 5px;
-    box-shadow: 0 0 2px rgba(var(--vitamui-grey-900-rgb), 0.2), 0 1px 4px rgba(var(--vitamui-grey-900-rgb), 0.05);
+    box-shadow: 0 0 1px rgba(var(--vitamui-grey-600-rgb), 1), 0 1px 2px rgba(var(--vitamui-grey-900-rgb), 0.2) ;
     transition: border-color 200ms ease-out;
     height: 50px;
     padding: 0 30px;

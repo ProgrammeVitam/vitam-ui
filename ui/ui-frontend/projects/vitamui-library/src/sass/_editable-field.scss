@@ -108,14 +108,14 @@ $anim-timing: 150ms ease-out;
   border-radius: 25px;
   padding: 10px;
   background-color: white;
-  @include elevation-1-dark;
+  @include shadow-2dp-dark;
   z-index: 1;
   margin: 10px 0 10px 10px;
   display: flex;
   justify-content: space-between;
 
   button {
-    @include elevation-1-dark;
+    @include shadow-2dp-dark;
     background: none;
     border: none;
     color: white;

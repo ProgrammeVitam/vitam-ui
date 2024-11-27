@@ -2,7 +2,7 @@
 
 mat-card {
   cursor: pointer;
-  @include elevation-0;
+  @include shadow-0;
   background-color: transparent;
 
   a {
@@ -12,7 +12,7 @@ mat-card {
 
 mat-card > img,
 .appIcon {
-  @include elevation-1-dark;
+  @include shadow-2dp-dark;
   border-radius: 5px;
 }
 

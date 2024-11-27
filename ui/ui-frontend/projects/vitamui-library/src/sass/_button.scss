@@ -6,7 +6,7 @@
   border: 1px solid $border-color;
   color: $color;
 
-  @include elevation-0;
+  @include shadow-0;
 
   i {
     display: flex !important;
@@ -28,7 +28,7 @@
   &.link,
   &:disabled,
   &.btn-search {
-    @include elevation-0;
+    @include shadow-0;
   }
 
   &:not(:disabled) {

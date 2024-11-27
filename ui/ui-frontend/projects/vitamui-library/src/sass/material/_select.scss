@@ -90,7 +90,7 @@ mat-select-trigger.vitamui-mat-select {
       .mat-form-field-flex {
         background-color: var(--vitamui-grey-300);
         border: none;
-        @include elevation-0;
+        @include shadow-0;
 
         .mat-select .mat-select-value {
           font-weight: normal;
@@ -180,7 +180,7 @@ mat-select-trigger.vitamui-mat-select {
     height: 25px;
     padding: 0;
     border: none;
-    @include elevation-0;
+    @include shadow-0;
   }
 
   .mat-form-field-infix {

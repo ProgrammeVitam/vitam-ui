@@ -16,7 +16,7 @@
 }
 
 .pastis-btn-show-profile {
-  @include shadow-8dp-dark;
+  @include shadow-32dp-primary;
   position: absolute;
   width: 70px;
   height: 70px;
@@ -36,7 +36,7 @@
 }
 
 .pastis-side-nav {
-  @include shadow-8dp-dark;
+  @include shadow-64dp-dark;
 }
 
 .mat-sidenav {
