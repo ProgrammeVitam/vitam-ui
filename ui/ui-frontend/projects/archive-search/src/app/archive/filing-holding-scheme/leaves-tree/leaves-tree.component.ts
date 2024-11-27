@@ -59,7 +59,6 @@ import { ArchiveService } from '../../archive.service';
   styleUrls: ['./leaves-tree.component.scss'],
 })
 export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
-  @Input() accessContract: string;
   @Input() loadingNodeUnit: boolean;
   // Already a graph
   @Input() nestedDataSourceLeaves: MatTreeNestedDataSource<FilingHoldingSchemeNode>;

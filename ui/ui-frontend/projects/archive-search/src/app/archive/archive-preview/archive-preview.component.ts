@@ -34,7 +34,18 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { AfterViewInit, Component, EventEmitter, HostListener, Input, OnChanges, Output, SimpleChanges, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  EventEmitter,
+  HostListener,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+  ViewChild,
+} from '@angular/core';
 import {
   MatLegacyTab as MatTab,
   MatLegacyTabChangeEvent as MatTabChangeEvent,
@@ -43,7 +54,7 @@ import {
 } from '@angular/material/legacy-tabs';
 import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { Unit, unitToVitamuiIcon } from 'vitamui-library';
+import { AccessContract, AccessContractService, Unit, unitToVitamuiIcon } from 'vitamui-library';
 import { ArchiveUnitDescriptionTabComponent } from './archive-unit-description-tab/archive-unit-description-tab.component';
 
 @Component({
@@ -51,16 +62,16 @@ import { ArchiveUnitDescriptionTabComponent } from './archive-unit-description-t
   templateUrl: './archive-preview.component.html',
   styleUrls: ['./archive-preview.component.scss'],
 })
-export class ArchivePreviewComponent implements OnChanges, AfterViewInit {
+export class ArchivePreviewComponent implements OnChanges, OnInit, AfterViewInit {
   @Input() archiveUnit: Unit;
-  @Input() accessContractId: string;
   @Input() isPopup: boolean;
-  @Input() accessContractAllowUpdating: boolean;
   @Input() hasUpdateDescriptiveUnitMetadataRole: boolean;
 
   @Output() backToNormalLateralPanel: EventEmitter<any> = new EventEmitter();
   @Output() previewClose: EventEmitter<any> = new EventEmitter();
   @Output() showExtendedLateralPanel: EventEmitter<any> = new EventEmitter();
+
+  accessContractAllowUpdating: boolean;
 
   isPanelextended = false;
   selectedIndex = 0;
@@ -74,6 +85,7 @@ export class ArchivePreviewComponent implements OnChanges, AfterViewInit {
   constructor(
     private route: ActivatedRoute,
     private translateService: TranslateService,
+    private accessContractService: AccessContractService,
   ) {
     this.route.params.subscribe((params) => {
       this.tenantIdentifier = +params.tenantIdentifier;
@@ -151,6 +163,12 @@ export class ArchivePreviewComponent implements OnChanges, AfterViewInit {
       }
       this.showNormalPanel();
     }
+  }
+
+  async ngOnInit() {
+    this.accessContractService.currentAccessContract$.subscribe((ac: AccessContract) => {
+      this.accessContractAllowUpdating = ac.writingPermission;
+    });
   }
 
   getArchiveUnitIcon(unit: Unit) {

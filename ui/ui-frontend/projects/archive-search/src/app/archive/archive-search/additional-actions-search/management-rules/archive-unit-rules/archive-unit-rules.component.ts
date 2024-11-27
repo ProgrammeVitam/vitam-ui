@@ -56,8 +56,6 @@ import { ActionsRules, ManagementRules, RuleActionsEnum, RuleCategoryAction } fr
 })
 export class ArchiveUnitRulesComponent implements OnDestroy {
   @Input()
-  accessContract: string;
-  @Input()
   selectedItem: string;
   @Input()
   ruleCategory: string;

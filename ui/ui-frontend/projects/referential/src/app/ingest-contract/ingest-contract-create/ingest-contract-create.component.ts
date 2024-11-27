@@ -41,14 +41,11 @@ import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogRef as MatDia
 import { Subscription } from 'rxjs';
 import {
   ConfirmDialogService,
-  ExternalParameters,
-  ExternalParametersService,
   FilingPlanMode,
   IngestContract,
   Option,
   SignaturePolicy,
   SignedDocumentPolicyEnum,
-  VitamUISnackBarService,
   VitamuiAutocompleteMultiselectOptions,
 } from 'vitamui-library';
 import { ArchiveProfileApiService } from '../../core/api/archive-profile-api.service';
@@ -92,14 +89,11 @@ export class IngestContractCreateComponent implements OnInit, OnDestroy {
     private fileFormatService: FileFormatService,
     private managementContractService: ManagementContractApiService,
     private archiveProfileService: ArchiveProfileApiService,
-    private externalParameterService: ExternalParametersService,
-    private vitamUISnackBarService: VitamUISnackBarService,
   ) {}
 
   statusControl = new FormControl(false);
   linkParentIdControl = new FormControl();
   checkParentIdControl = new FormControl();
-  accessContractSelect = new FormControl(null);
 
   formatTypesOptions: VitamuiAutocompleteMultiselectOptions = { options: [] };
   managementContracts: any[];
@@ -157,17 +151,6 @@ export class IngestContractCreateComponent implements OnInit, OnDestroy {
       this.formatTypesOptions.options = fileFormats.map((fileFormat) => {
         return { key: fileFormat.puid, label: fileFormat.puid + ' - ' + fileFormat.name };
       });
-    });
-
-    this.externalParameterService.getUserExternalParameters().subscribe((parameters) => {
-      const accessContratId: string = parameters.get(ExternalParameters.PARAM_ACCESS_CONTRACT);
-      if (accessContratId && accessContratId.length > 0) {
-        this.accessContractSelect.setValue(accessContratId);
-      } else {
-        this.vitamUISnackBarService.open({
-          message: 'SNACKBAR.NO_ACCESS_CONTRACT_LINKED',
-        });
-      }
     });
 
     const params = new HttpParams().set('embedded', 'ALL');

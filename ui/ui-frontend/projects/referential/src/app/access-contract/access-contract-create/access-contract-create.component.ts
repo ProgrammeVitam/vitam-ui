@@ -39,19 +39,14 @@ import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors,
 import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
 import {
   AccessContract,
-  AccessRightType,
+  AccessContractService,
   ConfirmDialogService,
-  ExternalParameters,
-  ExternalParametersService,
   FilingPlanMode,
   Option,
   Status,
   VitamuiAutocompleteMultiselectOptions,
-  VitamUISnackBarService,
-  AccessContractService,
 } from 'vitamui-library';
 import { AgencyService } from '../../agency/agency.service';
-import { RULE_TYPES } from '../../rule/rules.constants';
 import { AccessContractCreateValidators } from './access-contract-create.validators';
 
 import { finalize, Subject } from 'rxjs';
@@ -63,7 +58,6 @@ import { takeUntil } from 'rxjs/operators';
   styleUrls: ['./access-contract-create.component.scss'],
 })
 export class AccessContractCreateComponent implements OnInit, OnDestroy {
-  protected readonly AccessRightType = AccessRightType;
   protected readonly FILLING_PLAN_MODE = FilingPlanMode;
   @Input() tenantIdentifier: number;
   @Input() isSlaveMode: boolean;
@@ -72,19 +66,16 @@ export class AccessContractCreateComponent implements OnInit, OnDestroy {
 
   stepIndex = 0;
   stepCount = 4;
-  accessRightSelected: AccessRightType = AccessRightType.ACCESS_FULL;
 
   private unsubscribe = new Subject<void>();
 
   allNodes = new FormControl(false);
   ruleFilter = new FormControl(false);
   selectNodesControl = new FormControl({ included: [], excluded: [] });
-  accessContractSelect = new FormControl(null, Validators.required);
 
   isLoading = false;
 
   originatingAgenciesOptions: VitamuiAutocompleteMultiselectOptions = { options: [] };
-  ruleTypesOptions: VitamuiAutocompleteMultiselectOptions = { options: RULE_TYPES };
   // FIXME: Get list from common var ?
   usages: Option[] = [
     { key: 'BinaryMaster', label: 'Archives numériques originales', info: '' },
@@ -103,12 +94,9 @@ export class AccessContractCreateComponent implements OnInit, OnDestroy {
     private accessContractService: AccessContractService,
     private agencyService: AgencyService,
     private confirmDialogService: ConfirmDialogService,
-    private externalParameterService: ExternalParametersService,
-    private vitamUISnackBarService: VitamUISnackBarService,
   ) {}
 
   ngOnInit() {
-    this.loadAccessContract();
     this.agencyService.getOriginatingAgenciesAsOptions().subscribe((options: Option[]) => (this.originatingAgenciesOptions = { options }));
     this.initForm();
 
@@ -147,22 +135,6 @@ export class AccessContractCreateComponent implements OnInit, OnDestroy {
     } else {
       this.dialogRef.close();
     }
-  }
-
-  private loadAccessContract(): void {
-    this.externalParameterService
-      .getUserExternalParameters()
-      .pipe(takeUntil(this.unsubscribe))
-      .subscribe((parameters) => {
-        const accessContractId: string = parameters.get(ExternalParameters.PARAM_ACCESS_CONTRACT);
-        if (accessContractId && accessContractId.length > 0) {
-          this.accessContractSelect.setValue(accessContractId);
-        } else {
-          this.vitamUISnackBarService.open({
-            message: 'SNACKBAR.NO_ACCESS_CONTRACT_LINKED',
-          });
-        }
-      });
   }
 
   private initForm(): void {

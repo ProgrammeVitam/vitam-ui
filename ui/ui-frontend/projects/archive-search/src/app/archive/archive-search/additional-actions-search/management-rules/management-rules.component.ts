@@ -66,8 +66,6 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
 
   criteriaSearchListToSave: SearchCriteriaEltDto[] = [];
   criteriaSearchDSLQuery: SearchCriteriaDto;
-  accessContract: string;
-  accessContractSubscription: Subscription;
   tenantIdentifier: string;
   selectedItem: number;
   selectedItemToShow: string;
@@ -337,7 +335,6 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
     );
 
     this.applyChanges();
-    this.loadAccessContract();
     this.loadSelectedItem();
     this.loadCriteriaSearchListToSave();
     this.loadCriteriaSearchDSLQuery();
@@ -495,12 +492,6 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
         this.criteriaSearchListToSave = response;
       }),
     );
-  }
-
-  loadAccessContract() {
-    this.accessContractSubscription = this.managementRulesSharedDataService.getAccessContract().subscribe((accessContract) => {
-      this.accessContract = accessContract;
-    });
   }
 
   loadSelectedItem() {

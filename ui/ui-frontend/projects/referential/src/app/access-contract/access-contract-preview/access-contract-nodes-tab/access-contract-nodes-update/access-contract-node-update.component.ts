@@ -46,7 +46,6 @@ import { AccessContract, FilingPlanMode, AccessContractService } from 'vitamui-l
 })
 export class AccessContractNodeUpdateComponent implements OnInit {
   accessContract: AccessContract;
-  searchAccessContractId: string;
   tenantIdentifier: number;
   selectNodesForm: FormGroup;
   selectedRootsControl = new FormControl();
@@ -65,7 +64,6 @@ export class AccessContractNodeUpdateComponent implements OnInit {
     private formBuilder: FormBuilder,
     private accessContractService: AccessContractService,
   ) {
-    this.searchAccessContractId = this.data.searchAccessContractId;
     this.tenantIdentifier = this.data.tenantIdentifier;
     this.accessContract = this.data.accessContract;
     this.selectNodesForm = this.formBuilder.group({

@@ -55,11 +55,13 @@ import {
   StartupService,
   Unit,
   UnitType,
+  VitamUICommonModule,
   WINDOW_LOCATION,
 } from 'vitamui-library';
 import { environment } from '../../../environments/environment.prod';
 import { ArchiveService } from '../archive.service';
 import { ArchivePreviewComponent } from './archive-preview.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('ArchivePreviewComponent', () => {
   let component: ArchivePreviewComponent;
@@ -93,6 +95,7 @@ describe('ArchivePreviewComponent', () => {
 
     await TestBed.configureTestingModule({
       imports: [
+        HttpClientTestingModule,
         MatMenuModule,
         MatTreeModule,
         MatProgressSpinnerModule,
@@ -103,6 +106,9 @@ describe('ArchivePreviewComponent', () => {
         MatIconModule,
         BrowserAnimationsModule,
         TranslateModule.forRoot(),
+        VitamUICommonModule,
+        InjectorModule,
+        LoggerModule.forRoot(),
       ],
       declarations: [ArchivePreviewComponent, MockTruncatePipe, MockUnitI18nPipe],
       providers: [

@@ -47,20 +47,18 @@ import { TranslateService } from '@ngx-translate/core';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import {
-  ExternalParameters,
-  ExternalParametersService,
   FilingPlanMode,
   FlowType,
   IOntology,
   Logger,
   MetadataUnitUp,
+  oneIncludedNodeRequired,
   OntologyService,
   Project,
   ProjectStatus,
   Transaction,
   TransactionStatus,
   Workflow,
-  oneIncludedNodeRequired,
 } from 'vitamui-library';
 import { CollectUploadFile, CollectZippedUploadFile } from '../../shared/collect-upload/collect-upload-file';
 import { CollectUploadService } from '../../shared/collect-upload/collect-upload.service';
@@ -136,7 +134,6 @@ export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewCheck
     private uploadService: CollectUploadService,
     private snackBar: MatSnackBar,
     private logger: Logger,
-    private externalParameterService: ExternalParametersService,
     private cdr: ChangeDetectorRef,
     private translationService: TranslateService,
     public dialog: MatDialog,
@@ -147,14 +144,9 @@ export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewCheck
     return this.projectForm.controls.linkParentIdControl as FormControl;
   }
 
-  get accessContractSelect() {
-    return this.projectForm.controls.accessContractSelect;
-  }
-
   ngOnInit(): void {
     this.tenantIdentifier = this.data.tenantIdentifier;
     this.initForm();
-    this.accessContract();
     this.uploadFiles$ = this.uploadService.getUploadingFiles();
     this.zippedFile$ = this.uploadService.getZipFile();
     this.ontologyService.getInternalOntologyFieldsList().subscribe((data) => {
@@ -173,20 +165,6 @@ export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewCheck
 
   ngAfterViewChecked(): void {
     this.cdr.detectChanges();
-  }
-
-  accessContract() {
-    this.externalParameterService.getUserExternalParameters().subscribe((parameters) => {
-      const accessContratId: string = parameters.get(ExternalParameters.PARAM_ACCESS_CONTRACT);
-      if (accessContratId && accessContratId.length > 0) {
-        this.accessContractSelect.setValue(accessContratId);
-      } else {
-        this.snackBar.open(this.translationService.instant('COLLECT.NO_ACCESS_CONTRACT'), null, {
-          panelClass: 'vitamui-snack-bar',
-          duration: 10000,
-        });
-      }
-    });
   }
 
   onClose() {
@@ -286,7 +264,6 @@ export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewCheck
   /*** All Steps ***/
   private initForm() {
     this.projectForm = this.formBuilder.group({
-      accessContractSelect: [null],
       automaticIngest: [true],
       referentialCheckup: [false],
 
