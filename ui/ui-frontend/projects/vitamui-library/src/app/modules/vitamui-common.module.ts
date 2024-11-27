@@ -48,13 +48,11 @@ import { ArchiveUnitModule } from './archive-unit/archive-unit.module';
 import { AuthService } from './auth.service';
 import { AccordionModule } from './components/accordion/accordion.module';
 import { ApplicationCardModule } from './components/application';
-import { ApplicationSelectContentModule } from './components/application-select-content/application-select-content.module';
 import {
   VitamUIAutocompleteModule,
   VitamUIAutocompleteMultiSelectModule,
   VitamUIAutocompleteMultiSelectTreeModule,
 } from './components/autocomplete';
-import { BlankComponent } from './components/blank/blank.component';
 import { CancelledSnackBarModule } from './components/cancelled-snack-bar/cancelled-snack-bar.module';
 import { ChipComponent } from './components/chip/chip.component';
 import { CollapseModule } from './components/collapse/collapse.module';
@@ -74,7 +72,6 @@ import { SelectTenantDialogModule } from './components/header/select-tenant-dial
 import { UserPhotoModule } from './components/header/user-photo/user-photo.module';
 import { LogbookOperationFacetModule } from './components/logbook-operation-facet/logbook-operation-facet.module';
 import { MultipleOptionsDatepickerModule } from './components/multiple-options-datepicker/multiple-options-datepicker.module';
-import { NavbarModule } from './components/navbar/navbar.module';
 import { OrderByButtonModule } from './components/order-by-button/order-by-button.module';
 import { OrderDropdownModule } from './components/order-dropdown/order-dropdown.module';
 import { ScrollTopModule } from './components/scroll-top/scroll-top.module';
@@ -97,7 +94,6 @@ import { VitamUICommonInputModule } from './components/vitamui-input/vitamui-com
 import { VitamuiIntervalDatePickerComponent } from './components/vitamui-interval-date-picker/vitamui-interval-date-picker.component';
 import { VitamUIListInputModule } from './components/vitamui-list-input/vitamui-list-input.module';
 import { VitamuiMenuButtonModule } from './components/vitamui-menu-button/vitamui-menu-button.module';
-import { VitamUIMenuTileModule } from './components/vitamui-menu-tile/vitamui-menu-tile.module';
 import { VitamuiMultiInputsModule } from './components/vitamui-multi-inputs/vitamui-multi-inputs.module';
 import { VitamuiRepeatableInputModule } from './components/vitamui-repeatable-input/vitamui-repeatable-input.module';
 import { VitamuiSidenavHeaderModule } from './components/vitamui-sidenav-header/vitamui-sidenav-header.module';
@@ -112,7 +108,6 @@ import { EllipsisDirectiveModule } from './directives/ellipsis/ellipsis.directiv
 import { InfiniteScrollModule } from './directives/infinite-scroll/infinite-scroll.module';
 import { ResizeSidebarModule } from './directives/resize-sidebar/resize-sidebar.module';
 import { RowCollapseModule } from './directives/row-collapse/row-collapse.module';
-import { TooltipModule } from './directives/tooltip/tooltip.module';
 import { ErrorDialogComponent } from './error-dialog/error-dialog.component';
 import { ENVIRONMENT, SUBROGRATION_REFRESH_RATE_MS, WINDOW_LOCATION } from './injection-tokens';
 import { LogbookModule } from './logbook/logbook.module';
@@ -149,12 +144,11 @@ export function startupServiceFactory(startupService: StartupService, authServic
 }
 
 @NgModule({
-  declarations: [BlankComponent, ErrorDialogComponent, VitamuiIntervalDatePickerComponent],
+  declarations: [ErrorDialogComponent, VitamuiIntervalDatePickerComponent],
   imports: [
     AccordionModule,
     AccountModule,
     ApplicationCardModule,
-    ApplicationSelectContentModule,
     ArchiveUnitModule,
     AutocompletePositionDirectiveModule,
     CancelledSnackBarModule,
@@ -180,7 +174,6 @@ export function startupServiceFactory(startupService: StartupService, authServic
     MatDatepickerModule,
     MatDialogModule,
     MatSnackBarModule,
-    NavbarModule,
     ObjectEditorModule,
     ObjectViewerModule,
     OrderByButtonModule,
@@ -197,7 +190,6 @@ export function startupServiceFactory(startupService: StartupService, authServic
     SlideToggleModule,
     StepperModule,
     SubrogationModule,
-    TooltipModule,
     TranslateModule,
     UserAlertCardModule,
     UserPhotoModule,
@@ -217,7 +209,6 @@ export function startupServiceFactory(startupService: StartupService, authServic
     VitamUIFieldErrorModule,
     VitamUIListInputModule,
     VitamuiMenuButtonModule,
-    VitamUIMenuTileModule,
     VitamuiRepeatableInputModule,
     VitamuiSidenavHeaderModule,
     VitamUISnackBarModule,
@@ -229,10 +220,8 @@ export function startupServiceFactory(startupService: StartupService, authServic
     AccordionModule,
     AccountModule,
     ApplicationCardModule,
-    ApplicationSelectContentModule,
     ArchiveUnitModule,
     AutocompletePositionDirectiveModule,
-    BlankComponent,
     CollapseDirectiveModule,
     CollapseModule,
     CommonProgressBarModule,
@@ -250,7 +239,6 @@ export function startupServiceFactory(startupService: StartupService, authServic
     LogbookModule,
     LogbookOperationFacetModule,
     LoggerModule,
-    NavbarModule,
     ObjectEditorModule,
     ObjectViewerModule,
     OrderByButtonModule,
@@ -267,7 +255,6 @@ export function startupServiceFactory(startupService: StartupService, authServic
     SlideToggleModule,
     StepperModule,
     SubrogationModule,
-    TooltipModule,
     TranslateModule,
     UserAlertCardModule,
     UserPhotoModule,
@@ -288,7 +275,6 @@ export function startupServiceFactory(startupService: StartupService, authServic
     VitamuiIntervalDatePickerComponent,
     VitamUIListInputModule,
     VitamuiMenuButtonModule,
-    VitamUIMenuTileModule,
     VitamuiMultiInputsModule,
     VitamuiRepeatableInputModule,
     VitamuiSidenavHeaderModule,

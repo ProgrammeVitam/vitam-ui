@@ -37,8 +37,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CustomerSelectionService } from '../../customer-selection.service';
-import { MenuOption } from '../navbar';
 import { CustomerMenuService } from '../navbar/customer-menu/customer-menu.service';
+import { MenuOption } from '../navbar/customer-menu/menu-option.interface';
 
 @Component({
   selector: 'vitamui-common-customer-select-content',

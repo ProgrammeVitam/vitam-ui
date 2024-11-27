@@ -40,8 +40,8 @@ import {
   MatLegacyDialogConfig as MatDialogConfig,
   MatLegacyDialogRef as MatDialogRef,
 } from '@angular/material/legacy-dialog';
-import { MenuOption } from '../../navbar';
 import { StartupService } from './../../../startup.service';
+import { MenuOption } from '../../navbar/customer-menu/menu-option.interface';
 
 @Component({
   selector: 'vitamui-common-select-tenant-dialog',

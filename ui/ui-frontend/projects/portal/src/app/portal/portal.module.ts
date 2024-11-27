@@ -42,7 +42,6 @@ import { MatLegacyMenuModule as MatMenuModule } from '@angular/material/legacy-m
 import { RouterModule } from '@angular/router';
 
 import { MatLegacyProgressSpinnerModule as MatProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
-import { ApplicationSelectContentModule } from 'vitamui-library';
 import { ContentListModule } from '../components/content-list/content-list.module';
 import { WelcomeMessageModule } from '../components/welcome-message/welcome-message.module';
 import { PortalComponent } from './portal.component';
@@ -54,7 +53,6 @@ import { PortalComponent } from './portal.component';
     MatMenuModule,
     ReactiveFormsModule,
     RouterModule,
-    ApplicationSelectContentModule,
     WelcomeMessageModule,
     ContentListModule,
     MatProgressSpinnerModule,

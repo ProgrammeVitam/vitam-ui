@@ -37,11 +37,11 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { TooltipModule } from './../../directives/tooltip/tooltip.module';
 import { VitamUIMenuTileComponent } from './vitamui-menu-tile.component';
+import { CommonTooltipModule } from '../common-tooltip/common-tooltip.module';
 
 @NgModule({
-  imports: [CommonModule, TooltipModule, RouterModule],
+  imports: [CommonModule, RouterModule, CommonTooltipModule],
   declarations: [VitamUIMenuTileComponent],
   exports: [VitamUIMenuTileComponent],
 })

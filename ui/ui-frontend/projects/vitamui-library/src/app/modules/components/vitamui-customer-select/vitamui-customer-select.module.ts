@@ -40,11 +40,10 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { CustomerSelectContentModule } from '../customer-select-content/customer-select-content.module';
-import { NavbarModule } from '../navbar/navbar.module';
 import { VitamUICustomerSelectComponent } from './vitamui-customer-select.component';
 
 @NgModule({
-  imports: [CommonModule, HttpClientModule, RouterModule, NavbarModule, CustomerSelectContentModule, TranslateModule],
+  imports: [CommonModule, HttpClientModule, RouterModule, CustomerSelectContentModule, TranslateModule],
   declarations: [VitamUICustomerSelectComponent],
   exports: [VitamUICustomerSelectComponent],
 })

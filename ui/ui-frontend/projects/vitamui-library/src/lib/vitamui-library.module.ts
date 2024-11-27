@@ -42,7 +42,6 @@ import { CardModule } from './components/card/card.module';
 import { ConfirmActionModule } from './components/confirm-action/confirm-action.module';
 import { FilingPlanModule } from './components/filing-plan/filing-plan.module';
 import { VitamUIInputModule } from './components/vitamui-input/vitamui-input.module';
-import { UpdatedVitamUIMenuTileModule } from './components/vitamui-menu-tile/vitamui-menu-tile.module';
 import { VitamUIRadioGroupModule } from './components/vitamui-radio-group/vitamui-radio-group.module';
 import { VitamUIRadioModule } from './components/vitamui-radio/vitamui-radio.module';
 import { VitamUISelectAllOptionModule } from './components/vitamui-select-all-option/vitamui-select-all-option.module';
@@ -55,7 +54,6 @@ import { VitamUISelectAllOptionModule } from './components/vitamui-select-all-op
     CardSelectModule,
     ConfirmActionModule,
     FilingPlanModule,
-    UpdatedVitamUIMenuTileModule,
     VitamUIInputModule,
     VitamUIRadioGroupModule,
     VitamUIRadioModule,
@@ -67,7 +65,6 @@ import { VitamUISelectAllOptionModule } from './components/vitamui-select-all-op
     CardSelectModule,
     ConfirmActionModule,
     FilingPlanModule,
-    UpdatedVitamUIMenuTileModule,
     VitamUIInputModule,
     VitamUIRadioGroupModule,
     VitamUIRadioModule,
