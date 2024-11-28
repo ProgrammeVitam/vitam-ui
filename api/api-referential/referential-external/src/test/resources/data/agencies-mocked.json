@@ -1,0 +1,51 @@
+{
+  "httpCode": 200,
+  "$hits": {
+    "total": 4,
+    "offset": 0,
+    "limit": 10000,
+    "size": 4
+  },
+  "$results": [
+    {
+      "Identifier": "FRAN_NP_050770",
+      "Name": "Fouch\u00E9, Joseph (1759-1820) ",
+      "_tenant": 0
+    },
+    {
+      "Identifier": "FRAN_NP_050758",
+      "Name": "Bernis, Fran\u00E7ois-Joachim de Pierres (1715-1794 ; cardinal de) ",
+      "_tenant": 0
+    },
+    {
+      "Identifier": "producteur1",
+      "Name": "Service producteur1",
+      "_tenant": 0
+    },
+    {
+      "Identifier": "Service_producteur",
+      "Name": "Service producteur1",
+      "_tenant": 0
+    }
+  ],
+  "$facetResults": [],
+  "$context": {
+    "$query": {
+      "$in": {
+        "Identifier": [
+          "producteur1",
+          "FRAN_NP_050770",
+          "FRAN_NP_050758",
+          "Service_producteur"
+        ]
+      }
+    },
+    "$filter": {},
+    "$projection": {
+      "$fields": {
+        "Identifier": 1,
+        "Name": 1
+      }
+    }
+  }
+}

@@ -31,3 +31,6 @@ swagger:
  layer: api-external
  file-path: file:../../../tools/swagger/docs/api-external/referential-external/swagger.json
 
+
+# internal ontology file path
+internal_ontology_file_path: "src/main/resources/internal-ontology/internal_ontology_fields.json"

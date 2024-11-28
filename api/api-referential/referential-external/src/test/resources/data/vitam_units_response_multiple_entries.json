@@ -1,0 +1,440 @@
+{
+  "httpCode": 200,
+  "$hits": {
+    "total": 10,
+    "offset": 0,
+    "limit": 10000,
+    "size": 10
+  },
+  "$results": [
+    {
+      "DescriptionLevel": "RecordGrp",
+      "Title": "Liste des Métros de Tokyo",
+      "Description": "Le métro de Tokyo (東京の地下鉄, Tōkyō no chikatetsu) est un des systèmes de transport en commun desservant l'agglomération de Tokyo au Japon. Il se compose des lignes de deux compagnies : Tokyo Metro et Toei.\n                       La première ligne du métro de Tokyo, la ligne Ginza, a été ouverte en 1927.",
+      "AcquiredDate": "2015-12-04T09:02:25",
+      "StartDate": "2015-12-04T09:02:25",
+      "EndDate": "2016-06-02T15:32:29",
+      "Event": [
+        {
+          "evDateTime": "2013-11-04T09:02:25"
+        }
+      ],
+      "#id": "aeaqaaaaaahmnykxabnagalrcg7u3iaaaabq",
+      "#tenant": 0,
+      "#unitups": [],
+      "#min": 1,
+      "#max": 1,
+      "#allunitups": [],
+      "#management": {
+        "AccessRule": {
+          "Rules": [
+            {
+              "Rule": "ACC-00002",
+              "StartDate": "2015-11-19",
+              "EndDate": "2040-11-19"
+            }
+          ]
+        },
+        "DisseminationRule": {
+          "Rules": [
+            {
+              "Rule": "DIS-00002",
+              "StartDate": "2016-12-04",
+              "EndDate": "2091-12-04"
+            }
+          ]
+        }
+      },
+      "#unitType": "INGEST",
+      "#operations": [
+        "aeeaaaaaachf2vysaau5malrcg7upfqaaaaq",
+        "aeeaaaaaachf2vysaalimalrcg736lyaaaaq",
+        "aeeaaaaaachf2vysaalimalrcg75gdiaaaaq"
+      ],
+      "#opi": "aeeaaaaaachf2vysaau5malrcg7upfqaaaaq",
+      "#originating_agency": "FRAN_NP_009915",
+      "#originating_agencies": [
+        "FRAN_NP_009915"
+      ],
+      "#storage": {
+        "strategyId": "default"
+      },
+      "#version": 2,
+      "#sedaVersion": "2.1",
+      "#implementationVersion": "3.3.0-SNAPSHOT"
+    },
+    {
+      "DescriptionLevel": "Item",
+      "Title": "Liste des armements",
+      "StartDate": "1700-01-01",
+      "EndDate": "1700-01-02",
+      "#id": "aeaqaaaaaahc23qyabnlmalrcf6o2tyaaaba",
+      "#tenant": 0,
+      "#object": "aebaaaaaaahc23qyabnlmalrcf6o2pqaaaaq",
+      "#unitups": [
+        "aeaqaaaaaahc23qyabnlmalrcf6o2uaaaabq"
+      ],
+      "#min": 1,
+      "#max": 2,
+      "#allunitups": [
+        "aeaqaaaaaahc23qyabnlmalrcf6o2uaaaabq"
+      ],
+      "#management": {},
+      "#unitType": "INGEST",
+      "#operations": [
+        "aeeaaaaaachf2vysaau5malrcf6ohuqaaaaq"
+      ],
+      "#opi": "aeeaaaaaachf2vysaau5malrcf6ohuqaaaaq",
+      "#originating_agency": "FRAN_NP_009913",
+      "#originating_agencies": [
+        "FRAN_NP_009913"
+      ],
+      "#storage": {
+        "strategyId": "default"
+      },
+      "#version": 0,
+      "#sedaVersion": "2.1",
+      "#implementationVersion": "3.3.0-SNAPSHOT"
+    },
+    {
+      "DescriptionLevel": "RecordGrp",
+      "Title": "Ginza",
+      "Description": "ELa ligne Ginza (東京地下鉄銀座線, Tōkyō Chikatetsu Ginza-sen) est une ligne de métro à Tokyo au Japon gérée par le réseau Tōkyō Métro. Elle relie la station de Shibuya à celle d'Asakusa. Longue de 14,3 km, elle traverse Tokyo du sud-ouest au nord-est en traversant les arrondissements de Shibuya, Minato, Chūō, Chiyoda, et Taitō. Sur les cartes, sa couleur est orange et est identifiée avec la lettre G.",
+      "AcquiredDate": "2014-12-04T09:02:25",
+      "StartDate": "2015-12-04T09:02:25",
+      "EndDate": "2015-12-04T09:02:25",
+      "#id": "aeaqaaaaaahmnykxabnagalrcg7u3kaaaabq",
+      "#tenant": 0,
+      "#unitups": [
+        "aeaqaaaaaahmnykxabnagalrcg7u3iaaaabq"
+      ],
+      "#min": 1,
+      "#max": 2,
+      "#allunitups": [
+        "aeaqaaaaaahmnykxabnagalrcg7u3iaaaabq"
+      ],
+      "#management": {
+        "ReuseRule": {
+          "Rules": [
+            {
+              "Rule": "REU-00001",
+              "StartDate": "2015-11-19",
+              "EndDate": "2025-11-19"
+            }
+          ]
+        }
+      },
+      "#unitType": "INGEST",
+      "#operations": [
+        "aeeaaaaaachf2vysaau5malrcg7upfqaaaaq",
+        "aeeaaaaaachf2vysaalimalrcg736lyaaaaq",
+        "aeeaaaaaachf2vysaalimalrcg75gdiaaaaq"
+      ],
+      "#opi": "aeeaaaaaachf2vysaau5malrcg7upfqaaaaq",
+      "#originating_agency": "FRAN_NP_009915",
+      "#originating_agencies": [
+        "FRAN_NP_009915"
+      ],
+      "#storage": {
+        "strategyId": "default"
+      },
+      "#version": 2,
+      "#sedaVersion": "2.1",
+      "#implementationVersion": "3.3.0-SNAPSHOT"
+    },
+    {
+      "DescriptionLevel": "Item",
+      "Title": "Compte rendu",
+      "StartDate": "1910-01-01",
+      "EndDate": "1916-01-01",
+      "#id": "aeaqaaaaaahc23qyabnlmalrcf6o2tqaaaba",
+      "#tenant": 0,
+      "#object": "aebaaaaaaahc23qyabnlmalrcf6o2piaaaaq",
+      "#unitups": [
+        "aeaqaaaaaahc23qyabnlmalrcf6o2uaaaabq"
+      ],
+      "#min": 1,
+      "#max": 2,
+      "#allunitups": [
+        "aeaqaaaaaahc23qyabnlmalrcf6o2uaaaabq"
+      ],
+      "#management": {},
+      "#unitType": "INGEST",
+      "#operations": [
+        "aeeaaaaaachf2vysaau5malrcf6ohuqaaaaq"
+      ],
+      "#opi": "aeeaaaaaachf2vysaau5malrcf6ohuqaaaaq",
+      "#originating_agency": "FRAN_NP_009913",
+      "#originating_agencies": [
+        "FRAN_NP_009913"
+      ],
+      "#storage": {
+        "strategyId": "default"
+      },
+      "#version": 0,
+      "#sedaVersion": "2.1",
+      "#implementationVersion": "3.3.0-SNAPSHOT"
+    },
+    {
+      "DescriptionLevel": "Item",
+      "Title": "Vidéos d'époque",
+      "StartDate": "1915-01-01",
+      "EndDate": "1926-01-01",
+      "#id": "aeaqaaaaaahc23qyabnlmalrcf6o2uaaaaaq",
+      "#tenant": 0,
+      "#unitups": [
+        "aeaqaaaaaahc23qyabnlmalrcf6o2uaaaabq"
+      ],
+      "#min": 1,
+      "#max": 2,
+      "#allunitups": [
+        "aeaqaaaaaahc23qyabnlmalrcf6o2uaaaabq"
+      ],
+      "#management": {},
+      "#unitType": "INGEST",
+      "#operations": [
+        "aeeaaaaaachf2vysaau5malrcf6ohuqaaaaq"
+      ],
+      "#opi": "aeeaaaaaachf2vysaau5malrcf6ohuqaaaaq",
+      "#originating_agency": "FRAN_NP_009913",
+      "#originating_agencies": [
+        "FRAN_NP_009913"
+      ],
+      "#storage": {
+        "strategyId": "default"
+      },
+      "#version": 0,
+      "#sedaVersion": "2.1",
+      "#implementationVersion": "3.3.0-SNAPSHOT"
+    },
+    {
+      "DescriptionLevel": "Item",
+      "Title": "Histoire de la station de sa cération à aujourd'hui.pdf",
+      "Description": "Cette ligne ferroviaire souterraine est la plus ancienne en Asie : les travaux de construction du tronçon entre Ueno et Asakusa ont commencé le 27 septembre 19251. La ligne a ouvert le 30 décembre 1927, puis elle a été prolongée à Manseibashi en 1931 et à Shinbashi en 1934.\n                        \n                        En 1938, la Tokyo Rapid Railway, l’ancêtre de la compagnie Tōkyū, ouvre une ligne entre Shibuya et Toranomon. Cette dernière est prolongée à Shimbashi l'année suivante et les deux lignes sont interconnectées. En 1941, ces deux lignes sont regroupées en une seule qui prend le nom de ligne Ginza en 1951 (pour la différencier de la ligne Marunouchi nouvellement créée).",
+      "Keyword": [
+        {
+          "KeywordContent": "blabla",
+          "KeywordType": "subject"
+        }
+      ],
+      "TransactedDate": "2015-12-04T09:02:25",
+      "Gps": {
+        "GpsLatitude": "1235"
+      },
+      "#id": "aeaqaaaaaahmnykxabnagalrcg7u3kiaaaba",
+      "#tenant": 0,
+      "#object": "aebaaaaaaahmnykxabnagalrcg7u3haaaaaq",
+      "#unitups": [
+        "aeaqaaaaaahmnykxabnagalrcg7u3kaaaabq"
+      ],
+      "#min": 1,
+      "#max": 3,
+      "#allunitups": [
+        "aeaqaaaaaahmnykxabnagalrcg7u3kaaaabq",
+        "aeaqaaaaaahmnykxabnagalrcg7u3iaaaabq"
+      ],
+      "#management": {},
+      "#unitType": "INGEST",
+      "#operations": [
+        "aeeaaaaaachf2vysaau5malrcg7upfqaaaaq",
+        "aeeaaaaaachf2vysaalimalrcg736lyaaaaq",
+        "aeeaaaaaachf2vysaalimalrcg75gdiaaaaq"
+      ],
+      "#opi": "aeeaaaaaachf2vysaau5malrcg7upfqaaaaq",
+      "#originating_agency": "FRAN_NP_009915",
+      "#originating_agencies": [
+        "FRAN_NP_009915"
+      ],
+      "#storage": {
+        "strategyId": "default"
+      },
+      "#version": 2,
+      "#sedaVersion": "2.1",
+      "#implementationVersion": "3.3.0-SNAPSHOT"
+    },
+    {
+      "DescriptionLevel": "RecordGrp",
+      "Title": "Dossiers 1900-1920",
+      "StartDate": "1910-01-01",
+      "EndDate": "1920-01-01",
+      "#id": "aeaqaaaaaahc23qyabnlmalrcf6o2uaaaabq",
+      "#tenant": 0,
+      "#unitups": [],
+      "#min": 1,
+      "#max": 1,
+      "#allunitups": [],
+      "#management": {},
+      "#unitType": "INGEST",
+      "#operations": [
+        "aeeaaaaaachf2vysaau5malrcf6ohuqaaaaq"
+      ],
+      "#opi": "aeeaaaaaachf2vysaau5malrcf6ohuqaaaaq",
+      "#originating_agency": "FRAN_NP_009913",
+      "#originating_agencies": [
+        "FRAN_NP_009913"
+      ],
+      "#storage": {
+        "strategyId": "default"
+      },
+      "#version": 0,
+      "#sedaVersion": "2.1",
+      "#implementationVersion": "3.3.0-SNAPSHOT"
+    },
+    {
+      "DescriptionLevel": "Item",
+      "Title": "Histoire de la station de sa création à 2000.odp",
+      "Description": "JLa ligne Marunouchi est la deuxième ligne construite du réseau, après la ligne Ginza. La première section entre Ikebukuro and Ochanomizu est inaugurée le 20 janvier 19541. La ligne est ensuite prolongée plusieurs fois entre 1956 et 1964.\n                        \n                        Le 20 mars 1995, la ligne est touchée par l'attentat au gaz sarin dans le métro de Tokyo.",
+      "Tag": [
+        "métro"
+      ],
+      "Writer": [
+        {
+          "FirstName": "Marc",
+          "BirthName": "Graf"
+        }
+      ],
+      "TransactedDate": "2016-06-02T15:32:29",
+      "ReceivedDate": "2010-09-15",
+      "#id": "aeaqaaaaaahmnykxabnagalrcg7u3laaaaba",
+      "#tenant": 0,
+      "#object": "aebaaaaaaahmnykxabnagalrcg7u3hyaaaaq",
+      "#unitups": [
+        "aeaqaaaaaahmnykxabnagalrcg7u3kyaaabq"
+      ],
+      "#min": 1,
+      "#max": 3,
+      "#allunitups": [
+        "aeaqaaaaaahmnykxabnagalrcg7u3kyaaabq",
+        "aeaqaaaaaahmnykxabnagalrcg7u3iaaaabq"
+      ],
+      "#management": {},
+      "#unitType": "INGEST",
+      "#operations": [
+        "aeeaaaaaachf2vysaau5malrcg7upfqaaaaq",
+        "aeeaaaaaachf2vysaalimalrcg736lyaaaaq",
+        "aeeaaaaaachf2vysaalimalrcg75gdiaaaaq"
+      ],
+      "#opi": "aeeaaaaaachf2vysaau5malrcg7upfqaaaaq",
+      "#originating_agency": "FRAN_NP_009915",
+      "#originating_agencies": [
+        "FRAN_NP_009915"
+      ],
+      "#storage": {
+        "strategyId": "default"
+      },
+      "#version": 2,
+      "#sedaVersion": "2.1",
+      "#implementationVersion": "3.3.0-SNAPSHOT"
+    },
+    {
+      "DescriptionLevel": "RecordGrp",
+      "Title": "Marunouchi",
+      "Description": "La ligne Marunouchi (東京地下鉄丸ノ内線, Tōkyō Chikatetsu Marunouchi-sen) est une ligne de métro à Tokyo au Japon gérée par le réseau Tokyo Metro. Elle relie la station d'Ikebukuro à la station d'Ogikubo, avec une branche entre les stations de Nakano-Sakaue et Hōnanchō. Longue de 27,4 km, elle traverse Tokyo du nord-ouest à l'ouest en passant par le centre. Les arrondissements traversés sont Suginami, Nakano, Shinjuku, Minato, Chiyoda, Chūō, Bunkyō et Toshima. Sur les cartes, la ligne est de couleur rouge et identifiée par la lettre M pour la branche principale et m pour la branche secondaire.",
+      "Coverage": {
+        "Juridictional": [
+          "Tribunal de Paris"
+        ]
+      },
+      "StartDate": "2016-06-02T15:32:29",
+      "EndDate": "2017-10-02T15:32:29",
+      "#id": "aeaqaaaaaahmnykxabnagalrcg7u3kyaaabq",
+      "#tenant": 0,
+      "#unitups": [
+        "aeaqaaaaaahmnykxabnagalrcg7u3iaaaabq"
+      ],
+      "#min": 1,
+      "#max": 2,
+      "#allunitups": [
+        "aeaqaaaaaahmnykxabnagalrcg7u3iaaaabq"
+      ],
+      "#management": {
+        "DisseminationRule": {
+          "Rules": [
+            {
+              "Rule": "DIS-00001",
+              "StartDate": "2015-11-19",
+              "EndDate": "2040-11-19"
+            }
+          ]
+        }
+      },
+      "#unitType": "INGEST",
+      "#operations": [
+        "aeeaaaaaachf2vysaau5malrcg7upfqaaaaq",
+        "aeeaaaaaachf2vysaalimalrcg736lyaaaaq",
+        "aeeaaaaaachf2vysaalimalrcg75gdiaaaaq"
+      ],
+      "#opi": "aeeaaaaaachf2vysaau5malrcg7upfqaaaaq",
+      "#originating_agency": "FRAN_NP_009915",
+      "#originating_agencies": [
+        "FRAN_NP_009915"
+      ],
+      "#storage": {
+        "strategyId": "default"
+      },
+      "#version": 2,
+      "#sedaVersion": "2.1",
+      "#implementationVersion": "3.3.0-SNAPSHOT"
+    },
+    {
+      "DescriptionLevel": "Item",
+      "Title": "Correspondance",
+      "StartDate": "1916-01-01",
+      "EndDate": "1920-01-01",
+      "#id": "aeaqaaaaaahc23qyabnlmalrcf6o2pyaaaaq",
+      "#tenant": 0,
+      "#object": "aebaaaaaaahc23qyabnlmalrcf6o2paaaaaq",
+      "#unitups": [
+        "aeaqaaaaaahc23qyabnlmalrcf6o2uaaaabq"
+      ],
+      "#min": 1,
+      "#max": 2,
+      "#allunitups": [
+        "aeaqaaaaaahc23qyabnlmalrcf6o2uaaaabq"
+      ],
+      "#management": {},
+      "#unitType": "INGEST",
+      "#operations": [
+        "aeeaaaaaachf2vysaau5malrcf6ohuqaaaaq"
+      ],
+      "#opi": "aeeaaaaaachf2vysaau5malrcf6ohuqaaaaq",
+      "#originating_agency": "FRAN_NP_009913",
+      "#originating_agencies": [
+        "FRAN_NP_009913"
+      ],
+      "#storage": {
+        "strategyId": "default"
+      },
+      "#version": 0,
+      "#sedaVersion": "2.1",
+      "#implementationVersion": "3.3.0-SNAPSHOT"
+    }
+  ],
+  "$facetResults": [],
+  "$context": {
+    "$query": [
+      {
+        "$or": [
+          {
+            "$in": {
+              "#id": [
+                "aeaqaaaaaahmnykxabnagalrcg7u3iaaaabq",
+                "aeaqaaaaaahc23qyabnlmalrcf6o2uaaaabq"
+              ]
+            }
+          },
+          {
+            "$in": {
+              "#allunitups": [
+                "aeaqaaaaaahmnykxabnagalrcg7u3iaaaabq",
+                "aeaqaaaaaahc23qyabnlmalrcf6o2uaaaabq"
+              ]
+            }
+          }
+        ]
+      }
+    ],
+    "$filter": {},
+    "$projection": {}
+  }
+}

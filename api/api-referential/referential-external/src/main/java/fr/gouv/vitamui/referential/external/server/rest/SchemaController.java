@@ -27,13 +27,13 @@
 
 package fr.gouv.vitamui.referential.external.server.rest;
 
+import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitamui.commons.api.CommonConstants;
-import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import fr.gouv.vitamui.referential.common.dto.SchemaDto;
 import fr.gouv.vitamui.referential.common.exception.NoCollectionException;
 import fr.gouv.vitamui.referential.common.model.Collection;
-import fr.gouv.vitamui.referential.external.server.service.SchemaService;
+import fr.gouv.vitamui.referential.external.server.service.schema.SchemaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
@@ -75,24 +75,14 @@ public class SchemaController {
             throw new NoCollectionException();
         }
 
-        return ResponseEntity.ok(
-            schemaService.getSchemas(
-                InternalHttpContext.buildFromExternalHttpContext(externalSecurityService.getHttpContext()),
-                collections
-            )
-        );
+        return ResponseEntity.ok(schemaService.getSchemas(collections));
     }
 
     @GetMapping("/archive-unit-profile/{id}")
     @Produces(APPLICATION_JSON)
     @Secured(ROLE_GET_SCHEMAS)
     public ResponseEntity<SchemaDto> getArchiveUnitProfileSchema(@PathVariable @NotNull String id)
-        throws URISyntaxException {
-        return ResponseEntity.ok(
-            schemaService.getArchiveUnitProfileSchema(
-                InternalHttpContext.buildFromExternalHttpContext(externalSecurityService.getHttpContext()),
-                id
-            )
-        );
+        throws URISyntaxException, VitamClientException {
+        return ResponseEntity.ok(schemaService.getArchiveUnitProfileSchema(id));
     }
 }

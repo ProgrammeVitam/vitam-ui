@@ -36,19 +36,68 @@
  */
 package fr.gouv.vitamui.referential.external.server.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import fr.gouv.vitam.access.external.client.AccessExternalClient;
+import fr.gouv.vitam.access.external.client.AdminExternalClient;
 import fr.gouv.vitamui.commons.api.application.AbstractContextConfiguration;
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
+import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
 import fr.gouv.vitamui.commons.rest.configuration.SwaggerConfiguration;
+import fr.gouv.vitamui.commons.vitam.api.access.UnitService;
+import fr.gouv.vitamui.commons.vitam.api.administration.AgencyService;
+import fr.gouv.vitamui.commons.vitam.api.administration.VitamOperationService;
+import fr.gouv.vitamui.commons.vitam.api.config.VitamAccessConfig;
+import fr.gouv.vitamui.commons.vitam.api.config.VitamAdministrationConfig;
 import fr.gouv.vitamui.iam.internal.client.IamInternalRestClientFactory;
 import fr.gouv.vitamui.iam.internal.client.IamInternalWebClientFactory;
-import fr.gouv.vitamui.iam.internal.client.UserInternalRestClient;
-import fr.gouv.vitamui.iam.security.provider.ExternalApiAuthenticationProvider;
-import fr.gouv.vitamui.iam.security.service.ExternalAuthentificationService;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
-import fr.gouv.vitamui.referential.internal.client.*;
+import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
+import fr.gouv.vitamui.referential.common.service.AccessionRegisterService;
+import fr.gouv.vitamui.referential.common.service.IngestContractService;
+import fr.gouv.vitamui.referential.common.service.OntologyService;
+import fr.gouv.vitamui.referential.common.service.OperationService;
+import fr.gouv.vitamui.referential.common.service.VitamAgencyService;
+import fr.gouv.vitamui.referential.common.service.VitamArchivalProfileUnitService;
+import fr.gouv.vitamui.referential.common.service.VitamBatchReportService;
+import fr.gouv.vitamui.referential.common.service.VitamContextService;
+import fr.gouv.vitamui.referential.common.service.VitamFileFormatService;
+import fr.gouv.vitamui.referential.common.service.VitamProfileService;
+import fr.gouv.vitamui.referential.common.service.VitamRuleService;
+import fr.gouv.vitamui.referential.common.service.VitamSecurityProfileService;
+import fr.gouv.vitamui.referential.common.service.VitamUIAccessContractService;
+import fr.gouv.vitamui.referential.common.service.VitamUIManagementContractService;
+import fr.gouv.vitamui.referential.external.server.security.WebSecurityConfig;
+import fr.gouv.vitamui.referential.internal.client.AccessContractInternalRestClient;
+import fr.gouv.vitamui.referential.internal.client.AccessContractInternalWebClient;
+import fr.gouv.vitamui.referential.internal.client.AccessionRegisterDetailInternalRestClient;
+import fr.gouv.vitamui.referential.internal.client.AccessionRegisterSummaryInternalRestClient;
+import fr.gouv.vitamui.referential.internal.client.AgencyInternalRestClient;
+import fr.gouv.vitamui.referential.internal.client.AgencyInternalWebClient;
+import fr.gouv.vitamui.referential.internal.client.ArchivalProfileInternalWebClient;
+import fr.gouv.vitamui.referential.internal.client.ArchivalProfileUnitInternalRestClient;
+import fr.gouv.vitamui.referential.internal.client.ContextInternalRestClient;
+import fr.gouv.vitamui.referential.internal.client.FileFormatInternalRestClient;
+import fr.gouv.vitamui.referential.internal.client.FileFormatInternalWebClient;
+import fr.gouv.vitamui.referential.internal.client.IngestContractInternalRestClient;
+import fr.gouv.vitamui.referential.internal.client.IngestContractInternalWebClient;
+import fr.gouv.vitamui.referential.internal.client.LogbookManagementOperationInternalRestClient;
+import fr.gouv.vitamui.referential.internal.client.ManagementContractInternalRestClient;
+import fr.gouv.vitamui.referential.internal.client.OntologyInternalRestClient;
+import fr.gouv.vitamui.referential.internal.client.OntologyInternalWebClient;
+import fr.gouv.vitamui.referential.internal.client.OperationInternalRestClient;
+import fr.gouv.vitamui.referential.internal.client.ProfileInternalRestClient;
+import fr.gouv.vitamui.referential.internal.client.ProfileInternalWebClient;
+import fr.gouv.vitamui.referential.internal.client.ReferentialInternalRestClientFactory;
+import fr.gouv.vitamui.referential.internal.client.ReferentialInternalWebClientFactory;
+import fr.gouv.vitamui.referential.internal.client.RuleInternalRestClient;
+import fr.gouv.vitamui.referential.internal.client.RuleInternalWebClient;
+import fr.gouv.vitamui.referential.internal.client.SchemaClient;
+import fr.gouv.vitamui.referential.internal.client.SecurityProfileInternalRestClient;
+import fr.gouv.vitamui.referential.internal.client.UnitInternalRestClient;
 import fr.gouv.vitamui.security.client.ContextRestClient;
 import fr.gouv.vitamui.security.client.SecurityRestClientFactory;
 import org.springframework.boot.autoconfigure.http.HttpMessageConvertersAutoConfiguration;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -59,7 +108,18 @@ import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.multipart.support.MultipartFilter;
 
 @Configuration
-@Import({ RestExceptionHandler.class, SwaggerConfiguration.class, HttpMessageConvertersAutoConfiguration.class })
+@Import(
+    {
+        RestExceptionHandler.class,
+        SwaggerConfiguration.class,
+        HttpMessageConvertersAutoConfiguration.class,
+        WebSecurityConfig.class,
+        VitamAccessConfig.class,
+        VitamAdministrationConfig.class,
+        ConverterConfig.class,
+        VitamAdministrationConfig.class,
+    }
+)
 public class ApiReferentialServerConfig extends AbstractContextConfiguration {
 
     @Bean
@@ -99,21 +159,6 @@ public class ApiReferentialServerConfig extends AbstractContextConfiguration {
     }
 
     @Bean
-    public ExternalAuthentificationService externalAuthentificationService(
-        final ContextRestClient contextRestClient,
-        final UserInternalRestClient userInternalRestClient
-    ) {
-        return new ExternalAuthentificationService(contextRestClient, userInternalRestClient);
-    }
-
-    @Bean
-    public ExternalApiAuthenticationProvider apiAuthenticationProvider(
-        final ExternalAuthentificationService externalAuthentificationService
-    ) {
-        return new ExternalApiAuthenticationProvider(externalAuthentificationService);
-    }
-
-    @Bean
     public IamInternalRestClientFactory iamInternalRestClientFactory(
         final ApiReferentialApplicationProperties apiReferentialApplicationProperties,
         final RestTemplateBuilder restTemplateBuilder
@@ -129,13 +174,6 @@ public class ApiReferentialServerConfig extends AbstractContextConfiguration {
         final ApiReferentialApplicationProperties apiReferentialApplicationProperties
     ) {
         return new IamInternalWebClientFactory(apiReferentialApplicationProperties.getIamInternalClient());
-    }
-
-    @Bean
-    public UserInternalRestClient userInternalRestClient(
-        final IamInternalRestClientFactory iamInternalRestClientFactory
-    ) {
-        return iamInternalRestClientFactory.getUserInternalRestClient();
     }
 
     @Bean
@@ -323,5 +361,124 @@ public class ApiReferentialServerConfig extends AbstractContextConfiguration {
         final ReferentialInternalWebClientFactory referentialInternalWebClientFactory
     ) {
         return referentialInternalWebClientFactory.getIngestContractInternalWebClient();
+    }
+
+    @Bean
+    public InternalSecurityService securityService() {
+        return new InternalSecurityService();
+    }
+
+    @Bean
+    public VitamUIAccessContractService vitamUIAccessContractService(final AdminExternalClient adminExternalClient) {
+        return new VitamUIAccessContractService(adminExternalClient);
+    }
+
+    @Bean
+    public AccessionRegisterService accessionRegisterService(final AdminExternalClient adminExternalClient) {
+        return new AccessionRegisterService(adminExternalClient);
+    }
+
+    @Bean
+    public VitamAgencyService vitamAgencyService(
+        final AdminExternalClient adminClient,
+        final AgencyService agencyService,
+        ObjectMapper objectMapper,
+        final AccessExternalClient accessClient
+    ) {
+        return new VitamAgencyService(adminClient, agencyService, objectMapper, accessClient);
+    }
+
+    @Bean
+    public VitamArchivalProfileUnitService vitamArchivalProfileService(
+        final AdminExternalClient adminClient,
+        ObjectMapper objectMapper,
+        final AccessExternalClient accessClient
+    ) {
+        return new VitamArchivalProfileUnitService(adminClient, objectMapper, accessClient);
+    }
+
+    @Bean
+    public VitamContextService vitamContextService(final AdminExternalClient adminClient, ObjectMapper objectMapper) {
+        return new VitamContextService(adminClient, objectMapper);
+    }
+
+    @Bean
+    public VitamFileFormatService vitamFileFormatService(
+        final AdminExternalClient adminClient,
+        ObjectMapper objectMapper,
+        final AccessExternalClient accessClient
+    ) {
+        return new VitamFileFormatService(adminClient, objectMapper, accessClient);
+    }
+
+    @Bean
+    public VitamUIManagementContractService getVitamUIManagementContractService(final AdminExternalClient adminClient) {
+        return new VitamUIManagementContractService(adminClient);
+    }
+
+    @Bean
+    public OntologyService ontologyService(final AdminExternalClient adminExternalClient) {
+        return new OntologyService(adminExternalClient);
+    }
+
+    @Bean
+    public OperationService operationService(final AdminExternalClient adminExternalClient) {
+        return new OperationService(adminExternalClient);
+    }
+
+    @Bean
+    public VitamProfileService vitamProfileService(final AdminExternalClient adminClient, ObjectMapper objectMapper) {
+        return new VitamProfileService(adminClient, objectMapper);
+    }
+
+    @Bean
+    public VitamRuleService vitamRuleService(
+        final AdminExternalClient adminClient,
+        ObjectMapper objectMapper,
+        final AccessExternalClient accessClient
+    ) {
+        return new VitamRuleService(adminClient, objectMapper, accessClient);
+    }
+
+    @Bean
+    public VitamSecurityProfileService vitamSecurityProfileService(
+        final AdminExternalClient adminClient,
+        ObjectMapper objectMapper
+    ) {
+        return new VitamSecurityProfileService(adminClient, objectMapper);
+    }
+
+    @Bean
+    public IngestContractService ingestContractService(final AdminExternalClient adminExternalClient) {
+        return new IngestContractService(adminExternalClient);
+    }
+
+    @Bean
+    public VitamBatchReportService vitamBatchReportService(final AdminExternalClient adminExternalClient) {
+        return new VitamBatchReportService(adminExternalClient);
+    }
+
+    @Bean
+    @ConfigurationProperties(prefix = "clients.iam-internal")
+    public RestClientConfiguration IamInternalRestClientConfiguration() {
+        return new RestClientConfiguration();
+    }
+
+    @Bean
+    public IamInternalRestClientFactory iamInternalRestClientFactory(
+        final RestClientConfiguration IamInternalRestClientConfiguration,
+        final RestTemplateBuilder restTemplateBuilder
+    ) {
+        return new IamInternalRestClientFactory(IamInternalRestClientConfiguration, restTemplateBuilder);
+    }
+
+    @Bean
+    public UnitService unitService(final AccessExternalClient client) {
+        return new UnitService(client);
+    }
+
+    @Bean
+    public VitamOperationService vitamOperationService(final AdminExternalClient adminExternalClient) {
+        return new VitamOperationService(adminExternalClient);
     }
 }
