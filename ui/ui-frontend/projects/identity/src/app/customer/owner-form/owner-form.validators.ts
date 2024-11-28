@@ -47,6 +47,10 @@ export const OWNER_NAME_MAX_LENGTH = 100;
 export const OWNER_CODE_MIN_LENGTH = 6;
 export const OWNER_COMPANY_NAME_MAX_LENGTH = 100;
 
+export const OWNER_INTERNAL_CODE_MAX_LENGTH = 20;
+export const OWNER_ZIP_CODE_MAX_LENGTH = 10;
+export const OWNER_CITY_MAX_LENGTH = 100;
+
 @Injectable({
   providedIn: 'root',
 })
