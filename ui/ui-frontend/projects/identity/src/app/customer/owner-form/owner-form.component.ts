@@ -41,11 +41,13 @@ import { distinctUntilChanged, map } from 'rxjs/operators';
 import { CountryOption, CountryService, Customer, Owner, StartupService } from 'vitamui-library';
 import {
   ALPHA_NUMERIC_REGEX,
+  OWNER_CITY_MAX_LENGTH,
   OWNER_CODE_MAX_LENGTH,
   OWNER_CODE_MIN_LENGTH,
   OWNER_COMPANY_NAME_MAX_LENGTH,
   OWNER_INTERNAL_CODE_MAX_LENGTH,
   OWNER_NAME_MAX_LENGTH,
+  OWNER_ZIP_CODE_MAX_LENGTH,
   OwnerFormValidators,
 } from './owner-form.validators';
 
@@ -132,8 +134,8 @@ export class OwnerFormComponent implements ControlValueAccessor, OnDestroy, OnIn
       internalCode: [null, [Validators.maxLength(OWNER_INTERNAL_CODE_MAX_LENGTH)]],
       address: this.formBuilder.group({
         street: [null, Validators.maxLength(this.maxStreetLength)],
-        zipCode: null,
-        city: null,
+        zipCode: [null, Validators.maxLength(OWNER_ZIP_CODE_MAX_LENGTH)],
+        city: [null, Validators.maxLength(OWNER_CITY_MAX_LENGTH)],
         country: 'FR',
       }),
       readonly: false,
