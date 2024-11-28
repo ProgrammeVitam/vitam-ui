@@ -85,10 +85,8 @@ pipeline {
 
         stage('Upgrade build context') {
             steps {
-                // TODO: install nvm and choose the node/npm version
-                sh 'sudo apt install -y nodejs npm node-npmrc build-essential make ruby ruby-dev rubygems jq'
-                sh 'sudo rm -f /usr/local/bin/node /usr/local/bin/npm'
-                sh 'node -v;npm -v'
+                sh 'sudo apt remove -y nodejs npm node-npmrc'
+                sh 'sudo apt install -y build-essential make ruby ruby-dev rubygems jq'
                 sh 'sudo timedatectl set-timezone Europe/Paris'
                 sh 'sudo gem install fpm'
             }
@@ -108,14 +106,16 @@ pipeline {
                     steps {
                         dir('ui/ui-frontend') {
                             script {
-                                sh 'npm ci'
-                                if (env.DO_CHECKS_AND_TESTS == 'true') {
-                                    sh 'npm run lint'
-                                }
-                                sh 'npm run build:vitamui-library'
-                                sh 'npm run build:allModules'
-                                if (env.DO_CHECKS_AND_TESTS == 'true') {
-                                    sh 'npm run ci:test'
+                                nvm('v18.20.3') {
+                                    sh 'npm ci'
+                                    if (env.DO_CHECKS_AND_TESTS == 'true') {
+                                        sh 'npm run lint'
+                                    }
+                                    sh 'npm run build:vitamui-library'
+                                    sh 'npm run build:allModules'
+                                    if (env.DO_CHECKS_AND_TESTS == 'true') {
+                                        sh 'npm run ci:test'
+                                    }
                                 }
                                 if (env.GOAL == 'publish') {
                                     // If the goal is to publish, we also generate .deb/.rpm
@@ -132,7 +132,9 @@ pipeline {
                     }
                     steps {
                         // TODO: generate .deb/.rpm by running Makefile directly in the Jenkinsfile instead of being run by a maven plugin
-                        sh '${MVN_COMMAND} clean ${MVN_GOAL} -U -Pvitam,deb,rpm'
+                        nvm('v18.20.3') { // We need node for spotless (when env.DO_CHECKS_AND_TESTS == 'true')
+                            sh '${MVN_COMMAND} clean ${MVN_GOAL} -U -Pvitam,deb,rpm'
+                        }
                     }
                 }
             }
@@ -158,7 +160,9 @@ pipeline {
             }
             steps {
                 dir('ui/ui-frontend') {
-                    sh 'npm run build:pastis-standalone'
+                    nvm('v18.20.3') {
+                        sh 'npm run build:pastis-standalone'
+                    }
                 }
                 sh '${MVN_COMMAND} deploy -Pstandalone --projects "api/api-pastis/pastis-standalone" -Dspotless.check.skip=true -Dmaven.test.skip -Dlicense.skip=true'
             }
