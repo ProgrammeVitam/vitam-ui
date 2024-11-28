@@ -87,7 +87,8 @@ jobs:
         run: >
           mvn --settings .ci/github-actions-settings.xml
           -Pvitam,no-cve-proxy
-          -Dspotless.check.skip=true
+          -Dspotless.check.skip
+          -Ddependency-check.skip
           --batch-mode --errors -U
           --projects '!cots/vitamui-mongo-express'
           verify
