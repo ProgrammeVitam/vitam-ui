@@ -39,10 +39,18 @@ import { Component, forwardRef, Input, OnDestroy, OnInit } from '@angular/core';
 import { ControlValueAccessor, FormBuilder, FormGroup, NG_VALUE_ACCESSOR, Validators } from '@angular/forms';
 import { merge } from 'rxjs';
 import { distinctUntilChanged, map } from 'rxjs/operators';
-import { CountryOption, CountryService, Customer, StartupService } from 'ui-frontend-common';
-
-import { Owner } from 'ui-frontend-common';
-import { ALPHA_NUMERIC_REGEX, OwnerFormValidators, OWNER_CODE_MAX_LENGTH } from './owner-form.validators';
+import { CountryOption, CountryService, Customer, Owner, StartupService } from 'ui-frontend-common';
+import {
+  ALPHA_NUMERIC_REGEX,
+  OWNER_CITY_MAX_LENGTH,
+  OWNER_CODE_MAX_LENGTH,
+  OWNER_CODE_MIN_LENGTH,
+  OWNER_COMPANY_NAME_MAX_LENGTH,
+  OWNER_INTERNAL_CODE_MAX_LENGTH,
+  OWNER_NAME_MAX_LENGTH,
+  OWNER_ZIP_CODE_MAX_LENGTH,
+  OwnerFormValidators,
+} from './owner-form.validators';
 
 /*eslint no-use-before-define: "error"*/
 export const OWNER_FORM_VALUE_ACCESSOR: any = {
@@ -60,7 +68,6 @@ export const OWNER_FORM_VALUE_ACCESSOR: any = {
 export class OwnerFormComponent implements ControlValueAccessor, OnDestroy, OnInit {
   public form: FormGroup;
   public maxStreetLength: number;
-  public ownerCodeMaxLength = OWNER_CODE_MAX_LENGTH;
   public countries: CountryOption[];
 
   private sub: any;
@@ -90,12 +97,17 @@ export class OwnerFormComponent implements ControlValueAccessor, OnDestroy, OnIn
         name: customerInfo.name,
         companyName: customerInfo.companyName,
       });
+      const codeControl = this.form.get('code');
+      if (codeControl?.invalid) {
+        codeControl.markAsTouched();
+      }
     }
   }
 
   get customerInfo() {
     return this._customerInfo;
   }
+
   // tslint:disable-next-line:variable-name
   private _customerInfo: any;
 
@@ -112,16 +124,21 @@ export class OwnerFormComponent implements ControlValueAccessor, OnDestroy, OnIn
       identifier: null,
       code: [
         null,
-        [Validators.required, Validators.pattern(ALPHA_NUMERIC_REGEX), Validators.maxLength(this.ownerCodeMaxLength)],
+        [
+          Validators.required,
+          Validators.pattern(ALPHA_NUMERIC_REGEX),
+          Validators.maxLength(OWNER_CODE_MAX_LENGTH),
+          Validators.minLength(OWNER_CODE_MIN_LENGTH),
+        ],
         this.ownerFormValidators.uniqueCode(),
       ],
-      name: [null, Validators.required],
-      companyName: [null, Validators.required],
-      internalCode: [null],
+      name: [null, [Validators.required, Validators.maxLength(OWNER_NAME_MAX_LENGTH)]],
+      companyName: [null, [Validators.required, Validators.maxLength(OWNER_COMPANY_NAME_MAX_LENGTH)]],
+      internalCode: [null, [Validators.maxLength(OWNER_INTERNAL_CODE_MAX_LENGTH)]],
       address: this.formBuilder.group({
         street: [null, Validators.maxLength(this.maxStreetLength)],
-        zipCode: null,
-        city: null,
+        zipCode: [null, Validators.maxLength(OWNER_ZIP_CODE_MAX_LENGTH)],
+        city: [null, Validators.maxLength(OWNER_CITY_MAX_LENGTH)],
         country: 'FR',
       }),
       readonly: false,
