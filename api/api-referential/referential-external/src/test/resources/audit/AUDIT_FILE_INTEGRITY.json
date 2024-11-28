@@ -1,0 +1,19 @@
+{
+  "$roots": [],
+  "$query": [{
+    "$or": [{
+      "$exists": "#id"
+    }],
+    "$depth": 1000
+  }],
+  "$filter": {
+    "$limit": 1,
+    "$track_total_hits": true
+  },
+  "$projection": {
+    "$fields": {
+      "#id": 1
+    }
+  },
+  "$facets": []
+}

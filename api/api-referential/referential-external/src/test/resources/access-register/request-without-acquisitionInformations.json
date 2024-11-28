@@ -1,0 +1,28 @@
+{
+  "filters": {
+    "Status": [
+      "status1",
+      "status2"
+    ]
+  },
+  "endDateInterval": {
+    "endDateMin": "13/03/1988",
+    "endDateMax": "14/04/1999"
+  },
+  "elimination": "all",
+  "transferReply": "all",
+  "opi": "operation_technical_id",
+  "originatingAgency": "agence de recencement de rien",
+  "originatingAgencies": [
+    "agence 01",
+    "agence 02"
+  ],
+  "archivalAgreements":  [
+    "archival agreement 01",
+    "archival agreement 02"
+  ],
+  "archivalProfiles": [
+    "archival profile 01",
+    "archival profile 02"
+  ]
+}

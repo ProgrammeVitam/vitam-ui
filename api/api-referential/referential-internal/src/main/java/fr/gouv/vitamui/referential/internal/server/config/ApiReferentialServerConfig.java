@@ -44,7 +44,6 @@ import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
 import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
 import fr.gouv.vitamui.commons.rest.configuration.SwaggerConfiguration;
 import fr.gouv.vitamui.commons.vitam.api.access.UnitService;
-import fr.gouv.vitamui.commons.vitam.api.administration.AgencyService;
 import fr.gouv.vitamui.commons.vitam.api.administration.VitamOperationService;
 import fr.gouv.vitamui.commons.vitam.api.config.VitamAccessConfig;
 import fr.gouv.vitamui.commons.vitam.api.config.VitamAdministrationConfig;
@@ -126,16 +125,6 @@ public class ApiReferentialServerConfig extends AbstractContextConfiguration {
     @Bean
     public VitamUIAccessContractService vitamUIAccessContractService(final AdminExternalClient adminExternalClient) {
         return new VitamUIAccessContractService(adminExternalClient);
-    }
-
-    @Bean
-    public VitamAgencyService vitamAgencyService(
-        final AdminExternalClient adminClient,
-        final AgencyService agencyService,
-        ObjectMapper objectMapper,
-        final AccessExternalClient accessClient
-    ) {
-        return new VitamAgencyService(adminClient, agencyService, objectMapper, accessClient);
     }
 
     @Bean

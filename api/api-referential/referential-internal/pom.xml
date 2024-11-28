@@ -267,7 +267,7 @@
                 <filtering>false</filtering>
             </resource>
             <resource>
-                <directory>src/main/resources/templates</directory>
+                <directory>../referential-external/src/main/resources/templates</directory>
                 <filtering>false</filtering>
                 <excludes>
                     <exclude>*.odt</exclude>
