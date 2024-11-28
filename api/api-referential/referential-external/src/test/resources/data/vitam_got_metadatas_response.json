@@ -1,0 +1,86 @@
+{
+  "httpCode": 200,
+  "$hits": {
+    "total": 1,
+    "offset": 0,
+    "limit": 0,
+    "size": 1
+  },
+  "$results": [
+    {
+      "FileInfo": {
+        "Filename": "Pereire.txt",
+        "LastModified": "2017-04-04T08:07:27.825+02:00"
+      },
+      "#id": "aebaaaaaaahl2zz5ab23malq4gw2cnqaaaba",
+      "#nbobjects": 1,
+      "#qualifiers": [
+        {
+          "qualifier": "BinaryMaster",
+          "#nbc": 1,
+          "versions": [
+            {
+              "DataObjectGroupId": "aebaaaaaaahl2zz5ab23malq4gw2cnqaaaba",
+              "DataObjectVersion": "BinaryMaster_1",
+              "FormatIdentification": {
+                "FormatLitteral": "Plain Text File",
+                "MimeType": "text/plain",
+                "FormatId": "x-fmt/111"
+              },
+              "FileInfo": {
+                "Filename": "Pereire.txt",
+                "LastModified": "2017-04-04T08:07:27.825+02:00"
+              },
+              "Size": 6,
+              "Uri": "Content/ID35.txt",
+              "MessageDigest": "664ac614a819df2a97d2a5df57dcad91d6ec38b0fffc793e80c56b4553a14ac7a5f0bce3bb71af419b0bb8f151ad3d512867454eeb818e01818a31989c13319b",
+              "Algorithm": "SHA-512",
+              "#id": "aeaaaaaaaahl2zz5ab23malq4gw2cnqaaaaq",
+              "#opi": "aeeaaaaaachf2vysaau5malrcg7nsjqaaaaq",
+              "#storage": {
+                "strategyId": "default"
+              }
+            }
+          ]
+        }
+      ],
+      "#type": "",
+      "#tenant": 0,
+      "#unitups": [
+        "aeaqaaaaaahl2zz5ab23malq4gw2eqqaaaba"
+      ],
+      "#allunitups": [
+        "aeaqaaaaaahc23qyabnlmalrcg7n7myaaabq",
+        "aeaqaaaaaahc23qyabnlmalrcg7n7miaaabq",
+        "aeaqaaaaaahc23qyabnlmalrcg7n7miaaacq",
+        "aeaqaaaaaahc23qyabnlmalrcg7n7mqaaabq",
+        "aeaqaaaaaahc23qyabnlmalrcg7n7maaaacq",
+        "aeaqaaaaaahc23qyabnlmalrcg7n7maaaaba",
+        "aeaqaaaaaahc23qyabnlmalrcg7n7maaaafq",
+        "aeaqaaaaaahc23qyabnlmalrcg7n7maaaaea",
+        "aeaqaaaaaahc23qyabnlmalrcg7n7miaaaea",
+        "aeaqaaaaaahc23qyabnlmalrcg7n7myaaada"
+      ],
+      "#operations": [
+        "aeeaaaaaachf2vysaau5malrcg7nsjqaaaaq"
+      ],
+      "#opi": "aeeaaaaaachf2vysaau5malrcg7nsjqaaaaq",
+      "#originating_agency": "RATP",
+      "#originating_agencies": [
+        "RATP"
+      ],
+      "#storage": {
+        "strategyId": "default"
+      },
+      "#version": 1
+    }
+  ],
+  "$facetResults": [],
+  "$context": {
+    "$roots": [],
+    "$query": [],
+    "$filter": {},
+    "$projection": {},
+    "$facets": []
+  }
+}
