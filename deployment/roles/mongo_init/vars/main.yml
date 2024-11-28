@@ -1,0 +1,4 @@
+---
+
+# Define proper FeatureCompatibilityVersion after fresh install
+mongo_feature_compatibility_version: "5.0"
