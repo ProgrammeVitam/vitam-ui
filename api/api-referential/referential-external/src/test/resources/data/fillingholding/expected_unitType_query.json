@@ -1,0 +1,30 @@
+{
+  "$roots": [],
+  "$query": [
+    {
+      "$in": {
+        "#unitType": [
+          "HOLDING_UNIT",
+          "FILING_UNIT"
+        ]
+      }
+    }
+  ],
+  "$filter": {},
+  "$projection": {
+    "$fields": {
+      "#id": 1,
+      "Title": 1,
+      "DescriptionLevel": 1,
+      "#unitType": 1,
+      "#unitups": 1,
+      "#allunitups": 1,
+      "#opi": 1,
+      "Keyword":1,
+      "Vtag":1,
+      "#object" : 1,
+      "Title_":1
+    }
+  },
+  "$facets": []
+}

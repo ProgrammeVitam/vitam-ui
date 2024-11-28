@@ -37,7 +37,10 @@
 package fr.gouv.vitamui.referential.external.server.rest;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import fr.gouv.vitam.access.external.common.exception.AccessExternalClientException;
+import fr.gouv.vitam.access.external.common.exception.AccessExternalNotFoundException;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
+import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitamui.common.security.SafeFileChecker;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
@@ -48,10 +51,9 @@ import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.utils.ApiUtils;
 import fr.gouv.vitamui.commons.rest.util.RestUtils;
-import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsResponseDto;
 import fr.gouv.vitamui.referential.common.dto.ProfileDto;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
-import fr.gouv.vitamui.referential.external.server.service.ProfileExternalService;
+import fr.gouv.vitamui.referential.external.server.service.profile.ProfileInternalService;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
@@ -91,7 +93,7 @@ public class ProfileExternalController {
     private static final Logger LOGGER = LoggerFactory.getLogger(ProfileExternalController.class);
 
     @Autowired
-    private ProfileExternalService profileExternalService;
+    private ProfileInternalService profileExternalService;
 
     @GetMapping
     @Secured(ServicesData.ROLE_GET_ARCHIVE_PROFILES)
@@ -136,7 +138,7 @@ public class ProfileExternalController {
 
     @GetMapping(RestApi.DOWNLOAD_PROFILE + CommonConstants.PATH_ID)
     public ResponseEntity<Resource> download(final @PathVariable("id") String id)
-        throws InvalidParseOperationException, PreconditionFailedException {
+        throws InvalidParseOperationException, PreconditionFailedException, AccessExternalNotFoundException, AccessExternalClientException {
         ParameterChecker.checkParameter("Event Identifier is mandatory : ", id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("download profile with id :{}", id);
@@ -155,7 +157,7 @@ public class ProfileExternalController {
     public ResponseEntity<JsonNode> importProfileFile(
         final @PathVariable("id") String id,
         @RequestParam("file") MultipartFile file
-    ) throws IOException, InvalidParseOperationException, PreconditionFailedException {
+    ) throws IOException, InvalidParseOperationException, PreconditionFailedException, AccessExternalClientException {
         ParameterChecker.checkParameter("profileFile stream is a mandatory parameter: ", file);
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         SanityChecker.checkSecureParameter(id);
@@ -199,7 +201,7 @@ public class ProfileExternalController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public ProfileDto create(final @Valid @RequestBody ProfileDto profileDto)
-        throws InvalidParseOperationException, PreconditionFailedException {
+        throws InvalidParseOperationException, PreconditionFailedException, VitamClientException {
         ApiUtils.checkValidity(profileDto);
         SanityChecker.sanitizeCriteria(profileDto);
         LOGGER.debug("Create {}", profileDto);
@@ -249,15 +251,5 @@ public class ProfileExternalController {
         );
         LOGGER.debug("Patch {} with {}", id, partialDto);
         return profileExternalService.patch(partialDto);
-    }
-
-    @Secured(ServicesData.ROLE_GET_ARCHIVE_PROFILES)
-    @GetMapping("/{id}/history")
-    public LogbookOperationsResponseDto findHistoryById(final @PathVariable("id") String id)
-        throws InvalidParseOperationException, PreconditionFailedException {
-        ParameterChecker.checkParameter("Identifier is mandatory : ", id);
-        SanityChecker.checkSecureParameter(id);
-        LOGGER.debug("get logbook for accessContract with id :{}", id);
-        return profileExternalService.findHistoryById(id);
     }
 }
