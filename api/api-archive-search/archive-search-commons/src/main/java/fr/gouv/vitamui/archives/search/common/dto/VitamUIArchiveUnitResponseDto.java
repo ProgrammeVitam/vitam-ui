@@ -36,25 +36,12 @@
  */
 package fr.gouv.vitamui.archives.search.common.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import fr.gouv.vitamui.commons.vitam.api.dto.AbstractVitamUIResponseDto;
-import fr.gouv.vitamui.commons.vitam.api.dto.FacetResultsDto;
-import fr.gouv.vitamui.commons.vitam.api.dto.VitamSearchRequestDto;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Getter
 @Setter
 @ToString
-public class VitamUIArchiveUnitResponseDto extends AbstractVitamUIResponseDto<ArchiveUnit> {
-
-    @JsonProperty("$context")
-    private VitamSearchRequestDto context;
-
-    @JsonProperty("$facetResults")
-    private List<FacetResultsDto> facetResults = new ArrayList<>();
-}
+public class VitamUIArchiveUnitResponseDto extends AbstractVitamUIResponseDto<ArchiveUnit> {}

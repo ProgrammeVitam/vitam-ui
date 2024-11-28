@@ -1,8 +1,34 @@
 {
-  "$query" : { },
-  "$filter" : {
-    "$offset" : 12,
-    "$limit" : 1
+  "$query": {},
+  "$filter": {
+    "$offset": 12,
+    "$limit": 1
   },
-  "$projection" : { }
+  "$projection": {},
+  "$facets": [
+    {
+      "$name": "FACETS_TOTAL_OBJECTS",
+      "$sum": {
+        "$field": "TotalObjects.ingested"
+      }
+    },
+    {
+      "$name": "FACETS_TOTAL_UNITS",
+      "$sum": {
+        "$field": "TotalUnits.ingested"
+      }
+    },
+    {
+      "$name": "FACETS_TOTAL_OBJECT_GROUPS",
+      "$sum": {
+        "$field": "TotalObjectGroups.ingested"
+      }
+    },
+    {
+      "$name": "FACETS_TOTAL_OBJECT_SIZE",
+      "$sum": {
+        "$field": "ObjectSize.ingested"
+      }
+    }
+  ]
 }

@@ -55,7 +55,7 @@ import java.util.List;
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class PersistentIdentifierResponseDto extends AbstractVitamUIResponseDto<ResultsDto> {
+public class PersistentIdentifierResponseDto extends AbstractSingleVitamUIResponseDto<ResultsDto> {
 
     @JsonProperty("$history")
     private List<PurgedPersistentIdentifierDto> history = new ArrayList<>();

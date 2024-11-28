@@ -62,10 +62,8 @@ import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.SecureRandom;
 import java.security.Security;
-import java.text.CharacterIterator;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
-import java.text.StringCharacterIterator;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
@@ -92,9 +90,7 @@ public final class VitamUIUtils {
     public static final String PRINT_ALGORITHM = "SHA-512";
 
     public static final DecimalFormat UI_DECIMAL_FORMAT_2_DIGITS = decimalFormat2digits();
-    public static final String BYTE_SIZES_LETTERS = "kMGTPE";
-    public static final String OCTET = " octet";
-    public static final String OCTETS = " octets";
+    public static final String KILO = " ko";
 
     private VitamUIUtils() {
         // empty
@@ -296,8 +292,7 @@ public final class VitamUIUtils {
     }
 
     /**
-     * @Deprecated
-     * This method is no longer acceptable to calculate SHA print.
+     * @Deprecated This method is no longer acceptable to calculate SHA print.
      * Use {@link #getSha512Print(InputStream)} instead.
      */
     @Deprecated
@@ -351,7 +346,7 @@ public final class VitamUIUtils {
             .collect(Collectors.joining(", ", "[", "]"));
     }
 
-    private static final DecimalFormat decimalFormat2digits() {
+    private static DecimalFormat decimalFormat2digits() {
         DecimalFormat df = new DecimalFormat();
         DecimalFormatSymbols symbols = df.getDecimalFormatSymbols();
         symbols.setGroupingSeparator(' ');
@@ -362,43 +357,8 @@ public final class VitamUIUtils {
         return df;
     }
 
-    /**
-     * SI (1 k = 1,000)
-     */
-    public static String humanReadableByteCountSI(long bytes) {
-        if (-2 < bytes && bytes < 2) {
-            return bytes + OCTET;
-        }
-        if (-1000 < bytes && bytes < 1000) {
-            return bytes + OCTETS;
-        }
-        CharacterIterator ci = new StringCharacterIterator(BYTE_SIZES_LETTERS);
-        while (bytes <= -999_950 || bytes >= 999_950) {
-            bytes /= 1000;
-            ci.next();
-        }
-        return UI_DECIMAL_FORMAT_2_DIGITS.format(bytes / 1000.0) + ' ' + ci.current() + 'o';
-    }
-
-    /**
-     * Binary (1 Ki = 1,024)
-     */
-    public static String humanReadableByteCountBin(long bytes) {
-        long absB = bytes == Long.MIN_VALUE ? Long.MAX_VALUE : Math.abs(bytes);
-        if (absB < 2) {
-            return bytes + OCTET;
-        }
-        if (absB < 1024) {
-            return bytes + OCTETS;
-        }
-        long value = absB;
-        CharacterIterator ci = new StringCharacterIterator(BYTE_SIZES_LETTERS);
-        for (int i = 40; i >= 0 && absB > 0xfffccccccccccccL >> i; i -= 10) {
-            value >>= 10;
-            ci.next();
-        }
-        value *= Long.signum(bytes);
-        System.out.println(value / 1024.0);
-        return UI_DECIMAL_FORMAT_2_DIGITS.format(value / 1024.0) + ' ' + ci.current() + 'o';
+    public static String convertSizeToKiloByte(long sizeInBytes) {
+        double sizeInKilobytes = sizeInBytes / 1024.0;
+        return UI_DECIMAL_FORMAT_2_DIGITS.format(sizeInKilobytes) + KILO;
     }
 }

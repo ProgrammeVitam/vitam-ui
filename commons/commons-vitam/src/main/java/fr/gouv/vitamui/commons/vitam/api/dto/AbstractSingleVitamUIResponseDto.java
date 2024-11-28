@@ -34,49 +34,28 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-package fr.gouv.vitamui.referential.internal.server.accessionregister;
+package fr.gouv.vitamui.commons.vitam.api.dto;
 
-import fr.gouv.vitam.common.model.administration.AccessionRegisterDetailModel;
-import fr.gouv.vitamui.referential.common.dto.AccessionRegisterStatsDto;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import fr.gouv.vitamui.commons.vitam.api.model.HitsDto;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class AccessRegisterStatsHelper {
+@Getter
+@Setter
+@ToString
+public abstract class AbstractSingleVitamUIResponseDto<T> {
 
-    private AccessRegisterStatsHelper() {
-        throw new UnsupportedOperationException("Utility class !");
-    }
+    @JsonProperty("$hits")
+    private HitsDto hits;
 
-    public static AccessionRegisterStatsDto fetchStats(
-        List<AccessionRegisterDetailModel> accessionRegisterDetailModels
-    ) {
-        AccessionRegisterStatsDto statsDto = new AccessionRegisterStatsDto();
+    @JsonProperty("$results")
+    private List<T> results = new ArrayList<>();
 
-        Long objectSizes = accessionRegisterDetailModels
-            .parallelStream()
-            .map(ardm -> ardm.getObjectSize().getIngested())
-            .reduce(0L, Long::sum);
-
-        Long totalObjects = accessionRegisterDetailModels
-            .parallelStream()
-            .map(ardm -> ardm.getTotalObjects().getIngested())
-            .reduce(0L, Long::sum);
-
-        Long totalUnits = accessionRegisterDetailModels
-            .parallelStream()
-            .map(ardm -> ardm.getTotalUnits().getIngested())
-            .reduce(0L, Long::sum);
-
-        Long totalObjectsGroups = accessionRegisterDetailModels
-            .parallelStream()
-            .map(ardm -> ardm.getTotalObjectsGroups().getIngested())
-            .reduce(0L, Long::sum);
-
-        statsDto.setObjectSizes(objectSizes);
-        statsDto.setTotalObjects(totalObjects);
-        statsDto.setTotalUnits(totalUnits);
-        statsDto.setTotalObjectsGroups(totalObjectsGroups);
-
-        return statsDto;
-    }
+    @JsonProperty("$facetResults")
+    private List<FacetResultsDto> facetResults = new ArrayList<>();
 }

@@ -36,6 +36,31 @@
  */
 package fr.gouv.vitamui.commons.vitam.api.dto;
 
-import fr.gouv.vitamui.commons.api.domain.VitamOperationDto;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import fr.gouv.vitam.common.model.QueryDTO;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
-public class VitamOperationResponseDto extends AbstractVitamUIResponseDto<VitamOperationDto> {}
+import java.util.ArrayList;
+import java.util.List;
+
+@Getter
+@Setter
+@ToString
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class VitamSingleRequestDto {
+
+    @JsonProperty("$roots")
+    private List<String> roots = new ArrayList<>();
+
+    @JsonProperty("$query")
+    private QueryDTO query;
+
+    @JsonProperty("$filter")
+    private FilterDto filter;
+
+    @JsonProperty("$projection")
+    private ProjectionDto projection;
+}

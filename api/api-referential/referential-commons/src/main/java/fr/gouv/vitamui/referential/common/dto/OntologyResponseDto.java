@@ -37,6 +37,6 @@
 package fr.gouv.vitamui.referential.common.dto;
 
 import fr.gouv.vitam.common.model.administration.OntologyModel;
-import fr.gouv.vitamui.commons.vitam.api.dto.AbstractVitamUIResponseDto;
+import fr.gouv.vitamui.commons.vitam.api.dto.AbstractSingleVitamUIResponseDto;
 
-public class OntologyResponseDto extends AbstractVitamUIResponseDto<OntologyModel> {}
+public class OntologyResponseDto extends AbstractSingleVitamUIResponseDto<OntologyModel> {}

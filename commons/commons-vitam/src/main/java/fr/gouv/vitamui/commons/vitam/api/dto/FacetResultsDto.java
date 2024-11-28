@@ -37,6 +37,7 @@
 package fr.gouv.vitamui.commons.vitam.api.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import fr.gouv.vitam.common.model.SingleValueFacet;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -54,4 +55,7 @@ public class FacetResultsDto {
 
     @JsonProperty("buckets")
     private List<FacetBucketDto> buckets = new ArrayList<>();
+
+    @JsonProperty("singleValueFacet")
+    private SingleValueFacet singleValueFacet;
 }

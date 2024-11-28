@@ -63,6 +63,7 @@ import fr.gouv.vitamui.referential.common.dto.AccessionRegisterSummaryResponseDt
 import fr.gouv.vitamui.referential.common.dto.AgencyResponseDto;
 import fr.gouv.vitamui.referential.common.dto.ExportAccessionRegisterResultParam;
 import fr.gouv.vitamui.referential.common.service.AccessionRegisterService;
+import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -123,6 +124,7 @@ public class AccessionRegisterInternalService {
                 requestResponse.toJsonNode(),
                 AccessionRegisterSummaryResponseDto.class
             );
+
             return AccessionRegisterConverter.toSummaryDtos(accessionRegisterSymbolicResponseDto.getResults());
         } catch (JsonProcessingException | VitamClientException e) {
             throw new InternalServerException("Unable to find accessionRegisterSymbolic", e);
@@ -176,15 +178,7 @@ public class AccessionRegisterInternalService {
             value.setOriginatingAgencyLabel(agenciesMap.get(value.getOriginatingAgency()));
             value.setSubmissionAgencyLabel(agenciesMap.get(value.getSubmissionAgency()));
         });
-        AccessionRegisterStatsDto statsDto;
-        //Build statistics from paged data
-        if (resultSize > resultTotal) {
-            //fetch stats from all records with limit 10000
-            statsDto = buildStatisticData(accessionRegisterSearchDto, vitamContext);
-        } else {
-            //extract stats from current results
-            statsDto = AccessRegisterStatsHelper.fetchStats(results.getResults());
-        }
+        AccessionRegisterStatsDto statsDto = buildStatisticData(results);
         return new PaginatedValuesDto<>(
             valuesDto,
             pageNumber,
@@ -195,27 +189,30 @@ public class AccessionRegisterInternalService {
         );
     }
 
-    private AccessionRegisterStatsDto buildStatisticData(
-        AccessionRegisterSearchDto accessionRegisterSearchDto,
-        VitamContext vitamContext
-    ) {
-        try {
-            JsonNode bigStatisticQuery = AccessRegisterVitamQueryHelper.createQueryDSL(
-                accessionRegisterSearchDto,
-                0,
-                10000,
-                null,
-                null
-            );
-            //fetching all 10000 elements as another query to compute statistics as quick solution
-            AccessionRegisterDetailResponseDto statisticResults = fetchingAllPaginatedDataFromVitam(
-                vitamContext,
-                bigStatisticQuery
-            );
-            return AccessRegisterStatsHelper.fetchStats(statisticResults.getResults());
-        } catch (InvalidCreateOperationException | InvalidParseOperationException e) {
-            throw new InternalServerException("Can't create dsl query to get paginated accession registers", e);
+    private AccessionRegisterStatsDto buildStatisticData(AccessionRegisterDetailResponseDto resultResponse) {
+        AccessionRegisterStatsDto statsDto = new AccessionRegisterStatsDto();
+        if (CollectionUtils.isNotEmpty(resultResponse.getFacetResults())) {
+            resultResponse
+                .getFacetResults()
+                .stream()
+                .forEach(facetResult -> {
+                    switch (facetResult.getName()) {
+                        case AccessRegisterVitamQueryHelper.FACETS_TOTAL_OBJECT_GROUPS:
+                            statsDto.setTotalObjectsGroups(facetResult.getSingleValueFacet().getValue().longValue());
+                            break;
+                        case AccessRegisterVitamQueryHelper.FACETS_TOTAL_OBJECT_SIZE:
+                            statsDto.setObjectSizes(facetResult.getSingleValueFacet().getValue().longValue());
+                            break;
+                        case AccessRegisterVitamQueryHelper.FACETS_TOTAL_OBJECTS:
+                            statsDto.setTotalObjects(facetResult.getSingleValueFacet().getValue().longValue());
+                            break;
+                        case AccessRegisterVitamQueryHelper.FACETS_TOTAL_UNITS:
+                            statsDto.setTotalUnits(facetResult.getSingleValueFacet().getValue().longValue());
+                            break;
+                    }
+                });
         }
+        return statsDto;
     }
 
     /**
@@ -301,7 +298,7 @@ public class AccessionRegisterInternalService {
                             String.valueOf(accessionRegisterCsv.getTotalUnits().getIngested()),
                             String.valueOf(accessionRegisterCsv.getTotalObjectsGroups().getIngested()),
                             String.valueOf(accessionRegisterCsv.getTotalObjects().getIngested()),
-                            VitamUIUtils.humanReadableByteCountBin(accessionRegisterCsv.getObjectSize().getIngested()),
+                            VitamUIUtils.convertSizeToKiloByte(accessionRegisterCsv.getObjectSize().getIngested()),
                             accessionRegisterCsv.getStatus().value(),
                         }
                     );
