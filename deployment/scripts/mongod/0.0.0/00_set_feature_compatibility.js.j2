@@ -1,0 +1,7 @@
+db = db.getSiblingDB('admin')
+
+print("START_00_set_feature_compatibility.js");
+
+db.adminCommand( { setFeatureCompatibilityVersion: "{{ mongo_feature_compatibility_version }}", confirm: true } );
+
+print("END_00_set_feature_compatibility.js");
