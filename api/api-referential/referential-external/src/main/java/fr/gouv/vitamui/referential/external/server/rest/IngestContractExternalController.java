@@ -36,6 +36,7 @@
  */
 package fr.gouv.vitamui.referential.external.server.rest;
 
+import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
@@ -46,7 +47,7 @@ import fr.gouv.vitamui.commons.rest.util.RestUtils;
 import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsResponseDto;
 import fr.gouv.vitamui.referential.common.dto.IngestContractDto;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
-import fr.gouv.vitamui.referential.external.server.service.IngestContractExternalService;
+import fr.gouv.vitamui.referential.external.server.service.ingestcontract.IngestContractInternalService;
 import io.swagger.annotations.ApiOperation;
 import lombok.Getter;
 import lombok.Setter;
@@ -86,14 +87,14 @@ public class IngestContractExternalController {
     private static final Logger LOGGER = LoggerFactory.getLogger(IngestContractExternalController.class);
 
     @Autowired
-    private IngestContractExternalService ingestContractExternalService;
+    private IngestContractInternalService ingestContractExternalService;
 
     @GetMapping
     @Secured(ServicesData.ROLE_GET_INGEST_CONTRACTS)
     public Collection<IngestContractDto> getAll(final Optional<String> criteria) {
         LOGGER.debug("get all customer criteria={}", criteria);
         SanityChecker.sanitizeCriteria(criteria);
-        return ingestContractExternalService.getAll(criteria);
+        return ingestContractExternalService.getAll();
     }
 
     @Secured(ServicesData.ROLE_GET_INGEST_CONTRACTS)
@@ -167,7 +168,8 @@ public class IngestContractExternalController {
 
     @Secured(ServicesData.ROLE_GET_INGEST_CONTRACTS)
     @GetMapping(CommonConstants.PATH_LOGBOOK)
-    public LogbookOperationsResponseDto findHistoryById(final @PathVariable("id") String id) {
+    public LogbookOperationsResponseDto findHistoryById(final @PathVariable("id") String id)
+        throws VitamClientException {
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("get logbook for ingestContract with id :{}", id);
         ParameterChecker.checkParameter("Identifier is mandatory : ", id);

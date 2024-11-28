@@ -37,6 +37,25 @@
 package fr.gouv.vitamui.commons.api.domain;
 
 public enum DirectionDto {
-    ASC,
-    DESC,
+    ASC("ASC"),
+    DESC("DESC");
+
+    private final String value;
+
+    DirectionDto(String value) {
+        this.value = value;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public static DirectionDto fromValue(String value) {
+        for (DirectionDto direction : DirectionDto.values()) {
+            if (direction.value.equalsIgnoreCase(value)) {
+                return direction;
+            }
+        }
+        throw new IllegalArgumentException("Unknown value: " + value);
+    }
 }

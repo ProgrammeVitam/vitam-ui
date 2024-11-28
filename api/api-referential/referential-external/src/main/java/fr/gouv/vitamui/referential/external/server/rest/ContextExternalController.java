@@ -36,6 +36,7 @@
  */
 package fr.gouv.vitamui.referential.external.server.rest;
 
+import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
@@ -47,7 +48,7 @@ import fr.gouv.vitamui.commons.rest.util.RestUtils;
 import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsResponseDto;
 import fr.gouv.vitamui.referential.common.dto.ContextDto;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
-import fr.gouv.vitamui.referential.external.server.service.ContextExternalService;
+import fr.gouv.vitamui.referential.external.server.service.context.ContextInternalService;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
@@ -58,7 +59,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.util.Assert;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.Collection;
@@ -73,14 +83,14 @@ public class ContextExternalController {
     private static final Logger LOGGER = LoggerFactory.getLogger(ContextExternalController.class);
 
     @Autowired
-    private ContextExternalService contextExternalService;
+    private ContextInternalService contextExternalService;
 
     @GetMapping
     @Secured(ServicesData.ROLE_GET_CONTEXTS)
     public Collection<ContextDto> getAll(final Optional<String> criteria) {
         LOGGER.debug("get all context criteria={}", criteria);
         SanityChecker.sanitizeCriteria(criteria);
-        return contextExternalService.getAll(criteria);
+        return contextExternalService.getAll();
     }
 
     @Secured(ServicesData.ROLE_GET_CONTEXTS)
@@ -149,7 +159,8 @@ public class ContextExternalController {
 
     @Secured(ServicesData.ROLE_GET_CONTEXTS)
     @GetMapping(CommonConstants.PATH_LOGBOOK)
-    public LogbookOperationsResponseDto findHistoryById(final @PathVariable("id") String id) {
+    public LogbookOperationsResponseDto findHistoryById(final @PathVariable("id") String id)
+        throws VitamClientException {
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("get logbook for context with id :{}", id);
         ParameterChecker.checkParameter("Identifier is mandatory : ", id);

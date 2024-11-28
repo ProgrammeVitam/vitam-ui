@@ -1,0 +1,79 @@
+{
+  "httpCode": 200,
+  "$hits": {
+    "total": 1,
+    "offset": 0,
+    "limit": 0,
+    "size": 1
+  },
+  "$results": [
+    {
+      "FileInfo": {
+        "Filename": "Histoire de la station de sa création à 1946.odp",
+        "LastModified": "2016-06-02T15:32:29.146+02:00"
+      },
+      "#id": "aebaaaaaaahmnykxabnagalrcg7u3hyaaaaq",
+      "#nbobjects": 1,
+      "#qualifiers": [
+        {
+          "qualifier": "BinaryMaster",
+          "#nbc": 1,
+          "versions": [
+            {
+              "DataObjectGroupId": "aebaaaaaaahmnykxabnagalrcg7u3hyaaaaq",
+              "DataObjectVersion": "BinaryMaster_1",
+              "FormatIdentification": {
+                "FormatLitteral": "OpenDocument Presentation",
+                "MimeType": "application/vnd.oasis.opendocument.presentation",
+                "FormatId": "fmt/293"
+              },
+              "FileInfo": {
+                "Filename": "Histoire de la station de sa création à 1946.odp",
+                "LastModified": "2016-06-02T15:32:29.146+02:00"
+              },
+              "Size": 2201507,
+              "Uri": "Content/ID13.odp",
+              "MessageDigest": "422d96b979ebe53082b951048890cf09daebf1caf487d90a1e288978bdb57afb4c9f109159b40c8fc1319fa22bb96ded8b9e05b6529abc3a04e11f06707f0871",
+              "Algorithm": "SHA-512",
+              "#id": "aeaaaaaaaahmnykxabnagalrcg7u3hiaaaaq",
+              "#opi": "aeeaaaaaachf2vysaau5malrcg7upfqaaaaq",
+              "#storage": {
+                "strategyId": "default"
+              }
+            }
+          ]
+        }
+      ],
+      "#type": "",
+      "#tenant": 0,
+      "#unitups": [
+        "aeaqaaaaaahmnykxabnagalrcg7u3laaaaba"
+      ],
+      "#allunitups": [
+        "aeaqaaaaaahmnykxabnagalrcg7u3kyaaabq",
+        "aeaqaaaaaahmnykxabnagalrcg7u3laaaaba",
+        "aeaqaaaaaahmnykxabnagalrcg7u3iaaaabq"
+      ],
+      "#operations": [
+        "aeeaaaaaachf2vysaau5malrcg7upfqaaaaq"
+      ],
+      "#opi": "aeeaaaaaachf2vysaau5malrcg7upfqaaaaq",
+      "#originating_agency": "FRAN_NP_009915",
+      "#originating_agencies": [
+        "FRAN_NP_009915"
+      ],
+      "#storage": {
+        "strategyId": "default"
+      },
+      "#version": 1
+    }
+  ],
+  "$facetResults": [],
+  "$context": {
+    "$roots": [],
+    "$query": [],
+    "$filter": {},
+    "$projection": {},
+    "$facets": []
+  }
+}
