@@ -1,9 +1,39 @@
-.vitamui-checkbox {
-  width: 46px;
-  height: 46px;
-  padding: 14px;
+/* change .criteria-checkbox-choice into .vitamui-checkbox */
+input[type='checkbox'].vitamui-checkbox {
+  &:not([disabled]) {
+    @extend .clickable;
+  }
 
-  input {
-    margin: 0;
+  margin: 0;
+  height: 16px;
+  width: 16px;
+  accent-color: var(--vitamui-primary);
+}
+
+label.vitamui-checkbox {
+  input[type='checkbox'] {
+    @extend .vitamui-checkbox;
+  }
+  &:has(input:not([disabled])) {
+    @extend .clickable;
+  }
+
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
+
+  min-width: 24px;
+  min-height: 24px;
+  padding: 4px;
+
+  &.wide {
+    min-width: 46px;
+    min-height: 46px;
+    padding: 15px;
+  }
+
+  span {
+    @extend .ml-2;
   }
 }
