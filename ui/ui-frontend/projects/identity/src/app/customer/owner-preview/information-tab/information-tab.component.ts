@@ -39,7 +39,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { merge, of } from 'rxjs';
 import { catchError, debounceTime, filter, map, switchMap } from 'rxjs/operators';
 import { extend, isEmpty } from 'underscore';
-import { CountryOption, CountryService, Owner, StartupService, Tenant, diff } from 'vitamui-library';
+import { CountryOption, CountryService, diff, Owner, StartupService, Tenant } from 'vitamui-library';
 
 import { ALPHA_NUMERIC_REGEX, OWNER_CODE_MAX_LENGTH, OwnerFormValidators } from '../../owner-form/owner-form.validators';
 import { OwnerService } from '../../owner.service';
@@ -108,7 +108,7 @@ export class InformationTabComponent implements OnChanges, OnInit {
       customerId: [null, Validators.required],
       code: [
         null,
-        [Validators.required, Validators.pattern(ALPHA_NUMERIC_REGEX), Validators.maxLength(this.ownerCodeMaxLength)],
+        [Validators.required, Validators.pattern(ALPHA_NUMERIC_REGEX), Validators.maxLength(OWNER_CODE_MAX_LENGTH)],
         this.ownerFormValidators.uniqueCode(),
       ],
       name: [null, Validators.required],
