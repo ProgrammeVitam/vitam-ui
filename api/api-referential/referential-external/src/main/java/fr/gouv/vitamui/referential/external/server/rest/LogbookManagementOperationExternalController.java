@@ -37,11 +37,15 @@ import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.vitam.api.dto.ProcessDetailDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUIProcessDetailResponseDto;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
-import fr.gouv.vitamui.referential.external.server.service.LogbookManagementOperationExternalService;
+import fr.gouv.vitamui.referential.external.server.service.logbookmanagement.LogbookManagementOperationExternalService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RequestMapping(RestApi.LOGBOOK_MANAGEMENT_OPERATION_PATH)
 @RestController

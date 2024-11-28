@@ -1,0 +1,11 @@
+serverHost: {{ vitam_vars.access_external.host }}
+serverPort: {{ vitam_vars.access_external.port_service }}
+secure: true
+sslConfiguration :
+ keystore :
+  - keyPath: {{ vitamui_folder_conf }}/{{ vitam_cert.filename }}
+    keyPassword: {{ vitam_cert.password }}
+ truststore :
+  - keyPath: {{ vitamui_folder_conf }}/{{ vitam_cert.truststore_filename }}
+    keyPassword: {{ vitam_cert.password_truststore }}
+hostnameVerification: true

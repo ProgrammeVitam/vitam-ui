@@ -33,7 +33,7 @@ import fr.gouv.vitamui.commons.api.domain.IdDto;
 import fr.gouv.vitamui.commons.api.dtos.VitamUiOntologyDto;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
-import fr.gouv.vitamui.referential.external.server.service.OntologyExternalService;
+import fr.gouv.vitamui.referential.external.server.service.ontology.OntologyExternalService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -45,6 +45,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,12 +64,12 @@ class OntologyExternalControllerTest extends ApiReferentialControllerTest<IdDto>
     }
 
     @Test
-    void testGetInternalOntologyListThenReturnOntologiesValuesList() throws PreconditionFailedException {
+    void testGetInternalOntologyListThenReturnOntologiesValuesList() throws PreconditionFailedException, IOException {
         // Given
         List<VitamUiOntologyDto> expectedResponse = new ArrayList<>();
 
         // When
-        Mockito.when(ontologyExternalService.getInternalOntologyList()).thenReturn(expectedResponse);
+        Mockito.when(ontologyExternalService.readInternalOntologyFromFile()).thenReturn(expectedResponse);
         List<VitamUiOntologyDto> response = ontologyExternalController.getInternalOntologiesList();
 
         // Then

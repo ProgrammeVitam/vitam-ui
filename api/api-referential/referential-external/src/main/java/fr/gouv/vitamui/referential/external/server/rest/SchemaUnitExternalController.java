@@ -27,17 +27,17 @@
 
 package fr.gouv.vitamui.referential.external.server.rest;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitamui.common.security.SafeFileChecker;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
-import fr.gouv.vitamui.referential.external.server.service.SchemaExternalService;
+import fr.gouv.vitamui.referential.external.server.service.schema.SchemaExternalService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -65,7 +65,7 @@ public class SchemaUnitExternalController {
 
     @Secured(ServicesData.ROLE_IMPORT_SCHEMAS)
     @PostMapping(CommonConstants.PATH_IMPORT)
-    public JsonNode importUnitSchemas(@RequestParam("file") MultipartFile file) {
+    public ResponseEntity<Void> importUnitSchemas(@RequestParam("file") MultipartFile file) {
         if (file == null || file.isEmpty()) {
             throw new IllegalArgumentException("The file cannot be null or empty.");
         }
@@ -74,6 +74,6 @@ public class SchemaUnitExternalController {
         InternalHttpContext internalHttpContext = InternalHttpContext.buildFromExternalHttpContext(
             externalSecurityService.getHttpContext()
         );
-        return schemaExternalService.importUnitSchemas(internalHttpContext, file.getOriginalFilename(), file);
+        return schemaExternalService.importUnitSchema(file);
     }
 }

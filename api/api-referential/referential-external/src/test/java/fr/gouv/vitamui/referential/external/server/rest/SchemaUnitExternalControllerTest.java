@@ -1,9 +1,8 @@
 package fr.gouv.vitamui.referential.external.server.rest;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
-import fr.gouv.vitamui.referential.external.server.service.SchemaExternalService;
+import fr.gouv.vitamui.referential.external.server.service.schema.SchemaExternalService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,6 +11,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
+import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockMultipartFile;
 
 import java.io.IOException;
@@ -55,10 +55,10 @@ public class SchemaUnitExternalControllerTest {
     @DisplayName("Test importUnitSchema with valid file and successful response")
     void testImportSchemas_Success() throws IOException {
         // Given
-        JsonNode expectedResponse = mock(JsonNode.class);
+        ResponseEntity<Void> expectedResponse = mock(ResponseEntity.class);
 
         // Mock schemaExternalService.importUnitSchemas behavior
-        when(schemaExternalService.importUnitSchemas(any(), any(), any())).thenReturn(expectedResponse);
+        when(schemaExternalService.importUnitSchema(any())).thenReturn(expectedResponse);
 
         // Mock externalSecurityService.getHttpContext() to return a valid ExternalHttpContext
         ExternalHttpContext mockHttpContext = mock(ExternalHttpContext.class);
@@ -75,7 +75,7 @@ public class SchemaUnitExternalControllerTest {
         );
 
         // When
-        JsonNode actualResponse = schemaExternalController.importUnitSchemas(validFile);
+        ResponseEntity<Void> actualResponse = schemaExternalController.importUnitSchemas(validFile);
 
         // Then
         assertNotNull(actualResponse, "The response should not be null.");
@@ -128,7 +128,7 @@ public class SchemaUnitExternalControllerTest {
             "valid content".getBytes()
         );
 
-        when(schemaExternalService.importUnitSchemas(any(), any(), any())).thenThrow(
+        when(schemaExternalService.importUnitSchema(any())).thenThrow(
             new RuntimeException("Mocked exception from schemaExternalService")
         );
 

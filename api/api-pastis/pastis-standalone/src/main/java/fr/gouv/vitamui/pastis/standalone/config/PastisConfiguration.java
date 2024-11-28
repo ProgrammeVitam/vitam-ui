@@ -39,6 +39,7 @@ knowledge of the CeCILL-C license and that you accept its terms.
 package fr.gouv.vitamui.pastis.standalone.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import fr.gouv.vitamui.pastis.common.service.JsonFromPUA;
 import fr.gouv.vitamui.pastis.common.service.PuaFromJSON;
 import fr.gouv.vitamui.pastis.common.service.PuaPastisValidator;
@@ -68,6 +69,11 @@ public class PastisConfiguration {
     }
 
     @Bean
+    public ExternalSecurityService externalSecurityService() {
+        return new ExternalSecurityService();
+    }
+
+    @Bean
     public JsonFromPUA jsonFromPUA() {
         return new JsonFromPUA();
     }
@@ -86,7 +92,9 @@ public class PastisConfiguration {
             puaPastisValidator(),
             jsonFromPUA(),
             puaFromJSON(),
-            new MetaModelService(new ExternalSchemaServiceStandaloneImpl(objectMapper))
+            new MetaModelService(new ExternalSchemaServiceStandaloneImpl(objectMapper)),
+            null,
+            externalSecurityService()
         );
     }
 

@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableMap;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
-import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import fr.gouv.vitamui.pastis.common.dto.ElementProperties;
 import fr.gouv.vitamui.pastis.common.dto.profiles.ProfileResponse;
 import fr.gouv.vitamui.pastis.common.dto.profiles.ProfileType;
@@ -13,7 +12,6 @@ import fr.gouv.vitamui.pastis.common.exception.TechnicalException;
 import fr.gouv.vitamui.pastis.common.rest.RestApi;
 import fr.gouv.vitamui.pastis.server.security.WebSecurityConfig;
 import fr.gouv.vitamui.pastis.server.service.PastisService;
-import fr.gouv.vitamui.referential.internal.client.ProfileInternalRestClient;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -43,17 +41,11 @@ public class PastisControllerTest extends ControllerTest {
     @MockBean
     private PastisService service;
 
-    @MockBean
-    private ExternalSecurityService externalSecurityService;
-
-    @MockBean
-    private ProfileInternalRestClient profileInternalRestClient;
-
     private PastisController controller;
 
     @Before
     public void setUp() throws Exception {
-        controller = new PastisController(externalSecurityService, service, profileInternalRestClient);
+        controller = new PastisController(service);
     }
 
     @Test

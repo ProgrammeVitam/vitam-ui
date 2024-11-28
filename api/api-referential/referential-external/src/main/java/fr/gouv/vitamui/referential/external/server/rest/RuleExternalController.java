@@ -38,6 +38,7 @@ package fr.gouv.vitamui.referential.external.server.rest;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
+import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitamui.common.security.SafeFileChecker;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
@@ -47,11 +48,11 @@ import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
+import fr.gouv.vitamui.commons.rest.dto.RuleDto;
 import fr.gouv.vitamui.commons.rest.util.RestUtils;
 import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsResponseDto;
-import fr.gouv.vitamui.referential.common.dto.RuleDto;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
-import fr.gouv.vitamui.referential.external.server.service.RuleExternalService;
+import fr.gouv.vitamui.referential.external.server.service.rule.RuleExternalService;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
@@ -63,7 +64,17 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.util.Assert;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
@@ -93,7 +104,7 @@ public class RuleExternalController {
     public Collection<RuleDto> getAll(final Optional<String> criteria) {
         LOGGER.debug("get all rules criteria={}", criteria);
         SanityChecker.sanitizeCriteria(criteria);
-        return ruleExternalService.getAll(criteria);
+        return ruleExternalService.getAll();
     }
 
     @Secured(ServicesData.ROLE_GET_RULES)
@@ -165,13 +176,13 @@ public class RuleExternalController {
             StringUtils.equals(id, (String) partialDto.get("id")),
             "The DTO identifier must match the path identifier for update."
         );
-        return RestUtils.buildBooleanResponse(ruleExternalService.patchRule(id, partialDto));
+        return RestUtils.buildBooleanResponse(ruleExternalService.patchRule(partialDto));
     }
 
     @Secured(ServicesData.ROLE_GET_RULES)
     @GetMapping(CommonConstants.PATH_LOGBOOK)
     public LogbookOperationsResponseDto findHistoryById(final @PathVariable("id") String id)
-        throws InvalidParseOperationException, PreconditionFailedException {
+        throws InvalidParseOperationException, PreconditionFailedException, VitamClientException {
         ParameterChecker.checkParameter(IDENTIFIER_MANDATORY_MESSAGE, id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("get logbook for accessContract with id :{}", id);

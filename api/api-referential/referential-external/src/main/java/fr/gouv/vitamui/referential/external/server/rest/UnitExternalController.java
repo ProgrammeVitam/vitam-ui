@@ -36,6 +36,7 @@
  */
 package fr.gouv.vitamui.referential.external.server.rest;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
@@ -45,7 +46,7 @@ import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
-import fr.gouv.vitamui.referential.external.server.service.UnitExternalService;
+import fr.gouv.vitamui.referential.external.server.service.unit.UnitExtternalService;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,12 +67,12 @@ import java.util.Optional;
 public class UnitExternalController {
 
     @Autowired
-    private UnitExternalService unitExternalService;
+    private UnitExtternalService unitExternalService;
 
     @GetMapping(CommonConstants.PATH_ID)
     @Secured(ServicesData.ROLE_GET_UNITS)
     public VitamUISearchResponseDto searchById(final @PathVariable("id") String id)
-        throws InvalidParseOperationException {
+        throws InvalidParseOperationException, VitamClientException {
         ParameterChecker.checkParameter("The archive unit id is mandatory : ", id);
         SanityChecker.checkSecureParameter(id);
         return unitExternalService.findUnitById(id);
@@ -79,7 +80,8 @@ public class UnitExternalController {
 
     @PostMapping({ RestApi.DSL_PATH, RestApi.DSL_PATH + CommonConstants.PATH_ID })
     @Secured(ServicesData.ROLE_GET_UNITS)
-    public JsonNode searchByDsl(final @PathVariable Optional<String> id, final @RequestBody JsonNode dsl) {
+    public JsonNode searchByDsl(final @PathVariable Optional<String> id, final @RequestBody JsonNode dsl)
+        throws VitamClientException {
         ParameterChecker.checkParameter("The dsl query is mandatory : ", dsl);
         SanityChecker.sanitizeJson(dsl);
         return unitExternalService.findUnitByDsl(id, dsl);
@@ -97,7 +99,7 @@ public class UnitExternalController {
 
     @Secured(ServicesData.ROLE_GET_FILLING_PLAN_ACCESS)
     @GetMapping(RestApi.FILING_PLAN_PATH)
-    public VitamUISearchResponseDto getFilingAndHoldingUnits() {
+    public VitamUISearchResponseDto getFilingAndHoldingUnits() throws VitamClientException, JsonProcessingException {
         return unitExternalService.getFilingAndHoldingUnits();
     }
 }
