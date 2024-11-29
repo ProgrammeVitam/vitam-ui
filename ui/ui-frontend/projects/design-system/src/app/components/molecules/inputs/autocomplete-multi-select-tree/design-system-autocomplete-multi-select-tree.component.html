@@ -1,0 +1,44 @@
+<h2>{{ 'INPUT.AUTOCOMPLETE_MULTI_SELECT_TREE.TITLE' | translate }}</h2>
+<div>
+  <div class="row">
+    <vitamui-common-autocomplete-multi-select-tree
+      class="col-6"
+      [formControl]="autoCompleteMultiSelectTree"
+      [multiSelectOptions]="schemaOptions"
+      [getDisplayValue]="getSchemaElementDisplayValue"
+      [placeholder]="'INPUT.AUTOCOMPLETE_MULTI_SELECT_TREE.PLACEHOLDER.OPTIONAL' | translate"
+      [searchBarPlaceHolder]="'INPUT.AUTOCOMPLETE_MULTI_SELECT_TREE.SEARCH_BAR_PLACEHOLDER' | translate"
+    >
+    </vitamui-common-autocomplete-multi-select-tree>
+    <vitamui-common-autocomplete-multi-select-tree
+      class="col-6"
+      required
+      [formControl]="autoCompleteMultiSelectTree2"
+      [multiSelectOptions]="schemaOptions"
+      [getDisplayValue]="getSchemaElementDisplayValue"
+      [placeholder]="'INPUT.AUTOCOMPLETE_MULTI_SELECT_TREE.PLACEHOLDER.MANDATORY' | translate"
+      [searchBarPlaceHolder]="'INPUT.AUTOCOMPLETE_MULTI_SELECT_TREE.SEARCH_BAR_PLACEHOLDER' | translate"
+    >
+      <vitamui-common-input-error *ngIf="autoCompleteMultiSelectTree2.touched && autoCompleteMultiSelectTree2.hasError('required')"
+        >{{ 'COMMON.REQUIRED' | translate }}
+      </vitamui-common-input-error>
+    </vitamui-common-autocomplete-multi-select-tree>
+    <vitamui-common-autocomplete-multi-select-tree
+      class="col-6"
+      [multiSelectOptions]="schemaOptions"
+      [getDisplayValue]="getSchemaElementDisplayValue"
+      [placeholder]="'INPUT.AUTOCOMPLETE_MULTI_SELECT_TREE.PLACEHOLDER.NO_SEARCH' | translate"
+      [enableSearch]="false"
+    >
+    </vitamui-common-autocomplete-multi-select-tree>
+    <vitamui-common-autocomplete-multi-select-tree
+      class="col-6"
+      [multiSelectOptions]="schemaOptions"
+      [getDisplayValue]="getSchemaElementDisplayValue"
+      [placeholder]="'INPUT.AUTOCOMPLETE_MULTI_SELECT_TREE.PLACEHOLDER.NO_SEARCH_NO_CART' | translate"
+      [enableSearch]="false"
+      [enableDisplaySelected]="false"
+    >
+    </vitamui-common-autocomplete-multi-select-tree>
+  </div>
+</div>

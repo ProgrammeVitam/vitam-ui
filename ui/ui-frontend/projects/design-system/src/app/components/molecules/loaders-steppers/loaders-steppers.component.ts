@@ -35,19 +35,25 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component } from '@angular/core';
-import { Router, Routes } from '@angular/router';
+import { CommonProgressBarModule } from 'vitamui-library';
+import { MatLegacyProgressSpinnerModule as MatProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
 
 @Component({
-  selector: 'design-system-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'],
+  templateUrl: './loaders-steppers.component.html',
+  styleUrls: ['./loaders-steppers.component.scss'],
+  standalone: true,
+  imports: [CommonProgressBarModule, MatProgressSpinnerModule],
 })
-export class AppComponent {
-  title = 'Design system App';
+export class LoadersSteppersComponent {
+  nbSteps = [2, 3, 4, 5];
+  step = 0;
+  percent = 0;
 
-  routes: Routes;
-
-  constructor(router: Router) {
-    this.routes = router.config;
+  constructor() {
+    setInterval(() => this.step++, 1000);
+    setInterval(() => {
+      this.percent += Math.round(Math.random() * 10);
+      if (this.percent > 100) this.percent = 0;
+    }, 400);
   }
 }

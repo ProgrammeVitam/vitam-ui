@@ -10,6 +10,10 @@
   }
 
   mat-expansion-panel {
+    mat-expansion-panel {
+      padding-left: 1rem;
+    }
+
     mat-expansion-panel-header {
       &.mat-expanded {
         height: var(--mat-expansion-header-collapsed-state-height);
@@ -20,14 +24,11 @@
       }
 
       ::ng-deep .mat-content {
-        justify-content: center;
         font-weight: bold;
       }
-    }
 
-    &:focus,
-    &.active {
-      mat-expansion-panel-header {
+      &:focus,
+      &.active {
         color: white;
         background-color: var(--vitamui-primary);
         outline: none;
@@ -44,31 +45,31 @@
 
     ::ng-deep .mat-expansion-panel-body {
       padding: 0;
-      ul {
-        font-size: 80%;
-        list-style: none;
-        padding: 0 0 0 1rem;
-        li a {
-          height: 2rem;
-          padding: 0 1rem;
-          display: inline-block;
-          cursor: pointer;
-          white-space: nowrap;
-          text-overflow: ellipsis;
-          line-height: 2rem;
-          width: 100%;
-          box-sizing: border-box;
-          overflow: hidden;
+      a {
+        height: 2rem;
+        padding: 0 1rem;
+        display: inline-block;
+        cursor: pointer;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        line-height: 2rem;
+        width: 100%;
+        box-sizing: border-box;
+        overflow: hidden;
+        text-decoration: none;
+        color: var(--vitamui-grey-900);
+
+        &:hover {
+          background: var(--mat-expansion-header-hover-state-layer-color);
+        }
+
+        &.active {
+          background: var(--vitamui-primary-100);
 
           &:hover {
-            background: var(--mat-expansion-header-hover-state-layer-color);
+            background: var(--vitamui-primary-200);
           }
         }
-      }
-      > ul {
-        margin: 0;
-        padding: 0;
-        font-size: 100%;
       }
     }
   }

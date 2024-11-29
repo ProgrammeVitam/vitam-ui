@@ -34,20 +34,29 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component } from '@angular/core';
-import { Router, Routes } from '@angular/router';
+import { Component, Input } from '@angular/core';
+import { AbstractControl } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
-  selector: 'design-system-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'],
+  selector: 'vitamui-form-errors',
+  standalone: true,
+  imports: [MatFormFieldModule, TranslateModule],
+  templateUrl: './form-errors.component.html',
+  styleUrl: './form-errors.component.scss',
 })
-export class AppComponent {
-  title = 'Design system App';
+export class FormErrorsComponent {
+  @Input({ required: true }) control: AbstractControl;
+  /**
+   * By default, the i18n key for the error message is computed as `ERRORS.[errorKey]`.
+   * To use a specific i18n key instead (to override the default value or for special validators), provide an object in this errorMessageMap whit errorKey as key and i18n message key as value: `{"required": "MY.ERROR.REQUIRED"}`.
+   */
+  @Input() errorMessageMap: { [key: string]: string } = {};
 
-  routes: Routes;
-
-  constructor(router: Router) {
-    this.routes = router.config;
+  getErrorMessageKey(errorKey: string): string {
+    return (this.errorMessageMap && this.errorMessageMap[errorKey]) || 'ERRORS.' + errorKey;
   }
+
+  protected readonly Object = Object;
 }

@@ -35,19 +35,46 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component } from '@angular/core';
-import { Router, Routes } from '@angular/router';
+import { rgbToHsl, toHex } from 'vitamui-library';
+import { KeyValuePipe, NgClass, NgForOf } from '@angular/common';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
-  selector: 'design-system-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'],
+  templateUrl: './colors.component.html',
+  styleUrls: ['./colors.component.scss'],
+  standalone: true,
+  imports: [NgClass, TranslateModule, KeyValuePipe, NgForOf],
 })
-export class AppComponent {
-  title = 'Design system App';
+export class ColorsComponent {
+  private hueIds = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900];
+  colors = [
+    { key: 'PRIMARY', varName: '--vitamui-primary', hueIds: this.hueIds },
+    { key: 'SECONDARY', varName: '--vitamui-secondary', hueIds: this.hueIds },
+    { key: 'RED', varName: '--vitamui-red', hueIds: this.hueIds },
+    { key: 'ORANGE', varName: '--vitamui-orange', hueIds: this.hueIds },
+    { key: 'GREEN', varName: '--vitamui-green', hueIds: this.hueIds },
+    { key: 'GREY', varName: '--vitamui-grey', hueIds: this.hueIds },
+    { key: 'ADDITIONAL', varName: '--vitamui-additional', hueIds: this.hueIds },
+    { key: 'WHITE', varName: '--vitamui-white', border: true },
+    { key: 'PRIMARY_LIGHT', varName: '--vitamui-background' },
+  ];
 
-  routes: Routes;
+  private colorToRGB(color: string) {
+    const [_, r, g, b] = /rgba?\((\d+), (\d+), (\d+)(, \d+)?\)/.exec(color.toString());
+    return { r: Number.parseInt(r), g: Number.parseInt(g), b: Number.parseInt(b) };
+  }
 
-  constructor(router: Router) {
-    this.routes = router.config;
+  colorToHex(element: HTMLElement): string {
+    const color = getComputedStyle(element).backgroundColor;
+    if (!color) return color;
+    const { r, g, b } = this.colorToRGB(color);
+    return `#${toHex(r)}${toHex(g)}${toHex(b)}`.toUpperCase();
+  }
+
+  colorToHsl(element: HTMLElement): { S?: number; H?: number; L?: number } {
+    const color = getComputedStyle(element).backgroundColor;
+    if (!color) return {};
+    const { h, s, l } = rgbToHsl(this.colorToRGB(color));
+    return { H: Math.round(360 * h), S: s, L: l };
   }
 }

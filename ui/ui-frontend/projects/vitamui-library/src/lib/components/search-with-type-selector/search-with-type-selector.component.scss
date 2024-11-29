@@ -1,0 +1,81 @@
+:host {
+  display: flex;
+  flex-direction: column;
+}
+
+.vitamui-input {
+  padding: 0;
+}
+
+.type-selector-trigger {
+  display: flex;
+  align-items: center;
+  border-radius: 5px 0 0 5px;
+  border: none;
+  border-right: 1px solid var(--vitamui-grey-200);
+  background: var(--vitamui-background);
+  height: 100%;
+  cursor: pointer;
+
+  :host.focused &,
+  :host:has(.focus-within-zone:focus-within) & {
+    border-right-color: var(--vitamui-primary);
+  }
+
+  :host.ng-invalid.ng-touched & {
+    border-right-color: var(--vitamui-red);
+  }
+
+  .search-icon {
+    position: relative;
+    display: flex;
+    height: 35px;
+    width: 41px;
+    .vitamui-icon-search {
+      position: absolute;
+      &:nth-of-type(2) {
+        color: var(--vitamui-primary);
+        font-size: 35px;
+        left: 0;
+        top: 0;
+      }
+      &:nth-of-type(1) {
+        color: var(--vitamui-primary-200);
+        font-size: 24px;
+        right: 0;
+        top: 4px;
+      }
+    }
+  }
+  .vitamui-icon-chevron-down {
+    font-size: 24px;
+    color: var(--vitamui-grey-600);
+  }
+}
+
+.input-box {
+  position: relative;
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+label {
+  user-select: none;
+  cursor: text;
+  pointer-events: none;
+
+  position: absolute;
+  line-height: 0 !important;
+  font-size: 14px;
+  top: 50%;
+  left: 15px;
+  transition:
+    font-size 150ms ease-out,
+    top 150ms ease-out;
+}
+
+input {
+  padding: 0 15px !important;
+  border: none;
+}

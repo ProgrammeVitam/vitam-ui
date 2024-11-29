@@ -1,0 +1,12 @@
+@if (control.touched) {
+  @for (errorKey of Object.keys(control.errors || {}); track errorKey) {
+    <div class="mt-1 hgap-1">
+      <i class="vitamui-icon vitamui-icon-anomalie danger"></i>
+      <mat-hint
+        class="text caption danger"
+        [translate]="getErrorMessageKey(errorKey)"
+        [translateParams]="control.errors[errorKey]"
+      ></mat-hint>
+    </div>
+  }
+}

@@ -92,7 +92,7 @@ label {
   :host.vitamui-float & {
     font-size: 12px;
     top: 10px;
-    transform: none;
+    transform: none !important;
   }
 }
 

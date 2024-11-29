@@ -35,19 +35,31 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component } from '@angular/core';
-import { Router, Routes } from '@angular/router';
+import { SearchType, SearchWithTypeSelectorComponent, SearchWithTypeSelectorValue } from 'vitamui-library';
+import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
-  selector: 'design-system-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'],
+  selector: 'design-system-search-with-type-selector',
+  standalone: true,
+  imports: [SearchWithTypeSelectorComponent, ReactiveFormsModule],
+  templateUrl: './design-system-search-with-type-selector.component.html',
+  styleUrl: './design-system-search-with-type-selector.component.scss',
 })
-export class AppComponent {
-  title = 'Design system App';
-
-  routes: Routes;
-
-  constructor(router: Router) {
-    this.routes = router.config;
-  }
+export class DesignSystemSearchWithTypeSelectorComponent {
+  searchTypes: SearchType[] = [
+    { label: 'Recherche approchante', value: 'approx' },
+    { label: 'Recherche exacte', value: 'exact' },
+  ];
+  control = new FormControl();
+  activeControl = new FormControl<SearchWithTypeSelectorValue>({ type: this.searchTypes[1], value: 'Ma recherche' });
+  disabledControl = (() => {
+    const fc = new FormControl('');
+    fc.disable();
+    return fc;
+  })();
+  errorControl = (() => {
+    const fc = new FormControl(null, [Validators.required]);
+    fc.markAsTouched();
+    return fc;
+  })();
 }

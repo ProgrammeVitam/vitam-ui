@@ -35,19 +35,19 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component } from '@angular/core';
-import { Router, Routes } from '@angular/router';
+import { FormControl } from '@angular/forms';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
-  selector: 'design-system-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'],
+  templateUrl: './buttons.component.html',
+  styleUrls: ['./buttons.component.scss'],
+  standalone: true,
+  imports: [TranslateModule],
 })
-export class AppComponent {
-  title = 'Design system App';
+export class ButtonsComponent {
+  public control = new FormControl();
 
-  routes: Routes;
-
-  constructor(router: Router) {
-    this.routes = router.config;
+  public onClick(): void {
+    console.log('[onClick]');
   }
 }

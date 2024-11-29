@@ -1,5 +1,34 @@
 @import '../mixins/elevation';
 
+.mat-mdc-menu-panel {
+  --mat-menu-item-label-text-color: var(--vitamui-grey-900);
+  --mat-menu-item-hover-state-layer-color: var(--vitamui-background);
+  --mat-menu-item-focus-state-layer-color: var(--vitamui-background);
+
+  @include shadow-16dp-dark('!important');
+  border-radius: 10px !important;
+  scrollbar-color: var(--vitamui-primary) var(--vitamui-primary-50);
+  scrollbar-width: thin;
+
+  .mat-mdc-menu-content {
+    max-height: 360px;
+
+    .mat-mdc-menu-item {
+      border-bottom: 1px solid var(--vitamui-grey-300);
+      height: 51px;
+      cursor: pointer;
+
+      &:last-of-type {
+        border-bottom: none;
+      }
+
+      &.selected .mat-mdc-menu-item-text {
+        font-weight: 700;
+      }
+    }
+  }
+}
+
 .vitamui-menu-panel.mat-menu-panel {
   border-radius: 10px;
   background: transparent;

@@ -34,20 +34,50 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component } from '@angular/core';
-import { Router, Routes } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
+import {
+  CountryOption,
+  CountryService,
+  Option,
+  VitamUIAutocompleteMultiSelectModule,
+  VitamuiAutocompleteMultiselectOptions,
+} from 'vitamui-library';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgIf } from '@angular/common';
+import { extend } from 'underscore';
 
 @Component({
-  selector: 'design-system-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'],
+  selector: 'design-system-autocomplete-multi-select',
+  standalone: true,
+  imports: [TranslateModule, VitamUIAutocompleteMultiSelectModule, FormsModule, ReactiveFormsModule, NgIf],
+  templateUrl: './design-system-autocomplete-multi-select.component.html',
+  styleUrl: './design-system-autocomplete-multi-select.component.scss',
 })
-export class AppComponent {
-  title = 'Design system App';
+export class DesignSystemAutocompleteMultiSelectComponent implements OnInit {
+  public autoCompleteMultiSelect = new FormControl();
 
-  routes: Routes;
+  public multiSelectOptions: VitamuiAutocompleteMultiselectOptions;
 
-  constructor(router: Router) {
-    this.routes = router.config;
+  constructor(private countryService: CountryService) {}
+
+  ngOnInit() {
+    this.initMultiselectOptions();
   }
+
+  private initMultiselectOptions(): void {
+    this.countryService.getAvailableCountries().subscribe((values: CountryOption[]) => {
+      const countries = values.map((value) =>
+        extend({
+          key: value.code,
+          label: value.name,
+        }),
+      );
+      this.multiSelectOptions = { options: countries, customSorting: this.sortAlphabetically };
+    });
+  }
+
+  private sortAlphabetically = (a: Option, b: Option): number => {
+    return a.label.toLocaleLowerCase() > b.label.toLocaleLowerCase() ? 1 : -1;
+  };
 }

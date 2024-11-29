@@ -35,19 +35,20 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component } from '@angular/core';
-import { Router, Routes } from '@angular/router';
+import { ApplicationId } from 'vitamui-library';
+import { CommonModule } from '@angular/common';
+import { VitamUICommonModule } from 'vitamui-library';
 
 @Component({
-  selector: 'design-system-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'],
+  templateUrl: './breadcrumbs.component.html',
+  styleUrls: ['./breadcrumbs.component.scss'],
+  standalone: true,
+  imports: [CommonModule, VitamUICommonModule],
 })
-export class AppComponent {
-  title = 'Design system App';
+export class BreadcrumbsComponent {
+  public breadCrumbData = [{ identifier: ApplicationId.PORTAL_APP }, { identifier: ApplicationId.CUSTOMERS_APP }, { label: 'Client n°1' }];
 
-  routes: Routes;
-
-  constructor(router: Router) {
-    this.routes = router.config;
+  public onClick(val: string): void {
+    console.log('[onClick]', val);
   }
 }

@@ -35,19 +35,12 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component } from '@angular/core';
-import { Router, Routes } from '@angular/router';
 
 @Component({
-  selector: 'design-system-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'],
+  selector: 'design-system-checkbox',
+  standalone: true,
+  imports: [],
+  templateUrl: './design-system-checkbox.component.html',
+  styleUrl: './design-system-checkbox.component.scss',
 })
-export class AppComponent {
-  title = 'Design system App';
-
-  routes: Routes;
-
-  constructor(router: Router) {
-    this.routes = router.config;
-  }
-}
+export class DesignSystemCheckboxComponent {}

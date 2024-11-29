@@ -35,19 +35,15 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component } from '@angular/core';
-import { Router, Routes } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule } from '@angular/forms';
+import { VitamUICommonModule } from 'vitamui-library';
 
 @Component({
-  selector: 'design-system-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'],
+  selector: 'design-system-tooltip',
+  templateUrl: './tooltip.component.html',
+  styleUrls: ['./tooltip.component.scss'],
+  standalone: true,
+  imports: [CommonModule, VitamUICommonModule, ReactiveFormsModule],
 })
-export class AppComponent {
-  title = 'Design system App';
-
-  routes: Routes;
-
-  constructor(router: Router) {
-    this.routes = router.config;
-  }
-}
+export class TooltipComponent {}
