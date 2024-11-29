@@ -41,7 +41,7 @@ import { catchError, debounceTime, filter, map, switchMap } from 'rxjs/operators
 import { CountryOption, CountryService, diff, Owner, StartupService, Tenant } from 'ui-frontend-common';
 import { extend, isEmpty } from 'underscore';
 
-import { ALPHA_NUMERIC_REGEX, OwnerFormValidators, OWNER_CODE_MAX_LENGTH } from '../../owner-form/owner-form.validators';
+import { ALPHA_NUMERIC_REGEX, OWNER_CODE_MAX_LENGTH, OwnerFormValidators } from '../../owner-form/owner-form.validators';
 import { OwnerService } from '../../owner.service';
 import { TenantFormValidators } from '../../tenant-create/tenant-form.validators';
 import { TenantService } from '../../tenant.service';
@@ -108,7 +108,7 @@ export class InformationTabComponent implements OnChanges, OnInit {
       customerId: [null, Validators.required],
       code: [
         null,
-        [Validators.required, Validators.pattern(ALPHA_NUMERIC_REGEX), Validators.maxLength(this.ownerCodeMaxLength)],
+        [Validators.required, Validators.pattern(ALPHA_NUMERIC_REGEX), Validators.maxLength(OWNER_CODE_MAX_LENGTH)],
         this.ownerFormValidators.uniqueCode(),
       ],
       name: [null, Validators.required],

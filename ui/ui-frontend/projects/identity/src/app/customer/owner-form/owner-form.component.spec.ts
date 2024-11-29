@@ -43,14 +43,15 @@ import { MatSelectModule } from '@angular/material/select';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { EMPTY, of, timer } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { BASE_URL, CountryService, LoggerModule, StartupService, WINDOW_LOCATION } from 'ui-frontend-common';
-import { Owner } from 'ui-frontend-common';
+import { BASE_URL, CountryService, LoggerModule, Owner, StartupService, WINDOW_LOCATION } from 'ui-frontend-common';
 import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 import { OwnerService } from '../owner.service';
 import { OwnerFormComponent } from './owner-form.component';
 import { OwnerFormValidators } from './owner-form.validators';
 
-@Component({ template: `<app-owner-form [customerId]="customerId" [(ngModel)]="owner"></app-owner-form>` })
+@Component({
+  template: ` <app-owner-form [customerId]="customerId" [(ngModel)]="owner"></app-owner-form>`,
+})
 class TesthostComponent {
   owner: Owner = null;
   customerId = '4242';
@@ -138,6 +139,33 @@ describe('OwnerFormComponent', () => {
       identifier: null,
       customerId: '4242',
       code: 'invalid-code',
+      name: 'Toto',
+      companyName: 'Toto & Co.',
+      address: {
+        street: 'Street name',
+        zipCode: '2134',
+        city: 'Paris',
+        country: 'FR',
+      },
+      readonly: false,
+    };
+
+    testhost.ownerFormComponent.form.get('code').setValue(owner.code);
+    testhost.ownerFormComponent.form.get('name').setValue(owner.name);
+    testhost.ownerFormComponent.form.get('companyName').setValue(owner.companyName);
+    testhost.ownerFormComponent.form.get('address.street').setValue(owner.address.street);
+    testhost.ownerFormComponent.form.get('address.zipCode').setValue(owner.address.zipCode);
+    testhost.ownerFormComponent.form.get('address.city').setValue(owner.address.city);
+    testhost.ownerFormComponent.form.get('address.country').setValue(owner.address.country);
+    expect(testhost.owner).toBe(null);
+  });
+
+  it('should set owner to null when the code is short ', () => {
+    const owner: Owner = {
+      id: null,
+      identifier: null,
+      customerId: '4242',
+      code: '135', //short code
       name: 'Toto',
       companyName: 'Toto & Co.',
       address: {
