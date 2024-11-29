@@ -214,3 +214,7 @@ export * from './app/modules/agencies/agency.service';
 export * from './app/modules/archive-unit-profiles/archive-unit-profiles.service';
 export * from './app/modules/config.service';
 export * from './app/modules/models/app.configuration.interface';
+export * from './app/modules/url/query-params.service';
+export * from './app/modules/date/date.service';
+export * from './app/modules/date/date';
+export * from './app/modules/models/criteria/search-criteria.service';

@@ -107,9 +107,7 @@ export class ProjectListComponent extends InfiniteScrollTable<Project> implement
   }
 
   searchArchiveUnitsByProject(project: Project) {
-    this.router.navigate(['collect/tenant/' + this.tenantIdentifier + '/units', project.id], {
-      queryParams: { projectName: project.messageIdentifier },
-    });
+    this.router.navigate(['collect/tenant/' + this.tenantIdentifier + '/units', project.id]);
   }
 
   searchTransactions(project: Project) {

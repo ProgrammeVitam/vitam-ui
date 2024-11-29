@@ -40,7 +40,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
-import { InjectorModule, LoggerModule, WINDOW_LOCATION } from 'vitamui-library';
+import { InjectorModule, LoggerModule, WINDOW_LOCATION, VitamUICommonModule, BASE_URL, ENVIRONMENT } from 'vitamui-library';
 import { LogbookManagementOperationComponent } from './logbook-management-operation.component';
 
 describe('LogbookManagementOperationComponent', () => {
@@ -49,14 +49,23 @@ describe('LogbookManagementOperationComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, InjectorModule, TranslateModule.forRoot(), LoggerModule.forRoot()],
+      imports: [ReactiveFormsModule, InjectorModule, VitamUICommonModule, TranslateModule.forRoot(), LoggerModule.forRoot()],
       declarations: [LogbookManagementOperationComponent],
       providers: [
         {
           provide: ActivatedRoute,
-          useValue: { params: of({ tenantIdentifier: 1 }), data: of({ appId: 'LOGBOOK_MANAGEMENT_OPERATION_APP' }) },
+          useValue: {
+            params: of({ tenantIdentifier: 1 }),
+            data: of({ appId: 'LOGBOOK_MANAGEMENT_OPERATION_APP' }),
+            queryParams: of({}),
+            snapshot: {
+              data: { appId: 'LOGBOOK_MANAGEMENT_OPERATION_APP' },
+            },
+          },
         },
         { provide: WINDOW_LOCATION, useValue: {} },
+        { provide: BASE_URL, useValue: '' },
+        { provide: ENVIRONMENT, useValue: '' },
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();

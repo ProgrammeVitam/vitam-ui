@@ -1,5 +1,5 @@
 <div class="container">
-  <form [formGroup]="simpleCriteriaForm" class="p-4">
+  <form [formGroup]="form" class="p-4">
     <div class="hgap-4 align-items-start pb-4">
       <vitamui-common-editable-input
         formControlName="title"
@@ -103,7 +103,7 @@
         <label class="criteria-checkbox-choice">
           <input
             type="checkbox"
-            (click)="addArchiveUnitTypeCriteria('ARCHIVE_UNIT_WITH_OBJECTS', $event)"
+            (click)="toggleArchiveUnitCriteria('ARCHIVE_UNIT_WITH_OBJECTS', $event)"
             [checked]="archiveUnitTypesCriteria.get('ARCHIVE_UNIT_WITH_OBJECTS')"
           />
           <span>{{ 'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.UNIT_TYPE.ARCHIVE_UNIT_WITH_OBJECTS' | translate }}</span>
@@ -117,7 +117,7 @@
         <label class="criteria-checkbox-choice">
           <input
             type="checkbox"
-            (click)="addArchiveUnitTypeCriteria('ARCHIVE_UNIT_WITHOUT_OBJECTS', $event)"
+            (click)="toggleArchiveUnitCriteria('ARCHIVE_UNIT_WITHOUT_OBJECTS', $event)"
             [checked]="archiveUnitTypesCriteria.get('ARCHIVE_UNIT_WITHOUT_OBJECTS')"
           />
           <span>{{ 'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.UNIT_TYPE.ARCHIVE_UNIT_WITHOUT_OBJECTS' | translate }}</span>
@@ -129,7 +129,7 @@
     <div class="hgap-4">
       <p class="title-text text uppercase">{{ 'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.OTHER_FIELDS' | translate }}</p>
     </div>
-    @if (otherCriteriaOptions$ | async; as otherCriteriaOptions) {
+    @if (otherCriteriaOptions) {
       <div class="hgap-4 align-items-start align-items-start pb-4">
         <vitamui-common-autocomplete-multi-select-tree
           formControlName="otherCriteriaList"
@@ -143,15 +143,11 @@
         <div class="gap-4 w-100" formArrayName="otherCriteria">
           @for (otherCriteria of otherCriteriaList.value; track otherCriteria.ApiPath) {
             @if (['TEXT', 'KEYWORD', 'BOOLEAN', 'LONG'].includes(otherCriteria.Type)) {
-              <vitamui-common-editable-input
-                [label]="getCriteriaName(otherCriteria, otherCriteriaOptions)"
-                [formControlName]="otherCriteria.Path"
-                class="w-100"
-              >
+              <vitamui-common-editable-input [label]="getCriteriaName(otherCriteria)" [formControlName]="otherCriteria.Path" class="w-100">
               </vitamui-common-editable-input>
             } @else if (['DATE'].includes(otherCriteria.Type)) {
               <vitamui-common-datepicker
-                [label]="getCriteriaName(otherCriteria, otherCriteriaOptions)"
+                [label]="getCriteriaName(otherCriteria)"
                 [onlyDate]="false"
                 [formControlName]="otherCriteria.Path"
                 class="w-100"

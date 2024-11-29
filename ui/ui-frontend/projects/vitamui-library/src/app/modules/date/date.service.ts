@@ -34,50 +34,30 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, ElementRef, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { Injectable } from '@angular/core';
+import { FrenchDate } from './date';
 
-@Component({
-  selector: 'vitamui-common-search-bar',
-  templateUrl: './search-bar.component.html',
-  styleUrls: ['./search-bar.component.scss'],
+@Injectable({
+  providedIn: 'root',
 })
-export class SearchBarComponent implements OnChanges {
-  @Input() placeholder: string;
+export class DateService {
+  public toFrenchDate(value: string): FrenchDate {
+    if (!value) return null;
 
-  @Input() name: string;
+    const date = new Date(value);
 
-  @Input() disabled = false;
-
-  @Input() searchButtonColor: 'primary' | 'secondary' = 'secondary';
-
-  @Output() search = new EventEmitter<string>();
-
-  @Output() searchChanged = new EventEmitter<string>();
-
-  @Output() clear = new EventEmitter<string>();
-
-  @ViewChild('searchInput', { static: true }) searchInput: ElementRef;
-
-  @Input() searchValue: string;
-
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes.searchValue) {
-      this.searchChanged.emit(this.searchValue);
-    }
+    return `${this.getDay(date.getDate())}/${this.getMonth(date.getMonth() + 1)}/${date.getFullYear()}` as FrenchDate;
   }
 
-  onSearch() {
-    this.search.emit(this.searchValue);
+  public toIsoDate(frenchDate: FrenchDate) {
+    return frenchDate ? new Date(frenchDate).toISOString() : null;
   }
 
-  reset() {
-    this.searchValue = null;
-    this.clear.emit();
+  private getMonth(num: number): string {
+    return `${num > 9 ? '' : '0'}${num.toString()}`;
   }
 
-  public onFocus() {
-    if (this.searchInput) {
-      setTimeout(() => this.searchInput.nativeElement.focus(), 0);
-    }
+  private getDay(day: number): string {
+    return `${day > 9 ? '' : '0'}${day.toString()}`;
   }
 }

@@ -136,9 +136,7 @@ export class ProjectPreviewComponent implements OnInit {
   }
 
   searchArchiveUnitsByProject() {
-    this.router.navigate(['collect/tenant/' + this.tenantIdentifier + '/units', this.project.id], {
-      queryParams: { projectName: this.project.messageIdentifier },
-    });
+    this.router.navigate(['collect/tenant/' + this.tenantIdentifier + '/units', this.project.id]);
   }
 
   emitClose() {

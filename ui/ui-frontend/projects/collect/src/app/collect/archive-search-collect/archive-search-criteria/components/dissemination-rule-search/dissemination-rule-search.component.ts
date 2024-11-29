@@ -41,7 +41,6 @@ import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { Subscription, merge } from 'rxjs';
 import { debounceTime, filter, map } from 'rxjs/operators';
 import {
-  ActionOnCriteria,
   CriteriaDataType,
   CriteriaOperator,
   CriteriaValue,
@@ -51,7 +50,7 @@ import {
   diff,
 } from 'vitamui-library';
 import { ArchiveSearchConstsEnum } from '../../models/archive-search-consts-enum';
-import { ArchiveSharedDataService } from '../../services/archive-shared-data.service';
+import { ArchiveSharedDataService } from '../../../../core/archive-shared-data.service';
 import { RuleValidator } from '../../services/rule.validator';
 
 const RULE_TYPE_SUFFIX = '_DISSEMINATION_RULE';
@@ -152,9 +151,9 @@ export class DisseminationRuleSearchComponent implements OnInit, OnDestroy {
     this.subscriptionDisseminationFromMainSearchCriteria =
       this.archiveExchangeDataService.disseminationFromMainSearchCriteriaObservable.subscribe((criteria) => {
         if (criteria) {
-          if (this.disseminationAdditionalCriteria && criteria.action === ActionOnCriteria.ADD) {
+          if (this.disseminationAdditionalCriteria && criteria.action === 'ADD') {
             this.disseminationAdditionalCriteria.set(criteria.valueElt.value, true);
-          } else if (criteria.action === ActionOnCriteria.REMOVE) {
+          } else if (criteria.action === 'REMOVE') {
             if (this.disseminationAdditionalCriteria && this.disseminationAdditionalCriteria.has(criteria.valueElt.value)) {
               this.disseminationAdditionalCriteria.set(criteria.valueElt.value, false);
             }

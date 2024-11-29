@@ -38,7 +38,6 @@
 import { Injectable } from '@angular/core';
 import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
 import {
-  ActionOnCriteria,
   CriteriaDataType,
   CriteriaOperator,
   CriteriaSearchCriteria,
@@ -51,7 +50,7 @@ import {
   SearchCriteriaValue,
 } from 'vitamui-library';
 import { VitamUISnackBarComponent } from '../../../shared/vitamui-snack-bar/vitamui-snack-bar.component';
-import { ArchiveSharedDataService } from './archive-shared-data.service';
+import { ArchiveSharedDataService } from '../../../core/archive-shared-data.service';
 
 const ALL_ARCHIVE_UNIT_TYPES = 'ALL_ARCHIVE_UNIT_TYPES';
 const WAITING_RECALCULATE = 'WAITING_RECALCULATE';
@@ -96,19 +95,19 @@ export class ArchiveSearchHelperService {
         emit,
       );
       if (category === SearchCriteriaTypeEnum.ACCESS_RULE) {
-        this.archiveExchangeDataService.sendAppraisalFromMainSearchCriteriaAction({ keyElt, valueElt, action: ActionOnCriteria.ADD });
+        this.archiveExchangeDataService.sendAppraisalFromMainSearchCriteriaAction({ keyElt, valueElt, action: 'ADD' });
       }
       if (category === SearchCriteriaTypeEnum.APPRAISAL_RULE) {
-        this.archiveExchangeDataService.sendAccessFromMainSearchCriteriaAction({ keyElt, valueElt, action: ActionOnCriteria.ADD });
+        this.archiveExchangeDataService.sendAccessFromMainSearchCriteriaAction({ keyElt, valueElt, action: 'ADD' });
       }
       if (category === SearchCriteriaTypeEnum.STORAGE_RULE) {
-        this.archiveExchangeDataService.sendStorageFromMainSearchCriteriaAction({ keyElt, valueElt, action: ActionOnCriteria.ADD });
+        this.archiveExchangeDataService.sendStorageFromMainSearchCriteriaAction({ keyElt, valueElt, action: 'ADD' });
       }
       if (category === SearchCriteriaTypeEnum.REUSE_RULE) {
-        this.archiveExchangeDataService.sendReuseFromMainSearchCriteriaAction({ keyElt, valueElt, action: ActionOnCriteria.ADD });
+        this.archiveExchangeDataService.sendReuseFromMainSearchCriteriaAction({ keyElt, valueElt, action: 'ADD' });
       }
       if (category === SearchCriteriaTypeEnum.DISSEMINATION_RULE) {
-        this.archiveExchangeDataService.sendDisseminationFromMainSearchCriteriaAction({ keyElt, valueElt, action: ActionOnCriteria.ADD });
+        this.archiveExchangeDataService.sendDisseminationFromMainSearchCriteriaAction({ keyElt, valueElt, action: 'ADD' });
       }
       return;
     }
@@ -171,27 +170,28 @@ export class ArchiveSearchHelperService {
       };
       searchCriterias.set(keyElt, criteriaToAdd);
     }
+    this.archiveExchangeDataService.emitSearchCriteriaChange(searchCriterias);
     if (emit === true && category === SearchCriteriaTypeEnum.APPRAISAL_RULE) {
-      this.archiveExchangeDataService.sendAppraisalFromMainSearchCriteriaAction({ keyElt, valueElt, action: ActionOnCriteria.ADD });
+      this.archiveExchangeDataService.sendAppraisalFromMainSearchCriteriaAction({ keyElt, valueElt, action: 'ADD' });
     }
     if (emit === true && category === SearchCriteriaTypeEnum.ACCESS_RULE) {
-      this.archiveExchangeDataService.sendAccessFromMainSearchCriteriaAction({ keyElt, valueElt, action: ActionOnCriteria.ADD });
+      this.archiveExchangeDataService.sendAccessFromMainSearchCriteriaAction({ keyElt, valueElt, action: 'ADD' });
     }
     if (emit === true && category === SearchCriteriaTypeEnum.STORAGE_RULE) {
-      this.archiveExchangeDataService.sendStorageFromMainSearchCriteriaAction({ keyElt, valueElt, action: ActionOnCriteria.ADD });
+      this.archiveExchangeDataService.sendStorageFromMainSearchCriteriaAction({ keyElt, valueElt, action: 'ADD' });
     }
     if (emit === true && category === SearchCriteriaTypeEnum.REUSE_RULE) {
       this.archiveExchangeDataService.sendReuseFromMainSearchCriteriaAction({
         keyElt,
         valueElt,
-        action: ActionOnCriteria.ADD,
+        action: 'ADD',
       });
     }
     if (emit === true && category === SearchCriteriaTypeEnum.DISSEMINATION_RULE) {
       this.archiveExchangeDataService.sendDisseminationFromMainSearchCriteriaAction({
         keyElt,
         valueElt,
-        action: ActionOnCriteria.ADD,
+        action: 'ADD',
       });
     }
   }
@@ -251,29 +251,29 @@ export class ArchiveSearchHelperService {
           this.archiveExchangeDataService.sendAppraisalFromMainSearchCriteriaAction({
             keyElt,
             valueElt,
-            action: ActionOnCriteria.REMOVE,
+            action: 'REMOVE',
           });
 
           this.archiveExchangeDataService.sendAccessFromMainSearchCriteriaAction({
             keyElt,
             valueElt,
-            action: ActionOnCriteria.REMOVE,
+            action: 'REMOVE',
           });
 
           this.archiveExchangeDataService.sendStorageFromMainSearchCriteriaAction({
             keyElt,
             valueElt,
-            action: ActionOnCriteria.REMOVE,
+            action: 'REMOVE',
           });
           this.archiveExchangeDataService.sendReuseFromMainSearchCriteriaAction({
             keyElt,
             valueElt,
-            action: ActionOnCriteria.REMOVE,
+            action: 'REMOVE',
           });
           this.archiveExchangeDataService.sendDisseminationFromMainSearchCriteriaAction({
             keyElt,
             valueElt,
-            action: ActionOnCriteria.REMOVE,
+            action: 'REMOVE',
           });
         }
         valueElt.id = WAITING_RECALCULATE;
@@ -305,6 +305,7 @@ export class ArchiveSearchHelperService {
             searchCriteria.values = values;
             searchCriterias.set(keyElt, searchCriteria);
           }
+          this.archiveExchangeDataService.emitSearchCriteriaChange(searchCriterias);
           nbQueryCriteria--;
           if (emit === true && (key === 'NODE' || key === ORPHANS_NODE_ID)) {
             this.archiveExchangeDataService.emitNodeTarget(valueElt.value);
@@ -314,42 +315,42 @@ export class ArchiveSearchHelperService {
             this.archiveExchangeDataService.sendAppraisalFromMainSearchCriteriaAction({
               keyElt,
               valueElt,
-              action: ActionOnCriteria.REMOVE,
+              action: 'REMOVE',
             });
           }
           if (emit === true && searchCriteria.category === SearchCriteriaTypeEnum.ACCESS_RULE) {
             this.archiveExchangeDataService.sendAccessFromMainSearchCriteriaAction({
               keyElt,
               valueElt,
-              action: ActionOnCriteria.REMOVE,
+              action: 'REMOVE',
             });
           }
           if (emit === true && searchCriteria.category === SearchCriteriaTypeEnum.STORAGE_RULE) {
             this.archiveExchangeDataService.sendStorageFromMainSearchCriteriaAction({
               keyElt,
               valueElt,
-              action: ActionOnCriteria.REMOVE,
+              action: 'REMOVE',
             });
           }
           if (emit === true && searchCriteria.category === SearchCriteriaTypeEnum.REUSE_RULE) {
             this.archiveExchangeDataService.sendReuseFromMainSearchCriteriaAction({
               keyElt,
               valueElt,
-              action: ActionOnCriteria.REMOVE,
+              action: 'REMOVE',
             });
           }
           if (emit === true && searchCriteria.category === SearchCriteriaTypeEnum.DISSEMINATION_RULE) {
             this.archiveExchangeDataService.sendDisseminationFromMainSearchCriteriaAction({
               keyElt,
               valueElt,
-              action: ActionOnCriteria.REMOVE,
+              action: 'REMOVE',
             });
           }
           if (emit === true && searchCriteria.category === SearchCriteriaTypeEnum.FIELDS && searchCriteria.key === ALL_ARCHIVE_UNIT_TYPES) {
             this.archiveExchangeDataService.sendRemoveFromChildSearchCriteriaAction({
               keyElt,
               valueElt,
-              action: ActionOnCriteria.REMOVE,
+              action: 'REMOVE',
             });
           }
         }

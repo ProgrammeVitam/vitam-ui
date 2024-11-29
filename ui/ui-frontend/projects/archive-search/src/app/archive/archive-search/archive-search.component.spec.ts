@@ -34,18 +34,16 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { DatePipe } from '@angular/common';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { NO_ERRORS_SCHEMA, Pipe, PipeTransform } from '@angular/core';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormBuilder } from '@angular/forms';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { MatLegacyMenuModule as MatMenuModule } from '@angular/material/legacy-menu';
 import { MatLegacyProgressSpinnerModule as MatProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
 import { MatTreeModule } from '@angular/material/tree';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { environment } from 'projects/archive-search/src/environments/environment';
@@ -55,9 +53,9 @@ import {
   InjectorModule,
   LoggerModule,
   PagedResult,
+  SearchCriteriaDto,
   SearchCriteriaStatusEnum,
   VitamuiRoles,
-  WINDOW_LOCATION,
 } from 'vitamui-library';
 import { ArchiveSharedDataService } from '../../core/archive-shared-data.service';
 import { ArchiveService } from '../archive.service';
@@ -66,16 +64,9 @@ import { ArchiveUnitDipService } from '../common-services/archive-unit-dip.servi
 import { ArchiveUnitEliminationService } from '../common-services/archive-unit-elimination.service';
 import { ComputeInheritedRulesService } from '../common-services/compute-inherited-rules.service';
 import { UpdateUnitManagementRuleService } from '../common-services/update-unit-management-rule.service';
-import { VitamUISnackBar } from '../shared/vitamui-snack-bar/vitamui-snack-bar.service';
 import { ArchiveSearchComponent } from './archive-search.component';
 import { TransferAcknowledgmentComponent } from './transfer-acknowledgment/transfer-acknowledgment.component';
-
-@Pipe({ name: 'truncate' })
-class MockTruncatePipe implements PipeTransform {
-  transform(value: number): number {
-    return value;
-  }
-}
+import { SimpleCriteriaSearchComponent } from './simple-criteria-search/simple-criteria-search.component';
 
 const translations: any = { TEST: 'Mock translate test' };
 
@@ -93,21 +84,19 @@ describe('ArchiveSearchComponent', () => {
   const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
   matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
 
-  const snackBarSpy = jasmine.createSpyObj('MatSnackBar', ['open', 'openFromComponent']);
-
   const archiveServiceStub = {
-    loadFilingHoldingSchemeTree: () => of([]),
-    getOntologiesFromJson: () => of([]),
-    searchArchiveUnitsByCriteria: () => of(pagedResult),
-    hasArchiveSearchRole: () => of(true),
     getAccessContractById: () => of({}),
-  };
-  const archiveSearchCommonService = {
-    addCriteria: () => of(),
-    removeCriteria: () => of(),
-    buildNodesListForQUery: () => of(),
-    buildManagementRulesCriteriaListForQuery: () => of(),
-    buildFieldsCriteriaListForQUery: () => of(),
+    getTotalTrackHitsByCriteria: () => of(42),
+    hasArchiveSearchRole: () => of(true),
+    isAccessRuleCriteria: () => false,
+    isAppraisalRuleCriteria: () => false,
+    isDisseminationRuleCriteria: () => false,
+    isEliminationTenchnicalIdCriteria: () => false,
+    isReuseRuleCriteria: () => false,
+    isStorageRuleCriteria: () => false,
+    isWaitingToRecalculateCriteria: () => false,
+    loadFilingHoldingSchemeTree: () => of([]),
+    searchArchiveUnitsByCriteria: (_criteriaDto: SearchCriteriaDto) => of(pagedResult),
   };
 
   const updateUnitManagementRuleServiceMock = {
@@ -124,133 +113,172 @@ describe('ArchiveSearchComponent', () => {
     launchComputedInheritedRulesModal: () => of(),
   };
 
-  beforeEach(async () => {
+  const computeActivatedRoute = (queryParams: Params = {}) => {
+    return {
+      params: of({ tenantIdentifier: 1 }),
+      queryParamMap: of({ keys: Object.keys(queryParams) }),
+      snapshot: { queryParamMap: { keys: Object.keys(queryParams) }, queryParams: queryParams },
+    };
+  };
+
+  const setupTest = async (queryParams: Params) => {
+    const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
+
+    spyOn(archiveServiceStub, 'searchArchiveUnitsByCriteria').and.callThrough();
+
     await TestBed.configureTestingModule({
       imports: [
-        MatMenuModule,
-        MatTreeModule,
-        MatProgressSpinnerModule,
-        MatSidenavModule,
+        HttpClientTestingModule,
         InjectorModule,
         LoggerModule.forRoot(),
+        MatMenuModule,
+        MatProgressSpinnerModule,
+        MatSidenavModule,
+        MatSnackBarModule,
+        MatTreeModule,
+        RouterTestingModule,
         TranslateModule.forRoot({
           loader: { provide: TranslateLoader, useClass: FakeLoader },
         }),
-        MatSnackBarModule,
-        HttpClientTestingModule,
-        RouterTestingModule,
       ],
-      declarations: [ArchiveSearchComponent, MockTruncatePipe],
+      declarations: [ArchiveSearchComponent, SimpleCriteriaSearchComponent],
       providers: [
-        FormBuilder,
+        ArchiveSearchHelperService,
         ArchiveSharedDataService,
-        DatePipe,
+        { provide: ActivatedRoute, useValue: computeActivatedRoute(queryParams) },
         { provide: ArchiveService, useValue: archiveServiceStub },
-        { provide: ArchiveSearchHelperService, useValue: archiveSearchCommonService },
-        {
-          provide: ActivatedRoute,
-          useValue: {
-            params: of({ tenantIdentifier: 1 }),
-            data: of({ appId: 'ARCHIVE_SEARCH_MANAGEMENT_APP' }),
-            queryParamMap: of({ get: () => undefined }),
-            snapshot: { queryParamMap: { has: () => false } },
-          },
-        },
-        { provide: MatDialog, useValue: matDialogSpy },
-        { provide: VitamUISnackBar, useValue: snackBarSpy },
-        { provide: WINDOW_LOCATION, useValue: window.location },
-        { provide: BASE_URL, useValue: '/fake-api' },
-        { provide: environment, useValue: environment },
-        { provide: UpdateUnitManagementRuleService, useValue: updateUnitManagementRuleServiceMock },
-        { provide: ArchiveUnitEliminationService, useValue: archiveUnitEliminationServiceMock },
-        { provide: ComputeInheritedRulesService, useValue: computeInheritedRulesServiceMock },
         { provide: ArchiveUnitDipService, useValue: archiveUnitDipServiceMock },
+        { provide: ArchiveUnitEliminationService, useValue: archiveUnitEliminationServiceMock },
+        { provide: BASE_URL, useValue: '/fake-api' },
+        { provide: ComputeInheritedRulesService, useValue: computeInheritedRulesServiceMock },
+        { provide: MatDialog, useValue: matDialogSpy },
+        { provide: Router, useValue: routerSpy },
+        { provide: UpdateUnitManagementRuleService, useValue: updateUnitManagementRuleServiceMock },
+        { provide: environment, useValue: environment },
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
-  });
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(ArchiveSearchComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-  });
 
-  it('Component should be created', () => {
-    expect(component).toBeTruthy();
-  });
+    return { routerSpy };
+  };
 
-  it('should have the corrects values', () => {
-    expect(component.DEFAULT_ELIMINATION_ANALYSIS_THRESHOLD).toEqual(100000);
-    expect(component.DEFAULT_DIP_EXPORT_THRESHOLD).toEqual(100000);
-    expect(component.DEFAULT_ELIMINATION_THRESHOLD).toEqual(10000);
-    expect(component.DEFAULT_TRANSFER_THRESHOLD).toEqual(100000);
-    expect(component.DEFAULT_UPDATE_MGT_RULES_THRESHOLD).toEqual(100000);
-  });
+  describe('', () => {
+    beforeEach(async () => await setupTest({}));
 
-  it('should be true', () => {
-    component.showHideDuaEndDate(true);
-    expect(component.showDuaEndDate).toBeTruthy();
-  });
-
-  it('should be false', () => {
-    component.showHidePanel(false);
-    expect(component.showCriteriaPanel).toBeFalsy();
-  });
-
-  it('should call hasArchiveSearchRole', () => {
-    spyOn(archiveServiceStub, 'hasArchiveSearchRole').and.callThrough();
-    // When
-    component.checkUserHasRole(VitamuiRoles.ROLE_EXPORT_DIP, 1);
-
-    // Then
-    expect(archiveServiceStub.hasArchiveSearchRole).toHaveBeenCalled();
-  });
-  it('should open a modal with TransferAcknowledgmentComponent', () => {
-    component.accessContractId = 'accessContract';
-    component.showAcknowledgmentTransferForm();
-    expect(matDialogSpy.open).toHaveBeenCalledWith(TransferAcknowledgmentComponent, {
-      panelClass: 'vitamui-modal',
-      disableClose: true,
-      data: {
-        accessContract: 'accessContract',
-        tenantIdentifier: '1',
-      },
+    it('Component should be created', () => {
+      expect(component).toBeTruthy();
     });
-  });
 
-  describe('submit', () => {
-    it('should check all criteria as included when submit', () => {
-      component.submit();
-      component.searchCriterias.forEach((criteria) => {
-        criteria.values.forEach((criteriaValue) => {
-          expect(criteriaValue.status).toEqual(SearchCriteriaStatusEnum.NOT_INCLUDED);
+    it('should have the corrects values', () => {
+      expect(component.DEFAULT_ELIMINATION_ANALYSIS_THRESHOLD).toEqual(100000);
+      expect(component.DEFAULT_DIP_EXPORT_THRESHOLD).toEqual(100000);
+      expect(component.DEFAULT_ELIMINATION_THRESHOLD).toEqual(10000);
+      expect(component.DEFAULT_TRANSFER_THRESHOLD).toEqual(100000);
+      expect(component.DEFAULT_UPDATE_MGT_RULES_THRESHOLD).toEqual(100000);
+    });
+
+    it('should be true', () => {
+      component.showHideDuaEndDate(true);
+      expect(component.showDuaEndDate).toBeTruthy();
+    });
+
+    it('should be false', () => {
+      component.showHidePanel(false);
+      expect(component.showCriteriaPanel).toBeFalsy();
+    });
+
+    it('should call hasArchiveSearchRole', () => {
+      spyOn(archiveServiceStub, 'hasArchiveSearchRole').and.callThrough();
+      // When
+      component.checkUserHasRole(VitamuiRoles.ROLE_EXPORT_DIP, 1);
+
+      // Then
+      expect(archiveServiceStub.hasArchiveSearchRole).toHaveBeenCalled();
+    });
+    it('should open a modal with TransferAcknowledgmentComponent', () => {
+      component.accessContractId = 'accessContract';
+      component.showAcknowledgmentTransferForm();
+      expect(matDialogSpy.open).toHaveBeenCalledWith(TransferAcknowledgmentComponent, {
+        panelClass: 'vitamui-modal',
+        disableClose: true,
+        data: {
+          accessContract: 'accessContract',
+          tenantIdentifier: '1',
+        },
+      });
+    });
+
+    describe('submit', () => {
+      it('should check all criteria as included when submit', () => {
+        component.submit();
+        component.searchCriterias.forEach((criteria) => {
+          criteria.values.forEach((criteriaValue) => {
+            expect(criteriaValue.status).toEqual(SearchCriteriaStatusEnum.NOT_INCLUDED);
+          });
         });
+      });
+    });
+
+    describe('DOM', () => {
+      it('should have 5 rows ', () => {
+        // When
+        const nativeElement = fixture.nativeElement;
+        const elementRow = nativeElement.querySelectorAll('.row');
+
+        // Then
+        expect(elementRow.length).toBe(5);
+      });
+
+      it('should have 1 vitamui-common-menu-button ', () => {
+        // When
+        const nativeElement = fixture.nativeElement;
+        const elementRow = nativeElement.querySelectorAll('vitamui-common-menu-button');
+
+        // Then
+        expect(elementRow.length).toBe(1);
+      });
+      it('should have 2 buttons ', () => {
+        const elementBtn = fixture.nativeElement.querySelectorAll('button[type=button]');
+        expect(elementBtn.length).toBe(2);
       });
     });
   });
 
-  describe('DOM', () => {
-    it('should have 5 rows ', () => {
-      // When
-      const nativeElement = fixture.nativeElement;
-      const elementRow = nativeElement.querySelectorAll('.row');
-
-      // Then
-      expect(elementRow.length).toBe(5);
+  describe('queryParams', () => {
+    it('should be set to archives with or without object by default', async () => {
+      const { routerSpy } = await setupTest({});
+      expect(routerSpy.navigate.calls.first().args[1].queryParams).toEqual({
+        archiveUnitType: 'ARCHIVE_UNIT_WITH_OBJECTS,ARCHIVE_UNIT_WITHOUT_OBJECTS',
+      });
     });
 
-    it('should have 1 vitamui-common-menu-button ', () => {
-      // When
-      const nativeElement = fixture.nativeElement;
-      const elementRow = nativeElement.querySelectorAll('vitamui-common-menu-button');
+    it('should trigger a search with criteria matching the queryParams in the URL on page access', async () => {
+      await setupTest({ opi: '1234' });
 
-      // Then
-      expect(elementRow.length).toBe(1);
-    });
-    it('should have 2 buttons ', () => {
-      const elementBtn = fixture.nativeElement.querySelectorAll('button[type=button]');
-      expect(elementBtn.length).toBe(2);
+      await fixture.whenStable();
+
+      expect(archiveServiceStub.searchArchiveUnitsByCriteria).toHaveBeenCalledOnceWith(
+        jasmine.objectContaining({
+          criteriaList: [
+            {
+              criteria: 'opi',
+              values: [
+                {
+                  id: 'opi',
+                  value: '1234',
+                },
+              ],
+              operator: 'EQ',
+              category: 'FIELDS',
+              dataType: 'STRING',
+            },
+          ],
+        }),
+      );
     });
   });
 });

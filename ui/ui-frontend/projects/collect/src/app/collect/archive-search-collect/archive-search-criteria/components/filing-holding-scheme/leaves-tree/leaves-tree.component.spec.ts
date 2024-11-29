@@ -42,7 +42,7 @@ import { of } from 'rxjs';
 import { DescriptionLevel, FilingHoldingSchemeNode, ResultFacet, SearchCriteriaDto, UnitType } from 'vitamui-library';
 import { ArchiveCollectService } from '../../../../archive-collect.service';
 import { ArchiveFacetsService } from '../../../services/archive-facets.service';
-import { ArchiveSharedDataService } from '../../../services/archive-shared-data.service';
+import { ArchiveSharedDataService } from '../../../../../core/archive-shared-data.service';
 import { LeavesTreeComponent } from './leaves-tree.component';
 
 export function newNode(
