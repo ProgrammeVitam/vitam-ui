@@ -250,7 +250,7 @@ export class EditObjectService {
       value,
       default: defaultValue,
       displayRule,
-      open: true,
+      open: displayRule?.ui?.open ?? true,
       favoriteKeys: [],
       required: true,
       virtual: false,
