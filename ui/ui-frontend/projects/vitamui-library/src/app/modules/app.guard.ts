@@ -68,6 +68,7 @@ export class AppGuard {
     const appId = next.data.appId;
     const foundAppProfile = this.authService.user.profileGroup.profiles.find((profile) => profile.applicationName === appId);
     if (!foundAppProfile) {
+      console.error(`Application profile not found for ${this.authService.user.username}`);
       this.location.href = this.startupService.getPortalUrl();
       return false;
     }

@@ -47,6 +47,7 @@ export class AuthGuard {
   constructor(private authService: AuthService) {}
 
   canActivate(): Observable<boolean> | Promise<boolean> | boolean {
+    if (!this.authService.user) console.error('User no authenticated');
     return !!this.authService.user;
   }
 }
