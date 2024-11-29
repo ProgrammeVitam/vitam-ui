@@ -29,6 +29,7 @@
     "ERROR": {
       "WRONG_FORMAT": "Format incorrect",
       "STRING_MAX_LENGTH": "{{max}} caractères maximum",
+      "STRING_MIN_LENGTH": "{{min}} caractères minimum",
       "NAME_ALREADY_EXISTS": "Nom déjà existant",
       "REQUIRED": "Champ requis"
     }
