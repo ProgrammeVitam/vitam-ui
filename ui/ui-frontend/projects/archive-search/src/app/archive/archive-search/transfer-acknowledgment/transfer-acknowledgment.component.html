@@ -12,8 +12,7 @@
           {{ 'ARCHIVE_SEARCH.TRANSFER_ACKNOWLEDGMENT.DOWNLOAD_ATR_FILE' | translate }}
           <i
             class="vitamui-icon vitamui-icon-info"
-            matTooltip=" {{ 'ARCHIVE_SEARCH.TRANSFER_ACKNOWLEDGMENT.DOWNLOAD_ATR_FILE_TEXT' | translate }}"
-            matTooltipClass="vitamui-tooltip"
+            [vitamuiCommonToolTip]="'ARCHIVE_SEARCH.TRANSFER_ACKNOWLEDGMENT.DOWNLOAD_ATR_FILE_TEXT' | translate"
           ></i>
         </h4>
       </div>
@@ -175,23 +174,23 @@
       <div *ngIf="fileName && fileSize > 0 && fileSizeString" class="drag-container">
         <div class="file-info-class">
           {{ fileName }}
-          <span class="text-grey"> | {{ fileSizeString }} </span>
+          <span class="text light"> | {{ fileSizeString }} </span>
           <i class="material-icons success-icon" *ngIf="!hasError">check_circle</i>
           <div>
-            <span class="text-red">{{ message }} </span>
+            <span class="text danger bold">{{ message }} </span>
             <i class="material-icons error-icon" *ngIf="hasError">cancel </i>
           </div>
 
           <div *ngIf="hasFileSizeError">
             <div>
-              <span class="text-red"> {{ 'ARCHIVE_SEARCH.TRANSFER_ACKNOWLEDGMENT.AUTHORIZED_SIZE' | translate }}</span>
+              <span class="text danger bold"> {{ 'ARCHIVE_SEARCH.TRANSFER_ACKNOWLEDGMENT.AUTHORIZED_SIZE' | translate }}</span>
               <i class="material-icons error-icon">cancel </i>
             </div>
           </div>
 
           <div *ngIf="isAtrNotValid">
             <div>
-              <span class="text-red"> {{ 'ARCHIVE_SEARCH.TRANSFER_ACKNOWLEDGMENT.ATR_NOT_VALID' | translate }}</span>
+              <span class="text danger bold"> {{ 'ARCHIVE_SEARCH.TRANSFER_ACKNOWLEDGMENT.ATR_NOT_VALID' | translate }}</span>
               <i class="material-icons error-icon">cancel </i>
             </div>
           </div>

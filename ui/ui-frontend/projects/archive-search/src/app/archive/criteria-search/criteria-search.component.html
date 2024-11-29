@@ -6,7 +6,7 @@
           <ng-container *ngFor="let criteriaValue of criteriaVal.values; let index = index; let isFirst = first; let isLast = last">
             <div
               class="vitamui-search-criteria-content"
-              matTooltip="{{
+              vitamuiCommonToolTip="{{
                 criteriaValue.keyTranslated
                   ? ('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.' + getCategoryName(criteriaVal.category) + '.' + criteriaVal.key | translate)
                   : criteriaVal.key
@@ -18,8 +18,6 @@
                       | translate)
                     : criteriaValue.label
               }}"
-              matTooltipClass="vitamui-tooltip"
-              [matTooltipShowDelay]="300"
               [ngClass]="[
                 isFirst ? 'left-arround' : 'left-not-arround',
                 criteriaValue.status === 'INCLUDED' ? 'after-search-launched-button' : 'before-search-launched-button',
@@ -74,13 +72,12 @@
           <ng-container *ngFor="let criteriaValue of criteriaVal.values; let index = index; let isFirst = first; let isLast = last">
             <div
               class="vitamui-search-criteria-content"
-              matTooltip="{{
+              [vitamuiCommonToolTip]="
                 criteriaValue.keyTranslated
                   ? ('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.' + getCategoryName(criteriaVal.category) + '.' + criteriaVal.key | translate)
                   : criteriaVal.key
-              }}"
-              matTooltipClass="vitamui-tooltip"
-              [matTooltipShowDelay]="300"
+              "
+              [vitamuiCommonToolTipShowDelay]="300"
               [ngClass]="[
                 isFirst ? 'left-arround' : 'left-not-arround',
                 criteriaValue.status === 'INCLUDED' ? 'after-search-launched-button' : 'before-search-launched-button',
@@ -145,15 +142,14 @@
             <ng-container *ngIf="criteriaVal.values.length === 1">
               <div
                 class="vitamui-search-criteria-content"
-                [matTooltip]="
+                [vitamuiCommonToolTip]="
                   (criteriaVal.operator === 'EQ'
                     ? ('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.GUID_TO_INCLUDE' | translate)
                     : ('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.GUID_TO_EXCLUDE' | translate)) +
                   ' : ' +
                   criteriaVal.values[0].value.value
                 "
-                matTooltipClass="vitamui-tooltip"
-                [matTooltipShowDelay]="300"
+                [vitamuiCommonToolTipShowDelay]="300"
                 [ngClass]="[
                   isFirst ? 'left-arround' : 'left-not-arround',
                   criteriaVal.values[criteriaVal.values.length - 1].status === 'INCLUDED'
@@ -174,15 +170,14 @@
             <ng-container *ngIf="criteriaVal.values.length > 1">
               <div
                 class="vitamui-search-criteria-content"
-                [matTooltip]="
+                [vitamuiCommonToolTip]="
                   (criteriaVal.operator === 'EQ'
                     ? ('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.GUIDS_TO_INCLUDE' | translate)
                     : ('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.GUIDS_TO_EXCLUDE' | translate)) +
                   ' : ' +
                   criteriaVal.values.length
                 "
-                matTooltipClass="vitamui-tooltip"
-                [matTooltipShowDelay]="300"
+                [vitamuiCommonToolTipShowDelay]="300"
                 [ngClass]="[
                   isFirst ? 'left-arround' : 'left-not-arround',
                   criteriaVal.values[criteriaVal.values.length - 1].status === 'INCLUDED'
@@ -232,7 +227,7 @@
             <ng-container *ngFor="let criteriaValue of criteriaVal.values; let index = index; let isFirst = first; let isLast = last">
               <div
                 class="vitamui-search-criteria-content"
-                matTooltip="{{
+                vitamuiCommonToolTip="{{
                   criteriaValue.keyTranslated
                     ? ('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.' + getCategoryName(criteriaVal.category) + '.' + criteriaVal.key | translate)
                     : criteriaVal.key
@@ -244,8 +239,7 @@
                       ? criteriaValue.label
                       : criteriaValue.value.value
                 }}"
-                matTooltipClass="vitamui-tooltip"
-                [matTooltipShowDelay]="300"
+                [vitamuiCommonToolTipShowDelay]="300"
                 [ngClass]="[
                   isFirst ? 'left-arround' : 'left-not-arround',
                   criteriaValue.status === 'INCLUDED' ? 'after-search-launched-button' : 'before-search-launched-button',

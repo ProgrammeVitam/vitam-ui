@@ -3,9 +3,8 @@
     <button
       mat-menu-item
       (click)="storedSearchCriteriaHistory.emit(criteria)"
-      matTooltip="{{ criteria.name }}"
-      matTooltipClass="vitamui-tooltip"
-      [matTooltipShowDelay]="300"
+      [vitamuiCommonToolTip]="criteria.name"
+      [vitamuiCommonToolTipShowDelay]="300"
     >
       <div class="grid-container">
         <div class="criteria-name-date">

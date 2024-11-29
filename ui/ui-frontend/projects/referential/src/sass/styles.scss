@@ -4,8 +4,6 @@
 @import 'fonts/font-styles';
 
 @import 'form';
-@import 'tooltip';
-@import 'text';
 
 vitamui-common-slide-toggle {
   padding-bottom: 15px;
@@ -61,8 +59,8 @@ vitamui-common-slide-toggle {
 }
 
 .card-criteria {
-  background: #ffffff;
-  border: 1px solid #bdbdbd;
+  background: var(--vitamui-white);
+  border: 1px solid var(--vitamui-grey-400);
   box-sizing: border-box;
   border-radius: 5px;
   margin-top: 20px;

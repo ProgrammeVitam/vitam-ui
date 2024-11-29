@@ -1,11 +1,7 @@
 <div class="vitamui-panel" [class.active]="!selectedIdentityProvider">
   <div class="vitamui-panel-content" *ngIf="!selectedIdentityProvider">
     <button *ngIf="!readOnly" class="btn primary" (click)="openCreateIDPDialog()" [disabled]="!domainsAvailable">
-      <div
-        [matTooltipDisabled]="domainsAvailable"
-        [matTooltip]="'CUSTOMER.SSO.UNAVAILABLE_DOMAINS' | translate"
-        matTooltipClass="vitamui-tooltip"
-      >
+      <div [vitamuiCommonToolTipDisabled]="domainsAvailable" [vitamuiCommonToolTip]="'CUSTOMER.SSO.UNAVAILABLE_DOMAINS' | translate">
         {{ 'CUSTOMER.SSO.BUTTON' | translate }}
       </div>
     </button>

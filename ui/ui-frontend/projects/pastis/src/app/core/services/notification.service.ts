@@ -95,16 +95,8 @@ export class NotificationService {
     this.toasterService.success(message);
   }
 
-  showInfo(message: string) {
-    this.toasterService.info(message);
-  }
-
   showError(message: string) {
     this.toasterService.error(message);
-  }
-
-  showWarning(message: string) {
-    this.toasterService.warning(message);
   }
 
   // SnackBar

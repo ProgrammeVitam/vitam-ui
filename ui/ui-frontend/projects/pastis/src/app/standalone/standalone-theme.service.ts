@@ -91,6 +91,10 @@ export class StandaloneThemeService {
     [ThemeColorType.VITAMUI_ADDITIONAL]: '#9AA0FF',
     [ThemeColorType.VITAMUI_SECONDARY]: '#296EBC',
     [ThemeColorType.VITAMUI_TERTIARY]: '#C22A40',
+    [ThemeColorType.VITAMUI_RED]: '#C10000',
+    [ThemeColorType.VITAMUI_ORANGE]: '#BF511F',
+    [ThemeColorType.VITAMUI_GREEN]: '#27740A',
+    [ThemeColorType.VITAMUI_WHITE]: '#FFFFFF',
     [ThemeColorType.VITAMUI_HEADER_FOOTER]: '#604379',
     [ThemeColorType.VITAMUI_BACKGROUND]: StandaloneThemeService.getPrimaryLight(DEFAULT_PRIMARY),
     /* DEPRECATED colors : Use color chart with declinations var(--vitamui-primary-XXX),
@@ -171,7 +175,13 @@ export class StandaloneThemeService {
     }
   }
 
-  private add10Declinations(key: string, colors: { [key: string]: string }, customerColors: { [colorId: string]: string }): void {
+  private add10Declinations(
+    key: string,
+    colors: { [key: string]: string },
+    customerColors: {
+      [colorId: string]: string;
+    },
+  ): void {
     const mergedMap: { [key: string]: string } = { ...this.defaultMap, ...this.applicationColorMap, ...customerColors };
     // consider hs-L from color key as 500
 
@@ -219,7 +229,19 @@ export class StandaloneThemeService {
     const colors: { [key: string]: string } = {};
     for (const key in this.defaultMap) {
       if (this.defaultMap.hasOwnProperty(key)) {
-        if (([ThemeColorType.VITAMUI_PRIMARY, ThemeColorType.VITAMUI_SECONDARY, ThemeColorType.VITAMUI_GREY] as string[]).includes(key)) {
+        if (
+          (
+            [
+              ThemeColorType.VITAMUI_PRIMARY,
+              ThemeColorType.VITAMUI_SECONDARY,
+              ThemeColorType.VITAMUI_GREY,
+              ThemeColorType.VITAMUI_ADDITIONAL,
+              ThemeColorType.VITAMUI_RED,
+              ThemeColorType.VITAMUI_ORANGE,
+              ThemeColorType.VITAMUI_GREEN,
+            ] as string[]
+          ).includes(key)
+        ) {
           this.add10Declinations(key, colors, customerColors);
         } else if (key === ThemeColorType.VITAMUI_HEADER_FOOTER) {
           const mergedMap = { ...this.defaultMap, ...this.applicationColorMap, ...customerColors };

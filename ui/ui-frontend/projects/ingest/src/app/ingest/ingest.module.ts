@@ -42,7 +42,6 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatLegacyDialogModule as MatDialogModule } from '@angular/material/legacy-dialog';
 import { MatLegacyMenuModule as MatMenuModule } from '@angular/material/legacy-menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatLegacyTooltipModule as MatTooltipModule } from '@angular/material/legacy-tooltip';
 import { SharedModule } from 'projects/identity/src/app/shared/shared.module';
 import { VitamUICommonModule } from 'vitamui-library';
 
@@ -70,7 +69,6 @@ import { TranslateModule } from '@ngx-translate/core';
     ReactiveFormsModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatTooltipModule,
     TranslateModule,
   ],
   declarations: [IngestComponent],

@@ -65,7 +65,7 @@
               <div class="text medium light">{{ 'COLLECT.PROJECT_DESCRIPTION_SERVICES' | translate }}</div>
             </div>
             <div class="col toggle-right">
-              <vitamui-common-slide-toggle class="fields-padding d-flex" [checked]="false" [disabled]="true" matTooltipPosition="below">
+              <vitamui-common-slide-toggle class="fields-padding d-flex" [checked]="false" [disabled]="true">
                 {{ 'COLLECT.PROJECT_DESCRIPTION_REFERENTIAL_CHECKUP' | translate }}
               </vitamui-common-slide-toggle>
             </div>
@@ -128,7 +128,7 @@
             <div class="text large bold">{{ 'COLLECT.PROJECT_CONTEXT_SUB_TITLE' | translate }}</div>
           </div>
           <div class="col toggle-right">
-            <vitamui-common-slide-toggle class="fields-padding" [checked]="false" [disabled]="true" matTooltipPosition="below">
+            <vitamui-common-slide-toggle class="fields-padding" [checked]="false" [disabled]="true">
               {{ 'COLLECT.PROJECT_DESCRIPTION_REFERENTIAL_CHECKUP' | translate }}
             </vitamui-common-slide-toggle>
           </div>
@@ -286,7 +286,7 @@
       <div class="content">
         <div class="text medium light">{{ 'COLLECT.MODAL.TITLE' | translate }}</div>
         <div class="text large bold">{{ 'COLLECT.MODAL.FLOW_WORKFLOW_TYPE_CHOICE' | translate }}</div>
-        <div class="main-content gap-20">
+        <div class="main-content gap-4">
           <mat-button-toggle-group class="vitamui-button-toggle-group">
             <mat-button-toggle value="{{ FlowType.FIX }}" (click)="setFlowType(FlowType.FIX)" [checked]="true">
               {{ 'COLLECT.MODAL.FIX_FLOW_WORKFLOW' | translate }}
@@ -295,7 +295,7 @@
               {{ 'COLLECT.MODAL.RULES_FLOW_WORKFLOW' | translate }}
             </mat-button-toggle>
           </mat-button-toggle-group>
-          <div class="hgap-10">
+          <div class="hgap-2">
             <span>{{ 'COLLECT.MODAL.AUTO_INGEST' | translate }}</span>
             <mat-button-toggle-group formControlName="automaticIngest" class="vitamui-button-toggle-group">
               <mat-button-toggle [value]="true">
@@ -385,8 +385,7 @@
                     <button
                       class="delete-button"
                       (click)="deleteRuleParam(index)"
-                      matTooltip="{{ 'COLLECT.MODAL.REMOVE_PARAM' | translate }}"
-                      matTooltipClass="vitamui-tooltip"
+                      [vitamuiCommonToolTip]="'COLLECT.MODAL.REMOVE_PARAM' | translate"
                     >
                       <i class="vitamui-icon vitamui-icon-delete"></i>
                     </button>

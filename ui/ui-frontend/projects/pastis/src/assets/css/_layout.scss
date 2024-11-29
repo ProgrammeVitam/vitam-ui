@@ -1,22 +1,5 @@
 @import 'mixins';
-
-//Pastis class header without sidebar
-/// @author Paulo Pimenta
-.pastis-header-no-sidebar {
-  position: absolute;
-  width: 1440px;
-  height: 288px;
-  left: 0px;
-  top: -2px;
-  background: #eceef3;
-}
-
-//Pastis class header with sidebar
-/// @author Paulo Pimenta
-.pastis-header-with-sidebar {
-  @extend .pastis-header-no-sidebar;
-  width: 952px;
-}
+@import 'mixins/elevation';
 
 .pastis-content-metadata {
   position: absolute;
@@ -25,7 +8,7 @@
   top: 359px;
   right: 116px;
   left: 58px;
-  background: #ffffff;
+  background: var(--vitamui-white);
 }
 
 .pastis-slide-nav-profile {
@@ -33,13 +16,7 @@
   height: auto;
 
   //bottom: 100px;
-  background: #ffffff;
-}
-
-.pastis-slide-nav-header {
-  position: absolute;
-  height: 200px;
-  background: #5cbaa9;
+  background: var(--vitamui-white);
 }
 
 .pastis-page-container {
@@ -57,25 +34,6 @@
 
   //overflow: auto;
   width: 100%;
-}
-
-.pastis-table {
-  width: 80%;
-  height: 612px;
-  left: 150px;
-  margin-right: 120px;
-  /*Material*/
-  height: auto;
-  overflow: auto;
-  background: #ffffff !important;
-  box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.14) !important;
-  border-radius: 5px !important;
-}
-
-.pastis-metadata-table {
-  background: #ffffff;
-  box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.14);
-  border-radius: 5px;
 }
 
 .pastis-col {
@@ -110,11 +68,6 @@
   height: 50px;
 }
 
-.pastis-side-nav {
-  background: #ffffff;
-  box-shadow: 20px 20px 80px rgba(168, 153, 153, 0.5);
-}
-
 .pastis-ico-svg {
   display: block;
   margin: auto;
@@ -125,22 +78,6 @@
   line-height: 22px;
   margin-left: 10px;
   vertical-align: middle;
-}
-
-.pastis-popup-modal-box {
-  mat-dialog-container {
-    //padding: 0px !important;
-    //width: 100%;
-    //max-height: 100%;
-    background: #f7f8fb;
-    /* Elevation 3 */
-    box-shadow:
-      0px 11px 15px rgba(0, 0, 0, 0.1),
-      0px 9px 46px rgba(0, 0, 0, 0.06),
-      0px 24px 38px rgba(0, 0, 0, 0.07);
-    border-radius: 20px;
-    overflow: hidden;
-  }
 }
 
 /* width */
@@ -157,11 +94,9 @@
 /* Handle */
 ::-webkit-scrollbar-thumb {
   // background:  var(--vitamui-primary-50);
-  // background: #F7F8FB;
   border-radius: 100px;
 
   background: var(--vitamui-primary);
-  // background: #C1C1C1
 }
 
 /* Handle on hover */
@@ -199,7 +134,7 @@
   /* or 133% */
   letter-spacing: 0.4px;
   /* Surface - White */
-  color: #ffffff;
+  color: var(--vitamui-white);
 }
 
 /* style de la flèche du tooltip*/
@@ -221,14 +156,14 @@
 
 .pastis-text-area {
   height: 40px;
-  background: #ffffff;
+  background: var(--vitamui-white);
   outline: none;
   display: flex;
   align-items: center;
   text-align: center;
   letter-spacing: 0.25px;
   resize: none;
-  color: #757575;
+  color: var(--vitamui-grey-600);
 }
 
 /* Hide the browser's default checkbox */
@@ -269,7 +204,7 @@
 }
 
 .checkbox-label input:checked ~ .checkbox-custom {
-  background-color: #ffffff;
+  background-color: var(--vitamui-white);
   border-radius: 3px;
   -webkit-transform: rotate(0deg) scale(1);
   -ms-transform: rotate(0deg) scale(1);
@@ -325,7 +260,7 @@
 .pastis-table-row-header {
   border-width: 5px;
   border-color: transparent;
-  background-color: #ffffff;
+  background-color: var(--vitamui-white);
   border-radius: 5px;
   height: 60px !important;
 }
@@ -336,23 +271,17 @@
 
 .pastis-table-row:hover {
   @extend .pastis-table-row;
-  background-color: #f6f3fb;
-  box-shadow:
-    0px 1px 4px rgba(33, 33, 33, 0.2),
-    0px 2px 8px rgba(33, 33, 33, 0.05);
+  background-color: var(--vitamui-background);
+  @include shadow-2dp-dark;
   cursor: pointer;
 }
 
 .pastis-panel-shadow-primary-500 {
-  box-shadow:
-    0px 1px 4px rgba(112, 35, 130, 0.4),
-    0px 2px 8px rgba(112, 35, 130, 0.2);
+  @include shadow-2dp-dark;
 }
 
 .pastis-panel-shadow {
-  box-shadow:
-    0px 2px 8px rgba(33, 33, 33, 0.2),
-    0px 4px 16px rgba(33, 33, 33, 0.05);
+  @include shadow-2dp-dark;
 }
 
 .pastis-panel-radius-5 {
@@ -369,5 +298,5 @@
   left: 90px;
   top: 0.83%;
   bottom: 0.83%;
-  @extend .pastis-bgcolor-grey-400;
+  background-color: var(--vitamui-grey-400);
 }

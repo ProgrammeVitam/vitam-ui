@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Directive, forwardRef, Input, ViewChild } from '@angular/core';
+import { Component, forwardRef, Input, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AsyncValidator, ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule, Validator } from '@angular/forms';
 import { of, Subject } from 'rxjs';
@@ -44,14 +44,6 @@ import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { HierarchyService } from '../../hierarchy.service';
 import { ProfileValidators } from '../../profile.validators';
 import { InformationTabComponent } from './information-tab.component';
-
-// eslint-disable-next-line @angular-eslint/directive-selector
-@Directive({ selector: '[matTooltip]' })
-class MatTooltipStubDirective {
-  @Input() matTooltip: any;
-  @Input() matTooltipDisabled: any;
-  @Input() matTooltipClass: any;
-}
 
 @Component({
   selector: 'app-editable-textarea',
@@ -121,7 +113,7 @@ describe('Hierarchy InformationTabComponent', () => {
 
     await TestBed.configureTestingModule({
       imports: [ReactiveFormsModule, VitamUICommonTestModule],
-      declarations: [InformationTabComponent, TestHostComponent, EditableTextAreaStubComponent, MatTooltipStubDirective],
+      declarations: [InformationTabComponent, TestHostComponent, EditableTextAreaStubComponent],
       providers: [
         { provide: HierarchyService, useValue: hierarchyServiceMock },
         { provide: ProfileValidators, useValue: profileValidatorsSpy },

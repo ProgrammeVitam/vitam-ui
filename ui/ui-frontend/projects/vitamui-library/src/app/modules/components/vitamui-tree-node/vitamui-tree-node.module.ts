@@ -39,11 +39,11 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatLegacyButtonModule as MatButtonModule } from '@angular/material/legacy-button';
 import { MatLegacyCheckboxModule as MatCheckboxModule } from '@angular/material/legacy-checkbox';
-import { MatLegacyTooltipModule as MatTooltipModule } from '@angular/material/legacy-tooltip';
 import { VitamuiTreeNodeComponent } from './vitamui-tree-node.component';
+import { CommonTooltipModule } from '../common-tooltip/common-tooltip.module';
 
 @NgModule({
-  imports: [CommonModule, FormsModule, MatButtonModule, MatCheckboxModule, MatTooltipModule],
+  imports: [CommonModule, FormsModule, MatButtonModule, MatCheckboxModule, CommonTooltipModule],
   declarations: [VitamuiTreeNodeComponent],
   exports: [VitamuiTreeNodeComponent],
 })

@@ -252,7 +252,7 @@ describe('UpdateUnitRulesComponent', () => {
 
   describe('DOM', () => {
     it('should have 3 titles ', () => {
-      const formTitlesHtmlElements = fixture.nativeElement.querySelectorAll('.title-text');
+      const formTitlesHtmlElements = fixture.nativeElement.querySelectorAll('label');
 
       expect(formTitlesHtmlElements).toBeTruthy();
       expect(formTitlesHtmlElements.length).toBe(3);

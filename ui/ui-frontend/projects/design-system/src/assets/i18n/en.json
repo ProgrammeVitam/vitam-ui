@@ -89,6 +89,7 @@
     "Secondary": "Color secondary",
     "Grey": "Color grey",
     "Additional": "Color additional",
+    "WHITE": "Color white",
     "PRIMARY_LIGHT": "Color \"primary-light\"",
     "Red": "Color red",
     "Orange": "Color orange",
@@ -142,6 +143,7 @@
   },
   "SPACING": {
     "PADDING": "Padding",
-    "MARGIN": "Margin"
+    "MARGIN": "Margin",
+    "GAP": "Gap"
   }
 }

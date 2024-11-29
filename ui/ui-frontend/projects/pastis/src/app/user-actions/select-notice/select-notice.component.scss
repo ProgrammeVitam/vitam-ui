@@ -32,9 +32,6 @@
   /* identical to box height, or 157% */
   letter-spacing: 0.1px;
 
-  /* Secondary/Secondary-900 */
-  color: #050c15;
-
   /* Inside Auto Layout */
   flex: none;
   order: 0;
@@ -97,30 +94,6 @@
   position: relative;
   margin-left: 5%;
   margin-bottom: 10px;
-}
-
-.pastis-btn-oui-dialog-confirm {
-  font-family: Mulish !important;
-  border-radius: 100px;
-  padding-left: 30px;
-  padding-right: 30px;
-  min-width: 92px;
-  height: 50px;
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
-  @extend .pastis-btn-primary-enabled;
-}
-
-.pastis-btn-oui-dialog-confirm:hover:not([disabled]) {
-  @extend .pastis-btn-primary-hover;
-}
-
-.pastis-btn-oui-dialog-confirm:active {
-  @extend .pastis-btn-primary-focus;
-}
-
-.pastis-btn-oui-dialog-confirm:disabled {
-  @extend .pastis-btn-primary-disabled;
 }
 
 .pastis-btn-non-dialog-confirm {

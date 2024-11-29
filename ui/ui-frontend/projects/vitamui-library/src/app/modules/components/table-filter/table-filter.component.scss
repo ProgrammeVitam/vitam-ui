@@ -3,14 +3,14 @@
 
 .table-filter-panel {
   @include elevation-3-dark;
-  background: $white;
+  background: var(--vitamui-white);
   border: 1px solid var(--vitamui-grey-400);
   border-radius: 5px;
 }
 
 .table-filter-header {
   padding: 7px 11px;
-  border-bottom: 1px solid #e0e0e0;
+  border-bottom: 1px solid var(--vitamui-grey-300);
   display: flex;
   align-items: center;
 
@@ -21,7 +21,6 @@
     input {
       height: 36px;
       border-radius: 18px;
-      border: 1px solid rgba(0, 0, 0, 0.5);
       padding: 8px 36px 8px 24px;
       outline: none;
       width: 100%;
@@ -32,7 +31,7 @@
       position: absolute;
       right: 0;
       top: 6px;
-      color: rgba(0, 0, 0, 0.5);
+      color: var(--vitamui-grey-600);
       padding: 0 12px 0 0;
     }
 
@@ -41,7 +40,7 @@
       position: absolute;
       right: 12px;
       top: 0;
-      color: rgba(0, 0, 0, 0.5);
+      color: var(--vitamui-grey-600);
       height: 36px;
       padding: 0;
       border: none;

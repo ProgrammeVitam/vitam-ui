@@ -37,7 +37,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { MatLegacyProgressSpinnerModule as MatProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
-import { MatLegacyTooltipModule as MatTooltipModule } from '@angular/material/legacy-tooltip';
 import { TranslateModule } from '@ngx-translate/core';
 import { AccordionModule } from '../components/accordion/accordion.module';
 import { DataModule } from '../components/data/data.module';
@@ -53,7 +52,7 @@ import { PathStrategyDisplayObjectService } from './services/path-strategy-displ
 import { SchemaElementToDisplayRuleService } from './services/schema-element-to-display-rule.service';
 
 @NgModule({
-  imports: [CommonModule, TranslateModule, PipesModule, MatTooltipModule, MatProgressSpinnerModule, AccordionModule, DataModule],
+  imports: [CommonModule, TranslateModule, PipesModule, MatProgressSpinnerModule, AccordionModule, DataModule],
   declarations: [ObjectViewerComponent, GroupComponent, ListComponent, PrimitiveComponent],
   providers: [
     DisplayObjectHelperService,

@@ -1,62 +1,7 @@
 //Generate Pastis dropdown lists
-@import 'colors';
 
 /// Pastis dropdown border colors
 /// @author Paulo Pimenta
-$dropdowns-border: (
-  button1: (
-    enabled: (
-      1px solid var(--vitamui-secondary-300),
-    ),
-    disabled: (
-      1px solid var(--vitamui-secondary-200),
-    ),
-    hover: (
-      1px solid var(--vitamui-secondary-200),
-    ),
-    focus: (
-      1px solid var(--vitamui-secondary-200),
-    ),
-  ),
-  button2: (
-    enabled: (
-      1px solid #f0f0f0,
-    ),
-    disabled: '',
-    hover: (
-      1px solid #f0f0f0,
-    ),
-    focus: (
-      1px solid #f0f0f0,
-    ),
-  ),
-  leading: (
-    enabled: (
-      1px solid var(--vitamui-secondary-300),
-    ),
-    disabled: (
-      1px solid map-get($colors, 'secondary-disabled'),
-    ),
-    hover: (
-      1px solid var(--vitamui-secondary-300),
-    ),
-    focus: (
-      1px solid var(--vitamui-secondary-300),
-    ),
-  ),
-  search: (
-    enabled: '',
-    disabled: '',
-    hover: '',
-    focus: '',
-  ),
-  special: (
-    enabled: (
-      1px solid #5cbaa9,
-    ),
-  ),
-);
-
 $dropdowns-text: (
   button1: (
     enabled: var(--vitamui-secondary-300),
@@ -77,43 +22,13 @@ $dropdowns-text: (
     focus: var(--vitamui-secondary-300),
   ),
   search: (
-    enabled: #ffffff,
-    disabled: #ffffff,
-    hover: #ffffff,
-    focus: #ffffff,
+    enabled: var(--vitamui-white),
+    disabled: var(--vitamui-white),
+    hover: var(--vitamui-white),
+    focus: var(--vitamui-white),
   ),
   special: (
-    enabled: #9d9d9d,
-  ),
-);
-
-$dropdowns-background: (
-  button1: (
-    enabled: #ffffff,
-    disabled: #ffffff,
-    hover: #ffffff,
-    focus: #ffffff,
-  ),
-  button2: (
-    enabled: #ffffff,
-    disabled: #ffffff,
-    hover: #ffffff,
-    focus: #ffffff,
-  ),
-  leading: (
-    enabled: #ffffff,
-    disabled: #ffffff,
-    hover: #ffffff,
-    focus: #ffffff,
-  ),
-  search: (
-    enabled: #ff833c,
-    disabled: #ff833c,
-    hover: #ff833c,
-    focus: #ff833c,
-  ),
-  special: (
-    enabled: #ffffff,
+    enabled: var(--vitamui-grey),
   ),
 );
 
@@ -147,27 +62,6 @@ $dropdowns-background: (
 .dropdown {
   border-radius: 50px;
   height: 49px;
-  background: #ffffff;
+  background: var(--vitamui-white);
   max-height: 40px;
 }
-
-/*Defines dropdown box-shadow*/
-
-$dropdowns-box-shadow: (
-  enabled: (
-    0px 1px 3px rgba(0, 0, 0, 0.2),
-    0px 2px 2px rgba(0, 0, 0, 0.12),
-    0px 0px 2px rgba(0, 0, 0, 0.14),
-  ),
-  disabled: '',
-  hover: (
-    0px 1px 10px rgba(0, 0, 0, 0.2),
-    0px 4px 5px rgba(0, 0, 0, 0.12),
-    0px 2px 4px rgba(0, 0, 0, 0.14),
-  ),
-  focus: (
-    0px 1px 3px rgba(0, 0, 0, 0.2),
-    0px 2px 2px rgba(0, 0, 0, 0.12),
-    0px 0px 2px rgba(0, 0, 0, 0.14),
-  ),
-);

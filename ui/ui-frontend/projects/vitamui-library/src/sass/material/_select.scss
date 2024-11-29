@@ -49,7 +49,7 @@ mat-select-trigger.vitamui-mat-select {
   }
 
   &.mat-form-field-invalid .mat-form-field-label {
-    color: $red;
+    color: var(--vitamui-red);
   }
 
   .mat-form-field-label {
@@ -57,7 +57,7 @@ mat-select-trigger.vitamui-mat-select {
     font-weight: 400;
 
     .mat-form-field-required-marker {
-      color: $red;
+      color: var(--vitamui-red);
     }
   }
 

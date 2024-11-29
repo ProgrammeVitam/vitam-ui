@@ -279,14 +279,14 @@
         <div class="row">
           <div class="col-12">
             <ng-container *ngIf="!updateStarted">
-              <div *ngIf="selectedProject.unitUp" class="gap-10">
+              <div *ngIf="selectedProject.unitUp" class="gap-2">
                 <div class="text normal bold primary uppercase">{{ 'COLLECT.PROJECT_UNIT_PREVIEW.ATTACHMENT.FIX.TITLE' | translate }}</div>
                 <vitamui-common-data
                   [label]="'COLLECT.PROJECT_UNIT_PREVIEW.ATTACHMENT.FIX.ATTACHMENT_ID' | translate"
                   [value]="selectedProject.unitUp"
                 ></vitamui-common-data>
               </div>
-              <div *ngIf="selectedProject.unitUps" class="gap-20">
+              <div *ngIf="selectedProject.unitUps" class="gap-4">
                 <div class="text normal bold primary uppercase">
                   {{ 'COLLECT.PROJECT_UNIT_PREVIEW.ATTACHMENT.RULES.TITLE' | translate }}
                 </div>

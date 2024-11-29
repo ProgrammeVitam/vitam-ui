@@ -2,10 +2,10 @@
 
 .dot-danger {
   @include dot;
-  background-color: $red;
+  background-color: var(--vitamui-red);
 }
 
 .dot-success {
   @include dot;
-  background-color: $green;
+  background-color: var(--vitamui-green);
 }

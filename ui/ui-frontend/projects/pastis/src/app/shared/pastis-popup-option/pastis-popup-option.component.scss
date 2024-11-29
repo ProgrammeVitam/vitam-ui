@@ -3,8 +3,8 @@
   width: 280px;
   height: 150px;
   position: absolute;
-  background: #ffffff;
-  border: 1px solid #bdbdbd;
+  background: var(--vitamui-white);
+  border: 1px solid var(--vitamui-grey-400);
   box-sizing: border-box;
   border-radius: 10px;
 }

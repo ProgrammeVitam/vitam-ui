@@ -22,6 +22,6 @@ input[type='radio'] {
 }
 
 .radio-label.checked {
-  color: $white;
+  color: var(--vitamui-white);
   background: var(--vitamui-secondary);
 }

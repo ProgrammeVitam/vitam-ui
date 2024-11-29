@@ -40,7 +40,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 
-import { NavbarStubComponent, VitamUIFieldErrorStubComponent } from '../../../../../testing/src/public_api';
+import { VitamUIFieldErrorStubComponent } from '../../../../../testing/src/public_api';
 import { EditableFieldModule } from '../../components/editable-field/editable-field.module';
 import { SlideToggleModule } from '../../components/slide-toggle/slide-toggle.module';
 import { WINDOW_LOCATION } from '../../injection-tokens';
@@ -58,7 +58,7 @@ describe('AccountInformationTabComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [ReactiveFormsModule, EditableFieldModule, SlideToggleModule, TranslateModule.forRoot(), NoopAnimationsModule],
-      declarations: [AccountInformationTabComponent, VitamUIFieldErrorStubComponent, NavbarStubComponent],
+      declarations: [AccountInformationTabComponent, VitamUIFieldErrorStubComponent],
       providers: [
         { provide: WINDOW_LOCATION, useValue: {} },
         { provide: AccountService, useValue: accountServiceSpy },

@@ -140,7 +140,7 @@
         <div class="vitamui-table-rows" *ngFor="let operation of results" (click)="operationClick.emit(operation)">
           <div class="vitamui-row d-flex align-items-center clickable">
             <div class="col-3">
-              <span matTooltip="{{ operation.operationId }}" matTooltipClass="vitamui-tooltip" [matTooltipShowDelay]="300">
+              <span [vitamuiCommonToolTip]="operation.operationId" [vitamuiCommonToolTipShowDelay]="300">
                 {{ operation?.operationId | truncate: 30 }}
               </span>
             </div>
@@ -158,15 +158,12 @@
 
             <div class="col-2">
               <span
-                [ngClass]="
-                  operationStatus(operation) === 'OK'
-                    ? 'text-green'
-                    : operationStatus(operation) === 'KO'
-                      ? 'text-red'
-                      : operationStatus(operation) === 'WARNING'
-                        ? 'text-orange'
-                        : 'text-red-fatal'
-                "
+                class="text bold"
+                [ngClass]="{
+                  success: operationStatus(operation) === 'OK',
+                  danger: ['KO', 'FATAL'].includes(operationStatus(operation)),
+                  warning: operationStatus(operation) === 'WARNING',
+                }"
                 >{{ 'STATUS_VALUE.' + operation?.stepStatus | translate }}</span
               >
               <br />

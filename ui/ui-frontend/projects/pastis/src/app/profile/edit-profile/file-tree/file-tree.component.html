@@ -72,12 +72,7 @@
                 {{ this.profileService.profileType === 'PUA' ? onResolveName(node) : '' }}
               </span>
               <ng-template #elseBlock>{{ onResolveName(node) }}</ng-template>
-              <span
-                *ngIf="node.nonEditFileNode || node.name === 'ArchiveUnit'"
-                matTooltip="Ajouter une UA"
-                matTooltipClass="pastis-tooltip-class"
-                style="float: right"
-              >
+              <span *ngIf="node.nonEditFileNode || node.name === 'ArchiveUnit'" vitamuiCommonToolTip="Ajouter une UA" style="float: right">
                 <!--Button plus-->
                 <button (click)="addArchiveUnit(node)" *ngIf="this.profileService.profileType === 'PA'" class="pastis-btn-add-ua">
                   <i class="vitamui-icon vitamui-icon-add" style="color: var(--vitamui-primary)"></i>

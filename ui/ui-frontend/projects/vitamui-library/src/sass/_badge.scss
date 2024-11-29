@@ -4,8 +4,8 @@
   @include status-badge;
 
   &:after {
-    background-color: $green;
-    border: solid 2px $white;
+    background-color: var(--vitamui-green);
+    border: solid 2px var(--vitamui-white);
   }
 
   &.status-badge-mini {
@@ -17,8 +17,8 @@
   @include status-badge;
 
   &:after {
-    background-color: $red;
-    border: solid 2px $white;
+    background-color: var(--vitamui-red);
+    border: solid 2px var(--vitamui-white);
   }
 
   &.status-badge-mini {
@@ -30,8 +30,8 @@
   @include status-badge;
 
   &:after {
-    background-color: $mustard-yellow;
-    border: solid 2px $white;
+    background-color: var(--vitamui-orange);
+    border: solid 2px var(--vitamui-white);
   }
 
   &.status-badge-mini {
@@ -44,7 +44,7 @@
 
   &:after {
     background-color: $light-grey;
-    border: solid 2px $white;
+    border: solid 2px var(--vitamui-white);
   }
 
   &.status-badge-mini {
@@ -56,8 +56,8 @@
   @include status-badge;
 
   &:after {
-    background-color: #dadada;
-    border: solid 2px $white;
+    background-color: var(--vitamui-grey-300);
+    border: solid 2px var(--vitamui-white);
   }
 
   &.status-badge-mini {
@@ -70,7 +70,7 @@
 
   &:after {
     background-color: $black;
-    border: solid 2px $white;
+    border: solid 2px var(--vitamui-white);
   }
 
   &.status-badge-mini {
@@ -85,6 +85,6 @@
     content: '\ea0f';
     font-size: 8px;
     line-height: 8px;
-    color: $white;
+    color: var(--vitamui-white);
   }
 }

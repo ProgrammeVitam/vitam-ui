@@ -39,7 +39,6 @@ import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatLegacyMenuModule as MatMenuModule } from '@angular/material/legacy-menu';
 import { MatLegacyTabsModule as MatTabsModule } from '@angular/material/legacy-tabs';
-import { MatLegacyTooltipModule as MatTooltipModule } from '@angular/material/legacy-tooltip';
 
 import { RoleToggleModule, VitamUICommonModule } from 'vitamui-library';
 import { SharedModule } from '../../shared/shared.module';
@@ -48,16 +47,7 @@ import { ProfileDetailComponent } from './profile-detail.component';
 import { ProfilePopupComponent } from './profile-popup.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    SharedModule,
-    MatMenuModule,
-    MatTabsModule,
-    MatTooltipModule,
-    ReactiveFormsModule,
-    VitamUICommonModule,
-    RoleToggleModule,
-  ],
+  imports: [CommonModule, SharedModule, MatMenuModule, MatTabsModule, ReactiveFormsModule, VitamUICommonModule, RoleToggleModule],
   declarations: [ProfilePopupComponent, ProfileDetailComponent, InformationTabComponent],
   exports: [ProfileDetailComponent],
 })

@@ -50,30 +50,6 @@
   margin-bottom: 10px;
 }
 
-.pastis-btn-oui-dialog-confirm {
-  padding-left: 30px;
-  padding-right: 30px;
-  min-width: 92px;
-  height: 50px;
-  background-color: var(--vitamui-primary);
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
-  font-family: Mulish !important;
-  @extend .pastis-btn-primary-enabled;
-}
-
-.pastis-btn-oui-dialog-confirm:hover:not([disabled]) {
-  @extend .pastis-btn-primary-hover;
-}
-
-.pastis-btn-oui-dialog-confirm:active {
-  @extend .pastis-btn-primary-focus;
-}
-
-.pastis-btn-oui-dialog-confirm:disabled {
-  @extend .pastis-btn-primary-disabled;
-}
-
 .pastis-btn-non-dialog-confirm {
   padding-left: 30px;
   padding-right: 30px;

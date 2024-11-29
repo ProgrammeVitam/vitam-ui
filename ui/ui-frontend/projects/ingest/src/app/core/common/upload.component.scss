@@ -1,7 +1,6 @@
 @import 'variables/colors';
 
 $field-spacing: 15px;
-$dark-red: #ea0101;
 
 .header {
   padding: 30px 60px 0 60px;
@@ -16,11 +15,6 @@ h2 {
   line-height: 46px;
   margin-top: 23px;
   margin-bottom: 37px;
-}
-
-i.icon-error {
-  color: red;
-  font-size: 40px;
 }
 
 .actions {
@@ -68,18 +62,12 @@ button > small {
   font-weight: 400;
 }
 
-.hint {
-  color: #a5a5a5;
-  font-size: 15px;
-}
-
 .drag-and-drop-area {
   width: 100%;
   height: 210px;
   border: 2px dashed var(--vitamui-primary);
   border-radius: 6px;
-  box-shadow: 0px 0px 80px rgba(255, 255, 249, 0.3);
-  background: $white;
+  background: var(--vitamui-white);
   margin-bottom: 10px;
   margin-top: -20px;
 
@@ -91,13 +79,13 @@ button > small {
   border: 2px solid var(--vitamui-secondary);
 
   p {
-    color: $white;
+    color: var(--vitamui-white);
   }
 
   .drop-area {
-    background: #5cbaa9;
+    background: var(--vitamui-grey-400);
     opacity: 0.9;
-    color: $white;
+    color: var(--vitamui-white);
   }
 }
 
@@ -111,17 +99,6 @@ button > small {
 .drop-area {
   text-align: center;
   height: 156px;
-}
-
-.upload-text {
-  padding-top: 5%;
-  font-size: 15px;
-  line-height: 18px;
-  color: #a5a5a5;
-  text-align: center;
-  .upload {
-    color: var(--vitamui-secondary);
-  }
 }
 
 .sip-drop {
@@ -146,7 +123,7 @@ button > small {
   line-height: 10px;
 }
 .error-message {
-  color: $red;
+  color: var(--vitamui-red);
   font-size: 16px;
   margin-top: 80px;
 }
@@ -156,12 +133,12 @@ button > small {
   padding: 34px 0px 34px 34px;
 }
 .success-icon {
-  color: #27740a;
+  color: var(--vitamui-green);
   font-size: 50px;
 }
 
 .error-icon {
-  color: $dark-red;
+  color: var(--vitamui-red);
   font-size: 50px;
 }
 
@@ -173,19 +150,13 @@ button > small {
 }
 
 .file-info-class {
-  font-size: 14px;
   line-height: 20px;
   text-align: center;
   margin-top: 50px;
   margin-bottom: 10px;
-  color: #000000;
   font-style: normal;
   font-weight: bold;
   font-size: 18px;
-
-  small {
-    color: #a5a5a5;
-  }
 }
 
 .font-class-file {

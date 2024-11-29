@@ -1,0 +1,24 @@
+@import './variables/bootstrap-variables';
+
+@mixin gap($gap) {
+  display: flex;
+  gap: $gap;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+@mixin hgap($gap) {
+  display: flex;
+  gap: $gap;
+  flex-direction: row;
+  align-items: center;
+}
+
+@each $size, $length in $spacers {
+  .gap-#{$size} {
+    @include gap($length);
+  }
+  .hgap-#{$size} {
+    @include hgap($length);
+  }
+}

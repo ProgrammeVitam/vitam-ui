@@ -17,7 +17,7 @@ body {
   font:
     20px Mulish,
     sans-serif;
-  color: #333;
+  color: var(--vitamui-grey-800);
   background: cornsilk;
 }
 article {
@@ -26,10 +26,10 @@ article {
   margin: 0 auto;
 }
 a {
-  color: #dc8100;
+  color: var(--vitamui-orange);
   text-decoration: none;
 }
 a:hover {
-  color: #333;
+  color: var(--vitamui-grey-800);
   text-decoration: none;
 }

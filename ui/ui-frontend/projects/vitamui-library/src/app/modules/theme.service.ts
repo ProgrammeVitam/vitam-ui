@@ -87,6 +87,10 @@ export class ThemeService {
     [ThemeColorType.VITAMUI_ADDITIONAL]: '#9AA0FF',
     [ThemeColorType.VITAMUI_SECONDARY]: '#296EBC',
     [ThemeColorType.VITAMUI_TERTIARY]: '#C22A40',
+    [ThemeColorType.VITAMUI_RED]: '#C10000',
+    [ThemeColorType.VITAMUI_ORANGE]: '#BF511F',
+    [ThemeColorType.VITAMUI_GREEN]: '#27740A',
+    [ThemeColorType.VITAMUI_WHITE]: '#ffffff',
     [ThemeColorType.VITAMUI_HEADER_FOOTER]: '#604379',
     [ThemeColorType.VITAMUI_BACKGROUND]: ThemeService.getPrimaryLight(DEFAULT_PRIMARY),
     /* DEPRECATED colors : Use color chart with declinations var(--vitamui-primary-XXX),
@@ -270,6 +274,9 @@ export class ThemeService {
               ThemeColorType.VITAMUI_SECONDARY,
               ThemeColorType.VITAMUI_GREY,
               ThemeColorType.VITAMUI_ADDITIONAL,
+              ThemeColorType.VITAMUI_RED,
+              ThemeColorType.VITAMUI_ORANGE,
+              ThemeColorType.VITAMUI_GREEN,
             ] as string[]
           ).includes(key)
         ) {

@@ -26,12 +26,7 @@
 
 <!-- Pastis defaut dialog buttons-->
 <mat-dialog-actions align="right" class="pastis-dialog-confirm-buttons">
-  <button
-    (click)="onYesClick()"
-    [disabled]="btnYesShouldBeDisabled"
-    [mat-dialog-close]="dataBeforeClose"
-    class="pastis-btn-oui-dialog-confirm"
-  >
+  <button (click)="onYesClick()" [disabled]="btnYesShouldBeDisabled" [mat-dialog-close]="dataBeforeClose" class="btn primary">
     {{ dialogReceivedData.okLabel }}
   </button>
   <button (click)="onNoClick()" class="pastis-btn-non-dialog-confirm">{{ dialogReceivedData.cancelLabel }}</button>

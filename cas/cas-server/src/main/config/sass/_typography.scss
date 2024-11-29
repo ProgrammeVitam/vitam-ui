@@ -1,10 +1,10 @@
 
 h1, h2, h3, h4, h5 {
-  color: $grey-900;
+  color: var(--vitamui-grey-900);
   margin: 10px 0;
 
   &.light {
-    color: $grey-600;
+    color: var(--vitamui-grey-600);
   }
 }
 

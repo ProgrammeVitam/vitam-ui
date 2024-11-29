@@ -34,20 +34,11 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Directive, Input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatLegacyAutocompleteModule as MatAutocompleteModule } from '@angular/material/legacy-autocomplete';
 
 import { VitamUIAutocompleteComponent } from './vitamui-autocomplete.component';
-
-// eslint-disable-next-line @angular-eslint/directive-selector
-@Directive({ selector: '[matTooltip]' })
-class MatTooltipStubDirective {
-  @Input() matTooltip: any;
-  @Input() matTooltipDisabled: any;
-  @Input() matTooltipClass: any;
-}
 
 describe('VitamUIAutocompleteComponent', () => {
   let component: VitamUIAutocompleteComponent;
@@ -56,7 +47,7 @@ describe('VitamUIAutocompleteComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [ReactiveFormsModule, MatAutocompleteModule],
-      declarations: [VitamUIAutocompleteComponent, MatTooltipStubDirective],
+      declarations: [VitamUIAutocompleteComponent],
     }).compileComponents();
   });
 

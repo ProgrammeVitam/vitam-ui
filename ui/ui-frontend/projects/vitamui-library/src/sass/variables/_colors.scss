@@ -14,31 +14,7 @@
     limitations under the License.
  */
 
-$red: #c10000;
-$orange: #bf511f;
-$green: #27740a;
-$mustard-yellow: #ffa610;
 $black: black;
-$ligthly-purple: #f6f3fb;
-$light-primary: #f7ebfa;
-
-:root {
-  --vitamui-lightly-purple: $ligthly-purple; // équivaut à --vitamui-background ??
-}
 
 /** DEPRECATED colors : Use color chart with declinations var(--vitamui-grey-XXX) **/
-$charcoal-grey-two: #474d4a;
-$charcoal-grey: #485053;
-$cool-grey: #aab0b3;
-$silver: #bfc4ce;
-$pale-grey: #f7f8fb;
-$dark-grey: #4a4a4a;
-$warm-grey: #979797;
-$warm-grey-two: #999999;
-$light-grey: #9d9d9d;
-$greyish-two: #a6a6a6;
-$greyish: #b7b7b7;
-$white-four: #d8d8d8;
-$white-two: #e1e1e1;
-$white-three: #ececec;
-$white: #ffffff;
+$light-grey: var(--vitamui-grey);

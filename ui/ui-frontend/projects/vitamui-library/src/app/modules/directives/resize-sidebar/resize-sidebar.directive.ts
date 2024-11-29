@@ -56,9 +56,8 @@ export class ResizeSidebarDirective implements OnInit {
 
   /**
    * Couleur de la barre permettant de redimensionner
-   * valeur par défaut #702382
    */
-  @Input() barColor = 'rgb(112, 35, 130)';
+  @Input() barColor = 'var(--vitamui-primary)';
 
   /**
    * Largeur du block à redimensionner

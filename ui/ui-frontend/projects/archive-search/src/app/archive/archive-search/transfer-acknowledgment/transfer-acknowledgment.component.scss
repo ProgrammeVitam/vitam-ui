@@ -1,7 +1,6 @@
 @import 'variables/colors';
 
 $field-spacing: 15px;
-$dark-red: #ea0101;
 
 h2 {
   font-size: 23px;
@@ -30,7 +29,7 @@ h4 {
   display: flex;
   align-items: center;
 
-  color: #757575;
+  color: var(--vitamui-grey-600);
 }
 .input-file {
   display: none;
@@ -48,17 +47,6 @@ button.back {
   margin-top: 60px;
 }
 
-button > small {
-  display: block;
-  font-size: 12px;
-  font-weight: 400;
-}
-
-.hint {
-  color: #a5a5a5;
-  font-size: 15px;
-}
-
 .url-select {
   cursor: pointer;
   font-size: 30px;
@@ -73,13 +61,13 @@ button > small {
   border: 2px solid var(--vitamui-secondary);
 
   p {
-    color: $white;
+    color: var(--vitamui-white);
   }
 
   .drop-area {
-    background: #5cbaa9;
+    background: var(--vitamui-grey-400);
     opacity: 0.9;
-    color: $white;
+    color: var(--vitamui-white);
   }
 }
 
@@ -93,17 +81,6 @@ button > small {
 .drop-area {
   text-align: center;
   height: 156px;
-}
-
-.upload-text {
-  padding-top: 5%;
-  font-size: 15px;
-  line-height: 18px;
-  color: #a5a5a5;
-  text-align: center;
-  .upload {
-    color: var(--vitamui-secondary);
-  }
 }
 
 .atr-drop {
@@ -123,7 +100,7 @@ button > small {
   line-height: 10px;
 }
 .error-message {
-  color: $red;
+  color: var(--vitamui-red);
   font-size: 16px;
   margin-top: 80px;
 }
@@ -133,12 +110,12 @@ button > small {
   padding: 34px 0px 34px 34px;
 }
 .success-icon {
-  color: #27740a;
+  color: var(--vitamui-green);
   font-size: 50px;
 }
 
 .error-icon {
-  color: $dark-red;
+  color: var(--vitamui-red);
   font-size: 50px;
 }
 
@@ -150,19 +127,13 @@ button > small {
 }
 
 .file-info-class {
-  font-size: 14px;
   line-height: 20px;
   text-align: center;
   margin-top: 50px;
   margin-bottom: 10px;
-  color: #000000;
   font-style: normal;
   font-weight: bold;
   font-size: 18px;
-
-  small {
-    color: #a5a5a5;
-  }
 }
 
 .font-class-file {
@@ -174,8 +145,7 @@ button > small {
   height: 300px;
   border: 2px dashed var(--vitamui-primary);
   border-radius: 6px;
-  box-shadow: 0 0 80px rgba(255, 255, 249, 0.3);
-  background: $white;
+  background: var(--vitamui-white);
   overflow: hidden;
 
   p {
@@ -198,13 +168,4 @@ button > small {
 }
 .btn-up {
   margin-top: 0px;
-}
-
-.text-red {
-  color: #c10000;
-}
-
-.text-grey {
-  color: #9d9d9d;
-  font-size: 13px;
 }

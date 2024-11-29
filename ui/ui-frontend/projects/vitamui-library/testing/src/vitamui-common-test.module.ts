@@ -38,14 +38,6 @@
 import { Component, Directive, EventEmitter, forwardRef, Input, NgModule, Output, Pipe, PipeTransform } from '@angular/core';
 import { AsyncValidatorFn, ControlValueAccessor, NG_VALUE_ACCESSOR, ValidatorFn } from '@angular/forms';
 
-@Component({ selector: 'vitamui-common-navbar', template: '<ng-content></ng-content>' })
-export class NavbarStubComponent {
-  @Input() appId: string;
-  @Input() hideTenantMenu = false;
-  @Input() hideCustomerMenu = false;
-  @Input() customers: any[];
-}
-
 @Component({ selector: 'vitamui-common-application-select-content', template: '<ng-content></ng-content>' })
 export class ApplicationSelectContentStubComponent {
   @Input() applications: any[];
@@ -402,7 +394,6 @@ export class RowCollapseTriggerForStubDirective {
     VitamUITextareaStubComponent,
     EditableLevelInputStubComponent,
     InfiniteScrollStubDirective,
-    NavbarStubComponent,
     RowCollapseStubDirective,
     RowCollapseTriggerForStubDirective,
     StepperStubComponent,
@@ -434,7 +425,6 @@ export class RowCollapseTriggerForStubDirective {
     VitamUITextareaStubComponent,
     EditableLevelInputStubComponent,
     InfiniteScrollStubDirective,
-    NavbarStubComponent,
     RowCollapseStubDirective,
     RowCollapseTriggerForStubDirective,
     StepperStubComponent,

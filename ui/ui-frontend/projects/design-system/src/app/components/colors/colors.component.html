@@ -4,7 +4,13 @@
       <h2>{{ 'COLORS.' + colorInfo.key | translate }}</h2>
     </div>
     <div>
-      <div #color class="color" [ngClass]="colorInfo.className" style="background-color: var({{ colorInfo.varName }})">
+      <div
+        #color
+        class="color"
+        [ngClass]="colorInfo.className"
+        style="background-color: var({{ colorInfo.varName }})"
+        [class.border]="colorInfo.border"
+      >
         <div class="shade-text">
           <div class="text medium">{{ colorToHex(color) }}</div>
           <div class="text medium" *ngFor="let kv of colorToHsl(color) | keyvalue">{{ kv.key }} : {{ kv.value }}</div>

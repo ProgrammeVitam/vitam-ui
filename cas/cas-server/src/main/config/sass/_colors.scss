@@ -14,37 +14,25 @@
     limitations under the License.
  */
 
-$red-500: #C10000;
-$green: #27740A;
-$mustard-yellow: #FFA610;
-
-$charcoal-grey-two: #474d4a;
-$charcoal-grey: #485053;
-$cool-grey: #aab0b3;
-$silver: #bfc4ce;
-$pale-grey: #f7f8fb;
-
-$dark-grey: #4a4a4a;
-$warm-grey: #979797;
-$warm-grey-two: #999999;
-$light-grey: #9D9D9D;
-$greyish-two: #a6a6a6;
-$greyish: #b7b7b7;
-$white-four: #d8d8d8;
-$white-two: #e1e1e1;
-$white-three: #ececec;
-$white: #ffffff;
-
-$grey-900: #212121;
-$grey-600: #757575;
-$grey-400: #BDBDBD;
-
-$dp-dark: 0px 8px 32px rgba(33, 33, 33, 0.2), 0px 16px 64px rgba(33, 33, 33, 0.05);
-
-.Grey-600 {
-  color: $grey-600;
+:root {
+    --vitamui-grey-900: #212121;
+    --vitamui-grey-900-rgb: 33, 33, 33;
+    --vitamui-grey-800: #424242;
+    --vitamui-grey-700: #616161;
+    --vitamui-grey-600: #757575;
+    --vitamui-grey: #9E9E9E;
+    --vitamui-grey-400: #BDBDBD;
+    --vitamui-grey-300: #E0E0E0;
+    --vitamui-grey-200: #EEEEEE;
+    --vitamui-grey-100: #F5F5F5;
+    --vitamui-grey-50: #FAFAFA;
+    --vitamui-red: #C10000;
+    --vitamui-green: #27740A;
+    --vitamui-white: #FFFFFF;
 }
 
-.Red-500 {
-  color: $red-500;
+$dp-dark: 0 2px 8px rgba(var(--vitamui-grey-900-rgb), .2), 0 4px 16px rgba(var(--vitamui-grey-900-rgb), .05);
+
+.Grey-600 {
+  color: var(--vitamui-grey-600);
 }

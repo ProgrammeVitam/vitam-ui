@@ -30,15 +30,15 @@
   }
 
   &.success {
-    color: $green;
+    color: var(--vitamui-green);
   }
 
   &.warning {
-    color: $orange;
+    color: var(--vitamui-orange);
   }
 
   &.danger {
-    color: $red;
+    color: var(--vitamui-red);
   }
 
   &.light {
@@ -50,44 +50,10 @@
 @mixin login-title {
   font-size: 28px;
   font-weight: 300;
-  color: $charcoal-grey;
-}
-
-@mixin login-text-1 {
-  font-size: 20px;
-  font-weight: 300;
-  color: $charcoal-grey;
-}
-
-@mixin button-primary {
-  font-size: 15px;
-  font-weight: 500;
-  color: $white;
-}
-
-@mixin login-text-2 {
-  font-size: 15px;
-  color: $greyish-two;
-}
-
-@mixin login-helper {
-  font-size: 15px;
-  color: $cool-grey;
-}
-
-@mixin vitamui-link {
-  font-size: 15px;
-  color: var(--vitamui-primary);
 }
 
 @mixin vitamui-input-placeholder {
   font-size: 14px;
   text-align: left;
-  color: $greyish-two;
-}
-
-@mixin login-error {
-  font-size: 14px;
-  letter-spacing: -0.4px;
-  color: $red;
+  color: var(--vitamui-grey);
 }

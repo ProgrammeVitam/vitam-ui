@@ -73,9 +73,9 @@ describe('ResizeSidebarDirective', () => {
     expect(div.length).toBe(1);
   });
 
-  it('should have default barColor to be #702382', () => {
+  it('should have default barColor to be var(--vitamui-primary)', () => {
     const div = fixture.debugElement.queryAll(By.css('.vitamuiResizeSidebar'));
-    const borderRightColor = div[0].nativeElement.style.borderRightColor;
-    expect(borderRightColor).toBe('rgb(112, 35, 130)');
+    const borderRightColor = div[0].nativeElement.style.borderRight;
+    expect(borderRightColor).toContain('var(--vitamui-primary)');
   });
 });

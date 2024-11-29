@@ -4,7 +4,7 @@
 .vitamui-button-toggle-group.mat-button-toggle-group {
   @include elevation-0;
   border-radius: 5px;
-  background-color: $white;
+  background-color: var(--vitamui-white);
   border: solid 1px var(--vitamui-primary);
 
   .mat-button-toggle:not(.mat-button-toggle-disabled) {
@@ -49,7 +49,7 @@
     border: none;
 
     .mat-button-toggle {
-      border: 1px solid #e4e4e4;
+      border: 1px solid var(--vitamui-grey-300);
       border-radius: 10px;
       white-space: normal;
       min-height: 80px;
@@ -71,7 +71,7 @@
     }
 
     .mat-button-toggle + .mat-button-toggle {
-      border-left: 1px solid #e4e4e4;
+      border-left: 1px solid var(--vitamui-grey-900);
       margin-left: 12px;
 
       &.mat-button-toggle-checked {

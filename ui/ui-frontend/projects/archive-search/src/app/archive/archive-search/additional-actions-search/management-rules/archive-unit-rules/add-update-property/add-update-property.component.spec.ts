@@ -527,7 +527,7 @@ describe('AddUpdatePropertyComponent', () => {
 
   describe('DOM', () => {
     it('should have 1 title ', () => {
-      const formTitlesHtmlElements = fixture.nativeElement.querySelectorAll('.title-text');
+      const formTitlesHtmlElements = fixture.nativeElement.querySelectorAll('label');
 
       expect(formTitlesHtmlElements).toBeTruthy();
       expect(formTitlesHtmlElements.length).toBe(1);

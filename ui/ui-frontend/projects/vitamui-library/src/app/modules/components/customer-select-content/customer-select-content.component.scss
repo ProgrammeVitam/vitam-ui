@@ -20,14 +20,14 @@
   word-break: break-word;
   font-size: 16px;
   font-weight: 500;
-  background: $white;
+  background: var(--vitamui-white);
   border-radius: 10px;
   padding-top: 23px;
   padding-bottom: 23px;
   padding-right: 12px;
   padding-left: 30px;
   margin-bottom: 24px;
-  color: #474747;
+  color: var(--vitamui-grey-800);
   transition: box-shadow 240ms ease-out;
 
   i {

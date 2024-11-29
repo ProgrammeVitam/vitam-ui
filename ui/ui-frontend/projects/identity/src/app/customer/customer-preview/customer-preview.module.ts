@@ -44,7 +44,6 @@ import { MatLegacyProgressBarModule as MatProgressBarModule } from '@angular/mat
 import { MatLegacyProgressSpinnerModule as MatProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
 import { MatLegacySelectModule as MatSelectModule } from '@angular/material/legacy-select';
 import { MatLegacyTabsModule as MatTabsModule } from '@angular/material/legacy-tabs';
-import { MatLegacyTooltipModule as MatTooltipModule } from '@angular/material/legacy-tooltip';
 import { RouterModule } from '@angular/router';
 import { VitamUICommonModule } from 'vitamui-library';
 
@@ -81,7 +80,6 @@ import { TranslateModule } from '@ngx-translate/core';
     MatButtonToggleModule,
     ReactiveFormsModule,
     MatProgressBarModule,
-    MatTooltipModule,
     MatProgressSpinnerModule,
     VitamUICommonModule,
     CustomParamsModule,

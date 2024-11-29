@@ -35,7 +35,7 @@
   }
 
   &.ng-invalid.ng-touched {
-    border: 1px solid $red;
+    border: 1px solid var(--vitamui-red);
   }
 }
 
@@ -101,28 +101,6 @@ label {
   &.first {
     border-top: none;
   }
-}
-
-@mixin gap($gap) {
-  display: flex;
-  gap: $gap;
-  flex-direction: column;
-  align-items: flex-start;
-}
-
-@mixin hgap($gap) {
-  display: flex;
-  gap: $gap;
-  flex-direction: row;
-  align-items: center;
-}
-
-.gap-5 {
-  @include gap(5px);
-}
-
-.hgap-5 {
-  @include hgap(5px);
 }
 
 // This is used to automatically grow the textarea height depending on its content

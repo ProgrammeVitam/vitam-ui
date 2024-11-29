@@ -9,19 +9,12 @@
   margin-top: 15px;
 }
 .radio-btn-area {
-  background: #eeeeee;
+  background: var(--vitamui-grey-200);
 }
 
 .radio-btn-list {
-  background: #ffffff;
+  background: var(--vitamui-white);
   height: 50px;
-}
-
-.title-text {
-  font-style: normal;
-  font-weight: bold;
-  font-size: 14px;
-  color: #9c31b5;
 }
 
 .select-style {
@@ -54,10 +47,6 @@
   padding-left: 20px;
 }
 
-.text-return {
-  color: #9c31b5;
-}
-
 .details-ua {
   text-align: center;
   vertical-align: middle;
@@ -78,7 +67,7 @@
   display: flex;
   align-items: center;
 
-  color: #757575;
+  color: var(--vitamui-grey-600);
 }
 
 :host ::ng-deep .mat-tab-body-content {

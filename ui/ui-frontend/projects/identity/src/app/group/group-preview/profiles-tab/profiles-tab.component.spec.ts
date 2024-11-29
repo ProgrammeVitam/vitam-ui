@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Directive, Input } from '@angular/core';
+import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 
@@ -44,14 +44,6 @@ import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { GroupService } from '../../group.service';
 import { ProfilesEditComponent } from './profiles-edit/profiles-edit.component';
 import { ProfilesTabComponent } from './profiles-tab.component';
-
-// eslint-disable-next-line @angular-eslint/directive-selector
-@Directive({ selector: '[matTooltip]' })
-class MatTooltipStubDirective {
-  @Input() matTooltip: any;
-  @Input() matTooltipDisabled: any;
-  @Input() matTooltipClass: any;
-}
 
 @Component({
   template: ` <app-profiles-tab [group]="group" [readOnly]="readOnly"></app-profiles-tab> `,
@@ -164,7 +156,7 @@ describe('ProfilesTabComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [VitamUICommonTestModule],
-      declarations: [ProfilesTabComponent, TesthostComponent, MatTooltipStubDirective],
+      declarations: [ProfilesTabComponent, TesthostComponent],
       providers: [
         { provide: MatDialog, useValue: matDialogSpy },
         { provide: GroupService, useValue: { updated: new Subject() } },

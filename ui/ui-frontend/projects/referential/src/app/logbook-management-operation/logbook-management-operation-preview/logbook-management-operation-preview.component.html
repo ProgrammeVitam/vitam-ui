@@ -90,11 +90,11 @@
       <div class="col-6">
         <div>{{ 'STATE_VALUE.' + operation?.globalState | translate }}</div>
         <div
+          class="text bold"
           [ngClass]="{
-            'text-green': operationStatus(operation) === 'OK',
-            'text-red': operationStatus(operation) === 'KO',
-            'text-orange': operationStatus(operation) === 'WARNING',
-            'text-red-fatal': operationStatus(operation) === 'FATAL',
+            success: operationStatus(operation) === 'OK',
+            danger: ['KO', 'FATAL'].includes(operationStatus(operation)),
+            warning: operationStatus(operation) === 'WARNING',
           }"
         >
           <strong>{{ 'STATUS_VALUE.' + operation?.stepStatus | translate }}</strong>

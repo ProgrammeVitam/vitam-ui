@@ -30,8 +30,7 @@
     <div>
       <i
         class="vitamui-icon vitamui-icon-info primary clickable"
-        [matTooltip]="profile?.description ? profile.description : ('MISC.NO_DESC' | translate)"
-        matTooltipClass="vitamui-tooltip"
+        [vitamuiCommonToolTipDisabled]="profile?.description ? profile.description : ('MISC.NO_DESC' | translate)"
       ></i>
     </div>
   </div>

@@ -40,12 +40,11 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatLegacySelectModule as MatSelectModule } from '@angular/material/legacy-select';
-import { MatLegacyTooltipModule as MatTooltipModule } from '@angular/material/legacy-tooltip';
 import { VitamUICommonModule } from 'vitamui-library';
 import { UnitsFormComponent } from './units-form.component';
 
 @NgModule({
-  imports: [CommonModule, CommonModule, ReactiveFormsModule, MatSelectModule, MatTooltipModule, VitamUICommonModule],
+  imports: [CommonModule, CommonModule, ReactiveFormsModule, MatSelectModule, VitamUICommonModule],
   declarations: [UnitsFormComponent],
   exports: [UnitsFormComponent],
 })

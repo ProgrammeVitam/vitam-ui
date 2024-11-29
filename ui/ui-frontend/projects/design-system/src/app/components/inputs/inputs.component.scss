@@ -22,7 +22,7 @@
   }
 
   .contrast-container {
-    background-color: $white;
+    background-color: var(--vitamui-white);
     border: 1px solid var(--vitamui-grey-200);
     border-radius: 10px;
   }

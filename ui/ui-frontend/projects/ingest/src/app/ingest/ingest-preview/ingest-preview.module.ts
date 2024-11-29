@@ -44,7 +44,6 @@ import { MatLegacyProgressSpinnerModule as MatProgressSpinnerModule } from '@ang
 import { MatLegacySelectModule as MatSelectModule } from '@angular/material/legacy-select';
 import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
 import { MatLegacyTabsModule as MatTabsModule } from '@angular/material/legacy-tabs';
-import { MatLegacyTooltipModule as MatTooltipModule } from '@angular/material/legacy-tooltip';
 import { MatTreeModule } from '@angular/material/tree';
 import { RouterModule } from '@angular/router';
 
@@ -77,7 +76,6 @@ import { TranslateModule } from '@ngx-translate/core';
     MatSelectModule,
     MatOptionModule,
     MatTabsModule,
-    MatTooltipModule,
     MatTreeModule,
     TranslateModule,
   ],

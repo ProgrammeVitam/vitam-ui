@@ -7,7 +7,7 @@ $animation-time: 150ms;
 :host {
   &.ng-invalid:not(.ng-untouched) {
     .vitamui-autocomplete {
-      border: 1px solid $red;
+      border: 1px solid var(--vitamui-red);
     }
     input:focus {
       outline: none;
@@ -29,10 +29,10 @@ $animation-time: 150ms;
   position: relative;
 
   > input {
-    background: $white;
+    background: var(--vitamui-white);
     box-sizing: border-box;
     border-radius: 4px;
-    background-color: $white;
+    background-color: var(--vitamui-white);
     border: none;
     height: 60px;
     width: 100%;
@@ -84,7 +84,7 @@ $animation-time: 150ms;
       top $animation-time ease-out;
 
     > .required-marker {
-      color: $red;
+      color: var(--vitamui-red);
     }
   }
 

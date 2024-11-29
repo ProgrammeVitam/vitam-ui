@@ -340,7 +340,7 @@ describe('ManagementRulesComponent', () => {
     });
 
     it('should have 2 text titles', () => {
-      const formTitlesHtmlElements = fixture.nativeElement.querySelectorAll('.title-text');
+      const formTitlesHtmlElements = fixture.nativeElement.querySelectorAll('label');
 
       expect(formTitlesHtmlElements).toBeTruthy();
       expect(formTitlesHtmlElements.length).toBe(2);

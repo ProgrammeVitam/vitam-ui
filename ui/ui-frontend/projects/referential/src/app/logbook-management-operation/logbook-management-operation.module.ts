@@ -43,7 +43,6 @@ import { MatLegacyFormFieldModule as MatFormFieldModule } from '@angular/materia
 import { MatLegacyProgressSpinnerModule as MatProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatLegacyTabsModule as MatTabsModule } from '@angular/material/legacy-tabs';
-import { MatLegacyTooltipModule as MatTooltipModule } from '@angular/material/legacy-tooltip';
 import { TableFilterModule, VitamUICommonModule } from 'vitamui-library';
 import { LogbookManagementOperationListComponent } from './logbook-management-operation-list/logbook-management-operation-list.component';
 // eslint-disable-next-line max-len
@@ -66,7 +65,6 @@ import { LogbookManagementOperationComponent } from './logbook-management-operat
     MatSidenavModule,
     MatDatepickerModule,
     VitamUICommonModule,
-    MatTooltipModule,
     ReactiveFormsModule,
     FormsModule,
     MatFormFieldModule,

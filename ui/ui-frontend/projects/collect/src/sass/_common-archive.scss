@@ -1,9 +1,9 @@
 /** TODO DEPRECATED : REMOVE THIS CSS AT THE END OF THE REWORK **/
 
 .after-search-launched-button {
-  color: #fff;
-  background-color: #2c76c9;
-  border: 1px solid #2c76c9;
+  color: var(--vitamui-white);
+  background-color: var(--vitamui-secondary);
+  border: 1px solid var(--vitamui-secondary);
   box-sizing: border-box;
   border-radius: 5px;
 }

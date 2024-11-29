@@ -5,7 +5,7 @@
   @extend .text;
   @extend .caption;
   width: 100%;
-  color: $red;
+  color: var(--vitamui-red);
   display: flex;
   align-items: center;
   padding: 5px 0 0 0;

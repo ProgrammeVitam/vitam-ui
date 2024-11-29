@@ -40,7 +40,7 @@
   }
 
   .vitamui-sidepanel-resize-sidebar {
-    border-top: 4px solid rgb(112, 35, 130);
+    border-top: 4px solid var(--vitamui-primary);
     height: 0;
     padding: 0;
     margin: 0;
@@ -66,7 +66,7 @@
 
   .load-more-ua {
     cursor: pointer;
-    color: #205692;
+    color: var(--vitamui-primary);
     text-decoration: underline;
   }
 
@@ -85,33 +85,21 @@
 .filing-holding-scheme-tree-node,
 .filing-holding-scheme-tree-node-selected {
   position: relative;
-  border-bottom: 1px solid transparentize(#979797, 0.7);
+  border-bottom: 1px solid var(--vitamui-grey-300);
   color: var(--vitamui-secondary-dark-5);
   cursor: pointer;
 
   &:hover {
-    background-color: #f7ebfa;
+    background-color: var(--vitamui-primary-50);
   }
 }
 
 .filing-holding-scheme-tree-node-selected {
-  background-color: #f7ebfa;
+  background-color: var(--vitamui-primary-50);
 }
 
 .selected-node {
   box-shadow: -2px 0px 0px 0px var(--vitamui-primary);
-}
-
-.loader {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(255, 255, 255, 0.8);
 }
 
 .icon-greeny-blue {
@@ -120,7 +108,7 @@
 
 .tree-show-link {
   cursor: pointer;
-  color: #979797;
+  color: var(--vitamui-primary);
   text-decoration: underline;
 }
 
@@ -141,15 +129,13 @@
 }
 
 .badge-primary {
-  // Primary/Primary-500
-  color: #9c31b5;
-  // Primary/Primary-100
-  background-color: #e6c3ef;
+  color: var(--vitamui-primary);
+  background-color: var(--vitamui-primary-100);
 }
 
 .badge-secondary {
-  color: #2c76c9;
-  background-color: #abcaed;
+  color: var(--vitamui-secondary);
+  background-color: var(--vitamui-secondary-100);
 }
 
 .area-show-tree {

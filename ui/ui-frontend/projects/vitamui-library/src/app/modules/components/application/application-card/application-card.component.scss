@@ -12,9 +12,6 @@ mat-card {
 
 mat-card > img,
 .appIcon {
-  -webkit-box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.75);
-  -moz-box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.75);
-  box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.75);
   @include elevation-1-dark;
   border-radius: 5px;
 }

@@ -14,16 +14,16 @@ li {
 }
 
 .ingest-error-tree-node {
-  border-bottom: 1px solid rgba(151, 151, 151, 0.3);
+  border-bottom: 1px solid rgba(var(--vitamui-grey-rgb), 0.3);
 }
 
 .ko-icon {
-  color: red;
+  color: var(--vitamui-red);
   right: 5px;
 }
 
 .ok-icon {
-  color: green;
+  color: var(--vitamui-green);
   right: 5px;
 }
 

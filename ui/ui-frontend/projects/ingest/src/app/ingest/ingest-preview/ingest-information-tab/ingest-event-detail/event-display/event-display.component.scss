@@ -15,10 +15,10 @@
 }
 
 .errorRow {
-  color: $red;
+  color: var(--vitamui-red);
 }
 .warningRow {
-  color: $mustard-yellow;
+  color: var(--vitamui-orange);
 }
 
 .outMessage {

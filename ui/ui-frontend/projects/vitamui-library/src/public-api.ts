@@ -41,13 +41,7 @@
 /* API SERVICES */
 export * from './lib/api/metadata-api.service';
 export * from './lib/api/search-unit-api.service';
-export * from './lib/components/card-group/card-group.component';
-export * from './lib/components/card-group/card-group.module';
 /* COMPONENTS */
-export * from './lib/components/card-select/card-select.component';
-export * from './lib/components/card-select/card-select.module';
-export * from './lib/components/card/card.component';
-export * from './lib/components/card/card.module';
 export * from './lib/components/confirm-action/confirm-action.component';
 export * from './lib/components/confirm-action/confirm-action.module';
 export * from './lib/components/filing-plan/filing-plan.component';
@@ -124,9 +118,6 @@ export * from './app/modules/components/logbook-operation-facet/logbook-operatio
 export * from './app/modules/components/logbook-operation-facet/logbook-operation-facet.module';
 export * from './app/modules/components/multiple-options-datepicker/multiple-options-datepicker.module';
 export * from './app/modules/components/navbar/customer-menu/menu-option.interface';
-export * from './app/modules/components/order-dropdown/order-dropdown.component';
-export * from './app/modules/components/order-dropdown/order-dropdown.module';
-export * from './app/modules/components/order-dropdown/order-option/order-option.component';
 export * from './app/modules/components/scroll-top/scroll-top.component';
 export * from './app/modules/components/scroll-top/scroll-top.module';
 export * from './app/modules/components/search-bar-with-sibling-button/search-bar-with-sibling-button.component';

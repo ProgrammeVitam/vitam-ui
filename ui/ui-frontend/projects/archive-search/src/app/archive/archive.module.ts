@@ -52,7 +52,6 @@ import { MatLegacyRadioModule as MatRadioModule } from '@angular/material/legacy
 import { MatLegacySelectModule as MatSelectModule } from '@angular/material/legacy-select';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatLegacyTabsModule as MatTabsModule } from '@angular/material/legacy-tabs';
-import { MatLegacyTooltipModule as MatTooltipModule } from '@angular/material/legacy-tooltip';
 import { MatTreeModule } from '@angular/material/tree';
 import { TableFilterModule, VitamUICommonModule } from 'vitamui-library';
 import { VitamUILibraryModule } from 'vitamui-library';
@@ -102,7 +101,6 @@ import { SharedModule } from './shared/shared.module';
 
 @NgModule({
   imports: [
-    MatTooltipModule,
     CommonModule,
     VitamUICommonModule,
     MatDialogModule,

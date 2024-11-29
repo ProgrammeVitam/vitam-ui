@@ -31,7 +31,7 @@
   display: flex;
   align-items: center;
 
-  color: #757575;
+  color: var(--vitamui-grey-600);
 }
 
 .cancel-popup {
@@ -40,16 +40,6 @@
 
 .margin_right {
   margin-right: 0px;
-}
-
-.btn-size {
-  background-color: #e24242;
-  position: absolute;
-  right: 16px;
-  bottom: 16px;
-  width: 30px;
-  height: 30px;
-  border: none;
 }
 
 .close-color {

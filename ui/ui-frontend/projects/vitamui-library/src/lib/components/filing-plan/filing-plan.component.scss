@@ -34,13 +34,12 @@
 }
 
 .filing-tree-node {
-  border-bottom: 1px solid transparentize(#979797, 0.7);
-  color: #666666;
+  border-bottom: 1px solid var(--vitamui-grey-300);
+  color: var(--vitamui-grey-600);
   cursor: pointer;
 
   &:hover {
-    // text-decoration: underline;
-    background-color: rgba(92, 186, 169, 0.15);
+    background-color: var(--vitamui-background);
   }
 }
 
@@ -53,13 +52,9 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(255, 255, 255, 0.8);
+  background: rgba(var(--vitamui-white-rbg), 0.8);
 }
 
 .icon-greeny-blue {
   color: var(--vitamui-secondary);
-}
-
-.icon-yellow {
-  color: #ffcb19;
 }

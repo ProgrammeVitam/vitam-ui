@@ -1,15 +1,13 @@
 @import '../../../assets/css/mixins';
 @import '../../../assets/css/layout';
-@import '../../../assets/css/colors';
 @import '../../../assets/css/font';
-@import '../../../assets/css/buttons';
 @import 'icons/vitamui-icons';
 
 .pastis-vitamui-option-container {
   margin-top: 45px;
   position: absolute;
-  background: #ffffff;
-  border: 1px solid #bdbdbd;
+  background: var(--vitamui-white);
+  border: 1px solid var(--vitamui-grey-400);
   box-sizing: border-box;
   border-radius: 10px;
 
@@ -37,19 +35,6 @@
   z-index: 1000;
 }
 
-::ng-deep .modifierToolTip {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  padding: 0;
-  background: var(--vitamui-primary);
-  font-family: Mulish, sans-serif;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 12px;
-  filter: drop-shadow(0px 0px 2px rgba(112, 35, 130, 0.4)) drop-shadow(0px 1px 4px rgba(112, 35, 130, 0.2));
-}
 pastis-popup-option {
   margin-right: 200px;
   padding-left: 50px;
@@ -58,7 +43,6 @@ pastis-popup-option {
 .btn-search {
   margin-left: -40px;
   vertical-align: middle;
-  @extend .pastis-btn-rounded-mini-primary;
 }
 
 .total-pa-pua-card {
@@ -76,13 +60,13 @@ pastis-popup-option {
 
 .total-profile-card {
   @extend .total-pa-pua-card;
-  @extend .pastis-bgcolor-primary-500;
+  background-color: var(--vitamui-primary);
   @extend .pastis-panel-shadow-primary-500;
 }
 
 .pa-pua-card {
   @extend .total-pa-pua-card;
-  @extend .pastis-bgcolor-white-highlight;
+  background-color: var(--vitamui-white);
   @extend .pastis-panel-shadow;
 }
 .profile-label {
@@ -111,24 +95,24 @@ pastis-popup-option {
 }
 .total-profile-label {
   @extend .profile-label;
-  @extend .pastis-primary-50;
+  color: var(--vitamui-primary-50);
   @extend .pastis-font-caption-bold;
-}
-
-.total-profilenum-label {
-  @extend .profile-num-label;
-  @extend .pastis-white-highlight;
-  @extend .pastis-font-text-large-bold;
 }
 
 .pa-pua-label {
   @extend .profile-label;
-  @extend .pastis-grey-600;
+  color: var(--vitamui-grey-600);
   @extend .pastis-font-caption-bold;
 }
 
 .pa-pua-num-label {
   @extend .profile-num-label;
   @extend .pastis-font-text-large-bold;
-  @extend .pastis-grey-900;
+  color: var(--vitamui-grey-900);
+}
+
+.total-profilenum-label {
+  @extend .profile-num-label;
+  color: var(--vitamui-white);
+  @extend .pastis-font-text-large-bold;
 }

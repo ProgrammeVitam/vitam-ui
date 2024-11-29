@@ -125,8 +125,7 @@
                   <button
                     class="mat-icon-button delete-button d-flex justify-content-center align-items-center"
                     (click)="removeObjectUsagePolicy(i)"
-                    matTooltip="{{ 'CONTRACT_MANAGEMENT.FORM_UPDATE.REMOVE_USAGE' | translate }}"
-                    matTooltipClass="vitamui-tooltip"
+                    [vitamuiCommonToolTip]="'CONTRACT_MANAGEMENT.FORM_UPDATE.REMOVE_USAGE' | translate"
                   >
                     <i class="vitamui-icon vitamui-icon-delete icon primary"></i>
                   </button>
@@ -143,8 +142,7 @@
             <button
               type="button"
               class="col btn link back justify-content-start"
-              matTooltip="{{ 'CONTRACT_MANAGEMENT.FORM_UPDATE.ADD_USAGE' | translate }}"
-              matTooltipClass="vitamui-tooltip"
+              [vitamuiCommonToolTip]="'CONTRACT_MANAGEMENT.FORM_UPDATE.ADD_USAGE' | translate"
               [disabled]="addButtonDisabled"
               (click)="addObjectUsagePolicy()"
             >

@@ -61,7 +61,7 @@ button, textarea, input {
   box-sizing: border-box;
   width: 820px;
   border-radius: 20px;
-  background-color: $white;
+  background-color: var(--vitamui-white);
   box-shadow: $dp-dark;
 
   .vitamui-icon {
@@ -85,22 +85,24 @@ button, textarea, input {
     outline: none;
     border: 1px solid transparent;
     border-radius: 5px;
-    box-shadow: 0 0 2px rgba(33, 33, 33, 0.2), 0 1px 4px rgba(33, 33, 33, 0.05);
+    box-shadow:
+      0 0 2px rgba(var(--vitamui-grey-900-rgb), 0.2),
+      0 1px 4px rgba(var(--vitamui-grey-900-rgb), 0.05);
     transition: border-color 200ms ease-out;
     height: 50px;
     padding: 0 30px;
     background-color: transparent;
 
     &:focus {
-      border-color: $greyish-two;
+      border-color: var(--vitamui-grey);
     }
 
     &.ng-valid.ng-touched {
-      border-color: $green;
+      border-color: var(--vitamui-green);
     }
 
     &.ng-invalid.ng-touched {
-      border-color: $red-500;
+      border-color: var(--vitamui-red);
     }
 
     &[disabled] {
@@ -113,7 +115,7 @@ button, textarea, input {
     align-items: start;
     margin: 5px 0 0 15px;
     min-height: 24px;
-    color: $red-500;
+    color: var(--vitamui-red);
 
     .element {
       min-height: 24px;

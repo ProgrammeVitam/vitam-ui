@@ -17,8 +17,7 @@
         <button
           class="btn secondary"
           (click)="openCreateManagementcontractDialog()"
-          matTooltip="{{ 'CONTRACT_MANAGEMENT.CONTRACT_PAGE.CREATE_MANAGEMENT_CONTRACT' | translate }}"
-          matTooltipClass="vitamui-tooltip"
+          [vitamuiCommonToolTip]="'CONTRACT_MANAGEMENT.CONTRACT_PAGE.CREATE_MANAGEMENT_CONTRACT' | translate"
         >
           <span> {{ 'CONTRACT_MANAGEMENT.CONTRACT_PAGE.CREATE_MANAGEMENT_CONTRACT' | translate }}</span>
         </button>

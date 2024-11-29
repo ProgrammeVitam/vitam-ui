@@ -22,8 +22,7 @@ button.primary {
   height: 300px;
   border: 2px dashed var(--vitamui-primary);
   border-radius: 6px;
-  box-shadow: 0 0 80px rgba(255, 255, 249, 0.3);
-  background: $white;
+  background: var(--vitamui-white);
   overflow: hidden;
 
   p {
@@ -38,38 +37,8 @@ button.primary {
   text-align: center;
 }
 
-.file-info-class {
-  font-size: 14px;
-  line-height: 20px;
-  text-align: center;
-  margin-top: 50px;
-  margin-bottom: 10px;
-  color: #000000;
-  font-style: normal;
-  font-weight: bold;
-  font-size: 18px;
-
-  small {
-    color: #a5a5a5;
-  }
-}
-
-.text-red {
-  color: #c10000;
-}
-
-.text-grey {
-  color: #9d9d9d;
-  font-size: 13px;
-}
-
 .success-icon {
-  color: #27740a;
-  font-size: 50px;
-}
-
-.error-icon {
-  color: #ea0101;
+  color: var(--vitamui-green);
   font-size: 50px;
 }
 
@@ -86,13 +55,13 @@ button.primary {
   border: 2px solid var(--vitamui-secondary);
 
   p {
-    color: $white;
+    color: var(--vitamui-white);
   }
 
   .drop-csv-file-area {
-    background: #5cbaa9;
+    background: var(--vitamui-grey-400);
     opacity: 0.9;
-    color: $white;
+    color: var(--vitamui-white);
   }
 }
 
@@ -111,17 +80,6 @@ button.primary {
   font-weight: bold;
   font-size: 15px;
   line-height: 10px;
-}
-
-.upload-text {
-  padding-top: 5%;
-  font-size: 15px;
-  line-height: 18px;
-  color: #a5a5a5;
-  text-align: center;
-  .upload {
-    color: var(--vitamui-secondary);
-  }
 }
 
 .url-select {

@@ -13,9 +13,8 @@
           <a
             class="link-without-underline"
             (click)="loadExactCount()"
-            matTooltip="{{ 'ARCHIVE_SEARCH.RETRIEVE_EXACT_COUNT' | translate }}"
-            matTooltipClass="vitamui-tooltip"
-            [matTooltipShowDelay]="300"
+            [vitamuiCommonToolTip]="'ARCHIVE_SEARCH.RETRIEVE_EXACT_COUNT' | translate"
+            [vitamuiCommonToolTipShowDelay]="300"
           >
             <span *ngIf="!pendingGetChilds" class="badge badge-secondary pad"
               >{{ 'ARCHIVE_SEARCH.MORE_THAN' | translate }} {{ totalChilds }} {{ 'RECLASSIFICATION.FIRST_STEP.CHILDS' | translate }}</span
@@ -34,9 +33,8 @@
             <a
               class="link-without-underline"
               (click)="loadExactCount()"
-              matTooltip="{{ 'ARCHIVE_SEARCH.RETRIEVE_EXACT_COUNT' | translate }}"
-              matTooltipClass="vitamui-tooltip"
-              [matTooltipShowDelay]="300"
+              [vitamuiCommonToolTip]="'ARCHIVE_SEARCH.RETRIEVE_EXACT_COUNT' | translate"
+              [vitamuiCommonToolTipShowDelay]="300"
             >
               <span *ngIf="!pendingGetChilds" class="badge badge-secondary pad"
                 >{{ 'ARCHIVE_SEARCH.MORE_THAN' | translate }} {{ totalChilds }} {{ 'RECLASSIFICATION.FIRST_STEP.CHILDS' | translate }}</span

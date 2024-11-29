@@ -10,7 +10,7 @@
   font-family: Helvetica, sans-serif;
   font-size: 10px;
   font-weight: 200;
-  color: $white;
+  color: var(--vitamui-white);
   width: 16px;
   height: 16px;
   display: block;
@@ -20,7 +20,7 @@
   padding: 0 3px 3px 4px;
   border-radius: 50%;
   background-color: var(--vitamui-grey-600);
-  border: solid 2px $white;
+  border: solid 2px var(--vitamui-white);
 }
 
 span.email {

@@ -33,9 +33,8 @@
           type="button"
           class="btn secondary right-arround left-not-arround"
           (click)="hiddenTreeBlock(show)"
-          matTooltip="{{ 'ARCHIVE_SEARCH.SHOW_TREES_PLANS' | translate }}"
-          matTooltipClass="vitamui-tooltip"
-          [matTooltipShowDelay]="300"
+          [vitamuiCommonToolTip]="'ARCHIVE_SEARCH.SHOW_TREES_PLANS' | translate"
+          [vitamuiCommonToolTipShowDelay]="300"
         >
           <i class="material-icons">chevron_right</i>
         </button>

@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { Component, Directive, Input, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
@@ -47,14 +47,6 @@ import { GroupValidators } from '../../group.validators';
 import { InformationTabComponent } from './information-tab.component';
 
 let expectedGroup: Group;
-
-// eslint-disable-next-line @angular-eslint/directive-selector
-@Directive({ selector: '[matTooltip]' })
-class MatTooltipStubDirective {
-  @Input() matTooltip: any;
-  @Input() matTooltipDisabled: any;
-  @Input() matTooltipClass: any;
-}
 
 @Component({
   template: `<app-information-tab [group]="group" [readOnly]="readOnly"></app-information-tab>`,
@@ -93,7 +85,7 @@ describe('Profile Group InformationTabComponent', () => {
 
     await TestBed.configureTestingModule({
       imports: [ReactiveFormsModule, VitamUICommonTestModule, LoggerModule.forRoot(), HttpClientTestingModule],
-      declarations: [InformationTabComponent, TestHostComponent, MatTooltipStubDirective],
+      declarations: [InformationTabComponent, TestHostComponent],
       providers: [
         { provide: WINDOW_LOCATION, useValue: window.location },
         { provide: BASE_URL, useValue: '/fake-api' },

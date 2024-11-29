@@ -51,7 +51,7 @@ import {
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { Component, Directive, Input, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
@@ -156,14 +156,6 @@ let expectedAdminUserProfile: AdminUserProfile = {
     },
   ],
 };
-
-// eslint-disable-next-line @angular-eslint/directive-selector
-@Directive({ selector: '[matTooltip]' })
-class MatTooltipStubDirective {
-  @Input() matTooltip: any;
-  @Input() matTooltipDisabled: any;
-  @Input() matTooltipClass: any;
-}
 
 @Component({
   // eslint-disable-next-line max-len
@@ -297,7 +289,7 @@ describe('UserInfoTabComponent', () => {
         LoggerModule.forRoot(),
         HttpClientTestingModule,
       ],
-      declarations: [UserInfoTabComponent, TestHostComponent, MatTooltipStubDirective],
+      declarations: [UserInfoTabComponent, TestHostComponent],
       providers: [
         { provide: WINDOW_LOCATION, useValue: window.location },
         { provide: BASE_URL, useValue: '/fake-api' },

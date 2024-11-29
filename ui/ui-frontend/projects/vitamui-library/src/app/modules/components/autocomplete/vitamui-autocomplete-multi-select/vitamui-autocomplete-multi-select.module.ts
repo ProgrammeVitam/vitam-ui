@@ -47,7 +47,6 @@ import { MatLegacyFormFieldModule as MatFormFieldModule } from '@angular/materia
 import { MatLegacyInputModule as MatInputModule } from '@angular/material/legacy-input';
 import { MatLegacyListModule as MatListModule } from '@angular/material/legacy-list';
 import { MatLegacySelectModule as MatSelectModule } from '@angular/material/legacy-select';
-import { MatLegacyTooltipModule as MatTooltipModule } from '@angular/material/legacy-tooltip';
 import { TranslateModule } from '@ngx-translate/core';
 import { AutocompletePositionDirectiveModule } from '../../../directives/autocomplete-position/autocomplete-position.directive.module';
 import { EllipsisDirectiveModule } from '../../../directives/ellipsis/ellipsis.directive.module';
@@ -61,7 +60,6 @@ import { VitamUIAutocompleteMultiSelectComponent } from './vitamui-autocomplete-
     CommonModule,
     MatAutocompleteModule,
     ReactiveFormsModule,
-    MatTooltipModule,
     MatInputModule,
     AutocompletePositionDirectiveModule,
     CommonTooltipModule,

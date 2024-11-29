@@ -7,11 +7,11 @@ $input-height: 90px;
   align-items: baseline;
 
   &.ng-valid.ng-touched .vitamui-input {
-    border: 1px solid $green;
+    border: 1px solid var(--vitamui-green);
   }
 
   &.ng-invalid.ng-touched .vitamui-input {
-    border: 1px solid $red;
+    border: 1px solid var(--vitamui-red);
   }
 }
 

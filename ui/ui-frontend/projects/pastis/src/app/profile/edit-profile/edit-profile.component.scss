@@ -1,16 +1,14 @@
-@import '../../../assets/css/colors';
-
 .pastis-edit-profile-header {
   position: fixed;
   width: 480px;
   top: 70px;
   height: 180px;
   display: block;
-  background-color: #ffffff;
+  background-color: var(--vitamui-white);
   border-bottom: solid var(--vitamui-grey-200);
 }
 .mat-table {
-  background-color: map-get($colors, 'ligthly-purple');
+  background-color: var(--vitamui-background);
   position: fixed;
   top: 220px;
   height: 100%;
@@ -25,7 +23,7 @@
   font-style: normal;
   font-weight: bold;
   font-size: 24px;
-  color: #ffffff;
+  color: var(--vitamui-white);
 }
 
 .pastis-edit-profile-header-id {
@@ -37,7 +35,7 @@
   font-weight: normal;
   font-size: 13px;
   line-height: 20px;
-  color: #ffffff;
+  color: var(--vitamui-white);
 }
 
 // The tabs containers
@@ -54,7 +52,6 @@
 ::ng-deep.mat-tab-label {
   @extend .pastis-font-label-historique !optional;
   margin-right: 3px !important;
-  background: rgba(255, 255, 255, 0.3);
   height: 37px !important;
   padding: 0 !important;
   min-width: fit-content !important;
@@ -63,20 +60,17 @@
 
 //The tab hover
 ::ng-deep.mat-tab-label:hover {
-  background: #ffffff !important;
+  background: var(--vitamui-white) !important;
 }
 
 // Tab hover and tab text hover
 ::ng-deep.mat-tab-label:hover .mat-tab-label-content {
-  text-shadow: 0.5px 0 #5e5d5d;
-  background: rgba(255, 255, 255, 0.3) !important;
-  color: #5e5d5d !important;
+  color: var(--vitamui-grey-800) !important;
 }
 
 // The active tab (Black and bold)
 ::ng-deep .mat-tab-label-active {
-  text-shadow: 0.5px 0 #5e5d5d;
-  background: #ffffff !important;
+  background: var(--vitamui-white) !important;
   border-bottom: solid var(--vitamui-primary) 3px;
 }
 
@@ -133,7 +127,7 @@
   position: absolute;
   left: 90%;
   top: 31px;
-  color: #757575;
+  color: var(--vitamui-grey-600);
   cursor: pointer;
   font-size: 24px;
 }

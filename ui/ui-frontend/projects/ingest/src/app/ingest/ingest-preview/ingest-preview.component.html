@@ -26,8 +26,7 @@
     <button
       mat-menu-item
       (click)="generateODTreport()"
-      matTooltip="{{ 'INGEST_DETAIL.DOWNLOAD_DOCX' | translate }}"
-      matTooltipClass="vitamui-tooltip"
+      [vitamuiCommonToolTip]="'INGEST_DETAIL.DOWNLOAD_DOCX' | translate"
       [disabled]="
         getIngestStatus(ingest) === IngestStatus.KO ||
         getIngestStatus(ingest) === IngestStatus.FATAL ||

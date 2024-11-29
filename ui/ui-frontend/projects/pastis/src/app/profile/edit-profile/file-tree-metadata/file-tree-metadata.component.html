@@ -27,17 +27,17 @@
         <!--Toggle button allow additional properties-->
         <div
           *ngIf="this.profileService.profileType === 'PUA' && this.isStandalone"
-          matTooltip="{{ 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.ADDITIONAL_PROPERTIES_TOOLTIP' | translate }}"
+          [vitamuiCommonToolTip]="'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.ADDITIONAL_PROPERTIES_TOOLTIP' | translate"
         >
           <allow-additional-properties [checked]="rootAdditionalProperties" (stateToggleButton)="changeStatusAdditionalProperties($event)">
           </allow-additional-properties>
         </div>
         <!--Button save-->
-        <div matTooltip="{{ 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.ENREGISTRER_PROFIL_TOOLTIP' | translate }}">
+        <div [vitamuiCommonToolTip]="'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.ENREGISTRER_PROFIL_TOOLTIP' | translate">
           <pastis-user-action-save-profile></pastis-user-action-save-profile>
         </div>
         <!--Button setting-->
-        <div matTooltip="{{ 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.TELECHARGER_MANUEL_TOOLTIP' | translate }}">
+        <div [vitamuiCommonToolTip]="'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.TELECHARGER_MANUEL_TOOLTIP' | translate">
           <pastis-user-action-download-doc (click)="openChoicePopup()"></pastis-user-action-download-doc>
           <div class="vitamui-pastis-choice-language">
             <pastis-popup-metadata-language (click)="changeSedaLanguage()" *ngIf="languagePopup"></pastis-popup-metadata-language>
@@ -77,14 +77,11 @@
           </th>
           <td *matCellDef="let element; index as j" class="pastis-metadata-table-col-large" mat-cell>
             <span
-              [matTooltipShowDelay]="0"
               [ngClass]="{
                 'pastis-table-content': isSedaCardinalityConform(element.cardinalite, selectedCardinalities[j]),
                 'pastis-table-content-with-errors': !isSedaCardinalityConform(element.cardinalite, selectedCardinalities[j]),
               }"
-              matTooltip="{{ getSedaDefinition(element.nomDuChamp) }}"
-              matTooltipClass="pastis-matTooltipClass"
-              placement="right"
+              [vitamuiCommonToolTip]="getSedaDefinition(element.nomDuChamp)"
             >
               <span *ngIf="element.external">EXT-</span>
               <span *ngIf="isElementEdit(element); else nonEdit">{{ element.nomDuChampEdit }}</span>
@@ -92,9 +89,8 @@
 
               <mat-icon
                 *ngIf="!isSedaCardinalityConform(element.cardinalite, selectedCardinalities[j])"
-                matTooltip="La cardinalité n'est pas conforme aux specifications du SEDA 2.1"
-                matTooltipClass="pastis-table-content"
-                matTooltipPosition="above"
+                vitamuiCommonToolTip="La cardinalité n'est pas conforme aux specifications du SEDA 2.1"
+                vitamuiCommonToolTipPosition="TOP"
               >
                 info
               </mat-icon>
@@ -219,24 +215,17 @@
 
             <mat-menu #menu="matMenu" (closed)="buttonClickedId = undefined" [overlapTrigger]="false" class="pastis-menu-item-vitam">
               <!-- Dupliquer-->
-              <mat-divider
-                *ngIf="isDuplicated(element.nomDuChamp) && this.profileService.profileType === 'PA'"
-                style="border-top-color: #e0e0e0"
-              >
-              </mat-divider>
+              <mat-divider *ngIf="isDuplicated(element.nomDuChamp) && this.profileService.profileType === 'PA'"> </mat-divider>
               <button
                 (click)="onDuplicateNode(element.id)"
                 *ngIf="isDuplicated(element.nomDuChamp) && this.profileService.profileType === 'PA'"
                 mat-menu-item
               >
-                <mat-icon style="color: #757575">filter_none</mat-icon>
+                <mat-icon>filter_none</mat-icon>
                 <span class="text normal">{{ 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.DUPLIQUER' | translate }}</span>
               </button>
               <!-- @Attributs-->
-              <mat-divider
-                *ngIf="hasAttributes(element.nomDuChamp) && this.profileService.profileType === 'PA'"
-                style="border-top-color: #e0e0e0"
-              ></mat-divider>
+              <mat-divider *ngIf="hasAttributes(element.nomDuChamp) && this.profileService.profileType === 'PA'"></mat-divider>
               <button
                 (click)="onEditAttributesClick(element.id)"
                 *ngIf="hasAttributes(element.nomDuChamp) && this.profileService.profileType === 'PA'"
@@ -252,7 +241,6 @@
                   this.profileService.profileType === 'PUA' &&
                   isElementNameNotContentManagement(element.nomDuChamp)
                 "
-                style="border-top-color: #e0e0e0"
               >
               </mat-divider>
               <mat-checkbox
@@ -272,17 +260,16 @@
                 <div class="placement-tooltip">
                   <i
                     class="vitamui-icon vitamui-icon-info primary clickable"
-                    matTooltip="Permet de modifier l’autorisation dans le manifeste de la présence de métadonnées non déclarées dans le PUA"
-                    matTooltipClass="vitamui-tooltip"
+                    vitamuiCommonToolTip="Permet de modifier l’autorisation dans le manifeste de la présence de métadonnées non déclarées dans le PUA"
                     style="font-size: 1.5em"
                   ></i>
                 </div>
               </mat-checkbox>
 
               <!-- @Supprimer-->
-              <mat-divider *ngIf="isDeletable(element)" style="border-top-color: #e0e0e0"></mat-divider>
+              <mat-divider *ngIf="isDeletable(element)"></mat-divider>
               <button (click)="onDeleteNode(element.id)" *ngIf="isDeletable(element)" mat-menu-item>
-                <mat-icon style="color: #757575">delete</mat-icon>
+                <mat-icon>delete</mat-icon>
                 <span class="text normal">{{ 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.SUPPRIMER' | translate }}</span>
               </button>
 
@@ -294,7 +281,6 @@
                   element.id === clickedNode.id &&
                   !isAppliedControl(element.id)
                 "
-                style="border-top-color: #e0e0e0"
               >
               </mat-divider>
               <button
@@ -307,7 +293,7 @@
                 "
                 mat-menu-item
               >
-                <mat-icon style="color: #757575"><i class="vitamui-icon vitamui-icon-ic24-PUA"></i></mat-icon>
+                <mat-icon><i class="vitamui-icon vitamui-icon-ic24-PUA"></i></mat-icon>
                 <span class="text normal">{{ 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.CONTROLE_METADONNEE' | translate }}</span>
               </button>
 
@@ -319,7 +305,6 @@
                   element.id === clickedNode.id &&
                   isAppliedControl(element.id)
                 "
-                style="border-top-color: #e0e0e0"
               >
               </mat-divider>
               <button
@@ -332,7 +317,7 @@
                 "
                 mat-menu-item
               >
-                <mat-icon style="color: #757575"><i class="vitamui-icon vitamui-icon-ic24-PUA"></i></mat-icon>
+                <mat-icon><i class="vitamui-icon vitamui-icon-ic24-PUA"></i></mat-icon>
                 <span class="text normal">{{ 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.EDITION_CONTROLE' | translate }}</span>
               </button>
             </mat-menu>
@@ -361,8 +346,7 @@
                 <mat-icon class="pastis-icon-primary">
                   <i
                     class="vitamui-icon vitamui-icon-info primary clickable"
-                    [matTooltip]="'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.INFO_ENNUMERATION' | translate"
-                    matTooltipClass="vitamui-tooltip"
+                    [vitamuiCommonToolTip]="'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.INFO_ENNUMERATION' | translate"
                   ></i>
                 </mat-icon>
               </span>
@@ -409,8 +393,7 @@
                 <mat-icon class="pastis-icon-primary">
                   <i
                     class="vitamui-icon vitamui-icon-info primary clickable"
-                    [matTooltip]="'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.INFO_EXPRESSION' | translate"
-                    matTooltipClass="vitamui-tooltip"
+                    [vitamuiCommonToolTip]="'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.INFO_EXPRESSION' | translate"
                   ></i>
                 </mat-icon>
               </span>

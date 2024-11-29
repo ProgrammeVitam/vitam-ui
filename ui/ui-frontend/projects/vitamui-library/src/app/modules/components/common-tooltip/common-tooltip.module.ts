@@ -36,13 +36,12 @@
  */
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { MatLegacyTooltipModule as MatTooltipModule } from '@angular/material/legacy-tooltip';
 import { CommonTooltipComponent } from './common-tooltip.component';
 import { CommonTooltipDirective } from './common-tooltip.directive';
 
 @NgModule({
-  imports: [CommonModule, MatTooltipModule],
+  imports: [CommonModule],
   declarations: [CommonTooltipComponent, CommonTooltipDirective],
-  exports: [CommonTooltipComponent, CommonTooltipDirective, MatTooltipModule],
+  exports: [CommonTooltipComponent, CommonTooltipDirective],
 })
 export class CommonTooltipModule {}

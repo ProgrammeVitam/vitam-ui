@@ -8,7 +8,7 @@
 
 :host::ng-deep .mat-form-field {
   .mat-form-field-outline {
-    background-color: #ffffff;
+    background-color: var(--vitamui-white);
   }
 
   label,
@@ -20,19 +20,4 @@
     font-weight: 700;
     color: var(--vitamui-primary);
   }
-}
-
-@mixin gap($gap) {
-  display: flex;
-  gap: $gap;
-  flex-direction: column;
-  align-items: flex-start;
-}
-
-.gap-10 {
-  @include gap(10px);
-}
-
-.gap-20 {
-  @include gap(20px);
 }

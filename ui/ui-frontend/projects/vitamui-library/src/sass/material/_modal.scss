@@ -44,7 +44,7 @@ $footer-height: 100px !default;
   }
 
   .error-message {
-    color: $red;
+    color: var(--vitamui-red);
     font-size: 14px;
     margin-bottom: 30px;
   }

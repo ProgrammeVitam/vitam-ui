@@ -84,7 +84,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatLegacySlideToggleModule as MatSlideToggleModule } from '@angular/material/legacy-slide-toggle';
 import { TranslateModule } from '@ngx-translate/core';
 import { FileUploadModule } from 'ng2-file-upload';
-import { NgxUiLoaderModule } from 'ngx-ui-loader';
 import { VitamUICommonModule } from 'vitamui-library';
 import { PastisMaterialModule } from '../material.module';
 import { UserActionsModule } from '../user-actions/user-actions.module';
@@ -110,7 +109,6 @@ import { ProfilePreviewModule } from './profile-preview/profile-preview.module';
     FormsModule,
     VitamUICommonModule,
     TranslateModule,
-    NgxUiLoaderModule,
     ProfilePreviewModule,
     ReactiveFormsModule,
   ],

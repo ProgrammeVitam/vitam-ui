@@ -53,7 +53,7 @@
   width: 100%;
   font-size: 12px;
   font-weight: 400;
-  color: $red;
+  color: var(--vitamui-red);
   display: flex;
   align-items: center;
   padding: 5px 0 0 0;
@@ -76,11 +76,11 @@ input[type='email'].vitamui-input {
   font-size: 16px;
 
   &.ng-valid.ng-touched {
-    border: 1px solid $green;
+    border: 1px solid var(--vitamui-green);
   }
 
   &.ng-invalid.ng-touched {
-    border: 1px solid $red;
+    border: 1px solid var(--vitamui-red);
   }
 
   &.vitamui-small {

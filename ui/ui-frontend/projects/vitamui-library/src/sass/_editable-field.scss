@@ -136,22 +136,22 @@ $anim-timing: 150ms ease-out;
     }
 
     &.editable-field-confirm {
-      background-color: $green;
+      background-color: var(--vitamui-green);
 
       &:hover,
       &:active,
       &:focus {
-        background-color: lighten($green, 15%);
+        background-color: var(--vitamui-green-300);
       }
     }
 
     &.editable-field-cancel {
-      background-color: $red;
+      background-color: var(--vitamui-red);
 
       &:hover,
       &:active,
       &:focus {
-        background-color: lighten($red, 15%);
+        background-color: var(--vitamui-red-300);
       }
     }
   }

@@ -2,9 +2,8 @@
   <div clas="row">
     <vitamui-common-slide-toggle
       formControlName="enabled"
-      [matTooltip]="'GROUP.INFORMATIONS.ACTIVE_SWITCH_TOOLTIP' | translate"
-      matTooltipClass="vitamui-tooltip"
-      [matTooltipDisabled]="form.get('enabled').enabled || readOnly"
+      [vitamuiCommonToolTip]="'GROUP.INFORMATIONS.ACTIVE_SWITCH_TOOLTIP' | translate"
+      [vitamuiCommonToolTipDisabled]="form.get('enabled').enabled || readOnly"
     >
       <span *ngIf="!form?.get('enabled').value">{{ 'GROUP.INFORMATIONS.INACTIVE_SWITCH' | translate }}</span>
       <span *ngIf="form?.get('enabled').value">{{ 'GROUP.INFORMATIONS.ACTIVE_SWITCH' | translate }}</span>
@@ -62,9 +61,8 @@
     </div>
     <div
       class="col-7"
-      [matTooltip]="'GROUP.INFORMATIONS.SUBLEVEL_TOOLTIP' | translate"
-      matTooltipClass="vitamui-tooltip"
-      [matTooltipDisabled]="form?.get('level').enabled || readOnly"
+      [vitamuiCommonToolTip]="'GROUP.INFORMATIONS.SUBLEVEL_TOOLTIP' | translate"
+      [vitamuiCommonToolTipDisabled]="form?.get('level').enabled || readOnly"
     >
       <vitamui-common-editable-level-input
         formControlName="level"

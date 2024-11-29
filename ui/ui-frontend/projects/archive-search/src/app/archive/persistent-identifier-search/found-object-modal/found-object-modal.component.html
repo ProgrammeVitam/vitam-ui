@@ -1,12 +1,10 @@
 <div class="header"></div>
 
 <div class="content">
-  <h2 class="title">{{ 'PERSISTENT_IDENTIFIER_SEARCH.MODAL.SEARCH_BY_ID' | translate }}</h2>
-  <span class="subtitle">
+  <div class="text medium light">{{ 'PERSISTENT_IDENTIFIER_SEARCH.MODAL.SEARCH_BY_ID' | translate }}</div>
+  <span class="subtitle text large bold">
     {{ 'PERSISTENT_IDENTIFIER_SEARCH.MODAL.FOUND_OBJECT_MESSAGE' | translate: { ark: ark, usageVersion: usageVersion } }}
   </span>
-
-  <div class="main-content"></div>
 
   <div class="actions">
     <button (click)="lookupUnit()" class="btn primary" type="button" [disabled]="downloading">

@@ -55,7 +55,7 @@
           {{ 'PROFILE.POP_UP_CREATION_NOTICE.AUTORISER_PRESENCE_METADONNEES' | translate }}
         </vitamui-common-slide-toggle>
         <div>
-          <i class="vitamui-icon vitamui-icon-info primary clickable" [matTooltip]="information" matTooltipClass="vitamui-tooltip"></i>
+          <i class="vitamui-icon vitamui-icon-info primary clickable" [vitamuiCommonToolTip]="information"></i>
         </div>
       </div>
     </div>
@@ -78,13 +78,8 @@
   </mat-form-field>
 
   <div class="btn-container">
-    <mat-dialog-actions align="right" class="pastis-dialog-confirm-buttons">
-      <button
-        type="submit"
-        [disabled]="!validate"
-        Class="pastis-btn-oui-dialog-confirm"
-        [ngStyle]="{ background: validate ? '#9C31B5' : 'grey' }"
-      >
+    <mat-dialog-actions class="pastis-dialog-confirm-buttons">
+      <button type="submit" [disabled]="!validate" class="btn primary">
         {{ data.okLabel }}
       </button>
       <button type="button" class="pastis-btn-non-dialog-confirm" (click)="onCancel()">{{ data.cancelLabel }}</button>

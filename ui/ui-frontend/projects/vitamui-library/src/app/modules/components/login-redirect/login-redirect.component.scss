@@ -18,7 +18,6 @@
 }
 
 .login-box {
-  color: $charcoal-grey;
   position: relative;
   display: block;
   box-sizing: border-box;
@@ -27,6 +26,6 @@
   margin: 120px auto;
   padding: 48px 80px;
   border-radius: 20px;
-  background-color: $white;
+  background-color: var(--vitamui-white);
   @include elevation-3-dark;
 }

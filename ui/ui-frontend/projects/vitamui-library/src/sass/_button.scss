@@ -22,8 +22,8 @@
   $background-color-hover: transparent,
   $border-color: transparent,
   $border-color-hover: transparent,
-  $button-color: $white,
-  $button-color-hover: $white
+  $button-color: var(--vitamui-white),
+  $button-color-hover: var(--vitamui-white)
 ) {
   &.link,
   &:disabled,
@@ -91,34 +91,62 @@
 }
 
 .btn.contrast {
-  @include btn($white, $white, $white, $white);
+  @include btn(var(--vitamui-white), var(--vitamui-white), var(--vitamui-white), var(--vitamui-white));
 
   &.contrast-primary {
-    @include btn($white, $white, $white, $white, var(--vitamui-primary), var(--vitamui-primary-700));
+    @include btn(
+      var(--vitamui-white),
+      var(--vitamui-white),
+      var(--vitamui-white),
+      var(--vitamui-white),
+      var(--vitamui-primary),
+      var(--vitamui-primary-700)
+    );
   }
 
   &.contrast-secondary {
-    @include btn($white, $white, $white, $white, var(--vitamui-secondary), var(--vitamui-secondary-700));
+    @include btn(
+      var(--vitamui-white),
+      var(--vitamui-white),
+      var(--vitamui-white),
+      var(--vitamui-white),
+      var(--vitamui-secondary),
+      var(--vitamui-secondary-700)
+    );
   }
   &:disabled {
-    @include disabled($white);
+    @include disabled(var(--vitamui-white));
     opacity: 0.4;
   }
 }
 
 .btn.contrast-outline {
-  @include btn(transparent, transparent, $white, $white, $white, $white);
+  @include btn(transparent, transparent, var(--vitamui-white), var(--vitamui-white), var(--vitamui-white), var(--vitamui-white));
 
   &.contrast-outline-primary {
-    @include btn(transparent, var(--vitamui-primary-400), $white, $white, $white, $white);
+    @include btn(
+      transparent,
+      var(--vitamui-primary-400),
+      var(--vitamui-white),
+      var(--vitamui-white),
+      var(--vitamui-white),
+      var(--vitamui-white)
+    );
   }
 
   &.contrast-outline-secondary {
-    @include btn(transparent, var(--vitamui-secondary-400), $white, $white, $white, $white);
+    @include btn(
+      transparent,
+      var(--vitamui-secondary-400),
+      var(--vitamui-white),
+      var(--vitamui-white),
+      var(--vitamui-white),
+      var(--vitamui-white)
+    );
   }
 
   &:disabled {
-    @include disabled(transparent, $white, $white);
+    @include disabled(transparent, var(--vitamui-white), var(--vitamui-white));
     opacity: 0.4;
   }
 }

@@ -8,7 +8,7 @@
       <div class="row">
         <div class="col-4 radio-btn-area">
           <br />
-          <label class="title-text"> {{ 'RULES.SELECT_RULE_CATEGORY' | translate }} *</label>
+          <label class="text bold normal primary"> {{ 'RULES.SELECT_RULE_CATEGORY' | translate }} *</label>
           <div class="radio-group" *ngFor="let ruleCategory of rulesCatygories">
             <div class="radio-btn-list">
               <mat-radio-button
@@ -22,7 +22,7 @@
             </div>
           </div>
           <br />
-          <label class="title-text">{{ 'RULES.SELECT_RULE_ACTION' | translate }} *</label>
+          <label class="text bold normal primary">{{ 'RULES.SELECT_RULE_ACTION' | translate }} *</label>
           <br />
           <div>
             <mat-form-field class="vitamui-mat-select select-style">
@@ -33,23 +33,20 @@
                 <mat-option
                   [disabled]="!isRuleCategorySelected || isAddValidActions"
                   (click)="onSelectAction('ADD_RULES')"
-                  matTooltip="{{ isAddValidActions ? messageNotAdd : '' }}"
-                  matTooltipClass="vitamui-tooltip-rules"
+                  vitamuiCommonToolTip="{{ isAddValidActions ? messageNotAdd : '' }}"
                 >
                   {{ 'RULES.ACTIONS.ADD_RULE' | translate }}
                 </mat-option>
                 <mat-option
                   [disabled]="!isRuleCategorySelected || isUpdateValidActions || isUpdateValidActionsWithProperty"
                   (click)="onSelectAction('UPDATE_RULES')"
-                  matTooltip="{{ isUpdateValidActions || isUpdateValidActionsWithProperty ? messageNotUpdate : '' }}"
-                  matTooltipClass="vitamui-tooltip-rules"
+                  vitamuiCommonToolTip="{{ isUpdateValidActions || isUpdateValidActionsWithProperty ? messageNotUpdate : '' }}"
                 >
                   {{ 'RULES.ACTIONS.UPDATE_RULE' | translate }}
                 </mat-option>
                 <mat-option
                   [disabled]="!isRuleCategorySelected || isDeleteValidActions || isDeleteValidActionsWithProperty"
-                  matTooltip="{{ isDeleteValidActions || isDeleteValidActionsWithProperty ? messageNotDelete : '' }}"
-                  matTooltipClass="vitamui-tooltip-rules"
+                  vitamuiCommonToolTip="{{ isDeleteValidActions || isDeleteValidActionsWithProperty ? messageNotDelete : '' }}"
                   (click)="onSelectAction('DELETE_RULES')"
                 >
                   {{ 'RULES.ACTIONS.DELETE_RULE' | translate }}
@@ -85,15 +82,13 @@
                   isUpdateValidActionsWithProperty
                 "
                 (click)="onSelectAction('UPDATE_PROPERTY')"
-                matTooltip="{{ isAddPropertyValidActions ? messageNotAddProperty : isAddValidActions ? messageNotAdd : '' }}"
-                matTooltipClass="vitamui-tooltip-rules "
+                vitamuiCommonToolTip="{{ isAddPropertyValidActions ? messageNotAddProperty : isAddValidActions ? messageNotAdd : '' }}"
               >
                 {{ 'RULES.MORE_ACTIONS.UPDATE_PROPERTY' | translate }}
               </mat-option>
               <mat-option
                 [disabled]="isDeletePropertyDisabled || isStorageRuleActionDisabled"
-                matTooltip="{{ isDeletePropertyDisabled ? messageNotToDeleteProperty : '' }}"
-                matTooltipClass="vitamui-tooltip-rules "
+                vitamuiCommonToolTip="{{ isDeletePropertyDisabled ? messageNotToDeleteProperty : '' }}"
                 (click)="onSelectAction('DELETE_PROPERTY')"
               >
                 {{ 'RULES.MORE_ACTIONS.DELETE_PROPERTY' | translate }}
@@ -107,8 +102,7 @@
               <mat-option
                 [disabled]="isUnlockInheritanceCategoryDisabled || isBlockInheritanceCategoryDisabled"
                 (click)="onSelectAction('UNLOCK_CATEGORY_INHERITANCE')"
-                matTooltip="{{ 'RULES.MORE_ACTIONS.DELETE_BLOCK_PROPERTY_INHERITANCE' | translate }}"
-                matTooltipClass="vitamui-tooltip-rules "
+                vitamuiCommonToolTip="{{ 'RULES.MORE_ACTIONS.DELETE_BLOCK_PROPERTY_INHERITANCE' | translate }}"
               >
                 {{ 'RULES.MORE_ACTIONS.DELETE_BLOCK_PROPERTY_INHERITANCE' | translate }}
               </mat-option>
@@ -126,7 +120,7 @@
         <div class="col-8 row-padding">
           <div class="update-rules-table-head row">
             <div class="col-2 clickable" (click)="returnToArchiveSearchPage()">
-              <span class="text-return"> {{ 'RULES.BACK' | translate }}</span>
+              <span class="text primary"> {{ 'RULES.BACK' | translate }}</span>
             </div>
             <div class="col-10">
               <div class="row">

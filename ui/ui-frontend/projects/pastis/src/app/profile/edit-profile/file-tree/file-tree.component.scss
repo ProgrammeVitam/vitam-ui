@@ -1,10 +1,8 @@
 @import '../../../../assets/css/mixins';
 @import '../../../../assets/css/layout';
-@import '../../../../assets/css/colors';
 @import 'mixins/elevation';
 
 .pastis-btn-container-add-ua {
-  background-color: #f6f3fb;
   height: 70px;
   margin-left: 40px;
 }
@@ -16,7 +14,7 @@
 }
 
 .pastis-tree-node-root-name {
-  @extend .pastis-black-height;
+  color: var(--vitamui-grey-900);
   @extend .pastis-font-headline-6;
   line-height: 50px;
   cursor: pointer;
@@ -30,7 +28,7 @@
 }
 
 .pastis-tree-node-name {
-  @extend .pastis-surface-snackbar;
+  color: var(--vitamui-primary);
   @extend .pastis-font-label;
   line-height: 50px;
   cursor: pointer;
@@ -77,7 +75,7 @@
 .mat-list-item {
   display: block !important;
   text-align-last: left;
-  background-color: #ffff;
+  background-color: var(--vitamui-white);
   margin-top: 5px;
   margin-left: 40px;
   margin-right: 40px;
@@ -89,13 +87,13 @@
 }
 
 .list-item:hover {
-  background: #f6f3fb;
+  background: var(--vitamui-background);
 }
 
 .pastis-tree {
   display: inline-block;
   min-width: 100%;
-  background-color: #f6f3fb;
+  background-color: transparent;
 }
 
 .text-medium-normal {

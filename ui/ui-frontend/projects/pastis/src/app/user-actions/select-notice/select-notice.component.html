@@ -32,12 +32,7 @@
       class="pastis-dialog-confirm-buttons"
       *ngIf="selectedProfile && selectedProfile.controlSchema && selectedProfile.controlSchema !== '{}'; else submitButton"
     >
-      <button
-        (click)="setUserValidation(true)"
-        Class="pastis-btn-oui-dialog-confirm"
-        [disabled]="!validate"
-        [ngStyle]="{ background: validate ? '#9C31B5' : 'grey' }"
-      >
+      <button (click)="setUserValidation(true)" class="btn primary" [disabled]="!validate">
         {{ 'PROFILE.POP-UP_SELECT_NOTICE.NEXT_LABEL' | translate }}
       </button>
       <button type="button" class="pastis-btn-non-dialog-confirm" (click)="onCancel()">{{ data.cancelLabel }}</button>
@@ -48,13 +43,8 @@
 <ng-template #validation>
   <p class="pastis-dialog-content">{{ 'PROFILE.POP-UP_SELECT_NOTICE.VALIDATION_MESSAGE' | translate }}</p>
   <div class="btn-container">
-    <mat-dialog-actions align="right" class="pastis-dialog-confirm-buttons">
-      <button
-        (click)="onSubmit()"
-        Class="pastis-btn-oui-dialog-confirm"
-        [disabled]="!validate"
-        [ngStyle]="{ background: validate ? '#9C31B5' : 'grey' }"
-      >
+    <mat-dialog-actions class="pastis-dialog-confirm-buttons">
+      <button (click)="onSubmit()" class="btn primary" [disabled]="!validate">
         {{ data.okLabel }}
       </button>
       <button type="button" class="pastis-btn-non-dialog-confirm" (click)="setUserValidation(false)">{{ data.cancelLabel }}</button>
@@ -63,13 +53,8 @@
 </ng-template>
 
 <ng-template #submitButton>
-  <mat-dialog-actions align="right" class="pastis-dialog-confirm-buttons">
-    <button
-      (click)="onSubmit()"
-      Class="pastis-btn-oui-dialog-confirm"
-      [disabled]="!validate"
-      [ngStyle]="{ background: validate ? '#9C31B5' : 'grey' }"
-    >
+  <mat-dialog-actions class="pastis-dialog-confirm-buttons">
+    <button (click)="onSubmit()" class="btn primary" [disabled]="!validate">
       {{ data.okLabel }}
     </button>
     <button type="button" class="pastis-btn-non-dialog-confirm" (click)="userValidation = false">{{ data.cancelLabel }}</button>

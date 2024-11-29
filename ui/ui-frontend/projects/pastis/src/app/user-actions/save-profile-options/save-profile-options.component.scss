@@ -55,20 +55,6 @@
   margin-bottom: 10px;
 }
 
-.pastis-btn-oui-dialog-confirm {
-  background: #9c31b5 !important;
-
-  font-family: Mulish !important;
-  border-radius: 100px;
-  padding-left: 30px;
-  padding-right: 30px;
-  min-width: 92px;
-  height: 50px;
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
-  @extend .pastis-btn-primary-enabled;
-}
-
 .pastis-btn-non-dialog-confirm {
   padding-left: 30px;
   padding-right: 30px;
