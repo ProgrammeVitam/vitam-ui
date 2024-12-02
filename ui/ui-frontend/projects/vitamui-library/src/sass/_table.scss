@@ -485,7 +485,7 @@ $row-padding: 0.8rem;
   }
 }
 
-table,
+table:not(.mat-calendar-table),
 table.cdk-table {
   border-spacing: 0 5px;
   background-color: transparent;
