@@ -391,7 +391,7 @@ describe('EditObjectService', () => {
       }),
     ));
 
-    it('should create projected nested object and do complexe operations on arrays', waitForAsync(
+    it('should create projected nested object and do complex operations on arrays', waitForAsync(
       inject([MockSchemaService, TemplateService, SchemaService], (schemaService: MockSchemaService, templetaService: TemplateService) => {
         schemaService.getSchema(Collection.ARCHIVE_UNIT).subscribe((schema) => {
           const path = '';
@@ -523,6 +523,179 @@ describe('EditObjectService', () => {
         });
       }),
     ));
+
+    it('should create with nested arrays', waitForAsync(
+      inject([TemplateService, SchemaService], () => {
+        const schema: Schema = [
+          {
+            Path: 'Invoice',
+            Cardinality: 'MANY',
+            FieldName: 'Invoice',
+            ShortName: 'Facture',
+            Description: 'Informations de facturation',
+            Type: 'OBJECT',
+            Origin: 'EXTERNAL',
+            Collection: Collection.ARCHIVE_UNIT,
+            Category: 'OTHER',
+            ApiPath: 'Invoice',
+            DataType: 'OBJECT',
+            ApiField: 'Invoice',
+            SedaVersions: [],
+          },
+          {
+            Path: 'Invoice.Provider',
+            Cardinality: 'MANY',
+            FieldName: 'Provider',
+            ShortName: 'Provider',
+            Description: 'Émetteur de la facture',
+            Type: 'OBJECT',
+            Origin: 'EXTERNAL',
+            Collection: Collection.ARCHIVE_UNIT,
+            Category: 'OTHER',
+            ApiPath: 'Invoice.Provider',
+            DataType: 'OBJECT',
+            ApiField: 'Provider',
+            SedaVersions: [],
+          },
+          {
+            Path: 'Invoice.Provider.MyKeyword',
+            StringSize: 'MEDIUM',
+            Cardinality: 'ONE_REQUIRED',
+            FieldName: 'MyKeyword',
+            ShortName: 'My keyword',
+            Description: 'Extension au SEDA. Elément de type mot clé',
+            Type: 'KEYWORD',
+            Origin: 'EXTERNAL',
+            Collection: Collection.ARCHIVE_UNIT,
+            Category: 'OTHER',
+            ApiPath: 'Invoice.Provider.MyKeyword',
+            DataType: 'STRING',
+            ApiField: 'MyKeyword',
+            SedaVersions: [],
+          },
+          {
+            Path: 'Invoice.Provider.MyText',
+            StringSize: 'MEDIUM',
+            Cardinality: 'ONE',
+            FieldName: 'MyText',
+            ShortName: 'My text',
+            Description: 'Extension au SEDA. Elément de type texte',
+            Type: 'TEXT',
+            Origin: 'EXTERNAL',
+            Collection: Collection.ARCHIVE_UNIT,
+            Category: 'OTHER',
+            ApiPath: 'Invoice.Provider.MyText',
+            DataType: 'STRING',
+            ApiField: 'MyText',
+            SedaVersions: [],
+          },
+          {
+            Path: 'Invoice.Provider.MyDate',
+            Cardinality: 'MANY',
+            FieldName: 'MyDate',
+            ShortName: 'My date',
+            Description: 'Extension au SEDA. Elément de type date',
+            Type: 'DATE',
+            Origin: 'EXTERNAL',
+            Collection: Collection.ARCHIVE_UNIT,
+            Category: 'OTHER',
+            ApiPath: 'Invoice.Provider.MyDate',
+            DataType: 'DATETIME',
+            ApiField: 'MyDate',
+            SedaVersions: [],
+          },
+          {
+            Path: 'Invoice.Provider.MyDouble',
+            Cardinality: 'ONE',
+            FieldName: 'MyDouble',
+            ShortName: 'My double',
+            Description: 'Extension au SEDA. Elément de type décimal',
+            Type: 'DOUBLE',
+            Origin: 'EXTERNAL',
+            Collection: Collection.ARCHIVE_UNIT,
+            Category: 'OTHER',
+            ApiPath: 'Invoice.Provider.MyDouble',
+            DataType: 'DOUBLE',
+            ApiField: 'MyDouble',
+            SedaVersions: [],
+          },
+          {
+            Path: 'Invoice.Provider.MyEnum',
+            Cardinality: 'ONE',
+            FieldName: 'MyEnum',
+            ShortName: 'My enum',
+            Description: 'Extension au SEDA. Elément de type énumératif',
+            Type: 'ENUM',
+            Origin: 'EXTERNAL',
+            Collection: Collection.ARCHIVE_UNIT,
+            Category: 'OTHER',
+            ApiPath: 'Invoice.Provider.MyEnum',
+            DataType: 'STRING',
+            ApiField: 'MyEnum',
+            SedaVersions: [],
+          },
+        ];
+        const path = '';
+        const originalData = {
+          Invoice: [
+            {
+              Provider: [
+                {
+                  MyText: 'Hello',
+                },
+              ],
+            },
+          ],
+        };
+        const template: DisplayRule[] = [];
+        const templatedSchema = service.createTemplateSchema(template, schema);
+        const editObject: EditObject = service.editObject(path, originalData, template, templatedSchema);
+
+        expect(editObject).toBeTruthy();
+        expect(editObject.children.length).toEqual(1);
+        expect(editObject.children).toEqual(
+          jasmine.arrayContaining([
+            jasmine.objectContaining({
+              path: 'Invoice',
+              kind: 'object-array',
+            }),
+          ]),
+        );
+        expect(editObject.children[0].children).toEqual(
+          jasmine.arrayContaining([
+            jasmine.objectContaining({
+              path: 'Invoice[0]',
+              kind: 'object',
+            }),
+          ]),
+        );
+        expect(editObject.children[0].children[0].children).toEqual(
+          jasmine.arrayContaining([
+            jasmine.objectContaining({
+              path: 'Invoice[0].Provider',
+              kind: 'object-array',
+            }),
+          ]),
+        );
+        expect(editObject.children[0].children[0].children[0].children).toEqual(
+          jasmine.arrayContaining([
+            jasmine.objectContaining({
+              path: 'Invoice[0].Provider[0]',
+              kind: 'object',
+            }),
+          ]),
+        );
+        expect(editObject.children[0].children[0].children[0].children[0].children).toEqual(
+          jasmine.arrayContaining([
+            jasmine.objectContaining({
+              path: 'Invoice[0].Provider[0].MyText',
+              kind: 'primitive',
+              value: 'Hello',
+            }),
+          ]),
+        );
+      }),
+    ));
   });
 
   describe('Kind', () => {
@@ -647,7 +820,14 @@ describe('EditObjectService', () => {
               next: (editObject) => {
                 expect(editObject).toBeTruthy();
                 expect(editObject.children).toEqual(
-                  jasmine.arrayContaining([jasmine.objectContaining({ path, kind, cardinality: effectiveCardinality, required: true })]),
+                  jasmine.arrayContaining([
+                    jasmine.objectContaining({
+                      path,
+                      kind,
+                      cardinality: effectiveCardinality,
+                      required: true,
+                    }),
+                  ]),
                 );
               },
             });
@@ -683,7 +863,14 @@ describe('EditObjectService', () => {
               next: (editObject) => {
                 expect(editObject).toBeTruthy();
                 expect(editObject.children).toEqual(
-                  jasmine.arrayContaining([jasmine.objectContaining({ path, kind, cardinality: effectiveCardinality, required: true })]),
+                  jasmine.arrayContaining([
+                    jasmine.objectContaining({
+                      path,
+                      kind,
+                      cardinality: effectiveCardinality,
+                      required: true,
+                    }),
+                  ]),
                 );
               },
             });
@@ -719,7 +906,14 @@ describe('EditObjectService', () => {
               next: (editObject) => {
                 expect(editObject).toBeTruthy();
                 expect(editObject.children).toEqual(
-                  jasmine.arrayContaining([jasmine.objectContaining({ path, kind, cardinality: effectiveCardinality, required: true })]),
+                  jasmine.arrayContaining([
+                    jasmine.objectContaining({
+                      path,
+                      kind,
+                      cardinality: effectiveCardinality,
+                      required: true,
+                    }),
+                  ]),
                 );
               },
             });
@@ -755,7 +949,14 @@ describe('EditObjectService', () => {
               next: (editObject) => {
                 expect(editObject).toBeTruthy();
                 expect(editObject.children).toEqual(
-                  jasmine.arrayContaining([jasmine.objectContaining({ path, kind, cardinality: effectiveCardinality, required: true })]),
+                  jasmine.arrayContaining([
+                    jasmine.objectContaining({
+                      path,
+                      kind,
+                      cardinality: effectiveCardinality,
+                      required: true,
+                    }),
+                  ]),
                 );
               },
             });
@@ -791,7 +992,14 @@ describe('EditObjectService', () => {
               next: (editObject) => {
                 expect(editObject).toBeTruthy();
                 expect(editObject.children).toEqual(
-                  jasmine.arrayContaining([jasmine.objectContaining({ path, kind, cardinality: effectiveCardinality, required: true })]),
+                  jasmine.arrayContaining([
+                    jasmine.objectContaining({
+                      path,
+                      kind,
+                      cardinality: effectiveCardinality,
+                      required: true,
+                    }),
+                  ]),
                 );
               },
             });
