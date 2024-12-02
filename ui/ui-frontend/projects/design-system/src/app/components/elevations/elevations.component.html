@@ -1,10 +1,20 @@
 <h2>{{ 'ELEVATIONS.TITLE' | translate }}</h2>
 
+<h3>{{ 'ELEVATIONS.ACCESSIBLE' | translate }}</h3>
+<div class="d-flex mb-5 overflow-auto">
+  <div #element class="elevation-box accessible">
+    <strong>shadow-accessible</strong>
+    @for (part of getBoxShadow(element); track part) {
+      <div class="text-nowrap">{{ part }}</div>
+    }
+  </div>
+</div>
+
 @for (color of colors; track color) {
   <h3>{{ 'ELEVATIONS.' + (color | uppercase) | translate }}</h3>
   <div class="d-flex mb-5 overflow-auto">
     @for (elevation of elevations; track elevation) {
-      <div #element class="elevation-box elevation {{ color }}-{{ elevation }}">
+      <div #element class="elevation-box {{ color }}-{{ elevation }}">
         <strong>{{ name(elevation, color) }}</strong>
         @for (part of getBoxShadow(element); track part) {
           <div class="text-nowrap">{{ part }}</div>

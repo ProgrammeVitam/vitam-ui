@@ -10,7 +10,7 @@
 .primary {
   @extend .primary;
   background-color: var(--vitamui-primary) !important;
-  @include elevation-0;
+  @include shadow-0;
 }
 
 .pastis-tree-node-root-name {

@@ -1,6 +1,6 @@
 .mat-drawer {
   border-left: none !important;
-  @include elevation-5-dark;
+  @include shadow-32dp-dark;
 }
 
 .extended-preview-tab-group:not(.show-pagination).mat-tab-group {

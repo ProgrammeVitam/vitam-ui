@@ -1,4 +1,6 @@
-.ok{
+@import 'mixins/elevation';
+
+.ok {
   flex-flow: row;
 }
 
@@ -24,5 +26,5 @@
   padding: 10px;
   border: 1px solid var(--buttons-border);
   border-radius: 5px;
-  box-shadow: 0 0 2px rgba(var(--vitamui-grey-900-rgb), 0.2), 0 1px 4px rgba(var(--vitamui-grey-900-rgb), 0.05);
+  @include shadow-accessible;
 }

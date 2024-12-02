@@ -40,17 +40,7 @@ import { MatLegacyProgressSpinnerModule as MatProgressSpinnerModule } from '@ang
 
 @Component({
   template: `<mat-spinner class="vitamui-spinner x-large my-3"></mat-spinner>`,
-  styles: [
-    `
-      ::ng-deep .spinner-overlay .mat-dialog-container {
-        background: transparent;
-        box-shadow: none;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-    `,
-  ],
+  styleUrls: ['spinner-component.scss'],
 })
 class SpinnerComponent {}
 

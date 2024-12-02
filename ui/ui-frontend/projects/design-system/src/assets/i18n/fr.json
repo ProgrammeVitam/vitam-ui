@@ -102,6 +102,7 @@
   },
   "ELEVATIONS": {
     "TITLE": "Ombres & Elevations",
+    "ACCESSIBLE": "Ombre accessible",
     "DARK": "Ombres foncées",
     "PRIMARY": "Ombres primaires",
     "SECONDARY": "Ombres secondaires",

@@ -3,7 +3,7 @@
 ::ng-deep {
   .more-action-menu.mat-menu-panel {
     background: none;
-    @include elevation-0;
+    @include shadow-0;
 
     .mat-menu-content {
       align-items: flex-end;

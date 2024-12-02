@@ -67,7 +67,7 @@ $animation-time: 150ms;
 
 ::ng-deep .vitamui-common-autocomplete-multi-select-tree {
   max-height: none !important;
-  @include elevation-1-dark;
+  @include shadow-2dp-dark;
   border-radius: 10px !important;
   border: 1px solid var(--vitamui-grey-300);
 

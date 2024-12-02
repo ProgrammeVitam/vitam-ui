@@ -3,7 +3,7 @@
 $header-height: 72px !default;
 
 mat-toolbar {
-  @include elevation-7-dark;
+  @include shadow-128dp-dark;
   z-index: 10;
 }
 
@@ -34,7 +34,7 @@ mat-toolbar {
 vitamui-common-item-select {
   height: 100%;
   width: 100%;
-  @include elevation-0;
+  @include shadow-0;
 }
 
 vitamui-common-user-alerts-menu,
@@ -112,7 +112,7 @@ vitamui-common-header-extra-select {
 
   mat-form-field {
     background-color: transparent !important;
-    @include elevation-0;
+    @include shadow-0;
     height: 100% !important;
     border: none !important;
     border-radius: 0 !important;

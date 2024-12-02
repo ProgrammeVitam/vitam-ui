@@ -41,7 +41,7 @@ import { FileNode } from '../../models/file-node';
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'modify-text-button',
   templateUrl: './modify-text-button.component.html',
-  styleUrls: ['./modify-text-button.component.css'],
+  styleUrls: ['./modify-text-button.component.scss'],
 })
 export class ModifyTextButtonComponent {
   @Input()

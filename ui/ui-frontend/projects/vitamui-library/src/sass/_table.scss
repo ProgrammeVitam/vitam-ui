@@ -356,7 +356,7 @@ $row-padding: 0.8rem;
 
     &:hover {
       background-color: transparent;
-      @include elevation-3-dark;
+      @include shadow-8dp-dark;
 
       .actions > div {
         visibility: visible;
@@ -393,7 +393,7 @@ $row-padding: 0.8rem;
 
       &:hover {
         background-color: transparent;
-        @include elevation-3-dark;
+        @include shadow-8dp-dark;
 
         .actions > div {
           visibility: visible;

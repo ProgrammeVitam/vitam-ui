@@ -99,7 +99,8 @@
 }
 
 .selected-node {
-  box-shadow: -2px 0px 0px 0px var(--vitamui-primary);
+  border-left: 2px solid var(--vitamui-primary);
+  margin-left: -2px;
 }
 
 .icon-greeny-blue {

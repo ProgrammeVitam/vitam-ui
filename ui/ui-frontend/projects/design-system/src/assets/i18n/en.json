@@ -102,6 +102,7 @@
   },
   "ELEVATIONS": {
     "Title": "Shadows & Elevations",
+    "ACCESSIBLE": "Accessible shadow",
     "Dark": "Black Shadows",
     "Primary": "Primary Shadows",
     "Secondary": "Secondaty Shadows",

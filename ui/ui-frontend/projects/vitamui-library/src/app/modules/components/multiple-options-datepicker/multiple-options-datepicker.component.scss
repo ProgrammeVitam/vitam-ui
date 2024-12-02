@@ -1,12 +1,6 @@
 @import '../../../../sass/variables/colors';
 @import '../../../../sass/mixins/elevation';
 
-:host {
-  &.ng-invalid:not(.ng-pristine) .vitamui-input {
-    outline: 1px solid var(--vitamui-red);
-  }
-}
-
 .vitamui-input,
 .vitamui-input label {
   cursor: text;
@@ -75,7 +69,7 @@ mat-datepicker-toggle mat-icon {
       }
 
       .mat-calendar-body-selected.mat-calendar-body-today {
-        @include elevation-0;
+        @include shadow-0;
       }
 
       .mat-calendar-body-selected {

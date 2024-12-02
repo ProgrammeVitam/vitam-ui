@@ -21,115 +21,119 @@ div {
     padding: 0;
   }
 
+  &.accessible {
+    @include shadow-accessible;
+  }
+
   &.dark-1 {
-    @include elevation-1-dark;
+    @include shadow-2dp-dark;
   }
 
   &.dark-2 {
-    @include elevation-2-dark;
+    @include shadow-4dp-dark;
   }
 
   &.dark-3 {
-    @include elevation-3-dark;
+    @include shadow-8dp-dark;
   }
 
   &.dark-4 {
-    @include elevation-4-dark;
+    @include shadow-16dp-dark;
   }
 
   &.dark-5 {
-    @include elevation-5-dark;
+    @include shadow-32dp-dark;
   }
 
   &.dark-6 {
-    @include elevation-6-dark;
+    @include shadow-64dp-dark;
   }
 
   &.dark-7 {
-    @include elevation-7-dark;
+    @include shadow-128dp-dark;
   }
 
   &.primary-1 {
-    @include elevation-1-primary;
+    @include shadow-2dp-primary;
   }
 
   &.primary-2 {
-    @include elevation-2-primary;
+    @include shadow-4dp-primary;
   }
 
   &.primary-3 {
-    @include elevation-3-primary;
+    @include shadow-8dp-primary;
   }
 
   &.primary-4 {
-    @include elevation-4-primary;
+    @include shadow-16dp-primary;
   }
 
   &.primary-5 {
-    @include elevation-5-primary;
+    @include shadow-32dp-primary;
   }
 
   &.primary-6 {
-    @include elevation-6-primary;
+    @include shadow-64dp-primary;
   }
 
   &.primary-7 {
-    @include elevation-7-primary;
+    @include shadow-128dp-primary;
   }
 
   &.secondary-1 {
-    @include elevation-1-secondary;
+    @include shadow-2dp-secondary;
   }
 
   &.secondary-2 {
-    @include elevation-2-secondary;
+    @include shadow-4dp-secondary;
   }
 
   &.secondary-3 {
-    @include elevation-3-secondary;
+    @include shadow-8dp-secondary;
   }
 
   &.secondary-4 {
-    @include elevation-4-secondary;
+    @include shadow-16dp-secondary;
   }
 
   &.secondary-5 {
-    @include elevation-5-secondary;
+    @include shadow-32dp-secondary;
   }
 
   &.secondary-6 {
-    @include elevation-6-secondary;
+    @include shadow-64dp-secondary;
   }
 
   &.secondary-7 {
-    @include elevation-7-secondary;
+    @include shadow-128dp-secondary;
   }
 
   &.tertiary-1 {
-    @include elevation-1-tertiary;
+    @include shadow-2dp-tertiary;
   }
 
   &.tertiary-2 {
-    @include elevation-2-tertiary;
+    @include shadow-4dp-tertiary;
   }
 
   &.tertiary-3 {
-    @include elevation-3-tertiary;
+    @include shadow-8dp-tertiary;
   }
 
   &.tertiary-4 {
-    @include elevation-4-tertiary;
+    @include shadow-16dp-tertiary;
   }
 
   &.tertiary-5 {
-    @include elevation-5-tertiary;
+    @include shadow-32dp-tertiary;
   }
 
   &.tertiary-6 {
-    @include elevation-6-tertiary;
+    @include shadow-64dp-tertiary;
   }
 
   &.tertiary-7 {
-    @include elevation-7-tertiary;
+    @include shadow-128dp-tertiary;
   }
 }
