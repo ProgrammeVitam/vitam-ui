@@ -35,8 +35,32 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
-import { AfterViewInit, Component, ElementRef, forwardRef, HostBinding, HostListener, Input, OnInit, ViewChild } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  forwardRef,
+  HostBinding,
+  HostListener,
+  Injector,
+  Input,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
+import {
+  AbstractControl,
+  ControlContainer,
+  ControlValueAccessor,
+  FormControl,
+  FormControlDirective,
+  FormControlName,
+  FormGroup,
+  NG_VALUE_ACCESSOR,
+  NgControl,
+  NgModel,
+} from '@angular/forms';
+import { Subscription } from 'rxjs';
 
 export const VITAMUI_COMMON_INPUT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -50,7 +74,9 @@ export const VITAMUI_COMMON_INPUT_VALUE_ACCESSOR: any = {
   styleUrls: ['./vitamui-common-input.component.scss'],
   providers: [VITAMUI_COMMON_INPUT_VALUE_ACCESSOR],
 })
-export class VitamUICommonInputComponent implements ControlValueAccessor, OnInit, AfterViewInit {
+export class VitamUICommonInputComponent implements ControlValueAccessor, OnInit, AfterViewInit, OnDestroy {
+  control: AbstractControl;
+
   @Input() type = 'text';
   @Input() minValue: number;
   @Input() maxValue: number;
@@ -58,42 +84,68 @@ export class VitamUICommonInputComponent implements ControlValueAccessor, OnInit
   @Input() placeholder: string;
   @Input() autofocus: boolean;
   @Input() value: string | number;
+
   @Input()
   get autoFocus(): boolean {
     return this._autoFocus;
   }
+
   set autoFocus(value: boolean) {
     this._autoFocus = coerceBooleanProperty(value);
   }
+
   private _autoFocus = false;
 
   @Input()
   get disabled(): boolean {
     return this._disabled;
   }
+
   set disabled(value: boolean) {
     this._disabled = coerceBooleanProperty(value);
   }
+
   private _disabled = false;
+
   @Input()
   get required(): boolean {
     return this._required;
   }
+
   set required(value: boolean) {
     this._required = coerceBooleanProperty(value);
   }
+
   private _required = false;
   @ViewChild('vitamUIInput') private input: ElementRef;
 
   @HostBinding('class.vitamui-focused') focused = false;
   @HostBinding('class.vitamui-float') labelFloat = false;
 
-  onChange = (_: any) => {};
-  onTouched = () => {};
+  private subscription?: Subscription;
 
-  @HostListener('click')
-  onClick() {
-    this.input.nativeElement.focus();
+  constructor(private injector: Injector) {}
+
+  ngOnInit() {
+    const ngControl = this.injector.get(NgControl, null, { self: true, optional: true });
+
+    if (ngControl instanceof NgModel) {
+      this.control = ngControl.control;
+      this.subscription = ngControl.control.valueChanges.subscribe((value) => {
+        if (ngControl.model !== value || ngControl.viewModel !== value) {
+          ngControl.viewToModelUpdate(value);
+        }
+      });
+    } else if (ngControl instanceof FormControlDirective) {
+      this.control = ngControl.control;
+    } else if (ngControl instanceof FormControlName) {
+      const container = this.injector.get(ControlContainer).control as FormGroup;
+      this.control = container.controls[ngControl.name] as FormControl;
+    } else {
+      this.control = new FormControl();
+    }
+
+    this.labelFloat = !!this.value;
   }
 
   ngAfterViewInit(): void {
@@ -104,8 +156,16 @@ export class VitamUICommonInputComponent implements ControlValueAccessor, OnInit
     }
   }
 
-  ngOnInit() {
-    this.labelFloat = !!this.value;
+  ngOnDestroy() {
+    this.subscription?.unsubscribe();
+  }
+
+  onChange = (_: any) => {};
+  onTouched = () => {};
+
+  @HostListener('click')
+  onClick() {
+    this.input.nativeElement.focus();
   }
 
   writeValue(value: string | number) {

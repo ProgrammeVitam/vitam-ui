@@ -40,24 +40,18 @@ import { AbstractControl } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
-  selector: 'vitamui-editor-hint',
+  selector: 'vitamui-hint',
   template: `
     @if (hint && control.valid) {
-      <mat-hint class="d-flex align-items-center">
-        <i class="vitamui-icon vitamui-icon-info mr-1"></i>
-        <span>{{ hint | translate }}</span>
-      </mat-hint>
+      <i class="vitamui-icon vitamui-icon-info mr-1"></i>
+      <span>{{ hint | translate }}</span>
     }
   `,
-  styles: `
-    i {
-      font-size: 1rem;
-    }
-  `,
+  styleUrls: ['./hint.component.scss'],
   standalone: true,
   imports: [MatFormFieldModule, TranslateModule],
 })
-export class EditorHintComponent {
+export class HintComponent {
   @Input({ required: true }) control!: AbstractControl;
   @Input() hint?: string;
 }

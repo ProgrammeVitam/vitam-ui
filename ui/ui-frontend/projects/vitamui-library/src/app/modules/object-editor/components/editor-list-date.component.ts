@@ -40,7 +40,7 @@ import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { EditorInputComponent } from './editor-input.component';
 import { AppendStarPipe } from '../required.pipe';
-import { EditorHintComponent } from './editor-hint.component';
+import { HintComponent } from '../../components/hint/hint.component';
 import { FormErrorDisplayComponent } from '../../components/form-error-display/form-error-display.component';
 import { MultipleOptionsDatepickerModule } from '../../components/multiple-options-datepicker/multiple-options-datepicker.module';
 import { NgSwitchCase } from '@angular/common';
@@ -55,14 +55,14 @@ import { TranslateModule } from '@ngx-translate/core';
       [label]="editObject.displayRule.ui.label | translate | empty | appendStar: editObject.required"
       pickerType="day"
     >
-      <vitamui-editor-hint [control]="editObject.control" [hint]="editObject.hint"></vitamui-editor-hint>
+      <vitamui-hint [control]="editObject.control" [hint]="editObject.hint"></vitamui-hint>
       <vitamui-form-error-display [control]="editObject.control"></vitamui-form-error-display>
     </vitamui-common-multiple-options-datepicker>
   `,
   imports: [
     EditorInputComponent,
     AppendStarPipe,
-    EditorHintComponent,
+    HintComponent,
     FormErrorDisplayComponent,
     MultipleOptionsDatepickerModule,
     NgSwitchCase,

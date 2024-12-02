@@ -21,6 +21,9 @@
 
   <mat-spinner diameter="25" color="accent"></mat-spinner>
 </div>
-<div class="vitamui-input-errors">
+<div class="message-area">
+  @if (control?.valid) {
+    <ng-content select="vitamui-hint"></ng-content>
+  }
   <ng-content></ng-content>
 </div>

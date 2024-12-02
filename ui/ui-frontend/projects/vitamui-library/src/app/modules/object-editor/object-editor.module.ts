@@ -63,7 +63,7 @@ import { EditorListInputComponent } from './components/editor-list-input.compone
 import { EditorListTextareaComponent } from './components/editor-list-textarea.component';
 import { FormErrorDisplayComponent } from '../components/form-error-display/form-error-display.component';
 import { EditorListSelectComponent } from './components/editor-list-select.component';
-import { EditorHintComponent } from './components/editor-hint.component';
+import { HintComponent } from '../components/hint/hint.component';
 import { EditorInputComponent } from './components/editor-input.component';
 import { EditorTextareaComponent } from './components/editor-textarea.component';
 import { EditorSelectComponent } from './components/editor-select.component';
@@ -107,7 +107,7 @@ import { TemplateService } from './services/template.service';
     FormErrorDisplayComponent,
     AppendStarPipe,
     EditorListSelectComponent,
-    EditorHintComponent,
+    HintComponent,
     EditorInputComponent,
     EditorTextareaComponent,
     EditorSelectComponent,

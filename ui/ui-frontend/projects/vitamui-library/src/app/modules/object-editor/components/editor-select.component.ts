@@ -36,7 +36,7 @@
  */
 import { Component, Input } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { EditorHintComponent } from './editor-hint.component';
+import { HintComponent } from '../../components/hint/hint.component';
 import { FormErrorDisplayComponent } from '../../components/form-error-display/form-error-display.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { PipesModule } from '../../pipes/pipes.module';
@@ -60,14 +60,14 @@ import { MatLegacySelectModule } from '@angular/material/legacy-select';
         <i class="material-icons">keyboard_arrow_up</i>
         <i class="material-icons">keyboard_arrow_down</i>
       </div>
-      <vitamui-editor-hint [control]="control" [hint]="hint"></vitamui-editor-hint>
+      <vitamui-hint [control]="control" [hint]="hint"></vitamui-hint>
       <vitamui-form-error-display [control]="control"></vitamui-form-error-display>
     </mat-form-field>
   `,
   standalone: true,
   imports: [
     ReactiveFormsModule,
-    EditorHintComponent,
+    HintComponent,
     FormErrorDisplayComponent,
     TranslateModule,
     PipesModule,

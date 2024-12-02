@@ -44,7 +44,7 @@ import { VitamUICommonInputModule } from '../vitamui-input/vitamui-common-input.
   template: `
     @for (errorKey of errorKeys; track errorKey) {
       <vitamui-common-input-error>
-        <i class="vitamui-icon vitamui-icon-anomalie"></i>
+        <i class="vitamui-icon vitamui-icon-anomalie mr-1"></i>
         <span>{{ 'ERRORS.' + errorKey | translate: getErrorParams(errorKey) }}</span>
       </vitamui-common-input-error>
     }
