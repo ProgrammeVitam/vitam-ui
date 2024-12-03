@@ -34,21 +34,12 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, forwardRef, HostBinding, Injector, Input, OnInit } from '@angular/core';
-import {
-  AbstractControl,
-  ControlValueAccessor,
-  FormControl,
-  FormsModule,
-  NG_VALUE_ACCESSOR,
-  NgControl,
-  ReactiveFormsModule,
-  ValidationErrors,
-  Validators,
-} from '@angular/forms';
+import { Component, forwardRef, HostBinding, Input, OnInit } from '@angular/core';
+import { AbstractControl, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { MatMenuModule } from '@angular/material/menu';
 import { LowerCasePipe, NgIf } from '@angular/common';
 import { FormErrorsComponent } from '../form-errors/form-errors.component';
+import { AbstractFormInputDirective } from '../abstract-form-input.directive';
 
 export const SEARCH_WITH_TYPE_SELECTOR_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -74,12 +65,11 @@ export interface SearchWithTypeSelectorValue {
   styleUrl: './search-with-type-selector.component.scss',
   providers: [SEARCH_WITH_TYPE_SELECTOR_VALUE_ACCESSOR],
 })
-export class SearchWithTypeSelectorComponent implements ControlValueAccessor, OnInit {
+export class SearchWithTypeSelectorComponent extends AbstractFormInputDirective implements OnInit {
   @Input({ required: true }) placeholder: string;
   @Input({ required: true }) types: SearchType[];
   @Input() errorMessageMap: { [p: string]: string };
 
-  protected control: FormControl<SearchWithTypeSelectorValue>;
   protected isRequired = false;
 
   @HostBinding('class.vitamui-float')
@@ -87,12 +77,8 @@ export class SearchWithTypeSelectorComponent implements ControlValueAccessor, On
     return !!this.control?.value?.value;
   }
 
-  constructor(private injector: Injector) {}
-
   ngOnInit() {
-    const ngControl: NgControl = this.injector.get(NgControl);
-    this.control = ngControl.control as FormControl<SearchWithTypeSelectorValue>;
-
+    super.ngOnInit();
     this.isRequired = this.control.hasValidator(Validators.required);
     this.applyValidatorsToInputValue();
   }
@@ -107,19 +93,6 @@ export class SearchWithTypeSelectorComponent implements ControlValueAccessor, On
       );
     }
   }
-
-  onChange = (_: any) => {};
-  onTouched = () => {};
-
-  registerOnChange(fn: any): void {
-    this.onChange = fn;
-  }
-
-  registerOnTouched(fn: any): void {
-    this.onTouched = fn;
-  }
-
-  writeValue(_searchWithTypeSelectorValue?: SearchWithTypeSelectorValue): void {}
 
   selectType(type: SearchType) {
     this.onChange({ ...this.control.value, type: type });
