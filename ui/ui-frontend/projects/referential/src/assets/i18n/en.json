@@ -983,7 +983,16 @@
       "ENTER_INGEST_OPERATIONS_IDENTIFIERS_PLACEHOLDER": "Comma-separated ingest operations identifiers",
       "CHOOSE_ORIGINATING_AGENCY": "Choose producer services",
       "EVIDENCE_AUDIT_NOT_FOUND": "The consistency audit identifier entered does not exist",
+      "CHOOSE_INGEST_OPERATIONS_PERIOD": "Choose ingest operation period",
+      "CHOOSE_AU_CREATION_PERIOD": "Choose archive unit creation period",
+      "PERIOD_FROM": "Period from :",
+      "PERIOD_TO": "To :",
+      "INGEST_OPERATION_DATE_PLACEHOLDER": "Ingest operation date",
+      "AU_CREATION_DATE_PLACEHOLDER": "AU creation date",
+      "DATE_GMT_TIME_CAPTION": "GMT hour date",
       "START_AUDIT": "Start audit",
+      "REFINE_OVER_PERIOD": "Refine over a period",
+      "END_PERIOD_DATE_BEFORE_START_PERIOD_DATE": "The end period date is earlier than the start period date",
       "OPERATIONS_CATEGORIES": {
         "AUDIT_FILE_EXISTING": "Existence",
         "AUDIT_FILE_INTEGRITY": "Integrity",
@@ -992,8 +1001,9 @@
       },
       "PERIMETERS": {
         "AUDIT_PERIMETER_ORIGINATING_AGENCY": "By producers service",
-        "AUDIT_PERIMETER_INGEST_OPERATION": "By ingest operation",
-        "AUDIT_PERIMETER_ATTACHMENT_POSITION": "By attachment position"
+        "AUDIT_PERIMETER_INGEST_OPERATION_IDENTIFIER": "By ingest operation(s) identifier(s)",
+        "AUDIT_PERIMETER_ATTACHMENT_POSITION": "By attachment position",
+        "AUDIT_PERIMETER_INGEST_OPERATION_PERIOD": "By ingest operation(s) period"
       }
     }
   },

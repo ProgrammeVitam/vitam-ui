@@ -56,8 +56,10 @@ export const MULTIPLE_OPTIONS_DATEPICKER_VALUE_ACCESSOR: any = {
 export class MultipleOptionsDatepickerComponent implements ControlValueAccessor, OnInit {
   @Input() pickerType: PickerType = 'day';
   @Input() startView: MatDatepicker<Date>['startView'];
-  @Input() required = false;
   @Input() label = 'DATE.DATE';
+  @Input() hint: string;
+
+  @Input() isRequired = false;
 
   date: FormControl;
   // We store a value specific for the datepicker in order to store a Date object and not a String for datepicker to keep the currently selected value
