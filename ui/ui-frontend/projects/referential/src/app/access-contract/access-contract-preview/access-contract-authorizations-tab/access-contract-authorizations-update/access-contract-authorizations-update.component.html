@@ -25,12 +25,8 @@
               [placeholder]="'ACCESS_CONTRACT.CREATE_DIALOG.EVERY_ORIGINATING_AGENCY_PLACEHOLDER' | translate"
               [searchBarPlaceHolder]="'ACCESS_CONTRACT.CREATE_DIALOG.SELECT_PRODUCERS' | translate"
               [required]="true"
+              [errorMessageMap]="{ required: 'ACCESS_CONTRACT.TAB.USAGE.NO_AGENCY_SELECTED' }"
             >
-              @if (form.get('originatingAgencies').touched && form.get('originatingAgencies').errors?.required) {
-                <vitamui-common-input-error>
-                  {{ 'ACCESS_CONTRACT.TAB.USAGE.NO_AGENCY_SELECTED' | translate }}
-                </vitamui-common-input-error>
-              }
             </vitamui-common-autocomplete-multi-select>
           </div>
         }
@@ -47,11 +43,6 @@
               [required]="true"
               required
             >
-              @if (form.get('ruleCategoryToFilter').touched && form.get('ruleCategoryToFilter').hasError('required')) {
-                <vitamui-common-input-error>{{ 'COMMON.REQUIRED' | translate }}</vitamui-common-input-error>
-              } @else if (form.get('ruleCategoryToFilter').touched && form.get('ruleCategoryToFilter').hasError('match')) {
-                <vitamui-common-input-error>{{ 'COMMON.INCORRECT_VALUE' | translate }}</vitamui-common-input-error>
-              }
             </vitamui-common-autocomplete-multi-select>
           </div>
         }
@@ -70,12 +61,8 @@
               [placeholder]="'ACCESS_CONTRACT.CREATE_DIALOG.EVERY_ORIGINATING_AGENCY_PLACEHOLDER' | translate"
               [searchBarPlaceHolder]="'ACCESS_CONTRACT.CREATE_DIALOG.SELECT_PRODUCERS' | translate"
               [required]="true"
+              [errorMessageMap]="{ required: 'ACCESS_CONTRACT.TAB.USAGE.NO_AGENCY_SELECTED' }"
             >
-              @if (form.get('originatingAgencies').touched && form.get('originatingAgencies').errors?.required) {
-                <vitamui-common-input-error>
-                  {{ 'ACCESS_CONTRACT.TAB.USAGE.NO_AGENCY_SELECTED' | translate }}
-                </vitamui-common-input-error>
-              }
             </vitamui-common-autocomplete-multi-select>
             <div class="text medium bold primary mb-2">
               {{ 'ACCESS_CONTRACT.CREATE_DIALOG.AUTHORISATION_PERIMETER.MANAGMENT_RULES' | translate }}
@@ -87,17 +74,6 @@
               [required]="true"
               required
             >
-              @if (
-                form.get('ruleCategoryToFilterForTheOtherOriginatingAgencies').touched &&
-                form.get('ruleCategoryToFilterForTheOtherOriginatingAgencies').hasError('required')
-              ) {
-                <vitamui-common-input-error>{{ 'COMMON.REQUIRED' | translate }}</vitamui-common-input-error>
-              } @else if (
-                form.get('ruleCategoryToFilterForTheOtherOriginatingAgencies').touched &&
-                form.get('ruleCategoryToFilterForTheOtherOriginatingAgencies').hasError('match')
-              ) {
-                <vitamui-common-input-error>{{ 'COMMON.INCORRECT_VALUE' | translate }}</vitamui-common-input-error>
-              }
             </vitamui-common-autocomplete-multi-select>
           </div>
         }
@@ -113,12 +89,8 @@
               [placeholder]="'ACCESS_CONTRACT.CREATE_DIALOG.EVERY_ORIGINATING_AGENCY_PLACEHOLDER' | translate"
               [searchBarPlaceHolder]="'ACCESS_CONTRACT.CREATE_DIALOG.SELECT_PRODUCERS' | translate"
               [required]="true"
+              [errorMessageMap]="{ required: 'ACCESS_CONTRACT.TAB.USAGE.NO_AGENCY_SELECTED' }"
             >
-              @if (form.get('originatingAgencies').touched && form.get('originatingAgencies').errors?.required) {
-                <vitamui-common-input-error>
-                  {{ 'ACCESS_CONTRACT.TAB.USAGE.NO_AGENCY_SELECTED' | translate }}
-                </vitamui-common-input-error>
-              }
             </vitamui-common-autocomplete-multi-select>
             <vitamui-common-autocomplete-multi-select
               formControlName="ruleCategoryToFilter"
@@ -127,11 +99,6 @@
               [required]="true"
               required
             >
-              @if (form.get('ruleCategoryToFilter').touched && form.get('ruleCategoryToFilter').hasError('required')) {
-                <vitamui-common-input-error>{{ 'COMMON.REQUIRED' | translate }}</vitamui-common-input-error>
-              } @else if (form.get('ruleCategoryToFilter').touched && form.get('ruleCategoryToFilter').hasError('match')) {
-                <vitamui-common-input-error>{{ 'COMMON.INCORRECT_VALUE' | translate }}</vitamui-common-input-error>
-              }
             </vitamui-common-autocomplete-multi-select>
           </div>
         }

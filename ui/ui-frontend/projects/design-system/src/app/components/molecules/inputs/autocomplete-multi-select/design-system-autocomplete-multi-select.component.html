@@ -1,17 +1,43 @@
 <h2>{{ 'INPUT.AUTOCOMPLETE_MULTI_SELECT' | translate }}</h2>
-<div>
-  <div class="d-flex justify-content-around">
-    <vitamui-common-autocomplete-multi-select
-      [formControl]="autoCompleteMultiSelect"
-      [multiSelectOptions]="multiSelectOptions"
-      [placeholder]="'COMMON.ADRESS.COUNTRY' | translate"
-      [searchBarPlaceHolder]="'INPUT.SEARCH_PLACEHOLDER' | translate"
-      class="w-100"
-      required
-    >
-      <vitamui-common-input-error *ngIf="autoCompleteMultiSelect.touched && autoCompleteMultiSelect.hasError('required')"
-        >{{ 'COMMON.REQUIRED' | translate }}
-      </vitamui-common-input-error>
-    </vitamui-common-autocomplete-multi-select>
-  </div>
-</div>
+
+<ng-container *ngIf="multiSelectOptions$ | async as multiSelectOptions">
+  <h3>Default</h3>
+  <vitamui-common-autocomplete-multi-select
+    [formControl]="control"
+    [multiSelectOptions]="multiSelectOptions"
+    [placeholder]="'COMMON.ADRESS.COUNTRY' | translate"
+    [searchBarPlaceHolder]="'INPUT.SEARCH_PLACEHOLDER' | translate"
+    class="w-100"
+  >
+  </vitamui-common-autocomplete-multi-select>
+
+  <h3>Active</h3>
+  <vitamui-common-autocomplete-multi-select
+    [formControl]="activeControl"
+    [multiSelectOptions]="multiSelectOptions"
+    [placeholder]="'COMMON.ADRESS.COUNTRY' | translate"
+    [searchBarPlaceHolder]="'INPUT.SEARCH_PLACEHOLDER' | translate"
+    class="focused w-100"
+  >
+  </vitamui-common-autocomplete-multi-select>
+
+  <h3>Disabled</h3>
+  <vitamui-common-autocomplete-multi-select
+    [formControl]="disabledControl"
+    [multiSelectOptions]="multiSelectOptions"
+    [placeholder]="'COMMON.ADRESS.COUNTRY' | translate"
+    [searchBarPlaceHolder]="'INPUT.SEARCH_PLACEHOLDER' | translate"
+    class="w-100"
+  >
+  </vitamui-common-autocomplete-multi-select>
+
+  <h3>Error</h3>
+  <vitamui-common-autocomplete-multi-select
+    [formControl]="errorControl"
+    [multiSelectOptions]="multiSelectOptions"
+    [placeholder]="'COMMON.ADRESS.COUNTRY' | translate"
+    [searchBarPlaceHolder]="'INPUT.SEARCH_PLACEHOLDER' | translate"
+    class="w-100"
+  >
+  </vitamui-common-autocomplete-multi-select>
+</ng-container>

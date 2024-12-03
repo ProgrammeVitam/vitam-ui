@@ -42,22 +42,15 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  forwardRef,
   HostListener,
+  Injector,
   Input,
   QueryList,
   ViewChild,
   ViewChildren,
-  forwardRef,
 } from '@angular/core';
-import {
-  AbstractControl,
-  ControlValueAccessor,
-  FormControl,
-  NG_VALIDATORS,
-  NG_VALUE_ACCESSOR,
-  ValidationErrors,
-  Validator,
-} from '@angular/forms';
+import { AbstractControl, FormControl, NG_VALIDATORS, NG_VALUE_ACCESSOR, ValidationErrors, Validator, Validators } from '@angular/forms';
 import { MatLegacyOption as MatOption, MatLegacyOptionSelectionChange as MatOptionSelectionChange } from '@angular/material/legacy-core';
 import { MatLegacySelect as MatSelect } from '@angular/material/legacy-select';
 import { merge } from 'rxjs';
@@ -65,6 +58,7 @@ import { filter } from 'rxjs/operators';
 import { SearchBarComponent } from '../../search-bar/search-bar.component';
 import { Option } from '../utils/option.interface';
 import { VitamuiAutocompleteMultiselectOptions } from '../utils/vitamui-autocomplete-multiselect-options.interface';
+import { AbstractFormInputDirective } from '../../../../../lib/components/abstract-form-input.directive';
 
 export const VITAMUI_MULTISELECT_AUTOCOMPLETE_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -85,12 +79,14 @@ export const VITAMUI_MULTISELECT_AUTOCOMPLETE_NG_VALIDATORS: any = {
   providers: [VITAMUI_MULTISELECT_AUTOCOMPLETE_VALUE_ACCESSOR, VITAMUI_MULTISELECT_AUTOCOMPLETE_NG_VALIDATORS],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class VitamUIAutocompleteMultiSelectComponent implements ControlValueAccessor, Validator, AfterViewInit, AfterViewChecked {
+export class VitamUIAutocompleteMultiSelectComponent
+  extends AbstractFormInputDirective
+  implements Validator, AfterViewInit, AfterViewChecked
+{
   public nbSelectedItemsMap: { [k: string]: string } = {
     '=1': 'MULTIPLE_SELECT_AUTOCOMPLETE.SELECTED_ELEMENT.SINGULAR',
     other: 'MULTIPLE_SELECT_AUTOCOMPLETE.SELECTED_ELEMENT.PLURAL',
   };
-  public control = new FormControl([]);
   public searchTextControl = new FormControl();
   public showOnlySelectedOption = false;
   public allOptions: Option[] = [];
@@ -188,9 +184,12 @@ export class VitamUIAutocompleteMultiSelectComponent implements ControlValueAcce
   }
 
   constructor(
+    injector: Injector,
     private cd: ChangeDetectorRef,
     readonly sd: ScrollDispatcher,
-  ) {}
+  ) {
+    super(injector);
+  }
 
   ngAfterViewInit(): void {
     merge(this.sd.scrolled().pipe(filter((scrollable) => this.cdkVirtualScrollViewport === scrollable)), this.optionKeys.changes).subscribe(
@@ -276,7 +275,6 @@ export class VitamUIAutocompleteMultiSelectComponent implements ControlValueAcce
     // When the component is reset this method is called with selectedOptionKeys = null
     if (this.preselectedOptionKeys == null) {
       this.selectedOptions = [];
-      this.control.reset();
     } else {
       this.selectedOptions = this.allOptions.filter((option) => this.preselectedOptionKeys.includes(option.key));
     }
@@ -284,22 +282,6 @@ export class VitamUIAutocompleteMultiSelectComponent implements ControlValueAcce
     this.updateSelectAll();
 
     this.resizeContainerHeightInSelectedItemsView();
-  }
-
-  registerOnChange(fn: any): void {
-    this.onChange = fn;
-  }
-
-  registerOnTouched(fn: any): void {
-    this.onTouched = fn;
-  }
-
-  setDisabledState(disabled: boolean) {
-    if (disabled) {
-      this.control.disable({ emitEvent: false });
-    } else {
-      this.control.enable({ emitEvent: false });
-    }
   }
 
   validate(_control: AbstractControl): ValidationErrors | null {
@@ -392,11 +374,6 @@ export class VitamUIAutocompleteMultiSelectComponent implements ControlValueAcce
     this.updateMatSelectTriggerContent();
   }
 
-  private onChange = (_: any) => {};
-
-  // @ts-ignore
-  private onTouched = () => {};
-
   private updateSelectAll(): void {
     if (
       !this.showOnlySelectedOption &&
@@ -458,4 +435,6 @@ export class VitamUIAutocompleteMultiSelectComponent implements ControlValueAcce
       this.cdkVirtualScrollViewport.checkViewportSize();
     }
   }
+
+  protected readonly Validators = Validators;
 }

@@ -38,12 +38,20 @@
         font-size: 35px;
         left: 0;
         top: 0;
+
+        .vitamui-input.disabled & {
+          color: var(--vitamui-grey-500);
+        }
       }
       &:nth-of-type(1) {
         color: var(--vitamui-primary-200);
         font-size: 24px;
         right: 0;
         top: 4px;
+
+        .vitamui-input.disabled & {
+          color: var(--vitamui-grey-600);
+        }
       }
     }
   }
@@ -61,18 +69,26 @@
 }
 
 label {
+  display: flex;
   user-select: none;
   cursor: text;
   pointer-events: none;
 
   position: absolute;
-  line-height: 0 !important;
-  font-size: 14px;
   top: 50%;
-  left: 15px;
-  transition:
-    font-size 150ms ease-out,
-    top 150ms ease-out;
+  $paddingX: 15px;
+  left: $paddingX;
+  right: $paddingX;
+  transition: transform 150ms ease-out;
+
+  $lineHeight: 1rem;
+  line-height: $lineHeight;
+  margin-top: -$lineHeight/2;
+
+  span.ellipsis {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 }
 
 input {

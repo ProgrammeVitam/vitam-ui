@@ -1,0 +1,36 @@
+@if (!this.ref) {
+  <div class="text danger bold">
+    Couldn't find any component extending AbstractFormInputDirective! Make sure you put a component inside the wrapper:
+    <pre>
+      &lt;vitamui-form-field-value-wrapper ...>
+        &lt;some-component-extending-abstract-form-input-directive ...>&lt;/some-component-extending-abstract-form-input-directive>
+      &lt;/vitamui-form-field-value-wrapper>
+    </pre>
+    Also, make sure the component extending AbstractFormInputDirective has the following provider if it is a standalone component, otherwise
+    the wrapper won't be able to find it:
+    <pre ngNonBindable>
+      providers: [
+        &#123;
+          provide: AbstractFormInputDirective,
+          useExisting: forwardRef(() => SomeComponentExtendingAbstractFormInputDirective),
+        &#125;,
+      ],
+    </pre>
+  </div>
+}
+<div cdkOverlayOrigin #origin="cdkOverlayOrigin">
+  <ng-content></ng-content>
+</div>
+<ng-template
+  cdkConnectedOverlay
+  [cdkConnectedOverlayOrigin]="origin"
+  [cdkConnectedOverlayOpen]="editMode"
+  [cdkConnectedOverlayPositions]="positions"
+>
+  <div class="editable-field-actions">
+    <button type="button" class="editable-field-confirm" (click)="confirm()" [disabled]="!canConfirm">
+      <i class="material-icons">check</i>
+    </button>
+    <button type="button" class="editable-field-cancel" (click)="cancel()"><i class="material-icons">clear</i></button>
+  </div>
+</ng-template>

@@ -27,6 +27,13 @@
   [types]="searchTypes"
 ></vitamui-search-with-type-selector>
 
+<p>A "type" can be disabled in the type selector.</p>
+<vitamui-search-with-type-selector
+  [formControl]="disabledTypeControl"
+  placeholder="Intitulé"
+  [types]="searchTypesWithDisabledValue"
+></vitamui-search-with-type-selector>
+
 <h3>Error</h3>
 <p><i>Validators.required</i> validator is automatically applied to the "input" part of the component.</p>
 <p>
@@ -39,3 +46,10 @@
   placeholder="Intitulé"
   [types]="searchTypes"
 ></vitamui-search-with-type-selector>
+
+<h3>Wrapper</h3>
+<p>The component is wrapped in another component that requires validating/cancelling the filled value before "emitting" it.</p>
+<vitamui-form-field-value-wrapper [formControl]="wrapperControl">
+  <vitamui-search-with-type-selector placeholder="Intitulé" [types]="searchTypes"></vitamui-search-with-type-selector>
+</vitamui-form-field-value-wrapper>
+<div><strong>Value: </strong>{{ wrapperControl.value | json }}</div>

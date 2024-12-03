@@ -1,11 +1,10 @@
-@import '../../../../sass/variables/colors';
 @import '../../../../sass/mixins/elevation';
 
 :host {
-  @include shadow-2dp-dark;
+  @include shadow-accessible;
   cursor: text;
   border-radius: 5px;
-  border: solid 1px var(--vitamui-grey-300);
+  border: solid 1px transparent;
   background-color: white;
   display: flex;
   flex-direction: column;
@@ -32,18 +31,20 @@
 
   &:focus-within {
     border: solid 1px var(--vitamui-primary);
+    @include shadow-0;
   }
 
   &.ng-invalid.ng-touched {
     border: 1px solid var(--vitamui-red);
+    @include shadow-0;
   }
 }
 
 input {
   margin-top: 0 !important;
 
-  .vitamui-input.first & {
-    margin-top: 15px !important;
+  .vitamui-input:not(.first) & {
+    padding-top: 0 !important;
   }
 }
 
@@ -84,16 +85,6 @@ label {
   line-height: 0;
   font-size: 14px;
   top: 50%;
-  transition:
-    font-size 150ms ease-out,
-    top 150ms ease-out;
-
-  .vitamui-focused &,
-  :host.vitamui-float & {
-    font-size: 12px;
-    top: 10px;
-    transform: none !important;
-  }
 }
 
 .item {
@@ -109,6 +100,10 @@ label {
   /* easy way to plop the elements on top of each other and have them both sized based on the tallest one's height */
   display: grid;
   width: 100%;
+
+  .first & {
+    margin-top: 15px;
+  }
 
   &::after {
     /* Note the weird space! Needed to preventy jumpy behavior */
@@ -137,10 +132,6 @@ label {
     max-height: 240px; // Max 10 lines, then scroll
     overflow-y: auto;
     margin-top: 0;
-
-    .first & {
-      margin-top: 16px;
-    }
 
     /* Place on top of each other */
     grid-area: 1 / 1 / 2 / 2;

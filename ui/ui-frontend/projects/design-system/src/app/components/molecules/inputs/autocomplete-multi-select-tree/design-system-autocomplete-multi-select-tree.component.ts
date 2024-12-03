@@ -34,101 +34,57 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import {
-  CountryOption,
-  CountryService,
-  ItemNode,
-  Option,
-  SchemaElement,
-  SchemaService,
-  VitamuiAutocompleteMultiselectOptions,
-  VitamUIAutocompleteMultiSelectTreeModule,
-} from 'vitamui-library';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { takeUntil } from 'rxjs/operators';
-import { extend } from 'underscore';
-import { Subject } from 'rxjs';
-import { NgIf } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ItemNode, SchemaElement, SchemaService, VitamUIAutocompleteMultiSelectTreeModule } from 'vitamui-library';
+import { TranslateModule } from '@ngx-translate/core';
+import { Observable } from 'rxjs';
+import { AsyncPipe, NgIf } from '@angular/common';
 import { MockSchemaService } from '../../../../../../../vitamui-library/src/app/modules/schema/mock-schema.service';
+import { tap } from 'rxjs/operators';
 
 @Component({
-  selector: 'design-system-autocomplete-multi-select-tree',
   standalone: true,
-  imports: [VitamUIAutocompleteMultiSelectTreeModule, ReactiveFormsModule, TranslateModule, NgIf],
+  imports: [VitamUIAutocompleteMultiSelectTreeModule, ReactiveFormsModule, TranslateModule, NgIf, AsyncPipe],
   templateUrl: './design-system-autocomplete-multi-select-tree.component.html',
   styleUrl: './design-system-autocomplete-multi-select-tree.component.scss',
   providers: [{ provide: SchemaService, useClass: MockSchemaService }],
 })
-export class DesignSystemAutocompleteMultiSelectTreeComponent implements OnInit, OnDestroy {
-  public autoCompleteSelect = new FormControl();
-  public autoCompleteSelectDisabled = new FormControl();
-  public autoCompleteMultiSelectTree = new FormControl();
-  public autoCompleteMultiSelectTree2 = new FormControl();
+export class DesignSystemAutocompleteMultiSelectTreeComponent implements OnInit {
+  control = new FormControl();
+  activeControl = new FormControl();
+  disabledControl = (() => {
+    const fc = new FormControl('');
+    fc.disable();
+    return fc;
+  })();
+  errorControl = (() => {
+    const fc = new FormControl(null, [Validators.required]);
+    fc.markAsTouched();
+    return fc;
+  })();
 
-  public multiSelectOptions: VitamuiAutocompleteMultiselectOptions;
-  public schemaOptions: ItemNode<SchemaElement>[] = [];
-  public countries: Option[] = [];
+  schemaOptions$: Observable<ItemNode<SchemaElement>[]>;
 
-  private readonly destroyer$ = new Subject<void>();
-
-  constructor(
-    private countryService: CountryService,
-    private translateService: TranslateService,
-    private schemaService: SchemaService,
-  ) {}
+  constructor(private schemaService: SchemaService) {}
 
   ngOnInit() {
-    this.initMultiselectOptions();
     this.initSchemaOptions();
-    this.translateService.onLangChange.pipe(takeUntil(this.destroyer$)).subscribe(() => {
-      this.updateCountryTranslation();
-    });
   }
 
-  public getSchemaElementDisplayValue = (element: SchemaElement) =>
+  getSchemaElementDisplayValue = (element: SchemaElement) =>
     `${element.Origin === 'EXTERNAL' ? 'EXT-' : ''}${element.ShortName} - ${element.FieldName}`;
 
-  private initMultiselectOptions(): void {
-    this.countryService.getAvailableCountries().subscribe((values: CountryOption[]) => {
-      this.countries = values.map((value) =>
-        extend({
-          key: value.code,
-          label: value.name,
-        }),
-      );
-      this.autoCompleteSelect.setValue('DE');
-      this.multiSelectOptions = { options: this.countries, customSorting: this.sortAlphabetically };
-    });
-    this.autoCompleteSelectDisabled.disable({ emitEvent: false });
-  }
-
   private initSchemaOptions(): void {
-    this.schemaService.getDescriptiveSchemaTree().subscribe((schemaOptions) => {
-      this.schemaOptions = schemaOptions;
-
-      this.autoCompleteMultiSelectTree2.setValue([
-        schemaOptions.find((o) => o.item.FieldName === 'TextContent').item,
-        schemaOptions.find((o) => o.item.FieldName === 'RegisteredDate').item,
-        schemaOptions.find((o) => o.item.FieldName === 'Agent').children.find((o) => o.item.FieldName === 'Activity').item,
-        schemaOptions.find((o) => o.item.FieldName === 'Agent').children.find((o) => o.item.FieldName === 'DeathDate').item,
-      ]);
-    });
-  }
-
-  private updateCountryTranslation(): void {
-    this.countries.forEach((country) => {
-      country.label = this.countryService.getTranslatedCountryNameByCode(country.key);
-    });
-  }
-
-  private sortAlphabetically = (a: Option, b: Option): number => {
-    return a.label.toLocaleLowerCase() > b.label.toLocaleLowerCase() ? 1 : -1;
-  };
-
-  ngOnDestroy() {
-    this.destroyer$.next();
-    this.destroyer$.complete();
+    this.schemaOptions$ = this.schemaService.getDescriptiveSchemaTree().pipe(
+      tap((schemaOptions) => {
+        this.activeControl.setValue([
+          schemaOptions.find((o) => o.item.FieldName === 'TextContent').item,
+          schemaOptions.find((o) => o.item.FieldName === 'RegisteredDate').item,
+          schemaOptions.find((o) => o.item.FieldName === 'Agent').children.find((o) => o.item.FieldName === 'Activity').item,
+          schemaOptions.find((o) => o.item.FieldName === 'Agent').children.find((o) => o.item.FieldName === 'DeathDate').item,
+        ]);
+      }),
+    );
   }
 }

@@ -36,6 +36,7 @@
  */
 import { Directive, Injector, Input, OnDestroy, OnInit } from '@angular/core';
 import {
+  AsyncValidatorFn,
   ControlContainer,
   ControlValueAccessor,
   FormControl,
@@ -44,6 +45,7 @@ import {
   FormGroup,
   NgControl,
   NgModel,
+  ValidatorFn,
 } from '@angular/forms';
 import { Subscription } from 'rxjs';
 
@@ -56,6 +58,23 @@ export class AbstractFormInputDirective implements ControlValueAccessor, OnInit,
   #subscription?: Subscription;
 
   constructor(private injector: Injector) {}
+
+  // Used by FormFieldValueWrapperComponent
+  setControl(control: FormControl) {
+    this.control.patchValue(control.value);
+    this.control.addValidators((control as any)._rawValidators as ValidatorFn[]);
+    this.control.addAsyncValidators((control as any)._rawAsyncValidators as AsyncValidatorFn[]);
+    control.registerOnDisabledChange((disabled) => (disabled ? this.control.disable() : this.control.enable()));
+    control.valueChanges.subscribe((value) => this.control.setValue(value));
+    this.afterControlSet();
+    return this.control;
+  }
+
+  /**
+   * Callback method, called after setControl has been called.
+   * It is useful to run some configuration code after changing the control (when wrapped by FormFieldValueWrapperComponent).
+   */
+  afterControlSet() {}
 
   ngOnInit() {
     const ngControl = this.injector.get(NgControl, null, { self: true, optional: true });

@@ -1,5 +1,5 @@
-<mat-form-field class="vitamui-mat-select w-100 p-0">
-  <mat-label>{{ placeholder }}<span *ngIf="required" class="required-marker">*</span></mat-label>
+<mat-form-field class="vitamui-mat-select w-100 p-0" [hideRequiredMarker]="true">
+  <mat-label>{{ placeholder }}<span *ngIf="control.hasValidator(Validators.required)" class="required-marker">*</span></mat-label>
   <mat-select
     (closed)="onSelectClosed()"
     (openedChange)="openedChange($event)"
@@ -109,6 +109,4 @@
   </div>
 </mat-form-field>
 
-<div class="vitamui-input-errors">
-  <ng-content></ng-content>
-</div>
+<vitamui-form-errors [control]="control" [errorMessageMap]="errorMessageMap"></vitamui-form-errors>

@@ -29,7 +29,7 @@ $anim-timing: 150ms ease-out;
     }
 
     button {
-      background: var(--vitamui-grey-200);
+      background: var(--vitamui-grey-300);
       cursor: initial;
     }
   }
@@ -138,12 +138,11 @@ $anim-timing: 150ms ease-out;
 .vitamui-float.vitamui-input {
   label:first-of-type {
     transform: scale((12 / 14)) translateY(-12px);
-    line-height: 10px;
   }
 
   input {
-    margin-top: 15px;
     padding: 0;
+    padding-top: 15px !important;
   }
   textarea {
     margin-top: 25px;
