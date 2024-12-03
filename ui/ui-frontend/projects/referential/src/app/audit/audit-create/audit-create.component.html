@@ -82,7 +82,7 @@
 
     <cdk-step>
       <div class="content mt-3">
-        <div *ngIf="form.get('auditPerimeter')?.value === 'AUDIT_PERIMETER_ORIGINATING_AGENCY'">
+        <div *ngIf="form.get('auditPerimeter')?.value === 'AUDIT_PERIMETER_ORIGINATING_AGENCY' && !refiningScreen">
           <div class="text medium light">{{ 'AUDIT.CREATE_DIALOG.TITLE' | translate }}</div>
           <div class="text large bold mb-3">{{ 'AUDIT.CREATE_DIALOG.CHOOSE_ORIGINATING_AGENCY' | translate }}</div>
 
@@ -104,7 +104,7 @@
           </vitamui-common-autocomplete-multi-select>
         </div>
 
-        <div *ngIf="form.get('auditPerimeter')?.value === 'AUDIT_PERIMETER_INGEST_OPERATION'">
+        <div *ngIf="form.get('auditPerimeter')?.value === 'AUDIT_PERIMETER_INGEST_OPERATION_IDENTIFIER'">
           <div class="text medium light">{{ 'AUDIT.CREATE_DIALOG.TITLE' | translate }}</div>
           <div class="text large bold mb-3">{{ 'AUDIT.CREATE_DIALOG.ENTER_INGEST_OPERATIONS_IDENTIFIERS' | translate }}</div>
 
@@ -118,7 +118,7 @@
           </vitamui-common-input>
         </div>
 
-        <div *ngIf="form.get('auditPerimeter')?.value === 'AUDIT_PERIMETER_ATTACHMENT_POSITION'">
+        <div *ngIf="form.get('auditPerimeter')?.value === 'AUDIT_PERIMETER_ATTACHMENT_POSITION' && !refiningScreen">
           <div class="text medium light">{{ 'AUDIT.CREATE_DIALOG.TITLE' | translate }}</div>
           <div class="text large bold mb-3">{{ 'AUDIT.CREATE_DIALOG.CHOOSE_ATTACHMENT_POSITION' | translate }}</div>
 
@@ -130,9 +130,62 @@
           </vitamui-library-filing-plan>
         </div>
 
+        <div *ngIf="canShowRefiningScreen()">
+          <div class="text medium light">{{ 'AUDIT.CREATE_DIALOG.TITLE' | translate }}</div>
+          <div class="text large bold mb-3">
+            {{
+              (refiningScreen ? 'AUDIT.CREATE_DIALOG.CHOOSE_AU_CREATION_PERIOD' : 'AUDIT.CREATE_DIALOG.CHOOSE_INGEST_OPERATIONS_PERIOD')
+                | translate
+            }}
+          </div>
+          <div class="date-area">
+            <div class="start-date">
+              <p>{{ 'AUDIT.CREATE_DIALOG.PERIOD_FROM' | translate }}</p>
+              <vitamui-common-multiple-options-datepicker
+                [formControl]="startDateControl"
+                [label]="
+                  refiningScreen
+                    ? 'AUDIT.CREATE_DIALOG.AU_CREATION_DATE_PLACEHOLDER'
+                    : ('AUDIT.CREATE_DIALOG.INGEST_OPERATION_DATE_PLACEHOLDER' | translate)
+                "
+                [hint]="'AUDIT.CREATE_DIALOG.DATE_GMT_TIME_CAPTION'"
+                required
+              ></vitamui-common-multiple-options-datepicker>
+            </div>
+            <div class="end-date">
+              <p>{{ 'AUDIT.CREATE_DIALOG.PERIOD_TO' | translate }}</p>
+              <vitamui-common-multiple-options-datepicker
+                [formControl]="endDateControl"
+                [label]="
+                  refiningScreen
+                    ? 'AUDIT.CREATE_DIALOG.AU_CREATION_DATE_PLACEHOLDER'
+                    : ('AUDIT.CREATE_DIALOG.INGEST_OPERATION_DATE_PLACEHOLDER' | translate)
+                "
+                [hint]="'AUDIT.CREATE_DIALOG.DATE_GMT_TIME_CAPTION'"
+              ></vitamui-common-multiple-options-datepicker>
+            </div>
+          </div>
+          <p *ngIf="canShowPeriodErrorMessage()" class="text-red">
+            {{ 'AUDIT.CREATE_DIALOG.END_PERIOD_DATE_BEFORE_START_PERIOD_DATE' | translate }}
+          </p>
+        </div>
+
         <div class="actions">
           <button type="submit" class="btn primary" [disabled]="!isStepTwoValid()">
             {{ 'AUDIT.CREATE_DIALOG.START_AUDIT' | translate }}
+          </button>
+          <button
+            *ngIf="
+              ['AUDIT_PERIMETER_ORIGINATING_AGENCY', 'AUDIT_PERIMETER_ATTACHMENT_POSITION'].includes(form.get('auditPerimeter')?.value) &&
+              !refiningScreen
+            "
+            type="button"
+            class="btn cancel link"
+            (click)="initPeriodScreen()"
+            [disabled]="!isStepTwoValid()"
+          >
+            <i class="vitamui-icon vitamui-icon-plus"></i>
+            <span>{{ 'AUDIT.CREATE_DIALOG.REFINE_OVER_PERIOD' | translate }}</span>
           </button>
           <button type="button" class="btn cancel" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
         </div>
