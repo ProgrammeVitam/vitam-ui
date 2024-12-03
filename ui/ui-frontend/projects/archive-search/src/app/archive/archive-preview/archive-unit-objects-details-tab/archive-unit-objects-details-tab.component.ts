@@ -39,6 +39,7 @@ import {
 } from 'vitamui-library';
 import { ArchiveService } from '../../archive.service';
 import { Subscription } from 'rxjs';
+import { ArchiveSharedDataService } from '../../../core/archive-shared-data.service';
 
 @Component({
   selector: 'app-archive-unit-objects-details-tab',
@@ -68,6 +69,7 @@ export class ArchiveUnitObjectsDetailsTabComponent implements OnChanges, OnInit,
     private clipboard: Clipboard,
     private tenantSelectionService: TenantSelectionService,
     private accessContractService: AccessContractService,
+    private archiveSharedDataService: ArchiveSharedDataService,
   ) {}
 
   ngOnInit() {
@@ -120,7 +122,7 @@ export class ArchiveUnitObjectsDetailsTabComponent implements OnChanges, OnInit,
       next: (unitObject) => {
         this.archiveUnit.objectGroup = unitObject;
         this.archiveUnit.objectGroup.versionsWithQualifiers = qualifiersToVersionsWithQualifier(unitObject['#qualifiers']);
-
+        this.archiveSharedDataService.unitUpdatedWithComputedObjectGroup.next(this.archiveUnit);
         this.setDownloadableOnVersionsWithQualifiers();
         this.setFirstVersionWithQualifierOpen();
       },
