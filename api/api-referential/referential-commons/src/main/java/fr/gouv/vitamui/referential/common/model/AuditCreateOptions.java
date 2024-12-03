@@ -59,5 +59,9 @@ public class AuditCreateOptions {
 
     private String[] attachmentPositionIds;
 
+    private String startDate;
+
+    private String endDate;
+
     public AuditCreateOptions() {}
 }
