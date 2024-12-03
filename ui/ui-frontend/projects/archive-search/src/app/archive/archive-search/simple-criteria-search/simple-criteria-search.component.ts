@@ -51,10 +51,12 @@ import {
   searchCriteriaConfigs,
   SearchCriteriaEltDto,
   SearchCriteriaTypeEnum,
+  SearchType,
+  SearchWithTypeSelectorValue,
 } from 'vitamui-library';
 import { ArchiveSharedDataService } from '../../../core/archive-shared-data.service';
 import { ManagementRulesSharedDataService } from '../../../core/management-rules-shared-data.service';
-import { debounceTime } from 'rxjs/operators';
+import { debounceTime, filter, map } from 'rxjs/operators';
 import { ArchiveSearchConstsEnum } from '../../models/archive-search-consts-enum';
 
 const FINAL_ACTION_TYPE = 'FINAL_ACTION_TYPE';
@@ -83,6 +85,12 @@ export class SimpleCriteriaSearchComponent implements OnInit {
   otherCriteriaOptions$: Observable<ItemNode<SchemaElement>[]>;
   getOtherCriteriaDisplayValue = (element: SchemaElement) =>
     `${element.Origin === 'EXTERNAL' ? 'EXT-' : ''}${element.ShortName} - ${element.FieldName}`;
+
+  searchTypes: SearchType[] = [
+    { label: 'Recherche approchante', value: 'approx' },
+    { label: 'Recherche exacte', value: 'strict' },
+  ];
+  titleSelectedType?: SearchType;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -136,6 +144,20 @@ export class SimpleCriteriaSearchComponent implements OnInit {
       });
     });
 
+    // Sync title type with criteria
+    archiveExchangeDataService.searchCriteria$
+      .pipe(
+        filter((searchCriteria) => !!searchCriteria),
+        map((searchCriteria) => Array.from(searchCriteria.keys())),
+        map((criteriaKeys) => criteriaKeys.filter((criteriaKey) => ['TITLE', 'Title.Strict'].includes(criteriaKey))),
+      )
+      .subscribe((titleKeys) => {
+        const type = titleKeys?.length ? (titleKeys.includes('Title.Strict') ? 'strict' : 'approx') : null;
+        this.searchTypes.forEach((item) => (item.disabled = type && item.value !== type));
+
+        if (type) this.titleSelectedType = this.searchTypes.find((item) => item.value === type);
+      });
+
     Object.entries(this.simpleCriteriaForm.controls)
       .filter(([key, _value]) => !['otherCriteriaList'].includes(key))
       .forEach(([key, control]) => {
@@ -188,6 +210,11 @@ export class SimpleCriteriaSearchComponent implements OnInit {
             valueTranslated: this.isValueTranslated(searchCriteriaAddAction.keyElt),
           };
           this.archiveExchangeDataService.addSimpleSearchCriteriaSubject(searchCriteria);
+        } else if (key.toLowerCase() === 'title') {
+          const searchWithTypeSelectorValue = value as SearchWithTypeSelectorValue;
+          const type = searchWithTypeSelectorValue.type.value;
+          const key = type === 'strict' ? 'title.strict' : 'title';
+          this.addCriteriaFromObject({ [key]: searchWithTypeSelectorValue.value });
         } else if (typeof value === 'object' && Object.entries(value).length) {
           this.addCriteriaFromObject(value);
         } else {

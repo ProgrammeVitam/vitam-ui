@@ -53,6 +53,7 @@ describe('SimpleCriteriaSearchComponent', () => {
   const archiveExchangeDataServiceMock = {
     addSimpleSearchCriteriaSubject: () => of(),
     receiveRemoveFromChildSearchCriteriaSubject: () => of(),
+    searchCriteria$: of(),
   };
 
   const archiveServiceStub = {
@@ -143,13 +144,15 @@ describe('SimpleCriteriaSearchComponent', () => {
   });
 
   describe('DOM', () => {
-    it('should have 6 vitamui editables inputs ', () => {
+    it('should have 6 vitamui editables inputs and 1 formFieldValueWrapper', () => {
       // When
       const nativeElement = fixture.nativeElement;
-      const elementRow = nativeElement.querySelectorAll('vitamui-common-editable-input');
+      const editableInputs = nativeElement.querySelectorAll('vitamui-common-editable-input');
+      const formFieldValueWrapper = nativeElement.querySelectorAll('vitamui-form-field-value-wrapper');
 
       // Then
-      expect(elementRow.length).toBe(6);
+      expect(editableInputs.length).toBe(5);
+      expect(formFieldValueWrapper.length).toBe(1);
     });
   });
 });

@@ -169,6 +169,7 @@ export class ArchiveSearchHelperService {
           };
           searchCriterias.set(keyElt, criteriaToAdd);
         }
+        this.archiveExchangeDataService.emitSearchCriteriaChange(searchCriterias);
         if (emit === true && category === SearchCriteriaTypeEnum.APPRAISAL_RULE) {
           this.archiveExchangeDataService.sendAppraisalFromMainSearchCriteriaAction({ keyElt, valueElt, action: ActionOnCriteria.ADD });
         }
@@ -303,6 +304,7 @@ export class ArchiveSearchHelperService {
             val.values = values;
             searchCriterias.set(keyElt, val);
           }
+          this.archiveExchangeDataService.emitSearchCriteriaChange(searchCriterias);
           nbQueryCriteria--;
           if ((emit === true && key === 'NODE') || key === ORPHANS_NODE_ID) {
             this.archiveExchangeDataService.emitNodeTarget(valueElt.value);

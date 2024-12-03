@@ -53,8 +53,13 @@ import { MatLegacySelectModule as MatSelectModule } from '@angular/material/lega
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatLegacyTabsModule as MatTabsModule } from '@angular/material/legacy-tabs';
 import { MatTreeModule } from '@angular/material/tree';
-import { TableFilterModule, VitamUICommonModule } from 'vitamui-library';
-import { VitamUILibraryModule } from 'vitamui-library';
+import {
+  FormFieldValueWrapperComponent,
+  SearchWithTypeSelectorComponent,
+  TableFilterModule,
+  VitamUICommonModule,
+  VitamUILibraryModule,
+} from 'vitamui-library';
 import { ArchivePreviewComponent } from './archive-preview/archive-preview.component';
 import { ArchiveUnitDescriptionTabComponent } from './archive-preview/archive-unit-description-tab/archive-unit-description-tab.component';
 import { ArchiveUnitInformationTabComponent } from './archive-preview/archive-unit-information-tab/archive-unit-information-tab.component';
@@ -127,6 +132,8 @@ import { SharedModule } from './shared/shared.module';
     MatTabsModule,
     MatRadioModule,
     CommonModule,
+    SearchWithTypeSelectorComponent,
+    FormFieldValueWrapperComponent,
   ],
   declarations: [
     ArchiveComponent,

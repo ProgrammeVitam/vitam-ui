@@ -5129,6 +5129,7 @@
         "TITLE_OR_DESCRIPTION": "Intitulé ou Description",
         "NODE": "Position",
         "TITLE": "Intitulé",
+        "Title.Strict": "Intitulé exact",
         "START_DATE": "Date de début ≥",
         "END_DATE": "Date de fin ≤",
         "START_DATE_SEARCH": "Date de début",
