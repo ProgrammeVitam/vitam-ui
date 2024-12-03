@@ -36,7 +36,7 @@
  */
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
-import { AccessContract, AccessContractService, Unit, VersionWithQualifierDto } from 'vitamui-library';
+import { AccessContract, AccessContractService, ObjectQualifierType, Unit, VersionWithQualifierDto } from 'vitamui-library';
 import { ArchiveService } from '../../archive.service';
 import { ArchiveSharedDataService } from '../../../core/archive-shared-data.service';
 
@@ -57,7 +57,7 @@ export class ArchiveUnitInformationTabComponent implements OnInit, OnChanges, On
   downloadableVersionWithQualifier: VersionWithQualifierDto = null;
 
   private accessContract: AccessContract;
-  private subscription: Subscription;
+  private subscriptions = new Subscription();
 
   constructor(
     private archiveService: ArchiveService,
@@ -69,13 +69,15 @@ export class ArchiveUnitInformationTabComponent implements OnInit, OnChanges, On
     this.getAccessContract();
     this.checkDownloadPermissions();
     this.uaPath$ = this.archiveService.buildArchiveUnitPath(this.archiveUnit);
-    this.archiveSharedDataService.unitUpdatedWithComputedObjectGroup
-      .asObservable()
-      .subscribe((_value) => this.findDownloadableObjectWithAccessContract());
+    this.subscriptions.add(
+      this.archiveSharedDataService.unitUpdatedWithComputedObjectGroup
+        .asObservable()
+        .subscribe((_value) => this.findDownloadableObjectWithAccessContract()),
+    );
   }
 
   ngOnDestroy(): void {
-    this.subscription.unsubscribe();
+    this.subscriptions.unsubscribe();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -87,13 +89,15 @@ export class ArchiveUnitInformationTabComponent implements OnInit, OnChanges, On
   }
 
   private getAccessContract() {
-    this.subscription = this.accessContractService.currentAccessContract$.subscribe({
-      next: (accessContract: AccessContract) => {
-        this.accessContract = accessContract;
-        this.findDownloadableObjectWithAccessContract();
-      },
-      error: (e) => console.error(e),
-    });
+    this.subscriptions.add(
+      this.accessContractService.currentAccessContract$.subscribe({
+        next: (accessContract: AccessContract) => {
+          this.accessContract = accessContract;
+          this.findDownloadableObjectWithAccessContract();
+        },
+        error: (e) => console.error(e),
+      }),
+    );
   }
 
   private findDownloadableObjectWithAccessContract(): void {
@@ -112,6 +116,9 @@ export class ArchiveUnitInformationTabComponent implements OnInit, OnChanges, On
       firstQualifierDownloadable = this.archiveUnit.objectGroup.versionsWithQualifiers.find((versionWithQualifier) =>
         this.accessContract.dataObjectVersion.includes(versionWithQualifier.qualifier),
       );
+    }
+    if (firstQualifierDownloadable.qualifier === ObjectQualifierType.PHYSICALMASTER) {
+      return; // PhysicalMasters are not downloadable
     }
     const downloadableQualifiers = this.archiveUnit.objectGroup.versionsWithQualifiers.filter(
       (versionWithQualifier) => versionWithQualifier.qualifier === firstQualifierDownloadable.qualifier,
