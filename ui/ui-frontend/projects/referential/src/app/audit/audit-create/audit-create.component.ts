@@ -240,6 +240,10 @@ export class AuditCreateComponent implements OnInit, OnDestroy {
     return this.startDateControl.value && this.endDateControl.value && this.form.get('endDate').valid && this.isDateIntevalInvalid();
   }
 
+  public isStartDateRequired() {
+    return this.form.controls.startDate.hasValidator(Validators.required);
+  }
+
   private extractAccesContractIdAndGetAccessionRegisterSummaries(params: Map<string, string>) {
     const accessContractId = params.get(ExternalParameters.PARAM_ACCESS_CONTRACT);
     if (!accessContractId || accessContractId.length < 1) {
