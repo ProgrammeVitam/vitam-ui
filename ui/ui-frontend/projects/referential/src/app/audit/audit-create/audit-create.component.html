@@ -138,7 +138,7 @@
                 | translate
             }}
           </div>
-          <div class="date-area">
+          <div class="hgap-2">
             <div class="start-date">
               <p>{{ 'AUDIT.CREATE_DIALOG.PERIOD_FROM' | translate }}</p>
               <vitamui-common-multiple-options-datepicker
@@ -149,6 +149,7 @@
                     : ('AUDIT.CREATE_DIALOG.INGEST_OPERATION_DATE_PLACEHOLDER' | translate)
                 "
                 [hint]="'AUDIT.CREATE_DIALOG.DATE_GMT_TIME_CAPTION'"
+                [isRequired]="isStartDateRequired()"
                 required
               ></vitamui-common-multiple-options-datepicker>
             </div>
