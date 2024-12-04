@@ -37,6 +37,6 @@
 package fr.gouv.vitamui.referential.common.dto;
 
 import fr.gouv.vitam.common.model.administration.IngestContractModel;
-import fr.gouv.vitamui.commons.vitam.api.dto.AbstractVitamUIResponseDto;
+import fr.gouv.vitamui.commons.vitam.api.dto.AbstractSingleVitamUIResponseDto;
 
-public class IngestContractResponseDto extends AbstractVitamUIResponseDto<IngestContractModel> {}
+public class IngestContractResponseDto extends AbstractSingleVitamUIResponseDto<IngestContractModel> {}

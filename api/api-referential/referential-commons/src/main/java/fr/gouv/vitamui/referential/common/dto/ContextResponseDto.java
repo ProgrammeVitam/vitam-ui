@@ -37,6 +37,6 @@
 package fr.gouv.vitamui.referential.common.dto;
 
 import fr.gouv.vitam.common.model.administration.ContextModel;
-import fr.gouv.vitamui.commons.vitam.api.dto.AbstractVitamUIResponseDto;
+import fr.gouv.vitamui.commons.vitam.api.dto.AbstractSingleVitamUIResponseDto;
 
-public class ContextResponseDto extends AbstractVitamUIResponseDto<ContextModel> {}
+public class ContextResponseDto extends AbstractSingleVitamUIResponseDto<ContextModel> {}

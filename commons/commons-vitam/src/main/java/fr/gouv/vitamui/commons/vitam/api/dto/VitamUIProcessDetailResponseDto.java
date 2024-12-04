@@ -27,23 +27,12 @@
 
 package fr.gouv.vitamui.commons.vitam.api.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import fr.gouv.vitam.common.model.processing.ProcessDetail;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Getter
 @Setter
 @ToString
-public class VitamUIProcessDetailResponseDto extends AbstractVitamUIResponseDto<ProcessDetail> {
-
-    @JsonProperty("$context")
-    private VitamSearchRequestDto context;
-
-    @JsonProperty("$facetResults")
-    private List<FacetResultsDto> facetResults = new ArrayList<>();
-}
+public class VitamUIProcessDetailResponseDto extends AbstractVitamUIResponseDto<ProcessDetail> {}

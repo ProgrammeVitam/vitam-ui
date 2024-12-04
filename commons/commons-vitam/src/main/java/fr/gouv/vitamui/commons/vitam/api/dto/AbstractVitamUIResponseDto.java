@@ -37,6 +37,7 @@
 package fr.gouv.vitamui.commons.vitam.api.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import fr.gouv.vitam.common.model.QueryDTO;
 import fr.gouv.vitamui.commons.vitam.api.model.HitsDto;
 import lombok.Getter;
 import lombok.Setter;
@@ -55,4 +56,13 @@ public abstract class AbstractVitamUIResponseDto<T> {
 
     @JsonProperty("$results")
     private List<T> results = new ArrayList<>();
+
+    @JsonProperty("$query")
+    private QueryDTO query;
+
+    @JsonProperty("$facetResults")
+    private List<FacetResultsDto> facetResults = new ArrayList<>();
+
+    @JsonProperty("$context")
+    private VitamSearchRequestDto context;
 }

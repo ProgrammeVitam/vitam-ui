@@ -36,7 +36,6 @@
  */
 package fr.gouv.vitamui.referential.common.service;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitam.access.external.client.AdminExternalClient;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.database.builder.request.single.Select;
@@ -63,17 +62,5 @@ public class AccessionRegisterService {
         LOGGER.debug("findAccessionRegisterSymbolic");
         LOGGER.info("Accession Register EvIdAppSession : {} ", context.getApplicationSessionId());
         return this.adminExternalClient.findAccessionRegister(context, new Select().getFinalSelect());
-    }
-
-    public RequestResponse<AccessionRegisterSummaryModel> findAccessionRegisterSummaryByQuery(
-        VitamContext context,
-        JsonNode query
-    ) throws VitamClientException {
-        LOGGER.debug("findAccessionRegisterSummary by query projections");
-        LOGGER.info(
-            "Accession Register Summary by projection query on wanted fields stats : {} ",
-            context.getApplicationSessionId()
-        );
-        return this.adminExternalClient.findAccessionRegister(context, query);
     }
 }

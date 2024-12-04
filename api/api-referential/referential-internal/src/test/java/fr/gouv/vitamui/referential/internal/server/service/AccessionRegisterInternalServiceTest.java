@@ -124,7 +124,7 @@ class AccessionRegisterInternalServiceTest {
 
         doReturn(buildResponseFrom("data/accession-register-details-mocked.json", AccessionRegisterDetailModel.class))
             .when(adminExternalClient)
-            .findAccessionRegisterDetails(vitamContext, query);
+            .findAccessionRegisterDetails(any(VitamContext.class), any(JsonNode.class));
         doReturn(buildResponseFrom("data/agencies-mocked.json", AgenciesModel.class))
             .when(agencyService)
             .findAgencies(any(VitamContext.class), any(JsonNode.class));
@@ -133,7 +133,10 @@ class AccessionRegisterInternalServiceTest {
         accessionRegisterInternalService.getAllPaginated(Optional.empty(), pageNumber, size, null, null, vitamContext);
 
         //Then
-        verify(adminExternalClient, times(1)).findAccessionRegisterDetails(vitamContext, query);
+        verify(adminExternalClient, times(1)).findAccessionRegisterDetails(
+            any(VitamContext.class),
+            any(JsonNode.class)
+        );
         verify(agencyService, times(1)).findAgencies(any(VitamContext.class), any(JsonNode.class));
     }
 

@@ -37,6 +37,6 @@
 package fr.gouv.vitamui.archives.search.common.dto;
 
 import fr.gouv.vitamui.commons.api.domain.AgencyModelDto;
-import fr.gouv.vitamui.commons.vitam.api.dto.AbstractVitamUIResponseDto;
+import fr.gouv.vitamui.commons.vitam.api.dto.AbstractSingleVitamUIResponseDto;
 
-public class AgencyResponseDto extends AbstractVitamUIResponseDto<AgencyModelDto> {}
+public class AgencyResponseDto extends AbstractSingleVitamUIResponseDto<AgencyModelDto> {}

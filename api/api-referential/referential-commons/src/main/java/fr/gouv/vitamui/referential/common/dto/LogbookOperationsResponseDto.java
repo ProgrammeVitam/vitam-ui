@@ -36,6 +36,6 @@
  */
 package fr.gouv.vitamui.referential.common.dto;
 
-import fr.gouv.vitamui.commons.vitam.api.dto.AbstractVitamUIResponseDto;
+import fr.gouv.vitamui.commons.vitam.api.dto.AbstractSingleVitamUIResponseDto;
 
-public class LogbookOperationsResponseDto extends AbstractVitamUIResponseDto<LogbookOperationModel> {}
+public class LogbookOperationsResponseDto extends AbstractSingleVitamUIResponseDto<LogbookOperationModel> {}

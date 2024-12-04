@@ -37,6 +37,6 @@
 package fr.gouv.vitamui.referential.common.dto;
 
 import fr.gouv.vitam.common.model.administration.SecurityProfileModel;
-import fr.gouv.vitamui.commons.vitam.api.dto.AbstractVitamUIResponseDto;
+import fr.gouv.vitamui.commons.vitam.api.dto.AbstractSingleVitamUIResponseDto;
 
-public class SecurityProfileResponseDto extends AbstractVitamUIResponseDto<SecurityProfileModel> {}
+public class SecurityProfileResponseDto extends AbstractSingleVitamUIResponseDto<SecurityProfileModel> {}
