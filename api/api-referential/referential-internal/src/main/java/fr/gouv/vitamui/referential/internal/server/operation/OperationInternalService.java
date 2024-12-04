@@ -107,9 +107,16 @@ public class OperationInternalService {
     private final String AUDIT_FILE_EXISTING = "AUDIT_FILE_EXISTING";
     private final String AUDIT_PERIMETER_INGEST_OPERATION_PERIOD = "AUDIT_PERIMETER_INGEST_OPERATION_PERIOD";
     private final List<String> AUDITS_WITHOUT_PROJECTION = List.of(AUDIT_FILE_INTEGRITY, AUDIT_FILE_EXISTING);
+    public static final String DSL_QUERY = "$query";
     public static final String DSL_QUERY_PROJECTION = "$projection";
     public static final String DSL_QUERY_FILTER = "$filter";
     public static final String DSL_QUERY_FACETS = "$facets";
+    public static final String DSL_QUERY_FIELDS = "$fields";
+    public static final String DSL_QUERY_EVID = "evId";
+    public static final String APPROXIMATE_CREATION_DATE = "#approximate_creation_date";
+    public static final String EV_DATE_TIME = "evDateTime";
+    public static final String EV_TYPE_PROC = "evTypeProc";
+    public static final String INGEST = "INGEST";
     private final ObjectMapper objectMapper;
     private final String START_TIME = "T00:00:00.000";
     private final String END_TIME = "T23:59:59.999";
@@ -227,28 +234,33 @@ public class OperationInternalService {
 
                 if (StringUtils.isNotEmpty(auditCreateOptions.getStartDate())) {
                     String fullDate = auditCreateOptions.getStartDate().concat(START_TIME);
-                    and.add(QueryHelper.gte("#approximate_creation_date", fullDate));
+                    and.add(QueryHelper.gte(APPROXIMATE_CREATION_DATE, fullDate));
                 }
                 if (StringUtils.isNotEmpty(auditCreateOptions.getEndDate())) {
                     String fullDate = auditCreateOptions.getEndDate().concat(END_TIME);
-                    and.add(QueryHelper.lte("#approximate_creation_date", fullDate));
+                    and.add(QueryHelper.lte(APPROXIMATE_CREATION_DATE, fullDate));
                 }
 
                 multiQuery.setQuery(and);
             } else {
                 if (StringUtils.isNotEmpty(auditCreateOptions.getStartDate())) {
                     String fullDate = auditCreateOptions.getStartDate().concat(START_TIME);
-                    and.add(QueryHelper.gte("evDateTime", fullDate));
+                    and.add(QueryHelper.gte(EV_DATE_TIME, fullDate));
                 }
                 if (StringUtils.isNotEmpty(auditCreateOptions.getEndDate())) {
                     String fullDate = auditCreateOptions.getEndDate().concat(END_TIME);
-                    and.add(QueryHelper.lte("evDateTime", fullDate));
+                    and.add(QueryHelper.lte(EV_DATE_TIME, fullDate));
                 }
-                and.add(QueryHelper.eq("evTypeProc", "INGEST"));
+                and.add(QueryHelper.eq(EV_TYPE_PROC, INGEST));
 
                 ObjectNode queryNode = JsonHandler.createObjectNode();
-                queryNode.put("$query", and.getCurrentQuery());
-                queryNode.put(DSL_QUERY_PROJECTION, objectMapper.readTree("{}"));
+                ObjectNode projectionNode = JsonHandler.createObjectNode();
+                ObjectNode fieldsNode = JsonHandler.createObjectNode();
+                queryNode.put(DSL_QUERY, and.getCurrentQuery());
+
+                fieldsNode.put(DSL_QUERY_EVID, 1);
+                projectionNode.put(DSL_QUERY_FIELDS, fieldsNode);
+                queryNode.put(DSL_QUERY_PROJECTION, projectionNode);
 
                 LogbookOperationsResponseDto response = this.findAll(context, queryNode);
                 String[] ingestIds = response
