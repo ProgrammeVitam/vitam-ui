@@ -11,6 +11,8 @@
 }
 
 .vitamui-sidepanel-header {
+  display: flex;
+  flex-direction: column;
   background-color: white;
   padding: 2px 20px 10px 10px;
   height: 100%;
@@ -41,7 +43,10 @@
     }
 
     > div:first-of-type {
-      width: 100%;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+      min-width: 0;
       padding-left: 2rem;
       padding-right: 1rem;
 
@@ -64,6 +69,7 @@
       width: auto;
     }
   }
+
   .title-actions {
     display: flex;
     align-items: center;
