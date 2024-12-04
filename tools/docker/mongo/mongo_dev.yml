@@ -1,5 +1,5 @@
 version: "3.5"
-
+name: vitamui-mongo-dev
 services:
   mongo-dev:
     image: mongo:8.0.3
