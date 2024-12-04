@@ -203,3 +203,6 @@ export * from './app/modules/object-editor/services/edit-object.service';
 export * from './app/modules/object-editor/services/template.service';
 export * from './app/modules/object-editor/services/path.service';
 export * from './app/modules/dates.constants';
+export * from './app/modules/url/query-params.service';
+export * from './app/modules/date/date.service';
+export * from './app/modules/date/date';

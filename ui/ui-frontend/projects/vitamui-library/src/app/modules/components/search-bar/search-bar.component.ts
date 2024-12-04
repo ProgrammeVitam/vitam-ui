@@ -34,14 +34,14 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'vitamui-common-search-bar',
   templateUrl: './search-bar.component.html',
   styleUrls: ['./search-bar.component.scss'],
 })
-export class SearchBarComponent {
+export class SearchBarComponent implements OnChanges {
   @Input() placeholder: string;
 
   @Input() name: string;
@@ -58,7 +58,13 @@ export class SearchBarComponent {
 
   @ViewChild('searchInput', { static: true }) searchInput: ElementRef;
 
-  searchValue: string;
+  @Input() searchValue: string;
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.searchValue) {
+      this.searchChanged.emit(this.searchValue);
+    }
+  }
 
   onSearch() {
     this.search.emit(this.searchValue);
@@ -67,7 +73,6 @@ export class SearchBarComponent {
   reset() {
     this.searchValue = null;
     this.clear.emit();
-    this.search.emit(this.searchValue);
   }
 
   public onFocus() {

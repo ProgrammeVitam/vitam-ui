@@ -34,21 +34,30 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Injectable } from '@angular/core';
+import { FrenchDate } from './date';
 
-@Component({
-  selector: 'vitamui-common-banner',
-  templateUrl: './vitamui-common-banner.component.html',
-  styleUrls: ['./vitamui-common-banner.component.scss'],
+@Injectable({
+  providedIn: 'root',
 })
-export class VitamuiCommonBannerComponent {
-  @Input() searchbarPlaceholder: string;
-  @Input() disableSearchBar = false;
-  @Input() searchValue: string = null;
+export class DateService {
+  public toFrenchDate(value: string): FrenchDate {
+    if (!value) return null;
 
-  @Output() action = new EventEmitter<string>();
-  @Output() search = new EventEmitter<string>();
-  @Output() searchChanged = new EventEmitter<string>();
+    const date = new Date(value);
 
-  constructor() {}
+    return `${this.getDay(date.getDate())}/${this.getMonth(date.getMonth() + 1)}/${date.getFullYear()}` as FrenchDate;
+  }
+
+  public toIsoDate(frenchDate: FrenchDate) {
+    return frenchDate ? new Date(frenchDate).toISOString() : null;
+  }
+
+  private getMonth(num: number): string {
+    return `${num > 9 ? '' : '0'}${num.toString()}`;
+  }
+
+  private getDay(day: number): string {
+    return `${day > 9 ? '' : '0'}${day.toString()}`;
+  }
 }

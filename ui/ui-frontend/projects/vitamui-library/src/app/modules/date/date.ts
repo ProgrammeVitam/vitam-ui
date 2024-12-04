@@ -34,21 +34,41 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+export type Day =
+  | '01'
+  | '02'
+  | '03'
+  | '04'
+  | '05'
+  | '06'
+  | '07'
+  | '08'
+  | '09'
+  | '10'
+  | '11'
+  | '12'
+  | '13'
+  | '14'
+  | '15'
+  | '16'
+  | '17'
+  | '18'
+  | '19'
+  | '20'
+  | '21'
+  | '22'
+  | '23'
+  | '24'
+  | '25'
+  | '26'
+  | '27'
+  | '28'
+  | '29'
+  | '30'
+  | '31';
 
-@Component({
-  selector: 'vitamui-common-banner',
-  templateUrl: './vitamui-common-banner.component.html',
-  styleUrls: ['./vitamui-common-banner.component.scss'],
-})
-export class VitamuiCommonBannerComponent {
-  @Input() searchbarPlaceholder: string;
-  @Input() disableSearchBar = false;
-  @Input() searchValue: string = null;
+export type Month = '01' | '02' | '03' | '04' | '05' | '06' | '07' | '08' | '09' | '10' | '11' | '12';
 
-  @Output() action = new EventEmitter<string>();
-  @Output() search = new EventEmitter<string>();
-  @Output() searchChanged = new EventEmitter<string>();
+export type Year = `${number}`;
 
-  constructor() {}
-}
+export type FrenchDate = `${Day}/${Month}/${Year}`;

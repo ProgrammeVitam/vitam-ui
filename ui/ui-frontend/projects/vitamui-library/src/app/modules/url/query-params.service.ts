@@ -34,21 +34,53 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Injectable } from '@angular/core';
+import { ActivatedRoute, Params, Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import { fromPromise } from 'rxjs/internal/observable/innerFrom';
 
-@Component({
-  selector: 'vitamui-common-banner',
-  templateUrl: './vitamui-common-banner.component.html',
-  styleUrls: ['./vitamui-common-banner.component.scss'],
+@Injectable({
+  providedIn: 'root',
 })
-export class VitamuiCommonBannerComponent {
-  @Input() searchbarPlaceholder: string;
-  @Input() disableSearchBar = false;
-  @Input() searchValue: string = null;
+export class QueryParamsService {
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+  ) {}
 
-  @Output() action = new EventEmitter<string>();
-  @Output() search = new EventEmitter<string>();
-  @Output() searchChanged = new EventEmitter<string>();
+  setQueryParams(queryParams: Params): Observable<boolean> {
+    return fromPromise(
+      this.router.navigate([], {
+        queryParams,
+        queryParamsHandling: 'merge', // Merge with existing query parameters
+        replaceUrl: true, // Prevent navigation
+      }),
+    );
+  }
 
-  constructor() {}
+  getQueryParams(): Observable<Params> {
+    return this.route.queryParams;
+  }
+
+  transform(
+    params: Params,
+    mapping: {
+      source: string;
+      target: string;
+    }[] = [],
+  ): Params {
+    return mapping.reduce(
+      (acc, cur) => {
+        const hasSourceParam = Object.keys(acc).find((key) => key === cur.source);
+
+        if (hasSourceParam) {
+          acc[cur.target] = acc[cur.source];
+          delete acc[cur.source];
+        }
+
+        return acc;
+      },
+      { ...params },
+    );
+  }
 }

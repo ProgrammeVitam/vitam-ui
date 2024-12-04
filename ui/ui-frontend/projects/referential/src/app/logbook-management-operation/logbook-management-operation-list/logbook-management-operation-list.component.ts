@@ -160,8 +160,6 @@ export class LogbookManagementOperationListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.searchOperationsList({});
-
     if (this.logbookManagementOperationService.operationUpdated) {
       this.updatedoperationSub = this.logbookManagementOperationService.operationUpdated.subscribe((operationUpdated: OperationDetails) => {
         const operationIndex = this.results.findIndex((operation) => operationUpdated.operationId === operation.operationId);
