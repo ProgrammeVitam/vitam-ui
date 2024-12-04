@@ -35,19 +35,12 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component } from '@angular/core';
-import { Router, Routes } from '@angular/router';
+import { ChipComponent } from 'vitamui-library';
 
 @Component({
-  selector: 'design-system-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'],
+  templateUrl: './design-system-chips.component.html',
+  styleUrls: ['./design-system-chips.component.scss'],
+  standalone: true,
+  imports: [ChipComponent],
 })
-export class AppComponent {
-  title = 'Design system App';
-
-  routes: Routes;
-
-  constructor(router: Router) {
-    this.routes = router.config;
-  }
-}
+export class DesignSystemChipsComponent {}

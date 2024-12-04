@@ -161,10 +161,13 @@
 
 @mixin input-elevation-dark {
   @include shadow-accessible;
-  &:focus-within,
+  &:not(:has(.focus-within-zone)):focus-within,
+  &:has(.focus-within-zone:focus-within),
   .focused &,
+  &.focused,
   .vitamui-focused &,
-  .ng-invalid:not(.ng-pristine):not(form) & {
+  .ng-invalid.ng-touched:not(form) &,
+  &.ng-invalid.ng-touched:not(form) {
     @include shadow-0;
   }
 }

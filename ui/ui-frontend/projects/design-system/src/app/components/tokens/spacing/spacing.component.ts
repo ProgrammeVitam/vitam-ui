@@ -35,19 +35,28 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component } from '@angular/core';
-import { Router, Routes } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
-  selector: 'design-system-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'],
+  templateUrl: './spacing.component.html',
+  styleUrls: ['./spacing.component.scss'],
+  imports: [TranslateModule],
+  standalone: true,
 })
-export class AppComponent {
-  title = 'Design system App';
+export class SpacingComponent {
+  paddings = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+  margins = [0, 1, 2, 3, 4, 5, 6, 7, 8, 'auto'];
+  gaps = [0, 1, 2, 3, 4, 5, 6, 7, 8];
 
-  routes: Routes;
+  getPadding(element: HTMLElement) {
+    return getComputedStyle(element).padding;
+  }
 
-  constructor(router: Router) {
-    this.routes = router.config;
+  getMargin(element: HTMLElement) {
+    return getComputedStyle(element).margin;
+  }
+
+  getGap(element: HTMLElement) {
+    return getComputedStyle(element).gap;
   }
 }

@@ -35,19 +35,55 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component } from '@angular/core';
-import { Router, Routes } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { MatLegacyOptionModule as MatOptionModule } from '@angular/material/legacy-core';
+import { MatLegacySelectModule as MatSelectModule } from '@angular/material/legacy-select';
+import { VitamUICommonModule } from 'vitamui-library';
 
 @Component({
-  selector: 'design-system-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'],
+  templateUrl: './icons.component.html',
+  styleUrls: ['./icons.component.scss'],
+  standalone: true,
+  imports: [CommonModule, VitamUICommonModule, FormsModule, MatOptionModule, MatSelectModule],
 })
-export class AppComponent {
-  title = 'Design system App';
+export class IconsComponent {
+  icons: (string | string[])[];
+  coloredIcons: { [key: string]: string[] };
+  colors = ['primary', 'secondary', 'danger', 'success', 'warning', 'light'];
+  selectedColor: string = '';
 
-  routes: Routes;
+  constructor() {
+    const cssRules = Array.from(document.styleSheets)
+      .reduce((acc, v) => {
+        try {
+          return acc.concat(Array.from(v.cssRules));
+        } catch (e) {
+          return acc;
+        }
+      }, [])
+      .filter((css) => css.cssText?.startsWith('.vitamui-icon-'))
+      .map((css) => css.cssText.split(':')[0].split('vitamui-icon-')[1])
+      .sort((a, b) => a.localeCompare(b));
 
-  constructor(router: Router) {
-    this.routes = router.config;
+    const obj = cssRules.reduce((acc, cssRule) => {
+      const [icon, path] = cssRule.split(' .');
+      acc[icon] = acc[icon] || [];
+      if (path) {
+        acc[icon] = [...new Set([...acc[icon], path])];
+      }
+      return acc;
+    }, {});
+
+    this.icons = Object.keys(obj);
+    this.coloredIcons = Object.entries(obj)
+      .filter(([_, value]) => value)
+      .reduce(
+        (acc, [key, value]) => {
+          acc[key] = value as string[];
+          return acc;
+        },
+        {} as { [key: string]: string[] },
+      );
   }
 }

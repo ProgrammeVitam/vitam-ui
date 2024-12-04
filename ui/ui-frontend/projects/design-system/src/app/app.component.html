@@ -1,59 +1,40 @@
 <mat-sidenav-container autosize>
   <mat-sidenav mode="side" opened fixedInViewport>
     <mat-list>
-      <mat-list-item class="d-flex justify-content-center">
+      <mat-list-item class="d-flex justify-content-center mb-3">
         <vitamui-common-select-language></vitamui-common-select-language>
       </mat-list-item>
-      <mat-expansion-panel class="mt-3" routerLink="/arrays" routerLinkActive="active">
-        <mat-expansion-panel-header>Arrays</mat-expansion-panel-header>
-      </mat-expansion-panel>
-      <mat-expansion-panel routerLink="/buttons" routerLinkActive="active">
-        <mat-expansion-panel-header>Buttons</mat-expansion-panel-header>
-      </mat-expansion-panel>
-      <mat-expansion-panel routerLink="/chips" routerLinkActive="active">
-        <mat-expansion-panel-header>Chips</mat-expansion-panel-header>
-      </mat-expansion-panel>
-      <mat-expansion-panel routerLink="/inputs" routerLinkActive="active">
-        <mat-expansion-panel-header>Inputs</mat-expansion-panel-header>
-      </mat-expansion-panel>
-      <mat-expansion-panel routerLink="/breadcrumbs" routerLinkActive="active">
-        <mat-expansion-panel-header>Breadcrumb</mat-expansion-panel-header>
-      </mat-expansion-panel>
-      <mat-expansion-panel routerLink="/progress-bar" routerLinkActive="active">
-        <mat-expansion-panel-header>Progress Bar</mat-expansion-panel-header>
-      </mat-expansion-panel>
-      <mat-expansion-panel routerLink="/tooltip" routerLinkActive="active">
-        <mat-expansion-panel-header>Tooltip</mat-expansion-panel-header>
-      </mat-expansion-panel>
-      <mat-expansion-panel routerLink="/miscellaneous" routerLinkActive="active" [expanded]="isActive('/miscellaneous')">
-        <mat-expansion-panel-header>Miscellaneous</mat-expansion-panel-header>
-      </mat-expansion-panel>
-      <mat-expansion-panel routerLink="/typography" routerLinkActive="active">
-        <mat-expansion-panel-header>Typography</mat-expansion-panel-header>
-      </mat-expansion-panel>
-      <mat-expansion-panel routerLink="/colors" routerLinkActive="active">
-        <mat-expansion-panel-header>Colors</mat-expansion-panel-header>
-      </mat-expansion-panel>
-      <mat-expansion-panel routerLink="/icons" routerLinkActive="active">
-        <mat-expansion-panel-header>Icons</mat-expansion-panel-header>
-      </mat-expansion-panel>
-      <mat-expansion-panel routerLink="/elevations" routerLinkActive="active">
-        <mat-expansion-panel-header>Elevations</mat-expansion-panel-header>
-      </mat-expansion-panel>
-      <mat-expansion-panel routerLink="/spacing" routerLinkActive="active">
-        <mat-expansion-panel-header>Spacing</mat-expansion-panel-header>
-      </mat-expansion-panel>
-      <mat-expansion-panel routerLink="/translation" routerLinkActive="active">
-        <mat-expansion-panel-header>Translations</mat-expansion-panel-header>
-      </mat-expansion-panel>
-      <mat-expansion-panel
-        routerLink=""
-        routerLinkActive="active"
-        [routerLinkActiveOptions]="{ exact: true }"
-        [expanded]="isActive('/translation')"
-      >
-        <mat-expansion-panel-header><i class="material-icons">help</i></mat-expansion-panel-header>
-      </mat-expansion-panel>
+
+      <ng-template #accordion let-routes let-parents="parents">
+        <mat-accordion>
+          @for (route of routes; track route.path) {
+            @if (route.path) {
+              <mat-expansion-panel [hideToggle]="!route.children?.length">
+                <mat-expansion-panel-header
+                  routerLink="/{{ (parents ? parents.join('/') + '/' : '') + route.path }}"
+                  routerLinkActive="active"
+                  >{{ 'ROUTE.' + (parents ? parents.join('.') + '.' : '') + route.path + '.TITLE' | translate }}
+                </mat-expansion-panel-header>
+                @for (child of route.children; track child.path) {
+                  @if (child.children) {
+                    <ng-container
+                      *ngTemplateOutlet="accordion; context: { $implicit: [child], parents: (parents || []).concat([route.path]) }"
+                    ></ng-container>
+                  } @else if (child.path) {
+                    <a
+                      routerLink="/{{ (parents ? parents.join('/') + '/' : '') + route.path + '/' + child.path }}"
+                      routerLinkActive="active"
+                      >{{ 'ROUTE.' + (parents ? parents.join('.') + '.' : '') + route.path + '.' + child.path + '.TITLE' | translate }}</a
+                    >
+                  }
+                }
+              </mat-expansion-panel>
+            }
+          }
+        </mat-accordion>
+      </ng-template>
+
+      <ng-container *ngTemplateOutlet="accordion; context: { $implicit: routes }"></ng-container>
     </mat-list>
   </mat-sidenav>
   <mat-sidenav-content>

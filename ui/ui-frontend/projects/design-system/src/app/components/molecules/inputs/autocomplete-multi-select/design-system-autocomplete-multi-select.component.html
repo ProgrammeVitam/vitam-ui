@@ -1,0 +1,17 @@
+<h2>{{ 'INPUT.AUTOCOMPLETE_MULTI_SELECT' | translate }}</h2>
+<div>
+  <div class="d-flex justify-content-around">
+    <vitamui-common-autocomplete-multi-select
+      [formControl]="autoCompleteMultiSelect"
+      [multiSelectOptions]="multiSelectOptions"
+      [placeholder]="'COMMON.ADRESS.COUNTRY' | translate"
+      [searchBarPlaceHolder]="'INPUT.SEARCH_PLACEHOLDER' | translate"
+      class="w-100"
+      required
+    >
+      <vitamui-common-input-error *ngIf="autoCompleteMultiSelect.touched && autoCompleteMultiSelect.hasError('required')"
+        >{{ 'COMMON.REQUIRED' | translate }}
+      </vitamui-common-input-error>
+    </vitamui-common-autocomplete-multi-select>
+  </div>
+</div>

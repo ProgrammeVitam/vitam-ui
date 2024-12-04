@@ -60,18 +60,11 @@ import {
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { ArraysModule } from './components/arrays/arrays.module';
-import { BreadcrumbModule } from './components/breadcrumb/breadcrumb.module';
-import { ButtonsModule } from './components/buttons/buttons.module';
-import { IconsModule } from './components/icons/icons.module';
-import { InputsModule } from './components/inputs/inputs.module';
 import { MiscellaneousModule } from './components/miscellaneous/miscellaneous.module';
-import { TooltipModule } from './components/tooltip/tooltip.module';
 import { TranslationModule } from './components/translation/translation.module';
-import { DesignSystemModule } from './design-system/design-system.module';
+import { DesignSystemModule } from './components/design-system/design-system.module';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { MatExpansionModule } from '@angular/material/expansion';
-import { ChipsModule } from './components/chips/chips.module';
 
 registerLocaleData(localeFr, 'fr');
 
@@ -86,21 +79,14 @@ export function httpLoaderFactory(httpClient: HttpClient): MultiTranslateHttpLoa
   declarations: [AppComponent],
   imports: [
     AppRoutingModule,
-    ArraysModule,
-    BreadcrumbModule,
     BrowserAnimationsModule,
     BrowserModule,
-    ButtonsModule,
-    ChipsModule,
     DesignSystemModule,
-    IconsModule,
-    InputsModule,
     LoggerModule.forRoot(),
     MatExpansionModule,
     MatListModule,
     MatSidenavModule,
     MiscellaneousModule,
-    TooltipModule,
     TranslationModule,
     VitamUICommonModule,
     TranslateModule.forRoot({

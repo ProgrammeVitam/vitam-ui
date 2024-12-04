@@ -1,0 +1,24 @@
+<div class="vitamui-input" [class.disabled]="this.control.disabled">
+  <button type="button" class="px-2 type-selector-trigger" [matMenuTriggerFor]="menu" [disabled]="control.disabled">
+    <div class="search-icon">
+      <i class="vitamui-icon vitamui-icon-search"></i>
+      <i class="vitamui-icon vitamui-icon-search"></i>
+    </div>
+    <i class="vitamui-icon vitamui-icon-chevron-down"></i>
+  </button>
+  <div class="input-box focus-within-zone">
+    <label>
+      {{ placeholder }} ({{ (control.value?.type || types[0]).label | lowercase }})
+      <span *ngIf="isRequired" class="required-marker">*</span>
+    </label>
+    <input type="text" [ngModel]="control.value?.value" (ngModelChange)="inputValueChange($event)" [disabled]="control.disabled" />
+  </div>
+</div>
+<vitamui-form-errors [control]="control" [errorMessageMap]="errorMessageMap"></vitamui-form-errors>
+<mat-menu #menu="matMenu">
+  @for (type of types; track type.value; let first = $first) {
+    <button mat-menu-item (click)="selectType(type)" [class.selected]="(first && !control.value?.type) || type === control.value?.type">
+      {{ type.label }}
+    </button>
+  }
+</mat-menu>

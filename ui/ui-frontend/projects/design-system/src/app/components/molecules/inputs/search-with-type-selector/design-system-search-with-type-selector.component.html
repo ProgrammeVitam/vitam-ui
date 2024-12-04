@@ -1,0 +1,41 @@
+<h2>Search with type selector</h2>
+<p>This is a form component that mixes a "type" selection and a normal input.</p>
+<p>The purpose of this component is to be able to specify the type of search (fuzzy, exact, ...) in addition to the term to search.</p>
+
+<h3>Default</h3>
+<p>Default instance of the component. The first type in the list is used by default.</p>
+
+<vitamui-search-with-type-selector [formControl]="control" placeholder="Intitulé" [types]="searchTypes"></vitamui-search-with-type-selector>
+
+<h3>Active</h3>
+<p>"Active" version of the component: when the component is focused, borders change to primary color.</p>
+<p>Also, we put an initial value both for the type selector and the input value.</p>
+
+<vitamui-search-with-type-selector
+  [formControl]="activeControl"
+  placeholder="Intitulé"
+  [types]="searchTypes"
+  class="focused"
+></vitamui-search-with-type-selector>
+
+<h3>Disabled</h3>
+<p>Disabled version of the component: no interaction is possible and the background color is grey.</p>
+
+<vitamui-search-with-type-selector
+  [formControl]="disabledControl"
+  placeholder="Intitulé"
+  [types]="searchTypes"
+></vitamui-search-with-type-selector>
+
+<h3>Error</h3>
+<p><i>Validators.required</i> validator is automatically applied to the "input" part of the component.</p>
+<p>
+  If you need to use other validators, make sure to write a custom validator that applies the validation on the "value" (or the "type")
+  returned by this component.
+</p>
+
+<vitamui-search-with-type-selector
+  [formControl]="errorControl"
+  placeholder="Intitulé"
+  [types]="searchTypes"
+></vitamui-search-with-type-selector>

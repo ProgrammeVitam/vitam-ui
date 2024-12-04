@@ -37,40 +37,80 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { QuicklinkModule, QuicklinkStrategy } from 'ngx-quicklink';
-import { ApplicationId } from 'vitamui-library';
-import { ArraysComponent } from './components/arrays/arrays.component';
-import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.component';
-import { ButtonsComponent } from './components/buttons/buttons.component';
-import { ColorsComponent } from './components/colors/colors.component';
-import { ElevationComponent } from './components/elevations/elevations.component';
-import { IconsComponent } from './components/icons/icons.component';
-import { InputsComponent } from './components/inputs/inputs.component';
+import { TableComponent } from './components/organisms/table/table.component';
+import { BreadcrumbsComponent } from './components/molecules/breadcrumbs/breadcrumbs.component';
+import { ButtonsComponent } from './components/atoms/buttons/buttons.component';
+import { ColorsComponent } from './components/tokens/colors/colors.component';
+import { ShadowsComponent } from './components/tokens/shadows/shadows.component';
+import { IconsComponent } from './components/atoms/icons/icons.component';
 import { MiscellaneousComponent } from './components/miscellaneous/miscellaneous.component';
-import { ProgressBarComponent } from './components/progress-bar/progress-bar.component';
-import { TooltipComponent } from './components/tooltip/tooltip.component';
+import { LoadersSteppersComponent } from './components/molecules/loaders-steppers/loaders-steppers.component';
+import { TooltipComponent } from './components/atoms/tooltip/tooltip.component';
 import { TranslationComponent } from './components/translation/translation.component';
-import { TypographyComponent } from './components/typography/typography.component';
-import { DesignSystemComponent } from './design-system/design-system.component';
-import { ChipsComponent } from './components/chips/chips.component';
-import { SpacingComponent } from './components/spacing/spacing.component';
+import { TypographyComponent } from './components/tokens/typography/typography.component';
+import { DesignSystemComponent } from './components/design-system/design-system.component';
+import { DesignSystemChipsComponent } from './components/atoms/chips/design-system-chips.component';
+import { SpacingComponent } from './components/tokens/spacing/spacing.component';
+import { DesignSystemCheckboxComponent } from './components/molecules/inputs/checkbox/design-system-checkbox.component';
+import { DesignSystemAutocompleteMultiSelectComponent } from './components/molecules/inputs/autocomplete-multi-select/design-system-autocomplete-multi-select.component';
+import { DesignSystemAutocompleteMultiSelectTreeComponent } from './components/molecules/inputs/autocomplete-multi-select-tree/design-system-autocomplete-multi-select-tree.component';
+import { DesignSystemOldInputsComponent } from './components/molecules/inputs/old-input/design-system-old-inputs.component';
+import { DesignSystemRepeatableInputComponent } from './components/molecules/inputs/repeatable-input/design-system-repeatable-input.component';
+import { DesignSystemSearchWithTypeSelectorComponent } from './components/molecules/inputs/search-with-type-selector/design-system-search-with-type-selector.component';
+import { DesignSystemMultipleOptionsDatepickerComponent } from './components/molecules/inputs/multiple-options-datepicker/design-system-multiple-options-datepicker.component';
 
 const routes: Routes = [
-  { path: '', component: DesignSystemComponent, data: { appId: ApplicationId.DESIGN_SYSTEM_APP } },
-  { path: 'buttons', component: ButtonsComponent, data: { appId: ApplicationId.DESIGN_SYSTEM_APP } },
-  { path: 'arrays', component: ArraysComponent, data: { appId: ApplicationId.DESIGN_SYSTEM_APP } },
-  { path: 'inputs', component: InputsComponent, data: { appId: ApplicationId.DESIGN_SYSTEM_APP } },
-  { path: 'breadcrumbs', component: BreadcrumbComponent, data: { appId: ApplicationId.DESIGN_SYSTEM_APP } },
-  { path: 'buttons', component: ButtonsComponent, data: { appId: ApplicationId.DESIGN_SYSTEM_APP } },
-  { path: 'chips', component: ChipsComponent, data: { appId: ApplicationId.DESIGN_SYSTEM_APP } },
-  { path: 'progress-bar', component: ProgressBarComponent, data: { appId: ApplicationId.DESIGN_SYSTEM_APP } },
-  { path: 'tooltip', component: TooltipComponent, data: { appId: ApplicationId.DESIGN_SYSTEM_APP } },
-  { path: 'miscellaneous', component: MiscellaneousComponent, data: { appId: ApplicationId.DESIGN_SYSTEM_APP } },
-  { path: 'typography', component: TypographyComponent, data: { appId: ApplicationId.DESIGN_SYSTEM_APP } },
-  { path: 'colors', component: ColorsComponent, data: { appId: ApplicationId.DESIGN_SYSTEM_APP } },
-  { path: 'icons', component: IconsComponent, data: { appId: ApplicationId.DESIGN_SYSTEM_APP } },
-  { path: 'elevations', component: ElevationComponent, data: { appId: ApplicationId.DESIGN_SYSTEM_APP } },
-  { path: 'spacing', component: SpacingComponent, data: { appId: ApplicationId.DESIGN_SYSTEM_APP } },
-  { path: 'translation', component: TranslationComponent, data: { appId: ApplicationId.DESIGN_SYSTEM_APP } },
+  { path: '', component: DesignSystemComponent },
+  {
+    path: 'tokens',
+    children: [
+      { path: '', redirectTo: 'colors', pathMatch: 'full' },
+      { path: 'colors', component: ColorsComponent },
+      { path: 'shadows', component: ShadowsComponent },
+      { path: 'typography', component: TypographyComponent },
+      { path: 'spacing', component: SpacingComponent },
+    ],
+  },
+  {
+    path: 'atoms',
+    children: [
+      { path: '', redirectTo: 'buttons', pathMatch: 'full' },
+      { path: 'buttons', component: ButtonsComponent },
+      { path: 'chips', component: DesignSystemChipsComponent },
+      { path: 'icons', component: IconsComponent },
+      { path: 'tooltip', component: TooltipComponent },
+    ],
+  },
+  {
+    path: 'molecules',
+    children: [
+      { path: '', redirectTo: 'breadcrumbs', pathMatch: 'full' },
+      { path: 'breadcrumbs', component: BreadcrumbsComponent },
+      { path: 'loaders-steppers', component: LoadersSteppersComponent },
+      {
+        path: 'inputs',
+        children: [
+          { path: '', redirectTo: 'autocomplete-multi-select', pathMatch: 'full' },
+          { path: 'autocomplete-multi-select', component: DesignSystemAutocompleteMultiSelectComponent },
+          { path: 'autocomplete-multi-select-tree', component: DesignSystemAutocompleteMultiSelectTreeComponent },
+          { path: 'checkboxes', component: DesignSystemCheckboxComponent },
+          { path: 'old-input', component: DesignSystemOldInputsComponent },
+          { path: 'multiple-options-datepicker', component: DesignSystemMultipleOptionsDatepickerComponent },
+          { path: 'repeatable-input', component: DesignSystemRepeatableInputComponent },
+          { path: 'search-with-type-selector', component: DesignSystemSearchWithTypeSelectorComponent },
+        ],
+      },
+    ],
+  },
+  {
+    path: 'organisms',
+    children: [
+      { path: '', redirectTo: 'table', pathMatch: 'full' },
+      { path: 'table', component: TableComponent },
+    ],
+  },
+  { path: 'miscellaneous', component: MiscellaneousComponent },
+  { path: 'translation', component: TranslationComponent },
   { path: '**', redirectTo: '' },
 ];
 

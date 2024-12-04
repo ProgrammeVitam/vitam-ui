@@ -1,0 +1,17 @@
+<h2>Progress bars</h2>
+@for (nbStep of nbSteps; track nbStep) {
+  <div class="mt-3">
+    <vitamui-common-progress-bar [index]="step % nbStep" [count]="nbStep"></vitamui-common-progress-bar>
+  </div>
+}
+<div class="mt-3">
+  <vitamui-common-progress-bar [percent]="percent"></vitamui-common-progress-bar>
+</div>
+
+<div>
+  <h2>Progress spinners</h2>
+  <mat-spinner class="vitamui-spinner small my-3"></mat-spinner>
+  <mat-spinner class="vitamui-spinner medium my-3"></mat-spinner>
+  <mat-spinner class="vitamui-spinner large my-3"></mat-spinner>
+  <mat-spinner class="vitamui-spinner x-large my-3"></mat-spinner>
+</div>

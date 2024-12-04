@@ -1,4 +1,42 @@
 {
+  "ROUTE": {
+    "tokens": {
+      "TITLE": "Tokens",
+      "colors.TITLE": "Couleurs",
+      "shadows.TITLE": "Ombres",
+      "typography.TITLE": "Typographie",
+      "spacing.TITLE": "Espacements"
+    },
+    "atoms": {
+      "TITLE": "Atoms",
+      "buttons.TITLE": "Boutons",
+      "chips.TITLE": "Chips",
+      "icons.TITLE": "Icônes",
+      "tooltip.TITLE": "Tooltip"
+    },
+    "molecules": {
+      "TITLE": "Molécules",
+      "breadcrumbs.TITLE": "Breadcrumbs",
+      "loaders-steppers.TITLE": "Loaders & Steppers",
+      "inputs": {
+        "TITLE": "Inputs",
+        "autocomplete-multi-select.TITLE": "Autocomplete multi select",
+        "autocomplete-multi-select-tree.TITLE": "Autocomplete multi select tree",
+        "checkboxes.TITLE": "Checkboxes",
+        "multiple-options-datepicker.TITLE": "Multiple options datepicker",
+        "old-input.TITLE": "OLD input",
+        "repeatable-input.TITLE": "Repeatable input",
+        "search-with-type-selector.TITLE": "Search with type selector"
+      }
+    },
+    "organisms": {
+      "TITLE": "Organismes",
+      "table.TITLE": "Tableau"
+    },
+    "miscellaneous.TITLE": "Divers",
+    "translation.TITLE": "Traduction",
+    "**.TITLE": "Aide"
+  },
   "COMMON": {
     "ID": "Identifiant",
     "ADRESS": {

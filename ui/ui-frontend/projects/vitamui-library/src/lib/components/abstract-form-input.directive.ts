@@ -34,20 +34,63 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component } from '@angular/core';
-import { Router, Routes } from '@angular/router';
+import { Directive, Injector, Input, OnDestroy, OnInit } from '@angular/core';
+import {
+  ControlContainer,
+  ControlValueAccessor,
+  FormControl,
+  FormControlDirective,
+  FormControlName,
+  FormGroup,
+  NgControl,
+  NgModel,
+} from '@angular/forms';
+import { Subscription } from 'rxjs';
 
-@Component({
-  selector: 'design-system-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'],
-})
-export class AppComponent {
-  title = 'Design system App';
+@Directive()
+export class AbstractFormInputDirective implements ControlValueAccessor, OnInit, OnDestroy {
+  @Input() errorMessageMap: { [p: string]: string };
 
-  routes: Routes;
+  protected control: FormControl;
 
-  constructor(router: Router) {
-    this.routes = router.config;
+  #subscription?: Subscription;
+
+  constructor(private injector: Injector) {}
+
+  ngOnInit() {
+    const ngControl = this.injector.get(NgControl, null, { self: true, optional: true });
+
+    if (ngControl instanceof NgModel) {
+      this.control = ngControl.control;
+      this.#subscription = ngControl.control.valueChanges.subscribe((value) => {
+        if (ngControl.model !== value || ngControl.viewModel !== value) {
+          ngControl.viewToModelUpdate(value);
+        }
+      });
+    } else if (ngControl instanceof FormControlDirective) {
+      this.control = ngControl.control;
+    } else if (ngControl instanceof FormControlName) {
+      const container = this.injector.get(ControlContainer).control as FormGroup;
+      this.control = container.controls[ngControl.name] as FormControl;
+    } else {
+      this.control = new FormControl();
+    }
   }
+
+  ngOnDestroy() {
+    this.#subscription?.unsubscribe();
+  }
+
+  onChange = (_: any) => {};
+  onTouched = () => {};
+
+  registerOnChange(fn: any): void {
+    this.onChange = fn;
+  }
+
+  registerOnTouched(fn: any): void {
+    this.onTouched = fn;
+  }
+
+  writeValue(_obj: any) {}
 }

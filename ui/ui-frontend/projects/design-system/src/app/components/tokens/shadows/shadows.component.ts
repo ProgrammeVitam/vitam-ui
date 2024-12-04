@@ -35,19 +35,23 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component } from '@angular/core';
-import { Router, Routes } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
+import { UpperCasePipe } from '@angular/common';
 
 @Component({
-  selector: 'design-system-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'],
+  templateUrl: './shadows.component.html',
+  styleUrls: ['./shadows.component.scss'],
+  imports: [TranslateModule, UpperCasePipe],
+  standalone: true,
 })
-export class AppComponent {
-  title = 'Design system App';
+export class ShadowsComponent {
+  colors = ['dark', 'primary', 'secondary', 'tertiary'];
+  elevations = Array.from({ length: 7 }, (_, i) => i + 1);
+  name = (elevation: number, color: string) => `${Math.pow(2, elevation)}dp-${color}`;
 
-  routes: Routes;
-
-  constructor(router: Router) {
-    this.routes = router.config;
+  getBoxShadow(element: HTMLElement) {
+    return getComputedStyle(element)
+      .boxShadow.toString()
+      .match(/rgba?([^)]+)[^,]+/g);
   }
 }

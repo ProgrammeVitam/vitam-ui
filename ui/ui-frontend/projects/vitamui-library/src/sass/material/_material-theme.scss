@@ -120,3 +120,36 @@ $custom-typography: mat.define-legacy-typography-config(
 @include mat.legacy-checkbox-typography($custom-typography);
 @include mat.all-legacy-component-typographies($custom-typography);
 @include mat.legacy-core();
+
+// NON-legacy
+
+$custom-typography: mat.define-typography-config(
+  $font-family: 'Mulish, sans-serif',
+  //$headline-1: mat.define-typography-level(...), // TODO: define typography
+  //$headline-2: mat.define-typography-level(...), // TODO: define typography
+  //$headline-3: mat.define-typography-level(...), // TODO: define typography
+  //$headline-4: mat.define-typography-level(...), // TODO: define typography
+  //$headline-5: mat.define-typography-level(...), // TODO: define typography
+  //$headline-6: mat.define-typography-level(...), // TODO: define typography
+  //$subtitle-1: mat.define-typography-level(...), // TODO: define typography
+  //$subtitle-2: mat.define-typography-level(...), // TODO: define typography
+  $body-1:
+    mat.define-typography-level(
+      $font-weight: 400,
+      $font-size: 14px,
+      $line-height: 22px,
+      $letter-spacing: 0.1px,
+    ),
+  //$body-2: mat.define-typography-level(...), // TODO: define typography
+  //$caption: mat.define-typography-level(...), // TODO: define typography
+  //$button: mat.define-typography-level(...), // TODO: define typography
+  //$overline: mat.define-typography-level(...), // TODO: define typography
+);
+
+$custom-theme: mat.define-light-theme(
+  (
+    typography: $custom-typography,
+  )
+);
+
+@include mat.all-component-themes($custom-theme);
