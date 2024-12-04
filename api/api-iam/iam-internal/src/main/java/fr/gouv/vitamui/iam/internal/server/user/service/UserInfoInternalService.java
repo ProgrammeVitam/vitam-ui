@@ -61,7 +61,6 @@ import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.shiro.util.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.transaction.Transactional;
@@ -193,13 +192,5 @@ public class UserInfoInternalService extends VitamUICrudService<UserInfoDto, Use
         super.checkIdentifier(dto.getIdentifier(), message);
 
         dto.setIdentifier(getNextSequenceId(SequencesConstants.USER_INFOS_IDENTIFIER));
-    }
-
-    private UserInfo find(final String id, final String message) {
-        Assert.isTrue(StringUtils.isNotEmpty(id), message + ": no id");
-
-        return getRepository()
-            .findById(id)
-            .orElseThrow(() -> new IllegalArgumentException(message + ": no user info found for id " + id));
     }
 }
