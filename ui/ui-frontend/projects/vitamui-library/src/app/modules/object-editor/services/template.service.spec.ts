@@ -43,7 +43,7 @@ describe('TemplateService', () => {
   let service: TemplateService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({ providers: [SchemaElementToDisplayRuleService] });
+    TestBed.configureTestingModule({ providers: [SchemaElementToDisplayRuleService, TemplateService] });
     service = TestBed.inject(TemplateService);
   });
 

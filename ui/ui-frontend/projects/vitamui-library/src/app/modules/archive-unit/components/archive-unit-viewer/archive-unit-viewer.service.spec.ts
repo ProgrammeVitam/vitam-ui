@@ -50,13 +50,14 @@ import { TypeService } from '../../../object-viewer/services/type.service';
 import { SchemaService } from '../../../schema';
 import { MockSchemaService } from '../../../schema/mock-schema.service';
 import { ArchiveUnitViewerService } from './archive-unit-viewer.service';
+import { ObjectEditorModule } from '../../../object-editor/object-editor.module';
 
 describe('ArchiveUnitViewerService', () => {
   let service: ArchiveUnitViewerService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, ReactiveFormsModule, LoggerModule.forRoot()],
+      imports: [HttpClientTestingModule, ReactiveFormsModule, LoggerModule.forRoot(), ObjectEditorModule],
       providers: [
         ArchiveUnitViewerService,
         TypeService,

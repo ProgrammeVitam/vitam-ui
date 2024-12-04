@@ -37,4 +37,5 @@
 export enum Collection {
   ARCHIVE_UNIT = 'ARCHIVE_UNIT',
   OBJECT_GROUP = 'OBJECT_GROUP',
+  AGENCY = 'AGENCY',
 }

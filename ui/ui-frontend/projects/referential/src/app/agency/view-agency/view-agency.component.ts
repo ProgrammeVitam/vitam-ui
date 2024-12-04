@@ -34,53 +34,47 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input } from '@angular/core';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { HintComponent } from '../../components/hint/hint.component';
-import { FormErrorDisplayComponent } from '../../components/form-error-display/form-error-display.component';
-import { TranslateModule } from '@ngx-translate/core';
-import { PipesModule } from '../../pipes/pipes.module';
-import { AppendStarPipe } from '../required.pipe';
-import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
-import { MatLegacySelectModule } from '@angular/material/legacy-select';
+import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { Agency, ApplicationId, BreadCrumbData, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
+import { template } from '../agency.template';
+import { of, switchMap } from 'rxjs';
+import { AgencyService } from '../agency.service';
 
 @Component({
-  selector: 'vitamui-editor-select',
-  template: `
-    <mat-form-field class="mb-4 w-100 vitamui-mat-select">
-      <mat-label>{{ label | translate | empty }}</mat-label>
-      <mat-select [formControl]="control" [multiple]="multiple" panelClass="vitamui-mat-select">
-        @for (option of options; track option) {
-          <mat-option [value]="option">
-            {{ option }}
-          </mat-option>
-        }
-      </mat-select>
-      <div class="select-arrow">
-        <i class="material-icons">keyboard_arrow_up</i>
-        <i class="material-icons">keyboard_arrow_down</i>
-      </div>
-      <vitamui-hint [control]="control" [hint]="hint"></vitamui-hint>
-      <vitamui-form-error-display [control]="control"></vitamui-form-error-display>
-    </mat-form-field>
-  `,
+  selector: 'app-view-agency',
+  templateUrl: 'view-agency.component.html',
+  imports: [CommonModule, RouterModule, VitamUICommonModule, VitamUILibraryModule],
   standalone: true,
-  imports: [
-    ReactiveFormsModule,
-    HintComponent,
-    FormErrorDisplayComponent,
-    TranslateModule,
-    PipesModule,
-    AppendStarPipe,
-    MatLegacyFormFieldModule,
-    MatLegacySelectModule,
-  ],
 })
-export class EditorSelectComponent {
-  @Input({ required: true }) control!: FormControl;
-  @Input() options: string[] = [];
-  @Input() multiple: boolean = false;
-  @Input() required: boolean = false;
-  @Input() label?: string;
-  @Input() hint?: string;
+export class ViewAgencyComponent implements OnInit {
+  readonly template = template;
+  breadcrumbData: BreadCrumbData[] = [{ identifier: ApplicationId.PORTAL_APP }, { identifier: ApplicationId.AGENCIES_APP }];
+  agency: Agency;
+
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    private agencyService: AgencyService,
+  ) {
+    this.agency = this.router.getCurrentNavigation()?.extras?.state?.agency;
+  }
+
+  ngOnInit() {
+    of(this.agency)
+      .pipe(
+        switchMap((agency: Agency) => {
+          if (agency) return of(agency);
+
+          return this.route.params.pipe(switchMap((params) => this.agencyService.get(params?.agencyIdentifier)));
+        }),
+      )
+      .subscribe({
+        next: (agency: Agency) => {
+          this.agency = agency;
+          this.breadcrumbData.push({ label: this.agency.identifier });
+        },
+      });
+  }
 }

@@ -63,16 +63,26 @@ import { EditorListInputComponent } from './components/editor-list-input.compone
 import { EditorListTextareaComponent } from './components/editor-list-textarea.component';
 import { FormErrorDisplayComponent } from '../components/form-error-display/form-error-display.component';
 import { EditorListSelectComponent } from './components/editor-list-select.component';
-import { EditorHintComponent } from './components/editor-hint.component';
+import { HintComponent } from '../components/hint/hint.component';
 import { EditorInputComponent } from './components/editor-input.component';
 import { EditorTextareaComponent } from './components/editor-textarea.component';
 import { EditorSelectComponent } from './components/editor-select.component';
 import { MultipleOptionsDatepickerModule } from '../components/multiple-options-datepicker/multiple-options-datepicker.module';
 import { EditorListDateComponent } from './components/editor-list-date.component';
+import { EditObjectService } from './services/edit-object.service';
+import { PathService } from './services/path.service';
+import { SchemaService } from './services/schema.service';
+import { TemplateService } from './services/template.service';
 
 @NgModule({
   declarations: [ObjectEditorComponent, GroupEditorComponent, ListEditorComponent, PrimitiveEditorComponent],
-  providers: [{ provide: DisplayObjectService, useClass: PathStrategyDisplayObjectService }],
+  providers: [
+    { provide: DisplayObjectService, useClass: PathStrategyDisplayObjectService },
+    EditObjectService,
+    PathService,
+    SchemaService,
+    TemplateService,
+  ],
   imports: [
     CommonModule,
     TranslateModule,
@@ -97,7 +107,7 @@ import { EditorListDateComponent } from './components/editor-list-date.component
     FormErrorDisplayComponent,
     AppendStarPipe,
     EditorListSelectComponent,
-    EditorHintComponent,
+    HintComponent,
     EditorInputComponent,
     EditorTextareaComponent,
     EditorSelectComponent,

@@ -21,4 +21,8 @@
   display: flex;
   align-items: center;
   justify-content: flex-end;
+
+  &.only {
+    justify-content: flex-start;
+  }
 }

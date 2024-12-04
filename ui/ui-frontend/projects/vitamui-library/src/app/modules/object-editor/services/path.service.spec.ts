@@ -41,7 +41,9 @@ describe('PathService', () => {
   let service: PathService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({
+      providers: [PathService],
+    });
     service = TestBed.inject(PathService);
   });
 

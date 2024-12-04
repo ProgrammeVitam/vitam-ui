@@ -36,7 +36,7 @@
  */
 import { Component, Input } from '@angular/core';
 import { AppendStarPipe } from '../required.pipe';
-import { EditorHintComponent } from './editor-hint.component';
+import { HintComponent } from '../../components/hint/hint.component';
 import { FormErrorDisplayComponent } from '../../components/form-error-display/form-error-display.component';
 import { PipesModule } from '../../pipes/pipes.module';
 import { TranslateModule } from '@ngx-translate/core';
@@ -47,14 +47,14 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
   selector: 'vitamui-editor-input',
   template: `
     <vitamui-common-input [formControl]="control" [placeholder]="label | translate | empty | appendStar: required" class="w-100">
-      <vitamui-editor-hint [control]="control" [hint]="hint"></vitamui-editor-hint>
+      <vitamui-hint [control]="control" [hint]="hint"></vitamui-hint>
       <vitamui-form-error-display [control]="control"></vitamui-form-error-display>
     </vitamui-common-input>
   `,
   standalone: true,
   imports: [
     AppendStarPipe,
-    EditorHintComponent,
+    HintComponent,
     FormErrorDisplayComponent,
     PipesModule,
     TranslateModule,

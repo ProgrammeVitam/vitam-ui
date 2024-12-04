@@ -1,5 +1,5 @@
-/**
- * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
+/*
+ * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2022)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
  *
  * contact@programmevitam.fr
@@ -34,45 +34,33 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-package fr.gouv.vitamui.referential.common.dto;
+import { SecurityService } from 'vitamui-library';
+import { inject } from '@angular/core';
+import { CanActivateFn, Router } from '@angular/router';
+import { ApplicationId, Role, TenantSelectionService } from 'vitamui-library';
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import fr.gouv.vitamui.commons.api.domain.IdDto;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+export const EditAgencyGuard: CanActivateFn = (route, _state) => {
+  const securityService: SecurityService = inject(SecurityService);
+  const tenantSelectionService: TenantSelectionService = inject(TenantSelectionService);
+  const router: Router = inject(Router);
+  const tenantIdentifier: number = route.params['tenantIdentifier'] || tenantSelectionService.getSelectedTenant()?.identifier;
+  const agencyIdentifier = route.params['agencyIdentifier'];
 
-import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
+  if (!tenantIdentifier) console.error('No tenant selected');
+  if (!agencyIdentifier) console.error('No agency selected');
 
-@ToString
-@JsonInclude(JsonInclude.Include.NON_NULL)
-@Getter
-@Setter
-public class AgencyDto extends IdDto implements Serializable {
+  if (!tenantIdentifier || !agencyIdentifier) {
+    router.navigateByUrl('/agency/tenant');
+    return false;
+  }
 
-    private Integer tenant;
+  const hasPermission = securityService.hasRole(ApplicationId.AGENCIES_APP, tenantIdentifier, Role.ROLE_UPDATE_AGENCIES);
 
-    private Integer version;
+  if (!hasPermission) {
+    const redirectUrl = `/agency/tenant/${tenantIdentifier}/agencies/${agencyIdentifier}`;
+    router.navigateByUrl(redirectUrl);
+    return false;
+  }
 
-    private String name;
-
-    private String identifier;
-
-    private String description;
-
-    private Map<String, Object> additionalProperties = new HashMap<>();
-
-    @JsonAnyGetter
-    public Map<String, Object> getAdditionalProperties() {
-        return additionalProperties;
-    }
-
-    @JsonAnySetter
-    public void setAdditionalProperties(String key, Object value) {
-        additionalProperties.put(key, value);
-    }
-}
+  return true;
+};

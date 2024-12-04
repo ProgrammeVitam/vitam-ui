@@ -35,8 +35,20 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
-import { Component, ElementRef, forwardRef, HostBinding, HostListener, Input, ViewChild } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { Component, ElementRef, forwardRef, HostBinding, HostListener, Injector, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import {
+  AbstractControl,
+  ControlContainer,
+  ControlValueAccessor,
+  FormControl,
+  FormControlDirective,
+  FormControlName,
+  FormGroup,
+  NG_VALUE_ACCESSOR,
+  NgControl,
+  NgModel,
+} from '@angular/forms';
+import { Subscription } from 'rxjs';
 
 export const VITAMUI_TEXTAREA_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -50,39 +62,72 @@ export const VITAMUI_TEXTAREA_VALUE_ACCESSOR: any = {
   styleUrls: ['./vitamui-textarea.component.scss'],
   providers: [VITAMUI_TEXTAREA_VALUE_ACCESSOR],
 })
-export class VitamUITextareaComponent implements ControlValueAccessor {
+export class VitamUITextareaComponent implements ControlValueAccessor, OnInit, OnDestroy {
+  control: AbstractControl;
+  value: string | number;
+
   @Input() maxlength: number;
   @Input() placeholder: string;
   @Input() rows = 2;
-  @Input()
-  get required(): boolean {
-    return this._required;
-  }
-  set required(value: boolean) {
-    this._required = coerceBooleanProperty(value);
-  }
-  private _required = false;
 
-  @Input()
-  get disabled(): boolean {
-    return this._disabled;
-  }
-  set disabled(value: boolean) {
-    this._disabled = coerceBooleanProperty(value);
-  }
-  private _disabled = false;
   @ViewChild('textarea', { static: true }) private textarea: ElementRef;
 
   @HostBinding('class.vitamui-focused') focused = false;
   @HostBinding('class.vitamui-float') labelFloat = false;
 
-  value: string | number;
+  private _required = false;
+
+  @Input() get required(): boolean {
+    return this._required;
+  }
+
+  set required(value: boolean) {
+    this._required = coerceBooleanProperty(value);
+  }
+
+  private _disabled = false;
+
+  @Input() get disabled(): boolean {
+    return this._disabled;
+  }
+
+  set disabled(value: boolean) {
+    this._disabled = coerceBooleanProperty(value);
+  }
+
+  private subscription?: Subscription;
+
+  constructor(private injector: Injector) {}
+
+  ngOnInit() {
+    const ngControl = this.injector.get(NgControl, null, { self: true, optional: true });
+
+    if (ngControl instanceof NgModel) {
+      this.control = ngControl.control;
+      this.subscription = ngControl.control.valueChanges.subscribe((value) => {
+        if (ngControl.model !== value || ngControl.viewModel !== value) {
+          ngControl.viewToModelUpdate(value);
+        }
+      });
+    } else if (ngControl instanceof FormControlDirective) {
+      this.control = ngControl.control;
+    } else if (ngControl instanceof FormControlName) {
+      const container = this.injector.get(ControlContainer).control as FormGroup;
+      this.control = container.controls[ngControl.name] as FormControl;
+    } else {
+      this.control = new FormControl();
+    }
+  }
+
+  ngOnDestroy() {
+    this.subscription?.unsubscribe();
+  }
 
   onChange = (_: any) => {};
+
   onTouched = () => {};
 
-  @HostListener('click')
-  onClick() {
+  @HostListener('click') onClick() {
     this.textarea.nativeElement.focus();
   }
 

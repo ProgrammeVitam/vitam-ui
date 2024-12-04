@@ -4,7 +4,8 @@
 $input-height: 90px;
 
 :host {
-  align-items: baseline;
+  display: inline-block;
+  height: $input-height;
 
   &.ng-valid.ng-touched .vitamui-input {
     border: 1px solid var(--vitamui-green);
@@ -31,6 +32,6 @@ label {
   pointer-events: none;
 }
 
-.vitamui-input-errors {
+.message-area {
   min-height: 23px;
 }

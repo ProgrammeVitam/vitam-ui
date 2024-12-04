@@ -54,7 +54,7 @@ export class LayoutService {
     const hasDisplayRule = Boolean(displayObject.displayRule);
 
     if (!hasDisplayRule) {
-      this.logger.warn(this, 'No display rule found for the node, the node will be skipped', { displayObject });
+      this.logger.warn(this, `No display rule found for the node ${displayObject.path}, the node will be skipped`, { displayObject });
     }
 
     return hasDisplayRule;
@@ -86,8 +86,8 @@ export class LayoutService {
 
   public compute(displayObject: DisplayObject): DisplayObject[][] {
     return displayObject.children
-      .filter(this.keepNodeWithDisplayRuleFilter)
-      .filter(this.keepDisplayedNodeFilter)
+      .filter((displayObject) => this.keepNodeWithDisplayRuleFilter(displayObject))
+      .filter((displayObject) => this.keepDisplayedNodeFilter(displayObject))
       .reduce((rows, child: DisplayObject) => {
         if (!this.getLastRow(rows)) {
           rows.push([]);

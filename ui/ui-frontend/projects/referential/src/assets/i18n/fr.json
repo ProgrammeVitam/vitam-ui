@@ -655,7 +655,7 @@
   },
   "AGENCY": {
     "HOME": {
-      "TITLE": "Services agents",
+      "TITLE": "Référentiel des services agents",
       "TITLE_PLACEHOLDER": "Nom, Identifiant",
       "ACTION_BUTTON": "Créer un service agent",
       "ACTION_IMPORT": "Importer le référentiel",
@@ -686,6 +686,40 @@
       "HISTORY": "Historique",
       "NAME": "Nom",
       "DESCRIPTION": "Description"
+    },
+    "ACTION": {
+      "EDIT": "Accéder à la notice"
+    },
+    "LABEL": {
+      "IDENTIFICATION": "Identification",
+      "IDENTIFIER": "Identifiant",
+      "NAME": "Nom",
+      "ENTITY_TYPE": "Type d’entité",
+      "NAME_ENTRY_PARALLEL": "Formes parallèles du nom",
+      "AUTHORIZED_FORM": "Formes du nom normalisées selon d’autres conventions",
+      "ALTERNATIVE_FORM": "Autres formes du nom",
+      "ENTITY_ID": "Numéro d’immatriculation des collectivités",
+      "DESCRIPTION": "Description",
+      "FROM_DATE": "Date de début d’existence",
+      "TO_DATE": "Date de fin d’existence",
+      "FUNCTIONS": "Fonctions et activités",
+      "BIOGHIST": "Histoire",
+      "PLACES": "Lieux",
+      "LEGAL_STATUSES": "Statut juridique",
+      "MANDATES": "Textes de référence",
+      "STRUCTURE_OR_GENEALOGY": "Organisation interne/généalogie",
+      "GENERAL_CONTEXT": "Contexte général",
+      "CONTROL": "Contrôle",
+      "CREATION_DATE": "Date de création de la notice",
+      "UPDATE_DATE": "Date de dernière révision de la notice",
+      "MAINTENANCE_STATUS": "Niveau d’élaboration",
+      "LOCAL_STATUS": "Niveau de détail",
+      "SOURCES": "Sources",
+      "EVENT_DESCRIPTION": "Notes relatives à la mise à jour de la notice"
+    },
+    "HINT": {
+      "MAX_LENGTH_50": "Limité à 50 caractères",
+      "MAX_LENGTH_5000": "Limité à 5000 caractères"
     }
   },
   "LOGBOOK": {

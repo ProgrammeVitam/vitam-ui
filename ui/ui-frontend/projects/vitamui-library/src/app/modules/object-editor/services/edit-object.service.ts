@@ -55,9 +55,7 @@ import { CustomValidators } from '../pattern.validator';
 const ADD_ACTION_LABEL = 'ARCHIVE_UNIT.ACTIONS.ADD';
 const REMOVE_ACTION_LABEL = 'ARCHIVE_UNIT.ACTIONS.REMOVE';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class EditObjectService {
   constructor(
     private schemaService: SchemaService,
@@ -250,7 +248,7 @@ export class EditObjectService {
       value,
       default: defaultValue,
       displayRule,
-      open: true,
+      open: displayRule?.ui?.open ?? true,
       favoriteKeys: [],
       required: true,
       virtual: false,

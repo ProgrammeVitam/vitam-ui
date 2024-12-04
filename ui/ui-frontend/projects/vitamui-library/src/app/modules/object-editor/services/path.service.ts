@@ -37,7 +37,7 @@
 import { Injectable } from '@angular/core';
 import { DataStructureService } from '../../object-viewer/services/data-structure.service';
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class PathService {
   constructor(private dataStructureService: DataStructureService) {}
 

@@ -41,7 +41,7 @@ import { Template } from '../../object-viewer/models/template.model';
 import { DataStructureService } from '../../object-viewer/services/data-structure.service';
 import { SchemaElementToDisplayRuleService } from '../../object-viewer/services/schema-element-to-display-rule.service';
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class TemplateService {
   constructor(
     private dataStructureService: DataStructureService,
