@@ -983,16 +983,7 @@
       "ENTER_INGEST_OPERATIONS_IDENTIFIERS_PLACEHOLDER": "Identifiant(s) d'opération d'entrée séparés par des virgules",
       "CHOOSE_ORIGINATING_AGENCY": "Choisir le(s) service(s) producteur",
       "EVIDENCE_AUDIT_NOT_FOUND": "L'identifiant d'audit de cohérence saisi n'existe pas",
-      "CHOOSE_INGEST_OPERATIONS_PERIOD": "Choisir une période d'opération d'entrée",
-      "CHOOSE_AU_CREATION_PERIOD": "Choisir une période de création d'unité archivistique",
-      "PERIOD_FROM": "Période du :",
-      "PERIOD_TO": "Au :",
-      "INGEST_OPERATION_DATE_PLACEHOLDER": "Date d'opération d’entrée",
-      "AU_CREATION_DATE_PLACEHOLDER": "Date de création d'UA",
-      "DATE_GMT_TIME_CAPTION": "Date à l'heure GMT",
       "START_AUDIT": "Lancer l'audit",
-      "REFINE_OVER_PERIOD": "Affiner sur une période",
-      "END_PERIOD_DATE_BEFORE_START_PERIOD_DATE": "La date de fin de période est antérieure à la date de début",
       "OPERATIONS_CATEGORIES": {
         "AUDIT_FILE_EXISTING": "Existence",
         "AUDIT_FILE_INTEGRITY": "Integrité",
@@ -1001,9 +992,8 @@
       },
       "PERIMETERS": {
         "AUDIT_PERIMETER_ORIGINATING_AGENCY": "Par service(s) producteur(s)",
-        "AUDIT_PERIMETER_INGEST_OPERATION_IDENTIFIER": "Par identifiant(s) d'opération(s) d'entrée",
-        "AUDIT_PERIMETER_ATTACHMENT_POSITION": "Par position(s) de rattachement",
-        "AUDIT_PERIMETER_INGEST_OPERATION_PERIOD": "Par période d'opération(s) d'entrée"
+        "AUDIT_PERIMETER_INGEST_OPERATION": "Par opération(s) d'entrée",
+        "AUDIT_PERIMETER_ATTACHMENT_POSITION": "Par position(s) de rattachement"
       }
     }
   },

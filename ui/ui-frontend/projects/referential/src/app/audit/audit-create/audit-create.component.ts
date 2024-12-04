@@ -51,8 +51,6 @@ import {
   StartupService,
   VitamuiAutocompleteMultiselectOptions,
   VitamUISnackBarService,
-  CustomValidators,
-  DatePattern,
 } from 'vitamui-library';
 import { AuditAction, AuditPerimeter } from '../../models/audit.interface';
 import { AuditService } from '../audit.service';
@@ -66,22 +64,20 @@ import { AuditCreateValidators } from './audit-create-validator';
 export class AuditCreateComponent implements OnInit, OnDestroy {
   @Input() tenantIdentifier: number;
 
+  public AuditAction = AuditAction;
   public form: FormGroup;
   public stepIndex = 0;
   public stepCount = 2;
   public allProducerServices = new FormControl(false);
+  public allNodes = new FormControl(true);
   public selectedNodes = new FormControl({ included: [], excluded: [] });
   public producerServicesMultiSelect = new FormControl();
   public ingestOperationsEntries = new FormControl();
-  public startDateControl = new FormControl('');
-  public endDateControl = new FormControl('');
   public accessContractId: string = null;
   public accessionRegisterSummaries: AccessionRegisterSummary[];
   public producerServicesOptions: Option[] = [];
   public producerServicesMultiSelectOptions: VitamuiAutocompleteMultiselectOptions;
   public isDisabledButton = false;
-  public refiningScreen = false;
-  public idsArray = ['originatingAgencyIds', 'ingestOperationIds', 'attachmentPositionIds'];
   public FILLING_PLAN_MODE_INCLUDE = FilingPlanMode.INCLUDE_ONLY;
 
   private destroyer$ = new Subject<void>();
@@ -108,8 +104,6 @@ export class AuditCreateComponent implements OnInit, OnDestroy {
       originatingAgencyIds: [[]],
       ingestOperationIds: [[]],
       attachmentPositionIds: [[]],
-      startDate: [null],
-      endDate: [null],
     });
 
     this.externalParameterService
@@ -163,14 +157,6 @@ export class AuditCreateComponent implements OnInit, OnDestroy {
         this.form.controls.objectId.setValue(value);
       }
     });
-
-    this.startDateControl.valueChanges.pipe(takeUntil(this.destroyer$)).subscribe((value) => {
-      this.form.controls.startDate.setValue(value);
-    });
-
-    this.endDateControl.valueChanges.pipe(takeUntil(this.destroyer$)).subscribe((value) => {
-      this.form.controls.endDate.setValue(value);
-    });
   }
 
   ngOnDestroy() {
@@ -191,19 +177,7 @@ export class AuditCreateComponent implements OnInit, OnDestroy {
   }
 
   backToPreviousStep() {
-    if (this.refiningScreen) {
-      this.refiningScreen = false;
-      this.startDateControl.setValue(null);
-      this.endDateControl.setValue(null);
-      this.form.get('startDate').clearValidators();
-      this.form.get('startDate').markAsUntouched();
-      this.form.get('endDate').clearValidators();
-      this.form.get('endDate').markAsUntouched();
-      this.form.get('startDate').updateValueAndValidity();
-      this.form.get('endDate').updateValueAndValidity();
-    } else {
-      this.stepIndex = this.stepIndex - 1;
-    }
+    this.stepIndex = this.stepIndex - 1;
   }
 
   private sortAlphabetically = (a: Option, b: Option): number => {
@@ -220,24 +194,22 @@ export class AuditCreateComponent implements OnInit, OnDestroy {
     return selectedAuditAction !== AuditAction.AUDIT_FILE_RECTIFICATION;
   }
 
+  public showAllNodesToggle(): boolean {
+    const selectedAuditAction = this.form.get('auditActions').value;
+    return selectedAuditAction === AuditAction.AUDIT_FILE_CONSISTENCY;
+  }
+
   public showProducerSelection(): boolean {
     return this.showProducerToggle() && this.allProducerServices.value === false;
   }
 
+  public showEvidenceAuditInput(): boolean {
+    const selectedAuditAction = this.form.get('auditActions').value;
+    return selectedAuditAction === AuditAction.AUDIT_FILE_RECTIFICATION;
+  }
+
   public getStepCount(): number {
     return this.form.get('auditActions').value === AuditAction.AUDIT_FILE_RECTIFICATION ? 1 : 2;
-  }
-
-  public canShowRefiningScreen() {
-    return (
-      this.form.get('auditPerimeter')?.value === 'AUDIT_PERIMETER_INGEST_OPERATION_PERIOD' ||
-      (['AUDIT_PERIMETER_ORIGINATING_AGENCY', 'AUDIT_PERIMETER_ATTACHMENT_POSITION'].includes(this.form.get('auditPerimeter')?.value) &&
-        this.refiningScreen)
-    );
-  }
-
-  public canShowPeriodErrorMessage() {
-    return this.startDateControl.value && this.endDateControl.value && this.form.get('endDate').valid && this.isDateIntevalInvalid();
   }
 
   private extractAccesContractIdAndGetAccessionRegisterSummaries(params: Map<string, string>) {
@@ -256,46 +228,40 @@ export class AuditCreateComponent implements OnInit, OnDestroy {
     // Update the validators
     if (auditActions === AuditAction.AUDIT_FILE_RECTIFICATION) {
       this.form.get('evidenceAudit').setValidators(Validators.required);
+      this.form.get('originatingAgencyIds').clearValidators();
       this.form.get('auditPerimeter').clearValidators();
     } else {
-      this.clearField('evidenceAudit');
+      this.form.get('evidenceAudit').clearValidators();
+      this.form.get('evidenceAudit').setValue(null);
+      this.form.get('evidenceAudit').markAsUntouched();
+      this.form.get('originatingAgencyIds').clearValidators();
+      this.form.get('originatingAgencyIds').setValue([]);
+      this.form.get('originatingAgencyIds').markAsUntouched();
+      this.form.get('ingestOperationIds').clearValidators();
+      this.form.get('ingestOperationIds').setValue([]);
+      this.form.get('ingestOperationIds').markAsUntouched();
+      this.form.get('attachmentPositionIds').clearValidators();
+      this.form.get('attachmentPositionIds').setValue([]);
+      this.form.get('attachmentPositionIds').markAsUntouched();
       this.form.get('auditPerimeter').setValidators(Validators.required);
     }
-    this.clearField('originatingAgencyIds');
-    this.clearField('ingestOperationIds');
-    this.clearField('attachmentPositionIds');
 
-    this.form.get('startDate').clearValidators();
-    this.form.get('startDate').markAsUntouched();
-
-    this.producerServicesMultiSelect.setValue([]);
-    this.ingestOperationsEntries.setValue([]);
-    this.startDateControl.setValue(null);
-    this.endDateControl.setValue(null);
     this.allProducerServices.setValue(false);
-    this.form.get('objectId').setValue(this.startupService.getTenantIdentifier());
+    this.allNodes.setValue(true);
     this.form.get('evidenceAudit').updateValueAndValidity();
     this.form.get('originatingAgencyIds').updateValueAndValidity();
     this.form.get('ingestOperationIds').updateValueAndValidity();
     this.form.get('auditPerimeter').updateValueAndValidity();
-    this.form.get('startDate').updateValueAndValidity();
-    this.form.get('endDate').updateValueAndValidity();
     this.updateObjectIdValidators();
     this.form.updateValueAndValidity();
-  }
-
-  private clearField(fieldName: string): void {
-    this.form.get(fieldName).clearValidators();
-    this.form.get(fieldName).setValue(this.idsArray.includes(fieldName) ? [] : null);
-    this.form.get(fieldName).markAsUntouched();
   }
 
   private updateFieldsOnAllProducerServicesChange(allProducerServices: boolean): void {
     if (this.form.controls.auditActions.value !== AuditAction.AUDIT_FILE_RECTIFICATION) {
       const allOptions = this.producerServicesOptions.map((option) => option.key);
-      this.form.controls.originatingAgencyIds.setValue(allProducerServices ? allOptions : this.producerServicesMultiSelect.value);
+      this.form.controls.originatingAgencyIds.setValue(allOptions);
     }
-    this.form.controls.objectId.setValue(this.startupService.getTenantIdentifier());
+    this.form.controls.objectId.setValue(allProducerServices ? this.startupService.getTenantIdentifier() : null);
     this.form.get('originatingAgencyIds').updateValueAndValidity();
     this.updateObjectIdValidators();
     this.form.updateValueAndValidity();
@@ -304,41 +270,24 @@ export class AuditCreateComponent implements OnInit, OnDestroy {
   private updateFieldsOnAuditPerimeterChange(auditPerimeter: AuditPerimeter) {
     if (auditPerimeter === AuditPerimeter.AUDIT_PERIMETER_ORIGINATING_AGENCY) {
       this.form.get('originatingAgencyIds').setValidators(Validators.required);
-      this.clearField('ingestOperationIds');
-      this.clearField('attachmentPositionIds');
-      this.form.get('startDate').clearValidators();
-      this.form.get('startDate').markAsUntouched();
-    } else if (auditPerimeter === AuditPerimeter.AUDIT_PERIMETER_INGEST_OPERATION_IDENTIFIER) {
+      this.form.get('ingestOperationIds').clearValidators();
+      this.form.get('attachmentPositionIds').clearValidators();
+    } else if (auditPerimeter === AuditPerimeter.AUDIT_PERIMETER_INGEST_OPERATION) {
       this.form.get('ingestOperationIds').setValidators(Validators.required);
-      this.clearField('originatingAgencyIds');
-      this.clearField('attachmentPositionIds');
-      this.form.get('startDate').clearValidators();
-      this.form.get('startDate').markAsUntouched();
+      this.form.get('originatingAgencyIds').clearValidators();
+      this.form.get('originatingAgencyIds').setValue([]);
+      this.form.get('originatingAgencyIds').markAsUntouched();
+      this.form.get('attachmentPositionIds').clearValidators();
     } else if (auditPerimeter === AuditPerimeter.AUDIT_PERIMETER_ATTACHMENT_POSITION) {
       this.form.get('attachmentPositionIds').setValidators(Validators.required);
-      this.clearField('originatingAgencyIds');
-      this.clearField('ingestOperationIds');
-      this.form.get('startDate').clearValidators();
-      this.form.get('startDate').markAsUntouched();
-    } else if (auditPerimeter === AuditPerimeter.AUDIT_PERIMETER_INGEST_OPERATION_PERIOD) {
-      this.form.get('startDate').setValidators([Validators.required, CustomValidators.date(DatePattern.YEAR_MONTH_DAY)]);
-      this.form.get('endDate').setValidators([CustomValidators.date(DatePattern.YEAR_MONTH_DAY)]);
-      this.clearField('originatingAgencyIds');
-      this.clearField('attachmentPositionIds');
-      this.clearField('ingestOperationIds');
+      this.form.get('originatingAgencyIds').clearValidators();
+      this.form.get('originatingAgencyIds').setValue([]);
+      this.form.get('originatingAgencyIds').markAsUntouched();
+      this.form.get('attachmentPositionIds').clearValidators();
+      this.form.get('ingestOperationIds').clearValidators();
     }
-    this.producerServicesMultiSelect.setValue([]);
-    this.ingestOperationsEntries.setValue([]);
-    this.allProducerServices.setValue(false);
-    this.startDateControl.setValue(null);
-    this.endDateControl.setValue(null);
-    this.form.get('objectId').setValue(this.startupService.getTenantIdentifier());
     this.form.get('ingestOperationIds').updateValueAndValidity();
     this.form.get('attachmentPositionIds').updateValueAndValidity();
-    this.form.get('originatingAgencyIds').updateValueAndValidity();
-    this.form.get('startDate').updateValueAndValidity();
-    this.form.get('endDate').updateValueAndValidity();
-    this.updateObjectIdValidators();
     this.form.updateValueAndValidity();
   }
 
@@ -367,25 +316,15 @@ export class AuditCreateComponent implements OnInit, OnDestroy {
    * Add or remove the required validator on the field 'objectId'
    */
   private updateObjectIdValidators() {
-    if (this.form.value.auditActions !== AuditAction.AUDIT_FILE_RECTIFICATION) {
+    if (
+      !this.allProducerServices.value &&
+      this.accessionRegisterSummaries &&
+      this.form.value.auditActions !== AuditAction.AUDIT_FILE_RECTIFICATION
+    ) {
       this.form.get('objectId').setValidators(Validators.required);
     } else {
       this.form.get('objectId').clearValidators();
     }
-  }
-
-  public initPeriodScreen() {
-    this.refiningScreen = true;
-    this.form.get('startDate').setValidators([Validators.required, CustomValidators.date(DatePattern.YEAR_MONTH_DAY)]);
-    this.form.get('endDate').setValidators([CustomValidators.date(DatePattern.YEAR_MONTH_DAY)]);
-  }
-
-  public isDateIntevalInvalid(): boolean {
-    if (this.form.get('startDate').value === null) return true;
-    let startDate = new Date(this.form.get('startDate').value);
-    if (this.form.get('endDate').value === null) return false;
-    let endDate = new Date(this.form.get('endDate').value);
-    return this.form.get('endDate').invalid || this.form.get('endDate').pending || endDate < startDate;
   }
 
   isStepOneValid(): boolean {
@@ -402,7 +341,7 @@ export class AuditCreateComponent implements OnInit, OnDestroy {
       (this.allProducerServices.value || (this.producerServicesMultiSelect.value && this.producerServicesMultiSelect.value.length > 0));
 
     const isIngestOperationValid =
-      this.form.value.auditPerimeter === AuditPerimeter.AUDIT_PERIMETER_INGEST_OPERATION_IDENTIFIER &&
+      this.form.value.auditPerimeter === AuditPerimeter.AUDIT_PERIMETER_INGEST_OPERATION &&
       this.accessContractId != null &&
       !this.form.get('ingestOperationIds').invalid &&
       !this.form.get('ingestOperationIds').pending;
@@ -412,22 +351,23 @@ export class AuditCreateComponent implements OnInit, OnDestroy {
       this.accessContractId != null &&
       this.selectedNodes.value.included.length > 0;
 
-    const isIngestPeriodValid =
-      this.form.value.auditPerimeter === AuditPerimeter.AUDIT_PERIMETER_INGEST_OPERATION_PERIOD &&
+    return isAttachmentPositionValid || isIngestOperationValid || isOriginatingAgencyValid;
+  }
+
+  isStepValid(): boolean {
+    const isEvidenceAuditValid = this.form.value.auditActions === AuditAction.AUDIT_FILE_CONSISTENCY && this.accessContractId != null;
+    const isRectificationAuditValid =
+      this.form.value.auditActions === AuditAction.AUDIT_FILE_RECTIFICATION &&
       this.accessContractId != null &&
-      !this.form.get('startDate').invalid &&
-      !this.form.get('startDate').pending;
-
-    if (this.refiningScreen) {
-      return (isOriginatingAgencyValid || isAttachmentPositionValid) && !this.isDateIntevalInvalid();
-    }
-
-    return (
-      isAttachmentPositionValid ||
-      isIngestOperationValid ||
-      isOriginatingAgencyValid ||
-      (isIngestPeriodValid && !this.isDateIntevalInvalid())
-    );
+      !this.form.get('evidenceAudit').invalid &&
+      !this.form.get('evidenceAudit').pending;
+    const isOtherAuditValid =
+      (this.form.value.auditActions === AuditAction.AUDIT_FILE_INTEGRITY ||
+        this.form.value.auditActions === AuditAction.AUDIT_FILE_EXISTING) &&
+      this.accessContractId != null &&
+      !this.form.get('objectId').invalid &&
+      !this.form.get('objectId').pending;
+    return isEvidenceAuditValid || isRectificationAuditValid || isOtherAuditValid;
   }
 
   onCancel() {

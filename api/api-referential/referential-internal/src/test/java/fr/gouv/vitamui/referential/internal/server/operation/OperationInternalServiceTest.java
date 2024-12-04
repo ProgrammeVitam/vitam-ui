@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.model.AuditOptions;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
@@ -64,7 +63,6 @@ class OperationInternalServiceTest {
 
     @Test
     void updateAuditDslQuery_should_handle_dsl_types() throws JsonProcessingException, FileNotFoundException {
-        VitamContext vitamContext = new VitamContext(1);
         // AuditType ko
         auditCreateOptions.setAuditType("fakeAuditType");
         auditCreateOptions.setIngestOperationIds(new String[] { "fakeIngestOperationId1", "fakeIngestOperationId2" });
@@ -77,7 +75,7 @@ class OperationInternalServiceTest {
         auditCreateOptions.setAuditPerimeter(AUDIT_PERIMETER_ORIGINATING_AGENCY);
         auditCreateOptions.setAuditActions(AUDIT_FILE_CONSISTENCY); // or AUDIT_FILE_RECTIFICATION
         // set unexpected threshold
-        assertThatCode(() -> operationInternalService.updateAuditDslQuery(auditCreateOptions, null, vitamContext))
+        assertThatCode(() -> operationInternalService.updateAuditDslQuery(auditCreateOptions, null))
             .isInstanceOf(BadRequestException.class)
             .hasMessageContaining("Invalid audit query");
 
@@ -86,19 +84,18 @@ class OperationInternalServiceTest {
         String AUDIT_FILE_EXISTING = "AUDIT_FILE_EXISTING";
         auditCreateOptions.setAuditActions(AUDIT_FILE_EXISTING); // or AUDIT_FILE_INTEGRITY
         // load query
-        assertThatCode(() -> operationInternalService.updateAuditDslQuery(auditCreateOptions, null, vitamContext))
+        assertThatCode(() -> operationInternalService.updateAuditDslQuery(auditCreateOptions, null))
             .isInstanceOf(BadRequestException.class)
             .hasMessageContaining("Invalid audit query");
 
         // check expected threshold
         assertThatCode(
-            () -> operationInternalService.updateAuditDslQuery(auditCreateOptions, Optional.empty(), vitamContext)
+            () -> operationInternalService.updateAuditDslQuery(auditCreateOptions, Optional.empty())
         ).doesNotThrowAnyException();
     }
 
     @Test
     void updateAuditDslQuery_should_handle_dsl_attributes() throws JsonProcessingException, FileNotFoundException {
-        VitamContext vitamContext = new VitamContext(1);
         // check that dsl should not include projection
         auditCreateOptions.setAuditType("dsl");
         auditCreateOptions.setIngestOperationIds(new String[] { "fakeIngestOperationId1", "fakeIngestOperationId2" });
@@ -111,12 +108,12 @@ class OperationInternalServiceTest {
         auditCreateOptions.setAuditPerimeter(AUDIT_PERIMETER_ORIGINATING_AGENCY);
         String AUDIT_FILE_EXISTING = "AUDIT_FILE_EXISTING";
         auditCreateOptions.setAuditActions(AUDIT_FILE_EXISTING); // or AUDIT_FILE_INTEGRITY
-        auditOptions = operationInternalService.updateAuditDslQuery(auditCreateOptions, Optional.of(10L), vitamContext);
+        auditOptions = operationInternalService.updateAuditDslQuery(auditCreateOptions, Optional.of(10L));
         Assertions.assertFalse(containsAttribute(auditOptions.getQuery(), DSL_QUERY_PROJECTION));
 
         // check that dsl should include projection
         auditCreateOptions.setAuditActions(AUDIT_FILE_CONSISTENCY); // or AUDIT_FILE_RECTIFICATION
-        auditOptions = operationInternalService.updateAuditDslQuery(auditCreateOptions, Optional.of(10L), vitamContext);
+        auditOptions = operationInternalService.updateAuditDslQuery(auditCreateOptions, Optional.of(10L));
         Assertions.assertTrue(containsAttribute(auditOptions.getQuery(), DSL_QUERY_PROJECTION));
     }
 

@@ -40,7 +40,6 @@ import { PickerType } from './multiple-options-datepicker.interface';
 import { DatePipe } from '@angular/common';
 import { MatDatepicker } from '@angular/material/datepicker';
 import { CustomValidators, DatePattern } from '../../object-editor/pattern.validator';
-import { coerceBooleanProperty } from '@angular/cdk/coercion';
 
 export const MULTIPLE_OPTIONS_DATEPICKER_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -57,17 +56,8 @@ export const MULTIPLE_OPTIONS_DATEPICKER_VALUE_ACCESSOR: any = {
 export class MultipleOptionsDatepickerComponent implements ControlValueAccessor, OnInit {
   @Input() pickerType: PickerType = 'day';
   @Input() startView: MatDatepicker<Date>['startView'];
+  @Input() required = false;
   @Input() label = 'DATE.DATE';
-  @Input() hint: string;
-
-  @Input()
-  get required(): boolean {
-    return this._required;
-  }
-  set required(value: boolean) {
-    this._required = coerceBooleanProperty(value);
-  }
-  private _required = false;
 
   date: FormControl;
   // We store a value specific for the datepicker in order to store a Date object and not a String for datepicker to keep the currently selected value
