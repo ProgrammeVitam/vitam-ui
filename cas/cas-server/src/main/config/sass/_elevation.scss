@@ -9,7 +9,7 @@
 @mixin shadow-accessible($important: null) {
   box-shadow:
     0 0 1px rgba(var(--vitamui-grey-600-rgb), 1),
-    0 1px 2px rgba(var(--vitamui-grey-900-rgb), 0.2) is-important($important);
+    0 1px 2px rgba(var(--vitamui-grey-900-rgb), 0.4) is-important($important);
 }
 
 @mixin shadow-2dp-dark($important: null) {

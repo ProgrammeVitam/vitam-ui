@@ -607,7 +607,7 @@ button, textarea, input {
     outline: none;
     border: 1px solid transparent;
     border-radius: 5px;
-    box-shadow: 0 0 1px rgba(var(--vitamui-grey-600-rgb), 1), 0 1px 2px rgba(var(--vitamui-grey-900-rgb), 0.2) ;
+    box-shadow: 0 0 1px rgba(var(--vitamui-grey-600-rgb), 1), 0 1px 2px rgba(var(--vitamui-grey-900-rgb), 0.4) ;
     transition: border-color 200ms ease-out;
     height: 50px;
     padding: 0 30px;
