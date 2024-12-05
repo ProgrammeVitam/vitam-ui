@@ -307,11 +307,6 @@ public class ApiReferentialServerConfig extends AbstractContextConfiguration {
     }
 
     @Bean
-    public SchemaClient schemaClient(final ReferentialInternalRestClientFactory referentialInternalRestClientFactory) {
-        return referentialInternalRestClientFactory.getSchemaClient();
-    }
-
-    @Bean
     public AccessContractInternalWebClient accessContractInternalWebClient(
         final ReferentialInternalWebClientFactory referentialInternalWebClientFactory
     ) {
@@ -323,5 +318,19 @@ public class ApiReferentialServerConfig extends AbstractContextConfiguration {
         final ReferentialInternalWebClientFactory referentialInternalWebClientFactory
     ) {
         return referentialInternalWebClientFactory.getIngestContractInternalWebClient();
+    }
+
+    @Bean
+    public SchemaInternalWebClient schemaInternalWebClient(
+        final ReferentialInternalWebClientFactory referentialInternalWebClientFactory
+    ) {
+        return referentialInternalWebClientFactory.getSchemaInternalWebClient();
+    }
+
+    @Bean
+    public SchemaInternalRestClient schemaInternalRestClient(
+        final ReferentialInternalRestClientFactory referentialInternalRestClientFactory
+    ) {
+        return referentialInternalRestClientFactory.getSchemaInternalRestClient();
     }
 }

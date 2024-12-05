@@ -25,21 +25,30 @@
  * accept its terms.
  */
 
-package fr.gouv.vitamui.referential.internal.server.schema;
+package fr.gouv.vitamui.referential.internal.server.rest;
 
+import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.VitamClientException;
+import fr.gouv.vitamui.common.security.SafeFileChecker;
+import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import fr.gouv.vitamui.referential.common.dto.SchemaDto;
 import fr.gouv.vitamui.referential.common.exception.NoCollectionException;
 import fr.gouv.vitamui.referential.common.model.Collection;
+import fr.gouv.vitamui.referential.internal.server.schema.SchemaInternalService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.Produces;
@@ -50,13 +59,18 @@ import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
 @RestController
 @RequestMapping(CommonConstants.SCHEMAS)
-public class SchemaController {
+public class SchemaInternalController {
 
-    private final SchemaService schemaService;
+    private static final Logger LOGGER = LoggerFactory.getLogger(SchemaInternalController.class);
+
+    private final SchemaInternalService schemaInternalService;
 
     @Autowired
-    public SchemaController(final SchemaService schemaService) {
-        this.schemaService = schemaService;
+    private InternalSecurityService securityService;
+
+    @Autowired
+    public SchemaInternalController(final SchemaInternalService schemaInternalService) {
+        this.schemaInternalService = schemaInternalService;
     }
 
     @GetMapping
@@ -67,13 +81,25 @@ public class SchemaController {
             throw new NoCollectionException();
         }
 
-        return ResponseEntity.ok(schemaService.getSchemas(collections));
+        return ResponseEntity.ok(schemaInternalService.getSchemas(collections));
     }
 
     @GetMapping("/archive-unit-profile/{id}")
     @Produces(APPLICATION_JSON)
     public ResponseEntity<SchemaDto> getArchiveUnitProfileSchema(@PathVariable @NotNull String id)
         throws VitamClientException {
-        return ResponseEntity.ok(schemaService.getArchiveUnitProfileSchema(id));
+        return ResponseEntity.ok(schemaInternalService.getArchiveUnitProfileSchema(id));
+    }
+
+    @PostMapping(CommonConstants.IMPORT_UNIT_SCHEMAS)
+    public ResponseEntity<Void> importUnitSchema(
+        @RequestParam("fileName") String fileName,
+        @RequestParam("file") MultipartFile file
+    ) {
+        SanityChecker.isValidFileName(fileName);
+        LOGGER.debug("importing schema file {}", fileName);
+        SafeFileChecker.checkSafeFilePath(file.getOriginalFilename());
+        final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
+        return schemaInternalService.importUnitSchema(vitamContext, file);
     }
 }

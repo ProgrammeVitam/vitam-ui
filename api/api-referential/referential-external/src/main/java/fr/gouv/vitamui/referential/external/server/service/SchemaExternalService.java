@@ -27,34 +27,56 @@
 
 package fr.gouv.vitamui.referential.external.server.service;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import fr.gouv.vitamui.referential.common.dto.SchemaDto;
 import fr.gouv.vitamui.referential.common.model.Collection;
-import fr.gouv.vitamui.referential.internal.client.SchemaClient;
+import fr.gouv.vitamui.referential.internal.client.SchemaInternalRestClient;
+import fr.gouv.vitamui.referential.internal.client.SchemaInternalWebClient;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Set;
 
 @Service
-public class SchemaService {
+public class SchemaExternalService {
 
-    private final SchemaClient client;
+    private final SchemaInternalRestClient schemaInternalRestClient;
+    private final SchemaInternalWebClient schemaInternalWebClient;
 
-    public SchemaService(SchemaClient client) {
-        this.client = client;
+    public SchemaExternalService(
+        SchemaInternalRestClient schemaInternalRestClient,
+        SchemaInternalWebClient schemaInternalWebClient
+    ) {
+        this.schemaInternalRestClient = schemaInternalRestClient;
+        this.schemaInternalWebClient = schemaInternalWebClient;
     }
 
     public List<SchemaDto> getSchemas(final InternalHttpContext internalHttpContext, final Set<Collection> collections)
         throws URISyntaxException {
-        return client.getSchemas(internalHttpContext, collections);
+        return schemaInternalRestClient.getSchemas(internalHttpContext, collections);
     }
 
     public SchemaDto getArchiveUnitProfileSchema(
         final InternalHttpContext internalHttpContext,
         final String archiveUnitProfileId
     ) throws URISyntaxException {
-        return client.getArchiveUnitProfileSchema(internalHttpContext, archiveUnitProfileId);
+        return schemaInternalRestClient.getArchiveUnitProfileSchema(internalHttpContext, archiveUnitProfileId);
+    }
+
+    public JsonNode importUnitSchemas(
+        final InternalHttpContext internalHttpContext,
+        String originalFilename,
+        MultipartFile file
+    ) {
+        if (originalFilename == null) {
+            throw new IllegalArgumentException("Filename cannot be null");
+        }
+        if (file == null) {
+            throw new IllegalArgumentException("File cannot be null");
+        }
+        return schemaInternalWebClient.importUnitSchema(internalHttpContext, originalFilename, file);
     }
 }

@@ -1,5 +1,5 @@
-/*
- * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2022)
+/**
+ * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
  *
  * contact@programmevitam.fr
@@ -34,32 +34,34 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { FileTypes } from 'projects/vitamui-library/src/lib/models/file-types.enum';
+package fr.gouv.vitamui.referential.common.dto;
 
-export interface ImportDialogParam {
-  title: string;
-  subtitle: string;
-  fileFormatDetailInfo?: string;
-  allowedFiles: FileTypes[];
-  referential: ReferentialTypes;
-  successMessage: string;
-  errorMessage?: string;
-  iconMessage: string;
-}
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.opencsv.bean.CsvBindByName;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
-export enum ReferentialTypes {
-  AGENCY = 'agency',
-  ACCESS_CONTRACTS = 'accesscontracts',
-  INGEST_CONTRACT = 'ingestcontract',
-  FILE_FORMAT = 'fileformat',
-  ONTOLOGY = 'ontology',
-  SCHEMA = 'schemas',
-  RULE = 'rule',
-}
+import java.io.Serializable;
 
-export interface ImportError {
-  line: number;
-  column: string;
-  error: string;
-  data: string;
+@ToString
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@Getter
+@Setter
+public class ImportSchemaDto implements Serializable {
+
+    @CsvBindByName(column = "Path")
+    private String path;
+
+    @CsvBindByName(column = "Cardinality")
+    private String cardinality;
+
+    @CsvBindByName(column = "IsObject")
+    private boolean isObject;
+
+    @CsvBindByName(column = "ShortName")
+    private String shortName;
+
+    @CsvBindByName(column = "Description")
+    private String description;
 }

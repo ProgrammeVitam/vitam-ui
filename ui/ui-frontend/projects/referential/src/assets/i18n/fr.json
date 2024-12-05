@@ -20,17 +20,21 @@
   },
   "IMPORT_DIALOG": {
     "TITLE": "Versement Manuel",
+    "SCHEMA_TITLE": "Importer dans le schéma",
     "ACCESS_CONTRACT_SUBTITLE": "Import de contrat(s) d'accès",
     "INGEST_CONTRACT_SUBTITLE": "Import de contrat(s) d'entrée",
-    "AGENCY_SUBTITLE": "Import d’un référentiel de service agent",
+    "AGENCY_SUBTITLE": "Import d'un référentiel de service agent",
     "RULES_SUBTITLE": "Import d'un référentiel de règle de gestion",
     "FILE_FORMAT_SUBTITLE": "Import d'un référentiel de format de fichier",
     "ONTOLOGY_SUBTITLE": "Import d'un référentiel d'ontologie",
+    "ONTOLOGY_FORMAT_JSON": "Le fichier d'import doit être au format json",
+    "SCHEMA_SUBTITLE": "Import de vocabulaire(s) dans un schema",
+    "SCHEMA_FORMAT_JSON": "Le fichier d'import doit être au format csv, encodé en UTF8, avec séparateur de point virgule",
     "IMPORT": "Importer",
     "DRAG_DROP": "Glisser / Déposer ou ",
     "CHOOSE_FILE": "cliquer pour parcourir",
-    "FILE_FORMAT_DETAIL_INFO": "Le fichier d’import doit être au format csv, encodé en UTF8, avec séparateur de point virgule",
-    "WRONG_FORMAT": "Le format de fichier n’est pas supporté, veuillez choisir un format {{ format }}",
+    "FILE_FORMAT_DETAIL_INFO": "Le fichier d'import doit être au format csv, encodé en UTF8, avec séparateur de point virgule",
+    "WRONG_FORMAT": "Le format de fichier n'est pas supporté, veuillez choisir un format {{ format }}",
     "ERRORS_DURING_IMPORT": "Une ou plusieurs erreurs ont été identifiées dans le fichier d'import.<br>Veuillez consulter le détail de ces erreurs et corriger le fichier d'import.",
     "ERRORS_LIST": "Liste des erreurs identifiées:",
     "IMPORT_ERROR_MESSAGE": {
@@ -72,9 +76,9 @@
       "PARAMETRAGE_IDENTIFICATION_PERENNE": "Paramétrage de l'identification pérenne",
       "PARAMETRAGE_IDENTIFICATION_PERENNE_TOOLTIP": "Paramétrage de l'identification pérenne",
       "STORAGE_POLICIES": "Paramétrage des stratégies de stockage",
-      "STORAGE_POLICIES_TOOLTIP": "Il est recommandé, dans un contrat de gestion, de déclarer les même stratégies pour les métadonnées des unités archivistiques et des métadonnées des groupes d’objets techniques.",
-      "UNIT_STRATEGY": "Pour les métadonnées décrivant des unités d’archives (et leur journal du cycle de vie)",
-      "OBJECT_GROUP_STRATEGY": "Pour les métadonnées décrivant des groupes d’objets techniques (et leur journal du cycle de vie)",
+      "STORAGE_POLICIES_TOOLTIP": "Il est recommandé, dans un contrat de gestion, de déclarer les même stratégies pour les métadonnées des unités archivistiques et des métadonnées des groupes d'objets techniques.",
+      "UNIT_STRATEGY": "Pour les métadonnées décrivant des unités d'archives (et leur journal du cycle de vie)",
+      "OBJECT_GROUP_STRATEGY": "Pour les métadonnées décrivant des groupes d'objets techniques (et leur journal du cycle de vie)",
       "OBJECT_STRATEGY": "Pour les fichiers numériques (objets binaires)",
       "SUBMIT": "Confirmer",
       "MANAGEMENT_CONTRACT_CREATED": "Le contrat de gestion est bien créé",
@@ -121,8 +125,8 @@
       },
       "STORAGE_DETAILS": {
         "STORAGE_STRATEGY": "Stratégies de stockage",
-        "UNIT_STRATEGY": "Unité d’archives",
-        "OBJECT_GROUP_STRATEGY": "Groupes d’objets techniques",
+        "UNIT_STRATEGY": "Unité d'archives",
+        "OBJECT_GROUP_STRATEGY": "Groupes d'objets techniques",
         "OBJECT_STRATEGY": "Fichiers numériques"
       }
     },
@@ -251,9 +255,9 @@
       "CHECK": "Vérification des journaux sécurisés",
       "UPDATE": "Mise à jour",
       "EXPORT_DIP": "Export du DIP",
-      "RECLASSIFICATION": "Modification d’arborescence des unités archivistiques",
+      "RECLASSIFICATION": "Modification d'arborescence des unités archivistiques",
       "PRESERVATION": "Processus global de préservation",
-      "EXTERNAL_LOGBOOK": "Journalisation d’événements externes"
+      "EXTERNAL_LOGBOOK": "Journalisation d'événements externes"
     }
   },
   "STATE_VALUE": {
@@ -307,9 +311,9 @@
       "ORIGINATING_AGENCY": "Service producteur",
       "ARCHIVAL_AGREEMENT": "Contrat d'entrée",
       "ACQUISITION_INFORMATION": "Modalité d'entrée",
-      "TOTAL_UNITS": "Nbre initial d’AU",
-      "TOTAL_OBJECTS_GROUPS": "Nbre initial grpes d’objets ",
-      "TOTAL_OBJECTS": "Nbre initial d’objets",
+      "TOTAL_UNITS": "Nbre initial d'AU",
+      "TOTAL_OBJECTS_GROUPS": "Nbre initial grpes d'objets ",
+      "TOTAL_OBJECTS": "Nbre initial d'objets",
       "OBJECT_SIZE_INGESTED": "Volumétrie initiale",
       "STATUS": "Statut",
       "NO_RESULT": "Aucun résultat",
@@ -513,6 +517,8 @@
       "SEARCH_PLACEHOLDER": "Nom, identifiant",
       "CREATE_VOCABULARY": "Créer un vocabulaire",
       "IMPORT": "Importer",
+      "IMPORT_ONTOLOGY": "Importer une ontologie",
+      "IMPORT_SCHEMA": "Importer dans le schema",
       "ARRAY": {
         "IDENTIFIER": "Identifiant",
         "NAME": "Nom",
@@ -535,7 +541,7 @@
       "IDENTIFIER_TOOLTIP": "Pour les vocabulaires externes, cet identifiant correspond au nom de la métadonnée telle qu'elle est nommée dans le bordereau de transfert ou dans un profil d'unité archivistique",
       "INDEXING_MODE_TOOLTIP": "Type d'indexation du vocabulaire, correspondant à un type attendu par le moteur Elastic Search",
       "COLLECTION_TOOLTIP": "Collection de la base Mongo DB qui utilise le vocabulaire",
-      "NAME_TOOLTIP": "Label du champ tel qu'il s’affichera en recherche et consultation de cette métadonnée",
+      "NAME_TOOLTIP": "Label du champ tel qu'il s'affichera en recherche et consultation de cette métadonnée",
       "SIZE_TOOLTIP": "La valeur attendue pour cette métadonnée correspond pour \"Court\" à quelques mots ; pour \"Moyen\" à une phrase et pour \"Long\" à un paragraphe",
       "NAME_ALREADY_EXISTS": "Nom déjà utilisé",
       "IDENTIFIER_ALREADY_EXISTS": "Identifiant déjà utilisé",
@@ -583,7 +589,7 @@
       "PERIOD": "Durée",
       "UNIT_MEASURE": "Unité de mesure",
       "IDENTIFIER_TOOLTIP": "L'identifiant est unique par type de règle. Il ne doit pas comprendre d'espace ou de caractère accentué",
-      "TYPE_TOOLTIP": "StorageRule : Durée d’utilité courante - AppraisalRule : Durée d’utilité administrative - AccessRule : Délai de communicabilité - ReuseRule: Durée de réutilisation - DisseminationRule : Délai de diffusion - ClassificationRule : Durée de classification",
+      "TYPE_TOOLTIP": "StorageRule : Durée d'utilité courante - AppraisalRule : Durée d'utilité administrative - AccessRule : Délai de communicabilité - ReuseRule: Durée de réutilisation - DisseminationRule : Délai de diffusion - ClassificationRule : Durée de classification",
       "NAME_ALREADY_EXISTS": "Nom déjà utilisé",
       "IDENTIFIER_ALREADY_EXISTS": "Le code de la règle renseigné existe déjà",
       "IDENTIFIER_NO_COMPLIANT": "Identifiant non conforme"
@@ -732,9 +738,9 @@
       "INGEST": "Entrée",
       "INGEST_TEST": "Entrée à blanc",
       "EXPORT_DIP": "Export du DIP",
-      "EXTERNAL_LOGBOOK": "Journalisation d’événements externes",
+      "EXTERNAL_LOGBOOK": "Journalisation d'événements externes",
       "UPDATE": "Mise à jour",
-      "RECLASSIFICATION": "Modification d’arborescence des unités archivistiques",
+      "RECLASSIFICATION": "Modification d'arborescence des unités archivistiques",
       "PRESERVATION": "Processus global de préservation",
       "STORAGE_BACKUP": "Sauvegarde des journaux des écritures",
       "TRACEABILITY": "Sécurisation",
@@ -760,7 +766,7 @@
   },
   "INGEST_CONTRACT": {
     "HOME": {
-      "TITLE": "Contrats d’entrée",
+      "TITLE": "Contrats d'entrée",
       "SEARCH_PLACEHOLDER": "Nom, identifiant",
       "CREATE_INGEST_CONTRACT": "Créer un contrat d'entrée",
       "IMPORT": "Importer",
@@ -770,7 +776,7 @@
         "NAME": "Nom",
         "IDENTIFIER": "Identifiant",
         "CREATION_DATE": "Date de création",
-        "PROFILE_COUNT": "Nombre de profils d’archivage",
+        "PROFILE_COUNT": "Nombre de profils d'archivage",
         "ACTIVE": "Actif",
         "INACTIVE": "Inactif"
       }
@@ -837,9 +843,9 @@
       "ALLOW_UNIDENTIFIED_FORMATS": "Autoriser les formats non identifiés",
       "ALLOW_UNIDENTIFIED_FORMATS_DESCRIPTION": "Autoriser les formats d'objets binaires non référencés dans le référentiel des formats",
       "BINARY_OBJECT_MANDATORY": "Original numérique obligatoire",
-      "BINARY_OBJECT_MANDATORY_TOOLTIP": "Option permettant de rendre obligatoire ou non la présence d’un objet binaire de type « Master »",
+      "BINARY_OBJECT_MANDATORY_TOOLTIP": "Option permettant de rendre obligatoire ou non la présence d'un objet binaire de type « Master »",
       "ALL_USAGES_ALLOWED": "Tous usages autorisés",
-      "ALL_USAGES_ALLOWED_TOOLTIP": "Usage(s) autorisé(s) dans le cas de l’ajout d’un objet binaire à un groupe d’objets techniques existant",
+      "ALL_USAGES_ALLOWED_TOOLTIP": "Usage(s) autorisé(s) dans le cas de l'ajout d'un objet binaire à un groupe d'objets techniques existant",
       "COMPUTING_INHERITED_RULES": "Calcul des héritages de règles et d'indexation des échéances",
       "COMPUTING_INHERITED_RULES_TOOLIP": "Indexation des unités archivistiques indiquée comme invalide lors de leur entrée afin qu'elles fassent l'objet d'un calcul lors d'un processus automatique déclenché périodiquement",
       "ATTACHEMENT_POSITION": "Position de rattachement",
@@ -881,7 +887,7 @@
         "TRACEABILITY_TYPES": {
           "STP_OP_SECURISATION": "Journal des opérations",
           "LOGBOOK_UNIT_LFC_TRACEABILITY": "Cycle de vie des unités archivistiques",
-          "LOGBOOK_OBJECTGROUP_LFC_TRACEABILITY": "Cycle de vie des groupes d’objets",
+          "LOGBOOK_OBJECTGROUP_LFC_TRACEABILITY": "Cycle de vie des groupes d'objets",
           "STP_STORAGE_SECURISATION": "Journal des écritures"
         }
       }
@@ -948,7 +954,7 @@
     "CREATE_DIALOG": {
       "TITLE": "Générer un relevé de valeur probante",
       "SUBTITLE": "Informations",
-      "UNIT_ID": "Identifiant de l’unité archivistique",
+      "UNIT_ID": "Identifiant de l'unité archivistique",
       "USAGE": "Sélectionner un usage",
       "VERSION": "Version",
       "SUBMIT": "Générer le relevé",
@@ -986,13 +992,13 @@
         "OPERATION_CATEGORY": "Catégorie d'opération",
         "EXTERNAL_AGENTS_INDENTIFIERS": "Identifiant des agents externes",
         "ASSOCIATED_CONTRACT": "Contrat associé",
-        "ASSIGMENT_DATE": "Date d’affectation",
-        "OPERATION_IDENTIFIER": "Identification de l’opération",
+        "ASSIGMENT_DATE": "Date d'affectation",
+        "OPERATION_IDENTIFIER": "Identification de l'opération",
         "TRANSACTION_NUMBER": "Numéro de transaction",
         "APPLICATION_IDENTIFIER": "Identifiant de l'application",
-        "OBJECT_IDENTIFIER": "Identification de l’objet",
+        "OBJECT_IDENTIFIER": "Identification de l'objet",
         "REPORT": "Rapport",
-        "ADDITIONAL_OPERATION_INFORMATIONS": "Informations complémentaires sur l’opération",
+        "ADDITIONAL_OPERATION_INFORMATIONS": "Informations complémentaires sur l'opération",
         "MESSAGE": "Résultat"
       },
       "DETAILS": {
@@ -1012,7 +1018,7 @@
       "ALL_PRODUCERS_SEARCHBAR_PLACEHOLDER": "Taper l'ID ou le nom de service producteur...",
       "ALL_NODES": "Toutes les positions de rattachement ",
       "NODES": "Positions de rattachement",
-      "EVIDENCE_AUDIT_IDENTIFIER": "Identifiant de l’audit de cohérence",
+      "EVIDENCE_AUDIT_IDENTIFIER": "Identifiant de l'audit de cohérence",
       "CHOOSE_ATTACHMENT_POSITION": "Choisir une position de rattachement",
       "ENTER_INGEST_OPERATIONS_IDENTIFIERS": "Saisir le(s) identifiant(s) d'opération d'entrée",
       "ENTER_INGEST_OPERATIONS_IDENTIFIERS_PLACEHOLDER": "Identifiant(s) d'opération d'entrée séparés par des virgules",
@@ -1086,8 +1092,8 @@
     "RULE_EXPORT_ALL": "Export des règles de gestion en cours...",
     "EXPORT_CSV_LIMIT_REACHED": "Il n'est pas possible de réaliser un export csv sur plus de {{ limit }} résultats de recherche, veuillez restreindre votre sélection ou affiner votre recherche.",
     "NO_ACCESS_CONTRACT_LINKED": "Aucun contrat d'accès n'est associé à l'utilisateur",
-    "TRACEABILITY_OPERATION_SUCCESS": "L’audit de vérification des journaux sécurisés a été lancé.",
-    "TRACEABILITY_OPERATION_FAILED": "L’audit de vérification des journaux sécurisés a échoué.",
+    "TRACEABILITY_OPERATION_SUCCESS": "L'audit de vérification des journaux sécurisés a été lancé.",
+    "TRACEABILITY_OPERATION_FAILED": "L'audit de vérification des journaux sécurisés a échoué.",
     "OPEN_LOGBOOK": "Voir le journal des opérations",
     "INVALID_DSL_REQUEST_FORMAT": "Format de la requête invalide"
   }

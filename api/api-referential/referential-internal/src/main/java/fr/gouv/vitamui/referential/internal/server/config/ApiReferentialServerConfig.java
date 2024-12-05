@@ -56,6 +56,7 @@ import fr.gouv.vitamui.iam.security.provider.InternalApiAuthenticationProvider;
 import fr.gouv.vitamui.iam.security.service.InternalAuthentificationService;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import fr.gouv.vitamui.referential.common.service.AccessionRegisterService;
+import fr.gouv.vitamui.referential.common.service.ImportSchemaService;
 import fr.gouv.vitamui.referential.common.service.IngestContractService;
 import fr.gouv.vitamui.referential.common.service.OntologyService;
 import fr.gouv.vitamui.referential.common.service.OperationService;
@@ -69,6 +70,7 @@ import fr.gouv.vitamui.referential.common.service.VitamRuleService;
 import fr.gouv.vitamui.referential.common.service.VitamSecurityProfileService;
 import fr.gouv.vitamui.referential.common.service.VitamUIAccessContractService;
 import fr.gouv.vitamui.referential.common.service.VitamUIManagementContractService;
+import fr.gouv.vitamui.referential.internal.server.schema.ImportSchemaConverter;
 import fr.gouv.vitamui.referential.internal.server.security.WebSecurityConfig;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -241,5 +243,15 @@ public class ApiReferentialServerConfig extends AbstractContextConfiguration {
         final IamInternalRestClientFactory iamInternalRestClientFactory
     ) {
         return iamInternalRestClientFactory.getExternalParametersInternalRestClient();
+    }
+
+    @Bean
+    public ImportSchemaConverter importSchemaConverter() {
+        return new ImportSchemaConverter();
+    }
+
+    @Bean
+    public ImportSchemaService importSchemaService(final AdminExternalClient adminExternalClient) {
+        return new ImportSchemaService(adminExternalClient);
     }
 }
