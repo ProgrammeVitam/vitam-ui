@@ -42,7 +42,6 @@ import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import {
-  ActionOnCriteria,
   CriteriaDataType,
   CriteriaOperator,
   CriteriaValue,
@@ -145,9 +144,9 @@ export class SimpleCriteriaSearchComponent implements OnInit {
 
     this.archiveExchangeDataService.receiveRemoveFromChildSearchCriteriaSubject().subscribe((criteria) => {
       if (criteria) {
-        if (criteria.action === ActionOnCriteria.ADD) {
+        if (criteria.action === 'ADD') {
           this.archiveUnitTypesCriteria.set(criteria.valueElt.id, true);
-        } else if (criteria.action === ActionOnCriteria.REMOVE) {
+        } else if (criteria.action === 'REMOVE') {
           this.archiveUnitTypesCriteria.set(criteria.valueElt.id, false);
         }
       }
@@ -318,7 +317,7 @@ export class SimpleCriteriaSearchComponent implements OnInit {
   }
 
   emitRemoveCriteriaEvent(keyElt: string, valueElt?: CriteriaValue) {
-    this.archiveExchangeDataService.sendRemoveFromChildSearchCriteriaAction({ keyElt, valueElt, action: ActionOnCriteria.REMOVE });
+    this.archiveExchangeDataService.sendRemoveFromChildSearchCriteriaAction({ keyElt, valueElt, action: 'REMOVE' });
   }
 
   manageUnitObjectUnitCriteria(unitObjectProperty: string) {

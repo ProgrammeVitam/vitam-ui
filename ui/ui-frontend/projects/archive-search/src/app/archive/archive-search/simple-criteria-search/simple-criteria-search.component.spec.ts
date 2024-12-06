@@ -40,7 +40,7 @@ import { FormBuilder } from '@angular/forms';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
-import { BASE_URL, CriteriaDataType, CriteriaOperator, CriteriaValue, InjectorModule } from 'vitamui-library';
+import { BASE_URL, InjectorModule, SearchCriteriaAddAction } from 'vitamui-library';
 import { ArchiveSharedDataService } from '../../../core/archive-shared-data.service';
 import { ManagementRulesSharedDataService } from '../../../core/management-rules-shared-data.service';
 import { ArchiveService } from '../../archive.service';
@@ -57,11 +57,8 @@ describe('SimpleCriteriaSearchComponent', () => {
 
   const archiveServiceStub = {
     loadFilingHoldingSchemeTree: () => of([]),
-    getOntologiesFromJson: () => of([]),
     hasArchiveSearchRole: () => of(true),
     getAccessContractById: () => of({}),
-    hasAccessContractPermissions: () => of(true),
-    getExternalOntologiesList: () => of([]),
   };
 
   const managementRulesSharedDataServiceMock = {
@@ -97,14 +94,14 @@ describe('SimpleCriteriaSearchComponent', () => {
 
   it('should not call addSimpleSearchCriteriaSubject when keyElt is null', () => {
     // Given
-    const criteriaValue: CriteriaValue = {
-      id: 'criteriaId',
-      value: 'criteriaValue',
+    const criteria: Partial<SearchCriteriaAddAction> = {
+      keyElt: null,
     };
+
     spyOn(archiveExchangeDataServiceMock, 'addSimpleSearchCriteriaSubject').and.callThrough();
 
     // When
-    component.addCriteria(null, criteriaValue, 'labelElt', true, CriteriaOperator.EQ, true, CriteriaDataType.STRING);
+    component.addCriteria(criteria as SearchCriteriaAddAction);
 
     // Then
     expect(archiveExchangeDataServiceMock.addSimpleSearchCriteriaSubject).not.toHaveBeenCalled();
@@ -129,14 +126,18 @@ describe('SimpleCriteriaSearchComponent', () => {
 
   it('should call addSimpleSearchCriteriaSubject when keyElt and CriteriaValue are not null', () => {
     // Given
-    const criteriaValue: CriteriaValue = {
-      id: 'criteriaId',
-      value: 'criteriaValue',
+    const criteria: Partial<SearchCriteriaAddAction> = {
+      keyElt: 'keyElt',
+      valueElt: {
+        id: '',
+        value: '',
+      },
     };
+
     spyOn(archiveExchangeDataServiceMock, 'addSimpleSearchCriteriaSubject').and.callThrough();
 
     // When
-    component.addCriteria('keyElt', criteriaValue, 'labelElt', true, CriteriaOperator.EQ, true, CriteriaDataType.DATE);
+    component.addCriteria(criteria as SearchCriteriaAddAction);
 
     // Then
     expect(archiveExchangeDataServiceMock.addSimpleSearchCriteriaSubject).toHaveBeenCalled();

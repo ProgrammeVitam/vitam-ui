@@ -53,7 +53,4 @@ export enum CriteriaDataType {
   INTERVAL = 'INTERVAL',
 }
 
-export enum ActionOnCriteria {
-  REMOVE = 'REMOVE',
-  ADD = 'ADD',
-}
+export type CriteriaAction = 'ADD' | 'REMOVE';

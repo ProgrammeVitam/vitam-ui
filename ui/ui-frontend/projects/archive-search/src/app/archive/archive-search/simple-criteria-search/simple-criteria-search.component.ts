@@ -40,7 +40,6 @@ import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import {
-  ActionOnCriteria,
   CriteriaDataType,
   CriteriaOperator,
   CriteriaValue,
@@ -51,10 +50,11 @@ import {
   searchCriteriaConfigs,
   SearchCriteriaEltDto,
   SearchCriteriaTypeEnum,
+  CriteriaAction,
 } from 'vitamui-library';
 import { ArchiveSharedDataService } from '../../../core/archive-shared-data.service';
 import { ManagementRulesSharedDataService } from '../../../core/management-rules-shared-data.service';
-import { debounceTime } from 'rxjs/operators';
+import { debounceTime, filter } from 'rxjs/operators';
 import { ArchiveSearchConstsEnum } from '../../models/archive-search-consts-enum';
 
 const FINAL_ACTION_TYPE = 'FINAL_ACTION_TYPE';
@@ -63,6 +63,12 @@ const ARCHIVE_UNIT_HOLDING_UNIT = 'ARCHIVE_UNIT_HOLDING_UNIT';
 const ARCHIVE_UNIT_WITH_OBJECTS = 'ARCHIVE_UNIT_WITH_OBJECTS';
 const ARCHIVE_UNIT_WITHOUT_OBJECTS = 'ARCHIVE_UNIT_WITHOUT_OBJECTS';
 const ALL_ARCHIVE_UNIT_TYPES = 'ALL_ARCHIVE_UNIT_TYPES';
+
+type ArchiveUnitType =
+  | 'ARCHIVE_UNIT_FILING_UNIT'
+  | 'ARCHIVE_UNIT_HOLDING_UNIT'
+  | 'ARCHIVE_UNIT_WITH_OBJECTS'
+  | 'ARCHIVE_UNIT_WITHOUT_OBJECTS';
 
 @Component({
   selector: 'app-simple-criteria-search',
@@ -85,9 +91,9 @@ export class SimpleCriteriaSearchComponent implements OnInit {
     `${element.Origin === 'EXTERNAL' ? 'EXT-' : ''}${element.ShortName} - ${element.FieldName}`;
 
   constructor(
+    public dialog: MatDialog,
     private formBuilder: FormBuilder,
     private archiveExchangeDataService: ArchiveSharedDataService,
-    public dialog: MatDialog,
     private managementRulesSharedDataService: ManagementRulesSharedDataService,
     private translateService: TranslateService,
     private schemaService: SchemaService,
@@ -96,11 +102,11 @@ export class SimpleCriteriaSearchComponent implements OnInit {
 
     this.translateService.onLangChange.subscribe(() => {
       if (this.archiveUnitTypesCriteria.get(ARCHIVE_UNIT_WITH_OBJECTS)) {
-        this.manageUnitObjectUnitCriteria(ARCHIVE_UNIT_WITH_OBJECTS);
+        this.synchronizeArchiveUnitCriteria(ARCHIVE_UNIT_WITH_OBJECTS);
       }
 
       if (this.archiveUnitTypesCriteria.get(ARCHIVE_UNIT_WITHOUT_OBJECTS)) {
-        this.manageUnitObjectUnitCriteria(ARCHIVE_UNIT_WITHOUT_OBJECTS);
+        this.synchronizeArchiveUnitCriteria(ARCHIVE_UNIT_WITHOUT_OBJECTS);
       }
     });
 
@@ -121,40 +127,63 @@ export class SimpleCriteriaSearchComponent implements OnInit {
     });
 
     otherCriteriaListControl.valueChanges.subscribe((schemaElements) => {
-      schemaElements.forEach((schemaElement) => {
-        const path = schemaElement.Path;
-        if (!otherCriteriaControl.get(path)) {
-          const control = formBuilder.control(undefined);
-          otherCriteriaControl.addControl(path, control);
-        }
-      });
-      const paths = schemaElements.map((se) => se.Path);
-      Object.keys(otherCriteriaControl.controls).forEach((path) => {
-        if (!paths.includes(path)) {
-          otherCriteriaControl.removeControl(path);
-        }
-      });
+      const currentPaths = Object.keys(otherCriteriaControl.controls);
+      const expectedPaths = schemaElements.map((element) => element.Path);
+
+      this.addMissingControls(expectedPaths, currentPaths, otherCriteriaControl, formBuilder);
+      this.removeObsoleteControls(expectedPaths, currentPaths, otherCriteriaControl);
     });
 
     Object.entries(this.simpleCriteriaForm.controls)
       .filter(([key, _value]) => !['otherCriteriaList'].includes(key))
       .forEach(([key, control]) => {
-        control.valueChanges.pipe(debounceTime(ArchiveSearchConstsEnum.UPDATE_DEBOUNCE_TIME)).subscribe((value) => {
-          if (value) {
+        control.valueChanges
+          .pipe(
+            debounceTime(ArchiveSearchConstsEnum.UPDATE_DEBOUNCE_TIME),
+            filter((value) => Boolean(value)),
+          )
+          .subscribe((value) => {
             this.addCriteriaFromObject({ [key]: value });
             control.reset(undefined, { emitEvent: false });
-          }
-        });
+          });
       });
 
-    this.archiveExchangeDataService.receiveRemoveFromChildSearchCriteriaSubject().subscribe((criteria) => {
-      if (criteria) {
-        if (criteria.action === ActionOnCriteria.ADD) {
-          this.archiveUnitTypesCriteria.set(criteria.valueElt.id, true);
-        } else if (criteria.action === ActionOnCriteria.REMOVE) {
-          this.archiveUnitTypesCriteria.set(criteria.valueElt.id, false);
-        }
+    this.archiveExchangeDataService
+      .receiveRemoveFromChildSearchCriteriaSubject()
+      .pipe(
+        filter((criteria) => Boolean(criteria?.valueElt?.id)),
+        filter((criteria) => Boolean(criteria?.action)),
+      )
+      .subscribe((criteria) => {
+        this.archiveUnitTypesCriteria.set(criteria.valueElt.id, criteria.action === 'ADD');
+      });
+  }
+
+  ngOnInit() {
+    this.managementRulesSharedDataService.getCriteriaSearchListToSave().subscribe((data) => {
+      this.criteriaSearchListToSave = data;
+    });
+
+    this.criteriaSearchListToSave.forEach((searchCriteria) => {
+      if (searchCriteria.criteria === ALL_ARCHIVE_UNIT_TYPES) {
+        searchCriteria.values.forEach((criteriaValue) => {
+          this.archiveUnitTypesCriteria.set(criteriaValue.id, true);
+        });
       }
+      searchCriteria.values.forEach((value) => {
+        const criteria: SearchCriteriaAddAction = {
+          keyElt: searchCriteria.criteria,
+          valueElt: value,
+          labelElt: value.label,
+          keyTranslated: true,
+          operator: searchCriteria.operator as CriteriaOperator,
+          valueTranslated: this.isValueTranslated(searchCriteria.criteria),
+          dataType: searchCriteria.dataType as CriteriaDataType,
+          category: searchCriteria.category as SearchCriteriaTypeEnum,
+        };
+
+        this.addCriteria(criteria);
+      });
     });
   }
 
@@ -200,32 +229,6 @@ export class SimpleCriteriaSearchComponent implements OnInit {
     return criteria === FINAL_ACTION_TYPE || criteria === ALL_ARCHIVE_UNIT_TYPES;
   }
 
-  ngOnInit() {
-    this.managementRulesSharedDataService.getCriteriaSearchListToSave().subscribe((data) => {
-      this.criteriaSearchListToSave = data;
-    });
-
-    this.criteriaSearchListToSave.forEach((criteriaSearch) => {
-      if (criteriaSearch.criteria === ALL_ARCHIVE_UNIT_TYPES) {
-        criteriaSearch.values.forEach((criteriaValue) => {
-          this.archiveUnitTypesCriteria.set(criteriaValue.id, true);
-        });
-      }
-      criteriaSearch.values.forEach((value) => {
-        this.addCriteria(
-          criteriaSearch.criteria,
-          value,
-          value.label,
-          true,
-          criteriaSearch.operator,
-          this.isValueTranslated(criteriaSearch.criteria),
-          criteriaSearch.dataType,
-          criteriaSearch.category as SearchCriteriaTypeEnum,
-        );
-      });
-    });
-  }
-
   getCriteriaName(criteria: SchemaElement, otherCriteriaOptions: ItemNode<SchemaElement>[]) {
     const path = criteria.Path.split('.').slice(0, -1);
     const parent = path.reduce((acc, p) => acc.children.find((o) => o.item.FieldName === p), {
@@ -234,136 +237,19 @@ export class SimpleCriteriaSearchComponent implements OnInit {
     return `${criteria.ShortName}${parent?.item ? ` (${parent.item.ShortName})` : ''}`;
   }
 
-  addCriteria(
-    keyElt: string,
-    valueElt: CriteriaValue,
-    labelElt: string,
-    keyTranslated: boolean,
-    operator: string,
-    valueTranslated: boolean,
-    dataType: string,
-    category?: SearchCriteriaTypeEnum,
-  ) {
-    if (keyElt && valueElt) {
-      this.archiveExchangeDataService.addSimpleSearchCriteriaSubject({
-        keyElt,
-        valueElt,
-        labelElt,
-        keyTranslated,
-        operator,
-        category: category ? category : SearchCriteriaTypeEnum.FIELDS,
-        valueTranslated,
-        dataType,
-      });
-    }
+  toggleArchiveUnitCriteria(archiveUnitType: ArchiveUnitType, event: any) {
+    const action = event.target.checked ? 'ADD' : 'REMOVE';
+
+    this.archiveUnitTypesCriteria.set(archiveUnitType, event.target.checked);
+    this.processCriteriaAction(action, archiveUnitType);
   }
 
-  addArchiveUnitTypeCriteria(unitType: string, event: any) {
-    const action = event.target.checked;
-    this.archiveUnitTypesCriteria.set(unitType, action);
-    switch (unitType) {
-      case ARCHIVE_UNIT_FILING_UNIT:
-        if (action) {
-          this.addCriteria(
-            ALL_ARCHIVE_UNIT_TYPES,
-            { value: ARCHIVE_UNIT_FILING_UNIT, id: ARCHIVE_UNIT_FILING_UNIT },
-            this.translateService.instant('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.UNIT_TYPE.ARCHIVE_UNIT_PLAN'),
-            true,
-            CriteriaOperator.EQ,
-            false,
-            CriteriaDataType.STRING,
-            SearchCriteriaTypeEnum.FIELDS,
-          );
-        } else {
-          this.emitRemoveCriteriaEvent(ALL_ARCHIVE_UNIT_TYPES, {
-            value: ARCHIVE_UNIT_FILING_UNIT,
-            id: ARCHIVE_UNIT_FILING_UNIT,
-          });
-        }
-        break;
-      case ARCHIVE_UNIT_HOLDING_UNIT:
-        if (action) {
-          this.addCriteria(
-            ALL_ARCHIVE_UNIT_TYPES,
-            { value: ARCHIVE_UNIT_HOLDING_UNIT, id: ARCHIVE_UNIT_HOLDING_UNIT },
-            this.translateService.instant('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.UNIT_TYPE.ARCHIVE_UNIT_HOLDING'),
-            true,
-            CriteriaOperator.EQ,
-            false,
-            CriteriaDataType.STRING,
-            SearchCriteriaTypeEnum.FIELDS,
-          );
-        } else {
-          this.emitRemoveCriteriaEvent(ALL_ARCHIVE_UNIT_TYPES, {
-            value: ARCHIVE_UNIT_HOLDING_UNIT,
-            id: ARCHIVE_UNIT_HOLDING_UNIT,
-          });
-        }
-        break;
-      case ARCHIVE_UNIT_WITH_OBJECTS:
-        if (action) {
-          this.addCriteria(
-            ALL_ARCHIVE_UNIT_TYPES,
-            { value: ARCHIVE_UNIT_WITH_OBJECTS, id: ARCHIVE_UNIT_WITH_OBJECTS },
-            this.translateService.instant('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.UNIT_TYPE.ARCHIVE_UNIT_WITH_OBJECTS'),
-            true,
-            CriteriaOperator.EQ,
-            false,
-            CriteriaDataType.STRING,
-            SearchCriteriaTypeEnum.FIELDS,
-          );
-        } else {
-          this.emitRemoveCriteriaEvent(ALL_ARCHIVE_UNIT_TYPES, {
-            value: ARCHIVE_UNIT_WITH_OBJECTS,
-            id: ARCHIVE_UNIT_WITH_OBJECTS,
-          });
-        }
-        break;
-      case ARCHIVE_UNIT_WITHOUT_OBJECTS:
-        if (action) {
-          this.addCriteria(
-            ALL_ARCHIVE_UNIT_TYPES,
-            { value: ARCHIVE_UNIT_WITHOUT_OBJECTS, id: ARCHIVE_UNIT_WITHOUT_OBJECTS },
-            this.translateService.instant('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.UNIT_TYPE.ARCHIVE_UNIT_WITHOUT_OBJECTS'),
-            true,
-            CriteriaOperator.EQ,
-            false,
-            CriteriaDataType.STRING,
-            SearchCriteriaTypeEnum.FIELDS,
-          );
-        } else {
-          this.emitRemoveCriteriaEvent(ALL_ARCHIVE_UNIT_TYPES, {
-            value: ARCHIVE_UNIT_WITHOUT_OBJECTS,
-            id: ARCHIVE_UNIT_WITHOUT_OBJECTS,
-          });
-        }
-        break;
-      default:
-        break;
-    }
-  }
+  addCriteria(criteria: SearchCriteriaAddAction) {
+    const { keyElt, valueElt } = criteria;
 
-  emitRemoveCriteriaEvent(keyElt: string, valueElt?: CriteriaValue) {
-    this.archiveExchangeDataService.sendRemoveFromChildSearchCriteriaAction({
-      keyElt,
-      valueElt,
-      action: ActionOnCriteria.REMOVE,
-    });
-  }
+    if (!keyElt || !valueElt) return;
 
-  manageUnitObjectUnitCriteria(unitObjectProperty: string) {
-    this.emitRemoveCriteriaEvent(ALL_ARCHIVE_UNIT_TYPES, { value: unitObjectProperty, id: unitObjectProperty });
-    this.addCriteria(
-      ALL_ARCHIVE_UNIT_TYPES,
-      { value: unitObjectProperty, id: unitObjectProperty },
-      this.translateService.instant('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.UNIT_TYPE.' + unitObjectProperty),
-      true,
-      CriteriaOperator.EQ,
-      false,
-      CriteriaDataType.STRING,
-      SearchCriteriaTypeEnum.FIELDS,
-    );
-    this.archiveUnitTypesCriteria.set(unitObjectProperty, true);
+    this.archiveExchangeDataService.addSimpleSearchCriteriaSubject(criteria);
   }
 
   get guid() {
@@ -404,5 +290,68 @@ export class SimpleCriteriaSearchComponent implements OnInit {
 
   get otherCriteriaList(): AbstractControl<SchemaElement[]> {
     return this.simpleCriteriaForm.controls.otherCriteriaList;
+  }
+
+  private addMissingControls(expectedPaths: string[], currentPaths: string[], formGroup: FormGroup, formBuilder: FormBuilder): void {
+    expectedPaths.forEach((path) => {
+      if (!currentPaths.includes(path)) {
+        formGroup.addControl(path, formBuilder.control(undefined));
+      }
+    });
+  }
+
+  private removeObsoleteControls(expectedPaths: string[], currentPaths: string[], formGroup: FormGroup): void {
+    currentPaths.forEach((path) => {
+      if (!expectedPaths.includes(path)) {
+        formGroup.removeControl(path);
+      }
+    });
+  }
+
+  private synchronizeArchiveUnitCriteria(archiveUnitType: ArchiveUnitType) {
+    this.processCriteriaAction('REMOVE', archiveUnitType);
+    this.processCriteriaAction('ADD', archiveUnitType);
+    this.archiveUnitTypesCriteria.set(archiveUnitType, true);
+  }
+
+  private getTranslationKey(archiveUnitType: ArchiveUnitType): string {
+    const translationPrefix = 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.UNIT_TYPE';
+
+    return `${translationPrefix}.${archiveUnitType}`;
+  }
+
+  private processCriteriaAction(action: CriteriaAction, unitType: ArchiveUnitType): void {
+    const criteria = this.generateCriteria(unitType);
+    const criteriaValue = criteria.valueElt;
+
+    if (action === 'ADD') this.addCriteria(criteria);
+    if (action === 'REMOVE') this.removeCriteria(ALL_ARCHIVE_UNIT_TYPES, criteriaValue);
+  }
+
+  private removeCriteria(keyElt: string, valueElt?: CriteriaValue) {
+    this.archiveExchangeDataService.sendRemoveFromChildSearchCriteriaAction({
+      keyElt,
+      valueElt,
+      action: 'REMOVE',
+    });
+  }
+
+  private generateCriteria(archiveUnitType: ArchiveUnitType): SearchCriteriaAddAction {
+    const translationKey = this.getTranslationKey(archiveUnitType);
+    const criteriaValue: CriteriaValue = {
+      value: archiveUnitType,
+      id: archiveUnitType,
+    };
+
+    return {
+      keyElt: ALL_ARCHIVE_UNIT_TYPES,
+      valueElt: criteriaValue,
+      labelElt: this.translateService.instant(translationKey),
+      keyTranslated: true,
+      operator: CriteriaOperator.EQ,
+      valueTranslated: false,
+      dataType: CriteriaDataType.STRING,
+      category: SearchCriteriaTypeEnum.FIELDS,
+    };
   }
 }

@@ -119,7 +119,7 @@
               <label class="criteria-checkbox-choice">
                 <input
                   type="checkbox"
-                  (click)="addArchiveUnitTypeCriteria('ARCHIVE_UNIT_WITH_OBJECTS', $event)"
+                  (click)="toggleArchiveUnitCriteria('ARCHIVE_UNIT_WITH_OBJECTS', $event)"
                   [checked]="archiveUnitTypesCriteria.get('ARCHIVE_UNIT_WITH_OBJECTS')"
                 />
                 <span>{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.UNIT_TYPE.ARCHIVE_UNIT_WITH_OBJECTS' | translate }}</span>
@@ -131,7 +131,7 @@
               <label class="criteria-checkbox-choice">
                 <input
                   type="checkbox"
-                  (click)="addArchiveUnitTypeCriteria('ARCHIVE_UNIT_WITHOUT_OBJECTS', $event)"
+                  (click)="toggleArchiveUnitCriteria('ARCHIVE_UNIT_WITHOUT_OBJECTS', $event)"
                   [checked]="archiveUnitTypesCriteria.get('ARCHIVE_UNIT_WITHOUT_OBJECTS')"
                 />
                 <span>{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.UNIT_TYPE.ARCHIVE_UNIT_WITHOUT_OBJECTS' | translate }}</span>
@@ -144,7 +144,7 @@
               <label class="criteria-checkbox-choice">
                 <input
                   type="checkbox"
-                  (click)="addArchiveUnitTypeCriteria('ARCHIVE_UNIT_HOLDING_UNIT', $event)"
+                  (click)="toggleArchiveUnitCriteria('ARCHIVE_UNIT_HOLDING_UNIT', $event)"
                   [checked]="archiveUnitTypesCriteria.get('ARCHIVE_UNIT_HOLDING_UNIT')"
                 />
                 <span>{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.UNIT_TYPE.ARCHIVE_UNIT_HOLDING_UNIT' | translate }}</span>
@@ -157,7 +157,7 @@
               <label class="criteria-checkbox-choice">
                 <input
                   type="checkbox"
-                  (click)="addArchiveUnitTypeCriteria('ARCHIVE_UNIT_FILING_UNIT', $event)"
+                  (click)="toggleArchiveUnitCriteria('ARCHIVE_UNIT_FILING_UNIT', $event)"
                   [checked]="archiveUnitTypesCriteria.get('ARCHIVE_UNIT_FILING_UNIT')"
                 />
                 <span>{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.UNIT_TYPE.ARCHIVE_UNIT_FILING_UNIT' | translate }}</span>

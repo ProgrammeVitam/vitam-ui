@@ -41,7 +41,6 @@ import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { Subscription, merge } from 'rxjs';
 import { debounceTime, filter, map } from 'rxjs/operators';
 import {
-  ActionOnCriteria,
   CriteriaDataType,
   CriteriaOperator,
   CriteriaValue,
@@ -171,9 +170,9 @@ export class AppraisalRuleSearchComponent implements OnInit, OnDestroy {
     this.subscriptionAppraisalFromMainSearchCriteria = this.archiveExchangeDataService.appraisalFromMainSearchCriteriaObservable.subscribe(
       (criteria) => {
         if (criteria) {
-          if (criteria.action === ActionOnCriteria.ADD) {
+          if (criteria.action === 'ADD') {
             this.appraisalAdditionalCriteria.set(criteria.valueElt.value, true);
-          } else if (criteria.action === ActionOnCriteria.REMOVE) {
+          } else if (criteria.action === 'REMOVE') {
             if (this.appraisalAdditionalCriteria && this.appraisalAdditionalCriteria.has(criteria.valueElt.value)) {
               this.appraisalAdditionalCriteria.set(criteria.valueElt.value, false);
             }
