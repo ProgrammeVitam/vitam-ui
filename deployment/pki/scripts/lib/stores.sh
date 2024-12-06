@@ -146,6 +146,16 @@ function generateTrustStore {
                     ${CRT_FILE} \
                     ${ALIAS}
     done
+
+    # Add the hosts/localhost certificates to the truststore
+    # for CRT_FILE in $(ls ${REPERTOIRE_CERTIFICAT}/server/hosts/localhost/*.crt); do
+    #     pki_logger "Ajout de ${CRT_FILE} dans le truststore ${CLIENT_TYPE}"
+    #     ALIAS="server-$(basename ${CRT_FILE})"
+    #     addCrtInJks ${JKS_TRUST_STORE} \
+    #                 ${TRUST_STORE_PASSWORD} \
+    #                 ${CRT_FILE} \
+    #                 ${ALIAS}
+    # done
 }
 
 function generateHostKeystore {
@@ -173,8 +183,8 @@ function generateHostKeystore {
                 ${P12_KEYSTORE} \
                 ${TMP_P12_PASSWORD}
 
-    pki_logger "Suppression du p12"
     if [ -f ${P12_KEYSTORE} ]; then
+        pki_logger " /!\ Suppression du p12: ${P12_KEYSTORE}"
         rm -f ${P12_KEYSTORE}
     fi
 }
@@ -261,6 +271,7 @@ function main() {
             P12_PASSWORD=$(getKeystorePassphrase "keystores_client_${CLIENT_TYPE}_${COMPONENT}")
 
             if [ -f ${P12_KEYSTORE} ]; then
+                pki_logger " /!\ Suppression du p12: ${P12_KEYSTORE}"
                 rm -f ${P12_KEYSTORE}
             fi
 
