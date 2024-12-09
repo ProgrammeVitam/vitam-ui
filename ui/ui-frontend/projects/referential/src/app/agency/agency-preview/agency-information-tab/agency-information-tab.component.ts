@@ -37,10 +37,10 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { Observable, of } from 'rxjs';
+import { finalize, Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
-import { extend, isEmpty } from 'underscore';
-import { Agency, ApplicationId, Role, SecurityService, diff } from 'vitamui-library';
+import { isEmpty } from 'underscore';
+import { Agency, ApplicationId, diff, Role, SecurityService } from 'vitamui-library';
 import { AgencyService } from '../../agency.service';
 
 @Component({
@@ -52,7 +52,7 @@ export class AgencyInformationTabComponent {
   @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   tenantIdentifier: number;
-  submited = false;
+  isLoading = false;
   checkUpdateRole = new Observable<boolean>();
 
   private _agency: Agency;
@@ -118,27 +118,34 @@ export class AgencyInformationTabComponent {
   prepareSubmit(): Observable<Agency> {
     return of(diff(this.form.getRawValue(), this.previousValue())).pipe(
       filter((formData) => !isEmpty(formData)),
-      map((formData) => extend({ id: this.previousValue().id, identifier: this.previousValue().identifier }, formData)),
-      switchMap((formData: { id: string; [key: string]: any }) => this.agencyService.patch(formData).pipe(catchError(() => of(null)))),
+      map((formData) => this.copyProperties(formData)),
+      switchMap((agency) => this.agencyService.patch(agency).pipe(catchError(() => of(null)))),
     );
   }
 
+  copyProperties(formData: { [key: string]: any }): Agency {
+    return {
+      ...this.agency,
+      ...formData,
+    };
+  }
+
   onSubmit() {
-    this.submited = true;
+    this.isLoading = true;
     if (this.isInvalid()) {
       return;
     }
-    this.prepareSubmit().subscribe(
-      () => {
-        this.agencyService.get(this._agency.identifier).subscribe((response) => {
-          this.submited = false;
-          this.agency = response;
-        });
-      },
-      () => {
-        this.submited = false;
-      },
-    );
+    this.prepareSubmit()
+      .pipe(
+        switchMap(() => this.agencyService.get(this._agency.identifier)),
+        finalize(() => (this.isLoading = false)),
+      )
+      .subscribe({
+        next: (agency) => {
+          this.agency = agency;
+        },
+        error: (e) => console.error(e),
+      });
   }
 
   resetForm(Agency: Agency) {

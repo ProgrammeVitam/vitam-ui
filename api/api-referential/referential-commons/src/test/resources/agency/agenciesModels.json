@@ -1,0 +1,46 @@
+[
+  {
+    "#id": "agency_id",
+    "_tenant": 4,
+    "#version": 12,
+    "Name": "agency_id",
+    "Identifier": "agency_identifier",
+    "Description": "agency_description",
+    "EntityType": "agency_entityType",
+    "NameEntryParallel": [
+      "agency_nameEntryParallel"
+    ],
+    "AuthorizedForm": [
+      "agency_authorizedForm"
+    ],
+    "AlternativeForm": [
+      "agency_alternativeForm"
+    ],
+    "EntityId": "agency_entityId",
+    "FromDate": "agency_fromDate",
+    "ToDate": "agency_toDate",
+    "Functions": [
+      "agency_functions"
+    ],
+    "BiogHist": "agency_biogHist",
+    "Places": [
+      "agency_places"
+    ],
+    "LegalStatuses": [
+      "agency_legalStatuses"
+    ],
+    "Mandates": [
+      "agency_mandates"
+    ],
+    "StructureOrGenealogy": "agency_structureOrGenealogy",
+    "GeneralContext": "agency_generalContext",
+    "CreationDate": "agency_creationDate",
+    "UpdateDate": "agency_updateDate",
+    "MaintenanceStatus": "agency_maintenanceStatus",
+    "LocalStatus": "agency_localStatus",
+    "Sources": [
+      "agency_sources"
+    ],
+    "EventDescription": "agency_eventDescription"
+  }
+]

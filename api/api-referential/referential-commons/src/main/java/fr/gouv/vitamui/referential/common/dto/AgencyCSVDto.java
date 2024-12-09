@@ -38,16 +38,19 @@ package fr.gouv.vitamui.referential.common.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
 import java.io.Serializable;
+import java.util.List;
 
 @ToString
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Getter
 @Setter
+@EqualsAndHashCode
 public class AgencyCSVDto implements Serializable {
 
     @JsonProperty("Name")
@@ -58,4 +61,58 @@ public class AgencyCSVDto implements Serializable {
 
     @JsonProperty("Description")
     private String description;
+
+    @JsonProperty("EntityType")
+    private String entityType;
+
+    @JsonProperty("NameEntryParallel")
+    private List<String> nameEntryParallel;
+
+    @JsonProperty("AuthorizedForm")
+    private List<String> authorizedForm;
+
+    @JsonProperty("AlternativeForm")
+    private List<String> alternativeForm;
+
+    @JsonProperty("EntityId")
+    private String entityId;
+
+    @JsonProperty("FromDate")
+    private String fromDate;
+
+    @JsonProperty("ToDate")
+    private String toDate;
+
+    @JsonProperty("Functions")
+    private List<String> functions;
+
+    @JsonProperty("BiogHist")
+    private String biogHist;
+
+    @JsonProperty("Places")
+    private List<String> places;
+
+    @JsonProperty("LegalStatuses")
+    private List<String> legalStatuses;
+
+    @JsonProperty("Mandates")
+    private List<String> mandates;
+
+    @JsonProperty("StructureOrGenealogy")
+    private String structureOrGenealogy;
+
+    @JsonProperty("GeneralContext")
+    private String generalContext;
+
+    @JsonProperty("MaintenanceStatus")
+    private String maintenanceStatus;
+
+    @JsonProperty("LocalStatus")
+    private String localStatus;
+
+    @JsonProperty("Sources")
+    private List<String> sources;
+
+    @JsonProperty("EventDescription")
+    private String eventDescription;
 }

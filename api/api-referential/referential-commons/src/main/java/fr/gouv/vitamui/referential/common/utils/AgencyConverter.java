@@ -34,18 +34,41 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-package fr.gouv.vitamui.commons.vitam.api.dto;
+package fr.gouv.vitamui.referential.common.utils;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import fr.gouv.vitam.common.model.administration.AgenciesModel;
+import fr.gouv.vitamui.commons.utils.VitamUIUtils;
+import fr.gouv.vitamui.referential.common.dto.AgencyCSVDto;
+import fr.gouv.vitamui.referential.common.dto.AgencyDto;
+import lombok.experimental.UtilityClass;
 
-@Getter
-@Setter
-@ToString
-public class AgencyDto {
+import java.util.List;
+import java.util.stream.Collectors;
 
-    @JsonProperty("Identifier")
-    private String identifier;
+@UtilityClass
+public class AgencyConverter {
+
+    public AgenciesModel convertDtoToVitam(final AgencyDto dto) {
+        return VitamUIUtils.copyProperties(dto, new AgenciesModel());
+    }
+
+    public AgencyDto convertVitamToDto(final AgenciesModel agency) {
+        return VitamUIUtils.copyProperties(agency, new AgencyDto());
+    }
+
+    public List<AgenciesModel> convertDtosToVitams(final List<AgencyDto> dtos) {
+        return dtos.stream().map(AgencyConverter::convertDtoToVitam).collect(Collectors.toList());
+    }
+
+    public List<AgencyDto> convertVitamsToDtos(final List<AgenciesModel> agencies) {
+        return agencies.stream().map(AgencyConverter::convertVitamToDto).collect(Collectors.toList());
+    }
+
+    public AgencyCSVDto convertDtoToCsvDto(AgenciesModel agenciesModel) {
+        return VitamUIUtils.copyProperties(agenciesModel, new AgencyCSVDto());
+    }
+
+    public List<AgencyCSVDto> convertDtosToCsvDtos(List<AgenciesModel> agencies) {
+        return agencies.stream().map(AgencyConverter::convertDtoToCsvDto).collect(Collectors.toList());
+    }
 }

@@ -53,7 +53,7 @@ export class TenantSelectionGuard {
     private snackBar: MatSnackBar,
     private appService: ApplicationService,
     private router: Router,
-    private tenantService: TenantSelectionService,
+    private tenantSelectionService: TenantSelectionService,
     private translateService: TranslateService,
     @Inject(WINDOW_LOCATION) private location: any,
   ) {}
@@ -61,10 +61,10 @@ export class TenantSelectionGuard {
   canActivate(route: ActivatedRouteSnapshot): boolean {
     if (route.params.tenantIdentifier) {
       return true;
-    } else if (this.tenantService.getSelectedTenant()) {
+    } else if (this.tenantSelectionService.getSelectedTenant()) {
       this.appService.getApplications$().subscribe((data) => {
         const application = data.find((appFromService) => appFromService.identifier === route.data.appId);
-        this.location.href = application.url + TENANT_SELECTION_URL_CONDITION + this.tenantService.getSelectedTenant().identifier;
+        this.location.href = application.url + TENANT_SELECTION_URL_CONDITION + this.tenantSelectionService.getSelectedTenant().identifier;
       });
     }
 

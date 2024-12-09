@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -45,19 +45,21 @@ import {
   EditObject,
   EditObjectService,
   ObjectEditorModule,
+  ProfiledSchemaElement,
   SpinnerOverlayService,
   TemplateService,
+  TenantSelectionService,
   TypeService,
   VitamUICommonModule,
   VitamUILibraryModule,
-  ProfiledSchemaElement,
 } from 'vitamui-library';
-import { template } from '../agency.template';
+import { agencyTemplate } from '../agency.template';
 import { schema } from '../agency.schema';
 import { AgencyService } from '../agency.service';
 import { filter, finalize, of, Subscription, switchMap } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
+import { MatLegacyDialog as MatDialog, MatLegacyDialogModule, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
 
 @Component({
   selector: 'app-edit-agency',
@@ -69,26 +71,41 @@ import { TranslateService } from '@ngx-translate/core';
       padding-left: 112%;
     }
   `,
-  imports: [CommonModule, RouterModule, VitamUICommonModule, VitamUILibraryModule, FormsModule, ReactiveFormsModule, ObjectEditorModule],
+  imports: [
+    CommonModule,
+    RouterModule,
+    VitamUICommonModule,
+    VitamUILibraryModule,
+    FormsModule,
+    ReactiveFormsModule,
+    ObjectEditorModule,
+    MatLegacyDialogModule,
+  ],
   standalone: true,
 })
 export class EditAgencyComponent implements OnInit, OnDestroy {
+  @ViewChild('confirmCancelDialog', { static: true })
+  confirmCancelDialog: TemplateRef<EditAgencyComponent>;
+  dialogRefToClose: MatDialogRef<EditAgencyComponent>;
+
   private subscriptions = new Subscription();
 
-  protected readonly template = template;
+  protected readonly template = agencyTemplate;
 
-  agency: Agency;
+  private agency: Agency;
   breadcrumbData: BreadCrumbData[] = [{ identifier: ApplicationId.PORTAL_APP }, { identifier: ApplicationId.AGENCIES_APP }];
   editObject: EditObject;
 
   constructor(
-    private router: Router,
     private route: ActivatedRoute,
     private agencyService: AgencyService,
     private editObjectService: EditObjectService,
     private templateService: TemplateService,
     private typeService: TypeService,
     private spinnerService: SpinnerOverlayService,
+    private router: Router,
+    private tenantSelectionService: TenantSelectionService,
+    private dialog: MatDialog,
     private translateService: TranslateService,
   ) {
     this.agency = this.router.getCurrentNavigation()?.extras?.state?.agency;
@@ -109,9 +126,9 @@ export class EditAgencyComponent implements OnInit, OnDestroy {
           this.breadcrumbData.push({ label: this.agency.identifier });
 
           const translatedSchema = this.translateComments(schema);
-          const templateSchema = this.editObjectService.createTemplateSchema(template, translatedSchema);
-          const data = this.templateService.toProjected(this.agency, template);
-          this.editObject = this.editObjectService.editObject('', data, template, templateSchema);
+          const templateSchema = this.editObjectService.createTemplateSchema(agencyTemplate, translatedSchema);
+          const data = this.templateService.toProjected(this.agency, agencyTemplate);
+          this.editObject = this.editObjectService.editObject('', data, agencyTemplate, templateSchema);
         },
       });
   }
@@ -122,7 +139,7 @@ export class EditAgencyComponent implements OnInit, OnDestroy {
 
   save() {
     const formData = this.editObject.control.value;
-    const agency = this.templateService.toOriginal(formData, template);
+    const agency = this.templateService.toOriginal(formData, agencyTemplate);
     const partialAgency: Partial<Agency> = Object.entries(agency).reduce(
       (acc, [key, value]) =>
         this.typeService.isConsistent(value)
@@ -133,21 +150,44 @@ export class EditAgencyComponent implements OnInit, OnDestroy {
           : acc,
       { id: this.agency.id },
     );
-
     this.subscriptions.add(
       of(partialAgency)
         .pipe(
           filter((agency) => this.typeService.isConsistent(agency)),
           tap(() => this.spinnerService.open()),
-          switchMap(() => this.agencyService.patch(partialAgency as Agency)),
+          map((formData) => this.copyProperties(formData)),
+          switchMap((agency) => this.agencyService.patch(agency)),
           finalize(() => this.spinnerService.close()),
         )
-        .subscribe((agency) => (this.agency = agency)),
+        .subscribe((agency) => {
+          this.agency = agency;
+          this.editObject.control.markAsPristine();
+        }),
     );
   }
 
+  copyProperties(formData: { [key: string]: any }): Agency {
+    return {
+      ...this.agency,
+      ...formData,
+    };
+  }
+
   cancel() {
-    if (this.editObject.control.pristine) return history.back();
+    if (this.editObject.control.pristine) {
+      this.router.navigate(['/agency/tenant/', this.tenantSelectionService.getSelectedTenant().identifier]);
+    } else {
+      this.dialogRefToClose = this.dialog.open(this.confirmCancelDialog, { panelClass: 'vitamui-dialog' });
+    }
+  }
+
+  confirmCancel() {
+    this.dialogRefToClose.close(true);
+    this.router.navigate(['/agency/tenant/', this.tenantSelectionService.getSelectedTenant().identifier]);
+  }
+
+  cancelCancel() {
+    this.dialogRefToClose.close(true);
   }
 
   private translateComments(schema: ProfiledSchemaElement[]): ProfiledSchemaElement[] {

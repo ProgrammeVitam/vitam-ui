@@ -39,7 +39,28 @@ import { Id } from '../../app/modules';
 export interface Agency extends Id {
   tenant: number;
   version: number;
+
   name: string;
   identifier: string;
   description: string;
+  entityType: string;
+  nameEntryParallel: Array<string>;
+  authorizedForm: Array<string>;
+  alternativeForm: Array<string>;
+  entityId: string;
+  fromDate: string;
+  toDate: string;
+  functions: Array<string>;
+  biogHist: string;
+  places: Array<string>;
+  legalStatuses: Array<string>;
+  mandates: Array<string>;
+  structureOrGenealogy: string;
+  generalContext: string;
+  creationDate: string;
+  updateDate: string;
+  maintenanceStatus: string;
+  localStatus: string;
+  sources: Array<string>;
+  eventDescription: string;
 }

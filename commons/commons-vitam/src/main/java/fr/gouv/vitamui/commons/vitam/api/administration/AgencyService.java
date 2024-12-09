@@ -37,28 +37,15 @@
 package fr.gouv.vitamui.commons.vitam.api.administration;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitam.access.external.client.AdminExternalClient;
-import fr.gouv.vitam.access.external.common.exception.AccessExternalClientException;
 import fr.gouv.vitam.common.client.VitamContext;
-import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.administration.AgenciesModel;
-import fr.gouv.vitamui.commons.api.domain.AgencyDto;
-import fr.gouv.vitamui.commons.api.domain.AgencyModelDto;
-import fr.gouv.vitamui.commons.utils.VitamUIUtils;
 import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
 
 public class AgencyService {
 
@@ -83,53 +70,5 @@ public class AgencyService {
         final RequestResponse<AgenciesModel> response = adminExternalClient.findAgencyByID(vitamContext, contractId);
         VitamRestUtils.checkResponse(response);
         return response;
-    }
-
-    public RequestResponse createAgencies(final VitamContext vitamContext, final List<AgencyModelDto> agenciesModel)
-        throws InvalidParseOperationException, AccessExternalClientException, IOException {
-        return createAgencies(vitamContext, agenciesModel, "Agencies.json");
-    }
-
-    public RequestResponse createAgencies(
-        final VitamContext vitamContext,
-        final List<AgencyModelDto> accessContractModels,
-        String fileName
-    ) throws InvalidParseOperationException, AccessExternalClientException, IOException {
-        try (ByteArrayInputStream byteArrayInputStream = serializeAgencies(accessContractModels)) {
-            return createAgencies(vitamContext, byteArrayInputStream, fileName);
-        }
-    }
-
-    public RequestResponse<?> createAgencies(
-        final VitamContext vitamContext,
-        final InputStream accessContract,
-        String fileName
-    ) throws InvalidParseOperationException, AccessExternalClientException {
-        // FIXME: Check if create erase old agencies.
-        // TODO: If yes, need to get all agencies, check for non-existance, add the new one, and re-import all
-        return adminExternalClient.createAgencies(vitamContext, accessContract, fileName);
-    }
-
-    private ByteArrayInputStream serializeAgencies(final List<AgencyModelDto> accessContractModels) throws IOException {
-        final List<AgencyDto> listOfAgencies = convertAgenciesToModelOfCreation(accessContractModels);
-        final ObjectMapper mapper = new ObjectMapper();
-        final JsonNode node = mapper.convertValue(listOfAgencies, JsonNode.class);
-        LOGGER.debug("The json for creation access contract, sent to Vitam {}", node);
-
-        try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream()) {
-            mapper.writeValue(byteArrayOutputStream, node);
-            return new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
-        }
-    }
-
-    private List<AgencyDto> convertAgenciesToModelOfCreation(final List<AgencyModelDto> AgencyModels) {
-        final List<AgencyDto> listOfAC = new ArrayList<>();
-        for (final AgencyModelDto aModel : AgencyModels) {
-            final AgencyDto agency = new AgencyDto();
-            // we don't want to inculde the tenant field in the json sent to vitam
-            aModel.setTenant(null);
-            listOfAC.add(VitamUIUtils.copyProperties(aModel, agency));
-        }
-        return listOfAC;
     }
 }

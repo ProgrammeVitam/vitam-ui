@@ -37,14 +37,8 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Logger } from '../../logger/logger';
-import { DisplayObject, DisplayObjectService, DisplayRule } from '../models';
+import { DisplayObject, DisplayObjectService, DisplayRule, Mode } from '../models';
 import { DisplayObjectHelperService } from './display-object-helper.service';
-
-enum Mode {
-  DATE_DRIVEN = 'data-driven',
-  TEMPLATE_DRIVEN = 'template-driven',
-  MIXED_DRIVEN = 'mixed-driven',
-}
 
 const NO_MODE_MESSAGE = 'Mode is not set';
 const DATA_MODE_MESSAGE = 'The data mode is enabled, the computed display object will follow object structure';
@@ -60,7 +54,7 @@ export class PathStrategyDisplayObjectService implements DisplayObjectService {
   private displayObject = new BehaviorSubject<DisplayObject>(null);
   private data = new BehaviorSubject<any>(null);
   private template = new BehaviorSubject<DisplayRule[]>([]);
-  private mode = new BehaviorSubject<Mode>(Mode.DATE_DRIVEN);
+  private mode = new BehaviorSubject<Mode>(Mode.DATA_DRIVEN);
 
   displayObject$: Observable<DisplayObject> = this.displayObject.asObservable();
 
@@ -76,7 +70,7 @@ export class PathStrategyDisplayObjectService implements DisplayObjectService {
       let message = NO_MODE_MESSAGE;
       let displayObject = this.displayObjectHelper.toDisplayObject({});
 
-      if (this.mode.value === Mode.DATE_DRIVEN) {
+      if (this.mode.value === Mode.DATA_DRIVEN) {
         message = DATA_MODE_MESSAGE;
         displayObject = this.displayObjectHelper.dataDrivenDisplayObject(this.data.value, this.configuration);
       }

@@ -37,6 +37,7 @@
 export * from '../../models/schema/schema-element.model';
 export * from './configuration.model';
 export * from './display-object-service';
+export * from './display-object.enum';
 export * from './display-object.model';
 export * from './display-rule.model';
 export * from './layout.model';

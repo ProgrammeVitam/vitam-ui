@@ -1,5 +1,5 @@
-/**
- * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
+/*
+ * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2022)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
  *
  * contact@programmevitam.fr
@@ -34,48 +34,9 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-package fr.gouv.vitamui.referential.common.dto;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import fr.gouv.vitamui.commons.api.domain.IdDto;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
-import lombok.experimental.Accessors;
-
-import java.io.Serializable;
-import java.util.List;
-
-@ToString
-@JsonInclude(JsonInclude.Include.NON_NULL)
-@Getter
-@Setter
-@Accessors(chain = true)
-public class AgencyDto extends IdDto implements Serializable {
-
-    private Integer tenant;
-    private Integer version;
-    private String name;
-    private String identifier;
-    private String description;
-    private String entityType;
-    private List<String> nameEntryParallel;
-    private List<String> authorizedForm;
-    private List<String> alternativeForm;
-    private String entityId;
-    private String fromDate;
-    private String toDate;
-    private List<String> functions;
-    private String biogHist;
-    private List<String> places;
-    private List<String> legalStatuses;
-    private List<String> mandates;
-    private String structureOrGenealogy;
-    private String generalContext;
-    private String creationDate;
-    private String updateDate;
-    private String maintenanceStatus;
-    private String localStatus;
-    private List<String> sources;
-    private String eventDescription;
+export enum Mode {
+  DATA_DRIVEN = 'data-driven',
+  TEMPLATE_DRIVEN = 'template-driven',
+  MIXED_DRIVEN = 'mixed-driven',
 }

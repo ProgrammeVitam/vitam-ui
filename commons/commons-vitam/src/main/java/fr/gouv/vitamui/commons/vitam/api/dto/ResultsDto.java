@@ -177,7 +177,7 @@ public class ResultsDto {
     private List<QualifiersDto> qualifiers = new ArrayList<>();
 
     @JsonProperty("SubmissionAgency")
-    private AgencyDto submissionAgency;
+    private AgencyIdentifierDto submissionAgency;
 
     @JsonProperty("OriginatingSystemId")
     private List<String> originatingSystemId = new ArrayList<>();

@@ -76,11 +76,13 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import javax.ws.rs.core.Response;
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.io.SequenceInputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Collection;
-import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -163,11 +165,11 @@ public class AgencyInternalController {
     }
 
     @PatchMapping(CommonConstants.PATH_ID)
-    public AgencyDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto) {
+    public AgencyDto patch(final @PathVariable("id") String id, @RequestBody final AgencyDto partialDto) {
         LOGGER.debug("Patch {} with {}", id, partialDto);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
         Assert.isTrue(
-            StringUtils.equals(id, (String) partialDto.get("id")),
+            StringUtils.equals(id, partialDto.getId()),
             "The DTO identifier must match the path identifier for update."
         );
         return agencyInternalService.patch(vitamContext, partialDto);

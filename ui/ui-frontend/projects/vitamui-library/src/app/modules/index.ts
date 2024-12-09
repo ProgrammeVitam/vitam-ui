@@ -70,7 +70,6 @@ export * from './services/index';
 export * from './sidenav-page.class';
 export * from './startup.service';
 export * from './subrogation/index';
-export * from './tenant-selection.guard';
 export * from './theme.service';
 export * from './utils/index';
 export * from './vitamui-global-error-handler';

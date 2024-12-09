@@ -37,8 +37,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { Agency, ApplicationId, BreadCrumbData, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
-import { template } from '../agency.template';
+import { Agency, ApplicationId, BreadCrumbData, TenantSelectionService, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
+import { agencyTemplate } from '../agency.template';
 import { of, switchMap } from 'rxjs';
 import { AgencyService } from '../agency.service';
 
@@ -49,13 +49,14 @@ import { AgencyService } from '../agency.service';
   standalone: true,
 })
 export class ViewAgencyComponent implements OnInit {
-  readonly template = template;
+  readonly agencyTemplate = agencyTemplate;
   breadcrumbData: BreadCrumbData[] = [{ identifier: ApplicationId.PORTAL_APP }, { identifier: ApplicationId.AGENCIES_APP }];
   agency: Agency;
 
   constructor(
     private router: Router,
     private route: ActivatedRoute,
+    private tenantSelectionService: TenantSelectionService,
     private agencyService: AgencyService,
   ) {
     this.agency = this.router.getCurrentNavigation()?.extras?.state?.agency;
@@ -76,5 +77,9 @@ export class ViewAgencyComponent implements OnInit {
           this.breadcrumbData.push({ label: this.agency.identifier });
         },
       });
+  }
+
+  back() {
+    this.router.navigate(['/agency/tenant/', this.tenantSelectionService.getSelectedTenant().identifier]);
   }
 }
