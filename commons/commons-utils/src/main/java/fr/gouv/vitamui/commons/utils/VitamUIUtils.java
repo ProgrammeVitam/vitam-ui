@@ -89,8 +89,8 @@ public final class VitamUIUtils {
 
     public static final String PRINT_ALGORITHM = "SHA-512";
 
-    public static final DecimalFormat UI_DECIMAL_FORMAT_2_DIGITS = decimalFormat2digits();
-    public static final String KILO = " ko";
+    public static final DecimalFormat UI_DECIMAL_FORMAT_6_DIGITS = decimalFormat6digits();
+    public static final String GIGA = " go";
 
     private VitamUIUtils() {
         // empty
@@ -346,19 +346,19 @@ public final class VitamUIUtils {
             .collect(Collectors.joining(", ", "[", "]"));
     }
 
-    private static DecimalFormat decimalFormat2digits() {
+    private static DecimalFormat decimalFormat6digits() {
         DecimalFormat df = new DecimalFormat();
         DecimalFormatSymbols symbols = df.getDecimalFormatSymbols();
         symbols.setGroupingSeparator(' ');
         symbols.setDecimalSeparator('.');
         df.setDecimalFormatSymbols(symbols);
-        df.setMaximumFractionDigits(2);
+        df.setMaximumFractionDigits(6);
         df.setRoundingMode(RoundingMode.HALF_UP);
         return df;
     }
 
-    public static String convertSizeToKiloByte(long sizeInBytes) {
-        double sizeInKilobytes = sizeInBytes / 1024.0;
-        return UI_DECIMAL_FORMAT_2_DIGITS.format(sizeInKilobytes) + KILO;
+    public static String convertSizeToGigaByte(long sizeInBytes) {
+        double sizeInGigaBytes = sizeInBytes / (1024.0 * 1024.0 * 1024.0);
+        return UI_DECIMAL_FORMAT_6_DIGITS.format(sizeInGigaBytes) + GIGA;
     }
 }

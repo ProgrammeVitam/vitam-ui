@@ -298,7 +298,7 @@ public class AccessionRegisterInternalService {
                             String.valueOf(accessionRegisterCsv.getTotalUnits().getIngested()),
                             String.valueOf(accessionRegisterCsv.getTotalObjectsGroups().getIngested()),
                             String.valueOf(accessionRegisterCsv.getTotalObjects().getIngested()),
-                            VitamUIUtils.convertSizeToKiloByte(accessionRegisterCsv.getObjectSize().getIngested()),
+                            VitamUIUtils.convertSizeToGigaByte(accessionRegisterCsv.getObjectSize().getIngested()),
                             accessionRegisterCsv.getStatus().value(),
                         }
                     );

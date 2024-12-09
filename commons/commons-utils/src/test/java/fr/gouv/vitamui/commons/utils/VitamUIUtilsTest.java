@@ -137,13 +137,12 @@ public class VitamUIUtilsTest {
 
     @Test
     public void convertSizeToKiloByteByteCountSI() throws IOException {
-        assertEquals("638 988.83 ko", VitamUIUtils.convertSizeToKiloByte(654_324_564L));
-        assertEquals("0 ko", VitamUIUtils.convertSizeToKiloByte(0L));
-        assertEquals("0.98 ko", VitamUIUtils.convertSizeToKiloByte(1_000L));
-        assertEquals("1.17 ko", VitamUIUtils.convertSizeToKiloByte(1_200L));
-        assertEquals("76.95 ko", VitamUIUtils.convertSizeToKiloByte(78_800));
-        assertEquals("1 ko", VitamUIUtils.convertSizeToKiloByte(1_024L));
-        assertEquals("1.17 ko", VitamUIUtils.convertSizeToKiloByte(1_200L));
-        assertEquals("225.83 ko", VitamUIUtils.convertSizeToKiloByte(231_246L));
+        assertEquals("624 go", VitamUIUtils.convertSizeToGigaByte(670_014_898_176L));
+        assertEquals("0 go", VitamUIUtils.convertSizeToGigaByte(0L));
+        assertEquals("0.000001 go", VitamUIUtils.convertSizeToGigaByte(1_000L));
+        assertEquals("0.001118 go", VitamUIUtils.convertSizeToGigaByte(1_200_000L));
+        assertEquals("0.073388 go", VitamUIUtils.convertSizeToGigaByte(78_800_000));
+        assertEquals("1 go", VitamUIUtils.convertSizeToGigaByte(1_073_741_824L));
+        assertEquals("0.000215 go", VitamUIUtils.convertSizeToGigaByte(231_246L));
     }
 }
