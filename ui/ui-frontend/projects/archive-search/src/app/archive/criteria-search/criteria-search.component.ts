@@ -34,16 +34,23 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { CriteriaSearchCriteria, CriteriaValue, SearchCriteriaTypeEnum, SearchCriteriaValue } from 'vitamui-library';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { CriteriaSearchCriteria, CriteriaValue, SearchCriteriaTypeEnum, SearchCriteriaValue, QueryParamsService } from 'vitamui-library';
+import { Params } from '@angular/router';
 
 @Component({
   selector: 'app-criteria-search',
   templateUrl: './criteria-search.component.html',
   styleUrls: ['./criteria-search.component.scss'],
 })
-export class CriteriaSearchComponent {
-  constructor() {}
+export class CriteriaSearchComponent implements OnInit {
+  private queryParams: Params;
+
+  constructor(private queryParamsService: QueryParamsService) {}
+
+  ngOnInit() {
+    this.queryParamsService.getQueryParams().subscribe((queryParams) => (this.queryParams = queryParams));
+  }
 
   @Input()
   criteriaKey: string;
@@ -54,6 +61,7 @@ export class CriteriaSearchComponent {
   @Output() criteriaRemoveEvent: EventEmitter<any> = new EventEmitter();
 
   removeCriteria(keyElt: string, valueElt?: CriteriaValue) {
+    this.queryParamsService.setQueryParams({ ...this.queryParams, [valueElt.id]: null });
     this.criteriaRemoveEvent.emit({ keyElt, valueElt });
   }
 

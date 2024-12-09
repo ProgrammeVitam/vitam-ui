@@ -51,11 +51,13 @@ import {
   SearchCriteriaEltDto,
   SearchCriteriaTypeEnum,
   CriteriaAction,
+  QueryParamsService,
 } from 'vitamui-library';
 import { ArchiveSharedDataService } from '../../../core/archive-shared-data.service';
 import { ManagementRulesSharedDataService } from '../../../core/management-rules-shared-data.service';
 import { debounceTime, filter } from 'rxjs/operators';
 import { ArchiveSearchConstsEnum } from '../../models/archive-search-consts-enum';
+import { Params } from '@angular/router';
 
 const FINAL_ACTION_TYPE = 'FINAL_ACTION_TYPE';
 const ARCHIVE_UNIT_FILING_UNIT = 'ARCHIVE_UNIT_FILING_UNIT';
@@ -76,7 +78,7 @@ type ArchiveUnitType =
   styleUrls: ['./simple-criteria-search.component.css'],
 })
 export class SimpleCriteriaSearchComponent implements OnInit {
-  simpleCriteriaForm: FormGroup;
+  form: FormGroup;
   criteriaSearchListToSave: SearchCriteriaEltDto[] = [];
 
   archiveUnitTypesCriteria: Map<any, boolean> = new Map<any, boolean>([
@@ -90,6 +92,8 @@ export class SimpleCriteriaSearchComponent implements OnInit {
   getOtherCriteriaDisplayValue = (element: SchemaElement) =>
     `${element.Origin === 'EXTERNAL' ? 'EXT-' : ''}${element.ShortName} - ${element.FieldName}`;
 
+  private queryParams: Params;
+
   constructor(
     public dialog: MatDialog,
     private formBuilder: FormBuilder,
@@ -97,6 +101,7 @@ export class SimpleCriteriaSearchComponent implements OnInit {
     private managementRulesSharedDataService: ManagementRulesSharedDataService,
     private translateService: TranslateService,
     private schemaService: SchemaService,
+    private queryParamsService: QueryParamsService,
   ) {
     this.otherCriteriaOptions$ = this.schemaService.getDescriptiveSchemaTree();
 
@@ -113,7 +118,7 @@ export class SimpleCriteriaSearchComponent implements OnInit {
     const otherCriteriaListControl = this.formBuilder.control<SchemaElement[]>([]);
     const otherCriteriaControl = this.formBuilder.group({});
 
-    this.simpleCriteriaForm = this.formBuilder.group({
+    this.form = this.formBuilder.group({
       title: ['', []],
       description: ['', []],
       guidopi: ['', []],
@@ -134,7 +139,7 @@ export class SimpleCriteriaSearchComponent implements OnInit {
       this.removeObsoleteControls(expectedPaths, currentPaths, otherCriteriaControl);
     });
 
-    Object.entries(this.simpleCriteriaForm.controls)
+    Object.entries(this.form.controls)
       .filter(([key, _value]) => !['otherCriteriaList'].includes(key))
       .forEach(([key, control]) => {
         control.valueChanges
@@ -185,6 +190,17 @@ export class SimpleCriteriaSearchComponent implements OnInit {
         this.addCriteria(criteria);
       });
     });
+
+    this.queryParamsService.getQueryParams().subscribe((queryParams) => {
+      this.queryParams = queryParams;
+
+      const formData: any = this.form.value;
+      const hasChanged = Object.entries(queryParams).filter(([key, value]) => formData[key] !== value).length > 0;
+
+      if (!hasChanged) return;
+
+      this.form.patchValue(queryParams, { onlySelf: false });
+    });
   }
 
   addCriteriaFromObject(object: any) {
@@ -199,7 +215,7 @@ export class SimpleCriteriaSearchComponent implements OnInit {
         } else if (typeof value === 'string' || value instanceof Date) {
           const criteriaValue = value instanceof Date ? value.toISOString() : value.trim();
           const defaultSearchCriteriaAddAction: Partial<SearchCriteriaAddAction> = {
-            valueElt: { value: criteriaValue, id: criteriaValue },
+            valueElt: { value: criteriaValue, id: key },
             labelElt: criteriaValue,
             keyTranslated: false,
             operator: CriteriaOperator.EQ,
@@ -216,6 +232,7 @@ export class SimpleCriteriaSearchComponent implements OnInit {
             ...searchCriteriaAddAction,
             valueTranslated: this.isValueTranslated(searchCriteriaAddAction.keyElt),
           };
+          this.queryParamsService.setQueryParams({ ...this.queryParams, [key]: criteriaValue });
           this.archiveExchangeDataService.addSimpleSearchCriteriaSubject(searchCriteria);
         } else if (typeof value === 'object' && Object.entries(value).length) {
           this.addCriteriaFromObject(value);
@@ -253,43 +270,43 @@ export class SimpleCriteriaSearchComponent implements OnInit {
   }
 
   get guid() {
-    return this.simpleCriteriaForm.controls.guid;
+    return this.form.controls.guid;
   }
 
   get archiveCriteria() {
-    return this.simpleCriteriaForm.controls.archiveCriteria;
+    return this.form.controls.archiveCriteria;
   }
 
   get title() {
-    return this.simpleCriteriaForm.controls.title;
+    return this.form.controls.title;
   }
 
   get description() {
-    return this.simpleCriteriaForm.controls.description;
+    return this.form.controls.description;
   }
 
   get guidopi() {
-    return this.simpleCriteriaForm.controls.guidopi;
+    return this.form.controls.guidopi;
   }
 
   get beginDt() {
-    return this.simpleCriteriaForm.controls.beginDt;
+    return this.form.controls.beginDt;
   }
 
   get endDt() {
-    return this.simpleCriteriaForm.controls.endDt;
+    return this.form.controls.endDt;
   }
 
   get serviceProdLabel() {
-    return this.simpleCriteriaForm.controls.serviceProdLabel;
+    return this.form.controls.serviceProdLabel;
   }
 
   get serviceProdCode() {
-    return this.simpleCriteriaForm.controls.serviceProdCode;
+    return this.form.controls.serviceProdCode;
   }
 
   get otherCriteriaList(): AbstractControl<SchemaElement[]> {
-    return this.simpleCriteriaForm.controls.otherCriteriaList;
+    return this.form.controls.otherCriteriaList;
   }
 
   private addMissingControls(expectedPaths: string[], currentPaths: string[], formGroup: FormGroup, formBuilder: FormBuilder): void {
