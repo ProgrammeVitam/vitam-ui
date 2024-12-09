@@ -40,10 +40,10 @@ import fr.gouv.vitamui.commons.api.domain.StorageManagementContractDto;
 import fr.gouv.vitamui.commons.api.domain.VersionRetentionPolicyMgtContractDto;
 import fr.gouv.vitamui.commons.api.domain.VersionUsageMgtContractDto;
 import fr.gouv.vitamui.commons.api.enums.IntermediaryVersionEnum;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;

@@ -30,6 +30,7 @@ package fr.gouv.vitamui.referential.external.server.service.accessionregister;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import fr.gouv.vitam.common.database.builder.facet.FacetHelper;
 import fr.gouv.vitam.common.database.builder.query.BooleanQuery;
 import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOperationException;
 import fr.gouv.vitam.common.database.builder.request.single.Select;
@@ -107,6 +108,16 @@ public class AccessRegisterVitamQueryHelper {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AccessRegisterVitamQueryHelper.class);
 
+    //Facets constants
+    public static final String FACETS_TOTAL_OBJECTS = "FACETS_TOTAL_OBJECTS";
+    public static final String FACETS_TOTAL_UNITS = "FACETS_TOTAL_UNITS";
+    public static final String FACETS_TOTAL_OBJECT_SIZE = "FACETS_TOTAL_OBJECT_SIZE";
+    public static final String FACETS_TOTAL_OBJECT_GROUPS = "FACETS_TOTAL_OBJECT_GROUPS";
+    public static final String TOTAL_OBJECTS_INGESTED_PATH = "TotalObjects.ingested";
+    public static final String TOTAL_UNITS_INGESTED_PATH = "TotalUnits.ingested";
+    public static final String TOTAL_OBJECT_GROUPS_INGESTED_PATH = "TotalObjectGroups.ingested";
+    public static final String OBJECT_SIZE_INGESTED_PATH = "ObjectSize.ingested";
+
     public static JsonNode createQueryDSL(AccessionRegisterSearchDto criteria)
         throws InvalidCreateOperationException, InvalidParseOperationException {
         return AccessRegisterVitamQueryHelper.createQueryDSL(
@@ -148,9 +159,21 @@ public class AccessRegisterVitamQueryHelper {
         setAcquisitionInformationsToQuery(orQuery, criteria.getAcquisitionInformations());
 
         setQuery(select, andQuery, orQuery);
+
+        fillAccessionRegisterFacets(select);
+
         ObjectNode finalSelect = select.getFinalSelect();
         LOGGER.debug("Final query Details: {}", finalSelect.toPrettyString());
         return finalSelect;
+    }
+
+    private static void fillAccessionRegisterFacets(Select select) throws InvalidCreateOperationException {
+        select.addFacets(
+            FacetHelper.sum(FACETS_TOTAL_OBJECTS, TOTAL_OBJECTS_INGESTED_PATH),
+            FacetHelper.sum(FACETS_TOTAL_UNITS, TOTAL_UNITS_INGESTED_PATH),
+            FacetHelper.sum(FACETS_TOTAL_OBJECT_GROUPS, TOTAL_OBJECT_GROUPS_INGESTED_PATH),
+            FacetHelper.sum(FACETS_TOTAL_OBJECT_SIZE, OBJECT_SIZE_INGESTED_PATH)
+        );
     }
 
     private static void addFieldInToQuery(BooleanQuery query, String field, List<String> list)

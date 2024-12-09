@@ -37,15 +37,6 @@
 package fr.gouv.vitamui.referential.internal.server.config;
 
 import fr.gouv.vitamui.commons.api.domain.AccessionRegisterSearchDto;
-import fr.gouv.vitamui.referential.internal.server.agency.AgencyConverter;
-import fr.gouv.vitamui.referential.internal.server.archivalprofileunit.ArchivalProfileUnitConverter;
-import fr.gouv.vitamui.referential.internal.server.context.ContextConverter;
-import fr.gouv.vitamui.referential.internal.server.fileformat.FileFormatConverter;
-import fr.gouv.vitamui.referential.internal.server.ingestcontract.IngestContractConverter;
-import fr.gouv.vitamui.referential.internal.server.managementcontract.converter.ManagementContractConverter;
-import fr.gouv.vitamui.referential.internal.server.ontology.OntologyConverter;
-import fr.gouv.vitamui.referential.internal.server.profile.ProfileConverter;
-import fr.gouv.vitamui.referential.internal.server.securityprofile.SecurityProfileConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -55,50 +46,5 @@ public class ConverterConfig {
     @Bean
     public AccessionRegisterSearchDto accessionRegisterSearchDtoConverter() {
         return new AccessionRegisterSearchDto();
-    }
-
-    @Bean
-    public IngestContractConverter ingestContractConverter() {
-        return new IngestContractConverter();
-    }
-
-    @Bean
-    public AgencyConverter agencyConverter() {
-        return new AgencyConverter();
-    }
-
-    @Bean
-    public FileFormatConverter fileFormatConverter() {
-        return new FileFormatConverter();
-    }
-
-    @Bean
-    public ArchivalProfileUnitConverter archivalProfileConverter() {
-        return new ArchivalProfileUnitConverter();
-    }
-
-    @Bean
-    public ContextConverter contextConverter() {
-        return new ContextConverter();
-    }
-
-    @Bean
-    public SecurityProfileConverter securityProfileConverter() {
-        return new SecurityProfileConverter();
-    }
-
-    @Bean
-    public OntologyConverter ontologyConverter() {
-        return new OntologyConverter();
-    }
-
-    @Bean
-    public ManagementContractConverter managementContractConverter() {
-        return new ManagementContractConverter();
-    }
-
-    @Bean
-    public ProfileConverter profileConverter() {
-        return new ProfileConverter();
     }
 }

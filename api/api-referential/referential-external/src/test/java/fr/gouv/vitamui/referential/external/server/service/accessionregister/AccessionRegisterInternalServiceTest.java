@@ -51,9 +51,10 @@ import fr.gouv.vitam.common.model.RequestResponseOK;
 import fr.gouv.vitam.common.model.administration.AccessionRegisterDetailModel;
 import fr.gouv.vitam.common.model.administration.AgenciesModel;
 import fr.gouv.vitamui.commons.vitam.api.administration.AgencyService;
+import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import fr.gouv.vitamui.referential.common.dsl.VitamQueryHelper;
 import fr.gouv.vitamui.referential.common.service.AccessionRegisterService;
-import fr.gouv.vitamui.referential.internal.server.accessionregister.AccessionRegisterInternalService;
+import fr.gouv.vitamui.referential.external.server.service.accessionregister.AccessionRegisterInternalService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -88,6 +89,9 @@ class AccessionRegisterInternalServiceTest {
     private AccessionRegisterService accessionRegisterService;
 
     @Mock
+    private ExternalSecurityService externalSecurityService;
+
+    @Mock
     private Logger log;
 
     private ObjectMapper objectMapper;
@@ -100,7 +104,8 @@ class AccessionRegisterInternalServiceTest {
             objectMapper,
             adminExternalClient,
             agencyService,
-            accessionRegisterService
+            accessionRegisterService,
+            externalSecurityService
         );
 
         doNothing().when(log).info(any());

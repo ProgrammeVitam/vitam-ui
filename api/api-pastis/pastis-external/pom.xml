@@ -53,7 +53,7 @@
         </dependency>
         <dependency>
             <groupId>fr.gouv.vitamui</groupId>
-            <artifactId>referential-internal-client</artifactId>
+            <artifactId>referential-external-client</artifactId>
         </dependency>
         <dependency>
             <groupId>fr.gouv.vitamui</groupId>

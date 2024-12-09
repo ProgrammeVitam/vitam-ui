@@ -58,7 +58,6 @@ import fr.gouv.vitamui.referential.common.service.AccessionRegisterService;
 import fr.gouv.vitamui.referential.common.service.IngestContractService;
 import fr.gouv.vitamui.referential.common.service.OntologyService;
 import fr.gouv.vitamui.referential.common.service.OperationService;
-import fr.gouv.vitamui.referential.common.service.VitamAgencyService;
 import fr.gouv.vitamui.referential.common.service.VitamArchivalProfileUnitService;
 import fr.gouv.vitamui.referential.common.service.VitamBatchReportService;
 import fr.gouv.vitamui.referential.common.service.VitamContextService;

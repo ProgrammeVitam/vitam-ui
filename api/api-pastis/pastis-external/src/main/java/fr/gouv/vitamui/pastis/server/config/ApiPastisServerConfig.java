@@ -38,6 +38,8 @@ knowledge of the CeCILL-C license and that you accept its terms.
 
 package fr.gouv.vitamui.pastis.server.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import fr.gouv.vitam.access.external.client.AdminExternalClient;
 import fr.gouv.vitamui.commons.api.application.AbstractContextConfiguration;
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
 import fr.gouv.vitamui.commons.rest.configuration.SwaggerConfiguration;
@@ -50,8 +52,9 @@ import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import fr.gouv.vitamui.pastis.common.service.JsonFromPUA;
 import fr.gouv.vitamui.pastis.common.service.PuaFromJSON;
 import fr.gouv.vitamui.pastis.common.service.PuaPastisValidator;
-import fr.gouv.vitamui.referential.internal.client.ProfileInternalRestClient;
-import fr.gouv.vitamui.referential.internal.client.ReferentialInternalRestClientFactory;
+import fr.gouv.vitamui.referential.common.service.VitamProfileService;
+import fr.gouv.vitamui.referential.external.client.ProfileExternalRestClient;
+import fr.gouv.vitamui.referential.external.client.ReferentialExternalRestClientFactory;
 import fr.gouv.vitamui.security.client.ContextRestClient;
 import fr.gouv.vitamui.security.client.SecurityRestClientFactory;
 import org.springframework.boot.autoconfigure.http.HttpMessageConvertersAutoConfiguration;
@@ -87,6 +90,11 @@ public class ApiPastisServerConfig extends AbstractContextConfiguration {
     }
 
     @Bean
+    public VitamProfileService vitamProfileService(final AdminExternalClient adminClient, ObjectMapper objectMapper) {
+        return new VitamProfileService(adminClient, objectMapper);
+    }
+
+    @Bean
     public ContextRestClient contextCrudRestClient(final SecurityRestClientFactory securityRestClientFactory) {
         return securityRestClientFactory.getContextRestClient();
     }
@@ -111,22 +119,23 @@ public class ApiPastisServerConfig extends AbstractContextConfiguration {
         return new ExternalAuthentificationService(contextRestClient, userInternalRestClient);
     }
 
+    //TODO remove internal and external
     @Bean
-    public ReferentialInternalRestClientFactory referentialInternalRestClientFactory(
+    public ReferentialExternalRestClientFactory referentialInternalRestClientFactory(
         final ApiPastisApplicationProperties apiArchiveExternalApplicationProperties,
         final RestTemplateBuilder restTemplateBuilder
     ) {
-        return new ReferentialInternalRestClientFactory(
+        return new ReferentialExternalRestClientFactory(
             apiArchiveExternalApplicationProperties.getReferentialInternalClient(),
             restTemplateBuilder
         );
     }
 
     @Bean
-    public ProfileInternalRestClient profileInternalRestClient(
-        final ReferentialInternalRestClientFactory referentialInternalRestClientFactory
+    public ProfileExternalRestClient profileInternalRestClient(
+        final ReferentialExternalRestClientFactory referentialInternalRestClientFactory
     ) {
-        return referentialInternalRestClientFactory.getProfileInternalRestClient();
+        return referentialInternalRestClientFactory.getProfileExternalRestClient();
     }
 
     @Bean

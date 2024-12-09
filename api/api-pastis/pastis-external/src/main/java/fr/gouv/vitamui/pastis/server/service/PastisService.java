@@ -40,6 +40,12 @@ package fr.gouv.vitamui.pastis.server.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import fr.gouv.vitam.access.external.common.exception.AccessExternalClientException;
+import fr.gouv.vitam.access.external.common.exception.AccessExternalNotFoundException;
+import fr.gouv.vitam.common.client.VitamContext;
+import fr.gouv.vitam.common.exception.VitamClientException;
+import fr.gouv.vitamui.commons.api.exception.InternalServerException;
+import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import fr.gouv.vitamui.pastis.common.dto.ElementProperties;
 import fr.gouv.vitamui.pastis.common.dto.jaxb.AnnotationXML;
 import fr.gouv.vitamui.pastis.common.dto.jaxb.AnyNameXML;
@@ -72,6 +78,7 @@ import fr.gouv.vitamui.pastis.common.util.NoticeUtils;
 import fr.gouv.vitamui.pastis.common.util.PastisCustomCharacterEscapeHandler;
 import fr.gouv.vitamui.pastis.common.util.PastisGetXmlJsonTree;
 import fr.gouv.vitamui.pastis.common.util.PastisSAX2Handler;
+import fr.gouv.vitamui.referential.common.service.VitamProfileService;
 import lombok.Getter;
 import lombok.Setter;
 import org.json.JSONObject;
@@ -81,9 +88,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.io.support.ResourcePatternUtils;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.xml.sax.InputSource;
@@ -91,6 +101,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
 
+import javax.ws.rs.core.Response;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
@@ -136,10 +147,14 @@ public class PastisService {
 
     private final JsonFromPUA jsonFromPUA;
 
+    private VitamProfileService vitamProfileService;
+
     private final PuaFromJSON puaFromJSON;
 
     private List<PastisProfile> pastisProfiles = new ArrayList<>();
     private List<Notice> notices = new ArrayList<>();
+
+    private ExternalSecurityService externalSecurityService;
 
     private Random rand;
 
@@ -150,7 +165,9 @@ public class PastisService {
         PuaPastisValidator puaPastisValidator,
         JsonFromPUA jsonFromPUA,
         PuaFromJSON puaFromJSON,
-        MetaModelService metaModelService
+        MetaModelService metaModelService,
+        VitamProfileService vitamProfileService,
+        ExternalSecurityService externalSecurityService
     ) {
         this.objectMapper = objectMapper;
         this.resourceLoader = resourceLoader;
@@ -158,6 +175,8 @@ public class PastisService {
         this.jsonFromPUA = jsonFromPUA;
         this.puaFromJSON = puaFromJSON;
         this.metaModelService = metaModelService;
+        this.vitamProfileService = vitamProfileService;
+        this.externalSecurityService = externalSecurityService;
     }
 
     public String getArchiveProfile(final ElementProperties json, ProfileVersion version) throws TechnicalException {
@@ -451,5 +470,28 @@ public class PastisService {
 
     public SedaNode getMetaModel(ProfileVersion profileVersion) throws IOException {
         return metaModelService.getMetaModelForVersion(profileVersion);
+    }
+
+    private VitamContext buildVitamContext() {
+        return externalSecurityService.buildVitamContext(externalSecurityService.getTenantIdentifier());
+    }
+
+    public ResponseEntity<Resource> download(String id) {
+        VitamContext vitamContext = buildVitamContext();
+        Response response;
+
+        try {
+            LOGGER.info("Download EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
+
+            response = vitamProfileService.downloadProfile(vitamContext, id);
+            Object entity = response.getEntity();
+            if (entity instanceof InputStream) {
+                Resource resource = new InputStreamResource((InputStream) entity);
+                return new ResponseEntity<>(resource, HttpStatus.OK);
+            }
+            return null;
+        } catch (VitamClientException | AccessExternalClientException | AccessExternalNotFoundException e) {
+            throw new InternalServerException("Unable to download Profile operation report", e);
+        }
     }
 }

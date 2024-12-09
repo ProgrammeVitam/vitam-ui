@@ -13,7 +13,7 @@ import fr.gouv.vitamui.pastis.common.exception.TechnicalException;
 import fr.gouv.vitamui.pastis.common.rest.RestApi;
 import fr.gouv.vitamui.pastis.server.security.WebSecurityConfig;
 import fr.gouv.vitamui.pastis.server.service.PastisService;
-import fr.gouv.vitamui.referential.internal.client.ProfileInternalRestClient;
+import fr.gouv.vitamui.referential.external.client.ProfileExternalRestClient;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -47,7 +47,7 @@ public class PastisControllerTest extends ControllerTest {
     private ExternalSecurityService externalSecurityService;
 
     @MockBean
-    private ProfileInternalRestClient profileInternalRestClient;
+    private ProfileExternalRestClient profileInternalRestClient;
 
     private PastisController controller;
 
