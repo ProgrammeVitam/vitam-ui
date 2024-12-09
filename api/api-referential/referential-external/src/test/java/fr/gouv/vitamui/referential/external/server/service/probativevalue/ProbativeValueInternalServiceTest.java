@@ -49,12 +49,12 @@ import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.RequestResponseOK;
 import fr.gouv.vitamui.commons.vitam.api.access.UnitService;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
-import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import fr.gouv.vitamui.referential.common.service.VitamBatchReportService;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -74,6 +74,7 @@ import static org.mockito.Mockito.when;
 
 public class ProbativeValueInternalServiceTest {
 
+    @InjectMocks
     private ProbativeValueInternalService probativeValueInternalService;
 
     @Mock
@@ -81,9 +82,6 @@ public class ProbativeValueInternalServiceTest {
 
     @Mock
     private UnitService unitService;
-
-    @Mock
-    private ExternalSecurityService externalSecurityService;
 
     @Rule
     public TemporaryFolder folder = new TemporaryFolder();
