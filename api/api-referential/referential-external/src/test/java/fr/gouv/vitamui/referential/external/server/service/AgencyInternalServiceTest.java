@@ -50,7 +50,6 @@ import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.RequestResponseOK;
 import fr.gouv.vitam.common.model.administration.AgenciesModel;
 import fr.gouv.vitam.common.model.logbook.LogbookOperation;
-import fr.gouv.vitamui.commons.api.domain.AgencyModelDto;
 import fr.gouv.vitamui.commons.api.exception.ConflictException;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
@@ -58,7 +57,6 @@ import fr.gouv.vitamui.commons.vitam.api.administration.AgencyService;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import fr.gouv.vitamui.referential.common.dto.AgencyDto;
 import fr.gouv.vitamui.referential.common.service.VitamAgencyService;
-import fr.gouv.vitamui.referential.external.server.service.agency.AgencyConverter;
 import fr.gouv.vitamui.referential.external.server.service.agency.AgencyInternalService;
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.BeforeEach;
@@ -101,11 +99,9 @@ public class AgencyInternalServiceTest {
     @BeforeEach
     public void setUp() {
         ObjectMapper objectMapper = new ObjectMapper().disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-        AgencyConverter converter = new AgencyConverter();
         agencyInternalService = new AgencyInternalService(
             agencyService,
             objectMapper,
-            converter,
             logbookService,
             vitamAgencyService,
             externalSecurityService
@@ -221,7 +217,7 @@ public class AgencyInternalServiceTest {
         AgencyDto agencyDto = new AgencyDto();
         agencyDto.setId("1");
 
-        when(vitamAgencyService.create(any(VitamContext.class), any(AgencyModelDto.class))).thenReturn(
+        when(vitamAgencyService.create(any(VitamContext.class), any(AgenciesModel.class))).thenReturn(
             new RequestResponseOK().setHttpCode(200)
         );
 
@@ -236,7 +232,7 @@ public class AgencyInternalServiceTest {
         AgencyDto agencyDto = new AgencyDto();
         agencyDto.setId("1");
 
-        when(vitamAgencyService.create(any(VitamContext.class), any(AgencyModelDto.class))).thenReturn(
+        when(vitamAgencyService.create(any(VitamContext.class), any(AgenciesModel.class))).thenReturn(
             new RequestResponseOK().setHttpCode(400)
         );
 
@@ -251,7 +247,7 @@ public class AgencyInternalServiceTest {
         AgencyDto agencyDto = new AgencyDto();
         agencyDto.setId("1");
 
-        when(vitamAgencyService.create(any(VitamContext.class), any(AgencyModelDto.class))).thenThrow(
+        when(vitamAgencyService.create(any(VitamContext.class), any(AgenciesModel.class))).thenThrow(
             new AccessExternalClientException("Exception thrown by vitam")
         );
 
@@ -268,7 +264,7 @@ public class AgencyInternalServiceTest {
         AgencyDto agencyDto = new AgencyDto();
         agencyDto.setId("1");
 
-        when(vitamAgencyService.create(any(VitamContext.class), any(AgencyModelDto.class))).thenThrow(
+        when(vitamAgencyService.create(any(VitamContext.class), any(AgenciesModel.class))).thenThrow(
             new InvalidParseOperationException("Exception thrown by vitam")
         );
 
@@ -285,7 +281,7 @@ public class AgencyInternalServiceTest {
         AgencyDto agencyDto = new AgencyDto();
         agencyDto.setId("1");
 
-        when(vitamAgencyService.create(any(VitamContext.class), any(AgencyModelDto.class))).thenThrow(
+        when(vitamAgencyService.create(any(VitamContext.class), any(AgenciesModel.class))).thenThrow(
             new VitamClientException("Exception thrown by vitam")
         );
 
@@ -302,7 +298,7 @@ public class AgencyInternalServiceTest {
         AgencyDto agencyDto = new AgencyDto();
         agencyDto.setId("1");
 
-        when(vitamAgencyService.create(any(VitamContext.class), any(AgencyModelDto.class))).thenThrow(
+        when(vitamAgencyService.create(any(VitamContext.class), any(AgenciesModel.class))).thenThrow(
             new IOException("Exception thrown by vitam")
         );
 

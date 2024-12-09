@@ -34,43 +34,45 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-package fr.gouv.vitamui.referential.external.server;
+package fr.gouv.vitamui.iam.security.client;
 
-import fr.gouv.vitamui.commons.test.VitamClientTestConfig;
-import fr.gouv.vitamui.referential.external.server.config.ApiReferentialApplicationProperties;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Import;
-import org.springframework.core.env.Environment;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import fr.gouv.vitamui.commons.api.exception.ApplicationServerException;
+import fr.gouv.vitamui.commons.rest.client.BaseRestClient;
+import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
+import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
+import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 
-import static org.assertj.core.api.Assertions.assertThat;
+/**
+ * Class for ExternalVitamUICrudService
+ *
+ *
+ */
+public abstract class AbstractExternalClientService {
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
-@ActiveProfiles("test")
-@TestPropertySource(locations = "classpath:application.yml")
-@Import(VitamClientTestConfig.class)
-public class ApiReferentialApplicationTest {
+    protected final ExternalSecurityService externalSecurityService;
 
-
-
-    @Autowired
-    private Environment env;
-
-    @Autowired
-    private ApiReferentialApplicationProperties referentialProperties;
-
-    @Test
-    public void testContextLoads() {
-        assertThat(env).isNotNull();
-        assertThat(env.getProperty("spring.config.name")).isEqualTo("referential-external-application");
-
-        assertThat(referentialProperties).isNotNull();
-        assertThat(referentialProperties.getIamInternalClient()).isNotNull();
+    public AbstractExternalClientService(final ExternalSecurityService externalSecurityService) {
+        this.externalSecurityService = externalSecurityService;
     }
+
+    //TODO remove internal and external
+    /**
+     * Retrieve InternalHttpContext
+     * @return
+     */
+    protected ExternalHttpContext getInternalHttpContext() {
+        final ExternalHttpContext externalHttpContext = externalSecurityService.getHttpContext();
+        final AuthUserDto user = externalSecurityService.getUser();
+
+        final String userLevel = user.getLevel();
+        if (userLevel == null) {
+            throw new ApplicationServerException("Level is null for user " + user.getEmail());
+        }
+
+        // final String customerId = externalSecurityService.getUser().getCustomerId();
+
+        return externalHttpContext;
+    }
+
+    protected abstract BaseRestClient<ExternalHttpContext> getClient();
 }
