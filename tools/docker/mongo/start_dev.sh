@@ -1,6 +1,8 @@
 #!/bin/bash
 # Emmanuel Deviller
 
+cd $(dirname $0)
+
 #########################
 # Copy mongo scripts and template them
 CUR_DIR=`pwd`

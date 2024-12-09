@@ -1,5 +1,7 @@
 #!/bin/bash
 
+cd $(dirname $0)
+
 CUR_DIR=`pwd`
 TEMPLATER_EXTRA_VARS="--extra-vars \"@$CUR_DIR/mongo_vars_dev.yml\""
 
