@@ -36,15 +36,15 @@ fi
 
 
 # Start Docker Compose in detached mode
-docker-compose up --build -d
+docker compose up --build -d
 
 # Function to wait for the container to be up
 wait_for_container() {
     echo "Waiting for the container $KEYCLOAK_SERVICE_NAME to be up..."
-    docker-compose ps | grep -q "$KEYCLOAK_SERVICE_NAME"
+    docker compose ps | grep -q "$KEYCLOAK_SERVICE_NAME"
     while [ $? -ne 0 ]; do
         sleep 1
-        docker-compose ps | grep -q "$KEYCLOAK_SERVICE_NAME"
+        docker compose ps | grep -q "$KEYCLOAK_SERVICE_NAME"
     done
 }
 

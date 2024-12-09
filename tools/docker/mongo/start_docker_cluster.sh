@@ -7,7 +7,7 @@ if [ ! -z "$ADDITIONNAL_VITAMUI_CONFIG_FILE" ]; then
     TEMPLATER_EXTRA_VARS="${TEMPLATER_EXTRA_VARS} --extra-vars \"@${ADDITIONNAL_VITAMUI_CONFIG_FILE}\""
 fi
 
-docker-compose -f ./mongo_cluster.yml up -d
+docker compose -f ./mongo_cluster.yml up -d
 
 sleep 2
 
