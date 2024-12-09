@@ -38,13 +38,15 @@ knowledge of the CeCILL-C license and that you accept its terms.
 
 package fr.gouv.vitamui.pastis.server.rest;
 
+import fr.gouv.vitam.access.external.common.exception.AccessExternalClientException;
+import fr.gouv.vitam.access.external.common.exception.AccessExternalNotFoundException;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.rest.client.BaseRestClient;
-import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
-import fr.gouv.vitamui.iam.security.client.AbstractInternalClientService;
+import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
+import fr.gouv.vitamui.iam.security.client.AbstractExternalClientService;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import fr.gouv.vitamui.pastis.common.dto.ElementProperties;
 import fr.gouv.vitamui.pastis.common.dto.profiles.Notice;
@@ -57,7 +59,7 @@ import fr.gouv.vitamui.pastis.common.exception.TechnicalException;
 import fr.gouv.vitamui.pastis.common.rest.RestApi;
 import fr.gouv.vitamui.pastis.common.util.NoticeUtils;
 import fr.gouv.vitamui.pastis.server.service.PastisService;
-import fr.gouv.vitamui.referential.internal.client.ProfileInternalRestClient;
+import fr.gouv.vitamui.referential.external.client.ProfileExternalRestClient;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.core.io.Resource;
@@ -82,18 +84,18 @@ import java.util.Objects;
 @RequestMapping(RestApi.PASTIS)
 @RestController
 @ResponseBody
-class PastisController extends AbstractInternalClientService {
+class PastisController extends AbstractExternalClientService {
 
     private static final String APPLICATION_JSON_UTF8 = "application/json; charset=utf-8";
 
     private final PastisService profileService;
 
-    private final ProfileInternalRestClient profileInternalRestClient;
+    private final ProfileExternalRestClient profileInternalRestClient;
 
     public PastisController(
         final ExternalSecurityService externalSecurityService,
         PastisService profileService,
-        ProfileInternalRestClient profileInternalRestClient
+        ProfileExternalRestClient profileInternalRestClient
     ) {
         super(externalSecurityService);
         this.profileService = profileService;
@@ -101,7 +103,7 @@ class PastisController extends AbstractInternalClientService {
     }
 
     @Override
-    protected BaseRestClient<InternalHttpContext> getClient() {
+    protected BaseRestClient<ExternalHttpContext> getClient() {
         return this.profileInternalRestClient;
     }
 
@@ -151,13 +153,11 @@ class PastisController extends AbstractInternalClientService {
     @Secured({ ServicesData.ROLE_UPDATE_ARCHIVE_PROFILES, ServicesData.ROLE_UPDATE_PROFILES })
     @PostMapping(value = RestApi.PASTIS_TRANSFORM_PROFILE)
     ResponseEntity<ProfileResponse> loadProfile(@RequestBody final Notice notice)
-        throws TechnicalException, InvalidParseOperationException, PreconditionFailedException {
+        throws TechnicalException, InvalidParseOperationException, PreconditionFailedException, AccessExternalNotFoundException, AccessExternalClientException {
         SanityChecker.sanitizeCriteria(notice);
         // Code copied from UI-Pastis. Cannot be in PastisService because the service is also used by Pastis Standalone
         if (notice.getControlSchema() == null) {
-            Resource resource = profileInternalRestClient
-                .download(getInternalHttpContext(), notice.getIdentifier())
-                .getBody();
+            Resource resource = profileService.download(notice.getIdentifier()).getBody();
             ElementProperties elementProperties = profileService.loadProfilePA(resource);
             ProfileResponse profileResponse = NoticeUtils.convertToProfileResponse(notice);
             profileResponse.setProfile(elementProperties);

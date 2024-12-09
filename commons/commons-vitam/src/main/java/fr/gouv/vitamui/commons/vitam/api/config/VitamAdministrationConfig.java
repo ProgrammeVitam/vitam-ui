@@ -36,13 +36,15 @@
  */
 package fr.gouv.vitamui.commons.vitam.api.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import fr.gouv.vitam.access.external.client.AdminExternalClient;
 import fr.gouv.vitamui.commons.vitam.api.administration.AccessContractService;
 import fr.gouv.vitamui.commons.vitam.api.administration.AgencyService;
 import fr.gouv.vitamui.commons.vitam.api.administration.IngestContractService;
 import fr.gouv.vitamui.commons.vitam.api.administration.ManagementContractService;
-import fr.gouv.vitamui.commons.vitam.api.administration.ProfileService;
 import fr.gouv.vitamui.commons.vitam.api.administration.RuleService;
 import fr.gouv.vitamui.commons.vitam.api.administration.VitamOperationService;
+import fr.gouv.vitamui.commons.vitam.api.administration.VitamProfileService;
 import fr.gouv.vitamui.commons.vitam.api.config.converter.RuleConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -66,11 +68,6 @@ public class VitamAdministrationConfig extends VitamClientConfig {
     }
 
     @Bean
-    public ProfileService getProfileService() {
-        return new ProfileService(adminExternalClient());
-    }
-
-    @Bean
     public RuleService getRuleService() {
         return new RuleService(adminExternalClient());
     }
@@ -88,5 +85,10 @@ public class VitamAdministrationConfig extends VitamClientConfig {
     @Bean
     public ManagementContractService getManagementContractService() {
         return new ManagementContractService(adminExternalClient());
+    }
+
+    @Bean
+    public VitamProfileService vitamProfileService(final AdminExternalClient adminClient, ObjectMapper objectMapper) {
+        return new VitamProfileService(adminClient, objectMapper);
     }
 }

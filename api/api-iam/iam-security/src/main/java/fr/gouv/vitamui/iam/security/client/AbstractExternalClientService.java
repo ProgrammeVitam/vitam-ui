@@ -34,30 +34,45 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-package fr.gouv.vitamui.referential.internal.server.securityprofile;
+package fr.gouv.vitamui.iam.security.client;
 
-import fr.gouv.vitam.common.model.administration.SecurityProfileModel;
-import fr.gouv.vitamui.commons.utils.VitamUIUtils;
-import fr.gouv.vitamui.referential.common.dto.SecurityProfileDto;
+import fr.gouv.vitamui.commons.api.exception.ApplicationServerException;
+import fr.gouv.vitamui.commons.rest.client.BaseRestClient;
+import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
+import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
+import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 
-import java.util.List;
-import java.util.stream.Collectors;
+/**
+ * Class for ExternalVitamUICrudService
+ *
+ *
+ */
+public abstract class AbstractExternalClientService {
 
-public class SecurityProfileConverter {
+    protected final ExternalSecurityService externalSecurityService;
 
-    public SecurityProfileModel convertDtoToVitam(final SecurityProfileDto dto) {
-        return VitamUIUtils.copyProperties(dto, new SecurityProfileModel());
+    public AbstractExternalClientService(final ExternalSecurityService externalSecurityService) {
+        this.externalSecurityService = externalSecurityService;
     }
 
-    public SecurityProfileDto convertVitamToDto(final SecurityProfileModel securityProfile) {
-        return VitamUIUtils.copyProperties(securityProfile, new SecurityProfileDto());
+    //TODO remove internal and external
+    /**
+     * Retrieve InternalHttpContext
+     * @return
+     */
+    protected ExternalHttpContext getInternalHttpContext() {
+        final ExternalHttpContext externalHttpContext = externalSecurityService.getHttpContext();
+        final AuthUserDto user = externalSecurityService.getUser();
+
+        final String userLevel = user.getLevel();
+        if (userLevel == null) {
+            throw new ApplicationServerException("Level is null for user " + user.getEmail());
+        }
+
+        // final String customerId = externalSecurityService.getUser().getCustomerId();
+
+        return externalHttpContext;
     }
 
-    public List<SecurityProfileModel> convertDtosToVitams(final List<SecurityProfileDto> dtos) {
-        return dtos.stream().map(this::convertDtoToVitam).collect(Collectors.toList());
-    }
-
-    public List<SecurityProfileDto> convertVitamsToDtos(final List<SecurityProfileModel> securityProfiles) {
-        return securityProfiles.stream().map(this::convertVitamToDto).collect(Collectors.toList());
-    }
+    protected abstract BaseRestClient<ExternalHttpContext> getClient();
 }

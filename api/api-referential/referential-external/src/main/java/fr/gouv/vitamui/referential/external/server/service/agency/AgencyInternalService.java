@@ -49,7 +49,6 @@ import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.administration.AgenciesModel;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
-import fr.gouv.vitamui.commons.api.domain.AgencyModelDto;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.exception.ConflictException;
@@ -66,7 +65,6 @@ import fr.gouv.vitamui.referential.common.dto.AgencyDto;
 import fr.gouv.vitamui.referential.common.dto.AgencyResponseDto;
 import fr.gouv.vitamui.referential.common.service.VitamAgencyService;
 import fr.gouv.vitamui.referential.external.server.service.utils.ExportCSVUtils;
-import org.apache.commons.beanutils.BeanUtilsBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -82,7 +80,6 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.SequenceInputStream;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -98,8 +95,6 @@ public class AgencyInternalService {
 
     private ObjectMapper objectMapper;
 
-    private AgencyConverter converter;
-
     private LogbookService logbookService;
 
     private VitamAgencyService vitamAgencyService;
@@ -110,14 +105,12 @@ public class AgencyInternalService {
     public AgencyInternalService(
         AgencyService agencyService,
         ObjectMapper objectMapper,
-        AgencyConverter converter,
         LogbookService logbookService,
         VitamAgencyService vitamAgencyService,
         ExternalSecurityService externalSecurityService
     ) {
         this.agencyService = agencyService;
         this.objectMapper = objectMapper;
-        this.converter = converter;
         this.logbookService = logbookService;
         this.vitamAgencyService = vitamAgencyService;
         this.externalSecurityService = externalSecurityService;
@@ -133,7 +126,9 @@ public class AgencyInternalService {
             if (agencyResponseDto.getResults().size() == 0) {
                 return null;
             } else {
-                return converter.convertVitamToDto(agencyResponseDto.getResults().get(0));
+                return fr.gouv.vitamui.referential.common.utils.AgencyConverter.convertVitamToDto(
+                    agencyResponseDto.getResults().get(0)
+                );
             }
         } catch (VitamClientException | JsonProcessingException e) {
             throw new InternalServerException("Unable to get Agency", e);
@@ -157,7 +152,9 @@ public class AgencyInternalService {
                 AgencyResponseDto.class
             );
 
-            return converter.convertVitamsToDtos(agencyResponseDto.getResults());
+            return fr.gouv.vitamui.referential.common.utils.AgencyConverter.convertVitamsToDtos(
+                agencyResponseDto.getResults()
+            );
         } catch (VitamClientException | JsonProcessingException e) {
             throw new InternalServerException("Unable to find agencies", e);
         }
@@ -201,7 +198,9 @@ public class AgencyInternalService {
         AgencyResponseDto results = this.findAll(vitamContext, query);
         boolean hasMore = pageNumber * size + results.getHits().getSize() < results.getHits().getTotal();
 
-        final List<AgencyDto> valuesDto = converter.convertVitamsToDtos(results.getResults());
+        final List<AgencyDto> valuesDto = fr.gouv.vitamui.referential.common.utils.AgencyConverter.convertVitamsToDtos(
+            results.getResults()
+        );
         return new PaginatedValuesDto<>(valuesDto, pageNumber, results.getHits().getSize(), hasMore);
     }
 
@@ -238,7 +237,7 @@ public class AgencyInternalService {
     public Boolean check(VitamContext vitamContext, AgencyDto agencyDto) {
         try {
             Integer agencyCheckedTenant = vitamAgencyService.checkAbilityToCreateAgencyInVitam(
-                converter.convertDtosToVitams(Arrays.asList(agencyDto)),
+                fr.gouv.vitamui.referential.common.utils.AgencyConverter.convertDtosToVitams(Arrays.asList(agencyDto)),
                 vitamContext.getApplicationSessionId()
             );
             return !vitamContext.getTenantId().equals(agencyCheckedTenant);
@@ -261,13 +260,13 @@ public class AgencyInternalService {
         try {
             RequestResponse<?> requestResponse = vitamAgencyService.create(
                 vitamContext,
-                converter.convertDtoToVitam(agencyDto)
+                fr.gouv.vitamui.referential.common.utils.AgencyConverter.convertDtoToVitam(agencyDto)
             );
-            final AgencyModelDto agencyModelDto = objectMapper.treeToValue(
+            final AgenciesModel agencyModelDto = objectMapper.treeToValue(
                 requestResponse.toJsonNode(),
-                AgencyModelDto.class
+                AgenciesModel.class
             );
-            return converter.convertVitamToDto(agencyModelDto);
+            return fr.gouv.vitamui.referential.common.utils.AgencyConverter.convertVitamToDto(agencyModelDto);
         } catch (
             InvalidParseOperationException | AccessExternalClientException | IOException | VitamClientException e
         ) {
@@ -283,30 +282,17 @@ public class AgencyInternalService {
         return this.create(vitamContext, agencyDto);
     }
 
-    public AgencyDto patch(VitamContext vitamContext, final Map<String, Object> partialDto) {
-        final AgencyDto agencyDto = this.getOne(vitamContext, (String) partialDto.get("identifier"));
-
-        partialDto.forEach((key, value) -> {
-            if (!"id".equals(key)) {
-                try {
-                    BeanUtilsBean.getInstance().copyProperty(agencyDto, key, value);
-                } catch (InvocationTargetException | IllegalAccessException e) {
-                    LOGGER.warn(e.getMessage());
-                }
-            }
-        });
-        AgencyModelDto agencyModelDto = converter.convertDtoToVitam(agencyDto);
+    public AgencyDto patch(VitamContext vitamContext, final AgencyDto agencyDto) {
+        AgenciesModel agencyModelDto = fr.gouv.vitamui.referential.common.utils.AgencyConverter.convertDtoToVitam(
+            agencyDto
+        );
         try {
             RequestResponse<?> requestResponse = vitamAgencyService.patchAgency(
                 vitamContext,
-                (String) partialDto.get("id"),
+                agencyDto.getId(),
                 agencyModelDto
             );
-            final AgencyModelDto agencyModelDtoResult = objectMapper.treeToValue(
-                requestResponse.toJsonNode(),
-                AgencyModelDto.class
-            );
-            return converter.convertVitamToDto(agencyModelDtoResult);
+            return agencyDto;
         } catch (
             InvalidParseOperationException | AccessExternalClientException | VitamClientException | IOException e
         ) {
@@ -319,7 +305,7 @@ public class AgencyInternalService {
             externalSecurityService.getTenantIdentifier()
         );
 
-        return this.patch(vitamContext, partialDto);
+        return this.patch(vitamContext, objectMapper.convertValue(partialDto, AgencyDto.class));
     }
 
     public boolean delete(VitamContext context, String id) {

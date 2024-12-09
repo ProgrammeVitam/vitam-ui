@@ -58,12 +58,10 @@ import fr.gouv.vitamui.referential.common.service.AccessionRegisterService;
 import fr.gouv.vitamui.referential.common.service.IngestContractService;
 import fr.gouv.vitamui.referential.common.service.OntologyService;
 import fr.gouv.vitamui.referential.common.service.OperationService;
-import fr.gouv.vitamui.referential.common.service.VitamAgencyService;
 import fr.gouv.vitamui.referential.common.service.VitamArchivalProfileUnitService;
 import fr.gouv.vitamui.referential.common.service.VitamBatchReportService;
 import fr.gouv.vitamui.referential.common.service.VitamContextService;
 import fr.gouv.vitamui.referential.common.service.VitamFileFormatService;
-import fr.gouv.vitamui.referential.common.service.VitamProfileService;
 import fr.gouv.vitamui.referential.common.service.VitamRuleService;
 import fr.gouv.vitamui.referential.common.service.VitamSecurityProfileService;
 import fr.gouv.vitamui.referential.common.service.VitamUIAccessContractService;
@@ -83,7 +81,6 @@ import org.springframework.context.annotation.Import;
         WebSecurityConfig.class,
         VitamAccessConfig.class,
         VitamAdministrationConfig.class,
-        ConverterConfig.class,
     }
 )
 public class ApiReferentialServerConfig extends AbstractContextConfiguration {
@@ -166,11 +163,6 @@ public class ApiReferentialServerConfig extends AbstractContextConfiguration {
         final AccessExternalClient accessClient
     ) {
         return new VitamArchivalProfileUnitService(adminClient, objectMapper, accessClient);
-    }
-
-    @Bean
-    public VitamProfileService vitamProfileService(final AdminExternalClient adminClient, ObjectMapper objectMapper) {
-        return new VitamProfileService(adminClient, objectMapper);
     }
 
     @Bean

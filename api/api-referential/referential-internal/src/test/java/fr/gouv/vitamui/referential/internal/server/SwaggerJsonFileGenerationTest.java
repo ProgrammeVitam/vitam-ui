@@ -42,20 +42,6 @@ import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
 import fr.gouv.vitamui.commons.rest.configuration.SwaggerConfiguration;
 import fr.gouv.vitamui.commons.test.rest.AbstractSwaggerJsonFileGenerationTest;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
-import fr.gouv.vitamui.referential.internal.server.accesscontract.AccessContractInternalService;
-import fr.gouv.vitamui.referential.internal.server.agency.AgencyInternalService;
-import fr.gouv.vitamui.referential.internal.server.context.ContextInternalService;
-import fr.gouv.vitamui.referential.internal.server.fileformat.FileFormatInternalService;
-import fr.gouv.vitamui.referential.internal.server.ingestcontract.IngestContractInternalService;
-import fr.gouv.vitamui.referential.internal.server.logbookmanagement.LogbookManagementOperationInternalService;
-import fr.gouv.vitamui.referential.internal.server.managementcontract.service.ManagementContractInternalService;
-import fr.gouv.vitamui.referential.internal.server.ontology.OntologyInternalService;
-import fr.gouv.vitamui.referential.internal.server.operation.OperationInternalService;
-import fr.gouv.vitamui.referential.internal.server.probativevalue.ProbativeValueInternalService;
-import fr.gouv.vitamui.referential.internal.server.profile.ProfileInternalService;
-import fr.gouv.vitamui.referential.internal.server.rule.RuleInternalService;
-import fr.gouv.vitamui.referential.internal.server.securityprofile.SecurityProfileInternalService;
-import fr.gouv.vitamui.referential.internal.server.unit.UnitInternalService;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -85,50 +71,8 @@ public class SwaggerJsonFileGenerationTest extends AbstractSwaggerJsonFileGenera
     private AccessExternalClient accessExternalClient;
 
     @MockBean
-    private AccessContractInternalService accessContractInternalService;
-
-    @MockBean
-    private IngestContractInternalService ingestContractInternalService;
-
-    @MockBean
-    private AgencyInternalService agencyInternalService;
-
-    @MockBean
     private InternalSecurityService internalSecurityService;
 
     @MockBean
-    private FileFormatInternalService fileFormatInternalService;
-
-    @MockBean
-    private OntologyInternalService ontologyInternalService;
-
-    @MockBean
-    private ContextInternalService contextInternalService;
-
-    @MockBean
-    private SecurityProfileInternalService securityProfileInternalService;
-
-    @MockBean
-    private OperationInternalService operationInternalService;
-
-    @MockBean
     private AuthenticationProvider authenticationProvider;
-
-    @MockBean
-    private UnitInternalService unitInternalService;
-
-    @MockBean
-    private ManagementContractInternalService managementContractInternalService;
-
-    @MockBean
-    private ProfileInternalService profileInternalService;
-
-    @MockBean
-    private ProbativeValueInternalService probativeValueInternalService;
-
-    @MockBean
-    private RuleInternalService ruleInternalService;
-
-    @MockBean
-    private LogbookManagementOperationInternalService logbookManagementOperationInternalService;
 }

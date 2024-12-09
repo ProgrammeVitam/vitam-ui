@@ -4,11 +4,12 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import fr.gouv.vitam.common.PropertiesUtils;
+import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.model.AuditOptions;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
+import fr.gouv.vitamui.referential.common.model.AuditCreateOptions;
 import fr.gouv.vitamui.referential.common.service.OperationService;
 import fr.gouv.vitamui.referential.external.server.service.service.ExternalParametersService;
 import org.junit.jupiter.api.Assertions;
@@ -27,6 +28,7 @@ class OperationInternalServiceTest {
 
     public static final String DSL_QUERY_PROJECTION = "$projection";
     private final String AUDIT_FILE_CONSISTENCY = "AUDIT_FILE_CONSISTENCY";
+    private final String AUDIT_PERIMETER_ORIGINATING_AGENCY = "AUDIT_PERIMETER_ORIGINATING_AGENCY";
 
     @Mock
     private ObjectMapper objectMapper;
@@ -46,6 +48,7 @@ class OperationInternalServiceTest {
     @InjectMocks
     private OperationInternalService operationInternalService;
 
+    private AuditCreateOptions auditCreateOptions;
     private AuditOptions auditOptions;
 
     @BeforeEach
@@ -60,55 +63,65 @@ class OperationInternalServiceTest {
             externalParametersService,
             externalSecurityService
         );
+        auditCreateOptions = new AuditCreateOptions();
         auditOptions = new AuditOptions();
     }
 
     @Test
     void updateAuditDslQuery_should_handle_dsl_types() throws JsonProcessingException, FileNotFoundException {
+        VitamContext vitamContext = new VitamContext(1);
         // AuditType ko
-        auditOptions.setAuditType("fakeAuditType");
-        String jsonDslQuery = PropertiesUtils.getResourceAsString("audit/AUDIT_FILE_CONSISTENCY.json").trim();
-        JsonNode dslQuery = objectMapper.readTree(jsonDslQuery);
-        auditOptions.setQuery(dslQuery);
+        auditCreateOptions.setAuditType("fakeAuditType");
+        auditCreateOptions.setIngestOperationIds(new String[] { "fakeIngestOperationId1", "fakeIngestOperationId2" });
+        auditCreateOptions.setOriginatingAgencyIds(
+            new String[] { "fakeOriginatingAgencyId1", "fakeOriginatingAgencyId2" }
+        );
+        auditCreateOptions.setAttachmentPositionIds(
+            new String[] { "fakeAttachmentPositionId1", "fakeAttachmentPositionId2" }
+        );
+        auditCreateOptions.setAuditPerimeter(AUDIT_PERIMETER_ORIGINATING_AGENCY);
+        auditCreateOptions.setAuditActions(AUDIT_FILE_CONSISTENCY); // or AUDIT_FILE_RECTIFICATION
         // set unexpected threshold
-        assertThatCode(() -> operationInternalService.updateAuditDslQuery(auditOptions, Optional.empty()))
+        assertThatCode(() -> operationInternalService.updateAuditDslQuery(auditCreateOptions, null, vitamContext))
             .isInstanceOf(BadRequestException.class)
             .hasMessageContaining("Invalid audit query");
 
         // set right AuditType ok
-        auditOptions.setAuditType("dsl");
-        auditOptions.setAuditActions(AUDIT_FILE_CONSISTENCY);
+        auditCreateOptions.setAuditType("dsl");
+        String AUDIT_FILE_EXISTING = "AUDIT_FILE_EXISTING";
+        auditCreateOptions.setAuditActions(AUDIT_FILE_EXISTING); // or AUDIT_FILE_INTEGRITY
         // load query
-        assertThatCode(() -> operationInternalService.updateAuditDslQuery(auditOptions, null))
+        assertThatCode(() -> operationInternalService.updateAuditDslQuery(auditCreateOptions, null, vitamContext))
             .isInstanceOf(BadRequestException.class)
             .hasMessageContaining("Invalid audit query");
 
         // check expected threshold
         assertThatCode(
-            () -> operationInternalService.updateAuditDslQuery(auditOptions, Optional.empty())
+            () -> operationInternalService.updateAuditDslQuery(auditCreateOptions, Optional.empty(), vitamContext)
         ).doesNotThrowAnyException();
     }
 
     @Test
     void updateAuditDslQuery_should_handle_dsl_attributes() throws JsonProcessingException, FileNotFoundException {
+        VitamContext vitamContext = new VitamContext(1);
         // check that dsl should not include projection
-        String inputJsonExistence = "audit/AUDIT_FILE_EXISTING.json";
-        String jsonWrongDslQuery = PropertiesUtils.getResourceAsString(inputJsonExistence).trim();
-        JsonNode wrongDslQuery = objectMapper.readTree(jsonWrongDslQuery);
-        auditOptions.setQuery(wrongDslQuery);
-        auditOptions.setAuditType("dsl");
+        auditCreateOptions.setAuditType("dsl");
+        auditCreateOptions.setIngestOperationIds(new String[] { "fakeIngestOperationId1", "fakeIngestOperationId2" });
+        auditCreateOptions.setOriginatingAgencyIds(
+            new String[] { "fakeOriginatingAgencyId1", "fakeOriginatingAgencyId2" }
+        );
+        auditCreateOptions.setAttachmentPositionIds(
+            new String[] { "fakeAttachmentPositionId1", "fakeAttachmentPositionId2" }
+        );
+        auditCreateOptions.setAuditPerimeter(AUDIT_PERIMETER_ORIGINATING_AGENCY);
         String AUDIT_FILE_EXISTING = "AUDIT_FILE_EXISTING";
-        auditOptions.setAuditActions(AUDIT_FILE_EXISTING); // or AUDIT_FILE_INTEGRITY
-        operationInternalService.updateAuditDslQuery(auditOptions, Optional.of(10L));
+        auditCreateOptions.setAuditActions(AUDIT_FILE_EXISTING); // or AUDIT_FILE_INTEGRITY
+        auditOptions = operationInternalService.updateAuditDslQuery(auditCreateOptions, Optional.of(10L), vitamContext);
         Assertions.assertFalse(containsAttribute(auditOptions.getQuery(), DSL_QUERY_PROJECTION));
 
         // check that dsl should include projection
-        String inputJsonConsistency = "audit/AUDIT_FILE_CONSISTENCY.json";
-        String jsonDslQuery = PropertiesUtils.getResourceAsString(inputJsonConsistency).trim();
-        JsonNode dslQuery = objectMapper.readTree(jsonDslQuery);
-        auditOptions.setQuery(dslQuery);
-        auditOptions.setAuditActions(AUDIT_FILE_CONSISTENCY); // or AUDIT_FILE_RECTIFICATION
-        operationInternalService.updateAuditDslQuery(auditOptions, Optional.of(10L));
+        auditCreateOptions.setAuditActions(AUDIT_FILE_CONSISTENCY); // or AUDIT_FILE_RECTIFICATION
+        auditOptions = operationInternalService.updateAuditDslQuery(auditCreateOptions, Optional.of(10L), vitamContext);
         Assertions.assertTrue(containsAttribute(auditOptions.getQuery(), DSL_QUERY_PROJECTION));
     }
 
