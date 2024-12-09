@@ -108,7 +108,7 @@ export class MultipleOptionsDatepickerComponent implements ControlValueAccessor,
   }
 
   writeValue(value: string) {
-    this.datePickerValue = value ? new Date(value) : new Date();
+    this.datePickerValue = value ? new Date(value) : null;
   }
 
   registerOnChange(fn: any): void {
