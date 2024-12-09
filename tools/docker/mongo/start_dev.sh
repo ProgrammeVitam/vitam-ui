@@ -1,6 +1,8 @@
 #!/bin/bash
 # Emmanuel Deviller
 
+cd $(dirname $0)
+
 #########################
 # Copy mongo scripts and template them
 CUR_DIR=`pwd`
@@ -13,7 +15,7 @@ fi
 # Make sure mongo-entrypoint is created before being mounted by docker to prevent it to be owned by root (which would fail running ansible).
 mkdir -p mongo-entrypoint
 
-docker-compose -f ./mongo_dev.yml up -d
+docker compose -f ./mongo_dev.yml up -d
 
 sleep 2
 

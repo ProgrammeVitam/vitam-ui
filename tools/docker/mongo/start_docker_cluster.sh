@@ -1,5 +1,7 @@
 #!/bin/bash
 
+cd $(dirname $0)
+
 CUR_DIR=`pwd`
 TEMPLATER_EXTRA_VARS="--extra-vars \"@$CUR_DIR/mongo_vars_dev.yml\""
 
@@ -7,7 +9,7 @@ if [ ! -z "$ADDITIONNAL_VITAMUI_CONFIG_FILE" ]; then
     TEMPLATER_EXTRA_VARS="${TEMPLATER_EXTRA_VARS} --extra-vars \"@${ADDITIONNAL_VITAMUI_CONFIG_FILE}\""
 fi
 
-docker-compose -f ./mongo_cluster.yml up -d
+docker compose -f ./mongo_cluster.yml up -d
 
 sleep 2
 

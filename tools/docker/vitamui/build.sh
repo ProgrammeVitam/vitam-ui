@@ -50,14 +50,14 @@ docker build . --build-arg VITAMUI_VERSION=$VITAMUI_VERSION -t docker.vitamui.co
 echo ">>> Running continaer to finish repository initialisation for vitamui image $VITAMUI_VERSION"
 echo "-------------------------------------------------------------"
 # Re run image with compose *I.E : systemd service start related workaround for docker container
-docker-compose  up -d
+docker compose  up -d
 # Laucnh install from shipped deployment and repository
-docker-compose  exec -T vitamui /workspace/deployment/install.sh -v
+docker compose  exec -T vitamui /workspace/deployment/install.sh -v
 
 ###############################
 # Save installed image
 ###############################
 # Commit image to publish ir
 docker commit vitamui_build docker.vitamui.com/vitamui:${VITAMUI_VERSION}
-docker-compose  down
+docker compose  down
 echo "Build success"
