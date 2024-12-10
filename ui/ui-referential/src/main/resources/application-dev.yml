@@ -20,7 +20,7 @@ server:
   tomcat.connection-timeout: 60000
   scheme: https
   ssl:
-    key-store: src/main/resources/dev/keystore_ui-referential.jks
+    key-store: ../../dev-deployment/environments/keystores/server/localhost/keystore_ui-referential.jks
     key-store-password: changeme
     key-password: changeme
     enabled-protocols: TLSv1.2,TLSv1.3
@@ -58,11 +58,11 @@ ui-referential:
     secure: true
     ssl-configuration:
       keystore:
-        key-path: src/main/resources/dev/keystore_ui-referential.jks
+        key-path: ../../dev-deployment/environments/keystores/server/localhost/keystore_ui-referential.jks
         key-password: changeme
         type: JKS
       truststore:
-        key-path: src/main/resources/dev/truststore_server.jks
+        key-path: ../../dev-deployment/environments/keystores/server/truststore_server.jks
         key-password: changeme
       hostname-verification: false
   referential-external-client:
@@ -74,11 +74,11 @@ ui-referential:
     secure: true
     ssl-configuration:
       keystore:
-        key-path: src/main/resources/dev/keystore_ui-referential.jks
+        key-path: ../../dev-deployment/environments/keystores/server/localhost/keystore_ui-referential.jks
         key-password: changeme
         type: JKS
       truststore:
-        key-path: src/main/resources/dev/truststore_server.jks
+        key-path: ../../dev-deployment/environments/keystores/server/truststore_server.jks
         key-password: changeme
       hostname-verification: false
   base-url:
@@ -114,7 +114,7 @@ cas:
   external-url: https://dev.vitamui.com:8080/cas
   callback-url: ${ui.url}/referential-api/callback
   ssl:
-    trust-store: src/main/resources/dev/truststore_server.jks
+    trust-store: ../../dev-deployment/environments/keystores/server/truststore_server.jks
     trust-store-password: changeme
 
 # Jaeger
