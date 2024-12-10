@@ -101,16 +101,6 @@ vitamui:
     port_admin: 7105
     server_connection_timeout: 60000
 
-  referential_internal:
-    host: "vitamui-referential-internal.service.{{ consul_domain }}"
-    vitamui_component: referential-internal
-    port_service: 8205
-    port_admin: 7205
-    server_connection_timeout: 60000
-    connect_timeout: 30
-    read_timeout: 30
-    write_timeout: 30
-
   iam_external:
     host: "vitamui-iam-external.service.{{ consul_domain }}"
     vitamui_component: iam-external
