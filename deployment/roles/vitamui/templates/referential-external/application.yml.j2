@@ -80,14 +80,7 @@ referential-external:
         key-password: {{ password_truststore }}
       hostname-verification: false
 {% endif %}
-{% if vitamui.referential_internal.secure | default(secure) | bool == true %}
-    secure: {{ vitamui.referential_internal.secure | default(secure) | lower }}
-    ssl-configuration:
-      truststore:
-        key-path: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
-        key-password: {{ password_truststore }}
-      hostname-verification: false
-{% endif %}
+
 
 {% if opentracing.jaeger.enabled | default(false) | bool %}
 opentracing:

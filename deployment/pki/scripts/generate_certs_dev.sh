@@ -30,7 +30,6 @@ function generateCerts {
     # Zone interne
     generateHostCertAndStorePassphrase          security-internal   hosts_vitamui_security_internal
     generateHostCertAndStorePassphrase          iam-internal        hosts_vitamui_iam_internal
-    generateHostCertAndStorePassphrase          referential-internal        hosts_vitamui_referential_internal
     generateHostCertAndStorePassphrase          ingest-internal     hosts_vitamui_ingest_internal
     generateHostCertAndStorePassphrase          archive-search-internal     hosts_vitamui_archive_search_internal
     generateHostCertAndStorePassphrase          collect-internal     hosts_vitamui_collect_internal
