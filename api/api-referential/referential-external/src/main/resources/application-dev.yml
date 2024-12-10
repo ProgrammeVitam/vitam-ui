@@ -48,14 +48,7 @@ referential-external:
     server-host: localhost
     server-port: 7083
     secure: false
-  referential-internal-client:
-    server-host: localhost
-    server-port: 7087
-    connect-time-out: 30
-    read-time-out: 30
-    write-time-out: 30
-    secure: false
-
+    
 # Jaeger
 opentracing:
   jaeger:
