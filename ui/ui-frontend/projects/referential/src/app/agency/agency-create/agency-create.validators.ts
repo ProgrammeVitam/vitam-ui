@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Injectable } from '@angular/core';
-import { AbstractControl, AsyncValidatorFn } from '@angular/forms';
+import { AbstractControl, AsyncValidatorFn, ValidatorFn } from '@angular/forms';
 
 import { of, timer } from 'rxjs';
 import { map, switchMap, take } from 'rxjs/operators';
@@ -53,6 +53,11 @@ export class AgencyCreateValidators {
 
   uniqueIdentifier = (identifierToIgnore?: string): AsyncValidatorFn => {
     return this.uniqueFields('identifier', 'identifierExists', identifierToIgnore);
+  };
+
+  onlyWhitespaces: ValidatorFn = (control: AbstractControl) => {
+    const regExp = /^\s+$/;
+    return regExp.test(control.value) ? { onlyWhitespaces: true } : null;
   };
 
   private uniqueFields(field: string, existTag: string, valueToIgnore?: string) {

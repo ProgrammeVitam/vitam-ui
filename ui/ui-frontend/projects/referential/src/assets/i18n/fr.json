@@ -4,7 +4,8 @@
     "SUBMIT": "Confirmer",
     "UPDATE": "Modifier",
     "APPLY_UPDATE": "Appliquer les modifications ",
-    "REQUIRED": "Champ requis"
+    "REQUIRED": "Champ requis",
+    "INVALID_FIELD": "Champ invalide"
   },
   "CONTRACT_MANAGEMENT": {
     "CONTRACT_PAGE": {
