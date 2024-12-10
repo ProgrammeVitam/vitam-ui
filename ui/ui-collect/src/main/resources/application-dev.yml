@@ -18,7 +18,7 @@ server:
   port: 9010
   scheme: https
   ssl:
-    key-store: src/main/resources/dev/keystore_ui-collect.jks
+    key-store: ../../dev-deployment/environments/keystores/server/localhost/keystore_ui-collect.jks
     key-store-password: changeme
     key-password: changeme
     enabled-protocols: TLSv1.2,TLSv1.3
@@ -54,11 +54,11 @@ ui-collect:
     secure: true
     ssl-configuration:
       keystore:
-        key-path: src/main/resources/dev/keystore_ui-collect.jks
+        key-path: ../../dev-deployment/environments/keystores/server/localhost/keystore_ui-collect.jks
         key-password: changeme
         type: JKS
       truststore:
-        key-path: src/main/resources/dev/truststore_server.jks
+        key-path: ../../dev-deployment/environments/keystores/server/truststore_server.jks
         key-password: changeme
       hostname-verification: false
   collect-external-client:
@@ -67,11 +67,11 @@ ui-collect:
     secure: true
     ssl-configuration:
       keystore:
-        key-path: src/main/resources/dev/keystore_ui-collect.jks
+        key-path: ../../dev-deployment/environments/keystores/server/localhost/keystore_ui-collect.jks
         key-password: changeme
         type: JKS
       truststore:
-        key-path: src/main/resources/dev/truststore_server.jks
+        key-path: ../../dev-deployment/environments/keystores/server/truststore_server.jks
         key-password: changeme
       hostname-verification: false
   update-units-metadata-external-client:
@@ -83,11 +83,11 @@ ui-collect:
     write-time-out: 240000 #4 minutes
     ssl-configuration:
       keystore:
-        key-path: src/main/resources/dev/keystore_ui-collect.jks
+        key-path: ../../dev-deployment/environments/keystores/server/localhost/keystore_ui-collect.jks
         key-password: changeme
         type: JKS
       truststore:
-        key-path: src/main/resources/dev/truststore_server.jks
+        key-path: ../../dev-deployment/environments/keystores/server/truststore_server.jks
         key-password: changeme
       hostname-verification: false
 
@@ -100,11 +100,11 @@ ui-collect:
     secure: true
     ssl-configuration:
       keystore:
-        key-path: src/main/resources/dev/keystore_ui-collect.jks
+        key-path: ../../dev-deployment/environments/keystores/server/localhost/keystore_ui-collect.jks
         key-password: changeme
         type: JKS
       truststore:
-        key-path: src/main/resources/dev/truststore_server.jks
+        key-path: ../../dev-deployment/environments/keystores/server/truststore_server.jks
         key-password: changeme
       hostname-verification: false
   base-url:
@@ -145,7 +145,7 @@ cas:
   external-url: https://dev.vitamui.com:8080/cas
   callback-url: ${ui.url}/collect-api/callback
   ssl:
-    trust-store: src/main/resources/dev/truststore_server.jks
+    trust-store: ../../dev-deployment/environments/keystores/server/truststore_server.jks
     trust-store-password: changeme
 
 logging:
