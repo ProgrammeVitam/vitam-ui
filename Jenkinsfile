@@ -151,6 +151,7 @@ pipeline {
         }
 
         // If in "deploy" or "publish" mode, build pastis front in "standalone" mode & run maven goal to package the .exe/.zip
+        /*
         stage("Pastis standalone") {
             when {
                 anyOf {
@@ -167,6 +168,7 @@ pipeline {
                 sh '${MVN_COMMAND} deploy -Pstandalone --projects "api/api-pastis/pastis-standalone" -Dspotless.check.skip=true -Dmaven.test.skip -Dlicense.skip=true'
             }
         }
+        */
 
         stage("Publish") {
             when {

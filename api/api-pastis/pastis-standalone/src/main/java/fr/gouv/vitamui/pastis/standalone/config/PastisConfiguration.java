@@ -77,6 +77,14 @@ public class PastisConfiguration {
         return new PuaFromJSON(puaPastisValidator());
     }
 
+/*
+    @Bean
+    public VitamProfileService vitamProfileService() {
+        ObjectMapper objectMapper = new ObjectMapper();
+        return new VitamProfileService(null, objectMapper);
+    }
+*/
+
     @Bean
     public PastisService pastisService() {
         ObjectMapper objectMapper = new ObjectMapper();
@@ -86,7 +94,8 @@ public class PastisConfiguration {
             puaPastisValidator(),
             jsonFromPUA(),
             puaFromJSON(),
-            new MetaModelService(new ExternalSchemaServiceStandaloneImpl(objectMapper))
+            new MetaModelService(new ExternalSchemaServiceStandaloneImpl(objectMapper)),
+            null, null
         );
     }
 
