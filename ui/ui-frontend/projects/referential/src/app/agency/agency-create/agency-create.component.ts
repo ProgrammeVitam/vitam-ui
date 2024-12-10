@@ -77,8 +77,12 @@ export class AgencyCreateComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.form = this.formBuilder.group({
-      name: [null, Validators.required],
-      identifier: [null, Validators.required, this.agencyCreateValidators.uniqueIdentifier()],
+      name: [null, [Validators.required, this.agencyCreateValidators.onlyWhitespaces]],
+      identifier: [
+        null,
+        [Validators.required, this.agencyCreateValidators.onlyWhitespaces],
+        this.agencyCreateValidators.uniqueIdentifier(),
+      ],
       description: [null],
     });
 
