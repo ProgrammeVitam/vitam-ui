@@ -1,4 +1,6 @@
 ---
+client_client_external_customer_x_key: changeme
+client_client_vitam_vitamui_key: changeme
 server_security_internal_key: changeme
 server_iam_internal_key: changeme
 server_ingest_internal_key: changeme
@@ -22,5 +24,3 @@ server_ui_pastis_key: changeme
 server_ui_collect_key: changeme
 server_ui_design_system_key: changeme
 server_reverse_key: changeme
-client_client_external_customer_x_key: changeme
-client_client_vitam_vitamui_key: changeme
