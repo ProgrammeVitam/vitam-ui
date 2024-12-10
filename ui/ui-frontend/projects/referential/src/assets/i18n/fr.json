@@ -759,7 +759,8 @@
       "DESCRIPTION": "Description",
       "IDENTIFIER_ALREADY_EXISTS": "Identifiant déjà utilisé",
       "NAME_ALREADY_EXISTS": "Nom déjà utilisé",
-      "VALIDATE_AND_CREATE": "Terminer et créer un nouveau service agent"
+      "VALIDATE_AND_EDIT": "Terminer et saisir la notice",
+      "INVALID_FIELD": "Champ invalide"
     },
     "TAB": {
       "INFORMATION": "Informations",
