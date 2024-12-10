@@ -61,10 +61,6 @@ pastis-external:
     server-host: localhost
     server-port: 7083
     secure: false
-  referential-internal-client:
-    server-host: localhost
-    server-port: 7087
-    secure: false
 
 # Jaeger
 opentracing:

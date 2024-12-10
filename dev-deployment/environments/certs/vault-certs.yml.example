@@ -1,7 +1,6 @@
 ---
 server_security_internal_key: changeme
 server_iam_internal_key: changeme
-server_referential_internal_key: changeme
 server_ingest_internal_key: changeme
 server_archive_search_internal_key: changeme
 server_collect_internal_key: changeme
