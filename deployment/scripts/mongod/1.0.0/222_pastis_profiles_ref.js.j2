@@ -4,6 +4,7 @@ print("START 222_pastis_profiles_ref.js");
 
 // -------- VITAM ADMINISTRATION -----
 
+var maxIdProfile = db.getCollection('sequences').findOne({'_id': 'profile_identifier'}).sequence;
 
 db.profiles.insert({
   "_id": "system_pastis",
@@ -35,5 +36,13 @@ db.profiles.insert({
    ]
 });
 
+
+db.sequences.updateOne({
+    "_id": "profile_identifier"
+}, {
+	$set: {
+		"sequence": NumberInt(maxIdProfile)
+	}
+});
 
 print("END 222_pastis_profiles_ref.js");
