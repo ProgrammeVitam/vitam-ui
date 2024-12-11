@@ -40,18 +40,18 @@ import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import {
+  CriteriaAction,
   CriteriaDataType,
   CriteriaOperator,
   CriteriaValue,
   ItemNode,
+  QueryParamsService,
   SchemaElement,
   SchemaService,
   SearchCriteriaAddAction,
-  searchCriteriaConfigs,
   SearchCriteriaEltDto,
+  SearchCriteriaService,
   SearchCriteriaTypeEnum,
-  CriteriaAction,
-  QueryParamsService,
 } from 'vitamui-library';
 import { ArchiveSharedDataService } from '../../../core/archive-shared-data.service';
 import { ManagementRulesSharedDataService } from '../../../core/management-rules-shared-data.service';
@@ -102,6 +102,7 @@ export class SimpleCriteriaSearchComponent implements OnInit {
     private translateService: TranslateService,
     private schemaService: SchemaService,
     private queryParamsService: QueryParamsService,
+    private searchCriteriaService: SearchCriteriaService,
   ) {
     this.otherCriteriaOptions$ = this.schemaService.getDescriptiveSchemaTree();
 
@@ -148,7 +149,10 @@ export class SimpleCriteriaSearchComponent implements OnInit {
             filter((value) => Boolean(value)),
           )
           .subscribe((value) => {
-            this.addCriteriaFromObject({ [key]: value });
+            this.searchCriteriaService.toSearchCriteria({ [key]: value }).forEach((criterion) => {
+              this.queryParamsService.setQueryParams({ ...this.queryParams, [criterion.valueElt.id]: criterion.valueElt.value });
+              archiveExchangeDataService.addSimpleSearchCriteriaSubject(criterion);
+            });
             control.reset(undefined, { emitEvent: false });
           });
       });
@@ -201,45 +205,6 @@ export class SimpleCriteriaSearchComponent implements OnInit {
 
       this.form.patchValue(queryParams, { onlySelf: false });
     });
-  }
-
-  addCriteriaFromObject(object: any) {
-    Object.entries(object)
-      .filter(([_key, value]) => !!value)
-      .forEach(([key, value]) => {
-        if (key === 'guid' && value.toString().includes(',')) {
-          value
-            .toString()
-            .split(',')
-            .forEach((v) => this.addCriteriaFromObject({ guid: v }));
-        } else if (typeof value === 'string' || value instanceof Date) {
-          const criteriaValue = value instanceof Date ? value.toISOString() : value.trim();
-          const defaultSearchCriteriaAddAction: Partial<SearchCriteriaAddAction> = {
-            valueElt: { value: criteriaValue, id: key },
-            labelElt: criteriaValue,
-            keyTranslated: false,
-            operator: CriteriaOperator.EQ,
-            category: SearchCriteriaTypeEnum.FIELDS,
-            dataType: value instanceof Date ? CriteriaDataType.DATE : CriteriaDataType.STRING,
-          };
-
-          const searchCriteriaAddAction: SearchCriteriaAddAction = {
-            ...defaultSearchCriteriaAddAction,
-            ...(searchCriteriaConfigs[key] || { keyElt: key }),
-          } as SearchCriteriaAddAction;
-
-          const searchCriteria = {
-            ...searchCriteriaAddAction,
-            valueTranslated: this.isValueTranslated(searchCriteriaAddAction.keyElt),
-          };
-          this.queryParamsService.setQueryParams({ ...this.queryParams, [key]: criteriaValue });
-          this.archiveExchangeDataService.addSimpleSearchCriteriaSubject(searchCriteria);
-        } else if (typeof value === 'object' && Object.entries(value).length) {
-          this.addCriteriaFromObject(value);
-        } else {
-          console.error(`Unhandled case`, object, key, value);
-        }
-      });
   }
 
   isValueTranslated(criteria: string) {

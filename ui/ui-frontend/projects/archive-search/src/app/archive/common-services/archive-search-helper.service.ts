@@ -290,7 +290,7 @@ export class ArchiveSearchHelperService {
       searchCriterias.forEach((val, key) => {
         if (key === keyElt) {
           let values = val.values;
-          values = values.filter((item) => item.value.id !== valueElt.id);
+          values = values.filter((item) => item.value.value !== valueElt.value);
           if (values.length === 0) {
             searchCriteriaKeys.forEach((element, index) => {
               if (element === keyElt) {

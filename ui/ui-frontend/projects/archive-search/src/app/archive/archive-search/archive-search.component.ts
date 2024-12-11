@@ -79,6 +79,8 @@ import {
   Unit,
   UnitType,
   VitamuiRoles,
+  QueryParamsService,
+  SearchCriteriaService,
 } from 'vitamui-library';
 import { ArchiveSharedDataService } from '../../core/archive-shared-data.service';
 import { ManagementRulesSharedDataService } from '../../core/management-rules-shared-data.service';
@@ -221,6 +223,8 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
     private archiveUnitDipService: ArchiveUnitDipService,
     private accessContractService: AccessContractService,
     private cdr: ChangeDetectorRef,
+    private queryParamsService: QueryParamsService,
+    private searchCriteriaService: SearchCriteriaService,
   ) {
     this.subscriptions.add(
       this.managementRulesSharedDataService.getBulkOperationsThreshold().subscribe((bulkOperationsThreshold) => {
@@ -445,6 +449,30 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
 
         this.submit();
       });
+
+    this.queryParamsService.getQueryParams().subscribe((queryParams) => {
+      const hasChanged = Object.entries(queryParams).filter(([key, value]) => this.searchCriterias.get(key) !== value).length > 0;
+
+      if (!hasChanged) return;
+
+      this.initializeSelectionParams();
+      this.searchCriterias = new Map();
+      this.searchCriteriaService.toSearchCriteria(queryParams).forEach((criterion) => {
+        this.addCriteria(
+          criterion.keyElt,
+          criterion.valueElt,
+          criterion.labelElt,
+          criterion.keyTranslated,
+          criterion.operator,
+          criterion.category,
+          criterion.valueTranslated,
+          criterion.dataType,
+          false,
+        );
+      });
+
+      this.submit();
+    });
   }
 
   private addInitialCriteriaValues() {

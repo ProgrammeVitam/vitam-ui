@@ -206,3 +206,4 @@ export * from './app/modules/dates.constants';
 export * from './app/modules/url/query-params.service';
 export * from './app/modules/date/date.service';
 export * from './app/modules/date/date';
+export * from './app/modules/models/criteria/search-criteria.service';
