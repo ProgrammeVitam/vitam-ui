@@ -57,7 +57,7 @@ public class ApiPastisApplicationProperties {
 
     private RestClientConfiguration iamInternalClient;
 
-    private RestClientConfiguration referentialInternalClient;
+    private RestClientConfiguration referentialClient;//The external client
 
     private RestClientConfiguration securityClient;
 }

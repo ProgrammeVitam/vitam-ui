@@ -24,7 +24,6 @@ Par défaut les services java utilisent 512Mo de Ram et on a donc pour tous les 
 * ingest-internal 512Mo
 * ingest-external 512Mo
 * ui-ingest 512Mo
-* referential-internal 512Mo
 * referential-external 512Mo
 * ui-referential 512Mo
 * ui-identity 512Mo
