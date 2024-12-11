@@ -1,7 +1,7 @@
 ---
 
 - include_tasks: uninstall.yml
-  when: syslog.name | default('filebeat') != "filebeat"
+  when: syslog.name | default('filebeat') != "filebeat" and 1 == 2
 
 - include_tasks: install.yml
-  when: syslog.name | default('filebeat') == "filebeat"
+  when: syslog.name | default('filebeat') == "filebeat" and 1 == 2
