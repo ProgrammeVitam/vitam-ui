@@ -85,7 +85,6 @@ pipeline {
 
         stage('Upgrade build context') {
             steps {
-                sh 'sudo apt remove -y nodejs npm node-npmrc'
                 sh 'sudo apt install -y build-essential make ruby ruby-dev rubygems jq'
                 sh 'sudo timedatectl set-timezone Europe/Paris'
                 sh 'sudo gem install fpm'
