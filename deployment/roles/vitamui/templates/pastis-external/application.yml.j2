@@ -93,12 +93,14 @@ pastis-external:
         key-password: {{ password_truststore }}
       hostname-verification: false
 {% endif %}
-  referential-internal-client:
-    server-host: {{ vitamui.referential_internal.host }}
-    server-port: {{ vitamui.referential_internal.port_service }}
+#TODO rename it to referential-external-client
 
-{% if vitamui.referential_internal.secure | default(secure) | bool == true %}
-    secure: {{ vitamui.referential_internal.secure | default(secure) | lower }}
+  referential-internal-client:
+    server-host: {{ vitamui.referential_external.host }}
+    server-port: {{ vitamui.referential_external.port_service }}
+
+{% if vitamui.referential_external.secure | default(secure) | bool == true %}
+    secure: {{ vitamui.referential_external.secure | default(secure) | lower }}
     ssl-configuration:
       truststore:
         key-path: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks

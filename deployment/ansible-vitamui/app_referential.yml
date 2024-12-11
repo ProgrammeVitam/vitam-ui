@@ -1,17 +1,3 @@
-# Referential internal calls VITAM
-- hosts: hosts_vitamui_referential_internal
-  gather_facts: no
-  any_errors_fatal: true
-  roles:
-    - vitamui
-  vars:
-    vitamui_struct: "{{ vitamui.referential_internal }}"
-    vitamui_certificate_type: server
-    password_keystore: "{{ keystores_server_referential_internal }}"
-    password_truststore: "{{ truststores_server }}"
-    vitam_cert: "{{ vitam_certs.vitamui }}"
-    consul_tags: "referential-internal, api, internal"
-
 # Referential internal calls referential internal
 - hosts: hosts_vitamui_referential_external
   gather_facts: no
@@ -23,4 +9,5 @@
     vitamui_certificate_type: external
     password_keystore: "{{ keystores_server_referential_external }}"
     password_truststore: "{{ truststores_client_external }}"
+    vitam_cert: "{{ vitam_certs.vitamui }}"
     consul_tags: "referential-external, api, external"
