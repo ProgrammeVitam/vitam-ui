@@ -1,5 +1,5 @@
 /*
- * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
+ * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2022)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
  *
  * contact@programmevitam.fr
@@ -34,41 +34,106 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
-import { Observable } from 'rxjs';
-import { Unit } from 'ui-frontend-common';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Observable, Subscription } from 'rxjs';
+import { AccessContract, AccessContractService, ObjectQualifierType, Unit, VersionWithQualifierDto } from 'ui-frontend-common';
 import { ArchiveService } from '../../archive.service';
+import { ArchiveSharedDataService } from '../../../core/archive-shared-data.service';
 
 @Component({
   selector: 'app-archive-unit-information-tab',
   templateUrl: './archive-unit-information-tab.component.html',
   styleUrls: ['./archive-unit-information-tab.component.css'],
 })
-export class ArchiveUnitInformationTabComponent implements OnInit, OnChanges {
+export class ArchiveUnitInformationTabComponent implements OnInit, OnChanges, OnDestroy {
   @Input() archiveUnit: Unit;
-  @Input() accessContract: string;
 
   @Output() showNormalPanel = new EventEmitter<any>();
 
   uaPath$: Observable<{ fullPath: string; resumePath: string }>;
   fullPath = false;
+  hasDownloadDocumentRole = false;
+  downloadableVersionWithQualifier: VersionWithQualifierDto = null;
 
-  constructor(private archiveService: ArchiveService) {}
+  private accessContract: AccessContract;
+  private subscriptions = new Subscription();
+
+  constructor(
+    private archiveService: ArchiveService,
+    private accessContractService: AccessContractService,
+    private archiveSharedDataService: ArchiveSharedDataService,
+  ) {}
 
   ngOnInit() {
+    this.getAccessContract();
     this.uaPath$ = this.archiveService.buildArchiveUnitPath(this.archiveUnit);
+    this.subscriptions.add(
+      this.archiveSharedDataService.unitUpdatedWithComputedObjectGroup
+        .asObservable()
+        .subscribe((_value) => this.findDownloadableObjectWithAccessContract()),
+    );
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.archiveUnit?.currentValue['#id']) {
       this.uaPath$ = this.archiveService.buildArchiveUnitPath(this.archiveUnit);
+      this.findDownloadableObjectWithAccessContract();
     }
     this.fullPath = false;
   }
 
-  onDownloadObjectFromUnit(archiveUnit: Unit) {
-    return this.archiveService.downloadObjectFromUnit(archiveUnit['#id']);
+  private getAccessContract() {
+    this.subscriptions.add(
+      this.accessContractService.currentAccessContract$.subscribe({
+        next: (accessContract: AccessContract) => {
+          this.accessContract = accessContract;
+          this.findDownloadableObjectWithAccessContract();
+        },
+        error: (e) => console.error(e),
+      }),
+    );
+  }
+
+  private findDownloadableObjectWithAccessContract(): void {
+    this.downloadableVersionWithQualifier = null;
+    if (!this.archiveUnit || !this.accessContract) {
+      return;
+    }
+    if (!this.archiveUnit?.objectGroup?.versionsWithQualifiers) {
+      return; // nothing to download
+    }
+    if (!this.accessContract.everyDataObjectVersion && !this.accessContract.dataObjectVersion) {
+      return; // no rights to download
+    }
+    let firstQualifierDownloadable = this.archiveUnit.objectGroup.versionsWithQualifiers[0];
+    if (!this.accessContract.everyDataObjectVersion) {
+      firstQualifierDownloadable = this.archiveUnit.objectGroup.versionsWithQualifiers.find((versionWithQualifier) =>
+        this.accessContract.dataObjectVersion.includes(versionWithQualifier.qualifier),
+      );
+    }
+    if (firstQualifierDownloadable.qualifier === ObjectQualifierType.PHYSICALMASTER) {
+      return; // PhysicalMasters are not downloadable
+    }
+    const downloadableQualifiers = this.archiveUnit.objectGroup.versionsWithQualifiers.filter(
+      (versionWithQualifier) => versionWithQualifier.qualifier === firstQualifierDownloadable.qualifier,
+    );
+    // lastest version
+    this.downloadableVersionWithQualifier = downloadableQualifiers[downloadableQualifiers.length - 1];
+  }
+
+  onDownloadObjectFromUnit() {
+    if (!this.downloadableVersionWithQualifier) {
+      throw new Error('Download forbidden');
+    }
+    return this.archiveService.downloadObjectFromUnit(
+      this.archiveUnit['#id'],
+      this.downloadableVersionWithQualifier.qualifier,
+      this.downloadableVersionWithQualifier.version,
+    );
   }
 
   showArchiveUniteFullPath() {

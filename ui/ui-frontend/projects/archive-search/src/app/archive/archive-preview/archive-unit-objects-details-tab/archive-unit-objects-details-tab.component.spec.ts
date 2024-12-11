@@ -27,10 +27,19 @@
 
 import { Clipboard } from '@angular/cdk/clipboard';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
-import { ApiUnitObject, DescriptionLevel, ObjectQualifierType, Unit, VersionWithQualifierDto } from 'ui-frontend-common';
+import {
+  AccessContract,
+  AccessContractService,
+  ApiUnitObject,
+  DescriptionLevel,
+  ObjectQualifierType,
+  TenantSelectionService,
+  Unit,
+  VersionWithQualifierDto,
+} from 'ui-frontend-common';
 import { ArchiveService } from '../../archive.service';
 import { ArchiveUnitObjectsDetailsTabComponent } from './archive-unit-objects-details-tab.component';
 import createSpyObj = jasmine.createSpyObj;
@@ -40,24 +49,55 @@ describe('ArchiveUnitObjectsDetailsTabComponent tests', () => {
   let component: ArchiveUnitObjectsDetailsTabComponent;
   let fixture: ComponentFixture<ArchiveUnitObjectsDetailsTabComponent>;
   const clipboardSpy = createSpyObj<Clipboard>('Clipboard', ['copy']);
-  const archiveServiceSpy = createSpyObj<ArchiveService>('ArchiveService', ['downloadObjectFromUnit', 'getObjectById']);
+  const archiveServiceSpy = createSpyObj<ArchiveService>('ArchiveService', [
+    'downloadObjectFromUnit',
+    'getObjectById',
+    'getAccessContractById',
+    'hasArchiveSearchRole',
+  ]);
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
+  archiveServiceSpy.getAccessContractById.and.returnValue(of({} as AccessContract));
+  archiveServiceSpy.hasArchiveSearchRole.and.returnValue(of(true));
+  const tenantSelectionServiceSpy = jasmine.createSpyObj('TenantSelectionService', {
+    getSelectedTenant: {
+      name: 'tenantName',
+      identifier: 2,
+      ownerId: 'owner',
+      customerId: 'customer',
+      enabled: true,
+      proof: false,
+      readonly: true,
+      ingestContractHoldingIdentifier: 'string',
+      itemIngestContractIdentifier: 'string',
+      accessContractHoldingIdentifier: 'string',
+      accessContractLogbookIdentifier: 'string',
+    },
+  });
+
+  const accessContractServiceMock = {
+    currentAccessContract$: of({
+      dataObjectVersion: [ObjectQualifierType.BINARYMASTER],
+    } as AccessContract),
+  };
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
       declarations: [ArchiveUnitObjectsDetailsTabComponent],
       providers: [
         { provide: ArchiveService, useValue: archiveServiceSpy },
+        { provide: TenantSelectionService, useValue: tenantSelectionServiceSpy },
         { provide: Clipboard, useValue: clipboardSpy },
+        { provide: AccessContractService, useValue: accessContractServiceMock },
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ArchiveUnitObjectsDetailsTabComponent);
     component = fixture.componentInstance;
-    const archiveUnit: Unit = {
+    component.archiveUnit = {
       '#allunitups': [],
       '#id': 'archiveUnitTestID',
       '#object': '',
@@ -67,7 +107,6 @@ describe('ArchiveUnitObjectsDetailsTabComponent tests', () => {
       Title_: { fr: 'Teste', en: 'Test' },
       Description_: { fr: 'DescriptionFr', en: 'DescriptionEn' },
     };
-    component.archiveUnit = archiveUnit;
     fixture.detectChanges();
   });
 
@@ -90,10 +129,10 @@ describe('ArchiveUnitObjectsDetailsTabComponent tests', () => {
     expect(preventDefaultSpy).toHaveBeenCalled();
   });
 
-  it('sendCalls', () => {
+  it('getObjectVersionsWithQualifiers', () => {
     const unit = newUnit('zertyuhtfrc');
     archiveServiceSpy.getObjectById.and.returnValue(of(newApiUnitObject()));
-    component.sendCalls(unit);
+    component.getObjectVersionsWithQualifiers(unit);
     expect(archiveServiceSpy.getObjectById).toHaveBeenCalled();
     expect(archiveServiceSpy.getObjectById).toHaveBeenCalledWith(unit['#id'], anything());
   });

@@ -1,34 +1,42 @@
 /*
- * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2015-2022)
+ * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2022)
+ * and the signatories of the "VITAM - Accord du Contributeur" agreement.
  *
- * contact.vitam@culture.gouv.fr
+ * contact@programmevitam.fr
  *
- * This software is a computer program whose purpose is to implement a digital archiving back-office system managing
- * high volumetry securely and efficiently.
+ * This software is a computer program whose purpose is to implement
+ * implement a digital archiving front-office system for the secure and
+ * efficient high volumetry VITAM solution.
  *
- * This software is governed by the CeCILL 2.1 license under French law and abiding by the rules of distribution of free
- * software. You can use, modify and/ or redistribute the software under the terms of the CeCILL 2.1 license as
- * circulated by CEA, CNRS and INRIA at the following URL "https://cecill.info".
+ * This software is governed by the CeCILL-C license under French law and
+ * abiding by the rules of distribution of free software.  You can  use,
+ * modify and/ or redistribute the software under the terms of the CeCILL-C
+ * license as circulated by CEA, CNRS and INRIA at the following URL
+ * "http://www.cecill.info".
  *
- * As a counterpart to the access to the source code and rights to copy, modify and redistribute granted by the license,
- * users are provided only with a limited warranty and the software's author, the holder of the economic rights, and the
- * successive licensors have only limited liability.
+ * As a counterpart to the access to the source code and  rights to copy,
+ * modify and redistribute granted by the license, users are provided only
+ * with a limited warranty  and the software's author,  the holder of the
+ * economic rights,  and the successive licensors  have only  limited
+ * liability.
  *
- * In this respect, the user's attention is drawn to the risks associated with loading, using, modifying and/or
- * developing or reproducing the software by the user in light of its specific status of free software, that may mean
- * that it is complicated to manipulate, and that also therefore means that it is reserved for developers and
- * experienced professionals having in-depth computer knowledge. Users are therefore encouraged to load and test the
- * software's suitability as regards their requirements in conditions enabling the security of their systems and/or data
- * to be ensured and, more generally, to use and operate it in the same conditions as regards security.
+ * In this respect, the user's attention is drawn to the risks associated
+ * with loading,  using,  modifying and/or developing or reproducing the
+ * software by the user in light of its specific status of free software,
+ * that may mean  that it is complicated to manipulate,  and  that  also
+ * therefore means  that it is reserved for developers  and  experienced
+ * professionals having in-depth computer knowledge. Users are therefore
+ * encouraged to load and test the software's suitability as regards their
+ * requirements in conditions enabling the security of their systems and/or
+ * data to be ensured and,  more generally, to use and operate it in the
+ * same conditions as regards security.
  *
- * The fact that you are presently reading this means that you have had knowledge of the CeCILL 2.1 license and that you
- * accept its terms.
- *
- *
+ * The fact that you are presently reading this means that you have had
+ * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { NO_ERRORS_SCHEMA, Pipe, PipeTransform } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { NO_ERRORS_SCHEMA, Pipe, PipeTransform, SimpleChange } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
@@ -43,20 +51,22 @@ import { TranslateModule } from '@ngx-translate/core';
 import { environment } from 'projects/archive-search/src/environments/environment';
 import { of } from 'rxjs';
 import {
+  AccessContract,
+  AccessContractService,
+  ApiUnitObject,
   BASE_URL,
   DescriptionLevel,
   ENVIRONMENT,
   InjectorModule,
   LoggerModule,
+  ObjectQualifierType,
   StartupService,
   Unit,
   UnitType,
   WINDOW_LOCATION,
-  TenantSelectionService,
 } from 'ui-frontend-common';
 import { ArchiveService } from '../../archive.service';
 import { ArchiveUnitInformationTabComponent } from './archive-unit-information-tab.component';
-import { HttpClientModule } from '@angular/common/http';
 
 @Pipe({ name: 'dateTime' })
 export class MockDateTimePipe implements PipeTransform {
@@ -99,10 +109,11 @@ describe('ArchiveUnitInformationTabComponent', () => {
     openSnackBarForWorkflow: () => of({}),
     downloadObjectFromUnit: () => of({}),
   };
-
-  const tenantServiceMock = {
-    getSelectedTenant: () => of({ identifier: 1 }),
-  };
+  const accessContractServiceMock = {
+    currentAccessContract$: of({
+      dataObjectVersion: [ObjectQualifierType.BINARYMASTER],
+    } as AccessContract),
+  } as AccessContractService;
 
   const startUpServiceMock = {
     getPortalUrl: () => '',
@@ -114,15 +125,14 @@ describe('ArchiveUnitInformationTabComponent', () => {
     getReferentialUrl: () => '',
   };
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       imports: [
         MatMenuModule,
         MatTreeModule,
         MatProgressSpinnerModule,
         MatSidenavModule,
         InjectorModule,
-        HttpClientModule,
         LoggerModule.forRoot(),
         RouterTestingModule,
         MatIconModule,
@@ -133,17 +143,17 @@ describe('ArchiveUnitInformationTabComponent', () => {
       providers: [
         FormBuilder,
         { provide: ArchiveService, useValue: archiveServiceMock },
-        { provide: TenantSelectionService, useValue: tenantServiceMock },
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: ActivatedRoute, useValue: activatedRouteMock },
         { provide: ENVIRONMENT, useValue: environment },
         { provide: WINDOW_LOCATION, useValue: window.location },
         { provide: StartupService, useValue: startUpServiceMock },
+        { provide: AccessContractService, useValue: accessContractServiceMock },
         { provide: MatDialog, useValue: matDialogSpy },
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ArchiveUnitInformationTabComponent);
@@ -190,20 +200,38 @@ describe('ArchiveUnitInformationTabComponent', () => {
 
   it('should call downloadObjectFromUnit of archiveService ', () => {
     // Given
-    const unit: Unit = {
+    const archiveUnit = {
       '#allunitups': [],
       '#id': 'id',
-      '#object': '',
+      '#object': 'object_group_id',
+      objectGroup: {
+        '#id': 'object_group_id',
+        versionsWithQualifiers: [
+          {
+            qualifier: ObjectQualifierType.BINARYMASTER,
+            version: 1,
+          },
+        ],
+      } as ApiUnitObject,
       '#unitType': UnitType.INGEST,
       '#unitups': [],
       '#opi': '',
       Title: 'test tets',
       Description_: { fr: 'DescriptionFr', en: 'DescriptionEn' },
-    };
-    spyOn(archiveServiceMock, 'downloadObjectFromUnit').and.callThrough();
+    } as Unit;
+    const accessContractEveryObject = {
+      everyDataObjectVersion: true,
+      dataObjectVersion: [],
+    } as AccessContract;
 
+    spyOn(archiveServiceMock, 'downloadObjectFromUnit').and.callThrough();
+    spyOn<AccessContractService, any>(accessContractServiceMock, 'currentAccessContract$').and.returnValue(of(accessContractEveryObject));
+    component.archiveUnit = archiveUnit;
+    component.ngOnChanges({
+      archiveUnit: new SimpleChange(null, archiveUnit, true),
+    });
     // When
-    component.onDownloadObjectFromUnit(unit);
+    component.onDownloadObjectFromUnit();
 
     // Then
     expect(archiveServiceMock.downloadObjectFromUnit).toHaveBeenCalled();

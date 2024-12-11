@@ -37,7 +37,6 @@
 
 import { AfterViewInit, Component, EventEmitter, HostListener, Input, OnChanges, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { MatTab, MatTabChangeEvent, MatTabGroup, MatTabHeader } from '@angular/material/tabs';
-import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Unit, unitToVitamuiIcon } from 'ui-frontend-common';
 import { ArchiveUnitDescriptionTabComponent } from './archive-unit-description-tab/archive-unit-description-tab.component';
@@ -49,7 +48,7 @@ import { ArchiveUnitDescriptionTabComponent } from './archive-unit-description-t
 })
 export class ArchivePreviewComponent implements OnChanges, AfterViewInit {
   @Input() archiveUnit: Unit;
-  @Input() accessContract: string;
+  @Input() accessContractId: string;
   @Input() isPopup: boolean;
   @Input() accessContractAllowUpdating: boolean;
   @Input() hasUpdateDescriptiveUnitMetadataRole: boolean;
@@ -60,21 +59,13 @@ export class ArchivePreviewComponent implements OnChanges, AfterViewInit {
 
   isPanelextended = false;
   selectedIndex = 0;
-  tenantIdentifier: number;
   updateStarted = false;
   hasAccessContractManagementPermissionsMessage = this.translateService.instant('UNIT_UPDATE.NO_PERMISSION');
 
   @ViewChild('tabs', { static: false }) tabs: MatTabGroup;
   @ViewChild('descriptionTab', { static: false }) descriptionTab: ArchiveUnitDescriptionTabComponent;
 
-  constructor(
-    private route: ActivatedRoute,
-    private translateService: TranslateService,
-  ) {
-    this.route.params.subscribe((params) => {
-      this.tenantIdentifier = +params.tenantIdentifier;
-    });
-  }
+  constructor(private translateService: TranslateService) {}
 
   ngAfterViewInit(): void {
     this.tabs._handleClick = this.interceptTabChange.bind(this);

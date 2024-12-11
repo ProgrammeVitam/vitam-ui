@@ -42,6 +42,8 @@ export interface ApiUnitObject {
   '#nbobjects': StorageDto;
   FileInfo: FileInfoDto;
   '#qualifiers': Array<QualifierDto>;
+  // computed data of #qualifiers
+  versionsWithQualifiers?: Array<VersionWithQualifierDto>;
   '#approximate_creation_date': string;
   '#approximate_update_date': string;
 }
