@@ -96,7 +96,7 @@ export const agencyTemplate: DisplayRule[] = [
   {
     Path: 'description',
     ui: {
-      Path: 'Description',
+      Path: 'Description.Description',
       component: 'textfield',
       open: true,
       display: false,
