@@ -227,7 +227,11 @@ public class VitamAgencyService {
 
         try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream()) {
             final CsvMapper csvMapper = new CsvMapper();
-            final CsvSchema schema = csvMapper.schemaFor(AgencyCSVDto.class).withColumnSeparator(',').withHeader();
+            final CsvSchema schema = csvMapper
+                .schemaFor(AgencyCSVDto.class)
+                .withColumnSeparator(',')
+                .withArrayElementSeparator("|")
+                .withHeader();
             final ObjectWriter writer = csvMapper.writer(schema);
             writer.writeValue(byteArrayOutputStream, listOfAgencies);
             return new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
