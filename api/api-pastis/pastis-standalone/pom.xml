@@ -58,7 +58,10 @@
                     <groupId>fr.gouv.vitamui</groupId>
                     <artifactId>iam-internal-client</artifactId>
                 </exclusion>
-
+                <exclusion>
+                    <groupId>fr.gouv.vitamui</groupId>
+                    <artifactId>referential-external-client</artifactId>
+                </exclusion>
                 <exclusion>
                     <groupId>fr.gouv.vitamui</groupId>
                     <artifactId>iam-security</artifactId>
@@ -104,12 +107,6 @@
                     <artifactId>commons-test</artifactId>
                 </exclusion>
             </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>fr.gouv.vitamui.commons</groupId>
-            <artifactId>commons-test</artifactId>
-            <type>test-jar</type>
-            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.skyscreamer</groupId>

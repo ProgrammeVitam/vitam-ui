@@ -57,8 +57,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Import(VitamClientTestConfig.class)
 public class ApiReferentialApplicationTest {
 
-
-
     @Autowired
     private Environment env;
 

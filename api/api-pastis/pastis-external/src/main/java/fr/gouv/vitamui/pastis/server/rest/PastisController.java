@@ -44,10 +44,6 @@ import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
-import fr.gouv.vitamui.commons.rest.client.BaseRestClient;
-import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
-import fr.gouv.vitamui.iam.security.client.AbstractExternalClientService;
-import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import fr.gouv.vitamui.pastis.common.dto.ElementProperties;
 import fr.gouv.vitamui.pastis.common.dto.profiles.Notice;
 import fr.gouv.vitamui.pastis.common.dto.profiles.ProfileNotice;
@@ -59,7 +55,6 @@ import fr.gouv.vitamui.pastis.common.exception.TechnicalException;
 import fr.gouv.vitamui.pastis.common.rest.RestApi;
 import fr.gouv.vitamui.pastis.common.util.NoticeUtils;
 import fr.gouv.vitamui.pastis.server.service.PastisService;
-import fr.gouv.vitamui.referential.external.client.ProfileExternalRestClient;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.core.io.Resource;
@@ -84,27 +79,14 @@ import java.util.Objects;
 @RequestMapping(RestApi.PASTIS)
 @RestController
 @ResponseBody
-class PastisController extends AbstractExternalClientService {
+class PastisController {
 
     private static final String APPLICATION_JSON_UTF8 = "application/json; charset=utf-8";
 
     private final PastisService profileService;
 
-    private final ProfileExternalRestClient profileInternalRestClient;
-
-    public PastisController(
-        final ExternalSecurityService externalSecurityService,
-        PastisService profileService,
-        ProfileExternalRestClient profileInternalRestClient
-    ) {
-        super(externalSecurityService);
+    public PastisController(PastisService profileService) {
         this.profileService = profileService;
-        this.profileInternalRestClient = profileInternalRestClient;
-    }
-
-    @Override
-    protected BaseRestClient<ExternalHttpContext> getClient() {
-        return this.profileInternalRestClient;
     }
 
     @ApiOperation(value = "Download Pa Profile rng file")
