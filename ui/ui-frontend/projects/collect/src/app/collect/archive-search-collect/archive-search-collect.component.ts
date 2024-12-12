@@ -45,7 +45,9 @@ import { debounceTime, map, mergeMap, tap } from 'rxjs/operators';
 import { isEmpty } from 'underscore';
 import {
   AccessContract,
+  ApplicationId,
   ArchiveSearchResultFacets,
+  BreadCrumbData,
   CriteriaDataType,
   CriteriaOperator,
   CriteriaSearchCriteria,
@@ -170,6 +172,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
 
   tenantIdentifier: string;
   projectName: string;
+  breadcrumbData: BreadCrumbData[];
 
   selectedArchive$: Observable<Unit>;
 
@@ -332,6 +335,11 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
     );
 
     this.checkUpdateUnitPermissions();
+    this.breadcrumbData = [
+      { identifier: ApplicationId.PORTAL_APP },
+      { identifier: ApplicationId.COLLECT_APP },
+      { label: this.projectName },
+    ];
   }
 
   private checkUpdateUnitPermissions() {
