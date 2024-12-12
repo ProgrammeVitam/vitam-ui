@@ -30,7 +30,9 @@
 
   <mat-sidenav-content>
     <div class="vitamui-heading">
-      <vitamui-common-title-breadcrumb> {{ 'COLLECT.TITLE_SEARCH_AREA' | translate }} : {{ projectName }} </vitamui-common-title-breadcrumb>
+      <vitamui-common-title-breadcrumb [data]="breadcrumbData">
+        {{ 'COLLECT.TITLE_SEARCH_AREA' | translate }} : {{ projectName }}
+      </vitamui-common-title-breadcrumb>
     </div>
     <div class="vitamui-content" *ngIf="foundAccessContract">
       <div class="row row justify-content-around">

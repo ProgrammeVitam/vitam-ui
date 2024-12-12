@@ -35,7 +35,9 @@ import { BehaviorSubject, merge, Observable, Subject, Subscription } from 'rxjs'
 import { debounceTime, map, mergeMap, tap } from 'rxjs/operators';
 import {
   AccessContract,
+  ApplicationId,
   ArchiveSearchResultFacets,
+  BreadCrumbData,
   CriteriaDataType,
   CriteriaOperator,
   CriteriaValue,
@@ -158,6 +160,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
 
   tenantIdentifier: string;
   projectName: string;
+  breadcrumbData: BreadCrumbData[];
 
   search$: Observable<number>;
 
@@ -316,6 +319,11 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
     );
 
     this.hasUpdateUnitDescriptiveMetadataPermission();
+    this.breadcrumbData = [
+      { identifier: ApplicationId.PORTAL_APP },
+      { identifier: ApplicationId.COLLECT_APP },
+      { label: this.projectName },
+    ];
   }
 
   private hasUpdateUnitDescriptiveMetadataPermission() {
