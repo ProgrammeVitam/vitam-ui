@@ -4,7 +4,8 @@
     "SUBMIT": "Confirm",
     "UPDATE": "Update",
     "APPLY_UPDATE": "Apply changes",
-    "REQUIRED": "Required field"
+    "REQUIRED": "Required field",
+    "INVALID_FIELD": "Invalid field"
   },
   "CONTRACT_MANAGEMENT": {
     "CONTRACT_PAGE": {
