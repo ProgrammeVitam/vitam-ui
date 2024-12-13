@@ -41,8 +41,15 @@ import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable, pipe, Subscription, UnaryFunction } from 'rxjs';
 import { filter, map, switchMap, tap } from 'rxjs/operators';
-import { ArchiveUnit, ArchiveUnitEditorComponent, JsonPatch, Logger, SpinnerOverlayService, StartupService } from 'vitamui-library';
-import { EditObject } from 'vitamui-library/app/modules/object-editor/models/edit-object.model';
+import {
+  ArchiveUnit,
+  ArchiveUnitEditorComponent,
+  EditObject,
+  JsonPatch,
+  Logger,
+  SpinnerOverlayService,
+  StartupService,
+} from 'vitamui-library';
 import { VitamUISnackBarComponent } from '../../shared/vitamui-snack-bar/vitamui-snack-bar.component';
 import { ArchiveUnitService } from './archive-unit.service';
 

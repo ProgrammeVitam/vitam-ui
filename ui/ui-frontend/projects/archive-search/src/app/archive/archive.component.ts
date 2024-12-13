@@ -54,6 +54,7 @@ import {
 import { ArchiveSharedDataService } from '../core/archive-shared-data.service';
 import { ManagementRulesSharedDataService } from '../core/management-rules-shared-data.service';
 import { ArchiveService } from './archive.service';
+import { ArchiveCollectService } from '../../../../collect/src/app/collect/archive-search-collect/archive-collect.service';
 
 @Component({
   selector: 'app-archive',
@@ -82,9 +83,11 @@ export class ArchiveComponent extends SidenavPage<any> implements OnInit, OnDest
     private archiveService: ArchiveService,
     private schemaService: SchemaService,
     private accessContractService: AccessContractService,
+    archiveCollectService: ArchiveCollectService,
   ) {
     super(route, globalEventService);
     this.schemaService.getSchema(Collection.ARCHIVE_UNIT);
+    console.log(archiveCollectService);
   }
 
   ngOnInit() {

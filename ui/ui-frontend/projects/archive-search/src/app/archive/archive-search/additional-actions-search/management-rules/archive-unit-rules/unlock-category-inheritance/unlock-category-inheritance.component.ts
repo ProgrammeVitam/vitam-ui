@@ -38,7 +38,6 @@ import { Component, Input, OnDestroy, TemplateRef, ViewChild } from '@angular/co
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { cloneDeep } from 'lodash-es';
-import { ManagementRulesSharedDataService } from 'projects/archive-search/src/app/core/management-rules-shared-data.service';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { CriteriaDataType, CriteriaOperator, SearchCriteriaDto, SearchCriteriaEltDto } from 'vitamui-library';
@@ -46,6 +45,7 @@ import { ArchiveService } from '../../../../../archive.service';
 import { UpdateUnitManagementRuleService } from '../../../../../common-services/update-unit-management-rule.service';
 import { ArchiveSearchConstsEnum } from '../../../../../models/archive-search-consts-enum';
 import { ActionsRules, ManagementRules, RuleActionsEnum, RuleCategoryAction } from '../../../../../models/ruleAction.interface';
+import { ManagementRulesSharedDataService } from '../../../../../../core/management-rules-shared-data.service';
 
 const ORIGIN_HAS_AT_LEAST_ONE = 'ORIGIN_HAS_AT_LEAST_ONE';
 const MANAGEMENT_RULE_INHERITED_CRITERIA = 'MANAGEMENT_RULE_INHERITED_CRITERIA';

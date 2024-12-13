@@ -39,8 +39,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { cloneDeep } from 'lodash-es';
-import { UpdateUnitManagementRuleService } from 'projects/archive-search/src/app/archive/common-services/update-unit-management-rule.service';
-import { ManagementRulesSharedDataService } from 'projects/archive-search/src/app/core/management-rules-shared-data.service';
 import { merge, Subscription } from 'rxjs';
 import { debounceTime, filter, map } from 'rxjs/operators';
 import {
@@ -57,6 +55,8 @@ import { ArchiveService } from '../../../../../archive.service';
 import { ArchiveSearchConstsEnum } from '../../../../../models/archive-search-consts-enum';
 import { ManagementRules, RuleAction, RuleActionsEnum, RuleCategoryAction } from '../../../../../models/ruleAction.interface';
 import { ManagementRulesValidatorService } from '../../../../../validators/management-rules-validator.service';
+import { ManagementRulesSharedDataService } from '../../../../../../core/management-rules-shared-data.service';
+import { UpdateUnitManagementRuleService } from '../../../../../common-services/update-unit-management-rule.service';
 
 const ORIGIN_HAS_AT_LEAST_ONE = 'ORIGIN_HAS_AT_LEAST_ONE';
 const APPRAISAL_PREVENT_RULE_IDENTIFIER = 'APPRAISAL_PREVENT_RULE_IDENTIFIER';

@@ -36,10 +36,10 @@
  */
 import { Component, Input, OnDestroy, TemplateRef, ViewChild } from '@angular/core';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
-import { ManagementRulesSharedDataService } from 'projects/archive-search/src/app/core/management-rules-shared-data.service';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { ActionsRules, ManagementRules, RuleActionsEnum, RuleCategoryAction } from '../../../../../models/ruleAction.interface';
+import { ManagementRulesSharedDataService } from '../../../../../../core/management-rules-shared-data.service';
 
 @Component({
   selector: 'app-block-category-inheritance',

@@ -8,6 +8,109 @@
       "files": [
         "*.ts"
       ],
+      "excludedFiles": [
+        "*.spec.ts"
+      ],
+      "plugins": [
+        "boundaries"
+      ],
+      "settings": {
+        "boundaries/elements": [
+          {
+            "type": "service",
+            "pattern": "projects/*/**/*.service.ts",
+            "capture": [
+              "project"
+            ],
+            "mode": "full"
+          },
+          {
+            "type": "component",
+            "pattern": "projects/*/**/*.component.ts",
+            "capture": [
+              "project"
+            ],
+            "mode": "full"
+          },
+          {
+            "type": "module",
+            "pattern": "projects/*/**/*.module.ts",
+            "capture": [
+              "project"
+            ],
+            "mode": "full"
+          }
+        ]
+      },
+      "rules": {
+        "boundaries/element-types": [
+          "error",
+          {
+            "default": "disallow",
+            "rules": [
+              {
+                "from": [
+                  "component"
+                ],
+                "allow": [
+                  "service"
+                ]
+              },
+              {
+                "from": [
+                  "module"
+                ],
+                "allow": [
+                  "component",
+                  "service"
+                ]
+              }
+            ]
+          }
+        ],
+        "boundaries/external": [
+          "error",
+          {
+            "default": "disallow",
+            "rules": [
+              {
+                "from": [
+                  "*"
+                ],
+                "allow": [
+                  "@angular/**",
+                  "rxjs",
+                  "zone.js"
+                ]
+              },
+              {
+                "from": [
+                  ["*"]
+                ],
+                "allow": [
+                  "@angular/**",
+                  "@ngx-translate/**",
+                  "fast-xml-parser",
+                  "file-saver-es",
+                  "lodash-es",
+                  "ngx-quicklink",
+                  "ngx-translate-multi-http-loader",
+                  "projects/${project}/**",
+                  "rxjs",
+                  "uuid",
+                  "zone.js",
+                  "vitamui-library"
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "files": [
+        "*.ts"
+      ],
       "parserOptions": {
         "project": [
           "tsconfig.json"
