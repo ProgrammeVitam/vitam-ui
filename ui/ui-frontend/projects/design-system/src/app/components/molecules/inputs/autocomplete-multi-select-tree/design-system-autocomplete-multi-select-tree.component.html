@@ -1,44 +1,63 @@
 <h2>{{ 'INPUT.AUTOCOMPLETE_MULTI_SELECT_TREE.TITLE' | translate }}</h2>
-<div>
-  <div class="row">
-    <vitamui-common-autocomplete-multi-select-tree
-      class="col-6"
-      [formControl]="autoCompleteMultiSelectTree"
-      [multiSelectOptions]="schemaOptions"
-      [getDisplayValue]="getSchemaElementDisplayValue"
-      [placeholder]="'INPUT.AUTOCOMPLETE_MULTI_SELECT_TREE.PLACEHOLDER.OPTIONAL' | translate"
-      [searchBarPlaceHolder]="'INPUT.AUTOCOMPLETE_MULTI_SELECT_TREE.SEARCH_BAR_PLACEHOLDER' | translate"
-    >
-    </vitamui-common-autocomplete-multi-select-tree>
-    <vitamui-common-autocomplete-multi-select-tree
-      class="col-6"
-      required
-      [formControl]="autoCompleteMultiSelectTree2"
-      [multiSelectOptions]="schemaOptions"
-      [getDisplayValue]="getSchemaElementDisplayValue"
-      [placeholder]="'INPUT.AUTOCOMPLETE_MULTI_SELECT_TREE.PLACEHOLDER.MANDATORY' | translate"
-      [searchBarPlaceHolder]="'INPUT.AUTOCOMPLETE_MULTI_SELECT_TREE.SEARCH_BAR_PLACEHOLDER' | translate"
-    >
-      <vitamui-common-input-error *ngIf="autoCompleteMultiSelectTree2.touched && autoCompleteMultiSelectTree2.hasError('required')"
-        >{{ 'COMMON.REQUIRED' | translate }}
-      </vitamui-common-input-error>
-    </vitamui-common-autocomplete-multi-select-tree>
-    <vitamui-common-autocomplete-multi-select-tree
-      class="col-6"
-      [multiSelectOptions]="schemaOptions"
-      [getDisplayValue]="getSchemaElementDisplayValue"
-      [placeholder]="'INPUT.AUTOCOMPLETE_MULTI_SELECT_TREE.PLACEHOLDER.NO_SEARCH' | translate"
-      [enableSearch]="false"
-    >
-    </vitamui-common-autocomplete-multi-select-tree>
-    <vitamui-common-autocomplete-multi-select-tree
-      class="col-6"
-      [multiSelectOptions]="schemaOptions"
-      [getDisplayValue]="getSchemaElementDisplayValue"
-      [placeholder]="'INPUT.AUTOCOMPLETE_MULTI_SELECT_TREE.PLACEHOLDER.NO_SEARCH_NO_CART' | translate"
-      [enableSearch]="false"
-      [enableDisplaySelected]="false"
-    >
-    </vitamui-common-autocomplete-multi-select-tree>
-  </div>
-</div>
+
+<ng-container *ngIf="schemaOptions$ | async as schemaOptions">
+  <h3>Default</h3>
+  <vitamui-common-autocomplete-multi-select-tree
+    [formControl]="control"
+    [multiSelectOptions]="schemaOptions"
+    [getDisplayValue]="getSchemaElementDisplayValue"
+    [placeholder]="'INPUT.AUTOCOMPLETE_MULTI_SELECT_TREE.PLACEHOLDER.OPTIONAL' | translate"
+    [searchBarPlaceHolder]="'INPUT.AUTOCOMPLETE_MULTI_SELECT_TREE.SEARCH_BAR_PLACEHOLDER' | translate"
+  >
+  </vitamui-common-autocomplete-multi-select-tree>
+
+  <h3>Active</h3>
+  <vitamui-common-autocomplete-multi-select-tree
+    [formControl]="activeControl"
+    [multiSelectOptions]="schemaOptions"
+    [getDisplayValue]="getSchemaElementDisplayValue"
+    [placeholder]="'INPUT.AUTOCOMPLETE_MULTI_SELECT_TREE.PLACEHOLDER.OPTIONAL' | translate"
+    [searchBarPlaceHolder]="'INPUT.AUTOCOMPLETE_MULTI_SELECT_TREE.SEARCH_BAR_PLACEHOLDER' | translate"
+    class="focused"
+  >
+  </vitamui-common-autocomplete-multi-select-tree>
+
+  <h3>Disabled</h3>
+  <vitamui-common-autocomplete-multi-select-tree
+    [formControl]="disabledControl"
+    [multiSelectOptions]="schemaOptions"
+    [getDisplayValue]="getSchemaElementDisplayValue"
+    [placeholder]="'INPUT.AUTOCOMPLETE_MULTI_SELECT_TREE.PLACEHOLDER.OPTIONAL' | translate"
+    [searchBarPlaceHolder]="'INPUT.AUTOCOMPLETE_MULTI_SELECT_TREE.SEARCH_BAR_PLACEHOLDER' | translate"
+  >
+  </vitamui-common-autocomplete-multi-select-tree>
+
+  <h3>Error</h3>
+  <vitamui-common-autocomplete-multi-select-tree
+    [formControl]="errorControl"
+    [multiSelectOptions]="schemaOptions"
+    [getDisplayValue]="getSchemaElementDisplayValue"
+    [placeholder]="'INPUT.AUTOCOMPLETE_MULTI_SELECT_TREE.PLACEHOLDER.MANDATORY' | translate"
+    [searchBarPlaceHolder]="'INPUT.AUTOCOMPLETE_MULTI_SELECT_TREE.SEARCH_BAR_PLACEHOLDER' | translate"
+  >
+  </vitamui-common-autocomplete-multi-select-tree>
+
+  <h3>Customized</h3>
+  <h4>{{ 'INPUT.AUTOCOMPLETE_MULTI_SELECT_TREE.PLACEHOLDER.NO_SEARCH' | translate }}</h4>
+  <vitamui-common-autocomplete-multi-select-tree
+    [multiSelectOptions]="schemaOptions"
+    [getDisplayValue]="getSchemaElementDisplayValue"
+    [placeholder]="'INPUT.AUTOCOMPLETE_MULTI_SELECT_TREE.PLACEHOLDER.NO_SEARCH' | translate"
+    [enableSearch]="false"
+  >
+  </vitamui-common-autocomplete-multi-select-tree>
+  <h4>{{ 'INPUT.AUTOCOMPLETE_MULTI_SELECT_TREE.PLACEHOLDER.NO_SEARCH_NO_CART' | translate }}</h4>
+  <vitamui-common-autocomplete-multi-select-tree
+    [multiSelectOptions]="schemaOptions"
+    [getDisplayValue]="getSchemaElementDisplayValue"
+    [placeholder]="'INPUT.AUTOCOMPLETE_MULTI_SELECT_TREE.PLACEHOLDER.NO_SEARCH_NO_CART' | translate"
+    [enableSearch]="false"
+    [enableDisplaySelected]="false"
+  >
+  </vitamui-common-autocomplete-multi-select-tree>
+</ng-container>

@@ -10,10 +10,8 @@
       [placeholder]="'INGEST_CONTRACT.TAB.FORMAT.SELECT_FORMAT' | translate"
       [searchBarPlaceHolder]="'INGEST_CONTRACT.TAB.FORMAT.SELECT_FORMAT_SEARCH' | translate"
       [multiSelectOptions]="formatOptions"
+      [errorMessageMap]="{ required: 'INGEST_CONTRACT.TAB.FORMAT.NO_FORMAT_SELECTED' }"
     >
-      <vitamui-common-input-error *ngIf="form.get('formatType').errors?.required">
-        {{ 'INGEST_CONTRACT.TAB.FORMAT.NO_FORMAT_SELECTED' | translate }}
-      </vitamui-common-input-error>
     </vitamui-common-autocomplete-multi-select>
   </div>
 

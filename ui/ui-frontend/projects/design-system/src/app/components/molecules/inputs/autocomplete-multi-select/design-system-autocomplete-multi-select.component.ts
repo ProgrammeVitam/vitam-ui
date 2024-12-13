@@ -43,21 +43,33 @@ import {
   VitamUIAutocompleteMultiSelectModule,
   VitamuiAutocompleteMultiselectOptions,
 } from 'vitamui-library';
-import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NgIf } from '@angular/common';
+import { FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AsyncPipe, NgIf } from '@angular/common';
 import { extend } from 'underscore';
+import { Observable } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
 
 @Component({
-  selector: 'design-system-autocomplete-multi-select',
   standalone: true,
-  imports: [TranslateModule, VitamUIAutocompleteMultiSelectModule, FormsModule, ReactiveFormsModule, NgIf],
+  imports: [TranslateModule, VitamUIAutocompleteMultiSelectModule, FormsModule, ReactiveFormsModule, NgIf, AsyncPipe],
   templateUrl: './design-system-autocomplete-multi-select.component.html',
   styleUrl: './design-system-autocomplete-multi-select.component.scss',
 })
 export class DesignSystemAutocompleteMultiSelectComponent implements OnInit {
-  public autoCompleteMultiSelect = new FormControl();
+  control = new FormControl();
+  activeControl = new FormControl();
+  disabledControl = (() => {
+    const fc = new FormControl('');
+    fc.disable();
+    return fc;
+  })();
+  errorControl = (() => {
+    const fc = new FormControl(null, [Validators.required]);
+    fc.markAsTouched();
+    return fc;
+  })();
 
-  public multiSelectOptions: VitamuiAutocompleteMultiselectOptions;
+  multiSelectOptions$: Observable<VitamuiAutocompleteMultiselectOptions>;
 
   constructor(private countryService: CountryService) {}
 
@@ -66,15 +78,18 @@ export class DesignSystemAutocompleteMultiSelectComponent implements OnInit {
   }
 
   private initMultiselectOptions(): void {
-    this.countryService.getAvailableCountries().subscribe((values: CountryOption[]) => {
-      const countries = values.map((value) =>
-        extend({
-          key: value.code,
-          label: value.name,
-        }),
-      );
-      this.multiSelectOptions = { options: countries, customSorting: this.sortAlphabetically };
-    });
+    this.multiSelectOptions$ = this.countryService.getAvailableCountries().pipe(
+      map((values: CountryOption[]) => {
+        const countries = values.map((value) =>
+          extend({
+            key: value.code,
+            label: value.name,
+          }),
+        );
+        return { options: countries, customSorting: this.sortAlphabetically };
+      }),
+      tap((options) => this.activeControl.setValue([options.options[0].key])),
+    );
   }
 
   private sortAlphabetically = (a: Option, b: Option): number => {

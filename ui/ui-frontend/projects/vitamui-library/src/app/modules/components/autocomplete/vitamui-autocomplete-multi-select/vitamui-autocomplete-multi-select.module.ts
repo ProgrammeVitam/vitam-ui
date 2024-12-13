@@ -54,6 +54,7 @@ import { PipesModule } from '../../../pipes/pipes.module';
 import { CommonTooltipModule } from '../../common-tooltip/common-tooltip.module';
 import { SearchBarModule } from '../../search-bar/search-bar.module';
 import { VitamUIAutocompleteMultiSelectComponent } from './vitamui-autocomplete-multi-select.component';
+import { FormErrorsComponent } from '../../../../../lib/components/form-errors/form-errors.component';
 
 @NgModule({
   imports: [
@@ -77,6 +78,7 @@ import { VitamUIAutocompleteMultiSelectComponent } from './vitamui-autocomplete-
     SearchBarModule,
     PipesModule,
     ScrollingModule,
+    FormErrorsComponent,
   ],
   declarations: [VitamUIAutocompleteMultiSelectComponent],
   exports: [VitamUIAutocompleteMultiSelectComponent],

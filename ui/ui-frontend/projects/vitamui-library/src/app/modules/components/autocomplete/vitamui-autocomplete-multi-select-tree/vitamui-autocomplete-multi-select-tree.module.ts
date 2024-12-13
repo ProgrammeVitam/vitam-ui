@@ -56,6 +56,7 @@ import { SearchBarModule } from '../../search-bar/search-bar.module';
 import { VitamUiAutocompleteMultiSelectTreeComponent } from './vitamui-autocomplete-multi-select-tree.component';
 import { AccordionModule } from '../../accordion/accordion.module';
 import { MatTreeModule } from '@angular/material/tree';
+import { FormErrorsComponent } from '../../../../../lib/components/form-errors/form-errors.component';
 
 @NgModule({
   imports: [
@@ -81,6 +82,7 @@ import { MatTreeModule } from '@angular/material/tree';
     ScrollingModule,
     AccordionModule,
     MatTreeModule,
+    FormErrorsComponent,
   ],
   declarations: [VitamUiAutocompleteMultiSelectTreeComponent],
   exports: [VitamUiAutocompleteMultiSelectTreeComponent],

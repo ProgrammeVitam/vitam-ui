@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, forwardRef, HostBinding, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, forwardRef, HostBinding, HostListener, Input, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { MatMenuModule } from '@angular/material/menu';
 import { LowerCasePipe, NgIf } from '@angular/common';
@@ -50,6 +50,7 @@ export const SEARCH_WITH_TYPE_SELECTOR_VALUE_ACCESSOR: any = {
 export interface SearchType {
   label: string;
   value: string;
+  disabled?: boolean;
 }
 
 export interface SearchWithTypeSelectorValue {
@@ -63,12 +64,25 @@ export interface SearchWithTypeSelectorValue {
   imports: [ReactiveFormsModule, MatMenuModule, FormsModule, LowerCasePipe, NgIf, FormErrorsComponent],
   templateUrl: './search-with-type-selector.component.html',
   styleUrl: './search-with-type-selector.component.scss',
-  providers: [SEARCH_WITH_TYPE_SELECTOR_VALUE_ACCESSOR],
+  providers: [
+    SEARCH_WITH_TYPE_SELECTOR_VALUE_ACCESSOR,
+    {
+      provide: AbstractFormInputDirective,
+      useExisting: forwardRef(() => SearchWithTypeSelectorComponent),
+    }, // This provider is required in order for the FormFieldValueWrapperComponent to be able to find a reference to that component
+  ],
 })
 export class SearchWithTypeSelectorComponent extends AbstractFormInputDirective implements OnInit {
   @Input({ required: true }) placeholder: string;
   @Input({ required: true }) types: SearchType[];
   @Input() errorMessageMap: { [p: string]: string };
+
+  _selectedType: SearchType;
+  @Input() set selectedType(type: SearchType) {
+    this.selectType(type);
+  }
+
+  @Output() selectedTypeChange = new EventEmitter<SearchType>();
 
   protected isRequired = false;
 
@@ -77,10 +91,23 @@ export class SearchWithTypeSelectorComponent extends AbstractFormInputDirective 
     return !!this.control?.value?.value;
   }
 
+  @HostListener('keydown.enter', ['$event'])
+  onEnter(event: KeyboardEvent) {
+    if ((event.target as HTMLElement).tagName !== 'INPUT') {
+      event.stopPropagation();
+    }
+  }
+
   ngOnInit() {
     super.ngOnInit();
+    this.afterControlSet();
+  }
+
+  afterControlSet() {
     this.isRequired = this.control.hasValidator(Validators.required);
+    if (this._selectedType) this.selectType(this._selectedType);
     this.applyValidatorsToInputValue();
+    this.control.valueChanges.subscribe((value: SearchWithTypeSelectorValue) => ((this.control as any).resetValue = { type: value?.type })); // resetValue is a metadata that is used to keep the selected type when we reset the field from a FormFieldValueWrapperComponent
   }
 
   // As the component contains a "type" and a "value", we wrap "required" validator to apply it on the "value" and not the object containing both the "type" and the "value"
@@ -89,16 +116,27 @@ export class SearchWithTypeSelectorComponent extends AbstractFormInputDirective 
       this.control.removeValidators(Validators.required);
       this.control.addValidators(
         (control: AbstractControl<SearchWithTypeSelectorValue>): ValidationErrors =>
-          Validators.required({ ...control, value: control.value?.value } as AbstractControl),
+          Validators.required({
+            ...control,
+            value: control.value?.value,
+          } as AbstractControl),
       );
     }
   }
 
-  selectType(type: SearchType) {
-    this.onChange({ ...this.control.value, type: type });
+  selectType(selectedType: SearchType) {
+    if (this.control) {
+      this.control.setValue({ ...this.control.value, type: selectedType });
+      this.control.markAsDirty();
+      this.onChange(this.control.value);
+    }
+    this._selectedType = selectedType;
+    this.selectedTypeChange.emit(selectedType);
   }
 
   inputValueChange(value: string) {
-    this.onChange({ ...this.control.value, value: value });
+    this.control.setValue({ type: this.types[0], ...this.control.value, value: value });
+    this.control.markAsDirty();
+    this.onChange(this.control.value);
   }
 }

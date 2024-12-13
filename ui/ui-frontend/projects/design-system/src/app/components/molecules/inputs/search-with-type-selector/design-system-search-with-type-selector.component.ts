@@ -35,21 +35,43 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component } from '@angular/core';
-import { SearchType, SearchWithTypeSelectorComponent, SearchWithTypeSelectorValue } from 'vitamui-library';
-import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormFieldValueWrapperComponent,
+  SearchType,
+  SearchWithTypeSelectorComponent,
+  SearchWithTypeSelectorValue,
+  VitamUICommonModule,
+} from 'vitamui-library';
+import { FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { JsonPipe } from '@angular/common';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'design-system-search-with-type-selector',
   standalone: true,
-  imports: [SearchWithTypeSelectorComponent, ReactiveFormsModule],
+  imports: [
+    SearchWithTypeSelectorComponent,
+    ReactiveFormsModule,
+    FormFieldValueWrapperComponent,
+    FormsModule,
+    JsonPipe,
+    TranslateModule,
+    VitamUICommonModule,
+  ],
   templateUrl: './design-system-search-with-type-selector.component.html',
   styleUrl: './design-system-search-with-type-selector.component.scss',
 })
 export class DesignSystemSearchWithTypeSelectorComponent {
   searchTypes: SearchType[] = [
     { label: 'Recherche approchante', value: 'approx' },
-    { label: 'Recherche exacte', value: 'exact' },
+    { label: 'Recherche exacte', value: 'strict' },
   ];
+
+  searchTypesWithDisabledValue: SearchType[] = [
+    { label: 'Recherche approchante', value: 'approx' },
+    { label: 'Recherche exacte', value: 'strict', disabled: true },
+  ];
+
   control = new FormControl();
   activeControl = new FormControl<SearchWithTypeSelectorValue>({ type: this.searchTypes[1], value: 'Ma recherche' });
   disabledControl = (() => {
@@ -57,9 +79,11 @@ export class DesignSystemSearchWithTypeSelectorComponent {
     fc.disable();
     return fc;
   })();
+  disabledTypeControl = new FormControl();
   errorControl = (() => {
     const fc = new FormControl(null, [Validators.required]);
     fc.markAsTouched();
     return fc;
   })();
+  wrapperControl = new FormControl();
 }

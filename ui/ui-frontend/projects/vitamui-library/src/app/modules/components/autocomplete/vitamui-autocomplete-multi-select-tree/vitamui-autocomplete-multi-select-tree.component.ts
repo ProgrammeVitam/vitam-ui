@@ -42,9 +42,11 @@ import {
   ChangeDetectorRef,
   Component,
   forwardRef,
+  Injector,
   Input,
   OnDestroy,
   ViewChild,
+  OnInit,
 } from '@angular/core';
 import {
   AbstractControl,
@@ -54,6 +56,7 @@ import {
   NG_VALUE_ACCESSOR,
   ValidationErrors,
   Validator,
+  Validators,
 } from '@angular/forms';
 import { MatLegacyOption as MatOption, MatLegacyOptionSelectionChange as MatOptionSelectionChange } from '@angular/material/legacy-core';
 import { MatLegacySelect as MatSelect } from '@angular/material/legacy-select';
@@ -64,6 +67,7 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { partition } from 'lodash-es';
 import { Subject, Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, map } from 'rxjs/operators';
+import { AbstractFormInputDirective } from '../../../../../lib/components/abstract-form-input.directive';
 
 /**
  * Node for item
@@ -100,11 +104,15 @@ class ItemFlatNode<T> {
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class VitamUiAutocompleteMultiSelectTreeComponent<T> implements ControlValueAccessor, Validator, AfterViewInit, OnDestroy {
+export class VitamUiAutocompleteMultiSelectTreeComponent<T>
+  extends AbstractFormInputDirective
+  implements ControlValueAccessor, Validator, AfterViewInit, OnDestroy, OnInit
+{
   @Input({ required: true })
   set multiSelectOptions(itemNodes: ItemNode<T>[]) {
     this.dataSource.data = itemNodes;
   }
+
   /**
    * A function that must return the value to display from an item
    */
@@ -126,7 +134,6 @@ export class VitamUiAutocompleteMultiSelectTreeComponent<T> implements ControlVa
     '=1': 'MULTIPLE_SELECT_AUTOCOMPLETE.SELECTED_ELEMENT.SINGULAR',
     other: 'MULTIPLE_SELECT_AUTOCOMPLETE.SELECTED_ELEMENT.PLURAL',
   };
-  control = new FormControl([]);
   searchText = '';
   showOnlySelected = false;
 
@@ -148,12 +155,19 @@ export class VitamUiAutocompleteMultiSelectTreeComponent<T> implements ControlVa
   private searchSubscription: Subscription;
 
   constructor(
+    injector: Injector,
     private cd: ChangeDetectorRef,
     readonly sd: ScrollDispatcher,
   ) {
+    super(injector);
     this.treeFlattener = new MatTreeFlattener(this.transformer, this.getLevel, this.isExpandable, this.getChildren);
     this.treeControl = new FlatTreeControl<ItemFlatNode<T>>(this.getLevel, this.isExpandable);
     this.dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
+  }
+
+  ngOnInit() {
+    super.ngOnInit();
+    this.control = new FormControl([]); // We override the control defined in parent class
   }
 
   ngOnDestroy() {
@@ -347,22 +361,6 @@ export class VitamUiAutocompleteMultiSelectTreeComponent<T> implements ControlVa
     }
   }
 
-  registerOnChange(fn: any): void {
-    this.onChange = fn;
-  }
-
-  registerOnTouched(fn: any): void {
-    this.onTouched = fn;
-  }
-
-  setDisabledState(disabled: boolean) {
-    if (disabled) {
-      this.control.disable({ emitEvent: false });
-    } else {
-      this.control.enable({ emitEvent: false });
-    }
-  }
-
   validate(_control: AbstractControl): ValidationErrors | null {
     if (this.required && this.checklistSelection.selected.length === 0) {
       return { required: true };
@@ -441,7 +439,5 @@ export class VitamUiAutocompleteMultiSelectTreeComponent<T> implements ControlVa
     this.updateAfterToggleShowOnlySelectedOption();
   }
 
-  private onChange = (_: any) => {};
-
-  private onTouched = () => {};
+  protected readonly Validators = Validators;
 }

@@ -193,6 +193,7 @@ export class VitamUICommonInputComponent implements ControlValueAccessor, OnInit
   }
 
   onValueChange(value: string) {
+    this.control.markAsDirty();
     if (this.type !== 'number' || value === '') {
       this.onTextChange(value);
     } else {

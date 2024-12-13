@@ -1,6 +1,3 @@
-@import '../../../../../sass/variables/colors';
-@import '../../../../../sass/mixins/elevation';
-
 $animation-time: 150ms;
 
 .left-link {
@@ -24,10 +21,6 @@ $animation-time: 150ms;
   .hide {
     display: none;
   }
-}
-
-.vitamui-input-errors {
-  min-height: 23px;
 }
 
 :host::ng-deep {
@@ -68,7 +61,6 @@ $animation-time: 150ms;
 
 ::ng-deep .vitamui-common-autocomplete-multi-select {
   max-height: none !important;
-  @include shadow-2dp-dark;
   border-radius: 10px !important;
   border: 1px solid var(--vitamui-grey-300);
 

@@ -32,10 +32,21 @@ mat-select-trigger.vitamui-mat-select {
     }
   }
 
-  &:not(.vitamui-mat-select-mini).mat-focused {
+  &:not(.vitamui-mat-select-mini).mat-focused,
+  .focused &:not(.vitamui-mat-select-mini) {
     .mat-form-field-flex {
       outline: none;
-      border: solid 1px var(--vitamui-primary) !important;
+      @include shadow-0;
+      border: 1px solid var(--vitamui-primary) !important;
+    }
+  }
+
+  &:not(.vitamui-mat-select-mini).ng-invalid,
+  :not(.vitamui-mat-select-mini).ng-invalid & {
+    .mat-form-field-flex {
+      outline: none;
+      @include shadow-0;
+      border: 1px solid var(--vitamui-red) !important;
     }
   }
 
@@ -126,7 +137,7 @@ mat-select-trigger.vitamui-mat-select {
     padding: 0 15px;
     border: none;
 
-    @include input-elevation-dark;
+    @include shadow-accessible;
 
     .mat-form-field-infix {
       border-top-width: 16px;
