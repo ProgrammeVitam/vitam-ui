@@ -70,6 +70,14 @@ describe('Agency Create Validators', () => {
       expect(agencyServiceSpy.existsProperties).toHaveBeenCalledWith({ name: '123456' });
     }));
 
+    it('should return { onlyWhitespaces: true }', fakeAsync(() => {
+      const agencyServiceSpy = jasmine.createSpyObj('AgencyService', ['']);
+      const agencyCreateValidators = new AgencyCreateValidators(agencyServiceSpy);
+      expect(agencyCreateValidators.onlyWhitespaces(new FormControl('   '))).toEqual({
+        onlyWhitespaces: true,
+      });
+    }));
+
     it('should not call the service', fakeAsync(() => {
       const agencyServiceSpy = jasmine.createSpyObj('AgencyService', ['existsProperties']);
       agencyServiceSpy.existsProperties.and.returnValue(of(true));
