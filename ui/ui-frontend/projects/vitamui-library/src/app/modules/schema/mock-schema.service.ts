@@ -13510,7 +13510,7 @@ export class MockSchemaService {
       Origin: 'EXTERNAL',
       Collection: Collection.ARCHIVE_UNIT,
       SedaVersions: null,
-      Category: 'OTHER',
+      Category: 'DESCRIPTION',
       ApiPath: 'MyBoolean',
       DataType: 'BOOLEAN',
     },

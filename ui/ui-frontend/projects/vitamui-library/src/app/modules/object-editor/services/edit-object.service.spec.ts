@@ -90,7 +90,7 @@ describe('EditObjectService', () => {
           const editObject = service.editObject(path, data, template, subschema);
 
           expect(editObject).toBeTruthy();
-          expect(editObject.children.length).toEqual(50);
+          expect(editObject.children.length).toEqual(51);
           expect(editObject.children).toEqual(
             jasmine.arrayContaining(
               [
@@ -146,7 +146,7 @@ describe('EditObjectService', () => {
           const editObject = service.editObject(path, data, template, subschema);
 
           expect(editObject).toBeTruthy();
-          expect(editObject.children.length).toEqual(50);
+          expect(editObject.children.length).toEqual(51);
           expect(editObject.children).toEqual(
             jasmine.arrayContaining(
               [
@@ -189,7 +189,7 @@ describe('EditObjectService', () => {
     ));
 
     it('should create projected nested object', waitForAsync(
-      inject([MockSchemaService, TemplateService, SchemaService], (schemaService: MockSchemaService, templetaService: TemplateService) => {
+      inject([MockSchemaService, TemplateService, SchemaService], (schemaService: MockSchemaService, templateService: TemplateService) => {
         schemaService.getSchema(Collection.ARCHIVE_UNIT).subscribe((schema) => {
           const path = '';
           const originalData = {
@@ -204,13 +204,13 @@ describe('EditObjectService', () => {
             { Path: 'Transmitter', ui: { Path: 'Actors.Transmitter', component: 'group' } },
             { Path: 'Writer', ui: { Path: 'Actors.Writer', component: 'group' } },
           ];
-          const projectedData = templetaService.toProjected(originalData, template);
+          const projectedData = templateService.toProjected(originalData, template);
           const subschema = schema.filter((element) => element.Category === 'DESCRIPTION');
           const templatedSchema = service.createTemplateSchema(template, subschema);
           const editObject = service.editObject(path, projectedData, template, templatedSchema);
 
           expect(editObject).toBeTruthy();
-          expect(editObject.children.length).toEqual(47);
+          expect(editObject.children.length).toEqual(48);
           expect(editObject.children).toEqual(
             jasmine.arrayContaining(
               [
@@ -253,7 +253,7 @@ describe('EditObjectService', () => {
     ));
 
     it('should create projected nested object and add new items', waitForAsync(
-      inject([MockSchemaService, TemplateService, SchemaService], (schemaService: MockSchemaService, templetaService: TemplateService) => {
+      inject([MockSchemaService, TemplateService, SchemaService], (schemaService: MockSchemaService, templateService: TemplateService) => {
         schemaService.getSchema(Collection.ARCHIVE_UNIT).subscribe((schema) => {
           const path = '';
           const originalData = {
@@ -268,13 +268,13 @@ describe('EditObjectService', () => {
             { Path: 'Transmitter', ui: { Path: 'Actors.Transmitter', component: 'group' } },
             { Path: 'Writer', ui: { Path: 'Actors.Writer', component: 'group' } },
           ];
-          const projectedData = templetaService.toProjected(originalData, template);
+          const projectedData = templateService.toProjected(originalData, template);
           const subschema = schema.filter((element) => element.Category === 'DESCRIPTION');
           const templatedSchema = service.createTemplateSchema(template, subschema);
           const editObject: EditObject = service.editObject(path, projectedData, template, templatedSchema);
 
           expect(editObject).toBeTruthy();
-          expect(editObject.children.length).toEqual(47);
+          expect(editObject.children.length).toEqual(48);
           expect(editObject.children).toEqual(
             jasmine.arrayContaining(
               [
@@ -325,7 +325,7 @@ describe('EditObjectService', () => {
     ));
 
     it('should create projected nested object and remove an item', waitForAsync(
-      inject([MockSchemaService, TemplateService, SchemaService], (schemaService: MockSchemaService, templetaService: TemplateService) => {
+      inject([MockSchemaService, TemplateService, SchemaService], (schemaService: MockSchemaService, templateService: TemplateService) => {
         schemaService.getSchema(Collection.ARCHIVE_UNIT).subscribe((schema) => {
           const path = '';
           const originalData = {
@@ -340,13 +340,13 @@ describe('EditObjectService', () => {
             { Path: 'Transmitter', ui: { Path: 'Actors.Transmitter', component: 'group' } },
             { Path: 'Writer', ui: { Path: 'Actors.Writer', component: 'group' } },
           ];
-          const projectedData = templetaService.toProjected(originalData, template);
+          const projectedData = templateService.toProjected(originalData, template);
           const subschema = schema.filter((element) => element.Category === 'DESCRIPTION');
           const templatedSchema = service.createTemplateSchema(template, subschema);
           const editObject: EditObject = service.editObject(path, projectedData, template, templatedSchema);
 
           expect(editObject).toBeTruthy();
-          expect(editObject.children.length).toEqual(47);
+          expect(editObject.children.length).toEqual(48);
           expect(editObject.children).toEqual(
             jasmine.arrayContaining(
               [
@@ -397,7 +397,7 @@ describe('EditObjectService', () => {
     ));
 
     it('should create projected nested object and do complex operations on arrays', waitForAsync(
-      inject([MockSchemaService, TemplateService, SchemaService], (schemaService: MockSchemaService, templetaService: TemplateService) => {
+      inject([MockSchemaService, TemplateService, SchemaService], (schemaService: MockSchemaService, templateService: TemplateService) => {
         schemaService.getSchema(Collection.ARCHIVE_UNIT).subscribe((schema) => {
           const path = '';
           const originalData = {
@@ -412,13 +412,13 @@ describe('EditObjectService', () => {
             { Path: 'Transmitter', ui: { Path: 'Actors.Transmitter', component: 'group' } },
             { Path: 'Writer', ui: { Path: 'Actors.Writer', component: 'group' } },
           ];
-          const projectedData = templetaService.toProjected(originalData, template);
+          const projectedData = templateService.toProjected(originalData, template);
           const subschema = schema.filter((element) => element.Category === 'DESCRIPTION');
           const templatedSchema = service.createTemplateSchema(template, subschema);
           const editObject: EditObject = service.editObject(path, projectedData, template, templatedSchema);
 
           expect(editObject).toBeTruthy();
-          expect(editObject.children.length).toEqual(47);
+          expect(editObject.children.length).toEqual(48);
           expect(editObject.children).toEqual(
             jasmine.arrayContaining(
               [
@@ -482,18 +482,18 @@ describe('EditObjectService', () => {
     ));
 
     it('should create with empty data', waitForAsync(
-      inject([MockSchemaService, TemplateService, SchemaService], (schemaService: MockSchemaService, templetaService: TemplateService) => {
+      inject([MockSchemaService, TemplateService, SchemaService], (schemaService: MockSchemaService, templateService: TemplateService) => {
         schemaService.getSchema(Collection.ARCHIVE_UNIT).subscribe((schema) => {
           const path = '';
           const originalData = {};
           const template: DisplayRule[] = [];
-          const projectedData = templetaService.toProjected(originalData, template);
+          const projectedData = templateService.toProjected(originalData, template);
           const subschema = schema.filter((element) => element.Category === 'DESCRIPTION');
           const templatedSchema = service.createTemplateSchema(template, subschema);
           const editObject: EditObject = service.editObject(path, projectedData, template, templatedSchema);
 
           expect(editObject).toBeTruthy();
-          expect(editObject.children.length).toEqual(50);
+          expect(editObject.children.length).toEqual(51);
           expect(editObject.children).toEqual(
             jasmine.arrayContaining(
               [
@@ -524,7 +524,6 @@ describe('EditObjectService', () => {
               }),
             ]),
           );
-          expect(editObject.children.length).toEqual(50);
         });
       }),
     ));
@@ -541,7 +540,7 @@ describe('EditObjectService', () => {
             Type: 'OBJECT',
             Origin: 'EXTERNAL',
             Collection: Collection.ARCHIVE_UNIT,
-            Category: 'OTHER',
+            Category: 'DESCRIPTION',
             ApiPath: 'Invoice',
             DataType: 'OBJECT',
             ApiField: 'Invoice',
@@ -556,7 +555,7 @@ describe('EditObjectService', () => {
             Type: 'OBJECT',
             Origin: 'EXTERNAL',
             Collection: Collection.ARCHIVE_UNIT,
-            Category: 'OTHER',
+            Category: 'DESCRIPTION',
             ApiPath: 'Invoice.Provider',
             DataType: 'OBJECT',
             ApiField: 'Provider',
@@ -572,7 +571,7 @@ describe('EditObjectService', () => {
             Type: 'KEYWORD',
             Origin: 'EXTERNAL',
             Collection: Collection.ARCHIVE_UNIT,
-            Category: 'OTHER',
+            Category: 'DESCRIPTION',
             ApiPath: 'Invoice.Provider.MyKeyword',
             DataType: 'STRING',
             ApiField: 'MyKeyword',
@@ -588,7 +587,7 @@ describe('EditObjectService', () => {
             Type: 'TEXT',
             Origin: 'EXTERNAL',
             Collection: Collection.ARCHIVE_UNIT,
-            Category: 'OTHER',
+            Category: 'DESCRIPTION',
             ApiPath: 'Invoice.Provider.MyText',
             DataType: 'STRING',
             ApiField: 'MyText',
@@ -603,7 +602,7 @@ describe('EditObjectService', () => {
             Type: 'DATE',
             Origin: 'EXTERNAL',
             Collection: Collection.ARCHIVE_UNIT,
-            Category: 'OTHER',
+            Category: 'DESCRIPTION',
             ApiPath: 'Invoice.Provider.MyDate',
             DataType: 'DATETIME',
             ApiField: 'MyDate',
@@ -618,7 +617,7 @@ describe('EditObjectService', () => {
             Type: 'DOUBLE',
             Origin: 'EXTERNAL',
             Collection: Collection.ARCHIVE_UNIT,
-            Category: 'OTHER',
+            Category: 'DESCRIPTION',
             ApiPath: 'Invoice.Provider.MyDouble',
             DataType: 'DOUBLE',
             ApiField: 'MyDouble',
@@ -633,7 +632,7 @@ describe('EditObjectService', () => {
             Type: 'ENUM',
             Origin: 'EXTERNAL',
             Collection: Collection.ARCHIVE_UNIT,
-            Category: 'OTHER',
+            Category: 'DESCRIPTION',
             ApiPath: 'Invoice.Provider.MyEnum',
             DataType: 'STRING',
             ApiField: 'MyEnum',
