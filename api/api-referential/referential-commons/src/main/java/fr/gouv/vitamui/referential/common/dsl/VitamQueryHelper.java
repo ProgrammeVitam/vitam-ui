@@ -169,7 +169,6 @@ public class VitamQueryHelper {
                         haveOrParameters = true;
                         break;
                     case EV_TYPE_PROC:
-                    case RULE_TYPE:
                         // string equals operation filter as a and
                         final String ruleType = (String) entry.getValue();
                         query.add(eq(searchKey, ruleType));
@@ -204,6 +203,7 @@ public class VitamQueryHelper {
 
                         break;
                     case STATUS:
+                    case RULE_TYPE:
                         // in list of string operation
                         final List<String> stringValues = (ArrayList<String>) entry.getValue();
                         query.add(in(searchKey, stringValues.toArray(new String[] {})));
