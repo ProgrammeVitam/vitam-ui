@@ -660,7 +660,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
     }
   }
 
-  clearCriterias() {
+  clearCriteria() {
     const searchCriteriaKeysCloned = Object.assign([], this.searchCriteriaKeys);
     searchCriteriaKeysCloned.forEach((criteriaKey) => {
       if (this.searchCriterias.has(criteriaKey)) {
