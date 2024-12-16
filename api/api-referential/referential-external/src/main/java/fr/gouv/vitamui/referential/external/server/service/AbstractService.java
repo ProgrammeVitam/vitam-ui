@@ -12,6 +12,6 @@ public class AbstractService {
     }
 
     protected VitamContext buildVitamContext() {
-        return externalSecurityService.buildVitamContext(externalSecurityService.getTenantIdentifier());
+        return externalSecurityService.getVitamContext();
     }
 }

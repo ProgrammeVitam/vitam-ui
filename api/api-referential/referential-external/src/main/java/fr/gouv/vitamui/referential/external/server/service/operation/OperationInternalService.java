@@ -72,6 +72,7 @@ import fr.gouv.vitamui.referential.common.dto.LogbookOperationsResponseDto;
 import fr.gouv.vitamui.referential.common.dto.ReportType;
 import fr.gouv.vitamui.referential.common.model.AuditCreateOptions;
 import fr.gouv.vitamui.referential.common.service.OperationService;
+import fr.gouv.vitamui.referential.external.server.service.AbstractService;
 import fr.gouv.vitamui.referential.external.server.service.probativevalue.ProbativeValueInternalService;
 import fr.gouv.vitamui.referential.external.server.service.service.ExternalParametersService;
 import org.apache.commons.collections4.CollectionUtils;
@@ -105,7 +106,7 @@ import static fr.gouv.vitam.common.model.objectgroup.ObjectGroupResponse.OPERATI
 import static fr.gouv.vitam.common.model.objectgroup.ObjectGroupResponse.ORIGINATING_AGENCY;
 
 @Service
-public class OperationInternalService {
+public class OperationInternalService extends AbstractService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(OperationInternalService.class);
 
@@ -126,8 +127,6 @@ public class OperationInternalService {
     public static final String DSL_QUERY_FILTER = "$filter";
     public static final String DSL_QUERY_FACETS = "$facets";
     private final ObjectMapper objectMapper;
-
-    private final ExternalSecurityService externalSecurityService;
 
     private final String AUDIT_PERIMETER_INGEST_OPERATION_PERIOD = "AUDIT_PERIMETER_INGEST_OPERATION_PERIOD";
 
@@ -150,15 +149,11 @@ public class OperationInternalService {
         ExternalParametersService externalParametersService,
         ExternalSecurityService externalSecurityService
     ) {
+        super(externalSecurityService);
         this.operationService = operationService;
         this.logbookService = logbookService;
         this.objectMapper = objectMapper;
         this.externalParametersService = externalParametersService;
-        this.externalSecurityService = externalSecurityService;
-    }
-
-    private VitamContext buildVitamContext() {
-        return externalSecurityService.buildVitamContext(externalSecurityService.getTenantIdentifier());
     }
 
     public PaginatedValuesDto<LogbookOperationDto> getAllPaginated(

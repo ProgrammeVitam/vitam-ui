@@ -27,6 +27,7 @@ import fr.gouv.vitamui.referential.common.dsl.VitamQueryHelper;
 import fr.gouv.vitamui.referential.common.dto.ArchivalProfileUnitDto;
 import fr.gouv.vitamui.referential.common.dto.ArchivalProfileUnitResponseDto;
 import fr.gouv.vitamui.referential.common.service.VitamArchivalProfileUnitService;
+import fr.gouv.vitamui.referential.external.server.service.AbstractService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +47,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @Service
-public class ArchivalProfileUnitInternalService {
+public class ArchivalProfileUnitInternalService extends AbstractService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ArchivalProfileUnitInternalService.class);
 
@@ -58,8 +59,6 @@ public class ArchivalProfileUnitInternalService {
 
     private VitamArchivalProfileUnitService vitamArchivalProfileUnitService;
 
-    private ExternalSecurityService externalSecurityService;
-
     @Autowired
     public ArchivalProfileUnitInternalService(
         ObjectMapper objectMapper,
@@ -68,11 +67,11 @@ public class ArchivalProfileUnitInternalService {
         VitamArchivalProfileUnitService vitamArchivalProfileUnitService,
         ExternalSecurityService externalSecurityService
     ) {
+        super(externalSecurityService);
         this.objectMapper = objectMapper;
         this.converter = converter;
         this.logbookService = logbookService;
         this.vitamArchivalProfileUnitService = vitamArchivalProfileUnitService;
-        this.externalSecurityService = externalSecurityService;
     }
 
     public ArchivalProfileUnitDto getOne(VitamContext vitamContext, String identifier) {
@@ -95,9 +94,7 @@ public class ArchivalProfileUnitInternalService {
     }
 
     public ArchivalProfileUnitDto getOne(final String identifier) {
-        final VitamContext vitamContext = externalSecurityService.buildVitamContext(
-            externalSecurityService.getTenantIdentifier()
-        );
+        final VitamContext vitamContext = this.buildVitamContext();
         return this.getOne(vitamContext, identifier);
     }
 
@@ -128,9 +125,7 @@ public class ArchivalProfileUnitInternalService {
     }
 
     public List<ArchivalProfileUnitDto> getAll(final Optional<String> criteria) {
-        final VitamContext vitamContext = externalSecurityService.buildVitamContext(
-            externalSecurityService.getTenantIdentifier()
-        );
+        final VitamContext vitamContext = this.buildVitamContext();
         return this.getAll(vitamContext, criteria);
     }
 
@@ -173,9 +168,7 @@ public class ArchivalProfileUnitInternalService {
         final Optional<String> orderBy,
         final Optional<DirectionDto> direction
     ) {
-        final VitamContext vitamContext = externalSecurityService.buildVitamContext(
-            externalSecurityService.getTenantIdentifier()
-        );
+        final VitamContext vitamContext = this.buildVitamContext();
         return this.getAllPaginated(pageNumber, size, orderBy, direction, vitamContext, criteria);
     }
 
@@ -215,9 +208,7 @@ public class ArchivalProfileUnitInternalService {
     }
 
     public boolean check(final ArchivalProfileUnitDto archivalProfileUnitDto) {
-        final VitamContext vitamContext = externalSecurityService.buildVitamContext(
-            externalSecurityService.getTenantIdentifier()
-        );
+        final VitamContext vitamContext = this.buildVitamContext();
         return this.check(vitamContext, archivalProfileUnitDto);
     }
 
@@ -267,18 +258,14 @@ public class ArchivalProfileUnitInternalService {
     }
 
     public boolean checkExists(final String criteria) {
-        final VitamContext vitamContext = externalSecurityService.buildVitamContext(
-            externalSecurityService.getTenantIdentifier()
-        );
+        final VitamContext vitamContext = this.buildVitamContext();
         // Implémentez la logique dans l'InternalService si nécessaire
         throw new UnsupportedOperationException("Method not implemented yet in InternalService");
     }
 
     public ArchivalProfileUnitDto update(final ArchivalProfileUnitDto dto)
         throws AccessExternalClientException, InvalidParseOperationException {
-        final VitamContext vitamContext = externalSecurityService.buildVitamContext(
-            externalSecurityService.getTenantIdentifier()
-        );
+        final VitamContext vitamContext = this.buildVitamContext();
         return this.update(dto, vitamContext);
     }
 
@@ -350,9 +337,7 @@ public class ArchivalProfileUnitInternalService {
     }
 
     public ArchivalProfileUnitDto create(final ArchivalProfileUnitDto archivalProfileUnitDto) {
-        final VitamContext vitamContext = externalSecurityService.buildVitamContext(
-            externalSecurityService.getTenantIdentifier()
-        );
+        final VitamContext vitamContext = this.buildVitamContext();
         return this.create(vitamContext, archivalProfileUnitDto);
     }
 
@@ -377,9 +362,7 @@ public class ArchivalProfileUnitInternalService {
     }
 
     public ResponseEntity<JsonNode> importArchivalUnitProfiles(String fileName, MultipartFile file) {
-        final VitamContext vitamContext = externalSecurityService.buildVitamContext(
-            externalSecurityService.getTenantIdentifier()
-        );
+        final VitamContext vitamContext = this.buildVitamContext();
         return this.importProfile(vitamContext, fileName, file);
     }
 

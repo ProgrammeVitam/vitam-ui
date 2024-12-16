@@ -64,6 +64,7 @@ import fr.gouv.vitamui.referential.common.dto.AccessionRegisterSummaryResponseDt
 import fr.gouv.vitamui.referential.common.dto.AgencyResponseDto;
 import fr.gouv.vitamui.referential.common.dto.ExportAccessionRegisterResultParam;
 import fr.gouv.vitamui.referential.common.service.AccessionRegisterService;
+import fr.gouv.vitamui.referential.external.server.service.AbstractService;
 import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -91,7 +92,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 @Service
-public class AccessionRegisterInternalService {
+public class AccessionRegisterInternalService extends AbstractService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AccessionRegisterInternalService.class);
 
@@ -103,8 +104,6 @@ public class AccessionRegisterInternalService {
 
     private final AccessionRegisterService accessionRegisterService;
 
-    private final ExternalSecurityService externalSecurityService;
-
     @Autowired
     public AccessionRegisterInternalService(
         ObjectMapper objectMapper,
@@ -113,11 +112,11 @@ public class AccessionRegisterInternalService {
         AccessionRegisterService accessionRegisterService,
         ExternalSecurityService externalSecurityService
     ) {
+        super(externalSecurityService);
         this.objectMapper = objectMapper;
         this.agencyService = agencyService;
         this.adminExternalClient = adminExternalClient;
         this.accessionRegisterService = accessionRegisterService;
-        this.externalSecurityService = externalSecurityService;
     }
 
     public List<AccessionRegisterSummaryDto> getAll(VitamContext context) {
@@ -460,24 +459,18 @@ public class AccessionRegisterInternalService {
         final Optional<DirectionDto> direction
     ) {
         ParameterChecker.checkPagination(size, page);
-        final VitamContext vitamContext = externalSecurityService.buildVitamContext(
-            externalSecurityService.getTenantIdentifier()
-        );
+        final VitamContext vitamContext = this.buildVitamContext();
 
         return this.getAllPaginated(criteria, page, size, orderBy.orElse(null), direction.orElse(null), vitamContext);
     }
 
     public List<AccessionRegisterSummaryDto> getAll(final Optional<String> criteria) {
-        final VitamContext vitamContext = externalSecurityService.buildVitamContext(
-            externalSecurityService.getTenantIdentifier()
-        );
+        final VitamContext vitamContext = this.buildVitamContext();
         return this.getAll(vitamContext);
     }
 
     public Resource exportCsvArchiveUnitsByCriteria(final AccessionRegisterSearchDto query) {
-        final VitamContext vitamContext = externalSecurityService.buildVitamContext(
-            externalSecurityService.getTenantIdentifier()
-        );
+        final VitamContext vitamContext = this.buildVitamContext();
 
         return this.exportToCsvAccessionRegister(query, vitamContext);
     }

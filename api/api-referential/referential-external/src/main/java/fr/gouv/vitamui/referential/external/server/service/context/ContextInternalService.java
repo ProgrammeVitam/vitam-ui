@@ -69,6 +69,7 @@ import fr.gouv.vitamui.referential.common.dto.ContextDto;
 import fr.gouv.vitamui.referential.common.dto.ContextResponseDto;
 import fr.gouv.vitamui.referential.common.dto.PermissionDto;
 import fr.gouv.vitamui.referential.common.service.VitamContextService;
+import fr.gouv.vitamui.referential.external.server.service.AbstractService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -82,7 +83,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @Service
-public class ContextInternalService {
+public class ContextInternalService extends AbstractService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ContextInternalService.class);
 
@@ -94,8 +95,6 @@ public class ContextInternalService {
 
     private LogbookService logbookService;
 
-    private ExternalSecurityService externalSecurityService;
-
     @Autowired
     public ContextInternalService(
         VitamContextService vitamContextService,
@@ -104,11 +103,11 @@ public class ContextInternalService {
         LogbookService logbookService,
         ExternalSecurityService externalSecurityService
     ) {
+        super(externalSecurityService);
         this.vitamContextService = vitamContextService;
         this.objectMapper = objectMapper;
         this.converter = converter;
         this.logbookService = logbookService;
-        this.externalSecurityService = externalSecurityService;
     }
 
     public ContextDto getOne(VitamContext vitamContext, String identifier) {
@@ -311,10 +310,6 @@ public class ContextInternalService {
                 vitamContext
             )
             .toJsonNode();
-    }
-
-    private VitamContext buildVitamContext() {
-        return externalSecurityService.buildVitamContext(externalSecurityService.getTenantIdentifier());
     }
 
     public ContextDto getOne(String identifier) {

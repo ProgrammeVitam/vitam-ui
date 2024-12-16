@@ -64,6 +64,7 @@ import fr.gouv.vitamui.referential.common.dsl.VitamQueryHelper;
 import fr.gouv.vitamui.referential.common.dto.AgencyDto;
 import fr.gouv.vitamui.referential.common.dto.AgencyResponseDto;
 import fr.gouv.vitamui.referential.common.service.VitamAgencyService;
+import fr.gouv.vitamui.referential.external.server.service.AbstractService;
 import fr.gouv.vitamui.referential.external.server.service.utils.ExportCSVUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -87,7 +88,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @Service
-public class AgencyInternalService {
+public class AgencyInternalService extends AbstractService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AgencyInternalService.class);
 
@@ -99,8 +100,6 @@ public class AgencyInternalService {
 
     private VitamAgencyService vitamAgencyService;
 
-    private ExternalSecurityService externalSecurityService;
-
     @Autowired
     public AgencyInternalService(
         AgencyService agencyService,
@@ -109,11 +108,11 @@ public class AgencyInternalService {
         VitamAgencyService vitamAgencyService,
         ExternalSecurityService externalSecurityService
     ) {
+        super(externalSecurityService);
         this.agencyService = agencyService;
         this.objectMapper = objectMapper;
         this.logbookService = logbookService;
         this.vitamAgencyService = vitamAgencyService;
-        this.externalSecurityService = externalSecurityService;
     }
 
     public AgencyDto getOne(VitamContext vitamContext, String identifier) {
@@ -136,9 +135,7 @@ public class AgencyInternalService {
     }
 
     public AgencyDto getOne(String id) {
-        final VitamContext vitamContext = externalSecurityService.buildVitamContext(
-            externalSecurityService.getTenantIdentifier()
-        );
+        final VitamContext vitamContext = this.buildVitamContext();
 
         return this.getOne(vitamContext, id);
     }
@@ -161,9 +158,7 @@ public class AgencyInternalService {
     }
 
     public List<AgencyDto> getAll(final Optional<String> criteria) {
-        final VitamContext vitamContext = externalSecurityService.buildVitamContext(
-            externalSecurityService.getTenantIdentifier()
-        );
+        final VitamContext vitamContext = this.buildVitamContext();
 
         return this.getAll(vitamContext);
     }
@@ -212,9 +207,7 @@ public class AgencyInternalService {
         final Optional<DirectionDto> direction
     ) {
         ParameterChecker.checkPagination(size, page);
-        final VitamContext vitamContext = externalSecurityService.buildVitamContext(
-            externalSecurityService.getTenantIdentifier()
-        );
+        final VitamContext vitamContext = this.buildVitamContext();
         return this.getAllPaginated(page, size, orderBy, direction, vitamContext, criteria);
     }
 
@@ -249,9 +242,7 @@ public class AgencyInternalService {
     }
 
     public boolean check(AgencyDto agencyDto) {
-        final VitamContext vitamContext = externalSecurityService.buildVitamContext(
-            externalSecurityService.getTenantIdentifier()
-        );
+        final VitamContext vitamContext = this.buildVitamContext();
 
         return this.check(vitamContext, agencyDto);
     }
@@ -275,9 +266,7 @@ public class AgencyInternalService {
     }
 
     public AgencyDto create(final AgencyDto agencyDto) {
-        final VitamContext vitamContext = externalSecurityService.buildVitamContext(
-            externalSecurityService.getTenantIdentifier()
-        );
+        final VitamContext vitamContext = this.buildVitamContext();
 
         return this.create(vitamContext, agencyDto);
     }
@@ -301,9 +290,7 @@ public class AgencyInternalService {
     }
 
     public AgencyDto patch(final Map<String, Object> partialDto) {
-        final VitamContext vitamContext = externalSecurityService.buildVitamContext(
-            externalSecurityService.getTenantIdentifier()
-        );
+        final VitamContext vitamContext = this.buildVitamContext();
 
         return this.patch(vitamContext, objectMapper.convertValue(partialDto, AgencyDto.class));
     }
@@ -319,9 +306,7 @@ public class AgencyInternalService {
     }
 
     public ResponseEntity<Boolean> deleteWithResponse(final String id) {
-        final VitamContext vitamContext = externalSecurityService.buildVitamContext(
-            externalSecurityService.getTenantIdentifier()
-        );
+        final VitamContext vitamContext = this.buildVitamContext();
 
         return new ResponseEntity<Boolean>(this.delete(vitamContext, id), HttpStatus.OK);
     }
@@ -335,9 +320,7 @@ public class AgencyInternalService {
     }
 
     public ResponseEntity<Resource> export() {
-        final VitamContext vitamContext = externalSecurityService.buildVitamContext(
-            externalSecurityService.getTenantIdentifier()
-        );
+        final VitamContext vitamContext = this.buildVitamContext();
 
         Response response = this.export(vitamContext);
         Object entity = response.getEntity();
@@ -362,9 +345,7 @@ public class AgencyInternalService {
     }
 
     public LogbookOperationsResponseDto findHistoryById(final String id) throws VitamClientException {
-        final VitamContext vitamContext = externalSecurityService.buildVitamContext(
-            externalSecurityService.getTenantIdentifier()
-        );
+        final VitamContext vitamContext = this.buildVitamContext();
 
         final JsonNode body = this.findHistoryByIdentifier(vitamContext, id);
         try {
@@ -386,9 +367,7 @@ public class AgencyInternalService {
     }
 
     public JsonNode importAgencies(String fileName, MultipartFile file) {
-        final VitamContext vitamContext = externalSecurityService.buildVitamContext(
-            externalSecurityService.getTenantIdentifier()
-        );
+        final VitamContext vitamContext = this.buildVitamContext();
 
         return this.importAgencies(vitamContext, fileName, file).toJsonNode();
     }

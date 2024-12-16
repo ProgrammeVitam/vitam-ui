@@ -58,6 +58,7 @@ import fr.gouv.vitamui.referential.common.dsl.VitamQueryHelper;
 import fr.gouv.vitamui.referential.common.dto.ManagementContractResponseDto;
 import fr.gouv.vitamui.referential.common.dto.ManagementContractVitamDto;
 import fr.gouv.vitamui.referential.common.service.VitamUIManagementContractService;
+import fr.gouv.vitamui.referential.external.server.service.AbstractService;
 import fr.gouv.vitamui.referential.external.server.service.managementcontract.ManagementContractDtoToModelConverter;
 import fr.gouv.vitamui.referential.external.server.service.managementcontract.ManagementContractModelToDtoConverter;
 import fr.gouv.vitamui.referential.external.server.service.managementcontract.PatchManagementContractModel;
@@ -76,7 +77,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @Service
-public class ManagementContractInternalService {
+public class ManagementContractInternalService extends AbstractService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ManagementContractInternalService.class);
 
@@ -94,8 +95,6 @@ public class ManagementContractInternalService {
 
     private final LogbookService logbookService;
 
-    private final ExternalSecurityService externalSecurityService;
-
     private ManagementContractDtoToModelConverter managementContractDtoToModelConverter;
     private ManagementContractModelToDtoConverter managementContractModelToDtoConverter;
 
@@ -108,12 +107,12 @@ public class ManagementContractInternalService {
         final LogbookService logbookService,
         final ExternalSecurityService externalSecurityService
     ) {
+        super(externalSecurityService);
         this.managementContractService = managementContractService;
         this.vitamUIManagementContractService = vitamUIManagementContractService;
         this.objectMapper = objectMapper;
         this.converter = converter;
         this.logbookService = logbookService;
-        this.externalSecurityService = externalSecurityService;
     }
 
     public List<ManagementContractDto> getAll(VitamContext vitamContext) {
@@ -304,10 +303,6 @@ public class ManagementContractInternalService {
         query.set("$action", actions);
 
         return query;
-    }
-
-    private VitamContext buildVitamContext() {
-        return externalSecurityService.buildVitamContext(externalSecurityService.getTenantIdentifier());
     }
 
     public List<ManagementContractDto> getAll() {

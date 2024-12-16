@@ -75,6 +75,7 @@ import fr.gouv.vitamui.referential.common.dto.IngestContractDto;
 import fr.gouv.vitamui.referential.common.dto.IngestContractResponseDto;
 import fr.gouv.vitamui.referential.common.dto.SignaturePolicyDto;
 import fr.gouv.vitamui.referential.common.service.IngestContractService;
+import fr.gouv.vitamui.referential.external.server.service.AbstractService;
 import fr.gouv.vitamui.referential.external.server.service.utils.ExportCSVUtils;
 import fr.gouv.vitamui.referential.external.server.service.utils.ImportCSVUtils;
 import org.apache.commons.io.input.BOMInputStream;
@@ -105,7 +106,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public class IngestContractInternalService {
+public class IngestContractInternalService extends AbstractService {
 
     private static final String INGEST_CONTRACT = "INGEST_CONTRACT";
 
@@ -122,7 +123,6 @@ public class IngestContractInternalService {
     private final ApplicationInternalRestClient applicationInternalRestClient;
 
     private final InternalSecurityService internalSecurityService;
-    private final ExternalSecurityService externalSecurityService;
 
     @Autowired
     public IngestContractInternalService(
@@ -134,12 +134,12 @@ public class IngestContractInternalService {
         ExternalSecurityService externalSecurityService,
         InternalSecurityService internalSecurityService
     ) {
+        super(externalSecurityService);
         this.ingestContractService = ingestContractService;
         this.objectMapper = objectMapper;
         this.converter = converter;
         this.logbookService = logbookService;
         this.applicationInternalRestClient = applicationInternalRestClient;
-        this.externalSecurityService = externalSecurityService;
         this.internalSecurityService = internalSecurityService;
     }
 
@@ -549,10 +549,6 @@ public class IngestContractInternalService {
         };
     }
 
-    private VitamContext buildVitamContext() {
-        return externalSecurityService.buildVitamContext(externalSecurityService.getTenantIdentifier());
-    }
-
     public IngestContractDto getOne(String identifier) {
         VitamContext vitamContext = buildVitamContext();
         return this.getOne(vitamContext, identifier);
@@ -601,9 +597,7 @@ public class IngestContractInternalService {
     }
 
     public ResponseEntity<Resource> exportIngestContracts() {
-        final VitamContext vitamContext = externalSecurityService.buildVitamContext(
-            externalSecurityService.getTenantIdentifier()
-        );
+        final VitamContext vitamContext = this.buildVitamContext();
         return new ResponseEntity<>(this.exportIngestContracts(vitamContext), HttpStatus.OK);
     }
 

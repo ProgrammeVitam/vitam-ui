@@ -64,6 +64,7 @@ import fr.gouv.vitamui.referential.common.dsl.VitamQueryHelper;
 import fr.gouv.vitamui.referential.common.dto.FileFormatDto;
 import fr.gouv.vitamui.referential.common.dto.FileFormatResponseDto;
 import fr.gouv.vitamui.referential.common.service.VitamFileFormatService;
+import fr.gouv.vitamui.referential.external.server.service.AbstractService;
 import org.apache.commons.beanutils.BeanUtilsBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -83,7 +84,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @Service
-public class FileFormatInternalService {
+public class FileFormatInternalService extends AbstractService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(FileFormatInternalService.class);
 
@@ -95,8 +96,6 @@ public class FileFormatInternalService {
 
     private VitamFileFormatService vitamFileFormatService;
 
-    private final ExternalSecurityService externalSecurityService;
-
     @Autowired
     public FileFormatInternalService(
         ObjectMapper objectMapper,
@@ -105,11 +104,11 @@ public class FileFormatInternalService {
         VitamFileFormatService vitamFileFormatService,
         ExternalSecurityService externalSecurityService
     ) {
+        super(externalSecurityService);
         this.objectMapper = objectMapper;
         this.converter = converter;
         this.logbookService = logbookService;
         this.vitamFileFormatService = vitamFileFormatService;
-        this.externalSecurityService = externalSecurityService;
     }
 
     public FileFormatDto getOne(VitamContext vitamContext, String identifier) {
@@ -327,10 +326,6 @@ public class FileFormatInternalService {
             LOGGER.error("Unable to file format file {}: {}", fileName, e.getMessage());
             throw new InternalServerException("Unable to import file format file " + fileName + " : ", e);
         }
-    }
-
-    private VitamContext buildVitamContext() {
-        return externalSecurityService.buildVitamContext(externalSecurityService.getTenantIdentifier());
     }
 
     public FileFormatDto getOne(String identifier) {

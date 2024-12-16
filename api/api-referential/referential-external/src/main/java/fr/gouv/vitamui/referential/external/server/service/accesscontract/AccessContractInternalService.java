@@ -78,6 +78,7 @@ import fr.gouv.vitamui.iam.internal.client.ApplicationInternalRestClient;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import fr.gouv.vitamui.referential.common.dsl.VitamQueryHelper;
 import fr.gouv.vitamui.referential.common.service.VitamUIAccessContractService;
+import fr.gouv.vitamui.referential.external.server.service.AbstractService;
 import fr.gouv.vitamui.referential.external.server.service.utils.ExportCSVUtils;
 import fr.gouv.vitamui.referential.external.server.service.utils.ImportCSVUtils;
 import org.apache.commons.io.input.BOMInputStream;
@@ -108,7 +109,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @Service
-public class AccessContractInternalService {
+public class AccessContractInternalService extends AbstractService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AccessContractInternalService.class);
 
@@ -135,18 +136,17 @@ public class AccessContractInternalService {
         ApplicationInternalRestClient applicationInternalRestClient,
         ExternalSecurityService externalSecurityService
     ) {
-        this.externalSecurityService = externalSecurityService;
+        super(externalSecurityService);
         this.accessContractService = accessContractService;
         this.vitamUIAccessContractService = vitamUIAccessContractService;
         this.objectMapper = objectMapper;
         this.logbookService = logbookService;
         this.applicationInternalRestClient = applicationInternalRestClient;
+        this.externalSecurityService = externalSecurityService;
     }
 
     public AccessContractDto getOne(String id) {
-        final VitamContext vitamContext = externalSecurityService.buildVitamContext(
-            externalSecurityService.getTenantIdentifier()
-        );
+        final VitamContext vitamContext = this.buildVitamContext();
 
         return this.getOne(vitamContext, id);
     }
@@ -173,9 +173,7 @@ public class AccessContractInternalService {
     }
 
     public List<AccessContractDto> getAll(final Optional<String> criteria) {
-        final VitamContext vitamContext = externalSecurityService.buildVitamContext(
-            externalSecurityService.getTenantIdentifier()
-        );
+        final VitamContext vitamContext = this.buildVitamContext();
         return this.getAll(vitamContext);
     }
 
@@ -203,9 +201,7 @@ public class AccessContractInternalService {
         final Optional<DirectionDto> direction
     ) {
         ParameterChecker.checkPagination(size, page);
-        final VitamContext vitamContext = externalSecurityService.buildVitamContext(
-            externalSecurityService.getTenantIdentifier()
-        );
+        final VitamContext vitamContext = this.buildVitamContext();
 
         return this.getAllPaginated(page, size, orderBy, direction, vitamContext, criteria);
     }
@@ -253,9 +249,7 @@ public class AccessContractInternalService {
     }
 
     public boolean check(AccessContractDto accessContractDto) {
-        final VitamContext vitamContext = externalSecurityService.buildVitamContext(
-            externalSecurityService.getTenantIdentifier()
-        );
+        final VitamContext vitamContext = this.buildVitamContext();
         return this.check(vitamContext, accessContractDto);
     }
 
@@ -273,9 +267,7 @@ public class AccessContractInternalService {
     }
 
     public AccessContractDto create(final AccessContractDto accessContractDto) {
-        final VitamContext vitamContext = externalSecurityService.buildVitamContext(
-            externalSecurityService.getTenantIdentifier()
-        );
+        final VitamContext vitamContext = this.buildVitamContext();
         return this.create(vitamContext, accessContractDto);
     }
 
@@ -301,9 +293,7 @@ public class AccessContractInternalService {
     }
 
     public AccessContractDto patch(final Map<String, Object> partialDto) {
-        final VitamContext vitamContext = externalSecurityService.buildVitamContext(
-            externalSecurityService.getTenantIdentifier()
-        );
+        final VitamContext vitamContext = this.buildVitamContext();
         return this.patch(vitamContext, partialDto);
     }
 
@@ -346,9 +336,7 @@ public class AccessContractInternalService {
     }
 
     public LogbookOperationsResponseDto findHistoryById(final String id) throws VitamClientException {
-        final VitamContext vitamContext = externalSecurityService.buildVitamContext(
-            externalSecurityService.getTenantIdentifier()
-        );
+        final VitamContext vitamContext = this.buildVitamContext();
 
         final JsonNode body = this.findHistoryByIdentifier(vitamContext, id);
         try {
@@ -373,9 +361,7 @@ public class AccessContractInternalService {
     }
 
     public ResponseEntity<Void> importAccessContracts(MultipartFile file) {
-        final VitamContext vitamContext = externalSecurityService.buildVitamContext(
-            externalSecurityService.getTenantIdentifier()
-        );
+        final VitamContext vitamContext = this.buildVitamContext();
         return importAccessContracts(vitamContext, file);
     }
 
@@ -446,9 +432,7 @@ public class AccessContractInternalService {
     }
 
     public ResponseEntity<Resource> exportAccessContracts() {
-        final VitamContext vitamContext = externalSecurityService.buildVitamContext(
-            externalSecurityService.getTenantIdentifier()
-        );
+        final VitamContext vitamContext = this.buildVitamContext();
         return new ResponseEntity<>(this.exportAccessContracts(vitamContext), HttpStatus.OK);
     }
 

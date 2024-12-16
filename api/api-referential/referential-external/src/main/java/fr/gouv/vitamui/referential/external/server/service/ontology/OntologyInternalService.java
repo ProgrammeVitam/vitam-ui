@@ -67,6 +67,7 @@ import fr.gouv.vitamui.referential.common.dsl.VitamQueryHelper;
 import fr.gouv.vitamui.referential.common.dto.OntologyDto;
 import fr.gouv.vitamui.referential.common.dto.OntologyResponseDto;
 import fr.gouv.vitamui.referential.common.service.OntologyService;
+import fr.gouv.vitamui.referential.external.server.service.AbstractService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,7 +84,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public class OntologyInternalService {
+public class OntologyInternalService extends AbstractService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(OntologyInternalService.class);
 
@@ -94,8 +95,6 @@ public class OntologyInternalService {
     private OntologyConverter converter;
 
     private LogbookService logbookService;
-
-    private final ExternalSecurityService externalSecurityService;
 
     @Value("${internal_ontology_file_path}")
     private String internalOntologieFilePath;
@@ -108,11 +107,11 @@ public class OntologyInternalService {
         LogbookService logbookService,
         ExternalSecurityService externalSecurityService
     ) {
+        super(externalSecurityService);
         this.ontologyService = ontologyService;
         this.objectMapper = objectMapper;
         this.converter = converter;
         this.logbookService = logbookService;
-        this.externalSecurityService = externalSecurityService;
     }
 
     public OntologyDto getOne(VitamContext vitamContext, String identifier) {
@@ -324,10 +323,6 @@ public class OntologyInternalService {
     public List<VitamUiOntologyDto> readInternalOntologyFromFile() throws IOException {
         LOGGER.debug("get default internal ontologie file from path : {} ", internalOntologieFilePath);
         return OntologyServiceReader.readInternalOntologyFromFile(internalOntologieFilePath);
-    }
-
-    private VitamContext buildVitamContext() {
-        return externalSecurityService.buildVitamContext(externalSecurityService.getTenantIdentifier());
     }
 
     public OntologyDto getOne(String identifier) {

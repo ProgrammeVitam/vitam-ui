@@ -39,6 +39,7 @@ import fr.gouv.vitamui.commons.vitam.api.administration.VitamOperationService;
 import fr.gouv.vitamui.commons.vitam.api.dto.ProcessDetailDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUIProcessDetailResponseDto;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
+import fr.gouv.vitamui.referential.external.server.service.AbstractService;
 import org.apache.commons.lang3.EnumUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,7 +47,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class LogbookManagementOperationInternalService {
+public class LogbookManagementOperationInternalService extends AbstractService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LogbookManagementOperationInternalService.class);
     private static final String START_MAX_DATE = "30/12/2999";
@@ -55,7 +56,6 @@ public class LogbookManagementOperationInternalService {
     private ObjectMapper objectMapper;
 
     private VitamOperationService vitamOperationService;
-    private final ExternalSecurityService externalSecurityService;
 
     @Autowired
     public LogbookManagementOperationInternalService(
@@ -63,9 +63,9 @@ public class LogbookManagementOperationInternalService {
         VitamOperationService vitamOperationService,
         ExternalSecurityService externalSecurityService
     ) {
+        super(externalSecurityService);
         this.objectMapper = objectMapper;
         this.vitamOperationService = vitamOperationService;
-        this.externalSecurityService = externalSecurityService;
     }
 
     public ProcessDetailDto searchOperationsDetails(VitamContext vitamContext, ProcessQuery processQuery)
@@ -120,10 +120,6 @@ public class LogbookManagementOperationInternalService {
         processQuery.setId(operationId);
         operation = searchOperationsDetails(vitamContext, processQuery);
         return operation;
-    }
-
-    private VitamContext buildVitamContext() {
-        return externalSecurityService.buildVitamContext(externalSecurityService.getTenantIdentifier());
     }
 
     public ProcessDetailDto searchOperationsDetails(ProcessQuery processQuery) {
