@@ -40,7 +40,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
 import { extend, isEmpty } from 'underscore';
-import { IngestContract, diff } from 'vitamui-library';
+import { diff, IngestContract, VitamuiHttpHeaders } from 'vitamui-library';
 
 import { ArchiveProfileApiService } from '../../../core/api/archive-profile-api.service';
 import { ManagementContractApiService } from '../../../core/api/management-contract-api.service';
@@ -135,7 +135,7 @@ export class IngestContractInformationTabComponent implements OnInit {
 
   ngOnInit(): void {
     const params = new HttpParams().set('embedded', 'ALL');
-    const headers = new HttpHeaders().append('X-Tenant-Id', '' + this.tenantIdentifier);
+    const headers = new HttpHeaders().set(VitamuiHttpHeaders.X_TENANT_ID, '' + this.tenantIdentifier);
 
     this.managementContractService.getAllByParams(params, headers).subscribe((managmentContracts) => {
       this.managementContracts = managmentContracts;

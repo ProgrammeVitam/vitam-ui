@@ -36,11 +36,10 @@
  */
 import { Component, OnInit } from '@angular/core';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ItemNode, SchemaElement, SchemaService, VitamUIAutocompleteMultiSelectTreeModule } from 'vitamui-library';
+import { ItemNode, MockSchemaService, SchemaElement, SchemaService, VitamUIAutocompleteMultiSelectTreeModule } from 'vitamui-library';
 import { TranslateModule } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { AsyncPipe, NgIf } from '@angular/common';
-import { MockSchemaService } from '../../../../../../../vitamui-library/src/app/modules/schema/mock-schema.service';
 import { tap } from 'rxjs/operators';
 
 @Component({

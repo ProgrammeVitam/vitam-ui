@@ -38,8 +38,7 @@ import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { SearchService, VitamUISnackBarService } from 'vitamui-library';
-import { FILE_FORMAT_EXTERNAL_PREFIX, FileFormat } from 'vitamui-library';
+import { FILE_FORMAT_EXTERNAL_PREFIX, FileFormat, SearchService, VitamuiHttpHeaders, VitamUISnackBarService } from 'vitamui-library';
 
 import { FileFormatApiService } from '../core/api/file-format-api.service';
 
@@ -63,7 +62,7 @@ export class FileFormatService extends SearchService<FileFormat> {
   getAllForTenant(tenantId: string): Observable<FileFormat[]> {
     // TODO: Check add of tenantId
     const params = new HttpParams().set('embedded', 'ALL');
-    const headers = new HttpHeaders().append('X-Tenant-Id', tenantId);
+    const headers = new HttpHeaders().set(VitamuiHttpHeaders.X_TENANT_ID, '' + tenantId);
     return this.fileFormatApiService.getAllByParams(params, headers);
   }
 

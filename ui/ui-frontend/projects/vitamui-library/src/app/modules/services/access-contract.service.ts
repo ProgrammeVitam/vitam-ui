@@ -44,6 +44,7 @@ import { SearchService } from '../vitamui-table';
 import { VitamUISnackBarService } from '../components/vitamui-snack-bar';
 import { ExternalParametersService } from '../externalParameters.service';
 import { ExternalParameters } from '../externalParameters.enum';
+import { VitamuiHttpHeaders } from '../vitamui-http-headers.enum';
 
 @Injectable({
   providedIn: 'root',
@@ -83,7 +84,7 @@ export class AccessContractService extends SearchService<AccessContract> {
   getAllForTenant(tenantId: string): Observable<AccessContract[]> {
     // TODO: Cgeck add of tenantId
     const params = new HttpParams().set('embedded', 'ALL');
-    const headers = new HttpHeaders().append('X-Tenant-Id', tenantId);
+    const headers = new HttpHeaders().set(VitamuiHttpHeaders.X_TENANT_ID, tenantId);
     return this.accessContractApi.getAllByParams(params, headers);
   }
 
@@ -145,7 +146,7 @@ export class AccessContractService extends SearchService<AccessContract> {
   }
 
   setTenantId(tenantIdentifier: number) {
-    this.headers = new HttpHeaders({ 'X-Tenant-Id': tenantIdentifier.toString() });
+    this.headers = new HttpHeaders().set(VitamuiHttpHeaders.X_TENANT_ID, tenantIdentifier.toString());
   }
 
   public downloadImportAccessContractFileModel(): Observable<HttpResponse<Blob>> {

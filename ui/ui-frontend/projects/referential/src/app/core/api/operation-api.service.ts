@@ -38,7 +38,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { BaseHttpClient, BASE_URL, Event, PageRequest, PaginatedResponse } from 'vitamui-library';
+import { BaseHttpClient, BASE_URL, Event, PageRequest, PaginatedResponse, VitamuiHttpHeaders } from 'vitamui-library';
 
 @Injectable({
   providedIn: 'root',
@@ -64,8 +64,8 @@ export class OperationApiService extends BaseHttpClient<Event> {
     return super.getOne(id, headers).pipe(tap((ev) => (ev.parsedData = ev.data != null ? JSON.parse(ev.data) : null)));
   }
 
-  checkTraceabilityOperation(id: string, accessContract: string): Observable<any> {
-    const headers = new HttpHeaders({ 'X-Access-Contract-Id': accessContract });
+  checkTraceabilityOperation(id: string, accessContractId: string): Observable<any> {
+    const headers: HttpHeaders = new HttpHeaders().set(VitamuiHttpHeaders.X_ACCESS_CONTRACT_ID, accessContractId);
     return super.getHttp().get(`${this.apiUrl}/check/${id}`, { headers });
   }
 

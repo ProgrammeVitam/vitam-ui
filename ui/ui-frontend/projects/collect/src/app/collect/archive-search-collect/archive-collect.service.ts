@@ -59,6 +59,7 @@ import {
   SecurityService,
   Transaction,
   Unit,
+  VitamuiHttpHeaders,
 } from 'vitamui-library';
 import { ProjectsApiService } from '../core/api/project-api.service';
 import { TransactionApiService } from '../core/api/transaction-api.service';
@@ -243,9 +244,7 @@ export class ArchiveCollectService extends SearchService<any> implements SearchA
   }
 
   public loadFilingHoldingSchemeTree(tenantIdentifier: string): Observable<FilingHoldingSchemeNode[]> {
-    const headers = new HttpHeaders({
-      'X-Tenant-Id': '' + tenantIdentifier,
-    });
+    const headers = new HttpHeaders().set(VitamuiHttpHeaders.X_TENANT_ID, '' + tenantIdentifier);
 
     return this.searchUnitApiService.getFilingPlan(headers).pipe(
       catchError(() => {
@@ -297,7 +296,7 @@ export class ArchiveCollectService extends SearchService<any> implements SearchA
   updateUnitsMetadata(csvFile: Blob, fileName: string, transactionId: string): Observable<string> {
     let headers = new HttpHeaders();
     headers = headers.append('Content-Type', 'application/octet-stream');
-    headers = headers.append('X-Original-Filename', fileName);
+    headers = headers.append(VitamuiHttpHeaders.X_ORIGINAL_FILENAME, fileName);
 
     return this.transactionApiService.updateUnitsMetadata(transactionId, csvFile, headers);
   }

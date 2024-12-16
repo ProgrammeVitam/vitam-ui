@@ -38,12 +38,8 @@ import { HttpClient, HttpEvent, HttpHeaders, HttpParams, HttpRequest } from '@an
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { BASE_URL, BaseHttpClient, PageRequest, PaginatedResponse } from 'vitamui-library';
+import { BASE_URL, BaseHttpClient, PageRequest, PaginatedResponse, VitamuiHttpHeaders } from 'vitamui-library';
 import { IngestType } from '../common/ingest-type.enum';
-
-const tenantKey = 'X-Tenant-Id';
-const contextIdKey = 'X-Context-Id';
-const actionKey = 'X-Action';
 
 @Injectable({
   providedIn: 'root',
@@ -85,12 +81,12 @@ export class IngestApiService extends BaseHttpClient<any> {
     fileName: string,
   ): Observable<HttpEvent<void>> {
     let headers = new HttpHeaders();
-    headers = headers.set(tenantKey, tenantIdentifier.toString());
-    headers = headers.set(contextIdKey, contextId.toString());
-    headers = headers.set(actionKey, action);
+    headers = headers.set(VitamuiHttpHeaders.X_TENANT_ID, tenantIdentifier.toString());
+    headers = headers.set(VitamuiHttpHeaders.X_CONTEXT_ID, contextId.toString());
+    headers = headers.set(VitamuiHttpHeaders.X_ACTION, action);
     headers = headers.set('Content-Type', 'application/octet-stream');
     headers = headers.set('reportProgress', 'true');
-    headers = headers.set('X-Original-Filename', fileName);
+    headers = headers.set(VitamuiHttpHeaders.X_ORIGINAL_FILENAME, fileName);
     headers = headers.set('ngsw-bypass', 'true');
 
     const options = {

@@ -43,6 +43,7 @@ import { ProfileApiService } from '../api/profile-api.service';
 import { Criterion, Profile } from '../models';
 import { CriteriaSearchQuery } from '../models/criteria/criteria.interface';
 import { Operators } from '../vitamui-table';
+import { VitamuiHttpHeaders } from '../vitamui-http-headers.enum';
 
 @Injectable({
   providedIn: 'root',
@@ -62,7 +63,7 @@ export class ProfileService {
     }
 
     if (tenantIdentifier) {
-      httpHeaders = httpHeaders.set('X-Tenant-Id', tenantIdentifier.toString());
+      httpHeaders = httpHeaders.set(VitamuiHttpHeaders.X_TENANT_ID, tenantIdentifier.toString());
       const criterionTenantIdentifier: Criterion = { key: 'tenantIdentifier', value: tenantIdentifier, operator: Operators.equals };
       criterionArray.push(criterionTenantIdentifier);
     }

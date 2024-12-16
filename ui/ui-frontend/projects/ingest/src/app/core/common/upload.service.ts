@@ -41,6 +41,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { IngestApiService } from '../api/ingest-api.service';
 import { IngestInfo, IngestList, IngestUploadStatus } from './ingest-list';
 import { IngestType } from './ingest-type.enum';
+import { VitamuiHttpHeaders } from 'vitamui-library';
 
 @Injectable({
   providedIn: 'root',
@@ -88,7 +89,7 @@ export class UploadService {
               break;
             case HttpEventType.Response:
               this.updateFileStatus(fileName, 100, IngestUploadStatus.FINISHED);
-              callback(data.headers.get('X-Operation-Id'));
+              callback(data.headers.get(VitamuiHttpHeaders.X_OPERATION_ID));
               break;
           }
         }

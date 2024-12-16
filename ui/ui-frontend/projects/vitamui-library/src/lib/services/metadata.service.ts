@@ -41,6 +41,7 @@ import { Injectable } from '@angular/core';
 
 import { MetadataApiService } from '../api/metadata-api.service';
 import { Metadata } from '../models/metadata.interface';
+import { VitamuiHttpHeaders } from '../../app/modules';
 
 @Injectable({
   providedIn: 'root',
@@ -49,11 +50,10 @@ export class MetadataService {
   constructor(private metadataApi: MetadataApiService) {}
 
   get(tenantIdentifier: number, unitId: string): Observable<Metadata> {
-    const headers = new HttpHeaders({
-      'X-Tenant-Id': tenantIdentifier.toString(),
-      // FIXME: Use Root/Admin Access Contract ? Use Specific Value ? Let the user choose ?
-      'X-Access-Contract-Id': 'hardCodedAccessContract' /*this.activeAccessContract.identifier*/,
-    });
+    const headers = new HttpHeaders()
+      .set(VitamuiHttpHeaders.X_TENANT_ID, tenantIdentifier.toString())
+      .set(VitamuiHttpHeaders.X_ACCESS_CONTRACT_ID, 'hardCodedAccessContract');
+    // FIXME: Use Root/Admin Access Contract ? Use Specific Value ? Let the user choose ? this.activeAccessContract.identifier
 
     return this.metadataApi.searchMetadata(unitId, headers);
   }

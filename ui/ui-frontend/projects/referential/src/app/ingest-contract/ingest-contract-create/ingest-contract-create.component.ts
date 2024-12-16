@@ -47,6 +47,7 @@ import {
   SignaturePolicy,
   SignedDocumentPolicyEnum,
   VitamuiAutocompleteMultiselectOptions,
+  VitamuiHttpHeaders,
 } from 'vitamui-library';
 import { ArchiveProfileApiService } from '../../core/api/archive-profile-api.service';
 import { ManagementContractApiService } from '../../core/api/management-contract-api.service';
@@ -154,7 +155,7 @@ export class IngestContractCreateComponent implements OnInit, OnDestroy {
     });
 
     const params = new HttpParams().set('embedded', 'ALL');
-    const headers = new HttpHeaders().append('X-Tenant-Id', '' + this.tenantIdentifier);
+    const headers = new HttpHeaders().set(VitamuiHttpHeaders.X_TENANT_ID, '' + this.tenantIdentifier);
 
     this.managementContractService.getAllByParams(params, headers).subscribe((managmentContracts) => {
       this.managementContracts = managmentContracts;
