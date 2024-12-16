@@ -73,6 +73,10 @@ public class ReferentialInternalWebClientFactory extends BaseWebClientFactory {
         return new OntologyInternalWebClient(getWebClient(), getBaseUrl());
     }
 
+    public SchemaInternalWebClient getSchemaInternalWebClient() {
+        return new SchemaInternalWebClient(getWebClient(), getBaseUrl());
+    }
+
     public RuleInternalWebClient getRuleInternalWebClient() {
         return new RuleInternalWebClient(getWebClient(), getBaseUrl());
     }

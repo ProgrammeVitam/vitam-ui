@@ -48,9 +48,9 @@ import java.util.stream.Collectors;
 
 import static org.springframework.http.HttpMethod.GET;
 
-public class SchemaClient extends BaseRestClient<InternalHttpContext> {
+public class SchemaInternalRestClient extends BaseRestClient<InternalHttpContext> {
 
-    public SchemaClient(RestTemplate restTemplate, String baseUrl) {
+    public SchemaInternalRestClient(RestTemplate restTemplate, String baseUrl) {
         super(restTemplate, baseUrl);
     }
 

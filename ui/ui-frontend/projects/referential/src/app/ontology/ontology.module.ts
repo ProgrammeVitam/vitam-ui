@@ -51,6 +51,7 @@ import { OntologyPreviewModule } from './ontology-preview/ontology-preview.modul
 import { OntologyRoutingModule } from './ontology-routing.module';
 import { OntologyComponent } from './ontology.component';
 import { ImportDialogModule } from '../shared/import-dialog/import-dialog.module';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -68,6 +69,7 @@ import { ImportDialogModule } from '../shared/import-dialog/import-dialog.module
     MatSidenavModule,
     MatProgressSpinnerModule,
     TableFilterModule,
+    TranslateModule,
   ],
   declarations: [OntologyComponent, OntologyListComponent],
 })

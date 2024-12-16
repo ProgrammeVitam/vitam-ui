@@ -34,26 +34,31 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { ActivatedRoute } from '@angular/router';
 
 import { TranslateService } from '@ngx-translate/core';
-import { GlobalEventService, SidenavPage } from 'vitamui-library';
+import { ApplicationId, GlobalEventService, SidenavPage, SecurityService, Role } from 'vitamui-library';
 import { Ontology } from 'vitamui-library';
 import { FileTypes } from 'vitamui-library';
 import { ImportDialogParam, ReferentialTypes } from '../shared/import-dialog/import-dialog-param.interface';
 import { ImportDialogComponent } from '../shared/import-dialog/import-dialog.component';
 import { OntologyCreateComponent } from './ontology-create/ontology-create.component';
 import { OntologyListComponent } from './ontology-list/ontology-list.component';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-ontology',
   templateUrl: './ontology.component.html',
   styleUrls: ['./ontology.component.scss'],
 })
-export class OntologyComponent extends SidenavPage<Ontology> {
+export class OntologyComponent extends SidenavPage<Ontology> implements OnInit {
   search = '';
+  filters: string;
+  tenantId: number;
+  checkImportOntology = new Observable<boolean>();
+  checkImportSchema = new Observable<boolean>();
 
   @ViewChild(OntologyListComponent, { static: true }) ontologyListComponent: OntologyListComponent;
 
@@ -62,8 +67,14 @@ export class OntologyComponent extends SidenavPage<Ontology> {
     route: ActivatedRoute,
     globalEventService: GlobalEventService,
     private translateService: TranslateService,
+    private securityService: SecurityService,
   ) {
     super(route, globalEventService);
+  }
+
+  ngOnInit() {
+    this.checkImportSchema = this.securityService.hasRole(ApplicationId.ONTOLOGY_APP, this.tenantId, Role.ROLE_IMPORT_SCHEMA);
+    this.checkImportOntology = this.securityService.hasRole(ApplicationId.ONTOLOGY_APP, this.tenantId, Role.ROLE_IMPORT_ONTOLOGY);
   }
 
   openCreateOntologyDialog() {
@@ -98,7 +109,34 @@ export class OntologyComponent extends SidenavPage<Ontology> {
       title: this.translateService.instant('IMPORT_DIALOG.TITLE'),
       subtitle: this.translateService.instant('IMPORT_DIALOG.ONTOLOGY_SUBTITLE'),
       allowedFiles: [FileTypes.JSON],
+      fileFormatDetailInfo: this.translateService.instant('IMPORT_DIALOG.ONTOLOGY_FORMAT_JSON'),
       referential: ReferentialTypes.ONTOLOGY,
+      successMessage: 'SNACKBAR.IMPORT_REFERENTIAL_SUCCESSED',
+      errorMessage: 'SNACKBAR.IMPORT_REFERENTIAL_FAILED',
+      iconMessage: 'vitamui-icon-ontologie',
+    };
+
+    this.dialog
+      .open(ImportDialogComponent, {
+        panelClass: 'vitamui-modal',
+        disableClose: true,
+        data: params,
+      })
+      .afterClosed()
+      .subscribe((result) => {
+        if (result?.successfulImport) {
+          this.refreshList();
+        }
+      });
+  }
+
+  openSchemaImportDialog() {
+    const params: ImportDialogParam = {
+      title: this.translateService.instant('IMPORT_DIALOG.SCHEMA_TITLE'),
+      subtitle: this.translateService.instant('IMPORT_DIALOG.SCHEMA_SUBTITLE'),
+      allowedFiles: [FileTypes.CSV],
+      fileFormatDetailInfo: this.translateService.instant('IMPORT_DIALOG.SCHEMA_FORMAT_JSON'),
+      referential: ReferentialTypes.SCHEMA,
       successMessage: 'SNACKBAR.IMPORT_REFERENTIAL_SUCCESSED',
       errorMessage: 'SNACKBAR.IMPORT_REFERENTIAL_FAILED',
       iconMessage: 'vitamui-icon-ontologie',

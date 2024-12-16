@@ -27,19 +27,43 @@
 
 package fr.gouv.vitamui.referential.internal.server.schema;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.opencsv.bean.CsvToBean;
+import com.opencsv.bean.CsvToBeanBuilder;
+import com.opencsv.enums.CSVReaderNullFieldIndicator;
 import fr.gouv.vitam.access.external.client.AdminExternalClient;
+import fr.gouv.vitam.access.external.common.exception.AccessExternalClientException;
 import fr.gouv.vitam.common.client.VitamContext;
+import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.RequestResponseOK;
 import fr.gouv.vitam.common.model.administration.CombinedSchemaModel;
 import fr.gouv.vitam.common.model.administration.schema.SchemaResponse;
+import fr.gouv.vitamui.commons.api.dtos.ErrorImportFile;
+import fr.gouv.vitamui.commons.api.enums.ErrorImportFileMessage;
+import fr.gouv.vitamui.commons.api.exception.BadRequestException;
+import fr.gouv.vitamui.commons.api.exception.InternalServerException;
+import fr.gouv.vitamui.iam.internal.client.ApplicationInternalRestClient;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
+import fr.gouv.vitamui.referential.common.dto.ImportSchemaDto;
 import fr.gouv.vitamui.referential.common.dto.SchemaDto;
 import fr.gouv.vitamui.referential.common.model.Collection;
+import fr.gouv.vitamui.referential.common.service.ImportSchemaService;
+import fr.gouv.vitamui.referential.internal.server.utils.ImportCSVUtils;
+import org.apache.commons.io.input.BOMInputStream;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -47,18 +71,33 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
-public class SchemaService {
+public class SchemaInternalService {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(SchemaInternalService.class);
+
+    private static final String IMPORT_UNIT_SCHEMA = "IMPORT_UNIT_SCHEMA";
+    private final ImportSchemaService importSchemaService;
+    private final ObjectMapper objectMapper;
+    private final ImportSchemaConverter converter;
+    private final ApplicationInternalRestClient applicationInternalRestClient;
     private final InternalSecurityService internalSecurityService;
     private final AdminExternalClient adminExternalClient;
 
     @Autowired
-    public SchemaService(
+    public SchemaInternalService(
         final InternalSecurityService internalSecurityService,
-        final AdminExternalClient adminExternalClient
+        final AdminExternalClient adminExternalClient,
+        ImportSchemaService importSchemaService,
+        ObjectMapper objectMapper,
+        ImportSchemaConverter converter,
+        ApplicationInternalRestClient applicationInternalRestClient
     ) {
         this.internalSecurityService = internalSecurityService;
         this.adminExternalClient = adminExternalClient;
+        this.importSchemaService = importSchemaService;
+        this.objectMapper = objectMapper;
+        this.converter = converter;
+        this.applicationInternalRestClient = applicationInternalRestClient;
     }
 
     public Optional<SchemaDto> getSchema(final Collection collection) {
@@ -107,5 +146,63 @@ public class SchemaService {
             return Optional.of(adminExternalClient.getObjectGroupSchema(vitamContext));
         }
         return Optional.empty();
+    }
+
+    public ResponseEntity<Void> importUnitSchema(VitamContext vitamContext, MultipartFile file) {
+        Boolean isIdentifierMandatory = applicationInternalRestClient
+            .isApplicationExternalIdentifierEnabled(internalSecurityService.getHttpContext(), IMPORT_UNIT_SCHEMA)
+            .getBody();
+
+        if (isIdentifierMandatory == null) {
+            throw new InternalServerException("The result of the API call should not be null");
+        }
+        ImportSchemaCSVUtils.checkImportFile(file);
+        LOGGER.debug("Schema file {} has been validated before parsing it", file.getOriginalFilename());
+
+        List<ImportSchemaDto> importSchemaDtos = convertCsvFileToImportDto(file);
+        LOGGER.debug("Schema file {} has been parsed in schema List", file.getOriginalFilename());
+
+        RequestResponse<?> result;
+
+        try {
+            result = importSchemaService.importUnitSchema(
+                vitamContext,
+                converter.convertDtosToVitams(importSchemaDtos)
+            );
+        } catch (InvalidParseOperationException | AccessExternalClientException | IOException e) {
+            throw new InternalServerException("Can't create schema", e);
+        }
+
+        if (HttpStatus.OK.value() == result.getHttpCode()) {
+            LOGGER.debug("Schemas file {} has been successfully import to VITAM", file.getOriginalFilename());
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        }
+
+        throw new BadRequestException(
+            "The CSV file has been rejected by vitam",
+            null,
+            List.of(
+                ImportCSVUtils.errorToJson(
+                    ErrorImportFile.builder()
+                        .error(ErrorImportFileMessage.REJECT_BY_VITAM_CHECK_LOGBOOK_OPERATION_APP)
+                        .build()
+                )
+            )
+        );
+    }
+
+    private List<ImportSchemaDto> convertCsvFileToImportDto(MultipartFile file) {
+        try (Reader reader = new InputStreamReader(new BOMInputStream(file.getInputStream()), StandardCharsets.UTF_8)) {
+            CsvToBean<ImportSchemaDto> csvToBean = new CsvToBeanBuilder<ImportSchemaDto>(reader)
+                .withType(ImportSchemaDto.class)
+                .withIgnoreLeadingWhiteSpace(true)
+                .withFieldAsNull(CSVReaderNullFieldIndicator.BOTH)
+                .withSeparator(';')
+                .build();
+
+            return csvToBean.parse();
+        } catch (RuntimeException | IOException e) {
+            throw new BadRequestException("Unable to read schema CSV file ", e);
+        }
     }
 }
