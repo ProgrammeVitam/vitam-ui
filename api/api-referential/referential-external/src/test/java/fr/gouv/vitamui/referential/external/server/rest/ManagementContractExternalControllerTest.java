@@ -30,7 +30,7 @@ package fr.gouv.vitamui.referential.external.server.rest;
 import fr.gouv.vitamui.commons.api.domain.ManagementContractDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
-import fr.gouv.vitamui.referential.external.server.service.managementcontract.service.ManagementContractInternalService;
+import fr.gouv.vitamui.referential.external.server.service.managementcontract.service.ManagementContractExternalService;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -47,7 +47,7 @@ public class ManagementContractExternalControllerTest extends ApiReferentialCont
     private static final Logger LOGGER = LoggerFactory.getLogger(ManagementContractExternalControllerTest.class);
 
     @MockBean
-    private ManagementContractInternalService managementContractExternalService;
+    private ManagementContractExternalService managementContractExternalService;
 
     @Override
     protected String[] getServices() {

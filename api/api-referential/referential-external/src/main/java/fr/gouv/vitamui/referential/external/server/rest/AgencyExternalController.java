@@ -52,7 +52,7 @@ import fr.gouv.vitamui.commons.rest.util.RestUtils;
 import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsResponseDto;
 import fr.gouv.vitamui.referential.common.dto.AgencyDto;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
-import fr.gouv.vitamui.referential.external.server.service.agency.AgencyInternalService;
+import fr.gouv.vitamui.referential.external.server.service.agency.AgencyExternalService;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
@@ -94,7 +94,7 @@ public class AgencyExternalController {
     public static final String MANDATORY_IDENTIFIER = "Identifier is mandatory : ";
 
     @Autowired
-    private AgencyInternalService agencyExternalService;
+    private AgencyExternalService agencyExternalService;
 
     @GetMapping
     @Secured(ServicesData.ROLE_GET_AGENCIES)

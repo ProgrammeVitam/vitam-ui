@@ -49,7 +49,7 @@ import fr.gouv.vitamui.commons.rest.util.RestUtils;
 import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsResponseDto;
 import fr.gouv.vitamui.referential.common.dto.SecurityProfileDto;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
-import fr.gouv.vitamui.referential.external.server.service.securityprofile.SecurityProfileInternalService;
+import fr.gouv.vitamui.referential.external.server.service.securityprofile.SecurityProfileExternalService;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
@@ -86,7 +86,7 @@ public class SecurityProfileExternalController {
     private static final Logger LOGGER = LoggerFactory.getLogger(SecurityProfileExternalController.class);
 
     @Autowired
-    private SecurityProfileInternalService securityProfileExternalService;
+    private SecurityProfileExternalService securityProfileExternalService;
 
     @GetMapping
     @Secured(ServicesData.ROLE_GET_SECURITY_PROFILES)

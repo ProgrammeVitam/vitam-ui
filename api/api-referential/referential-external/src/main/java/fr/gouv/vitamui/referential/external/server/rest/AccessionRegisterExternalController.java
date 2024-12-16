@@ -47,7 +47,7 @@ import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.referential.common.dto.AccessionRegisterDetailDto;
 import fr.gouv.vitamui.referential.common.dto.AccessionRegisterSummaryDto;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
-import fr.gouv.vitamui.referential.external.server.service.accessionregister.AccessionRegisterInternalService;
+import fr.gouv.vitamui.referential.external.server.service.accessionregister.AccessionRegisterExternalService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,11 +69,11 @@ public class AccessionRegisterExternalController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AccessionRegisterExternalController.class);
 
-    private final AccessionRegisterInternalService accessionRegisterDetailExternalService;
+    private final AccessionRegisterExternalService accessionRegisterDetailExternalService;
 
     @Autowired
     public AccessionRegisterExternalController(
-        AccessionRegisterInternalService accessionRegisterDetailExternalService
+        AccessionRegisterExternalService accessionRegisterDetailExternalService
     ) {
         this.accessionRegisterDetailExternalService = accessionRegisterDetailExternalService;
     }

@@ -117,12 +117,12 @@ public class AccessContractInternalServiceTest {
     private ExternalSecurityService externalSecurityService;
 
     @InjectMocks
-    private AccessContractInternalService accessContractInternalService;
+    private AccessContractExternalService accessContractExternalService;
 
     @BeforeEach
     public void setUp() {
         ObjectMapper objectMapper = new ObjectMapper().disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-        accessContractInternalService = new AccessContractInternalService(
+        accessContractExternalService = new AccessContractExternalService(
             accessContractService,
             vitamUIAccessContractService,
             objectMapper,
@@ -141,7 +141,7 @@ public class AccessContractInternalServiceTest {
             new RequestResponseOK<AccessContractModel>().setHttpCode(200)
         );
 
-        assertThatCode(() -> accessContractInternalService.getOne(vitamContext, identifier)).doesNotThrowAnyException();
+        assertThatCode(() -> accessContractExternalService.getOne(vitamContext, identifier)).doesNotThrowAnyException();
     }
 
     @Test
@@ -153,7 +153,7 @@ public class AccessContractInternalServiceTest {
             new RequestResponseOK<AccessContractModel>().setHttpCode(400)
         );
 
-        assertThatCode(() -> accessContractInternalService.getOne(vitamContext, identifier)).doesNotThrowAnyException();
+        assertThatCode(() -> accessContractExternalService.getOne(vitamContext, identifier)).doesNotThrowAnyException();
     }
 
     @Test
@@ -166,7 +166,7 @@ public class AccessContractInternalServiceTest {
             new VitamClientException("Exception thrown by Vitam")
         );
 
-        assertThatCode(() -> accessContractInternalService.getOne(vitamContext, identifier)).isInstanceOf(
+        assertThatCode(() -> accessContractExternalService.getOne(vitamContext, identifier)).isInstanceOf(
             InternalServerException.class
         );
     }
@@ -179,7 +179,7 @@ public class AccessContractInternalServiceTest {
             new RequestResponseOK<AccessContractModel>().setHttpCode(200)
         );
 
-        assertThatCode(() -> accessContractInternalService.getAll(vitamContext)).doesNotThrowAnyException();
+        assertThatCode(() -> accessContractExternalService.getAll(vitamContext)).doesNotThrowAnyException();
     }
 
     @Test
@@ -190,7 +190,7 @@ public class AccessContractInternalServiceTest {
             new RequestResponseOK<AccessContractModel>().setHttpCode(400)
         );
 
-        assertThatCode(() -> accessContractInternalService.getAll(vitamContext)).doesNotThrowAnyException();
+        assertThatCode(() -> accessContractExternalService.getAll(vitamContext)).doesNotThrowAnyException();
     }
 
     @Test
@@ -202,7 +202,7 @@ public class AccessContractInternalServiceTest {
             new VitamClientException("Exception thrown by Vitam")
         );
 
-        assertThatCode(() -> accessContractInternalService.getAll(vitamContext)).isInstanceOf(
+        assertThatCode(() -> accessContractExternalService.getAll(vitamContext)).isInstanceOf(
             InternalServerException.class
         );
     }
@@ -216,7 +216,7 @@ public class AccessContractInternalServiceTest {
             new RequestResponseOK().setHttpCode(200)
         );
 
-        assertThatCode(() -> accessContractInternalService.findAll(vitamContext, query)).doesNotThrowAnyException();
+        assertThatCode(() -> accessContractExternalService.findAll(vitamContext, query)).doesNotThrowAnyException();
     }
 
     @Test
@@ -228,7 +228,7 @@ public class AccessContractInternalServiceTest {
             new RequestResponseOK().setHttpCode(400)
         );
 
-        assertThatCode(() -> accessContractInternalService.findAll(vitamContext, query)).doesNotThrowAnyException();
+        assertThatCode(() -> accessContractExternalService.findAll(vitamContext, query)).doesNotThrowAnyException();
     }
 
     @Test
@@ -241,7 +241,7 @@ public class AccessContractInternalServiceTest {
             new VitamClientException("Exception thrown by Vitam")
         );
 
-        assertThatCode(() -> accessContractInternalService.findAll(vitamContext, query)).isInstanceOf(
+        assertThatCode(() -> accessContractExternalService.findAll(vitamContext, query)).isInstanceOf(
             InternalServerException.class
         );
     }
@@ -257,7 +257,7 @@ public class AccessContractInternalServiceTest {
             .checkAbilityToCreateAccessContractInVitam(eq(vitamContext), any(List.class));
 
         assertThatCode(
-            () -> accessContractInternalService.check(vitamContext, accessContractDto)
+            () -> accessContractExternalService.check(vitamContext, accessContractDto)
         ).doesNotThrowAnyException();
     }
 
@@ -271,7 +271,7 @@ public class AccessContractInternalServiceTest {
             .checkAbilityToCreateAccessContractInVitam(eq(vitamContext), any(List.class));
 
         assertThatCode(
-            () -> accessContractInternalService.check(vitamContext, accessContractDto)
+            () -> accessContractExternalService.check(vitamContext, accessContractDto)
         ).doesNotThrowAnyException();
     }
 
@@ -287,7 +287,7 @@ public class AccessContractInternalServiceTest {
         );
 
         assertThatCode(
-            () -> accessContractInternalService.create(vitamContext, accessContractDto)
+            () -> accessContractExternalService.create(vitamContext, accessContractDto)
         ).doesNotThrowAnyException();
     }
 
@@ -302,7 +302,7 @@ public class AccessContractInternalServiceTest {
             new RequestResponseOK().setHttpCode(400)
         );
 
-        assertThatCode(() -> accessContractInternalService.create(vitamContext, accessContractDto)).isInstanceOf(
+        assertThatCode(() -> accessContractExternalService.create(vitamContext, accessContractDto)).isInstanceOf(
             BadRequestException.class
         );
     }
@@ -318,7 +318,7 @@ public class AccessContractInternalServiceTest {
             new InvalidParseOperationException("Exception thrown by vitam")
         );
 
-        assertThatCode(() -> accessContractInternalService.create(vitamContext, accessContractDto)).isInstanceOf(
+        assertThatCode(() -> accessContractExternalService.create(vitamContext, accessContractDto)).isInstanceOf(
             InternalServerException.class
         );
     }
@@ -334,7 +334,7 @@ public class AccessContractInternalServiceTest {
             new AccessExternalClientException("Exception thrown by vitam")
         );
 
-        assertThatCode(() -> accessContractInternalService.create(vitamContext, accessContractDto)).isInstanceOf(
+        assertThatCode(() -> accessContractExternalService.create(vitamContext, accessContractDto)).isInstanceOf(
             InternalServerException.class
         );
     }
@@ -350,7 +350,7 @@ public class AccessContractInternalServiceTest {
             new IOException("Exception thrown by vitam")
         );
 
-        assertThatCode(() -> accessContractInternalService.create(vitamContext, accessContractDto)).isInstanceOf(
+        assertThatCode(() -> accessContractExternalService.create(vitamContext, accessContractDto)).isInstanceOf(
             InternalServerException.class
         );
     }
@@ -367,7 +367,7 @@ public class AccessContractInternalServiceTest {
         when(accessContractService.findAccessContractById(any(), any())).thenReturn(new RequestResponseOK<>());
 
         Map<String, Object> partialDto = new HashMap<>(Map.of("identifier", "value"));
-        assertThatCode(() -> accessContractInternalService.patch(vitamContext, partialDto)).doesNotThrowAnyException();
+        assertThatCode(() -> accessContractExternalService.patch(vitamContext, partialDto)).doesNotThrowAnyException();
     }
 
     @Test
@@ -382,7 +382,7 @@ public class AccessContractInternalServiceTest {
         when(accessContractService.findAccessContractById(any(), any())).thenReturn(new RequestResponseOK<>());
 
         Map<String, Object> partialDto = new HashMap<>(Map.of("identifier", "value"));
-        assertThatCode(() -> accessContractInternalService.patch(vitamContext, partialDto)).doesNotThrowAnyException();
+        assertThatCode(() -> accessContractExternalService.patch(vitamContext, partialDto)).doesNotThrowAnyException();
     }
 
     @Test
@@ -400,7 +400,7 @@ public class AccessContractInternalServiceTest {
             )
         ).thenThrow(new InvalidParseOperationException("Exception thrown by vitam"));
 
-        assertThatCode(() -> accessContractInternalService.patch(vitamContext, partialDto)).isInstanceOf(
+        assertThatCode(() -> accessContractExternalService.patch(vitamContext, partialDto)).isInstanceOf(
             InternalServerException.class
         );
     }
@@ -420,7 +420,7 @@ public class AccessContractInternalServiceTest {
             )
         ).thenThrow(new AccessExternalClientException("Exception thrown by vitam"));
 
-        assertThatCode(() -> accessContractInternalService.patch(vitamContext, partialDto)).isInstanceOf(
+        assertThatCode(() -> accessContractExternalService.patch(vitamContext, partialDto)).isInstanceOf(
             InternalServerException.class
         );
     }
@@ -435,7 +435,7 @@ public class AccessContractInternalServiceTest {
         );
 
         assertThatCode(
-            () -> accessContractInternalService.findHistoryByIdentifier(vitamContext, id)
+            () -> accessContractExternalService.findHistoryByIdentifier(vitamContext, id)
         ).doesNotThrowAnyException();
     }
 
@@ -449,7 +449,7 @@ public class AccessContractInternalServiceTest {
             new BadRequestException("Exception thrown by Vitam")
         );
 
-        assertThatCode(() -> accessContractInternalService.findHistoryByIdentifier(vitamContext, id)).isInstanceOf(
+        assertThatCode(() -> accessContractExternalService.findHistoryByIdentifier(vitamContext, id)).isInstanceOf(
             BadRequestException.class
         );
     }
@@ -464,7 +464,7 @@ public class AccessContractInternalServiceTest {
             new VitamClientException("Exception thrown by vitam")
         );
 
-        assertThatCode(() -> accessContractInternalService.findHistoryByIdentifier(vitamContext, id)).isInstanceOf(
+        assertThatCode(() -> accessContractExternalService.findHistoryByIdentifier(vitamContext, id)).isInstanceOf(
             VitamClientException.class
         );
     }
@@ -498,7 +498,7 @@ public class AccessContractInternalServiceTest {
         );
 
         assertThatCode(
-            () -> accessContractInternalService.importAccessContracts(vitamContext, multipartFile)
+            () -> accessContractExternalService.importAccessContracts(vitamContext, multipartFile)
         ).doesNotThrowAnyException();
     }
 
@@ -533,7 +533,7 @@ public class AccessContractInternalServiceTest {
         BadRequestException badRequestException = null;
 
         try {
-            accessContractInternalService.importAccessContracts(vitamContext, multipartFile);
+            accessContractExternalService.importAccessContracts(vitamContext, multipartFile);
         } catch (BadRequestException e) {
             badRequestException = e;
         }
@@ -566,7 +566,7 @@ public class AccessContractInternalServiceTest {
                 )
         );
 
-        Resource resource = accessContractInternalService.exportAccessContracts(vitamContext);
+        Resource resource = accessContractExternalService.exportAccessContracts(vitamContext);
         byte[] bytes = ((ByteArrayResource) resource).getByteArray();
         String csv = new String(bytes, StandardCharsets.UTF_8);
         //remove BOM

@@ -56,7 +56,7 @@ import fr.gouv.vitamui.referential.common.dto.LogbookOperationDto;
 import fr.gouv.vitamui.referential.common.dto.ReportType;
 import fr.gouv.vitamui.referential.common.model.AuditCreateOptions;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
-import fr.gouv.vitamui.referential.external.server.service.operation.OperationInternalService;
+import fr.gouv.vitamui.referential.external.server.service.operation.OperationExternalService;
 import lombok.Getter;
 import lombok.Setter;
 import org.bouncycastle.asn1.ASN1InputStream;
@@ -97,7 +97,7 @@ public class OperationExternalController {
     private static final Logger LOGGER = LoggerFactory.getLogger(AgencyExternalController.class);
 
     @Autowired
-    private OperationInternalService operationExternalService;
+    private OperationExternalService operationExternalService;
 
     @GetMapping
     @Secured(ServicesData.ROLE_GET_OPERATIONS)

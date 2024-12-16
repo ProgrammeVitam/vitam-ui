@@ -109,9 +109,9 @@ import java.util.Map;
 import java.util.Optional;
 
 @Service
-public class AccessContractInternalService extends AbstractService {
+public class AccessContractExternalService extends AbstractService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(AccessContractInternalService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AccessContractExternalService.class);
 
     private static final String ACCESS_CONTRACT = "ACCESS_CONTRACT";
 
@@ -128,7 +128,7 @@ public class AccessContractInternalService extends AbstractService {
     private final ExternalSecurityService externalSecurityService;
 
     @Autowired
-    public AccessContractInternalService(
+    public AccessContractExternalService(
         AccessContractService accessContractService,
         VitamUIAccessContractService vitamUIAccessContractService,
         ObjectMapper objectMapper,

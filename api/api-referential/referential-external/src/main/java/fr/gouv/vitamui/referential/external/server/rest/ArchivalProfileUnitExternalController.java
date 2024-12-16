@@ -52,7 +52,7 @@ import fr.gouv.vitamui.commons.api.utils.ApiUtils;
 import fr.gouv.vitamui.commons.rest.util.RestUtils;
 import fr.gouv.vitamui.referential.common.dto.ArchivalProfileUnitDto;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
-import fr.gouv.vitamui.referential.external.server.service.archivalprofileunit.ArchivalProfileUnitInternalService;
+import fr.gouv.vitamui.referential.external.server.service.archivalprofileunit.ArchivalProfileUnitExternalService;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
@@ -88,7 +88,7 @@ public class ArchivalProfileUnitExternalController {
     private static final Logger LOGGER = LoggerFactory.getLogger(ArchivalProfileUnitExternalController.class);
 
     @Autowired
-    private ArchivalProfileUnitInternalService archivalProfileUnitExternalService;
+    private ArchivalProfileUnitExternalService archivalProfileUnitExternalService;
 
     @GetMapping
     @Secured(ServicesData.ROLE_GET_ARCHIVE_PROFILES_UNIT)

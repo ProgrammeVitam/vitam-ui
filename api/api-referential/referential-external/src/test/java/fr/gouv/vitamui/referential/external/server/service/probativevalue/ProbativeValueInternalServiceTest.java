@@ -75,7 +75,7 @@ import static org.mockito.Mockito.when;
 public class ProbativeValueInternalServiceTest {
 
     @InjectMocks
-    private ProbativeValueInternalService probativeValueInternalService;
+    private ProbativeValueExternalService probativeValueExternalService;
 
     @Mock
     private VitamBatchReportService vitamProbativeValueService;
@@ -89,7 +89,7 @@ public class ProbativeValueInternalServiceTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        probativeValueInternalService = new ProbativeValueInternalService(vitamProbativeValueService, unitService);
+        probativeValueExternalService = new ProbativeValueExternalService(vitamProbativeValueService, unitService);
     }
 
     @Test
@@ -110,7 +110,7 @@ public class ProbativeValueInternalServiceTest {
 
         File zip = new File(workspace.getAbsolutePath(), operationId + ".zip");
         FileOutputStream zipOutputStream = new FileOutputStream(zip);
-        probativeValueInternalService.exportReport(
+        probativeValueExternalService.exportReport(
             vitamContext,
             operationId,
             workspace.getAbsolutePath(),
@@ -158,7 +158,7 @@ public class ProbativeValueInternalServiceTest {
 
         File zip = new File(workspace.getAbsolutePath(), operationId + ".zip");
         FileOutputStream zipOutputStream = new FileOutputStream(zip);
-        probativeValueInternalService.exportReport(
+        probativeValueExternalService.exportReport(
             vitamContext,
             operationId,
             workspace.getAbsolutePath(),
@@ -197,7 +197,7 @@ public class ProbativeValueInternalServiceTest {
 
         File zip = new File(workspace.getAbsolutePath(), operationId + ".zip");
         FileOutputStream zipOutputStream = new FileOutputStream(zip);
-        probativeValueInternalService.exportReport(
+        probativeValueExternalService.exportReport(
             vitamContext,
             operationId,
             workspace.getAbsolutePath(),

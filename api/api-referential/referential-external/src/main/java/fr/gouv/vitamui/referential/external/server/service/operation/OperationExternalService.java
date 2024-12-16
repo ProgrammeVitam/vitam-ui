@@ -73,7 +73,7 @@ import fr.gouv.vitamui.referential.common.dto.ReportType;
 import fr.gouv.vitamui.referential.common.model.AuditCreateOptions;
 import fr.gouv.vitamui.referential.common.service.OperationService;
 import fr.gouv.vitamui.referential.external.server.service.AbstractService;
-import fr.gouv.vitamui.referential.external.server.service.probativevalue.ProbativeValueInternalService;
+import fr.gouv.vitamui.referential.external.server.service.probativevalue.ProbativeValueExternalService;
 import fr.gouv.vitamui.referential.external.server.service.service.ExternalParametersService;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -106,16 +106,16 @@ import static fr.gouv.vitam.common.model.objectgroup.ObjectGroupResponse.OPERATI
 import static fr.gouv.vitam.common.model.objectgroup.ObjectGroupResponse.ORIGINATING_AGENCY;
 
 @Service
-public class OperationInternalService extends AbstractService {
+public class OperationExternalService extends AbstractService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(OperationInternalService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(OperationExternalService.class);
 
     private final OperationService operationService;
 
     private final LogbookService logbookService;
 
     @Autowired
-    private ProbativeValueInternalService probativeValueInternalService;
+    private ProbativeValueExternalService probativeValueExternalService;
 
     private final ExternalParametersService externalParametersService;
     private final String AUDIT_FILE_CONSISTENCY = "AUDIT_FILE_CONSISTENCY";
@@ -142,7 +142,7 @@ public class OperationInternalService extends AbstractService {
     private final String END_TIME = "T23:59:59.999";
 
     @Autowired
-    public OperationInternalService(
+    public OperationExternalService(
         OperationService operationService,
         LogbookService logbookService,
         ObjectMapper objectMapper,
@@ -459,7 +459,7 @@ public class OperationInternalService extends AbstractService {
         File zip = new File(tempFolder);
         try {
             FileOutputStream zipOutputStream = new FileOutputStream(zip);
-            probativeValueInternalService.exportReport(vitamContext, operationId, "/tmp", zipOutputStream);
+            probativeValueExternalService.exportReport(vitamContext, operationId, "/tmp", zipOutputStream);
             Resource resource = new InputStreamResource(new FileInputStream(zip.getAbsoluteFile()));
             return new ResponseEntity<>(resource, HttpStatus.OK);
         } catch (FileNotFoundException e) {

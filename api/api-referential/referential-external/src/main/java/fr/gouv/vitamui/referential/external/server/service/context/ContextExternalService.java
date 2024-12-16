@@ -83,9 +83,9 @@ import java.util.Map;
 import java.util.Optional;
 
 @Service
-public class ContextInternalService extends AbstractService {
+public class ContextExternalService extends AbstractService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ContextInternalService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ContextExternalService.class);
 
     private VitamContextService vitamContextService;
 
@@ -96,7 +96,7 @@ public class ContextInternalService extends AbstractService {
     private LogbookService logbookService;
 
     @Autowired
-    public ContextInternalService(
+    public ContextExternalService(
         VitamContextService vitamContextService,
         ObjectMapper objectMapper,
         ContextConverter converter,

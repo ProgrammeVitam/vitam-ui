@@ -46,7 +46,7 @@ import fr.gouv.vitam.common.json.JsonHandler;
 import fr.gouv.vitam.common.model.RequestResponseOK;
 import fr.gouv.vitamui.commons.vitam.api.access.UnitService;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
-import fr.gouv.vitamui.referential.external.server.service.unit.UnitInternalService;
+import fr.gouv.vitamui.referential.external.server.service.unit.UnitExtternalService;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -74,13 +74,13 @@ public class UnitInternalServiceTest {
     private ObjectMapper objectMapper;
 
     @InjectMocks
-    private UnitInternalService unitInternalService;
+    private UnitExtternalService unitExtternalService;
 
     public final String FILLING_HOLDING_SCHEME_QUERY = "data/fillingholding/expected_unitType_query.json";
 
     @BeforeEach
     public void setUp() {
-        unitInternalService = new UnitInternalService(unitService, objectMapper, externalSecurityService);
+        unitExtternalService = new UnitExtternalService(unitService, objectMapper, externalSecurityService);
     }
 
     @Test
@@ -93,7 +93,7 @@ public class UnitInternalServiceTest {
         );
 
         assertThatCode(() -> {
-            unitInternalService.searchUnits(dslQuery, vitamContext);
+            unitExtternalService.searchUnits(dslQuery, vitamContext);
         }).doesNotThrowAnyException();
     }
 
@@ -107,7 +107,7 @@ public class UnitInternalServiceTest {
         );
 
         assertThatCode(() -> {
-            unitInternalService.searchUnits(dslQuery, vitamContext);
+            unitExtternalService.searchUnits(dslQuery, vitamContext);
         }).doesNotThrowAnyException();
     }
 
@@ -122,7 +122,7 @@ public class UnitInternalServiceTest {
         );
 
         assertThatCode(() -> {
-            unitInternalService.searchUnits(dslQuery, vitamContext);
+            unitExtternalService.searchUnits(dslQuery, vitamContext);
         }).isInstanceOf(VitamClientException.class);
     }
 
@@ -136,7 +136,7 @@ public class UnitInternalServiceTest {
         ).thenReturn(new RequestResponseOK<JsonNode>().setHttpCode(200));
 
         assertThatCode(() -> {
-            unitInternalService.searchUnitsWithErrors(Optional.empty(), dslQuery, vitamContext);
+            unitExtternalService.searchUnitsWithErrors(Optional.empty(), dslQuery, vitamContext);
         }).doesNotThrowAnyException();
     }
 
@@ -150,7 +150,7 @@ public class UnitInternalServiceTest {
         ).thenReturn(new RequestResponseOK<JsonNode>().setHttpCode(400));
 
         assertThatCode(() -> {
-            unitInternalService.searchUnitsWithErrors(Optional.empty(), dslQuery, vitamContext);
+            unitExtternalService.searchUnitsWithErrors(Optional.empty(), dslQuery, vitamContext);
         }).doesNotThrowAnyException();
     }
 
@@ -165,7 +165,7 @@ public class UnitInternalServiceTest {
         ).thenThrow(new VitamClientException("Exception thrown by vitam"));
 
         assertThatCode(() -> {
-            unitInternalService.searchUnitsWithErrors(Optional.empty(), dslQuery, vitamContext);
+            unitExtternalService.searchUnitsWithErrors(Optional.empty(), dslQuery, vitamContext);
         }).isInstanceOf(VitamClientException.class);
     }
 
@@ -179,7 +179,7 @@ public class UnitInternalServiceTest {
         );
 
         assertThatCode(() -> {
-            unitInternalService.findUnitById(unitId, vitamContext);
+            unitExtternalService.findUnitById(unitId, vitamContext);
         }).doesNotThrowAnyException();
     }
 
@@ -193,7 +193,7 @@ public class UnitInternalServiceTest {
         );
 
         assertThatCode(() -> {
-            unitInternalService.findUnitById(unitId, vitamContext);
+            unitExtternalService.findUnitById(unitId, vitamContext);
         }).doesNotThrowAnyException();
     }
 
@@ -208,7 +208,7 @@ public class UnitInternalServiceTest {
         );
 
         assertThatCode(() -> {
-            unitInternalService.findUnitById(unitId, vitamContext);
+            unitExtternalService.findUnitById(unitId, vitamContext);
         }).isInstanceOf(VitamClientException.class);
     }
 
@@ -223,7 +223,7 @@ public class UnitInternalServiceTest {
         ).thenReturn(new RequestResponseOK<JsonNode>().setHttpCode(200));
 
         assertThatCode(() -> {
-            unitInternalService.findObjectMetadataById(unitId, dslQuery, vitamContext);
+            unitExtternalService.findObjectMetadataById(unitId, dslQuery, vitamContext);
         }).doesNotThrowAnyException();
     }
 
@@ -238,7 +238,7 @@ public class UnitInternalServiceTest {
         ).thenReturn(new RequestResponseOK<JsonNode>().setHttpCode(400));
 
         assertThatCode(() -> {
-            unitInternalService.findObjectMetadataById(unitId, dslQuery, vitamContext);
+            unitExtternalService.findObjectMetadataById(unitId, dslQuery, vitamContext);
         }).doesNotThrowAnyException();
     }
 
@@ -254,7 +254,7 @@ public class UnitInternalServiceTest {
         ).thenThrow(new VitamClientException("Exception thrown by vitam"));
 
         assertThatCode(() -> {
-            unitInternalService.findObjectMetadataById(unitId, dslQuery, vitamContext);
+            unitExtternalService.findObjectMetadataById(unitId, dslQuery, vitamContext);
         }).isInstanceOf(VitamClientException.class);
     }
 
@@ -264,7 +264,7 @@ public class UnitInternalServiceTest {
         JsonNode expectedQuery = JsonHandler.getFromFile(PropertiesUtils.findFile(FILLING_HOLDING_SCHEME_QUERY));
 
         // When
-        JsonNode givenQuery = unitInternalService.createQueryForFillingOrHoldingUnit();
+        JsonNode givenQuery = unitExtternalService.createQueryForFillingOrHoldingUnit();
 
         // Then
         Assertions.assertThat(expectedQuery.toString()).hasToString(String.valueOf(givenQuery));

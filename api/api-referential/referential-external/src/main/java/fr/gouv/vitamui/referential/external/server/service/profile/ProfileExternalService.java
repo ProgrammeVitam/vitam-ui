@@ -86,9 +86,9 @@ import java.util.Objects;
 import java.util.Optional;
 
 @Service
-public class ProfileInternalService extends AbstractService {
+public class ProfileExternalService extends AbstractService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ProfileInternalService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ProfileExternalService.class);
 
     private final ObjectMapper objectMapper;
 
@@ -97,7 +97,7 @@ public class ProfileInternalService extends AbstractService {
     private final VitamProfileService vitamProfileService;
 
     @Autowired
-    public ProfileInternalService(
+    public ProfileExternalService(
         ObjectMapper objectMapper,
         ProfileConverter converter,
         VitamProfileService vitamProfileService,

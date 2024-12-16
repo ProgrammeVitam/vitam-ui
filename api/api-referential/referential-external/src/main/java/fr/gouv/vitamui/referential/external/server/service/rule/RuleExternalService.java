@@ -85,9 +85,9 @@ import java.util.Map;
 import java.util.Optional;
 
 @Service
-public class RuleInternalService extends AbstractService {
+public class RuleExternalService extends AbstractService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(RuleInternalService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(RuleExternalService.class);
 
     private ObjectMapper objectMapper;
 
@@ -98,7 +98,7 @@ public class RuleInternalService extends AbstractService {
     private VitamRuleService ruleService;
 
     @Autowired
-    public RuleInternalService(
+    public RuleExternalService(
         ObjectMapper objectMapper,
         RuleConverter converter,
         LogbookService logbookService,

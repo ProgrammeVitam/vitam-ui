@@ -83,18 +83,18 @@ import java.util.Optional;
  *
  */
 @Service
-public class ProbativeValueInternalService {
+public class ProbativeValueExternalService {
 
     private static final String TEMPLATE_PROBATIVEVALUEREPORT_ODT = "templates/probativevaluereport.ftl.odt";
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ProbativeValueInternalService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ProbativeValueExternalService.class);
 
     private final VitamBatchReportService vitamBatchReportService;
 
     private final UnitService unitService;
 
     @Autowired
-    ProbativeValueInternalService(VitamBatchReportService vitamBatchReportService, UnitService unitService) {
+    ProbativeValueExternalService(VitamBatchReportService vitamBatchReportService, UnitService unitService) {
         this.vitamBatchReportService = vitamBatchReportService;
         this.unitService = unitService;
     }

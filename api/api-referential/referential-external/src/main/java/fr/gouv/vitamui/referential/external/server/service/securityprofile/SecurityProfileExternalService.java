@@ -79,9 +79,9 @@ import java.util.Map;
 import java.util.Optional;
 
 @Service
-public class SecurityProfileInternalService extends AbstractService {
+public class SecurityProfileExternalService extends AbstractService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(SecurityProfileInternalService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(SecurityProfileExternalService.class);
 
     private VitamSecurityProfileService vitamSecurityProfileService;
 
@@ -92,7 +92,7 @@ public class SecurityProfileInternalService extends AbstractService {
     private LogbookService logbookService;
 
     @Autowired
-    public SecurityProfileInternalService(
+    public SecurityProfileExternalService(
         VitamSecurityProfileService vitamSecurityProfileService,
         ObjectMapper objectMapper,
         SecurityProfileConverter converter,

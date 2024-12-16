@@ -41,7 +41,7 @@ import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.rest.util.RestUtils;
 import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsResponseDto;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
-import fr.gouv.vitamui.referential.external.server.service.managementcontract.service.ManagementContractInternalService;
+import fr.gouv.vitamui.referential.external.server.service.managementcontract.service.ManagementContractExternalService;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
@@ -78,10 +78,10 @@ public class ManagementContractExternalController {
 
     private static final String MANDATORY_IDENTIFIER = "The Identifier is a mandatory parameter: ";
 
-    private final ManagementContractInternalService managementContractExternalService;
+    private final ManagementContractExternalService managementContractExternalService;
 
     @Autowired
-    public ManagementContractExternalController(ManagementContractInternalService managementContractExternalService) {
+    public ManagementContractExternalController(ManagementContractExternalService managementContractExternalService) {
         this.managementContractExternalService = managementContractExternalService;
     }
 

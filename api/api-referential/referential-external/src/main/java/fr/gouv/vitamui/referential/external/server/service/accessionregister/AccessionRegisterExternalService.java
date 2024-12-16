@@ -92,9 +92,9 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 @Service
-public class AccessionRegisterInternalService extends AbstractService {
+public class AccessionRegisterExternalService extends AbstractService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(AccessionRegisterInternalService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AccessionRegisterExternalService.class);
 
     private final ObjectMapper objectMapper;
 
@@ -105,7 +105,7 @@ public class AccessionRegisterInternalService extends AbstractService {
     private final AccessionRegisterService accessionRegisterService;
 
     @Autowired
-    public AccessionRegisterInternalService(
+    public AccessionRegisterExternalService(
         ObjectMapper objectMapper,
         AdminExternalClient adminExternalClient,
         AgencyService agencyService,

@@ -40,7 +40,7 @@ import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.referential.common.dto.AccessionRegisterDetailDto;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
-import fr.gouv.vitamui.referential.external.server.service.accessionregister.AccessionRegisterInternalService;
+import fr.gouv.vitamui.referential.external.server.service.accessionregister.AccessionRegisterExternalService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.slf4j.Logger;
@@ -61,7 +61,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class AccessionRegisterExternalControllerTest extends ApiReferentialControllerTest<AccessionRegisterDetailDto> {
 
     @MockBean
-    private AccessionRegisterInternalService detailExternalService;
+    private AccessionRegisterExternalService detailExternalService;
 
     @Test
     void should_call_the_corresponding_service_once_when_paginated_api_is_called() throws Exception {

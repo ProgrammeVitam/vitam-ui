@@ -88,9 +88,9 @@ import java.util.Map;
 import java.util.Optional;
 
 @Service
-public class AgencyInternalService extends AbstractService {
+public class AgencyExternalService extends AbstractService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(AgencyInternalService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AgencyExternalService.class);
 
     private AgencyService agencyService;
 
@@ -101,7 +101,7 @@ public class AgencyInternalService extends AbstractService {
     private VitamAgencyService vitamAgencyService;
 
     @Autowired
-    public AgencyInternalService(
+    public AgencyExternalService(
         AgencyService agencyService,
         ObjectMapper objectMapper,
         LogbookService logbookService,

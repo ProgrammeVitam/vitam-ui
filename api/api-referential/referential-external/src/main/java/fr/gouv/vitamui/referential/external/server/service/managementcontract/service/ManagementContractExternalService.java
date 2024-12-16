@@ -77,9 +77,9 @@ import java.util.Map;
 import java.util.Optional;
 
 @Service
-public class ManagementContractInternalService extends AbstractService {
+public class ManagementContractExternalService extends AbstractService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ManagementContractInternalService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ManagementContractExternalService.class);
 
     private static final String MANAGEMENT_CONTRACT_NOT_FOUND = "Unable to find Management Contracts";
     private static final String MANAGEMENT_CONTRACT_EVENT_ID_APP_SESSION = "Management Contracts EvIdAppSession : {} ";
@@ -99,7 +99,7 @@ public class ManagementContractInternalService extends AbstractService {
     private ManagementContractModelToDtoConverter managementContractModelToDtoConverter;
 
     @Autowired
-    public ManagementContractInternalService(
+    public ManagementContractExternalService(
         final ManagementContractService managementContractService,
         final VitamUIManagementContractService vitamUIManagementContractService,
         final ObjectMapper objectMapper,

@@ -55,7 +55,7 @@ import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import fr.gouv.vitamui.referential.common.dto.SecurityProfileDto;
 import fr.gouv.vitamui.referential.common.service.VitamSecurityProfileService;
 import fr.gouv.vitamui.referential.external.server.service.securityprofile.SecurityProfileConverter;
-import fr.gouv.vitamui.referential.external.server.service.securityprofile.SecurityProfileInternalService;
+import fr.gouv.vitamui.referential.external.server.service.securityprofile.SecurityProfileExternalService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -85,14 +85,14 @@ public class SecurityProfileInternalServiceTest {
     private ExternalSecurityService externalSecurityService;
 
     @InjectMocks
-    private SecurityProfileInternalService securityProfileInternalService;
+    private SecurityProfileExternalService securityProfileExternalService;
 
     @BeforeEach
     public void setUp() {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
         SecurityProfileConverter converter = new SecurityProfileConverter();
-        securityProfileInternalService = new SecurityProfileInternalService(
+        securityProfileExternalService = new SecurityProfileExternalService(
             vitamSecurityProfileService,
             objectMapper,
             converter,
@@ -111,7 +111,7 @@ public class SecurityProfileInternalServiceTest {
         ).thenReturn(new RequestResponseOK<SecurityProfileModel>().setHttpCode(200));
 
         assertThatCode(() -> {
-            securityProfileInternalService.getOne(vitamContext, identifier);
+            securityProfileExternalService.getOne(vitamContext, identifier);
         }).doesNotThrowAnyException();
     }
 
@@ -125,7 +125,7 @@ public class SecurityProfileInternalServiceTest {
         ).thenReturn(new RequestResponseOK<SecurityProfileModel>().setHttpCode(400));
 
         assertThatCode(() -> {
-            securityProfileInternalService.getOne(vitamContext, identifier);
+            securityProfileExternalService.getOne(vitamContext, identifier);
         }).doesNotThrowAnyException();
     }
 
@@ -140,7 +140,7 @@ public class SecurityProfileInternalServiceTest {
         );
 
         assertThatCode(() -> {
-            securityProfileInternalService.getOne(vitamContext, identifier);
+            securityProfileExternalService.getOne(vitamContext, identifier);
         }).isInstanceOf(InternalServerException.class);
     }
 
@@ -153,7 +153,7 @@ public class SecurityProfileInternalServiceTest {
         ).thenReturn(new RequestResponseOK<SecurityProfileModel>().setHttpCode(200));
 
         assertThatCode(() -> {
-            securityProfileInternalService.getAll(vitamContext);
+            securityProfileExternalService.getAll(vitamContext);
         }).doesNotThrowAnyException();
     }
 
@@ -166,7 +166,7 @@ public class SecurityProfileInternalServiceTest {
         ).thenReturn(new RequestResponseOK<SecurityProfileModel>().setHttpCode(400));
 
         assertThatCode(() -> {
-            securityProfileInternalService.getAll(vitamContext);
+            securityProfileExternalService.getAll(vitamContext);
         }).doesNotThrowAnyException();
     }
 
@@ -180,7 +180,7 @@ public class SecurityProfileInternalServiceTest {
         ).thenThrow(new VitamClientException("Exception thrown by vitam"));
 
         assertThatCode(() -> {
-            securityProfileInternalService.getAll(vitamContext);
+            securityProfileExternalService.getAll(vitamContext);
         }).isInstanceOf(InternalServerException.class);
     }
 
@@ -194,7 +194,7 @@ public class SecurityProfileInternalServiceTest {
         );
 
         assertThatCode(() -> {
-            securityProfileInternalService.findAll(vitamContext, query);
+            securityProfileExternalService.findAll(vitamContext, query);
         }).doesNotThrowAnyException();
     }
 
@@ -208,7 +208,7 @@ public class SecurityProfileInternalServiceTest {
         );
 
         assertThatCode(() -> {
-            securityProfileInternalService.findAll(vitamContext, query);
+            securityProfileExternalService.findAll(vitamContext, query);
         }).doesNotThrowAnyException();
     }
 
@@ -223,7 +223,7 @@ public class SecurityProfileInternalServiceTest {
         );
 
         assertThatCode(() -> {
-            securityProfileInternalService.findAll(vitamContext, query);
+            securityProfileExternalService.findAll(vitamContext, query);
         }).isInstanceOf(InternalServerException.class);
     }
 
@@ -240,7 +240,7 @@ public class SecurityProfileInternalServiceTest {
         ).thenReturn(true);
 
         assertThatCode(() -> {
-            securityProfileInternalService.check(vitamContext, securityProfileDto);
+            securityProfileExternalService.check(vitamContext, securityProfileDto);
         }).doesNotThrowAnyException();
     }
 
@@ -257,7 +257,7 @@ public class SecurityProfileInternalServiceTest {
         ).thenThrow(new ConflictException("Exception thrown by vitam"));
 
         assertThatCode(() -> {
-            securityProfileInternalService.check(vitamContext, securityProfileDto);
+            securityProfileExternalService.check(vitamContext, securityProfileDto);
         }).doesNotThrowAnyException();
     }
 
@@ -272,7 +272,7 @@ public class SecurityProfileInternalServiceTest {
         ).thenReturn(new RequestResponseOK().setHttpCode(200));
 
         assertThatCode(() -> {
-            securityProfileInternalService.create(vitamContext, securityProfileDto);
+            securityProfileExternalService.create(vitamContext, securityProfileDto);
         }).doesNotThrowAnyException();
     }
 
@@ -287,7 +287,7 @@ public class SecurityProfileInternalServiceTest {
         ).thenReturn(new RequestResponseOK().setHttpCode(400));
 
         assertThatCode(() -> {
-            securityProfileInternalService.create(vitamContext, securityProfileDto);
+            securityProfileExternalService.create(vitamContext, securityProfileDto);
         }).doesNotThrowAnyException();
     }
 
@@ -302,7 +302,7 @@ public class SecurityProfileInternalServiceTest {
         ).thenThrow(new VitamClientException("Exception thrown by vitam"));
 
         assertThatCode(() -> {
-            securityProfileInternalService.create(vitamContext, securityProfileDto);
+            securityProfileExternalService.create(vitamContext, securityProfileDto);
         }).isInstanceOf(InternalServerException.class);
     }
 
@@ -317,7 +317,7 @@ public class SecurityProfileInternalServiceTest {
         ).thenThrow(new AccessExternalClientException("Exception thrown by vitam"));
 
         assertThatCode(() -> {
-            securityProfileInternalService.create(vitamContext, securityProfileDto);
+            securityProfileExternalService.create(vitamContext, securityProfileDto);
         }).isInstanceOf(InternalServerException.class);
     }
 
@@ -332,7 +332,7 @@ public class SecurityProfileInternalServiceTest {
         ).thenThrow(new IOException("Exception thrown by vitam"));
 
         assertThatCode(() -> {
-            securityProfileInternalService.create(vitamContext, securityProfileDto);
+            securityProfileExternalService.create(vitamContext, securityProfileDto);
         }).isInstanceOf(InternalServerException.class);
     }
 
@@ -347,7 +347,7 @@ public class SecurityProfileInternalServiceTest {
         ).thenThrow(new InvalidParseOperationException("Exception thrown by vitam"));
 
         assertThatCode(() -> {
-            securityProfileInternalService.create(vitamContext, securityProfileDto);
+            securityProfileExternalService.create(vitamContext, securityProfileDto);
         }).isInstanceOf(InternalServerException.class);
     }
 
@@ -366,7 +366,7 @@ public class SecurityProfileInternalServiceTest {
         ).thenReturn(new RequestResponseOK().setHttpCode(200));
 
         assertThatCode(() -> {
-            securityProfileInternalService.patch(vitamContext, partialDto);
+            securityProfileExternalService.patch(vitamContext, partialDto);
         }).doesNotThrowAnyException();
     }
 
@@ -385,7 +385,7 @@ public class SecurityProfileInternalServiceTest {
         ).thenReturn(new RequestResponseOK().setHttpCode(400));
 
         assertThatCode(() -> {
-            securityProfileInternalService.patch(vitamContext, partialDto);
+            securityProfileExternalService.patch(vitamContext, partialDto);
         }).doesNotThrowAnyException();
     }
 
@@ -405,7 +405,7 @@ public class SecurityProfileInternalServiceTest {
         ).thenThrow(new VitamClientException("Exception thrown by vitam"));
 
         assertThatCode(() -> {
-            securityProfileInternalService.patch(vitamContext, partialDto);
+            securityProfileExternalService.patch(vitamContext, partialDto);
         }).isInstanceOf(InternalServerException.class);
     }
 
@@ -420,7 +420,7 @@ public class SecurityProfileInternalServiceTest {
         );
 
         assertThatCode(() -> {
-            securityProfileInternalService.delete(vitamContext, id);
+            securityProfileExternalService.delete(vitamContext, id);
         }).doesNotThrowAnyException();
     }
 
@@ -435,7 +435,7 @@ public class SecurityProfileInternalServiceTest {
         );
 
         assertThatCode(() -> {
-            securityProfileInternalService.delete(vitamContext, id);
+            securityProfileExternalService.delete(vitamContext, id);
         }).doesNotThrowAnyException();
     }
 
@@ -450,7 +450,7 @@ public class SecurityProfileInternalServiceTest {
         );
 
         assertThatCode(() -> {
-            securityProfileInternalService.delete(vitamContext, id);
+            securityProfileExternalService.delete(vitamContext, id);
         }).isInstanceOf(InternalServerException.class);
     }
 
@@ -465,7 +465,7 @@ public class SecurityProfileInternalServiceTest {
         );
 
         assertThatCode(() -> {
-            securityProfileInternalService.delete(vitamContext, id);
+            securityProfileExternalService.delete(vitamContext, id);
         }).isInstanceOf(InternalServerException.class);
     }
 
@@ -480,7 +480,7 @@ public class SecurityProfileInternalServiceTest {
         );
 
         assertThatCode(() -> {
-            securityProfileInternalService.delete(vitamContext, id);
+            securityProfileExternalService.delete(vitamContext, id);
         }).isInstanceOf(InternalServerException.class);
     }
 
@@ -495,7 +495,7 @@ public class SecurityProfileInternalServiceTest {
         );
 
         assertThatCode(() -> {
-            securityProfileInternalService.delete(vitamContext, id);
+            securityProfileExternalService.delete(vitamContext, id);
         }).isInstanceOf(InternalServerException.class);
     }
 
@@ -513,7 +513,7 @@ public class SecurityProfileInternalServiceTest {
         ).thenReturn(new RequestResponseOK<LogbookOperation>().setHttpCode(200));
 
         assertThatCode(() -> {
-            securityProfileInternalService.findHistoryByIdentifier(vitamContext, id);
+            securityProfileExternalService.findHistoryByIdentifier(vitamContext, id);
         }).doesNotThrowAnyException();
     }
 
@@ -531,7 +531,7 @@ public class SecurityProfileInternalServiceTest {
         ).thenReturn(new RequestResponseOK<LogbookOperation>().setHttpCode(400));
 
         assertThatCode(() -> {
-            securityProfileInternalService.findHistoryByIdentifier(vitamContext, id);
+            securityProfileExternalService.findHistoryByIdentifier(vitamContext, id);
         }).doesNotThrowAnyException();
     }
 
@@ -550,7 +550,7 @@ public class SecurityProfileInternalServiceTest {
         ).thenThrow(new VitamClientException("Exception thrown by vitam"));
 
         assertThatCode(() -> {
-            securityProfileInternalService.findHistoryByIdentifier(vitamContext, id);
+            securityProfileExternalService.findHistoryByIdentifier(vitamContext, id);
         }).isInstanceOf(VitamClientException.class);
     }
 }

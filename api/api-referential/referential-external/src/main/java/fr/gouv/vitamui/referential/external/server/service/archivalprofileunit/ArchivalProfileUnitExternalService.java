@@ -47,9 +47,9 @@ import java.util.Map;
 import java.util.Optional;
 
 @Service
-public class ArchivalProfileUnitInternalService extends AbstractService {
+public class ArchivalProfileUnitExternalService extends AbstractService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ArchivalProfileUnitInternalService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ArchivalProfileUnitExternalService.class);
 
     private ObjectMapper objectMapper;
 
@@ -60,7 +60,7 @@ public class ArchivalProfileUnitInternalService extends AbstractService {
     private VitamArchivalProfileUnitService vitamArchivalProfileUnitService;
 
     @Autowired
-    public ArchivalProfileUnitInternalService(
+    public ArchivalProfileUnitExternalService(
         ObjectMapper objectMapper,
         ArchivalProfileUnitConverter converter,
         LogbookService logbookService,

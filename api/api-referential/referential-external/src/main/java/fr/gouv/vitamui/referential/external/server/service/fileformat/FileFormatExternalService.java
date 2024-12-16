@@ -84,9 +84,9 @@ import java.util.Map;
 import java.util.Optional;
 
 @Service
-public class FileFormatInternalService extends AbstractService {
+public class FileFormatExternalService extends AbstractService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(FileFormatInternalService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(FileFormatExternalService.class);
 
     private ObjectMapper objectMapper;
 
@@ -97,7 +97,7 @@ public class FileFormatInternalService extends AbstractService {
     private VitamFileFormatService vitamFileFormatService;
 
     @Autowired
-    public FileFormatInternalService(
+    public FileFormatExternalService(
         ObjectMapper objectMapper,
         FileFormatConverter converter,
         LogbookService logbookService,

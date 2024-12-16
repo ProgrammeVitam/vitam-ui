@@ -47,9 +47,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class LogbookManagementOperationInternalService extends AbstractService {
+public class LogbookManagementOperationExternalService extends AbstractService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(LogbookManagementOperationInternalService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(LogbookManagementOperationExternalService.class);
     private static final String START_MAX_DATE = "30/12/2999";
     private static final String START_MIN_DATE = "01/01/1900";
 
@@ -58,7 +58,7 @@ public class LogbookManagementOperationInternalService extends AbstractService {
     private VitamOperationService vitamOperationService;
 
     @Autowired
-    public LogbookManagementOperationInternalService(
+    public LogbookManagementOperationExternalService(
         ObjectMapper objectMapper,
         VitamOperationService vitamOperationService,
         ExternalSecurityService externalSecurityService

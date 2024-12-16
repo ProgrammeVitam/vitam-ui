@@ -46,7 +46,7 @@ class OperationInternalServiceTest {
     private ExternalSecurityService externalSecurityService;
 
     @InjectMocks
-    private OperationInternalService operationInternalService;
+    private OperationExternalService operationExternalService;
 
     private AuditCreateOptions auditCreateOptions;
     private AuditOptions auditOptions;
@@ -56,7 +56,7 @@ class OperationInternalServiceTest {
         MockitoAnnotations.openMocks(this);
         objectMapper = new ObjectMapper();
         objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-        operationInternalService = new OperationInternalService(
+        operationExternalService = new OperationExternalService(
             operationService,
             logbookService,
             objectMapper,
@@ -82,7 +82,7 @@ class OperationInternalServiceTest {
         auditCreateOptions.setAuditPerimeter(AUDIT_PERIMETER_ORIGINATING_AGENCY);
         auditCreateOptions.setAuditActions(AUDIT_FILE_CONSISTENCY); // or AUDIT_FILE_RECTIFICATION
         // set unexpected threshold
-        assertThatCode(() -> operationInternalService.updateAuditDslQuery(auditCreateOptions, null, vitamContext))
+        assertThatCode(() -> operationExternalService.updateAuditDslQuery(auditCreateOptions, null, vitamContext))
             .isInstanceOf(BadRequestException.class)
             .hasMessageContaining("Invalid audit query");
 
@@ -91,13 +91,13 @@ class OperationInternalServiceTest {
         String AUDIT_FILE_EXISTING = "AUDIT_FILE_EXISTING";
         auditCreateOptions.setAuditActions(AUDIT_FILE_EXISTING); // or AUDIT_FILE_INTEGRITY
         // load query
-        assertThatCode(() -> operationInternalService.updateAuditDslQuery(auditCreateOptions, null, vitamContext))
+        assertThatCode(() -> operationExternalService.updateAuditDslQuery(auditCreateOptions, null, vitamContext))
             .isInstanceOf(BadRequestException.class)
             .hasMessageContaining("Invalid audit query");
 
         // check expected threshold
         assertThatCode(
-            () -> operationInternalService.updateAuditDslQuery(auditCreateOptions, Optional.empty(), vitamContext)
+            () -> operationExternalService.updateAuditDslQuery(auditCreateOptions, Optional.empty(), vitamContext)
         ).doesNotThrowAnyException();
     }
 
@@ -116,12 +116,12 @@ class OperationInternalServiceTest {
         auditCreateOptions.setAuditPerimeter(AUDIT_PERIMETER_ORIGINATING_AGENCY);
         String AUDIT_FILE_EXISTING = "AUDIT_FILE_EXISTING";
         auditCreateOptions.setAuditActions(AUDIT_FILE_EXISTING); // or AUDIT_FILE_INTEGRITY
-        auditOptions = operationInternalService.updateAuditDslQuery(auditCreateOptions, Optional.of(10L), vitamContext);
+        auditOptions = operationExternalService.updateAuditDslQuery(auditCreateOptions, Optional.of(10L), vitamContext);
         Assertions.assertFalse(containsAttribute(auditOptions.getQuery(), DSL_QUERY_PROJECTION));
 
         // check that dsl should include projection
         auditCreateOptions.setAuditActions(AUDIT_FILE_CONSISTENCY); // or AUDIT_FILE_RECTIFICATION
-        auditOptions = operationInternalService.updateAuditDslQuery(auditCreateOptions, Optional.of(10L), vitamContext);
+        auditOptions = operationExternalService.updateAuditDslQuery(auditCreateOptions, Optional.of(10L), vitamContext);
         Assertions.assertTrue(containsAttribute(auditOptions.getQuery(), DSL_QUERY_PROJECTION));
     }
 

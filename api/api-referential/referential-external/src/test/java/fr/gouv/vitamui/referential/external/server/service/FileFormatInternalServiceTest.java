@@ -55,7 +55,7 @@ import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import fr.gouv.vitamui.referential.common.dto.FileFormatDto;
 import fr.gouv.vitamui.referential.common.service.VitamFileFormatService;
 import fr.gouv.vitamui.referential.external.server.service.fileformat.FileFormatConverter;
-import fr.gouv.vitamui.referential.external.server.service.fileformat.FileFormatInternalService;
+import fr.gouv.vitamui.referential.external.server.service.fileformat.FileFormatExternalService;
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -92,14 +92,14 @@ public class FileFormatInternalServiceTest {
     private ExternalSecurityService externalSecurityService;
 
     @InjectMocks
-    private FileFormatInternalService fileFormatInternalService;
+    private FileFormatExternalService fileFormatExternalService;
 
     @BeforeEach
     public void setUp() {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
         FileFormatConverter converter = new FileFormatConverter();
-        fileFormatInternalService = new FileFormatInternalService(
+        fileFormatExternalService = new FileFormatExternalService(
             objectMapper,
             converter,
             logbookService,
@@ -118,7 +118,7 @@ public class FileFormatInternalServiceTest {
         );
 
         assertThatCode(() -> {
-            fileFormatInternalService.getOne(vitamContext, identifier);
+            fileFormatExternalService.getOne(vitamContext, identifier);
         }).doesNotThrowAnyException();
     }
 
@@ -132,7 +132,7 @@ public class FileFormatInternalServiceTest {
         );
 
         assertThatCode(() -> {
-            fileFormatInternalService.getOne(vitamContext, identifier);
+            fileFormatExternalService.getOne(vitamContext, identifier);
         }).doesNotThrowAnyException();
     }
 
@@ -147,7 +147,7 @@ public class FileFormatInternalServiceTest {
         );
 
         assertThatCode(() -> {
-            fileFormatInternalService.getOne(vitamContext, identifier);
+            fileFormatExternalService.getOne(vitamContext, identifier);
         }).isInstanceOf(InternalServerException.class);
     }
 
@@ -160,7 +160,7 @@ public class FileFormatInternalServiceTest {
         );
 
         assertThatCode(() -> {
-            fileFormatInternalService.getAll(vitamContext);
+            fileFormatExternalService.getAll(vitamContext);
         }).doesNotThrowAnyException();
     }
 
@@ -173,7 +173,7 @@ public class FileFormatInternalServiceTest {
         );
 
         assertThatCode(() -> {
-            fileFormatInternalService.getAll(vitamContext);
+            fileFormatExternalService.getAll(vitamContext);
         }).doesNotThrowAnyException();
     }
 
@@ -187,7 +187,7 @@ public class FileFormatInternalServiceTest {
         );
 
         assertThatCode(() -> {
-            fileFormatInternalService.getAll(vitamContext);
+            fileFormatExternalService.getAll(vitamContext);
         }).isInstanceOf(InternalServerException.class);
     }
 
@@ -201,7 +201,7 @@ public class FileFormatInternalServiceTest {
         ).thenReturn(true);
 
         assertThatCode(() -> {
-            fileFormatInternalService.check(vitamContext, accessContractDto);
+            fileFormatExternalService.check(vitamContext, accessContractDto);
         }).doesNotThrowAnyException();
     }
 
@@ -215,7 +215,7 @@ public class FileFormatInternalServiceTest {
         ).thenThrow(new ConflictException("Exception thrown by vitam"));
 
         assertThatCode(() -> {
-            fileFormatInternalService.check(vitamContext, accessContractDto);
+            fileFormatExternalService.check(vitamContext, accessContractDto);
         }).doesNotThrowAnyException();
     }
 
@@ -230,7 +230,7 @@ public class FileFormatInternalServiceTest {
         );
 
         assertThatCode(() -> {
-            fileFormatInternalService.create(vitamContext, accessContractDto);
+            fileFormatExternalService.create(vitamContext, accessContractDto);
         }).doesNotThrowAnyException();
     }
 
@@ -245,7 +245,7 @@ public class FileFormatInternalServiceTest {
         );
 
         assertThatCode(() -> {
-            fileFormatInternalService.create(vitamContext, accessContractDto);
+            fileFormatExternalService.create(vitamContext, accessContractDto);
         }).doesNotThrowAnyException();
     }
 
@@ -260,7 +260,7 @@ public class FileFormatInternalServiceTest {
         );
 
         assertThatCode(() -> {
-            fileFormatInternalService.create(vitamContext, accessContractDto);
+            fileFormatExternalService.create(vitamContext, accessContractDto);
         }).isInstanceOf(InternalServerException.class);
     }
 
@@ -275,7 +275,7 @@ public class FileFormatInternalServiceTest {
         );
 
         assertThatCode(() -> {
-            fileFormatInternalService.create(vitamContext, accessContractDto);
+            fileFormatExternalService.create(vitamContext, accessContractDto);
         }).isInstanceOf(InternalServerException.class);
     }
 
@@ -290,7 +290,7 @@ public class FileFormatInternalServiceTest {
         );
 
         assertThatCode(() -> {
-            fileFormatInternalService.create(vitamContext, accessContractDto);
+            fileFormatExternalService.create(vitamContext, accessContractDto);
         }).isInstanceOf(InternalServerException.class);
     }
 
@@ -305,7 +305,7 @@ public class FileFormatInternalServiceTest {
         );
 
         assertThatCode(() -> {
-            fileFormatInternalService.create(vitamContext, accessContractDto);
+            fileFormatExternalService.create(vitamContext, accessContractDto);
         }).isInstanceOf(InternalServerException.class);
     }
 
@@ -320,7 +320,7 @@ public class FileFormatInternalServiceTest {
         );
 
         assertThatCode(() -> {
-            fileFormatInternalService.create(vitamContext, accessContractDto);
+            fileFormatExternalService.create(vitamContext, accessContractDto);
         }).isInstanceOf(InternalServerException.class);
     }
 
@@ -352,7 +352,7 @@ public class FileFormatInternalServiceTest {
         ).thenReturn(new RequestResponseOK().setHttpCode(200));
 
         assertThatCode(() -> {
-            fileFormatInternalService.patch(vitamContext, partialDto);
+            fileFormatExternalService.patch(vitamContext, partialDto);
         }).doesNotThrowAnyException();
     }
 
@@ -384,7 +384,7 @@ public class FileFormatInternalServiceTest {
         ).thenReturn(new RequestResponseOK().setHttpCode(400));
 
         assertThatCode(() -> {
-            fileFormatInternalService.patch(vitamContext, partialDto);
+            fileFormatExternalService.patch(vitamContext, partialDto);
         }).doesNotThrowAnyException();
     }
 
@@ -416,7 +416,7 @@ public class FileFormatInternalServiceTest {
         ).thenThrow(new JAXBException("Exception thrown by vitam"));
 
         assertThatCode(() -> {
-            fileFormatInternalService.patch(vitamContext, partialDto);
+            fileFormatExternalService.patch(vitamContext, partialDto);
         }).isInstanceOf(InternalServerException.class);
     }
 
@@ -448,7 +448,7 @@ public class FileFormatInternalServiceTest {
         ).thenThrow(new AccessExternalClientException("Exception thrown by vitam"));
 
         assertThatCode(() -> {
-            fileFormatInternalService.patch(vitamContext, partialDto);
+            fileFormatExternalService.patch(vitamContext, partialDto);
         }).isInstanceOf(InternalServerException.class);
     }
 
@@ -480,7 +480,7 @@ public class FileFormatInternalServiceTest {
         ).thenThrow(new InvalidParseOperationException("Exception thrown by vitam"));
 
         assertThatCode(() -> {
-            fileFormatInternalService.patch(vitamContext, partialDto);
+            fileFormatExternalService.patch(vitamContext, partialDto);
         }).isInstanceOf(InternalServerException.class);
     }
 
@@ -512,7 +512,7 @@ public class FileFormatInternalServiceTest {
         ).thenThrow(new VitamClientException("Exception thrown by vitam"));
 
         assertThatCode(() -> {
-            fileFormatInternalService.patch(vitamContext, partialDto);
+            fileFormatExternalService.patch(vitamContext, partialDto);
         }).isInstanceOf(InternalServerException.class);
     }
 
@@ -544,7 +544,7 @@ public class FileFormatInternalServiceTest {
         ).thenThrow(new IOException("Exception thrown by vitam"));
 
         assertThatCode(() -> {
-            fileFormatInternalService.patch(vitamContext, partialDto);
+            fileFormatExternalService.patch(vitamContext, partialDto);
         }).isInstanceOf(InternalServerException.class);
     }
 
@@ -559,7 +559,7 @@ public class FileFormatInternalServiceTest {
         );
 
         assertThatCode(() -> {
-            fileFormatInternalService.delete(vitamContext, id);
+            fileFormatExternalService.delete(vitamContext, id);
         }).doesNotThrowAnyException();
     }
 
@@ -574,7 +574,7 @@ public class FileFormatInternalServiceTest {
         );
 
         assertThatCode(() -> {
-            fileFormatInternalService.delete(vitamContext, id);
+            fileFormatExternalService.delete(vitamContext, id);
         }).doesNotThrowAnyException();
     }
 
@@ -589,7 +589,7 @@ public class FileFormatInternalServiceTest {
         );
 
         assertThatCode(() -> {
-            fileFormatInternalService.delete(vitamContext, id);
+            fileFormatExternalService.delete(vitamContext, id);
         }).isInstanceOf(InternalServerException.class);
     }
 
@@ -604,7 +604,7 @@ public class FileFormatInternalServiceTest {
         );
 
         assertThatCode(() -> {
-            fileFormatInternalService.delete(vitamContext, id);
+            fileFormatExternalService.delete(vitamContext, id);
         }).isInstanceOf(InternalServerException.class);
     }
 
@@ -619,7 +619,7 @@ public class FileFormatInternalServiceTest {
         );
 
         assertThatCode(() -> {
-            fileFormatInternalService.delete(vitamContext, id);
+            fileFormatExternalService.delete(vitamContext, id);
         }).isInstanceOf(InternalServerException.class);
     }
 
@@ -634,7 +634,7 @@ public class FileFormatInternalServiceTest {
         );
 
         assertThatCode(() -> {
-            fileFormatInternalService.delete(vitamContext, id);
+            fileFormatExternalService.delete(vitamContext, id);
         }).isInstanceOf(InternalServerException.class);
     }
 
@@ -649,7 +649,7 @@ public class FileFormatInternalServiceTest {
         );
 
         assertThatCode(() -> {
-            fileFormatInternalService.delete(vitamContext, id);
+            fileFormatExternalService.delete(vitamContext, id);
         }).isInstanceOf(InternalServerException.class);
     }
 
@@ -667,7 +667,7 @@ public class FileFormatInternalServiceTest {
         ).thenReturn(new RequestResponseOK<LogbookOperation>().setHttpCode(200));
 
         assertThatCode(() -> {
-            fileFormatInternalService.findHistoryByIdentifier(vitamContext, id);
+            fileFormatExternalService.findHistoryByIdentifier(vitamContext, id);
         }).doesNotThrowAnyException();
     }
 
@@ -685,7 +685,7 @@ public class FileFormatInternalServiceTest {
         ).thenReturn(new RequestResponseOK<LogbookOperation>().setHttpCode(400));
 
         assertThatCode(() -> {
-            fileFormatInternalService.findHistoryByIdentifier(vitamContext, id);
+            fileFormatExternalService.findHistoryByIdentifier(vitamContext, id);
         }).doesNotThrowAnyException();
     }
 
@@ -704,7 +704,7 @@ public class FileFormatInternalServiceTest {
         ).thenThrow(new VitamClientException("Exception thrown by vitam"));
 
         assertThatCode(() -> {
-            fileFormatInternalService.findHistoryByIdentifier(vitamContext, id);
+            fileFormatExternalService.findHistoryByIdentifier(vitamContext, id);
         }).isInstanceOf(VitamClientException.class);
     }
 
@@ -734,7 +734,7 @@ public class FileFormatInternalServiceTest {
         ).thenReturn((RequestResponse) new RequestResponseOK<JsonNode>(jsonResponse));
 
         assertThatCode(() -> {
-            fileFormatInternalService.importFileFormats(vitamContext, file.getName(), multipartFile);
+            fileFormatExternalService.importFileFormats(vitamContext, file.getName(), multipartFile);
         }).doesNotThrowAnyException();
     }
 }

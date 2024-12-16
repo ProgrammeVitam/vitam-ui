@@ -37,7 +37,7 @@ import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.vitam.api.dto.ProcessDetailDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUIProcessDetailResponseDto;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
-import fr.gouv.vitamui.referential.external.server.service.logbookmanagement.LogbookManagementOperationInternalService;
+import fr.gouv.vitamui.referential.external.server.service.logbookmanagement.LogbookManagementOperationExternalService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.annotation.Secured;
@@ -53,10 +53,10 @@ public class LogbookManagementOperationExternalController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LogbookManagementOperationExternalController.class);
 
-    private final LogbookManagementOperationInternalService logbookManagementOperationExternalService;
+    private final LogbookManagementOperationExternalService logbookManagementOperationExternalService;
 
     public LogbookManagementOperationExternalController(
-        LogbookManagementOperationInternalService logbookManagementOperationExternalService
+        LogbookManagementOperationExternalService logbookManagementOperationExternalService
     ) {
         this.logbookManagementOperationExternalService = logbookManagementOperationExternalService;
     }

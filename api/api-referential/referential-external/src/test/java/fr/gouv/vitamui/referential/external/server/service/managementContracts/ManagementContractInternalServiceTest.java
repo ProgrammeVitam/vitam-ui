@@ -44,7 +44,7 @@ import fr.gouv.vitamui.commons.vitam.api.administration.ManagementContractServic
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import fr.gouv.vitamui.referential.common.service.VitamUIManagementContractService;
 import fr.gouv.vitamui.referential.external.server.service.managementcontract.converter.ManagementContractConverter;
-import fr.gouv.vitamui.referential.external.server.service.managementcontract.service.ManagementContractInternalService;
+import fr.gouv.vitamui.referential.external.server.service.managementcontract.service.ManagementContractExternalService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -72,14 +72,14 @@ public class ManagementContractInternalServiceTest {
     private ExternalSecurityService externalSecurityService;
 
     @InjectMocks
-    private ManagementContractInternalService managementContractInternalService;
+    private ManagementContractExternalService managementContractExternalService;
 
     @BeforeEach
     public void setUp() throws Exception {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
         ManagementContractConverter converter = new ManagementContractConverter();
-        managementContractInternalService = new ManagementContractInternalService(
+        managementContractExternalService = new ManagementContractExternalService(
             managementContractService,
             vitamUIManagementContractService,
             objectMapper,
@@ -98,7 +98,7 @@ public class ManagementContractInternalServiceTest {
         ).thenReturn(new RequestResponseOK<ManagementContractModel>().setHttpCode(200));
 
         assertThatCode(
-            () -> managementContractInternalService.getOne(vitamContext, identifier)
+            () -> managementContractExternalService.getOne(vitamContext, identifier)
         ).doesNotThrowAnyException();
     }
 
@@ -112,7 +112,7 @@ public class ManagementContractInternalServiceTest {
         ).thenReturn(new RequestResponseOK<ManagementContractModel>().setHttpCode(400));
 
         assertThatCode(
-            () -> managementContractInternalService.getOne(vitamContext, identifier)
+            () -> managementContractExternalService.getOne(vitamContext, identifier)
         ).doesNotThrowAnyException();
     }
 
@@ -126,7 +126,7 @@ public class ManagementContractInternalServiceTest {
             managementContractService.findManagementContractById(any(VitamContext.class), any(String.class))
         ).thenThrow(new VitamClientException("Exception thrown by vitam"));
 
-        assertThatCode(() -> managementContractInternalService.getOne(vitamContext, identifier)).isInstanceOf(
+        assertThatCode(() -> managementContractExternalService.getOne(vitamContext, identifier)).isInstanceOf(
             InternalServerException.class
         );
     }
@@ -139,7 +139,7 @@ public class ManagementContractInternalServiceTest {
             new RequestResponseOK<ManagementContractModel>().setHttpCode(400)
         );
 
-        assertThatCode(() -> managementContractInternalService.getAll(vitamContext)).doesNotThrowAnyException();
+        assertThatCode(() -> managementContractExternalService.getAll(vitamContext)).doesNotThrowAnyException();
     }
 
     @Test
@@ -151,7 +151,7 @@ public class ManagementContractInternalServiceTest {
         );
 
         assertThatCode(
-            () -> managementContractInternalService.findHistoryByIdentifier(vitamContext, identifier)
+            () -> managementContractExternalService.findHistoryByIdentifier(vitamContext, identifier)
         ).doesNotThrowAnyException();
     }
 
@@ -165,7 +165,7 @@ public class ManagementContractInternalServiceTest {
         );
 
         assertThatCode(
-            () -> managementContractInternalService.findAll(vitamContext, jsonQuery)
+            () -> managementContractExternalService.findAll(vitamContext, jsonQuery)
         ).doesNotThrowAnyException();
     }
 }

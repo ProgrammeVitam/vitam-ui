@@ -106,11 +106,11 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public class IngestContractInternalService extends AbstractService {
+public class IngestContractExternalService extends AbstractService {
 
     private static final String INGEST_CONTRACT = "INGEST_CONTRACT";
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(IngestContractInternalService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(IngestContractExternalService.class);
 
     private final IngestContractService ingestContractService;
 
@@ -125,7 +125,7 @@ public class IngestContractInternalService extends AbstractService {
     private final InternalSecurityService internalSecurityService;
 
     @Autowired
-    public IngestContractInternalService(
+    public IngestContractExternalService(
         IngestContractService ingestContractService,
         ObjectMapper objectMapper,
         IngestContractConverter converter,

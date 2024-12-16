@@ -49,7 +49,7 @@ import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.rest.util.RestUtils;
 import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsResponseDto;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
-import fr.gouv.vitamui.referential.external.server.service.accesscontract.AccessContractInternalService;
+import fr.gouv.vitamui.referential.external.server.service.accesscontract.AccessContractExternalService;
 import io.swagger.annotations.ApiOperation;
 import lombok.Getter;
 import lombok.Setter;
@@ -88,7 +88,7 @@ public class AccessContractExternalController {
     private static final Logger LOGGER = LoggerFactory.getLogger(AccessContractExternalController.class);
 
     @Autowired
-    private AccessContractInternalService accessContractExternalService;
+    private AccessContractExternalService accessContractExternalService;
 
     @GetMapping
     @Secured(ServicesData.ROLE_GET_ACCESS_CONTRACTS)

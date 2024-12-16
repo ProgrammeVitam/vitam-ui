@@ -60,7 +60,7 @@ import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import fr.gouv.vitamui.referential.common.dto.OntologyDto;
 import fr.gouv.vitamui.referential.common.service.OntologyService;
 import fr.gouv.vitamui.referential.external.server.service.ontology.OntologyConverter;
-import fr.gouv.vitamui.referential.external.server.service.ontology.OntologyInternalService;
+import fr.gouv.vitamui.referential.external.server.service.ontology.OntologyExternalService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -94,13 +94,13 @@ public class OntologyInternalServiceTest {
     private ExternalSecurityService externalSecurityService;
 
     @InjectMocks
-    private OntologyInternalService ontologyInternalService;
+    private OntologyExternalService ontologyExternalService;
 
     @BeforeEach
     public void setUp() {
         ObjectMapper objectMapper = new ObjectMapper().disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
         OntologyConverter converter = new OntologyConverter();
-        ontologyInternalService = new OntologyInternalService(
+        ontologyExternalService = new OntologyExternalService(
             ontologyService,
             objectMapper,
             converter,
@@ -118,7 +118,7 @@ public class OntologyInternalServiceTest {
             new RequestResponseOK<OntologyModel>().setHttpCode(200)
         );
 
-        assertThatCode(() -> ontologyInternalService.getOne(vitamContext, identifier)).doesNotThrowAnyException();
+        assertThatCode(() -> ontologyExternalService.getOne(vitamContext, identifier)).doesNotThrowAnyException();
     }
 
     @Test
@@ -130,7 +130,7 @@ public class OntologyInternalServiceTest {
             new RequestResponseOK<OntologyModel>().setHttpCode(400)
         );
 
-        assertThatCode(() -> ontologyInternalService.getOne(vitamContext, identifier)).doesNotThrowAnyException();
+        assertThatCode(() -> ontologyExternalService.getOne(vitamContext, identifier)).doesNotThrowAnyException();
     }
 
     @Test
@@ -143,7 +143,7 @@ public class OntologyInternalServiceTest {
             new VitamClientException("Exception thrown by vitam")
         );
 
-        assertThatCode(() -> ontologyInternalService.getOne(vitamContext, identifier)).isInstanceOf(
+        assertThatCode(() -> ontologyExternalService.getOne(vitamContext, identifier)).isInstanceOf(
             InternalServerException.class
         );
     }
@@ -156,7 +156,7 @@ public class OntologyInternalServiceTest {
             new RequestResponseOK<OntologyModel>().setHttpCode(200)
         );
 
-        assertThatCode(() -> ontologyInternalService.getAll(vitamContext)).doesNotThrowAnyException();
+        assertThatCode(() -> ontologyExternalService.getAll(vitamContext)).doesNotThrowAnyException();
     }
 
     @Test
@@ -167,7 +167,7 @@ public class OntologyInternalServiceTest {
             new RequestResponseOK<OntologyModel>().setHttpCode(400)
         );
 
-        assertThatCode(() -> ontologyInternalService.getAll(vitamContext)).doesNotThrowAnyException();
+        assertThatCode(() -> ontologyExternalService.getAll(vitamContext)).doesNotThrowAnyException();
     }
 
     @Test
@@ -179,7 +179,7 @@ public class OntologyInternalServiceTest {
             new VitamClientException("Exception thrown by vitam")
         );
 
-        assertThatCode(() -> ontologyInternalService.getAll(vitamContext)).isInstanceOf(InternalServerException.class);
+        assertThatCode(() -> ontologyExternalService.getAll(vitamContext)).isInstanceOf(InternalServerException.class);
     }
 
     @Test
@@ -191,7 +191,7 @@ public class OntologyInternalServiceTest {
             true
         );
 
-        assertThatCode(() -> ontologyInternalService.check(vitamContext, ontologyDto)).doesNotThrowAnyException();
+        assertThatCode(() -> ontologyExternalService.check(vitamContext, ontologyDto)).doesNotThrowAnyException();
     }
 
     @Test
@@ -203,7 +203,7 @@ public class OntologyInternalServiceTest {
             new BadRequestException("Exception thrown by vitam")
         );
 
-        assertThatCode(() -> ontologyInternalService.check(vitamContext, ontologyDto)).isInstanceOf(
+        assertThatCode(() -> ontologyExternalService.check(vitamContext, ontologyDto)).isInstanceOf(
             BadRequestException.class
         );
     }
@@ -217,7 +217,7 @@ public class OntologyInternalServiceTest {
             new UnavailableServiceException("Exception thrown by vitam")
         );
 
-        assertThatCode(() -> ontologyInternalService.check(vitamContext, ontologyDto)).isInstanceOf(
+        assertThatCode(() -> ontologyExternalService.check(vitamContext, ontologyDto)).isInstanceOf(
             UnavailableServiceException.class
         );
     }
@@ -231,7 +231,7 @@ public class OntologyInternalServiceTest {
             new ConflictException("Exception thrown by vitam")
         );
 
-        assertThatCode(() -> ontologyInternalService.check(vitamContext, ontologyDto)).doesNotThrowAnyException();
+        assertThatCode(() -> ontologyExternalService.check(vitamContext, ontologyDto)).doesNotThrowAnyException();
     }
 
     @Test
@@ -249,7 +249,7 @@ public class OntologyInternalServiceTest {
             new RequestResponseOK().setHttpCode(200)
         );
 
-        assertThatCode(() -> ontologyInternalService.create(vitamContext, ontologyDto)).doesNotThrowAnyException();
+        assertThatCode(() -> ontologyExternalService.create(vitamContext, ontologyDto)).doesNotThrowAnyException();
     }
 
     @Test
@@ -267,7 +267,7 @@ public class OntologyInternalServiceTest {
             new RequestResponseOK().setHttpCode(400)
         );
 
-        assertThatThrownBy(() -> ontologyInternalService.create(vitamContext, ontologyDto)).isInstanceOf(
+        assertThatThrownBy(() -> ontologyExternalService.create(vitamContext, ontologyDto)).isInstanceOf(
             BadRequestException.class
         );
     }
@@ -287,7 +287,7 @@ public class OntologyInternalServiceTest {
             new AccessExternalClientException("Exception thrown by vitam")
         );
 
-        assertThatCode(() -> ontologyInternalService.create(vitamContext, ontologyDto)).isInstanceOf(
+        assertThatCode(() -> ontologyExternalService.create(vitamContext, ontologyDto)).isInstanceOf(
             InternalServerException.class
         );
     }
@@ -307,7 +307,7 @@ public class OntologyInternalServiceTest {
             new IOException("Exception thrown by vitam")
         );
 
-        assertThatCode(() -> ontologyInternalService.create(vitamContext, ontologyDto)).isInstanceOf(
+        assertThatCode(() -> ontologyExternalService.create(vitamContext, ontologyDto)).isInstanceOf(
             InternalServerException.class
         );
     }
@@ -327,7 +327,7 @@ public class OntologyInternalServiceTest {
             new InvalidParseOperationException("Exception thrown by vitam")
         );
 
-        assertThatCode(() -> ontologyInternalService.create(vitamContext, ontologyDto)).isInstanceOf(
+        assertThatCode(() -> ontologyExternalService.create(vitamContext, ontologyDto)).isInstanceOf(
             InternalServerException.class
         );
     }
@@ -346,7 +346,7 @@ public class OntologyInternalServiceTest {
             new RequestResponseOK().setHttpCode(200)
         );
 
-        assertThatCode(() -> ontologyInternalService.delete(vitamContext, identifier)).doesNotThrowAnyException();
+        assertThatCode(() -> ontologyExternalService.delete(vitamContext, identifier)).doesNotThrowAnyException();
     }
 
     @Test
@@ -364,7 +364,7 @@ public class OntologyInternalServiceTest {
         );
 
         assertThatCode(() -> {
-            ontologyInternalService.delete(vitamContext, identifier);
+            ontologyExternalService.delete(vitamContext, identifier);
         }).isInstanceOf(BadRequestException.class);
     }
 
@@ -382,7 +382,7 @@ public class OntologyInternalServiceTest {
             new AccessExternalClientException("Exception throw by vitam")
         );
 
-        assertThatCode(() -> ontologyInternalService.delete(vitamContext, identifier)).isInstanceOf(
+        assertThatCode(() -> ontologyExternalService.delete(vitamContext, identifier)).isInstanceOf(
             InternalServerException.class
         );
     }
@@ -401,7 +401,7 @@ public class OntologyInternalServiceTest {
             new IOException("Exception throw by vitam")
         );
 
-        assertThatCode(() -> ontologyInternalService.delete(vitamContext, identifier)).isInstanceOf(
+        assertThatCode(() -> ontologyExternalService.delete(vitamContext, identifier)).isInstanceOf(
             InternalServerException.class
         );
     }
@@ -420,7 +420,7 @@ public class OntologyInternalServiceTest {
             new InvalidParseOperationException("Exception throw by vitam")
         );
 
-        assertThatCode(() -> ontologyInternalService.delete(vitamContext, identifier)).isInstanceOf(
+        assertThatCode(() -> ontologyExternalService.delete(vitamContext, identifier)).isInstanceOf(
             InternalServerException.class
         );
     }
@@ -439,7 +439,7 @@ public class OntologyInternalServiceTest {
             new RequestResponseOK().setHttpCode(200)
         );
 
-        assertThatCode(() -> ontologyInternalService.delete(vitamContext, identifier)).doesNotThrowAnyException();
+        assertThatCode(() -> ontologyExternalService.delete(vitamContext, identifier)).doesNotThrowAnyException();
     }
 
     @Test
@@ -456,7 +456,7 @@ public class OntologyInternalServiceTest {
             new RequestResponseOK().setHttpCode(400)
         );
 
-        assertThatCode(() -> ontologyInternalService.delete(vitamContext, identifier)).isInstanceOf(
+        assertThatCode(() -> ontologyExternalService.delete(vitamContext, identifier)).isInstanceOf(
             BadRequestException.class
         );
     }
@@ -475,7 +475,7 @@ public class OntologyInternalServiceTest {
             new AccessExternalClientException("Exception")
         );
 
-        assertThatCode(() -> ontologyInternalService.delete(vitamContext, identifier)).isInstanceOf(
+        assertThatCode(() -> ontologyExternalService.delete(vitamContext, identifier)).isInstanceOf(
             InternalServerException.class
         );
     }
@@ -494,7 +494,7 @@ public class OntologyInternalServiceTest {
             new IOException("Exception")
         );
 
-        assertThatCode(() -> ontologyInternalService.delete(vitamContext, identifier)).isInstanceOf(
+        assertThatCode(() -> ontologyExternalService.delete(vitamContext, identifier)).isInstanceOf(
             InternalServerException.class
         );
     }
@@ -513,7 +513,7 @@ public class OntologyInternalServiceTest {
             new InvalidParseOperationException("Exception")
         );
 
-        assertThatCode(() -> ontologyInternalService.delete(vitamContext, identifier)).isInstanceOf(
+        assertThatCode(() -> ontologyExternalService.delete(vitamContext, identifier)).isInstanceOf(
             InternalServerException.class
         );
     }
@@ -562,7 +562,7 @@ public class OntologyInternalServiceTest {
         when(ontologyService.importOntologies(any(VitamContext.class), captor.capture())).thenReturn(null);
 
         // Calling the method under test
-        OntologyDto patchedOntology = ontologyInternalService.patch(vitamContext, partialDto);
+        OntologyDto patchedOntology = ontologyExternalService.patch(vitamContext, partialDto);
 
         // Assertions
         List<OntologyModel> capturedOntologies = captor.getValue();
@@ -598,7 +598,7 @@ public class OntologyInternalServiceTest {
         );
 
         assertThatCode(
-            () -> ontologyInternalService.findHistoryByIdentifier(vitamContext, identifier)
+            () -> ontologyExternalService.findHistoryByIdentifier(vitamContext, identifier)
         ).doesNotThrowAnyException();
     }
 
@@ -612,7 +612,7 @@ public class OntologyInternalServiceTest {
         );
 
         assertThatCode(
-            () -> ontologyInternalService.findHistoryByIdentifier(vitamContext, identifier)
+            () -> ontologyExternalService.findHistoryByIdentifier(vitamContext, identifier)
         ).doesNotThrowAnyException();
     }
 
@@ -626,7 +626,7 @@ public class OntologyInternalServiceTest {
             new VitamClientException(("Exception throws by vitam"))
         );
 
-        assertThatCode(() -> ontologyInternalService.findHistoryByIdentifier(vitamContext, identifier)).isInstanceOf(
+        assertThatCode(() -> ontologyExternalService.findHistoryByIdentifier(vitamContext, identifier)).isInstanceOf(
             VitamClientException.class
         );
     }

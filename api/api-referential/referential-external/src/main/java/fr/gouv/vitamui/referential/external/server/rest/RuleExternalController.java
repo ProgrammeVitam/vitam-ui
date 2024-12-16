@@ -52,7 +52,7 @@ import fr.gouv.vitamui.commons.rest.dto.RuleDto;
 import fr.gouv.vitamui.commons.rest.util.RestUtils;
 import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsResponseDto;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
-import fr.gouv.vitamui.referential.external.server.service.rule.RuleInternalService;
+import fr.gouv.vitamui.referential.external.server.service.rule.RuleExternalService;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
@@ -90,12 +90,12 @@ public class RuleExternalController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RuleExternalController.class);
 
-    private RuleInternalService ruleExternalService;
+    private RuleExternalService ruleExternalService;
 
     private static final String IDENTIFIER_MANDATORY_MESSAGE = "The Identifier is a mandatory parameter: ";
 
     @Autowired
-    public RuleExternalController(final RuleInternalService ruleExternalService) {
+    public RuleExternalController(final RuleExternalService ruleExternalService) {
         this.ruleExternalService = ruleExternalService;
     }
 

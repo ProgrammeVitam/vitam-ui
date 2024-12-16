@@ -54,7 +54,7 @@ import fr.gouv.vitamui.commons.vitam.api.administration.AgencyService;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import fr.gouv.vitamui.referential.common.dsl.VitamQueryHelper;
 import fr.gouv.vitamui.referential.common.service.AccessionRegisterService;
-import fr.gouv.vitamui.referential.external.server.service.accessionregister.AccessionRegisterInternalService;
+import fr.gouv.vitamui.referential.external.server.service.accessionregister.AccessionRegisterExternalService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -77,7 +77,7 @@ import static org.mockito.Mockito.verify;
 class AccessionRegisterInternalServiceTest {
 
     @InjectMocks
-    AccessionRegisterInternalService accessionRegisterInternalService;
+    AccessionRegisterExternalService accessionRegisterExternalService;
 
     @Mock
     private AgencyService agencyService;
@@ -100,7 +100,7 @@ class AccessionRegisterInternalServiceTest {
     public void setUp() {
         MockitoAnnotations.openMocks(this);
         objectMapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        accessionRegisterInternalService = new AccessionRegisterInternalService(
+        accessionRegisterExternalService = new AccessionRegisterExternalService(
             objectMapper,
             adminExternalClient,
             agencyService,
@@ -135,7 +135,7 @@ class AccessionRegisterInternalServiceTest {
             .findAgencies(any(VitamContext.class), any(JsonNode.class));
 
         //When
-        accessionRegisterInternalService.getAllPaginated(Optional.empty(), pageNumber, size, null, null, vitamContext);
+        accessionRegisterExternalService.getAllPaginated(Optional.empty(), pageNumber, size, null, null, vitamContext);
 
         //Then
         verify(adminExternalClient, times(1)).findAccessionRegisterDetails(

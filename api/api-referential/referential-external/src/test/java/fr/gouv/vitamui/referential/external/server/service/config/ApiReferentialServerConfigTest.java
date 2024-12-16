@@ -43,9 +43,9 @@ import fr.gouv.vitam.ingest.external.client.IngestExternalClient;
 import fr.gouv.vitamui.commons.api.application.AbstractContextConfiguration;
 import fr.gouv.vitamui.commons.vitam.api.administration.AccessContractService;
 import fr.gouv.vitamui.commons.vitam.api.administration.AgencyService;
-import fr.gouv.vitamui.referential.external.server.service.accesscontract.AccessContractInternalService;
-import fr.gouv.vitamui.referential.external.server.service.agency.AgencyInternalService;
-import fr.gouv.vitamui.referential.external.server.service.logbookmanagement.LogbookManagementOperationInternalService;
+import fr.gouv.vitamui.referential.external.server.service.accesscontract.AccessContractExternalService;
+import fr.gouv.vitamui.referential.external.server.service.agency.AgencyExternalService;
+import fr.gouv.vitamui.referential.external.server.service.logbookmanagement.LogbookManagementOperationExternalService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,22 +74,22 @@ public class ApiReferentialServerConfigTest extends AbstractContextConfiguration
     private AccessExternalClientV2 accessExternalClientV2;
 
     @Autowired
-    private AccessContractInternalService accessContractInternalService;
+    private AccessContractExternalService accessContractExternalService;
 
     @MockBean
     private AccessContractService accessContractService;
 
     @Autowired
-    private AgencyInternalService agencyInternalService;
+    private AgencyExternalService agencyExternalService;
 
     @MockBean
     private AgencyService agencyService;
 
     @Autowired
-    private LogbookManagementOperationInternalService logbookManagementOperationInternalService;
+    private LogbookManagementOperationExternalService logbookManagementOperationExternalService;
 
     @Test
     public void testAgency() {
-        assertThat(agencyInternalService).isNotNull();
+        assertThat(agencyExternalService).isNotNull();
     }
 }

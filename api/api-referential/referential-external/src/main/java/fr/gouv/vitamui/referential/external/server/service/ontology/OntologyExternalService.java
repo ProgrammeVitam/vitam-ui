@@ -84,9 +84,9 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public class OntologyInternalService extends AbstractService {
+public class OntologyExternalService extends AbstractService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(OntologyInternalService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(OntologyExternalService.class);
 
     private OntologyService ontologyService;
 
@@ -100,7 +100,7 @@ public class OntologyInternalService extends AbstractService {
     private String internalOntologieFilePath;
 
     @Autowired
-    public OntologyInternalService(
+    public OntologyExternalService(
         OntologyService ontologyService,
         ObjectMapper objectMapper,
         OntologyConverter converter,

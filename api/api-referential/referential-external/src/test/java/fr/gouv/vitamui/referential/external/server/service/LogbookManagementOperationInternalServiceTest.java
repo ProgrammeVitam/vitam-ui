@@ -41,7 +41,7 @@ import fr.gouv.vitamui.commons.vitam.api.administration.VitamOperationService;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamSearchRequestDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUIProcessDetailResponseDto;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
-import fr.gouv.vitamui.referential.external.server.service.logbookmanagement.LogbookManagementOperationInternalService;
+import fr.gouv.vitamui.referential.external.server.service.logbookmanagement.LogbookManagementOperationExternalService;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -66,7 +66,7 @@ public class LogbookManagementOperationInternalServiceTest {
     private ExternalSecurityService externalSecurityService;
 
     @InjectMocks
-    private LogbookManagementOperationInternalService logbookManagementOperationInternalService;
+    private LogbookManagementOperationExternalService logbookManagementOperationExternalService;
 
     private DummyData dummyData;
 
@@ -75,7 +75,7 @@ public class LogbookManagementOperationInternalServiceTest {
         MockitoAnnotations.openMocks(this);
 
         dummyData = new DummyData();
-        logbookManagementOperationInternalService = new LogbookManagementOperationInternalService(
+        logbookManagementOperationExternalService = new LogbookManagementOperationExternalService(
             objectMapper,
             vitamOperationService,
             externalSecurityService
@@ -106,7 +106,7 @@ public class LogbookManagementOperationInternalServiceTest {
 
         //When //Then
         assertThatCode(() -> {
-            logbookManagementOperationInternalService.updateOperationActionProcess(
+            logbookManagementOperationExternalService.updateOperationActionProcess(
                 vitamContext,
                 replay.toString(),
                 operationId
@@ -132,7 +132,7 @@ public class LogbookManagementOperationInternalServiceTest {
 
         //When //Then
         assertThatCode(() -> {
-            logbookManagementOperationInternalService.updateOperationActionProcess(vitamContext, actionId, operationId);
+            logbookManagementOperationExternalService.updateOperationActionProcess(vitamContext, actionId, operationId);
         }).hasMessage("Cannot update  the operation, because the actionId given is not correct");
     }
 
@@ -149,7 +149,7 @@ public class LogbookManagementOperationInternalServiceTest {
 
         //When //Then
         assertThatCode(() -> {
-            logbookManagementOperationInternalService.cancelOperationProcessExecution(vitamContext, identifier);
+            logbookManagementOperationExternalService.cancelOperationProcessExecution(vitamContext, identifier);
         }).isInstanceOf(VitamClientException.class);
     }
 

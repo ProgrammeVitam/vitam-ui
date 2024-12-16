@@ -56,7 +56,7 @@ import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import fr.gouv.vitamui.referential.common.dto.ContextDto;
 import fr.gouv.vitamui.referential.common.service.VitamContextService;
 import fr.gouv.vitamui.referential.external.server.service.context.ContextConverter;
-import fr.gouv.vitamui.referential.external.server.service.context.ContextInternalService;
+import fr.gouv.vitamui.referential.external.server.service.context.ContextExternalService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -84,14 +84,14 @@ public class ContextInternalServiceTest {
     private ExternalSecurityService externalSecurityService;
 
     @InjectMocks
-    private ContextInternalService contextInternalService;
+    private ContextExternalService contextExternalService;
 
     @BeforeEach
     public void setUp() {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
         ContextConverter converter = new ContextConverter();
-        contextInternalService = new ContextInternalService(
+        contextExternalService = new ContextExternalService(
             vitamContextService,
             objectMapper,
             converter,
@@ -109,7 +109,7 @@ public class ContextInternalServiceTest {
             new RequestResponseOK<ContextModel>().setHttpCode(200)
         );
 
-        assertThatCode(() -> contextInternalService.getOne(vitamContext, identifier)).doesNotThrowAnyException();
+        assertThatCode(() -> contextExternalService.getOne(vitamContext, identifier)).doesNotThrowAnyException();
     }
 
     @Test
@@ -121,7 +121,7 @@ public class ContextInternalServiceTest {
             new RequestResponseOK<ContextModel>().setHttpCode(400)
         );
 
-        assertThatCode(() -> contextInternalService.getOne(vitamContext, identifier)).doesNotThrowAnyException();
+        assertThatCode(() -> contextExternalService.getOne(vitamContext, identifier)).doesNotThrowAnyException();
     }
 
     @Test
@@ -134,7 +134,7 @@ public class ContextInternalServiceTest {
             new VitamClientException("Exception thrown by vitam")
         );
 
-        assertThatCode(() -> contextInternalService.getOne(vitamContext, identifier)).isInstanceOf(
+        assertThatCode(() -> contextExternalService.getOne(vitamContext, identifier)).isInstanceOf(
             InternalServerException.class
         );
     }
@@ -147,7 +147,7 @@ public class ContextInternalServiceTest {
             new RequestResponseOK<ContextModel>().setHttpCode(200)
         );
 
-        assertThatCode(() -> contextInternalService.getAll(vitamContext)).doesNotThrowAnyException();
+        assertThatCode(() -> contextExternalService.getAll(vitamContext)).doesNotThrowAnyException();
     }
 
     @Test
@@ -158,7 +158,7 @@ public class ContextInternalServiceTest {
             new RequestResponseOK<ContextModel>().setHttpCode(400)
         );
 
-        assertThatCode(() -> contextInternalService.getAll(vitamContext)).doesNotThrowAnyException();
+        assertThatCode(() -> contextExternalService.getAll(vitamContext)).doesNotThrowAnyException();
     }
 
     @Test
@@ -170,7 +170,7 @@ public class ContextInternalServiceTest {
             new VitamClientException("Exception thrown by vitam")
         );
 
-        assertThatCode(() -> contextInternalService.getAll(vitamContext)).isInstanceOf(InternalServerException.class);
+        assertThatCode(() -> contextExternalService.getAll(vitamContext)).isInstanceOf(InternalServerException.class);
     }
 
     @Test
@@ -182,7 +182,7 @@ public class ContextInternalServiceTest {
             new RequestResponseOK<ContextModel>().setHttpCode(200)
         );
 
-        assertThatCode(() -> contextInternalService.findAll(vitamContext, query)).doesNotThrowAnyException();
+        assertThatCode(() -> contextExternalService.findAll(vitamContext, query)).doesNotThrowAnyException();
     }
 
     @Test
@@ -194,7 +194,7 @@ public class ContextInternalServiceTest {
             new RequestResponseOK<ContextModel>().setHttpCode(400)
         );
 
-        assertThatCode(() -> contextInternalService.findAll(vitamContext, query)).doesNotThrowAnyException();
+        assertThatCode(() -> contextExternalService.findAll(vitamContext, query)).doesNotThrowAnyException();
     }
 
     @Test
@@ -207,7 +207,7 @@ public class ContextInternalServiceTest {
             new VitamClientException("Exception throw by vitam")
         );
 
-        assertThatCode(() -> contextInternalService.findAll(vitamContext, query)).isInstanceOf(
+        assertThatCode(() -> contextExternalService.findAll(vitamContext, query)).isInstanceOf(
             InternalServerException.class
         );
     }
@@ -221,7 +221,7 @@ public class ContextInternalServiceTest {
             vitamContextService.checkAbilityToCreateContextInVitam(any(List.class), any(VitamContext.class))
         ).thenReturn(true);
 
-        assertThatCode(() -> contextInternalService.check(vitamContext, contextDto)).doesNotThrowAnyException();
+        assertThatCode(() -> contextExternalService.check(vitamContext, contextDto)).doesNotThrowAnyException();
     }
 
     @Test
@@ -233,7 +233,7 @@ public class ContextInternalServiceTest {
             vitamContextService.checkAbilityToCreateContextInVitam(any(List.class), any(VitamContext.class))
         ).thenThrow(new UnavailableServiceException("Exception throw by vitam"));
 
-        assertThatCode(() -> contextInternalService.check(vitamContext, contextDto)).isInstanceOf(
+        assertThatCode(() -> contextExternalService.check(vitamContext, contextDto)).isInstanceOf(
             InternalServerException.class
         );
     }
@@ -247,7 +247,7 @@ public class ContextInternalServiceTest {
             vitamContextService.checkAbilityToCreateContextInVitam(any(List.class), any(VitamContext.class))
         ).thenThrow(new ConflictException("Exception throw by vitam"));
 
-        assertThatCode(() -> contextInternalService.check(vitamContext, contextDto)).doesNotThrowAnyException();
+        assertThatCode(() -> contextExternalService.check(vitamContext, contextDto)).doesNotThrowAnyException();
     }
 
     @Test
@@ -260,7 +260,7 @@ public class ContextInternalServiceTest {
             new RequestResponseOK().setHttpCode(200)
         );
 
-        assertThatCode(() -> contextInternalService.create(vitamContext, contextDto)).doesNotThrowAnyException();
+        assertThatCode(() -> contextExternalService.create(vitamContext, contextDto)).doesNotThrowAnyException();
     }
 
     @Test
@@ -273,7 +273,7 @@ public class ContextInternalServiceTest {
             new AccessExternalClientException(("Exception throw by vitam"))
         );
 
-        assertThatCode(() -> contextInternalService.create(vitamContext, contextDto)).isInstanceOf(
+        assertThatCode(() -> contextExternalService.create(vitamContext, contextDto)).isInstanceOf(
             InternalServerException.class
         );
     }
@@ -288,7 +288,7 @@ public class ContextInternalServiceTest {
             new IOException(("Exception throw by vitam"))
         );
 
-        assertThatCode(() -> contextInternalService.create(vitamContext, contextDto)).isInstanceOf(
+        assertThatCode(() -> contextExternalService.create(vitamContext, contextDto)).isInstanceOf(
             InternalServerException.class
         );
     }
@@ -303,7 +303,7 @@ public class ContextInternalServiceTest {
             new InvalidParseOperationException(("Exception throw by vitam"))
         );
 
-        assertThatCode(() -> contextInternalService.create(vitamContext, contextDto)).isInstanceOf(
+        assertThatCode(() -> contextExternalService.create(vitamContext, contextDto)).isInstanceOf(
             InternalServerException.class
         );
     }
@@ -319,7 +319,7 @@ public class ContextInternalServiceTest {
             vitamContextService.patchContext(any(VitamContext.class), any(String.class), any(ObjectNode.class))
         ).thenReturn(new RequestResponseOK().setHttpCode(200));
 
-        assertThatCode(() -> contextInternalService.patch(vitamContext, partialDto)).doesNotThrowAnyException();
+        assertThatCode(() -> contextExternalService.patch(vitamContext, partialDto)).doesNotThrowAnyException();
     }
 
     @Test
@@ -333,7 +333,7 @@ public class ContextInternalServiceTest {
             vitamContextService.patchContext(any(VitamContext.class), any(String.class), any(ObjectNode.class))
         ).thenReturn(new RequestResponseOK().setHttpCode(400));
 
-        assertThatCode(() -> contextInternalService.patch(vitamContext, partialDto)).doesNotThrowAnyException();
+        assertThatCode(() -> contextExternalService.patch(vitamContext, partialDto)).doesNotThrowAnyException();
     }
 
     @Test
@@ -347,7 +347,7 @@ public class ContextInternalServiceTest {
             vitamContextService.patchContext(any(VitamContext.class), any(String.class), any(ObjectNode.class))
         ).thenThrow(new InvalidParseOperationException("Exception throw by vitam"));
 
-        assertThatCode(() -> contextInternalService.patch(vitamContext, partialDto)).isInstanceOf(
+        assertThatCode(() -> contextExternalService.patch(vitamContext, partialDto)).isInstanceOf(
             InternalServerException.class
         );
     }
@@ -363,7 +363,7 @@ public class ContextInternalServiceTest {
             vitamContextService.patchContext(any(VitamContext.class), any(String.class), any(ObjectNode.class))
         ).thenThrow(new AccessExternalClientException("Exception throw by vitam"));
 
-        assertThatCode(() -> contextInternalService.patch(vitamContext, partialDto)).isInstanceOf(
+        assertThatCode(() -> contextExternalService.patch(vitamContext, partialDto)).isInstanceOf(
             InternalServerException.class
         );
     }
@@ -382,7 +382,7 @@ public class ContextInternalServiceTest {
         ).thenReturn(new RequestResponseOK<LogbookOperation>().setHttpCode(200));
 
         assertThatCode(
-            () -> contextInternalService.findHistoryByIdentifier(vitamContext, id)
+            () -> contextExternalService.findHistoryByIdentifier(vitamContext, id)
         ).doesNotThrowAnyException();
     }
 
@@ -400,7 +400,7 @@ public class ContextInternalServiceTest {
         ).thenReturn(new RequestResponseOK<LogbookOperation>().setHttpCode(400));
 
         assertThatCode(
-            () -> contextInternalService.findHistoryByIdentifier(vitamContext, id)
+            () -> contextExternalService.findHistoryByIdentifier(vitamContext, id)
         ).doesNotThrowAnyException();
     }
 
@@ -418,7 +418,7 @@ public class ContextInternalServiceTest {
             )
         ).thenThrow(new VitamClientException("Exception"));
 
-        assertThatCode(() -> contextInternalService.findHistoryByIdentifier(vitamContext, id)).isInstanceOf(
+        assertThatCode(() -> contextExternalService.findHistoryByIdentifier(vitamContext, id)).isInstanceOf(
             VitamClientException.class
         );
     }

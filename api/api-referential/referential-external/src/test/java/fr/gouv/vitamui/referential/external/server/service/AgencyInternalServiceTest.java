@@ -57,7 +57,7 @@ import fr.gouv.vitamui.commons.vitam.api.administration.AgencyService;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import fr.gouv.vitamui.referential.common.dto.AgencyDto;
 import fr.gouv.vitamui.referential.common.service.VitamAgencyService;
-import fr.gouv.vitamui.referential.external.server.service.agency.AgencyInternalService;
+import fr.gouv.vitamui.referential.external.server.service.agency.AgencyExternalService;
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -94,12 +94,12 @@ public class AgencyInternalServiceTest {
     private ExternalSecurityService externalSecurityService;
 
     @InjectMocks
-    private AgencyInternalService agencyInternalService;
+    private AgencyExternalService agencyExternalService;
 
     @BeforeEach
     public void setUp() {
         ObjectMapper objectMapper = new ObjectMapper().disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-        agencyInternalService = new AgencyInternalService(
+        agencyExternalService = new AgencyExternalService(
             agencyService,
             objectMapper,
             logbookService,
@@ -117,7 +117,7 @@ public class AgencyInternalServiceTest {
             new RequestResponseOK<AgenciesModel>().setHttpCode(200)
         );
 
-        assertThatCode(() -> agencyInternalService.getOne(vitamContext, identifier)).doesNotThrowAnyException();
+        assertThatCode(() -> agencyExternalService.getOne(vitamContext, identifier)).doesNotThrowAnyException();
     }
 
     @Test
@@ -129,7 +129,7 @@ public class AgencyInternalServiceTest {
             new RequestResponseOK<AgenciesModel>().setHttpCode(400)
         );
 
-        assertThatCode(() -> agencyInternalService.getOne(vitamContext, identifier)).doesNotThrowAnyException();
+        assertThatCode(() -> agencyExternalService.getOne(vitamContext, identifier)).doesNotThrowAnyException();
     }
 
     @Test
@@ -142,7 +142,7 @@ public class AgencyInternalServiceTest {
             new VitamClientException("Exception thrown by vitam")
         );
 
-        assertThatCode(() -> agencyInternalService.getOne(vitamContext, identifier)).isInstanceOf(
+        assertThatCode(() -> agencyExternalService.getOne(vitamContext, identifier)).isInstanceOf(
             InternalServerException.class
         );
     }
@@ -155,7 +155,7 @@ public class AgencyInternalServiceTest {
             new RequestResponseOK<AgenciesModel>().setHttpCode(200)
         );
 
-        assertThatCode(() -> agencyInternalService.getAll(vitamContext)).doesNotThrowAnyException();
+        assertThatCode(() -> agencyExternalService.getAll(vitamContext)).doesNotThrowAnyException();
     }
 
     @Test
@@ -166,7 +166,7 @@ public class AgencyInternalServiceTest {
             new RequestResponseOK<AgenciesModel>().setHttpCode(400)
         );
 
-        assertThatCode(() -> agencyInternalService.getAll(vitamContext)).doesNotThrowAnyException();
+        assertThatCode(() -> agencyExternalService.getAll(vitamContext)).doesNotThrowAnyException();
     }
 
     @Test
@@ -178,7 +178,7 @@ public class AgencyInternalServiceTest {
             new VitamClientException("Exception thrown by vitam")
         );
 
-        assertThatCode(() -> agencyInternalService.getAll(vitamContext)).isInstanceOf(InternalServerException.class);
+        assertThatCode(() -> agencyExternalService.getAll(vitamContext)).isInstanceOf(InternalServerException.class);
     }
 
     @Test
@@ -192,7 +192,7 @@ public class AgencyInternalServiceTest {
             1
         );
 
-        assertThatCode(() -> agencyInternalService.check(vitamContext, agencyDto)).doesNotThrowAnyException();
+        assertThatCode(() -> agencyExternalService.check(vitamContext, agencyDto)).doesNotThrowAnyException();
     }
 
     @Test
@@ -206,7 +206,7 @@ public class AgencyInternalServiceTest {
             new ConflictException("Exception thrown by vitam")
         );
 
-        assertThatCode(() -> agencyInternalService.check(vitamContext, agencyDto)).doesNotThrowAnyException();
+        assertThatCode(() -> agencyExternalService.check(vitamContext, agencyDto)).doesNotThrowAnyException();
     }
 
     @Test
@@ -221,7 +221,7 @@ public class AgencyInternalServiceTest {
             new RequestResponseOK().setHttpCode(200)
         );
 
-        assertThatCode(() -> agencyInternalService.create(vitamContext, agencyDto)).doesNotThrowAnyException();
+        assertThatCode(() -> agencyExternalService.create(vitamContext, agencyDto)).doesNotThrowAnyException();
     }
 
     @Test
@@ -236,7 +236,7 @@ public class AgencyInternalServiceTest {
             new RequestResponseOK().setHttpCode(400)
         );
 
-        assertThatCode(() -> agencyInternalService.create(vitamContext, agencyDto)).doesNotThrowAnyException();
+        assertThatCode(() -> agencyExternalService.create(vitamContext, agencyDto)).doesNotThrowAnyException();
     }
 
     @Test
@@ -251,7 +251,7 @@ public class AgencyInternalServiceTest {
             new AccessExternalClientException("Exception thrown by vitam")
         );
 
-        assertThatCode(() -> agencyInternalService.create(vitamContext, agencyDto)).isInstanceOf(
+        assertThatCode(() -> agencyExternalService.create(vitamContext, agencyDto)).isInstanceOf(
             InternalServerException.class
         );
     }
@@ -268,7 +268,7 @@ public class AgencyInternalServiceTest {
             new InvalidParseOperationException("Exception thrown by vitam")
         );
 
-        assertThatCode(() -> agencyInternalService.create(vitamContext, agencyDto)).isInstanceOf(
+        assertThatCode(() -> agencyExternalService.create(vitamContext, agencyDto)).isInstanceOf(
             InternalServerException.class
         );
     }
@@ -285,7 +285,7 @@ public class AgencyInternalServiceTest {
             new VitamClientException("Exception thrown by vitam")
         );
 
-        assertThatCode(() -> agencyInternalService.create(vitamContext, agencyDto)).isInstanceOf(
+        assertThatCode(() -> agencyExternalService.create(vitamContext, agencyDto)).isInstanceOf(
             InternalServerException.class
         );
     }
@@ -302,7 +302,7 @@ public class AgencyInternalServiceTest {
             new IOException("Exception thrown by vitam")
         );
 
-        assertThatCode(() -> agencyInternalService.create(vitamContext, agencyDto)).isInstanceOf(
+        assertThatCode(() -> agencyExternalService.create(vitamContext, agencyDto)).isInstanceOf(
             InternalServerException.class
         );
     }
@@ -344,7 +344,7 @@ public class AgencyInternalServiceTest {
             new AccessExternalClientException("Exception thrown by vitam")
         );
 
-        assertThatCode(() -> agencyInternalService.delete(vitamContext, identifier)).isInstanceOf(
+        assertThatCode(() -> agencyExternalService.delete(vitamContext, identifier)).isInstanceOf(
             InternalServerException.class
         );
     }
@@ -360,7 +360,7 @@ public class AgencyInternalServiceTest {
             new InvalidParseOperationException("Exception thrown by vitam")
         );
 
-        assertThatCode(() -> agencyInternalService.delete(vitamContext, identifier)).isInstanceOf(
+        assertThatCode(() -> agencyExternalService.delete(vitamContext, identifier)).isInstanceOf(
             InternalServerException.class
         );
     }
@@ -376,7 +376,7 @@ public class AgencyInternalServiceTest {
             new VitamClientException("Exception thrown by vitam")
         );
 
-        assertThatCode(() -> agencyInternalService.delete(vitamContext, identifier)).isInstanceOf(
+        assertThatCode(() -> agencyExternalService.delete(vitamContext, identifier)).isInstanceOf(
             InternalServerException.class
         );
     }
@@ -392,7 +392,7 @@ public class AgencyInternalServiceTest {
             new IOException("Exception thrown by vitam")
         );
 
-        assertThatCode(() -> agencyInternalService.delete(vitamContext, identifier)).isInstanceOf(
+        assertThatCode(() -> agencyExternalService.delete(vitamContext, identifier)).isInstanceOf(
             InternalServerException.class
         );
     }
@@ -404,7 +404,7 @@ public class AgencyInternalServiceTest {
 
         when(vitamAgencyService.export(any(VitamContext.class))).thenReturn(Response.status(200).build());
 
-        assertThatCode(() -> agencyInternalService.export(vitamContext)).doesNotThrowAnyException();
+        assertThatCode(() -> agencyExternalService.export(vitamContext)).doesNotThrowAnyException();
     }
 
     @Test
@@ -414,7 +414,7 @@ public class AgencyInternalServiceTest {
 
         when(vitamAgencyService.export(any(VitamContext.class))).thenReturn(Response.status(400).build());
 
-        assertThatCode(() -> agencyInternalService.export(vitamContext)).doesNotThrowAnyException();
+        assertThatCode(() -> agencyExternalService.export(vitamContext)).doesNotThrowAnyException();
     }
 
     @Test
@@ -426,7 +426,7 @@ public class AgencyInternalServiceTest {
             new VitamClientException("Exception throxn by vitam")
         );
 
-        assertThatCode(() -> agencyInternalService.export(vitamContext)).isInstanceOf(InternalServerException.class);
+        assertThatCode(() -> agencyExternalService.export(vitamContext)).isInstanceOf(InternalServerException.class);
     }
 
     @Test
@@ -438,7 +438,7 @@ public class AgencyInternalServiceTest {
             new InvalidCreateOperationException("Exception throxn by vitam")
         );
 
-        assertThatCode(() -> agencyInternalService.export(vitamContext)).isInstanceOf(InternalServerException.class);
+        assertThatCode(() -> agencyExternalService.export(vitamContext)).isInstanceOf(InternalServerException.class);
     }
 
     @Test
@@ -450,7 +450,7 @@ public class AgencyInternalServiceTest {
             new InvalidParseOperationException("Exception throxn by vitam")
         );
 
-        assertThatCode(() -> agencyInternalService.export(vitamContext)).isInstanceOf(InternalServerException.class);
+        assertThatCode(() -> agencyExternalService.export(vitamContext)).isInstanceOf(InternalServerException.class);
     }
 
     @Test
@@ -463,7 +463,7 @@ public class AgencyInternalServiceTest {
         );
 
         assertThatCode(
-            () -> agencyInternalService.findHistoryByIdentifier(vitamContext, id)
+            () -> agencyExternalService.findHistoryByIdentifier(vitamContext, id)
         ).doesNotThrowAnyException();
     }
 
@@ -477,7 +477,7 @@ public class AgencyInternalServiceTest {
         );
 
         assertThatCode(
-            () -> agencyInternalService.findHistoryByIdentifier(vitamContext, id)
+            () -> agencyExternalService.findHistoryByIdentifier(vitamContext, id)
         ).doesNotThrowAnyException();
     }
 
@@ -491,7 +491,7 @@ public class AgencyInternalServiceTest {
             new VitamClientException("Exception thrown by vitam")
         );
 
-        assertThatCode(() -> agencyInternalService.findHistoryByIdentifier(vitamContext, id)).isInstanceOf(
+        assertThatCode(() -> agencyExternalService.findHistoryByIdentifier(vitamContext, id)).isInstanceOf(
             VitamClientException.class
         );
     }
@@ -518,7 +518,7 @@ public class AgencyInternalServiceTest {
         ).thenReturn((RequestResponse) new RequestResponseOK<JsonNode>(jsonResponse));
 
         assertThatCode(
-            () -> agencyInternalService.importAgencies(vitamContext, file.getName(), multipartFile)
+            () -> agencyExternalService.importAgencies(vitamContext, file.getName(), multipartFile)
         ).doesNotThrowAnyException();
     }
 }

@@ -47,7 +47,7 @@ import fr.gouv.vitamui.commons.rest.util.RestUtils;
 import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsResponseDto;
 import fr.gouv.vitamui.referential.common.dto.IngestContractDto;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
-import fr.gouv.vitamui.referential.external.server.service.ingestcontract.IngestContractInternalService;
+import fr.gouv.vitamui.referential.external.server.service.ingestcontract.IngestContractExternalService;
 import io.swagger.annotations.ApiOperation;
 import lombok.Getter;
 import lombok.Setter;
@@ -87,7 +87,7 @@ public class IngestContractExternalController {
     private static final Logger LOGGER = LoggerFactory.getLogger(IngestContractExternalController.class);
 
     @Autowired
-    private IngestContractInternalService ingestContractExternalService;
+    private IngestContractExternalService ingestContractExternalService;
 
     @GetMapping
     @Secured(ServicesData.ROLE_GET_INGEST_CONTRACTS)

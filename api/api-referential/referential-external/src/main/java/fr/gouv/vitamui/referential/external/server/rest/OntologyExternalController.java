@@ -52,7 +52,7 @@ import fr.gouv.vitamui.commons.rest.util.RestUtils;
 import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsResponseDto;
 import fr.gouv.vitamui.referential.common.dto.OntologyDto;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
-import fr.gouv.vitamui.referential.external.server.service.ontology.OntologyInternalService;
+import fr.gouv.vitamui.referential.external.server.service.ontology.OntologyExternalService;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
@@ -91,10 +91,10 @@ public class OntologyExternalController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(OntologyExternalController.class);
 
-    private OntologyInternalService ontologyExternalService;
+    private OntologyExternalService ontologyExternalService;
 
     @Autowired
-    public OntologyExternalController(OntologyInternalService ontologyExternalService) {
+    public OntologyExternalController(OntologyExternalService ontologyExternalService) {
         this.ontologyExternalService = ontologyExternalService;
     }
 

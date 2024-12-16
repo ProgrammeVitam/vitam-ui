@@ -33,7 +33,7 @@ import fr.gouv.vitamui.commons.api.domain.IdDto;
 import fr.gouv.vitamui.commons.api.dtos.VitamUiOntologyDto;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
-import fr.gouv.vitamui.referential.external.server.service.ontology.OntologyInternalService;
+import fr.gouv.vitamui.referential.external.server.service.ontology.OntologyExternalService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -54,7 +54,7 @@ import java.util.List;
 class OntologyExternalControllerTest extends ApiReferentialControllerTest<IdDto> {
 
     @MockBean
-    private OntologyInternalService ontologyExternalService;
+    private OntologyExternalService ontologyExternalService;
 
     private OntologyExternalController ontologyExternalController;
 

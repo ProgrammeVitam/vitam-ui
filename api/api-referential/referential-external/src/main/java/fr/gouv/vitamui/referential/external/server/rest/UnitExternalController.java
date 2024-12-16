@@ -46,7 +46,7 @@ import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
-import fr.gouv.vitamui.referential.external.server.service.unit.UnitInternalService;
+import fr.gouv.vitamui.referential.external.server.service.unit.UnitExtternalService;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,7 +67,7 @@ import java.util.Optional;
 public class UnitExternalController {
 
     @Autowired
-    private UnitInternalService unitExternalService;
+    private UnitExtternalService unitExternalService;
 
     @GetMapping(CommonConstants.PATH_ID)
     @Secured(ServicesData.ROLE_GET_UNITS)
