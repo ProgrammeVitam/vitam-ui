@@ -71,7 +71,7 @@ export const agencyTemplate: DisplayRule[] = [
       Path: 'Identification.Identifier',
       component: 'textfield',
       open: true,
-      display: true,
+      display: false,
       layout: {
         columns: 1,
         size: 'medium',
@@ -85,7 +85,7 @@ export const agencyTemplate: DisplayRule[] = [
       Path: 'Identification.Name',
       component: 'textfield',
       open: true,
-      display: true,
+      display: false,
       layout: {
         columns: 1,
         size: 'medium',
