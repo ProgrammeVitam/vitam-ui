@@ -29,7 +29,7 @@
     "ONTOLOGY_SUBTITLE": "Importing an ontology repository",
     "ONTOLOGY_FORMAT_JSON": "The import file must be in json format",
     "SCHEMA_SUBTITLE": "Importing vocabulary(ies) into a schema",
-    "SCHEMA_FORMAT_JSON": "The import file must be in csv format, encoded in UTF8, with semicolon separator",
+    "SCHEMA_FORMAT_CSV": "The import file must be in csv format, encoded in UTF8, with semicolon separator",
     "IMPORT": "Import",
     "DRAG_DROP": "Drag / Drop or ",
     "CHOOSE_FILE": "click to browse",

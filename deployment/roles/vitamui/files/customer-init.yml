@@ -359,6 +359,14 @@ customer-init:
         - ROLE_UPDATE_MANAGEMENT_CONTRACT
         - ROLE_DELETE_MANAGEMENT_CONTRACT
 
+    - name: Profil pour la consultation des ontologies et gestion des schémas
+      description: Consultation des ontologies et gestion des schémas
+      app-name: ONTOLOGY_APP
+      level:
+      roles:
+        - ROLE_GET_ONTOLOGIES
+        - ROLE_IMPORT_ONTOLOGY
+
 
   # Other Default profiles for admin group
   admin-profiles:

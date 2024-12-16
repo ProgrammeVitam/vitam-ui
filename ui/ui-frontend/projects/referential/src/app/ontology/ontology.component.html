@@ -9,14 +9,14 @@
         <h5>{{ 'ONTOLOGY.HOME.TITLE' | translate }}</h5>
       </vitamui-common-title-breadcrumb>
       <vitamui-common-banner [searchbarPlaceholder]="'ONTOLOGY.HOME.SEARCH_PLACEHOLDER' | translate" (search)="onSearchSubmit($event)">
-        <button class="btn primary ml-3 mr-3" (click)="openCreateOntologyDialog()">
+        <button class="btn primary ml-3 mr-3" [disabled]="(canCreateVocabulary$ | async) === false" (click)="openCreateOntologyDialog()">
           <span>{{ 'ONTOLOGY.HOME.CREATE_VOCABULARY' | translate }}</span>
         </button>
         <vitamui-common-menu-button [overlayPos]="'end'" [icon]="'vitamui-icon-more-horiz'" [disabled]="false">
-          <button mat-menu-item [disabled]="(checkImportSchema | async) !== false" (click)="openSchemaImportDialog()">
+          <button mat-menu-item [disabled]="(canImportSchema$ | async) !== false" (click)="openSchemaImportDialog()">
             {{ 'ONTOLOGY.HOME.IMPORT_SCHEMA' | translate }}
           </button>
-          <button mat-menu-item [disabled]="(checkImportOntology | async) !== false" (click)="openOntologyImportDialog()">
+          <button mat-menu-item [disabled]="(canImportOntology$ | async) !== false" (click)="openOntologyImportDialog()">
             {{ 'ONTOLOGY.HOME.IMPORT_ONTOLOGY' | translate }}
           </button>
         </vitamui-common-menu-button>
