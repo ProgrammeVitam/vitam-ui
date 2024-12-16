@@ -34,33 +34,13 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { SecurityService } from 'vitamui-library';
-import { inject } from '@angular/core';
-import { CanActivateFn, Router } from '@angular/router';
-import { ApplicationId, Role, TenantSelectionService } from 'vitamui-library';
+export const ROUTES = {
+  ACCESS_DENIED: '/agency/tenant',
+  AGENCY_DETAILS: (tenantId: number, agencyId: string) => `/agency/tenant/${tenantId}/agencies/${agencyId}`,
+};
 
-export const EditAgencyGuard: CanActivateFn = (route, _state) => {
-  const securityService: SecurityService = inject(SecurityService);
-  const tenantSelectionService: TenantSelectionService = inject(TenantSelectionService);
-  const router: Router = inject(Router);
-  const tenantIdentifier: number = route.params['tenantIdentifier'] || tenantSelectionService.getSelectedTenant()?.identifier;
-  const agencyIdentifier = route.params['agencyIdentifier'];
-
-  if (!tenantIdentifier) console.error('No tenant selected');
-  if (!agencyIdentifier) console.error('No agency selected');
-
-  if (!tenantIdentifier || !agencyIdentifier) {
-    router.navigateByUrl('/agency/tenant');
-    return false;
-  }
-
-  const hasPermission = securityService.hasRole(ApplicationId.AGENCIES_APP, tenantIdentifier, Role.ROLE_UPDATE_AGENCIES);
-
-  if (!hasPermission) {
-    const redirectUrl = `/agency/tenant/${tenantIdentifier}/agencies/${agencyIdentifier}`;
-    router.navigateByUrl(redirectUrl);
-    return false;
-  }
-
-  return true;
+export const ERROR_MESSAGES = {
+  MISSING_TENANT: 'Missing tenant identifier',
+  MISSING_AGENCY: 'Missing agency identifier',
+  PERMISSION_CHECK: 'Error checking permissions',
 };
