@@ -1,6 +1,7 @@
 package fr.gouv.vitamui.referential.external.server.service;
 
 import fr.gouv.vitam.common.client.VitamContext;
+import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 
 public class AbstractService {
@@ -12,6 +13,9 @@ public class AbstractService {
     }
 
     protected VitamContext buildVitamContext() {
-        return externalSecurityService.getVitamContext();
+        VitamContext vitamContext = externalSecurityService.getVitamContext();
+        ExternalHttpContext externalHttpContext = externalSecurityService.getHttpContext();
+        vitamContext.setAccessContract(externalHttpContext.getAccessContract());
+        return vitamContext;
     }
 }
