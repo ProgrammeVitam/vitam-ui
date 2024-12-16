@@ -34,13 +34,12 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpHeaders } from '@angular/common/http';
+
 import { Inject, Injectable, LOCALE_ID } from '@angular/core';
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
-import { Observable, of, switchMap } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { catchError, map, shareReplay, tap } from 'rxjs/operators';
-import { AccessContractService, FileType, UnitType } from '../../../app/modules';
-import { Unit } from '../../../app/modules';
+import { FileType, Unit, UnitType } from '../../../app/modules';
 import { SearchUnitApiService } from '../../api/search-unit-api.service';
 import { DescriptionLevel } from '../../models/description-level.enum';
 import { Node } from '../../models/node.interface';
@@ -67,7 +66,6 @@ export class FilingPlanService {
 
   constructor(
     private searchUnitApi: SearchUnitApiService,
-    private accessContractService: AccessContractService,
     @Inject(LOCALE_ID) private locale: string,
   ) {}
 
@@ -75,16 +73,13 @@ export class FilingPlanService {
     return this._pending > 0;
   }
 
-  public loadTree(tenantIdentifier: number, idPrefix: string): Observable<Node[]> {
+  public loadTreeFromDataSource(units: Unit[], idPrefix: string): Node[] {
+    return this.getNestedChildren(units, idPrefix);
+  }
+
+  public loadTree(idPrefix: string): Observable<Node[]> {
     this._pending++;
-    return this.accessContractService.currentAccessContractId$.pipe(
-      map((accessContractId) => {
-        return new HttpHeaders({
-          'X-Tenant-Id': tenantIdentifier.toString(),
-          'X-Access-Contract-Id': accessContractId,
-        });
-      }),
-      switchMap((headers) => this.searchUnitApi.getFilingPlan(headers)),
+    return this.searchUnitApi.getFilingPlan().pipe(
       catchError(() => of({ $hits: null, $results: [] })),
       map((response) => response.$results),
       tap(() => this._pending--),

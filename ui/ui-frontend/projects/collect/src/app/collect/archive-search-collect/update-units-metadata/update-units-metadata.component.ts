@@ -97,7 +97,7 @@ export class UpdateUnitsMetadataComponent implements OnDestroy {
     });
 
     this.subscriptions = this.archiveCollectService
-      .updateUnitsAMetadata(this.data.tenantIdentifier, this.fileToUpload, this.fileToUpload.name, this.data.selectedTransaction.id)
+      .updateUnitsMetadata(this.fileToUpload, this.fileToUpload.name, this.data.selectedTransaction.id)
       .subscribe(
         (data) => {
           this.isLoadingData = false;

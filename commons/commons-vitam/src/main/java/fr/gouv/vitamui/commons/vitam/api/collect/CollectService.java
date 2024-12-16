@@ -34,6 +34,7 @@ import fr.gouv.vitam.collect.common.dto.CriteriaProjectDto;
 import fr.gouv.vitam.collect.common.dto.ProjectDto;
 import fr.gouv.vitam.collect.common.dto.TransactionDto;
 import fr.gouv.vitam.collect.external.client.CollectExternalClient;
+import fr.gouv.vitam.common.CharsetUtils;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.model.RequestResponse;
@@ -228,10 +229,17 @@ public class CollectService {
     public RequestResponse uploadProjectZip(
         final VitamContext vitamContext,
         final String transactionId,
+        final String attachmentId,
         final InputStream inputStream
     ) throws VitamClientException {
         LOGGER.debug("upload zip by transaction id : {}", transactionId);
-        final RequestResponse result = collectExternalClient.uploadProjectZip(vitamContext, transactionId, inputStream);
+        final RequestResponse result = collectExternalClient.uploadZipToTransaction(
+            vitamContext,
+            transactionId,
+            inputStream,
+            CharsetUtils.UTF_8,
+            attachmentId
+        );
         VitamRestUtils.checkResponse(result);
         return result;
     }

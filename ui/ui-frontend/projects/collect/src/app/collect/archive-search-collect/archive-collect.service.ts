@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpErrorResponse, HttpHeaders, HttpResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpEvent, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Inject, Injectable, LOCALE_ID } from '@angular/core';
 import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
 import { saveAs } from 'file-saver-es';
@@ -211,6 +211,10 @@ export class ArchiveCollectService extends SearchService<any> implements SearchA
     return this.projectsApiService.getById(projectId);
   }
 
+  uploadZip(content: Blob, transactionId: string, attachmentId?: string): Observable<HttpEvent<any>> {
+    return this.projectsApiService.uploadZip(content, transactionId, `${transactionId}.zip`, attachmentId);
+  }
+
   exportCsvSearchArchiveUnitsByCriteria(criteriaDto: SearchCriteriaDto, projectId: string) {
     const headers = new HttpHeaders().append('Content-Type', 'application/json');
 
@@ -290,13 +294,12 @@ export class ArchiveCollectService extends SearchService<any> implements SearchA
 
   // update metadata CSV file
 
-  updateUnitsAMetadata(tenantIdentifier: string, csvFile: Blob, fileName: string, transactionId: string): Observable<string> {
+  updateUnitsMetadata(csvFile: Blob, fileName: string, transactionId: string): Observable<string> {
     let headers = new HttpHeaders();
-    headers = headers.append('X-Tenant-Id', tenantIdentifier);
     headers = headers.append('Content-Type', 'application/octet-stream');
     headers = headers.append('X-Original-Filename', fileName);
 
-    return this.transactionApiService.updateUnitsAMetadata(transactionId, csvFile, headers);
+    return this.transactionApiService.updateUnitsMetadata(transactionId, csvFile, headers);
   }
 
   getExternalOntologiesList(): Observable<IOntology[]> {

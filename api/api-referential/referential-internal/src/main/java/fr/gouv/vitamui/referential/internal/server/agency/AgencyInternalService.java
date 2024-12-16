@@ -68,7 +68,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.ws.rs.core.Response;
 import java.io.IOException;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -107,7 +107,7 @@ public class AgencyInternalService {
                 requestResponse.toJsonNode(),
                 AgencyResponseDto.class
             );
-            if (agencyResponseDto.getResults().size() == 0) {
+            if (agencyResponseDto.getResults().isEmpty()) {
                 return null;
             } else {
                 return AgencyConverter.convertVitamToDto(agencyResponseDto.getResults().get(0));
@@ -171,12 +171,7 @@ public class AgencyInternalService {
         try {
             requestResponse = agencyService.findAgencies(vitamContext, query);
 
-            final AgencyResponseDto agencyResponseDto = objectMapper.treeToValue(
-                requestResponse.toJsonNode(),
-                AgencyResponseDto.class
-            );
-
-            return agencyResponseDto;
+            return objectMapper.treeToValue(requestResponse.toJsonNode(), AgencyResponseDto.class);
         } catch (VitamClientException | JsonProcessingException e) {
             throw new InternalServerException("Unable to find agencies", e);
         }
@@ -185,7 +180,7 @@ public class AgencyInternalService {
     public Boolean check(VitamContext vitamContext, AgencyDto agencyDto) {
         try {
             Integer agencyCheckedTenant = vitamAgencyService.checkAbilityToCreateAgencyInVitam(
-                AgencyConverter.convertDtosToVitams(Arrays.asList(agencyDto)),
+                AgencyConverter.convertDtosToVitams(Collections.singletonList(agencyDto)),
                 vitamContext.getApplicationSessionId()
             );
             return !vitamContext.getTenantId().equals(agencyCheckedTenant);

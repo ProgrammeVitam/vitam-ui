@@ -1,5 +1,11 @@
 {
   "COLLECT": {
+    "ADD_UNITS": {
+      "ACTION_TITLE": "Ajouter des unités archivistiques",
+      "TITLE": "Ajouter des unités archivistiques au projet de versement ",
+      "UPLOAD_FILES_TITLE": "Chargement des répertoires et documents à verser",
+      "ATTACHMENT_POSITION_TITLE": "Position de rattachement"
+    },
     "UPDATE_UNITS_METADATA": {
       "ACTION_UPDATE": "Mettre à jour les métadonnées",
       "ACTION_TITLE": "Mise à jour des métadonnées des archives",
@@ -131,7 +137,6 @@
       }
     }
   },
-
   "ACQUISITION_INFORMATION": {
     "PAYMENT": "Versement",
     "PROTOCOL": "Protocole",

@@ -146,16 +146,18 @@ public class ProjectInternalController {
     public void streamingUpload(
         InputStream inputStream,
         @RequestHeader(value = CommonConstants.X_TRANSACTION_ID_HEADER) final String transactionId,
+        @RequestHeader(value = CommonConstants.X_ATTACHMENT_ID_HEADER, required = false) final String attachmentId,
         @RequestHeader(value = CommonConstants.X_ORIGINAL_FILENAME_HEADER) final String originalFileName
     ) throws InvalidParseOperationException {
         ParameterChecker.checkParameter("The transaction ID is a mandatory parameter: ", transactionId);
         SanityChecker.isValidFileName(originalFileName);
         SafeFileChecker.checkSafeFilePath(originalFileName);
-        SanityChecker.checkSecureParameter(transactionId);
+        SanityChecker.checkSecureParameter(transactionId, attachmentId);
         LOGGER.debug("[Internal] upload collect zip file : {}", originalFileName);
         projectInternalService.streamingUpload(
             inputStream,
             transactionId,
+            attachmentId,
             originalFileName,
             externalParametersService.buildVitamContextFromExternalParam()
         );

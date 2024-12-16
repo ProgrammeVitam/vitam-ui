@@ -78,6 +78,7 @@ import { ArchiveFacetsService } from './archive-search-criteria/services/archive
 import { ArchiveSearchHelperService } from './archive-search-criteria/services/archive-search-helper.service';
 import { ArchiveSharedDataService } from './archive-search-criteria/services/archive-shared-data.service';
 import { UpdateUnitsMetadataComponent } from './update-units-metadata/update-units-metadata.component';
+import { AddUnitsComponent } from './add-units/add-units.component';
 
 const PAGE_SIZE = 10;
 const ELIMINATION_TECHNICAL_ID = 'ELIMINATION_TECHNICAL_ID';
@@ -108,7 +109,6 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
   subscriptionNodes: Subscription;
   searchCriteriaChangeSubscription: Subscription;
   subscriptions: Subscription = new Subscription();
-  uaMetadataUpdateDialogSub: Subscription;
 
   transaction: Transaction;
   projectId: string;
@@ -271,6 +271,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
   }
 
   public ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
     this.accessContractSub?.unsubscribe();
     this.accessContractSubscription?.unsubscribe();
     this.subscriptionSimpleSearchCriteriaAdd?.unsubscribe();
@@ -278,9 +279,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
     this.subscriptionNodes?.unsubscribe();
     this.errorMessageSub?.unsubscribe();
     this.searchCriteriaChangeSubscription?.unsubscribe();
-    this.subscriptions?.unsubscribe();
     this.transactionSubscription?.unsubscribe();
-    this.uaMetadataUpdateDialogSub?.unsubscribe();
   }
 
   public ngOnInit(): void {
@@ -1051,9 +1050,8 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
   }
 
   // Udpate archive units metadata
-
   openUpdateUnitsForm() {
-    const dialogRef = this.dialog.open(UpdateUnitsMetadataComponent, {
+    const updateUnitsMetadataDialog = this.dialog.open(UpdateUnitsMetadataComponent, {
       panelClass: 'vitamui-modal',
       disableClose: true,
       data: {
@@ -1062,11 +1060,24 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
       },
     });
 
-    this.uaMetadataUpdateDialogSub = dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        return;
-      }
+    this.subscriptions.add(updateUnitsMetadataDialog.afterClosed().subscribe());
+  }
+
+  openAddUnitsForm() {
+    const addUnitsDialog = this.dialog.open(AddUnitsComponent, {
+      panelClass: 'vitamui-modal',
+      disableClose: true,
+      data: {
+        transaction: this.transaction,
+      },
     });
+    this.subscriptions.add(
+      addUnitsDialog.afterClosed().subscribe((filesUploaded) => {
+        if (filesUploaded) {
+          this.submit();
+        }
+      }),
+    );
   }
 
   updateUnitsMetadataDisabled(): boolean {

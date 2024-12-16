@@ -93,7 +93,7 @@ export class TransactionApiService extends BaseHttpClient<Transaction> {
   }
 
   // Manage units metadata
-  updateUnitsAMetadata(transactionId: string, file: Blob, headers: HttpHeaders): Observable<string> {
+  updateUnitsMetadata(transactionId: string, file: Blob, headers: HttpHeaders): Observable<string> {
     return this.http.put(`${this.apiUrl}/${transactionId}/update-units-metadata`, file, {
       responseType: 'text',
       headers,

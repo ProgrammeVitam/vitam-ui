@@ -140,6 +140,7 @@ export * from './theme.service';
 export * from './utils/index';
 export * from './vitamui-common.module';
 export * from './vitamui-global-error-handler';
+export * from './vitamui-http-headers.enum';
 export * from './vitamui-icons.enum';
 export * from './vitamui-roles.enum';
 export * from './vitamui-table/index';

@@ -44,7 +44,7 @@ import {
 } from '@angular/material/legacy-dialog';
 import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
 import { TranslateService } from '@ngx-translate/core';
-import { Observable, throwError } from 'rxjs';
+import { finalize, Observable, throwError } from 'rxjs';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import {
   FilingPlanMode,
@@ -83,7 +83,7 @@ export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewCheck
   FilingPlanMode = FilingPlanMode;
   FlowType = FlowType;
   // http calls
-  pending: boolean;
+  isLoading: boolean;
 
   selectedWorkflow: Workflow = Workflow.MANUAL;
   selectedFlowType: FlowType = FlowType.FIX;
@@ -96,7 +96,6 @@ export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewCheck
   hasError = false;
   uploadFiles$: Observable<CollectUploadFile[]>;
   zippedFile$: Observable<CollectZippedUploadFile>;
-  tenantIdentifier: number;
   ontologies: IOntology[];
 
   acquisitionInformationsList = [
@@ -145,7 +144,6 @@ export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewCheck
   }
 
   ngOnInit(): void {
-    this.tenantIdentifier = this.data.tenantIdentifier;
     this.initForm();
     this.uploadFiles$ = this.uploadService.getUploadingFiles();
     this.zippedFile$ = this.uploadService.getZipFile();
@@ -221,8 +219,7 @@ export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewCheck
   async handleFile(event: any) {
     event.preventDefault();
     const items: FileList = event.target.files;
-    const exists = this.uploadService.directoryExistInZipFile(items, false);
-    if (exists) {
+    if (this.uploadService.directoryExistInZipFile(items, false)) {
       this.snackBar.open(this.translationService.instant('COLLECT.UPLOAD_FILE_ALREADY_IMPORTED'), null, { duration: 3000 });
       return;
     }
@@ -357,30 +354,31 @@ export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewCheck
   }
 
   private createProject() {
-    this.pending = true;
+    this.isLoading = true;
     const project: Project = this.formToProject();
     this.moveToNextStep();
-    this.projectsService.create(project).subscribe(
-      (_result) => {
-        this.pending = false;
-        this.snackBar.open(this.translationService.instant('COLLECT.MODAL.PROJECT_CREATED'), null, {
-          panelClass: 'vitamui-snack-bar',
-          duration: 10000,
-        });
-      },
-      (_error) => {
-        this.pending = false;
-        this.snackBar.open(this.translationService.instant('COLLECT.MODAL.PROJECT_CREATION_ERROR'), null, {
-          panelClass: 'vitamui-snack-bar',
-          duration: 10000,
-        });
-      },
-    );
+    this.projectsService
+      .create(project)
+      .pipe(finalize(() => (this.isLoading = false)))
+      .subscribe({
+        next: (_result) => {
+          this.snackBar.open(this.translationService.instant('COLLECT.MODAL.PROJECT_CREATED'), null, {
+            panelClass: 'vitamui-snack-bar',
+            duration: 10000,
+          });
+        },
+        error: (_error) => {
+          this.snackBar.open(this.translationService.instant('COLLECT.MODAL.PROJECT_CREATION_ERROR'), null, {
+            panelClass: 'vitamui-snack-bar',
+            duration: 10000,
+          });
+        },
+      });
   }
 
   private createProjectAndTransactionAndUpload() {
     this.uploadZipCompleted = false;
-    this.pending = true;
+    this.isLoading = true;
     const project: Project = this.formToProject();
     this.moveToNextStep();
 
@@ -397,11 +395,11 @@ export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewCheck
         ),
         switchMap((transaction) => this.transactionsService.create(transaction)),
         map((createTransactionResponse) => createTransactionResponse.id as string),
-        switchMap((createTransactionId) => this.uploadService.uploadZip(this.tenantIdentifier, createTransactionId)),
+        switchMap((createTransactionId) => this.uploadService.uploadZip(createTransactionId)),
         switchMap((uploadOperation) => uploadOperation),
         tap(() => {
           this.uploadZipCompleted = true;
-          this.pending = false;
+          this.isLoading = false;
           this.snackBar.open(this.translationService.instant('COLLECT.UPLOAD.TERMINATED'), null, {
             panelClass: 'vitamui-snack-bar',
             duration: 10000,

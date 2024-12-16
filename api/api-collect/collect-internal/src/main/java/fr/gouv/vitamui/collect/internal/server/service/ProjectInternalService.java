@@ -207,13 +207,14 @@ public class ProjectInternalService {
     public void streamingUpload(
         InputStream inputStream,
         String transactionId,
+        String attachmentId,
         String originalFileName,
         VitamContext vitamContext
     ) {
         LOGGER.debug("TransactionId: {}", transactionId);
         LOGGER.debug("OriginalFileName: {}", originalFileName);
         try {
-            collectService.uploadProjectZip(vitamContext, transactionId, inputStream);
+            collectService.uploadProjectZip(vitamContext, transactionId, attachmentId, inputStream);
         } catch (VitamClientException e) {
             LOGGER.debug(UNABLE_TO_UPLOAD_PROJECT_ZIP_FILE, e);
             throw new InternalServerException(UNABLE_TO_UPLOAD_PROJECT_ZIP_FILE, e);

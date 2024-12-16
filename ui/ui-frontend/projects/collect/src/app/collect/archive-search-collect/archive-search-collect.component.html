@@ -77,6 +77,9 @@
             >
               {{ 'COLLECT.UPDATE_UNITS_METADATA.ACTION_UPDATE' | translate }}
             </button>
+            <button mat-menu-item (click)="openAddUnitsForm()">
+              {{ 'COLLECT.ADD_UNITS.ACTION_TITLE' | translate }}
+            </button>
             <button
               mat-menu-item
               (click)="validateTransaction()"

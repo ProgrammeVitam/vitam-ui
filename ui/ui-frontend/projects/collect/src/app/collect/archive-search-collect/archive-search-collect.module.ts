@@ -46,7 +46,7 @@ import { MatLegacySelectModule as MatSelectModule } from '@angular/material/lega
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatLegacyTabsModule as MatTabsModule } from '@angular/material/legacy-tabs';
 import { MatTreeModule } from '@angular/material/tree';
-import { VitamUICommonModule } from 'vitamui-library';
+import { VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 import { ArchiveUnitDescriptionTabComponent } from './archive-preview/archive-unit-description-tab/archive-unit-description-tab.component';
 import { ArchivePreviewComponent } from './archive-preview/archive-preview.component';
 import { ArchiveUnitInformationTabComponent } from './archive-preview/archive-unit-information-tab/archive-unit-information-tab.component';
@@ -78,6 +78,8 @@ import { StorageRuleSearchComponent } from './archive-search-criteria/components
 import { TitleAndDescriptionCriteriaSearchCollectComponent } from './archive-search-criteria/components/title-and-description-criteria-search-collect/title-and-description-criteria-search-collect.component';
 import { UpdateUnitsMetadataComponent } from './update-units-metadata/update-units-metadata.component';
 import { VitamUISnackBarModule } from '../shared/vitamui-snack-bar/vitamui-snack-bar.module';
+import { AddUnitsComponent } from './add-units/add-units.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -95,6 +97,8 @@ import { VitamUISnackBarModule } from '../shared/vitamui-snack-bar/vitamui-snack
     ConfirmActionModule,
     MatTreeModule,
     VitamUISnackBarModule,
+    VitamUILibraryModule,
+    TranslateModule,
   ],
   declarations: [
     AccessRuleSearchComponent,
@@ -126,6 +130,7 @@ import { VitamUISnackBarModule } from '../shared/vitamui-snack-bar/vitamui-snack
     StorageRuleSearchComponent,
     TitleAndDescriptionCriteriaSearchCollectComponent,
     UpdateUnitsMetadataComponent,
+    AddUnitsComponent,
   ],
 })
 export class ArchiveSearchCollectModule {}

@@ -1,5 +1,11 @@
 {
   "COLLECT": {
+    "ADD_UNITS": {
+      "ACTION_TITLE": "Add archival units",
+      "TITLE": "Add archival units to the upload project",
+      "UPLOAD_FILES_TITLE": "Load directories and documents to upload",
+      "ATTACHMENT_POSITION_TITLE": "Attachment position"
+    },
     "UPDATE_UNITS_METADATA": {
       "ACTION_UPDATE": "Update metadata",
       "ACTION_TITLE": "Update Archive Metadata",
