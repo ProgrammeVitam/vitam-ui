@@ -78,8 +78,6 @@ export class RuleListComponent extends InfiniteScrollTable<Rule> implements OnDe
     ruleType: this.ruleTypes.map((value) => value.label),
   };
 
-  private _filters: string;
-
   ruleMeasurements = RULE_MEASUREMENTS;
 
   @Output() ruleClick = new EventEmitter<Rule>();
@@ -144,8 +142,8 @@ export class RuleListComponent extends InfiniteScrollTable<Rule> implements OnDe
       criteria.RuleId = this._searchText;
     }
 
-    if (this._filters?.length > 0) {
-      criteria.RuleType = this._filters;
+    if (this.filterMap.ruleType.length > 0) {
+      criteria.RuleType = this.filterMap.ruleType;
     }
 
     return criteria;
@@ -200,10 +198,8 @@ export class RuleListComponent extends InfiniteScrollTable<Rule> implements OnDe
       });
   }
 
-  onFilterChange(key: string, values: string[]) {
+  onFilterChange(key: string, values: any[]) {
     this.filterMap[key] = values;
-    // TODO: remplacer les checkbox par des radio button ou gérer plusieurs ruleTypes?
-    this._filters = values[0];
     this.filterChange.next(this.filterMap);
   }
 }
