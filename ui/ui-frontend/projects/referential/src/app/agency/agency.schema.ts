@@ -276,7 +276,7 @@ export const schema: ProfiledSchemaElement[] = [
     id: null,
     Path: 'Functions',
     StringSize: 'SHORT',
-    Cardinality: 'ONE',
+    Cardinality: 'MANY',
     FieldName: 'Functions',
     ShortName: 'AGENCY.LABEL.FUNCTIONS',
     Description: 'AGENCY.LABEL.FUNCTIONS',
