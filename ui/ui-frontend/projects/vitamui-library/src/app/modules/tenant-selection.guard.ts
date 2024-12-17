@@ -59,7 +59,6 @@ export class TenantSelectionGuard {
   ) {}
 
   canActivate(route: ActivatedRouteSnapshot): boolean {
-    console.log({ route });
     if (route.params.tenantIdentifier) {
       return true;
     } else if (this.tenantSelectionService.getSelectedTenant()) {

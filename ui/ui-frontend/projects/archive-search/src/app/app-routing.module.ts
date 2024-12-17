@@ -38,18 +38,15 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { QuicklinkStrategy } from 'ngx-quicklink';
 import { AccountComponent, ActiveTenantGuard, AnalyticsResolver, AppGuard, AuthGuard } from 'vitamui-library';
-// import { AppComponent } from './app.component';
+import { AppComponent } from './app.component';
 
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'archive-search',
-    pathMatch: 'full',
+    component: AppComponent,
+    canActivate: [AuthGuard, AppGuard],
+    resolve: { userAnalytics: AnalyticsResolver },
     data: { appId: 'PORTAL_APP' },
-    // component: AppComponent,
-    // // canActivate: [AuthGuard, AppGuard],
-    // resolve: { userAnalytics: AnalyticsResolver },
-    // data: { appId: 'PORTAL_APP' },
   },
   {
     path: 'account',
@@ -61,7 +58,7 @@ const routes: Routes = [
   {
     path: 'archive-search',
     loadChildren: () => import('./archive/archive.module').then((m) => m.ArchiveModule),
-    // canActivate: [AuthGuard, AppGuard],
+    canActivate: [AuthGuard, AppGuard],
     resolve: { userAnalytics: AnalyticsResolver },
     data: { appId: 'ARCHIVE_SEARCH_MANAGEMENT_APP' },
   },
@@ -73,7 +70,6 @@ const routes: Routes = [
   imports: [
     RouterModule.forRoot(routes, {
       preloadingStrategy: QuicklinkStrategy,
-      useHash: true,
     }),
   ],
   exports: [RouterModule],
