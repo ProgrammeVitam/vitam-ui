@@ -4,7 +4,7 @@ Requires=docker.service
 After=docker.service
 
 [Service]
-ExecStartPre=-/usr/bin/docker pull {{ container_repository.registry_url }}/vitamui/{{ vitamui_struct.vitamui_component }}:latest
+ExecStartPre=-/usr/bin/docker pull {{ container_repository.registry_url }}/vitamui/{{ vitamui_struct.vitamui_component }}:{{ vitamui_container_version | default('latest') }}
 ExecStart=/usr/bin/docker run --rm --network host --name {{ vitamui_struct.vitamui_component }} --user {{ getent_passwd[vitamui_defaults.users.vitamui | default('vitamui')].1 }}:{{ getent_passwd[vitamui_defaults.users.vitamui | default('vitamui')].2 }} \
                               -e "JAVA_TOOL_OPTIONS={{ vitamui_struct.jvm_opts.gc | default(jvm_opts.gc) }} -XX:MaxRAMPercentage=75.0 -XX:MinRAMPercentage=50.0 -XX:+ExitOnOutOfMemoryError -Dlogback.configurationFile={{ vitamui_folder_conf }}/logback.xml -Dvitam.config.folder={{ vitamui_folder_conf }} -Dvitam.data.folder={{ vitamui_folder_data }} -Dvitam.tmp.folder={{ vitamui_folder_tmp }} -Dvitam.log.folder={{ vitamui_folder_log }} -Djava.security.properties={{ vitamui_folder_conf }}/java.security -XX:+HeapDumpOnOutOfMemoryError -Djava.net.preferIPv4Stack=true -Djava.net.preferIPv4Addresses=true -XX:HeapDumpPath={{ vitamui_folder_log }}" \
                               -e "SPRING_CONFIG_ADDITIONAL_LOCATION={{ vitamui_folder_conf }}/application.yml" \
@@ -15,7 +15,7 @@ ExecStart=/usr/bin/docker run --rm --network host --name {{ vitamui_struct.vitam
                               -v "{{ vitamui_folder_tmp }}:{{ vitamui_folder_tmp }}:rw" \
                               -v "{{ vitamui_folder_lib }}:{{ vitamui_folder_lib }}:rw" \
                               -v "/vitamui/conf/assets:/vitamui/conf/assets:rw" \
-                              {{ container_repository.registry_url }}/vitamui/{{ vitamui_struct.vitamui_component }}:latest
+                              {{ container_repository.registry_url }}/vitamui/{{ vitamui_struct.vitamui_component }}:{{ vitamui_container_version | default('latest') }}
 
 ExecStop=/usr/bin/docker stop -t 85 {{ vitamui_struct.vitamui_component }}
 ExecReload=/usr/bin/docker restart -t 85 {{ vitamui_struct.vitamui_component }}
