@@ -18,7 +18,9 @@
 
   <mat-sidenav-content>
     <div class="vitamui-heading">
-      <vitamui-common-title-breadcrumb>{{ 'COLLECT.APP_BREADCRUMB' | translate }}</vitamui-common-title-breadcrumb>
+      <vitamui-common-title-breadcrumb>
+        <h5>{{ 'COLLECT.APP_BREADCRUMB' | translate }}</h5>
+      </vitamui-common-title-breadcrumb>
       <vitamui-common-banner (search)="onSearch($event)" [searchbarPlaceholder]="'COLLECT.SEARCH_PLACEHOLDER' | translate">
         <button class="btn primary" (click)="openCreateProjectDialog()">
           <span>{{ 'COLLECT.CREATE_PROJECT' | translate }}</span>

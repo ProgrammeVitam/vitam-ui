@@ -27,7 +27,10 @@
 
 <div class="vitamui-heading">
   <vitamui-common-title-breadcrumb [data]="breadcrumbData">
-    {{ 'AGENCY.HOME.TITLE' | translate }}
+    <h5>{{ 'AGENCY.HOME.TITLE' | translate }}</h5>
+    @if (agency) {
+      <span class="sub-title">{{ agency.identifier }} - {{ agency.name }}</span>
+    }
   </vitamui-common-title-breadcrumb>
   @if (editObject) {
     <vitamui-common-object-editor [editObject]="editObject"></vitamui-common-object-editor>

@@ -37,6 +37,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { DisplayRule } from './display-rule.model';
+import { DisplayObject } from './display-object.model';
 
 @Injectable()
 export abstract class DisplayObjectService {
@@ -45,4 +46,8 @@ export abstract class DisplayObjectService {
   public abstract setData(data: any): void;
   public abstract setTemplate(template: DisplayRule[]): void;
   public abstract setMode(mode: string): void;
+
+  public afterCompute?(displayObject: DisplayObject): DisplayObject {
+    return displayObject;
+  }
 }

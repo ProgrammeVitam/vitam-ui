@@ -64,13 +64,7 @@ import { MatLegacyDialog as MatDialog, MatLegacyDialogModule, MatLegacyDialogRef
 @Component({
   selector: 'app-edit-agency',
   templateUrl: 'edit-agency.component.html',
-  styles: `
-    vitamui-common-editor-banner {
-      width: 320%;
-      translate: -35%;
-      padding-left: 112%;
-    }
-  `,
+  styleUrls: ['edit-agency.component.scss'],
   imports: [
     CommonModule,
     RouterModule,
@@ -92,7 +86,7 @@ export class EditAgencyComponent implements OnInit, OnDestroy {
 
   protected readonly template = agencyTemplate;
 
-  private agency: Agency;
+  agency: Agency;
   breadcrumbData: BreadCrumbData[] = [{ identifier: ApplicationId.PORTAL_APP }, { identifier: ApplicationId.AGENCIES_APP }];
   editObject: EditObject;
 
