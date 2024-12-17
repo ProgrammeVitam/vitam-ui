@@ -118,6 +118,7 @@ export class ArchivePreviewComponent implements OnChanges, OnInit, AfterViewInit
         break;
       case 1:
       case 2:
+      case 3:
         this.isPanelextended = true;
         this.showExtendedLateralPanel.emit();
         break;
