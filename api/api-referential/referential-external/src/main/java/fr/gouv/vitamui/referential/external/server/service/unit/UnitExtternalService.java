@@ -74,7 +74,7 @@ public class UnitExtternalService extends AbstractService {
 
     private final UnitService unitService;
 
-    private ObjectMapper objectMapper;
+    private final ObjectMapper objectMapper;
 
     private static final String[] FILING_PLAN_PROJECTION = new String[] {
         "#id",
@@ -163,8 +163,7 @@ public class UnitExtternalService extends AbstractService {
         }
     }
 
-    public VitamUISearchResponseDto findUnitById(final String id) throws VitamClientException {
-        final VitamContext vitamContext = buildVitamContext();
+    public VitamUISearchResponseDto findUnitById(final String id) {
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         SanityChecker.checkSecureParameter(id);
         final JsonNode queryForUnitById = this.createQueryForUnitById(id);

@@ -114,7 +114,6 @@ public class OperationExternalService extends AbstractService {
 
     private final LogbookService logbookService;
 
-    @Autowired
     private ProbativeValueExternalService probativeValueExternalService;
 
     private final ExternalParametersService externalParametersService;
@@ -147,13 +146,15 @@ public class OperationExternalService extends AbstractService {
         LogbookService logbookService,
         ObjectMapper objectMapper,
         ExternalParametersService externalParametersService,
-        ExternalSecurityService externalSecurityService
+        ExternalSecurityService externalSecurityService,
+        ProbativeValueExternalService probativeValueExternalService
     ) {
         super(externalSecurityService);
         this.operationService = operationService;
         this.logbookService = logbookService;
         this.objectMapper = objectMapper;
         this.externalParametersService = externalParametersService;
+        this.probativeValueExternalService = probativeValueExternalService;
     }
 
     public PaginatedValuesDto<LogbookOperationDto> getAllPaginated(
@@ -169,7 +170,7 @@ public class OperationExternalService extends AbstractService {
         LOGGER.info("All Operations EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
         try {
             if (criteria.isPresent()) {
-                TypeReference<HashMap<String, Object>> typRef = new TypeReference<HashMap<String, Object>>() {};
+                TypeReference<HashMap<String, Object>> typRef = new TypeReference<>() {};
                 vitamCriteria = objectMapper.readValue(criteria.get(), typRef);
             }
             query = VitamQueryHelper.createQueryDSL(vitamCriteria, pageNumber, size, orderBy, direction);
@@ -387,7 +388,7 @@ public class OperationExternalService extends AbstractService {
         JsonNode query;
         try {
             if (criteria.isPresent()) {
-                TypeReference<HashMap<String, Object>> typRef = new TypeReference<HashMap<String, Object>>() {};
+                TypeReference<HashMap<String, Object>> typRef = new TypeReference<>() {};
                 vitamCriteria = objectMapper.readValue(criteria.get(), typRef);
             }
             query = VitamQueryHelper.createQueryDSL(vitamCriteria, null, null, Optional.empty(), Optional.empty());

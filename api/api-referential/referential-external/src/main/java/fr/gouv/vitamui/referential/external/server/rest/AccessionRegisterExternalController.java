@@ -85,7 +85,7 @@ public class AccessionRegisterExternalController {
     ) {
         SanityChecker.sanitizeCriteria(criteria);
         LOGGER.debug("get all accessionRegister criteria={}", criteria);
-        return accessionRegisterDetailExternalService.getAll(criteria);
+        return accessionRegisterDetailExternalService.getAll();
     }
 
     @GetMapping(value = RestApi.DETAILS, params = { "page", "size" })

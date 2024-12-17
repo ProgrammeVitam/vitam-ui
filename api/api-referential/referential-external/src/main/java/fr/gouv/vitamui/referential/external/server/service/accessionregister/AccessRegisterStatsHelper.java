@@ -37,6 +37,7 @@
 package fr.gouv.vitamui.referential.external.server.service.accessionregister;
 
 import fr.gouv.vitam.common.model.administration.AccessionRegisterDetailModel;
+import fr.gouv.vitam.common.model.administration.RegisterValueDetailModel;
 import fr.gouv.vitamui.referential.common.dto.AccessionRegisterStatsDto;
 
 import java.util.List;
@@ -54,22 +55,26 @@ public class AccessRegisterStatsHelper {
 
         Long objectSizes = accessionRegisterDetailModels
             .parallelStream()
-            .map(ardm -> ardm.getObjectSize().getIngested())
+            .map(AccessionRegisterDetailModel::getObjectSize)
+            .map(RegisterValueDetailModel::getIngested)
             .reduce(0L, Long::sum);
 
         Long totalObjects = accessionRegisterDetailModels
             .parallelStream()
-            .map(ardm -> ardm.getTotalObjects().getIngested())
+            .map(AccessionRegisterDetailModel::getTotalObjects)
+            .map(RegisterValueDetailModel::getIngested)
             .reduce(0L, Long::sum);
 
         Long totalUnits = accessionRegisterDetailModels
             .parallelStream()
-            .map(ardm -> ardm.getTotalUnits().getIngested())
+            .map(AccessionRegisterDetailModel::getTotalUnits)
+            .map(RegisterValueDetailModel::getIngested)
             .reduce(0L, Long::sum);
 
         Long totalObjectsGroups = accessionRegisterDetailModels
             .parallelStream()
-            .map(ardm -> ardm.getTotalObjectsGroups().getIngested())
+            .map(AccessionRegisterDetailModel::getTotalObjectsGroups)
+            .map(RegisterValueDetailModel::getIngested)
             .reduce(0L, Long::sum);
 
         statsDto.setObjectSizes(objectSizes);

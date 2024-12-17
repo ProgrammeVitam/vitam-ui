@@ -106,7 +106,7 @@ public class ArchivalProfileUnitExternalService extends AbstractService {
         try {
             LOGGER.info("All Archival Profiles EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
             if (criteria.isPresent()) {
-                TypeReference<HashMap<String, Object>> typRef = new TypeReference<HashMap<String, Object>>() {};
+                TypeReference<HashMap<String, Object>> typRef = new TypeReference<>() {};
                 vitamCriteria = objectMapper.readValue(criteria.get(), typRef);
             }
             query = VitamQueryHelper.createQueryDSL(vitamCriteria);
@@ -255,12 +255,6 @@ public class ArchivalProfileUnitExternalService extends AbstractService {
         } catch (JsonProcessingException | VitamClientException e) {
             throw new InternalServerException("Can't update Archival Unit profile", e);
         }
-    }
-
-    public boolean checkExists(final String criteria) {
-        final VitamContext vitamContext = this.buildVitamContext();
-        // Implémentez la logique dans l'InternalService si nécessaire
-        throw new UnsupportedOperationException("Method not implemented yet in InternalService");
     }
 
     public ArchivalProfileUnitDto update(final ArchivalProfileUnitDto dto)

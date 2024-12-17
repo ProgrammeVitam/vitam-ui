@@ -218,29 +218,6 @@ public class AccessionRegisterExternalService extends AbstractService {
         return statsDto;
     }
 
-    private AccessionRegisterStatsDto buildStatisticData(
-        AccessionRegisterSearchDto accessionRegisterSearchDto,
-        VitamContext vitamContext
-    ) {
-        try {
-            JsonNode bigStatisticQuery = AccessRegisterVitamQueryHelper.createQueryDSL(
-                accessionRegisterSearchDto,
-                0,
-                10000,
-                null,
-                null
-            );
-            //fetching all 10000 elements as another query to compute statistics as quick solution
-            AccessionRegisterDetailResponseDto statisticResults = fetchingAllPaginatedDataFromVitam(
-                vitamContext,
-                bigStatisticQuery
-            );
-            return AccessRegisterStatsHelper.fetchStats(statisticResults.getResults());
-        } catch (InvalidCreateOperationException | InvalidParseOperationException e) {
-            throw new InternalServerException("Can't create dsl query to get paginated accession registers", e);
-        }
-    }
-
     /**
      * Export accession register details into csv result file
      *
@@ -464,7 +441,7 @@ public class AccessionRegisterExternalService extends AbstractService {
         return this.getAllPaginated(criteria, page, size, orderBy.orElse(null), direction.orElse(null), vitamContext);
     }
 
-    public List<AccessionRegisterSummaryDto> getAll(final Optional<String> criteria) {
+    public List<AccessionRegisterSummaryDto> getAll() {
         final VitamContext vitamContext = this.buildVitamContext();
         return this.getAll(vitamContext);
     }

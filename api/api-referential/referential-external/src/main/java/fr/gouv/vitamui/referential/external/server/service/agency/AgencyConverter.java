@@ -46,15 +46,11 @@ import java.util.stream.Collectors;
 public class AgencyConverter {
 
     public AgencyModelDto convertDtoToVitam(final AgencyDto dto) {
-        final AgencyModelDto Agency = VitamUIUtils.copyProperties(dto, new AgencyModelDto());
-
-        return Agency;
+        return VitamUIUtils.copyProperties(dto, new AgencyModelDto());
     }
 
     public AgencyDto convertVitamToDto(final AgencyModelDto Agency) {
-        final AgencyDto dto = VitamUIUtils.copyProperties(Agency, new AgencyDto());
-
-        return dto;
+        return VitamUIUtils.copyProperties(Agency, new AgencyDto());
     }
 
     public List<AgencyModelDto> convertDtosToVitams(final List<AgencyDto> dtos) {

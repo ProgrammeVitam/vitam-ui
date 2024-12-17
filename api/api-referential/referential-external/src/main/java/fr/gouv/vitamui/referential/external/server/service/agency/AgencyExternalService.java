@@ -87,6 +87,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import static fr.gouv.vitamui.referential.common.utils.AgencyConverter.*;
+
 @Service
 public class AgencyExternalService extends AbstractService {
 
@@ -125,9 +127,7 @@ public class AgencyExternalService extends AbstractService {
             if (agencyResponseDto.getResults().size() == 0) {
                 return null;
             } else {
-                return fr.gouv.vitamui.referential.common.utils.AgencyConverter.convertVitamToDto(
-                    agencyResponseDto.getResults().get(0)
-                );
+                return convertVitamToDto(agencyResponseDto.getResults().get(0));
             }
         } catch (VitamClientException | JsonProcessingException e) {
             throw new InternalServerException("Unable to get Agency", e);
@@ -149,9 +149,7 @@ public class AgencyExternalService extends AbstractService {
                 AgencyResponseDto.class
             );
 
-            return fr.gouv.vitamui.referential.common.utils.AgencyConverter.convertVitamsToDtos(
-                agencyResponseDto.getResults()
-            );
+            return convertVitamsToDtos(agencyResponseDto.getResults());
         } catch (VitamClientException | JsonProcessingException e) {
             throw new InternalServerException("Unable to find agencies", e);
         }
@@ -179,7 +177,7 @@ public class AgencyExternalService extends AbstractService {
         JsonNode query;
         try {
             if (criteria.isPresent()) {
-                TypeReference<HashMap<String, Object>> typRef = new TypeReference<HashMap<String, Object>>() {};
+                TypeReference<HashMap<String, Object>> typRef = new TypeReference<>() {};
                 vitamCriteria = objectMapper.readValue(criteria.get(), typRef);
             }
 
@@ -193,9 +191,7 @@ public class AgencyExternalService extends AbstractService {
         AgencyResponseDto results = this.findAll(vitamContext, query);
         boolean hasMore = pageNumber * size + results.getHits().getSize() < results.getHits().getTotal();
 
-        final List<AgencyDto> valuesDto = fr.gouv.vitamui.referential.common.utils.AgencyConverter.convertVitamsToDtos(
-            results.getResults()
-        );
+        final List<AgencyDto> valuesDto = convertVitamsToDtos(results.getResults());
         return new PaginatedValuesDto<>(valuesDto, pageNumber, results.getHits().getSize(), hasMore);
     }
 
@@ -230,7 +226,7 @@ public class AgencyExternalService extends AbstractService {
     public Boolean check(VitamContext vitamContext, AgencyDto agencyDto) {
         try {
             Integer agencyCheckedTenant = vitamAgencyService.checkAbilityToCreateAgencyInVitam(
-                fr.gouv.vitamui.referential.common.utils.AgencyConverter.convertDtosToVitams(Arrays.asList(agencyDto)),
+                convertDtosToVitams(Arrays.asList(agencyDto)),
                 vitamContext.getApplicationSessionId()
             );
             return !vitamContext.getTenantId().equals(agencyCheckedTenant);
@@ -249,15 +245,12 @@ public class AgencyExternalService extends AbstractService {
 
     public AgencyDto create(VitamContext vitamContext, AgencyDto agencyDto) {
         try {
-            RequestResponse<?> requestResponse = vitamAgencyService.create(
-                vitamContext,
-                fr.gouv.vitamui.referential.common.utils.AgencyConverter.convertDtoToVitam(agencyDto)
-            );
+            RequestResponse<?> requestResponse = vitamAgencyService.create(vitamContext, convertDtoToVitam(agencyDto));
             final AgenciesModel agencyModelDto = objectMapper.treeToValue(
                 requestResponse.toJsonNode(),
                 AgenciesModel.class
             );
-            return fr.gouv.vitamui.referential.common.utils.AgencyConverter.convertVitamToDto(agencyModelDto);
+            return convertVitamToDto(agencyModelDto);
         } catch (
             InvalidParseOperationException | AccessExternalClientException | IOException | VitamClientException e
         ) {
@@ -272,15 +265,9 @@ public class AgencyExternalService extends AbstractService {
     }
 
     public AgencyDto patch(VitamContext vitamContext, final AgencyDto agencyDto) {
-        AgenciesModel agencyModelDto = fr.gouv.vitamui.referential.common.utils.AgencyConverter.convertDtoToVitam(
-            agencyDto
-        );
+        AgenciesModel agencyModelDto = convertDtoToVitam(agencyDto);
         try {
-            RequestResponse<?> requestResponse = vitamAgencyService.patchAgency(
-                vitamContext,
-                agencyDto.getId(),
-                agencyModelDto
-            );
+            vitamAgencyService.patchAgency(vitamContext, agencyDto.getId(), agencyModelDto);
             return agencyDto;
         } catch (
             InvalidParseOperationException | AccessExternalClientException | VitamClientException | IOException e

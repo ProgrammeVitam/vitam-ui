@@ -27,7 +27,6 @@
 
 package fr.gouv.vitamui.referential.internal.server.service;
 
-import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitamui.commons.api.domain.ExternalParametersDto;
 import fr.gouv.vitamui.commons.api.domain.ParameterDto;
 import fr.gouv.vitamui.iam.internal.client.ExternalParametersInternalRestClient;
@@ -87,17 +86,6 @@ public class ExternalParametersService {
             throw new IllegalArgumentException("No access contract defined");
         }
         return parameterAccessContract.getValue();
-    }
-
-    /**
-     * This function create a VitamContext
-     *
-     * @return
-     */
-    public VitamContext buildVitamContextFromExternalParam() {
-        return new VitamContext(securityService.getTenantIdentifier())
-            .setAccessContract(retrieveAccessContractFromExternalParam())
-            .setApplicationSessionId(securityService.getApplicationId());
     }
 
     /**

@@ -197,34 +197,4 @@ public class ArchivalProfileUnitExternalController {
         final boolean exist = archivalProfileUnitExternalService.check(archivalProfileUnitDto);
         return RestUtils.buildBooleanResponse(exist);
     }
-    //TODO methode note use A supprimer
-    /*
-    @PatchMapping(CommonConstants.PATH_ID)
-    @Secured(ServicesData.ROLE_UPDATE_PASTIS)
-    public ArchivalProfileUnitDto patch(
-        final @PathVariable("id") String id,
-        @RequestBody final Map<String, Object> partialDto
-    ) throws InvalidParseOperationException, PreconditionFailedException {
-        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
-        SanityChecker.checkSecureParameter(id);
-        SanityChecker.sanitizeCriteria(partialDto);
-        LOGGER.debug("Patch {} with {}", id, partialDto);
-        Assert.isTrue(
-            StringUtils.equals(id, (String) partialDto.get("id")),
-            "The DTO identifier must match the path identifier for update."
-        );
-        return archivalProfileUnitExternalService.patch(partialDto);
-    }
-
-    @Secured(ServicesData.ROLE_GET_PASTIS)
-    @GetMapping("/{id}/history")
-    public LogbookOperationsResponseDto findHistoryById(final @PathVariable("id") String id)
-        throws InvalidParseOperationException, PreconditionFailedException {
-        ParameterChecker.checkParameter("Identifier is mandatory : ", id);
-        SanityChecker.checkSecureParameter(id);
-        LOGGER.debug("get logbook for accessContract with id :{}", id);
-        return archivalProfileUnitExternalService.findHistoryById(id);
-    }
-
-     */
 }

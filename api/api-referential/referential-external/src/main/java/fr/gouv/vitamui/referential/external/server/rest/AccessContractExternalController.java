@@ -96,7 +96,7 @@ public class AccessContractExternalController {
         LOGGER.debug("get all customer criteria={}", criteria);
         SanityChecker.sanitizeCriteria(criteria);
 
-        return accessContractExternalService.getAll(criteria);
+        return accessContractExternalService.getAll();
     }
 
     @Secured(ServicesData.ROLE_GET_ACCESS_CONTRACTS)

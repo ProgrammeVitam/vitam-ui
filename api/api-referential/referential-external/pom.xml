@@ -203,13 +203,6 @@
             <groupId>com.opencsv</groupId>
             <artifactId>opencsv</artifactId>
         </dependency>
-
-
-        <!-- Export CSV -->
-        <dependency>
-            <groupId>com.opencsv</groupId>
-            <artifactId>opencsv</artifactId>
-        </dependency>
         <!-- PDF generation -->
         <dependency>
             <groupId>xerces</groupId>

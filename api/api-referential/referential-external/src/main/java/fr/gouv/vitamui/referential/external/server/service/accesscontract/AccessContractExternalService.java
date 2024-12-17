@@ -172,7 +172,7 @@ public class AccessContractExternalService extends AbstractService {
         }
     }
 
-    public List<AccessContractDto> getAll(final Optional<String> criteria) {
+    public List<AccessContractDto> getAll() {
         final VitamContext vitamContext = this.buildVitamContext();
         return this.getAll(vitamContext);
     }

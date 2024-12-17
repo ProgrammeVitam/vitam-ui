@@ -55,7 +55,6 @@ public abstract class AbstractExternalClientService {
         this.externalSecurityService = externalSecurityService;
     }
 
-    //TODO remove internal and external
     /**
      * Retrieve InternalHttpContext
      * @return
@@ -68,8 +67,6 @@ public abstract class AbstractExternalClientService {
         if (userLevel == null) {
             throw new ApplicationServerException("Level is null for user " + user.getEmail());
         }
-
-        // final String customerId = externalSecurityService.getUser().getCustomerId();
 
         return externalHttpContext;
     }

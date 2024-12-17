@@ -89,6 +89,23 @@ referential-external:
       hostname-verification: false
 {% endif %}
 
+
+clients:
+  iam-internal:
+    server-host: {{ vitamui.iam_internal.host }}
+    server-port: {{ vitamui.iam_internal.port_service }}
+{% if vitamui.iam_internal.secure | default(secure) | bool == true %}
+    secure: {{ vitamui.iam_internal.secure | default(secure) | lower }}
+    ssl-configuration:
+      truststore:
+        key-path: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
+        key-password: {{ password_truststore }}
+      hostname-verification: false
+{% endif %}
+
+
+internal_ontology_file_path: {{ vitamui_folder_data }}/internal_ontology_fields.json
+
 {% if opentracing.jaeger.enabled | default(false) | bool %}
 opentracing:
   jaeger:

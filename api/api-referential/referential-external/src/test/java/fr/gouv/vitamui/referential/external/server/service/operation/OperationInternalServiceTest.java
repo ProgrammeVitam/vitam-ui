@@ -11,6 +11,7 @@ import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import fr.gouv.vitamui.referential.common.model.AuditCreateOptions;
 import fr.gouv.vitamui.referential.common.service.OperationService;
+import fr.gouv.vitamui.referential.external.server.service.probativevalue.ProbativeValueExternalService;
 import fr.gouv.vitamui.referential.external.server.service.service.ExternalParametersService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -45,6 +46,9 @@ class OperationInternalServiceTest {
     @Mock
     private ExternalSecurityService externalSecurityService;
 
+    @Mock
+    private ProbativeValueExternalService probativeValueExternalService;
+
     @InjectMocks
     private OperationExternalService operationExternalService;
 
@@ -61,7 +65,8 @@ class OperationInternalServiceTest {
             logbookService,
             objectMapper,
             externalParametersService,
-            externalSecurityService
+            externalSecurityService,
+            probativeValueExternalService
         );
         auditCreateOptions = new AuditCreateOptions();
         auditOptions = new AuditOptions();

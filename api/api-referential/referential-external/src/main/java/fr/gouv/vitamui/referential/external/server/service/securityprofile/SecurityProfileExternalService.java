@@ -159,7 +159,7 @@ public class SecurityProfileExternalService extends AbstractService {
         LOGGER.info("All Security Profiles EvIdAppSession : {} ", vitamSecurityProfile.getApplicationSessionId());
         try {
             if (criteria.isPresent()) {
-                TypeReference<HashMap<String, Object>> typRef = new TypeReference<HashMap<String, Object>>() {};
+                TypeReference<HashMap<String, Object>> typRef = new TypeReference<>() {};
                 vitamCriteria = objectMapper.readValue(criteria.get(), typRef);
             }
 
@@ -337,7 +337,7 @@ public class SecurityProfileExternalService extends AbstractService {
     }
 
     public SecurityProfileDto patch(final Map<String, Object> securityProfileDto) {
-        LOGGER.debug("Creating Security Profile: {}", securityProfileDto);
+        LOGGER.debug("Patching Security Profile: {}", securityProfileDto);
         VitamContext vitamContext = buildVitamContext();
         return patch(vitamContext, securityProfileDto);
     }
