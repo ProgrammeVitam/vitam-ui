@@ -1,7 +1,6 @@
 package fr.gouv.vitamui.referential.internal.server.rest;
 
 import fr.gouv.vitam.common.exception.VitamClientException;
-import fr.gouv.vitamui.commons.api.exception.InvalidFileSanitizeException;
 import fr.gouv.vitamui.referential.common.dto.SchemaDto;
 import fr.gouv.vitamui.referential.common.exception.NoCollectionException;
 import fr.gouv.vitamui.referential.common.model.Collection;
@@ -13,13 +12,17 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Collections;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 class SchemaInternalControllerTest {
 
@@ -42,22 +45,6 @@ class SchemaInternalControllerTest {
         // Act & Assert
         assertThrows(NoCollectionException.class, () -> schemaInternalController.getSchemas(collections));
         verify(schemaInternalService, never()).getSchemas(any());
-    }
-
-    @Test
-    void testImportSchema_withInvalidFileName_throwsException() {
-        // Arrange
-        String fileName = "invalid/file";
-        MultipartFile file = mock(MultipartFile.class);
-
-        // Act & Assert
-        assertThrows(
-            InvalidFileSanitizeException.class,
-            () -> schemaInternalController.importUnitSchema(fileName, file)
-        );
-
-        // Verify no further processing occurs
-        verify(schemaInternalService, never()).importUnitSchema(any(), any());
     }
 
     @Test

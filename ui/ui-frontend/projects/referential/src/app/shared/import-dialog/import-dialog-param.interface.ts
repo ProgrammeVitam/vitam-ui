@@ -53,7 +53,7 @@ export enum ReferentialTypes {
   INGEST_CONTRACT = 'ingestcontract',
   FILE_FORMAT = 'fileformat',
   ONTOLOGY = 'ontology',
-  SCHEMA = 'schemas',
+  SCHEMA_UNIT = 'schemas-unit',
   RULE = 'rule',
 }
 
