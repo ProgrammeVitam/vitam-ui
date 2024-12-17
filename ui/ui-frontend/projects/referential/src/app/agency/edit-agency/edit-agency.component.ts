@@ -57,7 +57,7 @@ import { agencyTemplate } from '../agency.template';
 import { schema } from '../agency.schema';
 import { AgencyService } from '../agency.service';
 import { filter, finalize, of, Subscription, switchMap } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { tap } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
 import { MatLegacyDialog as MatDialog, MatLegacyDialogModule, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
 
@@ -155,8 +155,7 @@ export class EditAgencyComponent implements OnInit, OnDestroy {
         .pipe(
           filter((agency) => this.typeService.isConsistent(agency)),
           tap(() => this.spinnerService.open()),
-          map((formData) => this.copyProperties(formData)),
-          switchMap((agency) => this.agencyService.patch(agency)),
+          switchMap((agency) => this.agencyService.patch(agency as Agency)),
           finalize(() => this.spinnerService.close()),
         )
         .subscribe((agency) => {
@@ -164,13 +163,6 @@ export class EditAgencyComponent implements OnInit, OnDestroy {
           this.editObject.control.markAsPristine();
         }),
     );
-  }
-
-  copyProperties(formData: { [key: string]: any }): Agency {
-    return {
-      ...this.agency,
-      ...formData,
-    };
   }
 
   cancel() {
