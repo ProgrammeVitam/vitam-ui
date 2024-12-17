@@ -21,3 +21,5 @@ install_mode: legacy
 #   registry_url:
 #   username:
 #   password:
+# Add vitamui_container_version for specific container version deployment (default: latest)
+vitamui_container_version: '8.0.1-SNAPSHOT'
