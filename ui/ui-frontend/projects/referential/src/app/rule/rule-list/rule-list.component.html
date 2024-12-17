@@ -19,12 +19,6 @@
       </div>
       <div class="col-4 d-flex align-items-center justify-content-between">
         <span>{{ 'RULES_APP.HOME.ARRAY.NAME' | translate }}</span>
-        <vitamui-common-order-by-button
-          orderByKey="RuleValue"
-          [(orderBy)]="orderBy"
-          [(direction)]="direction"
-          (orderChange)="emitOrderChange()"
-        ></vitamui-common-order-by-button>
       </div>
       <div class="col-1 d-flex align-items-center justify-content-between">
         <span>{{ 'RULES_APP.HOME.ARRAY.PERIOD' | translate }}</span>

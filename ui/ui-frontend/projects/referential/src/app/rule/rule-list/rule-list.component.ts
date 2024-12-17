@@ -75,7 +75,7 @@ export class RuleListComponent extends InfiniteScrollTable<Rule> implements OnDe
   ruleTypes = RULE_TYPES;
 
   filterMap: { [key: string]: any[] } = {
-    ruleType: this.ruleTypes.map((value) => value.label),
+    ruleType: this.ruleTypes.map((value) => value.key),
   };
 
   ruleMeasurements = RULE_MEASUREMENTS;
