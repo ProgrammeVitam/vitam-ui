@@ -87,7 +87,7 @@ public class SchemaInternalWebClient extends BaseWebClient<InternalHttpContext> 
 
     @Override
     public String getPathUrl() {
-        return CommonConstants.SCHEMAS;
+        return CommonConstants.SCHEMAS_UNIT;
     }
 
     private boolean isValidFileType(MultipartFile file) {

@@ -27,45 +27,35 @@
 
 package fr.gouv.vitamui.referential.external.server.rest;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import fr.gouv.vitamui.common.security.SafeFileChecker;
+import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
-import fr.gouv.vitamui.referential.common.dto.SchemaDto;
-import fr.gouv.vitamui.referential.common.exception.NoCollectionException;
-import fr.gouv.vitamui.referential.common.model.Collection;
 import fr.gouv.vitamui.referential.external.server.service.SchemaExternalService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.util.CollectionUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.validation.constraints.NotNull;
-import javax.ws.rs.Produces;
-import java.net.URISyntaxException;
-import java.util.List;
-import java.util.Set;
-
-import static fr.gouv.vitamui.commons.api.domain.ServicesData.ROLE_GET_SCHEMAS;
-import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
-@RequestMapping(CommonConstants.SCHEMAS)
-public class SchemaExternalController {
+@RequestMapping(CommonConstants.SCHEMAS_UNIT)
+public class SchemaUnitExternalController {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(SchemaExternalController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(SchemaUnitExternalController.class);
 
     private final SchemaExternalService schemaExternalService;
     private final ExternalSecurityService externalSecurityService;
 
     @Autowired
-    public SchemaExternalController(
+    public SchemaUnitExternalController(
         final SchemaExternalService schemaExternalService,
         final ExternalSecurityService externalSecurityService
     ) {
@@ -73,33 +63,17 @@ public class SchemaExternalController {
         this.externalSecurityService = externalSecurityService;
     }
 
-    @GetMapping
-    @Produces(APPLICATION_JSON)
-    @Secured(ROLE_GET_SCHEMAS)
-    public ResponseEntity<List<SchemaDto>> getSchemas(@RequestParam final Set<Collection> collections)
-        throws NoCollectionException, URISyntaxException {
-        if (CollectionUtils.isEmpty(collections)) {
-            throw new NoCollectionException();
+    @Secured(ServicesData.ROLE_IMPORT_SCHEMAS)
+    @PostMapping(CommonConstants.PATH_IMPORT)
+    public JsonNode importUnitSchemas(@RequestParam("file") MultipartFile file) {
+        if (file == null || file.isEmpty()) {
+            throw new IllegalArgumentException("The file cannot be null or empty.");
         }
-
-        return ResponseEntity.ok(
-            schemaExternalService.getSchemas(
-                InternalHttpContext.buildFromExternalHttpContext(externalSecurityService.getHttpContext()),
-                collections
-            )
+        SafeFileChecker.checkSafeFilePath(file.getOriginalFilename());
+        SanityChecker.isValidFileName(file.getOriginalFilename());
+        InternalHttpContext internalHttpContext = InternalHttpContext.buildFromExternalHttpContext(
+            externalSecurityService.getHttpContext()
         );
-    }
-
-    @GetMapping("/archive-unit-profile/{id}")
-    @Produces(APPLICATION_JSON)
-    @Secured(ROLE_GET_SCHEMAS)
-    public ResponseEntity<SchemaDto> getArchiveUnitProfileSchema(@PathVariable @NotNull String id)
-        throws URISyntaxException {
-        return ResponseEntity.ok(
-            schemaExternalService.getArchiveUnitProfileSchema(
-                InternalHttpContext.buildFromExternalHttpContext(externalSecurityService.getHttpContext()),
-                id
-            )
-        );
+        return schemaExternalService.importUnitSchemas(internalHttpContext, file.getOriginalFilename(), file);
     }
 }

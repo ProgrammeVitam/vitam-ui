@@ -143,8 +143,6 @@ public class CommonConstants {
 
     public static final String PATH_IMPORT = "/import";
 
-    public static final String PATH_IMPORT_UNIT_SCHEMA = "/import-unit-schema";
-
     public static final String PATH_EXPORT = "/export";
 
     public static final String USER_ID_ATTRIBUTE = "id";
@@ -354,11 +352,6 @@ public class CommonConstants {
     public static final String EXTERNAL_ONTOLOGIES_LIST = "/external-ontologies";
     public static final String INTERNAL_ONTOLOGY_LIST = "/internal-ontologies";
     public static final String SCHEMAS = "/schemas";
+    public static final String SCHEMAS_UNIT = "/schemas-unit";
     public static final String ARCHIVE_UNIT_PROFILE_SCHEMAS = SCHEMAS + "/archive-unit-profile";
-
-    /**
-     * Constants of schema operations
-     */
-
-    public static final String IMPORT_UNIT_SCHEMAS = "/import-unit-schema";
 }

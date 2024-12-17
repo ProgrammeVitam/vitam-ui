@@ -136,7 +136,7 @@ export class OntologyComponent extends SidenavPage<Ontology> implements OnInit {
       subtitle: this.translateService.instant('IMPORT_DIALOG.SCHEMA_SUBTITLE'),
       allowedFiles: [FileTypes.CSV],
       fileFormatDetailInfo: this.translateService.instant('IMPORT_DIALOG.SCHEMA_FORMAT_JSON'),
-      referential: ReferentialTypes.SCHEMA,
+      referential: ReferentialTypes.SCHEMA_UNIT,
       successMessage: 'SNACKBAR.IMPORT_REFERENTIAL_SUCCESSED',
       errorMessage: 'SNACKBAR.IMPORT_REFERENTIAL_FAILED',
       iconMessage: 'vitamui-icon-ontologie',
