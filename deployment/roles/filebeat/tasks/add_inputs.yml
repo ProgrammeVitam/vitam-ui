@@ -12,24 +12,24 @@
 
 - block:
 
-  - set_fact:
-      vitamui_keys: "{{ vitamui.keys() | list }}"
+    - set_fact:
+        vitamui_keys: "{{ vitamui.keys() | list }}"
 
-  - set_fact:
-      vitamui_service_list: "{{ services_on_vm | intersect(vitamui_keys) }}"
+    - set_fact:
+        vitamui_service_list: "{{ services_on_vm | intersect(vitamui_keys) | select('ne', 'referential-internal')   }}"
 
-  - name: Add VitamUI filebeat inputs
-    template:
-      src: inputs/vitamui_services.yml.j2
-      dest: /etc/filebeat/inputs.d/vitamui-services.yml
-      mode: 0644
-    notify: "filebeat - restart service"
+    - name: Add VitamUI filebeat inputs
+      template:
+        src: inputs/vitamui_services.yml.j2
+        dest: /etc/filebeat/inputs.d/vitamui-services.yml
+        mode: 0644
+      notify: "filebeat - restart service"
 
-  - name: Add COTS filebeat inputs
-    template:
-      src: inputs/cots.yml.j2
-      dest: /etc/filebeat/inputs.d/cots.yml
-      mode: 0644
-    notify: "filebeat - restart service"
+    - name: Add COTS filebeat inputs
+      template:
+        src: inputs/cots.yml.j2
+        dest: /etc/filebeat/inputs.d/cots.yml
+        mode: 0644
+      notify: "filebeat - restart service"
 
   when: inventory_hostname in groups['hosts_vitamui']
