@@ -76,7 +76,7 @@ public class SchemaInternalWebClient extends BaseWebClient<InternalHttpContext> 
         }
         LOGGER.debug("Importing file {}", file.getOriginalFilename());
         return multipartData(
-            getUrl() + CommonConstants.PATH_IMPORT,
+            getUrl() + CommonConstants.PATH_IMPORT_UNIT_SCHEMA,
             HttpMethod.POST,
             context,
             Collections.singletonMap("fileName", fileName),
