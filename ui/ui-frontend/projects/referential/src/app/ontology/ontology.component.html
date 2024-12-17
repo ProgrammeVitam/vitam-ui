@@ -6,7 +6,7 @@
   <mat-sidenav-content>
     <div class="vitamui-heading">
       <vitamui-common-title-breadcrumb>
-        {{ 'ONTOLOGY.HOME.TITLE' | translate }}
+        <h5>{{ 'ONTOLOGY.HOME.TITLE' | translate }}</h5>
       </vitamui-common-title-breadcrumb>
       <vitamui-common-banner [searchbarPlaceholder]="'ONTOLOGY.HOME.SEARCH_PLACEHOLDER' | translate" (search)="onSearchSubmit($event)">
         <button class="btn primary ml-3 mr-3" (click)="openCreateOntologyDialog()">

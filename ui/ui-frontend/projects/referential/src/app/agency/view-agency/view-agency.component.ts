@@ -45,6 +45,7 @@ import { AgencyService } from '../agency.service';
 @Component({
   selector: 'app-view-agency',
   templateUrl: 'view-agency.component.html',
+  styleUrls: ['view-agency.component.scss'],
   imports: [CommonModule, RouterModule, VitamUICommonModule, VitamUILibraryModule],
   standalone: true,
 })

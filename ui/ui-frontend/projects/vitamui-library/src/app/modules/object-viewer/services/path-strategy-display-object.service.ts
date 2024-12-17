@@ -39,6 +39,16 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { Logger } from '../../logger/logger';
 import { DisplayObject, DisplayObjectService, DisplayRule, Mode } from '../models';
 import { DisplayObjectHelperService } from './display-object-helper.service';
+import { TypeService } from './type.service';
+import {
+  conditional,
+  hasAllChildrenHidden,
+  hasInconsistentValue,
+  hide,
+  label,
+  sequence,
+} from '../../object-editor/models/edit-object.operators';
+import { EditObject } from '../../object-editor/models/edit-object.model';
 
 const NO_MODE_MESSAGE = 'Mode is not set';
 const DATA_MODE_MESSAGE = 'The data mode is enabled, the computed display object will follow object structure';
@@ -61,6 +71,7 @@ export class PathStrategyDisplayObjectService implements DisplayObjectService {
   constructor(
     private logger: Logger,
     private displayObjectHelper: DisplayObjectHelperService,
+    private typeService: TypeService,
   ) {
     const handleDisplayObjectComputing = (): void => {
       if (!this.data.value) {
@@ -87,7 +98,7 @@ export class PathStrategyDisplayObjectService implements DisplayObjectService {
 
       this.logger.info(this, message);
 
-      this.populateLabels(displayObject);
+      displayObject = this.afterCompute(displayObject);
 
       this.displayObject.next(displayObject);
     };
@@ -97,9 +108,12 @@ export class PathStrategyDisplayObjectService implements DisplayObjectService {
     this.mode.subscribe(handleDisplayObjectComputing);
   }
 
-  private populateLabels(displayObject: DisplayObject) {
-    displayObject.children?.forEach((child) => this.populateLabels(child));
-    displayObject.displayRule.ui.label = displayObject.displayRule.ui.label || displayObject.key;
+  afterCompute(displayObject: DisplayObject): DisplayObject {
+    displayObject?.children?.forEach((child) => this.afterCompute(child));
+
+    return sequence([label, conditional(hasInconsistentValue(this.typeService), hide), conditional(hasAllChildrenHidden, hide)])(
+      displayObject as EditObject,
+    );
   }
 
   setData(object: any): void {
