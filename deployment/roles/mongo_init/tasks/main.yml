@@ -69,7 +69,7 @@
     delegate_to: localhost
     set_fact:
       mongod_eligible_files : "{{ (mongod_eligible_files| default([])) + [ {'name': item, 'version': item | regex_replace('^(.+)/(.+)$', '\\1') ,'finalname': 'vitamui_' + item | regex_replace('/', '_') | basename | regex_replace('\\.j2$')} ] }}"
-    loop: "{{ mongod_files | difference(mongod_excluded_files| default([])) }}"
+    loop: "{{ mongod_files | difference(mongod_excluded_files| default([])) | sort }}" # Difference filter documentation states 'Items in the resulting list are returned in arbitrary order'. This is a workaround
 
   # We generate scripts and upload on remote host
   - name: Compute and copy script files
