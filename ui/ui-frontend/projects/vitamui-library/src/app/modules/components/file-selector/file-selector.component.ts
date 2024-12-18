@@ -39,6 +39,7 @@ import { DragAndDropDirective } from '../../directives/drag-and-drop/drag-and-dr
 import { TranslateModule } from '@ngx-translate/core';
 import { NgForOf, NgIf, NgTemplateOutlet } from '@angular/common';
 import { PipesModule } from '../../pipes/pipes.module';
+import { DisplayFile } from './display-file.interface';
 
 @Component({
   selector: 'vitamui-file-selector',
@@ -65,7 +66,7 @@ export class FileSelectorComponent {
   @Output() filesChanged = new EventEmitter<File[]>();
 
   private files: File[] = [];
-  protected displayFiles: File[] = [];
+  protected displayFiles: DisplayFile[] = [];
 
   protected handleFilesSelection(files: FileList | File[]) {
     if (!this.multipleFiles && this.files.length > 0) {
@@ -80,16 +81,27 @@ export class FileSelectorComponent {
     if (this.directoryMode && directory) {
       this.displayFiles.push(directory);
     } else {
-      this.displayFiles.push(...filteredFiles);
+      const displayFiles: DisplayFile[] = Array.from(filteredFiles).map((file: File): DisplayFile => {
+        return {
+          name: file.name,
+          size: file.size,
+          directory: false,
+        };
+      });
+      this.displayFiles.push(...displayFiles);
     }
     this.filesChanged.emit(this.files);
   }
 
-  private getDirectory(files: FileList | File[]): File {
+  private getDirectory(files: FileList | File[]): DisplayFile {
     let path = files[0].webkitRelativePath;
     if (path.indexOf('/') !== -1) {
       path = path.split('/')[0];
-      return new File([], path);
+      return {
+        name: path,
+        size: Array.from(files).reduce((acc, file) => acc + file.size, 0),
+        directory: true,
+      };
     }
     return null;
   }
@@ -98,8 +110,16 @@ export class FileSelectorComponent {
     this.inputFiles.nativeElement.click();
   }
 
-  removeFile(file: File) {
-    this.files.splice(this.files.indexOf(file), 1);
+  removeFile(displayFile: DisplayFile) {
+    if (displayFile.directory) {
+      this.files = this.files.filter((file) => !file.webkitRelativePath.startsWith(displayFile.name));
+    } else {
+      this.files.splice(
+        this.files.findIndex((file) => file.name === displayFile.name),
+        1,
+      );
+    }
     this.filesChanged.emit(this.files);
+    this.displayFiles.splice(this.displayFiles.indexOf(displayFile), 1);
   }
 }
