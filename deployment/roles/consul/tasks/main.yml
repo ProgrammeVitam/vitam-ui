@@ -61,21 +61,64 @@
     state: started
     enabled: "{{ consul.at_boot | default(service_at_boot) }}"
 
-# Changing the resolv.conf doesn't work into a docker container...
-- name: Add consul nameserver to resolv.conf
-  blockinfile:
-    backup: yes
-    dest: /etc/resolv.conf
-    insertbefore: BOF # necessary or this entry won't be asked
-    marker: "# {mark} ANSIBLE MANAGED BLOCK"
-    block: |
-      nameserver 127.0.0.1
-  when: inventory_hostname not in single_vm_hostnames
+- block:
+
+    # Changing the resolv.conf doesn't work into a docker container...
+    - name: Add consul nameserver to resolv.conf
+      blockinfile:
+        backup: true
+        dest: /etc/resolv.conf
+        insertbefore: BOF # necessary or this entry won't be asked
+        marker: "# {mark} ANSIBLE MANAGED BLOCK"
+        block: |
+          nameserver 127.0.0.1
+      when: inventory_hostname not in single_vm_hostnames
+
+    # Install resolvconf package to maintain proper nameserver for consul resolution
+    - name: Install resolvconf package
+      package:
+        name: "{{ 'resolvconf' if ansible_distribution == 'Debian' else 'vitam-resolvconf' }}"
+        state: latest
+      register: result
+      retries: "{{ packages_install_retries_number }}"
+      until: result is succeeded
+      delay: "{{ packages_install_retries_delay }}"
+
+    # For Debian add nameserver 127.0.0.1 entry in /etc/resolvconf/resolv.conf.d/head
+    - name: Add nameserver entry in /etc/resolvconf/resolv.conf.d/head
+      blockinfile:
+        backup: true
+        dest: /etc/resolvconf/resolv.conf.d/head
+        insertbefore: BOF
+        create: true
+        mode: 0644
+        block: |
+          nameserver 127.0.0.1
+      when: ansible_os_family == "Debian"
+
+    - name: Start the resolvconf service
+      systemd:
+        name: resolvconf
+        enabled: true
+        state: started
+      when: ansible_os_family == "Debian"
+
+    - name: Start the vitam-resolvconf services
+      systemd:
+        name: "{{ item }}"
+        enabled: true
+        state: started
+      with_items:
+        - vitam_dns_localhost_enforce.path
+        - vitam_dns_localhost_enforce.service
+      when: ansible_os_family == "RedHat"
+
+  when: ansible_virtualization_type not in ['docker', 'container']
 
 - meta: flush_handlers
 
 - name: Wait for consul port to be open
   wait_for:
-    host: "127.0.0.1"
+    host: 127.0.0.1
     port: 53
-    state: "started"
+    state: started
