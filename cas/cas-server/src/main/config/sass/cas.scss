@@ -15,196 +15,195 @@
 // COMMONS
 
 body {
-  margin: 0;
-  font-family: 'Mulish', sans-serif;
-  background-color: var(--vitamui-background);
-  color: var(--vitamui-grey-900);
+    margin: 0;
+    font-family: 'Mulish', sans-serif;
+    background-color: var(--vitamui-background);
+    color: var(--vitamui-grey-900);
 }
 
 div, span, form, i, button {
-  display: flex;
+    display: flex;
 }
 
 .centered {
-  flex-direction: column;
-  align-items: center;
+    flex-direction: column;
+    align-items: center;
 
-  .logo {
-    justify-content: center;
-    margin-top: 60px;
-    margin-bottom: 20px;
+    .logo {
+        justify-content: center;
+        margin-top: 60px;
+        margin-bottom: 20px;
 
-    img {
-      max-width: 270px;
-      height: 150px;
+        img {
+            max-width: 270px;
+            height: 150px;
+        }
     }
-  }
 }
 
 button, textarea, input {
-  font-family: 'Mulish', sans-serif;
+    font-family: 'Mulish', sans-serif;
 }
 
 * {
-  box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 .picto-attention {
-  width: 31px;
-  height: 28px;
-  object-fit: contain;
+    width: 31px;
+    height: 28px;
+    object-fit: contain;
 }
 
 .vitamui-card {
-  padding: 40px 100px;
-  position: relative;
-  flex-direction: column;
-  box-sizing: border-box;
-  width: 820px;
-  border-radius: 20px;
-  background-color: var(--vitamui-white);
-  @include shadow-2dp-dark;
-
-  .vitamui-icon {
-    width: 24px;
-    height: 24px;
-  }
-
-  strong {
-    font-weight: 700;
-  }
-
-  a {
-    color: var(--vitamui-primary);
-    text-decoration: underline;
-  }
-
-  input[type=text],
-  input[type=email],
-  input[type=password],
-  select {
-    outline: none;
-    border: 1px solid transparent;
-    border-radius: 5px;
-    @include shadow-accessible;
-    transition: border-color 200ms ease-out;
-    height: 50px;
-    padding: 0 30px;
-    background-color: transparent;
-
-    &:focus {
-      border-color: var(--vitamui-grey);
-    }
-
-    &.ng-valid.ng-touched {
-      border-color: var(--vitamui-green);
-    }
-
-    &.ng-invalid.ng-touched {
-      border-color: var(--vitamui-red);
-    }
-
-    &[disabled] {
-      opacity: 0.4;
-    }
-  }
-
-  .warning {
-    flex-direction: row;
-    align-items: start;
-    margin: 5px 0 0 15px;
-    min-height: 24px;
-    color: var(--vitamui-red);
-
-    .element {
-      min-height: 24px;
-      align-items: center;
-    }
-  }
-
-  form {
+    padding: 40px 100px;
+    position: relative;
     flex-direction: column;
+    box-sizing: border-box;
+    width: 820px;
+    border-radius: 20px;
+    background-color: var(--vitamui-white);
+    @include shadow-2dp-dark;
 
-    .form-line {
-      flex-grow: 1;
-      position: relative;
-      margin-top: 10px;
+    .vitamui-icon {
+        width: 24px;
+        height: 24px;
+    }
 
-      input, select {
-        font-size: 16px;
-        width: 100%;
-        padding-top: 23px;
-        height: 60px;
-        padding-left: 15px;
-      }
-
-      label {
-        font-family: 'Mulish', sans-serif;
+    strong {
         font-weight: 700;
-        font-size: 12px;
-        line-height: 16px;
-        color: var(--vitamui-primary);
-        opacity: 1; /* Firefox */
-        position: absolute;
-        top: 22px;
-        left: 15px;
-        -moz-transition: 0.3s right ease;
-        -ms-transition: 0.3s right ease;
-        -o-transition: 0.3s right ease;
-        -webkit-transition: 0.3s right ease;
-        transition: 0.3s right ease;
-        z-index: 0;
-        transition: transform 150ms ease-out;
-      }
-
-      select {
-        /* Arrow */
-        appearance: none;
-      }
-
-      .select-arrow {
-        color: var(--vitamui-primary);
-        pointer-events: none;
-        position: absolute;
-        top: 18px;
-        right: 15px;
-      }
-
-      select:focus + label,
-      input:focus + label {
-        transform: translateY(-12px);
-      }
-
-      select:valid + label,
-      input:valid + label {
-        transform: translateY(-12px);
-      }
     }
 
-    button[type=submit] {
-      margin-left: 20px;
+    a {
+        color: var(--vitamui-primary);
+        text-decoration: underline;
     }
-  }
 
-  .button-footer {
-    flex-direction: row;
-    margin-top: 30px;
-    align-items: center;
-    gap: 20px;
-  }
+    input[type=text],
+    input[type=email],
+    input[type=password],
+    select {
+        outline: none;
+        border: 1px solid transparent;
+        border-radius: 5px;
+        @include shadow-accessible;
+        transition: border-color 200ms ease-out;
+        height: 50px;
+        padding: 0 30px;
+        background-color: transparent;
+
+        &:focus {
+            border-color: var(--vitamui-primary);
+            @include shadow-0;
+        }
+
+        &.ng-valid.ng-touched {
+            border-color: var(--vitamui-green);
+        }
+
+        &.ng-invalid.ng-touched {
+            border-color: var(--vitamui-red);
+        }
+
+        &[disabled] {
+            opacity: 0.4;
+        }
+    }
+
+    .warning {
+        flex-direction: row;
+        align-items: start;
+        margin: 5px 0 0 15px;
+        min-height: 24px;
+        color: var(--vitamui-red);
+
+        .element {
+            min-height: 24px;
+            align-items: center;
+        }
+    }
+
+    form {
+        flex-direction: column;
+
+        .form-line {
+            flex-grow: 1;
+            position: relative;
+            margin-top: 10px;
+
+            input, select {
+                font-size: 16px;
+                width: 100%;
+                padding-top: 23px;
+                height: 60px;
+                padding-left: 15px;
+            }
+
+            label {
+                font-family: 'Mulish', sans-serif;
+                font-weight: 700;
+                font-size: 12px;
+                line-height: 0;
+                color: var(--vitamui-primary);
+                opacity: 1; /* Firefox */
+                position: absolute;
+                top: 50%;
+                left: 15px;
+                z-index: 0;
+                transition: transform 150ms ease-out;
+                cursor: text;
+                pointer-events: none;
+                transform-origin: left;
+            }
+
+            select {
+                /* Arrow */
+                appearance: none;
+            }
+
+            .select-arrow {
+                color: var(--vitamui-primary);
+                pointer-events: none;
+                position: absolute;
+                top: 18px;
+                right: 15px;
+            }
+
+            select:focus + label,
+            input:focus + label {
+                transform: scale(calc(12 / 14)) translateY(-12px);
+            }
+
+            select:valid + label,
+            input:valid + label {
+                transform: scale(calc(12 / 14)) translateY(-12px);
+            }
+        }
+
+        button[type=submit] {
+            margin-left: 20px;
+        }
+    }
+
+    .button-footer {
+        flex-direction: row;
+        margin-top: 30px;
+        align-items: center;
+        gap: 20px;
+    }
 }
 
 @media only screen and (max-width: 801px) {
-  /* Styles pour cette Media Queries */
-  h3 {
-    font-size: 35px !important;
-  }
-  .vitamui-card {
-    width: 95vw;
-    padding: 15px 20px;
-
-    input[type=text], input[type=email], input[type=password] {
-      padding: 0 10px;
+    /* Styles pour cette Media Queries */
+    h3 {
+        font-size: 35px !important;
     }
-  }
+    .vitamui-card {
+        width: 95vw;
+        padding: 15px 20px;
+
+        input[type=text], input[type=email], input[type=password] {
+            padding: 0 10px;
+        }
+    }
 }

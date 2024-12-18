@@ -220,13 +220,13 @@
 	.accession_register_app_203{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000122713323048341929710000015692461015359376308_);}
 	.accession_register_app_204{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000038378060351428397270000007504634332462169478_);}
 	.accession_register_app_205{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000103973222978663411560000006632932895789610909_);}
-	.accession_register_app_206{fill-rule:evenodd;clip-rule:evenodd;fill:var(--vitamui-primary-dark);}
+	.accession_register_app_206{fill-rule:evenodd;clip-rule:evenodd;fill:var(--vitamui-primary-600);}
 	.accession_register_app_207{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000173870029028297344160000003882240709844913298_);}
 	.accession_register_app_208{fill:url(#SVGID_00000022549856181835682510000005344169174253466037_);}
 	.accession_register_app_209{fill:url(#SVGID_00000007394192007689972870000005723443240005716113_);}
 	.accession_register_app_210{fill:var(--vitamui-primary-50);}
-	.accession_register_app_211{fill:var(--vitamui-primary-light);}
-	.accession_register_app_212{fill:var(--vitamui-primary-dark);}
+	.accession_register_app_211{fill:var(--vitamui-primary-400);}
+	.accession_register_app_212{fill:var(--vitamui-primary-600);}
 	.accession_register_app_213{fill:#2A2C2B;}
 	.accession_register_app_214{fill:none;stroke:#4C4C4C;stroke-width:0.9117;stroke-miterlimit:10;}
 </style>

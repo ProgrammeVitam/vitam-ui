@@ -207,7 +207,7 @@
   .secure_app_191{fill:url(#SVGID_SECURE_APP_06);}
   .secure_app_192{fill:url(#SVGID_SECURE_APP_07);}
   .secure_app_193{fill:url(#SVGID_SECURE_APP_08);}
-  .secure_app_194{fill:var(--vitamui-primary-light);}
+  .secure_app_194{fill:var(--vitamui-primary-400);}
   .secure_app_195{fill:var(--vitamui-primary-50);}
   .secure_app_196{fill:url(#SVGID_SECURE_APP_09);}
   .secure_app_197{fill:url(#SVGID_SECURE_APP_10);}
@@ -221,7 +221,7 @@
   .secure_app_205{fill:url(#SVGID_SECURE_APP_18);}
   .secure_app_206{fill:var(--vitamui-primary);}
   .secure_app_207{fill:var(--vitamui-primary-900);}
-  .secure_app_208{fill:var(--vitamui-primary-dark);}
+  .secure_app_208{fill:var(--vitamui-primary-600);}
   .secure_app_209{fill:url(#SVGID_SECURE_APP_19);}
   .secure_app_210{fill:url(#SVGID_SECURE_APP_20);}
   .secure_app_211{fill:url(#SVGID_SECURE_APP_21);}
@@ -257,10 +257,10 @@
   .secure_app_241{fill-rule:evenodd;clip-rule:evenodd;fill:#9B9A9B;}
   .secure_app_242{fill:#FFFFFF;}
   .secure_app_243{fill:var(--vitamui-primary-800);}
-  .secure_app_244{fill:var(--vitamui-primary-light);}
+  .secure_app_244{fill:var(--vitamui-primary-400);}
   .secure_app_245{fill:var(--vitamui-primary-50);}
   .secure_app_246{fill:var(--vitamui-primary);}
-  .secure_app_247{fill:var(--vitamui-primary-dark);}
+  .secure_app_247{fill:var(--vitamui-primary-600);}
   .secure_app_248{fill:#A1A1A1;}
 </style>
   <metadata>
@@ -517,8 +517,8 @@
               <stop  offset="0.3813" style="stop-color:var(--vitamui-primary-600)"/>
               <stop  offset="0.5467" style="stop-color:var(--vitamui-primary)"/>
               <stop  offset="0.7072" style="stop-color:var(--vitamui-primary-400)"/>
-              <stop  offset="0.8609" style="stop-color:var(--vitamui-primary-light)"/>
-              <stop  offset="1" style="stop-color:var(--vitamui-primary-light)"/>
+              <stop  offset="0.8609" style="stop-color:var(--vitamui-primary-400)"/>
+              <stop  offset="1" style="stop-color:var(--vitamui-primary-400)"/>
 					</linearGradient>
           <path style="fill:url(#SVGID_SECURE_APP_50);" d="M118.7,72.6l-18.2,0.3l0.1-3.9
 						c0.4-2.3-0.8-4.5-2.4-4.4l-45.3,0.6c-1.9,0.1-3.4,2.4-3.1,4.9l-1,48.2l-1.1,34.6v5.7c0,0-0.2,4.9,5,5.7
@@ -722,8 +722,8 @@
               <stop  offset="0.3813" style="stop-color:var(--vitamui-primary-600)"/>
               <stop  offset="0.5467" style="stop-color:var(--vitamui-primary)"/>
               <stop  offset="0.7072" style="stop-color:var(--vitamui-primary-400)"/>
-              <stop  offset="0.8609" style="stop-color:var(--vitamui-primary-light)"/>
-              <stop  offset="1" style="stop-color:var(--vitamui-primary-light)"/>
+              <stop  offset="0.8609" style="stop-color:var(--vitamui-primary-400)"/>
+              <stop  offset="1" style="stop-color:var(--vitamui-primary-400)"/>
 					</linearGradient>
           <path style="fill:url(#SVGID_SECURE_APP_68);" d="M144.8,72.6L125.2,73l0.2-4.2
 						c0.4-2.5-0.9-4.8-2.6-4.7l-48.8,0.6c-2,0.1-3.6,2.6-3.4,5.3l-1.1,51.9l-1.2,37.3v6.1c0,0-0.3,5.3,5.4,6.1

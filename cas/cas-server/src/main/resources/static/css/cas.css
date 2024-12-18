@@ -616,7 +616,8 @@ button, textarea, input {
     .vitamui-card input[type=email]:focus,
     .vitamui-card input[type=password]:focus,
     .vitamui-card select:focus {
-      border-color: var(--vitamui-grey); }
+      border-color: var(--vitamui-primary);
+      box-shadow: none !important; }
     .vitamui-card input[type=text].ng-valid.ng-touched,
     .vitamui-card input[type=email].ng-valid.ng-touched,
     .vitamui-card input[type=password].ng-valid.ng-touched,
@@ -664,13 +665,11 @@ button, textarea, input {
         position: absolute;
         top: 22px;
         left: 15px;
-        -moz-transition: 0.3s right ease;
-        -ms-transition: 0.3s right ease;
-        -o-transition: 0.3s right ease;
-        -webkit-transition: 0.3s right ease;
-        transition: 0.3s right ease;
         z-index: 0;
-        transition: transform 150ms ease-out; }
+        transition: transform 150ms ease-out;
+        cursor: text;
+        pointer-events: none;
+        transform-origin: left; }
       .vitamui-card form .form-line select {
         /* Arrow */
         appearance: none; }
@@ -682,10 +681,10 @@ button, textarea, input {
         right: 15px; }
       .vitamui-card form .form-line select:focus + label,
       .vitamui-card form .form-line input:focus + label {
-        transform: translateY(-12px); }
+        transform: scale(calc(12 / 14)) translateY(-12px); }
       .vitamui-card form .form-line select:valid + label,
       .vitamui-card form .form-line input:valid + label {
-        transform: translateY(-12px); }
+        transform: scale(calc(12 / 14)) translateY(-12px); }
     .vitamui-card form button[type=submit] {
       margin-left: 20px; }
   .vitamui-card .button-footer {

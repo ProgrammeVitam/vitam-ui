@@ -402,7 +402,7 @@ dp-date-picker {
   .mat-menu-item.cdk-keyboard-focused:not([disabled]),
   .mat-menu-item-highlighted:not([disabled]) {
     color: white;
-    background-color: var(--vitamui-background) !important;
+    background-color: var(--vitamui-primary-light) !important;
   }
 }
 

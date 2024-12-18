@@ -361,7 +361,7 @@
   .security_profiles_app_345{fill:#2A2C2B;}
   .security_profiles_app_346{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_SECURITY_PROFILES_APP_16);}
   .security_profiles_app_347{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_SECURITY_PROFILES_APP_17);}
-  .security_profiles_app_348{fill-rule:evenodd;clip-rule:evenodd;fill:var(--vitamui-primary-dark);}
+  .security_profiles_app_348{fill-rule:evenodd;clip-rule:evenodd;fill:var(--vitamui-primary-600);}
   .security_profiles_app_349{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_SECURITY_PROFILES_APP_18);}
   .security_profiles_app_350{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_SECURITY_PROFILES_APP_19);}
   .security_profiles_app_351{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_SECURITY_PROFILES_APP_20);}
@@ -369,7 +369,7 @@
   .security_profiles_app_353{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_SECURITY_PROFILES_APP_21);}
   .security_profiles_app_354{fill:none;stroke:#4C4C4C;stroke-miterlimit:10;}
   .security_profiles_app_355{fill:var(--vitamui-secondary-300);}
-  .security_profiles_app_356{fill:var(--vitamui-primary-dark);}
+  .security_profiles_app_356{fill:var(--vitamui-primary-600);}
   .security_profiles_app_357{fill:url(#SVGID_SECURITY_PROFILES_APP_22);}
   .security_profiles_app_358{fill:url(#SVGID_SECURITY_PROFILES_APP_23);}
   .security_profiles_app_359{fill:#FFFFFF;}
@@ -1095,7 +1095,7 @@
           <stop  offset="0.5606" style="stop-color:var(--vitamui-primary)"/>
           <stop  offset="0.6312" style="stop-color:var(--vitamui-primary)"/>
           <stop  offset="0.7003" style="stop-color:var(--vitamui-primary)"/>
-          <stop  offset="0.8198" style="stop-color:var(--vitamui-primary-light)"/>
+          <stop  offset="0.8198" style="stop-color:var(--vitamui-primary-400)"/>
           <stop  offset="0.9743" style="stop-color:var(--vitamui-primary-100)"/>
           <stop  offset="1" style="stop-color:var(--vitamui-primary-50)"/>
 				</linearGradient>

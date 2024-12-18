@@ -2,8 +2,8 @@
 
 .mat-mdc-menu-panel {
   --mat-menu-item-label-text-color: var(--vitamui-grey-900);
-  --mat-menu-item-hover-state-layer-color: var(--vitamui-background);
-  --mat-menu-item-focus-state-layer-color: var(--vitamui-background);
+  --mat-menu-item-hover-state-layer-color: var(--vitamui-primary-light);
+  --mat-menu-item-focus-state-layer-color: var(--vitamui-primary-light);
 
   @include shadow-16dp-dark('!important');
   border: 1px solid var(--vitamui-grey-400);

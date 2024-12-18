@@ -1,17 +1,19 @@
-.container {
-  margin-top: 40px;
+@use 'gap';
+
+:host {
+  @extend .gap-6;
 }
 
 ul {
   display: flex;
   list-style: none;
-  justify-content: space-between;
   padding-left: 0 !important;
+  @extend .hgap-3;
 }
 .color {
   width: auto;
   height: 150px;
-  border-radius: 8px;
+  border-radius: 4px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -21,8 +23,8 @@ ul {
   }
 }
 .shade {
-  width: 90px;
-  height: 90px;
+  width: 80px;
+  height: 80px;
   border-radius: 4px;
 }
 
@@ -31,14 +33,7 @@ ul {
   margin-top: 0.5rem;
 }
 
-.red {
-  background-color: var(--vitamui-red);
-}
-
-.orange {
-  background-color: var(--vitamui-orange);
-}
-
-.green {
-  background-color: var(--vitamui-green);
+p ::ng-deep code {
+  white-space: nowrap;
+  background: var(--vitamui-grey-300);
 }

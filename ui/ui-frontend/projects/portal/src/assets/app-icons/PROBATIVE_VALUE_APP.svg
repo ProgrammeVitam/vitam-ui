@@ -213,8 +213,8 @@
   .probative_value_app_197{fill:var(--vitamui-primary-400);}
   .probative_value_app_198{fill:var(--vitamui-primary-400);}
   .probative_value_app_199{fill:var(--vitamui-primary-400);}
-  .probative_value_app_200{fill:var(--vitamui-primary-light);}
-  .probative_value_app_201{fill:var(--vitamui-primary-light);}
+  .probative_value_app_200{fill:var(--vitamui-primary-400);}
+  .probative_value_app_201{fill:var(--vitamui-primary-400);}
   .probative_value_app_202{fill:var(--vitamui-primary-50);}
   .probative_value_app_203{fill:var(--vitamui-primary-50);}
   .probative_value_app_204{fill:var(--vitamui-primary-200);}

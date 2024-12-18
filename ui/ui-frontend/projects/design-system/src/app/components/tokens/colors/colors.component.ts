@@ -46,17 +46,19 @@ import { TranslateModule } from '@ngx-translate/core';
   imports: [NgClass, TranslateModule, KeyValuePipe, NgForOf],
 })
 export class ColorsComponent {
-  private hueIds = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900];
+  private hueIds = [900, 800, 700, 600, 500, 400, 300, 200, 100, 50];
+  private informativeHueIds = [900, 500, 300, 50];
   colors = [
     { key: 'PRIMARY', varName: '--vitamui-primary', hueIds: this.hueIds },
     { key: 'SECONDARY', varName: '--vitamui-secondary', hueIds: this.hueIds },
-    { key: 'RED', varName: '--vitamui-red', hueIds: this.hueIds },
-    { key: 'ORANGE', varName: '--vitamui-orange', hueIds: this.hueIds },
-    { key: 'GREEN', varName: '--vitamui-green', hueIds: this.hueIds },
-    { key: 'GREY', varName: '--vitamui-grey', hueIds: this.hueIds },
+    { key: 'TERTIARY', varName: '--vitamui-tertiary', hueIds: this.hueIds },
     { key: 'ADDITIONAL', varName: '--vitamui-additional', hueIds: this.hueIds },
+    { key: 'GREEN', varName: '--vitamui-green', hueIds: this.informativeHueIds },
+    { key: 'RED', varName: '--vitamui-red', hueIds: this.informativeHueIds },
+    { key: 'ORANGE', varName: '--vitamui-orange', hueIds: this.informativeHueIds },
+    { key: 'GREY', varName: '--vitamui-grey', hueIds: this.hueIds },
     { key: 'WHITE', varName: '--vitamui-white', border: true },
-    { key: 'PRIMARY_LIGHT', varName: '--vitamui-background' },
+    { key: 'PRIMARY_LIGHT', varName: '--vitamui-primary-light' },
   ];
 
   private colorToRGB(color: string) {

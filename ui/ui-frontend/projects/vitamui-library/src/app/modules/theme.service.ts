@@ -88,19 +88,12 @@ export class ThemeService {
     [ThemeColorType.VITAMUI_SECONDARY]: '#296EBC',
     [ThemeColorType.VITAMUI_TERTIARY]: '#C22A40',
     [ThemeColorType.VITAMUI_RED]: '#C10000',
-    [ThemeColorType.VITAMUI_ORANGE]: '#BF511F',
+    [ThemeColorType.VITAMUI_ORANGE]: '#EE7B00',
     [ThemeColorType.VITAMUI_GREEN]: '#27740A',
-    [ThemeColorType.VITAMUI_WHITE]: '#ffffff',
-    [ThemeColorType.VITAMUI_HEADER_FOOTER]: '#604379',
+    [ThemeColorType.VITAMUI_WHITE]: '#FFFFFF',
+    [ThemeColorType.VITAMUI_HEADER_FOOTER]: '#FFFFFF',
     [ThemeColorType.VITAMUI_BACKGROUND]: ThemeService.getPrimaryLight(DEFAULT_PRIMARY),
-    /* DEPRECATED colors : Use color chart with declinations var(--vitamui-primary-XXX),
-    var(--vitamui-secondary-XXX) and var(--vitamui-grey-XXX) */
-    [ThemeColorType.VITAMUI_PRIMARY_LIGHT]: '',
-    [ThemeColorType.VITAMUI_PRIMARY_LIGHT_20]: '',
-    [ThemeColorType.VITAMUI_PRIMARY_DARK]: '',
-    [ThemeColorType.VITAMUI_SECONDARY_LIGHT]: '',
-    [ThemeColorType.VITAMUI_SECONDARY_LIGHT_8]: '',
-    [ThemeColorType.VITAMUI_SECONDARY_DARK_5]: '',
+    [ThemeColorType.VITAMUI_PRIMARY_LIGHT]: ThemeService.getPrimaryLight(DEFAULT_PRIMARY),
   };
 
   // Theme for current app configuration
@@ -209,7 +202,7 @@ export class ThemeService {
     }
   }
 
-  private add10Declinations(key: string, colors: { [key: string]: string }, customerColors: { [colorId: string]: string }): void {
+  private addDeclinations(key: string, colors: { [key: string]: string }, customerColors: { [colorId: string]: string }): void {
     const mergedMap: { [key: string]: string } = { ...this.defaultMap, ...this.applicationColorMap, ...customerColors };
     // consider hs-L from color key as 500
 
@@ -233,6 +226,18 @@ export class ThemeService {
       colors[key + '-200'] = '#C7CAFF';
       colors[key + '-100'] = '#D6D9FF';
       colors[key + '-50'] = '#E5E7FF';
+    } else if (key === ThemeColorType.VITAMUI_GREEN) {
+      colors[key + '-900'] = '#0E4403';
+      colors[key + '-300'] = '#51BC29';
+      colors[key + '-50'] = '#DFF3D8';
+    } else if (key === ThemeColorType.VITAMUI_RED) {
+      colors[key + '-900'] = '#9E0000';
+      colors[key + '-300'] = '#EA3E3E';
+      colors[key + '-50'] = '#FAE5E5';
+    } else if (key === ThemeColorType.VITAMUI_ORANGE) {
+      colors[key + '-900'] = '#A85700';
+      colors[key + '-300'] = '#FFAE57';
+      colors[key + '-50'] = '#FBF1DF';
     } else {
       colors[key + '-900'] = convertToDarkColor(mergedMap[key], 4 * this.luminosityStep);
       colors[key + '-800'] = convertToDarkColor(mergedMap[key], 3 * this.luminosityStep);
@@ -244,18 +249,18 @@ export class ThemeService {
       colors[key + '-200'] = convertToLightColor(mergedMap[key], 3 * this.luminosityStep);
       colors[key + '-100'] = convertToLightColor(mergedMap[key], 4 * this.luminosityStep);
       colors[key + '-50'] = convertToLightColor(mergedMap[key], 5 * this.luminosityStep);
-    }
 
-    colors[key + '-900-font'] = this.calculateFontColor(colors[key + '-900']);
-    colors[key + '-800-font'] = this.calculateFontColor(colors[key + '-800']);
-    colors[key + '-700-font'] = this.calculateFontColor(colors[key + '-700']);
-    colors[key + '-600-font'] = this.calculateFontColor(colors[key + '-600']);
-    colors[key + '-font'] = this.calculateFontColor(mergedMap[key]); // primary/secondary/tertiary
-    colors[key + '-400-font'] = this.calculateFontColor(colors[key + '-400']);
-    colors[key + '-300-font'] = this.calculateFontColor(colors[key + '-300']);
-    colors[key + '-200-font'] = this.calculateFontColor(colors[key + '-200']);
-    colors[key + '-100-font'] = this.calculateFontColor(colors[key + '-100']);
-    colors[key + '-50-font'] = this.calculateFontColor(colors[key + '-50']);
+      colors[key + '-900-font'] = this.calculateFontColor(colors[key + '-900']);
+      colors[key + '-800-font'] = this.calculateFontColor(colors[key + '-800']);
+      colors[key + '-700-font'] = this.calculateFontColor(colors[key + '-700']);
+      colors[key + '-600-font'] = this.calculateFontColor(colors[key + '-600']);
+      colors[key + '-font'] = this.calculateFontColor(mergedMap[key]); // primary/secondary/tertiary
+      colors[key + '-400-font'] = this.calculateFontColor(colors[key + '-400']);
+      colors[key + '-300-font'] = this.calculateFontColor(colors[key + '-300']);
+      colors[key + '-200-font'] = this.calculateFontColor(colors[key + '-200']);
+      colors[key + '-100-font'] = this.calculateFontColor(colors[key + '-100']);
+      colors[key + '-50-font'] = this.calculateFontColor(colors[key + '-50']);
+    }
   }
 
   /**
@@ -272,6 +277,7 @@ export class ThemeService {
             [
               ThemeColorType.VITAMUI_PRIMARY,
               ThemeColorType.VITAMUI_SECONDARY,
+              ThemeColorType.VITAMUI_TERTIARY,
               ThemeColorType.VITAMUI_GREY,
               ThemeColorType.VITAMUI_ADDITIONAL,
               ThemeColorType.VITAMUI_RED,
@@ -280,7 +286,7 @@ export class ThemeService {
             ] as string[]
           ).includes(key)
         ) {
-          this.add10Declinations(key, colors, customerColors);
+          this.addDeclinations(key, colors, customerColors);
         } else if (key === ThemeColorType.VITAMUI_HEADER_FOOTER) {
           const mergedMap = { ...this.defaultMap, ...this.applicationColorMap, ...customerColors };
           colors[key + '-font'] = this.calculateFontColor(mergedMap[key]);

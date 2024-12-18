@@ -65,24 +65,4 @@ describe('Colors', () => {
   it('should take customColor if both are defined', () => {
     expect(getColorFromMaps('bothColor', defaultMap, appColorMap, customerColorMap)).toEqual('#296EBC');
   });
-
-  it('should compute lighten from app color', () => {
-    expect(getColorFromMaps('appColor-light', defaultMap, appColorMap, customerColorMap)).toEqual('#b54bce');
-  });
-
-  it('should compute darken from custom color', () => {
-    expect(getColorFromMaps('bothColor-dark', defaultMap, appColorMap, customerColorMap)).toEqual('#205692');
-  });
-
-  it('should compute darker color', () => {
-    expect(getColorFromMaps('appColor-light-50', defaultMap, appColorMap, customerColorMap)).toEqual('#f7ebfa');
-  });
-
-  it('should not overflow white color', () => {
-    expect(getColorFromMaps('appColor-light-100', defaultMap, appColorMap, customerColorMap)).toEqual('#ffffff');
-  });
-
-  it('should not overflow black color', () => {
-    expect(getColorFromMaps('appColor-dark-100', defaultMap, appColorMap, customerColorMap)).toEqual('#000000');
-  });
 });

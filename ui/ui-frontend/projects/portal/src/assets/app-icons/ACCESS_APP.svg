@@ -1088,7 +1088,7 @@
 				<stop  offset="0.5606" style="stop-color:var(--vitamui-primary)"/>
 				<stop  offset="0.6312" style="stop-color:var(--vitamui-primary)"/>
 				<stop  offset="0.7003" style="stop-color:var(--vitamui-primary)"/>
-				<stop  offset="0.8198" style="stop-color:var(--vitamui-primary-light)"/>
+				<stop  offset="0.8198" style="stop-color:var(--vitamui-primary-400)"/>
 				<stop  offset="0.9743" style="stop-color:var(--vitamui-primary-100)"/>
 				<stop  offset="1" style="stop-color:var(--vitamui-primary-50)"/>
 			</linearGradient>

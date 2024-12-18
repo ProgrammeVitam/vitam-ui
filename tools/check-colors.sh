@@ -17,54 +17,13 @@ find_arguments=(
   -not -path "./tools/*"
   -not -path "./deployment/*"
   -not -path "*/vitamui-icons.css" # TODO: we should remove colors from vitamui-icon-apps-colored icon instead of excluding from the check
+  -not -path "*/*.spec.ts"
 )
 
 allowed_colors=(
-    "#9aa0ff" # additional
-    "#296ebc" # secondary
-    "#c22a40" # tertiary
-    "#ffffff" # white
-    "#604379" # header/footer
-    "#0f0d2d" # background foncé
-    "#FCF7FD" # background
-    "#000000" # black
-    "#c10000" # red
-    "#bf511f" # orange
-    "#27740a" # green
-
-    "#F7EBFA" # primary-50
-    "#E6C3EF" # primary-100
-    "#D69BE4" # primary-200
-    "#C573D9" # primary-300
-    "#B54BCE" # primary-400
     "#9C31B5" # primary-(500)
-    "#79268C" # primary-600
-    "#561B64" # primary-700
-    "#34103C" # primary-800
-    "#110514" # primary-900
-
-    "#EAF2FA" # secondary-50
-    "#C0D7F1" # secondary-100
-    "#96BDE8" # secondary-200
-    "#6DA2DF" # secondary-300
-    "#4388D6" # secondary-400
     "#296EBC" # secondary-(500)
-    "#205692" # secondary-600
-    "#173D69" # secondary-700
-    "#0E253F" # secondary-800
-    "#050C15" # secondary-900
-
-    "#fafafa" # grey-50
-    "#f5f5f5" # grey-100
-    "#eeeeee" # grey-200
-    "#e0e0e0" # grey-300
-    "#bdbdbd" # grey-400
-    "#9e9e9e" # grey-(500)
-    "#757575" # grey-600
-    "#616161" # grey-700
-    "#424242" # grey-800
-    "#212121" # grey-900
-
+    "#C22A40" # tertiary
     "#E5E7FF" # additional-50
     "#D6D9FF" # additional-100
     "#C7CAFF" # additional-200
@@ -75,6 +34,33 @@ allowed_colors=(
     "#1F2CFF" # additional-700
     "#000DE0" # additional-800
     "#000AA3" # additional-900
+    "#FAFAFA" # grey-50
+    "#F5F5F5" # grey-100
+    "#EEEEEE" # grey-200
+    "#E0E0E0" # grey-300
+    "#BDBDBD" # grey-400
+    "#9E9E9E" # grey-(500)
+    "#757575" # grey-600
+    "#616161" # grey-700
+    "#424242" # grey-800
+    "#212121" # grey-900
+    "#FFFFFF" # white
+    "#FCF7FD" # primary-light
+    '#DFF3D8' # green-50
+    '#51BC29' # green-300
+    "#27740A" # green
+    '#0E4403' # green-900
+    '#FAE5E5' # red-50
+    '#EA3E3E' # red-300
+    "#C10000" # red
+    '#9E0000' # red-900
+    '#FBF1DF' # orange-50
+    '#FFAE57' # orange-300
+    "#EE7B00" # orange
+    '#A85700' # orange-900
+
+    "#0F0D2D" # background foncé
+    "#000000" # black
 )
 files_allowed_colors=(
     "index\.html"

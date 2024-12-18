@@ -124,14 +124,25 @@
   },
   "COLORS": {
     "PRIMARY": "Couleur primaire",
+    "PRIMARY.INFO": "La couleur primaire s'utilise via la variable CSS <code>--vitamui-primary</code> (pour la variante 500) et ses variantes : <code>--vitamui-primary-50</code>, <code>--vitamui-primary-100</code>, ..., <code>--vitamui-primary-900</code>.<br/>Les variantes suivent un algorithme qui ajoute/retranche 10 de luminosité entre chaque variante.<br/>La couleur principale (500) peut être surchargée via différents moyens (fichier de configuration, identité graphique d'une organisation, ...), et les variantes sont alors automatiquement recalculées dans ce cas.",
     "SECONDARY": "Couleur secondaire",
+    "SECONDARY.INFO": "La couleur secondaire s'utilise via la variable CSS <code>--vitamui-secondary</code> (pour la variante 500) et ses variantes : <code>--vitamui-secondary-50</code>, <code>--vitamui-secondary-100</code>, ..., <code>--vitamui-secondary-900</code>.<br/>Les variantes suivent un algorithme qui ajoute/retranche 10 de luminosité entre chaque variante.<br/>La couleur principale (500) peut être surchargée via différents moyens (fichier de configuration, identité graphique d'une organisation, ...), et les variantes sont alors automatiquement recalculées dans ce cas.",
+    "TERTIARY": "Couleur tertiaire",
+    "TERTIARY.INFO": "La couleur tertiaire s'utilise via la variable CSS <code>--vitamui-tertiary</code> (pour la variante 500) et ses variantes : <code>--vitamui-tertiary-50</code>, <code>--vitamui-tertiary-100</code>, ..., <code>--vitamui-tertiary-900</code>.<br/>Les variantes suivent un algorithme qui ajoute/retranche 10 de luminosité entre chaque variante.<br/>La couleur principale (500) peut être surchargée via différents moyens (fichier de configuration, identité graphique d'une organisation, ...), et les variantes sont alors automatiquement recalculées dans ce cas.",
+    "ADDITIONAL": "Couleur additionnelle",
+    "ADDITIONAL.INFO": "La couleur additionnelle s'utilise via la variable CSS <code>--vitamui-additional</code> (pour la variante 500) et ses variantes : <code>--vitamui-additional-50</code>, <code>--vitamui-additional-100</code>, ..., <code>--vitamui-additional-900</code>.<br/>Les variantes sont définies \"en dur\" sans suivre d'algorithme.",
     "GREY": "Couleur grise",
-    "ADDITIONAL": "Couleur additionelle",
+    "GREY.INFO": "La couleur grise s'utilise via la variable CSS <code>--vitamui-grey</code> (pour la variante 500) et ses variantes : <code>--vitamui-grey-50</code>, <code>--vitamui-grey-100</code>, ..., <code>--vitamui-grey-900</code>.<br/>Les variantes sont définies \"en dur\" sans suivre d'algorithme.",
     "WHITE": "Couleur blanche",
+    "WHITE.INFO": "La couleur blanche s'utilise via la variable CSS <code>--vitamui-white</code>.",
     "PRIMARY_LIGHT": "Couleur \"primary-light\"",
+    "PRIMARY_LIGHT.INFO": "La couleur primary-light s'utilise via la variable CSS <code>--vitamui-primary-light</code>.",
+    "GREEN": "Couleur verte",
+    "GREEN.INFO": "La couleur verte s'utilise via la variable CSS <code>--vitamui-green</code> (pour la variante 500) et ses variantes : <code>--vitamui-green-50</code>, <code>--vitamui-green-300</code> et <code>--vitamui-green-900</code>.<br/>Les variantes sont définies \"en dur\" sans suivre d'algorithme.",
     "RED": "Couleur rouge",
+    "RED.INFO": "La couleur rouge s'utilise via la variable CSS <code>--vitamui-red</code> (pour la variante 500) et ses variantes : <code>--vitamui-red-50</code>, <code>--vitamui-red-300</code> et <code>--vitamui-red-900</code>.<br/>Les variantes sont définies \"en dur\" sans suivre d'algorithme.",
     "ORANGE": "Couleur orange",
-    "GREEN": "Couleur verte"
+    "ORANGE.INFO": "La couleur orange s'utilise via la variable CSS <code>--vitamui-orange</code> (pour la variante 500) et ses variantes : <code>--vitamui-orange-50</code>, <code>--vitamui-orange-300</code> et <code>--vitamui-orange-900</code>.<br/>Les variantes sont définies \"en dur\" sans suivre d'algorithme."
   },
   "ICONS": {
     "TITLE": "Liste des icônes de Vitam-UI",

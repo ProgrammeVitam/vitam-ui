@@ -271,7 +271,7 @@
 
 .pastis-table-row:hover {
   @extend .pastis-table-row;
-  background-color: var(--vitamui-background);
+  background-color: var(--vitamui-primary-light);
   @include shadow-2dp-dark;
   cursor: pointer;
 }
