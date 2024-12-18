@@ -37,24 +37,26 @@
 import { Component } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { EllipsisDirectiveModule } from 'vitamui-library';
-import { NgClass } from '@angular/common';
+import { NgClass, NgTemplateOutlet } from '@angular/common';
+import { CommonTooltipModule } from '../../../../../../vitamui-library/src/app/modules/components/common-tooltip/common-tooltip.module';
 
 @Component({
   templateUrl: './typography.component.html',
   styleUrls: ['./typography.component.scss'],
   standalone: true,
-  imports: [TranslateModule, EllipsisDirectiveModule, NgClass],
+  imports: [TranslateModule, EllipsisDirectiveModule, NgClass, CommonTooltipModule, NgTemplateOutlet],
 })
 export class TypographyComponent {
-  textButtonFlavors = ['', 'link'];
+  textFlavors = ['', 'bold'];
+  textLinkFlavors = ['', 'bold'];
+  textButtonFlavors = ['link', ''];
   textButtonSizes = ['large', 'medium', 'small'];
-  textFlavors = ['', 'bold', 'link'];
   textSizes = ['large', 'medium', 'normal', 'caption', 'subcaption'];
   textColors = ['primary', 'secondary', 'tertiary', 'success', 'warning', 'danger', 'light']; // FIXME: do not keep all?
 
   info(element: HTMLElement) {
     const style = getComputedStyle(element);
-    return `(${this.fontFamily(style)} | ${this.fontSize(style)} | w: ${this.fontWeight(style)} | lh: ${this.lineHeight(style)} | ls: ${this.letterSpacing(style)})`;
+    return `${this.fontFamily(style)} | Size: ${this.fontSize(style)}px | Weight: ${this.fontWeight(style)} | Line height: ${this.lineHeight(style)}px | Letter spacing: ${this.letterSpacing(style)}`;
   }
 
   private fontSize(style: CSSStyleDeclaration) {

@@ -1,8 +1,14 @@
-:host > div {
-  background-color: var(--vitamui-background);
-  padding: 20px;
+@use 'gap';
+
+:host {
+  @extend .gap-8;
+  align-items: normal;
 }
 
-.d-flex {
-  gap: 1rem;
+p {
+  margin: 0;
+}
+
+.info {
+  color: var(--vitamui-grey-700);
 }
