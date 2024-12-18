@@ -16,7 +16,15 @@
         vitamui_keys: "{{ vitamui.keys() | list }}"
 
     - set_fact:
-        vitamui_service_list: "{{ services_on_vm | intersect(vitamui_keys) | select('ne', 'referential-internal')   }}"
+        vitamui_service_list: "{{ services_on_vm | intersect(vitamui_keys) | select('ne', 'referential_internal')   }}"
+
+    - name: Debug the value of vitamui_service_list
+      debug:
+        var: vitamui_service_list
+
+    - name: Debug the value of vitamui_keys
+      debug:
+        var: vitamui_keys
 
     - name: Add VitamUI filebeat inputs
       template:
