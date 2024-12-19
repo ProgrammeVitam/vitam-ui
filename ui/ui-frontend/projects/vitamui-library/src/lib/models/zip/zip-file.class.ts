@@ -38,12 +38,14 @@
 import JSZip from 'jszip';
 import { ZipFileStatus } from './zip-file-status.interface';
 import { HttpEvent, HttpEventType } from '@angular/common/http';
+import { BehaviorSubject } from 'rxjs';
 
 export class ZipFile {
   private zipFile: JSZip;
   zipFileStatus: ZipFileStatus = null;
+  zipFileStatus$: BehaviorSubject<ZipFileStatus> = new BehaviorSubject<ZipFileStatus>(null);
 
-  constructor(transactionId: string) {
+  constructor(transactionId?: string) {
     this.zipFile = new JSZip();
     this.zipFileStatus = {
       transactionId: transactionId,
@@ -52,9 +54,14 @@ export class ZipFile {
     };
   }
 
-  addFiles(files: FileList | File[]) {
+  setTransactionId(transactionId: string): ZipFile {
+    this.zipFileStatus.transactionId = transactionId;
+    return this;
+  }
+
+  addFiles(files: FileList | File[]): ZipFile {
     if (files.length === 0) {
-      return;
+      return this;
     }
     for (let i = 0; i < files.length; i++) {
       const item = files[i];
@@ -73,6 +80,7 @@ export class ZipFile {
   private updateZipFileStatus(metadataCurrentFile: string, metadataPercent: number) {
     this.zipFileStatus.currentFile = metadataCurrentFile;
     this.zipFileStatus.currentFileUploadedSize = metadataPercent;
+    this.zipFileStatus$.next(this.zipFileStatus);
   }
 
   updateUploadingZipFileStatus(data: HttpEvent<any>) {
@@ -87,5 +95,6 @@ export class ZipFile {
         break;
     }
     this.zipFileStatus.uploadedSize = progressPercent;
+    this.zipFileStatus$.next(this.zipFileStatus);
   }
 }

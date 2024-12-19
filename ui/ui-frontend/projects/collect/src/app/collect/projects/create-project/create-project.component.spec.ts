@@ -167,6 +167,7 @@ describe('CreateProjectComponent', () => {
         { provide: TransactionsService, useValue: transactionServiceMock },
         { provide: CollectUploadService, useValue: uploadServiceMock },
       ],
+      teardown: { destroyAfterEach: false },
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });
@@ -258,7 +259,7 @@ describe('CreateProjectComponent', () => {
   describe('DOM', () => {
     it('should have an input file', () => {
       const nativeElement = fixture.nativeElement;
-      const elInput = nativeElement.querySelector('input[type=file]');
+      const elInput = nativeElement.querySelector('vitamui-file-selector');
       expect(elInput).toBeTruthy();
     });
 
