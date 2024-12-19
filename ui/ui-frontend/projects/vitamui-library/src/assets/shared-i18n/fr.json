@@ -5123,6 +5123,10 @@
         "ORIGIN_WAITING_RECALCULATE": "En attente de recalcul",
         "ORIGIN_INHERITE_AT_LEAST_ONE": "Héritées"
       },
+      "SEARCH_TYPES": {
+        "": "Recherche approchante",
+        "Strict": "Recherche exacte"
+      },
       "FIELDS": {
         "ORPHANS_NODE": "Position",
         "ID": "ID",

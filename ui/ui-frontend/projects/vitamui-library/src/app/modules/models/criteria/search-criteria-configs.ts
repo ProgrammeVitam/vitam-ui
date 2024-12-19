@@ -42,7 +42,7 @@ export const searchCriteriaConfigs: { [key: string]: Partial<SearchCriteriaAddAc
     keyElt: 'TITLE',
     keyTranslated: true,
   },
-  'title.strict': {
+  'title.Strict': {
     keyElt: 'Title.Strict',
     keyTranslated: true,
   },

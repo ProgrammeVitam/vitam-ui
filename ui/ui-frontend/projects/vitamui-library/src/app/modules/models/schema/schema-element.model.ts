@@ -58,6 +58,7 @@ export interface SchemaElement extends WithPath {
   readonly Collection: Collection;
   readonly ApiPath: string;
   readonly Category: 'DESCRIPTION' | 'MANAGEMENT' | 'OTHER';
+  readonly CustomSearchTypes?: string[];
 }
 
 export interface ProfiledSchemaElement extends SchemaElement {

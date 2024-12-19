@@ -38,7 +38,6 @@ import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { TranslateService } from '@ngx-translate/core';
-import { Observable } from 'rxjs';
 import {
   ActionOnCriteria,
   CriteriaDataType,
@@ -82,14 +81,11 @@ export class SimpleCriteriaSearchComponent implements OnInit {
     [ARCHIVE_UNIT_WITHOUT_OBJECTS, true],
   ]);
 
-  otherCriteriaOptions$: Observable<ItemNode<SchemaElement>[]>;
+  otherCriteriaOptions: ItemNode<SchemaElement>[];
   getOtherCriteriaDisplayValue = (element: SchemaElement) =>
     `${element.Origin === 'EXTERNAL' ? 'EXT-' : ''}${element.ShortName} - ${element.FieldName}`;
 
-  searchTypes: SearchType[] = [
-    { label: 'Recherche approchante', value: 'approx' },
-    { label: 'Recherche exacte', value: 'strict' },
-  ];
+  titleSearchTypes: SearchType[];
   titleSelectedType?: SearchType;
 
   constructor(
@@ -100,7 +96,10 @@ export class SimpleCriteriaSearchComponent implements OnInit {
     private translateService: TranslateService,
     private schemaService: SchemaService,
   ) {
-    this.otherCriteriaOptions$ = this.schemaService.getDescriptiveSchemaTree();
+    this.schemaService.getDescriptiveSchemaTree().subscribe((schema) => {
+      this.otherCriteriaOptions = schema;
+      this.titleSearchTypes = this.searchTypes(schema, 'Title');
+    });
 
     this.translateService.onLangChange.subscribe(() => {
       if (this.archiveUnitTypesCriteria.get(ARCHIVE_UNIT_WITH_OBJECTS)) {
@@ -149,13 +148,14 @@ export class SimpleCriteriaSearchComponent implements OnInit {
       .pipe(
         filter((searchCriteria) => !!searchCriteria),
         map((searchCriteria) => Array.from(searchCriteria.keys())),
-        map((criteriaKeys) => criteriaKeys.filter((criteriaKey) => ['TITLE', 'Title.Strict'].includes(criteriaKey))),
+        map((criteriaKeys) => criteriaKeys.filter((criteriaKey) => /^TITLE(\.[^.]+)?$/i.test(criteriaKey))),
       )
       .subscribe((titleKeys) => {
-        const type = titleKeys?.length ? (titleKeys.includes('Title.Strict') ? 'strict' : 'approx') : null;
-        this.searchTypes.forEach((item) => (item.disabled = type && item.value !== type));
+        const hasTitleSearchCriteria = !!titleKeys?.length;
+        const type = hasTitleSearchCriteria ? titleKeys[0].split('.')[1] || '' : null;
+        this.titleSearchTypes.forEach((item) => (item.disabled = hasTitleSearchCriteria && item.value !== type));
 
-        if (type) this.titleSelectedType = this.searchTypes.find((item) => item.value === type);
+        if (hasTitleSearchCriteria) this.titleSelectedType = this.titleSearchTypes.find((item) => item.value === type);
       });
 
     Object.entries(this.simpleCriteriaForm.controls)
@@ -178,6 +178,17 @@ export class SimpleCriteriaSearchComponent implements OnInit {
         }
       }
     });
+  }
+
+  private searchTypes(schema: ItemNode<SchemaElement>[], path: string): SearchType[] {
+    // TODO: only works for a path at the root level
+    const customSearchTypes = schema.find((s) => s.item.ApiPath === path).item.CustomSearchTypes;
+    return customSearchTypes?.length
+      ? ['', ...customSearchTypes].map((type) => ({
+          label: this.translateService.instant(`ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.SEARCH_TYPES.${type}`),
+          value: type,
+        }))
+      : [];
   }
 
   addCriteriaFromObject(object: any) {
@@ -213,7 +224,7 @@ export class SimpleCriteriaSearchComponent implements OnInit {
         } else if (key.toLowerCase() === 'title') {
           const searchWithTypeSelectorValue = value as SearchWithTypeSelectorValue;
           const type = searchWithTypeSelectorValue.type.value;
-          const key = type === 'strict' ? 'title.strict' : 'title';
+          const key = type ? `title.${type}` : 'title';
           this.addCriteriaFromObject({ [key]: searchWithTypeSelectorValue.value });
         } else if (typeof value === 'object' && Object.entries(value).length) {
           this.addCriteriaFromObject(value);
