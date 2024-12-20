@@ -31,6 +31,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 import java.util.Map;
 
+import static java.util.Map.entry;
+
 public class ArchiveSearchConsts {
 
     public static final String RULE_NAME_FIELD = "RuleValue";
@@ -234,25 +236,6 @@ public class ArchiveSearchConsts {
     public static final String ORIGINATING_AGENCY_LABEL_FIELD = "SP_LABEL";
     public static final String ORIGINATING_AGENCY_ID_FIELD = "SP_CODE";
 
-    public static Map<String, String> SIMPLE_FIELDS_VALUES_MAPPING = Map.of(
-        "GUID",
-        "#id",
-        "GUID_OPI",
-        "#opi",
-        ORIGINATING_AGENCY_ID_FIELD,
-        "#originating_agency",
-        "START_DATE",
-        "StartDate",
-        "END_DATE",
-        "EndDate",
-        ORIGINATING_AGENCY_LABEL_FIELD,
-        "originating_agency_label",
-        "ARCHIVE_UNIT_HOLDING_UNIT",
-        "#unitType",
-        RULES_COMPUTED,
-        "#validComputedInheritedRules"
-    );
-
     public static final int DEFAULT_DEPTH = 10;
     public static final int FACET_SIZE_MULTIPLIER = 100;
 
@@ -312,4 +295,15 @@ public class ArchiveSearchConsts {
     public static final String APPRAISAL_RULE_START_DATE = "APPRAISAL_RULE_START_DATE";
 
     public static final String UNITS_UPS = "#allunitups";
+
+    public static Map<String, String> SIMPLE_FIELDS_VALUES_MAPPING = Map.ofEntries(
+        entry("GUID", GUID),
+        entry("GUID_OPI", "#opi"),
+        entry(ORIGINATING_AGENCY_ID_FIELD, PRODUCER_SERVICE),
+        entry("START_DATE", START_DATE),
+        entry("END_DATE", END_DATE),
+        entry(ORIGINATING_AGENCY_LABEL_FIELD, "originating_agency_label"),
+        entry("ARCHIVE_UNIT_HOLDING_UNIT", ALL_ARCHIVE_UNIT_TYPES),
+        entry(RULES_COMPUTED, MetadataSearchCriteriaUtils.WAITING_TO_COMPUTE_RULES_STATUS)
+    );
 }

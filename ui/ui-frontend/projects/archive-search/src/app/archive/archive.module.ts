@@ -54,8 +54,10 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatLegacyTabsModule as MatTabsModule } from '@angular/material/legacy-tabs';
 import { MatTreeModule } from '@angular/material/tree';
 import {
+  AgenciesModule,
   FormFieldValueWrapperComponent,
   SearchWithTypeSelectorComponent,
+  SelectComponent,
   TableFilterModule,
   VitamUICommonModule,
   VitamUILibraryModule,
@@ -103,6 +105,7 @@ import { ClassificationTreeComponent } from './filing-holding-scheme/classificat
 import { FilingHoldingSchemeComponent } from './filing-holding-scheme/filing-holding-scheme.component';
 import { LeavesTreeComponent } from './filing-holding-scheme/leaves-tree/leaves-tree.component';
 import { SharedModule } from './shared/shared.module';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -134,6 +137,9 @@ import { SharedModule } from './shared/shared.module';
     CommonModule,
     SearchWithTypeSelectorComponent,
     FormFieldValueWrapperComponent,
+    TranslateModule,
+    AgenciesModule,
+    SelectComponent,
   ],
   declarations: [
     ArchiveComponent,

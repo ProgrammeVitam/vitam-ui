@@ -64,4 +64,9 @@
   {% else %}
   ]
   {% endif %}
+  {% if (vitamui_struct.vitamui_component == "ui-collect") and (vitamui.collect.offline_services | default([]) | length > 0) %}
+  "COLLECT": {
+    "OFFLINE_SERVICES": {{ vitamui.collect.offline_services | to_json(indent=2, sort_keys=True) }}
+  }
+  {% endif %}
 }

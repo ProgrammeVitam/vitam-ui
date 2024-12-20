@@ -32,6 +32,10 @@
   width: 100% !important;
 }
 
+.w-50 {
+  width: 50% !important;
+}
+
 $vitamui-colors: vitamui-grey, vitamui-primary, vitamui-secondary;
 @each $color in $vitamui-colors {
   @for $i from 1 to 9 {

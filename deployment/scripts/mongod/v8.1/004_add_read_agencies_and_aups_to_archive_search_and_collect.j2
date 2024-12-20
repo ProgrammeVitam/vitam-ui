@@ -1,0 +1,57 @@
+print("Start - 004_add_read_agencies_and_aups_to_archive_search_and_collect.js.j2");
+
+db = db.getSiblingDB('iam')
+db.profiles.updateMany({
+    applicationName: "ARCHIVE_SEARCH_MANAGEMENT_APP"
+}, {
+    $addToSet: {
+        roles: {
+            $each: [
+                { name: "ROLE_GET_AGENCIES" },
+                { name: "ROLE_GET_ARCHIVE_PROFILES_UNIT" }
+            ]
+        }
+    }
+});
+db.profiles.updateMany({
+    applicationName: "COLLECT_APP"
+}, {
+    $addToSet: {
+        roles: {
+            $each: [
+                { name: "ROLE_GET_AGENCIES" },
+                { name: "ROLE_GET_ARCHIVE_PROFILES_UNIT" }
+            ]
+        }
+    }
+});
+
+db = db.getSiblingDB('security')
+db.contexts.updateOne({
+    "_id": "ui_archive_search_context"
+},
+{
+    $addToSet:{
+        roleNames:{
+            $each:[
+                "ROLE_GET_AGENCIES",
+                "ROLE_GET_ARCHIVE_PROFILES_UNIT"
+            ]
+        }
+    }
+});
+db.contexts.updateOne({
+    "_id": "ui_collect_context"
+},
+{
+    $addToSet:{
+        "roleNames":{
+            $each:[
+                "ROLE_GET_AGENCIES",
+                "ROLE_GET_ARCHIVE_PROFILES_UNIT"
+            ]
+        }
+    }
+});
+
+print("End - 004_add_read_agencies_and_aups_to_archive_search_and_collect.js.j2");

@@ -42,9 +42,7 @@ import {
   MatLegacyTabHeader as MatTabHeader,
 } from '@angular/material/legacy-tabs';
 import { Observable } from 'rxjs';
-import { Agency } from 'vitamui-library';
-import { ConfirmActionComponent } from 'vitamui-library';
-import { AgencyService } from '../agency.service';
+import { Agency, ConfirmActionComponent, AgencyService } from 'vitamui-library';
 import { AgencyInformationTabComponent } from './agency-information-tab/agency-information-tab.component';
 
 @Component({

@@ -47,10 +47,15 @@ import { MatLegacySelectModule as MatSelectModule } from '@angular/material/lega
 import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { EMPTY, of } from 'rxjs';
-import { BASE_URL, ConfirmDialogService, ExternalParametersService, LoggerModule, AccessContractService } from 'vitamui-library';
+import {
+  BASE_URL,
+  ConfirmDialogService,
+  ExternalParametersService,
+  LoggerModule,
+  AccessContractService,
+  AgencyService,
+} from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
-
-import { AgencyService } from '../../agency/agency.service';
 import { AccessContractCreateComponent } from './access-contract-create.component';
 import { AccessContractCreateValidators } from './access-contract-create.validators';
 import { HttpClientTestingModule } from '@angular/common/http/testing';

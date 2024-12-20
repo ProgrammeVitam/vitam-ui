@@ -235,6 +235,7 @@ customer-init:
         - ROLE_TRANSFER_ACKNOWLEDGMENT
         - ROLE_GET_RULES
         - ROLE_GET_SCHEMAS
+        - ROLE_GET_AGENCIES
         - ROLE_GET_ARCHIVE_PROFILES_UNIT
 
     - name: Consultation
@@ -247,6 +248,7 @@ customer-init:
         - ROLE_GET_ACCESS_CONTRACTS
         - ROLE_GET_RULES
         - ROLE_GET_SCHEMAS
+        - ROLE_GET_AGENCIES
         - ROLE_GET_ARCHIVE_PROFILES_UNIT
 
     - name: Archiviste
@@ -260,6 +262,7 @@ customer-init:
         - ROLE_GET_ACCESS_CONTRACTS
         - ROLE_GET_RULES
         - ROLE_GET_SCHEMAS
+        - ROLE_GET_AGENCIES
         - ROLE_GET_ARCHIVE_PROFILES_UNIT
 
     - name: Profil pour la gestion des pua/pa de pastis
@@ -297,6 +300,8 @@ customer-init:
         - ROLE_GET_ONTOLOGIES
         - ROLE_GET_FILLING_PLAN_ACCESS
         - ROLE_GET_UNITS
+        - ROLE_GET_AGENCIES
+        - ROLE_GET_ARCHIVE_PROFILES_UNIT
 
 
     - name: Archiviste - gestion et collecte
@@ -323,6 +328,8 @@ customer-init:
         - ROLE_GET_SCHEMAS
         - ROLE_GET_ONTOLOGIES
         - ROLE_GET_UNITS
+        - ROLE_GET_AGENCIES
+        - ROLE_GET_ARCHIVE_PROFILES_UNIT
 
     - name: Service producteur
       description: Profil de préparation des versements des archives sans possibilité de transmettre les archives au SAE
@@ -344,6 +351,8 @@ customer-init:
         - ROLE_GET_ONTOLOGIES
         - ROLE_GET_FILLING_PLAN_ACCESS
         - ROLE_GET_UNITS
+        - ROLE_GET_AGENCIES
+        - ROLE_GET_ARCHIVE_PROFILES_UNIT
 
     - name: Pastis-Gestion des profils documentaires
       description: Pastis-Gestion des profils documentaires

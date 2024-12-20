@@ -45,8 +45,8 @@ import {
   Option,
   Status,
   VitamuiSelectOptions,
+  AgencyService,
 } from 'vitamui-library';
-import { AgencyService } from '../../agency/agency.service';
 import { AccessContractCreateValidators } from './access-contract-create.validators';
 
 import { finalize, Subject } from 'rxjs';

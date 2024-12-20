@@ -39,10 +39,9 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { of } from 'rxjs';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
-import { AgencyService } from '../../../agency/agency.service';
 import { AccessContractAuthorizationsTabComponent } from './access-contract-authorizations-tab.component';
 import { MatLegacyDialog as MatDialog, MatLegacyDialogModule } from '@angular/material/legacy-dialog';
-import { AccessContract, Status } from 'vitamui-library';
+import { AccessContract, Status, AgencyService } from 'vitamui-library';
 
 describe('AccessContractUsageAndServicesTabComponent', () => {
   let component: AccessContractAuthorizationsTabComponent;

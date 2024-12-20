@@ -334,6 +334,7 @@ export class SelectComponent extends AbstractFormInputDirective implements Valid
     // When the component is reset this method is called with selectedOptionKeys = null
     if (this.preselectedOptionKeys == null) {
       this.selectedOptions = [];
+      setTimeout(() => this.matSelect._onBlur()); // Required to prevent the label to keep floating when resetting the value
     } else {
       this.selectedOptions = this.allOptions.filter((option) => this.preselectedOptionKeys.includes(option.key));
     }

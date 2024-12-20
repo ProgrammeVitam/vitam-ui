@@ -52,7 +52,6 @@ export interface AppConfiguration {
   FOOTER_LOGO: string;
   USER_LOGO: string;
   LOGO: string;
-  [key: string]: any;
   PLATFORM_NAME: string;
   CUSTOMER: string;
   GATEWAY_ENABLED: boolean;
@@ -63,4 +62,10 @@ export interface AppConfiguration {
   UI: Ui;
   VITAM: VitamConfiguration;
   VITAM_ADMIN_TENANT?: number;
+  COLLECT?: {
+    OFFLINE_SERVICES?: SearchProvider[];
+  };
+  [key: string]: any;
 }
+
+export type SearchProvider = 'agencies' | 'archive-unit-profiles';

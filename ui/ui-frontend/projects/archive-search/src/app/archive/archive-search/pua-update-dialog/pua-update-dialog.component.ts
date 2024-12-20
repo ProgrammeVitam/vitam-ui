@@ -44,9 +44,15 @@ import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, 
 import { MatRadioModule } from '@angular/material/radio';
 import { finalize, Observable } from 'rxjs';
 import { AsyncPipe, I18nPluralPipe } from '@angular/common';
-import { Logger, SearchCriteriaEltDto, SelectComponent, StartupService, VitamuiSelectOptions } from 'vitamui-library';
+import {
+  ArchiveUnitProfilesService,
+  Logger,
+  SearchCriteriaEltDto,
+  SelectComponent,
+  StartupService,
+  VitamuiSelectOptions,
+} from 'vitamui-library';
 import { map } from 'rxjs/operators';
-import { PuaService } from './pua.service';
 import { ArchiveService } from '../../archive.service';
 import { RuleActions, RuleSearchCriteriaDto } from '../../models/ruleAction.interface';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
@@ -76,16 +82,16 @@ export class PuaUpdateDialogComponent {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: PuaUpdateDialogComponentData,
     fb: FormBuilder,
-    puaService: PuaService,
+    archiveUnitProfilesService: ArchiveUnitProfilesService,
     private dialogRef: MatDialogRef<PuaUpdateDialogComponent>,
     private archiveService: ArchiveService,
     private startupService: StartupService,
     private translateService: TranslateService,
     private logger: Logger,
   ) {
-    this.puas$ = puaService
+    this.puas$ = archiveUnitProfilesService
       .getAll()
-      .pipe(map((puas) => ({ options: puas.map((pua) => ({ key: pua.identifier, label: pua.identifier })) })));
+      .pipe(map((puas) => ({ options: puas.map((pua) => ({ key: pua.identifier, label: `${pua.identifier} - ${pua.name}` })) })));
 
     const actionControl = new FormControl(null, Validators.required);
     this.form = fb.group({

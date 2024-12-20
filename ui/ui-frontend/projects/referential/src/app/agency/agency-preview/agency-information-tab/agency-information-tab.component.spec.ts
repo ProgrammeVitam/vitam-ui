@@ -41,8 +41,7 @@ import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
-import { SecurityService } from 'vitamui-library';
-import { AgencyService } from '../../agency.service';
+import { SecurityService, AgencyService } from 'vitamui-library';
 import { AgencyInformationTabComponent } from './agency-information-tab.component';
 
 describe('AgencyInformationTabComponent', () => {

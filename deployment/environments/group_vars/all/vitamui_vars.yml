@@ -80,6 +80,9 @@ vitamui:
   collect:
     vitamui_component: ui-collect
     port_service: 8010
+#    offline_services: # Disables online search engines in collect
+#      - agencies
+#      - archive-unit-profiles
   pastis:
     vitamui_component: ui-pastis
     port_service: 9015

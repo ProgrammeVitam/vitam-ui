@@ -40,6 +40,8 @@ import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { TranslateService } from '@ngx-translate/core';
 import {
   ActionOnCriteria,
+  AgencyService,
+  ArchiveUnitProfilesService,
   CriteriaDataType,
   CriteriaOperator,
   CriteriaValue,
@@ -52,6 +54,8 @@ import {
   SearchCriteriaTypeEnum,
   SearchType,
   SearchWithTypeSelectorValue,
+  Option,
+  VitamuiSelectOptions,
 } from 'vitamui-library';
 import { ArchiveSharedDataService } from '../../../core/archive-shared-data.service';
 import { ManagementRulesSharedDataService } from '../../../core/management-rules-shared-data.service';
@@ -88,6 +92,11 @@ export class SimpleCriteriaSearchComponent implements OnInit {
   titleSearchTypes: SearchType[];
   titleSelectedType?: SearchType;
 
+  selectOptions = {
+    agency: { options: [] as Option[] },
+    archiveUnitProfile: { options: [] as Option[] },
+  } satisfies { [key: string]: VitamuiSelectOptions };
+
   constructor(
     private formBuilder: FormBuilder,
     private archiveExchangeDataService: ArchiveSharedDataService,
@@ -95,7 +104,38 @@ export class SimpleCriteriaSearchComponent implements OnInit {
     private managementRulesSharedDataService: ManagementRulesSharedDataService,
     private translateService: TranslateService,
     private schemaService: SchemaService,
+    private agencyService: AgencyService,
+    private archiveUnitProfilesService: ArchiveUnitProfilesService,
   ) {
+    this.agencyService
+      .getAll()
+      .pipe(
+        map(
+          (agencies): VitamuiSelectOptions => ({
+            options: agencies.map((agency) => ({
+              key: agency.identifier,
+              label: `${agency.identifier} - ${agency.name}`,
+              info: agency.description,
+            })),
+          }),
+        ),
+      )
+      .subscribe((options) => (this.selectOptions.agency = options));
+
+    this.archiveUnitProfilesService
+      .getAll()
+      .pipe(
+        map(
+          (archiveUnitProfiles): VitamuiSelectOptions => ({
+            options: archiveUnitProfiles.map((archiveUnitProfile) => ({
+              key: archiveUnitProfile.identifier,
+              label: `${archiveUnitProfile.identifier} - ${archiveUnitProfile.name}`,
+            })),
+          }),
+        ),
+      )
+      .subscribe((options) => (this.selectOptions.archiveUnitProfile = options));
+
     this.schemaService.getDescriptiveSchemaTree().subscribe((schema) => {
       this.otherCriteriaOptions = schema;
       this.titleSearchTypes = this.searchTypes(schema, 'Title');
@@ -119,8 +159,8 @@ export class SimpleCriteriaSearchComponent implements OnInit {
       description: ['', []],
       guidopi: ['', []],
       guid: ['', [Validators.pattern('^[a-z0-9_, ]+')]],
-      serviceProdLabel: ['', []],
-      serviceProdCode: ['', []],
+      agencies: [[], { updateOn: 'blur' }],
+      archiveUnitProfiles: [[], { updateOn: 'blur' }],
       beginDt: ['', []],
       endDt: ['', []],
       otherCriteriaList: otherCriteriaListControl,
@@ -158,15 +198,27 @@ export class SimpleCriteriaSearchComponent implements OnInit {
         if (hasTitleSearchCriteria) this.titleSelectedType = this.titleSearchTypes.find((item) => item.value === type);
       });
 
+    const complexInputs = ['otherCriteriaList'];
+    const splittableInputs = ['guid'];
+
     Object.entries(this.simpleCriteriaForm.controls)
-      .filter(([key, _value]) => !['otherCriteriaList'].includes(key))
+      .filter(([key, _value]) => !complexInputs.includes(key))
       .forEach(([key, control]) => {
-        control.valueChanges.pipe(debounceTime(ArchiveSearchConstsEnum.UPDATE_DEBOUNCE_TIME)).subscribe((value) => {
-          if (value) {
-            this.addCriteriaFromObject({ [key]: value });
+        control.valueChanges
+          .pipe(
+            debounceTime(ArchiveSearchConstsEnum.UPDATE_DEBOUNCE_TIME),
+            filter((value) => Boolean(value)),
+          )
+          .subscribe((value) => {
+            const isSplittable = splittableInputs.includes(key);
+            if (isSplittable) {
+              const fragments = (value as string).split(',');
+              fragments.forEach((fragment) => this.addCriteriaFromObject({ [key]: fragment }));
+            } else {
+              this.addCriteriaFromObject({ [key]: value });
+            }
             control.reset(undefined, { emitEvent: false });
-          }
-        });
+          });
       });
 
     this.archiveExchangeDataService.receiveRemoveFromChildSearchCriteriaSubject().subscribe((criteria) => {
@@ -195,12 +247,7 @@ export class SimpleCriteriaSearchComponent implements OnInit {
     Object.entries(object)
       .filter(([_key, value]) => !!value)
       .forEach(([key, value]) => {
-        if (key === 'guid' && value.toString().includes(',')) {
-          value
-            .toString()
-            .split(',')
-            .forEach((v) => this.addCriteriaFromObject({ guid: v }));
-        } else if (typeof value === 'string' || value instanceof Date) {
+        if (typeof value === 'string' || value instanceof Date) {
           const criteriaValue = value instanceof Date ? value.toISOString() : value.trim();
           const defaultSearchCriteriaAddAction: Partial<SearchCriteriaAddAction> = {
             valueElt: { value: criteriaValue, id: criteriaValue },
@@ -226,6 +273,8 @@ export class SimpleCriteriaSearchComponent implements OnInit {
           const type = searchWithTypeSelectorValue.type.value;
           const key = type ? `title.${type}` : 'title';
           this.addCriteriaFromObject({ [key]: searchWithTypeSelectorValue.value });
+        } else if (value instanceof Array && value.length) {
+          value.forEach((v) => this.addCriteriaFromObject({ [key]: v }));
         } else if (typeof value === 'object' && Object.entries(value).length) {
           this.addCriteriaFromObject(value);
         } else {
@@ -264,10 +313,10 @@ export class SimpleCriteriaSearchComponent implements OnInit {
     });
   }
 
-  getCriteriaName(criteria: SchemaElement, otherCriteriaOptions: ItemNode<SchemaElement>[]) {
+  getCriteriaName(criteria: SchemaElement) {
     const path = criteria.Path.split('.').slice(0, -1);
     const parent = path.reduce((acc, p) => acc.children.find((o) => o.item.FieldName === p), {
-      children: otherCriteriaOptions,
+      children: this.otherCriteriaOptions,
     } as ItemNode<SchemaElement>);
     return `${criteria.ShortName}${parent?.item ? ` (${parent.item.ShortName})` : ''}`;
   }
@@ -416,28 +465,12 @@ export class SimpleCriteriaSearchComponent implements OnInit {
     return this.simpleCriteriaForm.controls.title;
   }
 
-  get description() {
-    return this.simpleCriteriaForm.controls.description;
-  }
-
-  get guidopi() {
-    return this.simpleCriteriaForm.controls.guidopi;
-  }
-
   get beginDt() {
     return this.simpleCriteriaForm.controls.beginDt;
   }
 
   get endDt() {
     return this.simpleCriteriaForm.controls.endDt;
-  }
-
-  get serviceProdLabel() {
-    return this.simpleCriteriaForm.controls.serviceProdLabel;
-  }
-
-  get serviceProdCode() {
-    return this.simpleCriteriaForm.controls.serviceProdCode;
   }
 
   get otherCriteriaList(): AbstractControl<SchemaElement[]> {

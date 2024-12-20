@@ -40,14 +40,13 @@ import { MatLegacyDialogModule as MatDialogModule } from '@angular/material/lega
 import { MatLegacyMenuModule as MatMenuModule } from '@angular/material/legacy-menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { RouterTestingModule } from '@angular/router/testing';
-import { InjectorModule, LoggerModule, SecurityService } from 'vitamui-library';
+import { InjectorModule, LoggerModule, SecurityService, AgencyService } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
 import { AgencyComponent } from './agency.component';
-import { AgencyService } from './agency.service';
 import { TranslateModule } from '@ngx-translate/core';
 
 @Component({ selector: 'app-agency-preview', template: '' })
