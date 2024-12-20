@@ -39,14 +39,18 @@ import { Observable } from 'rxjs';
 import { SchemaApiService } from '../api/schema-api.service';
 import { Collection, Schema } from '../models';
 import { map } from 'rxjs/operators';
-import { ItemNode } from '../components/autocomplete';
 import { SchemaElement } from '../models/schema/schema-element.model';
+import { ItemNode } from '../components/autocomplete/utils/item-node.interface';
+import { TranslateService } from '@ngx-translate/core';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SchemaService {
-  constructor(private api: SchemaApiService) {}
+  constructor(
+    private api: SchemaApiService,
+    private translateService: TranslateService,
+  ) {}
 
   public getSchemas(collections: Collection[]): Observable<Schema[]> {
     return this.api.getSchemas(collections);
@@ -60,45 +64,95 @@ export class SchemaService {
     return this.api.getArchiveUnitProfileSchema(archiveUnitProfileId);
   }
 
+  private recursiveSort = (node: ItemNode<SchemaElement>) => {
+    node.children.sort((n1, n2) =>
+      n1.children.length && !n2.children.length
+        ? 1
+        : !n1.children.length && n2.children.length
+          ? -1
+          : n1.item.ShortName.localeCompare(n2.item.ShortName),
+    );
+    node.children.forEach((n) => this.recursiveSort(n));
+  };
+
+  private removeLeavesWithTypeObject = (node: ItemNode<SchemaElement>) => {
+    node.children = node.children.filter((child) => !(child.item.Type === 'OBJECT' && !child.children.length));
+    node.children.forEach((child) => this.removeLeavesWithTypeObject(child));
+  };
+
   public getDescriptiveSchemaTree(): Observable<ItemNode<SchemaElement>[]> {
-    const recursiveSort = (node: ItemNode<SchemaElement>) => {
-      node.children.sort((n1, n2) =>
-        n1.children.length && !n2.children.length
-          ? 1
-          : !n1.children.length && n2.children.length
-            ? -1
-            : n1.item.ShortName.localeCompare(n2.item.ShortName),
-      );
-      node.children.forEach((n) => recursiveSort(n));
-    };
+    return this.getSchema(Collection.ARCHIVE_UNIT).pipe(map(this.buildTree));
+  }
 
-    const removeLeavesWithTypeObject = (node: ItemNode<SchemaElement>) => {
-      node.children = node.children.filter((child) => !(child.item.Type === 'OBJECT' && !child.children.length));
-      node.children.forEach((child) => removeLeavesWithTypeObject(child));
-    };
+  private buildTree: (schema: Schema) => ItemNode<SchemaElement>[] = (schema: Schema): ItemNode<SchemaElement>[] => {
+    const rootNode = schema
+      .filter((e) => (e.Category === 'DESCRIPTION' || e.Origin === 'EXTERNAL') && e.FieldName !== '_sp' && e.FieldName !== '_sps')
+      .reduce(this.buildTreeReducer, { children: [] } as ItemNode<SchemaElement>);
+    this.removeLeavesWithTypeObject(rootNode);
+    this.recursiveSort(rootNode);
+    return rootNode.children;
+  };
 
+  private buildTreeReducer = (acc: ItemNode<SchemaElement>, element: SchemaElement) => {
+    const path = element.Path.split('.').slice(0, -1);
+    const parentNode = path.reduce((currentItem, p) => currentItem.children.find((n) => n.item.FieldName === p), acc) || acc;
+    parentNode.children.push({
+      item: element,
+      children: [],
+    });
+    return acc;
+  };
+
+  public getSchemaTree(): Observable<ItemNode<SchemaElement>[]> {
     return this.getSchema(Collection.ARCHIVE_UNIT).pipe(
       map((schema) => {
         const rootNode = schema
-          .filter((e) => (e.Category === 'DESCRIPTION' || e.Origin === 'EXTERNAL') && e.FieldName !== '_sp' && e.FieldName !== '_sps')
-          .reduce(
-            (acc, element) => {
-              const path = element.Path.split('.').slice(0, -1);
-              const parentNode = path.reduce((currentItem, p) => currentItem.children.find((n) => n.item.FieldName === p), acc) || acc;
-              parentNode.children.push({
-                item: element,
-                children: [],
-              });
-              return acc;
-            },
-            { children: [] } as ItemNode<SchemaElement>,
-          );
-
-        removeLeavesWithTypeObject(rootNode);
-
-        recursiveSort(rootNode);
+          .filter((e) => e.FieldName !== '_sp' && e.FieldName !== '_sps')
+          .reduce(this.buildTreeReducer, { children: [] } as ItemNode<SchemaElement>);
+        this.removeLeavesWithTypeObject(rootNode);
+        this.recursiveSort(rootNode);
         return rootNode.children;
       }),
     );
+  }
+
+  public readonly VIRTUAL_ROOT_NODES = 'VIRTUAL_ROOT_NODES';
+  private groupByCategory: (nodes: ItemNode<SchemaElement>[]) => ItemNode<SchemaElement>[] = (
+    nodes: ItemNode<SchemaElement>[],
+  ): ItemNode<SchemaElement>[] => {
+    const roots = {
+      DESCRIPTION: {
+        item: {
+          id: this.VIRTUAL_ROOT_NODES,
+          ShortName: this.translateService.instant('ONTOLOGY.NODES.DESCRIPTION'),
+          Category: 'DESCRIPTION',
+        } as SchemaElement,
+        children: [],
+      } as ItemNode<SchemaElement>,
+      MANAGEMENT: {
+        item: {
+          id: this.VIRTUAL_ROOT_NODES,
+          ShortName: this.translateService.instant('ONTOLOGY.NODES.DESCRIPTION'),
+          Category: 'MANAGEMENT',
+        } as SchemaElement,
+        children: [],
+      } as ItemNode<SchemaElement>,
+      OTHER: {
+        item: {
+          id: this.VIRTUAL_ROOT_NODES,
+          ShortName: this.translateService.instant('ONTOLOGY.NODES.OTHER'),
+          Category: 'OTHER',
+        } as SchemaElement,
+        children: [],
+      } as ItemNode<SchemaElement>,
+    };
+    nodes.forEach((node: ItemNode<SchemaElement>) => {
+      roots[node.item.Category].children.push(node);
+    });
+    return Object.values(roots) as ItemNode<SchemaElement>[];
+  };
+
+  public getSchemaTreeByCategory(): Observable<ItemNode<SchemaElement>[]> {
+    return this.getSchemaTree().pipe(map(this.groupByCategory));
   }
 }

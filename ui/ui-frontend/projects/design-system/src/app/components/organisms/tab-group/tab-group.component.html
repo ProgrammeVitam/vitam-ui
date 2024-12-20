@@ -1,0 +1,32 @@
+<ng-template #firstTab class="m-4">
+  <p class="text normal">Premier panel</p>
+  <span class="info"
+    >Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+    minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit
+    in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
+    officia deserunt mollit anim id est laborum.</span
+  >
+</ng-template>
+
+<ng-template #secondTab>
+  <p class="text normal">Deuxième panel</p>
+  <span class="info"
+    >Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+    minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit
+    in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
+    officia deserunt mollit anim id est laborum.</span
+  >
+</ng-template>
+
+<h2>Tab group</h2>
+<h3>mat-tab-group</h3>
+
+<mat-tab-group [(selectedIndex)]="tabIndex" class="vitamui-tab-group">
+  <mat-tab [label]="'First' | translate">
+    <ng-container *ngTemplateOutlet="firstTab"></ng-container>
+  </mat-tab>
+
+  <mat-tab [label]="'Second' | translate">
+    <ng-container *ngTemplateOutlet="secondTab"></ng-container>
+  </mat-tab>
+</mat-tab-group>

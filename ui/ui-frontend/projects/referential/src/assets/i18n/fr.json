@@ -517,8 +517,8 @@
       "SEARCH_PLACEHOLDER": "Nom, identifiant",
       "CREATE_VOCABULARY": "Créer un vocabulaire",
       "IMPORT": "Importer",
-      "IMPORT_ONTOLOGY": "Importer une ontologie",
-      "IMPORT_SCHEMA": "Importer dans le schema",
+      "IMPORT_ONTOLOGY": "Importer l'ontologie",
+      "IMPORT_SCHEMA": "Importer des extensions dans le schéma",
       "ARRAY": {
         "IDENTIFIER": "Identifiant",
         "NAME": "Nom",
@@ -561,6 +561,12 @@
       "HISTORY": {
         "TITLE": "Historique"
       }
+    },
+    "VOCABULARIES": "Vocabulaires",
+    "SCHEMA": "Schéma",
+    "FILTER": {
+      "INTERNAL": "Métadonnées internes",
+      "EXTERNAL": "Métadonnées externe"
     }
   },
   "RULES_APP": {

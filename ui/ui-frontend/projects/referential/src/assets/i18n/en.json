@@ -518,7 +518,7 @@
       "CREATE_VOCABULARY": "Create vocabulary",
       "IMPORT": "Import",
       "IMPORT_ONTOLOGY": "Import an ontology",
-      "IMPORT_SCHEMA": "Import into schema",
+      "IMPORT_SCHEMA": "Import extensions into schema",
       "ARRAY": {
         "IDENTIFIER": "Identifier",
         "NAME": "Name",
@@ -561,6 +561,12 @@
       "HISTORY": {
         "TITLE": "History"
       }
+    },
+    "VOCABULARIES": "Vocabulary",
+    "SCHEMA": "Schema",
+    "FILTER": {
+      "INTERNAL": "Internal metadata",
+      "EXTERNAL": "External metadata"
     }
   },
   "RULES_APP": {

@@ -114,6 +114,7 @@ h5 {
       text-decoration-line: underline;
     }
   }
+
   &-medium {
     @include button;
     @extend .normal;
@@ -123,6 +124,7 @@ h5 {
       text-decoration-line: underline;
     }
   }
+
   &-small {
     @include button;
     @extend .caption;
@@ -134,7 +136,7 @@ h5 {
 }
 
 .no-wrap {
-  white-space: nowrap;
+  white-space: nowrap !important;
 }
 
 .text-ellipsis {

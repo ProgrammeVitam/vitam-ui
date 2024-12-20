@@ -34,9 +34,51 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-export * from './utils/item-node.interface';
-export * from './utils/option.interface';
-export * from './vitamui-autocomplete-multi-select-tree/vitamui-autocomplete-multi-select-tree.component';
-export * from './vitamui-autocomplete-multi-select-tree/vitamui-autocomplete-multi-select-tree.module';
-export * from './vitamui-autocomplete/vitamui-autocomplete.component';
-export * from './vitamui-autocomplete/vitamui-autocomplete.module';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Ontology } from 'vitamui-library';
+import { ActivatedRoute, Params, Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import { fromPromise } from 'rxjs/internal/observable/innerFrom';
+import { MatTabChangeEvent } from '@angular/material/tabs';
+import { CommonModule } from '@angular/common';
+import { MatLegacyTabsModule as MatTabsModule } from '@angular/material/legacy-tabs';
+import { OntologyListComponent } from './ontology-list/ontology-list.component';
+import { SchemaListComponent } from './schema-list/schema-list.component';
+import { TranslateModule } from '@ngx-translate/core';
+
+@Component({
+  standalone: true,
+  imports: [MatTabsModule, CommonModule, TranslateModule, OntologyListComponent, SchemaListComponent],
+  selector: 'app-ontology-group',
+  templateUrl: './ontology-group.component.html',
+  styleUrls: ['./ontology-group.component.scss'],
+})
+export class OntologyGroupComponent {
+  @Input() searchText: string;
+  @Output() ontologyClick = new EventEmitter<Ontology>();
+
+  tabIndex = 0;
+
+  constructor(
+    private activatedRoute: ActivatedRoute,
+    private router: Router,
+  ) {
+    this.activatedRoute.queryParams.subscribe((params) => {
+      this.tabIndex = params.tab;
+    });
+  }
+
+  changeTab(matTabChangeEvent: MatTabChangeEvent) {
+    this.setQueryParams({ tab: matTabChangeEvent.index });
+  }
+
+  private setQueryParams(queryParams: Params): Observable<boolean> {
+    return fromPromise(
+      this.router.navigate([], {
+        queryParams,
+        queryParamsHandling: 'merge', // Merge with existing query parameters
+        replaceUrl: true, // Prevent navigation
+      }),
+    );
+  }
+}

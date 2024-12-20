@@ -36,24 +36,35 @@
  */
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
-import { Subject, merge } from 'rxjs';
+import { finalize, merge, Subject, Subscription } from 'rxjs';
 import { debounceTime, filter, takeUntil } from 'rxjs/operators';
-import { ConfirmActionComponent, DEFAULT_PAGE_SIZE, Direction, InfiniteScrollTable, PageRequest } from 'vitamui-library';
+import {
+  ConfirmActionComponent,
+  DEFAULT_PAGE_SIZE,
+  Direction,
+  InfiniteScrollTable,
+  IOntology,
+  Ontology,
+  PageRequest,
+  VitamUICommonModule,
+} from 'vitamui-library';
 
-import { TranslateService } from '@ngx-translate/core';
-import { Ontology } from 'vitamui-library';
-import { OntologyService } from '../ontology.service';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { OntologyService } from '../../ontology.service';
+import { CommonModule } from '@angular/common';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 const FILTER_DEBOUNCE_TIME_MS = 400;
 
 @Component({
+  standalone: true,
+  imports: [CommonModule, TranslateModule, VitamUICommonModule, MatProgressSpinnerModule],
   selector: 'app-ontology-list',
   templateUrl: './ontology-list.component.html',
   styleUrls: ['./ontology-list.component.scss'],
 })
 export class OntologyListComponent extends InfiniteScrollTable<Ontology> implements OnDestroy, OnInit {
-  // eslint-disable-next-line @angular-eslint/no-input-rename
-  @Input('search')
+  @Input()
   set searchText(searchText: string) {
     this._searchText = searchText;
     this.searchChange.next(searchText);
@@ -63,12 +74,17 @@ export class OntologyListComponent extends InfiniteScrollTable<Ontology> impleme
 
   @Output() ontologyClick = new EventEmitter<Ontology>();
 
-  orderBy = 'ShortName';
-  direction = Direction.ASCENDANT;
-
   private readonly searchChange = new Subject<string>();
   private readonly orderChange = new Subject<void>();
   private destroy$ = new Subject<void>();
+
+  protected readonly shortName: keyof IOntology = 'ShortName';
+  protected readonly identifier: keyof IOntology = 'Identifier';
+  protected readonly creationDate: keyof IOntology = 'CreationDate';
+  orderBy: keyof IOntology;
+  direction = Direction.ASCENDANT;
+
+  private subscriptions = new Subscription();
 
   constructor(
     public ontologyService: OntologyService,
@@ -76,27 +92,38 @@ export class OntologyListComponent extends InfiniteScrollTable<Ontology> impleme
     private matDialog: MatDialog,
   ) {
     super(ontologyService);
+    this.orderBy = this.shortName;
   }
 
   ngOnInit() {
     this.pending = true;
-    this.ontologyService.search(new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, Direction.ASCENDANT)).subscribe(
-      (data: Ontology[]) => {
-        this.dataSource = data;
-      },
-      () => {},
-      () => (this.pending = false),
-    );
-
-    const searchCriteriaChange = merge(this.searchChange, this.orderChange).pipe(debounceTime(FILTER_DEBOUNCE_TIME_MS));
-
-    searchCriteriaChange.subscribe(() => {
-      const query: any = this.buildOntologyCriteriaFromSearch();
-      const pageRequest = new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, this.direction, JSON.stringify(query));
-      this.search(pageRequest);
-    });
-
+    this.ontologyService
+      .search(new PageRequest(0, DEFAULT_PAGE_SIZE, this.shortName, Direction.ASCENDANT))
+      .pipe(finalize(() => (this.pending = false)))
+      .subscribe({
+        next: (data: Ontology[]) => {
+          this.dataSource = data;
+        },
+        error: (e) => console.error(e),
+      });
     this.replaceUpdatedOntology();
+    this.searchOnOrderChange();
+  }
+
+  emitOrderChange() {
+    this.orderChange.next();
+  }
+
+  private searchOnOrderChange() {
+    this.subscriptions.add(
+      merge(this.searchChange, this.orderChange)
+        .pipe(debounceTime(FILTER_DEBOUNCE_TIME_MS))
+        .subscribe(() => {
+          const query: any = this.buildOntologyCriteriaFromSearch();
+          const pageRequest = new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, this.direction, JSON.stringify(query));
+          this.search(pageRequest);
+        }),
+    );
   }
 
   buildOntologyCriteriaFromSearch() {
@@ -118,10 +145,6 @@ export class OntologyListComponent extends InfiniteScrollTable<Ontology> impleme
     this.search(new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, Direction.ASCENDANT));
   }
 
-  emitOrderChange() {
-    this.orderChange.next();
-  }
-
   deleteOntologyDialog(ontology: Ontology) {
     const dialog = this.matDialog.open(ConfirmActionComponent, { panelClass: 'vitamui-confirm-dialog' });
 
@@ -139,11 +162,18 @@ export class OntologyListComponent extends InfiniteScrollTable<Ontology> impleme
   }
 
   private replaceUpdatedOntology(): void {
-    this.ontologyService.updated.pipe(takeUntil(this.destroy$)).subscribe((updatedOntology: Ontology) => {
-      const index = this.dataSource.findIndex((item: Ontology) => item.id === updatedOntology.id);
-      if (index !== -1) {
-        this.dataSource[index] = updatedOntology;
-      }
-    });
+    this.subscriptions.add(
+      this.ontologyService.updated.pipe(takeUntil(this.destroy$)).subscribe((updatedOntology: Ontology) => {
+        const index = this.dataSource.findIndex((item: Ontology) => item.id === updatedOntology.id);
+        if (index !== -1) {
+          this.dataSource[index] = updatedOntology;
+        }
+      }),
+    );
+  }
+
+  selectLine(ontology: Ontology) {
+    this.ontologyService.selectedId$.next(ontology.id);
+    this.ontologyClick.emit(ontology);
   }
 }

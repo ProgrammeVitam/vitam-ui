@@ -4913,5 +4913,12 @@
       "TITLE": "Change of consultation positions",
       "ALL_POSITIONS_INFO": "Choice of positions to which you wish to give access during consultation"
     }
+  },
+  "ONTOLOGY": {
+    "NODES": {
+      "DESCRIPTION": "Descriptive metadata",
+      "MANAGEMENT": "Management metadata",
+      "OTHER": "System metadata"
+    }
   }
 }

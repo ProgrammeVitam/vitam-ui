@@ -470,6 +470,14 @@ $row-padding: 0.8rem;
   }
 }
 
+.mw-0 {
+  min-width: 0;
+}
+
+.w-0 {
+  width: 0;
+}
+
 // Profile list item css
 .vitamui-profile-list {
   background-color: var(--vitamui-grey-100);
@@ -498,6 +506,7 @@ table.cdk-table {
   thead,
   tbody {
     background: var(--vitamui-white);
+
     tr {
       @include shadow-2dp-dark;
       border-radius: 5px;

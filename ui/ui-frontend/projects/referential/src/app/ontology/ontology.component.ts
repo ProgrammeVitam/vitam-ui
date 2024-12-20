@@ -45,7 +45,7 @@ import { FileTypes } from 'vitamui-library';
 import { ImportDialogParam, ReferentialTypes } from '../shared/import-dialog/import-dialog-param.interface';
 import { ImportDialogComponent } from '../shared/import-dialog/import-dialog.component';
 import { OntologyCreateComponent } from './ontology-create/ontology-create.component';
-import { OntologyListComponent } from './ontology-list/ontology-list.component';
+import { OntologyListComponent } from './ontology-group/ontology-list/ontology-list.component';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -81,6 +81,7 @@ export class OntologyComponent extends SidenavPage<Ontology> implements OnInit {
     const dialogRef = this.dialog.open(OntologyCreateComponent, { panelClass: 'vitamui-modal', disableClose: true });
     dialogRef.afterClosed().subscribe((result) => {
       if (result?.success) {
+        //TODO(refacto): created$ in service, refresh in component
         this.refreshList();
       }
       if (result?.action === 'restart') {

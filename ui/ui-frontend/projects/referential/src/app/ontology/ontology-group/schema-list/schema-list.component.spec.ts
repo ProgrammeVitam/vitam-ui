@@ -34,9 +34,44 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-export * from './utils/item-node.interface';
-export * from './utils/option.interface';
-export * from './vitamui-autocomplete-multi-select-tree/vitamui-autocomplete-multi-select-tree.component';
-export * from './vitamui-autocomplete-multi-select-tree/vitamui-autocomplete-multi-select-tree.module';
-export * from './vitamui-autocomplete/vitamui-autocomplete.component';
-export * from './vitamui-autocomplete/vitamui-autocomplete.module';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { of } from 'rxjs';
+import { AuthService, BASE_URL, SchemaService } from 'vitamui-library';
+import { SchemaListComponent } from './schema-list.component';
+import { TranslateModule } from '@ngx-translate/core';
+
+describe('SchemaListComponent', () => {
+  let component: SchemaListComponent;
+  let fixture: ComponentFixture<SchemaListComponent>;
+
+  const schemaServiceMock = {
+    getSchemaTreeByCategory: () => of(null),
+  };
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [],
+      imports: [SchemaListComponent, TranslateModule.forRoot()],
+      providers: [
+        { provide: BASE_URL, useValue: '' },
+        { provide: MatDialog, useValue: {} },
+        { provide: SchemaService, useValue: schemaServiceMock },
+        { provide: AuthService, useValue: { user: { proofTenantIdentifier: '1' } } },
+      ],
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
+  });
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(SchemaListComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});

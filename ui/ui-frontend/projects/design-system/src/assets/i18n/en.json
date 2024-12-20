@@ -31,7 +31,8 @@
     },
     "organisms": {
       "TITLE": "Organisms",
-      "table.TITLE": "Table"
+      "table.TITLE": "Table",
+      "tab-group.TITLE": "Tab group"
     },
     "miscellaneous.TITLE": "Miscellaneous",
     "translation.TITLE": "Translation",

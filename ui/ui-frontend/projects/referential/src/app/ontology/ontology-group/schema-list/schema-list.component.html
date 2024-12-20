@@ -1,0 +1,84 @@
+<div>
+  <table mat-table [dataSource]="dataSource">
+    <!-- COL 1: NAME -->
+    <ng-container matColumnDef="ShortName">
+      <th mat-header-cell *matHeaderCellDef>
+        <span class="ml-5">
+          {{ 'ONTOLOGY.HOME.ARRAY.NAME' | translate }}
+          <button
+            class="ml-4 vitamui-filter-button active"
+            [vitamuiCommonTableFilter]="groupFilterTemplate"
+            #groupFilterTrigger="vitamuiCommonTableFilter"
+          >
+            <i class="material-icons vitamui-row-icon">filter_list</i>
+          </button>
+        </span>
+        <ng-template #groupFilterTemplate>
+          <vitamui-common-table-filter [(filter)]="defaultSelectedFilters" (filterChange)="filterByOrigin($event)">
+            <vitamui-common-table-filter-option *ngFor="let filter of availableFilters" value="{{ filter.name }}">
+              <div class="table-filter-icon">{{ filter.translation }}</div>
+            </vitamui-common-table-filter-option>
+          </vitamui-common-table-filter>
+        </ng-template>
+      </th>
+      <td mat-cell *matCellDef="let data">
+        <div class="row align-items-center">
+          <button
+            mat-icon-button
+            [style.visibility]="!data.expandable ? 'hidden' : ''"
+            [disabled]="disabled"
+            [style.marginLeft.px]="data.level * 32"
+            disableRipple
+            (click)="treeControl.toggle(data)"
+            class="arrow"
+            type="button"
+          >
+            <i class="material-icons mat-icon-rtl-mirror">{{ treeControl.isExpanded(data) ? 'expand_more' : 'chevron_right' }}</i>
+          </button>
+
+          {{ (data.item.Origin === 'EXTERNAL' ? 'EXT-' : '') + data.item.ShortName }}
+        </div>
+      </td>
+    </ng-container>
+
+    <!-- COL 2: IDENTIFIER -->
+    <ng-container matColumnDef="FieldName">
+      <th mat-header-cell *matHeaderCellDef>
+        <div class="row flex-nowrap">
+          <span class="no-wrap">{{ 'ONTOLOGY.HOME.ARRAY.IDENTIFIER' | translate }}</span>
+        </div>
+      </th>
+      <td mat-cell *matCellDef="let data">{{ data.item.FieldName }}</td>
+    </ng-container>
+
+    <!-- COL 3: HIDDEN DELETE BUTTON -->
+    <ng-container matColumnDef="deleteButton">
+      <th mat-header-cell *matHeaderCellDef class="w-0"></th>
+      <td mat-cell *matCellDef="let data"></td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="['ShortName', 'FieldName', 'deleteButton']" class="vitamui-table-rows"></tr>
+    <tr
+      mat-row
+      *matRowDef="let element; columns: ['ShortName', 'FieldName', 'deleteButton']"
+      class="vitamui-table-rows vitamui-row align-items-center clickable"
+      [ngClass]="{ 'd-none': !element.display }"
+    ></tr>
+  </table>
+  @if (!dataSource.data || pending) {
+    <ng-container *ngTemplateOutlet="loadingSpinner"></ng-container>
+  }
+  @if (!pending && dataSource?.data?.length === 0) {
+    <ng-container *ngTemplateOutlet="noResults"></ng-container>
+  }
+</div>
+
+<ng-template #loadingSpinner>
+  <div class="vitamui-min-content">
+    <mat-spinner class="vitamui-spinner medium"></mat-spinner>
+  </div>
+</ng-template>
+
+<ng-template #noResults>
+  <div class="vitamui-min-content vitamui-table-message">{{ 'COMMON.NO_RESULT' | translate }}</div>
+</ng-template>
