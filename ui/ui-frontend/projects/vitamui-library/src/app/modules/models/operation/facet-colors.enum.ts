@@ -37,7 +37,7 @@
 export enum Colors {
   DEFAULT = 'var(--vitamui-grey-600)',
   DISABLED = 'var(--vitamui-grey-200)',
-  FATAL_COLOR = 'var(--vitamui-red-600)', // TODO: change to red-900?
+  FATAL_COLOR = 'var(--vitamui-red-900)',
   KO_COLOR = 'var(--vitamui-red)',
   WARNING_COLOR = 'var(--vitamui-orange)',
   OK_COLOR = 'var(--vitamui-green)',

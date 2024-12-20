@@ -87,7 +87,7 @@ td .row-expand-btn {
   min-height: 60px;
   height: 100%;
   width: 60px;
-  background-color: var(--vitamui-primary-light);
+  background-color: var(--vitamui-primary-400);
   border: none;
   padding: 0;
   align-items: center;
@@ -492,7 +492,7 @@ table.cdk-table {
   width: 100%;
 
   &:not(.no-hover) tbody > tr:not(.no-hover):not(.selected):hover {
-    background-color: var(--vitamui-background);
+    background-color: var(--vitamui-primary-light);
   }
 
   thead,

@@ -34,11 +34,6 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-const DARK_SUFFIX = '-dark';
-const LIGHT_SUFFIX = '-light';
-const LIGHTEN_PATTERN = /-light-(\d*)/gm;
-const DARKEN_PATTERN = /-dark-(\d*)/gm;
-
 class RGB {
   constructor(
     public r: number,
@@ -85,32 +80,6 @@ function getColorFromMap(colorName: string, colorMap: any) {
 
   if (colorMap[colorName]) {
     return colorMap[colorName];
-  }
-
-  if (colorName.endsWith(DARK_SUFFIX) && colorMap[colorName.substring(0, colorName.length - DARK_SUFFIX.length)]) {
-    return convertToDarkColor(colorMap[colorName.substring(0, colorName.length - DARK_SUFFIX.length)]);
-  }
-
-  if (colorName.endsWith(LIGHT_SUFFIX) && colorMap[colorName.substring(0, colorName.length - LIGHT_SUFFIX.length)]) {
-    return convertToLightColor(colorMap[colorName.substring(0, colorName.length - LIGHT_SUFFIX.length)]);
-  }
-
-  LIGHTEN_PATTERN.lastIndex = 0;
-  let match = LIGHTEN_PATTERN.exec(colorName);
-  if (match && match.length === 2 && colorMap[colorName.substring(0, colorName.length - match[0].length)]) {
-    return convertToLightColor(colorMap[colorName.substring(0, colorName.length - match[0].length)], +match[1]);
-  }
-
-  DARKEN_PATTERN.lastIndex = 0;
-  match = DARKEN_PATTERN.exec(colorName);
-  if (match && match.length === 2 && colorMap[colorName.substring(0, colorName.length - match[0].length)]) {
-    return convertToDarkColor(colorMap[colorName.substring(0, colorName.length - match[0].length)], +match[1]);
-  }
-
-  DARKEN_PATTERN.lastIndex = 0;
-  match = DARKEN_PATTERN.exec(colorName);
-  if (match && match.length === 2 && colorMap[colorName.substring(0, colorName.length - match[0].length)]) {
-    return convertToDarkColor(colorMap[colorName.substring(0, colorName.length - match[0].length)], +match[1]);
   }
 
   return null;

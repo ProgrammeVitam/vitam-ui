@@ -380,7 +380,7 @@
   .contexts_app_364{fill:#2A2C2B;}
   .contexts_app_365{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_CONTEXTS_APP_32);}
   .contexts_app_366{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_CONTEXTS_APP_33);}
-  .contexts_app_367{fill-rule:evenodd;clip-rule:evenodd;fill:var(--vitamui-primary-dark);}
+  .contexts_app_367{fill-rule:evenodd;clip-rule:evenodd;fill:var(--vitamui-primary-600);}
   .contexts_app_368{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_CONTEXTS_APP_34);}
   .contexts_app_369{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_CONTEXTS_APP_35);}
   .contexts_app_370{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_CONTEXTS_APP_36);}
@@ -388,9 +388,9 @@
   .contexts_app_372{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_CONTEXTS_APP_37);}
   .contexts_app_373{fill:none;stroke:#4C4C4C;stroke-miterlimit:10;}
   .contexts_app_374{display:none;fill:#9B9A9B;}
-  .contexts_app_375{fill:var(--vitamui-primary-dark);}
+  .contexts_app_375{fill:var(--vitamui-primary-600);}
   .contexts_app_376{fill:url(#SVGID_CONTEXTS_APP_38);}
-  .contexts_app_377{fill:var(--vitamui-primary-light);}
+  .contexts_app_377{fill:var(--vitamui-primary-400);}
 </style>
   <metadata>
 	<sfw  xmlns="&ns_sfw;">
@@ -1407,7 +1407,7 @@
         <stop  offset="0.5606" style="stop-color:var(--vitamui-primary)"/>
         <stop  offset="0.6312" style="stop-color:var(--vitamui-primary)"/>
         <stop  offset="0.7003" style="stop-color:var(--vitamui-primary)"/>
-        <stop  offset="0.8198" style="stop-color:var(--vitamui-primary-light)"/>
+        <stop  offset="0.8198" style="stop-color:var(--vitamui-primary-400)"/>
         <stop  offset="0.9743" style="stop-color:var(--vitamui-primary-100)"/>
         <stop  offset="1" style="stop-color:var(--vitamui-primary-50)"/>
 			</linearGradient>
@@ -1564,7 +1564,7 @@
       <stop  offset="0.3035" style="stop-color:var(--vitamui-primary)"/>
       <stop  offset="0.4738" style="stop-color:var(--vitamui-primary)"/>
       <stop  offset="0.6112" style="stop-color:var(--vitamui-primary-600)"/>
-      <stop  offset="0.7311" style="stop-color:var(--vitamui-primary-dark)"/>
+      <stop  offset="0.7311" style="stop-color:var(--vitamui-primary-600)"/>
       <stop  offset="0.8394" style="stop-color:var(--vitamui-primary-700)"/>
       <stop  offset="0.9381" style="stop-color:var(--vitamui-primary-800)"/>
       <stop  offset="1" style="stop-color:var(--vitamui-primary-900)"/>

@@ -360,7 +360,7 @@
 	.ingest_app_343{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000152251288707153707280000002777205947198358417_);}
 	.ingest_app_344{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000176018124043976459300000005148948974871905668_);}
 	.ingest_app_345{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000098920369832508142880000000614946286929821366_);}
-	.ingest_app_346{fill-rule:evenodd;clip-rule:evenodd;fill:var(--vitamui-primary-dark);}
+	.ingest_app_346{fill-rule:evenodd;clip-rule:evenodd;fill:var(--vitamui-primary-600);}
 	.ingest_app_347{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000034806380720999360880000014570730240497110430_);}
 	.ingest_app_348{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000052783814146111478970000005125047692891313341_);}
 	.ingest_app_349{fill:#2A2C2B;}
@@ -1086,7 +1086,7 @@
 				<stop  offset="0.5606" style="stop-color:var(--vitamui-primary)"/>
 				<stop  offset="0.6312" style="stop-color:var(--vitamui-primary)"/>
 				<stop  offset="0.7003" style="stop-color:var(--vitamui-primary)"/>
-				<stop  offset="0.8198" style="stop-color:var(--vitamui-primary-light)"/>
+				<stop  offset="0.8198" style="stop-color:var(--vitamui-primary-400)"/>
 				<stop  offset="0.9743" style="stop-color:var(--vitamui-primary-100)"/>
 				<stop  offset="1" style="stop-color:var(--vitamui-primary-50)"/>
 			</linearGradient>

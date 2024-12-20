@@ -1,8 +1,9 @@
 @for (colorInfo of colors; track colorInfo.key) {
-  <div class="container">
+  <div>
     <div>
       <h2>{{ 'COLORS.' + colorInfo.key | translate }}</h2>
     </div>
+    <p [innerHTML]="'COLORS.' + colorInfo.key + '.INFO' | translate"></p>
     <div>
       <div
         #color
@@ -12,8 +13,8 @@
         [class.border]="colorInfo.border"
       >
         <div class="shade-text">
-          <div class="text medium">{{ colorToHex(color) }}</div>
-          <div class="text medium" *ngFor="let kv of colorToHsl(color) | keyvalue">{{ kv.key }} : {{ kv.value }}</div>
+          <div class="text normal">{{ colorToHex(color) }}</div>
+          <div class="text normal" *ngFor="let kv of colorToHsl(color) | keyvalue">{{ kv.key }} : {{ kv.value }}</div>
         </div>
       </div>
 
@@ -23,9 +24,9 @@
             <li>
               <div #hue class="shade" style="background-color: var({{ colorInfo.varName }}{{ hueId === 500 ? '' : '-' + hueId }})"></div>
               <div class="shade-text">
-                <div class="text medium">{{ hueId === 500 ? '(' + hueId + ')' : hueId }}</div>
-                <div class="text medium">{{ colorToHex(hue) }}</div>
-                <div class="text medium" *ngFor="let kv of colorToHsl(hue) | keyvalue">{{ kv.key }} : {{ kv.value }}</div>
+                <div class="text normal">{{ hueId === 500 ? '(' + hueId + ')' : hueId }}</div>
+                <div class="text normal">{{ colorToHex(hue) }}</div>
+                <div class="text normal" *ngFor="let kv of colorToHsl(hue) | keyvalue">{{ kv.key }} : {{ kv.value }}</div>
               </div>
             </li>
           }

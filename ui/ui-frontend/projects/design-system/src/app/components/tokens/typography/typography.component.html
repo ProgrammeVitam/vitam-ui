@@ -1,73 +1,137 @@
-<h2>Titles</h2>
-<div class="mb-5">
-  <div class="d-flex align-items-center">
-    <h1 #h1>H1 Headline</h1>
-    {{ info(h1) }}
-  </div>
-  <div class="d-flex align-items-center">
-    <h2 #h2>H2 Headline</h2>
-    {{ info(h2) }}
-  </div>
-  <div class="d-flex align-items-center">
-    <h3 #h3>H3 Headline</h3>
-    {{ info(h3) }}
-  </div>
-  <div class="d-flex align-items-center">
-    <h4 #h4>H4 Headline</h4>
-    {{ info(h4) }}
-  </div>
-  <div class="d-flex align-items-center">
-    <h5 #h5>H5 Headline</h5>
-    {{ info(h5) }}
+<div>
+  <h2>{{ 'TYPOGRAPHY.TITLES' | translate }}</h2>
+  <hr class="mb-6" />
+  <div class="gap-5">
+    <div class="gap-3">
+      <h1 #h1>H1 Headline</h1>
+      <span class="info">{{ info(h1) }}</span>
+    </div>
+    <div class="gap-3">
+      <h2 #h2>H2 Headline</h2>
+      <span class="info">{{ info(h2) }}</span>
+    </div>
+    <div class="gap-3">
+      <h3 #h3>H3 Headline</h3>
+      <span class="info">{{ info(h3) }}</span>
+    </div>
+    <div class="gap-3">
+      <h4 #h4>H4 Headline</h4>
+      <span class="info">{{ info(h4) }}</span>
+    </div>
+    <div class="gap-3">
+      <h5 #h5>H5 Headline</h5>
+      <span class="info">{{ info(h5) }}</span>
+    </div>
   </div>
 </div>
 
-<h2>Button</h2>
-<div class="d-flex mb-5">
-  @for (textButtonFlavor of textButtonFlavors; track textButtonFlavor) {
-    <div>
-      @for (textButtonSize of textButtonSizes; track textButtonSize) {
-        <div class="d-flex align-items-center">
-          <p #el [ngClass]="['button-' + textButtonSize, textButtonFlavor]">Button {{ textButtonSize }} {{ textButtonFlavor }}</p>
-          {{ info(el) }}
+<ng-template #text let-classes="classes" let-text="text">
+  <div class="gap-3">
+    <p #el [ngClass]="classes" [vitamuiCommonToolTip]="'TYPOGRAPHY.TOOLTIP' | translate: { classes: classes.join(' ') }">
+      {{ text }}
+    </p>
+    <span class="info">{{ info(el) }}</span>
+  </div>
+</ng-template>
+
+<div>
+  <hr />
+  <p>
+    <i class="vitamui-icon vitamui-icon-info"></i>
+    {{ 'TYPOGRAPHY.INFO' | translate }}
+  </p>
+  <hr />
+</div>
+
+<div>
+  <h2>{{ 'TYPOGRAPHY.TEXT' | translate }}</h2>
+  <hr class="mb-6" />
+  <div class="hgap-6">
+    @for (textFlavor of textFlavors; track textFlavor) {
+      <div class="gap-5">
+        @for (textSize of textSizes; track textSize) {
+          <ng-container
+            [ngTemplateOutlet]="text"
+            [ngTemplateOutletContext]="{ classes: ['text', textFlavor, textSize], text: textSize + ' text ' + textFlavor }"
+          >
+          </ng-container>
+        }
+      </div>
+    }
+  </div>
+</div>
+
+<div>
+  <h2>{{ 'TYPOGRAPHY.LINK_AND_BUTTON' | translate }}</h2>
+  <hr class="mb-6" />
+  <div class="gap-8">
+    <div class="hgap-6">
+      @for (textLinkFlavor of textLinkFlavors; track textLinkFlavor) {
+        <div class="gap-5">
+          @for (textSize of textSizes; track textSize) {
+            <ng-container
+              [ngTemplateOutlet]="text"
+              [ngTemplateOutletContext]="{
+                classes: ['text', 'link', textSize, textLinkFlavor],
+                text: textSize + ' link ' + textLinkFlavor,
+              }"
+            >
+            </ng-container>
+          }
         </div>
       }
     </div>
-  }
-</div>
-
-<h2>Text</h2>
-<div class="d-flex mb-5">
-  @for (textFlavor of textFlavors; track textFlavor) {
-    <div>
-      @for (textSize of textSizes; track textSize) {
-        <div class="d-flex align-items-center">
-          <p #el class="text" [ngClass]="[textFlavor, textSize]">{{ textSize }} text {{ textFlavor }}</p>
-          {{ info(el) }}
+    <div class="hgap-6">
+      @for (textButtonFlavor of textButtonFlavors; track textButtonFlavor) {
+        <div class="gap-5">
+          @for (textButtonSize of textButtonSizes; track textButtonSize) {
+            <ng-container
+              [ngTemplateOutlet]="text"
+              [ngTemplateOutletContext]="{
+                classes: ['button-' + textButtonSize, textButtonFlavor],
+                text: 'Button ' + textButtonSize + ' ' + textButtonFlavor,
+              }"
+            >
+            </ng-container>
+          }
         </div>
       }
     </div>
-  }
+  </div>
 </div>
 
-<h2>Colors</h2>
-<div class="d-flex mb-5">
-  @for (textColor of textColors; track textColor) {
-    <div>
-      <p #el class="text" [class]="textColor">{{ textColor }}</p>
-      {{ color(el) }}
-    </div>
-  }
+<div>
+  <h2>{{ 'TYPOGRAPHY.COLORS' | translate }}</h2>
+  <hr class="mb-6" />
+  <div class="hgap-6">
+    @for (textColor of textColors; track textColor) {
+      <div class="gap-3">
+        <p
+          #el
+          [class]="['text', textColor]"
+          [vitamuiCommonToolTip]="'TYPOGRAPHY.TOOLTIP' | translate: { classes: ['text', textColor].join(' ') }"
+        >
+          {{ textColor }}
+        </p>
+        <span class="info">{{ color(el) }}</span>
+      </div>
+    }
+  </div>
 </div>
 
-<h2>Others</h2>
-<div class="d-flex mb-5">
+<div>
+  <h2>{{ 'TYPOGRAPHY.UPPERCASE' | translate }}</h2>
+  <hr class="mb-6" />
   <div>
-    <p class="text">Use "text uppercase" class to make it <span class="text uppercase">uppercase</span></p>
+    <p class="text">
+      Use "text uppercase" class to make it
+      <span class="text uppercase" [vitamuiCommonToolTip]="'TYPOGRAPHY.TOOLTIP' | translate: { classes: 'text uppercase' }">uppercase</span>
+    </p>
   </div>
 </div>
 
-<h2>{{ 'TYPOGRAPHY.TEXT_ELLIPSIS_TITLE' | translate }}</h2>
-<div class="d-flex mb-5">
+<div>
+  <h2>{{ 'TYPOGRAPHY.TEXT_ELLIPSIS_TITLE' | translate }}</h2>
+  <hr class="mb-6" />
   <div class="col-6" vitamuiCommonEllipsis>{{ 'TYPOGRAPHY.TEXT_ELLIPSIS_CONTENT' | translate }}</div>
 </div>
