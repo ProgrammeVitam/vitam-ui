@@ -38,7 +38,7 @@ import { HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { from, mergeMap, Observable, of, Subject, toArray } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
-import { Agency, DownloadUtils, Option, SearchService, VitamUISnackBarService } from 'vitamui-library';
+import { Agency, DownloadUtils, Option, SearchService, VitamuiHttpHeaders, VitamUISnackBarService } from 'vitamui-library';
 
 import { AgencyApiService } from '../core/api/agency-api.service';
 
@@ -171,6 +171,6 @@ export class AgencyService extends SearchService<Agency> {
   }
 
   setTenantId(tenantIdentifier: number) {
-    this.headers = new HttpHeaders({ 'X-Tenant-Id': tenantIdentifier.toString() });
+    this.headers = new HttpHeaders().set(VitamuiHttpHeaders.X_TENANT_ID, '' + tenantIdentifier);
   }
 }

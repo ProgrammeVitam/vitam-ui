@@ -42,6 +42,7 @@ import {
   ExternalParametersService,
   IngestContract,
   SearchUnitApiService,
+  VitamuiHttpHeaders,
   VitamUISnackBarService,
 } from 'vitamui-library';
 import { IngestContractNodeUpdateComponent } from './ingest-contract-nodes-update/ingest-contract-node-update.component';
@@ -54,6 +55,7 @@ import { IngestContractNodeUpdateComponent } from './ingest-contract-nodes-updat
 export class IngestContractAttachmentTabComponent {
   @Input() tenantIdentifier: number;
   @Input() readOnly: boolean;
+
   @Input() set ingestContract(ingestContract: IngestContract) {
     this._ingestContract = ingestContract;
     this.accessContractId = '';
@@ -92,8 +94,9 @@ export class IngestContractAttachmentTabComponent {
   }
 
   initTitles() {
-    let headers = new HttpHeaders().append('Content-Type', 'application/json');
-    headers = headers.append('X-Access-Contract-Id', this.accessContractId);
+    let headers = new HttpHeaders()
+      .set('Content-Type', 'application/json')
+      .set(VitamuiHttpHeaders.X_ACCESS_CONTRACT_ID, this.accessContractId);
     this.unitService.getByDsl(null, this.getDslForRootNodes(), headers).subscribe((response) => {
       if (response.httpCode === 200) {
         this.checkParentIdTitles = [];

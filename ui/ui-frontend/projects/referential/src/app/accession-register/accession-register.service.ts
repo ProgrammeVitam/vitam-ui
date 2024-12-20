@@ -50,6 +50,7 @@ import {
   FacetDetails,
   SearchService,
   VitamUISnackBarService,
+  VitamuiHttpHeaders,
 } from 'vitamui-library';
 import { AccessionRegisterDetailApiService } from '../core/api/accession-register-detail-api.service';
 
@@ -105,7 +106,7 @@ export class AccessionRegistersService extends SearchService<AccessionRegisterDe
 
   exportAccessionRegisterCsv(criteria: any, accessContract: string) {
     let headers = new HttpHeaders().append('Content-Type', 'application/json');
-    headers = headers.append('X-Access-Contract-Id', accessContract);
+    headers = headers.append(VitamuiHttpHeaders.X_ACCESS_CONTRACT_ID, accessContract);
 
     return this.accessionRegisterApiService.exportAccessionRegisterCsv(criteria, headers).subscribe(
       (file) => {

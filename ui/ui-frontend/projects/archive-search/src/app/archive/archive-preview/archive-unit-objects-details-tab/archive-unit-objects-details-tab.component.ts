@@ -46,6 +46,7 @@ import {
   TenantSelectionService,
   Unit,
   VersionWithQualifierDto,
+  VitamuiHttpHeaders,
 } from 'vitamui-library';
 import { ArchiveService } from '../../archive.service';
 import { Subscription } from 'rxjs';
@@ -131,7 +132,9 @@ export class ArchiveUnitObjectsDetailsTabComponent implements OnChanges, OnInit,
     if (this.archiveUnit.objectGroup || !this.unitHasObject()) {
       return;
     }
-    const headers = new HttpHeaders().append('Content-Type', 'application/json').append('X-Access-Contract-Id', this.accessContract.id);
+    const headers = new HttpHeaders()
+      .append('Content-Type', 'application/json')
+      .append(VitamuiHttpHeaders.X_ACCESS_CONTRACT_ID, this.accessContract.id);
     this.archiveService.getObjectById(this.archiveUnit['#id'], headers).subscribe({
       next: (unitObject) => {
         this.archiveUnit.objectGroup = unitObject;

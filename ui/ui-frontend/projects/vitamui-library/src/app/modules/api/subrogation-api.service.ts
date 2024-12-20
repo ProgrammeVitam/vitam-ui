@@ -42,6 +42,7 @@ import { AuthService } from '../auth.service';
 import { BaseHttpClient } from '../base-http-client';
 import { BASE_URL } from '../injection-tokens';
 import { Group, Subrogation } from '../models';
+import { VitamuiHttpHeaders } from '../vitamui-http-headers.enum';
 
 @Injectable({
   providedIn: 'root',
@@ -64,13 +65,13 @@ export class SubrogationApiService extends BaseHttpClient<Subrogation> {
   }
 
   getMySubrogationAsSuperuser(): Observable<Subrogation> {
-    const headers = new HttpHeaders({ 'X-Tenant-Id': this.authService.getAnyTenantIdentifier() });
+    const headers = new HttpHeaders().set(VitamuiHttpHeaders.X_TENANT_ID, this.authService.getAnyTenantIdentifier());
 
     return this.http.get<Subrogation>(this.apiUrl + '/me/superuser', { headers });
   }
 
   getMySubrogationAsSurrogate(): Observable<Subrogation> {
-    const headers = new HttpHeaders({ 'X-Tenant-Id': this.authService.getAnyTenantIdentifier() });
+    const headers = new HttpHeaders().set(VitamuiHttpHeaders.X_TENANT_ID, this.authService.getAnyTenantIdentifier());
 
     return this.http.get<Subrogation>(this.apiUrl + '/me/surrogate', { headers });
   }

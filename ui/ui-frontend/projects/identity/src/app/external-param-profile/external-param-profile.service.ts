@@ -48,6 +48,7 @@ import {
   Operators,
   SearchService,
   VitamUISnackBarService,
+  VitamuiHttpHeaders,
 } from 'vitamui-library';
 
 @Injectable({
@@ -70,7 +71,7 @@ export class ExternalParamProfileService extends SearchService<ExternalParamProf
 
   getAllActiveAccessContracts(tenantIdentifier: string): Observable<AccessContract[]> {
     const params = new HttpParams();
-    const headers = new HttpHeaders().append('X-Tenant-Id', tenantIdentifier);
+    const headers = new HttpHeaders().set(VitamuiHttpHeaders.X_TENANT_ID, '' + tenantIdentifier);
     return this.accessContractApiService
       .getAllByParams(params, headers)
       .pipe(map((accessContracts) => accessContracts.filter((accessContract) => accessContract.status === 'ACTIVE')));

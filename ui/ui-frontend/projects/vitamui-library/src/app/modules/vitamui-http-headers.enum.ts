@@ -34,13 +34,19 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-
-//TODO: replace every usage
 export enum VitamuiHttpHeaders {
+  X_TENANT_ID = 'X-Tenant-Id',
+  X_ACCESS_CONTRACT_ID = 'X-Access-Contract-Id',
   X_TRANSACTION_ID = 'X-Transaction-Id',
   X_ATTACHEMENT_ID = 'X-Attachment-Id',
   X_ORIGINAL_FILENAME = 'X-Original-Filename',
-  X_TENANT_ID = 'X-Tenant-Id',
   X_REQUEST_ID = 'X-Request-Id',
   X_APPLICATION_ID = 'X-Application-Id',
+  X_OPERATION_ID = 'X-Operation-Id',
+  X_CONTEXT_ID = 'X-Context-Id',
+  X_API_TIMEOUT = 'X-Api-Timeout',
+  X_BY_PASSED_ERROR = 'X-By-Passed-Error',
+  X_ACTION = 'X-Action',
+  X_REQUEST_TIMESTAMP = 'X-Request-Timestamp',
+  X_REQUESTED_WITH = 'X-Requested-With',
 }

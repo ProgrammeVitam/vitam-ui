@@ -44,6 +44,7 @@ import {
   SearchService,
   VitamUISnackBarService,
   IEvent,
+  VitamuiHttpHeaders,
 } from 'vitamui-library';
 
 const DOWNLOAD_TYPE_TRANSFER_SIP = 'transfersip';
@@ -189,9 +190,7 @@ export class LogbookDownloadService extends SearchService<IEvent> {
   }
 
   private getFileByUrl(url: string, accessContractId: string): Observable<HttpResponse<Blob>> {
-    const headers = new HttpHeaders({
-      'X-Access-Contract-Id': accessContractId,
-    });
+    const headers = new HttpHeaders().set(VitamuiHttpHeaders.X_ACCESS_CONTRACT_ID, accessContractId);
     return this.http.get(url, { headers, observe: 'response', responseType: 'blob' });
   }
 }

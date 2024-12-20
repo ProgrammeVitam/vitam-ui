@@ -42,6 +42,7 @@ import { BASE_URL } from '../injection-tokens';
 import { Account } from '../models/account/account.interface';
 import { UserInfo } from '../models/user/user-info.interface';
 import { AuthService } from './../auth.service';
+import { VitamuiHttpHeaders } from '../vitamui-http-headers.enum';
 
 @Injectable({
   providedIn: 'root',
@@ -72,7 +73,7 @@ export class BaseUserInfoApiService extends BaseHttpClient<UserInfo> {
   }
 
   getMyUserInfo(headers?: HttpHeaders): Observable<UserInfo> {
-    headers = new HttpHeaders({ 'X-Tenant-Id': this.authService.getAnyTenantIdentifier() });
+    headers = new HttpHeaders().set(VitamuiHttpHeaders.X_TENANT_ID, this.authService.getAnyTenantIdentifier());
     return super.getHttp().get<any>(super.getApiUrl() + '/me', { headers });
   }
 }

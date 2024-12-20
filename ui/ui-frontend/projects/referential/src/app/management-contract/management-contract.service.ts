@@ -39,7 +39,7 @@ import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable, Subject } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { ManagementContract, SearchService, VitamUISnackBarService } from 'vitamui-library';
+import { ManagementContract, SearchService, VitamuiHttpHeaders, VitamUISnackBarService } from 'vitamui-library';
 
 import { ManagementContractsApiService } from '../core/api/management-contracts-api.service';
 
@@ -68,7 +68,7 @@ export class ManagementContractService extends SearchService<ManagementContract>
 
   getAllForTenant(tenantId: string): Observable<ManagementContract[]> {
     const params = new HttpParams().set('embedded', 'ALL');
-    const headers = new HttpHeaders().append('X-Tenant-Id', tenantId);
+    const headers = new HttpHeaders().set(VitamuiHttpHeaders.X_TENANT_ID, '' + tenantId);
     return this.managementContractApi.getAllByParams(params, headers);
   }
 

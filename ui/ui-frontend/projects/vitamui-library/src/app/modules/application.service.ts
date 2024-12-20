@@ -49,6 +49,7 @@ import { Category } from './models/application/category.interface';
 import { Tenant } from './models/customer/tenant.interface';
 import { ApplicationAnalytics } from './models/user/application-analytics.interface';
 import { TenantSelectionService } from './tenant-selection.service';
+import { VitamuiHttpHeaders } from './vitamui-http-headers.enum';
 
 @Injectable({
   providedIn: 'root',
@@ -62,6 +63,7 @@ export class ApplicationService {
   get applicationsAnalytics(): ApplicationAnalytics[] {
     return this._applicationsAnalytics;
   }
+
   set applicationsAnalytics(apps: ApplicationAnalytics[]) {
     this._applicationsAnalytics = apps;
   }
@@ -69,9 +71,11 @@ export class ApplicationService {
   get categories(): Category[] {
     return this._categories;
   }
+
   set categories(categories: Category[]) {
     this._categories = categories;
   }
+
   private _categories: Category[];
   private _applications: Application[];
   private _applications$ = new BehaviorSubject<Application[]>(null);
@@ -91,7 +95,7 @@ export class ApplicationService {
    */
   public list(): Observable<ApplicationInfo> {
     const params = new HttpParams().set('filterApp', 'true');
-    const headers = new HttpHeaders({ 'X-Tenant-Id': this.authService.getAnyTenantIdentifier() });
+    const headers = new HttpHeaders().set(VitamuiHttpHeaders.X_TENANT_ID, this.authService.getAnyTenantIdentifier());
     return this.applicationApi.getAllByParams(params, headers).pipe(
       catchError(() => of({ APPLICATION_CONFIGURATION: [], CATEGORY_CONFIGURATION: {} })),
       map((applicationInfo: ApplicationInfo) => {
@@ -255,7 +259,14 @@ export class ApplicationService {
     return resultMap;
   }
 
-  private getLastUsedApps(categories: Category[], applications: Application[], max = 8): { category: Category; apps: Application[] } {
+  private getLastUsedApps(
+    categories: Category[],
+    applications: Application[],
+    max = 8,
+  ): {
+    category: Category;
+    apps: Application[];
+  } {
     let dataSource: ApplicationAnalytics[];
     if (this.applicationsAnalytics) {
       dataSource = this.applicationsAnalytics;
@@ -264,7 +275,12 @@ export class ApplicationService {
     }
 
     if (dataSource) {
-      const lastUsedAppsCateg = { order: 0, identifier: 'lastusedapps', title: 'Dernières utilisées', displayTitle: true };
+      const lastUsedAppsCateg = {
+        order: 0,
+        identifier: 'lastusedapps',
+        title: 'Dernières utilisées',
+        displayTitle: true,
+      };
       // Define & set last used apps array
       let lastUsedApps = applications.filter((application: Application) => {
         return dataSource.findIndex((app: ApplicationAnalytics) => app.applicationId === application.identifier) !== -1;

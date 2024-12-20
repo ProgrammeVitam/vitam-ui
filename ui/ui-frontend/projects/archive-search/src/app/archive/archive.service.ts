@@ -63,6 +63,7 @@ import {
   SearchService,
   SecurityService,
   Unit,
+  VitamuiHttpHeaders,
 } from 'vitamui-library';
 import { ArchiveApiService } from '../core/api/archive-api.service';
 import { ExportDIPRequestDto, TransferRequestDto } from './models/dip.interface';
@@ -95,9 +96,7 @@ export class ArchiveService extends SearchService<any> implements SearchArchiveU
   }
 
   public loadFilingHoldingSchemeTree(tenantIdentifier: number): Observable<FilingHoldingSchemeNode[]> {
-    const headers = new HttpHeaders({
-      'X-Tenant-Id': '' + tenantIdentifier,
-    });
+    const headers = new HttpHeaders().set(VitamuiHttpHeaders.X_TENANT_ID, '' + tenantIdentifier);
 
     return this.archiveApiService.getFilingHoldingScheme(headers).pipe(
       catchError(() => {
@@ -369,9 +368,9 @@ export class ArchiveService extends SearchService<any> implements SearchArchiveU
 
   transferAcknowledgment(tenantIdentifier: string, xmlFile: Blob, fileName: string): Observable<string> {
     let headers = new HttpHeaders();
-    headers = headers.append('X-Tenant-Id', tenantIdentifier);
+    headers = headers.append(VitamuiHttpHeaders.X_TENANT_ID, tenantIdentifier);
     headers = headers.append('Content-Type', 'application/octet-stream');
-    headers = headers.append('X-Original-Filename', fileName);
+    headers = headers.append(VitamuiHttpHeaders.X_ORIGINAL_FILENAME, fileName);
 
     return this.archiveApiService.transferAcknowledgment(xmlFile, headers);
   }

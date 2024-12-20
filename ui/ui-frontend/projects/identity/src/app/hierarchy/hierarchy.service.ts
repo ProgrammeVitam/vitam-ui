@@ -75,12 +75,13 @@ import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import {
+  CriteriaSearchQuery,
   Criterion,
   Operators,
   Profile,
   ProfileApiService,
-  CriteriaSearchQuery,
   SearchService,
+  VitamuiHttpHeaders,
   VitamUISnackBarService,
 } from 'vitamui-library';
 
@@ -98,7 +99,7 @@ export class HierarchyService extends SearchService<Profile> {
   }
 
   setTenantId(tenantIdentifier: number) {
-    this.headers = new HttpHeaders({ 'X-Tenant-Id': tenantIdentifier.toString() });
+    this.headers = new HttpHeaders().set(VitamuiHttpHeaders.X_TENANT_ID, '' + tenantIdentifier);
   }
 
   getAllByParams(query: CriteriaSearchQuery, headers?: HttpHeaders) {
@@ -113,9 +114,17 @@ export class HierarchyService extends SearchService<Profile> {
   exists(tenantIdentifier: number, level: string, applicationName: string, name: string): Observable<boolean> {
     const criterionArray = [];
     const criterionName: Criterion = { key: 'name', value: name, operator: Operators.equalsIgnoreCase };
-    const criterionTenantIdentifier: Criterion = { key: 'tenantIdentifier', value: tenantIdentifier, operator: Operators.equals };
+    const criterionTenantIdentifier: Criterion = {
+      key: 'tenantIdentifier',
+      value: tenantIdentifier,
+      operator: Operators.equals,
+    };
     const criterionLevel: Criterion = { key: 'level', value: level, operator: Operators.equals };
-    const criterionApplicationName: Criterion = { key: 'applicationName', value: applicationName, operator: Operators.equals };
+    const criterionApplicationName: Criterion = {
+      key: 'applicationName',
+      value: applicationName,
+      operator: Operators.equals,
+    };
     criterionArray.push(criterionName, criterionTenantIdentifier, criterionLevel, criterionApplicationName);
     const query: CriteriaSearchQuery = { criteria: criterionArray };
 

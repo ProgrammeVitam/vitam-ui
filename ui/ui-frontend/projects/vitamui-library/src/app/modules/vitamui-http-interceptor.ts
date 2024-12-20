@@ -51,6 +51,7 @@ import { Logger } from './logger/logger';
 import { VitamUITimeoutError } from './models/http-interceptor/vitamui-timeout-error';
 import { StartupService } from './startup.service';
 import { SKIP_ERROR_NOTIFICATION } from './utils';
+import { VitamuiHttpHeaders } from './vitamui-http-headers.enum';
 
 const URLS_INCREASED_TIMEOUT = ['file', 'download', 'export', 'documents', 'ingest'];
 // @ts-ignore
@@ -98,39 +99,39 @@ export class VitamUIHttpInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     this.initSnackBarService();
 
-    let tenantIdentifier = request.headers.get('X-Tenant-Id');
+    let tenantIdentifier = request.headers.get(VitamuiHttpHeaders.X_TENANT_ID);
     if ((!tenantIdentifier || tenantIdentifier === '') && this.authService.user) {
       // TODO: change to tenant-selection.service
       tenantIdentifier = this.startupService.getTenantIdentifier();
     }
-    let requestId = request.headers.get('X-Request-Id');
+    let requestId = request.headers.get(VitamuiHttpHeaders.X_REQUEST_ID);
     if (!requestId) {
       requestId = '' + Math.floor(Math.random() * 10 ** 15);
     }
-    let applicationId = request.headers.get('X-Application-Id');
+    let applicationId = request.headers.get(VitamuiHttpHeaders.X_APPLICATION_ID);
     if (!applicationId) {
       applicationId = this.startupService.CURRENT_APP_ID;
     }
-    const headerTimeout = request.headers.get('X-Api-Timeout');
+    const headerTimeout = request.headers.get(VitamuiHttpHeaders.X_API_TIMEOUT);
     if (headerTimeout && !isNaN(Number(headerTimeout))) {
       this.apiTimeout = Number(headerTimeout);
     }
 
     const reqWithCredentials = request.clone({
       withCredentials: true,
-      headers: request.headers.delete('X-By-Passed-Error'),
+      headers: request.headers.delete(VitamuiHttpHeaders.X_BY_PASSED_ERROR),
       setHeaders: {
-        'X-Request-Id': requestId,
-        'X-Request-Timestamp': moment().unix().toString(),
-        'X-Requested-With': 'XMLHttpRequest',
-        'X-Tenant-Id': tenantIdentifier ? tenantIdentifier.toString() : '-1',
-        'X-Application-Id': applicationId,
+        [VitamuiHttpHeaders.X_REQUEST_ID]: requestId,
+        [VitamuiHttpHeaders.X_REQUEST_TIMESTAMP]: moment().unix().toString(),
+        [VitamuiHttpHeaders.X_REQUESTED_WITH]: 'XMLHttpRequest',
+        [VitamuiHttpHeaders.X_TENANT_ID]: tenantIdentifier ? tenantIdentifier.toString() : '-1',
+        [VitamuiHttpHeaders.X_APPLICATION_ID]: applicationId,
       },
     });
 
     let errorToByPass: number = null;
-    if (request.headers.has('X-By-Passed-Error')) {
-      errorToByPass = +request.headers.get('X-By-Passed-Error');
+    if (request.headers.has(VitamuiHttpHeaders.X_BY_PASSED_ERROR)) {
+      errorToByPass = +request.headers.get(VitamuiHttpHeaders.X_BY_PASSED_ERROR);
     }
 
     return next.handle(reqWithCredentials).pipe(

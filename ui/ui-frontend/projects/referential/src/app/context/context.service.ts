@@ -38,7 +38,7 @@ import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { Context, SearchService, VitamUISnackBarService } from 'vitamui-library';
+import { Context, SearchService, VitamuiHttpHeaders, VitamUISnackBarService } from 'vitamui-library';
 
 import { ContextApiService } from '../core/api/context-api.service';
 
@@ -105,6 +105,6 @@ export class ContextService extends SearchService<Context> {
   }
 
   setTenantId(tenantIdentifier: number) {
-    this.headers = new HttpHeaders({ 'X-Tenant-Id': tenantIdentifier.toString() });
+    this.headers = new HttpHeaders().set(VitamuiHttpHeaders.X_TENANT_ID, '' + tenantIdentifier);
   }
 }

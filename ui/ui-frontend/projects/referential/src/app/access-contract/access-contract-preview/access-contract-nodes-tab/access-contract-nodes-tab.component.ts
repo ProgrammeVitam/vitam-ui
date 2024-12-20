@@ -37,8 +37,14 @@
 import { HttpHeaders } from '@angular/common/http';
 import { Component, Input } from '@angular/core';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
-import { AccessContract, ExternalParameters, ExternalParametersService, VitamUISnackBarService } from 'vitamui-library';
-import { SearchUnitApiService } from 'vitamui-library';
+import {
+  AccessContract,
+  ExternalParameters,
+  ExternalParametersService,
+  SearchUnitApiService,
+  VitamuiHttpHeaders,
+  VitamUISnackBarService,
+} from 'vitamui-library';
 import { AccessContractNodeUpdateComponent } from './access-contract-nodes-update/access-contract-node-update.component';
 
 @Component({
@@ -48,6 +54,7 @@ import { AccessContractNodeUpdateComponent } from './access-contract-nodes-updat
 })
 export class AccessContractNodesTabComponent {
   @Input() tenantIdentifier: number;
+
   @Input() set accessContract(accessContract: AccessContract) {
     if (!accessContract.rootUnits) {
       accessContract.rootUnits = [];
@@ -121,7 +128,7 @@ export class AccessContractNodesTabComponent {
 
   private initTitles(): void {
     let headers = new HttpHeaders().append('Content-Type', 'application/json');
-    headers = headers.append('X-Access-Contract-Id', this.searchAccessContractId);
+    headers = headers.append(VitamuiHttpHeaders.X_ACCESS_CONTRACT_ID, this.searchAccessContractId);
     this.unitService.getByDsl(null, this.getDslForRootNodes(), headers).subscribe((response) => {
       if (response.httpCode === 200) {
         this.rootUnitsTitles = [];

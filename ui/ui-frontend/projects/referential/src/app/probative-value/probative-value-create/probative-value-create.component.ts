@@ -50,6 +50,7 @@ import {
   SearchResponse,
   SearchUnitApiService,
   SigningRoleType,
+  VitamuiHttpHeaders,
 } from 'vitamui-library';
 import { ProbativeValueService } from '../probative-value.service';
 
@@ -141,7 +142,7 @@ export class ProbativeValueCreateComponent implements OnInit, OnDestroy {
     this.isDisabledButton = true;
 
     this.probativeValueService
-      .create(this.createDsl(this.form.value), new HttpHeaders({ 'X-Access-Contract-Id': this.accessContractId }))
+      .create(this.createDsl(this.form.value), new HttpHeaders().set(VitamuiHttpHeaders.X_ACCESS_CONTRACT_ID, this.accessContractId))
       .subscribe(
         () => {
           this.isDisabledButton = false;

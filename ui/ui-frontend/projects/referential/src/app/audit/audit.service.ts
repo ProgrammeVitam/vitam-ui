@@ -42,12 +42,13 @@ import {
   AccessionRegisterSummary,
   DEFAULT_PAGE_SIZE,
   Direction,
+  Event,
   LogbookApiService,
   PageRequest,
   SearchService,
+  VitamuiHttpHeaders,
   VitamUISnackBarService,
 } from 'vitamui-library';
-import { Event } from 'vitamui-library';
 
 import { AccessionRegisterSummaryApiService } from '../core/api/accession-register-summary-api.service';
 import { OperationApiService } from '../core/api/operation-api.service';
@@ -95,7 +96,7 @@ export class AuditService extends SearchService<Event> {
   }
 
   download(id: string, eventType: string, accessContractId: string) {
-    const headers: HttpHeaders = new HttpHeaders({ 'X-Access-Contract-Id': accessContractId });
+    const headers: HttpHeaders = new HttpHeaders().set(VitamuiHttpHeaders.X_ACCESS_CONTRACT_ID, accessContractId);
     let downloadObservable: Observable<HttpResponse<Blob> | Blob>;
     let fileName: string;
     let downloadType: string;
@@ -140,7 +141,7 @@ export class AuditService extends SearchService<Event> {
   getAllAccessionRegister(accessContractId: string): Observable<AccessionRegisterSummary[]> {
     return this.accessionRegisterSummaryApiService.getAllByParams(
       new HttpParams(),
-      new HttpHeaders({ 'X-Access-Contract-Id': accessContractId }),
+      new HttpHeaders().set(VitamuiHttpHeaders.X_ACCESS_CONTRACT_ID, accessContractId),
     );
   }
 

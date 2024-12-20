@@ -36,8 +36,7 @@
  */
 import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { SearchService } from 'vitamui-library';
-import { Event, download } from 'vitamui-library';
+import { download, Event, SearchService, VitamuiHttpHeaders } from 'vitamui-library';
 
 import { OperationApiService } from '../core/api/operation-api.service';
 
@@ -51,7 +50,7 @@ export class SecurisationService extends SearchService<Event> {
 
   download(id: string, accessContractId: string) {
     this.operationApiService
-      .downloadOperation(id, 'TRACEABILITY', new HttpHeaders({ 'X-Access-Contract-Id': accessContractId }))
+      .downloadOperation(id, 'TRACEABILITY', new HttpHeaders().set(VitamuiHttpHeaders.X_ACCESS_CONTRACT_ID, accessContractId))
       .subscribe((blob) => {
         download(blob, 'report.zip');
       });

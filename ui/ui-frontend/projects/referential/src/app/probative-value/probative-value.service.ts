@@ -37,7 +37,7 @@
 import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { tap } from 'rxjs/operators';
-import { Event, SearchService, VitamUISnackBarService } from 'vitamui-library';
+import { Event, SearchService, VitamUISnackBarService, VitamuiHttpHeaders } from 'vitamui-library';
 import { OperationApiService } from '../core/api/operation-api.service';
 import { Observable } from 'rxjs';
 
@@ -79,16 +79,18 @@ export class ProbativeValueService extends SearchService<Event> {
   }
 
   export(id: string, accessContractId: string): Observable<Blob> {
-    return this.operationApiService.downloadProbativeValue(id, new HttpHeaders({ 'X-Access-Contract-Id': accessContractId })).pipe(
-      tap((blob) => {
-        const element = document.createElement('a');
-        element.href = window.URL.createObjectURL(blob);
-        element.download = id + '.zip';
-        element.style.visibility = 'hidden';
-        document.body.appendChild(element);
-        element.click();
-        document.body.removeChild(element);
-      }),
-    );
+    return this.operationApiService
+      .downloadProbativeValue(id, new HttpHeaders().set(VitamuiHttpHeaders.X_ACCESS_CONTRACT_ID, accessContractId))
+      .pipe(
+        tap((blob) => {
+          const element = document.createElement('a');
+          element.href = window.URL.createObjectURL(blob);
+          element.download = id + '.zip';
+          element.style.visibility = 'hidden';
+          document.body.appendChild(element);
+          element.click();
+          document.body.removeChild(element);
+        }),
+      );
   }
 }

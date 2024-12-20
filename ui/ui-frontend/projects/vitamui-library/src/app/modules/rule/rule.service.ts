@@ -42,6 +42,7 @@ import { VitamUISnackBarService } from '../../modules/components/vitamui-snack-b
 import { RuleApiService } from '../api/rule-api.service';
 import { Rule } from '../models/rule/rule.interface';
 import { SearchService } from '../vitamui-table';
+import { VitamuiHttpHeaders } from '../vitamui-http-headers.enum';
 
 const keySnackbar = 'APPLICATION.RULES_APP.MESSAGES.';
 
@@ -65,7 +66,7 @@ export class RuleService extends SearchService<Rule> {
   getAllForTenant(tenantId: string): Observable<Rule[]> {
     // TODO: Check add of tenantId
     const params = new HttpParams().set('embedded', 'ALL');
-    const headers = new HttpHeaders().append('X-Tenant-Id', tenantId);
+    const headers = new HttpHeaders().set(VitamuiHttpHeaders.X_TENANT_ID, tenantId);
     return this.ruleApiService.getAllByParams(params, headers);
   }
 

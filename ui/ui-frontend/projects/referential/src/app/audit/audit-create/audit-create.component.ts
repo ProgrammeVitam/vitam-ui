@@ -44,15 +44,16 @@ import {
   AccessContractService,
   AccessionRegisterSummary,
   ConfirmDialogService,
+  CustomValidators,
+  DatePattern,
   ExternalParameters,
   ExternalParametersService,
   FilingPlanMode,
   Option,
   StartupService,
   VitamuiAutocompleteMultiselectOptions,
+  VitamuiHttpHeaders,
   VitamUISnackBarService,
-  CustomValidators,
-  DatePattern,
 } from 'vitamui-library';
 import { AuditAction, AuditPerimeter } from '../../models/audit.interface';
 import { AuditService } from '../audit.service';
@@ -449,14 +450,16 @@ export class AuditCreateComponent implements OnInit, OnDestroy {
     }
     this.isDisabledButton = true;
 
-    this.auditService.create(this.form.value, new HttpHeaders({ 'X-Access-Contract-Id': this.accessContractId })).subscribe(
-      () => {
-        this.isDisabledButton = false;
-        this.dialogRef.close({ success: true, action: 'none' });
-      },
-      () => {
-        this.dialogRef.close({ success: false, action: 'none' });
-      },
-    );
+    this.auditService
+      .create(this.form.value, new HttpHeaders().set(VitamuiHttpHeaders.X_ACCESS_CONTRACT_ID, this.accessContractId))
+      .subscribe(
+        () => {
+          this.isDisabledButton = false;
+          this.dialogRef.close({ success: true, action: 'none' });
+        },
+        () => {
+          this.dialogRef.close({ success: false, action: 'none' });
+        },
+      );
   }
 }

@@ -37,7 +37,7 @@
 import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
-import { SearchService } from 'vitamui-library';
+import { SearchService, VitamuiHttpHeaders } from 'vitamui-library';
 import { IngestApiService } from '../core/api/ingest-api.service';
 import { LogbookOperation } from '../models/logbook-event.interface';
 
@@ -54,7 +54,7 @@ export class IngestService extends SearchService<any> {
   get(id: string, tenantIdentifier?: string): Observable<any> {
     const headers = new HttpHeaders();
     if (tenantIdentifier) {
-      headers.set('X-Tenant-Id', tenantIdentifier);
+      headers.set(VitamuiHttpHeaders.X_TENANT_ID, '' + tenantIdentifier);
     }
 
     return this.ingestApiService.getOne(id, headers);

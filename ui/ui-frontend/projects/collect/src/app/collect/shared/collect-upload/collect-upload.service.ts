@@ -40,13 +40,12 @@ import JSZip from 'jszip';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { CollectUploadFile, CollectZippedUploadFile } from './collect-upload-file';
+import { VitamuiHttpHeaders } from 'vitamui-library';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CollectUploadService {
-  private static X_TRANSACTION_ID_KEY = 'X-Transaction-Id';
-  private static X_ORIGINAL_FILENAME_HEADER = 'X-Original-Filename';
   private static COLLECT_UPLOAD_URL = './collect-api/projects/upload';
   zipFile: JSZip;
   private filesToUploadSubject$: BehaviorSubject<CollectUploadFile[]> = new BehaviorSubject<CollectUploadFile[]>([]);
@@ -120,8 +119,8 @@ export class CollectUploadService {
     };
     this.watchZippedFile$.next(this.zippedFile);
     let headers = new HttpHeaders();
-    headers = headers.set(CollectUploadService.X_TRANSACTION_ID_KEY, transactionId);
-    headers = headers.set(CollectUploadService.X_ORIGINAL_FILENAME_HEADER, this.zippedFile.name);
+    headers = headers.set(VitamuiHttpHeaders.X_TRANSACTION_ID, transactionId);
+    headers = headers.set(VitamuiHttpHeaders.X_ORIGINAL_FILENAME, this.zippedFile.name);
     headers = headers.set('Content-Type', 'application/octet-stream');
     headers = headers.set('reportProgress', 'true');
     headers = headers.set('ngsw-bypass', 'true');

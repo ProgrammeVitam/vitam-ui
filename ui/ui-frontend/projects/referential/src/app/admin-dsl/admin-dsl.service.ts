@@ -38,7 +38,7 @@ import { HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { SearchUnitApiService } from 'vitamui-library';
+import { SearchUnitApiService, VitamuiHttpHeaders } from 'vitamui-library';
 
 @Injectable({
   providedIn: 'root',
@@ -47,17 +47,21 @@ export class AdminDslService {
   constructor(private unitApiService: SearchUnitApiService) {}
 
   getById(unitId: string, accessContractId: string) {
-    const headers = new HttpHeaders().append('X-Access-Contract-Id', accessContractId).append('Content-Type', 'application/stream');
+    const headers = new HttpHeaders()
+      .append(VitamuiHttpHeaders.X_ACCESS_CONTRACT_ID, accessContractId)
+      .append('Content-Type', 'application/stream');
     return this.unitApiService.getById(unitId, headers);
   }
 
   getByDsl(unitId: string, dsl: any, accessContractId: string) {
-    let headers = new HttpHeaders().append('Content-Type', 'application/json').append('X-Access-Contract-Id', accessContractId);
+    let headers = new HttpHeaders()
+      .append('Content-Type', 'application/json')
+      .append(VitamuiHttpHeaders.X_ACCESS_CONTRACT_ID, accessContractId);
 
     // We don't want to display the error popup launched in the http interceptor
     // if the unit id is unknown
     if (unitId) {
-      headers = headers.append('X-By-Passed-Error', '500');
+      headers = headers.append(VitamuiHttpHeaders.X_BY_PASSED_ERROR, '500');
     }
     return this.unitApiService.getByDsl(unitId, dsl, headers).pipe(
       catchError((httpErrorResponse: HttpErrorResponse) => {
@@ -69,8 +73,8 @@ export class AdminDslService {
   getUnitObjectsByDsl(unitId: string, dsl: any, accessContractId: string) {
     const headers = new HttpHeaders()
       .append('Content-Type', 'application/json')
-      .append('X-Access-Contract-Id', accessContractId)
-      .append('X-By-Passed-Error', '500');
+      .append(VitamuiHttpHeaders.X_ACCESS_CONTRACT_ID, accessContractId)
+      .append(VitamuiHttpHeaders.X_BY_PASSED_ERROR, '500');
 
     return this.unitApiService.getUnitObjectsByDsl(unitId, dsl, headers).pipe(
       catchError((httpErrorResponse: HttpErrorResponse) => {

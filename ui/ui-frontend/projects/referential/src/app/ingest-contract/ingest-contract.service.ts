@@ -38,7 +38,7 @@ import { HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { IngestContract, SearchService, VitamUISnackBarService } from 'vitamui-library';
+import { IngestContract, SearchService, VitamuiHttpHeaders, VitamUISnackBarService } from 'vitamui-library';
 
 import { IngestContractApiService } from '../core/api/ingest-contract-api.service';
 
@@ -67,7 +67,7 @@ export class IngestContractService extends SearchService<IngestContract> {
   getAllForTenant(tenantId: string): Observable<IngestContract[]> {
     // TODO: Check add of tenantId
     const params = new HttpParams().set('embedded', 'ALL');
-    const headers = new HttpHeaders().append('X-Tenant-Id', tenantId);
+    const headers = new HttpHeaders().set(VitamuiHttpHeaders.X_TENANT_ID, '' + tenantId);
     return this.ingestContractApi.getAllByParams(params, headers);
   }
 

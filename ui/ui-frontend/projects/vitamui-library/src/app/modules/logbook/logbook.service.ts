@@ -42,6 +42,7 @@ import { LogbookApiService } from '../api/logbook-api.service';
 import { Logger } from '../logger/logger';
 import { IEvent } from '../models';
 import { VitamSelectQuery } from '../models/vitam/vitam-select-query.interface';
+import { VitamuiHttpHeaders } from '../vitamui-http-headers.enum';
 
 @Injectable({
   providedIn: 'root',
@@ -66,7 +67,9 @@ export class LogbookService {
   }
 
   listOperationsEvents(identifier: string, obIdReq: string, tenantIdentifier: number, accessContract: string): Observable<IEvent[]> {
-    const headers = new HttpHeaders({ 'X-Tenant-Id': tenantIdentifier.toString(), 'X-Access-Contract-Id': accessContract });
+    const headers = new HttpHeaders()
+      .set(VitamuiHttpHeaders.X_TENANT_ID, tenantIdentifier.toString())
+      .set(VitamuiHttpHeaders.X_ACCESS_CONTRACT_ID, accessContract);
 
     return this.logbookApi.findOperations(identifier, obIdReq, headers).pipe(
       catchError(() => of({ $results: [] as IEvent[] })),
@@ -75,7 +78,9 @@ export class LogbookService {
   }
 
   listUnitEvents(unitId: string, accessContract: string, tenantIdentifier: number): Observable<IEvent[]> {
-    const headers = new HttpHeaders({ 'X-Tenant-Id': tenantIdentifier.toString(), 'X-Access-Contract-Id': accessContract });
+    const headers = new HttpHeaders()
+      .set(VitamuiHttpHeaders.X_TENANT_ID, tenantIdentifier.toString())
+      .set(VitamuiHttpHeaders.X_ACCESS_CONTRACT_ID, accessContract);
 
     return this.logbookApi.findUnitLifeCyclesByUnitId(unitId, headers).pipe(
       catchError(() => of({ $hits: null, $results: [] })),
@@ -84,8 +89,9 @@ export class LogbookService {
   }
 
   listObjectEvents(objectId: string, accessContract: string, tenantIdentifier: number): Observable<IEvent[]> {
-    const headers = new HttpHeaders({ 'X-Tenant-Id': tenantIdentifier.toString(), 'X-Access-Contract-Id': accessContract });
-
+    const headers = new HttpHeaders()
+      .set(VitamuiHttpHeaders.X_TENANT_ID, tenantIdentifier.toString())
+      .set(VitamuiHttpHeaders.X_ACCESS_CONTRACT_ID, accessContract);
     return this.logbookApi.findObjectGroupLifeCyclesByUnitId(objectId, headers).pipe(
       catchError(() => of({ $hits: null, $results: [] })),
       map((response) => this.extractEvents(response).sort(sortEventByDate)),
@@ -93,8 +99,7 @@ export class LogbookService {
   }
 
   listOperationByIdAndCollectionName(identifier: string, collectionName: string, tenantIdentifier: number): Observable<IEvent[]> {
-    const headers = new HttpHeaders({ 'X-Tenant-Id': tenantIdentifier.toString() });
-
+    const headers = new HttpHeaders().set(VitamuiHttpHeaders.X_TENANT_ID, tenantIdentifier.toString());
     return this.logbookApi.findOperationByIdAndCollectionName(identifier, collectionName, headers).pipe(
       catchError(() => of({ $results: [] as IEvent[] })),
       map((response) =>
@@ -112,8 +117,7 @@ export class LogbookService {
     collectionName: string,
     tenantIdentifier: number,
   ): Observable<IEvent[]> {
-    const headers = new HttpHeaders({ 'X-Tenant-Id': tenantIdentifier.toString() });
-
+    const headers = new HttpHeaders().set(VitamuiHttpHeaders.X_TENANT_ID, tenantIdentifier.toString());
     return this.logbookApi.findOperationByIdAndCollectionName(identifier, resourcePath, headers).pipe(
       catchError(() => of({ $results: [] as IEvent[] })),
       map((response) =>
@@ -131,8 +135,7 @@ export class LogbookService {
     tenantIdentifier: number,
     filterPredicate: (event: IEvent) => boolean,
   ): Observable<IEvent[]> {
-    const headers = new HttpHeaders({ 'X-Tenant-Id': tenantIdentifier.toString() });
-
+    const headers = new HttpHeaders().set(VitamuiHttpHeaders.X_TENANT_ID, tenantIdentifier.toString());
     return this.logbookApi.findOperationByIdAndCollectionName(identifier, resourcePath, headers).pipe(
       catchError(() => of({ $results: [] as IEvent[] })),
       map((response) => response.$results.reduce(flattenChildEvents, []).filter(filterPredicate).sort(sortEventByDate)),
@@ -145,8 +148,7 @@ export class LogbookService {
     collectionName: string,
     tenantIdentifier: number,
   ): Observable<IEvent[]> {
-    const headers = new HttpHeaders({ 'X-Tenant-Id': tenantIdentifier.toString() });
-
+    const headers = new HttpHeaders().set(VitamuiHttpHeaders.X_TENANT_ID, tenantIdentifier.toString());
     return this.logbookApi.findOperationByIdAndCollectionName(id, collectionName, headers).pipe(
       catchError(() => of({ $results: [] as IEvent[] })),
       map((response) =>
@@ -205,10 +207,9 @@ export class LogbookService {
     accessContract?: string,
     vitamTenantIdentifier?: number,
   ): Observable<IEvent[]> {
-    let headers = new HttpHeaders({ 'X-Tenant-Id': tenantIdentifier.toString() });
-
+    let headers = new HttpHeaders().set(VitamuiHttpHeaders.X_TENANT_ID, tenantIdentifier.toString());
     if (accessContract) {
-      headers = headers.append('X-Access-Contract-Id', accessContract);
+      headers = headers.set(VitamuiHttpHeaders.X_ACCESS_CONTRACT_ID, accessContract);
     }
 
     return this.logbookApi.findOperationsBySelectQuery(query, vitamTenantIdentifier, headers).pipe(
@@ -220,11 +221,9 @@ export class LogbookService {
   }
 
   getOperationById(id: string, tenantIdentifier: number, accessContractId: string): Observable<IEvent> {
-    const headers = new HttpHeaders({
-      'X-Tenant-Id': tenantIdentifier.toString(),
-      'X-Access-Contract-Id': accessContractId,
-    });
-
+    const headers = new HttpHeaders()
+      .set(VitamuiHttpHeaders.X_TENANT_ID, tenantIdentifier.toString())
+      .set(VitamuiHttpHeaders.X_ACCESS_CONTRACT_ID, accessContractId);
     return this.logbookApi.findOperationById(id, headers).pipe(
       switchMap((response) => {
         if (!response || !response.$results || response.$results.length === 0) {
