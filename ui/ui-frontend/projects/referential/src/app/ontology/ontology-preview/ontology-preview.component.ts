@@ -123,5 +123,6 @@ export class OntologyPreviewComponent implements AfterViewInit {
 
   emitClose() {
     this.previewClose.emit();
+    this.ontologyService.selectedId$.next(null);
   }
 }

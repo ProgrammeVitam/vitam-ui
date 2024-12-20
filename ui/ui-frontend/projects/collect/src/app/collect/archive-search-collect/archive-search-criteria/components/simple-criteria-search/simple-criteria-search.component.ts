@@ -46,6 +46,7 @@ import {
   CriteriaDataType,
   CriteriaOperator,
   CriteriaValue,
+  ItemNode,
   SchemaElement,
   SchemaService,
   SearchCriteriaAddAction,
@@ -56,7 +57,6 @@ import {
 import { ArchiveSearchConstsEnum } from '../../models/archive-search-consts-enum';
 import { ArchiveSharedDataService } from '../../services/archive-shared-data.service';
 import { ManagementRulesSharedDataService } from '../../services/management-rules-shared-data.service';
-import { ItemNode } from 'vitamui-library/app/modules/components/autocomplete/vitamui-autocomplete-multi-select-tree/vitamui-autocomplete-multi-select-tree.component';
 
 const FINAL_ACTION_TYPE = 'FINAL_ACTION_TYPE';
 const ARCHIVE_UNIT_WITH_OBJECTS = 'ARCHIVE_UNIT_WITH_OBJECTS';

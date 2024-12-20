@@ -35,15 +35,13 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { finalize, Subject } from 'rxjs';
-
-import { Id } from '../';
 import { Direction } from './direction.enum';
 import { DEFAULT_PAGE_SIZE, PageRequest } from './page-request.model';
 import { SearchService } from './search.service';
 
 export const INFINITE_SCROLL_MAX_ITEMS = 100;
 
-export class InfiniteScrollTable<T extends Id> {
+export class InfiniteScrollTable<T> {
   infiniteScrollDisabled = false;
   pending = false;
   dataSource: T[];

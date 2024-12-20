@@ -53,7 +53,7 @@ import org.springframework.context.annotation.Configuration;
 public class VitamAdministrationConfig extends VitamClientConfig {
 
     @Bean
-    public AccessContractService geAccessContractService() {
+    public AccessContractService getAccessContractService() {
         return new AccessContractService(adminExternalClient());
     }
 

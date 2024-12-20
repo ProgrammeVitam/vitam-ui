@@ -36,10 +36,8 @@
  */
 import { HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
-import { Id } from './models';
 import { PageRequest, PaginatedResponse } from './vitamui-table';
 
-export interface PaginatedApi<T extends Id> {
+export interface PaginatedApi<T> {
   getAllPaginated(pageRequest: PageRequest, embedded?: string, headers?: HttpHeaders): Observable<PaginatedResponse<T>>;
 }

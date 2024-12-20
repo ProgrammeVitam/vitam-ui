@@ -59,6 +59,7 @@ import { DesignSystemRepeatableInputComponent } from './components/molecules/inp
 import { DesignSystemSearchWithTypeSelectorComponent } from './components/molecules/inputs/search-with-type-selector/design-system-search-with-type-selector.component';
 import { DesignSystemMultipleOptionsDatepickerComponent } from './components/molecules/inputs/multiple-options-datepicker/design-system-multiple-options-datepicker.component';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
+import { TabGroupComponent } from './components/organisms/tab-group/tab-group.component';
 
 export interface RouteData {
   // Alternative search terms
@@ -116,6 +117,7 @@ const routes: Routes = [
     children: [
       { path: '', redirectTo: 'table', pathMatch: 'full' },
       { path: 'table', component: TableComponent },
+      { path: 'tab-group', component: TabGroupComponent },
     ],
   },
   { path: 'miscellaneous', component: MiscellaneousComponent },

@@ -34,9 +34,26 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-export * from './utils/item-node.interface';
-export * from './utils/option.interface';
-export * from './vitamui-autocomplete-multi-select-tree/vitamui-autocomplete-multi-select-tree.component';
-export * from './vitamui-autocomplete-multi-select-tree/vitamui-autocomplete-multi-select-tree.module';
-export * from './vitamui-autocomplete/vitamui-autocomplete.component';
-export * from './vitamui-autocomplete/vitamui-autocomplete.module';
+
+/** Node for item */
+export class ItemNode<T> {
+  children: ItemNode<T>[];
+  item: T;
+}
+
+/** Flat item node with expandable and level information */
+export class ItemFlatNode<T> {
+  id: string;
+  item: T;
+  level: number;
+  expandable: boolean;
+  display: boolean;
+}
+
+export class ItemNodeUtils {
+  static getLevel = <T>(node: ItemFlatNode<T>): number => node.level;
+  static isExpandable = <T>(node: ItemFlatNode<T>) => node.expandable;
+  static getChildren = <T>(node: ItemNode<T>): ItemNode<T>[] => node.children;
+  static hasChild = <T>(_: number, _nodeData: ItemFlatNode<T>) => _nodeData.expandable;
+  static trackBy = <T>(_: number, _nodeData: ItemFlatNode<T>) => _nodeData.id;
+}

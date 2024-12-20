@@ -5762,5 +5762,12 @@
       "TITLE": "Modification des positions de consultation",
       "ALL_POSITIONS_INFO": "Choix des positions auquelles on souhaite donner accès en consultation"
     }
+  },
+  "ONTOLOGY": {
+    "NODES": {
+      "DESCRIPTION": "Métadonnées descriptives",
+      "MANAGEMENT": "Métadonnées de gestion",
+      "OTHER": "Métadonnées système"
+    }
   }
 }
