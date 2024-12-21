@@ -41,7 +41,6 @@ import fr.gouv.vitam.access.external.client.AccessExternalClient;
 import fr.gouv.vitam.access.external.client.AdminExternalClient;
 import fr.gouv.vitamui.commons.api.application.AbstractContextConfiguration;
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
-import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
 import fr.gouv.vitamui.commons.rest.configuration.SwaggerConfiguration;
 import fr.gouv.vitamui.commons.vitam.api.access.UnitService;
 import fr.gouv.vitamui.commons.vitam.api.administration.AgencyService;
@@ -75,7 +74,6 @@ import fr.gouv.vitamui.referential.external.server.security.WebSecurityConfig;
 import fr.gouv.vitamui.security.client.ContextRestClient;
 import fr.gouv.vitamui.security.client.SecurityRestClientFactory;
 import org.springframework.boot.autoconfigure.http.HttpMessageConvertersAutoConfiguration;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -233,17 +231,14 @@ public class ApiReferentialServerConfig extends AbstractContextConfiguration {
     }
 
     @Bean
-    @ConfigurationProperties(prefix = "clients.iam-internal")
-    public RestClientConfiguration IamInternalRestClientConfiguration() {
-        return new RestClientConfiguration();
-    }
-
-    @Bean
     public IamInternalRestClientFactory iamInternalRestClientFactory(
-        final RestClientConfiguration IamInternalRestClientConfiguration,
+        final ApiReferentialApplicationProperties apiReferentialApplicationProperties,
         final RestTemplateBuilder restTemplateBuilder
     ) {
-        return new IamInternalRestClientFactory(IamInternalRestClientConfiguration, restTemplateBuilder);
+        return new IamInternalRestClientFactory(
+            apiReferentialApplicationProperties.getIamInternalClient(),
+            restTemplateBuilder
+        );
     }
 
     @Bean
