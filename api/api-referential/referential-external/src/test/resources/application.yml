@@ -1,4 +1,6 @@
 spring:
+  config:
+    name: referential-external-application
   api:
     name: API Referential - Gestion des référentiels
     description: Ces APIS sont utilisés pour configurer les référentiels
@@ -22,10 +24,23 @@ referential-external:
     server-host: localhost
     server-port: 7083
     secure: false
-  referential-internal-client:
-    server-host: localhost
-    server-port: 7087
-    secure: false
 
 swagger:
   layer: api-external
+
+
+
+login.url: http://cas/login
+
+security:
+  host: xxx
+  port: 8080
+
+logbook.scheduling.sendEventToVitamTasks.enabled: false
+
+# internal ontology fields file path
+internal_ontology_file_path: "src/test/resources/internal-ontology/internal_ontology_fields.json"
+
+
+#logging.level.org.springframework: DEBUG
+

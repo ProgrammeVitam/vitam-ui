@@ -56,6 +56,4 @@ public class ApiReferentialApplicationProperties {
     private RestClientConfiguration iamInternalClient;
 
     private RestClientConfiguration securityClient;
-
-    private RestClientConfiguration referentialInternalClient;
 }

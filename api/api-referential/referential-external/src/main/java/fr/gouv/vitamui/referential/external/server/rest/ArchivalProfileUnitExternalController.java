@@ -38,6 +38,7 @@
 package fr.gouv.vitamui.referential.external.server.rest;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import fr.gouv.vitam.access.external.common.exception.AccessExternalClientException;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitamui.common.security.SafeFileChecker;
 import fr.gouv.vitamui.common.security.SanityChecker;
@@ -49,10 +50,9 @@ import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.utils.ApiUtils;
 import fr.gouv.vitamui.commons.rest.util.RestUtils;
-import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsResponseDto;
 import fr.gouv.vitamui.referential.common.dto.ArchivalProfileUnitDto;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
-import fr.gouv.vitamui.referential.external.server.service.ArchivalProfileUnitExternalService;
+import fr.gouv.vitamui.referential.external.server.service.archivalprofileunit.ArchivalProfileUnitExternalService;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
@@ -64,7 +64,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -78,7 +77,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.util.Collection;
-import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -134,7 +132,7 @@ public class ArchivalProfileUnitExternalController {
     public ArchivalProfileUnitDto update(
         final @PathVariable("id") String id,
         final @Valid @RequestBody ArchivalProfileUnitDto dto
-    ) throws InvalidParseOperationException {
+    ) throws InvalidParseOperationException, AccessExternalClientException {
         ParameterChecker.checkParameter("Identifier is mandatory : ", id);
         SanityChecker.checkSecureParameter(id);
         SanityChecker.sanitizeCriteria(dto);
@@ -198,32 +196,5 @@ public class ArchivalProfileUnitExternalController {
         LOGGER.debug("check exist accessContract={}", archivalProfileUnitDto);
         final boolean exist = archivalProfileUnitExternalService.check(archivalProfileUnitDto);
         return RestUtils.buildBooleanResponse(exist);
-    }
-
-    @PatchMapping(CommonConstants.PATH_ID)
-    @Secured(ServicesData.ROLE_UPDATE_PASTIS)
-    public ArchivalProfileUnitDto patch(
-        final @PathVariable("id") String id,
-        @RequestBody final Map<String, Object> partialDto
-    ) throws InvalidParseOperationException, PreconditionFailedException {
-        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
-        SanityChecker.checkSecureParameter(id);
-        SanityChecker.sanitizeCriteria(partialDto);
-        LOGGER.debug("Patch {} with {}", id, partialDto);
-        Assert.isTrue(
-            StringUtils.equals(id, (String) partialDto.get("id")),
-            "The DTO identifier must match the path identifier for update."
-        );
-        return archivalProfileUnitExternalService.patch(partialDto);
-    }
-
-    @Secured(ServicesData.ROLE_GET_PASTIS)
-    @GetMapping("/{id}/history")
-    public LogbookOperationsResponseDto findHistoryById(final @PathVariable("id") String id)
-        throws InvalidParseOperationException, PreconditionFailedException {
-        ParameterChecker.checkParameter("Identifier is mandatory : ", id);
-        SanityChecker.checkSecureParameter(id);
-        LOGGER.debug("get logbook for accessContract with id :{}", id);
-        return archivalProfileUnitExternalService.findHistoryById(id);
     }
 }

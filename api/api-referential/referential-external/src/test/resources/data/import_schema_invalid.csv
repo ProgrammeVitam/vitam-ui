@@ -1,4 +1,4 @@
-"Path";"Cardinality";"IsObject";"ShortName"
+"Path";"Cardinality";"IsObject";"ShortName";"Description"
 "MyKeyword";"ONE";"false";"Mot-clé";"Description"
 "MyText";"ONE_REQUIRED";"";"";""
 "MyKeyword2";"MANY";"false";"Mot-clé";"Description"

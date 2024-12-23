@@ -36,6 +36,7 @@
  */
 package fr.gouv.vitamui.iam.security.service;
 
+import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitamui.commons.api.domain.Role;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.domain.TenantDto;
@@ -189,5 +190,30 @@ public class ExternalSecurityService {
 
     public InternalHttpContext getInternalHttpContext() {
         return InternalHttpContext.buildFromExternalHttpContext(getHttpContext());
+    }
+
+    public VitamContext getVitamContext() {
+        return buildVitamContext(getTenantIdentifier());
+    }
+
+    /**
+     * Build Vitam Context using tenantIdentifier.
+     * @param tenantId
+     * @return
+     */
+    public VitamContext buildVitamContext(final Integer tenantId) {
+        return new VitamContext(tenantId).setApplicationSessionId(getApplicationId());
+    }
+
+    /**
+     * Build Vitam Context using tenantIdentifier & accessContractIdentifier.
+     * @param tenantId
+     * @param accessContractId
+     * @return
+     */
+    public VitamContext buildVitamContext(final Integer tenantId, final String accessContractId) {
+        return new VitamContext(tenantId)
+            .setAccessContract(accessContractId)
+            .setApplicationSessionId(getApplicationId());
     }
 }

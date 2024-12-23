@@ -47,8 +47,7 @@ import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.referential.common.dto.AccessionRegisterDetailDto;
 import fr.gouv.vitamui.referential.common.dto.AccessionRegisterSummaryDto;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
-import fr.gouv.vitamui.referential.external.server.service.AccessionRegisterDetailExternalService;
-import fr.gouv.vitamui.referential.external.server.service.AccessionRegisterSummaryExternalService;
+import fr.gouv.vitamui.referential.external.server.service.accessionregister.AccessionRegisterExternalService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,15 +69,12 @@ public class AccessionRegisterExternalController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AccessionRegisterExternalController.class);
 
-    private final AccessionRegisterSummaryExternalService accessionRegisterSummaryExternalService;
-    private final AccessionRegisterDetailExternalService accessionRegisterDetailExternalService;
+    private final AccessionRegisterExternalService accessionRegisterDetailExternalService;
 
     @Autowired
     public AccessionRegisterExternalController(
-        AccessionRegisterSummaryExternalService accessionRegisterSummaryExternalService,
-        AccessionRegisterDetailExternalService accessionRegisterDetailExternalService
+        AccessionRegisterExternalService accessionRegisterDetailExternalService
     ) {
-        this.accessionRegisterSummaryExternalService = accessionRegisterSummaryExternalService;
         this.accessionRegisterDetailExternalService = accessionRegisterDetailExternalService;
     }
 
@@ -89,7 +85,7 @@ public class AccessionRegisterExternalController {
     ) {
         SanityChecker.sanitizeCriteria(criteria);
         LOGGER.debug("get all accessionRegister criteria={}", criteria);
-        return accessionRegisterSummaryExternalService.getAll(criteria);
+        return accessionRegisterDetailExternalService.getAll();
     }
 
     @GetMapping(value = RestApi.DETAILS, params = { "page", "size" })
