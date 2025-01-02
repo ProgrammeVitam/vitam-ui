@@ -153,3 +153,6 @@ $custom-theme: mat.define-light-theme(
 );
 
 @include mat.all-component-themes($custom-theme);
+
+// In order to have 10px vertical padding on form fields, we need to set the density to -3 (otherwise it's 16px by default)
+@include mat.private-form-field-density(-3);

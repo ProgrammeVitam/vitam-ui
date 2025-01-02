@@ -48,7 +48,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
 import { MatLegacyTabsModule as MatTabsModule } from '@angular/material/legacy-tabs';
 import { RouterModule } from '@angular/router';
-import { VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
+import { SelectComponent, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 
 import { AccessContractInformationTabComponent } from './access-contract-information-tab/access-contract-information-tab.component';
 import { AccessContractNodesTabComponent } from './access-contract-nodes-tab/access-contract-nodes-tab.component';
@@ -64,24 +64,25 @@ import { MatRadioModule } from '@angular/material/radio';
 @NgModule({
   imports: [
     CommonModule,
-    RouterModule,
-    VitamUICommonModule,
-    VitamUILibraryModule,
     FormsModule,
-    ReactiveFormsModule,
-    MatMenuModule,
-    MatSnackBarModule,
+    MatButtonToggleModule,
     MatDialogModule,
-    MatSidenavModule,
-    MatProgressSpinnerModule,
-    MatSelectModule,
-    MatOptionModule,
-    MatTabsModule,
     MatFormFieldModule,
     MatInputModule,
-    MatButtonToggleModule,
-    TranslateModule,
+    MatMenuModule,
+    MatOptionModule,
+    MatProgressSpinnerModule,
     MatRadioModule,
+    MatSelectModule,
+    MatSidenavModule,
+    MatSnackBarModule,
+    MatTabsModule,
+    ReactiveFormsModule,
+    RouterModule,
+    SelectComponent,
+    TranslateModule,
+    VitamUICommonModule,
+    VitamUILibraryModule,
   ],
   declarations: [
     AccessContractPreviewComponent,

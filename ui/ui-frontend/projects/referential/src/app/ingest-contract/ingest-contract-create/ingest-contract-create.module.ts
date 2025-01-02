@@ -44,8 +44,7 @@ import { MatLegacyProgressBarModule as MatProgressBarModule } from '@angular/mat
 import { MatLegacyRadioModule as MatRadioModule } from '@angular/material/legacy-radio';
 import { MatLegacySelectModule as MatSelectModule } from '@angular/material/legacy-select';
 import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
-import { VitamUICommonModule } from 'vitamui-library';
-import { VitamUILibraryModule } from 'vitamui-library';
+import { SelectComponent, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 
 import { SharedModule } from '../../../../../identity/src/app/shared/shared.module';
 import { IngestContractCreateComponent } from './ingest-contract-create.component';
@@ -53,15 +52,16 @@ import { IngestContractCreateComponent } from './ingest-contract-create.componen
 @NgModule({
   imports: [
     CommonModule,
-    SharedModule,
     MatButtonToggleModule,
     MatFormFieldModule,
     MatInputModule,
     MatProgressBarModule,
+    MatRadioModule,
     MatSelectModule,
     MatSnackBarModule,
-    MatRadioModule,
     ReactiveFormsModule,
+    SelectComponent,
+    SharedModule,
     VitamUICommonModule,
     VitamUILibraryModule,
   ],

@@ -1,16 +1,38 @@
 @import '../mixins/elevation';
+@import '../mixins/material/panel';
+
+.mat-mdc-select-panel {
+  @include panel;
+
+  --mat-option-label-text-color: var(--vitamui-grey-900);
+  --mat-option-selected-state-label-text-color: var(--vitamui-grey-900);
+  --mat-option-hover-state-layer-color: var(--vitamui-primary-light);
+  --mat-option-focus-state-layer-color: var(--vitamui-primary-light);
+  --mat-option-selected-state-layer-color: transparent;
+
+  .mat-mdc-option.mdc-list-item--selected:not(.mdc-list-item--disabled):not(.mat-mdc-option-multiple) {
+    @extend .text;
+    @extend .bold;
+
+    .mat-pseudo-checkbox {
+      display: none;
+    }
+  }
+  // Override to set the background color as !important otherwise the hover color is not applied on selected item
+  .mat-mdc-option:hover:not(.mdc-list-item--disabled) {
+    background-color: var(--mat-option-hover-state-layer-color) !important;
+  }
+  .mat-mdc-option.mdc-list-item--disabled {
+    color: var(--vitamui-grey-600);
+    background-color: var(--vitamui-grey-200);
+    .mdc-list-item__primary-text {
+      opacity: 1;
+    }
+  }
+}
 
 .vitamui-mat-select.mat-select-panel {
   @include mat-select-panel;
-}
-
-.mat-drawer,
-.mat-dialog-container {
-  .vitamui-mat-select.mat-form-field {
-    .mat-form-field-flex {
-      @include dialog-elevation-dark;
-    }
-  }
 }
 
 mat-select-trigger.vitamui-mat-select {

@@ -38,4 +38,5 @@ export interface Option {
   key?: any;
   label?: string;
   info?: string;
+  disabled?: boolean;
 }

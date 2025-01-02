@@ -4,15 +4,16 @@
   </vitamui-common-slide-toggle>
 
   <div *ngIf="!form?.get('everyFormatType')?.value && formatOptions" class="py-3">
-    <vitamui-common-autocomplete-multi-select
+    <vitamui-select
+      [multiple]="true"
       formControlName="formatType"
       class="mb-3"
       [placeholder]="'INGEST_CONTRACT.TAB.FORMAT.SELECT_FORMAT' | translate"
       [searchBarPlaceHolder]="'INGEST_CONTRACT.TAB.FORMAT.SELECT_FORMAT_SEARCH' | translate"
-      [multiSelectOptions]="formatOptions"
+      [options]="formatOptions"
       [errorMessageMap]="{ required: 'INGEST_CONTRACT.TAB.FORMAT.NO_FORMAT_SELECTED' }"
     >
-    </vitamui-common-autocomplete-multi-select>
+    </vitamui-select>
   </div>
 
   <vitamui-common-slide-toggle formControlName="formatUnidentifiedAuthorized" class="w-100 p-0">

@@ -1,0 +1,54 @@
+<h2>Select</h2>
+
+This is a form component that allows the user to select an option from a list of options. The component can be configured:
+<ul>
+  <li>to display a search bar filtering the options</li>
+  <li>to allow selecting multiple options (multiple mode)</li>
+  <ul>
+    <li>to have a "select all" option (in multiple mode)</li>
+    <li>to manage selected options in a "cart" (in multiple mode)</li>
+  </ul>
+</ul>
+
+<div class="gap-2">
+  <p>Toggle the options and see the result below:</p>
+  <vitamui-common-slide-toggle class="col" [(ngModel)]="enableSearch">Display search bar</vitamui-common-slide-toggle>
+  <vitamui-common-slide-toggle class="col" [(ngModel)]="enableSelectAll"
+    >Display "select all" option (in multiple mode)
+  </vitamui-common-slide-toggle>
+  <vitamui-common-slide-toggle class="col" [(ngModel)]="enableDisplaySelected"
+    >Display "cart" (in multiple mode)
+  </vitamui-common-slide-toggle>
+</div>
+
+@if (multiSelectOptions$ | async; as multiSelectOptions) {
+  @for (config of configs; track config.name) {
+    <h3>{{ config.name }}</h3>
+    @for (entry of config.entries; track entry.type) {
+      <div class="container-fluid p-0">
+        <div class="row">
+          @for (state of entry.states; track state.id) {
+            <div class="col">
+              <h4>{{ state.id + ' (' + entry.type + ')' }}</h4>
+              <vitamui-select
+                [attr.data-active]="state.id === 'Active'"
+                [formControl]="state.control"
+                [options]="multiSelectOptions"
+                [placeholder]="'COMMON.ADRESS.COUNTRY' | translate"
+                [searchBarPlaceHolder]="'INPUT.SEARCH_PLACEHOLDER' | translate"
+                [multiple]="config.multiple"
+                [enableSearch]="enableSearch"
+                [enableSelectAll]="enableSelectAll"
+                [enableDisplaySelected]="enableDisplaySelected"
+                [errorMessageMap]="{
+                  pattern: 'ERRORS.CONTAINS_GB',
+                }"
+              >
+              </vitamui-select>
+            </div>
+          }
+        </div>
+      </div>
+    }
+  }
+}

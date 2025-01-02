@@ -482,7 +482,7 @@
     "PLACEHOLDER": "name@domain.xyz",
     "ERROR": "You must enter at least one email address"
   },
-  "MULTIPLE_SELECT_AUTOCOMPLETE": {
+  "SELECT": {
     "COMPLETE_SELECTION": "Complete the selection",
     "EMPTY_SELECTION": "Empty the selection",
     "CONSULT_SELECTION": "Consult the selection",

@@ -48,11 +48,7 @@ import { ArchiveUnitModule } from './archive-unit/archive-unit.module';
 import { AuthService } from './auth.service';
 import { AccordionModule } from './components/accordion/accordion.module';
 import { ApplicationCardModule } from './components/application';
-import {
-  VitamUIAutocompleteModule,
-  VitamUIAutocompleteMultiSelectModule,
-  VitamUIAutocompleteMultiSelectTreeModule,
-} from './components/autocomplete';
+import { VitamUIAutocompleteModule, VitamUIAutocompleteMultiSelectTreeModule } from './components/autocomplete';
 import { CancelledSnackBarModule } from './components/cancelled-snack-bar/cancelled-snack-bar.module';
 import { ChipComponent } from './components/chip/chip.component';
 import { CollapseModule } from './components/collapse/collapse.module';
@@ -191,7 +187,6 @@ export function startupServiceFactory(startupService: StartupService, authServic
     UserAlertCardModule,
     UserPhotoModule,
     VitamUIAutocompleteModule,
-    VitamUIAutocompleteMultiSelectModule,
     VitamUIAutocompleteMultiSelectTreeModule,
     VitamuiBodyModule,
     VitamuiCommonBannerModule,
@@ -254,7 +249,6 @@ export function startupServiceFactory(startupService: StartupService, authServic
     UserAlertCardModule,
     UserPhotoModule,
     VitamUIAutocompleteModule,
-    VitamUIAutocompleteMultiSelectModule,
     VitamUIAutocompleteMultiSelectTreeModule,
     VitamuiBodyModule,
     VitamuiCommonBannerModule,

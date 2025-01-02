@@ -131,8 +131,8 @@ export class VitamUiAutocompleteMultiSelectTreeComponent<T>
   @Input() searchDebounceTimeMs = 100;
 
   nbSelectedItemsMap: { [k: string]: string } = {
-    '=1': 'MULTIPLE_SELECT_AUTOCOMPLETE.SELECTED_ELEMENT.SINGULAR',
-    other: 'MULTIPLE_SELECT_AUTOCOMPLETE.SELECTED_ELEMENT.PLURAL',
+    '=1': 'SELECT.SELECTED_ELEMENT.SINGULAR',
+    other: 'SELECT.SELECTED_ELEMENT.PLURAL',
   };
   searchText = '';
   showOnlySelected = false;

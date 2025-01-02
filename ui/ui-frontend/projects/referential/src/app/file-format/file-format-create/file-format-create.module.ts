@@ -44,14 +44,13 @@ import { MatLegacyProgressBarModule as MatProgressBarModule } from '@angular/mat
 import { MatLegacySelectModule as MatSelectModule } from '@angular/material/legacy-select';
 import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
 
-import { VitamUICommonModule } from 'vitamui-library';
+import { SelectComponent, VitamUICommonModule } from 'vitamui-library';
 import { SharedModule } from '../../../../../identity/src/app/shared/shared.module';
 import { FileFormatCreateComponent } from './file-format-create.component';
 
 @NgModule({
   imports: [
     CommonModule,
-    SharedModule,
     MatButtonToggleModule,
     MatFormFieldModule,
     MatInputModule,
@@ -59,6 +58,8 @@ import { FileFormatCreateComponent } from './file-format-create.component';
     MatSelectModule,
     MatSnackBarModule,
     ReactiveFormsModule,
+    SelectComponent,
+    SharedModule,
     VitamUICommonModule,
   ],
   declarations: [FileFormatCreateComponent],

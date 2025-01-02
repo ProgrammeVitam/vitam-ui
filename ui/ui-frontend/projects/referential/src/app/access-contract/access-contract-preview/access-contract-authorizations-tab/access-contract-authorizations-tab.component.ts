@@ -36,14 +36,7 @@
  */
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import {
-  AccessContract,
-  AccessContractDisplay,
-  AccessRightType,
-  accessRightTypeOf,
-  Option,
-  VitamuiAutocompleteMultiselectOptions,
-} from 'vitamui-library';
+import { AccessContract, AccessContractDisplay, AccessRightType, accessRightTypeOf, Option, VitamuiSelectOptions } from 'vitamui-library';
 import { AgencyService } from '../../../agency/agency.service';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { AccessContractAuthorizationsUpdateComponent } from './access-contract-authorizations-update/access-contract-authorizations-update.component';
@@ -62,7 +55,7 @@ export class AccessContractAuthorizationsTabComponent implements OnInit {
 
   public form: FormGroup;
   public isLoading = false;
-  public originatingAgenciesOptions: VitamuiAutocompleteMultiselectOptions;
+  public originatingAgenciesOptions: VitamuiSelectOptions;
   public _accessContract: AccessContractDisplay;
 
   get accessContract(): AccessContractDisplay {

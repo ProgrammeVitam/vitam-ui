@@ -92,16 +92,17 @@
             </vitamui-common-slide-toggle>
           </div>
 
-          <vitamui-common-autocomplete-multi-select
+          <vitamui-select
+            [multiple]="true"
             *ngIf="showProducerSelection()"
             [formControl]="producerServicesMultiSelect"
             formControlName="originatingAgencyIds"
-            [multiSelectOptions]="producerServicesMultiSelectOptions"
+            [options]="producerServicesMultiSelectOptions"
             required
             [placeholder]="'AUDIT.CREATE_DIALOG.PRODUCERS' | translate"
             [searchBarPlaceHolder]="'AUDIT.CREATE_DIALOG.ALL_PRODUCERS_SEARCHBAR_PLACEHOLDER' | translate"
           >
-          </vitamui-common-autocomplete-multi-select>
+          </vitamui-select>
         </div>
 
         <div *ngIf="form.get('auditPerimeter')?.value === 'AUDIT_PERIMETER_INGEST_OPERATION_IDENTIFIER'">

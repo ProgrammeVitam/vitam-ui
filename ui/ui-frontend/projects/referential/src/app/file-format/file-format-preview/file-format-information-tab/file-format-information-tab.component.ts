@@ -38,18 +38,10 @@ import { formatDate } from '@angular/common';
 import { Component, EventEmitter, Inject, Input, LOCALE_ID, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { BehaviorSubject, Observable, Subscription, combineLatest, of } from 'rxjs';
+import { BehaviorSubject, combineLatest, Observable, of, Subscription } from 'rxjs';
 import { catchError, filter, map, switchMap, tap } from 'rxjs/operators';
 import { extend, isEmpty, omit } from 'underscore';
-import {
-  ApplicationId,
-  FILE_FORMAT_EXTERNAL_PREFIX,
-  FileFormat,
-  Role,
-  SecurityService,
-  VitamuiAutocompleteMultiselectOptions,
-  diff,
-} from 'vitamui-library';
+import { ApplicationId, diff, FILE_FORMAT_EXTERNAL_PREFIX, FileFormat, Role, SecurityService, VitamuiSelectOptions } from 'vitamui-library';
 import { FileFormatService } from '../../file-format.service';
 
 @Component({
@@ -76,7 +68,7 @@ export class FileFormatInformationTabComponent {
   canUpdateFileFormat$ = this.canUpdateFileFormat.asObservable();
   submitting$ = this.submitting.asObservable();
   canUpdate$: Observable<boolean>;
-  fileFormatOptions$: Observable<VitamuiAutocompleteMultiselectOptions>;
+  fileFormatOptions$: Observable<VitamuiSelectOptions>;
 
   form: FormGroup;
 

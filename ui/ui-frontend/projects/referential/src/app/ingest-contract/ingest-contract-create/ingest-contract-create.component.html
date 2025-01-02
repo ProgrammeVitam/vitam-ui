@@ -149,14 +149,15 @@
         </div>
 
         <div class="d-flex" *ngIf="form?.controls.everyFormatType?.value === false">
-          <vitamui-common-autocomplete-multi-select
+          <vitamui-select
+            [multiple]="true"
             class="col-8"
             formControlName="formatType"
-            [multiSelectOptions]="formatTypesOptions"
+            [options]="formatTypesOptions"
             [placeholder]="'INGEST_CONTRACT.CREATE_DIALOG.FILES_FORMAT_SELECT' | translate"
             [searchBarPlaceHolder]="'INGEST_CONTRACT.CREATE_DIALOG.FILES_FORMAT_SEARCH' | translate"
             [required]="true"
-          ></vitamui-common-autocomplete-multi-select>
+          ></vitamui-select>
           <div class="mt-4">
             <i
               class="vitamui-icon vitamui-icon-info primary"

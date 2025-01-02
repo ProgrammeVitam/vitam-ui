@@ -52,7 +52,7 @@ import { DesignSystemComponent } from './components/design-system/design-system.
 import { DesignSystemChipsComponent } from './components/atoms/chips/design-system-chips.component';
 import { SpacingComponent } from './components/tokens/spacing/spacing.component';
 import { DesignSystemCheckboxComponent } from './components/molecules/inputs/checkbox/design-system-checkbox.component';
-import { DesignSystemAutocompleteMultiSelectComponent } from './components/molecules/inputs/autocomplete-multi-select/design-system-autocomplete-multi-select.component';
+import { DesignSystemSelectComponent } from './components/molecules/inputs/select/design-system-select.component';
 import { DesignSystemAutocompleteMultiSelectTreeComponent } from './components/molecules/inputs/autocomplete-multi-select-tree/design-system-autocomplete-multi-select-tree.component';
 import { DesignSystemOldInputsComponent } from './components/molecules/inputs/old-input/design-system-old-inputs.component';
 import { DesignSystemRepeatableInputComponent } from './components/molecules/inputs/repeatable-input/design-system-repeatable-input.component';
@@ -90,8 +90,8 @@ const routes: Routes = [
       {
         path: 'inputs',
         children: [
-          { path: '', redirectTo: 'autocomplete-multi-select', pathMatch: 'full' },
-          { path: 'autocomplete-multi-select', component: DesignSystemAutocompleteMultiSelectComponent },
+          { path: '', redirectTo: 'select', pathMatch: 'full' },
+          { path: 'select', component: DesignSystemSelectComponent },
           { path: 'autocomplete-multi-select-tree', component: DesignSystemAutocompleteMultiSelectTreeComponent },
           { path: 'checkboxes', component: DesignSystemCheckboxComponent },
           { path: 'old-input', component: DesignSystemOldInputsComponent },

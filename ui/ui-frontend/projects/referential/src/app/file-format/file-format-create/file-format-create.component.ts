@@ -45,7 +45,7 @@ import {
   FileFormat,
   Option,
   StartupService,
-  VitamuiAutocompleteMultiselectOptions,
+  VitamuiSelectOptions,
 } from 'vitamui-library';
 import { FileFormatService } from '../file-format.service';
 import { FileFormatCreateValidators } from './file-format-create.validators';
@@ -58,7 +58,7 @@ import { FileFormatCreateValidators } from './file-format-create.validators';
 export class FileFormatCreateComponent implements OnInit, OnDestroy {
   form: FormGroup;
   tenantIdentifier: string;
-  hasPriorityOverFileFormatIDsOptions: VitamuiAutocompleteMultiselectOptions;
+  hasPriorityOverFileFormatIDsOptions: VitamuiSelectOptions;
   hasCustomGraphicIdentity = false;
   hasError = true;
   message: string;
@@ -103,7 +103,7 @@ export class FileFormatCreateComponent implements OnInit, OnDestroy {
           }));
           return { options };
         }),
-        tap((options: VitamuiAutocompleteMultiselectOptions) => (this.hasPriorityOverFileFormatIDsOptions = options)),
+        tap((options: VitamuiSelectOptions) => (this.hasPriorityOverFileFormatIDsOptions = options)),
       )
       .subscribe();
   }
