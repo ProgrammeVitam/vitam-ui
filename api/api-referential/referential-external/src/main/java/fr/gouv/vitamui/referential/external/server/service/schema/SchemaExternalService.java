@@ -43,9 +43,9 @@ import fr.gouv.vitamui.commons.api.dtos.ErrorImportFile;
 import fr.gouv.vitamui.commons.api.enums.ErrorImportFileMessage;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
+import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import fr.gouv.vitamui.iam.internal.client.ApplicationInternalRestClient;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
-import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import fr.gouv.vitamui.referential.common.dto.ImportSchemaDto;
 import fr.gouv.vitamui.referential.common.dto.SchemaDto;
 import fr.gouv.vitamui.referential.common.model.Collection;
@@ -80,21 +80,19 @@ public class SchemaExternalService extends AbstractService {
     private final ImportSchemaService importSchemaService;
     private final ImportSchemaConverter converter;
     private final ApplicationInternalRestClient applicationInternalRestClient;
-
-    private final InternalSecurityService internalSecurityService;
     private final AdminExternalClient adminExternalClient;
+    private final ExternalSecurityService externalSecurityService;
 
     @Autowired
     public SchemaExternalService(
-        final InternalSecurityService internalSecurityService,
         final AdminExternalClient adminExternalClient,
-        ExternalSecurityService externalSecurityService,
+        final ExternalSecurityService externalSecurityService,
         ImportSchemaService importSchemaService,
         ImportSchemaConverter converter,
         ApplicationInternalRestClient applicationInternalRestClient
     ) {
         super(externalSecurityService);
-        this.internalSecurityService = internalSecurityService;
+        this.externalSecurityService = externalSecurityService;
         this.adminExternalClient = adminExternalClient;
         this.importSchemaService = importSchemaService;
         this.converter = converter;
@@ -124,7 +122,7 @@ public class SchemaExternalService extends AbstractService {
     }
 
     public SchemaDto getArchiveUnitProfileSchema(final String archiveUnitProfileId) throws VitamClientException {
-        final VitamContext vitamContext = internalSecurityService.getVitamContext();
+        final VitamContext vitamContext = buildVitamContext();
         final RequestResponse<CombinedSchemaModel> payload = adminExternalClient.getArchiveUnitProfileSchema(
             vitamContext,
             archiveUnitProfileId
@@ -139,7 +137,7 @@ public class SchemaExternalService extends AbstractService {
 
     private Optional<RequestResponse<SchemaResponse>> getSchemaModels(Collection collection)
         throws VitamClientException {
-        final VitamContext vitamContext = internalSecurityService.getVitamContext();
+        final VitamContext vitamContext = buildVitamContext();
         if (Objects.equals(collection, Collection.ARCHIVE_UNIT)) {
             return Optional.of(adminExternalClient.getUnitSchema(vitamContext));
         }
@@ -159,7 +157,10 @@ public class SchemaExternalService extends AbstractService {
         }
 
         Boolean isIdentifierMandatory = applicationInternalRestClient
-            .isApplicationExternalIdentifierEnabled(internalSecurityService.getHttpContext(), IMPORT_UNIT_SCHEMA)
+            .isApplicationExternalIdentifierEnabled(
+                InternalHttpContext.buildFromExternalHttpContext(externalSecurityService.getHttpContext()),
+                IMPORT_UNIT_SCHEMA
+            )
             .getBody();
 
         if (isIdentifierMandatory == null) {
@@ -172,7 +173,7 @@ public class SchemaExternalService extends AbstractService {
         LOGGER.debug("Schema file {} has been parsed in schema List", file.getOriginalFilename());
 
         RequestResponse<?> result;
-        final VitamContext vitamContext = internalSecurityService.getVitamContext();
+        final VitamContext vitamContext = buildVitamContext();
         try {
             result = importSchemaService.importUnitSchema(
                 vitamContext,
