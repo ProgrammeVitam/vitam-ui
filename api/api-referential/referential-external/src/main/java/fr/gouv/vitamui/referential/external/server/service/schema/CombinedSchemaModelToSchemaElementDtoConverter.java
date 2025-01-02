@@ -71,7 +71,8 @@ public class CombinedSchemaModelToSchemaElementDtoConverter
             .setSedaVersions(schemaModel.getSedaVersions())
             .setCategory(schemaModel.getCategory())
             .setApiPath(Optional.ofNullable(schemaModel.getApiPath()).orElse(schemaModel.getPath()))
-            .setDataType(convertFromIndexationType(schemaModel.getType().name()));
+            .setDataType(convertFromIndexationType(schemaModel.getType().name()))
+            .setCustomSearchTypes(schemaModel.getCustomSearchTypes());
 
         schemaElementDto.setEffectiveCardinality(EffectiveCardinality.valueOf(schemaModel.getEffectiveCardinality()));
 

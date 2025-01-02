@@ -5123,12 +5123,17 @@
         "ORIGIN_WAITING_RECALCULATE": "En attente de recalcul",
         "ORIGIN_INHERITE_AT_LEAST_ONE": "Héritées"
       },
+      "SEARCH_TYPES": {
+        "": "Recherche approchante",
+        "Strict": "Recherche exacte"
+      },
       "FIELDS": {
         "ORPHANS_NODE": "Position",
         "ID": "ID",
         "TITLE_OR_DESCRIPTION": "Intitulé ou Description",
         "NODE": "Position",
         "TITLE": "Intitulé",
+        "Title.Strict": "Intitulé exact",
         "START_DATE": "Date de début ≥",
         "END_DATE": "Date de fin ≤",
         "START_DATE_SEARCH": "Date de début",

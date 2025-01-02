@@ -39,11 +39,19 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { TranslateModule } from '@ngx-translate/core';
-import { of } from 'rxjs';
-import { BASE_URL, CriteriaDataType, CriteriaOperator, CriteriaValue, InjectorModule } from 'vitamui-library';
+import { BehaviorSubject, of } from 'rxjs';
+import {
+  BASE_URL,
+  CriteriaDataType,
+  CriteriaOperator,
+  CriteriaValue,
+  InjectorModule,
+  ItemNode,
+  SchemaElement,
+  SchemaService,
+} from 'vitamui-library';
 import { ArchiveSharedDataService } from '../../../core/archive-shared-data.service';
 import { ManagementRulesSharedDataService } from '../../../core/management-rules-shared-data.service';
-import { ArchiveService } from '../../archive.service';
 import { SimpleCriteriaSearchComponent } from './simple-criteria-search.component';
 
 describe('SimpleCriteriaSearchComponent', () => {
@@ -53,32 +61,32 @@ describe('SimpleCriteriaSearchComponent', () => {
   const archiveExchangeDataServiceMock = {
     addSimpleSearchCriteriaSubject: () => of(),
     receiveRemoveFromChildSearchCriteriaSubject: () => of(),
-  };
-
-  const archiveServiceStub = {
-    loadFilingHoldingSchemeTree: () => of([]),
-    getOntologiesFromJson: () => of([]),
-    hasArchiveSearchRole: () => of(true),
-    getAccessContractById: () => of({}),
-    hasAccessContractPermissions: () => of(true),
-    getExternalOntologiesList: () => of([]),
+    searchCriteria$: of(),
   };
 
   const managementRulesSharedDataServiceMock = {
     getCriteriaSearchListToSave: () => of([]),
   };
 
+  let schema: BehaviorSubject<ItemNode<SchemaElement>[]>;
+
   beforeEach(async () => {
     const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
     matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
+
+    schema = new BehaviorSubject<ItemNode<SchemaElement>[]>([]);
+    const schemaServiceMock = {
+      getDescriptiveSchemaTree: () => schema,
+    };
+
     await TestBed.configureTestingModule({
       declarations: [SimpleCriteriaSearchComponent],
       providers: [
         FormBuilder,
-        { provide: ArchiveService, useValue: archiveServiceStub },
-        { provide: MatDialog, useValue: matDialogSpy },
         { provide: ArchiveSharedDataService, useValue: archiveExchangeDataServiceMock },
+        { provide: MatDialog, useValue: matDialogSpy },
         { provide: ManagementRulesSharedDataService, useValue: managementRulesSharedDataServiceMock },
+        { provide: SchemaService, useValue: schemaServiceMock },
         { provide: BASE_URL, useValue: '/fake-api' },
       ],
       imports: [HttpClientTestingModule, InjectorModule, TranslateModule.forRoot()],
@@ -143,13 +151,50 @@ describe('SimpleCriteriaSearchComponent', () => {
   });
 
   describe('DOM', () => {
-    it('should have 6 vitamui editables inputs ', () => {
+    it('should have 6 vitamui editables inputs and no formFieldValueWrapper when exact search on Title is disabled', () => {
+      // Given
+      schema.next([
+        {
+          item: {
+            Path: 'Title',
+            ApiPath: 'Title',
+          } as SchemaElement,
+          children: [],
+        },
+      ]);
+      fixture.detectChanges();
+
       // When
       const nativeElement = fixture.nativeElement;
-      const elementRow = nativeElement.querySelectorAll('vitamui-common-editable-input');
+      const editableInputs = nativeElement.querySelectorAll('vitamui-common-editable-input');
+      const formFieldValueWrapper = nativeElement.querySelectorAll('vitamui-form-field-value-wrapper');
 
       // Then
-      expect(elementRow.length).toBe(6);
+      expect(editableInputs.length).toBe(6);
+      expect(formFieldValueWrapper.length).toBe(0);
+    });
+    it('should have 5 vitamui editables inputs and 1 formFieldValueWrapper when exact search on Title is enabled', () => {
+      // Given
+      schema.next([
+        {
+          item: {
+            Path: 'Title',
+            ApiPath: 'Title',
+            CustomSearchTypes: ['Strict'],
+          } as SchemaElement,
+          children: [],
+        },
+      ]);
+      fixture.detectChanges();
+
+      // When
+      const nativeElement = fixture.nativeElement;
+      const editableInputs = nativeElement.querySelectorAll('vitamui-common-editable-input');
+      const formFieldValueWrapper = nativeElement.querySelectorAll('vitamui-form-field-value-wrapper');
+
+      // Then
+      expect(editableInputs.length).toBe(5);
+      expect(formFieldValueWrapper.length).toBe(1);
     });
   });
 });

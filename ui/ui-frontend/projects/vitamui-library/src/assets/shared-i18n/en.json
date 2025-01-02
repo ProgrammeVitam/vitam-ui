@@ -3776,6 +3776,10 @@
         "RULE_TITLE_DISSEMINATION_RULE": "Dissemination rule title"
       },
       "DUA_TITLE": "Administrative useful life",
+      "SEARCH_TYPES": {
+        "": "Approximate search",
+        "Strict": "Exact search"
+      },
       "FIELDS": {
         "ORPHANS_NODE": "Position",
         "ALL_ARCHIVE_UNIT_TYPES": "Type",
@@ -4447,6 +4451,7 @@
         "START_DATE_DUA": "End Date",
         "START_DATE_SEARCH": "Start date",
         "TITLE": "Title",
+        "Title.Strict": "Title (strict)",
         "TITLE_ACCESS": "Title",
         "TITLE_DUA": "Title",
         "TITLE_OR_DESCRIPTION": "Title or Description",

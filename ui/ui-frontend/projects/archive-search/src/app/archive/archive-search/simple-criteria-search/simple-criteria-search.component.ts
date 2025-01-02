@@ -38,7 +38,6 @@ import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { TranslateService } from '@ngx-translate/core';
-import { Observable } from 'rxjs';
 import {
   ActionOnCriteria,
   CriteriaDataType,
@@ -51,10 +50,12 @@ import {
   searchCriteriaConfigs,
   SearchCriteriaEltDto,
   SearchCriteriaTypeEnum,
+  SearchType,
+  SearchWithTypeSelectorValue,
 } from 'vitamui-library';
 import { ArchiveSharedDataService } from '../../../core/archive-shared-data.service';
 import { ManagementRulesSharedDataService } from '../../../core/management-rules-shared-data.service';
-import { debounceTime } from 'rxjs/operators';
+import { debounceTime, filter, map } from 'rxjs/operators';
 import { ArchiveSearchConstsEnum } from '../../models/archive-search-consts-enum';
 
 const FINAL_ACTION_TYPE = 'FINAL_ACTION_TYPE';
@@ -80,9 +81,12 @@ export class SimpleCriteriaSearchComponent implements OnInit {
     [ARCHIVE_UNIT_WITHOUT_OBJECTS, true],
   ]);
 
-  otherCriteriaOptions$: Observable<ItemNode<SchemaElement>[]>;
+  otherCriteriaOptions: ItemNode<SchemaElement>[];
   getOtherCriteriaDisplayValue = (element: SchemaElement) =>
     `${element.Origin === 'EXTERNAL' ? 'EXT-' : ''}${element.ShortName} - ${element.FieldName}`;
+
+  titleSearchTypes: SearchType[];
+  titleSelectedType?: SearchType;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -92,7 +96,10 @@ export class SimpleCriteriaSearchComponent implements OnInit {
     private translateService: TranslateService,
     private schemaService: SchemaService,
   ) {
-    this.otherCriteriaOptions$ = this.schemaService.getDescriptiveSchemaTree();
+    this.schemaService.getDescriptiveSchemaTree().subscribe((schema) => {
+      this.otherCriteriaOptions = schema;
+      this.titleSearchTypes = this.searchTypes(schema, 'Title');
+    });
 
     this.translateService.onLangChange.subscribe(() => {
       if (this.archiveUnitTypesCriteria.get(ARCHIVE_UNIT_WITH_OBJECTS)) {
@@ -136,6 +143,21 @@ export class SimpleCriteriaSearchComponent implements OnInit {
       });
     });
 
+    // Sync title type with criteria
+    archiveExchangeDataService.searchCriteria$
+      .pipe(
+        filter((searchCriteria) => !!searchCriteria),
+        map((searchCriteria) => Array.from(searchCriteria.keys())),
+        map((criteriaKeys) => criteriaKeys.filter((criteriaKey) => /^TITLE(\.[^.]+)?$/i.test(criteriaKey))),
+      )
+      .subscribe((titleKeys) => {
+        const hasTitleSearchCriteria = !!titleKeys?.length;
+        const type = hasTitleSearchCriteria ? titleKeys[0].split('.')[1] || '' : null;
+        this.titleSearchTypes.forEach((item) => (item.disabled = hasTitleSearchCriteria && item.value !== type));
+
+        if (hasTitleSearchCriteria) this.titleSelectedType = this.titleSearchTypes.find((item) => item.value === type);
+      });
+
     Object.entries(this.simpleCriteriaForm.controls)
       .filter(([key, _value]) => !['otherCriteriaList'].includes(key))
       .forEach(([key, control]) => {
@@ -156,6 +178,17 @@ export class SimpleCriteriaSearchComponent implements OnInit {
         }
       }
     });
+  }
+
+  private searchTypes(schema: ItemNode<SchemaElement>[], path: string): SearchType[] {
+    // TODO: only works for a path at the root level
+    const customSearchTypes = schema.find((s) => s.item.ApiPath === path).item.CustomSearchTypes;
+    return customSearchTypes?.length
+      ? ['', ...customSearchTypes].map((type) => ({
+          label: this.translateService.instant(`ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.SEARCH_TYPES.${type}`),
+          value: type,
+        }))
+      : [];
   }
 
   addCriteriaFromObject(object: any) {
@@ -188,6 +221,11 @@ export class SimpleCriteriaSearchComponent implements OnInit {
             valueTranslated: this.isValueTranslated(searchCriteriaAddAction.keyElt),
           };
           this.archiveExchangeDataService.addSimpleSearchCriteriaSubject(searchCriteria);
+        } else if (key.toLowerCase() === 'title') {
+          const searchWithTypeSelectorValue = value as SearchWithTypeSelectorValue;
+          const type = searchWithTypeSelectorValue.type.value;
+          const key = type ? `title.${type}` : 'title';
+          this.addCriteriaFromObject({ [key]: searchWithTypeSelectorValue.value });
         } else if (typeof value === 'object' && Object.entries(value).length) {
           this.addCriteriaFromObject(value);
         } else {

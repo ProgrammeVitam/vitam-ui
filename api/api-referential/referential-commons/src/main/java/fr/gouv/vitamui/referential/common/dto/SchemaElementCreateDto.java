@@ -109,4 +109,7 @@ public class SchemaElementCreateDto {
 
     @JsonProperty("EffectiveCardinality")
     private EffectiveCardinality effectiveCardinality;
+
+    @JsonProperty("CustomSearchTypes")
+    private List<String> customSearchTypes;
 }

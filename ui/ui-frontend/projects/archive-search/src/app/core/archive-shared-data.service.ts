@@ -37,6 +37,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import {
+  CriteriaSearchCriteria,
   Direction,
   FilingHoldingSchemeNode,
   ResultFacet,
@@ -78,8 +79,8 @@ export class ArchiveSharedDataService {
   private searchAccessCriteriaActionFromMainSubject = new BehaviorSubject<SearchCriteriaRemoveAction>(null);
   private searchReuseCriteriaActionFromMainSubject = new BehaviorSubject<SearchCriteriaRemoveAction>(null);
   private searchDisseminationCriteriaActionFromMainSubject = new BehaviorSubject<SearchCriteriaRemoveAction>(null);
-
   private searchCriteriaRemoveFromChildSubject = new BehaviorSubject<SearchCriteriaRemoveAction>(null);
+  private searchCriteriaSubject = new BehaviorSubject<Map<string, CriteriaSearchCriteria>>(null);
 
   private auTitleSubject = new BehaviorSubject<string>('');
 
@@ -109,6 +110,8 @@ export class ArchiveSharedDataService {
   disseminationFromMainSearchCriteriaObservable = this.searchDisseminationCriteriaActionFromMainSubject.asObservable();
 
   removeFromApraisalSearchCriteriaObservable = this.searchCriteriaRemoveFromChildSubject.asObservable();
+
+  searchCriteria$ = this.searchCriteriaSubject.asObservable();
 
   unitUpdatedWithComputedObjectGroup = new BehaviorSubject<Unit>(null);
 
@@ -337,5 +340,9 @@ export class ArchiveSharedDataService {
 
   receiveRemoveFromChildSearchCriteriaSubject(): Observable<SearchCriteriaRemoveAction> {
     return this.searchCriteriaRemoveFromChildSubject.asObservable();
+  }
+
+  emitSearchCriteriaChange(searchCriteria: Map<string, CriteriaSearchCriteria>) {
+    this.searchCriteriaSubject.next(searchCriteria);
   }
 }
