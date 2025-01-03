@@ -1,6 +1,6 @@
 {
   "GATEWAY_ENABLED": true,
-  "REFERENTIAL_URL": "https://dev.vitamui.com:4202/referential",
+  "REFERENTIAL_URL": "https://dev.vitamui.com:4202",
   "VERSION_RELEASE": "6.4",
   "PLATFORM_NAME": "VITAM-UI",
   "INGEST_URL": "https://dev.vitamui.com:4208/ingest",

@@ -93,6 +93,7 @@ import { ActionsRules } from '../models/ruleAction.interface';
 import { ReclassificationComponent } from './additional-actions-search/reclassification/reclassification.component';
 import { SearchCriteriaSaverComponent } from './search-criteria-saver/search-criteria-saver.component';
 import { TransferAcknowledgmentComponent } from './transfer-acknowledgment/transfer-acknowledgment.component';
+import { PuaUpdateDialogComponent, PuaUpdateDialogComponentData } from './pua-update-dialog/pua-update-dialog.component';
 
 const PAGE_SIZE = 10;
 const FILTER_DEBOUNCE_TIME_MS = 400;
@@ -117,6 +118,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   DEFAULT_DIP_EXPORT_THRESHOLD = 100_000;
   DEFAULT_TRANSFER_THRESHOLD = 100_000;
   DEFAULT_UPDATE_MGT_RULES_THRESHOLD = 100_000;
+  DEFAULT_PUA_UPDATE_THRESHOLD = 100_000;
 
   search$: Observable<number>;
 
@@ -1234,6 +1236,18 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
         ),
       this.DEFAULT_UPDATE_MGT_RULES_THRESHOLD,
     );
+  }
+
+  async launchPUAUpdateModal() {
+    this.launchBulkOperationWorkflow(() => {
+      this.dialog.open<PuaUpdateDialogComponent, PuaUpdateDialogComponentData>(PuaUpdateDialogComponent, {
+        data: {
+          selectedItemCount: this.selectedItemCount,
+          tenantIdentifier: this.tenantIdentifier,
+          listOfUACriteriaSearch: this.listOfUACriteriaSearch,
+        },
+      });
+    }, this.DEFAULT_PUA_UPDATE_THRESHOLD);
   }
 
   showAcknowledgmentTransferForm() {

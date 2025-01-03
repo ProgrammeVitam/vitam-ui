@@ -39,9 +39,10 @@ import { NgModule } from '@angular/core';
 
 import { TranslateModule } from '@ngx-translate/core';
 import { VitamUISnackBarComponent } from './vitamui-snack-bar.component';
+import { RouterLink } from '@angular/router';
 
 @NgModule({
-  imports: [CommonModule, TranslateModule],
+  imports: [CommonModule, TranslateModule, RouterLink],
   declarations: [VitamUISnackBarComponent],
   exports: [VitamUISnackBarComponent],
 })

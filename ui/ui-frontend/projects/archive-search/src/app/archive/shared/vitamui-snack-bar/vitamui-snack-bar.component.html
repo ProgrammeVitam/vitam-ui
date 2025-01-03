@@ -19,9 +19,9 @@
     </ng-container>
     <ng-container *ngSwitchCase="'WorkflowSuccessSnackBar'">
       <span class="space-style">{{ data?.message }}</span>
-      <button type="button" class="btn white" (click)="goToLogbook(data?.serviceUrl)">
+      <a class="btn contrast contrast-primary" [href]="data?.serviceUrl">
         {{ 'ARCHIVE_SEARCH.DIP.TO_OPERATION_APP' | translate }}
-      </button>
+      </a>
     </ng-container>
     <ng-container *ngSwitchCase="'exportDIPLimitReached'">
       {{ 'ARCHIVE_SEARCH.DIP.EXPORT_LIMITS' | translate }}

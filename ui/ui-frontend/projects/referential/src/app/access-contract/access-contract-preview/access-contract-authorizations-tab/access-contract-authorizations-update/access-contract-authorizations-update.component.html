@@ -18,7 +18,7 @@
           {{ 'ACCESS_CONTRACT.CREATE_DIALOG.AUTHORISATION_PERIMETER.ACCESS_BY_PRODUCERS' | translate }}
         </mat-radio-button>
         @if (accessRightSelected.value === AccessRightType.ACCESS_BY_PRODUCERS) {
-          <div class="under-radio">
+          <div>
             <vitamui-select
               [multiple]="true"
               formControlName="originatingAgencies"
@@ -36,7 +36,7 @@
           {{ 'ACCESS_CONTRACT.CREATE_DIALOG.AUTHORISATION_PERIMETER.ACCESS_BY_EXPIRED_MANAGEMENT_RULES' | translate }}
         </mat-radio-button>
         @if (accessRightSelected.value === AccessRightType.ACCESS_BY_EXPIRED_MANAGEMENT_RULES) {
-          <div class="under-radio">
+          <div>
             <vitamui-select
               [multiple]="true"
               formControlName="ruleCategoryToFilter"
@@ -53,7 +53,7 @@
           {{ 'ACCESS_CONTRACT.CREATE_DIALOG.AUTHORISATION_PERIMETER.ACCESS_BY_PRODUCERS_OR_EXPIRED_MANAGEMENT_RULES' | translate }}
         </mat-radio-button>
         @if (accessRightSelected.value === AccessRightType.ACCESS_BY_PRODUCERS_OR_EXPIRED_MANAGEMENT_RULES) {
-          <div class="under-radio">
+          <div>
             <div class="text medium bold primary mb-2">
               {{ 'ACCESS_CONTRACT.CREATE_DIALOG.AUTHORISATION_PERIMETER.PRODUCERS_LIST' | translate }}
             </div>
@@ -86,7 +86,7 @@
           {{ 'ACCESS_CONTRACT.CREATE_DIALOG.AUTHORISATION_PERIMETER.ACCESS_BY_PRODUCERS_AND_EXPIRED_MANAGEMENT_RULES' | translate }}
         </mat-radio-button>
         @if (accessRightSelected.value === AccessRightType.ACCESS_BY_PRODUCERS_AND_EXPIRED_MANAGEMENT_RULES) {
-          <div class="under-radio">
+          <div>
             <vitamui-select
               [multiple]="true"
               formControlName="originatingAgencies"

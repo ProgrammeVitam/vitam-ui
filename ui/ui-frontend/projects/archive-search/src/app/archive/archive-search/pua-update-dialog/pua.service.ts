@@ -34,24 +34,30 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Inject } from '@angular/core';
-import {
-  MatLegacySnackBarRef as MatSnackBarRef,
-  MAT_LEGACY_SNACK_BAR_DATA as MAT_SNACK_BAR_DATA,
-} from '@angular/material/legacy-snack-bar';
+import { Inject, Injectable } from '@angular/core';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { BASE_URL } from 'vitamui-library';
+import { Observable } from 'rxjs';
 
-@Component({
-  selector: 'app-vitamui-snack-bar',
-  templateUrl: './vitamui-snack-bar.component.html',
-  styleUrls: ['./vitamui-snack-bar.component.scss'],
+export interface ArchiveUnitProfile {
+  id: string;
+  identifier: string;
+  name: string;
+}
+
+@Injectable({
+  providedIn: 'root',
 })
-export class VitamUISnackBarComponent {
+export class PuaService {
   constructor(
-    @Inject(MAT_SNACK_BAR_DATA) public data: any,
-    private matSnackBarRef: MatSnackBarRef<VitamUISnackBarComponent>,
+    @Inject(BASE_URL) private baseUrl: string,
+    private http: HttpClient,
   ) {}
 
-  close() {
-    this.matSnackBarRef.dismiss();
+  getAll(): Observable<ArchiveUnitProfile[]> {
+    const options = {
+      params: new HttpParams().set('embedded', 'ALL'),
+    };
+    return this.http.get<ArchiveUnitProfile[]>(`${this.baseUrl}/archival-profile`, options);
   }
 }

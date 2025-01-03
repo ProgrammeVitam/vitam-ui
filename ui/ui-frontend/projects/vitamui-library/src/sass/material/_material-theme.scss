@@ -149,6 +149,11 @@ $custom-typography: mat.define-typography-config(
 $custom-theme: mat.define-light-theme(
   (
     typography: $custom-typography,
+    color: (
+      primary: $app-primary,
+      accent: $app-accent,
+      warn: $app-warn,
+    ),
   )
 );
 

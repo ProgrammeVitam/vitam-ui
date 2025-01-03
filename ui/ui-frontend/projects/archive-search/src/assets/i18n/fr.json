@@ -15,6 +15,9 @@
     "RULES_ACTION": {
       "UPDATE_RULE": "Mettre à jour des règles"
     },
+    "PUA": {
+      "UPDATE": "Mettre à jour les PUA"
+    },
     "OTHER_ACTIONS": {
       "DIALOG_MESSAGE": {
         "ACTION_ON_BIG_NUMBERS_TITLE_EXACT_COUNT": "Action sur {{elementsSize}} unités archivistiques",
@@ -31,6 +34,21 @@
         "PLATEFORM_THRESHOLD_REACHED_WARNING_MESSAGE_2": "Voulez-vous confirmer l’action à réaliser ?",
         "PLATEFORM_THRESHOLD_REACHED_ALERT_MESSAGE": "L’action demandée n’est pas possible sur cette sélection",
         "PLATEFORM_THRESHOLD_REACHED_ALERT_MESSAGE_2": "L’opération demandée dépasse le seuil de plateforme autorisé. Veuillez revoir la sélection des unités archivistiques avant de relancer l’opération"
+      },
+      "PUA_UPDATE": {
+        "TITLE": "Mettre à jour les profils d'unités archivistiques",
+        "SUBTITLE": {
+          "SINGULAR": "{{ number }} unité archivistique sélectionnée",
+          "PLURAL": "{{ number }} unités archivistiques sélectionnées"
+        },
+        "SELECT_ACTION": "Sélectionner une action",
+        "ACTION_UPDATE": "Appliquer un PUA aux unités archivistiques sélectionnées",
+        "SELECT_PUA_PLACEHOLDER": "Sélectionner le PUA",
+        "SELECT_PUA_FILTER_PLACEHOLDER": "Entrer les premières lettres de votre recherche",
+        "ACTION_DELETE": "Supprimer tous les PUA des unités archivistiques sélectionnées",
+        "UPDATE": "Mettre à jour",
+        "CANCEL": "Annuler",
+        "SUCCESS_MESSAGE": "L'opération de mise à jour des profils d'unités archivistiques a bien été lancée"
       }
     },
     "COMPUTED_INHERITED_RULES": {

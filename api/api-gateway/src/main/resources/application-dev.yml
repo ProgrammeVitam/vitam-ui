@@ -185,6 +185,8 @@ spring:
               /archive-search-api/ontology/**,
               /archive-search-api/rules/**,
               /archive-search-api/schemas/**,
+              /archive-search-api/archival-profile$,
+              /archive-search-api/archival-profile/**,
 
               /pastis-api/archival-profile$,
               /pastis-api/archival-profile/**,
@@ -210,6 +212,7 @@ spring:
             # Archive Search Referential API
             - RewritePath=/archive-search-api/schemas(?<segment>.*),/schemas$\{segment}
             - RewritePath=/archive-search-api(?<segment>.*),/referential/v1$\{segment}
+            - RewritePath=/archive-search-api/archival-profile(?<segment>.*),/referential/v1/archival-profile$\{segment}
 
             # Pastis to Referential API
             - RewritePath=/pastis-api/archival-profile(?<segment>.*),/referential/v1/archival-profile$\{segment}
