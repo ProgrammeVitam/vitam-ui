@@ -73,7 +73,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
-public class SecurityProfileInternalServiceTest {
+public class SecurityProfileExternalServiceTest {
 
     @Mock
     private VitamSecurityProfileService vitamSecurityProfileService;

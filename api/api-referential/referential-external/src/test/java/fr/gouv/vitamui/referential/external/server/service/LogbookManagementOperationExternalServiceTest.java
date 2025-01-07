@@ -54,7 +54,7 @@ import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
-public class LogbookManagementOperationInternalServiceTest {
+public class LogbookManagementOperationExternalServiceTest {
 
     @Mock
     private ObjectMapper objectMapper;

@@ -156,7 +156,7 @@ public class AgencyExternalService extends AbstractService {
         }
     }
 
-    public List<AgencyDto> getAll(final Optional<String> criteria) {
+    public List<AgencyDto> getAll() {
         final VitamContext vitamContext = this.buildVitamContext();
 
         return this.getAll(vitamContext);

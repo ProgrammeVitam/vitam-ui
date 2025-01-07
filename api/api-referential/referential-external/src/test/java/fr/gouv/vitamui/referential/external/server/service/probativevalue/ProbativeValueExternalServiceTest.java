@@ -72,7 +72,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
-public class ProbativeValueInternalServiceTest {
+public class ProbativeValueExternalServiceTest {
 
     @InjectMocks
     private ProbativeValueExternalService probativeValueExternalService;
@@ -223,7 +223,7 @@ public class ProbativeValueInternalServiceTest {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         InputStream inputStream =
-            ProbativeValueInternalServiceTest.class.getClassLoader().getResourceAsStream(filename);
+            ProbativeValueExternalServiceTest.class.getClassLoader().getResourceAsStream(filename);
         return inputStream;
     }
 
@@ -232,7 +232,7 @@ public class ProbativeValueInternalServiceTest {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         InputStream inputStream =
-            ProbativeValueInternalServiceTest.class.getClassLoader().getResourceAsStream(filename);
+            ProbativeValueExternalServiceTest.class.getClassLoader().getResourceAsStream(filename);
         return objectMapper.readValue(ByteStreams.toByteArray(inputStream), VitamUISearchResponseDto.class);
     }
 
@@ -241,7 +241,7 @@ public class ProbativeValueInternalServiceTest {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         InputStream inputStream =
-            ProbativeValueInternalServiceTest.class.getClassLoader().getResourceAsStream(filename);
+            ProbativeValueExternalServiceTest.class.getClassLoader().getResourceAsStream(filename);
         return RequestResponseOK.getFromJsonNode(
             objectMapper.readValue(ByteStreams.toByteArray(inputStream), JsonNode.class)
         );

@@ -79,7 +79,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
-public class AgencyInternalServiceTest {
+public class AgencyExternalServiceTest {
 
     @Mock
     private AgencyService agencyService;

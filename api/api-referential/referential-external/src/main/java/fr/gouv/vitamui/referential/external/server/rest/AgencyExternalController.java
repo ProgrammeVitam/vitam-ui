@@ -101,7 +101,7 @@ public class AgencyExternalController {
     public Collection<AgencyDto> getAll(final Optional<String> criteria) {
         SanityChecker.sanitizeCriteria(criteria);
         LOGGER.debug("get all customer criteria={}", criteria);
-        return agencyExternalService.getAll(criteria);
+        return agencyExternalService.getAll();
     }
 
     @Secured(ServicesData.ROLE_GET_AGENCIES)

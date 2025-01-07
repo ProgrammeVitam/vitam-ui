@@ -99,7 +99,7 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
-public class AccessContractInternalServiceTest {
+public class AccessContractExternalServiceTest {
 
     @Mock
     private AccessContractService accessContractService;

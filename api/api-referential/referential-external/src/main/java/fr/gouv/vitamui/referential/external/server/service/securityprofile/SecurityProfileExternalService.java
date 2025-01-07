@@ -312,8 +312,7 @@ public class SecurityProfileExternalService extends AbstractService {
         return getOne(vitamContext, id);
     }
 
-    public List<SecurityProfileDto> getAll(final Optional<String> criteria) {
-        LOGGER.debug("Fetching all Security Profiles with criteria: {}", criteria);
+    public List<SecurityProfileDto> getAll() {
         VitamContext vitamContext = buildVitamContext();
         return getAll(vitamContext);
     }

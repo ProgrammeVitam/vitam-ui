@@ -80,7 +80,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
-public class FileFormatInternalServiceTest {
+public class FileFormatExternalServiceTest {
 
     @Mock
     private LogbookService logbookService;

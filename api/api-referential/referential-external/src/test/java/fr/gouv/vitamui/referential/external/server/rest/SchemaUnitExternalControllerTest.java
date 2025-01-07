@@ -149,24 +149,4 @@ public class SchemaUnitExternalControllerTest {
             "The exception message should match the mocked message."
         );
     }
-
-    @Test
-    @DisplayName("Test importUnitSchema when HTTP context is null")
-    void testImportSchemas_NullHttpContext() throws IOException {
-        // Given
-        MockMultipartFile validFile = new MockMultipartFile(
-            "file",
-            TEST_FILE_NAME_INVALID,
-            TEST_FILE_CONTENT_TYPE,
-            "valid content".getBytes()
-        );
-        when(externalSecurityService.getHttpContext()).thenReturn(null);
-
-        // When & Then
-        assertThrows(
-            NullPointerException.class,
-            () -> schemaExternalController.importUnitSchemas(validFile),
-            "An exception should be thrown when the HTTP context is null."
-        );
-    }
 }

@@ -25,7 +25,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThatCode;
 
-class OperationInternalServiceTest {
+class OperationExternalServiceTest {
 
     public static final String DSL_QUERY_PROJECTION = "$projection";
     private final String AUDIT_FILE_CONSISTENCY = "AUDIT_FILE_CONSISTENCY";

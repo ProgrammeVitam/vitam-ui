@@ -31,7 +31,6 @@ import fr.gouv.vitamui.common.security.SafeFileChecker;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
-import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import fr.gouv.vitamui.referential.external.server.service.schema.SchemaExternalService;
 import org.slf4j.Logger;
@@ -71,9 +70,6 @@ public class SchemaUnitExternalController {
         }
         SafeFileChecker.checkSafeFilePath(file.getOriginalFilename());
         SanityChecker.isValidFileName(file.getOriginalFilename());
-        InternalHttpContext internalHttpContext = InternalHttpContext.buildFromExternalHttpContext(
-            externalSecurityService.getHttpContext()
-        );
         return schemaExternalService.importUnitSchema(file);
     }
 }

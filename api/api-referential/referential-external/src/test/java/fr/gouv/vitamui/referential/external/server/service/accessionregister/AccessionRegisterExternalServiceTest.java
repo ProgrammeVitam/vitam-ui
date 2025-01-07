@@ -74,7 +74,7 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-class AccessionRegisterInternalServiceTest {
+class AccessionRegisterExternalServiceTest {
 
     @InjectMocks
     AccessionRegisterExternalService accessionRegisterExternalService;
@@ -148,7 +148,9 @@ class AccessionRegisterInternalServiceTest {
     private <T> RequestResponse<T> buildResponseFrom(String filename, Class<T> clazz)
         throws IOException, InvalidParseOperationException {
         InputStream inputStream =
-            AccessionRegisterInternalServiceTest.class.getClassLoader().getResourceAsStream(filename);
+            fr.gouv.vitamui.referential.internal.server.service
+                .AccessionRegisterExternalServiceTest.class.getClassLoader()
+                .getResourceAsStream(filename);
         assert inputStream != null;
         JsonNode data = objectMapper.readValue(ByteStreams.toByteArray(inputStream), JsonNode.class);
         return RequestResponseOK.getFromJsonNode(data, clazz);

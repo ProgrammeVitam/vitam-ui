@@ -68,9 +68,9 @@ import static fr.gouv.vitam.common.database.builder.query.QueryHelper.in;
 import static fr.gouv.vitam.common.database.builder.query.VitamFieldsHelper.unitType;
 
 @Service
-public class UnitExtternalService extends AbstractService {
+public class UnitExternalService extends AbstractService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(UnitExtternalService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(UnitExternalService.class);
 
     private final UnitService unitService;
 
@@ -91,7 +91,7 @@ public class UnitExtternalService extends AbstractService {
     };
 
     @Autowired
-    public UnitExtternalService(
+    public UnitExternalService(
         final UnitService unitService,
         final ObjectMapper objectMapper,
         ExternalSecurityService externalSecurityService

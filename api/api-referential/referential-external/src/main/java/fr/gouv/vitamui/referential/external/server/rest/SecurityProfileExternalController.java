@@ -93,7 +93,7 @@ public class SecurityProfileExternalController {
     public Collection<SecurityProfileDto> getAll(final Optional<String> criteria) {
         LOGGER.debug("get all customer criteria={}", criteria);
         SanityChecker.sanitizeCriteria(criteria);
-        return securityProfileExternalService.getAll(criteria);
+        return securityProfileExternalService.getAll();
     }
 
     @Secured(ServicesData.ROLE_GET_SECURITY_PROFILES)

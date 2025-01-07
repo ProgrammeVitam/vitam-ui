@@ -183,10 +183,10 @@ public class IngestContractExternalService extends AbstractService {
     public PaginatedValuesDto<IngestContractDto> getAllPaginated(
         final Integer pageNumber,
         final Integer size,
+        Optional<String> criteria,
         final Optional<String> orderBy,
         final Optional<DirectionDto> direction,
-        VitamContext vitamContext,
-        Optional<String> criteria
+        VitamContext vitamContext
     ) {
         Map<String, Object> vitamCriteria = new HashMap<>();
         LOGGER.debug("All Ingest Contracts EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
@@ -567,7 +567,7 @@ public class IngestContractExternalService extends AbstractService {
         Optional<DirectionDto> direction
     ) {
         VitamContext vitamContext = buildVitamContext();
-        return this.getAllPaginated(page, size, orderBy, direction, vitamContext, criteria);
+        return this.getAllPaginated(page, size, criteria, orderBy, direction, vitamContext);
     }
 
     public Boolean check(IngestContractDto ingestContractDto) {
