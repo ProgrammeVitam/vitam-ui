@@ -109,10 +109,6 @@ export class AuthenticationModule {
     if (this.isValidUrl(uri)) {
       return uri;
     }
-    // to manage a bug in the OIDC lib. It is fixed in the new version. To remove after updating angular version + oidc lib.
-    if (uri) {
-      return this.location.href + uri;
-    }
     return this.location.href;
   }
 
