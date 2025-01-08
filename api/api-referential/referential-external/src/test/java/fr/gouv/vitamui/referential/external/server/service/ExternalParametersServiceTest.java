@@ -3,7 +3,7 @@ package fr.gouv.vitamui.referential.external.server.service;
 import fr.gouv.vitamui.commons.api.domain.ExternalParametersDto;
 import fr.gouv.vitamui.commons.api.domain.ParameterDto;
 import fr.gouv.vitamui.iam.internal.client.ExternalParametersInternalRestClient;
-import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
+import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import fr.gouv.vitamui.referential.external.server.service.service.ExternalParametersService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,7 +26,7 @@ class ExternalParametersServiceTest {
     private ExternalParametersInternalRestClient exteralParametersInternalRestClient;
 
     @MockBean(name = "securityService")
-    private InternalSecurityService securityService;
+    private ExternalSecurityService securityService;
 
     @InjectMocks
     private ExternalParametersService externalParametersService;
@@ -47,7 +47,7 @@ class ExternalParametersServiceTest {
         parameterDto.setValue("1000");
         myExternalParameter.setParameters(List.of(parameterDto));
         Mockito.when(
-            exteralParametersInternalRestClient.getMyExternalParameters(securityService.getHttpContext())
+            exteralParametersInternalRestClient.getMyExternalParameters(securityService.getInternalHttpContext())
         ).thenReturn(myExternalParameter);
         assertAll(
             "Grouped Assertions of a valid threshold",
@@ -66,7 +66,7 @@ class ExternalParametersServiceTest {
         parameterDto.setValue(null);
         myExternalParameter.setParameters(List.of(parameterDto));
         Mockito.when(
-            exteralParametersInternalRestClient.getMyExternalParameters(securityService.getHttpContext())
+            exteralParametersInternalRestClient.getMyExternalParameters(securityService.getInternalHttpContext())
         ).thenReturn(myExternalParameter);
         assertTrue(!externalParametersService.retrieveProfilThreshold().isPresent());
     }
@@ -81,7 +81,7 @@ class ExternalParametersServiceTest {
         parameterDto.setValue(null);
         myExternalParameter.setParameters(List.of(parameterDto));
         Mockito.when(
-            exteralParametersInternalRestClient.getMyExternalParameters(securityService.getHttpContext())
+            exteralParametersInternalRestClient.getMyExternalParameters(securityService.getInternalHttpContext())
         ).thenReturn(myExternalParameter);
 
         assertTrue(!externalParametersService.retrieveProfilThreshold().isPresent());
