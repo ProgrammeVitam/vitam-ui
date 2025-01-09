@@ -31,7 +31,7 @@ import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitamui.commons.api.domain.ExternalParametersDto;
 import fr.gouv.vitamui.commons.api.domain.ParameterDto;
 import fr.gouv.vitamui.iam.internal.client.ExternalParametersInternalRestClient;
-import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
+import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,12 +52,12 @@ public class ExternalParametersService {
     public static final String PARAM_ACCESS_CONTRACT_NAME = "PARAM_ACCESS_CONTRACT";
 
     private final ExternalParametersInternalRestClient externalParametersInternalRestClient;
-    private final InternalSecurityService securityService;
+    private final ExternalSecurityService securityService;
 
     @Autowired
     public ExternalParametersService(
         final ExternalParametersInternalRestClient externalParametersInternalRestClient,
-        final InternalSecurityService securityService
+        final ExternalSecurityService securityService
     ) {
         this.externalParametersInternalRestClient = externalParametersInternalRestClient;
         this.securityService = securityService;
@@ -71,7 +71,7 @@ public class ExternalParametersService {
      */
     public String retrieveAccessContractFromExternalParam() {
         final ExternalParametersDto myExternalParameter = externalParametersInternalRestClient.getMyExternalParameters(
-            securityService.getHttpContext()
+            securityService.getInternalHttpContext()
         );
         if (myExternalParameter == null || CollectionUtils.isEmpty(myExternalParameter.getParameters())) {
             throw new IllegalArgumentException("No external profile defined for access contract defined");
@@ -108,7 +108,7 @@ public class ExternalParametersService {
     public Optional<Long> retrieveProfilThreshold() {
         Optional<Long> thresholdOpt = Optional.empty();
         ExternalParametersDto myExternalParameter = externalParametersInternalRestClient.getMyExternalParameters(
-            securityService.getHttpContext()
+            securityService.getInternalHttpContext()
         );
         if (CollectionUtils.isNotEmpty(myExternalParameter.getParameters())) {
             ParameterDto parameterThreshold = myExternalParameter
