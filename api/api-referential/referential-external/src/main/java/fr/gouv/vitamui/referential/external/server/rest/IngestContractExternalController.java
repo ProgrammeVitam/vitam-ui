@@ -136,6 +136,7 @@ public class IngestContractExternalController {
     ) {
         SanityChecker.sanitizeCriteria(ingestContractDto);
         LOGGER.debug("check exist ingestContract={}", ingestContractDto);
+        ingestContractDto.setTenant(tenant);
         final boolean exist = ingestContractExternalService.check(ingestContractDto);
         return RestUtils.buildBooleanResponse(exist);
     }
