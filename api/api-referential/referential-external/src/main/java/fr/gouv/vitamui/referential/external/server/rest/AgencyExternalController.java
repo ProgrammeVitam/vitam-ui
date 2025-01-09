@@ -145,6 +145,7 @@ public class AgencyExternalController {
         SanityChecker.sanitizeCriteria(agencyDto);
         ApiUtils.checkValidity(agencyDto);
         LOGGER.debug("check exist agency={}", agencyDto);
+        agencyDto.setTenant(tenant);
         final boolean exist = agencyExternalService.check(agencyDto);
         return RestUtils.buildBooleanResponse(exist);
     }

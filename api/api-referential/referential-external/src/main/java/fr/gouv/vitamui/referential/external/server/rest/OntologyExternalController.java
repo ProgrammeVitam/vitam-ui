@@ -144,6 +144,7 @@ public class OntologyExternalController {
     ) throws InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.sanitizeCriteria(ontologyDto);
         LOGGER.debug("check exist ontology={}", ontologyDto);
+        ontologyDto.setTenant(tenant);
         final boolean exist = ontologyExternalService.check(ontologyDto);
         return RestUtils.buildBooleanResponse(exist);
     }
