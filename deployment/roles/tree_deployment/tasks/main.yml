@@ -1,0 +1,16 @@
+---
+
+- name: Install tree package
+  ignore_errors: true
+  become: true
+  package:
+    name: tree
+    state: present
+  delegate_to: localhost
+  run_once: true
+
+- name: list all files
+  ignore_errors: true
+  shell: tree -a ../../ > {{ inventory_dir }}/troubleshoot/listing_ansible.txt
+  delegate_to: localhost
+  run_once: true
