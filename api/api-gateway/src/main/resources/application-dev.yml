@@ -183,6 +183,7 @@ spring:
 
               /archive-search-api/security-profile/**,
               /archive-search-api/ontology/**,
+              /archive-search-api/search/**,
               /archive-search-api/rules/**,
               /archive-search-api/schemas/**,
               /archive-search-api/agency/**,
@@ -213,6 +214,9 @@ spring:
 
             # Archive Search Referential API
             - RewritePath=/archive-search-api/schemas(?<segment>.*),/schemas$\{segment}
+            - RewritePath=/archive-search-api/archival-profile(?<segment>.*),/referential/v1/archival-profile$\{segment}
+            - RewritePath=/archive-search-api/search/units(?<segment>.*),/units$\{segment}
+            - RewritePath=/archive-search-api/search/filingplan(?<segment>.*),/units/filingplan$\{segment}
             - RewritePath=/archive-search-api(?<segment>.*),/referential/v1$\{segment}
 
             # Pastis to Referential API

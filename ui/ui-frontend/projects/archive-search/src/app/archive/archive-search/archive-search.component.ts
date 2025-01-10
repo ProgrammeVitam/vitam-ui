@@ -118,6 +118,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   DEFAULT_DIP_EXPORT_THRESHOLD = 100_000;
   DEFAULT_TRANSFER_THRESHOLD = 100_000;
   DEFAULT_UPDATE_MGT_RULES_THRESHOLD = 100_000;
+  RECLASSIFICATION_THRESHOLD = 10_000;
   DEFAULT_PUA_UPDATE_THRESHOLD = 100_000;
 
   search$: Observable<number>;
@@ -183,7 +184,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   rulesFacetsComputed = false;
   showingFacets = false;
 
-  archiveUnitGuidSelected: string;
+  archiveUnitGuidSelected: string[];
   archiveUnitAllunitup: string[];
   hasAccessContractManagementPermissionsMessage = '';
   bulkOperationsThreshold = -1;
@@ -1029,7 +1030,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   }
 
   launchReclassification() {
-    if (this.selectedItemCount > 1) {
+    if (this.selectedItemCount > this.RECLASSIFICATION_THRESHOLD) {
       const dialogToOpen = this.reclassificationAlerteMessageDialog;
       const dialogRef = this.dialog.open(dialogToOpen, { panelClass: 'vitamui-dialog' });
       this.subscriptions.add(
@@ -1038,9 +1039,14 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
           .pipe(filter((result) => !!result))
           .subscribe(() => {}),
       );
-    } else if (this.selectedItemCount === 1) {
-      this.archiveUnitGuidSelected = this.isAllChecked ? this.archiveUnits[0]['#id'] : this.listOfUAIdToInclude[0].id;
-      this.archiveUnitAllunitup = this.archiveUnits.find((archiveUnit) => archiveUnit['#id'] === this.archiveUnitGuidSelected)['#unitups'];
+    } else if (this.selectedItemCount <= this.RECLASSIFICATION_THRESHOLD) {
+      this.archiveUnitGuidSelected = this.isAllChecked
+        ? this.archiveUnits.map((unit) => unit['#id'])
+        : this.listOfUAIdToInclude.map((unit) => unit.id);
+      let obj = this.archiveUnits
+        .filter((archiveUnit) => this.archiveUnitGuidSelected.includes(archiveUnit['#id']))
+        .map((archiveUnit) => archiveUnit['#unitups']);
+      this.archiveUnitAllunitup = this.initArchiveUnitAllunitup(obj);
       this.listOfUACriteriaSearch = this.prepareListOfUACriteriaSearch();
       const reclassificationCriteria = {
         criteriaList: this.listOfUACriteriaSearch,
@@ -1068,6 +1074,10 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
         }),
       );
     }
+  }
+
+  public initArchiveUnitAllunitup(values: string[][]) {
+    return [...new Set(values.flat())];
   }
 
   public shouldReadSelectedItemCount(): boolean {

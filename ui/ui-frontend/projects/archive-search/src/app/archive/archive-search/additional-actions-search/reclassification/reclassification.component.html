@@ -1,14 +1,15 @@
 <div class="header">
-  <mat-progress-bar mode="determinate" [value]="stepProgress" class="stepper-progress-bar"></mat-progress-bar>
+  <vitamui-common-progress-bar [count]="getStepCount()" [index]="stepIndex"></vitamui-common-progress-bar>
 </div>
 
 <form [formGroup]="form" (ngSubmit)="onSubmit()" (keydown.enter)="$event.preventDefault()">
   <vitamui-common-stepper (selectionChange)="stepIndex = $event.selectedIndex">
     <cdk-step>
       <div class="content">
-        <div class="text large bold">{{ 'RECLASSIFICATION.FIRST_STEP.TITLE' | translate }}</div>
-        <br />
-        {{ itemSelected }} {{ 'RECLASSIFICATION.FIRST_STEP.SELECTED_UNIT' | translate }}
+        <div class="text medium light">{{ 'RECLASSIFICATION.COMMON.TITLE' | translate }}</div>
+        <div class="text large bold mb-3">{{ 'RECLASSIFICATION.FIRST_STEP.SUBTITLE' | translate }}</div>
+        {{ itemSelected }}
+        {{ itemSelected | i18nPlural: selectedUnitMap | translate }}
         <div *ngIf="totalChilds !== null && totalChilds === 10000 && !waitingForLoadExactTotalTrackHits && !precided">
           <a
             class="link-without-underline"
@@ -44,31 +45,57 @@
         </div>
 
         <div *ngIf="precided || 1000 > totalChilds">
-          <span *ngIf="!pendingGetChilds" class="badge badge-secondary pad"
-            >{{ totalChilds }} {{ 'RECLASSIFICATION.FIRST_STEP.CHILDS' | translate }}</span
+          <span *ngIf="!pendingGetChilds" class="badge badge-secondary pad">
+            {{ 'RECLASSIFICATION.FIRST_STEP.INCLUDING_NB_FOLDERS_DOCUMENTS' | translate: { nbDocuments: totalChilds } }}</span
           >
         </div>
 
-        <p class="title-text choice-top">{{ 'RECLASSIFICATION.FIRST_STEP.SELECT_ACTION_MESSAGE_1' | translate }}</p>
+        <div class="text medium mb-2">
+          @if (archiveUnitFetchedParents.length >= 1 && archiveUnitFetchedParents.length <= 5) {
+            {{
+              archiveUnitFetchedParents.length
+                | i18nPlural: currentParentFolderMap
+                | translate: { nbParents: archiveUnitFetchedParents.length }
+            }}
+          } @else if (archiveUnitFetchedParents.length > 5) {
+            {{ 'RECLASSIFICATION.FIRST_STEP.MORE_THAN_FIVE_CURRENT_PARENTS_FOLDERS' | translate }}
+          } @else if (!hasParents) {
+            <div class="light">{{ 'RECLASSIFICATION.COMMON.ARCHIVE_WITH_NO_PARENTS' | translate }}</div>
+          }
+        </div>
+
+        <div *ngIf="archiveUnitFetchedParents.length <= 5">
+          <div *ngFor="let parent of archiveUnitFetchedParents">
+            <div class="text normal ml-3 mb-2">{{ parent.title }}</div>
+          </div>
+        </div>
+
+        <p class="text bold primary">{{ 'RECLASSIFICATION.FIRST_STEP.SELECT_ACTION_MESSAGE_1' | translate }}</p>
         <div class="form-group select-group-info">
-          <mat-form-field class="vitamui-mat-select">
-            <mat-select
-              formControlName="actionToFilter"
-              placeholder="{{ 'RECLASSIFICATION.FIRST_STEP.SELECT_ACTION_MESSAGE_2' | translate }}"
-              panelclass="vitamui-mat-select"
-              required
-              (selectionChange)="selectedAction($event)"
-            >
-              <mat-option *ngFor="let action of actions" [value]="action.key">{{ action.label }}</mat-option>
-            </mat-select>
-            <div class="select-arrow">
-              <i class="material-icons">keyboard_arrow_down</i>
-            </div>
-          </mat-form-field>
+          <vitamui-select
+            [formControl]="actionToFilterSelect"
+            formControlName="actionToFilter"
+            [options]="actionToFilterOptions"
+            [placeholder]="'RECLASSIFICATION.FIRST_STEP.SELECT_ACTION_MESSAGE_2' | translate"
+            [enableSearch]="false"
+            required
+          ></vitamui-select>
+        </div>
+
+        <div class="text danger">
+          <div *ngIf="actionChosen === 'REPLACE'">
+            {{ 'RECLASSIFICATION.FIRST_STEP.ALERT_REMOVED_CURRENT_PARENTS_FOLDERS' | translate }}
+          </div>
+          <div *ngIf="actionChosen === 'PULL'">
+            {{ 'RECLASSIFICATION.FIRST_STEP.ALERT_NO_ATTACHMENT_CURRENT_PARENTS_FOLDERS' | translate }}
+          </div>
         </div>
 
         <div class="actions">
-          <button type="button" class="btn primary" cdkStepperNext [disabled]="firstStepInvalid()">{{ 'COMMON.NEXT' | translate }}</button>
+          <button *ngIf="actionChosen !== 'PULL'" type="button" class="btn primary" cdkStepperNext [disabled]="firstStepInvalid()">
+            {{ 'COMMON.NEXT' | translate }}
+          </button>
+          <button *ngIf="actionChosen === 'PULL'" type="submit" class="btn primary">{{ 'COMMON.CONFIRM' | translate }}</button>
           <button type="button" class="btn link cancel" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
         </div>
       </div>
@@ -78,67 +105,60 @@
       <div [ngSwitch]="actionChosen">
         <ng-container *ngSwitchCase="'REPLACE'">
           <div class="content">
-            <div class="text large bold">{{ 'RECLASSIFICATION.REPLACE_STEP.TITLE' | translate }}</div>
+            <div class="text medium light">{{ 'RECLASSIFICATION.COMMON.TITLE' | translate }}</div>
+            <div class="text large bold">
+              {{ 'RECLASSIFICATION.REPLACE_STEP.TITLE' | translate }} / {{ 'RECLASSIFICATION.COMMON.NEW_ATTACHMENT_POSITION' | translate }}
+            </div>
+            <div class="alert-message mt-3">
+              {{ 'RECLASSIFICATION.FIRST_STEP.ALERT_REMOVED_CURRENT_PARENTS_FOLDERS' | translate }}
+            </div>
+            <div class="mt-3 mb-3">
+              <mat-button-toggle-group formControlName="toggleOption" class="vitamui-button-toggle-group">
+                <mat-button-toggle *ngFor="let option of getReclassificationToggleOptions()" [value]="option">
+                  <span>{{ 'RECLASSIFICATION.COMMON.' + option | translate }}</span>
+                </mat-button-toggle>
+              </mat-button-toggle-group>
+            </div>
             <div class="form-group">
-              <div class="row padding-form-div">
-                <ng-container *ngIf="hasParents">
-                  <div class="col-12 from-parent">{{ 'RECLASSIFICATION.REPLACE_STEP.FROM_PARENT_SOURCE_MESSAGE' | translate }}</div>
-                  <div class="col-12 title-text">{{ 'RECLASSIFICATION.COMMON.SELECT_TARGET_PARENT' | translate }}</div>
-                  <div class="parant-div">
-                    <div
-                      formArrayName="allunitupsGuidsFormAttribute"
-                      class="row padding-row"
-                      *ngFor="let parent of allunitupsControl; let i = index"
-                    >
-                      <label class="criteria-checkbox-choice align-checkbox-label">
-                        <input type="checkbox" [value]="archiveUnitFetchedParents[i].id" [formControlName]="i" [checked]="false" />
-                        <span>{{ archiveUnitFetchedParents[i].title }}</span>
-                      </label>
-                      <br />
-                    </div>
-                  </div>
-                </ng-container>
-              </div>
-
-              <ng-container *ngIf="!hasParents">
-                <div class="text-title">{{ 'RECLASSIFICATION.COMMON.ARCHIVE_WITH_NO_PARENTS' | translate }}</div>
-                <br />
-              </ng-container>
-
-              <div class="form-control" *ngIf="hasParents">
-                <div class="col-12 from-parent padding-target">{{ 'RECLASSIFICATION.COMMON.TO_PARENT_TARGET' | translate }}</div>
-                <vitamui-common-input
-                  formControlName="targetGuid"
-                  required
-                  placeholder="{{ 'RECLASSIFICATION.COMMON.TARGET_GUID_LABEL' | translate }}"
-                  class="col-12 px-0"
-                >
-                  <ng-container *ngIf="form.get('targetGuid')?.touched">
-                    <vitamui-common-input-error *ngIf="!!form.get('targetGuid')?.errors?.required"
-                      >{{ 'COMMON.REQUIRED' | translate }}
-                    </vitamui-common-input-error>
-                    <vitamui-common-input-error *ngIf="!!form?.get('targetGuid')?.errors?.targetGuid">
-                      {{ 'RECLASSIFICATION.COMMON.GUID_ALREADY_EXISTS' | translate }}
-                    </vitamui-common-input-error>
-                    <vitamui-common-input-error *ngIf="!!form?.get('targetGuid')?.errors?.alreadyExistParents"
-                      >{{ 'RECLASSIFICATION.COMMON.ATTACHMENT_ALREADY_EXISTS' | translate }}
-                    </vitamui-common-input-error>
-                  </ng-container>
-                </vitamui-common-input>
-              </div>
-
-              <div class="form-control" *ngIf="hasParents">
-                <vitamui-common-input
-                  class="col-12 px-0"
-                  formControlName="targetAuTitle"
-                  required
-                  placeholder="{{ 'RECLASSIFICATION.COMMON.TARGET_GUID_TITLE_LABEL' | translate }}"
-                ></vitamui-common-input>
-              </div>
+              @switch (form.get('toggleOption').value) {
+                @case (ReclassificationToggle.RECLASSIFICATION_TOGGLE_TREE_PLAN) {
+                  <vitamui-library-filing-plan
+                    [mode]="FilingPlanMode.SOLO"
+                    [tenantIdentifier]="data.tenantIdentifier"
+                    [formControl]="targetGuidFiling"
+                  ></vitamui-library-filing-plan>
+                }
+                @case (ReclassificationToggle.RECLASSIFICATION_TOGGLE_UA_ID) {
+                  <vitamui-common-input
+                    formControlName="targetGuid"
+                    required
+                    placeholder="{{ 'RECLASSIFICATION.COMMON.ATTACHMENT_GUID_LABEL' | translate }}"
+                    class="col-12 px-0"
+                  >
+                    <ng-container *ngIf="form.get('targetGuid')?.touched">
+                      <vitamui-common-input-error *ngIf="!!form.get('targetGuid')?.errors?.required"
+                        >{{ 'COMMON.REQUIRED' | translate }}
+                      </vitamui-common-input-error>
+                      <vitamui-common-input-error *ngIf="!!form?.get('targetGuid')?.errors?.targetGuid">
+                        {{ 'RECLASSIFICATION.COMMON.GUID_ALREADY_EXISTS' | translate }}
+                      </vitamui-common-input-error>
+                      <vitamui-common-input-error *ngIf="!!form?.get('targetGuid')?.errors?.alreadyExistParents"
+                        >{{ 'RECLASSIFICATION.COMMON.ATTACHMENT_ALREADY_EXISTS' | translate }}
+                      </vitamui-common-input-error>
+                    </ng-container>
+                  </vitamui-common-input>
+                  <vitamui-common-input
+                    class="col-12 px-0"
+                    formControlName="targetAuTitle"
+                    required
+                    placeholder="{{ 'RECLASSIFICATION.COMMON.TARGET_GUID_TITLE_LABEL' | translate }}"
+                  ></vitamui-common-input>
+                }
+              }
             </div>
             <div class="actions">
               <button type="submit" class="btn primary" [disabled]="lastStepInvalid() || isDisabledButton">
-                {{ 'COMMON.SUBMIT' | translate }}
+                {{ 'COMMON.CONFIRM' | translate }}
               </button>
               <button type="button" class="btn link cancel" (click)="onCancel()">
                 {{ 'COMMON.UNDO' | translate }}
@@ -146,113 +166,68 @@
             </div>
             <button type="button" class="btn link" cdkStepperPrevious>
               <i class="vitamui-icon vitamui-icon-chevron-left"></i>
-              <span class="underline">{{ 'COMMON.BACK' | translate }}</span>
-            </button>
-          </div>
-        </ng-container>
-
-        <ng-container *ngSwitchCase="'PULL'">
-          <div class="content">
-            <div class="text large bold">{{ 'RECLASSIFICATION.DELETE_STEP.TITLE' | translate }}</div>
-            <div class="form-group">
-              <div class="row padding-form-div">
-                <ng-container *ngIf="hasParents">
-                  <div class="col-12 from-parent">{{ 'RECLASSIFICATION.COMMON.FROM_PARENT_SOURCE_MESSAGE' | translate }}</div>
-                  <div class="col-12 title-text">{{ 'RECLASSIFICATION.COMMON.SELECT_TARGET_PARENT' | translate }}</div>
-
-                  <div class="parant-div">
-                    <div
-                      formArrayName="allunitupsGuidsFormAttribute"
-                      class="row padding-row"
-                      *ngFor="let parent of allunitupsControl; let i = index"
-                    >
-                      <label class="criteria-checkbox-choice align-checkbox-label">
-                        <input type="checkbox" [value]="archiveUnitFetchedParents[i].id" [formControlName]="i" [checked]="i === 0" />
-                        <span>{{ archiveUnitFetchedParents[i].title }}</span>
-                      </label>
-                      <br />
-                    </div>
-                  </div>
-                </ng-container>
-              </div>
-              <ng-container *ngIf="!hasParents">
-                <div class="text-title">{{ 'RECLASSIFICATION.COMMON.ARCHIVE_WITH_NO_PARENTS' | translate }}</div>
-                <br />
-              </ng-container>
-            </div>
-            <div class="actions">
-              <button type="submit" class="btn primary" [disabled]="lastStepInvalid() || isDisabledButton">
-                {{ 'COMMON.SUBMIT' | translate }}
-              </button>
-              <button type="button" class="btn link cancel" (click)="onCancel()">
-                {{ 'COMMON.UNDO' | translate }}
-              </button>
-            </div>
-            <button type="button" class="btn link" cdkStepperPrevious>
-              <i class="vitamui-icon vitamui-icon-chevron-left"></i>
-              <span class="underline">{{ 'COMMON.BACK' | translate }}</span>
+              <span>{{ 'COMMON.BACK' | translate }}</span>
             </button>
           </div>
         </ng-container>
 
         <ng-container *ngSwitchCase="'ADD'">
           <div class="content">
-            <div class="text large bold">{{ 'RECLASSIFICATION.ADD_STEP.TITLE' | translate }}</div>
-            <div class="form-group">
-              <div class="row padding-form-div">
-                <ng-container *ngIf="hasParents">
-                  <div class="col-12 from-parent">{{ 'RECLASSIFICATION.COMMON.FROM_PARENT_SOURCE_MESSAGE' | translate }}</div>
-                  <div class="parant-div">
-                    <div
-                      formArrayName="allunitupsGuidsFormAttribute"
-                      class="row padding-row"
-                      *ngFor="let parent of allunitupsControl; let i = index"
-                    >
-                      <label class="criteria-checkbox-choice">
-                        <span>{{ archiveUnitFetchedParents[i].title }}</span>
-                      </label>
-                    </div>
-                  </div>
-                </ng-container>
-              </div>
-              <ng-container *ngIf="!hasParents">
-                <div class="text-title">{{ 'RECLASSIFICATION.COMMON.ARCHIVE_WITH_NO_PARENTS' | translate }}</div>
-                <br />
-              </ng-container>
-              <div class="form-control">
-                <div class="col-12 from-parent padding-target">{{ 'RECLASSIFICATION.ADD_STEP.ADD_TO_FOLDER' | translate }}</div>
-                <vitamui-common-input
-                  formControlName="targetGuid"
-                  required
-                  placeholder="{{ 'RECLASSIFICATION.COMMON.TARGET_GUID_LABEL' | translate }}"
-                  class="col-12 px-0"
-                >
-                  <ng-container *ngIf="form.get('targetGuid')?.touched">
-                    <vitamui-common-input-error *ngIf="!!form.get('targetGuid')?.errors?.required"
-                      >{{ 'COMMON.REQUIRED' | translate }}
-                    </vitamui-common-input-error>
-                    <vitamui-common-input-error *ngIf="!!form?.get('targetGuid')?.errors?.targetGuid">
-                      {{ 'RECLASSIFICATION.COMMON.GUID_ALREADY_EXISTS' | translate }}
-                    </vitamui-common-input-error>
-                    <vitamui-common-input-error *ngIf="!!form?.get('targetGuid')?.errors?.alreadyExistParents"
-                      >{{ 'RECLASSIFICATION.COMMON.ATTACHMENT_ALREADY_EXISTS' | translate }}
-                    </vitamui-common-input-error>
-                  </ng-container>
-                </vitamui-common-input>
-              </div>
-
-              <div class="form-control">
-                <vitamui-common-input
-                  class="col-12 px-0"
-                  formControlName="targetAuTitle"
-                  required
-                  placeholder="{{ 'RECLASSIFICATION.COMMON.TARGET_GUID_TITLE_LABEL' | translate }}"
-                ></vitamui-common-input>
-              </div>
+            <div class="text medium light">{{ 'RECLASSIFICATION.COMMON.TITLE' | translate }}</div>
+            <div class="text large bold">
+              {{ 'RECLASSIFICATION.ADD_STEP.TITLE' | translate }} / {{ 'RECLASSIFICATION.COMMON.NEW_ATTACHMENT_POSITION' | translate }}
             </div>
+            <div class="mt-3 mb-3">
+              <mat-button-toggle-group formControlName="toggleOption" class="vitamui-button-toggle-group">
+                <mat-button-toggle *ngFor="let option of getReclassificationToggleOptions()" [value]="option">
+                  <span>{{ 'RECLASSIFICATION.COMMON.' + option | translate }}</span>
+                </mat-button-toggle>
+              </mat-button-toggle-group>
+            </div>
+            @switch (form.get('toggleOption').value) {
+              @case (ReclassificationToggle.RECLASSIFICATION_TOGGLE_TREE_PLAN) {
+                <vitamui-library-filing-plan
+                  [mode]="FilingPlanMode.SOLO"
+                  [tenantIdentifier]="data.tenantIdentifier"
+                  [formControl]="targetGuidFiling"
+                ></vitamui-library-filing-plan>
+              }
+              @case (ReclassificationToggle.RECLASSIFICATION_TOGGLE_UA_ID) {
+                <div class="form-group">
+                  <div class="form-control">
+                    <vitamui-common-input
+                      formControlName="targetGuid"
+                      required
+                      placeholder="{{ 'RECLASSIFICATION.COMMON.ATTACHMENT_GUID_LABEL' | translate }}"
+                      class="col-12 px-0"
+                    >
+                      <ng-container *ngIf="form.get('targetGuid')?.touched">
+                        <vitamui-common-input-error *ngIf="!!form.get('targetGuid')?.errors?.required"
+                          >{{ 'COMMON.REQUIRED' | translate }}
+                        </vitamui-common-input-error>
+                        <vitamui-common-input-error *ngIf="!!form?.get('targetGuid')?.errors?.targetGuid">
+                          {{ 'RECLASSIFICATION.COMMON.GUID_ALREADY_EXISTS' | translate }}
+                        </vitamui-common-input-error>
+                        <vitamui-common-input-error *ngIf="!!form?.get('targetGuid')?.errors?.alreadyExistParents"
+                          >{{ 'RECLASSIFICATION.COMMON.ATTACHMENT_ALREADY_EXISTS' | translate }}
+                        </vitamui-common-input-error>
+                      </ng-container>
+                    </vitamui-common-input>
+                  </div>
+                  <div class="form-control">
+                    <vitamui-common-input
+                      class="col-12 px-0"
+                      formControlName="targetAuTitle"
+                      required
+                      placeholder="{{ 'RECLASSIFICATION.COMMON.TARGET_GUID_TITLE_LABEL' | translate }}"
+                    ></vitamui-common-input>
+                  </div>
+                </div>
+              }
+            }
             <div class="actions">
               <button type="submit" class="btn primary" [disabled]="lastStepInvalid() || isDisabledButton">
-                {{ 'COMMON.SUBMIT' | translate }}
+                {{ 'COMMON.CONFIRM' | translate }}
               </button>
               <button type="button" class="btn link cancel" (click)="onCancel()">
                 {{ 'COMMON.UNDO' | translate }}
@@ -260,7 +235,7 @@
             </div>
             <button type="button" class="btn link" cdkStepperPrevious>
               <i class="vitamui-icon vitamui-icon-chevron-left"></i>
-              <span class="underline">{{ 'COMMON.BACK' | translate }}</span>
+              <span>{{ 'COMMON.BACK' | translate }}</span>
             </button>
           </div>
         </ng-container>

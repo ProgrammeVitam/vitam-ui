@@ -120,7 +120,7 @@ export class FilingPlanService {
       ) {
         const outNode: Node = {
           id: idPrefix + '-' + unit['#id'],
-          label: unit.Title,
+          label: fetchTitle(unit.Title, unit.Title_),
           type: this.getFileTypeFromUnit(unit),
           children: [],
           ingestContractIdentifier: getKeywordValue(unit, 'ingest_contract'),
@@ -147,6 +147,10 @@ function byTitle(locale: string): (a: Node, b: Node) => number {
     }
     return a.label.localeCompare(b.label, locale);
   };
+}
+
+function fetchTitle(title: string, titleInLanguages: any) {
+  return title ? title : titleInLanguages ? (titleInLanguages.fr ? titleInLanguages.fr : titleInLanguages.en) : titleInLanguages.en;
 }
 
 /** Required at least one node in included */

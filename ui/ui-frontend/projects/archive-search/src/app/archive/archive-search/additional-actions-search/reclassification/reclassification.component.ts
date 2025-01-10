@@ -46,12 +46,15 @@ import {
   ConfirmDialogService,
   CriteriaDataType,
   CriteriaOperator,
+  FilingPlanMode,
   Logger,
   Option,
   PagedResult,
   SearchCriteriaDto,
   SearchCriteriaTypeEnum,
   StartupService,
+  Unit,
+  VitamuiSelectOptions,
 } from 'vitamui-library';
 import { ArchiveSharedDataService } from '../../../../core/archive-shared-data.service';
 import { ArchiveService } from '../../../archive.service';
@@ -59,10 +62,10 @@ import {
   ReclassificationAction,
   ReclassificationCriteriaDto,
   ReclassificationQueryActionType,
+  ReclassificationToggle,
 } from '../../../models/reclassification-request.interface';
 import { ArchiveUnitValidatorService } from '../../../validators/archive-unit-validator.service';
 
-const PROGRESS_BAR_MULTIPLICATOR = 100;
 const PULL = 'PULL';
 const REPLACE = 'REPLACE';
 @Component({
@@ -72,10 +75,13 @@ const REPLACE = 'REPLACE';
   styleUrls: ['./reclassification.component.scss'],
 })
 export class ReclassificationComponent implements OnInit, OnDestroy {
+  protected readonly FilingPlanMode = FilingPlanMode;
   form: FormGroup;
   stepIndex = 0;
-  private stepCount = 2;
   private keyPressSubscription: Subscription;
+  targetGuidFiling = new FormControl({ included: [], excluded: [] });
+  actionToFilterSelect = new FormControl();
+  actionToFilterOptions: VitamuiSelectOptions;
 
   isDisabledButton = false;
 
@@ -89,17 +95,28 @@ export class ReclassificationComponent implements OnInit, OnDestroy {
   pendingGetFixedCount = false;
   pendingGetChilds = true;
   precided = false;
-  archiveUnitGuidSelected: string;
+  archiveUnitGuidsSelected: string[];
   archiveUnitAllunitup: string[];
   archiveUnitFetchedParents: Array<{ title: string; id: string }> = [];
-  targetedGuidToCheck: string;
   subscriptionAuTitle: Subscription;
+
+  archiveUnits: Unit[];
 
   actions: Option[] = [
     { key: 'REPLACE', label: this.translateService.instant('RECLASSIFICATION.REPLACE_STEP.TITLE') },
     { key: 'PULL', label: this.translateService.instant('RECLASSIFICATION.DELETE_STEP.TITLE') },
     { key: 'ADD', label: this.translateService.instant('RECLASSIFICATION.ADD_STEP.TITLE') },
   ];
+
+  public selectedUnitMap: { [k: string]: string } = {
+    '=1': 'RECLASSIFICATION.FIRST_STEP.SELECTED_UNIT',
+    other: 'RECLASSIFICATION.FIRST_STEP.SELECTED_UNIT_PLURAL',
+  };
+
+  public currentParentFolderMap: { [k: string]: string } = {
+    '=1': 'RECLASSIFICATION.FIRST_STEP.CURRENT_PARENT_FOLDERS',
+    other: 'RECLASSIFICATION.FIRST_STEP.CURRENT_PARENT_FOLDERS_PLURAL',
+  };
 
   constructor(
     private translateService: TranslateService,
@@ -118,7 +135,7 @@ export class ReclassificationComponent implements OnInit, OnDestroy {
       accessContract: string;
       tenantIdentifier: string;
       selectedItemCountKnown?: boolean;
-      archiveUnitGuidSelected: string;
+      archiveUnitGuidSelected: string[];
       archiveUnitAllunitup: string[];
     },
   ) {}
@@ -126,7 +143,7 @@ export class ReclassificationComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.itemSelected = this.data.itemSelected;
     this.accessContract = this.data.accessContract;
-    this.archiveUnitGuidSelected = this.data.archiveUnitGuidSelected;
+    this.archiveUnitGuidsSelected = this.data.archiveUnitGuidSelected;
     this.archiveUnitAllunitup = this.data.archiveUnitAllunitup;
 
     this.form = this.formBuilder.group({
@@ -134,7 +151,6 @@ export class ReclassificationComponent implements OnInit, OnDestroy {
       name: [null],
       description: [null],
       actionToFilter: [null, Validators.required],
-
       targetGuid: [
         { value: null, disabled: this.archiveUnitAllunitup.length < 1 && this.actionChosen === REPLACE },
         null,
@@ -144,6 +160,7 @@ export class ReclassificationComponent implements OnInit, OnDestroy {
         ],
       ],
       targetAuTitle: [{ value: null, disabled: true }],
+      toggleOption: [ReclassificationToggle.RECLASSIFICATION_TOGGLE_TREE_PLAN],
       allunitupsGuidsFormAttribute: new FormArray([], [Validators.required]),
     });
 
@@ -153,6 +170,29 @@ export class ReclassificationComponent implements OnInit, OnDestroy {
       this.hasParents = false;
       this.isDisabledButton = false;
     }
+
+    this.form.controls.toggleOption.valueChanges.subscribe((toggle) => {
+      if (toggle === ReclassificationToggle.RECLASSIFICATION_TOGGLE_UA_ID) {
+        this.form.get('targetGuid').reset();
+      } else {
+        this.form.get('targetGuid').setValue(this.targetGuidFiling.value.included[0]);
+      }
+    });
+
+    // this.targetGuidFiling.valueChanges.subscribe((value) => {
+    //   this.form.get('targetGuid').setValue(value.included[0]);
+    // });
+
+    this.actionToFilterOptions = {
+      options: this.actions,
+    };
+
+    this.actionToFilterSelect.valueChanges.subscribe((value) => {
+      this.form.get('actionToFilter').setValue(value);
+      this.form.get('targetGuid').reset();
+      this.form.get('targetAuTitle').reset();
+      this.actionChosen = value;
+    });
 
     this.keyPressSubscription = this.confirmDialogService.listenToEscapeKeyPress(this.dialogRef).subscribe(() => this.onCancel());
 
@@ -166,12 +206,16 @@ export class ReclassificationComponent implements OnInit, OnDestroy {
     this.calculateChilds();
   }
 
+  public getStepCount() {
+    return this.actionChosen === PULL ? 1 : 2;
+  }
+
   calculateChilds() {
     this.pendingGetChilds = true;
     const criteriaSearchList = [
       {
         criteria: '#allunitups',
-        values: [this.data.archiveUnitGuidSelected],
+        values: this.archiveUnitGuidsSelected,
         operator: CriteriaOperator.IN,
         category: SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.FIELDS],
         dataType: CriteriaDataType.STRING,
@@ -206,7 +250,7 @@ export class ReclassificationComponent implements OnInit, OnDestroy {
       const criteriaSearchList: any[] = [
         {
           criteria: '#allunitups',
-          values: [this.data.archiveUnitGuidSelected],
+          values: this.archiveUnitGuidsSelected,
           operator: CriteriaOperator.IN,
           category: SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.FIELDS],
           dataType: CriteriaDataType.STRING,
@@ -238,7 +282,6 @@ export class ReclassificationComponent implements OnInit, OnDestroy {
     const unitups: string[] = this.archiveUnitFetchedParents
       .filter((_cat, catIdx) => this.allunitupsControl.some((control, controlIdx) => catIdx === controlIdx && control.value))
       .map((cat) => cat.id);
-
     return unitups;
   }
 
@@ -253,21 +296,39 @@ export class ReclassificationComponent implements OnInit, OnDestroy {
   }
 
   lastStepInvalid(): boolean {
-    if (this.actionChosen === REPLACE) {
-      return this.form.get('targetGuid').invalid || this.form.get('targetGuid').pending || this.unitupsFormArraySelectedIds.length < 1;
-    } else if (this.actionChosen === PULL) {
-      return this.unitupsFormArraySelectedIds.length < 1;
+    if (this.form.get('toggleOption').value === ReclassificationToggle.RECLASSIFICATION_TOGGLE_TREE_PLAN) {
+      if (this.actionChosen === REPLACE) {
+        return this.isTargetGuidFilingValid();
+      } else if (this.actionChosen === PULL) {
+        return this.unitupsFormArraySelectedIds.length < 1;
+      } else {
+        return this.isTargetGuidFilingValid();
+      }
     } else {
-      return this.form.get('targetGuid').invalid || this.form.get('targetGuid').pending;
+      if (this.actionChosen === REPLACE) {
+        return this.isTargetGuidValid() || this.unitupsFormArraySelectedIds.length < 1;
+      } else if (this.actionChosen === PULL) {
+        return this.unitupsFormArraySelectedIds.length < 1;
+      } else {
+        return this.isTargetGuidValid();
+      }
     }
   }
 
-  get stepProgress() {
-    return ((this.stepIndex + 1) / this.stepCount) * PROGRESS_BAR_MULTIPLICATOR;
+  isTargetGuidValid() {
+    return this.form.get('targetGuid').invalid || this.form.get('targetGuid').pending;
+  }
+
+  isTargetGuidFilingValid() {
+    return this.targetGuidFiling.value && this.targetGuidFiling.value.included && this.targetGuidFiling.value.included.length == 0;
   }
 
   get parentGuidArray() {
     return this.form.get('allunitupsGuidsFormAttribute') as FormArray;
+  }
+
+  public getReclassificationToggleOptions(): String[] {
+    return Object.keys(ReclassificationToggle);
   }
 
   getArchiveUnitParents(allunitupsIds: string[]) {
@@ -330,8 +391,12 @@ export class ReclassificationComponent implements OnInit, OnDestroy {
   getReclassificationQuery(): ReclassificationCriteriaDto {
     if (this.actionChosen === REPLACE) {
       const parentToPull: string[] = this.getTargetedParentToPull(this.unitupsFormArraySelectedIds, this.archiveUnitAllunitup);
-      const reclassificationQueryPull = this.getReclassificationQueryActionType(parentToPull);
-      const reclassificationQueryAdd = this.getReclassificationQueryActionType([this.form.get('targetGuid').value]);
+      const reclassificationQueryPull = parentToPull.length ? this.getReclassificationQueryActionType(parentToPull) : null;
+      const parentToAdd =
+        this.form.get('toggleOption').value === ReclassificationToggle.RECLASSIFICATION_TOGGLE_UA_ID
+          ? [this.form.get('targetGuid').value]
+          : this.targetGuidFiling.value.included;
+      const reclassificationQueryAdd = this.getReclassificationQueryActionType(parentToAdd);
 
       const reclassificationAction = this.getReclassificationAction(reclassificationQueryAdd, reclassificationQueryPull);
 
@@ -353,7 +418,11 @@ export class ReclassificationComponent implements OnInit, OnDestroy {
       };
       return reclassificationCriteriaDto;
     } else {
-      const reclassificationQueryAdd = this.getReclassificationQueryActionType([this.form.get('targetGuid').value]);
+      const parentToAdd =
+        this.form.get('toggleOption').value === ReclassificationToggle.RECLASSIFICATION_TOGGLE_UA_ID
+          ? [this.form.get('targetGuid').value]
+          : this.targetGuidFiling.value.included;
+      const reclassificationQueryAdd = this.getReclassificationQueryActionType(parentToAdd);
 
       const reclassificationAction = this.getReclassificationAction(reclassificationQueryAdd, null);
 
@@ -393,4 +462,6 @@ export class ReclassificationComponent implements OnInit, OnDestroy {
       this.dialogRef.close();
     }
   }
+
+  protected readonly ReclassificationToggle = ReclassificationToggle;
 }
