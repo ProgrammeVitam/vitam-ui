@@ -53,6 +53,7 @@ import { TypographyComponent } from './components/typography/typography.componen
 import { DesignSystemComponent } from './design-system/design-system.component';
 import { ChipsComponent } from './components/chips/chips.component';
 import { SpacingComponent } from './components/spacing/spacing.component';
+import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 
 const routes: Routes = [
   { path: '', component: DesignSystemComponent, data: { appId: ApplicationId.DESIGN_SYSTEM_APP } },
@@ -82,5 +83,6 @@ const routes: Routes = [
     }),
   ],
   exports: [RouterModule],
+  providers: [{ provide: LocationStrategy, useClass: HashLocationStrategy }],
 })
 export class AppRoutingModule {}
