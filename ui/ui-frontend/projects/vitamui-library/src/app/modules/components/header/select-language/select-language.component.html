@@ -2,12 +2,12 @@
 
 <ng-template #button>
   <button mat-mini-fab class="flag-button" [matMenuTriggerFor]="menu" aria-label="flag">
-    <img [src]="'../../../assets/country/' + currentLang + '.svg'" />
+    <img [src]="'assets/country/' + currentLang + '.svg'" />
   </button>
 
   <mat-menu #menu="matMenu" [overlapTrigger]="false" xPosition="before">
-    <span mat-menu-item (click)="use(minLangString.FR)"> FR<img src="../../../assets/country/fr.svg" /> </span>
-    <span mat-menu-item (click)="use(minLangString.EN)"> EN<img src="../../../assets/country/en.svg" /> </span>
+    <span mat-menu-item (click)="use(minLangString.FR)"> FR<img src="assets/country/fr.svg" /> </span>
+    <span mat-menu-item (click)="use(minLangString.EN)"> EN<img src="assets/country/en.svg" /> </span>
   </mat-menu>
 </ng-template>
 
