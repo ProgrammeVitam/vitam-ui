@@ -46,7 +46,7 @@ import {
   Option,
   SignaturePolicy,
   SignedDocumentPolicyEnum,
-  VitamuiAutocompleteMultiselectOptions,
+  VitamuiSelectOptions,
   VitamuiHttpHeaders,
 } from 'vitamui-library';
 import { ArchiveProfileApiService } from '../../core/api/archive-profile-api.service';
@@ -96,7 +96,7 @@ export class IngestContractCreateComponent implements OnInit, OnDestroy {
   linkParentIdControl = new FormControl();
   checkParentIdControl = new FormControl();
 
-  formatTypesOptions: VitamuiAutocompleteMultiselectOptions = { options: [] };
+  formatTypesOptions: VitamuiSelectOptions = { options: [] };
   managementContracts: any[];
   archiveProfiles: any[];
   isDisabledButton = false;

@@ -34,31 +34,30 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { Inject, Injectable } from '@angular/core';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { BASE_URL } from 'vitamui-library';
+import { Observable } from 'rxjs';
 
-import { TranslateModule } from '@ngx-translate/core';
-import { VitamUIAutocompleteMultiSelectComponent } from './vitamui-autocomplete-multi-select.component';
-import { MatLegacySelectModule as MatSelectModule } from '@angular/material/legacy-select';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+export interface ArchiveUnitProfile {
+  id: string;
+  identifier: string;
+  name: string;
+}
 
-describe('VitamuiAutocompleteMultiSelectComponent', () => {
-  let component: VitamUIAutocompleteMultiSelectComponent;
-  let fixture: ComponentFixture<VitamUIAutocompleteMultiSelectComponent>;
+@Injectable({
+  providedIn: 'root',
+})
+export class PuaService {
+  constructor(
+    @Inject(BASE_URL) private baseUrl: string,
+    private http: HttpClient,
+  ) {}
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [VitamUIAutocompleteMultiSelectComponent],
-      imports: [NoopAnimationsModule, TranslateModule.forRoot(), MatSelectModule],
-    }).compileComponents();
-  });
-
-  beforeEach(() => {
-    fixture = TestBed.createComponent(VitamUIAutocompleteMultiSelectComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-});
+  getAll(): Observable<ArchiveUnitProfile[]> {
+    const options = {
+      params: new HttpParams().set('embedded', 'ALL'),
+    };
+    return this.http.get<ArchiveUnitProfile[]>(`${this.baseUrl}/archival-profile`, options);
+  }
+}

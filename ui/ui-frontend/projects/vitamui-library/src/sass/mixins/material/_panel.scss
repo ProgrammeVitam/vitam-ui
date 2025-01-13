@@ -1,0 +1,9 @@
+@import '../../mixins/elevation';
+
+@mixin panel {
+  @include shadow-16dp-dark('!important');
+  border: 1px solid var(--vitamui-grey-400);
+  border-radius: 10px !important;
+  scrollbar-color: var(--vitamui-primary) var(--vitamui-primary-50);
+  scrollbar-width: thin;
+}

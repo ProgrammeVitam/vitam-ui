@@ -224,16 +224,18 @@ customer-init:
       level:
       roles:
         - ROLE_ARCHIVE_SEARCH_GET_ARCHIVE_SEARCH
-        - ROLE_ARCHIVE_SEARCH_UPDATE_ARCHIVE_UNIT
+        - ROLE_ARCHIVE_SEARCH_GET_ARCHIVE_BINARY
         - ROLE_EXPORT_DIP
         - ROLE_ELIMINATION
         - ROLE_COMPUTED_INHERITED_RULES
         - ROLE_GET_ACCESS_CONTRACTS
         - ROLE_RECLASSIFICATION
+        - ROLE_ARCHIVE_SEARCH_UPDATE_ARCHIVE_UNIT
         - ROLE_TRANSFER_REQUEST
-        - ROLE_GET_RULES
         - ROLE_TRANSFER_ACKNOWLEDGMENT
+        - ROLE_GET_RULES
         - ROLE_GET_SCHEMAS
+        - ROLE_GET_ARCHIVE_PROFILES_UNIT
 
     - name: Consultation
       description: Profil pour la recherche et consultation des archives dans Vitam sans mises à jour des règles, sans export DIP et sans élimination
@@ -241,9 +243,11 @@ customer-init:
       level:
       roles:
         - ROLE_ARCHIVE_SEARCH_GET_ARCHIVE_SEARCH
+        - ROLE_ARCHIVE_SEARCH_GET_ARCHIVE_BINARY
         - ROLE_GET_ACCESS_CONTRACTS
         - ROLE_GET_RULES
         - ROLE_GET_SCHEMAS
+        - ROLE_GET_ARCHIVE_PROFILES_UNIT
 
     - name: Archiviste
       description: Profil pour la recherche et consultation des archives dans Vitam sans mises à jour des règles de gestion, avec export DIP et sans élimination
@@ -251,11 +255,12 @@ customer-init:
       level:
       roles:
         - ROLE_ARCHIVE_SEARCH_GET_ARCHIVE_SEARCH
+        - ROLE_ARCHIVE_SEARCH_GET_ARCHIVE_BINARY
         - ROLE_EXPORT_DIP
         - ROLE_GET_ACCESS_CONTRACTS
-        - ARCHIVE_SEARCH_UPDATE_ARCHIVE_UNIT_ROLE
         - ROLE_GET_RULES
         - ROLE_GET_SCHEMAS
+        - ROLE_GET_ARCHIVE_PROFILES_UNIT
 
     - name: Profil pour la gestion des pua/pa de pastis
       description: Gestion de Pastis dans Vitam

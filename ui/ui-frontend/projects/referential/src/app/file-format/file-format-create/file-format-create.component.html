@@ -80,14 +80,15 @@
     </div>
 
     <div class="d-flex">
-      <vitamui-common-autocomplete-multi-select
+      <vitamui-select
+        [multiple]="true"
         class="w-100"
         formControlName="hasPriorityOverFileFormatIDs"
         [placeholder]="'FILE_FORMATS.CREATE_DIALOG.HAS_PRIORITY_OVER_FILE_FORMAT_ID' | translate"
         [searchBarPlaceHolder]="'FILE_FORMATS.CREATE_DIALOG.HAS_PRIORITY_OVER_FILE_FORMAT_ID_SEARCH' | translate"
-        [multiSelectOptions]="hasPriorityOverFileFormatIDsOptions"
+        [options]="hasPriorityOverFileFormatIDsOptions"
       >
-      </vitamui-common-autocomplete-multi-select>
+      </vitamui-select>
     </div>
 
     <div class="actions">

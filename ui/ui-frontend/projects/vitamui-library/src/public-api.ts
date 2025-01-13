@@ -57,6 +57,7 @@ export * from './lib/components/vitamui-radio/vitamui-radio.module';
 export * from './lib/components/vitamui-select-all-option/vitamui-select-all-option.component';
 export * from './lib/components/vitamui-select-all-option/vitamui-select-all-option.module';
 
+export * from './lib/components/select/select.component';
 export * from './lib/components/search-with-type-selector/search-with-type-selector.component';
 export * from './lib/components/form-field-value-wrapper/form-field-value-wrapper.component';
 

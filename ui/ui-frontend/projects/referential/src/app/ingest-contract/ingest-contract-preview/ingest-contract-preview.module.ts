@@ -49,8 +49,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
 import { MatLegacyTabsModule as MatTabsModule } from '@angular/material/legacy-tabs';
 import { RouterModule } from '@angular/router';
-import { VitamUICommonModule } from 'vitamui-library';
-import { VitamUILibraryModule } from 'vitamui-library';
+import { SelectComponent, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 
 import { IngestContractAttachmentTabComponent } from './ingest-contract-attachment-tab/ingest-contract-attachment-tab.component';
 import { IngestContractNodeUpdateComponent } from './ingest-contract-attachment-tab/ingest-contract-nodes-update/ingest-contract-node-update.component';
@@ -74,22 +73,23 @@ import { IngestContractSignatureTabComponent } from './ingest-contract-signature
   ],
   imports: [
     CommonModule,
-    RouterModule,
-    VitamUICommonModule,
-    VitamUILibraryModule,
     FormsModule,
-    ReactiveFormsModule,
-    MatMenuModule,
-    MatSnackBarModule,
     MatButtonToggleModule,
     MatDialogModule,
-    MatSidenavModule,
-    MatProgressSpinnerModule,
-    MatSelectModule,
-    MatOptionModule,
-    MatTabsModule,
     MatFormFieldModule,
     MatInputModule,
+    MatMenuModule,
+    MatOptionModule,
+    MatProgressSpinnerModule,
+    MatSelectModule,
+    MatSidenavModule,
+    MatSnackBarModule,
+    MatTabsModule,
+    ReactiveFormsModule,
+    RouterModule,
+    SelectComponent,
+    VitamUICommonModule,
+    VitamUILibraryModule,
   ],
   exports: [IngestContractPreviewComponent],
 })

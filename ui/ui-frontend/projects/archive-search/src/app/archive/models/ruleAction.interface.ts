@@ -88,9 +88,11 @@ export interface RuleCat {
 }
 
 export interface RuleActions {
-  add: any[];
-  update: any[];
-  delete: any[];
+  add?: any[];
+  update?: any[];
+  delete?: any[];
+  addOrUpdateMetadata?: ManagementMetadataAction;
+  deleteMetadata?: ManagementMetadataAction;
 }
 
 export interface RuleCategoryActionDeletion {

@@ -1,0 +1,10 @@
+mat-radio-group mat-radio-button + *:not(mat-radio-button) {
+  @extend .py-4;
+  @extend .px-5;
+  @extend .mt-2;
+  @extend .mx-5;
+  @extend .gap-3;
+  align-items: stretch !important;
+
+  background-color: var(--vitamui-background);
+}

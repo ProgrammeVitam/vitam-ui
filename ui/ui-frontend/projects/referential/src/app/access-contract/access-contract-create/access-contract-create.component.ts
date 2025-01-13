@@ -44,7 +44,7 @@ import {
   FilingPlanMode,
   Option,
   Status,
-  VitamuiAutocompleteMultiselectOptions,
+  VitamuiSelectOptions,
 } from 'vitamui-library';
 import { AgencyService } from '../../agency/agency.service';
 import { AccessContractCreateValidators } from './access-contract-create.validators';
@@ -75,7 +75,7 @@ export class AccessContractCreateComponent implements OnInit, OnDestroy {
 
   isLoading = false;
 
-  originatingAgenciesOptions: VitamuiAutocompleteMultiselectOptions = { options: [] };
+  originatingAgenciesOptions: VitamuiSelectOptions = { options: [] };
   // FIXME: Get list from common var ?
   usages: Option[] = [
     { key: 'BinaryMaster', label: 'Archives numériques originales', info: '' },

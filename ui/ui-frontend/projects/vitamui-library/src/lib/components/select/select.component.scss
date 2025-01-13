@@ -1,0 +1,128 @@
+@import '../../../sass/mixins/elevation';
+@import '../../../sass/variables/bootstrap-variables';
+@import 'bootstrap/scss/bootstrap-grid';
+
+:host {
+  --mdc-outlined-text-field-label-text-color: var(--vitamui-primary);
+  --mdc-outlined-text-field-focus-label-text-color: var(--vitamui-primary);
+  --mdc-outlined-text-field-error-label-text-color: var(--vitamui-primary);
+  --mdc-outlined-text-field-error-focus-label-text-color: var(--vitamui-primary);
+  --mat-select-enabled-arrow-color: var(--vitamui-primary);
+  --mat-select-disabled-arrow-color: var(--vitamui-grey);
+  --mdc-outlined-text-field-disabled-label-text-color: var(--vitamui-grey-700);
+  --mdc-outlined-text-field-label-text-weight: 700;
+  --mdc-shape-small: 5px;
+  --mat-select-trigger-text-size: 16px;
+
+  ::ng-deep {
+    .mat-mdc-form-field {
+      background-color: var(--vitamui-white);
+    }
+
+    .mdc-text-field--outlined {
+      --mdc-outlined-text-field-outline-width: 1px;
+      --mdc-outlined-text-field-outline-color: transparent;
+      --mdc-outlined-text-field-hover-outline-color: transparent;
+      --mdc-outlined-text-field-error-outline-color: var(--vitamui-red);
+      --mdc-outlined-text-field-focus-outline-width: 1px;
+      --mdc-outlined-text-field-focus-outline-color: var(--vitamui-primary);
+      --mat-select-trigger-text-line-height: 40px;
+    }
+
+    .mat-mdc-text-field-wrapper {
+      height: 60px;
+    }
+
+    .mdc-text-field {
+      @include shadow-accessible;
+      border-radius: var(--mdc-shape-small);
+
+      &--focused,
+      &--disabled,
+      &--invalid {
+        @include shadow-0;
+      }
+    }
+
+    .mdc-text-field--disabled {
+      background-color: var(--vitamui-grey-200);
+
+      .mat-mdc-form-field-icon-suffix {
+        color: var(--mat-select-disabled-arrow-color);
+      }
+    }
+
+    .mat-mdc-select-arrow-wrapper {
+      display: none;
+    }
+
+    .mat-mdc-form-field-icon-suffix {
+      color: var(--mat-select-enabled-arrow-color);
+      @extend .px-3;
+
+      .vitamui-icon {
+        font-size: 24px;
+      }
+    }
+
+    .mat-mdc-text-field-wrapper .mat-mdc-form-field-flex .mat-mdc-floating-label {
+      top: 50%;
+    }
+
+    .mat-mdc-text-field-wrapper.mdc-text-field--outlined .mdc-notched-outline--upgraded .mdc-floating-label--float-above {
+      transform: translateY(-20px) scale(calc(12 / 14));
+    }
+
+    .mdc-notched-outline--notched .mdc-notched-outline__notch {
+      border-top: 1px solid var(--vitamui-primary);
+    }
+
+    .mdc-text-field--outlined {
+      @extend .pl-3;
+    }
+
+    .mat-mdc-select-trigger {
+      height: var(--mat-select-trigger-text-line-height);
+    }
+
+    .mat-mdc-select-value {
+      position: relative;
+      top: 10px;
+    }
+
+    .mat-mdc-select {
+      height: var(--mat-select-trigger-text-line-height);
+    }
+  }
+}
+
+.required-marker {
+  color: var(--vitamui-red);
+}
+
+.left-link {
+  @extend .ml-2;
+}
+
+.right-link {
+  @extend .ml-auto;
+  @extend .mr-2;
+}
+
+.search-bar {
+  @extend .m-2;
+}
+
+::ng-deep .vitamui-autocomplete-multi-select-panel {
+  max-height: none !important;
+
+  vitamui-common-search-bar {
+    .search {
+      max-width: none;
+    }
+  }
+}
+
+.h-100 {
+  height: 100%;
+}

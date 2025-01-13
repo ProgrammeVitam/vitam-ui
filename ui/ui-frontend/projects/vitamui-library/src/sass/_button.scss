@@ -78,6 +78,8 @@
   outline: none;
   white-space: nowrap;
 
+  text-decoration: none; // To make sure a <a> styled as a button doesn't have an underline
+
   flex-shrink: 0;
 
   &.text-transform-none {

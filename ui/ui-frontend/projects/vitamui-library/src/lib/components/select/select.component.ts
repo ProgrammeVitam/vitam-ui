@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
-import { CdkVirtualScrollViewport, ScrollDispatcher } from '@angular/cdk/scrolling';
+import { CdkVirtualScrollViewport, ScrollDispatcher, ScrollingModule } from '@angular/cdk/scrolling';
 import {
   AfterViewChecked,
   AfterViewInit,
@@ -50,60 +50,105 @@ import {
   ViewChild,
   ViewChildren,
 } from '@angular/core';
-import { AbstractControl, FormControl, NG_VALIDATORS, NG_VALUE_ACCESSOR, ValidationErrors, Validator, Validators } from '@angular/forms';
-import { MatLegacyOption as MatOption, MatLegacyOptionSelectionChange as MatOptionSelectionChange } from '@angular/material/legacy-core';
-import { MatLegacySelect as MatSelect } from '@angular/material/legacy-select';
+import {
+  AbstractControl,
+  FormControl,
+  FormsModule,
+  NG_VALIDATORS,
+  NG_VALUE_ACCESSOR,
+  ReactiveFormsModule,
+  ValidationErrors,
+  Validator,
+  Validators,
+} from '@angular/forms';
 import { merge } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { SearchBarComponent } from '../../search-bar/search-bar.component';
-import { Option } from '../utils/option.interface';
-import { VitamuiAutocompleteMultiselectOptions } from '../utils/vitamui-autocomplete-multiselect-options.interface';
-import { AbstractFormInputDirective } from '../../../../../lib/components/abstract-form-input.directive';
+import { Option, SearchBarComponent, SearchBarModule } from '../../../app/modules';
+import { AbstractFormInputDirective } from '../abstract-form-input.directive';
+import { AutocompletePositionDirectiveModule } from '../../../app/modules/directives/autocomplete-position/autocomplete-position.directive.module';
+import { CommonModule } from '@angular/common';
+import { CommonTooltipModule } from '../../../app/modules/components/common-tooltip/common-tooltip.module';
+import { EllipsisDirectiveModule } from '../../../app/modules/directives/ellipsis/ellipsis.directive.module';
+import { FormErrorsComponent } from '../form-errors/form-errors.component';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatListModule } from '@angular/material/list';
+import { MatOption, MatOptionModule, MatOptionSelectionChange } from '@angular/material/core';
+import { MatSelect, MatSelectModule } from '@angular/material/select';
+import { PipesModule } from '../../../app/modules/pipes/pipes.module';
+import { TranslateModule } from '@ngx-translate/core';
 
-export const VITAMUI_MULTISELECT_AUTOCOMPLETE_VALUE_ACCESSOR: any = {
+export const VITAMUI_SELECT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
-  useExisting: forwardRef(() => VitamUIAutocompleteMultiSelectComponent),
+  useExisting: forwardRef(() => SelectComponent),
   multi: true,
 };
 
-export const VITAMUI_MULTISELECT_AUTOCOMPLETE_NG_VALIDATORS: any = {
+export const VITAMUI_SELECT_NG_VALIDATORS: any = {
   provide: NG_VALIDATORS,
-  useExisting: forwardRef(() => VitamUIAutocompleteMultiSelectComponent),
+  useExisting: forwardRef(() => SelectComponent),
   multi: true,
 };
+
+export interface VitamuiSelectOptions {
+  options: Option[];
+  customSorting?: (a: Option, b: Option) => number;
+}
 
 @Component({
-  selector: 'vitamui-common-autocomplete-multi-select',
-  templateUrl: './vitamui-autocomplete-multi-select.component.html',
-  styleUrls: ['./vitamui-autocomplete-multi-select.component.scss'],
-  providers: [VITAMUI_MULTISELECT_AUTOCOMPLETE_VALUE_ACCESSOR, VITAMUI_MULTISELECT_AUTOCOMPLETE_NG_VALIDATORS],
+  selector: 'vitamui-select',
+  templateUrl: './select.component.html',
+  styleUrls: ['./select.component.scss'],
+  imports: [
+    AutocompletePositionDirectiveModule,
+    CommonModule,
+    CommonTooltipModule,
+    EllipsisDirectiveModule,
+    FormErrorsComponent,
+    FormsModule,
+    MatAutocompleteModule,
+    MatCheckboxModule,
+    MatExpansionModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatInputModule,
+    MatListModule,
+    MatOptionModule,
+    MatSelectModule,
+    PipesModule,
+    ReactiveFormsModule,
+    ScrollingModule,
+    SearchBarModule,
+    TranslateModule,
+  ],
+  providers: [VITAMUI_SELECT_VALUE_ACCESSOR, VITAMUI_SELECT_NG_VALIDATORS],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
 })
-export class VitamUIAutocompleteMultiSelectComponent
-  extends AbstractFormInputDirective
-  implements Validator, AfterViewInit, AfterViewChecked
-{
+export class SelectComponent extends AbstractFormInputDirective implements Validator, AfterViewInit, AfterViewChecked {
   public nbSelectedItemsMap: { [k: string]: string } = {
-    '=1': 'MULTIPLE_SELECT_AUTOCOMPLETE.SELECTED_ELEMENT.SINGULAR',
-    other: 'MULTIPLE_SELECT_AUTOCOMPLETE.SELECTED_ELEMENT.PLURAL',
+    '=1': 'SELECT.SELECTED_ELEMENT.SINGULAR',
+    other: 'SELECT.SELECTED_ELEMENT.PLURAL',
   };
   public searchTextControl = new FormControl();
   public showOnlySelectedOption = false;
   public allOptions: Option[] = [];
   public displayedOptions: Option[] = [];
-  public selectedOptions: Option[] = [];
+  protected selectedOptions: Option[] = [];
   public containerHeightInSearchView = '0px';
   public containerHeightInSelectedItemsView = '0px';
   public readonly SELECT_ALL_OPTIONS = 'SELECT_ALL_OPTIONS';
 
-  private visibleItemsInSearchView = 4;
-  private initialHeightInSearchView = 1;
-  private initialHeightInSelectedItemsView = 1;
+  private visibleItemsInSearchView = 5;
   private preselectedOptionKeys: string[] = [];
   private customSorting: (a: Option, b: Option) => number;
-  private _enableSelectAll = true;
-  private _enableDisplaySelected = true;
+  private _multiple = false;
   private _enableSearch = true;
+  private _enableSelectAll?: boolean;
+  private _enableDisplaySelected?: boolean;
 
   @ViewChild('searchBar') searchBar: SearchBarComponent;
   @ViewChild('scrollViewport') private cdkVirtualScrollViewport: CdkVirtualScrollViewport;
@@ -114,10 +159,17 @@ export class VitamUIAutocompleteMultiSelectComponent
   @Input() placeholder: string;
   @Input() searchBarPlaceHolder: string;
 
+  @Input() set multiple(multiple: boolean) {
+    this._multiple = multiple;
+    if (this._multiple) {
+      if (this.enableSelectAll === undefined) this.enableSelectAll = true;
+      if (this.enableDisplaySelected === undefined) this.enableDisplaySelected = true;
+    }
+  }
+
   @Input() set enableSelectAll(enableSelectAll: boolean) {
     this._enableSelectAll = enableSelectAll;
     if (!this._enableSelectAll) {
-      this.initialHeightInSearchView -= 48;
       this.visibleItemsInSearchView = 5;
       this.resizeContainerHeightInSearchView();
     }
@@ -130,9 +182,12 @@ export class VitamUIAutocompleteMultiSelectComponent
   @Input() set enableSearch(enableSearch: boolean) {
     this._enableSearch = enableSearch;
     if (!this._enableSearch) {
-      this.initialHeightInSearchView -= 52;
       this.resizeContainerHeightInSearchView();
     }
+  }
+
+  get multiple(): boolean {
+    return this._multiple;
   }
 
   get enableSearch(): boolean {
@@ -142,7 +197,6 @@ export class VitamUIAutocompleteMultiSelectComponent
   @Input() set enableDisplaySelected(enableDisplaySelected: boolean) {
     this._enableDisplaySelected = enableDisplaySelected;
     if (!this._enableDisplaySelected) {
-      this.initialHeightInSearchView -= 48;
       this.resizeContainerHeightInSearchView();
     }
   }
@@ -152,10 +206,10 @@ export class VitamUIAutocompleteMultiSelectComponent
   }
 
   @Input()
-  set multiSelectOptions(multiselectOptions: VitamuiAutocompleteMultiselectOptions) {
-    this.allOptions = multiselectOptions?.options != null ? multiselectOptions.options : [];
-    if (multiselectOptions?.customSorting != null) {
-      this.customSorting = multiselectOptions.customSorting;
+  set options(options: VitamuiSelectOptions) {
+    this.allOptions = options?.options != null ? options.options : [];
+    if (options?.customSorting != null) {
+      this.customSorting = options.customSorting;
       this.allOptions.sort(this.customSorting);
     }
     this.displayedOptions = this.allOptions;
@@ -270,8 +324,12 @@ export class VitamUIAutocompleteMultiSelectComponent
     }
   }
 
-  writeValue(preselectedOptionKeys: string[]) {
-    this.preselectedOptionKeys = preselectedOptionKeys;
+  writeValue(preselectedOptionKeys: string | string[]) {
+    this.preselectedOptionKeys = preselectedOptionKeys
+      ? Array.isArray(preselectedOptionKeys)
+        ? preselectedOptionKeys
+        : [preselectedOptionKeys]
+      : null;
     // When the component is reset this method is called with selectedOptionKeys = null
     if (this.preselectedOptionKeys == null) {
       this.selectedOptions = [];
@@ -317,7 +375,7 @@ export class VitamUIAutocompleteMultiSelectComponent
   public clearAllSelectedOptions(): void {
     this.showOnlySelectedOption = false;
     this.control.reset();
-    this.onChange([]);
+    this.onChange(this._multiple ? [] : undefined);
     this.selectedOptions = [];
   }
 
@@ -354,12 +412,17 @@ export class VitamUIAutocompleteMultiSelectComponent
       return;
     }
 
-    const selected = this.selectedOptions.filter((selectedOption) => selectedOption.key === change.source.value);
+    const value = change.source.value;
+    const uncheckingOption = this.selectedOptions.some((selectedOption) => selectedOption.key === value);
 
-    if (selected.length > 0) {
-      this.selectedOptions = this.selectedOptions.filter((selectedOption) => selectedOption.key !== change.source.value);
+    if (this._multiple) {
+      if (uncheckingOption) {
+        this.selectedOptions = this.selectedOptions.filter((selectedOption) => selectedOption.key !== value);
+      } else {
+        this.selectedOptions.push(this.allOptions.filter((selectedOption) => selectedOption.key === value)[0]);
+      }
     } else {
-      this.selectedOptions.push(this.allOptions.filter((selectedOption) => selectedOption.key === change.source.value)[0]);
+      this.selectedOptions = uncheckingOption ? [] : this.allOptions.filter((selectedOption) => selectedOption.key === value);
     }
 
     this.resizeContainerHeightInSelectedItemsView();
@@ -368,7 +431,7 @@ export class VitamUIAutocompleteMultiSelectComponent
       this.clearAllSelectedOptions();
     } else {
       const selectedKeys = [...this.selectedOptions.map((option) => option.key)].sort();
-      this.onChange(selectedKeys);
+      this.onChange(this._multiple ? selectedKeys : selectedKeys[0]);
     }
 
     this.updateMatSelectTriggerContent();
@@ -382,9 +445,9 @@ export class VitamUIAutocompleteMultiSelectComponent
     ) {
       const selectedOptionsCount = this.getSelectedOptionsCount();
       if (selectedOptionsCount === this.allOptions.length) {
-        this.optionKeys.filter((optionKey) => optionKey.value === this.SELECT_ALL_OPTIONS)[0].select();
+        this.optionKeys.find((optionKey) => optionKey.value === this.SELECT_ALL_OPTIONS).select();
       } else {
-        this.optionKeys.filter((optionKey) => optionKey.value === this.SELECT_ALL_OPTIONS)[0].deselect();
+        this.optionKeys.find((optionKey) => optionKey.value === this.SELECT_ALL_OPTIONS).deselect();
       }
       this.cd.detectChanges();
     }
@@ -404,30 +467,21 @@ export class VitamUIAutocompleteMultiSelectComponent
 
   private resizeContainerHeightInSearchView(): void {
     this.containerHeightInSearchView = this.calculateContainerHeight(
-      this.initialHeightInSearchView,
-      this.displayedOptions.length + 1,
+      this.displayedOptions.length + (this._multiple && this.enableSelectAll ? 1 : 0),
       this.visibleItemsInSearchView,
     );
     this.checkViewportSize();
   }
 
   private resizeContainerHeightInSelectedItemsView(): void {
-    this.containerHeightInSelectedItemsView = this.calculateContainerHeight(
-      this.initialHeightInSelectedItemsView,
-      this.selectedOptions.length,
-      5,
-    );
+    this.containerHeightInSelectedItemsView = this.calculateContainerHeight(this.selectedOptions.length, 5);
     this.checkViewportSize();
   }
 
-  private calculateContainerHeight(initialHeight: number, optionLength: number, visibleItems: number): string {
-    const itemHeight = 48;
+  private calculateContainerHeight(optionLength: number, visibleItems: number): string {
+    const itemHeight = 49;
 
-    if (optionLength <= visibleItems) {
-      return `${initialHeight + itemHeight * optionLength}px`;
-    }
-
-    return `${initialHeight + itemHeight * visibleItems}px`;
+    return `${itemHeight * (optionLength <= visibleItems ? optionLength : visibleItems) - 1}px`;
   }
 
   private checkViewportSize(): void {
@@ -437,4 +491,5 @@ export class VitamUIAutocompleteMultiSelectComponent
   }
 
   protected readonly Validators = Validators;
+  protected readonly String = String;
 }

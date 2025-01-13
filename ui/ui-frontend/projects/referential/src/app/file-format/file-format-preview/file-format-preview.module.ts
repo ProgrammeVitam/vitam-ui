@@ -46,8 +46,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
 import { MatLegacyTabsModule as MatTabsModule } from '@angular/material/legacy-tabs';
 import { RouterModule } from '@angular/router';
-import { VitamUICommonModule } from 'vitamui-library';
-import { VitamUILibraryModule } from 'vitamui-library';
+import { SelectComponent, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 
 import { FileFormatInformationTabComponent } from './file-format-information-tab/file-format-information-tab.component';
 import { FileFormatPreviewComponent } from './file-format-preview.component';
@@ -55,19 +54,20 @@ import { FileFormatPreviewComponent } from './file-format-preview.component';
 @NgModule({
   imports: [
     CommonModule,
-    RouterModule,
-    VitamUICommonModule,
-    VitamUILibraryModule,
     FormsModule,
-    ReactiveFormsModule,
-    MatMenuModule,
-    MatSnackBarModule,
     MatDialogModule,
-    MatSidenavModule,
+    MatMenuModule,
+    MatOptionModule,
     MatProgressSpinnerModule,
     MatSelectModule,
-    MatOptionModule,
+    MatSidenavModule,
+    MatSnackBarModule,
     MatTabsModule,
+    ReactiveFormsModule,
+    RouterModule,
+    SelectComponent,
+    VitamUICommonModule,
+    VitamUILibraryModule,
   ],
   declarations: [FileFormatPreviewComponent, FileFormatInformationTabComponent],
   exports: [FileFormatPreviewComponent],

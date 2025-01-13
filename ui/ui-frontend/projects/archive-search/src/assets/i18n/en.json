@@ -15,6 +15,9 @@
     "RULES_ACTION": {
       "UPDATE_RULE": "Update rules"
     },
+    "PUA": {
+      "UPDATE": "Update AUP"
+    },
     "OTHER_ACTIONS": {
       "DIALOG_MESSAGE": {
         "ACTION_ON_BIG_NUMBERS_TITLE_EXACT_COUNT": "Action on {{elementsSize}} archive units",
@@ -31,6 +34,21 @@
         "PLATEFORM_THRESHOLD_REACHED_WARNING_MESSAGE_2": "Validate rule change(s) ? ",
         "PLATEFORM_THRESHOLD_REACHED_ALERT_MESSAGE": "This action is not allowed ont the selected items",
         "PLATEFORM_THRESHOLD_REACHED_ALERT_MESSAGE_2": "The operation reach the allowed threshold, Please modify the selection and retry "
+      },
+      "PUA_UPDATE": {
+        "TITLE": "Update archive unit profiles",
+        "SUBTITLE": {
+          "SINGULAR": "{{ number }} archive unit selected",
+          "PLURAL": "{{ number }} archive units selected"
+        },
+        "SELECT_ACTION": "Choose an action",
+        "ACTION_UPDATE": "Apply an AUP to the selected archive units",
+        "SELECT_PUA_PLACEHOLDER": "Choose the AUP",
+        "SELECT_PUA_FILTER_PLACEHOLDER": "Fill-in the first characters of your search",
+        "ACTION_DELETE": "Delete all AUP on the selected archive units",
+        "UPDATE": "Update",
+        "CANCEL": "Cancel",
+        "SUCCESS_MESSAGE": "The operation to update the archive unit profiles has been launched"
       }
     },
     "COMPUTED_INHERITED_RULES": {

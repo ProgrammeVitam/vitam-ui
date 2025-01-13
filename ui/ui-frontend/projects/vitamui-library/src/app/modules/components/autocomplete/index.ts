@@ -35,10 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 export * from './utils/option.interface';
-export * from './utils/vitamui-autocomplete-multiselect-options.interface';
 export * from './vitamui-autocomplete-multi-select-tree/vitamui-autocomplete-multi-select-tree.component';
 export * from './vitamui-autocomplete-multi-select-tree/vitamui-autocomplete-multi-select-tree.module';
-export * from './vitamui-autocomplete-multi-select/vitamui-autocomplete-multi-select.component';
-export * from './vitamui-autocomplete-multi-select/vitamui-autocomplete-multi-select.module';
 export * from './vitamui-autocomplete/vitamui-autocomplete.component';
 export * from './vitamui-autocomplete/vitamui-autocomplete.module';

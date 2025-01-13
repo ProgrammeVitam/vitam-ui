@@ -313,6 +313,18 @@
           </button>
           <button
             mat-menu-item
+            (click)="launchPUAUpdateModal()"
+            [disabled]="
+              !hasUpdateManagementRuleRole ||
+              selectedItemCount === 0 ||
+              !accessContractAllowUpdating ||
+              accessContractUpdatingRestrictedDesc
+            "
+          >
+            {{ 'ARCHIVE_SEARCH.PUA.UPDATE' | translate }}
+          </button>
+          <button
+            mat-menu-item
             (click)="launchEliminationAnalysisModal()"
             [disabled]="!hasEliminationAnalysisOrActionRole || selectedItemCount === 0"
           >

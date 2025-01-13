@@ -51,7 +51,7 @@ import {
   FilingPlanMode,
   Option,
   StartupService,
-  VitamuiAutocompleteMultiselectOptions,
+  VitamuiSelectOptions,
   VitamuiHttpHeaders,
   VitamUISnackBarService,
 } from 'vitamui-library';
@@ -79,7 +79,7 @@ export class AuditCreateComponent implements OnInit, OnDestroy {
   public accessContractId: string = null;
   public accessionRegisterSummaries: AccessionRegisterSummary[];
   public producerServicesOptions: Option[] = [];
-  public producerServicesMultiSelectOptions: VitamuiAutocompleteMultiselectOptions;
+  public producerServicesMultiSelectOptions: VitamuiSelectOptions;
   public isDisabledButton = false;
   public refiningScreen = false;
   public idsArray = ['originatingAgencyIds', 'ingestOperationIds', 'attachmentPositionIds'];

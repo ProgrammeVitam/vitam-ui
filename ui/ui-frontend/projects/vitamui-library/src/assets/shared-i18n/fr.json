@@ -488,7 +488,7 @@
     "PLACEHOLDER": "nom@domaine.xyz",
     "ERROR": "Vous devez saisir au moins une adresse email"
   },
-  "MULTIPLE_SELECT_AUTOCOMPLETE": {
+  "SELECT": {
     "COMPLETE_SELECTION": "Compléter la sélection",
     "EMPTY_SELECTION": "Vider la sélection",
     "CONSULT_SELECTION": "Consulter la sélection",
@@ -5640,7 +5640,7 @@
     "minlength": "La longueur minimale est de {{ requiredLength }} caractères.",
     "maxlength": "La longueur maximale est de {{ requiredLength }} caractères.",
     "email": "Adresse e-mail invalide.",
-    "pattern": "Format attendu : {{ message }}."
+    "pattern": "Format attendu : {{ requiredPattern }}."
   },
   "ACCESS_CONTRACT": {
     "HOME": {

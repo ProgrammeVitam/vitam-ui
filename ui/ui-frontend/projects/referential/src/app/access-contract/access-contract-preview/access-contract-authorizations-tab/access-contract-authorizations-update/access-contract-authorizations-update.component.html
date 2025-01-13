@@ -18,16 +18,17 @@
           {{ 'ACCESS_CONTRACT.CREATE_DIALOG.AUTHORISATION_PERIMETER.ACCESS_BY_PRODUCERS' | translate }}
         </mat-radio-button>
         @if (accessRightSelected.value === AccessRightType.ACCESS_BY_PRODUCERS) {
-          <div class="under-radio">
-            <vitamui-common-autocomplete-multi-select
+          <div>
+            <vitamui-select
+              [multiple]="true"
               formControlName="originatingAgencies"
-              [multiSelectOptions]="originatingAgenciesOptions"
+              [options]="originatingAgenciesOptions"
               [placeholder]="'ACCESS_CONTRACT.CREATE_DIALOG.EVERY_ORIGINATING_AGENCY_PLACEHOLDER' | translate"
               [searchBarPlaceHolder]="'ACCESS_CONTRACT.CREATE_DIALOG.SELECT_PRODUCERS' | translate"
               [required]="true"
               [errorMessageMap]="{ required: 'ACCESS_CONTRACT.TAB.USAGE.NO_AGENCY_SELECTED' }"
             >
-            </vitamui-common-autocomplete-multi-select>
+            </vitamui-select>
           </div>
         }
         <!-- ACCESS_BY_EXPIRED_MANAGEMENT_RULES -->
@@ -35,15 +36,16 @@
           {{ 'ACCESS_CONTRACT.CREATE_DIALOG.AUTHORISATION_PERIMETER.ACCESS_BY_EXPIRED_MANAGEMENT_RULES' | translate }}
         </mat-radio-button>
         @if (accessRightSelected.value === AccessRightType.ACCESS_BY_EXPIRED_MANAGEMENT_RULES) {
-          <div class="under-radio">
-            <vitamui-common-autocomplete-multi-select
+          <div>
+            <vitamui-select
+              [multiple]="true"
               formControlName="ruleCategoryToFilter"
-              [multiSelectOptions]="ruleTypesOptions"
+              [options]="ruleTypesOptions"
               [placeholder]="'ACCESS_CONTRACT.CREATE_DIALOG.AUTHORISATION_PERIMETER.SELECT_RULES' | translate"
               [required]="true"
               required
             >
-            </vitamui-common-autocomplete-multi-select>
+            </vitamui-select>
           </div>
         }
         <!-- ACCESS_BY_PRODUCERS_OR_EXPIRED_MANAGEMENT_RULES -->
@@ -51,30 +53,32 @@
           {{ 'ACCESS_CONTRACT.CREATE_DIALOG.AUTHORISATION_PERIMETER.ACCESS_BY_PRODUCERS_OR_EXPIRED_MANAGEMENT_RULES' | translate }}
         </mat-radio-button>
         @if (accessRightSelected.value === AccessRightType.ACCESS_BY_PRODUCERS_OR_EXPIRED_MANAGEMENT_RULES) {
-          <div class="under-radio">
+          <div>
             <div class="text medium bold primary mb-2">
               {{ 'ACCESS_CONTRACT.CREATE_DIALOG.AUTHORISATION_PERIMETER.PRODUCERS_LIST' | translate }}
             </div>
-            <vitamui-common-autocomplete-multi-select
+            <vitamui-select
+              [multiple]="true"
               formControlName="originatingAgencies"
-              [multiSelectOptions]="originatingAgenciesOptions"
+              [options]="originatingAgenciesOptions"
               [placeholder]="'ACCESS_CONTRACT.CREATE_DIALOG.EVERY_ORIGINATING_AGENCY_PLACEHOLDER' | translate"
               [searchBarPlaceHolder]="'ACCESS_CONTRACT.CREATE_DIALOG.SELECT_PRODUCERS' | translate"
               [required]="true"
               [errorMessageMap]="{ required: 'ACCESS_CONTRACT.TAB.USAGE.NO_AGENCY_SELECTED' }"
             >
-            </vitamui-common-autocomplete-multi-select>
+            </vitamui-select>
             <div class="text medium bold primary mb-2">
               {{ 'ACCESS_CONTRACT.CREATE_DIALOG.AUTHORISATION_PERIMETER.MANAGMENT_RULES' | translate }}
             </div>
-            <vitamui-common-autocomplete-multi-select
+            <vitamui-select
+              [multiple]="true"
               formControlName="ruleCategoryToFilterForTheOtherOriginatingAgencies"
-              [multiSelectOptions]="ruleTypesOptions"
+              [options]="ruleTypesOptions"
               [placeholder]="'ACCESS_CONTRACT.CREATE_DIALOG.AUTHORISATION_PERIMETER.SELECT_RULES' | translate"
               [required]="true"
               required
             >
-            </vitamui-common-autocomplete-multi-select>
+            </vitamui-select>
           </div>
         }
         <!-- ACCESS_BY_PRODUCERS_AND_EXPIRED_MANAGEMENT_RULES -->
@@ -82,24 +86,26 @@
           {{ 'ACCESS_CONTRACT.CREATE_DIALOG.AUTHORISATION_PERIMETER.ACCESS_BY_PRODUCERS_AND_EXPIRED_MANAGEMENT_RULES' | translate }}
         </mat-radio-button>
         @if (accessRightSelected.value === AccessRightType.ACCESS_BY_PRODUCERS_AND_EXPIRED_MANAGEMENT_RULES) {
-          <div class="under-radio">
-            <vitamui-common-autocomplete-multi-select
+          <div>
+            <vitamui-select
+              [multiple]="true"
               formControlName="originatingAgencies"
-              [multiSelectOptions]="originatingAgenciesOptions"
+              [options]="originatingAgenciesOptions"
               [placeholder]="'ACCESS_CONTRACT.CREATE_DIALOG.EVERY_ORIGINATING_AGENCY_PLACEHOLDER' | translate"
               [searchBarPlaceHolder]="'ACCESS_CONTRACT.CREATE_DIALOG.SELECT_PRODUCERS' | translate"
               [required]="true"
               [errorMessageMap]="{ required: 'ACCESS_CONTRACT.TAB.USAGE.NO_AGENCY_SELECTED' }"
             >
-            </vitamui-common-autocomplete-multi-select>
-            <vitamui-common-autocomplete-multi-select
+            </vitamui-select>
+            <vitamui-select
+              [multiple]="true"
               formControlName="ruleCategoryToFilter"
-              [multiSelectOptions]="ruleTypesOptions"
+              [options]="ruleTypesOptions"
               [placeholder]="'ACCESS_CONTRACT.CREATE_DIALOG.AUTHORISATION_PERIMETER.SELECT_RULES' | translate"
               [required]="true"
               required
             >
-            </vitamui-common-autocomplete-multi-select>
+            </vitamui-select>
           </div>
         }
       </mat-radio-group>

@@ -40,7 +40,7 @@ import {
   AccessContract,
   AccessRightType,
   Option,
-  VitamuiAutocompleteMultiselectOptions,
+  VitamuiSelectOptions,
   AccessContractDisplay,
   AccessContractService,
 } from 'vitamui-library';
@@ -55,8 +55,8 @@ import { RULE_TYPES } from '../../../../rule/rules.constants';
 })
 export class AccessContractAuthorizationsUpdateComponent implements OnInit {
   protected readonly AccessRightType = AccessRightType;
-  originatingAgenciesOptions: VitamuiAutocompleteMultiselectOptions;
-  ruleTypesOptions: VitamuiAutocompleteMultiselectOptions = { options: RULE_TYPES };
+  originatingAgenciesOptions: VitamuiSelectOptions;
+  ruleTypesOptions: VitamuiSelectOptions = { options: RULE_TYPES };
 
   accessContract: AccessContract;
   @Output() validateEvent: EventEmitter<any> = new EventEmitter();

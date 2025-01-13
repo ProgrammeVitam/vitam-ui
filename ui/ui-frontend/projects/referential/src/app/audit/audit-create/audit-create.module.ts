@@ -43,8 +43,7 @@ import { MatLegacyInputModule as MatInputModule } from '@angular/material/legacy
 import { MatLegacyProgressBarModule as MatProgressBarModule } from '@angular/material/legacy-progress-bar';
 import { MatLegacySelectModule as MatSelectModule } from '@angular/material/legacy-select';
 import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
-import { VitamUICommonModule } from 'vitamui-library';
-import { VitamUILibraryModule } from 'vitamui-library';
+import { SelectComponent, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 
 import { AuditCreateComponent } from './audit-create.component';
 
@@ -59,6 +58,7 @@ import { AuditCreateComponent } from './audit-create.component';
     MatSelectModule,
     MatSnackBarModule,
     ReactiveFormsModule,
+    SelectComponent,
     VitamUICommonModule,
     VitamUILibraryModule,
   ],
