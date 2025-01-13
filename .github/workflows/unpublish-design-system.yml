@@ -16,4 +16,5 @@ jobs:
       - name: Update index.html and remove branch directory
         uses: ./.github/actions/update-gh-pages-index
         with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           branch_to_delete: ${{ env.branch_name }}

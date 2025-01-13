@@ -30,5 +30,8 @@ jobs:
           destination_dir: ${{ github.ref_name }}
           keep_files: true
           allow_empty_commit: false
+          commit_message: "Publish design system for branch ${{ github.ref_name }}"
       - name: Update index.html
         uses: ./.github/actions/update-gh-pages-index
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}

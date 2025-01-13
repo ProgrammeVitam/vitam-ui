@@ -1,6 +1,9 @@
 name: Update index.html
 description: "Update the index.html file to reflect available branch directories"
 inputs:
+  github_token:
+    description: 'Set a generated GITHUB_TOKEN for pushing to the remote branch.'
+    required: true
   branch_to_delete:
     description: "Name of the branch to delete (optional)"
     required: false
@@ -9,7 +12,7 @@ runs:
   steps:
     - name: Clone the gh-pages branch
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
       run: |
         git config --global user.name "github-actions[bot]"
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
@@ -36,7 +39,7 @@ runs:
       shell: bash
     - name: Commit and push changes
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
       run: |
         cd gh-pages
         git add index.html
