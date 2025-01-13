@@ -35,7 +35,11 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component } from '@angular/core';
-import { Router, Routes } from '@angular/router';
+import { Route, Router, Routes } from '@angular/router';
+import { VitamuiSelectOptions } from '../../../vitamui-library/src/lib/components/select/select.component';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { TranslateService } from '@ngx-translate/core';
+import { RouteData } from './app-routing.module';
 
 @Component({
   selector: 'design-system-root',
@@ -46,8 +50,48 @@ export class AppComponent {
   title = 'Design system App';
 
   routes: Routes;
+  searchOptions: VitamuiSelectOptions;
+  form: FormGroup;
 
-  constructor(router: Router) {
+  constructor(router: Router, fb: FormBuilder, translateService: TranslateService) {
     this.routes = router.config;
+
+    function extractSearchData(context: string, route: Route, acc: VitamuiSelectOptions) {
+      const pathWithContext = [context, route.path].join('/');
+      if (route.children) {
+        route.children.forEach((child) => extractSearchData(pathWithContext, child, acc));
+      } else if (route.path && route.redirectTo === undefined) {
+        const data: RouteData = route.data;
+        const altSearch = data?.altSearch
+          ? ([...(data.altSearch._ || []), ...(data.altSearch[translateService.currentLang] || [])] as string[])
+          : [];
+        const routeTitle = translateService.instant(`ROUTE${pathWithContext.replace(/\//g, '.')}.TITLE`);
+        const options = [routeTitle, ...altSearch].map((s) => ({ key: pathWithContext, label: s }));
+        acc.options.push(...options);
+      }
+      return acc;
+    }
+
+    // Make sure the translations are loaded, and reload on translation change
+    translateService.onLangChange.subscribe(() => {
+      this.searchOptions = this.routes.reduce(
+        (acc, route) => {
+          extractSearchData('', route, acc);
+          return acc;
+        },
+        { options: [], customSorting: (a, b) => a.label.localeCompare(b.label) } as VitamuiSelectOptions,
+      );
+    });
+
+    const searchControl = fb.control('');
+    this.form = fb.group({
+      search: searchControl,
+    });
+    searchControl.valueChanges.subscribe((value) => {
+      if (value) {
+        router.navigateByUrl(value);
+        setTimeout(() => searchControl.reset());
+      }
+    });
   }
 }

@@ -5,6 +5,16 @@
         <vitamui-common-select-language></vitamui-common-select-language>
       </mat-list-item>
 
+      <form [formGroup]="form">
+        <vitamui-select
+          class="d-flex my-2 mx-1"
+          [options]="searchOptions"
+          [placeholder]="'MENU.FIND.PLACEHOLDER' | translate"
+          [searchBarPlaceHolder]="'MENU.FIND.SEARCH_BAR_PLACEHOLDER' | translate"
+          formControlName="search"
+        ></vitamui-select>
+      </form>
+
       <ng-template #accordion let-routes let-parents="parents">
         <mat-accordion>
           @for (route of routes; track route.path) {

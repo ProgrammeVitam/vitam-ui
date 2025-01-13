@@ -1,4 +1,10 @@
 {
+  "MENU": {
+    "FIND": {
+      "PLACEHOLDER": "Find in design system",
+      "SEARCH_BAR_PLACEHOLDER": "Filter"
+    }
+  },
   "ROUTE": {
     "tokens": {
       "TITLE": "Tokens",
