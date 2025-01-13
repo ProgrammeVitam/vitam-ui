@@ -1,5 +1,5 @@
 name: Unpublish design system
-run-name: Unpublishing design system for branch ${{ github.ref }}
+run-name: Unpublishing design system for branch ${{ github.event.ref }}
 on: delete
 jobs:
   unpublish-design-system:
@@ -9,7 +9,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Extract branch name
-        run: echo "branch_name=${GITHUB_REF##refs/heads/}" >> $GITHUB_ENV
+        run: |
+          branch_name="${{ github.event.ref }}"
+          branch_name=${branch_name#refs/heads/}
+          echo "branch_name=${branch_name}" >> $GITHUB_ENV
       - name: Update index.html and remove branch directory
         uses: ./.github/actions/update-gh-pages-index
         with:
