@@ -8,10 +8,12 @@ runs:
   using: "composite"
   steps:
     - name: Clone the gh-pages branch
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
-        git config --global user.name "${{ github.actor }}"
-        git config --global user.email "${{ github.actor }}@users.noreply.github.com"
-        git clone --depth 1 --branch gh-pages https://github.com/${{ github.repository }} gh-pages
+        git config --global user.name "github-actions[bot]"
+        git config --global user.email "github-actions[bot]@users.noreply.github.com"
+        git clone --depth 1 --branch gh-pages https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }} gh-pages
       shell: bash
     - name: Remove directory for deleted branch (if applicable)
       if: inputs.branch_to_delete != ''
@@ -33,6 +35,8 @@ runs:
         echo "</ul></body></html>" >> index.html
       shell: bash
     - name: Commit and push changes
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         cd gh-pages
         git add index.html
@@ -40,5 +44,5 @@ runs:
           git add "${{ inputs.branch_to_delete }}" || echo "Directory already deleted"
         fi
         git commit -m "Update index.html" || echo "No changes to commit"
-        git push origin gh-pages
+        git push https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }} gh-pages
       shell: bash
