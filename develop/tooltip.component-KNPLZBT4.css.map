@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["projects/design-system/src/app/components/atoms/tooltip/tooltip.component.scss"],
+  "sourcesContent": ["button {\n  margin: 3rem;\n}\n"],
+  "mappings": "AAAA,cACE",
+  "names": []
+}
