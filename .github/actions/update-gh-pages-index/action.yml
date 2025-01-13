@@ -18,6 +18,7 @@ runs:
       run: |
         cd gh-pages
         rm -rf "${{ inputs.branch_to_delete }}/"
+      shell: bash
     - name: Update the index.html file
       run: |
         cd gh-pages
