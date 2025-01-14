@@ -140,10 +140,13 @@ public class ManagementContractExternalController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     @Secured(ServicesData.ROLE_CREATE_MANAGEMENT_CONTRACT)
-    public ManagementContractDto create(final @Valid @RequestBody ManagementContractDto managementContractDto)
-        throws PreconditionFailedException {
+    public ManagementContractDto create(
+        final @Valid @RequestBody ManagementContractDto managementContractDto,
+        @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant
+    ) throws PreconditionFailedException {
         SanityChecker.sanitizeCriteria(managementContractDto);
         LOGGER.debug("Create new management contract {}", managementContractDto);
+        managementContractDto.setTenant(tenant);
         return managementContractExternalService.create(managementContractDto);
     }
 
