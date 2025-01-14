@@ -239,6 +239,7 @@ export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewCheck
       return;
     }
     await this.uploadService.handleUpload(items);
+    event.target.value = '';
   }
 
   removeFolder(file: CollectUploadFile) {

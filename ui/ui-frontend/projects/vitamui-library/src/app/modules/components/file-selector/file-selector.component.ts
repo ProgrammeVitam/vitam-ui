@@ -28,9 +28,10 @@ export class FileSelectorComponent {
 
   protected files: File[] = [];
 
-  protected handleFiles(files: FileList | File[]) {
-    if (!this.multipleFiles && this.files.length > 0) return;
-
+  handleFiles(files: FileList | File[]) {
+    if (!this.multipleFiles && this.files.length > 0) {
+      return;
+    }
     // Filter to keep only the ones matching extension list (useful for drag & drop and to make sure no other type has been selected)
     this.files.push(
       ...Array.from(files)
@@ -38,6 +39,7 @@ export class FileSelectorComponent {
         .slice(0, this.multipleFiles ? undefined : 1),
     );
     this.filesChanged.emit(this.files);
+    this.resetInput();
   }
 
   openFileSelectorOSDialog() {
@@ -47,5 +49,14 @@ export class FileSelectorComponent {
   removeFile(file: File) {
     this.files.splice(this.files.indexOf(file), 1);
     this.filesChanged.emit(this.files);
+  }
+
+  /**
+   * Reset the value to allow a new "change" event.
+   */
+  private resetInput(): void {
+    if (this.inputFiles) {
+      this.inputFiles.nativeElement.value = '';
+    }
   }
 }
