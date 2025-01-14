@@ -80,6 +80,7 @@ import { MatOption, MatOptionModule, MatOptionSelectionChange } from '@angular/m
 import { MatSelect, MatSelectModule } from '@angular/material/select';
 import { PipesModule } from '../../../app/modules/pipes/pipes.module';
 import { TranslateModule } from '@ngx-translate/core';
+import { normalizeString } from '../../utils/string.util';
 
 export const VITAMUI_SELECT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -383,7 +384,7 @@ export class SelectComponent extends AbstractFormInputDirective implements Valid
     this.searchTextControl.setValue(value ? value : null);
     if (this.searchTextControl.value) {
       this.displayedOptions = this.allOptions.filter(
-        (option) => option.label.toLowerCase().indexOf(this.searchTextControl.value.toLowerCase()) !== -1,
+        (option) => normalizeString(option.label).indexOf(normalizeString(this.searchTextControl.value)) !== -1,
       );
       this.resizeContainerHeightInSearchView();
     } else {
