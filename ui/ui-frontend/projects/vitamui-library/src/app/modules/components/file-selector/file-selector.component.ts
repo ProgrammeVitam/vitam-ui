@@ -68,7 +68,7 @@ export class FileSelectorComponent {
   private files: File[] = [];
   protected displayFiles: DisplayFile[] = [];
 
-  protected handleFilesSelection(files: FileList | File[]) {
+  handleFilesSelection(files: FileList | File[]) {
     if (!this.multipleFiles && this.files.length > 0) {
       return;
     }
@@ -91,6 +91,7 @@ export class FileSelectorComponent {
       this.displayFiles.push(...displayFiles);
     }
     this.filesChanged.emit(this.files);
+    this.resetInput();
   }
 
   private getDirectory(files: FileList | File[]): DisplayFile {
@@ -121,5 +122,14 @@ export class FileSelectorComponent {
     }
     this.filesChanged.emit(this.files);
     this.displayFiles.splice(this.displayFiles.indexOf(displayFile), 1);
+  }
+
+  /**
+   * Reset the value to allow a new "change" event.
+   */
+  private resetInput(): void {
+    if (this.inputFiles) {
+      this.inputFiles.nativeElement.value = '';
+    }
   }
 }
