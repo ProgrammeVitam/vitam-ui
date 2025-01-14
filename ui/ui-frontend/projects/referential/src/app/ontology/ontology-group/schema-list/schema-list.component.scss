@@ -3,3 +3,7 @@
     justify-content: center;
   }
 }
+
+tr:not(:hover) .cdk-column-deleteButton button {
+  visibility: hidden;
+}

@@ -373,6 +373,7 @@ public class ServicesData {
     public static final String SERVICE_SCHEMAS = "SCHEMAS";
 
     public static final String ROLE_GET_SCHEMAS = GET_ROLE_PREFIX + SERVICE_SCHEMAS;
+    public static final String ROLE_DELETE_SCHEMAS = DELETE_ROLE_PREFIX + SERVICE_SCHEMAS;
     public static final String ROLE_IMPORT_SCHEMAS = IMPORT_ROLE_PREFIX + SERVICE_SCHEMAS;
 
     //------------------------------------- OPERATIONS --------------------------------------------

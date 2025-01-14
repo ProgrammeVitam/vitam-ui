@@ -567,6 +567,15 @@
     "FILTER": {
       "INTERNAL": "Métadonnées internes",
       "EXTERNAL": "Métadonnées externe"
+    },
+    "SCHEMA_DELETE_DIALOG": {
+      "TITLE": "Suppression d'extension du schéma",
+      "SUBTITLE": {
+        "SINGULAR": "Vous allez supprimer une extension dans le schéma. Confirmez-vous cette action ?",
+        "PLURAL": "Vous allez supprimer une extension dans le schéma ainsi que ses {{number}} sous-éléments. Confirmez-vous cette action ?"
+      },
+      "SUCCESS_MESSAGE": "La demande de suppression a bien été prise en compte",
+      "SUCCESS_LINK_TEXT": "Consulter le journal des opérations"
     }
   },
   "RULES_APP": {

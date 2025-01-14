@@ -60,6 +60,10 @@ export class SchemaService {
     return this.api.getSchema(collection);
   }
 
+  public deleteSchema(paths: string[]): Observable<string> {
+    return this.api.deleteSchema(paths);
+  }
+
   public getArchiveUnitProfileSchema(archiveUnitProfileId: string) {
     return this.api.getArchiveUnitProfileSchema(archiveUnitProfileId);
   }
