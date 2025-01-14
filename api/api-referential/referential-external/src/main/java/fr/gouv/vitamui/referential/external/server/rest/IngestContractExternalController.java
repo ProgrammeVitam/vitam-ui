@@ -144,9 +144,13 @@ public class IngestContractExternalController {
     @Secured(ServicesData.ROLE_CREATE_INGEST_CONTRACTS)
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public IngestContractDto create(final @Valid @RequestBody IngestContractDto ingestContractDto) {
+    public IngestContractDto create(
+        final @Valid @RequestBody IngestContractDto ingestContractDto,
+        @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant
+    ) {
         SanityChecker.sanitizeCriteria(ingestContractDto);
         LOGGER.debug("Create {}", ingestContractDto);
+        ingestContractDto.setTenant(tenant);
         return ingestContractExternalService.create(ingestContractDto);
     }
 

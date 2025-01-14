@@ -153,11 +153,14 @@ public class AgencyExternalController {
     @Secured(ServicesData.ROLE_CREATE_AGENCIES)
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public AgencyDto create(final @Valid @RequestBody AgencyDto agencyDto)
-        throws InvalidParseOperationException, PreconditionFailedException {
+    public AgencyDto create(
+        final @Valid @RequestBody AgencyDto agencyDto,
+        @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant
+    ) throws InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.sanitizeCriteria(agencyDto);
         ApiUtils.checkValidity(agencyDto);
         LOGGER.debug("Create {}", agencyDto);
+        agencyDto.setTenant(tenant);
         return agencyExternalService.create(agencyDto);
     }
 

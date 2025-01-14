@@ -169,9 +169,13 @@ public class OntologyExternalController {
     @Secured(ServicesData.ROLE_CREATE_ONTOLOGIES)
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public OntologyDto create(final @Valid @RequestBody OntologyDto ontologyDto) throws InvalidParseOperationException {
+    public OntologyDto create(
+        final @Valid @RequestBody OntologyDto ontologyDto,
+        @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant
+    ) throws InvalidParseOperationException {
         SanityChecker.sanitizeCriteria(ontologyDto);
         LOGGER.debug("Create {}", ontologyDto);
+        ontologyDto.setTenant(tenant);
         return ontologyExternalService.create(ontologyDto);
     }
 
