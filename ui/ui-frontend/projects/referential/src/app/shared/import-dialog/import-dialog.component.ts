@@ -39,7 +39,7 @@ import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogRef as MatDia
 import { FileTypes } from 'projects/vitamui-library/src/public-api';
 import { finalize, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { VitamUISnackBarService } from 'vitamui-library';
+import { VitamUISnackBarService, ApplicationId } from 'vitamui-library';
 import { ImportDialogParam, ImportError } from './import-dialog-param.interface';
 import { ReferentialImportService } from './referential-import.service';
 
@@ -72,12 +72,31 @@ export class ImportDialogComponent implements OnDestroy {
       .pipe(finalize(() => (this.isLoading = false)))
       .subscribe({
         next: () => {
-          this.snackBarService.open({ message: this.dialogParams.successMessage, icon: this.dialogParams.iconMessage });
+          this.snackBarService
+            .openWithAppUrlBtn(
+              {
+                message: this.dialogParams.successMessage,
+                icon: this.dialogParams.iconMessage,
+              },
+              ApplicationId.LOGBOOK_OPERATION_APP,
+              'SNACKBAR.VIEW_THE_OPERATIONS_LOG',
+            )
+            .subscribe();
+
           this.dialogRef.close({ successfulImport: true });
         },
         error: (error) => {
           if (this.dialogParams.errorMessage) {
-            this.snackBarService.open({ message: this.dialogParams.errorMessage, icon: this.dialogParams.iconMessage });
+            this.snackBarService
+              .openWithAppUrlBtn(
+                {
+                  message: this.dialogParams.errorMessage,
+                  icon: this.dialogParams.iconMessage,
+                },
+                ApplicationId.LOGBOOK_OPERATION_APP,
+                'SNACKBAR.VIEW_THE_OPERATIONS_LOG',
+              )
+              .subscribe();
           }
           if (error.error) {
             const errorJson = JSON.parse(error.error);
