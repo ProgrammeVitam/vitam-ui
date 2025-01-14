@@ -52,10 +52,10 @@ import {
   SearchCriteriaTypeEnum,
   Transaction,
   Unit,
+  ZipFile,
 } from 'vitamui-library';
 import { ArchiveCollectService } from '../archive-collect.service';
 import { FormControl } from '@angular/forms';
-import { ZipFile } from './zip-file';
 import { last, tap } from 'rxjs/operators';
 import { HttpEventType } from '@angular/common/http';
 

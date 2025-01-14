@@ -191,9 +191,9 @@
                 <span class="pb-3">{{ 'COLLECT.PROJECT_CONTEXT_ACQUISITION_INFORMATION' | translate }}</span>
               </label>
               <mat-select formControlName="acquisitionInformation">
-                <mat-option *ngFor="let acquisitionInformation of acquisitionInformationsList" [value]="acquisitionInformation">{{
-                  acquisitionInformation
-                }}</mat-option>
+                <mat-option *ngFor="let acquisitionInformation of acquisitionInformationsList" [value]="acquisitionInformation"
+                  >{{ acquisitionInformation }}
+                </mat-option>
               </mat-select>
             </mat-form-field>
           </div>
@@ -225,48 +225,25 @@
       </div>
     </cdk-step>
 
-    <!-- ########## stepIndex 4 : workflow 1     , step 4/6 : Upload fichiers ########## -->
+    <!-- ########## stepIndex 4 : workflow 1     , step 4/6 : Choix des fichiers à upload ########## -->
     <cdk-step *ngIf="selectedWorkflow === Workflow.MANUAL">
       <div class="content">
         <div class="text medium light">{{ 'COLLECT.MODAL.TITLE' | translate }}</div>
         <div class="text large bold">{{ 'COLLECT.MODAL.UPLOAD_SUB_TITLE' | translate }}</div>
         <div class="main-content">
-          <div
-            class="drag-and-drop-area"
-            (dragleave)="onDragLeave($event)"
-            (dragover)="onDragOver($event)"
-            (drop)="onDropped($event)"
-            [ngClass]="{ 'on-over': hasDropZoneOver }"
-          >
-            <div *ngIf="(uploadFiles$ | async)?.length > 0" class="drag-container">
-              <div class="file-info-class">
-                <div class="vitamui-chip-list">
-                  <div *ngFor="let uploadFile of uploadFiles$ | async" class="vitamui-chip">
-                    <div [title]="uploadFile" class="vitamui-chip-content">
-                      {{ uploadFile?.name }}
-                      <span class="file-size">{{ uploadFile?.size | bytes }}</span>
-                    </div>
-                    <div (click)="removeFolder(uploadFile)" class="vitamui-remove-chip">
-                      <i class="material-icons">clear</i>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <input #fileSearch (change)="handleFile($event)" class="input-file" directory multiple type="file" webkitdirectory />
-            <div class="drop-area">
-              <div class="sip-drop">
-                <span (click)="fileSearch.click()" class="url-select">
-                  {{ 'COLLECT.UPLOAD.DRAG_AND_DROP_OR_BROWSE' | translate }}
-                </span>
-                <span class="sip-drop-small">{{ 'COLLECT.UPLOAD.ADD_FILE_DESCRIPTION' | translate }}</span>
-              </div>
-            </div>
+          <div class="w-100">
+            <vitamui-file-selector
+              [multipleFiles]="true"
+              [maxSizeInBytes]="uploadMaxSizeInBytes"
+              [directoryMode]="true"
+              (filesChanged)="setFilesToUpload($event)"
+            >
+            </vitamui-file-selector>
           </div>
         </div>
         <div class="actions">
           <div class="line">
-            <button (click)="moveToNextStep()" [disabled]="(uploadFiles$ | async)?.length === 0" class="btn primary" type="button">
+            <button (click)="moveToNextStep()" [disabled]="filesToUpload.length < 1" class="btn primary" type="button">
               {{ 'COMMON.NEXT' | translate }}
             </button>
             <button (click)="onClose()" class="btn link" type="button">
@@ -484,7 +461,7 @@
       </div>
     </cdk-step>
 
-    <!-- stepIndex 8 : workflow 1     , step 6/6     : Upload fichiers -->
+    <!-- stepIndex 8 : workflow 1     , step 6/6     : Zip des fichiers et upload -->
     <cdk-step *ngIf="selectedWorkflow === Workflow.MANUAL">
       <div class="content">
         <div class="text medium light">{{ 'COLLECT.MODAL.TITLE' | translate }}</div>
@@ -500,7 +477,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngIf="zippedFile$ | async as zippedFile">
+              <tr *ngIf="zipFileStatus$ | async as zippedFile">
                 <td>{{ zippedFile?.name }}</td>
                 <td>{{ zippedFile?.size | fileSize }}</td>
                 <td>

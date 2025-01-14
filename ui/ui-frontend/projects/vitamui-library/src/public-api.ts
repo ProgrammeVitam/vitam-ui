@@ -80,6 +80,8 @@ export * from './lib/models/rule';
 export * from './lib/models/search-criteria.interface';
 export * from './lib/models/search-query.interface';
 export * from './lib/models/year-month-query.interface';
+export * from './lib/models/zip/zip-file.class';
+export * from './lib/models/zip/zip-file-status.interface';
 
 /* SERVICES */
 export * from './lib/components/filing-plan/filing-plan.service';
