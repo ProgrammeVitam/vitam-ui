@@ -74,7 +74,7 @@ jobs:
             **/target/coverage/*
   build-backend:
     name: Build Backend
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04 # We stay on Ubuntu 22.04, otherwise, timezone configuration would not be taken into account in Java on Ubuntu 24.04 (for unexplained reasons) and would break unit tests
     steps:
       - uses: szenius/set-timezone@v2.0
         with:
