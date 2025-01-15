@@ -170,12 +170,8 @@
           </vitamui-common-slide-toggle>
         </div>
 
-        <div *ngIf="!!allNodes.value && !allNodes.value">
-          <vitamui-library-filing-plan
-            [formControl]="selectNodesControl"
-            [tenantIdentifier]="tenantIdentifier"
-            [mode]="FILLING_PLAN_MODE.BOTH"
-          ></vitamui-library-filing-plan>
+        <div *ngIf="!allNodes.value">
+          <vitamui-library-filing-plan [formControl]="selectNodesControl" [mode]="FILLING_PLAN_MODE.BOTH"></vitamui-library-filing-plan>
         </div>
 
         <div class="actions">
