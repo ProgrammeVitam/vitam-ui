@@ -37,14 +37,15 @@
 
 import { Inject, Injectable, LOCALE_ID } from '@angular/core';
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
-import { Observable, of } from 'rxjs';
+import { Observable, of, switchMap } from 'rxjs';
 import { catchError, map, shareReplay, tap } from 'rxjs/operators';
-import { FileType, Unit, UnitType } from '../../../app/modules';
+import { AccessContractService, FileType, Unit, UnitType, VitamuiHttpHeaders } from '../../../app/modules';
 import { SearchUnitApiService } from '../../api/search-unit-api.service';
 import { DescriptionLevel } from '../../models/description-level.enum';
 import { Node } from '../../models/node.interface';
 
 import { getKeywordValue } from '../../utils/keyword.util';
+import { HttpHeaders } from '@angular/common/http';
 
 export enum ExpandLevel {
   NONE,
@@ -66,6 +67,7 @@ export class FilingPlanService {
 
   constructor(
     private searchUnitApi: SearchUnitApiService,
+    private accessContractService: AccessContractService,
     @Inject(LOCALE_ID) private locale: string,
   ) {}
 
@@ -79,7 +81,9 @@ export class FilingPlanService {
 
   public loadTree(idPrefix: string): Observable<Node[]> {
     this._pending++;
-    return this.searchUnitApi.getFilingPlan().pipe(
+    return this.accessContractService.currentAccessContractId$.pipe(
+      map((accessContractId) => new HttpHeaders().set(VitamuiHttpHeaders.X_ACCESS_CONTRACT_ID, accessContractId)),
+      switchMap((headers) => this.searchUnitApi.getFilingPlan(headers)),
       catchError(() => of({ $hits: null, $results: [] })),
       map((response) => response.$results),
       tap(() => this._pending--),

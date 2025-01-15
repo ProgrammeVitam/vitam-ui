@@ -138,6 +138,7 @@ describe('AccessContractCreateComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(AccessContractCreateComponent);
     component = fixture.componentInstance;
+    component.allNodes.setValue(true);
     fixture.detectChanges();
     page = new Page();
   });
@@ -208,6 +209,7 @@ describe('AccessContractCreateComponent', () => {
 
     it('should not call create()', () => {
       const accessContractService = TestBed.inject(AccessContractService);
+      component.allNodes.setValue(false);
       component.onSubmit();
       expect(accessContractService.create).toHaveBeenCalledTimes(0);
     });
