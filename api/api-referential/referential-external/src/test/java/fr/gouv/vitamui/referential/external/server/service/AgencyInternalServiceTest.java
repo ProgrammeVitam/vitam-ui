@@ -52,6 +52,7 @@ import fr.gouv.vitam.common.model.administration.AgenciesModel;
 import fr.gouv.vitam.common.model.logbook.LogbookOperation;
 import fr.gouv.vitamui.commons.api.exception.ConflictException;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
+import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
 import fr.gouv.vitamui.commons.vitam.api.administration.AgencyService;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
@@ -64,6 +65,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.web.multipart.MultipartFile;
@@ -105,6 +107,10 @@ public class AgencyInternalServiceTest {
             logbookService,
             vitamAgencyService,
             externalSecurityService
+        );
+        Mockito.when(externalSecurityService.getVitamContext()).thenReturn(new VitamContext(0));
+        Mockito.when(externalSecurityService.getHttpContext()).thenReturn(
+            new ExternalHttpContext(10, "userToken", "applicationid", "id")
         );
     }
 
@@ -518,7 +524,7 @@ public class AgencyInternalServiceTest {
         ).thenReturn((RequestResponse) new RequestResponseOK<JsonNode>(jsonResponse));
 
         assertThatCode(
-            () -> agencyExternalService.importAgencies(vitamContext, file.getName(), multipartFile)
+            () -> agencyExternalService.importAgencies(file.getName(), multipartFile)
         ).doesNotThrowAnyException();
     }
 }

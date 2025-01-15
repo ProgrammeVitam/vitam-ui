@@ -159,7 +159,8 @@ public class RuleExternalService extends AbstractService {
         JsonNode query;
         try {
             if (criteria.isPresent()) {
-                TypeReference<HashMap<String, Object>> typRef = new TypeReference<>() {};
+                TypeReference<HashMap<String, Object>> typRef = new TypeReference<>() {
+                };
                 vitamCriteria = objectMapper.readValue(criteria.get(), typRef);
             }
 
@@ -295,20 +296,6 @@ public class RuleExternalService extends AbstractService {
         }
     }
 
-    public JsonNode importRules(VitamContext context, String fileName, MultipartFile file) {
-        try {
-            return ruleService.importRules(context, fileName, file).toJsonNode();
-        } catch (
-            InvalidParseOperationException
-            | AccessExternalClientException
-            | IOException
-            | VitamClientException exception
-        ) {
-            LOGGER.error("Unable to import rule file " + fileName + " : ", exception);
-            throw new InternalServerException("Unable to import rule file " + fileName + " : ", exception);
-        }
-    }
-
     public RuleDto getOne(String identifier) {
         VitamContext vitamContext = buildVitamContext();
         return getOne(vitamContext, identifier);
@@ -352,7 +339,17 @@ public class RuleExternalService extends AbstractService {
 
     public JsonNode importRules(String fileName, MultipartFile file) {
         VitamContext vitamContext = buildVitamContext();
-        return importRules(vitamContext, fileName, file);
+        try {
+            return ruleService.importRules(vitamContext, fileName, file).toJsonNode();
+        } catch (
+            InvalidParseOperationException
+            | AccessExternalClientException
+            | IOException
+            | VitamClientException exception
+        ) {
+            LOGGER.error("Unable to import rule file " + fileName + " : ", exception);
+            throw new InternalServerException("Unable to import rule file " + fileName + " : ", exception);
+        }
     }
 
     public ResponseEntity<Resource> export() {
