@@ -58,6 +58,7 @@
         [tenantIdentifier]="tenantIdentifier"
         [searchText]="search"
         (eventClick)="openPanel($event)"
+        (finishedLoading)="onFinishedLoading()"
       ></app-logbook-operation-list>
     </div>
   </mat-sidenav-content>

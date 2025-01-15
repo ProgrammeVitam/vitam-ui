@@ -80,6 +80,7 @@ export class LogbookOperationListComponent extends InfiniteScrollTable<IEvent> i
   }
 
   @Output() eventClick = new EventEmitter<IEvent>();
+  @Output() finishedLoading = new EventEmitter<void>();
 
   @ViewChild('filterTemplate') filterTemplate: TemplateRef<LogbookOperationListComponent>;
   @ViewChild('filterButton') filterButton: ElementRef;
@@ -168,6 +169,7 @@ export class LogbookOperationListComponent extends InfiniteScrollTable<IEvent> i
     }
 
     this.logbookDownloadService.logbookOperationsReloaded.next(this.dataSource);
+    this.finishedLoading.next();
   }
 
   private updateLogbookOperations(logbookOperationsReloaded: IEvent[]) {

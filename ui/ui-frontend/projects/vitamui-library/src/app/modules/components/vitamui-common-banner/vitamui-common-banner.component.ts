@@ -34,7 +34,8 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { SearchBarComponent } from '../search-bar/search-bar.component';
 
 @Component({
   selector: 'vitamui-common-banner',
@@ -47,6 +48,11 @@ export class VitamuiCommonBannerComponent {
 
   @Output() action = new EventEmitter<string>();
   @Output() search = new EventEmitter<string>();
+  searchValue: string;
 
-  constructor() {}
+  @ViewChild(SearchBarComponent) searchBarComponent: SearchBarComponent;
+
+  setValue(value: string) {
+    this.searchBarComponent.searchValue = value;
+  }
 }
