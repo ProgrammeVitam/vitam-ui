@@ -213,6 +213,17 @@ public class ArchivesSearchExternalController {
         return archiveSearchEliminationService.startEliminationAction(query);
     }
 
+    @PostMapping(RestApi.ELIMINATION_UNIT_TREE_ACTION)
+    @Secured(ServicesData.ROLE_ELIMINATION)
+    public JsonNode startEliminationUnitTreeAction(final @RequestBody SearchCriteriaDto query)
+        throws PreconditionFailedException, VitamClientException {
+        ParameterChecker.checkParameter(MANDATORY_QUERY, query);
+        SanityChecker.sanitizeCriteria(query);
+        LOGGER.debug("Calling elimination action by criteria {} ", query);
+        //TODO : To be modified after the development of the functionality on the Vitam core side
+        return archiveSearchEliminationService.startEliminationAction(query);
+    }
+
     @PostMapping(RestApi.MASS_UPDATE_UNITS_RULES)
     @Secured(ServicesData.ARCHIVE_SEARCH_UPDATE_ARCHIVE_UNIT_ROLE)
     public String updateArchiveUnitsRules(final @RequestBody RuleSearchCriteriaDto ruleSearchCriteriaDto)

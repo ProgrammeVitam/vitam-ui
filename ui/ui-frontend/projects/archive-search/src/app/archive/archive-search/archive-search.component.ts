@@ -49,13 +49,14 @@ import {
   TemplateRef,
   ViewChild,
 } from '@angular/core';
-import { MatLegacyDialog as MatDialog, MatLegacyDialogConfig as MatDialogConfig } from '@angular/material/legacy-dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
+import { MatLegacyDialog as MatDialog, MatLegacyDialogConfig as MatDialogConfig } from '@angular/material/legacy-dialog';
 import { merge, Observable, Subject, Subscription } from 'rxjs';
-import { debounceTime, filter } from 'rxjs/operators';
+import { debounceTime, filter, tap } from 'rxjs/operators';
 import {
   AccessContract,
+  AlertDialogComponent,
   AccessContractService,
   ArchiveSearchResultFacets,
   CriteriaDataType,
@@ -157,6 +158,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   pageNumbers = 0;
   totalResults = 0;
   selectedItemCount = 0;
+  private selectedHoldingUnitItemCount = 0;
   itemNotSelected = 0;
   numberOfHoldingUnitTypeOnComputedRules = 0;
   additionalSearchCriteriaCategoryIndex = 0;
@@ -876,6 +878,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
 
     this.isAllChecked = checked;
     this.selectedItemCount = checked ? this.totalResults : 0;
+    this.selectedHoldingUnitItemCount = 0;
     if (!checked) {
       this.isIndeterminate = false;
     }
@@ -884,8 +887,11 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
     this.listOfUACriteriaSearch = [];
   }
 
-  checkChildrenBoxChange(id: string, event: any) {
+  checkChildrenBoxChange(archiveUnit: Unit, event: any) {
     event.stopPropagation();
+
+    const id = archiveUnit['#id'];
+    const unitType: UnitType = archiveUnit['#unitType'];
     const action = event.target.checked;
 
     if (this.isAllChecked && !action) {
@@ -897,9 +903,15 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
         this.selectedItemCount--;
         this.itemNotSelected++;
       }
+      if (this.selectedHoldingUnitItemCount > 0 && UnitType.HOLDING_UNIT === unitType) {
+        this.selectedHoldingUnitItemCount--;
+      }
     } else {
       this.itemNotSelected = 0;
       if (action) {
+        if (UnitType.HOLDING_UNIT === unitType) {
+          this.selectedHoldingUnitItemCount++;
+        }
         this.listOfUACriteriaSearch = [];
         this.selectedItemCount++;
         if (this.selectedItemCount === this.totalResults) {
@@ -924,6 +936,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
     this.archiveUnits = [];
     this.criteriaSearchList = [];
     this.selectedItemCount = 0;
+    this.selectedHoldingUnitItemCount = 0;
     this.isIndeterminate = false;
     this.itemNotSelected = 0;
     this.isAllChecked = false;
@@ -1113,16 +1126,71 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   }
 
   async launchEliminationModal() {
-    this.launchBulkOperationWorkflow(
-      () =>
-        this.archiveUnitEliminationService.launchEliminationModal(
-          this.listOfUACriteriaSearch,
-          this.tenantIdentifier,
-          this.currentPage,
-          this.confirmSecondActionBigNumberOfResultsActionDialog,
-        ),
-      this.DEFAULT_ELIMINATION_THRESHOLD,
-    );
+    if (this.selectedHoldingUnitItemCount > 0) {
+      const dialogConfig = new MatDialogConfig();
+
+      dialogConfig.data = {
+        title: 'ARCHIVE_SEARCH.ELIMINATION.ALERTE_MESSAGES.ACTION_ALERTE_TITLE',
+        icon: 'cancel',
+        message: 'RULES.ALERTE_MESSAGES.ACTION_ALERTE_FIRST_MESSAGE',
+        cancelLabel: 'RULES.ALERTE_MESSAGES.BACK_TO_SELECTION',
+      };
+
+      this.dialog.open(AlertDialogComponent, dialogConfig);
+    } else {
+      this.launchBulkOperationWorkflow(
+        () =>
+          this.archiveUnitEliminationService.launchEliminationModal(
+            this.listOfUACriteriaSearch,
+            this.tenantIdentifier,
+            this.currentPage,
+            this.confirmSecondActionBigNumberOfResultsActionDialog,
+            true,
+          ),
+        this.DEFAULT_ELIMINATION_THRESHOLD,
+      );
+    }
+  }
+
+  async launchDeleteUnitTreeModal() {
+    const listAUHoldingUnit = this.prepareListOfUACriteriaSearch();
+    listAUHoldingUnit.push({
+      criteria: 'ALL_ARCHIVE_UNIT_TYPES',
+      values: [{ value: 'ARCHIVE_UNIT_HOLDING_UNIT', id: 'ARCHIVE_UNIT_HOLDING_UNIT' }],
+      operator: CriteriaOperator.EQ,
+      category: SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.FIELDS],
+      dataType: CriteriaDataType.STRING,
+    });
+    this.archiveService
+      .getTotalTrackHitsByCriteria(listAUHoldingUnit)
+      .pipe(
+        tap((value: number) => {
+          if (value === this.selectedItemCount) {
+            this.launchBulkOperationWorkflow(
+              () =>
+                this.archiveUnitEliminationService.launchEliminationModal(
+                  this.listOfUACriteriaSearch,
+                  this.tenantIdentifier,
+                  this.currentPage,
+                  this.confirmSecondActionBigNumberOfResultsActionDialog,
+                  false,
+                ),
+              this.DEFAULT_ELIMINATION_THRESHOLD,
+            );
+          } else {
+            const dialogConfig = new MatDialogConfig();
+            dialogConfig.data = {
+              title: 'ARCHIVE_SEARCH.ELIMINATION.ALERTE_MESSAGES.ACTION_ALERTE_TITLE',
+              icon: 'cancel',
+              message: 'ARCHIVE_SEARCH.ELIMINATION.ALERTE_MESSAGES.ACTION_ALERTE_FIRST_MESSAGE',
+              cancelLabel: 'RULES.ALERTE_MESSAGES.BACK_TO_SELECTION',
+            };
+
+            this.dialog.open(AlertDialogComponent, dialogConfig);
+          }
+        }),
+      )
+      .subscribe();
   }
 
   async launchExportDipModal() {

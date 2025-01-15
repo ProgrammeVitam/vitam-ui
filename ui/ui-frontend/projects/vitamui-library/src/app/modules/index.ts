@@ -76,6 +76,7 @@ export * from './vitamui-global-error-handler';
 export * from './vitamui-table/index';
 
 export * from './base-http-client';
+export * from './components/alert-dialog/alert-dialog.component';
 export * from './components/accordion/accordion.component';
 export * from './components/application/index';
 export * from './components/autocomplete';

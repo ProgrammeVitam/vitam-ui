@@ -234,9 +234,11 @@ export class ArchiveService extends SearchService<any> implements SearchArchiveU
     return this.archiveApiService.startEliminationAnalysis(criteriaDto, headers);
   }
 
-  launchEliminationAction(criteriaDto: SearchCriteriaDto) {
+  launchEliminationAction(criteriaDto: SearchCriteriaDto, onlyArchiveUnit: boolean) {
     const headers = new HttpHeaders().append('Content-Type', 'application/json');
-    return this.archiveApiService.launchEliminationAction(criteriaDto, headers);
+    return onlyArchiveUnit
+      ? this.archiveApiService.launchEliminationAction(criteriaDto, headers)
+      : this.archiveApiService.launchDeleteUnitTree(criteriaDto, headers);
   }
 
   updateUnitsRules(ruleSearchCriteriaDto: RuleSearchCriteriaDto): Observable<string> {

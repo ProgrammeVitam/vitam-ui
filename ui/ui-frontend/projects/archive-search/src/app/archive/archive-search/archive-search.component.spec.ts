@@ -37,7 +37,6 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { MatLegacyMenuModule as MatMenuModule } from '@angular/material/legacy-menu';
 import { MatLegacyProgressSpinnerModule as MatProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -67,7 +66,7 @@ import { UpdateUnitManagementRuleService } from '../common-services/update-unit-
 import { ArchiveSearchComponent } from './archive-search.component';
 import { TransferAcknowledgmentComponent } from './transfer-acknowledgment/transfer-acknowledgment.component';
 import { SimpleCriteriaSearchComponent } from './simple-criteria-search/simple-criteria-search.component';
-
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 const translations: any = { TEST: 'Mock translate test' };
 
 class FakeLoader implements TranslateLoader {
@@ -82,7 +81,10 @@ describe('ArchiveSearchComponent', () => {
   const pagedResult: PagedResult = { pageNumbers: 1, facets: [], results: [], totalResults: 1 };
 
   const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
-  matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
+
+  matDialogSpy.open.and.returnValue({
+    afterClosed: jasmine.createSpy('afterClosed').and.returnValue(of(true)), // Simule une fermeture normale
+  });
 
   const archiveServiceStub = {
     getAccessContractById: () => of({}),
