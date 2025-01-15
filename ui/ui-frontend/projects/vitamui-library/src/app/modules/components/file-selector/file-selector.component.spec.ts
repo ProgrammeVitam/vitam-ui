@@ -59,6 +59,7 @@ describe('FileSelectorComponent', () => {
   });
 
   it('should reset the input after file selection', () => {
+    component['inputFiles'] = { nativeElement: { value: 'test' } };
     const mockFiles = [new File(['content'], 'test.json')];
     component.handleFilesSelection(mockFiles);
     expect(component['inputFiles'].nativeElement.value).toBe('');
