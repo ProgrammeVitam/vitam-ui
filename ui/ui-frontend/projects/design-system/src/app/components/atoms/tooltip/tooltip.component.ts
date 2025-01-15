@@ -34,16 +34,34 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component } from '@angular/core';
+import { AfterViewInit, Component, QueryList, ViewChildren } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
-import { VitamUICommonModule } from 'vitamui-library';
+import { CommonTooltipDirective, CommonTooltipModule } from 'vitamui-library';
 
 @Component({
   selector: 'design-system-tooltip',
   templateUrl: './tooltip.component.html',
   styleUrls: ['./tooltip.component.scss'],
   standalone: true,
-  imports: [CommonModule, VitamUICommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, CommonTooltipModule],
 })
-export class TooltipComponent {}
+export class TooltipComponent implements AfterViewInit {
+  outlineValues = [true, false];
+  colors = ['primary', 'secondary'];
+  positions = ['TOP', 'BOTTOM', 'LEFT', 'RIGHT'];
+
+  @ViewChildren(CommonTooltipDirective) tooltips: QueryList<CommonTooltipDirective>;
+
+  ngAfterViewInit(): void {
+    this.showTooltips();
+  }
+
+  showTooltips() {
+    this.tooltips.forEach((tooltip) => tooltip.show());
+  }
+
+  hideTooltips() {
+    this.tooltips.forEach((tooltip) => tooltip.hide());
+  }
+}
