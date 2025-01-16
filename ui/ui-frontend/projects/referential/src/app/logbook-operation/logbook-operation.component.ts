@@ -34,11 +34,11 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { ActivatedRoute } from '@angular/router';
-import { GlobalEventService, SidenavPage } from 'vitamui-library';
+import { GlobalEventService, SidenavPage, VitamuiCommonBannerComponent } from 'vitamui-library';
 import { EventFilter } from './event-filter.interface';
 import { LogbookOperationListComponent } from './logbook-operation-list/logbook-operation-list.component';
 
@@ -47,15 +47,15 @@ import { LogbookOperationListComponent } from './logbook-operation-list/logbook-
   templateUrl: './logbook-operation.component.html',
   styleUrls: ['./logbook-operation.component.scss'],
 })
-export class LogbookOperationComponent extends SidenavPage<any> implements OnInit {
+export class LogbookOperationComponent extends SidenavPage<any> implements OnInit, AfterViewInit {
   @ViewChild(LogbookOperationListComponent, { static: true }) list: LogbookOperationListComponent;
+  @ViewChild(VitamuiCommonBannerComponent, { static: true }) bannerComponent: VitamuiCommonBannerComponent;
 
   public search = '';
   public tenantIdentifier: number;
   public dateRangeFilterForm: FormGroup;
   public filters: Readonly<EventFilter> = {};
-
-  private workflowGuidToSearch: string;
+  private openOperationDetailAfterLoading: boolean;
 
   constructor(
     private route: ActivatedRoute,
@@ -81,12 +81,18 @@ export class LogbookOperationComponent extends SidenavPage<any> implements OnIni
         dateRange: value,
       };
     });
-
     this.route.queryParams.subscribe((params) => {
       if (params.guid) {
-        this.workflowGuidToSearch = params.guid;
-        this.onSearchSubmit(this.workflowGuidToSearch);
-        this.openOperationDetail();
+        this.onSearchSubmit(params.guid);
+        this.openOperationDetailAfterLoading = true;
+      }
+    });
+  }
+
+  ngAfterViewInit() {
+    this.route.queryParams.subscribe((params) => {
+      if (params.guid) {
+        this.bannerComponent.setValue(params.guid);
       }
     });
   }
@@ -109,6 +115,13 @@ export class LogbookOperationComponent extends SidenavPage<any> implements OnIni
   }
 
   private openOperationDetail(): void {
-    setTimeout(() => this.list.eventClick.emit(this.list.dataSource[0]), 2000);
+    this.list.eventClick.emit(this.list.dataSource[0]);
+  }
+
+  onFinishedLoading() {
+    if (this.openOperationDetailAfterLoading) {
+      this.openOperationDetail();
+      this.openOperationDetailAfterLoading = false;
+    }
   }
 }
