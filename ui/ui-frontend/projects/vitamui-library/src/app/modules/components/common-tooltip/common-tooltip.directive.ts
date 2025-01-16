@@ -68,6 +68,8 @@ const VITAMUI_TOOL_TIP_POSITIONS: { [key: string]: ConnectedPosition } = {
   },
 };
 
+const TOOLTIP_TRIGGER_CLASS = 'tooltip-trigger';
+
 @Directive({
   selector: '[vitamuiCommonToolTip]',
 })
@@ -89,6 +91,9 @@ export class CommonTooltipDirective implements OnInit, OnDestroy {
   set disabled(value) {
     this._disabled = coerceBooleanProperty(value);
 
+    if (this._disabled) (this.elementRef.nativeElement as HTMLElement).classList.remove(TOOLTIP_TRIGGER_CLASS);
+    else (this.elementRef.nativeElement as HTMLElement).classList.add(TOOLTIP_TRIGGER_CLASS);
+
     // If tooltip is disabled, hide immediately.
     if (this._disabled && this.overlayRef) {
       this.hide();
@@ -108,7 +113,8 @@ export class CommonTooltipDirective implements OnInit, OnDestroy {
     if (TooltipPosition[this.position]) {
       const position = VITAMUI_TOOL_TIP_POSITIONS[this.position];
       const positionStrategy = this.overlayPositionBuilder.flexibleConnectedTo(this.elementRef).withPositions([position]);
-      this.overlayRef = this.overlay.create({ positionStrategy });
+      if (!this.disabled && this.text) (this.elementRef.nativeElement as HTMLElement).classList.add(TOOLTIP_TRIGGER_CLASS);
+      this.overlayRef = this.overlay.create({ positionStrategy, scrollStrategy: this.overlay.scrollStrategies.reposition() });
     }
   }
 

@@ -1,25 +1,35 @@
-<div>
-  <h2>Dark tooltip</h2>
-  <div class="d-flex">
-    <button class="btn primary" vitamuiCommonToolTip="TOP" vitamuiCommonToolTipPosition="TOP">Tooltip TOP DARK</button>
-    <button class="btn primary" vitamuiCommonToolTip="BOTTOM" vitamuiCommonToolTipPosition="BOTTOM">Tooltip BOTTOM DARK</button>
-    <button class="btn primary" vitamuiCommonToolTip="LEFT" vitamuiCommonToolTipPosition="LEFT">Tooltip LEFT DARK</button>
-    <button class="btn primary" vitamuiCommonToolTip="RIGHT" vitamuiCommonToolTipPosition="RIGHT">Tooltip RIGHT DARK</button>
-    <button class="btn primary" vitamuiCommonToolTip="DEFAULT">DEFAULT DARK</button>
-  </div>
-</div>
+<h1>Tooltips</h1>
 
-<div>
-  <h2>Outline Tooltip</h2>
-  <div class="d-flex">
-    <button class="btn secondary" vitamuiCommonToolTip="TOP" vitamuiCommonToolTipPosition="TOP" outline="true">Tooltip TOP LIGHT</button>
-    <button class="btn secondary" vitamuiCommonToolTip="BOTTOM" vitamuiCommonToolTipPosition="BOTTOM" outline="true">
-      Tooltip BOTTOM LIGHT
-    </button>
-    <button class="btn secondary" vitamuiCommonToolTip="LEFT" vitamuiCommonToolTipPosition="LEFT" outline="true">Tooltip LEFT LIGHT</button>
-    <button class="btn secondary" vitamuiCommonToolTip="RIGHT" vitamuiCommonToolTipPosition="RIGHT" outline="true">
-      Tooltip RIGHT LIGHT
-    </button>
-    <button class="btn secondary" vitamuiCommonToolTip="DEFAULT" outline="true">DEFAULT LIGHT</button>
-  </div>
-</div>
+<p>Tooltips are available in different flavors.</p>
+<p>
+  On this screen, all tooltips are displayed by default to make it easier to preview all declinations. Hovering on a text will make the
+  tooltip disappear after mouse leave: the tooltip will then behave as a classical tooltip.
+</p>
+<p>
+  You can also hide/show all tooltips by clicking those buttons:
+  <span class="d-inline-flex hgap-2 ml-2">
+    <button class="btn secondary" (click)="hideTooltips()">Hide tooltips</button>
+    <button class="btn secondary" (click)="showTooltips()">Show tooltips</button>
+  </span>
+</p>
+
+@for (outline of outlineValues; track outline) {
+  <h2>{{ outline ? 'Light' : 'Dark' }}</h2>
+  @for (color of colors; track color) {
+    <h3>{{ color }}</h3>
+    <div class="row">
+      @for (position of positions; track position) {
+        <div class="col my-6">
+          <span
+            [vitamuiCommonToolTip]="position"
+            [vitamuiCommonToolTipPosition]="position"
+            [outline]="outline"
+            [vitamuiCommonToolTipClass]="color"
+          >
+            {{ outline ? 'Light' : 'Dark' }} {{ color }} {{ position }}
+          </span>
+        </div>
+      }
+    </div>
+  }
+}
