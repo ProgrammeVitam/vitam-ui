@@ -90,6 +90,7 @@ export * from './lib/services/spinner-overlay.service';
 /* UTILS */
 export * from './lib/utils/download';
 export * from './lib/utils/keyword.util';
+export * from './lib/utils/string.util';
 export * from './lib/vitamui-library.module';
 export * from './lib/vitamui-library.service';
 

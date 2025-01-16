@@ -34,39 +34,15 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Pipe, PipeTransform } from '@angular/core';
 
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-import DOMPurify from 'dompurify';
-import { normalizeString } from '../../../lib/utils/string.util';
-
-@Pipe({ name: 'highlight' })
-export class HighlightPipe implements PipeTransform {
-  constructor(private sanitizer: DomSanitizer) {}
-
-  transform(value?: string, args?: string): SafeHtml | string {
-    if (!args) {
-      return DOMPurify.sanitize(value);
-    }
-
-    const originalStringToSearchWithoutAccent = normalizeString(args);
-    const searchInWithoutAccent = normalizeString(value);
-
-    const regex = new RegExp(originalStringToSearchWithoutAccent, 'gi');
-    let result = '';
-    let startIndex = 0;
-
-    while (regex.exec(searchInWithoutAccent) !== null) {
-      const matchedStringIndex = regex.lastIndex - args.length;
-      result = result.concat(
-        value.substring(startIndex, matchedStringIndex),
-        `<span class="highlight-pipe">${value.substring(matchedStringIndex, regex.lastIndex)}</span>`,
-      );
-      startIndex = regex.lastIndex;
-    }
-
-    return startIndex > 0
-      ? this.sanitizer.bypassSecurityTrustHtml(DOMPurify.sanitize(result.concat(value.substring(startIndex))))
-      : DOMPurify.sanitize(value);
-  }
+/**
+ * Normalize a string by removing accents and lowercasing it.
+ */
+export function normalizeString(value?: string): string {
+  return (
+    value
+      ?.normalize('NFD')
+      ?.replace(/[\u0300-\u036f]/g, '')
+      ?.toLowerCase() || ''
+  );
 }

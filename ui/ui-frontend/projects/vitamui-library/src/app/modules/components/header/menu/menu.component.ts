@@ -64,6 +64,7 @@ import { SearchBarComponent } from '../../search-bar/search-bar.component';
 import { Tenant } from './../../../models/customer/tenant.interface';
 import { MenuOverlayRef } from './menu-overlay-ref';
 import { MenuOption } from '../../navbar/customer-menu/menu-option.interface';
+import { normalizeString } from '../../../../../lib/utils/string.util';
 
 const APPLICATION_TRANSLATE_PATH = 'APPLICATION';
 
@@ -178,16 +179,7 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
 
       // Search value in the translated apps array
       const filteredNgxTranslateApps = this.ngxAppArray.filter((app: NgxTranslateApp) => {
-        return app.name
-          .normalize('NFD')
-          .replace(/[\u0300-\u036f]/g, '')
-          .toLowerCase()
-          .includes(
-            value
-              .normalize('NFD')
-              .replace(/[\u0300-\u036f]/g, '')
-              .toLowerCase(),
-          );
+        return normalizeString(app.name).includes(normalizeString(value));
       });
 
       // Avoid maping array by identifier inside filter

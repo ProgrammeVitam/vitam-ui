@@ -68,6 +68,7 @@ import { partition } from 'lodash-es';
 import { Subject, Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, map } from 'rxjs/operators';
 import { AbstractFormInputDirective } from '../../../../../lib/components/abstract-form-input.directive';
+import { normalizeString } from '../../../../../lib/utils/string.util';
 
 /**
  * Node for item
@@ -287,18 +288,9 @@ export class VitamUiAutocompleteMultiSelectTreeComponent<T>
   hasChild = (_: number, _nodeData: ItemFlatNode<T>) => _nodeData.expandable;
   trackBy = (_: number, _nodeData: ItemFlatNode<T>) => _nodeData.id;
 
-  private normalizeString(value?: string): string {
-    return (
-      value
-        ?.normalize('NFD')
-        ?.replace(/[\u0300-\u036f]/g, '')
-        ?.toLowerCase() || ''
-    );
-  }
-
   private matchSearch(node: ItemNode<T> | ItemFlatNode<T>, search: string) {
-    const nodeNormalizedValue = this.normalizeString(this.getSearchValue(node.item));
-    const searchNormalizedValue = this.normalizeString(search);
+    const nodeNormalizedValue = normalizeString(this.getSearchValue(node.item));
+    const searchNormalizedValue = normalizeString(search);
     return nodeNormalizedValue.indexOf(searchNormalizedValue) !== -1;
   }
 
