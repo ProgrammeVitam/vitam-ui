@@ -1095,6 +1095,7 @@
     "TRACEABILITY_OPERATION_SUCCESS": "L'audit de vérification des journaux sécurisés a été lancé.",
     "TRACEABILITY_OPERATION_FAILED": "L'audit de vérification des journaux sécurisés a échoué.",
     "OPEN_LOGBOOK": "Voir le journal des opérations",
-    "INVALID_DSL_REQUEST_FORMAT": "Format de la requête invalide"
+    "INVALID_DSL_REQUEST_FORMAT": "Format de la requête invalide",
+    "VIEW_THE_OPERATIONS_LOG": "Consulter le journal des opérations"
   }
 }
