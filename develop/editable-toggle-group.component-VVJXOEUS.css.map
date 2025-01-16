@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["projects/vitamui-library/src/app/modules/components/editable-field/editable-toggle-group/editable-toggle-group.component.scss"],
+  "sourcesContent": [".editable-field-control {\n  margin-top: 15px;\n}\n"],
+  "mappings": "AAAA,CAAA,uBACE,WAAA",
+  "names": []
+}
