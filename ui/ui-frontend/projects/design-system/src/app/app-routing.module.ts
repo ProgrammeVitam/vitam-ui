@@ -60,6 +60,14 @@ import { DesignSystemSearchWithTypeSelectorComponent } from './components/molecu
 import { DesignSystemMultipleOptionsDatepickerComponent } from './components/molecules/inputs/multiple-options-datepicker/design-system-multiple-options-datepicker.component';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 
+export interface RouteData {
+  // Alternative search terms
+  altSearch?: {
+    _?: string[]; // For all languages
+    [lang: string]: string[]; // For a specific language
+  };
+}
+
 const routes: Routes = [
   { path: '', component: DesignSystemComponent },
   {
@@ -67,7 +75,7 @@ const routes: Routes = [
     children: [
       { path: '', redirectTo: 'colors', pathMatch: 'full' },
       { path: 'colors', component: ColorsComponent },
-      { path: 'shadows', component: ShadowsComponent },
+      { path: 'shadows', component: ShadowsComponent, data: { altSearch: { fr: ['Élévations'] } } satisfies RouteData },
       { path: 'typography', component: TypographyComponent },
       { path: 'spacing', component: SpacingComponent },
     ],
@@ -86,7 +94,7 @@ const routes: Routes = [
     path: 'molecules',
     children: [
       { path: '', redirectTo: 'breadcrumbs', pathMatch: 'full' },
-      { path: 'breadcrumbs', component: BreadcrumbsComponent },
+      { path: 'breadcrumbs', component: BreadcrumbsComponent, data: { altSearch: { fr: ["Fil d'Ariane"] } } satisfies RouteData },
       { path: 'loaders-steppers', component: LoadersSteppersComponent },
       {
         path: 'inputs',

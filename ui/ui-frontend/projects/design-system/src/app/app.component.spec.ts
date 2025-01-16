@@ -35,49 +35,15 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 /* eslint-disable @angular-eslint/component-selector, max-classes-per-file */
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { Router } from '@angular/router';
-import { EMPTY, of } from 'rxjs';
-import { BASE_URL } from 'vitamui-library';
-import { AuthService, InjectorModule, LoggerModule, StartupService } from 'vitamui-library';
-import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { AppComponent } from './app.component';
-import { TranslateService } from '@ngx-translate/core';
-
-@Component({ selector: 'router-outlet', template: '' })
-class RouterOutletStubComponent {}
+import { TranslateModule } from '@ngx-translate/core';
 
 describe('AppComponent', () => {
   beforeEach(async () => {
-    const startupServiceStub = {
-      configurationLoaded: () => true,
-      printConfiguration: () => {},
-      getPlatformName: () => '',
-      load: () => {},
-      getPortalUrl: () => '',
-    };
-
     await TestBed.configureTestingModule({
-      declarations: [AppComponent, RouterOutletStubComponent],
-      imports: [
-        HttpClientTestingModule,
-        MatSnackBarModule,
-        InjectorModule,
-        VitamUICommonTestModule,
-        BrowserAnimationsModule,
-        LoggerModule.forRoot(),
-      ],
-      providers: [
-        { provide: StartupService, useValue: startupServiceStub },
-        { provide: AuthService, useValue: { userLoaded: of(null) } },
-        { provide: Router, useValue: { navigate: () => {}, events: of(), isActive: () => false } },
-        { provide: BASE_URL, useValue: '/fake-api' },
-        { provide: TranslateService, useValue: { instant: () => EMPTY } },
-      ],
+      declarations: [AppComponent],
+      imports: [TranslateModule.forRoot()],
     }).compileComponents();
   });
 

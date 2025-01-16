@@ -65,6 +65,8 @@ import { TranslationModule } from './components/translation/translation.module';
 import { DesignSystemModule } from './components/design-system/design-system.module';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { SelectComponent } from '../../../vitamui-library/src/lib/components/select/select.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 registerLocaleData(localeFr, 'fr');
 
@@ -104,6 +106,8 @@ export function httpLoaderFactory(httpClient: HttpClient): MultiTranslateHttpLoa
       // or after 30 seconds (whichever comes first).
       registrationStrategy: 'registerWhenStable:30000',
     }),
+    SelectComponent,
+    ReactiveFormsModule,
   ],
   providers: [
     Title,
