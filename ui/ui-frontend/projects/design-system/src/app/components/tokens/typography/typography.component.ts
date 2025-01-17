@@ -36,9 +36,8 @@
  */
 import { Component } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
-import { EllipsisDirectiveModule } from 'vitamui-library';
+import { EllipsisDirectiveModule, CommonTooltipModule } from 'vitamui-library';
 import { NgClass, NgTemplateOutlet } from '@angular/common';
-import { CommonTooltipModule } from '../../../../../../vitamui-library/src/app/modules/components/common-tooltip/common-tooltip.module';
 
 @Component({
   templateUrl: './typography.component.html',

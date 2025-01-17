@@ -46,9 +46,8 @@ import { MatLegacyProgressSpinnerModule as MatProgressSpinnerModule } from '@ang
 import { MatLegacySelectModule as MatSelectModule } from '@angular/material/legacy-select';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { EMPTY, of } from 'rxjs';
-import { ConfirmDialogService } from 'vitamui-library';
+import { ConfirmDialogService, AgencyService } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
-import { AgencyService } from '../agency.service';
 import { AgencyCreateComponent } from './agency-create.component';
 import { AgencyCreateValidators } from './agency-create.validators';
 

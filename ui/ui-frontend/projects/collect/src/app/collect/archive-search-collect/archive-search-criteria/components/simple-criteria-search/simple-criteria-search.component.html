@@ -1,147 +1,167 @@
 <div class="container">
-  <form [formGroup]="simpleCriteriaForm">
-    <div class="row">
-      <div class="col-11">
-        <div class="row justify-content-around margin-row">
-          <div class="col-6 form-control">
-            <vitamui-common-editable-input
-              formControlName="title"
-              [validator]="title?.validator"
-              label="{{ 'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.TITLE' | translate }}"
-            >
-            </vitamui-common-editable-input>
-          </div>
-          <div class="col-6 form-control">
-            <vitamui-common-editable-input
-              formControlName="description"
-              [validator]="description?.validator"
-              label="{{ 'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.DESCRIPTION' | translate }}"
-            >
-            </vitamui-common-editable-input>
-          </div>
-        </div>
-
-        <div class="row justify-content-around margin-row">
-          <div class="col-6 form-control" [ngStyle]="{ 'margin-right': '50%' }">
-            <vitamui-common-editable-input
-              formControlName="guid"
-              [validator]="guid?.validator"
-              label="{{ 'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.UAID' | translate }}"
-            >
-            </vitamui-common-editable-input>
-            <i
-              class="vitamui-icon vitamui-icon-info-circle vitamui-row-icon icon-information"
-              [vitamuiCommonToolTip]="'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.GUIDS_SEPARATED' | translate"
-              [vitamuiCommonToolTipShowDelay]="300"
-            ></i>
-          </div>
-          <div class="col-6 form-control"></div>
-        </div>
-
-        <div class="row justify-content-around margin-row">
-          <div class="col-6 form-control">
-            <p class="title-text text uppercase">{{ 'COLLECT.SEARCH_CRITERIA_FILTER.DATES' | translate }}</p>
-          </div>
-          <div class="col-6 form-control"></div>
-        </div>
-
-        <div class="row justify-content-around margin-row margin-bottom">
-          <div class="col-6 form-control">
-            <div class="vitamui-input" (click)="pickerBegin.open()">
-              <span *ngIf="!beginDt.value; else showBeginDt" (click)="pickerBegin.open()" class="search-date-label">{{
-                'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.START_DATE_SEARCH' | translate
-              }}</span>
-              <ng-template #showBeginDt
-                ><span (click)="pickerBegin.open()">{{ beginDt.value | dateTime: 'dd/MM/yyyy' }} </span>
-              </ng-template>
-              <input class="hidden" size="0" [matDatepicker]="pickerBegin" formControlName="beginDt" [min]="beginDt.value" />
-              <mat-datepicker #pickerBegin></mat-datepicker>
-            </div>
-          </div>
-
-          <div class="col-6 form-control">
-            <div class="vitamui-input" (click)="pickerEnd.open()">
-              <span *ngIf="!endDt.value; else showEndDt" (click)="pickerEnd.open()" class="search-date-label">{{
-                'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.END_DATE_SEARCH' | translate
-              }}</span>
-              <ng-template #showEndDt
-                ><span (click)="pickerEnd.open()">{{ endDt.value | dateTime: 'dd/MM/yyyy' }} </span>
-              </ng-template>
-              <input class="hidden" size="0" [matDatepicker]="pickerEnd" formControlName="endDt" [min]="endDt.value" />
-              <mat-datepicker #pickerEnd></mat-datepicker>
-            </div>
-          </div>
-        </div>
-
-        <div class="row margin-row">
-          <div class="col-12 form-control">
-            <p class="title-text text uppercase">{{ 'COLLECT.SEARCH_CRITERIA_FILTER.UA_TYPE' | translate }}</p>
-          </div>
-        </div>
-        <div class="row margin-row">
-          <div class="col-12 form-control">
-            <div class="row padding-row">
-              <label class="criteria-checkbox-choice">
-                <input
-                  type="checkbox"
-                  (click)="addArchiveUnitTypeCriteria('ARCHIVE_UNIT_WITH_OBJECTS', $event)"
-                  [checked]="archiveUnitTypesCriteria.get('ARCHIVE_UNIT_WITH_OBJECTS')"
-                />
-                <span>{{ 'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.UNIT_TYPE.ARCHIVE_UNIT_WITH_OBJECTS' | translate }}</span>
-              </label>
-              <i class="vitamui-icon vitamui-icon-file vitamui-row-icon status-badge icon-large"></i>
-            </div>
-
-            <div class="row padding-row">
-              <label class="criteria-checkbox-choice">
-                <input
-                  type="checkbox"
-                  (click)="addArchiveUnitTypeCriteria('ARCHIVE_UNIT_WITHOUT_OBJECTS', $event)"
-                  [checked]="archiveUnitTypesCriteria.get('ARCHIVE_UNIT_WITHOUT_OBJECTS')"
-                />
-                <span>{{ 'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.UNIT_TYPE.ARCHIVE_UNIT_WITHOUT_OBJECTS' | translate }}</span>
-              </label>
-              <i class="vitamui-icon vitamui-icon-folder vitamui-row-icon status-badge icon-large"></i>
-            </div>
-          </div>
-        </div>
-        <div class="row margin-row">
-          <div class="col-12 form-control">
-            <p class="title-text text uppercase">{{ 'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.OTHER_FIELDS' | translate }}</p>
-          </div>
-        </div>
-        <div class="row margin-row" *ngIf="otherCriteriaOptions$ | async as otherCriteriaOptions">
-          <vitamui-common-autocomplete-multi-select-tree
-            formControlName="otherCriteriaList"
-            class="col-6 form-control"
-            [multiSelectOptions]="otherCriteriaOptions"
-            [getDisplayValue]="getOtherCriteriaDisplayValue"
-            [placeholder]="'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.OTHER_FIELDS' | translate"
-            [searchBarPlaceHolder]="'Entrer les premières lettres de votre recherche' | translate"
-          >
-          </vitamui-common-autocomplete-multi-select-tree>
-          <div class="col-6 form-control" formArrayName="otherCriteria">
-            <ng-container *ngFor="let otherCriteria of otherCriteriaList.value; let i = index">
+  <form [formGroup]="simpleCriteriaForm" class="p-4">
+    <div class="hgap-4 align-items-start pb-4">
+      <vitamui-common-editable-input
+        formControlName="title"
+        label="{{ 'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.TITLE' | translate }}"
+        class="w-100"
+      >
+      </vitamui-common-editable-input>
+      <vitamui-common-editable-input
+        formControlName="description"
+        label="{{ 'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.DESCRIPTION' | translate }}"
+        class="w-100"
+      >
+      </vitamui-common-editable-input>
+    </div>
+    <div class="hgap-4 align-items-start pb-4">
+      <vitamui-common-editable-input
+        formControlName="guid"
+        [validator]="guid?.validator"
+        label="{{ 'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.UAID' | translate }}"
+        class="w-100"
+      >
+      </vitamui-common-editable-input>
+      <div class="w-100">
+        <i
+          class="vitamui-icon vitamui-icon-info-circle vitamui-row-icon"
+          [vitamuiCommonToolTip]="'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.GUIDS_SEPARATED' | translate"
+          [vitamuiCommonToolTipShowDelay]="300"
+        ></i>
+      </div>
+    </div>
+    <div class="hgap-4 align-items-start pb-4">
+      @if (isProvided('agencies') | async) {
+        <vitamui-select
+          [multiple]="true"
+          [enableSelectAll]="false"
+          formControlName="agencies"
+          [options]="selectOptions.agency"
+          [placeholder]="'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.SP' | translate"
+          [searchBarPlaceHolder]="'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.SP_PLACEHOLDER' | translate"
+          class="w-100"
+        >
+        </vitamui-select>
+      } @else {
+        <vitamui-common-editable-input
+          formControlName="agencies"
+          label="{{ 'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.SP' | translate }}"
+          class="w-100"
+        >
+        </vitamui-common-editable-input>
+      }
+      @if (isProvided('archive-unit-profiles') | async) {
+        <vitamui-select
+          [multiple]="true"
+          [enableSelectAll]="false"
+          formControlName="archiveUnitProfiles"
+          [options]="selectOptions.archiveUnitProfile"
+          [placeholder]="'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.AUP' | translate"
+          [searchBarPlaceHolder]="'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.AUP_PLACEHOLDER' | translate"
+          class="w-100"
+        >
+        </vitamui-select>
+      } @else {
+        <vitamui-common-editable-input
+          formControlName="archiveUnitProfiles"
+          label="{{ 'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.AUP' | translate }}"
+          class="w-100"
+        >
+        </vitamui-common-editable-input>
+      }
+    </div>
+    <div class="hgap-4">
+      <p class="title-text text uppercase">{{ 'COLLECT.SEARCH_CRITERIA_FILTER.DATES' | translate }}</p>
+    </div>
+    <div class="hgap-4 align-items-start pb-4">
+      <div class="vitamui-input" (click)="pickerBegin.open()">
+        <span *ngIf="!beginDt.value; else showBeginDt" (click)="pickerBegin.open()" class="search-date-label">{{
+          'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.START_DATE_SEARCH' | translate
+        }}</span>
+        <ng-template #showBeginDt
+          ><span (click)="pickerBegin.open()">{{ beginDt.value | dateTime: 'dd/MM/yyyy' }} </span>
+        </ng-template>
+        <input class="hidden" size="0" [matDatepicker]="pickerBegin" formControlName="beginDt" [min]="beginDt.value" />
+        <mat-datepicker #pickerBegin></mat-datepicker>
+      </div>
+      <div class="vitamui-input" (click)="pickerEnd.open()">
+        <span *ngIf="!endDt.value; else showEndDt" (click)="pickerEnd.open()" class="search-date-label">{{
+          'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.END_DATE_SEARCH' | translate
+        }}</span>
+        <ng-template #showEndDt
+          ><span (click)="pickerEnd.open()">{{ endDt.value | dateTime: 'dd/MM/yyyy' }} </span>
+        </ng-template>
+        <input class="hidden" size="0" [matDatepicker]="pickerEnd" formControlName="endDt" [min]="endDt.value" />
+        <mat-datepicker #pickerEnd></mat-datepicker>
+      </div>
+    </div>
+    <div class="hgap-4">
+      <p class="title-text text uppercase">{{ 'COLLECT.SEARCH_CRITERIA_FILTER.UA_TYPE' | translate }}</p>
+    </div>
+    <div class="hgap-4 align-items-start pb-2">
+      <div class="d-flex align-items-center w-100">
+        <label class="criteria-checkbox-choice">
+          <input
+            type="checkbox"
+            (click)="addArchiveUnitTypeCriteria('ARCHIVE_UNIT_WITH_OBJECTS', $event)"
+            [checked]="archiveUnitTypesCriteria.get('ARCHIVE_UNIT_WITH_OBJECTS')"
+          />
+          <span>{{ 'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.UNIT_TYPE.ARCHIVE_UNIT_WITH_OBJECTS' | translate }}</span>
+        </label>
+        <i class="vitamui-icon vitamui-icon-file vitamui-row-icon status-badge icon-large ml-1"></i>
+      </div>
+      <div class="w-100"></div>
+    </div>
+    <div class="hgap-4 align-items-start pb-4">
+      <div class="d-flex align-items-center w-100">
+        <label class="criteria-checkbox-choice">
+          <input
+            type="checkbox"
+            (click)="addArchiveUnitTypeCriteria('ARCHIVE_UNIT_WITHOUT_OBJECTS', $event)"
+            [checked]="archiveUnitTypesCriteria.get('ARCHIVE_UNIT_WITHOUT_OBJECTS')"
+          />
+          <span>{{ 'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.UNIT_TYPE.ARCHIVE_UNIT_WITHOUT_OBJECTS' | translate }}</span>
+        </label>
+        <i class="vitamui-icon vitamui-icon-folder vitamui-row-icon status-badge icon-large ml-1"></i>
+      </div>
+      <div class="w-100"></div>
+    </div>
+    <div class="hgap-4">
+      <p class="title-text text uppercase">{{ 'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.OTHER_FIELDS' | translate }}</p>
+    </div>
+    @if (otherCriteriaOptions$ | async; as otherCriteriaOptions) {
+      <div class="hgap-4 align-items-start align-items-start pb-4">
+        <vitamui-common-autocomplete-multi-select-tree
+          formControlName="otherCriteriaList"
+          [multiSelectOptions]="otherCriteriaOptions"
+          [getDisplayValue]="getOtherCriteriaDisplayValue"
+          [placeholder]="'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.OTHER_FIELDS' | translate"
+          [searchBarPlaceHolder]="'Entrer les premières lettres de votre recherche' | translate"
+          class="w-100"
+        >
+        </vitamui-common-autocomplete-multi-select-tree>
+        <div class="gap-4 w-100" formArrayName="otherCriteria">
+          @for (otherCriteria of otherCriteriaList.value; track otherCriteria.ApiPath) {
+            @if (['TEXT', 'KEYWORD', 'BOOLEAN', 'LONG'].includes(otherCriteria.Type)) {
               <vitamui-common-editable-input
-                *ngIf="['TEXT', 'KEYWORD', 'BOOLEAN', 'LONG'].includes(otherCriteria.Type)"
                 [label]="getCriteriaName(otherCriteria, otherCriteriaOptions)"
                 [formControlName]="otherCriteria.Path"
+                class="w-100"
               >
               </vitamui-common-editable-input>
-
+            } @else if (['DATE'].includes(otherCriteria.Type)) {
               <vitamui-common-datepicker
-                *ngIf="['DATE'].includes(otherCriteria.Type)"
                 [label]="getCriteriaName(otherCriteria, otherCriteriaOptions)"
                 [onlyDate]="false"
                 [formControlName]="otherCriteria.Path"
+                class="w-100"
               ></vitamui-common-datepicker>
-            </ng-container>
-
-            <!--FIXME: what do we do with OBJECT type?-->
-          </div>
+            } @else {
+              <!--FIXME: what do we do with OBJECT type?-->
+            }
+          }
         </div>
-        <br />
       </div>
-    </div>
+    }
   </form>
 </div>

@@ -37,10 +37,17 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { Agency, ApplicationId, BreadCrumbData, TenantSelectionService, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
+import {
+  Agency,
+  ApplicationId,
+  BreadCrumbData,
+  TenantSelectionService,
+  VitamUICommonModule,
+  VitamUILibraryModule,
+  AgencyService,
+} from 'vitamui-library';
 import { agencyTemplate } from '../agency.template';
 import { of, switchMap } from 'rxjs';
-import { AgencyService } from '../agency.service';
 
 @Component({
   selector: 'app-view-agency',

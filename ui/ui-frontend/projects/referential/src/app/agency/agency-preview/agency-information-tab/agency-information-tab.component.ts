@@ -40,8 +40,7 @@ import { ActivatedRoute } from '@angular/router';
 import { finalize, Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
 import { isEmpty } from 'underscore';
-import { Agency, ApplicationId, diff, Role, SecurityService } from 'vitamui-library';
-import { AgencyService } from '../../agency.service';
+import { Agency, ApplicationId, diff, Role, SecurityService, AgencyService } from 'vitamui-library';
 
 @Component({
   selector: 'app-agency-information-tab',

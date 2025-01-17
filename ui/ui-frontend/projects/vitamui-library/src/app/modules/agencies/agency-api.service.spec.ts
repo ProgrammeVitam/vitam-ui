@@ -34,30 +34,27 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Inject, Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { BASE_URL } from 'vitamui-library';
-import { Observable } from 'rxjs';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { TestBed } from '@angular/core/testing';
+import { AgencyApiService } from './agency-api.service';
+import { InjectorModule } from '../helper/injector.module';
+import { LoggerModule } from '../logger';
+import { BASE_URL, ENVIRONMENT } from '../injection-tokens';
+import { environment } from '../../../environments/environment';
 
-export interface ArchiveUnitProfile {
-  id: string;
-  identifier: string;
-  name: string;
-}
+describe('AgencyApiService', () => {
+  beforeEach(() =>
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule, InjectorModule, LoggerModule.forRoot()],
+      providers: [
+        { provide: BASE_URL, useValue: '/fake-api' },
+        { provide: ENVIRONMENT, useValue: environment },
+      ],
+    }),
+  );
 
-@Injectable({
-  providedIn: 'root',
-})
-export class PuaService {
-  constructor(
-    @Inject(BASE_URL) private baseUrl: string,
-    private http: HttpClient,
-  ) {}
-
-  getAll(): Observable<ArchiveUnitProfile[]> {
-    const options = {
-      params: new HttpParams().set('embedded', 'ALL'),
-    };
-    return this.http.get<ArchiveUnitProfile[]>(`${this.baseUrl}/archival-profile`, options);
-  }
-}
+  it('should be created', () => {
+    const service: AgencyApiService = TestBed.inject(AgencyApiService);
+    expect(service).toBeTruthy();
+  });
+});

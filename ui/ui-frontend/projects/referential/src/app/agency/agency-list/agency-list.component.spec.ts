@@ -43,9 +43,8 @@ import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/
 import { ActivatedRoute } from '@angular/router';
 import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { EMPTY, of } from 'rxjs';
-import { AuthService, BASE_URL, LoggerModule, WINDOW_LOCATION } from 'vitamui-library';
+import { AuthService, BASE_URL, LoggerModule, WINDOW_LOCATION, AgencyService } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
-import { AgencyService } from '../agency.service';
 import { AgencyListComponent } from './agency-list.component';
 
 const authServiceMock = { user: { proofTenantIdentifier: '1' } };

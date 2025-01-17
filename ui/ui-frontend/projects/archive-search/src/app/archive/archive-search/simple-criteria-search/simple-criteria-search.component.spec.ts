@@ -49,10 +49,14 @@ import {
   ItemNode,
   SchemaElement,
   SchemaService,
+  AgenciesModule,
+  VitamUISnackBarService,
+  LoggerModule,
 } from 'vitamui-library';
 import { ArchiveSharedDataService } from '../../../core/archive-shared-data.service';
 import { ManagementRulesSharedDataService } from '../../../core/management-rules-shared-data.service';
 import { SimpleCriteriaSearchComponent } from './simple-criteria-search.component';
+import { MatLegacySnackBarModule } from '@angular/material/legacy-snack-bar';
 
 describe('SimpleCriteriaSearchComponent', () => {
   let component: SimpleCriteriaSearchComponent;
@@ -88,8 +92,16 @@ describe('SimpleCriteriaSearchComponent', () => {
         { provide: ManagementRulesSharedDataService, useValue: managementRulesSharedDataServiceMock },
         { provide: SchemaService, useValue: schemaServiceMock },
         { provide: BASE_URL, useValue: '/fake-api' },
+        VitamUISnackBarService,
       ],
-      imports: [HttpClientTestingModule, InjectorModule, TranslateModule.forRoot()],
+      imports: [
+        HttpClientTestingModule,
+        InjectorModule,
+        TranslateModule.forRoot(),
+        AgenciesModule,
+        MatLegacySnackBarModule,
+        LoggerModule.forRoot(),
+      ],
     }).compileComponents();
   });
 
@@ -151,7 +163,7 @@ describe('SimpleCriteriaSearchComponent', () => {
   });
 
   describe('DOM', () => {
-    it('should have 6 vitamui editables inputs and no formFieldValueWrapper when exact search on Title is disabled', () => {
+    it('should have 4 vitamui editables inputs and no formFieldValueWrapper when exact search on Title is disabled', () => {
       // Given
       schema.next([
         {
@@ -170,10 +182,10 @@ describe('SimpleCriteriaSearchComponent', () => {
       const formFieldValueWrapper = nativeElement.querySelectorAll('vitamui-form-field-value-wrapper');
 
       // Then
-      expect(editableInputs.length).toBe(6);
+      expect(editableInputs.length).toBe(4);
       expect(formFieldValueWrapper.length).toBe(0);
     });
-    it('should have 5 vitamui editables inputs and 1 formFieldValueWrapper when exact search on Title is enabled', () => {
+    it('should have 3 vitamui editables inputs and 1 formFieldValueWrapper when exact search on Title is enabled', () => {
       // Given
       schema.next([
         {
@@ -193,7 +205,7 @@ describe('SimpleCriteriaSearchComponent', () => {
       const formFieldValueWrapper = nativeElement.querySelectorAll('vitamui-form-field-value-wrapper');
 
       // Then
-      expect(editableInputs.length).toBe(5);
+      expect(editableInputs.length).toBe(3);
       expect(formFieldValueWrapper.length).toBe(1);
     });
   });

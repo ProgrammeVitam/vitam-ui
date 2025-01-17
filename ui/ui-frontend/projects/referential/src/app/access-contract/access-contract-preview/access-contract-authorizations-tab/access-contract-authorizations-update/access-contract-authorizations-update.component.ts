@@ -43,9 +43,9 @@ import {
   VitamuiSelectOptions,
   AccessContractDisplay,
   AccessContractService,
+  AgencyService,
 } from 'vitamui-library';
 import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
-import { AgencyService } from '../../../../agency/agency.service';
 import { RULE_TYPES } from '../../../../rule/rules.constants';
 
 @Component({

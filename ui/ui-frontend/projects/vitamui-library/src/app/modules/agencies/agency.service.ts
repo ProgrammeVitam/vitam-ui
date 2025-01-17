@@ -38,9 +38,13 @@ import { HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { from, mergeMap, Observable, of, Subject, toArray } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
-import { Agency, DownloadUtils, Option, SearchService, VitamuiHttpHeaders, VitamUISnackBarService } from 'vitamui-library';
-
-import { AgencyApiService } from '../core/api/agency-api.service';
+import { AgencyApiService } from './agency-api.service';
+import { SearchService } from '../vitamui-table';
+import { VitamUISnackBarService } from '../components/vitamui-snack-bar';
+import { Option } from '../components/autocomplete';
+import { DownloadUtils } from '../utils';
+import { VitamuiHttpHeaders } from '../vitamui-http-headers.enum';
+import { Agency } from '../../../lib/models/agency';
 
 @Injectable({
   providedIn: 'root',

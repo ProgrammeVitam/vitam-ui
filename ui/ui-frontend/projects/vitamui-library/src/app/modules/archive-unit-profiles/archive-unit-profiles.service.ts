@@ -34,58 +34,31 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { BASE_URL } from '../injection-tokens';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { Agency, BaseHttpClient, BASE_URL, PageRequest, PaginatedResponse } from 'vitamui-library';
 
-const HTTP_STATUS_OK = 200;
+export interface ArchiveUnitProfile {
+  id: string;
+  identifier: string;
+  name: string;
+}
 
 @Injectable({
   providedIn: 'root',
 })
-export class AgencyApiService extends BaseHttpClient<Agency> {
-  constructor(http: HttpClient, @Inject(BASE_URL) baseUrl: string) {
-    super(http, baseUrl + '/agency');
-  }
+export class ArchiveUnitProfilesService {
+  constructor(
+    private http: HttpClient,
+    @Inject(BASE_URL) private baseUrl: string,
+  ) {}
 
-  getAllByParams(params: HttpParams, headers?: HttpHeaders) {
-    return super.getAllByParams(params, headers);
-  }
+  getAll(): Observable<ArchiveUnitProfile[]> {
+    const options = {
+      params: new HttpParams().set('embedded', 'ALL'),
+    };
 
-  getAllPaginated(pageRequest: PageRequest, embedded?: string, headers?: HttpHeaders): Observable<PaginatedResponse<Agency>> {
-    return super.getAllPaginated(pageRequest, embedded, headers);
-  }
-
-  getOne(id: string, headers?: HttpHeaders): Observable<Agency> {
-    return super.getOne(id, headers);
-  }
-
-  patch(partialAgency: { id: string; [key: string]: any }, headers?: HttpHeaders): Observable<Agency> {
-    return super.patch(partialAgency, headers);
-  }
-
-  create(agency: Agency, headers?: HttpHeaders): Observable<Agency> {
-    return super.getHttp().post<any>(super.getApiUrl(), agency, { headers });
-  }
-
-  check(agency: Agency, headers?: HttpHeaders): Observable<boolean> {
-    return super
-      .getHttp()
-      .post<any>(super.getApiUrl() + '/check', agency, { observe: 'response', headers })
-      .pipe(map((response: HttpResponse<void>) => response.status === HTTP_STATUS_OK));
-  }
-
-  delete(id: string, headers?: HttpHeaders) {
-    return super.getHttp().delete(super.getApiUrl() + '/' + id, { headers });
-  }
-
-  export(headers?: HttpHeaders): Observable<any> {
-    return super.getHttp().get(super.getApiUrl() + '/export', {
-      headers,
-      observe: 'response',
-      responseType: 'blob',
-    });
+    return this.http.get<ArchiveUnitProfile[]>(`${this.baseUrl}/archival-profile`, options);
   }
 }

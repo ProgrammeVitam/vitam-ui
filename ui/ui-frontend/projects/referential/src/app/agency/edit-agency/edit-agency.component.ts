@@ -52,10 +52,10 @@ import {
   TypeService,
   VitamUICommonModule,
   VitamUILibraryModule,
+  AgencyService,
 } from 'vitamui-library';
 import { agencyTemplate } from '../agency.template';
 import { schema } from '../agency.schema';
-import { AgencyService } from '../agency.service';
 import { filter, finalize, of, Subscription, switchMap } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';

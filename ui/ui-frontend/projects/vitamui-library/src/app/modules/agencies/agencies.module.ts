@@ -34,25 +34,11 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { TestBed } from '@angular/core/testing';
-import { BASE_URL, ENVIRONMENT, InjectorModule, LoggerModule } from 'vitamui-library';
-import { environment } from '../../../environments/environment';
+import { NgModule } from '@angular/core';
 import { AgencyApiService } from './agency-api.service';
+import { AgencyService } from './agency.service';
 
-describe('AgencyApiService', () => {
-  beforeEach(() =>
-    TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, InjectorModule, LoggerModule.forRoot()],
-      providers: [
-        { provide: BASE_URL, useValue: '/fake-api' },
-        { provide: ENVIRONMENT, useValue: environment },
-      ],
-    }),
-  );
-
-  it('should be created', () => {
-    const service: AgencyApiService = TestBed.inject(AgencyApiService);
-    expect(service).toBeTruthy();
-  });
-});
+@NgModule({
+  providers: [AgencyApiService, AgencyService],
+})
+export class AgenciesModule {}

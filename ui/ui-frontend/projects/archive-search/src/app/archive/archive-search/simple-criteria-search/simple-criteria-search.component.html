@@ -1,235 +1,198 @@
 <div class="container">
-  <form [formGroup]="simpleCriteriaForm">
-    <div class="row">
-      <div class="col-11">
-        <div class="row justify-content-around margin-row">
-          <div class="col-6 form-control">
-            @if (titleSearchTypes) {
-              @if (titleSearchTypes?.length) {
-                <vitamui-form-field-value-wrapper formControlName="title">
-                  <vitamui-search-with-type-selector
-                    [placeholder]="'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.TITLE' | translate"
-                    [types]="titleSearchTypes"
-                    [(selectedType)]="titleSelectedType"
-                  ></vitamui-search-with-type-selector>
-                </vitamui-form-field-value-wrapper>
-              } @else {
-                <vitamui-common-editable-input
-                  formControlName="title"
-                  [validator]="title?.validator"
-                  [label]="'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.TITLE' | translate"
-                >
-                </vitamui-common-editable-input>
-              }
-            } @else {
-              <mat-spinner class="vitamui-spinner medium m-auto"></mat-spinner>
-            }
-          </div>
-          <div class="col-6 form-control">
-            <vitamui-common-editable-input
-              formControlName="description"
-              [validator]="description?.validator"
-              label="{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.DESCRIPTION' | translate }}"
-            >
-            </vitamui-common-editable-input>
-          </div>
+  <form [formGroup]="simpleCriteriaForm" class="p-4">
+    <div class="hgap-4 align-items-start pb-4">
+      @if (titleSearchTypes) {
+        @if (titleSearchTypes?.length) {
+          <vitamui-form-field-value-wrapper formControlName="title" class="w-100">
+            <vitamui-search-with-type-selector
+              [placeholder]="'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.TITLE' | translate"
+              [types]="titleSearchTypes"
+              [(selectedType)]="titleSelectedType"
+            ></vitamui-search-with-type-selector>
+          </vitamui-form-field-value-wrapper>
+        } @else {
+          <vitamui-common-editable-input
+            formControlName="title"
+            [validator]="title?.validator"
+            [label]="'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.TITLE' | translate"
+            class="w-100"
+          >
+          </vitamui-common-editable-input>
+        }
+      } @else {
+        <div class="d-flex justify-content-center w-100">
+          <mat-spinner class="vitamui-spinner medium m-auto"></mat-spinner>
         </div>
+      }
+      <vitamui-common-editable-input
+        formControlName="description"
+        label="{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.DESCRIPTION' | translate }}"
+        class="w-100"
+      >
+      </vitamui-common-editable-input>
+    </div>
 
-        <div class="row justify-content-around margin-row">
-          <div class="col-6 form-control">
-            <vitamui-common-editable-input
-              formControlName="guidopi"
-              [validator]="guidopi?.validator"
-              label="{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.GUID_OPI' | translate }}"
-            >
-            </vitamui-common-editable-input>
-          </div>
+    <div class="hgap-4 align-items-start pb-4">
+      <vitamui-common-editable-input
+        formControlName="guidopi"
+        label="{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.GUID_OPI' | translate }}"
+        class="w-100"
+      >
+      </vitamui-common-editable-input>
 
-          <div class="col-6 form-control">
-            <vitamui-common-editable-input
-              formControlName="guid"
-              [validator]="guid?.validator"
-              label="{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.UAID' | translate }}"
-            >
-            </vitamui-common-editable-input>
-            <i
-              class="vitamui-icon vitamui-icon-info-circle vitamui-row-icon icon-information"
-              [vitamuiCommonToolTip]="'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.GUIDS_SEPARATED' | translate"
-              [vitamuiCommonToolTipShowDelay]="300"
-            ></i>
-          </div>
-        </div>
+      <vitamui-common-editable-input
+        formControlName="guid"
+        [validator]="guid?.validator"
+        label="{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.UAID' | translate }}"
+        class="w-100"
+      >
+      </vitamui-common-editable-input>
+    </div>
 
-        <div class="row justify-content-around margin-row">
-          <div class="col-6 form-control">
-            <p class="title-text text uppercase">{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.SP' | translate }}</p>
-          </div>
-          <div class="col-6 form-control"></div>
-        </div>
+    <div class="hgap-4 align-items-start pb-4">
+      <vitamui-select
+        [multiple]="true"
+        [enableSelectAll]="false"
+        formControlName="agencies"
+        [options]="selectOptions.agency"
+        [placeholder]="'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.SP' | translate"
+        [searchBarPlaceHolder]="'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.SP_PLACEHOLDER' | translate"
+        class="w-100"
+      >
+      </vitamui-select>
+      <vitamui-select
+        [multiple]="true"
+        [enableSelectAll]="false"
+        formControlName="archiveUnitProfiles"
+        [options]="selectOptions.archiveUnitProfile"
+        [placeholder]="'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.AUP' | translate"
+        [searchBarPlaceHolder]="'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.AUP_PLACEHOLDER' | translate"
+        class="w-100"
+      >
+      </vitamui-select>
+    </div>
 
-        <div class="row justify-content-around margin-row">
-          <div class="col-6 form-control">
-            <vitamui-common-editable-input
-              formControlName="serviceProdCode"
-              [validator]="serviceProdCode?.validator"
-              label="{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.SP_CODE' | translate }}"
-            >
-            </vitamui-common-editable-input>
-          </div>
-
-          <div class="col-6 form-control">
-            <vitamui-common-editable-input
-              formControlName="serviceProdLabel"
-              [validator]="serviceProdLabel?.validator"
-              label="{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.SP_LABEL' | translate }}"
-            >
-            </vitamui-common-editable-input>
-          </div>
-        </div>
-
-        <div class="row justify-content-around margin-row">
-          <div class="col-6 form-control">
-            <p class="title-text text uppercase">{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.DATES' | translate }}</p>
-          </div>
-          <div class="col-6 form-control"></div>
-        </div>
-
-        <div class="row justify-content-around margin-row margin-bottom">
-          <div class="col-6 form-control">
-            <div class="vitamui-input" (click)="pickerBegin.open()">
-              <span *ngIf="!beginDt.value; else showBeginDt" (click)="pickerBegin.open()" class="search-date-label">{{
-                'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.START_DATE_SEARCH' | translate
-              }}</span>
-              <ng-template #showBeginDt
-                ><span (click)="pickerBegin.open()">{{ beginDt.value | dateTime: 'dd/MM/yyyy' }} </span>
-              </ng-template>
-              <input class="hidden" size="0" [matDatepicker]="pickerBegin" formControlName="beginDt" />
-              <mat-datepicker #pickerBegin></mat-datepicker>
-            </div>
-          </div>
-
-          <div class="col-6 form-control">
-            <div class="vitamui-input" (click)="pickerEnd.open()">
-              <span *ngIf="!endDt.value; else showEndDt" (click)="pickerEnd.open()" class="search-date-label">{{
-                'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.END_DATE_SEARCH' | translate
-              }}</span>
-              <ng-template #showEndDt
-                ><span (click)="pickerEnd.open()">{{ endDt.value | dateTime: 'dd/MM/yyyy' }} </span>
-              </ng-template>
-              <input class="hidden" size="0" [matDatepicker]="pickerEnd" formControlName="endDt" />
-              <mat-datepicker #pickerEnd></mat-datepicker>
-            </div>
-          </div>
-        </div>
-
-        <div class="row margin-row">
-          <div class="col-12 form-control">
-            <p class="title-text text uppercase">{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.UA_TYPE' | translate }}</p>
-          </div>
-        </div>
-        <div class="row margin-row">
-          <div class="col-4 form-control">
-            <div class="row padding-row">
-              <label class="criteria-checkbox-choice">
-                <input
-                  type="checkbox"
-                  (click)="addArchiveUnitTypeCriteria('ARCHIVE_UNIT_WITH_OBJECTS', $event)"
-                  [checked]="archiveUnitTypesCriteria.get('ARCHIVE_UNIT_WITH_OBJECTS')"
-                />
-                <span>{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.UNIT_TYPE.ARCHIVE_UNIT_WITH_OBJECTS' | translate }}</span>
-              </label>
-              <i class="vitamui-icon vitamui-icon-file vitamui-row-icon status-badge icon-large"></i>
-            </div>
-
-            <div class="row padding-row">
-              <label class="criteria-checkbox-choice">
-                <input
-                  type="checkbox"
-                  (click)="addArchiveUnitTypeCriteria('ARCHIVE_UNIT_WITHOUT_OBJECTS', $event)"
-                  [checked]="archiveUnitTypesCriteria.get('ARCHIVE_UNIT_WITHOUT_OBJECTS')"
-                />
-                <span>{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.UNIT_TYPE.ARCHIVE_UNIT_WITHOUT_OBJECTS' | translate }}</span>
-              </label>
-              <i class="vitamui-icon vitamui-icon-folder vitamui-row-icon status-badge icon-large"></i>
-            </div>
-          </div>
-          <div class="col-2 form-control">
-            <div class="row padding-row">
-              <label class="criteria-checkbox-choice">
-                <input
-                  type="checkbox"
-                  (click)="addArchiveUnitTypeCriteria('ARCHIVE_UNIT_HOLDING_UNIT', $event)"
-                  [checked]="archiveUnitTypesCriteria.get('ARCHIVE_UNIT_HOLDING_UNIT')"
-                />
-                <span>{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.UNIT_TYPE.ARCHIVE_UNIT_HOLDING_UNIT' | translate }}</span>
-              </label>
-
-              <i class="vitamui-icon vitamui-icon-ic24-arborescence vitamui-row-icon status-badge icon-large"></i>
-            </div>
-
-            <div class="row padding-row">
-              <label class="criteria-checkbox-choice">
-                <input
-                  type="checkbox"
-                  (click)="addArchiveUnitTypeCriteria('ARCHIVE_UNIT_FILING_UNIT', $event)"
-                  [checked]="archiveUnitTypesCriteria.get('ARCHIVE_UNIT_FILING_UNIT')"
-                />
-                <span>{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.UNIT_TYPE.ARCHIVE_UNIT_FILING_UNIT' | translate }}</span>
-              </label>
-              <i class="vitamui-icon vitamui-icon-plan-classement vitamui-row-icon status-badge icon-large"></i>
-            </div>
-          </div>
-        </div>
-        <div class="row margin-row">
-          <div class="col-12 form-control">
-            <p class="title-text text uppercase">{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.OTHER_FIELDS' | translate }}</p>
-          </div>
-        </div>
-
-        <div class="row margin-row">
-          @if (otherCriteriaOptions) {
-            <vitamui-common-autocomplete-multi-select-tree
-              formControlName="otherCriteriaList"
-              class="col-6 form-control"
-              [multiSelectOptions]="otherCriteriaOptions"
-              [getDisplayValue]="getOtherCriteriaDisplayValue"
-              [placeholder]="'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.OTHER_FIELDS' | translate"
-              [searchBarPlaceHolder]="'Entrer les premières lettres de votre recherche' | translate"
-            >
-            </vitamui-common-autocomplete-multi-select-tree>
-            <div class="col-6 form-control" formArrayName="otherCriteria">
-              @for (otherCriteria of otherCriteriaList.value; track otherCriteria.ApiPath) {
-                @if (['Title'].includes(otherCriteria.ApiPath) && titleSearchTypes?.length) {
-                  <vitamui-form-field-value-wrapper [formControlName]="otherCriteria.Path">
-                    <vitamui-search-with-type-selector
-                      [placeholder]="getCriteriaName(otherCriteria, otherCriteriaOptions)"
-                      [types]="titleSearchTypes"
-                      [(selectedType)]="titleSelectedType"
-                    ></vitamui-search-with-type-selector>
-                  </vitamui-form-field-value-wrapper>
-                } @else if (['TEXT', 'KEYWORD', 'BOOLEAN', 'LONG'].includes(otherCriteria.Type)) {
-                  <vitamui-common-editable-input
-                    [label]="getCriteriaName(otherCriteria, otherCriteriaOptions)"
-                    [formControlName]="otherCriteria.Path"
-                  >
-                  </vitamui-common-editable-input>
-                } @else if (['DATE'].includes(otherCriteria.Type)) {
-                  <vitamui-common-datepicker
-                    [label]="getCriteriaName(otherCriteria, otherCriteriaOptions)"
-                    [onlyDate]="false"
-                    [formControlName]="otherCriteria.Path"
-                  ></vitamui-common-datepicker>
-                } @else {
-                  <!--FIXME: what do we do with OBJECT type?-->
-                }
-              }
-            </div>
-          } @else {
-            <mat-spinner class="vitamui-spinner medium col-6 m-auto"></mat-spinner>
-          }
-        </div>
-        <br />
+    <div class="hgap-4 align-items-start">
+      <p class="title-text text uppercase">{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.DATES' | translate }}</p>
+    </div>
+    <div class="hgap-4 align-items-start pb-4">
+      <div class="vitamui-input" (click)="pickerBegin.open()">
+        <span *ngIf="!beginDt.value; else showBeginDt" (click)="pickerBegin.open()" class="search-date-label">{{
+          'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.START_DATE_SEARCH' | translate
+        }}</span>
+        <ng-template #showBeginDt
+          ><span (click)="pickerBegin.open()">{{ beginDt.value | dateTime: 'dd/MM/yyyy' }} </span>
+        </ng-template>
+        <input class="hidden" size="0" [matDatepicker]="pickerBegin" formControlName="beginDt" />
+        <mat-datepicker #pickerBegin></mat-datepicker>
+      </div>
+      <div class="vitamui-input" (click)="pickerEnd.open()">
+        <span *ngIf="!endDt.value; else showEndDt" (click)="pickerEnd.open()" class="search-date-label">{{
+          'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.END_DATE_SEARCH' | translate
+        }}</span>
+        <ng-template #showEndDt
+          ><span (click)="pickerEnd.open()">{{ endDt.value | dateTime: 'dd/MM/yyyy' }} </span>
+        </ng-template>
+        <input class="hidden" size="0" [matDatepicker]="pickerEnd" formControlName="endDt" />
+        <mat-datepicker #pickerEnd></mat-datepicker>
       </div>
     </div>
+    <div class="hgap-4 align-items-start">
+      <p class="title-text text uppercase">{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.UA_TYPE' | translate }}</p>
+    </div>
+    <div class="hgap-4 align-items-start pb-2 w-50">
+      <div class="d-flex align-items-center w-100">
+        <label class="criteria-checkbox-choice">
+          <input
+            type="checkbox"
+            (click)="addArchiveUnitTypeCriteria('ARCHIVE_UNIT_WITH_OBJECTS', $event)"
+            [checked]="archiveUnitTypesCriteria.get('ARCHIVE_UNIT_WITH_OBJECTS')"
+          />
+          <span>{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.UNIT_TYPE.ARCHIVE_UNIT_WITH_OBJECTS' | translate }}</span>
+        </label>
+        <i class="vitamui-icon vitamui-icon-file vitamui-row-icon status-badge icon-large ml-1"></i>
+      </div>
+      <div class="d-flex align-items-center w-100">
+        <label class="criteria-checkbox-choice">
+          <input
+            type="checkbox"
+            (click)="addArchiveUnitTypeCriteria('ARCHIVE_UNIT_HOLDING_UNIT', $event)"
+            [checked]="archiveUnitTypesCriteria.get('ARCHIVE_UNIT_HOLDING_UNIT')"
+          />
+          <span>{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.UNIT_TYPE.ARCHIVE_UNIT_HOLDING_UNIT' | translate }}</span>
+        </label>
+
+        <i class="vitamui-icon vitamui-icon-ic24-arborescence vitamui-row-icon status-badge icon-large"></i>
+      </div>
+    </div>
+    <div class="hgap-4 align-items-start pb-4 w-50">
+      <div class="d-flex align-items-center w-100">
+        <label class="criteria-checkbox-choice">
+          <input
+            type="checkbox"
+            (click)="addArchiveUnitTypeCriteria('ARCHIVE_UNIT_WITHOUT_OBJECTS', $event)"
+            [checked]="archiveUnitTypesCriteria.get('ARCHIVE_UNIT_WITHOUT_OBJECTS')"
+          />
+          <span>{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.UNIT_TYPE.ARCHIVE_UNIT_WITHOUT_OBJECTS' | translate }}</span>
+        </label>
+        <i class="vitamui-icon vitamui-icon-folder vitamui-row-icon status-badge icon-large ml-1"></i>
+      </div>
+      <div class="d-flex align-items-center w-100">
+        <label class="criteria-checkbox-choice">
+          <input
+            type="checkbox"
+            (click)="addArchiveUnitTypeCriteria('ARCHIVE_UNIT_FILING_UNIT', $event)"
+            [checked]="archiveUnitTypesCriteria.get('ARCHIVE_UNIT_FILING_UNIT')"
+          />
+          <span>{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.UNIT_TYPE.ARCHIVE_UNIT_FILING_UNIT' | translate }}</span>
+        </label>
+        <i class="vitamui-icon vitamui-icon-plan-classement vitamui-row-icon status-badge icon-large"></i>
+      </div>
+    </div>
+    <div class="hgap-4 align-items-start">
+      <p class="title-text text uppercase">{{ 'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.OTHER_FIELDS' | translate }}</p>
+    </div>
+    @if (otherCriteriaOptions) {
+      <div class="hgap-4 align-items-start align-items-start pb-4">
+        <vitamui-common-autocomplete-multi-select-tree
+          formControlName="otherCriteriaList"
+          class="w-100"
+          [multiSelectOptions]="otherCriteriaOptions"
+          [getDisplayValue]="getOtherCriteriaDisplayValue"
+          [placeholder]="'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.OTHER_FIELDS' | translate"
+          [searchBarPlaceHolder]="'Entrer les premières lettres de votre recherche' | translate"
+        >
+        </vitamui-common-autocomplete-multi-select-tree>
+        <div class="gap-4 w-100" formArrayName="otherCriteria">
+          @for (otherCriteria of otherCriteriaList.value; track otherCriteria.ApiPath) {
+            @if (['Title'].includes(otherCriteria.ApiPath) && titleSearchTypes?.length) {
+              <vitamui-form-field-value-wrapper [formControlName]="otherCriteria.Path" class="w-100">
+                <vitamui-search-with-type-selector
+                  [placeholder]="getCriteriaName(otherCriteria)"
+                  [types]="titleSearchTypes"
+                  [(selectedType)]="titleSelectedType"
+                ></vitamui-search-with-type-selector>
+              </vitamui-form-field-value-wrapper>
+            } @else if (['TEXT', 'KEYWORD', 'BOOLEAN', 'LONG'].includes(otherCriteria.Type)) {
+              <vitamui-common-editable-input [label]="getCriteriaName(otherCriteria)" [formControlName]="otherCriteria.Path" class="w-100">
+              </vitamui-common-editable-input>
+            } @else if (['DATE'].includes(otherCriteria.Type)) {
+              <vitamui-common-datepicker
+                [label]="getCriteriaName(otherCriteria)"
+                [onlyDate]="false"
+                [formControlName]="otherCriteria.Path"
+                class="w-100"
+              ></vitamui-common-datepicker>
+            } @else {
+              <!--FIXME: what do we do with OBJECT type?-->
+            }
+          }
+        </div>
+      </div>
+    } @else {
+      <div class="d-flex justify-content-center w-100">
+        <mat-spinner class="vitamui-spinner medium col-6 m-auto"></mat-spinner>
+      </div>
+    }
   </form>
 </div>

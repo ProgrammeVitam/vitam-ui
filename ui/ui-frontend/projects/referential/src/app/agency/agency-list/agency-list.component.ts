@@ -50,8 +50,8 @@ import {
   PageRequest,
   Role,
   SecurityService,
+  AgencyService,
 } from 'vitamui-library';
-import { AgencyService } from '../agency.service';
 
 const FILTER_DEBOUNCE_TIME_MS = 400;
 

@@ -62,5 +62,8 @@
       "title": "Organisation & droits utilisateurs",
       "order": 5
     }
-  ]
+  ],
+  "COLLECT": {
+    "OFFLINE_SERVICES": []
+  }
 }

@@ -39,7 +39,7 @@ import { AbstractControl, AsyncValidatorFn, ValidatorFn } from '@angular/forms';
 
 import { of, timer } from 'rxjs';
 import { map, switchMap, take } from 'rxjs/operators';
-import { AgencyService } from '../agency.service';
+import { AgencyService } from 'vitamui-library';
 
 @Injectable({
   providedIn: 'root',

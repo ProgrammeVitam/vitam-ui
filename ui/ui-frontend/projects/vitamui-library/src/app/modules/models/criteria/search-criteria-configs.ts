@@ -62,12 +62,12 @@ export const searchCriteriaConfigs: { [key: string]: Partial<SearchCriteriaAddAc
     operator: CriteriaOperator.LTE,
     dataType: CriteriaDataType.DATE,
   },
-  serviceProdCode: {
+  agencies: {
     keyElt: 'SP_CODE',
     keyTranslated: true,
   },
-  serviceProdLabel: {
-    keyElt: 'SP_LABEL',
+  archiveUnitProfiles: {
+    keyElt: 'ArchiveUnitProfile',
     keyTranslated: true,
   },
   guid: {

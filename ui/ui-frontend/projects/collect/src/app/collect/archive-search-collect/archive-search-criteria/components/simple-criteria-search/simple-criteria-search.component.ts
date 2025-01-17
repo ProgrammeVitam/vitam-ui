@@ -40,19 +40,25 @@ import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/fo
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
-import { debounceTime } from 'rxjs/operators';
+import { debounceTime, filter, map } from 'rxjs/operators';
 import {
   ActionOnCriteria,
+  AgencyService,
+  ArchiveUnitProfilesService,
+  ConfigService,
   CriteriaDataType,
   CriteriaOperator,
   CriteriaValue,
   ItemNode,
+  Option,
   SchemaElement,
   SchemaService,
   SearchCriteriaAddAction,
   searchCriteriaConfigs,
   SearchCriteriaEltDto,
   SearchCriteriaTypeEnum,
+  SearchProvider,
+  VitamuiSelectOptions,
 } from 'vitamui-library';
 import { ArchiveSearchConstsEnum } from '../../models/archive-search-consts-enum';
 import { ArchiveSharedDataService } from '../../services/archive-shared-data.service';
@@ -81,15 +87,56 @@ export class SimpleCriteriaSearchComponent implements OnInit {
   getOtherCriteriaDisplayValue = (element: SchemaElement) =>
     `${element.Origin === 'EXTERNAL' ? 'EXT-' : ''}${element.ShortName} - ${element.FieldName}`;
 
+  selectOptions = {
+    agency: { options: [] as Option[] },
+    archiveUnitProfile: { options: [] as Option[] },
+  } satisfies { [key: string]: VitamuiSelectOptions };
+  private offlineServices$: Observable<SearchProvider[]>;
+
   constructor(
-    private formBuilder: FormBuilder,
+    formBuilder: FormBuilder,
     private archiveExchangeDataService: ArchiveSharedDataService,
     public dialog: MatDialog,
     private managementRulesSharedDataService: ManagementRulesSharedDataService,
     private translateService: TranslateService,
-    private schemaService: SchemaService,
+    schemaService: SchemaService,
+    agencyService: AgencyService,
+    archiveUnitProfilesService: ArchiveUnitProfilesService,
+    configService: ConfigService,
   ) {
-    this.otherCriteriaOptions$ = this.schemaService.getDescriptiveSchemaTree();
+    this.otherCriteriaOptions$ = schemaService.getDescriptiveSchemaTree();
+    this.offlineServices$ = configService.config$
+      .pipe(map((configuration) => configuration.COLLECT))
+      .pipe(map((config) => config?.OFFLINE_SERVICES));
+
+    agencyService
+      .getAll()
+      .pipe(
+        map(
+          (agencies): VitamuiSelectOptions => ({
+            options: agencies.map((agency) => ({
+              key: agency.identifier,
+              label: `${agency.identifier} - ${agency.name}`,
+              info: agency.description,
+            })),
+          }),
+        ),
+      )
+      .subscribe((options) => (this.selectOptions.agency = options));
+
+    archiveUnitProfilesService
+      .getAll()
+      .pipe(
+        map(
+          (archiveUnitProfiles): VitamuiSelectOptions => ({
+            options: archiveUnitProfiles.map((archiveUnitProfile) => ({
+              key: archiveUnitProfile.identifier,
+              label: `${archiveUnitProfile.identifier} - ${archiveUnitProfile.name}`,
+            })),
+          }),
+        ),
+      )
+      .subscribe((options) => (this.selectOptions.archiveUnitProfile = options));
 
     this.translateService.onLangChange.subscribe(() => {
       if (this.archiveUnitTypesCriteria.get(ARCHIVE_UNIT_WITH_OBJECTS)) {
@@ -101,15 +148,13 @@ export class SimpleCriteriaSearchComponent implements OnInit {
       }
     });
 
-    const otherCriteriaListControl = this.formBuilder.control<SchemaElement[]>([]);
-    const otherCriteriaControl = this.formBuilder.group({});
+    const otherCriteriaListControl = formBuilder.control<SchemaElement[]>([]);
+    const otherCriteriaControl = formBuilder.group({});
 
-    this.simpleCriteriaForm = this.formBuilder.group({
+    this.simpleCriteriaForm = formBuilder.group({
       title: ['', []],
       description: ['', []],
       guid: ['', [Validators.pattern('^[a-z0-9_, ]+')]],
-      serviceProdLabel: ['', []],
-      serviceProdCode: ['', []],
       beginDt: ['', []],
       endDt: ['', []],
       otherCriteriaList: otherCriteriaListControl,
@@ -132,16 +177,38 @@ export class SimpleCriteriaSearchComponent implements OnInit {
       });
     });
 
-    Object.entries(this.simpleCriteriaForm.controls)
-      .filter(([key, _value]) => !['otherCriteriaList'].includes(key))
-      .forEach(([key, control]) => {
-        control.valueChanges.pipe(debounceTime(ArchiveSearchConstsEnum.UPDATE_DEBOUNCE_TIME)).subscribe((value) => {
-          if (value) {
-            this.addCriteriaFromObject({ [key]: value });
-            control.reset(undefined, { emitEvent: false });
-          }
+    this.offlineServices$.subscribe((offlineServices) => {
+      const isAgenciesOffline = offlineServices?.includes('agencies');
+      const isPUAOffline = offlineServices?.includes('archive-unit-profiles');
+
+      this.simpleCriteriaForm.addControl('agencies', formBuilder.control([], { updateOn: isAgenciesOffline ? 'change' : 'blur' }));
+      this.simpleCriteriaForm.addControl('archiveUnitProfiles', formBuilder.control([], { updateOn: isPUAOffline ? 'change' : 'blur' }));
+
+      const complexInputs = ['otherCriteriaList'];
+      const splittableInputs = ['guid'];
+      if (isAgenciesOffline) splittableInputs.push('agencies');
+      if (isPUAOffline) splittableInputs.push('archiveUnitProfiles');
+
+      Object.entries(this.simpleCriteriaForm.controls)
+        .filter(([key, _value]) => !complexInputs.includes(key))
+        .forEach(([key, control]) => {
+          control.valueChanges
+            .pipe(
+              debounceTime(ArchiveSearchConstsEnum.UPDATE_DEBOUNCE_TIME),
+              filter((value) => Boolean(value)),
+            )
+            .subscribe((value) => {
+              const isSplittable = splittableInputs.includes(key);
+              if (isSplittable) {
+                const fragments = (value as string).split(',');
+                fragments.forEach((fragment) => this.addCriteriaFromObject({ [key]: fragment }));
+              } else {
+                this.addCriteriaFromObject({ [key]: value });
+              }
+              control.reset(undefined, { emitEvent: false });
+            });
         });
-      });
+    });
 
     this.archiveExchangeDataService.receiveRemoveFromChildSearchCriteriaSubject().subscribe((criteria) => {
       if (criteria) {
@@ -158,12 +225,7 @@ export class SimpleCriteriaSearchComponent implements OnInit {
     Object.entries(object)
       .filter(([_key, value]) => !!value)
       .forEach(([key, value]) => {
-        if (key === 'guid' && value.toString().includes(',')) {
-          value
-            .toString()
-            .split(',')
-            .forEach((v) => this.addCriteriaFromObject({ guid: v }));
-        } else if (typeof value === 'string' || value instanceof Date) {
+        if (typeof value === 'string' || value instanceof Date) {
           const criteriaValue = value instanceof Date ? value.toISOString() : value.trim();
           const defaultSearchCriteriaAddAction: Partial<SearchCriteriaAddAction> = {
             valueElt: { value: criteriaValue, id: criteriaValue },
@@ -184,6 +246,8 @@ export class SimpleCriteriaSearchComponent implements OnInit {
             valueTranslated: this.isValueTranslated(searchCriteriaAddAction.keyElt),
           };
           this.archiveExchangeDataService.addSimpleSearchCriteriaSubject(searchCriteria);
+        } else if (value instanceof Array && value.length) {
+          value.forEach((v) => this.addCriteriaFromObject({ [key]: v }));
         } else if (typeof value === 'object' && Object.entries(value).length) {
           this.addCriteriaFromObject(value);
         } else {
@@ -195,6 +259,7 @@ export class SimpleCriteriaSearchComponent implements OnInit {
   isValueTranslated(criteria: string) {
     return criteria === FINAL_ACTION_TYPE || criteria === ALL_ARCHIVE_UNIT_TYPES;
   }
+
   ngOnInit() {
     this.managementRulesSharedDataService.getCriteriaSearchListToSave().subscribe((data) => {
       this.criteriaSearchListToSave = data;
@@ -293,7 +358,10 @@ export class SimpleCriteriaSearchComponent implements OnInit {
             SearchCriteriaTypeEnum.FIELDS,
           );
         } else {
-          this.emitRemoveCriteriaEvent(ALL_ARCHIVE_UNIT_TYPES, { value: ARCHIVE_UNIT_WITH_OBJECTS, id: ARCHIVE_UNIT_WITH_OBJECTS });
+          this.emitRemoveCriteriaEvent(ALL_ARCHIVE_UNIT_TYPES, {
+            value: ARCHIVE_UNIT_WITH_OBJECTS,
+            id: ARCHIVE_UNIT_WITH_OBJECTS,
+          });
         }
         break;
       case ARCHIVE_UNIT_WITHOUT_OBJECTS:
@@ -309,7 +377,10 @@ export class SimpleCriteriaSearchComponent implements OnInit {
             SearchCriteriaTypeEnum.FIELDS,
           );
         } else {
-          this.emitRemoveCriteriaEvent(ALL_ARCHIVE_UNIT_TYPES, { value: ARCHIVE_UNIT_WITHOUT_OBJECTS, id: ARCHIVE_UNIT_WITHOUT_OBJECTS });
+          this.emitRemoveCriteriaEvent(ALL_ARCHIVE_UNIT_TYPES, {
+            value: ARCHIVE_UNIT_WITHOUT_OBJECTS,
+            id: ARCHIVE_UNIT_WITHOUT_OBJECTS,
+          });
         }
         break;
       default:
@@ -318,7 +389,11 @@ export class SimpleCriteriaSearchComponent implements OnInit {
   }
 
   emitRemoveCriteriaEvent(keyElt: string, valueElt?: CriteriaValue) {
-    this.archiveExchangeDataService.sendRemoveFromChildSearchCriteriaAction({ keyElt, valueElt, action: ActionOnCriteria.REMOVE });
+    this.archiveExchangeDataService.sendRemoveFromChildSearchCriteriaAction({
+      keyElt,
+      valueElt,
+      action: ActionOnCriteria.REMOVE,
+    });
   }
 
   manageUnitObjectUnitCriteria(unitObjectProperty: string) {
@@ -336,30 +411,32 @@ export class SimpleCriteriaSearchComponent implements OnInit {
     this.archiveUnitTypesCriteria.set(unitObjectProperty, true);
   }
 
+  isProvided(service: SearchProvider): Observable<boolean> {
+    return this.offlineServices$.pipe(map((offlineServices) => !offlineServices?.includes(service)));
+  }
+
   get guid() {
     return this.simpleCriteriaForm.controls.guid;
   }
+
   get archiveCriteria() {
     return this.simpleCriteriaForm.controls.archiveCriteria;
   }
+
   get title() {
     return this.simpleCriteriaForm.controls.title;
   }
+
   get description() {
     return this.simpleCriteriaForm.controls.description;
   }
+
   get beginDt() {
     return this.simpleCriteriaForm.controls.beginDt;
   }
+
   get endDt() {
     return this.simpleCriteriaForm.controls.endDt;
-  }
-  get serviceProdLabel() {
-    return this.simpleCriteriaForm.controls.serviceProdLabel;
-  }
-
-  get serviceProdCode() {
-    return this.simpleCriteriaForm.controls.serviceProdCode;
   }
 
   get otherCriteriaList(): AbstractControl<SchemaElement[]> {
