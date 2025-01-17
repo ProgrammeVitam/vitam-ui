@@ -2,4 +2,4 @@
 
 - name: "Execute uninstall for {{ uninstaller_type }}"
   include_tasks: "{{ uninstaller_type }}.yml"
-  when: "{{ lookup('pipe', 'test -f {{ role_path }}/tasks/{{ uninstaller_type }}.yml || echo nofile') == \"\" }}"
+  when: lookup('pipe', 'test -f {{ role_path }}/tasks/{{ uninstaller_type }}.yml || echo nofile') == ''
