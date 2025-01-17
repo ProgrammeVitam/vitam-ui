@@ -1,0 +1,9 @@
+<mat-tab-group [(selectedIndex)]="tabIndex" class="vitamui-tab-group" (selectedTabChange)="changeTab($event)">
+  <mat-tab [label]="'ONTOLOGY.VOCABULARIES' | translate">
+    <app-ontology-list (ontologyClick)="ontologyClick.emit($event)" [searchText]="searchText"></app-ontology-list>
+  </mat-tab>
+
+  <mat-tab [label]="'ONTOLOGY.SCHEMA' | translate">
+    <app-schema-list [searchText]="searchText"></app-schema-list>
+  </mat-tab>
+</mat-tab-group>

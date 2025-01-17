@@ -1,0 +1,102 @@
+<div vitamuiCommonInfiniteScroll (vitamuiScroll)="onScroll()">
+  <table>
+    <thead>
+      <tr>
+        <!-- COL 1: NOM -->
+        <th>
+          <span>
+            {{ 'ONTOLOGY.HOME.ARRAY.NAME' | translate }}
+            <vitamui-common-order-by-button
+              [orderByKey]="shortName"
+              [(direction)]="direction"
+              [(orderBy)]="orderBy"
+              (orderChange)="emitOrderChange()"
+            ></vitamui-common-order-by-button>
+          </span>
+        </th>
+        <!-- COL 2: IDENTIFIANT -->
+        <th>
+          <span>
+            {{ 'ONTOLOGY.HOME.ARRAY.IDENTIFIER' | translate }}
+            <vitamui-common-order-by-button
+              [orderByKey]="identifier"
+              [(direction)]="direction"
+              [(orderBy)]="orderBy"
+              (orderChange)="emitOrderChange()"
+            ></vitamui-common-order-by-button>
+          </span>
+        </th>
+        <!-- COL 3: DESCRIPTION -->
+        <th>
+          <span>{{ 'ONTOLOGY.HOME.ARRAY.DESCRIPTION' | translate }}</span>
+        </th>
+        <!-- COL 4: DATE -->
+        <th>
+          <span class="no-wrap">
+            {{ 'ONTOLOGY.HOME.ARRAY.CREATION_DATE' | translate }}
+            <vitamui-common-order-by-button
+              [orderByKey]="creationDate"
+              [(direction)]="direction"
+              [(orderBy)]="orderBy"
+              (orderChange)="emitOrderChange()"
+            ></vitamui-common-order-by-button>
+          </span>
+        </th>
+        <!-- COL 5: HIDDEN DELETE BUTTON -->
+        <th></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      @for (ontology of dataSource; track ontology) {
+        <tr class="clickable" [class.selected]="(ontologyService.selectedId$ | async) === ontology.id" (click)="selectLine(ontology)">
+          <!-- COL 1: NOM -->
+          <td>{{ ontology.shortName }}</td>
+          <!-- COL 2: IDENTIFIANT -->
+          <td>{{ ontology.identifier }}</td>
+          <!-- COL 3: DESCRIPTION -->
+          <td>{{ ontology.description }}</td>
+          <!-- COL 4: DATE -->
+          <td>
+            <div>{{ ontology.creationDate | dateTime: 'dd/MM/yyyy' | empty }}</div>
+          </td>
+          <!-- COL 5: HIDDEN DELETE BUTTON -->
+          <td class="delete-button">
+            <div>
+              @if (ontology.origin === 'EXTERNAL') {
+                <button class="btn btn-circle primary" (click)="$event.stopPropagation(); deleteOntologyDialog(ontology)">
+                  <i class="vitamui-icon vitamui-icon-delete btn-icon"></i>
+                </button>
+              }
+            </div>
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+  @if (!dataSource || pending) {
+    <ng-container *ngTemplateOutlet="loadingSpinner"></ng-container>
+  }
+  @if (!pending && dataSource?.length === 0) {
+    <ng-container *ngTemplateOutlet="noResults"></ng-container>
+  }
+  @if (infiniteScrollDisabled && ontologyService.canLoadMore && !pending) {
+    <ng-container *ngTemplateOutlet="loadMore"></ng-container>
+  }
+</div>
+
+<ng-template #noResults>
+  <div class="vitamui-min-content vitamui-table-message">{{ 'COMMON.NO_RESULT' | translate }}</div>
+</ng-template>
+
+<ng-template #loadMore>
+  <div class="vitamui-min-content vitamui-table-message" (click)="ontologyService.loadMore()">
+    <span class="clickable">{{ 'COMMON.SHOW_MORE_RESULTS' | translate }}</span>
+  </div>
+</ng-template>
+
+<ng-template #loadingSpinner>
+  <div class="vitamui-min-content">
+    <mat-spinner class="vitamui-spinner medium"></mat-spinner>
+  </div>
+</ng-template>

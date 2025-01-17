@@ -38,12 +38,12 @@ import { HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { Id, PaginatedApi } from '../';
+import { PaginatedApi } from '../';
 import { Direction } from './direction.enum';
 import { DEFAULT_PAGE_SIZE, PageRequest } from './page-request.model';
 import { PaginatedResponse } from './paginated-response.interface';
 
-export class SearchService<T extends Id> {
+export class SearchService<T> {
   protected pageRequest: PageRequest;
   totalElements: number;
   protected hasMore: boolean;

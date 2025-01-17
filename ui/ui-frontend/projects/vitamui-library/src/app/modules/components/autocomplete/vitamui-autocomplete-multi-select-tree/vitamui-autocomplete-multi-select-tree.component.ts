@@ -45,8 +45,8 @@ import {
   Injector,
   Input,
   OnDestroy,
-  ViewChild,
   OnInit,
+  ViewChild,
 } from '@angular/core';
 import {
   AbstractControl,
@@ -68,24 +68,8 @@ import { partition } from 'lodash-es';
 import { Subject, Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, map } from 'rxjs/operators';
 import { AbstractFormInputDirective } from '../../../../../lib/components/abstract-form-input.directive';
+import { ItemFlatNode, ItemNode } from '../utils/item-node.interface';
 import { normalizeString } from '../../../../../lib/utils/string.util';
-
-/**
- * Node for item
- */
-export class ItemNode<T> {
-  children: ItemNode<T>[];
-  item: T;
-}
-
-/** Flat item node with expandable and level information */
-class ItemFlatNode<T> {
-  id: string;
-  item: T;
-  level: number;
-  expandable: boolean;
-  display: boolean;
-}
 
 @Component({
   selector: 'vitamui-common-autocomplete-multi-select-tree',

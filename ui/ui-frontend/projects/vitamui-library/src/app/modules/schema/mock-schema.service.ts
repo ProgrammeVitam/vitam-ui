@@ -40,8 +40,8 @@ import { Collection, Schema, SchemaElement } from '../models';
 import { ProfiledSchemaElement } from '../object-viewer/models';
 import { Control } from '../models/schema/control.model';
 import { EffectiveCardinality } from '../object-viewer/types';
-import { ItemNode } from '../components/autocomplete';
 import { map } from 'rxjs/operators';
+import { ItemNode } from '../components/autocomplete/utils/item-node.interface';
 
 @Injectable()
 export class MockSchemaService {
