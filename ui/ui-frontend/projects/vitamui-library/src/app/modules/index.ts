@@ -80,6 +80,7 @@ export * from './components/accordion/accordion.component';
 export * from './components/application/index';
 export * from './components/autocomplete';
 export * from './components/cancelled-snack-bar/index';
+export * from './components/badge/badge.component';
 export * from './components/chip/chip.component';
 export * from './components/collapse/collapse.module';
 export * from './components/confirm-dialog/index';

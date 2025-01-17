@@ -113,6 +113,7 @@ import { SecurityModule } from './security/security.module';
 import { StartupService } from './startup.service';
 import { SubrogationModule } from './subrogation/subrogation.module';
 import { VitamUIHttpInterceptor } from './vitamui-http-interceptor';
+import { BadgeComponent } from './components/badge/badge.component';
 
 export function loadConfigFactory(configService: ConfigService, environment: any) {
   const p = () => configService.load(environment.configUrls).toPromise();
@@ -206,6 +207,7 @@ export function startupServiceFactory(startupService: StartupService, authServic
     VitamUISnackBarModule,
     FileSelectorComponent,
     ChipComponent,
+    BadgeComponent,
   ],
   exports: [
     AccordionModule,
@@ -271,6 +273,7 @@ export function startupServiceFactory(startupService: StartupService, authServic
     VitamuiTreeNodeModule,
     FileSelectorComponent,
     ChipComponent,
+    BadgeComponent,
   ],
 })
 export class VitamUICommonModule {

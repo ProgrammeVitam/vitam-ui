@@ -50,6 +50,7 @@ import { TranslationComponent } from './components/translation/translation.compo
 import { TypographyComponent } from './components/tokens/typography/typography.component';
 import { DesignSystemComponent } from './components/design-system/design-system.component';
 import { DesignSystemChipsComponent } from './components/atoms/chips/design-system-chips.component';
+import { DesignSystemBadgesComponent } from './components/atoms/badges/design-system-badges.component';
 import { SpacingComponent } from './components/tokens/spacing/spacing.component';
 import { DesignSystemCheckboxComponent } from './components/molecules/inputs/checkbox/design-system-checkbox.component';
 import { DesignSystemSelectComponent } from './components/molecules/inputs/select/design-system-select.component';
@@ -87,6 +88,7 @@ const routes: Routes = [
       { path: '', redirectTo: 'buttons', pathMatch: 'full' },
       { path: 'buttons', component: ButtonsComponent },
       { path: 'chips', component: DesignSystemChipsComponent },
+      { path: 'badges', component: DesignSystemBadgesComponent },
       { path: 'icons', component: IconsComponent },
       { path: 'tooltip', component: TooltipComponent },
     ],

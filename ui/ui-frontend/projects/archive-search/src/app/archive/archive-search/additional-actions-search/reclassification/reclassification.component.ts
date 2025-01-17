@@ -99,6 +99,9 @@ export class ReclassificationComponent implements OnInit, OnDestroy {
   archiveUnitAllunitup: string[];
   archiveUnitFetchedParents: Array<{ title: string; id: string }> = [];
   subscriptionAuTitle: Subscription;
+  badgeMessageMoreThan: string;
+  badgeMessageIncluding: string;
+  space = ' ';
 
   archiveUnits: Unit[];
 
@@ -179,10 +182,6 @@ export class ReclassificationComponent implements OnInit, OnDestroy {
       }
     });
 
-    // this.targetGuidFiling.valueChanges.subscribe((value) => {
-    //   this.form.get('targetGuid').setValue(value.included[0]);
-    // });
-
     this.actionToFilterOptions = {
       options: this.actions,
     };
@@ -204,6 +203,13 @@ export class ReclassificationComponent implements OnInit, OnDestroy {
       }
     });
     this.calculateChilds();
+
+    this.badgeMessageMoreThan =
+      this.translateService.instant('ARCHIVE_SEARCH.MORE_THAN') +
+      this.space +
+      this.totalChilds +
+      this.space +
+      this.translateService.instant('RECLASSIFICATION.FIRST_STEP.CHILDS');
   }
 
   public getStepCount() {
@@ -230,6 +236,9 @@ export class ReclassificationComponent implements OnInit, OnDestroy {
     this.archiveService.searchArchiveUnitsByCriteria(searchCriteria).subscribe(
       (pagedResult: PagedResult) => {
         this.totalChilds = pagedResult.totalResults;
+        this.badgeMessageIncluding = this.translateService.instant('RECLASSIFICATION.FIRST_STEP.INCLUDING_NB_FOLDERS_DOCUMENTS', {
+          nbDocuments: this.totalChilds,
+        });
         this.pendingGetChilds = false;
       },
       (error: HttpErrorResponse) => {

@@ -10,16 +10,14 @@
         <div class="text large bold mb-3">{{ 'RECLASSIFICATION.FIRST_STEP.SUBTITLE' | translate }}</div>
         {{ itemSelected }}
         {{ itemSelected | i18nPlural: selectedUnitMap | translate }}
-        <div *ngIf="totalChilds !== null && totalChilds === 10000 && !waitingForLoadExactTotalTrackHits && !precided">
+        <div *ngIf="totalChilds !== null && totalChilds === 10000 && !waitingForLoadExactTotalTrackHits && !precided" class="mb-4">
           <a
             class="link-without-underline"
             (click)="loadExactCount()"
             [vitamuiCommonToolTip]="'ARCHIVE_SEARCH.RETRIEVE_EXACT_COUNT' | translate"
             [vitamuiCommonToolTipShowDelay]="300"
           >
-            <span *ngIf="!pendingGetChilds" class="badge badge-secondary pad"
-              >{{ 'ARCHIVE_SEARCH.MORE_THAN' | translate }} {{ totalChilds }} {{ 'RECLASSIFICATION.FIRST_STEP.CHILDS' | translate }}</span
-            >
+            <vitamui-badge *ngIf="!pendingGetChilds" [text]="badgeMessageMoreThan" color="red" decoration="filled"></vitamui-badge>
           </a>
         </div>
         <mat-spinner
@@ -30,24 +28,20 @@
         ></mat-spinner>
 
         <div class="col-8" *ngIf="waitingForLoadExactTotalTrackHits">
-          <ng-container *ngIf="!pendingGetFixedCount && !pending">
+          <ng-container *ngIf="!pendingGetFixedCount && !pending" class="mb-4">
             <a
               class="link-without-underline"
               (click)="loadExactCount()"
               [vitamuiCommonToolTip]="'ARCHIVE_SEARCH.RETRIEVE_EXACT_COUNT' | translate"
               [vitamuiCommonToolTipShowDelay]="300"
             >
-              <span *ngIf="!pendingGetChilds" class="badge badge-secondary pad"
-                >{{ 'ARCHIVE_SEARCH.MORE_THAN' | translate }} {{ totalChilds }} {{ 'RECLASSIFICATION.FIRST_STEP.CHILDS' | translate }}</span
-              >
+              <vitamui-badge *ngIf="!pendingGetChilds" [text]="badgeMessageMoreThan" color="red" decoration="filled"></vitamui-badge>
             </a>
           </ng-container>
         </div>
 
-        <div *ngIf="precided || 1000 > totalChilds">
-          <span *ngIf="!pendingGetChilds" class="badge badge-secondary pad">
-            {{ 'RECLASSIFICATION.FIRST_STEP.INCLUDING_NB_FOLDERS_DOCUMENTS' | translate: { nbDocuments: totalChilds } }}</span
-          >
+        <div *ngIf="precided || 1000 > totalChilds" class="mb-4">
+          <vitamui-badge *ngIf="!pendingGetChilds" [text]="badgeMessageIncluding" color="red" decoration="filled"></vitamui-badge>
         </div>
 
         <div class="text medium mb-2">
