@@ -113,7 +113,6 @@ export class SchemaService {
         const rootNode = schema
           .filter((e) => e.FieldName !== '_sp' && e.FieldName !== '_sps')
           .reduce(this.buildTreeReducer, { children: [] } as ItemNode<SchemaElement>);
-        this.removeLeavesWithTypeObject(rootNode);
         this.recursiveSort(rootNode);
         return rootNode.children;
       }),
