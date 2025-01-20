@@ -60,13 +60,16 @@ export class ZipFile {
   }
 
   addFiles(files: FileList | File[]): ZipFile {
-    if (files.length === 0) {
-      return this;
-    }
-    for (let i = 0; i < files.length; i++) {
-      const item = files[i];
-      this.zipFile.file(item.webkitRelativePath, item);
-      this.zipFileStatus.size += item.size;
+    if (!files?.length) return this;
+
+    for (const item of Array.isArray(files) ? files : Array.from(files)) {
+      if (item instanceof File) {
+        const filePath = item.webkitRelativePath || item.name;
+        if (filePath) {
+          this.zipFile.file(filePath, item);
+          this.zipFileStatus.size += item.size;
+        }
+      }
     }
     return this;
   }

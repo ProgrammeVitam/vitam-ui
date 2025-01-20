@@ -94,16 +94,26 @@ export class FileSelectorComponent {
     this.resetInput();
   }
 
-  private getDirectory(files: FileList | File[]): DisplayFile {
-    let path = files[0].webkitRelativePath;
-    if (path.indexOf('/') !== -1) {
-      path = path.split('/')[0];
+  private getDirectory(files: FileList | File[]): DisplayFile | null {
+    if (!files || files.length === 0) return null;
+
+    const firstFile = files[0];
+    const relativePath = firstFile.webkitRelativePath;
+
+    if (relativePath && relativePath.includes('/')) {
+      const directoryName = relativePath.split('/')[0];
+
+      const totalSize = Array.from(files).reduce((total, file) => {
+        return total + (file.size || 0);
+      }, 0);
+
       return {
-        name: path,
-        size: Array.from(files).reduce((acc, file) => acc + file.size, 0),
+        name: directoryName,
+        size: totalSize,
         directory: true,
       };
     }
+
     return null;
   }
 
