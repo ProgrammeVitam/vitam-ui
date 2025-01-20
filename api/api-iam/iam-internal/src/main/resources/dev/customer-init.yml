@@ -24,15 +24,6 @@ customer-init:
         - ROLE_UPDATE_FILE_FORMATS
         - ROLE_DELETE_FILE_FORMATS
 
-    - name: Profil pour la gestion des ontologies
-      description: Gestion des ontologies dans Vitam
-      app-name: ONTOLOGY_APP
-      level:
-      roles:
-        - ROLE_GET_ONTOLOGIES
-        - ROLE_CREATE_ONTOLOGIES
-        - ROLE_DELETE_ONTOLOGIES
-
     - name: Profil pour la gestion des contrats des contextes
       description: Gestion des contrats des contextes dans Vitam
       app-name: CONTEXTS_APP
@@ -371,6 +362,13 @@ customer-init:
         - ROLE_IMPORT_ARCHIVE_PROFILES
         - ROLE_DELETE_ARCHIVE_PROFILES
 
+    - name: Profil pour la consultation des ontologies et gestion des schémas
+      description: Consultation des ontologies et gestion des schémas
+      app-name: ONTOLOGY_APP
+      level:
+      roles:
+        - ROLE_GET_ONTOLOGIES
+        - ROLE_IMPORT_ONTOLOGY
   #- name: profileName
   #  description: desc
   #  level: 1

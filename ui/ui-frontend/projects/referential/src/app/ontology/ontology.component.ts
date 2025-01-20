@@ -54,17 +54,17 @@ import { Observable } from 'rxjs';
   styleUrls: ['./ontology.component.scss'],
 })
 export class OntologyComponent extends SidenavPage<Ontology> implements OnInit {
+  @ViewChild(OntologyListComponent, { static: true }) ontologyListComponent: OntologyListComponent;
   search = '';
   filters: string;
   tenantId: number;
-  checkImportOntology = new Observable<boolean>();
-  checkImportSchema = new Observable<boolean>();
-
-  @ViewChild(OntologyListComponent, { static: true }) ontologyListComponent: OntologyListComponent;
+  canImportOntology$: Observable<boolean>;
+  canImportSchema$: Observable<boolean>;
+  canCreateVocabulary$: Observable<boolean>;
 
   constructor(
     public dialog: MatDialog,
-    route: ActivatedRoute,
+    private route: ActivatedRoute,
     globalEventService: GlobalEventService,
     private translateService: TranslateService,
     private securityService: SecurityService,
@@ -72,9 +72,26 @@ export class OntologyComponent extends SidenavPage<Ontology> implements OnInit {
     super(route, globalEventService);
   }
 
-  ngOnInit() {
-    this.checkImportSchema = this.securityService.hasRole(ApplicationId.ONTOLOGY_APP, this.tenantId, Role.ROLE_IMPORT_SCHEMA);
-    this.checkImportOntology = this.securityService.hasRole(ApplicationId.ONTOLOGY_APP, this.tenantId, Role.ROLE_IMPORT_ONTOLOGY);
+  ngOnInit(): void {
+    this.initializeTenantId();
+    this.initializePermissions();
+    this.subscribeToTenantChanges();
+  }
+
+  private initializeTenantId(): void {
+    this.route.params.subscribe((params) => {
+      this.tenantId = +params.tenantIdentifier;
+    });
+  }
+
+  private subscribeToTenantChanges(): void {
+    this.globalEventService.tenantEvent.subscribe(() => this.refreshList());
+  }
+
+  private initializePermissions(): void {
+    this.canImportSchema$ = this.securityService.hasRole(ApplicationId.ONTOLOGY_APP, this.tenantId, Role.ROLE_IMPORT_SCHEMA);
+    this.canImportOntology$ = this.securityService.hasRole(ApplicationId.ONTOLOGY_APP, this.tenantId, Role.ROLE_IMPORT_ONTOLOGY);
+    this.canCreateVocabulary$ = this.securityService.hasRole(ApplicationId.ONTOLOGY_APP, this.tenantId, Role.ROLE_CREATE_ONTOLOGIES);
   }
 
   openCreateOntologyDialog() {
@@ -91,10 +108,7 @@ export class OntologyComponent extends SidenavPage<Ontology> implements OnInit {
   }
 
   private refreshList() {
-    if (!this.ontologyListComponent) {
-      return;
-    }
-    this.ontologyListComponent.searchOntologyOrdered();
+    this.ontologyListComponent?.searchOntologyOrdered();
   }
 
   onSearchSubmit(search: string) {
@@ -105,44 +119,48 @@ export class OntologyComponent extends SidenavPage<Ontology> implements OnInit {
     this.openPanel(item);
   }
 
-  openOntologyImportDialog() {
-    const params: ImportDialogParam = {
-      title: this.translateService.instant('IMPORT_DIALOG.TITLE'),
-      subtitle: this.translateService.instant('IMPORT_DIALOG.ONTOLOGY_SUBTITLE'),
-      allowedFiles: [FileTypes.JSON],
-      fileFormatDetailInfo: this.translateService.instant('IMPORT_DIALOG.ONTOLOGY_FORMAT_JSON'),
-      referential: ReferentialTypes.ONTOLOGY,
+  private getImportDialogParams(
+    type: ReferentialTypes,
+    titleKey: string,
+    subtitleKey: string,
+    allowedFiles: FileTypes[],
+    formatKey: string,
+  ): ImportDialogParam {
+    return {
+      title: this.translateService.instant(titleKey),
+      subtitle: this.translateService.instant(subtitleKey),
+      allowedFiles,
+      fileFormatDetailInfo: this.translateService.instant(formatKey),
+      referential: type,
       successMessage: 'SNACKBAR.IMPORT_REFERENTIAL_SUCCESSED',
       errorMessage: 'SNACKBAR.IMPORT_REFERENTIAL_FAILED',
       iconMessage: 'vitamui-icon-ontologie',
     };
+  }
 
-    this.dialog
-      .open(ImportDialogComponent, {
-        panelClass: 'vitamui-modal',
-        disableClose: true,
-        data: params,
-      })
-      .afterClosed()
-      .subscribe((result) => {
-        if (result?.successfulImport) {
-          this.refreshList();
-        }
-      });
+  openOntologyImportDialog() {
+    const params = this.getImportDialogParams(
+      ReferentialTypes.ONTOLOGY,
+      'IMPORT_DIALOG.TITLE',
+      'IMPORT_DIALOG.ONTOLOGY_SUBTITLE',
+      [FileTypes.JSON],
+      'IMPORT_DIALOG.ONTOLOGY_FORMAT_JSON',
+    );
+    this.openImportDialog(params);
   }
 
   openSchemaImportDialog() {
-    const params: ImportDialogParam = {
-      title: this.translateService.instant('IMPORT_DIALOG.SCHEMA_TITLE'),
-      subtitle: this.translateService.instant('IMPORT_DIALOG.SCHEMA_SUBTITLE'),
-      allowedFiles: [FileTypes.CSV],
-      fileFormatDetailInfo: this.translateService.instant('IMPORT_DIALOG.SCHEMA_FORMAT_JSON'),
-      referential: ReferentialTypes.SCHEMA_UNIT,
-      successMessage: 'SNACKBAR.IMPORT_REFERENTIAL_SUCCESSED',
-      errorMessage: 'SNACKBAR.IMPORT_REFERENTIAL_FAILED',
-      iconMessage: 'vitamui-icon-ontologie',
-    };
+    const params = this.getImportDialogParams(
+      ReferentialTypes.SCHEMA_UNIT,
+      'IMPORT_DIALOG.SCHEMA_TITLE',
+      'IMPORT_DIALOG.SCHEMA_SUBTITLE',
+      [FileTypes.CSV],
+      'IMPORT_DIALOG.SCHEMA_FORMAT_CSV',
+    );
+    this.openImportDialog(params);
+  }
 
+  private openImportDialog(params: ImportDialogParam) {
     this.dialog
       .open(ImportDialogComponent, {
         panelClass: 'vitamui-modal',

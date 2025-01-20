@@ -29,7 +29,7 @@
     "ONTOLOGY_SUBTITLE": "Import d'un référentiel d'ontologie",
     "ONTOLOGY_FORMAT_JSON": "Le fichier d'import doit être au format json",
     "SCHEMA_SUBTITLE": "Import de vocabulaire(s) dans un schema",
-    "SCHEMA_FORMAT_JSON": "Le fichier d'import doit être au format csv, encodé en UTF8, avec séparateur de point virgule",
+    "SCHEMA_FORMAT_CSV": "Le fichier d'import doit être au format csv, encodé en UTF8, avec séparateur de point virgule",
     "IMPORT": "Importer",
     "DRAG_DROP": "Glisser / Déposer ou ",
     "CHOOSE_FILE": "cliquer pour parcourir",
