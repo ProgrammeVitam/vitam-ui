@@ -243,16 +243,11 @@ export class ArchiveCollectService extends SearchService<any> implements SearchA
     );
   }
 
-  public loadFilingHoldingSchemeTree(tenantIdentifier: string): Observable<FilingHoldingSchemeNode[]> {
-    const headers = new HttpHeaders().set(VitamuiHttpHeaders.X_TENANT_ID, '' + tenantIdentifier);
-
-    return this.searchUnitApiService.getFilingPlan(headers).pipe(
-      catchError(() => {
-        return of({ $hits: null, $results: [] });
-      }),
-      map((response) => {
-        return this.buildNestedTreeLevels(response.$results as Unit[]);
-      }),
+  //TODO(refacto): use filing-plan service loadTree ?
+  public loadFilingHoldingSchemeTree(): Observable<FilingHoldingSchemeNode[]> {
+    return this.searchUnitApiService.getFilingPlan().pipe(
+      catchError(() => of({ $hits: null, $results: [] })),
+      map((response) => this.buildNestedTreeLevels(response.$results as Unit[])),
     );
   }
 
@@ -277,7 +272,6 @@ export class ArchiveCollectService extends SearchService<any> implements SearchA
 
   private buildNestedTreeLevels(arr: Unit[], parentNode?: FilingHoldingSchemeNode): FilingHoldingSchemeNode[] {
     const out: FilingHoldingSchemeNode[] = [];
-
     arr.forEach((unit) => {
       if (
         (parentNode && parentNode.vitamId && unit['#unitups'] && unit['#unitups'][0] === parentNode.vitamId) ||
@@ -292,7 +286,6 @@ export class ArchiveCollectService extends SearchService<any> implements SearchA
   }
 
   // update metadata CSV file
-
   updateUnitsMetadata(csvFile: Blob, fileName: string, transactionId: string): Observable<string> {
     let headers = new HttpHeaders();
     headers = headers.append('Content-Type', 'application/octet-stream');
