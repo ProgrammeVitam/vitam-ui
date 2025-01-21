@@ -1,93 +1,53 @@
 ---
-#- name: Install vitam user for /vitam browser
-#  package:
-#    name: vitam-user-vitam
-#    state: latest
 - block:
+
   - name: Install Apache package for displaying data content
     package:
-      name: httpd
+      name: "{{ 'apache2' if ansible_os_family == 'Debian' else 'httpd' }}"
       state: latest
     register: result
     retries: "{{ packages_install_retries_number | default(2) }}"
     until: result is succeeded
     delay: "{{ packages_install_retries_delay | default(10) }}"
-    when: (ansible_distribution == "CentOS" or ansible_distribution == "RedHat")
 
-  - name: Install Apache package for displaying data content
-    package:
-      name: apache2
-      state: latest
-    register: result
-    retries: "{{ packages_install_retries_number | default(2) }}"
-    until: result is succeeded
-    delay: "{{ packages_install_retries_delay | default(10) }}"
-    when: ( ansible_distribution == "Debian")
-
-  # TODO : idéalement, Apache ne devrait écouter que sur l'IP d'admin
-
-  - name: Ensure Apache autostart && Apache is started on Centos
-    service:
-      name: httpd
-      enabled: yes
-      state: started
-    when: (ansible_distribution == "CentOS" or ansible_distribution == "RedHat")
-
-  - name: Ensure Apache autostart && Apache is started on Debian
-    service:
-      name: apache2
-      enabled: yes
-      state: started
-    when: (ansible_distribution == "Debian" )
-
-  - name: add vitamui group to apache user on Centos
+  - name: add vitamui group to apache user
     user:
-      name: apache
+      name: "{{ 'www-data' if ansible_os_family == 'Debian' else 'httpd' }}"
       groups: vitamui
-    when: (ansible_distribution == "CentOS" or ansible_distribution == "RedHat")
-
-  - name: add vitamui group to apache user on Centos
-    user:
-      name: www-data
-      groups: vitamui
-    when: (ansible_distribution == "Debian" )
 
   - name: copy theme files
     copy:
-      src: ".theme"
-      dest: "{{vitamui_defaults.folder.root_path | default('/vitamui')}}"
-      owner: "root"
+      src: .theme
+      dest: "{{ vitamui_defaults.folder.root_path | default('/vitamui') }}"
+      owner: root
       mode: 0644
 
-  - name: add configuration file for mapping on Centos # + notify httpd restart
+  - name: add Apache configuration file for browser
     template:
-      src: "{{item}}.j2"
-      dest: "/etc/httpd/conf.d/{{item}}"
+      src: "{{ item }}.j2"
+      dest: "{{ '/etc/apache2/sites-available' if ansible_os_family == 'Debian' else '/etc/httpd/conf.d' }}/{{ item }}"
       mode: 0500
       owner: root
-    when: (ansible_distribution == "CentOS" or ansible_distribution == "RedHat")
     notify: restart apache
     with_items:
-    - "httpd-offer-view.conf"
-
-  - name: add configuration file for mapping on Debian # + notify httpd restart
-    template:
-      src: "{{item}}.j2"
-      dest: "/etc/apache2/sites-available/{{item}}"
-      mode: 0500
-      owner: root
-    when: (ansible_distribution == "Debian" )
-    notify: restart apache2
-    with_items:
-    - "httpd-offer-view.conf"
+      - httpd-offer-view.conf
 
   - name: activate offer view in Debian only
     file:
-      src: '/etc/apache2/sites-available/{{item}}'
-      dest: '/etc/apache2/sites-enabled/{{item}}'
+      src: '/etc/apache2/sites-available/{{ item }}'
+      dest: '/etc/apache2/sites-enabled/{{ item }}'
       state: link
-    when: (ansible_distribution == "Debian" )
-    notify: restart apache2
+    when: ansible_os_family == "Debian"
+    notify: restart apache
     with_items:
-    - "httpd-offer-view.conf"
+      - httpd-offer-view.conf
+
+  - meta: flush_handlers
+
+  - name: Ensure Apache autostart && Apache is started
+    service:
+      name: "{{ 'apache2' if ansible_os_family == 'Debian' else 'httpd' }}"
+      enabled: yes
+      state: started
+
   when: extra | d(false)
