@@ -34,23 +34,22 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { SearchCriteriaDto } from 'vitamui-library';
+import { Component, HostBinding, Input } from '@angular/core';
+import { NgIf } from '@angular/common';
 
-export interface ReclassificationCriteriaDto {
-  searchCriteriaDto: SearchCriteriaDto;
-  $action: ReclassificationAction[];
-}
+@Component({
+  selector: 'vitamui-badge',
+  templateUrl: './badge.component.html',
+  styleUrl: './badge.component.scss',
+  standalone: true,
+  imports: [NgIf],
+})
+export class BadgeComponent {
+  @Input() text = '';
 
-export interface ReclassificationAction {
-  $add?: ReclassificationQueryActionType;
-  $pull?: ReclassificationQueryActionType;
-}
-
-export interface ReclassificationQueryActionType {
-  '#unitups': string[];
-}
-
-export enum ReclassificationToggle {
-  RECLASSIFICATION_TOGGLE_TREE_PLAN = 'RECLASSIFICATION_TOGGLE_TREE_PLAN',
-  RECLASSIFICATION_TOGGLE_UA_ID = 'RECLASSIFICATION_TOGGLE_UA_ID',
+  @HostBinding('class')
+  @Input()
+  color: 'secondary' | 'orange' | 'red' = 'secondary';
+  @Input() decoration: 'default' | 'bordered' | 'filled' = 'default';
+  @Input() letter = '';
 }

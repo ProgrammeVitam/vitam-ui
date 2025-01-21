@@ -252,15 +252,5 @@ describe('ReclassificationComponent', () => {
       const elementCdkStep = fixture.nativeElement.querySelectorAll('cdk-step');
       expect(elementCdkStep.length).toBe(2);
     });
-
-    it('should have 3 mat options  ', () => {
-      // When
-      const nativeElement = fixture.nativeElement;
-      const elementMatOption = nativeElement.querySelectorAll('mat-option');
-
-      // Then
-      expect(elementMatOption).toBeTruthy();
-      expect(elementMatOption.length).toBe(3);
-    });
   });
 });

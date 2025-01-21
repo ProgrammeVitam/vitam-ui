@@ -34,23 +34,21 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { SearchCriteriaDto } from 'vitamui-library';
+import { Component } from '@angular/core';
+import { BadgeComponent } from 'vitamui-library';
 
-export interface ReclassificationCriteriaDto {
-  searchCriteriaDto: SearchCriteriaDto;
-  $action: ReclassificationAction[];
-}
-
-export interface ReclassificationAction {
-  $add?: ReclassificationQueryActionType;
-  $pull?: ReclassificationQueryActionType;
-}
-
-export interface ReclassificationQueryActionType {
-  '#unitups': string[];
-}
-
-export enum ReclassificationToggle {
-  RECLASSIFICATION_TOGGLE_TREE_PLAN = 'RECLASSIFICATION_TOGGLE_TREE_PLAN',
-  RECLASSIFICATION_TOGGLE_UA_ID = 'RECLASSIFICATION_TOGGLE_UA_ID',
+@Component({
+  standalone: true,
+  imports: [BadgeComponent],
+  templateUrl: './design-system-badges.component.html',
+  styleUrl: './design-system-badges.component.scss',
+})
+export class DesignSystemBadgesComponent {
+  colors = ['secondary', 'orange', 'red'];
+  decorations = ['filled', 'bordered', 'default'];
+  letters = {
+    filled: ['', 'P'],
+    bordered: ['', 'H'],
+    default: ['', 'A'],
+  };
 }

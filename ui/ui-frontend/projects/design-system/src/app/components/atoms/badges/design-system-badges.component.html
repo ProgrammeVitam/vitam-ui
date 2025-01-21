@@ -1,0 +1,9 @@
+@for (decoration of decorations; track decoration) {
+  <div class="flex-row gap-5 mb-3">
+    @for (letter of letters[decoration]; track letter) {
+      @for (color of colors; track color) {
+        <vitamui-badge text="10 000" [color]="color" [decoration]="decoration" [letter]="letter"></vitamui-badge>
+      }
+    }
+  </div>
+}

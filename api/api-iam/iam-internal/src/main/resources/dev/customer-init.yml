@@ -228,6 +228,7 @@ customer-init:
         - ROLE_GET_SCHEMAS
         - ROLE_GET_AGENCIES
         - ROLE_GET_ARCHIVE_PROFILES_UNIT
+        - ROLE_GET_FILLING_PLAN_ACCESS
 
     - name: Consultation
       description: Profil pour la recherche et consultation des archives dans Vitam sans mises à jour des règles, sans export DIP et sans élimination
@@ -241,6 +242,7 @@ customer-init:
         - ROLE_GET_SCHEMAS
         - ROLE_GET_AGENCIES
         - ROLE_GET_ARCHIVE_PROFILES_UNIT
+        - ROLE_GET_FILLING_PLAN_ACCESS
 
     - name: Archiviste
       description: Profil pour la recherche et consultation des archives dans Vitam sans mises à jour des règles de gestion, avec export DIP et sans élimination
@@ -255,6 +257,7 @@ customer-init:
         - ROLE_GET_SCHEMAS
         - ROLE_GET_AGENCIES
         - ROLE_GET_ARCHIVE_PROFILES_UNIT
+        - ROLE_GET_FILLING_PLAN_ACCESS
 
     - name: Profil pour la gestion des pua/pa de pastis
       description: Gestion de Pastis dans Vitam
