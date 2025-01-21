@@ -58,7 +58,7 @@ install: clean stage vitamui-dirs template-files
 	@echo "Ressources origin: $(RESSOURCE_DIR_ORIGIN)"
 	@echo "Ressources dest:   $(RESSOURCE_DIR_DEST)"
 
-	sudo mkdir -p -m 750 $(RESSOURCE_DIR_DEST)
+	mkdir -p -m 750 $(RESSOURCE_DIR_DEST)
 	cp -r $(RESSOURCE_DIR_ORIGIN) $(abspath $(RESSOURCE_DIR_DEST))
 
 rpm: install

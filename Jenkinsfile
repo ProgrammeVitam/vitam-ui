@@ -1,18 +1,68 @@
 def IMPORTANT_BRANCH_OR_TAG = (env.BRANCH_NAME =~ /(develop|master_.*)/).matches() || env.TAG_NAME != null
 
 pipeline {
-    agent {
-        label 'java11'
+  agent {
+    kubernetes {
+      yaml '''
+        apiVersion: v1
+        kind: Pod
+        metadata:
+          labels:
+            some-label: buildpod
+        spec:
+          affinity:
+            nodeAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                - matchExpressions:
+                  - key: k8s.scaleway.com/pool-name
+                    operator: In
+                    values:
+                    - pool-par-2-practical-noyce
+          containers:
+          - name: maven
+            image: harbor-k8s.programmevitam.fr/library/vitam-buildkit:1.0
+            env:
+             - name: TZ
+               value: Europe/Paris
+             - name: JDK_JAVA_OPTIONS
+               value: "-XX:+HeapDumpOnOutOfMemoryError -Xms4g -Xmx8g"
+             - name: MAVEN_OPTS
+               value: "-Xmx8000m"
+             - name: NODE_OPTIONS
+               value: "--max-old-space-size=2048"
+             - name: LANG
+               value: "C.UTF-8"
+             - name: LC_ALL
+               value: "C.UTF-8"
+            resources:
+              requests:
+                memory: "16Gi"
+                cpu: "2"
+            limits:
+                memory: "32Gi"
+                cpu: "3"
+            command:
+            - cat
+            tty: true
+          imagePullSecrets:
+          - name: harbork8scred
+'''
     }
+  }
 
     environment {
         M2_REPO = "${HOME}/.m2"
         CI = credentials("app-jenkins")
 
         SERVICE_GIT_URL = credentials("service-gitlab-url")
-        SERVICE_NEXUS_URL = credentials("service-nexus-url")
+        SERVICE_NEXUS_URL = "http://172.16.0.43"
         SERVICE_REPO_SSHURL = credentials("repository-connection-string")
-        SERVICE_REPOSITORY_URL = credentials("service-repository-url")
+        SERVICE_REPOSITORY_URL = "https://repository.dev.programmevitam.fr"
+        DOCKER_HOST = "tcp://kubedock-service.tools:2475"
+        TESTCONTAINERS_RYUK_DISABLED = true
+        TESTCONTAINERS_CHECKS_DISABLE = true
+        CHROME_BIN = "/usr/bin/google-chrome"
     }
 
     options {
@@ -37,6 +87,7 @@ pipeline {
             agent none
             when { expression { env.DO_CHECKS_AND_TESTS == null } }
             steps {
+                container('maven') {
                 script {
                     INPUT_PARAMS = input message: 'Configure your build',
                         parameters: [
@@ -48,10 +99,13 @@ pipeline {
                     env.DO_CHECKS_AND_TESTS = INPUT_PARAMS.DO_CHECKS_AND_TESTS
                 }
             }
+            }
+
         }
 
         stage('Show Configuration') {
             steps {
+                container('maven') {
                 script {
                     if (env.GOAL == 'build') {
                         // If the goal is only to build, we only run "mvn verify" (includes running tests, except if explicitely skipped)
@@ -61,7 +115,7 @@ pipeline {
                         env.MVN_GOAL = 'deploy'
                     }
 
-                    env.MVN_COMMAND = "/usr/local/maven/bin/mvn --settings ${pwd()}/.ci/settings.xml --show-version --batch-mode --errors -DdeployAtEnd=true"
+                    env.MVN_COMMAND = "mvn --settings ${pwd()}/.ci/settings.xml --show-version --batch-mode --errors -DdeployAtEnd=true"
                     if (env.DO_CHECKS_AND_TESTS == 'false') {
                         // If checks and tests are disabled:
                         // - "-T1C" builds modules in parallel
@@ -81,13 +135,29 @@ pipeline {
                 echo "MVN_COMMAND = ${env.MVN_COMMAND}"
                 echo "POM_VERSION = ${env.POM_VERSION}"
             }
+            }
         }
 
         stage('Upgrade build context') {
             steps {
-                sh 'sudo apt install -y build-essential make ruby ruby-dev rubygems jq'
-                sh 'sudo timedatectl set-timezone Europe/Paris'
-                sh 'sudo gem install fpm'
+                container('maven') {
+                sh 'date'
+      /*          sh 'apt  update  || true'
+                sh 'echo "deb http://deb.debian.org/debian bookworm main contrib non-free" >> /etc/apt/sources.list'
+                sh 'echo "deb http://deb.debian.org/debian bookworm-updates main contrib non-free" >> /etc/apt/sources.list'
+                sh 'apt install -y rpm'
+                sh 'apt install -y build-essential make ruby ruby-dev rubygems jq nodejs wget'
+                sh 'apt install -y npm'
+                sh 'gem install fpm'
+                sh 'npm -v'
+                sh 'wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb'
+                sh 'apt-get install -y fonts-liberation libasound2 libatk-bridge2.0-0 libatk1.0-0 libatspi2.0-0 libcairo2 libcups2 libgtk-3-0 libnspr4 libnss3 libpango-1.0-0 libvulkan1 libxdamage1 libxkbcommon0'
+                sh 'dpkg -i google-chrome-stable_current_amd64.deb'
+                sh 'id' */
+                sh 'env'
+                //sh 'sleep 600'
+
+                }
             }
         }
 
@@ -98,14 +168,17 @@ pipeline {
                         environment(name: 'DO_CHECKS_AND_TESTS', value: 'true')
                     }
                     steps {
+                        container('maven') {
                         sh './tools/check_icomoon.sh'
                     }
+                    }
+
                 }
                 stage('Frontend') {
                     steps {
+                        container('maven') {
                         dir('ui/ui-frontend') {
                             script {
-                                nvm('v18.20.3') {
                                     sh 'npm ci'
                                     if (env.DO_CHECKS_AND_TESTS == 'true') {
                                         sh 'npm run lint'
@@ -115,24 +188,22 @@ pipeline {
                                     if (env.DO_CHECKS_AND_TESTS == 'true') {
                                         sh 'npm run ci:test'
                                     }
-                                }
+
                                 if (env.GOAL == 'publish') {
                                     // If the goal is to publish, we also generate .deb/.rpm
                                     sh '../../tools/packaging/package-fronts.sh ui-identity,ui-archive-search,ui-portal,ui-pastis,ui-collect,ui-referential,ui-ingest,ui-design-system ${POM_VERSION}'
                                 }
                             }
                         }
+                        }
                     }
                 }
                 stage('Backend') {
-                    tools {
-                        jdk 'java17' // java11 || java17 || java21
-                        maven 'maven-3.9' // maven-3.8 || maven-3.9
-                    }
                     steps {
+                        container('maven') {
                         // TODO: generate .deb/.rpm by running Makefile directly in the Jenkinsfile instead of being run by a maven plugin
-                        nvm('v18.20.3') { // We need node for spotless (when env.DO_CHECKS_AND_TESTS == 'true')
                             sh '${MVN_COMMAND} clean ${MVN_GOAL} -U -Pvitam,deb,rpm'
+
                         }
                     }
                 }
@@ -158,12 +229,14 @@ pipeline {
                 }
             }
             steps {
+                container('maven') {
                 dir('ui/ui-frontend') {
-                    nvm('v18.20.3') {
+                    // nvm('v18.20.3') {
                         sh 'npm run build:pastis-standalone'
-                    }
+                    // }
                 }
                 sh '${MVN_COMMAND} deploy -Pstandalone --projects "api/api-pastis/pastis-standalone" -Dspotless.check.skip=true -Dmaven.test.skip -Dlicense.skip=true'
+            }
             }
         }
 
@@ -202,20 +275,6 @@ pipeline {
                     sh 'vitam-build.git/push_symlink_repo.sh contrib ${SERVICE_REPO_SSHURL}'
                 }
             }
-        }
-    }
-
-    post {
-        // Clean after build
-        always {
-            // Cleanup any remaining docker volumes
-            sh 'docker volume prune -f'
-
-            // Cleanup M2 repo
-            sh 'rm -fr ${M2_REPO}/repository/fr/gouv/vitamui/'
-
-            // Cleanup workspace
-            cleanWs()
         }
     }
 }
