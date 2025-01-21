@@ -567,6 +567,15 @@
     "FILTER": {
       "INTERNAL": "Internal metadata",
       "EXTERNAL": "External metadata"
+    },
+    "SCHEMA_DELETE_DIALOG": {
+      "TITLE": "Deleting extension from schema",
+      "SUBTITLE": {
+        "SINGULAR": "You are going to delete an extension from the schema. Do you confirm this action?",
+        "PLURAL": "You are going to delete an extension from the schema and {{number}} of its sub-elements. Do you confirm this action?"
+      },
+      "SUCCESS_MESSAGE": "The deletion request has been taken into account",
+      "SUCCESS_LINK_TEXT": "Go to logbook operation"
     }
   },
   "RULES_APP": {

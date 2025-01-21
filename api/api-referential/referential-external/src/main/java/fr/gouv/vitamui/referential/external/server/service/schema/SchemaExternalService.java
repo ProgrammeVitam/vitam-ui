@@ -39,6 +39,7 @@ import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.RequestResponseOK;
 import fr.gouv.vitam.common.model.administration.CombinedSchemaModel;
 import fr.gouv.vitam.common.model.administration.schema.SchemaResponse;
+import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.dtos.ErrorImportFile;
 import fr.gouv.vitamui.commons.api.enums.ErrorImportFileMessage;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
@@ -119,6 +120,15 @@ public class SchemaExternalService extends AbstractService {
             .filter(Optional::isPresent)
             .map(Optional::get)
             .collect(Collectors.toList());
+    }
+
+    public String deleteSchemas(final List<String> paths)
+        throws AccessExternalClientException, InvalidParseOperationException {
+        final RequestResponse<Void> requestResponse = adminExternalClient.deleteUnitExternalSchemas(
+            buildVitamContext(),
+            paths
+        );
+        return requestResponse.getHeaderString(CommonConstants.X_REQUEST_ID_HEADER);
     }
 
     public SchemaDto getArchiveUnitProfileSchema(final String archiveUnitProfileId) throws VitamClientException {

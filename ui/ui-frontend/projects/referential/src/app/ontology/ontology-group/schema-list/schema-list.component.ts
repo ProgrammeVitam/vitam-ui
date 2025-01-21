@@ -34,17 +34,28 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { finalize, Subject, Subscription } from 'rxjs';
-import { ItemFlatNode, ItemNode, ItemNodeUtils, SchemaElement, SchemaService, TableFilterModule } from 'vitamui-library';
+import { Component, ElementRef, Input, OnDestroy, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { finalize, Subscription } from 'rxjs';
+import {
+  CommonTooltipModule,
+  ItemFlatNode,
+  ItemNode,
+  ItemNodeUtils,
+  normalizeString,
+  SchemaElement,
+  SchemaService,
+  TableFilterModule,
+} from 'vitamui-library';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
-import { MatTableModule } from '@angular/material/table';
+import { MatRow, MatTableModule } from '@angular/material/table';
 import { CommonModule } from '@angular/common';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatLegacyButtonModule as MatButtonModule } from '@angular/material/legacy-button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { SchemaDeleteDialogComponent, SchemaDeleteDialogComponentData } from './schema-delete-dialog/schema-delete-dialog.component';
 
 @Component({
   standalone: true,
@@ -56,24 +67,28 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatButtonToggleModule,
     MatButtonModule,
     MatProgressSpinnerModule,
+    CommonTooltipModule,
   ],
   selector: 'app-schema-list',
   templateUrl: './schema-list.component.html',
   styleUrls: ['./schema-list.component.scss'],
 })
 export class SchemaListComponent implements OnInit, OnDestroy {
+  private _searchText: string;
   @Input()
   set searchText(searchText: string) {
-    this.searchChange.next(searchText);
+    this._searchText = searchText;
+    this.filter();
   }
 
+  @ViewChildren(MatRow, { read: ElementRef }) rows: QueryList<ElementRef>;
   pending = false;
-  private readonly searchChange = new Subject<string>();
   private readonly subscriptions = new Subscription();
 
   constructor(
     public schemaService: SchemaService,
     private translateService: TranslateService,
+    public dialog: MatDialog,
   ) {
     this.treeFlattener = new MatTreeFlattener(
       this.transformer,
@@ -86,17 +101,35 @@ export class SchemaListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.updateSchema();
+  }
+
+  private updateSchema() {
     this.pending = true;
     this.schemaService
       .getSchemaTreeByCategory()
       .pipe(finalize(() => (this.pending = false)))
       .subscribe({
         next: (data: ItemNode<SchemaElement>[]) => {
+          const previousVirtualNodesByCategory = this.treeControl.dataNodes
+            ?.filter((node) => node.item.id === this.schemaService.VIRTUAL_ROOT_NODES)
+            .reduce((acc, node) => acc.set(node.item.Category, node), new Map<SchemaElement['Category'], ItemFlatNode<SchemaElement>>());
+          const previousNodesByPath = this.treeControl.dataNodes
+            ?.filter((node) => node.item.Path)
+            .reduce((acc, node) => acc.set(node.item.Path, node), new Map<SchemaElement['Path'], ItemFlatNode<SchemaElement>>());
+
           this.dataSource.data = data;
+          this.treeControl.dataNodes.forEach((node) => {
+            const isVirtualNode = node.item.id === this.schemaService.VIRTUAL_ROOT_NODES;
+            const previousNode = isVirtualNode
+              ? previousVirtualNodesByCategory?.get(node.item.Category)
+              : previousNodesByPath?.get(node.item.Path);
+            if (this.treeControl.isExpanded(previousNode)) this.treeControl.expand(node);
+          });
+          this.filter();
         },
         error: (e) => console.error(e),
       });
-    this.subscriptions.add(this.searchChange.subscribe((searchText) => this.filterBySearchText(searchText)));
   }
 
   ngOnDestroy() {
@@ -113,20 +146,23 @@ export class SchemaListComponent implements OnInit, OnDestroy {
       translation: this.translateService.instant('ONTOLOGY.FILTER.EXTERNAL'),
     },
   ];
-  protected defaultSelectedFilters: Array<string> = this.availableFilters.map((e) => e.name);
+  protected selectedFilters: Array<string> = this.availableFilters.map((e) => e.name);
 
-  filterByOrigin(selectedFilters: string[]) {
-    this.treeControl.dataNodes.forEach((node: ItemFlatNode<SchemaElement>) => {
+  filter() {
+    this.treeControl.dataNodes?.forEach((node: ItemFlatNode<SchemaElement>) => {
       if (node.item.id === this.schemaService.VIRTUAL_ROOT_NODES) {
         node.display = true;
       } else {
-        node.display = selectedFilters.includes(node.item.Origin);
+        node.display =
+          this.selectedFilters.includes(node.item.Origin) &&
+          (!this._searchText || this.itemContainsSearchText(node.item, this._searchText));
       }
     });
+    this.recursiveDisplayParents(this.dataSource.data);
   }
 
   private recursiveDisplayParents(nodes: ItemNode<SchemaElement>[]): boolean {
-    for (var node of nodes) {
+    for (let node of nodes) {
       if (node.item.id === this.schemaService.VIRTUAL_ROOT_NODES) {
         this.recursiveDisplayParents(node.children);
         continue;
@@ -143,21 +179,9 @@ export class SchemaListComponent implements OnInit, OnDestroy {
     return false;
   }
 
-  filterBySearchText(searchText: string) {
-    let reset = !searchText || searchText === '';
-    searchText = searchText.toLowerCase();
-    this.treeControl.dataNodes.forEach((node: ItemFlatNode<SchemaElement>) => {
-      if (reset || node.item.id === this.schemaService.VIRTUAL_ROOT_NODES) {
-        node.display = true;
-      } else {
-        node.display = this.itemContainsSearchText(node.item, searchText);
-      }
-    });
-    this.recursiveDisplayParents(this.dataSource.data);
-  }
-
   private itemContainsSearchText(item: SchemaElement, searchText: string) {
-    return item.ShortName.toLowerCase().includes(searchText) || item.FieldName.toLowerCase().includes(searchText);
+    const normalizedSearchText = normalizeString(searchText);
+    return normalizeString(item.ShortName).includes(normalizedSearchText) || normalizeString(item.FieldName).includes(normalizedSearchText);
   }
 
   treeControl: FlatTreeControl<ItemFlatNode<SchemaElement>>;
@@ -177,4 +201,25 @@ export class SchemaListComponent implements OnInit, OnDestroy {
     this.nestedNodeMap.set(node.item, flatNode);
     return flatNode;
   };
+
+  delete(itemNode: ItemFlatNode<SchemaElement>) {
+    const paths = [itemNode, ...this.treeControl.getDescendants(itemNode)].map((node) => node.item.Path);
+    this.dialog
+      .open<SchemaDeleteDialogComponent, SchemaDeleteDialogComponentData>(SchemaDeleteDialogComponent, { data: paths })
+      .afterClosed()
+      .subscribe((shouldUpdate) => {
+        if (shouldUpdate) this.updateSchema();
+      });
+  }
+
+  previewDelete(item: SchemaElement) {
+    this.rows
+      .map((row) => row.nativeElement as HTMLElement)
+      .filter((row) => row.classList.contains(`path-${item.Path}`) || row.className.includes(`path-${item.Path}.`))
+      .forEach((row) => row.classList.add('selected'));
+  }
+
+  hidePreviewDelete() {
+    this.rows.forEach((row) => (row.nativeElement as HTMLElement).classList.remove('selected'));
+  }
 }
