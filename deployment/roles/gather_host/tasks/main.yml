@@ -1,0 +1,16 @@
+---
+
+- name: gather facts
+  setup:
+  register: faits
+
+# - name: test
+#   debug:
+#     msg: "{{ faits }}"
+
+- name: get back facts
+  copy:
+    content: "{{ faits }}"
+    dest: "{{ inventory_dir }}/troubleshoot/{{ inventory_hostname }}/facts.json"
+    mode: 0775
+  delegate_to: localhost
