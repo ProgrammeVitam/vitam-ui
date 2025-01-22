@@ -338,20 +338,15 @@ public class AgencyExternalService extends AbstractService {
         }
     }
 
-    public RequestResponse importAgencies(VitamContext context, String fileName, MultipartFile file) {
+    public JsonNode importAgencies(String fileName, MultipartFile file) {
+        final VitamContext vitamContext = this.buildVitamContext();
         try {
-            return vitamAgencyService.importAgencies(context, fileName, file);
+            return vitamAgencyService.importAgencies(vitamContext, fileName, file).toJsonNode();
         } catch (
             InvalidParseOperationException | AccessExternalClientException | VitamClientException | IOException e
         ) {
             LOGGER.error("Unable to import agency file {}: {}", fileName, e.getMessage());
             throw new InternalServerException("Unable to import agency file " + fileName + " : ", e);
         }
-    }
-
-    public JsonNode importAgencies(String fileName, MultipartFile file) {
-        final VitamContext vitamContext = this.buildVitamContext();
-
-        return this.importAgencies(vitamContext, fileName, file).toJsonNode();
     }
 }

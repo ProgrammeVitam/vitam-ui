@@ -295,9 +295,10 @@ public class RuleExternalService extends AbstractService {
         }
     }
 
-    public JsonNode importRules(VitamContext context, String fileName, MultipartFile file) {
+    public JsonNode importRules(String fileName, MultipartFile file) {
+        VitamContext vitamContext = buildVitamContext();
         try {
-            return ruleService.importRules(context, fileName, file).toJsonNode();
+            return ruleService.importRules(vitamContext, fileName, file).toJsonNode();
         } catch (
             InvalidParseOperationException
             | AccessExternalClientException
@@ -348,11 +349,6 @@ public class RuleExternalService extends AbstractService {
     public Boolean check(RuleDto ruleDto) {
         VitamContext vitamContext = buildVitamContext();
         return check(vitamContext, ruleDto);
-    }
-
-    public JsonNode importRules(String fileName, MultipartFile file) {
-        VitamContext vitamContext = buildVitamContext();
-        return importRules(vitamContext, fileName, file);
     }
 
     public ResponseEntity<Resource> export() {

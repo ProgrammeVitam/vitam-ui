@@ -1,2 +1,2 @@
-AlternativeForm,AuthorizedForm,BiogHist,Description,EntityId,EntityType,EventDescription,FromDate,Functions,GeneralContext,Identifier,LegalStatuses,LocalStatus,MaintenanceStatus,Mandates,Name,NameEntryParallel,Places,Sources,StructureOrGenealogy,ToDate
-,,,"AlexAgency super description",,,,,,,,,"Local status",,,AlexAgency,,"Place 1|Place 2",,,
+Name,Identifier,Description,EntityType,NameEntryParallel,AuthorizedForm,AlternativeForm,EntityId,FromDate,ToDate,Functions,BiogHist,Places,LegalStatuses,Mandates,StructureOrGenealogy,GeneralContext,MaintenanceStatus,LocalStatus,Sources,EventDescription
+AlexAgency,,"AlexAgency super description",,,,,,,,,,"Place 1|Place 2",,,,,,"Local status",,

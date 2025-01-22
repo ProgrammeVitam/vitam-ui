@@ -174,7 +174,7 @@ public class VitamRestUtils {
     }
 
     private static boolean isStatusAccepted(final Integer status, final Integer... acceptedStatus) {
-        final Integer[] defaultAcceptedStatuses = { 200 };
+        final Integer[] defaultAcceptedStatuses = { 200, 201, 202, 203, 204 };
         final List<Integer> statuses;
         if (acceptedStatus == null || acceptedStatus.length == 0) {
             statuses = Arrays.asList(defaultAcceptedStatuses);
@@ -218,9 +218,9 @@ public class VitamRestUtils {
      *
      * If no acceptedStatus parameter is given, the default accepted status is 200.
      *
-     * @throws
      * @param response Response of which the status is checked
      * @param acceptedStatus Statuses accepted
+     * TODO(refacto): commonize with BaseClient.checkResponse
      */
     public static void checkResponse(final RequestResponse<?> response, final Integer... acceptedStatus) {
         Assert.notNull(response, "The server response cannot be null");
