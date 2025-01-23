@@ -53,7 +53,11 @@ function purge_directory {
 }
 
 function generatePassphrase {
-    cat /dev/urandom | tr -dc 'a-zA-Z0-9' | head -c 48
+    if [ "${DEV_MODE}" == "true" ]; then
+        echo "changeme"
+    else
+        cat /dev/urandom | tr -dc 'a-zA-Z0-9' | head -c 48
+    fi
 }
 
 function normalize_key {
