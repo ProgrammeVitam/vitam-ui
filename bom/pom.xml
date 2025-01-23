@@ -171,16 +171,6 @@
             </dependency>
             <dependency>
                 <groupId>fr.gouv.vitamui</groupId>
-                <artifactId>ingest-internal</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>fr.gouv.vitamui</groupId>
-                <artifactId>ingest-internal-client</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>fr.gouv.vitamui</groupId>
                 <artifactId>ingest-external</artifactId>
                 <version>${project.version}</version>
             </dependency>

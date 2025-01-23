@@ -236,7 +236,7 @@ deployment/playbooks/templates/vitamui/conf/*/*.p12
 ###################################
 api/api-archive-search/archive-search-external/src/main/resources/dev/vitam/
 api/api-archive-search/archive-search-external/src/main/resources/ontology/
-api/api-ingest/ingest-internal/src/main/resources/dev/vitam/
+api/api-ingest/ingest-external/src/main/resources/dev/vitam/
 api/api-iam/iam-internal/src/main/resources/dev/vitam/
 api/api-collect/collect-internal/src/main/resources/dev/vitam/
 api/api-collect/collect-internal/src/main/resources/ontology/

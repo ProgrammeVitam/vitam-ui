@@ -22,10 +22,11 @@ ingest-external:
     server-host: localhost
     server-port: 7083
     secure: false
-  ingest-internal-client:
-    server-host: localhost
-    server-port: 7088
-    secure: false
 
 swagger:
   layer: api-external
+
+
+tmp_folder_path: "src/main/resources"
+
+logbook.scheduling.sendEventToVitamTasks.enabled: false

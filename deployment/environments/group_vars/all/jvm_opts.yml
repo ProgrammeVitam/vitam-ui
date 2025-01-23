@@ -39,11 +39,6 @@ vitamui:
     # memory: "-Xms128m -Xmx512m"
     # gc: ""
     # java: ""
-  ingest_internal:
-    jvm_opts:
-    # memory: "-Xms128m -Xmx512m"
-    # gc: ""
-    # java: ""
   archive_search_external:
     jvm_opts:
     # memory: "-Xms128m -Xmx512m"

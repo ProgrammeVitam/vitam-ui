@@ -343,14 +343,6 @@ voir la [configuration](docs/developeurs/vitamui-conf-dev/README.md) suivante.
 │   │   ├── iam-external: 'mvn clean spring-boot:run [-Puse-profile-here]' ou './run.sh'
 ```
 
-## 6 - Lancement de l'application SpringBoot Ingest-Internal
-
-```
-├── api
-│   ├── api-ingest
-│   │   ├── ingest-internal: 'mvn clean spring-boot:run' ou './run.sh'
-```
-
 ## 7 - Lancement de l'application SpringBoot Collect-Internal
 
 ```
