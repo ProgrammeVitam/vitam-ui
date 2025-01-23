@@ -424,8 +424,13 @@
           (click)="archiveUnitClick.emit(archiveUnit)"
         >
           <div class="col-1 d-flex align-items-stretch">
-            <label class="vitamui-checkbox wide" (click)="checkChildrenBoxChange(archiveUnit['#id'], $event)">
-              <input id="{{ archiveUnit['#id'] }}" type="checkbox" [checked]="isAllChecked" />
+            <label class="vitamui-checkbox wide" (click)="$event.stopPropagation()">
+              <input
+                id="{{ archiveUnit['#id'] }}"
+                (change)="checkChildrenBoxChange(archiveUnit['#id'], $event)"
+                type="checkbox"
+                [checked]="isAllChecked"
+              />
             </label>
           </div>
           <div class="col-1 d-flex align-items-center" (click)="archiveUnitClick.emit(archiveUnit)">
