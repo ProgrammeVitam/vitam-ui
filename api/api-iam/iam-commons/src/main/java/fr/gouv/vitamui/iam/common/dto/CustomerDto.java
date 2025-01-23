@@ -46,7 +46,6 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -66,15 +65,15 @@ public class CustomerDto extends IdDto {
     private static final long serialVersionUID = 997428479132350296L;
 
     @NotNull
-    @Length(max = 15)
+    @Size(max = 15)
     private String code;
 
     @NotNull
-    @Length(max = 100)
+    @Size(max = 100)
     private String name;
 
     @NotNull
-    @Length(max = 250)
+    @Size(max = 250)
     private String companyName;
 
     private boolean enabled;

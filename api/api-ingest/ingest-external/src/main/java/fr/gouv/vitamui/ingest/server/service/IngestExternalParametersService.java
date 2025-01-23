@@ -40,14 +40,13 @@
 package fr.gouv.vitamui.ingest.server.service;
 
 import fr.gouv.vitam.common.client.VitamContext;
-import fr.gouv.vitamui.commons.api.domain.ExternalParametersDto;
-import fr.gouv.vitamui.commons.api.domain.ParameterDto;
-import fr.gouv.vitamui.iam.internal.client.ExternalParametersInternalRestClient;
+import fr.gouv.vitamui.iam.external.client.ExternalParametersExternalRestClient;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -58,15 +57,15 @@ public class IngestExternalParametersService {
 
     public static final String PARAM_ACCESS_CONTRACT_NAME = "PARAM_ACCESS_CONTRACT";
 
-    private final ExternalParametersInternalRestClient externalParametersInternalRestClient;
+    private final ExternalParametersExternalRestClient externalParametersExternalRestClient;
     private final ExternalSecurityService externalSecurityService;
 
     @Autowired
     public IngestExternalParametersService(
-        final ExternalParametersInternalRestClient externalParametersInternalRestClient,
+        final ExternalParametersExternalRestClient externalParametersExternalRestClient,
         final ExternalSecurityService externalSecurityService
     ) {
-        this.externalParametersInternalRestClient = externalParametersInternalRestClient;
+        this.externalParametersExternalRestClient = externalParametersExternalRestClient;
         this.externalSecurityService = externalSecurityService;
     }
 
@@ -77,17 +76,17 @@ public class IngestExternalParametersService {
      * throws IllegalArgumentException
      */
     public String retrieveAccessContractFromExternalParam() {
-        ExternalParametersDto myExternalParameter = externalParametersInternalRestClient.getMyExternalParameters(
+        Map<String, String> myExternalParameter = externalParametersExternalRestClient.getMyExternalParameters(
             externalSecurityService.getHttpContext()
         );
-        if (myExternalParameter == null || CollectionUtils.isEmpty(myExternalParameter.getParameters())) {
+        if (myExternalParameter == null || CollectionUtils.isEmpty(myExternalParameter.entrySet())) {
             throw new IllegalArgumentException("No external profile defined for access contract defined");
         }
 
-        ParameterDto parameterAccessContract = myExternalParameter
-            .getParameters()
+        Map.Entry<String, String> parameterAccessContract = myExternalParameter
+            .entrySet()
             .stream()
-            .filter(parameter -> PARAM_ACCESS_CONTRACT_NAME.equals(parameter.getKey()))
+            .filter(entry -> PARAM_ACCESS_CONTRACT_NAME.equals(entry.getKey()))
             .findFirst()
             .orElse(null);
         if (Objects.isNull(parameterAccessContract) || Objects.isNull(parameterAccessContract.getValue())) {

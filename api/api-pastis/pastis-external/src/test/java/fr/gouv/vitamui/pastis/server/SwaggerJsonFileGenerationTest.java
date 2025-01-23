@@ -42,12 +42,11 @@ import fr.gouv.vitam.access.external.client.AdminExternalClient;
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
 import fr.gouv.vitamui.commons.rest.configuration.SwaggerConfiguration;
 import fr.gouv.vitamui.commons.test.rest.AbstractSwaggerJsonFileGenerationTest;
-import fr.gouv.vitamui.iam.internal.client.IamInternalRestClientFactory;
-import fr.gouv.vitamui.iam.internal.client.UserInternalRestClient;
+import fr.gouv.vitamui.iam.external.client.IamExternalRestClientFactory;
+import fr.gouv.vitamui.iam.external.client.UserExternalRestClient;
 import fr.gouv.vitamui.iam.security.provider.ExternalApiAuthenticationProvider;
 import fr.gouv.vitamui.iam.security.service.ExternalAuthentificationService;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
-import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import fr.gouv.vitamui.security.client.ContextRestClient;
 import fr.gouv.vitamui.security.client.SecurityRestClientFactory;
 import org.junit.runner.RunWith;
@@ -81,10 +80,10 @@ public class SwaggerJsonFileGenerationTest extends AbstractSwaggerJsonFileGenera
     public ExternalAuthentificationService externalAuthentificationService;
 
     @MockBean
-    public IamInternalRestClientFactory iamInternalRestClientFactory;
+    public IamExternalRestClientFactory iamExternalRestClientFactory;
 
     @MockBean
-    public UserInternalRestClient userInternalRestClient;
+    public UserExternalRestClient userExternalRestClient;
 
     @MockBean
     private RestExceptionHandler restExceptionHandler;
@@ -94,9 +93,6 @@ public class SwaggerJsonFileGenerationTest extends AbstractSwaggerJsonFileGenera
 
     @MockBean(name = "accessExternalClient")
     private AccessExternalClient accessExternalClient;
-
-    @MockBean
-    private InternalSecurityService internalSecurityService;
 
     @MockBean
     private AuthenticationProvider authenticationProvider;

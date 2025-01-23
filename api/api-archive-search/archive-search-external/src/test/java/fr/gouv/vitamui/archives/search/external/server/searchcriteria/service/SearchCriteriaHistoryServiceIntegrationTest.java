@@ -42,11 +42,11 @@ import fr.gouv.vitamui.archives.search.external.server.searchcriteria.dao.Search
 import fr.gouv.vitamui.archives.search.external.server.searchcriteria.domain.SearchCriteriaHistory;
 import fr.gouv.vitamui.archives.search.external.server.utils.Utils;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaHistoryDto;
-import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
+import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.commons.test.AbstractMongoTests;
 import fr.gouv.vitamui.commons.test.VitamClientTestConfig;
-import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
+import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -72,7 +72,7 @@ public class SearchCriteriaHistoryServiceIntegrationTest extends AbstractMongoTe
 
     private SearchCriteriaHistoryService service;
 
-    private final CustomSequenceRepository sequenceRepository = mock(CustomSequenceRepository.class);
+    private final SequenceGeneratorService sequenceGeneratorService = mock(SequenceGeneratorService.class);
 
     @Autowired
     private SearchCriteriaHistoryRepository repository;
@@ -84,23 +84,23 @@ public class SearchCriteriaHistoryServiceIntegrationTest extends AbstractMongoTe
     private MongoTemplate mongoTemplate;
 
     @MockBean
-    protected InternalSecurityService internalSecurityService;
+    protected ExternalSecurityService externalSecurityService;
 
     @BeforeEach
     public void setup() throws Exception {
         MockitoAnnotations.initMocks(this);
 
         service = new SearchCriteriaHistoryService(
-            sequenceRepository,
+            sequenceGeneratorService,
             repository,
             searchCriteriaHistoryConverter,
-            internalSecurityService
+            externalSecurityService
         );
         repository.deleteAll();
 
         final AuthUserDto user = Utils.buildAuthUserDto();
 
-        Mockito.when(internalSecurityService.getUser()).thenReturn(user);
+        Mockito.when(externalSecurityService.getUser()).thenReturn(user);
     }
 
     @AfterEach

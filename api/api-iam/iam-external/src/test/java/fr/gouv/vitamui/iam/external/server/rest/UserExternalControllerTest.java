@@ -6,8 +6,11 @@ import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
 import fr.gouv.vitamui.iam.common.rest.RestApi;
-import fr.gouv.vitamui.iam.external.server.service.UserExternalService;
+import fr.gouv.vitamui.iam.external.server.common.rest.ApiIamControllerTest;
+import fr.gouv.vitamui.iam.external.server.user.service.ConnectionHistoryService;
+import fr.gouv.vitamui.iam.external.server.user.service.UserService;
 import fr.gouv.vitamui.iam.external.server.utils.ApiIamServerUtils;
+import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentMatchers;
@@ -28,17 +31,21 @@ import static fr.gouv.vitamui.commons.api.CommonConstants.APPLICATION_ID;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(controllers = { UserExternalController.class })
+@WebMvcTest(controllers = { UserController.class })
 public class UserExternalControllerTest extends ApiIamControllerTest<UserDto> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserExternalControllerTest.class);
 
     @MockBean
-    private UserExternalService userExternalService;
+    private ExternalSecurityService externalSecurityService;
 
-    private final UserExternalController userExternalController = MvcUriComponentsBuilder.on(
-        UserExternalController.class
-    );
+    @MockBean
+    private UserService userService;
+
+    @MockBean
+    private ConnectionHistoryService connectionHistoryService;
+
+    private final UserController userController = MvcUriComponentsBuilder.on(UserController.class);
 
     @Test
     public void updateUserStatus_thenOk() throws Exception {
@@ -50,32 +57,30 @@ public class UserExternalControllerTest extends ApiIamControllerTest<UserDto> {
             endpoint,
             asJsonString(ImmutableMap.of("id", id, "status", status))
         );
-        result.andExpect(MockMvcResultMatchers.handler().methodCall(userExternalController.patch(null, null)));
-        Mockito.verify(userExternalService, Mockito.times(1)).patch(ArgumentMatchers.any());
+        result.andExpect(MockMvcResultMatchers.handler().methodCall(userController.patch(null, null)));
+        Mockito.verify(userService, Mockito.times(1)).patch(ArgumentMatchers.any());
     }
 
     @Test
     public void findHistoryById_thenOk() throws Exception {
         ResultActions result = super.performGet("/2626/history");
-        result.andExpect(MockMvcResultMatchers.handler().methodCall(userExternalController.findHistoryById(null)));
+        result.andExpect(MockMvcResultMatchers.handler().methodCall(userController.findHistoryById(null)));
     }
 
     @Test
     public void getLevels_thenOk() throws Exception {
         LOGGER.debug("testGetLevels");
         ResultActions result = super.performGet(CommonConstants.PATH_LEVELS, ImmutableMap.of(), status().isOk());
-        result.andExpect(
-            MockMvcResultMatchers.handler().methodCall(userExternalController.getLevels(Optional.empty()))
-        );
-        Mockito.verify(userExternalService, Mockito.times(1)).getLevels(Optional.empty());
+        result.andExpect(MockMvcResultMatchers.handler().methodCall(userController.getLevels(Optional.empty())));
+        Mockito.verify(userService, Mockito.times(1)).getLevels(Optional.empty());
     }
 
     @Test
     public void patchMe_thenOk() throws Exception {
         LOGGER.debug("testPatchMe");
         ResultActions result = super.performPatch(CommonConstants.PATH_ME, asJsonString(ImmutableMap.of("id", "id")));
-        result.andExpect(MockMvcResultMatchers.handler().methodCall(userExternalController.patchMe(null)));
-        Mockito.verify(userExternalService, Mockito.times(1)).patchMe(ArgumentMatchers.any());
+        result.andExpect(MockMvcResultMatchers.handler().methodCall(userController.patchMe(null)));
+        Mockito.verify(userService, Mockito.times(1)).patchMe(ArgumentMatchers.any());
     }
 
     @Test
@@ -83,8 +88,8 @@ public class UserExternalControllerTest extends ApiIamControllerTest<UserDto> {
         Map<String, Object> analytics = ImmutableMap.of(APPLICATION_ID, "API_SUPERVISION_APP");
         ResultActions result =
             this.performPost(getUriBuilder(CommonConstants.PATH_ANALYTICS), asJsonString(analytics), status().isOk());
-        result.andExpect(MockMvcResultMatchers.handler().methodCall(userExternalController.patchAnalytics(analytics)));
-        Mockito.verify(userExternalService).patchAnalytics(analytics);
+        result.andExpect(MockMvcResultMatchers.handler().methodCall(userController.patchAnalytics(analytics)));
+        Mockito.verify(userService).patchAnalytics(analytics);
     }
 
     @Override

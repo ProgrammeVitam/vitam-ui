@@ -53,7 +53,7 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "referential-external", ignoreUnknownFields = false)
 public class ApiReferentialApplicationProperties {
 
-    private RestClientConfiguration iamInternalClient;
+    private RestClientConfiguration iamExternalClient;
 
     private RestClientConfiguration securityClient;
 }

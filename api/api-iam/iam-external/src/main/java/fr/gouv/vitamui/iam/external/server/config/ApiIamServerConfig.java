@@ -34,58 +34,124 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+
 package fr.gouv.vitamui.iam.external.server.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import fr.gouv.vitam.access.external.client.AdminExternalClient;
 import fr.gouv.vitamui.commons.api.application.AbstractContextConfiguration;
+import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
+import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
-import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
-import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
-import fr.gouv.vitamui.commons.rest.client.accesscontract.AccessContractInternalRestClient;
-import fr.gouv.vitamui.commons.rest.client.logbook.LogbookInternalRestClient;
-import fr.gouv.vitamui.commons.rest.client.logbook.LogbookInternalWebClient;
+import fr.gouv.vitamui.commons.rest.client.BaseRestClientFactory;
+import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
 import fr.gouv.vitamui.commons.rest.configuration.SwaggerConfiguration;
-import fr.gouv.vitamui.iam.internal.client.ApplicationInternalRestClient;
-import fr.gouv.vitamui.iam.internal.client.CasInternalRestClient;
-import fr.gouv.vitamui.iam.internal.client.CustomerInternalRestClient;
-import fr.gouv.vitamui.iam.internal.client.CustomerInternalWebClient;
-import fr.gouv.vitamui.iam.internal.client.ExternalParamProfileInternalRestClient;
-import fr.gouv.vitamui.iam.internal.client.ExternalParametersInternalRestClient;
-import fr.gouv.vitamui.iam.internal.client.GroupInternalRestClient;
-import fr.gouv.vitamui.iam.internal.client.IamInternalRestClientFactory;
-import fr.gouv.vitamui.iam.internal.client.IamInternalWebClientFactory;
-import fr.gouv.vitamui.iam.internal.client.IdentityProviderInternalRestClient;
-import fr.gouv.vitamui.iam.internal.client.OwnerInternalRestClient;
-import fr.gouv.vitamui.iam.internal.client.ProfileInternalRestClient;
-import fr.gouv.vitamui.iam.internal.client.SubrogationInternalRestClient;
-import fr.gouv.vitamui.iam.internal.client.TenantInternalRestClient;
-import fr.gouv.vitamui.iam.internal.client.UserInfoInternalRestClient;
-import fr.gouv.vitamui.iam.internal.client.UserInternalRestClient;
-import fr.gouv.vitamui.iam.security.provider.ExternalApiAuthenticationProvider;
-import fr.gouv.vitamui.iam.security.service.ExternalAuthentificationService;
+import fr.gouv.vitamui.commons.security.client.config.password.PasswordConfiguration;
+import fr.gouv.vitamui.commons.security.client.password.PasswordValidator;
+import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
+import fr.gouv.vitamui.commons.vitam.api.administration.AccessContractService;
+import fr.gouv.vitamui.commons.vitam.api.administration.IngestContractService;
+import fr.gouv.vitamui.commons.vitam.api.config.VitamAccessConfig;
+import fr.gouv.vitamui.commons.vitam.api.config.VitamAdministrationConfig;
+import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
+import fr.gouv.vitamui.iam.common.utils.Pac4jClientBuilder;
+import fr.gouv.vitamui.iam.external.server.application.service.ApplicationService;
+import fr.gouv.vitamui.iam.external.server.cas.service.CasService;
+import fr.gouv.vitamui.iam.external.server.common.service.AddressService;
+import fr.gouv.vitamui.iam.external.server.configuration.ConfigurationService;
+import fr.gouv.vitamui.iam.external.server.customer.config.CustomerInitConfig;
+import fr.gouv.vitamui.iam.external.server.customer.converter.CustomerConverter;
+import fr.gouv.vitamui.iam.external.server.customer.dao.CustomerRepository;
+import fr.gouv.vitamui.iam.external.server.customer.service.CustomerService;
+import fr.gouv.vitamui.iam.external.server.customer.service.InitCustomerService;
+import fr.gouv.vitamui.iam.external.server.externalParameters.converter.ExternalParametersConverter;
+import fr.gouv.vitamui.iam.external.server.externalParameters.dao.ExternalParametersRepository;
+import fr.gouv.vitamui.iam.external.server.externalParameters.service.ExternalParametersService;
+import fr.gouv.vitamui.iam.external.server.externalparamprofile.dao.ExternalParamProfileRepository;
+import fr.gouv.vitamui.iam.external.server.externalparamprofile.service.ExternalParamProfileService;
+import fr.gouv.vitamui.iam.external.server.group.converter.GroupConverter;
+import fr.gouv.vitamui.iam.external.server.group.dao.GroupRepository;
+import fr.gouv.vitamui.iam.external.server.group.service.GroupExportService;
+import fr.gouv.vitamui.iam.external.server.group.service.GroupService;
+import fr.gouv.vitamui.iam.external.server.idp.converter.IdentityProviderConverter;
+import fr.gouv.vitamui.iam.external.server.idp.dao.IdentityProviderRepository;
+import fr.gouv.vitamui.iam.external.server.idp.service.IdentityProviderService;
+import fr.gouv.vitamui.iam.external.server.idp.service.SpMetadataGenerator;
+import fr.gouv.vitamui.iam.external.server.logbook.service.IamLogbookService;
+import fr.gouv.vitamui.iam.external.server.owner.converter.OwnerConverter;
+import fr.gouv.vitamui.iam.external.server.owner.dao.OwnerRepository;
+import fr.gouv.vitamui.iam.external.server.owner.service.OwnerService;
+import fr.gouv.vitamui.iam.external.server.profile.converter.ProfileConverter;
+import fr.gouv.vitamui.iam.external.server.profile.dao.ProfileRepository;
+import fr.gouv.vitamui.iam.external.server.profile.service.ProfileService;
+import fr.gouv.vitamui.iam.external.server.provisioning.config.ProvisioningClientConfiguration;
+import fr.gouv.vitamui.iam.external.server.security.IamApiAuthenticationProvider;
+import fr.gouv.vitamui.iam.external.server.security.IamAuthentificationService;
+import fr.gouv.vitamui.iam.external.server.security.WebSecurityConfig;
+import fr.gouv.vitamui.iam.external.server.subrogation.converter.SubrogationConverter;
+import fr.gouv.vitamui.iam.external.server.subrogation.dao.SubrogationRepository;
+import fr.gouv.vitamui.iam.external.server.subrogation.service.SubrogationService;
+import fr.gouv.vitamui.iam.external.server.tenant.converter.TenantConverter;
+import fr.gouv.vitamui.iam.external.server.tenant.dao.TenantRepository;
+import fr.gouv.vitamui.iam.external.server.tenant.service.InitVitamTenantService;
+import fr.gouv.vitamui.iam.external.server.tenant.service.TenantService;
+import fr.gouv.vitamui.iam.external.server.token.dao.TokenRepository;
+import fr.gouv.vitamui.iam.external.server.user.converter.UserConverter;
+import fr.gouv.vitamui.iam.external.server.user.converter.UserInfoConverter;
+import fr.gouv.vitamui.iam.external.server.user.dao.UserInfoRepository;
+import fr.gouv.vitamui.iam.external.server.user.dao.UserRepository;
+import fr.gouv.vitamui.iam.external.server.user.service.ConnectionHistoryService;
+import fr.gouv.vitamui.iam.external.server.user.service.UserEmailService;
+import fr.gouv.vitamui.iam.external.server.user.service.UserExportService;
+import fr.gouv.vitamui.iam.external.server.user.service.UserInfoService;
+import fr.gouv.vitamui.iam.external.server.user.service.UserService;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import fr.gouv.vitamui.security.client.ContextRestClient;
 import fr.gouv.vitamui.security.client.SecurityRestClientFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.http.HttpMessageConvertersAutoConfiguration;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.mongodb.MongoTransactionManager;
+import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.multipart.support.MultipartFilter;
-import org.springframework.web.reactive.function.client.WebClient;
-
-import java.util.Set;
 
 @Configuration
-@Import({ RestExceptionHandler.class, SwaggerConfiguration.class })
+@Import(
+    {
+        RestExceptionHandler.class,
+        SwaggerConfiguration.class,
+        HttpMessageConvertersAutoConfiguration.class,
+        WebSecurityConfig.class,
+        VitamAccessConfig.class,
+        VitamAdministrationConfig.class,
+        ConverterConfig.class,
+    }
+)
+@EnableConfigurationProperties({ PasswordConfiguration.class })
 public class ApiIamServerConfig extends AbstractContextConfiguration {
 
     @Bean
     public MultipartResolver multipartResolver() {
-        final MultipartResolver commonsMultipartResolver = new CommonsMultipartResolver();
-        return commonsMultipartResolver;
+        return new CommonsMultipartResolver();
     }
+
+    @Bean
+    public PasswordValidator passwordValidator() {
+        return new PasswordValidator();
+    }
+
+    @Autowired
+    private PasswordConfiguration passwordConfiguration;
 
     @SuppressWarnings("rawtypes")
     @Bean
@@ -97,11 +163,29 @@ public class ApiIamServerConfig extends AbstractContextConfiguration {
     }
 
     @Bean
+    @ConfigurationProperties(value = "cas-client")
+    public RestClientConfiguration casClientProperties() {
+        return new RestClientConfiguration();
+    }
+
+    @Bean
+    @ConfigurationProperties(value = "provisioning-client")
+    public ProvisioningClientConfiguration provisioningClientProperties() {
+        return new ProvisioningClientConfiguration();
+    }
+
+    @Bean
+    @ConfigurationProperties(value = "security")
+    public RestClientConfiguration securityClientProperties() {
+        return new RestClientConfiguration();
+    }
+
+    @Bean
     public SecurityRestClientFactory securityRestClientFactory(
-        final ApiIamApplicationProperties apiIamApplicationProperties,
-        final RestTemplateBuilder restTemplateBuilder
+        final RestTemplateBuilder restTemplateBuilder,
+        final RestClientConfiguration securityClientProperties
     ) {
-        return new SecurityRestClientFactory(apiIamApplicationProperties.getSecurityClient(), restTemplateBuilder);
+        return new SecurityRestClientFactory(securityClientProperties, restTemplateBuilder);
     }
 
     @Bean
@@ -110,167 +194,408 @@ public class ApiIamServerConfig extends AbstractContextConfiguration {
     }
 
     @Bean
-    public ExternalSecurityService externalSecurityService() {
-        return new ExternalSecurityService();
+    public IamAuthentificationService iamAuthentificationService(
+        final UserService internalUserService,
+        final TokenRepository tokenRepository,
+        final SubrogationRepository subrogationRepository
+    ) {
+        return new IamAuthentificationService(internalUserService, tokenRepository, subrogationRepository);
     }
 
     @Bean
-    public ExternalAuthentificationService externalAuthentificationService(
-        final ContextRestClient contextRestClient,
-        final UserInternalRestClient userInternalRestClient
+    public IamApiAuthenticationProvider apiAuthenticationProvider(
+        final IamAuthentificationService iamAuthentificationService
     ) {
-        return new ExternalAuthentificationService(contextRestClient, userInternalRestClient);
+        return new IamApiAuthenticationProvider(iamAuthentificationService);
     }
 
     @Bean
-    public ExternalApiAuthenticationProvider apiAuthenticationProvider(
-        final ExternalAuthentificationService externalAuthentificationService
-    ) {
-        return new ExternalApiAuthenticationProvider(externalAuthentificationService) {
-            private final Set<String> CROSS_TENANTS_ACCESS_URI = Set.of("/iam/v1/security");
-
-            @Override
-            public boolean supportsCrossTenants(ExternalHttpContext context) {
-                return CROSS_TENANTS_ACCESS_URI.contains(context.getRequestUri());
-            }
-        };
+    public Pac4jClientBuilder pac4jClientBuilder() {
+        return new Pac4jClientBuilder();
     }
 
     @Bean
-    public IamInternalRestClientFactory iamInternalRestClientFactory(
-        final ApiIamApplicationProperties apiIamApplicationProperties,
-        final RestTemplateBuilder restTemplateBuilder
+    public SpMetadataGenerator spMetadataGenerator() {
+        return new SpMetadataGenerator();
+    }
+
+    @Bean
+    public SequenceGeneratorService sequenceGeneratorService(final CustomSequenceRepository sequenceRepository) {
+        return new SequenceGeneratorService(sequenceRepository);
+    }
+
+    @Bean
+    public IdentityProviderService identityProviderCrudService(
+        final SequenceGeneratorService sequenceGeneratorService,
+        final IdentityProviderRepository identityProviderRepository,
+        final SpMetadataGenerator spMetadataGenerator,
+        final CustomerRepository customerRepository,
+        final IamLogbookService iamLogbookService,
+        final IdentityProviderConverter idpConverter,
+        final ExternalSecurityService externalSecurityService
     ) {
-        return new IamInternalRestClientFactory(
-            apiIamApplicationProperties.getIamInternalClient(),
-            restTemplateBuilder
+        return new IdentityProviderService(
+            sequenceGeneratorService,
+            identityProviderRepository,
+            spMetadataGenerator,
+            customerRepository,
+            iamLogbookService,
+            idpConverter,
+            externalSecurityService
         );
     }
 
     @Bean
-    public IamInternalWebClientFactory internalWebClientFactory(
-        final ApiIamApplicationProperties apiIamApplicationProperties,
-        final WebClient.Builder webClientBuilder
+    public CustomerService customerCrudService(
+        final SequenceGeneratorService sequenceGeneratorService,
+        final CustomerRepository customerRepository,
+        final OwnerService internalOwnerService,
+        final UserService userService,
+        final ExternalSecurityService externalSecurityService,
+        final AddressService addressService,
+        final InitCustomerService initCustomerService,
+        final IamLogbookService iamLogbookService,
+        final CustomerConverter customerConverter,
+        final LogbookService logbookService
     ) {
-        return new IamInternalWebClientFactory(apiIamApplicationProperties.getIamInternalClient(), webClientBuilder);
+        return new CustomerService(
+            sequenceGeneratorService,
+            customerRepository,
+            internalOwnerService,
+            userService,
+            externalSecurityService,
+            addressService,
+            initCustomerService,
+            iamLogbookService,
+            customerConverter,
+            logbookService
+        );
     }
 
     @Bean
-    public CustomerInternalRestClient customerInternalRestClient(
-        final IamInternalRestClientFactory iamInternalRestClientFactory
-    ) {
-        return iamInternalRestClientFactory.getCustomerInternalRestClient();
+    public InitCustomerService initCustomerCrudService() {
+        return new InitCustomerService();
     }
 
     @Bean
-    public CustomerInternalWebClient customerInternalV2RestClient(
-        final IamInternalWebClientFactory iamInternalRestClientFactory
+    public OwnerService ownerCrudService(
+        final SequenceGeneratorService sequenceGeneratorService,
+        final OwnerRepository ownerRepository,
+        final CustomerRepository customerRepository,
+        final AddressService addressService,
+        final IamLogbookService iamLogbookService,
+        final ExternalSecurityService externalSecurityService,
+        final OwnerConverter ownerConverter,
+        final LogbookService logbookService,
+        final TenantRepository tenantRepository
     ) {
-        return iamInternalRestClientFactory.getCustomerInternalRestClient();
+        return new OwnerService(
+            sequenceGeneratorService,
+            ownerRepository,
+            customerRepository,
+            addressService,
+            iamLogbookService,
+            externalSecurityService,
+            ownerConverter,
+            logbookService,
+            tenantRepository
+        );
     }
 
     @Bean
-    public IdentityProviderInternalRestClient identityProviderInternalRestClient(
-        final IamInternalRestClientFactory iamInternalRestClientFactory
+    public InitVitamTenantService initVitamTenantService(
+        final AccessContractService accessContractService,
+        final IngestContractService ingestContractService,
+        final ExternalSecurityService externalSecurityService,
+        final TenantConverter tenantConverter
     ) {
-        return iamInternalRestClientFactory.getIdentityProviderInternalRestClient();
+        return new InitVitamTenantService(
+            accessContractService,
+            ingestContractService,
+            externalSecurityService,
+            tenantConverter
+        );
     }
 
     @Bean
-    public ProfileInternalRestClient profileInternalRestClient(
-        final IamInternalRestClientFactory iamInternalRestClientFactory
+    public TenantService tenantCrudService(
+        final SequenceGeneratorService sequenceGeneratorService,
+        final TenantRepository tenantRepository,
+        final CustomerRepository customerRepository,
+        final OwnerRepository ownerRepository,
+        final GroupRepository groupRepository,
+        final ProfileRepository profileRepository,
+        final UserRepository userRepository,
+        final GroupService internalGroupService,
+        final UserService internalUserService,
+        final OwnerService internalOwnerService,
+        final ProfileService internalProfileService,
+        final ExternalSecurityService externalSecurityService,
+        final IamLogbookService iamLogbookService,
+        final TenantConverter tenantConverter,
+        final AccessContractService accessContractService,
+        final InitVitamTenantService initVitamTenantService,
+        final LogbookService logbookService,
+        final CustomerInitConfig customerInitConfig,
+        final ExternalParametersRepository externalParametersRepository,
+        final ExternalParametersService externalParametersService,
+        final ConfigurationService configurationService
     ) {
-        return iamInternalRestClientFactory.getProfileInternalRestClient();
+        return new TenantService(
+            sequenceGeneratorService,
+            tenantRepository,
+            customerRepository,
+            ownerRepository,
+            profileRepository,
+            internalGroupService,
+            internalUserService,
+            internalOwnerService,
+            externalSecurityService,
+            iamLogbookService,
+            tenantConverter,
+            initVitamTenantService,
+            logbookService,
+            customerInitConfig,
+            externalParametersRepository,
+            externalParametersService,
+            configurationService
+        );
     }
 
     @Bean
-    public GroupInternalRestClient groupInternalRestClient(
-        final IamInternalRestClientFactory iamInternalRestClientFactory
-    ) {
-        return iamInternalRestClientFactory.getProfileGroupInternalRestClient();
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 
     @Bean
-    public TenantInternalRestClient tenantInternalRestClient(
-        final IamInternalRestClientFactory iamInternalRestClientFactory
+    public UserService userService(
+        final SequenceGeneratorService sequenceGeneratorService,
+        final UserRepository userRepository,
+        final ProfileService profileService,
+        final UserEmailService userEmailService,
+        final TenantRepository tenantRepository,
+        final ExternalSecurityService externalSecurityService,
+        final CustomerRepository customerRepository,
+        final ProfileRepository profilRepository,
+        final GroupService groupService,
+        final GroupRepository groupRepository,
+        final IamLogbookService iamLogbookService,
+        final UserConverter userConverter,
+        final MongoTransactionManager mongoTransactionManager,
+        final LogbookService logbookService,
+        final AddressService addressService,
+        final ApplicationService applicationService,
+        final PasswordConfiguration passwordConfiguration,
+        final UserExportService userExportService,
+        final UserInfoService userInfoService,
+        final ConnectionHistoryService connectionHistoryService
     ) {
-        return iamInternalRestClientFactory.getTenantInternalRestClient();
+        return new UserService(
+            sequenceGeneratorService,
+            userRepository,
+            groupService,
+            profileService,
+            userEmailService,
+            tenantRepository,
+            externalSecurityService,
+            customerRepository,
+            iamLogbookService,
+            userConverter,
+            mongoTransactionManager,
+            logbookService,
+            addressService,
+            applicationService,
+            passwordConfiguration,
+            userExportService,
+            userInfoService,
+            connectionHistoryService
+        );
     }
 
     @Bean
-    public UserInternalRestClient userInternalRestClient(
-        final IamInternalRestClientFactory iamInternalRestClientFactory
+    public UserInfoService userInfoService(
+        final SequenceGeneratorService sequenceGeneratorService,
+        final UserInfoRepository userInfoRepository,
+        final ExternalSecurityService externalSecurityService,
+        final UserInfoConverter userInfoConverter,
+        final IamLogbookService iamLogbookService,
+        final LogbookService logbookService
     ) {
-        return iamInternalRestClientFactory.getUserInternalRestClient();
+        return new UserInfoService(
+            sequenceGeneratorService,
+            userInfoRepository,
+            externalSecurityService,
+            userInfoConverter,
+            iamLogbookService,
+            logbookService
+        );
     }
 
     @Bean
-    public UserInfoInternalRestClient userInfoInternalRestClient(
-        final IamInternalRestClientFactory iamInternalRestClientFactory
+    public GroupService groupService(
+        final SequenceGeneratorService sequenceGeneratorService,
+        final GroupRepository groupRepository,
+        final CustomerRepository customerRepository,
+        final ProfileService internalProfileService,
+        final UserRepository userRepository,
+        final ExternalSecurityService externalSecurityService,
+        final TenantRepository tenantRepository,
+        final IamLogbookService iamLogbookService,
+        final GroupConverter groupConverter,
+        final LogbookService logbookService,
+        final GroupExportService groupExportService
     ) {
-        return iamInternalRestClientFactory.getUserInfoInternalRestClient();
+        return new GroupService(
+            sequenceGeneratorService,
+            groupRepository,
+            customerRepository,
+            internalProfileService,
+            userRepository,
+            externalSecurityService,
+            tenantRepository,
+            iamLogbookService,
+            groupConverter,
+            logbookService,
+            groupExportService
+        );
     }
 
     @Bean
-    public OwnerInternalRestClient ownerInternalRestClient(
-        final IamInternalRestClientFactory iamInternalRestClientFactory
+    public ProfileService profileCrudService(
+        final SequenceGeneratorService sequenceGeneratorService,
+        final ProfileRepository profileRepository,
+        final CustomerRepository customerRepository,
+        final GroupRepository groupRepository,
+        final TenantRepository tenantRepository,
+        final UserRepository userRepository,
+        final ExternalSecurityService externalSecurityService,
+        final IamLogbookService iamLogbookService,
+        final ProfileConverter profileConverter,
+        final LogbookService logbookService,
+        final CustomerInitConfig customerInitConfig
     ) {
-        return iamInternalRestClientFactory.getOwnerInternalRestClient();
+        return new ProfileService(
+            sequenceGeneratorService,
+            profileRepository,
+            customerRepository,
+            groupRepository,
+            tenantRepository,
+            userRepository,
+            externalSecurityService,
+            iamLogbookService,
+            profileConverter,
+            logbookService,
+            customerInitConfig
+        );
     }
 
     @Bean
-    public SubrogationInternalRestClient subrogationInternalRestClient(
-        final IamInternalRestClientFactory iamInternalRestClientFactory
+    public UserEmailService userEmailService(
+        final RestTemplateBuilder restTemplateBuilder,
+        final RestClientConfiguration casClientProperties
     ) {
-        return iamInternalRestClientFactory.getSubrogationInternalRestClient();
+        final BaseRestClientFactory factory = new BaseRestClientFactory(casClientProperties, restTemplateBuilder);
+        return new UserEmailService(factory);
     }
 
     @Bean
-    public CasInternalRestClient casInternalRestClient(
-        final IamInternalRestClientFactory iamInternalRestClientFactory
-    ) {
-        return iamInternalRestClientFactory.getCasInternalRestClient();
+    public IdentityProviderHelper identityProviderHelper() {
+        return new IdentityProviderHelper();
     }
 
     @Bean
-    public LogbookInternalRestClient<InternalHttpContext> logbookInternalRestClient(
-        final IamInternalRestClientFactory iamInternalRestClientFactory
+    public SubrogationService subrogationCrudService(
+        final SequenceGeneratorService sequenceGeneratorService,
+        final SubrogationRepository subrogationRepository,
+        final UserRepository userRepository,
+        final UserService userService,
+        final GroupService groupService,
+        final GroupRepository groupRepository,
+        final ProfileRepository profilRepository,
+        final ExternalSecurityService externalSecurityService,
+        final CustomerRepository customerRepository,
+        final SubrogationConverter subrogationConverter,
+        final IamLogbookService iamLogbookService
     ) {
-        return iamInternalRestClientFactory.getLogbookInternalRestClient();
+        return new SubrogationService(
+            sequenceGeneratorService,
+            subrogationRepository,
+            userRepository,
+            userService,
+            groupService,
+            groupRepository,
+            profilRepository,
+            externalSecurityService,
+            customerRepository,
+            subrogationConverter,
+            iamLogbookService
+        );
     }
 
     @Bean
-    public LogbookInternalWebClient<InternalHttpContext> logbookInternalWebClient(
-        final IamInternalWebClientFactory iamInternalWebClientFactory
-    ) {
-        return iamInternalWebClientFactory.getLogbookInternalWebClient();
+    public CasService casService() {
+        return new CasService();
     }
 
     @Bean
-    public ApplicationInternalRestClient applicationInternalRestClient(
-        final IamInternalRestClientFactory iamInternalRestClientFactory
-    ) {
-        return iamInternalRestClientFactory.getApplicationInternalRestClient();
+    public AddressService addressService() {
+        return new AddressService();
     }
 
     @Bean
-    public ExternalParametersInternalRestClient externalParametersInternalRestClient(
-        final IamInternalRestClientFactory iamInternalRestClientFactory
+    public ExternalParametersService externalParametersService(
+        final SequenceGeneratorService sequenceGeneratorService,
+        final ExternalParametersRepository externalParametersRepository,
+        final ExternalParametersConverter externalParametersConverter,
+        final ExternalSecurityService externalSecurityService,
+        final IamLogbookService iamLogbookService
     ) {
-        return iamInternalRestClientFactory.getExternalParametersInternalRestClient();
+        return new ExternalParametersService(
+            sequenceGeneratorService,
+            externalParametersRepository,
+            externalParametersConverter,
+            externalSecurityService,
+            iamLogbookService
+        );
     }
 
     @Bean
-    public ExternalParamProfileInternalRestClient externalParamProfileInternalRestClient(
-        final IamInternalRestClientFactory iamInternalRestClientFactory
+    public ExternalParamProfileService externalParamProfileService(
+        final ExternalParametersService externalParametersService,
+        final ProfileService profileService,
+        final ExternalSecurityService externalSecurityService,
+        final IamLogbookService iamLogbookService,
+        final ExternalParamProfileRepository externalParamProfileRepository,
+        final LogbookService logbookService,
+        final ProfileConverter profileConverter
     ) {
-        return iamInternalRestClientFactory.getExternalParamProfileInternalRestClient();
+        return new ExternalParamProfileService(
+            externalParametersService,
+            profileService,
+            externalSecurityService,
+            iamLogbookService,
+            externalParamProfileRepository,
+            logbookService,
+            profileConverter
+        );
     }
 
     @Bean
-    public AccessContractInternalRestClient<InternalHttpContext> accessContractInternalRestClient(
-        final IamInternalRestClientFactory iamInternalRestClientFactory
+    ExternalParamProfileRepository externalParamProfileRepository(MongoOperations mongoOperations) {
+        return new ExternalParamProfileRepository(mongoOperations);
+    }
+
+    @Bean
+    public ConfigurationService configurationService(
+        final ExternalSecurityService externalSecurityService,
+        final AdminExternalClient adminExternalClient,
+        final ObjectMapper objectMapper
     ) {
-        return iamInternalRestClientFactory.getAccessContractInternalRestClient();
+        return new ConfigurationService(externalSecurityService, adminExternalClient, objectMapper);
+    }
+
+    @Bean
+    public ExternalSecurityService externalSecurityService() {
+        return new ExternalSecurityService();
     }
 }

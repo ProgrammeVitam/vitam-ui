@@ -5,6 +5,10 @@ spring:
     use-legacy-processing: true
   profiles:
     active: dev, swagger
+  servlet:
+    multipart:
+      max-file-size: -1
+      max-request-size: -1
 
   cloud:
     consul: #disabled for dev
@@ -12,9 +16,9 @@ spring:
       discovery:
         enabled: false
         register: false
-
-spring.servlet.multipart.max-file-size: -1
-spring.servlet.multipart.max-request-size: -1
+  data:
+    mongodb:
+      uri: mongodb://mongod_dbuser_iam:mongod_dbpwd_iam@localhost:27018/iam?connectTimeoutMS=2000
 
 server:
   host:
@@ -43,10 +47,40 @@ iam-external:
     server-host: localhost
     server-port: 8084
     secure: false
-  iam-internal-client:
-    server-host: localhost
-    server-port: 7083
-    secure: false
+
+cas-client:
+  server-host: dev.vitamui.com
+  server-port: 8080
+  secure: true
+  ssl-configuration:
+    truststore:
+      key-path: ../../../dev-deployment/environments/keystores/server/truststore_server.jks
+      key-password: changeme
+    keystore:
+      key-path: ../../../dev-deployment/environments/keystores/server/localhost/keystore_iam-internal.jks
+      key-password: changeme
+      type: JKS
+    hostname-verification: false
+
+cas.reset.password.url: /cas/extras/resetPassword?username={username}&firstname={firstname}&lastname={lastname}&language={language}&customerId={customerId}&ttl=1day
+
+login:
+  url: http://dev.vitamui.com:8080/cas/login
+  attempts:
+    maximum.failures: 5
+    time.interval: 20
+
+logbook:
+  scheduling:
+    enabled: false
+    sendEventToVitamTasks:
+      delay: 10000
+
+vitam.tenant.init.mandatory: true
+
+customer.init.config.file: src/main/resources/dev/customer-init.yml
+
+user.connection.tracing.enabled: false
 
 # Jaeger
 opentracing:
@@ -62,7 +96,50 @@ logging:
   level:
     fr.gouv.vitamui: DEBUG
     fr.gouv.vitamui.iam.security: DEBUG
-    #level.org.springframework.web.filter.CommonsRequestLoggingFilter: DEBUG
+    fr.gouv.vitamui.commons.mongo.service: DEBUG
+    fr.gouv.vitamui.iam.external.server: DEBUG
+    fr.gouv.vitamui.commons.logbook.scheduler: DEBUG
+    # org.springframework.data.mongodb.core.MongoTemplate: DEBUG
+
+gdpr_alert_readonly: true
+
+provisioning-client:
+  identity-providers:
+    - idp-identifier: system_idp
+      uri: "http://localhost:1080/provisioning/v1/users"
+      client:
+        secure: false
+        ssl-configuration:
+          keystore:
+            key-path: ../../../dev-deployment/environments/keystores/server/localhost/keystore_iam-external.jks
+            key-password: changeme
+            type: JKS
+          truststore:
+            key-path: ../../../dev-deployment/environments/keystores/server/truststore_server.jks
+            key-password: changeme
+            type: JKS
+          hostname-verification: false
+    - idp-identifier: 2
+      uri: https://localhost:8090/provisioning/v1/users
+      client:
+        secure: true
+        ssl-configuration:
+          keystore:
+            key-path: ../../../dev-deployment/environments/keystores/server/localhost/keystore_iam-external.jks
+            key-password: changeme
+            type: JKS
+          truststore:
+            key-path: ../../../dev-deployment/environments/keystores/server/truststore_server.jks
+            key-password: changeme
+            type: JKS
+          hostname-verification: false
+
+address:
+  max-street-length: 250
+
+# Password configuration
+password:
+  max-old-password: 12
 
 ---
 spring:

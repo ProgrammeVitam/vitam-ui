@@ -37,6 +37,7 @@
 package fr.gouv.vitamui.iam.security.service;
 
 import fr.gouv.vitam.common.client.VitamContext;
+import fr.gouv.vitamui.commons.api.domain.ProfileDto;
 import fr.gouv.vitamui.commons.api.domain.Role;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.domain.TenantDto;
@@ -49,8 +50,10 @@ import fr.gouv.vitamui.iam.security.authentication.ExternalAuthentication;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -101,7 +104,7 @@ public class ExternalSecurityService {
      */
     public boolean hasRole(final String role) {
         final AuthUserDto user = getAuthentication().getPrincipal();
-        final List<Role> roles = InternalSecurityService.getRoles(user);
+        final List<Role> roles = ExternalSecurityService.getRoles(user);
         return roles == null ? false : roles.stream().anyMatch(r -> r.getName().equalsIgnoreCase(role));
     }
 
@@ -155,6 +158,37 @@ public class ExternalSecurityService {
 
     public TenantDto getCurrentTenantDto() {
         return getTenant(getTenantIdentifier());
+    }
+
+    public static List<Role> getRoles(final AuthUserDto user) {
+        if (user.getProfileGroup() == null) {
+            return Collections.emptyList();
+        }
+
+        final List<ProfileDto> profiles = user.getProfileGroup().getProfiles();
+        return profiles == null || profiles.size() == 0
+            ? Collections.emptyList()
+            : profiles
+                .stream()
+                .filter(ProfileDto::isEnabled)
+                .flatMap(p -> p.getRoles().stream())
+                .collect(Collectors.toList());
+    }
+
+    public static List<Role> getRoles(final AuthUserDto user, final Integer tenantIdentifier) {
+        if (user.getProfileGroup() == null) {
+            return Collections.emptyList();
+        }
+
+        final List<ProfileDto> profiles = user.getProfileGroup().getProfiles();
+        return profiles == null || profiles.size() == 0
+            ? Collections.emptyList()
+            : profiles
+                .stream()
+                .filter(ProfileDto::isEnabled)
+                .filter(p -> tenantIdentifier.equals(p.getTenantIdentifier()))
+                .flatMap(p -> p.getRoles().stream())
+                .collect(Collectors.toList());
     }
 
     public TenantDto getTenant(final Integer tenantIdentifier) {

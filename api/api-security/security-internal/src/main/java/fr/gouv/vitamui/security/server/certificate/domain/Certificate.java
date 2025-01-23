@@ -42,11 +42,11 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.hibernate.validator.constraints.Length;
 import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  * A certificate.
@@ -62,7 +62,7 @@ import javax.validation.constraints.NotNull;
 public class Certificate extends IdDocument {
 
     @NotNull
-    @Length(min = 2, max = 100)
+    @Size(min = 2, max = 100)
     private String subjectDN;
 
     @NotNull

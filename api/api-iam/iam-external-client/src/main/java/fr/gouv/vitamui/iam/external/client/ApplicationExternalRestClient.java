@@ -41,7 +41,11 @@ import fr.gouv.vitamui.commons.rest.client.BaseCrudRestClient;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.iam.common.rest.RestApi;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
 
@@ -51,6 +55,8 @@ import java.util.List;
  *
  */
 public class ApplicationExternalRestClient extends BaseCrudRestClient<ApplicationDto, ExternalHttpContext> {
+
+    private static final String IDENTIFIER_EXTERNAL_PATH = "/{identifier}/externalid";
 
     public ApplicationExternalRestClient(final RestTemplate restTemplate, final String baseUrl) {
         super(restTemplate, baseUrl);
@@ -69,5 +75,13 @@ public class ApplicationExternalRestClient extends BaseCrudRestClient<Applicatio
     @Override
     protected ParameterizedTypeReference<List<ApplicationDto>> getDtoListClass() {
         return new ParameterizedTypeReference<List<ApplicationDto>>() {};
+    }
+
+    public ResponseEntity<Boolean> isApplicationExternalIdentifierEnabled(
+        ExternalHttpContext context,
+        String applicationId
+    ) {
+        var uri = UriComponentsBuilder.fromHttpUrl(getUrl() + IDENTIFIER_EXTERNAL_PATH).build(applicationId);
+        return restTemplate.exchange(uri, HttpMethod.GET, new HttpEntity<>(buildHeaders(context)), Boolean.class);
     }
 }

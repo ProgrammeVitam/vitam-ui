@@ -43,9 +43,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.OffsetDateTime;
 
 @Getter
@@ -58,27 +58,27 @@ import java.time.OffsetDateTime;
 public class ExternalParamProfileDto extends IdDto {
 
     @NotNull
-    @Length(min = 2, max = 100)
+    @Size(min = 2, max = 100)
     private String name;
 
     @NotNull
-    @Length(min = 2, max = 250)
+    @Size(min = 2, max = 250)
     private String description;
 
     @NotNull
-    @Length(min = 2, max = 100)
+    @Size(min = 2, max = 100)
     private String accessContract;
 
-    @Length(min = 2, max = 100)
+    @Size(min = 2, max = 100)
     private String profileIdentifier;
 
-    @Length(min = 2, max = 100)
+    @Size(min = 2, max = 100)
     private String idProfile;
 
-    @Length(min = 2, max = 100)
+    @Size(min = 2, max = 100)
     private String externalParamIdentifier;
 
-    @Length(min = 2, max = 100)
+    @Size(min = 2, max = 100)
     private String idExternalParam;
 
     private boolean enabled;

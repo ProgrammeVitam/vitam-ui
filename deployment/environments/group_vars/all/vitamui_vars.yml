@@ -110,15 +110,6 @@ vitamui:
     port_service: 8101
     port_admin: 7101
 
-  iam_internal:
-    host: "vitamui-iam-internal.service.{{ consul_domain }}"
-    vitamui_component: iam-internal
-    port_service: 8201
-    port_admin: 7201
-    connect_timeout: 30
-    read_timeout: 30
-    write_timeout: 30
-
   cas_server:
     host: "cas-server.service.{{ consul_domain }}"
     vitamui_component: cas-server

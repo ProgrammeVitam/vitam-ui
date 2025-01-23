@@ -44,7 +44,7 @@ import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.commons.utils.VitamUIUtils;
-import fr.gouv.vitamui.iam.internal.client.UserInternalRestClient;
+import fr.gouv.vitamui.iam.external.client.UserExternalRestClient;
 import fr.gouv.vitamui.security.client.ContextRestClient;
 import fr.gouv.vitamui.security.common.dto.ContextDto;
 import lombok.Getter;
@@ -71,17 +71,17 @@ public class ExternalAuthentificationService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ExternalAuthentificationService.class);
 
-    private final UserInternalRestClient userInternalRestClient;
+    private final UserExternalRestClient userExternalRestClient;
 
     private final ContextRestClient contextRestClient;
 
     @Autowired
     public ExternalAuthentificationService(
         final ContextRestClient contextRestClient,
-        final UserInternalRestClient userInternalRestClient
+        final UserExternalRestClient userExternalRestClient
     ) {
         this.contextRestClient = contextRestClient;
-        this.userInternalRestClient = userInternalRestClient;
+        this.userExternalRestClient = userExternalRestClient;
     }
 
     /**
@@ -138,12 +138,7 @@ public class ExternalAuthentificationService {
             throw new BadCredentialsException("User token is empty");
         }
 
-        final InternalHttpContext internalHttpContext = InternalHttpContext.buildFromExternalHttpContext(
-            httpContext,
-            null,
-            null
-        );
-        final AuthUserDto userDto = userInternalRestClient.getMe(internalHttpContext);
+        final AuthUserDto userDto = userExternalRestClient.getMe(httpContext);
         if (userDto == null) {
             throw new NotFoundException("User not found for token: " + userToken);
         }

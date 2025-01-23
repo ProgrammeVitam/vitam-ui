@@ -40,9 +40,9 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  * The DTO v1 for an application.
@@ -61,27 +61,27 @@ public class ApplicationDto extends IdDto {
     private static final long serialVersionUID = -3608467690332832042L;
 
     @NotNull
-    @Length(min = 1, max = 100)
+    @Size(min = 1, max = 100)
     private String identifier;
 
     @NotNull
-    @Length(max = 100)
+    @Size(max = 100)
     private String url;
 
     @NotNull
-    @Length(max = 100)
+    @Size(max = 100)
     private String serviceId;
 
     @NotNull
-    @Length(max = 50)
+    @Size(max = 50)
     private String icon;
 
     @NotNull
-    @Length(max = 50)
+    @Size(max = 50)
     private String name;
 
     @NotNull
-    @Length(max = 25)
+    @Size(max = 25)
     private String category;
 
     @NotNull
@@ -97,9 +97,9 @@ public class ApplicationDto extends IdDto {
     private Boolean hasHighlight;
 
     @NotNull
-    @Length(max = 200)
+    @Size(max = 200)
     private String tooltip;
 
-    @Length(max = 25)
+    @Size(max = 25)
     private String target;
 }

@@ -4,7 +4,8 @@ import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.iam.common.dto.CustomerCreationFormData;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.iam.common.rest.RestApi;
-import fr.gouv.vitamui.iam.external.server.service.CustomerExternalService;
+import fr.gouv.vitamui.iam.external.server.common.rest.ApiIamControllerTest;
+import fr.gouv.vitamui.iam.external.server.customer.service.CustomerService;
 import fr.gouv.vitamui.iam.external.server.utils.ApiIamServerUtils;
 import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
@@ -21,13 +22,13 @@ import java.util.Arrays;
 import java.util.Optional;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(controllers = { CustomerExternalController.class })
+@WebMvcTest(controllers = { CustomerController.class })
 public class CustomerExternalControllerTest extends ApiIamControllerTest<CustomerDto> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CustomerExternalControllerTest.class);
 
     @MockBean
-    private CustomerExternalService customerExternalService;
+    private CustomerService customerService;
 
     @Test
     public void testCreateCustomer() {

@@ -1,0 +1,238 @@
+/**
+ * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
+ * and the signatories of the "VITAM - Accord du Contributeur" agreement.
+ *
+ * contact@programmevitam.fr
+ *
+ * This software is a computer program whose purpose is to implement
+ * implement a digital archiving front-office system for the secure and
+ * efficient high volumetry VITAM solution.
+ *
+ * This software is governed by the CeCILL-C license under French law and
+ * abiding by the rules of distribution of free software.  You can  use,
+ * modify and/ or redistribute the software under the terms of the CeCILL-C
+ * license as circulated by CEA, CNRS and INRIA at the following URL
+ * "http://www.cecill.info".
+ *
+ * As a counterpart to the access to the source code and  rights to copy,
+ * modify and redistribute granted by the license, users are provided only
+ * with a limited warranty  and the software's author,  the holder of the
+ * economic rights,  and the successive licensors  have only  limited
+ * liability.
+ *
+ * In this respect, the user's attention is drawn to the risks associated
+ * with loading,  using,  modifying and/or developing or reproducing the
+ * software by the user in light of its specific status of free software,
+ * that may mean  that it is complicated to manipulate,  and  that  also
+ * therefore means  that it is reserved for developers  and  experienced
+ * professionals having in-depth computer knowledge. Users are therefore
+ * encouraged to load and test the software's suitability as regards their
+ * requirements in conditions enabling the security of their systems and/or
+ * data to be ensured and,  more generally, to use and operate it in the
+ * same conditions as regards security.
+ *
+ * The fact that you are presently reading this means that you have had
+ * knowledge of the CeCILL-C license and that you accept its terms.
+ */
+package fr.gouv.vitamui.iam.external.server.rest;
+
+import fr.gouv.vitam.common.exception.InvalidParseOperationException;
+import fr.gouv.vitam.common.exception.VitamClientException;
+import fr.gouv.vitamui.common.security.SanityChecker;
+import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.api.ParameterChecker;
+import fr.gouv.vitamui.commons.api.domain.DirectionDto;
+import fr.gouv.vitamui.commons.api.domain.GroupDto;
+import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
+import fr.gouv.vitamui.commons.api.domain.ServicesData;
+import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
+import fr.gouv.vitamui.commons.api.utils.CastUtils;
+import fr.gouv.vitamui.commons.api.utils.EnumUtils;
+import fr.gouv.vitamui.commons.rest.CrudController;
+import fr.gouv.vitamui.commons.rest.util.RestUtils;
+import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsResponseDto;
+import fr.gouv.vitamui.iam.common.dto.common.EmbeddedOptions;
+import fr.gouv.vitamui.iam.common.rest.RestApi;
+import fr.gouv.vitamui.iam.external.server.group.service.GroupService;
+import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
+import io.swagger.annotations.Api;
+import lombok.Getter;
+import lombok.Setter;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.util.Assert;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.validation.Valid;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
+/**
+ * The controller to check existence, create, read, update and delete the profile groups.
+ *
+ *
+ */
+@RestController
+@RequestMapping(RestApi.V1_GROUPS_URL)
+@Getter
+@Setter
+@Api(tags = "groups", value = "Profiles Groups Management", description = "Profiles Groups Management")
+public class GroupController implements CrudController<GroupDto> {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(GroupController.class);
+
+    protected static final String LEVEL_KEY = "level";
+
+    private final GroupService groupService;
+    private final ExternalSecurityService externalSecurityService;
+
+    @Autowired
+    public GroupController(final GroupService groupService, ExternalSecurityService externalSecurityService) {
+        this.groupService = groupService;
+        this.externalSecurityService = externalSecurityService;
+    }
+
+    @GetMapping
+    @Secured(ServicesData.ROLE_GET_GROUPS)
+    public List<GroupDto> getAll(final Optional<String> criteria, @RequestParam final Optional<String> embedded) {
+        SanityChecker.sanitizeCriteria(criteria);
+        EnumUtils.checkValidEnum(EmbeddedOptions.class, embedded);
+        LOGGER.debug("get all group criteria={}, embedded={}", criteria, embedded);
+        return groupService.getAll(criteria, embedded);
+    }
+
+    @Override
+    @RequestMapping(path = CommonConstants.PATH_CHECK, method = RequestMethod.HEAD)
+    @Secured(ServicesData.ROLE_GET_GROUPS)
+    public ResponseEntity<Void> checkExist(@RequestParam final String criteria) {
+        SanityChecker.sanitizeCriteria(Optional.of(criteria));
+        LOGGER.debug("check exist by criteria={}", criteria);
+        final boolean exist = groupService.checkExist(criteria);
+        return RestUtils.buildBooleanResponse(exist);
+    }
+
+    @GetMapping(CommonConstants.PATH_ID)
+    @Secured(ServicesData.ROLE_GET_GROUPS)
+    public GroupDto getOne(
+        final @PathVariable("id") String id,
+        final @RequestParam Optional<String> criteria,
+        final @RequestParam Optional<String> embedded
+    ) throws InvalidParseOperationException, PreconditionFailedException {
+        ParameterChecker.checkParameter("Identifier is mandatory : ", id);
+        SanityChecker.checkSecureParameter(id);
+        SanityChecker.sanitizeCriteria(criteria);
+        EnumUtils.checkValidEnum(EmbeddedOptions.class, embedded);
+        LOGGER.debug("Get group {} embedded={}", id, embedded);
+        return groupService.getOne(id, criteria, embedded);
+    }
+
+    @Secured(ServicesData.ROLE_GET_GROUPS)
+    @GetMapping(params = { "page", "size" })
+    public PaginatedValuesDto<GroupDto> getAllPaginated(
+        @RequestParam final Integer page,
+        @RequestParam final Integer size,
+        @RequestParam(required = false) final Optional<String> criteria,
+        @RequestParam(required = false) final Optional<String> orderBy,
+        @RequestParam(required = false) final Optional<DirectionDto> direction,
+        @RequestParam(required = false) final Optional<String> embedded
+    ) throws InvalidParseOperationException, PreconditionFailedException {
+        EnumUtils.checkValidEnum(EmbeddedOptions.class, embedded);
+        SanityChecker.sanitizeCriteria(criteria);
+        direction.ifPresent(SanityChecker::sanitizeCriteria);
+        orderBy.ifPresent(SanityChecker::checkSecureParameter);
+        SanityChecker.checkSecureParameter(String.valueOf(size), String.valueOf(page));
+        LOGGER.debug(
+            "getPaginateEntities page={}, size={}, criteria={}, orderBy={}, direction={}, embedded = {}",
+            page,
+            size,
+            orderBy,
+            direction,
+            embedded
+        );
+        return groupService.getAllPaginated(page, size, criteria, orderBy, direction, embedded);
+    }
+
+    @PostMapping
+    @Secured(ServicesData.ROLE_CREATE_GROUPS)
+    @Override
+    public GroupDto create(final @Valid @RequestBody GroupDto dto)
+        throws InvalidParseOperationException, PreconditionFailedException {
+        SanityChecker.sanitizeCriteria(dto);
+        LOGGER.debug("Create group {}", dto);
+        groupService.checkCustomerId(dto.getCustomerId(), "Unable to create group");
+        return groupService.create(dto);
+    }
+
+    @Override
+    public GroupDto update(final @PathVariable("id") String id, final @Valid @RequestBody GroupDto dto) {
+        throw new UnsupportedOperationException("update not implemented");
+    }
+
+    @Override
+    @PatchMapping(CommonConstants.PATH_ID)
+    @Secured(ServicesData.ROLE_UPDATE_GROUPS)
+    public GroupDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto)
+        throws InvalidParseOperationException, PreconditionFailedException {
+        ParameterChecker.checkParameter("Identifier is mandatory : ", id);
+        SanityChecker.checkSecureParameter(id);
+        SanityChecker.sanitizeCriteria(partialDto);
+        LOGGER.debug("Patch group {} with {}", id, partialDto);
+        Assert.isTrue(
+            StringUtils.equals(id, (String) partialDto.get("id")),
+            "Unable to patch group : the DTO id must match the path id"
+        );
+        final String customerId = (String) partialDto.get("customerId");
+        final String level = CastUtils.toString(partialDto.get(LEVEL_KEY));
+        if (StringUtils.isNotEmpty(customerId)) {
+            groupService.checkCustomerId(customerId, "Unable to patch group");
+        }
+        if (StringUtils.isNotEmpty(level)) {
+            groupService.checkLevel(level, "Unable to patch profile");
+        }
+        partialDto.put("customerId", externalSecurityService.getCustomerId());
+        return groupService.patch(partialDto);
+    }
+
+    @GetMapping(CommonConstants.PATH_LOGBOOK)
+    public LogbookOperationsResponseDto findHistoryById(final @PathVariable("id") String id)
+        throws InvalidParseOperationException, VitamClientException {
+        ParameterChecker.checkParameter("Identifier is mandatory : ", id);
+        SanityChecker.checkSecureParameter(id);
+        LOGGER.debug("get logbook for group with id :{}", id);
+        return groupService.findHistoryById(id);
+    }
+
+    /**
+     * Get levels by criteria.
+     * @param criteria Criteria as json string
+     * @return List of matching levels
+     */
+    @GetMapping(CommonConstants.PATH_LEVELS)
+    @Secured(ServicesData.ROLE_GET_GROUPS)
+    public List<String> getLevels(final Optional<String> criteria) {
+        SanityChecker.sanitizeCriteria(criteria);
+        LOGGER.debug("Get levels with criteria={}", criteria);
+        return groupService.getLevels(criteria);
+    }
+
+    @GetMapping(CommonConstants.PATH_EXPORT)
+    @Secured(ServicesData.ROLE_GET_GROUPS)
+    public Resource exportProfileGroups() {
+        LOGGER.debug("Export all profile groups to xlsx file");
+        return groupService.exportProfileGroups(Optional.empty());
+    }
+}

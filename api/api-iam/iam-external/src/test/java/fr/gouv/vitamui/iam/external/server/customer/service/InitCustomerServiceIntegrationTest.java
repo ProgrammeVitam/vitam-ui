@@ -1,0 +1,390 @@
+package fr.gouv.vitamui.iam.external.server.customer.service;
+
+import fr.gouv.vitamui.commons.api.domain.AddressDto;
+import fr.gouv.vitamui.commons.api.domain.ExternalParametersDto;
+import fr.gouv.vitamui.commons.api.domain.LanguageDto;
+import fr.gouv.vitamui.commons.api.domain.OwnerDto;
+import fr.gouv.vitamui.commons.api.domain.Role;
+import fr.gouv.vitamui.commons.api.domain.TenantDto;
+import fr.gouv.vitamui.commons.api.domain.VitamConfigurationDto;
+import fr.gouv.vitamui.commons.logbook.common.EventType;
+import fr.gouv.vitamui.commons.logbook.dao.EventRepository;
+import fr.gouv.vitamui.commons.logbook.domain.Event;
+import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
+import fr.gouv.vitamui.commons.mongo.domain.CustomSequence;
+import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
+import fr.gouv.vitamui.commons.test.VitamClientTestConfig;
+import fr.gouv.vitamui.iam.common.dto.CustomerCreationFormData;
+import fr.gouv.vitamui.iam.common.dto.CustomerDto;
+import fr.gouv.vitamui.iam.common.enums.OtpEnum;
+import fr.gouv.vitamui.iam.external.server.common.ApiIamExternalConstants;
+import fr.gouv.vitamui.iam.external.server.common.domain.MongoDbCollections;
+import fr.gouv.vitamui.iam.external.server.common.domain.SequencesConstants;
+import fr.gouv.vitamui.iam.external.server.configuration.ConfigurationService;
+import fr.gouv.vitamui.iam.external.server.customer.dao.CustomerRepository;
+import fr.gouv.vitamui.iam.external.server.customer.domain.Customer;
+import fr.gouv.vitamui.iam.external.server.group.dao.GroupRepository;
+import fr.gouv.vitamui.iam.external.server.group.domain.Group;
+import fr.gouv.vitamui.iam.external.server.profile.dao.ProfileRepository;
+import fr.gouv.vitamui.iam.external.server.profile.domain.Profile;
+import fr.gouv.vitamui.iam.external.server.tenant.dao.TenantRepository;
+import fr.gouv.vitamui.iam.external.server.tenant.domain.Tenant;
+import fr.gouv.vitamui.iam.external.server.tenant.service.InitVitamTenantService;
+import fr.gouv.vitamui.iam.external.server.user.dao.UserRepository;
+import fr.gouv.vitamui.iam.external.server.user.domain.User;
+import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.AdditionalAnswers;
+import org.mockito.ArgumentMatchers;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.testcontainers.containers.MongoDBContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+@SpringBootTest
+@ExtendWith(SpringExtension.class)
+@ActiveProfiles("test")
+@Import(VitamClientTestConfig.class)
+@Testcontainers
+public class InitCustomerServiceIntegrationTest {
+
+    @Configuration
+    @ComponentScan({ "fr.gouv.vitamui.commons.logbook.dao", "fr.gouv.vitamui.commons.mongo.dao" })
+    private static class CommonRepositoriesConfig {}
+
+    @Container
+    private static final MongoDBContainer mongoDBContainer = new MongoDBContainer("mongo:8.0.4");
+
+    @DynamicPropertySource
+    static void setProperties(DynamicPropertyRegistry registry) {
+        registry.add("spring.data.mongodb.uri", mongoDBContainer::getReplicaSetUrl);
+    }
+
+    private static final String PROFILE_NAME_1 = "profile1";
+    private static final String PROFILE_NAME_2 = "profile2";
+    private static final String PROFILE_NAME_3 = "profile3";
+    private static final String PROFILE_NAME_4 = "profile4";
+    private static final String GROUP_NAME_1 = "group1";
+    private static final String LEVEL_1 = "1";
+    private static final String LEVEL_2 = "2";
+    private static final String DESCRIPTION_1 = "desc1";
+    private static final String DESCRIPTION_2 = "desc2";
+    private static final String DESCRIPTION_3 = "desc3";
+    private static final String DESCRIPTION_4 = "desc4";
+    private static final String APP_NAME_1 = "app1";
+    private static final String APP_NAME_2 = "app2";
+    private static final String ROLE_1 = "role_1";
+    private static final String ROLE_2 = "role_2";
+    private static final String ROLE_3 = "role_3";
+    private static final String LAST_NAME = "LASTNAME";
+    private static final String FIRST_NAME = "FirstName";
+    private static final String EMAIl = "a@vitamui.com";
+    private static final String CUSTOMER_CODE = "0123456";
+    private static final Integer TENANT_IDENTIFIER = 10;
+
+    @Autowired
+    private CustomerService customerService;
+
+    @Autowired
+    private CustomerRepository customerRepository;
+
+    @Autowired
+    private CustomSequenceRepository sequenceRepository;
+
+    @Autowired
+    private EventRepository eventRepository;
+
+    @Autowired
+    private ProfileRepository profileRepository;
+
+    @Autowired
+    private GroupRepository groupRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @MockBean
+    private ExternalSecurityService externalSecurityService;
+
+    @Mock
+    private ExternalHttpContext externalHttpContext;
+
+    @MockBean
+    private ConfigurationService configurationService;
+
+    @MockBean
+    private TenantRepository tenantRepository;
+
+    @MockBean
+    private InitVitamTenantService initVitamTenantService;
+
+    @BeforeEach
+    public void setup() {
+        MockitoAnnotations.openMocks(this);
+        Mockito.when(externalSecurityService.getHttpContext()).thenReturn(externalHttpContext);
+        Mockito.when(externalSecurityService.userIsRootLevel()).thenReturn(true);
+        Mockito.when(externalSecurityService.isLevelAllowed(ArgumentMatchers.any())).thenReturn(true);
+        initSeq();
+        final Tenant tenant = new Tenant();
+        tenant.setIdentifier(10);
+        Mockito.when(tenantRepository.findOne(ArgumentMatchers.any(Query.class))).thenReturn(Optional.of(tenant));
+        Mockito.when(tenantRepository.save(ArgumentMatchers.any())).thenReturn(tenant);
+        Mockito.when(
+            initVitamTenantService.init(
+                ArgumentMatchers.any(Tenant.class),
+                ArgumentMatchers.any(ExternalParametersDto.class)
+            )
+        ).thenAnswer(AdditionalAnswers.returnsFirstArg());
+
+        customerRepository.deleteAll();
+    }
+
+    @Test
+    public void testCreateCustomer() {
+        Integer someTenantId = 2;
+        final CustomerCreationFormData customerDta = new CustomerCreationFormData(buildCustomerDto());
+        VitamConfigurationDto vitamConfigurationDto = new VitamConfigurationDto();
+        vitamConfigurationDto.setTenants(List.of(someTenantId));
+        TenantDto tenantDto = new TenantDto();
+        tenantDto.setName("Some name");
+        tenantDto.setIdentifier(someTenantId);
+
+        Mockito.when(configurationService.getVitamPublicConfigurations()).thenReturn(vitamConfigurationDto);
+        Mockito.when(externalSecurityService.getTenant(ArgumentMatchers.any())).thenReturn(tenantDto);
+
+        customerDta.setTenantName("tenantName");
+        customerDta.setTenantId(2);
+        customerService.create(customerDta);
+
+        Criteria criteria = Criteria.where("obId")
+            .is(customerDta.getCustomerDto().getIdentifier())
+            .and("obIdReq")
+            .is(MongoDbCollections.CUSTOMERS)
+            .and("evType")
+            .is(EventType.EXT_VITAMUI_CREATE_CUSTOMER);
+        List<Event> ev = eventRepository.findAll(Query.query(criteria));
+        assertThat(ev).isNotEmpty();
+        assertThat(ev).hasSize(1);
+
+        criteria = Criteria.where("obIdReq")
+            .is(MongoDbCollections.OWNERS)
+            .and("evType")
+            .is(EventType.EXT_VITAMUI_CREATE_OWNER);
+        ev = eventRepository.findAll(Query.query(criteria));
+        assertThat(ev).isNotEmpty();
+        assertThat(ev).hasSize(1);
+
+        criteria = Criteria.where("obIdReq")
+            .is(MongoDbCollections.TENANTS)
+            .and("evType")
+            .is(EventType.EXT_VITAMUI_CREATE_TENANT);
+        ev = eventRepository.findAll(Query.query(criteria));
+        assertThat(ev).isNotEmpty();
+        assertThat(ev).hasSize(1);
+
+        criteria = Criteria.where("obIdReq")
+            .is(MongoDbCollections.PROFILES)
+            .and("evType")
+            .is(EventType.EXT_VITAMUI_CREATE_PROFILE);
+        ev = eventRepository.findAll(Query.query(criteria));
+        assertThat(ev).isNotEmpty();
+        assertThat(ev).hasSize(10);
+
+        criteria = Criteria.where("obIdReq")
+            .is(MongoDbCollections.GROUPS)
+            .and("evType")
+            .is(EventType.EXT_VITAMUI_CREATE_GROUP);
+        ev = eventRepository.findAll(Query.query(criteria));
+        assertThat(ev).isNotEmpty();
+        assertThat(ev).hasSize(2);
+
+        criteria = Criteria.where("obIdReq")
+            .is(MongoDbCollections.USERS)
+            .and("evType")
+            .is(EventType.EXT_VITAMUI_CREATE_USER);
+        ev = eventRepository.findAll(Query.query(criteria));
+        assertThat(ev).isNotEmpty();
+        assertThat(ev).hasSize(2);
+
+        criteria = Criteria.where("obIdReq")
+            .is(MongoDbCollections.USER_INFOS)
+            .and("evType")
+            .is(EventType.EXT_VITAMUI_CREATE_USER_INFO);
+        ev = eventRepository.findAll(Query.query(criteria));
+        assertThat(ev).isNotEmpty();
+        assertThat(ev).hasSize(2);
+
+        final Optional<Customer> customer = customerRepository.findByCode(CUSTOMER_CODE);
+        assertThat(customer).isPresent();
+
+        final Profile profile1 = profileRepository.findByNameAndLevelAndTenantIdentifier(
+            PROFILE_NAME_1 + " " + TENANT_IDENTIFIER,
+            LEVEL_1,
+            TENANT_IDENTIFIER
+        );
+        assertThat(profile1).isNotNull();
+        assertThat(profile1.getDescription()).isEqualTo(DESCRIPTION_1);
+        assertThat(profile1.getLevel()).isEqualTo(LEVEL_1);
+        assertThat(profile1.getApplicationName()).isEqualTo(APP_NAME_1);
+        assertThat(profile1.getRoles().stream().map(Role::getName).collect(Collectors.toList())).contains(
+            ROLE_1,
+            ROLE_2,
+            ROLE_3
+        );
+
+        final Profile profile2 = profileRepository.findByNameAndLevelAndTenantIdentifier(
+            PROFILE_NAME_2 + " " + TENANT_IDENTIFIER,
+            LEVEL_2,
+            TENANT_IDENTIFIER
+        );
+        assertThat(profile2).isNotNull();
+        assertThat(profile2.getDescription()).isEqualTo(DESCRIPTION_2);
+        assertThat(profile2.getLevel()).isEqualTo(LEVEL_2);
+        assertThat(profile2.getApplicationName()).isEqualTo(APP_NAME_2);
+        assertThat(profile2.getRoles().stream().map(Role::getName).collect(Collectors.toList())).contains(
+            ROLE_2,
+            ROLE_3
+        );
+
+        final Profile profile3 = profileRepository.findByNameAndLevelAndTenantIdentifier(
+            PROFILE_NAME_3 + " " + TENANT_IDENTIFIER,
+            LEVEL_1,
+            TENANT_IDENTIFIER
+        );
+        assertThat(profile3).isNotNull();
+        assertThat(profile3.getDescription()).isEqualTo(DESCRIPTION_4);
+        assertThat(profile3.getLevel()).isEqualTo(LEVEL_1);
+        assertThat(profile3.getApplicationName()).isEqualTo(APP_NAME_2);
+        assertThat(profile3.getRoles().stream().map(Role::getName).collect(Collectors.toList())).contains(
+            ROLE_1,
+            ROLE_2,
+            ROLE_3
+        );
+
+        final List<Group> groups = groupRepository.findByCustomerId(customer.get().getId());
+        assertThat(groups).isNotEmpty();
+        final Map<String, Group> groupByName = groups
+            .stream()
+            .collect(Collectors.toMap(Group::getName, Function.identity()));
+        final Group group = groupByName.get(GROUP_NAME_1);
+        assertThat(group).isNotNull();
+        assertThat(group.getDescription()).isEqualTo(DESCRIPTION_3);
+        assertThat(group.getLevel()).isEqualTo(LEVEL_1);
+        assertThat(group.getProfileIds()).contains(profile1.getId());
+
+        final Group adminGroup = groupByName.get(ApiIamExternalConstants.ADMIN_CLIENT_ROOT + " " + CUSTOMER_CODE);
+        assertThat(adminGroup).isNotNull();
+        final List<Profile> adminProfiles = profileRepository.findAllByIdIn(adminGroup.getProfileIds());
+        final Map<String, Profile> profileByName = adminProfiles
+            .stream()
+            .collect(Collectors.toMap(Profile::getName, Function.identity()));
+        final Profile customProfileAdmin = profileByName.get(PROFILE_NAME_4 + " " + TENANT_IDENTIFIER);
+        assertThat(customProfileAdmin).isNotNull();
+        assertThat(customProfileAdmin.getApplicationName()).isEqualTo(APP_NAME_1);
+        assertThat(customProfileAdmin.getRoles().stream().map(Role::getName).collect(Collectors.toList())).contains(
+            ROLE_3
+        );
+
+        final User user = userRepository.findByEmailIgnoreCaseAndCustomerId(EMAIl, customer.get().getId());
+        assertThat(user).isNotNull();
+        assertThat(user.getLastname()).isEqualTo(LAST_NAME);
+        assertThat(user.getFirstname()).isEqualTo(FIRST_NAME);
+        assertThat(user.getGroupId()).isEqualTo(group.getId());
+        assertThat(user.getLevel()).isEqualTo(LEVEL_1);
+    }
+
+    protected CustomerDto buildCustomerDto() {
+        final CustomerDto dto = new CustomerDto();
+        dto.setEnabled(true);
+        dto.setName("CustomerName");
+        dto.setCode(CUSTOMER_CODE);
+        dto.setOtp(OtpEnum.OPTIONAL);
+        dto.setLanguage(LanguageDto.FRENCH);
+        dto.setPasswordRevocationDelay(365 * 10);
+        dto.setDefaultEmailDomain("vitamui.com");
+        final List<String> domainsEmails = new ArrayList<>();
+        domainsEmails.add("vitamui.com");
+        dto.setEmailDomains(domainsEmails);
+        final OwnerDto owner = new OwnerDto();
+        owner.setName("The Boss");
+        owner.setAddress(new AddressDto());
+        final List<OwnerDto> owners = new ArrayList<>();
+        owners.add(owner);
+        dto.setOwners(owners);
+        dto.setHasCustomGraphicIdentity(false);
+        dto.setGdprAlertDelay(72);
+        dto.setGdprAlert(false);
+        return dto;
+    }
+
+    private void initSeq() {
+        final CustomSequence customSequence = new CustomSequence();
+        customSequence.setName(SequencesConstants.CUSTOMER_IDENTIFIER);
+        customSequence.setSequence(1);
+        sequenceRepository.save(customSequence);
+
+        final CustomSequence customSequence2 = new CustomSequence();
+        customSequence2.setSequence(1);
+        customSequence2.setName(SequencesConstants.IDP_IDENTIFIER);
+        sequenceRepository.save(customSequence2);
+
+        final CustomSequence customSequence3 = new CustomSequence();
+        customSequence3.setName(SequencesConstants.GROUP_IDENTIFIER);
+        sequenceRepository.save(customSequence3);
+
+        final CustomSequence customSequence4 = new CustomSequence();
+        customSequence4.setName(SequencesConstants.PROFILE_IDENTIFIER);
+        sequenceRepository.save(customSequence4);
+
+        final CustomSequence customSequence5 = new CustomSequence();
+        customSequence5.setName(SequencesConstants.OWNER_IDENTIFIER);
+        sequenceRepository.save(customSequence5);
+
+        final CustomSequence customSequence6 = new CustomSequence();
+        customSequence6.setName(SequencesConstants.USER_IDENTIFIER);
+        sequenceRepository.save(customSequence6);
+
+        final CustomSequence customSequence7 = new CustomSequence();
+        customSequence7.setName(SequencesConstants.TENANT_IDENTIFIER);
+        sequenceRepository.save(customSequence7);
+
+        final CustomSequence customSequence8 = new CustomSequence();
+        customSequence8.setName(SequencesConstants.USER_INFOS_IDENTIFIER);
+        sequenceRepository.save(customSequence8);
+
+        // retrieve sequences
+        customerService.getNextSequenceId(SequencesConstants.CUSTOMER_IDENTIFIER);
+        customerService.getNextSequenceId(SequencesConstants.IDP_IDENTIFIER);
+        customerService.getNextSequenceId(SequencesConstants.GROUP_IDENTIFIER);
+        customerService.getNextSequenceId(SequencesConstants.PROFILE_IDENTIFIER);
+        customerService.getNextSequenceId(SequencesConstants.OWNER_IDENTIFIER);
+        customerService.getNextSequenceId(SequencesConstants.USER_IDENTIFIER);
+        customerService.getNextSequenceId(SequencesConstants.TENANT_IDENTIFIER);
+        customerService.getNextSequenceId(SequencesConstants.USER_INFOS_IDENTIFIER);
+    }
+}

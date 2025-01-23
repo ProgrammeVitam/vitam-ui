@@ -50,7 +50,7 @@ import fr.gouv.vitamui.commons.logbook.domain.Event;
 import fr.gouv.vitamui.commons.logbook.dto.EventDiffDto;
 import fr.gouv.vitamui.commons.logbook.scheduler.SendEventToVitamTasks;
 import fr.gouv.vitamui.commons.logbook.util.LogbookUtils;
-import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
+import fr.gouv.vitamui.commons.rest.client.AbstractHttpContext;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -92,7 +92,7 @@ public class EventService {
      */
     @Transactional(propagation = Propagation.MANDATORY)
     public Event logUpdate(
-        final InternalHttpContext context,
+        final AbstractHttpContext context,
         final String accessContractLogbookIdentifier,
         final Integer tenantIdentifier,
         final String objectIdentifier,
@@ -131,7 +131,7 @@ public class EventService {
      */
     @Transactional(propagation = Propagation.MANDATORY)
     public Event logCreate(
-        final InternalHttpContext context,
+        final AbstractHttpContext context,
         final String accessContractLogbookIdentifier,
         final Integer tenantIdentifier,
         final String objectIdentifier,
@@ -140,41 +140,6 @@ public class EventService {
         final String evDetData
     ) {
         LOGGER.debug("------------- context : {}", context);
-        return create(
-            context.getRequestId(),
-            context.getApplicationId(),
-            accessContractLogbookIdentifier,
-            tenantIdentifier,
-            objectIdentifier,
-            collectionNames,
-            evType,
-            EventTypeProc.EXTERNAL_LOGBOOK,
-            evDetData,
-            StatusCode.OK
-        );
-    }
-
-    /**
-     * Log event for an export action.
-     * Event status is OK by default.
-     * @param context
-     * @param accessContractLogbookIdentifier
-     * @param tenantIdentifier
-     * @param objectIdentifier
-     * @param collectionNames
-     * @param evType
-     * @param evDetData
-     * @return
-     */
-    public Event logAccess(
-        final InternalHttpContext context,
-        final String accessContractLogbookIdentifier,
-        final Integer tenantIdentifier,
-        final String objectIdentifier,
-        final String collectionNames,
-        final EventLogable evType,
-        final String evDetData
-    ) {
         return create(
             context.getRequestId(),
             context.getApplicationId(),

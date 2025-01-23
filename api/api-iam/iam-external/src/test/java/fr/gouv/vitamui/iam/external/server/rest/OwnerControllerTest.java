@@ -1,0 +1,57 @@
+package fr.gouv.vitamui.iam.external.server.rest;
+
+import fr.gouv.vitam.common.exception.InvalidParseOperationException;
+import fr.gouv.vitamui.commons.api.domain.OwnerDto;
+import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
+import fr.gouv.vitamui.iam.external.server.owner.service.OwnerService;
+import fr.gouv.vitamui.iam.external.server.utils.IamServerUtilsTest;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+
+import static org.junit.Assert.assertEquals;
+
+/**
+ * Tests the {@link OwnerController}.
+ *
+ *
+ */
+public final class OwnerControllerTest {
+
+    @InjectMocks
+    private OwnerController controller;
+
+    @Mock
+    private OwnerService service;
+
+    @Before
+    public void setup() {
+        MockitoAnnotations.initMocks(this);
+    }
+
+    private void prepareServices() {}
+
+    @Test
+    public void testUpdateFailsAsDtoIdAndPathIdAreDifferent() throws Exception {
+        prepareServices();
+
+        try {
+            final OwnerDto dto = buildOwnerDto();
+            controller.update("badId", dto);
+        } catch (final IllegalArgumentException e) {
+            assertEquals("The DTO identifier must match the path identifier for update.", e.getMessage());
+        }
+    }
+
+    @Test(expected = UnsupportedOperationException.class)
+    public void testCannotDelete() throws InvalidParseOperationException, PreconditionFailedException {
+        prepareServices();
+        controller.delete("Id");
+    }
+
+    private OwnerDto buildOwnerDto() {
+        return IamServerUtilsTest.buildOwnerDto();
+    }
+}

@@ -74,7 +74,7 @@ import fr.gouv.vitamui.commons.vitam.api.administration.AccessContractService;
 import fr.gouv.vitamui.commons.vitam.api.dto.AccessContractResponseDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsResponseDto;
 import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
-import fr.gouv.vitamui.iam.internal.client.ApplicationInternalRestClient;
+import fr.gouv.vitamui.iam.external.client.ApplicationExternalRestClient;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import fr.gouv.vitamui.referential.common.dsl.VitamQueryHelper;
 import fr.gouv.vitamui.referential.common.service.VitamUIAccessContractService;
@@ -123,7 +123,7 @@ public class AccessContractExternalService extends AbstractService {
 
     private final LogbookService logbookService;
 
-    private final ApplicationInternalRestClient applicationInternalRestClient;
+    private final ApplicationExternalRestClient applicationExternalRestClient;
 
     private final ExternalSecurityService externalSecurityService;
 
@@ -133,7 +133,7 @@ public class AccessContractExternalService extends AbstractService {
         VitamUIAccessContractService vitamUIAccessContractService,
         ObjectMapper objectMapper,
         LogbookService logbookService,
-        ApplicationInternalRestClient applicationInternalRestClient,
+        ApplicationExternalRestClient applicationExternalRestClient,
         ExternalSecurityService externalSecurityService
     ) {
         super(externalSecurityService);
@@ -141,7 +141,7 @@ public class AccessContractExternalService extends AbstractService {
         this.vitamUIAccessContractService = vitamUIAccessContractService;
         this.objectMapper = objectMapper;
         this.logbookService = logbookService;
-        this.applicationInternalRestClient = applicationInternalRestClient;
+        this.applicationExternalRestClient = applicationExternalRestClient;
         this.externalSecurityService = externalSecurityService;
     }
 
@@ -366,8 +366,8 @@ public class AccessContractExternalService extends AbstractService {
     }
 
     public ResponseEntity<Void> importAccessContracts(VitamContext context, MultipartFile file) {
-        Boolean isIdentifierMandatory = applicationInternalRestClient
-            .isApplicationExternalIdentifierEnabled(externalSecurityService.getInternalHttpContext(), ACCESS_CONTRACT)
+        Boolean isIdentifierMandatory = applicationExternalRestClient
+            .isApplicationExternalIdentifierEnabled(externalSecurityService.getHttpContext(), ACCESS_CONTRACT)
             .getBody();
 
         if (isIdentifierMandatory == null) {

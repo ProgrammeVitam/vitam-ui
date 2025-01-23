@@ -56,10 +56,6 @@
                 </exclusion>
                 <exclusion>
                     <groupId>fr.gouv.vitamui</groupId>
-                    <artifactId>iam-internal-client</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>fr.gouv.vitamui</groupId>
                     <artifactId>referential-external-client</artifactId>
                 </exclusion>
                 <exclusion>

@@ -44,10 +44,19 @@ referential-external:
     server-host: localhost
     server-port: 8084
     secure: false
-  iam-internal-client:
+  iam-external-client:
     server-host: localhost
-    server-port: 7083
-    secure: false
+    server-port: 8083
+    secure: true
+    ssl-configuration:
+      truststore:
+        key-path: ../../../dev-deployment/environments/keystores/server/truststore_server.jks
+        key-password: changeme
+      keystore:
+        key-path: ../../../dev-deployment/environments/keystores/server/localhost/keystore_archive-search-external.jks
+        key-password: changeme
+        type: JKS
+      hostname-verification: false
 
 # Jaeger
 opentracing:
@@ -77,10 +86,3 @@ server:
   ssl:
     client-auth: want
     client-certificate-header-name: x-ssl-cert
-
-
-
-clients:
-  iam-internal:
-    server-host: localhost
-    server-port: 7083

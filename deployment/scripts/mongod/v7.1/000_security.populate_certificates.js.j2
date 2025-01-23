@@ -26,7 +26,6 @@ db.certificates.insertOne({
 {%- endmacro %}
 
 {{ process('{{ pki_dir }}/server/hosts/%host%/cas-server.pem', 'cas_context', 'hosts_cas_server') }}
-{{ process('{{ pki_dir }}/server/hosts/%host%/iam-internal.pem', 'iam_internal_context', 'hosts_vitamui_iam_internal') }}
 
 {{ process('{{ pki_dir }}/server/hosts/%host%/ui-portal.pem', 'ui_portal_context', 'hosts_ui_portal') }}
 {{ process('{{ pki_dir }}/server/hosts/%host%/ui-identity.pem', 'ui_identity_context', 'hosts_ui_identity') }}

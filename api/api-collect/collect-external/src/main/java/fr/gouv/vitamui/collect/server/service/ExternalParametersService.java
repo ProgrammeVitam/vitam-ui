@@ -33,10 +33,8 @@ import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.RequestResponseOK;
 import fr.gouv.vitam.common.model.administration.AccessContractModel;
-import fr.gouv.vitamui.commons.api.domain.ExternalParametersDto;
-import fr.gouv.vitamui.commons.api.domain.ParameterDto;
 import fr.gouv.vitamui.commons.vitam.api.administration.AccessContractService;
-import fr.gouv.vitamui.iam.internal.client.ExternalParametersInternalRestClient;
+import fr.gouv.vitamui.iam.external.client.ExternalParametersExternalRestClient;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
@@ -44,6 +42,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -55,7 +54,7 @@ public class ExternalParametersService {
 
     public static final String PARAM_ACCESS_CONTRACT_NAME = "PARAM_ACCESS_CONTRACT";
 
-    private final ExternalParametersInternalRestClient externalParametersInternalRestClient;
+    private final ExternalParametersExternalRestClient externalParametersExternalRestClient;
     private final ExternalSecurityService securityService;
     private final AccessContractService accessContractService;
 
@@ -65,17 +64,17 @@ public class ExternalParametersService {
      * @return access contract throws IllegalArgumentException
      */
     private @Nonnull String retrieveAccessContractFromExternalParam() {
-        ExternalParametersDto myExternalParameter = externalParametersInternalRestClient.getMyExternalParameters(
+        Map<String, String> myExternalParameter = externalParametersExternalRestClient.getMyExternalParameters(
             securityService.getHttpContext()
         );
-        if (myExternalParameter == null || CollectionUtils.isEmpty(myExternalParameter.getParameters())) {
+        if (myExternalParameter == null || CollectionUtils.isEmpty(myExternalParameter.entrySet())) {
             throw new IllegalArgumentException("No external profile defined for access contract defined");
         }
 
-        ParameterDto parameterAccessContract = myExternalParameter
-            .getParameters()
+        Map.Entry<String, String> parameterAccessContract = myExternalParameter
+            .entrySet()
             .stream()
-            .filter(parameter -> PARAM_ACCESS_CONTRACT_NAME.equals(parameter.getKey()))
+            .filter(entry -> PARAM_ACCESS_CONTRACT_NAME.equals(entry.getKey()))
             .findFirst()
             .orElse(null);
         if (Objects.isNull(parameterAccessContract) || Objects.isNull(parameterAccessContract.getValue())) {

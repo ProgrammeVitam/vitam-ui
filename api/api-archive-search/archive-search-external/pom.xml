@@ -50,7 +50,7 @@
         </dependency>
         <dependency>
             <groupId>fr.gouv.vitamui</groupId>
-            <artifactId>iam-internal-client</artifactId>
+            <artifactId>iam-external-client</artifactId>
         </dependency>
 
         <dependency>
@@ -182,11 +182,6 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>fr.gouv.vitamui</groupId>
-            <artifactId>iam-external-client</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>fr.gouv.vitamui.commons</groupId>
             <artifactId>commons-test</artifactId>
             <type>test-jar</type>
@@ -218,11 +213,6 @@
             <scope>test</scope>
         </dependency>
 
-        <dependency>
-            <groupId>fr.gouv.vitamui</groupId>
-            <artifactId>iam-external-client</artifactId>
-            <scope>test</scope>
-        </dependency>
         <dependency>
             <groupId>fr.gouv.vitamui.commons</groupId>
             <artifactId>commons-test</artifactId>

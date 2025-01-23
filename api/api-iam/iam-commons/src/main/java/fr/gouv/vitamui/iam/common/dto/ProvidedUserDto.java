@@ -7,10 +7,10 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Getter
 @Setter
@@ -19,15 +19,15 @@ import javax.validation.constraints.NotNull;
 public class ProvidedUserDto {
 
     @NotNull
-    @Length(min = 2, max = 50)
+    @Size(min = 2, max = 50)
     private String lastname;
 
     @NotNull
-    @Length(min = 2, max = 50)
+    @Size(min = 2, max = 50)
     private String firstname;
 
     @NotNull
-    @Length(min = 4, max = 100)
+    @Size(min = 4, max = 100)
     @Email
     @JsonDeserialize(converter = ToLowerCaseConverter.class)
     private String email;

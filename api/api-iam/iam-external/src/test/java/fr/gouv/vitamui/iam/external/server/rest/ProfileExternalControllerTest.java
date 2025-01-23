@@ -5,8 +5,10 @@ import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.ProfileDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.iam.common.rest.RestApi;
-import fr.gouv.vitamui.iam.external.server.service.ProfileExternalService;
+import fr.gouv.vitamui.iam.external.server.common.rest.ApiIamControllerTest;
+import fr.gouv.vitamui.iam.external.server.profile.service.ProfileService;
 import fr.gouv.vitamui.iam.external.server.utils.ApiIamServerUtils;
+import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -24,15 +26,18 @@ import java.util.Optional;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(controllers = { ProfileExternalController.class })
+@WebMvcTest(controllers = { ProfileController.class })
 public class ProfileExternalControllerTest extends ApiIamControllerTest<ProfileDto> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ProfileExternalControllerTest.class);
 
     @MockBean
-    private ProfileExternalService profileExternalService;
+    private ProfileService profileExternalService;
 
-    private ProfileExternalController mockedController = MvcUriComponentsBuilder.on(ProfileExternalController.class);
+    @MockBean
+    private ExternalSecurityService externalSecurityService;
+
+    private ProfileController mockedController = MvcUriComponentsBuilder.on(ProfileController.class);
 
     @Test
     public void testGetAllProfiles() {

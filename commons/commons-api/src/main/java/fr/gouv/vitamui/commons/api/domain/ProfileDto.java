@@ -42,9 +42,9 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import org.apache.commons.lang3.StringUtils;
-import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,11 +63,11 @@ public class ProfileDto extends CustomerIdDto {
     private String identifier;
 
     @NotNull
-    @Length(max = 100)
+    @Size(max = 100)
     private String name;
 
     @NotNull
-    @Length(max = 250)
+    @Size(max = 250)
     private String description;
 
     // Profile is enabled by default
@@ -82,7 +82,7 @@ public class ProfileDto extends CustomerIdDto {
     @NotNull
     private Integer tenantIdentifier;
 
-    @Length(max = 250)
+    @Size(max = 250)
     private String level = StringUtils.EMPTY;
 
     private boolean readonly;

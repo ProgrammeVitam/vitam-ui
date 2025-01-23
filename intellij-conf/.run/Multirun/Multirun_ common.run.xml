@@ -4,7 +4,6 @@
                    hideSuccessProcess="false" delayTime="0.0">
         <runConfiguration name="Start Mongo" type="Docker"/>
         <runConfiguration name="security" type="Spring Boot"/>
-        <runConfiguration name="IAM internal" type="Spring Boot"/>
         <runConfiguration name="IAM external" type="Spring Boot"/>
         <runConfiguration name="API gateway" type="Spring Boot"/>
         <runConfiguration name="CAS" type="JAR Application"/>

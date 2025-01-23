@@ -5,7 +5,9 @@ import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.GroupDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.iam.common.rest.RestApi;
-import fr.gouv.vitamui.iam.external.server.service.GroupExternalService;
+import fr.gouv.vitamui.iam.external.server.common.rest.ApiIamControllerTest;
+import fr.gouv.vitamui.iam.external.server.group.service.GroupService;
+import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -23,15 +25,18 @@ import java.util.Optional;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(controllers = { GroupExternalController.class })
+@WebMvcTest(controllers = { GroupController.class })
 public class GroupExternalControllerTest extends ApiIamControllerTest<GroupDto> {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(GroupExternalControllerTest.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(GroupControllerTest.class);
 
     @MockBean
-    private GroupExternalService service;
+    private GroupService service;
 
-    private GroupExternalController mockedController = MvcUriComponentsBuilder.on(GroupExternalController.class);
+    @MockBean
+    private ExternalSecurityService externalSecurityService;
+
+    private GroupController mockedController = MvcUriComponentsBuilder.on(GroupController.class);
 
     @Test
     public void testGetAllGroups() {

@@ -37,7 +37,6 @@
 package fr.gouv.vitamui.iam.external.client;
 
 import fr.gouv.vitamui.commons.rest.client.BaseRestClientFactory;
-import fr.gouv.vitamui.commons.rest.client.accesscontract.AccessContractExternalRestClient;
 import fr.gouv.vitamui.commons.rest.client.configuration.HttpPoolConfiguration;
 import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
 import fr.gouv.vitamui.commons.rest.client.logbook.LogbookExternalRestClient;
@@ -124,9 +123,5 @@ public class IamExternalRestClientFactory extends BaseRestClientFactory {
 
     public ExternalParamProfileExternalRestClient getExternalParamProfileExternalRestClient() {
         return new ExternalParamProfileExternalRestClient(getRestTemplate(), getBaseUrl());
-    }
-
-    public AccessContractExternalRestClient getAccessContractExternalRestClient() {
-        return new AccessContractExternalRestClient(getRestTemplate(), getBaseUrl());
     }
 }

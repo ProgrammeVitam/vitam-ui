@@ -63,7 +63,7 @@ db.users.insertOne({
   "attributes" : {  },
   "mfa" : false,
   "surrogates" : [ ],
-  "profileGroupId" : "admingroup",
+  "groupId" : "admingroup",
   "canLogin" : true,
   "customerId" : "fakecustomerId"
 });

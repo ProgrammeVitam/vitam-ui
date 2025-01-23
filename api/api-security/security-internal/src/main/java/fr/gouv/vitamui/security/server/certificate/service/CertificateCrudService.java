@@ -107,7 +107,7 @@ public class CertificateCrudService extends VitamUICrudService<CertificateDto, C
     }
 
     @Override
-    protected CertificateDto internalConvertFromEntityToDto(final Certificate certificate) {
+    public CertificateDto internalConvertFromEntityToDto(final Certificate certificate) {
         final CertificateDto dto = new CertificateDto();
         dto.setId(certificate.getId());
         dto.setSubjectDN(certificate.getSubjectDN());

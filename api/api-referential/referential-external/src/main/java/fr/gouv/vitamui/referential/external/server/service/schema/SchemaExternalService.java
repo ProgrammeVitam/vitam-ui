@@ -44,8 +44,7 @@ import fr.gouv.vitamui.commons.api.dtos.ErrorImportFile;
 import fr.gouv.vitamui.commons.api.enums.ErrorImportFileMessage;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
-import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
-import fr.gouv.vitamui.iam.internal.client.ApplicationInternalRestClient;
+import fr.gouv.vitamui.iam.external.client.ApplicationExternalRestClient;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import fr.gouv.vitamui.referential.common.dto.ImportSchemaDto;
 import fr.gouv.vitamui.referential.common.dto.SchemaDto;
@@ -80,7 +79,7 @@ public class SchemaExternalService extends AbstractService {
     private static final String IMPORT_UNIT_SCHEMA = "IMPORT_UNIT_SCHEMA";
     private final ImportSchemaService importSchemaService;
     private final ImportSchemaConverter converter;
-    private final ApplicationInternalRestClient applicationInternalRestClient;
+    private final ApplicationExternalRestClient applicationExternalRestClient;
     private final AdminExternalClient adminExternalClient;
     private final ExternalSecurityService externalSecurityService;
 
@@ -90,14 +89,14 @@ public class SchemaExternalService extends AbstractService {
         final ExternalSecurityService externalSecurityService,
         ImportSchemaService importSchemaService,
         ImportSchemaConverter converter,
-        ApplicationInternalRestClient applicationInternalRestClient
+        ApplicationExternalRestClient applicationExternalRestClient
     ) {
         super(externalSecurityService);
         this.externalSecurityService = externalSecurityService;
         this.adminExternalClient = adminExternalClient;
         this.importSchemaService = importSchemaService;
         this.converter = converter;
-        this.applicationInternalRestClient = applicationInternalRestClient;
+        this.applicationExternalRestClient = applicationExternalRestClient;
     }
 
     public Optional<SchemaDto> getSchema(final Collection collection) {
@@ -166,11 +165,8 @@ public class SchemaExternalService extends AbstractService {
             throw new IllegalArgumentException("Filename cannot be null");
         }
 
-        Boolean isIdentifierMandatory = applicationInternalRestClient
-            .isApplicationExternalIdentifierEnabled(
-                InternalHttpContext.buildFromExternalHttpContext(externalSecurityService.getHttpContext()),
-                IMPORT_UNIT_SCHEMA
-            )
+        Boolean isIdentifierMandatory = applicationExternalRestClient
+            .isApplicationExternalIdentifierEnabled(externalSecurityService.getHttpContext(), IMPORT_UNIT_SCHEMA)
             .getBody();
 
         if (isIdentifierMandatory == null) {

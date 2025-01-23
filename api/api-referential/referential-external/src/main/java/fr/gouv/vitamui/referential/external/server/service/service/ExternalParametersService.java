@@ -28,9 +28,7 @@
 package fr.gouv.vitamui.referential.external.server.service.service;
 
 import fr.gouv.vitam.common.client.VitamContext;
-import fr.gouv.vitamui.commons.api.domain.ExternalParametersDto;
-import fr.gouv.vitamui.commons.api.domain.ParameterDto;
-import fr.gouv.vitamui.iam.internal.client.ExternalParametersInternalRestClient;
+import fr.gouv.vitamui.iam.external.client.ExternalParametersExternalRestClient;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
@@ -38,6 +36,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -51,15 +50,15 @@ public class ExternalParametersService {
     public static final String PARAM_BULK_OPERATIONS_THRESHOLD_NAME = "PARAM_BULK_OPERATIONS_THRESHOLD";
     public static final String PARAM_ACCESS_CONTRACT_NAME = "PARAM_ACCESS_CONTRACT";
 
-    private final ExternalParametersInternalRestClient externalParametersInternalRestClient;
+    private final ExternalParametersExternalRestClient externalParametersExternalRestClient;
     private final ExternalSecurityService securityService;
 
     @Autowired
     public ExternalParametersService(
-        final ExternalParametersInternalRestClient externalParametersInternalRestClient,
+        final ExternalParametersExternalRestClient externalParametersExternalRestClient,
         final ExternalSecurityService securityService
     ) {
-        this.externalParametersInternalRestClient = externalParametersInternalRestClient;
+        this.externalParametersExternalRestClient = externalParametersExternalRestClient;
         this.securityService = securityService;
     }
 
@@ -70,17 +69,17 @@ public class ExternalParametersService {
      * @return access contract throws IllegalArgumentException
      */
     public String retrieveAccessContractFromExternalParam() {
-        final ExternalParametersDto myExternalParameter = externalParametersInternalRestClient.getMyExternalParameters(
-            securityService.getInternalHttpContext()
+        final Map<String, String> myExternalParameter = externalParametersExternalRestClient.getMyExternalParameters(
+            securityService.getHttpContext()
         );
-        if (myExternalParameter == null || CollectionUtils.isEmpty(myExternalParameter.getParameters())) {
+        if (myExternalParameter == null || CollectionUtils.isEmpty(myExternalParameter.entrySet())) {
             throw new IllegalArgumentException("No external profile defined for access contract defined");
         }
 
-        final ParameterDto parameterAccessContract = myExternalParameter
-            .getParameters()
+        final Map.Entry<String, String> parameterAccessContract = myExternalParameter
+            .entrySet()
             .stream()
-            .filter(parameter -> PARAM_ACCESS_CONTRACT_NAME.equals(parameter.getKey()))
+            .filter(entry -> PARAM_ACCESS_CONTRACT_NAME.equals(entry.getKey()))
             .findFirst()
             .orElse(null);
         if (Objects.isNull(parameterAccessContract) || Objects.isNull(parameterAccessContract.getValue())) {
@@ -107,14 +106,14 @@ public class ExternalParametersService {
      */
     public Optional<Long> retrieveProfilThreshold() {
         Optional<Long> thresholdOpt = Optional.empty();
-        ExternalParametersDto myExternalParameter = externalParametersInternalRestClient.getMyExternalParameters(
-            securityService.getInternalHttpContext()
+        Map<String, String> myExternalParameter = externalParametersExternalRestClient.getMyExternalParameters(
+            securityService.getHttpContext()
         );
-        if (CollectionUtils.isNotEmpty(myExternalParameter.getParameters())) {
-            ParameterDto parameterThreshold = myExternalParameter
-                .getParameters()
+        if (CollectionUtils.isNotEmpty(myExternalParameter.entrySet())) {
+            Map.Entry<String, String> parameterThreshold = myExternalParameter
+                .entrySet()
                 .stream()
-                .filter(parameter -> PARAM_BULK_OPERATIONS_THRESHOLD_NAME.equals(parameter.getKey()))
+                .filter(entry -> PARAM_BULK_OPERATIONS_THRESHOLD_NAME.equals(entry.getKey()))
                 .findFirst()
                 .orElse(null);
             if (parameterThreshold != null && parameterThreshold.getValue() != null) {

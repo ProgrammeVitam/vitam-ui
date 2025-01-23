@@ -2,33 +2,65 @@ package fr.gouv.vitamui.iam.external.server.rest;
 
 import fr.gouv.vitamui.commons.api.domain.ApplicationDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
+import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
 import fr.gouv.vitamui.iam.common.rest.RestApi;
-import fr.gouv.vitamui.iam.external.server.service.ApplicationExternalService;
-import fr.gouv.vitamui.iam.external.server.service.ApplicationService;
+import fr.gouv.vitamui.iam.external.server.application.service.ApplicationService;
+import fr.gouv.vitamui.iam.external.server.common.rest.ApiIamControllerTest;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+
+import static org.junit.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+
+/**
+ * Tests the {@link ApplicationController}.
+ *
+ *
+ */
 @RunWith(SpringRunner.class)
-@WebMvcTest(controllers = { ApplicationExternalController.class })
-public class ApplicationExternalControllerTest extends ApiIamControllerTest<ApplicationDto> {
+@WebMvcTest(controllers = { ApplicationController.class })
+public final class ApplicationExternalControllerTest extends ApiIamControllerTest<ApplicationDto> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ApplicationExternalControllerTest.class);
 
-    @MockBean
-    private ApplicationExternalService service;
+    @Autowired
+    ApplicationController applicationController;
 
     @MockBean
     private ApplicationService applicationService;
 
-    private final ApplicationExternalController mockedController = MvcUriComponentsBuilder.on(
-        ApplicationExternalController.class
-    );
+    @Before
+    public void setup() {
+        this.mockMvc = MockMvcBuilders.standaloneSetup(applicationController)
+            .setControllerAdvice(new RestExceptionHandler())
+            .build();
+    }
+
+    @Test
+    public void testGetAll() {
+        List<ApplicationDto> apps = Arrays.asList(buildDto());
+
+        when(applicationService.getAll(any(), any())).thenReturn(apps);
+
+        try {
+            applicationController.getAll(Optional.empty(), Optional.empty());
+        } catch (final IllegalArgumentException e) {
+            assertEquals("The DTO identifier must match the path identifier for update.", e.getMessage());
+        }
+    }
 
     @Test
     public void testGetAllApplications() {
@@ -54,9 +86,18 @@ public class ApplicationExternalControllerTest extends ApiIamControllerTest<Appl
     @Override
     protected ApplicationDto buildDto() {
         final ApplicationDto app = new ApplicationDto();
-        app.setUrl("url");
-        app.setIdentifier("id");
         app.setId("1");
+        app.setIdentifier("id");
+        app.setServiceId("serviceId");
+        app.setIcon("icon");
+        app.setName("name");
+        app.setCategory("category");
+        app.setPosition(0);
+        app.setHasCustomerList(false);
+        app.setHasTenantList(false);
+        app.setHasHighlight(false);
+        app.setUrl("url");
+        app.setTooltip("tooltip");
         return app;
     }
 

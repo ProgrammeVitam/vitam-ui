@@ -34,13 +34,15 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+
 package fr.gouv.vitamui.iam.external.server.rest;
 
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.ExternalParametersDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.iam.common.rest.RestApi;
-import fr.gouv.vitamui.iam.external.server.service.ExternalParametersExternalService;
+import fr.gouv.vitamui.iam.external.server.common.rest.ApiIamControllerTest;
+import fr.gouv.vitamui.iam.external.server.externalParameters.service.ExternalParametersService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -54,22 +56,22 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(controllers = { ExternalParametersExternalController.class })
+@WebMvcTest(controllers = { ExternalParametersController.class })
 public class ExternalParametersExternalControllerTest extends ApiIamControllerTest<ExternalParametersDto> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ExternalParametersExternalControllerTest.class);
 
     @MockBean
-    private ExternalParametersExternalService service;
+    private ExternalParametersService externalParametersService;
 
-    private ExternalParametersExternalController mockedController = MvcUriComponentsBuilder.on(
-        ExternalParametersExternalController.class
+    private ExternalParametersController mockedController = MvcUriComponentsBuilder.on(
+        ExternalParametersController.class
     );
 
     @Test
     public void getMyExternalParameters_thenOk() throws Exception {
         LOGGER.debug("getMyExternalParameters_thenOk");
-        Mockito.when(service.getMyExternalParameters()).thenReturn(new ExternalParametersDto());
+        Mockito.when(externalParametersService.getMyExternalParameters()).thenReturn(new ExternalParametersDto());
 
         ResultActions result = super.performGet(CommonConstants.PATH_ME);
         result.andExpect(MockMvcResultMatchers.handler().methodCall(mockedController.getMyExternalParameters()));

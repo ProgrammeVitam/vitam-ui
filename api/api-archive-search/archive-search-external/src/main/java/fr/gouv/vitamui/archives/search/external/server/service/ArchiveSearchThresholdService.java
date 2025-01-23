@@ -29,9 +29,7 @@
 
 package fr.gouv.vitamui.archives.search.external.server.service;
 
-import fr.gouv.vitamui.commons.api.domain.ExternalParametersDto;
-import fr.gouv.vitamui.commons.api.domain.ParameterDto;
-import fr.gouv.vitamui.iam.internal.client.ExternalParametersInternalRestClient;
+import fr.gouv.vitamui.iam.external.client.ExternalParametersExternalRestClient;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,6 +37,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -50,15 +49,15 @@ public class ArchiveSearchThresholdService {
     private static final Logger LOGGER = LoggerFactory.getLogger(ArchiveSearchThresholdService.class);
     public static final String PARAM_BULK_OPERATIONS_THRESHOLD_NAME = "PARAM_BULK_OPERATIONS_THRESHOLD";
 
-    private final ExternalParametersInternalRestClient externalParametersInternalRestClient;
+    private final ExternalParametersExternalRestClient externalParametersExternalRestClient;
     private final ExternalSecurityService externalSecurityService;
 
     @Autowired
     public ArchiveSearchThresholdService(
-        final ExternalParametersInternalRestClient externalParametersInternalRestClient,
+        final ExternalParametersExternalRestClient externalParametersExternalRestClient,
         ExternalSecurityService externalSecurityService
     ) {
-        this.externalParametersInternalRestClient = externalParametersInternalRestClient;
+        this.externalParametersExternalRestClient = externalParametersExternalRestClient;
         this.externalSecurityService = externalSecurityService;
     }
 
@@ -69,12 +68,12 @@ public class ArchiveSearchThresholdService {
      */
     public Optional<Long> retrieveProfilThresholds() {
         Optional<Long> thresholdOpt = Optional.empty();
-        ExternalParametersDto myExternalParameter = externalParametersInternalRestClient.getMyExternalParameters(
-            this.externalSecurityService.getInternalHttpContext()
+        Map<String, String> myExternalParameter = externalParametersExternalRestClient.getMyExternalParameters(
+            this.externalSecurityService.getHttpContext()
         );
-        if (myExternalParameter != null && !CollectionUtils.isEmpty(myExternalParameter.getParameters())) {
-            ParameterDto parameterThreshold = myExternalParameter
-                .getParameters()
+        if (myExternalParameter != null && !CollectionUtils.isEmpty(myExternalParameter.entrySet())) {
+            Map.Entry<String, String> parameterThreshold = myExternalParameter
+                .entrySet()
                 .stream()
                 .filter(parameter -> PARAM_BULK_OPERATIONS_THRESHOLD_NAME.equals(parameter.getKey()))
                 .findFirst()

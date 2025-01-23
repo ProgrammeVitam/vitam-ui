@@ -12,16 +12,42 @@ spring:
       enabled: false
       config:
         enabled: false
+  data:
+    mongodb:
+      auto-index-creation: true
 
 iam-external:
   security-client:
     server-host: localhost
     server-port: 8084
     secure: false
-  iam-internal-client:
-    server-host: localhost
-    server-port: 7083
-    secure: false
+
+login.url: http://cas/login
+login.attempts.maximum.failures: 5
+login.attempts.time.interval: 20
+
+token.ttl: 15
+token.additional.ttl: 15
+subrogaton.token.ttl: 165
+api.token.ttl: 480
+generic.users.subrogation.ttl: 180
+subrogation.ttl: 30
+
+logbook.scheduling.sendEventToVitamTasks.enabled: false
+
+customer.init.config.file: src/test/resources/customer-init.yml
+
+cas.reset.password.url: /extras/resetPassword?username={username}&firstname={firstname}&lastname={lastname}&language={language}&customerId={customerId}&ttl=1day
+
+address:
+  max-street-length: 250
+
+# Password configuration
+password:
+  max-old-password: 12 # default is 3
+
+user.connection.tracing.enabled: true
+
 
 swagger:
   layer: api-external
