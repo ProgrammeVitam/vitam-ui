@@ -21,10 +21,10 @@ server:
   port: 8087
   tomcat.connection-timeout: 60000
   ssl:
-    key-store: src/main/resources/dev/keystore_referential-external.jks
+    key-store: ../../../dev-deployment/environments/keystores/server/localhost/keystore_referential-external.jks
     key-store-password: changeme
     key-password: changeme
-    trust-store: src/main/resources/dev/truststore_server.jks
+    trust-store: ../../../dev-deployment/environments/keystores/server/truststore_server.jks
     trust-store-password: changeme
     client-auth: need
     enabled-protocols: TLSv1.2,TLSv1.3
@@ -48,7 +48,7 @@ referential-external:
     server-host: localhost
     server-port: 7083
     secure: false
-    
+
 # Jaeger
 opentracing:
   jaeger:
