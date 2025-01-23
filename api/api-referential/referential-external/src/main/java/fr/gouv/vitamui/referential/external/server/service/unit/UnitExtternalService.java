@@ -56,6 +56,7 @@ import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
 import fr.gouv.vitamui.commons.vitam.api.model.UnitTypeEnum;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import fr.gouv.vitamui.referential.external.server.service.AbstractService;
+import fr.gouv.vitamui.referential.external.server.service.service.ExternalParametersService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -89,16 +90,19 @@ public class UnitExtternalService extends AbstractService {
         "#object",
         "Title_",
     };
+    private final ExternalParametersService externalParametersService;
 
     @Autowired
     public UnitExtternalService(
         final UnitService unitService,
         final ObjectMapper objectMapper,
-        ExternalSecurityService externalSecurityService
+        ExternalSecurityService externalSecurityService,
+        final ExternalParametersService externalParametersService
     ) {
         super(externalSecurityService);
         this.unitService = unitService;
         this.objectMapper = objectMapper;
+        this.externalParametersService = externalParametersService;
     }
 
     public JsonNode searchUnits(final JsonNode dslQuery, final VitamContext vitamContext) throws VitamClientException {
@@ -185,8 +189,9 @@ public class UnitExtternalService extends AbstractService {
 
     public VitamUISearchResponseDto getFilingAndHoldingUnits() throws VitamClientException, JsonProcessingException {
         final JsonNode fillingOrHoldingQuery = this.createQueryForFillingOrHoldingUnit();
+        final VitamContext vitamContext = externalParametersService.buildVitamContextFromExternalParam();
         return objectMapper.treeToValue(
-            this.searchUnits(fillingOrHoldingQuery, buildVitamContext()),
+            this.searchUnits(fillingOrHoldingQuery, vitamContext),
             VitamUISearchResponseDto.class
         );
     }

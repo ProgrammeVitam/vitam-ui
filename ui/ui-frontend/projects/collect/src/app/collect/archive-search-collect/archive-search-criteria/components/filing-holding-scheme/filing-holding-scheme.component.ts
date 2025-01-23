@@ -49,7 +49,6 @@ import {
   ResultFacet,
   SearchCriteriaEltDto,
   SearchCriteriaTypeEnum,
-  StartupService,
   Unit,
 } from 'vitamui-library';
 import { isEmpty } from 'underscore';
@@ -72,7 +71,6 @@ export class FilingHoldingSchemeComponent implements OnInit, OnDestroy {
   @Output() switchView: EventEmitter<void> = new EventEmitter();
 
   private subscriptions = new Subscription();
-  tenantIdentifier: string;
   nestedTreeControlFull: NestedTreeControl<FilingHoldingSchemeNode> = new NestedTreeControl<FilingHoldingSchemeNode>(
     (node) => node.children,
   );
@@ -97,11 +95,8 @@ export class FilingHoldingSchemeComponent implements OnInit, OnDestroy {
   constructor(
     private translateService: TranslateService,
     private archiveService: ArchiveCollectService,
-    private startupService: StartupService,
     private archiveSharedDataService: ArchiveSharedDataService,
-  ) {
-    this.tenantIdentifier = this.startupService.getTenantIdentifier();
-  }
+  ) {}
 
   ngOnInit(): void {
     this.nestedDataSourceLeaves.data = [];
@@ -198,7 +193,7 @@ export class FilingHoldingSchemeComponent implements OnInit, OnDestroy {
 
   loadFilingHoldingSchemeTree() {
     this.loadingHolding = true;
-    this.archiveService.loadFilingHoldingSchemeTree(this.tenantIdentifier).subscribe((nodes) => {
+    this.archiveService.loadFilingHoldingSchemeTree().subscribe((nodes) => {
       // Disable checkbox use to prevent add unit to search criteria
       this.disableNodesRecursive(nodes);
       this.fullNodes = nodes;

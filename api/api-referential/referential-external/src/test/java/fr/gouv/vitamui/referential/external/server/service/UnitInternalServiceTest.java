@@ -46,6 +46,7 @@ import fr.gouv.vitam.common.json.JsonHandler;
 import fr.gouv.vitam.common.model.RequestResponseOK;
 import fr.gouv.vitamui.commons.vitam.api.access.UnitService;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
+import fr.gouv.vitamui.referential.external.server.service.service.ExternalParametersService;
 import fr.gouv.vitamui.referential.external.server.service.unit.UnitExtternalService;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -71,6 +72,9 @@ public class UnitInternalServiceTest {
     private ExternalSecurityService externalSecurityService;
 
     @Mock
+    private ExternalParametersService externalParametersService;
+
+    @Mock
     private ObjectMapper objectMapper;
 
     @InjectMocks
@@ -80,7 +84,12 @@ public class UnitInternalServiceTest {
 
     @BeforeEach
     public void setUp() {
-        unitExtternalService = new UnitExtternalService(unitService, objectMapper, externalSecurityService);
+        unitExtternalService = new UnitExtternalService(
+            unitService,
+            objectMapper,
+            externalSecurityService,
+            externalParametersService
+        );
     }
 
     @Test
