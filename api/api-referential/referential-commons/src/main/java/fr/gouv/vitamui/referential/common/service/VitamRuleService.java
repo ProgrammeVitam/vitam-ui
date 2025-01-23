@@ -39,6 +39,7 @@ package fr.gouv.vitamui.referential.common.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
@@ -225,7 +226,9 @@ public class VitamRuleService {
         LOGGER.debug("The json for creation rules, sent to Vitam {}", listOfRules);
 
         try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream()) {
-            final CsvMapper csvMapper = new CsvMapper();
+            final CsvMapper csvMapper = CsvMapper.builder()
+                .disable(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY)
+                .build();
             final CsvSchema schema = csvMapper.schemaFor(RuleCSVDto.class).withColumnSeparator(',').withHeader();
 
             final ObjectWriter writer = csvMapper.writer(schema);
@@ -374,7 +377,9 @@ public class VitamRuleService {
     public RequestResponse<?> importRules(VitamContext vitamContext, String fileName, MultipartFile file)
         throws InvalidParseOperationException, AccessExternalClientException, VitamClientException, IOException {
         LOGGER.debug("Import rule file {}", fileName);
-        return this.adminExternalClient.createRules(vitamContext, file.getInputStream(), fileName);
+        RequestResponse response = this.adminExternalClient.createRules(vitamContext, file.getInputStream(), fileName);
+        VitamRestUtils.checkResponse(response);
+        return response;
     }
 
     /**

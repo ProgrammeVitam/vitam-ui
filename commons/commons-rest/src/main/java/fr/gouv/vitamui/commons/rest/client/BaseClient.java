@@ -138,6 +138,7 @@ public abstract class BaseClient<C extends AbstractHttpContext> implements RestC
         }
     }
 
+    // TODO(refacto): commonize with VitamRestUtils.checkResponse
     protected void checkResponse(final ResponseEntity response, final Integer... acceptedStatus) {
         Assert.notNull(response, "The server response cannot be null");
         final int responseStatus = response.getStatusCodeValue();

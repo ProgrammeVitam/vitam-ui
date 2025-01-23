@@ -51,6 +51,7 @@ import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.model.RequestResponseOK;
 import fr.gouv.vitam.common.model.administration.AgenciesModel;
 import fr.gouv.vitam.common.model.logbook.LogbookOperation;
+import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.vitam.api.administration.AgencyService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -158,7 +159,7 @@ public class VitamAgencyServiceTest {
     }
 
     @Test
-    public void patchAgency_should_return_ok_when_vitamclient_ok() throws VitamClientException {
+    public void patchAgency_should_return_ok_when_vitamclient_ok() throws Exception {
         VitamContext vitamContext = new VitamContext(1);
         String id = "id_0";
         AgenciesModel patchAgency = new AgenciesModel();
@@ -166,6 +167,9 @@ public class VitamAgencyServiceTest {
         when(agencyService.findAgencies(any(VitamContext.class), any(JsonNode.class))).thenReturn(
             new RequestResponseOK<AgenciesModel>().setHttpCode(200)
         );
+        when(
+            adminExternalClient.createAgencies(any(VitamContext.class), any(InputStream.class), any(String.class))
+        ).thenReturn(new RequestResponseOK<AgenciesModel>().setHttpCode(200));
 
         assertThatCode(() -> {
             vitamAgencyService.patchAgency(vitamContext, id, patchAgency);
@@ -173,7 +177,7 @@ public class VitamAgencyServiceTest {
     }
 
     @Test
-    public void patchAgency_should_return_ok_when_vitamclient_400() throws VitamClientException {
+    public void patchAgency_should_return_400_when_vitamclient_400() throws Exception {
         VitamContext vitamContext = new VitamContext(1);
         String id = "id_0";
         AgenciesModel patchAgency = new AgenciesModel();
@@ -181,10 +185,11 @@ public class VitamAgencyServiceTest {
         when(agencyService.findAgencies(any(VitamContext.class), any(JsonNode.class))).thenReturn(
             new RequestResponseOK<AgenciesModel>().setHttpCode(400)
         );
+        when(
+            adminExternalClient.createAgencies(any(VitamContext.class), any(InputStream.class), any(String.class))
+        ).thenReturn(new RequestResponseOK<AgenciesModel>().setHttpCode(400));
 
-        assertThatCode(() -> {
-            vitamAgencyService.patchAgency(vitamContext, id, patchAgency);
-        }).doesNotThrowAnyException();
+        assertThatCode(() -> vitamAgencyService.deleteAgency(vitamContext, id)).isInstanceOf(BadRequestException.class);
     }
 
     @Test
@@ -319,7 +324,7 @@ public class VitamAgencyServiceTest {
     }
 
     @Test
-    public void deleteAgency_should_return_ok_when_vitamclient_400()
+    public void deleteAgency_should_return_400_when_vitamclient_400()
         throws VitamClientException, AccessExternalClientException, InvalidParseOperationException {
         VitamContext vitamContext = new VitamContext(1);
         String id = "id_0";
@@ -330,11 +335,9 @@ public class VitamAgencyServiceTest {
 
         when(
             adminExternalClient.createAgencies(any(VitamContext.class), any(InputStream.class), any(String.class))
-        ).thenReturn(new RequestResponseOK<>().setHttpCode(400));
+        ).thenReturn(new RequestResponseOK<AgenciesModel>().setHttpCode(400));
 
-        assertThatCode(() -> {
-            vitamAgencyService.deleteAgency(vitamContext, id);
-        }).doesNotThrowAnyException();
+        assertThatCode(() -> vitamAgencyService.deleteAgency(vitamContext, id)).isInstanceOf(BadRequestException.class);
     }
 
     @Test
@@ -347,19 +350,22 @@ public class VitamAgencyServiceTest {
             new VitamClientException("Exception throw by vitam")
         );
 
-        assertThatCode(() -> {
-            vitamAgencyService.deleteAgency(vitamContext, id);
-        }).isInstanceOf(VitamClientException.class);
+        assertThatCode(() -> vitamAgencyService.deleteAgency(vitamContext, id)).isInstanceOf(
+            VitamClientException.class
+        );
     }
 
     @Test
-    public void create_should_return_ok_when_vitamclient_ok() throws VitamClientException {
+    public void create_should_return_ok_when_vitamclient_ok() throws Exception {
         VitamContext vitamContext = new VitamContext(1);
         AgenciesModel newAgency = new AgenciesModel();
 
         when(agencyService.findAgencies(any(VitamContext.class), any(JsonNode.class))).thenReturn(
             new RequestResponseOK<AgenciesModel>().setHttpCode(200)
         );
+        when(
+            adminExternalClient.createAgencies(any(VitamContext.class), any(InputStream.class), any(String.class))
+        ).thenReturn(new RequestResponseOK<AgenciesModel>().setHttpCode(200));
 
         assertThatCode(() -> {
             vitamAgencyService.create(vitamContext, newAgency);
@@ -367,13 +373,16 @@ public class VitamAgencyServiceTest {
     }
 
     @Test
-    public void create_should_return_ok_when_vitamclient_400() throws VitamClientException {
+    public void create_should_return_ok_when_vitamclient_400() throws Exception {
         VitamContext vitamContext = new VitamContext(1);
         AgenciesModel newAgency = new AgenciesModel();
 
         when(agencyService.findAgencies(any(VitamContext.class), any(JsonNode.class))).thenReturn(
             new RequestResponseOK<AgenciesModel>().setHttpCode(400)
         );
+        when(
+            adminExternalClient.createAgencies(any(VitamContext.class), any(InputStream.class), any(String.class))
+        ).thenReturn(new RequestResponseOK<AgenciesModel>().setHttpCode(200));
 
         assertThatCode(() -> {
             vitamAgencyService.create(vitamContext, newAgency);

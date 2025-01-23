@@ -39,6 +39,7 @@ package fr.gouv.vitamui.referential.common.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
@@ -217,7 +218,9 @@ public class VitamAgencyService {
         String fileName
     ) throws InvalidParseOperationException, AccessExternalClientException {
         LOGGER.info("Import Agencies EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
-        return adminExternalClient.createAgencies(vitamContext, agencies, fileName);
+        RequestResponse response = adminExternalClient.createAgencies(vitamContext, agencies, fileName);
+        VitamRestUtils.checkResponse(response);
+        return response;
     }
 
     private ByteArrayInputStream serializeAgencies(final List<AgenciesModel> agenciesModels) throws IOException {
@@ -225,7 +228,9 @@ public class VitamAgencyService {
         LOGGER.debug("The json for creation agencies, sent to Vitam {}", listOfAgencies);
 
         try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream()) {
-            final CsvMapper csvMapper = new CsvMapper();
+            final CsvMapper csvMapper = CsvMapper.builder()
+                .disable(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY)
+                .build();
             final CsvSchema schema = csvMapper
                 .schemaFor(AgencyCSVDto.class)
                 .withColumnSeparator(',')
