@@ -129,14 +129,14 @@
         <button type="button" class="btn primary" [disabled]="form.errors" (click)="onValidate()">
           {{ 'COMMON.SAVE' | translate }}
         </button>
-        <button type="button" class="btn cancel" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
+        <button type="button" class="btn cancel link" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
       </div>
     } @else {
       <div class="actions">
         <button type="button" class="btn primary" [disabled]="form.errors" cdkStepperNext (click)="onValidate()">
           {{ 'COMMON.NEXT' | translate }}
         </button>
-        <button type="button" class="btn cancel" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
+        <button type="button" class="btn cancel link" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
       </div>
       <button type="button" class="btn link" cdkStepperPrevious>
         <i class="vitamui-icon vitamui-icon-chevron-left"></i>

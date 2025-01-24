@@ -28,7 +28,9 @@
         >
           {{ 'ARCHIVE_SEARCH.TRANSFER_ACKNOWLEDGMENT.NEXT_STEP' | translate }}
         </button>
-        <button (click)="onClose()" class="btn link" type="button" [disabled]="isLoadingData">{{ 'COMMON.UNDO' | translate }}</button>
+        <button (click)="onClose()" class="btn cancel link" type="button" [disabled]="isLoadingData">
+          {{ 'COMMON.UNDO' | translate }}
+        </button>
       </div>
     </div>
   </cdk-step>
@@ -81,7 +83,7 @@
         <button (click)="goToNextStep()" class="btn primary" type="button">
           {{ 'ARCHIVE_SEARCH.TRANSFER_ACKNOWLEDGMENT.NEXT_STEP' | translate }}
         </button>
-        <button (click)="onCancel()" class="btn link" type="button">
+        <button (click)="onCancel()" class="btn cancel link" type="button">
           {{ 'ARCHIVE_SEARCH.TRANSFER_ACKNOWLEDGMENT.CANCEL_ACTION' | translate }}
         </button>
       </div>
@@ -106,7 +108,7 @@
         <button (click)="applyTransferAcknowledgment()" class="btn primary" type="button" [disabled]="isSubmitBtnDisabled">
           {{ 'ARCHIVE_SEARCH.TRANSFER_ACKNOWLEDGMENT.REPLY_TRANSFER' | translate }}
         </button>
-        <button (click)="onCancel()" class="btn link" type="button" [disabled]="isSubmitBtnDisabled">
+        <button (click)="onCancel()" class="btn cancel link" type="button" [disabled]="isSubmitBtnDisabled">
           {{ 'ARCHIVE_SEARCH.TRANSFER_ACKNOWLEDGMENT.CANCEL_ACTION' | translate }}
         </button>
       </div>
@@ -132,10 +134,10 @@
   </mat-dialog-content>
   <br />
   <mat-dialog-actions>
-    <button (click)="onConfirm()" class="btn primary btn-confirm-dialog margin-btn">
+    <button (click)="onConfirm()" class="btn primary btn-confirm-dialog">
       {{ 'ARCHIVE_SEARCH.TRANSFER_ACKNOWLEDGMENT.TRANSFER_CONFIRM' | translate }}
     </button>
-    <button type="button" (click)="onClose()" class="btn cancel">
+    <button type="button" (click)="onClose()" class="btn cancel link">
       {{ 'ARCHIVE_SEARCH.TRANSFER_ACKNOWLEDGMENT.CANCEL_ACTION' | translate }}
     </button>
   </mat-dialog-actions>

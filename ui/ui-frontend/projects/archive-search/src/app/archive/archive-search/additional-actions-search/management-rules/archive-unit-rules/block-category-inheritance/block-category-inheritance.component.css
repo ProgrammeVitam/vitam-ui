@@ -6,9 +6,7 @@
     line-height: 32px;
     padding-top: 15px;
 }
-.margin-btn {
-    margin-right: 300px;
-}
+
 .message-text-ok {
     color: var(--vitamui-green);
     padding-bottom: 15px;
