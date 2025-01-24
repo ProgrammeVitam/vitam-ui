@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["projects/design-system/src/app/components/atoms/buttons/buttons.component.scss"],
-  "sourcesContent": [":host {\n  display: flex;\n\n  button {\n    margin: 1.5rem;\n  }\n  .contrast-container {\n    background-color: var(--vitamui-primary-600);\n    color: var(--vitamui-white);\n  }\n}\n"],
-  "mappings": "AAAA,MACE,QAAA,KAEA,MAAA,OAHF,OAII,OAEF,MAAA,CAAA,mBACE,iBAAA,IAAA,uBACA,MAAA,IAAA",
-  "names": []
-}

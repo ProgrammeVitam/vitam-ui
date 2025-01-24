@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["projects/vitamui-library/src/app/modules/components/editable-field/editable-email-input/editable-email-input.component.scss"],
-  "sourcesContent": [":host::ng-deep {\n  .mat-select-trigger {\n    border-bottom: 1px solid var(--vitamui-primary);\n  }\n}\n\ninput {\n  width: 100%;\n}\n\nmat-form-field {\n  width: 40% !important;\n}\n\n.layer {\n  margin: 0 0.5rem;\n  font-size: 18px;\n  font-weight: bold;\n  color: var(--vitamui-grey-800);\n}\n"],
-  "mappings": "AACE,KAAA,UAAA,CAAA,mBACE,cAAA,IAAA,MAAA,IAAA,mBAIJ,MACE,MAAA,KAGF,eACE,MAAA,cAGF,CAAA,MAbE,OAcA,EAAA,MACA,UAAA,KACA,YAAA,IACA,MAAA,IAAA",
-  "names": []
-}

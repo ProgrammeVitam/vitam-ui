@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["projects/vitamui-library/src/app/modules/object-viewer/components/list/list.component.scss"],
-  "sourcesContent": [":host {\n  width: 100%;\n  display: flex;\n  flex-direction: column;\n  gap: 10px;\n}\n"],
-  "mappings": "AAAA,MACE,MAAA,KACA,QAAA,KACA,eAAA,OACA,IAAA",
-  "names": []
-}

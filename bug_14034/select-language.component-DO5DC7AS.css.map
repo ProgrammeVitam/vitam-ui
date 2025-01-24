@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["projects/vitamui-library/src/app/modules/components/header/select-language/select-language.component.scss"],
-  "sourcesContent": [":host {\n  width: 100%;\n}\n\n.mat-button-wrapper {\n  justify-content: center;\n  display: flex !important;\n}\n\nimg {\n  width: 25px;\n}\n\nspan img {\n  margin-left: 0.75rem;\n}\n\nspan {\n  display: inline-flex;\n}\n\n.flag-button {\n  background-color: white;\n  justify-content: center;\n  width: 40px;\n  height: 40px;\n}\n\n::ng-deep.mat-menu-content {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n}\n\n::ng-deep.mat-menu-panel {\n  min-width: 0 !important;\n}\n\n::ng-deep.mat-menu-content {\n  padding: 0 !important;\n}\n\n.select-language {\n  border-left: 1px solid var(--vitamui-grey-200);\n}\n\ndiv {\n  height: 100%;\n}\n"],
-  "mappings": "AAAA,MACE,MAAA,KAGF,CAAA,mBACE,gBAAA,OACA,QAAA,eAGF,IACE,MAAA,KAGF,KAAA,IACE,YAAA,OAGF,KACE,QAAA,YAGF,CAAA,YACE,iBAAA,KACA,gBAAA,OACA,MAAA,KACA,OAAA,KAGF,UAAA,CAAA,iBACE,QAAA,KACA,eAAA,OACA,YAAA,OAGF,UAAA,CAAA,eACE,UAAA,YAGF,UAAA,CAVA,iBA5BA,QAuCE,YAGF,CAAA,gBACE,YAAA,IAAA,MAAA,IAAA,oBAGF,IACE,OAAA",
-  "names": []
-}

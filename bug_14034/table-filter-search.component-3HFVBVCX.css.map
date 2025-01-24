@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["projects/vitamui-library/src/app/modules/components/table-filter/table-filter-search.component.scss"],
-  "sourcesContent": ["vitamui-common-table-filter-option.hidden {\n  display: none;\n  visibility: hidden;\n}\n"],
-  "mappings": "AAAA,kCAAA,CAAA,OACE,QAAA,KACA,WAAA",
-  "names": []
-}
