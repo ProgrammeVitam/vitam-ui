@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["projects/identity/src/app/shared/profiles-form/profiles-form.component.scss"],
+  "sourcesContent": [".d-flex {\n  > div:first-of-type {\n    width: 65%;\n\n    > div {\n      height: 60px;\n    }\n  }\n\n  > div:last-of-type {\n    width: 25%;\n  }\n}\n:host {\n  .unscrollable {\n    max-height: none;\n  }\n}\n"],
+  "mappings": "AACE,CAAA,MAAA,CAAA,GAAA,eACE,MAAA,IAEA,CAHF,MAGE,CAAA,GAAA,cAAA,CAAA,IACE,OAAA,KAIJ,CARA,MAQA,CAAA,GAAA,cACE,MAAA,IAIF,MAAA,CAAA,aACE,WAAA",
+  "names": []
+}

@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["projects/vitamui-library/src/app/modules/components/header/select-site/select-site.component.scss"],
+  "sourcesContent": ["$header-height: 72px !default;\n\n.site-label {\n  cursor: pointer;\n  height: $header-height;\n  border-left: 1px solid var(--vitamui-grey-200);\n\n  .text {\n    color: var(--vitamui-header-footer-font);\n\n    &.caption {\n      line-height: 1.4;\n    }\n\n    &.normal {\n      line-height: 2.8;\n    }\n  }\n}\n"],
+  "mappings": "AAEA,CAAA,WACE,OAAA,QACA,OAJc,KAKd,YAAA,IAAA,MAAA,IAAA,oBAEA,CALF,WAKE,CAAA,KACE,MAAA,IAAA,8BAEA,CARJ,WAQI,CAHF,IAGE,CAAA,QACE,YAAA,IAGF,CAZJ,WAYI,CAPF,IAOE,CAAA,OACE,YAAA",
+  "names": []
+}
