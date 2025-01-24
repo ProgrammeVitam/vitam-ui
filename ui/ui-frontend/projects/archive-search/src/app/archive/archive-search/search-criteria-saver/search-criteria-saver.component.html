@@ -10,8 +10,8 @@
         <div class="row pad-bottom">
           <button
             type="button"
-            [vitamuiCommonToolTip]="displaySearchCriteria.tooltip"
-            [vitamuiCommonToolTipShowDelay]="300"
+            [vitamuiTooltip]="displaySearchCriteria.tooltip"
+            [vitamuiTooltipShowDelay]="300"
             class="button-content right-arround left-arround after-search-launched-button"
           >
             {{ displaySearchCriteria.label }}: {{ displaySearchCriteria.value }}
@@ -72,8 +72,8 @@
           *ngIf="criteria !== searchCriteriaHistory"
           class="pad-results hover-div"
           (click)="preUpdate(criteria, $event)"
-          [vitamuiCommonToolTip]="criteria.name"
-          [vitamuiCommonToolTipShowDelay]="300"
+          [vitamuiTooltip]="criteria.name"
+          [vitamuiTooltipShowDelay]="300"
         >
           <button mat-menu-item (click)="preUpdate(criteria, $event)" class="boutton btn-result-update">
             <i class="material-icons save-icon">save</i>
@@ -117,7 +117,7 @@
         <button mat-menu-item class="boutton btn-result-update">
           <i class="material-icons save-icon">save</i>
           <ng-container>
-            <span class="results-message" [vitamuiCommonToolTip]="criteriaToUpdate.name">
+            <span class="results-message" [vitamuiTooltip]="criteriaToUpdate.name">
               {{ criteriaToUpdate.name | truncate: 30 }}
             </span>
             <span class="results-nb-filters"> - ({{ getNbFilters(criteriaToUpdate) }} filtres) </span>

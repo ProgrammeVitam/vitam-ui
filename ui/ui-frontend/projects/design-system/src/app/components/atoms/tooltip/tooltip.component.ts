@@ -36,22 +36,25 @@
  */
 import { AfterViewInit, Component, QueryList, ViewChildren } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms';
-import { CommonTooltipDirective, CommonTooltipModule } from 'vitamui-library';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CommonTooltipModule, TooltipDirective, VitamUICommonInputModule } from 'vitamui-library';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'design-system-tooltip',
   templateUrl: './tooltip.component.html',
   styleUrls: ['./tooltip.component.scss'],
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, CommonTooltipModule],
+  imports: [CommonModule, ReactiveFormsModule, CommonTooltipModule, MatTooltipModule, FormsModule, VitamUICommonInputModule],
 })
 export class TooltipComponent implements AfterViewInit {
   outlineValues = [true, false];
   colors = ['primary', 'secondary'];
   positions = ['TOP', 'BOTTOM', 'LEFT', 'RIGHT'];
+  disabled = false;
+  tooltipText = '';
 
-  @ViewChildren(CommonTooltipDirective) tooltips: QueryList<CommonTooltipDirective>;
+  @ViewChildren(TooltipDirective) tooltips: QueryList<TooltipDirective>;
 
   ngAfterViewInit(): void {
     this.showTooltips();

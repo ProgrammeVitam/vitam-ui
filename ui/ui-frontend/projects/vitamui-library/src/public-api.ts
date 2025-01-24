@@ -110,7 +110,7 @@ export * from './app/modules/components/collapse/collapse.component';
 export * from './app/modules/components/common-progress-bar/common-progress-bar.component';
 export * from './app/modules/components/common-progress-bar/common-progress-bar.module';
 export * from './app/modules/components/common-tooltip/common-tooltip.component';
-export * from './app/modules/components/common-tooltip/common-tooltip.directive';
+export * from './app/modules/components/common-tooltip/tooltip.directive';
 export * from './app/modules/components/common-tooltip/common-tooltip.module';
 export * from './app/modules/components/data/data.module';
 export * from './app/modules/components/datepicker/datepicker.module';

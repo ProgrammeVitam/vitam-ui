@@ -14,7 +14,7 @@
 
           <div
             class="col-3 d-flex align-items-center"
-            [vitamuiCommonToolTip]="permission.readPermission && permission.readPermission.description"
+            [vitamuiTooltip]="permission.readPermission && permission.readPermission.description"
           >
             <vitamui-common-slide-toggle
               *ngIf="permission.readPermission"
@@ -28,7 +28,7 @@
 
           <div
             class="col-3 d-flex align-items-center"
-            [vitamuiCommonToolTip]="permission.writePermission && permission.writePermission.description"
+            [vitamuiTooltip]="permission.writePermission && permission.writePermission.description"
           >
             <vitamui-common-slide-toggle
               *ngIf="permission.writePermission"
@@ -42,7 +42,7 @@
 
           <div
             class="col-3 d-flex align-items-center"
-            [vitamuiCommonToolTip]="permission.deletePermission && permission.deletePermission.description"
+            [vitamuiTooltip]="permission.deletePermission && permission.deletePermission.description"
           >
             <vitamui-common-slide-toggle
               *ngIf="permission.deletePermission"

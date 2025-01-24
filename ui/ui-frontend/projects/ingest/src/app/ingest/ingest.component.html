@@ -18,7 +18,7 @@
         <button
           class="btn secondary"
           (click)="refresh()"
-          [vitamuiCommonToolTip]="'INGEST_ACTION.ToolTip_Refresh' | translate"
+          [vitamuiTooltip]="'INGEST_ACTION.ToolTip_Refresh' | translate"
           [ngStyle]="{ 'margin-right': '10px' }"
         >
           <i class="vitamui-icon vitamui-icon-refresh"></i>
@@ -28,7 +28,7 @@
         <button
           class="btn primary"
           (click)="openImportSipDialog(IngestType.DEFAULT_WORKFLOW)"
-          [vitamuiCommonToolTip]="'INGEST_ACTION.ToolTip_New_Ingest' | translate"
+          [vitamuiTooltip]="'INGEST_ACTION.ToolTip_New_Ingest' | translate"
           [ngStyle]="{ 'margin-right': '10px' }"
         >
           <i class="vitamui-icon vitamui-icon-archive-ingest"></i>

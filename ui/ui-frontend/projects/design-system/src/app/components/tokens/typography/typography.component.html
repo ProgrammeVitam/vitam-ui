@@ -27,7 +27,7 @@
 
 <ng-template #text let-classes="classes" let-text="text">
   <div class="gap-3">
-    <p #el [ngClass]="classes" [vitamuiCommonToolTip]="'TYPOGRAPHY.TOOLTIP' | translate: { classes: classes.join(' ') }">
+    <p #el [ngClass]="classes" [vitamuiTooltip]="'TYPOGRAPHY.TOOLTIP' | translate: { classes: classes.join(' ') }">
       {{ text }}
     </p>
     <span class="info">{{ info(el) }}</span>
@@ -109,7 +109,7 @@
         <p
           #el
           [class]="['text', textColor]"
-          [vitamuiCommonToolTip]="'TYPOGRAPHY.TOOLTIP' | translate: { classes: ['text', textColor].join(' ') }"
+          [vitamuiTooltip]="'TYPOGRAPHY.TOOLTIP' | translate: { classes: ['text', textColor].join(' ') }"
         >
           {{ textColor }}
         </p>
@@ -125,7 +125,7 @@
   <div>
     <p class="text">
       Use "text uppercase" class to make it
-      <span class="text uppercase" [vitamuiCommonToolTip]="'TYPOGRAPHY.TOOLTIP' | translate: { classes: 'text uppercase' }">uppercase</span>
+      <span class="text uppercase" [vitamuiTooltip]="'TYPOGRAPHY.TOOLTIP' | translate: { classes: 'text uppercase' }">uppercase</span>
     </p>
   </div>
 </div>

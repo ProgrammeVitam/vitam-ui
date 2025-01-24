@@ -34,8 +34,8 @@
         type="button"
         class="btn btn-circle link primary xsmall remove"
         (click)="removeInput(i)"
-        [vitamuiCommonToolTip]="removeTooltipKey | translate"
-        vitamuiCommonToolTipPosition="LEFT"
+        [vitamuiTooltip]="removeTooltipKey | translate"
+        vitamuiTooltipPosition="LEFT"
         [outline]="true"
       >
         <i class="vitamui-icon vitamui-icon-remove"></i>
@@ -46,8 +46,8 @@
         class="btn btn-circle link primary xsmall"
         (click)="addInput()"
         [disabled]="isEmpty(item.value)"
-        [vitamuiCommonToolTip]="addTooltipKey | translate"
-        vitamuiCommonToolTipPosition="LEFT"
+        [vitamuiTooltip]="addTooltipKey | translate"
+        vitamuiTooltipPosition="LEFT"
         [outline]="true"
       >
         <i class="material-icons vitamui-icon vitamui-icon-add"> </i>

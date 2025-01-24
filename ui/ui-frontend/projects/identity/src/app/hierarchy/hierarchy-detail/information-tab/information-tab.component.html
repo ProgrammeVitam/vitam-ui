@@ -1,8 +1,8 @@
 <form [formGroup]="form">
   <vitamui-common-slide-toggle
     formControlName="enabled"
-    [vitamuiCommonToolTip]="'HIERARCHY.INFORMATIONS.ACTIVE_SWITCH_TOOLTIP' | translate"
-    [vitamuiCommonToolTipDisabled]="profile?.groupsCount === 0"
+    [vitamuiTooltip]="'HIERARCHY.INFORMATIONS.ACTIVE_SWITCH_TOOLTIP' | translate"
+    [vitamuiTooltipDisabled]="profile?.groupsCount === 0"
   >
     <span *ngIf="!form?.get('enabled').value">{{ 'HIERARCHY.INFORMATIONS.INACTIVE_SWITCH' | translate }}</span>
     <span *ngIf="form?.get('enabled').value">{{ 'HIERARCHY.INFORMATIONS.ACTIVE_SWITCH' | translate }}</span>
@@ -47,8 +47,8 @@
     </div>
     <div
       class="col-5"
-      [vitamuiCommonToolTip]="'HIERARCHY.INFORMATIONS.SUBLEVEL_TOOLTIP' | translate"
-      [vitamuiCommonToolTipDisabled]="profile?.groupsCount === 0"
+      [vitamuiTooltip]="'HIERARCHY.INFORMATIONS.SUBLEVEL_TOOLTIP' | translate"
+      [vitamuiTooltipDisabled]="profile?.groupsCount === 0"
     >
       <vitamui-common-editable-level-input
         formControlName="level"
