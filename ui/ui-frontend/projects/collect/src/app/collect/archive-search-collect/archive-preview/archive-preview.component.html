@@ -10,8 +10,8 @@
   <vitamui-common-menu-button [overlayPos]="'end'" [icon]="'vitamui-icon-more-horiz'">
     <button
       mat-menu-item
-      vitamuiCommonToolTip="{{ !accessContractAllowUpdating ? hasAccessContractManagementPermissionsMessage : '' }}"
-      [vitamuiCommonToolTipShowDelay]="300"
+      vitamuiTooltip="{{ !accessContractAllowUpdating ? hasAccessContractManagementPermissionsMessage : '' }}"
+      [vitamuiTooltipShowDelay]="300"
       (click)="updateMetadataDesc()"
       [disabled]="updateStarted || !accessContractAllowUpdating || !hasUnitaryUpdateUnitRole"
     >

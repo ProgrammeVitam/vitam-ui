@@ -42,8 +42,8 @@
             type="button"
             class="btn secondary right-arround left-not-arround"
             (click)="hiddenTreeBlock(show)"
-            [vitamuiCommonToolTip]="'COLLECT.SHOW_TREES_PLANS' | translate"
-            [vitamuiCommonToolTipShowDelay]="300"
+            [vitamuiTooltip]="'COLLECT.SHOW_TREES_PLANS' | translate"
+            [vitamuiTooltipShowDelay]="300"
           >
             <i class="material-icons">chevron_right</i>
           </button>
@@ -68,7 +68,7 @@
           <vitamui-common-menu-button
             [overlayPos]="'end'"
             [icon]="'vitamui-icon-more-horiz'"
-            [vitamuiCommonToolTip]="'COLLECT.OTHER_ACTION' | translate"
+            [vitamuiTooltip]="'COLLECT.OTHER_ACTION' | translate"
           >
             <button
               mat-menu-item
@@ -448,7 +448,7 @@
                   </span>
                 </div>
                 <div class="col-4 d-flex align-items-center">
-                  <p [vitamuiCommonToolTip]="archiveUnit | unitI18n: 'Description'" [vitamuiCommonToolTipShowDelay]="300">
+                  <p [vitamuiTooltip]="archiveUnit | unitI18n: 'Description'" [vitamuiTooltipShowDelay]="300">
                     <b> {{ archiveUnit | unitI18n: 'Title' }}</b> <br />
                     {{ archiveUnit | unitI18n: 'Description' | truncate: 100 }}
                   </p>
@@ -461,8 +461,8 @@
                 </div>
                 <div class="col-2 d-flex align-items-center">
                   <p
-                    [vitamuiCommonToolTip]="archiveUnit['#originating_agency'] + ' (' + archiveUnit['#originating_agencies'] + ')'"
-                    [vitamuiCommonToolTipShowDelay]="300"
+                    [vitamuiTooltip]="archiveUnit['#originating_agency'] + ' (' + archiveUnit['#originating_agencies'] + ')'"
+                    [vitamuiTooltipShowDelay]="300"
                   >
                     {{ archiveUnit['#originating_agency'] }}
                   </p>

@@ -37,7 +37,7 @@
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { ConnectedPosition, Overlay, OverlayPositionBuilder, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
-import { ComponentRef, Directive, ElementRef, HostListener, Input, OnDestroy, OnInit } from '@angular/core';
+import { ComponentRef, Directive, ElementRef, HostListener, Input, OnDestroy, OnInit, SimpleChanges, OnChanges } from '@angular/core';
 import { TooltipPosition } from './TooltipPosition.enum';
 import { CommonTooltipComponent } from './common-tooltip.component';
 
@@ -71,37 +71,21 @@ const VITAMUI_TOOL_TIP_POSITIONS: { [key: string]: ConnectedPosition } = {
 const TOOLTIP_TRIGGER_CLASS = 'tooltip-trigger';
 
 @Directive({
-  selector: '[vitamuiCommonToolTip]',
+  selector: '[vitamuiTooltip]',
 })
-export class CommonTooltipDirective implements OnInit, OnDestroy {
-  @Input('vitamuiCommonToolTip') text = '';
+export class TooltipDirective implements OnInit, OnDestroy, OnChanges {
+  @Input('vitamuiTooltip') text?: string;
   @Input() outline = false;
-  @Input('vitamuiCommonToolTipPosition') position: TooltipPosition = TooltipPosition.BOTTOM;
-  @Input() vitamuiCommonToolTipClass: string;
-  @Input() vitamuiCommonToolTipShowDelay = 0;
-
-  showTimeoutId: ReturnType<typeof setTimeout>;
-  hideTimeoutId: ReturnType<typeof setTimeout>;
-
+  @Input() vitamuiTooltipPosition: TooltipPosition = TooltipPosition.BOTTOM;
+  @Input() vitamuiTooltipClass?: string;
+  @Input() vitamuiTooltipShowDelay = 0;
   /** Disables the display of the tooltip. */
-  @Input('vitamuiCommonToolTipDisabled')
-  get disabled(): boolean {
-    return this._disabled;
-  }
-  set disabled(value) {
-    this._disabled = coerceBooleanProperty(value);
+  @Input({ alias: 'vitamuiTooltipDisabled', transform: coerceBooleanProperty }) disabled: boolean = false;
 
-    if (this._disabled) (this.elementRef.nativeElement as HTMLElement).classList.remove(TOOLTIP_TRIGGER_CLASS);
-    else (this.elementRef.nativeElement as HTMLElement).classList.add(TOOLTIP_TRIGGER_CLASS);
-
-    // If tooltip is disabled, hide immediately.
-    if (this._disabled && this.overlayRef) {
-      this.hide();
-    }
-  }
-
-  private _disabled = false;
-  private overlayRef: OverlayRef;
+  #tooltipRef?: ComponentRef<CommonTooltipComponent>;
+  #showTimeoutId: ReturnType<typeof setTimeout>;
+  #hideTimeoutId: ReturnType<typeof setTimeout>;
+  #overlayRef: OverlayRef;
 
   constructor(
     private overlay: Overlay,
@@ -110,45 +94,76 @@ export class CommonTooltipDirective implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    if (TooltipPosition[this.position]) {
-      const position = VITAMUI_TOOL_TIP_POSITIONS[this.position];
-      const positionStrategy = this.overlayPositionBuilder.flexibleConnectedTo(this.elementRef).withPositions([position]);
-      if (!this.disabled && this.text) (this.elementRef.nativeElement as HTMLElement).classList.add(TOOLTIP_TRIGGER_CLASS);
-      this.overlayRef = this.overlay.create({ positionStrategy, scrollStrategy: this.overlay.scrollStrategies.reposition() });
+    if (!this.disabled && this.text) (this.elementRef.nativeElement as HTMLElement).classList.add(TOOLTIP_TRIGGER_CLASS);
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (this.#tooltipRef?.instance) {
+      this.updateTooltip();
+    }
+    if (changes.disabled) {
+      if (this.disabled) (this.elementRef.nativeElement as HTMLElement).classList.remove(TOOLTIP_TRIGGER_CLASS);
+      else (this.elementRef.nativeElement as HTMLElement).classList.add(TOOLTIP_TRIGGER_CLASS);
+
+      // If tooltip is disabled, hide immediately.
+      if (this.disabled && this.#overlayRef) {
+        this.hide();
+      }
     }
   }
 
   ngOnDestroy() {
-    this.overlayRef?.detach();
+    this.closeToolTip();
+    this.#overlayRef?.dispose();
   }
 
-  @HostListener('mouseover')
+  @HostListener('mouseenter')
   @HostListener('focus')
   show() {
-    clearTimeout(this.hideTimeoutId);
+    clearTimeout(this.#hideTimeoutId);
 
-    if (!this.disabled && this.text && this.overlayRef && !this.overlayRef.hasAttached()) {
-      this.showTimeoutId = setTimeout(() => {
-        const tooltipPortal = new ComponentPortal(CommonTooltipComponent);
-        const tooltipRef: ComponentRef<CommonTooltipComponent> = this.overlayRef.attach(tooltipPortal);
-        tooltipRef.instance.text = this.text;
-        tooltipRef.instance.position = this.position;
-        tooltipRef.instance.outline = this.outline;
-        tooltipRef.instance.className = this.vitamuiCommonToolTipClass;
-      }, this.vitamuiCommonToolTipShowDelay);
+    if (!this.disabled && this.text) {
+      this.openToolTip();
     }
   }
 
   @HostListener('mouseleave')
-  @HostListener('mousedown')
   @HostListener('blur')
   hide() {
-    clearTimeout(this.showTimeoutId);
+    clearTimeout(this.#showTimeoutId);
+    this.#hideTimeoutId = setTimeout(() => this.closeToolTip(), this.vitamuiTooltipShowDelay);
+  }
 
-    this.hideTimeoutId = setTimeout(() => {
-      if (this.overlayRef.hasAttached()) {
-        this.overlayRef?.detach();
-      }
-    }, this.vitamuiCommonToolTipShowDelay);
+  private openToolTip() {
+    if (!this.#overlayRef) this.createOverlayRef();
+    if (!this.#overlayRef.hasAttached()) {
+      this.#showTimeoutId = setTimeout(() => {
+        const tooltipPortal = new ComponentPortal(CommonTooltipComponent);
+        this.#tooltipRef = this.#overlayRef.attach(tooltipPortal);
+        this.updateTooltip();
+      }, this.vitamuiTooltipShowDelay);
+    }
+  }
+
+  private updateTooltip() {
+    this.#tooltipRef.instance.text = this.text;
+    this.#tooltipRef.instance.position = this.vitamuiTooltipPosition;
+    this.#tooltipRef.instance.outline = this.outline;
+    this.#tooltipRef.instance.className = this.vitamuiTooltipClass;
+  }
+
+  private createOverlayRef() {
+    const position = VITAMUI_TOOL_TIP_POSITIONS[this.vitamuiTooltipPosition];
+    const positionStrategy = this.overlayPositionBuilder.flexibleConnectedTo(this.elementRef).withPositions([position]);
+    this.#overlayRef = this.overlay.create({
+      positionStrategy,
+      scrollStrategy: this.overlay.scrollStrategies.reposition(),
+    });
+  }
+
+  private closeToolTip() {
+    if (this.#overlayRef?.hasAttached()) {
+      this.#overlayRef.detach();
+    }
   }
 }

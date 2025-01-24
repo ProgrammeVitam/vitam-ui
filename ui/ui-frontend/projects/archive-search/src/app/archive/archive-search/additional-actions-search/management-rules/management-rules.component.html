@@ -35,20 +35,20 @@
                 <mat-option
                   [disabled]="!isRuleCategorySelected || isAddValidActions"
                   (click)="onSelectAction('ADD_RULES')"
-                  vitamuiCommonToolTip="{{ isAddValidActions ? messageNotAdd : '' }}"
+                  vitamuiTooltip="{{ isAddValidActions ? messageNotAdd : '' }}"
                 >
                   {{ 'RULES.ACTIONS.ADD_RULE' | translate }}
                 </mat-option>
                 <mat-option
                   [disabled]="!isRuleCategorySelected || isUpdateValidActions || isUpdateValidActionsWithProperty"
                   (click)="onSelectAction('UPDATE_RULES')"
-                  vitamuiCommonToolTip="{{ isUpdateValidActions || isUpdateValidActionsWithProperty ? messageNotUpdate : '' }}"
+                  vitamuiTooltip="{{ isUpdateValidActions || isUpdateValidActionsWithProperty ? messageNotUpdate : '' }}"
                 >
                   {{ 'RULES.ACTIONS.UPDATE_RULE' | translate }}
                 </mat-option>
                 <mat-option
                   [disabled]="!isRuleCategorySelected || isDeleteValidActions || isDeleteValidActionsWithProperty"
-                  vitamuiCommonToolTip="{{ isDeleteValidActions || isDeleteValidActionsWithProperty ? messageNotDelete : '' }}"
+                  vitamuiTooltip="{{ isDeleteValidActions || isDeleteValidActionsWithProperty ? messageNotDelete : '' }}"
                   (click)="onSelectAction('DELETE_RULES')"
                 >
                   {{ 'RULES.ACTIONS.DELETE_RULE' | translate }}
@@ -84,13 +84,13 @@
                   isUpdateValidActionsWithProperty
                 "
                 (click)="onSelectAction('UPDATE_PROPERTY')"
-                vitamuiCommonToolTip="{{ isAddPropertyValidActions ? messageNotAddProperty : isAddValidActions ? messageNotAdd : '' }}"
+                vitamuiTooltip="{{ isAddPropertyValidActions ? messageNotAddProperty : isAddValidActions ? messageNotAdd : '' }}"
               >
                 {{ 'RULES.MORE_ACTIONS.UPDATE_PROPERTY' | translate }}
               </mat-option>
               <mat-option
                 [disabled]="isDeletePropertyDisabled || isStorageRuleActionDisabled"
-                vitamuiCommonToolTip="{{ isDeletePropertyDisabled ? messageNotToDeleteProperty : '' }}"
+                vitamuiTooltip="{{ isDeletePropertyDisabled ? messageNotToDeleteProperty : '' }}"
                 (click)="onSelectAction('DELETE_PROPERTY')"
               >
                 {{ 'RULES.MORE_ACTIONS.DELETE_PROPERTY' | translate }}
@@ -104,7 +104,7 @@
               <mat-option
                 [disabled]="isUnlockInheritanceCategoryDisabled || isBlockInheritanceCategoryDisabled"
                 (click)="onSelectAction('UNLOCK_CATEGORY_INHERITANCE')"
-                vitamuiCommonToolTip="{{ 'RULES.MORE_ACTIONS.DELETE_BLOCK_PROPERTY_INHERITANCE' | translate }}"
+                vitamuiTooltip="{{ 'RULES.MORE_ACTIONS.DELETE_BLOCK_PROPERTY_INHERITANCE' | translate }}"
               >
                 {{ 'RULES.MORE_ACTIONS.DELETE_BLOCK_PROPERTY_INHERITANCE' | translate }}
               </mat-option>

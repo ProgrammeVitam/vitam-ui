@@ -21,7 +21,7 @@
         {{ 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.ATTRIBUTS.NOM_ATTRIBUT' | translate }}
       </th>
       <td *matCellDef="let element" class="pastis-metadata-table-col-large" mat-cell>
-        <span [ngClass]="" [vitamuiCommonToolTip]="getSedaDefinition(element.nomDuChamp)" vitamuiCommonToolTipPosition="RIGHT">
+        <span [ngClass]="" [vitamuiTooltip]="getSedaDefinition(element.nomDuChamp)" vitamuiTooltipPosition="RIGHT">
           {{ onResolveName(element.nomDuChamp) }}
         </span>
       </td>

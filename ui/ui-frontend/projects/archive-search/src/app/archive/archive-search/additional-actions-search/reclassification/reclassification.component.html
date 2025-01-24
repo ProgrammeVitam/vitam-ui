@@ -14,8 +14,8 @@
           <a
             class="link-without-underline"
             (click)="loadExactCount()"
-            [vitamuiCommonToolTip]="'ARCHIVE_SEARCH.RETRIEVE_EXACT_COUNT' | translate"
-            [vitamuiCommonToolTipShowDelay]="300"
+            [vitamuiTooltip]="'ARCHIVE_SEARCH.RETRIEVE_EXACT_COUNT' | translate"
+            [vitamuiTooltipShowDelay]="300"
           >
             <vitamui-badge *ngIf="!pendingGetChilds" [text]="badgeMessageMoreThan" color="red" decoration="filled"></vitamui-badge>
           </a>
@@ -32,8 +32,8 @@
             <a
               class="link-without-underline"
               (click)="loadExactCount()"
-              [vitamuiCommonToolTip]="'ARCHIVE_SEARCH.RETRIEVE_EXACT_COUNT' | translate"
-              [vitamuiCommonToolTipShowDelay]="300"
+              [vitamuiTooltip]="'ARCHIVE_SEARCH.RETRIEVE_EXACT_COUNT' | translate"
+              [vitamuiTooltipShowDelay]="300"
             >
               <vitamui-badge *ngIf="!pendingGetChilds" [text]="badgeMessageMoreThan" color="red" decoration="filled"></vitamui-badge>
             </a>

@@ -15,8 +15,8 @@
     [class.user-app]="application?.identifier === 'users'"
     [class.ingest-app]="application?.identifier === 'ingests'"
     [class.highlight]="application?.hasHighlight"
-    [vitamuiCommonToolTip]="application?.tooltip"
-    [vitamuiCommonToolTipShowDelay]="800"
+    [vitamuiTooltip]="application?.tooltip"
+    [vitamuiTooltipShowDelay]="800"
     id="{{ application.identifier }}"
   >
     <i [ngClass]="application?.icon"></i>{{ application?.name }}

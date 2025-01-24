@@ -35,7 +35,7 @@
           >
             <i class="vitamui-icon" [class]="treeControl.isExpanded(data) ? 'vitamui-icon-chevron-down' : 'vitamui-icon-chevron-right'"></i>
           </button>
-          <span [vitamuiCommonToolTip]="data.item.Path" [outline]="true" vitamuiCommonToolTipClass="no-wrap secondary">
+          <span [vitamuiTooltip]="data.item.Path" [outline]="true" vitamuiTooltipClass="no-wrap secondary">
             {{ (data.item.Origin === 'EXTERNAL' ? 'EXT-' : '') + data.item.ShortName }}
           </span>
         </div>

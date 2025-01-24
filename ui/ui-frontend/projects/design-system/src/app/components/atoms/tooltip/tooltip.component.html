@@ -6,11 +6,20 @@
   tooltip disappear after mouse leave: the tooltip will then behave as a classical tooltip.
 </p>
 <p>
-  You can also hide/show all tooltips by clicking those buttons:
+  Texts with tooltips are focusable, so you can navigate with TAB to focus those elements and check that the tooltip is displayed/hidden on
+  focus/blur.
+</p>
+<p>
+  You can hide/show all tooltips or enable/disable tooltips by clicking those buttons:
   <span class="d-inline-flex hgap-2 ml-2">
     <button class="btn secondary" (click)="hideTooltips()">Hide tooltips</button>
     <button class="btn secondary" (click)="showTooltips()">Show tooltips</button>
+    <button class="btn secondary" (click)="disabled = !disabled">{{ disabled ? 'Enable' : 'Disable' }} tooltips</button>
   </span>
+</p>
+<p>
+  You can customize the text (even HTML) of the tooltip here:
+  <vitamui-common-textarea class="w-100" [(ngModel)]="tooltipText"></vitamui-common-textarea>
 </p>
 
 @for (outline of outlineValues; track outline) {
@@ -21,10 +30,12 @@
       @for (position of positions; track position) {
         <div class="col my-6">
           <span
-            [vitamuiCommonToolTip]="position"
-            [vitamuiCommonToolTipPosition]="position"
+            tabindex="0"
+            [vitamuiTooltip]="tooltipText || position"
+            [vitamuiTooltipPosition]="position"
             [outline]="outline"
-            [vitamuiCommonToolTipClass]="color"
+            [vitamuiTooltipClass]="color"
+            [vitamuiTooltipDisabled]="disabled"
           >
             {{ outline ? 'Light' : 'Dark' }} {{ color }} {{ position }}
           </span>

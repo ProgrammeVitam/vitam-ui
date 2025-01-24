@@ -2,10 +2,10 @@
   class="vitamui-autocomplete"
   [class.disabled]="control.disabled"
   [class.label-up]="labelUp"
-  vitamuiCommonToolTipClass="text-pre-line"
-  vitamuiCommonToolTip="{{ this.autocompleteLabel }}"
-  vitamuiCommonToolTipPosition="BOTTOM"
-  vitamuiCommonToolTipShowDelay="300"
+  vitamuiTooltipClass="text-pre-line"
+  vitamuiTooltip="{{ this.autocompleteLabel }}"
+  vitamuiTooltipPosition="BOTTOM"
+  vitamuiTooltipShowDelay="300"
 >
   <label class="input-label">
     {{ placeholder }}
@@ -36,7 +36,7 @@
   <ng-container *ngFor="let option of filteredOptions | async">
     <mat-option [value]="option.key">
       <span vitamuiCommonEllipsis [isToolTipOnMouseEnter]="true">{{ option.label }}</span>
-      <i class="material-icons" *ngIf="option.info" [vitamuiCommonToolTip]="option.info">info_outline</i>
+      <i class="material-icons" *ngIf="option.info" [vitamuiTooltip]="option.info">info_outline</i>
     </mat-option>
   </ng-container>
 </mat-autocomplete>

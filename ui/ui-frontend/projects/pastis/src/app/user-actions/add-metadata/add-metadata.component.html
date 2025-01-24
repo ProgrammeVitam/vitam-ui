@@ -35,7 +35,7 @@
       <mat-list *ngFor="let element of allowedChildren | filterByName: filterName : sedaLanguage" class="list-item">
         <span class="list-box-content">
           <span *ngIf="element.external">EXT-</span>
-          <span class="text medium" [vitamuiCommonToolTip]="getDefinition(element)">{{ onResolveName(element) }}</span>
+          <span class="text medium" [vitamuiTooltip]="getDefinition(element)">{{ onResolveName(element) }}</span>
         </span>
         <span (click)="onAddSelectedElement(element)" class="ajouter">{{ 'USER_ACTION.ADD_METADATA.BOUTON_AJOUTER' | translate }}</span>
         <mat-divider class="pastis-popup-separator"></mat-divider>

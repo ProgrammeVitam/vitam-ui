@@ -15,7 +15,7 @@
         <h5>{{ 'LOGBOOK_OPERATION_PAGE.TITLE' | translate }}</h5>
       </vitamui-common-title-breadcrumb>
       <vitamui-common-banner [searchbarPlaceholder]="'LOGBOOK_OPERATION_PAGE.SEARCH' | translate" (search)="onSearchSubmit($event)">
-        <button class="btn secondary" (click)="refresh()" [vitamuiCommonToolTip]="'LOGBOOK_OPERATION_PAGE.ToolTip_Refresh' | translate">
+        <button class="btn secondary" (click)="refresh()" [vitamuiTooltip]="'LOGBOOK_OPERATION_PAGE.ToolTip_Refresh' | translate">
           <i class="vitamui-icon vitamui-icon-refresh"></i>
           <span>{{ 'LOGBOOK_OPERATION_PAGE.REFRESH' | translate }}</span>
         </button>

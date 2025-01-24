@@ -140,7 +140,7 @@
         <div class="vitamui-table-rows" *ngFor="let operation of results" (click)="operationClick.emit(operation)">
           <div class="vitamui-row d-flex align-items-center clickable">
             <div class="col-3">
-              <span [vitamuiCommonToolTip]="operation.operationId" [vitamuiCommonToolTipShowDelay]="300">
+              <span [vitamuiTooltip]="operation.operationId" [vitamuiTooltipShowDelay]="300">
                 {{ operation?.operationId | truncate: 30 }}
               </span>
             </div>

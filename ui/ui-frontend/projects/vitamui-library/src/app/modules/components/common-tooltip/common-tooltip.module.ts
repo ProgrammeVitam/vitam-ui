@@ -37,11 +37,11 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { CommonTooltipComponent } from './common-tooltip.component';
-import { CommonTooltipDirective } from './common-tooltip.directive';
+import { TooltipDirective } from './tooltip.directive';
 
 @NgModule({
   imports: [CommonModule],
-  declarations: [CommonTooltipComponent, CommonTooltipDirective],
-  exports: [CommonTooltipComponent, CommonTooltipDirective],
+  declarations: [CommonTooltipComponent, TooltipDirective],
+  exports: [CommonTooltipComponent, TooltipDirective],
 })
 export class CommonTooltipModule {}

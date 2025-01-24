@@ -27,17 +27,17 @@
         <!--Toggle button allow additional properties-->
         <div
           *ngIf="this.profileService.profileType === 'PUA' && this.isStandalone"
-          [vitamuiCommonToolTip]="'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.ADDITIONAL_PROPERTIES_TOOLTIP' | translate"
+          [vitamuiTooltip]="'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.ADDITIONAL_PROPERTIES_TOOLTIP' | translate"
         >
           <allow-additional-properties [checked]="rootAdditionalProperties" (stateToggleButton)="changeStatusAdditionalProperties($event)">
           </allow-additional-properties>
         </div>
         <!--Button save-->
-        <div [vitamuiCommonToolTip]="'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.ENREGISTRER_PROFIL_TOOLTIP' | translate">
+        <div [vitamuiTooltip]="'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.ENREGISTRER_PROFIL_TOOLTIP' | translate">
           <pastis-user-action-save-profile></pastis-user-action-save-profile>
         </div>
         <!--Button setting-->
-        <div [vitamuiCommonToolTip]="'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.TELECHARGER_MANUEL_TOOLTIP' | translate">
+        <div [vitamuiTooltip]="'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.TELECHARGER_MANUEL_TOOLTIP' | translate">
           <pastis-user-action-download-doc (click)="openChoicePopup()"></pastis-user-action-download-doc>
           <div class="vitamui-pastis-choice-language">
             <pastis-popup-metadata-language (click)="changeSedaLanguage()" *ngIf="languagePopup"></pastis-popup-metadata-language>
@@ -81,7 +81,7 @@
                 'pastis-table-content': isSedaCardinalityConform(element.cardinalite, selectedCardinalities[j]),
                 'pastis-table-content-with-errors': !isSedaCardinalityConform(element.cardinalite, selectedCardinalities[j]),
               }"
-              [vitamuiCommonToolTip]="getSedaDefinition(element.nomDuChamp)"
+              [vitamuiTooltip]="getSedaDefinition(element.nomDuChamp)"
             >
               <span *ngIf="element.external">EXT-</span>
               <span *ngIf="isElementEdit(element); else nonEdit">{{ element.nomDuChampEdit }}</span>
@@ -89,8 +89,8 @@
 
               <mat-icon
                 *ngIf="!isSedaCardinalityConform(element.cardinalite, selectedCardinalities[j])"
-                vitamuiCommonToolTip="La cardinalité n'est pas conforme aux specifications du SEDA 2.1"
-                vitamuiCommonToolTipPosition="TOP"
+                vitamuiTooltip="La cardinalité n'est pas conforme aux specifications du SEDA 2.1"
+                vitamuiTooltipPosition="TOP"
               >
                 info
               </mat-icon>
@@ -260,7 +260,7 @@
                 <div class="placement-tooltip">
                   <i
                     class="vitamui-icon vitamui-icon-info primary clickable"
-                    vitamuiCommonToolTip="Permet de modifier l’autorisation dans le manifeste de la présence de métadonnées non déclarées dans le PUA"
+                    vitamuiTooltip="Permet de modifier l’autorisation dans le manifeste de la présence de métadonnées non déclarées dans le PUA"
                     style="font-size: 1.5em"
                   ></i>
                 </div>
@@ -346,7 +346,7 @@
                 <mat-icon class="pastis-icon-primary">
                   <i
                     class="vitamui-icon vitamui-icon-info primary clickable"
-                    [vitamuiCommonToolTip]="'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.INFO_ENNUMERATION' | translate"
+                    [vitamuiTooltip]="'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.INFO_ENNUMERATION' | translate"
                   ></i>
                 </mat-icon>
               </span>
@@ -393,7 +393,7 @@
                 <mat-icon class="pastis-icon-primary">
                   <i
                     class="vitamui-icon vitamui-icon-info primary clickable"
-                    [vitamuiCommonToolTip]="'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.INFO_EXPRESSION' | translate"
+                    [vitamuiTooltip]="'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.INFO_EXPRESSION' | translate"
                   ></i>
                 </mat-icon>
               </span>

@@ -298,10 +298,10 @@
           <button
             mat-menu-item
             (click)="launchUpdateManagementRuleModal()"
-            [vitamuiCommonToolTip]="
+            [vitamuiTooltip]="
               !accessContractAllowUpdating || accessContractUpdatingRestrictedDesc ? hasAccessContractManagementPermissionsMessage : ''
             "
-            [vitamuiCommonToolTipShowDelay]="300"
+            [vitamuiTooltipShowDelay]="300"
             [disabled]="
               !hasUpdateManagementRuleRole ||
               selectedItemCount === 0 ||
@@ -449,18 +449,10 @@
             </span>
           </div>
           <div class="col-4 d-flex flex-column align-items-start" (click)="archiveUnitClick.emit(archiveUnit)">
-            <span
-              class="no-wrap text-ellipsis"
-              [vitamuiCommonToolTip]="archiveUnit | unitI18n: 'Title'"
-              [vitamuiCommonToolTipShowDelay]="300"
-            >
+            <span class="no-wrap text-ellipsis" [vitamuiTooltip]="archiveUnit | unitI18n: 'Title'" [vitamuiTooltipShowDelay]="300">
               <b> {{ archiveUnit | unitI18n: 'Title' }}</b>
             </span>
-            <span
-              class="no-wrap text-ellipsis"
-              [vitamuiCommonToolTip]="archiveUnit | unitI18n: 'Description'"
-              [vitamuiCommonToolTipShowDelay]="300"
-            >
+            <span class="no-wrap text-ellipsis" [vitamuiTooltip]="archiveUnit | unitI18n: 'Description'" [vitamuiTooltipShowDelay]="300">
               {{ archiveUnit | unitI18n: 'Description' | truncate: 100 }}
             </span>
           </div>
@@ -473,8 +465,8 @@
           <div class="col-2 d-flex align-items-center" (click)="archiveUnitClick.emit(archiveUnit)">
             <p
               class="no-wrap text-ellipsis"
-              [vitamuiCommonToolTip]="archiveUnit['originating_agencyName'] + ' (' + archiveUnit['#originating_agencies'] + ')'"
-              [vitamuiCommonToolTipShowDelay]="300"
+              [vitamuiTooltip]="archiveUnit['originating_agencyName'] + ' (' + archiveUnit['#originating_agencies'] + ')'"
+              [vitamuiTooltipShowDelay]="300"
             >
               {{ archiveUnit['originating_agencyName'] }}
             </p>

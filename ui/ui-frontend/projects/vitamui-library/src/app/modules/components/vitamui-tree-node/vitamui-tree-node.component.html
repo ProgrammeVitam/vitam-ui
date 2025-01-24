@@ -17,8 +17,8 @@
   [disabled]="node.disabled"
   (ngModelChange)="onCheckboxClick()"
   (click)="onCheckboxClick()"
-  [vitamuiCommonToolTip]="node?.title"
-  [vitamuiCommonToolTipShowDelay]="300"
+  [vitamuiTooltip]="node?.title"
+  [vitamuiTooltipShowDelay]="300"
 >
   <label class="node-label" (click)="onLabelClick($event)">
     <i class="pad vitamui-icon {{ icon }}"></i>
