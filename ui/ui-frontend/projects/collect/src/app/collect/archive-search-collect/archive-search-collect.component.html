@@ -423,8 +423,8 @@
                 class="vitamui-row d-flex align-items-center"
               >
                 <div class="col-1 d-flex align-items-center">
-                  <label class="vitamui-checkbox wide" (click)="checkChildrenBoxChange(archiveUnit['#id'], $event)">
-                    <input type="checkbox" [checked]="isAllChecked" />
+                  <label class="vitamui-checkbox wide" (click)="$event.stopPropagation()">
+                    <input type="checkbox" [checked]="isAllChecked" (change)="checkChildrenBoxChange(archiveUnit['#id'], $event)" />
                   </label>
                 </div>
                 <div class="col-1 d-flex align-items-center">
