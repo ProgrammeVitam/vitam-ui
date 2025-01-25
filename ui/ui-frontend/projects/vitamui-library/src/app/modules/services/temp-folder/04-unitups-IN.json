@@ -1,0 +1,95 @@
+{
+  "$hits": {
+    "limit": 10,
+    "offset": 0,
+    "total": 4,
+    "size": 4
+  },
+  "$results": [
+    {
+      "#id": "aeaqaaaaaqhmtxs2aafi2amktc4rjqiaaaaq",
+      "Title": "Bureautique",
+      "DescriptionLevel": "RecordGrp",
+      "#unitups": [
+        "aeaqaaaaaqhiyursaad7mambvgfpz3aaaaba"
+      ],
+      "#allunitups": [
+        "aeaqaaaaaqhawwq5aaqtial4hkxze6qaaaaq",
+        "aeaqaaaaaqhiyursaad7mambvgfpz3aaaaba"
+      ],
+      "#unitType": "HOLDING_UNIT"
+    },
+    {
+      "#id": "aeaqaaaaaqhiyursaab64amgtbk7eaqaaaea",
+      "Title": "CAB_ROYAL, dossiers de Julien PAVY, conseiller parlementaire et territoires",
+      "DescriptionLevel": "RecordGrp",
+      "Description": "Conseiller parlementaire et territoires",
+      "#unitups": [
+        "aeaqaaaaaqhiyursaad7mambvgfpz3aaaaba"
+      ],
+      "#allunitups": [
+        "aeaqaaaaaqhawwq5aaqtial4hkxze6qaaaaq",
+        "aeaqaaaaaqhiyursaad7mambvgfpz3aaaaba"
+      ],
+      "#unitType": "INGEST"
+    },
+    {
+      "#id": "aeaqaaaaaqhmtxs2aabxeamc7zfxxgyaaaea",
+      "Title": "Secretariat Leforestier",
+      "DescriptionLevel": "RecordGrp",
+      "Description": "Par arrêté publié au Journal Officiel vendredi 17 juillet, Guillaume Leforestier est nommé directeur du cabinet de la ministre de l’Écologie, du Développement durable et de l’Énergie, Ségolène Royal. Il était directeur adjoint du cabinet et conseiller budgétaire. Guillaume Leforestier  a succèdé  à Elisabeth Born enommée à d'autres fonctions.\nTitulaire d’une licence de philosophie et diplômé de l’Institut de sciences politiques de Paris, Guillaume Leforestier était administrateur du Sénat de 2003 à 2012, au service de la Séance puis de la commission des Finances. En 2012, il devient conseiller budgétaire et fiscal au cabinet de Delphine Batho, ministre de l’Écologie, du Développement durable et de l’Énergie. Tout en restant conseiller budgétaire, il est promu directeur adjoint du cabinet en février 2014 par Ségolène Royal.\nLe fonds présenté est constitué de correspondances directes ou à la signature de la Ministre et de quelques dosseirs thématiques comme la Conférence des parties COP 21, et la fisclaité écologique.",
+      "#unitups": [
+        "aeaqaaaaaqhiyursaad7mambvgfpz3aaaaba"
+      ],
+      "#allunitups": [
+        "aeaqaaaaaqhawwq5aaqtial4hkxze6qaaaaq",
+        "aeaqaaaaaqhiyursaad7mambvgfpz3aaaaba"
+      ],
+      "#unitType": "INGEST"
+    },
+    {
+      "#id": "aeaqaaaaaqhmtxs2aafi2amktc4rkriaaaba",
+      "Title": "Messagerie",
+      "DescriptionLevel": "RecordGrp",
+      "#unitups": [
+        "aeaqaaaaaqhiyursaad7mambvgfpz3aaaaba"
+      ],
+      "#allunitups": [
+        "aeaqaaaaaqhawwq5aaqtial4hkxze6qaaaaq",
+        "aeaqaaaaaqhiyursaad7mambvgfpz3aaaaba"
+      ],
+      "#unitType": "HOLDING_UNIT"
+    }
+  ],
+  "$context": {
+    "$roots": [],
+    "$query": [
+      {
+        "$roots": null,
+        "$query": null,
+        "$filter": null,
+        "$projection": null
+      }
+    ],
+    "$filter": {
+      "$limit": 10,
+      "$orderby": {}
+    },
+    "$projection": {}
+  },
+  "$facetResults": [
+    {
+      "name": "COUNT_BY_NODE",
+      "buckets": [
+        {
+          "value": "aeaqaaaaaqhawwq5aaqtial4hkxze6qaaaaq",
+          "count": 4
+        },
+        {
+          "value": "aeaqaaaaaqhiyursaad7mambvgfpz3aaaaba",
+          "count": 4
+        }
+      ]
+    }
+  ]
+}

@@ -263,7 +263,7 @@ export class LeavesTreeApiService {
       computeFacets: false,
     };
     // Can be improve with a projection (only nodes fields are needed)
-    return this.sendSearchArchiveUnitsByCriteria(searchCriteria).pipe();
+    return this.sendSearchArchiveUnitsByCriteria(searchCriteria);
   }
 
   searchAttachementUnit(): Observable<PagedResult> {
@@ -282,7 +282,7 @@ export class LeavesTreeApiService {
       trackTotalHits: false,
       computeFacets: false,
     };
-    return this.sendSearchArchiveUnitsByCriteria(searchCriteria).pipe();
+    return this.sendSearchArchiveUnitsByCriteria(searchCriteria);
   }
 
   // ########## IMPLEMENTATION ####################################################################################################

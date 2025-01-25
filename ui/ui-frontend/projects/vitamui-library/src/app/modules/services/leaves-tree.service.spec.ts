@@ -41,8 +41,14 @@ import { LeavesTreeApiService } from './leaves-tree-api.service';
 import { newPagedResult, newResultBucket, newResultFacetList } from './leaves-tree-api.service.spec';
 import { LeavesTreeService } from './leaves-tree.service';
 import { SearchArchiveUnitsInterface } from './search-archive-units.interface';
+import {
+  buildPagedResults,
+  searchAtNodeWithSearchCriterias,
+  searchUnderNode,
+  searchUnderNodeWithSearchCriterias,
+} from './leaves-tree-test-var.spec';
 
-describe('LeavesTreeService', () => {
+describe('LeavesTreeService tests', () => {
   let leavesTreeService: LeavesTreeService;
   const searchArchiveUnitsByCriteriaSpy = jasmine.createSpyObj<SearchArchiveUnitsInterface>('SearchArchiveUnitsInterface', [
     'searchArchiveUnitsByCriteria',
@@ -394,6 +400,34 @@ describe('LeavesTreeService', () => {
       expect(parentNode.children[1].count).toEqual(7);
       // @ts-ignore
       expect(leavesTreeService.searchRequestResultFacets).toContain(newResultFacet('node-0-2-1', 28));
+    });
+  });
+
+  describe('combined calls', () => {
+    it('should should combined calls nicely', () => {
+      const parentNode = newTreeNode('aeaqaaaaaqhiyursaad7mambvgfpz3aaaaba', 0);
+
+      const searchUnderNodePageResult = buildPagedResults(searchUnderNode);
+      const searchUnderNodeWithSearchCriteriasPageResult = buildPagedResults(searchUnderNodeWithSearchCriterias);
+      const searchAtNodeWithSearchCriteriasPageResult = buildPagedResults(searchAtNodeWithSearchCriterias);
+
+      leavesTreeApiServiceSpy.searchUnderNode.and.returnValue(of(searchUnderNodePageResult));
+      leavesTreeApiServiceSpy.searchUnderNodeWithSearchCriterias.and.returnValue(of(searchUnderNodeWithSearchCriteriasPageResult));
+      leavesTreeApiServiceSpy.searchAtNodeWithSearchCriterias.and.returnValue(of(searchAtNodeWithSearchCriteriasPageResult));
+
+      leavesTreeService.searchUnderNode(parentNode).subscribe((results) => {
+        expect(results).toEqual(searchUnderNodePageResult);
+      });
+      leavesTreeService.searchUnderNodeWithSearchCriterias(parentNode).subscribe((results) => {
+        expect(results).toEqual(searchUnderNodeWithSearchCriteriasPageResult);
+      });
+      leavesTreeService.searchAtNodeWithSearchCriterias(parentNode).subscribe((results) => {
+        expect(results).toEqual(searchAtNodeWithSearchCriteriasPageResult);
+      });
+
+      // Le résultat semble OK avec ce que renvoit l'API
+      // Le problème doit venir de leur arborescence.
+      expect(parentNode.children).toEqual([]);
     });
   });
 });

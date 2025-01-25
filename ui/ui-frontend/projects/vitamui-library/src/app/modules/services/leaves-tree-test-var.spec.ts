@@ -1,0 +1,1098 @@
+import { PagedResult, SearchResponse } from '../models';
+
+export const searchUnderNode = {
+  $hits: {
+    limit: 10,
+    offset: 0,
+    total: 4,
+    size: 4,
+  },
+  $results: [
+    {
+      '#id': 'aeaqaaaaaqhmtxs2aafi2amktc4rjqiaaaaq',
+      Title: 'Bureautique',
+      DescriptionLevel: 'RecordGrp',
+      '#unitups': ['aeaqaaaaaqhiyursaad7mambvgfpz3aaaaba'],
+      '#allunitups': ['aeaqaaaaaqhawwq5aaqtial4hkxze6qaaaaq', 'aeaqaaaaaqhiyursaad7mambvgfpz3aaaaba'],
+      '#unitType': 'HOLDING_UNIT',
+    },
+    {
+      '#id': 'aeaqaaaaaqhiyursaab64amgtbk7eaqaaaea',
+      Title: 'CAB_ROYAL, dossiers de Julien PAVY, conseiller parlementaire et territoires',
+      DescriptionLevel: 'RecordGrp',
+      Description: 'Conseiller parlementaire et territoires',
+      '#unitups': ['aeaqaaaaaqhiyursaad7mambvgfpz3aaaaba'],
+      '#allunitups': ['aeaqaaaaaqhawwq5aaqtial4hkxze6qaaaaq', 'aeaqaaaaaqhiyursaad7mambvgfpz3aaaaba'],
+      '#unitType': 'INGEST',
+    },
+    {
+      '#id': 'aeaqaaaaaqhmtxs2aabxeamc7zfxxgyaaaea',
+      Title: 'Secretariat Leforestier',
+      DescriptionLevel: 'RecordGrp',
+      Description:
+        "Par arrêté publié au Journal Officiel vendredi 17 juillet, Guillaume Leforestier est nommé directeur du cabinet de la ministre de l’Écologie, du Développement durable et de l’Énergie, Ségolène Royal. Il était directeur adjoint du cabinet et conseiller budgétaire. Guillaume Leforestier  a succèdé  à Elisabeth Born enommée à d'autres fonctions.\nTitulaire d’une licence de philosophie et diplômé de l’Institut de sciences politiques de Paris, Guillaume Leforestier était administrateur du Sénat de 2003 à 2012, au service de la Séance puis de la commission des Finances. En 2012, il devient conseiller budgétaire et fiscal au cabinet de Delphine Batho, ministre de l’Écologie, du Développement durable et de l’Énergie. Tout en restant conseiller budgétaire, il est promu directeur adjoint du cabinet en février 2014 par Ségolène Royal.\nLe fonds présenté est constitué de correspondances directes ou à la signature de la Ministre et de quelques dosseirs thématiques comme la Conférence des parties COP 21, et la fisclaité écologique.",
+      '#unitups': ['aeaqaaaaaqhiyursaad7mambvgfpz3aaaaba'],
+      '#allunitups': ['aeaqaaaaaqhawwq5aaqtial4hkxze6qaaaaq', 'aeaqaaaaaqhiyursaad7mambvgfpz3aaaaba'],
+      '#unitType': 'INGEST',
+    },
+    {
+      '#id': 'aeaqaaaaaqhmtxs2aafi2amktc4rkriaaaba',
+      Title: 'Messagerie',
+      DescriptionLevel: 'RecordGrp',
+      '#unitups': ['aeaqaaaaaqhiyursaad7mambvgfpz3aaaaba'],
+      '#allunitups': ['aeaqaaaaaqhawwq5aaqtial4hkxze6qaaaaq', 'aeaqaaaaaqhiyursaad7mambvgfpz3aaaaba'],
+      '#unitType': 'HOLDING_UNIT',
+    },
+  ],
+  $facetResults: [
+    {
+      name: 'COUNT_BY_NODE',
+      buckets: [
+        {
+          value: 'aeaqaaaaaqhawwq5aaqtial4hkxze6qaaaaq',
+          count: 4,
+        },
+        {
+          value: 'aeaqaaaaaqhiyursaad7mambvgfpz3aaaaba',
+          count: 4,
+        },
+      ],
+    },
+  ],
+} as SearchResponse;
+export const searchUnderNodeWithSearchCriterias = {
+  $hits: {
+    limit: 10,
+    offset: 0,
+    total: 2,
+    size: 2,
+  },
+  $results: [
+    {
+      '#id': 'aeaqaaaaaqhiyursaab64amgtbk7eaqaaaea',
+      Title: 'CAB_ROYAL, dossiers de Julien PAVY, conseiller parlementaire et territoires',
+      DescriptionLevel: 'RecordGrp',
+      Description: 'Conseiller parlementaire et territoires',
+      '#unitups': ['aeaqaaaaaqhiyursaad7mambvgfpz3aaaaba'],
+      '#allunitups': ['aeaqaaaaaqhawwq5aaqtial4hkxze6qaaaaq', 'aeaqaaaaaqhiyursaad7mambvgfpz3aaaaba'],
+      '#unitType': 'INGEST',
+    },
+    {
+      '#id': 'aeaqaaaaaqhmtxs2aabxeamc7zfxxgyaaaea',
+      Title: 'Secretariat Leforestier',
+      DescriptionLevel: 'RecordGrp',
+      Description:
+        "Par arrêté publié au Journal Officiel vendredi 17 juillet, Guillaume Leforestier est nommé directeur du cabinet de la ministre de l’Écologie, du Développement durable et de l’Énergie, Ségolène Royal. Il était directeur adjoint du cabinet et conseiller budgétaire. Guillaume Leforestier  a succèdé  à Elisabeth Born enommée à d'autres fonctions.\nTitulaire d’une licence de philosophie et diplômé de l’Institut de sciences politiques de Paris, Guillaume Leforestier était administrateur du Sénat de 2003 à 2012, au service de la Séance puis de la commission des Finances. En 2012, il devient conseiller budgétaire et fiscal au cabinet de Delphine Batho, ministre de l’Écologie, du Développement durable et de l’Énergie. Tout en restant conseiller budgétaire, il est promu directeur adjoint du cabinet en février 2014 par Ségolène Royal.\nLe fonds présenté est constitué de correspondances directes ou à la signature de la Ministre et de quelques dosseirs thématiques comme la Conférence des parties COP 21, et la fisclaité écologique.",
+      '#unitups': ['aeaqaaaaaqhiyursaad7mambvgfpz3aaaaba'],
+      '#allunitups': ['aeaqaaaaaqhawwq5aaqtial4hkxze6qaaaaq', 'aeaqaaaaaqhiyursaad7mambvgfpz3aaaaba'],
+      '#unitType': 'INGEST',
+    },
+  ],
+  $facetResults: [
+    {
+      name: 'COUNT_BY_NODE',
+      buckets: [
+        {
+          value: 'aeaqaaaaaqhawwq5aaqtial4hkxze6qaaaaq',
+          count: 2,
+        },
+        {
+          value: 'aeaqaaaaaqhiyursaad7mambvgfpz3aaaaba',
+          count: 2,
+        },
+      ],
+    },
+  ],
+} as SearchResponse;
+export const searchAtNodeWithSearchCriterias = {
+  $hits: {
+    limit: 10,
+    offset: 0,
+    total: 10000,
+    size: 10,
+  },
+  $results: [
+    {
+      '#id': 'aeaqaaaaaqhiyursaab64amgtbk7d5iaaaia',
+      Title: 'Déclaration de Cayenne_v0.doc',
+      DescriptionLevel: 'Item',
+      '#unitups': ['aeaqaaaaaqhiyursaab64amgtbk7eaqaaada'],
+      '#allunitups': [
+        'aeaqaaaaaqhiyursaab64amgtbk7eaqaaada',
+        'aeaqaaaaaqhawwq5aaqtial4hkxze6qaaaaq',
+        'aeaqaaaaaqhiyursaab64amgtbk7eaqaaaea',
+        'aeaqaaaaaqhiyursaad7mambvgfpz3aaaaba',
+      ],
+      '#unitType': 'INGEST',
+    },
+    {
+      '#id': 'aeaqaaaaaqhiyursaab64amgtbk7d4aaaaca',
+      Title: '2017 02 13 Segment ministériel - engagements et projet de déroulé v0.doc',
+      DescriptionLevel: 'Item',
+      '#unitups': ['aeaqaaaaaqhiyursaab64amgtbk7eaqaaada'],
+      '#allunitups': [
+        'aeaqaaaaaqhiyursaab64amgtbk7eaqaaada',
+        'aeaqaaaaaqhawwq5aaqtial4hkxze6qaaaaq',
+        'aeaqaaaaaqhiyursaab64amgtbk7eaqaaaea',
+        'aeaqaaaaaqhiyursaad7mambvgfpz3aaaaba',
+      ],
+      '#unitType': 'INGEST',
+    },
+    {
+      '#id': 'aeaqaaaaaqhiyursaab64amgtbk7dtyaaaaq',
+      Title: '2017 02 13 Segment ministériel - engagements et projet de déroulé v0.doc',
+      DescriptionLevel: 'Item',
+      '#unitups': ['aeaqaaaaaqhiyursaab64amgtbk7d3yaaaga'],
+      '#allunitups': [
+        'aeaqaaaaaqhawwq5aaqtial4hkxze6qaaaaq',
+        'aeaqaaaaaqhiyursaab64amgtbk7d3yaaaga',
+        'aeaqaaaaaqhiyursaab64amgtbk7eaqaaaea',
+        'aeaqaaaaaqhiyursaad7mambvgfpz3aaaaba',
+      ],
+      '#unitType': 'INGEST',
+    },
+    {
+      '#id': 'aeaqaaaaaqhem6iiab55gamd4zlodxaaaaca',
+      Title: 'quiriny_utilisateur_0.png',
+      DescriptionLevel: 'Item',
+      '#unitups': ['aeaqaaaaaqhem6iiab55gamd4zlodxiaaafa'],
+      '#allunitups': [
+        'aeaqaaaaaqhem6iiab55gamd4zlodxiaaafa',
+        'aeaqaaaaaqhem6iiab55gamd4zloe2yaaaea',
+        'aeaqaaaaaqhmtxs2aafi2amktc4rjqiaaaaq',
+        'aeaqaaaaaqhem6iiab55gamd4zloe3yaaafa',
+        'aeaqaaaaaqhem6iiab55gamd4zloe2qaaaha',
+        'aeaqaaaaaqhem6iiab55gamd4zlod4iaaaeq',
+        'aeaqaaaaaqhawwq5aaqtial4hkxze6qaaaaq',
+        'aeaqaaaaaqhiyursaad7mambvgfpz3aaaaba',
+      ],
+      '#unitType': 'INGEST',
+    },
+    {
+      '#id': 'aeaqaaaaaqhem6iiab55gamd4zlnv6iaaaea',
+      Title: '2016.01.29---Invitation-Réunion-Territoires-0-Déchet-0-Gaspillage.doc',
+      DescriptionLevel: 'Item',
+      '#unitups': ['aeaqaaaaaqhem6iiab55gamd4zlnv7iaaaeq'],
+      '#allunitups': [
+        'aeaqaaaaaqhem6iiab55gamd4zlnv7iaaaeq',
+        'aeaqaaaaaqhem6iiab55gamd4zlnxvaaaafa',
+        'aeaqaaaaaqhmtxs2aafi2amktc4rjqiaaaaq',
+        'aeaqaaaaaqhem6iiab55gamd4zloe3yaaafa',
+        'aeaqaaaaaqhem6iiab55gamd4zlnxcqaaaba',
+        'aeaqaaaaaqhem6iiab55gamd4zlocmaaaafq',
+        'aeaqaaaaaqhawwq5aaqtial4hkxze6qaaaaq',
+        'aeaqaaaaaqhiyursaad7mambvgfpz3aaaaba',
+      ],
+      '#unitType': 'INGEST',
+    },
+    {
+      '#id': 'aeaqaaaaaqhem6iiab55gamd4zlnuraaaada',
+      Title: '2015.06.16-S.-Royal-annonce-2è-appel-à-projets-0-Gaspillage-0-déchet.doc',
+      DescriptionLevel: 'Item',
+      '#unitups': ['aeaqaaaaaqhem6iiab55gamd4zlnuraaaafa'],
+      '#allunitups': [
+        'aeaqaaaaaqhem6iiab55gamd4zlnxvaaaafa',
+        'aeaqaaaaaqhem6iiab55gamd4zlnurqaaafa',
+        'aeaqaaaaaqhmtxs2aafi2amktc4rjqiaaaaq',
+        'aeaqaaaaaqhem6iiab55gamd4zlnvkqaaada',
+        'aeaqaaaaaqhem6iiab55gamd4zloe3yaaafa',
+        'aeaqaaaaaqhem6iiab55gamd4zlocmaaaafq',
+        'aeaqaaaaaqhem6iiab55gamd4zlnuraaaafa',
+        'aeaqaaaaaqhawwq5aaqtial4hkxze6qaaaaq',
+        'aeaqaaaaaqhiyursaad7mambvgfpz3aaaaba',
+      ],
+      '#unitType': 'INGEST',
+    },
+    {
+      '#id': 'aeaqaaaaaqhem6iiab55gamd4zlnuraaaaea',
+      Title: '2015.06.16-S.-Royal-annonce-2è-appel-à-projets-0-Gaspillage-0-déchet.pdf',
+      DescriptionLevel: 'Item',
+      '#unitups': ['aeaqaaaaaqhem6iiab55gamd4zlnuraaaafa'],
+      '#allunitups': [
+        'aeaqaaaaaqhem6iiab55gamd4zlnxvaaaafa',
+        'aeaqaaaaaqhem6iiab55gamd4zlnurqaaafa',
+        'aeaqaaaaaqhmtxs2aafi2amktc4rjqiaaaaq',
+        'aeaqaaaaaqhem6iiab55gamd4zlnvkqaaada',
+        'aeaqaaaaaqhem6iiab55gamd4zloe3yaaafa',
+        'aeaqaaaaaqhem6iiab55gamd4zlocmaaaafq',
+        'aeaqaaaaaqhem6iiab55gamd4zlnuraaaafa',
+        'aeaqaaaaaqhawwq5aaqtial4hkxze6qaaaaq',
+        'aeaqaaaaaqhiyursaad7mambvgfpz3aaaaba',
+      ],
+      '#unitType': 'INGEST',
+    },
+    {
+      '#id': 'aeaqaaaaaqhem6iiab55gamd4zlngiqaaafa',
+      Title: '0- DP Tests vehicules.doc',
+      DescriptionLevel: 'Item',
+      '#unitups': ['aeaqaaaaaqhem6iiab55gamd4zlngiyaaafa'],
+      '#allunitups': [
+        'aeaqaaaaaqhem6iiab55gamd4zlnloiaaaea',
+        'aeaqaaaaaqhmtxs2aafi2amktc4rjqiaaaaq',
+        'aeaqaaaaaqhem6iiab55gamd4zlngiyaaafa',
+        'aeaqaaaaaqhem6iiab55gamd4zloe3yaaafa',
+        'aeaqaaaaaqhem6iiab55gamd4zlngjqaaaga',
+        'aeaqaaaaaqhawwq5aaqtial4hkxze6qaaaaq',
+        'aeaqaaaaaqhem6iiab55gamd4zlnifiaaaga',
+        'aeaqaaaaaqhem6iiab55gamd4zlngjaaaaga',
+        'aeaqaaaaaqhiyursaad7mambvgfpz3aaaaba',
+      ],
+      '#unitType': 'INGEST',
+    },
+    {
+      '#id': 'aeaqaaaaaqhem6iiab55gamd4zlmwlyaaaha',
+      Title: '15140-8_france-exemplaire-territoires-action_DEF_Web_Page-+á-page_0.pdf',
+      DescriptionLevel: 'Item',
+      '#unitups': ['aeaqaaaaaqhem6iiab55gamd4zlmwlyaaaia'],
+      '#allunitups': [
+        'aeaqaaaaaqhmtxs2aafi2amktc4rjqiaaaaq',
+        'aeaqaaaaaqhem6iiab55gamd4zlmwlyaaaia',
+        'aeaqaaaaaqhem6iiab55gamd4zlmwmqaaaba',
+        'aeaqaaaaaqhem6iiab55gamd4zlmwmqaaaea',
+        'aeaqaaaaaqhem6iiab55gamd4zloe3yaaafa',
+        'aeaqaaaaaqhem6iiab55gamd4zlmwmqaaaca',
+        'aeaqaaaaaqhawwq5aaqtial4hkxze6qaaaaq',
+        'aeaqaaaaaqhiyursaad7mambvgfpz3aaaaba',
+      ],
+      '#unitType': 'INGEST',
+    },
+    {
+      '#id': 'aeaqaaaaaqhem6iiab55gamd4zlnppqaaaga',
+      Title: '0- Dossier de presse Bilan.doc',
+      DescriptionLevel: 'Item',
+      '#unitups': ['aeaqaaaaaqhem6iiab55gamd4zlnppyaaaja'],
+      '#allunitups': [
+        'aeaqaaaaaqhem6iiab55gamd4zlnrmqaaaea',
+        'aeaqaaaaaqhem6iiab55gamd4zlnppyaaaja',
+        'aeaqaaaaaqhmtxs2aafi2amktc4rjqiaaaaq',
+        'aeaqaaaaaqhem6iiab55gamd4zlnpqaaaaca',
+        'aeaqaaaaaqhem6iiab55gamd4zloe3yaaafa',
+        'aeaqaaaaaqhem6iiab55gamd4zlnsjiaaaeq',
+        'aeaqaaaaaqhawwq5aaqtial4hkxze6qaaaaq',
+        'aeaqaaaaaqhiyursaad7mambvgfpz3aaaaba',
+      ],
+      '#unitType': 'INGEST',
+    },
+  ],
+  $facetResults: [
+    {
+      name: 'COUNT_BY_NODE',
+      buckets: [
+        {
+          value: 'aeaqaaaaaqhawwq5aaqtial4hkxze6qaaaaq',
+          count: 120969,
+        },
+        {
+          value: 'aeaqaaaaaqhiyursaad7mambvgfpz3aaaaba',
+          count: 120969,
+        },
+        {
+          value: 'aeaqaaaaaqhmtxs2aafi2amktc4rjqiaaaaq',
+          count: 120575,
+        },
+        {
+          value: 'aeaqaaaaaqhem6iiab55gamd4zloe3yaaafa',
+          count: 42553,
+        },
+        {
+          value: 'aeaqaaaaaqhiyursaad7mamdyivfpvqaaaga',
+          count: 27125,
+        },
+        {
+          value: 'aeaqaaaaaqhmtxs2aabxeamdyfxqxbaaaaiq',
+          count: 13093,
+        },
+        {
+          value: 'aeaqaaaaaqhem6iiab55gamd4zlocmaaaafq',
+          count: 11594,
+        },
+        {
+          value: 'aeaqaaaaaqhawwq5aafyoameo3oyanyaaaga',
+          count: 11138,
+        },
+        {
+          value: 'aeaqaaaaaqhiyursaad7mamdyivflmyaaada',
+          count: 9390,
+        },
+        {
+          value: 'aeaqaaaaaqhiyursaad7mamdyivfc5iaaaea',
+          count: 8751,
+        },
+        {
+          value: 'aeaqaaaaaqhem6iiab55gamd4zlnbaiaaaba',
+          count: 7319,
+        },
+        {
+          value: 'aeaqaaaaaqhmtxs2aabxeamdyfxqscqaaaba',
+          count: 6120,
+        },
+        {
+          value: 'aeaqaaaaaqhem6iiab55gamd4zlnsjiaaaeq',
+          count: 5546,
+        },
+        {
+          value: 'aeaqaaaaaqhem6iiab55gamd4zlnloiaaaea',
+          count: 5139,
+        },
+        {
+          value: 'aeaqaaaaaqhem6iiab55gamd4zln55yaaaea',
+          count: 4842,
+        },
+        {
+          value: 'aeaqaaaaaqhmtxs2aabxeamdyfxqw7qaaala',
+          count: 4446,
+        },
+        {
+          value: 'aeaqaaaaaqhiyursaad7mamdyive3eaaaada',
+          count: 4405,
+        },
+        {
+          value: 'aeaqaaaaaqhiyursaad7mamdyivfpvqaaafa',
+          count: 4399,
+        },
+        {
+          value: 'aeaqaaaaaqhi2nujabkl4amsst6w7jqaaaga',
+          count: 4311,
+        },
+        {
+          value: 'aeaqaaaaaqhawwq5aafyoameo3oxyayaaaeq',
+          count: 4213,
+        },
+        {
+          value: 'aeaqaaaaaqhem6iiab55gamd4zlmvjqaaaba',
+          count: 3996,
+        },
+        {
+          value: 'aeaqaaaaaqhawwq5aafyoamc7zkjyraaaaea',
+          count: 3705,
+        },
+        {
+          value: 'aeaqaaaaaqhawwq5abcayamoykfpcuqaaaja',
+          count: 3682,
+        },
+        {
+          value: 'aeaqaaaaaqhi2nujabkl4amsst6w6pqaaagq',
+          count: 3526,
+        },
+        {
+          value: 'aeaqaaaaaqhawwq5aafyoameo3ox6paaaaeq',
+          count: 3458,
+        },
+        {
+          value: 'aeaqaaaaaqhem6iiab55gamd4zlocmaaaaeq',
+          count: 3446,
+        },
+        {
+          value: 'aeaqaaaaaqhem6iiab55gamd4zlmvjiaaaha',
+          count: 3312,
+        },
+        {
+          value: 'aeaqaaaaaqhem6iiab55gamd4zlnxvaaaafa',
+          count: 3303,
+        },
+        {
+          value: 'aeaqaaaaaqhmtxs2aabxeambwn3dlyiaaada',
+          count: 3268,
+        },
+        {
+          value: 'aeaqaaaaaqhiyursaad7mambzhep3xaaaafa',
+          count: 3142,
+        },
+        {
+          value: 'aeaqaaaaaqhawwq5aafyoamc7zkjylaaaaea',
+          count: 3003,
+        },
+        {
+          value: 'aeaqaaaaaqhem6iiab55gamd4zlm7eaaaaba',
+          count: 2994,
+        },
+        {
+          value: 'aeaqaaaaaqhmtxs2aabxeamdyfxqnxqaaaea',
+          count: 2864,
+        },
+        {
+          value: 'aeaqaaaaaqhmtxs2aabxeamdyfxqw7qaaaha',
+          count: 2828,
+        },
+        {
+          value: 'aeaqaaaaaqhem6iiab55gamd4zlm3qyaaafa',
+          count: 2707,
+        },
+        {
+          value: 'aeaqaaaaaqhawwq5aafyoameo3ox5naaaaba',
+          count: 2365,
+        },
+        {
+          value: 'aeaqaaaaaqhmtxs2aabxeamdyfxqrkqaaajq',
+          count: 2293,
+        },
+        {
+          value: 'aeaqaaaaaqhem6iiab55gamd4zlnrmqaaaea',
+          count: 2153,
+        },
+        {
+          value: 'aeaqaaaaaqhawwq5ablkiamgs7lbnsiaaaga',
+          count: 2096,
+        },
+        {
+          value: 'aeaqaaaaaqhawwq5ablkiamgs7lbnsaaaaea',
+          count: 2087,
+        },
+        {
+          value: 'aeaqaaaaaqhem6iiab55gamd4zlnifiaaaga',
+          count: 2009,
+        },
+        {
+          value: 'aeaqaaaaaqhem6iiab55gamd4zln25iaaafa',
+          count: 1984,
+        },
+        {
+          value: 'aeaqaaaaaqhawwq5aafyoameo3oxyaqaaaka',
+          count: 1933,
+        },
+        {
+          value: 'aeaqaaaaaqhmtxs2aabxeamdyfxqq4qaaama',
+          count: 1775,
+        },
+        {
+          value: 'aeaqaaaaaqhem6iiab55gamd4zlno2qaaaba',
+          count: 1662,
+        },
+        {
+          value: 'aeaqaaaaaqhem6iiab55gamd4zlnkjyaaaeq',
+          count: 1643,
+        },
+        {
+          value: 'aeaqaaaaaqhmtxs2aabxeamdyfxqwvaaaaga',
+          count: 1638,
+        },
+        {
+          value: 'aeaqaaaaaqhiyursaad7mamdyivflmyaaaca',
+          count: 1630,
+        },
+        {
+          value: 'aeaqaaaaaqhem6iiab55gamd4zln5daaaaca',
+          count: 1629,
+        },
+        {
+          value: 'aeaqaaaaaqhawwq5abcayamoykfpcraaaama',
+          count: 1546,
+        },
+        {
+          value: 'aeaqaaaaaqhiyursabdiwamoyin64piaaana',
+          count: 1522,
+        },
+        {
+          value: 'aeaqaaaaaqhawwq5aafyoameo3ox4tqaaafa',
+          count: 1455,
+        },
+        {
+          value: 'aeaqaaaaaqhawwq5aafyoamc7zkjx4yaaaha',
+          count: 1452,
+        },
+        {
+          value: 'aeaqaaaaaqhem6iiab55gamd4zlnfaaaaaca',
+          count: 1444,
+        },
+        {
+          value: 'aeaqaaaaaqhem6iiab55gamd4zlnc6iaaada',
+          count: 1437,
+        },
+        {
+          value: 'aeaqaaaaaqhem6iiab55gamd4zlobvqaaaga',
+          count: 1398,
+        },
+        {
+          value: 'aeaqaaaaaqhem6iiab55gamd4zlmuziaaaca',
+          count: 1371,
+        },
+        {
+          value: 'aeaqaaaaaqhem6iiab55gamd4zlnxcqaaaba',
+          count: 1371,
+        },
+        {
+          value: 'aeaqaaaaaqhmtxs2aabxeamdyfxqnxqaaada',
+          count: 1365,
+        },
+        {
+          value: 'aeaqaaaaaqhiyursaad7mamdyivfaqqaaaja',
+          count: 1326,
+        },
+        {
+          value: 'aeaqaaaaaqhmtxs2aabxeamdyfxqq4qaaaga',
+          count: 1319,
+        },
+        {
+          value: 'aeaqaaaaaqhmtxs2aabxeamdyfxqtlyaaafq',
+          count: 1317,
+        },
+        {
+          value: 'aeaqaaaaaqhiyursaad7mambzhep2taaaaba',
+          count: 1291,
+        },
+        {
+          value: 'aeaqaaaaaqhiyursaad7mamdyive7kqaaajq',
+          count: 1250,
+        },
+        {
+          value: 'aeaqaaaaaqhiyursabdiwamoyin64kiaaana',
+          count: 1219,
+        },
+        {
+          value: 'aeaqaaaaaqhiyursaad7mamdyivfj4aaaada',
+          count: 1208,
+        },
+        {
+          value: 'aeaqaaaaaqhem6iiab55gamd4zloe2yaaaea',
+          count: 1174,
+        },
+        {
+          value: 'aeaqaaaaaqhem6iiab55gamd4zlnapqaaaga',
+          count: 1170,
+        },
+        {
+          value: 'aeaqaaaaaqhem6iiab55gamd4zloe2qaaaha',
+          count: 1166,
+        },
+        {
+          value: 'aeaqaaaaaqhiyursaad7mamdyiveyhiaaahq',
+          count: 1165,
+        },
+        {
+          value: 'aeaqaaaaaqhmtxs2aabxeamdyfxqwiiaaaga',
+          count: 1149,
+        },
+        {
+          value: 'aeaqaaaaaqhawwq5aafyoameo3ox4taaaaha',
+          count: 1119,
+        },
+        {
+          value: 'aeaqaaaaaqhi2nujaapzsamoie5vo4yaaagq',
+          count: 1103,
+        },
+        {
+          value: 'aeaqaaaaaqhmtxs2aada6amog4njjqyaaaba',
+          count: 1103,
+        },
+        {
+          value: 'aeaqaaaaaqhi2nujabkl4amsst6w3wyaaaba',
+          count: 1095,
+        },
+        {
+          value: 'aeaqaaaaaqhawwq5aafyoameo3ox7qaaaaea',
+          count: 1091,
+        },
+        {
+          value: 'aeaqaaaaaqhiyursaad7mamdyive2baaaaea',
+          count: 1044,
+        },
+        {
+          value: 'aeaqaaaaaqhmtxs2aabxeamdyfxqtjaaaaca',
+          count: 1025,
+        },
+        {
+          value: 'aeaqaaaaaqhiyursaab64amgsnrplwiaaaga',
+          count: 1011,
+        },
+        {
+          value: 'aeaqaaaaaqhiyursaab64amgsnrplwiaaafa',
+          count: 1010,
+        },
+        {
+          value: 'aeaqaaaaaqhiyursaad7mamdyive6hqaaaea',
+          count: 1005,
+        },
+        {
+          value: 'aeaqaaaaaqhiyursaad7mamdyivfd6iaaafa',
+          count: 1003,
+        },
+        {
+          value: 'aeaqaaaaaqhmtxs2aabxeamdyfxqnnyaaala',
+          count: 995,
+        },
+        {
+          value: 'aeaqaaaaaqhiyursaab64amgsnrplvqaaaga',
+          count: 988,
+        },
+        {
+          value: 'aeaqaaaaaqhiyursaad7mamdyive3eaaaaca',
+          count: 982,
+        },
+        {
+          value: 'aeaqaaaaaqhem6iiab55gamd4zlnmviaaaea',
+          count: 965,
+        },
+        {
+          value: 'aeaqaaaaaqhiyursaad7mamdyive4ryaaaba',
+          count: 945,
+        },
+        {
+          value: 'aeaqaaaaaqhiyursaad7mamdyivezdiaaaha',
+          count: 936,
+        },
+        {
+          value: 'aeaqaaaaaqhem6iiab55gamd4zlmtgyaaaba',
+          count: 935,
+        },
+        {
+          value: 'aeaqaaaaaqhiyursaad7mamdyivfoqyaaada',
+          count: 935,
+        },
+        {
+          value: 'aeaqaaaaaqhem6iiab55gamd4zlnvkqaaada',
+          count: 934,
+        },
+        {
+          value: 'aeaqaaaaaqhawwq5aafyoameo3oxwgyaaaea',
+          count: 927,
+        },
+        {
+          value: 'aeaqaaaaaqhawwq5aafyoameo3ox6laaaaia',
+          count: 922,
+        },
+        {
+          value: 'aeaqaaaaaqhiyursaad7mamdyivfcuqaaaba',
+          count: 914,
+        },
+        {
+          value: 'aeaqaaaaaqhawwq5aafyoameo3oxuiaaaada',
+          count: 912,
+        },
+        {
+          value: 'aeaqaaaaaqhawwq5aafyoameo3ox5myaaaja',
+          count: 905,
+        },
+        {
+          value: 'aeaqaaaaaqhi2nujaapzsamoie5vowiaaaba',
+          count: 901,
+        },
+        {
+          value: 'aeaqaaaaaqhmtxs2aada6amog4njjkiaaafa',
+          count: 901,
+        },
+        {
+          value: 'aeaqaaaaaqhawwq5aafyoameo3oxvmqaaama',
+          count: 878,
+        },
+        {
+          value: 'aeaqaaaaaqhiyursaad7mamdyivfiyaaaaba',
+          count: 873,
+        },
+        {
+          value: 'aeaqaaaaaqhiyursaad7mamdyive5kiaaafa',
+          count: 858,
+        },
+        {
+          value: 'aeaqaaaaaqhem6iiab55gamd4zlmylqaaada',
+          count: 855,
+        },
+        {
+          value: 'aeaqaaaaaqhawwq5abcayamoykfpbjqaaalq',
+          count: 850,
+        },
+        {
+          value: 'aeaqaaaaaqhawwq5abcayamoyklfdgqaaaka',
+          count: 846,
+        },
+        {
+          value: 'aeaqaaaaaqhmtxs2aabxeambwn3dkzqaaagq',
+          count: 845,
+        },
+        {
+          value: 'aeaqaaaaaqhmtxs2aabxeamdyfxqmsaaaada',
+          count: 840,
+        },
+        {
+          value: 'aeaqaaaaaqhem6iiab55gamd4zln74aaaafa',
+          count: 797,
+        },
+        {
+          value: 'aeaqaaaaaqhawwq5aafyoamc7zkjxbqaaaba',
+          count: 793,
+        },
+        {
+          value: 'aeaqaaaaaqhiyursaad7mamdyivfbyyaaama',
+          count: 780,
+        },
+        {
+          value: 'aeaqaaaaaqhiyursaad7mamdyivfgwqaaaja',
+          count: 780,
+        },
+        {
+          value: 'aeaqaaaaaqhiyursaad7mamdyivfntyaaaba',
+          count: 780,
+        },
+        {
+          value: 'aeaqaaaaaqhmtxs2aabxeamdyfxqsciaaala',
+          count: 773,
+        },
+        {
+          value: 'aeaqaaaaaqhiyursaad7mamdyivfgaaaaaca',
+          count: 768,
+        },
+        {
+          value: 'aeaqaaaaaqhiyursaad7mamdyivffkyaaaia',
+          count: 762,
+        },
+        {
+          value: 'aeaqaaaaaqhem6iiab55gamd4zlnsjaaaafa',
+          count: 758,
+        },
+        {
+          value: 'aeaqaaaaaqhiyursaad7mamdyivfhlyaaadq',
+          count: 741,
+        },
+        {
+          value: 'aeaqaaaaaqhem6iiab55gamd4zln63qaaaca',
+          count: 716,
+        },
+        {
+          value: 'aeaqaaaaaqhmtxs2aabxeamdyfxqmnyaaaba',
+          count: 713,
+        },
+        {
+          value: 'aeaqaaaaaqhawwq5aafyoamc7zkjyjqaaana',
+          count: 682,
+        },
+        {
+          value: 'aeaqaaaaaqhem6iiab55gamd4zlmrraaaafa',
+          count: 682,
+        },
+        {
+          value: 'aeaqaaaaaqhem6iiab55gamd4zlnteyaaacq',
+          count: 681,
+        },
+        {
+          value: 'aeaqaaaaaqhmtxs2aabxeamdyfxqt6aaaaea',
+          count: 679,
+        },
+        {
+          value: 'aeaqaaaaaqhawwq5aafyoameo3oyanyaaafa',
+          count: 671,
+        },
+        {
+          value: 'aeaqaaaaaqhem6iiab55gamd4zlnlfaaaaca',
+          count: 671,
+        },
+        {
+          value: 'aeaqaaaaaqhmtxs2aabxeamdyfxqltqaaama',
+          count: 656,
+        },
+        {
+          value: 'aeaqaaaaaqhem6iiab55gamd4zlm7dyaaaha',
+          count: 655,
+        },
+        {
+          value: 'aeaqaaaaaqhiyursaad7mamdyive3wqaaaea',
+          count: 645,
+        },
+        {
+          value: 'aeaqaaaaaqhiyursaad7mamdyivfh6aaaaea',
+          count: 642,
+        },
+        {
+          value: 'aeaqaaaaaqhem6iiab55gamd4zln55yaaaca',
+          count: 641,
+        },
+        {
+          value: 'aeaqaaaaaqhiyursaad7mamdyive25iaaaba',
+          count: 631,
+        },
+        {
+          value: 'aeaqaaaaaqhiyursaad7mamdyivfbdaaaaja',
+          count: 624,
+        },
+        {
+          value: 'aeaqaaaaaqhiyursaad7mamdyivfpvqaaaea',
+          count: 612,
+        },
+        {
+          value: 'aeaqaaaaaqhem6iiab55gamd4zlmv6yaaafa',
+          count: 603,
+        },
+        {
+          value: 'aeaqaaaaaqhiyursaad7mamdyivfpdqaaaga',
+          count: 601,
+        },
+        {
+          value: 'aeaqaaaaaqhem6iiab55gamd4zlnetiaaaca',
+          count: 596,
+        },
+        {
+          value: 'aeaqaaaaaqhawwq5aafyoamcru6qi3iaaamq',
+          count: 595,
+        },
+        {
+          value: 'aeaqaaaaaqhem6iiab55gamd4zlmzoyaaaja',
+          count: 595,
+        },
+        {
+          value: 'aeaqaaaaaqhem6iiab55gamd4zlnfyqaaaga',
+          count: 585,
+        },
+        {
+          value: 'aeaqaaaaaqhem6iiab55gamd4zlnymaaaadq',
+          count: 583,
+        },
+        {
+          value: 'aeaqaaaaaqhem6iiab55gamd4zlnesyaaada',
+          count: 581,
+        },
+        {
+          value: 'aeaqaaaaaqhmtxs2aabxeambwn3dlvqaaana',
+          count: 577,
+        },
+        {
+          value: 'aeaqaaaaaqhem6iiab55gamd4zlmxmiaaaea',
+          count: 568,
+        },
+        {
+          value: 'aeaqaaaaaqhem6iiab55gamd4zlmxlyaaaea',
+          count: 551,
+        },
+        {
+          value: 'aeaqaaaaaqhem6iiab55gamd4zlmsfaaaaea',
+          count: 549,
+        },
+        {
+          value: 'aeaqaaaaaqhem6iiab55gamd4zlncdaaaaea',
+          count: 549,
+        },
+        {
+          value: 'aeaqaaaaaqhem6iiab55gamd4zlnueqaaaea',
+          count: 549,
+        },
+        {
+          value: 'aeaqaaaaaqhmtxs2aabxeamdyfxqvhyaaaea',
+          count: 547,
+        },
+        {
+          value: 'aeaqaaaaaqhem6iiab55gamd4zlncwyaaaga',
+          count: 536,
+        },
+        {
+          value: 'aeaqaaaaaqhem6iiab55gamd4zlocmaaaadq',
+          count: 531,
+        },
+        {
+          value: 'aeaqaaaaaqhem6iiab55gamd4zlntcqaaaba',
+          count: 526,
+        },
+        {
+          value: 'aeaqaaaaaqhem6iiab55gamd4zlntciaaafa',
+          count: 524,
+        },
+        {
+          value: 'aeaqaaaaaqhmtxs2aabxeambwn3dljqaaaca',
+          count: 520,
+        },
+        {
+          value: 'aeaqaaaaaqhem6iiab55gamd4zlm5haaaada',
+          count: 518,
+        },
+        {
+          value: 'aeaqaaaaaqhmtxs2aabxeamdyfxqunaaaaha',
+          count: 517,
+        },
+        {
+          value: 'aeaqaaaaaqhmtxs2aabxeamdyfxqrkqaaaiq',
+          count: 516,
+        },
+        {
+          value: 'aeaqaaaaaqhawwq5aafyoameo3ox5gqaaaga',
+          count: 511,
+        },
+        {
+          value: 'aeaqaaaaaqhem6iiab55gamd4zlnd4aaaaea',
+          count: 504,
+        },
+        {
+          value: 'aeaqaaaaaqhem6iiab55gamd4zlnd4aaaaba',
+          count: 501,
+        },
+        {
+          value: 'aeaqaaaaaqhawwq5ablkiamgs7lbnbqaaaba',
+          count: 486,
+        },
+        {
+          value: 'aeaqaaaaaqhiyursaad7mamdyivfemiaaaia',
+          count: 485,
+        },
+        {
+          value: 'aeaqaaaaaqhawwq5abcayamoykfpbuyaaaca',
+          count: 479,
+        },
+        {
+          value: 'aeaqaaaaaqhem6iiab55gamd4zloepyaaaca',
+          count: 475,
+        },
+        {
+          value: 'aeaqaaaaaqhmtxs2aabxeamdyfxqlcyaaafq',
+          count: 473,
+        },
+        {
+          value: 'aeaqaaaaaqhiyursaad7mambzhep3wiaaabq',
+          count: 469,
+        },
+        {
+          value: 'aeaqaaaaaqhawwq5aafyoameo3oxuvaaaaba',
+          count: 462,
+        },
+        {
+          value: 'aeaqaaaaaqhiyursaad7mamdyivfmdyaaagq',
+          count: 454,
+        },
+        {
+          value: 'aeaqaaaaaqhem6iiab55gamd4zlmvjiaaaga',
+          count: 453,
+        },
+        {
+          value: 'aeaqaaaaaqhem6iiab55gamd4zlm3haaaaea',
+          count: 451,
+        },
+        {
+          value: 'aeaqaaaaaqhem6iiab55gamd4zlmx4yaaaha',
+          count: 445,
+        },
+        {
+          value: 'aeaqaaaaaqhem6iiab55gamd4zlnxvaaaaea',
+          count: 445,
+        },
+        {
+          value: 'aeaqaaaaaqhem6iiab55gamd4zlodkyaaaea',
+          count: 443,
+        },
+        {
+          value: 'aeaqaaaaaqhem6iiab55gamd4zlnbaaaaaea',
+          count: 442,
+        },
+        {
+          value: 'aeaqaaaaaqhawwq5aafyoameo3oxt7qaaaja',
+          count: 428,
+        },
+        {
+          value: 'aeaqaaaaaqhmtxs2aabxeamdyfxqtyiaaaea',
+          count: 426,
+        },
+        {
+          value: 'aeaqaaaaaqhem6iiab55gamd4zlod4iaaaeq',
+          count: 423,
+        },
+        {
+          value: 'aeaqaaaaaqhawwq5abcayamoyklfdcyaaaba',
+          count: 420,
+        },
+        {
+          value: 'aeaqaaaaaqhawwq5aafyoameo3ox5gqaaafa',
+          count: 410,
+        },
+        {
+          value: 'aeaqaaaaaqhiyursaad7mambzhep3vaaaada',
+          count: 406,
+        },
+        {
+          value: 'aeaqaaaaaqhem6iiab55gamd4zlmx4iaaafa',
+          count: 396,
+        },
+        {
+          value: 'aeaqaaaaaqhmtxs2aabxeamdyfxquwqaaaha',
+          count: 386,
+        },
+        {
+          value: 'aeaqaaaaaqhmtxs2aabxeamdyfxqlniaaaea',
+          count: 384,
+        },
+        {
+          value: 'aeaqaaaaaqhiyursabdiwamoyin636yaaapa',
+          count: 373,
+        },
+        {
+          value: 'aeaqaaaaaqhawwq5aafyoameo3oyanyaaaea',
+          count: 365,
+        },
+        {
+          value: 'aeaqaaaaaqhmtxs2aabxeambwn3dkcyaaaka',
+          count: 365,
+        },
+        {
+          value: 'aeaqaaaaaqhmtxs2aabxeamdyfxqoqaaaagq',
+          count: 362,
+        },
+        {
+          value: 'aeaqaaaaaqhi2nujabkl4amsst6w5xiaaaba',
+          count: 358,
+        },
+        {
+          value: 'aeaqaaaaaqhi2nujabkl4amsst6w5xaaaafa',
+          count: 357,
+        },
+        {
+          value: 'aeaqaaaaaqhmtxs2aabxeamdyfxqnxqaaaba',
+          count: 356,
+        },
+        {
+          value: 'aeaqaaaaaqhem6iiab55gamd4zlmz4iaaaga',
+          count: 354,
+        },
+        {
+          value: 'aeaqaaaaaqhawwq5ablkiamgs7lbnbiaaafa',
+          count: 350,
+        },
+        {
+          value: 'aeaqaaaaaqhiyursaad7mamdyivfevyaaada',
+          count: 350,
+        },
+        {
+          value: 'aeaqaaaaaqhmtxs2aabxeamdyfxqsliaaaga',
+          count: 348,
+        },
+        {
+          value: 'aeaqaaaaaqhawwq5aafyoameo3ox73iaaada',
+          count: 338,
+        },
+        {
+          value: 'aeaqaaaaaqhem6iiab55gamd4zlne7yaaaga',
+          count: 331,
+        },
+        {
+          value: 'aeaqaaaaaqhem6iiab55gamd4zlne7yaaaea',
+          count: 329,
+        },
+        {
+          value: 'aeaqaaaaaqhawwq5aafyoameo3oxvmqaaala',
+          count: 322,
+        },
+        {
+          value: 'aeaqaaaaaqhem6iiab55gamd4zlmvvaaaadq',
+          count: 321,
+        },
+        {
+          value: 'aeaqaaaaaqhiyursaad7mamdyivfc5iaaada',
+          count: 319,
+        },
+        {
+          value: 'aeaqaaaaaqhiyursaad7mamdyivflwaaaaha',
+          count: 317,
+        },
+        {
+          value: 'aeaqaaaaaqhem6iiab55gamd4zlmtxqaaaca',
+          count: 314,
+        },
+      ],
+    },
+  ],
+} as SearchResponse;
+
+export function buildPagedResults(response: SearchResponse): PagedResult {
+  console.log('pouet');
+  const pagedResult: PagedResult = {
+    results: response.$results,
+    totalResults: response.$hits.total,
+    pageNumbers:
+      +response.$hits.size !== 0
+        ? Math.floor(+response.$hits.total / +response.$hits.size) + (+response.$hits.total % +response.$hits.size === 0 ? 0 : 1)
+        : 0,
+  };
+  pagedResult.facets = response.$facetResults;
+  return pagedResult;
+}
