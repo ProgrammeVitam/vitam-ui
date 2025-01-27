@@ -95,7 +95,7 @@
       <button type="submit" class="btn primary" [disabled]="form.pending || form.invalid || isCreationPending || isDisabledButton">
         {{ 'COMMON.TERMINATE' | translate }}
       </button>
-      <button type="button" class="btn cancel" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
+      <button type="button" class="btn cancel link" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
     </div>
   </div>
 </form>

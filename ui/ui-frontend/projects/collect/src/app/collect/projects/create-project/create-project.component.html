@@ -28,7 +28,7 @@
             <button (click)="moveToNextStep()" class="btn primary" type="button">
               {{ 'COMMON.NEXT' | translate }}
             </button>
-            <button (click)="onClose()" class="btn link" type="button">
+            <button (click)="onClose()" class="btn cancel link" type="button">
               {{ 'COMMON.UNDO' | translate }}
             </button>
           </div>
@@ -107,7 +107,7 @@
             <button (click)="moveToNextStep()" [disabled]="stepDescriptionIsInvalid()" class="btn primary" type="button">
               {{ 'COMMON.NEXT' | translate }}
             </button>
-            <button (click)="onClose()" class="btn link" type="button">
+            <button (click)="onClose()" class="btn cancel link" type="button">
               {{ 'COMMON.UNDO' | translate }}
             </button>
           </div>
@@ -213,7 +213,7 @@
             <button (click)="moveToNextStep()" [disabled]="stepContextIsInvalid()" class="btn primary" type="button">
               {{ 'COMMON.NEXT' | translate }}
             </button>
-            <button (click)="onClose()" class="btn link" type="button">
+            <button (click)="onClose()" class="btn cancel link" type="button">
               {{ 'COMMON.UNDO' | translate }}
             </button>
           </div>
@@ -246,7 +246,7 @@
             <button (click)="moveToNextStep()" [disabled]="filesToUpload.length < 1" class="btn primary" type="button">
               {{ 'COMMON.NEXT' | translate }}
             </button>
-            <button (click)="onClose()" class="btn link" type="button">
+            <button (click)="onClose()" class="btn cancel link" type="button">
               {{ 'COMMON.UNDO' | translate }}
             </button>
           </div>
@@ -289,7 +289,7 @@
             <button (click)="prepareRulesAndMoveToNextStep()" class="btn primary" type="button">
               {{ 'COMMON.NEXT' | translate }}
             </button>
-            <button (click)="onClose()" class="btn link" type="button">
+            <button (click)="onClose()" class="btn cancel link" type="button">
               {{ 'COMMON.UNDO' | translate }}
             </button>
           </div>
@@ -321,7 +321,7 @@
             <button (click)="validateAndCreateProject()" class="btn primary" type="button">
               {{ 'COMMON.SUBMIT' | translate }}
             </button>
-            <button (click)="onClose()" class="btn link" type="button">
+            <button (click)="onClose()" class="btn cancel link" type="button">
               {{ 'COMMON.UNDO' | translate }}
             </button>
           </div>
@@ -449,7 +449,7 @@
             <button (click)="validateAndCreateProject()" [disabled]="stepRulesParamsIsInvalid()" class="btn primary" type="button">
               {{ 'COMMON.SUBMIT' | translate }}
             </button>
-            <button (click)="onClose()" class="btn link" type="button">
+            <button (click)="onClose()" class="btn cancel link" type="button">
               {{ 'COMMON.UNDO' | translate }}
             </button>
           </div>

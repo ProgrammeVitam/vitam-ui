@@ -56,7 +56,7 @@
       <button type="button" class="btn primary" [disabled]="isDisabled || hasError" (click)="upload()">
         {{ (contextId === IngestType.BLANK_TEST ? 'INGEST_UPLOAD.CONFIRM_BLANK' : 'INGEST_UPLOAD.CONFIRM') | translate }}
       </button>
-      <button type="button" class="btn cancel" (click)="onCancel()">{{ 'COMMON.CANCEL' | translate }}</button>
+      <button type="button" class="btn cancel link" (click)="onCancel()">{{ 'COMMON.CANCEL' | translate }}</button>
     </div>
   </div>
 </form>

@@ -95,7 +95,7 @@
 
         <div class="actions">
           <button type="button" class="btn primary" cdkStepperNext [disabled]="firstStepInvalid()">{{ 'COMMON.NEXT' | translate }}</button>
-          <button type="button" class="btn cancel" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
+          <button type="button" class="btn cancel link" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
         </div>
       </div>
     </cdk-step>
@@ -127,7 +127,7 @@
           <button type="submit" class="btn primary" [disabled]="lastStepInvalid() || isDisabledButton">
             {{ 'COMMON.TERMINATE' | translate }}
           </button>
-          <button type="button" class="btn cancel" (click)="onCancel()">
+          <button type="button" class="btn cancel link" (click)="onCancel()">
             {{ 'COMMON.UNDO' | translate }}
           </button>
         </div>

@@ -27,7 +27,7 @@
         <button cdkStepperNext [disabled]="filesToUpload.length < 1" class="btn primary" type="button">
           {{ 'COMMON.NEXT' | translate }}
         </button>
-        <button (click)="cancel()" class="btn link" type="button">
+        <button (click)="cancel()" class="btn cancel link" type="button">
           {{ 'COMMON.UNDO' | translate }}
         </button>
       </div>
@@ -51,7 +51,7 @@
         <button (click)="validateAndUpload()" [disabled]="isLoading" class="btn primary" type="button">
           {{ 'COMMON.SUBMIT' | translate }}
         </button>
-        <button (click)="cancel()" [disabled]="isLoading" class="btn link" type="button">
+        <button (click)="cancel()" [disabled]="isLoading" class="btn cancel link" type="button">
           {{ 'COMMON.UNDO' | translate }}
         </button>
       </div>
@@ -72,10 +72,10 @@
   </mat-dialog-content>
   <br />
   <mat-dialog-actions>
-    <button (click)="close(false)" class="btn primary btn-confirm-dialog margin-btn">
+    <button (click)="close(false)" class="btn primary btn-confirm-dialog">
       {{ 'COLLECT.UPDATE_UNITS_METADATA.CONFIRM' | translate }}
     </button>
-    <button type="button" (click)="closeConfirmDialog()" class="btn cancel">
+    <button type="button" (click)="closeConfirmDialog()" class="btn cancel link">
       {{ 'COLLECT.UPDATE_UNITS_METADATA.UPDATE_CANCEL' | translate }}
     </button>
   </mat-dialog-actions>
