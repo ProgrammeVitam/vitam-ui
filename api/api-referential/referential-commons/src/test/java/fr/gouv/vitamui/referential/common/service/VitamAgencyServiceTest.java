@@ -40,9 +40,11 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.google.common.io.CharStreams;
 import fr.gouv.vitam.access.external.client.AccessExternalClient;
 import fr.gouv.vitam.access.external.client.AdminExternalClient;
 import fr.gouv.vitam.access.external.common.exception.AccessExternalClientException;
+import fr.gouv.vitam.common.PropertiesUtils;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
@@ -51,8 +53,10 @@ import fr.gouv.vitam.common.model.RequestResponseOK;
 import fr.gouv.vitam.common.model.administration.AgenciesModel;
 import fr.gouv.vitam.common.model.logbook.LogbookOperation;
 import fr.gouv.vitamui.commons.api.domain.AgencyModelDto;
+import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.identity.ServerIdentityConfiguration;
 import fr.gouv.vitamui.commons.vitam.api.administration.AgencyService;
+import org.easymock.Capture;
 import org.easymock.EasyMock;
 import org.junit.Before;
 import org.junit.Test;
@@ -63,9 +67,18 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
+import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
-import static org.easymock.EasyMock.*;
+import static org.easymock.EasyMock.capture;
+import static org.easymock.EasyMock.eq;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.isA;
+import static org.easymock.EasyMock.mock;
+import static org.easymock.EasyMock.verify;
 
 @RunWith(org.powermock.modules.junit4.PowerMockRunner.class)
 @PrepareForTest({ ServerIdentityConfiguration.class })
@@ -170,7 +183,7 @@ public class VitamAgencyServiceTest {
     }
 
     @Test
-    public void patchAgency_should_return_ok_when_vitamclient_ok() throws VitamClientException {
+    public void patchAgency_should_return_ok_when_vitamclient_ok() throws Exception {
         VitamContext vitamContext = new VitamContext(1);
         String id = "id_0";
         AgencyModelDto patchAgency = new AgencyModelDto();
@@ -178,7 +191,10 @@ public class VitamAgencyServiceTest {
         expect(agencyService.findAgencies(isA(VitamContext.class), isA(ObjectNode.class))).andReturn(
             new RequestResponseOK<AgenciesModel>().setHttpCode(200)
         );
-        EasyMock.replay(agencyService);
+        expect(
+            adminExternalClient.createAgencies(isA(VitamContext.class), isA(InputStream.class), isA(String.class))
+        ).andReturn(new RequestResponseOK<AgenciesModel>().setHttpCode(200));
+        EasyMock.replay(agencyService, adminExternalClient);
 
         assertThatCode(() -> {
             vitamAgencyService.patchAgency(vitamContext, id, patchAgency);
@@ -186,7 +202,7 @@ public class VitamAgencyServiceTest {
     }
 
     @Test
-    public void patchAgency_should_return_ok_when_vitamclient_400() throws VitamClientException {
+    public void patchAgency_should_return_400_when_vitamclient_400() throws Exception {
         VitamContext vitamContext = new VitamContext(1);
         String id = "id_0";
         AgencyModelDto patchAgency = new AgencyModelDto();
@@ -194,11 +210,12 @@ public class VitamAgencyServiceTest {
         expect(agencyService.findAgencies(isA(VitamContext.class), isA(ObjectNode.class))).andReturn(
             new RequestResponseOK<AgenciesModel>().setHttpCode(400)
         );
-        EasyMock.replay(agencyService);
+        expect(
+            adminExternalClient.createAgencies(isA(VitamContext.class), isA(InputStream.class), isA(String.class))
+        ).andReturn(new RequestResponseOK<AgenciesModel>().setHttpCode(400));
+        EasyMock.replay(agencyService, adminExternalClient);
 
-        assertThatCode(() -> {
-            vitamAgencyService.patchAgency(vitamContext, id, patchAgency);
-        }).doesNotThrowAnyException();
+        assertThatCode(() -> vitamAgencyService.deleteAgency(vitamContext, id)).isInstanceOf(BadRequestException.class);
     }
 
     @Test
@@ -216,6 +233,86 @@ public class VitamAgencyServiceTest {
         assertThatCode(() -> {
             vitamAgencyService.patchAgency(vitamContext, id, patchAgency);
         }).isInstanceOf(VitamClientException.class);
+    }
+
+    @Test
+    public void patchAgency_should_return_ok_with_additional_properties() throws Exception {
+        // Given
+        VitamContext vitamContext = new VitamContext(1);
+        AgencyModelDto patchAgency = new AgencyModelDto();
+        patchAgency.setId("agency_01");
+        patchAgency.setName("AlexAgency");
+        patchAgency.setDescription("AlexAgency super description");
+
+        final AgenciesModel agenciesModel = new AgenciesModel();
+        agenciesModel.setId(patchAgency.getId());
+        agenciesModel.setName(patchAgency.getName());
+        expect(agencyService.findAgencies(isA(VitamContext.class), isA(JsonNode.class))).andReturn(
+            new RequestResponseOK<AgenciesModel>().setHttpCode(200).addResult(agenciesModel)
+        );
+        final StringBuilder actualCsvContent = new StringBuilder();
+        final Capture<InputStream> isCapture = Capture.newInstance();
+        expect(
+            adminExternalClient.createAgencies(isA(VitamContext.class), capture(isCapture), eq("Agencies.json"))
+        ).andAnswer(() -> {
+            actualCsvContent.append(
+                CharStreams.toString(new InputStreamReader(isCapture.getValue(), StandardCharsets.UTF_8))
+            );
+            return new RequestResponseOK<>().setHttpCode(200);
+        });
+        EasyMock.replay(agencyService, adminExternalClient);
+
+        // When
+        assertThatCode(() -> {
+            vitamAgencyService.patchAgency(vitamContext, patchAgency.getId(), patchAgency);
+        }).doesNotThrowAnyException();
+        // Then
+        verify(adminExternalClient);
+        String expectedCsvContent = PropertiesUtils.getResourceAsString("agency/agency_with_additional_properties.csv");
+        assertThat(expectedCsvContent).isEqualTo(actualCsvContent.toString());
+    }
+
+    @Test
+    public void patchAgency_should_return_ok_with_additionnal_properties_and_existing() throws Exception {
+        // Given
+        VitamContext vitamContext = new VitamContext(1);
+        AgencyModelDto patchAgency = new AgencyModelDto();
+        patchAgency.setId("agency_01");
+        patchAgency.setName("AlexAgency");
+        patchAgency.setDescription("AlexAgency super description");
+
+        expect(agencyService.findAgencies(isA(VitamContext.class), isA(JsonNode.class))).andReturn(
+            new RequestResponseOK<AgenciesModel>()
+                .setHttpCode(200)
+                .addAllResults(
+                    List.of(
+                        new AgenciesModel(null, patchAgency.getName(), null, 4).setId(patchAgency.getId()),
+                        new AgenciesModel(null, "agency_15", null, 4).setId("agency_15")
+                    )
+                )
+        );
+        final StringBuilder actualCsvContent = new StringBuilder();
+        final Capture<InputStream> isCapture = Capture.newInstance();
+        expect(
+            adminExternalClient.createAgencies(isA(VitamContext.class), capture(isCapture), eq("Agencies.json"))
+        ).andAnswer(() -> {
+            actualCsvContent.append(
+                CharStreams.toString(new InputStreamReader(isCapture.getValue(), StandardCharsets.UTF_8))
+            );
+            return new RequestResponseOK<>().setHttpCode(200);
+        });
+        EasyMock.replay(agencyService, adminExternalClient);
+
+        // When
+        assertThatCode(() -> {
+            vitamAgencyService.patchAgency(vitamContext, patchAgency.getId(), patchAgency);
+        }).doesNotThrowAnyException();
+        // Then
+        verify(adminExternalClient);
+        String expectedCsvContent = PropertiesUtils.getResourceAsString(
+            "agency/agency_with_additional_properties_and_others.csv"
+        );
+        assertThat(expectedCsvContent).isEqualTo(actualCsvContent.toString());
     }
 
     @Test
@@ -239,7 +336,7 @@ public class VitamAgencyServiceTest {
     }
 
     @Test
-    public void deleteAgency_should_return_ok_when_vitamclient_400()
+    public void deleteAgency_should_return_400_when_vitamclient_400()
         throws VitamClientException, AccessExternalClientException, InvalidParseOperationException {
         VitamContext vitamContext = new VitamContext(1);
         String id = "id_0";
@@ -249,13 +346,11 @@ public class VitamAgencyServiceTest {
         );
         expect(
             adminExternalClient.createAgencies(isA(VitamContext.class), isA(InputStream.class), isA(String.class))
-        ).andReturn((RequestResponse) new RequestResponseOK<>().setHttpCode(400));
+        ).andReturn((RequestResponse) new RequestResponseOK<AgenciesModel>().setHttpCode(400));
         EasyMock.replay(agencyService);
         EasyMock.replay(adminExternalClient);
 
-        assertThatCode(() -> {
-            vitamAgencyService.deleteAgency(vitamContext, id);
-        }).doesNotThrowAnyException();
+        assertThatCode(() -> vitamAgencyService.deleteAgency(vitamContext, id)).isInstanceOf(BadRequestException.class);
     }
 
     @Test
@@ -269,20 +364,23 @@ public class VitamAgencyServiceTest {
         );
         EasyMock.replay(agencyService);
 
-        assertThatCode(() -> {
-            vitamAgencyService.deleteAgency(vitamContext, id);
-        }).isInstanceOf(VitamClientException.class);
+        assertThatCode(() -> vitamAgencyService.deleteAgency(vitamContext, id)).isInstanceOf(
+            VitamClientException.class
+        );
     }
 
     @Test
-    public void create_should_return_ok_when_vitamclient_ok() throws VitamClientException {
+    public void create_should_return_ok_when_vitamclient_ok() throws Exception {
         VitamContext vitamContext = new VitamContext(1);
         AgencyModelDto newAgency = new AgencyModelDto();
 
         expect(agencyService.findAgencies(isA(VitamContext.class), isA(ObjectNode.class))).andReturn(
             new RequestResponseOK<AgenciesModel>().setHttpCode(200)
         );
-        EasyMock.replay(agencyService);
+        expect(
+            adminExternalClient.createAgencies(isA(VitamContext.class), isA(InputStream.class), isA(String.class))
+        ).andReturn(new RequestResponseOK<AgenciesModel>().setHttpCode(200));
+        EasyMock.replay(agencyService, adminExternalClient);
 
         assertThatCode(() -> {
             vitamAgencyService.create(vitamContext, newAgency);
@@ -290,14 +388,17 @@ public class VitamAgencyServiceTest {
     }
 
     @Test
-    public void create_should_return_ok_when_vitamclient_400() throws VitamClientException {
+    public void create_should_return_ok_when_vitamclient_400() throws Exception {
         VitamContext vitamContext = new VitamContext(1);
         AgencyModelDto newAgency = new AgencyModelDto();
 
         expect(agencyService.findAgencies(isA(VitamContext.class), isA(ObjectNode.class))).andReturn(
             new RequestResponseOK<AgenciesModel>().setHttpCode(400)
         );
-        EasyMock.replay(agencyService);
+        expect(
+            adminExternalClient.createAgencies(isA(VitamContext.class), isA(InputStream.class), isA(String.class))
+        ).andReturn(new RequestResponseOK<AgenciesModel>().setHttpCode(200));
+        EasyMock.replay(agencyService, adminExternalClient);
 
         assertThatCode(() -> {
             vitamAgencyService.create(vitamContext, newAgency);
