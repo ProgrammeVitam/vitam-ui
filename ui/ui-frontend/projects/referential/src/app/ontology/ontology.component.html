@@ -13,7 +13,7 @@
           <span>{{ 'ONTOLOGY.HOME.CREATE_VOCABULARY' | translate }}</span>
         </button>
         <vitamui-common-menu-button [overlayPos]="'end'" [icon]="'vitamui-icon-more-horiz'" [disabled]="false">
-          <button mat-menu-item [disabled]="(canImportSchema$ | async) !== false" (click)="openSchemaImportDialog()">
+          <button mat-menu-item [disabled]="(canImportSchema$ | async) === false" (click)="openSchemaImportDialog()">
             {{ 'ONTOLOGY.HOME.IMPORT_SCHEMA' | translate }}
           </button>
           <button mat-menu-item [disabled]="(canImportOntology$ | async) !== false" (click)="openOntologyImportDialog()">

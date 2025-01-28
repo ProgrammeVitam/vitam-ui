@@ -89,7 +89,7 @@ export class OntologyComponent extends SidenavPage<Ontology> implements OnInit {
   }
 
   private initializePermissions(): void {
-    this.canImportSchema$ = this.securityService.hasRole(ApplicationId.ONTOLOGY_APP, this.tenantId, Role.ROLE_IMPORT_SCHEMA);
+    this.canImportSchema$ = this.securityService.hasRole(ApplicationId.ONTOLOGY_APP, this.tenantId, Role.ROLE_IMPORT_SCHEMAS);
     this.canImportOntology$ = this.securityService.hasRole(ApplicationId.ONTOLOGY_APP, this.tenantId, Role.ROLE_IMPORT_ONTOLOGY);
     this.canCreateVocabulary$ = this.securityService.hasRole(ApplicationId.ONTOLOGY_APP, this.tenantId, Role.ROLE_CREATE_ONTOLOGIES);
   }
