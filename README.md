@@ -73,28 +73,35 @@ By default we use a self signed certificates with 3 years duration on developmen
 
 To generate PKI, bellow the steps:
 
-1. Generate CA and dev certificates:
-
-``` shell
-cd deployment/pki/scripts
-./generate_ca_dev.sh ../../environments/hosts.local true
-
-./generate_certs_dev.sh ../../environments/hosts.local true
-```
-
-The last parameter with true value is used to force regenerate certificates.
-
-2. Generate Stores:
+1. Generate CA, certs and stores for dev
 
 ``` shell
 cd deployment
-./generate_stores_dev.sh
-
+./pki/scripts/generate_ca_dev.sh true && ./pki/scripts/generate_certs_dev.sh environments/hosts.local true && ./generate_stores_dev.sh
 ```
+
+N.B.: The "true" value is used to force regenerate CA & certs.
+
+2. Re-generate MongoDB
+
+After regenerating CA, certs and stores, the MongoDB must be re-generated.
+
+In `mongo/tools`, run (make sure you enabled your python env):
 
 ```shell
-docker ps 
+restart_dev.sh
 ```
+
+3. Add certificates in browser
+
+In order for browsers (Chrome, Firefox) to recognize the certificates, add the following certificates in your browser:
+
+- dev-deployment/environments/certs/server/ca/ca-intermediate.crt
+- dev-deployment/environments/certs/server/ca/ca-root.crt
+
+In Chrome: <chrome://settings/certificates> -> Authorities -> Import
+
+In Firefox: <about:preferences#privacy> -> Certificates -> Show Certificates -> Authorities -> Import
 
 # Maven profiles
 

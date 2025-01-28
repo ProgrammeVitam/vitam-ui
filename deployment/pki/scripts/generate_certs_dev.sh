@@ -17,6 +17,10 @@ function getHostCertificateCn {
     echo "dev.vitamui.com"
 }
 
+function getHostCertificateSan {
+    echo "DNS:dev.vitamui.com,DNS:localhost"
+}
+
 function generateCerts {
 
     # Copy CA

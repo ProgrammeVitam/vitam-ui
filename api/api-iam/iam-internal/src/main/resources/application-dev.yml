@@ -38,10 +38,10 @@ cas-client:
   secure: true
   ssl-configuration:
     truststore:
-      key-path: src/main/resources/dev/truststore_server.jks
+      key-path: ../../../dev-deployment/environments/keystores/server/truststore_server.jks
       key-password: changeme
     keystore:
-      key-path: src/main/resources/dev/keystore_iam-internal.jks
+      key-path: ../../../dev-deployment/environments/keystores/server/localhost/keystore_iam-internal.jks
       key-password: changeme
       type: JKS
     hostname-verification: false
@@ -94,11 +94,11 @@ provisioning-client:
         secure: false
         ssl-configuration:
           keystore:
-            key-path: src/main/resources/dev/keystore_iam-internal.jks
+            key-path: ../../../dev-deployment/environments/keystores/server/localhost/keystore_iam-internal.jks
             key-password: changeme
             type: JKS
           truststore:
-            key-path: src/main/resources/dev/truststore_server.jks
+            key-path: ../../../dev-deployment/environments/keystores/server/truststore_server.jks
             key-password: changeme
             type: JKS
           hostname-verification: false
@@ -108,11 +108,11 @@ provisioning-client:
         secure: true
         ssl-configuration:
           keystore:
-            key-path: src/main/resources/dev/keystore_iam-internal.jks
+            key-path: ../../../dev-deployment/environments/keystores/server/localhost/keystore_iam-internal.jks
             key-password: changeme
             type: JKS
           truststore:
-            key-path: src/main/resources/dev/truststore_server.jks
+            key-path: ../../../dev-deployment/environments/keystores/server/truststore_server.jks
             key-password: changeme
             type: JKS
           hostname-verification: false

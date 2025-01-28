@@ -1,11 +1,11 @@
 server:
   port: 8070
   ssl:
-    key-store: src/main/resources/dev/keystore_api-gateway.jks
+    key-store: ../../dev-deployment/environments/keystores/server/localhost/keystore_api-gateway.jks
     key-store-password: changeme
     key-password: changeme
     client-auth: need
-    trust-store: src/main/resources/dev/truststore_server.jks
+    trust-store: ../../dev-deployment/environments/keystores/server/truststore_server.jks
     trust-store-password: changeme
   max-http-header-size: 16KB
 

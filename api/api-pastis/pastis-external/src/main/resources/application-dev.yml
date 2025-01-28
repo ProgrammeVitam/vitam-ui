@@ -37,10 +37,10 @@ server:
   host:
   port: 8015
   ssl:
-    key-store: src/main/resources/dev/keystore_pastis-external.jks
+    key-store: ../../../dev-deployment/environments/keystores/server/localhost/keystore_pastis-external.jks
     key-store-password: changeme
     key-password: changeme
-    trust-store: src/main/resources/dev/truststore_server.jks
+    trust-store: ../../../dev-deployment/environments/keystores/server/truststore_server.jks
     trust-store-password: changeme
     client-auth: need
     enabled-protocols: TLSv1.1,TLSv1.2,TLSv1.3
