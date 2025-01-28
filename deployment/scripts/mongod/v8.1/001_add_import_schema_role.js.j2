@@ -2,7 +2,7 @@ db = db.getSiblingDB('iam')
 print("START_001_add_import_schema_role.js");
 //add new roles ontology profile for system
 db.profiles.updateMany({
-        "_id": "system_ontology"
+        "applicationName": "ONTOLOGY_APP"
     },
     {
         $addToSet:{
