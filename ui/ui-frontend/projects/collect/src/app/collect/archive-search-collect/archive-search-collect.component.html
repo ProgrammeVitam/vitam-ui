@@ -329,8 +329,6 @@
               class="col-8"
             ></vitamui-common-archive-unit-count>
 
-            <div class="col-1"></div>
-
             <div
               class="col-3 area-download"
               [ngClass]="
@@ -340,6 +338,13 @@
               "
             >
               <i (click)="exportArchiveUnitsToCsvFile()" class="vitamui-icon vitamui-icon-import-csv vitamui-row-icon clickable"></i>
+            </div>
+            <div class="col-1">
+              <vitamui-common-menu-button [overlayPos]="'end'" [icon]="'vitamui-icon-more-horiz'">
+                <button mat-menu-item (click)="launchReclassification()" [disabled]="!hasReclassificationRole || itemSelected === 0">
+                  {{ 'RECLASSIFICATION.EXECUTION_ACTION' | translate }}
+                </button>
+              </vitamui-common-menu-button>
             </div>
           </div>
 

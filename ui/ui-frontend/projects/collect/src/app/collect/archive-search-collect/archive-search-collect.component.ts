@@ -74,6 +74,7 @@ import {
   TransactionStatus,
   Unit,
   UnitType,
+  ReclassificationDialogComponent,
 } from 'vitamui-library';
 import { ArchiveCollectService } from './archive-collect.service';
 import { SearchCriteriaSaverComponent } from './archive-search-criteria/components/search-criteria-saver/search-criteria-saver.component';
@@ -117,6 +118,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
   show = true;
   hasSendTransactionRole = false;
   hasCloseTransactionRole = false;
+  hasReclassificationRole = false;
 
   searchCriteriaKeys: string[];
   searchCriterias: Map<string, CriteriaSearchCriteria>;
@@ -169,6 +171,9 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
   tenantIdentifier: string;
   projectName: string;
   breadcrumbData: BreadCrumbData[];
+
+  archiveUnitGuidSelected: string[];
+  archiveUnitAllunitup: string[];
 
   selectedArchive$: Observable<Unit>;
 
@@ -363,6 +368,50 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
     this.archiveUnitCollectService.hasCollectRole('ROLE_CLOSE_TRANSACTIONS', Number(this.tenantIdentifier)).subscribe((result) => {
       this.hasCloseTransactionRole = result;
     });
+
+    this.archiveUnitCollectService.hasCollectRole('ROLE_RECLASSIFICATION', Number(this.tenantIdentifier)).subscribe((result) => {
+      this.hasReclassificationRole = result;
+    });
+  }
+
+  launchReclassification() {
+    this.archiveUnitGuidSelected = this.isAllChecked
+      ? this.archiveUnits.map((unit) => unit['#id'])
+      : this.listOfUAIdToInclude.map((unit) => unit.id);
+    let unitUps = this.archiveUnits
+      .filter((archiveUnit) => this.archiveUnitGuidSelected.includes(archiveUnit['#id']))
+      .map((archiveUnit) => archiveUnit['#unitups']);
+    this.archiveUnitAllunitup = this.initArchiveUnitAllunitup(unitUps);
+    const reclassificationCriteria = {
+      criteriaList: this.listOfUACriteriaSearch,
+      pageNumber: this.currentPage,
+      size: PAGE_SIZE,
+      language: this.translateService.currentLang,
+    };
+
+    const dialogRef = this.dialog.open(ReclassificationDialogComponent, {
+      panelClass: 'vitamui-modal',
+      disableClose: false,
+      data: {
+        appName: 'COLLECT',
+        reclassificationCriteria,
+        itemSelected: this.itemSelected,
+        archiveUnitGuidSelected: this.archiveUnitGuidSelected,
+        archiveUnitAllunitup: this.archiveUnitAllunitup,
+        transactionId: this.transaction.id,
+      },
+    });
+    this.subscriptions.add(
+      dialogRef.afterClosed().subscribe((result) => {
+        if (result) {
+          return;
+        }
+      }),
+    );
+  }
+
+  public initArchiveUnitAllunitup(values: string[][]) {
+    return [...new Set(values.flat())];
   }
 
   private addInitialCriteriaValues() {
