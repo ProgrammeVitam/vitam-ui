@@ -1,0 +1,14 @@
+---
+
+- name: check whether VITAMUI parent dir already exists
+  stat:
+    path: "{{ vitamui_defaults.folder.root_path }}"
+  register: root_dir
+
+- name: fail if this VITAMUI parent dir is a symlink
+  #shell: echo "root vitam dir is symlink" > {{ inventory_dir }}/troubleshoot/{{ inventory_hostname }}/vitam_root_dir_symlink.txt
+  copy:
+    content: "root vitam dir is symlink"
+    dest: "{{ inventory_dir }}/troubleshoot/{{ inventory_hostname }}/vitam_root_dir_symlink.txt"
+  delegate_to: localhost
+  when: root_dir.stat.islnk is defined and root_dir.stat.islnk == "true"
