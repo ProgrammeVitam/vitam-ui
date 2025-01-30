@@ -114,6 +114,10 @@ import { VitamUIHttpInterceptor } from './vitamui-http-interceptor';
 import { BadgeComponent } from './components/badge/badge.component';
 import { DataComponent } from './components/data/data.component';
 import { AlertDialogComponent } from './components/alert-dialog/alert-dialog.component';
+import { ReclassificationDialogComponent } from './reclassification-dialog/reclassification-dialog.component';
+import { SelectComponent } from '../../lib/components/select/select.component';
+import { MatLegacyProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
+import { FilingPlanModule } from '../../lib/components/filing-plan/filing-plan.module';
 
 export function loadConfigFactory(configService: ConfigService, environment: any) {
   const p = () => configService.load(environment.configUrls).toPromise();
@@ -139,7 +143,7 @@ export function startupServiceFactory(startupService: StartupService, authServic
 }
 
 @NgModule({
-  declarations: [ErrorDialogComponent, VitamuiIntervalDatePickerComponent],
+  declarations: [ErrorDialogComponent, VitamuiIntervalDatePickerComponent, ReclassificationDialogComponent],
   exports: [
     AccordionModule,
     AccountModule,
@@ -204,6 +208,9 @@ export function startupServiceFactory(startupService: StartupService, authServic
     FileSelectorComponent,
     ChipComponent,
     BadgeComponent,
+    SelectComponent,
+    MatLegacyProgressSpinnerModule,
+    FilingPlanModule,
   ],
   imports: [
     AccordionModule,
@@ -271,6 +278,7 @@ export function startupServiceFactory(startupService: StartupService, authServic
     AlertDialogComponent,
     ChipComponent,
     BadgeComponent,
+    ReclassificationDialogComponent,
   ],
   providers: [provideHttpClient(withInterceptorsFromDi())],
 })

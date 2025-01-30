@@ -80,6 +80,7 @@ import { UpdateUnitsMetadataComponent } from './update-units-metadata/update-uni
 import { VitamUISnackBarModule } from '../shared/vitamui-snack-bar/vitamui-snack-bar.module';
 import { AddUnitsComponent } from './add-units/add-units.component';
 import { TranslateModule } from '@ngx-translate/core';
+import { MatLegacyMenuModule } from '@angular/material/legacy-menu';
 
 @NgModule({
   imports: [
