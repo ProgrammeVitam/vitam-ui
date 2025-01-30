@@ -1,6 +1,19 @@
 name: Publish design system
 run-name: Publishing design system for branch ${{ github.ref }}
-on: workflow_dispatch
+on:
+  workflow_dispatch: # run when triggered manually
+  push:
+      branches: # run automatically on protected branches (develop & master_*)
+        - develop
+        - master_*
+        - '!master_3.*'
+        - '!master_4.*'
+        - '!master_5.*'
+        - '!master_6.*'
+        - '!master_7.*'
+      paths: # only if design system or library changed
+        - 'ui/ui-frontend/projects/design-system/**'
+        - 'ui/ui-frontend/projects/vitamui-library/**'
 jobs:
   build-and-publish-design-system:
     name: Build design system
