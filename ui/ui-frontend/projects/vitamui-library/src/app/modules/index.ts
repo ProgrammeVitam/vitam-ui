@@ -146,5 +146,6 @@ export * from './vitamui-http-headers.enum';
 export * from './vitamui-icons.enum';
 export * from './vitamui-roles.enum';
 export * from './vitamui-table/index';
+export * from './reclassification-dialog/reclassification-dialog.component';
 
 export * from './pipes/unitI18n.pipe';

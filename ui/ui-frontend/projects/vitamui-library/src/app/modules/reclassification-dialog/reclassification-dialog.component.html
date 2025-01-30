@@ -1,0 +1,149 @@
+<div class="header">
+  <vitamui-common-progress-bar [count]="getStepCount()" [index]="stepIndex"></vitamui-common-progress-bar>
+</div>
+
+<form [formGroup]="form" (ngSubmit)="onSubmit()" (keydown.enter)="$event.preventDefault()">
+  <vitamui-common-stepper (selectionChange)="stepIndex = $event.selectedIndex">
+    <cdk-step>
+      <div class="content">
+        <div class="text medium light">{{ 'RECLASSIFICATION.COMMON.TITLE' | translate }}</div>
+        <div class="text large bold mb-3">{{ 'RECLASSIFICATION.FIRST_STEP.SUBTITLE' | translate }}</div>
+        {{ itemSelected }}
+        {{ itemSelected | i18nPlural: selectedUnitMap | translate }}
+
+        <div *ngIf="totalChilds !== null && totalChilds === 10000 && !waitingForLoadExactTotalTrackHits && !precided" class="mb-4">
+          <a class="link-without-underline" (click)="loadExactCount()">
+            <vitamui-badge *ngIf="!pendingGetChilds" [text]="badgeMessageMoreThan" color="red" decoration="filled"></vitamui-badge>
+          </a>
+        </div>
+        <mat-spinner
+          *ngIf="waitingForLoadExactTotalTrackHits || pendingGetChilds"
+          diameter="20"
+          color="accent"
+          class="spinner-wrapper"
+        ></mat-spinner>
+
+        <div class="col-8" *ngIf="waitingForLoadExactTotalTrackHits">
+          <ng-container *ngIf="!pendingGetFixedCount" class="mb-4">
+            <a class="link-without-underline" (click)="loadExactCount()">
+              <vitamui-badge *ngIf="!pendingGetChilds" [text]="badgeMessageMoreThan" color="red" decoration="filled"></vitamui-badge>
+            </a>
+          </ng-container>
+        </div>
+
+        <div *ngIf="precided || 1000 > totalChilds" class="mb-4">
+          <vitamui-badge *ngIf="!pendingGetChilds" [text]="badgeMessageIncluding" color="red" decoration="filled"></vitamui-badge>
+        </div>
+
+        <div class="text medium mb-2">
+          @if (archiveUnitFetchedParents.length >= 1 && archiveUnitFetchedParents.length <= 5) {
+            {{
+              archiveUnitFetchedParents.length
+                | i18nPlural: currentParentFolderMap
+                | translate: { nbParents: archiveUnitFetchedParents.length }
+            }}
+          } @else if (archiveUnitFetchedParents.length > 5) {
+            {{ 'RECLASSIFICATION.FIRST_STEP.MORE_THAN_FIVE_CURRENT_PARENTS_FOLDERS' | translate }}
+          } @else if (!hasParents) {
+            <div class="light">{{ 'RECLASSIFICATION.COMMON.ARCHIVE_WITH_NO_PARENTS' | translate }}</div>
+          }
+        </div>
+
+        <div *ngIf="archiveUnitFetchedParents.length <= 5">
+          <div *ngFor="let parent of archiveUnitFetchedParents">
+            <div class="text normal ml-3 mb-2">{{ parent.title }}</div>
+          </div>
+        </div>
+
+        <p class="text bold primary">{{ 'RECLASSIFICATION.FIRST_STEP.SELECT_ACTION_MESSAGE_1' | translate }}</p>
+        <div class="form-group">
+          <vitamui-select
+            [formControl]="actionToFilterSelect"
+            formControlName="actionToFilter"
+            [options]="actionToFilterOptions"
+            [placeholder]="'RECLASSIFICATION.FIRST_STEP.SELECT_ACTION_MESSAGE_2' | translate"
+            [enableSearch]="false"
+            required
+          ></vitamui-select>
+        </div>
+
+        <div class="text danger">
+          <div *ngIf="actionChosen === 'REPLACE'">
+            {{ 'RECLASSIFICATION.FIRST_STEP.ALERT_REMOVED_CURRENT_PARENTS_FOLDERS' | translate }}
+          </div>
+          <div *ngIf="actionChosen === 'PULL'">
+            {{ 'RECLASSIFICATION.FIRST_STEP.ALERT_NO_ATTACHMENT_CURRENT_PARENTS_FOLDERS' | translate }}
+          </div>
+        </div>
+
+        <div class="actions">
+          <button *ngIf="actionChosen !== 'PULL'" type="button" class="btn primary" cdkStepperNext [disabled]="firstStepInvalid()">
+            {{ 'COMMON.NEXT' | translate }}
+          </button>
+          <button *ngIf="actionChosen === 'PULL'" type="submit" class="btn primary">{{ 'COMMON.CONFIRM' | translate }}</button>
+          <button type="button" class="btn link cancel" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
+        </div>
+      </div>
+    </cdk-step>
+
+    <cdk-step>
+      <ng-container [ngSwitch]="actionChosen">
+        <ng-container *ngSwitchCase="'REPLACE'">
+          <div class="content">
+            <div class="text medium light">{{ 'RECLASSIFICATION.COMMON.TITLE' | translate }}</div>
+            <div class="text large bold">
+              {{ 'RECLASSIFICATION.REPLACE_STEP.TITLE' | translate }}
+            </div>
+            <div class="text danger mt-3 mb-3">
+              {{ 'RECLASSIFICATION.FIRST_STEP.ALERT_REMOVED_CURRENT_PARENTS_FOLDERS' | translate }}
+            </div>
+            <div class="form-group">
+              @if (projectUnits) {
+                <vitamui-library-filing-plan [mode]="FilingPlanMode.SOLO" [formControl]="selectedTargetUnits" [dataSource]="projectUnits">
+                </vitamui-library-filing-plan>
+              }
+            </div>
+            <div class="actions">
+              <button type="submit" class="btn primary" [disabled]="lastStepInvalid() || isDisabledButton">
+                {{ 'COMMON.CONFIRM' | translate }}
+              </button>
+              <button type="button" class="btn link cancel" (click)="onCancel()">
+                {{ 'COMMON.UNDO' | translate }}
+              </button>
+            </div>
+            <button type="button" class="btn link" cdkStepperPrevious>
+              <i class="vitamui-icon vitamui-icon-chevron-left"></i>
+              <span>{{ 'COMMON.BACK' | translate }}</span>
+            </button>
+          </div>
+        </ng-container>
+        <ng-container *ngSwitchCase="'ADD'">
+          <div class="content">
+            <div class="text medium light">{{ 'RECLASSIFICATION.COMMON.TITLE' | translate }}</div>
+            <div class="text large bold">
+              {{ 'RECLASSIFICATION.ADD_STEP.TITLE' | translate }}
+            </div>
+            <div class="form-group">
+              @if (projectUnits) {
+                <vitamui-library-filing-plan [mode]="FilingPlanMode.SOLO" [formControl]="selectedTargetUnits" [dataSource]="projectUnits">
+                </vitamui-library-filing-plan>
+              }
+            </div>
+            <div class="actions">
+              <button type="submit" class="btn primary" [disabled]="lastStepInvalid() || isDisabledButton">
+                {{ 'COMMON.CONFIRM' | translate }}
+              </button>
+              <button type="button" class="btn link cancel" (click)="onCancel()">
+                {{ 'COMMON.UNDO' | translate }}
+              </button>
+            </div>
+            <button type="button" class="btn link" cdkStepperPrevious>
+              <i class="vitamui-icon vitamui-icon-chevron-left"></i>
+              <span>{{ 'COMMON.BACK' | translate }}</span>
+            </button>
+          </div>
+        </ng-container>
+      </ng-container>
+    </cdk-step>
+  </vitamui-common-stepper>
+</form>
