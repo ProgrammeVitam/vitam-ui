@@ -44,7 +44,7 @@
   roles:
     - mongodb_upgrade_package
   vars:
-    mongo_version: 8.0.3
+    mongo_version: 8.0.4
     mongo_primary: false
   serial: 1
 
@@ -53,7 +53,7 @@
   roles:
     - mongodb_upgrade_package
   vars:
-    mongo_version: 8.0.3
+    mongo_version: 8.0.4
     mongo_primary: true
   serial: 1
 
