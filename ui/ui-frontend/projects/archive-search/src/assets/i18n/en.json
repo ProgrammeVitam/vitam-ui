@@ -230,8 +230,7 @@
       "GUID_ALREADY_EXISTS": "The technical identifier already exists",
       "ATTACHMENT_ALREADY_EXISTS": "The attachment already exists",
       "RECLASSIFICATION_TOGGLE_TREE_PLAN": "Trees & Plans",
-      "RECLASSIFICATION_TOGGLE_UA_ID": "Archive unit Identifier",
-      "NEW_ATTACHMENT_POSITION": "New attachment position"
+      "RECLASSIFICATION_TOGGLE_UA_ID": "Archive unit Identifier"
     },
     "FIRST_STEP": {
       "SUBTITLE": "Reclassification action",

@@ -386,8 +386,7 @@
       "GUID_ALREADY_EXISTS": "L'identifiant technique n'existe pas",
       "ATTACHMENT_ALREADY_EXISTS": "Le rattachement existe déjà",
       "RECLASSIFICATION_TOGGLE_TREE_PLAN": "Arbres & Plans",
-      "RECLASSIFICATION_TOGGLE_UA_ID": "Identifiant d'unité archivistique",
-      "NEW_ATTACHMENT_POSITION": "Nouvelle position de rattachement"
+      "RECLASSIFICATION_TOGGLE_UA_ID": "Identifiant d'unité archivistique"
     },
     "FIRST_STEP": {
       "SUBTITLE": "Action de reclassement",
