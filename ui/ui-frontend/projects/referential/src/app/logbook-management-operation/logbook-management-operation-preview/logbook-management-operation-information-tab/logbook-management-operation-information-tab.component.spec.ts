@@ -66,6 +66,8 @@ describe('LogbookManagementOperationInformationTabComponent', () => {
       processType: 'TRACEABILITY',
       stepByStep: true,
       stepStatus: 'KO',
+      stepCancellable: false,
+      forcedCancellation: false,
     };
     await TestBed.configureTestingModule({
       declarations: [LogbookManagementOperationInformationTabComponent, TestLogbookInformationComponent],

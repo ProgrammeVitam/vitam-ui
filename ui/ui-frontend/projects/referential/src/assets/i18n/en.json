@@ -272,10 +272,11 @@
     "WARNING": "Warning"
   },
   "LOGBOOK_OPERATION_INFORMATIONS": {
+    "PAUSE_STEP": "Pause the current operation",
     "NEXT_STEP": "Go to the next step",
-    "RESUME_OPERATION": "Finalize the opération",
+    "RESUME_OPERATION": "Finalize the operation",
     "REPLAY_STEP": "Replay the step",
-    "CANCEL_OPERATION": "Cancel the opération",
+    "CANCEL_OPERATION": "Cancel the operation",
     "INFORMATIONS": "Informations",
     "TICKETS": "Tickets",
     "DETAILS": "Details",
@@ -293,9 +294,16 @@
   "LOGBOOK_MANAGEMENT_OPERATION_ACTIONS": {
     "CANCEL_MESSAGE": " The request for a change of status has been taken into account",
     "POP_UP_SECOND_TITLE": "Do you confirm that you want to apply for a change of status :",
-    "POP_UP_NEXT_MESSAGE": "Update the Operation ",
-    "POP_UP_CANCEL_MESSAGE": "Cancel the Operation ",
-    "POP_UP_REPLAY_MESSAGE": "Replay the Operation ",
+    "POP_UP_NEXT_MESSAGE": "Update the Operation",
+    "POP_UP_CANCEL_MESSAGE": "Forcefully terminate the operation",
+    "POP_UP_CANCEL_TITLE": "Forcefully terminate the operation",
+    "POP_UP_CANCEL_FORCED_MODE_MESSAGE": "Warning: You are requesting the cancellation of the operation at a stage where the intervention of your technical administrator or platform support is required. If you confirm this action, the operation will end in error, and the elements needed for problem analysis will be destroyed. You must enter a reason to indicate the justification for this forced stop action.",
+    "POP_UP_CANCEL_NON_FORCED_MODE_MESSAGE": "Warning: The operation will be terminated in ERROR.",
+    "POP_UP_CANCEL_FORCED_MODE_REASON": "You must enter a reason to indicate the cause of this forced shutdown.",
+    "POP_UP_CANCEL_FORCED_MODE_REASON_PLACEHOLDER": "Reason",
+    "POP_UP_CANCEL_ACTION": "Forcefully terminate the operation",
+    "POP_UP_REPLAY_MESSAGE": "Replay the Operation",
+    "POP_UP_REPLAY_SECOND_MESSAGE": "Have you received confirmation that the technical issue causing the critical pause has been resolved before restarting the operation?",
     "POP_UP_RESUME_MESSAGE": "Resume the Operation "
   },
   "ACCESSION_REGISTER": {
