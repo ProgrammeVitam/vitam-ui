@@ -36,10 +36,9 @@
  */
 import { Injectable } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn } from '@angular/forms';
-import { cloneDeep } from 'lodash-es';
 import { of, timer } from 'rxjs';
 import { map, switchMap, take } from 'rxjs/operators';
-import { SearchCriteriaDto } from 'vitamui-library';
+import { SearchCriteriaDto, CriteriaOperator, SearchCriteriaTypeEnum, CriteriaDataType } from 'vitamui-library';
 import { ArchiveSharedDataService } from '../../core/archive-shared-data.service';
 import { ArchiveService } from '../archive.service';
 
@@ -77,19 +76,24 @@ export class ArchiveUnitValidatorService {
     return (control: AbstractControl) => {
       const auditExists: any = {};
       auditExists[existTag] = true;
-      const criteria = cloneDeep(criteriaDto);
-      criteria.pageNumber = 0;
-      criteria.criteriaList.forEach((v) =>
-        v.values.forEach((criteriaValue) => {
-          criteriaValue.id = control.value;
-          criteriaValue.value = control.value;
-        }),
-      );
+      const searchCriteria: SearchCriteriaDto = {
+        pageNumber: criteriaDto.pageNumber,
+        size: criteriaDto.size,
+        criteriaList: [
+          {
+            criteria: 'GUID',
+            operator: CriteriaOperator.EQ,
+            category: SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.FIELDS],
+            dataType: CriteriaDataType.STRING,
+            values: [{ value: control.value, id: control.value }],
+          },
+        ],
+      };
       const result = timer(this.debounceTime).pipe(
         switchMap(() =>
           control.value !== null
             ? this.archiveService
-                .searchArchiveUnitsByCriteria(criteria)
+                .searchArchiveUnitsByCriteria(searchCriteria)
                 .toPromise()
                 .then((data) => {
                   if (data.totalResults === 1) {
