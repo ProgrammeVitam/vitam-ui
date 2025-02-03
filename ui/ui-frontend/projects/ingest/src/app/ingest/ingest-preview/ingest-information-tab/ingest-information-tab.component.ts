@@ -40,9 +40,14 @@ import {
   EvDetDataDeflateJson,
   ingestHasEvents,
   ingestLastEvent,
+  IngestStatus,
   ingestStatus,
   LogbookOperation,
 } from '../../../models/logbook-event.interface';
+
+import { ApplicationId, ApplicationService } from 'vitamui-library';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-ingest-information-tab',
@@ -54,7 +59,7 @@ export class IngestInformationTabComponent implements OnChanges {
   evDetDataDeflated: EvDetDataDeflateJson;
   agIdExtDeflated: AgIdExtDeflateJson;
 
-  constructor() {}
+  constructor(private applicationService: ApplicationService) {}
 
   ngOnChanges() {
     this.evDetDataDeflated = this.deflateJsonEvDetData(this.ingest);
@@ -65,16 +70,26 @@ export class IngestInformationTabComponent implements OnChanges {
     return ingestHasEvents(this.ingest);
   }
 
-  ingestMessage(ingest: LogbookOperation): string {
-    return ingestHasEvents(ingest) ? ingestLastEvent(ingest).outMessg : ingest.outMessg;
+  ingestMessage(): string {
+    return ingestHasEvents(this.ingest) ? ingestLastEvent(this.ingest).outMessg : this.ingest.outMessg;
   }
 
   ingestEndDate(ingest: LogbookOperation): string {
     return ingestHasEvents(ingest) ? ingestLastEvent(ingest).evDateTime : ingest.evDateTime;
   }
 
-  getIngestStatus(ingest: LogbookOperation): string {
-    return ingestStatus(ingest);
+  getIngestStatusClass(): string {
+    switch (ingestStatus(this.ingest)) {
+      case IngestStatus.OK:
+        return 'success';
+      case IngestStatus.WARNING:
+        return 'warning';
+      case IngestStatus.KO:
+      case IngestStatus.FATAL:
+        return 'danger';
+      case IngestStatus.IN_PROGRESS:
+        return 'light';
+    }
   }
 
   private deflateJsonEvDetData(element: LogbookOperation): EvDetDataDeflateJson {
@@ -99,5 +114,11 @@ export class IngestInformationTabComponent implements OnChanges {
       element.agIdExt = JSON.parse(element.agIdExt);
     }
     return element.agIdExt;
+  }
+
+  getOpiUrl$(): Observable<string> {
+    return this.applicationService
+      .getUrl$({ appId: ApplicationId.ARCHIVE_SEARCH_APP })
+      .pipe(map((appUrl) => `${appUrl}?guidopi=${this.ingest.id}`));
   }
 }

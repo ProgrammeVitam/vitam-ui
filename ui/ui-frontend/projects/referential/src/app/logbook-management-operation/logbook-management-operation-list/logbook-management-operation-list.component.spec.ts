@@ -118,6 +118,8 @@ describe('LogbookManagementOperationListComponent', () => {
     fixture = TestBed.createComponent(LogbookManagementOperationListComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+
+    component.searchOperationsList({});
   });
 
   it('should create', () => {

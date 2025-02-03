@@ -112,7 +112,6 @@ export * from './app/modules/components/common-progress-bar/common-progress-bar.
 export * from './app/modules/components/common-tooltip/common-tooltip.component';
 export * from './app/modules/components/common-tooltip/tooltip.directive';
 export * from './app/modules/components/common-tooltip/common-tooltip.module';
-export * from './app/modules/components/data/data.module';
 export * from './app/modules/components/datepicker/datepicker.module';
 export * from './app/modules/components/file-selector/file-selector.component';
 export * from './app/modules/components/footer/footer.component';

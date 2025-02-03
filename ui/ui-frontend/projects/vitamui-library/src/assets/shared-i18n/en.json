@@ -36,7 +36,8 @@
     "HISTORY": {
       "NO_HISTORY": "No history",
       "OPERATIONS": "Logbook"
-    }
+    },
+    "COPY": "Copy"
   },
   "DATE": {
     "DATE": "Date",

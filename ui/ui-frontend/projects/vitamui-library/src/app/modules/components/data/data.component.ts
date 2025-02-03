@@ -35,14 +35,32 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, Input } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { PipesModule } from '../../pipes/pipes.module';
+import { CommonTooltipModule } from '../common-tooltip/common-tooltip.module';
+import { Clipboard } from '@angular/cdk/clipboard';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'vitamui-common-data',
   templateUrl: './data.component.html',
   styleUrls: ['./data.component.scss'],
+  standalone: true,
+  imports: [CommonModule, PipesModule, CommonTooltipModule, TranslateModule],
 })
 export class DataComponent {
   @Input() label: string;
   @Input() value: string | string[];
+  @Input() valueCss?: string;
+  @Input() valueUrl?: string;
+  @Input() valueTooltip?: string;
+  @Input() canCopyValue = false;
+
+  constructor(private clipboard: Clipboard) {}
+
+  copyToClipboard(text: string) {
+    this.clipboard.copy(text);
+  }
+
   readonly isArray = Array.isArray;
 }

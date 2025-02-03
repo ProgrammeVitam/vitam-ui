@@ -37,9 +37,11 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
+import { ApplicationService } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 
 import { IngestInformationTabComponent } from './ingest-information-tab.component';
+import { of } from 'rxjs';
 
 describe('IngestInformationTabComponent', () => {
   let component: IngestInformationTabComponent;
@@ -50,6 +52,7 @@ describe('IngestInformationTabComponent', () => {
       declarations: [IngestInformationTabComponent],
       imports: [TranslateModule.forRoot(), VitamUICommonTestModule],
       schemas: [NO_ERRORS_SCHEMA],
+      providers: [{ provide: ApplicationService, useValue: { getUrl$: () => of('') } }],
     }).compileComponents();
   });
 

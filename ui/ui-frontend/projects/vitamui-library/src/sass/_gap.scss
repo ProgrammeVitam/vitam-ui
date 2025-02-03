@@ -15,10 +15,14 @@
 }
 
 @each $size, $length in $spacers {
-  .gap-#{$size} {
+  .gap-#{$size}:not(.row) {
     @include gap($length);
   }
-  .hgap-#{$size} {
+  .hgap-#{$size}:not(.row) {
     @include hgap($length);
+  }
+
+  .gap-#{$size}.row {
+    row-gap: $length;
   }
 }

@@ -172,6 +172,10 @@ export class ApplicationService {
     });
   }
 
+  public getUrl$({ appId, tenantIdentifier }: { appId: ApplicationId; tenantIdentifier?: number }): Observable<string> {
+    return this.getAppById(appId).pipe(map((app) => this.getApplicationUrl(app, tenantIdentifier)));
+  }
+
   public getApplicationUrl(app: Application, tenantIdentifier?: number): string {
     if (!tenantIdentifier) {
       tenantIdentifier = this.tenantService.getSelectedTenant().identifier;

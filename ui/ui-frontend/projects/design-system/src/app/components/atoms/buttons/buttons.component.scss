@@ -1,9 +1,13 @@
 :host {
-  display: flex;
+  .row {
+    width: fit-content;
+    text-align: center;
 
-  button {
-    margin: 1.5rem;
+    .col {
+      align-content: center;
+    }
   }
+
   .contrast-container {
     background-color: var(--vitamui-primary-600);
     color: var(--vitamui-white);

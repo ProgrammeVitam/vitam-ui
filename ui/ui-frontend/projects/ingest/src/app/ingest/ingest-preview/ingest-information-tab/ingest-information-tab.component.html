@@ -1,77 +1,61 @@
-<div *ngIf="ingest">
-  <br />
-  <div class="row">
-    <div class="col-6 mb-3">
-      <label>{{ 'INGEST_DETAIL.DEPOSIT_ID' | translate }}</label>
-      <div>{{ ingest?.obIdIn }}</div>
-    </div>
+<div *ngIf="ingest" class="gap-2">
+  <vitamui-common-data [label]="'INGEST_DETAIL.DEPOSIT_ID' | translate" [value]="ingest.obIdIn"></vitamui-common-data>
+  <vitamui-common-data [label]="'INGEST_DETAIL.NAME' | translate" [value]="evDetDataDeflated?.EvDetailReq"></vitamui-common-data>
+  <vitamui-common-data
+    [label]="'INGEST_DETAIL.OPERATION_ID' | translate"
+    [value]="ingest.id"
+    [valueUrl]="getOpiUrl$() | async"
+    [valueTooltip]="'INGEST_DETAIL.OPERATION_ID_TOOLTIP' | translate"
+    [canCopyValue]="true"
+  ></vitamui-common-data>
+
+  <div class="row gap-2">
+    <vitamui-common-data
+      class="col-6"
+      [label]="'INGEST_DETAIL.START_DATE' | translate"
+      [value]="ingest?.evDateTime | dateTime: 'dd/MM/yyyy'"
+    ></vitamui-common-data>
+    <vitamui-common-data
+      class="col-6"
+      [label]="'INGEST_DETAIL.END_DATE' | translate"
+      [value]="ingestEndDate(ingest) | dateTime: 'dd/MM/yyyy'"
+    ></vitamui-common-data>
+
+    <vitamui-common-data
+      class="col-6"
+      [label]="'INGEST_DETAIL.PRODUCT_SERVICE' | translate"
+      [value]="agIdExtDeflated?.originatingAgency"
+    ></vitamui-common-data>
+    <vitamui-common-data
+      class="col-6"
+      [label]="'INGEST_DETAIL.VERSATILE_SERVICE' | translate"
+      [value]="agIdExtDeflated?.submissionAgency"
+    ></vitamui-common-data>
+
+    <vitamui-common-data
+      class="col-6"
+      [label]="'INGEST_DETAIL.ENTRY_CONTRACT' | translate"
+      [value]="evDetDataDeflated?.ArchivalAgreement"
+    ></vitamui-common-data>
+    <vitamui-common-data
+      class="col-6"
+      [label]="'INGEST_DETAIL.ARCHIVING_PROFIL' | translate"
+      [value]="evDetDataDeflated?.ArchivalProfile"
+    ></vitamui-common-data>
   </div>
 
-  <div class="row">
-    <div class="col-6 mb-3">
-      <label>{{ 'INGEST_DETAIL.NAME' | translate }}</label>
-      <div>{{ evDetDataDeflated?.EvDetailReq }}</div>
-    </div>
-  </div>
+  <vitamui-common-data [label]="'INGEST_DETAIL.STATUS' | translate" [value]="evDetDataDeflated?.LegalStatus"></vitamui-common-data>
 
-  <div class="row">
-    <div class="col-12 mb-3">
-      <label>{{ 'INGEST_DETAIL.OPERATION_ID' | translate }}</label>
-      <div>{{ ingest?.id }}</div>
-    </div>
-    <br />
+  <vitamui-common-data
+    [label]="'INGEST_DETAIL.MESSAGE' | translate"
+    [value]="ingestMessage()"
+    [valueCss]="'bold ' + getIngestStatusClass()"
+  ></vitamui-common-data>
 
-    <div class="col-6 mb-3">
-      <label>{{ 'INGEST_DETAIL.START_DATE' | translate }}</label>
-      <div>{{ ingest?.evDateTime | dateTime: 'dd/MM/yyyy' }}</div>
-    </div>
-    <div class="col-6 mb-3">
-      <label>{{ 'INGEST_DETAIL.END_DATE' | translate }}</label>
-      <div>{{ ingestEndDate(ingest) | dateTime: 'dd/MM/yyyy' }}</div>
-    </div>
-    <br />
-    <div class="col-6 mb-3">
-      <label>{{ 'INGEST_DETAIL.PRODUCT_SERVICE' | translate }}</label>
-      <div>{{ agIdExtDeflated?.originatingAgency }}</div>
-    </div>
-    <div class="col-6 mb-3">
-      <label>{{ 'INGEST_DETAIL.VERSATILE_SERVICE' | translate }}</label>
-      <div>{{ agIdExtDeflated?.submissionAgency }}</div>
-    </div>
-    <br />
-    <div class="col-6 mb-3">
-      <label>{{ 'INGEST_DETAIL.ENTRY_CONTRACT' | translate }}</label>
-      <div>{{ evDetDataDeflated?.ArchivalAgreement }}</div>
-    </div>
-    <div class="col-6 mb-3">
-      <label>{{ 'INGEST_DETAIL.ARCHIVING_PROFIL' | translate }}</label>
-      <div>{{ evDetDataDeflated?.ArchivalProfile }}</div>
-    </div>
-    <br />
-    <div class="col-6 mb-3">
-      <label>{{ 'INGEST_DETAIL.STATUS' | translate }}</label>
-      <div>{{ evDetDataDeflated?.LegalStatus }}</div>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-12 mb-3">
-      <label>{{ 'INGEST_DETAIL.MESSAGE' | translate }}</label>
-      <div class="vitamui-snack-bar-content" [ngSwitch]="getIngestStatus(ingest)">
-        <div *ngSwitchCase="'OK'" class="text success bold">{{ ingestMessage(ingest) }}</div>
-        <div *ngSwitchCase="'WARNING'" class="text warning bold">{{ ingestMessage(ingest) }}</div>
-        <div *ngSwitchCase="'KO'" class="text danger bold">{{ ingestMessage(ingest) }}</div>
-        <div *ngSwitchCase="'FATAL'" class="text danger bold">{{ ingestMessage(ingest) }}</div>
-        <div *ngSwitchCase="'En cours'" class="text light bold">{{ ingestMessage(ingest) }}</div>
-      </div>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-12 mb-3">
-      <label>{{ 'INGEST_DETAIL.OPERATION_DETAILS' | translate }}</label>
-      <div *ngIf="hasEvent()">
-        <app-ingest-event-detail [ingest]="ingest"></app-ingest-event-detail>
-      </div>
+  <div class="w-100">
+    <label class="text caption bold primary">{{ 'INGEST_DETAIL.OPERATION_DETAILS' | translate }}</label>
+    <div *ngIf="hasEvent()">
+      <app-ingest-event-detail [ingest]="ingest"></app-ingest-event-detail>
     </div>
   </div>
 </div>
