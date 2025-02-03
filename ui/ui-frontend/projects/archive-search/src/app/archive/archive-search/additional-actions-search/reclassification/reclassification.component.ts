@@ -210,6 +210,8 @@ export class ReclassificationComponent implements OnInit, OnDestroy {
       this.totalChilds +
       this.space +
       this.translateService.instant('RECLASSIFICATION.FIRST_STEP.CHILDS');
+
+    this.actions.find((action) => action.key === PULL).disabled = !this.archiveUnitAllunitup.length;
   }
 
   public getStepCount() {
