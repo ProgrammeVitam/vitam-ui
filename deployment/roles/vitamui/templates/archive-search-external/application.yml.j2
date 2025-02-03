@@ -10,6 +10,9 @@ spring:
         healthCheckUrl: http://${management.server.address}:${management.server.port}/actuator/health
         tags: {{ consul_tags }}
         instanceId: {{ vitamui_struct.vitamui_component }}-${server.port}-${spring.cloud.client.hostname}
+  data:
+    mongodb:
+      uri: mongodb://{{ mongodb.archivesearch.user }}:{{ mongodb.archivesearch.password }}@{{ mongodb.host }}:{{ mongodb.mongod_port }}/{{ mongodb.archivesearch.db }}?replicaSet={{ mongod_replicaset_name }}&connectTimeoutMS={{ mongod_client_connect_timeout_ms }}
 
 server:
   address: {{ ip_service }}
@@ -70,17 +73,6 @@ archive-search-external:
         key-password: {{ password_truststore }}
       hostname-verification: false
 {% endif %}
-  archive-search-internal-client:
-    server-host: {{ vitamui.archive_search_internal.host }}
-    server-port: {{ vitamui.archive_search_internal.port_service }}
-{% if vitamui.archive_search_internal.secure | default(secure) | bool == true %}
-    secure: {{ vitamui.archive_search_internal.secure | default(secure) | lower }}
-    ssl-configuration:
-      truststore:
-        key-path: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
-        key-password: {{ password_truststore }}
-      hostname-verification: false
-{% endif %}
 
 {% if opentracing.jaeger.enabled | default(false) | bool %}
 opentracing:
@@ -92,6 +84,8 @@ opentracing:
       host: {{ opentracing.jaeger.udp_sender.host }}
       port: {{ opentracing.jaeger.udp_sender.port }}
 {% endif %}
+
+ontologies_file_path: {{ vitamui_folder_data }}/external_ontology_fields.json
 
 logging:
   config: {{ vitamui_folder_conf }}/logback.xml

@@ -13,6 +13,11 @@ spring:
         enabled: false
         register: false
 
+
+  data:
+    mongodb:
+      uri: mongodb://mongod_dbuser_archivesearch:mongod_dbpwd_archivesearch@localhost:27018/archivesearch?connectTimeoutMS=2000
+
 multipart:
   enabled: true
 
@@ -48,10 +53,6 @@ archive-search-external:
     server-host: localhost
     server-port: 7083
     secure: false
-  archive-search-internal-client:
-    server-host: localhost
-    server-port: 7089
-    secure: false
 
 # Jaeger
 opentracing:
@@ -82,3 +83,7 @@ server:
   ssl:
     client-auth: want
     client-certificate-header-name: x-ssl-cert
+
+
+# external ontology file path
+ontologies_file_path: "src/main/resources/ontology/external_ontology_fields.json"

@@ -941,15 +941,15 @@ sous-rôles) qui donnent accès à des fonctions protégées du service. Ces “
 corps de la méthode par le contexte de sécurité.
 
 ```java
-    @Secured(ROLE_CREATE_XXX)
-public MyDto create(final @Valid @RequestBody MyDto dto){
-    if(SecurityContext.hasRole(ROLE_CREATE_XXX_YYY){
-    setProperty(...)
+@Secured(ROLE_CREATE_XXX)
+public MyDto create(final @Valid @RequestBody MyDto dto) {
+    if (SecurityContext.hasRole(ROLE_CREATE_XXX_YYY) {
+        setProperty(...)
     }
     else{
-    return HTTP.403;.
+        return HTTP .403;.
     }
-    }
+}
 ```
 
 Dans l'exemple ci-dessus :
@@ -1014,7 +1014,7 @@ Les tableaux ci-dessous indiquent les droits d'un utilisateur en fonction du niv
   N-1 :
 
   | Niveau cible   | N+1   | N       |   N-1   |
-    | -------------- | ----- | ------- | ------- |
+  | -------------- | ----- | ------- | ------- |
   | Créer          | Non   | Non     | Oui     |
   | Modifier       | Non   | Non     | Oui     |
   | Lire           | Non   | Oui (1) | Oui     |
@@ -1026,7 +1026,7 @@ Les tableaux ci-dessous indiquent les droits d'un utilisateur en fonction du niv
 * Matrice des droits d'un utilisateur de niveau N pour réaliser des actions sur un profil de niveau cible N+1, N, N-1 :
 
   | Niveau cible   | N+1   | N       | N-1   |
-    | -------------- | ----  | ------- | ----- |
+  | -------------- | ----  | ------- | ----- |
   | Créer          | Non   | Non     | Oui   |
   | Modifier       | Non   | Non     | Oui   |
   | Lire           | Non   | Oui (1) | Oui   |
@@ -1041,7 +1041,7 @@ Les tableaux ci-dessous indiquent les droits d'un utilisateur en fonction du niv
   N+1, N, N-1 :
 
   | Niveau cible   | N+1   | N       | N-1   |
-    | -------------- | ----- | ------- | ----- |
+  | -------------- | ----- | ------- | ----- |
   | Créer          | Non   | Non     | Oui   |
   | Modifier       | Non   | Non     | Oui   |
   | Lire           | Non   | Oui (1) | Oui   |
@@ -1055,7 +1055,7 @@ Les tableaux ci-dessous indiquent les droits d'un utilisateur en fonction du niv
   niveau cible N+1, N, N-1 :
 
   | Niveau cible    | N+1   | N     | N-1   |
-    | --------------- | ----- | ----- | ----- |
+  | --------------- | ----- | ----- | ----- |
   | Créer           | -     | Oui   | Oui   |
   | Modifier        | -     | Oui   | Oui   |
   | Lire            | -     | Oui   | Oui   |
@@ -1314,9 +1314,9 @@ Au niveau du fichier ts :
 
 ```js
 dataToSearchWithRules = {
-appId: "ApplicationId",
-tenantIdentifier: 1,
-role: 'ROLE_ARCHIVE_SEARCH_GET_ARCHIVE_SEARCH',
+    appId: "ApplicationId",
+    tenantIdentifier: 1,
+    role: 'ROLE_ARCHIVE_SEARCH_GET_ARCHIVE_SEARCH',
 };
 ```
 
@@ -1546,7 +1546,7 @@ d'ajouter ces ontologies dans la base de données de Vitam.
 Après l'installation de VitamUI le fichier des ontologies sera placé dans les deux répertoires (au niveau de la
 machine) :
 
-* vitamui/conf/archive-search-internal/
+* vitamui/conf/archive-search-external/
 * vitamui/conf/collect-internal/
 
 Ensuite, s'il y a un besoin d'ajouter des nouvelles ontologies, il suffit juste de modifier le fichier directement au
@@ -1738,7 +1738,7 @@ La journalisation des événements VITAMUI a pour objectifs :
 * GraphicIdentity (Embarqué)
 
   | Nom                      | Type                | Contrainte(s)              | Remarque(s)         |
-    | ------------------------ | ------------------- | -------------------------- | ------------------- |
+  | ------------------------ | ------------------- | -------------------------- | ------------------- |
   | hasCustomGraphicIdentity | boolean             |                            |                     |
   | logoDataBase64           | String              |                            |                     |
   | logoHeaderBase64         | String              |                            | Base64 encoded logo |
@@ -1749,7 +1749,7 @@ La journalisation des événements VITAMUI a pour objectifs :
 * themeColors
 
   | Nom                   | Type   | Contrainte(s)          | Remarque(s) |
-    | --------------------- | ------ | ---------------------- | ----------- |
+  | --------------------- | ------ | ---------------------- | ----------- |
   | vitamui-primary       | String | hexadecimal color like |             |
   | vitamui-secondary     | String | hexadecimal color like |             |
   | vitamui-tertiary      | String | hexadecimal color like |             |
@@ -1798,7 +1798,7 @@ La collection qui définit un contrat d'accès par défaut
 * ParameterDto (Embarqué)
 
   | Nom   | Type   | Contrainte(s) | Remarque(s)                    |
-    | ----- | ------ | ------------- | ------------------------------ |
+  | ----- | ------ | ------------- | ------------------------------ |
   | key   | String |               | exemple: PARAM_ACCESS_CONTRACT |
   | value | String |               | exemple: AC-000001             |
   | key   | String |               | exemple: PARAM_BULK_OPERATIONS_THRESHOLD |
@@ -1838,7 +1838,7 @@ app1:tenant2), profil(app2:tenant1)” est autorisé.
 * Address (Embarqué)
 
   | Nom     | Type   | Contrainte(s) | Remarque(s) |
-    | ------- | ------ | ------------- | ----------- |
+  | ------- | ------ | ------------- | ----------- |
   | street  | String | maximum = 250 |             |
   | zipCode | String | maximum = 10  |             |
   | city    | String | maximum = 100 |             |
@@ -1988,14 +1988,14 @@ profils).
 * AnalyticsDto (Embarqué)
 
   | Nom                  | Type                    | Contrainte(s) | Remarque(s) |
-    | -------------------- | ----------------------- | ------------- | ----------- |
+  | -------------------- | ----------------------- | ------------- | ----------- |
   | applications         | ApplicationAnalyticsDto |               |             |
   | lastTenantIdentifier | Integer                 |               |             |
 
 * ApplicationAnalyticsDto (Embarqué)
 
   | Nom           | Type           | Contrainte(s) | Remarque(s)                     |
-    | ------------- | -------------- | ------------- | ------------------------------- |
+  | ------------- | -------------- | ------------- | ------------------------------- |
   | applicationId | String         |               |                                 |
   | accessCounter | int            |               |                                 |
   | lastAccess    | OffsetDateTime |               | ex: YYYY-MM-ddTHH:mm:ss.ssssssZ |
@@ -2075,13 +2075,13 @@ archives.
 * SearchCriteriasDto (Embarqué)
 
   | Nom          | Type                              | Contrainte(s) | Remarque(s)                                                                      |
-    | ------------ | --------------------------------- | ------------- | -------------------------------------------------------------------------------- |
+  | ------------ | --------------------------------- | ------------- | -------------------------------------------------------------------------------- |
   | nodes        | List<_String_>                    |               | liste des identifiants des noeuds d'arbre de positionnement/ plans de classement |
   | criteriaList | List<_SearchCriteriaElementsDto_> |               | liste des critères de recherches sauvegardées                                    |
 
 * SearchCriteriaElementsDto (Embarqué)
 
   | Nom      | Type           | Contrainte(s) | Remarque(s)                                                          |
-    | -------- | -------------- | ------------- | -------------------------------------------------------------------- |
+  | -------- | -------------- | ------------- | -------------------------------------------------------------------- |
   | criteria | String         |               | le nom du critère de recherche (eg: Title, StartDate, #opi, #id ...) |
   | values   | List<_String_> |               | liste des valeurs du critère de filtre                               |

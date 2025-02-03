@@ -57,7 +57,6 @@ pipeline {
                         '$SERVICE_DOCKER_PUSH_URL/vitamui/ingest-internal',
                         '$SERVICE_DOCKER_PUSH_URL/vitamui/ingest-external',
                         '$SERVICE_DOCKER_PUSH_URL/vitamui/archive-search-external',
-                        '$SERVICE_DOCKER_PUSH_URL/vitamui/archive-search-internal',
                         '$SERVICE_DOCKER_PUSH_URL/vitamui/pastis-external',
                         '$SERVICE_DOCKER_PUSH_URL/vitamui/collect-external',
                         '$SERVICE_DOCKER_PUSH_URL/vitamui/collect-internal',

@@ -36,10 +36,18 @@
  */
 package fr.gouv.vitamui.archives.search.external.server.service;
 
-import fr.gouv.archive.internal.client.SearchCriteriaHistoryInternalRestClient;
 import fr.gouv.vitamui.archives.search.external.server.rest.SearchCriteriaHistoryExternalController;
+import fr.gouv.vitamui.archives.search.external.server.searchcriteria.converter.SearchCriteriaHistoryConverter;
+import fr.gouv.vitamui.archives.search.external.server.searchcriteria.dao.SearchCriteriaHistoryRepository;
+import fr.gouv.vitamui.archives.search.external.server.searchcriteria.domain.SearchCriteriaHistory;
+import fr.gouv.vitamui.commons.api.converter.Converter;
+import fr.gouv.vitamui.commons.api.domain.Criterion;
+import fr.gouv.vitamui.commons.api.domain.CriterionOperator;
+import fr.gouv.vitamui.commons.api.domain.QueryDto;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaHistoryDto;
-import fr.gouv.vitamui.iam.security.client.AbstractResourceClientService;
+import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
+import fr.gouv.vitamui.commons.mongo.service.VitamUICrudService;
+import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import lombok.Getter;
 import lombok.Setter;
@@ -47,63 +55,89 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * The service to read, create and delete the search criterias.
- *
- *
  */
 @Getter
 @Setter
 @Service
 public class SearchCriteriaHistoryExternalService
-    extends AbstractResourceClientService<SearchCriteriaHistoryDto, SearchCriteriaHistoryDto> {
+    extends VitamUICrudService<SearchCriteriaHistoryDto, SearchCriteriaHistory> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SearchCriteriaHistoryExternalController.class);
 
-    private final SearchCriteriaHistoryInternalRestClient searchCriteriaHistoryInternalRestClient;
+    private final SearchCriteriaHistoryRepository searchCriteriaHistoryRepo;
+
+    private final SearchCriteriaHistoryConverter searchCriteriaHistoryConverter;
+
+    private final ExternalSecurityService externalSecurityService;
 
     @Autowired
     public SearchCriteriaHistoryExternalService(
-        final SearchCriteriaHistoryInternalRestClient searchCriteriaHistoryInternalRestClient,
-        final ExternalSecurityService externalSecurityService
+        final CustomSequenceRepository sequenceRepository,
+        final SearchCriteriaHistoryRepository searchCriteriaHistoryRepo,
+        final SearchCriteriaHistoryConverter searchCriteriaHistoryConverter,
+        ExternalSecurityService externalSecurityService
     ) {
-        super(externalSecurityService);
-        this.searchCriteriaHistoryInternalRestClient = searchCriteriaHistoryInternalRestClient;
+        super(sequenceRepository);
+        this.searchCriteriaHistoryRepo = searchCriteriaHistoryRepo;
+        this.searchCriteriaHistoryConverter = searchCriteriaHistoryConverter;
+        this.externalSecurityService = externalSecurityService;
     }
 
-    public List<SearchCriteriaHistoryDto> getSearchCriteriaHistory() {
-        return searchCriteriaHistoryInternalRestClient.getSearchCriteriaHistory(getInternalHttpContext());
-    }
+    /**
+     * Retrieve the search criteria history of the specific authentified user.
+     *
+     * @return
+     */
+    public List<SearchCriteriaHistoryDto> getSearchCriteriaHistoryDtos() {
+        LOGGER.debug("getSearchCriteriaHistoryDtos");
+        AuthUserDto authUserDto = externalSecurityService.getUser();
 
-    @Override
-    public SearchCriteriaHistoryDto getOne(final String id, final Optional<String> embedded) {
-        return super.getOne(id, embedded);
-    }
-
-    @Override
-    @Transactional
-    public SearchCriteriaHistoryDto create(final SearchCriteriaHistoryDto dto) {
-        return super.create(dto);
-    }
-
-    @Override
-    public void delete(final String id) {
-        super.delete(id);
+        LOGGER.debug("Get the search history for user : {}", authUserDto.getIdentifier());
+        QueryDto criteria = new QueryDto();
+        criteria.addCriterion(new Criterion("userId", authUserDto.getIdentifier(), CriterionOperator.EQUALS));
+        return this.getAll(criteria);
     }
 
     @Override
-    public SearchCriteriaHistoryDto update(final SearchCriteriaHistoryDto dto) {
-        LOGGER.debug("service external = Update SearchCriteriaHistory with id :{}", dto.getId());
-        return super.update(dto);
+    protected void beforeCreate(final SearchCriteriaHistoryDto dto) {
+        AuthUserDto authUserDto = externalSecurityService.getUser();
+        dto.setUserId(authUserDto.getIdentifier());
+        List<SearchCriteriaHistoryDto> list = getSearchCriteriaHistoryDtos();
+        Assert.isTrue(
+            list != null && list.size() < 10,
+            "L’enregistrement n'est pas possible car vous avez atteint le nombre limite de recherches enregistrées. Veuillez supprimer au moins une de vos recherches."
+        );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected SearchCriteriaHistoryRepository getRepository() {
+        return searchCriteriaHistoryRepo;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected Class<SearchCriteriaHistory> getEntityClass() {
+        return SearchCriteriaHistory.class;
     }
 
     @Override
-    protected SearchCriteriaHistoryInternalRestClient getClient() {
-        return searchCriteriaHistoryInternalRestClient;
+    protected String getObjectName() {
+        return "searchCriteriaHistory";
+    }
+
+    @Override
+    protected Converter<SearchCriteriaHistoryDto, SearchCriteriaHistory> getConverter() {
+        return searchCriteriaHistoryConverter;
     }
 }

@@ -19,7 +19,6 @@ Par défaut les services java utilisent 512Mo de Ram et on a donc pour tous les 
 * iam-external 512Mo
 * iam-internal 512Mo
 * archive-search-external 512Mo
-* archive-search-internal 512Mo
 * ui-archive-search 512Mo
 * ingest-internal 512Mo
 * ingest-external 512Mo

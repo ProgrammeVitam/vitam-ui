@@ -22,10 +22,10 @@ archive-search-external:
     server-host: localhost
     server-port: 7083
     secure: false
-  archive-search-internal-client:
-    server-host: localhost
-    server-port: 7089
-    secure: false
+
 
 swagger:
   layer: api-external
+  
+# external ontologie file path
+ontologies_file_path: "src/test/resources/ontologies/external_ontology_fields.json"

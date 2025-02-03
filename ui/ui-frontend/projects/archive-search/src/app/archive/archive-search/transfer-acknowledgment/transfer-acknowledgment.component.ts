@@ -36,9 +36,9 @@
  */
 import { Component, Inject, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import {
+  MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA,
   MatLegacyDialog as MatDialog,
   MatLegacyDialogRef as MatDialogRef,
-  MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA,
 } from '@angular/material/legacy-dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
@@ -222,7 +222,7 @@ export class TransferAcknowledgmentComponent implements OnInit, OnDestroy {
   applyTransferAcknowledgment() {
     this.isSubmitBtnDisabled = true;
     this.transferAcknowledgementSubscription = this.archiveSearchService
-      .transferAcknowledgment(this.tenantIdentifier, this.fileToUpload, this.fileName)
+      .transferAcknowledgment(this.tenantIdentifier, this.fileToUpload)
       .subscribe(
         (operationId) => {
           this.dialogRef.close(true);

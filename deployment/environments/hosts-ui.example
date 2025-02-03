@@ -92,7 +92,6 @@ hosts_vitamui_iam_internal
 hosts_vitamui_ingest_external
 hosts_vitamui_ingest_internal
 hosts_vitamui_archive_search_external
-hosts_vitamui_archive_search_internal
 hosts_vitamui_collect_external
 hosts_vitamui_collect_internal
 hosts_vitamui_referential_external
@@ -115,9 +114,6 @@ hosts_vitamui_pastis_external
 # EDIT: Mandatory
 
 [hosts_vitamui_archive_search_external]
-# EDIT: Mandatory
-
-[hosts_vitamui_archive_search_internal]
 # EDIT: Mandatory
 
 [hosts_vitamui_collect_external]
