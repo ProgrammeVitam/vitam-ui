@@ -45,17 +45,17 @@ export class ZipFile {
   zipFileStatus: ZipFileStatus = null;
   zipFileStatus$: BehaviorSubject<ZipFileStatus> = new BehaviorSubject<ZipFileStatus>(null);
 
-  constructor(transactionId?: string) {
+  constructor(zipName?: string) {
     this.zipFile = new JSZip();
     this.zipFileStatus = {
-      transactionId: transactionId,
+      name: zipName,
       size: 0,
       uploadedSize: 0,
     };
   }
 
-  setTransactionId(transactionId: string): ZipFile {
-    this.zipFileStatus.transactionId = transactionId;
+  setZipName(zipName: string): ZipFile {
+    this.zipFileStatus.name = zipName;
     return this;
   }
 

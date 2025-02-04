@@ -355,7 +355,10 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
             }) as Transaction,
         ),
         switchMap((transaction) => this.transactionsService.create(transaction)),
-        tap((createdTransactionResponse) => (transactionId = createdTransactionResponse.id)),
+        tap((createdTransactionResponse) => {
+          transactionId = createdTransactionResponse.id;
+          zipFile.setZipName(transactionId + '.zip');
+        }),
         switchMap(() => zipFile.addFiles(this.filesToUpload).generateZip()),
         switchMap((content) => this.archiveCollectService.uploadZip(content, transactionId)),
         tap((httpEvent) => zipFile.updateUploadingZipFileStatus(httpEvent)),

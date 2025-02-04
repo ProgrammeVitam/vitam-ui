@@ -36,7 +36,7 @@
  */
 
 export interface ZipFileStatus {
-  transactionId: string;
+  name: string;
   size: number;
   uploadedSize: number;
   currentFile?: string;
