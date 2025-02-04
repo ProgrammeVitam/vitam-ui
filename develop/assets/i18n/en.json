@@ -17,6 +17,7 @@
       "TITLE": "Atoms",
       "buttons.TITLE": "Buttons",
       "chips.TITLE": "Chips",
+      "badges.TITLE": "Badges",
       "icons.TITLE": "Icons",
       "tooltip.TITLE": "Tooltip"
     },
@@ -37,7 +38,8 @@
     },
     "organisms": {
       "TITLE": "Organisms",
-      "table.TITLE": "Table"
+      "table.TITLE": "Table",
+      "tab-group.TITLE": "Tab group"
     },
     "miscellaneous.TITLE": "Miscellaneous",
     "translation.TITLE": "Translation",

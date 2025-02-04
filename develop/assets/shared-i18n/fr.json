@@ -4447,9 +4447,12 @@
         "GUIDS_TO_INCLUDE": "Identifiants d’unités à inclure",
         "GUIDS_TO_EXCLUDE": "Identifiants d’unités à exclure",
         "UAID": "Identifiant(s) technique(s) d'unité(s) archivistique(s) ",
-        "SP": "Service producteur",
-        "SP_CODE": "Identifiant",
-        "SP_LABEL": "Nom",
+        "SP": "Service(s) producteur",
+        "SP_CODE": "Service(s) producteur",
+        "SP_PLACEHOLDER": "Sélectionnez un ou plusieurs service(s) producteur",
+        "AUP": "Profil(s) d'unité d'archive",
+        "ArchiveUnitProfile": "PUA",
+        "AUP_PLACEHOLDER": "Sélectionnez un ou plusieurs profil(s) d'unité d'archive",
         "OTHER_FIELDS": "Autre(s) critère(s)",
         "TITLE_DUA": "Intitulé",
         "TITLE_ACCESS": "Intitulé",
@@ -4691,8 +4694,6 @@
         "GUID_OPI": "GUID du versement",
         "GUID": "GUID d'unité d'archivage",
         "SP": "Service producteur",
-        "SP_CODE": "Identifiant SP",
-        "SP_LABEL": "Nom SP",
         "OTHER_FIELD": "Autre critère",
         "SELECT_OTHER_FIELD": "Sélection d'un autre critère",
         "SP_COMM": "Service Prod Comm",
@@ -5146,9 +5147,12 @@
         "GUIDS_TO_INCLUDE": "Identifiants d’unités à inclure",
         "GUIDS_TO_EXCLUDE": "Identifiants d’unités à exclure",
         "UAID": "Identifiant(s) technique(s) d'unité(s) archivistique(s) ",
-        "SP": "Service producteur",
-        "SP_CODE": "Identifiant",
-        "SP_LABEL": "Nom",
+        "SP": "Service(s) producteur",
+        "SP_CODE": "Service(s) producteur",
+        "SP_PLACEHOLDER": "Sélectionnez un ou plusieurs service(s) producteur",
+        "AUP": "Profil(s) d'unité d'archive",
+        "ArchiveUnitProfile": "PUA",
+        "AUP_PLACEHOLDER": "Sélectionnez un ou plusieurs profil(s) d'unité d'archive",
         "OTHER_FIELDS": "Autre(s) critère(s)",
         "TITLE_DUA": "Intitulé",
         "TITLE_ACCESS": "Intitulé",
@@ -5761,6 +5765,13 @@
     "UPDATE_NODE_DIALOG": {
       "TITLE": "Modification des positions de consultation",
       "ALL_POSITIONS_INFO": "Choix des positions auquelles on souhaite donner accès en consultation"
+    }
+  },
+  "ONTOLOGY": {
+    "NODES": {
+      "DESCRIPTION": "Métadonnées descriptives",
+      "MANAGEMENT": "Métadonnées de gestion",
+      "OTHER": "Métadonnées système"
     }
   }
 }
