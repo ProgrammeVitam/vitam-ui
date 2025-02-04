@@ -72,9 +72,9 @@
       "PARAMETRAGE_IDENTIFICATION_PERENNE": "Paramétrage de l'identification pérenne",
       "PARAMETRAGE_IDENTIFICATION_PERENNE_TOOLTIP": "Paramétrage de l'identification pérenne",
       "STORAGE_POLICIES": "Paramétrage des stratégies de stockage",
-      "STORAGE_POLICIES_TOOLTIP": "Il est recommandé, dans un contrat de gestion, de déclarer les même stratégies pour les métadonnées des unités archivistiques et des métadonnées des groupes d’objets techniques.",
-      "UNIT_STRATEGY": "Pour les métadonnées décrivant des unités d’archives (et leur journal du cycle de vie)",
-      "OBJECT_GROUP_STRATEGY": "Pour les métadonnées décrivant des groupes d’objets techniques (et leur journal du cycle de vie)",
+      "STORAGE_POLICIES_TOOLTIP": "Il est recommandé, dans un contrat de gestion, de déclarer les mêmes stratégies pour les métadonnées des unités archivistiques et des métadonnées des groupes d'objets techniques.",
+      "UNIT_STRATEGY": "Pour les métadonnées décrivant des unités d'archives (et leur journal du cycle de vie)",
+      "OBJECT_GROUP_STRATEGY": "Pour les métadonnées décrivant des groupes d'objets techniques (et leur journal du cycle de vie)",
       "OBJECT_STRATEGY": "Pour les fichiers numériques (objets binaires)",
       "SUBMIT": "Confirmer",
       "MANAGEMENT_CONTRACT_CREATED": "Le contrat de gestion est bien créé",
@@ -287,7 +287,7 @@
     "STATUS": "Statut"
   },
   "LOGBOOK_MANAGEMENT_OPERATION_ACTIONS": {
-    "MESSAGE": "La demande de changement de statut à bien été pris en compte",
+    "MESSAGE": "La demande de changement de statut a bien été prise en compte",
     "POP_UP_SECOND_TITLE": "Confirmez-vous vouloir réaliser une demande de changement de statut :",
     "POP_UP_NEXT_MESSAGE": "Modifier l'opération ",
     "POP_UP_CANCEL_MESSAGE": "Annuler l'opération ",
