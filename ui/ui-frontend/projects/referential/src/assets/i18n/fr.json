@@ -518,7 +518,7 @@
       "CREATE_VOCABULARY": "Créer un vocabulaire",
       "IMPORT": "Importer",
       "IMPORT_ONTOLOGY": "Importer l'ontologie",
-      "IMPORT_SCHEMA": "Importer des extensions dans le schéma",
+      "IMPORT_SCHEMA": "Importer les extensions dans le schéma",
       "ARRAY": {
         "IDENTIFIER": "Identifiant",
         "NAME": "Nom",
