@@ -39,6 +39,8 @@ import { FileSelectorComponent } from './file-selector.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { PipesModule } from '../../pipes/pipes.module';
 import { LoggerModule } from '../../logger';
+import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
+import { CustomFile } from '../../../../lib/models/custom-file';
 
 describe('FileSelectorComponent', () => {
   let component: FileSelectorComponent;
@@ -46,7 +48,7 @@ describe('FileSelectorComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FileSelectorComponent, TranslateModule.forRoot(), PipesModule, LoggerModule.forRoot()],
+      imports: [FileSelectorComponent, TranslateModule.forRoot(), PipesModule, LoggerModule.forRoot(), MatSnackBarModule],
     }).compileComponents();
 
     fixture = TestBed.createComponent(FileSelectorComponent);
@@ -63,5 +65,104 @@ describe('FileSelectorComponent', () => {
     const mockFiles = [new File(['content'], 'test.json')];
     component.handleFilesSelection(mockFiles);
     expect(component['inputFiles'].nativeElement.value).toBe('');
+  });
+
+  it('should filter files based on allowed extensions', () => {
+    const file1 = new File([''], 'file1.json', { type: 'application/json' });
+    const file2 = new File([''], 'file2.txt', { type: 'text/plain' });
+    component.extensions = ['.json'];
+    component.handleFilesSelection([file1, file2]);
+    expect(component.files.length).toBe(1);
+    expect(component.files[0].name).toBe('file1.json');
+  });
+
+  it('should limit files to one if multipleFiles is false', () => {
+    const file1 = new File([''], 'file1.json', { type: 'application/json' });
+    const file2 = new File([''], 'file2.json', { type: 'application/json' });
+    component.multipleFiles = false;
+    component.handleFilesSelection([file1, file2]);
+    expect(component.files.length).toBe(1);
+  });
+
+  it('should emit filesChanged event with updated files', () => {
+    const file1 = new File([''], 'file1.json', { type: 'application/json' });
+    spyOn(component.filesChanged, 'emit');
+    component.handleFilesSelection([file1]);
+    expect(component.filesChanged.emit).toHaveBeenCalledWith([file1]);
+  });
+
+  it('should emit filesChanged event with updated files when adding to an existing list', () => {
+    const file1 = new File([''], 'file1.json', { type: 'application/json' });
+    const file2 = new File([''], 'file2.json', { type: 'application/json' });
+    component.multipleFiles = true;
+    component.files = [file1];
+
+    spyOn(component.filesChanged, 'emit');
+    component.handleFilesSelection([file2]);
+
+    expect(component.files).toEqual([file1, file2]);
+    expect(component.filesChanged.emit).toHaveBeenCalledWith([file1, file2]);
+  });
+
+  it('should remove a file from files and displayFiles arrays', () => {
+    const file1 = new File([''], 'file1.json', { type: 'application/json' });
+    component.files = [file1];
+    component.displayFiles = [{ name: 'file1.json', size: 0, directory: false }];
+    component.removeFile(component.displayFiles[0]);
+    expect(component.files.length).toBe(0);
+    expect(component.displayFiles.length).toBe(0);
+  });
+
+  it('should remove all files within a directory', () => {
+    const file1 = new CustomFile([''], 'file1.json', { type: 'application/json' });
+    file1.relativePath = 'dir1';
+    component.files = [file1];
+    component.displayFiles = [{ name: 'dir1', size: 0, directory: true }];
+    component.removeFile(component.displayFiles[0]);
+    expect(component.displayFiles.length).toBe(0);
+    expect(component.files.length).toBe(0);
+  });
+
+  it('should remove only the specified directory and keep others', () => {
+    const file1 = new CustomFile([''], 'file1.json', { type: 'application/json' });
+    const file2 = new CustomFile([''], 'file2.json', { type: 'application/json' });
+    file1.relativePath = 'dir1';
+    file2.relativePath = 'dir2';
+
+    component.files = [file1, file2];
+    component.displayFiles = [
+      { name: 'dir1', size: 0, directory: true },
+      { name: 'dir2', size: 0, directory: true },
+    ];
+
+    component.removeFile(component.displayFiles[0]);
+
+    expect(component.displayFiles.length).toBe(1);
+    expect(component.displayFiles[0].name).toBe('dir2');
+
+    expect(component.files.length).toBe(1);
+    expect(component.files[0]).toEqual(file2);
+  });
+
+  it('should skip adding files if directory already exists', () => {
+    const mockFiles = [
+      new CustomFile(['content'], 'file12.json', { type: 'application/json' }),
+      new CustomFile(['content'], 'file2.json', { type: 'application/json' }),
+    ];
+    mockFiles.forEach((file) => (file.relativePath = 'folder1'));
+
+    const mockDisplayFile = { name: 'folder1', size: 1000, directory: true };
+
+    component.displayFiles = [mockDisplayFile];
+
+    spyOn(component.snackBar, 'open');
+
+    component.handleFilesSelection(mockFiles);
+
+    mockFiles.forEach((file) => {
+      expect(component.files).not.toContain(file);
+    });
+
+    expect(component.snackBar.open).toHaveBeenCalledWith(jasmine.any(String), null, { panelClass: 'vitamui-snack-bar', duration: 10000 });
   });
 });

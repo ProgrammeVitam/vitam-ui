@@ -61,7 +61,7 @@ import { DesignSystemSearchWithTypeSelectorComponent } from './components/molecu
 import { DesignSystemMultipleOptionsDatepickerComponent } from './components/molecules/inputs/multiple-options-datepicker/design-system-multiple-options-datepicker.component';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { TabGroupComponent } from './components/organisms/tab-group/tab-group.component';
-
+import { UploadComponent } from './components/upload/upload.component';
 export interface RouteData {
   // Alternative search terms
   altSearch?: {
@@ -124,6 +124,7 @@ const routes: Routes = [
   },
   { path: 'miscellaneous', component: MiscellaneousComponent },
   { path: 'translation', component: TranslationComponent },
+  { path: 'upload', component: UploadComponent },
   { path: '**', redirectTo: '' },
 ];
 
