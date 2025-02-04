@@ -48,8 +48,8 @@
       "TELECHARGER_PROFILE": "Télécharger le profil"
     },
     "INFORMATION_TAB": {
-      "PROFILE": "Profil",
-      "ACTIF": "actif",
+      "ACTIVE_PROFILE": "Profil actif",
+      "INACTIVE_PROFILE": "Profil inactif",
       "TYPE": "Type",
       "PROFILE_ARCHIVAGE": "Profil d'archivage",
       "PROFILE_UNITE_ARCHIVISTIQUE": "Profil d'unité archivistique",
