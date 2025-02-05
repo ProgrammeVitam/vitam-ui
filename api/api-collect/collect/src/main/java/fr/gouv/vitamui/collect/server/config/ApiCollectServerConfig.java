@@ -43,6 +43,7 @@ import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
 import fr.gouv.vitamui.commons.rest.configuration.SwaggerConfiguration;
 import fr.gouv.vitamui.commons.vitam.api.administration.AgencyCommonService;
+import fr.gouv.vitamui.commons.vitam.api.administration.RuleCommonService;
 import fr.gouv.vitamui.commons.vitam.api.collect.CollectService;
 import fr.gouv.vitamui.commons.vitam.api.config.VitamAccessConfig;
 import fr.gouv.vitamui.commons.vitam.api.config.VitamAdministrationConfig;
@@ -135,9 +136,10 @@ public class ApiCollectServerConfig extends AbstractContextConfiguration {
     public TransactionArchiveUnitService projectArchiveUnitInternalService(
         final CollectService collectService,
         AgencyCommonService agencyCommonService,
+        final RuleCommonService ruleCommonService,
         ObjectMapper objectMapper
     ) {
-        return new TransactionArchiveUnitService(collectService, agencyCommonService, objectMapper);
+        return new TransactionArchiveUnitService(collectService, agencyCommonService, ruleCommonService, objectMapper);
     }
 
     @Bean

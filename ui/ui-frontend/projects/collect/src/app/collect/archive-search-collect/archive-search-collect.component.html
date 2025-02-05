@@ -342,6 +342,9 @@
             </div>
             <div class="col-1">
               <vitamui-common-menu-button [overlayPos]="'end'" [icon]="'vitamui-icon-more-horiz'">
+                <button mat-menu-item [disabled]="!hasDeleteArchiveUnitActionRole || itemSelected === 0" (click)="launchDeletionModal()">
+                  {{ 'COLLECT.UPDATE_UNITS_METADATA.ACTION_DELETE' | translate }}
+                </button>
                 <button mat-menu-item (click)="launchReclassification()" [disabled]="!hasReclassificationRole || itemSelected === 0">
                   {{ 'RECLASSIFICATION.EXECUTION_ACTION' | translate }}
                 </button>
@@ -489,3 +492,105 @@
     </div>
   </mat-sidenav-content>
 </mat-sidenav-container>
+
+<!-- migrate to common component -->
+<ng-template #confirmSecondActionBigNumberOfResultsActionDialog>
+  <mat-dialog-content>
+    <div class="text-title" *ngIf="!shouldReadSelectedItemCount()">
+      {{ 'COLLECT.OTHER_ACTIONS.DIALOG_MESSAGE.ACTION_ON_BIG_NUMBERS_TITLE_WITHOUT_EXACT_COUNT' | translate }}
+    </div>
+    <div class="text-title" *ngIf="shouldReadSelectedItemCount()">
+      <span *ngIf="itemSelected > 1">
+        {{
+          'COLLECT.OTHER_ACTIONS.DIALOG_MESSAGE.ACTION_ON_BIG_NUMBERS_TITLE_EXACT_COUNT' | translate: { elementsSize: itemSelected }
+        }}</span
+      >
+      <span *ngIf="itemSelected === 1">
+        {{ 'COLLECT.OTHER_ACTIONS.DIALOG_MESSAGE.ACTION_ON_BIG_NUMBERS_TITLE_EXACT_COUNT_ONE' | translate }}</span
+      >
+    </div>
+    <div class="text large bold" *ngIf="!shouldReadSelectedItemCount()">
+      {{ 'COLLECT.OTHER_ACTIONS.DIALOG_MESSAGE.ACTION_ON_BIG_NUMBERS_MESSAGE_WITHOUT_EXACT_COUNT' | translate }}
+    </div>
+    <div class="text large bold" *ngIf="shouldReadSelectedItemCount()">
+      <span *ngIf="itemSelected > 1">
+        {{
+          'COLLECT.OTHER_ACTIONS.DIALOG_MESSAGE.ACTION_ON_BIG_NUMBERS_MESSAGE_EXACT_COUNT' | translate: { elementsSize: itemSelected }
+        }}</span
+      >
+      <span *ngIf="itemSelected === 1">
+        {{ 'COLLECT.OTHER_ACTIONS.DIALOG_MESSAGE.ACTION_ON_BIG_NUMBERS_MESSAGE_EXACT_COUNT_ONE' | translate }}</span
+      >
+    </div>
+    <div class="text large bold">
+      {{ 'COLLECT.OTHER_ACTIONS.DIALOG_MESSAGE.ACTION_ON_BIG_NUMBERS_MESSAGE_2' | translate }}
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions class="mat-dialog-actions-right">
+    <button [matDialogClose]="true" class="btn primary btn-confirm-dialog margin-btn">
+      {{ 'COLLECT.OTHER_ACTIONS.DIALOG_MESSAGE.CONFIRM' | translate }}
+    </button>
+    <button matDialogClose class="btn cancel" cdkFocusInitial>
+      {{ 'COLLECT.OTHER_ACTIONS.DIALOG_MESSAGE.CANCEL' | translate }}
+    </button>
+  </mat-dialog-actions>
+</ng-template>
+
+<ng-template #confirmImportantAllowedBulkOperationsDialog>
+  <mat-dialog-content>
+    <div class="text large bold">
+      <span *ngIf="itemSelected > 1">
+        {{
+          'ARCHIVE_SEARCH.OTHER_ACTIONS.DIALOG_MESSAGE.PLATEFORM_THRESHOLD_REACHED_WARNING_MESSAGE'
+            | translate: { elementsSize: itemSelected }
+        }}</span
+      >
+    </div>
+    <div class="text large bold">
+      {{ 'ARCHIVE_SEARCH.OTHER_ACTIONS.DIALOG_MESSAGE.PLATEFORM_THRESHOLD_REACHED_WARNING_MESSAGE_2' | translate }}
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button [matDialogClose]="true" class="btn primary btn-confirm-dialog">
+      {{ 'ARCHIVE_SEARCH.OTHER_ACTIONS.DIALOG_MESSAGE.CONFIRM' | translate }}
+    </button>
+    <button matDialogClose class="btn cancel link" cdkFocusInitial>
+      {{ 'ARCHIVE_SEARCH.OTHER_ACTIONS.DIALOG_MESSAGE.CANCEL' | translate }}
+    </button>
+  </mat-dialog-actions>
+</ng-template>
+
+<ng-template #actionsWithThresholdReachedAlerteMessageDialog>
+  <vitamui-dialog-header
+    [title]="'ARCHIVE_SEARCH.OTHER_ACTIONS.DIALOG_MESSAGE.PLATEFORM_THRESHOLD_REACHED_ALERT_MESSAGE' | translate"
+  ></vitamui-dialog-header>
+  <mat-dialog-content>
+    <div class="row red-text">
+      <div class="col-1">
+        <i class="material-icons icon-style">cancel</i>
+      </div>
+      <div class="col-11">
+        {{ 'ARCHIVE_SEARCH.OTHER_ACTIONS.DIALOG_MESSAGE.PLATEFORM_THRESHOLD_REACHED_ALERT_MESSAGE' | translate }}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-1">
+        <span class="vertical-line"></span>
+      </div>
+      <div class="col-11">
+        <div class="text small bold">
+          {{ 'ARCHIVE_SEARCH.OTHER_ACTIONS.DIALOG_MESSAGE.PLATEFORM_THRESHOLD_REACHED_ALERT_MESSAGE' | translate }}
+        </div>
+
+        <div class="text small">
+          {{ 'ARCHIVE_SEARCH.OTHER_ACTIONS.DIALOG_MESSAGE.PLATEFORM_THRESHOLD_REACHED_ALERT_MESSAGE_2' | translate }}
+        </div>
+      </div>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button [matDialogClose]="true" class="btn primary btn-confirm-dialog">
+      {{ 'RULES.ALERTE_MESSAGES.BACK_TO_SELECTION' | translate }}
+    </button>
+  </mat-dialog-actions>
+</ng-template>

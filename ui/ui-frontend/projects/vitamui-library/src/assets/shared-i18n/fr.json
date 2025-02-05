@@ -4456,6 +4456,7 @@
         "ORIGIN_INHERITE_AT_LEAST_ONE": "Héritées"
       },
       "FIELDS": {
+        "ORIGIN_HAS_NO_ONE": "Non définies",
         "ORPHANS_NODE": "Position",
         "ID": "ID",
         "TITLE_OR_DESCRIPTION": "Intitulé ou Description",
