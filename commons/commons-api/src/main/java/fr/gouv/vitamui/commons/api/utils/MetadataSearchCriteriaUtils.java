@@ -103,7 +103,7 @@ public final class MetadataSearchCriteriaUtils {
     public static final String WAITING_TO_COMPUTE_RULES_STATUS = "#validComputedInheritedRules";
     private static final String INVALID_CREATION_OPERATION = "Invalid creation operation exception {}";
     private static final String COULD_NOT_CREATE_OPERATION = "Invalid creation operation exception ";
-    private static final String FINAL_QUERY = "Final query: {}";
+    public static final String FINAL_QUERY = "Final query: {}";
 
     public static final String SOME_OLD_DATE = "01/01/0001";
     public static final String SOME_FUTUR_DATE = "31/12/9999";

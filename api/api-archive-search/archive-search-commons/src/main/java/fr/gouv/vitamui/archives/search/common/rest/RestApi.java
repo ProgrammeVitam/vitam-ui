@@ -46,12 +46,16 @@ public class RestApi {
     public static final String ELIMINATION_ACTION = "/elimination/action";
 
     public static final String ELIMINATION_UNIT_TREE_ACTION = "/elimination/unit-tree/action";
+
+    public static final String DELETION_ACTION = "/deletion/action";
     public static final String MASS_UPDATE_UNITS_RULES = "/units/rules";
     public static final String COMPUTED_INHERITED_RULES = "/computed-inherited-rules";
     public static final String RECLASSIFICATION = "/reclassification";
     public static final String UNIT_WITH_INHERITED_RULES = "/unit-with-inherited-rules";
+
     public static final String ARCHIVE_UNITS = "/archive-units";
     public static final String TRANSFER_ACKNOWLEDGMENT = "/transfer-acknowledgment";
+
     public static final String BULK_OPERATION_THRESHOLDS = "/bulk-operations-thresholds";
     public static final String UNITS_PERSISTENT_IDENTIFIER = "/units-by-persistent-identifier";
     public static final String OBJECTS_PERSISTENT_IDENTIFIER = "/objects-by-persistent-identifier";

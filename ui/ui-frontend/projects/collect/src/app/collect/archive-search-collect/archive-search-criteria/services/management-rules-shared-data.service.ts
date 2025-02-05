@@ -62,6 +62,8 @@ export class ManagementRulesSharedDataService {
   allManagementRules = this.managementRules.asObservable();
   hasExactCounts = this.hasExactCount.asObservable();
 
+  private bulkOperationsThreshold = new BehaviorSubject<number>(-1);
+
   constructor(private ruleApiService: RuleApiService) {}
 
   emitRuleCategory(ruleCategory: string) {
@@ -141,5 +143,13 @@ export class ManagementRulesSharedDataService {
 
     const ruleObject = rule as Rule;
     return this.ruleApiService.check(ruleObject, headers);
+  }
+
+  emitBulkOperationsThreshold(threshold: number) {
+    this.bulkOperationsThreshold.next(threshold);
+  }
+
+  getBulkOperationsThreshold(): Observable<number> {
+    return this.bulkOperationsThreshold.asObservable();
   }
 }

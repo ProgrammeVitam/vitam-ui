@@ -29,6 +29,7 @@
 
 package fr.gouv.vitamui.collect.external.server.service;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.archives.search.common.dto.VitamUIArchiveUnitResponseDto;
 import fr.gouv.vitamui.collect.common.dto.CollectProjectDto;
@@ -104,6 +105,10 @@ public class TransactionArchiveUnitExternalService
             transactionId,
             query
         );
+    }
+
+    public JsonNode startDeletionAction(String transactionId, SearchCriteriaDto query) {
+        return collectTransactionInternalRestClient.startDeletionAction(getInternalHttpContext(), transactionId, query);
     }
 
     @Override

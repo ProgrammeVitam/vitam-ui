@@ -29,6 +29,7 @@
 
 package fr.gouv.vitamui.collect.internal.server.rest;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOperationException;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
@@ -62,6 +63,7 @@ import java.io.IOException;
 import java.util.List;
 
 import static fr.gouv.vitamui.archives.search.common.rest.RestApi.ARCHIVE_UNIT_INFO;
+import static fr.gouv.vitamui.archives.search.common.rest.RestApi.DELETION_ACTION;
 import static fr.gouv.vitamui.archives.search.common.rest.RestApi.EXPORT_CSV_SEARCH_PATH;
 import static fr.gouv.vitamui.collect.common.rest.RestApi.ARCHIVE_UNITS;
 import static fr.gouv.vitamui.collect.common.rest.RestApi.COLLECT_TRANSACTION_ARCHIVE_UNITS_PATH;
@@ -177,6 +179,20 @@ public class TransactionArchiveUnitInternalController {
             searchQuery,
             transactionId,
             externalParametersService.buildVitamContextFromExternalParam()
+        );
+    }
+
+    @PostMapping("/{transactionId}" + DELETION_ACTION)
+    public JsonNode startDeletionAction(
+        @PathVariable("transactionId") final String transactionId,
+        final @RequestBody SearchCriteriaDto query
+    ) throws PreconditionFailedException, VitamClientException {
+        SanityChecker.sanitizeCriteria(query);
+        LOGGER.debug("Calling deletion action by criteria {} ", query);
+        return transactionArchiveUnitInternalService.startDeletionAction(
+            externalParametersService.buildVitamContextFromExternalParam(),
+            transactionId,
+            query
         );
     }
 }
