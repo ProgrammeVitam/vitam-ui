@@ -27,6 +27,7 @@
 
 package fr.gouv.vitamui.collect.internal.client;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.collect.common.dto.CollectTransactionDto;
 import fr.gouv.vitamui.collect.common.rest.RestApi;
@@ -52,6 +53,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static fr.gouv.vitamui.archives.search.common.rest.RestApi.ARCHIVE_UNIT_INFO;
+import static fr.gouv.vitamui.archives.search.common.rest.RestApi.DELETION_ACTION;
 import static fr.gouv.vitamui.archives.search.common.rest.RestApi.EXPORT_CSV_SEARCH_PATH;
 import static fr.gouv.vitamui.collect.common.rest.RestApi.ABORT_PATH;
 import static fr.gouv.vitamui.collect.common.rest.RestApi.ARCHIVE_UNITS;
@@ -221,6 +223,20 @@ public class CollectTransactionInternalRestClient
             HttpMethod.POST,
             request,
             ResultsDto.class
+        );
+        checkResponse(response);
+        return response.getBody();
+    }
+
+    public JsonNode startDeletionAction(InternalHttpContext context, String transactionId, SearchCriteriaDto query) {
+        LOGGER.debug("Calling deletion action with query {} ", query);
+        MultiValueMap<String, String> headers = buildHeaders(context);
+        final HttpEntity<SearchCriteriaDto> request = new HttpEntity<>(query, headers);
+        final ResponseEntity<JsonNode> response = restTemplate.exchange(
+            getUrl() + "/" + transactionId + DELETION_ACTION,
+            HttpMethod.POST,
+            request,
+            JsonNode.class
         );
         checkResponse(response);
         return response.getBody();

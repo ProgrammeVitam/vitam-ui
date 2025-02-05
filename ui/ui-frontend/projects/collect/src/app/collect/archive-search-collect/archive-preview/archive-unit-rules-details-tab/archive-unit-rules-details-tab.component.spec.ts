@@ -38,6 +38,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { TranslateModule } from '@ngx-translate/core';
 import { environment } from 'projects/archive-search/src/environments/environment';
 import { BASE_URL, InjectorModule, LoggerModule, WINDOW_LOCATION } from 'vitamui-library';
@@ -47,6 +48,8 @@ describe('Collect ArchiveUnitRulesDetailsTabComponent', () => {
   let component: ArchiveUnitRulesDetailsTabComponent;
   let fixture: ComponentFixture<ArchiveUnitRulesDetailsTabComponent>;
 
+  const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ArchiveUnitRulesDetailsTabComponent],
@@ -54,6 +57,7 @@ describe('Collect ArchiveUnitRulesDetailsTabComponent', () => {
       providers: [
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: WINDOW_LOCATION, useValue: window.location },
+        { provide: MatDialog, useValue: matDialogSpy },
         { provide: environment, useValue: environment },
       ],
       schemas: [NO_ERRORS_SCHEMA],

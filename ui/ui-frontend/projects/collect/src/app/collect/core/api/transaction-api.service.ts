@@ -129,4 +129,10 @@ export class TransactionApiService extends BaseHttpClient<Transaction> {
   selectUnitWithInheritedRules(tranasctionId: string, criteriaDto: SearchCriteriaDto, headers?: HttpHeaders): Observable<Unit> {
     return this.http.post<Unit>(`${this.apiUrl}/${tranasctionId}/unit-with-inherited-rules`, criteriaDto, { headers });
   }
+
+  launchDeletionAction(tranasctionId: string, criteriaDto: SearchCriteriaDto, headers?: HttpHeaders): Observable<any> {
+    return this.http.post(`${this.apiUrl}/${tranasctionId}/deletion/action`, criteriaDto, {
+      headers,
+    });
+  }
 }

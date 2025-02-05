@@ -3782,6 +3782,7 @@
         "Strict": "Exact search"
       },
       "FIELDS": {
+        "ORIGIN_HAS_NO_ONE": "Not specified",
         "ORPHANS_NODE": "Position",
         "ALL_ARCHIVE_UNIT_TYPES": "Type",
         "ARCHIVE_UNIT_FILING_UNIT": "Filing plan",

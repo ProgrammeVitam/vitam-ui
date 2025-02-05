@@ -38,6 +38,7 @@ import fr.gouv.vitam.common.CharsetUtils;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.model.RequestResponse;
+import fr.gouv.vitam.common.model.elimination.EliminationRequestBody;
 import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -392,5 +393,17 @@ public class CollectService {
             dslQuery
         );
         return response.toJsonNode();
+    }
+
+    public RequestResponse<JsonNode> startDeletionAction(
+        VitamContext vitamContext,
+        String transactionId,
+        EliminationRequestBody eliminationRequestBody
+    ) throws VitamClientException {
+        return collectExternalClient.performDeletionActionOnTransaction(
+            vitamContext,
+            transactionId,
+            eliminationRequestBody
+        );
     }
 }

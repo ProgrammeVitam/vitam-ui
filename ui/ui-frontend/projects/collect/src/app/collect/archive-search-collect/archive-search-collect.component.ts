@@ -35,13 +35,13 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpErrorResponse } from '@angular/common/http';
-import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { MatLegacyDialog as MatDialog, MatLegacyDialogConfig as MatDialogConfig } from '@angular/material/legacy-dialog';
 import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { BehaviorSubject, merge, Observable, Subject, Subscription, zip } from 'rxjs';
-import { debounceTime, map, mergeMap, share, take, tap } from 'rxjs/operators';
+import { debounceTime, filter, map, mergeMap, share, take, tap } from 'rxjs/operators';
 import { isEmpty } from 'underscore';
 import {
   AccessContract,
@@ -102,6 +102,8 @@ const DYNAMIC_ATTACHEMENT = 'DYNAMIC_ATTACHEMENT_';
 export class ArchiveSearchCollectComponent extends SidenavPage<any> implements OnInit, OnDestroy, AfterViewInit {
   readonly UnitType = UnitType;
 
+  DEFAULT_DELETION_THRESHOLD = 10_000;
+
   accessContract: string;
 
   subscriptions: Subscription = new Subscription();
@@ -112,6 +114,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
   accessContractAllowUpdating = false;
   accessContractUpdatingRestrictedDesc: boolean;
   hasUnitaryUpdateUnitRole = false;
+  hasDeleteArchiveUnitActionRole = false;
   hasBulkUpdateUnitRole = false;
   isLPExtended = false;
   show = true;
@@ -162,6 +165,8 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
   submitedGetFixedCount = false;
   rulesFacetsCanBeComputed = false;
 
+  bulkOperationsThreshold = -1;
+
   private readonly filterChange = new Subject<{ [key: string]: any[] }>();
   private readonly orderChange = new Subject<void>();
   isNotOpen$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
@@ -174,6 +179,15 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
   selectedArchive$: Observable<Unit>;
 
   search$: Observable<number>;
+
+  @ViewChild('confirmImportantAllowedBulkOperationsDialog', { static: true })
+  confirmImportantAllowedBulkOperationsDialog: TemplateRef<ArchiveSearchCollectComponent>;
+  @ViewChild('actionsWithThresholdReachedAlerteMessageDialog', { static: true })
+  actionsWithThresholdReachedAlerteMessageDialog: TemplateRef<ArchiveSearchCollectComponent>;
+  @ViewChild('confirmSecondActionBigNumberOfResultsActionDialog', { static: true })
+  confirmSecondActionBigNumberOfResultsActionDialog: TemplateRef<ArchiveSearchCollectComponent>;
+
+  actionsWithThresholdReachedAlerteMessageDialogSubscription: Subscription;
 
   constructor(
     private route: ActivatedRoute,
@@ -256,8 +270,9 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
     this.selectedArchive$ = archiveExchangeDataService.selectedUnit$;
   }
 
-  public ngOnDestroy(): void {
+  ngOnDestroy() {
     this.subscriptions.unsubscribe();
+    this.actionsWithThresholdReachedAlerteMessageDialogSubscription?.unsubscribe();
   }
 
   public ngOnInit(): void {
@@ -333,6 +348,11 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
       }),
     );
 
+    this.externalParameterService.getUserExternalParameters().subscribe((parameters) => {
+      const threshold = Number(parameters.get(ExternalParameters.PARAM_BULK_OPERATIONS_THRESHOLD) || -1);
+      this.bulkOperationsThreshold = threshold;
+    });
+
     this.checkUpdateUnitPermissions();
   }
 
@@ -352,6 +372,11 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
       .subscribe((result) => {
         this.hasUnitaryUpdateUnitRole = result;
       });
+
+    this.archiveUnitCollectService.hasCollectRole('ROLE_COLLECT_DELETE_ARCHIVE_UNIT', Number(this.tenantIdentifier)).subscribe((result) => {
+      this.hasDeleteArchiveUnitActionRole = result;
+    });
+
     this.archiveUnitCollectService
       .hasCollectRole('ROLE_COLLECT_UPDATE_BULK_ARCHIVE_UNIT', Number(this.tenantIdentifier))
       .subscribe((result) => {
@@ -899,6 +924,77 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
         this.pendingComputeFacets = false;
         this.logger.error('Error message :', error.message);
       },
+    );
+  }
+
+  public shouldReadSelectedItemCount(): boolean {
+    return !this.waitingToGetFixedCount || !this.isAllChecked;
+  }
+
+  async prepareToLaunchVitamAction() {
+    this.loadExactCount();
+    this.listOfUACriteriaSearch = this.prepareListOfUACriteriaSearch();
+  }
+
+  private bulkOperationWarningWorkflow(operation: () => void): void {
+    const dialogConfirmActionWithImportantAllowedCount = this.confirmImportantAllowedBulkOperationsDialog;
+    const dialogConfirmActionWithImportantAllowedCountRef = this.dialog.open(dialogConfirmActionWithImportantAllowedCount, {
+      panelClass: 'vitamui-dialog',
+    });
+
+    dialogConfirmActionWithImportantAllowedCountRef
+      .afterClosed()
+      .pipe(filter((result) => !!result))
+      .subscribe(operation);
+  }
+
+  private bulkOperationErrorWorkflow(): void {
+    const dialogRef = this.dialog.open(this.actionsWithThresholdReachedAlerteMessageDialog, { panelClass: 'vitamui-dialog' });
+
+    this.actionsWithThresholdReachedAlerteMessageDialogSubscription = dialogRef
+      .afterClosed()
+      .pipe(filter((result) => !!result))
+      .subscribe(() => {});
+    this.actionsWithThresholdReachedAlerteMessageDialogSubscription?.unsubscribe();
+  }
+
+  private async launchBulkOperationWorkflow(operation: () => void, defaultBulkOperationThreshold: number) {
+    await this.prepareToLaunchVitamAction();
+
+    if (!(this.shouldReadSelectedItemCount() && this.itemSelected > 0)) {
+      return;
+    }
+
+    const hasBulkOperationThreshold = this.bulkOperationsThreshold !== -1;
+    const isGreaterThanBulkOperationThreshold = this.itemSelected > this.bulkOperationsThreshold;
+    const isGreaterThanDefaultBulkOperationThreshold = this.itemSelected > defaultBulkOperationThreshold;
+
+    if (hasBulkOperationThreshold) {
+      if (isGreaterThanBulkOperationThreshold) {
+        this.bulkOperationErrorWorkflow();
+      } else if (isGreaterThanDefaultBulkOperationThreshold) {
+        this.bulkOperationWarningWorkflow(operation);
+      } else {
+        operation();
+      }
+    } else if (isGreaterThanDefaultBulkOperationThreshold) {
+      this.bulkOperationErrorWorkflow();
+    } else {
+      operation();
+    }
+  }
+
+  async launchDeletionModal() {
+    this.launchBulkOperationWorkflow(
+      () =>
+        this.archiveUnitCollectService.launchDeletionModal(
+          this.transaction.id,
+          this.listOfUACriteriaSearch,
+          Number(this.tenantIdentifier),
+          this.currentPage,
+          this.confirmSecondActionBigNumberOfResultsActionDialog,
+        ),
+      this.DEFAULT_DELETION_THRESHOLD,
     );
   }
 

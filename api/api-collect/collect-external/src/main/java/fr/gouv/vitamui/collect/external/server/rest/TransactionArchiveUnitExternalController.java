@@ -26,6 +26,7 @@
  */
 package fr.gouv.vitamui.collect.external.server.rest;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitamui.archives.search.common.dto.VitamUIArchiveUnitResponseDto;
 import fr.gouv.vitamui.archives.search.common.rest.RestApi;
 import fr.gouv.vitamui.collect.external.server.service.TransactionArchiveUnitExternalService;
@@ -59,6 +60,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.ws.rs.Consumes;
 import java.util.List;
 
+import static fr.gouv.vitamui.archives.search.common.rest.RestApi.DELETION_ACTION;
 import static fr.gouv.vitamui.archives.search.common.rest.RestApi.EXPORT_CSV_SEARCH_PATH;
 import static fr.gouv.vitamui.collect.common.rest.RestApi.ARCHIVE_UNITS;
 import static fr.gouv.vitamui.collect.common.rest.RestApi.COLLECT_TRANSACTION_ARCHIVE_UNITS_PATH;
@@ -156,5 +158,24 @@ public class TransactionArchiveUnitExternalController {
         SanityChecker.sanitizeCriteria(query);
         LOGGER.debug("Calling select Unit With Inherited Rules By Criteria {} ", query);
         return transactionArchiveUnitExternalService.selectUnitWithInheritedRules(transactionId, query);
+    }
+
+    @Secured(ServicesData.COLLECT_DELETE_ARCHIVE_UNIT_ROLE)
+    @ApiOperation(
+        value = "Upload on streaming metadata file and update archive units",
+        consumes = MediaType.APPLICATION_JSON_VALUE
+    )
+    @PostMapping(
+        value = CommonConstants.TRANSACTION_PATH_ID + DELETION_ACTION,
+        consumes = MediaType.APPLICATION_JSON_VALUE
+    )
+    public JsonNode startDeletionAction(
+        final @PathVariable("transactionId") String transactionId,
+        final @RequestBody SearchCriteriaDto query
+    ) throws PreconditionFailedException {
+        ParameterChecker.checkParameter(MANDATORY_QUERY, query);
+        SanityChecker.sanitizeCriteria(query);
+        LOGGER.debug("Calling deletion action by criteria {} ", query);
+        return transactionArchiveUnitExternalService.startDeletionAction(transactionId, query);
     }
 }
