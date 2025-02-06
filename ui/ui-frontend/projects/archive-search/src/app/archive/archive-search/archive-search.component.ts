@@ -704,12 +704,14 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
       const c = criteria.criteria;
       criteria.values.forEach((value) => {
         if (
-          criteria.category === SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.APPRAISAL_RULE] ||
-          criteria.category === SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.NODES] ||
-          criteria.category === SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.ACCESS_RULE] ||
-          criteria.category === SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.STORAGE_RULE] ||
-          criteria.category === SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.REUSE_RULE] ||
-          criteria.category === SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.DISSEMINATION_RULE]
+          [
+            SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.APPRAISAL_RULE],
+            SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.NODES],
+            SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.ACCESS_RULE],
+            SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.STORAGE_RULE],
+            SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.REUSE_RULE],
+            SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.DISSEMINATION_RULE],
+          ].includes(criteria.category as SearchCriteriaTypeEnum)
         ) {
           this.addCriteriaCategory(criteria.category);
           this.addCriteria(
@@ -718,7 +720,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
             value.value,
             criteria.keyTranslated,
             criteria.operator,
-            criteria.category,
+            criteria.category as SearchCriteriaTypeEnum,
             criteria.valueTranslated,
             criteria.dataType,
             true,

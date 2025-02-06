@@ -245,7 +245,10 @@ export class ArchiveSharedDataService {
   }
 
   sendRemoveFromChildSearchCriteriaAction(searchCriteriaAction: SearchCriteriaRemoveAction) {
+    const builder = this.queryParamsService.builder();
+    builder.removeQueryParam(searchCriteriaAction.valueElt.id, searchCriteriaAction.valueElt.value);
     this.searchCriteriaRemoveFromChildSubject.next(searchCriteriaAction);
+    builder.navigate();
   }
 
   receiveRemoveFromChildSearchCriteriaSubject(): Observable<SearchCriteriaRemoveAction> {
