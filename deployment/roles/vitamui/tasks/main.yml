@@ -76,6 +76,16 @@
     - restart service
   when: install_mode != "container"
 
+- name: Compute list of mongo nodes
+  set_fact:
+    mongo_nodes: "{{ mongo_nodes | default([]) + [ hostvars[item]['ip_service'] + ':' + mongodb.mongod_port | string ] }}"
+  loop: "{{ groups['hosts_vitamui_mongod'] }}"
+  when: hostvars[item]['mongo_arbiter'] | default(false) | bool == false
+
+- name: Set Mongo URI
+  set_fact:
+    mongod_uri: "{{ mongo_nodes | join(',') }}"
+
 - name: Deploy common configuration files in sysconfig subdir
   template:
     src: "{{ item }}.j2"
