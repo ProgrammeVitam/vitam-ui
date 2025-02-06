@@ -2,7 +2,7 @@
   <mat-tree [dataSource]="ingestErrorsTreeDataSource" [treeControl]="ingestErrorsTreeControl" class="tree-ingest-errors-details">
     <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle>
       <li class="mat-tree-node ingest-error-tree-node">
-        <button mat-icon-button disabled><i class="material-icons mat-icon-rtl-mirror">chevron_right</i></button>
+        <button mat-icon-button disabled><i class="material-icons mat-icon-rtl-mirror vitamui-icon vitamui-icon-chevron-right"></i></button>
         <div class="top-right">
           <ng-container [ngSwitch]="getEventStatus(node)">
             <div *ngSwitchCase="'OK'">
@@ -41,9 +41,11 @@
       <li>
         <div class="mat-tree-node ingest-error-tree-node">
           <button mat-icon-button matTreeNodeToggle [attr.aria-label]="'Toggle ' + node.eventData.outMessg">
-            <i class="material-icons mat-icon-rtl-mirror">{{
-              ingestErrorsTreeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'
-            }}</i>
+            <i
+              class="material-icons mat-icon-rtl-mirror vitamui-icon {{
+                ingestErrorsTreeControl.isExpanded(node) ? 'vitamui-icon-chevron-down' : 'vitamui-icon-chevron-right'
+              }}"
+            ></i>
           </button>
           <div class="top-right">
             <ng-container [ngSwitch]="getEventStatus(node)">
