@@ -39,6 +39,7 @@ package fr.gouv.vitamui.iam.internal.client;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.ExternalParametersDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
+import fr.gouv.vitamui.commons.rest.client.AbstractHttpContext;
 import fr.gouv.vitamui.commons.rest.client.BasePaginatingAndSortingRestClient;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import fr.gouv.vitamui.iam.common.rest.RestApi;
@@ -55,8 +56,6 @@ import java.util.List;
 
 /**
  * A REST client to check existence, read, create, update and delete the external parameters.
- *
- *
  */
 public class ExternalParametersInternalRestClient
     extends BasePaginatingAndSortingRestClient<ExternalParametersDto, InternalHttpContext> {
@@ -69,10 +68,11 @@ public class ExternalParametersInternalRestClient
 
     /**
      * Retrieve the external parameters associated to the authenticated user.
+     *
      * @param context
      * @return the external parameters
      */
-    public ExternalParametersDto getMyExternalParameters(final InternalHttpContext context) {
+    public ExternalParametersDto getMyExternalParameters(final AbstractHttpContext context) {
         LOGGER.debug("getMyExternalParameters");
         final HttpEntity<?> request = new HttpEntity<>(buildHeaders(context));
 

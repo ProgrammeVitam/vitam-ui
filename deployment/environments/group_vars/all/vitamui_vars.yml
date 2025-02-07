@@ -152,12 +152,6 @@ vitamui:
     port_service: 8109
     port_admin: 7109
 
-  archive_search_internal:
-    host: "vitamui-archive-search-internal.service.{{ consul_domain }}"
-    vitamui_component: archive-search-internal
-    port_service: 8209
-    port_admin: 7209
-
   collect_external:
     host: "vitamui-collect-external.service.{{ consul_domain }}"
     vitamui_component: collect-external

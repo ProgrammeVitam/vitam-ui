@@ -46,6 +46,4 @@ public class ApiArchiveExternalApplicationProperties {
     private RestClientConfiguration iamInternalClient;
 
     private RestClientConfiguration securityClient;
-
-    private RestClientConfiguration archiveSearchInternalClient;
 }

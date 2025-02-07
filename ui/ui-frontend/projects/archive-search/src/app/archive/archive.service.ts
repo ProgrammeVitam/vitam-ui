@@ -366,11 +366,10 @@ export class ArchiveService extends SearchService<any> implements SearchArchiveU
     return this.archiveApiService.reclassification(criteriaDto, headers);
   }
 
-  transferAcknowledgment(tenantIdentifier: string, xmlFile: Blob, fileName: string): Observable<string> {
+  transferAcknowledgment(tenantIdentifier: string, xmlFile: Blob): Observable<string> {
     let headers = new HttpHeaders();
     headers = headers.append(VitamuiHttpHeaders.X_TENANT_ID, tenantIdentifier);
     headers = headers.append('Content-Type', 'application/octet-stream');
-    headers = headers.append(VitamuiHttpHeaders.X_ORIGINAL_FILENAME, fileName);
 
     return this.archiveApiService.transferAcknowledgment(xmlFile, headers);
   }
