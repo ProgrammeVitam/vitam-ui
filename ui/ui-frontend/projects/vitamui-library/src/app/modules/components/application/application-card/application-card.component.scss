@@ -1,5 +1,6 @@
 @import '../../../../../sass/mixins/elevation';
 
+/* TODO(mdc-migration): The following rule targets internal classes of card that may no longer apply for the MDC version. */
 mat-card {
   cursor: pointer;
   @include shadow-0;
@@ -10,22 +11,26 @@ mat-card {
   }
 }
 
+/* TODO(mdc-migration): The following rule targets internal classes of card that may no longer apply for the MDC version. */
 mat-card > img,
 .appIcon {
   @include shadow-2dp-dark;
   border-radius: 5px;
 }
 
+/* TODO(mdc-migration): The following rule targets internal classes of card that may no longer apply for the MDC version. */
 mat-card-header {
   background-color: transparent;
 }
 
+/* TODO(mdc-migration): The following rule targets internal classes of card that may no longer apply for the MDC version. */
 mat-card-title {
   color: var(--vitamui-grey-900);
   font-weight: 600;
   font-size: 18px !important;
 }
 
+/* TODO(mdc-migration): The following rule targets internal classes of card that may no longer apply for the MDC version. */
 mat-card-subtitle {
   color: var(--vitamui-grey-700);
   font-size: 14px;

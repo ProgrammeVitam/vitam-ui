@@ -45,7 +45,7 @@ import {
   Option,
   VitamuiSelectOptions,
 } from 'vitamui-library';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { AccessContractAuthorizationsUpdateComponent } from './access-contract-authorizations-update/access-contract-authorizations-update.component';
 import { RULE_TYPES } from '../../../rule/rules.constants';
 

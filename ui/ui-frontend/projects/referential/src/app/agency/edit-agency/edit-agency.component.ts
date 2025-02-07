@@ -59,7 +59,7 @@ import { schema } from '../agency.schema';
 import { filter, finalize, of, Subscription, switchMap } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
-import { MatLegacyDialog as MatDialog, MatLegacyDialogModule, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
+import { MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-edit-agency',
@@ -73,7 +73,7 @@ import { MatLegacyDialog as MatDialog, MatLegacyDialogModule, MatLegacyDialogRef
     FormsModule,
     ReactiveFormsModule,
     ObjectEditorModule,
-    MatLegacyDialogModule,
+    MatDialogModule,
   ],
   standalone: true,
 })

@@ -36,7 +36,7 @@
  */
 import { Component } from '@angular/core';
 import { CommonProgressBarModule } from 'vitamui-library';
-import { MatLegacyProgressSpinnerModule as MatProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   templateUrl: './loaders-steppers.component.html',

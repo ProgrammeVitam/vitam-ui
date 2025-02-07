@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component } from '@angular/core';
-import { MatLegacyDialog as MatDialog, MatLegacyDialogModule as MatDialogModule } from '@angular/material/legacy-dialog';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { collapseAnimation, Direction, Group, rotateAnimation, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 import { SampleDialogComponent } from '../../miscellaneous/sample-dialog/sample-dialog.component';
 import { CommonModule } from '@angular/common';

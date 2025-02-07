@@ -6,22 +6,22 @@
   background-color: var(--vitamui-white);
   border: solid 1px var(--vitamui-grey-400);
 
-  .mat-option {
+  .mat-mdc-option {
     height: 50px;
     padding: 14px 16px;
   }
 
-  .mat-option:not(:last-child) {
+  .mat-mdc-option:not(:last-child) {
     border-bottom: 1px solid var(--vitamui-grey-300);
   }
 
   // FIXME: Seems that var( --colorName ) cant be applied in transparentize function. How to load specific color with a composite here ?
-  .mat-option:hover:not(.mat-option-disabled),
+  .mat-mdc-option:hover:not(.mat-option-disabled),
   .mat-option:focus:not(.mat-option-disabled),
   .mat-option.mat-active {
     background: var(--vitamui-grey-300);
   }
-
+  /* TODO(mdc-migration): The following rule targets internal classes of option that may no longer apply for the MDC version.*/
   .mat-option-text {
     display: flex;
     align-items: center;
@@ -38,6 +38,7 @@
   }
 }
 
+/* TODO(mdc-migration): The following rule targets internal classes of autocomplete that may no longer apply for the MDC version.*/
 .mat-autocomplete-panel.mat-autocomplete-visible {
   @include shadow-0;
   width: 90%;

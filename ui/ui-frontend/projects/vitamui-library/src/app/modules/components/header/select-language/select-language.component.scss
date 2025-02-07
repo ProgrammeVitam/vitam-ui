@@ -2,6 +2,7 @@
   width: 100%;
 }
 
+/* TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version. */
 .mat-button-wrapper {
   justify-content: center;
   display: flex !important;
@@ -26,17 +27,17 @@ span {
   height: 40px;
 }
 
-::ng-deep.mat-menu-content {
+::ng-deep.mat-mdc-menu-content {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-::ng-deep.mat-menu-panel {
+::ng-deep.mat-mdc-menu-panel {
   min-width: 0 !important;
 }
 
-::ng-deep.mat-menu-content {
+::ng-deep.mat-mdc-menu-content {
   padding: 0 !important;
 }
 

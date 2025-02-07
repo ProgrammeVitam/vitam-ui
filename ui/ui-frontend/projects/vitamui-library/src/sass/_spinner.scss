@@ -1,6 +1,6 @@
 .vitamui-spinner {
-  &.mat-progress-spinner circle,
-  .mat-spinner circle {
+  &.mat-mdc-progress-spinner circle,
+  .mat-mdc-progress-spinner circle {
     stroke: var(--vitamui-grey-600);
   }
 
@@ -12,7 +12,7 @@
     stroke: var(--vitamui-secondary);
   }
 
-  &.mat-progress-spinner svg {
+  &.mat-mdc-progress-spinner svg {
     width: 50px;
     height: 50px;
   }
@@ -21,13 +21,13 @@
     width: 200px !important;
     height: 200px !important;
 
-    &.mat-progress-spinner svg {
+    &.mat-mdc-progress-spinner svg {
       width: 200px !important;
       height: 200px !important;
     }
 
-    &.mat-progress-spinner circle,
-    .mat-spinner circle {
+    &.mat-mdc-progress-spinner circle,
+    .mat-mdc-progress-spinner circle {
       stroke-width: 5% !important;
     }
   }
@@ -36,13 +36,13 @@
     width: 100px !important;
     height: 100px !important;
 
-    &.mat-progress-spinner svg {
+    &.mat-mdc-progress-spinner svg {
       width: 100px !important;
       height: 100px !important;
     }
 
-    &.mat-progress-spinner circle,
-    .mat-spinner circle {
+    &.mat-mdc-progress-spinner circle,
+    .mat-mdc-progress-spinner circle {
       stroke-width: 7% !important;
     }
   }
@@ -51,7 +51,7 @@
     width: 50px !important;
     height: 50px !important;
 
-    &.mat-progress-spinner svg {
+    &.mat-mdc-progress-spinner svg {
       width: 50px !important;
       height: 50px !important;
     }
@@ -60,7 +60,7 @@
   &.small {
     width: 25px !important;
     height: 25px !important;
-    &.mat-progress-spinner svg {
+    &.mat-mdc-progress-spinner svg {
       width: 25px !important;
       height: 25px !important;
     }

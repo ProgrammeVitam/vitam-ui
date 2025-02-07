@@ -34,12 +34,13 @@ td {
 }
 
 // Inital content
-.pastis-table-container .mat-select {
+.pastis-table-container .mat-mdc-select {
   @extend .dropdown;
   max-height: 50px;
 }
 
 // Inital content text
+/* TODO(mdc-migration): The following rule targets internal classes of select that may no longer apply for the MDC version.*/
 .pastis-table-container .mat-select-value {
   vertical-align: middle;
   color: var(--vitamui-grey-600);
@@ -48,6 +49,7 @@ td {
 }
 
 /////////////################ Select trigger - Text + arrow
+/* TODO(mdc-migration): The following rule targets internal classes of select that may no longer apply for the MDC version.*/
 .pastis-table-container .mat-select-arrow {
   background: url(../../../../assets/svg/icons/drop-box-arrow-vitam.svg) no-repeat 100% 50%;
   background-size: 24px 24px;
@@ -65,6 +67,7 @@ td {
   margin-bottom: 60px;
 }
 
+/* TODO(mdc-migration): The following rule targets internal classes of select that may no longer apply for the MDC version.*/
 .pastis-table-container .mat-select-value-text {
   @extend .text-text-normal;
   color: var(--vitamui-grey-600);
@@ -73,6 +76,7 @@ td {
   max-width: 200px;
 }
 
+/* TODO(mdc-migration): The following rule targets internal classes of select that may no longer apply for the MDC version.*/
 .pastis-table-container .mat-select-placeholder {
   //styleName: Text/Text-medium;
   @extend .text-text-medium;
@@ -80,7 +84,7 @@ td {
 }
 
 // Overhide mat-select-panel default min-size : calc(100%) + 32px;
-.mat-select-panel {
+.mat-mdc-select-panel {
   min-width: 100% !important;
 }
 
@@ -361,7 +365,7 @@ dp-date-picker {
   border: 1px solid blueviolet !important;
 }
 
-.pastis-metadata-table-col-large .mat-select,
+.pastis-metadata-table-col-large .mat-mdc-select,
 .pastis-metadata-table-col-large .mat-select:focus {
   width: 80%;
 }
@@ -375,7 +379,7 @@ dp-date-picker {
   height: 200px;
 }
 
-.pastis-metadata-table-col-small .mat-select {
+.pastis-metadata-table-col-small .mat-mdc-select {
   max-width: 120px;
   height: 50px;
   padding: 13px 15px 13px 15px;
@@ -397,7 +401,7 @@ dp-date-picker {
 .pastis-menu-item-vitam {
   @extend .vitamui-menu-panel;
 
-  .mat-menu-item:hover:not([disabled]),
+  .mat-mdc-menu-item:hover:not([disabled]),
   .mat-menu-item.cdk-program-focused:not([disabled]),
   .mat-menu-item.cdk-keyboard-focused:not([disabled]),
   .mat-menu-item-highlighted:not([disabled]) {
@@ -422,6 +426,7 @@ button.delete {
   position: relative;
 }
 
+/* TODO(mdc-migration): The following rule targets internal classes of select that may no longer apply for the MDC version.*/
 .mat-select-valeur-fixe {
   @extend .select-border;
   width: 140px !important;

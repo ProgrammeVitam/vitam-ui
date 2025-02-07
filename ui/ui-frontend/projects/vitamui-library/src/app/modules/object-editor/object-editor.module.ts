@@ -38,10 +38,10 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatLegacyDialogModule as MatDialogModule } from '@angular/material/legacy-dialog';
-import { MatLegacyFormFieldModule as MatFormFieldModule } from '@angular/material/legacy-form-field';
-import { MatLegacyInputModule as MatInputModule } from '@angular/material/legacy-input';
-import { MatLegacyProgressSpinnerModule as MatProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { TranslateModule } from '@ngx-translate/core';
 import { AccordionModule } from '../components/accordion/accordion.module';
 import { DatepickerModule } from '../components/datepicker/datepicker.module';
@@ -57,8 +57,8 @@ import { ListEditorComponent } from './components/list-editor/list-editor.compon
 import { PrimitiveEditorComponent } from './components/primitive-editor/primitive-editor.component';
 import { ObjectEditorComponent } from './object-editor.component';
 import { AppendStarPipe } from './required.pipe';
-import { MatLegacyOptionModule } from '@angular/material/legacy-core';
-import { MatLegacySelectModule } from '@angular/material/legacy-select';
+import { MatOptionModule } from '@angular/material/core';
+import { MatSelectModule } from '@angular/material/select';
 import { EditorListInputComponent } from './components/editor-list-input.component';
 import { EditorListTextareaComponent } from './components/editor-list-textarea.component';
 import { FormErrorDisplayComponent } from '../components/form-error-display/form-error-display.component';
@@ -100,8 +100,8 @@ import { TemplateService } from './services/template.service';
     MatProgressSpinnerModule,
     MatDialogModule,
     VitamuiRepeatableInputModule,
-    MatLegacyOptionModule,
-    MatLegacySelectModule,
+    MatOptionModule,
+    MatSelectModule,
     EditorListInputComponent,
     EditorListTextareaComponent,
     FormErrorDisplayComponent,

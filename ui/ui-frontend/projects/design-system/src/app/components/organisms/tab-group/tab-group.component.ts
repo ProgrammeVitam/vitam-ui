@@ -37,7 +37,7 @@
 import { Component, WritableSignal } from '@angular/core';
 import { collapseAnimation, rotateAnimation } from 'vitamui-library';
 import { TranslateModule } from '@ngx-translate/core';
-import { MatLegacyTabsModule as MatTabsModule } from '@angular/material/legacy-tabs';
+import { MatTabsModule } from '@angular/material/tabs';
 import { NumberInput } from '@angular/cdk/coercion';
 import { NgTemplateOutlet } from '@angular/common';
 

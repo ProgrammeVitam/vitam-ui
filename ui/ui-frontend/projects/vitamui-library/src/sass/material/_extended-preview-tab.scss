@@ -3,24 +3,26 @@
   @include shadow-32dp-dark;
 }
 
-.extended-preview-tab-group:not(.show-pagination).mat-tab-group {
-  .mat-tab-header {
+.extended-preview-tab-group:not(.show-pagination).mat-mdc-tab-group {
+  .mat-mdc-tab-header {
+    /* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version. */
     .mat-tab-header-pagination {
       display: none;
     }
   }
 }
 
-.extended-preview-tab-group.show-pagination.mat-tab-group {
-  .mat-tab-header {
+.extended-preview-tab-group.show-pagination.mat-mdc-tab-group {
+  .mat-mdc-tab-header {
+    /* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version. */
     .mat-tab-header-pagination-disabled {
       display: none;
     }
   }
 }
-.extended-preview-tab-group.mat-tab-group {
+.extended-preview-tab-group.mat-mdc-tab-group {
   height: 100%;
-  .mat-tab-header {
+  .mat-mdc-tab-header {
     border-bottom: none;
     background-color: white;
     height: 40px;
@@ -28,7 +30,8 @@
     width: 60%;
     z-index: 10;
   }
-
+  /* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version. */
+  /* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version. */
   .mat-tab-label {
     color: var(--vitamui-grey-600);
     align-items: baseline;
@@ -40,24 +43,26 @@
     &:hover {
       background-color: var(--vitamui-grey-300);
     }
-
+    /* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version. */
     &:not(.mat-tab-disabled):focus {
       background-color: var(--vitamui-grey-300);
     }
   }
-
+  /* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version. */
+  /* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version. */
   .mat-tab-label-active {
+    /* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version. */
     .mat-tab-label-content {
       color: var(--vitamui-primary);
       font-size: 16px;
       font-weight: 400;
     }
   }
-
+  /* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version. */
   .mat-tab-labels {
     padding: 0 30px;
   }
-
+  /* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version. */
   .mat-tab-body-content {
     margin-top: 40px;
     padding: 20px 40px;

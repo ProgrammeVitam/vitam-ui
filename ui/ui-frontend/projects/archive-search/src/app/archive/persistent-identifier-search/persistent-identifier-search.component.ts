@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component } from '@angular/core';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { NavigationExtras, Router } from '@angular/router';
 import { combineLatest } from 'rxjs';
 import { ApiUnitObject, ApplicationId, BreadCrumbData, TenantSelectionService } from 'vitamui-library';

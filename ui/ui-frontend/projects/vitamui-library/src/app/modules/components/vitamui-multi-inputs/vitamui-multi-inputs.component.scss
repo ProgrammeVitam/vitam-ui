@@ -8,6 +8,7 @@ $anim-timing: 150ms ease-out;
   display: block;
 }
 
+/* TODO(mdc-migration): The following rule targets internal classes of chips that may no longer apply for the MDC version.*/
 mat-chip i,
 mat-chip span {
   vertical-align: middle;

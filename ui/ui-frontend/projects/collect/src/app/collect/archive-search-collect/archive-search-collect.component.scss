@@ -18,7 +18,7 @@
   overflow: auto;
 }
 
-::ng-deep.mat-menu-panel {
+::ng-deep.mat-mdc-menu-panel {
   max-width: fit-content !important;
 }
 .link-without-underline {
@@ -67,6 +67,7 @@
   }
 }
 
+/* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version. */
 :host ::ng-deep .mat-tab-disabled .mat-tab-label-content {
   color: var(--vitamui-grey-600);
 }

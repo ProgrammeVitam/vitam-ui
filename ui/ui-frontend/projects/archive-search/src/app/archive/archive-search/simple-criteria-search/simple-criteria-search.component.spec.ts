@@ -37,7 +37,7 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { TranslateModule } from '@ngx-translate/core';
 import { BehaviorSubject, of } from 'rxjs';
 import {
@@ -54,7 +54,7 @@ import {
 import { ArchiveSharedDataService } from '../../../core/archive-shared-data.service';
 import { ManagementRulesSharedDataService } from '../../../core/management-rules-shared-data.service';
 import { SimpleCriteriaSearchComponent } from './simple-criteria-search.component';
-import { MatLegacySnackBarModule } from '@angular/material/legacy-snack-bar';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { ArchiveService } from '../../archive.service';
 import { ActivatedRoute } from '@angular/router';
 
@@ -112,7 +112,7 @@ describe('SimpleCriteriaSearchComponent', () => {
         InjectorModule,
         TranslateModule.forRoot(),
         AgenciesModule,
-        MatLegacySnackBarModule,
+        MatSnackBarModule,
         LoggerModule.forRoot(),
       ],
     }).compileComponents();

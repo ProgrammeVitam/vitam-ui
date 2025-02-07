@@ -31,7 +31,7 @@
   }
 }
 
-.vitamui-mat-select.mat-select-panel {
+.vitamui-mat-select.mat-mdc-select-panel {
   @include mat-select-panel;
 }
 
@@ -39,93 +39,105 @@ mat-select-trigger.vitamui-mat-select {
   line-height: normal !important;
 }
 
-.vitamui-mat-select.mat-form-field {
+.vitamui-mat-select.mat-mdc-form-field {
   font-size: 16px;
   font-weight: 500;
   width: 240px;
-
+  /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version.*/
   .mat-form-field-subscript-wrapper {
     top: 60px;
   }
 
   &.mat-focused {
+    /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version.*/
     .mat-form-field-label {
       color: var(--vitamui-primary);
     }
   }
-
+  /* TODO(mdc-migration): The following rule targets internal classes of select that may no longer apply for the MDC version.*/
+  /* TODO(mdc-migration): The following rule targets internal classes of select that may no longer apply for the MDC version.*/
   &:not(.vitamui-mat-select-mini).mat-focused,
   .focused &:not(.vitamui-mat-select-mini) {
+    /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version.*/
     .mat-form-field-flex {
       outline: none;
       @include shadow-0;
       border: 1px solid var(--vitamui-primary) !important;
     }
   }
-
+  /* TODO(mdc-migration): The following rule targets internal classes of select that may no longer apply for the MDC version.*/
+  /* TODO(mdc-migration): The following rule targets internal classes of select that may no longer apply for the MDC version.*/
   &:not(.vitamui-mat-select-mini).ng-invalid,
   :not(.vitamui-mat-select-mini).ng-invalid & {
+    /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version.*/
     .mat-form-field-flex {
       outline: none;
       @include shadow-0;
       border: 1px solid var(--vitamui-red) !important;
     }
   }
-
+  /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version.*/
   .mat-form-field-wrapper {
     padding-bottom: 0;
     background-color: white;
   }
-
+  /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version.*/
   &.no-bottom-padding .mat-form-field-wrapper {
     padding-bottom: 0;
   }
-
+  /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version.*/
   &.mat-form-field-invalid .mat-form-field-label {
     color: var(--vitamui-red);
   }
-
+  /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version.*/
+  /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version.*/
   .mat-form-field-label {
     color: var(--vitamui-grey-600);
     font-weight: 400;
-
+    /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version.*/
     .mat-form-field-required-marker {
       color: var(--vitamui-red);
     }
   }
-
+  /* TODO(mdc-migration): The following rule targets internal classes of input that may no longer apply for the MDC version.*/
+  /* TODO(mdc-migration): The following rule targets internal classes of input that may no longer apply for the MDC version.*/
   &.mat-form-field-type-mat-input {
+    /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version.*/
     .mat-form-field-flex .mat-form-field-infix {
       transition:
         border-top-width 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
         padding-bottom 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
     }
-
+    /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version.*/
     &.mat-form-field-should-float .mat-form-field-flex .mat-form-field-infix {
       padding-bottom: 0;
     }
-
+    /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version.*/
     &:not(.mat-form-field-should-float) .mat-form-field-flex .mat-form-field-infix {
       border-top-width: 0;
     }
   }
-
+  /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version.*/
   .mat-form-field-underline {
     display: none;
   }
 
   &.mat-form-field-type-mat-select {
+    /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version.*/
     &.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
       display: inline;
     }
 
     &.mat-form-field-disabled {
+      /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version.*/
+      /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version.*/
+      /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version.*/
       .mat-form-field-flex {
         background-color: var(--vitamui-grey-300);
         border: none;
         @include shadow-0;
-
-        .mat-select .mat-select-value {
+        /* TODO(mdc-migration): The following rule targets internal classes of select that may no longer apply for the MDC version.*/
+        .mat-mdc-select .mat-select-value {
           font-weight: normal;
           color: var(--vitamui-grey-900);
         }
@@ -138,17 +150,20 @@ mat-select-trigger.vitamui-mat-select {
       }
     }
   }
-
+  /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version.*/
+  /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version.*/
   .mat-form-field-label {
     color: var(--vitamui-primary);
     font-weight: bold;
-
+    /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version.*/
     .mat-form-field-required-marker {
       color: var(--vitamui-tertiary);
       font-weight: bold;
     }
   }
-
+  /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version.*/
+  /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version.*/
+  /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version.*/
   .mat-form-field-flex {
     vertical-align: top;
     border-radius: 4px;
@@ -160,15 +175,15 @@ mat-select-trigger.vitamui-mat-select {
     border: none;
 
     @include shadow-accessible;
-
+    /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version.*/
     .mat-form-field-infix {
       border-top-width: 16px;
       display: flex;
       align-items: center;
       justify-content: space-between;
     }
-
-    .mat-select .mat-select-arrow-wrapper {
+    /* TODO(mdc-migration): The following rule targets internal classes of select that may no longer apply for the MDC version.*/
+    .mat-mdc-select .mat-select-arrow-wrapper {
       visibility: hidden;
     }
 
@@ -183,9 +198,12 @@ mat-select-trigger.vitamui-mat-select {
       }
     }
   }
-
+  /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version.*/
+  /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version.*/
+  /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version.*/
   :not(.mat-form-field-disabled).mat-form-field-flex {
-    .mat-select .mat-select-value {
+    /* TODO(mdc-migration): The following rule targets internal classes of select that may no longer apply for the MDC version.*/
+    .mat-mdc-select .mat-select-value {
       font-weight: normal;
       color: var(--vitamui-grey-900);
     }
@@ -196,26 +214,26 @@ mat-select-trigger.vitamui-mat-select {
       }
     }
   }
-
+  /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version.*/
   &.no-padding .mat-form-field-wrapper {
     padding-bottom: 0;
   }
 }
 
-.vitamui-mat-select.vitamui-mat-select-mini.mat-form-field {
+.vitamui-mat-select.vitamui-mat-select-mini.mat-mdc-form-field {
   width: 100%;
-
+  /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version.*/
   .mat-form-field-wrapper {
     padding-bottom: 0;
   }
-
+  /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version.*/
   .mat-form-field-flex {
     height: 25px;
     padding: 0;
     border: none;
     @include shadow-0;
   }
-
+  /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version.*/
   .mat-form-field-infix {
     width: 100%;
     padding: 0;

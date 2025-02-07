@@ -51,12 +51,7 @@ import {
 } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
 import { MatPseudoCheckboxState } from '@angular/material/core';
-import {
-  MatLegacyOptgroup as MatOptgroup,
-  MatLegacyOption as MatOption,
-  MatLegacyOptionParentComponent as MatOptionParentComponent,
-  MAT_LEGACY_OPTION_PARENT_COMPONENT as MAT_OPTION_PARENT_COMPONENT,
-} from '@angular/material/legacy-core';
+import { MatOptgroup, MatOption, MatOptionParentComponent, MAT_OPTION_PARENT_COMPONENT } from '@angular/material/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 

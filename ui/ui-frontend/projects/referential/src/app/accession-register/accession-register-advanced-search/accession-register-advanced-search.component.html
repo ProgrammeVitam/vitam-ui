@@ -50,7 +50,7 @@
             <label for="acquisition-informations">
               <span class="pb-3">{{ 'ACCESSION_REGISTER.ADVANCED_SEARCH.ACQUISITION_INFORMATIONS' | translate }}</span>
             </label>
-            <mat-form-field appearance="legacy" id="acquisition-informations">
+            <mat-form-field id="acquisition-informations">
               <mat-select [formControl]="acquisitionInformationsControl" multiple>
                 <mat-select-trigger>
                   <span *ngIf="acquisitionInformationsControl.value?.length === acquisitionInformations.length; else acqInfoLayout">

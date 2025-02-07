@@ -15,7 +15,7 @@ h2 {
 
 :host::ng-deep {
   --radius: 20px;
-
+  /* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version. */
   .mat-tab-body-wrapper {
     border-top-right-radius: var(--radius);
     border-bottom-right-radius: var(--radius);
@@ -24,27 +24,27 @@ h2 {
     border: 1px solid var(--vitamui-grey-400);
     margin-top: -1px;
   }
-
+  /* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version. */
   .mat-tab-label {
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
     margin-right: 5px;
     background-color: var(--vitamui-primary-100);
   }
-
+  /* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version. */
   .mat-tab-label-active {
     border: 1px solid var(--vitamui-grey-400);
     border-bottom: none;
   }
 
-  .mat-tab-header,
-  .mat-tab-nav-bar {
+  .mat-mdc-tab-header,
+  .mat-mdc-tab-nav-bar {
     border-bottom: 0;
   }
   .mat-ink-bar {
     display: none;
   }
-
+  /* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version. */
   &.mat-tab-label-active,
   &.mat-tab-label-active:not(.mat-tab-disabled):focus {
     background-color: var(--vitamui-white);
@@ -52,12 +52,12 @@ h2 {
     color: var(--vitamui-grey-700);
     opacity: 1;
   }
-
+  /* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version. */
   .mat-tab-body-content {
     height: 100%;
     overflow: hidden;
   }
-
+  /* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version. */
   .mat-tab-body-content {
     height: 100%;
     overflow: hidden;

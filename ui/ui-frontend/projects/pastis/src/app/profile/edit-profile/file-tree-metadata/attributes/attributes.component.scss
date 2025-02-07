@@ -44,25 +44,26 @@ td {
   width: 150px;
 }
 
-::ng-deep .mat-checkbox {
+::ng-deep .mat-mdc-checkbox {
+  /* TODO(mdc-migration): The following rule targets internal classes of checkbox that may no longer apply for the MDC version. */
   .mat-checkbox-frame {
     border-radius: 3px;
     border: 1px solid var(--vitamui-grey-400);
     background: white;
   }
-
+  /* TODO(mdc-migration): The following rule targets internal classes of checkbox that may no longer apply for the MDC version. */
   &.mat-checkbox-checked .mat-checkbox-frame {
     border-radius: 3px;
     border: 1px solid var(--vitamui-primary);
     background: var(--vitamui-primary);
   }
-
+  /* TODO(mdc-migration): The following rule targets internal classes of checkbox that may no longer apply for the MDC version. */
   &.mat-checkbox-checked .mat-checkbox-background,
   .mat-checkbox-background {
     background: transparent;
     margin: 2px;
   }
-
+  /* TODO(mdc-migration): The following rule targets internal classes of checkbox that may no longer apply for the MDC version. */
   .mat-checkbox-checkmark-path {
     stroke: var(--vitamui-white) !important;
     stroke-width: 5px;
@@ -74,16 +75,18 @@ td {
   }
 }
 
+/* TODO(mdc-migration): The following rule targets internal classes of checkbox that may no longer apply for the MDC version. */
+/* TODO(mdc-migration): The following rule targets internal classes of checkbox that may no longer apply for the MDC version. */
 ::ng-deep .mat-checkbox-checked.mat-accent.mat-checkbox-disabled .mat-checkbox-background,
 .mat-checkbox-indeterminate.mat-accent .mat-checkbox-background {
   border: none !important;
   border-color: var(--vitamui-grey-700);
   background-color: var(--vitamui-grey-300);
-
+  /* TODO(mdc-migration): The following rule targets internal classes of checkbox that may no longer apply for the MDC version. */
   .mat-checkbox-checkmark-path {
     stroke: var(--vitamui-grey-700) !important;
   }
-
+  /* TODO(mdc-migration): The following rule targets internal classes of checkbox that may no longer apply for the MDC version. */
   &.mat-checkbox-checked .mat-checkbox-frame {
     border-radius: 3px;
     border: 1px solid var(--vitamui-grey-700) !important;
@@ -91,7 +94,8 @@ td {
   }
 }
 
-::ng-deep .mat-checkbox.mat-checkbox-disabled .mat-checkbox-frame {
+/* TODO(mdc-migration): The following rule targets internal classes of checkbox that may no longer apply for the MDC version. */
+::ng-deep .mat-mdc-checkbox.mat-checkbox-disabled .mat-checkbox-frame {
   border: 1px solid var(--vitamui-primary);
   border-color: var(--vitamui-grey-700);
   background-color: var(--vitamui-grey-300);

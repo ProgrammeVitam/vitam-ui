@@ -40,15 +40,15 @@ import { VitamUICommonTestModule } from 'vitamui-library/testing';
 
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
-import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
-import { MatLegacyProgressBarModule as MatProgressBarModule } from '@angular/material/legacy-progress-bar';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { TenantService } from '../tenant.service';
 import { TenantCreateComponent } from './tenant-create.component';
 import { TenantFormValidators } from './tenant-form.validators';
-import { MatLegacySelectModule as MatSelectModule } from '@angular/material/legacy-select';
-import { MatLegacyOptionModule } from '@angular/material/legacy-core';
+import { MatSelectModule } from '@angular/material/select';
+import { MatOptionModule } from '@angular/material/core';
 
 describe('TenantCreateComponent', () => {
   let component: TenantCreateComponent;
@@ -65,14 +65,7 @@ describe('TenantCreateComponent', () => {
     });
 
     await TestBed.configureTestingModule({
-      imports: [
-        MatSelectModule,
-        MatLegacyOptionModule,
-        MatProgressBarModule,
-        NoopAnimationsModule,
-        ReactiveFormsModule,
-        VitamUICommonTestModule,
-      ],
+      imports: [MatSelectModule, MatOptionModule, MatProgressBarModule, NoopAnimationsModule, ReactiveFormsModule, VitamUICommonTestModule],
       declarations: [TenantCreateComponent],
       providers: [
         { provide: MatDialogRef, useValue: matDialogRefSpy },

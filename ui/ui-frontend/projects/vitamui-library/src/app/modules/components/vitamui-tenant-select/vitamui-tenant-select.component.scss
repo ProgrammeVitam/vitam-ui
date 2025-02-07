@@ -25,7 +25,7 @@ $input-height: 70px;
 }
 
 .mat-drawer,
-.mat-dialog-container {
+.mat-mdc-dialog-container {
   .tenant-box {
     @include dialog-elevation-dark;
   }

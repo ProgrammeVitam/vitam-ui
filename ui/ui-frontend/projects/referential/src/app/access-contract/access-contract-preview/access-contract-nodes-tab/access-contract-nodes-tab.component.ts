@@ -36,7 +36,7 @@
  */
 import { HttpHeaders } from '@angular/common/http';
 import { Component, Input } from '@angular/core';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import {
   AccessContract,
   ExternalParameters,

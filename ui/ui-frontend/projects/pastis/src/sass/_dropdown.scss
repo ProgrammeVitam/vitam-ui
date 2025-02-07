@@ -34,6 +34,7 @@ $dropdowns-text: (
 );
 
 /*Defines dropdown font-text*/
+/*TODO(mdc-migration): The following rule targets internal classes of select that may no longer apply for the MDC version.*/
 .mat-select-trigger {
   //@extend .dropdown-font-text;
   @extend .text-text-normal;

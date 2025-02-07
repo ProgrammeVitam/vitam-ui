@@ -95,6 +95,7 @@ vitamui-common-header-extra-select {
 // Override item selection component css properties for header display only,
 // since the design is not common anymore with the other component usages.
 :host::ng-deep {
+  /* TODO(mdc-migration): The following rule targets internal classes of select that may no longer apply for the MDC version.*/
   mat-select,
   .mat-select-value,
   .mat-select-arrow,
@@ -105,7 +106,7 @@ vitamui-common-header-extra-select {
   .mat-toolbar-single-row {
     color: var(--vitamui-header-footer-font) !important;
   }
-
+  /* TODO(mdc-migration): The following rule targets internal classes of select that may no longer apply for the MDC version.*/
   .mat-select-arrow-wrapper {
     vertical-align: top !important;
   }
@@ -117,8 +118,10 @@ vitamui-common-header-extra-select {
     border: none !important;
     border-radius: 0 !important;
     padding: 0 1rem !important;
-
+    /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version.*/
+    /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version.*/
     .mat-form-field-wrapper {
+      /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version.*/
       .mat-form-field-flex {
         background-color: transparent !important;
       }

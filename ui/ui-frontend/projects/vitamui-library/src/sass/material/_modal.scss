@@ -10,7 +10,7 @@ $footer-height: 100px !default;
   top: 72px;
 }
 
-.vitamui-modal .mat-dialog-container {
+.vitamui-modal .mat-mdc-dialog-container {
   @extend %mat-dialog-container;
 
   .header {
@@ -64,7 +64,7 @@ $footer-height: 100px !default;
   }
 }
 
-.vitamui-form-dual-panel .mat-dialog-container {
+.vitamui-form-dual-panel .mat-mdc-dialog-container {
   @extend %mat-dialog-container;
 
   .vitamui-form-dual-panel-content {

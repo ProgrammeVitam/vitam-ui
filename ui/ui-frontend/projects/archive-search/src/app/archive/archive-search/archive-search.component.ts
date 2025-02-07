@@ -49,9 +49,9 @@ import {
   TemplateRef,
   ViewChild,
 } from '@angular/core';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { MatLegacyDialog as MatDialog, MatLegacyDialogConfig as MatDialogConfig } from '@angular/material/legacy-dialog';
 import { merge, Observable, Subject, Subscription } from 'rxjs';
 import { debounceTime, filter, tap } from 'rxjs/operators';
 import {

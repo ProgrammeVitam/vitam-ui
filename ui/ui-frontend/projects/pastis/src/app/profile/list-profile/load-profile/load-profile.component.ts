@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, Inject } from '@angular/core';
-import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogModule } from '@angular/material/legacy-dialog';
+import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { FileSelectorComponent, PipesModule } from 'vitamui-library';
 import { AsyncPipe, NgForOf, NgIf } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
@@ -57,7 +57,7 @@ export interface LoadProfileConfig {
   templateUrl: './load-profile.component.html',
   styleUrl: './load-profile.component.scss',
   standalone: true,
-  imports: [FileSelectorComponent, NgIf, TranslateModule, NgForOf, PipesModule, MatLegacyDialogModule, AsyncPipe],
+  imports: [FileSelectorComponent, NgIf, TranslateModule, NgForOf, PipesModule, MatDialogModule, AsyncPipe],
 })
 export class LoadProfileComponent {
   constructor(

@@ -37,7 +37,7 @@
 import { GlobalEventService, Profile, SidenavPage } from 'vitamui-library';
 
 import { Component, ViewChild } from '@angular/core';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 
 import { ProfileCreateComponent } from './profile-create/profile-create.component';

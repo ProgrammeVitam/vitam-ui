@@ -1,4 +1,4 @@
-.vitamui-dialog .mat-dialog-container {
+.vitamui-dialog .mat-mdc-dialog-container {
   border-radius: 20px;
   padding: 40px;
 
@@ -20,11 +20,11 @@
     }
   }
 }
-.vitamui-confirm-dialog > .mat-dialog-container {
+.vitamui-confirm-dialog > .mat-mdc-dialog-container {
   border-radius: 20px;
   padding: 40px 60px 30px 40px;
 
-  .mat-dialog-actions {
+  .mat-mdc-dialog-actions {
     margin-bottom: 0;
     padding-top: 30px;
 
@@ -34,6 +34,6 @@
   }
 }
 
-.mat-dialog-actions {
+.mat-mdc-dialog-actions {
   @extend .hgap-4;
 }

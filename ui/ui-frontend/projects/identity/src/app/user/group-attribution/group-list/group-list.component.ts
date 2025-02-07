@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
-import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA } from '@angular/material/legacy-dialog';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { collapseAnimation, Profile, rotateAnimation } from 'vitamui-library';
 import { GroupSelection } from './../../group-selection.interface';
 @Component({

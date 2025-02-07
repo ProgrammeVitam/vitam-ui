@@ -22,8 +22,8 @@
   }
 }
 
-::ng-deep .vitamui-spinner.mat-progress-spinner circle,
-.vitamui-spinner .mat-spinner circle {
+::ng-deep .vitamui-spinner.mat-mdc-progress-spinner circle,
+.vitamui-spinner .mat-mdc-progress-spinner circle {
   stroke: var(--vitamui-primary) !important;
 }
 

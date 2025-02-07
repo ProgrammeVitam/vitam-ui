@@ -43,7 +43,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { VitamUICommonInputModule } from '../vitamui-input/vitamui-common-input.module';
 import { TranslateModule } from '@ngx-translate/core';
-import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 @NgModule({
   imports: [
@@ -55,7 +55,7 @@ import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
     MatIconModule,
     VitamUICommonInputModule,
     TranslateModule,
-    MatLegacyFormFieldModule,
+    MatFormFieldModule,
   ],
   declarations: [MultipleOptionsDatepickerComponent],
   exports: [MultipleOptionsDatepickerComponent],

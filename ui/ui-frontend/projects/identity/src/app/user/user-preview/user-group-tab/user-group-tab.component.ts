@@ -36,7 +36,7 @@
  */
 import { Component, Input, OnChanges, OnDestroy } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
 
 import { AdminUserProfile, AuthService, Group, isRootLevel, Profile, User } from 'vitamui-library';

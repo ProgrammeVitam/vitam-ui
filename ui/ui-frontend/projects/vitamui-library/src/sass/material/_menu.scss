@@ -31,17 +31,17 @@
   }
 }
 
-.vitamui-menu-panel.mat-menu-panel {
+.vitamui-menu-panel.mat-mdc-menu-panel {
   border-radius: 10px;
   background: transparent;
   @include shadow-32dp-dark;
 
-  .mat-menu-content {
+  .mat-mdc-menu-content {
     padding-top: 0;
     padding-bottom: 0;
   }
 
-  .mat-menu-item {
+  .mat-mdc-menu-item {
     color: var(--vitamui-primary);
     background: white;
     font-size: 16px;
@@ -64,7 +64,7 @@
     }
   }
 
-  .mat-menu-item:hover:not([disabled]),
+  .mat-mdc-menu-item:hover:not([disabled]),
   .mat-menu-item.cdk-program-focused:not([disabled]),
   .mat-menu-item.cdk-keyboard-focused:not([disabled]),
   .mat-menu-item-highlighted:not([disabled]) {
@@ -72,7 +72,7 @@
     background-color: var(--vitamui-primary);
   }
 
-  .mat-menu-item.vitamui-menu-item-header {
+  .mat-mdc-menu-item.vitamui-menu-item-header {
     padding: 0 14px 0 20px;
 
     > span {

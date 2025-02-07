@@ -1,12 +1,15 @@
 @import '../variables/colors';
 @import '../mixins/elevation';
 
+/* TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version. */
+/* TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version. */
+/* TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version. */
 .vitamui-button-toggle-group.mat-button-toggle-group {
   @include shadow-0;
   border-radius: 5px;
   background-color: var(--vitamui-white);
   border: solid 1px var(--vitamui-primary);
-
+  /* TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version. */
   .mat-button-toggle:not(.mat-button-toggle-disabled) {
     border-color: var(--vitamui-primary);
 
@@ -15,9 +18,11 @@
       color: var(--vitamui-primary-50-font);
     }
   }
-
+  /* TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version. */
+  /* TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version. */
   .mat-button-toggle-checked,
   .mat-button-toggle-disabled.mat-button-toggle-checked {
+    /* TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version. */
     &:not(.mat-button-toggle-disabled) {
       background-color: var(--vitamui-primary);
       color: var(--vitamui-primary-font);
@@ -27,7 +32,7 @@
   &.disabled {
     border-color: var(--vitamui-grey);
   }
-
+  /* TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version. */
   .mat-button-toggle-disabled {
     background-color: var(--vitamui-grey-300);
     color: var(--vitamui-grey);
@@ -35,19 +40,25 @@
   }
 }
 
+/* TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version. */
 .mat-button-toggle-label-content {
   font-size: 14px;
   line-height: 22px !important;
   padding: 6px 30px !important;
 }
+/* TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version. */
 .mat-button-toggle-button {
   padding: 1px 0 0 0;
 }
 .vitamui-button-toggle-group-big {
+  /* TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version. */
+  /* TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version. */
+  /* TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version. */
   &.mat-button-toggle-group-appearance-standard,
   &.mat-button-toggle-standalone.mat-button-toggle-appearance-standard {
     border: none;
-
+    /* TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version. */
+    /* TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version. */
     .mat-button-toggle {
       border: 1px solid var(--vitamui-grey-300);
       border-radius: 10px;
@@ -55,7 +66,7 @@
       min-height: 80px;
       align-items: center;
       display: flex;
-
+      /* TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version. */
       .mat-button-toggle-label-content {
         padding: 15px 20px;
         font-size: 14px;
@@ -69,21 +80,23 @@
         }
       }
     }
-
+    /* TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version. */
+    /* TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version. */
     .mat-button-toggle + .mat-button-toggle {
       border-left: 1px solid var(--vitamui-grey-900);
       margin-left: 12px;
-
+      /* TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version. */
       &.mat-button-toggle-checked {
         border-color: var(--vitamui-primary);
       }
     }
-
+    /* TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version. */
+    /* TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version. */
     .mat-button-toggle-checked {
       background-color: var(--vitamui-primary);
       border-color: var(--vitamui-primary);
       color: var(--vitamui-primary-font);
-
+      /* TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version. */
       .mat-button-toggle-focus-overlay {
         border-bottom: none;
       }

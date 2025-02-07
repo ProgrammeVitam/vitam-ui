@@ -36,18 +36,18 @@
  */
 import { Component, OnInit } from '@angular/core';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MatLegacyFormFieldModule as MatFormFieldModule } from '@angular/material/legacy-form-field';
-import { MatLegacySelectModule as MatSelectModule } from '@angular/material/legacy-select';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
 import { CountryOption, CountryService, Option, VitamUICommonModule } from 'vitamui-library';
 import { EditableFieldModule } from '../../../../../../../identity/src/app/shared/editable-field';
 import { NgForOf, NgIf } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatLegacyInputModule as MatInputModule } from '@angular/material/legacy-input';
+import { MatInputModule } from '@angular/material/input';
 import { extend } from 'underscore';
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
-import { MatLegacyNativeDateModule as MatNativeDateModule } from '@angular/material/legacy-core';
+import { MatNativeDateModule } from '@angular/material/core';
 
 @Component({
   selector: 'design-system-old-inputs',

@@ -16,6 +16,7 @@ $animation-time: 150ms;
   margin: 10px;
 }
 
+/*TODO(mdc-migration): The following rule targets internal classes of select that may no longer apply for the MDC version.*/
 .vitamui-mat-select-options {
   max-height: 50vh;
   overflow-y: auto;
@@ -30,10 +31,11 @@ $animation-time: 150ms;
 }
 
 :host::ng-deep {
+  /*TODO(mdc-migration): The following rule targets internal classes of select that may no longer apply for the MDC version.*/
   .mat-select-trigger {
     transform: translateY(10px);
   }
-
+  /*TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version.*/
   .mat-form-field-label {
     display: block !important;
 
@@ -54,7 +56,7 @@ $animation-time: 150ms;
       color: var(--vitamui-red);
     }
   }
-
+  /*TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version.*/
   .mat-form-field-appearance-legacy.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
     transform: scale(calc(12 / 14)) translateY(-12px) !important;
     letter-spacing: 0.4px;
@@ -97,15 +99,15 @@ $animation-time: 150ms;
 
     &:hover,
     &:focus,
-    .mat-option.mat-active {
+    .mat-mdc-option.mat-active {
       background: var(--vitamui-primary-light);
     }
 
-    .mat-option:hover,
+    .mat-mdc-option:hover,
     .mat-option:focus {
       background: transparent;
     }
-
+    /*TODO(mdc-migration): The following rule targets internal classes of option that may no longer apply for the MDC version.*/
     mat-option {
       flex-grow: 1;
       justify-content: flex-start;
@@ -124,7 +126,7 @@ $animation-time: 150ms;
       mat-pseudo-checkbox {
         display: none;
       }
-
+      /*TODO(mdc-migration): The following rule targets internal classes of option that may no longer apply for the MDC version.*/
       .mat-option-text {
         //@extend .text-text-normal-bold;
         font-weight: 700;

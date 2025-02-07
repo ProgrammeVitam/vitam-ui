@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component } from '@angular/core';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { SampleDialogComponent } from './sample-dialog/sample-dialog.component';
 
 const INFINITE_SCROLL_FAKE_DELAY_MS = 1500;

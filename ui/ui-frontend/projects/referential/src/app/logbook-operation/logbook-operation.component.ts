@@ -36,7 +36,7 @@
  */
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { GlobalEventService, SidenavPage, VitamuiCommonBannerComponent } from 'vitamui-library';
 import { EventFilter } from './event-filter.interface';

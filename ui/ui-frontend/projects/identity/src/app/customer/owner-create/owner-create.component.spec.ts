@@ -37,8 +37,8 @@
 import { Component, forwardRef, Input, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
-import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
-import { MatLegacyProgressBarModule as MatProgressBarModule } from '@angular/material/legacy-progress-bar';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { EMPTY, of } from 'rxjs';
 import { ConfirmDialogService, Owner, Tenant } from 'vitamui-library';
@@ -48,8 +48,8 @@ import { OwnerService } from '../owner.service';
 import { TenantFormValidators } from '../tenant-create/tenant-form.validators';
 import { TenantService } from '../tenant.service';
 import { OwnerCreateComponent } from './owner-create.component';
-import { MatLegacySelectModule as MatSelectModule, MatLegacySelectModule } from '@angular/material/legacy-select';
-import { MatLegacyOptionModule } from '@angular/material/legacy-core';
+import { MatSelectModule } from '@angular/material/select';
+import { MatOptionModule } from '@angular/material/core';
 
 @Component({
   selector: 'app-owner-form',
@@ -109,13 +109,13 @@ describe('OwnerCreateComponent', () => {
     await TestBed.configureTestingModule({
       imports: [
         MatSelectModule,
-        MatLegacyOptionModule,
+        MatOptionModule,
         MatProgressBarModule,
         ReactiveFormsModule,
         NoopAnimationsModule,
         VitamUICommonTestModule,
-        MatLegacySelectModule,
-        MatLegacyOptionModule,
+        MatSelectModule,
+        MatOptionModule,
       ],
       declarations: [OwnerCreateComponent, OwnerFormStubComponent],
       providers: [

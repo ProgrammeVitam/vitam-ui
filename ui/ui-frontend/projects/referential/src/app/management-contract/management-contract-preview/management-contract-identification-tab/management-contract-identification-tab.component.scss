@@ -27,6 +27,7 @@ h5 {
   border-radius: 50%;
 }
 
+/* TODO(mdc-migration): The following rule targets internal classes of checkbox that may no longer apply for the MDC version.*/
 .mat-checkbox-frame,
 .mat-checkbox-background,
 .mat-checkbox-anim-unchecked-checked .mat-checkbox-anim-checked-unchecked {
@@ -49,6 +50,7 @@ h5 {
     font-size: 12px;
     font-weight: 700;
   }
+  /* TODO(mdc-migration): The following rule targets internal classes of select that may no longer apply for the MDC version.*/
   mat-select {
     margin-top: 3px;
   }
