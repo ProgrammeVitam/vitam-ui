@@ -94,6 +94,8 @@ describe('LogbookManagementOperationPreviewComponent', () => {
       processType: 'TRACEABILITY',
       stepByStep: false,
       stepStatus: 'KO',
+      stepCancellable: false,
+      forcedCancellation: false,
     };
     fixture.detectChanges();
   });

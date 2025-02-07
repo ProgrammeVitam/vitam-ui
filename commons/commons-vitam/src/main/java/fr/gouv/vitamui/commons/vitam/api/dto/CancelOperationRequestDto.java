@@ -1,5 +1,5 @@
-/*
- * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2022)
+/**
+ * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
  *
  * contact@programmevitam.fr
@@ -34,41 +34,17 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Inject, Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { BaseHttpClient, BASE_URL, PageRequest, PaginatedResponse } from 'vitamui-library';
-import { OperationResponse } from '../../models/operation-response.interface';
+package fr.gouv.vitamui.commons.vitam.api.dto;
 
-@Injectable({
-  providedIn: 'root',
-})
-export class LogbookManagementOperationApiService extends BaseHttpClient<any> {
-  baseUrl: string;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
-  constructor(http: HttpClient, @Inject(BASE_URL) baseUrl: string) {
-    super(http, baseUrl + '/logbook-management-operation');
-    this.baseUrl = baseUrl;
-  }
+@Getter
+@Setter
+@ToString
+public class CancelOperationRequestDto {
 
-  getBaseUrl() {
-    return this.baseUrl;
-  }
-
-  searchOperationsDetails(searchCriteria: any): Observable<OperationResponse> {
-    return this.http.post<OperationResponse>(`${this.apiUrl}/operations`, searchCriteria);
-  }
-
-  cancelOperationProcessExecution(id: string, stepCancellable: boolean, reason: string): Observable<OperationResponse> {
-    const body = { stepCancellable, reason };
-    return this.http.post<OperationResponse>(`${this.apiUrl}/operations/cancel/${id}`, body);
-  }
-
-  updateOperationProcessExecution(id: string, actionId: string): Observable<OperationResponse> {
-    return this.http.post<OperationResponse>(`${this.apiUrl}/operations/update/${id}`, actionId);
-  }
-
-  getAllPaginated(pageRequest: PageRequest, embedded?: string, headers?: HttpHeaders): Observable<PaginatedResponse<any>> {
-    return super.getAllPaginated(pageRequest, embedded, headers);
-  }
+    private boolean stepCancellable;
+    private String reason;
 }

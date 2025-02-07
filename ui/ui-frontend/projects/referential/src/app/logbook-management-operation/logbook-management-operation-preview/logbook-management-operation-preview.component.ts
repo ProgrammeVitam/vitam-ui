@@ -40,6 +40,7 @@ import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { OperationDetails } from '../../models/operation-response.interface';
 import { LogbookManagementOperationService } from '../logbook-management-operation.service';
+import { FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-logbook-management-operation-preview',
@@ -53,8 +54,11 @@ export class LogbookManagementOperationPreviewComponent implements OnInit, OnDes
   @Output() previewClose = new EventEmitter();
   @ViewChild('confirmUpdateOperationDialog', { static: true })
   confirmUpdateOperationDialog: TemplateRef<LogbookManagementOperationPreviewComponent>;
+  @ViewChild('confirmCancelOperationDialog', { static: true })
+  confirmCancelOperationDialog: TemplateRef<LogbookManagementOperationPreviewComponent>;
 
   actionId: string;
+  reason: FormControl;
   operationUpdatedSub: Subscription;
 
   constructor(
@@ -67,6 +71,7 @@ export class LogbookManagementOperationPreviewComponent implements OnInit, OnDes
   }
 
   ngOnInit(): void {
+    this.reason = new FormControl('', [Validators.required, Validators.maxLength(500), Validators.minLength(3)]);
     if (this.logbookManagementOperationService.operationUpdated) {
       this.operationUpdatedSub = this.logbookManagementOperationService.operationUpdated.subscribe((updatedOperation: OperationDetails) => {
         this.operation = updatedOperation;
@@ -98,18 +103,20 @@ export class LogbookManagementOperationPreviewComponent implements OnInit, OnDes
   cancelOperation(operation: OperationDetails) {
     let dialogToOpen;
     this.actionId = 'CANCEL';
-    dialogToOpen = this.confirmUpdateOperationDialog;
+    dialogToOpen = this.confirmCancelOperationDialog;
 
     const dialogRef = this.matDialog.open(dialogToOpen, { panelClass: 'vitamui-dialog' });
     dialogRef
       .afterClosed()
       .pipe(filter((result) => !!result))
       .subscribe(() => {
-        this.logbookManagementOperationService.cancelOperationProcessExecution(operation.operationId).subscribe((operations) => {
-          if (operations.results) {
-            this.operation = operations.results[operations.hits.total - 1];
-          }
-        });
+        this.logbookManagementOperationService
+          .cancelOperationProcessExecution(operation.operationId, this.operation?.stepCancellable, this.reason?.value)
+          .subscribe((operations) => {
+            if (operations.results) {
+              this.operation = operations.results[operations.hits.total - 1];
+            }
+          });
       });
   }
 

@@ -9,25 +9,20 @@
   <vitamui-common-menu-button [overlayPos]="'end'" [icon]="'vitamui-icon-more-horiz'">
     <button
       mat-menu-item
-      (click)="updateOperationStatus(operation, 'NEXT')"
-      [disabled]="
-        !(
-          operation?.stepByStep &&
-          operation?.globalState === 'PAUSE' &&
-          (operation?.stepStatus === 'WARNING' || operation?.stepStatus === 'OK')
-        )
-      "
+      (click)="updateOperationStatus(operation, 'PAUSE')"
+      [disabled]="operation?.globalState === 'COMPLETED' || operation?.globalState === 'PAUSE'"
     >
-      {{ 'LOGBOOK_OPERATION_INFORMATIONS.NEXT_STEP' | translate }}
+      {{ 'LOGBOOK_OPERATION_INFORMATIONS.PAUSE_STEP' | translate }}
     </button>
     <button
       mat-menu-item
       (click)="updateOperationStatus(operation, 'RESUME')"
       [disabled]="
+        operation?.globalState === 'COMPLETED' ||
         !(
           operation?.stepByStep &&
           operation?.globalState === 'PAUSE' &&
-          (operation?.stepStatus === 'WARNING' || operation?.stepStatus === 'OK')
+          (operation?.stepStatus === 'WARNING' || operation?.stepStatus === 'OK' || operation?.stepStatus === 'FATAL')
         )
       "
     >
@@ -35,8 +30,23 @@
     </button>
     <button
       mat-menu-item
+      (click)="updateOperationStatus(operation, 'NEXT')"
+      [disabled]="
+        operation?.globalState === 'COMPLETED' ||
+        !(
+          operation?.stepByStep &&
+          operation?.globalState === 'PAUSE' &&
+          (operation?.stepStatus === 'WARNING' || operation?.stepStatus === 'OK' || operation?.stepStatus === 'FATAL')
+        )
+      "
+    >
+      {{ 'LOGBOOK_OPERATION_INFORMATIONS.NEXT_STEP' | translate }}
+    </button>
+    <button
+      mat-menu-item
       (click)="updateOperationStatus(operation, 'REPLAY')"
       [disabled]="
+        operation?.globalState === 'COMPLETED' ||
         !(
           operation?.globalState === 'PAUSE' &&
           (operation?.stepStatus === 'WARNING' || operation?.stepStatus === 'OK' || operation?.stepStatus === 'FATAL')
@@ -67,7 +77,11 @@
   <mat-dialog-content class="dialog-content">
     <div class="text-title">{{ 'LOGBOOK_MANAGEMENT_OPERATION_ACTIONS.POP_UP_' + actionId + '_MESSAGE' | translate }}</div>
     <div class="text-action">
-      {{ 'LOGBOOK_MANAGEMENT_OPERATION_ACTIONS.POP_UP_SECOND_TITLE' | translate }}
+      @if (operation?.globalState === 'PAUSE' && operation?.stepStatus === 'FATAL') {
+        {{ 'LOGBOOK_MANAGEMENT_OPERATION_ACTIONS.POP_UP_' + actionId + '_SECOND_MESSAGE' | translate }}
+      } @else {
+        {{ 'LOGBOOK_MANAGEMENT_OPERATION_ACTIONS.POP_UP_SECOND_TITLE' | translate }}
+      }
     </div>
     <br />
     <div>
@@ -104,6 +118,40 @@
   </mat-dialog-content>
   <mat-dialog-actions class="dialog-action">
     <button [matDialogClose]="true" class="btn primary btn-confirm-dialog">{{ 'COMMON.SUBMIT' | translate }}</button>
+    <button matDialogClose class="btn cancel link">{{ 'COMMON.CANCEL' | translate }}</button>
+  </mat-dialog-actions>
+</ng-template>
+
+<ng-template #confirmCancelOperationDialog>
+  <mat-dialog-content>
+    <label> {{ 'LOGBOOK_MANAGEMENT_OPERATION_ACTIONS.POP_UP_' + actionId + '_TITLE' | translate }} </label>
+    <p
+      class="text bold"
+      [innerHTML]="
+        'LOGBOOK_MANAGEMENT_OPERATION_ACTIONS.POP_UP_' +
+          actionId +
+          '_' +
+          (operation?.stepCancellable ? 'FORCED' : 'NON_FORCED') +
+          '_MODE_MESSAGE' | translate
+      "
+    ></p>
+    <div *ngIf="operation?.stepCancellable">
+      <p>
+        {{ 'LOGBOOK_MANAGEMENT_OPERATION_ACTIONS.POP_UP_' + actionId + '_FORCED_MODE_REASON' | translate }}
+      </p>
+      <vitamui-common-textarea
+        class="w-100"
+        [formControl]="reason"
+        [required]="true"
+        [placeholder]="'LOGBOOK_MANAGEMENT_OPERATION_ACTIONS.POP_UP_CANCEL_FORCED_MODE_REASON_PLACEHOLDER' | translate"
+      >
+      </vitamui-common-textarea>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions class="dialog-action">
+    <button [matDialogClose]="true" [disabled]="!reason.valid" class="btn primary btn-confirm-dialog">
+      {{ 'LOGBOOK_MANAGEMENT_OPERATION_ACTIONS.POP_UP_CANCEL_ACTION' | translate }}
+    </button>
     <button matDialogClose class="btn cancel link">{{ 'COMMON.CANCEL' | translate }}</button>
   </mat-dialog-actions>
 </ng-template>

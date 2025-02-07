@@ -2,6 +2,7 @@
 
 ::ng-deep {
   .more-action-menu.mat-menu-panel {
+    max-width: max-content;
     background: none;
     @include shadow-0;
 

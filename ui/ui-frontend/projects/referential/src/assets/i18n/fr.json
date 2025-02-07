@@ -272,10 +272,11 @@
     "WARNING": "Avertissement"
   },
   "LOGBOOK_OPERATION_INFORMATIONS": {
-    "NEXT_STEP": "Passer à l'étape suivante",
-    "RESUME_OPERATION": "Finaliser l'opération",
-    "REPLAY_STEP": "Rejouer l'étape",
-    "CANCEL_OPERATION": "Annuler l'opération",
+    "PAUSE_STEP": " Mettre en pause l'opération en cours",
+    "NEXT_STEP": "Poursuivre l'étape en cours et passer l'opération en mode pas à pas",
+    "RESUME_OPERATION": "Poursuivre l'opération jusqu'à la fin du traitement",
+    "REPLAY_STEP": "Rejouer l'étape en cours et passer l'opération en mode pas à pas",
+    "CANCEL_OPERATION": "Forcer l'arrêt et terminer l'opération en erreur",
     "INFORMATIONS": "Informations",
     "TICKETS": "Tickets",
     "DETAILS": "Détails",
@@ -293,10 +294,16 @@
   "LOGBOOK_MANAGEMENT_OPERATION_ACTIONS": {
     "MESSAGE": "La demande de changement de statut a bien été prise en compte",
     "POP_UP_SECOND_TITLE": "Confirmez-vous vouloir réaliser une demande de changement de statut :",
-    "POP_UP_NEXT_MESSAGE": "Modifier l'opération ",
-    "POP_UP_CANCEL_MESSAGE": "Annuler l'opération ",
-    "POP_UP_REPLAY_MESSAGE": "Rejouer l'opération ",
-    "POP_UP_RESUME_MESSAGE": "Finaliser l'opération "
+    "POP_UP_NEXT_MESSAGE": "Modifier l'opération",
+    "POP_UP_REPLAY_MESSAGE": "Confirmer l’action",
+    "POP_UP_REPLAY_SECOND_MESSAGE": "Avez-vous eu la confirmation que le problème technique à l'origine de la mise en pause fatale a été corrigé avant de relancer l'opération ?",
+    "POP_UP_RESUME_MESSAGE": "Finaliser l'opération",
+    "POP_UP_CANCEL_TITLE": "Forcer l'arrêt",
+    "POP_UP_CANCEL_FORCED_MODE_MESSAGE": "Attention vous demandez l’annulation de l’opération à une étape où l’intervention de votre administrateur technique ou du support de la plateforme est nécessaire.<br/>Si vous validez cette action l’opération sera terminée en erreur et les éléments permettant l’analyse du problème seront détruits. Vous devez saisir un motif pour indiquer la raison de cette action d’arrêt forcé.",
+    "POP_UP_CANCEL_NON_FORCED_MODE_MESSAGE": "Attention l’opération sera terminée en ERREUR.",
+    "POP_UP_CANCEL_FORCED_MODE_REASON": "Vous devez saisir un motif pour indiquer la raison de cette action d’arrêt forcé.",
+    "POP_UP_CANCEL_FORCED_MODE_REASON_PLACEHOLDER": "Motif",
+    "POP_UP_CANCEL_ACTION": "Forcer l'arrêt"
   },
   "ACCESSION_REGISTER": {
     "ACCESSION_REGISTER": "Registre des fonds",
