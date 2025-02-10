@@ -6,6 +6,9 @@
     }
   },
   "ROUTE": {
+    "upload": {
+      "TITLE": "Upload"
+    },
     "tokens": {
       "TITLE": "Tokens",
       "colors.TITLE": "Couleurs",
