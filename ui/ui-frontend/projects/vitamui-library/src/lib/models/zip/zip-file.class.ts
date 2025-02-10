@@ -39,6 +39,7 @@ import JSZip from 'jszip';
 import { ZipFileStatus } from './zip-file-status.interface';
 import { HttpEvent, HttpEventType } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs';
+import { CustomFile } from '../custom-file';
 
 export class ZipFile {
   private zipFile: JSZip;
@@ -64,8 +65,9 @@ export class ZipFile {
       return this;
     }
     for (let i = 0; i < files.length; i++) {
-      const item = files[i];
-      this.zipFile.file(item.webkitRelativePath, item);
+      const item: CustomFile = files[i];
+      const filePath = item?.webkitRelativePath || item?.relativePath || item?.name;
+      this.zipFile.file(filePath, item);
       this.zipFileStatus.size += item.size;
     }
     return this;
