@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["projects/vitamui-library/src/app/modules/error-dialog/error-dialog.component.scss"],
-  "sourcesContent": [".error-message {\n  padding: 40px;\n\n  h2 {\n    font-size: 24px;\n    font-weight: 500;\n    margin-top: 40px;\n  }\n\n  button.back {\n    margin-top: 40px;\n  }\n}\n"],
-  "mappings": "AAAA,CAAA,cAAA,QACE,KAEA,CAHF,cAGE,GACE,UAAA,KACA,YAAA,IACA,WAAA,KAGF,CATF,cASE,MAAA,CAAA,KACE,WAAA",
-  "names": []
-}

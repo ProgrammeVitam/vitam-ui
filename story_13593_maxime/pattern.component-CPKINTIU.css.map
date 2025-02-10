@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["projects/identity/src/app/shared/pattern/pattern.component.scss"],
-  "sourcesContent": [":host::ng-deep {\n  mat-form-field {\n    width: 50%;\n  }\n\n  .mat-form-field-wrapper {\n    width: 83%;\n  }\n\n  .mat-form-field-flex {\n    height: 100%;\n  }\n\n  .mat-form-field-infix {\n    padding: 0.5rem 0rem !important;\n  }\n\n  .mat-form-field-label span {\n    line-height: 15px;\n  }\n}\n"],
-  "mappings": "AACE,KAAA,UAAA,eACE,MAAA,IAGF,KAAA,UAAA,CAAA,uBACE,MAAA,IAGF,KAAA,UAAA,CAAA,oBACE,OAAA,KAGF,KAAA,UAAA,CAAA,qBAZA,QAaE,MAAA,eAGF,KAAA,UAAA,CAAA,qBAAA,KACE,YAAA",
-  "names": []
-}
