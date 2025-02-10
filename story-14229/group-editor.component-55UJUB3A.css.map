@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["projects/vitamui-library/src/app/modules/object-editor/components/group-editor/group-editor.component.scss"],
+  "sourcesContent": [":host {\n  width: 100%;\n  display: flex;\n  gap: 10px;\n  flex-direction: column;\n}\n\n/* TODO(mdc-migration): The following rule targets internal classes of dialog that may no longer apply for the MDC version. */\nmat-dialog-content {\n  display: flex;\n  flex-direction: column;\n  gap: 5px;\n}\n\n.v-col {\n  display: flex;\n  flex: 1;\n}\n\n.v-row {\n  display: flex;\n  flex-direction: row;\n  flex-wrap: wrap;\n  width: 100%;\n  gap: 10px;\n}\n"],
+  "mappings": "AAAA,MACE,MAAA,KACA,QAAA,KACA,IAAA,KACA,eAAA,OAIF,mBACE,QAAA,KACA,eAAA,OACA,IAAA,IAGF,CAAA,MACE,QAAA,KACA,KAAA,EAGF,CAAA,MACE,QAAA,KACA,eAAA,IACA,UAAA,KACA,MAAA,KACA,IAAA",
+  "names": []
+}
