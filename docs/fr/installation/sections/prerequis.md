@@ -42,7 +42,6 @@ HOST1:
 
 * (browser)
 * archive_search_external
-* archive_search_internal
 * security_internal
 * referential_external
 * ingest_external
