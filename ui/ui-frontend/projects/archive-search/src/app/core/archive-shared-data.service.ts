@@ -40,6 +40,7 @@ import {
   CriteriaSearchCriteria,
   Direction,
   FilingHoldingSchemeNode,
+  QueryParamsService,
   ResultFacet,
   SearchCriteriaAddAction,
   SearchCriteriaDto,
@@ -60,19 +61,13 @@ export class ArchiveSharedDataService {
   private facetsSubject = new BehaviorSubject<ResultFacet[]>([]);
   private totalResultsSubject = new BehaviorSubject<number>(null);
   private toggleSubject = new BehaviorSubject<boolean>(true);
-  private toggleReverseSubject = new BehaviorSubject<boolean>(true);
-  private archiveUnitTpPreviewSubject = new BehaviorSubject<Unit>(null);
-  private toggleArchiveUnitSubject = new BehaviorSubject<boolean>(true);
   private lastSearchCriterias = new BehaviorSubject<SearchCriteriaDto>(null);
   private storedSearchCriteriaHistorySubject = new BehaviorSubject<SearchCriteriaHistory>(null);
   private allSearchCriteriaHistorySubject = new BehaviorSubject<SearchCriteriaHistory[]>([]);
 
   private simpleSearchCriteriaAddSubject = new BehaviorSubject<SearchCriteriaAddAction>(null);
   private appraisalSearchCriteriaAddSubject = new BehaviorSubject<SearchCriteriaAddAction>(null);
-  private storageSearchCriteriaAddSubject = new BehaviorSubject<SearchCriteriaAddAction>(null);
   private accessSearchCriteriaAddSubject = new BehaviorSubject<SearchCriteriaAddAction>(null);
-  private reuseSearchCriteriaAddSubject = new BehaviorSubject<SearchCriteriaAddAction>(null);
-  private disseminationSearchCriteriaAddSubject = new BehaviorSubject<SearchCriteriaAddAction>(null);
 
   private searchAppraisalCriteriaActionFromMainSubject = new BehaviorSubject<SearchCriteriaRemoveAction>(null);
   private searchStorageCriteriaActionFromMainSubject = new BehaviorSubject<SearchCriteriaRemoveAction>(null);
@@ -83,39 +78,18 @@ export class ArchiveSharedDataService {
   private searchCriteriaSubject = new BehaviorSubject<Map<string, CriteriaSearchCriteria>>(null);
 
   private auTitleSubject = new BehaviorSubject<string>('');
-
-  private actionSubject = new BehaviorSubject<string>('');
-
   private ruleCategory = new BehaviorSubject<string>('');
 
   public selectedUnit$ = this.selectedUnitSubject.asObservable();
 
-  facetsObservable = this.facetsSubject.asObservable();
-  toggleObservable = this.toggleSubject.asObservable();
-  toggleReverseObservable = this.toggleReverseSubject.asObservable();
-  archiveUnitToPreviewObservable = this.archiveUnitTpPreviewSubject.asObservable();
-  toggleArchiveUnitObservable = this.toggleArchiveUnitSubject.asObservable();
-  storedSearchCriteriaHistoryObservable = this.storedSearchCriteriaHistorySubject.asObservable();
-  auTitleObservable = this.auTitleSubject.asObservable();
-  actionObservable = this.actionSubject.asObservable();
-  allSearchCriteriaHistoryObservable = this.allSearchCriteriaHistorySubject.asObservable();
-
-  simpleSearchCriteriaAddObservable = this.simpleSearchCriteriaAddSubject.asObservable();
-
-  appraisalFromMainSearchCriteriaObservable = this.searchAppraisalCriteriaActionFromMainSubject.asObservable();
-  storageFromMainSearchCriteriaObservable = this.searchStorageCriteriaActionFromMainSubject.asObservable();
-
-  accessFromMainSearchCriteriaObservable = this.searchAccessCriteriaActionFromMainSubject.asObservable();
-  reuseFromMainSearchCriteriaObservable = this.searchReuseCriteriaActionFromMainSubject.asObservable();
-  disseminationFromMainSearchCriteriaObservable = this.searchDisseminationCriteriaActionFromMainSubject.asObservable();
-
-  removeFromApraisalSearchCriteriaObservable = this.searchCriteriaRemoveFromChildSubject.asObservable();
-
+  get searchCriteria(): Map<string, CriteriaSearchCriteria> {
+    return this.searchCriteriaSubject.getValue();
+  }
   searchCriteria$ = this.searchCriteriaSubject.asObservable();
 
   unitUpdatedWithComputedObjectGroup = new BehaviorSubject<Unit>(null);
 
-  constructor() {}
+  constructor(private queryParamsService: QueryParamsService) {}
 
   emitRuleCategory(ruleCategory: string) {
     this.ruleCategory.next(ruleCategory);
@@ -193,14 +167,6 @@ export class ArchiveSharedDataService {
     this.auTitleSubject.next(auTitle);
   }
 
-  emitActionChosen(action: string) {
-    this.auTitleSubject.next(action);
-  }
-
-  getActionChosen(): Observable<string> {
-    return this.auTitleSubject.asObservable();
-  }
-
   getArchiveUnitTitle(): Observable<string> {
     return this.auTitleSubject.asObservable();
   }
@@ -246,52 +212,29 @@ export class ArchiveSharedDataService {
     return searchCriteriaHistory;
   }
 
+  addSimpleSearchCriteriaSubjects(searchCriteriaList: SearchCriteriaAddAction[]) {
+    const builder = this.queryParamsService.builder();
+    searchCriteriaList.forEach((searchCriteria) => {
+      builder.addQueryParam(searchCriteria.valueElt.id, searchCriteria.valueElt.value);
+      this.simpleSearchCriteriaAddSubject.next(searchCriteria);
+    });
+    builder.navigate();
+  }
+
   addSimpleSearchCriteriaSubject(searchCriteria: SearchCriteriaAddAction) {
-    this.simpleSearchCriteriaAddSubject.next(searchCriteria);
+    this.addSimpleSearchCriteriaSubjects([searchCriteria]);
   }
 
   receiveSimpleSearchCriteriaSubject(): Observable<SearchCriteriaAddAction> {
     return this.simpleSearchCriteriaAddSubject.asObservable();
   }
 
-  addAppraisalSearchCriteriaSubject(searchCriteria: SearchCriteriaAddAction) {
-    this.appraisalSearchCriteriaAddSubject.next(searchCriteria);
-  }
-
   receiveAppraisalSearchCriteriaSubject(): Observable<SearchCriteriaAddAction> {
     return this.appraisalSearchCriteriaAddSubject.asObservable();
   }
 
-  addStorageSearchCriteriaSubject(searchCriteria: SearchCriteriaAddAction) {
-    this.storageSearchCriteriaAddSubject.next(searchCriteria);
-  }
-
-  receiveStorageSearchCriteriaSubject(): Observable<SearchCriteriaAddAction> {
-    return this.storageSearchCriteriaAddSubject.asObservable();
-  }
-
-  addAccessSearchCriteriaSubject(searchCriteria: SearchCriteriaAddAction) {
-    this.accessSearchCriteriaAddSubject.next(searchCriteria);
-  }
-
   receiveAccessSearchCriteriaSubject(): Observable<SearchCriteriaAddAction> {
     return this.accessSearchCriteriaAddSubject.asObservable();
-  }
-
-  addDisseminationSearchCriteriaSubject(searchCriteria: SearchCriteriaAddAction) {
-    this.disseminationSearchCriteriaAddSubject.next(searchCriteria);
-  }
-
-  receiveDisseminationSearchCriteriaSubject(): Observable<SearchCriteriaAddAction> {
-    return this.disseminationSearchCriteriaAddSubject.asObservable();
-  }
-
-  addReuseSearchCriteriaSubject(searchCriteria: SearchCriteriaAddAction) {
-    this.reuseSearchCriteriaAddSubject.next(searchCriteria);
-  }
-
-  receiveReuseSearchCriteriaSubject(): Observable<SearchCriteriaAddAction> {
-    return this.reuseSearchCriteriaAddSubject.asObservable();
   }
 
   sendAppraisalFromMainSearchCriteriaAction(searchCriteriaAction: SearchCriteriaRemoveAction) {
@@ -335,7 +278,10 @@ export class ArchiveSharedDataService {
   }
 
   sendRemoveFromChildSearchCriteriaAction(searchCriteriaAction: SearchCriteriaRemoveAction) {
+    const builder = this.queryParamsService.builder();
+    builder.removeQueryParam(searchCriteriaAction.valueElt.id, searchCriteriaAction.valueElt.value);
     this.searchCriteriaRemoveFromChildSubject.next(searchCriteriaAction);
+    builder.navigate();
   }
 
   receiveRemoveFromChildSearchCriteriaSubject(): Observable<SearchCriteriaRemoveAction> {

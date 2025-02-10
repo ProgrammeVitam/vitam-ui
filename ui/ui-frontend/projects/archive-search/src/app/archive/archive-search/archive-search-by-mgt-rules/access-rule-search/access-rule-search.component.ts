@@ -40,7 +40,6 @@ import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { Subscription, merge } from 'rxjs';
 import { debounceTime, filter, map } from 'rxjs/operators';
 import {
-  ActionOnCriteria,
   CriteriaDataType,
   CriteriaOperator,
   CriteriaValue,
@@ -153,9 +152,9 @@ export class AccessRuleSearchComponent implements OnInit, OnDestroy {
       .receiveAccessFromMainSearchCriteriaSubject()
       .subscribe((criteria) => {
         if (criteria) {
-          if (this.accessAdditionalCriteria && criteria.action === ActionOnCriteria.ADD) {
+          if (this.accessAdditionalCriteria && criteria.action === 'ADD') {
             this.accessAdditionalCriteria.set(criteria.valueElt.value, true);
-          } else if (criteria.action === ActionOnCriteria.REMOVE) {
+          } else if (criteria.action === 'REMOVE') {
             if (this.accessAdditionalCriteria && this.accessAdditionalCriteria.has(criteria.valueElt.value)) {
               this.accessAdditionalCriteria.set(criteria.valueElt.value, false);
             }

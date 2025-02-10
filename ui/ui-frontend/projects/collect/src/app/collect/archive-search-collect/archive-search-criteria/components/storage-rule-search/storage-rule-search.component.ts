@@ -41,7 +41,6 @@ import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { Subscription, merge } from 'rxjs';
 import { debounceTime, filter, map } from 'rxjs/operators';
 import {
-  ActionOnCriteria,
   CriteriaDataType,
   CriteriaOperator,
   CriteriaValue,
@@ -51,7 +50,7 @@ import {
   diff,
 } from 'vitamui-library';
 import { ArchiveSearchConstsEnum } from '../../models/archive-search-consts-enum';
-import { ArchiveSharedDataService } from '../../services/archive-shared-data.service';
+import { ArchiveSharedDataService } from '../../../../core/archive-shared-data.service';
 import { RuleValidator } from '../../services/rule.validator';
 
 const RULE_TYPE_SUFFIX = '_STORAGE_RULE';
@@ -170,9 +169,9 @@ export class StorageRuleSearchComponent implements OnInit, OnDestroy {
     this.subscriptionStorageFromMainSearchCriteria = this.archiveExchangeDataService.storageFromMainSearchCriteriaObservable.subscribe(
       (criteria) => {
         if (criteria) {
-          if (criteria.action === ActionOnCriteria.ADD) {
+          if (criteria.action === 'ADD') {
             this.storageAdditionalCriteria.set(criteria.valueElt.value, true);
-          } else if (criteria.action === ActionOnCriteria.REMOVE) {
+          } else if (criteria.action === 'REMOVE') {
             if (this.storageAdditionalCriteria && this.storageAdditionalCriteria.has(criteria.valueElt.value)) {
               this.storageAdditionalCriteria.set(criteria.valueElt.value, false);
             }

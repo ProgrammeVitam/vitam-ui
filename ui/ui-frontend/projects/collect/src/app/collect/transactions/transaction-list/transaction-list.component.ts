@@ -84,9 +84,7 @@ export class TransactionListComponent extends InfiniteScrollTable<Transaction> i
   }
 
   searchArchiveUnitsByTransaction(transaction: Transaction) {
-    this.router.navigate(['collect/tenant/' + this.tenantIdentifier + '/units', transaction.projectId, transaction.id], {
-      queryParams: { projectName: transaction.messageIdentifier },
-    });
+    this.router.navigate(['collect/tenant/' + this.tenantIdentifier + '/units', transaction.projectId, transaction.id]);
   }
 
   sendTransaction(transaction: Transaction) {

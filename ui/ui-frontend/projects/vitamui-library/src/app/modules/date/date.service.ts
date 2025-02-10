@@ -34,14 +34,30 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { TestBed } from '@angular/core/testing';
-import { ArchiveSharedDataService } from './archive-shared-data.service';
+import { Injectable } from '@angular/core';
+import { FrenchDate } from './date';
 
-describe('ArchiveSharedDataServiceService', () => {
-  beforeEach(() => TestBed.configureTestingModule({}));
+@Injectable({
+  providedIn: 'root',
+})
+export class DateService {
+  public toFrenchDate(value: string): FrenchDate {
+    if (!value) return null;
 
-  it('should be created', () => {
-    const service: ArchiveSharedDataService = TestBed.get(ArchiveSharedDataService);
-    expect(service).toBeTruthy();
-  });
-});
+    const date = new Date(value);
+
+    return `${this.getDay(date.getDate())}/${this.getMonth(date.getMonth() + 1)}/${date.getFullYear()}` as FrenchDate;
+  }
+
+  public toIsoDate(frenchDate: FrenchDate) {
+    return frenchDate ? new Date(frenchDate).toISOString() : null;
+  }
+
+  private getMonth(num: number): string {
+    return `${num > 9 ? '' : '0'}${num.toString()}`;
+  }
+
+  private getDay(day: number): string {
+    return `${day > 9 ? '' : '0'}${day.toString()}`;
+  }
+}

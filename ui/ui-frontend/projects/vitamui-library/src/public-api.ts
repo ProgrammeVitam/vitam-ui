@@ -112,7 +112,6 @@ export * from './app/modules/components/common-progress-bar/common-progress-bar.
 export * from './app/modules/components/common-tooltip/common-tooltip.component';
 export * from './app/modules/components/common-tooltip/tooltip.directive';
 export * from './app/modules/components/common-tooltip/common-tooltip.module';
-export * from './app/modules/components/data/data.module';
 export * from './app/modules/components/datepicker/datepicker.module';
 export * from './app/modules/components/file-selector/file-selector.component';
 export * from './app/modules/components/footer/footer.component';
@@ -214,3 +213,7 @@ export * from './app/modules/agencies/agency.service';
 export * from './app/modules/archive-unit-profiles/archive-unit-profiles.service';
 export * from './app/modules/config.service';
 export * from './app/modules/models/app.configuration.interface';
+export * from './app/modules/url/query-params.service';
+export * from './app/modules/date/date.service';
+export * from './app/modules/date/date';
+export * from './app/modules/models/criteria/search-criteria.service';

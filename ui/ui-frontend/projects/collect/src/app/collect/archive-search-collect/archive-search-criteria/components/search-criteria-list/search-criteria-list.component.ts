@@ -43,7 +43,7 @@ import { filter } from 'rxjs/operators';
 import { Direction, SearchCriteriaHistory } from 'vitamui-library';
 import { VitamUISnackBarComponent } from '../../../../shared/vitamui-snack-bar/vitamui-snack-bar.component';
 import { VitamUISnackBar } from '../../../../shared/vitamui-snack-bar/vitamui-snack-bar.service';
-import { ArchiveSharedDataService } from '../../services/archive-shared-data.service';
+import { ArchiveSharedDataService } from '../../../../core/archive-shared-data.service';
 import { SearchCriteriaSaverService } from '../../services/search-criteria-saver.service';
 import { ConfirmActionComponent } from './confirm-action/confirm-action.component';
 

@@ -52,7 +52,7 @@ import {
 } from 'vitamui-library';
 import { ArchiveCollectService } from '../../../../archive-collect.service';
 import { Pair } from '../../../models/utils';
-import { ArchiveSharedDataService } from '../../../services/archive-shared-data.service';
+import { ArchiveSharedDataService } from '../../../../../core/archive-shared-data.service';
 
 @Component({
   selector: 'app-leaves-tree',

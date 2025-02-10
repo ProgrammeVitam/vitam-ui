@@ -45,10 +45,11 @@ import { SearchBarComponent } from '../search-bar/search-bar.component';
 export class VitamuiCommonBannerComponent {
   @Input() searchbarPlaceholder: string;
   @Input() disableSearchBar = false;
+  @Input() searchValue: string = null;
 
   @Output() action = new EventEmitter<string>();
   @Output() search = new EventEmitter<string>();
-  searchValue: string;
+  @Output() searchChanged = new EventEmitter<string>();
 
   @ViewChild(SearchBarComponent) searchBarComponent: SearchBarComponent;
 

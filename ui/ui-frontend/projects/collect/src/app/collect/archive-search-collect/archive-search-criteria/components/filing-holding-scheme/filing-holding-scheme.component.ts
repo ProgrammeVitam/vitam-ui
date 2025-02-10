@@ -55,7 +55,7 @@ import { isEmpty } from 'underscore';
 import { ArchiveCollectService } from '../../../archive-collect.service';
 import { NodeData } from '../../models/nodedata.interface';
 import { Pair } from '../../models/utils';
-import { ArchiveSharedDataService } from '../../services/archive-shared-data.service';
+import { ArchiveSharedDataService } from '../../../../core/archive-shared-data.service';
 
 @Component({
   selector: 'app-filing-holding-scheme',

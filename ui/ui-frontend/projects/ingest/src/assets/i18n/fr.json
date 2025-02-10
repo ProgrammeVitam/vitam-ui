@@ -75,6 +75,7 @@
     "DETAILS": "Informations",
     "DEPOSIT_ID": "Identifiant du message",
     "OPERATION_ID": "Identifiant de l’opération",
+    "OPERATION_ID_TOOLTIP": "Accéder aux archives du versement",
     "NAME": "Commentaire(s)",
     "START_DATE": "Début de versement",
     "END_DATE": "Fin de versement",

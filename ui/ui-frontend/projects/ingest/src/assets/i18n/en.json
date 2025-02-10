@@ -78,6 +78,7 @@
     "DETAILS": "Informations",
     "DEPOSIT_ID": "The deposit identifier",
     "OPERATION_ID": "The operation Identifier",
+    "OPERATION_ID_TOOLTIP": "Access deposit archives",
     "NAME": "Entitled",
     "START_DATE": "Deposit start date",
     "END_DATE": "Deposit end date",

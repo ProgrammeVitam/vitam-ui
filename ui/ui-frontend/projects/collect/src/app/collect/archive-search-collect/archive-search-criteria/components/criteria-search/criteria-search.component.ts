@@ -36,7 +36,7 @@
  */
 
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { CriteriaSearchCriteria, CriteriaValue, SearchCriteriaTypeEnum } from 'vitamui-library';
+import { CriteriaSearchCriteria, CriteriaValue, QueryParamsService, SearchCriteriaTypeEnum } from 'vitamui-library';
 
 @Component({
   selector: 'app-criteria-search',
@@ -44,7 +44,7 @@ import { CriteriaSearchCriteria, CriteriaValue, SearchCriteriaTypeEnum } from 'v
   styleUrls: ['./criteria-search.component.scss'],
 })
 export class CriteriaSearchComponent {
-  constructor() {}
+  constructor(private queryParamsService: QueryParamsService) {}
 
   @Input()
   criteriaKey: string;
@@ -54,17 +54,24 @@ export class CriteriaSearchComponent {
 
   @Output() criteriaRemoveEvent: EventEmitter<any> = new EventEmitter();
 
-  removeCriteria(keyElt: string, valueElt?: CriteriaValue) {
-    this.criteriaRemoveEvent.emit({ keyElt, valueElt });
+  removeCriteria(valueElt?: CriteriaValue) {
+    this.removeCriteriaList([valueElt]);
+  }
+
+  private removeCriteriaList(criteriaValues: CriteriaValue[]) {
+    const builder = this.queryParamsService.builder();
+    criteriaValues.forEach((criteriaValue) => {
+      builder.removeQueryParam(criteriaValue.id, criteriaValue.value);
+      this.criteriaRemoveEvent.emit({ keyElt: this.criteriaKey, valueElt: criteriaValue });
+    });
+    builder.navigate();
   }
 
   getCategoryName(categoryEnum: SearchCriteriaTypeEnum): string {
     return SearchCriteriaTypeEnum[categoryEnum];
   }
 
-  removeCriteriaAllValues(keyElt: string) {
-    this.criteriaVal.values.forEach((value) => {
-      this.removeCriteria(keyElt, value.value);
-    });
+  removeCriteriaAllValues() {
+    this.removeCriteriaList(this.criteriaVal.values.map((value) => value.value));
   }
 }

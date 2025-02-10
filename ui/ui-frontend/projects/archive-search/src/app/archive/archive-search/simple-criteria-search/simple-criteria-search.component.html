@@ -1,5 +1,5 @@
 <div class="container">
-  <form [formGroup]="simpleCriteriaForm" class="p-4">
+  <form [formGroup]="form" class="p-4">
     <div class="hgap-4 align-items-start pb-4">
       @if (titleSearchTypes) {
         @if (titleSearchTypes?.length) {
@@ -100,54 +100,34 @@
     <div class="hgap-4 align-items-start">
       <p class="title-text text uppercase">{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.UA_TYPE' | translate }}</p>
     </div>
+    <ng-template #archiveUnitType let-archiveUnitType let-icon="icon">
+      <div class="d-flex align-items-center w-100">
+        <label class="criteria-checkbox-choice">
+          <input
+            type="checkbox"
+            (click)="toggleArchiveUnitCriteria(archiveUnitType, $event)"
+            [checked]="archiveUnitTypesCriteria.get(archiveUnitType)"
+          />
+          <span>{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.UNIT_TYPE.' + archiveUnitType | translate }}</span>
+        </label>
+        <i class="vitamui-icon vitamui-row-icon status-badge icon-large ml-1" [class]="icon"></i>
+      </div>
+    </ng-template>
     <div class="hgap-4 align-items-start pb-2 w-50">
-      <div class="d-flex align-items-center w-100">
-        <label class="criteria-checkbox-choice">
-          <input
-            type="checkbox"
-            (click)="addArchiveUnitTypeCriteria('ARCHIVE_UNIT_WITH_OBJECTS', $event)"
-            [checked]="archiveUnitTypesCriteria.get('ARCHIVE_UNIT_WITH_OBJECTS')"
-          />
-          <span>{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.UNIT_TYPE.ARCHIVE_UNIT_WITH_OBJECTS' | translate }}</span>
-        </label>
-        <i class="vitamui-icon vitamui-icon-file vitamui-row-icon status-badge icon-large ml-1"></i>
-      </div>
-      <div class="d-flex align-items-center w-100">
-        <label class="criteria-checkbox-choice">
-          <input
-            type="checkbox"
-            (click)="addArchiveUnitTypeCriteria('ARCHIVE_UNIT_HOLDING_UNIT', $event)"
-            [checked]="archiveUnitTypesCriteria.get('ARCHIVE_UNIT_HOLDING_UNIT')"
-          />
-          <span>{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.UNIT_TYPE.ARCHIVE_UNIT_HOLDING_UNIT' | translate }}</span>
-        </label>
-
-        <i class="vitamui-icon vitamui-icon-ic24-arborescence vitamui-row-icon status-badge icon-large"></i>
-      </div>
+      <ng-container
+        *ngTemplateOutlet="archiveUnitType; context: { $implicit: 'ARCHIVE_UNIT_WITH_OBJECTS', icon: 'vitamui-icon-file' }"
+      ></ng-container>
+      <ng-container
+        *ngTemplateOutlet="archiveUnitType; context: { $implicit: 'ARCHIVE_UNIT_HOLDING_UNIT', icon: 'vitamui-icon-ic24-arborescence' }"
+      ></ng-container>
     </div>
     <div class="hgap-4 align-items-start pb-4 w-50">
-      <div class="d-flex align-items-center w-100">
-        <label class="criteria-checkbox-choice">
-          <input
-            type="checkbox"
-            (click)="addArchiveUnitTypeCriteria('ARCHIVE_UNIT_WITHOUT_OBJECTS', $event)"
-            [checked]="archiveUnitTypesCriteria.get('ARCHIVE_UNIT_WITHOUT_OBJECTS')"
-          />
-          <span>{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.UNIT_TYPE.ARCHIVE_UNIT_WITHOUT_OBJECTS' | translate }}</span>
-        </label>
-        <i class="vitamui-icon vitamui-icon-folder vitamui-row-icon status-badge icon-large ml-1"></i>
-      </div>
-      <div class="d-flex align-items-center w-100">
-        <label class="criteria-checkbox-choice">
-          <input
-            type="checkbox"
-            (click)="addArchiveUnitTypeCriteria('ARCHIVE_UNIT_FILING_UNIT', $event)"
-            [checked]="archiveUnitTypesCriteria.get('ARCHIVE_UNIT_FILING_UNIT')"
-          />
-          <span>{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.UNIT_TYPE.ARCHIVE_UNIT_FILING_UNIT' | translate }}</span>
-        </label>
-        <i class="vitamui-icon vitamui-icon-plan-classement vitamui-row-icon status-badge icon-large"></i>
-      </div>
+      <ng-container
+        *ngTemplateOutlet="archiveUnitType; context: { $implicit: 'ARCHIVE_UNIT_WITHOUT_OBJECTS', icon: 'vitamui-icon-folder' }"
+      ></ng-container>
+      <ng-container
+        *ngTemplateOutlet="archiveUnitType; context: { $implicit: 'ARCHIVE_UNIT_FILING_UNIT', icon: 'vitamui-icon-plan-classement' }"
+      ></ng-container>
     </div>
     <div class="hgap-4 align-items-start">
       <p class="title-text text uppercase">{{ 'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.OTHER_FIELDS' | translate }}</p>

@@ -53,8 +53,9 @@ import { ArchiveService } from '../../archive.service';
 import { ArchiveUnitObjectsDetailsTabComponent } from './archive-unit-objects-details-tab.component';
 import createSpyObj = jasmine.createSpyObj;
 import anything = jasmine.anything;
+import { ActivatedRoute } from '@angular/router';
 
-describe('ArchiveUnitObjectsDetailsTabComponent tests', () => {
+describe('ArchiveUnitObjectsDetailsTabComponent', () => {
   let component: ArchiveUnitObjectsDetailsTabComponent;
   let fixture: ComponentFixture<ArchiveUnitObjectsDetailsTabComponent>;
   const clipboardSpy = createSpyObj<Clipboard>('Clipboard', ['copy']);
@@ -98,6 +99,12 @@ describe('ArchiveUnitObjectsDetailsTabComponent tests', () => {
         { provide: TenantSelectionService, useValue: tenantSelectionServiceSpy },
         { provide: Clipboard, useValue: clipboardSpy },
         { provide: AccessContractService, useValue: accessContractServiceMock },
+        {
+          provide: ActivatedRoute,
+          useValue: {
+            queryParams: of(),
+          },
+        },
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();

@@ -1,5 +1,27 @@
 <label class="text caption bold primary">{{ label | empty }}</label>
-<div *ngIf="!isArray(value)" class="text medium">{{ value | empty }}</div>
-<ul *ngIf="isArray(value)">
-  <li *ngFor="let item of value" class="text medium">{{ item | empty }}</li>
-</ul>
+@if (isArray(value)) {
+  <ul>
+    <li *ngFor="let item of value" class="text medium">{{ item | empty }}</li>
+  </ul>
+} @else {
+  <div>
+    <span class="text medium" [class]="valueCss" [vitamuiTooltip]="valueTooltip" [outline]="true" vitamuiTooltipClass="secondary">
+      @if (valueUrl) {
+        <a [href]="valueUrl">{{ value | empty }}</a>
+      } @else {
+        {{ value | empty }}
+      }
+    </span>
+    <button
+      *ngIf="canCopyValue"
+      (click)="copyToClipboard(value)"
+      class="btn btn-circle link primary xsmall d-inline-block ml-1"
+      [vitamuiTooltip]="'COMMON.COPY' | translate"
+      [outline]="true"
+      vitamuiTooltipClass="secondary"
+      tabindex="0"
+    >
+      <i class="vitamui-icon vitamui-icon-content-copy"></i>
+    </button>
+  </div>
+}

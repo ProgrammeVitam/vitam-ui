@@ -1,13 +1,11 @@
-<div class="row">
-  <div class="arrow">
-    <button class="btn-circle" (click)="toggleShow()">
-      <i class="material-icons" [@rotateAnimation]="isShown ? 'collapse' : 'expand'">keyboard_arrow_down</i>
-    </button>
-  </div>
-
-  <div *ngIf="isShown" class="row container-fluid">
-    <div *ngFor="let event of events; let i = index">
-      <app-vitam-event-display [event]="event"></app-vitam-event-display>
-    </div>
-  </div>
+<div class="text-right">
+  <button class="btn-circle" (click)="toggleShow()">
+    <i class="material-icons" [@rotateAnimation]="isShown ? 'collapse' : 'expand'">keyboard_arrow_down</i>
+  </button>
 </div>
+
+@if (isShown) {
+  @for (event of events; track event) {
+    <app-vitam-event-display [event]="event"></app-vitam-event-display>
+  }
+}
