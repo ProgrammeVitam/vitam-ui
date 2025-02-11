@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["projects/vitamui-library/src/app/modules/components/data/data.component.scss"],
+  "sourcesContent": [":host {\n  display: flex;\n  flex-direction: column;\n  gap: 5px;\n}\n\nlabel,\ndiv {\n  display: block;\n  overflow-wrap: anywhere;\n}\n\nul {\n  margin: 0;\n  padding: 0 0 0 10px;\n  list-style-position: inside;\n}\n\nli {\n  overflow-wrap: anywhere;\n}\n\na {\n  color: var(--vitamui-secondary);\n}\n"],
+  "mappings": "AAAA,MACE,QAAA,KACA,eAAA,OACA,IAAA,IAGF,MAAA,IAEE,QAAA,MACA,cAAA,SAGF,GAZA,OAaE,EAbF,QAcE,EAAA,EAAA,EAAA,KACA,oBAAA,OAGF,GACE,cAAA,SAGF,EACE,MAAA,IAAA",
+  "names": []
+}

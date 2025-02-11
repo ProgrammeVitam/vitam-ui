@@ -6,6 +6,9 @@
     }
   },
   "ROUTE": {
+    "upload": {
+      "TITLE": "Upload"
+    },
     "tokens": {
       "TITLE": "Tokens",
       "colors.TITLE": "Couleurs",
@@ -39,7 +42,8 @@
     "organisms": {
       "TITLE": "Organismes",
       "table.TITLE": "Tableau",
-      "tab-group.TITLE": "Tab group"
+      "tab-group.TITLE": "Tab group",
+      "dialog.TITLE": "Dialog"
     },
     "miscellaneous.TITLE": "Divers",
     "translation.TITLE": "Traduction",

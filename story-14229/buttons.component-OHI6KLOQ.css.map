@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["projects/design-system/src/app/components/atoms/buttons/buttons.component.scss"],
+  "sourcesContent": [":host {\n  .row {\n    width: fit-content;\n    text-align: center;\n\n    .col {\n      align-content: center;\n    }\n  }\n\n  .contrast-container {\n    background-color: var(--vitamui-primary-600);\n    color: var(--vitamui-white);\n  }\n}\n"],
+  "mappings": "AACE,MAAA,CAAA,IACE,MAAA,YACA,WAAA,OAEA,MAAA,CAJF,IAIE,CAAA,IACE,cAAA,OAIJ,MAAA,CAAA,mBACE,iBAAA,IAAA,uBACA,MAAA,IAAA",
+  "names": []
+}
