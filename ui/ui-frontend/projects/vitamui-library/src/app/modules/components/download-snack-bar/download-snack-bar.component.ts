@@ -75,7 +75,7 @@ export class DownloadSnackBarComponent {
   }
 
   confirmClose() {
-    const dialogRef = this.matDialog.open(this.confirmDialog, { panelClass: 'vitamui-dialog' });
+    const dialogRef = this.matDialog.open(this.confirmDialog);
     dialogRef
       .afterClosed()
       .pipe(filter((result) => !!result))

@@ -854,13 +854,14 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
   }
 
   openCriteriaPopup(searchCriteriaHistory$: SearchCriteriaHistory) {
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.panelClass = 'vitamui-modal';
-    dialogConfig.disableClose = false;
-    dialogConfig.data = {
-      searchCriteriaHistory: searchCriteriaHistory$,
-      originalSearchCriteria: this.searchCriterias,
-      nbCriterias: this.archiveExchangeDataService.nbFilters(searchCriteriaHistory$),
+    const dialogConfig: MatDialogConfig = {
+      panelClass: 'p-0',
+      disableClose: false,
+      data: {
+        searchCriteriaHistory: searchCriteriaHistory$,
+        originalSearchCriteria: this.searchCriterias,
+        nbCriterias: this.archiveExchangeDataService.nbFilters(searchCriteriaHistory$),
+      },
     };
 
     const dialogRef = this.dialog.open(SearchCriteriaSaverComponent, dialogConfig);
@@ -1102,7 +1103,6 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
   // Udpate archive units metadata
   openUpdateUnitsForm() {
     const updateUnitsMetadataDialog = this.dialog.open(UpdateUnitsMetadataComponent, {
-      panelClass: 'vitamui-modal',
       disableClose: true,
       data: {
         selectedTransaction: this.transaction,
@@ -1115,7 +1115,6 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
 
   openAddUnitsForm() {
     const addUnitsDialog = this.dialog.open(AddUnitsComponent, {
-      panelClass: 'vitamui-modal',
       disableClose: true,
       data: {
         transaction: this.transaction,

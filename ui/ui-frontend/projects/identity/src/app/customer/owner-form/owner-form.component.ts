@@ -38,7 +38,7 @@ import { Component, forwardRef, Input, OnDestroy, OnInit } from '@angular/core';
 import { ControlValueAccessor, FormBuilder, FormGroup, NG_VALUE_ACCESSOR, Validators } from '@angular/forms';
 import { merge } from 'rxjs';
 import { distinctUntilChanged, map } from 'rxjs/operators';
-import { CountryOption, CountryService, Customer, Owner, StartupService } from 'vitamui-library';
+import { CountryOption, CountryService, Customer, Option, Owner, StartupService } from 'vitamui-library';
 import {
   ALPHA_NUMERIC_REGEX,
   OWNER_CITY_MAX_LENGTH,
@@ -67,7 +67,7 @@ export const OWNER_FORM_VALUE_ACCESSOR: any = {
 export class OwnerFormComponent implements ControlValueAccessor, OnDestroy, OnInit {
   public form: FormGroup;
   public maxStreetLength: number;
-  public countries: CountryOption[];
+  public countries: Option[];
 
   private sub: any;
 
@@ -149,7 +149,7 @@ export class OwnerFormComponent implements ControlValueAccessor, OnDestroy, OnIn
   ngOnInit() {
     this.subscribeToValueChanges();
     this.countryService.getAvailableCountries().subscribe((values: CountryOption[]) => {
-      this.countries = values;
+      this.countries = values.map((country) => ({ key: country.code, label: country.name }));
     });
   }
 

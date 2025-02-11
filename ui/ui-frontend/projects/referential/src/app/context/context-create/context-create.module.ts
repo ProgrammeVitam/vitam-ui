@@ -44,25 +44,30 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 
-import { VitamUICommonModule, VitamUIFieldErrorModule } from 'vitamui-library';
+import { VitamUICommonModule, VitamUIFieldErrorModule, VitamUILibraryModule } from 'vitamui-library';
 import { SharedModule } from '../../../../../identity/src/app/shared/shared.module';
 import { ContextEditPermissionModule } from '../context-create/context-edit-permission/context-edit-permission.module';
 import { ContextCreateComponent } from './context-create.component';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   imports: [
     CommonModule,
-    SharedModule,
+    ContextEditPermissionModule,
     MatButtonToggleModule,
+    MatDialogModule,
     MatFormFieldModule,
     MatInputModule,
     MatProgressBarModule,
     MatSelectModule,
     MatSnackBarModule,
     ReactiveFormsModule,
+    SharedModule,
+    TranslateModule,
     VitamUICommonModule,
     VitamUIFieldErrorModule,
-    ContextEditPermissionModule,
+    VitamUILibraryModule,
   ],
   declarations: [ContextCreateComponent],
 })

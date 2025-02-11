@@ -58,8 +58,6 @@ import { HierarchyService } from '../hierarchy.service';
 })
 export class HierarchyCreateComponent implements OnInit, OnDestroy {
   form: FormGroup;
-  stepIndex = 0;
-  subLevelIsRequired: boolean;
 
   private keyPressSubscription: Subscription;
 

@@ -72,7 +72,7 @@ export class BlockCategoryInheritanceComponent implements OnDestroy {
   }
   onCancelBlockCategoryInheritance() {
     const dialogToOpen = this.confirmDeleteBlockCategoryInheritance;
-    const dialogRef = this.dialog.open(dialogToOpen, { panelClass: 'vitamui-dialog' });
+    const dialogRef = this.dialog.open(dialogToOpen);
 
     this.showConfirmDeleteBlockCategoryInheritanceSuscription = dialogRef
       .afterClosed()

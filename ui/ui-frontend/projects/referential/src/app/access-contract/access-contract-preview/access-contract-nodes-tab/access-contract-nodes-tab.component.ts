@@ -96,7 +96,6 @@ export class AccessContractNodesTabComponent {
 
     this.dialog
       .open(AccessContractNodeUpdateComponent, {
-        panelClass: 'vitamui-modal',
         disableClose: true,
         data: {
           accessContract: this._accessContract,

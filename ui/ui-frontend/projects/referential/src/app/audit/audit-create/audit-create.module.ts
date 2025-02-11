@@ -46,6 +46,8 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { SelectComponent, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 
 import { AuditCreateComponent } from './audit-create.component';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [AuditCreateComponent],
@@ -61,6 +63,8 @@ import { AuditCreateComponent } from './audit-create.component';
     SelectComponent,
     VitamUICommonModule,
     VitamUILibraryModule,
+    TranslateModule,
+    MatDialogModule,
   ],
 })
 export class AuditCreateModule {}

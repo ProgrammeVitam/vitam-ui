@@ -1,14 +1,13 @@
-<div class="header">
-  <vitamui-common-progress-bar [count]="stepCount" [index]="stepIndex"></vitamui-common-progress-bar>
-</div>
+<vitamui-dialog-header
+  [stepper]="stepper"
+  [subhead]="'COLLECT.ADD_UNITS.TITLE' | translate"
+  [title]="['COLLECT.ADD_UNITS.UPLOAD_FILES_TITLE' | translate, 'COLLECT.ADD_UNITS.ATTACHMENT_POSITION_TITLE' | translate]"
+></vitamui-dialog-header>
 
-<vitamui-common-stepper [selectedIndex]="stepIndex" (selectionChange)="stepIndex = $event.selectedIndex">
+<vitamui-common-stepper #stepper>
   <!-- stepIndex 1 : upload de fichier -->
   <cdk-step>
-    <div class="content">
-      <div class="text medium light">{{ 'COLLECT.ADD_UNITS.TITLE' | translate }}</div>
-      <div class="text large bold mb-5">{{ 'COLLECT.ADD_UNITS.UPLOAD_FILES_TITLE' | translate }}</div>
-
+    <mat-dialog-content>
       @if (isLoading) {
         <div class="vitamui-min-content">
           <mat-spinner class="vitamui-spinner large"></mat-spinner>
@@ -22,23 +21,19 @@
         >
         </vitamui-file-selector>
       }
+    </mat-dialog-content>
 
-      <div class="actions">
-        <button cdkStepperNext [disabled]="filesToUpload.length < 1" class="btn primary" type="button">
-          {{ 'COMMON.NEXT' | translate }}
-        </button>
-        <button (click)="cancel()" class="btn cancel link" type="button">
-          {{ 'COMMON.UNDO' | translate }}
-        </button>
-      </div>
-    </div>
+    <mat-dialog-actions>
+      <vitamui-next-step [disabled]="filesToUpload.length < 1"></vitamui-next-step>
+      <button (click)="cancel()" class="btn cancel link" type="button">
+        {{ 'COMMON.UNDO' | translate }}
+      </button>
+    </mat-dialog-actions>
   </cdk-step>
 
   <!-- stepIndex 2 : Définir la position fixe de rattachement -->
   <cdk-step>
-    <div class="content">
-      <div class="text medium light">{{ 'COLLECT.ADD_UNITS.TITLE' | translate }}</div>
-      <div class="text large bold">{{ 'COLLECT.ADD_UNITS.ATTACHMENT_POSITION_TITLE' | translate }}</div>
+    <mat-dialog-content>
       <div class="main-content">
         <div class="form-group">
           @if (projectUnits) {
@@ -47,7 +42,9 @@
           }
         </div>
       </div>
-      <div class="actions">
+    </mat-dialog-content>
+    <mat-dialog-actions>
+      <div>
         <button (click)="validateAndUpload()" [disabled]="isLoading" class="btn primary" type="button">
           {{ 'COMMON.SUBMIT' | translate }}
         </button>
@@ -55,22 +52,13 @@
           {{ 'COMMON.UNDO' | translate }}
         </button>
       </div>
-      <button cdkStepperPrevious class="btn link">
-        <i class="vitamui-icon vitamui-icon-chevron-left"></i>
-        <span>{{ 'COMMON.BACK' | translate }}</span>
-      </button>
-    </div>
+      <vitamui-previous-step></vitamui-previous-step>
+    </mat-dialog-actions>
   </cdk-step>
 </vitamui-common-stepper>
 
 <ng-template #confirmCancelDialog>
-  <mat-dialog-content>
-    <div class="text-title">{{ 'COLLECT.UPDATE_UNITS_METADATA.ACTION_TITLE' | translate }}</div>
-    <br />
-
-    <div class="text large bold">{{ 'COLLECT.UPDATE_UNITS_METADATA.CANCEL_UPDATE_TO_CONFIRM' | translate }}</div>
-  </mat-dialog-content>
-  <br />
+  <vitamui-dialog-header [title]="'COLLECT.UPDATE_UNITS_METADATA.CANCEL_UPDATE_TO_CONFIRM' | translate"></vitamui-dialog-header>
   <mat-dialog-actions>
     <button (click)="close(false)" class="btn primary btn-confirm-dialog">
       {{ 'COLLECT.UPDATE_UNITS_METADATA.CONFIRM' | translate }}

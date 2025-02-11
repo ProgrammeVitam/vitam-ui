@@ -43,7 +43,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { TranslateService } from '@ngx-translate/core';
 import { EMPTY, of } from 'rxjs';
-import { ConfirmDialogService, ExternalParametersService, SearchUnitApiService } from 'vitamui-library';
+import { ConfirmDialogService, ExternalParametersService, SearchUnitApiService, VitamUILibraryModule } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
@@ -70,6 +70,7 @@ describe('ProbativeValueCreateComponent', () => {
         MatProgressBarModule,
         MatSnackBarModule,
         VitamUICommonTestModule,
+        VitamUILibraryModule,
       ],
       declarations: [ProbativeValueCreateComponent],
       providers: [

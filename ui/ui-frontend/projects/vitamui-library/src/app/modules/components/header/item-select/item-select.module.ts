@@ -42,8 +42,8 @@ import { TranslateModule } from '@ngx-translate/core';
 import { ItemSelectComponent } from './item-select.component';
 
 @NgModule({
-  imports: [CommonModule, FormsModule, MatSelectModule, TranslateModule],
   declarations: [ItemSelectComponent],
+  imports: [CommonModule, FormsModule, MatSelectModule, TranslateModule],
   exports: [ItemSelectComponent],
 })
 export class ItemSelectModule {}

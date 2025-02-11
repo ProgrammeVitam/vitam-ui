@@ -205,7 +205,6 @@ describe('ArchiveSearchComponent', () => {
       component.accessContractId = 'accessContract';
       component.showAcknowledgmentTransferForm();
       expect(matDialogSpy.open).toHaveBeenCalledWith(TransferAcknowledgmentComponent, {
-        panelClass: 'vitamui-modal',
         disableClose: true,
         data: {
           accessContract: 'accessContract',

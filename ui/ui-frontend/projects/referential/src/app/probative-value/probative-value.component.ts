@@ -87,7 +87,6 @@ export class ProbativeValueComponent extends SidenavPage<Event> implements OnDes
 
   openCreateProbativeValueDialog() {
     const dialogRef = this.dialog.open(ProbativeValueCreateComponent, {
-      panelClass: 'vitamui-modal',
       disableClose: true,
       autoFocus: false,
     });

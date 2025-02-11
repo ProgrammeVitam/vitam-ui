@@ -1,32 +1,21 @@
-<div class="header">
-  <vitamui-common-progress-bar [index]="0" [count]="1"></vitamui-common-progress-bar>
-</div>
+<vitamui-dialog-header [title]="'CUSTOMER.OWNER.MODAL.SAFE_TITLE' | translate: { name: data?.owner?.name }"></vitamui-dialog-header>
 
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
-  <div class="content">
-    <div class="text large bold">{{ 'CUSTOMER.OWNER.MODAL.SAFE_TITLE' | translate }} "{{ data?.owner?.name }}"</div>
-    <div class="row">
-      <vitamui-common-input formControlName="name" required [placeholder]="'CUSTOMER.OWNER.SAFE_NAME' | translate"></vitamui-common-input>
-    </div>
+  <mat-dialog-content class="gap-3 align-items-stretch">
+    <vitamui-common-input formControlName="name" required [placeholder]="'CUSTOMER.OWNER.SAFE_NAME' | translate"></vitamui-common-input>
 
-    <div class="row">
-      <mat-form-field class="col-6" class="vitamui-mat-select">
-        <mat-select formControlName="identifier" [placeholder]="'CUSTOMER.OWNER.TENANT_ID' | translate" panelClass="vitamui-mat-select">
-          <mat-option *ngFor="let availableTenantId of availableTenants" [value]="availableTenantId">
-            {{ availableTenantId }}
-          </mat-option>
-        </mat-select>
-        <div class="select-arrow">
-          <i class="material-icons">keyboard_arrow_up</i>
-          <i class="material-icons">keyboard_arrow_down</i>
-        </div>
-      </mat-form-field>
-    </div>
-    <div class="actions">
-      <button type="submit" class="btn primary" [disabled]="isLoading || form.pending || form.invalid">
-        {{ 'COMMON.SUBMIT' | translate }}
-      </button>
-      <button type="button" class="btn cancel link" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
-    </div>
-  </div>
+    <vitamui-select
+      formControlName="identifier"
+      [placeholder]="'CUSTOMER.OWNER.TENANT_ID' | translate"
+      [options]="availableTenants"
+      [multiple]="false"
+      [enableSearch]="false"
+    ></vitamui-select>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button type="submit" class="btn primary" [disabled]="isLoading || form.pending || form.invalid">
+      {{ 'COMMON.SUBMIT' | translate }}
+    </button>
+    <button type="button" class="btn cancel link" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
+  </mat-dialog-actions>
 </form>

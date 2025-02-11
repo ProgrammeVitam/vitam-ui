@@ -70,7 +70,6 @@ export class HierarchyComponent extends SidenavPage<Profile> implements OnInit {
   public openHierarchyDuplicateDialog(): void {
     this.dialog
       .open(HierarchyCreateComponent, {
-        panelClass: 'vitamui-modal',
         disableClose: true,
         data: { tenantId: this.tenantIdentifier },
       })

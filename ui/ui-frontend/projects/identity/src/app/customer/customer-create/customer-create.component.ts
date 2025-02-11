@@ -40,7 +40,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { finalize, merge, Observable, Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { ConfirmDialogService, CountryOption, CountryService, Customer, Logo, OtpState, StartupService } from 'vitamui-library';
+import { ConfirmDialogService, CountryOption, CountryService, Customer, Logo, Option, OtpState, StartupService } from 'vitamui-library';
 import { CustomerService } from '../../core/customer.service';
 import { TenantFormValidators } from '../tenant-create/tenant-form.validators';
 import { CustomerAlertingComponent } from './customer-alerting/customer-alerting.component';
@@ -82,7 +82,7 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
   }
 
   public logos: Logo[];
-  public countries: CountryOption[];
+  public countries: Option[];
   public portalTitles: { [language: string]: string };
   public portalMessages: { [language: string]: string };
 
@@ -177,7 +177,7 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
     this.subscription = this.confirmDialogService.listenToEscapeKeyPress(this.dialogRef).subscribe(() => this.onCancel());
 
     this.countryService.getAvailableCountries().subscribe((values: CountryOption[]) => {
-      this.countries = values;
+      this.countries = values.map((country) => ({ key: country.code, label: country.name }));
     });
   }
 
@@ -211,7 +211,7 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
 
   confirm(componentOrTemplateRef: TemplateRef<unknown> | ComponentType<unknown>): Observable<boolean> {
     return this.matDialog
-      .open(componentOrTemplateRef, { panelClass: 'vitamui-dialog' })
+      .open(componentOrTemplateRef)
       .beforeClosed()
       .pipe(filter((result) => !result));
   }

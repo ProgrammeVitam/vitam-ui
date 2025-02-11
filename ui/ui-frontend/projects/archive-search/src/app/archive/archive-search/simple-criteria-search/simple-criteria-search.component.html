@@ -134,15 +134,16 @@
     </div>
     @if (otherCriteriaOptions) {
       <div class="hgap-4 align-items-start align-items-start pb-4">
-        <vitamui-common-autocomplete-multi-select-tree
+        <vitamui-select-with-tree
           formControlName="otherCriteriaList"
           class="w-100"
-          [multiSelectOptions]="otherCriteriaOptions"
+          [multiple]="true"
+          [options]="otherCriteriaOptions"
           [getDisplayValue]="getOtherCriteriaDisplayValue"
           [placeholder]="'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.OTHER_FIELDS' | translate"
           [searchBarPlaceHolder]="'Entrer les premières lettres de votre recherche' | translate"
         >
-        </vitamui-common-autocomplete-multi-select-tree>
+        </vitamui-select-with-tree>
         <div class="gap-4 w-100" formArrayName="otherCriteria">
           @for (otherCriteria of otherCriteriaList.value; track otherCriteria.ApiPath) {
             @if (['Title'].includes(otherCriteria.ApiPath) && titleSearchTypes?.length) {

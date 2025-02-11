@@ -162,33 +162,22 @@
 </mat-sidenav-container>
 
 <ng-template #confirmRuleActionsDialog>
-  <mat-dialog-content>
-    <br />
-    <div class="text-title">{{ 'RULES.DIALOG_MESSAGE.UPDATE_CONFIRM_TITLE_MESSAGE' | translate }}</div>
-    <div class="text large bold">
-      {{ 'RULES.DIALOG_MESSAGE.UPDATE_CONFIRM_MESSAGE' | translate }}
-    </div>
-  </mat-dialog-content>
-  <br />
+  <vitamui-dialog-header
+    [subhead]="'RULES.DIALOG_MESSAGE.UPDATE_CONFIRM_TITLE_MESSAGE' | translate"
+    [title]="'RULES.DIALOG_MESSAGE.UPDATE_CONFIRM_MESSAGE' | translate"
+  ></vitamui-dialog-header>
   <mat-dialog-actions>
     <button matDialogClose class="btn primary btn-confirm-dialog">{{ 'RULES.COMMON.UNDO' | translate }}</button>
-
     <button [matDialogClose]="true" class="btn cancel link">{{ 'RULES.COMMON.CONFIRM' | translate }}</button>
   </mat-dialog-actions>
 </ng-template>
 
 <ng-template #confirmLeaveRuleActionsDialog>
-  <mat-dialog-content>
-    <br />
-
-    <div class="text large bold">
-      {{ 'RULES.DIALOG_MESSAGE.EXIT_CONFIRM_MESSAGE' | translate: { ua_selected: selectedItem } }}
-    </div>
-  </mat-dialog-content>
-  <br />
+  <vitamui-dialog-header
+    [title]="'RULES.DIALOG_MESSAGE.EXIT_CONFIRM_MESSAGE' | translate: { ua_selected: selectedItem }"
+  ></vitamui-dialog-header>
   <mat-dialog-actions>
     <button [matDialogClose]="true" class="btn primary btn-confirm-dialog">{{ 'RULES.COMMON.CONFIRM' | translate }}</button>
-
     <button matDialogClose class="btn cancel link">{{ 'RULES.COMMON.UNDO' | translate }}</button>
   </mat-dialog-actions>
 </ng-template>

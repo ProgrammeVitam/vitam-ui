@@ -37,9 +37,9 @@
 import { Component, ElementRef, forwardRef, Inject, Input, ViewChild } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 
-import { EditableFieldComponent } from 'vitamui-library';
-import { PatternComponent } from '../../pattern/pattern.component';
+import { EditableFieldComponent, PatternComponent } from 'vitamui-library';
 import { DOCUMENT } from '@angular/common';
+
 export const EDITABLE_PATTERNS_INPUT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
   // eslint-disable-next-line no-use-before-define
@@ -77,7 +77,7 @@ export class EditablePatternsComponent extends EditableFieldComponent {
     }
     const overlayRef = this.cdkConnectedOverlay.overlayRef;
     // Overlay has same id as the "select" element, suffixed by "-panel"
-    const selectOverlay = this.document.querySelector(`#${this.pattern.select.id}-panel`) as HTMLElement;
+    const selectOverlay = this.document.querySelector(`#${this.pattern.select.matSelect.id}-panel`) as HTMLElement;
     if (
       this.isInside(target, this.elementRef.nativeElement) ||
       this.isInside(target, overlayRef.hostElement) ||

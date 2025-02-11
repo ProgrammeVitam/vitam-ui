@@ -51,9 +51,6 @@ import { GroupValidators } from '../group.validators';
 })
 export class GroupCreateComponent implements OnInit, OnDestroy {
   form: FormGroup;
-  public stepIndex = 0;
-  public stepCount = 3;
-  subLevelIsRequired: boolean;
 
   private keyPressSubscription: Subscription;
 

@@ -1,3 +1,21 @@
+@import '../mixins/elevation';
+
+:root {
+  .mat-mdc-snack-bar-container {
+    --mdc-snackbar-container-color: transparent;
+
+    .mdc-snackbar__surface {
+      @include shadow-0;
+      max-width: unset;
+      border: 0;
+
+      .mdc-snackbar__label {
+        padding: 0;
+      }
+    }
+  }
+}
+
 .vitamui-snack-bar.mat-mdc-snack-bar-container {
   font-size: 16px;
   color: white;
@@ -6,16 +24,7 @@
   width: 100vw;
   margin: 0;
   border-radius: 0;
-  padding: 22px 120px;
-}
-
-.vitamui-snack-bar-container {
-  position: relative;
-  margin: 0 auto;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  padding: 15px 120px;
 }
 
 .close-btn {
@@ -31,7 +40,9 @@
 }
 
 .vitamui-snack-bar-content {
-  color: white;
+  @extend .text;
+  @extend .medium;
+  color: white !important;
   vertical-align: middle;
   display: flex;
   align-items: center;

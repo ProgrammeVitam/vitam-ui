@@ -1,13 +1,20 @@
-<div class="header">
-  <vitamui-common-progress-bar [index]="stepIndex" [count]="stepCount"></vitamui-common-progress-bar>
-</div>
+<vitamui-dialog-header
+  [stepper]="stepper"
+  [subhead]="stepper.selectedIndex === 0 ? '' : ('CUSTOMER.HOME.CREATE_TITLE' | translate)"
+  [title]="[
+    'CUSTOMER.HOME.CREATE_TITLE' | translate,
+    'CUSTOMER.INFORMATIONS.MODAL.ACCESS_TITLE' | translate,
+    '',
+    '',
+    'CUSTOMER.OWNER.CREATE.TITLE' | translate: { name: customerInfo.name },
+    'CUSTOMER.OWNER.MODAL.SAFE_TITLE' | translate: { name: getOwnerName() },
+  ]"
+></vitamui-dialog-header>
 
 <form [formGroup]="form" (ngSubmit)="onSubmit()" id="formCreateCustomer">
-  <vitamui-common-stepper (selectionChange)="stepIndex = $event.selectedIndex">
+  <vitamui-common-stepper #stepper (selectionChange)="stepIndex = $event.selectedIndex">
     <cdk-step>
-      <div class="content">
-        <div class="text large bold">{{ 'CUSTOMER.HOME.CREATE_TITLE' | translate }}</div>
-
+      <mat-dialog-content class="gap-3 align-items-stretch">
         <vitamui-common-input class="col-6 pl-0" formControlName="code" required [placeholder]="'CUSTOMER.INFORMATIONS.CODE' | translate">
           <ng-container *ngIf="form.get('code')?.touched">
             <vitamui-common-input-error *ngIf="!!form?.get('code')?.errors?.required"
@@ -88,22 +95,13 @@
               </vitamui-common-input-error>
             </vitamui-common-input>
 
-            <mat-form-field class="col-4" class="vitamui-mat-select">
-              <mat-select
-                formControlName="country"
-                required
-                [placeholder]="'COMMON.ADRESS.COUNTRY' | translate"
-                panelClass="vitamui-mat-select"
-              >
-                <mat-option *ngFor="let country of countries" [value]="country.code">
-                  {{ country.name }}
-                </mat-option>
-              </mat-select>
-              <div class="select-arrow">
-                <i class="material-icons">keyboard_arrow_up</i>
-                <i class="material-icons">keyboard_arrow_down</i>
-              </div>
-            </mat-form-field>
+            <vitamui-select
+              class="col-4"
+              formControlName="country"
+              [placeholder]="'COMMON.ADRESS.COUNTRY' | translate"
+              [options]="countries"
+              [enableSearch]="false"
+            ></vitamui-select>
           </div>
         </ng-container>
 
@@ -151,31 +149,27 @@
             </div>
           </label>
 
-          <mat-form-field class="vitamui-mat-select">
-            <mat-select formControlName="language" required panelClass="vitamui-mat-select">
-              <mat-option value="ENGLISH">{{ 'COMMON.LANGUAGE.ENGLISH' | translate }}</mat-option>
-              <mat-option value="FRENCH">{{ 'COMMON.LANGUAGE.FRENCH' | translate }}</mat-option>
-            </mat-select>
-            <div class="select-arrow">
-              <i class="material-icons">keyboard_arrow_up</i>
-              <i class="material-icons">keyboard_arrow_down</i>
-            </div>
-          </mat-form-field>
+          <vitamui-select
+            formControlName="language"
+            [placeholder]="'COMMON.ADRESS.COUNTRY' | translate"
+            [options]="[
+              { key: 'ENGLISH', label: 'COMMON.LANGUAGE.ENGLISH' | translate },
+              { key: 'FRENCH', label: 'COMMON.LANGUAGE.FRENCH' | translate },
+            ]"
+            [enableSearch]="false"
+          ></vitamui-select>
         </div>
-
-        <div class="actions">
-          <button type="button" class="btn primary" cdkStepperNext [disabled]="firstStepInvalid()">{{ 'COMMON.NEXT' | translate }}</button>
-          <ng-container *ngTemplateOutlet="cancel"></ng-container>
-        </div>
-      </div>
+      </mat-dialog-content>
+      <mat-dialog-actions>
+        <vitamui-next-step [disabled]="firstStepInvalid()"></vitamui-next-step>
+        <ng-container *ngTemplateOutlet="cancel"></ng-container>
+      </mat-dialog-actions>
     </cdk-step>
 
     <cdk-step>
-      <div class="content">
-        <div class="text large bold">{{ 'CUSTOMER.INFORMATIONS.MODAL.ACCESS_TITLE' | translate }}</div>
-
-        <div class="col-12 p-0 d-flex align-items-center">
-          <div>
+      <mat-dialog-content>
+        <div class="row p-0 d-flex align-items-center">
+          <div class="col">
             <div class="text medium bold">
               {{ 'CUSTOMER.INFORMATIONS.PASSWORD_DURATION_1' | translate }}
             </div>
@@ -184,22 +178,19 @@
             </div>
           </div>
 
-          <mat-form-field class="vitamui-mat-select ml-5">
-            <mat-select
-              formControlName="passwordRevocationDelay"
-              [placeholder]="'CUSTOMER.INFORMATIONS.PASSWORDS_DURATION' | translate"
-              panelClass="vitamui-mat-select"
-            >
-              <mat-option [value]="3">{{ 'CUSTOMER.INFORMATIONS.MODAL.PWD_REVOCATION_THREE' | translate }}</mat-option>
-              <mat-option [value]="6">{{ 'CUSTOMER.INFORMATIONS.MODAL.PWD_REVOCATION_SIX' | translate }}</mat-option>
-              <mat-option [value]="9">{{ 'CUSTOMER.INFORMATIONS.MODAL.PWD_REVOCATION_NINE' | translate }}</mat-option>
-              <mat-option [value]="12">{{ 'CUSTOMER.INFORMATIONS.MODAL.PWD_REVOCATION_TWELVE' | translate }} </mat-option>
-            </mat-select>
-            <div class="select-arrow">
-              <i class="material-icons">keyboard_arrow_up</i>
-              <i class="material-icons">keyboard_arrow_down</i>
-            </div>
-          </mat-form-field>
+          <vitamui-select
+            class="col"
+            formControlName="passwordRevocationDelay"
+            [placeholder]="'CUSTOMER.INFORMATIONS.PASSWORDS_DURATION' | translate"
+            [options]="[
+              { key: 3, label: 'CUSTOMER.INFORMATIONS.MODAL.PWD_REVOCATION_THREE' | translate },
+              { key: 6, label: 'CUSTOMER.INFORMATIONS.MODAL.PWD_REVOCATION_SIX' | translate },
+              { key: 9, label: 'CUSTOMER.INFORMATIONS.MODAL.PWD_REVOCATION_NINE' | translate },
+              { key: 12, label: 'CUSTOMER.INFORMATIONS.MODAL.PWD_REVOCATION_TWELVE' | translate },
+            ]"
+            [multiple]="false"
+            [enableSearch]="false"
+          ></vitamui-select>
         </div>
 
         <div class="col-12 p-0 mt-3">
@@ -226,57 +217,57 @@
             (selectedChange)="form.get('defaultEmailDomain').setValue($event)"
           ></app-domains-input>
         </div>
-
-        <div class="actions">
-          <button type="button" class="btn primary" cdkStepperNext [disabled]="secondStepInvalid()">{{ 'COMMON.NEXT' | translate }}</button>
-          <ng-container *ngTemplateOutlet="cancel"></ng-container>
-        </div>
-        <ng-container *ngTemplateOutlet="back"></ng-container>
-      </div>
-    </cdk-step>
-
-    <cdk-step>
-      <div *ngIf="stepIndex === 2" id="toOverride" class="content mt-4">
-        <app-graphic-identity [customer]="customer" (formToSend)="customerForm = $event.form; logos = $event.logos"></app-graphic-identity>
-
-        <div class="actions">
-          <button type="button" class="btn primary" cdkStepperNext [disabled]="!thirdStepValid()">
-            {{ 'COMMON.NEXT' | translate }}
-          </button>
-          <ng-container *ngTemplateOutlet="cancel"></ng-container>
-        </div>
-        <ng-container *ngTemplateOutlet="back"></ng-container>
-      </div>
-    </cdk-step>
-
-    <cdk-step>
-      <div *ngIf="stepIndex === 3" class="content mt-4">
-        <app-homepage-message
-          [customer]="this.getCustomerFromForm()"
-          (formToSend)="homepageMessageForm = $event.form; portalTitles = $event.portalTitles; portalMessages = $event.portalMessages"
-        ></app-homepage-message>
-
-        <div class="actions">
-          <button type="button" class="btn primary" cdkStepperNext [disabled]="!fourthStepValid()">
-            {{ 'COMMON.NEXT' | translate }}
-          </button>
-          <ng-container *ngTemplateOutlet="cancel"></ng-container>
-        </div>
-        <ng-container *ngTemplateOutlet="back"></ng-container>
-      </div>
-    </cdk-step>
-
-    <cdk-step>
-      <div class="content">
-        <div class="text large bold">{{ 'CUSTOMER.OWNER.CREATE.TITLE' | translate }} "{{ customerInfo.name }}"</div>
+      </mat-dialog-content>
+      <mat-dialog-actions>
         <div>
-          <app-owner-form [formControl]="form.get(['owners', 0])" [customerInfo]="customerInfo"></app-owner-form>
-          <p class="hint">
-            {{ 'CUSTOMER.OWNER.CREATE.PROOF_ELEMENTS' | translate }}
-          </p>
+          <vitamui-next-step [disabled]="secondStepInvalid()"></vitamui-next-step>
+          <ng-container *ngTemplateOutlet="cancel"></ng-container>
         </div>
+        <vitamui-previous-step></vitamui-previous-step>
+      </mat-dialog-actions>
+    </cdk-step>
 
-        <div class="actions">
+    <cdk-step>
+      <div id="toOverride">
+        <mat-dialog-content>
+          <app-graphic-identity
+            [customer]="customer"
+            (formToSend)="customerForm = $event.form; logos = $event.logos"
+          ></app-graphic-identity>
+        </mat-dialog-content>
+        <mat-dialog-actions>
+          <div>
+            <vitamui-next-step [disabled]="!thirdStepValid()"></vitamui-next-step>
+            <ng-container *ngTemplateOutlet="cancel"></ng-container>
+          </div>
+          <vitamui-previous-step></vitamui-previous-step>
+        </mat-dialog-actions>
+      </div>
+    </cdk-step>
+
+    <cdk-step>
+      <app-homepage-message
+        [customer]="this.getCustomerFromForm()"
+        (formToSend)="homepageMessageForm = $event.form; portalTitles = $event.portalTitles; portalMessages = $event.portalMessages"
+      ></app-homepage-message>
+      <mat-dialog-actions>
+        <div>
+          <vitamui-next-step [disabled]="!fourthStepValid()"></vitamui-next-step>
+          <ng-container *ngTemplateOutlet="cancel"></ng-container>
+        </div>
+        <vitamui-previous-step></vitamui-previous-step>
+      </mat-dialog-actions>
+    </cdk-step>
+
+    <cdk-step>
+      <mat-dialog-content>
+        <app-owner-form [formControl]="form.get(['owners', 0])" [customerInfo]="customerInfo"></app-owner-form>
+        <p class="hint">
+          {{ 'CUSTOMER.OWNER.CREATE.PROOF_ELEMENTS' | translate }}
+        </p>
+      </mat-dialog-content>
+      <mat-dialog-actions>
+        <div>
           <button
             type="button"
             class="btn primary"
@@ -287,56 +278,42 @@
           </button>
           <ng-container *ngTemplateOutlet="cancel"></ng-container>
         </div>
-        <ng-container *ngTemplateOutlet="back"></ng-container>
-      </div>
+        <vitamui-previous-step></vitamui-previous-step>
+      </mat-dialog-actions>
     </cdk-step>
 
     <cdk-step>
-      <div class="content">
-        <div class="text large bold">{{ 'CUSTOMER.OWNER.MODAL.SAFE_TITLE' | translate }} "{{ getOwnerName() }}"</div>
-        <div class="row">
-          <vitamui-common-input formControlName="tenantName" required [placeholder]="'CUSTOMER.OWNER.SAFE_NAME' | translate">
-            <vitamui-common-input-error *ngIf="form?.get('tenantName')?.touched && form?.get('tenantName')?.hasError('required')"
-              >{{ 'COMMON.ERROR.REQUIRED' | translate }}
-            </vitamui-common-input-error>
-            <vitamui-common-input-error *ngIf="form?.get('tenantName')?.touched && form?.get('tenantName')?.hasError('uniqueName')"
-              >{{ 'CUSTOMER.OWNER.MODAL.NAME_ALREADY_EXIST' | translate }}
-            </vitamui-common-input-error>
-          </vitamui-common-input>
-        </div>
+      <mat-dialog-content class="gap-3 align-items-stretch">
+        <vitamui-common-input formControlName="tenantName" required [placeholder]="'CUSTOMER.OWNER.SAFE_NAME' | translate">
+          <vitamui-common-input-error *ngIf="form?.get('tenantName')?.touched && form?.get('tenantName')?.hasError('required')"
+            >{{ 'COMMON.ERROR.REQUIRED' | translate }}
+          </vitamui-common-input-error>
+          <vitamui-common-input-error *ngIf="form?.get('tenantName')?.touched && form?.get('tenantName')?.hasError('uniqueName')"
+            >{{ 'CUSTOMER.OWNER.MODAL.NAME_ALREADY_EXIST' | translate }}
+          </vitamui-common-input-error>
+        </vitamui-common-input>
 
-        <div class="row">
-          <mat-form-field class="col-6" class="vitamui-mat-select">
-            <mat-select formControlName="tenantId" [placeholder]="'CUSTOMER.OWNER.TENANT_ID' | translate" panelClass="vitamui-mat-select">
-              <mat-option *ngFor="let availableTenantId of availableTenants" [value]="availableTenantId">
-                {{ availableTenantId }}
-              </mat-option>
-            </mat-select>
-            <div class="select-arrow">
-              <i class="material-icons">keyboard_arrow_up</i>
-              <i class="material-icons">keyboard_arrow_down</i>
-            </div>
-          </mat-form-field>
-        </div>
-        <div class="actions">
+        <vitamui-select
+          formControlName="tenantId"
+          [placeholder]="'CUSTOMER.OWNER.TENANT_ID' | translate"
+          [options]="availableTenants"
+          [multiple]="false"
+          [enableSearch]="false"
+        ></vitamui-select>
+      </mat-dialog-content>
+      <mat-dialog-actions>
+        <div>
           <button type="submit" class="btn primary" [disabled]="form.pending || form.invalid || isLoading">
             {{ 'COMMON.SUBMIT' | translate }}
           </button>
           <ng-container *ngTemplateOutlet="cancel"></ng-container>
         </div>
-        <ng-container *ngTemplateOutlet="back"></ng-container>
-      </div>
+        <vitamui-previous-step></vitamui-previous-step>
+      </mat-dialog-actions>
     </cdk-step>
 
     <ng-template #cancel>
-      <button type="button" class="btn cancel link ml-3" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
-    </ng-template>
-
-    <ng-template #back>
-      <button type="button" class="btn link mt-1 ml-1 primary" cdkStepperPrevious>
-        <i class="vitamui-icon vitamui-icon-chevron-left"></i>
-        <span class="underline">{{ 'COMMON.BACK' | translate }}</span>
-      </button>
+      <button type="button" class="btn cancel link" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
     </ng-template>
   </vitamui-common-stepper>
 </form>

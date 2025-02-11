@@ -399,7 +399,8 @@ dp-date-picker {
 }
 
 .pastis-menu-item-vitam {
-  @extend .vitamui-menu-panel;
+  // FIXME: remove
+  //@extend .vitamui-menu-panel;
 
   .mat-mdc-menu-item:hover:not([disabled]),
   .mat-menu-item.cdk-program-focused:not([disabled]),
@@ -448,12 +449,6 @@ button.delete {
   font-family: 'Mulish', sans-serif !important;
   color: var(--vitamui-grey-900) !important;
   font-weight: 400;
-}
-
-.placement-tooltip {
-  position: absolute;
-  left: 13em;
-  top: 1em;
 }
 
 .pastis-dialog-config-title {

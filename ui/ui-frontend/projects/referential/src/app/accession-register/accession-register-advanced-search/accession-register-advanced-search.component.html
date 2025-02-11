@@ -50,19 +50,16 @@
             <label for="acquisition-informations">
               <span class="pb-3">{{ 'ACCESSION_REGISTER.ADVANCED_SEARCH.ACQUISITION_INFORMATIONS' | translate }}</span>
             </label>
-            <mat-form-field id="acquisition-informations">
-              <mat-select [formControl]="acquisitionInformationsControl" multiple>
-                <mat-select-trigger>
-                  <span *ngIf="acquisitionInformationsControl.value?.length === acquisitionInformations.length; else acqInfoLayout">
-                    {{ 'ACCESSION_REGISTER.ADVANCED_SEARCH.ACQUISITION_INFORMATIONS_ALL' | translate }}
-                  </span>
-                  <ng-template #acqInfoLayout class="example-additional-selection">
-                    {{ acquisitionInformationsControl.value }}
-                  </ng-template>
-                </mat-select-trigger>
-                <mat-option *ngFor="let acqInfo of acquisitionInformations" [value]="acqInfo">{{ acqInfo }}</mat-option>
-              </mat-select>
-            </mat-form-field>
+
+            <vitamui-select
+              [formControl]="acquisitionInformationsControl"
+              [options]="acquisitionInformations"
+              [multiple]="true"
+              [enableSelectAll]="true"
+              [enableDisplaySelected]="false"
+              [enableSearch]="false"
+              [allSelectedLabel]="'ACCESSION_REGISTER.ADVANCED_SEARCH.ACQUISITION_INFORMATIONS_ALL' | translate"
+            ></vitamui-select>
           </div>
         </div>
         <div class="row justify-content-around">

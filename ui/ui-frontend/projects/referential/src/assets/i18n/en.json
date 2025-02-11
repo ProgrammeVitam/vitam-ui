@@ -51,12 +51,6 @@
       "REJECT_BY_VITAM_CHECK_LOGBOOK_OPERATION_APP": "Import failed. Please consult the error details in the operations log."
     }
   },
-  "CONFIRM_DIALOG": {
-    "DELETE_TITLE": "Delete {{objectType}}",
-    "UNSAVED_CHANGES_TITLE": "Unsaved Changes",
-    "DELETE": "Do you confirm the deletion : {{objectType}} - {{objectName}}",
-    "SAVE": "Do you want to save the changes?"
-  },
   "CONTRACT_MANAGEMENT": {
     "CONTRACT_PAGE": {
       "CREATE_MANAGEMENT_CONTRACT": "Create management contract",

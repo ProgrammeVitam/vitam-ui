@@ -1,35 +1,34 @@
-<div [formGroup]="form" class="gap-5 align-items-stretch">
-  <div>
-    <div class="text medium light">{{ 'ARCHIVE_SEARCH.OTHER_ACTIONS.PUA_UPDATE.TITLE' | translate }}</div>
-    <div class="text large bold">{{ data.selectedItemCount | i18nPlural: subtitle | translate: { number: data.selectedItemCount } }}</div>
-  </div>
-  <div>
-    <div class="text medium bold primary">{{ 'ARCHIVE_SEARCH.OTHER_ACTIONS.PUA_UPDATE.SELECT_ACTION' | translate }}</div>
-    <mat-radio-group formControlName="action">
-      <mat-radio-button color="primary" value="update">{{
-        'ARCHIVE_SEARCH.OTHER_ACTIONS.PUA_UPDATE.ACTION_UPDATE' | translate
-      }}</mat-radio-button>
-      @if (form.contains('pua')) {
-        <div>
-          <vitamui-select
-            formControlName="pua"
-            [placeholder]="'ARCHIVE_SEARCH.OTHER_ACTIONS.PUA_UPDATE.SELECT_PUA_PLACEHOLDER' | translate"
-            [searchBarPlaceHolder]="'ARCHIVE_SEARCH.OTHER_ACTIONS.PUA_UPDATE.SELECT_PUA_FILTER_PLACEHOLDER' | translate"
-            [options]="puas$ | async"
-            [enableSearch]="true"
-          ></vitamui-select>
-        </div>
-      }
-      <mat-radio-button value="delete">{{ 'ARCHIVE_SEARCH.OTHER_ACTIONS.PUA_UPDATE.ACTION_DELETE' | translate }}</mat-radio-button>
-    </mat-radio-group>
-  </div>
+<vitamui-dialog-header
+  [subhead]="'ARCHIVE_SEARCH.OTHER_ACTIONS.PUA_UPDATE.TITLE' | translate"
+  [title]="data.selectedItemCount | i18nPlural: subtitle | translate: { number: data.selectedItemCount }"
+></vitamui-dialog-header>
 
-  <div class="hgap-4">
-    <button type="button" class="btn primary" [disabled]="form.invalid || updating" (click)="submit()">
-      {{ 'ARCHIVE_SEARCH.OTHER_ACTIONS.PUA_UPDATE.UPDATE' | translate }}
-    </button>
-    <button [matDialogClose]="false" class="btn link cancel" [disabled]="updating">
-      {{ 'ARCHIVE_SEARCH.OTHER_ACTIONS.PUA_UPDATE.CANCEL' | translate }}
-    </button>
-  </div>
-</div>
+<mat-dialog-content [formGroup]="form">
+  <div class="text medium bold primary">{{ 'ARCHIVE_SEARCH.OTHER_ACTIONS.PUA_UPDATE.SELECT_ACTION' | translate }}</div>
+  <mat-radio-group formControlName="action">
+    <mat-radio-button color="primary" value="update">{{
+      'ARCHIVE_SEARCH.OTHER_ACTIONS.PUA_UPDATE.ACTION_UPDATE' | translate
+    }}</mat-radio-button>
+    @if (form.contains('pua')) {
+      <div>
+        <vitamui-select
+          formControlName="pua"
+          [placeholder]="'ARCHIVE_SEARCH.OTHER_ACTIONS.PUA_UPDATE.SELECT_PUA_PLACEHOLDER' | translate"
+          [searchBarPlaceHolder]="'ARCHIVE_SEARCH.OTHER_ACTIONS.PUA_UPDATE.SELECT_PUA_FILTER_PLACEHOLDER' | translate"
+          [options]="puas$ | async"
+          [enableSearch]="true"
+        ></vitamui-select>
+      </div>
+    }
+    <mat-radio-button value="delete">{{ 'ARCHIVE_SEARCH.OTHER_ACTIONS.PUA_UPDATE.ACTION_DELETE' | translate }}</mat-radio-button>
+  </mat-radio-group>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button type="button" class="btn primary" [disabled]="form.invalid || updating" (click)="submit()">
+    {{ 'ARCHIVE_SEARCH.OTHER_ACTIONS.PUA_UPDATE.UPDATE' | translate }}
+  </button>
+  <button [matDialogClose]="false" class="btn link cancel" [disabled]="updating">
+    {{ 'ARCHIVE_SEARCH.OTHER_ACTIONS.PUA_UPDATE.CANCEL' | translate }}
+  </button>
+</mat-dialog-actions>

@@ -42,8 +42,6 @@ import { VitamUISnackBarService } from '../../components/vitamui-snack-bar/vitam
 import { Subrogation } from '../../models';
 import { SubrogationService } from '../subrogation.service';
 
-const PROGRESS_BAR_MULTIPLICATOR = 100;
-
 @Component({
   selector: 'vitamui-common-subrogation-modal',
   templateUrl: './subrogation-modal.component.html',
@@ -51,7 +49,6 @@ const PROGRESS_BAR_MULTIPLICATOR = 100;
 })
 export class SubrogationModalComponent implements OnInit {
   public stepIndex = 0;
-  public stepCount = 2;
   public domains: string[];
   public customerId: string;
   public user: { email: string; firstname: string; lastname: string };
@@ -70,7 +67,7 @@ export class SubrogationModalComponent implements OnInit {
   ) {
     this.form = this.builder.group({
       emailFirstPart: [null, Validators.required],
-      domain: null,
+      domain: [null, Validators.required],
     });
   }
 
@@ -84,10 +81,6 @@ export class SubrogationModalComponent implements OnInit {
     } else {
       this.form.get('domain').setValue(this.domains[0], { emitEvent: false });
     }
-  }
-
-  get stepProgress() {
-    return ((this.stepIndex + 1) / this.stepCount) * PROGRESS_BAR_MULTIPLICATOR;
   }
 
   // check if a subrogation exists and was already created with the same information

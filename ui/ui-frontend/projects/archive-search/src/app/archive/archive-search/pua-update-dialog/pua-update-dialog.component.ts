@@ -42,6 +42,7 @@ import { finalize, Observable } from 'rxjs';
 import { AsyncPipe, I18nPluralPipe } from '@angular/common';
 import {
   ArchiveUnitProfilesService,
+  DialogHeaderComponent,
   Logger,
   SearchCriteriaEltDto,
   SelectComponent,
@@ -61,7 +62,17 @@ export interface PuaUpdateDialogComponentData {
 
 @Component({
   standalone: true,
-  imports: [FormsModule, MatRadioModule, ReactiveFormsModule, MatDialogModule, AsyncPipe, SelectComponent, TranslateModule, I18nPluralPipe],
+  imports: [
+    FormsModule,
+    MatRadioModule,
+    ReactiveFormsModule,
+    MatDialogModule,
+    AsyncPipe,
+    SelectComponent,
+    TranslateModule,
+    I18nPluralPipe,
+    DialogHeaderComponent,
+  ],
   templateUrl: './pua-update-dialog.component.html',
   styleUrl: './pua-update-dialog.component.scss',
 })

@@ -94,7 +94,7 @@ export class ComputeInheritedRulesService {
       numberOfHoldingUnitTypeOnComputedRules = response.totalResults;
       if (numberOfHoldingUnitTypeOnComputedRules > 0) {
         const dialogToOpen = launchComputeInheritedRuleAlerteMessageDialog;
-        const dialogRef = this.dialog.open(dialogToOpen, { panelClass: 'vitamui-dialog' });
+        const dialogRef = this.dialog.open(dialogToOpen);
         dialogRef
           .afterClosed()
           .pipe(filter((result) => !!result))
@@ -103,7 +103,6 @@ export class ComputeInheritedRulesService {
         const dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpen = confirmSecondActionBigNumberOfResultsActionDialog;
         const dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpenRef = this.dialog.open(
           dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpen,
-          { panelClass: 'vitamui-dialog' },
         );
 
         dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpenRef

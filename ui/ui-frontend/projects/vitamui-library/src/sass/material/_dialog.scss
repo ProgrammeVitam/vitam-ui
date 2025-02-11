@@ -1,39 +1,61 @@
-.vitamui-dialog .mat-mdc-dialog-container {
-  border-radius: 20px;
-  padding: 40px;
+@import '../mixins/elevation';
 
-  .content {
+:root {
+  .cdk-overlay-pane.small .mat-mdc-dialog-container {
+    width: 500px;
+  }
+
+  .cdk-overlay-pane.p-0 .mdc-dialog__surface {
+    @extend .p-0;
+  }
+
+  .mat-mdc-dialog-container {
+    --mdc-dialog-container-shape: 20px;
+    --mdc-dialog-supporting-text-color: var(--vitamui-grey-900);
+    --mdc-dialog-supporting-text-size: 16px;
+    --mdc-dialog-supporting-text-line-height: 24px;
+    --mdc-dialog-supporting-text-weight: 400;
     padding: 0;
+    max-height: 90vh;
+    width: 800px;
 
-    // dialog title
-    > .text.large:first-of-type {
-      margin: 1.5rem 0;
+    .mdc-dialog__surface {
+      @include shadow-32dp-dark();
+      @extend .p-6;
     }
 
-    .actions:last-of-type {
-      display: flex;
-      margin-top: 30px;
+    .mdc-dialog__title::before {
+      content: unset;
     }
 
-    .actions:last-of-type > button:not(:last-child) {
-      margin-right: 20px;
+    .mat-mdc-dialog-title,
+    .mat-mdc-dialog-content,
+    .mat-mdc-dialog-actions {
+      padding: 0;
+    }
+
+    .mat-mdc-dialog-content {
+      max-height: unset;
+      overflow: unset;
+      @extend .mt-4;
+      @extend .mb-6;
+    }
+
+    .mat-mdc-dialog-actions {
+      @extend .mt-6;
+
+      // When buttons are directly in the dialog-actions, display it horizontally with a gap
+      &:not(:has(> div)) {
+        @extend .hgap-4;
+      }
+      // If buttons are wrapped in divs (to form several lines), put a gap between the lines
+      &:has(> div) {
+        @extend .gap-4;
+        // And a horizontal gap between the buttons
+        & > div {
+          @extend .hgap-4;
+        }
+      }
     }
   }
-}
-.vitamui-confirm-dialog > .mat-mdc-dialog-container {
-  border-radius: 20px;
-  padding: 40px 60px 30px 40px;
-
-  .mat-mdc-dialog-actions {
-    margin-bottom: 0;
-    padding-top: 30px;
-
-    button + button {
-      margin-left: 20px;
-    }
-  }
-}
-
-.mat-mdc-dialog-actions {
-  @extend .hgap-4;
 }

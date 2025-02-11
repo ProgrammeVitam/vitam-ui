@@ -1,14 +1,17 @@
-<form [formGroup]="form">
-  <div class="content mt-3" [ngClass]="{ 'mt-4': updateMode }">
-    <div class="text medium light">{{ 'ACCESS_CONTRACT.CREATE_DIALOG.TITLE' | translate }}</div>
-    <div class="text large bold mb-3">{{ 'ACCESS_CONTRACT.CREATE_DIALOG.AUTHORISATION_PERIMETER.TITLE' | translate }}</div>
+<vitamui-dialog-header
+  *ngIf="updateMode"
+  [subhead]="'ACCESS_CONTRACT.CREATE_DIALOG.TITLE' | translate"
+  [title]="'ACCESS_CONTRACT.CREATE_DIALOG.AUTHORISATION_PERIMETER.TITLE' | translate"
+></vitamui-dialog-header>
 
+<form [formGroup]="form">
+  <mat-dialog-content>
     <div class="d-flex flex-column">
       <div class="text medium bold primary">
         {{ 'ACCESS_CONTRACT.CREATE_DIALOG.AUTHORISATION_PERIMETER.SELECT_TITLE' | translate }}
       </div>
 
-      <mat-radio-group [formControl]="accessRightSelected">
+      <mat-radio-group [formControl]="accessRightSelected" class="gap-2 align-items-stretch">
         <!-- ACCESS_FULL -->
         <mat-radio-button class="text-text-normal" [value]="AccessRightType.ACCESS_FULL">
           {{ 'ACCESS_CONTRACT.CREATE_DIALOG.AUTHORISATION_PERIMETER.ACCESS_FULL' | translate }}
@@ -18,35 +21,31 @@
           {{ 'ACCESS_CONTRACT.CREATE_DIALOG.AUTHORISATION_PERIMETER.ACCESS_BY_PRODUCERS' | translate }}
         </mat-radio-button>
         @if (accessRightSelected.value === AccessRightType.ACCESS_BY_PRODUCERS) {
-          <div>
-            <vitamui-select
-              [multiple]="true"
-              formControlName="originatingAgencies"
-              [options]="originatingAgenciesOptions"
-              [placeholder]="'ACCESS_CONTRACT.CREATE_DIALOG.EVERY_ORIGINATING_AGENCY_PLACEHOLDER' | translate"
-              [searchBarPlaceHolder]="'ACCESS_CONTRACT.CREATE_DIALOG.SELECT_PRODUCERS' | translate"
-              [required]="true"
-              [errorMessageMap]="{ required: 'ACCESS_CONTRACT.TAB.USAGE.NO_AGENCY_SELECTED' }"
-            >
-            </vitamui-select>
-          </div>
+          <vitamui-select
+            [multiple]="true"
+            formControlName="originatingAgencies"
+            [options]="originatingAgenciesOptions"
+            [placeholder]="'ACCESS_CONTRACT.CREATE_DIALOG.EVERY_ORIGINATING_AGENCY_PLACEHOLDER' | translate"
+            [searchBarPlaceHolder]="'ACCESS_CONTRACT.CREATE_DIALOG.SELECT_PRODUCERS' | translate"
+            [required]="true"
+            [errorMessageMap]="{ required: 'ACCESS_CONTRACT.TAB.USAGE.NO_AGENCY_SELECTED' }"
+          >
+          </vitamui-select>
         }
         <!-- ACCESS_BY_EXPIRED_MANAGEMENT_RULES -->
         <mat-radio-button class="text-text-normal" [value]="AccessRightType.ACCESS_BY_EXPIRED_MANAGEMENT_RULES">
           {{ 'ACCESS_CONTRACT.CREATE_DIALOG.AUTHORISATION_PERIMETER.ACCESS_BY_EXPIRED_MANAGEMENT_RULES' | translate }}
         </mat-radio-button>
         @if (accessRightSelected.value === AccessRightType.ACCESS_BY_EXPIRED_MANAGEMENT_RULES) {
-          <div>
-            <vitamui-select
-              [multiple]="true"
-              formControlName="ruleCategoryToFilter"
-              [options]="ruleTypesOptions"
-              [placeholder]="'ACCESS_CONTRACT.CREATE_DIALOG.AUTHORISATION_PERIMETER.SELECT_RULES' | translate"
-              [required]="true"
-              required
-            >
-            </vitamui-select>
-          </div>
+          <vitamui-select
+            [multiple]="true"
+            formControlName="ruleCategoryToFilter"
+            [options]="ruleTypesOptions"
+            [placeholder]="'ACCESS_CONTRACT.CREATE_DIALOG.AUTHORISATION_PERIMETER.SELECT_RULES' | translate"
+            [required]="true"
+            required
+          >
+          </vitamui-select>
         }
         <!-- ACCESS_BY_PRODUCERS_OR_EXPIRED_MANAGEMENT_RULES -->
         <mat-radio-button class="text-text-normal" [value]="AccessRightType.ACCESS_BY_PRODUCERS_OR_EXPIRED_MANAGEMENT_RULES">
@@ -121,25 +120,20 @@
         vitamuiTooltip="{{ 'ACCESS_CONTRACT.CREATE_DIALOG.AUTHORISATION_PERIMETER.ACCESS_TO_PLAN_AUTHORIZATION_TOOLTIP' | translate }}"
       ></i>
     </vitamui-common-slide-toggle>
+  </mat-dialog-content>
 
+  <mat-dialog-actions>
     @if (updateMode) {
-      <div class="actions">
-        <button type="button" class="btn primary" [disabled]="form.errors" (click)="onValidate()">
-          {{ 'COMMON.SAVE' | translate }}
-        </button>
-        <button type="button" class="btn cancel link" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
-      </div>
-    } @else {
-      <div class="actions">
-        <button type="button" class="btn primary" [disabled]="form.errors" cdkStepperNext (click)="onValidate()">
-          {{ 'COMMON.NEXT' | translate }}
-        </button>
-        <button type="button" class="btn cancel link" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
-      </div>
-      <button type="button" class="btn link" cdkStepperPrevious>
-        <i class="vitamui-icon vitamui-icon-chevron-left"></i>
-        <span class="underline">{{ 'COMMON.BACK' | translate }}</span>
+      <button type="button" class="btn primary" [disabled]="form.errors" (click)="onValidate()">
+        {{ 'COMMON.SAVE' | translate }}
       </button>
+      <button type="button" class="btn cancel link" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
+    } @else {
+      <div>
+        <vitamui-next-step [disabled]="form.errors"></vitamui-next-step>
+        <button type="button" class="btn cancel link" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
+      </div>
+      <vitamui-previous-step></vitamui-previous-step>
     }
-  </div>
+  </mat-dialog-actions>
 </form>

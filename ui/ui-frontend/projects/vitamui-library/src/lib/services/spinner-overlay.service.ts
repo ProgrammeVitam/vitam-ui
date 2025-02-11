@@ -34,22 +34,17 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Injectable, NgModule } from '@angular/core';
+import { Component, Injectable } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   template: `<mat-spinner class="vitamui-spinner x-large my-3"></mat-spinner>`,
   styleUrls: ['spinner-component.scss'],
+  imports: [MatProgressSpinnerModule],
+  standalone: true,
 })
 class SpinnerComponent {}
-
-@NgModule({
-  declarations: [SpinnerComponent],
-  imports: [MatProgressSpinnerModule],
-  exports: [],
-})
-export class SpinnerModule {}
 
 @Injectable({
   providedIn: 'root',

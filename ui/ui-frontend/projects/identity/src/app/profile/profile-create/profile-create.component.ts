@@ -42,7 +42,6 @@ import {
   buildValidators,
   collapseAnimation,
   ConfirmDialogService,
-  Group,
   Profile,
   Role,
 } from 'vitamui-library';
@@ -64,10 +63,6 @@ import { ProfileValidators } from '../profile.validators';
 export class ProfileCreateComponent implements OnInit, OnDestroy {
   adminProfileForm: FormGroup;
   tenantWithProofId: string;
-  selectedProfileGroups: Group[] = [];
-  selectedProfileGroupsId: string[] = [];
-  userLevel: string;
-  subLevelIsRequired: boolean;
   roleEnum = Role;
 
   private keyPressSubscription: Subscription;

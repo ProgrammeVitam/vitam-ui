@@ -1,63 +1,28 @@
-.vitamui-tab-group.mat-mdc-tab-group {
-  height: 100%;
+:root {
+  .mat-mdc-tab-group,
+  .mat-mdc-tab-nav-bar {
+    --mat-tab-header-active-label-text-color: var(--vitamui-primary);
+    --mat-tab-header-active-ripple-color: var(--vitamui-primary-50);
+
+    --mat-tab-header-inactive-label-text-color: var(--vitamui-grey-600);
+    --mat-tab-header-inactive-ripple-color: var(--vitamui-primary-50);
+  }
 
   .mat-mdc-tab-header {
-    background-color: white;
-    border-bottom: none;
-    height: 56px;
+    --mat-tab-header-label-text-size: 16px;
+    --mat-tab-header-label-text-tracking: 0;
+    --mat-tab-header-label-text-line-height: 24px;
+    --mat-tab-header-label-text-weight: 700;
   }
 
-  .mat-mdc-tab-body {
-    height: 100%;
+  .mdc-tab,
+  .mdc-mdc-tab-indicator {
+    padding: 0 15px;
   }
   /* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version. */
   /* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version. */
-  .mat-tab-label {
-    background-color: white;
-    color: var(--vitamui-grey-600);
-    min-width: 130px;
+  .mat-mdc-tab:hover .mdc-tab__ripple::before {
     opacity: 1;
-    height: 56px;
-    font-size: 16px;
-
-    &:hover {
-      background-color: var(--vitamui-grey-300);
-    }
-    /* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version. */
-    &:not(.mat-tab-disabled):focus {
-      background-color: var(--vitamui-grey-300);
-    }
-  }
-  /* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version. */
-  /* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version. */
-  .mat-tab-label-active {
-    /* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version. */
-    .mat-tab-label-content {
-      color: var(--vitamui-primary);
-      font-weight: 700;
-    }
-  }
-  /* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version. */
-  .mat-tab-body-content {
-    margin-top: 20px;
-    height: calc(100% - 40px);
-    overflow: hidden;
-  }
-
-  .mat-ink-bar {
-    background-color: transparent !important;
-    height: 3px;
-
-    &::before {
-      content: '';
-      display: block;
-      width: 40%;
-      background-color: var(--vitamui-primary);
-      height: 6px;
-      border-bottom-right-radius: 70px;
-      border-bottom-left-radius: 70px;
-      left: 30%;
-      position: relative;
-    }
+    border-radius: 5px 5px 0 0;
   }
 }

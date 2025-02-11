@@ -1,14 +1,13 @@
-<form [formGroup]="form" class="side-form" (ngSubmit)="onSubmit()">
-  <div class="d-flex">
-    <mat-form-field class="vitamui-mat-select w-100">
-      <mat-select formControlName="ruleType" [placeholder]="'RULES_APP.TAB.INFORMATION.TYPE' | translate" required>
-        <mat-option *ngFor="let ruleType of ruleTypes" [value]="ruleType.key">{{ ruleType.label }}</mat-option>
-      </mat-select>
-      <div class="select-arrow"><i class="material-icons">keyboard_arrow_down</i></div>
-    </mat-form-field>
-  </div>
+<form [formGroup]="form" class="gap-5" (ngSubmit)="onSubmit()">
+  <div class="gap-3 w-100">
+    <vitamui-select
+      class="w-100"
+      formControlName="ruleType"
+      [placeholder]="'RULES_APP.TAB.INFORMATION.TYPE' | translate"
+      [options]="ruleTypes"
+      [enableSearch]="false"
+    ></vitamui-select>
 
-  <div class="d-flex mt-4">
     <vitamui-common-input
       class="w-100"
       formControlName="ruleValue"
@@ -22,9 +21,7 @@
         </vitamui-common-input-error>
       </ng-container>
     </vitamui-common-input>
-  </div>
 
-  <div class="d-flex">
     <vitamui-common-input
       class="w-100"
       formControlName="ruleDuration"
@@ -41,20 +38,15 @@
         </vitamui-common-input-error>
       </ng-container>
     </vitamui-common-input>
-  </div>
 
-  <div class="d-flex">
-    <mat-form-field class="vitamui-mat-select w-100">
-      <mat-select formControlName="ruleMeasurement" [placeholder]="'RULES_APP.TAB.INFORMATION.UNIT_MEASURE' | translate" required>
-        <mat-option *ngFor="let ruleMeasurement of ruleMeasurements" [value]="ruleMeasurement.key">
-          {{ ruleMeasurement.label }}
-        </mat-option>
-      </mat-select>
-      <div class="select-arrow"><i class="material-icons">keyboard_arrow_down</i></div>
-    </mat-form-field>
-  </div>
+    <vitamui-select
+      class="w-100"
+      formControlName="ruleMeasurement"
+      [placeholder]="'RULES_APP.TAB.INFORMATION.UNIT_MEASURE' | translate"
+      [options]="ruleMeasurements"
+      [enableSearch]="false"
+    ></vitamui-select>
 
-  <div class="d-flex mt-4">
     <vitamui-common-textarea
       class="w-100"
       required
@@ -70,9 +62,7 @@
     </vitamui-common-textarea>
   </div>
 
-  <div class="actions mt-5">
-    <button type="submit" class="btn primary" [disabled]="isInvalid() || unchanged() || submited || (hasUpdateRuleRole$ | async) !== true">
-      {{ 'COMMON.SAVE' | translate }}
-    </button>
-  </div>
+  <button type="submit" class="btn primary" [disabled]="isInvalid() || unchanged() || submited || (hasUpdateRuleRole$ | async) !== true">
+    {{ 'COMMON.SAVE' | translate }}
+  </button>
 </form>

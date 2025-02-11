@@ -46,16 +46,10 @@
 </div>
 
 <ng-template #confirmCancelDialog>
-  <mat-dialog-content>
-    <div class="text-title">
-      {{ 'COMMON.UNDO_MODAL.CANCEL_TITLE' | translate }}
-    </div>
-    <br />
-    <div class="text large bold">
-      {{ 'COMMON.UNDO_MODAL.UNDO_MESSAGE' | translate }}
-    </div>
-  </mat-dialog-content>
-  <br />
+  <vitamui-dialog-header
+    [subhead]="'COMMON.UNDO_MODAL.CANCEL_TITLE' | translate"
+    [title]="'COMMON.UNDO_MODAL.UNDO_MESSAGE' | translate"
+  ></vitamui-dialog-header>
   <mat-dialog-actions>
     <button (click)="confirmCancel()" class="btn primary btn-confirm-dialog">
       {{ 'COMMON.CONFIRM' | translate }}

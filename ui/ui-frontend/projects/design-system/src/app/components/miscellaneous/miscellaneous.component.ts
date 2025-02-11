@@ -35,8 +35,9 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { SampleDialogComponent } from './sample-dialog/sample-dialog.component';
+import { CommonModule } from '@angular/common';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { VitamUICommonModule } from 'vitamui-library';
 
 const INFINITE_SCROLL_FAKE_DELAY_MS = 1500;
 
@@ -44,22 +45,15 @@ const INFINITE_SCROLL_FAKE_DELAY_MS = 1500;
   selector: 'design-system-miscellaneous',
   templateUrl: './miscellaneous.component.html',
   styleUrls: ['./miscellaneous.component.scss'],
+  imports: [CommonModule, MatProgressSpinnerModule, VitamUICommonModule],
+  standalone: true,
 })
 export class MiscellaneousComponent {
   infiniteValues: number[] = [1, 2, 3, 4, 5];
   infiniteScrollDisabled = false;
   scrollLastValue = 6;
 
-  constructor(private dialog: MatDialog) {}
-
-  openDialog() {
-    this.dialog
-      .open(SampleDialogComponent, { panelClass: 'vitamui-modal', disableClose: true })
-      .afterClosed()
-      .subscribe(() => {
-        console.log('Dialog closed !');
-      });
-  }
+  constructor() {}
 
   onScroll() {
     this.infiniteScrollDisabled = true;

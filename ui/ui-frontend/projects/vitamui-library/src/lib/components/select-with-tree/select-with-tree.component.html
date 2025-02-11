@@ -1,0 +1,121 @@
+<mat-form-field class="w-100 p-0" [hideRequiredMarker]="true" appearance="outline" subscriptSizing="dynamic">
+  <mat-label>{{ placeholder }}<span *ngIf="control.hasValidator(Validators.required)" class="text danger bold"> *</span></mat-label>
+  <mat-select
+    (closed)="onSelectClosed()"
+    (openedChange)="openedChange($event)"
+    [multiple]="multiple"
+    [formControl]="control"
+    panelClass="vitamui-select-with-tree-panel"
+    #matSelect
+  >
+    <mat-select-trigger>
+      @if (getSelectedOptionsCount() > 0) {
+        @if (multiple) {
+          {{ getSelectedOptionsCount() }} {{ getSelectedOptionsCount() | i18nPlural: nbSelectedItemsMap | translate }}
+        } @else {
+          {{ getDisplayValue(checklistSelection.selected[0].item) }}
+        }
+      }
+    </mat-select-trigger>
+
+    @if (showOnlySelectedOption) {
+      <button (click)="toggleShowOnlySelectedOption()" class="btn link small d-flex ml-auto mr-2">
+        <i class="vitamui-icon vitamui-icon-chevron-left"></i>
+        <span>
+          {{ 'SELECT.COMPLETE_SELECTION' | translate }}
+        </span>
+      </button>
+
+      <button (click)="clearAllSelectedOptions()" class="btn link small ml-2">
+        <i class="vitamui-icon vitamui-icon-delete"></i>
+        <span>
+          {{ 'SELECT.EMPTY_SELECTION' | translate }}
+        </span>
+      </button>
+    } @else {
+      <button
+        *ngIf="enableDisplaySelected && multiple"
+        (click)="toggleShowOnlySelectedOption()"
+        [disabled]="getSelectedOptionsCount() === 0"
+        class="btn link small d-flex ml-auto mr-2"
+      >
+        <i class="vitamui-icon vitamui-icon-chevron-right"></i>
+        <span> {{ 'SELECT.CONSULT_SELECTION' | translate }} ({{ getSelectedOptionsCount() }}) </span>
+      </button>
+
+      <div *ngIf="enableSearch" class="m-2">
+        <vitamui-common-search-bar
+          #searchBar
+          (search)="onSearch($event, true)"
+          (searchChanged)="onSearch($event)"
+          name="element-search"
+          [placeholder]="searchBarPlaceHolder"
+          searchButtonColor="primary"
+        ></vitamui-common-search-bar>
+      </div>
+    }
+
+    <div
+      class="vitamui-mat-select-options"
+      [class.with-search]="enableSearch"
+      [class.with-display-selected]="enableDisplaySelected && multiple"
+      cdkScrollable
+    >
+      <mat-divider *ngIf="showOnlySelectedOption"></mat-divider>
+      <mat-tree [dataSource]="dataSource" [treeControl]="treeControl" [trackBy]="trackBy">
+        <mat-tree-node *matTreeNodeDef="let node" [style.display]="node.display ? 'block' : 'none'">
+          <ng-container *ngIf="node.display">
+            <mat-option
+              matTreeNodePadding
+              matTreeNodePaddingIndent="20"
+              [value]="node.item"
+              (onSelectionChange)="leafItemSelectionToggle($event, node)"
+            >
+              <span
+                [innerHTML]="getDisplayValue(node.item) | highlight: this.searchText"
+                vitamuiCommonEllipsis
+                [isToolTipOnMouseEnter]="true"
+              ></span>
+            </mat-option>
+            <mat-divider></mat-divider>
+          </ng-container>
+        </mat-tree-node>
+
+        <mat-tree-node
+          *matTreeNodeDef="let node; when: hasChild"
+          [style.display]="node.display ? 'block' : 'none'"
+          matTreeNodeToggle
+          [attr.aria-label]="'Toggle ' + getDisplayValue(node.item)"
+        >
+          <ng-container *ngIf="node.display">
+            <mat-option
+              matTreeNodePadding
+              matTreeNodePaddingIndent="20"
+              [value]="node.item"
+              class="fake-option"
+              [class.expanded]="treeControl.isExpanded(node)"
+              [disabled]="true"
+            >
+              <i
+                class="vitamui-icon"
+                [ngClass]="treeControl.isExpanded(node) ? 'vitamui-icon-chevron-down' : 'vitamui-icon-chevron-right'"
+              ></i>
+              <span
+                [innerHTML]="getDisplayValue(node.item) | highlight: this.searchText"
+                vitamuiCommonEllipsis
+                [isToolTipOnMouseEnter]="true"
+              ></span>
+            </mat-option>
+            <mat-divider></mat-divider>
+          </ng-container>
+        </mat-tree-node>
+      </mat-tree>
+    </div>
+  </mat-select>
+
+  <div matSuffix class="select-arrow">
+    <i class="vitamui-icon vitamui-icon-unfold-more"></i>
+  </div>
+</mat-form-field>
+
+<vitamui-form-errors [control]="control" [errorMessageMap]="errorMessageMap"></vitamui-form-errors>

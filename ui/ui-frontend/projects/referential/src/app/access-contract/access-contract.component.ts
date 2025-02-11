@@ -92,7 +92,7 @@ export class AccessContractComponent extends SidenavPage<AccessContract> impleme
   }
 
   public openCreateAccesscontractDialog() {
-    const dialogRef = this.dialog.open(AccessContractCreateComponent, { panelClass: 'vitamui-modal', disableClose: true });
+    const dialogRef = this.dialog.open(AccessContractCreateComponent, { disableClose: true });
     dialogRef.componentInstance.tenantIdentifier = this.tenantIdentifier;
     dialogRef.componentInstance.isSlaveMode = this.isSlaveMode;
 
@@ -115,7 +115,7 @@ export class AccessContractComponent extends SidenavPage<AccessContract> impleme
     };
 
     this.dialog
-      .open(ImportDialogComponent, { panelClass: 'vitamui-modal', disableClose: true, data: params })
+      .open(ImportDialogComponent, { disableClose: true, data: params })
       .afterClosed()
       .subscribe((result) => {
         if (result?.successfulImport) {

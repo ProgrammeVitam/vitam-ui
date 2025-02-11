@@ -108,7 +108,6 @@ export class OwnerListComponent implements OnDestroy, OnInit {
         customer: this.customer,
       },
       disableClose: true,
-      panelClass: 'vitamui-modal',
     });
     dialogRef
       .afterClosed()
@@ -153,7 +152,6 @@ export class OwnerListComponent implements OnDestroy, OnInit {
     const dialogRef = this.dialog.open(TenantCreateComponent, {
       disableClose: true,
       data: { owner },
-      panelClass: 'vitamui-modal',
     });
     dialogRef
       .afterClosed()

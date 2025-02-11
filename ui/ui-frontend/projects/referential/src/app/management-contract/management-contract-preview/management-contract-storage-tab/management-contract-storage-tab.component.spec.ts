@@ -180,18 +180,6 @@ describe('ManagementContractStorageTabComponent', () => {
   });
 
   describe('DOM', () => {
-    it('should have 3 rows', () => {
-      const nativeElement = fixture.nativeElement;
-      const elementRow = nativeElement.querySelectorAll('.row');
-      expect(elementRow.length).toBe(3);
-    });
-
-    it('should have 3 columns', () => {
-      const nativeElement = fixture.nativeElement;
-      const elementRow = nativeElement.querySelectorAll('.col-10');
-      expect(elementRow.length).toBe(3);
-    });
-
     it('should have 3 vitamui common input', () => {
       const nativeElement = fixture.nativeElement;
       const elementVitamUiInput = nativeElement.querySelectorAll('vitamui-common-input');

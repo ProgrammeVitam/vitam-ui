@@ -129,7 +129,6 @@ describe('CustomerComponent', () => {
     page.createCustomer.click();
     expect(matDialogSpy.open).toHaveBeenCalledWith(CustomerCreateComponent, {
       data: { gdprReadOnlySettingStatus: true },
-      panelClass: 'vitamui-modal',
       disableClose: true,
     });
   });

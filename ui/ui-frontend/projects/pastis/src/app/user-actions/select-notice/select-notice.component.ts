@@ -41,6 +41,7 @@ import { ProfileService } from '../../core/services/profile.service';
 import { ProfileDescription } from '../../models/profile-description.model';
 import { ProfileType } from '../../models/profile-type.enum';
 import { PastisDialogDataCreate } from '../save-profile/save-profile.component';
+import { Option } from 'vitamui-library';
 
 const POPUP_CREATION_CHOICE_PATH = 'PROFILE.POP_UP_CREATION_NOTICE.CHOICE';
 
@@ -56,11 +57,9 @@ function constantToTranslate() {
   styleUrls: ['./select-notice.component.scss'],
 })
 export class SelectNoticeComponent implements OnInit {
-  profiles: ProfileDescription[];
+  profileOptions: Option[];
   selectedProfile: ProfileDescription;
-  validate: boolean;
   userValidation = false;
-  showMessage: boolean;
 
   constructor(
     public dialogRef: MatDialogRef<SelectNoticeComponent>,
@@ -70,14 +69,15 @@ export class SelectNoticeComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    const mapProfileDescriptionsToOptions = (profileListPUA: ProfileDescription[]) =>
+      (this.profileOptions = profileListPUA.map((profile: ProfileDescription) => ({
+        key: profile,
+        label: `${profile.identifier} - ${profile.name}`,
+      })));
     if (this.data.profileType === ProfileType.PUA) {
-      this.profilService.getAllProfilesPUA(this.data.profileVersion).subscribe((profileListPUA: ProfileDescription[]) => {
-        this.profiles = profileListPUA;
-      });
+      this.profilService.getAllProfilesPUA(this.data.profileVersion).subscribe(mapProfileDescriptionsToOptions);
     } else if (this.data.profileType === ProfileType.PA) {
-      this.profilService.getAllProfilesPA(this.data.profileVersion).subscribe((profileListPUA: ProfileDescription[]) => {
-        this.profiles = profileListPUA;
-      });
+      this.profilService.getAllProfilesPA(this.data.profileVersion).subscribe(mapProfileDescriptionsToOptions);
     }
   }
 
@@ -107,12 +107,6 @@ export class SelectNoticeComponent implements OnInit {
 
   onNoClick(): void {
     this.dialogRef.close();
-  }
-
-  setValidate() {
-    if (this.selectedProfile) {
-      this.validate = true;
-    }
   }
 
   setUserValidation(bool: boolean) {

@@ -100,7 +100,6 @@ export class AccessContractAuthorizationsTabComponent implements OnInit {
 
   public openModalCreateAccessContractStep2Only() {
     const dialogRef = this.dialog.open(AccessContractAuthorizationsUpdateComponent, {
-      panelClass: 'vitamui-modal',
       disableClose: true,
       data: {
         accessContract: this._accessContract,

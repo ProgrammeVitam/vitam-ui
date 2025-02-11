@@ -42,24 +42,45 @@ import { VitamUIInputModule } from './components/vitamui-input/vitamui-input.mod
 import { VitamUIRadioGroupModule } from './components/vitamui-radio-group/vitamui-radio-group.module';
 import { VitamUIRadioModule } from './components/vitamui-radio/vitamui-radio.module';
 import { VitamUISelectAllOptionModule } from './components/vitamui-select-all-option/vitamui-select-all-option.module';
+import { MAT_TABS_CONFIG } from '@angular/material/tabs';
+import { SelectComponent } from './components/select/select.component';
+import { MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
+import { MAT_RADIO_DEFAULT_OPTIONS } from '@angular/material/radio';
+import { DialogHeaderComponent } from './components/dialog-header/dialog-header.component';
+import { PreviousStepComponent } from './components/previous-step/previous-step.component';
+import { NextStepComponent } from './components/next-step/next-step.component';
+import { SelectWithTreeComponent } from './components/select-with-tree/select-with-tree.component';
+import { SearchWithTypeSelectorComponent } from './components/search-with-type-selector/search-with-type-selector.component';
+import { FormFieldValueWrapperComponent } from './components/form-field-value-wrapper/form-field-value-wrapper.component';
+import { MAT_CHECKBOX_DEFAULT_OPTIONS } from '@angular/material/checkbox';
+import { PatternComponent } from './components/pattern/pattern.component';
+
+const components = [
+  ConfirmActionModule,
+  DialogHeaderComponent,
+  FilingPlanModule,
+  FormFieldValueWrapperComponent,
+  NextStepComponent,
+  PatternComponent,
+  PreviousStepComponent,
+  SearchWithTypeSelectorComponent,
+  SelectComponent,
+  SelectWithTreeComponent,
+  VitamUIInputModule,
+  VitamUIRadioGroupModule,
+  VitamUIRadioModule,
+  VitamUISelectAllOptionModule,
+];
 
 @NgModule({
   declarations: [],
-  imports: [
-    ConfirmActionModule,
-    FilingPlanModule,
-    VitamUIInputModule,
-    VitamUIRadioGroupModule,
-    VitamUIRadioModule,
-    VitamUISelectAllOptionModule,
-  ],
-  exports: [
-    ConfirmActionModule,
-    FilingPlanModule,
-    VitamUIInputModule,
-    VitamUIRadioGroupModule,
-    VitamUIRadioModule,
-    VitamUISelectAllOptionModule,
+  imports: components,
+  exports: components,
+  providers: [
+    { provide: MAT_TABS_CONFIG, useValue: { stretchTabs: false } },
+    { provide: MAT_CHECKBOX_DEFAULT_OPTIONS, useValue: { color: 'primary' } },
+    { provide: MAT_RADIO_DEFAULT_OPTIONS, useValue: { color: 'primary' } },
+    { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { autoFocus: false } },
   ],
 })
 export class VitamUILibraryModule {}

@@ -48,7 +48,7 @@ import {
   Direction,
   getProjectIcon,
   getProjectWorkflow,
-  LegalStatus,
+  Option,
   PageRequest,
   PaginatedResponse,
   Project,
@@ -80,7 +80,7 @@ export class ProjectPreviewComponent implements OnInit, AfterViewInit, OnDestroy
   project: Project;
 
   acquisitionInformationsList: string[];
-  legalStatusList: LegalStatus[] = [];
+  legalStatusList: Option[] = [];
 
   protected readonly Workflow = Workflow;
   getProjectIcon = getProjectIcon;
@@ -232,7 +232,7 @@ export class ProjectPreviewComponent implements OnInit, AfterViewInit, OnDestroy
     this.projectApiService.getTransactionsByProjectId(pageRequest, this.projectId$.getValue()).subscribe((transactions) => {
       this.transactions$.next(transactions);
     });
-    this.dialogRefToClose = this.dialog.open(dialogToOpen, { panelClass: 'vitamui-dialog' });
+    this.dialogRefToClose = this.dialog.open(dialogToOpen);
   }
 
   mapProjectInternalFields(projectToUpdate: Project) {

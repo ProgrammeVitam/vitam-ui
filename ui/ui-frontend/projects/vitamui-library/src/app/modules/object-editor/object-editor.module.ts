@@ -73,6 +73,7 @@ import { EditObjectService } from './services/edit-object.service';
 import { PathService } from './services/path.service';
 import { SchemaService } from './services/schema.service';
 import { TemplateService } from './services/template.service';
+import { DialogHeaderComponent } from '../../../lib/components/dialog-header/dialog-header.component';
 
 @NgModule({
   declarations: [ObjectEditorComponent, GroupEditorComponent, ListEditorComponent, PrimitiveEditorComponent],
@@ -113,6 +114,7 @@ import { TemplateService } from './services/template.service';
     EditorSelectComponent,
     EditorListDateComponent,
     MultipleOptionsDatepickerModule,
+    DialogHeaderComponent,
   ],
   exports: [ObjectEditorComponent, GroupEditorComponent, ListEditorComponent, PrimitiveEditorComponent],
 })

@@ -1,5 +1,8 @@
-<div class="pastis-vitamui-language-seda-title">{{ title }}</div>
-<div class="pastis-vitamui-language-seda-choice">
+<div>
+  {{ title }}
+  <ng-content></ng-content>
+</div>
+<div>
   <button
     [ngStyle]="{ width: secondPopup ? 'fit-content' : '' }"
     (click)="changeStatus(firstChoice)"

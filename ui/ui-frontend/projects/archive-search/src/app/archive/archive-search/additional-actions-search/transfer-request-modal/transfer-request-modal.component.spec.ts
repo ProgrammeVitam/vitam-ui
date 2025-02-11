@@ -43,16 +43,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { TranslateModule } from '@ngx-translate/core';
 import { environment } from 'projects/archive-search/src/environments/environment';
 import { of } from 'rxjs';
-import {
-  BASE_URL,
-  ConfirmDialogService,
-  InjectorModule,
-  LoggerModule,
-  ObjectQualifierType,
-  ObjectQualifierTypeList,
-  UsageVersionEnum,
-  WINDOW_LOCATION,
-} from 'vitamui-library';
+import { BASE_URL, ConfirmDialogService, InjectorModule, LoggerModule, UsageVersionEnum, WINDOW_LOCATION } from 'vitamui-library';
 import { ArchiveApiService } from '../../../../core/api/archive-api.service';
 import { TransferRequestModalComponent } from './transfer-request-modal.component';
 
@@ -152,39 +143,7 @@ describe('TransferRequestModalComponent tests', () => {
     expect(component.formGroups[1].get('usages').value.length).toBe(1);
   });
 
-  it('should only list non already selected usages when listing usages', () => {
-    // First usage is "BinaryMaster" by default and any usage is selectable
-    expect(component.listUsages(0).length).toBe(ObjectQualifierTypeList.length);
-
-    // We add a new usage
-    component.addUsage();
-
-    // After adding a new usage, first usage can still choose any usage
-    expect(component.listUsages(0).length).toBe(ObjectQualifierTypeList.length);
-    // But second usage cannot select "BinaryMaster" as it is already selected in the first usage
-    expect(component.listUsages(1).length).toBe(ObjectQualifierTypeList.length - 1);
-    expect(component.listUsages(1)).not.toContain(ObjectQualifierType.BINARYMASTER);
-
-    // We select "Dissemination" in second usage
-    component.usages.at(1).patchValue({ usage: ObjectQualifierType.DISSEMINATION, version: ['FIRST'] });
-
-    // After selecting "Dissemination" usage in second usage, first usage can no longer choose "Dissemination"
-    expect(component.listUsages(0).length).toBe(ObjectQualifierTypeList.length - 1);
-    expect(component.listUsages(0)).not.toContain(ObjectQualifierType.DISSEMINATION);
-    // Second usage can still select the same usages (all except BinaryMaster)
-    expect(component.listUsages(1).length).toBe(ObjectQualifierTypeList.length - 1);
-    expect(component.listUsages(1)).not.toContain(ObjectQualifierType.BINARYMASTER);
-  });
-
   describe('DOM', () => {
-    it('should have 2 text titles', () => {
-      const formTitlesHtmlElements = fixture.nativeElement.querySelectorAll('.text-title');
-
-      expect(formTitlesHtmlElements).toBeTruthy();
-      expect(formTitlesHtmlElements.length).toBe(2);
-      expect(formTitlesHtmlElements[0].textContent).toContain('ARCHIVE_SEARCH.DIP.TRANSFER_REQUEST_TITLE');
-    });
-
     it('should have 8 vitamui input', () => {
       const elementVitamuiInput = fixture.nativeElement.querySelectorAll('vitamui-common-input');
       expect(elementVitamuiInput.length).toBe(8);

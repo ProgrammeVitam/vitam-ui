@@ -38,7 +38,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
-import { CountryOption, CountryService, Option, VitamUICommonModule } from 'vitamui-library';
+import { CountryOption, CountryService, Option, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 import { EditableFieldModule } from '../../../../../../../identity/src/app/shared/editable-field';
 import { NgForOf, NgIf } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
@@ -53,24 +53,31 @@ import { MatNativeDateModule } from '@angular/material/core';
   selector: 'design-system-old-inputs',
   standalone: true,
   imports: [
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    MatSelectModule,
-    MatInputModule,
-    MatNativeDateModule,
-    VitamUICommonModule,
     EditableFieldModule,
-    NgIf,
-    TranslateModule,
     MatButtonToggleModule,
     MatDatepickerModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatNativeDateModule,
+    MatSelectModule,
     NgForOf,
+    NgIf,
+    ReactiveFormsModule,
+    TranslateModule,
+    VitamUICommonModule,
+    VitamUILibraryModule,
   ],
   templateUrl: './design-system-old-inputs.component.html',
   styleUrl: './design-system-old-inputs.component.scss',
   providers: [{ provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: { useUtc: true } }],
 })
 export class DesignSystemOldInputsComponent implements OnInit {
+  patternOptions = [
+    { value: 'pattern 1', disabled: false },
+    { value: 'pattern 2', disabled: false },
+  ];
+  patternControl = new FormControl();
+
   datePickerControl = new FormControl();
 
   control = new FormControl();

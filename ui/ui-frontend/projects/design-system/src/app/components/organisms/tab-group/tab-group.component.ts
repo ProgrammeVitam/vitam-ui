@@ -35,7 +35,6 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, WritableSignal } from '@angular/core';
-import { collapseAnimation, rotateAnimation } from 'vitamui-library';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatTabsModule } from '@angular/material/tabs';
 import { NumberInput } from '@angular/cdk/coercion';
@@ -44,7 +43,6 @@ import { NgTemplateOutlet } from '@angular/common';
 @Component({
   templateUrl: './tab-group.component.html',
   styleUrls: ['./tab-group.component.scss'],
-  animations: [collapseAnimation, rotateAnimation],
   standalone: true,
   imports: [MatTabsModule, TranslateModule, NgTemplateOutlet],
 })

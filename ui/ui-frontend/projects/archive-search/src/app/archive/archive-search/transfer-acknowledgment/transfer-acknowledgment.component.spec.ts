@@ -157,27 +157,6 @@ describe('TransferAcknowledgmentComponent', () => {
     expect(component.data.tenantIdentifier).not.toBeNull();
   });
 
-  it('should the next step be the step number 3', () => {
-    // Given
-    component.transfertDetails = { archiveTransferReply: 'OK' };
-    component.stepIndex = 2;
-
-    // When
-    component.goToNextStep();
-
-    // Then
-    expect(component.stepIndex).toEqual(3);
-  });
-
-  it('should the previous step be the step number 2', () => {
-    // Given
-    component.stepIndex = 3;
-    // When
-    component.backToPreviousStep();
-    // Then
-    expect(component.stepIndex).toEqual(2);
-  });
-
   it('Should return true if the extension file is xml ', () => {
     const contents = 'text for test';
     const blob = new Blob([contents], { type: 'text/plain' });
@@ -274,11 +253,6 @@ describe('TransferAcknowledgmentComponent', () => {
 
       // Then
       expect(component.handleFile).toHaveBeenCalled();
-    });
-
-    it('should have 8 buttons ', () => {
-      const elementBtn = fixture.nativeElement.querySelectorAll('button[type=button]');
-      expect(elementBtn.length).toBe(8);
     });
 
     it('should have an input file', () => {

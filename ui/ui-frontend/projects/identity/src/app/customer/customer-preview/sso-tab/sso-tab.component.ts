@@ -121,7 +121,6 @@ export class SsoTabComponent implements OnDestroy, OnInit {
         domains: this.domains,
       },
       disableClose: true,
-      panelClass: 'vitamui-modal',
     });
     dialogRef.afterClosed().subscribe((result: IdentityProvider) => {
       if (result) {

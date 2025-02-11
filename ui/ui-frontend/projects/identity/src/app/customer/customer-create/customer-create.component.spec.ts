@@ -47,7 +47,16 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { EMPTY, of } from 'rxjs';
-import { BASE_URL, ConfirmDialogService, CountryService, LoggerModule, OtpState, StartupService, WINDOW_LOCATION } from 'vitamui-library';
+import {
+  BASE_URL,
+  ConfirmDialogService,
+  CountryService,
+  LoggerModule,
+  OtpState,
+  StartupService,
+  VitamUILibraryModule,
+  WINDOW_LOCATION,
+} from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { CustomerService } from '../../core/customer.service';
 import { OwnerFormValidators } from '../owner-form/owner-form.validators';
@@ -56,6 +65,7 @@ import { TenantFormValidators } from '../tenant-create/tenant-form.validators';
 import { TenantService } from '../tenant.service';
 import { CustomerCreateComponent } from './customer-create.component';
 import { CustomerCreateValidators } from './customer-create.validators';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-domains-input',
@@ -199,16 +209,18 @@ describe('CustomerCreateComponent', () => {
     });
     await TestBed.configureTestingModule({
       imports: [
-        ReactiveFormsModule,
-        MatFormFieldModule,
-        MatSelectModule,
-        MatButtonToggleModule,
-        MatProgressBarModule,
-        NoopAnimationsModule,
-        MatProgressSpinnerModule,
-        VitamUICommonTestModule,
-        LoggerModule.forRoot(),
         HttpClientTestingModule,
+        LoggerModule.forRoot(),
+        MatButtonToggleModule,
+        MatFormFieldModule,
+        MatProgressBarModule,
+        MatProgressSpinnerModule,
+        MatSelectModule,
+        NoopAnimationsModule,
+        ReactiveFormsModule,
+        TranslateModule.forRoot(),
+        VitamUICommonTestModule,
+        VitamUILibraryModule,
       ],
       declarations: [CustomerCreateComponent, OwnerFormStubComponent, CustomerColorsInputStubComponent, DomainInputStubComponent],
       providers: [

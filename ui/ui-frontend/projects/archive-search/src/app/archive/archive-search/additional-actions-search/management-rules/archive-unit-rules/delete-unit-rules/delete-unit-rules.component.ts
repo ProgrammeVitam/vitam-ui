@@ -175,7 +175,7 @@ export class DeleteUnitRulesComponent implements OnDestroy {
 
   onDelete() {
     const dialogToOpen = this.confirmDeleteBlocRuleDialog;
-    const dialogRef = this.dialog.open(dialogToOpen, { panelClass: 'vitamui-dialog' });
+    const dialogRef = this.dialog.open(dialogToOpen);
 
     this.showConfirmDeleteBlocRuleSuscription = dialogRef
       .afterClosed()

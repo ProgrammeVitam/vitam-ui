@@ -52,7 +52,6 @@ import { map, tap } from 'rxjs/operators';
 export class OwnerCreateComponent implements OnInit, OnDestroy {
   public ownerForm: FormGroup;
   public tenantForm: FormGroup;
-  public stepIndex = 0;
 
   private keyPressSubscription: Subscription;
   availableTenants: number[];

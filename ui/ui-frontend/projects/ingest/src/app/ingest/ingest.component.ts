@@ -145,7 +145,6 @@ export class IngestComponent extends SidenavPage<any> implements OnInit {
 
   openImportSipDialog(type: IngestType) {
     const dialogConfig = new MatDialogConfig();
-    dialogConfig.panelClass = 'vitamui-modal';
     dialogConfig.disableClose = false;
 
     dialogConfig.data = {

@@ -7,41 +7,7 @@ a {
 }
 
 :host::ng-deep {
-  /* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version. */
-  .mat-tab-body-wrapper {
-    ::-webkit-scrollbar {
-      display: none;
-    }
-  }
-
-  .mat-mdc-card-image:first-child {
-    margin: 0;
-  }
-  /* TODO(mdc-migration): The following rule targets internal classes of card that may no longer apply for the MDC version. */
-  .mat-card-header-text {
-    max-width: 16.8vw;
-    margin: 1rem 0;
-  }
-
   .mat-mdc-tab-header {
     margin: 3rem 0 1.5rem 0;
-  }
-  /* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version. */
-  .mat-tab-label.mat-tab-label-active {
-    color: var(--vitamui-primary);
-    opacity: 1;
-    font-weight: bold;
-  }
-  /* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version. */
-  .mat-tab-labels {
-    justify-content: center;
-  }
-
-  .mat-ink-bar {
-    background-color: var(--vitamui-primary) !important;
-  }
-  /* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version. */
-  .mat-tab-header-pagination.mat-tab-header-pagination-disabled {
-    display: none !important;
   }
 }

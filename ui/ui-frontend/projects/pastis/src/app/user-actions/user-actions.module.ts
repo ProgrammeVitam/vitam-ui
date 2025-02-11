@@ -78,7 +78,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { FileUploadModule } from 'ng2-file-upload';
-import { VitamUIInputModule } from 'vitamui-library';
+import { VitamUIInputModule, VitamUILibraryModule } from 'vitamui-library';
 import { CoreModule } from '../core/core.module';
 import { PastisMaterialModule } from '../material.module';
 import { SharedModule } from '../shared/shared.module';
@@ -92,32 +92,35 @@ import { SaveProfileOptionsComponent } from './save-profile-options/save-profile
 import { UserActionSaveProfileComponent } from './save-profile/save-profile.component';
 import { SelectNoticeComponent } from './select-notice/select-notice.component';
 import { UserActionUploadProfileComponent } from './upload-profile/upload-profile.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [
-    UserActionUploadProfileComponent,
-    FilterByNamePipe,
-    UserActionSaveProfileComponent,
-    UserActionsDownloadDocComponent,
-    DuplicateMetadataComponent,
-    CreateNoticeComponent,
-    SaveProfileOptionsComponent,
     AllowAdditionalPropertiesComponent,
-    UserActionAddPuaControlComponent,
+    CreateNoticeComponent,
+    DuplicateMetadataComponent,
+    FilterByNamePipe,
+    SaveProfileOptionsComponent,
     SelectNoticeComponent,
+    UserActionAddPuaControlComponent,
+    UserActionSaveProfileComponent,
+    UserActionUploadProfileComponent,
+    UserActionsDownloadDocComponent,
   ],
   imports: [
     CommonModule,
-    PastisMaterialModule,
-    FileUploadModule,
-    SharedModule,
-    MatInputModule,
-    MatFormFieldModule,
-    ReactiveFormsModule,
-    VitamUIInputModule,
     CoreModule,
+    FileUploadModule,
     FormsModule,
+    MatFormFieldModule,
+    MatInputModule,
     MatSlideToggleModule,
+    PastisMaterialModule,
+    ReactiveFormsModule,
+    SharedModule,
+    TranslateModule,
+    VitamUIInputModule,
+    VitamUILibraryModule,
   ],
   exports: [
     UserActionUploadProfileComponent,

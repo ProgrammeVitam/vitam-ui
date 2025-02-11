@@ -41,6 +41,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { AppRootComponent, DslQueryType, Option, VitamUISnackBarService, AccessContractService } from 'vitamui-library';
 import { AdminDslService } from './admin-dsl.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-admin-dsl',
@@ -51,7 +52,10 @@ export class AdminDslComponent extends AppRootComponent {
   tenantId: number;
   form: FormGroup;
   accessContracts: Option[] = [];
-  dslQueryTypeEnum = DslQueryType;
+  dslQueryTypeOptions = Object.values(DslQueryType).map((queryType) => ({
+    key: queryType,
+    label: this.translateService.instant(`DSL.HOME.${queryType}`),
+  }));
 
   constructor(
     private route: ActivatedRoute,
@@ -60,6 +64,7 @@ export class AdminDslComponent extends AppRootComponent {
     private accessContractService: AccessContractService,
     private formBuilder: FormBuilder,
     private clipboard: Clipboard,
+    private translateService: TranslateService,
   ) {
     super(route);
 
@@ -87,7 +92,7 @@ export class AdminDslComponent extends AppRootComponent {
   search() {
     try {
       const searchObservable: Observable<any> =
-        this.form.get('dslQueryType').value === this.dslQueryTypeEnum.ARCHIVE_UNIT
+        this.form.get('dslQueryType').value === DslQueryType.ARCHIVE_UNIT
           ? this.adminDslService.getByDsl(this.form.value.id, JSON.parse(this.form.value.dsl), this.form.value.accessContract)
           : this.adminDslService.getUnitObjectsByDsl(this.form.value.id, JSON.parse(this.form.value.dsl), this.form.value.accessContract);
 
@@ -132,6 +137,6 @@ export class AdminDslComponent extends AppRootComponent {
    * Check if the unit id is required according to the selected dsl query type
    */
   isUnitIdRequired(): boolean {
-    return this.form.get('dslQueryType').value === this.dslQueryTypeEnum.TECHNICAL_OBJECT_GROUP;
+    return this.form.get('dslQueryType').value === DslQueryType.TECHNICAL_OBJECT_GROUP;
   }
 }

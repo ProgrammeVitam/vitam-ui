@@ -1,18 +1,29 @@
-<div class="header">
-  <vitamui-common-progress-bar [count]="stepCount" [index]="stepIndex"></vitamui-common-progress-bar>
-</div>
+<vitamui-dialog-header
+  [stepper]="stepper"
+  [subhead]="'COLLECT.MODAL.TITLE' | translate"
+  [title]="[
+    'COLLECT.MODAL.WORKFLOW_CHOICE' | translate,
+    'COLLECT.PROJECT_DESCRIPTION_SUB_TITLE' | translate,
+    'COLLECT.PROJECT_CONTEXT_SUB_TITLE' | translate,
+    (selectedWorkflow === Workflow.MANUAL ? 'COLLECT.MODAL.UPLOAD_SUB_TITLE' : 'COLLECT.MODAL.FLOW_WORKFLOW_TYPE_CHOICE') | translate,
+    (selectedWorkflow === Workflow.MANUAL || selectedFlowType === FlowType.FIX
+      ? 'COLLECT.MODAL.ARCHIVE_POSITION_SUB_TITLE'
+      : 'COLLECT.MODAL.RULES_TITLE'
+    ) | translate,
+    (selectedWorkflow === Workflow.MANUAL ? 'COLLECT.MODAL.UPLOAD_FILES' : 'COLLECT.MODAL.UPLOAD_CONF_FILES') | translate,
+    (selectedWorkflow === Workflow.FLOW ? 'COLLECT.MODAL.PROJECT_CREATED' : 'UNKNOWN STEP!!') | translate,
+  ]"
+></vitamui-dialog-header>
 
 <!-- workflow 1 projet de versement manuel -->
 <!-- workflow 2 projet de versement de flux + position de rattachement fixe -->
 <!-- workflow 3 projet de versement de flux + parametrage des regles de rattachement -->
 
 <form [formGroup]="projectForm">
-  <vitamui-common-stepper [selectedIndex]="stepIndex">
+  <vitamui-common-stepper #stepper [(selectedIndex)]="stepIndex">
     <!-- ########## stepIndex 1 : workflow 1-2-3 , step 1/6 : Choix du type de projet ########## -->
     <cdk-step>
-      <div class="content">
-        <div class="text medium light">{{ 'COLLECT.MODAL.TITLE' | translate }}</div>
-        <div class="text large bold">{{ 'COLLECT.MODAL.WORKFLOW_CHOICE' | translate }}</div>
+      <mat-dialog-content>
         <div class="main-content">
           <mat-button-toggle-group class="vitamui-button-toggle-group">
             <mat-button-toggle value="{{ Workflow.MANUAL }}" (click)="setWorkflow(Workflow.MANUAL)" [checked]="true">
@@ -23,25 +34,19 @@
             </mat-button-toggle>
           </mat-button-toggle-group>
         </div>
-        <div class="actions">
-          <div class="line">
-            <button (click)="moveToNextStep()" class="btn primary" type="button">
-              {{ 'COMMON.NEXT' | translate }}
-            </button>
-            <button (click)="onClose()" class="btn cancel link" type="button">
-              {{ 'COMMON.UNDO' | translate }}
-            </button>
-          </div>
-        </div>
-      </div>
+      </mat-dialog-content>
+      <mat-dialog-actions>
+        <vitamui-next-step></vitamui-next-step>
+        <button (click)="onClose()" class="btn cancel link" type="button">
+          {{ 'COMMON.UNDO' | translate }}
+        </button>
+      </mat-dialog-actions>
     </cdk-step>
 
     <!-- ########## stepIndex 2 : workflow 1-2-3 , step 2/6 : Description du versement ########## -->
     <cdk-step>
-      <div class="content">
-        <div class="text medium light">{{ 'COLLECT.MODAL.TITLE' | translate }}</div>
-        <div class="text large bold">{{ 'COLLECT.PROJECT_DESCRIPTION_SUB_TITLE' | translate }}</div>
-        <div class="main-content">
+      <mat-dialog-content>
+        <div class="gap-3 align-items-stretch">
           <div class="row">
             <vitamui-common-input
               class="col"
@@ -102,38 +107,30 @@
             </vitamui-common-input>
           </div>
         </div>
-        <div class="actions">
-          <div class="line">
-            <button (click)="moveToNextStep()" [disabled]="stepDescriptionIsInvalid()" class="btn primary" type="button">
-              {{ 'COMMON.NEXT' | translate }}
-            </button>
-            <button (click)="onClose()" class="btn cancel link" type="button">
-              {{ 'COMMON.UNDO' | translate }}
-            </button>
-          </div>
-          <button type="button" class="btn link back" (click)="backToPreviousStep()">
-            <i class="vitamui-icon vitamui-icon-chevron-left"></i>
-            <span class="underline">{{ 'COMMON.BACK' | translate }}</span>
+      </mat-dialog-content>
+      <mat-dialog-actions>
+        <div>
+          <vitamui-next-step [disabled]="stepDescriptionIsInvalid()"></vitamui-next-step>
+          <button (click)="onClose()" class="btn cancel link" type="button">
+            {{ 'COMMON.UNDO' | translate }}
           </button>
         </div>
-      </div>
+        <vitamui-previous-step></vitamui-previous-step>
+      </mat-dialog-actions>
     </cdk-step>
 
     <!-- ########## stepIndex 3 : workflow 1-2-3 , step 3/6 : Contexte du versement ########## -->
     <cdk-step>
-      <div class="content">
-        <div class="text medium light">{{ 'COLLECT.MODAL.TITLE' | translate }}</div>
+      <mat-dialog-content>
         <div class="row">
-          <div class="col">
-            <div class="text large bold">{{ 'COLLECT.PROJECT_CONTEXT_SUB_TITLE' | translate }}</div>
-          </div>
+          <div class="col"></div>
           <div class="col toggle-right">
             <vitamui-common-slide-toggle class="fields-padding" [checked]="false" [disabled]="true">
               {{ 'COLLECT.PROJECT_DESCRIPTION_REFERENTIAL_CHECKUP' | translate }}
             </vitamui-common-slide-toggle>
           </div>
         </div>
-        <div class="main-content">
+        <div class="gap-3 align-items-stretch">
           <div class="row">
             <vitamui-common-input
               class="col-5"
@@ -185,51 +182,36 @@
             <vitamui-common-input [disabled]="true" class="col" placeholder="{{ 'COLLECT.PROJECT_CONTEXT_ARCHIVE_PROFILE' | translate }}">
             </vitamui-common-input>
           </div>
-          <div class="row">
-            <mat-form-field appearance="outline" class="col" id="acquisition-informations">
-              <label for="acquisition-informations">
-                <span class="pb-3">{{ 'COLLECT.PROJECT_CONTEXT_ACQUISITION_INFORMATION' | translate }}</span>
-              </label>
-              <mat-select formControlName="acquisitionInformation">
-                <mat-option *ngFor="let acquisitionInformation of acquisitionInformationsList" [value]="acquisitionInformation"
-                  >{{ acquisitionInformation }}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-          </div>
-          <div class="row">
-            <mat-form-field appearance="outline" class="col" id="legal-status">
-              <label for="legal-status">
-                <span class="pb-3">{{ 'COLLECT.PROJECT_CONTEXT_LEGAL_STATUS' | translate }}</span>
-              </label>
-              <mat-select formControlName="legalStatus">
-                <mat-option *ngFor="let legalStatus of legalStatusList" [value]="legalStatus.id">{{ legalStatus.value }}</mat-option>
-              </mat-select>
-            </mat-form-field>
-          </div>
+          <vitamui-select
+            formControlName="acquisitionInformation"
+            [placeholder]="'COLLECT.PROJECT_CONTEXT_ACQUISITION_INFORMATION' | translate"
+            [options]="acquisitionInformationsList"
+            [multiple]="false"
+            [enableSearch]="false"
+          ></vitamui-select>
+          <vitamui-select
+            formControlName="legalStatus"
+            [placeholder]="'COLLECT.PROJECT_CONTEXT_LEGAL_STATUS' | translate"
+            [options]="legalStatusList"
+            [multiple]="false"
+            [enableSearch]="false"
+          ></vitamui-select>
         </div>
-        <div class="actions">
-          <div class="line">
-            <button (click)="moveToNextStep()" [disabled]="stepContextIsInvalid()" class="btn primary" type="button">
-              {{ 'COMMON.NEXT' | translate }}
-            </button>
-            <button (click)="onClose()" class="btn cancel link" type="button">
-              {{ 'COMMON.UNDO' | translate }}
-            </button>
-          </div>
-          <button type="button" class="btn link back" (click)="backToPreviousStep()">
-            <i class="vitamui-icon vitamui-icon-chevron-left"></i>
-            <span class="underline">{{ 'COMMON.BACK' | translate }}</span>
+      </mat-dialog-content>
+      <mat-dialog-actions>
+        <div>
+          <vitamui-next-step [disabled]="stepContextIsInvalid()"></vitamui-next-step>
+          <button (click)="onClose()" class="btn cancel link" type="button">
+            {{ 'COMMON.UNDO' | translate }}
           </button>
         </div>
-      </div>
+        <vitamui-previous-step></vitamui-previous-step>
+      </mat-dialog-actions>
     </cdk-step>
 
     <!-- ########## stepIndex 4 : workflow 1     , step 4/6 : Choix des fichiers à upload ########## -->
     <cdk-step *ngIf="selectedWorkflow === Workflow.MANUAL">
-      <div class="content">
-        <div class="text medium light">{{ 'COLLECT.MODAL.TITLE' | translate }}</div>
-        <div class="text large bold">{{ 'COLLECT.MODAL.UPLOAD_SUB_TITLE' | translate }}</div>
+      <mat-dialog-content>
         <div class="main-content">
           <div class="w-100">
             <vitamui-file-selector
@@ -241,28 +223,21 @@
             </vitamui-file-selector>
           </div>
         </div>
-        <div class="actions">
-          <div class="line">
-            <button (click)="moveToNextStep()" [disabled]="filesToUpload.length < 1" class="btn primary" type="button">
-              {{ 'COMMON.NEXT' | translate }}
-            </button>
-            <button (click)="onClose()" class="btn cancel link" type="button">
-              {{ 'COMMON.UNDO' | translate }}
-            </button>
-          </div>
-          <button type="button" class="btn link back" (click)="backToPreviousStep()">
-            <i class="vitamui-icon vitamui-icon-chevron-left"></i>
-            <span class="underline">{{ 'COMMON.BACK' | translate }}</span>
+      </mat-dialog-content>
+      <mat-dialog-actions>
+        <div>
+          <vitamui-next-step [disabled]="filesToUpload.length < 1"></vitamui-next-step>
+          <button (click)="onClose()" class="btn cancel link" type="button">
+            {{ 'COMMON.UNDO' | translate }}
           </button>
         </div>
-      </div>
+        <vitamui-previous-step></vitamui-previous-step>
+      </mat-dialog-actions>
     </cdk-step>
 
     <!-- stepIndex 5 : workflow 2-3   , step 4/6 : Choisir le type de rattachement -->
     <cdk-step *ngIf="selectedWorkflow === Workflow.FLOW">
-      <div class="content">
-        <div class="text medium light">{{ 'COLLECT.MODAL.TITLE' | translate }}</div>
-        <div class="text large bold">{{ 'COLLECT.MODAL.FLOW_WORKFLOW_TYPE_CHOICE' | translate }}</div>
+      <mat-dialog-content>
         <div class="main-content gap-4">
           <mat-button-toggle-group class="vitamui-button-toggle-group">
             <mat-button-toggle value="{{ FlowType.FIX }}" (click)="setFlowType(FlowType.FIX)" [checked]="true">
@@ -284,28 +259,23 @@
             </mat-button-toggle-group>
           </div>
         </div>
-        <div class="actions">
-          <div class="line">
-            <button (click)="prepareRulesAndMoveToNextStep()" class="btn primary" type="button">
-              {{ 'COMMON.NEXT' | translate }}
-            </button>
-            <button (click)="onClose()" class="btn cancel link" type="button">
-              {{ 'COMMON.UNDO' | translate }}
-            </button>
-          </div>
-          <button type="button" class="btn link back" (click)="backToPreviousStep()">
-            <i class="vitamui-icon vitamui-icon-chevron-left"></i>
-            <span class="underline">{{ 'COMMON.BACK' | translate }}</span>
+      </mat-dialog-content>
+      <mat-dialog-actions>
+        <div>
+          <button (click)="prepareRulesAndMoveToNextStep()" class="btn primary" type="button">
+            {{ 'COMMON.NEXT' | translate }}
+          </button>
+          <button (click)="onClose()" class="btn cancel link" type="button">
+            {{ 'COMMON.UNDO' | translate }}
           </button>
         </div>
-      </div>
+        <vitamui-previous-step></vitamui-previous-step>
+      </mat-dialog-actions>
     </cdk-step>
 
     <!-- stepIndex 6 : workflow 1-2   , step 5/6 : Définir la position fixe de rattachement -->
     <cdk-step *ngIf="selectedWorkflow === Workflow.MANUAL || selectedFlowType === FlowType.FIX">
-      <div class="content">
-        <div class="text medium light">{{ 'COLLECT.MODAL.TITLE' | translate }}</div>
-        <div class="text large bold">{{ 'COLLECT.MODAL.ARCHIVE_POSITION_SUB_TITLE' | translate }}</div>
+      <mat-dialog-content>
         <div class="main-content">
           <div class="form-group">
             <vitamui-library-filing-plan
@@ -316,28 +286,27 @@
             </vitamui-library-filing-plan>
           </div>
         </div>
-        <div class="actions">
-          <div class="line">
-            <button (click)="moveToNextStep()" class="btn primary" type="button">
-              {{ 'COMMON.NEXT' | translate }}
-            </button>
-            <button (click)="onClose()" class="btn cancel link" type="button">
-              {{ 'COMMON.UNDO' | translate }}
-            </button>
-          </div>
-          <button type="button" class="btn link back" (click)="backToPreviousStep()">
-            <i class="vitamui-icon vitamui-icon-chevron-left"></i>
-            <span class="underline">{{ 'COMMON.BACK' | translate }}</span>
+      </mat-dialog-content>
+      <mat-dialog-actions>
+        <div>
+          <button
+            (click)="selectedWorkflow === Workflow.MANUAL ? validateAndCreateProject() : moveToNextStep()"
+            class="btn primary"
+            type="button"
+          >
+            {{ 'COMMON.NEXT' | translate }}
+          </button>
+          <button (click)="onClose()" class="btn cancel link" type="button">
+            {{ 'COMMON.UNDO' | translate }}
           </button>
         </div>
-      </div>
+        <vitamui-previous-step></vitamui-previous-step>
+      </mat-dialog-actions>
     </cdk-step>
 
     <!-- stepIndex 7 : workflow 3     , step 5/6 : Parametrer les regles de rattachement -->
     <cdk-step *ngIf="selectedWorkflow === Workflow.FLOW && selectedFlowType === FlowType.RULES">
-      <div class="content">
-        <div class="text medium light">{{ 'COLLECT.MODAL.TITLE' | translate }}</div>
-        <div class="text large bold">{{ 'COLLECT.MODAL.RULES_TITLE' | translate }}</div>
+      <mat-dialog-content>
         <div class="main-content">
           <ng-container formArrayName="rulesParams">
             <div class="object-container" *ngFor="let ruleParamForm of rulesParams.controls; let index = index">
@@ -347,18 +316,18 @@
                   [ngClass]="{ opened: ruleParamForm.value.opened }"
                   (click)="openCloseRuleParam(ruleParamForm.value)"
                 >
-                  <div class="line split">
-                    <div class="line open-close-icon">
+                  <div class="d-flex align-items-center split">
+                    <div class="d-flex align-items-center open-close-icon">
                       <i
                         class="vitamui-icon {{ ruleParamForm.value.opened ? 'vitamui-icon-chevron-down' : 'vitamui-icon-chevron-right' }}"
                       ></i>
                     </div>
-                    <div class="line shrink object-name">
+                    <div class="d-flex align-items-center shrink object-name">
                       {{ ('COLLECT.MODAL.RULE_PARAMETER_PREFIX' | translate) + (index + 1) }}
                     </div>
                   </div>
-                  <div class="line split">
-                    <div class="line shrink object-type"></div>
+                  <div class="d-flex align-items-center split">
+                    <div class="d-flex align-items-center shrink object-type"></div>
                     <button
                       class="delete-button"
                       (click)="deleteRuleParam(index)"
@@ -373,21 +342,13 @@
                     <div class="row">
                       <div class="col">
                         <label>{{ 'COLLECT.MODAL.SELECT_METADATA' | translate }}</label>
-                        <mat-form-field class="vitamui-mat-select">
-                          <mat-select
-                            class="select"
-                            formControlName="ontology"
-                            placeholder="{{ 'COLLECT.MODAL.SELECT_THE_METADATA' | translate }}"
-                          >
-                            <mat-option *ngFor="let ontology of ontologies" class="option" [value]="ontology">
-                              {{ ontology.Identifier }}
-                            </mat-option>
-                          </mat-select>
-                          <div class="select-arrow">
-                            <i class="material-icons">keyboard_arrow_up</i>
-                            <i class="material-icons">keyboard_arrow_down</i>
-                          </div>
-                        </mat-form-field>
+                        <vitamui-select
+                          formControlName="ontology"
+                          [placeholder]="'COLLECT.MODAL.SELECT_THE_METADATA' | translate"
+                          [options]="ontologies"
+                          [multiple]="false"
+                          [enableSearch]="false"
+                        ></vitamui-select>
                       </div>
                       <div class="col">
                         <label>{{ 'COLLECT.MODAL.SET_VALUE' | translate }}</label>
@@ -444,61 +405,48 @@
             </button>
           </div>
         </div>
-        <div class="actions">
-          <div class="line">
-            <button (click)="moveToNextStep()" [disabled]="stepRulesParamsIsInvalid()" class="btn primary" type="button">
-              {{ 'COMMON.NEXT' | translate }}
-            </button>
-            <button (click)="onClose()" class="btn cancel link" type="button">
-              {{ 'COMMON.UNDO' | translate }}
-            </button>
-          </div>
-          <button type="button" class="btn link back" (click)="backToPreviousStep()">
-            <i class="vitamui-icon vitamui-icon-chevron-left"></i>
-            <span class="underline">{{ 'COMMON.BACK' | translate }}</span>
+      </mat-dialog-content>
+      <mat-dialog-actions>
+        <div>
+          <vitamui-next-step [disabled]="stepRulesParamsIsInvalid()"></vitamui-next-step>
+          <button (click)="onClose()" class="btn cancel link" type="button">
+            {{ 'COMMON.UNDO' | translate }}
           </button>
         </div>
-      </div>
+        <vitamui-previous-step></vitamui-previous-step>
+      </mat-dialog-actions>
     </cdk-step>
+
     <!-- ########## stepIndex 6 : workflow 2     , step 6/6 : Choix des fichiers à upload ########## -->
     <cdk-step *ngIf="selectedWorkflow === Workflow.FLOW">
-      <div class="content">
-        <div class="text medium light">{{ 'COLLECT.MODAL.TITLE' | translate }}</div>
-        <div class="text large bold">{{ 'COLLECT.MODAL.UPLOAD_CONF_FILES' | translate }}</div>
-        <div class="main-content">
-          <div class="w-100">
-            <vitamui-file-selector
-              [multipleFiles]="false"
-              [maxSizeInBytes]="10 * 1024"
-              [directoryMode]="false"
-              [extensions]="['.jslt']"
-              (filesChanged)="uploadJsltFile($event)"
-            >
-            </vitamui-file-selector>
-          </div>
+      <mat-dialog-content>
+        <div class="w-100">
+          <vitamui-file-selector
+            [multipleFiles]="false"
+            [maxSizeInBytes]="10 * 1024"
+            [directoryMode]="false"
+            [extensions]="['.jslt']"
+            (filesChanged)="uploadJsltFile($event)"
+          >
+          </vitamui-file-selector>
         </div>
-        <div class="actions">
-          <div class="line">
-            <button (click)="validateAndCreateProject()" class="btn primary" type="button">
-              {{ 'COMMON.SUBMIT' | translate }}
-            </button>
-            <button (click)="onClose()" class="btn cancel link" type="button">
-              {{ 'COMMON.UNDO' | translate }}
-            </button>
-          </div>
-          <button type="button" class="btn link back" (click)="backToPreviousStep()">
-            <i class="vitamui-icon vitamui-icon-chevron-left"></i>
-            <span class="underline">{{ 'COMMON.BACK' | translate }}</span>
+      </mat-dialog-content>
+      <mat-dialog-actions>
+        <div>
+          <button (click)="validateAndCreateProject()" class="btn primary" type="button">
+            {{ 'COMMON.SUBMIT' | translate }}
+          </button>
+          <button (click)="onClose()" class="btn cancel link" type="button">
+            {{ 'COMMON.UNDO' | translate }}
           </button>
         </div>
-      </div>
+        <vitamui-previous-step></vitamui-previous-step>
+      </mat-dialog-actions>
     </cdk-step>
 
     <!-- stepIndex 8 : workflow 1     , step 6/6     : Zip des fichiers et upload -->
     <cdk-step *ngIf="selectedWorkflow === Workflow.MANUAL">
-      <div class="content">
-        <div class="text medium light">{{ 'COLLECT.MODAL.TITLE' | translate }}</div>
-        <div class="text large bold">{{ 'COLLECT.MODAL.UPLOAD_CONF_FILES' | translate }}</div>
+      <mat-dialog-content>
         <div class="main-content">
           <table>
             <thead>
@@ -523,26 +471,24 @@
             </tbody>
           </table>
         </div>
-        <div class="actions">
-          <button (click)="close()" [disabled]="isLoading" class="btn primary" type="button">
-            {{ 'COMMON.CLOSE' | translate }}
-          </button>
-        </div>
-      </div>
+      </mat-dialog-content>
+      <mat-dialog-actions>
+        <button (click)="close()" [disabled]="isLoading" class="btn primary" type="button">
+          {{ 'COMMON.CLOSE' | translate }}
+        </button>
+      </mat-dialog-actions>
     </cdk-step>
 
     <!-- workflow 2-3 step 6/6   : Projet de versement cree -->
     <cdk-step *ngIf="selectedWorkflow === Workflow.FLOW">
-      <div class="content">
-        <div class="text medium light">{{ 'COLLECT.MODAL.TITLE' | translate }}</div>
-        <div class="text large bold">{{ 'COLLECT.MODAL.PROJECT_CREATED' | translate }}</div>
+      <mat-dialog-content>
         <div class="main-content"></div>
-        <div class="actions">
-          <button (click)="close()" [disabled]="isLoading" class="btn primary" type="button">
-            {{ 'COMMON.CLOSE' | translate }}
-          </button>
-        </div>
-      </div>
+      </mat-dialog-content>
+      <mat-dialog-actions>
+        <button (click)="close()" [disabled]="isLoading" class="btn primary" type="button">
+          {{ 'COMMON.CLOSE' | translate }}
+        </button>
+      </mat-dialog-actions>
     </cdk-step>
   </vitamui-common-stepper>
 </form>

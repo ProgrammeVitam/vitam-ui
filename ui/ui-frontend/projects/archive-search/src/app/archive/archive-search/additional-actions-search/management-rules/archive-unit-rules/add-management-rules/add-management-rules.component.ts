@@ -302,7 +302,7 @@ export class AddManagementRulesComponent implements OnDestroy {
 
   onDelete() {
     const dialogToOpen = this.confirmDeleteAddRuleDialog;
-    const dialogRef = this.dialog.open(dialogToOpen, { panelClass: 'vitamui-dialog' });
+    const dialogRef = this.dialog.open(dialogToOpen);
 
     this.showConfirmDeleteAddRuleSuscription = dialogRef
       .afterClosed()

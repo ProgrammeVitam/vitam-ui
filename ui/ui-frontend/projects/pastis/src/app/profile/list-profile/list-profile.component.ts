@@ -348,7 +348,7 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
     ]);
 
     (this.isProfilAttached(profileDescription)
-      ? this.dialog.open(this.confirmReplacement, { panelClass: 'vitamui-confirm-dialog' }).afterClosed()
+      ? this.dialog.open(this.confirmReplacement, { panelClass: 'small' }).afterClosed()
       : of(true)
     )
       .pipe(
@@ -356,7 +356,6 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
         switchMap(() =>
           this.dialog
             .open<LoadProfileComponent, LoadProfileConfig>(LoadProfileComponent, {
-              panelClass: 'vitamui-modal',
               data: {
                 title: this.translations.popupUploadTitle,
                 subTitle: this.translations.popupUploadSubTitle,

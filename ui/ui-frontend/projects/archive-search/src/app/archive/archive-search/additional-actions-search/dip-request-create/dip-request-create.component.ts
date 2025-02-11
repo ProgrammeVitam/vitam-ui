@@ -48,9 +48,11 @@ import {
   SearchCriteriaEltDto,
   StartupService,
   UsageVersionEnum,
+  VitamuiSelectOptions,
 } from 'vitamui-library';
 import { ArchiveService } from '../../../archive.service';
 import { ExportDIPRequestDto, QualifierVersion } from '../../../models/dip.interface';
+import { distinctUntilChanged, map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-dip-request-create',
@@ -58,10 +60,9 @@ import { ExportDIPRequestDto, QualifierVersion } from '../../../models/dip.inter
   styleUrls: ['./dip-request-create.component.scss'],
 })
 export class DipRequestCreateComponent implements OnInit, OnDestroy {
-  stepIndex = 0;
-  stepCount = 2;
   formGroups: FormGroup[];
   isLoading = false;
+  usageOptions: VitamuiSelectOptions[] = [];
 
   constructor(
     private translate: TranslateService,
@@ -119,6 +120,15 @@ export class DipRequestCreateComponent implements OnInit, OnDestroy {
         ]),
       }),
     ];
+
+    this.computeUsageOptions();
+    this.formGroups[1]
+      .get('usages')
+      .valueChanges.pipe(
+        map((usages) => usages.map((usage: any) => usage.usage)),
+        distinctUntilChanged((u1: string[], u2: string[]) => u1.length === u2.length && u1.every((v, i) => u2[i] === v)),
+      )
+      .subscribe(() => this.computeUsageOptions());
   }
 
   get messageRequestIdentifier(): FormControl {
@@ -137,15 +147,19 @@ export class DipRequestCreateComponent implements OnInit, OnDestroy {
     return this.formGroups[1].get('usages') as FormArray;
   }
 
-  listUsages(i: number): string[] {
-    const otherUsages = (
-      this.usages.value as {
-        usage: string;
-      }[]
-    )
-      .filter((_, index) => i !== index)
-      .map((v) => v.usage);
-    return this.dataObjectVersions.filter((usage) => !otherUsages.includes(usage));
+  private computeUsageOptions() {
+    this.usages.controls.forEach((_, i) => {
+      if (!this.usageOptions[i]) {
+        this.usageOptions[i] = {
+          options: this.dataObjectVersions.map((usage) => ({
+            key: usage,
+            label: this.translate.instant(`ARCHIVE_SEARCH.DIP.USAGES.${usage}`),
+          })),
+        };
+      }
+      const otherUsages = (this.usages.value as any[]).filter((_, index) => i !== index).map((v: { usage: string }) => v.usage);
+      this.usageOptions[i].options.forEach((option) => (option.disabled = otherUsages.includes(option.key)));
+    });
   }
 
   addUsage() {

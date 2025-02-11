@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Directive, Injector, Input, OnDestroy, OnInit } from '@angular/core';
+import { Directive, Injector, Input, OnDestroy, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import {
   AsyncValidatorFn,
   ControlContainer,
@@ -46,18 +46,28 @@ import {
   NgControl,
   NgModel,
   ValidatorFn,
+  Validators,
 } from '@angular/forms';
 import { Subscription } from 'rxjs';
+import { coerceBooleanProperty } from '@angular/cdk/coercion';
 
 @Directive()
-export class AbstractFormInputDirective implements ControlValueAccessor, OnInit, OnDestroy {
+export class AbstractFormInputDirective implements ControlValueAccessor, OnInit, OnDestroy, OnChanges {
   @Input() errorMessageMap: { [p: string]: string };
+  @Input({ transform: coerceBooleanProperty }) required: boolean;
+  @Input({ transform: coerceBooleanProperty }) disabled: boolean;
 
   protected control: FormControl;
 
   #subscription?: Subscription;
 
   constructor(private injector: Injector) {}
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['required'] && this.control) {
+      this.updateValidators();
+    }
+  }
 
   // Used by FormFieldValueWrapperComponent
   setControl(control: FormControl) {
@@ -94,6 +104,8 @@ export class AbstractFormInputDirective implements ControlValueAccessor, OnInit,
     } else {
       this.control = new FormControl();
     }
+
+    this.updateValidators();
   }
 
   ngOnDestroy() {
@@ -112,4 +124,9 @@ export class AbstractFormInputDirective implements ControlValueAccessor, OnInit,
   }
 
   writeValue(_obj: any) {}
+
+  private updateValidators() {
+    if (this.required) this.control.addValidators(Validators.required);
+    else if (this.required === false) this.control.removeValidators(Validators.required);
+  }
 }

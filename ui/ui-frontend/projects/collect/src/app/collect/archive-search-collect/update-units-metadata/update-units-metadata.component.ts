@@ -50,9 +50,6 @@ const VITAMUI_SNACK_BAR = 'vitamui-snack-bar';
   styleUrls: ['./update-units-metadata.component.scss'],
 })
 export class UpdateUnitsMetadataComponent implements OnDestroy {
-  public stepIndex = 0;
-  public stepCount = 1;
-
   isLoadingData = false;
 
   fileToUpload: File = undefined;
@@ -118,7 +115,7 @@ export class UpdateUnitsMetadataComponent implements OnDestroy {
 
   onCancel() {
     const dialogToOpen = this.confirmDeleteUpdateUnitsMetadataDialog;
-    this.dialogRefToClose = this.dialog.open(dialogToOpen, { panelClass: 'vitamui-dialog' });
+    this.dialogRefToClose = this.dialog.open(dialogToOpen);
   }
 
   onCloseAction() {

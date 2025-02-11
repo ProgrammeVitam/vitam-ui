@@ -44,8 +44,6 @@ import { VitamUISnackBarComponent } from '../../shared/vitamui-snack-bar/vitamui
 import { IngestType } from './ingest-type.enum';
 import { UploadService } from './upload.service';
 
-const LAST_STEP_INDEX = 1;
-
 @Component({
   selector: 'app-upload',
   templateUrl: './upload.component.html',
@@ -66,8 +64,6 @@ export class UploadComponent implements OnInit {
   contextId: IngestType;
   tenantIdentifier: string;
   isDisabled = true;
-  public stepIndex = 0;
-  public stepCount = 2;
 
   @ViewChild('fileSearch', { static: false }) fileSearch: any;
 
@@ -114,7 +110,6 @@ export class UploadComponent implements OnInit {
       this.hasError = true;
       return;
     }
-    this.stepIndex = LAST_STEP_INDEX;
   }
 
   addSip() {

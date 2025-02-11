@@ -45,7 +45,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { RouterModule } from '@angular/router';
-import { VitamUICommonModule } from 'vitamui-library';
+import { VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 
 import { MatInputModule } from '@angular/material/input';
 import { AdminDslRoutingModule } from './admin-dsl-routing.module';
@@ -53,20 +53,21 @@ import { AdminDslComponent } from './admin-dsl.component';
 
 @NgModule({
   imports: [
-    CommonModule,
-    RouterModule,
-    FormsModule,
-    ReactiveFormsModule,
-    VitamUICommonModule,
     AdminDslRoutingModule,
-    MatMenuModule,
-    MatSnackBarModule,
-    MatDialogModule,
-    MatSidenavModule,
-    MatProgressSpinnerModule,
+    CommonModule,
+    FormsModule,
     MatDatepickerModule,
-    MatSelectModule,
+    MatDialogModule,
     MatInputModule,
+    MatMenuModule,
+    MatProgressSpinnerModule,
+    MatSelectModule,
+    MatSidenavModule,
+    MatSnackBarModule,
+    ReactiveFormsModule,
+    RouterModule,
+    VitamUICommonModule,
+    VitamUILibraryModule,
   ],
   declarations: [AdminDslComponent],
 })

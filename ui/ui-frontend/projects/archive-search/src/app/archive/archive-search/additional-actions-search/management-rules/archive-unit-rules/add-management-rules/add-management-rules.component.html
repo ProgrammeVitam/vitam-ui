@@ -96,15 +96,9 @@
 </div>
 
 <ng-template #confirmDeleteAddRuleDialog>
-  <mat-dialog-content>
-    <br />
-
-    <div class="text large bold">{{ 'RULES.DIALOG_MESSAGE.DELETE_COMPONENT' | translate }}</div>
-  </mat-dialog-content>
-  <br />
+  <vitamui-dialog-header [title]="'RULES.DIALOG_MESSAGE.DELETE_COMPONENT' | translate"></vitamui-dialog-header>
   <mat-dialog-actions>
     <button [matDialogClose]="true" class="btn primary btn-confirm-dialog">{{ 'RULES.COMMON.CONFIRM' | translate }}</button>
-
     <button matDialogClose class="btn cancel link">{{ 'RULES.COMMON.UNDO' | translate }}</button>
   </mat-dialog-actions>
 </ng-template>

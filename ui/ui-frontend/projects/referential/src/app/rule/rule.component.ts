@@ -87,7 +87,6 @@ export class RuleComponent extends SidenavPage<Rule> implements OnInit {
 
   openCreateRuleDialog() {
     const dialogRef = this.dialog.open(RuleCreateComponent, {
-      panelClass: 'vitamui-modal',
       disableClose: true,
     });
     dialogRef.componentInstance.tenantIdentifier = this.tenantId;
@@ -142,7 +141,6 @@ export class RuleComponent extends SidenavPage<Rule> implements OnInit {
 
     this.dialog
       .open(ImportDialogComponent, {
-        panelClass: 'vitamui-modal',
         disableClose: true,
         data: params,
       })

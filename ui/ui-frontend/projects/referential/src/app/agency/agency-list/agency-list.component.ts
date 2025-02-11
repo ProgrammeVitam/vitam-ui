@@ -141,7 +141,7 @@ export class AgencyListComponent extends InfiniteScrollTable<Agency> implements 
   public deleteAgencyDialog(agency: Agency): void {
     this.agencyToDelete = agency;
     this.matDialog
-      .open(this.confirmDeleteDialog, { panelClass: 'vitamui-confirm-dialog' })
+      .open(this.confirmDeleteDialog, { panelClass: 'small' })
       .afterClosed()
       .pipe(filter((result) => !!result))
       .subscribe(() => {

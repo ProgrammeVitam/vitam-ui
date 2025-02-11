@@ -17,9 +17,6 @@ h5 {
   &.opened {
     border-left: 2px solid var(--vitamui-primary);
   }
-  /* TODO(mdc-migration): The following rule targets internal classes of checkbox that may no longer apply for the MDC version.*/
-  .mat-checkbox-layout,
-  .mat-checkbox-label,
   span {
     font-size: 1rem;
     color: var(--vitamui-primary);
@@ -46,13 +43,6 @@ h5 {
 .delete-button {
   border: 1px solid var(--vitamui-primary);
   border-radius: 50%;
-}
-
-/* TODO(mdc-migration): The following rule targets internal classes of checkbox that may no longer apply for the MDC version.*/
-.mat-checkbox-frame,
-.mat-checkbox-background,
-.mat-checkbox-anim-unchecked-checked .mat-checkbox-anim-checked-unchecked {
-  transform: scale(1.2);
 }
 
 .radio-button-group-wrapper {

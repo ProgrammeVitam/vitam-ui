@@ -1,29 +1,29 @@
-<form [formGroup]="form" (ngSubmit)="onSubmit()">
-  <vitamui-common-input
-    [disabled]="(checkUpdateRole | async) === false"
-    class="w-100"
-    formControlName="name"
-    placeholder="{{ 'AGENCY.TAB.NAME' | translate }}"
-  >
-    <ng-container *ngIf="form.get('name')?.touched">
-      <vitamui-common-input-error *ngIf="!!form.get('name')?.errors?.required">
-        {{ 'COMMON.REQUIRED' | translate }}
-      </vitamui-common-input-error>
-    </ng-container>
-  </vitamui-common-input>
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="gap-5">
+  <div class="gap-3 w-100 align-items-stretch">
+    <vitamui-common-input
+      [disabled]="(checkUpdateRole | async) === false"
+      formControlName="name"
+      placeholder="{{ 'AGENCY.TAB.NAME' | translate }}"
+    >
+      <ng-container *ngIf="form.get('name')?.touched">
+        <vitamui-common-input-error *ngIf="!!form.get('name')?.errors?.required">
+          {{ 'COMMON.REQUIRED' | translate }}
+        </vitamui-common-input-error>
+      </ng-container>
+    </vitamui-common-input>
 
-  <vitamui-common-input
-    [disabled]="(checkUpdateRole | async) === false"
-    class="w-100"
-    formControlName="description"
-    placeholder="{{ 'AGENCY.TAB.DESCRIPTION' | translate }}"
-  >
-    <ng-container *ngIf="form.get('description')?.touched">
-      <vitamui-common-input-error *ngIf="!!form.get('description')?.errors?.required">
-        {{ 'COMMON.REQUIRED' | translate }}
-      </vitamui-common-input-error>
-    </ng-container>
-  </vitamui-common-input>
+    <vitamui-common-input
+      [disabled]="(checkUpdateRole | async) === false"
+      formControlName="description"
+      placeholder="{{ 'AGENCY.TAB.DESCRIPTION' | translate }}"
+    >
+      <ng-container *ngIf="form.get('description')?.touched">
+        <vitamui-common-input-error *ngIf="!!form.get('description')?.errors?.required">
+          {{ 'COMMON.REQUIRED' | translate }}
+        </vitamui-common-input-error>
+      </ng-container>
+    </vitamui-common-input>
+  </div>
 
   <button
     *ngIf="checkUpdateRole | async"

@@ -65,7 +65,7 @@ import { ArchiveSharedDataService } from '../core/archive-shared-data.service';
 import { ArchiveCollectService } from './archive-collect.service';
 import { SimpleCriteriaSearchComponent } from './archive-search-criteria/components/simple-criteria-search/simple-criteria-search.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { MatLegacyMenuModule as MatMenuModule } from '@angular/material/legacy-menu';
+import { MatMenuModule } from '@angular/material/menu';
 
 const translations: any = { TEST: 'Mock translate test' };
 

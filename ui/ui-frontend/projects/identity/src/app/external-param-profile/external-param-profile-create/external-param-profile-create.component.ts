@@ -38,9 +38,12 @@ import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Observable, Subscription } from 'rxjs';
-import { AccessContract, ApplicationId, ConfirmDialogService, ExternalParamProfile } from 'vitamui-library';
+import { ApplicationId, ConfirmDialogService, ExternalParamProfile, Option } from 'vitamui-library';
 import { ExternalParamProfileService } from '../external-param-profile.service';
 import { ExternalParamProfileValidators } from '../external-param-profile.validators';
+import { map } from 'rxjs/operators';
+import { TranslateService } from '@ngx-translate/core';
+import { DecimalPipe } from '@angular/common';
 
 @Component({
   selector: 'app-external-param-profile-create',
@@ -49,14 +52,10 @@ import { ExternalParamProfileValidators } from '../external-param-profile.valida
 })
 export class ExternalParamProfileCreateComponent implements OnInit, OnDestroy {
   externalParamProfileForm: FormGroup;
-  activeAccessContracts$: Observable<AccessContract[]>;
+  activeAccessContractsIdentifiers$: Observable<string[]>;
   private keyPressSubscription: Subscription;
   tenantIdentifier: string;
-  thresholdValues: number[] = [100, 10000, 100000, 1000000, 10000000, 100000000, 1000000000];
-
-  public stepIndex = 0;
-  public stepCount = 2;
-  public selectedThreshold = '';
+  thresholdOptions: Option[];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -65,13 +64,24 @@ export class ExternalParamProfileCreateComponent implements OnInit, OnDestroy {
     private externalParamProfileValidators: ExternalParamProfileValidators,
     private confirmDialogService: ConfirmDialogService,
     @Inject(MAT_DIALOG_DATA) public data: any,
-  ) {}
+    translateService: TranslateService,
+    decimalPipe: DecimalPipe,
+  ) {
+    this.thresholdOptions = [100, 10000, 100000, 1000000, 10000000, 100000000, 1000000000].map((thresholdValue) => ({
+      key: thresholdValue,
+      label: translateService.instant('EXTERNAL_PARAM_PROFILE.MAX_BULK_OPERATIONS_THRESHOLD_VALUES', {
+        threshold: decimalPipe.transform(thresholdValue),
+      }),
+    }));
+  }
 
   ngOnInit() {
     this.initForm(this.data.tenantIdentifier);
     this.tenantIdentifier = this.data.tenantIdentifier;
 
-    this.activeAccessContracts$ = this.externalParamProfileService.getAllActiveAccessContracts(this.data.tenantIdentifier);
+    this.activeAccessContractsIdentifiers$ = this.externalParamProfileService
+      .getAllActiveAccessContracts(this.data.tenantIdentifier)
+      .pipe(map((accessContracts) => accessContracts.map((accessContract) => accessContract.identifier)));
     this.keyPressSubscription = this.confirmDialogService.listenToEscapeKeyPress(this.dialogRef).subscribe(() => this.onCancel());
   }
 

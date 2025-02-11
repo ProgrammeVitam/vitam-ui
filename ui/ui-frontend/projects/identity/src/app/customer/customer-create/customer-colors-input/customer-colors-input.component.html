@@ -10,12 +10,12 @@
   </div>
 
   <ng-container *ngIf="!displayTertiary; else closeTertiary">
-    <small class="mb-4 pb-2" (click)="displayTertiary = !displayTertiary">{{
+    <small class="pb-2" (click)="displayTertiary = !displayTertiary">{{
       'CUSTOMER.GRAPHIC_IDENTITY.TERTIARY_COLOR_SHOW' | translate
     }}</small>
   </ng-container>
   <ng-template #closeTertiary>
-    <small class="mb-4 pb-2" (click)="displayTertiary = !displayTertiary">{{
+    <small class="pb-2" (click)="displayTertiary = !displayTertiary">{{
       'CUSTOMER.GRAPHIC_IDENTITY.TERTIARY_COLOR_HIDE' | translate
     }}</small>
   </ng-template>
@@ -36,13 +36,15 @@
   >
   </app-input-color>
 
-  <vitamui-common-select
+  <vitamui-select
     class="mb-4"
+    [placeholder]="'COLOR.BACKGROUND' | translate"
     [disabled]="disabled"
-    [data]="backgroundColors"
-    [messages]="{ unselected: 'COLOR.BACKGROUND' | translate, selected: 'COLOR.BACKGROUND' | translate }"
-    [selected]="selectedBgColor"
-    (selectedChange)="updateBackgroundColor($event)"
-  >
-  </vitamui-common-select>
+    [options]="backgroundColorsOptions"
+    [multiple]="false"
+    [ngModel]="selectedBgColor"
+    (ngModelChange)="updateBackgroundColor($event)"
+    [ngModelOptions]="{ standalone: true }"
+    [enableSearch]="false"
+  ></vitamui-select>
 </ng-container>

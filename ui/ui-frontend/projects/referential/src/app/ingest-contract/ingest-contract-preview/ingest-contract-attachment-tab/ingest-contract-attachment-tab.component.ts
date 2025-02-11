@@ -146,7 +146,6 @@ export class IngestContractAttachmentTabComponent {
 
     this.dialog
       .open(IngestContractNodeUpdateComponent, {
-        panelClass: 'vitamui-modal',
         disableClose: true,
         data: {
           ingestContract: this.ingestContract,

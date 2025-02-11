@@ -81,7 +81,6 @@ export class ManagementContractComponent extends SidenavPage<ManagementContract>
 
   openCreateManagementcontractDialog() {
     const dialogRef = this.dialog.open(ManagementContractCreateComponent, {
-      panelClass: 'vitamui-modal',
       disableClose: true,
     });
     dialogRef.componentInstance.isSlaveMode = this.isSlaveMode;

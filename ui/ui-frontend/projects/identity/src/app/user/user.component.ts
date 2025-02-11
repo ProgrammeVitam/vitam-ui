@@ -97,7 +97,6 @@ export class UserComponent extends SidenavPage<User> implements OnInit {
 
   public openCreateUserDialog(): void {
     const dialogRef = this.dialog.open(UserCreateComponent, {
-      panelClass: 'vitamui-modal',
       disableClose: true,
       data: { userInfo: this.connectedUserInfo, customer: this.customer, groups: this.groups },
     });

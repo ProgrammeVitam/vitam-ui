@@ -132,6 +132,6 @@ describe('GroupComponent', () => {
     const matDialogSpy = TestBed.inject(MatDialog);
     page.createGroup.click();
     expect(matDialogSpy.open).toHaveBeenCalledTimes(1);
-    expect(matDialogSpy.open).toHaveBeenCalledWith(GroupCreateComponent, { panelClass: 'vitamui-modal', disableClose: true });
+    expect(matDialogSpy.open).toHaveBeenCalledWith(GroupCreateComponent, { disableClose: true });
   });
 });

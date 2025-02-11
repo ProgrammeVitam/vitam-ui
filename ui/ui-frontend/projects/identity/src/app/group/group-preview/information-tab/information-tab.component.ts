@@ -147,7 +147,6 @@ export class InformationTabComponent implements OnDestroy, OnChanges {
       },
       autoFocus: false,
       disableClose: true,
-      panelClass: 'vitamui-modal',
     });
   }
 

@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { EMPTY, of } from 'rxjs';
-import { ConfirmDialogService, Tenant } from 'vitamui-library';
+import { ConfirmDialogService, Tenant, VitamUILibraryModule } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 
 import { ComponentFixture, TestBed } from '@angular/core/testing';
@@ -49,6 +49,7 @@ import { TenantCreateComponent } from './tenant-create.component';
 import { TenantFormValidators } from './tenant-form.validators';
 import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
+import { TranslateModule } from '@ngx-translate/core';
 
 describe('TenantCreateComponent', () => {
   let component: TenantCreateComponent;
@@ -65,7 +66,16 @@ describe('TenantCreateComponent', () => {
     });
 
     await TestBed.configureTestingModule({
-      imports: [MatSelectModule, MatOptionModule, MatProgressBarModule, NoopAnimationsModule, ReactiveFormsModule, VitamUICommonTestModule],
+      imports: [
+        MatSelectModule,
+        MatOptionModule,
+        MatProgressBarModule,
+        NoopAnimationsModule,
+        ReactiveFormsModule,
+        TranslateModule.forRoot(),
+        VitamUICommonTestModule,
+        VitamUILibraryModule,
+      ],
       declarations: [TenantCreateComponent],
       providers: [
         { provide: MatDialogRef, useValue: matDialogRefSpy },

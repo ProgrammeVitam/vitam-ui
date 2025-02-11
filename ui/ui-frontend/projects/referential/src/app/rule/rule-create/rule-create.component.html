@@ -1,9 +1,11 @@
-<form [formGroup]="form" (ngSubmit)="onSubmit()" cdkFocusInitial>
-  <div class="content mt-5">
-    <div class="text medium light">{{ 'RULES_APP.CREATE_DIALOG.TITLE' | translate }}</div>
-    <div class="text large bold mb-3">{{ 'RULES_APP.CREATE_DIALOG.SUBTITLE' | translate }}</div>
+<vitamui-dialog-header
+  [subhead]="'RULES_APP.CREATE_DIALOG.TITLE' | translate"
+  [title]="'RULES_APP.CREATE_DIALOG.SUBTITLE' | translate"
+></vitamui-dialog-header>
 
-    <div class="d-flex align-items-center">
+<form [formGroup]="form" (ngSubmit)="onSubmit()" cdkFocusInitial>
+  <mat-dialog-content class="gap-4">
+    <div class="w-100 d-flex align-items-center">
       <vitamui-common-input
         class="w-100"
         formControlName="ruleId"
@@ -31,52 +33,50 @@
       </i>
     </div>
 
-    <div class="d-flex align-items-center mb-4">
-      <mat-form-field class="vitamui-mat-select w-100">
-        <mat-select required formControlName="ruleType" [placeholder]="'RULES_APP.CREATE_DIALOG.TYPE' | translate">
-          <mat-option *ngFor="let ruleType of ruleTypes" [value]="ruleType.key">{{ ruleType.label }}</mat-option>
-        </mat-select>
-        <div class="select-arrow"><i class="material-icons">keyboard_arrow_down</i></div>
-      </mat-form-field>
+    <div class="w-100 d-flex align-items-center">
+      <vitamui-select
+        class="d-block w-100"
+        formControlName="ruleType"
+        [placeholder]="'RULES_APP.CREATE_DIALOG.TYPE' | translate"
+        [options]="ruleTypes"
+        [multiple]="false"
+        [enableSearch]="false"
+      ></vitamui-select>
       <i class="vitamui-icon primary vitamui-icon-info ml-3" vitamuiTooltip="{{ 'RULES_APP.CREATE_DIALOG.TYPE_TOOLTIP' | translate }}"> </i>
     </div>
 
-    <div class="d-flex">
-      <vitamui-common-input
-        class="w-100"
-        formControlName="ruleValue"
-        minlength="2"
-        maxlength="100"
-        required
-        [placeholder]="'RULES_APP.CREATE_DIALOG.NAME' | translate"
-      >
-        <ng-container *ngIf="form.get('ruleValue')?.touched">
-          <vitamui-common-input-error *ngIf="!!form.get('ruleValue')?.errors?.required">
-            {{ 'COMMON.REQUIRED' | translate }}
-          </vitamui-common-input-error>
-        </ng-container>
-      </vitamui-common-input>
-    </div>
+    <vitamui-common-input
+      class="w-100"
+      formControlName="ruleValue"
+      minlength="2"
+      maxlength="100"
+      required
+      [placeholder]="'RULES_APP.CREATE_DIALOG.NAME' | translate"
+    >
+      <ng-container *ngIf="form.get('ruleValue')?.touched">
+        <vitamui-common-input-error *ngIf="!!form.get('ruleValue')?.errors?.required">
+          {{ 'COMMON.REQUIRED' | translate }}
+        </vitamui-common-input-error>
+      </ng-container>
+    </vitamui-common-input>
 
-    <div class="d-flex">
-      <vitamui-common-textarea
-        formControlName="ruleDescription"
-        required
-        class="w-100"
-        [placeholder]="'RULES_APP.CREATE_DIALOG.DESCRIPTION' | translate"
-        [rows]="1"
-      >
-        <ng-container *ngIf="form.get('ruleDescription')?.touched">
-          <vitamui-common-input-error *ngIf="!!form.get('ruleDescription')?.errors?.required">
-            {{ 'COMMON.REQUIRED' | translate }}
-          </vitamui-common-input-error>
-        </ng-container>
-      </vitamui-common-textarea>
-    </div>
+    <vitamui-common-textarea
+      formControlName="ruleDescription"
+      required
+      class="w-100"
+      [placeholder]="'RULES_APP.CREATE_DIALOG.DESCRIPTION' | translate"
+      [rows]="1"
+    >
+      <ng-container *ngIf="form.get('ruleDescription')?.touched">
+        <vitamui-common-input-error *ngIf="!!form.get('ruleDescription')?.errors?.required">
+          {{ 'COMMON.REQUIRED' | translate }}
+        </vitamui-common-input-error>
+      </ng-container>
+    </vitamui-common-textarea>
 
-    <div class="d-flex mt-4">
+    <div class="w-100 hgap-2 align-items-start">
       <vitamui-common-input
-        class="col-6 pl-0"
+        class="w-50"
         required
         formControlName="ruleDuration"
         pattern="[0-9]*"
@@ -93,23 +93,23 @@
         </ng-container>
       </vitamui-common-input>
 
-      <mat-form-field class="col-6 pr-0 vitamui-mat-select">
-        <mat-select formControlName="ruleMeasurement" [placeholder]="'RULES_APP.CREATE_DIALOG.UNIT_MEASURE' | translate" required>
-          <mat-option *ngFor="let ruleMeasurement of ruleMeasurements" [value]="ruleMeasurement.key">
-            {{ ruleMeasurement.label }}
-          </mat-option>
-        </mat-select>
-        <div class="select-arrow"><i class="material-icons">keyboard_arrow_down</i></div>
-      </mat-form-field>
+      <vitamui-select
+        class="w-50"
+        formControlName="ruleMeasurement"
+        [placeholder]="'RULES_APP.CREATE_DIALOG.UNIT_MEASURE' | translate"
+        [options]="ruleMeasurements"
+        [multiple]="false"
+        [enableSearch]="false"
+      ></vitamui-select>
     </div>
+  </mat-dialog-content>
 
-    <div class="actions">
-      <button type="submit" class="btn primary" [disabled]="form.pending || form.invalid || isDisabledButton">
-        {{ 'COMMON.TERMINATE' | translate }}
-      </button>
-      <button type="button" class="btn cancel link" (click)="onCancel()">
-        {{ 'COMMON.UNDO' | translate }}
-      </button>
-    </div>
-  </div>
+  <mat-dialog-actions>
+    <button type="submit" class="btn primary" [disabled]="form.pending || form.invalid || isDisabledButton">
+      {{ 'COMMON.TERMINATE' | translate }}
+    </button>
+    <button type="button" class="btn cancel link" (click)="onCancel()">
+      {{ 'COMMON.UNDO' | translate }}
+    </button>
+  </mat-dialog-actions>
 </form>

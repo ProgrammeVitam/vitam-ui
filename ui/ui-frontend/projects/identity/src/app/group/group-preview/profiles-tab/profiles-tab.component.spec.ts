@@ -187,7 +187,6 @@ describe('ProfilesTabComponent', () => {
       },
       autoFocus: false,
       disableClose: true,
-      panelClass: 'vitamui-modal',
     });
   });
 

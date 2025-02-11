@@ -1,4 +1,4 @@
-<div *ngIf="!hideCounter" class="text normal bold primary steps" [class.right]="!count">
+<div *ngIf="!hideCounter" class="text caption bold primary steps" [class.right]="!count">
   @if (count) {
     {{ 'PROGRESS_BAR.STEP' | translate }} {{ index + 1 }} / {{ count }}
   } @else {

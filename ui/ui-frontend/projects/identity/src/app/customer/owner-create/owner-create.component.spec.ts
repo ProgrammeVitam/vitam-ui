@@ -41,7 +41,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { EMPTY, of } from 'rxjs';
-import { ConfirmDialogService, Owner, Tenant } from 'vitamui-library';
+import { ConfirmDialogService, Owner, Tenant, VitamUILibraryModule } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { OwnerFormValidators } from '../owner-form/owner-form.validators';
 import { OwnerService } from '../owner.service';
@@ -50,6 +50,7 @@ import { TenantService } from '../tenant.service';
 import { OwnerCreateComponent } from './owner-create.component';
 import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-owner-form',
@@ -108,14 +109,16 @@ describe('OwnerCreateComponent', () => {
 
     await TestBed.configureTestingModule({
       imports: [
-        MatSelectModule,
+        MatOptionModule,
         MatOptionModule,
         MatProgressBarModule,
-        ReactiveFormsModule,
-        NoopAnimationsModule,
-        VitamUICommonTestModule,
         MatSelectModule,
-        MatOptionModule,
+        MatSelectModule,
+        NoopAnimationsModule,
+        ReactiveFormsModule,
+        TranslateModule.forRoot(),
+        VitamUICommonTestModule,
+        VitamUILibraryModule,
       ],
       declarations: [OwnerCreateComponent, OwnerFormStubComponent],
       providers: [

@@ -87,7 +87,7 @@ export class LogbookManagementOperationPreviewComponent implements OnInit, OnDes
     let dialogToOpen;
     this.actionId = actionId;
     dialogToOpen = this.confirmUpdateOperationDialog;
-    const dialogRef = this.matDialog.open(dialogToOpen, { panelClass: 'vitamui-dialog' });
+    const dialogRef = this.matDialog.open(dialogToOpen);
     dialogRef
       .afterClosed()
       .pipe(filter((result) => !!result))
@@ -105,7 +105,7 @@ export class LogbookManagementOperationPreviewComponent implements OnInit, OnDes
     this.actionId = 'CANCEL';
     dialogToOpen = this.confirmCancelOperationDialog;
 
-    const dialogRef = this.matDialog.open(dialogToOpen, { panelClass: 'vitamui-dialog' });
+    const dialogRef = this.matDialog.open(dialogToOpen);
     dialogRef
       .afterClosed()
       .pipe(filter((result) => !!result))

@@ -85,7 +85,7 @@ export class AuditComponent extends SidenavPage<Event> {
   }
 
   openCreateAuditDialog() {
-    const dialogRef = this.dialog.open(AuditCreateComponent, { panelClass: 'vitamui-modal', disableClose: true });
+    const dialogRef = this.dialog.open(AuditCreateComponent, { disableClose: true });
     dialogRef.componentInstance.tenantIdentifier = +this.tenantIdentifier;
     dialogRef.afterClosed().subscribe((result) => {
       if (result !== undefined && result.success) {

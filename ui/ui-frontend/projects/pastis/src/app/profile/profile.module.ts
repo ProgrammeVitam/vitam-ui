@@ -84,7 +84,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { TranslateModule } from '@ngx-translate/core';
 import { FileUploadModule } from 'ng2-file-upload';
-import { VitamUICommonModule } from 'vitamui-library';
+import { VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 import { PastisMaterialModule } from '../material.module';
 import { UserActionsModule } from '../user-actions/user-actions.module';
 import { CreateProfileComponent } from './create-profile/create-profile.component';
@@ -98,19 +98,20 @@ import { ProfilePreviewModule } from './profile-preview/profile-preview.module';
   imports: [
     CommonModule,
     CoreModule,
-    MatIconModule,
-    MatTabsModule,
-    SharedModule,
     FileTreeModule,
     FileUploadModule,
-    PastisMaterialModule,
-    UserActionsModule,
-    MatSlideToggleModule,
     FormsModule,
-    VitamUICommonModule,
-    TranslateModule,
+    MatIconModule,
+    MatSlideToggleModule,
+    MatTabsModule,
+    PastisMaterialModule,
     ProfilePreviewModule,
     ReactiveFormsModule,
+    SharedModule,
+    TranslateModule,
+    UserActionsModule,
+    VitamUICommonModule,
+    VitamUILibraryModule,
   ],
   exports: [CreateProfileComponent, EditProfileComponent, ListProfileComponent, FilterByStringNamePipe, FilterByTypePipe],
   declarations: [CreateProfileComponent, EditProfileComponent, ListProfileComponent, FilterByStringNamePipe, FilterByTypePipe],

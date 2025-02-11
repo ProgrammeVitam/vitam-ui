@@ -49,9 +49,6 @@ import { GroupService } from '../../../group.service';
 export class ProfilesEditComponent implements OnInit, OnDestroy {
   form: FormGroup;
 
-  public stepIndex = 0;
-  public stepCount = 1;
-
   private keyPressSubscription: Subscription;
 
   constructor(

@@ -103,7 +103,6 @@ export class IngestContractComponent extends SidenavPage<IngestContract> impleme
 
   openCreateIngestcontractDialog() {
     const dialogRef = this.dialog.open(IngestContractCreateComponent, {
-      panelClass: 'vitamui-modal',
       disableClose: true,
     });
     dialogRef.componentInstance.tenantIdentifier = this.tenantId;
@@ -152,7 +151,7 @@ export class IngestContractComponent extends SidenavPage<IngestContract> impleme
     };
 
     this.dialog
-      .open(ImportDialogComponent, { panelClass: 'vitamui-modal', disableClose: true, data: params })
+      .open(ImportDialogComponent, { disableClose: true, data: params })
       .afterClosed()
       .subscribe((result) => {
         if (result?.successfulImport) {

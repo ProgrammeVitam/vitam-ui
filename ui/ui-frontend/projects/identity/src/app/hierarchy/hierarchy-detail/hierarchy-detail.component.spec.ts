@@ -155,7 +155,7 @@ describe('HierarchyDetailComponent', () => {
     });
 
     it('should have a mat-tab-group', () => {
-      const elTabGroup = fixture.nativeElement.querySelector('.mat-tab-group');
+      const elTabGroup = fixture.nativeElement.querySelector('.mat-mdc-tab-group');
       expect(elTabGroup).toBeTruthy();
     });
   });

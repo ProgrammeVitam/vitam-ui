@@ -31,7 +31,7 @@
       "inputs": {
         "TITLE": "Inputs",
         "select.TITLE": "Select",
-        "autocomplete-multi-select-tree.TITLE": "Autocomplete multi select tree",
+        "select-with-tree.TITLE": "Select avec arborescence",
         "checkboxes.TITLE": "Checkboxes",
         "multiple-options-datepicker.TITLE": "Multiple options datepicker",
         "old-input.TITLE": "OLD input",
@@ -42,7 +42,8 @@
     "organisms": {
       "TITLE": "Organismes",
       "table.TITLE": "Tableau",
-      "tab-group.TITLE": "Tab group"
+      "tab-group.TITLE": "Tab group",
+      "dialog.TITLE": "Dialog"
     },
     "miscellaneous.TITLE": "Divers",
     "translation.TITLE": "Traduction",
@@ -109,14 +110,9 @@
     "EDITABLE_LIST": "Liste éditable",
     "EDITABLE_LIST_DISABLED": "Liste éditable désactivée",
     "AUTOCOMPLETE": "Auto-complete",
-    "AUTOCOMPLETE_MULTI_SELECT_TREE": {
-      "TITLE": "Auto-complete à sélection multiple avec arborescence",
-      "PLACEHOLDER": {
-        "OPTIONAL": "Non obligatoire",
-        "MANDATORY": "Obligatoire",
-        "NO_SEARCH": "Sans recherche",
-        "NO_SEARCH_NO_CART": "Sans recherche ni consultation de la sélection"
-      },
+    "SELECT_WITH_TREE": {
+      "TITLE": "Select avec arborescence",
+      "PLACEHOLDER": "Schema",
       "SEARCH_BAR_PLACEHOLDER": "Entrer les premières lettres de votre recherche"
     },
     "SEARCH_PLACEHOLDER": "Rechercher dans les pays",
@@ -157,7 +153,7 @@
   "ICONS": {
     "TITLE": "Liste des icônes de Vitam-UI",
     "COLORS": "Couleurs disponibles",
-    "SELECT_COLOR": "Sélectionnez une couleur :"
+    "SELECT_COLOR": "Sélectionnez une couleur"
   },
   "ELEVATIONS": {
     "TITLE": "Ombres & Elevations",
@@ -215,6 +211,7 @@
     "GAP": "Gap"
   },
   "ERRORS": {
-    "CONTAINS_GB": "Doit contenir ou être Royaume-Uni"
+    "CONTAINS_GB": "Doit contenir ou être Royaume-Uni",
+    "CONTAINS_TextContent": "Doit contenir ou être \"TextContent\""
   }
 }

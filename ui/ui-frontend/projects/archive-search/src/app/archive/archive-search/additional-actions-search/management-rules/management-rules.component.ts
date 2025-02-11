@@ -627,7 +627,7 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   returnToArchiveSearchPage() {
-    const dialogRef = this.dialog.open(this.confirmLeaveRuleActionsDialog, { panelClass: 'vitamui-dialog' });
+    const dialogRef = this.dialog.open(this.confirmLeaveRuleActionsDialog);
 
     this.subscriptions.add(
       dialogRef
@@ -641,7 +641,7 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   submitUpdates() {
-    const dialogRef = this.dialog.open(this.confirmRuleActionsDialog, { panelClass: 'vitamui-dialog' });
+    const dialogRef = this.dialog.open(this.confirmRuleActionsDialog);
     const actionAddOnRules: any = {};
     const actionUpdateOnRules: any = {};
     const actionDeleteOnRules: any = {};

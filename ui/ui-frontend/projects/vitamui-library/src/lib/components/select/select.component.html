@@ -1,17 +1,21 @@
-<mat-form-field class="vitamui-mat-select w-100 p-0" [hideRequiredMarker]="true" appearance="outline" subscriptSizing="dynamic">
-  <mat-label>{{ placeholder }}<span *ngIf="control.hasValidator(Validators.required)" class="required-marker"> *</span></mat-label>
+<mat-form-field *ngIf="allOptions.length" class="w-100 p-0" [hideRequiredMarker]="true" appearance="outline" subscriptSizing="dynamic">
+  <mat-label>{{ placeholder }}<span *ngIf="control.hasValidator(Validators.required)" class="text danger bold"> *</span></mat-label>
   <mat-select
     (closed)="onSelectClosed()"
     (openedChange)="openedChange($event)"
-    [value]="control.value"
     [multiple]="multiple"
-    panelClass="vitamui-autocomplete-multi-select-panel"
+    [formControl]="control"
+    panelClass="vitamui-select-panel"
     #matSelect
   >
     <mat-select-trigger>
-      @if (selectedOptions.length > 0) {
+      @if (getSelectedOptionsCount() > 0) {
         @if (multiple) {
-          {{ getSelectedOptionsCount() }} {{ getSelectedOptionsCount() | i18nPlural: nbSelectedItemsMap | translate }}
+          @if (allSelectedLabel && getSelectedOptionsCount() === allOptions.length) {
+            {{ allSelectedLabel }}
+          } @else {
+            {{ getSelectedOptionsCount() }} {{ getSelectedOptionsCount() | i18nPlural: nbSelectedItemsMap | translate }}
+          }
         } @else {
           {{ selectedOptions[0].label }}
         }
@@ -19,14 +23,14 @@
     </mat-select-trigger>
 
     @if (showOnlySelectedOption) {
-      <button (click)="toggleShowOnlySelectedOption()" class="btn link small right-link">
+      <button (click)="toggleShowOnlySelectedOption()" class="btn link small d-flex ml-auto mr-2">
         <i class="vitamui-icon vitamui-icon-chevron-left"></i>
         <span>
           {{ 'SELECT.COMPLETE_SELECTION' | translate }}
         </span>
       </button>
 
-      <button (click)="clearAllSelectedOptions()" class="btn link small left-link">
+      <button (click)="clearAllSelectedOptions()" class="btn link small ml-2">
         <i class="vitamui-icon vitamui-icon-delete"></i>
         <span>
           {{ 'SELECT.EMPTY_SELECTION' | translate }}
@@ -54,14 +58,14 @@
       <button
         *ngIf="enableDisplaySelected && multiple"
         (click)="toggleShowOnlySelectedOption()"
-        [disabled]="selectedOptions.length === 0"
-        class="btn link small right-link"
+        [disabled]="getSelectedOptionsCount() === 0"
+        class="btn link small d-flex ml-auto mr-2"
       >
         <i class="vitamui-icon vitamui-icon-chevron-right"></i>
         <span> {{ 'SELECT.CONSULT_SELECTION' | translate }} ({{ getSelectedOptionsCount() }}) </span>
       </button>
 
-      <div *ngIf="enableSearch" class="search-bar mb-2">
+      <div *ngIf="enableSearch" class="m-2">
         <vitamui-common-search-bar
           #searchBar
           (clear)="resetSearchBar()"
@@ -78,7 +82,7 @@
             <ng-container *ngIf="enableSelectAll && multiple">
               <mat-option [id]="String(0)" (onSelectionChange)="toggleSelectAll($event)" [value]="SELECT_ALL_OPTIONS">
                 <span class="text normal secondary bold">
-                  {{ 'SELECT.SELECT_ALL' | translate }}
+                  {{ selectAllLabel }}
                 </span>
               </mat-option>
               <mat-divider></mat-divider>

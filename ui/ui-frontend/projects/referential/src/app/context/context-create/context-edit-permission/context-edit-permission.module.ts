@@ -36,7 +36,7 @@
  */
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -47,6 +47,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { VitamUICommonModule } from 'vitamui-library';
 import { VitamUILibraryModule } from 'vitamui-library';
 import { ContextEditPermissionComponent } from './context-edit-permission.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -60,6 +61,8 @@ import { ContextEditPermissionComponent } from './context-edit-permission.compon
     ReactiveFormsModule,
     VitamUICommonModule,
     VitamUILibraryModule,
+    TranslateModule,
+    FormsModule,
   ],
   declarations: [ContextEditPermissionComponent],
   exports: [ContextEditPermissionComponent],

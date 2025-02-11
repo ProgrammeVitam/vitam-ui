@@ -104,7 +104,7 @@ export class EditableSelectComponent extends EditableFieldComponent {
     }
 
     if (this.showConfirmDialog) {
-      this.dialogRef = this.matDialog.open(this.confirmDialog, { panelClass: 'vitamui-confirm-dialog' });
+      this.dialogRef = this.matDialog.open(this.confirmDialog, { panelClass: 'small' });
       this.dialogRef
         .afterClosed()
         .pipe(filter((result) => !!result))

@@ -63,8 +63,6 @@ import { HttpEventType } from '@angular/common/http';
 export class AddUnitsComponent implements OnInit {
   protected readonly FilingPlanMode = FilingPlanMode;
   protected readonly maxSizeInBytes = 10 * Math.pow(1024, 3); // 10 Gb
-  public stepIndex = 0;
-  public stepCount = 2;
 
   isLoading = false;
 
@@ -115,7 +113,7 @@ export class AddUnitsComponent implements OnInit {
 
   cancel() {
     if (this.filesToUpload.length > 0) {
-      this.confirmCancelDialog = this.dialog.open(this.confirmCancelDialogTemplate, { panelClass: 'vitamui-dialog' });
+      this.confirmCancelDialog = this.dialog.open(this.confirmCancelDialogTemplate);
     } else {
       this.addUnitsDialogRef.close(false);
     }

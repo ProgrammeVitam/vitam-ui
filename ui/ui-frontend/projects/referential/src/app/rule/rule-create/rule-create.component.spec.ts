@@ -46,11 +46,12 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { EMPTY, of } from 'rxjs';
-import { ConfirmDialogService, ManagementRuleValidators, RuleService } from 'vitamui-library';
+import { ConfirmDialogService, ManagementRuleValidators, RuleService, VitamUILibraryModule } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { RULE_MEASUREMENTS, RULE_TYPES } from '../rules.constants';
 import { RuleCreateComponent } from './rule-create.component';
 import { RuleCreateValidators } from './rule-create.validators';
+import { TranslateModule } from '@ngx-translate/core';
 
 const expectedRule = {
   ruleId: '424242',
@@ -100,15 +101,17 @@ describe('RuleCreateComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [RuleCreateComponent],
       imports: [
-        ReactiveFormsModule,
-        NoopAnimationsModule,
-        MatFormFieldModule,
-        MatSelectModule,
         MatButtonToggleModule,
+        MatDialogModule,
+        MatFormFieldModule,
         MatProgressBarModule,
         MatProgressSpinnerModule,
-        MatDialogModule,
+        MatSelectModule,
+        NoopAnimationsModule,
+        ReactiveFormsModule,
+        TranslateModule.forRoot(),
         VitamUICommonTestModule,
+        VitamUILibraryModule,
       ],
       providers: [
         { provide: RuleService, useValue: ruleServiceSpy },
@@ -128,7 +131,7 @@ describe('RuleCreateComponent', () => {
     page = new Page();
   });
 
-  xit('should create', () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
   });
 

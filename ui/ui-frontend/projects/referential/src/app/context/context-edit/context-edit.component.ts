@@ -48,7 +48,6 @@ import { ContextCreateValidators } from '../context-create/context-create.valida
 })
 export class ContextEditComponent implements OnInit, OnDestroy {
   form: FormGroup;
-  stepIndex = 0;
   hasError = true;
   message: string;
   isPermissionsOnMultipleOrganisations = false;

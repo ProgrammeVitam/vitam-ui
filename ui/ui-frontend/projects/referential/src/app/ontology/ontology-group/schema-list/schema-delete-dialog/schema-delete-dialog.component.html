@@ -1,14 +1,13 @@
-<div class="gap-5">
-  <div>
-    <div class="text medium light">{{ 'ONTOLOGY.SCHEMA_DELETE_DIALOG.TITLE' | translate }}</div>
-    <div class="text large bold">{{ paths.length | i18nPlural: subtitle | translate: { number: paths.length - 1 } }}</div>
-  </div>
-  <div class="hgap-4">
-    <button type="button" class="btn primary" (click)="submit()" [disabled]="deleting">
-      {{ 'COMMON.CONFIRM' | translate }}
-    </button>
-    <button [matDialogClose]="false" class="btn link cancel" [disabled]="deleting">
-      {{ 'COMMON.UNDO' | translate }}
-    </button>
-  </div>
-</div>
+<vitamui-dialog-header
+  [subhead]="'ONTOLOGY.SCHEMA_DELETE_DIALOG.TITLE' | translate"
+  [title]="paths.length | i18nPlural: subtitle | translate: { number: paths.length - 1 }"
+></vitamui-dialog-header>
+
+<mat-dialog-actions>
+  <button type="button" class="btn primary" (click)="submit()" [disabled]="deleting">
+    {{ 'COMMON.CONFIRM' | translate }}
+  </button>
+  <button [matDialogClose]="false" class="btn link cancel" [disabled]="deleting">
+    {{ 'COMMON.UNDO' | translate }}
+  </button>
+</mat-dialog-actions>

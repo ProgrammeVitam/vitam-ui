@@ -1,3 +1,43 @@
+:root {
+  $checkboxSize: 24px;
+  $boxSize: 16px;
+  .mat-mdc-checkbox {
+    --mdc-checkbox-state-layer-size: $checkboxSize;
+
+    &.mat-primary {
+      --mdc-checkbox-selected-checkmark-color: var(--vitamui-white);
+
+      --mdc-checkbox-unselected-hover-state-layer-opacity: 1;
+      --mdc-checkbox-unselected-hover-state-layer-color: transparent;
+      --mdc-checkbox-unselected-icon-color: var(--vitamui-grey-700);
+
+      --mdc-checkbox-selected-hover-state-layer-opacity: 1;
+      --mdc-checkbox-selected-hover-state-layer-color: var(--vitamui-primary-50);
+    }
+  }
+  .mat-mdc-checkbox-touch-target {
+    width: $checkboxSize;
+    height: $checkboxSize;
+  }
+  .mdc-checkbox {
+    flex: 0 0 $boxSize;
+    width: $boxSize;
+    height: $boxSize;
+    padding: calc(($checkboxSize - $boxSize) / 2);
+  }
+  .mdc-checkbox__background {
+    width: $boxSize;
+    height: $boxSize;
+    border-width: 1px;
+  }
+  .mdc-checkbox__ripple {
+    border-radius: 2px;
+  }
+  .mdc-checkbox__checkmark {
+    padding: 1px;
+  }
+}
+
 /* change .criteria-checkbox-choice into .vitamui-checkbox */
 input[type='checkbox'].vitamui-checkbox {
   &:not([disabled]) {

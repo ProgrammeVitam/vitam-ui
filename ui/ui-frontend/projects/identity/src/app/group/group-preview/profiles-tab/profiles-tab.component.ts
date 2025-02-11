@@ -101,7 +101,6 @@ export class ProfilesTabComponent implements OnInit, OnDestroy {
       },
       autoFocus: false,
       disableClose: true,
-      panelClass: 'vitamui-modal',
     });
   }
 

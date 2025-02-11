@@ -77,7 +77,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { TranslateModule } from '@ngx-translate/core';
-import { VitamUICommonModule } from 'vitamui-library';
+import { VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 import { PastisMaterialModule } from '../material.module';
 import { ModifyTextButtonComponent } from './modify-text-button/modify-text-button.component';
 import { PastisBreadcrumbComponent } from './pastis-breadcrumb-components/pastis-breadcrumb/pastis-breadcrumb.component';
@@ -99,7 +99,16 @@ import { PastisUnderConstructionComponent } from './pastis-under-construction/pa
     PastisPopupOptionComponent,
     ModifyTextButtonComponent,
   ],
-  imports: [CommonModule, FormsModule, PastisMaterialModule, MatSlideToggleModule, PortalModule, TranslateModule, VitamUICommonModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    PastisMaterialModule,
+    MatSlideToggleModule,
+    PortalModule,
+    TranslateModule,
+    VitamUICommonModule,
+    VitamUILibraryModule,
+  ],
   exports: [
     PastisUnderConstructionComponent,
     PastisMaterialModule,

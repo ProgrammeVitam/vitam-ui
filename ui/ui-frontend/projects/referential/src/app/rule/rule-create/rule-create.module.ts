@@ -44,9 +44,11 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 
-import { VitamUICommonModule } from 'vitamui-library';
+import { VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 import { SharedModule } from '../../../../../identity/src/app/shared/shared.module';
 import { RuleCreateComponent } from './rule-create.component';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   imports: [
@@ -60,6 +62,9 @@ import { RuleCreateComponent } from './rule-create.component';
     MatSnackBarModule,
     ReactiveFormsModule,
     VitamUICommonModule,
+    TranslateModule,
+    MatDialogModule,
+    VitamUILibraryModule,
   ],
   declarations: [RuleCreateComponent],
 })

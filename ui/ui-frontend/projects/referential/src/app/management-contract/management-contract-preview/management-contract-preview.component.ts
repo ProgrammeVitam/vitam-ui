@@ -124,7 +124,7 @@ export class ManagementContractPreviewComponent implements OnChanges, AfterViewI
   }
 
   async confirmAction(): Promise<boolean> {
-    const dialog = this.matDialog.open(ConfirmActionComponent, { panelClass: 'vitamui-confirm-dialog' });
+    const dialog = this.matDialog.open(ConfirmActionComponent, { panelClass: 'small' });
 
     dialog.componentInstance.dialogType = 'changeTab';
 

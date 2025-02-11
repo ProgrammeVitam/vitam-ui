@@ -1,4 +1,4 @@
-<div class="row pad">
+<div class="row pad no-gutters">
   <div class="col-5 rectangle">
     <div class="row actif-filters">{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_SAVER.ACTIVE_FILTERS' | translate }} ({{ nbCriterias }})</div>
     <div
@@ -21,69 +21,67 @@
     </div>
   </div>
 
-  <div class="col-6 form-width" *ngIf="ToUpdate !== null && !ToUpdate">
+  <div class="col-6" *ngIf="ToUpdate !== null && !ToUpdate">
     <div class="row triangle"></div>
-    <form [formGroup]="searchCriteriaForm">
-      <div class="sauvegarde-text">{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_SAVER.NEW_SAVE_IN_POPUP' | translate }}</div>
-      <div class="row input-width">
-        <div class="col-11">
-          <vitamui-common-input
-            [(ngModel)]="nameControl"
-            class="input-text"
-            formControlName="name"
-            maxlength="maxlength"
-            required
-            placeholder="{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_SAVER.NAME' | translate }}"
-          >
-          </vitamui-common-input>
-        </div>
+    <form [formGroup]="searchCriteriaForm" class="pl-5">
+      <div class="sauvegarde-text pb-4">{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_SAVER.NEW_SAVE_IN_POPUP' | translate }}</div>
+      <vitamui-common-input
+        [(ngModel)]="nameControl"
+        class="w-100"
+        formControlName="name"
+        maxlength="maxlength"
+        required
+        placeholder="{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_SAVER.NAME' | translate }}"
+      >
+      </vitamui-common-input>
 
-        <div class="col-1 btn-ok" *ngIf="ToUpdate !== null && !ToUpdate">
-          <button type="submit" class="btn primary" (click)="onSubmit()" [disabled]="nameControl === '' || nameControl.length > maxlength">
-            OK
-          </button>
-        </div>
+      <div *ngIf="ToUpdate !== null && !ToUpdate">
+        <button type="submit" class="btn primary" (click)="onSubmit()" [disabled]="nameControl === '' || nameControl.length > maxlength">
+          OK
+        </button>
+      </div>
 
-        <div *ngIf="nameControl.length > maxlength" class="warning">
-          <span class="ko-icon">
-            <i class="material-icons">report_problem</i>
-            {{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_SAVER.SAVE_NOT_POSSIBLE_ALERT_NAME' | translate }}
-          </span>
-          <br />
-          <span class="warning-message">
-            {{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_SAVER.SAVE_NOT_POSSIBLE_MESSAGE_NAME' | translate }}
-          </span>
-        </div>
+      <div *ngIf="nameControl.length > maxlength" class="warning">
+        <span class="ko-icon">
+          <i class="material-icons">report_problem</i>
+          {{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_SAVER.SAVE_NOT_POSSIBLE_ALERT_NAME' | translate }}
+        </span>
+        <br />
+        <span class="warning-message">
+          {{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_SAVER.SAVE_NOT_POSSIBLE_MESSAGE_NAME' | translate }}
+        </span>
       </div>
     </form>
   </div>
 
-  <div class="col-6 form-width" *ngIf="ToUpdate">
+  <div class="col-6" *ngIf="ToUpdate">
     <div class="row triangle"></div>
-    <div class="sauvegarde-text pad5">{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_SAVER.NEW_SAVE_LABEL' | translate }}</div>
-    <strong class="pad35">{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_SAVER.NEW_SAVE_REPLACE_LABEL' | translate }}</strong>
-    <div
-      (mouseenter)="over('scroll-results')"
-      (mouseleave)="out('scroll-results')"
-      [ngClass]="showScroll ? 'scroll-results' : 'no-scroll-results'"
-    >
-      <div *ngFor="let criteria of searchCriteriaHistories" class="border-results">
-        <div
-          *ngIf="criteria !== searchCriteriaHistory"
-          class="pad-results hover-div"
-          (click)="preUpdate(criteria, $event)"
-          [vitamuiTooltip]="criteria.name"
-          [vitamuiTooltipShowDelay]="300"
-        >
-          <button mat-menu-item (click)="preUpdate(criteria, $event)" class="boutton btn-result-update">
-            <i class="material-icons save-icon">save</i>
-            <ng-container (click)="preUpdate(criteria, $event)">
-              <span class="results-message">
-                {{ criteria.name | truncate: 30 }}
-              </span>
-              <span class="results-nb-filters"> - ({{ getNbFilters(criteria) }} filtres) </span>
-            </ng-container>
-          </button>
+    <div class="pl-5">
+      <div class="sauvegarde-text pad5">{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_SAVER.NEW_SAVE_LABEL' | translate }}</div>
+      <strong>{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_SAVER.NEW_SAVE_REPLACE_LABEL' | translate }}</strong>
+      <div
+        (mouseenter)="over('scroll-results')"
+        (mouseleave)="out('scroll-results')"
+        [ngClass]="showScroll ? 'scroll-results' : 'no-scroll-results'"
+      >
+        <div *ngFor="let criteria of searchCriteriaHistories" class="border-results">
+          <div
+            *ngIf="criteria !== searchCriteriaHistory"
+            class="pad-results hover-div"
+            (click)="preUpdate(criteria, $event)"
+            [vitamuiTooltip]="criteria.name"
+            [vitamuiTooltipShowDelay]="300"
+          >
+            <button mat-menu-item (click)="preUpdate(criteria, $event)" class="boutton btn-result-update">
+              <i class="material-icons save-icon">save</i>
+              <ng-container (click)="preUpdate(criteria, $event)">
+                <span class="results-message">
+                  {{ criteria.name | truncate: 30 }}
+                </span>
+                <span class="results-nb-filters"> - ({{ getNbFilters(criteria) }} filtres) </span>
+              </ng-container>
+            </button>
+          </div>
         </div>
       </div>
       <button mat-menu-item class="btn-no-result" *ngIf="searchCriteriaHistories !== undefined && searchCriteriaHistories.length === 0">
@@ -109,7 +107,7 @@
     </div>
   </div>
 
-  <div class="col-6 form-width" *ngIf="criteriaToUpdate && updateConfirm">
+  <div class="col-6" *ngIf="criteriaToUpdate && updateConfirm">
     <div class="row triangle"></div>
     <div class="sauvegarde-text pad5">{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_SAVER.SAVE_REPLACE_CONFIRM_MESSAGE' | translate }}</div>
     <div class="div-update no-scroll-results">

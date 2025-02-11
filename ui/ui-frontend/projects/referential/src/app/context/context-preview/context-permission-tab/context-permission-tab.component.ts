@@ -265,7 +265,6 @@ export class ContextPermissionTabComponent implements OnInit {
 
   openEditContextDialog() {
     const dialogRef = this.dialog.open(ContextEditComponent, {
-      panelClass: 'vitamui-modal',
       disableClose: true,
       data: { permissions: this.updatedPermissions, enableControl: this._context.enableControl },
     });

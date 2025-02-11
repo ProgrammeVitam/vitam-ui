@@ -1,40 +1,29 @@
-<div class="header">
-  <vitamui-common-progress-bar [count]="getStepCount()" [index]="stepIndex"></vitamui-common-progress-bar>
-</div>
+<vitamui-dialog-header
+  [stepper]="stepper"
+  [subhead]="'AUDIT.CREATE_DIALOG.TITLE' | translate"
+  [title]="['AUDIT.CREATE_DIALOG.SUBTITLE' | translate, secondStepTitleKey() | translate]"
+></vitamui-dialog-header>
 
 <form [formGroup]="form" (ngSubmit)="onSubmit()" (keydown.enter)="$event.preventDefault()">
-  <vitamui-common-stepper [selectedIndex]="stepIndex">
+  <vitamui-common-stepper #stepper>
     <cdk-step>
-      <div class="content mt-3">
-        <div class="text medium light">{{ 'AUDIT.CREATE_DIALOG.TITLE' | translate }}</div>
-        <div class="text large bold mb-3">{{ 'AUDIT.CREATE_DIALOG.SUBTITLE' | translate }}</div>
-
-        <div class="mt-3">
-          <mat-button-toggle-group formControlName="auditActions" class="vitamui-button-toggle-group">
-            <mat-button-toggle *ngFor="let action of getAuditActions()" [value]="action">
-              <span>{{ 'AUDIT.CREATE_DIALOG.OPERATIONS_CATEGORIES.' + action | translate }}</span>
-            </mat-button-toggle>
-          </mat-button-toggle-group>
-        </div>
+      <mat-dialog-content>
+        <mat-button-toggle-group formControlName="auditActions" class="vitamui-button-toggle-group">
+          <mat-button-toggle *ngFor="let action of getAuditActions()" [value]="action">
+            <span>{{ 'AUDIT.CREATE_DIALOG.OPERATIONS_CATEGORIES.' + action | translate }}</span>
+          </mat-button-toggle>
+        </mat-button-toggle-group>
 
         <div class="mt-4" *ngIf="showAuditPerimeter()">
           <div class="text large bold mb-3">{{ 'AUDIT.CREATE_DIALOG.CHOOSE_AUDIT_PERIMETER' | translate }}</div>
-          <mat-form-field class="vitamui-mat-select w-100">
-            <mat-select
-              formControlName="auditPerimeter"
-              placeholder="{{ 'AUDIT.CREATE_DIALOG.AUDIT_PERIMETER' | translate }}"
-              panelclass="vitamui-mat-select"
-            >
-              <mat-option *ngFor="let perimeter of getAuditPerimeters()" [value]="perimeter">
-                {{ 'AUDIT.CREATE_DIALOG.PERIMETERS.' + perimeter | translate }}
-              </mat-option>
-            </mat-select>
 
-            <div class="select-arrow">
-              <i class="material-icons">keyboard_arrow_up</i>
-              <i class="material-icons">keyboard_arrow_down</i>
-            </div>
-          </mat-form-field>
+          <vitamui-select
+            formControlName="auditPerimeter"
+            [placeholder]="'AUDIT.CREATE_DIALOG.AUDIT_PERIMETER' | translate"
+            [options]="auditPerimetersOptions"
+            [multiple]="false"
+            [enableSearch]="false"
+          ></vitamui-select>
         </div>
 
         <div class="mt-4" *ngIf="!showAuditPerimeter()">
@@ -55,42 +44,31 @@
             </ng-container>
           </vitamui-common-input>
         </div>
+      </mat-dialog-content>
 
-        <div class="actions">
-          <button
-            (click)="moveToNextStep()"
-            type="button"
-            *ngIf="form.get('auditActions')?.value !== 'AUDIT_FILE_RECTIFICATION'"
-            class="btn primary"
-            [disabled]="!isStepOneValid()"
-            cdkStepperNext
-          >
-            {{ 'COMMON.NEXT' | translate }}
-          </button>
-          <button
-            type="submit"
-            *ngIf="form.get('auditActions')?.value === 'AUDIT_FILE_RECTIFICATION'"
-            class="btn primary"
-            [disabled]="!isStepOneValid()"
-          >
-            {{ 'AUDIT.CREATE_DIALOG.START_AUDIT' | translate }}
-          </button>
-          <button type="button" class="btn cancel link" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
-        </div>
-      </div>
+      <mat-dialog-actions>
+        <vitamui-next-step
+          *ngIf="form.get('auditActions')?.value !== 'AUDIT_FILE_RECTIFICATION'"
+          [disabled]="!isStepOneValid()"
+        ></vitamui-next-step>
+        <button
+          type="submit"
+          *ngIf="form.get('auditActions')?.value === 'AUDIT_FILE_RECTIFICATION'"
+          class="btn primary"
+          [disabled]="!isStepOneValid()"
+        >
+          {{ 'AUDIT.CREATE_DIALOG.START_AUDIT' | translate }}
+        </button>
+        <button type="button" class="btn cancel link" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
+      </mat-dialog-actions>
     </cdk-step>
 
     <cdk-step>
-      <div class="content mt-3">
-        <div *ngIf="form.get('auditPerimeter')?.value === 'AUDIT_PERIMETER_ORIGINATING_AGENCY' && !refiningScreen">
-          <div class="text medium light">{{ 'AUDIT.CREATE_DIALOG.TITLE' | translate }}</div>
-          <div class="text large bold mb-3">{{ 'AUDIT.CREATE_DIALOG.CHOOSE_ORIGINATING_AGENCY' | translate }}</div>
-
-          <div class="mt-4">
-            <vitamui-common-slide-toggle [formControl]="allProducerServices">
-              <span>{{ 'AUDIT.CREATE_DIALOG.SELECT_ALL_PRODUCERS' | translate }}</span>
-            </vitamui-common-slide-toggle>
-          </div>
+      <mat-dialog-content>
+        <div *ngIf="chooseOriginatingAgency()">
+          <vitamui-common-slide-toggle [formControl]="allProducerServices">
+            <span>{{ 'AUDIT.CREATE_DIALOG.SELECT_ALL_PRODUCERS' | translate }}</span>
+          </vitamui-common-slide-toggle>
 
           <vitamui-select
             [multiple]="true"
@@ -105,10 +83,7 @@
           </vitamui-select>
         </div>
 
-        <div *ngIf="form.get('auditPerimeter')?.value === 'AUDIT_PERIMETER_INGEST_OPERATION_IDENTIFIER'">
-          <div class="text medium light">{{ 'AUDIT.CREATE_DIALOG.TITLE' | translate }}</div>
-          <div class="text large bold mb-3">{{ 'AUDIT.CREATE_DIALOG.ENTER_INGEST_OPERATIONS_IDENTIFIERS' | translate }}</div>
-
+        <div *ngIf="enterIngestOperationsIdentifiers()">
           <vitamui-common-input
             class="w-100 mt-4"
             [formControl]="ingestOperationsEntries"
@@ -119,10 +94,7 @@
           </vitamui-common-input>
         </div>
 
-        <div *ngIf="form.get('auditPerimeter')?.value === 'AUDIT_PERIMETER_ATTACHMENT_POSITION' && !refiningScreen">
-          <div class="text medium light">{{ 'AUDIT.CREATE_DIALOG.TITLE' | translate }}</div>
-          <div class="text large bold mb-3">{{ 'AUDIT.CREATE_DIALOG.CHOOSE_ATTACHMENT_POSITION' | translate }}</div>
-
+        <div *ngIf="chooseAttachmentPosition()">
           <vitamui-library-filing-plan
             [formControl]="selectedNodes"
             [tenantIdentifier]="tenantIdentifier"
@@ -132,13 +104,6 @@
         </div>
 
         <div *ngIf="canShowRefiningScreen()">
-          <div class="text medium light">{{ 'AUDIT.CREATE_DIALOG.TITLE' | translate }}</div>
-          <div class="text large bold mb-3">
-            {{
-              (refiningScreen ? 'AUDIT.CREATE_DIALOG.CHOOSE_AU_CREATION_PERIOD' : 'AUDIT.CREATE_DIALOG.CHOOSE_INGEST_OPERATIONS_PERIOD')
-                | translate
-            }}
-          </div>
           <div class="hgap-2">
             <div class="start-date">
               <p>{{ 'AUDIT.CREATE_DIALOG.PERIOD_FROM' | translate }}</p>
@@ -171,16 +136,15 @@
             {{ 'AUDIT.CREATE_DIALOG.END_PERIOD_DATE_BEFORE_START_PERIOD_DATE' | translate }}
           </p>
         </div>
+      </mat-dialog-content>
 
-        <div class="actions">
+      <mat-dialog-actions>
+        <div>
           <button type="submit" class="btn primary" [disabled]="!isStepTwoValid()">
             {{ 'AUDIT.CREATE_DIALOG.START_AUDIT' | translate }}
           </button>
           <button
-            *ngIf="
-              ['AUDIT_PERIMETER_ORIGINATING_AGENCY', 'AUDIT_PERIMETER_ATTACHMENT_POSITION'].includes(form.get('auditPerimeter')?.value) &&
-              !refiningScreen
-            "
+            *ngIf="chooseAttachmentPosition() || chooseOriginatingAgency()"
             type="button"
             class="btn cancel link"
             (click)="initPeriodScreen()"
@@ -195,7 +159,7 @@
           <i class="vitamui-icon vitamui-icon-chevron-left"></i>
           <span class="underline">{{ 'COMMON.BACK' | translate }}</span>
         </button>
-      </div>
+      </mat-dialog-actions>
     </cdk-step>
   </vitamui-common-stepper>
 </form>

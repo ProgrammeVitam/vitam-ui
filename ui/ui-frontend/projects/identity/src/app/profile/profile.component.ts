@@ -62,7 +62,7 @@ export class ProfileComponent extends SidenavPage<Profile> {
   }
 
   openProfilAdminCreateDialog() {
-    const dialogRef = this.dialog.open(ProfileCreateComponent, { panelClass: 'vitamui-modal', disableClose: true });
+    const dialogRef = this.dialog.open(ProfileCreateComponent, { disableClose: true });
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         this.refreshList();

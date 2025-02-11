@@ -40,11 +40,11 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 
-import { VitamUICommonModule } from 'vitamui-library';
+import { VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 import { OwnerFormComponent } from './owner-form.component';
 
 @NgModule({
-  imports: [CommonModule, MatFormFieldModule, MatSelectModule, ReactiveFormsModule, VitamUICommonModule],
+  imports: [CommonModule, MatFormFieldModule, MatSelectModule, ReactiveFormsModule, VitamUICommonModule, VitamUILibraryModule],
   declarations: [OwnerFormComponent],
   exports: [OwnerFormComponent],
 })

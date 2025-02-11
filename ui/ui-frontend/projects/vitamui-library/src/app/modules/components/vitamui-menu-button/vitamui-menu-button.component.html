@@ -21,8 +21,10 @@
   [overlapTrigger]="true"
   class="more-action-menu {{ overlayPos }}"
 >
-  <button mat-menu-item disableRipple class="menu-cancel-button">
-    <i class="vitamui-icon vitamui-icon-close"></i>
-  </button>
+  <div class="d-flex" [class.justify-content-end]="overlayPos === 'end'">
+    <button mat-menu-item disableRipple class="menu-cancel-button">
+      <i class="vitamui-icon vitamui-icon-close"></i>
+    </button>
+  </div>
   <ng-content></ng-content>
 </mat-menu>

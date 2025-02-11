@@ -16,6 +16,7 @@
       [items]="tenants"
       [selectedItem]="selectedTenant"
       (itemSelected)="updateApps($event)"
+      appearance="outline"
     ></vitamui-common-item-select>
 
     <div class="apps-container col-3 ml-auto" (click)="onClose()">
@@ -34,7 +35,13 @@
     <ng-container *ngIf="filteredApplications; else displayMats">
       <span class="px-3">{{ 'MENU.RESULT' | translate }}&nbsp;: </span>
       <hr class="mb-0" />
-      <mat-selection-list id="searchResults" (selectionChange)="onClose($event)" class="py-3 overflow">
+      <mat-selection-list
+        id="searchResults"
+        (selectionChange)="onClose($event)"
+        class="py-3 overflow"
+        [multiple]="false"
+        [hideSingleSelectionIndicator]="true"
+      >
         <mat-list-option [value]="app" @slideAnimation *ngFor="let app of filteredApplications">
           <vitamui-common-menu-application-tile
             [application]="app"
@@ -56,7 +63,7 @@
           *ngFor="let element of appMap | keyvalue"
           [label]="'MENU.' + element.key.identifier | translate: { default: element.key.title }"
         >
-          <mat-selection-list (selectionChange)="onClose($event)" class="py-3">
+          <mat-selection-list (selectionChange)="onClose($event)" class="py-3" [multiple]="false" [hideSingleSelectionIndicator]="true">
             <mat-list-option cdkTrapFocus cdkTrapFocusAutoChange [value]="app" *ngFor="let app of element.value">
               <vitamui-common-menu-application-tile
                 [application]="app"

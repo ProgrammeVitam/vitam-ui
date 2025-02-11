@@ -74,7 +74,6 @@ export class ProjectsComponent extends SidenavPage<any> implements OnDestroy {
 
   openCreateProjectDialog() {
     const dialogRef = this.dialog.open(CreateProjectComponent, {
-      panelClass: 'vitamui-modal',
       disableClose: true,
       data: {
         tenantIdentifier: this.tenantIdentifier,

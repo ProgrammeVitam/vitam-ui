@@ -134,7 +134,6 @@ export class CustomerListComponent extends InfiniteScrollTable<Customer> impleme
     const dialogRef = this.dialog.open(OwnerCreateComponent, {
       disableClose: true,
       data: { customer },
-      panelClass: 'vitamui-modal',
     });
     dialogRef
       .afterClosed()

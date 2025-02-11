@@ -37,21 +37,22 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { MatOptionModule } from '@angular/material/core';
-import { MatSelectModule } from '@angular/material/select';
-import { VitamUICommonModule } from 'vitamui-library';
+import { SelectComponent } from 'vitamui-library';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   templateUrl: './icons.component.html',
   styleUrls: ['./icons.component.scss'],
   standalone: true,
-  imports: [CommonModule, VitamUICommonModule, FormsModule, MatOptionModule, MatSelectModule],
+  imports: [CommonModule, TranslateModule, FormsModule, SelectComponent],
 })
 export class IconsComponent {
   icons: (string | string[])[];
   coloredIcons: { [key: string]: string[] };
   colors = ['primary', 'secondary', 'danger', 'success', 'warning', 'light'];
   selectedColor: string = '';
+
+  colorOptions = { options: this.colors.map((color) => ({ key: color, label: color })) };
 
   constructor() {
     const cssRules = Array.from(document.styleSheets)

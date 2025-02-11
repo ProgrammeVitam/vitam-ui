@@ -42,11 +42,12 @@ import { MatSelectModule } from '@angular/material/select';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { EMPTY, of, timer } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { BASE_URL, CountryService, LoggerModule, Owner, StartupService, WINDOW_LOCATION } from 'vitamui-library';
+import { BASE_URL, CountryService, LoggerModule, Owner, StartupService, VitamUILibraryModule, WINDOW_LOCATION } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { OwnerService } from '../owner.service';
 import { OwnerFormComponent } from './owner-form.component';
 import { OwnerFormValidators } from './owner-form.validators';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   template: ` <app-owner-form [customerId]="customerId" [(ngModel)]="owner"></app-owner-form>`,
@@ -69,13 +70,15 @@ describe('OwnerFormComponent', () => {
 
     await TestBed.configureTestingModule({
       imports: [
-        MatSelectModule,
-        ReactiveFormsModule,
-        NoopAnimationsModule,
         FormsModule,
-        VitamUICommonTestModule,
         HttpClientTestingModule,
         LoggerModule.forRoot(),
+        MatSelectModule,
+        NoopAnimationsModule,
+        ReactiveFormsModule,
+        TranslateModule.forRoot(),
+        VitamUICommonTestModule,
+        VitamUILibraryModule,
       ],
       declarations: [OwnerFormComponent, TesthostComponent],
       providers: [

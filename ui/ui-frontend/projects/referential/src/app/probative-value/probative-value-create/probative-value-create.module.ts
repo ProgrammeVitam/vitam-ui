@@ -47,6 +47,8 @@ import { VitamUICommonModule } from 'vitamui-library';
 import { VitamUILibraryModule } from 'vitamui-library';
 
 import { ProbativeValueCreateComponent } from './probative-value-create.component';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [ProbativeValueCreateComponent],
@@ -61,6 +63,8 @@ import { ProbativeValueCreateComponent } from './probative-value-create.componen
     ReactiveFormsModule,
     VitamUICommonModule,
     VitamUILibraryModule,
+    TranslateModule,
+    MatDialogModule,
   ],
 })
 export class ProbativeValueCreateModule {}

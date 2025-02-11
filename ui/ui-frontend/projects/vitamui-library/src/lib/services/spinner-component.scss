@@ -1,6 +1,6 @@
 @import '../../sass/mixins/elevation';
 
-::ng-deep .spinner-overlay .mat-mdc-dialog-container {
+::ng-deep .spinner-overlay .mat-mdc-dialog-surface {
   background: transparent;
   @include shadow-0;
   display: flex;

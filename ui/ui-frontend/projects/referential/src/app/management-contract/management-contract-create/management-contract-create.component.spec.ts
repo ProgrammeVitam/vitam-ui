@@ -46,7 +46,15 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { EMPTY, of } from 'rxjs';
 import { delay } from 'rxjs/operators';
-import { BASE_URL, ConfirmDialogService, InjectorModule, LoggerModule, ManagementContract, WINDOW_LOCATION } from 'vitamui-library';
+import {
+  BASE_URL,
+  ConfirmDialogService,
+  InjectorModule,
+  LoggerModule,
+  ManagementContract,
+  VitamUILibraryModule,
+  WINDOW_LOCATION,
+} from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { ManagementContractToFormGroupConverterService } from '../components/management-contract-to-form-group-converter.service';
 import { ManagementContractService } from '../management-contract.service';
@@ -80,17 +88,18 @@ describe('ManagementContractCreateComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
-        ReactiveFormsModule,
-        MatSidenavModule,
-        InjectorModule,
-        VitamUICommonTestModule,
-        HttpClientTestingModule,
-        TranslateModule.forRoot(),
-        RouterTestingModule,
-        LoggerModule.forRoot(),
         BrowserAnimationsModule,
-        NoopAnimationsModule,
+        HttpClientTestingModule,
+        InjectorModule,
+        LoggerModule.forRoot(),
         MatSelectModule,
+        MatSidenavModule,
+        NoopAnimationsModule,
+        ReactiveFormsModule,
+        RouterTestingModule,
+        TranslateModule.forRoot(),
+        VitamUICommonTestModule,
+        VitamUILibraryModule,
       ],
       declarations: [ManagementContractCreateComponent],
       providers: [

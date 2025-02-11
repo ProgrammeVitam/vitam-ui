@@ -11,13 +11,13 @@
 
 <div class="color-select-container">
   <h2>{{ 'ICONS.TITLE' | translate }}</h2>
-  <mat-form-field>
-    <mat-label>{{ 'ICONS.SELECT_COLOR' | translate }}</mat-label>
-    <mat-select [(ngModel)]="selectedColor">
-      <mat-option value=""></mat-option>
-      <mat-option *ngFor="let color of colors" [value]="color">{{ color }}</mat-option>
-    </mat-select>
-  </mat-form-field>
+  <vitamui-select
+    [(ngModel)]="selectedColor"
+    [placeholder]="'ICONS.SELECT_COLOR' | translate"
+    [options]="colorOptions"
+    [multiple]="false"
+    [enableSearch]="false"
+  ></vitamui-select>
 </div>
 
 <ul>

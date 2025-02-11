@@ -56,6 +56,7 @@ import { ProjectListComponent } from './project-list/project-list.component';
 import { ProjectPreviewComponent } from './project-preview/project-preview.component';
 import { ProjectRoutingModule } from './project-routing.module';
 import { ProjectsComponent } from './projects.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -77,6 +78,7 @@ import { ProjectsComponent } from './projects.component';
     MatButtonToggleModule,
     FormsModule,
     PipesModule,
+    TranslateModule,
   ],
   providers: [{ provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: { useUtc: true } }],
   declarations: [ProjectsComponent, ProjectListComponent, CreateProjectComponent, ProjectPreviewComponent],

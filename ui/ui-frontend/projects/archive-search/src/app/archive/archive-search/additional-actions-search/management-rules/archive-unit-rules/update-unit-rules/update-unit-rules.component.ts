@@ -323,7 +323,7 @@ export class UpdateUnitRulesComponent implements OnDestroy {
 
   onDelete() {
     const dialogToOpen = this.confirmDeleteUpdateRuleDialog;
-    const dialogRef = this.dialog.open(dialogToOpen, { panelClass: 'vitamui-dialog' });
+    const dialogRef = this.dialog.open(dialogToOpen);
 
     this.subscriptions.add(
       dialogRef

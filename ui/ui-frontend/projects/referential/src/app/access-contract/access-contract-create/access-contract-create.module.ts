@@ -50,6 +50,7 @@ import { AccessContractCreateComponent } from './access-contract-create.componen
 import { MatRadioModule } from '@angular/material/radio';
 import { TranslateModule } from '@ngx-translate/core';
 import { AccessContractPreviewModule } from '../access-contract-preview/access-contract-preview.module';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   imports: [
@@ -68,6 +69,7 @@ import { AccessContractPreviewModule } from '../access-contract-preview/access-c
     TranslateModule,
     VitamUICommonModule,
     VitamUILibraryModule,
+    MatDialogModule,
   ],
   declarations: [AccessContractCreateComponent],
 })

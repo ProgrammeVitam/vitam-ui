@@ -24,8 +24,13 @@ $anim-timing: 150ms ease-out;
       color: var(--vitamui-grey-700) !important;
     }
 
-    mat-datepicker-toggle mat-icon {
-      color: var(--vitamui-grey) !important;
+    mat-datepicker-toggle {
+      mat-icon {
+        color: var(--vitamui-grey) !important;
+      }
+      button {
+        background: var(--vitamui-grey-200);
+      }
     }
 
     button {

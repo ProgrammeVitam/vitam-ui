@@ -144,7 +144,7 @@ export class BlockRulesInheritanceComponent implements OnDestroy {
 
   onDelete() {
     const dialogToOpen = this.confirmDeleteBlockBlocRuleDialog;
-    const dialogRef = this.dialog.open(dialogToOpen, { panelClass: 'vitamui-dialog' });
+    const dialogRef = this.dialog.open(dialogToOpen);
 
     this.showConfirmDeleteBlocRuleSuscription = dialogRef
       .afterClosed()

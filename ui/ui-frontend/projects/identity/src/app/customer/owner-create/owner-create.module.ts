@@ -39,12 +39,13 @@ import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 
-import { VitamUICommonModule } from 'vitamui-library';
+import { VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 import { OwnerFormModule } from '../owner-form/owner-form.module';
 import { OwnerCreateComponent } from './owner-create.component';
 import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { TranslateModule } from '@ngx-translate/core';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   imports: [
@@ -56,6 +57,8 @@ import { TranslateModule } from '@ngx-translate/core';
     MatOptionModule,
     MatSelectModule,
     TranslateModule,
+    VitamUILibraryModule,
+    MatDialogModule,
   ],
   declarations: [OwnerCreateComponent],
 })

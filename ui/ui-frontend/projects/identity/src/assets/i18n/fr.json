@@ -196,7 +196,7 @@
       "USE_PKCE": "Avec Pkce",
       "PROTOCOL_TYPE": "Type de protocole",
       "MODAL": {
-        "TITLE": "Création d'un IDP pour",
+        "TITLE": "Création d'un IDP pour \"{{name}}\"",
         "KEYSTORE_PWD": "Mot de passe du keystore",
         "WRONG_PASSWORD": "Mot de passe incorrect",
         "UPLOAD_KEYSTORE": "Uploader le fichier keystore de CAS",
@@ -254,14 +254,14 @@
       "NAME_ALREADY_EXIST": "Nom déjà existant",
       "CODE_ALREADY_EXIST": "Code déjà existant",
       "CREATE": {
-        "TITLE": "Création d'un propriétaire pour",
+        "TITLE": "Création d'un propriétaire pour \"{{name}}\"",
         "PROOF_ELEMENTS": "Ce propriétaire détiendra les éléments de preuve transverses à l’organisation."
       },
       "LIST": {
         "PROOF_ELEMENTS": "Coffre contenant les éléments de preuve transverses à l’organisation"
       },
       "MODAL": {
-        "SAFE_TITLE": "Création du coffre pour",
+        "SAFE_TITLE": "Création du coffre pour \"{{name}}\"",
         "ACTION_BUTTON": "Créer un coffre",
         "NAME_ALREADY_EXIST": "Nom déjà existant",
         "CODE_ALREADY_EXIST": "Code déjà existant"
@@ -462,14 +462,14 @@
         "TITLE": "Création d'un groupe de profils",
         "EXISTING_NAME": "Nom déjà utilisé",
         "WRONG_FORMAT": "Format incorrect (caractères alphanumériques séparés par le caractères .)",
-        "PROVISIONNING_GROUP": "Provisionnement du groupe",
+        "PROVISIONNING_GROUP": "Provisionnement du groupe \"{{ name }}\"",
         "UNITS_INFORMATION": "Saisie des unités d'appartenance",
-        "UPDATE_UNITS": "Modification des unités de"
+        "UPDATE_UNITS": "Modification des unités de \"{{ name }}\""
       }
     },
     "PROFILE": {
       "MODAL": {
-        "TITLE": "Modification des profils de ",
+        "TITLE": "Modification des profils de \"{{name}}\"",
         "APP": "Application",
         "SAFE": "Coffre",
         "PROFILE": "Profil"

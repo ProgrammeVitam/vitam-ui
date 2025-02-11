@@ -15,7 +15,6 @@
 
   ::ng-deep .image-area-big > * > .drag-and-drop-area > .image-area {
     height: 230px;
-    width: 410px;
     max-width: 100%;
 
     img {
@@ -24,17 +23,9 @@
     }
   }
 
-  ::ng-deep .image-area-small > * > .drag-and-drop-area > .image-area {
-    width: 200px;
-  }
-
   .form-group {
     margin-top: 40px;
     margin-bottom: 20px;
-  }
-
-  .container-color {
-    min-width: 295px;
   }
 
   .cancel {
@@ -43,10 +34,6 @@
 
   span {
     font-weight: bold;
-  }
-
-  vitamui-common-input {
-    width: 47%;
   }
 
   vitamui-common-textarea + small {
@@ -59,20 +46,12 @@
     margin-bottom: 20px;
   }
 
-  .container-color {
-    margin-right: 80px;
-  }
-
   .cancel {
     margin-left: 10px;
   }
 
   span {
     font-weight: bold;
-  }
-
-  vitamui-common-input {
-    width: 47%;
   }
 
   vitamui-common-textarea + small {

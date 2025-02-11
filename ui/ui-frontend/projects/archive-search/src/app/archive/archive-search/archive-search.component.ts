@@ -92,7 +92,7 @@ import { ArchiveUnitEliminationService } from '../common-services/archive-unit-e
 import { ComputeInheritedRulesService } from '../common-services/compute-inherited-rules.service';
 import { UpdateUnitManagementRuleService } from '../common-services/update-unit-management-rule.service';
 import { ActionsRules } from '../models/ruleAction.interface';
-import { ReclassificationComponent } from './additional-actions-search/reclassification/reclassification.component';
+import { ReclassificationDialogComponent } from './additional-actions-search/reclassification-dialog/reclassification-dialog.component';
 import { SearchCriteriaSaverComponent } from './search-criteria-saver/search-criteria-saver.component';
 import { TransferAcknowledgmentComponent } from './transfer-acknowledgment/transfer-acknowledgment.component';
 import { PuaUpdateDialogComponent, PuaUpdateDialogComponentData } from './pua-update-dialog/pua-update-dialog.component';
@@ -193,8 +193,6 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
 
   @ViewChild('confirmSecondActionBigNumberOfResultsActionDialog', { static: true })
   confirmSecondActionBigNumberOfResultsActionDialog: TemplateRef<ArchiveSearchComponent>;
-  @ViewChild('updateArchiveUnitAlerteMessageDialog', { static: true })
-  updateArchiveUnitAlerteMessageDialog: TemplateRef<ArchiveSearchComponent>;
   @ViewChild('reclassificationAlerteMessageDialog', { static: true })
   reclassificationAlerteMessageDialog: TemplateRef<ArchiveSearchComponent>;
   @ViewChild('launchComputeInheritedRuleAlerteMessageDialog', { static: true })
@@ -659,13 +657,14 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   }
 
   openCriteriaPopup(searchCriteriaHistory$: SearchCriteriaHistory) {
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.panelClass = 'vitamui-modal';
-    dialogConfig.disableClose = false;
-    dialogConfig.data = {
-      searchCriteriaHistory: searchCriteriaHistory$,
-      originalSearchCriteria: this.searchCriterias,
-      nbCriterias: this.archiveSharedDataService.nbFilters(searchCriteriaHistory$),
+    const dialogConfig: MatDialogConfig = {
+      panelClass: 'p-0',
+      disableClose: false,
+      data: {
+        searchCriteriaHistory: searchCriteriaHistory$,
+        originalSearchCriteria: this.searchCriterias,
+        nbCriterias: this.archiveSharedDataService.nbFilters(searchCriteriaHistory$),
+      },
     };
 
     const dialogRef = this.dialog.open(SearchCriteriaSaverComponent, dialogConfig);
@@ -978,7 +977,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   launchReclassification() {
     if (this.selectedItemCount > this.RECLASSIFICATION_THRESHOLD) {
       const dialogToOpen = this.reclassificationAlerteMessageDialog;
-      const dialogRef = this.dialog.open(dialogToOpen, { panelClass: 'vitamui-dialog' });
+      const dialogRef = this.dialog.open(dialogToOpen);
       this.subscriptions.add(
         dialogRef
           .afterClosed()
@@ -1001,8 +1000,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
         language: this.translateService.currentLang,
       };
 
-      const dialogRef = this.dialog.open(ReclassificationComponent, {
-        panelClass: 'vitamui-modal',
+      const dialogRef = this.dialog.open(ReclassificationDialogComponent, {
         disableClose: false,
         data: {
           itemSelected: this.selectedItemCount,
@@ -1066,9 +1064,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
 
   private bulkOperationWarningWorkflow(operation: () => void): void {
     const dialogConfirmActionWithImportantAllowedCount = this.confirmImportantAllowedBulkOperationsDialog;
-    const dialogConfirmActionWithImportantAllowedCountRef = this.dialog.open(dialogConfirmActionWithImportantAllowedCount, {
-      panelClass: 'vitamui-dialog',
-    });
+    const dialogConfirmActionWithImportantAllowedCountRef = this.dialog.open(dialogConfirmActionWithImportantAllowedCount);
 
     dialogConfirmActionWithImportantAllowedCountRef
       .afterClosed()
@@ -1077,7 +1073,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   }
 
   private bulkOperationErrorWorkflow(): void {
-    const dialogRef = this.dialog.open(this.actionsWithThresholdReachedAlerteMessageDialog, { panelClass: 'vitamui-dialog' });
+    const dialogRef = this.dialog.open(this.actionsWithThresholdReachedAlerteMessageDialog);
 
     this.actionsWithThresholdReachedAlerteMessageDialogSubscription = dialogRef
       .afterClosed()
@@ -1263,7 +1259,6 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
 
   showAcknowledgmentTransferForm() {
     const dialogRef = this.dialog.open(TransferAcknowledgmentComponent, {
-      panelClass: 'vitamui-modal',
       disableClose: true,
       data: {
         accessContract: this.accessContractId,

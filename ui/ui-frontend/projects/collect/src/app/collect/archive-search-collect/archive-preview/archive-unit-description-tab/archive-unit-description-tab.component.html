@@ -20,16 +20,10 @@
 </ng-template>
 
 <ng-template #updateDialog>
-  <mat-dialog-content>
-    <div class="text-title">
-      {{ 'ARCHIVE_UNIT.DIALOGS.SAVE.TITLE' | translate }}
-    </div>
-
-    <div class="text large bold">
-      {{ 'ARCHIVE_UNIT.DIALOGS.SAVE.CONTENT' | translate }}
-    </div>
-  </mat-dialog-content>
-  <br />
+  <vitamui-dialog-header
+    [subhead]="'ARCHIVE_UNIT.DIALOGS.SAVE.TITLE' | translate"
+    [title]="'ARCHIVE_UNIT.DIALOGS.SAVE.CONTENT' | translate"
+  ></vitamui-dialog-header>
   <mat-dialog-actions>
     <button [matDialogClose]="true" [disabled]="!isModified()" class="btn primary btn-confirm-dialog">
       {{ 'ARCHIVE_UNIT.DIALOGS.SAVE.BUTTONS.CONFIRM' | translate }}
@@ -39,16 +33,10 @@
 </ng-template>
 
 <ng-template #cancelDialog>
-  <mat-dialog-content>
-    <div class="text-title">
-      {{ 'ARCHIVE_UNIT.DIALOGS.CANCEL.TITLE' | translate }}
-    </div>
-
-    <div class="text large bold">
-      {{ 'ARCHIVE_UNIT.DIALOGS.CANCEL.CONTENT' | translate }}
-    </div>
-  </mat-dialog-content>
-  <br />
+  <vitamui-dialog-header
+    [subhead]="'ARCHIVE_UNIT.DIALOGS.CANCEL.TITLE' | translate"
+    [title]="'ARCHIVE_UNIT.DIALOGS.CANCEL.CONTENT' | translate"
+  ></vitamui-dialog-header>
   <mat-dialog-actions>
     <button [matDialogClose]="true" [disabled]="!isModified()" class="btn primary btn-confirm-dialog">
       {{ 'ARCHIVE_UNIT.DIALOGS.CANCEL.BUTTONS.CONFIRM' | translate }}

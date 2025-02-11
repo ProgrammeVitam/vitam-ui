@@ -140,7 +140,7 @@ export class AddUpdatePropertyComponent implements OnInit, OnDestroy {
 
   onCancelAddRuleProperty() {
     const dialogToOpen = this.confirmDeleteAddRulePropertyDialog;
-    const dialogRef = this.dialog.open(dialogToOpen, { panelClass: 'vitamui-dialog' });
+    const dialogRef = this.dialog.open(dialogToOpen);
 
     this.showConfirmDeleteAddRulePropertySuscription = dialogRef
       .afterClosed()

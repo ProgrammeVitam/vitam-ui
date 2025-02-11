@@ -36,7 +36,5 @@
  */
 export * from './utils/item-node.interface';
 export * from './utils/option.interface';
-export * from './vitamui-autocomplete-multi-select-tree/vitamui-autocomplete-multi-select-tree.component';
-export * from './vitamui-autocomplete-multi-select-tree/vitamui-autocomplete-multi-select-tree.module';
 export * from './vitamui-autocomplete/vitamui-autocomplete.component';
 export * from './vitamui-autocomplete/vitamui-autocomplete.module';

@@ -92,7 +92,7 @@ export class AgencyComponent extends SidenavPage<Agency> implements OnInit {
   }
 
   public openCreateAgencyDialog(): void {
-    const dialogRef = this.dialog.open(AgencyCreateComponent, { panelClass: 'vitamui-modal', disableClose: true });
+    const dialogRef = this.dialog.open(AgencyCreateComponent, { disableClose: true });
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result?.success) {
@@ -117,7 +117,6 @@ export class AgencyComponent extends SidenavPage<Agency> implements OnInit {
 
     this.dialog
       .open(ImportDialogComponent, {
-        panelClass: 'vitamui-modal',
         disableClose: true,
         data: params,
       })

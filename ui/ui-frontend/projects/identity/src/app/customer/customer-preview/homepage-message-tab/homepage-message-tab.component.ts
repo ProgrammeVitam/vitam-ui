@@ -110,7 +110,6 @@ export class HomepageMessageTabComponent implements OnDestroy {
 
   openUpdateHomepageMessage() {
     const dialogRef = this.dialog.open(HomepageMessageUpdateComponent, {
-      panelClass: 'vitamui-modal',
       disableClose: true,
       data: { customer: this.customer },
     });

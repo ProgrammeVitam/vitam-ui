@@ -163,7 +163,7 @@ export class FileFormatListComponent extends InfiniteScrollTable<FileFormat> imp
   }
 
   deleteFileFormatDialog(fileFormat: FileFormat) {
-    const dialog = this.matDialog.open(ConfirmActionComponent, { panelClass: 'vitamui-confirm-dialog' });
+    const dialog = this.matDialog.open(ConfirmActionComponent, { panelClass: 'small' });
 
     dialog.componentInstance.objectType = this.translateService.instant('FILE_FORMATS.HOME.FILE_FORMAT');
     dialog.componentInstance.objectName = fileFormat.puid;

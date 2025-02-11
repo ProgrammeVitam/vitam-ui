@@ -52,8 +52,4 @@ export class VitamUISnackBarComponent {
   close() {
     this.matSnackBarRef.dismiss();
   }
-
-  goToLogbook(url: string) {
-    window.location.href = url;
-  }
 }

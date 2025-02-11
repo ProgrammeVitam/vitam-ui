@@ -71,7 +71,6 @@ export class ArchiveUnitDipService {
       const dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpen = confirmSecondActionBigNumberOfResultsActionDialog;
       const dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpenRef = this.dialog.open(
         dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpen,
-        { panelClass: 'vitamui-dialog' },
       );
 
       dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpenRef
@@ -99,7 +98,6 @@ export class ArchiveUnitDipService {
     };
 
     const dialogRef = this.dialog.open(DipRequestCreateComponent, {
-      panelClass: 'vitamui-modal',
       disableClose: false,
       data: {
         itemSelected,
@@ -138,7 +136,6 @@ export class ArchiveUnitDipService {
     } else {
       const dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpenRef = this.dialog.open(
         confirmSecondActionBigNumberOfResultsActionDialog,
-        { panelClass: 'vitamui-dialog' },
       );
       dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpenRef
         .afterClosed()
@@ -172,7 +169,6 @@ export class ArchiveUnitDipService {
     };
 
     const dialogRef = this.dialog.open(TransferRequestModalComponent, {
-      panelClass: 'vitamui-modal',
       disableClose: false,
       data: {
         itemSelected,

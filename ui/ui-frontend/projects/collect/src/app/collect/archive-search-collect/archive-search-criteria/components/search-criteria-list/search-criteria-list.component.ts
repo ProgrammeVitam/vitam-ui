@@ -101,7 +101,7 @@ export class SearchCriteriaListComponent implements OnInit {
   }
 
   deleteSearchCriteriaHistory(searchCriteriaHistory: SearchCriteriaHistory) {
-    const dialog = this.dialog.open(ConfirmActionComponent, { panelClass: 'vitamui-confirm-dialog' });
+    const dialog = this.dialog.open(ConfirmActionComponent, { panelClass: 'small' });
     dialog.componentInstance.objectType = this.translateService.instant('COLLECT.SEARCH_CRITERIA_SAVER.OBJECT_TYPE');
     dialog.componentInstance.objectName = searchCriteriaHistory.name;
     dialog.componentInstance.objectDate = searchCriteriaHistory.savingDate;

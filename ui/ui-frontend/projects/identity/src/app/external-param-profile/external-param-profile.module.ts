@@ -44,7 +44,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTabsModule } from '@angular/material/tabs';
-import { LevelInputModule, RoleToggleModule, VitamUICommonModule } from 'vitamui-library';
+import { LevelInputModule, RoleToggleModule, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 import { SharedModule } from '../shared/shared.module';
 import { GroupAttributionModule } from '../user/group-attribution/group-attribution.module';
 import { ExternalParamProfileCreateComponent } from './external-param-profile-create/external-param-profile-create.component';
@@ -54,24 +54,29 @@ import { ThresholdsTabComponent } from './external-param-profile-detail/threshol
 import { ExternalParamProfileListComponent } from './external-param-profile-list/external-param-profile-list.component';
 import { ExternalParamProfileRoutingModule } from './external-param-profile-routing.module';
 import { ExternalParamProfileComponent } from './external-param-profile.component';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   imports: [
     CommonModule,
-    VitamUICommonModule,
-    SharedModule,
-    MatButtonToggleModule,
-    MatMenuModule,
-    MatSelectModule,
-    ReactiveFormsModule,
+    ExternalParamProfileRoutingModule,
     GroupAttributionModule,
     LevelInputModule,
-    MatSidenavModule,
-    MatProgressSpinnerModule,
-    ExternalParamProfileRoutingModule,
+    MatButtonToggleModule,
+    MatDialogModule,
+    MatMenuModule,
     MatProgressBarModule,
+    MatProgressSpinnerModule,
+    MatSelectModule,
+    MatSidenavModule,
     MatTabsModule,
+    ReactiveFormsModule,
     RoleToggleModule,
+    SharedModule,
+    TranslateModule,
+    VitamUICommonModule,
+    VitamUILibraryModule,
   ],
   declarations: [
     ExternalParamProfileComponent,

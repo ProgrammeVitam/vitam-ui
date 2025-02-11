@@ -149,7 +149,7 @@ export class UserPreviewComponent implements OnDestroy, OnInit {
     } else if (status === 'DISABLED') {
       dialogToOpen = this.confirmDisabledUserDialog;
     }
-    const dialogRef = this.matDialog.open(dialogToOpen, { panelClass: 'vitamui-dialog' });
+    const dialogRef = this.matDialog.open(dialogToOpen);
     dialogRef
       .afterClosed()
       .pipe(filter((result) => !!result))
@@ -201,7 +201,7 @@ export class UserPreviewComponent implements OnDestroy, OnInit {
 
     let dialogToOpen;
     dialogToOpen = this.confirmdeleteUserDialog;
-    const dialogRef = this.matDialog.open(dialogToOpen, { panelClass: 'vitamui-dialog' });
+    const dialogRef = this.matDialog.open(dialogToOpen);
     dialogRef
       .afterClosed()
       .pipe(filter((result) => !!result))

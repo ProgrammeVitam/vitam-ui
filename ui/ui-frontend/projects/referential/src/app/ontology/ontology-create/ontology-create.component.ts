@@ -50,7 +50,6 @@ import { types, collections, sizes } from '../ontology-form-options';
 })
 export class OntologyCreateComponent implements OnInit, OnDestroy {
   form: FormGroup;
-  stepIndex = 0;
   hasCustomGraphicIdentity = false;
   hasError = true;
   message: string;
@@ -60,10 +59,6 @@ export class OntologyCreateComponent implements OnInit, OnDestroy {
   collections = collections;
   sizes = sizes;
 
-  // stepCount is the total number of steps and is used to calculate the advancement of the progress bar.
-  // We could get the number of steps using ViewChildren(StepComponent) but this triggers a
-  // "Expression has changed after it was checked" error so we instead manually define the value.
-  // Make sure to update this value whenever you add or remove a step from the  template.
   private keyPressSubscription: Subscription;
 
   @ViewChild('fileSearch', { static: false }) fileSearch: any;
@@ -89,6 +84,13 @@ export class OntologyCreateComponent implements OnInit, OnDestroy {
       origin: ['INTERNAL'],
     });
 
+    this.form.get('type').valueChanges.subscribe((key) => {
+      this.sizeFieldVisible = ['TEXT', 'GEO_POINT', 'KEYWORD'].includes(key);
+      if (this.sizeFieldVisible) this.form.get('stringSize').addValidators(Validators.required);
+      else this.form.get('stringSize').removeValidators(Validators.required);
+      setTypeDetailAndStringSize(key, this.form);
+    });
+
     this.keyPressSubscription = this.confirmDialogService.listenToEscapeKeyPress(this.dialogRef).subscribe(() => this.onCancel());
   }
 
@@ -102,11 +104,6 @@ export class OntologyCreateComponent implements OnInit, OnDestroy {
     } else {
       this.dialogRef.close();
     }
-  }
-
-  onIndexingModeChange(key: string) {
-    this.sizeFieldVisible = ['TEXT', 'GEO_POINT', 'KEYWORD'].includes(key);
-    setTypeDetailAndStringSize(key, this.form);
   }
 
   onSubmit() {

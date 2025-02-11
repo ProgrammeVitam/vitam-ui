@@ -199,11 +199,6 @@ describe('IdentityProviderCreateComponent', () => {
   });
 
   describe('DOM', () => {
-    it('should have a title', () => {
-      const elTitle = fixture.nativeElement.querySelector('.large');
-      expect(elTitle.textContent).toContain('CUSTOMER.SSO.MODAL.TITLE "OwnerName"');
-    });
-
     it('should have all the inputs', () => {
       const elEnabled = fixture.nativeElement.querySelector('vitamui-common-slide-toggle[formControlName=enabled]');
       expect(elEnabled).toBeTruthy();

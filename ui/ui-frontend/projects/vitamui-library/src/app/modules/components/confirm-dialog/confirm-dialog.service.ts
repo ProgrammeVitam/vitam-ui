@@ -52,7 +52,7 @@ export class ConfirmDialogService {
 
   public confirm(componentOrTemplateRef: TemplateRef<unknown> | ComponentType<unknown>, data?: DialogInputData): Observable<boolean> {
     return this.matDialog
-      .open(componentOrTemplateRef, { panelClass: 'vitamui-confirm-dialog', data })
+      .open(componentOrTemplateRef, { panelClass: 'small', data })
       .afterClosed()
       .pipe(filter((result) => !!result));
   }

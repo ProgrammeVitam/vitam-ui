@@ -76,7 +76,6 @@ export class CustomerComponent extends SidenavPage<Customer | Owner | Tenant> im
       data: {
         gdprReadOnlySettingStatus: this.gdprReadOnlySettingStatus,
       },
-      panelClass: 'vitamui-modal',
       disableClose: true,
     });
     dialogRef.afterClosed().subscribe((result) => {

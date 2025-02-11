@@ -45,9 +45,11 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 
-import { VitamUICommonModule } from 'vitamui-library';
+import { VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 import { SharedModule } from '../../../../../identity/src/app/shared/shared.module';
 import { AgencyCreateComponent } from './agency-create.component';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   imports: [
@@ -62,6 +64,9 @@ import { AgencyCreateComponent } from './agency-create.component';
     ReactiveFormsModule,
     VitamUICommonModule,
     MatProgressSpinnerModule,
+    TranslateModule,
+    MatDialogModule,
+    VitamUILibraryModule,
   ],
   declarations: [AgencyCreateComponent],
 })

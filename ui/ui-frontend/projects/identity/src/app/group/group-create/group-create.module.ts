@@ -45,25 +45,28 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 
-import { VitamUICommonModule } from 'vitamui-library';
+import { VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 import { SharedModule } from '../../shared/shared.module';
 import { UnitsFormModule } from '../units-form/units-form.module';
 import { GroupCreateComponent } from './group-create.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
     CommonModule,
-    SharedModule,
     MatButtonToggleModule,
+    MatDialogModule,
     MatFormFieldModule,
     MatInputModule,
     MatProgressBarModule,
     MatSelectModule,
     MatSnackBarModule,
     ReactiveFormsModule,
-    MatDialogModule,
-    VitamUICommonModule,
+    SharedModule,
+    TranslateModule,
     UnitsFormModule,
+    VitamUICommonModule,
+    VitamUILibraryModule,
   ],
   declarations: [GroupCreateComponent],
 })

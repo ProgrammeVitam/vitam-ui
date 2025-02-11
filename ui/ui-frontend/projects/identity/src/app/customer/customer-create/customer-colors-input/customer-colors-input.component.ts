@@ -36,8 +36,9 @@
  */
 import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { Color, ThemeColorType, ThemeService } from 'vitamui-library';
+import { Color, Option, ThemeColorType, ThemeService } from 'vitamui-library';
 import { Subscription } from 'rxjs';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-customer-colors-input',
@@ -62,7 +63,12 @@ export class CustomerColorsInputComponent implements OnInit {
   selectedBgColor: string;
   private primaryLightSubscription?: Subscription;
 
-  constructor(private themeService: ThemeService) {}
+  backgroundColorsOptions: Option[];
+
+  constructor(
+    private themeService: ThemeService,
+    private translateService: TranslateService,
+  ) {}
 
   public ngOnInit(): void {
     this.baseColors = this.themeService.getBaseColors();
@@ -74,6 +80,11 @@ export class CustomerColorsInputComponent implements OnInit {
       label: c.class,
       isDefault: c.isDefault,
       isPrimaryLight: c.isPrimaryLight,
+    }));
+    this.backgroundColorsOptions = this.backgroundColors.map((color) => ({
+      key: color.id,
+      label: ((color as any).isDefault ? `${this.translateService.instant('COMMON_SELECT.DEFAULT_LABEL')} ` : '') + color.label,
+      isPrimaryLight: color.isPrimaryLight,
     }));
 
     // We set original bg color value. If the value doesn't match available bg colors, it's probably because there's a custom primary color and the primary-light variant has been selected as bg color.

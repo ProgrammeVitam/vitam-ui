@@ -69,7 +69,6 @@ export class HoldingFillingSchemeComponent extends SidenavPage<any> implements O
   openImportTreePlanPopup(type: IngestType) {
     const dialogConfig = new MatDialogConfig();
 
-    dialogConfig.panelClass = 'vitamui-modal';
     dialogConfig.disableClose = false;
 
     dialogConfig.data = {

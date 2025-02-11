@@ -12,43 +12,18 @@
   .mat-mdc-tab-nav-bar.mat-primary .mat-ink-bar {
     background: var(--vitamui-primary);
   }
-  /* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version. */
-  .mat-tab-header-pagination.mat-tab-header-pagination-disabled {
-    display: none !important;
-  }
-  /* TODO(mdc-migration): The following rule targets internal classes of list that may no longer apply for the MDC version. */
-  .mat-list-text {
-    height: 100%;
-    padding: 0 !important;
-  }
 
   mat-pseudo-checkbox.mat-pseudo-checkbox {
     display: none;
   }
-  /* TODO(mdc-migration): The following rule targets internal classes of list that may no longer apply for the MDC version. */
   mat-list-option:focus,
   mat-list-option:hover {
     background-color: var(--vitamui-grey-300);
-  }
-  /* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version. */
-  .mat-tab-body-content {
-    overflow: hidden;
-  }
-  /* TODO(mdc-migration): The following rule targets internal classes of list that may no longer apply for the MDC version. */
-  .mat-list-single-selected-option {
-    background-color: var(--vitamui-white);
-  }
-  /* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version. */
-  .mat-tab-label.mat-tab-label-active {
-    color: var(--vitamui-primary);
-    opacity: 1;
-    font-weight: bold;
   }
 
   vitamui-common-menu-application-tile {
     height: 100%;
   }
-  /* TODO(mdc-migration): The following rule targets internal classes of list that may no longer apply for the MDC version. */
   mat-list-option vitamui-common-menu-application-tile * {
     .hover-focus {
       visibility: hidden;
@@ -64,11 +39,6 @@
     overflow-y: auto;
     overflow-x: hidden;
   }
-  /* TODO(mdc-migration): The following rule targets internal classes of list that may no longer apply for the MDC version. */
-  mat-list-option .mat-list-item-content {
-    padding: 0 !important;
-  }
-  /* TODO(mdc-migration): The following rule targets internal classes of list that may no longer apply for the MDC version. */
   mat-list-option:focus {
     vitamui-common-menu-application-tile * {
       .appName {
@@ -88,7 +58,6 @@
       }
     }
   }
-  /* TODO(mdc-migration): The following rule targets internal classes of list that may no longer apply for the MDC version. */
   mat-list-option:hover {
     vitamui-common-menu-application-tile * {
       .appName {
@@ -99,10 +68,6 @@
         visibility: visible;
       }
     }
-  }
-  /* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version. */
-  .mat-tab-body-wrapper {
-    height: 100%;
   }
 
   *:focus {

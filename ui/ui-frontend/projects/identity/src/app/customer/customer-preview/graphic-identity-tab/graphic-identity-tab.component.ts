@@ -129,7 +129,6 @@ export class GraphicIdentityTabComponent implements OnInit, OnDestroy {
 
   openUpdateCustomerLogo() {
     const dialogRef = this.dialog.open(GraphicIdentityUpdateComponent, {
-      panelClass: 'vitamui-modal',
       disableClose: true,
       data: { customer: this.customer, logos: this.customerLogos },
     });

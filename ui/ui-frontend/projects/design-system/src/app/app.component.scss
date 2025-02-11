@@ -3,10 +3,13 @@
     margin: 3rem 5rem;
   }
 
+  mat-sidenav {
+    max-width: 250px;
+  }
+
   .mat-mdc-list-base {
     overflow-y: auto;
     height: 100%;
-    max-width: 250px;
   }
 
   mat-expansion-panel {
@@ -48,7 +51,7 @@
 
       a {
         height: 2rem;
-        padding: 0 1rem;
+        padding: 0 24px;
         display: inline-block;
         cursor: pointer;
         white-space: nowrap;

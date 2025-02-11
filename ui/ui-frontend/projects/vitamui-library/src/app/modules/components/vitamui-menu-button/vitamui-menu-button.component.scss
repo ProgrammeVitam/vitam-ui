@@ -5,19 +5,16 @@
     max-width: max-content;
     background: none;
     @include shadow-0;
+    border: none;
+    overflow: visible;
 
     .mat-mdc-menu-content {
-      align-items: flex-end;
-      border-top: none;
       min-width: 152px;
+      padding: 0;
     }
 
     &.start {
-      .mat-mdc-menu-content {
-        align-items: flex-start;
-      }
-
-      .mat-mdc-menu-item:nth-of-type(2) {
+      .mat-mdc-menu-item:nth-of-type(1) {
         border-radius: 0 5px 0 0;
       }
     }
@@ -32,9 +29,9 @@
       border-top: 1px solid var(--vitamui-grey-300);
       border-bottom: none;
       background-color: white;
-      font-size: 16px;
+      --mat-menu-item-label-text-size: 16px;
 
-      &:nth-of-type(2) {
+      &:nth-of-type(1) {
         border-top: 1px solid var(--vitamui-secondary);
         border-radius: 5px 0 0 0;
       }
@@ -48,14 +45,14 @@
     .mat-mdc-menu-item.menu-cancel-button {
       border: 1px solid var(--vitamui-secondary);
       border-bottom: none;
-      border-radius: 5px 5px 0 0;
+      border-radius: 5px 5px 0 0 !important;
       width: 50px;
       height: 50px;
       display: flex;
       align-items: center;
       justify-content: center;
 
-      > i {
+      i {
         font-size: 14px;
         color: var(--vitamui-secondary);
       }
@@ -67,6 +64,7 @@
 
     .mat-mdc-menu-item[disabled] {
       background-color: var(--vitamui-grey-400);
+      opacity: 1;
     }
   }
 }

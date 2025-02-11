@@ -9,9 +9,8 @@
 
 /* TODO(mdc-migration): The following rule targets internal classes of radio that may no longer apply for the MDC version. */
 mat-radio-button {
-  display: flex;
+  display: inline-block;
   flex-direction: row;
-  margin-top: 15px;
 
   div,
   .mdc-form-field {

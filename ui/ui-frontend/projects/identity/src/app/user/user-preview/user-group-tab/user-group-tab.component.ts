@@ -165,7 +165,6 @@ export class UserGroupTabComponent implements OnChanges, OnDestroy {
   openAttributionGroupe() {
     this.activeGroups = this.getAttributableGroups();
     const dialogRef = this.groupAttrDialog.open(GroupAttributionComponent, {
-      panelClass: 'vitamui-modal',
       disableClose: true,
       data: [this.user, this.userGroup, this.activeGroups],
     });

@@ -1,32 +1,13 @@
 <form [formGroup]="form" id="translationForm">
-  <div class="col-12 d-flex align-items-center">
-    <label for="language" class="mr-4 mb-0">
-      <div class="text medium bold">
-        {{ "COMMON.LANGUAGE.TITLE" | translate }} {{index}}
-        <span class="text normal danger">*</span>
-      </div>
-
-      <div class="text caption danger">
-        <vitamui-common-input-error
-          *ngIf="
-                form.get('language')?.touched &&
-                !!form.get('language')?.errors?.required
-              "
-        >
-          {{ 'COMMON.ERROR.REQUIRED' | translate }}</vitamui-common-input-error
-        >
-      </div>
-    </label>
-
-    <mat-form-field class="mt-4 mb-4 vitamui-mat-select">
-      <mat-select formControlName="language" required panelClass="vitamui-mat-select">
-        <mat-option *ngFor="let option of languages" [value]="option.key"> {{ 'COMMON.LANGUAGE.'+option.key | translate}} </mat-option>
-      </mat-select>
-      <div class="select-arrow">
-        <i class="material-icons">keyboard_arrow_up</i>
-        <i class="material-icons">keyboard_arrow_down</i>
-      </div>
-    </mat-form-field>
+  <div class="d-flex align-items-center">
+    <vitamui-select
+      class="mt-4 mb-4"
+      formControlName="language"
+      [placeholder]="('COMMON.LANGUAGE.TITLE' | translate) + ' ' + index"
+      [options]="languages"
+      [enableSearch]="false"
+      [multiple]="false"
+    ></vitamui-select>
 
     <button class="pl-4 btn link" (click)="onRemove()">
       <span> {{ "CUSTOMER.HOMEPAGE_MESSAGE.DELETE_LANGUAGE" | translate }}</span>

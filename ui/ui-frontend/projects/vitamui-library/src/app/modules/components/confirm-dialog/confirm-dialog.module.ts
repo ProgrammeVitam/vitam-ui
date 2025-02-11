@@ -41,10 +41,11 @@ import { TranslateModule } from '@ngx-translate/core';
 
 import { ClosePopupDialogComponent } from './close-popup-dialog.component';
 import { ConfirmDialogComponent } from './confirm-dialog.component';
+import { DialogHeaderComponent } from '../../../../lib/components/dialog-header/dialog-header.component';
 
 @NgModule({
   declarations: [ConfirmDialogComponent, ClosePopupDialogComponent],
-  imports: [CommonModule, MatDialogModule, TranslateModule],
+  imports: [CommonModule, MatDialogModule, TranslateModule, DialogHeaderComponent],
   exports: [ConfirmDialogComponent, ClosePopupDialogComponent],
 })
 export class ConfirmDialogModule {}

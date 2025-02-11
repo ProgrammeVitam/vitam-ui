@@ -43,14 +43,15 @@ import { MatInputModule } from '@angular/material/input';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { VitamUICommonModule } from 'vitamui-library';
-import { VitamUILibraryModule } from 'vitamui-library';
+import { VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatRadioModule } from '@angular/material/radio';
 import { SharedModule } from 'projects/identity/src/app/shared/shared.module';
 import { PersistentIdentifierPoliciesFormModule } from '../components/create-persistent-identifier-policy-form/create-persistent-identifier-policy-form.module';
 import { ManagementContractCreateComponent } from './management-contract-create.component';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [ManagementContractCreateComponent],
@@ -70,6 +71,9 @@ import { ManagementContractCreateComponent } from './management-contract-create.
     MatRadioModule,
     FormsModule,
     PersistentIdentifierPoliciesFormModule,
+    TranslateModule,
+    MatDialogModule,
+    VitamUILibraryModule,
   ],
 })
 export class ManagementContractCreateModule {}

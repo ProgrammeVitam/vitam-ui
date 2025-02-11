@@ -36,10 +36,10 @@
  */
 import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Observable, Subscription, of } from 'rxjs';
-import { catchError, filter, map, switchMap } from 'rxjs/operators';
-import { extend, isEmpty } from 'underscore';
-import { AccessContract, ApplicationId, ExternalParamProfile, diff } from 'vitamui-library';
+import { of, skip, Subscription } from 'rxjs';
+import { catchError, distinctUntilChanged, filter, map, switchMap } from 'rxjs/operators';
+import { extend, isEqual } from 'underscore';
+import { ApplicationId, ExternalParamProfile } from 'vitamui-library';
 import { ExternalParamProfileService } from '../../external-param-profile.service';
 import { ExternalParamProfileValidators } from '../../external-param-profile.validators';
 
@@ -56,11 +56,9 @@ export class InformationTabComponent implements OnDestroy, OnInit, OnChanges {
   ) {}
 
   form: FormGroup;
-  permissionForm: FormGroup;
   groupsCount: boolean;
-  userLevel: string;
   previousValue: ExternalParamProfile;
-  activeAccessContracts$: Observable<AccessContract[]>;
+  activeAccessContractsIdentifiers: string[];
 
   @Input() externalParamProfile: ExternalParamProfile;
   @Input() readOnly: boolean;
@@ -68,19 +66,14 @@ export class InformationTabComponent implements OnDestroy, OnInit, OnChanges {
 
   private updateFormSub: Subscription;
 
-  private static initFormActivationState(form: FormGroup, readOnly: boolean) {
-    if (readOnly) {
-      form.disable({ emitEvent: false });
-      return;
-    }
-    form.enable({ emitEvent: false });
-  }
-
   ngOnInit() {
     this.initForm();
     this.initListenersOnFormsValuesChanges();
 
-    this.activeAccessContracts$ = this.externalParamProfileService.getAllActiveAccessContracts(this.tenantIdentifier);
+    this.externalParamProfileService
+      .getAllActiveAccessContracts(this.tenantIdentifier)
+      .pipe(map((accessContracts) => accessContracts.map((accessContract) => accessContract.identifier)))
+      .subscribe((activeAccessContractsIdentifiers) => (this.activeAccessContractsIdentifiers = activeAccessContractsIdentifiers));
   }
 
   ngOnDestroy() {
@@ -89,7 +82,7 @@ export class InformationTabComponent implements OnDestroy, OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.hasOwnProperty('externalParamProfile') && this.form) {
-      this.resetForm(this.form, this.externalParamProfile, this.readOnly);
+      this.resetForm(this.externalParamProfile);
       this.previousValue = this.form.value;
     }
   }
@@ -106,8 +99,9 @@ export class InformationTabComponent implements OnDestroy, OnInit, OnChanges {
   private initListenersOnFormsValuesChanges() {
     this.updateFormSub = this.form.valueChanges
       .pipe(
-        map(() => diff(this.form.value, this.previousValue)),
-        filter((formData) => !isEmpty(formData)),
+        skip(1),
+        filter(() => this.form.valid),
+        distinctUntilChanged(isEqual),
         map((formData) =>
           extend(
             {
@@ -119,19 +113,18 @@ export class InformationTabComponent implements OnDestroy, OnInit, OnChanges {
           ),
         ),
         switchMap((formData) => this.externalParamProfileService.patch(formData).pipe(catchError((error) => of(error)))),
-        catchError((error) => of(error)),
       )
-      .subscribe((externalParamProfile: ExternalParamProfile) => this.resetForm(this.form, externalParamProfile, this.readOnly));
+      .subscribe();
   }
 
-  private resetForm(form: FormGroup, externalParamProfile: ExternalParamProfile, readOnly: boolean) {
-    form.reset(externalParamProfile, { emitEvent: false });
-    this.initFormValidators(form, externalParamProfile);
-    InformationTabComponent.initFormActivationState(form, readOnly);
+  private resetForm(externalParamProfile: ExternalParamProfile) {
+    this.form.reset(externalParamProfile, { emitEvent: false });
+    this.initFormValidators(externalParamProfile);
+    this.initFormActivationState(this.readOnly);
   }
 
-  private initFormValidators(form: FormGroup, externalParamProfile: ExternalParamProfile) {
-    form
+  private initFormValidators(externalParamProfile: ExternalParamProfile) {
+    this.form
       .get('name')
       .setAsyncValidators(
         this.externalParamProfileValidators.nameExists(
@@ -140,5 +133,13 @@ export class InformationTabComponent implements OnDestroy, OnInit, OnChanges {
           externalParamProfile.name,
         ),
       );
+  }
+
+  private initFormActivationState(readOnly: boolean) {
+    if (readOnly) {
+      this.form.disable({ emitEvent: false });
+      return;
+    }
+    this.form.enable({ emitEvent: false });
   }
 }

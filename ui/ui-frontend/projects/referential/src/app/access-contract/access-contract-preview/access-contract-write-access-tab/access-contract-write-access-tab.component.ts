@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup, ValidationErrors, ValidatorFn } from '@angular/forms';
+import { FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
 import { extend, isEmpty } from 'underscore';
@@ -85,7 +85,7 @@ export class AccessContractWriteAccessTabComponent implements OnInit {
       {
         writingPermission: [false],
         downloadChoose: ['ALL'],
-        everyDataObjectVersion: [true],
+        everyDataObjectVersion: [true, Validators.required],
         dataObjectVersion: [new Array<string>()],
         writingAuthorizedDesc: [false],
       },

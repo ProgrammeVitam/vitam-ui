@@ -46,7 +46,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatTreeModule } from '@angular/material/tree';
-import { SelectComponent, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
+import { SelectComponent, SelectWithTreeComponent, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 import { ArchiveUnitDescriptionTabComponent } from './archive-preview/archive-unit-description-tab/archive-unit-description-tab.component';
 import { ArchivePreviewComponent } from './archive-preview/archive-preview.component';
 import { ArchiveUnitInformationTabComponent } from './archive-preview/archive-unit-information-tab/archive-unit-information-tab.component';
@@ -100,6 +100,7 @@ import { TranslateModule } from '@ngx-translate/core';
     VitamUILibraryModule,
     TranslateModule,
     SelectComponent,
+    SelectWithTreeComponent,
   ],
   declarations: [
     AccessRuleSearchComponent,

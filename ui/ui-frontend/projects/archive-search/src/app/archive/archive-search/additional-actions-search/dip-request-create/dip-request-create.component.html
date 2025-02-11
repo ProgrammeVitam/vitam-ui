@@ -1,29 +1,26 @@
-<div class="header">
-  <vitamui-common-progress-bar [index]="stepIndex" [count]="stepCount"></vitamui-common-progress-bar>
+<vitamui-dialog-header
+  [stepper]="stepper"
+  [subhead]="'ARCHIVE_SEARCH.DIP.DIP_EXPORT' | translate"
+  [title]="['ARCHIVE_SEARCH.DIP.DIP_CONTEXT' | translate, 'ARCHIVE_SEARCH.DIP.DIP_PARAMS' | translate]"
+></vitamui-dialog-header>
+
+<div class="text medium light">
+  <ng-container *ngIf="selectedItemCountKnown && itemSelected > 1"
+    >{{ itemSelected }} {{ 'ARCHIVE_SEARCH.DIP.ITEMS_SELECTED' | translate }}
+  </ng-container>
+  <ng-container *ngIf="selectedItemCountKnown && itemSelected === 1"
+    >{{ itemSelected }} {{ 'ARCHIVE_SEARCH.DIP.ONE_ITEM_SELECTED' | translate }}
+  </ng-container>
+  <ng-container *ngIf="!selectedItemCountKnown"
+    >{{ 'ARCHIVE_SEARCH.MORE_THAN_THRESHOLD' | translate }} {{ 'ARCHIVE_SEARCH.DIP.ITEMS_SELECTED' | translate }}
+  </ng-container>
 </div>
-<div class="content vitamui-form">
-  <div class="text-title">{{ 'ARCHIVE_SEARCH.DIP.DIP_EXPORT' | translate }}</div>
-  <div class="text large bold">
-    <ng-container *ngIf="stepIndex === 0">{{ 'ARCHIVE_SEARCH.DIP.DIP_CONTEXT' | translate }}</ng-container>
-    <ng-container *ngIf="stepIndex === 1">{{ 'ARCHIVE_SEARCH.DIP.DIP_PARAMS' | translate }}</ng-container>
-  </div>
-  <div class="text-title">
-    <ng-container *ngIf="selectedItemCountKnown && itemSelected > 1"
-      >{{ itemSelected }} {{ 'ARCHIVE_SEARCH.DIP.ITEMS_SELECTED' | translate }}
-    </ng-container>
-    <ng-container *ngIf="selectedItemCountKnown && itemSelected === 1"
-      >{{ itemSelected }} {{ 'ARCHIVE_SEARCH.DIP.ONE_ITEM_SELECTED' | translate }}
-    </ng-container>
-    <ng-container *ngIf="!selectedItemCountKnown"
-      >{{ 'ARCHIVE_SEARCH.MORE_THAN_THRESHOLD' | translate }} {{ 'ARCHIVE_SEARCH.DIP.ITEMS_SELECTED' | translate }}
-    </ng-container>
-  </div>
-  <br />
-  <vitamui-common-stepper [selectedIndex]="stepIndex" (selectionChange)="stepIndex = $event.selectedIndex">
-    <cdk-step>
-      <form [formGroup]="formGroups[0]">
+
+<vitamui-common-stepper #stepper>
+  <cdk-step>
+    <form [formGroup]="formGroups[0]">
+      <mat-dialog-content class="gap-3 align-items-stretch">
         <vitamui-common-input
-          class="col-10 px-0"
           formControlName="messageRequestIdentifier"
           minlength="2"
           maxlength="100"
@@ -36,7 +33,6 @@
         </vitamui-common-input>
 
         <vitamui-common-input
-          class="col-10 px-0"
           formControlName="requesterIdentifier"
           minlength="2"
           maxlength="100"
@@ -49,7 +45,6 @@
         </vitamui-common-input>
 
         <vitamui-common-input
-          class="col-10 px-0"
           formControlName="archivalAgencyIdentifier"
           minlength="2"
           maxlength="300"
@@ -62,7 +57,6 @@
         </vitamui-common-input>
 
         <vitamui-common-input
-          class="col-10 px-0"
           [required]="false"
           formControlName="authorizationRequestReplyIdentifier"
           maxlength="300"
@@ -71,7 +65,6 @@
         </vitamui-common-input>
 
         <vitamui-common-input
-          class="col-10 px-0"
           [required]="false"
           formControlName="submissionAgencyIdentifier"
           maxlength="100"
@@ -80,81 +73,75 @@
         </vitamui-common-input>
 
         <vitamui-common-input
-          class="col-10 px-0"
           [required]="false"
           formControlName="comment"
           maxlength="300"
           placeholder="{{ 'ARCHIVE_SEARCH.DIP.COMMENT' | translate }}"
         >
         </vitamui-common-input>
+      </mat-dialog-content>
+    </form>
 
-        <div class="hgap-4">
-          <button type="button" class="btn primary" [disabled]="formGroups[0].invalid" cdkStepperNext>
-            {{ 'ARCHIVE_SEARCH.DIP.NEXT' | translate }}
-          </button>
-          <button type="button" class="btn link cancel" (click)="onCancel()">
-            {{ 'ARCHIVE_SEARCH.DIP.CANCEL' | translate }}
-          </button>
-        </div>
-      </form>
-    </cdk-step>
-    <cdk-step>
-      <form [formGroup]="formGroups[1]" (ngSubmit)="onSubmit()">
-        <div class="gap-6">
-          <div class="gap-4">
+    <mat-dialog-actions>
+      <vitamui-next-step [disabled]="formGroups[0].invalid"></vitamui-next-step>
+      <button type="button" class="btn link cancel" (click)="onCancel()">
+        {{ 'ARCHIVE_SEARCH.DIP.CANCEL' | translate }}
+      </button>
+    </mat-dialog-actions>
+  </cdk-step>
+  <cdk-step>
+    <form [formGroup]="formGroups[1]" (ngSubmit)="onSubmit()">
+      <mat-dialog-content>
+        <div class="gap-4">
+          <div class="gap-2">
+            <div class="text medium bold primary">{{ 'ARCHIVE_SEARCH.DIP.LOGS' | translate }}</div>
+            <mat-button-toggle-group
+              formControlName="includeLifeCycleLogs"
+              #group="matButtonToggleGroup"
+              class="vitamui-button-toggle-group"
+            >
+              <mat-button-toggle [value]="true">{{ 'ARCHIVE_SEARCH.DIP.INCLUDE' | translate }}</mat-button-toggle>
+              <mat-button-toggle [value]="false">{{ 'ARCHIVE_SEARCH.DIP.EXCLUDE' | translate }}</mat-button-toggle>
+            </mat-button-toggle-group>
+          </div>
+
+          <div class="gap-2">
+            <div class="text medium bold primary">{{ 'ARCHIVE_SEARCH.DIP.SEDA_VERSION' | translate }}</div>
+            <mat-button-toggle-group formControlName="sedaVersion" class="vitamui-button-toggle-group">
+              <mat-button-toggle value="2.1">SEDA 2.1</mat-button-toggle>
+              <mat-button-toggle value="2.2">SEDA 2.2</mat-button-toggle>
+              <mat-button-toggle value="2.3">SEDA 2.3</mat-button-toggle>
+            </mat-button-toggle-group>
+          </div>
+
+          <div class="gap-5">
             <div class="gap-2">
-              <div class="text-text-medium-bold primary">{{ 'ARCHIVE_SEARCH.DIP.LOGS' | translate }}</div>
-              <mat-button-toggle-group
-                formControlName="includeLifeCycleLogs"
-                #group="matButtonToggleGroup"
-                class="vitamui-button-toggle-group"
-              >
-                <mat-button-toggle [value]="true">{{ 'ARCHIVE_SEARCH.DIP.INCLUDE' | translate }}</mat-button-toggle>
-                <mat-button-toggle [value]="false">{{ 'ARCHIVE_SEARCH.DIP.EXCLUDE' | translate }}</mat-button-toggle>
+              <div class="text medium bold primary">{{ 'ARCHIVE_SEARCH.DIP.INCLUDE_OBJECTS' | translate }}</div>
+              <mat-button-toggle-group formControlName="includeObjects" class="vitamui-button-toggle-group">
+                <mat-button-toggle [value]="UsageVersionEnum.ALL">{{ 'ARCHIVE_SEARCH.DIP.ALL' | translate }} </mat-button-toggle>
+                <mat-button-toggle [value]="UsageVersionEnum.NONE">{{ 'ARCHIVE_SEARCH.DIP.NONE' | translate }} </mat-button-toggle>
+                <mat-button-toggle [value]="UsageVersionEnum.SELECTION"
+                  >{{ 'ARCHIVE_SEARCH.DIP.SELECTION' | translate }}
+                </mat-button-toggle>
               </mat-button-toggle-group>
             </div>
 
-            <div class="gap-2">
-              <div class="text-text-medium-bold primary">{{ 'ARCHIVE_SEARCH.DIP.SEDA_VERSION' | translate }}</div>
-              <mat-button-toggle-group formControlName="sedaVersion" class="vitamui-button-toggle-group">
-                <mat-button-toggle value="2.1">SEDA 2.1</mat-button-toggle>
-                <mat-button-toggle value="2.2">SEDA 2.2</mat-button-toggle>
-                <mat-button-toggle value="2.3">SEDA 2.3</mat-button-toggle>
-              </mat-button-toggle-group>
-            </div>
-
-            <div class="gap-5">
-              <div class="gap-2">
-                <div class="text-text-medium-bold primary">{{ 'ARCHIVE_SEARCH.DIP.INCLUDE_OBJECTS' | translate }}</div>
-                <mat-button-toggle-group formControlName="includeObjects" class="vitamui-button-toggle-group">
-                  <mat-button-toggle [value]="UsageVersionEnum.ALL">{{ 'ARCHIVE_SEARCH.DIP.ALL' | translate }} </mat-button-toggle>
-                  <mat-button-toggle [value]="UsageVersionEnum.NONE">{{ 'ARCHIVE_SEARCH.DIP.NONE' | translate }} </mat-button-toggle>
-                  <mat-button-toggle [value]="UsageVersionEnum.SELECTION"
-                    >{{ 'ARCHIVE_SEARCH.DIP.SELECTION' | translate }}
-                  </mat-button-toggle>
-                </mat-button-toggle-group>
-              </div>
-
-              <div class="gap-2" *ngIf="formGroups[1].get('includeObjects').value === UsageVersionEnum.SELECTION" formArrayName="usages">
-                <div *ngFor="let usage of usages.controls; let i = index" class="hgap-6">
+            <div class="gap-2" *ngIf="formGroups[1].get('includeObjects').value === UsageVersionEnum.SELECTION" formArrayName="usages">
+              @for (usage of usages.controls; track usage; let i = $index) {
+                <div class="hgap-6">
                   <div class="hgap-4" [formGroupName]="i">
-                    <mat-form-field class="vitamui-mat-select usage">
-                      <mat-select
-                        placeholder="{{ 'ARCHIVE_SEARCH.DIP.TARGET_USAGE_#' | translate: { i: i + 1 } }}"
-                        panelClass="vitamui-mat-select"
-                        formControlName="usage"
-                      >
-                        <mat-option *ngFor="let usage of listUsages(i)" [value]="usage"
-                          >{{ 'ARCHIVE_SEARCH.DIP.USAGES.' + usage | translate }}
-                        </mat-option>
-                      </mat-select>
-                      <div class="select-arrow">
-                        <i class="material-icons">keyboard_arrow_up</i>
-                        <i class="material-icons">keyboard_arrow_down</i>
-                      </div>
-                    </mat-form-field>
+                    <vitamui-select
+                      *ngIf="usageOptions[i]"
+                      [multiple]="false"
+                      [enableSearch]="false"
+                      [enableSelectAll]="false"
+                      [placeholder]="'ARCHIVE_SEARCH.DIP.TARGET_USAGE_#' | translate: { i: i + 1 }"
+                      formControlName="usage"
+                      [options]="usageOptions[i]"
+                    ></vitamui-select>
+
                     <div class="gap-2">
-                      <label class="caption-caption-bold primary"> {{ 'ARCHIVE_SEARCH.DIP.USAGE_VERSION' | translate }}</label>
+                      <label class="text caption bold primary"> {{ 'ARCHIVE_SEARCH.DIP.USAGE_VERSION' | translate }}</label>
                       <mat-radio-group class="hgap-2" formControlName="version">
                         <mat-radio-button value="FIRST">{{ 'ARCHIVE_SEARCH.DIP.USAGE_VERSIONS.FIRST' | translate }} </mat-radio-button>
                         <mat-radio-button value="ALL">{{ 'ARCHIVE_SEARCH.DIP.USAGE_VERSIONS.ALL' | translate }} </mat-radio-button>
@@ -162,44 +149,41 @@
                       </mat-radio-group>
                     </div>
                   </div>
-                  <button *ngIf="i > 0" class="delete-button" type="button" (click)="removeUsage(i)">
+                  <button *ngIf="i > 0" class="btn btn-circle outline-primary small" type="button" (click)="removeUsage(i)">
                     <i class="vitamui-icon vitamui-icon-delete"></i>
                   </button>
                 </div>
+              }
 
-                <button *ngIf="usages.length < dataObjectVersions.length" type="button" class="btn link" (click)="addUsage()">
-                  <i class="vitamui-icon vitamui-icon-add"></i>
-                  {{ 'ARCHIVE_SEARCH.DIP.ADD_USAGE' | translate }}
-                </button>
-              </div>
-            </div>
-
-            <div class="gap-2">
-              <div class="text-text-medium-bold primary">{{ 'ARCHIVE_SEARCH.DIP.EXPORT_FORMAT' | translate }}</div>
-              <div class="col-6">
-                <vitamui-common-slide-toggle formControlName="exportWithTree">
-                  {{ 'ARCHIVE_SEARCH.DIP.EXPORT_FORMAT_MESSAGE' | translate }}
-                </vitamui-common-slide-toggle>
-              </div>
+              <button *ngIf="usages.length < dataObjectVersions.length" type="button" class="btn link" (click)="addUsage()">
+                <i class="vitamui-icon vitamui-icon-add"></i>
+                {{ 'ARCHIVE_SEARCH.DIP.ADD_USAGE' | translate }}
+              </button>
             </div>
           </div>
 
-          <div class="gap-4">
-            <div class="hgap-4">
-              <button type="submit" class="btn primary mr-4" [disabled]="isLoading || formGroups[1].invalid">
-                {{ 'ARCHIVE_SEARCH.DIP.EXPORT_DIP' | translate }}
-              </button>
-              <button type="button" class="btn link cancel" (click)="onCancel()">
-                {{ 'ARCHIVE_SEARCH.DIP.CANCEL' | translate }}
-              </button>
+          <div class="gap-2">
+            <div class="text medium bold primary">{{ 'ARCHIVE_SEARCH.DIP.EXPORT_FORMAT' | translate }}</div>
+            <div class="col-6">
+              <vitamui-common-slide-toggle formControlName="exportWithTree">
+                {{ 'ARCHIVE_SEARCH.DIP.EXPORT_FORMAT_MESSAGE' | translate }}
+              </vitamui-common-slide-toggle>
             </div>
-            <button type="button" class="btn link back" cdkStepperPrevious>
-              <i class="vitamui-icon vitamui-icon-chevron-left"></i>
-              {{ 'COMMON.BACK' | translate }}
-            </button>
           </div>
         </div>
-      </form>
-    </cdk-step>
-  </vitamui-common-stepper>
-</div>
+      </mat-dialog-content>
+
+      <mat-dialog-actions>
+        <div>
+          <button type="submit" class="btn primary" [disabled]="isLoading || formGroups[1].invalid">
+            {{ 'ARCHIVE_SEARCH.DIP.EXPORT_DIP' | translate }}
+          </button>
+          <button type="button" class="btn link cancel" (click)="onCancel()">
+            {{ 'ARCHIVE_SEARCH.DIP.CANCEL' | translate }}
+          </button>
+        </div>
+        <vitamui-previous-step></vitamui-previous-step>
+      </mat-dialog-actions>
+    </form>
+  </cdk-step>
+</vitamui-common-stepper>

@@ -1,7 +1,8 @@
 @import '../mixins/elevation';
 @import '../mixins/material/panel';
 
-.mat-mdc-select-panel {
+.mat-mdc-select-panel,
+.vitamui-autocomplete-panel {
   @include panel;
 
   --mat-option-label-text-color: var(--vitamui-grey-900);
@@ -23,8 +24,10 @@
     background-color: var(--mat-option-hover-state-layer-color) !important;
   }
   .mat-mdc-option.mdc-list-item--disabled {
-    color: var(--vitamui-grey-600);
-    background-color: var(--vitamui-grey-200);
+    &:not(.fake-option) {
+      color: var(--vitamui-grey-600);
+      background-color: var(--vitamui-grey-200);
+    }
     .mdc-list-item__primary-text {
       opacity: 1;
     }

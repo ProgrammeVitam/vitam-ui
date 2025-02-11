@@ -42,7 +42,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatTabsModule } from '@angular/material/tabs';
 import { RouterModule } from '@angular/router';
 
-import { VitamUICommonModule } from 'vitamui-library';
+import { VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 import { SharedModule } from '../../shared/shared.module';
 import { UnitsFormModule } from '../units-form/units-form.module';
 import { GroupPopupComponent } from './group-popup.component';
@@ -51,18 +51,23 @@ import { InformationTabComponent } from './information-tab/information-tab.compo
 import { UnitsEditComponent } from './information-tab/units-edit/units-edit.component';
 import { ProfilesEditComponent } from './profiles-tab/profiles-edit/profiles-edit.component';
 import { ProfilesTabComponent } from './profiles-tab/profiles-tab.component';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   imports: [
     CommonModule,
-    SharedModule,
-    RouterModule,
     MatMenuModule,
-    MatTabsModule,
     MatProgressBarModule,
+    MatTabsModule,
     ReactiveFormsModule,
-    VitamUICommonModule,
+    RouterModule,
+    SharedModule,
+    TranslateModule,
     UnitsFormModule,
+    VitamUICommonModule,
+    VitamUILibraryModule,
+    MatDialogModule,
   ],
   declarations: [
     GroupPopupComponent,

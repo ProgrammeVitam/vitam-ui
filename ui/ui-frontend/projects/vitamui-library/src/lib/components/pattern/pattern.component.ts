@@ -1,0 +1,129 @@
+/*
+ * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2022)
+ * and the signatories of the "VITAM - Accord du Contributeur" agreement.
+ *
+ * contact@programmevitam.fr
+ *
+ * This software is a computer program whose purpose is to implement
+ * implement a digital archiving front-office system for the secure and
+ * efficient high volumetry VITAM solution.
+ *
+ * This software is governed by the CeCILL-C license under French law and
+ * abiding by the rules of distribution of free software.  You can  use,
+ * modify and/ or redistribute the software under the terms of the CeCILL-C
+ * license as circulated by CEA, CNRS and INRIA at the following URL
+ * "http://www.cecill.info".
+ *
+ * As a counterpart to the access to the source code and  rights to copy,
+ * modify and redistribute granted by the license, users are provided only
+ * with a limited warranty  and the software's author,  the holder of the
+ * economic rights,  and the successive licensors  have only  limited
+ * liability.
+ *
+ * In this respect, the user's attention is drawn to the risks associated
+ * with loading,  using,  modifying and/or developing or reproducing the
+ * software by the user in light of its specific status of free software,
+ * that may mean  that it is complicated to manipulate,  and  that  also
+ * therefore means  that it is reserved for developers  and  experienced
+ * professionals having in-depth computer knowledge. Users are therefore
+ * encouraged to load and test the software's suitability as regards their
+ * requirements in conditions enabling the security of their systems and/or
+ * data to be ensured and,  more generally, to use and operate it in the
+ * same conditions as regards security.
+ *
+ * The fact that you are presently reading this means that you have had
+ * knowledge of the CeCILL-C license and that you accept its terms.
+ */
+import { Component, forwardRef, Input, ViewChild } from '@angular/core';
+import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { CommonModule } from '@angular/common';
+import { MatSelectModule } from '@angular/material/select';
+import { SelectComponent } from '../select/select.component';
+import { Option } from '../../../app/modules';
+
+export const PATTERN_VALUE_ACCESSOR: any = {
+  provide: NG_VALUE_ACCESSOR,
+  // eslint-disable-next-line no-use-before-define
+  useExisting: forwardRef(() => PatternComponent),
+  multi: true,
+};
+
+@Component({
+  // eslint-disable-next-line @angular-eslint/component-selector
+  selector: 'app-pattern',
+  templateUrl: './pattern.component.html',
+  styleUrls: ['./pattern.component.scss'],
+  imports: [CommonModule, ReactiveFormsModule, MatSelectModule, TranslateModule, SelectComponent],
+  providers: [PATTERN_VALUE_ACCESSOR],
+  standalone: true,
+})
+export class PatternComponent implements ControlValueAccessor {
+  @Input() set options(options: Array<{ value: string; disabled?: boolean }>) {
+    this.availableOptions = (options || [])
+      .filter((option) => this.isAvailable(option.value))
+      .map((o) => ({
+        key: o.value,
+        label: `${o.value} ${o.disabled ? this.translateService.instant('SHARED.PATTERN_ALREADY_USED') : ''}`,
+        disabled: o.disabled,
+      }));
+  }
+  availableOptions: Option[];
+
+  @Input() vitamuiMiniMode = false;
+
+  @ViewChild('select', { static: true }) select: SelectComponent;
+
+  patterns: string[];
+  control = new FormControl();
+
+  onChange: (_: any) => void;
+  onTouched: () => void;
+
+  constructor(private translateService: TranslateService) {}
+
+  writeValue(patterns: string[]) {
+    this.patterns = (patterns || []).slice();
+  }
+
+  registerOnChange(fn: (_: any) => void) {
+    this.onChange = fn;
+  }
+
+  registerOnTouched(fn: () => void) {
+    this.onTouched = fn;
+  }
+
+  add() {
+    if (!this.controlValueValid()) {
+      return;
+    }
+    this.patterns.push(this.control.value);
+    this.availableOptions.find((o) => o.key === this.control.value).disabled = true;
+    this.onChange(this.patterns);
+    if (this.enabledOptions().length <= 0 && this.control.enabled) {
+      this.control.disable();
+    }
+  }
+
+  remove(pattern: string) {
+    this.patterns = this.patterns.filter((p) => p !== pattern);
+    this.availableOptions.find((o) => o.key === pattern).disabled = false;
+    this.onChange(this.patterns);
+    if (this.enabledOptions().length > 0 && this.control.disabled) {
+      this.control.enable();
+    }
+  }
+
+  enabledOptions(): Option[] {
+    return this.availableOptions.filter((option) => !option.disabled);
+  }
+
+  controlValueValid(): boolean {
+    return !(this.patterns || []).includes(this.control.value) && !!this.control.value;
+  }
+
+  isAvailable(value: string): boolean {
+    return !(this.patterns || []).includes(value);
+  }
+}

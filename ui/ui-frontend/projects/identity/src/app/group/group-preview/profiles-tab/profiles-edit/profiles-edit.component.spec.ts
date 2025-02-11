@@ -100,12 +100,6 @@ describe('ProfilesEditComponent', () => {
   });
 
   describe('DOM', () => {
-    it('should have a title', () => {
-      const elTitle = fixture.nativeElement.querySelector('.text, .large');
-      expect(elTitle).toBeTruthy();
-      expect(elTitle.textContent).toContain('GROUP.PROFILE.MODAL.TITLE "Test"');
-    });
-
     it('should have a app-profiles-form', () => {
       const elProfilesForm = fixture.nativeElement.querySelector('app-profiles-form[formControlName=profileIds]');
       expect(elProfilesForm).toBeTruthy();

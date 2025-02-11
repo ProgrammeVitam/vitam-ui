@@ -44,26 +44,31 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 
-import { RoleToggleModule, VitamUICommonModule } from 'vitamui-library';
+import { RoleToggleModule, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 import { SharedModule } from '../../shared/shared.module';
 import { GroupAttributionModule } from '../../user/group-attribution/group-attribution.module';
 import { ProfileCreateComponent } from './profile-create.component';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   imports: [
     CommonModule,
-    SharedModule,
+    FormsModule,
+    GroupAttributionModule,
     MatButtonToggleModule,
     MatFormFieldModule,
     MatInputModule,
     MatProgressBarModule,
     MatSelectModule,
     MatSnackBarModule,
-    FormsModule,
     ReactiveFormsModule,
-    GroupAttributionModule,
-    VitamUICommonModule,
     RoleToggleModule,
+    SharedModule,
+    TranslateModule,
+    VitamUICommonModule,
+    VitamUILibraryModule,
+    MatDialogModule,
   ],
   declarations: [ProfileCreateComponent],
 })

@@ -57,7 +57,12 @@ export * from './lib/components/vitamui-radio/vitamui-radio.module';
 export * from './lib/components/vitamui-select-all-option/vitamui-select-all-option.component';
 export * from './lib/components/vitamui-select-all-option/vitamui-select-all-option.module';
 
+export * from './lib/components/dialog-header/dialog-header.component';
+export * from './lib/components/next-step/next-step.component';
+export * from './lib/components/pattern/pattern.component';
+export * from './lib/components/previous-step/previous-step.component';
 export * from './lib/components/select/select.component';
+export * from './lib/components/select-with-tree/select-with-tree.component';
 export * from './lib/components/search-with-type-selector/search-with-type-selector.component';
 export * from './lib/components/form-field-value-wrapper/form-field-value-wrapper.component';
 
@@ -137,8 +142,6 @@ export * from './app/modules/components/vitamui-body/vitamui-body.component';
 export * from './app/modules/components/vitamui-body/vitamui-body.module';
 export * from './app/modules/components/vitamui-common-banner/vitamui-common-banner.component';
 export * from './app/modules/components/vitamui-common-banner/vitamui-common-banner.module';
-export * from './app/modules/components/vitamui-common-select/vitamui-common-select.component';
-export * from './app/modules/components/vitamui-common-select/vitamui-common-select.module';
 export * from './app/modules/components/vitamui-content-breadcrumb/vitamui-breadcrumb/vitamui-breadcrumb.component';
 export * from './app/modules/components/vitamui-content-breadcrumb/vitamui-content-breadcrumb.module';
 export * from './app/modules/components/vitamui-content-breadcrumb/vitamui-title-breadcrumb/vitamui-title-breadcrumb.component';

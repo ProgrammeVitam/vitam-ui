@@ -188,9 +188,7 @@ export class VitamUIHttpInterceptor implements HttpInterceptor {
 
   private displayErrorDialog(): void {
     if (!this.errorDialog) {
-      this.errorDialog = this.matDialog.open(ErrorDialogComponent, {
-        panelClass: 'vitamui-modal',
-      });
+      this.errorDialog = this.matDialog.open(ErrorDialogComponent);
       this.errorDialog.afterClosed().subscribe(() => (this.errorDialog = null));
     }
   }

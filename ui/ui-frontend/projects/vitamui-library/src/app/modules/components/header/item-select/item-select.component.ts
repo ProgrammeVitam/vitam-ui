@@ -36,6 +36,7 @@
  */
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MenuOption } from '../../navbar/customer-menu/menu-option.interface';
+import { Option } from '../../autocomplete';
 
 @Component({
   selector: 'vitamui-common-item-select',
@@ -44,11 +45,9 @@ import { MenuOption } from '../../navbar/customer-menu/menu-option.interface';
 })
 export class ItemSelectComponent {
   @Input() label: string;
-
   @Input() selectedLabel: string;
-
   @Input() items: MenuOption[];
-
+  @Input() appearance: 'fill' | 'outline' = 'fill';
   @Output() itemSelected = new EventEmitter<MenuOption>();
 
   @Input() set selectedItem(value: MenuOption) {
@@ -64,5 +63,9 @@ export class ItemSelectComponent {
   public selectItem(itemLabel: string): void {
     const item = this.items.find((value) => value.label === itemLabel);
     this.itemSelected.emit(item);
+  }
+
+  getItems(): Option[] {
+    return this.items.map((item) => ({ key: item.label, label: item.label }));
   }
 }

@@ -95,7 +95,7 @@ export class OntologyComponent extends SidenavPage<Ontology> implements OnInit {
   }
 
   openCreateOntologyDialog() {
-    const dialogRef = this.dialog.open(OntologyCreateComponent, { panelClass: 'vitamui-modal', disableClose: true });
+    const dialogRef = this.dialog.open(OntologyCreateComponent, { disableClose: true });
     dialogRef.afterClosed().subscribe((result) => {
       if (result?.success) {
         //TODO(refacto): created$ in service, refresh in component
@@ -163,7 +163,6 @@ export class OntologyComponent extends SidenavPage<Ontology> implements OnInit {
   private openImportDialog(params: ImportDialogParam) {
     this.dialog
       .open(ImportDialogComponent, {
-        panelClass: 'vitamui-modal',
         disableClose: true,
         data: params,
       })

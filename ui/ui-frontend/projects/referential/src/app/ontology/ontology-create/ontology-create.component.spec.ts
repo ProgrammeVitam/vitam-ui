@@ -45,12 +45,13 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { EMPTY, of } from 'rxjs';
-import { ConfirmDialogService } from 'vitamui-library';
+import { ConfirmDialogService, VitamUILibraryModule } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 
 import { OntologyService } from '../ontology.service';
 import { OntologyCreateComponent } from './ontology-create.component';
 import { OntologyCreateValidators } from './ontology-create.validators';
+import { TranslateModule } from '@ngx-translate/core';
 
 const expectedOntology = {
   shortName: 'Name',
@@ -92,14 +93,16 @@ describe('OntologyCreateComponent', () => {
 
     await TestBed.configureTestingModule({
       imports: [
-        ReactiveFormsModule,
-        MatFormFieldModule,
-        MatSelectModule,
         MatButtonToggleModule,
+        MatFormFieldModule,
         MatProgressBarModule,
-        NoopAnimationsModule,
         MatProgressSpinnerModule,
+        MatSelectModule,
+        NoopAnimationsModule,
+        ReactiveFormsModule,
+        TranslateModule.forRoot(),
         VitamUICommonTestModule,
+        VitamUILibraryModule,
       ],
       declarations: [OntologyCreateComponent],
       providers: [

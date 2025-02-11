@@ -59,6 +59,7 @@ import { IngestContractInformationTabComponent } from './ingest-contract-informa
 import { IngestContractObjectTabComponent } from './ingest-contract-object-tab/ingest-contract-object-tab.component';
 import { IngestContractPreviewComponent } from './ingest-contract-preview.component';
 import { IngestContractSignatureTabComponent } from './ingest-contract-signature-tab/ingest-contract-signature-tab.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [
@@ -90,6 +91,7 @@ import { IngestContractSignatureTabComponent } from './ingest-contract-signature
     SelectComponent,
     VitamUICommonModule,
     VitamUILibraryModule,
+    TranslateModule,
   ],
   exports: [IngestContractPreviewComponent],
 })

@@ -72,7 +72,7 @@ export class FileFormatComponent extends SidenavPage<FileFormat> implements OnIn
   }
 
   openCreateFileFormatDialog() {
-    const dialogRef = this.dialog.open(FileFormatCreateComponent, { panelClass: 'vitamui-modal', disableClose: true });
+    const dialogRef = this.dialog.open(FileFormatCreateComponent, { disableClose: true });
     dialogRef.afterClosed().subscribe((result) => {
       if (result.success) {
         this.refreshList();
@@ -129,7 +129,6 @@ export class FileFormatComponent extends SidenavPage<FileFormat> implements OnIn
 
     this.dialog
       .open(ImportDialogComponent, {
-        panelClass: 'vitamui-modal',
         disableClose: true,
         data: params,
       })

@@ -45,7 +45,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTabsModule } from '@angular/material/tabs';
 import { RouterModule } from '@angular/router';
-import { VitamUICommonModule } from 'vitamui-library';
+import { VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 
 import { CustomParamsModule } from '../../shared/custom-params/custom-params.module';
 import { SharedModule } from '../../shared/shared.module';
@@ -84,6 +84,7 @@ import { TranslateModule } from '@ngx-translate/core';
     VitamUICommonModule,
     CustomParamsModule,
     TranslateModule,
+    VitamUILibraryModule,
   ],
   declarations: [
     CustomerPreviewComponent,

@@ -63,7 +63,6 @@ export class SecurityProfileComponent extends SidenavPage<SecurityProfile> imple
 
   openCreateSecurityProfileDialog() {
     const dialogRef = this.dialog.open(SecurityProfileCreateComponent, {
-      panelClass: 'vitamui-modal',
       disableClose: true,
     });
     dialogRef.componentInstance.isSlaveMode = this.isSlaveMode;

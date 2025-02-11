@@ -51,8 +51,7 @@ const ATR_EXTENSION = '.xml';
   styleUrls: ['./transfer-acknowledgment.component.scss'],
 })
 export class TransferAcknowledgmentComponent implements OnInit, OnDestroy {
-  public stepIndex = 0;
-  public stepCount = 3;
+  stepIndex = 0;
   fileSize = 0;
 
   isAtrNotValid = false;
@@ -132,13 +131,9 @@ export class TransferAcknowledgmentComponent implements OnInit, OnDestroy {
     this.transferAcknowledgementSubscription?.unsubscribe();
   }
 
-  backToPreviousStep() {
-    this.stepIndex = this.stepIndex - 1;
-  }
-
   onCancel() {
     const dialogToOpen = this.confirmDeleteTransferAcknowledgmentDialog;
-    this.dialogRefToClose = this.dialog.open(dialogToOpen, { panelClass: 'vitamui-dialog' });
+    this.dialogRefToClose = this.dialog.open(dialogToOpen, { panelClass: 'small' });
   }
 
   onClose() {

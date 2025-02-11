@@ -188,7 +188,7 @@ export class UnlockCategoryInheritanceComponent implements OnDestroy {
 
   onCancelUnlockCategoryInheritance() {
     const dialogToOpen = this.confirmDeleteUnlockCategoryInheritance;
-    const dialogRef = this.dialog.open(dialogToOpen, { panelClass: 'vitamui-dialog' });
+    const dialogRef = this.dialog.open(dialogToOpen);
 
     this.showConfirmDeleteUnlockCategoryInheritanceSuscription = dialogRef
       .afterClosed()

@@ -357,7 +357,6 @@ describe('CustomerListComponent', () => {
     expect(matDialogSpy.open.calls.count()).toBe(1);
     expect(matDialogSpy.open).toHaveBeenCalledWith(OwnerCreateComponent, {
       data: { customer: customers[2] },
-      panelClass: 'vitamui-modal',
       disableClose: true,
     });
   });

@@ -48,6 +48,8 @@ import { SelectComponent, VitamUICommonModule, VitamUILibraryModule } from 'vita
 
 import { SharedModule } from '../../../../../identity/src/app/shared/shared.module';
 import { IngestContractCreateComponent } from './ingest-contract-create.component';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   imports: [
@@ -64,6 +66,8 @@ import { IngestContractCreateComponent } from './ingest-contract-create.componen
     SharedModule,
     VitamUICommonModule,
     VitamUILibraryModule,
+    TranslateModule,
+    MatDialogModule,
   ],
   declarations: [IngestContractCreateComponent],
 })

@@ -102,16 +102,12 @@ export class PersistentIdentifierSearchComponent {
 
   openPurgedDialog(ark: string, purgedPersistentIdentifier: PurgedPersistentIdentifierDto) {
     this.dialog.open(PurgedPersistentIdentifierModalComponent, {
-      width: '800px',
-      panelClass: 'vitamui-dialog',
       data: { ark, purgedPersistentIdentifier },
     });
   }
 
   openFoundObjectDialog(ark: string, object: ApiUnitObject) {
     this.dialog.open(FoundObjectModalComponent, {
-      width: '800px',
-      panelClass: 'vitamui-dialog',
       data: { ark, object },
     });
   }

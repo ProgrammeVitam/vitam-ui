@@ -64,9 +64,6 @@ export class AccessContractCreateComponent implements OnInit, OnDestroy {
 
   form: FormGroup;
 
-  stepIndex = 0;
-  stepCount = 4;
-
   private unsubscribe = new Subject<void>();
 
   allNodes = new FormControl(false);

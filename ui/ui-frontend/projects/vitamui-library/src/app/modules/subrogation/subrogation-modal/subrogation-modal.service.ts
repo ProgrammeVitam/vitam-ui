@@ -47,7 +47,6 @@ export class SubrogationModalService {
 
   open(domains: string[], customerId: string, subrogateUser?: { email: string; firstname?: string; lastname?: string }) {
     this.dialog.open(SubrogationModalComponent, {
-      panelClass: 'vitamui-modal',
       data: { domains, customerId, user: subrogateUser },
     });
   }

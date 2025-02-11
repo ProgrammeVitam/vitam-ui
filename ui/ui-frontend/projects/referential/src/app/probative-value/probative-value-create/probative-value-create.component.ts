@@ -53,6 +53,7 @@ import {
   VitamuiHttpHeaders,
 } from 'vitamui-library';
 import { ProbativeValueService } from '../probative-value.service';
+import { sizes } from '../../ontology/ontology-form-options';
 
 @Component({
   selector: 'app-probative-value-create',
@@ -195,4 +196,6 @@ export class ProbativeValueCreateComponent implements OnInit, OnDestroy {
       });
     }
   }
+
+  protected readonly sizes = sizes;
 }

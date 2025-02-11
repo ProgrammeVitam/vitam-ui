@@ -39,13 +39,13 @@
         "HOLDING_SCHEME": "Importer un arbre de positionnement",
         "FILING_SCHEME": "Importer un plan de classement",
         "DEFAULT_WORKFLOW": "Verser un paquet d'archives (SIP)",
-        "BLANK_WORKFLOW": "Tester le versement d'un paquet d'archives (SIP)"
+        "BLANK_TEST": "Tester le versement d'un paquet d'archives (SIP)"
       },
       "MESSAGE_IMPORT_TYPE": {
         "HOLDING_SCHEME": "Nouvel arbre de positionnement",
         "FILING_SCHEME": "Nouveau plan de classement",
         "DEFAULT_WORKFLOW": "Dépôt d'un versement",
-        "BLANK_WORKFLOW": "Entrée à blanc"
+        "BLANK_TEST": "Entrée à blanc"
       }
     }
   },

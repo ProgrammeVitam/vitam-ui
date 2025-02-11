@@ -44,10 +44,12 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 
-import { VitamUICommonModule } from 'vitamui-library';
+import { VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 import { SharedModule } from '../../../../../identity/src/app/shared/shared.module';
 import { SecurityProfileCreateComponent } from './security-profile-create.component';
 import { SecurityProfileEditPermissionModule } from './security-profile-edit-permission/security-profile-edit-permission.module';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   imports: [
@@ -62,6 +64,9 @@ import { SecurityProfileEditPermissionModule } from './security-profile-edit-per
     ReactiveFormsModule,
     VitamUICommonModule,
     SecurityProfileEditPermissionModule,
+    TranslateModule,
+    MatDialogModule,
+    VitamUILibraryModule,
   ],
   declarations: [SecurityProfileCreateComponent],
 })

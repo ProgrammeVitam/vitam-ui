@@ -146,7 +146,7 @@ export class OntologyListComponent extends InfiniteScrollTable<Ontology> impleme
   }
 
   deleteOntologyDialog(ontology: Ontology) {
-    const dialog = this.matDialog.open(ConfirmActionComponent, { panelClass: 'vitamui-confirm-dialog' });
+    const dialog = this.matDialog.open(ConfirmActionComponent, { panelClass: 'small' });
 
     dialog.componentInstance.objectType = this.translateService.instant('ONTOLOGY.HOME.TITLE');
     dialog.componentInstance.objectName = ontology.identifier;

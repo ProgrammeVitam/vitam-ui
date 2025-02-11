@@ -66,7 +66,7 @@ export class ContextComponent extends SidenavPage<Context> implements OnInit {
   }
 
   openCreateContextDialog() {
-    const dialogRef = this.dialog.open(ContextCreateComponent, { panelClass: 'vitamui-modal', disableClose: true });
+    const dialogRef = this.dialog.open(ContextCreateComponent, { disableClose: true });
     dialogRef.componentInstance.isSlaveMode = this.isSlaveMode;
     dialogRef.afterClosed().subscribe((result) => {
       if (result?.success) {
