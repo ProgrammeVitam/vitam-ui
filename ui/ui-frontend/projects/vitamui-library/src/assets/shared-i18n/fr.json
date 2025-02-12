@@ -1,6 +1,7 @@
 {
   "SNACK_BAR": {
-    "TENANT_NOT_FOUND": "Liste des tenants introuvable pour :"
+    "TENANT_NOT_FOUND": "Liste des tenants introuvable pour :",
+    "TO_OPERATION_APP": "VOIR LE JOURNAL DES OPERATIONS"
   },
   "COMMON": {
     "ADD": "Ajouter",
@@ -1014,6 +1015,7 @@
     "CHECK_UNIT_SCHEMA.RULE_DATE_THRESHOLD.KO": "Échec du calcul des dates d'échéance : la date ne peut être gérée",
     "CHECK_UNIT_SCHEMA.WARNING": "Avertissement lors de la vérification globale de l'unité archivistique",
     "CHECK_UNIT_SCHEMA": "Vérification globale de l'unité archivistique",
+    "COLLECT_RECLASSIFICATION": "Modification d'arborescence des unités archivistiques",
     "COMMIT_LIFE_CYCLE_OBJECT_GROUP.ALREADY_EXECUTED": "Action déjà exécutée : Pas d'enregistrement des journaux de cycle de vie des groupes d'objets",
     "COMMIT_LIFE_CYCLE_OBJECT_GROUP.FATAL": "Erreur technique lors de l'enregistrement des journaux du cycle de vie des groupes d'objets",
     "COMMIT_LIFE_CYCLE_OBJECT_GROUP.OK": "Succès de l'enregistrement des journaux du cycle de vie des groupes d'objets",

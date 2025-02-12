@@ -26,6 +26,7 @@
  */
 package fr.gouv.vitamui.collect.external.server.service;
 
+import fr.gouv.vitamui.archives.search.common.dto.ReclassificationCriteriaDto;
 import fr.gouv.vitamui.collect.common.dto.CollectTransactionDto;
 import fr.gouv.vitamui.collect.internal.client.CollectTransactionInternalRestClient;
 import fr.gouv.vitamui.collect.internal.client.UpdateUnitsMetadataInternalRestClient;
@@ -110,6 +111,17 @@ public class TransactionExternalService
             fileName,
             transactionId,
             inputStream
+        );
+    }
+
+    public String reclassification(
+        final String transactionId,
+        final ReclassificationCriteriaDto reclassificationCriteriaDto
+    ) {
+        return collectTransactionInternalRestClient.reclassification(
+            transactionId,
+            reclassificationCriteriaDto,
+            getInternalHttpContext()
         );
     }
 }

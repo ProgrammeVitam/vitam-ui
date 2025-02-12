@@ -142,8 +142,10 @@
   },
   "RECLASSIFICATION": {
     "EXECUTION_ACTION": "Reclasser des unités archivistiques",
+    "EXECUTE_RECLASSEMENT_MESSAGE": "La demande de reclassement a bien été lancée",
     "COMMON": {
-      "TITLE": "Reclasser des unités archivistiques"
+      "TITLE": "Reclasser des unités archivistiques",
+      "ARCHIVE_WITH_NO_PARENTS": "Le dossier n'a pas de parents"
     },
     "FIRST_STEP": {
       "SUBTITLE": "Action de reclassement",

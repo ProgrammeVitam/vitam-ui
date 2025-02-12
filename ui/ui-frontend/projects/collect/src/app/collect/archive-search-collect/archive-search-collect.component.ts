@@ -384,13 +384,14 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
       .filter((archiveUnit) => this.archiveUnitGuidSelected.includes(archiveUnit['#id']))
       .map((archiveUnit) => archiveUnit['#unitups']);
     this.archiveUnitAllunitup = this.initArchiveUnitAllunitup(unitUps);
+    this.listOfUACriteriaSearch = this.prepareListOfUACriteriaSearch();
     const reclassificationCriteria = {
       criteriaList: this.listOfUACriteriaSearch,
       pageNumber: this.currentPage,
       size: PAGE_SIZE,
       language: this.translateService.currentLang,
+      tenantIdentifier: this.tenantIdentifier,
     };
-
     const dialogRef = this.dialog.open(ReclassificationDialogComponent, {
       panelClass: 'vitamui-modal',
       disableClose: false,
@@ -401,6 +402,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
         archiveUnitGuidSelected: this.archiveUnitGuidSelected,
         archiveUnitAllunitup: this.archiveUnitAllunitup,
         transactionId: this.transaction.id,
+        tenantIdentifier: this.tenantIdentifier,
       },
     });
     this.subscriptions.add(
@@ -513,6 +515,9 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
   }
 
   submit() {
+    this.listOfUAIdToInclude = [];
+    this.listOfUAIdToExclude = [];
+
     this.archiveExchangeDataService.emitSelectedUnit(null);
     this.initializeSelectionParams();
     this.archiveHelperService.buildNodesListForQUery(this.searchCriterias, this.criteriaSearchList);

@@ -34,45 +34,24 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+import { Component, Inject } from '@angular/core';
+import {
+  MAT_LEGACY_SNACK_BAR_DATA as MAT_SNACK_BAR_DATA,
+  MatLegacySnackBarRef as MatSnackBarRef,
+} from '@angular/material/legacy-snack-bar';
 
-import { Inject, Injectable } from '@angular/core';
-import { BaseHttpClient } from '../base-http-client';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { BASE_URL } from '../injection-tokens';
-import { SearchCriteriaDto, SearchResponse } from '../models';
-import { Observable } from 'rxjs';
-import { PageRequest, PaginatedResponse } from '../vitamui-table';
-import { ReclassificationCriteriaDto } from './reclassification.interface';
-
-@Injectable({
-  providedIn: 'root',
+@Component({
+  selector: 'vitamui-vitamui-snack-bar',
+  templateUrl: './vitamui-snack-bar.component.html',
+  styleUrls: ['./vitamui-snack-bar.component.scss'],
 })
-export class ReclassificationApiService extends BaseHttpClient<any> {
-  baseUrl: string;
+export class VitamuiSnackBarComponent {
+  constructor(
+    @Inject(MAT_SNACK_BAR_DATA) public data: any,
+    private matSnackBarRef: MatSnackBarRef<VitamuiSnackBarComponent>,
+  ) {}
 
-  constructor(http: HttpClient, @Inject(BASE_URL) baseUrl: string) {
-    super(http, baseUrl);
-    this.baseUrl = baseUrl;
-  }
-
-  getBaseUrl() {
-    return this.baseUrl;
-  }
-
-  public getAllPaginated(pageRequest: PageRequest, embedded?: string, headers?: HttpHeaders): Observable<PaginatedResponse<any>> {
-    return super.getAllPaginated(pageRequest, embedded, headers);
-  }
-
-  searchArchiveUnitsByCriteria(criteriaDto: SearchCriteriaDto, transactionId: string, headers?: HttpHeaders) {
-    const transactionPath = transactionId ? `/transactions/archive-units/${transactionId}` : '/archive-search';
-    return this.http.post<SearchResponse>(`${this.apiUrl}${transactionPath}/search`, criteriaDto, { headers });
-  }
-
-  reclassification(transactionId: string, criteriaDto: ReclassificationCriteriaDto, headers?: HttpHeaders): Observable<string> {
-    const transactionPath = transactionId ? `/transactions/${transactionId}` : '/archive-search';
-    return this.http.post(`${this.apiUrl}${transactionPath}/reclassification`, criteriaDto, {
-      responseType: 'text',
-      headers,
-    });
+  close() {
+    this.matSnackBarRef.dismiss();
   }
 }

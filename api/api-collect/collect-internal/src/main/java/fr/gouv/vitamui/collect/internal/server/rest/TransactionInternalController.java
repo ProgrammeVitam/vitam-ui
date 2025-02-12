@@ -29,6 +29,7 @@ package fr.gouv.vitamui.collect.internal.server.rest;
 
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
+import fr.gouv.vitamui.archives.search.common.dto.ReclassificationCriteriaDto;
 import fr.gouv.vitamui.collect.common.dto.CollectTransactionDto;
 import fr.gouv.vitamui.collect.common.rest.RestApi;
 import fr.gouv.vitamui.collect.internal.server.service.ExternalParametersService;
@@ -43,9 +44,12 @@ import io.swagger.annotations.Api;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -70,6 +74,8 @@ public class TransactionInternalController {
 
     private final ExternalParametersService externalParametersService;
     private static final String IDENTIFIER_MANDATORY_MESSAGE = "The Identifier is a mandatory parameter: ";
+    private static final String MANDATORY_RECLASSIFICATION_CRITERIA =
+        "The ReclassificationCriteria is a mandatory parameter: ";
 
     @Autowired
     public TransactionInternalController(
@@ -167,5 +173,21 @@ public class TransactionInternalController {
             transactionDto,
             externalParametersService.buildVitamContextFromExternalParam()
         );
+    }
+
+    @PostMapping(CommonConstants.TRANSACTION_PATH_ID + "/reclassification")
+    public ResponseEntity<String> reclassification(
+        final @PathVariable("transactionId") String transactionId,
+        @RequestBody final ReclassificationCriteriaDto reclassificationCriteriaDto
+    ) throws VitamClientException, InvalidParseOperationException, PreconditionFailedException {
+        SanityChecker.sanitizeCriteria(reclassificationCriteriaDto);
+        ParameterChecker.checkParameter(MANDATORY_RECLASSIFICATION_CRITERIA, reclassificationCriteriaDto);
+        LOGGER.debug("Reclassification query {}", reclassificationCriteriaDto);
+        String result = transactionInternalService.reclassification(
+            transactionId,
+            reclassificationCriteriaDto,
+            externalParametersService.buildVitamContextFromExternalParam()
+        );
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 }
