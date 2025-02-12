@@ -1,6 +1,7 @@
 {
   "SNACK_BAR": {
-    "TENANT_NOT_FOUND": "List of tenants not found for :"
+    "TENANT_NOT_FOUND": "List of tenants not found for :",
+    "TO_OPERATION_APP": "VIEW THE OPERATIONS APP"
   },
   "COMMON": {
     "ADD": "Add",

@@ -18,15 +18,15 @@ dbSecurity.contexts.updateOne(
 
 db.profiles.updateMany(
   {
-    name: { $regex: "^Archiviste" },
-    applicationName: "COLLECT_APP",
+    "name": { $regex: /^Archiviste/i },
+    "applicationName": "COLLECT_APP",
   },
   {
     $addToSet: {
       roles: {
         $each: [
           {
-            name: "ROLE_RECLASSIFICATION",
+            name: "ROLE_RECLASSIFICATION"
           },
         ],
       },

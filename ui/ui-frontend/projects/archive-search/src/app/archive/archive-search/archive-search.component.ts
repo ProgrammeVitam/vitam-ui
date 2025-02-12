@@ -81,6 +81,7 @@ import {
   Unit,
   UnitType,
   VitamuiRoles,
+  ReclassificationDialogComponent,
 } from 'vitamui-library';
 import { ArchiveSharedDataService } from '../../core/archive-shared-data.service';
 import { ManagementRulesSharedDataService } from '../../core/management-rules-shared-data.service';
@@ -1004,6 +1005,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
       const dialogRef = this.dialog.open(ReclassificationDialogComponent, {
         disableClose: false,
         data: {
+          appName: 'ARCHIVE',
           itemSelected: this.selectedItemCount,
           reclassificationCriteria,
           tenantIdentifier: this.tenantIdentifier,

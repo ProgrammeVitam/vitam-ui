@@ -1,6 +1,7 @@
 {
   "SNACK_BAR": {
-    "TENANT_NOT_FOUND": "Liste des tenants introuvable pour :"
+    "TENANT_NOT_FOUND": "Liste des tenants introuvable pour :",
+    "TO_OPERATION_APP": "VOIR LE JOURNAL DES OPERATIONS"
   },
   "COMMON": {
     "ADD": "Ajouter",

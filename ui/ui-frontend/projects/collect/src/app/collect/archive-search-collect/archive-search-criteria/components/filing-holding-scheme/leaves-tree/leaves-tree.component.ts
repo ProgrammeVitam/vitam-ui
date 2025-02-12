@@ -271,7 +271,7 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
       this.archiveSharedDataService.selectedUnit$.subscribe((selectedUnit: Unit) => {
         if (selectedUnit) {
           this.unitId = selectedUnit['#id'];
-          this.allunitups = selectedUnit['#allunitups'];
+          this.allunitups = selectedUnit['#allunitups'] ? selectedUnit['#allunitups'] : [];
         } else {
           this.unitId = null;
           this.allunitups = [];

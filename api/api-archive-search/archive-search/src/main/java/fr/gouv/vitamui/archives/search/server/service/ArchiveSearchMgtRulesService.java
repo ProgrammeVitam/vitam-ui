@@ -68,6 +68,8 @@ import org.springframework.util.CollectionUtils;
 import java.util.Objects;
 import java.util.Optional;
 
+import static fr.gouv.vitamui.commons.api.utils.MetadataSearchCriteriaUtils.mapRequestToDslQuery;
+
 /**
  * Archive-Search Management rules Internal service.
  */
@@ -128,7 +130,7 @@ public class ArchiveSearchMgtRulesService {
             ruleSearchCriteriaDto.getRuleActions()
         );
         MassUpdateUnitRuleRequest massUpdateUnitRuleRequest = new MassUpdateUnitRuleRequest();
-        JsonNode dslQuery = archiveSearchService.mapRequestToDslQuery(ruleSearchCriteriaDto.getSearchCriteriaDto());
+        JsonNode dslQuery = mapRequestToDslQuery(ruleSearchCriteriaDto.getSearchCriteriaDto());
         ObjectNode dslRequest = (ObjectNode) dslQuery;
         RulesUpdateCommonService.deleteAttributesFromObjectNode(
             dslRequest,
