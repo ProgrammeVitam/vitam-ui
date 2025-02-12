@@ -36,15 +36,7 @@
  */
 package fr.gouv.vitamui.commons.vitam.api.config;
 
-import fr.gouv.vitamui.commons.vitam.api.ingest.IngestService;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class VitamIngestConfig extends VitamClientConfig {
-
-    @Bean
-    public IngestService getIngestService() {
-        return new IngestService(ingestExternalClient());
-    }
-}
+public class VitamIngestConfig extends VitamClientConfig {}
