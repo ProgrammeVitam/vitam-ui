@@ -139,13 +139,6 @@ vitamui:
     port_service: 8108
     port_admin: 7108
 
-  ingest_internal:
-    host: "vitamui-ingest-internal.service.{{ consul_domain }}"
-    vitamui_component: ingest-internal
-    port_service: 8208
-    port_admin: 7208
-    # tmp_folder_path: /vitamui/tmp
-
   archive_search_external:
     host: "vitamui-archive-search-external.service.{{ consul_domain }}"
     vitamui_component: archive-search-external

@@ -100,7 +100,6 @@ hosts_vitamui_api_gateway
 hosts_vitamui_iam_external
 hosts_vitamui_iam_internal
 hosts_vitamui_ingest_external
-hosts_vitamui_ingest_internal
 hosts_vitamui_archive_search_external
 hosts_vitamui_collect_external
 hosts_vitamui_collect_internal
@@ -121,10 +120,6 @@ localhost
 localhost
 
 [hosts_vitamui_ingest_external]
-# EDIT: Mandatory
-localhost
-
-[hosts_vitamui_ingest_internal]
 # EDIT: Mandatory
 localhost
 
