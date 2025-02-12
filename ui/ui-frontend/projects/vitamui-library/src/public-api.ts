@@ -167,6 +167,8 @@ export * from './app/modules/components/vitamui-snack-bar/vitamui-snack-bar.inte
 export * from './app/modules/components/vitamui-snack-bar/vitamui-snack-bar.component';
 export * from './app/modules/components/vitamui-snack-bar/vitamui-snack-bar.service';
 export * from './app/modules/components/vitamui-snack-bar/vitamui-snack-bar.module';
+export * from './app/modules/reclassification-dialog/shared/vitamui-snack-bar/vitamui-snack-bar.component';
+export * from './app/modules/reclassification-dialog/shared/vitamui-snack-bar/vitamui-snack-bar.module';
 export * from './app/modules/directives/autocomplete-position/autocomplete-position.directive';
 export * from './app/modules/directives/autocomplete-position/autocomplete-position.directive.module';
 export * from './app/modules/directives/click-outside/click-outside.directive';

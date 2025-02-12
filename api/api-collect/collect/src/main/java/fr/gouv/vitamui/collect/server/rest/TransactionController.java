@@ -46,6 +46,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -75,6 +76,7 @@ public class TransactionController {
 
     private static final String MANDATORY_IDENTIFIER = "The Identifier is a mandatory parameter: ";
     private static final String TRANSACTION_ID = "The transaction id {} ";
+    private static final String MANDATORY_QUERY = "The query is a mandatory parameter: ";
 
     private final TransactionService transactionService;
     private final ExternalParametersService externalParametersService;
@@ -171,5 +173,17 @@ public class TransactionController {
             transactionId,
             externalParametersService.buildVitamContextFromExternalParam()
         );
+    }
+
+    @Secured(ServicesData.ROLE_RECLASSIFICATION)
+    @PostMapping(CommonConstants.TRANSACTION_PATH_ID + "/reclassification")
+    public String reclassification(
+        final @PathVariable("transactionId") String transactionId,
+        @RequestBody final ReclassificationCriteriaDto reclassificationCriteriaDto
+    ) throws PreconditionFailedException {
+        ParameterChecker.checkParameter(MANDATORY_QUERY, reclassificationCriteriaDto);
+        SanityChecker.sanitizeCriteria(reclassificationCriteriaDto);
+        LOGGER.debug("Reclassification query {}", reclassificationCriteriaDto);
+        return transactionExternalService.reclassification(transactionId, reclassificationCriteriaDto);
     }
 }

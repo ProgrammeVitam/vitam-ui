@@ -34,45 +34,48 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { Inject, Injectable } from '@angular/core';
-import { BaseHttpClient } from '../base-http-client';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { BASE_URL } from '../injection-tokens';
-import { SearchCriteriaDto, SearchResponse } from '../models';
-import { Observable } from 'rxjs';
-import { PageRequest, PaginatedResponse } from '../vitamui-table';
-import { ReclassificationCriteriaDto } from './reclassification.interface';
+import { VitamuiSnackBarComponent } from './vitamui-snack-bar.component';
+import {
+  MAT_LEGACY_SNACK_BAR_DATA as MAT_SNACK_BAR_DATA,
+  MatLegacySnackBarRef as MatSnackBarRef,
+} from '@angular/material/legacy-snack-bar';
+import { TranslateModule } from '@ngx-translate/core';
 
-@Injectable({
-  providedIn: 'root',
-})
-export class ReclassificationApiService extends BaseHttpClient<any> {
-  baseUrl: string;
+describe('VitamuiSnackBarComponent', () => {
+  let component: VitamuiSnackBarComponent;
+  let fixture: ComponentFixture<VitamuiSnackBarComponent>;
 
-  constructor(http: HttpClient, @Inject(BASE_URL) baseUrl: string) {
-    super(http, baseUrl);
-    this.baseUrl = baseUrl;
-  }
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [VitamuiSnackBarComponent],
+      imports: [TranslateModule.forRoot()],
+      providers: [
+        { provide: MAT_SNACK_BAR_DATA, useValue: {} },
+        { provide: MatSnackBarRef, useValue: { dismiss: () => {} } },
+      ],
+    }).compileComponents();
+  });
 
-  getBaseUrl() {
-    return this.baseUrl;
-  }
+  beforeEach(() => {
+    fixture = TestBed.createComponent(VitamuiSnackBarComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
 
-  public getAllPaginated(pageRequest: PageRequest, embedded?: string, headers?: HttpHeaders): Observable<PaginatedResponse<any>> {
-    return super.getAllPaginated(pageRequest, embedded, headers);
-  }
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
 
-  searchArchiveUnitsByCriteria(criteriaDto: SearchCriteriaDto, transactionId: string, headers?: HttpHeaders) {
-    const transactionPath = transactionId ? `/transactions/archive-units/${transactionId}` : '/archive-search';
-    return this.http.post<SearchResponse>(`${this.apiUrl}${transactionPath}/search`, criteriaDto, { headers });
-  }
+  describe('DOM', () => {
+    it('should have one button ', () => {
+      // When
+      const nativeElement = fixture.nativeElement;
+      const elementBtn = nativeElement.querySelectorAll('.close-btn');
 
-  reclassification(transactionId: string, criteriaDto: ReclassificationCriteriaDto, headers?: HttpHeaders): Observable<string> {
-    const transactionPath = transactionId ? `/transactions/${transactionId}` : '/archive-search';
-    return this.http.post(`${this.apiUrl}${transactionPath}/reclassification`, criteriaDto, {
-      responseType: 'text',
-      headers,
+      // Then
+      expect(elementBtn.length).toBe(1);
     });
-  }
-}
+  });
+});

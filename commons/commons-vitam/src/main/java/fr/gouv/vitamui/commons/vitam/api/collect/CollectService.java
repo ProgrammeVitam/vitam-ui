@@ -39,6 +39,7 @@ import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
+import org.apache.http.HttpStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -392,5 +393,19 @@ public class CollectService {
             dslQuery
         );
         return response.toJsonNode();
+    }
+
+    public RequestResponse<JsonNode> reclassification(
+        final VitamContext vitamContext,
+        final String transactionId,
+        final JsonNode dslQuery
+    ) throws VitamClientException {
+        final RequestResponse<JsonNode> jsonResponse = collectExternalClient.performReclassificationOnTransaction(
+            vitamContext,
+            transactionId,
+            dslQuery
+        );
+        VitamRestUtils.checkResponse(jsonResponse, HttpStatus.SC_OK, HttpStatus.SC_ACCEPTED);
+        return jsonResponse;
     }
 }

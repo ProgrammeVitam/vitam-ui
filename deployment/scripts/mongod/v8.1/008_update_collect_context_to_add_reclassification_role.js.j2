@@ -18,8 +18,8 @@ dbSecurity.contexts.updateOne(
 
 db.profiles.updateMany(
   {
-    name: { $regex: "^Archiviste" },
-    applicationName: "COLLECT_APP",
+    "name": { $regex: /^Archiviste/i },
+    "applicationName": "COLLECT_APP",
   },
   {
     $addToSet: {

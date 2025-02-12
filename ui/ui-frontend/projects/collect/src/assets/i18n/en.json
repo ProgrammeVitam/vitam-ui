@@ -136,8 +136,10 @@
   },
   "RECLASSIFICATION": {
     "EXECUTION_ACTION": "Reclassify archival units",
+    "EXECUTE_RECLASSEMENT_MESSAGE": "The reclassification request demand is successfully lunched",
     "COMMON": {
-      "TITLE": "Reclassify archival units"
+      "TITLE": "Reclassify archival units",
+      "ARCHIVE_WITH_NO_PARENTS": "The archival unit has no parents"
     },
     "FIRST_STEP": {
       "SUBTITLE": "Reclassification action",
@@ -162,6 +164,9 @@
     "ADD_STEP": {
       "TITLE": "Add to a folder",
       "ADD_TO_FOLDER": "Add to folder"
+    },
+    "SNACK_BAR": {
+      "TO_OPERATION_APP": "VIEW THE OPERATIONS APP"
     }
   },
   "ACQUISITION_INFORMATION": {

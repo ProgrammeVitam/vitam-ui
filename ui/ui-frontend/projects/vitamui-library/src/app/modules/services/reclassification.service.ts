@@ -43,17 +43,28 @@ import { ReclassificationApiService } from './reclassification-api.service';
 import { HttpHeaders } from '@angular/common/http';
 import { catchError, map } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
+import { ReclassificationCriteriaDto } from './reclassification.interface';
+import { VitamuiSnackBarComponent } from '../reclassification-dialog/shared/vitamui-snack-bar/vitamui-snack-bar.component';
+import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
+import { getUnitI18nAttribute } from '../pipes/unitI18n.pipe';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ReclassificationService extends SearchService<any> implements SearchArchiveUnitsInterface {
-  constructor(private reclassificationApiService: ReclassificationApiService) {
+  constructor(
+    private reclassificationApiService: ReclassificationApiService,
+    private snackBar: MatSnackBar,
+  ) {
     super(reclassificationApiService, 'ALL');
   }
 
   public fetchTitle(title: string, titleInLanguages: any) {
     return title ? title : titleInLanguages ? (titleInLanguages.fr ? titleInLanguages.fr : titleInLanguages.en) : titleInLanguages.en;
+  }
+
+  public static fetchAuTitle(unit: any) {
+    return getUnitI18nAttribute(unit, 'Title');
   }
 
   getTotalTrackHitsByCriteria(criteriaElts: SearchCriteriaEltDto[]): Observable<number> {
@@ -63,6 +74,7 @@ export class ReclassificationService extends SearchService<any> implements Searc
       size: 1,
       trackTotalHits: true,
     };
+    console.log(searchCriteria);
     return this.searchArchiveUnitsByCriteria(searchCriteria).pipe(
       map((pagedResult: PagedResult) => {
         return pagedResult.totalResults;
@@ -75,23 +87,20 @@ export class ReclassificationService extends SearchService<any> implements Searc
 
   searchArchiveUnitsByCriteria(searchCriteria: SearchCriteriaDto, transactionId?: string): Observable<PagedResult> {
     const headers = new HttpHeaders().append('Content-Type', 'application/json');
-    if (!!transactionId) {
-      return this.reclassificationApiService.searchArchiveUnitsByCriteria(searchCriteria, transactionId, headers).pipe(
-        //   timeout(TIMEOUT_SEC),
-        catchError((error) => {
-          if (error instanceof TimeoutError) {
-            return throwError('Erreur : délai d’attente dépassé pour votre recherche');
-          }
-          // Return other errors
-          return of({ $hits: null, $results: [] });
-        }),
-        map((results) => {
-          return ReclassificationService.buildPagedResults(results);
-        }),
-      );
-    } else {
-      return of({ pageNumbers: 1, results: [], totalResults: 0 });
-    }
+
+    return this.reclassificationApiService.searchArchiveUnitsByCriteria(searchCriteria, transactionId, headers).pipe(
+      //   timeout(TIMEOUT_SEC),
+      catchError((error) => {
+        if (error instanceof TimeoutError) {
+          return throwError('Erreur : délai d’attente dépassé pour votre recherche');
+        }
+        // Return other errors
+        return of({ $hits: null, $results: [] });
+      }),
+      map((results) => {
+        return ReclassificationService.buildPagedResults(results);
+      }),
+    );
   }
 
   private static buildPagedResults(response: SearchResponse): PagedResult {
@@ -105,5 +114,24 @@ export class ReclassificationService extends SearchService<any> implements Searc
     };
     pagedResult.facets = response.$facetResults;
     return pagedResult;
+  }
+
+  // TODO To refactor to make this method common
+  reclassification(transactionId: string, criteriaDto: ReclassificationCriteriaDto): Observable<string> {
+    const headers = new HttpHeaders().append('Content-Type', 'application/json');
+
+    return this.reclassificationApiService.reclassification(transactionId, criteriaDto, headers).pipe();
+  }
+
+  openSnackBarForWorkflow(message: string, serviceUrl?: string) {
+    this.snackBar.openFromComponent(VitamuiSnackBarComponent, {
+      panelClass: 'vitamui-snack-bar',
+      data: {
+        type: 'WorkflowSuccessSnackBar',
+        message,
+        serviceUrl,
+      },
+      duration: 100000,
+    });
   }
 }

@@ -104,6 +104,7 @@ import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.RULE_FINAL_A
 import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.RULE_ORIGIN_CRITERIA;
 import static fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.RuleOriginValues;
 import static fr.gouv.vitamui.commons.api.utils.MetadataSearchCriteriaUtils.createSelectMultiQuery;
+import static fr.gouv.vitamui.commons.api.utils.MetadataSearchCriteriaUtils.mapRequestToDslQuery;
 
 /**
  * Archive-Search facets Internal service .
@@ -408,7 +409,7 @@ public class ArchiveSearchFacetsService {
         facetSearchQuery.setSize(1);
         facetSearchQuery.setTrackTotalHits(trackTotalHits);
         facetSearchQuery.setFieldsList(List.of(ArchiveSearchService.TITLE_FIELD));
-        JsonNode dslQuery = archiveSearchService.mapRequestToDslQuery(facetSearchQuery);
+        JsonNode dslQuery = mapRequestToDslQuery(facetSearchQuery);
         JsonNode vitamResponse = archiveSearchService.searchArchiveUnits(dslQuery, vitamContext);
         VitamUISearchResponseDto archivesUnitsResults = objectMapper.treeToValue(
             vitamResponse,
@@ -451,7 +452,7 @@ public class ArchiveSearchFacetsService {
         countSearchQuery.setFieldsList(List.of(ArchiveSearchService.TITLE_FIELD));
         countSearchQuery.setSize(1);
         countSearchQuery.setTrackTotalHits(trackTotalHits);
-        JsonNode dslQuery = archiveSearchService.mapRequestToDslQuery(countSearchQuery);
+        JsonNode dslQuery = mapRequestToDslQuery(countSearchQuery);
         JsonNode vitamResponse = archiveSearchService.searchArchiveUnits(dslQuery, vitamContext);
         VitamUISearchResponseDto archivesUnitsResults = objectMapper.treeToValue(
             vitamResponse,

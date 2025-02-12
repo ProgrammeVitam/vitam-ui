@@ -1,0 +1,9 @@
+<div class="vitamui-snack-bar-container">
+  <span class="vitamui-snack-bar-content">
+    <span class="space-style">{{ data?.message }}</span>
+    <a class="btn contrast contrast-primary" [href]="data?.serviceUrl">
+      {{ 'SNACK_BAR.TO_OPERATION_APP' | translate }}
+    </a>
+  </span>
+  <button class="close-btn" (click)="close()"><i class="material-icons">clear</i></button>
+</div>
