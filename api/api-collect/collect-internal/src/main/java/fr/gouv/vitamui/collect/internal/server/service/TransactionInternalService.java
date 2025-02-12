@@ -30,6 +30,8 @@
 package fr.gouv.vitamui.collect.internal.server.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import fr.gouv.vitam.collect.common.dto.TransactionDto;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
@@ -37,8 +39,10 @@ import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.json.JsonHandler;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.RequestResponseOK;
+import fr.gouv.vitamui.archives.search.common.dto.ReclassificationCriteriaDto;
 import fr.gouv.vitamui.collect.common.dto.CollectTransactionDto;
 import fr.gouv.vitamui.collect.internal.server.service.converters.TransactionConverter;
+import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.api.exception.RequestTimeOutException;
 import fr.gouv.vitamui.commons.vitam.api.collect.CollectService;
@@ -47,6 +51,9 @@ import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.core.Response;
 import java.io.InputStream;
+import java.util.Arrays;
+
+import static fr.gouv.vitamui.commons.api.utils.MetadataSearchCriteriaUtils.mapRequestToDslQuery;
 
 public class TransactionInternalService {
 
@@ -63,6 +70,14 @@ public class TransactionInternalService {
 
     public static final String REQUEST_TIMEOUT_EXCEPTION_MESSAGE =
         "the server has decided to close the connection rather than continue waiting";
+
+    public static final String DSL_QUERY_PROJECTION = "$projection";
+    public static final String DSL_QUERY_FILTER = "$filter";
+    public static final String DSL_QUERY_THRESHOLD = "$threshold";
+    public static final String DSL_QUERY_FACETS = "$facets";
+    public static final String OPERATION_IDENTIFIER = "itemId";
+
+    private static final String ACTION = "$action";
 
     public TransactionInternalService(CollectService collectService) {
         this.collectService = collectService;
@@ -165,5 +180,30 @@ public class TransactionInternalService {
             throw new RequestTimeOutException(REQUEST_TIMEOUT_EXCEPTION_MESSAGE, REQUEST_TIMEOUT_EXCEPTION_MESSAGE);
         }
         return result;
+    }
+
+    public String reclassification(
+        final String transactionId,
+        final ReclassificationCriteriaDto reclassificationCriteriaDto,
+        final VitamContext vitamContext
+    ) throws VitamClientException {
+        if (reclassificationCriteriaDto == null) {
+            throw new BadRequestException("Error reclassification criteria");
+        }
+        LOGGER.debug("Reclassification Object : {}", reclassificationCriteriaDto.toString());
+        JsonNode dslQuery = mapRequestToDslQuery(reclassificationCriteriaDto.getSearchCriteriaDto());
+        ArrayNode array = JsonHandler.createArrayNode();
+        ((ObjectNode) dslQuery).putPOJO(ACTION, reclassificationCriteriaDto.getAction());
+        Arrays.stream(
+            new String[] { DSL_QUERY_PROJECTION, DSL_QUERY_FILTER, DSL_QUERY_FACETS, DSL_QUERY_THRESHOLD }
+        ).forEach(((ObjectNode) dslQuery)::remove);
+        array.add(dslQuery);
+        LOGGER.debug("Reclassification query : {}", array);
+        RequestResponse<JsonNode> jsonNodeRequestResponse = collectService.reclassification(
+            vitamContext,
+            transactionId,
+            array
+        );
+        return jsonNodeRequestResponse.toJsonNode().findValue(OPERATION_IDENTIFIER).textValue();
     }
 }

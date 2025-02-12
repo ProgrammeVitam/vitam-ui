@@ -28,6 +28,7 @@
 package fr.gouv.vitamui.collect.internal.client;
 
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
+import fr.gouv.vitamui.archives.search.common.dto.ReclassificationCriteriaDto;
 import fr.gouv.vitamui.collect.common.dto.CollectTransactionDto;
 import fr.gouv.vitamui.collect.common.rest.RestApi;
 import fr.gouv.vitamui.commons.api.CommonConstants;
@@ -53,6 +54,7 @@ import java.util.List;
 
 import static fr.gouv.vitamui.archives.search.common.rest.RestApi.ARCHIVE_UNIT_INFO;
 import static fr.gouv.vitamui.archives.search.common.rest.RestApi.EXPORT_CSV_SEARCH_PATH;
+import static fr.gouv.vitamui.archives.search.common.rest.RestApi.RECLASSIFICATION;
 import static fr.gouv.vitamui.collect.common.rest.RestApi.ABORT_PATH;
 import static fr.gouv.vitamui.collect.common.rest.RestApi.ARCHIVE_UNITS;
 import static fr.gouv.vitamui.collect.common.rest.RestApi.REOPEN_PATH;
@@ -185,6 +187,24 @@ public class CollectTransactionInternalRestClient
             request,
             CollectTransactionDto.class
         );
+        return response.getBody();
+    }
+
+    public String reclassification(
+        final String transactionId,
+        final ReclassificationCriteriaDto reclassificationCriteriaDto,
+        final InternalHttpContext context
+    ) {
+        LOGGER.debug("Calling reclassification with query {} ", reclassificationCriteriaDto);
+        MultiValueMap<String, String> headers = buildHeaders(context);
+        final HttpEntity<ReclassificationCriteriaDto> request = new HttpEntity<>(reclassificationCriteriaDto, headers);
+        final ResponseEntity<String> response = restTemplate.exchange(
+            getUrl() + "/" + transactionId + RECLASSIFICATION,
+            HttpMethod.POST,
+            request,
+            String.class
+        );
+        checkResponse(response);
         return response.getBody();
     }
 

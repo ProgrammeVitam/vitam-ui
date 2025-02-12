@@ -81,6 +81,7 @@ import {
   Unit,
   UnitType,
   VitamuiRoles,
+  ReclassificationDialogComponent,
 } from 'vitamui-library';
 import { ArchiveSharedDataService } from '../../core/archive-shared-data.service';
 import { ManagementRulesSharedDataService } from '../../core/management-rules-shared-data.service';
@@ -92,7 +93,6 @@ import { ArchiveUnitEliminationService } from '../common-services/archive-unit-e
 import { ComputeInheritedRulesService } from '../common-services/compute-inherited-rules.service';
 import { UpdateUnitManagementRuleService } from '../common-services/update-unit-management-rule.service';
 import { ActionsRules } from '../models/ruleAction.interface';
-import { ReclassificationComponent } from './additional-actions-search/reclassification/reclassification.component';
 import { SearchCriteriaSaverComponent } from './search-criteria-saver/search-criteria-saver.component';
 import { TransferAcknowledgmentComponent } from './transfer-acknowledgment/transfer-acknowledgment.component';
 import { PuaUpdateDialogComponent, PuaUpdateDialogComponentData } from './pua-update-dialog/pua-update-dialog.component';
@@ -1000,11 +1000,11 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
         size: PAGE_SIZE,
         language: this.translateService.currentLang,
       };
-
-      const dialogRef = this.dialog.open(ReclassificationComponent, {
+      const dialogRef = this.dialog.open(ReclassificationDialogComponent, {
         panelClass: 'vitamui-modal',
         disableClose: false,
         data: {
+          appName: 'ARCHIVE',
           itemSelected: this.selectedItemCount,
           reclassificationCriteria,
           tenantIdentifier: this.tenantIdentifier,

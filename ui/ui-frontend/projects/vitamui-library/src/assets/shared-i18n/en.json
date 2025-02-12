@@ -1,6 +1,7 @@
 {
   "SNACK_BAR": {
-    "TENANT_NOT_FOUND": "List of tenants not found for :"
+    "TENANT_NOT_FOUND": "List of tenants not found for :",
+    "TO_OPERATION_APP": "VIEW THE OPERATIONS APP"
   },
   "COMMON": {
     "ADD": "Add",
@@ -805,6 +806,7 @@
     "LFC.AUDIT_CHECK_OBJECT.AUDIT_FILE_EXISTING.PHYSICAL_OBJECT.FATAL": "Technical error while auditing the verification of physical objects in the group of objects",
     "CHECK_LOGBOOK_OP_SECURISATION": "Checking secure logs",
     "RECLASSIFICATION": "Modification of the tree structure of archival units",
+    "COLLECT_RECLASSIFICATION": "Modification of the tree structure of archival units",
     "FINALIZE_OG_LFC_TRACEABILITY.OP_SECURISATION_STORAGE.KO": "Failed to store object group lifecycle logs",
     "STP_IMPORT_PROFILE_FILE.WARNING": "Warning during the import process of the archiving profile (xsd or rng file)",
     "UPDATE_RUNNING_INGESTS": "Updating entries in progress",

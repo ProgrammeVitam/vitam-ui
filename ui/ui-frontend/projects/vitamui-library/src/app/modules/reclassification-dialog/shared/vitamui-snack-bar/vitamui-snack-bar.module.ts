@@ -34,45 +34,16 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
 
-import { Inject, Injectable } from '@angular/core';
-import { BaseHttpClient } from '../base-http-client';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { BASE_URL } from '../injection-tokens';
-import { SearchCriteriaDto, SearchResponse } from '../models';
-import { Observable } from 'rxjs';
-import { PageRequest, PaginatedResponse } from '../vitamui-table';
-import { ReclassificationCriteriaDto } from './reclassification.interface';
+import { TranslateModule } from '@ngx-translate/core';
+import { VitamuiSnackBarComponent } from './vitamui-snack-bar.component';
+import { RouterLink } from '@angular/router';
 
-@Injectable({
-  providedIn: 'root',
+@NgModule({
+  imports: [CommonModule, TranslateModule, RouterLink],
+  declarations: [VitamuiSnackBarComponent],
+  exports: [VitamuiSnackBarComponent],
 })
-export class ReclassificationApiService extends BaseHttpClient<any> {
-  baseUrl: string;
-
-  constructor(http: HttpClient, @Inject(BASE_URL) baseUrl: string) {
-    super(http, baseUrl);
-    this.baseUrl = baseUrl;
-  }
-
-  getBaseUrl() {
-    return this.baseUrl;
-  }
-
-  public getAllPaginated(pageRequest: PageRequest, embedded?: string, headers?: HttpHeaders): Observable<PaginatedResponse<any>> {
-    return super.getAllPaginated(pageRequest, embedded, headers);
-  }
-
-  searchArchiveUnitsByCriteria(criteriaDto: SearchCriteriaDto, transactionId: string, headers?: HttpHeaders) {
-    const transactionPath = transactionId ? `/transactions/archive-units/${transactionId}` : '/archive-search';
-    return this.http.post<SearchResponse>(`${this.apiUrl}${transactionPath}/search`, criteriaDto, { headers });
-  }
-
-  reclassification(transactionId: string, criteriaDto: ReclassificationCriteriaDto, headers?: HttpHeaders): Observable<string> {
-    const transactionPath = transactionId ? `/transactions/${transactionId}` : '/archive-search';
-    return this.http.post(`${this.apiUrl}${transactionPath}/reclassification`, criteriaDto, {
-      responseType: 'text',
-      headers,
-    });
-  }
-}
+export class VitamuiSnackBarModule {}

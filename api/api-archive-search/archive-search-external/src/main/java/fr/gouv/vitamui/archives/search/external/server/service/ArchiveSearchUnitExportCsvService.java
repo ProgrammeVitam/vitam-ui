@@ -85,6 +85,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static fr.gouv.vitamui.commons.api.utils.MetadataSearchCriteriaUtils.cleanString;
+import static fr.gouv.vitamui.commons.api.utils.MetadataSearchCriteriaUtils.mapRequestToDslQuery;
 
 /**
  * Archive-Search export Internal service.
@@ -234,7 +235,7 @@ public class ArchiveSearchUnitExportCsvService {
             searchQuery.setPageNumber(0);
             searchQuery.setSize(EXPORT_ARCHIVE_UNITS_MAX_ELEMENTS);
             JsonNode archiveUnitsResult = archiveSearchService.searchArchiveUnits(
-                archiveSearchService.mapRequestToDslQuery(searchQuery),
+                mapRequestToDslQuery(searchQuery),
                 vitamContext
             );
             final VitamUISearchResponseDto archivesResponse = objectMapper.treeToValue(
@@ -282,7 +283,7 @@ public class ArchiveSearchUnitExportCsvService {
         SearchCriteriaDto searchQueryCounting = new SearchCriteriaDto();
         searchQueryCounting.setCriteriaList(searchQuery.getCriteriaList());
         JsonNode archiveUnitsResult = archiveSearchService.searchArchiveUnits(
-            archiveSearchService.mapRequestToDslQuery(searchQueryCounting),
+            mapRequestToDslQuery(searchQueryCounting),
             vitamContext
         );
         final VitamUISearchResponseDto archivesOriginResponse = objectMapper.treeToValue(

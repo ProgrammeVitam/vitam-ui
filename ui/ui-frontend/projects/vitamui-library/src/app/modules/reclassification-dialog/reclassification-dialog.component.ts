@@ -62,14 +62,21 @@ import {
   ReclassificationQueryActionType,
 } from '../services/reclassification.interface';
 import { Subscription } from 'rxjs';
+import { StartupService } from '../startup.service';
+import { ReclassificationValidatorService } from './shared/validators/reclassification-validator.service';
 
-const REPLACE = 'REPLACE';
 const PULL = 'PULL';
+const REPLACE = 'REPLACE';
+
+export enum ReclassificationToggle {
+  RECLASSIFICATION_TOGGLE_TREE_PLAN = 'RECLASSIFICATION_TOGGLE_TREE_PLAN',
+  RECLASSIFICATION_TOGGLE_UA_ID = 'RECLASSIFICATION_TOGGLE_UA_ID',
+}
 
 @Component({
   selector: 'vitamui-reclassification-dialog',
   templateUrl: './reclassification-dialog.component.html',
-  styleUrl: './reclassification-dialog.component.scss',
+  styleUrls: ['./reclassification-dialog.component.scss'],
 })
 export class ReclassificationDialogComponent implements OnInit, OnDestroy {
   protected readonly FilingPlanMode = FilingPlanMode;
@@ -79,6 +86,7 @@ export class ReclassificationDialogComponent implements OnInit, OnDestroy {
 
   actionChosen: string;
 
+  targetGuidFiling = new FormControl({ included: [], excluded: [] });
   actionToFilterSelect = new FormControl();
   actionToFilterOptions: VitamuiSelectOptions;
 
@@ -88,9 +96,11 @@ export class ReclassificationDialogComponent implements OnInit, OnDestroy {
   itemSelected: number;
   archiveUnitGuidsSelected: string[];
   archiveUnitAllunitup: string[];
-  transactionId: string;
+  accessContract: string;
+  transactionId: string = null;
 
   archiveUnitFetchedParents: Array<{ title: string; id: string }> = [];
+  subscriptionAuTitle: Subscription;
   pendingGetChilds = true;
   waitingForLoadExactTotalTrackHits = false;
   totalChilds: number = null;
@@ -103,6 +113,8 @@ export class ReclassificationDialogComponent implements OnInit, OnDestroy {
 
   projectUnits: Unit[];
   selectedTargetUnits = new FormControl({ included: [], excluded: [] });
+
+  RECLASSIFICATION_THRESHOLD = 10_000;
 
   actions: Option[] = [
     { key: 'REPLACE', label: this.translateService.instant('RECLASSIFICATION.REPLACE_STEP.TITLE') },
@@ -125,7 +137,9 @@ export class ReclassificationDialogComponent implements OnInit, OnDestroy {
     public dialogRef: MatDialogRef<ReclassificationDialogComponent>,
     private formBuilder: FormBuilder,
     private reclassificationService: ReclassificationService,
+    private reclassificationValidator: ReclassificationValidatorService,
     private confirmDialogService: ConfirmDialogService,
+    private startupService: StartupService,
     private logger: Logger,
     @Inject(MAT_DIALOG_DATA)
     public data: {
@@ -134,7 +148,9 @@ export class ReclassificationDialogComponent implements OnInit, OnDestroy {
       itemSelected: number;
       archiveUnitGuidSelected: string[];
       archiveUnitAllunitup: string[];
+      accessContract: string;
       transactionId: string;
+      tenantIdentifier: number;
     },
   ) {}
 
@@ -143,14 +159,41 @@ export class ReclassificationDialogComponent implements OnInit, OnDestroy {
     this.itemSelected = this.data.itemSelected;
     this.archiveUnitGuidsSelected = this.data.archiveUnitGuidSelected;
     this.archiveUnitAllunitup = this.data.archiveUnitAllunitup;
+    this.accessContract = this.data.accessContract;
     this.transactionId = this.data.transactionId;
 
     this.form = this.formBuilder.group({
       actionToFilter: [null, Validators.required],
+      targetGuid: [
+        { value: null, disabled: this.archiveUnitAllunitup.length < 1 && this.actionChosen === REPLACE },
+        null,
+        [
+          this.reclassificationValidator.alreadyExistParents(null, this.archiveUnitAllunitup),
+          this.reclassificationValidator.existArchiveUnit(this.data.reclassificationCriteria),
+        ],
+      ],
+      targetAuTitle: [{ value: null, disabled: true }],
+      toggleOption: [ReclassificationToggle.RECLASSIFICATION_TOGGLE_TREE_PLAN],
       allunitupsGuidsFormAttribute: new FormArray([], [Validators.required]),
     });
 
     this.keyPressSubscription = this.confirmDialogService.listenToEscapeKeyPress(this.dialogRef).subscribe(() => this.onCancel());
+
+    this.subscriptionAuTitle = this.reclassificationValidator.getArchiveUnitTitle().subscribe((title) => {
+      if (title != null) {
+        this.form.get('targetAuTitle').setValue(title);
+      } else {
+        this.form.get('targetAuTitle').setValue(null);
+      }
+    });
+
+    this.form.controls.toggleOption.valueChanges.subscribe((toggle) => {
+      if (toggle === ReclassificationToggle.RECLASSIFICATION_TOGGLE_UA_ID) {
+        this.form.get('targetGuid').reset();
+      } else {
+        this.form.get('targetGuid').setValue(this.targetGuidFiling.value.included[0]);
+      }
+    });
 
     if (this.archiveUnitAllunitup.length > 0) {
       this.getArchiveUnitParents(this.archiveUnitAllunitup);
@@ -165,8 +208,8 @@ export class ReclassificationDialogComponent implements OnInit, OnDestroy {
 
     this.actionToFilterSelect.valueChanges.subscribe((value) => {
       this.form.get('actionToFilter').setValue(value);
-      // this.form.get('targetGuid').reset();
-      // this.form.get('targetAuTitle').reset();
+      this.form.get('targetGuid').reset();
+      this.form.get('targetAuTitle').reset();
       this.actionChosen = value;
     });
 
@@ -179,6 +222,13 @@ export class ReclassificationDialogComponent implements OnInit, OnDestroy {
       this.totalChilds +
       this.space +
       this.translateService.instant('RECLASSIFICATION.FIRST_STEP.CHILDS');
+
+    this.actions.find((action) => action.key === REPLACE).disabled = !this.archiveUnitAllunitup.length;
+    this.actions.find((action) => action.key === PULL).disabled = !this.archiveUnitAllunitup.length;
+  }
+
+  public getReclassificationToggleOptions(): String[] {
+    return Object.keys(ReclassificationToggle);
   }
 
   calculateChilds() {
@@ -191,13 +241,6 @@ export class ReclassificationDialogComponent implements OnInit, OnDestroy {
         operator: CriteriaOperator.IN,
         category: SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.FIELDS],
         dataType: CriteriaDataType.STRING,
-      },
-      (error: HttpErrorResponse) => {
-        this.pendingGetFixedCount = false;
-
-        this.pendingGetChilds = false;
-        this.waitingForLoadExactTotalTrackHits = false;
-        this.logger.error('error message', error.message);
       },
     ];
     const searchCriteria: any = {
@@ -333,15 +376,45 @@ export class ReclassificationDialogComponent implements OnInit, OnDestroy {
   }
 
   lastStepInvalid(): boolean {
-    if (this.actionChosen !== PULL) {
-      return this.isTargetGuidFilingValid();
+    if (this.appName === 'ARCHIVE') {
+      if (this.form.get('toggleOption').value === ReclassificationToggle.RECLASSIFICATION_TOGGLE_TREE_PLAN) {
+        if (this.actionChosen === REPLACE) {
+          return this.isTargetGuidFilingValid();
+        } else if (this.actionChosen === PULL) {
+          return this.unitupsFormArraySelectedIds.length < 1;
+        } else {
+          return this.isTargetGuidFilingValid();
+        }
+      } else {
+        if (this.actionChosen === REPLACE) {
+          return this.isTargetGuidValid() || this.unitupsFormArraySelectedIds.length < 1;
+        } else if (this.actionChosen === PULL) {
+          return this.unitupsFormArraySelectedIds.length < 1;
+        } else {
+          return this.isTargetGuidValid();
+        }
+      }
     } else {
-      return this.unitupsFormArraySelectedIds.length < 1;
+      if (this.actionChosen !== PULL) {
+        return this.isTargetGuidFilingValid();
+      } else {
+        return this.unitupsFormArraySelectedIds.length < 1;
+      }
     }
   }
 
+  isTargetGuidValid() {
+    return this.form.get('targetGuid').invalid || this.form.get('targetGuid').pending;
+  }
+
   isTargetGuidFilingValid() {
-    return this.selectedTargetUnits.value && this.selectedTargetUnits.value.included && this.selectedTargetUnits.value.included.length == 0;
+    if (this.appName == 'ARCHIVE') {
+      return this.targetGuidFiling.value && this.targetGuidFiling.value.included && this.targetGuidFiling.value.included.length == 0;
+    } else {
+      return (
+        this.selectedTargetUnits.value && this.selectedTargetUnits.value.included && this.selectedTargetUnits.value.included.length == 0
+      );
+    }
   }
 
   get parentGuidArray() {
@@ -356,7 +429,12 @@ export class ReclassificationDialogComponent implements OnInit, OnDestroy {
     if (this.actionChosen === REPLACE) {
       const parentToPull: string[] = this.getTargetedParentToPull(this.unitupsFormArraySelectedIds, this.archiveUnitAllunitup);
       const reclassificationQueryPull = parentToPull.length ? this.getReclassificationQueryActionType(parentToPull) : null;
-      const parentToAdd = this.selectedTargetUnits.value.included;
+      const parentToAdd =
+        this.appName === 'ARCHIVE'
+          ? this.form.get('toggleOption').value === ReclassificationToggle.RECLASSIFICATION_TOGGLE_UA_ID
+            ? [this.form.get('targetGuid').value]
+            : this.targetGuidFiling.value.included
+          : this.selectedTargetUnits.value.included;
       const reclassificationQueryAdd = this.getReclassificationQueryActionType(parentToAdd);
 
       const reclassificationAction = this.getReclassificationAction(reclassificationQueryAdd, reclassificationQueryPull);
@@ -379,7 +457,12 @@ export class ReclassificationDialogComponent implements OnInit, OnDestroy {
       };
       return reclassificationCriteriaDto;
     } else {
-      const parentToAdd = this.selectedTargetUnits.value.included;
+      const parentToAdd =
+        this.appName === 'ARCHIVE'
+          ? this.form.get('toggleOption').value === ReclassificationToggle.RECLASSIFICATION_TOGGLE_UA_ID
+            ? [this.form.get('targetGuid').value]
+            : this.targetGuidFiling.value.included
+          : this.selectedTargetUnits.value.included;
       const reclassificationQueryAdd = this.getReclassificationQueryActionType(parentToAdd);
 
       const reclassificationAction = this.getReclassificationAction(reclassificationQueryAdd, null);
@@ -423,6 +506,21 @@ export class ReclassificationDialogComponent implements OnInit, OnDestroy {
 
   onSubmit() {
     const reclassificationQuery = this.getReclassificationQuery();
-    console.log(reclassificationQuery);
+    this.reclassificationService.reclassification(this.transactionId, reclassificationQuery).subscribe(
+      (response) => {
+        this.dialogRef.close(true);
+        const serviceUrl =
+          this.startupService.getReferentialUrl() + '/logbook-operation/tenant/' + this.data.tenantIdentifier + '?guid=' + response;
+        this.reclassificationService.openSnackBarForWorkflow(
+          this.translateService.instant('RECLASSIFICATION.EXECUTE_RECLASSEMENT_MESSAGE'),
+          serviceUrl,
+        );
+      },
+      (error: any) => {
+        this.logger.error('Error message :', error);
+      },
+    );
   }
+
+  protected readonly ReclassificationToggle = ReclassificationToggle;
 }

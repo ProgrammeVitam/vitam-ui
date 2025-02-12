@@ -99,7 +99,7 @@ import java.util.stream.Collectors;
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.in;
 import static fr.gouv.vitam.common.database.builder.query.VitamFieldsHelper.unitType;
 import static fr.gouv.vitamui.commons.api.utils.MetadataSearchCriteriaUtils.createDslQueryWithFacets;
-import static fr.gouv.vitamui.commons.api.utils.MetadataSearchCriteriaUtils.mapRequestToSelectMultiQuery;
+import static fr.gouv.vitamui.commons.api.utils.MetadataSearchCriteriaUtils.mapRequestToDslQuery;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 import static org.apache.commons.lang3.ObjectUtils.isEmpty;
@@ -259,11 +259,6 @@ public class ArchiveSearchService {
         responseFilled.setResults(archivesFilled);
         responseFilled.setHits(archivesOriginResponse.getHits());
         return new ArchiveUnitsDto(responseFilled);
-    }
-
-    public JsonNode mapRequestToDslQuery(SearchCriteriaDto searchQuery) throws VitamClientException {
-        SelectMultiQuery selectMultiQuery = mapRequestToSelectMultiQuery(searchQuery);
-        return selectMultiQuery.getFinalSelect();
     }
 
     public JsonNode searchArchiveUnits(final JsonNode dslQuery, final VitamContext vitamContext)
