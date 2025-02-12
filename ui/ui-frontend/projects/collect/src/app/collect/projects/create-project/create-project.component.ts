@@ -145,7 +145,7 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
 
   ngOnInit(): void {
     this.initForm();
-    this.ontologyService.getInternalOntologyFieldsList().subscribe((data) => {
+    this.ontologyService.getInternalOntologyFieldsList().subscribe((data: IOntology[]) => {
       this.ontologies = data;
       this.ontologies.sort((a: any, b: any) => {
         const shortNameA = a.Identifier;
@@ -188,6 +188,20 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
 
   setFilesToUpload(files: File[]) {
     this.filesToUpload = files;
+  }
+
+  uploadJsltFile(files: File[]) {
+    const jsltFile = files?.length ? files[0] : undefined;
+    if (jsltFile) {
+      this.readFileContent(jsltFile)
+        .then((content: string) => {
+          this.projectForm.get('transformationRules').setValue(content);
+        })
+        .catch((error: any) => {
+          this.logger.error('Error reading JSLT file:', error);
+          this.isLoading = false;
+        });
+    }
   }
 
   /*** Form validator Step : Description du versement ***/
@@ -240,6 +254,7 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
       rulesParams: this.formBuilder.array([], Validators.required),
       comment: [null],
       status: [null],
+      transformationRules: [null],
     });
   }
 
@@ -258,6 +273,7 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
       legalStatus: this.projectForm.value.legalStatus,
       comment: this.projectForm.value.comment,
       status: ProjectStatus.OPEN,
+      transformationRules: this.projectForm.value.transformationRules,
       automaticIngest: this.selectedWorkflow === Workflow.MANUAL ? null : this.projectForm.value.automaticIngest === true,
     } as Project;
     if (this.selectedWorkflow === Workflow.MANUAL || this.selectedFlowType === FlowType.FIX) {
@@ -384,5 +400,14 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
 
   asFormControl(control: AbstractControl) {
     return control as FormControl;
+  }
+
+  private readFileContent(file: File): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = (event) => resolve(event.target?.result as string);
+      reader.onerror = (error) => reject(error);
+      reader.readAsText(file);
+    });
   }
 }
