@@ -196,7 +196,6 @@ public class ApiIngestServerConfig extends AbstractContextConfiguration {
         final LogbookService logbookService,
         final ObjectMapper objectMapper,
         final IngestExternalClient ingestExternalClient,
-        final IngestService ingestService,
         final CustomerInternalRestClient customerInternalRestClient,
         final IngestGeneratorODTFile ingestGeneratorODTFile,
         final IngestExternalParametersService ingestExternalParametersService,

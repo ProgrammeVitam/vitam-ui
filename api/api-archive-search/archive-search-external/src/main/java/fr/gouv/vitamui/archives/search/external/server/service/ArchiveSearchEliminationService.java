@@ -94,8 +94,6 @@ public class ArchiveSearchEliminationService {
 
     public JsonNode startEliminationAction(final SearchCriteriaDto searchQuery) throws VitamClientException {
         LOGGER.debug("Elimination action by criteria {} ", searchQuery.toString());
-        Optional<Long> thresholdOpt = archiveSearchThresholdService.retrieveProfilThresholds();
-        thresholdOpt.ifPresent(searchQuery::setThreshold);
         VitamContext vitamContext = archiveSearchExternalParametersService.buildVitamContextFromExternalParam();
         JsonNode dslQuery = archiveSearchService.prepareDslQuery(searchQuery, vitamContext);
         EliminationRequestBody eliminationRequestBody = null;
