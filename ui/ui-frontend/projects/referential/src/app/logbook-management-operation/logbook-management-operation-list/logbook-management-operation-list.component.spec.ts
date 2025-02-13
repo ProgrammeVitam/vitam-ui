@@ -78,6 +78,8 @@ describe('LogbookManagementOperationListComponent', () => {
           processType: 'TRACEABILITY',
           stepByStep: false,
           stepStatus: 'OK',
+          stepCancellable: false,
+          forcedCancellation: false,
         },
         {
           globalState: 'RUNNING',
@@ -88,6 +90,8 @@ describe('LogbookManagementOperationListComponent', () => {
           processType: 'TRACEABILITY',
           stepByStep: false,
           stepStatus: 'WARNING',
+          stepCancellable: true,
+          forcedCancellation: false,
         },
         {
           globalState: 'PAUSE',
@@ -98,6 +102,8 @@ describe('LogbookManagementOperationListComponent', () => {
           processType: 'TRACEABILITY',
           stepByStep: false,
           stepStatus: 'KO',
+          stepCancellable: false,
+          forcedCancellation: false,
         },
       ],
       facetResults: [],
@@ -118,6 +124,8 @@ describe('LogbookManagementOperationListComponent', () => {
     fixture = TestBed.createComponent(LogbookManagementOperationListComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+
+    component.searchOperationsList({});
   });
 
   it('should create', () => {

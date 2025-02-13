@@ -343,28 +343,12 @@ voir la [configuration](docs/developeurs/vitamui-conf-dev/README.md) suivante.
 │   │   ├── iam-external: 'mvn clean spring-boot:run [-Puse-profile-here]' ou './run.sh'
 ```
 
-## 6 - Lancement de l'application SpringBoot Ingest-Internal
-
-```
-├── api
-│   ├── api-ingest
-│   │   ├── ingest-internal: 'mvn clean spring-boot:run' ou './run.sh'
-```
-
 ## 7 - Lancement de l'application SpringBoot Collect-Internal
 
 ```
 ├── api
 │   ├── api-collect
 │   │   ├── collect-internal: 'mvn clean spring-boot:run' ou './run.sh'
-```
-
-## 8 - Lancement de l'application SpringBoot Archive-Search-Internal
-
-```
-├── api
-│   ├── api-archive-search
-│   │   ├── archive-search-internal: 'mvn clean spring-boot:run' ou './run.sh'
 ```
 
 ## 9 - Lancement de l'application SpringBoot Ingest-External
@@ -375,7 +359,7 @@ voir la [configuration](docs/developeurs/vitamui-conf-dev/README.md) suivante.
 │   │   ├── ingest-external: 'mvn clean spring-boot:run' ou './run.sh'
 ```
 
-## 10 - Lancement de l'application CAS Server.
+## 10 - Lancement de l'application CAS Server
 
 La surcharge faite sur CAS nous empêche de lancer avec le plugin spring-boot
 

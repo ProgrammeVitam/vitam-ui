@@ -36,7 +36,7 @@
             <div
               class="vitamui-remove-search-criteria"
               *ngIf="criteriaValue.status !== 'IN_PROGRESS'"
-              (click)="removeCriteria(criteriaKey, criteriaValue.value)"
+              (click)="removeCriteria(criteriaValue.value)"
               [ngClass]="[
                 isLast ? 'right-arround' : 'right-button',
                 criteriaValue.status === 'INCLUDED' ? 'after-search-launched-button' : 'before-search-launched-button',
@@ -105,7 +105,7 @@
             <div
               class="vitamui-remove-search-criteria"
               *ngIf="criteriaValue.status !== 'IN_PROGRESS'"
-              (click)="removeCriteria(criteriaKey, criteriaValue.value)"
+              (click)="removeCriteria(criteriaValue.value)"
               [ngClass]="[
                 isLast ? 'right-arround' : 'right-button',
                 criteriaValue.status === 'INCLUDED' ? 'after-search-launched-button' : 'before-search-launched-button',
@@ -199,7 +199,7 @@
             <div
               class="vitamui-remove-search-criteria"
               *ngIf="criteriaVal.values[criteriaVal.values.length - 1].status !== 'IN_PROGRESS'"
-              (click)="removeCriteriaAllValues(criteriaKey)"
+              (click)="removeCriteriaAllValues()"
               [ngClass]="[
                 isLast ? 'right-arround' : 'right-button',
                 criteriaVal.values[criteriaVal.values.length - 1].status === 'INCLUDED'
@@ -266,7 +266,7 @@
               <div
                 class="vitamui-remove-search-criteria"
                 *ngIf="criteriaValue.status !== 'IN_PROGRESS'"
-                (click)="removeCriteria(criteriaKey, criteriaValue.value)"
+                (click)="removeCriteria(criteriaValue.value)"
                 [ngClass]="[
                   isLast ? 'right-arround' : 'right-button',
                   criteriaValue.status === 'INCLUDED' ? 'after-search-launched-button' : 'before-search-launched-button',

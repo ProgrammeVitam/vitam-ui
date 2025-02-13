@@ -19,11 +19,14 @@
 
 @mixin btn(
   $background-color: transparent,
-  $background-color-hover: transparent,
+  $background-color-hover: $background-color,
+  $background-color-active: $background-color-hover,
   $border-color: transparent,
-  $border-color-hover: transparent,
+  $border-color-hover: $border-color,
+  $border-color-active: $border-color-hover,
   $button-color: var(--vitamui-white),
-  $button-color-hover: var(--vitamui-white)
+  $button-color-hover: $button-color,
+  $button-color-active: $button-color-hover
 ) {
   &.link,
   &:disabled,
@@ -48,13 +51,25 @@
     }
 
     &:focus-visible,
-    &:hover {
+    &:hover,
+    &.hover {
       background-color: $background-color-hover;
       border: 1px solid $border-color-hover;
       color: $button-color-hover;
 
       i {
         color: $button-color-hover;
+      }
+    }
+
+    &:active,
+    &.active {
+      background-color: $background-color-active;
+      border: 1px solid $border-color-active;
+      color: $button-color-active;
+
+      i {
+        color: $button-color-active;
       }
     }
   }
@@ -68,7 +83,7 @@
 .btn {
   @extend .button-medium;
   cursor: pointer;
-  display: flex;
+  display: inline-flex;
   justify-content: center;
   align-items: center;
   height: 50px;
@@ -93,29 +108,26 @@
 }
 
 .btn.contrast {
-  @include btn(var(--vitamui-white), var(--vitamui-white), var(--vitamui-white), var(--vitamui-white));
+  @include btn($background-color: var(--vitamui-white), $border-color: var(--vitamui-white), $button-color: var(--vitamui-white));
 
   &.contrast-primary {
     @include btn(
-      var(--vitamui-white),
-      var(--vitamui-white),
-      var(--vitamui-white),
-      var(--vitamui-white),
-      var(--vitamui-primary),
-      var(--vitamui-primary-700)
+      $background-color: var(--vitamui-white),
+      $border-color: var(--vitamui-white),
+      $button-color: var(--vitamui-primary),
+      $button-color-hover: var(--vitamui-primary-700)
     );
   }
 
   &.contrast-secondary {
     @include btn(
-      var(--vitamui-white),
-      var(--vitamui-white),
-      var(--vitamui-white),
-      var(--vitamui-white),
-      var(--vitamui-secondary),
-      var(--vitamui-secondary-700)
+      $background-color: var(--vitamui-white),
+      $border-color: var(--vitamui-white),
+      $button-color: var(--vitamui-secondary),
+      $button-color-hover: var(--vitamui-secondary-700)
     );
   }
+
   &:disabled {
     @include disabled(var(--vitamui-white));
     opacity: 0.4;
@@ -123,27 +135,23 @@
 }
 
 .btn.contrast-outline {
-  @include btn(transparent, transparent, var(--vitamui-white), var(--vitamui-white), var(--vitamui-white), var(--vitamui-white));
+  @include btn($background-color: transparent, $border-color: var(--vitamui-white), $button-color: var(--vitamui-white));
 
   &.contrast-outline-primary {
     @include btn(
-      transparent,
-      var(--vitamui-primary-400),
-      var(--vitamui-white),
-      var(--vitamui-white),
-      var(--vitamui-white),
-      var(--vitamui-white)
+      $background-color: transparent,
+      $background-color-hover: var(--vitamui-primary-400),
+      $border-color: var(--vitamui-white),
+      $button-color: var(--vitamui-white)
     );
   }
 
   &.contrast-outline-secondary {
     @include btn(
-      transparent,
-      var(--vitamui-secondary-400),
-      var(--vitamui-white),
-      var(--vitamui-white),
-      var(--vitamui-white),
-      var(--vitamui-white)
+      $background-color: transparent,
+      $background-color-hover: var(--vitamui-secondary-400),
+      $border-color: var(--vitamui-white),
+      $button-color: var(--vitamui-white)
     );
   }
 
@@ -185,14 +193,34 @@
     width: 24px;
     height: 24px;
 
-    &.btn.primary {
-      @include btn(transparent, var(--vitamui-primary-50), transparent, transparent, var(--vitamui-grey), var(--vitamui-primary));
+    &.btn {
+      &.primary {
+        @include btn(
+          $background-color: transparent,
+          $background-color-hover: var(--vitamui-primary-50),
+          $background-color-active: var(--vitamui-primary),
+          $border-color: transparent,
+          $button-color: var(--vitamui-grey),
+          $button-color-hover: var(--vitamui-primary),
+          $button-color-active: var(--vitamui-primary-50)
+        );
+      }
+      &.secondary {
+        @include btn(
+          $background-color: transparent,
+          $background-color-hover: var(--vitamui-secondary-50),
+          $background-color-active: var(--vitamui-secondary),
+          $border-color: transparent,
+          $button-color: var(--vitamui-grey),
+          $button-color-hover: var(--vitamui-secondary),
+          $button-color-active: var(--vitamui-secondary-50)
+        );
+      }
+    }
 
-      &:disabled {
-        i {
-          font-size: large;
-          color: var(--vitamui-grey-300);
-        }
+    &:disabled {
+      i {
+        color: var(--vitamui-grey-300);
       }
     }
   }
@@ -200,34 +228,33 @@
 
 .btn.primary {
   @include btn(
-    var(--vitamui-primary),
-    var(--vitamui-primary-800),
-    var(--vitamui-primary),
-    var(--vitamui-primary-800),
-    var(--vitamui-primary-font),
-    var(--vitamui-primary-font)
+    $background-color: var(--vitamui-primary),
+    $background-color-hover: var(--vitamui-primary-800),
+    $border-color: var(--vitamui-primary),
+    $border-color-hover: var(--vitamui-primary-800),
+    $button-color: var(--vitamui-primary-font)
   );
 }
 
 .btn.secondary {
   @include btn(
-    var(--vitamui-secondary),
-    var(--vitamui-secondary-700),
-    var(--vitamui-secondary),
-    var(--vitamui-secondary-700),
-    var(--vitamui-secondary-font),
-    var(--vitamui-secondary-font)
+    $background-color: var(--vitamui-secondary),
+    $background-color-hover: var(--vitamui-secondary-700),
+    $border-color: var(--vitamui-secondary),
+    $border-color-hover: var(--vitamui-secondary-700),
+    $button-color: var(--vitamui-secondary-font)
   );
 }
 
 .btn.link {
   padding: 0;
+
   &:not(.cancel) {
-    @include btn(transparent, transparent, transparent, transparent, var(--vitamui-primary), var(--vitamui-primary));
+    @include btn($background-color: transparent, $border-color: transparent, $button-color: var(--vitamui-primary));
   }
 
   &.cancel {
-    @include btn(transparent, transparent, transparent, transparent, var(--vitamui-grey-900), var(--vitamui-grey-900));
+    @include btn($background-color: transparent, $border-color: transparent, $button-color: var(--vitamui-grey-900));
   }
 
   i {
@@ -271,23 +298,21 @@
 
 .btn.outline-primary {
   @include btn(
-    transparent,
-    transparent,
-    var(--vitamui-primary),
-    var(--vitamui-primary-800),
-    var(--vitamui-primary),
-    var(--vitamui-primary-800)
+    $background-color: transparent,
+    $border-color: var(--vitamui-primary),
+    $border-color-hover: var(--vitamui-primary-800),
+    $button-color: var(--vitamui-primary),
+    $button-color-hover: var(--vitamui-primary-800)
   );
 }
 
 .btn.outline-secondary {
   @include btn(
-    transparent,
-    transparent,
-    var(--vitamui-secondary),
-    var(--vitamui-secondary-700),
-    var(--vitamui-secondary),
-    var(--vitamui-secondary-700)
+    $background-color: transparent,
+    $border-color: var(--vitamui-secondary),
+    $border-color-hover: var(--vitamui-secondary-700),
+    $button-color: var(--vitamui-secondary),
+    $button-color-hover: var(--vitamui-secondary-700)
   );
 }
 

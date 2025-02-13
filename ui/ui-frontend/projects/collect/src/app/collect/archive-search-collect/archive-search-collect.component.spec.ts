@@ -40,17 +40,32 @@ import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { environment } from 'projects/collect/src/environments/environment';
 import { Observable, of } from 'rxjs';
-import { BASE_URL, InjectorModule, LoggerModule, Transaction, TransactionStatus, WINDOW_LOCATION } from 'vitamui-library';
-import { VitamUISnackBar } from '../shared/vitamui-snack-bar/vitamui-snack-bar.service';
+import {
+  BASE_URL,
+  ConfigService,
+  ExternalParameters,
+  ExternalParametersService,
+  InjectorModule,
+  LoggerModule,
+  PagedResult,
+  Project,
+  SearchCriteriaDto,
+  Transaction,
+  TransactionStatus,
+} from 'vitamui-library';
 
 import { ArchiveSearchCollectComponent } from './archive-search-collect.component';
 import { ArchiveSearchHelperService } from './archive-search-criteria/services/archive-search-helper.service';
-import { ArchiveSharedDataService } from './archive-search-criteria/services/archive-shared-data.service';
+import { ArchiveSharedDataService } from '../core/archive-shared-data.service';
+import { ArchiveCollectService } from './archive-collect.service';
+import { SimpleCriteriaSearchComponent } from './archive-search-criteria/components/simple-criteria-search/simple-criteria-search.component';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { MatLegacyMenuModule as MatMenuModule } from '@angular/material/legacy-menu';
 
 const translations: any = { TEST: 'Mock translate test' };
 
@@ -63,21 +78,12 @@ class FakeLoader implements TranslateLoader {
 describe('ArchiveSearchCollectComponent', () => {
   let component: ArchiveSearchCollectComponent;
   let fixture: ComponentFixture<ArchiveSearchCollectComponent>;
+  const pagedResult: PagedResult = { pageNumbers: 1, facets: [], results: [], totalResults: 1 };
 
-  const archiveSearchCommonService = {
-    addCriteria: () => of(),
-    buildNodesListForQUery: () => of(),
-    buildFieldsCriteriaListForQUery: () => of(),
-    buildManagementRulesCriteriaListForQuery: () => of(),
-    checkIfRulesFacetsCanBeComputed: () => of(),
-    updateCriteriaStatus: () => of(),
-    removeCriteria: () => of(),
-    recursiveCheck: () => of(),
-  };
   const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
   matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
 
-  const snackBarSpy = jasmine.createSpyObj('MatSnackBar', ['open', 'openFromComponent']);
+  const project: Project = {} as Project;
 
   const transaction: Transaction = {
     id: 'transactionId',
@@ -95,81 +101,143 @@ describe('ArchiveSearchCollectComponent', () => {
     acquisitionInformation: 'Protocol',
   };
 
-  beforeEach(async () => {
+  const archiveCollectServiceStub = {
+    getAccessContractById: () => of({}),
+    getLastTransactionByProjectId: () => of(transaction),
+    getProjectById: () => of(project),
+    getTotalTrackHitsByCriteria: () => of(42),
+    hasCollectRole: () => of(false),
+    loadFilingHoldingSchemeTree: () => of([]),
+    searchArchiveUnitsByCriteria: (_criteriaDto: SearchCriteriaDto, _transactionId: string) => of(pagedResult),
+  };
+
+  const externalParametersServiceStub = {
+    getUserExternalParameters: () => of(new Map<string, string>([[ExternalParameters.PARAM_ACCESS_CONTRACT, 'SomeAccessContract']])),
+  };
+
+  const computeActivatedRoute = (queryParams: Params = {}) => {
+    return {
+      params: of({ tenantIdentifier: 1 }),
+      queryParamMap: of({ keys: Object.keys(queryParams) }),
+      data: of(),
+      snapshot: {
+        queryParamMap: {
+          keys: Object.keys(queryParams),
+        },
+        queryParams: queryParams,
+      },
+    };
+  };
+
+  const setupTest = async (queryParams: Params, withSimpleCriteria = false) => {
+    const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
+
+    spyOn(archiveCollectServiceStub, 'searchArchiveUnitsByCriteria').and.callThrough();
+
+    const declarations = withSimpleCriteria
+      ? [ArchiveSearchCollectComponent, SimpleCriteriaSearchComponent]
+      : [ArchiveSearchCollectComponent];
+
     await TestBed.configureTestingModule({
-      declarations: [ArchiveSearchCollectComponent],
       imports: [
+        BrowserAnimationsModule,
+        HttpClientTestingModule,
         InjectorModule,
+        LoggerModule.forRoot(),
+        MatMenuModule,
         MatSidenavModule,
         MatSnackBarModule,
-        BrowserAnimationsModule,
-        LoggerModule.forRoot(),
-        HttpClientTestingModule,
         RouterTestingModule,
         TranslateModule.forRoot({
           loader: { provide: TranslateLoader, useClass: FakeLoader },
         }),
       ],
+      declarations: declarations,
       providers: [
+        ArchiveSearchHelperService,
         ArchiveSharedDataService,
-        { provide: ArchiveSearchHelperService, useValue: archiveSearchCommonService },
-        {
-          provide: ActivatedRoute,
-          useValue: {
-            params: of({ tenantIdentifier: 1 }),
-            data: of({ appId: 'COLLECT_APP' }),
-            snapshot: {
-              queryParamMap: {
-                get: () => 'project messageIdentifier',
-              },
-            },
-          },
-        },
-        { provide: MatDialog, useValue: matDialogSpy },
-        { provide: VitamUISnackBar, useValue: snackBarSpy },
-        { provide: WINDOW_LOCATION, useValue: window.location },
+        { provide: ActivatedRoute, useValue: computeActivatedRoute(queryParams) },
+        { provide: ArchiveCollectService, useValue: archiveCollectServiceStub },
         { provide: BASE_URL, useValue: '/fake-api' },
+        { provide: ConfigService, useValue: { config$: of() } },
+        { provide: ExternalParametersService, useValue: externalParametersServiceStub },
+        { provide: MatDialog, useValue: matDialogSpy },
+        { provide: Router, useValue: routerSpy },
         { provide: environment, useValue: environment },
       ],
+      schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
-  });
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(ArchiveSearchCollectComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
     component.transaction = transaction;
+    fixture.detectChanges();
+
+    return { routerSpy };
+  };
+
+  describe('', () => {
+    beforeEach(async () => await setupTest({}));
+
+    it('component should be created', () => {
+      expect(component).toBeTruthy();
+    });
+
+    it('Some parameters should be true after initializing selection', () => {
+      // When
+      component.submit();
+
+      // Then
+      expect(component.submited).toBeTruthy();
+      expect(component.itemSelected).toBe(0);
+    });
+
+    it('Some parameters should be false after initializing selection', () => {
+      // When
+      component.submit();
+
+      // Then
+      expect(component.isIndeterminate).toBeFalsy();
+      expect(component.isAllChecked).toBeFalsy();
+      expect(component.itemNotSelected).toBe(0);
+    });
+
+    it('should return true', () => {
+      // When
+      const response = component.updateUnitsMetadataDisabled();
+
+      // Then
+      expect(response).toBeTruthy();
+    });
   });
 
-  it('component should be created', () => {
-    expect(component).toBeTruthy();
-  });
+  describe('queryParams', () => {
+    it('should be set to archives with or without object by default', async () => {
+      const { routerSpy } = await setupTest({});
+      expect(routerSpy.navigate.calls.first().args[1].queryParams).toEqual({
+        archiveUnitType: 'ARCHIVE_UNIT_WITH_OBJECTS,ARCHIVE_UNIT_WITHOUT_OBJECTS',
+      });
+    });
 
-  it('Some parameters should be true after initializing selection', () => {
-    // When
-    component.submit();
+    it('should trigger a search with criteria matching the queryParams in the URL on page access', async () => {
+      await setupTest({ guid: '1234' }, true);
 
-    // Then
-    expect(component.pending).toBeTruthy();
-    expect(component.submited).toBeTruthy();
-    expect(component.itemSelected).toBe(0);
-  });
+      await fixture.whenStable();
 
-  it('Some parameters should be false after initializing selection', () => {
-    // When
-    component.submit();
-
-    // Then
-    expect(component.isIndeterminate).toBeFalsy();
-    expect(component.isAllChecked).toBeFalsy();
-    expect(component.itemNotSelected).toBe(0);
-  });
-
-  it('should return true', () => {
-    // When
-    const response = component.updateUnitsMetadataDisabled();
-
-    // Then
-    expect(response).toBeTruthy();
+      expect(archiveCollectServiceStub.searchArchiveUnitsByCriteria).toHaveBeenCalledWith(
+        jasmine.objectContaining({
+          criteriaList: [
+            {
+              criteria: 'GUID',
+              values: [{ id: 'guid', value: '1234' }],
+              operator: 'EQ',
+              category: 'FIELDS',
+              dataType: 'STRING',
+            },
+          ],
+        }),
+        transaction.id,
+      );
+    });
   });
 });

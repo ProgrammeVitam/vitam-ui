@@ -427,7 +427,7 @@ La PKI voit ses fichiers répartis à deux emplacements:
   clés privées ...)
 
   | Fichier            | Description                                                                                   |
-    | ------------------ | --------------------------------------------------------------------------------------------- |
+  | ------------------ | --------------------------------------------------------------------------------------------- |
   | pki/ca             | Répertoire dans lequel sont stockés les CA de chaque zone                                     |
   | pki/config         | Répertoire dans lequel sont stockées les configurations pour la génération des CA/certificats |
   | pki/config/scripts | Répertoire dans lequel sont stockées les scripts de génération de la PKI.                     |
@@ -576,7 +576,6 @@ Le tableau ci-dessous détail l’ensemble du contenu des keystores et truststor
 | **ingest-external**         | ingest-external.crt, ingest-external.key           | ca-root.crt                      |
 | **ingest-internal**         | ingest-internal.crt, ingest-internal.key           | ca-root.crt                      |
 | **archive-search-external** | archive-search-external.crt, archive-external.key  | ca-root.crt                      |
-| **archive-search-internal** | archive-search-internal.crt, archive-internal.key  | ca-root.crt                      |
 | **collect-external**        | collect-external.crt, collect.key                  | ca-root.crt                      |
 | **collect-internal**        | collect-internal.crt, collect.key                  | ca-root.crt                      |
 | **pastis-external**         | pastis-external.crt, pastis.key                    | ca-root.crt                      |

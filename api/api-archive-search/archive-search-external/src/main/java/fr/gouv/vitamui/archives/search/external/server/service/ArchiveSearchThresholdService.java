@@ -29,12 +29,9 @@
 
 package fr.gouv.vitamui.archives.search.external.server.service;
 
-import fr.gouv.archive.internal.client.ArchiveInternalRestClient;
-import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.commons.api.domain.ExternalParametersDto;
 import fr.gouv.vitamui.commons.api.domain.ParameterDto;
 import fr.gouv.vitamui.iam.internal.client.ExternalParametersInternalRestClient;
-import fr.gouv.vitamui.iam.security.client.AbstractResourceClientService;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,30 +45,21 @@ import java.util.Optional;
  * The service to retrieve profil thresholds.
  */
 @Service
-public class ArchiveSearchThresholdService extends AbstractResourceClientService<ArchiveUnitsDto, ArchiveUnitsDto> {
+public class ArchiveSearchThresholdService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ArchiveSearchThresholdService.class);
     public static final String PARAM_BULK_OPERATIONS_THRESHOLD_NAME = "PARAM_BULK_OPERATIONS_THRESHOLD";
 
-    @Autowired
     private final ExternalParametersInternalRestClient externalParametersInternalRestClient;
+    private final ExternalSecurityService externalSecurityService;
 
     @Autowired
-    private final ArchiveInternalRestClient archiveInternalRestClient;
-
     public ArchiveSearchThresholdService(
-        @Autowired ArchiveInternalRestClient archiveInternalRestClient,
-        final ExternalSecurityService externalSecurityService,
-        final ExternalParametersInternalRestClient externalParametersInternalRestClient
+        final ExternalParametersInternalRestClient externalParametersInternalRestClient,
+        ExternalSecurityService externalSecurityService
     ) {
-        super(externalSecurityService);
-        this.archiveInternalRestClient = archiveInternalRestClient;
         this.externalParametersInternalRestClient = externalParametersInternalRestClient;
-    }
-
-    @Override
-    protected ArchiveInternalRestClient getClient() {
-        return archiveInternalRestClient;
+        this.externalSecurityService = externalSecurityService;
     }
 
     /**
@@ -82,7 +70,7 @@ public class ArchiveSearchThresholdService extends AbstractResourceClientService
     public Optional<Long> retrieveProfilThresholds() {
         Optional<Long> thresholdOpt = Optional.empty();
         ExternalParametersDto myExternalParameter = externalParametersInternalRestClient.getMyExternalParameters(
-            getInternalHttpContext()
+            this.externalSecurityService.getInternalHttpContext()
         );
         if (myExternalParameter != null && !CollectionUtils.isEmpty(myExternalParameter.getParameters())) {
             ParameterDto parameterThreshold = myExternalParameter

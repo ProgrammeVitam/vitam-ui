@@ -56,7 +56,6 @@ import { CommonProgressBarModule } from './components/common-progress-bar/common
 import { CommonTooltipModule } from './components/common-tooltip/common-tooltip.module';
 import { ConfirmDialogModule } from './components/confirm-dialog/confirm-dialog.module';
 import { CustomerSelectContentModule } from './components/customer-select-content/customer-select-content.module';
-import { DataModule } from './components/data/data.module';
 import { DatepickerModule } from './components/datepicker/datepicker.module';
 import { DownloadSnackBarModule } from './components/download-snack-bar/download-snack-bar.module';
 import { EditableFieldModule } from './components/editable-field/editable-field.module';
@@ -114,6 +113,7 @@ import { StartupService } from './startup.service';
 import { SubrogationModule } from './subrogation/subrogation.module';
 import { VitamUIHttpInterceptor } from './vitamui-http-interceptor';
 import { BadgeComponent } from './components/badge/badge.component';
+import { DataComponent } from './components/data/data.component';
 
 export function loadConfigFactory(configService: ConfigService, environment: any) {
   const p = () => configService.load(environment.configUrls).toPromise();
@@ -152,7 +152,7 @@ export function startupServiceFactory(startupService: StartupService, authServic
     CommonProgressBarModule,
     ConfirmDialogModule,
     CustomerSelectContentModule,
-    DataModule,
+    DataComponent,
     DatepickerModule,
     MultipleOptionsDatepickerModule,
     DownloadSnackBarModule,
@@ -220,7 +220,7 @@ export function startupServiceFactory(startupService: StartupService, authServic
     CommonProgressBarModule,
     CommonTooltipModule,
     ConfirmDialogModule,
-    DataModule,
+    DataComponent,
     DatepickerModule,
     MultipleOptionsDatepickerModule,
     DragAndDropDirective,

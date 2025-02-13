@@ -34,6 +34,7 @@ import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
+import fr.gouv.vitamui.commons.vitam.api.dto.CancelOperationRequestDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.ProcessDetailDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUIProcessDetailResponseDto;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
@@ -80,12 +81,18 @@ public class LogbookManagementOperationExternalController {
     @PostMapping(RestApi.CANCEL_OPERATION_PATH + CommonConstants.PATH_ID)
     @Secured(ServicesData.ROLE_UPDATE_LOGBOOK_OPERATION)
     public VitamUIProcessDetailResponseDto cancelOperationProcessExecution(
-        final @PathVariable("id") String operationId
+        final @PathVariable("id") String operationId,
+        @RequestBody CancelOperationRequestDto request
     ) throws InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.checkSecureParameter(operationId);
         LOGGER.debug("Cancel the operation with id={}", operationId);
         ParameterChecker.checkParameter("operationId is mandatory : ", operationId);
         VitamUIProcessDetailResponseDto operationResponseDto = new VitamUIProcessDetailResponseDto();
+        if (!request.isStepCancellable()) LOGGER.warn(
+            "Forced cancellation of operation {} with the following reason: {}",
+            operationId,
+            request.getReason()
+        );
         ProcessDetailDto processDetailDto = logbookManagementOperationExternalService.cancelOperationProcessExecution(
             operationId
         );

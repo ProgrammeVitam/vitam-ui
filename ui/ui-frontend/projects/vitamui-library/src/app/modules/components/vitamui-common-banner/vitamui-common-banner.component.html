@@ -2,7 +2,10 @@
   <vitamui-common-search-bar
     [disabled]="disableSearchBar"
     [placeholder]="searchbarPlaceholder"
+    [searchValue]="searchValue"
     (search)="search.emit($event)"
+    (searchChanged)="searchChanged.emit($event)"
+    (clear)="searchChanged.emit($event)"
   ></vitamui-common-search-bar>
   <ng-content></ng-content>
 </div>

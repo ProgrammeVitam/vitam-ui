@@ -41,22 +41,22 @@ import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { TranslateModule } from '@ngx-translate/core';
 import { BehaviorSubject, of } from 'rxjs';
 import {
+  AgenciesModule,
   BASE_URL,
-  CriteriaDataType,
-  CriteriaOperator,
-  CriteriaValue,
   InjectorModule,
   ItemNode,
+  LoggerModule,
   SchemaElement,
   SchemaService,
-  AgenciesModule,
+  SearchCriteriaAddAction,
   VitamUISnackBarService,
-  LoggerModule,
 } from 'vitamui-library';
 import { ArchiveSharedDataService } from '../../../core/archive-shared-data.service';
 import { ManagementRulesSharedDataService } from '../../../core/management-rules-shared-data.service';
 import { SimpleCriteriaSearchComponent } from './simple-criteria-search.component';
 import { MatLegacySnackBarModule } from '@angular/material/legacy-snack-bar';
+import { ArchiveService } from '../../archive.service';
+import { ActivatedRoute } from '@angular/router';
 
 describe('SimpleCriteriaSearchComponent', () => {
   let component: SimpleCriteriaSearchComponent;
@@ -66,6 +66,12 @@ describe('SimpleCriteriaSearchComponent', () => {
     addSimpleSearchCriteriaSubject: () => of(),
     receiveRemoveFromChildSearchCriteriaSubject: () => of(),
     searchCriteria$: of(),
+  };
+
+  const archiveServiceStub = {
+    loadFilingHoldingSchemeTree: () => of([]),
+    hasArchiveSearchRole: () => of(true),
+    getAccessContractById: () => of({}),
   };
 
   const managementRulesSharedDataServiceMock = {
@@ -87,12 +93,19 @@ describe('SimpleCriteriaSearchComponent', () => {
       declarations: [SimpleCriteriaSearchComponent],
       providers: [
         FormBuilder,
+        { provide: ArchiveService, useValue: archiveServiceStub },
         { provide: ArchiveSharedDataService, useValue: archiveExchangeDataServiceMock },
         { provide: MatDialog, useValue: matDialogSpy },
         { provide: ManagementRulesSharedDataService, useValue: managementRulesSharedDataServiceMock },
         { provide: SchemaService, useValue: schemaServiceMock },
         { provide: BASE_URL, useValue: '/fake-api' },
         VitamUISnackBarService,
+        {
+          provide: ActivatedRoute,
+          useValue: {
+            queryParamMap: of(),
+          },
+        },
       ],
       imports: [
         HttpClientTestingModule,
@@ -117,14 +130,14 @@ describe('SimpleCriteriaSearchComponent', () => {
 
   it('should not call addSimpleSearchCriteriaSubject when keyElt is null', () => {
     // Given
-    const criteriaValue: CriteriaValue = {
-      id: 'criteriaId',
-      value: 'criteriaValue',
+    const criteria: Partial<SearchCriteriaAddAction> = {
+      keyElt: null,
     };
+
     spyOn(archiveExchangeDataServiceMock, 'addSimpleSearchCriteriaSubject').and.callThrough();
 
     // When
-    component.addCriteria(null, criteriaValue, 'labelElt', true, CriteriaOperator.EQ, true, CriteriaDataType.STRING);
+    component.addCriteria(criteria as SearchCriteriaAddAction);
 
     // Then
     expect(archiveExchangeDataServiceMock.addSimpleSearchCriteriaSubject).not.toHaveBeenCalled();
@@ -149,14 +162,18 @@ describe('SimpleCriteriaSearchComponent', () => {
 
   it('should call addSimpleSearchCriteriaSubject when keyElt and CriteriaValue are not null', () => {
     // Given
-    const criteriaValue: CriteriaValue = {
-      id: 'criteriaId',
-      value: 'criteriaValue',
+    const criteria: Partial<SearchCriteriaAddAction> = {
+      keyElt: 'keyElt',
+      valueElt: {
+        id: '',
+        value: '',
+      },
     };
+
     spyOn(archiveExchangeDataServiceMock, 'addSimpleSearchCriteriaSubject').and.callThrough();
 
     // When
-    component.addCriteria('keyElt', criteriaValue, 'labelElt', true, CriteriaOperator.EQ, true, CriteriaDataType.DATE);
+    component.addCriteria(criteria as SearchCriteriaAddAction);
 
     // Then
     expect(archiveExchangeDataServiceMock.addSimpleSearchCriteriaSubject).toHaveBeenCalled();

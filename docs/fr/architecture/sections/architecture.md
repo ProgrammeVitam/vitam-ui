@@ -23,20 +23,11 @@ Les applications de base :
 
 ## Services externes
 
-Les services externes exposent des API REST publiques accessibles en HTTPS. Ces services constituent une porte d'accès
-aux services internes et assurent principalement un rôle de sécurisation des ressources internes.
+Les services externes exposent des API REST publiques accessibles en HTTPS. Ces services constituent une porte d'accès aux services internes et assurent principalement un rôle de sécurisation des ressources internes.
 
-La connexion d'une application cliente à un service externe nécessite le partage de certificats X509 client et serveur
-dans le cadre d'un processus d'authentification mutuel (Machine To Machine/M2M). Dans la solution VITAMUI, les
-certificats des clients sont associés à un contexte de sécurité stocké dans une collection MongoDb gérée par le service
-security_internal. D'autre part, les utilisateurs clients sont identifiés et authentifiés dans les services externes par
-le token fourni par CAS et transmis dans les headers des requêtes REST en HTTPS.
+La connexion d'une application cliente à un service externe nécessite le partage de certificats X509 client et serveur dans le cadre d'un processus d'authentification mutuel (Machine To Machine/M2M). Dans la solution VITAMUI, les certificats des clients sont associés à un contexte de sécurité stocké dans une collection MongoDb gérée par le service security_internal. D'autre part, les utilisateurs clients sont identifiés et authentifiés dans les services externes par le token fourni par CAS et transmis dans les headers des requêtes REST en HTTPS.
 
-Le service externe a pour responsabilité de sécuriser les accès en effectuant les différentes étapes de vérifications
-des droits (générale, tenant, rôles, groupes, etc.) et de déterminer les droits résultants du client à l'origine de la
-requête, en réalisant l'intersection des droits applicatifs, définis dans le contexte de sécurité, avec les droits issus
-des profils de l'utilisateur. Le service externe s'assure ensuite que le client possède bien les droits pour accéder à
-la ressource demandée.
+Le service externe a pour responsabilité de sécuriser les accès en effectuant les différentes étapes de vérifications des droits (générale, tenant, rôles, groupes, etc.) et de déterminer les droits résultants du client à l'origine de la requête, en réalisant l'intersection des droits applicatifs, définis dans le contexte de sécurité, avec les droits issus des profils de l'utilisateur. Le service externe s'assure ensuite que le client possède bien les droits pour accéder à la ressource demandée.
 
 Les services externes s'auto-déclarent au démarrage dans l'annuaire de service Consul.
 
@@ -63,54 +54,53 @@ Les services génèrent les logs techniques dans la solution de log centralisée
 
 * Description : service externe pour la gestion des référentiels de la solution logicielle VITAM.
 
-  Le service de référentiel externe a pour responsabilité la réception, la sécurisation des ressources internes de
-  gestion des référentiels, et la communication sécurisée avec les couches internes.
+  Le service de referential-external a pour responsabilité la réception et la sécurisation des ressources de gestion des référentiels ainsi que la communication sécurisée avec Vitam via les clients Admin/Access pour la récupération des données.
 
   Le service de référentiel externe est composé de plusieurs points d'APIs:
 
-    * API des contrats d'accès (/referential/accesscontracts)
-    * API des contrats d'entrées (/referential/ingestcontract)
-    * API des contrats de gestion (/referential/managementcontract)
-    * API des services agents (/referential/agency)
-    * API des formats (/referential/fileformat)
-    * API des ontologies (/referential/ontology)
-    * API des profils d'archivages (/referential/profile)
-    * API des règles de gestion (/referential/profile)
-    * API des profils de sécurité (/referential/security-profile)
-    * API des contexts applicatifs (/referential/context)
-    * API des opérations permettant le lancement différents audits (cohérence, valeur probante ...).
+  * API des contrats d'accès (/referential/accesscontracts)
+  * API des contrats d'entrées (/referential/ingestcontract)
+  * API des contrats de gestion (/referential/managementcontract)
+  * API des services agents (/referential/agency)
+  * API des formats (/referential/fileformat)
+  * API des ontologies (/referential/ontology)
+  * API des profils d'archivages (/referential/profile)
+  * API des règles de gestion (/referential/profile)
+  * API des profils de sécurité (/referential/security-profile)
+  * API des contexts applicatifs (/referential/context)
+  * API des opérations permettant le lancement différents audits (cohérence, valeur probante ...).
+
+  Pour plus d'information: voir la documentation des [référentiels](https://www.programmevitam.fr/pages/documentation/pour_archiviste/)
 
 ### Service ingest-external
 
 * Description : service externe pour la gestion des opérations d'entrées d'archives de la solution logicielle VITAM.
 
-  Le service d'ingest externe a pour responsabilité la réception, la sécurisation des ressources internes de versement,
-  et la communication sécurisée avec les couches internes.
+  Le service d'ingest externe a pour responsabilité la réception, la sécurisation des ressources internes de versement et la communication sécurisée avec les couches internes.
 
   Le service d'ingest externe est composé de plusieurs points d'APIs:
 
-    * API de versement des archives permettant la consommation des flux d'archives (/v1/ingest/upload)
-    * API de visualisation des journaux d'opération des opérations d'entrées (API /v1/ingest)
-    * API de visualisation détaillé d'un journal d'une opération d'entrées (/v1/ingest/{id})
-    * API permettant le téléchargement d'un rapport sous forme ODT d'une opération d'entrée (/v1/ingest/odtreport/{id})
-    * API commune est utilisé pour le téléchargement du Manifest et de l'ATR (Archival Transfer Reply) d'une opération
-      d'entrée.
-      (Manifest: /logbooks/operations/{id}/download/manifest, ATR: /logbooks/operations/{id}/download/atr)
+  * API de versement des archives permettant la consommation des flux d'archives (/v1/ingest/upload)
+  * API de visualisation des journaux d'opération des opérations d'entrées (API /v1/ingest)
+  * API de visualisation détaillé d'un journal d'une opération d'entrées (/v1/ingest/{id})
+  * API permettant le téléchargement d'un rapport sous forme ODT d'une opération d'entrée (/v1/ingest/odtreport/{id})
+  * API commune est utilisé pour le téléchargement du Manifest et de l'ATR (Archival Transfer Reply) d'une opération
+    d'entrée.
+    (Manifest: /logbooks/operations/{id}/download/manifest, ATR: /logbooks/operations/{id}/download/atr)
 
 ### Service archive-search-external
 
 * Description : service externe pour la gestion d'accès et la recherche d'archives de la solution logicielle VITAM.
 
-  Le service d'archive externe a pour responsabilité la réception, la sécurisation des ressources internes, et la
-  communication sécurisée avec les couches internes d'accès aux archives.
+  Le service archive-search-external a pour responsabilité la réception et la sécurisation des ressources internes ainsi que la communication sécurisée avec Vitam via les clients Admin/Access pour la récupération des données.
 
   Le service d'archive externe est composé de plusieurs points d'APIs:
 
-    * API de recherche des archive par requetes (/archive-search/search)
-    * API de recherche des unités archivistiques (/archive-search/archiveunit/{id})
-    * API de recherche des arbres de positionnement et plans de classement (/archive-search/filingholdingscheme)
-    * API de téléchargement des objets (/archive-search/downloadobjectfromunit/{id})
-    * API d'export des résultats sous format csv (/export-csv-search)
+  * API de recherche des archive par requetes (/archive-search/search)
+  * API de recherche des unités archivistiques (/archive-search/archiveunit/{id})
+  * API de recherche des arbres de positionnement et plans de classement (/archive-search/filingholdingscheme)
+  * API de téléchargement des objets (/archive-search/downloadobjectfromunit/{id})
+  * API d'export des résultats sous format csv (/export-csv-search)
 
 ### Service de collect externe
 
@@ -118,41 +108,40 @@ Les services génèrent les logs techniques dans la solution de log centralisée
 
   Le service collecte externe est composé de plusieurs points d'APIs:
 
-
-* GET /collect-api/projects: get projects paginated
-* POST /collect-api/projects: Create new collect project
-* GET /collect-api/projects/{id}: GET project Details
-* PUT /collect-api/projects/{id}: updateProject
-* DELETE /collect-api/projects/{id}: DELETE project
-* GET /collect-api/projects/{id}/last-transaction: GET last Transaction for project
-* GET /collect-api/projects/{id}/transactions:    GET transactions by project paginated
-* POST /collect-api/projects/{id}/transactions:    Create Transaction For Project
-* GET /collect-api/projects/archive-units/searchcriteriahistory:  GET the search criteria history
-* POST /collect-api/projects/archive-units/searchcriteriahistory:  Create search criteria history for collect
-* PUT /collect-api/projects/archive-units/searchcriteriahistory/{id}: Update Search criteria history
-* DELETE /collect-api/projects/archive-units/searchcriteriahistory/{id}: DELETE Search criteria history
-* GET /collect-api/projects/object-groups/downloadobjectfromunit/{id}: Download Archive Unit Object
-* POST /collect-api/projects/upload: Upload collect zip file
-* GET /collect-api/transactions/{id}: GET transaction by project
-* PUT/collect-api/transactions/{id}: updateTransaction
-* PUT /collect-api/transactions/{id}/abort: Abort transaction operation
-* PUT /collect-api/transactions/{id}/reopen: Reopen transaction operation
-* PUT /collect-api/transactions/{id}/send: Send transaction operation
-* PUT /collect-api/transactions/{id}/validate:Validate transaction operation
-* PUT /collect-api/transactions/{transactionId}/update-units-metadata: Upload on streaming metadata file and update
-  archive units
-* POST/collect-api/transactions/archive-units/{transactionId}/export-csv-search: export into csv format archive units by
-  criteria
-* POST/collect-api/transactions/archive-units/{transactionId}/search: GET AU collect paginated
-* GET /collect-api/transactions/archive-units/archiveunit/{id}: Find the Archive Unit Details
+  * GET /collect-api/projects: get projects paginated
+  * POST /collect-api/projects: Create new collect project
+  * GET /collect-api/projects/{id}: GET project Details
+  * PUT /collect-api/projects/{id}: updateProject
+  * DELETE /collect-api/projects/{id}: DELETE project
+  * GET /collect-api/projects/{id}/last-transaction: GET last Transaction for project
+  * GET /collect-api/projects/{id}/transactions:    GET transactions by project paginated
+  * POST /collect-api/projects/{id}/transactions:    Create Transaction For Project
+  * GET /collect-api/projects/archive-units/searchcriteriahistory:  GET the search criteria history
+  * POST /collect-api/projects/archive-units/searchcriteriahistory:  Create search criteria history for collect
+  * PUT /collect-api/projects/archive-units/searchcriteriahistory/{id}: Update Search criteria history
+  * DELETE /collect-api/projects/archive-units/searchcriteriahistory/{id}: DELETE Search criteria history
+  * GET /collect-api/projects/object-groups/downloadobjectfromunit/{id}: Download Archive Unit Object
+  * POST /collect-api/projects/upload: Upload collect zip file
+  * GET /collect-api/transactions/{id}: GET transaction by project
+  * PUT/collect-api/transactions/{id}: updateTransaction
+  * PUT /collect-api/transactions/{id}/abort: Abort transaction operation
+  * PUT /collect-api/transactions/{id}/reopen: Reopen transaction operation
+  * PUT /collect-api/transactions/{id}/send: Send transaction operation
+  * PUT /collect-api/transactions/{id}/validate:Validate transaction operation
+  * PUT /collect-api/transactions/{transactionId}/update-units-metadata: Upload on streaming metadata file and update
+    archive units
+  * POST/collect-api/transactions/archive-units/{transactionId}/export-csv-search: export into csv format archive units by
+    criteria
+  * POST/collect-api/transactions/archive-units/{transactionId}/search: GET AU collect paginated
+  * GET /collect-api/transactions/archive-units/archiveunit/{id}: Find the Archive Unit Details
 
 ### Service externe de gestion de profils documentaires (Pastis-external)
 
-* Description :  Accéder, Créer, Modifier ou Supprimer les profils d'archivage et les profils d'unité archivistique
+* Description : Accéder, Créer, Modifier ou Supprimer les profils d'archivage et les profils d'unité archivistique
 
 Le service Pastis externe est composé de plusieurs points d'APIs:
 
-## Pastis Controller
+#### Pastis Controller
 
 * POST /pastis-api/pastis/archiveprofile: Download Archive Profile
 * POST /pastis-api/pastis/edit: Transform profile
@@ -160,7 +149,7 @@ Le service Pastis externe est composé de plusieurs points d'APIs:
 * GET /pastis-api/pastis/profile: Create new Profile by type PA or PUA
 * POST /pastis-api/pastis/profile: Upload Profile Vitamui
 
-## Profile controller
+#### Profile controller
 
 * GET /pastis-api/profile: Get entities paginated
 * POST /pastis-api/profile: Create Archival Profile
@@ -171,7 +160,7 @@ Le service Pastis externe est composé de plusieurs points d'APIs:
 * POST /pastis-api/profile/import: import profile
 * PUT /pastis-api/profile/updateProfileFile/{id}: Importer un fichier xsd ou rng dans un profil
 
-## Archival-profile unit controller
+#### Archival-profile unit controller
 
 * GET /pastis-api/archival-profile: Get entity
 * POST /pastis-api/archival-profile: Create Archival Unit Profile
@@ -184,15 +173,10 @@ Le service Pastis externe est composé de plusieurs points d'APIs:
 
 ## Services internes
 
-Les services internes offrent des API REST accessibles en HTTPS uniquement depuis les services externes ou internes. Les
-API de ces services ne sont donc pas exposées publiquement. Les services internes implémentent les fonctionnalités de
-base de la solution ainsi que les fonctionnalités métiers. En fonction des besoins, les services internes peuvent être
-amenés à journaliser des évènements dans le logbook des opérations du socle VITAM.
+Les services internes offrent des API REST accessibles en HTTPS uniquement depuis les services externes ou internes. Les API de ces services ne sont donc pas exposées publiquement. Les services internes implémentent les fonctionnalités de base de la solution ainsi que les fonctionnalités métiers. En fonction des besoins, les services internes peuvent être amenés à journaliser des évènements dans le logbook des opérations du socle VITAM.
 
 Les utilisateurs sont identifiés dans les services internes grâce au token transmis dans les headers des requêtes HTTPS.
-L'utilisation du protocole HTTPS permet de chiffrer les tokens et les informations sensibles qui sont transportées dans
-les requêtes. Les services internes peuvent éventuellement vérifier les droits d'accès de l'utilisateur avant d'accéder
-aux ressources.
+L'utilisation du protocole HTTPS permet de chiffrer les tokens et les informations sensibles qui sont transportées dans les requêtes. Les services internes peuvent éventuellement vérifier les droits d'accès de l'utilisateur avant d'accéder aux ressources.
 
 Les services internes s'auto-déclarent au démarrage dans l'annuaire de service Consul.
 
@@ -217,30 +201,6 @@ Les services génèrent les logs techniques dans la solution de log centralisée
 * API swagger
 * Modèle de données
 
-### Service referential-internal
-
-* Description : service interne pour la gestion des référentiels de la solution logicielle VITAM.
-
-  Le service de référentiel interne reçoit les requêtes du client référentiel externe, et communique avec VITAM via les
-  clients Admin/Access pour la récupération des données.
-
-  Le service de référentiel interne est composé de plusieurs points d'APIs:
-
-    * API des contrats d'accès (/referential/accesscontracts)
-    * API des contrats d'entrées (/referential/ingestcontract)
-    * API des contrats de gestion (/referential/managementcontract)
-    * API des services agents (/referential/agency)
-    * API des formats (/referential/fileformat)
-    * API des ontologies (/referential/ontology)
-    * API des profils d'archivages (/referential/profile)
-    * API des règles de gestion (/referential/profile)
-    * API des profils de sécurité (/referential/security-profile)
-    * API des contexts applicatifs (/referential/context)
-    * API des opérations permettant le lancement différents audits (cohérence, valeur probante ...).
-
-  Pour plus d'information: voir la documentation
-  des [référentiels](https://www.programmevitam.fr/pages/documentation/pour_archiviste/)
-
 ### Service ingest-internal
 
 * Description : service interne pour la gestion des opérations d'entrées d'archives de la solution logicielle VITAM.
@@ -262,23 +222,6 @@ Les services génèrent les logs techniques dans la solution de log centralisée
 
   Pour aller plus
   loin: [API Ingest](https://www.programmevitam.fr/ressources/DocCourante/raml/externe/ingest.html), [API externes (ingest-external et access-external)](htps://www.programmevitam.fr/ressources/DocCourante/html/archi/archi-applicative/20-services-list.html#api-externes-ingest-external-et-access-external)
-
-### Service archive-search-internal
-
-* Description : service interne pour la gestion d'accès et la recherche d'archives de la solution logicielle VITAM.
-
-  Le service d'archive interne a pour responsabilité la réception, et la communication sécurisée avec les couches
-  externes VITAM.
-
-  Le service d'archive interne est composé de plusieurs points d'APIs:
-
-    * API de recherche des archive par requêtes (/archive-search/search)
-    * API de recherche des unités archivistiques (/archive-search/archiveunit/{id})
-    * API de recherche des arbres de positionnement et plans de classement (/archive-search/filingholdingscheme)
-    * API de téléchargement des objets (/archive-search/downloadobjectfromunit/{id})
-    * API d'export des résultats sous format csv (/export-csv-search)
-
-### Service de collect interne
 
 ---
 
@@ -941,15 +884,15 @@ sous-rôles) qui donnent accès à des fonctions protégées du service. Ces “
 corps de la méthode par le contexte de sécurité.
 
 ```java
-    @Secured(ROLE_CREATE_XXX)
-public MyDto create(final @Valid @RequestBody MyDto dto){
-    if(SecurityContext.hasRole(ROLE_CREATE_XXX_YYY){
-    setProperty(...)
+@Secured(ROLE_CREATE_XXX)
+public MyDto create(final @Valid @RequestBody MyDto dto) {
+    if (SecurityContext.hasRole(ROLE_CREATE_XXX_YYY) {
+        setProperty(...)
     }
     else{
-    return HTTP.403;.
+        return HTTP .403;.
     }
-    }
+}
 ```
 
 Dans l'exemple ci-dessus :
@@ -1014,7 +957,7 @@ Les tableaux ci-dessous indiquent les droits d'un utilisateur en fonction du niv
   N-1 :
 
   | Niveau cible   | N+1   | N       |   N-1   |
-    | -------------- | ----- | ------- | ------- |
+  | -------------- | ----- | ------- | ------- |
   | Créer          | Non   | Non     | Oui     |
   | Modifier       | Non   | Non     | Oui     |
   | Lire           | Non   | Oui (1) | Oui     |
@@ -1026,7 +969,7 @@ Les tableaux ci-dessous indiquent les droits d'un utilisateur en fonction du niv
 * Matrice des droits d'un utilisateur de niveau N pour réaliser des actions sur un profil de niveau cible N+1, N, N-1 :
 
   | Niveau cible   | N+1   | N       | N-1   |
-    | -------------- | ----  | ------- | ----- |
+  | -------------- | ----  | ------- | ----- |
   | Créer          | Non   | Non     | Oui   |
   | Modifier       | Non   | Non     | Oui   |
   | Lire           | Non   | Oui (1) | Oui   |
@@ -1041,7 +984,7 @@ Les tableaux ci-dessous indiquent les droits d'un utilisateur en fonction du niv
   N+1, N, N-1 :
 
   | Niveau cible   | N+1   | N       | N-1   |
-    | -------------- | ----- | ------- | ----- |
+  | -------------- | ----- | ------- | ----- |
   | Créer          | Non   | Non     | Oui   |
   | Modifier       | Non   | Non     | Oui   |
   | Lire           | Non   | Oui (1) | Oui   |
@@ -1055,7 +998,7 @@ Les tableaux ci-dessous indiquent les droits d'un utilisateur en fonction du niv
   niveau cible N+1, N, N-1 :
 
   | Niveau cible    | N+1   | N     | N-1   |
-    | --------------- | ----- | ----- | ----- |
+  | --------------- | ----- | ----- | ----- |
   | Créer           | -     | Oui   | Oui   |
   | Modifier        | -     | Oui   | Oui   |
   | Lire            | -     | Oui   | Oui   |
@@ -1314,9 +1257,9 @@ Au niveau du fichier ts :
 
 ```js
 dataToSearchWithRules = {
-appId: "ApplicationId",
-tenantIdentifier: 1,
-role: 'ROLE_ARCHIVE_SEARCH_GET_ARCHIVE_SEARCH',
+    appId: "ApplicationId",
+    tenantIdentifier: 1,
+    role: 'ROLE_ARCHIVE_SEARCH_GET_ARCHIVE_SEARCH',
 };
 ```
 
@@ -1546,7 +1489,7 @@ d'ajouter ces ontologies dans la base de données de Vitam.
 Après l'installation de VitamUI le fichier des ontologies sera placé dans les deux répertoires (au niveau de la
 machine) :
 
-* vitamui/conf/archive-search-internal/
+* vitamui/conf/archive-search-external/
 * vitamui/conf/collect-internal/
 
 Ensuite, s'il y a un besoin d'ajouter des nouvelles ontologies, il suffit juste de modifier le fichier directement au
@@ -1738,7 +1681,7 @@ La journalisation des événements VITAMUI a pour objectifs :
 * GraphicIdentity (Embarqué)
 
   | Nom                      | Type                | Contrainte(s)              | Remarque(s)         |
-    | ------------------------ | ------------------- | -------------------------- | ------------------- |
+  | ------------------------ | ------------------- | -------------------------- | ------------------- |
   | hasCustomGraphicIdentity | boolean             |                            |                     |
   | logoDataBase64           | String              |                            |                     |
   | logoHeaderBase64         | String              |                            | Base64 encoded logo |
@@ -1749,7 +1692,7 @@ La journalisation des événements VITAMUI a pour objectifs :
 * themeColors
 
   | Nom                   | Type   | Contrainte(s)          | Remarque(s) |
-    | --------------------- | ------ | ---------------------- | ----------- |
+  | --------------------- | ------ | ---------------------- | ----------- |
   | vitamui-primary       | String | hexadecimal color like |             |
   | vitamui-secondary     | String | hexadecimal color like |             |
   | vitamui-tertiary      | String | hexadecimal color like |             |
@@ -1798,7 +1741,7 @@ La collection qui définit un contrat d'accès par défaut
 * ParameterDto (Embarqué)
 
   | Nom   | Type   | Contrainte(s) | Remarque(s)                    |
-    | ----- | ------ | ------------- | ------------------------------ |
+  | ----- | ------ | ------------- | ------------------------------ |
   | key   | String |               | exemple: PARAM_ACCESS_CONTRACT |
   | value | String |               | exemple: AC-000001             |
   | key   | String |               | exemple: PARAM_BULK_OPERATIONS_THRESHOLD |
@@ -1838,7 +1781,7 @@ app1:tenant2), profil(app2:tenant1)” est autorisé.
 * Address (Embarqué)
 
   | Nom     | Type   | Contrainte(s) | Remarque(s) |
-    | ------- | ------ | ------------- | ----------- |
+  | ------- | ------ | ------------- | ----------- |
   | street  | String | maximum = 250 |             |
   | zipCode | String | maximum = 10  |             |
   | city    | String | maximum = 100 |             |
@@ -1988,14 +1931,14 @@ profils).
 * AnalyticsDto (Embarqué)
 
   | Nom                  | Type                    | Contrainte(s) | Remarque(s) |
-    | -------------------- | ----------------------- | ------------- | ----------- |
+  | -------------------- | ----------------------- | ------------- | ----------- |
   | applications         | ApplicationAnalyticsDto |               |             |
   | lastTenantIdentifier | Integer                 |               |             |
 
 * ApplicationAnalyticsDto (Embarqué)
 
   | Nom           | Type           | Contrainte(s) | Remarque(s)                     |
-    | ------------- | -------------- | ------------- | ------------------------------- |
+  | ------------- | -------------- | ------------- | ------------------------------- |
   | applicationId | String         |               |                                 |
   | accessCounter | int            |               |                                 |
   | lastAccess    | OffsetDateTime |               | ex: YYYY-MM-ddTHH:mm:ss.ssssssZ |
@@ -2075,13 +2018,13 @@ archives.
 * SearchCriteriasDto (Embarqué)
 
   | Nom          | Type                              | Contrainte(s) | Remarque(s)                                                                      |
-    | ------------ | --------------------------------- | ------------- | -------------------------------------------------------------------------------- |
+  | ------------ | --------------------------------- | ------------- | -------------------------------------------------------------------------------- |
   | nodes        | List<_String_>                    |               | liste des identifiants des noeuds d'arbre de positionnement/ plans de classement |
   | criteriaList | List<_SearchCriteriaElementsDto_> |               | liste des critères de recherches sauvegardées                                    |
 
 * SearchCriteriaElementsDto (Embarqué)
 
   | Nom      | Type           | Contrainte(s) | Remarque(s)                                                          |
-    | -------- | -------------- | ------------- | -------------------------------------------------------------------- |
+  | -------- | -------------- | ------------- | -------------------------------------------------------------------- |
   | criteria | String         |               | le nom du critère de recherche (eg: Title, StartDate, #opi, #id ...) |
   | values   | List<_String_> |               | liste des valeurs du critère de filtre                               |

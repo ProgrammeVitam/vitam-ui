@@ -40,10 +40,11 @@ import { NavigationExtras, Router } from '@angular/router';
 import { combineLatest } from 'rxjs';
 import { ApiUnitObject, ApplicationId, BreadCrumbData, TenantSelectionService } from 'vitamui-library';
 import { PurgedPersistentIdentifierDto } from '../../core/api/persistent-identifier-response-dto.interface';
-import { PERMANENT_IDENTIFIER } from '../archive-search/archive-search.component';
 import { PersistentIdentifierService } from '../persistent-identifier.service';
 import { FoundObjectModalComponent } from './found-object-modal/found-object-modal.component';
 import { PurgedPersistentIdentifierModalComponent } from './purged-persistent-identifier-modal/purged-persistent-identifier-modal.component';
+
+const PERMANENT_IDENTIFIER = 'PersistentIdentifier.PersistentIdentifierContent';
 
 @Component({
   selector: 'app-persistent-identifier-search',

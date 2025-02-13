@@ -59,8 +59,9 @@ export class LogbookManagementOperationApiService extends BaseHttpClient<any> {
     return this.http.post<OperationResponse>(`${this.apiUrl}/operations`, searchCriteria);
   }
 
-  cancelOperationProcessExecution(id: string): Observable<OperationResponse> {
-    return this.http.post<OperationResponse>(`${this.apiUrl}/operations/cancel/${id}`, id);
+  cancelOperationProcessExecution(id: string, stepCancellable: boolean, reason: string): Observable<OperationResponse> {
+    const body = { stepCancellable, reason };
+    return this.http.post<OperationResponse>(`${this.apiUrl}/operations/cancel/${id}`, body);
   }
 
   updateOperationProcessExecution(id: string, actionId: string): Observable<OperationResponse> {

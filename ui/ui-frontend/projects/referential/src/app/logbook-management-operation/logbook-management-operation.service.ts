@@ -82,9 +82,9 @@ export class LogbookManagementOperationService extends SearchService<any> {
     );
   }
 
-  cancelOperationProcessExecution(id: string): Observable<OperationsResults> {
+  cancelOperationProcessExecution(id: string, stepCancellable: boolean, reason: string): Observable<OperationsResults> {
     return this.logbookManagementOperationApiService
-      .cancelOperationProcessExecution(id)
+      .cancelOperationProcessExecution(id, stepCancellable, reason)
       .pipe(
         catchError(() => {
           return of({ $hits: null, $results: [] });

@@ -41,7 +41,6 @@ import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { Subscription, merge } from 'rxjs';
 import { debounceTime, filter, map } from 'rxjs/operators';
 import {
-  ActionOnCriteria,
   CriteriaDataType,
   CriteriaOperator,
   CriteriaValue,
@@ -51,7 +50,7 @@ import {
   diff,
 } from 'vitamui-library';
 import { ArchiveSearchConstsEnum } from '../../models/archive-search-consts-enum';
-import { ArchiveSharedDataService } from '../../services/archive-shared-data.service';
+import { ArchiveSharedDataService } from '../../../../core/archive-shared-data.service';
 import { RuleValidator } from '../../services/rule.validator';
 
 const RULE_TYPE_SUFFIX = '_REUSE_RULE';
@@ -152,9 +151,9 @@ export class ReuseRuleSearchComponent implements OnInit, OnDestroy {
     this.subscriptionReuseFromMainSearchCriteria = this.archiveExchangeDataService.reuseFromMainSearchCriteriaObservable.subscribe(
       (criteria) => {
         if (criteria) {
-          if (this.reuseAdditionalCriteria && criteria.action === ActionOnCriteria.ADD) {
+          if (this.reuseAdditionalCriteria && criteria.action === 'ADD') {
             this.reuseAdditionalCriteria.set(criteria.valueElt.value, true);
-          } else if (criteria.action === ActionOnCriteria.REMOVE) {
+          } else if (criteria.action === 'REMOVE') {
             if (this.reuseAdditionalCriteria && this.reuseAdditionalCriteria.has(criteria.valueElt.value)) {
               this.reuseAdditionalCriteria.set(criteria.valueElt.value, false);
             }

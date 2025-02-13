@@ -26,23 +26,38 @@
 
 package fr.gouv.vitamui.archives.search.external.server.config;
 
-import fr.gouv.archive.internal.client.ArchiveInternalRestClient;
-import fr.gouv.archive.internal.client.ArchiveInternalRestClientFactory;
-import fr.gouv.archive.internal.client.ArchiveSearchInternalWebClient;
-import fr.gouv.archive.internal.client.ArchiveSearchInternalWebClientFactory;
-import fr.gouv.archive.internal.client.ArchiveSearchStreamingInternalRestClient;
-import fr.gouv.archive.internal.client.ArchiveSearchStreamingInternalRestClientFactory;
-import fr.gouv.archive.internal.client.SearchCriteriaHistoryInternalRestClient;
-import fr.gouv.vitamui.archives.search.common.rest.ArchiveUnitClient;
+import fr.gouv.vitam.access.external.client.AccessExternalClient;
+import fr.gouv.vitam.access.external.client.v2.AccessExternalClientV2;
+import fr.gouv.vitamui.archives.search.common.dto.converter.UpdateArchiveUnitDtoToUpdateMultiQueryConverter;
+import fr.gouv.vitamui.archives.search.common.service.ArchiveUnitService;
+import fr.gouv.vitamui.archives.search.external.server.converter.RuleOperationsConverter;
+import fr.gouv.vitamui.archives.search.external.server.searchcriteria.converter.SearchCriteriaHistoryConverter;
+import fr.gouv.vitamui.archives.search.external.server.searchcriteria.dao.SearchCriteriaHistoryRepository;
+import fr.gouv.vitamui.archives.search.external.server.searchcriteria.service.SearchCriteriaHistoryService;
+import fr.gouv.vitamui.archives.search.external.server.security.WebSecurityConfig;
+import fr.gouv.vitamui.archives.search.external.server.service.ArchiveSearchExternalParametersService;
+import fr.gouv.vitamui.archives.search.external.server.service.ArchiveSearchUnitServiceImpl;
 import fr.gouv.vitamui.commons.api.application.AbstractContextConfiguration;
+import fr.gouv.vitamui.commons.api.converter.JsonPatchDtoToUpdateMultiQueryConverter;
+import fr.gouv.vitamui.commons.api.converter.UpdateMultiQueriesToBulkCommandDto;
+import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
 import fr.gouv.vitamui.commons.rest.configuration.SwaggerConfiguration;
+import fr.gouv.vitamui.commons.vitam.api.access.ExportDipV2Service;
+import fr.gouv.vitamui.commons.vitam.api.access.TransferAcknowledgmentService;
+import fr.gouv.vitamui.commons.vitam.api.access.TransferRequestService;
+import fr.gouv.vitamui.commons.vitam.api.access.UnitService;
+import fr.gouv.vitamui.commons.vitam.api.config.VitamAccessConfig;
+import fr.gouv.vitamui.commons.vitam.api.config.VitamAdministrationConfig;
 import fr.gouv.vitamui.iam.internal.client.ExternalParametersInternalRestClient;
 import fr.gouv.vitamui.iam.internal.client.IamInternalRestClientFactory;
 import fr.gouv.vitamui.iam.internal.client.UserInternalRestClient;
 import fr.gouv.vitamui.iam.security.provider.ExternalApiAuthenticationProvider;
+import fr.gouv.vitamui.iam.security.provider.InternalApiAuthenticationProvider;
 import fr.gouv.vitamui.iam.security.service.ExternalAuthentificationService;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
+import fr.gouv.vitamui.iam.security.service.InternalAuthentificationService;
+import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import fr.gouv.vitamui.security.client.ContextRestClient;
 import fr.gouv.vitamui.security.client.SecurityRestClientFactory;
 import org.springframework.boot.autoconfigure.http.HttpMessageConvertersAutoConfiguration;
@@ -52,7 +67,18 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 @Configuration
-@Import({ RestExceptionHandler.class, SwaggerConfiguration.class, HttpMessageConvertersAutoConfiguration.class })
+@Import(
+    {
+        RestExceptionHandler.class,
+        SwaggerConfiguration.class,
+        HttpMessageConvertersAutoConfiguration.class,
+        WebSecurityConfig.class,
+        VitamAccessConfig.class,
+        VitamAdministrationConfig.class,
+        MongoDbConfig.class,
+        ConverterConfig.class,
+    }
+)
 public class ApiArchiveServerConfig extends AbstractContextConfiguration {
 
     @Bean
@@ -103,66 +129,29 @@ public class ApiArchiveServerConfig extends AbstractContextConfiguration {
     }
 
     @Bean
+    public InternalAuthentificationService internalAuthentificationService(
+        final UserInternalRestClient userInternalRestClient
+    ) {
+        return new InternalAuthentificationService(userInternalRestClient);
+    }
+
+    @Bean
+    public InternalSecurityService securityService() {
+        return new InternalSecurityService();
+    }
+
+    @Bean
+    public InternalApiAuthenticationProvider internalApiAuthenticationProvider(
+        final InternalAuthentificationService internalAuthentificationService
+    ) {
+        return new InternalApiAuthenticationProvider(internalAuthentificationService);
+    }
+
+    @Bean
     public UserInternalRestClient userInternalRestClient(
         final IamInternalRestClientFactory iamInternalRestClientFactory
     ) {
         return iamInternalRestClientFactory.getUserInternalRestClient();
-    }
-
-    @Bean
-    public ArchiveSearchStreamingInternalRestClientFactory archiveSearchStreamingInternalRestClientFactory(
-        final ApiArchiveExternalApplicationProperties apiArchiveExternalApplicationProperties
-    ) {
-        return new ArchiveSearchStreamingInternalRestClientFactory(
-            apiArchiveExternalApplicationProperties.getArchiveSearchInternalClient()
-        );
-    }
-
-    @Bean
-    public ArchiveSearchStreamingInternalRestClient archiveSearchStreamingInternalRestClient(
-        final ArchiveSearchStreamingInternalRestClientFactory factory
-    ) {
-        return factory.getArchiveSearchStreamingInternalRestClient();
-    }
-
-    @Bean
-    public ArchiveInternalRestClientFactory archiveInternalRestClientFactory(
-        final ApiArchiveExternalApplicationProperties apiArchiveExternalApplicationProperties,
-        final RestTemplateBuilder restTemplateBuilder
-    ) {
-        return new ArchiveInternalRestClientFactory(
-            apiArchiveExternalApplicationProperties.getArchiveSearchInternalClient(),
-            restTemplateBuilder
-        );
-    }
-
-    @Bean
-    public ArchiveInternalRestClient archiveInternalRestClient(final ArchiveInternalRestClientFactory factory) {
-        return factory.getArchiveInternalRestClient();
-    }
-
-    @Bean
-    public ArchiveSearchInternalWebClientFactory archiveInternalWebClientFactory(
-        final ApiArchiveExternalApplicationProperties apiArchiveExternalApplicationProperties,
-        final RestTemplateBuilder restTemplateBuilder
-    ) {
-        return new ArchiveSearchInternalWebClientFactory(
-            apiArchiveExternalApplicationProperties.getArchiveSearchInternalClient()
-        );
-    }
-
-    @Bean
-    public ArchiveSearchInternalWebClient archiveInternalWebClient(
-        final ArchiveSearchInternalWebClientFactory factory
-    ) {
-        return factory.getArchiveInternalWebClient();
-    }
-
-    @Bean
-    public SearchCriteriaHistoryInternalRestClient searchCriteriaHistoryInternalRestClient(
-        final ArchiveInternalRestClientFactory archiveInternalRestClientFactory
-    ) {
-        return archiveInternalRestClientFactory.getSearchCriteriaHistoryInternalRestClient();
     }
 
     @Bean
@@ -173,9 +162,61 @@ public class ApiArchiveServerConfig extends AbstractContextConfiguration {
     }
 
     @Bean
-    public ArchiveUnitClient getArchiveUnitClient(
-        final ArchiveInternalRestClientFactory archiveInternalRestClientFactory
+    public UnitService unitService(final AccessExternalClient client) {
+        return new UnitService(client);
+    }
+
+    @Bean
+    public ExportDipV2Service exportDipV2Service(final AccessExternalClientV2 accessExternalClientV2) {
+        return new ExportDipV2Service(accessExternalClientV2);
+    }
+
+    @Bean
+    public TransferRequestService transferRequestService(final AccessExternalClient accessExternalClient) {
+        return new TransferRequestService(accessExternalClient);
+    }
+
+    @Bean
+    public TransferAcknowledgmentService transferAcknowledgmentService(
+        final AccessExternalClient accessExternalClient
     ) {
-        return archiveInternalRestClientFactory.getArchiveUnitClient();
+        return new TransferAcknowledgmentService(accessExternalClient);
+    }
+
+    @Bean
+    public SearchCriteriaHistoryService searchCriteriaHistoryInternalService(
+        final CustomSequenceRepository sequenceRepository,
+        final SearchCriteriaHistoryRepository searchCriteriaHistoryRepository,
+        final SearchCriteriaHistoryConverter searchCriteriaHistoryConverter,
+        final InternalSecurityService internalSecurityService
+    ) {
+        return new SearchCriteriaHistoryService(
+            sequenceRepository,
+            searchCriteriaHistoryRepository,
+            searchCriteriaHistoryConverter,
+            internalSecurityService
+        );
+    }
+
+    @Bean
+    public RuleOperationsConverter ruleOperationsConverter() {
+        return new RuleOperationsConverter();
+    }
+
+    @Bean
+    public ArchiveUnitService archiveUnitService(
+        final AccessExternalClient accessExternalClient,
+        final UpdateArchiveUnitDtoToUpdateMultiQueryConverter updateArchiveUnitDtoToUpdateMultiQueryConverter,
+        final ArchiveSearchExternalParametersService externalParametersService,
+        final JsonPatchDtoToUpdateMultiQueryConverter jsonPatchDtoToUpdateMultiQueryConverter,
+        final UpdateMultiQueriesToBulkCommandDto updateMultiQueriesToBulkCommandDto
+    ) {
+        return new ArchiveSearchUnitServiceImpl(
+            accessExternalClient,
+            updateArchiveUnitDtoToUpdateMultiQueryConverter,
+            externalParametersService,
+            jsonPatchDtoToUpdateMultiQueryConverter,
+            updateMultiQueriesToBulkCommandDto
+        );
     }
 }

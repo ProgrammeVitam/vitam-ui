@@ -38,6 +38,14 @@ import { SearchCriteriaAddAction } from './search-criteria.interface';
 import { CriteriaDataType, CriteriaOperator } from './criteria.enums';
 
 export const searchCriteriaConfigs: { [key: string]: Partial<SearchCriteriaAddAction> } = {
+  titleOrDescription: {
+    keyElt: 'TITLE_OR_DESCRIPTION',
+    keyTranslated: true,
+  },
+  archiveUnitType: {
+    keyElt: 'ALL_ARCHIVE_UNIT_TYPES',
+    keyTranslated: true,
+  },
   title: {
     keyElt: 'TITLE',
     keyTranslated: true,

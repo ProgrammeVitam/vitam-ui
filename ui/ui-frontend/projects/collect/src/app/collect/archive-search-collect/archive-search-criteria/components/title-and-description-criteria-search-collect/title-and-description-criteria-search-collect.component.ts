@@ -41,7 +41,7 @@ import { merge } from 'rxjs';
 import { debounceTime, filter, map } from 'rxjs/operators';
 import { CriteriaDataType, CriteriaOperator, CriteriaValue, diff, SearchCriteriaTypeEnum } from 'vitamui-library';
 import { ArchiveSearchConstsEnum } from '../../models/archive-search-consts-enum';
-import { ArchiveSharedDataService } from '../../services/archive-shared-data.service';
+import { ArchiveSharedDataService } from '../../../../core/archive-shared-data.service';
 
 const TITLE_OR_DESCRIPTION = 'TITLE_OR_DESCRIPTION';
 
@@ -89,7 +89,7 @@ export class TitleAndDescriptionCriteriaSearchCollectComponent {
       if (formData.archiveCriteria) {
         this.addCriteria(
           TITLE_OR_DESCRIPTION,
-          { value: formData.archiveCriteria.trim(), id: formData.archiveCriteria.trim() },
+          { id: 'titleOrDescription', value: formData.archiveCriteria.trim() },
           formData.archiveCriteria.trim(),
           true,
           CriteriaOperator.EQ,

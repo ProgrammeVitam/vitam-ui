@@ -39,37 +39,36 @@ import JSZip from 'jszip';
 import { ZipFileStatus } from './zip-file-status.interface';
 import { HttpEvent, HttpEventType } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs';
+import { CustomFile } from '../custom-file';
 
 export class ZipFile {
   private zipFile: JSZip;
   zipFileStatus: ZipFileStatus = null;
   zipFileStatus$: BehaviorSubject<ZipFileStatus> = new BehaviorSubject<ZipFileStatus>(null);
 
-  constructor(transactionId?: string) {
+  constructor(zipName?: string) {
     this.zipFile = new JSZip();
     this.zipFileStatus = {
-      transactionId: transactionId,
+      name: zipName,
       size: 0,
       uploadedSize: 0,
     };
   }
 
-  setTransactionId(transactionId: string): ZipFile {
-    this.zipFileStatus.transactionId = transactionId;
+  setZipName(zipName: string): ZipFile {
+    this.zipFileStatus.name = zipName;
     return this;
   }
 
   addFiles(files: FileList | File[]): ZipFile {
-    if (!files?.length) return this;
-
-    for (const item of Array.isArray(files) ? files : Array.from(files)) {
-      if (item instanceof File) {
-        const filePath = item.webkitRelativePath || item.name;
-        if (filePath) {
-          this.zipFile.file(filePath, item);
-          this.zipFileStatus.size += item.size;
-        }
-      }
+    if (files.length === 0) {
+      return this;
+    }
+    for (let i = 0; i < files.length; i++) {
+      const item: CustomFile = files[i];
+      const filePath = item?.webkitRelativePath || item?.relativePath || item?.name;
+      this.zipFile.file(filePath, item);
+      this.zipFileStatus.size += item.size;
     }
     return this;
   }

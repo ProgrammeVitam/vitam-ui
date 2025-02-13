@@ -55,7 +55,9 @@ export interface OperationDetails {
   operationId: string;
   processType: string;
   stepByStep: boolean;
+  stepCancellable: boolean;
   globalState: string;
+  forcedCancellation: boolean;
   processDate: Date;
 }
 

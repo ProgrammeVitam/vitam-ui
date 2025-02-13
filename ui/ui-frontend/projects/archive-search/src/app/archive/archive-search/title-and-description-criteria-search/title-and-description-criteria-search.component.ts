@@ -89,7 +89,7 @@ export class TitleAndDescriptionCriteriaSearchComponent {
       if (formData.archiveCriteria) {
         this.addCriteria(
           TITLE_OR_DESCRIPTION,
-          { value: formData.archiveCriteria.trim(), id: formData.archiveCriteria.trim() },
+          { id: 'titleOrDescription', value: formData.archiveCriteria.trim() },
           formData.archiveCriteria.trim(),
           true,
           CriteriaOperator.EQ,

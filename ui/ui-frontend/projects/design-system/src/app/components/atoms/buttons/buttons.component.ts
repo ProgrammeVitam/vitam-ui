@@ -37,17 +37,64 @@
 import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
+import { NgForOf, NgIf, NgTemplateOutlet, TitleCasePipe } from '@angular/common';
+
+interface ButtonType {
+  type: string;
+  classes: string;
+  variations?: string[];
+  colors: (
+    | 'primary'
+    | 'secondary'
+    | 'outline outline-primary'
+    | 'outline outline-secondary'
+    | 'contrast contrast-primary'
+    | 'contrast contrast-secondary'
+    | string
+  )[];
+  sizes: string[];
+  icon?: string;
+  subTypes?: ButtonType[];
+}
 
 @Component({
   templateUrl: './buttons.component.html',
   styleUrls: ['./buttons.component.scss'],
   standalone: true,
-  imports: [TranslateModule],
+  imports: [TranslateModule, NgForOf, TitleCasePipe, NgIf, NgTemplateOutlet],
 })
 export class ButtonsComponent {
   public control = new FormControl();
 
-  public onClick(): void {
-    console.log('[onClick]');
+  variations = ['default', 'hover', 'active', 'disabled'];
+
+  buttonTypes: ButtonType[] = [
+    {
+      type: 'btn-circle',
+      classes: 'btn-circle',
+      colors: ['primary', 'secondary', 'outline outline-primary', 'outline outline-secondary'],
+      sizes: ['large', 'medium', 'small'],
+      icon: 'arrow-back',
+      subTypes: [
+        {
+          type: 'xsmall',
+          classes: 'link',
+          colors: ['xsmall'],
+          sizes: ['primary', 'secondary'],
+          icon: 'content-copy',
+        },
+      ],
+    },
+  ];
+
+  computeSubButtonType(buttonType: ButtonType, subButtonType: ButtonType): ButtonType {
+    return {
+      ...buttonType,
+      ...subButtonType,
+      classes: `${buttonType.classes} ${subButtonType.classes}`,
+      subTypes: subButtonType.subTypes || [],
+    };
   }
+
+  protected readonly Object = Object;
 }

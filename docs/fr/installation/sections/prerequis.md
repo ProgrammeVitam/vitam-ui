@@ -19,9 +19,7 @@ Par défaut les services java utilisent 512Mo de Ram et on a donc pour tous les 
 * iam-external 512Mo
 * iam-internal 512Mo
 * archive-search-external 512Mo
-* archive-search-internal 512Mo
 * ui-archive-search 512Mo
-* ingest-internal 512Mo
 * ingest-external 512Mo
 * ui-ingest 512Mo
 * referential-external 512Mo
@@ -43,11 +41,9 @@ HOST1:
 
 * (browser)
 * archive_search_external
-* archive_search_internal
 * security_internal
 * referential_external
 * ingest_external
-* ingest_internal
 * iam_external
 * iam_internal
 * mongod

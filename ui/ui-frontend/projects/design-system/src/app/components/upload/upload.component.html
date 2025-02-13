@@ -1,0 +1,30 @@
+<div>
+  <h2>Upload files/directories</h2>
+
+  <h3>(~25 MB) max size</h3>
+  <vitamui-file-selector [maxSizeInBytes]="25 * 1024 * 1024"> </vitamui-file-selector>
+
+  <h3>Upload multipleFiles is allowed</h3>
+  <vitamui-file-selector [multipleFiles]="true"> </vitamui-file-selector>
+
+  <h3>Upload directories is allowed</h3>
+  <vitamui-file-selector [directoryMode]="true"> </vitamui-file-selector>
+
+  <h3>Only '.json' '.png' extensions are allowed</h3>
+  <vitamui-file-selector [extensions]="['.json', '.png']"> </vitamui-file-selector>
+
+  <h3>Default template</h3>
+  <vitamui-file-selector> </vitamui-file-selector>
+
+  <h3>Custom template</h3>
+  <vitamui-file-selector #fs [multipleFiles]="true">
+    <ng-template #fileList>
+      <ul style="margin: 0 auto">
+        <li *ngFor="let file of fs.files">{{ file.name }} ({{ file.size }})</li>
+      </ul>
+    </ng-template>
+    <ng-template #content>
+      <h4 (click)="fs.openFileSelectorOSDialog()" class="text link primary text-center">Click me (or drag & drop)!</h4>
+    </ng-template>
+  </vitamui-file-selector>
+</div>

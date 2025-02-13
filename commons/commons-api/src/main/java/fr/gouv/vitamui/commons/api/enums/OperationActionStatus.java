@@ -31,4 +31,5 @@ public enum OperationActionStatus {
     RESUME,
     NEXT,
     REPLAY,
+    PAUSE,
 }

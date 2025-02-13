@@ -64,7 +64,6 @@ import java.util.List;
 
 /**
  * The controller to check existence, create, read and delete the search criterias
- *
  */
 @RestController
 @RequestMapping(RestApi.SEARCH_CRITERIA_HISTORY)
@@ -86,7 +85,7 @@ public class SearchCriteriaHistoryExternalController {
     @Secured(ServicesData.ARCHIVE_SEARCH_GET_ARCHIVE_SEARCH_ROLE)
     public List<SearchCriteriaHistoryDto> getSearchCriteriaHistory() {
         LOGGER.debug("getSearchCriteriaHistory archive external");
-        return searchCriteriaHistoryExternalService.getSearchCriteriaHistory();
+        return searchCriteriaHistoryExternalService.getSearchCriteriaHistoryDtos();
     }
 
     @PostMapping

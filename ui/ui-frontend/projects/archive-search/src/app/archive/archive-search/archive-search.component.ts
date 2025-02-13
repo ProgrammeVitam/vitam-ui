@@ -37,6 +37,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import {
   AfterContentChecked,
+  AfterViewInit,
   ChangeDetectorRef,
   Component,
   EventEmitter,
@@ -49,11 +50,10 @@ import {
   ViewChild,
 } from '@angular/core';
 import { MatLegacyDialog as MatDialog, MatLegacyDialogConfig as MatDialogConfig } from '@angular/material/legacy-dialog';
-import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { merge, Observable, Subject, Subscription } from 'rxjs';
-import { debounceTime, filter, map } from 'rxjs/operators';
+import { debounceTime, filter } from 'rxjs/operators';
 import {
   AccessContract,
   AccessContractService,
@@ -67,6 +67,7 @@ import {
   Logger,
   ORPHANS_NODE_ID,
   PagedResult,
+  QueryParamsService,
   SearchCriteriaAddAction,
   SearchCriteriaCategory,
   SearchCriteriaEltDto,
@@ -99,17 +100,13 @@ const PAGE_SIZE = 10;
 const FILTER_DEBOUNCE_TIME_MS = 400;
 const ELIMINATION_TECHNICAL_ID = 'ELIMINATION_TECHNICAL_ID';
 const ALL_ARCHIVE_UNIT_TYPES = 'ALL_ARCHIVE_UNIT_TYPES';
-const ARCHIVE_UNIT_WITH_OBJECTS = 'ARCHIVE_UNIT_WITH_OBJECTS';
-const ARCHIVE_UNIT_WITHOUT_OBJECTS = 'ARCHIVE_UNIT_WITHOUT_OBJECTS';
-export const PERMANENT_IDENTIFIER = 'PersistentIdentifier.PersistentIdentifierContent';
-export const GUID = 'GUID';
 
 @Component({
   selector: 'app-archive-search',
   templateUrl: './archive-search.component.html',
   styleUrls: ['./archive-search.component.scss'],
 })
-export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, AfterContentChecked {
+export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, AfterContentChecked, AfterViewInit {
   readonly UnitType = UnitType;
 
   DEFAULT_RESULT_THRESHOLD = 10_000;
@@ -212,7 +209,6 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
     private translateService: TranslateService,
     private route: ActivatedRoute,
     private archiveSharedDataService: ArchiveSharedDataService,
-    public snackBar: MatSnackBar,
     public dialog: MatDialog,
     private router: Router,
     private managementRulesSharedDataService: ManagementRulesSharedDataService,
@@ -224,6 +220,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
     private archiveUnitDipService: ArchiveUnitDipService,
     private accessContractService: AccessContractService,
     private cdr: ChangeDetectorRef,
+    private queryParamsService: QueryParamsService,
   ) {
     this.subscriptions.add(
       this.managementRulesSharedDataService.getBulkOperationsThreshold().subscribe((bulkOperationsThreshold) => {
@@ -277,8 +274,6 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
       this.archiveSharedDataService.receiveSimpleSearchCriteriaSubject().subscribe((criteria) => this.searchCriteriaAddAction(criteria)),
     );
 
-    this.selectedArchive$ = archiveSharedDataService.selectedUnit$;
-
     this.archiveSharedDataService
       .receiveRemoveFromChildSearchCriteriaSubject()
       .subscribe((criteria) => this.searchCriteriaRemoveAction(criteria));
@@ -286,6 +281,8 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
     this.archiveSharedDataService.receiveAppraisalSearchCriteriaSubject().subscribe((criteria) => this.searchCriteriaAddAction(criteria));
 
     this.archiveSharedDataService.receiveAccessSearchCriteriaSubject().subscribe((criteria) => this.searchCriteriaAddAction(criteria));
+
+    this.selectedArchive$ = archiveSharedDataService.selectedUnit$;
   }
 
   selectedCategoryChange(selectedCategoryIndex: number) {
@@ -381,10 +378,12 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
     this.searchCriterias = new Map();
     this.searchCriteriaKeys = [];
 
-    const hasPermanentIdentifierParam = this.route.snapshot.queryParamMap.has(PERMANENT_IDENTIFIER);
-    const hasGUIDParam = this.route.snapshot.queryParamMap.has(GUID);
-    if (!hasPermanentIdentifierParam && !hasGUIDParam) {
-      this.addInitialCriteriaValues();
+    if (!this.route.snapshot.queryParamMap.keys.length) {
+      this.queryParamsService
+        .builder()
+        .addQueryParam('archiveUnitType', 'ARCHIVE_UNIT_WITH_OBJECTS')
+        .addQueryParam('archiveUnitType', 'ARCHIVE_UNIT_WITHOUT_OBJECTS')
+        .navigate({ replaceUrl: true });
     }
 
     const searchCriteriaChange = merge(this.orderChange, this.filterChange).pipe(debounceTime(FILTER_DEBOUNCE_TIME_MS));
@@ -402,78 +401,11 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
     const ruleActions: ActionsRules[] = [];
     this.managementRulesSharedDataService.emitRuleActions(ruleActions);
     this.managementRulesSharedDataService.emitManagementRules([]);
-
-    this.route.queryParamMap
-      .pipe(
-        map((params) => params.get(PERMANENT_IDENTIFIER)),
-        filter((permanentIdentifier) => !!permanentIdentifier),
-      )
-      .subscribe((permanentIdentifier) => {
-        this.initializeSelectionParams();
-        this.searchCriterias = new Map();
-        this.addCriteria(
-          PERMANENT_IDENTIFIER,
-          { value: permanentIdentifier, id: permanentIdentifier },
-          permanentIdentifier,
-          true,
-          CriteriaOperator.EQ,
-          SearchCriteriaTypeEnum.FIELDS,
-          false,
-          CriteriaDataType.STRING,
-          false,
-        );
-
-        this.submit();
-      });
-
-    this.route.queryParamMap
-      .pipe(
-        map((params) => params.get(GUID)),
-        filter((guid) => !!guid),
-      )
-      .subscribe((guid) => {
-        this.initializeSelectionParams();
-        this.searchCriterias = new Map();
-        this.addCriteria(
-          GUID,
-          { value: guid, id: guid },
-          guid,
-          true,
-          CriteriaOperator.EQ,
-          SearchCriteriaTypeEnum.FIELDS,
-          false,
-          CriteriaDataType.STRING,
-          false,
-        );
-
-        this.submit();
-      });
   }
 
-  private addInitialCriteriaValues() {
-    this.addCriteria(
-      ALL_ARCHIVE_UNIT_TYPES,
-      { value: ARCHIVE_UNIT_WITH_OBJECTS, id: ARCHIVE_UNIT_WITH_OBJECTS },
-      this.translateService.instant('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.UNIT_TYPE.ARCHIVE_UNIT_WITH_OBJECTS'),
-      true,
-      CriteriaOperator.EQ,
-      SearchCriteriaTypeEnum.FIELDS,
-      false,
-      CriteriaDataType.STRING,
-      false,
-    );
-
-    this.addCriteria(
-      ALL_ARCHIVE_UNIT_TYPES,
-      { value: ARCHIVE_UNIT_WITHOUT_OBJECTS, id: ARCHIVE_UNIT_WITHOUT_OBJECTS },
-      this.translateService.instant('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.UNIT_TYPE.ARCHIVE_UNIT_WITHOUT_OBJECTS'),
-      true,
-      CriteriaOperator.EQ,
-      SearchCriteriaTypeEnum.FIELDS,
-      false,
-      CriteriaDataType.STRING,
-      false,
-    );
+  ngAfterViewInit() {
+    // Trigger the search if we land on the page with query params
+    if (this.route.snapshot.queryParamMap.keys.length) setTimeout(() => this.submit());
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -508,10 +440,6 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
       this.removeCriteria(criteriaToRemove.keyElt, criteriaToRemove.valueElt, true);
     } else {
       this.removeCriteriaAllValues(criteriaToRemove.keyElt, true);
-    }
-    // TODO: this is a temporary fix. This needs to be cleaned up when we synchronize search parameters with query params
-    if (criteriaToRemove.keyElt === PERMANENT_IDENTIFIER || criteriaToRemove.keyElt === GUID) {
-      this.resetParam(criteriaToRemove.keyElt);
     }
   }
 
@@ -572,7 +500,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
     for (const mgtRuleType in SearchCriteriaMgtRuleEnum) {
       this.archiveHelperService.buildManagementRulesCriteriaListForQuery(mgtRuleType, this.searchCriterias, this.criteriaSearchList);
     }
-    if (this.hasSearchCriterias()) {
+    if (this.hasSearchCriteria()) {
       this.search$ = this.archiveService.getTotalTrackHitsByCriteria(this.criteriaSearchList);
       this.rulesFacetsComputed = false;
       this.rulesFacetsCanBeComputed = this.archiveHelperService.checkIfRulesFacetsCanBeComputed(this.searchCriterias);
@@ -767,7 +695,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
     this.recursiveCheck(this.nodeArray, show);
   }
 
-  public reMapSearchCriteriaFromSearchCriteriaHistory(storedSearchCriteriaHistory: SearchCriteriaHistory) {
+  private reMapSearchCriteriaFromSearchCriteriaHistory(storedSearchCriteriaHistory: SearchCriteriaHistory) {
     this.subscribeResetNodesOnFilingHoldingNodesChanges();
     this.recursiveCheck(this.nodeArray, false);
 
@@ -776,12 +704,14 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
       const c = criteria.criteria;
       criteria.values.forEach((value) => {
         if (
-          criteria.category === SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.APPRAISAL_RULE] ||
-          criteria.category === SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.NODES] ||
-          criteria.category === SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.ACCESS_RULE] ||
-          criteria.category === SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.STORAGE_RULE] ||
-          criteria.category === SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.REUSE_RULE] ||
-          criteria.category === SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.DISSEMINATION_RULE]
+          [
+            SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.APPRAISAL_RULE],
+            SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.NODES],
+            SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.ACCESS_RULE],
+            SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.STORAGE_RULE],
+            SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.REUSE_RULE],
+            SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.DISSEMINATION_RULE],
+          ].includes(criteria.category as SearchCriteriaTypeEnum)
         ) {
           this.addCriteriaCategory(criteria.category);
           this.addCriteria(
@@ -790,7 +720,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
             value.value,
             criteria.keyTranslated,
             criteria.operator,
-            criteria.category,
+            criteria.category as SearchCriteriaTypeEnum,
             criteria.valueTranslated,
             criteria.dataType,
             true,
@@ -840,23 +770,23 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
     }
     this.submited = true;
     this.currentPage = this.currentPage + 1;
-    if (!this.hasSearchCriterias()) {
+    if (!this.hasSearchCriteria()) {
       return;
     }
     this.callVitamApiService(false);
   }
 
-  private hasSearchCriterias() {
+  private hasSearchCriteria() {
     return this.criteriaSearchList && this.criteriaSearchList.length > 0;
   }
 
   async launchFacetsComputing() {
-    if (this.pendingComputeFacets || !this.hasSearchCriterias()) {
+    if (this.pendingComputeFacets || !this.hasSearchCriteria()) {
       return;
     }
 
     if (this.waitingToGetFixedCount) {
-      if (this.hasSearchCriterias()) {
+      if (this.hasSearchCriteria()) {
         this.pendingGetFixedCount = true;
         this.submitedGetFixedCount = true;
         const exactCountResults: number = await this.archiveService.getTotalTrackHitsByCriteria(this.criteriaSearchList).toPromise();
@@ -898,7 +828,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   }
 
   exportArchiveUnitsToCsvFile() {
-    if (this.hasSearchCriterias()) {
+    if (this.hasSearchCriteria()) {
       this.listOfUACriteriaSearch = this.prepareListOfUACriteriaSearch();
       const sortingCriteria = { criteria: this.orderBy, sorting: this.direction };
       const searchCriteria = {
@@ -938,7 +868,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
     this.archiveSharedDataService.emitFilingHoldingNodes(this.nodeArray);
     this.recursiveCheck(this.nodeArray, false);
 
-    this.route.snapshot.queryParamMap.keys.forEach((param) => this.resetParam(param));
+    this.queryParamsService.setQueryParams({}, {});
   }
 
   checkParentBoxChange(event: any) {
@@ -1086,7 +1016,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
 
   async prepareToLaunchVitamAction() {
     if (!this.shouldReadSelectedItemCount()) {
-      if (this.hasSearchCriterias()) {
+      if (this.hasSearchCriteria()) {
         this.pendingGetFixedCount = true;
         this.submitedGetFixedCount = true;
         const exactCountResults: number = await this.archiveService.getTotalTrackHitsByCriteria(this.criteriaSearchList).toPromise();
@@ -1279,25 +1209,6 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
 
   goToPersistentIdentifierSearchPage(): void {
     this.router.navigate(['archive-search/persistent-identifier-search'], {});
-  }
-
-  private resetParam(searchCriteriaKey: string) {
-    if (this.route.snapshot.queryParamMap.has(searchCriteriaKey)) {
-      this.router.navigate([], {
-        queryParams: { [searchCriteriaKey]: null },
-        queryParamsHandling: 'merge',
-      });
-    }
-    if (this.searchCriteriaKeys?.includes(searchCriteriaKey)) {
-      this.archiveHelperService.removeCriteria(
-        searchCriteriaKey,
-        this.searchCriterias.get(searchCriteriaKey).values[0].value,
-        true,
-        this.searchCriteriaKeys,
-        this.searchCriterias,
-        this.nbQueryCriteria,
-      );
-    }
   }
 
   private addCriteria(

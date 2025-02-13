@@ -17,7 +17,7 @@
         <rpm.skip>false</rpm.skip>
         <swagger.dir>api-external</swagger.dir>
         <swagger.skip>false</swagger.skip>
-		<jib.skip>true</jib.skip>
+        <jib.skip>true</jib.skip>
     </properties>
 
     <dependencies>
@@ -49,12 +49,19 @@
 
         <dependency>
             <groupId>fr.gouv.vitamui</groupId>
-            <artifactId>ingest-internal-client</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>fr.gouv.vitamui</groupId>
             <artifactId>iam-security</artifactId>
         </dependency>
+
+        <!-- APACHE ODFtoolKit-->
+        <dependency>
+            <groupId>org.odftoolkit</groupId>
+            <artifactId>odfdom-java</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.odftoolkit</groupId>
+            <artifactId>simple-odf</artifactId>
+        </dependency>
+        <!-- APACHE ODFtoolKit-->
 
         <!-- SPRING BOOT -->
         <dependency>
@@ -193,15 +200,15 @@
     <build>
         <plugins>
             <plugin>
-				<groupId>com.google.cloud.tools</groupId>
-				<artifactId>jib-maven-plugin</artifactId>
-                    <configuration>
-                        <to>
-                            <image>${env.SERVICE_DOCKER_PUSH_URL}/vitamui/ingest-external</image>
-                            <tags>${project.version}</tags>
-                        </to>
-                    </configuration>
-			</plugin>
+                <groupId>com.google.cloud.tools</groupId>
+                <artifactId>jib-maven-plugin</artifactId>
+                <configuration>
+                    <to>
+                        <image>${env.SERVICE_DOCKER_PUSH_URL}/vitamui/ingest-external</image>
+                        <tags>${project.version}</tags>
+                    </to>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
@@ -222,9 +229,9 @@
                     <layout>JAR</layout>
                     <executable>true</executable>
                     <attach>false</attach> <!-- Need to use the original jar for integration-tests -->
-                    <mainClass>fr.gouv.vitamui.ingest.external.server.ApiIngestExternalServerApplication</mainClass>
+                    <mainClass>fr.gouv.vitamui.ingest.server.ApiIngestApplication</mainClass>
                     <arguments>
-                         <argument>--spring.profiles.active=dev</argument>
+                        <argument>--spring.profiles.active=dev</argument>
                     </arguments>
                 </configuration>
             </plugin>
