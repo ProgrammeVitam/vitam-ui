@@ -27,7 +27,7 @@
       <mat-tab label="{{ 'COLLECT.PROJECT_UNIT_PREVIEW.TABS.DESCRIPTION' | translate }}">
         <div class="row">
           <div class="col-12">
-            <div class="read-only-field" *ngIf="!updateStarted">
+            <div class="read-only-field" *ngIf="!editMode">
               <label>{{ 'COLLECT.PROJECT_UNIT_PREVIEW.FIELDS.NAME' | translate }} :</label>
               <div>
                 <ng-container *ngIf="selectedProject.messageIdentifier">
@@ -35,7 +35,7 @@
                 </ng-container>
               </div>
             </div>
-            <div class="form-control read-only-field" *ngIf="updateStarted">
+            <div class="form-control read-only-field" *ngIf="editMode">
               <vitamui-common-input
                 formControlName="messageIdentifier"
                 required
@@ -54,7 +54,7 @@
               </div>
             </div>
 
-            <div class="read-only-field" *ngIf="!updateStarted">
+            <div class="read-only-field" *ngIf="!editMode">
               <label>{{ 'COLLECT.PROJECT_UNIT_PREVIEW.FIELDS.DESCRIPTION' | translate }} :</label>
               <div>
                 <ng-container *ngIf="selectedProject.comment">
@@ -62,7 +62,7 @@
                 </ng-container>
               </div>
             </div>
-            <div class="form-control read-only-field" class="col-8 px-0" *ngIf="updateStarted">
+            <div class="form-control read-only-field col-12 px-0" *ngIf="editMode">
               <vitamui-common-textarea
                 formControlName="comment"
                 placeholder="{{ 'COLLECT.PROJECT_UNIT_PREVIEW.FIELDS.DESCRIPTION' | translate }}"
@@ -76,7 +76,7 @@
               formControlName="originatingAgencyIdentifier"
               placeholder="{{ 'COLLECT.PROJECT_UNIT_PREVIEW.FIELDS.SP_ID' | translate }} "
               required
-              *ngIf="updateStarted"
+              *ngIf="editMode"
             >
             </vitamui-common-input>
 
@@ -84,14 +84,14 @@
               [disabled]="true"
               class="ml-2 col-4"
               placeholder="{{ 'COLLECT.PROJECT_UNIT_PREVIEW.FIELDS.SP_ID' | translate }} "
-              *ngIf="updateStarted"
+              *ngIf="editMode"
             >
             </vitamui-common-input>
             <vitamui-common-input
               class="col-4 px-0"
               formControlName="submissionAgencyIdentifier"
               placeholder="{{ 'COLLECT.PROJECT_UNIT_PREVIEW.FIELDS.SV_ID' | translate }} "
-              *ngIf="updateStarted"
+              *ngIf="editMode"
               required
             >
             </vitamui-common-input>
@@ -99,18 +99,17 @@
               [disabled]="true"
               class="ml-2 col-4"
               placeholder="{{ 'COLLECT.PROJECT_UNIT_PREVIEW.FIELDS.SV_ID' | translate }} "
-              *ngIf="updateStarted"
+              *ngIf="editMode"
             >
             </vitamui-common-input>
-            <div class="row padding-style" *ngIf="updateStarted">
-              <div class="col-2 mr-10 actions">
-                <button type="button" class="btn primary" [disabled]="!form.valid || !form.dirty" (click)="launchUpdate()">
-                  {{ 'UNIT_UPDATE.SAVE' | translate }}
-                </button>
-              </div>
+            <div class="row padding-style" *ngIf="editMode">
+              <button type="button" class="btn primary" [disabled]="!form.valid || !form.dirty" (click)="launchUpdate()">
+                {{ 'UNIT_UPDATE.SAVE' | translate }}
+              </button>
+              <button class="btn cancel" type="button" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
             </div>
 
-            <div class="read-only-field" *ngIf="!updateStarted">
+            <div class="read-only-field" *ngIf="!editMode">
               <label>{{ 'COLLECT.PROJECT_UNIT_PREVIEW.FIELDS.SP_ID' | translate }} :</label>
               <div>
                 <ng-container *ngIf="selectedProject.originatingAgencyIdentifier">
@@ -118,7 +117,7 @@
                 </ng-container>
               </div>
             </div>
-            <div class="read-only-field" *ngIf="!updateStarted">
+            <div class="read-only-field" *ngIf="!editMode">
               <label>{{ 'COLLECT.PROJECT_UNIT_PREVIEW.FIELDS.SV_ID' | translate }} :</label>
               <div>
                 <ng-container *ngIf="selectedProject.submissionAgencyIdentifier">
@@ -134,7 +133,7 @@
       <mat-tab label="{{ 'COLLECT.PROJECT_UNIT_PREVIEW.TABS.CONTEXT' | translate }}">
         <div class="row">
           <div class="col-12">
-            <div class="read-only-field" *ngIf="!updateStarted">
+            <div class="read-only-field" *ngIf="!editMode">
               <label>{{ 'COLLECT.PROJECT_CONTEXT_ARCHIVAL_AGENCY' | translate }} :</label>
               <div>
                 <ng-container *ngIf="selectedProject.archivalAgencyIdentifier">
@@ -142,7 +141,7 @@
                 </ng-container>
               </div>
             </div>
-            <div class="read-only-field" *ngIf="!updateStarted">
+            <div class="read-only-field" *ngIf="!editMode">
               <label>{{ 'COLLECT.PROJECT_CONTEXT_TRANSFERRING_AGENCY' | translate }} :</label>
               <div>
                 <ng-container *ngIf="selectedProject.transferringAgencyIdentifier">
@@ -150,7 +149,7 @@
                 </ng-container>
               </div>
             </div>
-            <div class="read-only-field" *ngIf="!updateStarted">
+            <div class="read-only-field" *ngIf="!editMode">
               <label>{{ 'COLLECT.PROJECT_CONTEXT_ARCHIVAL_AGREEMENT' | translate }} :</label>
               <div>
                 <ng-container *ngIf="selectedProject.archivalAgreement">
@@ -158,7 +157,7 @@
                 </ng-container>
               </div>
             </div>
-            <div class="read-only-field" *ngIf="!updateStarted">
+            <div class="read-only-field" *ngIf="!editMode">
               <label>{{ 'COLLECT.PROJECT_CONTEXT_ARCHIVE_PROFILE' | translate }} :</label>
               <div>
                 <ng-container *ngIf="selectedProject.archiveProfile">
@@ -166,7 +165,7 @@
                 </ng-container>
               </div>
             </div>
-            <div class="read-only-field" *ngIf="!updateStarted">
+            <div class="read-only-field" *ngIf="!editMode">
               <label>{{ 'COLLECT.PROJECT_CONTEXT_ACQUISITION_INFORMATION' | translate }} :</label>
               <div>
                 <ng-container *ngIf="selectedProject.acquisitionInformation">
@@ -174,7 +173,7 @@
                 </ng-container>
               </div>
             </div>
-            <div class="read-only-field" *ngIf="!updateStarted">
+            <div class="read-only-field" *ngIf="!editMode">
               <label>{{ 'COLLECT.PROJECT_CONTEXT_LEGAL_STATUS' | translate }} :</label>
               <div>
                 <ng-container *ngIf="selectedProject.legalStatus">
@@ -183,7 +182,7 @@
               </div>
             </div>
 
-            <div class="col-8 mr-4" *ngIf="updateStarted">
+            <div class="col-12 mr-4" *ngIf="editMode">
               <div class="form-control read-only-field">
                 <vitamui-common-input
                   class="col-5"
@@ -271,7 +270,7 @@
       <mat-tab label="{{ 'COLLECT.PROJECT_UNIT_PREVIEW.TABS.ATTACHEMENT' | translate }}">
         <div class="row">
           <div class="col-12">
-            <div class="read-only-field" *ngIf="!updateStarted">
+            <div class="read-only-field" *ngIf="!editMode">
               <label>{{ 'COLLECT.PROJECT_UNIT_PREVIEW.FIELDS.UNIT_UPS_ID' | translate }} :</label>
               <div>
                 <ng-container *ngIf="selectedProject.unitUp; else elseBlock">
@@ -320,8 +319,27 @@
   </mat-dialog-content>
 
   <mat-dialog-actions class="row mt-4">
-    <button (click)="onConfirm()" class="btn primary btn-confirm-dialog mr-2 margin-btn">{{ 'COMMON.CONFIRM' | translate }}</button>
+    <button (click)="onConfirm()" class="btn primary btn-confirm-dialog mr-2">{{ 'COMMON.CONFIRM' | translate }}</button>
 
-    <button (click)="onClose()" class="btn cancel">{{ 'COMMON.UNDO' | translate }}</button>
+    <button matDialogClose class="btn cancel link">{{ 'COMMON.UNDO' | translate }}</button>
+  </mat-dialog-actions>
+</ng-template>
+
+<ng-template #cancelDialog>
+  <mat-dialog-content>
+    <div class="text-title">
+      {{ 'COLLECT.UPDATE_PROJECT.DIALOGS_CANCEL_TITLE' | translate }}
+    </div>
+
+    <div class="text large bold">
+      {{ 'COLLECT.UPDATE_PROJECT.DIALOGS_CANCEL_CONTENT' | translate }}
+    </div>
+  </mat-dialog-content>
+  <br />
+  <mat-dialog-actions>
+    <button [matDialogClose]="true" [disabled]="false" class="btn primary btn-confirm-dialog">
+      {{ 'COLLECT.UPDATE_PROJECT.SAVE' | translate }}
+    </button>
+    <button matDialogClose class="btn link cancel cancel-popup">{{ 'COMMON.UNDO' | translate }}</button>
   </mat-dialog-actions>
 </ng-template>

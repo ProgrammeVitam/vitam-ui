@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, TemplateRef, ViewChild, AfterViewInit, OnDestroy, Renderer2 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -6,7 +6,7 @@ import { MatTabGroup } from '@angular/material/tabs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
-import { map, mergeMap } from 'rxjs/operators';
+import { distinctUntilChanged, map, mergeMap, scan } from 'rxjs/operators';
 import {
   DEFAULT_PAGE_SIZE,
   Direction,
@@ -19,13 +19,14 @@ import {
 } from 'ui-frontend-common';
 import { ProjectsApiService } from '../../core/api/project-api.service';
 import { ProjectsService } from '../projects.service';
+import { MatDialogConfig } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-project-preview',
   templateUrl: './project-preview.component.html',
   styleUrls: ['./project-preview.component.scss'],
 })
-export class ProjectPreviewComponent implements OnInit {
+export class ProjectPreviewComponent implements OnInit, AfterViewInit, OnDestroy {
   @Output()
   backToNormalLateralPanel: EventEmitter<any> = new EventEmitter();
   @Output()
@@ -43,6 +44,7 @@ export class ProjectPreviewComponent implements OnInit {
   legalStatusList: LegalStatus[] = [];
 
   @ViewChild('confirmEditProject', { static: true }) confirmEditProject: TemplateRef<ProjectPreviewComponent>;
+  @ViewChild('cancelDialog') cancelDialog: TemplateRef<ProjectPreviewComponent>;
 
   @Input()
   get projectId(): string {
@@ -50,15 +52,16 @@ export class ProjectPreviewComponent implements OnInit {
   }
 
   set projectId(value: string) {
-    this.project = null;
     this.projectId$.next(value);
     this.selectedTabIndex = 0;
   }
 
   private projectId$ = new BehaviorSubject<string>(null);
   private tenantIdentifier: string;
+  private clickOutSideListener!: () => void;
+  private readonly dialogConfig: MatDialogConfig = { panelClass: 'vitamui-dialog' };
 
-  updateStarted = false;
+  editMode = false;
   isPanelextended = false;
   selectedTabIndex = 0;
   dialogRefToClose: MatDialogRef<ProjectPreviewComponent>;
@@ -75,6 +78,7 @@ export class ProjectPreviewComponent implements OnInit {
     public dialog: MatDialog,
     private translationService: TranslateService,
     private snackBar: MatSnackBar,
+    private renderer: Renderer2,
   ) {}
 
   ngOnInit(): void {
@@ -82,24 +86,42 @@ export class ProjectPreviewComponent implements OnInit {
       this.tenantIdentifier = params.tenantIdentifier;
     });
 
-    this.projectId$.pipe(mergeMap(() => this.projectService.getProjectById(this.projectId$.getValue()))).subscribe((project) => {
-      this.project = project;
-    });
+    this.projectId$
+      .pipe(
+        scan((acc, newValue) => (this.isModified() ? acc : newValue), this.projectId$.getValue()), // Keep the old value if we have edited data not yet saved; **isModified()** is true.
+        distinctUntilChanged(), // Avoid calling multiple times with the same value.
+        mergeMap((projectId) => this.projectService.getProjectById(projectId)),
+      )
+      .subscribe((project) => {
+        this.project = project;
+        this.showNormalPanel();
+        this.initForm();
+      });
 
     this.legalStatusList = this.projectService.getLegalStatusList();
     this.acquisitionInformationsList = this.projectService.getAcquisitionInformationsList();
 
     this.configForm();
   }
+  ngAfterViewInit() {
+    // Listen for clicks on the #projectList div (outside the panel)
+    const projectList = document.getElementById('projectList');
+    if (projectList) {
+      this.clickOutSideListener = this.renderer.listen(projectList, 'click', () => {
+        if (this.isModified() && this.dialogRefToClose?.getState() !== 0) {
+          this.openCancelDialog();
+        }
+      });
+    }
+  }
 
   searchArchiveUnitsByProject() {
-    this.router.navigate(['collect/tenant/' + this.tenantIdentifier + '/units', this.project.id], {
-      queryParams: { projectName: this.project.messageIdentifier },
-    });
+    this.router.navigate(['collect/tenant/' + this.tenantIdentifier + '/units', this.project.id]);
   }
 
   emitClose() {
     this.isPanelextended = false;
+    this.editMode = false;
     this.previewClose.emit();
     this.backToNormalLateralPanel.emit();
     this.selectedTabIndex = 0;
@@ -108,7 +130,7 @@ export class ProjectPreviewComponent implements OnInit {
   showNormalPanel() {
     this.isPanelextended = false;
     this.backToNormalLateralPanel.emit();
-    this.updateStarted = false;
+    this.editMode = false;
   }
 
   showExtendedPanel() {
@@ -132,24 +154,31 @@ export class ProjectPreviewComponent implements OnInit {
     });
   }
 
-  showEditProject() {
-    this.form.markAsPristine();
-    this.updateStarted = true;
-    this.showExtendedPanel();
-    this.initFormForEdit();
+  isModified(): boolean {
+    // use pristine to check if the form is unchanged.
+    return this.editMode && !this.form.pristine;
   }
 
-  initFormForEdit() {
-    this.form.get('messageIdentifier').setValue(this.project.messageIdentifier);
-    this.form.get('comment').setValue(this.project.comment);
-    this.form.get('originatingAgencyIdentifier').setValue(this.project.originatingAgencyIdentifier);
-    this.form.get('submissionAgencyIdentifier').setValue(this.project.submissionAgencyIdentifier);
-    this.form.get('archivalAgencyIdentifier').setValue(this.project.archivalAgencyIdentifier);
-    this.form.get('transferringAgencyIdentifier').setValue(this.project.transferringAgencyIdentifier);
-    this.form.get('archivalAgreement').setValue(this.project.archivalAgreement);
-    this.form.get('archiveProfile').setValue(this.project.archiveProfile);
-    this.form.get('acquisitionInformation').setValue(this.project.acquisitionInformation);
-    this.form.get('legalStatus').setValue(this.project.legalStatus);
+  showEditProject() {
+    this.form.markAsPristine();
+    this.editMode = true;
+    this.showExtendedPanel();
+    this.initForm();
+  }
+
+  initForm() {
+    if (this.form) {
+      this.form.get('messageIdentifier').setValue(this.project.messageIdentifier);
+      this.form.get('comment').setValue(this.project.comment);
+      this.form.get('originatingAgencyIdentifier').setValue(this.project.originatingAgencyIdentifier);
+      this.form.get('submissionAgencyIdentifier').setValue(this.project.submissionAgencyIdentifier);
+      this.form.get('archivalAgencyIdentifier').setValue(this.project.archivalAgencyIdentifier);
+      this.form.get('transferringAgencyIdentifier').setValue(this.project.transferringAgencyIdentifier);
+      this.form.get('archivalAgreement').setValue(this.project.archivalAgreement);
+      this.form.get('archiveProfile').setValue(this.project.archiveProfile);
+      this.form.get('acquisitionInformation').setValue(this.project.acquisitionInformation);
+      this.form.get('legalStatus').setValue(this.project.legalStatus);
+    }
   }
 
   launchUpdate() {
@@ -201,7 +230,7 @@ export class ProjectPreviewComponent implements OnInit {
             this.project = project;
             this.projectService.nextUpdatedProject(project);
 
-            this.updateStarted = false;
+            this.showNormalPanel();
             return this.transactions$;
           }),
           map((paginated) => paginated.values),
@@ -221,6 +250,7 @@ export class ProjectPreviewComponent implements OnInit {
         )
         .subscribe(
           (transactionsKO: Transaction[]) => {
+            this.showNormalPanel();
             let transactionMessage = this.translationService.instant('COLLECT.UPDATE_PROJECT.TERMINATED');
             if (transactionsKO.length > 0) {
               transactionMessage += ' ' + this.translationService.instant('COLLECT.UPDATE_PROJECT.TRANSACTIONS_KO');
@@ -232,6 +262,7 @@ export class ProjectPreviewComponent implements OnInit {
           },
           () => {
             this.project = previousProject;
+            this.showNormalPanel();
           },
         );
     } else {
@@ -241,19 +272,45 @@ export class ProjectPreviewComponent implements OnInit {
             panelClass: 'vitamui-snack-bar',
             duration: 10000,
           });
-          this.dialogRefToClose.close(true);
-          this.updateStarted = false;
+          this.dialogRefToClose?.close(true);
+          this.showNormalPanel();
           this.project = project;
           this.projectService.nextUpdatedProject(project);
         },
         () => {
           this.project = previousProject;
+          this.showNormalPanel();
         },
       );
     }
   }
 
-  onClose() {
-    this.dialogRefToClose.close(true);
+  onCancel() {
+    this.showNormalPanel();
+    this.dialogRefToClose?.close(true);
+  }
+
+  openCancelDialog() {
+    if (!this.isModified()) {
+      this.onCancel();
+      return;
+    }
+    this.dialog
+      .open(this.cancelDialog, this.dialogConfig)
+      .afterClosed()
+      .subscribe((result) => {
+        if (result) {
+          this.selectedValue = 'NO';
+          this.onConfirm();
+        } else {
+          this.onCancel();
+        }
+      });
+  }
+
+  ngOnDestroy() {
+    if (this.clickOutSideListener) {
+      this.clickOutSideListener();
+    }
   }
 }
