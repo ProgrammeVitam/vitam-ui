@@ -94,9 +94,9 @@ import java.util.Set;
 /**
  * Ingest Internal service communication with VITAM.
  */
-public class IngestService {
+public class IngestExternalService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(IngestService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(IngestExternalService.class);
 
     private static final String ILLEGAL_CHARACTERS = "[\uFEFF-\uFFFF]";
     private static final String SELECTED_ORIGINATING_AGENCIES = "SELECTED_ORIGINATING_AGENCIES";
@@ -121,7 +121,7 @@ public class IngestService {
     private final IngestAccessContractService ingestAccessContractService;
 
     @Autowired
-    public IngestService(
+    public IngestExternalService(
         final InternalSecurityService internalSecurityService,
         final LogbookService logbookService,
         final ObjectMapper objectMapper,
