@@ -23,13 +23,16 @@
       "WAIT_MESSAGE": "The operation is in progress, please do not shut down or refresh your browser"
     },
     "UPDATE_PROJECT": {
+      "SAVE": "Save",
       "TERMINATED": "The project has been well updated",
       "TRANSACTIONS_KO": "on the other hand there are KO transactions",
       "POPUP_ACTIONS_TITLE": "Action on a project",
       "POPUP_ACTIONS_CONTENT_MAJ1": "You have",
       "POPUP_ACTIONS_CONTENT_MAJ2": "ingest in edit. Do you want to update automatically",
       "POPUP_ACTIONS_CONTENT_MAJ3": "these ingests? If the answer is negative, only the new ingests will include",
-      "POPUP_ACTIONS_CONTENT_MAJ4": "these modifications"
+      "POPUP_ACTIONS_CONTENT_MAJ4": "these modifications",
+      "DIALOGS_CANCEL_TITLE": "Save the current changes",
+      "DIALOGS_CANCEL_CONTENT": "You have made changes to the descriptive metadata of a project. Do you want to save or discard them ?"
     },
     "SEARCH_PLACEHOLDER": "Code and message identifier, Submission agency",
     "APP_BREADCRUMB": "Collection and Remittance Preparation",
