@@ -64,7 +64,7 @@ public class IngestExternalParametersService {
     @Autowired
     public IngestExternalParametersService(
         final ExternalParametersInternalRestClient externalParametersInternalRestClient,
-        ExternalSecurityService externalSecurityService
+        final ExternalSecurityService externalSecurityService
     ) {
         this.externalParametersInternalRestClient = externalParametersInternalRestClient;
         this.externalSecurityService = externalSecurityService;

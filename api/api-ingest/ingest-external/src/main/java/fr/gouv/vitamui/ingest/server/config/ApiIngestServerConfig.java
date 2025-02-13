@@ -60,8 +60,8 @@ import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import fr.gouv.vitamui.ingest.server.security.WebSecurityConfig;
 import fr.gouv.vitamui.ingest.server.service.IngestAccessContractService;
 import fr.gouv.vitamui.ingest.server.service.IngestExternalParametersService;
+import fr.gouv.vitamui.ingest.server.service.IngestExternalService;
 import fr.gouv.vitamui.ingest.server.service.IngestGeneratorODTFile;
-import fr.gouv.vitamui.ingest.server.service.IngestService;
 import fr.gouv.vitamui.security.client.ContextRestClient;
 import fr.gouv.vitamui.security.client.SecurityRestClientFactory;
 import org.springframework.boot.autoconfigure.http.HttpMessageConvertersAutoConfiguration;
@@ -191,7 +191,7 @@ public class ApiIngestServerConfig extends AbstractContextConfiguration {
     }
 
     @Bean
-    public IngestService ingestInternalService(
+    public IngestExternalService ingestInternalService(
         final InternalSecurityService internalSecurityService,
         final LogbookService logbookService,
         final ObjectMapper objectMapper,
@@ -203,7 +203,7 @@ public class ApiIngestServerConfig extends AbstractContextConfiguration {
         final ExternalSecurityService externalSecurityService,
         final UserInternalRestClient userInternalRestClient
     ) {
-        return new IngestService(
+        return new IngestExternalService(
             internalSecurityService,
             logbookService,
             objectMapper,

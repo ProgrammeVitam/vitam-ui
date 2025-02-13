@@ -66,7 +66,7 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class IngestServiceTest {
+public class IngestExternalServiceTest {
 
     @Mock
     private IngestExternalParametersService ingestExternalParametersService;
@@ -84,7 +84,7 @@ public class IngestServiceTest {
     private ObjectMapper objectMapper = new ObjectMapper();
 
     @InjectMocks
-    private IngestService ingestService;
+    private IngestExternalService ingestExternalService;
 
     @BeforeEach
     public void beforeEach() {
@@ -117,7 +117,8 @@ public class IngestServiceTest {
         );
 
         Assertions.assertDoesNotThrow(
-            () -> ingestService.getAllPaginated(0, 10, Optional.empty(), Optional.empty(), Optional.of(criteria))
+            () ->
+                ingestExternalService.getAllPaginated(0, 10, Optional.empty(), Optional.empty(), Optional.of(criteria))
         );
     }
 }

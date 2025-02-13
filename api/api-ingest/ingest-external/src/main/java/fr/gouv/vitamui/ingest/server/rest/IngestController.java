@@ -50,7 +50,7 @@ import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.utils.VitamUIUtils;
 import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationDto;
 import fr.gouv.vitamui.ingest.common.rest.RestApi;
-import fr.gouv.vitamui.ingest.server.service.IngestService;
+import fr.gouv.vitamui.ingest.server.service.IngestExternalService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
@@ -83,11 +83,11 @@ public class IngestController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(IngestController.class);
 
-    private final IngestService ingestService;
+    private final IngestExternalService ingestExternalService;
 
     @Autowired
-    public IngestController(IngestService ingestService) {
-        this.ingestService = ingestService;
+    public IngestController(IngestExternalService ingestExternalService) {
+        this.ingestExternalService = ingestExternalService;
     }
 
     @Secured(ServicesData.ROLE_GET_ALL_INGEST)
@@ -113,7 +113,7 @@ public class IngestController {
             orderBy,
             direction
         );
-        return ingestService.getAllPaginated(page, size, orderBy, direction, criteria);
+        return ingestExternalService.getAllPaginated(page, size, orderBy, direction, criteria);
     }
 
     @Secured(ServicesData.ROLE_GET_INGEST)
@@ -123,7 +123,7 @@ public class IngestController {
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("get One Ingest id={}", id);
-        return ingestService.getOne(id);
+        return ingestExternalService.getOne(id);
     }
 
     @Secured(ServicesData.ROLE_LOGBOOKS)
@@ -133,7 +133,7 @@ public class IngestController {
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter :", id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("export ODT report for ingest with id :{}", id);
-        return ingestService.generateODTReport(id);
+        return ingestExternalService.generateODTReport(id);
     }
 
     @Secured(ServicesData.ROLE_CREATE_INGEST)
@@ -146,6 +146,6 @@ public class IngestController {
     ) throws PreconditionFailedException, IngestExternalException {
         ParameterChecker.checkParameter("The action and the context ID are mandatory parameters: ", action, contextId);
         LOGGER.debug("[Ingest] upload file ");
-        return ingestService.streamingUpload(inputStream, contextId, action);
+        return ingestExternalService.streamingUpload(inputStream, contextId, action);
     }
 }
