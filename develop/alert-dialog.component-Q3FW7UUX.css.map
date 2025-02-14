@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["projects/vitamui-library/src/app/modules/components/alert-dialog/alert-dialog.component.scss"],
+  "sourcesContent": [".icon-container {\n  width: 50px;\n  height: 50px;\n  background-color: var(--vitamui-red);\n  color: white;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  border-radius: 50%;\n}\n"],
+  "mappings": "AAAA,CAAA,eACE,MAAA,KACA,OAAA,KACA,iBAAA,IAAA,eACA,MAAA,KACA,QAAA,KACA,gBAAA,OACA,YAAA,OAPF,cAQE",
+  "names": []
+}
