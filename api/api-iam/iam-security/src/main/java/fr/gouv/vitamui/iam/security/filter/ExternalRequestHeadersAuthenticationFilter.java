@@ -37,10 +37,10 @@
 package fr.gouv.vitamui.iam.security.filter;
 
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.web.authentication.preauth.x509.X509AuthenticationFilter;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Objects;
 
@@ -55,7 +55,6 @@ public class ExternalRequestHeadersAuthenticationFilter extends X509Authenticati
 
     /**
      *
-     * @param authenticationManager
      * @param x509CertificateExtractors
      * @param tokenExtractors
      */

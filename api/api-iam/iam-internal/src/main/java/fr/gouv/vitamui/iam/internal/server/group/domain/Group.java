@@ -39,6 +39,8 @@ package fr.gouv.vitamui.iam.internal.server.group.domain;
 import fr.gouv.vitamui.commons.api.domain.BaseIdentifierDocument;
 import fr.gouv.vitamui.iam.internal.server.common.domain.CustomerIdDocument;
 import fr.gouv.vitamui.iam.internal.server.common.domain.MongoDbCollections;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -48,8 +50,6 @@ import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;

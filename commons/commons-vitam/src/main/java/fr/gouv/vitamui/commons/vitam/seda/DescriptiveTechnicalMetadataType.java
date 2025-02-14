@@ -7,9 +7,9 @@
 
 package fr.gouv.vitamui.commons.vitam.seda;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlType;
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlType;
 
 /**
  * Contient toutes les métadonnées techniques et/ou descriptives définies dans un schéma par un service producteur ou versant mais n'étant pas présentes dans les métadonnées de base.

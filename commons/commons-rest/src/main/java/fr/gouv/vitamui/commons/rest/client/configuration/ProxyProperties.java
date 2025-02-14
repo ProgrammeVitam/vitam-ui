@@ -36,11 +36,10 @@
  */
 package fr.gouv.vitamui.commons.rest.client.configuration;
 
+import jakarta.annotation.Nullable;
 import lombok.Getter;
 import lombok.Setter;
 import reactor.netty.transport.ProxyProvider;
-
-import javax.annotation.Nullable;
 
 /**
  * Used for mapping proxy properties defined in application.yml

@@ -38,10 +38,9 @@ package fr.gouv.vitamui.iam.security.filter;
 
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter;
-
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * The authentication filter based on the request headers.
@@ -50,7 +49,8 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class InternalRequestHeadersAuthenticationFilter extends AbstractPreAuthenticatedProcessingFilter {
 
-    public InternalRequestHeadersAuthenticationFilter(final AuthenticationManager authenticationManager) {
+    public InternalRequestHeadersAuthenticationFilter(AuthenticationManager authenticationManager) {
+        super();
         setAuthenticationManager(authenticationManager);
     }
 

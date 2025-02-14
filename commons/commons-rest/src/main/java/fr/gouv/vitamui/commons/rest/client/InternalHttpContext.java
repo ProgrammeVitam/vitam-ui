@@ -37,11 +37,10 @@
 package fr.gouv.vitamui.commons.rest.client;
 
 import fr.gouv.vitamui.commons.api.CommonConstants;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
-
-import javax.servlet.http.HttpServletRequest;
 
 @Getter
 @ToString(callSuper = true)

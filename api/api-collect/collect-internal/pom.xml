@@ -78,7 +78,7 @@
             <artifactId>spring-cloud-starter-consul-discovery</artifactId>
             <exclusions>
                 <exclusion>
-                    <groupId>javax.ws.rs</groupId>
+                    <groupId>jakarta.ws.rs</groupId>
                     <artifactId>jsr311-api</artifactId>
                 </exclusion>
             </exclusions>

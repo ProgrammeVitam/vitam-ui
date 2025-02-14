@@ -125,8 +125,8 @@ import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.multipart.MultipartResolver;
-import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.multipart.support.MultipartFilter;
+import org.springframework.web.multipart.support.StandardServletMultipartResolver;
 import org.springframework.web.reactive.function.client.WebClient;
 
 @Configuration
@@ -146,7 +146,7 @@ public class ApiIamServerConfig extends AbstractContextConfiguration {
 
     @Bean
     public MultipartResolver multipartResolver() {
-        return new CommonsMultipartResolver();
+        return new StandardServletMultipartResolver();
     }
 
     @Bean

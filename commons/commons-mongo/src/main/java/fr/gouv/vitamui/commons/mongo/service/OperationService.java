@@ -42,11 +42,11 @@ import fr.gouv.vitamui.commons.mongo.converter.OperationConverter;
 import fr.gouv.vitamui.commons.mongo.dao.OperationRepository;
 import fr.gouv.vitamui.commons.mongo.domain.Operation;
 import fr.gouv.vitamui.commons.mongo.repository.VitamUIRepository;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
+import jakarta.validation.ValidatorFactory;
 
-import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
-import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;

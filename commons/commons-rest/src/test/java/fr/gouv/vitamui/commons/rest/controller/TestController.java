@@ -7,6 +7,7 @@ import fr.gouv.vitamui.commons.api.exception.VitamUIException;
 import fr.gouv.vitamui.commons.rest.ApiErrorGenerator;
 import fr.gouv.vitamui.commons.rest.dto.VitamUIDto;
 import fr.gouv.vitamui.commons.rest.dto.VitamUIError;
+import jakarta.validation.Valid;
 import org.springframework.beans.ConversionNotSupportedException;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.HttpMethod;
@@ -26,7 +27,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.async.AsyncRequestTimeoutException;
 import org.springframework.web.multipart.support.MissingServletRequestPartException;
 
-import javax.validation.Valid;
 import java.io.IOException;
 import java.lang.reflect.Method;
 

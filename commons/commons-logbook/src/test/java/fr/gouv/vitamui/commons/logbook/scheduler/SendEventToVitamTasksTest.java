@@ -13,6 +13,7 @@ import fr.gouv.vitamui.commons.logbook.common.EventType;
 import fr.gouv.vitamui.commons.logbook.common.EventTypeProc;
 import fr.gouv.vitamui.commons.logbook.dao.EventRepository;
 import fr.gouv.vitamui.commons.logbook.domain.Event;
+import jakarta.ws.rs.core.Response.Status;
 import org.apache.commons.lang.StringUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,7 +25,6 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.internal.verification.VerificationModeFactory;
 import org.springframework.data.mongodb.core.query.Query;
 
-import javax.ws.rs.core.Response.Status;
 import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;

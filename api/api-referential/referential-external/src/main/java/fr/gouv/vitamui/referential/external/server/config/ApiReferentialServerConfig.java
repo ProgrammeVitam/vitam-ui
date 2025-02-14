@@ -80,8 +80,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.web.multipart.MultipartResolver;
-import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.multipart.support.MultipartFilter;
+import org.springframework.web.multipart.support.StandardServletMultipartResolver;
 
 @Configuration
 @Import(
@@ -99,7 +99,7 @@ public class ApiReferentialServerConfig extends AbstractContextConfiguration {
 
     @Bean
     public MultipartResolver multipartResolver() {
-        final MultipartResolver commonsMultipartResolver = new CommonsMultipartResolver();
+        final MultipartResolver commonsMultipartResolver = new StandardServletMultipartResolver();
         return commonsMultipartResolver;
     }
 

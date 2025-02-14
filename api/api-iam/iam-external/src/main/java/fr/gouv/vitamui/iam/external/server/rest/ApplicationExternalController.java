@@ -47,6 +47,7 @@ import fr.gouv.vitamui.iam.external.server.service.ApplicationExternalService;
 import fr.gouv.vitamui.iam.external.server.service.ApplicationService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import jakarta.validation.Valid;
 import lombok.Getter;
 import lombok.Setter;
 import org.slf4j.Logger;
@@ -61,7 +62,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;

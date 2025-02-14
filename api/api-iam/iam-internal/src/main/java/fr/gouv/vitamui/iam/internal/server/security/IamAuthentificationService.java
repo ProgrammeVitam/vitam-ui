@@ -44,13 +44,14 @@ import fr.gouv.vitamui.iam.internal.server.subrogation.domain.Subrogation;
 import fr.gouv.vitamui.iam.internal.server.token.dao.TokenRepository;
 import fr.gouv.vitamui.iam.internal.server.token.domain.Token;
 import fr.gouv.vitamui.iam.internal.server.user.service.UserInternalService;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang.time.DateUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.BadCredentialsException;
 
-import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
@@ -77,6 +78,7 @@ public class IamAuthentificationService {
     @NotNull
     private Integer tokenAdditionalTtl;
 
+    @Autowired
     public IamAuthentificationService(
         final UserInternalService internalUserService,
         final TokenRepository tokenRepository,

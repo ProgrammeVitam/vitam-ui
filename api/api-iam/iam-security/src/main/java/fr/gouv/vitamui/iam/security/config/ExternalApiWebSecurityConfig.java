@@ -43,8 +43,10 @@ import fr.gouv.vitamui.iam.security.filter.X509CertificateExtractor;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.core.env.Environment;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,6 +60,7 @@ import static fr.gouv.vitamui.commons.api.CommonConstants.X_USER_TOKEN_HEADER;
  */
 @Getter
 @Setter
+@Component
 public class ExternalApiWebSecurityConfig extends AbstractApiWebSecurityConfig {
 
     private static final String GATEWAY_ENABLED = "gateway.enabled";
@@ -76,9 +79,11 @@ public class ExternalApiWebSecurityConfig extends AbstractApiWebSecurityConfig {
     }
 
     @Override
-    protected AbstractPreAuthenticatedProcessingFilter getRequestHeadersAuthenticationFilter() throws Exception {
+    protected AbstractPreAuthenticatedProcessingFilter getRequestHeadersAuthenticationFilter(
+        AuthenticationManager authenticationManager
+    ) throws Exception {
         return new ExternalRequestHeadersAuthenticationFilter(
-            authenticationManager(),
+            authenticationManager,
             getX509CertificateExtractors(),
             getTokenExtractors()
         );

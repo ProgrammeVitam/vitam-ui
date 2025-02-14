@@ -41,8 +41,10 @@ import fr.gouv.vitamui.iam.security.filter.InternalRequestHeadersAuthenticationF
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.core.env.Environment;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter;
+import org.springframework.stereotype.Component;
 
 /**
  * The security configuration.
@@ -51,6 +53,7 @@ import org.springframework.security.web.authentication.preauth.AbstractPreAuthen
  */
 @Getter
 @Setter
+@Component
 public class InternalApiWebSecurityConfig extends AbstractApiWebSecurityConfig {
 
     public InternalApiWebSecurityConfig(
@@ -62,7 +65,9 @@ public class InternalApiWebSecurityConfig extends AbstractApiWebSecurityConfig {
     }
 
     @Override
-    protected AbstractPreAuthenticatedProcessingFilter getRequestHeadersAuthenticationFilter() throws Exception {
-        return new InternalRequestHeadersAuthenticationFilter(authenticationManager());
+    protected AbstractPreAuthenticatedProcessingFilter getRequestHeadersAuthenticationFilter(
+        AuthenticationManager authenticationManager
+    ) throws Exception {
+        return new InternalRequestHeadersAuthenticationFilter(authenticationManager);
     }
 }

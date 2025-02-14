@@ -41,17 +41,18 @@ import fr.gouv.vitamui.commons.rest.client.configuration.HttpPoolConfiguration;
 import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
 import fr.gouv.vitamui.commons.rest.client.configuration.SSLConfiguration;
 import fr.gouv.vitamui.commons.rest.util.RestUtils;
-import org.apache.http.HttpHost;
-import org.apache.http.client.config.RequestConfig;
-import org.apache.http.config.Registry;
-import org.apache.http.config.RegistryBuilder;
-import org.apache.http.conn.routing.HttpRoute;
-import org.apache.http.conn.socket.ConnectionSocketFactory;
-import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
-import org.apache.http.ssl.SSLContextBuilder;
+import org.apache.hc.client5.http.HttpRoute;
+import org.apache.hc.client5.http.config.RequestConfig;
+import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
+import org.apache.hc.client5.http.impl.classic.HttpClientBuilder;
+import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManager;
+import org.apache.hc.client5.http.socket.ConnectionSocketFactory;
+import org.apache.hc.client5.http.ssl.SSLConnectionSocketFactory;
+import org.apache.hc.core5.http.HttpHost;
+import org.apache.hc.core5.http.config.Registry;
+import org.apache.hc.core5.http.config.RegistryBuilder;
+import org.apache.hc.core5.ssl.SSLContextBuilder;
+import org.apache.hc.core5.util.Timeout;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
@@ -218,7 +219,7 @@ public class BaseStreamingRestClientFactory implements RestClientFactory {
             connectionManager.setDefaultMaxPerRoute(poolConfig.getMaxPerRoute());
 
             for (final HttpPoolConfiguration.HostConfiguration hostConfig : poolConfig.getHostConfigurations()) {
-                final HttpHost host = new HttpHost(hostConfig.getHost(), hostConfig.getPort(), hostConfig.getScheme());
+                final HttpHost host = new HttpHost(hostConfig.getScheme(), hostConfig.getHost(), hostConfig.getPort());
                 // Max per route for a specific hosts route
                 connectionManager.setMaxPerRoute(new HttpRoute(host), hostConfig.getMaxPerRoute());
             }
@@ -228,9 +229,9 @@ public class BaseStreamingRestClientFactory implements RestClientFactory {
 
     private RequestConfig buildRequestConfig() {
         return RequestConfig.custom()
-            .setConnectionRequestTimeout(connectionRequestTimeout)
-            .setConnectTimeout(connectTimeout)
-            .setSocketTimeout(socketTimeout)
+            .setConnectionRequestTimeout(Timeout.ofMilliseconds(connectionRequestTimeout))
+            .setConnectTimeout(Timeout.ofMilliseconds(connectTimeout))
+            .setResponseTimeout(Timeout.ofMilliseconds(socketTimeout))
             .build();
     }
 

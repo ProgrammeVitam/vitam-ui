@@ -47,6 +47,7 @@ import fr.gouv.vitamui.security.common.dto.CertificateDto;
 import fr.gouv.vitamui.security.common.rest.RestApi;
 import fr.gouv.vitamui.security.server.certificate.service.CertificateCrudService;
 import io.swagger.annotations.Api;
+import jakarta.validation.Valid;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
@@ -66,7 +67,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 

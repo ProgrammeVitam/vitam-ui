@@ -38,6 +38,5 @@
 package fr.gouv.vitamui.commons.sip.model;
 
 import fr.gouv.vitamui.commons.sip.util.SIPConstant;
-
-import javax.xml.bind.annotation.XmlNsForm;
-import javax.xml.bind.annotation.XmlSchema;
+import jakarta.xml.bind.annotation.XmlNsForm;
+import jakarta.xml.bind.annotation.XmlSchema;

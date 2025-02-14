@@ -1,11 +1,11 @@
 package fr.gouv.vitamui.commons.test.rest;
 
+import jakarta.ws.rs.core.MediaType;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import javax.ws.rs.core.MediaType;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.Writer;

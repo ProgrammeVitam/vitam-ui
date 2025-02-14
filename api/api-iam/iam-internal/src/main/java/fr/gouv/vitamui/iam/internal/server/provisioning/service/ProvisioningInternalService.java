@@ -45,12 +45,12 @@ import fr.gouv.vitamui.iam.internal.server.provisioning.client.ProvisioningWebCl
 import fr.gouv.vitamui.iam.internal.server.provisioning.config.IdPProvisioningClientConfiguration;
 import fr.gouv.vitamui.iam.internal.server.provisioning.config.ProvisioningClientConfiguration;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
+import jakarta.validation.constraints.NotNull;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 /**

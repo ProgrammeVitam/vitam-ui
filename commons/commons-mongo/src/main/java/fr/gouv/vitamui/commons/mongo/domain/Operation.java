@@ -38,13 +38,13 @@ package fr.gouv.vitamui.commons.mongo.domain;
 
 import fr.gouv.vitamui.commons.api.enums.OperationStatus;
 import fr.gouv.vitamui.commons.mongo.IdDocument;
+import jakarta.validation.constraints.NotNull;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.validation.constraints.NotNull;
 import java.time.OffsetDateTime;
 
 /**

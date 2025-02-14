@@ -43,21 +43,22 @@ import fr.gouv.vitamui.commons.rest.client.configuration.ProxyProperties;
 import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
 import fr.gouv.vitamui.commons.rest.client.configuration.SSLConfiguration;
 import fr.gouv.vitamui.commons.rest.util.RestUtils;
+import jakarta.validation.constraints.NotNull;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.http.HttpHost;
-import org.apache.http.auth.AuthScope;
-import org.apache.http.auth.UsernamePasswordCredentials;
-import org.apache.http.client.CredentialsProvider;
-import org.apache.http.client.config.RequestConfig;
-import org.apache.http.config.Registry;
-import org.apache.http.config.RegistryBuilder;
-import org.apache.http.conn.routing.HttpRoute;
-import org.apache.http.conn.socket.ConnectionSocketFactory;
-import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
-import org.apache.http.impl.client.BasicCredentialsProvider;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
-import org.apache.http.ssl.SSLContextBuilder;
+import org.apache.hc.client5.http.HttpRoute;
+import org.apache.hc.client5.http.auth.AuthScope;
+import org.apache.hc.client5.http.auth.UsernamePasswordCredentials;
+import org.apache.hc.client5.http.config.RequestConfig;
+import org.apache.hc.client5.http.impl.auth.BasicCredentialsProvider;
+import org.apache.hc.client5.http.impl.classic.HttpClientBuilder;
+import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManager;
+import org.apache.hc.client5.http.socket.ConnectionSocketFactory;
+import org.apache.hc.client5.http.ssl.SSLConnectionSocketFactory;
+import org.apache.hc.core5.http.HttpHost;
+import org.apache.hc.core5.http.config.Registry;
+import org.apache.hc.core5.http.config.RegistryBuilder;
+import org.apache.hc.core5.ssl.SSLContextBuilder;
+import org.apache.hc.core5.util.Timeout;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -69,7 +70,6 @@ import org.springframework.web.client.RestTemplate;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLContext;
-import javax.validation.constraints.NotNull;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -165,11 +165,7 @@ public class BaseRestClientFactory implements RestClientFactory {
     private void addProxy(final HttpClientBuilder httpClientBuilder, final @NotNull ProxyProperties proxyProperties) {
         ParameterChecker.checkParameter("Proxy properties must not be null", proxyProperties);
 
-        final var proxy = new HttpHost(
-            proxyProperties.getHost(),
-            proxyProperties.getPort(),
-            proxyProperties.getType().toString()
-        );
+        final var proxy = new HttpHost(proxyProperties.getHost(), proxyProperties.getPort());
         httpClientBuilder.setProxy(proxy);
 
         final String username = proxyProperties.getUsername();
@@ -191,10 +187,10 @@ public class BaseRestClientFactory implements RestClientFactory {
     ) {
         if (StringUtils.isBlank(username)) return;
 
-        CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
+        BasicCredentialsProvider credentialsProvider = new BasicCredentialsProvider();
         credentialsProvider.setCredentials(
             new AuthScope(proxy.getHostName(), proxy.getPort()),
-            new UsernamePasswordCredentials(username, password)
+            new UsernamePasswordCredentials(username, password.toCharArray())
         );
         httpClientBuilder.setDefaultCredentialsProvider(credentialsProvider);
     }
@@ -279,7 +275,7 @@ public class BaseRestClientFactory implements RestClientFactory {
             connectionManager.setDefaultMaxPerRoute(poolConfig.getMaxPerRoute());
 
             for (final HttpPoolConfiguration.HostConfiguration hostConfig : poolConfig.getHostConfigurations()) {
-                final HttpHost host = new HttpHost(hostConfig.getHost(), hostConfig.getPort(), hostConfig.getScheme());
+                final HttpHost host = new HttpHost(hostConfig.getScheme(), hostConfig.getHost(), hostConfig.getPort());
                 // Max per route for a specific hosts route
                 connectionManager.setMaxPerRoute(new HttpRoute(host), hostConfig.getMaxPerRoute());
             }
@@ -289,9 +285,9 @@ public class BaseRestClientFactory implements RestClientFactory {
 
     private RequestConfig buildRequestConfig() {
         return RequestConfig.custom()
-            .setConnectionRequestTimeout(connectionRequestTimeout)
-            .setConnectTimeout(connectTimeout)
-            .setSocketTimeout(socketTimeout)
+            .setConnectionRequestTimeout(Timeout.ofMilliseconds(connectionRequestTimeout))
+            .setConnectTimeout(Timeout.ofMilliseconds(connectTimeout))
+            .setResponseTimeout(Timeout.ofMilliseconds(socketTimeout))
             .build();
     }
 

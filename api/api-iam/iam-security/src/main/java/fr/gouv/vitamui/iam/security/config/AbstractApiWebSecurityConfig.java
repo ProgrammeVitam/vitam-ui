@@ -28,6 +28,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+
 package fr.gouv.vitamui.iam.security.config;
 
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
@@ -35,12 +36,13 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.Environment;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
@@ -56,11 +58,10 @@ import static org.springframework.http.HttpMethod.PUT;
 
 /**
  * The security configuration.
- *
  */
 @Getter
 @Setter
-public abstract class AbstractApiWebSecurityConfig extends WebSecurityConfigurerAdapter {
+public abstract class AbstractApiWebSecurityConfig {
 
     protected AuthenticationProvider apiAuthenticationProvider;
 
@@ -79,31 +80,18 @@ public abstract class AbstractApiWebSecurityConfig extends WebSecurityConfigurer
         this.env = env;
     }
 
-    @Override
-    protected void configure(final AuthenticationManagerBuilder auth) {
-        auth.authenticationProvider(apiAuthenticationProvider);
-    }
-
-    @Override
-    protected void configure(final HttpSecurity http) throws Exception {
-        http
-            .authorizeRequests()
-            .antMatchers(getAuthList())
-            .permitAll()
-            .anyRequest()
-            .authenticated()
-            .and()
-            .cors()
-            .configurationSource(request -> getCorsConfiguration())
-            .and()
-            .exceptionHandling()
-            .authenticationEntryPoint(getUnauthorizedHandler())
-            .and()
-            .csrf()
-            .disable()
-            .addFilterAt(getRequestHeadersAuthenticationFilter(), BasicAuthenticationFilter.class)
-            .sessionManagement()
-            .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http, AuthenticationManager authenticationManager)
+        throws Exception {
+        return http
+            .csrf(CsrfConfigurer::disable)
+            .cors(cors -> cors.configurationSource(request -> getCorsConfiguration()))
+            .authorizeHttpRequests(auth -> auth.requestMatchers(getAuthList()).permitAll()) //.anyRequest().authenticated())
+            .exceptionHandling(exc -> exc.authenticationEntryPoint(getUnauthorizedHandler()))
+            .authenticationProvider(apiAuthenticationProvider)
+            .addFilterAt(getRequestHeadersAuthenticationFilter(authenticationManager), BasicAuthenticationFilter.class)
+            .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .build();
     }
 
     private CorsConfiguration getCorsConfiguration() {
@@ -111,11 +99,6 @@ public abstract class AbstractApiWebSecurityConfig extends WebSecurityConfigurer
         var methodsAllowed = List.of(GET.name(), POST.name(), HEAD.name(), PATCH.name(), PUT.name(), DELETE.name());
         corsConfiguration.setAllowedMethods(methodsAllowed);
         return corsConfiguration;
-    }
-
-    @Override
-    public void configure(final WebSecurity web) throws Exception {
-        web.ignoring().antMatchers(getAuthList());
     }
 
     protected String[] getAuthList() {
@@ -134,10 +117,17 @@ public abstract class AbstractApiWebSecurityConfig extends WebSecurityConfigurer
     }
 
     @Bean
+    public AuthenticationManager getAuthenticationManager(AuthenticationConfiguration authenticationConfiguration)
+        throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
+    }
+
+    @Bean
     protected ApiAuthenticationEntryPoint getUnauthorizedHandler() {
         return new ApiAuthenticationEntryPoint(restExceptionHandler);
     }
 
-    protected abstract AbstractPreAuthenticatedProcessingFilter getRequestHeadersAuthenticationFilter()
-        throws Exception;
+    protected abstract AbstractPreAuthenticatedProcessingFilter getRequestHeadersAuthenticationFilter(
+        AuthenticationManager authenticationManager
+    ) throws Exception;
 }

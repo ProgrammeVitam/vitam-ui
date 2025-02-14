@@ -36,14 +36,10 @@
  */
 package fr.gouv.vitamui.commons.rest.client;
 
-import fr.gouv.vitamui.commons.api.exception.ApplicationServerException;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
 /**
@@ -65,17 +61,6 @@ public abstract class BaseStatusRestClient implements RestClient {
     public BaseStatusRestClient(final RestTemplate restTemplate, final String baseUrl) {
         this.restTemplate = restTemplate;
         this.baseUrl = baseUrl;
-    }
-
-    public void checkStatus() {
-        LOGGER.debug("checkStatus");
-
-        final ResponseEntity<String> response = restTemplate.exchange(getUrl(), HttpMethod.GET, null, String.class);
-        final HttpStatus status = response.getStatusCode();
-        if (status != HttpStatus.OK && status != HttpStatus.NO_CONTENT) {
-            throw new ApplicationServerException("Internal Server Error : " + status.getReasonPhrase());
-        }
-        // TODO: consume entity and close
     }
 
     protected String getUrl() {

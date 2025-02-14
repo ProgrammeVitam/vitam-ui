@@ -37,13 +37,12 @@
 package fr.gouv.vitamui.security.common.dto;
 
 import fr.gouv.vitamui.commons.api.domain.IdDto;
+import jakarta.validation.constraints.NotNull;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.validator.constraints.Length;
-
-import javax.validation.constraints.NotNull;
 
 /**
  * The DTO v1 for a certificate.

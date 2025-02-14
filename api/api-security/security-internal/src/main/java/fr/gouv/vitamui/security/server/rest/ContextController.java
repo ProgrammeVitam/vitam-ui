@@ -47,6 +47,7 @@ import fr.gouv.vitamui.security.common.dto.ContextDto;
 import fr.gouv.vitamui.security.common.rest.RestApi;
 import fr.gouv.vitamui.security.server.context.service.ContextService;
 import io.swagger.annotations.Api;
+import jakarta.validation.Valid;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
@@ -68,7 +69,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -121,7 +121,7 @@ public class ContextController implements CrudController<ContextDto> {
     }
 
     @PostMapping(value = RestApi.FINDBYCERTIFICATE_PATH)
-    public ContextDto findByCertificate(final @Valid @RequestBody String data) {
+    public ContextDto findByCertificate(final @RequestBody String data) {
         LOGGER.debug("Request data {} ", data);
         ParameterChecker.checkParameter("The request data is a mandatory parameter: ", data);
         return contextService.findByCertificate(data);

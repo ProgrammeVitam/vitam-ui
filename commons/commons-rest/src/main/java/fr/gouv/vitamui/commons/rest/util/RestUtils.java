@@ -42,10 +42,6 @@ import fr.gouv.vitamui.commons.api.exception.ApplicationServerException;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.api.utils.CriteriaUtils;
 import fr.gouv.vitamui.commons.rest.enums.ContentDispositionType;
-import org.apache.commons.fileupload.FileItemIterator;
-import org.apache.commons.fileupload.FileUploadException;
-import org.apache.commons.fileupload.disk.DiskFileItemFactory;
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -62,10 +58,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.ResponseEntity.BodyBuilder;
 import org.springframework.util.Assert;
 
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
 import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -233,34 +226,5 @@ public final class RestUtils {
         } catch (final IOException e) {
             throw new ApplicationServerException(e.getMessage(), e);
         }
-    }
-
-    /**
-     * Read {@link HttpServletRequest} and get a {@link FileItemIterator}.
-     * @param factory : a factory for disk-based file items
-     * @param request
-     * @return
-     * @throws FileUploadException
-     * @throws IOException
-     */
-    public static FileItemIterator getFileItemIterator(
-        final DiskFileItemFactory factory,
-        final HttpServletRequest request
-    ) throws FileUploadException, IOException {
-        // Configure a repository (to ensure a secure temp location is used)
-        final ServletContext servletContext = request.getServletContext();
-        final File repository = (File) servletContext.getAttribute("javax.servlet.context.tempdir");
-        factory.setRepository(repository);
-
-        // Create a new file upload handler
-        final ServletFileUpload upload = new ServletFileUpload(factory);
-        //
-        upload.setFileSizeMax(-1);
-        upload.setSizeMax(-1);
-
-        LOGGER.debug("Request: {}", request);
-        LOGGER.debug("ContentLength: {}", request.getContentLength());
-
-        return upload.getItemIterator(request);
     }
 }

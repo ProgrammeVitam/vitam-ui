@@ -38,14 +38,14 @@ package fr.gouv.vitamui.iam.common.dto;
 
 import fr.gouv.vitamui.commons.api.domain.CustomerIdDto;
 import fr.gouv.vitamui.iam.common.enums.AuthnRequestBindingEnum;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.validator.constraints.Length;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.util.List;
 import java.util.Map;
 

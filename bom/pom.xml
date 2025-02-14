@@ -43,8 +43,9 @@
         <jakarta.mail.version>1.6.5</jakarta.mail.version>
         <jakarta.xml.binding.version>2.3.3</jakarta.xml.binding.version>
         <javassist.version>3.30.2-GA</javassist.version>
-        <javax.servlet.version>4.0.1</javax.servlet.version>
-        <javax.validation.api.version>2.0.1.Final</javax.validation.api.version>
+        <javax.servlet.version>4.0.1</javax.servlet.version> <!-- for CAS -->
+        <jakarta.servlet.version>6.1.0</jakarta.servlet.version>
+        <jakarta.validation.api.version>3.1.1</jakarta.validation.api.version>
         <javax.ws.rs.version>2.1.1</javax.ws.rs.version>
         <jaxb.core.version>2.3.0.1</jaxb.core.version>
         <jaxb.impl.version>3.0.0-M1</jaxb.impl.version>
@@ -72,8 +73,8 @@
         <serenity.cucumber.version>2.2.6</serenity.cucumber.version>
         <serenity.version>3.3.10</serenity.version>
         <slf4j.version>1.7.30</slf4j.version>
-        <spring-cloud-dependencies.version>2021.0.8</spring-cloud-dependencies.version>
-        <spring-security-cas.version>5.7.3</spring-security-cas.version>
+        <spring-cloud-dependencies.version>2022.0.5</spring-cloud-dependencies.version>
+        <spring-security-cas.version>6.4.2</spring-security-cas.version>
         <spring-webmvc-pac4j.version>6.0.3</spring-webmvc-pac4j.version>
         <swagger.version>3.0.0</swagger.version>
         <testcontainers.version>1.19.8</testcontainers.version>
@@ -329,7 +330,7 @@
             </dependency>
 
             <dependency>
-                <groupId>javax.xml.parsers</groupId>
+                <groupId>jakarta.xml.parsers</groupId>
                 <artifactId>jaxp-api</artifactId>
                 <version>${jaxp-api.version}</version>
             </dependency>
@@ -459,13 +460,13 @@
 
             <!-- Web -->
             <dependency>
-                <groupId>javax.servlet</groupId>
-                <artifactId>javax.servlet-api</artifactId>
-                <version>${javax.servlet.version}</version>
+                <groupId>jakarta.servlet</groupId>
+                <artifactId>jakarta.servlet-api</artifactId>
+                <version>${jakarta.servlet.version}</version>
             </dependency>
             <dependency>
-                <groupId>javax.ws.rs</groupId>
-                <artifactId>javax.ws.rs-api</artifactId>
+                <groupId>jakarta.ws.rs</groupId>
+                <artifactId>jakarta.ws.rs-api</artifactId>
                 <version>${javax.ws.rs.version}</version>
             </dependency>
 
@@ -560,7 +561,7 @@
                         <artifactId>log4j-to-slf4j</artifactId>
                     </exclusion>
                     <exclusion>
-                        <groupId>javax.mail</groupId>
+                        <groupId>jakarta.mail</groupId>
                         <artifactId>mailapi</artifactId>
                     </exclusion>
                     <exclusion>
@@ -583,7 +584,7 @@
                         <artifactId>log4j-to-slf4j</artifactId>
                     </exclusion>
                     <exclusion>
-                        <groupId>javax.mail</groupId>
+                        <groupId>jakarta.mail</groupId>
                         <artifactId>mailapi</artifactId>
                     </exclusion>
                     <exclusion>
@@ -726,9 +727,9 @@
             </dependency>
 
             <dependency>
-                <groupId>javax.validation</groupId>
-                <artifactId>validation-api</artifactId>
-                <version>${javax.validation.api.version}</version>
+                <groupId>jakarta.validation</groupId>
+                <artifactId>jakarta.validation-api</artifactId>
+                <version>${jakarta.validation.api.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.hibernate.validator</groupId>
@@ -812,8 +813,8 @@
                 <version>${poi.version}</version>
             </dependency>
             <dependency>
-                <groupId>javax.xml.bind</groupId>
-                <artifactId>jaxb-api</artifactId>
+                <groupId>jakarta.xml.bind</groupId>
+                <artifactId>jakarta.xml.bind-api</artifactId>
                 <version>${jaxb.version}</version>
             </dependency>
             <dependency>
@@ -866,7 +867,7 @@
                 <version>${fop.version}</version>
                 <exclusions>
                     <exclusion>
-                        <groupId>javax.media</groupId>
+                        <groupId>jakarta.media</groupId>
                         <artifactId>jai-core</artifactId>
                     </exclusion>
                     <exclusion>
