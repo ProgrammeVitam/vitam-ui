@@ -11,12 +11,13 @@ spring:
   mvc:
     favicon:
       enabled : false
+  jmx:
+    unique-names: true
 
 management:
   endpoints:
     jmx:
       domain: security-internal
-      unique-names: true
     web.exposure.include: '*'
   endpoint:
     health:

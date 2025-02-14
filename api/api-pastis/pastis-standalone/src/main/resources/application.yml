@@ -18,6 +18,8 @@ spring:
     enabled: true
   profiles:
     active: 'standalone'
+  jmx:
+    unique-names: true
 
 #Spring docs swagger
 springdoc:
@@ -40,7 +42,6 @@ management:
   endpoints:
     jmx:
       domain: pastis-standalone
-      unique-names: true
       web.exposure.include: info,health,prometheus
   endpoint:
     health:
