@@ -338,6 +338,13 @@
           </button>
           <button
             mat-menu-item
+            (click)="launchDeleteUnitTreeModal()"
+            [disabled]="!hasEliminationAnalysisOrActionRole || selectedItemCount === 0"
+          >
+            {{ 'ARCHIVE_SEARCH.ELIMINATION.TREE_ELIMINATION' | translate }}
+          </button>
+          <button
+            mat-menu-item
             (click)="launchComputedInheritedRulesModal()"
             [disabled]="!hasComputedInheritedRulesRole || selectedItemCount === 0"
           >
@@ -426,7 +433,7 @@
             <label class="vitamui-checkbox wide" (click)="$event.stopPropagation()">
               <input
                 id="{{ archiveUnit['#id'] }}"
-                (change)="checkChildrenBoxChange(archiveUnit['#id'], $event)"
+                (change)="checkChildrenBoxChange(archiveUnit, $event)"
                 type="checkbox"
                 [checked]="isAllChecked"
               />

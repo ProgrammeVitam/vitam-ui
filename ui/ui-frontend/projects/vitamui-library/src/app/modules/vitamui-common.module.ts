@@ -114,6 +114,7 @@ import { SubrogationModule } from './subrogation/subrogation.module';
 import { VitamUIHttpInterceptor } from './vitamui-http-interceptor';
 import { BadgeComponent } from './components/badge/badge.component';
 import { DataComponent } from './components/data/data.component';
+import { AlertDialogComponent } from './components/alert-dialog/alert-dialog.component';
 
 export function loadConfigFactory(configService: ConfigService, environment: any) {
   const p = () => configService.load(environment.configUrls).toPromise();
@@ -206,6 +207,7 @@ export function startupServiceFactory(startupService: StartupService, authServic
     VitamuiSidenavHeaderModule,
     VitamUISnackBarModule,
     FileSelectorComponent,
+    AlertDialogComponent,
     ChipComponent,
     BadgeComponent,
   ],
@@ -271,6 +273,7 @@ export function startupServiceFactory(startupService: StartupService, authServic
     VitamuiSidenavHeaderModule,
     VitamUISnackBarModule,
     VitamuiTreeNodeModule,
+    AlertDialogComponent,
     FileSelectorComponent,
     ChipComponent,
     BadgeComponent,

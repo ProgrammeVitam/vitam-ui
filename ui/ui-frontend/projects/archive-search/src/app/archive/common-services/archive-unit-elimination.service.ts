@@ -112,6 +112,7 @@ export class ArchiveUnitEliminationService {
     tenantIdentifier: number,
     currentPage: number,
     confirmSecondActionBigNumberOfResultsActionDialog: TemplateRef<ArchiveSearchComponent>,
+    onlyArchiveUnit: boolean,
   ) {
     const dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpenRef = this.dialog.open(
       confirmSecondActionBigNumberOfResultsActionDialog,
@@ -121,19 +122,24 @@ export class ArchiveUnitEliminationService {
       .afterClosed()
       .pipe(filter((result) => !!result))
       .subscribe(() => {
-        this.launchEliminationAction(listOfUACriteriaSearch, tenantIdentifier, currentPage);
+        this.launchEliminationAction(listOfUACriteriaSearch, tenantIdentifier, currentPage, onlyArchiveUnit);
       });
   }
 
-  private launchEliminationAction(listOfUACriteriaSearch: SearchCriteriaEltDto[], tenantIdentifier: number, currentPage: number) {
-    const exportDIPSearchCriteria = {
+  private launchEliminationAction(
+    listOfUACriteriaSearch: SearchCriteriaEltDto[],
+    tenantIdentifier: number,
+    currentPage: number,
+    onlyArchiveUnit: boolean,
+  ) {
+    const unitsForEliminationCriteria = {
       criteriaList: listOfUACriteriaSearch,
       pageNumber: currentPage,
       size: PAGE_SIZE,
       language: this.translateService.currentLang,
     };
 
-    this.archiveService.launchEliminationAction(exportDIPSearchCriteria).subscribe((response) => {
+    this.archiveService.launchEliminationAction(unitsForEliminationCriteria, onlyArchiveUnit).subscribe((response) => {
       const eliminationActionResponse = response.$results;
 
       if (eliminationActionResponse && eliminationActionResponse[0].itemId) {

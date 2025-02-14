@@ -158,6 +158,12 @@ export class ArchiveApiService extends BaseHttpClient<any> {
     });
   }
 
+  launchDeleteUnitTree(criteriaDto: SearchCriteriaDto, headers?: HttpHeaders): Observable<any> {
+    return this.http.post(`${this.apiUrl}/elimination/unit-tree/action`, criteriaDto, {
+      headers,
+    });
+  }
+
   updateUnitsRules(ruleSearchCriteriaDto: RuleSearchCriteriaDto, headers?: HttpHeaders): Observable<string> {
     return this.http.post(`${this.apiUrl}/units/rules`, ruleSearchCriteriaDto, {
       responseType: 'text',

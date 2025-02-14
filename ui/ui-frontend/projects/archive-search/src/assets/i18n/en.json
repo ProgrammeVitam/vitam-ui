@@ -6,11 +6,16 @@
       "ELIMINATION_ANALYSIS_LAUNCHED": "Your request for elimination analysis has been taken into account",
       "THRESHOLD_EXCEEDED": "The elimination analysis cannot be started. Please restrict your selection to a maximum of 10,000 archival units.",
       "EXECUTION": "Delete archives",
+      "TREE_ELIMINATION": "Delete tree units",
       "TO_ELIMINATE": "Do you want to eliminate",
       "SELECTED_ITEMS": "selected items?",
       "ONE_SELECTED": " Do you want to delete the selected item ?",
       "EXECUTE": "Delete the archives",
-      "EXECUTE_ONE": "Delete the archive"
+      "EXECUTE_ONE": "Delete the archive",
+      "ALERTE_MESSAGES": {
+        "ACTION_ALERTE_TITLE": "The requested action is not possible for this selection",
+        "ACTION_ALERTE_FIRST_MESSAGE": "Please select only archival units of the positioning tree type"
+      }
     },
     "RULES_ACTION": {
       "UPDATE_RULE": "Update rules"

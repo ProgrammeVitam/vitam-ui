@@ -44,6 +44,8 @@ public class RestApi {
     public static final String TRANSFER_REQUEST = "/transfer-request";
     public static final String ELIMINATION_ANALYSIS = "/elimination/analysis";
     public static final String ELIMINATION_ACTION = "/elimination/action";
+
+    public static final String ELIMINATION_UNIT_TREE_ACTION = "/elimination/unit-tree/action";
     public static final String MASS_UPDATE_UNITS_RULES = "/units/rules";
     public static final String COMPUTED_INHERITED_RULES = "/computed-inherited-rules";
     public static final String RECLASSIFICATION = "/reclassification";
