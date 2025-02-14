@@ -28,4 +28,4 @@ Pour démarrer l'application en mode production
         ./build.sh
         ./run.sh (pour tester pastis standalone)
         
-        l'executable windows peut etre récupéré dans api/api-pastis/pastis-standalone/target/pastis-standalone-{verion}-package.zip
+        l'executable windows peut etre récupéré dans api/api-pastis/pastis-standalone/target/pastis-standalone-{version}-package.zip
