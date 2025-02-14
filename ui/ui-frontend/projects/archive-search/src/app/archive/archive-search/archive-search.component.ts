@@ -493,6 +493,9 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   }
 
   submit() {
+    this.listOfUAIdToInclude = [];
+    this.listOfUAIdToExclude = [];
+
     this.archiveSharedDataService.emitSelectedUnit(null);
     this.initializeSelectionParams();
     this.archiveHelperService.buildNodesListForQUery(this.searchCriterias, this.criteriaSearchList);
