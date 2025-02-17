@@ -179,11 +179,15 @@
     - import_tasks: check_auth.yml
 
     # Create the local shard admin user
+    - name: Unset mongo_nodes fact
+      set_fact:
+        mongo_nodes: []
+
     - name: Compute list of mongo_nodes
       set_fact:
-        mongo_nodes: "{{ mongo_nodes | default([]) + [ hostvars[item]['ip_service'] + ':' + mongodb.mongod_port | string ] }}"
+        mongo_nodes: "{{ mongo_nodes + [ hostvars[item]['ip_service'] + ':' + mongodb.mongod_port | string ] }}"
       loop: "{{ groups['hosts_vitamui_mongod'] }}"
-      when: hostvars[item]['mongo_arbiter'] | default(false) | bool == false
+      when: not hostvars[item]['mongo_arbiter'] | default(false) | bool
 
     - name: Copy the script which create the local users
       template:
