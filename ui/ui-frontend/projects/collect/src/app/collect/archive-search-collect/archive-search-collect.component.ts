@@ -148,6 +148,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
   direction = Direction.ASCENDANT;
   DEFAULT_RESULT_THRESHOLD = 10000;
   searchHasResults = false;
+  hasDynamicAttachment = false;
   pageNumbers = 0;
   canLoadMore = false;
 
@@ -283,6 +284,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
         if (!!transaction) {
           this.isNotOpen$.next(transaction.status !== TransactionStatus.OPEN);
           this.isNotReady$.next(transaction.status !== TransactionStatus.READY);
+          this.existsArchiveUnitWithDynamicAttachment();
         } else {
           this.isNotOpen$.next(true);
           this.isNotReady$.next(true);
@@ -1172,5 +1174,51 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
   trackBy(_: number, unit: Unit) {
     // FIXME: for some reason, that trackBy - used to make Angular update the Unit in the list when it's modified in the sidenav - is not always working correctly: sometimes, the Unit is updated, sometimes not. It looks like it is updated for "simple" Units (with only Généralités) and not for "complex" ones.
     return unit['#id'];
+  }
+
+  existsArchiveUnitWithDynamicAttachment(): void {
+    const criteriaList = [
+      {
+        criteria: 'ALL_ARCHIVE_UNIT_TYPES',
+        values: [
+          {
+            value: 'ARCHIVE_UNIT_WITH_OBJECTS',
+            id: 'ARCHIVE_UNIT_WITH_OBJECTS',
+          },
+          {
+            value: 'ARCHIVE_UNIT_WITHOUT_OBJECTS',
+            id: 'ARCHIVE_UNIT_WITHOUT_OBJECTS',
+          },
+        ],
+        operator: 'EQ',
+        category: 'FIELDS',
+        dataType: 'STRING',
+      },
+      {
+        criteria: 'TITLE_OR_DESCRIPTION',
+        values: [
+          {
+            value: 'DYNAMIC_ATTACHEMENT',
+            id: 'DYNAMIC_ATTACHEMENT',
+          },
+        ],
+        operator: 'EQ',
+        category: 'FIELDS',
+        dataType: 'STRING',
+      },
+    ];
+    const searchCriteria = {
+      criteriaList: criteriaList,
+      pageNumber: 0,
+      size: 1,
+      sortingCriteria: { criteria: this.orderBy, sorting: this.direction },
+      trackTotalHits: false,
+      computeFacets: false,
+    };
+    this.archiveUnitCollectService
+      .searchArchiveUnitsByCriteria(searchCriteria, this.transaction?.id || null)
+      .subscribe((response: PagedResult) => {
+        this.hasDynamicAttachment = response.results != null && !isEmpty(response.results);
+      });
   }
 }
