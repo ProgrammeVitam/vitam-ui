@@ -65,6 +65,7 @@ import { ArchiveSharedDataService } from '../../../../core/archive-shared-data.s
 export class FilingHoldingSchemeComponent implements OnInit, OnDestroy {
   @Input() transactionId: string;
   @Input() searchHasMatches = false;
+  @Input() hasDynamicAttachment = false;
   @Input() searchRequestTotalResults: number;
 
   @Output() showArchiveUnitDetails = new EventEmitter<Unit>();
@@ -133,7 +134,7 @@ export class FilingHoldingSchemeComponent implements OnInit, OnDestroy {
         }
         // Re-init attachment units to render children by criteria
         this.nestedDataSourceLeaves.data = [...this.attachmentNodes];
-        if (this.searchRequestTotalResults > 0 && isEmpty(this.attachmentNodes)) {
+        if (this.searchRequestTotalResults > 0 && (isEmpty(this.attachmentNodes) || this.hasDynamicAttachment)) {
           FilingHoldingSchemeHandler.addOrphansNodeFromTree(
             this.nestedDataSourceLeaves.data,
             this.translateService.instant('ARCHIVE_SEARCH.FILING_SCHEMA.ORPHANS_NODE'),
