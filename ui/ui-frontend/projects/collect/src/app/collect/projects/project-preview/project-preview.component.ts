@@ -229,6 +229,7 @@ export class ProjectPreviewComponent implements OnInit {
     const projectToUpdate = {
       ...this.form.value,
       name: this.form.value.messageIdentifier,
+      automaticIngest: this.project?.automaticIngest,
     };
     this.mapProjectInternalFields(projectToUpdate);
 
