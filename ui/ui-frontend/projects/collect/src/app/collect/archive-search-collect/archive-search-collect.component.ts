@@ -137,6 +137,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
   direction = Direction.ASCENDANT;
   DEFAULT_RESULT_THRESHOLD = 10000;
   searchHasResults = false;
+  hasDynamicAttachment = false;
   pageNumbers = 0;
   canLoadMore = false;
 
@@ -295,6 +296,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
         if (!!transaction) {
           this.isNotOpen$.next(transaction.status !== TransactionStatus.OPEN);
           this.isNotReady$.next(transaction.status !== TransactionStatus.READY);
+          this.existsArchiveUnitWithDynamicAttachment();
         } else {
           this.isNotOpen$.next(true);
           this.isNotReady$.next(true);
@@ -1023,5 +1025,36 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
   trackBy(_: number, unit: Unit) {
     // FIXME: for some reason, that trackBy - used to make Angular update the Unit in the list when it's modified in the sidenav - is not always working correctly: sometimes, the Unit is updated, sometimes not. It looks like it is updated for "simple" Units (with only Généralités) and not for "complex" ones.
     return unit['#id'];
+  }
+
+  existsArchiveUnitWithDynamicAttachment(): void {
+    const criteriaList = [
+      {
+        criteria: '#management.UpdateOperation.SystemId',
+        values: [
+          {
+            id: 'true',
+            value: 'true',
+          },
+        ],
+        category: 'FIELDS',
+        operator: 'EXISTS',
+        dataType: 'STRING',
+      },
+    ];
+    const searchCriteria = {
+      criteriaList: criteriaList,
+      pageNumber: 0,
+      size: 10,
+      trackTotalHits: false,
+      computeFacets: false,
+    };
+    this.archiveUnitCollectService
+      .searchArchiveUnitsByCriteria(searchCriteria, this.transaction?.id || null)
+      .subscribe((response: PagedResult) => {
+        const isStaticProject =
+          response.results != null && response.results.length === 1 && response.results[0].Title === 'STATIC_ATTACHEMENT';
+        this.hasDynamicAttachment = !isEmpty(response.results) && !isStaticProject;
+      });
   }
 }
