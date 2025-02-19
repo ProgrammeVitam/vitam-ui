@@ -134,6 +134,7 @@ export class UploadComponent implements OnInit {
           this.contextId === IngestType.FILING_SCHEME ||
           this.contextId === IngestType.BLANK_TEST
         ) {
+          console.log('operationId is ' + operationId);
           this.displaySnackBar({
             type: 'fileUploaded',
             messageKey:
