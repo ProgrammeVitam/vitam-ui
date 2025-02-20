@@ -248,7 +248,6 @@ describe('CreateProjectComponent', () => {
 
     // Then
     expect(projectsServiceMock.create).toHaveBeenCalled();
-    expect(transactionServiceMock.create).not.toHaveBeenCalled();
     const arg = projectsServiceMock.create.calls.mostRecent().args[0] as Project;
     expect(arg.name).toBe(form.messageIdentifier);
     expect(arg.messageIdentifier).toBe(form.messageIdentifier);

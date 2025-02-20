@@ -59,6 +59,7 @@ export interface Project extends Id {
   facets?: FacetDetails[];
   tenant?: string;
   automaticIngest?: boolean;
+  transformationRules?: string;
 }
 
 export interface MetadataUnitUp {

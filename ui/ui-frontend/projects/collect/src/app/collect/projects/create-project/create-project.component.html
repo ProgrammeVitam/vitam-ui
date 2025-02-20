@@ -318,8 +318,8 @@
         </div>
         <div class="actions">
           <div class="line">
-            <button (click)="validateAndCreateProject()" class="btn primary" type="button">
-              {{ 'COMMON.SUBMIT' | translate }}
+            <button (click)="moveToNextStep()" class="btn primary" type="button">
+              {{ 'COMMON.NEXT' | translate }}
             </button>
             <button (click)="onClose()" class="btn cancel link" type="button">
               {{ 'COMMON.UNDO' | translate }}
@@ -446,7 +446,40 @@
         </div>
         <div class="actions">
           <div class="line">
-            <button (click)="validateAndCreateProject()" [disabled]="stepRulesParamsIsInvalid()" class="btn primary" type="button">
+            <button (click)="moveToNextStep()" [disabled]="stepRulesParamsIsInvalid()" class="btn primary" type="button">
+              {{ 'COMMON.NEXT' | translate }}
+            </button>
+            <button (click)="onClose()" class="btn cancel link" type="button">
+              {{ 'COMMON.UNDO' | translate }}
+            </button>
+          </div>
+          <button type="button" class="btn link back" (click)="backToPreviousStep()">
+            <i class="vitamui-icon vitamui-icon-chevron-left"></i>
+            <span class="underline">{{ 'COMMON.BACK' | translate }}</span>
+          </button>
+        </div>
+      </div>
+    </cdk-step>
+    <!-- ########## stepIndex 6 : workflow 2     , step 6/6 : Choix des fichiers à upload ########## -->
+    <cdk-step *ngIf="selectedWorkflow === Workflow.FLOW">
+      <div class="content">
+        <div class="text medium light">{{ 'COLLECT.MODAL.TITLE' | translate }}</div>
+        <div class="text large bold">{{ 'COLLECT.MODAL.UPLOAD_CONF_FILES' | translate }}</div>
+        <div class="main-content">
+          <div class="w-100">
+            <vitamui-file-selector
+              [multipleFiles]="false"
+              [maxSizeInBytes]="10 * 1024"
+              [directoryMode]="false"
+              [extensions]="['.jslt']"
+              (filesChanged)="uploadJsltFile($event)"
+            >
+            </vitamui-file-selector>
+          </div>
+        </div>
+        <div class="actions">
+          <div class="line">
+            <button (click)="validateAndCreateProject()" class="btn primary" type="button">
               {{ 'COMMON.SUBMIT' | translate }}
             </button>
             <button (click)="onClose()" class="btn cancel link" type="button">
@@ -465,7 +498,7 @@
     <cdk-step *ngIf="selectedWorkflow === Workflow.MANUAL">
       <div class="content">
         <div class="text medium light">{{ 'COLLECT.MODAL.TITLE' | translate }}</div>
-        <div class="text large bold">{{ 'COLLECT.MODAL.UPLOAD_FILES' | translate }}</div>
+        <div class="text large bold">{{ 'COLLECT.MODAL.UPLOAD_CONF_FILES' | translate }}</div>
         <div class="main-content">
           <table>
             <thead>

@@ -27,6 +27,7 @@
 package fr.gouv.vitamui.collect.common.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.common.annotations.Beta;
 import fr.gouv.vitamui.commons.api.domain.IdDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -57,6 +58,11 @@ public class CollectProjectDto extends IdDto {
 
     @JsonProperty("unitUps")
     private List<CollectMetadataUnitUpDto> unitUps;
+
+    // Added transformationRules to support JSLT rules
+    @Beta
+    @JsonProperty("transformationRules")
+    private String transformationRules;
 
     private String name;
     private String archivalAgreement;

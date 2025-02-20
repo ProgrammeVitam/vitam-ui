@@ -93,6 +93,7 @@
       "RULES_TITLE": "Set up attachment rules",
       "RULES_PARAMS_ADD": "Add Parameter",
       "UPLOAD_FILES": "Uploading files",
+      "UPLOAD_CONF_FILES": "Uploading an automatic metadata installation configuration file",
       "PROJECT_CREATED": "Upload project has been created",
       "RULE_PARAMETER_PREFIX": "Parameter ",
       "REMOVE_PARAM": "Remove this parameter",
