@@ -8,6 +8,7 @@
   enabled: true
   paths:
     - "{{ vitam_defaults.folder.root_path }}/log/consul/consul*.log"
+  ignore_older: {{ filebeat.config.ignore_older }}
   fields_under_root: true
   fields:
     kind: log
