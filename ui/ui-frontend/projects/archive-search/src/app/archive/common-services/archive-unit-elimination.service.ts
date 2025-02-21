@@ -35,8 +35,8 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Injectable, TemplateRef } from '@angular/core';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
-import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
@@ -74,9 +74,7 @@ export class ArchiveUnitEliminationService {
       this.launchEliminationAnalysis(listOfUACriteriaSearch, tenantIdentifier, currentPage);
     } else {
       const dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpen = confirmSecondActionBigNumberOfResultsActionDialog;
-      const showConfirmBigNumberOfResultsSuscription = this.dialog.open(dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpen, {
-        panelClass: 'vitamui-dialog',
-      });
+      const showConfirmBigNumberOfResultsSuscription = this.dialog.open(dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpen);
 
       showConfirmBigNumberOfResultsSuscription
         .afterClosed()
@@ -116,7 +114,6 @@ export class ArchiveUnitEliminationService {
   ) {
     const dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpenRef = this.dialog.open(
       confirmSecondActionBigNumberOfResultsActionDialog,
-      { panelClass: 'vitamui-dialog' },
     );
     dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpenRef
       .afterClosed()

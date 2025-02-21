@@ -1,12 +1,9 @@
-.mat-progress-bar {
-  height: 8px !important;
-
-  .mat-progress-bar-buffer {
-    background-color: var(--vitamui-primary-50);
+:root {
+  .mat-mdc-progress-bar {
+    --mdc-linear-progress-track-color: var(--vitamui-primary-50);
+    --mdc-linear-progress-active-indicator-color: var(--vitamui-primary);
+    --mdc-linear-progress-track-height: 8px;
+    --mdc-linear-progress-active-indicator-height: 8px;
+    border-radius: 8px;
   }
-
-  .mat-progress-bar-fill::after {
-    background-color: var(--vitamui-primary);
-  }
-  border-radius: 100px;
 }

@@ -37,7 +37,7 @@
 import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { Component, Inject, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import {
   ConfirmDialogService,
@@ -68,16 +68,10 @@ export class IngestContractCreateComponent implements OnInit, OnDestroy {
   @Input() isSlaveMode: boolean;
 
   form: FormGroup;
-  stepIndex = 0;
   hasCustomGraphicIdentity = false;
   hasError = true;
   message: string;
 
-  // stepCount is the total number of steps and is used to calculate the advancement of the progress bar.
-  // We could get the number of steps using ViewChildren(StepComponent) but this triggers a
-  // "Expression has changed after it was checked" error so we instead manually define the value.
-  // Make sure to update this value whenever you add or remove a step from the  template.
-  stepCount = 9;
   private keyPressSubscription: Subscription;
 
   constructor(
@@ -97,8 +91,8 @@ export class IngestContractCreateComponent implements OnInit, OnDestroy {
   checkParentIdControl = new FormControl();
 
   formatTypesOptions: VitamuiSelectOptions = { options: [] };
-  managementContracts: any[];
-  archiveProfiles: any[];
+  managementContracts: Option[];
+  archiveProfiles: Option[];
   isDisabledButton = false;
 
   usages: Option[] = [
@@ -157,12 +151,15 @@ export class IngestContractCreateComponent implements OnInit, OnDestroy {
     const params = new HttpParams().set('embedded', 'ALL');
     const headers = new HttpHeaders().set(VitamuiHttpHeaders.X_TENANT_ID, '' + this.tenantIdentifier);
 
-    this.managementContractService.getAllByParams(params, headers).subscribe((managmentContracts) => {
-      this.managementContracts = managmentContracts;
+    this.managementContractService.getAllByParams(params, headers).subscribe((managementContracts) => {
+      this.managementContracts = managementContracts.map((managementContract) => ({
+        key: managementContract.identifier,
+        label: managementContract.name,
+      }));
     });
 
     this.archiveProfileService.getAllByParams(params, headers).subscribe((archiveProfiles) => {
-      this.archiveProfiles = archiveProfiles;
+      this.archiveProfiles = archiveProfiles.map((archiveProfile) => ({ key: archiveProfile.identifier, label: archiveProfile.name }));
     });
 
     this.statusControl.valueChanges.subscribe((value) => {

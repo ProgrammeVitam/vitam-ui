@@ -51,12 +51,6 @@
       "REJECT_BY_VITAM_CHECK_LOGBOOK_OPERATION_APP": "L'import a échoué. Veuillez-consulter le détail des erreurs dans le journal des opérations"
     }
   },
-  "CONFIRM_DIALOG": {
-    "DELETE_TITLE": "Suppression {{objectType}}",
-    "UNSAVED_CHANGES_TITLE": "Modifications non sauvegardées",
-    "DELETE": " Confirmez-vous la suppression : {{objectType}} - {{objectName}}",
-    "SAVE": "Voulez-vous sauvegarder les modifications ?"
-  },
   "CONTRACT_MANAGEMENT": {
     "CONTRACT_PAGE": {
       "CREATE_MANAGEMENT_CONTRACT": "Créer un contrat de gestion",

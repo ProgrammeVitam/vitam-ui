@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, OnInit } from '@angular/core';
-import { MatLegacyDialog as MatDialog, MatLegacyDialogConfig as MatDialogConfig } from '@angular/material/legacy-dialog';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalEventService, SidenavPage } from 'vitamui-library';
 import { IngestType } from '../core/common/ingest-type.enum';
@@ -69,7 +69,6 @@ export class HoldingFillingSchemeComponent extends SidenavPage<any> implements O
   openImportTreePlanPopup(type: IngestType) {
     const dialogConfig = new MatDialogConfig();
 
-    dialogConfig.panelClass = 'vitamui-modal';
     dialogConfig.disableClose = false;
 
     dialogConfig.data = {

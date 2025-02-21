@@ -37,13 +37,14 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { MatLegacyProgressBarModule as MatProgressBarModule } from '@angular/material/legacy-progress-bar';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
-import { VitamUICommonModule } from 'vitamui-library';
+import { VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 import { TenantCreateComponent } from './tenant-create.component';
-import { MatLegacyOptionModule } from '@angular/material/legacy-core';
-import { MatLegacySelectModule } from '@angular/material/legacy-select';
+import { MatOptionModule } from '@angular/material/core';
+import { MatSelectModule } from '@angular/material/select';
 import { TranslateModule } from '@ngx-translate/core';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   imports: [
@@ -51,9 +52,11 @@ import { TranslateModule } from '@ngx-translate/core';
     MatProgressBarModule,
     ReactiveFormsModule,
     VitamUICommonModule,
-    MatLegacyOptionModule,
-    MatLegacySelectModule,
+    MatOptionModule,
+    MatSelectModule,
     TranslateModule,
+    MatDialogModule,
+    VitamUILibraryModule,
   ],
   declarations: [TenantCreateComponent],
 })

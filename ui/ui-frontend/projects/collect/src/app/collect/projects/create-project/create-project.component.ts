@@ -37,12 +37,8 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { AfterViewChecked, ChangeDetectorRef, Component, Inject, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import {
-  MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA,
-  MatLegacyDialog as MatDialog,
-  MatLegacyDialogRef as MatDialogRef,
-} from '@angular/material/legacy-dialog';
-import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
 import { finalize, Observable, throwError } from 'rxjs';
 import { catchError, last, map, switchMap, tap } from 'rxjs/operators';
@@ -54,6 +50,7 @@ import {
   MetadataUnitUp,
   oneIncludedNodeRequired,
   OntologyService,
+  Option,
   Project,
   ProjectStatus,
   Transaction,
@@ -90,13 +87,12 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
 
   selectedWorkflow: Workflow = Workflow.MANUAL;
   selectedFlowType: FlowType = FlowType.FIX;
-  public stepIndex = 0;
-  public stepCount = 6;
+  stepIndex = 0;
 
   projectForm: FormGroup;
 
   hasError = false;
-  ontologies: IOntology[];
+  ontologies: Option[];
   filesToUpload: File[] = [];
   zipFileStatus$: Observable<ZipFileStatus>;
 
@@ -115,10 +111,10 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
     this.translationService.instant('ACQUISITION_INFORMATION.UNKNOWN'),
   ];
 
-  legalStatusList = [
-    { id: 'Public Archive', value: this.translationService.instant('LEGAL_STATUS.PUBLIC_ARCHIVE') },
-    { id: 'Private Archive', value: this.translationService.instant('LEGAL_STATUS.PRIVATE_ARCHIVE') },
-    { id: 'Public and Private Archive', value: this.translationService.instant('LEGAL_STATUS.PUBLIC_PRIVATE_ARCHIVE') },
+  legalStatusList: Option[] = [
+    { key: 'Public Archive', label: this.translationService.instant('LEGAL_STATUS.PUBLIC_ARCHIVE') },
+    { key: 'Private Archive', label: this.translationService.instant('LEGAL_STATUS.PRIVATE_ARCHIVE') },
+    { key: 'Public and Private Archive', label: this.translationService.instant('LEGAL_STATUS.PUBLIC_PRIVATE_ARCHIVE') },
   ];
 
   @ViewChild('confirmDeleteAddRuleDialog', { static: true }) confirmDeleteAddRuleDialog: TemplateRef<CreateProjectComponent>;
@@ -146,12 +142,13 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
   ngOnInit(): void {
     this.initForm();
     this.ontologyService.getInternalOntologyFieldsList().subscribe((data: IOntology[]) => {
-      this.ontologies = data;
-      this.ontologies.sort((a: any, b: any) => {
-        const shortNameA = a.Identifier;
-        const shortNameB = b.Identifier;
-        return shortNameA < shortNameB ? -1 : shortNameA > shortNameB ? 1 : 0;
-      });
+      this.ontologies = data
+        .sort((a: any, b: any) => {
+          const shortNameA = a.Identifier;
+          const shortNameB = b.Identifier;
+          return shortNameA < shortNameB ? -1 : shortNameA > shortNameB ? 1 : 0;
+        })
+        .map((ontology: IOntology) => ({ key: ontology, label: ontology.Identifier }));
     });
   }
 

@@ -36,11 +36,12 @@
  */
 import { Component, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { ConfirmDialogService, ManagementRuleValidators, Rule, RuleService } from 'vitamui-library';
 import { RULE_MEASUREMENTS, RULE_TYPES } from '../rules.constants';
 import { RuleCreateValidators } from './rule-create.validators';
+import { sizes } from '../../ontology/ontology-form-options';
 
 @Component({
   selector: 'app-rule-create',
@@ -49,15 +50,10 @@ import { RuleCreateValidators } from './rule-create.validators';
 })
 export class RuleCreateComponent implements OnInit, OnDestroy {
   form: FormGroup;
-  stepIndex = 0;
   hasCustomGraphicIdentity = false;
   hasError = true;
   message: string;
 
-  // stepCount is the total number of steps and is used to calculate the advancement of the progress bar.
-  // We could get the number of steps using ViewChildren(StepComponent) but this triggers a
-  // "Expression has changed after it was checked" error so we instead manually define the value.
-  // Make sure to update this value whenever you add or remove a step from the  template.
   private keyPressSubscription: Subscription;
 
   ruleTypes = RULE_TYPES;
@@ -122,4 +118,6 @@ export class RuleCreateComponent implements OnInit, OnDestroy {
       },
     );
   }
+
+  protected readonly sizes = sizes;
 }

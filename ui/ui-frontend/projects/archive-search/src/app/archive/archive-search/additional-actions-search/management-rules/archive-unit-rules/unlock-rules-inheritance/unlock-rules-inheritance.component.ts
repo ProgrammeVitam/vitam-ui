@@ -36,7 +36,7 @@
  */
 import { Component, EventEmitter, Input, OnDestroy, Output, TemplateRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { cloneDeep } from 'lodash-es';
 import { UpdateUnitManagementRuleService } from 'projects/archive-search/src/app/archive/common-services/update-unit-management-rule.service';
@@ -198,7 +198,7 @@ export class UnlockRulesInheritanceComponent implements OnDestroy {
 
   onDeleteBloc() {
     const dialogToOpen = this.confirmDeleteUnlockBlocRuleDialog;
-    const dialogRef = this.dialog.open(dialogToOpen, { panelClass: 'vitamui-dialog' });
+    const dialogRef = this.dialog.open(dialogToOpen);
 
     this.showConfirmDeleteBlocRuleSuscription = dialogRef
       .afterClosed()

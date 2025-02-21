@@ -5,10 +5,6 @@
   flex-direction: column;
 }
 
-.row:not(:last-child) {
-  margin-bottom: 1.5rem;
-}
-
 label {
   font-size: 14px;
 
@@ -20,9 +16,4 @@ span {
   font-size: 16px;
 
   color: var(--vitamui-grey-900);
-}
-.form-pad {
-  padding-top: 4.5rem;
-  padding-bottom: 6.5rem;
-  padding-left: 2.5rem;
 }

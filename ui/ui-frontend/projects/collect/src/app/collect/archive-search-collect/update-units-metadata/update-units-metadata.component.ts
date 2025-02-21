@@ -35,12 +35,8 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, Inject, OnDestroy, TemplateRef, ViewChild } from '@angular/core';
-import {
-  MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA,
-  MatLegacyDialog as MatDialog,
-  MatLegacyDialogRef as MatDialogRef,
-} from '@angular/material/legacy-dialog';
-import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription } from 'rxjs';
 import { Logger, Transaction } from 'vitamui-library';
 import { VitamUISnackBarComponent } from '../../shared/vitamui-snack-bar/vitamui-snack-bar.component';
@@ -54,9 +50,6 @@ const VITAMUI_SNACK_BAR = 'vitamui-snack-bar';
   styleUrls: ['./update-units-metadata.component.scss'],
 })
 export class UpdateUnitsMetadataComponent implements OnDestroy {
-  public stepIndex = 0;
-  public stepCount = 1;
-
   isLoadingData = false;
 
   fileToUpload: File = undefined;
@@ -122,7 +115,7 @@ export class UpdateUnitsMetadataComponent implements OnDestroy {
 
   onCancel() {
     const dialogToOpen = this.confirmDeleteUpdateUnitsMetadataDialog;
-    this.dialogRefToClose = this.dialog.open(dialogToOpen, { panelClass: 'vitamui-dialog' });
+    this.dialogRefToClose = this.dialog.open(dialogToOpen);
   }
 
   onCloseAction() {

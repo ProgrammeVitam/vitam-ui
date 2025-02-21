@@ -37,6 +37,7 @@
 /* eslint-disable max-classes-per-file */
 import { Component, Directive, EventEmitter, forwardRef, Input, NgModule, Output, Pipe, PipeTransform } from '@angular/core';
 import { AsyncValidatorFn, ControlValueAccessor, NG_VALUE_ACCESSOR, ValidatorFn } from '@angular/forms';
+import { CdkStepper } from '@angular/cdk/stepper';
 
 @Component({ selector: 'vitamui-common-application-select-content', template: '<ng-content></ng-content>' })
 export class ApplicationSelectContentStubComponent {
@@ -70,9 +71,14 @@ export class VitamUIDurationInputStubComponent implements ControlValueAccessor {
 @Component({ selector: 'vitamui-common-tenant-select', template: '<ng-content></ng-content>' })
 export class VitamUITenantSelectStubComponent {}
 
-@Component({ selector: 'vitamui-common-stepper', template: '<ng-content></ng-content>' })
+@Component({
+  selector: 'vitamui-common-stepper',
+  template: '<ng-content></ng-content>',
+  providers: [{ provide: CdkStepper, useExisting: StepperStubComponent }],
+})
 export class StepperStubComponent {
   @Input() selectedIndex: number;
+  steps: any[] = [];
 }
 
 @Component({ selector: 'vitamui-common-input-error', template: '<ng-content></ng-content>' })

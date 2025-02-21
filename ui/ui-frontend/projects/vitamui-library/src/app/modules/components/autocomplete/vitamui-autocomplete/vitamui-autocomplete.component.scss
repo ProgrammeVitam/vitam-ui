@@ -17,7 +17,7 @@ $animation-time: 150ms;
 }
 
 .mat-drawer,
-.mat-dialog-container {
+.mat-mdc-dialog-container {
   .vitamui-autocomplete {
     > input {
       @include dialog-elevation-dark;

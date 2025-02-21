@@ -1,12 +1,15 @@
-<div class="header">
-  <vitamui-common-progress-bar [index]="stepIndex" [count]="stepCount"></vitamui-common-progress-bar>
-</div>
+<vitamui-dialog-header
+  [stepper]="stepper"
+  [subhead]="'ARCHIVE_UNIT.DIALOGS.CANCEL.TITLE' | translate"
+  [title]="[
+    'SUBROGATION.HOME.RESULTS_TABLE.MODAL.TITLE' | translate,
+    'SUBROGATION.HOME.RESULTS_TABLE.MODAL.WAITING_ACCEPTATION' | translate,
+  ]"
+></vitamui-dialog-header>
 
-<vitamui-common-stepper [selectedIndex]="stepIndex" (selectionChange)="stepIndex = $event.selectedIndex">
+<vitamui-common-stepper #stepper [selectedIndex]="stepIndex" (selectionChange)="stepIndex = $event.selectedIndex">
   <cdk-step>
-    <div class="content">
-      <div class="large text bold">{{ 'SUBROGATION.HOME.RESULTS_TABLE.MODAL.TITLE' | translate }}</div>
-
+    <mat-dialog-content>
       <form [formGroup]="form">
         <div class="d-flex">
           <vitamui-common-input
@@ -23,33 +26,21 @@
 
           <h4 class="mx-2 mt-1 light">&#64;</h4>
 
-          <mat-form-field class="vitamui-mat-select">
-            <mat-select formControlName="domain" panelClass="vitamui-mat-select" required>
-              <mat-option value="{{ domainTmp }}" *ngFor="let domainTmp of domains">
-                {{ domainTmp }}
-              </mat-option>
-            </mat-select>
-            <div class="select-arrow">
-              <i class="material-icons">keyboard_arrow_up</i>
-              <i class="material-icons">keyboard_arrow_down</i>
-            </div>
-          </mat-form-field>
+          <vitamui-select formControlName="domain" [options]="domains" [multiple]="false" [enableSearch]="false"></vitamui-select>
         </div>
       </form>
+    </mat-dialog-content>
 
-      <div class="actions">
-        <button class="btn primary" appStepperNext (click)="askForSubrogation()">
-          {{ 'SUBROGATION.HOME.RESULTS_TABLE.MODAL.BUTTON' | translate }}
-        </button>
-        <button class="btn cancel link" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
-      </div>
-    </div>
+    <mat-dialog-actions>
+      <button class="btn primary" appStepperNext (click)="askForSubrogation()" [disabled]="form.invalid">
+        {{ 'SUBROGATION.HOME.RESULTS_TABLE.MODAL.BUTTON' | translate }}
+      </button>
+      <button class="btn cancel link" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
+    </mat-dialog-actions>
   </cdk-step>
 
   <cdk-step>
-    <div class="content">
-      <div class="text large bold mb-1">{{ 'SUBROGATION.HOME.RESULTS_TABLE.MODAL.WAITING_ACCEPTATION' | translate }}</div>
-
+    <mat-dialog-content>
       <div class="text normal" *ngIf="user?.firstname && user?.lastname">
         {{ 'SUBROGATION.HOME.RESULTS_TABLE.MODAL.ASK_SUBROGATION' | translate }} {{ user?.firstname }} {{ user?.lastname }}
       </div>
@@ -61,10 +52,10 @@
       <div class="d-flex justify-content-center align-items-center my-5">
         <mat-spinner *ngIf="pending" class="vitamui-spinner large"></mat-spinner>
       </div>
+    </mat-dialog-content>
 
-      <div class="actions">
-        <button type="button" class="btn cancel link" (click)="cancelSubrogation()">{{ 'COMMON.UNDO' | translate }}</button>
-      </div>
-    </div>
+    <mat-dialog-actions>
+      <button type="button" class="btn cancel link" (click)="cancelSubrogation()">{{ 'COMMON.UNDO' | translate }}</button>
+    </mat-dialog-actions>
   </cdk-step>
 </vitamui-common-stepper>

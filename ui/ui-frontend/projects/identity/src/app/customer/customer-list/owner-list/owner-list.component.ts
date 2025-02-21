@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
@@ -108,7 +108,6 @@ export class OwnerListComponent implements OnDestroy, OnInit {
         customer: this.customer,
       },
       disableClose: true,
-      panelClass: 'vitamui-modal',
     });
     dialogRef
       .afterClosed()
@@ -153,7 +152,6 @@ export class OwnerListComponent implements OnDestroy, OnInit {
     const dialogRef = this.dialog.open(TenantCreateComponent, {
       disableClose: true,
       data: { owner },
-      panelClass: 'vitamui-modal',
     });
     dialogRef
       .afterClosed()

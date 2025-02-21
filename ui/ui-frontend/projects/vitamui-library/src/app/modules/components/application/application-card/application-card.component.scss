@@ -1,49 +1,46 @@
 @import '../../../../../sass/mixins/elevation';
 
 mat-card {
+  --mdc-outlined-card-outline-width: 0;
+  --mat-card-title-text-line-height: 23px;
+  --mat-card-title-text-tracking: 0;
+
   cursor: pointer;
-  @include shadow-0;
   background-color: transparent;
+  padding: 16px;
 
   a {
     text-decoration: none;
   }
+
+  mat-card-header {
+    background-color: transparent;
+    padding: 1rem 0;
+  }
+
+  mat-card-title {
+    color: var(--vitamui-grey-900);
+    font-weight: 600;
+    font-size: 18px !important;
+    margin-bottom: 2px;
+  }
+
+  mat-card-subtitle {
+    color: var(--vitamui-grey-700);
+  }
 }
 
-mat-card > img,
 .appIcon {
   @include shadow-2dp-dark;
   border-radius: 5px;
-}
-
-mat-card-header {
-  background-color: transparent;
-}
-
-mat-card-title {
-  color: var(--vitamui-grey-900);
-  font-weight: 600;
-  font-size: 18px !important;
-}
-
-mat-card-subtitle {
-  color: var(--vitamui-grey-700);
-  font-size: 14px;
-}
-
-.appIcon {
   width: 100%;
   overflow: hidden;
   text-align: center;
   max-width: 16.8vw;
   max-height: 12vw;
   background-color: white;
-}
 
-.appIcon i {
-  font-size: 10vw;
-}
-
-.no-decoration {
-  text-decoration: none;
+  i {
+    font-size: 10vw;
+  }
 }

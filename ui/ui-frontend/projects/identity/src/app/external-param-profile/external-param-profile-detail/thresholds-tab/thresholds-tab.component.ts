@@ -38,8 +38,10 @@ import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { extend, isEmpty } from 'underscore';
-import { ExternalParamProfile, diff } from 'vitamui-library';
+import { diff, ExternalParamProfile, Option } from 'vitamui-library';
 import { ExternalParamProfileService } from '../../external-param-profile.service';
+import { TranslateService } from '@ngx-translate/core';
+import { DecimalPipe } from '@angular/common';
 
 @Component({
   selector: 'app-thresholds-tab',
@@ -50,11 +52,18 @@ export class ThresholdsTabComponent implements OnDestroy, OnInit, OnChanges {
   constructor(
     private formBuilder: FormBuilder,
     private externalParamProfileService: ExternalParamProfileService,
+    private translateService: TranslateService,
+    private decimalPipe: DecimalPipe,
   ) {}
 
   form: FormGroup;
   previousValue: ExternalParamProfile;
-  thresholdValues: number[] = [100, 10000, 100000, 1000000, 10000000, 100000000, 1000000000];
+  thresholdValues: Option[] = [100, 10000, 100000, 1000000, 10000000, 100000000, 1000000000].map((thresholdValue) => ({
+    key: thresholdValue,
+    label: this.translateService.instant('EXTERNAL_PARAM_PROFILE.MAX_BULK_OPERATIONS_THRESHOLD_VALUES', {
+      threshold: this.decimalPipe.transform(thresholdValue),
+    }),
+  }));
   isUpdated: boolean;
 
   @Input() externalParamProfile: ExternalParamProfile;

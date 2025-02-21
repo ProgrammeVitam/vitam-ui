@@ -1,22 +1,18 @@
-<div class="header"></div>
+<vitamui-dialog-header
+  [subhead]="'PERSISTENT_IDENTIFIER_SEARCH.MODAL.SEARCH_BY_ID' | translate"
+  [title]="'PERSISTENT_IDENTIFIER_SEARCH.MODAL.FOUND_OBJECT_MESSAGE' | translate: { ark: ark, usageVersion: usageVersion }"
+></vitamui-dialog-header>
 
-<div class="content">
-  <div class="text medium light">{{ 'PERSISTENT_IDENTIFIER_SEARCH.MODAL.SEARCH_BY_ID' | translate }}</div>
-  <span class="subtitle text large bold">
-    {{ 'PERSISTENT_IDENTIFIER_SEARCH.MODAL.FOUND_OBJECT_MESSAGE' | translate: { ark: ark, usageVersion: usageVersion } }}
-  </span>
-
-  <div class="actions">
-    <button (click)="lookupUnit()" class="btn primary" type="button" [disabled]="downloading">
-      {{ 'PERSISTENT_IDENTIFIER_SEARCH.MODAL.LOOKUP_ARCHIVAL_UNIT' | translate }}
-    </button>
-    <button
-      (click)="downloadObject()"
-      class="btn primary"
-      type="button"
-      [disabled]="!versionWithQualifier.downloadAllowed || downloading || isPhysicalMaster"
-    >
-      {{ 'PERSISTENT_IDENTIFIER_SEARCH.MODAL.DOWNLOAD_OBJECT' | translate }}
-    </button>
-  </div>
-</div>
+<mat-dialog-actions>
+  <button (click)="lookupUnit()" class="btn primary" type="button" [disabled]="downloading">
+    {{ 'PERSISTENT_IDENTIFIER_SEARCH.MODAL.LOOKUP_ARCHIVAL_UNIT' | translate }}
+  </button>
+  <button
+    (click)="downloadObject()"
+    class="btn primary"
+    type="button"
+    [disabled]="!versionWithQualifier.downloadAllowed || downloading || isPhysicalMaster"
+  >
+    {{ 'PERSISTENT_IDENTIFIER_SEARCH.MODAL.DOWNLOAD_OBJECT' | translate }}
+  </button>
+</mat-dialog-actions>

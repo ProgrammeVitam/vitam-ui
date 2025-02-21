@@ -36,7 +36,7 @@
  */
 import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse } from '@angular/common/http';
 import { Inject, Injectable, Injector } from '@angular/core';
-import { MatLegacyDialog as MatDialog, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import moment from 'moment';
 import { Observable, throwError } from 'rxjs';
 
@@ -188,9 +188,7 @@ export class VitamUIHttpInterceptor implements HttpInterceptor {
 
   private displayErrorDialog(): void {
     if (!this.errorDialog) {
-      this.errorDialog = this.matDialog.open(ErrorDialogComponent, {
-        panelClass: 'vitamui-modal',
-      });
+      this.errorDialog = this.matDialog.open(ErrorDialogComponent);
       this.errorDialog.afterClosed().subscribe(() => (this.errorDialog = null));
     }
   }

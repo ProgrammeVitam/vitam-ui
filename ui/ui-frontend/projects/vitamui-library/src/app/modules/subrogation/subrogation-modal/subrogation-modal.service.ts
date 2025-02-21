@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Injectable } from '@angular/core';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 
 import { SubrogationModalComponent } from './subrogation-modal.component';
 
@@ -47,7 +47,6 @@ export class SubrogationModalService {
 
   open(domains: string[], customerId: string, subrogateUser?: { email: string; firstname?: string; lastname?: string }) {
     this.dialog.open(SubrogationModalComponent, {
-      panelClass: 'vitamui-modal',
       data: { domains, customerId, user: subrogateUser },
     });
   }

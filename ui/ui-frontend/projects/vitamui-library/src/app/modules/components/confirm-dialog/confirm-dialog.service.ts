@@ -37,7 +37,7 @@
 import { hasModifierKey } from '@angular/cdk/keycodes';
 import { ComponentType } from '@angular/cdk/portal';
 import { Injectable, TemplateRef } from '@angular/core';
-import { MatLegacyDialog as MatDialog, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { filter, tap } from 'rxjs/operators';
 
@@ -52,7 +52,7 @@ export class ConfirmDialogService {
 
   public confirm(componentOrTemplateRef: TemplateRef<unknown> | ComponentType<unknown>, data?: DialogInputData): Observable<boolean> {
     return this.matDialog
-      .open(componentOrTemplateRef, { panelClass: 'vitamui-confirm-dialog', data })
+      .open(componentOrTemplateRef, { panelClass: 'small', data })
       .afterClosed()
       .pipe(filter((result) => !!result));
   }

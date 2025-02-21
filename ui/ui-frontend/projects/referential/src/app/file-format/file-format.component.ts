@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 
 import { TranslateService } from '@ngx-translate/core';
@@ -72,7 +72,7 @@ export class FileFormatComponent extends SidenavPage<FileFormat> implements OnIn
   }
 
   openCreateFileFormatDialog() {
-    const dialogRef = this.dialog.open(FileFormatCreateComponent, { panelClass: 'vitamui-modal', disableClose: true });
+    const dialogRef = this.dialog.open(FileFormatCreateComponent, { disableClose: true });
     dialogRef.afterClosed().subscribe((result) => {
       if (result.success) {
         this.refreshList();
@@ -129,7 +129,6 @@ export class FileFormatComponent extends SidenavPage<FileFormat> implements OnIn
 
     this.dialog
       .open(ImportDialogComponent, {
-        panelClass: 'vitamui-modal',
         disableClose: true,
         data: params,
       })

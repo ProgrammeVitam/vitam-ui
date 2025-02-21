@@ -36,7 +36,7 @@
  */
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import {
@@ -47,9 +47,11 @@ import {
   SearchCriteriaEltDto,
   StartupService,
   UsageVersionEnum,
+  VitamuiSelectOptions,
 } from 'vitamui-library';
 import { ArchiveService } from '../../../archive.service';
 import { QualifierVersion, TransferRequestDto } from '../../../models/dip.interface';
+import { delay, distinctUntilChanged, map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-transfer-request-modal',
@@ -57,14 +59,13 @@ import { QualifierVersion, TransferRequestDto } from '../../../models/dip.interf
   styleUrls: ['./transfer-request-modal.component.scss'],
 })
 export class TransferRequestModalComponent implements OnInit, OnDestroy {
-  stepIndex = 0;
-  stepCount = 2;
   formGroups: FormGroup[];
   itemSelected: number;
   selectedItemCountKnown: boolean;
   keyPressSubscription: Subscription;
   dataObjectVersions = ObjectQualifierTypeList;
   UsageVersionEnum = UsageVersionEnum;
+  usageOptions: VitamuiSelectOptions[] = [];
 
   constructor(
     private translate: TranslateService,
@@ -115,6 +116,16 @@ export class TransferRequestModalComponent implements OnInit, OnDestroy {
         ]),
       }),
     ];
+
+    this.computeUsageOptions();
+    this.formGroups[1]
+      .get('usages')
+      .valueChanges.pipe(
+        map((usages) => usages.map((usage: any) => usage.usage)),
+        distinctUntilChanged((u1: string[], u2: string[]) => u1.length === u2.length && u1.every((v, i) => u2[i] === v)),
+        delay(0),
+      )
+      .subscribe(() => this.computeUsageOptions());
   }
 
   get archivalAgreement(): FormControl {
@@ -133,9 +144,19 @@ export class TransferRequestModalComponent implements OnInit, OnDestroy {
     return this.formGroups[1].get('usages') as FormArray;
   }
 
-  listUsages(i: number): string[] {
-    const otherUsages = (this.usages.value as { usage: string }[]).filter((_, index) => i !== index).map((v) => v.usage);
-    return this.dataObjectVersions.filter((usage) => !otherUsages.includes(usage));
+  private computeUsageOptions() {
+    this.usages.controls.forEach((_, i) => {
+      if (!this.usageOptions[i]) {
+        this.usageOptions[i] = {
+          options: this.dataObjectVersions.map((usage) => ({
+            key: usage,
+            label: this.translate.instant(`ARCHIVE_SEARCH.DIP.USAGES.${usage}`),
+          })),
+        };
+      }
+      const otherUsages = (this.usages.value as any[]).filter((_, index) => i !== index).map((v: { usage: string }) => v.usage);
+      this.usageOptions[i].options.forEach((option) => (option.disabled = otherUsages.includes(option.key)));
+    });
   }
 
   addUsage() {

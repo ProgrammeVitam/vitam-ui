@@ -36,7 +36,7 @@
  */
 import { Component, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { Event, GlobalEventService, SearchBarComponent, SidenavPage } from 'vitamui-library';
 

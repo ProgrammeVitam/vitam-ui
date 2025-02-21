@@ -1,7 +1,6 @@
-<div class="text medium light" *ngIf="dialogSubTitle">{{ dialogSubTitle }}</div>
-<div class="text large bold" *ngIf="dialogTitle">{{ dialogTitle }}</div>
+<vitamui-dialog-header [subhead]="dialogSubTitle" [title]="dialogTitle"></vitamui-dialog-header>
 
-<mat-dialog-content class="mt-4">
+<mat-dialog-content>
   <ng-content></ng-content>
 </mat-dialog-content>
 

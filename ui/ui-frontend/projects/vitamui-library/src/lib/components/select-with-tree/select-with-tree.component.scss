@@ -1,0 +1,108 @@
+@use '../../../sass/base/typography';
+@import '../../../sass/mixins/elevation';
+@import 'bootstrap/scss/bootstrap-grid';
+
+::ng-deep .vitamui-select-with-tree-panel {
+  max-height: none !important;
+
+  vitamui-common-search-bar {
+    .search {
+      max-width: none;
+    }
+  }
+
+  .vitamui-mat-select-options {
+    $searchHeight: 66px;
+    $showSelectedHeight: 50px;
+    // Mixin to compute select options height depending on its header height (depends on component configuration)
+    @mixin height($headerHeight: 0px) {
+      $selectHeight: 30px;
+      $availableSpace: calc(
+        (90vh - $selectHeight) / 2
+      ); // 90% (keep some space around) of screen height minus select height (because we display the panel over or under it)
+      max-height: calc($availableSpace - $headerHeight); // Available space minus header height (because it takes some space in the panel)
+    }
+
+    overflow-y: auto;
+
+    > mat-divider {
+      margin: 0 10px;
+    }
+
+    @include height();
+    &.with-search {
+      @include height($searchHeight);
+      &.with-display-selected {
+        @include height($searchHeight + $showSelectedHeight);
+      }
+    }
+    &.with-display-selected {
+      @include height($showSelectedHeight);
+    }
+  }
+
+  mat-tree {
+    padding: 0 10px;
+  }
+
+  mat-tree-node {
+    display: block;
+
+    .mat-pseudo-checkbox {
+      width: 16px;
+      height: 16px;
+      border: 1px solid;
+      margin: 4px;
+    }
+
+    &[matTreeNodeToggle] {
+      cursor: pointer;
+    }
+
+    &:hover,
+    &:focus,
+    .mat-mdc-option.mat-active {
+      background: var(--vitamui-primary-light);
+    }
+
+    .mat-mdc-option:hover,
+    .mat-option:focus {
+      background: transparent;
+    }
+
+    mat-option {
+      height: 50px !important;
+
+      &:not(.fake-option) mat-pseudo-checkbox + span {
+        padding-left: 11px !important;
+      }
+
+      i + span {
+        padding-left: 5px !important;
+      }
+    }
+
+    .fake-option {
+      mat-pseudo-checkbox {
+        display: none;
+      }
+      .mdc-list-item__primary-text {
+        @extend .text;
+        @extend .normal;
+        @extend .bold;
+
+        color: var(--vitamui-grey-900);
+        display: flex;
+        align-items: center;
+
+        &.expanded {
+          color: var(--vitamui-primary);
+        }
+
+        i {
+          font-size: 24px;
+        }
+      }
+    }
+  }
+}

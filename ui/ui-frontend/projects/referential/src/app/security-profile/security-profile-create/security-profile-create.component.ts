@@ -36,7 +36,7 @@
  */
 import { Component, Inject, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { ConfirmDialogService } from 'vitamui-library';
 import { SecurityProfileService } from '../security-profile.service';
@@ -51,16 +51,10 @@ export class SecurityProfileCreateComponent implements OnInit, OnDestroy {
   @Input() isSlaveMode: boolean;
 
   form: FormGroup;
-  stepIndex = 0;
   hasCustomGraphicIdentity = false;
   hasError = true;
   message: string;
 
-  // stepCount is the total number of steps and is used to calculate the advancement of the progress bar.
-  // We could get the number of steps using ViewChildren(StepComponent) but this triggers a
-  // "Expression has changed after it was checked" error so we instead manually define the value.
-  // Make sure to update this value whenever you add or remove a step from the  template.
-  public stepCount = 2;
   private keyPressSubscription: Subscription;
   isDisabledButton = false;
 

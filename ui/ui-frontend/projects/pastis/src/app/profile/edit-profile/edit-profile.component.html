@@ -15,7 +15,7 @@
     <p class="text medium light">{{ 'PROFILE.EDIT_PROFILE.PROFILE_ID' | translate }} : {{ this.profileService.profileId }}</p>
   </div>
 </div>
-<div class="mat-table">
+<div class="mat-mdc-table">
   <ng-container>
     <mat-tab-group (selectedTabChange)="changeTab($event)" [selectedIndex]="selectedIndex" disableRipple="true" fxFill>
       <mat-tab *ngIf="canShowOnPuaMode(1)" label="{{ tabLabels[0] | translate }}">

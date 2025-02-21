@@ -38,16 +38,18 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { MatLegacyFormFieldModule as MatFormFieldModule } from '@angular/material/legacy-form-field';
-import { MatLegacyInputModule as MatInputModule } from '@angular/material/legacy-input';
-import { MatLegacyProgressBarModule as MatProgressBarModule } from '@angular/material/legacy-progress-bar';
-import { MatLegacySelectModule as MatSelectModule } from '@angular/material/legacy-select';
-import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
-import { VitamUICommonModule } from 'vitamui-library';
+import { VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 import { SharedModule } from '../../../../../identity/src/app/shared/shared.module';
 import { SecurityProfileCreateComponent } from './security-profile-create.component';
 import { SecurityProfileEditPermissionModule } from './security-profile-edit-permission/security-profile-edit-permission.module';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   imports: [
@@ -62,6 +64,9 @@ import { SecurityProfileEditPermissionModule } from './security-profile-edit-per
     ReactiveFormsModule,
     VitamUICommonModule,
     SecurityProfileEditPermissionModule,
+    TranslateModule,
+    MatDialogModule,
+    VitamUILibraryModule,
   ],
   declarations: [SecurityProfileCreateComponent],
 })

@@ -39,14 +39,12 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { MatLegacyProgressSpinnerModule as MatProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
-import { MatLegacySelectModule as MatSelectModule } from '@angular/material/legacy-select';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSelectModule } from '@angular/material/select';
 
-import { VitamUICommonModule } from 'vitamui-library';
-import { LevelInputModule } from 'vitamui-library';
+import { LevelInputModule, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 import { CustomParamsModule } from '../custom-params/custom-params.module';
 import { DomainsInputModule } from '../domains-input';
-import { PatternModule } from '../pattern';
 import { EditableCustomParamsComponent } from './editable-custom-params/editable-custom-params.component';
 import { EditableDomainInputComponent } from './editable-domain-input/editable-domain-input.component';
 import { EditableKeystoreComponent } from './editable-keystore/editable-keystore.component';
@@ -55,17 +53,17 @@ import { EditablePatternsComponent } from './editable-patterns/editable-patterns
 @NgModule({
   imports: [
     CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    OverlayModule,
-    MatSelectModule,
-    MatProgressSpinnerModule,
-    MatButtonToggleModule,
-    DomainsInputModule,
-    LevelInputModule,
-    PatternModule,
-    VitamUICommonModule,
     CustomParamsModule,
+    DomainsInputModule,
+    FormsModule,
+    LevelInputModule,
+    MatButtonToggleModule,
+    MatProgressSpinnerModule,
+    MatSelectModule,
+    OverlayModule,
+    ReactiveFormsModule,
+    VitamUICommonModule,
+    VitamUILibraryModule,
   ],
   declarations: [EditableDomainInputComponent, EditablePatternsComponent, EditableKeystoreComponent, EditableCustomParamsComponent],
   exports: [EditableDomainInputComponent, EditablePatternsComponent, EditableKeystoreComponent, EditableCustomParamsComponent],

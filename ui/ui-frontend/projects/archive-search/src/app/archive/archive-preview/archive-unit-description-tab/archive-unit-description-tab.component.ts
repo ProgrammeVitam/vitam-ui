@@ -35,8 +35,8 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, EventEmitter, Input, OnDestroy, Output, TemplateRef, ViewChild } from '@angular/core';
-import { MatLegacyDialog as MatDialog, MatLegacyDialogConfig as MatDialogConfig } from '@angular/material/legacy-dialog';
-import { MatLegacySnackBar as MatSnackBar, MatLegacySnackBarConfig as MatSnackBarConfig } from '@angular/material/legacy-snack-bar';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable, pipe, Subscription, UnaryFunction } from 'rxjs';
@@ -63,7 +63,7 @@ export class ArchiveUnitDescriptionTabComponent implements OnDestroy {
   editObject: EditObject;
 
   private readonly subscriptions = new Subscription();
-  private readonly dialogConfig: MatDialogConfig = { panelClass: 'vitamui-dialog', width: '800px', autoFocus: false };
+  private readonly dialogConfig: MatDialogConfig = { autoFocus: false };
   private readonly snackBarConfig: MatSnackBarConfig = {
     panelClass: 'vitamui-snack-bar',
     data: {

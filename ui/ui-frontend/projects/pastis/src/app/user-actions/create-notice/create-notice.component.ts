@@ -36,11 +36,11 @@
  */
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
-import { ApplicationService } from 'vitamui-library';
+import { ApplicationService, Option } from 'vitamui-library';
 import { environment } from '../../../environments/environment';
 import { FileService } from '../../core/services/file.service';
 import { PopupService } from '../../core/services/popup.service';
@@ -49,14 +49,8 @@ import { ArchivalProfileUnit } from '../../models/archival-profile-unit';
 import { Notice } from '../../models/notice.model';
 import { Profile } from '../../models/profile';
 import { ProfileType } from '../../models/profile-type.enum';
-import { PastisDialogData } from '../../shared/pastis-dialog/classes/pastis-dialog-data';
 import { PastisDialogDataCreate } from '../save-profile/save-profile.component';
 import { ProfileVersion } from '../../models/profile-version.enum';
-
-interface Status {
-  value: string;
-  viewValue: string;
-}
 
 const POPUP_CREATION_CHOICE_PATH = 'PROFILE.POP_UP_CREATION_NOTICE.CHOICE';
 
@@ -73,9 +67,7 @@ function constantToTranslate() {
 })
 export class CreateNoticeComponent implements OnInit, OnDestroy {
   form: FormGroup;
-  stepIndex = 0;
   btnIsDisabled: boolean;
-  dialogData: PastisDialogData;
   notice: Notice;
   // edit or new notice
   editNotice: boolean;
@@ -83,13 +75,12 @@ export class CreateNoticeComponent implements OnInit, OnDestroy {
   subTitleDialog: string;
   okLabel: string;
   cancelLabel: string;
-  arrayStatus: Status[];
+  statusOptions: Option[];
   profileType?: ProfileType;
   profileVersion?: ProfileVersion;
   modePUA: boolean;
   information: string;
   presenceNonDeclareMetadonneesPUAControl = new FormControl(false);
-  createNotice: boolean;
   profilActif: string;
   profilInactif: string;
   validate: boolean;
@@ -147,9 +138,9 @@ export class CreateNoticeComponent implements OnInit, OnDestroy {
       this.profilActif = 'Profil actif';
       this.profilInactif = 'Profil inactif';
     }
-    this.arrayStatus = [
-      { value: 'INACTIVE', viewValue: this.profilInactif },
-      { value: 'ACTIVE', viewValue: this.profilActif },
+    this.statusOptions = [
+      { key: 'INACTIVE', label: this.profilInactif },
+      { key: 'ACTIVE', label: this.profilActif },
     ];
     this.information = "texte d'information";
     this.form = this.formBuilder.group({

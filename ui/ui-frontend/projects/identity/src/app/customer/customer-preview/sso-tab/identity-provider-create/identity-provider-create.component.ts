@@ -36,7 +36,7 @@
  */
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { AuthnRequestBindingEnum, ConfirmDialogService, Customer, IdentityProvider } from 'vitamui-library';
 import { IdentityProviderService } from '../identity-provider.service';
@@ -54,8 +54,6 @@ export class IdentityProviderCreateComponent implements OnInit, OnDestroy {
   oidcSpecificControls: FormGroup;
   keystore: File;
   idpMetadata: File;
-  stepCount = 2;
-  stepIndex = 0;
   private keyPressSubscription: Subscription;
   protocoleType = ProtocoleType;
   jwsAlgorithms = JWS_ALGORITHMS;
@@ -85,7 +83,6 @@ export class IdentityProviderCreateComponent implements OnInit, OnDestroy {
   onProtocoleTypeChange(value: string) {
     switch (value) {
       case ProtocoleType.CERTIFICAT:
-        this.stepCount = 1;
         this.form = this.formBuilder.group({
           ...this.commonControls.controls,
         });
@@ -96,14 +93,12 @@ export class IdentityProviderCreateComponent implements OnInit, OnDestroy {
           ...this.commonControls.controls,
           ...this.samlSpecificControls.controls,
         });
-        this.stepCount = 2;
         break;
       case ProtocoleType.OIDC:
         this.form = this.formBuilder.group({
           ...this.commonControls.controls,
           ...this.oidcSpecificControls.controls,
         });
-        this.stepCount = 2;
         break;
     }
   }

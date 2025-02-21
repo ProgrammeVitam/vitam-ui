@@ -1,20 +1,16 @@
 <mat-sidenav-container autosize>
   <mat-sidenav mode="side" opened fixedInViewport>
+    <vitamui-common-select-language class="d-flex justify-content-center my-3"></vitamui-common-select-language>
+    <form [formGroup]="form">
+      <vitamui-select
+        class="d-flex my-3 mx-1"
+        [options]="searchOptions"
+        [placeholder]="'MENU.FIND.PLACEHOLDER' | translate"
+        [searchBarPlaceHolder]="'MENU.FIND.SEARCH_BAR_PLACEHOLDER' | translate"
+        formControlName="search"
+      ></vitamui-select>
+    </form>
     <mat-list>
-      <mat-list-item class="d-flex justify-content-center mb-3">
-        <vitamui-common-select-language></vitamui-common-select-language>
-      </mat-list-item>
-
-      <form [formGroup]="form">
-        <vitamui-select
-          class="d-flex my-2 mx-1"
-          [options]="searchOptions"
-          [placeholder]="'MENU.FIND.PLACEHOLDER' | translate"
-          [searchBarPlaceHolder]="'MENU.FIND.SEARCH_BAR_PLACEHOLDER' | translate"
-          formControlName="search"
-        ></vitamui-select>
-      </form>
-
       <ng-template #accordion let-routes let-parents="parents">
         <mat-accordion>
           @for (route of routes; track route.path) {

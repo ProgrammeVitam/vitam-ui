@@ -35,12 +35,8 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, EmbeddedViewRef, EventEmitter, Input, OnDestroy, Output, TemplateRef, ViewChild } from '@angular/core';
-import { MatLegacyDialog as MatDialog, MatLegacyDialogConfig as MatDialogConfig } from '@angular/material/legacy-dialog';
-import {
-  MatLegacySnackBar as MatSnackBar,
-  MatLegacySnackBarConfig as MatSnackBarConfig,
-  MatLegacySnackBarRef as MatSnackBarRef,
-} from '@angular/material/legacy-snack-bar';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar, MatSnackBarConfig, MatSnackBarRef } from '@angular/material/snack-bar';
 import { Subscription } from 'rxjs';
 import { filter, map, switchMap, tap } from 'rxjs/operators';
 import { ArchiveUnit, ArchiveUnitEditorComponent, JsonPatch, SpinnerOverlayService } from 'vitamui-library';
@@ -67,7 +63,6 @@ export class ArchiveUnitDescriptionTabComponent implements OnDestroy {
   snackBarRef: MatSnackBarRef<EmbeddedViewRef<any>>;
 
   private readonly subscriptions = new Subscription();
-  private readonly dialogConfig: MatDialogConfig = { panelClass: 'vitamui-dialog' };
   private readonly snackBarConfig: MatSnackBarConfig = {
     panelClass: 'vitamui-snack-bar',
     duration: 10000,
@@ -105,7 +100,7 @@ export class ArchiveUnitDescriptionTabComponent implements OnDestroy {
       this.backToDisplayMode();
     } else {
       await this.dialog
-        .open(this.cancelDialog, this.dialogConfig)
+        .open(this.cancelDialog)
         .afterClosed()
         .pipe(
           map((result) => {
@@ -124,7 +119,7 @@ export class ArchiveUnitDescriptionTabComponent implements OnDestroy {
   onSave(): void {
     this.subscriptions.add(
       this.dialog
-        .open(this.updateDialog, this.dialogConfig)
+        .open(this.updateDialog)
         .afterClosed()
         .pipe(
           filter((result) => !!result),

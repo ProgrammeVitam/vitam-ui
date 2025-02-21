@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { Subject, merge } from 'rxjs';
 import { debounceTime, filter } from 'rxjs/operators';
@@ -180,7 +180,7 @@ export class RuleListComponent extends InfiniteScrollTable<Rule> implements OnDe
   }
 
   deleteRuleDialog(rule: Rule) {
-    const dialog = this.matDialog.open(ConfirmActionComponent, { panelClass: 'vitamui-confirm-dialog' });
+    const dialog = this.matDialog.open(ConfirmActionComponent, { panelClass: 'small' });
 
     dialog.componentInstance.objectType = this.translateService.instant('RULES_APP.HOME.RULE_MANAGEMENT');
     dialog.componentInstance.objectName = rule.ruleId;

@@ -40,28 +40,10 @@ import { NgModule } from '@angular/core';
 import { CollapseModule, LevelInputModule, TableFilterModule } from 'vitamui-library';
 import { DomainsInputModule } from './domains-input';
 import { EditableFieldModule } from './editable-field';
-import { PatternModule } from './pattern';
 import { ProfilesFormModule } from './profiles-form/profiles-form.module';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    CollapseModule,
-    DomainsInputModule,
-    EditableFieldModule,
-    PatternModule,
-    ProfilesFormModule,
-    LevelInputModule,
-    TableFilterModule,
-  ],
-  exports: [
-    CollapseModule,
-    DomainsInputModule,
-    EditableFieldModule,
-    PatternModule,
-    ProfilesFormModule,
-    LevelInputModule,
-    TableFilterModule,
-  ],
+  imports: [CommonModule, CollapseModule, DomainsInputModule, EditableFieldModule, ProfilesFormModule, LevelInputModule, TableFilterModule],
+  exports: [CollapseModule, DomainsInputModule, EditableFieldModule, ProfilesFormModule, LevelInputModule, TableFilterModule],
 })
 export class SharedModule {}

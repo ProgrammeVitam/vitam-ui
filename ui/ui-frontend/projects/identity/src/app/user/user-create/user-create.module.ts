@@ -38,27 +38,32 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { MatLegacyFormFieldModule as MatFormFieldModule } from '@angular/material/legacy-form-field';
-import { MatLegacyInputModule as MatInputModule } from '@angular/material/legacy-input';
-import { MatLegacySelectModule as MatSelectModule } from '@angular/material/legacy-select';
-import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
-import { VitamUICommonModule } from 'vitamui-library';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 import { SharedModule } from '../../shared/shared.module';
 import { GroupAttributionModule } from '../group-attribution/group-attribution.module';
 import { UserCreateComponent } from './user-create.component';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   imports: [
     CommonModule,
-    SharedModule,
+    GroupAttributionModule,
     MatButtonToggleModule,
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
     MatSnackBarModule,
     ReactiveFormsModule,
-    GroupAttributionModule,
+    SharedModule,
+    TranslateModule,
     VitamUICommonModule,
+    VitamUILibraryModule,
+    MatDialogModule,
   ],
   declarations: [UserCreateComponent],
 })

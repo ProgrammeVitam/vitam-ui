@@ -1,7 +1,20 @@
 <h2>Checkboxes</h2>
+
+<h3>mat-checkbox</h3>
+@for (disabled of [false, true]; track disabled) {
+  <div class="row">
+    @for (state of [{}, { checked: true }, { indeterminate: true }]; track state) {
+      <mat-checkbox class="col" [checked]="state.checked" [indeterminate]="state.indeterminate" [disabled]="disabled">
+        Text form option label
+      </mat-checkbox>
+    }
+  </div>
+}
+
+<h3>input type="checkbox"</h3>
 <div class="row m-0">
   <div class="col m-0">
-    <h3>Default</h3>
+    <h4>Default</h4>
     <div class="col mt-4">
       <input type="checkbox" class="vitamui-checkbox" />
       <input type="checkbox" class="vitamui-checkbox" disabled />
@@ -10,7 +23,7 @@
   </div>
 
   <div class="col m-0">
-    <h3>Label</h3>
+    <h4>Label</h4>
     <div class="col mt-4">
       <label class="vitamui-checkbox">
         <input type="checkbox" />
@@ -25,7 +38,7 @@
   </div>
 
   <div class="col m-0">
-    <h3>Wide label</h3>
+    <h4>Wide label</h4>
     <div class="col mt-4">
       <label class="vitamui-checkbox wide">
         <input type="checkbox" />
@@ -41,7 +54,7 @@
 </div>
 <div class="row m-0">
   <div class="col m-0">
-    <h3>Text label</h3>
+    <h4>Text label</h4>
     <div class="col mt-4">
       <label class="vitamui-checkbox">
         <input type="checkbox" />
@@ -59,7 +72,7 @@
   </div>
 
   <div class="col m-0">
-    <h3>Wide text label</h3>
+    <h4>Wide text label</h4>
     <div class="col mt-4">
       <label class="vitamui-checkbox wide">
         <input type="checkbox" />

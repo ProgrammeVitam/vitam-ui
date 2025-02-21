@@ -39,7 +39,6 @@ import { HttpBackend, HttpClient } from '@angular/common/http';
 import { default as localeFr } from '@angular/common/locales/fr';
 import { LOCALE_ID, NgModule } from '@angular/core';
 import { MatNativeDateModule } from '@angular/material/core';
-import { MAT_LEGACY_RADIO_DEFAULT_OPTIONS as MAT_RADIO_DEFAULT_OPTIONS } from '@angular/material/legacy-radio';
 import { BrowserModule, Title } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ServiceWorkerModule } from '@angular/service-worker';
@@ -104,7 +103,6 @@ registerLocaleData(localeFr, 'fr');
     { provide: BASE_URL, useValue: './referential-api' },
     { provide: ENVIRONMENT, useValue: environment },
     { provide: WINDOW_LOCATION, useValue: window.location },
-    { provide: MAT_RADIO_DEFAULT_OPTIONS, useValue: { color: 'primary' } },
     BytesPipe,
     DatePipe,
   ],

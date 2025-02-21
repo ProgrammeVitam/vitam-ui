@@ -1,35 +1,33 @@
-<div class="vitamui-snack-bar-container">
-  <span class="vitamui-snack-bar-content" [ngSwitch]="data?.type">
-    <ng-container *ngSwitchCase="'sipUploaded'">
-      <i class="vitamui-icon vitamui-icon-archive-ingest"></i> Un ou plusieurs versement(s) sont en cours
-      <br />
-      <span> (Merci de ne pas éteindre votre navigateur pendant le processus)</span>
-    </ng-container>
-    <ng-container *ngSwitchCase="'searchCriteriaHistoryCreated'">
-      {{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_SAVER.SAVED_WITH_SUCCESS' | translate }} "<strong>{{ data?.name }}</strong
-      >"
-    </ng-container>
-    <ng-container *ngSwitchCase="'exportCsvLimitReached'">
-      <span> {{ 'ARCHIVE_SEARCH.EXPORT_CSV.EXPORT_CSV_LIMIT_REACHED' | translate }} </span>
-    </ng-container>
+<span class="vitamui-snack-bar-content" [ngSwitch]="data?.type">
+  <ng-container *ngSwitchCase="'sipUploaded'">
+    <i class="vitamui-icon vitamui-icon-archive-ingest"></i> Un ou plusieurs versement(s) sont en cours
+    <br />
+    <span> (Merci de ne pas éteindre votre navigateur pendant le processus)</span>
+  </ng-container>
+  <ng-container *ngSwitchCase="'searchCriteriaHistoryCreated'">
+    {{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_SAVER.SAVED_WITH_SUCCESS' | translate }} "<strong>{{ data?.name }}</strong
+    >"
+  </ng-container>
+  <ng-container *ngSwitchCase="'exportCsvLimitReached'">
+    <span> {{ 'ARCHIVE_SEARCH.EXPORT_CSV.EXPORT_CSV_LIMIT_REACHED' | translate }} </span>
+  </ng-container>
 
-    <ng-container *ngSwitchCase="'searchCriteriaHistoryDeleted'">
-      {{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_SAVER.DELETED_WITH_SUCCESS_1' | translate }} "<strong>{{ data?.name }}</strong> "
-      {{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_SAVER.DELETED_WITH_SUCCESS_2' | translate }}
-    </ng-container>
-    <ng-container *ngSwitchCase="'WorkflowSuccessSnackBar'">
-      <span class="space-style">{{ data?.message }}</span>
-      <a class="btn contrast contrast-primary" [href]="data?.serviceUrl">
-        {{ 'ARCHIVE_SEARCH.DIP.TO_OPERATION_APP' | translate }}
-      </a>
-    </ng-container>
-    <ng-container *ngSwitchCase="'exportDIPLimitReached'">
-      {{ 'ARCHIVE_SEARCH.DIP.EXPORT_LIMITS' | translate }}
-    </ng-container>
-    <ng-container *ngSwitchCase="'thresholdExceeded'">
-      {{ 'ARCHIVE_SEARCH.ELIMINATION.THRESHOLD_EXCEEDED' | translate }}
-    </ng-container>
-  </span>
+  <ng-container *ngSwitchCase="'searchCriteriaHistoryDeleted'">
+    {{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_SAVER.DELETED_WITH_SUCCESS_1' | translate }} "<strong>{{ data?.name }}</strong> "
+    {{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_SAVER.DELETED_WITH_SUCCESS_2' | translate }}
+  </ng-container>
+  <ng-container *ngSwitchCase="'WorkflowSuccessSnackBar'">
+    <span>{{ data?.message }}</span>
+    <a class="btn contrast contrast-primary ml-5" [href]="data?.serviceUrl">
+      {{ 'ARCHIVE_SEARCH.DIP.TO_OPERATION_APP' | translate }}
+    </a>
+  </ng-container>
+  <ng-container *ngSwitchCase="'exportDIPLimitReached'">
+    {{ 'ARCHIVE_SEARCH.DIP.EXPORT_LIMITS' | translate }}
+  </ng-container>
+  <ng-container *ngSwitchCase="'thresholdExceeded'">
+    {{ 'ARCHIVE_SEARCH.ELIMINATION.THRESHOLD_EXCEEDED' | translate }}
+  </ng-container>
+</span>
 
-  <button class="close-btn" (click)="close()"><i class="material-icons">clear</i></button>
-</div>
+<button class="close-btn ml-3" (click)="close()"><i class="material-icons">clear</i></button>

@@ -36,7 +36,7 @@
  */
 import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { MatLegacyDialog as MatDialog, MatLegacyDialogConfig as MatDialogConfig } from '@angular/material/legacy-dialog';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AdminUserProfile, Direction, GlobalEventService, SearchBarComponent, SidenavPage } from 'vitamui-library';
 import { IngestList } from '../core/common/ingest-list';
@@ -145,7 +145,6 @@ export class IngestComponent extends SidenavPage<any> implements OnInit {
 
   openImportSipDialog(type: IngestType) {
     const dialogConfig = new MatDialogConfig();
-    dialogConfig.panelClass = 'vitamui-modal';
     dialogConfig.disableClose = false;
 
     dialogConfig.data = {

@@ -46,12 +46,7 @@ import {
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
-import {
-  MatLegacyTab as MatTab,
-  MatLegacyTabChangeEvent as MatTabChangeEvent,
-  MatLegacyTabGroup as MatTabGroup,
-  MatLegacyTabHeader as MatTabHeader,
-} from '@angular/material/legacy-tabs';
+import { MatTab, MatTabChangeEvent, MatTabGroup, MatTabHeader } from '@angular/material/tabs';
 import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { AccessContract, AccessContractService, Unit, unitToVitamuiIcon } from 'vitamui-library';

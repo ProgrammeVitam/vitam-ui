@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { ApplicationService, GlobalEventService, ManagementContract, SidenavPage } from 'vitamui-library';
@@ -81,7 +81,6 @@ export class ManagementContractComponent extends SidenavPage<ManagementContract>
 
   openCreateManagementcontractDialog() {
     const dialogRef = this.dialog.open(ManagementContractCreateComponent, {
-      panelClass: 'vitamui-modal',
       disableClose: true,
     });
     dialogRef.componentInstance.isSlaveMode = this.isSlaveMode;

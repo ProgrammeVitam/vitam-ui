@@ -39,13 +39,13 @@ import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 
-import { MatLegacyDialogModule as MatDialogModule } from '@angular/material/legacy-dialog';
-import { MatLegacyFormFieldModule as MatFormFieldModule } from '@angular/material/legacy-form-field';
-import { MatLegacyInputModule as MatInputModule } from '@angular/material/legacy-input';
-import { MatLegacySelectModule as MatSelectModule } from '@angular/material/legacy-select';
-import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
-import { VitamUICommonModule } from 'vitamui-library';
+import { VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 import { SharedModule } from '../../shared/shared.module';
 import { CustomerPreviewModule } from '../customer-preview/customer-preview.module';
 import { OwnerFormModule } from '../owner-form/owner-form.module';
@@ -70,6 +70,7 @@ import { TranslateModule } from '@ngx-translate/core';
     CustomerPreviewModule,
     MatDialogModule,
     TranslateModule,
+    VitamUILibraryModule,
   ],
   declarations: [CustomerCreateComponent, CustomerAlertingComponent],
 })

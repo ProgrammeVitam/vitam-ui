@@ -58,8 +58,8 @@ import { agencyTemplate } from '../agency.template';
 import { schema } from '../agency.schema';
 import { filter, finalize, of, Subscription, switchMap } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { TranslateService } from '@ngx-translate/core';
-import { MatLegacyDialog as MatDialog, MatLegacyDialogModule, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-edit-agency',
@@ -73,7 +73,8 @@ import { MatLegacyDialog as MatDialog, MatLegacyDialogModule, MatLegacyDialogRef
     FormsModule,
     ReactiveFormsModule,
     ObjectEditorModule,
-    MatLegacyDialogModule,
+    MatDialogModule,
+    TranslateModule,
   ],
   standalone: true,
 })
@@ -163,7 +164,7 @@ export class EditAgencyComponent implements OnInit, OnDestroy {
     if (this.editObject.control.pristine) {
       this.router.navigate(['/agency/tenant/', this.tenantSelectionService.getSelectedTenant().identifier]);
     } else {
-      this.dialogRefToClose = this.dialog.open(this.confirmCancelDialog, { panelClass: 'vitamui-dialog' });
+      this.dialogRefToClose = this.dialog.open(this.confirmCancelDialog);
     }
   }
 

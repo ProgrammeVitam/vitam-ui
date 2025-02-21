@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Customer, Theme, ThemeColorType, ThemeService } from 'vitamui-library';
@@ -129,7 +129,6 @@ export class GraphicIdentityTabComponent implements OnInit, OnDestroy {
 
   openUpdateCustomerLogo() {
     const dialogRef = this.dialog.open(GraphicIdentityUpdateComponent, {
-      panelClass: 'vitamui-modal',
       disableClose: true,
       data: { customer: this.customer, logos: this.customerLogos },
     });

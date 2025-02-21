@@ -36,13 +36,14 @@
  */
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import * as uuid from 'uuid';
 import {
   ConfirmDialogService,
   Logger,
   ManagementContract,
+  Option,
   PersistentIdentifierPolicy,
   PersistentIdentifierPolicyTypeEnum,
 } from 'vitamui-library';
@@ -50,13 +51,7 @@ import { FormGroupToManagementContractConverterService } from '../components/for
 import { ManagementContractToFormGroupConverterService } from '../components/management-contract-to-form-group-converter.service';
 import { ManagementContractService } from '../management-contract.service';
 import { ManagementContractCreateValidators } from '../validators/management-contract-create.validators';
-
-const PROGRESS_BAR_MULTIPLICATOR = 100;
-
-interface PersistentIdentifierPolicyTypeOption {
-  label: string;
-  value: PersistentIdentifierPolicyTypeEnum | string;
-}
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-management-contract-create',
@@ -74,15 +69,10 @@ export class ManagementContractCreateComponent implements OnInit, OnDestroy {
     private managementContractToFormGroupConverterService: ManagementContractToFormGroupConverterService,
     private formGroupToManagementContractConverterService: FormGroupToManagementContractConverterService,
     private logger: Logger,
+    private translateService: TranslateService,
   ) {}
 
-  get stepProgress() {
-    return ((this.stepIndex + 1) / this.stepCount) * PROGRESS_BAR_MULTIPLICATOR;
-  }
-
   form: FormGroup;
-  stepIndex = 0;
-  stepCount = 3;
 
   isDisabledButton = false;
   isSlaveMode: boolean;
@@ -90,11 +80,13 @@ export class ManagementContractCreateComponent implements OnInit, OnDestroy {
   keyPressSubscription: Subscription;
   apiSubscriptions: Subscription;
 
-  policyTypeOptions: PersistentIdentifierPolicyTypeOption[] = [
-    { label: 'CONTRACT_MANAGEMENT.FORM_UPDATE.PERMANENT_IDENTIFIER_POLICY_OPTION.NONE.LABEL', value: '' },
+  policyTypeOptions: Option[] = [
+    { label: this.translateService.instant('CONTRACT_MANAGEMENT.FORM_UPDATE.PERMANENT_IDENTIFIER_POLICY_OPTION.NONE.LABEL'), key: '' },
     ...Object.values(PersistentIdentifierPolicyTypeEnum).map((pipt) => ({
-      label: `CONTRACT_MANAGEMENT.FORM_UPDATE.PERMANENT_IDENTIFIER_POLICY_OPTION.${pipt.toUpperCase()}.LABEL`,
-      value: pipt,
+      label: this.translateService.instant(
+        `CONTRACT_MANAGEMENT.FORM_UPDATE.PERMANENT_IDENTIFIER_POLICY_OPTION.${pipt.toUpperCase()}.LABEL`,
+      ),
+      key: pipt,
     })),
   ];
 
@@ -134,7 +126,7 @@ export class ManagementContractCreateComponent implements OnInit, OnDestroy {
 
       if (value === PersistentIdentifierPolicyTypeEnum.ARK) {
         persistentIdentifierPolicies = this.getDefaultPersistentIdentifierPolicies();
-        persistentIdentifierPolicies.patchValue([{ policyTypeOption: this.policyTypeOptions[1].value }]);
+        persistentIdentifierPolicies.patchValue([{ policyTypeOption: this.policyTypeOptions[1].key }]);
       }
       this.form.removeControl('persistentIdentifierPolicies');
       this.form.setControl('persistentIdentifierPolicies', persistentIdentifierPolicies);

@@ -72,7 +72,7 @@ The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
 import { Injectable, OnDestroy } from '@angular/core';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { BehaviorSubject, finalize, mergeMap, Observable, Subscription } from 'rxjs';
 import { FileNode, TypeConstants } from '../../models/file-node';
 import { Notice } from '../../models/notice.model';

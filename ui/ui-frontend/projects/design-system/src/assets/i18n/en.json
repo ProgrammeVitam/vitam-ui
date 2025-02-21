@@ -31,7 +31,7 @@
       "inputs": {
         "TITLE": "Inputs",
         "select.TITLE": "Select",
-        "autocomplete-multi-select-tree.TITLE": "Autocomplete multi select tree",
+        "select-with-tree.TITLE": "Select with tree",
         "checkboxes.TITLE": "Checkboxes",
         "multiple-options-datepicker.TITLE": "Multiple options datepicker",
         "old-input.TITLE": "OLD input",
@@ -42,7 +42,8 @@
     "organisms": {
       "TITLE": "Organisms",
       "table.TITLE": "Table",
-      "tab-group.TITLE": "Tab group"
+      "tab-group.TITLE": "Tab group",
+      "dialog.TITLE": "Dialog"
     },
     "miscellaneous.TITLE": "Miscellaneous",
     "translation.TITLE": "Translation",
@@ -109,14 +110,9 @@
     "EDITABLE_LIST": "Editable list",
     "EDITABLE_LIST_DISABLED": "Editable list disabled",
     "AUTOCOMPLETE": "Auto-complete",
-    "AUTOCOMPLETE_MULTI_SELECT_TREE": {
-      "TITLE": "Auto-complete multi select with tree",
-      "PLACEHOLDER": {
-        "OPTIONAL": "Optional",
-        "MANDATORY": "Mandatory",
-        "NO_SEARCH": "No search",
-        "NO_SEARCH_NO_CART": "No search and no cart"
-      },
+    "SELECT_WITH_TREE": {
+      "TITLE": "Select with tree",
+      "PLACEHOLDER": "Schema",
       "SEARCH_BAR_PLACEHOLDER": "Enter the first few letters of your search"
     },
     "SEARCH_PLACEHOLDER": "Search in countries",
@@ -157,7 +153,7 @@
   "ICONS": {
     "TITLE": "Vitam-UI icons list",
     "COLORS": "Available colors",
-    "SELECT_COLOR": "Select a color:"
+    "SELECT_COLOR": "Select a color"
   },
   "ELEVATIONS": {
     "Title": "Shadows & Elevations",
@@ -214,6 +210,7 @@
     "GAP": "Gap"
   },
   "ERRORS": {
-    "CONTAINS_GB": "Should contain or be United Kingdom"
+    "CONTAINS_GB": "Should contain or be United Kingdom",
+    "CONTAINS_TextContent": "Should contain or be \"TextContent\""
   }
 }

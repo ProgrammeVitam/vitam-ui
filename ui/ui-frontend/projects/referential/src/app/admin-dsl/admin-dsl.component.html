@@ -2,28 +2,20 @@
   <mat-sidenav #panel mode="side" position="end" [fixedInViewport]="true"> </mat-sidenav>
 
   <mat-sidenav-content>
-    <div class="vitamui-heading mb-1">
+    <div class="vitamui-heading mb-3">
       <vitamui-common-title-breadcrumb>
         <h5>{{ 'DSL.HOME.TITLE' | translate }}</h5>
       </vitamui-common-title-breadcrumb>
 
-      <form [formGroup]="form" (ngSubmit)="search()" class="d-flex align-item-center justify-content-between mx-2">
-        <mat-form-field class="vitamui-mat-select w-100">
-          <mat-select
-            formControlName="dslQueryType"
-            placeholder="{{ 'DSL.HOME.SEARCH_CATEGORY' | translate }}"
-            panelClass="vitamui-mat-select"
-          >
-            <mat-option *ngFor="let dslQuery of dslQueryTypeEnum | keyvalue" [value]="dslQuery.value">
-              {{ 'DSL.HOME.' + dslQuery.value | translate }}
-            </mat-option>
-          </mat-select>
-
-          <div class="select-arrow">
-            <i class="material-icons">keyboard_arrow_up</i>
-            <i class="material-icons">keyboard_arrow_down</i>
-          </div>
-        </mat-form-field>
+      <form [formGroup]="form" (ngSubmit)="search()" class="d-flex align-item-center justify-content-between">
+        <vitamui-select
+          class="w-100"
+          formControlName="dslQueryType"
+          [placeholder]="'DSL.HOME.SEARCH_CATEGORY' | translate"
+          [options]="dslQueryTypeOptions"
+          [multiple]="false"
+          [enableSearch]="false"
+        ></vitamui-select>
 
         <vitamui-common-input
           class="w-100 mx-3"
@@ -47,22 +39,14 @@
           </ng-container>
         </vitamui-common-input>
 
-        <mat-form-field class="vitamui-mat-select w-100">
-          <mat-select
-            formControlName="accessContract"
-            placeholder="{{ 'DSL.HOME.ACCESS_CONTRACT' | translate }}"
-            panelClass="vitamui-mat-select"
-          >
-            <mat-option *ngFor="let accessContract of accessContracts" [value]="accessContract.key">
-              {{ accessContract.label }}
-            </mat-option>
-          </mat-select>
-
-          <div class="select-arrow">
-            <i class="material-icons">keyboard_arrow_up</i>
-            <i class="material-icons">keyboard_arrow_down</i>
-          </div>
-        </mat-form-field>
+        <vitamui-select
+          class="w-100"
+          formControlName="accessContract"
+          [placeholder]="'DSL.HOME.ACCESS_CONTRACT' | translate"
+          [options]="accessContracts"
+          [multiple]="false"
+          [enableSearch]="false"
+        ></vitamui-select>
       </form>
     </div>
 
@@ -70,12 +54,12 @@
       <form [formGroup]="form" class="request">
         <div class="w-100 mr-3">
           <div class="text normal bold mb-3">{{ 'DSL.HOME.REQUEST' | translate }}</div>
-          <vitamui-common-textarea formControlName="dsl"></vitamui-common-textarea>
+          <vitamui-common-textarea class="w-100" formControlName="dsl"></vitamui-common-textarea>
         </div>
 
         <div class="w-100">
           <div class="text normal bold mb-3">{{ 'DSL.HOME.REQUEST_RESULT' | translate }}</div>
-          <vitamui-common-textarea formControlName="response" disabled #responseText></vitamui-common-textarea>
+          <vitamui-common-textarea class="w-100" formControlName="response" disabled #responseText></vitamui-common-textarea>
         </div>
       </form>
 

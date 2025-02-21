@@ -36,7 +36,7 @@
  */
 import { HttpErrorResponse, HttpEvent, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Inject, Injectable, LOCALE_ID } from '@angular/core';
-import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { saveAs } from 'file-saver-es';
 import { VitamUISnackBarComponent } from '../shared/vitamui-snack-bar/vitamui-snack-bar.component';
 import { Observable, of, throwError, TimeoutError } from 'rxjs';

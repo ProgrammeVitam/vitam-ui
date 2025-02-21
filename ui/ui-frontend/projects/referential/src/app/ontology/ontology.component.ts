@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 
 import { TranslateService } from '@ngx-translate/core';
@@ -95,7 +95,7 @@ export class OntologyComponent extends SidenavPage<Ontology> implements OnInit {
   }
 
   openCreateOntologyDialog() {
-    const dialogRef = this.dialog.open(OntologyCreateComponent, { panelClass: 'vitamui-modal', disableClose: true });
+    const dialogRef = this.dialog.open(OntologyCreateComponent, { disableClose: true });
     dialogRef.afterClosed().subscribe((result) => {
       if (result?.success) {
         //TODO(refacto): created$ in service, refresh in component
@@ -163,7 +163,6 @@ export class OntologyComponent extends SidenavPage<Ontology> implements OnInit {
   private openImportDialog(params: ImportDialogParam) {
     this.dialog
       .open(ImportDialogComponent, {
-        panelClass: 'vitamui-modal',
         disableClose: true,
         data: params,
       })

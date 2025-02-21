@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { merge, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, map, takeUntil, tap } from 'rxjs/operators';
@@ -141,7 +141,7 @@ export class AgencyListComponent extends InfiniteScrollTable<Agency> implements 
   public deleteAgencyDialog(agency: Agency): void {
     this.agencyToDelete = agency;
     this.matDialog
-      .open(this.confirmDeleteDialog, { panelClass: 'vitamui-confirm-dialog' })
+      .open(this.confirmDeleteDialog, { panelClass: 'small' })
       .afterClosed()
       .pipe(filter((result) => !!result))
       .subscribe(() => {

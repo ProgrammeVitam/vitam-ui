@@ -45,11 +45,8 @@ import {
   ViewChild,
   ViewChildren,
 } from '@angular/core';
-import {
-  MatLegacySelectionList as MatSelectionList,
-  MatLegacySelectionListChange as MatSelectionListChange,
-} from '@angular/material/legacy-list';
-import { MatLegacyTabChangeEvent as MatTabChangeEvent } from '@angular/material/legacy-tabs';
+import { MatSelectionList, MatSelectionListChange } from '@angular/material/list';
+import { MatTabChangeEvent } from '@angular/material/tabs';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Subject } from 'rxjs';

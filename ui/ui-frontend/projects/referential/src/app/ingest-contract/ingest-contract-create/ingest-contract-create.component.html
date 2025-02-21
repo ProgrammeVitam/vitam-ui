@@ -1,20 +1,26 @@
-<div class="header" xmlns="http://www.w3.org/1999/html">
-  <vitamui-common-progress-bar [count]="stepCount" [index]="stepIndex"></vitamui-common-progress-bar>
-</div>
+<vitamui-dialog-header
+  [stepper]="stepper"
+  [subhead]="'INGEST_CONTRACT.CREATE_DIALOG.TITLE' | translate"
+  [title]="[
+    'INGEST_CONTRACT.CREATE_DIALOG.INFORMATIONS' | translate,
+    'INGEST_CONTRACT.CREATE_DIALOG.INFORMATIONS' | translate,
+    'INGEST_CONTRACT.CREATE_DIALOG.FILE_FORMATS' | translate,
+    'INGEST_CONTRACT.CREATE_DIALOG.USAGES' | translate,
+    'INGEST_CONTRACT.CREATE_DIALOG.LEGACY' | translate,
+    '',
+    '',
+    '',
+    'INGEST_CONTRACT.MODAL_CREATE.SIGNING_POLICY.TITLE' | translate,
+  ]"
+></vitamui-dialog-header>
 
 <form [formGroup]="form" (ngSubmit)="onSubmit()" (keydown.enter)="$event.preventDefault()">
-  <vitamui-common-stepper (selectionChange)="stepIndex = $event.selectedIndex">
+  <vitamui-common-stepper #stepper>
     <cdk-step>
-      <div class="content mt-3">
-        <div class="text medium light">{{ 'INGEST_CONTRACT.CREATE_DIALOG.TITLE' | translate }}</div>
-
-        <div class="text large bold mb-3">{{ 'INGEST_CONTRACT.CREATE_DIALOG.INFORMATIONS' | translate }}</div>
-
-        <div>
-          <vitamui-common-slide-toggle [formControl]="statusControl"
-            >{{ 'INGEST_CONTRACT.CREATE_DIALOG.INGEST_CONTRACT_ACTIVE' | translate }}
-          </vitamui-common-slide-toggle>
-        </div>
+      <mat-dialog-content class="gap-3 align-items-stretch">
+        <vitamui-common-slide-toggle [formControl]="statusControl"
+          >{{ 'INGEST_CONTRACT.CREATE_DIALOG.INGEST_CONTRACT_ACTIVE' | translate }}
+        </vitamui-common-slide-toggle>
 
         <div class="d-flex" *ngIf="isSlaveMode">
           <vitamui-common-input
@@ -63,92 +69,55 @@
             </vitamui-common-input-error>
           </ng-container>
         </vitamui-common-textarea>
+      </mat-dialog-content>
 
-        <div class="actions">
-          <div class="line">
-            <button type="button" class="btn primary" cdkStepperNext [disabled]="firstStepInvalid()">
-              {{ 'COMMON.NEXT' | translate }}
-            </button>
-            <button type="button" class="btn cancel link" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
-          </div>
-        </div>
-      </div>
+      <mat-dialog-actions>
+        <vitamui-next-step [disabled]="firstStepInvalid()"></vitamui-next-step>
+        <button type="button" class="btn cancel link" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
+      </mat-dialog-actions>
     </cdk-step>
 
     <cdk-step>
-      <div class="content mt-3">
-        <div class="text medium light">{{ 'INGEST_CONTRACT.CREATE_DIALOG.TITLE' | translate }}</div>
+      <mat-dialog-content>
+        <vitamui-select
+          class="d-block mb-3"
+          formControlName="archiveProfiles"
+          [placeholder]="'INGEST_CONTRACT.CREATE_DIALOG.ARCHIVE_PROFILE' | translate"
+          [options]="archiveProfiles"
+          [multiple]="true"
+          [enableSearch]="false"
+        ></vitamui-select>
 
-        <div class="text large bold mb-3">{{ 'INGEST_CONTRACT.CREATE_DIALOG.INFORMATIONS' | translate }}</div>
+        <vitamui-select
+          formControlName="managementContractId"
+          [placeholder]="'INGEST_CONTRACT.CREATE_DIALOG.MANAGEMENT_CONTRACT' | translate"
+          [options]="managementContracts"
+          [multiple]="false"
+          [enableSearch]="false"
+        ></vitamui-select>
+      </mat-dialog-content>
 
-        <div class="d-flex mb-3">
-          <mat-form-field class="vitamui-mat-select">
-            <mat-select
-              formControlName="archiveProfiles"
-              [placeholder]="'INGEST_CONTRACT.CREATE_DIALOG.ARCHIVE_PROFILE' | translate"
-              panelclass="vitamui-mat-select"
-              multiple
-            >
-              <mat-option *ngFor="let profiles of archiveProfiles" [value]="profiles.identifier">{{ profiles.name }} </mat-option>
-            </mat-select>
-            <div class="select-arrow">
-              <i class="material-icons">keyboard_arrow_up</i>
-              <i class="material-icons">keyboard_arrow_down</i>
-            </div>
-          </mat-form-field>
-        </div>
-
-        <div class="d-flex">
-          <mat-form-field class="vitamui-mat-select">
-            <mat-select
-              formControlName="managementContractId"
-              [placeholder]="'INGEST_CONTRACT.CREATE_DIALOG.MANAGEMENT_CONTRACT' | translate"
-              panelclass="vitamui-mat-select"
-            >
-              <mat-option [value]="null"> {{ 'CONTRACT_MANAGEMENT.CONTRACTS_CREATION.SELECT_MANAGEMENT_CONTRACT' | translate }}</mat-option>
-              <mat-option *ngFor="let managementContract of managementContracts" [value]="managementContract.identifier"
-                >{{ managementContract.name }}
-              </mat-option>
-            </mat-select>
-            <div class="select-arrow">
-              <i class="material-icons">keyboard_arrow_up</i>
-              <i class="material-icons">keyboard_arrow_down</i>
-            </div>
-          </mat-form-field>
-        </div>
-
-        <div class="actions">
-          <div class="line">
-            <button type="button" class="btn primary" cdkStepperNext>{{ 'COMMON.NEXT' | translate }}</button>
-            <button type="button" class="btn cancel link" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
-          </div>
-        </div>
-
-        <button type="button" class="btn link" cdkStepperPrevious>
-          <i class="vitamui-icon vitamui-icon-chevron-left"></i>
-          <span class="underline">{{ 'COMMON.BACK' | translate }}</span>
-        </button>
-      </div>
-    </cdk-step>
-
-    <cdk-step>
-      <div class="content mt-3">
-        <div class="text medium light">{{ 'INGEST_CONTRACT.CREATE_DIALOG.TITLE' | translate }}</div>
-
-        <div class="text large bold mb-3">{{ 'INGEST_CONTRACT.CREATE_DIALOG.FILE_FORMATS' | translate }}</div>
-
+      <mat-dialog-actions>
         <div>
-          <vitamui-common-slide-toggle formControlName="everyFormatType"
-            >{{ 'INGEST_CONTRACT.CREATE_DIALOG.EVERY_FORMAT_TYPES' | translate }}
-            <i
-              class="vitamui-icon vitamui-icon-info align-middle primary"
-              vitamuiTooltip="{{ 'INGEST_CONTRACT.CREATE_DIALOG.ALLOW_EVERY_FORMAT_TYPES' | translate }}"
-              vitamuiTooltipPosition="TOP"
-            ></i>
-          </vitamui-common-slide-toggle>
+          <vitamui-next-step></vitamui-next-step>
+          <button type="button" class="btn cancel link" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
         </div>
+        <vitamui-previous-step></vitamui-previous-step>
+      </mat-dialog-actions>
+    </cdk-step>
 
-        <div class="d-flex" *ngIf="form?.controls.everyFormatType?.value === false">
+    <cdk-step>
+      <mat-dialog-content>
+        <vitamui-common-slide-toggle class="d-block" formControlName="everyFormatType">
+          {{ 'INGEST_CONTRACT.CREATE_DIALOG.EVERY_FORMAT_TYPES' | translate }}
+          <i
+            class="vitamui-icon vitamui-icon-info align-middle primary"
+            vitamuiTooltip="{{ 'INGEST_CONTRACT.CREATE_DIALOG.ALLOW_EVERY_FORMAT_TYPES' | translate }}"
+            vitamuiTooltipPosition="TOP"
+          ></i>
+        </vitamui-common-slide-toggle>
+
+        <div class="d-flex mb-5" *ngIf="form?.controls.everyFormatType?.value === false">
           <vitamui-select
             [multiple]="true"
             class="col-8"
@@ -166,316 +135,237 @@
           </div>
         </div>
 
+        <vitamui-common-slide-toggle formControlName="formatUnidentifiedAuthorized">
+          {{ 'INGEST_CONTRACT.CREATE_DIALOG.ALLOW_UNIDENTIFIED_FORMATS' | translate }}
+          <i
+            class="vitamui-icon vitamui-icon-info align-middle primary"
+            vitamuiTooltip="{{ 'INGEST_CONTRACT.CREATE_DIALOG.ALLOW_UNIDENTIFIED_FORMATS_DESCRIPTION' | translate }}"
+          ></i>
+        </vitamui-common-slide-toggle>
+      </mat-dialog-content>
+
+      <mat-dialog-actions>
         <div>
-          <vitamui-common-slide-toggle formControlName="formatUnidentifiedAuthorized">
-            {{ 'INGEST_CONTRACT.CREATE_DIALOG.ALLOW_UNIDENTIFIED_FORMATS' | translate }}
-            <i
-              class="vitamui-icon vitamui-icon-info align-middle primary"
-              vitamuiTooltip="{{ 'INGEST_CONTRACT.CREATE_DIALOG.ALLOW_UNIDENTIFIED_FORMATS_DESCRIPTION' | translate }}"
-            ></i>
-          </vitamui-common-slide-toggle>
+          <vitamui-next-step [disabled]="thirdStepInvalid()"></vitamui-next-step>
+          <button type="button" class="btn cancel link" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
         </div>
-
-        <div class="actions">
-          <div class="line">
-            <button type="button" class="btn primary" [disabled]="thirdStepInvalid()" cdkStepperNext>
-              {{ 'COMMON.NEXT' | translate }}
-            </button>
-            <button type="button" class="btn cancel link" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
-          </div>
-        </div>
-
-        <button type="button" class="btn link" cdkStepperPrevious>
-          <i class="vitamui-icon vitamui-icon-chevron-left"></i>
-          <span class="underline">{{ 'COMMON.BACK' | translate }}</span>
-        </button>
-      </div>
+        <vitamui-previous-step></vitamui-previous-step>
+      </mat-dialog-actions>
     </cdk-step>
 
     <cdk-step>
-      <div class="content mt-3">
-        <div class="text medium light">{{ 'INGEST_CONTRACT.CREATE_DIALOG.TITLE' | translate }}</div>
+      <mat-dialog-content>
+        <vitamui-common-slide-toggle class="d-block" formControlName="binaryObjectMandatory">
+          {{ 'INGEST_CONTRACT.CREATE_DIALOG.BINARY_OBJECT_MANDATORY' | translate }}
+          <i
+            class="vitamui-icon vitamui-icon-info align-middle primary"
+            vitamuiTooltip="{{ 'INGEST_CONTRACT.CREATE_DIALOG.BINARY_OBJECT_MANDATORY_TOOLTIP' | translate }}"
+          ></i>
+        </vitamui-common-slide-toggle>
 
-        <div class="text large bold mb-3">{{ 'INGEST_CONTRACT.CREATE_DIALOG.USAGES' | translate }}</div>
-
-        <div>
-          <vitamui-common-slide-toggle formControlName="binaryObjectMandatory">
-            {{ 'INGEST_CONTRACT.CREATE_DIALOG.BINARY_OBJECT_MANDATORY' | translate }}
-            <i
-              class="vitamui-icon vitamui-icon-info align-middle primary"
-              vitamuiTooltip="{{ 'INGEST_CONTRACT.CREATE_DIALOG.BINARY_OBJECT_MANDATORY_TOOLTIP' | translate }}"
-            ></i>
-          </vitamui-common-slide-toggle>
-        </div>
-
-        <div>
-          <vitamui-common-slide-toggle formControlName="everyDataObjectVersion">
-            {{ 'INGEST_CONTRACT.CREATE_DIALOG.ALL_USAGES_ALLOWED' | translate }}
-            <i
-              class="vitamui-icon vitamui-icon-info align-middle primary"
-              vitamuiTooltip="{{ 'INGEST_CONTRACT.CREATE_DIALOG.ALL_USAGES_ALLOWED_TOOLTIP' | translate }}"
-            ></i>
-          </vitamui-common-slide-toggle>
-        </div>
+        <vitamui-common-slide-toggle class="d-block" formControlName="everyDataObjectVersion">
+          {{ 'INGEST_CONTRACT.CREATE_DIALOG.ALL_USAGES_ALLOWED' | translate }}
+          <i
+            class="vitamui-icon vitamui-icon-info align-middle primary"
+            vitamuiTooltip="{{ 'INGEST_CONTRACT.CREATE_DIALOG.ALL_USAGES_ALLOWED_TOOLTIP' | translate }}"
+          ></i>
+        </vitamui-common-slide-toggle>
 
         <div class="d-flex" *ngIf="form?.controls.everyDataObjectVersion?.value === false">
-          <mat-form-field class="vitamui-mat-select">
-            <mat-select
-              formControlName="dataObjectVersion"
-              required="required"
-              placeholder="{{ 'INGEST_CONTRACT.CREATE_DIALOG.SELECT_USAGES' | translate }}"
-              panelclass="vitamui-mat-select"
-              multiple
-            >
-              <mat-option *ngFor="let usage of usages" [value]="usage.key">
-                {{ usage.label }}
-              </mat-option>
-            </mat-select>
-            <div class="select-arrow">
-              <i class="material-icons">keyboard_arrow_down</i>
-            </div>
-          </mat-form-field>
+          <vitamui-select
+            formControlName="dataObjectVersion"
+            placeholder="{{ 'INGEST_CONTRACT.CREATE_DIALOG.SELECT_USAGES' | translate }}"
+            [options]="usages"
+            [multiple]="true"
+            [enableSearch]="false"
+            [enableSelectAll]="false"
+            [enableDisplaySelected]="false"
+          ></vitamui-select>
         </div>
+      </mat-dialog-content>
 
-        <div class="actions">
-          <div class="line">
-            <button type="button" class="btn primary" [disabled]="fourthStepInvalid()" cdkStepperNext>
-              {{ 'COMMON.NEXT' | translate }}
-            </button>
-            <button type="button" class="btn cancel link" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
-          </div>
-        </div>
-
-        <button type="button" class="btn link" cdkStepperPrevious>
-          <i class="vitamui-icon vitamui-icon-chevron-left"></i>
-          <span class="underline">{{ 'COMMON.BACK' | translate }}</span>
-        </button>
-      </div>
-    </cdk-step>
-
-    <cdk-step>
-      <div class="content mt-3">
-        <div class="text medium light">{{ 'INGEST_CONTRACT.CREATE_DIALOG.TITLE' | translate }}</div>
-
-        <div class="text large bold mb-3">{{ 'INGEST_CONTRACT.CREATE_DIALOG.LEGACY' | translate }}</div>
-
+      <mat-dialog-actions>
         <div>
-          <vitamui-common-slide-toggle formControlName="computeInheritedRulesAtIngest">
-            {{ 'INGEST_CONTRACT.CREATE_DIALOG.COMPUTING_INHERITED_RULES' | translate }}
-            <i
-              class="vitamui-icon vitamui-icon-info align-middle primary"
-              vitamuiTooltip="{{ 'INGEST_CONTRACT.CREATE_DIALOG.COMPUTING_INHERITED_RULES_TOOLIP' | translate }}"
-            ></i>
-          </vitamui-common-slide-toggle>
-        </div>
-
-        <div class="actions">
-          <div class="line">
-            <button type="button" class="btn primary" cdkStepperNext>{{ 'COMMON.NEXT' | translate }}</button>
-            <button type="button" class="btn cancel link" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
-          </div>
-        </div>
-
-        <button type="button" class="btn link" cdkStepperPrevious>
-          <i class="vitamui-icon vitamui-icon-chevron-left"></i>
-          <span class="underline">{{ 'COMMON.BACK' | translate }}</span>
-        </button>
-      </div>
-    </cdk-step>
-
-    <cdk-step>
-      <div class="content mt-3">
-        <div class="text medium light">{{ 'INGEST_CONTRACT.CREATE_DIALOG.TITLE' | translate }}</div>
-
-        <div class="text large bold mb-3">
-          {{ 'INGEST_CONTRACT.CREATE_DIALOG.ATTACHEMENT_POSITION' | translate }}
-          <i
-            class="vitamui-icon vitamui-icon-info align-middle primary text medium"
-            vitamuiTooltip="{{ 'INGEST_CONTRACT.CREATE_DIALOG.ATTACHEMENT_POSITION_TOOLTIP' | translate }}"
-          ></i>
-        </div>
-
-        <div class="form-group">
-          <vitamui-library-filing-plan
-            [formControl]="linkParentIdControl"
-            [tenantIdentifier]="tenantIdentifier"
-            [mode]="FilingPlanMode.SOLO"
-          ></vitamui-library-filing-plan>
-        </div>
-
-        <div class="actions">
-          <div class="line">
-            <button type="button" class="btn primary" cdkStepperNext>{{ 'COMMON.NEXT' | translate }}</button>
-            <button type="button" class="btn cancel link" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
-          </div>
-        </div>
-
-        <button type="button" class="btn link" cdkStepperPrevious>
-          <i class="vitamui-icon vitamui-icon-chevron-left"></i>
-          <span class="underline">{{ 'COMMON.BACK' | translate }}</span>
-        </button>
-      </div>
-    </cdk-step>
-
-    <cdk-step>
-      <div class="content mt-3">
-        <div class="text medium light">{{ 'INGEST_CONTRACT.CREATE_DIALOG.TITLE' | translate }}</div>
-
-        <div class="text large bold mb-3">
-          {{ 'INGEST_CONTRACT.CREATE_DIALOG.ATTACHEMENT_CONTROL' | translate }}
-          <i
-            class="vitamui-icon vitamui-icon-info align-middle primary text medium"
-            vitamuiTooltip="{{ 'INGEST_CONTRACT.CREATE_DIALOG.ATTACHEMENT_CONTROL_TOOLTIP' | translate }}"
-          ></i>
-        </div>
-
-        <div class="form-group">
-          <vitamui-radio-group formControlName="checkParentLink" primary="true">
-            <vitamui-radio
-              vitamuiTooltip="{{ 'INGEST_CONTRACT.CREATE_DIALOG.ATTACHEMENT_CONTROL_ALLOW_TOOLTIP' | translate }}"
-              label="{{ 'INGEST_CONTRACT.CREATE_DIALOG.ATTACHEMENT_CONTROL_ALLOW' | translate }}"
-              value="AUTHORIZED"
-              [checked]="true"
-              primary="true"
-            >
-            </vitamui-radio>
-            <vitamui-radio
-              vitamuiTooltip="{{ 'INGEST_CONTRACT.CREATE_DIALOG.ATTACHEMENT_CONTROL_MANDATORY_TOOLTIP' | translate }}"
-              label="{{ 'INGEST_CONTRACT.CREATE_DIALOG.ATTACHEMENT_CONTROL_MANDATORY' | translate }}"
-              value="REQUIRED"
-              primary="true"
-            >
-            </vitamui-radio>
-            <vitamui-radio
-              vitamuiTooltip="{{ 'INGEST_CONTRACT.CREATE_DIALOG.ATTACHEMENT_CONTROL_FORBIDDEN_TOOLTIP' | translate }}"
-              label="{{ 'INGEST_CONTRACT.CREATE_DIALOG.ATTACHEMENT_CONTROL_FORBIDDEN' | translate }}"
-              value="UNAUTHORIZED"
-              primary="true"
-            >
-            </vitamui-radio>
-          </vitamui-radio-group>
-        </div>
-
-        <div class="actions">
-          <div class="line">
-            <button type="button" class="btn primary" cdkStepperNext>{{ 'COMMON.NEXT' | translate }}</button>
-            <button type="button" class="btn cancel link" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
-          </div>
-        </div>
-
-        <button type="button" class="btn link" cdkStepperPrevious>
-          <i class="vitamui-icon vitamui-icon-chevron-left"></i>
-          <span class="underline">{{ 'COMMON.BACK' | translate }}</span>
-        </button>
-      </div>
-    </cdk-step>
-
-    <cdk-step>
-      <div class="content mt-3">
-        <div class="text medium light">{{ 'INGEST_CONTRACT.CREATE_DIALOG.TITLE' | translate }}</div>
-
-        <div class="text large bold mb-3">
-          {{ 'INGEST_CONTRACT.CREATE_DIALOG.ATTACHEMENT_CONTROL' | translate }}
-          <i
-            class="vitamui-icon vitamui-icon-info align-middle primary text medium"
-            vitamuiTooltip="{{ 'INGEST_CONTRACT.CREATE_DIALOG.SELECT_TREE_POSITIONS' | translate }}"
-          ></i>
-        </div>
-
-        <div class="form-group">
-          <vitamui-library-filing-plan
-            [formControl]="checkParentIdControl"
-            [tenantIdentifier]="tenantIdentifier"
-            [mode]="FilingPlanMode.INCLUDE_ONLY"
-            [required]="checkParentIdControl.value === 'REQUIRED'"
-          ></vitamui-library-filing-plan>
-        </div>
-        <div class="actions">
-          <div class="line">
-            <button type="button" class="btn primary" cdkStepperNext>
-              {{ 'COMMON.NEXT' | translate }}
-            </button>
-            <button type="button" class="btn cancel link" (click)="onCancel()">
-              {{ 'COMMON.UNDO' | translate }}
-            </button>
-          </div>
-          <button type="button" class="btn link back" cdkStepperPrevious>
-            <i class="vitamui-icon vitamui-icon-chevron-left"></i>
-            <span class="underline">{{ 'COMMON.BACK' | translate }}</span>
+          <button type="button" class="btn primary" [disabled]="fourthStepInvalid()" cdkStepperNext>
+            {{ 'COMMON.NEXT' | translate }}
           </button>
+          <button type="button" class="btn cancel link" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
         </div>
+        <vitamui-previous-step></vitamui-previous-step>
+      </mat-dialog-actions>
+    </cdk-step>
+
+    <cdk-step>
+      <mat-dialog-content>
+        <vitamui-common-slide-toggle class="d-block" formControlName="computeInheritedRulesAtIngest">
+          {{ 'INGEST_CONTRACT.CREATE_DIALOG.COMPUTING_INHERITED_RULES' | translate }}
+          <i
+            class="vitamui-icon vitamui-icon-info align-middle primary"
+            vitamuiTooltip="{{ 'INGEST_CONTRACT.CREATE_DIALOG.COMPUTING_INHERITED_RULES_TOOLIP' | translate }}"
+          ></i>
+        </vitamui-common-slide-toggle>
+      </mat-dialog-content>
+
+      <mat-dialog-actions>
+        <div>
+          <vitamui-next-step></vitamui-next-step>
+          <button type="button" class="btn cancel link" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
+        </div>
+
+        <vitamui-previous-step></vitamui-previous-step>
+      </mat-dialog-actions>
+    </cdk-step>
+
+    <cdk-step>
+      <div class="text large bold mb-3">
+        {{ 'INGEST_CONTRACT.CREATE_DIALOG.ATTACHEMENT_POSITION' | translate }}
+        <i
+          class="vitamui-icon vitamui-icon-info align-middle primary text medium"
+          vitamuiTooltip="{{ 'INGEST_CONTRACT.CREATE_DIALOG.ATTACHEMENT_POSITION_TOOLTIP' | translate }}"
+        ></i>
       </div>
+      <mat-dialog-content>
+        <vitamui-library-filing-plan
+          [formControl]="linkParentIdControl"
+          [tenantIdentifier]="tenantIdentifier"
+          [mode]="FilingPlanMode.SOLO"
+        ></vitamui-library-filing-plan>
+      </mat-dialog-content>
+
+      <mat-dialog-actions>
+        <div>
+          <vitamui-next-step></vitamui-next-step>
+          <button type="button" class="btn cancel link" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
+        </div>
+        <vitamui-previous-step></vitamui-previous-step>
+      </mat-dialog-actions>
+    </cdk-step>
+
+    <cdk-step>
+      <div class="text large bold mb-3">
+        {{ 'INGEST_CONTRACT.CREATE_DIALOG.ATTACHEMENT_CONTROL' | translate }}
+        <i
+          class="vitamui-icon vitamui-icon-info align-middle primary text medium"
+          vitamuiTooltip="{{ 'INGEST_CONTRACT.CREATE_DIALOG.ATTACHEMENT_CONTROL_TOOLTIP' | translate }}"
+        ></i>
+      </div>
+      <mat-dialog-content>
+        <vitamui-radio-group formControlName="checkParentLink" primary="true">
+          <vitamui-radio
+            vitamuiTooltip="{{ 'INGEST_CONTRACT.CREATE_DIALOG.ATTACHEMENT_CONTROL_ALLOW_TOOLTIP' | translate }}"
+            label="{{ 'INGEST_CONTRACT.CREATE_DIALOG.ATTACHEMENT_CONTROL_ALLOW' | translate }}"
+            value="AUTHORIZED"
+            [checked]="true"
+            primary="true"
+          >
+          </vitamui-radio>
+          <vitamui-radio
+            vitamuiTooltip="{{ 'INGEST_CONTRACT.CREATE_DIALOG.ATTACHEMENT_CONTROL_MANDATORY_TOOLTIP' | translate }}"
+            label="{{ 'INGEST_CONTRACT.CREATE_DIALOG.ATTACHEMENT_CONTROL_MANDATORY' | translate }}"
+            value="REQUIRED"
+            primary="true"
+          >
+          </vitamui-radio>
+          <vitamui-radio
+            vitamuiTooltip="{{ 'INGEST_CONTRACT.CREATE_DIALOG.ATTACHEMENT_CONTROL_FORBIDDEN_TOOLTIP' | translate }}"
+            label="{{ 'INGEST_CONTRACT.CREATE_DIALOG.ATTACHEMENT_CONTROL_FORBIDDEN' | translate }}"
+            value="UNAUTHORIZED"
+            primary="true"
+          >
+          </vitamui-radio>
+        </vitamui-radio-group>
+      </mat-dialog-content>
+
+      <mat-dialog-actions>
+        <div>
+          <vitamui-next-step></vitamui-next-step>
+          <button type="button" class="btn cancel link" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
+        </div>
+        <vitamui-previous-step></vitamui-previous-step>
+      </mat-dialog-actions>
+    </cdk-step>
+
+    <cdk-step>
+      <div class="text large bold mb-3">
+        {{ 'INGEST_CONTRACT.CREATE_DIALOG.ATTACHEMENT_CONTROL' | translate }}
+        <i
+          class="vitamui-icon vitamui-icon-info align-middle primary text medium"
+          vitamuiTooltip="{{ 'INGEST_CONTRACT.CREATE_DIALOG.SELECT_TREE_POSITIONS' | translate }}"
+        ></i>
+      </div>
+      <mat-dialog-content>
+        <vitamui-library-filing-plan
+          [formControl]="checkParentIdControl"
+          [tenantIdentifier]="tenantIdentifier"
+          [mode]="FilingPlanMode.INCLUDE_ONLY"
+          [required]="checkParentIdControl.value === 'REQUIRED'"
+        ></vitamui-library-filing-plan>
+      </mat-dialog-content>
+      <mat-dialog-actions>
+        <div>
+          <vitamui-next-step></vitamui-next-step>
+          <button type="button" class="btn cancel link" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
+        </div>
+        <vitamui-previous-step></vitamui-previous-step>
+      </mat-dialog-actions>
     </cdk-step>
 
     <!-- STEP 9 - Versement de documents signés -->
     <cdk-step>
-      <div class="content">
-        <h4>{{ 'INGEST_CONTRACT.MODAL_CREATE.TITLE' | translate }}</h4>
-        <h2>{{ 'INGEST_CONTRACT.MODAL_CREATE.SIGNING_POLICY.TITLE' | translate }}</h2>
+      <mat-dialog-content>
         <div class="main-content" formGroupName="signaturePolicy">
-          <div class="row">
-            <mat-button-toggle-group formControlName="signedDocument" #group="matButtonToggleGroup" class="vitamui-button-toggle-group">
-              <mat-button-toggle
-                value="{{ SignedDocumentPolicyEnum.ALLOWED }}"
-                (click)="changeSignedDocumentPolicy(SignedDocumentPolicyEnum.ALLOWED)"
-              >
-                {{ 'INGEST_CONTRACT.SIGNED_DOCUMENT_TYPE.' + SignedDocumentPolicyEnum.ALLOWED | translate }}
-              </mat-button-toggle>
-              <mat-button-toggle
-                value="{{ SignedDocumentPolicyEnum.MANDATORY }}"
-                (click)="changeSignedDocumentPolicy(SignedDocumentPolicyEnum.MANDATORY)"
-              >
-                {{ 'INGEST_CONTRACT.SIGNED_DOCUMENT_TYPE.' + SignedDocumentPolicyEnum.MANDATORY | translate }}
-              </mat-button-toggle>
-              <mat-button-toggle
-                value="{{ SignedDocumentPolicyEnum.FORBIDDEN }}"
-                (click)="changeSignedDocumentPolicy(SignedDocumentPolicyEnum.FORBIDDEN)"
-              >
-                {{ 'INGEST_CONTRACT.SIGNED_DOCUMENT_TYPE.' + SignedDocumentPolicyEnum.FORBIDDEN | translate }}
-              </mat-button-toggle>
-            </mat-button-toggle-group>
+          <mat-button-toggle-group formControlName="signedDocument" #group="matButtonToggleGroup" class="vitamui-button-toggle-group">
+            <mat-button-toggle
+              value="{{ SignedDocumentPolicyEnum.ALLOWED }}"
+              (click)="changeSignedDocumentPolicy(SignedDocumentPolicyEnum.ALLOWED)"
+            >
+              {{ 'INGEST_CONTRACT.SIGNED_DOCUMENT_TYPE.' + SignedDocumentPolicyEnum.ALLOWED | translate }}
+            </mat-button-toggle>
+            <mat-button-toggle
+              value="{{ SignedDocumentPolicyEnum.MANDATORY }}"
+              (click)="changeSignedDocumentPolicy(SignedDocumentPolicyEnum.MANDATORY)"
+            >
+              {{ 'INGEST_CONTRACT.SIGNED_DOCUMENT_TYPE.' + SignedDocumentPolicyEnum.MANDATORY | translate }}
+            </mat-button-toggle>
+            <mat-button-toggle
+              value="{{ SignedDocumentPolicyEnum.FORBIDDEN }}"
+              (click)="changeSignedDocumentPolicy(SignedDocumentPolicyEnum.FORBIDDEN)"
+            >
+              {{ 'INGEST_CONTRACT.SIGNED_DOCUMENT_TYPE.' + SignedDocumentPolicyEnum.FORBIDDEN | translate }}
+            </mat-button-toggle>
+          </mat-button-toggle-group>
+          <p class="title-text">{{ 'INGEST_CONTRACT.MODAL_CREATE.SIGNING_POLICY.ELEMENTS_TO_CHECK' | translate }}</p>
+          <div class="criteria-checkbox-choice">
+            <label [ngClass]="{ disabled: signedDocumentPolicyIsDisabled() }">
+              <input type="checkbox" id="declaredSignature" formControlName="declaredSignature" />
+              <span>{{ 'INGEST_CONTRACT.ELEMENT_TO_CHECK.SIGNATURE' | translate }}</span>
+            </label>
           </div>
-          <div class="row">
-            <p class="title-text">{{ 'INGEST_CONTRACT.MODAL_CREATE.SIGNING_POLICY.ELEMENTS_TO_CHECK' | translate }}</p>
+          <div class="criteria-checkbox-choice">
+            <label [ngClass]="{ disabled: signedDocumentPolicyIsDisabled() }">
+              <input type="checkbox" id="TIMESTAMP" formControlName="declaredTimestamp" />
+              <span>{{ 'INGEST_CONTRACT.ELEMENT_TO_CHECK.TIMESTAMP' | translate }}</span>
+            </label>
           </div>
-          <div class="row">
-            <div class="col">
-              <div class="criteria-checkbox-choice">
-                <label [ngClass]="{ disabled: signedDocumentPolicyIsDisabled() }">
-                  <input type="checkbox" id="declaredSignature" formControlName="declaredSignature" />
-                  <span>{{ 'INGEST_CONTRACT.ELEMENT_TO_CHECK.SIGNATURE' | translate }}</span>
-                </label>
-              </div>
-              <div class="criteria-checkbox-choice">
-                <label [ngClass]="{ disabled: signedDocumentPolicyIsDisabled() }">
-                  <input type="checkbox" id="TIMESTAMP" formControlName="declaredTimestamp" />
-                  <span>{{ 'INGEST_CONTRACT.ELEMENT_TO_CHECK.TIMESTAMP' | translate }}</span>
-                </label>
-              </div>
-              <div class="criteria-checkbox-choice">
-                <label [ngClass]="{ disabled: signedDocumentPolicyIsDisabled() }">
-                  <input type="checkbox" id="ADDITIONAL_EVIDENCES" formControlName="declaredAdditionalProof" />
-                  <span>{{ 'INGEST_CONTRACT.ELEMENT_TO_CHECK.ADDITIONAL_EVIDENCES' | translate }}</span>
-                </label>
-              </div>
-            </div>
+          <div class="criteria-checkbox-choice">
+            <label [ngClass]="{ disabled: signedDocumentPolicyIsDisabled() }">
+              <input type="checkbox" id="ADDITIONAL_EVIDENCES" formControlName="declaredAdditionalProof" />
+              <span>{{ 'INGEST_CONTRACT.ELEMENT_TO_CHECK.ADDITIONAL_EVIDENCES' | translate }}</span>
+            </label>
           </div>
         </div>
-        <div class="actions">
-          <div class="line">
-            <button type="submit" class="btn primary" [disabled]="isDisabledButton || selectedSignedDocumentPolicyInvalid()">
-              {{ 'COMMON.SUBMIT' | translate }}
-            </button>
-            <button type="button" class="btn cancel link" (click)="onCancel()">
-              {{ 'COMMON.UNDO' | translate }}
-            </button>
-          </div>
-          <button type="button" class="btn link back" cdkStepperPrevious>
-            <i class="vitamui-icon vitamui-icon-chevron-left"></i>
-            <span class="underline">{{ 'COMMON.BACK' | translate }}</span>
+      </mat-dialog-content>
+      <mat-dialog-actions>
+        <div>
+          <button type="submit" class="btn primary" [disabled]="isDisabledButton || selectedSignedDocumentPolicyInvalid()">
+            {{ 'COMMON.SUBMIT' | translate }}
+          </button>
+          <button type="button" class="btn cancel link" (click)="onCancel()">
+            {{ 'COMMON.UNDO' | translate }}
           </button>
         </div>
-      </div>
+        <vitamui-previous-step></vitamui-previous-step>
+      </mat-dialog-actions>
     </cdk-step>
   </vitamui-common-stepper>
 </form>

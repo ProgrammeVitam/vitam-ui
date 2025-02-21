@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Injectable, TemplateRef } from '@angular/core';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
@@ -80,7 +80,6 @@ export class UpdateUnitManagementRuleService {
     const dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpen = confirmSecondActionBigNumberOfResultsActionDialog;
     const dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpenRef = this.dialog.open(
       dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpen,
-      { panelClass: 'vitamui-dialog' },
     );
     dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpenRef
       .afterClosed()
@@ -149,7 +148,7 @@ export class UpdateUnitManagementRuleService {
       numberOfHoldingUnitType = data.totalResults;
       if (numberOfHoldingUnitType > 0) {
         const dialogToOpen = updateArchiveUnitAlerteMessageDialog;
-        const dialogRef = this.dialog.open(dialogToOpen, { panelClass: 'vitamui-dialog' });
+        const dialogRef = this.dialog.open(dialogToOpen);
         updateArchiveUnitAlerteMessageDialogSubscription = dialogRef
           .afterClosed()
           .pipe(filter((result) => !!result))

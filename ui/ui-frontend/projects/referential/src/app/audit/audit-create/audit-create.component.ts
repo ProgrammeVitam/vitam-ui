@@ -37,7 +37,7 @@
 import { HttpHeaders } from '@angular/common/http';
 import { Component, Inject, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { EMPTY, Subject } from 'rxjs';
 import { map, switchMap, take, takeUntil } from 'rxjs/operators';
 import {
@@ -58,6 +58,7 @@ import {
 import { AuditAction, AuditPerimeter } from '../../models/audit.interface';
 import { AuditService } from '../audit.service';
 import { AuditCreateValidators } from './audit-create-validator';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-audit-create',
@@ -68,8 +69,6 @@ export class AuditCreateComponent implements OnInit, OnDestroy {
   @Input() tenantIdentifier: number;
 
   public form: FormGroup;
-  public stepIndex = 0;
-  public stepCount = 2;
   public allProducerServices = new FormControl(false);
   public selectedNodes = new FormControl({ included: [], excluded: [] });
   public producerServicesMultiSelect = new FormControl();
@@ -85,6 +84,8 @@ export class AuditCreateComponent implements OnInit, OnDestroy {
   public idsArray = ['originatingAgencyIds', 'ingestOperationIds', 'attachmentPositionIds'];
   public FILLING_PLAN_MODE_INCLUDE = FilingPlanMode.INCLUDE_ONLY;
 
+  public auditPerimetersOptions: Option[];
+
   private destroyer$ = new Subject<void>();
 
   constructor(
@@ -98,7 +99,13 @@ export class AuditCreateComponent implements OnInit, OnDestroy {
     private auditCreateValidator: AuditCreateValidators,
     private externalParameterService: ExternalParametersService,
     private snackBarService: VitamUISnackBarService,
-  ) {}
+    translateService: TranslateService,
+  ) {
+    this.auditPerimetersOptions = Object.keys(AuditPerimeter).map((key) => ({
+      key: key,
+      label: translateService.instant(`AUDIT.CREATE_DIALOG.PERIMETERS.${key}`),
+    }));
+  }
 
   ngOnInit() {
     this.form = this.formBuilder.group({
@@ -183,14 +190,6 @@ export class AuditCreateComponent implements OnInit, OnDestroy {
     return Object.keys(AuditAction);
   }
 
-  public getAuditPerimeters(): String[] {
-    return Object.keys(AuditPerimeter);
-  }
-
-  moveToNextStep() {
-    this.stepIndex = this.stepIndex + 1;
-  }
-
   backToPreviousStep() {
     if (this.refiningScreen) {
       this.refiningScreen = false;
@@ -202,8 +201,6 @@ export class AuditCreateComponent implements OnInit, OnDestroy {
       this.form.get('endDate').markAsUntouched();
       this.form.get('startDate').updateValueAndValidity();
       this.form.get('endDate').updateValueAndValidity();
-    } else {
-      this.stepIndex = this.stepIndex - 1;
     }
   }
 
@@ -225,10 +222,6 @@ export class AuditCreateComponent implements OnInit, OnDestroy {
     return this.showProducerToggle() && this.allProducerServices.value === false;
   }
 
-  public getStepCount(): number {
-    return this.form.get('auditActions').value === AuditAction.AUDIT_FILE_RECTIFICATION ? 1 : 2;
-  }
-
   public canShowRefiningScreen() {
     return (
       this.form.get('auditPerimeter')?.value === 'AUDIT_PERIMETER_INGEST_OPERATION_PERIOD' ||
@@ -237,7 +230,27 @@ export class AuditCreateComponent implements OnInit, OnDestroy {
     );
   }
 
-  public canShowPeriodErrorMessage() {
+  public secondStepTitleKey(): string {
+    if (this.chooseOriginatingAgency()) return 'AUDIT.CREATE_DIALOG.CHOOSE_ORIGINATING_AGENCY';
+    if (this.enterIngestOperationsIdentifiers()) return 'AUDIT.CREATE_DIALOG.ENTER_INGEST_OPERATIONS_IDENTIFIERS';
+    if (this.chooseAttachmentPosition()) return 'AUDIT.CREATE_DIALOG.CHOOSE_ATTACHMENT_POSITION';
+    if (this.canShowRefiningScreen())
+      return this.refiningScreen ? 'AUDIT.CREATE_DIALOG.CHOOSE_AU_CREATION_PERIOD' : 'AUDIT.CREATE_DIALOG.CHOOSE_INGEST_OPERATIONS_PERIOD';
+  }
+
+  public chooseAttachmentPosition(): boolean {
+    return this.form.get('auditPerimeter')?.value === 'AUDIT_PERIMETER_ATTACHMENT_POSITION' && !this.refiningScreen;
+  }
+
+  public enterIngestOperationsIdentifiers(): boolean {
+    return this.form.get('auditPerimeter')?.value === 'AUDIT_PERIMETER_INGEST_OPERATION_IDENTIFIER';
+  }
+
+  public chooseOriginatingAgency(): boolean {
+    return this.form.get('auditPerimeter')?.value === 'AUDIT_PERIMETER_ORIGINATING_AGENCY' && !this.refiningScreen;
+  }
+
+  public canShowPeriodErrorMessage(): boolean {
     return this.startDateControl.value && this.endDateControl.value && this.form.get('endDate').valid && this.isDateIntevalInvalid();
   }
 

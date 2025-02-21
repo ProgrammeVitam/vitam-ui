@@ -1,15 +1,12 @@
-<div class="content mt-3">
-  <div class="text medium light">{{ 'AGENCY.CREATE_DIALOG.SUBTITLE' | translate }}</div>
-  <div class="text large bold">{{ 'AGENCY.CREATE_DIALOG.TITLE' | translate }}</div>
+<vitamui-dialog-header
+  [subhead]="'AGENCY.CREATE_DIALOG.SUBTITLE' | translate"
+  [title]="'AGENCY.CREATE_DIALOG.TITLE' | translate"
+></vitamui-dialog-header>
 
-  <form class="mt-4" [formGroup]="form" (ngSubmit)="onSubmit()" cdkFocusInitial>
+<mat-dialog-content>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" cdkFocusInitial class="gap-3 align-items-stretch">
     <ng-container *ngIf="!isLoading; else loading">
-      <vitamui-common-input
-        class="w-100"
-        formControlName="identifier"
-        placeholder="{{ 'AGENCY.CREATE_DIALOG.IDENTIFIER' | translate }}"
-        required
-      >
+      <vitamui-common-input formControlName="identifier" placeholder="{{ 'AGENCY.CREATE_DIALOG.IDENTIFIER' | translate }}" required>
         <ng-container *ngIf="form.get('identifier')?.touched">
           <vitamui-common-input-error *ngIf="!!form.get('identifier')?.errors?.required">
             {{ 'COMMON.REQUIRED' | translate }}
@@ -23,7 +20,7 @@
         </ng-container>
       </vitamui-common-input>
 
-      <vitamui-common-input class="w-100" formControlName="name" placeholder="{{ 'AGENCY.CREATE_DIALOG.NAME' | translate }}" required>
+      <vitamui-common-input formControlName="name" placeholder="{{ 'AGENCY.CREATE_DIALOG.NAME' | translate }}" required>
         <ng-container *ngIf="form.get('name')?.touched">
           <vitamui-common-input-error *ngIf="!!form.get('name')?.errors?.required">{{
             'COMMON.REQUIRED' | translate
@@ -37,32 +34,28 @@
         </ng-container>
       </vitamui-common-input>
 
-      <vitamui-common-textarea
-        class="w-100"
-        formControlName="description"
-        placeholder="{{ 'AGENCY.CREATE_DIALOG.DESCRIPTION' | translate }}"
-      >
+      <vitamui-common-textarea formControlName="description" placeholder="{{ 'AGENCY.CREATE_DIALOG.DESCRIPTION' | translate }}">
       </vitamui-common-textarea>
     </ng-container>
-
-    <div class="actions">
-      <button type="submit" class="btn primary" [disabled]="form.invalid || form.pending || isLoading">
-        <span>{{ 'COMMON.TERMINATE' | translate }}</span>
-      </button>
-
-      <button
-        type="button"
-        class="btn outline outline-primary"
-        [disabled]="form.invalid || form.pending || isLoading"
-        (click)="submitAndEdit()"
-      >
-        <span>{{ 'AGENCY.CREATE_DIALOG.VALIDATE_AND_EDIT' | translate }}</span>
-      </button>
-
-      <button type="button" class="btn cancel link" (click)="onCancel()">{{ 'COMMON.CANCEL' | translate }}</button>
-    </div>
   </form>
-</div>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button type="submit" class="btn primary" [disabled]="form.invalid || form.pending || isLoading">
+    <span>{{ 'COMMON.TERMINATE' | translate }}</span>
+  </button>
+
+  <button
+    type="button"
+    class="btn outline outline-primary"
+    [disabled]="form.invalid || form.pending || isLoading"
+    (click)="submitAndEdit()"
+  >
+    <span>{{ 'AGENCY.CREATE_DIALOG.VALIDATE_AND_EDIT' | translate }}</span>
+  </button>
+
+  <button type="button" class="btn cancel link" (click)="onCancel()">{{ 'COMMON.CANCEL' | translate }}</button>
+</mat-dialog-actions>
 
 <ng-template #loading>
   <div class="loader">

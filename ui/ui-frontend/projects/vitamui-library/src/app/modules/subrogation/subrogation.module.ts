@@ -37,11 +37,11 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { MatLegacyDialogModule as MatDialogModule } from '@angular/material/legacy-dialog';
-import { MatLegacyFormFieldModule as MatFormFieldModule } from '@angular/material/legacy-form-field';
-import { MatLegacyProgressBarModule as MatProgressBarModule } from '@angular/material/legacy-progress-bar';
-import { MatLegacyProgressSpinnerModule as MatProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
-import { MatLegacySelectModule as MatSelectModule } from '@angular/material/legacy-select';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSelectModule } from '@angular/material/select';
 import { TranslateModule } from '@ngx-translate/core';
 import { CommonProgressBarModule } from '../components/common-progress-bar/common-progress-bar.module';
 
@@ -54,6 +54,8 @@ import { NotificationSnackBarComponent } from './notification-snack-bar/notifica
 import { SubrogationBannerComponent } from './subrogation-banner/subrogation-banner.component';
 import { SubrogationModalComponent } from './subrogation-modal/subrogation-modal.component';
 import { SubrogationSnackBarComponent } from './subrogation-snack-bar/subrogation-snack-bar.component';
+import { DialogHeaderComponent } from '../../../lib/components/dialog-header/dialog-header.component';
+import { SelectComponent } from '../../../lib/components/select/select.component';
 
 @NgModule({
   imports: [
@@ -70,6 +72,8 @@ import { SubrogationSnackBarComponent } from './subrogation-snack-bar/subrogatio
     CommonProgressBarModule,
     TranslateModule,
     PipesModule,
+    DialogHeaderComponent,
+    SelectComponent,
   ],
   declarations: [NotificationSnackBarComponent, SubrogationBannerComponent, SubrogationModalComponent, SubrogationSnackBarComponent],
   exports: [SubrogationBannerComponent],

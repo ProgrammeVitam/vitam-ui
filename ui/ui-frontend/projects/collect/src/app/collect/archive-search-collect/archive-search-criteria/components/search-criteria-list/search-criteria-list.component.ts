@@ -36,7 +36,7 @@
  */
 
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { Subject, Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
@@ -101,7 +101,7 @@ export class SearchCriteriaListComponent implements OnInit {
   }
 
   deleteSearchCriteriaHistory(searchCriteriaHistory: SearchCriteriaHistory) {
-    const dialog = this.dialog.open(ConfirmActionComponent, { panelClass: 'vitamui-confirm-dialog' });
+    const dialog = this.dialog.open(ConfirmActionComponent, { panelClass: 'small' });
     dialog.componentInstance.objectType = this.translateService.instant('COLLECT.SEARCH_CRITERIA_SAVER.OBJECT_TYPE');
     dialog.componentInstance.objectName = searchCriteriaHistory.name;
     dialog.componentInstance.objectDate = searchCriteriaHistory.savingDate;

@@ -40,8 +40,8 @@ import { BASE_URL, ConfirmDialogService } from 'vitamui-library';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
-import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
-import { MatLegacyProgressBarModule as MatProgressBarModule } from '@angular/material/legacy-progress-bar';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { Component, forwardRef, Input, NO_ERRORS_SCHEMA } from '@angular/core';
@@ -100,12 +100,6 @@ describe('ProfilesEditComponent', () => {
   });
 
   describe('DOM', () => {
-    it('should have a title', () => {
-      const elTitle = fixture.nativeElement.querySelector('.text, .large');
-      expect(elTitle).toBeTruthy();
-      expect(elTitle.textContent).toContain('GROUP.PROFILE.MODAL.TITLE "Test"');
-    });
-
     it('should have a app-profiles-form', () => {
       const elProfilesForm = fixture.nativeElement.querySelector('app-profiles-form[formControlName=profileIds]');
       expect(elProfilesForm).toBeTruthy();

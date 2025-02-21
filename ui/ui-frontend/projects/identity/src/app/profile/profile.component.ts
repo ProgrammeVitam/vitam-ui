@@ -37,7 +37,7 @@
 import { GlobalEventService, Profile, SidenavPage } from 'vitamui-library';
 
 import { Component, ViewChild } from '@angular/core';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 
 import { ProfileCreateComponent } from './profile-create/profile-create.component';
@@ -62,7 +62,7 @@ export class ProfileComponent extends SidenavPage<Profile> {
   }
 
   openProfilAdminCreateDialog() {
-    const dialogRef = this.dialog.open(ProfileCreateComponent, { panelClass: 'vitamui-modal', disableClose: true });
+    const dialogRef = this.dialog.open(ProfileCreateComponent, { disableClose: true });
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         this.refreshList();

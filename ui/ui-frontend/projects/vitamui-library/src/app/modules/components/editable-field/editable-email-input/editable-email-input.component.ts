@@ -36,7 +36,7 @@
  */
 import { Component, ElementRef, forwardRef, Inject, Input, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { MatLegacySelect as MatSelect } from '@angular/material/legacy-select';
+import { MatSelect } from '@angular/material/select';
 
 import { DOCUMENT } from '@angular/common';
 import { EditableFieldComponent } from '../editable-field.component';

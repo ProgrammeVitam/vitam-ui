@@ -36,7 +36,7 @@
  */
 import { Component, EventEmitter, Input, OnDestroy, Output, TemplateRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { ManagementRulesSharedDataService } from 'projects/archive-search/src/app/core/management-rules-shared-data.service';
 import { merge, Subscription } from 'rxjs';
 import { debounceTime, filter, map } from 'rxjs/operators';
@@ -144,7 +144,7 @@ export class BlockRulesInheritanceComponent implements OnDestroy {
 
   onDelete() {
     const dialogToOpen = this.confirmDeleteBlockBlocRuleDialog;
-    const dialogRef = this.dialog.open(dialogToOpen, { panelClass: 'vitamui-dialog' });
+    const dialogRef = this.dialog.open(dialogToOpen);
 
     this.showConfirmDeleteBlocRuleSuscription = dialogRef
       .afterClosed()

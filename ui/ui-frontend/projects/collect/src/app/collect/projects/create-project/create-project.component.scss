@@ -125,9 +125,9 @@
   }
 }
 
-.mat-form-field {
+.mat-mdc-form-field {
   label,
-  .mat-select {
+  .mat-mdc-select {
     padding: 0 20px !important;
   }
 
@@ -226,22 +226,6 @@
       }
     }
   }
-}
-
-.row {
-  width: 100%;
-}
-
-.col {
-  display: flex;
-  flex-direction: column;
-  flex-shrink: 1;
-}
-
-.line {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
 }
 
 .toggle-right {

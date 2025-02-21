@@ -1,24 +1,11 @@
 @import 'variables/colors';
 
-.text-title {
-  font-family: Mulish;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 16px;
-  line-height: 24px;
-
-  display: flex;
-  align-items: center;
-
-  color: var(--vitamui-grey-600);
-}
-
 .facet-area {
   display: block;
   overflow: auto;
 }
 
-::ng-deep.mat-menu-panel {
+::ng-deep.mat-mdc-menu-panel {
   max-width: fit-content !important;
 }
 
@@ -75,6 +62,10 @@
   }
 }
 
-:host ::ng-deep .mat-tab-disabled .mat-tab-label-content {
-  color: var(--vitamui-grey-600);
+// Make disabled tabs clickable to be able to trigger the mat menu
+:host ::ng-deep .mat-mdc-tab.mat-mdc-tab-disabled {
+  &,
+  & .mdc-tab__content {
+    pointer-events: unset;
+  }
 }

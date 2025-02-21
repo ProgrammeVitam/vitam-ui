@@ -36,41 +36,48 @@
  */
 import { Component, OnInit } from '@angular/core';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MatLegacyFormFieldModule as MatFormFieldModule } from '@angular/material/legacy-form-field';
-import { MatLegacySelectModule as MatSelectModule } from '@angular/material/legacy-select';
-import { CountryOption, CountryService, Option, VitamUICommonModule } from 'vitamui-library';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { CountryOption, CountryService, Option, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 import { EditableFieldModule } from '../../../../../../../identity/src/app/shared/editable-field';
 import { NgForOf, NgIf } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatLegacyInputModule as MatInputModule } from '@angular/material/legacy-input';
+import { MatInputModule } from '@angular/material/input';
 import { extend } from 'underscore';
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
-import { MatLegacyNativeDateModule as MatNativeDateModule } from '@angular/material/legacy-core';
+import { MatNativeDateModule } from '@angular/material/core';
 
 @Component({
   selector: 'design-system-old-inputs',
   standalone: true,
   imports: [
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    MatSelectModule,
-    MatInputModule,
-    MatNativeDateModule,
-    VitamUICommonModule,
     EditableFieldModule,
-    NgIf,
-    TranslateModule,
     MatButtonToggleModule,
     MatDatepickerModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatNativeDateModule,
+    MatSelectModule,
     NgForOf,
+    NgIf,
+    ReactiveFormsModule,
+    TranslateModule,
+    VitamUICommonModule,
+    VitamUILibraryModule,
   ],
   templateUrl: './design-system-old-inputs.component.html',
   styleUrl: './design-system-old-inputs.component.scss',
   providers: [{ provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: { useUtc: true } }],
 })
 export class DesignSystemOldInputsComponent implements OnInit {
+  patternOptions = [
+    { value: 'pattern 1', disabled: false },
+    { value: 'pattern 2', disabled: false },
+  ];
+  patternControl = new FormControl();
+
   datePickerControl = new FormControl();
 
   control = new FormControl();

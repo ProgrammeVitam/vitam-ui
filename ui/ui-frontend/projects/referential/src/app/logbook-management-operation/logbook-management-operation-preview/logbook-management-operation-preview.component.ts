@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { OperationDetails } from '../../models/operation-response.interface';
@@ -87,7 +87,7 @@ export class LogbookManagementOperationPreviewComponent implements OnInit, OnDes
     let dialogToOpen;
     this.actionId = actionId;
     dialogToOpen = this.confirmUpdateOperationDialog;
-    const dialogRef = this.matDialog.open(dialogToOpen, { panelClass: 'vitamui-dialog' });
+    const dialogRef = this.matDialog.open(dialogToOpen);
     dialogRef
       .afterClosed()
       .pipe(filter((result) => !!result))
@@ -105,7 +105,7 @@ export class LogbookManagementOperationPreviewComponent implements OnInit, OnDes
     this.actionId = 'CANCEL';
     dialogToOpen = this.confirmCancelOperationDialog;
 
-    const dialogRef = this.matDialog.open(dialogToOpen, { panelClass: 'vitamui-dialog' });
+    const dialogRef = this.matDialog.open(dialogToOpen);
     dialogRef
       .afterClosed()
       .pipe(filter((result) => !!result))

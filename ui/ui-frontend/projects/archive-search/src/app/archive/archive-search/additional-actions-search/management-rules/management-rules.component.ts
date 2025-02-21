@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, OnChanges, OnDestroy, OnInit, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
@@ -627,7 +627,7 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   returnToArchiveSearchPage() {
-    const dialogRef = this.dialog.open(this.confirmLeaveRuleActionsDialog, { panelClass: 'vitamui-dialog' });
+    const dialogRef = this.dialog.open(this.confirmLeaveRuleActionsDialog);
 
     this.subscriptions.add(
       dialogRef
@@ -641,7 +641,7 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   submitUpdates() {
-    const dialogRef = this.dialog.open(this.confirmRuleActionsDialog, { panelClass: 'vitamui-dialog' });
+    const dialogRef = this.dialog.open(this.confirmRuleActionsDialog);
     const actionAddOnRules: any = {};
     const actionUpdateOnRules: any = {};
     const actionDeleteOnRules: any = {};

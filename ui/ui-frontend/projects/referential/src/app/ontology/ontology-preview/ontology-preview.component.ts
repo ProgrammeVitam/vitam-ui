@@ -35,12 +35,8 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { AfterViewInit, Component, EventEmitter, HostListener, Input, Output, ViewChild } from '@angular/core';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
-import {
-  MatLegacyTab as MatTab,
-  MatLegacyTabGroup as MatTabGroup,
-  MatLegacyTabHeader as MatTabHeader,
-} from '@angular/material/legacy-tabs';
+import { MatDialog } from '@angular/material/dialog';
+import { MatTab, MatTabGroup, MatTabHeader } from '@angular/material/tabs';
 import { Observable } from 'rxjs';
 import { ConfirmActionComponent, Ontology } from 'vitamui-library';
 import { OntologyService } from '../ontology.service';
@@ -116,7 +112,7 @@ export class OntologyPreviewComponent implements AfterViewInit {
   }
 
   async confirmAction(): Promise<boolean> {
-    const dialog = this.matDialog.open(ConfirmActionComponent, { panelClass: 'vitamui-confirm-dialog' });
+    const dialog = this.matDialog.open(ConfirmActionComponent, { panelClass: 'small' });
     dialog.componentInstance.dialogType = 'changeTab';
     return await dialog.afterClosed().toPromise();
   }

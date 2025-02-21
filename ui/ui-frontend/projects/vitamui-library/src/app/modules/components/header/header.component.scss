@@ -106,22 +106,7 @@ vitamui-common-header-extra-select {
     color: var(--vitamui-header-footer-font) !important;
   }
 
-  .mat-select-arrow-wrapper {
-    vertical-align: top !important;
-  }
-
   mat-form-field {
-    background-color: transparent !important;
-    @include shadow-0;
     height: 100% !important;
-    border: none !important;
-    border-radius: 0 !important;
-    padding: 0 1rem !important;
-
-    .mat-form-field-wrapper {
-      .mat-form-field-flex {
-        background-color: transparent !important;
-      }
-    }
   }
 }

@@ -1,0 +1,50 @@
+<vitamui-dialog-header
+  [stepper]="showSteps ? stepper : undefined"
+  [subhead]="showSubhead ? 'Sample dialog' : ''"
+  [title]="showTitle ? (showSteps ? titles : titles[0]) : ''"
+></vitamui-dialog-header>
+<mat-dialog-content>
+  <vitamui-common-stepper #stepper>
+    <!-- Step 1 -->
+    <cdk-step>
+      <div class="gap-2">
+        <vitamui-common-slide-toggle [(ngModel)]="showSteps">Toggle stepper</vitamui-common-slide-toggle>
+        <vitamui-common-slide-toggle [(ngModel)]="showSubhead">Toggle subhead</vitamui-common-slide-toggle>
+        <vitamui-common-slide-toggle [(ngModel)]="showTitle">Toggle title</vitamui-common-slide-toggle>
+        <vitamui-common-slide-toggle [ngModel]="smallDialog" (ngModelChange)="toggleSmall($event)"
+          >Small dialog</vitamui-common-slide-toggle
+        >
+      </div>
+    </cdk-step>
+
+    <!-- Step 2 -->
+    <cdk-step *ngIf="showSteps"><vitamui-file-selector></vitamui-file-selector></cdk-step>
+
+    <!-- Step 3 -->
+    <cdk-step *ngIf="showSteps">
+      <div class="text medium bold primary">Sélectionner le périmètre des autorisations</div>
+      <mat-radio-group [(ngModel)]="radioValue">
+        <mat-radio-button [value]="1">
+          Accès à toutes les archives sans restriction sur les services producteurs ou les règles de gestion
+        </mat-radio-button>
+        <mat-radio-button [value]="2">Accès aux archives par service(s) producteur(s)</mat-radio-button>
+        <mat-radio-button [value]="3">Accès aux archives par règle(s) de gestion arrivée(s) à échéance</mat-radio-button>
+        <mat-radio-button [value]="4">
+          Accès aux archives d’une liste de services producteurs et, pour les autres services, accès par règle(s) de gestion arrivée(s) à
+          échéance
+        </mat-radio-button>
+        <mat-radio-button [value]="5">
+          Accès aux archives d’une liste de services producteurs en appliquant un filtre par règle(s) de gestion arrivée(s) à échéance
+        </mat-radio-button>
+      </mat-radio-group>
+    </cdk-step>
+  </vitamui-common-stepper>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <div>
+    <vitamui-next-step [stepper]="stepper"></vitamui-next-step>
+    <button type="submit" class="btn primary" matDialogClose="SUCCESS!">{{ 'COMMON.SUBMIT' | translate }}</button>
+    <button type="button" class="btn cancel link" matDialogClose>{{ 'COMMON.UNDO' | translate }}</button>
+  </div>
+  <vitamui-previous-step [stepper]="stepper"></vitamui-previous-step>
+</mat-dialog-actions>

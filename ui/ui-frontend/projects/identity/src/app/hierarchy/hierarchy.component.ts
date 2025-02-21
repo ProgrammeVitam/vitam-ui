@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { GlobalEventService, Profile, SidenavPage } from 'vitamui-library';
 import { HierarchyCreateComponent } from './hierarchy-create/hierarchy-create.component';
@@ -70,7 +70,6 @@ export class HierarchyComponent extends SidenavPage<Profile> implements OnInit {
   public openHierarchyDuplicateDialog(): void {
     this.dialog
       .open(HierarchyCreateComponent, {
-        panelClass: 'vitamui-modal',
         disableClose: true,
         data: { tenantId: this.tenantIdentifier },
       })

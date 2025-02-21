@@ -41,7 +41,7 @@ import { Observable } from 'rxjs';
 import { fromPromise } from 'rxjs/internal/observable/innerFrom';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { CommonModule } from '@angular/common';
-import { MatLegacyTabsModule as MatTabsModule } from '@angular/material/legacy-tabs';
+import { MatTabsModule } from '@angular/material/tabs';
 import { OntologyListComponent } from './ontology-list/ontology-list.component';
 import { SchemaListComponent } from './schema-list/schema-list.component';
 import { TranslateModule } from '@ngx-translate/core';

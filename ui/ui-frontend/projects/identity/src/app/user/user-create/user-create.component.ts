@@ -36,7 +36,7 @@
  */
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import {
   AdminUserProfile,
@@ -46,11 +46,12 @@ import {
   CountryService,
   Customer,
   Group,
+  isRootLevel,
   Logger,
+  Option,
   OtpState,
   StartupService,
   UserInfo,
-  isRootLevel,
 } from 'vitamui-library';
 import { GroupSelection } from './../group-selection.interface';
 import { UserInfoService } from './../user-info.service';
@@ -59,8 +60,6 @@ import { distinctUntilChanged, map } from 'rxjs/operators';
 import { UserService } from '../user.service';
 import { UserValidators } from '../user.validators';
 import { UserCreateValidators } from './user-create.validators';
-
-const LAST_STEP_INDEX = 2;
 
 const emailValidator: RegExp =
   /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
@@ -78,13 +77,13 @@ export class UserCreateComponent implements OnInit, OnDestroy {
   public groups: GroupSelection[] = [];
   public fullGroup: Group[];
   public groupName: string;
-  public stepIndex = 0;
   public connectedUserInfo: AdminUserProfile;
   public addressEmpty = true;
   public creating = false;
-  public stepCount = 4;
   private keyPressSubscription: Subscription;
-  public countries: CountryOption[];
+  public countries: Option[];
+
+  LAST_STEP_INDEX = 2;
 
   constructor(
     public dialogRef: MatDialogRef<UserCreateComponent>,
@@ -125,7 +124,7 @@ export class UserCreateComponent implements OnInit, OnDestroy {
 
     this.formEmail = this.formBuilder.group({
       emailFirstPart: null,
-      domain: [this.customer.emailDomains[0]],
+      domain: [this.customer.emailDomains[0], Validators.required],
     });
 
     this.form = this.formBuilder.group(
@@ -136,7 +135,6 @@ export class UserCreateComponent implements OnInit, OnDestroy {
         lastname: [null, Validators.required],
         mobile: [null, [Validators.pattern(/^[+]{1}[0-9]{11,12}$/)]],
         phone: [null, [Validators.pattern(/^[+]{1}[0-9]{11,12}$/)]],
-        domain: [this.customer.emailDomains[0], Validators.required],
         groupId: [null, Validators.required],
         customerId: this.authService.user.customerId,
         otp: [
@@ -187,7 +185,7 @@ export class UserCreateComponent implements OnInit, OnDestroy {
       });
 
     this.countryService.getAvailableCountries().subscribe((values: CountryOption[]) => {
-      this.countries = values;
+      this.countries = values.map((country) => ({ key: country.code, label: country.name }));
     });
   }
 
@@ -257,7 +255,7 @@ export class UserCreateComponent implements OnInit, OnDestroy {
       this.form.get('email').pending ||
       this.form.get('firstname').invalid ||
       this.form.get('lastname').invalid ||
-      this.form.get('domain').invalid ||
+      this.formEmail.get('domain').invalid ||
       this.form.get('enabled').invalid
     );
   }
@@ -269,10 +267,6 @@ export class UserCreateComponent implements OnInit, OnDestroy {
       this.form.get('internalCode').pending ||
       this.form.get('internalCode').invalid
     );
-  }
-
-  passGroupStep() {
-    this.stepIndex = LAST_STEP_INDEX;
   }
 
   formInvalid(): boolean {

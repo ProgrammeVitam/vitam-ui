@@ -52,21 +52,3 @@
   vertical-align: middle;
   line-height: 50px;
 }
-
-.text-title {
-  font-family: Mulish;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 16px;
-  line-height: 24px;
-
-  display: flex;
-  align-items: center;
-
-  color: var(--vitamui-grey-600);
-}
-
-:host ::ng-deep .mat-tab-body-content {
-  height: 100%;
-  overflow: hidden;
-}

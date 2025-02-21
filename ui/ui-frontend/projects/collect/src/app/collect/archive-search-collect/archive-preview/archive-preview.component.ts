@@ -35,12 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { AfterViewInit, Component, EventEmitter, HostListener, Input, OnChanges, Output, SimpleChanges, ViewChild } from '@angular/core';
-import {
-  MatLegacyTab as MatTab,
-  MatLegacyTabChangeEvent as MatTabChangeEvent,
-  MatLegacyTabGroup as MatTabGroup,
-  MatLegacyTabHeader as MatTabHeader,
-} from '@angular/material/legacy-tabs';
+import { MatTab, MatTabChangeEvent, MatTabGroup, MatTabHeader } from '@angular/material/tabs';
 import { TranslateService } from '@ngx-translate/core';
 import { Unit, unitToVitamuiIcon } from 'vitamui-library';
 import { ArchiveUnitDescriptionTabComponent } from './archive-unit-description-tab/archive-unit-description-tab.component';

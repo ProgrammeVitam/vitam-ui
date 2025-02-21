@@ -39,20 +39,18 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import {
-  MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA,
-  MatLegacyDialog as MatDialog,
-  MatLegacyDialogRef as MatDialogRef,
-} from '@angular/material/legacy-dialog';
-import { MatLegacyProgressBarModule as MatProgressBarModule } from '@angular/material/legacy-progress-bar';
-import { MatLegacySelectModule as MatSelectModule } from '@angular/material/legacy-select';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatSelectModule } from '@angular/material/select';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { EMPTY, of } from 'rxjs';
-import { CollapseModule, ConfirmDialogService } from 'vitamui-library';
+import { CollapseModule, ConfirmDialogService, VitamUILibraryModule } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { ExternalParamProfileService } from '../external-param-profile.service';
 import { ExternalParamProfileValidators } from '../external-param-profile.validators';
 import { ExternalParamProfileCreateComponent } from './external-param-profile-create.component';
+import { TranslateModule } from '@ngx-translate/core';
+import { DecimalPipe } from '@angular/common';
 
 describe('ExternalParamProfileCreateComponent', () => {
   let component: ExternalParamProfileCreateComponent;
@@ -73,17 +71,20 @@ describe('ExternalParamProfileCreateComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [ExternalParamProfileCreateComponent],
       imports: [
-        ReactiveFormsModule,
-        MatProgressBarModule,
-        CollapseModule,
-        MatButtonToggleModule,
-        VitamUICommonTestModule,
-        HttpClientTestingModule,
-        FormsModule,
-        MatSelectModule,
         BrowserAnimationsModule,
+        CollapseModule,
+        FormsModule,
+        HttpClientTestingModule,
+        MatButtonToggleModule,
+        MatProgressBarModule,
+        MatSelectModule,
+        ReactiveFormsModule,
+        TranslateModule.forRoot(),
+        VitamUICommonTestModule,
+        VitamUILibraryModule,
       ],
       providers: [
+        DecimalPipe,
         FormBuilder,
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MatDialog, useValue: matDialogSpy },

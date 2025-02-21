@@ -35,8 +35,8 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Injectable, TemplateRef } from '@angular/core';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
-import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
 import { filter } from 'rxjs/operators';
 import {
@@ -94,7 +94,7 @@ export class ComputeInheritedRulesService {
       numberOfHoldingUnitTypeOnComputedRules = response.totalResults;
       if (numberOfHoldingUnitTypeOnComputedRules > 0) {
         const dialogToOpen = launchComputeInheritedRuleAlerteMessageDialog;
-        const dialogRef = this.dialog.open(dialogToOpen, { panelClass: 'vitamui-dialog' });
+        const dialogRef = this.dialog.open(dialogToOpen);
         dialogRef
           .afterClosed()
           .pipe(filter((result) => !!result))
@@ -103,7 +103,6 @@ export class ComputeInheritedRulesService {
         const dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpen = confirmSecondActionBigNumberOfResultsActionDialog;
         const dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpenRef = this.dialog.open(
           dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpen,
-          { panelClass: 'vitamui-dialog' },
         );
 
         dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpenRef

@@ -36,7 +36,7 @@
  */
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 
 import { Customer, DownloadUtils, IdentityProvider } from 'vitamui-library';
@@ -121,7 +121,6 @@ export class SsoTabComponent implements OnDestroy, OnInit {
         domains: this.domains,
       },
       disableClose: true,
-      panelClass: 'vitamui-modal',
     });
     dialogRef.afterClosed().subscribe((result: IdentityProvider) => {
       if (result) {

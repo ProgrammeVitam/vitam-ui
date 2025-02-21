@@ -41,15 +41,15 @@ import { EMPTY, of } from 'rxjs';
 import { ENVIRONMENT, Group, InjectorModule, LoggerModule, SearchBarModule, VitamUISnackBarService } from 'vitamui-library';
 import { environment } from './../../environments/environment';
 
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
-import { MatLegacyMenuModule as MatMenuModule } from '@angular/material/legacy-menu';
+import { MatDialog } from '@angular/material/dialog';
+import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { GroupCreateComponent } from './group-create/group-create.component';
 import { GroupComponent } from './group.component';
 import { DownloadSnackBarService } from 'projects/referential/src/app/core/service/download-snack-bar.service';
-import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { GroupService } from './group.service';
 
 let component: GroupComponent;
@@ -132,6 +132,6 @@ describe('GroupComponent', () => {
     const matDialogSpy = TestBed.inject(MatDialog);
     page.createGroup.click();
     expect(matDialogSpy.open).toHaveBeenCalledTimes(1);
-    expect(matDialogSpy.open).toHaveBeenCalledWith(GroupCreateComponent, { panelClass: 'vitamui-modal', disableClose: true });
+    expect(matDialogSpy.open).toHaveBeenCalledWith(GroupCreateComponent, { disableClose: true });
   });
 });

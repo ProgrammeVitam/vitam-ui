@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Injectable, TemplateRef } from '@angular/core';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { filter } from 'rxjs/operators';
 import { SearchCriteriaEltDto } from 'vitamui-library';
@@ -71,7 +71,6 @@ export class ArchiveUnitDipService {
       const dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpen = confirmSecondActionBigNumberOfResultsActionDialog;
       const dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpenRef = this.dialog.open(
         dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpen,
-        { panelClass: 'vitamui-dialog' },
       );
 
       dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpenRef
@@ -99,7 +98,6 @@ export class ArchiveUnitDipService {
     };
 
     const dialogRef = this.dialog.open(DipRequestCreateComponent, {
-      panelClass: 'vitamui-modal',
       disableClose: false,
       data: {
         itemSelected,
@@ -138,7 +136,6 @@ export class ArchiveUnitDipService {
     } else {
       const dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpenRef = this.dialog.open(
         confirmSecondActionBigNumberOfResultsActionDialog,
-        { panelClass: 'vitamui-dialog' },
       );
       dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpenRef
         .afterClosed()
@@ -172,7 +169,6 @@ export class ArchiveUnitDipService {
     };
 
     const dialogRef = this.dialog.open(TransferRequestModalComponent, {
-      panelClass: 'vitamui-modal',
       disableClose: false,
       data: {
         itemSelected,

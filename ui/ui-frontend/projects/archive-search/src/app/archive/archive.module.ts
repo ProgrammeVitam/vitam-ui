@@ -37,31 +37,23 @@
 import { CommonModule } from '@angular/common';
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatLegacyButtonModule as MatButtonModule } from '@angular/material/legacy-button';
+import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { MatLegacyCheckboxModule as MatCheckboxModule } from '@angular/material/legacy-checkbox';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatLegacyDialogModule as MatDialogModule } from '@angular/material/legacy-dialog';
-import { MatLegacyFormFieldModule as MatFormFieldModule } from '@angular/material/legacy-form-field';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
-import { MatLegacyInputModule as MatInputModule } from '@angular/material/legacy-input';
-import { MatLegacyMenuModule as MatMenuModule } from '@angular/material/legacy-menu';
-import { MatLegacyProgressSpinnerModule as MatProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
-import { MatLegacyRadioModule as MatRadioModule } from '@angular/material/legacy-radio';
-import { MatLegacySelectModule as MatSelectModule } from '@angular/material/legacy-select';
+import { MatInputModule } from '@angular/material/input';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatLegacyTabsModule as MatTabsModule } from '@angular/material/legacy-tabs';
+import { MatTabsModule } from '@angular/material/tabs';
 import { MatTreeModule } from '@angular/material/tree';
-import {
-  AgenciesModule,
-  FormFieldValueWrapperComponent,
-  SearchWithTypeSelectorComponent,
-  SelectComponent,
-  TableFilterModule,
-  VitamUICommonModule,
-  VitamUILibraryModule,
-} from 'vitamui-library';
+import { AgenciesModule, TableFilterModule, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 import { ArchivePreviewComponent } from './archive-preview/archive-preview.component';
 import { ArchiveUnitDescriptionTabComponent } from './archive-preview/archive-unit-description-tab/archive-unit-description-tab.component';
 import { ArchiveUnitInformationTabComponent } from './archive-preview/archive-unit-information-tab/archive-unit-information-tab.component';
@@ -80,7 +72,7 @@ import { UnlockCategoryInheritanceComponent } from './archive-search/additional-
 import { UnlockRulesInheritanceComponent } from './archive-search/additional-actions-search/management-rules/archive-unit-rules/unlock-rules-inheritance/unlock-rules-inheritance.component';
 import { UpdateUnitRulesComponent } from './archive-search/additional-actions-search/management-rules/archive-unit-rules/update-unit-rules/update-unit-rules.component';
 import { ManagementRulesComponent } from './archive-search/additional-actions-search/management-rules/management-rules.component';
-import { ReclassificationComponent } from './archive-search/additional-actions-search/reclassification/reclassification.component';
+import { ReclassificationDialogComponent } from './archive-search/additional-actions-search/reclassification-dialog/reclassification-dialog.component';
 import { TransferRequestModalComponent } from './archive-search/additional-actions-search/transfer-request-modal/transfer-request-modal.component';
 import { AccessRuleSearchComponent } from './archive-search/archive-search-by-mgt-rules/access-rule-search/access-rule-search.component';
 import { AppraisalRuleSearchComponent } from './archive-search/archive-search-by-mgt-rules/appraisal-rule-search/appraisal-rule-search.component';
@@ -109,82 +101,75 @@ import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
-    CommonModule,
-    VitamUICommonModule,
-    MatDialogModule,
-    MatMenuModule,
-    MatSidenavModule,
-    MatTreeModule,
-    ArchiveRoutingModule,
-    SharedModule,
-    ReactiveFormsModule,
-    MatDatepickerModule,
-    MatButtonModule,
-    MatCheckboxModule,
-    FormsModule,
-    MatNativeDateModule,
-    MatButtonToggleModule,
-    MatButtonToggleModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatSelectModule,
-    MatProgressSpinnerModule,
-    TableFilterModule,
-    VitamUILibraryModule,
-    MatIconModule,
-    MatTabsModule,
-    MatRadioModule,
-    CommonModule,
-    SearchWithTypeSelectorComponent,
-    FormFieldValueWrapperComponent,
-    TranslateModule,
     AgenciesModule,
-    SelectComponent,
+    ArchiveRoutingModule,
+    CommonModule,
+    FormsModule,
+    MatButtonModule,
+    MatButtonToggleModule,
+    MatCheckboxModule,
+    MatDatepickerModule,
+    MatDialogModule,
+    MatFormFieldModule,
+    MatIconModule,
+    MatInputModule,
+    MatMenuModule,
+    MatNativeDateModule,
+    MatProgressSpinnerModule,
+    MatRadioModule,
+    MatSelectModule,
+    MatSidenavModule,
+    MatTabsModule,
+    MatTreeModule,
+    ReactiveFormsModule,
+    SharedModule,
+    TableFilterModule,
+    TranslateModule,
+    VitamUICommonModule,
+    VitamUILibraryModule,
   ],
   declarations: [
-    ArchiveComponent,
-    LeavesTreeComponent,
-    FilingHoldingSchemeComponent,
-    ArchiveSearchComponent,
-    ArchivePreviewComponent,
-    SearchCriteriaSaverComponent,
-    SearchCriteriaListComponent,
-    CriteriaSearchComponent,
-    AppraisalRuleSearchComponent,
-    StorageRuleSearchComponent,
     AccessRuleSearchComponent,
-    ReuseRuleSearchComponent,
+    AddManagementRulesComponent,
+    AddUpdatePropertyComponent,
+    AppraisalRuleSearchComponent,
+    ArchiveComponent,
+    ArchivePreviewComponent,
+    ArchiveSearchComponent,
+    ArchiveSearchRulesFacetsComponent,
+    ArchiveUnitDescriptionTabComponent,
+    ArchiveUnitInformationTabComponent,
+    ArchiveUnitObjectsDetailsTabComponent,
+    ArchiveUnitRulesComponent,
+    ArchiveUnitRulesDetailsTabComponent,
+    ArchiveUnitRulesInformationsTabComponent,
+    BlockCategoryInheritanceComponent,
+    BlockRulesInheritanceComponent,
+    ClassificationTreeComponent,
+    CriteriaSearchComponent,
+    DeleteUnitRulesComponent,
+    DipRequestCreateComponent,
     DisseminationRuleSearchComponent,
+    FilingHoldingSchemeComponent,
+    LeavesTreeComponent,
+    ManagementRulesComponent,
+    ReclassificationDialogComponent,
+    ReuseRuleSearchComponent,
+    SearchAccessRulesFacetsComponent,
+    SearchAppraisalRulesFacetsComponent,
+    SearchCriteriaListComponent,
+    SearchCriteriaSaverComponent,
     SearchDisseminationRulesFacetsComponent,
     SearchReuseRulesFacetsComponent,
-    SimpleCriteriaSearchComponent,
-    TitleAndDescriptionCriteriaSearchComponent,
-    DipRequestCreateComponent,
-    TransferRequestModalComponent,
-    SearchAppraisalRulesFacetsComponent,
     SearchStorageRulesFacetsComponent,
-    SearchAccessRulesFacetsComponent,
-    ArchiveSearchRulesFacetsComponent,
-    SearchReuseRulesFacetsComponent,
-    ManagementRulesComponent,
-    AddManagementRulesComponent,
-    ArchiveUnitRulesComponent,
-    AddUpdatePropertyComponent,
-    UpdateUnitRulesComponent,
-    ReclassificationComponent,
-    DeleteUnitRulesComponent,
-    ArchiveUnitInformationTabComponent,
-    ArchiveUnitDescriptionTabComponent,
-    ArchiveUnitRulesDetailsTabComponent,
-    ArchiveUnitObjectsDetailsTabComponent,
-    ArchiveUnitRulesInformationsTabComponent,
-    DeleteUnitRulesComponent,
-    BlockCategoryInheritanceComponent,
-    UnlockCategoryInheritanceComponent,
-    BlockRulesInheritanceComponent,
-    UnlockRulesInheritanceComponent,
+    SimpleCriteriaSearchComponent,
+    StorageRuleSearchComponent,
+    TitleAndDescriptionCriteriaSearchComponent,
     TransferAcknowledgmentComponent,
-    ClassificationTreeComponent,
+    TransferRequestModalComponent,
+    UnlockCategoryInheritanceComponent,
+    UnlockRulesInheritanceComponent,
+    UpdateUnitRulesComponent,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })

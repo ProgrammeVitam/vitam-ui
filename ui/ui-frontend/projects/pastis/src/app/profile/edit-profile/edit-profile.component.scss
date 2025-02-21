@@ -7,7 +7,7 @@
   background-color: var(--vitamui-white);
   border-bottom: solid var(--vitamui-grey-200);
 }
-.mat-table {
+.mat-mdc-table {
   background-color: var(--vitamui-background);
   position: fixed;
   top: 220px;
@@ -39,16 +39,17 @@
 }
 
 // The tabs containers
-::ng-deep .mat-tab-header {
+::ng-deep .mat-mdc-tab-header {
   left: 40px;
   right: 40px;
-  bottom: 37px;
-  height: 37px;
+  bottom: 48px;
+  height: 48px;
   max-width: fit-content;
   border: none;
 }
 
 // The tab
+/* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.*/
 ::ng-deep.mat-tab-label {
   @extend .pastis-font-label-historique !optional;
   margin-right: 3px !important;
@@ -59,22 +60,26 @@
 }
 
 //The tab hover
+/* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.*/
 ::ng-deep.mat-tab-label:hover {
   background: var(--vitamui-white) !important;
 }
 
 // Tab hover and tab text hover
+/* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.*/
 ::ng-deep.mat-tab-label:hover .mat-tab-label-content {
   color: var(--vitamui-grey-800) !important;
 }
 
 // The active tab (Black and bold)
+/* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.*/
 ::ng-deep .mat-tab-label-active {
   background: var(--vitamui-white) !important;
   border-bottom: solid var(--vitamui-primary) 3px;
 }
 
 // The tab content
+/* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.*/
 ::ng-deep .mat-tab-label-content {
   margin: 8px;
   display: flex;
@@ -83,22 +88,24 @@
 }
 
 // The content of the active tab
+/* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.*/
 ::ng-deep .mat-tab-label-active .mat-tab-label-content {
   color: var(--vitamui-primary) !important;
   padding-top: 3px !important;
 }
 
 // The automatic tab pagination chevron
+/* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.*/
 ::ng-deep .mat-tab-header-pagination-controls-enabled .mat-tab-header-pagination {
   display: none !important;
 }
 
-::ng-deep .mat-tab-group.mat-primary .mat-ink-bar,
-.mat-tab-nav-bar.mat-primary .mat-ink-bar .pastis-ink-bar {
+::ng-deep .mat-mdc-tab-group.mat-primary .mat-ink-bar,
+.mat-mdc-tab-nav-bar.mat-primary .mat-ink-bar .pastis-ink-bar {
   height: 0;
 }
 
-.mat-tab-group {
+.mat-mdc-tab-group {
   @media screen and (min-height: 950px) {
     max-height: 850px;
   }
@@ -113,11 +120,13 @@
   }
 }
 
-.mat-tab-body .mat-tab-body-active {
+/* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.*/
+.mat-mdc-tab-body .mat-tab-body-active {
   overflow-x: auto !important;
   overflow-y: auto !important;
 }
 
+/* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.*/
 .mat-tab-body-content {
   overflow-x: auto !important;
   overflow-y: auto !important;

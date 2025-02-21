@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { AdminUserProfile, AuthService, Customer, Group, isLevelAllowed, StartupService, User, UserInfo } from 'vitamui-library';
@@ -149,7 +149,7 @@ export class UserPreviewComponent implements OnDestroy, OnInit {
     } else if (status === 'DISABLED') {
       dialogToOpen = this.confirmDisabledUserDialog;
     }
-    const dialogRef = this.matDialog.open(dialogToOpen, { panelClass: 'vitamui-dialog' });
+    const dialogRef = this.matDialog.open(dialogToOpen);
     dialogRef
       .afterClosed()
       .pipe(filter((result) => !!result))
@@ -201,7 +201,7 @@ export class UserPreviewComponent implements OnDestroy, OnInit {
 
     let dialogToOpen;
     dialogToOpen = this.confirmdeleteUserDialog;
-    const dialogRef = this.matDialog.open(dialogToOpen, { panelClass: 'vitamui-dialog' });
+    const dialogRef = this.matDialog.open(dialogToOpen);
     dialogRef
       .afterClosed()
       .pipe(filter((result) => !!result))

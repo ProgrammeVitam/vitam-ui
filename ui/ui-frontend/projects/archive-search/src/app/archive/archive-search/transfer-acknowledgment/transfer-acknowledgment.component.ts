@@ -35,11 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, Inject, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import {
-  MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA,
-  MatLegacyDialog as MatDialog,
-  MatLegacyDialogRef as MatDialogRef,
-} from '@angular/material/legacy-dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { BytesPipe, Logger, StartupService } from 'vitamui-library';
@@ -55,8 +51,7 @@ const ATR_EXTENSION = '.xml';
   styleUrls: ['./transfer-acknowledgment.component.scss'],
 })
 export class TransferAcknowledgmentComponent implements OnInit, OnDestroy {
-  public stepIndex = 0;
-  public stepCount = 3;
+  stepIndex = 0;
   fileSize = 0;
 
   isAtrNotValid = false;
@@ -136,13 +131,9 @@ export class TransferAcknowledgmentComponent implements OnInit, OnDestroy {
     this.transferAcknowledgementSubscription?.unsubscribe();
   }
 
-  backToPreviousStep() {
-    this.stepIndex = this.stepIndex - 1;
-  }
-
   onCancel() {
     const dialogToOpen = this.confirmDeleteTransferAcknowledgmentDialog;
-    this.dialogRefToClose = this.dialog.open(dialogToOpen, { panelClass: 'vitamui-dialog' });
+    this.dialogRefToClose = this.dialog.open(dialogToOpen, { panelClass: 'small' });
   }
 
   onClose() {

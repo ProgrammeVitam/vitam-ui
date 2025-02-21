@@ -112,6 +112,11 @@ export class OntologyInformationTabComponent implements OnInit {
       description: [{ value: null, disabled: true }],
       creationDate: [{ value: null, disabled: true }],
     });
+
+    this.form.get('type').valueChanges.subscribe((key) => {
+      if (!this.isInternal) this.sizeFieldVisible = ['TEXT', 'GEO_POINT', 'KEYWORD'].includes(key);
+      setTypeDetailAndStringSize(key, this.form);
+    });
   }
 
   ngOnInit(): void {
@@ -125,14 +130,6 @@ export class OntologyInformationTabComponent implements OnInit {
     const unchanged = JSON.stringify(diff(this.form.getRawValue(), this.previousValue())) === '{}';
     this.updated.emit(!unchanged);
     return unchanged;
-  }
-
-  onIndexingModeChange(key: string) {
-    if (!this.isInternal) {
-      this.sizeFieldVisible = ['TEXT', 'GEO_POINT', 'KEYWORD'].includes(key);
-    }
-
-    setTypeDetailAndStringSize(key, this.form);
   }
 
   prepareSubmit(): Observable<Ontology> {

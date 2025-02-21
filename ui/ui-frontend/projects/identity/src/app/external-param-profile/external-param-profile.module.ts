@@ -38,13 +38,13 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { MatLegacyMenuModule as MatMenuModule } from '@angular/material/legacy-menu';
-import { MatLegacyProgressBarModule as MatProgressBarModule } from '@angular/material/legacy-progress-bar';
-import { MatLegacyProgressSpinnerModule as MatProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
-import { MatLegacySelectModule as MatSelectModule } from '@angular/material/legacy-select';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatLegacyTabsModule as MatTabsModule } from '@angular/material/legacy-tabs';
-import { LevelInputModule, RoleToggleModule, VitamUICommonModule } from 'vitamui-library';
+import { MatTabsModule } from '@angular/material/tabs';
+import { LevelInputModule, RoleToggleModule, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 import { SharedModule } from '../shared/shared.module';
 import { GroupAttributionModule } from '../user/group-attribution/group-attribution.module';
 import { ExternalParamProfileCreateComponent } from './external-param-profile-create/external-param-profile-create.component';
@@ -54,24 +54,29 @@ import { ThresholdsTabComponent } from './external-param-profile-detail/threshol
 import { ExternalParamProfileListComponent } from './external-param-profile-list/external-param-profile-list.component';
 import { ExternalParamProfileRoutingModule } from './external-param-profile-routing.module';
 import { ExternalParamProfileComponent } from './external-param-profile.component';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   imports: [
     CommonModule,
-    VitamUICommonModule,
-    SharedModule,
-    MatButtonToggleModule,
-    MatMenuModule,
-    MatSelectModule,
-    ReactiveFormsModule,
+    ExternalParamProfileRoutingModule,
     GroupAttributionModule,
     LevelInputModule,
-    MatSidenavModule,
-    MatProgressSpinnerModule,
-    ExternalParamProfileRoutingModule,
+    MatButtonToggleModule,
+    MatDialogModule,
+    MatMenuModule,
     MatProgressBarModule,
+    MatProgressSpinnerModule,
+    MatSelectModule,
+    MatSidenavModule,
     MatTabsModule,
+    ReactiveFormsModule,
     RoleToggleModule,
+    SharedModule,
+    TranslateModule,
+    VitamUICommonModule,
+    VitamUILibraryModule,
   ],
   declarations: [
     ExternalParamProfileComponent,

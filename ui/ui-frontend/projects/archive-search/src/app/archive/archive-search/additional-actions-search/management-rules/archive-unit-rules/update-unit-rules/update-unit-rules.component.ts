@@ -36,7 +36,7 @@
  */
 import { Component, EventEmitter, Input, OnDestroy, Output, TemplateRef, ViewChild } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { cloneDeep } from 'lodash-es';
 import { finalize, merge, Subscription } from 'rxjs';
@@ -323,7 +323,7 @@ export class UpdateUnitRulesComponent implements OnDestroy {
 
   onDelete() {
     const dialogToOpen = this.confirmDeleteUpdateRuleDialog;
-    const dialogRef = this.dialog.open(dialogToOpen, { panelClass: 'vitamui-dialog' });
+    const dialogRef = this.dialog.open(dialogToOpen);
 
     this.subscriptions.add(
       dialogRef

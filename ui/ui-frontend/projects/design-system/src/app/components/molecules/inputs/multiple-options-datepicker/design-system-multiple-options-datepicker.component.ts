@@ -38,8 +38,8 @@ import { Component } from '@angular/core';
 import { CustomValidators, DatePattern, MultipleOptionsDatepickerModule } from 'vitamui-library';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgClass, NgTemplateOutlet } from '@angular/common';
-import { MatLegacyFormFieldModule as MatFormFieldModule } from '@angular/material/legacy-form-field';
-import { MatLegacyNativeDateModule as MatNativeDateModule } from '@angular/material/legacy-core';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatNativeDateModule } from '@angular/material/core';
 
 @Component({
   selector: 'design-system-multiple-options-datepicker',

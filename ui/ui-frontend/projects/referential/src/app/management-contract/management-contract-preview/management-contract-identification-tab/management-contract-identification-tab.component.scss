@@ -27,12 +27,6 @@ h5 {
   border-radius: 50%;
 }
 
-.mat-checkbox-frame,
-.mat-checkbox-background,
-.mat-checkbox-anim-unchecked-checked .mat-checkbox-anim-checked-unchecked {
-  transform: scale(1.2);
-}
-
 .radio-button-group-wrapper {
   padding: 0.5rem 0;
 }
@@ -48,8 +42,5 @@ h5 {
     color: var(--vitamui-primary);
     font-size: 12px;
     font-weight: 700;
-  }
-  mat-select {
-    margin-top: 3px;
   }
 }

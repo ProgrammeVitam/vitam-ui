@@ -36,15 +36,15 @@
  */
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { MatLegacyFormFieldModule as MatFormFieldModule } from '@angular/material/legacy-form-field';
-import { MatLegacyInputModule as MatInputModule } from '@angular/material/legacy-input';
-import { MatLegacyProgressBarModule as MatProgressBarModule } from '@angular/material/legacy-progress-bar';
-import { MatLegacySelectModule as MatSelectModule } from '@angular/material/legacy-select';
-import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { ColorPickerModule } from 'ngx-color-picker';
-import { VitamUICommonModule } from 'vitamui-library';
+import { VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 import { SharedModule } from '../../../shared/shared.module';
 import { OwnerFormModule } from '../../owner-form/owner-form.module';
 import { CustomerColorsInputComponent } from './customer-colors-input.component';
@@ -64,6 +64,8 @@ import { InputColorComponent } from './input-color/input-color.component';
     OwnerFormModule,
     VitamUICommonModule,
     ColorPickerModule,
+    VitamUILibraryModule,
+    FormsModule,
   ],
   declarations: [CustomerColorsInputComponent, InputColorComponent],
   exports: [CustomerColorsInputComponent],

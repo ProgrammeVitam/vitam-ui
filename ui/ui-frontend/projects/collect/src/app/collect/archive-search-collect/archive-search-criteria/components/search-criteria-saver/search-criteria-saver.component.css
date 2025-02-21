@@ -50,34 +50,12 @@
 }
 
 .sauvegarde-text {
-  padding-left: 20px;
-  padding-bottom: 25px;
   font-size: 21px;
   font-weight: bold;
 }
 
-.input-text {
-  width: 95%;
-  padding-left: 5%;
-  padding-top: 25px;
-}
-
-.btn-ok {
-  margin-top: 30px;
-}
-
-.input-width {
-  width: 475px;
-}
-
 .pad5 {
   padding-bottom: 10px;
-}
-
-.pad35 {
-  padding-left: 20px;
-  font-size: 15px;
-  font-weight: bold;
 }
 
 .border-results {
@@ -85,7 +63,6 @@
   right: 0;
   top: 0;
   bottom: 0;
-  background: var(--vitamui-white);
   border: 1px solid var(--vitamui-grey-400);
   box-sizing: border-box;
   border-radius: 10px;
@@ -116,7 +93,7 @@
 }
 
 .btn-create {
-  padding: 5px 0 0 140px;
+  text-align: right;
 }
 
 .pink-color {
@@ -202,10 +179,6 @@
   padding-top: 10px;
 }
 
-.cancel-update {
-  padding-left: 70px;
-}
-
 .pad-actions {
   padding-left: 30px;
 }
@@ -241,7 +214,6 @@
 
 .no-scroll-results {
   height: 283px;
-  width: 107%;
   padding-left: 25px;
   overflow-y: hidden;
 }
@@ -252,6 +224,3 @@
   overflow-x: hidden;
 }
 
-.form-width {
-  width: 730px;
-}

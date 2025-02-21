@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
@@ -134,7 +134,6 @@ export class CustomerListComponent extends InfiniteScrollTable<Customer> impleme
     const dialogRef = this.dialog.open(OwnerCreateComponent, {
       disableClose: true,
       data: { customer },
-      panelClass: 'vitamui-modal',
     });
     dialogRef
       .afterClosed()

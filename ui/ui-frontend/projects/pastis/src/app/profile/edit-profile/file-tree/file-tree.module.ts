@@ -77,7 +77,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../../../shared/shared.module';
 import { UserActionsModule } from '../../../user-actions/user-actions.module';
 
-import { MatLegacyTableModule as MatTableModule } from '@angular/material/legacy-table';
+import { MatTableModule } from '@angular/material/table';
 import { PastisMaterialModule } from '../../../material.module';
 
 import { MAT_RIPPLE_GLOBAL_OPTIONS } from '@angular/material/core';

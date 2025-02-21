@@ -40,7 +40,7 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { NgForOf, NgIf, NgTemplateOutlet } from '@angular/common';
 import { PipesModule } from '../../pipes/pipes.module';
 import { DisplayFile } from './display-file.interface';
-import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { CustomFile } from '../../../../lib/models/custom-file';
 
 @Component({

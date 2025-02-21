@@ -34,7 +34,6 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { CdkVirtualScrollViewport, ScrollDispatcher, ScrollingModule } from '@angular/cdk/scrolling';
 import {
   AfterViewChecked,
@@ -50,17 +49,7 @@ import {
   ViewChild,
   ViewChildren,
 } from '@angular/core';
-import {
-  AbstractControl,
-  FormControl,
-  FormsModule,
-  NG_VALIDATORS,
-  NG_VALUE_ACCESSOR,
-  ReactiveFormsModule,
-  ValidationErrors,
-  Validator,
-  Validators,
-} from '@angular/forms';
+import { FormControl, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule, Validators } from '@angular/forms';
 import { merge } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { Option, SearchBarComponent, SearchBarModule } from '../../../app/modules';
@@ -79,17 +68,11 @@ import { MatListModule } from '@angular/material/list';
 import { MatOption, MatOptionModule, MatOptionSelectionChange } from '@angular/material/core';
 import { MatSelect, MatSelectModule } from '@angular/material/select';
 import { PipesModule } from '../../../app/modules/pipes/pipes.module';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { normalizeString } from '../../utils/string.util';
 
 export const VITAMUI_SELECT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
-  useExisting: forwardRef(() => SelectComponent),
-  multi: true,
-};
-
-export const VITAMUI_SELECT_NG_VALIDATORS: any = {
-  provide: NG_VALIDATORS,
   useExisting: forwardRef(() => SelectComponent),
   multi: true,
 };
@@ -125,38 +108,11 @@ export interface VitamuiSelectOptions {
     SearchBarModule,
     TranslateModule,
   ],
-  providers: [VITAMUI_SELECT_VALUE_ACCESSOR, VITAMUI_SELECT_NG_VALIDATORS],
+  providers: [VITAMUI_SELECT_VALUE_ACCESSOR],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
 })
-export class SelectComponent extends AbstractFormInputDirective implements Validator, AfterViewInit, AfterViewChecked {
-  public nbSelectedItemsMap: { [k: string]: string } = {
-    '=1': 'SELECT.SELECTED_ELEMENT.SINGULAR',
-    other: 'SELECT.SELECTED_ELEMENT.PLURAL',
-  };
-  public searchTextControl = new FormControl();
-  public showOnlySelectedOption = false;
-  public allOptions: Option[] = [];
-  public displayedOptions: Option[] = [];
-  protected selectedOptions: Option[] = [];
-  public containerHeightInSearchView = '0px';
-  public containerHeightInSelectedItemsView = '0px';
-  public readonly SELECT_ALL_OPTIONS = 'SELECT_ALL_OPTIONS';
-
-  private visibleItemsInSearchView = 5;
-  private preselectedOptionKeys: string[] = [];
-  private customSorting: (a: Option, b: Option) => number;
-  private _multiple = false;
-  private _enableSearch = true;
-  private _enableSelectAll?: boolean;
-  private _enableDisplaySelected?: boolean;
-
-  @ViewChild('searchBar') searchBar: SearchBarComponent;
-  @ViewChild('scrollViewport') private cdkVirtualScrollViewport: CdkVirtualScrollViewport;
-  @ViewChildren(MatOption) optionKeys: QueryList<MatOption>;
-  @ViewChild('matSelect') matSelect: MatSelect;
-
-  private _required = false;
+export class SelectComponent extends AbstractFormInputDirective implements AfterViewInit, AfterViewChecked {
   @Input() placeholder: string;
   @Input() searchBarPlaceHolder: string;
 
@@ -166,6 +122,10 @@ export class SelectComponent extends AbstractFormInputDirective implements Valid
       if (this.enableSelectAll === undefined) this.enableSelectAll = true;
       if (this.enableDisplaySelected === undefined) this.enableDisplaySelected = true;
     }
+  }
+
+  get multiple(): boolean {
+    return this._multiple;
   }
 
   @Input() set enableSelectAll(enableSelectAll: boolean) {
@@ -187,10 +147,6 @@ export class SelectComponent extends AbstractFormInputDirective implements Valid
     }
   }
 
-  get multiple(): boolean {
-    return this._multiple;
-  }
-
   get enableSearch(): boolean {
     return this._enableSearch;
   }
@@ -206,8 +162,19 @@ export class SelectComponent extends AbstractFormInputDirective implements Valid
     return this._enableDisplaySelected;
   }
 
-  @Input()
-  set options(options: VitamuiSelectOptions) {
+  @Input({ required: true })
+  set options(optionsParam: VitamuiSelectOptions | any[]) {
+    const options: VitamuiSelectOptions =
+      optionsParam instanceof Array
+        ? optionsParam[0]?.key != null && optionsParam[0]?.label != null
+          ? { options: optionsParam }
+          : {
+              options: optionsParam.map((option) => ({
+                key: option,
+                label: option.toString(),
+              })),
+            }
+        : optionsParam;
     this.allOptions = options?.options != null ? options.options : [];
     if (options?.customSorting != null) {
       this.customSorting = options.customSorting;
@@ -215,14 +182,41 @@ export class SelectComponent extends AbstractFormInputDirective implements Valid
     }
     this.displayedOptions = this.allOptions;
     this.resizeContainerHeightInSearchView();
-    this.selectedOptions = this.allOptions.filter((option) => this.preselectedOptionKeys?.includes(option.key));
+    if (!this.selectedOptions.length)
+      this.selectedOptions = this.allOptions.filter((option) => this.preselectedOptionKeys?.includes(option.key));
     this.resizeContainerHeightInSelectedItemsView();
+    this.addEventListeners();
   }
 
-  @Input()
-  get required(): boolean {
-    return this._required;
-  }
+  @Input() selectAllLabel = this.translateService.instant('SELECT.SELECT_ALL');
+  @Input() allSelectedLabel?: string;
+
+  public displayedOptions: Option[] = [];
+
+  protected nbSelectedItemsMap: { [k: string]: string } = {
+    '=1': 'SELECT.SELECTED_ELEMENT.SINGULAR',
+    other: 'SELECT.SELECTED_ELEMENT.PLURAL',
+  };
+  protected searchTextControl = new FormControl();
+  protected showOnlySelectedOption = false;
+  protected selectedOptions: Option[] = [];
+  protected containerHeightInSearchView = '0px';
+  protected containerHeightInSelectedItemsView = '0px';
+  protected readonly SELECT_ALL_OPTIONS = 'SELECT_ALL_OPTIONS';
+  protected allOptions: Option[] = [];
+
+  private visibleItemsInSearchView = 5;
+  private preselectedOptionKeys: string[] = [];
+  private customSorting: (a: Option, b: Option) => number;
+  private _multiple = false;
+  private _enableSearch = true;
+  private _enableSelectAll?: boolean;
+  private _enableDisplaySelected?: boolean;
+
+  @ViewChild('searchBar') searchBar: SearchBarComponent;
+  @ViewChild('scrollViewport') private cdkVirtualScrollViewport: CdkVirtualScrollViewport;
+  @ViewChildren(MatOption) optionKeys: QueryList<MatOption>;
+  @ViewChild('matSelect') matSelect: MatSelect;
 
   @HostListener('document:keydown', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
@@ -234,19 +228,22 @@ export class SelectComponent extends AbstractFormInputDirective implements Valid
     }
   }
 
-  set required(value: boolean) {
-    this._required = coerceBooleanProperty(value);
-  }
-
   constructor(
     injector: Injector,
     private cd: ChangeDetectorRef,
     readonly sd: ScrollDispatcher,
+    private translateService: TranslateService,
   ) {
     super(injector);
   }
 
+  ngAfterViewChecked(): void {
+    this.updateSelectAll();
+  }
+
   ngAfterViewInit(): void {
+    this.filterAllOptionsValue();
+
     merge(this.sd.scrolled().pipe(filter((scrollable) => this.cdkVirtualScrollViewport === scrollable)), this.optionKeys.changes).subscribe(
       () => {
         this.updateCheckboxes();
@@ -254,75 +251,20 @@ export class SelectComponent extends AbstractFormInputDirective implements Valid
       },
     );
 
-    this.searchBar?.searchInput?.nativeElement?.addEventListener('keydown', this.onKeydown.bind(this), { capture: true });
-    this.matSelect._elementRef.nativeElement.addEventListener('keydown', this.onKeydown.bind(this), { capture: true });
+    this.addEventListeners();
   }
 
-  private onKeydown(event: KeyboardEvent) {
-    if (event.key === 'a' && event.ctrlKey) {
-      // Prevent mat-select to select/deselect everything with CTRL+A shortcut
-      event.stopImmediatePropagation();
-    }
-    const focusInSearchInput = [this.searchBar?.searchInput?.nativeElement].includes(event.target);
-    if (focusInSearchInput) {
-      if (['ArrowDown'].includes(event.code)) {
-        // Get out of searchInput if arrow down
-        this.matSelect._elementRef.nativeElement.focus();
-      }
-      if (['Enter'].includes(event.code)) {
-        // Trigger search
-        this.onSearch(this.searchBar.searchValue);
-      }
-      if (!['ArrowDown', 'ArrowUp', 'Escape'].includes(event.code)) {
-        // Prevent most keyboard keypress to be interpreted by the mat-select, otherwise it would "search" in options or open/close toggles
-        event.stopPropagation();
-      }
-    }
-  }
+  private addEventListeners() {
+    const eventListener = this.onKeydown.bind(this);
 
-  ngAfterViewChecked(): void {
-    this.updateSelectAll();
-  }
+    const searchInputElement: HTMLInputElement | undefined = this.searchBar?.searchInput?.nativeElement;
+    const matSelectElement: HTMLInputElement | undefined = this.matSelect?._elementRef?.nativeElement;
 
-  private updateCheckboxes(): void {
-    if (this.optionKeys == null) {
-      return;
-    }
+    searchInputElement?.removeEventListener('keydown', eventListener);
+    matSelectElement?.removeEventListener('keydown', eventListener);
 
-    let needUpdate = false;
-
-    this.optionKeys.forEach((optionKey) => {
-      const selected = this.selectedOptions.filter((selectedOption) => selectedOption.key === optionKey.value);
-
-      if (selected.length > 0 && !optionKey.selected) {
-        optionKey.select();
-        needUpdate = true;
-      } else if (selected.length === 0 && optionKey.selected) {
-        optionKey.deselect();
-        needUpdate = true;
-      }
-    });
-
-    if (needUpdate) {
-      this.cd.detectChanges();
-    }
-
-    this.updateMatSelectTriggerContent();
-  }
-
-  private updateMatSelectTriggerContent(): void {
-    Object.defineProperties(this.matSelect, {
-      empty: {
-        value: this.selectedOptions.length <= 0,
-        writable: true,
-      },
-    });
-  }
-
-  public openedChange(opened: boolean): void {
-    if (opened && this.enableSearch) {
-      this.searchBar.onFocus();
-    }
+    searchInputElement?.addEventListener('keydown', eventListener, { capture: true });
+    matSelectElement?.addEventListener('keydown', eventListener, { capture: true });
   }
 
   writeValue(preselectedOptionKeys: string | string[]) {
@@ -334,7 +276,7 @@ export class SelectComponent extends AbstractFormInputDirective implements Valid
     // When the component is reset this method is called with selectedOptionKeys = null
     if (this.preselectedOptionKeys == null) {
       this.selectedOptions = [];
-      setTimeout(() => this.matSelect._onBlur()); // Required to prevent the label to keep floating when resetting the value
+      setTimeout(() => this.matSelect?._onBlur()); // Required to prevent the label to keep floating when resetting the value
     } else {
       this.selectedOptions = this.allOptions.filter((option) => this.preselectedOptionKeys.includes(option.key));
     }
@@ -344,18 +286,17 @@ export class SelectComponent extends AbstractFormInputDirective implements Valid
     this.resizeContainerHeightInSelectedItemsView();
   }
 
-  validate(_control: AbstractControl): ValidationErrors | null {
-    if (this.required && this.selectedOptions.length === 0) {
-      return { required: true };
+  protected openedChange(opened: boolean): void {
+    if (opened && this.enableSearch) {
+      this.searchBar.onFocus();
     }
-    return null;
   }
 
-  public getSelectedOptionsCount(): number {
+  protected getSelectedOptionsCount(): number {
     return this.selectedOptions.length;
   }
 
-  public toggleShowOnlySelectedOption(): void {
+  protected toggleShowOnlySelectedOption(): void {
     this.showOnlySelectedOption = !this.showOnlySelectedOption;
     if (!this.showOnlySelectedOption) {
       this.displayedOptions = this.allOptions;
@@ -366,7 +307,7 @@ export class SelectComponent extends AbstractFormInputDirective implements Valid
     }
   }
 
-  public toggleSelectAll(event: MatOptionSelectionChange): void {
+  protected toggleSelectAll(event: MatOptionSelectionChange): void {
     if (!event.isUserInput) {
       return;
     }
@@ -374,14 +315,14 @@ export class SelectComponent extends AbstractFormInputDirective implements Valid
     this.selectAll(event.source.selected);
   }
 
-  public clearAllSelectedOptions(): void {
+  protected clearAllSelectedOptions(): void {
     this.showOnlySelectedOption = false;
     this.control.reset();
     this.onChange(this._multiple ? [] : undefined);
     this.selectedOptions = [];
   }
 
-  public onSearch(value: string): void {
+  protected onSearch(value: string): void {
     this.searchTextControl.setValue(value ? value : null);
     if (this.searchTextControl.value) {
       this.displayedOptions = this.allOptions.filter(
@@ -393,7 +334,7 @@ export class SelectComponent extends AbstractFormInputDirective implements Valid
     }
   }
 
-  public onSelectClosed(): void {
+  protected onSelectClosed(): void {
     this.onTouched();
     this.showOnlySelectedOption = false;
     if (this.searchBar && this.enableSearch) {
@@ -402,14 +343,14 @@ export class SelectComponent extends AbstractFormInputDirective implements Valid
     this.searchTextControl.reset();
   }
 
-  public resetSearchBar(): void {
+  protected resetSearchBar(): void {
     this.searchTextControl.reset();
     this.displayedOptions = this.allOptions;
     this.resizeContainerHeightInSearchView();
     this.searchBar?.onFocus();
   }
 
-  public onSelectionChange(change: MatOptionSelectionChange) {
+  protected onSelectionChange(change: MatOptionSelectionChange) {
     if (!change.isUserInput) {
       return;
     }
@@ -437,6 +378,14 @@ export class SelectComponent extends AbstractFormInputDirective implements Valid
     }
 
     this.updateMatSelectTriggerContent();
+  }
+
+  private filterAllOptionsValue() {
+    const previousSetValue = this.control.setValue;
+    this.control.setValue = (value: any, options?: any) => {
+      const filteredValue = value instanceof Array ? value.filter((v) => v !== this.SELECT_ALL_OPTIONS) : value;
+      previousSetValue.bind(this.control)(filteredValue, options);
+    };
   }
 
   private updateSelectAll(): void {
@@ -490,6 +439,64 @@ export class SelectComponent extends AbstractFormInputDirective implements Valid
     if (this.cdkVirtualScrollViewport) {
       this.cdkVirtualScrollViewport.checkViewportSize();
     }
+  }
+
+  private onKeydown(event: KeyboardEvent) {
+    if (event.key === 'a' && event.ctrlKey) {
+      // Prevent mat-select to select/deselect everything with CTRL+A shortcut
+      event.stopImmediatePropagation();
+    }
+    const focusInSearchInput = [this.searchBar?.searchInput?.nativeElement].includes(event.target);
+    if (focusInSearchInput) {
+      if (['ArrowDown'].includes(event.code)) {
+        // Get out of searchInput if arrow down
+        this.matSelect._elementRef.nativeElement.focus();
+      }
+      if (['Enter'].includes(event.code)) {
+        // Trigger search
+        this.onSearch(this.searchBar.searchValue);
+      }
+      if (!['ArrowDown', 'ArrowUp', 'Escape'].includes(event.code)) {
+        // Prevent most keyboard keypress to be interpreted by the mat-select, otherwise it would "search" in options or open/close toggles
+        event.stopPropagation();
+      }
+    }
+  }
+
+  private updateCheckboxes(): void {
+    if (this.optionKeys == null) {
+      return;
+    }
+
+    let needUpdate = false;
+
+    this.optionKeys.forEach((optionKey) => {
+      const selected = this.selectedOptions.filter((selectedOption) => selectedOption.key === optionKey.value);
+
+      if (selected.length > 0 && !optionKey.selected) {
+        optionKey.select();
+        needUpdate = true;
+      } else if (selected.length === 0 && optionKey.selected) {
+        optionKey.deselect();
+        needUpdate = true;
+      }
+    });
+
+    if (needUpdate) {
+      this.cd.detectChanges();
+    }
+
+    this.updateMatSelectTriggerContent();
+  }
+
+  private updateMatSelectTriggerContent(): void {
+    if (this.matSelect)
+      Object.defineProperties(this.matSelect, {
+        empty: {
+          value: this.selectedOptions.length <= 0,
+          writable: true,
+        },
+      });
   }
 
   protected readonly Validators = Validators;

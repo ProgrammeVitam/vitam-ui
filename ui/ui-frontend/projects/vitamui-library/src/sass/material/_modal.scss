@@ -10,61 +10,7 @@ $footer-height: 100px !default;
   top: 72px;
 }
 
-.vitamui-modal .mat-dialog-container {
-  @extend %mat-dialog-container;
-
-  .header {
-    @extend .pt-5;
-    @extend .pb-4;
-    @extend .px-8;
-  }
-
-  .content {
-    @extend .px-6;
-    @extend .pb-6;
-
-    // dialog title
-    > .text.large:first-of-type {
-      margin: 1.5rem 0;
-    }
-
-    .actions:last-of-type {
-      @extend .mt-6;
-      display: flex;
-    }
-
-    .actions:last-of-type > button:not(:last-child) {
-      margin-right: 20px;
-    }
-
-    .main-content {
-      @extend .mt-5;
-      min-height: 25vh;
-    }
-  }
-
-  .error-message {
-    color: var(--vitamui-red);
-    font-size: 14px;
-    margin-bottom: 30px;
-  }
-
-  .vitamui-table {
-    overflow: auto;
-    max-height: 43vh;
-
-    &::-webkit-scrollbar {
-      display: none;
-    }
-  }
-
-  // TODO : depereacted, remove at the end of the redesign
-  .form-group {
-    margin-bottom: 20px;
-  }
-}
-
-.vitamui-form-dual-panel .mat-dialog-container {
+.vitamui-form-dual-panel .mat-mdc-dialog-container {
   @extend %mat-dialog-container;
 
   .vitamui-form-dual-panel-content {

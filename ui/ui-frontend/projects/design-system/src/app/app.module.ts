@@ -37,8 +37,8 @@
 import { registerLocaleData } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { default as localeFr } from '@angular/common/locales/fr';
-import { LOCALE_ID, NgModule, isDevMode } from '@angular/core';
-import { MatLegacyListModule as MatListModule } from '@angular/material/legacy-list';
+import { isDevMode, LOCALE_ID, NgModule } from '@angular/core';
+import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { BrowserModule, Title } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -55,17 +55,16 @@ import {
   LoggerModule,
   ThemeService,
   VitamUICommonModule,
+  VitamUILibraryModule,
   VitamuiMissingTranslationHandler,
 } from 'vitamui-library';
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { MiscellaneousModule } from './components/miscellaneous/miscellaneous.module';
 import { TranslationModule } from './components/translation/translation.module';
 import { DesignSystemModule } from './components/design-system/design-system.module';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { MatExpansionModule } from '@angular/material/expansion';
-import { SelectComponent } from '../../../vitamui-library/src/lib/components/select/select.component';
 import { ReactiveFormsModule } from '@angular/forms';
 
 registerLocaleData(localeFr, 'fr');
@@ -88,7 +87,6 @@ export function httpLoaderFactory(httpClient: HttpClient): MultiTranslateHttpLoa
     MatExpansionModule,
     MatListModule,
     MatSidenavModule,
-    MiscellaneousModule,
     TranslationModule,
     VitamUICommonModule,
     TranslateModule.forRoot({
@@ -106,8 +104,8 @@ export function httpLoaderFactory(httpClient: HttpClient): MultiTranslateHttpLoa
       // or after 30 seconds (whichever comes first).
       registrationStrategy: 'registerWhenStable:30000',
     }),
-    SelectComponent,
     ReactiveFormsModule,
+    VitamUILibraryModule,
   ],
   providers: [
     Title,

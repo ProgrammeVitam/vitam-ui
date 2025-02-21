@@ -36,7 +36,7 @@
  */
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 
 import { ContextService } from '../context.service';
 import { ContextPreviewComponent } from './context-preview.component';

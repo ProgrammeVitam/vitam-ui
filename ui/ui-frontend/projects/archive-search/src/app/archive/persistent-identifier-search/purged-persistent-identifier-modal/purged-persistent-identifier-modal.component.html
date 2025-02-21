@@ -1,15 +1,12 @@
-<div class="header"></div>
+<vitamui-dialog-header
+  [subhead]="'PERSISTENT_IDENTIFIER_SEARCH.MODAL.SEARCH_BY_ID' | translate"
+  [title]="
+    messageKey | translate: { ark: data.ark, date: data.purgedPersistentIdentifier.operationLastPersistentDate | date: 'dd/MM/yyyy' }
+  "
+></vitamui-dialog-header>
 
-<div class="content">
-  <div class="text medium light">{{ 'PERSISTENT_IDENTIFIER_SEARCH.MODAL.SEARCH_BY_ID' | translate }}</div>
-  <span class="text large bold">
-    {{ messageKey | translate: { ark: data.ark, date: data.purgedPersistentIdentifier.operationLastPersistentDate | date: 'dd/MM/yyyy' }
-    }}<br />
-  </span>
-
-  <div class="actions">
-    <button (click)="closeDialog()" class="btn primary" type="button">
-      {{ 'COMMON.CLOSE' | translate }}
-    </button>
-  </div>
-</div>
+<mat-dialog-actions>
+  <button (click)="closeDialog()" class="btn primary" type="button">
+    {{ 'COMMON.CLOSE' | translate }}
+  </button>
+</mat-dialog-actions>

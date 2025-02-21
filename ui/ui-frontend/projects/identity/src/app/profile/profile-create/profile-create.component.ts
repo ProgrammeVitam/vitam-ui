@@ -42,14 +42,13 @@ import {
   buildValidators,
   collapseAnimation,
   ConfirmDialogService,
-  Group,
   Profile,
   Role,
 } from 'vitamui-library';
 
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 import { CustomerService } from '../../core/customer.service';
 import { ProfileService } from '../profile.service';
@@ -64,10 +63,6 @@ import { ProfileValidators } from '../profile.validators';
 export class ProfileCreateComponent implements OnInit, OnDestroy {
   adminProfileForm: FormGroup;
   tenantWithProofId: string;
-  selectedProfileGroups: Group[] = [];
-  selectedProfileGroupsId: string[] = [];
-  userLevel: string;
-  subLevelIsRequired: boolean;
   roleEnum = Role;
 
   private keyPressSubscription: Subscription;

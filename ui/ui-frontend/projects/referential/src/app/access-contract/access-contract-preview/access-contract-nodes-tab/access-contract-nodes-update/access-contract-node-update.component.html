@@ -1,9 +1,7 @@
-<form [formGroup]="selectNodesForm" (ngSubmit)="updateAccessContractNodes()">
-  <div class="header"></div>
+<vitamui-dialog-header [title]="'ACCESS_CONTRACT.UPDATE_NODE_DIALOG.TITLE' | translate"></vitamui-dialog-header>
 
-  <div class="content mt-3">
-    <div class="text large bold mb-3">{{ 'ACCESS_CONTRACT.UPDATE_NODE_DIALOG.TITLE' | translate }}</div>
-
+<mat-dialog-content>
+  <form [formGroup]="selectNodesForm" (ngSubmit)="updateAccessContractNodes()">
     <vitamui-common-slide-toggle class="mt-3" [formControl]="allRootUnitsControl">
       <div class="d-flex align-items-center">
         <span>{{ 'ACCESS_CONTRACT.CREATE_DIALOG.ALL_POSITIONS' | translate }}</span>
@@ -24,14 +22,14 @@
       [mode]="FILLING_PLAN_MODE_BOTH"
     >
     </vitamui-library-filing-plan>
+  </form>
+</mat-dialog-content>
 
-    <div class="actions">
-      <button type="submit" class="btn primary">
-        {{ 'COMMON.VALIDATE' | translate }}
-      </button>
-      <button type="button" class="btn cancel link" (click)="onCancel()">
-        {{ 'COMMON.UNDO' | translate }}
-      </button>
-    </div>
-  </div>
-</form>
+<mat-dialog-actions>
+  <button type="submit" class="btn primary">
+    {{ 'COMMON.VALIDATE' | translate }}
+  </button>
+  <button type="button" class="btn cancel link" (click)="onCancel()">
+    {{ 'COMMON.UNDO' | translate }}
+  </button>
+</mat-dialog-actions>

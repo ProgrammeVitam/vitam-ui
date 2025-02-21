@@ -4,10 +4,10 @@
   disableRipple
   [attr.aria-label]="'toggle ' + node?.label"
   (click)="nodeToggle.emit()"
-  class="arrow"
+  class="arrow mr-1"
   type="button"
 >
-  <i class="material-icons mat-icon-rtl-mirror">{{ expanded ? 'expand_more' : 'chevron_right' }}</i>
+  <i class="vitamui-icon icon {{ expanded ? 'vitamui-icon-chevron-down' : 'vitamui-icon-chevron-right' }}"></i>
 </button>
 
 <mat-checkbox
@@ -21,7 +21,7 @@
   [vitamuiTooltipShowDelay]="300"
 >
   <label class="node-label" (click)="onLabelClick($event)">
-    <i class="pad vitamui-icon {{ icon }}"></i>
+    <i class="mr-1 vitamui-icon {{ icon }}"></i>
     {{ node?.title }}
   </label>
 </mat-checkbox>

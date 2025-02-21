@@ -1,12 +1,9 @@
-<div class="header">
-  <vitamui-common-progress-bar [count]="stepCount" [index]="stepIndex"></vitamui-common-progress-bar>
-</div>
+<vitamui-dialog-header [stepper]="stepper" [title]="'COLLECT.UPDATE_UNITS_METADATA.ACTION_TITLE' | translate"></vitamui-dialog-header>
 
-<vitamui-common-stepper [selectedIndex]="stepIndex" (selectionChange)="stepIndex = $event.selectedIndex">
+<vitamui-common-stepper #stepper>
   <!-- Step 1 -->
   <cdk-step>
-    <div class="content">
-      <h2>{{ 'COLLECT.UPDATE_UNITS_METADATA.ACTION_TITLE' | translate }}</h2>
+    <mat-dialog-content>
       <div>
         <h4>
           {{ 'COLLECT.UPDATE_UNITS_METADATA.ACTION_SUB_TITLE' | translate }}
@@ -22,27 +19,20 @@
         <vitamui-file-selector [extensions]="['.csv']" [multipleFiles]="false" (filesChanged)="handleFiles($event)">
         </vitamui-file-selector>
       }
-
-      <div class="actions">
-        <button (click)="updateUnitsMetadata()" [disabled]="!fileToUpload || isLoadingData" class="btn primary" type="button">
-          {{ 'COLLECT.UPDATE_UNITS_METADATA.UPDATE_CONFIRM' | translate }}
-        </button>
-        <button (click)="onCancel()" class="btn cancel link" [disabled]="isLoadingData" type="button">
-          {{ 'COLLECT.UPDATE_UNITS_METADATA.UPDATE_CANCEL' | translate }}
-        </button>
-      </div>
-    </div>
+    </mat-dialog-content>
+    <mat-dialog-actions>
+      <button (click)="updateUnitsMetadata()" [disabled]="!fileToUpload || isLoadingData" class="btn primary" type="button">
+        {{ 'COLLECT.UPDATE_UNITS_METADATA.UPDATE_CONFIRM' | translate }}
+      </button>
+      <button (click)="onCancel()" class="btn cancel link" [disabled]="isLoadingData" type="button">
+        {{ 'COLLECT.UPDATE_UNITS_METADATA.UPDATE_CANCEL' | translate }}
+      </button>
+    </mat-dialog-actions>
   </cdk-step>
 </vitamui-common-stepper>
 
 <ng-template #confirmDeleteUpdateUnitsMetadataDialog>
-  <mat-dialog-content>
-    <div class="text-title">{{ 'COLLECT.UPDATE_UNITS_METADATA.ACTION_TITLE' | translate }}</div>
-    <br />
-
-    <div class="text large bold">{{ 'COLLECT.UPDATE_UNITS_METADATA.CANCEL_UPDATE_TO_CONFIRM' | translate }}</div>
-  </mat-dialog-content>
-  <br />
+  <vitamui-dialog-header [title]="'COLLECT.UPDATE_UNITS_METADATA.CANCEL_UPDATE_TO_CONFIRM' | translate"></vitamui-dialog-header>
   <mat-dialog-actions>
     <button (click)="onConfirmAction()" class="btn primary btn-confirm-dialog">
       {{ 'COLLECT.UPDATE_UNITS_METADATA.CONFIRM' | translate }}

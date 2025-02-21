@@ -1,8 +1,6 @@
 @import '../../../../sass/variables/colors';
 @import '../../../../sass/mixins/elevation';
 
-$input-height: 70px;
-
 .bg-tenant {
   z-index: -2;
   position: fixed;
@@ -25,7 +23,7 @@ $input-height: 70px;
 }
 
 .mat-drawer,
-.mat-dialog-container {
+.mat-mdc-dialog-container {
   .tenant-box {
     @include dialog-elevation-dark;
   }

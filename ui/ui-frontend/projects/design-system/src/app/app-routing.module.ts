@@ -54,7 +54,7 @@ import { DesignSystemBadgesComponent } from './components/atoms/badges/design-sy
 import { SpacingComponent } from './components/tokens/spacing/spacing.component';
 import { DesignSystemCheckboxComponent } from './components/molecules/inputs/checkbox/design-system-checkbox.component';
 import { DesignSystemSelectComponent } from './components/molecules/inputs/select/design-system-select.component';
-import { DesignSystemAutocompleteMultiSelectTreeComponent } from './components/molecules/inputs/autocomplete-multi-select-tree/design-system-autocomplete-multi-select-tree.component';
+import { DesignSystemSelectWithTreeComponent } from './components/molecules/inputs/select-with-tree/design-system-select-with-tree.component';
 import { DesignSystemOldInputsComponent } from './components/molecules/inputs/old-input/design-system-old-inputs.component';
 import { DesignSystemRepeatableInputComponent } from './components/molecules/inputs/repeatable-input/design-system-repeatable-input.component';
 import { DesignSystemSearchWithTypeSelectorComponent } from './components/molecules/inputs/search-with-type-selector/design-system-search-with-type-selector.component';
@@ -62,6 +62,7 @@ import { DesignSystemMultipleOptionsDatepickerComponent } from './components/mol
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { TabGroupComponent } from './components/organisms/tab-group/tab-group.component';
 import { UploadComponent } from './components/upload/upload.component';
+import { DialogComponent } from './components/organisms/dialog/dialog.component';
 export interface RouteData {
   // Alternative search terms
   altSearch?: {
@@ -104,7 +105,7 @@ const routes: Routes = [
         children: [
           { path: '', redirectTo: 'select', pathMatch: 'full' },
           { path: 'select', component: DesignSystemSelectComponent },
-          { path: 'autocomplete-multi-select-tree', component: DesignSystemAutocompleteMultiSelectTreeComponent },
+          { path: 'select-with-tree', component: DesignSystemSelectWithTreeComponent },
           { path: 'checkboxes', component: DesignSystemCheckboxComponent },
           { path: 'old-input', component: DesignSystemOldInputsComponent },
           { path: 'multiple-options-datepicker', component: DesignSystemMultipleOptionsDatepickerComponent },
@@ -120,6 +121,7 @@ const routes: Routes = [
       { path: '', redirectTo: 'table', pathMatch: 'full' },
       { path: 'table', component: TableComponent },
       { path: 'tab-group', component: TabGroupComponent },
+      { path: 'dialog', component: DialogComponent },
     ],
   },
   { path: 'miscellaneous', component: MiscellaneousComponent },

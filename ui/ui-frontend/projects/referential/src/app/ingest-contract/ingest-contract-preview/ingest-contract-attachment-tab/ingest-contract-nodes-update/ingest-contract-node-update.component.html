@@ -1,36 +1,30 @@
-<div class="header">
-  <vitamui-common-progress-bar [count]="stepCount" [index]="stepIndex"></vitamui-common-progress-bar>
-</div>
+<vitamui-dialog-header
+  [stepper]="stepper"
+  [subhead]="'INGEST_CONTRACT.UPDATE_NODE_DIALOG.UPDATE_SIP' | translate"
+  [title]="['INGEST_CONTRACT.UPDATE_NODE_DIALOG.TITLE' | translate, 'INGEST_CONTRACT.CREATE_DIALOG.ATTACHEMENT_CONTROL' | translate]"
+></vitamui-dialog-header>
 
 <form [formGroup]="selectNodesForm" (ngSubmit)="updateIngestContractNodes()" (keydown.enter)="$event.preventDefault()">
-  <vitamui-common-stepper (selectionChange)="stepIndex = $event.selectedIndex">
+  <vitamui-common-stepper #stepper>
     <cdk-step>
-      <div class="content mt-3">
-        <div class="text medium light">{{ 'INGEST_CONTRACT.UPDATE_NODE_DIALOG.UPDATE_SIP' | translate }}</div>
-        <div class="text large bold mb-3">{{ 'INGEST_CONTRACT.UPDATE_NODE_DIALOG.TITLE' | translate }}</div>
-
+      <mat-dialog-content>
         <vitamui-library-filing-plan
           [formControl]="linkParentIdControl"
           [tenantIdentifier]="tenantIdentifier"
           [mode]="FILING_PLAN_MODE_SOLO"
         ></vitamui-library-filing-plan>
+      </mat-dialog-content>
 
-        <div class="actions">
-          <button type="button" class="btn primary" cdkStepperNext>
-            {{ 'COMMON.NEXT' | translate }}
-          </button>
-          <button type="button" class="btn cancel link" (click)="onCancel()">
-            {{ 'COMMON.UNDO' | translate }}
-          </button>
-        </div>
-      </div>
+      <mat-dialog-actions>
+        <vitamui-next-step></vitamui-next-step>
+        <button type="button" class="btn cancel link" (click)="onCancel()">
+          {{ 'COMMON.UNDO' | translate }}
+        </button>
+      </mat-dialog-actions>
     </cdk-step>
 
     <cdk-step>
-      <div class="content mt-3">
-        <div class="text medium light">{{ 'INGEST_CONTRACT.UPDATE_NODE_DIALOG.UPDATE_AU' | translate }}</div>
-        <div class="text large bold mb-3">{{ 'INGEST_CONTRACT.CREATE_DIALOG.ATTACHEMENT_CONTROL' | translate }}</div>
-
+      <mat-dialog-content>
         <div class="d-flex align-items-center mb-3">
           <mat-button-toggle-group [formControl]="checkParentLinkControl" class="vitamui-button-toggle-group">
             <mat-button-toggle [value]="'AUTHORIZED'">
@@ -57,8 +51,10 @@
           [tenantIdentifier]="tenantIdentifier"
           [mode]="FILING_PLAN_MODE_INC"
         ></vitamui-library-filing-plan>
+      </mat-dialog-content>
 
-        <div class="actions">
+      <mat-dialog-actions>
+        <div>
           <button type="submit" class="btn primary">
             {{ 'COMMON.VALIDATE' | translate }}
           </button>
@@ -66,12 +62,8 @@
             {{ 'COMMON.UNDO' | translate }}
           </button>
         </div>
-
-        <button type="button" class="btn link" cdkStepperPrevious>
-          <i class="vitamui-icon vitamui-icon-chevron-left"></i>
-          <span class="underline">{{ 'COMMON.BACK' | translate }}</span>
-        </button>
-      </div>
+        <vitamui-previous-step></vitamui-previous-step>
+      </mat-dialog-actions>
     </cdk-step>
   </vitamui-common-stepper>
 </form>

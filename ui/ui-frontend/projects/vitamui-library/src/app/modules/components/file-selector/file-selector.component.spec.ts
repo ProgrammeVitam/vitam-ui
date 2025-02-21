@@ -39,7 +39,7 @@ import { FileSelectorComponent } from './file-selector.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { PipesModule } from '../../pipes/pipes.module';
 import { LoggerModule } from '../../logger';
-import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { CustomFile } from '../../../../lib/models/custom-file';
 
 describe('FileSelectorComponent', () => {

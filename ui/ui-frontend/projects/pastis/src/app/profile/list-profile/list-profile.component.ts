@@ -72,8 +72,8 @@ The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
 import { Component, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
-import { MatLegacyTableDataSource as MatTableDataSource } from '@angular/material/legacy-table';
+import { MatDialog } from '@angular/material/dialog';
+import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { filter, of, Subscription, switchMap } from 'rxjs';
@@ -348,7 +348,7 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
     ]);
 
     (this.isProfilAttached(profileDescription)
-      ? this.dialog.open(this.confirmReplacement, { panelClass: 'vitamui-confirm-dialog' }).afterClosed()
+      ? this.dialog.open(this.confirmReplacement, { panelClass: 'small' }).afterClosed()
       : of(true)
     )
       .pipe(
@@ -356,7 +356,6 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
         switchMap(() =>
           this.dialog
             .open<LoadProfileComponent, LoadProfileConfig>(LoadProfileComponent, {
-              panelClass: 'vitamui-modal',
               data: {
                 title: this.translations.popupUploadTitle,
                 subTitle: this.translations.popupUploadSubTitle,

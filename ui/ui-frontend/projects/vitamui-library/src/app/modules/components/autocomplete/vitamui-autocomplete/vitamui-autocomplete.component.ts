@@ -45,10 +45,7 @@ import {
   ValidationErrors,
   Validator,
 } from '@angular/forms';
-import {
-  MatLegacyAutocompleteSelectedEvent as MatAutocompleteSelectedEvent,
-  MatLegacyAutocompleteTrigger as MatAutocompleteTrigger,
-} from '@angular/material/legacy-autocomplete';
+import { MatAutocompleteSelectedEvent, MatAutocompleteTrigger } from '@angular/material/autocomplete';
 import { isEqual } from 'lodash-es';
 import { merge, Observable, Subject } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';

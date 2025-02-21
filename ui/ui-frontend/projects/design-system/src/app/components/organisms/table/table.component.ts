@@ -35,16 +35,15 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component } from '@angular/core';
-import { MatLegacyDialog as MatDialog, MatLegacyDialogModule as MatDialogModule } from '@angular/material/legacy-dialog';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { collapseAnimation, Direction, Group, rotateAnimation, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
-import { SampleDialogComponent } from '../../miscellaneous/sample-dialog/sample-dialog.component';
+import { SampleDialogComponent } from '../dialog/sample-dialog/sample-dialog.component';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { SampleDialogModule } from '../../miscellaneous/sample-dialog/sample-dialog.module';
-import { SharedModule } from '../../../../../../identity/src/app/shared/shared.module';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatTableModule } from '@angular/material/table';
+import { TableFilterModule } from 'vitamui-library';
 
 @Component({
   templateUrl: './table.component.html',
@@ -57,8 +56,7 @@ import { MatTableModule } from '@angular/material/table';
     VitamUICommonModule,
     VitamUILibraryModule,
     MatButtonToggleModule,
-    SampleDialogModule,
-    SharedModule,
+    TableFilterModule,
     TranslateModule,
     MatDialogModule,
     MatTableModule,
@@ -104,7 +102,7 @@ export class TableComponent {
   openDialog(event: any) {
     console.log('[Dialog] : ' + event);
     this.dialog
-      .open(SampleDialogComponent, { panelClass: 'vitamui-modal', disableClose: true })
+      .open(SampleDialogComponent, { disableClose: true })
       .afterClosed()
       .subscribe(() => {
         console.log('Dialog closed !');

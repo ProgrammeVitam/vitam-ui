@@ -38,9 +38,9 @@ import { Component, forwardRef, Input, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
-import { MatLegacyProgressBarModule as MatProgressBarModule } from '@angular/material/legacy-progress-bar';
-import { MatLegacySelect as MatSelect, MatLegacySelectModule as MatSelectModule } from '@angular/material/legacy-select';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatSelect, MatSelectModule } from '@angular/material/select';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { EMPTY, of, throwError as observableThrowError } from 'rxjs';
 import { AuthnRequestBindingEnum, ConfirmDialogService, newFile } from 'vitamui-library';
@@ -199,11 +199,6 @@ describe('IdentityProviderCreateComponent', () => {
   });
 
   describe('DOM', () => {
-    it('should have a title', () => {
-      const elTitle = fixture.nativeElement.querySelector('.large');
-      expect(elTitle.textContent).toContain('CUSTOMER.SSO.MODAL.TITLE "OwnerName"');
-    });
-
     it('should have all the inputs', () => {
       const elEnabled = fixture.nativeElement.querySelector('vitamui-common-slide-toggle[formControlName=enabled]');
       expect(elEnabled).toBeTruthy();

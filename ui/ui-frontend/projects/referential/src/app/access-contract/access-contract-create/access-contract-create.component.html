@@ -1,190 +1,179 @@
-<div class="header">
-  <vitamui-common-progress-bar [count]="stepCount" [index]="stepIndex"></vitamui-common-progress-bar>
-</div>
+<vitamui-dialog-header
+  [stepper]="stepper"
+  [subhead]="'ACCESS_CONTRACT.CREATE_DIALOG.TITLE' | translate"
+  [title]="[
+    'ACCESS_CONTRACT.CREATE_DIALOG.SUBTITLE' | translate,
+    'ACCESS_CONTRACT.CREATE_DIALOG.AUTHORISATION_PERIMETER.TITLE' | translate,
+    'ACCESS_CONTRACT.CREATE_DIALOG.WRITING_PERMISSION_TITLE' | translate,
+    'ACCESS_CONTRACT.CREATE_DIALOG.POSITIONS_TITLE' | translate,
+  ]"
+></vitamui-dialog-header>
 
 <form [formGroup]="form" (ngSubmit)="onSubmit()" (keydown.enter)="$event.preventDefault()">
-  <vitamui-common-stepper (selectionChange)="stepIndex = $event.selectedIndex">
+  <vitamui-common-stepper #stepper>
     <!-- STEP 1 / 4 -->
     <cdk-step>
-      <div class="content mt-3">
-        <div class="text medium light">{{ 'ACCESS_CONTRACT.CREATE_DIALOG.TITLE' | translate }}</div>
-        <div class="text large bold mb-3">{{ 'ACCESS_CONTRACT.CREATE_DIALOG.SUBTITLE' | translate }}</div>
+      <mat-dialog-content class="gap-3">
+        <vitamui-common-slide-toggle class="w-100" formControlName="status">
+          {{ 'ACCESS_CONTRACT.CREATE_DIALOG.STATUS' | translate }}
+        </vitamui-common-slide-toggle>
 
-        <div>
-          <vitamui-common-slide-toggle formControlName="status">
-            {{ 'ACCESS_CONTRACT.CREATE_DIALOG.STATUS' | translate }}
-          </vitamui-common-slide-toggle>
-        </div>
-
-        <div class="d-flex">
+        <vitamui-common-input
+          formControlName="name"
+          class="w-100"
+          minlength="2"
+          maxlength="100"
+          required
+          [placeholder]="'ACCESS_CONTRACT.CREATE_DIALOG.NAME' | translate"
+        >
+          @if (form.get('name')?.touched) {
+            @if (!!form.get('name')?.errors?.required) {
+              <vitamui-common-input-error>
+                {{ 'COMMON.REQUIRED' | translate }}
+              </vitamui-common-input-error>
+            } @else if (!!form?.get('name')?.errors?.nameExists) {
+              <vitamui-common-input-error>
+                {{ 'ACCESS_CONTRACT.CREATE_DIALOG.NAME_ALREADY_EXISTS' | translate }}
+              </vitamui-common-input-error>
+            }
+          }
+        </vitamui-common-input>
+        @if (isSlaveMode) {
           <vitamui-common-input
-            formControlName="name"
+            formControlName="identifier"
             class="w-100"
             minlength="2"
             maxlength="100"
             required
-            [placeholder]="'ACCESS_CONTRACT.CREATE_DIALOG.NAME' | translate"
+            [placeholder]="'ACCESS_CONTRACT.CREATE_DIALOG.IDENTIFIER' | translate"
           >
-            @if (form.get('name')?.touched) {
-              @if (!!form.get('name')?.errors?.required) {
+            @if (form.get('identifier')?.touched) {
+              @if (!!form.get('identifier')?.errors?.required) {
                 <vitamui-common-input-error>
                   {{ 'COMMON.REQUIRED' | translate }}
                 </vitamui-common-input-error>
-              } @else if (!!form?.get('name')?.errors?.nameExists) {
+              } @else if (!!form?.get('identifier')?.errors?.identifierExists) {
                 <vitamui-common-input-error>
-                  {{ 'ACCESS_CONTRACT.CREATE_DIALOG.NAME_ALREADY_EXISTS' | translate }}
+                  {{ 'ACCESS_CONTRACT.CREATE_DIALOG.IDENTIFIER_ALREADY_EXISTS' | translate }}
                 </vitamui-common-input-error>
               }
             }
           </vitamui-common-input>
-        </div>
-        @if (isSlaveMode) {
-          <div class="d-flex">
-            <vitamui-common-input
-              formControlName="identifier"
-              class="w-100"
-              minlength="2"
-              maxlength="100"
-              required
-              [placeholder]="'ACCESS_CONTRACT.CREATE_DIALOG.IDENTIFIER' | translate"
-            >
-              @if (form.get('identifier')?.touched) {
-                @if (!!form.get('identifier')?.errors?.required) {
-                  <vitamui-common-input-error>
-                    {{ 'COMMON.REQUIRED' | translate }}
-                  </vitamui-common-input-error>
-                } @else if (!!form?.get('identifier')?.errors?.identifierExists) {
-                  <vitamui-common-input-error>
-                    {{ 'ACCESS_CONTRACT.CREATE_DIALOG.IDENTIFIER_ALREADY_EXISTS' | translate }}
-                  </vitamui-common-input-error>
-                }
-              }
-            </vitamui-common-input>
-          </div>
         }
-        <vitamui-common-textarea formControlName="description" [placeholder]="'ACCESS_CONTRACT.CREATE_DIALOG.DESCRIPTION' | translate">
+        <vitamui-common-textarea
+          class="w-100"
+          formControlName="description"
+          [placeholder]="'ACCESS_CONTRACT.CREATE_DIALOG.DESCRIPTION' | translate"
+        >
         </vitamui-common-textarea>
 
-        <div class="mt-3 mb-0">
-          <vitamui-common-slide-toggle formControlName="accessLog">
-            {{ 'ACCESS_CONTRACT.CREATE_DIALOG.ACCESS_LOG' | translate }}
-            <i
-              class="vitamui-icon vitamui-icon-info align-middle primary"
-              vitamuiTooltip="{{ 'ACCESS_CONTRACT.CREATE_DIALOG.ACCESS_LOG_TOOLTIP' | translate }}"
-            ></i>
-          </vitamui-common-slide-toggle>
-        </div>
+        <vitamui-common-slide-toggle class="w-100" formControlName="accessLog">
+          {{ 'ACCESS_CONTRACT.CREATE_DIALOG.ACCESS_LOG' | translate }}
+          <i
+            class="vitamui-icon vitamui-icon-info align-middle primary"
+            vitamuiTooltip="{{ 'ACCESS_CONTRACT.CREATE_DIALOG.ACCESS_LOG_TOOLTIP' | translate }}"
+          ></i>
+        </vitamui-common-slide-toggle>
+      </mat-dialog-content>
 
-        <div class="actions">
-          <button type="button" class="btn primary" cdkStepperNext [disabled]="firstStepInvalid()">{{ 'COMMON.NEXT' | translate }}</button>
-          <button type="button" class="btn cancel link" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
-        </div>
-      </div>
+      <mat-dialog-actions>
+        <vitamui-next-step [disabled]="firstStepInvalid()"></vitamui-next-step>
+        <button type="button" class="btn cancel link" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
+      </mat-dialog-actions>
     </cdk-step>
 
     <!-- STEP 2 / 4 -->
     <cdk-step>
       <app-access-contract-authorizations-update (validateEvent)="saveSecondStepData($event)"> </app-access-contract-authorizations-update>
     </cdk-step>
-    -->
+
     <!-- STEP 3 / 4 -->
     <cdk-step>
-      <div class="content mt-3" formGroupName="thirdStep">
-        <div class="text medium light">{{ 'ACCESS_CONTRACT.CREATE_DIALOG.TITLE' | translate }}</div>
-        <div class="text large bold mb-3">{{ 'ACCESS_CONTRACT.CREATE_DIALOG.WRITING_PERMISSION_TITLE' | translate }}</div>
-        <div class="mt-4 mb-3">
-          <div class="title-text medium light">{{ 'ACCESS_CONTRACT.CREATE_DIALOG.WRITE_PERMISSION_AUTHORIZE' | translate }}</div>
-          <div class="mt-3">
-            <vitamui-common-slide-toggle formControlName="writingPermission"
-              >{{ 'ACCESS_CONTRACT.CREATE_DIALOG.AUTHORIZE_DESCRIPTIVE_METADATA_WRITE' | translate }}
-              <i
-                class="vitamui-icon vitamui-icon-info align-middle primary"
-                vitamuiTooltip="{{ 'ACCESS_CONTRACT.CREATE_DIALOG.AUTHORIZE_DESCRIPTIVE_METADATA_WRITE' | translate }}"
-                vitamuiTooltipPosition="BOTTOM"
-              ></i>
-            </vitamui-common-slide-toggle>
-          </div>
-          <div>
-            <vitamui-common-slide-toggle formControlName="writingAuthorizedDesc"
-              >{{ 'ACCESS_CONTRACT.CREATE_DIALOG.AUTHORIZE_MANAGEMENT_METADATA_WRITE' | translate }}
-            </vitamui-common-slide-toggle>
-          </div>
-        </div>
-
-        <div class="mt-4 mb-3 half-width">
-          <div class="title-text medium light">{{ 'ACCESS_CONTRACT.CREATE_DIALOG.AUTHORIZE_OBJECT_DOWNLOAD' | translate }}</div>
-
-          <div class="mt-4 mb-4 equal-width-container">
-            <div>
-              <mat-button-toggle-group formControlName="downloadChoose" class="vitamui-button-toggle-group">
-                <mat-button-toggle value="ALL">{{ 'ACCESS_CONTRACT.CREATE_DIALOG.ALL' | translate }} </mat-button-toggle>
-                <mat-button-toggle value="NONE">{{ 'ACCESS_CONTRACT.CREATE_DIALOG.NONE' | translate }} </mat-button-toggle>
-                <mat-button-toggle value="SELECTION">{{ 'ACCESS_CONTRACT.CREATE_DIALOG.SELECTION' | translate }} </mat-button-toggle>
-              </mat-button-toggle-group>
+      <mat-dialog-content>
+        <div formGroupName="thirdStep">
+          <div class="mt-4 mb-3">
+            <div class="title-text medium light">{{ 'ACCESS_CONTRACT.CREATE_DIALOG.WRITE_PERMISSION_AUTHORIZE' | translate }}</div>
+            <div class="mt-3">
+              <vitamui-common-slide-toggle formControlName="writingPermission"
+                >{{ 'ACCESS_CONTRACT.CREATE_DIALOG.AUTHORIZE_DESCRIPTIVE_METADATA_WRITE' | translate }}
+                <i
+                  class="vitamui-icon vitamui-icon-info align-middle primary"
+                  vitamuiTooltip="{{ 'ACCESS_CONTRACT.CREATE_DIALOG.AUTHORIZE_DESCRIPTIVE_METADATA_WRITE' | translate }}"
+                  vitamuiTooltipPosition="BOTTOM"
+                ></i>
+              </vitamui-common-slide-toggle>
             </div>
+            <div>
+              <vitamui-common-slide-toggle formControlName="writingAuthorizedDesc"
+                >{{ 'ACCESS_CONTRACT.CREATE_DIALOG.AUTHORIZE_MANAGEMENT_METADATA_WRITE' | translate }}
+              </vitamui-common-slide-toggle>
+            </div>
+          </div>
 
-            <div class="mt-2" *ngIf="form.get('thirdStep.downloadChoose').value === 'SELECTION'">
-              <mat-form-field class="vitamui-mat-select pb-0 full-width">
-                <mat-select
+          <div class="mt-4 mb-3 half-width">
+            <div class="title-text medium light">{{ 'ACCESS_CONTRACT.CREATE_DIALOG.AUTHORIZE_OBJECT_DOWNLOAD' | translate }}</div>
+
+            <div class="mt-4 mb-4 equal-width-container">
+              <div>
+                <mat-button-toggle-group formControlName="downloadChoose" class="vitamui-button-toggle-group">
+                  <mat-button-toggle value="ALL">{{ 'ACCESS_CONTRACT.CREATE_DIALOG.ALL' | translate }} </mat-button-toggle>
+                  <mat-button-toggle value="NONE">{{ 'ACCESS_CONTRACT.CREATE_DIALOG.NONE' | translate }} </mat-button-toggle>
+                  <mat-button-toggle value="SELECTION">{{ 'ACCESS_CONTRACT.CREATE_DIALOG.SELECTION' | translate }} </mat-button-toggle>
+                </mat-button-toggle-group>
+              </div>
+
+              <div class="mt-2" *ngIf="form.get('thirdStep.downloadChoose').value === 'SELECTION'">
+                <vitamui-select
                   formControlName="dataObjectVersion"
                   [placeholder]="'ACCESS_CONTRACT.CREATE_DIALOG.EVERY_DATA_OBJECT_VERSION_SELECT_PLACEHOLDER' | translate"
-                  multiple
-                  required
-                >
-                  <mat-option *ngFor="let usage of usages" [value]="usage.key">{{ usage.label }}</mat-option>
-                </mat-select>
-                <div class="select-arrow">
-                  <i class="material-icons">keyboard_arrow_down</i>
-                </div>
-              </mat-form-field>
+                  [options]="usages"
+                  [multiple]="true"
+                  [enableSearch]="false"
+                  [enableDisplaySelected]="false"
+                  [enableSelectAll]="false"
+                ></vitamui-select>
+              </div>
             </div>
           </div>
         </div>
+      </mat-dialog-content>
 
-        <div class="actions">
-          <button type="button" class="btn primary" [disabled]="form.get('thirdStep').errors" cdkStepperNext>
-            {{ 'COMMON.NEXT' | translate }}
-          </button>
+      <mat-dialog-actions>
+        <div>
+          <vitamui-next-step [disabled]="form.get('thirdStep').errors"></vitamui-next-step>
           <button type="button" class="btn cancel link" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
         </div>
-        <button type="button" class="btn link" cdkStepperPrevious>
-          <i class="vitamui-icon vitamui-icon-chevron-left"></i>
-          <span class="underline">{{ 'COMMON.BACK' | translate }}</span>
-        </button>
-      </div>
+        <vitamui-previous-step></vitamui-previous-step>
+      </mat-dialog-actions>
     </cdk-step>
 
     <!-- STEP 4 / 4 -->
     <cdk-step>
-      <div class="content mt-3">
-        <div class="text medium light">{{ 'ACCESS_CONTRACT.CREATE_DIALOG.TITLE' | translate }}</div>
-        <div class="text large bold mb-3">{{ 'ACCESS_CONTRACT.CREATE_DIALOG.POSITIONS_TITLE' | translate }}</div>
+      <mat-dialog-content>
+        <vitamui-common-slide-toggle [formControl]="allNodes"
+          >{{ 'ACCESS_CONTRACT.CREATE_DIALOG.ALL_POSITIONS' | translate }}
+          <i
+            class="vitamui-icon vitamui-icon-info align-middle primary"
+            vitamuiTooltip="{{ 'ACCESS_CONTRACT.CREATE_DIALOG.ALL_POSITIONS_TOOLTIP' | translate }}"
+          ></i>
+        </vitamui-common-slide-toggle>
 
+        <vitamui-library-filing-plan
+          *ngIf="!allNodes.value"
+          [formControl]="selectNodesControl"
+          [mode]="FILLING_PLAN_MODE.BOTH"
+        ></vitamui-library-filing-plan>
+      </mat-dialog-content>
+
+      <mat-dialog-actions>
         <div>
-          <vitamui-common-slide-toggle [formControl]="allNodes"
-            >{{ 'ACCESS_CONTRACT.CREATE_DIALOG.ALL_POSITIONS' | translate }}
-            <i
-              class="vitamui-icon vitamui-icon-info align-middle primary"
-              vitamuiTooltip="{{ 'ACCESS_CONTRACT.CREATE_DIALOG.ALL_POSITIONS_TOOLTIP' | translate }}"
-            ></i>
-          </vitamui-common-slide-toggle>
-        </div>
-
-        <div *ngIf="!allNodes.value">
-          <vitamui-library-filing-plan [formControl]="selectNodesControl" [mode]="FILLING_PLAN_MODE.BOTH"></vitamui-library-filing-plan>
-        </div>
-
-        <div class="actions">
           <button type="submit" class="btn primary" [disabled]="lastStepInvalid() || isLoading">
             {{ 'COMMON.TERMINATE' | translate }}
           </button>
           <button type="button" class="btn cancel link" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
         </div>
-        <button type="button" class="btn link" cdkStepperPrevious>
-          <i class="vitamui-icon vitamui-icon-chevron-left"></i>
-          <span class="underline">{{ 'COMMON.BACK' | translate }}</span>
-        </button>
-      </div>
+        <vitamui-previous-step></vitamui-previous-step>
+      </mat-dialog-actions>
     </cdk-step>
   </vitamui-common-stepper>
 </form>

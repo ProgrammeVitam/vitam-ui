@@ -37,15 +37,16 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { MatLegacyFormFieldModule as MatFormFieldModule } from '@angular/material/legacy-form-field';
-import { MatLegacyInputModule as MatInputModule } from '@angular/material/legacy-input';
-import { MatLegacySelectModule as MatSelectModule } from '@angular/material/legacy-select';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { of } from 'rxjs';
-import { Ontology } from 'vitamui-library';
+import { Ontology, VitamUILibraryModule } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { OntologyService } from '../../ontology.service';
 import { OntologyInformationTabComponent } from './ontology-information-tab.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 describe('OntologyInformationTabComponent', () => {
   let component: OntologyInformationTabComponent;
@@ -75,7 +76,16 @@ describe('OntologyInformationTabComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, VitamUICommonTestModule, NoopAnimationsModule, MatFormFieldModule, MatInputModule, MatSelectModule],
+      imports: [
+        MatFormFieldModule,
+        MatInputModule,
+        MatSelectModule,
+        NoopAnimationsModule,
+        ReactiveFormsModule,
+        TranslateModule.forRoot(),
+        VitamUICommonTestModule,
+        VitamUILibraryModule,
+      ],
       declarations: [OntologyInformationTabComponent],
       providers: [FormBuilder, { provide: OntologyService, useValue: ontologyServiceMock }],
       schemas: [NO_ERRORS_SCHEMA],

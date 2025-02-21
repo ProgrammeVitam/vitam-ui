@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, Input, OnDestroy, TemplateRef, ViewChild } from '@angular/core';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { cloneDeep } from 'lodash-es';
 import { ManagementRulesSharedDataService } from 'projects/archive-search/src/app/core/management-rules-shared-data.service';
@@ -188,7 +188,7 @@ export class UnlockCategoryInheritanceComponent implements OnDestroy {
 
   onCancelUnlockCategoryInheritance() {
     const dialogToOpen = this.confirmDeleteUnlockCategoryInheritance;
-    const dialogRef = this.dialog.open(dialogToOpen, { panelClass: 'vitamui-dialog' });
+    const dialogRef = this.dialog.open(dialogToOpen);
 
     this.showConfirmDeleteUnlockCategoryInheritanceSuscription = dialogRef
       .afterClosed()

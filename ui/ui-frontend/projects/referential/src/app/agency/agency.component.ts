@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { FileTypes } from 'projects/vitamui-library/src/public-api';
@@ -92,7 +92,7 @@ export class AgencyComponent extends SidenavPage<Agency> implements OnInit {
   }
 
   public openCreateAgencyDialog(): void {
-    const dialogRef = this.dialog.open(AgencyCreateComponent, { panelClass: 'vitamui-modal', disableClose: true });
+    const dialogRef = this.dialog.open(AgencyCreateComponent, { disableClose: true });
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result?.success) {
@@ -117,7 +117,6 @@ export class AgencyComponent extends SidenavPage<Agency> implements OnInit {
 
     this.dialog
       .open(ImportDialogComponent, {
-        panelClass: 'vitamui-modal',
         disableClose: true,
         data: params,
       })

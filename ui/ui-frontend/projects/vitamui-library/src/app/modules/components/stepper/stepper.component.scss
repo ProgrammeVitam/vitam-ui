@@ -1,4 +1,7 @@
 .step {
-  overflow: hidden;
   outline: none;
+
+  &.hidden {
+    overflow: hidden;
+  }
 }

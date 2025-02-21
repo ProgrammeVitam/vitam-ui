@@ -199,7 +199,7 @@
       "USE_PKCE": "With Pkce",
       "PROTOCOL_TYPE": "protocol type",
       "MODAL": {
-        "TITLE": "IDP Creation for",
+        "TITLE": "IDP Creation for \"{{name}}\"",
         "KEYSTORE_PWD": "Keystore password",
         "WRONG_PASSWORD": "Wrong password",
         "UPLOAD_KEYSTORE": "Upload the CAS keystore file",
@@ -257,14 +257,14 @@
       "NAME_ALREADY_EXIST": "Name already exists",
       "CODE_ALREADY_EXIST": "Code already exists",
       "CREATE": {
-        "TITLE": "Creation of an owner for",
+        "TITLE": "Creation of an owner for \"{{name}}\"",
         "PROOF_ELEMENTS": "This owner will hold the proof elements transverse to the organization."
       },
       "LIST": {
         "PROOF_ELEMENTS": "Tenant containing the proof elements transverse to the organization"
       },
       "MODAL": {
-        "SAFE_TITLE": "Safe creation for ",
+        "SAFE_TITLE": "Safe creation for \"{{name}}\"",
         "ACTION_BUTTON": "Create a safe",
         "NAME_ALREADY_EXIST": "Name already exists",
         "CODE_ALREADY_EXIST": "Code already exists"
@@ -465,14 +465,14 @@
         "TITLE": "Create profile groups",
         "EXISTING_NAME": "Name already exists",
         "WRONG_FORMAT": "Wrong format (alphanumeric characters separated by characters .)",
-        "PROVISIONNING_GROUP": "Group Provisioning",
+        "PROVISIONNING_GROUP": "Group Provisioning \"{{ name }}\"",
         "UNITS_INFORMATION": "Entering the membership units",
-        "UPDATE_UNITS": "Editing membership units of"
+        "UPDATE_UNITS": "Editing membership units of \"{{ name }}\""
       }
     },
     "PROFILE": {
       "MODAL": {
-        "TITLE": "Editing profiles of",
+        "TITLE": "Editing profiles of \"{{ name }}\"",
         "APP": "Application",
         "SAFE": "Safe",
         "PROFILE": "Profile"

@@ -27,89 +27,55 @@
           <i (click)="onDelete(i)" class="text normal vitamui-icon vitamui-icon-cross"></i>
         </div>
 
-        <mat-form-field class="col-3 vitamui-mat-select pb-2 customers selectorPosition" *ngIf="selectedOrganisations?.length > i">
-          <mat-select
-            [(value)]="selectedOrganisations[i]"
-            [placeholder]="'CONTEXTS_APP.CREATE_DIALOG.PERMISSION.ARRAY.ORGANISATIONS' | translate"
-            (selectionChange)="onCustomerSelect(permission)"
-            required
-          >
-            <mat-option *ngFor="let customer of customers" [value]="customer.id">
-              {{ customer.name }}
-            </mat-option>
-          </mat-select>
-          <div class="select-arrow">
-            <i class="material-icons">keyboard_arrow_down</i>
-          </div>
-        </mat-form-field>
+        <vitamui-select
+          class="col-3 pb-2 customers selectorPosition"
+          *ngIf="selectedOrganisations?.length > i"
+          [(ngModel)]="selectedOrganisations[i]"
+          (ngModelChange)="onCustomerSelect(permission)"
+          [placeholder]="'CONTEXTS_APP.CREATE_DIALOG.PERMISSION.ARRAY.ORGANISATIONS' | translate"
+          [options]="customersOptions"
+          [multiple]="false"
+          [enableSearch]="false"
+        ></vitamui-select>
 
-        <mat-form-field
-          class="col-3 vitamui-mat-select pb-2 tenants selectorPosition"
+        <vitamui-select
+          class="col-3 pb-2 tenants selectorPosition"
           *ngIf="selectedOrganisations?.length > i && selectedOrganisations[i] !== null"
-        >
-          <mat-select
-            [(value)]="permission.tenant"
-            [compareWith]="compareTenantIds"
-            [placeholder]="'CONTEXTS_APP.CREATE_DIALOG.PERMISSION.ARRAY.TENANTS' | translate"
-            (selectionChange)="onTenantSelect(permission)"
-            required
-          >
-            <mat-option *ngFor="let tenant of getTenantsForOrganisation(selectedOrganisations[i])" [value]="tenant.identifier">
-              {{ tenant.name }}
-            </mat-option>
-          </mat-select>
-          <div class="select-arrow">
-            <i class="material-icons">keyboard_arrow_down</i>
-          </div>
-        </mat-form-field>
+          [(ngModel)]="permission.tenant"
+          (ngModelChange)="onTenantSelect()"
+          [placeholder]="'CONTEXTS_APP.CREATE_DIALOG.PERMISSION.ARRAY.TENANTS' | translate"
+          [options]="tenantOptionsByOrganisation.get(selectedOrganisations[i])"
+          [multiple]="false"
+          [enableSearch]="false"
+        ></vitamui-select>
 
-        <mat-form-field class="col-3 vitamui-mat-select pb-2 contractsSelect selectorPosition" *ngIf="permission.tenant">
-          <mat-select
-            [(value)]="permission.accessContracts"
-            [placeholder]="'CONTEXTS_APP.CREATE_DIALOG.PERMISSION.ARRAY.ACCESS_CONTRACT' | translate"
-            (selectionChange)="onContractSelect()"
-            multiple
-            required
-          >
-            <vitamui-select-all-option
-              [value]="permission.accessContracts"
-              [values]="getAccessContractKeys(permission.tenant)"
-              [title]="'CONTEXTS_APP.CREATE_DIALOG.PERMISSION.ARRAY.ACCESS_CONTRACT_TITLE' | translate"
-              (toggleSelection)="permission.accessContracts = $event"
-            >
-            </vitamui-select-all-option>
-            <mat-option *ngFor="let contract of accessContracts.get('' + permission.tenant)" [value]="contract.key">
-              {{ contract.label }}
-            </mat-option>
-          </mat-select>
-          <div class="select-arrow">
-            <i class="material-icons">keyboard_arrow_down</i>
-          </div>
-        </mat-form-field>
+        <vitamui-select
+          class="col-3 pb-2 contractsSelect selectorPosition"
+          *ngIf="permission.tenant"
+          [(ngModel)]="permission.accessContracts"
+          (ngModelChange)="onContractSelect()"
+          [placeholder]="'CONTEXTS_APP.CREATE_DIALOG.PERMISSION.ARRAY.ACCESS_CONTRACT' | translate"
+          [options]="accessContractsOptionsByOrganisation.get('' + permission.tenant)"
+          [multiple]="true"
+          [enableSearch]="false"
+          [enableSelectAll]="true"
+          [enableDisplaySelected]="false"
+          [selectAllLabel]="'CONTEXTS_APP.CREATE_DIALOG.PERMISSION.ARRAY.ACCESS_CONTRACT_TITLE' | translate"
+        ></vitamui-select>
 
-        <mat-form-field class="col-2 ingestContracts vitamui-mat-select pb-2 contractsSelect selectorPosition" *ngIf="permission.tenant">
-          <mat-select
-            [(value)]="permission.ingestContracts"
-            (selectionChange)="onContractSelect()"
-            [placeholder]="'CONTEXTS_APP.CREATE_DIALOG.PERMISSION.ARRAY.INGEST_CONTRACT' | translate"
-            multiple
-            required
-          >
-            <vitamui-select-all-option
-              [value]="permission.ingestContracts"
-              [values]="getIngestContractKeys(permission.tenant)"
-              [title]="'CONTEXTS_APP.CREATE_DIALOG.PERMISSION.ARRAY.INGEST_CONTRACT_TITLE' | translate"
-              (toggleSelection)="permission.ingestContracts = $event"
-            >
-            </vitamui-select-all-option>
-            <mat-option *ngFor="let contract of ingestContracts.get('' + permission.tenant)" [value]="contract.key">
-              {{ contract.label }}
-            </mat-option>
-          </mat-select>
-          <div class="select-arrow">
-            <i class="material-icons">keyboard_arrow_down</i>
-          </div>
-        </mat-form-field>
+        <vitamui-select
+          class="col-3 pb-2 ingestContracts selectorPosition"
+          *ngIf="permission.tenant"
+          [(ngModel)]="permission.ingestContracts"
+          (ngModelChange)="onContractSelect()"
+          [placeholder]="'CONTEXTS_APP.CREATE_DIALOG.PERMISSION.ARRAY.INGEST_CONTRACT' | translate"
+          [options]="ingestContractsOptionsByOrganisation.get('' + permission.tenant)"
+          [multiple]="true"
+          [enableSearch]="false"
+          [enableSelectAll]="true"
+          [enableDisplaySelected]="false"
+          [selectAllLabel]="'CONTEXTS_APP.CREATE_DIALOG.PERMISSION.ARRAY.INGEST_CONTRACT_TITLE' | translate"
+        ></vitamui-select>
       </div>
     </div>
   </div>

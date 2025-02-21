@@ -1,10 +1,10 @@
-<div class="header"></div>
+<vitamui-dialog-header
+  [subhead]="'PROBATIVE_VALUE.CREATE_DIALOG.TITLE' | translate"
+  [title]="'PROBATIVE_VALUE.CREATE_DIALOG.SUBTITLE' | translate"
+></vitamui-dialog-header>
 
-<div class="content">
-  <div class="text medium light">{{ 'PROBATIVE_VALUE.CREATE_DIALOG.TITLE' | translate }}</div>
-  <div class="text large bold">{{ 'PROBATIVE_VALUE.CREATE_DIALOG.SUBTITLE' | translate }}</div>
-
-  <form [formGroup]="form" (ngSubmit)="onSubmit()" (keydown.enter)="$event.preventDefault()" class="mt-4">
+<form [formGroup]="form" (ngSubmit)="onSubmit()" (keydown.enter)="$event.preventDefault()">
+  <mat-dialog-content class="gap-3">
     <vitamui-common-input
       formControlName="unitId"
       minlength="36"
@@ -14,9 +14,9 @@
       placeholder="{{ 'PROBATIVE_VALUE.CREATE_DIALOG.UNIT_ID' | translate }}"
     >
       <ng-container *ngIf="form.get('unitId')?.touched">
-        <vitamui-common-input-error *ngIf="!!form.get('unitId')?.errors?.required">{{
-          'COMMON.REQUIRED' | translate
-        }}</vitamui-common-input-error>
+        <vitamui-common-input-error *ngIf="!!form.get('unitId')?.errors?.required"
+          >{{ 'COMMON.REQUIRED' | translate }}
+        </vitamui-common-input-error>
         <ng-container *ngIf="form.get('unitId')?.errors?.minlength">
           <ng-template #minlengthErrorTemplate let-minlength="minlength">
             <vitamui-common-input-error>
@@ -28,31 +28,28 @@
       </ng-container>
     </vitamui-common-input>
 
-    <mat-form-field class="vitamui-mat-select w-100 mb-4">
-      <mat-select formControlName="usage" placeholder="{{ 'PROBATIVE_VALUE.CREATE_DIALOG.USAGE' | translate }}" required>
-        <mat-option *ngFor="let usage of usages" [value]="usage.key">{{ usage.label }}</mat-option>
-      </mat-select>
-      <div class="select-arrow">
-        <i class="material-icons">keyboard_arrow_up</i>
-        <i class="material-icons">keyboard_arrow_down</i>
-      </div>
-    </mat-form-field>
+    <vitamui-select
+      class="w-100 d-block"
+      formControlName="usage"
+      [placeholder]="'PROBATIVE_VALUE.CREATE_DIALOG.USAGE' | translate"
+      [options]="usages"
+      [multiple]="false"
+      [enableSearch]="false"
+    ></vitamui-select>
 
-    <div class="d-flex">
-      <vitamui-common-input
-        formControlName="version"
-        required
-        placeholder="{{ 'PROBATIVE_VALUE.CREATE_DIALOG.VERSION' | translate }}"
-        type="number"
-        class="w-100"
-      >
-        <ng-container *ngIf="form.get('version')?.touched">
-          <vitamui-common-input-error *ngIf="!!form.get('version')?.errors?.required">{{
-            'COMMON.REQUIRED' | translate
-          }}</vitamui-common-input-error>
-        </ng-container>
-      </vitamui-common-input>
-    </div>
+    <vitamui-common-input
+      formControlName="version"
+      required
+      placeholder="{{ 'PROBATIVE_VALUE.CREATE_DIALOG.VERSION' | translate }}"
+      type="number"
+      class="w-100"
+    >
+      <ng-container *ngIf="form.get('version')?.touched">
+        <vitamui-common-input-error *ngIf="!!form.get('version')?.errors?.required"
+          >{{ 'COMMON.REQUIRED' | translate }}
+        </vitamui-common-input-error>
+      </ng-container>
+    </vitamui-common-input>
 
     <div class="d-flex align-items-center">
       <div class="text-medium-normal mr-2">{{ 'PROBATIVE_VALUE.HOME.ELECTRONICALLY_SIGNED_DOCUMENT' | translate }} :</div>
@@ -69,12 +66,12 @@
     <div *ngIf="showWarningMessage">
       <p [innerText]="'PROBATIVE_VALUE.HOME.WARNING_ELECTRONICALLY_SIGNED_DOCUMENT' | translate" class="text bold warningRow"></p>
     </div>
+  </mat-dialog-content>
 
-    <div class="actions">
-      <button type="submit" class="btn primary" [disabled]="form.invalid || isDisabledButton">
-        {{ 'PROBATIVE_VALUE.CREATE_DIALOG.SUBMIT' | translate }}
-      </button>
-      <button type="button" class="btn cancel link" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
-    </div>
-  </form>
-</div>
+  <mat-dialog-actions>
+    <button type="submit" class="btn primary" [disabled]="form.invalid || isDisabledButton">
+      {{ 'PROBATIVE_VALUE.CREATE_DIALOG.SUBMIT' | translate }}
+    </button>
+    <button type="button" class="btn cancel link" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
+  </mat-dialog-actions>
+</form>

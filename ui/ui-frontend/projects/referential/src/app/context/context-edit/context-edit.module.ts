@@ -38,31 +38,36 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { MatLegacyFormFieldModule as MatFormFieldModule } from '@angular/material/legacy-form-field';
-import { MatLegacyInputModule as MatInputModule } from '@angular/material/legacy-input';
-import { MatLegacyProgressBarModule as MatProgressBarModule } from '@angular/material/legacy-progress-bar';
-import { MatLegacySelectModule as MatSelectModule } from '@angular/material/legacy-select';
-import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
-import { VitamUICommonModule, VitamUIFieldErrorModule } from 'vitamui-library';
+import { VitamUICommonModule, VitamUIFieldErrorModule, VitamUILibraryModule } from 'vitamui-library';
 import { SharedModule } from '../../../../../identity/src/app/shared/shared.module';
 import { ContextEditPermissionModule } from '../context-create/context-edit-permission/context-edit-permission.module';
 import { ContextEditComponent } from './context-edit.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
     CommonModule,
-    SharedModule,
+    ContextEditPermissionModule,
     MatButtonToggleModule,
+    MatDialogModule,
     MatFormFieldModule,
     MatInputModule,
     MatProgressBarModule,
     MatSelectModule,
     MatSnackBarModule,
     ReactiveFormsModule,
+    SharedModule,
+    TranslateModule,
     VitamUICommonModule,
     VitamUIFieldErrorModule,
-    ContextEditPermissionModule,
+    VitamUILibraryModule,
   ],
   declarations: [ContextEditComponent],
 })

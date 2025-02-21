@@ -40,8 +40,8 @@ import { EMPTY, of } from 'rxjs';
 import { ENVIRONMENT, InjectorModule, LoggerModule } from 'vitamui-library';
 import { environment } from './../../environments/environment';
 
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
-import { MatLegacyMenuModule as MatMenuModule } from '@angular/material/legacy-menu';
+import { MatDialog } from '@angular/material/dialog';
+import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute } from '@angular/router';
@@ -129,7 +129,6 @@ describe('CustomerComponent', () => {
     page.createCustomer.click();
     expect(matDialogSpy.open).toHaveBeenCalledWith(CustomerCreateComponent, {
       data: { gdprReadOnlySettingStatus: true },
-      panelClass: 'vitamui-modal',
       disableClose: true,
     });
   });

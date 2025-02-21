@@ -41,8 +41,8 @@ import { FormErrorDisplayComponent } from '../../components/form-error-display/f
 import { TranslateModule } from '@ngx-translate/core';
 import { PipesModule } from '../../pipes/pipes.module';
 import { AppendStarPipe } from '../required.pipe';
-import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
-import { MatLegacySelectModule } from '@angular/material/legacy-select';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
 
 @Component({
   selector: 'vitamui-editor-select',
@@ -72,8 +72,8 @@ import { MatLegacySelectModule } from '@angular/material/legacy-select';
     TranslateModule,
     PipesModule,
     AppendStarPipe,
-    MatLegacyFormFieldModule,
-    MatLegacySelectModule,
+    MatFormFieldModule,
+    MatSelectModule,
   ],
 })
 export class EditorSelectComponent {

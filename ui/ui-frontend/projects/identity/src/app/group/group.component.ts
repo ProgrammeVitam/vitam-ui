@@ -72,7 +72,7 @@ import { GroupService } from './group.service';
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, ViewChild } from '@angular/core';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 
 import { DownloadUtils, GlobalEventService, Group, SidenavPage, VitamUISnackBarService } from 'vitamui-library';
@@ -105,7 +105,7 @@ export class GroupComponent extends SidenavPage<Group> {
   }
 
   public openCreateGroupDialog(): void {
-    const dialogRef = this.dialog.open(GroupCreateComponent, { panelClass: 'vitamui-modal', disableClose: true });
+    const dialogRef = this.dialog.open(GroupCreateComponent, { disableClose: true });
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         this.refreshList();

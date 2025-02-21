@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
@@ -87,7 +87,6 @@ export class RuleComponent extends SidenavPage<Rule> implements OnInit {
 
   openCreateRuleDialog() {
     const dialogRef = this.dialog.open(RuleCreateComponent, {
-      panelClass: 'vitamui-modal',
       disableClose: true,
     });
     dialogRef.componentInstance.tenantIdentifier = this.tenantId;
@@ -142,7 +141,6 @@ export class RuleComponent extends SidenavPage<Rule> implements OnInit {
 
     this.dialog
       .open(ImportDialogComponent, {
-        panelClass: 'vitamui-modal',
         disableClose: true,
         data: params,
       })

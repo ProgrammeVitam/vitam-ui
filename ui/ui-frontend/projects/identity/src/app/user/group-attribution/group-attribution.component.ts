@@ -34,11 +34,11 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Group, User } from 'vitamui-library';
+import { User } from 'vitamui-library';
 
 import { Component, forwardRef, Inject, OnInit } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
-import { MatLegacyDialogRef as MatDialogRef, MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA } from '@angular/material/legacy-dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { GroupSelection } from '../group-selection.interface';
 import { UserService } from '../user.service';
 
@@ -61,14 +61,6 @@ export class GroupAttributionComponent implements OnInit {
   selectedGroupName: string;
   CUSTOMER_ACTIVE_PROFILE_GROUPS_INDEX = 2;
   userGroupName: string;
-
-  public stepIndex = 0;
-  public stepCount = 1;
-
-  public profileGroupChange(event: Group): void {
-    this.user.groupId = event.id;
-    this.selectedGroupName = event.name;
-  }
 
   constructor(
     private userService: UserService,

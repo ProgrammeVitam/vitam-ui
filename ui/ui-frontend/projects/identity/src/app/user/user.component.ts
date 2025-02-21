@@ -36,7 +36,7 @@
  */
 import { HttpResponse } from '@angular/common/http';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { DownloadSnackBarService } from 'projects/referential/src/app/core/service/download-snack-bar.service';
 import { Subscription } from 'rxjs';
@@ -97,7 +97,6 @@ export class UserComponent extends SidenavPage<User> implements OnInit {
 
   public openCreateUserDialog(): void {
     const dialogRef = this.dialog.open(UserCreateComponent, {
-      panelClass: 'vitamui-modal',
       disableClose: true,
       data: { userInfo: this.connectedUserInfo, customer: this.customer, groups: this.groups },
     });

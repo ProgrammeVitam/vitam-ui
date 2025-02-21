@@ -38,7 +38,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { MatLegacySelectModule as MatSelectModule } from '@angular/material/legacy-select';
+import { MatSelectModule } from '@angular/material/select';
 import { of } from 'rxjs';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { SecurityProfileService } from '../../../security-profile/security-profile.service';

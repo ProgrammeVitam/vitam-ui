@@ -36,11 +36,7 @@
  */
 
 import { Component, Inject, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import {
-  MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA,
-  MatLegacyDialog as MatDialog,
-  MatLegacyDialogRef as MatDialogRef,
-} from '@angular/material/legacy-dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { finalize, from, switchMap } from 'rxjs';
 import {
   CriteriaDataType,
@@ -67,8 +63,6 @@ import { HttpEventType } from '@angular/common/http';
 export class AddUnitsComponent implements OnInit {
   protected readonly FilingPlanMode = FilingPlanMode;
   protected readonly maxSizeInBytes = 10 * Math.pow(1024, 3); // 10 Gb
-  public stepIndex = 0;
-  public stepCount = 2;
 
   isLoading = false;
 
@@ -119,7 +113,7 @@ export class AddUnitsComponent implements OnInit {
 
   cancel() {
     if (this.filesToUpload.length > 0) {
-      this.confirmCancelDialog = this.dialog.open(this.confirmCancelDialogTemplate, { panelClass: 'vitamui-dialog' });
+      this.confirmCancelDialog = this.dialog.open(this.confirmCancelDialogTemplate);
     } else {
       this.addUnitsDialogRef.close(false);
     }

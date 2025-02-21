@@ -39,6 +39,12 @@
     },
     "COPY": "Copier"
   },
+  "CONFIRM_DIALOG": {
+    "DELETE_TITLE": "Suppression {{objectType}}",
+    "UNSAVED_CHANGES_TITLE": "Modifications non sauvegardées",
+    "DELETE": " Confirmez-vous la suppression : {{objectType}} - {{objectName}}",
+    "SAVE": "Voulez-vous sauvegarder les modifications ?"
+  },
   "DATE": {
     "DATE": "Date",
     "DAYS": "Jours",
@@ -4924,7 +4930,6 @@
       "TRANSFER_REQUEST_WARNING_MESSAGE": "Attention, vous n’avez pas intégré d’originaux numériques à votre demande de transfert.",
       "TO_OPERATION_APP": "VOIR LE JOURNAL DES OPÉRATIONS",
       "EXPORT_LIMITS": "Le transfert d'archive ne peut être réalisé. Merci de restreindre votre sélection à 10 000 unités archivistiques maximum.",
-      "NEXT": "Suivant",
       "USAGES": {
         "BinaryMaster": "Original numérique",
         "Dissemination": "Copie de diffusion",
@@ -5765,7 +5770,7 @@
     },
     "UPDATE_NODE_DIALOG": {
       "TITLE": "Modification des positions de consultation",
-      "ALL_POSITIONS_INFO": "Choix des positions auquelles on souhaite donner accès en consultation"
+      "ALL_POSITIONS_INFO": "Choix des positions auxquelles on souhaite donner accès en consultation"
     }
   },
   "ONTOLOGY": {

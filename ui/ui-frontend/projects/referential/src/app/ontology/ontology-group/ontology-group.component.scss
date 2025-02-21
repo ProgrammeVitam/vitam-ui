@@ -1,3 +1,15 @@
-::ng-deep .mat-menu-panel {
+@use 'bootstrap/scss/bootstrap-grid';
+
+::ng-deep .mat-mdc-menu-panel {
   max-width: fit-content !important;
+}
+
+:host ::ng-deep {
+  mat-tab-header {
+    background-color: var(--vitamui-white);
+  }
+
+  .mat-mdc-tab-body-wrapper {
+    @extend .mt-4;
+  }
 }

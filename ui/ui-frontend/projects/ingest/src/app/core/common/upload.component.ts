@@ -36,15 +36,13 @@
  */
 import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
-import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { BytesPipe, StartupService } from 'vitamui-library';
 
 import { VitamUISnackBarComponent } from '../../shared/vitamui-snack-bar/vitamui-snack-bar.component';
 import { IngestType } from './ingest-type.enum';
 import { UploadService } from './upload.service';
-
-const LAST_STEP_INDEX = 1;
 
 @Component({
   selector: 'app-upload',
@@ -66,8 +64,6 @@ export class UploadComponent implements OnInit {
   contextId: IngestType;
   tenantIdentifier: string;
   isDisabled = true;
-  public stepIndex = 0;
-  public stepCount = 2;
 
   @ViewChild('fileSearch', { static: false }) fileSearch: any;
 
@@ -114,7 +110,6 @@ export class UploadComponent implements OnInit {
       this.hasError = true;
       return;
     }
-    this.stepIndex = LAST_STEP_INDEX;
   }
 
   addSip() {

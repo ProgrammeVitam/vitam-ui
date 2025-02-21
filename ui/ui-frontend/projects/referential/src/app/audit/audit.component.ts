@@ -36,7 +36,7 @@
  */
 import { Component, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import moment from 'moment';
 import { Event, GlobalEventService, SearchBarComponent, SidenavPage } from 'vitamui-library';
@@ -85,7 +85,7 @@ export class AuditComponent extends SidenavPage<Event> {
   }
 
   openCreateAuditDialog() {
-    const dialogRef = this.dialog.open(AuditCreateComponent, { panelClass: 'vitamui-modal', disableClose: true });
+    const dialogRef = this.dialog.open(AuditCreateComponent, { disableClose: true });
     dialogRef.componentInstance.tenantIdentifier = +this.tenantIdentifier;
     dialogRef.afterClosed().subscribe((result) => {
       if (result !== undefined && result.success) {

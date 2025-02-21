@@ -1,0 +1,14 @@
+@use 'bootstrap/scss/bootstrap-grid';
+
+:host {
+  @extend .mb-4;
+}
+
+.with-progress-bar {
+  margin-top: -21px;
+}
+
+vitamui-common-progress-bar {
+  display: block;
+  @extend .mb-4;
+}

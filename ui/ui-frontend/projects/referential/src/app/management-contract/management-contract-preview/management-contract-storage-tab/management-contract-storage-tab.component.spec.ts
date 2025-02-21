@@ -38,7 +38,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
-import { MatLegacyDialog as MatDialog, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
@@ -180,18 +180,6 @@ describe('ManagementContractStorageTabComponent', () => {
   });
 
   describe('DOM', () => {
-    it('should have 3 rows', () => {
-      const nativeElement = fixture.nativeElement;
-      const elementRow = nativeElement.querySelectorAll('.row');
-      expect(elementRow.length).toBe(3);
-    });
-
-    it('should have 3 columns', () => {
-      const nativeElement = fixture.nativeElement;
-      const elementRow = nativeElement.querySelectorAll('.col-10');
-      expect(elementRow.length).toBe(3);
-    });
-
     it('should have 3 vitamui common input', () => {
       const nativeElement = fixture.nativeElement;
       const elementVitamUiInput = nativeElement.querySelectorAll('vitamui-common-input');

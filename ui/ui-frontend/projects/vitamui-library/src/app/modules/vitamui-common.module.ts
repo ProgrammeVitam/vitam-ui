@@ -39,8 +39,8 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { APP_INITIALIZER, ModuleWithProviders, NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatLegacyDialogModule as MatDialogModule } from '@angular/material/legacy-dialog';
-import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { TranslateModule } from '@ngx-translate/core';
 import { first, switchMap } from 'rxjs/operators';
 import { AccountModule } from './account/account.module';
@@ -48,7 +48,7 @@ import { ArchiveUnitModule } from './archive-unit/archive-unit.module';
 import { AuthService } from './auth.service';
 import { AccordionModule } from './components/accordion/accordion.module';
 import { ApplicationCardModule } from './components/application';
-import { VitamUIAutocompleteModule, VitamUIAutocompleteMultiSelectTreeModule } from './components/autocomplete';
+import { VitamUIAutocompleteModule } from './components/autocomplete';
 import { CancelledSnackBarModule } from './components/cancelled-snack-bar/cancelled-snack-bar.module';
 import { ChipComponent } from './components/chip/chip.component';
 import { CollapseModule } from './components/collapse/collapse.module';
@@ -63,7 +63,6 @@ import { FileSelectorComponent } from './components/file-selector/file-selector.
 import { FooterModule } from './components/footer/footer.module';
 import { HeaderModule } from './components/header/header.module';
 import { SelectLanguageModule } from './components/header/select-language/select-language.module';
-import { SelectTenantDialogModule } from './components/header/select-tenant-dialog/select-tenant-dialog.module';
 import { UserPhotoModule } from './components/header/user-photo/user-photo.module';
 import { LogbookOperationFacetModule } from './components/logbook-operation-facet/logbook-operation-facet.module';
 import { MultipleOptionsDatepickerModule } from './components/multiple-options-datepicker/multiple-options-datepicker.module';
@@ -76,7 +75,6 @@ import { StepperModule } from './components/stepper/stepper.module';
 import { UserAlertCardModule } from './components/user-alerts/user-alerts-card';
 import { VitamuiBodyModule } from './components/vitamui-body/vitamui-body.module';
 import { VitamuiCommonBannerModule } from './components/vitamui-common-banner/vitamui-common-banner.module';
-import { VitamuiCommonSelectModule } from './components/vitamui-common-select/vitamui-common-select.module';
 import { VitamuiContentBreadcrumbModule } from './components/vitamui-content-breadcrumb/vitamui-content-breadcrumb.module';
 import { VitamUICustomerSelectModule } from './components/vitamui-customer-select/vitamui-customer-select.module';
 import { VitamUIDisplayNodeModule } from './components/vitamui-display-node/vitamui-display-node.module';
@@ -181,7 +179,6 @@ export function startupServiceFactory(startupService: StartupService, authServic
     SearchBarModule,
     SearchBarWithSiblingButtonModule,
     SecurityModule,
-    SelectTenantDialogModule,
     SlideToggleModule,
     StepperModule,
     SubrogationModule,
@@ -189,11 +186,9 @@ export function startupServiceFactory(startupService: StartupService, authServic
     UserAlertCardModule,
     UserPhotoModule,
     VitamUIAutocompleteModule,
-    VitamUIAutocompleteMultiSelectTreeModule,
     VitamuiBodyModule,
     VitamuiCommonBannerModule,
     VitamUICommonInputModule,
-    VitamuiCommonSelectModule,
     VitamuiContentBreadcrumbModule,
     VitamUICustomerSelectModule,
     VitamUIDisplayNodeModule,
@@ -245,7 +240,6 @@ export function startupServiceFactory(startupService: StartupService, authServic
     SearchBarWithSiblingButtonModule,
     SecurityModule,
     SelectLanguageModule,
-    SelectTenantDialogModule,
     SlideToggleModule,
     StepperModule,
     SubrogationModule,
@@ -253,11 +247,9 @@ export function startupServiceFactory(startupService: StartupService, authServic
     UserAlertCardModule,
     UserPhotoModule,
     VitamUIAutocompleteModule,
-    VitamUIAutocompleteMultiSelectTreeModule,
     VitamuiBodyModule,
     VitamuiCommonBannerModule,
     VitamUICommonInputModule,
-    VitamuiCommonSelectModule,
     VitamuiContentBreadcrumbModule,
     VitamUICustomerSelectModule,
     VitamUIDisplayNodeModule,

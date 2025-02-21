@@ -36,17 +36,13 @@
  */
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Observable, Subscription, of } from 'rxjs';
+import { Observable, of, Subscription } from 'rxjs';
 import { mergeMap, tap } from 'rxjs/operators';
-import { ManagementContract, PersistentIdentifierPolicyTypeEnum } from 'vitamui-library';
+import { ManagementContract, Option, PersistentIdentifierPolicyTypeEnum } from 'vitamui-library';
 import { FormGroupToManagementContractConverterService } from '../../components/form-group-to-management-contract-converter.service';
 import { ManagementContractToFormGroupConverterService } from '../../components/management-contract-to-form-group-converter.service';
 import { ManagementContractService } from '../../management-contract.service';
-
-interface PersistentIdentifierPolicyTypeOption {
-  label: string;
-  value: PersistentIdentifierPolicyTypeEnum | string;
-}
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-management-contract-identification-tab',
@@ -61,11 +57,13 @@ export class ManagementContractIdentificationTabComponent implements OnChanges {
   contractForm: FormGroup;
   sending = false;
 
-  policyTypeOptions: PersistentIdentifierPolicyTypeOption[] = [
-    { label: 'CONTRACT_MANAGEMENT.FORM_UPDATE.PERMANENT_IDENTIFIER_POLICY_OPTION.NONE.LABEL', value: '' },
+  policyTypeOptions: Option[] = [
+    { label: this.translateService.instant('CONTRACT_MANAGEMENT.FORM_UPDATE.PERMANENT_IDENTIFIER_POLICY_OPTION.NONE.LABEL'), key: '' },
     ...Object.values(PersistentIdentifierPolicyTypeEnum).map((pipt) => ({
-      label: `CONTRACT_MANAGEMENT.FORM_UPDATE.PERMANENT_IDENTIFIER_POLICY_OPTION.${pipt.toUpperCase()}.LABEL`,
-      value: pipt,
+      label: this.translateService.instant(
+        `CONTRACT_MANAGEMENT.FORM_UPDATE.PERMANENT_IDENTIFIER_POLICY_OPTION.${pipt.toUpperCase()}.LABEL`,
+      ),
+      key: pipt,
     })),
   ];
 
@@ -76,6 +74,7 @@ export class ManagementContractIdentificationTabComponent implements OnChanges {
     private formGroupToManagementContractConverterService: FormGroupToManagementContractConverterService,
     private managementContractService: ManagementContractService,
     private formBuilder: FormBuilder,
+    private translateService: TranslateService,
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -128,7 +127,7 @@ export class ManagementContractIdentificationTabComponent implements OnChanges {
             .getDefaultManagementContractForm()
             .get('persistentIdentifierPolicies') as FormArray;
         }
-        persistentIdentifierPolicyFormArray.patchValue([{ policyTypeOption: this.policyTypeOptions[1].value }]);
+        persistentIdentifierPolicyFormArray.patchValue([{ policyTypeOption: this.policyTypeOptions[1].key }]);
       }
       this.contractForm.removeControl('persistentIdentifierPolicies');
       this.contractForm.setControl('persistentIdentifierPolicies', persistentIdentifierPolicyFormArray);

@@ -33,14 +33,6 @@ $dropdowns-text: (
 );
 
 /*Defines dropdown font-text*/
-.mat-select-trigger {
-  //@extend .dropdown-font-text;
-  @extend .text-text-normal;
-  /*  display: block;
-    max-height: 19px;
-    padding-left: 10px;
-    padding-right: 20px;*/
-}
 
 .dropdown-font-text {
   padding-top: 4px;

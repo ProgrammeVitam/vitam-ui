@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { Observable, forkJoin, of } from 'rxjs';
 import { catchError, filter, map, switchMap, tap } from 'rxjs/operators';
 import {
@@ -265,7 +265,6 @@ export class ContextPermissionTabComponent implements OnInit {
 
   openEditContextDialog() {
     const dialogRef = this.dialog.open(ContextEditComponent, {
-      panelClass: 'vitamui-modal',
       disableClose: true,
       data: { permissions: this.updatedPermissions, enableControl: this._context.enableControl },
     });

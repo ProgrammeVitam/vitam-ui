@@ -1,23 +1,20 @@
 @import '../../../../sass/mixins/elevation';
 
 ::ng-deep {
-  .more-action-menu.mat-menu-panel {
+  .more-action-menu.mat-mdc-menu-panel {
     max-width: max-content;
     background: none;
     @include shadow-0;
+    border: none;
+    overflow: visible;
 
-    .mat-menu-content {
-      align-items: flex-end;
-      border-top: none;
+    .mat-mdc-menu-content {
       min-width: 152px;
+      padding: 0;
     }
 
     &.start {
-      .mat-menu-content {
-        align-items: flex-start;
-      }
-
-      .mat-menu-item:nth-of-type(2) {
+      .mat-mdc-menu-item:nth-of-type(1) {
         border-radius: 0 5px 0 0;
       }
     }
@@ -26,15 +23,15 @@
       font-size: xx-large;
     }
 
-    .mat-menu-item {
+    .mat-mdc-menu-item {
       border-left: 1px solid var(--vitamui-secondary);
       border-right: 1px solid var(--vitamui-secondary);
       border-top: 1px solid var(--vitamui-grey-300);
       border-bottom: none;
       background-color: white;
-      font-size: 16px;
+      --mat-menu-item-label-text-size: 16px;
 
-      &:nth-of-type(2) {
+      &:nth-of-type(1) {
         border-top: 1px solid var(--vitamui-secondary);
         border-radius: 5px 0 0 0;
       }
@@ -45,28 +42,29 @@
       }
     }
 
-    .mat-menu-item.menu-cancel-button {
+    .mat-mdc-menu-item.menu-cancel-button {
       border: 1px solid var(--vitamui-secondary);
       border-bottom: none;
-      border-radius: 5px 5px 0 0;
+      border-radius: 5px 5px 0 0 !important;
       width: 50px;
       height: 50px;
       display: flex;
       align-items: center;
       justify-content: center;
 
-      > i {
+      i {
         font-size: 14px;
         color: var(--vitamui-secondary);
       }
     }
 
-    .mat-menu-item:hover:not([disabled]):not(.menu-cancel-button) {
+    .mat-mdc-menu-item:hover:not([disabled]):not(.menu-cancel-button) {
       background-color: var(--vitamui-grey-300);
     }
 
-    .mat-menu-item[disabled] {
+    .mat-mdc-menu-item[disabled] {
       background-color: var(--vitamui-grey-400);
+      opacity: 1;
     }
   }
 }

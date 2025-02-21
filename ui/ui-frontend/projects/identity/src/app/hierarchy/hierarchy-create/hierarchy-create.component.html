@@ -1,13 +1,9 @@
-<div class="header">
-  <vitamui-common-progress-bar [index]="stepIndex" [count]="1"></vitamui-common-progress-bar>
-</div>
+<vitamui-dialog-header [title]="'HIERARCHY.INFORMATIONS.MODAL.TITLE' | translate"></vitamui-dialog-header>
 
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
-  <div class="content">
-    <div class="text large bold">{{ 'HIERARCHY.INFORMATIONS.MODAL.TITLE' | translate }}</div>
-
+  <mat-dialog-content class="gap-3 align-items-stretch">
     <div class="d-flex justify-content-between">
-      <div class="mt-2">
+      <div class="d-flex align-items-center">
         <vitamui-common-slide-toggle formControlName="enabled">
           <span *ngIf="!form?.get('enabled').value">{{ 'HIERARCHY.INFORMATIONS.INACTIVE_SWITCH' | translate }}</span>
           <span *ngIf="form?.get('enabled').value">{{ 'HIERARCHY.INFORMATIONS.ACTIVE_SWITCH' | translate }}</span>
@@ -15,7 +11,7 @@
       </div>
 
       <div class="d-flex">
-        <div class="mr-4 mt-2">
+        <div class="d-flex align-items-center mr-4">
           <div class="text normal light">{{ 'HIERARCHY.INFORMATIONS.LEVEL' | translate }}</div>
           <div class="text medium bold">{{ authService.user.level }}</div>
         </div>
@@ -39,10 +35,10 @@
       [tenantIdentifier]="data.tenantId"
       [applicationNameExclude]="['USERS_APP', 'ARCHIVE_APP']"
     ></app-profiles-form>
+  </mat-dialog-content>
 
-    <div class="actions">
-      <button type="submit" class="btn primary" [disabled]="formValid()">{{ 'COMMON.SUBMIT' | translate }}</button>
-      <button type="button" class="btn cancel link" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
-    </div>
-  </div>
+  <mat-dialog-actions>
+    <button type="submit" class="btn primary" [disabled]="formValid()">{{ 'COMMON.SUBMIT' | translate }}</button>
+    <button type="button" class="btn cancel link" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
+  </mat-dialog-actions>
 </form>

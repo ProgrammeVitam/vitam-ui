@@ -21,19 +21,6 @@
   padding-top: 20px;
 }
 
-.text-title {
-  font-family: Mulish;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 16px;
-  line-height: 24px;
-
-  display: flex;
-  align-items: center;
-
-  color: var(--vitamui-grey-600);
-}
-
 .cancel-popup {
   padding-left: 40px;
 }

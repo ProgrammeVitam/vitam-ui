@@ -1,9 +1,3 @@
-:host::ng-deep {
-  .mat-button-wrapper {
-    justify-content: center;
-  }
-}
-
 tr:not(:hover) .cdk-column-deleteButton button {
   visibility: hidden;
 }

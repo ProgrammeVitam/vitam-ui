@@ -36,7 +36,7 @@
  */
 import { Component, OnDestroy, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import moment from 'moment';
 import { Subscription } from 'rxjs';
@@ -87,7 +87,6 @@ export class ProbativeValueComponent extends SidenavPage<Event> implements OnDes
 
   openCreateProbativeValueDialog() {
     const dialogRef = this.dialog.open(ProbativeValueCreateComponent, {
-      panelClass: 'vitamui-modal',
       disableClose: true,
       autoFocus: false,
     });

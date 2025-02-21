@@ -36,19 +36,16 @@
  */
 
 import { Component, Inject } from '@angular/core';
-import {
-  MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA,
-  MatLegacyDialogModule as MatDialogModule,
-  MatLegacyDialogRef as MatDialogRef,
-} from '@angular/material/legacy-dialog';
 import { TranslateModule } from '@ngx-translate/core';
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { DialogHeaderComponent } from '../../../../lib/components/dialog-header/dialog-header.component';
 
 @Component({
   selector: 'vitamui-alert-dialog',
   templateUrl: './alert-dialog.component.html',
   styleUrls: ['./alert-dialog.component.scss'],
   standalone: true,
-  imports: [TranslateModule, MatDialogModule],
+  imports: [TranslateModule, MatDialogModule, DialogHeaderComponent],
 })
 export class AlertDialogComponent {
   constructor(

@@ -8,47 +8,22 @@
   font-weight: 400;
   font-size: 16px;
 
-  .mat-tab-group.mat-primary .mat-ink-bar,
-  .mat-tab-nav-bar.mat-primary .mat-ink-bar {
+  .mat-mdc-tab-group.mat-primary .mat-ink-bar,
+  .mat-mdc-tab-nav-bar.mat-primary .mat-ink-bar {
     background: var(--vitamui-primary);
-  }
-
-  .mat-tab-header-pagination.mat-tab-header-pagination-disabled {
-    display: none !important;
-  }
-
-  .mat-list-text {
-    height: 100%;
-    padding: 0 !important;
   }
 
   mat-pseudo-checkbox.mat-pseudo-checkbox {
     display: none;
   }
-
   mat-list-option:focus,
   mat-list-option:hover {
     background-color: var(--vitamui-grey-300);
   }
 
-  .mat-tab-body-content {
-    overflow: hidden;
-  }
-
-  .mat-list-single-selected-option {
-    background-color: var(--vitamui-white);
-  }
-
-  .mat-tab-label.mat-tab-label-active {
-    color: var(--vitamui-primary);
-    opacity: 1;
-    font-weight: bold;
-  }
-
   vitamui-common-menu-application-tile {
     height: 100%;
   }
-
   mat-list-option vitamui-common-menu-application-tile * {
     .hover-focus {
       visibility: hidden;
@@ -64,11 +39,6 @@
     overflow-y: auto;
     overflow-x: hidden;
   }
-
-  mat-list-option .mat-list-item-content {
-    padding: 0 !important;
-  }
-
   mat-list-option:focus {
     vitamui-common-menu-application-tile * {
       .appName {
@@ -88,7 +58,6 @@
       }
     }
   }
-
   mat-list-option:hover {
     vitamui-common-menu-application-tile * {
       .appName {
@@ -99,10 +68,6 @@
         visibility: visible;
       }
     }
-  }
-
-  .mat-tab-body-wrapper {
-    height: 100%;
   }
 
   *:focus {

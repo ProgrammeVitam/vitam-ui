@@ -2,7 +2,7 @@
 @import '../../../../sass/mixins/elevation';
 
 .mat-drawer,
-.mat-dialog-container {
+.mat-mdc-dialog-container {
   .vitamui-duration-input {
     @include dialog-elevation-dark;
   }

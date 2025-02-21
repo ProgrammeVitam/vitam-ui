@@ -36,11 +36,8 @@
  */
 
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA } from '@angular/material/legacy-dialog';
-import {
-  MAT_LEGACY_SNACK_BAR_DATA as MAT_SNACK_BAR_DATA,
-  MatLegacySnackBarRef as MatSnackBarRef,
-} from '@angular/material/legacy-snack-bar';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_SNACK_BAR_DATA, MatSnackBarRef } from '@angular/material/snack-bar';
 
 import { VitamUISnackBarComponent } from './vitamui-snack-bar.component';
 

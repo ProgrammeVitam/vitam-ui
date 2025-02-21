@@ -1,12 +1,12 @@
-<div class="header">
-  <vitamui-common-progress-bar [count]="stepCount" [index]="stepIndex"></vitamui-common-progress-bar>
-</div>
+<vitamui-dialog-header
+  [stepper]="stepper"
+  [title]="'ARCHIVE_SEARCH.TRANSFER_ACKNOWLEDGMENT.TITLE_FIRST_STEP' | translate"
+></vitamui-dialog-header>
 
-<vitamui-common-stepper [selectedIndex]="stepIndex" (selectionChange)="stepIndex = $event.selectedIndex">
+<vitamui-common-stepper #stepper [selectedIndex]="stepIndex" (selectionChange)="stepIndex = $event.selectedIndex">
   <!-- Step 1 -->
   <cdk-step>
-    <div class="content">
-      <h2>{{ 'ARCHIVE_SEARCH.TRANSFER_ACKNOWLEDGMENT.TITLE_FIRST_STEP' | translate }}</h2>
+    <mat-dialog-content>
       <div>
         <h4>
           {{ 'ARCHIVE_SEARCH.TRANSFER_ACKNOWLEDGMENT.DOWNLOAD_ATR_FILE' | translate }}
@@ -18,27 +18,26 @@
       </div>
 
       <div *ngIf="isLoadingData; then loadingMode; else dragAndDropArea"></div>
+    </mat-dialog-content>
 
-      <div class="actions">
-        <button
-          (click)="validateAndParseXmlFile()"
-          [disabled]="isDisabled || hasError || hasFileSizeError || isAtrNotValid || isLoadingData"
-          class="btn primary"
-          type="button"
-        >
-          {{ 'ARCHIVE_SEARCH.TRANSFER_ACKNOWLEDGMENT.NEXT_STEP' | translate }}
-        </button>
-        <button (click)="onClose()" class="btn cancel link" type="button" [disabled]="isLoadingData">
-          {{ 'COMMON.UNDO' | translate }}
-        </button>
-      </div>
-    </div>
+    <mat-dialog-actions>
+      <button
+        (click)="validateAndParseXmlFile()"
+        [disabled]="isDisabled || hasError || hasFileSizeError || isAtrNotValid || isLoadingData"
+        class="btn primary"
+        type="button"
+      >
+        {{ 'COMMON.NEXT' | translate }}
+      </button>
+      <button (click)="onClose()" class="btn cancel link" type="button" [disabled]="isLoadingData">
+        {{ 'COMMON.UNDO' | translate }}
+      </button>
+    </mat-dialog-actions>
   </cdk-step>
 
   <!-- Step 2 -->
   <cdk-step>
-    <div class="content">
-      <h2>{{ 'ARCHIVE_SEARCH.TRANSFER_ACKNOWLEDGMENT.TRANSFER_REPLY_OPERATION' | translate }}</h2>
+    <mat-dialog-content>
       <div>
         <p class="detail-text">
           {{ 'ARCHIVE_SEARCH.TRANSFER_ACKNOWLEDGMENT.OPERATION_MESSAGE_IDENTIFIER' | translate }}
@@ -78,33 +77,29 @@
         </p>
         <p>{{ transfertDetails.archiveTransferReply }}</p>
       </div>
+    </mat-dialog-content>
 
-      <div class="actions">
+    <mat-dialog-actions>
+      <div>
         <button (click)="goToNextStep()" class="btn primary" type="button">
-          {{ 'ARCHIVE_SEARCH.TRANSFER_ACKNOWLEDGMENT.NEXT_STEP' | translate }}
+          {{ 'COMMON.NEXT' | translate }}
         </button>
         <button (click)="onCancel()" class="btn cancel link" type="button">
           {{ 'ARCHIVE_SEARCH.TRANSFER_ACKNOWLEDGMENT.CANCEL_ACTION' | translate }}
         </button>
       </div>
-
-      <button type="button" class="btn link" (click)="backToPreviousStep()">
-        <i class="vitamui-icon vitamui-icon-chevron-left"></i>
-        <ng-container
-          ><span class="underline"> {{ 'ARCHIVE_SEARCH.TRANSFER_ACKNOWLEDGMENT.PREVIOUS_STEP' | translate }}</span></ng-container
-        >
-      </button>
-    </div>
+      <vitamui-previous-step></vitamui-previous-step>
+    </mat-dialog-actions>
   </cdk-step>
 
   <!-- Step 3 -->
   <cdk-step>
-    <div class="content">
-      <h2>{{ 'ARCHIVE_SEARCH.TRANSFER_ACKNOWLEDGMENT.ACKNOWLEDGMENT_TRANSFER_VALIDATION' | translate }}</h2>
-
+    <mat-dialog-content>
       <div *ngIf="isSubmitBtnDisabled; then loadingMode; else transferReplyStatusDetails"></div>
+    </mat-dialog-content>
 
-      <div class="actions">
+    <mat-dialog-actions>
+      <div>
         <button (click)="applyTransferAcknowledgment()" class="btn primary" type="button" [disabled]="isSubmitBtnDisabled">
           {{ 'ARCHIVE_SEARCH.TRANSFER_ACKNOWLEDGMENT.REPLY_TRANSFER' | translate }}
         </button>
@@ -112,27 +107,19 @@
           {{ 'ARCHIVE_SEARCH.TRANSFER_ACKNOWLEDGMENT.CANCEL_ACTION' | translate }}
         </button>
       </div>
-
-      <button type="button" class="btn link" (click)="backToPreviousStep()" [disabled]="isSubmitBtnDisabled">
-        <i class="vitamui-icon vitamui-icon-chevron-left"></i>
-        <ng-container
-          ><span class="underline"> {{ 'ARCHIVE_SEARCH.TRANSFER_ACKNOWLEDGMENT.PREVIOUS_STEP' | translate }}</span></ng-container
-        >
-      </button>
-    </div>
+      <vitamui-previous-step [disabled]="isSubmitBtnDisabled"></vitamui-previous-step>
+    </mat-dialog-actions>
   </cdk-step>
 </vitamui-common-stepper>
 
 <ng-template #confirmDeleteTransferAcknowledgmentDialog>
+  <vitamui-dialog-header [title]="'ARCHIVE_SEARCH.TRANSFER_ACKNOWLEDGMENT.ACKNOWLEDGMENT_TRANSFER' | translate"></vitamui-dialog-header>
   <mat-dialog-content>
-    <div class="text-title">{{ 'ARCHIVE_SEARCH.TRANSFER_ACKNOWLEDGMENT.ACKNOWLEDGMENT_TRANSFER' | translate }}</div>
-    <br />
-
     <div class="text large bold">
       {{ 'ARCHIVE_SEARCH.TRANSFER_ACKNOWLEDGMENT.CANCEL_TRANSFER_OPERATION' | translate }}
     </div>
   </mat-dialog-content>
-  <br />
+
   <mat-dialog-actions>
     <button (click)="onConfirm()" class="btn primary btn-confirm-dialog">
       {{ 'ARCHIVE_SEARCH.TRANSFER_ACKNOWLEDGMENT.TRANSFER_CONFIRM' | translate }}

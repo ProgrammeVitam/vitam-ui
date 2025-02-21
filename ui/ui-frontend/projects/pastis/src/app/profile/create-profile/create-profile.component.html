@@ -1,24 +1,13 @@
-<div [formGroup]="form">
-  <h2 class="pastis-dialog-config-title" matDialogTitle>
-    <i (click)="dialogRef.close()" class="vitamui-icon vitamui-icon-close icon-close"></i>
-    <p class="pastis-dialog-subtitle">
-      <b>{{ data.subTitleDialog }}</b>
-    </p>
-    <P class="pastis-dialog-title">{{ data.titleDialog }}</P>
-  </h2>
+<vitamui-dialog-header [subhead]="data.subTitleDialog" [title]="data.titleDialog"></vitamui-dialog-header>
 
-  <div class="conteneur">
-    <div class="gauche">
-      <pastis-generic-popup
-        [firstChoice]="ProfileType.PA"
-        [secondChoice]="ProfileType.PUA"
-        [title]="'PROFILE.POP_UP_CREATION.CHOICE.TITLE' | translate"
-        (changeStatusEvent)="form.controls.profileType.setValue($event)"
-      >
-      </pastis-generic-popup>
-    </div>
-
-    <div class="droite">
+<mat-dialog-content>
+  <div [formGroup]="form" class="gap-6">
+    <pastis-generic-popup
+      [firstChoice]="ProfileType.PA"
+      [secondChoice]="ProfileType.PUA"
+      [title]="'PROFILE.POP_UP_CREATION.CHOICE.TITLE' | translate"
+      (changeStatusEvent)="form.controls.profileType.setValue($event)"
+    >
       <i
         class="vitamui-icon vitamui-icon-info vitamui-grey-700 clickable"
         [style.fontSize.px]="25"
@@ -30,22 +19,20 @@
         vitamuiTooltipPosition="RIGHT"
         [vitamuiTooltipShowDelay]="300"
       ></i>
+    </pastis-generic-popup>
+
+    <div>
+      <div class="subtitle">Version du SEDA souhaitée</div>
+      <mat-radio-group class="seda-options" formControlName="profileVersion">
+        <mat-radio-button *ngFor="let profileVersionOption of ProfileVersionOptions" [value]="profileVersionOption.version">{{
+          profileVersionOption.label
+        }}</mat-radio-button>
+      </mat-radio-group>
     </div>
   </div>
+</mat-dialog-content>
 
-  <div class="container">
-    <div class="subtitle">Version du SEDA souhaitée</div>
-    <mat-radio-group class="seda-options" formControlName="profileVersion">
-      <mat-radio-button *ngFor="let profileVersionOption of ProfileVersionOptions" [value]="profileVersionOption.version">{{
-        profileVersionOption.label
-      }}</mat-radio-button>
-    </mat-radio-group>
-  </div>
-
-  <div class="btn-container">
-    <mat-dialog-actions align="right" class="actions">
-      <button type="submit" class="btn primary" (click)="submit()" [disabled]="form.invalid">{{ data.okLabel }}</button>
-      <button type="button" class="btn cancel link" (click)="dialogRef.close()">{{ data.cancelLabel }}</button>
-    </mat-dialog-actions>
-  </div>
-</div>
+<mat-dialog-actions>
+  <button type="submit" class="btn primary" (click)="submit()" [disabled]="form.invalid">{{ data.okLabel }}</button>
+  <button type="button" class="btn cancel link" (click)="dialogRef.close()">{{ data.cancelLabel }}</button>
+</mat-dialog-actions>

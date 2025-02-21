@@ -36,7 +36,7 @@
  */
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FilingPlanMode, IngestContract } from 'vitamui-library';
 import { IngestContractService } from '../../../ingest-contract.service';
 
@@ -50,9 +50,6 @@ export class IngestContractNodeUpdateComponent implements OnInit {
   accessContractId: string;
   tenantIdentifier: number;
   selectNodesForm: FormGroup;
-
-  stepCount = 2;
-  stepIndex = 0;
 
   hasError = true;
   message: string;
@@ -124,9 +121,5 @@ export class IngestContractNodeUpdateComponent implements OnInit {
     this.ingestContractService.patch(formData).subscribe((updatedIngestContract) => {
       this.dialogRef.close(updatedIngestContract);
     });
-  }
-
-  get stepProgress() {
-    return ((this.stepIndex + 1) / 2) * 100;
   }
 }

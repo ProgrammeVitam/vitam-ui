@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApplicationService, DownloadUtils, GlobalEventService, IngestContract, SecurityService, SidenavPage } from 'vitamui-library';
 import { DownloadSnackBarService } from './../core/service/download-snack-bar.service';
@@ -103,7 +103,6 @@ export class IngestContractComponent extends SidenavPage<IngestContract> impleme
 
   openCreateIngestcontractDialog() {
     const dialogRef = this.dialog.open(IngestContractCreateComponent, {
-      panelClass: 'vitamui-modal',
       disableClose: true,
     });
     dialogRef.componentInstance.tenantIdentifier = this.tenantId;
@@ -152,7 +151,7 @@ export class IngestContractComponent extends SidenavPage<IngestContract> impleme
     };
 
     this.dialog
-      .open(ImportDialogComponent, { panelClass: 'vitamui-modal', disableClose: true, data: params })
+      .open(ImportDialogComponent, { disableClose: true, data: params })
       .afterClosed()
       .subscribe((result) => {
         if (result?.successfulImport) {

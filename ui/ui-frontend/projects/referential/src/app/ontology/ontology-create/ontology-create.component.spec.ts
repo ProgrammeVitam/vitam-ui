@@ -38,19 +38,20 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
-import { MatLegacyFormFieldModule as MatFormFieldModule } from '@angular/material/legacy-form-field';
-import { MatLegacyProgressBarModule as MatProgressBarModule } from '@angular/material/legacy-progress-bar';
-import { MatLegacyProgressSpinnerModule as MatProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
-import { MatLegacySelectModule as MatSelectModule } from '@angular/material/legacy-select';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSelectModule } from '@angular/material/select';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { EMPTY, of } from 'rxjs';
-import { ConfirmDialogService } from 'vitamui-library';
+import { ConfirmDialogService, VitamUILibraryModule } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 
 import { OntologyService } from '../ontology.service';
 import { OntologyCreateComponent } from './ontology-create.component';
 import { OntologyCreateValidators } from './ontology-create.validators';
+import { TranslateModule } from '@ngx-translate/core';
 
 const expectedOntology = {
   shortName: 'Name',
@@ -92,14 +93,16 @@ describe('OntologyCreateComponent', () => {
 
     await TestBed.configureTestingModule({
       imports: [
-        ReactiveFormsModule,
-        MatFormFieldModule,
-        MatSelectModule,
         MatButtonToggleModule,
+        MatFormFieldModule,
         MatProgressBarModule,
-        NoopAnimationsModule,
         MatProgressSpinnerModule,
+        MatSelectModule,
+        NoopAnimationsModule,
+        ReactiveFormsModule,
+        TranslateModule.forRoot(),
         VitamUICommonTestModule,
+        VitamUILibraryModule,
       ],
       declarations: [OntologyCreateComponent],
       providers: [

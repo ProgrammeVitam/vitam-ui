@@ -128,15 +128,16 @@
     </div>
     @if (otherCriteriaOptions) {
       <div class="hgap-4 align-items-start align-items-start pb-4">
-        <vitamui-common-autocomplete-multi-select-tree
+        <vitamui-select-with-tree
           formControlName="otherCriteriaList"
-          [multiSelectOptions]="otherCriteriaOptions"
+          [multiple]="true"
+          [options]="otherCriteriaOptions"
           [getDisplayValue]="getOtherCriteriaDisplayValue"
           [placeholder]="'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.OTHER_FIELDS' | translate"
           [searchBarPlaceHolder]="'Entrer les premières lettres de votre recherche' | translate"
           class="w-100"
         >
-        </vitamui-common-autocomplete-multi-select-tree>
+        </vitamui-select-with-tree>
         <div class="gap-4 w-100" formArrayName="otherCriteria">
           @for (otherCriteria of otherCriteriaList.value; track otherCriteria.ApiPath) {
             @if (['TEXT', 'KEYWORD', 'BOOLEAN', 'LONG'].includes(otherCriteria.Type)) {

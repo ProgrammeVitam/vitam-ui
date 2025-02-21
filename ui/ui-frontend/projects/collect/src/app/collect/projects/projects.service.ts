@@ -37,7 +37,7 @@
 import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { Project, SearchService } from 'vitamui-library';
+import { Option, Project, SearchService } from 'vitamui-library';
 import { ProjectsApiService } from '../core/api/project-api.service';
 
 @Injectable({
@@ -67,10 +67,10 @@ export class ProjectsService extends SearchService<Project> {
     this.translationService.instant('ACQUISITION_INFORMATION.UNKNOWN'),
   ];
 
-  legalStatusList = [
-    { id: 'Public Archive', value: this.translationService.instant('LEGAL_STATUS.PUBLIC_ARCHIVE') },
-    { id: 'Private Archive', value: this.translationService.instant('LEGAL_STATUS.PRIVATE_ARCHIVE') },
-    { id: 'Public and Private Archive', value: this.translationService.instant('LEGAL_STATUS.PUBLIC_PRIVATE_ARCHIVE') },
+  legalStatusList: Option[] = [
+    { key: 'Public Archive', label: this.translationService.instant('LEGAL_STATUS.PUBLIC_ARCHIVE') },
+    { key: 'Private Archive', label: this.translationService.instant('LEGAL_STATUS.PRIVATE_ARCHIVE') },
+    { key: 'Public and Private Archive', label: this.translationService.instant('LEGAL_STATUS.PUBLIC_PRIVATE_ARCHIVE') },
   ];
 
   constructor(

@@ -39,13 +39,13 @@
         "HOLDING_SCHEME": "Import a position tree",
         "FILING_SCHEME": "Import a holding scheme",
         "DEFAULT_WORKFLOW": "New Ingest",
-        "BLANK_WORKFLOW": "Test Ingest"
+        "BLANK_TEST": "Test Ingest"
       },
       "MESSAGE_IMPORT_TYPE": {
         "HOLDING_SCHEME": "Import a position tree",
         "FILING_SCHEME": "Import a holding scheme",
         "DEFAULT_WORKFLOW": "Ingest a new SIP",
-        "BLANK_WORKFLOW": "Test ingest a new SIP"
+        "BLANK_TEST": "Test ingest a new SIP"
       }
     }
   },

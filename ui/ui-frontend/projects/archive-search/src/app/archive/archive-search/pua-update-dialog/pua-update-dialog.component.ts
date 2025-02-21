@@ -35,17 +35,14 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, Inject } from '@angular/core';
-import {
-  MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA,
-  MatLegacyDialogModule as MatDialogModule,
-  MatLegacyDialogRef as MatDialogRef,
-} from '@angular/material/legacy-dialog';
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatRadioModule } from '@angular/material/radio';
 import { finalize, Observable } from 'rxjs';
 import { AsyncPipe, I18nPluralPipe } from '@angular/common';
 import {
   ArchiveUnitProfilesService,
+  DialogHeaderComponent,
   Logger,
   SearchCriteriaEltDto,
   SelectComponent,
@@ -65,7 +62,17 @@ export interface PuaUpdateDialogComponentData {
 
 @Component({
   standalone: true,
-  imports: [FormsModule, MatRadioModule, ReactiveFormsModule, MatDialogModule, AsyncPipe, SelectComponent, TranslateModule, I18nPluralPipe],
+  imports: [
+    FormsModule,
+    MatRadioModule,
+    ReactiveFormsModule,
+    MatDialogModule,
+    AsyncPipe,
+    SelectComponent,
+    TranslateModule,
+    I18nPluralPipe,
+    DialogHeaderComponent,
+  ],
   templateUrl: './pua-update-dialog.component.html',
   styleUrl: './pua-update-dialog.component.scss',
 })

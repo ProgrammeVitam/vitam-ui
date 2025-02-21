@@ -79,7 +79,7 @@
             </div>
 
             <vitamui-common-input
-              class="col-6 px-0"
+              class="col-6 px-0 mb-3"
               formControlName="originatingAgencyIdentifier"
               placeholder="{{ 'COLLECT.PROJECT_UNIT_PREVIEW.FIELDS.SP_ID' | translate }} "
               required
@@ -109,11 +109,11 @@
               *ngIf="editMode"
             >
             </vitamui-common-input>
-            <div class="row padding-style" *ngIf="editMode">
+            <div class="mt-5 hgap-3" *ngIf="editMode">
               <button type="button" class="btn primary" [disabled]="!form.valid || !form.dirty" (click)="launchUpdate()">
                 {{ 'UNIT_UPDATE.SAVE' | translate }}
               </button>
-              <button class="btn cancel" type="button" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
+              <button class="btn link cancel" type="button" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
             </div>
 
             <div class="read-only-field" *ngIf="!editMode">
@@ -189,85 +189,76 @@
               </div>
             </div>
 
-            <div class="col-12 mr-4" *ngIf="editMode">
-              <div class="form-control read-only-field">
-                <vitamui-common-input
-                  class="col-6"
-                  formControlName="archivalAgencyIdentifier"
-                  placeholder="{{ 'COLLECT.PROJECT_CONTEXT_ARCHIVAL_AGENCY' | translate }}"
-                  required
-                >
-                </vitamui-common-input>
+            <div class="gap-5" *ngIf="editMode">
+              <div class="gap-3 w-100 align-items-stretch">
+                <div class="hgap-2">
+                  <vitamui-common-input
+                    class="w-50"
+                    formControlName="archivalAgencyIdentifier"
+                    placeholder="{{ 'COLLECT.PROJECT_CONTEXT_ARCHIVAL_AGENCY' | translate }}"
+                    required
+                  >
+                  </vitamui-common-input>
 
+                  <vitamui-common-input
+                    [disabled]="true"
+                    class="w-50"
+                    placeholder="{{ 'COLLECT.PROJECT_CONTEXT_ARCHIVAL_AGENCY' | translate }}"
+                  >
+                  </vitamui-common-input>
+                </div>
+                <div class="hgap-2">
+                  <vitamui-common-input
+                    class="w-50"
+                    formControlName="transferringAgencyIdentifier"
+                    placeholder="{{ 'COLLECT.PROJECT_CONTEXT_TRANSFERRING_AGENCY' | translate }}"
+                    required
+                  >
+                  </vitamui-common-input>
+                  <vitamui-common-input
+                    [disabled]="true"
+                    class="w-50"
+                    placeholder="{{ 'COLLECT.PROJECT_CONTEXT_TRANSFERRING_AGENCY' | translate }}"
+                  >
+                  </vitamui-common-input>
+                </div>
                 <vitamui-common-input
-                  [disabled]="true"
-                  class="col-6"
-                  placeholder="{{ 'COLLECT.PROJECT_CONTEXT_ARCHIVAL_AGENCY' | translate }}"
-                >
-                </vitamui-common-input>
-              </div>
-              <div class="form-control read-only-field">
-                <vitamui-common-input
-                  class="col-6"
-                  formControlName="transferringAgencyIdentifier"
-                  placeholder="{{ 'COLLECT.PROJECT_CONTEXT_TRANSFERRING_AGENCY' | translate }}"
-                  required
-                >
-                </vitamui-common-input>
-                <vitamui-common-input
-                  [disabled]="true"
-                  class="col-6"
-                  placeholder="{{ 'COLLECT.PROJECT_CONTEXT_TRANSFERRING_AGENCY' | translate }}"
-                >
-                </vitamui-common-input>
-              </div>
-              <div class="form-control read-only-field">
-                <vitamui-common-input
-                  class="col-6 mr-7"
+                  class="w-50"
                   formControlName="archivalAgreement"
                   placeholder="{{ 'COLLECT.PROJECT_CONTEXT_ARCHIVAL_AGREEMENT' | translate }}"
                   required
                 >
                 </vitamui-common-input>
-              </div>
-              <div class="form-control read-only-field">
+
                 <vitamui-common-input
-                  class="col-6 mr-7"
+                  class="w-50"
                   formControlName="archiveProfile"
                   placeholder="{{ 'COLLECT.PROJECT_CONTEXT_ARCHIVE_PROFILE' | translate }}"
                 >
                 </vitamui-common-input>
+
+                <vitamui-select
+                  class="w-50"
+                  formControlName="acquisitionInformation"
+                  [placeholder]="'COLLECT.PROJECT_CONTEXT_ACQUISITION_INFORMATION' | translate"
+                  [options]="acquisitionInformationsList"
+                  [multiple]="false"
+                  [enableSearch]="false"
+                ></vitamui-select>
+
+                <vitamui-select
+                  class="w-50"
+                  formControlName="legalStatus"
+                  [placeholder]="'COLLECT.PROJECT_CONTEXT_LEGAL_STATUS' | translate"
+                  [options]="legalStatusList"
+                  [multiple]="false"
+                  [enableSearch]="false"
+                ></vitamui-select>
               </div>
 
-              <div class="form-control read-only-field">
-                <mat-form-field appearance="outline" class="col-6 mr-7" id="acquisition-informations">
-                  <label for="acquisition-informations">
-                    <span class="pb-3">{{ 'COLLECT.PROJECT_CONTEXT_ACQUISITION_INFORMATION' | translate }}</span>
-                  </label>
-                  <mat-select formControlName="acquisitionInformation">
-                    <mat-option *ngFor="let acquisitionInformation of acquisitionInformationsList" [value]="acquisitionInformation">{{
-                      acquisitionInformation
-                    }}</mat-option>
-                  </mat-select>
-                </mat-form-field>
-              </div>
-              <div class="form-control read-only-field">
-                <mat-form-field appearance="outline" class="col-6 mr-7" id="legal-status">
-                  <label for="legal-status">
-                    <span class="pb-3">{{ 'COLLECT.PROJECT_CONTEXT_LEGAL_STATUS' | translate }}</span>
-                  </label>
-                  <mat-select formControlName="legalStatus" panelClass="legal-status">
-                    <mat-option *ngFor="let legalStatus of legalStatusList" [value]="legalStatus.id">{{ legalStatus.value }}</mat-option>
-                  </mat-select>
-                </mat-form-field>
-              </div>
-              <div class="form-control read-only-field">
-                <div class="col-2 mr-10 actions">
-                  <button type="button" class="btn primary" [disabled]="!form.valid || !form.dirty" (click)="launchUpdate()">
-                    {{ 'UNIT_UPDATE.SAVE' | translate }}
-                  </button>
-                </div>
-              </div>
+              <button type="button" class="btn primary" [disabled]="!form.valid || !form.dirty" (click)="launchUpdate()">
+                {{ 'UNIT_UPDATE.SAVE' | translate }}
+              </button>
             </div>
           </div>
         </div>
@@ -331,20 +322,12 @@
 </ng-template>
 
 <ng-template #confirmEditProject>
+  <vitamui-dialog-header [title]="'COLLECT.UPDATE_PROJECT.POPUP_ACTIONS_TITLE' | translate"></vitamui-dialog-header>
   <mat-dialog-content *ngIf="transactions$.getValue(); let transactions; else: loadingSpinner" class="row">
-    <div class="text large bold">
-      {{ 'COLLECT.UPDATE_PROJECT.POPUP_ACTIONS_TITLE' | translate }}
-    </div>
-
-    <div class="text d-flex mt-4">
-      {{ 'COLLECT.UPDATE_PROJECT.POPUP_ACTIONS_CONTENT_MAJ1' | translate }}
-      {{ transactions.values?.length }}
-      {{ 'COLLECT.UPDATE_PROJECT.POPUP_ACTIONS_CONTENT_MAJ2' | translate }}
-      <br />
-      {{ 'COLLECT.UPDATE_PROJECT.POPUP_ACTIONS_CONTENT_MAJ3' | translate }}
-      <br />
-      {{ 'COLLECT.UPDATE_PROJECT.POPUP_ACTIONS_CONTENT_MAJ4' | translate }}
-    </div>
+    <div
+      class="text d-flex mt-4"
+      [innerHTML]="'COLLECT.UPDATE_PROJECT.POPUP_ACTIONS_CONTENT_MAJ' | translate: { nb: transactions.values?.length }"
+    ></div>
 
     <div class="mt-4">
       <mat-button-toggle-group #group="matButtonToggleGroup" [(ngModel)]="selectedValue" class="vitamui-button-toggle-group">
@@ -354,28 +337,22 @@
     </div>
   </mat-dialog-content>
 
-  <mat-dialog-actions class="row mt-4">
-    <button (click)="onConfirm()" class="btn primary btn-confirm-dialog mr-2">{{ 'COMMON.CONFIRM' | translate }}</button>
-
+  <mat-dialog-actions>
+    <button (click)="onConfirm()" class="btn primary">{{ 'COMMON.CONFIRM' | translate }}</button>
     <button matDialogClose class="btn cancel link">{{ 'COMMON.UNDO' | translate }}</button>
   </mat-dialog-actions>
 </ng-template>
 
 <ng-template #cancelDialog>
-  <mat-dialog-content>
-    <div class="text-title">
-      {{ 'COLLECT.UPDATE_PROJECT.DIALOGS_CANCEL_TITLE' | translate }}
-    </div>
+  <vitamui-dialog-header
+    [subhead]="'COLLECT.UPDATE_PROJECT.DIALOGS_CANCEL_TITLE' | translate"
+    [title]="'COLLECT.UPDATE_PROJECT.DIALOGS_CANCEL_CONTENT' | translate"
+  ></vitamui-dialog-header>
 
-    <div class="text large bold">
-      {{ 'COLLECT.UPDATE_PROJECT.DIALOGS_CANCEL_CONTENT' | translate }}
-    </div>
-  </mat-dialog-content>
-  <br />
   <mat-dialog-actions>
-    <button [matDialogClose]="true" [disabled]="false" class="btn primary btn-confirm-dialog">
+    <button [matDialogClose]="true" [disabled]="false" class="btn primary">
       {{ 'COLLECT.UPDATE_PROJECT.SAVE' | translate }}
     </button>
-    <button matDialogClose class="btn link cancel cancel-popup">{{ 'COMMON.UNDO' | translate }}</button>
+    <button matDialogClose class="btn link cancel">{{ 'COMMON.UNDO' | translate }}</button>
   </mat-dialog-actions>
 </ng-template>

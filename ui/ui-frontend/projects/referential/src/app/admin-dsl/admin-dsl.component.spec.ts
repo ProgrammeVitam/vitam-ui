@@ -37,14 +37,22 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { MatLegacySelectModule as MatSelectModule } from '@angular/material/legacy-select';
+import { MatSelectModule } from '@angular/material/select';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute, Router } from '@angular/router';
 import { of } from 'rxjs';
-import { DslQueryType, InjectorModule, LoggerModule, VitamUISnackBarService, AccessContractService } from 'vitamui-library';
+import {
+  AccessContractService,
+  DslQueryType,
+  InjectorModule,
+  LoggerModule,
+  VitamUILibraryModule,
+  VitamUISnackBarService,
+} from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { AdminDslComponent } from './admin-dsl.component';
 import { AdminDslService } from './admin-dsl.service';
+import { TranslateModule } from '@ngx-translate/core';
 
 describe('AdminDslComponent', () => {
   let component: AdminDslComponent;
@@ -73,12 +81,14 @@ describe('AdminDslComponent', () => {
 
     await TestBed.configureTestingModule({
       imports: [
-        ReactiveFormsModule,
-        VitamUICommonTestModule,
         InjectorModule,
         LoggerModule.forRoot(),
         MatSelectModule,
         NoopAnimationsModule,
+        ReactiveFormsModule,
+        TranslateModule.forRoot(),
+        VitamUICommonTestModule,
+        VitamUILibraryModule,
       ],
       declarations: [AdminDslComponent],
       providers: [

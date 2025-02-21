@@ -36,7 +36,7 @@
  */
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Agency, ConfirmDialogService, AgencyService } from 'vitamui-library';
 import { AgencyCreateValidators } from './agency-create.validators';
 
