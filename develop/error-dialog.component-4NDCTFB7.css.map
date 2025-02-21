@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["projects/vitamui-library/src/app/modules/error-dialog/error-dialog.component.scss"],
+  "sourcesContent": ["h2 {\n  font-size: 24px;\n  font-weight: 500;\n}\n"],
+  "mappings": "AAAA,GACE,UAAA,KACA,YAAA",
+  "names": []
+}
