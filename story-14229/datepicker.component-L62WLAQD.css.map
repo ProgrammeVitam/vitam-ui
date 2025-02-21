@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["projects/vitamui-library/src/app/modules/components/datepicker/datepicker.component.scss"],
-  "sourcesContent": ["i {\n  transform: scale(1.5);\n}\n\n.filled {\n  .search-date-label {\n    top: 13px;\n\n    transition: top 150ms ease-out;\n  }\n\n  input {\n    position: relative;\n    top: 8px;\n    left: -2px;\n\n    transition: top left 150ms ease-out;\n    transition: left 150ms ease-out;\n  }\n}\n"],
-  "mappings": "AAAA,EACE,UAAA,MAAA,KAIA,CAAA,OAAA,CAAA,kBACE,IAAA,KAEA,WAAA,IAAA,KAAA,SAGF,CANA,OAMA,MACE,SAAA,SACA,IAAA,IACA,KAAA,KAEA,WAAA,IAAA,KAAA,KAAA,SACA,WAAA,KAAA,KAAA",
-  "names": []
-}
