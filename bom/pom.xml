@@ -187,7 +187,7 @@
             </dependency>
             <dependency>
                 <groupId>fr.gouv.vitamui</groupId>
-                <artifactId>archive-search-external</artifactId>
+                <artifactId>archive-search</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>

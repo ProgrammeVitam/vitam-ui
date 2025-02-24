@@ -15,7 +15,7 @@
     <name>VITAMUI Archive Search API</name>
     <modules>
         <module>archive-search-commons</module>
-        <module>archive-search-external</module>
+        <module>archive-search</module>
     </modules>
 
 </project>
