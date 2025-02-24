@@ -80,6 +80,7 @@ export class GroupEditorComponent implements OnChanges, AfterViewInit, OnDestroy
         this.subscription = this.editObject.childrenChange.subscribe(() => {
           this.computeLayout();
           this.computeActions();
+          this.isEmptyObject(editObject.currentValue);
         });
       }
 
@@ -119,6 +120,13 @@ export class GroupEditorComponent implements OnChanges, AfterViewInit, OnDestroy
 
   stopPropagation(event: Event) {
     event.stopPropagation();
+  }
+
+  isEmptyObject(obj: any): boolean {
+    return Object.values(obj).every(
+      (value) =>
+        value === null || (Array.isArray(value) && value.length === 0) || (typeof value === 'object' && Object.keys(value).length === 0),
+    );
   }
 
   private withValidation(action: Action, predicate: () => boolean): Action {
