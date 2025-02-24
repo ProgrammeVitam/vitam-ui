@@ -11,8 +11,8 @@ db.applications.updateOne({
     "identifier" : "INGEST_MANAGEMENT_APP"
 }, {
     $set: {
-       {% if vitamui.ingest.base_url is defined %}
-       	"serviceId": "^{{ vitamui.ingest.base_url }}/.*",
+       {% if vitamui.ui_ingest.base_url is defined %}
+       	"serviceId": "^{{ vitamui.ui_ingest.base_url }}/.*",
        {% else %}
        	"serviceId": "^{{ url_prefix }}/ingest/.*",
        {% endif %}

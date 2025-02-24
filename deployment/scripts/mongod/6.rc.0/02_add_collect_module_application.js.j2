@@ -6,9 +6,9 @@ print("START 6.rc.0/02_add_collect_module_application.js");
 
 db.applications.insertOne({
     "identifier" : "COLLECT_APP",
-{% if vitamui.collect.base_url is defined %}
-    "url": "{{ vitamui.collect.base_url }}/collect",
-    "serviceId": "^{{ vitamui.collect.base_url }}/.*",
+{% if vitamui.ui_collect.base_url is defined %}
+    "url": "{{ vitamui.ui_collect.base_url }}/collect",
+    "serviceId": "^{{ vitamui.ui_collect.base_url }}/.*",
 {% else %}
     "url": "{{ url_prefix }}/collect/collect",
     "serviceId": "^{{ url_prefix }}/collect/.*",

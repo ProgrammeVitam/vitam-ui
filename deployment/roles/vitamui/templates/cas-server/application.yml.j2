@@ -163,7 +163,7 @@ cas.sms-provider.sms-mode.access-token: {{ sms.token }}
 mfa.sms.sender: "{{ sms.sender }}"
 {% endif %}
 
-vitamui.portal.url: {{ vitamui.portal.base_url|default(url_prefix) }}
+vitamui.portal.url: {{ vitamui.ui_portal.base_url | default(url_prefix) }}
 
 token.api.cas: tokcas_ie6UZsEcHIWrfv2x
 

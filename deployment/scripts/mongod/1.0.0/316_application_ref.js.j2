@@ -6,9 +6,9 @@ print("START 316_application_ref.js");
 
 db.applications.insertOne({
     "identifier" : "EXTERNAL_PARAM_PROFILE_APP",
-{% if vitamui.identity.base_url is defined %}
-    "url": "{{ vitamui.identity.base_url }}/externalparamprofile",
-    "serviceId": "^{{ vitamui.identity.base_url }}/.*",
+{% if vitamui.ui_identity.base_url is defined %}
+    "url": "{{ vitamui.ui_identity.base_url }}/externalparamprofile",
+    "serviceId": "^{{ vitamui.ui_identity.base_url }}/.*",
 {% else %}
     "url": "{{ url_prefix }}/identity/externalparamprofile",
     "serviceId": "^{{ url_prefix }}/identity/.*",

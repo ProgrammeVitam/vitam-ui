@@ -6,8 +6,8 @@ print("START 212_application_ref.js");
 
 db.applications.insertOne({
     "identifier" : "INGEST_MANAGEMENT_APP",
-{% if vitamui.ingest.base_url is defined %}
-    "url": "{{ vitamui.ingest.base_url }}/ingest",
+{% if vitamui.ui_ingest.base_url is defined %}
+    "url": "{{ vitamui.ui_ingest.base_url }}/ingest",
 {% else %}
     "url": "{{ url_prefix }}/ingest/ingest",
 {% endif %}

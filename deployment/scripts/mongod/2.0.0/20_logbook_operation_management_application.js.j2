@@ -6,9 +6,9 @@ print("START_08_logbook_operation_management_application.js");
 
 db.applications.insertOne({
     "identifier" : "LOGBOOK_MANAGEMENT_OPERATION_APP",
-{% if vitamui.referential.base_url is defined %}
-    "url": "{{ vitamui.referential.base_url }}/logbook-management-operation",
-    "serviceId": "^{{ vitamui.referential.base_url }}/.*",
+{% if vitamui.ui_referential.base_url is defined %}
+    "url": "{{ vitamui.ui_referential.base_url }}/logbook-management-operation",
+    "serviceId": "^{{ vitamui.ui_referential.base_url }}/.*",
 {% else %}
     "url": "{{ url_prefix }}/referential/logbook-management-operation",
     "serviceId": "^{{ url_prefix }}/referential/.*",

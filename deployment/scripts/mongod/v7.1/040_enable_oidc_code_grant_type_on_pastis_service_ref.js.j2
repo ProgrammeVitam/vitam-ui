@@ -8,9 +8,9 @@ db.services.deleteOne({ "_id": NumberInt(8) });
 db.services.insertOne({
   _id: NumberInt(8),
   _class: "org.apereo.cas.services.OidcRegisteredService",
-  clientId: "{{ vitamui.pastis.clientId | default('pastis') }}",
-  serviceId: "{{ vitamui.pastis.serviceId | default('^' + vitamui.pastis.base_url | default(url_prefix+'/pastis') + '/.*') }}",
-  name: "{{ vitamui.pastis.name | default('Pastis Application') }}",
+  clientId: "{{ vitamui.ui_pastis.clientId | default('pastis') }}",
+  serviceId: "{{ vitamui.ui_pastis.serviceId | default('^' + vitamui.pastis.base_url | default(url_prefix+'/pastis') + '/.*') }}",
+  name: "{{ vitamui.ui_pastis.name | default('Pastis Application') }}",
   bypassApprovalPrompt: true,
   supportedGrantTypes: ["authorization_code"],
   supportedResponseTypes: ["code", "token"],
