@@ -17,6 +17,8 @@ filebeat_log:
   keepfiles: 30
 
 filebeat:
+  config:
+    ignore_older: "24h"
   system:
     enable_log: false
     enable_auth: false
