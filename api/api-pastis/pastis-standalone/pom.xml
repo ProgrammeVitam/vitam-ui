@@ -14,7 +14,7 @@
     <name>VITAMUI Pastis Standalone API</name>
 
     <properties>
-        <rpm.skip>false</rpm.skip>
+        <rpm.skip>true</rpm.skip>
         <sonar.sources>src/main/java</sonar.sources>
         <swagger.dir>ui</swagger.dir>
         <swagger.skip>false</swagger.skip>
