@@ -57,3 +57,5 @@ export type SedaVersion = '2.1' | '2.2' | '2.3' | string;
 export type Cardinality = 'ONE' | 'MANY' | 'ONE_REQUIRED' | 'MANY_REQUIRED';
 
 export type LayoutSize = 'small' | 'medium' | 'large';
+
+export type EffectiveCardinality = 'ZERO' | Cardinality;
