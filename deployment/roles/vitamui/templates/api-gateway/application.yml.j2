@@ -274,7 +274,7 @@ spring:
             - RewritePath=/archive-search-api/archive-search/(?<segment>.*),/archives-search/$\{segment},
             - RewritePath=/archive-search-api/archive-units/(?<segment>.*),/archive-units/$\{segment}
 
-        - id: pastis-external-service
+        - id: pastis-service
           uri: {{ 'https' if vitamui.pastis.secure | default(secure) | bool else 'http' }}://{{ vitamui.pastis.host }}:{{ vitamui.pastis.port_service }}
           predicates:
             - >

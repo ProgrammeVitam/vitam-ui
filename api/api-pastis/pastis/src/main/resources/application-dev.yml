@@ -37,7 +37,7 @@ server:
   host:
   port: 8015
   ssl:
-    key-store: ../../../dev-deployment/environments/keystores/server/localhost/keystore_pastis-external.jks
+    key-store: ../../../dev-deployment/environments/keystores/server/localhost/keystore_pastis.jks
     key-store-password: changeme
     key-password: changeme
     trust-store: ../../../dev-deployment/environments/keystores/server/truststore_server.jks
@@ -52,7 +52,7 @@ management:
     port: 8191
     ssl:
       enabled: false
-pastis-external:
+pastis:
   security-client:
     server-host: localhost
     server-port: 8084

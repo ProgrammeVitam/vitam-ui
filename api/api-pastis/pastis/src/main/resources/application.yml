@@ -3,7 +3,7 @@
 
 spring:
   application:
-    name: pastis-external
+    name: pastis
   api:
     name: API Pastis
     description: This API is used to manage Vitam's profile
@@ -20,7 +20,7 @@ spring:
 management:
   endpoints:
     jmx:
-      domain: pastis-external
+      domain: pastis
       web.exposure.include: info,health,prometheus
   endpoint:
     health:
@@ -30,6 +30,6 @@ management:
 
 swagger:
   layer: api-external
-  file-path: file:../../../tools/swagger/docs/api-external/pastis-external/swagger.json
+  file-path: file:../../../tools/swagger/docs/api-external/pastis/swagger.json
 cors.allowed-origins: https://dev.vitamui.com:4251,https://localhost
 

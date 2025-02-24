@@ -258,7 +258,7 @@
             </dependency>
             <dependency>
                 <groupId>fr.gouv.vitamui</groupId>
-                <artifactId>pastis-external</artifactId>
+                <artifactId>pastis</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
