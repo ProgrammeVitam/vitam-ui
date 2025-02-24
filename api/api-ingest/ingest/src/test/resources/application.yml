@@ -1,7 +1,7 @@
 spring:
   api:
-    name: API Ingest externe - Gestion des ingests
-    description: API externe de gestion des ingests
+    name: API Ingest - Gestion des ingests
+    description: API de gestion des ingests
     version: v1
   cloud:
     bus:
@@ -13,7 +13,7 @@ spring:
       config:
         enabled: false
 
-ingest-external:
+ingest:
   security-client:
     server-host: localhost
     server-port: 8084
@@ -34,7 +34,6 @@ ingest-external:
 
 swagger:
   layer: api-external
-
 
 tmp_folder_path: "src/main/resources"
 

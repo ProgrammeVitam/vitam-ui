@@ -3,9 +3,9 @@
 
 spring:
   application:
-    name: ingest-external
+    name: ingest
   api:
-    name: API Ingest External
+    name: API Ingest
     description: This API is used to manage Vitam's ingests
     version: v1
   mvc:
@@ -20,7 +20,7 @@ spring:
 management:
   endpoints:
     jmx:
-      domain: ingest-external
+      domain: ingest
       web.exposure.include: info,health,prometheus
   endpoint:
     health:
@@ -35,5 +35,5 @@ server:
 
 swagger:
   layer: api-external
-  file-path: file:../../../tools/swagger/docs/api-external/ingest-external/swagger.json
+  file-path: file:../../../tools/swagger/docs/api-external/ingest/swagger.json
 

@@ -36,26 +36,34 @@
  *  knowledge of the CeCILL-C license and that you accept its terms.
  *
  */
-package fr.gouv.vitamui.ingest.server.config;
+package fr.gouv.vitamui.ingest.server.doc;
 
-import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
-import lombok.Getter;
-import lombok.Setter;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
+import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
+import fr.gouv.vitamui.commons.rest.configuration.SwaggerConfiguration;
+import fr.gouv.vitamui.commons.test.rest.AbstractSwaggerJsonFileGenerationTest;
+import fr.gouv.vitamui.iam.security.provider.ExternalApiAuthenticationProvider;
+import fr.gouv.vitamui.ingest.server.rest.IngestController;
+import org.junit.runner.RunWith;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.junit4.SpringRunner;
 
-/**
- * Properties specific to API Ingest Application.
- * <p>
- * Properties are configured in the application.yml file.
- */
-@Getter
-@Setter
-@Component
-@ConfigurationProperties(prefix = "ingest-external", ignoreUnknownFields = false)
-public class ApiIngestApplicationProperties {
+@RunWith(SpringRunner.class)
+@WebMvcTest
+@Import(value = { SwaggerConfiguration.class })
+@TestPropertySource(properties = { "spring.config.name=ingest-application" })
+@ActiveProfiles("test, swagger")
+public class SwaggerJsonFileGenerationTest extends AbstractSwaggerJsonFileGenerationTest {
 
-    private RestClientConfiguration iamExternalClient;
+    @MockBean
+    private ExternalApiAuthenticationProvider externalApiAuthenticationProvider;
 
-    private RestClientConfiguration securityClient;
+    @MockBean
+    private RestExceptionHandler restExceptionHandler;
+
+    @MockBean
+    private IngestController ingestController;
 }

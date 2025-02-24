@@ -171,7 +171,7 @@
             </dependency>
             <dependency>
                 <groupId>fr.gouv.vitamui</groupId>
-                <artifactId>ingest-external</artifactId>
+                <artifactId>ingest</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>

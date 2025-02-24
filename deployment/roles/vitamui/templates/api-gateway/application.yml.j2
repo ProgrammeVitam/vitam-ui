@@ -307,7 +307,7 @@ spring:
             - RewritePath=/collect-api/transactions/archive-units(?<segment>.*),/collect-api/v1/transactions$\{segment},
             - RewritePath=/collect-api/transactions(?<segment>.*),/collect-api/v1/transactions$\{segment},
 
-        - id: ingest-external-service
+        - id: ingest-service
           uri: {{ 'https' if vitamui.ingest.secure | default(secure) | bool else 'http' }}://{{ vitamui.ingest.host }}:{{ vitamui.ingest.port_service }}
           predicates:
             - >

@@ -17,7 +17,7 @@ server:
   host:
   port: 8088
   ssl:
-    key-store: ../../../dev-deployment/environments/keystores/server/localhost/keystore_ingest-external.jks
+    key-store: ../../../dev-deployment/environments/keystores/server/localhost/keystore_ingest.jks
     key-store-password: changeme
     key-password: changeme
     trust-store: ../../../dev-deployment/environments/keystores/server/truststore_server.jks
@@ -33,7 +33,7 @@ management:
     ssl:
       enabled: false
 
-ingest-external:
+ingest:
   security-client:
     server-host: localhost
     server-port: 8084
