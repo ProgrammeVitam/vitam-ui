@@ -2,7 +2,7 @@
   <configuration default="false" name="security" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
     <option name="ACTIVE_PROFILES" value="dev" />
     <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
-    <module name="security-internal" />
+    <module name="security" />
     <option name="SPRING_BOOT_MAIN_CLASS" value="fr.gouv.vitamui.security.server.ApiSecurityServerApplication" />
     <option name="VM_PARAMETERS" value="-Xmx100m" />
     <method v="2">

@@ -324,7 +324,7 @@ voir la [configuration](docs/developeurs/vitamui-conf-dev/README.md) suivante.
 ```
 ├── api
 │   ├── api-security
-│   │   ├── security-internal: 'mvn clean spring-boot:run [-Puse-profile-here]' ou './run.sh'
+│   │   ├── security: 'mvn clean spring-boot:run [-Puse-profile-here]' ou './run.sh'
 ```
 
 ## 4 - Lancement de l'application SpringBoot IAM-Internal

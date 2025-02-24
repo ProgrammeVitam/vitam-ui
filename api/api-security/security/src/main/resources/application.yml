@@ -3,7 +3,7 @@
 
 spring:
   application:
-    name: security-internal
+    name: security
   api:
     name: API Security Internal
     description: This API is used to manage certificates for HTTPS access and their associated contexts. This API is used for internal purposes only.
@@ -17,7 +17,7 @@ spring:
 management:
   endpoints:
     jmx:
-      domain: security-internal
+      domain: security
     web.exposure.include: '*'
   endpoint:
     health:
