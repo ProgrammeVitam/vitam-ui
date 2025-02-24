@@ -10,6 +10,7 @@
   enabled: true
   paths:
     - "{{ vitamui_defaults.folder.root_path }}/log/{{ vitamui_component }}/accesslog-{{ vitamui_component }}.*.log"
+  ignore_older: {{ filebeat.config.ignore_older }}
   fields_under_root: true
   fields:
     kind: access
@@ -60,6 +61,7 @@
   enabled: true
   paths:
     - "{{ vitamui_defaults.folder.root_path }}/log/{{ vitamui_component }}/management_accesslog-{{ vitamui_component }}.*.log"
+  ignore_older: {{ filebeat.config.ignore_older }}
   fields_under_root: true
   fields:
     kind: management
@@ -96,6 +98,7 @@
   enabled: true
   paths:
     - "{{ vitamui_defaults.folder.root_path }}/log/{{ vitamui_component }}/{{ vitamui_component }}.*.log"
+  ignore_older: {{ filebeat.config.ignore_older }}
   fields_under_root: true
   fields:
     kind: log
