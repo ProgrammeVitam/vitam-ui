@@ -1232,11 +1232,11 @@ describe('EditObjectService', () => {
         }),
       ));
 
-      it('should object-array have inconsistent value when its schema has zero cardinality modifier', waitForAsync(
+      it('should object-array have inconsistent value when its schema has one cardinality modifier', waitForAsync(
         inject([MockSchemaService, TemplateService], (schemaService: MockSchemaService, templateService: TemplateService) => {
           const path = 'Writer';
           const cardinality: Cardinality = 'MANY';
-          const effectiveCardinality = 'ZERO';
+          const effectiveCardinality = 'ONE';
 
           schemaService
             .getSchema(Collection.ARCHIVE_UNIT)
@@ -1266,7 +1266,7 @@ describe('EditObjectService', () => {
             .subscribe({
               next: (editObject) => {
                 expect(editObject).toBeTruthy();
-                expect(editObject.children).toEqual([]);
+                expect(editObject.children.length).toEqual(1);
               },
             });
         }),

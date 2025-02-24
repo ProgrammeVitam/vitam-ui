@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 
 import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { TranslateService } from '@ngx-translate/core';
 import { BehaviorSubject } from 'rxjs';
 import { orderedFields } from '../../archive-unit/archive-unit-fields';
 import { Logger } from '../../logger/logger';
@@ -29,7 +28,6 @@ export class EditObjectService {
     private dataService: DataStructureService,
     private pathService: PathService,
     private formBuilder: FormBuilder,
-    private translateService: TranslateService,
     private logger: Logger,
   ) {}
 
@@ -269,6 +267,9 @@ export class EditObjectService {
   }
 
   private computeChildrenRemoveActions = (editObject: Partial<EditObject>): Action[] => {
+    const canRemove = Boolean(['MANY', 'MANY_REQUIRED'].includes(editObject.cardinality));
+    if (!canRemove) return [];
+
     if (editObject.kind === 'object-array') {
       return editObject.children.map((child) => ({
         name: 'remove',
@@ -346,36 +347,6 @@ export class EditObjectService {
         });
 
         return [add];
-      }
-
-      if (editObject.kind === 'object') {
-        return editObject.children
-          .filter((child) => child.kind === 'object')
-          .filter((child) => !child.required)
-          .filter((child) => !child.virtual)
-          .map((child) => {
-            return {
-              name: `add-${child.key.toLowerCase()}`,
-              label: `${this.translateService.instant(ADD_ACTION_LABEL)}: ${child.key}`,
-              handler: (data: any = null) => {
-                if (editObject.children.some((item) => item.path === child.path)) return;
-
-                const defaultValue = this.schemaService.data(this.schemaService.normalize(child.path), schema);
-                const fullData = defaultValue ? this.dataService.deepMerge(defaultValue, data) : data;
-                const eo = this.editObject(child.path, fullData, template, schema);
-
-                (editObject.control as FormGroup).addControl(eo.key, eo.control);
-                (editObject.control as FormGroup).markAsDirty();
-                editObject.children.push(eo);
-                this.sort(editObject as EditObject, orderedFields);
-                editObject.childrenChange.next(editObject.children);
-
-                this.computeChildrenRemoveActions(editObject).forEach((action, i) => {
-                  editObject.children[i].actions.remove = action;
-                });
-              },
-            };
-          });
       }
 
       return [];
