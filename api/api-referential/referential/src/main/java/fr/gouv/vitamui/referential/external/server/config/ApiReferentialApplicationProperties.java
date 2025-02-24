@@ -34,40 +34,26 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-package fr.gouv.vitamui.referential.external.server;
+package fr.gouv.vitamui.referential.external.server.config;
 
-import fr.gouv.vitamui.commons.test.VitamClientTestConfig;
-import fr.gouv.vitamui.referential.external.server.config.ApiReferentialApplicationProperties;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Import;
-import org.springframework.core.env.Environment;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
 
-import static org.assertj.core.api.Assertions.assertThat;
+/**
+ * Properties specific to API Iam Application.
+ * <p>
+ * Properties are configured in the application.yml file.
+ */
+@Getter
+@Setter
+@Component
+@ConfigurationProperties(prefix = "referential", ignoreUnknownFields = false)
+public class ApiReferentialApplicationProperties {
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
-@ActiveProfiles("test")
-@TestPropertySource(locations = "classpath:application.yml")
-@Import(VitamClientTestConfig.class)
-public class ApiReferentialApplicationTest {
+    private RestClientConfiguration iamExternalClient;
 
-    @Autowired
-    private Environment env;
-
-    @Autowired
-    private ApiReferentialApplicationProperties referentialProperties;
-
-    @Test
-    public void testContextLoads() {
-        assertThat(env).isNotNull();
-        assertThat(env.getProperty("spring.config.name")).isEqualTo("referential-external-application");
-
-        assertThat(referentialProperties).isNotNull();
-    }
+    private RestClientConfiguration securityClient;
 }

@@ -1,6 +1,6 @@
 spring:
   config:
-    name: referential-external-application
+    name: referential-application
   api:
     name: API Referential - Gestion des référentiels
     description: Ces APIS sont utilisés pour configurer les référentiels
@@ -15,7 +15,7 @@ spring:
       config:
         enabled: false
 
-referential-external:
+referential:
   security-client:
     server-host: localhost
     server-port: 8084

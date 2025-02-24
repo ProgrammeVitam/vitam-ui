@@ -6,7 +6,6 @@ These components are a set of REST/JSON web services to perform CRUD operations 
 
 There are composed of the web services themselves (api-referential-server module), the REST clients of these web services (api-referential-client module) and the DTOs shared between the two modules (api-referential-common module).
 
-
 # Run the web services
 
 ```shell

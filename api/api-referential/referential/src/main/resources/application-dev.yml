@@ -21,7 +21,7 @@ server:
   port: 8087
   tomcat.connection-timeout: 60000
   ssl:
-    key-store: ../../../dev-deployment/environments/keystores/server/localhost/keystore_referential-external.jks
+    key-store: ../../../dev-deployment/environments/keystores/server/localhost/keystore_referential.jks
     key-store-password: changeme
     key-password: changeme
     trust-store: ../../../dev-deployment/environments/keystores/server/truststore_server.jks
@@ -39,7 +39,7 @@ management:
     ssl:
       enabled: false
 
-referential-external:
+referential:
   security-client:
     server-host: localhost
     server-port: 8084

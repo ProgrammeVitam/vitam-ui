@@ -187,7 +187,7 @@ spring:
             - RewritePath=/ingest-api/subrogations/(?<segment>.*),/iam/v1/subrogations/$\{segment},
             - RewritePath=/ingest-api/(?<segment>.*),/v1/$\{segment}
 
-        - id: referential-external-service
+        - id: referential-service
           uri: {{ 'https' if vitamui.referential.secure | default(secure) | bool else 'http' }}://{{ vitamui.referential.host }}:{{ vitamui.referential.port_service }}
           predicates:
             - >

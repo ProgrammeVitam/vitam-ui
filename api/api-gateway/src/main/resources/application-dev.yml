@@ -156,7 +156,7 @@ spring:
             - RewritePath=/ingest-api/subrogations/(?<segment>.*),/iam/v1/subrogations/$\{segment},
             - RewritePath=/ingest-api/(?<segment>.*),/v1/$\{segment}
 
-        - id: referential-external-service
+        - id: referential-service
           uri: https://localhost:8087 # URL REFERENTIAL EXTERNAL
           predicates:
             - >
