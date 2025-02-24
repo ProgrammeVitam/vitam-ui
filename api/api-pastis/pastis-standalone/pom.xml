@@ -56,7 +56,7 @@
                 </exclusion>
                 <exclusion>
                     <groupId>fr.gouv.vitamui</groupId>
-                    <artifactId>referential-external-client</artifactId>
+                    <artifactId>referential-client</artifactId>
                 </exclusion>
                 <exclusion>
                     <groupId>fr.gouv.vitamui</groupId>

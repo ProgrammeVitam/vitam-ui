@@ -160,7 +160,7 @@
             </dependency>
             <dependency>
                 <groupId>fr.gouv.vitamui</groupId>
-                <artifactId>referential-external-client</artifactId>
+                <artifactId>referential-client</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
