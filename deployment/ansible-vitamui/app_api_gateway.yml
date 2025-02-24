@@ -1,5 +1,4 @@
 ---
-
 - hosts: hosts_vitamui_api_gateway
   gather_facts: no
   any_errors_fatal: true
