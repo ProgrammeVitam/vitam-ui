@@ -25,7 +25,7 @@ Les applications de base :
 
 Les services externes exposent des API REST publiques accessibles en HTTPS. Ces services constituent une porte d'accès aux services internes et assurent principalement un rôle de sécurisation des ressources internes.
 
-La connexion d'une application cliente à un service externe nécessite le partage de certificats X509 client et serveur dans le cadre d'un processus d'authentification mutuel (Machine To Machine/M2M). Dans la solution VITAMUI, les certificats des clients sont associés à un contexte de sécurité stocké dans une collection MongoDb gérée par le service security_internal. D'autre part, les utilisateurs clients sont identifiés et authentifiés dans les services externes par le token fourni par CAS et transmis dans les headers des requêtes REST en HTTPS.
+La connexion d'une application cliente à un service externe nécessite le partage de certificats X509 client et serveur dans le cadre d'un processus d'authentification mutuel (Machine To Machine/M2M). Dans la solution VitamUI, les certificats des clients sont associés à un contexte de sécurité stocké dans une collection MongoDB gérée par le service security. D'autre part, les utilisateurs clients sont identifiés et authentifiés dans les services externes par le token fourni par CAS et transmis dans les headers des requêtes REST en HTTPS.
 
 Le service externe a pour responsabilité de sécuriser les accès en effectuant les différentes étapes de vérifications des droits (générale, tenant, rôles, groupes, etc.) et de déterminer les droits résultants du client à l'origine de la requête, en réalisant l'intersection des droits applicatifs, définis dans le contexte de sécurité, avec les droits issus des profils de l'utilisateur. Le service externe s'assure ensuite que le client possède bien les droits pour accéder à la ressource demandée.
 
@@ -50,13 +50,13 @@ Les services génèrent les logs techniques dans la solution de log centralisée
 * Contraintes
 * API swagger
 
-### Service referential-external
+### Service referential
 
-* Description : service externe pour la gestion des référentiels de la solution logicielle VITAM.
+* Description : service pour la gestion des référentiels de la solution logicielle VITAM.
 
-  Le service de referential-external a pour responsabilité la réception et la sécurisation des ressources de gestion des référentiels ainsi que la communication sécurisée avec Vitam via les clients Admin/Access pour la récupération des données.
+  Le service de referential a pour responsabilité la réception et la sécurisation des ressources de gestion des référentiels ainsi que la communication sécurisée avec Vitam via les clients Admin/Access pour la récupération des données.
 
-  Le service de référentiel externe est composé de plusieurs points d'APIs:
+  Le service de référentiel est composé de plusieurs points d'APIs:
 
   * API des contrats d'accès (/referential/accesscontracts)
   * API des contrats d'entrées (/referential/ingestcontract)
@@ -72,13 +72,13 @@ Les services génèrent les logs techniques dans la solution de log centralisée
 
   Pour plus d'information: voir la documentation des [référentiels](https://www.programmevitam.fr/pages/documentation/pour_archiviste/)
 
-### Service ingest-external
+### Service ingest
 
-* Description : service externe pour la gestion des opérations d'entrées d'archives de la solution logicielle VITAM.
+* Description : service pour la gestion des opérations d'entrées d'archives de la solution logicielle VITAM.
 
-  Le service d'ingest externe a pour responsabilité la réception, la sécurisation des ressources internes de versement et la communication sécurisée avec les couches internes.
+  Le service d'ingest a pour responsabilité la réception, la sécurisation des ressources internes de versement et la communication sécurisée avec les couches internes.
 
-  Le service d'ingest externe est composé de plusieurs points d'APIs:
+  Le service d'ingest est composé de plusieurs points d'APIs:
 
   * API de versement des archives permettant la consommation des flux d'archives (/v1/ingest/upload)
   * API de visualisation des journaux d'opération des opérations d'entrées (API /v1/ingest)
@@ -88,13 +88,13 @@ Les services génèrent les logs techniques dans la solution de log centralisée
     d'entrée.
     (Manifest: /logbooks/operations/{id}/download/manifest, ATR: /logbooks/operations/{id}/download/atr)
 
-### Service archive-search-external
+### Service archive-search
 
-* Description : service externe pour la gestion d'accès et la recherche d'archives de la solution logicielle VITAM.
+* Description : service pour la gestion d'accès et la recherche d'archives de la solution logicielle VITAM.
 
-  Le service archive-search-external a pour responsabilité la réception et la sécurisation des ressources internes ainsi que la communication sécurisée avec Vitam via les clients Admin/Access pour la récupération des données.
+  Le service archive-search a pour responsabilité la réception et la sécurisation des ressources internes ainsi que la communication sécurisée avec Vitam via les clients Admin/Access pour la récupération des données.
 
-  Le service d'archive externe est composé de plusieurs points d'APIs:
+  Le service d'archive est composé de plusieurs points d'APIs:
 
   * API de recherche des archive par requetes (/archive-search/search)
   * API de recherche des unités archivistiques (/archive-search/archiveunit/{id})
@@ -135,11 +135,11 @@ Les services génèrent les logs techniques dans la solution de log centralisée
   * POST/collect-api/transactions/archive-units/{transactionId}/search: GET AU collect paginated
   * GET /collect-api/transactions/archive-units/archiveunit/{id}: Find the Archive Unit Details
 
-### Service externe de gestion de profils documentaires (Pastis-external)
+### Service de gestion de profils documentaires (Pastis)
 
 * Description : Accéder, Créer, Modifier ou Supprimer les profils d'archivage et les profils d'unité archivistique
 
-Le service Pastis externe est composé de plusieurs points d'APIs:
+Le service Pastis est composé de plusieurs points d'APIs:
 
 #### Pastis Controller
 
@@ -194,7 +194,7 @@ Les services génèrent les logs techniques dans la solution de log centralisée
 * API swagger
 * Modèle de données
 
-### Service security-internal
+### Service security
 
 * Description : service de gestion de la sécurité applicative
 * Contraintes
@@ -1474,27 +1474,20 @@ Exemple de mise à jour de la description du profil:
 
 ## Les ontologies dans VitamUI
 
-On affiche actuellement une liste statique des ontologies dans VitamUI, au niveau des applications **_Collecte_**, *
-*_Consultation et Recherche_**.
+On affiche actuellement une liste statique des ontologies dans VitamUI, au niveau des applications **_Collecte_**, **_Consultation et Recherche_**.
 
-En plus des ontologies statiques, nous avons ajouté une nouvelle option qui va permettre à un exploitant d'ajouter d'
-autres ontologies qui seront utilisées ensuite dans les deux applications de collecte et de recherche.
+En plus des ontologies statiques, nous avons ajouté une nouvelle option qui va permettre à un exploitant d'ajouter d'autres ontologies qui seront utilisées ensuite dans les deux applications de collecte et de recherche.
 
-Il est nécessaire de déposer le fichier d'ontology au format JSON sous `environments/ontology/` avec le
-nom: `external_ontology_fields.json`.
+Il est nécessaire de déposer le fichier d'ontology au format JSON sous `environments/ontology/` avec le nom: `external_ontology_fields.json`.
 
-Le fichier doit obligatoirement être nommé ainsi afin qu'il puisse être récupéré dans VitamUI. Il est aussi recommandé
-d'ajouter ces ontologies dans la base de données de Vitam.
+Le fichier doit obligatoirement être nommé ainsi afin qu'il puisse être récupéré dans VitamUI. Il est aussi recommandé d'ajouter ces ontologies dans la base de données de Vitam.
 
-Après l'installation de VitamUI le fichier des ontologies sera placé dans les deux répertoires (au niveau de la
-machine) :
+Après l'installation de VitamUI le fichier des ontologies sera placé dans les deux répertoires (au niveau de la machine) :
 
-* vitamui/conf/archive-search-external/
+* vitamui/conf/archive-search/
 * vitamui/conf/collect-external/
 
-Ensuite, s'il y a un besoin d'ajouter des nouvelles ontologies, il suffit juste de modifier le fichier directement au
-niveau des machines. Sinon changer le fichier **environments/ontology/external_ontology_fields.json** et relancer les
-deux tâches :
+Ensuite, s'il y a un besoin d'ajouter des nouvelles ontologies, il suffit juste de modifier le fichier directement au niveau des machines. Sinon changer le fichier **environments/ontology/external_ontology_fields.json** et relancer les deux tâches :
 
 * Copy ontologies file to the service conf repository dans **Archive-search**.
 * Copy ontologies file to the service conf repository dans **Collect**.
@@ -1511,8 +1504,7 @@ Chaque objet représente une ontologie, et les informations qu'il faut renseigne
 * **_CreationDate_** : date de création de l'ontologie.
 * **_LastUpdate_** : date de la dernière modification de l'ontologie.
 * **_ShortName_** : (chaine de caractère)
-* **_TenantIds_** : La liste des tenants dont on pourra utiliser l'ontologie (liste des entiers), si le tenant **1** est
-  parmi la liste des entiers donc l'ontologie en question sera visible sur l'ensemble des tenants.
+* **_TenantIds_** : La liste des tenants dont on pourra utiliser l'ontologie (liste des entiers), si le tenant **1** est parmi la liste des entiers donc l'ontologie en question sera visible sur l'ensemble des tenants.
 
 **Exemple** :
 
@@ -1555,15 +1547,15 @@ La journalisation des événements VITAMUI a pour objectifs :
 #### Vitam
 
 * Un événement = Un événement Primaire (Primary) et ensemble de sous-événements secondaires (Secondary)
-    * Primary : événement initial
-        * les champs sont contrôlés par VITAM
-        * Marque le début de la transaction au sens VITAM
-        * L’heure de l’événement émise par VITAM (cohérence des journeaux)
-    * Secondary : note un sous événement réalisé suite à l’action principale
-        * possède les mêmes champs que l’événement Master mais VITAM ne procède à aucun contrôle
-        * l’heure de l’événement est à l’appréciation du client
-    * Fin de la transaction : le dernier sous événement doit posséder le même champ “eventType” que l’événement Master
-      pour finir la transaction.
+  * Primary : événement initial
+    * les champs sont contrôlés par VITAM
+    * Marque le début de la transaction au sens VITAM
+    * L’heure de l’événement émise par VITAM (cohérence des journeaux)
+  * Secondary : note un sous événement réalisé suite à l’action principale
+    * possède les mêmes champs que l’événement Master mais VITAM ne procède à aucun contrôle
+    * l’heure de l’événement est à l’appréciation du client
+  * Fin de la transaction : le dernier sous événement doit posséder le même champ “eventType” que l’événement Master
+    pour finir la transaction.
 
 #### VITAMUI
 
@@ -1946,9 +1938,9 @@ profils).
 ### Base security
 
 * Collections
-    * certificates
-    * contexts
-    * events
+  * certificates
+  * contexts
+  * events
 
 #### Collection certificates
 
@@ -1982,7 +1974,7 @@ connexion https les droits d’accès (rôles) à différents services.
 Cette base est initialisée à la création de l'environnement. Elle est uniquement utilisée par CAS en lecture seule.
 
 * Collection
-    * services
+  * services
 
 #### Collection services
 
@@ -2002,8 +1994,8 @@ utilisée uniquement par le service Archive-Search, en particulier l'application
 archives.
 
 * Collections
-    * searchCriteriaHistories
-    * searchCriteriaHistoriesCollect
+  * searchCriteriaHistories
+  * searchCriteriaHistoriesCollect
 
 #### Collections : searchCriteriaHistories / searchCriteriaHistoriesCollect
 

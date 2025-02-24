@@ -3,10 +3,10 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>security-internal</artifactId>
+    <artifactId>security</artifactId>
     <packaging>jar</packaging>
-    <name>VITAMUI Security API Internal</name>
-    <description>VITAMUI Security API Internal</description>
+    <name>VITAMUI Security API</name>
+    <description>VITAMUI Security API</description>
 
     <parent>
         <groupId>fr.gouv.vitamui</groupId>
@@ -153,7 +153,7 @@
                 <artifactId>jib-maven-plugin</artifactId>
                 <configuration>
                     <to>
-                        <image>${env.SERVICE_DOCKER_PUSH_URL}/vitamui/security-internal</image>
+                        <image>${env.SERVICE_DOCKER_PUSH_URL}/vitamui/security</image>
                         <tags>${project.version}</tags>
                     </to>
                 </configuration>

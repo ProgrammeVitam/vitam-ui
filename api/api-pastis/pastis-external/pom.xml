@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>pastis-external</artifactId>
+    <artifactId>pastis</artifactId>
     <packaging>jar</packaging>
     <name>VITAMUI Pastis API Server</name>
 
@@ -17,7 +17,7 @@
         <rpm.skip>false</rpm.skip>
         <swagger.dir>api-external</swagger.dir>
         <swagger.skip>false</swagger.skip>
-		<jib.skip>true</jib.skip>
+        <jib.skip>true</jib.skip>
     </properties>
 
     <dependencies>
@@ -239,15 +239,15 @@
     <build>
         <plugins>
             <plugin>
-				<groupId>com.google.cloud.tools</groupId>
-				<artifactId>jib-maven-plugin</artifactId>
+                <groupId>com.google.cloud.tools</groupId>
+                <artifactId>jib-maven-plugin</artifactId>
                     <configuration>
                         <to>
-                            <image>${env.SERVICE_DOCKER_PUSH_URL}/vitamui/pastis-external</image>
+                            <image>${env.SERVICE_DOCKER_PUSH_URL}/vitamui/pastis</image>
                             <tags>${project.version}</tags>
                         </to>
                     </configuration>
-			</plugin>
+            </plugin>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>

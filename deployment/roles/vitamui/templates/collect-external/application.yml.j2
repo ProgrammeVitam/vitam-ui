@@ -60,10 +60,10 @@ gateway:
 
 collect-external:
   security-client:
-    server-host: {{ vitamui.security_internal.host }}
-    server-port: {{ vitamui.security_internal.port_service }}
-{% if vitamui.security_internal.secure | default(secure) | bool == true %}
-    secure: {{ vitamui.security_internal.secure | default(secure) | lower }}
+    server-host: {{ vitamui.security.host }}
+    server-port: {{ vitamui.security.port_service }}
+{% if vitamui.security.secure | default(secure) | bool == true %}
+    secure: {{ vitamui.security.secure | default(secure) | lower }}
     ssl-configuration:
       truststore:
         key-path: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks

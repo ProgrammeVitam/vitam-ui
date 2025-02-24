@@ -88,12 +88,12 @@ hosts_cas_server
 [zone_vitamui_app:children]
 hosts_vitamui_api_gateway
 hosts_vitamui_iam_external
-hosts_vitamui_ingest_external
-hosts_vitamui_archive_search_external
+hosts_vitamui_ingest
+hosts_vitamui_archive_search
 hosts_vitamui_collect_external
-hosts_vitamui_referential_external
-hosts_vitamui_security_internal
-hosts_vitamui_pastis_external
+hosts_vitamui_referential
+hosts_vitamui_security
+hosts_vitamui_pastis
 
 [hosts_vitamui_api_gateway]
 # EDIT: Mandatory
@@ -101,22 +101,22 @@ hosts_vitamui_pastis_external
 [hosts_vitamui_iam_external]
 # EDIT: Mandatory
 
-[hosts_vitamui_ingest_external]
+[hosts_vitamui_ingest]
 # EDIT: Mandatory
 
-[hosts_vitamui_archive_search_external]
+[hosts_vitamui_archive_search]
 # EDIT: Mandatory
 
 [hosts_vitamui_collect_external]
 # EDIT: Mandatory
 
-[hosts_vitamui_referential_external]
+[hosts_vitamui_referential]
 # EDIT: Mandatory
 
-[hosts_vitamui_security_internal]
+[hosts_vitamui_security]
 # EDIT: Mandatory
 
-[hosts_vitamui_pastis_external]
+[hosts_vitamui_pastis]
 # EDIT: Mandatory
 
 ################################################################################

@@ -9,9 +9,9 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>archive-search-external</artifactId>
+    <artifactId>archive-search</artifactId>
     <packaging>jar</packaging>
-    <name>VITAMUI Archive Search External API</name>
+    <name>VITAMUI Archive Search API</name>
 
     <properties>
         <rpm.skip>false</rpm.skip>
@@ -198,29 +198,17 @@
             <scope>test</scope>
             <type>test-jar</type>
         </dependency>
-
-
-        <!-- TESTS -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-inline</artifactId>
             <scope>test</scope>
         </dependency>
-
         <dependency>
             <groupId>fr.gouv.vitamui.commons</groupId>
             <artifactId>commons-test</artifactId>
             <type>test-jar</type>
             <scope>test</scope>
         </dependency>
-
-
         <dependency>
             <groupId>org.testcontainers</groupId>
             <artifactId>testcontainers</artifactId>
@@ -241,7 +229,7 @@
                 <artifactId>jib-maven-plugin</artifactId>
                 <configuration>
                     <to>
-                        <image>${env.SERVICE_DOCKER_PUSH_URL}/vitamui/archive-search-external</image>
+                        <image>${env.SERVICE_DOCKER_PUSH_URL}/vitamui/archive-search</image>
                         <tags>${project.version}</tags>
                     </to>
                 </configuration>

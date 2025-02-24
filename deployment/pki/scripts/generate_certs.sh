@@ -22,17 +22,17 @@ function generateCerts {
     # Generate hosts certificates
     pki_logger "Génération des certificats serveurs"
     # Zone interne
-    generateHostCertAndStorePassphrase   security-internal       hosts_vitamui_security_internal
+    generateHostCertAndStorePassphrase   security                hosts_vitamui_security
     generateHostCertAndStorePassphrase   api-gateway             hosts_vitamui_api_gateway
 
     #Zone externe
     generateHostCertAndStorePassphrase   iam-external            hosts_vitamui_iam_external
-    generateHostCertAndStorePassphrase   referential-external    hosts_vitamui_referential_external
+    generateHostCertAndStorePassphrase   referential             hosts_vitamui_referential
     generateHostCertAndStorePassphrase   cas-server              hosts_cas_server
-    generateHostCertAndStorePassphrase   ingest-external         hosts_vitamui_ingest_external
-    generateHostCertAndStorePassphrase   archive-search-external hosts_vitamui_archive_search_external
+    generateHostCertAndStorePassphrase   ingest                  hosts_vitamui_ingest
+    generateHostCertAndStorePassphrase   archive-search          hosts_vitamui_archive_search
     generateHostCertAndStorePassphrase   collect-external        hosts_vitamui_collect_external
-    generateHostCertAndStorePassphrase   pastis-external         hosts_vitamui_pastis_external
+    generateHostCertAndStorePassphrase   pastis                  hosts_vitamui_pastis
 
     #Zone UI
     generateHostCertAndStorePassphrase   ui-portal               hosts_ui_portal

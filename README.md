@@ -319,7 +319,7 @@ voir la [configuration](docs/developeurs/vitamui-conf-dev/README.md) suivante.
 │   │   ├── mail: './start.sh'
 ```
 
-## 3 - Lancement de l'application SpringBoot Security-Internal
+## 3 - Lancement de l'application SpringBoot Security
 
 ```
 ├── api
@@ -351,19 +351,19 @@ voir la [configuration](docs/developeurs/vitamui-conf-dev/README.md) suivante.
 │   │   ├── collect-external: 'mvn clean spring-boot:run' ou './run.sh'
 ```
 
-## 9 - Lancement de l'application SpringBoot Ingest-External
+## 9 - Lancement de l'application SpringBoot Ingest
 
 ```
 ├── api
 │   ├── api-ingest
-│   │   ├── ingest-external: 'mvn clean spring-boot:run' ou './run.sh'
+│   │   ├── ingest: 'mvn clean spring-boot:run' ou './run.sh'
 ```
 
 ## 10 - Lancement de l'application CAS Server
 
 La surcharge faite sur CAS nous empêche de lancer avec le plugin spring-boot
 
-**CAS-Server dépend de security-internal, iam-internal & iam-external**
+**CAS-Server dépend de security, iam-internal & iam-external**
 
 ```
 ├── cas
@@ -414,24 +414,24 @@ La surcharge faite sur CAS nous empêche de lancer avec le plugin spring-boot
     ├── ui-frontend: 'npm run start:pastis'
 ```
 
-## 15 - Les certificats sont auto-signés, il faut les accepter dans le navigateur pour :
+## 15 - Les certificats sont auto-signés, il faut les accepter dans le navigateur pour
 
 - UI-Frontend
-    - https://dev.vitamui.com:4200
-    - https://dev.vitamui.com:4201/user
-    - https://dev-vitamui.com:4208
+- https://dev.vitamui.com:4200
+- https://dev.vitamui.com:4201/user
+- https://dev-vitamui.com:4208
 - Ui-Back
-    - https://dev.vitamui.com:9000/
-    - https://dev.vitamui.com:9001/
-    - https://dev-vitamui.com:9008
+- https://dev.vitamui.com:9000/
+- https://dev.vitamui.com:9001/
+- https://dev-vitamui.com:9008
 
 **Attention : sans cette étape, le logout sur toutes les applications par CAS ne fonctionne pas**.
 
-## 16 - Se connecter sur le portail via :
+## 16 - Se connecter sur le portail via
 
 - https://dev.vitamui.com:4200
 
-## 17 - Se connecter sur la page de réception des mails smtp4dev via :
+## 17 - Se connecter sur la page de réception des mails smtp4dev via
 
 - http://localhost:3000/
 

@@ -4,9 +4,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>referential-external</artifactId>
+    <artifactId>referential</artifactId>
     <packaging>jar</packaging>
-    <name>VITAMUI Referential API External</name>
+    <name>VITAMUI Referential API</name>
 
     <parent>
         <groupId>fr.gouv.vitamui</groupId>
@@ -262,7 +262,7 @@
                 <artifactId>jib-maven-plugin</artifactId>
                     <configuration>
                         <to>
-                            <image>${env.SERVICE_DOCKER_PUSH_URL}/vitamui/referential-external</image>
+                            <image>${env.SERVICE_DOCKER_PUSH_URL}/vitamui/referential</image>
                             <tags>${project.version}</tags>
                         </to>
                     </configuration>

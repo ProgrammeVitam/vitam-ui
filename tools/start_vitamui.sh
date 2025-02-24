@@ -42,7 +42,7 @@ function cmd() {
 function start_api() {
 
      # Start Iam Security
-     launch "../api/api-security/security-internal" "$SPRINGBOOT"
+     launch "../api/api-security/security" "$SPRINGBOOT"
 
      # Start Iam Server Internal
      launch "../api/api-iam/iam-internal" "$SPRINGBOOT"

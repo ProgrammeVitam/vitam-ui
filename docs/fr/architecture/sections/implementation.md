@@ -113,11 +113,10 @@ Dans cet exemple, il est prévu pour respecter les contraintes de flux inter-zon
 
 * les utilisateurs de la zone USERS communiquent avec les services de la zone IHM
 * les administrateurs de la zone ADMIN communiquent avec les services de la zone IHM ADMIN
-* les services de la zone IHM et IHM-ADMIN communiquent avec les services de la zone API-EXTERNAL
-* les services de la zone API-EXTERNAL communiquent avec les services de la zone API-INTERNAL
-* les services de la zone API-INTERNAL communiquent avec les services de la zone DATA
+* les services de la zone IHM et IHM-ADMIN communiquent avec les services de la zone API
+* les services de la zone API communiquent avec les services de la zone DATA
 * les services de toutes les zones communiquent avec les services déployés dans la zone INFRA
-* les exploitants techniques accédent aux services de la zone EXPLOITATION puis intervenir dans toutes les zones
+* les exploitants techniques accédent aux services de la zone EXPLOITATION pour intervenir dans toutes les zones
 
 #### Les différentes zones
 
@@ -133,26 +132,16 @@ La zone IHM se compose de plusieurs services:
 * UI Collect
 * UI Pastis
 
-##### zone API-EXTERNAL
+##### zone API
 
-La zone API-EXTERNAL se compose de plusieurs services:
+La zone API se compose de plusieurs services:
 
-* IAM EXTERNAL
-* REFERENTIAL EXTERNAL
-* INGEST EXTERNAL
-* ARCHIVE SEARCH EXTERNAL
-* COLLECT EXTERNAL
-* PASTIS EXTERNAL
-
-##### zone API-INTERNAL
-
-La zone API-INTERNAL se compose de plusieurs services:
-
-* IAM INTERNAL
-* REFERENTIAL INTERNAL
-* INGEST INTERNAL
-* ARCHIVE SEARCH INTERNAL
-* COLLECT INTERNAL
+* IAM
+* REFERENTIAL
+* INGEST
+* ARCHIVE SEARCH
+* COLLECT
+* PASTIS
 
 ##### zone DATA
 
@@ -572,12 +561,12 @@ Le tableau ci-dessous détail l’ensemble du contenu des keystores et truststor
 | **cas-server**              | cas-server.crt, cas-server.key                     | ca-root.crt, ca-intermediate.crt |
 | **iam-external**            | iam-external.crt, iam-external.key                 | ca-root.crt                      |
 | **iam-internal**            | iam-internal.crt, iam-internal.key                 | ca-root.crt                      |
-| **referential-external**    | referential-external.crt, referential-external.key | ca-root.crt                      |
-| **ingest-external**         | ingest-external.crt, ingest-external.key           | ca-root.crt                      |
+| **referential**             | referential.crt, referential.key                   | ca-root.crt                      |
+| **ingest**                  | ingest.crt, ingest.key                             | ca-root.crt                      |
 | **ingest-internal**         | ingest-internal.crt, ingest-internal.key           | ca-root.crt                      |
-| **archive-search-external** | archive-search-external.crt, archive-external.key  | ca-root.crt                      |
+| **archive-search**          | archive-search.crt, archive-search.key             | ca-root.crt                      |
 | **collect-external**        | collect-external.crt, collect.key                  | ca-root.crt                      |
-| **pastis-external**         | pastis-external.crt, pastis.key                    | ca-root.crt                      |
+| **pastis**                  | pastis.crt, pastis.key                             | ca-root.crt                      |
 | **security-server**         | security-server.crt, security-server               | ca-root.crt                      |
 
 La liste des certificats utilisées par VITAM est décrite à cette

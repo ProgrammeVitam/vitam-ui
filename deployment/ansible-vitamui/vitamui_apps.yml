@@ -1,19 +1,19 @@
 ---
 
 # Internal apps
-- hosts: hosts_vitamui_security_internal
+- hosts: hosts_vitamui_security
   gather_facts: no
   any_errors_fatal: true
   roles:
     - vitamui
   vars:
-    vitamui_struct: "{{ vitamui.security_internal }}"
-    vitamui_certificate_type: "server"
-    password_keystore: "{{ keystores_server_security_internal }}"
+    vitamui_struct: "{{ vitamui.security }}"
+    vitamui_certificate_type: server
+    password_keystore: "{{ keystores_server_security }}"
     password_truststore: "{{ truststores_server }}"
-    consul_tags: "security-internal, api, internal"
+    consul_tags: "security, api"
   tags:
-    - security-internal
+    - security
 
 # External apps
 - hosts: hosts_vitamui_iam_external

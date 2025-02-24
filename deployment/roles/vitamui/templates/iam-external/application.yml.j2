@@ -57,9 +57,9 @@ gateway:
   enabled: true
 
 security:
-  host: {{ vitamui.security_internal.host }}
-  port: {{ vitamui.security_internal.port_service }}
-{% if vitamui.security_internal.secure | default(secure) | bool == true %}
+  host: {{ vitamui.security.host }}
+  port: {{ vitamui.security.port_service }}
+{% if vitamui.security.secure | default(secure) | bool == true %}
   secure: true
   ssl-configuration:
     truststore:

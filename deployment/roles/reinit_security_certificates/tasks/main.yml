@@ -33,4 +33,4 @@
     path: "{{ bootstrap_temp_dir }}/security.populate_certificates.js"
     state: absent
 
-# Restart the associated services: security-internal & cas-server
+# Restart the associated services: security & cas-server

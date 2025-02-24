@@ -55,38 +55,38 @@ vitamui_defaults:
 
 vitamui:
   # UI
-  identity:
+  ui_identity:
     vitamui_component: ui-identity
     port_service: 8002
-  identity_admin:
+  ui_identity_admin:
     vitamui_component: ui-identity-admin
     port_service: 8401
     package_name: vitamui-ui-identity-rsc
-  referential:
+  ui_referential:
     vitamui_component: ui-referential
     port_service: 8005
-  portal:
+  ui_portal:
     vitamui_component: ui-portal
     port_service: 8003
     has_tenant_list: true
     has_lang_selection: true
     has_site_selection: false
-  ingest:
+  ui_ingest:
     vitamui_component: ui-ingest
     port_service: 8008
-  archive_search:
+  ui_archive_search:
     vitamui_component: ui-archive-search
     port_service: 8009
-  collect:
+  ui_collect:
     vitamui_component: ui-collect
     port_service: 8010
 #    offline_services: # Disables online search engines in collect
 #      - agencies
 #      - archive-unit-profiles
-  pastis:
+  ui_pastis:
     vitamui_component: ui-pastis
     port_service: 9015
-  design_system:
+  ui_design_system:
     vitamui_component: ui-design-system
     port_service: 9016
 
@@ -97,9 +97,9 @@ vitamui:
     port_service: 8090
     port_admin: 7090
 
-  referential_external:
-    host: "vitamui-referential-external.service.{{ consul_domain }}"
-    vitamui_component: referential-external
+  referential:
+    host: "vitamui-referential.service.{{ consul_domain }}"
+    vitamui_component: referential
     port_service: 8105
     port_admin: 7105
     server_connection_timeout: 60000
@@ -118,21 +118,21 @@ vitamui:
     cors:
       enabled: true
 
-  security_internal:
-    host: "vitamui-security-internal.service.{{ consul_domain }}"
-    vitamui_component: security-internal
+  security:
+    host: "vitamui-security.service.{{ consul_domain }}"
+    vitamui_component: security
     port_service: 8203
     port_admin: 7203
 
-  ingest_external:
-    host: "vitamui-ingest-external.service.{{ consul_domain }}"
-    vitamui_component: ingest-external
+  ingest:
+    host: "vitamui-ingest.service.{{ consul_domain }}"
+    vitamui_component: ingest
     port_service: 8108
     port_admin: 7108
 
-  archive_search_external:
-    host: "vitamui-archive-search-external.service.{{ consul_domain }}"
-    vitamui_component: archive-search-external
+  archive_search:
+    host: "vitamui-archive-search.service.{{ consul_domain }}"
+    vitamui_component: archive-search
     port_service: 8109
     port_admin: 7109
 
@@ -142,9 +142,9 @@ vitamui:
     port_service: 8110
     port_admin: 7110
 
-  pastis_external:
-    host: "vitamui-pastis-external.service.{{ consul_domain }}"
-    vitamui_component: pastis-external
+  pastis:
+    host: "vitamui-pastis.service.{{ consul_domain }}"
+    vitamui_component: pastis
     port_service: 8015
     port_admin: 7115
     server_connection_timeout: 60000

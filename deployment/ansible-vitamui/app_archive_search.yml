@@ -1,13 +1,14 @@
-# Archive Search external calls Vitam
-- hosts: hosts_vitamui_archive_search_external
+---
+
+- hosts: hosts_vitamui_archive_search
   gather_facts: no
   any_errors_fatal: true
   roles:
     - vitamui
   vars:
-    vitamui_struct: "{{ vitamui.archive_search_external }}"
+    vitamui_struct: "{{ vitamui.archive_search }}"
     vitamui_certificate_type: external
-    password_keystore: "{{ keystores_server_archive_search_external }}"
+    password_keystore: "{{ keystores_server_archive_search }}"
     vitam_cert: "{{ vitam_certs.vitamui }}"
     password_truststore: "{{ truststores_client_external }}"
-    consul_tags: "archive-search-external, api, external"
+    consul_tags: "archive-search, api"

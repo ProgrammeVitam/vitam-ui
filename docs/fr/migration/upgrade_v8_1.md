@@ -4,7 +4,30 @@
 
 ## Adaptation des sources de déploiement ansible
 
-N/A
+### Fusion des couches external & internal de VitamUI
+
+Dans le fichier d'inventaire, les groupes suivants ont étés fusionnés:
+
+* hosts_vitamui_iam_external & hosts_vitamui_iam_internal -> hosts_vitamui_iam
+* hosts_vitamui_ingest_external & hosts_vitamui_ingest_internal -> hosts_vitamui_ingest
+* hosts_vitamui_archive_search_external & hosts_vitamui_archive_search_internal -> hosts_vitamui_archive_search
+* hosts_vitamui_collect_external & hosts_vitamui_collect_internal -> hosts_vitamui_collect
+* hosts_vitamui_referential_external & hosts_vitamui_referential_internal -> hosts_vitamui_referential
+
+Ainsi, vous pouvez devrez renommer aussi de votre côté les noms des groupes afin de n'en conserver qu'un seul avec le nouveau nom tel qu'attendu.
+
+Au niveau des fichiers de `deployment/environments/group_vars/all/vitamui_vars.yml`
+
+Si vous avez été amené à modifier les paramètres par défaut définis pour chacun des sous composants de vitamui:*, il faudra reporter les modifications selon la nouvelle convention de nommage.
+
+En effet, les composants UI sont tous préfixés vitamui.ui_xxx
+
+Les composants fusionnés ont perdu la référence à external/internal et par défaut, les paramètres de externals ont étés transférés sur la couche fusionnée.
+
+Ainsi, les ports des couches internals ne sont plus utilisés.
+
+vitamui.xxx_internal -> supprimé
+vitamui.xxx_external -> modifié en vitamui.xxx
 
 ---
 
@@ -44,6 +67,12 @@ VitamUI doit être arrêté :
 ```sh
 ansible-playbook -i environments/<inventaire> ansible-vitamui-exploitation/stop_vitamui.yml --ask-vault-pass
 ```
+
+### Nettoyage des anciens composants avant migration
+
+Exécuter le playbook de migration suivant à l'aide de l'ancien fichier d'inventaire.
+
+Ce playbook va venir supprimer tous les anciens paquets installés pour permettre le déploiement des nouveaux.
 
 ---
 

@@ -31,7 +31,7 @@ of our environment trusted by the remote environment, to do that, we follow thes
     openssl pkcs12 -export -in external_pub.pem -inkey external_key.pem -out our-keystore-env-ga.p12
 ```
 
-### 2. Update settings files:
+### 2. Update settings files
 
 Update settings files to call Vitam external services: we need to update the settings file for calling external
 webservices on Vitam: access-external, ingest-external, and collect-external.
@@ -41,9 +41,9 @@ access-external-client.conf, ingest-external-client.conf, collect-external-clien
 
 Example ingest-external-client.conf :
 
-```
+```yml
 serverHost: ga.env-api.programmevitam.fr                ## the API url of remote Vitam environment
-serverPort: 443                                         ## HTTPS default port 
+serverPort: 443                                         ## HTTPS default port
 secure: true
 sslConfiguration :
  keystore :
