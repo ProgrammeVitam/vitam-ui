@@ -18,7 +18,6 @@ hosts_vitamui_security_internal
 hosts_vitamui_referential_external
 hosts_vitamui_ingest_external
 hosts_vitamui_archive_search_external
-hosts_vitamui_collect_internal
 hosts_vitamui_collect_external
 hosts_vitamui_pastis_external
 hosts_vitamui_api_gateway
@@ -39,9 +38,6 @@ localhost
 localhost
 
 [hosts_vitamui_archive_search_external]
-localhost
-
-[hosts_vitamui_collect_internal]
 localhost
 
 [hosts_vitamui_collect_external]

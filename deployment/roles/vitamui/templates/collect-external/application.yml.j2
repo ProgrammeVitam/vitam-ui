@@ -10,6 +10,9 @@ spring:
         healthCheckUrl: http://${management.server.address}:${management.server.port}/actuator/health
         tags: {{ consul_tags }}
         instanceId: {{ vitamui_struct.vitamui_component }}-${server.port}-${spring.cloud.client.hostname}
+  data:
+    mongodb:
+      uri: mongodb://{{ mongodb.archivesearch.user }}:{{ mongodb.archivesearch.password }}@{{ mongodb.host }}:{{ mongodb.mongod_port }}/{{ mongodb.archivesearch.db }}?replicaSet={{ mongod_replicaset_name }}&connectTimeoutMS={{ mongod_client_connect_timeout_ms }}
   servlet:
     multipart:
       max-file-size: -1
@@ -78,31 +81,8 @@ collect-external:
         key-password: {{ password_truststore }}
       hostname-verification: false
 {% endif %}
-  collect-internal-client:
-    server-host: {{ vitamui.collect_internal.host }}
-    server-port: {{ vitamui.collect_internal.port_service }}
-{% if vitamui.collect_internal.secure | default(secure) | bool == true %}
-    secure: {{ vitamui.collect_internal.secure | default(secure) | lower }}
-    ssl-configuration:
-      truststore:
-        key-path: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
-        key-password: {{ password_truststore }}
-      hostname-verification: false
-{% endif %}
-  update-units-metadata-internal-client:
-    server-host: {{ vitamui.collect_internal.host }}
-    server-port: {{ vitamui.collect_internal.port_service }}
-{% if vitamui.collect_internal.secure | default(secure) | bool == true %}
-    secure: {{ vitamui.collect_internal.secure | default(secure) | lower }}
-    connect-time-out: {{ vitamui.collect_internal.connect_timeout | default(30) }}
-    read-time-out: {{ vitamui.collect_internal.read_timeout | default(240000) }}
-    write-time-out: {{ vitamui.collect_internal.write_timeout | default(240000) }}
-    ssl-configuration:
-      truststore:
-        key-path: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
-        key-password: {{ password_truststore }}
-      hostname-verification: false
-{%endif %}
+
+ontologies_file_path: {{ vitamui_folder_data }}/external_ontology_fields.json
 
 {% if opentracing.jaeger.enabled | default(false) | bool %}
 opentracing:

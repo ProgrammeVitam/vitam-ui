@@ -203,16 +203,6 @@
             </dependency>
             <dependency>
                 <groupId>fr.gouv.vitamui</groupId>
-                <artifactId>collect-internal</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>fr.gouv.vitamui</groupId>
-                <artifactId>collect-internal-client</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>fr.gouv.vitamui</groupId>
                 <artifactId>collect-external</artifactId>
                 <version>${project.version}</version>
             </dependency>

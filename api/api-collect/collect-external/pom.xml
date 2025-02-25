@@ -17,37 +17,31 @@
         <rpm.skip>false</rpm.skip>
         <swagger.dir>api-external</swagger.dir>
         <swagger.skip>false</swagger.skip>
-		<jib.skip>true</jib.skip>
+        <jib.skip>true</jib.skip>
     </properties>
 
     <dependencies>
 
         <!-- VITAMUI -->
         <dependency>
-            <groupId>fr.gouv.vitamui.commons</groupId>
-            <artifactId>commons-api</artifactId>
+            <groupId>fr.gouv.vitamui</groupId>
+            <artifactId>collect-commons</artifactId>
         </dependency>
         <dependency>
             <groupId>fr.gouv.vitamui.commons</groupId>
-            <artifactId>commons-rest</artifactId>
+            <artifactId>commons-api</artifactId>
         </dependency>
         <dependency>
             <groupId>fr.gouv.vitamui.commons</groupId>
             <artifactId>commons-vitam</artifactId>
         </dependency>
         <dependency>
+            <groupId>fr.gouv.vitamui.commons</groupId>
+            <artifactId>commons-rest</artifactId>
+        </dependency>
+        <dependency>
             <groupId>fr.gouv.vitamui</groupId>
             <artifactId>security-client</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>fr.gouv.vitamui</groupId>
-            <artifactId>iam-internal-client</artifactId>
-        </dependency>
-
-
-        <dependency>
-            <groupId>fr.gouv.vitamui</groupId>
-            <artifactId>collect-internal-client</artifactId>
         </dependency>
         <dependency>
             <groupId>fr.gouv.vitamui</groupId>
@@ -65,7 +59,11 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-webflux</artifactId>
+            <artifactId>spring-boot-starter-data-mongodb</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>fr.gouv.vitamui.commons</groupId>
+            <artifactId>commons-mongo</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -78,6 +76,12 @@
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-consul-discovery</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>javax.ws.rs</groupId>
+                    <artifactId>jsr311-api</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
@@ -89,15 +93,15 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-tomcat</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
         </dependency>
         <dependency>
-            <groupId>io.opentracing.contrib</groupId>
-            <artifactId>opentracing-spring-jaeger-web-starter</artifactId>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-expression</artifactId>
         </dependency>
         <!-- Metrics -->
         <dependency>
@@ -111,23 +115,13 @@
             <artifactId>pac4j-saml</artifactId>
         </dependency>
 
-        <!-- UTIL -->
         <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <scope>provided</scope>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>javax.ws.rs</groupId>
-            <artifactId>javax.ws.rs-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>xml-apis</groupId>
-            <artifactId>xml-apis</artifactId>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
         </dependency>
 
         <!-- Documentation -->
@@ -140,7 +134,18 @@
             <artifactId>springfox-swagger-ui</artifactId>
         </dependency>
 
-        <!--TEST -->
+        <dependency>
+            <groupId>com.opencsv</groupId>
+            <artifactId>opencsv</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>io.opentracing.contrib</groupId>
+            <artifactId>opentracing-spring-jaeger-web-starter</artifactId>
+        </dependency>
+
+
+        <!-- TESTS -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
@@ -169,8 +174,17 @@
             <type>test-jar</type>
         </dependency>
         <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-tx</artifactId>
+            <groupId>fr.gouv.vitamui</groupId>
+            <artifactId>archive-search-commons</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-mongodb</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>uk.co.jemos.podam</groupId>
+            <artifactId>podam</artifactId>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
@@ -179,12 +193,12 @@
             <plugin>
 				<groupId>com.google.cloud.tools</groupId>
 				<artifactId>jib-maven-plugin</artifactId>
-				<configuration>
-                    <to>
-                        <image>${env.SERVICE_DOCKER_PUSH_URL}/vitamui/collect-external</image>
-                        <tags>${project.version}</tags>
-                    </to>
-				</configuration>
+                    <configuration>
+                        <to>
+                            <image>${env.SERVICE_DOCKER_PUSH_URL}/vitamui/collect-external</image>
+                            <tags>${project.version}</tags>
+                        </to>
+                    </configuration>
 			</plugin>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
@@ -207,7 +221,7 @@
                     <executable>true</executable>
                     <attach>false</attach> <!-- Need to use the original jar for integration-tests -->
                     <mainClass>
-                        fr.gouv.vitamui.collect.external.server.ApiCollectExternalServerApplication
+                        fr.gouv.vitamui.collect.server.ApiCollectServerApplication
                     </mainClass>
                     <arguments>
                         <!-- use src/main/config/application-dev.yml when using mvn spring-boot:run -->

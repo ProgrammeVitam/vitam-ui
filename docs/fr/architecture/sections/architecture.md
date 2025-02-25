@@ -1490,7 +1490,7 @@ Après l'installation de VitamUI le fichier des ontologies sera placé dans les 
 machine) :
 
 * vitamui/conf/archive-search-external/
-* vitamui/conf/collect-internal/
+* vitamui/conf/collect-external/
 
 Ensuite, s'il y a un besoin d'ajouter des nouvelles ontologies, il suffit juste de modifier le fichier directement au
 niveau des machines. Sinon changer le fichier **environments/ontology/external_ontology_fields.json** et relancer les
