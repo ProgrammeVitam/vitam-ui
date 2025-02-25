@@ -20,7 +20,7 @@
   processors:
     {% if vitamui_service == 'api_gateway' %}
     - dissect:
-        tokenizer: '[%{date_time}] %{client_ip|ip} - - [%{misformated_date_time}] "%{http_method} %{request_path} HTTP/%{http_version}" %{http_status_code|integer} %{response_size}'
+        tokenizer: '[%{date_time}] %{client_ip|ip} - - [%{?misformated_date_time}] "%{http_method} %{request_path} HTTP/%{http_version}" %{http_status_code|integer} %{response_size}'
         target_prefix: ""
     - timestamp:
         field: date_time
@@ -29,7 +29,7 @@
         test:
           - '2024-09-30 13:46:37,298'
     - drop_fields:
-        fields: ["date_time", "misformated_date_time"]
+        fields: ["date_time", "message"]
       {% if filebeat.drop_health_checks_logs | default(true) | bool %}
     # Drop health checks
     - drop_event:
@@ -51,7 +51,7 @@
         test:
           - '30/Sep/2024:13:46:37 +0200'
     - drop_fields:
-        fields: ["date_time"]
+        fields: ["date_time", "message"]
     {% endif %}
 
   {% endif %}
@@ -79,7 +79,7 @@
         test:
           - '30/Sep/2024:13:46:37 +0200'
     - drop_fields:
-        fields: ["date_time"]
+        fields: ["date_time", "message"]
     {% if filebeat.drop_health_checks_logs | default(true) | bool %}
     # Drop health checks
     - drop_event:
@@ -107,7 +107,7 @@
     type: application
   processors:
     - dissect:
-        tokenizer: '%{date_time} [[%{thread}]] [%{request_id}] %{log_level} %{logger} - %{log_message}'
+        tokenizer: '%{date_time} [[%{java_thread}]] [%{request_id}] %{log_level->} %{java_class} - %{?skipvalue} at %{java_caller} : %{log_message}'
         target_prefix: ""
         trim_values: all
     - timestamp:
@@ -117,7 +117,7 @@
         test:
           - '2024-09-30 13:46:37,298'
     - drop_fields:
-        fields: ["date_time"]
+        fields: ["date_time", "message"]
   parsers:
     - multiline:
         type: pattern
