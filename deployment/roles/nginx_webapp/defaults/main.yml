@@ -11,6 +11,6 @@ frontend_role_goal: install
 nginx_conf_dir: /etc/nginx/conf.d
 nginx_ssl_dir: /etc/nginx/conf.d/ssl
 
-secure: "{{ vitamui_default.services.secure | default(true) | bool }}"
+secure: "{{ vitamui_defaults.services.secure | default(true) | bool }}"
 
 package_name: "vitamui-{{ vitamui_struct.vitamui_component }}-rsc"
