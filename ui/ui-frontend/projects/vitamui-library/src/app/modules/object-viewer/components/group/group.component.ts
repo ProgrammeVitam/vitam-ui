@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { DisplayObject } from '../../models';
 import { internationalizedKeys } from '../../services/display-object-helper.service';
 import { FavoriteEntryService } from '../../services/favorite-entry.service';
@@ -46,7 +46,7 @@ import { DisplayObjectType } from '../../types';
   templateUrl: './group.component.html',
   styleUrls: ['./group.component.scss'],
 })
-export class GroupComponent implements OnChanges {
+export class GroupComponent implements OnInit, OnChanges {
   @Input() displayObject: DisplayObject;
 
   favoriteEntry: [key: string, value: any];
@@ -61,6 +61,12 @@ export class GroupComponent implements OnChanges {
     private layoutService: LayoutService,
     private favoriteEntryService: FavoriteEntryService,
   ) {}
+
+  ngOnInit(): void {
+    if (this.displayObject.key !== 'Generalities') {
+      this.displayObject.open = false;
+    }
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     const { displayObject } = changes;
