@@ -49,8 +49,8 @@
       "TELECHARGER_PROFILE": "Download the profile"
     },
     "INFORMATION_TAB": {
-      "PROFILE": "Profile",
-      "ACTIF": "active",
+      "ACTIVE_PROFILE": "Active profile",
+      "INACTIVE_PROFILE": "Inactive profile",
       "TYPE": "Type",
       "PROFILE_ARCHIVAGE": "Archival profile",
       "PROFILE_UNITE_ARCHIVISTIQUE": "Archival Unit Profile",
