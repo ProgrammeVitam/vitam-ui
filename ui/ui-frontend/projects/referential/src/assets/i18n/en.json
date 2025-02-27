@@ -26,6 +26,7 @@
     "AGENCY_SUBTITLE": "Agency referential import",
     "RULES_SUBTITLE": "Importing a business rule repository",
     "FILE_FORMAT_SUBTITLE": "Importing a file format repository",
+    "ONTOLOGY_TITLE": "Importing an ontology",
     "ONTOLOGY_SUBTITLE": "Importing an ontology repository",
     "ONTOLOGY_FORMAT_JSON": "The import file must be in json format",
     "SCHEMA_SUBTITLE": "Importing vocabulary(ies) into a schema",
