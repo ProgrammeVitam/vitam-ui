@@ -109,7 +109,6 @@ maven-eclipse.xml
 **/*.rpm
 **/*.deb
 
-
 ######################
 # Windows
 ######################
@@ -170,12 +169,12 @@ maven-eclipse.xml
 *.retry
 
 ######################
-# Editor files:
+# Editor files
 ######################
 .ideas/*
 
 ######################
-# python compiled code :
+# python compiled code
 ######################
 *.pyc
 
@@ -184,7 +183,7 @@ maven-eclipse.xml
 ######################
 .directory
 
-####################
+###################
 # Vagrant
 ###################
 deployment/.vagrant
@@ -200,7 +199,7 @@ deployment/.vagrant
 # Camel
 **/tmp/
 
-/deployment/playbooks/pki/tempcerts/
+deployment/playbooks/pki/tempcerts/
 
 ##################
 # Angular Common #
@@ -213,7 +212,7 @@ ui/angular-commons/*.tgz
 /deployment/tmp/
 
 ##########################################
-# Deployment Local deployement keystores  #
+# Deployment Local deployement keystores #
 ##########################################
 # Created vitam client stores
 deployment/playbooks/pki/vitam/client-external/*.p12
@@ -228,8 +227,6 @@ deployment/playbooks/pki/certs/*/*.p12
 deployment/playbooks/templates/vitamui/conf/*/*.jks
 # Imported vitamui app vitam truststore
 deployment/playbooks/templates/vitamui/conf/*/*.p12
-
-# Vitam development configuration
 
 ###################################
 # Vitam development configuration #
@@ -246,3 +243,9 @@ api/api-collect/collect-internal/src/main/resources/ontology/
 # Mongo workspace entry-point #
 ##########################################
 tools/docker/mongo/mongo-entrypoint
+
+#####################
+# Python virtualenv #
+#####################
+.virtualenvs
+vitamUI-ansible
