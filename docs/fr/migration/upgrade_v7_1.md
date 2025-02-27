@@ -70,8 +70,8 @@ Il est toujours possible de personnaliser ce paramétrage par défaut via les va
   * `vitamui_defaults.services.access_total_size_cap: 5GB` ou par composant en utilisant la variable `vitamui.<composant>.access_total_size_cap: 5GB`.
 
 * Pour les logs applicatifs:
-  * `vitamui_default.services.log.logback_max_history: 365` ou par composant en utilisant la variable `vitamui.<composant>.log.logback_max_history: 365`.
-  * `vitamui_default.services.log.logback_total_size_cap: 5GB` ou par composant en utilisant la variable `vitam.<composant>.log.logback_total_size_cap: 5GB`.
+  * `vitamui_defaults.services.log.logback_max_history: 365` ou par composant en utilisant la variable `vitamui.<composant>.log.logback_max_history: 365`.
+  * `vitamui_defaults.services.log.logback_total_size_cap: 5GB` ou par composant en utilisant la variable `vitam.<composant>.log.logback_total_size_cap: 5GB`.
 
 ### Modification de la méthodologie de concentration des logs
 
