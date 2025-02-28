@@ -285,8 +285,8 @@ spring:
             # Pastis API
             - RewritePath=/pastis-api/,/
 
-        - id: collect-external-service
-          uri: {{ 'https' if vitamui.collect_external.secure | default(secure) | bool else 'http' }}://{{ vitamui.collect_external.host }}:{{ vitamui.collect_external.port_service }}
+        - id: collect-service
+          uri: {{ 'https' if vitamui.collect.secure | default(secure) | bool else 'http' }}://{{ vitamui.collect.host }}:{{ vitamui.collect.port_service }}
           predicates:
             - >
               Path=

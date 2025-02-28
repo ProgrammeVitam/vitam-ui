@@ -41,7 +41,7 @@ import org.springframework.stereotype.Component;
 @Getter
 @Setter
 @Component
-@ConfigurationProperties(prefix = "collect-external", ignoreUnknownFields = false)
+@ConfigurationProperties(prefix = "collect", ignoreUnknownFields = false)
 public class ApiCollectApplicationProperties {
 
     private RestClientConfiguration iamExternalClient;

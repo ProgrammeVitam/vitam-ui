@@ -31,7 +31,7 @@ function generateCerts {
     generateHostCertAndStorePassphrase   cas-server              hosts_cas_server
     generateHostCertAndStorePassphrase   ingest                  hosts_vitamui_ingest
     generateHostCertAndStorePassphrase   archive-search          hosts_vitamui_archive_search
-    generateHostCertAndStorePassphrase   collect-external        hosts_vitamui_collect_external
+    generateHostCertAndStorePassphrase   collect                 hosts_vitamui_collect
     generateHostCertAndStorePassphrase   pastis                  hosts_vitamui_pastis
 
     #Zone UI

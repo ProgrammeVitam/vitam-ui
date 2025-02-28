@@ -203,12 +203,12 @@
             </dependency>
             <dependency>
                 <groupId>fr.gouv.vitamui</groupId>
-                <artifactId>collect-external</artifactId>
+                <artifactId>collect</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>fr.gouv.vitamui</groupId>
-                <artifactId>collect-external-client</artifactId>
+                <artifactId>collect-client</artifactId>
                 <version>${project.version}</version>
             </dependency>
 

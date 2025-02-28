@@ -27,7 +27,7 @@ server:
   host:
   port: 8090
   ssl:
-    key-store: ../../../dev-deployment/environments/keystores/server/localhost/keystore_collect-external.jks
+    key-store: ../../../dev-deployment/environments/keystores/server/localhost/keystore_collect.jks
     key-store-password: changeme
     key-password: changeme
     trust-store: ../../../dev-deployment/environments/keystores/server/truststore_server.jks
@@ -41,7 +41,7 @@ management:
     address: localhost
     port: 8190
 
-collect-external:
+collect:
   security-client:
     server-host: localhost
     server-port: 8084

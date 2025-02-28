@@ -18,7 +18,7 @@ hosts_vitamui_security
 hosts_vitamui_referential
 hosts_vitamui_ingest
 hosts_vitamui_archive_search
-hosts_vitamui_collect_external
+hosts_vitamui_collect
 hosts_vitamui_pastis
 hosts_vitamui_api_gateway
 
@@ -37,7 +37,7 @@ localhost
 [hosts_vitamui_archive_search]
 localhost
 
-[hosts_vitamui_collect_external]
+[hosts_vitamui_collect]
 localhost
 
 [hosts_vitamui_pastis]

@@ -39,7 +39,7 @@ vitamui:
     # memory: "-Xms128m -Xmx512m"
     # gc: ""
     # java: ""
-  collect_external:
+  collect:
     jvm_opts:
     # memory: "-Xms128m -Xmx512m"
     # gc: ""

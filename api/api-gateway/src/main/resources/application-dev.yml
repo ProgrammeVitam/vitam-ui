@@ -254,7 +254,7 @@ spring:
             # Pastis API
             - RewritePath=/pastis-api/,/
 
-        - id: collect-external-service
+        - id: collect-service
           uri: https://localhost:8090 # URL COLLECT EXTERNAL
           predicates:
             - >

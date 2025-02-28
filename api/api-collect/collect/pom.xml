@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>collect-external</artifactId>
+    <artifactId>collect</artifactId>
     <packaging>jar</packaging>
     <name>VITAMUI Collect External API</name>
 
@@ -194,7 +194,7 @@
 				<artifactId>jib-maven-plugin</artifactId>
                     <configuration>
                         <to>
-                            <image>${env.SERVICE_DOCKER_PUSH_URL}/vitamui/collect-external</image>
+                            <image>${env.SERVICE_DOCKER_PUSH_URL}/vitamui/collect</image>
                             <tags>${project.version}</tags>
                         </to>
                     </configuration>

@@ -38,7 +38,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.test.context.TestPropertySource;
 
 @Import(value = { WebSecurityConfig.class, RestExceptionHandler.class })
-@TestPropertySource(properties = { "spring.config.name=collect-external-application" })
+@TestPropertySource(properties = { "spring.config.name=collect-application" })
 public abstract class ApiCollectControllerTest<T extends IdDto> extends ApiControllerTest<T> {
 
     @MockBean

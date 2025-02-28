@@ -136,9 +136,9 @@ vitamui:
     port_service: 8109
     port_admin: 7109
 
-  collect_external:
-    host: "vitamui-collect-external.service.{{ consul_domain }}"
-    vitamui_component: collect-external
+  collect:
+    host: "vitamui-collect.service.{{ consul_domain }}"
+    vitamui_component: collect
     port_service: 8110
     port_admin: 7110
 
