@@ -16,9 +16,6 @@
     <modules>
         <module>collect-commons</module>
         <module>collect-external</module>
-        <module>collect-external-client</module>
-        <module>collect-internal</module>
-        <module>collect-internal-client</module>
     </modules>
 
 </project>

@@ -49,11 +49,6 @@ vitamui:
     # memory: "-Xms128m -Xmx512m"
     # gc: ""
     # java: ""
-  collect_internal:
-    jvm_opts:
-    # memory: "-Xms128m -Xmx512m"
-    # gc: ""
-    # java: ""
   pastis_external:
     jvm_opts:
     # memory: "-Xms128m -Xmx512m"

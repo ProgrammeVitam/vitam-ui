@@ -13,6 +13,10 @@ spring:
         enabled: false
         register: false
 
+  data:
+    mongodb:
+      uri: mongodb://mongod_dbuser_archivesearch:mongod_dbpwd_archivesearch@localhost:27018/archivesearch?connectTimeoutMS=2000
+
 multipart:
   enabled: true
 
@@ -36,9 +40,6 @@ management:
   server:
     address: localhost
     port: 8190
-    ssl:
-      enabled: false
-
 
 collect-external:
   security-client:
@@ -49,18 +50,6 @@ collect-external:
     server-host: localhost
     server-port: 7083
     secure: false
-  collect-internal-client:
-    server-host: localhost
-    server-port: 7090
-    secure: false
-  update-units-metadata-internal-client:
-    server-host: localhost
-    server-port: 7090
-    secure: false
-    connect-time-out: 30   #30 secondes
-    read-time-out: 240000  #4 minutes
-    write-time-out: 240000 #4 minutes
-
 
 # Jaeger
 opentracing:
@@ -74,9 +63,15 @@ opentracing:
 
 logging:
   level:
-    fr.gouv.vitamui: DEBUG
-    fr.gouv.vitamui.iam.security: DEBUG
-    #level.org.springframework.web.filter.CommonsRequestLoggingFilter: DEBUG
+    fr.gouv.vitamui.collect: DEBUG
+    fr.gouv.vitamui.iam.security: INFO
+    fr.gouv.vitam.collect: DEBUG
+    fr.gouv.vitam.collect.*: DEBUG
+    reactor.netty.*: DEBUG
+#    org.springframework.core.env: DEBUG
+
+# ontology fields file path
+ontologies_file_path: "src/main/resources/ontology/external_ontology_fields.json"
 
 ---
 spring:

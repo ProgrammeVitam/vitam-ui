@@ -577,7 +577,6 @@ Le tableau ci-dessous détail l’ensemble du contenu des keystores et truststor
 | **ingest-internal**         | ingest-internal.crt, ingest-internal.key           | ca-root.crt                      |
 | **archive-search-external** | archive-search-external.crt, archive-external.key  | ca-root.crt                      |
 | **collect-external**        | collect-external.crt, collect.key                  | ca-root.crt                      |
-| **collect-internal**        | collect-internal.crt, collect.key                  | ca-root.crt                      |
 | **pastis-external**         | pastis-external.crt, pastis.key                    | ca-root.crt                      |
 | **security-server**         | security-server.crt, security-server               | ca-root.crt                      |
 

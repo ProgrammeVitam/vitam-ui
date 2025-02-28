@@ -5,8 +5,8 @@ spring:
   application:
     name: collect-external
   api:
-    name: API Collect External
-    description: This API is used to collect Vitam's archives
+    name: API Collect
+    description: This API is used to collect archives
     version: v1
   mvc:
     favicon:
@@ -21,14 +21,14 @@ management:
   endpoints:
     jmx:
       domain: collect-external
-      web.exposure.include: info,health,prometheus
+    web.exposure.include: info,health,prometheus
   endpoint:
     health:
       show-details: always
     prometheus:
       enabled: true
 
-swagger:
-  layer: api-external
-  file-path: file:../../../tools/swagger/docs/api-external/collect-external/swagger.json
-
+metrics:
+  reporterInterval: 1
+  reporterIntervalUnit: MINUTES
+  index: metrics-vitam-jvm
