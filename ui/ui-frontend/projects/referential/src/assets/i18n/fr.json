@@ -26,9 +26,10 @@
     "AGENCY_SUBTITLE": "Import d'un référentiel de service agent",
     "RULES_SUBTITLE": "Import d'un référentiel de règle de gestion",
     "FILE_FORMAT_SUBTITLE": "Import d'un référentiel de format de fichier",
+    "ONTOLOGY_TITLE": "Importer l'ontologie",
     "ONTOLOGY_SUBTITLE": "Import d'un référentiel d'ontologie",
     "ONTOLOGY_FORMAT_JSON": "Le fichier d'import doit être au format json",
-    "SCHEMA_SUBTITLE": "Import de vocabulaire(s) dans un schema",
+    "SCHEMA_SUBTITLE": "Import de vocabulaire(s) dans le schéma",
     "SCHEMA_FORMAT_CSV": "Le fichier d'import doit être au format csv, encodé en UTF8, avec séparateur de point virgule",
     "IMPORT": "Importer",
     "DRAG_DROP": "Glisser / Déposer ou ",
@@ -263,7 +264,8 @@
     "KO": "Erreur",
     "OK": "Succès",
     "FATAL": "Erreur technique",
-    "WARNING": "Avertissement"
+    "WARNING": "Avertissement",
+    "STARTED": "Démarré"
   },
   "LOGBOOK_OPERATION_INFORMATIONS": {
     "PAUSE_STEP": " Mettre en pause l'opération en cours",
@@ -297,7 +299,8 @@
     "POP_UP_CANCEL_NON_FORCED_MODE_MESSAGE": "Attention l’opération sera terminée en ERREUR.",
     "POP_UP_CANCEL_FORCED_MODE_REASON": "Vous devez saisir un motif pour indiquer la raison de cette action d’arrêt forcé.",
     "POP_UP_CANCEL_FORCED_MODE_REASON_PLACEHOLDER": "Motif",
-    "POP_UP_CANCEL_ACTION": "Forcer l'arrêt"
+    "POP_UP_CANCEL_ACTION": "Forcer l'arrêt",
+    "POP_UP_PAUSE_MESSAGE": "Mettre en pause l'opération"
   },
   "ACCESSION_REGISTER": {
     "ACCESSION_REGISTER": "Registre des fonds",

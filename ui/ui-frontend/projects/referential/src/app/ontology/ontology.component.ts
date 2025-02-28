@@ -141,7 +141,7 @@ export class OntologyComponent extends SidenavPage<Ontology> implements OnInit {
   openOntologyImportDialog() {
     const params = this.getImportDialogParams(
       ReferentialTypes.ONTOLOGY,
-      'IMPORT_DIALOG.TITLE',
+      'IMPORT_DIALOG.ONTOLOGY_TITLE',
       'IMPORT_DIALOG.ONTOLOGY_SUBTITLE',
       [FileTypes.JSON],
       'IMPORT_DIALOG.ONTOLOGY_FORMAT_JSON',
