@@ -42,7 +42,6 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { SharedModule } from 'projects/identity/src/app/shared/shared.module';
 import { VitamUICommonModule } from 'vitamui-library';
 
 import { UploadModule } from '../core/common/upload.module';
@@ -56,20 +55,19 @@ import { TranslateModule } from '@ngx-translate/core';
 @NgModule({
   imports: [
     CommonModule,
-    VitamUICommonModule,
-    MatDialogModule,
-    MatMenuModule,
-    MatSidenavModule,
-    IngestRoutingModule,
-    UploadModule,
-    UploadTrackingModule,
-    SharedModule,
     IngestListModule,
     IngestPreviewModule,
-    ReactiveFormsModule,
+    IngestRoutingModule,
     MatDatepickerModule,
+    MatDialogModule,
+    MatMenuModule,
     MatNativeDateModule,
+    MatSidenavModule,
+    ReactiveFormsModule,
     TranslateModule,
+    UploadModule,
+    UploadTrackingModule,
+    VitamUICommonModule,
   ],
   declarations: [IngestComponent],
 })

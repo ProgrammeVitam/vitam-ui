@@ -1,5 +1,5 @@
-<form [formGroup]="form" class="gap-5 align-items-stretch" (ngSubmit)="onSubmit()">
-  <div class="gap-3 align-items-stretch">
+<form [formGroup]="form" class="gap-5" (ngSubmit)="onSubmit()">
+  <div class="gap-3 align-items-stretch w-100">
     <vitamui-common-slide-toggle [formControl]="statusControl" checked="form.controls.status.value === 'ACTIVE'">
       {{ 'CONTEXTS_APP.TAB.INFORMATION.STATUS_TOGGLE' | translate }}
     </vitamui-common-slide-toggle>
@@ -18,49 +18,33 @@
       [enableSearch]="false"
     ></vitamui-select>
 
-    <mat-form-field class="w-100 vitamui-input vitamui-date">
-      <input
-        [matDatepicker]="creationDate"
-        matInput
-        formControlName="creationDate"
-        [placeholder]="'CONTEXTS_APP.TAB.INFORMATION.CREATION_DATE' | translate"
-      />
-      <mat-datepicker-toggle [for]="creationDate" matSuffix></mat-datepicker-toggle>
-      <mat-datepicker #creationDate disabled></mat-datepicker>
-    </mat-form-field>
+    <vitamui-common-multiple-options-datepicker
+      class="w-100"
+      formControlName="creationDate"
+      [label]="'CONTEXTS_APP.TAB.INFORMATION.CREATION_DATE' | translate"
+    >
+    </vitamui-common-multiple-options-datepicker>
 
-    <mat-form-field class="w-100 vitamui-input vitamui-date">
-      <input
-        [matDatepicker]="lastUpdate"
-        matInput
-        formControlName="lastUpdate"
-        [placeholder]="'CONTEXTS_APP.TAB.INFORMATION.LAST_UPDATE_DATE' | translate"
-      />
-      <mat-datepicker-toggle [for]="lastUpdate" matSuffix></mat-datepicker-toggle>
-      <mat-datepicker #lastUpdate></mat-datepicker>
-    </mat-form-field>
+    <vitamui-common-multiple-options-datepicker
+      class="w-100"
+      formControlName="lastUpdate"
+      [label]="'CONTEXTS_APP.TAB.INFORMATION.LAST_UPDATE_DATE' | translate"
+    >
+    </vitamui-common-multiple-options-datepicker>
 
-    <mat-form-field class="w-100 vitamui-input vitamui-date">
-      <input
-        [matDatepicker]="activationDate"
-        matInput
-        formControlName="activationDate"
-        [placeholder]="'CONTEXTS_APP.TAB.INFORMATION.ACTIVATION_DATE' | translate"
-      />
-      <mat-datepicker-toggle [for]="activationDate" matSuffix></mat-datepicker-toggle>
-      <mat-datepicker #activationDate></mat-datepicker>
-    </mat-form-field>
+    <vitamui-common-multiple-options-datepicker
+      class="w-100"
+      formControlName="activationDate"
+      [label]="'CONTEXTS_APP.TAB.INFORMATION.ACTIVATION_DATE' | translate"
+    >
+    </vitamui-common-multiple-options-datepicker>
 
-    <mat-form-field class="w-100 vitamui-input vitamui-date">
-      <input
-        [matDatepicker]="deactivationDate"
-        matInput
-        formControlName="deactivationDate"
-        [placeholder]="'CONTEXTS_APP.TAB.INFORMATION.DEACTIVATION_DATE' | translate"
-      />
-      <mat-datepicker-toggle [for]="deactivationDate" matSuffix></mat-datepicker-toggle>
-      <mat-datepicker #deactivationDate></mat-datepicker>
-    </mat-form-field>
+    <vitamui-common-multiple-options-datepicker
+      class="w-100"
+      formControlName="deactivationDate"
+      [label]="'CONTEXTS_APP.TAB.INFORMATION.DEACTIVATION_DATE' | translate"
+    >
+    </vitamui-common-multiple-options-datepicker>
   </div>
 
   <button type="submit" class="btn primary" [disabled]="isInvalid() || unchanged() || submited">

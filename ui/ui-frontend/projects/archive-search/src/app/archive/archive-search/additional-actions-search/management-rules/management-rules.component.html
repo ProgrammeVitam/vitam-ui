@@ -8,116 +8,39 @@
 
     <div class="vitamui-content">
       <div class="row">
-        <div class="col-4 radio-btn-area">
-          <br />
-          <label class="text bold normal primary"> {{ 'RULES.SELECT_RULE_CATEGORY' | translate }} *</label>
-          <div class="radio-group" *ngFor="let ruleCategory of rulesCatygories">
-            <div class="radio-btn-list">
-              <mat-radio-button
-                class="radio-button"
-                (change)="selectRule(ruleCategory)"
-                [disabled]="ruleCategory.isDisabled"
-                [value]="ruleCategory.id"
-              >
-                {{ ruleCategory.name }}
-              </mat-radio-button>
+        <div class="col-4 radio-btn-area py-3 gap-5 align-items-stretch">
+          <div class="gap-3 align-items-stretch">
+            <label class="text bold normal primary"> {{ 'RULES.SELECT_RULE_CATEGORY' | translate }} *</label>
+            <div class="radio-group" *ngFor="let ruleCategory of rulesCategories">
+              <div class="radio-btn-list d-flex align-items-center">
+                <mat-radio-button (change)="selectRule(ruleCategory)" [disabled]="ruleCategory.isDisabled" [value]="ruleCategory.id">
+                  {{ ruleCategory.name }}
+                </mat-radio-button>
+              </div>
             </div>
           </div>
-          <br />
-          <label class="text bold normal primary">{{ 'RULES.SELECT_RULE_ACTION' | translate }} *</label>
-          <br />
-          <div>
-            <mat-form-field class="vitamui-mat-select select-style">
-              <mat-select
-                placeholder="{{ 'RULES.ACTION_ON_RULES' | translate }} "
-                [disabled]="!isRuleCategorySelected || !isAllActionsValid()"
-              >
-                <mat-option
-                  [disabled]="!isRuleCategorySelected || isAddValidActions"
-                  (click)="onSelectAction('ADD_RULES')"
-                  vitamuiTooltip="{{ isAddValidActions ? messageNotAdd : '' }}"
-                >
-                  {{ 'RULES.ACTIONS.ADD_RULE' | translate }}
-                </mat-option>
-                <mat-option
-                  [disabled]="!isRuleCategorySelected || isUpdateValidActions || isUpdateValidActionsWithProperty"
-                  (click)="onSelectAction('UPDATE_RULES')"
-                  vitamuiTooltip="{{ isUpdateValidActions || isUpdateValidActionsWithProperty ? messageNotUpdate : '' }}"
-                >
-                  {{ 'RULES.ACTIONS.UPDATE_RULE' | translate }}
-                </mat-option>
-                <mat-option
-                  [disabled]="!isRuleCategorySelected || isDeleteValidActions || isDeleteValidActionsWithProperty"
-                  vitamuiTooltip="{{ isDeleteValidActions || isDeleteValidActionsWithProperty ? messageNotDelete : '' }}"
-                  (click)="onSelectAction('DELETE_RULES')"
-                >
-                  {{ 'RULES.ACTIONS.DELETE_RULE' | translate }}
-                </mat-option>
-                <mat-option [disabled]="!isRuleCategorySelected || isAddValidActions" (click)="onSelectAction('BLOCK_RULE_INHERITANCE')">
-                  {{ 'RULES.ACTIONS.BLOCK_RULE_INHERITANCE' | translate }}
-                </mat-option>
-                <mat-option
-                  [disabled]="isUnlockRulesInheritanceDisabled || isDeleteValidActions || !isRuleCategorySelected"
-                  (click)="onSelectAction('UNLOCK_RULE_INHERITANCE')"
-                >
-                  {{ 'RULES.ACTIONS.DELETE_BLOCK_RULE_INHERITANCE' | translate }}
-                </mat-option>
-              </mat-select>
-              <div class="select-arrow">
-                <i class="vitamui-icon vitamui-row-icon"></i>
-              </div>
-              <div class="select-arrow">
-                <i class="material-icons">keyboard_arrow_up</i>
-                <i class="material-icons">keyboard_arrow_down</i>
-              </div>
-            </mat-form-field>
+
+          <div class="gap-3 align-items-stretch">
+            <label class="text bold normal primary">{{ 'RULES.SELECT_RULE_ACTION' | translate }} *</label>
+            <vitamui-select
+              #action
+              [placeholder]="'RULES.ACTION_ON_RULES' | translate"
+              [disabled]="!isRuleCategorySelected || !isAllActionsValid()"
+              [options]="actionOptions"
+              [multiple]="false"
+              [enableSearch]="false"
+              (change)="onSelectAction($event); reset(action)"
+            ></vitamui-select>
+            <vitamui-select
+              #otherAction
+              [placeholder]="'RULES.OTHER_ACTIONS' | translate"
+              [disabled]="!isRuleCategorySelected || !isAllActionsValid()"
+              [options]="otherActionOptions"
+              [multiple]="false"
+              [enableSearch]="false"
+              (change)="onSelectAction($event); reset(otherAction)"
+            ></vitamui-select>
           </div>
-
-          <mat-form-field class="vitamui-mat-select select-more-actions">
-            <mat-select placeholder=" {{ 'RULES.OTHER_ACTIONS' | translate }}" [disabled]="!isRuleCategorySelected || !isAllActionsValid()">
-              <mat-option
-                [disabled]="
-                  !isRuleCategorySelected ||
-                  isAddPropertyValidActions ||
-                  isAddValidActions ||
-                  isUpdateValidActionsWithFinalAction ||
-                  isUpdateValidActionsWithProperty
-                "
-                (click)="onSelectAction('UPDATE_PROPERTY')"
-                vitamuiTooltip="{{ isAddPropertyValidActions ? messageNotAddProperty : isAddValidActions ? messageNotAdd : '' }}"
-              >
-                {{ 'RULES.MORE_ACTIONS.UPDATE_PROPERTY' | translate }}
-              </mat-option>
-              <mat-option
-                [disabled]="isDeletePropertyDisabled || isStorageRuleActionDisabled"
-                vitamuiTooltip="{{ isDeletePropertyDisabled ? messageNotToDeleteProperty : '' }}"
-                (click)="onSelectAction('DELETE_PROPERTY')"
-              >
-                {{ 'RULES.MORE_ACTIONS.DELETE_PROPERTY' | translate }}
-              </mat-option>
-              <mat-option
-                [disabled]="isBlockInheritanceCategoryDisabled || isUnlockInheritanceCategoryDisabled"
-                (click)="onSelectAction('BLOCK_CATEGORY_INHERITANCE')"
-              >
-                {{ 'RULES.MORE_ACTIONS.BLOCK_PROPERTY_INHERITANCE' | translate }}
-              </mat-option>
-              <mat-option
-                [disabled]="isUnlockInheritanceCategoryDisabled || isBlockInheritanceCategoryDisabled"
-                (click)="onSelectAction('UNLOCK_CATEGORY_INHERITANCE')"
-                vitamuiTooltip="{{ 'RULES.MORE_ACTIONS.DELETE_BLOCK_PROPERTY_INHERITANCE' | translate }}"
-              >
-                {{ 'RULES.MORE_ACTIONS.DELETE_BLOCK_PROPERTY_INHERITANCE' | translate }}
-              </mat-option>
-            </mat-select>
-
-            <div class="select-arrow">
-              <i class="vitamui-icon vitamui-row-icon"></i>
-            </div>
-            <div class="select-arrow">
-              <i class="material-icons">keyboard_arrow_up</i>
-              <i class="material-icons">keyboard_arrow_down</i>
-            </div>
-          </mat-form-field>
         </div>
         <div class="col-8 row-padding">
           <div class="update-rules-table-head row">
@@ -143,7 +66,7 @@
           <div class="row">
             <div class="col-12">
               <mat-tab-group [selectedIndex]="indexOfSelectedCategory">
-                <div *ngFor="let item of rulesCatygoriesToShow">
+                <div *ngFor="let item of rulesCategoriesToShow">
                   <mat-tab label="{{ item.name }}">
                     <app-archive-unit-rules
                       [selectedItem]="selectedItem"

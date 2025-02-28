@@ -65,7 +65,6 @@ export class ArchiveUnitDescriptionTabComponent implements OnDestroy {
   private readonly subscriptions = new Subscription();
   private readonly dialogConfig: MatDialogConfig = { autoFocus: false };
   private readonly snackBarConfig: MatSnackBarConfig = {
-    panelClass: 'vitamui-snack-bar',
     data: {
       type: 'WorkflowSuccessSnackBar',
     },

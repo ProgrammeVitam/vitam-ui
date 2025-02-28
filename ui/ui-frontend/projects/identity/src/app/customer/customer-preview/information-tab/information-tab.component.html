@@ -1,4 +1,4 @@
-<form [formGroup]="form">
+<form [formGroup]="form" class="gap-3 align-items-stretch">
   <div class="row">
     <div class="col-6 form-control">
       <vitamui-common-editable-input
@@ -96,15 +96,14 @@
 
     <div class="row">
       <div class="col-12 form-control">
-        <vitamui-common-editable-select
-          formControlName="country"
-          [label]="'COMMON.ADRESS.COUNTRY' | translate"
-          [validator]="form?.get('address.country')?.validator"
-          [asyncValidator]="form?.get('address.country')?.asyncValidator"
-        >
-          <vitamui-common-editable-option *ngFor="let country of countries" [value]="country.code" [content]="country.name">
-          </vitamui-common-editable-option>
-        </vitamui-common-editable-select>
+        <vitamui-form-field-value-wrapper formControlName="country">
+          <vitamui-select
+            [placeholder]="'COMMON.ADRESS.COUNTRY' | translate"
+            [options]="countries"
+            [multiple]="false"
+            [enableSearch]="false"
+          ></vitamui-select>
+        </vitamui-form-field-value-wrapper>
       </div>
     </div>
   </ng-container>
@@ -121,43 +120,35 @@
 
   <div class="row">
     <div class="col-12 form-control">
-      <vitamui-common-editable-select
-        formControlName="language"
-        [label]="'CUSTOMER.INFORMATIONS.DEFAULT_LANGUAGE' | translate"
-        [validator]="form?.get('language')?.validator"
-        [asyncValidator]="form?.get('language')?.asyncValidator"
-      >
-        <vitamui-common-editable-option value="ENGLISH" [content]="'COMMON.LANGUAGE.ENGLISH' | translate"></vitamui-common-editable-option>
-        <vitamui-common-editable-option value="FRENCH" [content]="'COMMON.LANGUAGE.FRENCH' | translate"></vitamui-common-editable-option>
-      </vitamui-common-editable-select>
+      <vitamui-form-field-value-wrapper formControlName="language">
+        <vitamui-select
+          [placeholder]="'CUSTOMER.INFORMATIONS.DEFAULT_LANGUAGE' | translate"
+          [options]="[
+            { key: 'ENGLISH', label: 'COMMON.LANGUAGE.ENGLISH' | translate },
+            { key: 'FRENCH', label: 'COMMON.LANGUAGE.FRENCH' | translate },
+          ]"
+          [multiple]="false"
+          [enableSearch]="false"
+        ></vitamui-select>
+      </vitamui-form-field-value-wrapper>
     </div>
   </div>
 
   <div class="row">
     <div class="col-12 form-control">
-      <vitamui-common-editable-select
-        formControlName="passwordRevocationDelay"
-        [label]="'CUSTOMER.INFORMATIONS.PASSWORD_DURATION' | translate"
-        [validator]="form?.get('passwordRevocationDelay')?.validator"
-        [asyncValidator]="form?.get('passwordRevocationDelay')?.asyncValidator"
-      >
-        <vitamui-common-editable-option
-          [value]="3"
-          [content]="'CUSTOMER.INFORMATIONS.PWD_REVOCATION_THREE' | translate"
-        ></vitamui-common-editable-option>
-        <vitamui-common-editable-option
-          [value]="6"
-          [content]="'CUSTOMER.INFORMATIONS.PWD_REVOCATION_SIX' | translate"
-        ></vitamui-common-editable-option>
-        <vitamui-common-editable-option
-          [value]="9"
-          [content]="'CUSTOMER.INFORMATIONS.PWD_REVOCATION_NINE' | translate"
-        ></vitamui-common-editable-option>
-        <vitamui-common-editable-option
-          [value]="12"
-          [content]="'CUSTOMER.INFORMATIONS.PWD_REVOCATION_TWELVE' | translate"
-        ></vitamui-common-editable-option>
-      </vitamui-common-editable-select>
+      <vitamui-form-field-value-wrapper formControlName="passwordRevocationDelay">
+        <vitamui-select
+          [placeholder]="'CUSTOMER.INFORMATIONS.PASSWORD_DURATION' | translate"
+          [options]="[
+            { key: 3, label: 'CUSTOMER.INFORMATIONS.PWD_REVOCATION_THREE' | translate },
+            { key: 6, label: 'CUSTOMER.INFORMATIONS.PWD_REVOCATION_SIX' | translate },
+            { key: 9, label: 'CUSTOMER.INFORMATIONS.PWD_REVOCATION_NINE' | translate },
+            { key: 12, label: 'CUSTOMER.INFORMATIONS.PWD_REVOCATION_TWELVE' | translate },
+          ]"
+          [multiple]="false"
+          [enableSearch]="false"
+        ></vitamui-select>
+      </vitamui-form-field-value-wrapper>
     </div>
   </div>
 

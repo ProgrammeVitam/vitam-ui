@@ -93,7 +93,6 @@ export class TransactionListComponent extends InfiniteScrollTable<Transaction> i
         const message = this.translateService.instant('COLLECT.INGEST_TRANSACTION_LAUNCHED');
         transaction.status = TransactionStatus.SENDING;
         this.snackBar.open(message, null, {
-          panelClass: 'vitamui-snack-bar',
           duration: 10000,
         });
       },
@@ -109,7 +108,6 @@ export class TransactionListComponent extends InfiniteScrollTable<Transaction> i
         const message = this.translateService.instant('COLLECT.VALIDATE_TRANSACTION_VALIDATED');
         transaction.status = TransactionStatus.READY;
         this.snackBar.open(message, null, {
-          panelClass: 'vitamui-snack-bar',
           duration: 10000,
         });
       },
@@ -125,7 +123,6 @@ export class TransactionListComponent extends InfiniteScrollTable<Transaction> i
         transaction.status = TransactionStatus.ABORTED;
         const message = this.translateService.instant('COLLECT.TRANSACTION_ABORTED');
         this.snackBar.open(message, null, {
-          panelClass: 'vitamui-snack-bar',
           duration: 10000,
         });
       },
@@ -141,7 +138,6 @@ export class TransactionListComponent extends InfiniteScrollTable<Transaction> i
         transaction.status = TransactionStatus.OPEN;
         const message = this.translateService.instant('COLLECT.TRANSACTION_REOPENED');
         this.snackBar.open(message, null, {
-          panelClass: 'vitamui-snack-bar',
           duration: 10000,
         });
       },

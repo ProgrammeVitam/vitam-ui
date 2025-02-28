@@ -34,9 +34,8 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { MAT_SNACK_BAR_DATA, MatSnackBarRef } from '@angular/material/snack-bar';
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { VitamuiSnackBarData } from './vitamui-snack-bar.interface';
 
 @Component({
@@ -44,25 +43,13 @@ import { VitamuiSnackBarData } from './vitamui-snack-bar.interface';
   templateUrl: './vitamui-snack-bar.component.html',
   styleUrls: ['./vitamui-snack-bar.component.scss'],
 })
-export class VitamUISnackBarComponent implements OnInit {
-  public html: SafeHtml;
-
+export class VitamUISnackBarComponent {
   constructor(
     @Inject(MAT_SNACK_BAR_DATA) public data: VitamuiSnackBarData,
     private matSnackBarRef: MatSnackBarRef<VitamUISnackBarComponent>,
-    private domSanitizer: DomSanitizer,
   ) {}
-
-  ngOnInit() {
-    this.html = this.domSanitizer.bypassSecurityTrustHtml(this.data.htmlContent);
-  }
 
   public close(): void {
     this.matSnackBarRef.dismiss();
-  }
-
-  public callBack(): void {
-    this.data.callBack?.subscribe();
-    this.close();
   }
 }

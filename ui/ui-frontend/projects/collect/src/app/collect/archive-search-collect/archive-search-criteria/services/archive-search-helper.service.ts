@@ -374,7 +374,6 @@ export class ArchiveSearchHelperService {
 
   openSnackBarForWorkflow(snackBar: MatSnackBar, message: string, serviceUrl?: string) {
     snackBar.openFromComponent(VitamUISnackBarComponent, {
-      panelClass: 'vitamui-snack-bar',
       data: {
         type: 'WorkflowSuccessSnackBar',
         message,

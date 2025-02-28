@@ -41,11 +41,12 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { TranslateModule } from '@ngx-translate/core';
 import { EMPTY, of } from 'rxjs';
-import { BytesPipe, ConfirmDialogService, LoggerModule, StartupService } from 'vitamui-library';
+import { BASE_URL, BytesPipe, ConfirmDialogService, LoggerModule, StartupService } from 'vitamui-library';
 
 import { UploadComponent } from './upload.component';
 import { UploadService } from './upload.service';
 import { DecimalPipe } from '@angular/common';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('UploadComponent', () => {
   let component: UploadComponent;
@@ -58,7 +59,7 @@ describe('UploadComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MatProgressBarModule, MatSnackBarModule, LoggerModule.forRoot(), TranslateModule.forRoot()],
+      imports: [HttpClientTestingModule, MatProgressBarModule, MatSnackBarModule, LoggerModule.forRoot(), TranslateModule.forRoot()],
       declarations: [UploadComponent],
       providers: [
         FormBuilder,
@@ -69,6 +70,7 @@ describe('UploadComponent', () => {
         { provide: StartupService, useValue: { getReferentialUrl: () => '' } },
         DecimalPipe,
         BytesPipe,
+        { provide: BASE_URL, useValue: '/fake-api' },
       ],
     }).compileComponents();
   });

@@ -97,7 +97,6 @@ export class ProbativeValueCreateComponent implements OnInit, OnDestroy {
       } else {
         const message = this.translateService.instant('PROBATIVE_VALUE.CREATE_DIALOG.ACCESS_CONTACT_NOT_SET');
         this.snackBar.open(message, null, {
-          panelClass: 'vitamui-snack-bar',
           duration: 10000,
         });
       }
@@ -185,7 +184,6 @@ export class ProbativeValueCreateComponent implements OnInit, OnDestroy {
         if (!unitIdStatus.$results[0]) {
           const message = this.translateService.instant('EXCEPTIONS.HTTP_INTERCEPTOR.HTTP_STATUS_CODE_NOT_FOUND');
           this.snackBar.open(message, null, {
-            panelClass: 'vitamui-snack-bar',
             duration: 10000,
           });
         } else {

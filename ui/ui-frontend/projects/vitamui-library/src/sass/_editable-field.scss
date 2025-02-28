@@ -8,8 +8,12 @@ $anim-timing: 150ms ease-out;
   width: 100%;
 
   .vitamui-input-errors {
-    padding: 4px 25px;
     overflow: hidden;
+    padding: 0;
+
+    vitamui-common-field-error:not(:empty) {
+      padding: 4px 25px;
+    }
   }
 }
 

@@ -43,24 +43,27 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatTabsModule } from '@angular/material/tabs';
 import { RouterModule } from '@angular/router';
 
-import { VitamUICommonModule } from 'vitamui-library';
+import { VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 import { SharedModule } from '../../shared/shared.module';
 import { UserGroupTabComponent } from './user-group-tab/user-group-tab.component';
 import { UserInfoTabComponent } from './user-information-tab/user-information-tab.component';
 import { UserPopupComponent } from './user-popup.component';
 import { UserPreviewComponent } from './user-preview.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
     CommonModule,
-    SharedModule,
-    RouterModule,
     MatButtonToggleModule,
+    MatDialogModule,
     MatMenuModule,
     MatTabsModule,
     ReactiveFormsModule,
-    MatDialogModule,
+    RouterModule,
+    SharedModule,
+    TranslateModule,
     VitamUICommonModule,
+    VitamUILibraryModule,
   ],
   declarations: [UserPopupComponent, UserPreviewComponent, UserInfoTabComponent, UserGroupTabComponent],
   exports: [UserPreviewComponent],

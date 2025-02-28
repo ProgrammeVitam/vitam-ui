@@ -163,7 +163,6 @@ export class ArchiveCollectService extends SearchService<any> implements SearchA
 
   openSnackBarForWorkflow(message: string, serviceUrl?: string) {
     this.snackBar.openFromComponent(VitamUISnackBarComponent, {
-      panelClass: 'vitamui-snack-bar',
       data: {
         type: 'WorkflowSuccessSnackBar',
         message,
@@ -234,7 +233,6 @@ export class ArchiveCollectService extends SearchService<any> implements SearchA
           console.log('Please update filter to reduce size of response' + errors.message);
 
           this.snackBar.openFromComponent(VitamUISnackBarComponent, {
-            panelClass: 'vitamui-snack-bar',
             data: { type: 'exportCsvLimitReached' },
             duration: 10000,
           });

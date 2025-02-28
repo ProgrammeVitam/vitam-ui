@@ -56,6 +56,9 @@ export class DesignSystemMultipleOptionsDatepickerComponent {
   datepickerMonth = new FormControl('2018-05');
   datepickerDay = new FormControl('2022-06-16');
 
+  startDate = new FormControl();
+  endDate = new FormControl();
+
   datepickerEmptyError = (() => {
     const fc = new FormControl(null, Validators.required);
     fc.markAsTouched();

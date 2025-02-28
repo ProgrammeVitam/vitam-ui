@@ -34,12 +34,13 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, ElementRef, forwardRef, HostBinding, HostListener, Injector, Input, OnInit, ViewChild } from '@angular/core';
-import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR, NgControl } from '@angular/forms';
+import { Component, ElementRef, forwardRef, HostBinding, HostListener, Injector, Input, ViewChild, OnInit } from '@angular/core';
+import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { PickerType } from './multiple-options-datepicker.interface';
 import { DatePipe } from '@angular/common';
 import { MatDatepicker } from '@angular/material/datepicker';
 import { CustomValidators, DatePattern } from '../../object-editor/pattern.validator';
+import { AbstractFormInputDirective } from '../../../../lib/components/abstract-form-input.directive';
 
 export const MULTIPLE_OPTIONS_DATEPICKER_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -53,20 +54,21 @@ export const MULTIPLE_OPTIONS_DATEPICKER_VALUE_ACCESSOR: any = {
   styleUrl: './multiple-options-datepicker.component.scss',
   providers: [MULTIPLE_OPTIONS_DATEPICKER_VALUE_ACCESSOR],
 })
-export class MultipleOptionsDatepickerComponent implements ControlValueAccessor, OnInit {
+export class MultipleOptionsDatepickerComponent extends AbstractFormInputDirective implements OnInit {
   @Input() pickerType: PickerType = 'day';
   @Input() startView: MatDatepicker<Date>['startView'];
   @Input() label = 'DATE.DATE';
   @Input() hint: string;
   @Input() isRequired = false;
+  @Input() min?: Date;
+  @Input() max?: Date;
 
-  date: FormControl;
   // We store a value specific for the datepicker in order to store a Date object and not a String for datepicker to keep the currently selected value
   datePickerValue: Date;
 
   @HostBinding('class.vitamui-float')
   get labelFloat(): boolean {
-    return !!this.date.value;
+    return !!this.control.value;
   }
 
   @ViewChild('vitamUIInput') private vitamUIInput: ElementRef;
@@ -96,31 +98,25 @@ export class MultipleOptionsDatepickerComponent implements ControlValueAccessor,
   ]);
 
   constructor(
+    injector: Injector,
     private datePipe: DatePipe,
-    private injector: Injector,
-  ) {}
+  ) {
+    super(injector);
+  }
 
   ngOnInit() {
-    const ngControl: NgControl = this.injector.get(NgControl);
-    this.date = ngControl.control as FormControl;
+    super.ngOnInit();
+
     if (!this.startView) this.startView = this.startViewMapping.get(this.pickerType);
-    this.date.addValidators(CustomValidators.date(this.datePatternMapping.get(this.pickerType)));
+    this.control.addValidators(CustomValidators.date(this.datePatternMapping.get(this.pickerType)));
   }
 
   writeValue(value: string) {
     this.datePickerValue = value ? new Date(value) : null;
   }
 
-  registerOnChange(fn: any): void {
-    this.onChange = fn;
-  }
-
-  registerOnTouched(fn: any): void {
-    this.onTouched = fn;
-  }
-
   onFocus() {
-    if (!this.date.disabled) {
+    if (!this.control.disabled) {
       this.onTouched();
     }
   }
@@ -130,23 +126,23 @@ export class MultipleOptionsDatepickerComponent implements ControlValueAccessor,
   }
 
   onTextChange(value: string) {
-    this.date.setValue(value);
+    this.control.setValue(value);
     this.onChange(value);
   }
 
   setYearMonthAndDay(date: Date) {
     if (this.pickerType === 'day') {
       this.datePickerValue = date;
-      this.date.setValue(this.datePipe.transform(date, 'yyyy-MM-dd'));
-      this.onChange(this.date.value);
+      this.control.setValue(this.datePipe.transform(date, 'yyyy-MM-dd'));
+      this.onChange(this.control.value);
     }
   }
 
   setYear(year: Date) {
     if (this.pickerType === 'year') {
       this.datePickerValue = year;
-      this.date.setValue(this.datePipe.transform(year, 'yyyy'));
-      this.onChange(this.date.value);
+      this.control.setValue(this.datePipe.transform(year, 'yyyy'));
+      this.onChange(this.control.value);
       this.datepicker.close();
     }
   }
@@ -154,8 +150,8 @@ export class MultipleOptionsDatepickerComponent implements ControlValueAccessor,
   setYearAndMonth(monthAndYear: Date) {
     if (this.pickerType === 'month') {
       this.datePickerValue = monthAndYear;
-      this.date.setValue(this.datePipe.transform(monthAndYear, 'yyyy-MM'));
-      this.onChange(this.date.value);
+      this.control.setValue(this.datePipe.transform(monthAndYear, 'yyyy-MM'));
+      this.onChange(this.control.value);
       this.datepicker.close();
     }
   }

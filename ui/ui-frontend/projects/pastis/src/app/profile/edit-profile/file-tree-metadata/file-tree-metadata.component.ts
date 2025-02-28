@@ -41,7 +41,7 @@ import { Router } from '@angular/router';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 import { environment } from 'projects/pastis/src/environments/environment';
 import { mergeMap, Subscription } from 'rxjs';
-import { StartupService } from 'vitamui-library';
+import { DatePatternConstants, Logger, Option, StartupService } from 'vitamui-library';
 import { FileService } from '../../../core/services/file.service';
 import { NotificationService } from '../../../core/services/notification.service';
 import { ProfileService } from '../../../core/services/profile.service';
@@ -68,7 +68,6 @@ import { FileTreeService } from '../file-tree/file-tree.service';
 import { AttributesPopupComponent } from './attributes/attributes.component';
 import { FileTreeMetadataService } from './file-tree-metadata.service';
 import { filter, map, tap } from 'rxjs/operators';
-import { DatePatternConstants, Logger } from 'vitamui-library';
 import { BreadcrumbService } from '../../../core/services/breadcrumb.service';
 
 const FILE_TREE_METADATA_TRANSLATE_PATH = 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA';
@@ -136,13 +135,13 @@ export class FileTreeMetadataComponent implements OnInit, OnDestroy {
   radioExpressionReguliere: 'select' | 'input';
   regex: string;
   customRegex: string;
-  private formatagePredefini: Array<{ label: string; value: string }> = [
-    { label: 'AAAA-MM-JJ', value: DatePatternConstants.YEAR_MONTH_DAY },
-    { label: 'AAAA-MM-JJTHH:MM:SS', value: DatePatternConstants.FULL_DATE },
-    { label: 'AAAA', value: DatePatternConstants.YEAR },
-    { label: 'AAAA-MM', value: DatePatternConstants.YEAR_MONTH },
+  private formatagePredefini: Option[] = [
+    { label: 'AAAA-MM-JJ', key: DatePatternConstants.YEAR_MONTH_DAY },
+    { label: 'AAAA-MM-JJTHH:MM:SS', key: DatePatternConstants.FULL_DATE },
+    { label: 'AAAA', key: DatePatternConstants.YEAR },
+    { label: 'AAAA-MM', key: DatePatternConstants.YEAR_MONTH },
   ];
-  availableRegex: Array<{ label: string; value: string }>;
+  availableRegex: Option[];
   public breadcrumbDataTop: Array<BreadcrumbDataTop>;
   public breadcrumbDataMetadata: Array<BreadcrumbDataMetadata>;
   profileModeLabel: string;
@@ -579,8 +578,8 @@ export class FileTreeMetadataComponent implements OnInit, OnDestroy {
       this.expressionControl = true;
       this.commentaire = fileNode.documentation;
       this.setAvailableRegex(this.selectedSedaNode.type);
-      if (this.availableRegex.map((e) => e.value).includes(actualPattern)) {
-        this.regex = this.availableRegex.filter((e) => e.value === actualPattern).map((e) => e.value)[0];
+      if (this.availableRegex.map((e) => e.key).includes(actualPattern)) {
+        this.regex = this.availableRegex.filter((e) => e.key === actualPattern).map((e) => e.key)[0];
         this.radioExpressionReguliere = 'select';
       } else {
         this.customRegex = actualPattern;
@@ -605,7 +604,7 @@ export class FileTreeMetadataComponent implements OnInit, OnDestroy {
     return (
       actualPattern &&
       !this.getAvailableRegex(fileNode?.sedaData?.Type)
-        .map((e) => e.value)
+        .map((e) => e.key)
         .includes(actualPattern)
     );
   }
@@ -628,7 +627,7 @@ export class FileTreeMetadataComponent implements OnInit, OnDestroy {
     this.availableRegex = this.getAvailableRegex(type);
   }
 
-  private getAvailableRegex(type: string): Array<{ label: string; value: string }> {
+  private getAvailableRegex(type: string): Option[] {
     switch (type) {
       case DateFormatType.date:
         return this.formatagePredefini.filter((e) => e.label === 'AAAA-MM-JJ');
@@ -667,7 +666,7 @@ export class FileTreeMetadataComponent implements OnInit, OnDestroy {
       this.commentaire = fileNode.documentation;
       const type: string = this.sedaService.findSedaChildByName(sedaName, this.selectedSedaNode).type;
       this.setAvailableRegex(type);
-      this.regex = this.formatagePredefini[0].value;
+      this.regex = this.formatagePredefini[0].key;
     }
     if (
       (this.isStandalone && elements.includes('Longueur Min/Max')) ||

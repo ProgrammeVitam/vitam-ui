@@ -51,7 +51,6 @@ import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
 import { HoldingFillingSchemeModule } from './holding-filling-scheme/holding-filling-scheme.module';
 import { IngestModule } from './ingest/ingest.module';
-import { SharedModule } from './shared/shared.module';
 
 export function httpLoaderFactory(httpBackend: HttpBackend): MultiTranslateHttpLoader {
   return new MultiTranslateHttpLoader(new HttpClient(httpBackend), [
@@ -71,7 +70,6 @@ registerLocaleData(localeFr, 'fr');
     BrowserModule,
     VitamUICommonModule.forRoot(),
     AppRoutingModule,
-    SharedModule,
     IngestModule,
     HoldingFillingSchemeModule,
     QuicklinkModule,

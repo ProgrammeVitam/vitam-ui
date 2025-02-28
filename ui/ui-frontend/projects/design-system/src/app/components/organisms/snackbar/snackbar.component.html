@@ -1,0 +1,27 @@
+<h2>Snackbar</h2>
+<form class="gap-5" [formGroup]="form">
+  <div class="gap-3">
+    <div class="hgap-3">
+      <vitamui-select
+        placeholder="Icon"
+        formControlName="icon"
+        [options]="iconOptions"
+        [multiple]="false"
+        [enableSearch]="false"
+      ></vitamui-select>
+      <vitamui-common-input placeholder="Message" formControlName="message"></vitamui-common-input>
+    </div>
+    <div formArrayName="buttons">
+      @for (button of buttons.controls; track button; let i = $index) {
+        <h3>Button #{{ i + 1 }}</h3>
+        <div [formGroupName]="i" class="hgap-3">
+          <vitamui-common-input placeholder="Label" formControlName="label"></vitamui-common-input>
+          <vitamui-common-input placeholder="Url" formControlName="url"></vitamui-common-input>
+          <vitamui-common-slide-toggle formControlName="outline">Outline</vitamui-common-slide-toggle>
+          <button class="btn secondary" (click)="removeButton(i)">Remove button</button>
+        </div>
+      }
+    </div>
+  </div>
+  <button class="btn primary" (click)="addButton()">Add button</button>
+</form>

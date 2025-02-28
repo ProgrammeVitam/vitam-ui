@@ -55,8 +55,6 @@ import { EditableFileComponent } from './editable-file/editable-file.component';
 import { EditableInputComponent } from './editable-input/editable-input.component';
 import { EditableLevelInputComponent } from './editable-level-input/editable-level-input.component';
 import { SubLevelPipe } from './editable-level-input/sub-level.pipe';
-import { EditableOptionComponent } from './editable-select/editable-option.component';
-import { EditableSelectComponent } from './editable-select/editable-select.component';
 import { EditableTextareaComponent } from './editable-textarea/editable-textarea.component';
 import { EditableButtonToggleComponent } from './editable-toggle-group/editable-button-toggle.component';
 import { EditableToggleGroupComponent } from './editable-toggle-group/editable-toggle-group.component';
@@ -90,8 +88,6 @@ import { MultipleEmailInputComponent } from './multiple-email-input/multiple-ema
     EditableFileComponent,
     EditableInputComponent,
     EditableLevelInputComponent,
-    EditableOptionComponent,
-    EditableSelectComponent,
     EditableTextareaComponent,
     EditableToggleGroupComponent,
     HumanizedDurationPipe,
@@ -101,8 +97,6 @@ import { MultipleEmailInputComponent } from './multiple-email-input/multiple-ema
   exports: [
     EditableFieldComponent,
     EditableInputComponent,
-    EditableOptionComponent,
-    EditableSelectComponent,
     EditableTextareaComponent,
     EditableToggleGroupComponent,
     EditableButtonToggleComponent,

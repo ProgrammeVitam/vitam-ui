@@ -46,9 +46,12 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute, Router } from '@angular/router';
 import { of } from 'rxjs';
-import { GlobalEventService, InjectorModule, LoggerModule } from 'vitamui-library';
+import { BASE_URL, GlobalEventService, InjectorModule, LoggerModule, MultipleOptionsDatepickerModule } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { AuditComponent } from './audit.component';
+import { DatePipe } from '@angular/common';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatMomentDateModule } from '@angular/material-moment-adapter';
 
 describe('AuditComponent', () => {
   let component: AuditComponent;
@@ -64,18 +67,23 @@ describe('AuditComponent', () => {
 
     await TestBed.configureTestingModule({
       imports: [
-        ReactiveFormsModule,
-        VitamUICommonTestModule,
-        NoopAnimationsModule,
-        MatSelectModule,
         InjectorModule,
-        MatSidenavModule,
+        LoggerModule.forRoot(),
+        MatMomentDateModule,
         MatFormFieldModule,
         MatInputModule,
-        LoggerModule.forRoot(),
+        MatSelectModule,
+        MatSidenavModule,
+        MultipleOptionsDatepickerModule,
+        NoopAnimationsModule,
+        ReactiveFormsModule,
+        TranslateModule.forRoot(),
+        VitamUICommonTestModule,
       ],
       declarations: [AuditComponent],
       providers: [
+        { provide: BASE_URL, useValue: '/pastis-api' },
+        DatePipe,
         FormBuilder,
         GlobalEventService,
         { provide: MatDialogRef, useValue: matDialogRefSpy },

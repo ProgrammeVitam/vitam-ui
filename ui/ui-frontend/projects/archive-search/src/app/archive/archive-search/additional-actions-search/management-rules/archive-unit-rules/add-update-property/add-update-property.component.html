@@ -1,56 +1,37 @@
-<div class="container">
-  <label class="text bold normal primary">{{ 'RULES.FINAL_ACTION.TITLE' | translate }}</label>
-  <div *ngIf="ruleCategory === 'AppraisalRule'" class="row content vitamui-form" style="margin-right: 0px">
-    <mat-form-field class="vitamui-mat-select select-more-actions col-5">
-      <mat-select
-        placeholder="{{ 'RULES.FINAL_ACTION.SELECT_VALUE' | translate }} "
-        (selectionChange)="onChangeValue()"
-        [(value)]="rulePropertyName"
-      >
-        <mat-option value="Keep"> {{ 'RULES.FINAL_ACTION.KEEP' | translate }}</mat-option>
-        <mat-option value="Destroy"> {{ 'RULES.FINAL_ACTION.ELIMINATION' | translate }}</mat-option>
-      </mat-select>
+<div class="container gap-5 align-items-stretch">
+  <div class="gap-3 align-items-stretch">
+    <label class="text bold normal primary">{{ 'RULES.FINAL_ACTION.TITLE' | translate }}</label>
 
-      <div class="select-arrow">
-        <i class="vitamui-icon vitamui-row-icon"></i>
-      </div>
-      <div class="select-arrow">
-        <i class="material-icons">keyboard_arrow_up</i>
-        <i class="material-icons">keyboard_arrow_down</i>
-      </div>
-    </mat-form-field>
-  </div>
+    <vitamui-select
+      class="w-50"
+      [placeholder]="'RULES.FINAL_ACTION.SELECT_VALUE' | translate"
+      (change)="onChangeValue()"
+      [(ngModel)]="rulePropertyName"
+      [options]="
+        ruleCategory === 'AppraisalRule'
+          ? [
+              { key: 'Keep', label: 'RULES.FINAL_ACTION.KEEP' | translate },
+              { key: 'Destroy', label: 'RULES.FINAL_ACTION.ELIMINATION' | translate },
+            ]
+          : ruleCategory === 'StorageRule'
+            ? [
+                { key: 'RestrictAccess', label: 'RULES.FINAL_ACTION.RESTRICT_ACCESS' | translate },
+                { key: 'Transfer', label: 'RULES.FINAL_ACTION.TRANSFER' | translate },
+                { key: 'Copy', label: 'RULES.FINAL_ACTION.COPY' | translate },
+              ]
+            : []
+      "
+      [multiple]="false"
+      [enableSearch]="false"
+    ></vitamui-select>
 
-  <div *ngIf="ruleCategory === 'StorageRule'" class="row content vitamui-form" style="margin-right: 0px">
-    <mat-form-field class="vitamui-mat-select select-more-actions col-5">
-      <mat-select
-        placeholder="{{ 'RULES.FINAL_ACTION.SELECT_VALUE' | translate }} "
-        (selectionChange)="onChangeValue()"
-        [(value)]="rulePropertyName"
-      >
-        <mat-option value="RestrictAccess"> {{ 'RULES.FINAL_ACTION.RESTRICT_ACCESS' | translate }}</mat-option>
-        <mat-option value="Transfer">{{ 'RULES.FINAL_ACTION.TRANSFER' | translate }} </mat-option>
-        <mat-option value="Copy"> {{ 'RULES.FINAL_ACTION.COPY' | translate }}</mat-option>
-      </mat-select>
-
-      <div class="select-arrow">
-        <i class="vitamui-icon vitamui-row-icon"></i>
+    <div *ngIf="showText" class="row message-text-ok">
+      <div class="col-1"><i class="material-icons">check_circle</i></div>
+      <div class="col-11">
+        {{ 'RULES.UA_CONTROL.UA_FINAL_ACTION_MESSAGE' | translate }}
       </div>
-      <div class="select-arrow">
-        <i class="material-icons">keyboard_arrow_up</i>
-        <i class="material-icons">keyboard_arrow_down</i>
-      </div>
-    </mat-form-field>
-  </div>
-
-  <br />
-  <div *ngIf="showText" class="row message-text-ok">
-    <div class="col-1"><i class="material-icons">check_circle</i></div>
-    <div class="col-11">
-      {{ 'RULES.UA_CONTROL.UA_FINAL_ACTION_MESSAGE' | translate }}
     </div>
   </div>
-  <br />
 
   <div class="d-flex padding-btm-style">
     <button type="button" (click)="onUpdateRuleProperty()" [disabled]="isValidValue" class="btn primary mr-4">

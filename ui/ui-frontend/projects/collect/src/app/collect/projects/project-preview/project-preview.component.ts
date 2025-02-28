@@ -301,7 +301,6 @@ export class ProjectPreviewComponent implements OnInit, AfterViewInit, OnDestroy
               transactionMessage += ' ' + this.translationService.instant('COLLECT.UPDATE_PROJECT.TRANSACTIONS_KO');
             }
             this.snackBar.open(transactionMessage, null, {
-              panelClass: 'vitamui-snack-bar',
               duration: 10000,
             });
           },
@@ -314,7 +313,6 @@ export class ProjectPreviewComponent implements OnInit, AfterViewInit, OnDestroy
       updateProjectOperation$.subscribe(
         (project) => {
           this.snackBar.open(this.translationService.instant('COLLECT.UPDATE_PROJECT.TERMINATED'), null, {
-            panelClass: 'vitamui-snack-bar',
             duration: 10000,
           });
           this.dialogRefToClose?.close(true);

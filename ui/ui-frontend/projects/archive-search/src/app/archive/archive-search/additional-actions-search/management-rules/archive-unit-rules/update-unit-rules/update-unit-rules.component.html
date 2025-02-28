@@ -107,12 +107,13 @@
         </div>
         <button
           [ngStyle]="{
-            'background-color': 'green',
+            'background-color': 'var(--vitamui-green)',
+            color: 'var(--vitamui-white)',
             width: '30',
             height: '30',
             position: 'absolute',
             right: '20px',
-            bottom: '35px',
+            top: '10px',
           }"
           *ngIf="ruleDetailsForm.get('startDate').value && isShowCheckButton"
           type="button"

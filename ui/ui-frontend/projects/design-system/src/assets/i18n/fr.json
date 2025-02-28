@@ -43,7 +43,8 @@
       "TITLE": "Organismes",
       "table.TITLE": "Tableau",
       "tab-group.TITLE": "Tab group",
-      "dialog.TITLE": "Dialog"
+      "dialog.TITLE": "Dialog",
+      "snackbar.TITLE": "Snackbar"
     },
     "miscellaneous.TITLE": "Divers",
     "translation.TITLE": "Traduction",

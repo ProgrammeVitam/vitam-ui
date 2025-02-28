@@ -39,7 +39,6 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import moment from 'moment';
-import { Subscription } from 'rxjs';
 import { Event, GlobalEventService, SearchBarComponent, SidenavPage } from 'vitamui-library';
 import { ProbativeValueCreateComponent } from './probative-value-create/probative-value-create.component';
 import { ProbativeValueListComponent } from './probative-value-list/probative-value-list.component';
@@ -54,9 +53,6 @@ export class ProbativeValueComponent extends SidenavPage<Event> implements OnDes
   dateRangeFilterForm: FormGroup;
   filters: any = {};
 
-  accessContractSub: Subscription;
-  errorMessageSub: Subscription;
-  foundAccessContract = false;
   accessContract: string;
 
   @ViewChild(SearchBarComponent, { static: true }) searchBar: SearchBarComponent;
@@ -77,7 +73,7 @@ export class ProbativeValueComponent extends SidenavPage<Event> implements OnDes
     });
 
     this.dateRangeFilterForm.controls.startDate.valueChanges.subscribe((value) => {
-      this.filters = { ...this.filters, startDate: value };
+      this.filters = { ...this.filters, startDate: value ? moment(value).startOf('day') : null };
     });
 
     this.dateRangeFilterForm.controls.endDate.valueChanges.subscribe((value: Date) => {
@@ -106,20 +102,6 @@ export class ProbativeValueComponent extends SidenavPage<Event> implements OnDes
 
   onSearchSubmit(search: string) {
     this.search = search || '';
-  }
-
-  clearDate(dateToClear: 'startDate' | 'endDate', $event: any, input: HTMLInputElement): void {
-    if (!!this.dateRangeFilterForm.get(dateToClear).value) {
-      this.dateRangeFilterForm.get(dateToClear).reset();
-    }
-
-    input.value = null;
-    $event.stopPropagation();
-  }
-
-  resetFilters() {
-    this.dateRangeFilterForm.reset();
-    this.searchBar.reset();
   }
 
   showProbativeValue(item: Event) {

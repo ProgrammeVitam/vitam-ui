@@ -76,9 +76,7 @@ export class SchemaDeleteDialogComponent {
         const serviceUrl = `${this.startupService.getReferentialUrl()}/logbook-operation/tenant/${this.startupService.getTenantIdentifier()}?guid=${guid}`;
         this.snackBarService.open({
           message: this.translateService.instant('ONTOLOGY.SCHEMA_DELETE_DIALOG.SUCCESS_MESSAGE'),
-          htmlContent: `<a class="btn contrast contrast-primary" href="${serviceUrl}">
-          ${this.translateService.instant('ONTOLOGY.SCHEMA_DELETE_DIALOG.SUCCESS_LINK_TEXT')}
-      </a>`,
+          buttons: [{ url: serviceUrl, label: this.translateService.instant('ONTOLOGY.SCHEMA_DELETE_DIALOG.SUCCESS_LINK_TEXT') }],
         });
       });
   }

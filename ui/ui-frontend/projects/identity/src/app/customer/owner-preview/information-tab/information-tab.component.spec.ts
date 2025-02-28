@@ -48,6 +48,7 @@ import {
   Owner,
   StartupService,
   Tenant,
+  VitamUILibraryModule,
   VitamUISnackBarService,
   WINDOW_LOCATION,
 } from 'vitamui-library';
@@ -57,6 +58,7 @@ import { OwnerService } from '../../owner.service';
 import { TenantFormValidators } from '../../tenant-create/tenant-form.validators';
 import { TenantService } from '../../tenant.service';
 import { InformationTabComponent } from './information-tab.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 const expectedOwner: Owner = {
   id: '5ad5f14c894e6a414edc7b63',
@@ -135,12 +137,14 @@ describe('Owner InformationTabComponent', () => {
 
     await TestBed.configureTestingModule({
       imports: [
-        ReactiveFormsModule,
-        MatDividerModule,
-        NoopAnimationsModule,
-        VitamUICommonTestModule,
         HttpClientTestingModule,
         LoggerModule.forRoot(),
+        MatDividerModule,
+        NoopAnimationsModule,
+        ReactiveFormsModule,
+        TranslateModule.forRoot(),
+        VitamUICommonTestModule,
+        VitamUILibraryModule,
       ],
       declarations: [TestHostComponent, InformationTabComponent],
       providers: [

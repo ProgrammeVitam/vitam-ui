@@ -128,7 +128,6 @@ export class SearchCriteriaSaverComponent implements OnInit, OnDestroy {
           this.archiveExchangeDataService.emitSearchCriteriaHistory(this.searchCriteriaHistory);
           this.dialogRef.close(true);
           this.snackBar.openFromComponent(VitamUISnackBarComponent, {
-            panelClass: 'vitamui-snack-bar',
             data: { type: 'searchCriteriaHistoryCreated', name: response.name },
             duration: 10000,
           });
@@ -136,7 +135,6 @@ export class SearchCriteriaSaverComponent implements OnInit, OnDestroy {
         (error) => {
           this.dialogRef.close(false);
           this.snackBar.open(error.error.message, null, {
-            panelClass: 'vitamui-snack-bar',
             duration: 10000,
           });
         },
@@ -195,14 +193,12 @@ export class SearchCriteriaSaverComponent implements OnInit, OnDestroy {
         () => {
           this.dialogRef.close(true);
           this.snackBar.openFromComponent(VitamUISnackBarComponent, {
-            panelClass: 'vitamui-snack-bar',
             data: { type: 'searchCriteriaHistoryCreated', name: this.criteriaToUpdate.name },
             duration: 10000,
           });
         },
         (error) => {
           this.snackBar.open(error.error.message, null, {
-            panelClass: 'vitamui-snack-bar',
             duration: 10000,
           });
         },

@@ -40,7 +40,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { Logger, SearchCriteriaDto, SearchCriteriaEltDto, StartupService } from 'vitamui-library';
+import { Logger, Option, SearchCriteriaDto, SearchCriteriaEltDto, SelectComponent, StartupService } from 'vitamui-library';
 import { ManagementRulesSharedDataService } from '../../../../core/management-rules-shared-data.service';
 import { ArchiveService } from '../../../archive.service';
 import { ArchiveSearchConstsEnum } from '../../../models/archive-search-consts-enum';
@@ -81,9 +81,8 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
   private ruleCategoryDuaActionsToDelete: RuleCategoryAction = {
     rules: [],
   };
-  actionSelected: string;
 
-  rulesCatygories: { id: string; name: string; isDisabled: boolean }[] = [
+  rulesCategories: { id: string; name: string; isDisabled: boolean }[] = [
     { id: 'StorageRule', name: this.translateService.instant('RULES.CATEGORIES_NAME.STORAGE_RULE'), isDisabled: false },
     {
       id: 'AppraisalRule',
@@ -105,7 +104,7 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
     },
   ];
 
-  rulesCatygoriesToShow: { id: string; name: string; isDisabled: boolean }[] = [];
+  rulesCategoriesToShow: { id: string; name: string; isDisabled: boolean }[] = [];
   indexOfSelectedCategory = 0;
 
   isRuleCategorySelected = false;
@@ -125,16 +124,30 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
   isStorageRuleActionDisabled = false;
   isUnlockRulesInheritanceDisabled = false;
 
-  messageNotUpdate: string;
-  messageNotAdd: string;
   ruleCategorySelected: string;
-  messageNotAddProperty: string;
-  messageNotDelete: string;
-  messageNotToDeleteProperty: string;
   hasExactCount: boolean;
   resultNumberToShow: string;
 
   private subscriptions = new Subscription();
+
+  actionOptions: Option[] = [
+    { key: 'ADD_RULES', label: this.translateService.instant('RULES.ACTIONS.ADD_RULE') },
+    { key: 'UPDATE_RULES', label: this.translateService.instant('RULES.ACTIONS.UPDATE_RULE') },
+    { key: 'DELETE_RULES', label: this.translateService.instant('RULES.ACTIONS.DELETE_RULE') },
+    { key: 'BLOCK_RULE_INHERITANCE', label: this.translateService.instant('RULES.ACTIONS.BLOCK_RULE_INHERITANCE') },
+    { key: 'UNLOCK_RULE_INHERITANCE', label: this.translateService.instant('RULES.ACTIONS.DELETE_BLOCK_RULE_INHERITANCE') },
+  ];
+
+  otherActionOptions: Option[] = [
+    { key: 'UPDATE_PROPERTY', label: this.translateService.instant('RULES.MORE_ACTIONS.UPDATE_PROPERTY') },
+    { key: 'DELETE_PROPERTY', label: this.translateService.instant('RULES.MORE_ACTIONS.DELETE_PROPERTY') },
+    { key: 'BLOCK_CATEGORY_INHERITANCE', label: this.translateService.instant('RULES.MORE_ACTIONS.BLOCK_PROPERTY_INHERITANCE') },
+    {
+      key: 'UNLOCK_CATEGORY_INHERITANCE',
+      label: this.translateService.instant('RULES.MORE_ACTIONS.DELETE_BLOCK_PROPERTY_INHERITANCE'),
+      info: this.translateService.instant('RULES.MORE_ACTIONS.DELETE_BLOCK_PROPERTY_INHERITANCE'),
+    },
+  ];
 
   constructor(
     private archiveService: ArchiveService,
@@ -220,6 +233,8 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
               rule.category === this.ruleCategorySelected &&
               (rule.actionType === RuleActionsEnum.ADD_RULES || rule.actionType === RuleActionsEnum.UPDATE_RULES),
           ).length !== 0;
+
+        this.updateDisabledActions();
       }),
     );
   }
@@ -344,11 +359,6 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
       this.initializeParameters();
       this.router.navigate(['/archive-search/tenant/', this.tenantIdentifier]);
     }
-    this.messageNotUpdate = this.translateService.instant('RULES.ACTIONS.NOT_TO_UPDATE');
-    this.messageNotAdd = this.translateService.instant('RULES.ACTIONS.NOT_TO_ADD');
-    this.messageNotAddProperty = this.translateService.instant('RULES.ACTIONS.FINAL_ACTION_NOT_TO_ADD');
-    this.messageNotDelete = this.translateService.instant('RULES.ACTIONS.NOT_TO_DELETE');
-    this.messageNotToDeleteProperty = this.translateService.instant('RULES.ACTIONS.FINAL_ACTION_NOT_TO_DELETE_PROPERTY');
     this.resultNumberToShow = this.translateService.instant('ARCHIVE_SEARCH.MORE_THAN_THRESHOLD');
   }
 
@@ -460,11 +470,11 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
     this.isDisseminationActionDisabled = rule.id === RuleTypeEnum.DISSEMINATIONRULE;
     this.isStorageRuleActionDisabled = rule.id === RuleTypeEnum.STORAGERULE;
 
-    if (this.rulesCatygoriesToShow.find((ruleCategory) => ruleCategory.name === rule.name) === undefined) {
-      this.rulesCatygoriesToShow.push(rule);
-      this.indexOfSelectedCategory = this.rulesCatygoriesToShow.length - 1;
+    if (this.rulesCategoriesToShow.find((ruleCategory) => ruleCategory.name === rule.name) === undefined) {
+      this.rulesCategoriesToShow.push(rule);
+      this.indexOfSelectedCategory = this.rulesCategoriesToShow.length - 1;
     } else {
-      this.indexOfSelectedCategory = this.rulesCatygoriesToShow.indexOf(rule);
+      this.indexOfSelectedCategory = this.rulesCategoriesToShow.indexOf(rule);
     }
     this.ruleCategorySelected = rule.id;
     this.managementRulesSharedDataService.emitRuleCategory(rule.id);
@@ -569,9 +579,7 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
         if (this.isRuleCategorySelected && !this.isAddValidActions) {
           this.prepareActionToAdd(rule);
         }
-
         break;
-
       case 'UPDATE_RULES':
         if (this.isRuleCategorySelected && !this.isUpdateValidActions && !this.isUpdateValidActionsWithProperty) {
           this.prepareActionToAdd(rule);
@@ -582,7 +590,6 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
           this.prepareActionToAdd(rule);
         }
         break;
-
       case 'UPDATE_PROPERTY':
         if (
           this.isRuleCategorySelected &&
@@ -599,7 +606,6 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
           this.prepareActionToAdd(rule);
         }
         break;
-
       case 'BLOCK_CATEGORY_INHERITANCE':
         if (!this.isBlockInheritanceCategoryDisabled && !this.isUnlockInheritanceCategoryDisabled) {
           this.prepareActionToAdd(rule);
@@ -1005,5 +1011,55 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
       item[x] = object[x];
       return item;
     });
+  }
+
+  private updateDisabledActions() {
+    this.actionOptions.forEach((action) => {
+      if (action.key === 'ADD_RULES') {
+        action.disabled = this.isAddValidActions;
+        action.info = action.disabled ? this.translateService.instant('RULES.ACTIONS.NOT_TO_ADD') : '';
+      }
+      if (action.key === 'UPDATE_RULES') {
+        action.disabled = this.isUpdateValidActions || this.isUpdateValidActionsWithProperty;
+        action.info = action.disabled ? this.translateService.instant('RULES.ACTIONS.NOT_TO_UPDATE') : '';
+      }
+      if (action.key === 'DELETE_RULES') {
+        action.disabled = this.isDeleteValidActions || this.isDeleteValidActionsWithProperty;
+        action.info = action.disabled ? this.translateService.instant('RULES.ACTIONS.NOT_TO_DELETE') : '';
+      }
+      if (action.key === 'BLOCK_RULE_INHERITANCE') action.disabled = this.isAddValidActions;
+      if (action.key === 'UNLOCK_RULE_INHERITANCE') action.disabled = this.isDeleteValidActions || this.isUnlockRulesInheritanceDisabled;
+    });
+
+    this.otherActionOptions.forEach((action) => {
+      if (action.key === 'UPDATE_PROPERTY') {
+        action.disabled =
+          this.isAddPropertyValidActions ||
+          this.isAddValidActions ||
+          this.isUpdateValidActionsWithFinalAction ||
+          this.isUpdateValidActionsWithProperty;
+        action.info = this.isAddPropertyValidActions
+          ? this.translateService.instant('RULES.ACTIONS.FINAL_ACTION_NOT_TO_ADD')
+          : this.isAddValidActions
+            ? this.translateService.instant('RULES.ACTIONS.NOT_TO_ADD')
+            : '';
+      }
+      if (action.key === 'DELETE_PROPERTY') {
+        action.disabled = this.isDeletePropertyDisabled || this.isStorageRuleActionDisabled;
+        action.info = this.isDeletePropertyDisabled
+          ? this.translateService.instant('RULES.ACTIONS.FINAL_ACTION_NOT_TO_DELETE_PROPERTY')
+          : '';
+      }
+      if (action.key === 'BLOCK_CATEGORY_INHERITANCE') {
+        action.disabled = this.isBlockInheritanceCategoryDisabled || this.isUnlockInheritanceCategoryDisabled;
+      }
+      if (action.key === 'UNLOCK_CATEGORY_INHERITANCE') {
+        action.disabled = this.isBlockInheritanceCategoryDisabled || this.isUnlockInheritanceCategoryDisabled;
+      }
+    });
+  }
+
+  reset(selectComponent: SelectComponent) {
+    selectComponent.writeValue(null);
   }
 }

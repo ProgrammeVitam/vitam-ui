@@ -64,7 +64,6 @@ export class ArchiveUnitDescriptionTabComponent implements OnDestroy {
 
   private readonly subscriptions = new Subscription();
   private readonly snackBarConfig: MatSnackBarConfig = {
-    panelClass: 'vitamui-snack-bar',
     duration: 10000,
   };
 

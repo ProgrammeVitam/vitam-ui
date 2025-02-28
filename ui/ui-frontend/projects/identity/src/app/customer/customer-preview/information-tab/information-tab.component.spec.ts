@@ -40,11 +40,21 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AsyncValidator, ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule, Validator } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { EMPTY, of } from 'rxjs';
-import { BASE_URL, CountryService, Customer, LoggerModule, OtpState, StartupService, WINDOW_LOCATION } from 'vitamui-library';
+import {
+  BASE_URL,
+  CountryService,
+  Customer,
+  LoggerModule,
+  OtpState,
+  StartupService,
+  VitamUILibraryModule,
+  WINDOW_LOCATION,
+} from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { CustomerService } from '../../../core/customer.service';
 import { CustomerCreateValidators } from '../../customer-create/customer-create.validators';
 import { InformationTabComponent } from './information-tab.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 let expectedCustomer: Customer = {
   id: '11',
@@ -169,7 +179,15 @@ describe('Customer InformationTabComponent', () => {
     });
 
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, NoopAnimationsModule, VitamUICommonTestModule, HttpClientTestingModule, LoggerModule.forRoot()],
+      imports: [
+        HttpClientTestingModule,
+        LoggerModule.forRoot(),
+        NoopAnimationsModule,
+        ReactiveFormsModule,
+        TranslateModule.forRoot(),
+        VitamUICommonTestModule,
+        VitamUILibraryModule,
+      ],
       declarations: [InformationTabComponent, TestHostComponent, EditableDomainInputStubComponent, CustomerColorsInputStubComponent],
       providers: [
         { provide: WINDOW_LOCATION, useValue: window.location },

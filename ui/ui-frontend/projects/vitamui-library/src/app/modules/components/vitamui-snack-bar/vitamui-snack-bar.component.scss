@@ -6,6 +6,12 @@
   width: 100%;
 }
 
+.vitamui-snack-bar-container {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
 .close-btn {
   background: none;
   border: none;
@@ -13,17 +19,11 @@
 
   > i {
     color: white;
-    opacity: 0.5;
-    font-size: 36px;
+    font-size: 20px;
+    width: 40px;
   }
 }
 
-.vitamui-snack-bar-content {
-  font-size: 14px;
-  font-weight: bold;
-  color: white;
-
-  > i {
-    margin-right: 10px;
-  }
+.white {
+  color: var(--vitamui-white);
 }

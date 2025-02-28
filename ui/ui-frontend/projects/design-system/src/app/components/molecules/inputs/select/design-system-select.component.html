@@ -51,4 +51,15 @@ This is a form component that allows the user to select an option from a list of
       </div>
     }
   }
+
+  <h3>Wrapper</h3>
+  <p>The component is wrapped in another component that requires validating/cancelling the filled value before "emitting" it.</p>
+  <vitamui-form-field-value-wrapper [formControl]="wrapperControl">
+    <vitamui-select
+      [placeholder]="'COMMON.ADRESS.COUNTRY' | translate"
+      [options]="multiSelectOptions"
+      [enableSearch]="false"
+    ></vitamui-select>
+  </vitamui-form-field-value-wrapper>
+  <div><strong>Value: </strong>{{ wrapperControl.value | json }}</div>
 }

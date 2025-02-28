@@ -432,7 +432,6 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
               .pipe(
                 map((message) => {
                   this.snackBar.open(message, null, {
-                    panelClass: 'vitamui-snack-bar',
                     duration: 10000,
                   });
                 }),
@@ -455,7 +454,6 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
           this.logger.error('AccessContract not found :', error.message);
           const message = this.translateService.instant('COLLECT.ACCESS_CONTRACT_NOT_FOUND_IN_VITAM');
           this.snackBar.open(message + ': ' + this.accessContract, null, {
-            panelClass: 'vitamui-snack-bar',
             duration: 10000,
           });
         },
@@ -1083,7 +1081,6 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
       this.isNotReady$.next(false);
       const message = this.translateService.instant('COLLECT.VALIDATE_TRANSACTION_VALIDATED');
       this.snackBar.open(message, null, {
-        panelClass: 'vitamui-snack-bar',
         duration: 10000,
       });
     });
@@ -1094,7 +1091,6 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
       this.isNotReady$.next(true);
       const message = this.translateService.instant('COLLECT.INGEST_TRANSACTION_LAUNCHED');
       this.snackBar.open(message, null, {
-        panelClass: 'vitamui-snack-bar',
         duration: 10000,
       });
     });

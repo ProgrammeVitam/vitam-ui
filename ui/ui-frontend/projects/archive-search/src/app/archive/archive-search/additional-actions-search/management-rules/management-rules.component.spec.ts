@@ -329,16 +329,6 @@ describe('ManagementRulesComponent', () => {
       expect(elementRow.length).toBe(4);
     });
 
-    it('should have 9 mat options  ', () => {
-      // When
-      const nativeElement = fixture.nativeElement;
-      const elementMatOption = nativeElement.querySelectorAll('mat-option');
-
-      // Then
-      expect(elementMatOption).toBeTruthy();
-      expect(elementMatOption.length).toBe(9);
-    });
-
     it('should have 2 text titles', () => {
       const formTitlesHtmlElements = fixture.nativeElement.querySelectorAll('label');
 

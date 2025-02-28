@@ -1,4 +1,4 @@
-<form [formGroup]="form">
+<form [formGroup]="form" class="gap-3 align-items-stretch">
   <div class="row align-items-center">
     <div class="col-6">
       <vitamui-common-slide-toggle formControlName="enabled">{{ 'CUSTOMER.SSO.ACTIVE_SWITCH' | translate }}</vitamui-common-slide-toggle>
@@ -79,7 +79,7 @@
     </div>
   </div>
 
-  <div class="row pattern-row">
+  <div class="row">
     <div class="col-12">
       <app-editable-patterns
         formControlName="patterns"
@@ -98,7 +98,7 @@
       'CUSTOMER.SSO.AUTO_PROVISIONING' | translate
     }}</vitamui-common-slide-toggle>
   </div>
-  <div *ngIf="form.value.protocoleType === 'SAML' && displayOIDCSAMLBLOCKS">
+  @if (form.value.protocoleType === 'SAML' && displayOIDCSAMLBLOCKS) {
     <div class="row">
       <div class="col-6">
         <vitamui-common-editable-toggle-group
@@ -160,8 +160,8 @@
         </vitamui-common-slide-toggle>
       </div>
     </div>
-  </div>
-  <div *ngIf="form.value.protocoleType === 'OIDC' && displayOIDCSAMLBLOCKS">
+  }
+  @if (form.value.protocoleType === 'OIDC' && displayOIDCSAMLBLOCKS) {
     <div class="row">
       <div class="col-6">
         <vitamui-common-editable-input
@@ -206,10 +206,14 @@
     </div>
     <div class="row">
       <div class="col-12 form-control">
-        <vitamui-common-editable-select formControlName="preferredJwsAlgorithm" [label]="'CUSTOMER.SSO.JWS_ALGORITHME' | translate">
-          <vitamui-common-editable-option *ngFor="let jwsAlgorithm of jwsAlgorithms" [value]="jwsAlgorithm" [content]="jwsAlgorithm">
-          </vitamui-common-editable-option>
-        </vitamui-common-editable-select>
+        <vitamui-form-field-value-wrapper formControlName="preferredJwsAlgorithm">
+          <vitamui-select
+            [placeholder]="'CUSTOMER.SSO.JWS_ALGORITHME' | translate"
+            [options]="jwsAlgorithms"
+            [multiple]="false"
+            [enableSearch]="false"
+          ></vitamui-select>
+        </vitamui-form-field-value-wrapper>
       </div>
     </div>
     <div class="row align-items-center">
@@ -223,10 +227,10 @@
         <vitamui-common-slide-toggle formControlName="useNonce">{{ 'CUSTOMER.SSO.USE_PKCE' | translate }}</vitamui-common-slide-toggle>
       </div>
     </div>
-    <div class="col-6 padding0">
+    <div class="col-6 p-0">
       <vitamui-common-slide-toggle formControlName="propagateLogout">
         {{ 'CUSTOMER.SSO.PROPAGATE_LOGOUT' | translate }}
       </vitamui-common-slide-toggle>
     </div>
-  </div>
+  }
 </form>

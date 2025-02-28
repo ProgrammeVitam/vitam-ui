@@ -36,10 +36,10 @@
  */
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Subscription, merge, of } from 'rxjs';
+import { merge, of, Subscription } from 'rxjs';
 import { catchError, debounceTime, filter, map, switchMap } from 'rxjs/operators';
 import { extend, isEmpty } from 'underscore';
-import { CountryOption, CountryService, Customer, OtpState, StartupService, diff } from 'vitamui-library';
+import { CountryOption, CountryService, Customer, diff, Option, OtpState, StartupService } from 'vitamui-library';
 
 import { CustomerService } from '../../../core/customer.service';
 import { ALPHA_NUMERIC_REGEX, CUSTOMER_CODE_MAX_LENGTH, CustomerCreateValidators } from '../../customer-create/customer-create.validators';
@@ -115,7 +115,7 @@ export class InformationTabComponent implements OnInit, OnDestroy {
 
   private sub: Subscription;
 
-  public countries: CountryOption[];
+  public countries: Option[];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -165,7 +165,7 @@ export class InformationTabComponent implements OnInit, OnDestroy {
       .subscribe((customer: Customer) => this.resetForm(customer));
 
     this.countryService.getAvailableCountries().subscribe((values: CountryOption[]) => {
-      this.countries = values;
+      this.countries = values.map((country) => ({ key: country.code, label: country.name }));
     });
   }
 

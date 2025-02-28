@@ -351,7 +351,6 @@ export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
       return;
     }
     this.snackBar.openFromComponent(VitamUISnackBarComponent, {
-      panelClass: 'vitamui-snack-bar',
       data: {
         type: 'otherType',
         messageKey: 'SNACKBAR.ERROR_WITH_LOGBOOK_OPERATION_ID',

@@ -68,36 +68,7 @@ export class VitamUISnackBarService {
       data.duration = DEFAULT_DURATION;
     }
 
-    return this.matSnackBar.openFromComponent(component, { panelClass: 'vitamui-snack-bar', duration, data });
-  }
-
-  public openWithAppUrl(
-    data: VitamuiSnackBarData,
-    appId: ApplicationId | any,
-    urlName: string,
-    urlParams?: Map<string, string>,
-  ): Observable<MatSnackBarRef<VitamUISnackBarComponent>> {
-    return this.applicationService.getAppById(appId).pipe(
-      map((application: Application) => {
-        data.message = this.getTranslateValue(data.translate, data.message, data.translateParams);
-        urlName = this.getTranslateValue(data.translate, urlName, urlParams);
-        let url = application.url;
-
-        if (urlParams) {
-          let urlWithParams = application.url;
-          for (const [key, value] of urlParams.entries()) {
-            urlWithParams += '/' + key + '/' + value;
-          }
-
-          url = urlWithParams;
-        }
-
-        data.message = data.message + ' <a href="' + url + '">' + urlName + '</a>';
-
-        return this.open(data);
-      }),
-      take(1),
-    );
+    return this.matSnackBar.openFromComponent(component, { duration, data });
   }
 
   public openWithAppUrlBtn(
@@ -107,41 +78,11 @@ export class VitamUISnackBarService {
   ): Observable<MatSnackBarRef<VitamUISnackBarComponent>> {
     return this.applicationService.getAppById(appId).pipe(
       map((application: Application) => {
-        data.message = this.getTranslateValue(data.translate, data.message, data.translateParams);
-        urlName = this.getTranslateValue(data.translate, urlName);
-        data.htmlContent = '<a href="' + application.url + '" class="btn contrast contrast-primary mr-3">' + urlName + '</a>';
-
+        data.buttons = [{ url: application.url, label: this.getTranslateValue(data.translate, urlName) }];
         return this.open(data);
       }),
       take(1),
     );
-  }
-
-  public openWithStringUrl(
-    data: VitamuiSnackBarData,
-    url: string,
-    urlName: string,
-    cssClass?: string,
-    closeOnClick: boolean = false,
-  ): MatSnackBarRef<VitamUISnackBarComponent> {
-    data.message = this.getTranslateValue(data.translate, data.message, data.translateParams);
-    urlName = this.getTranslateValue(data.translate, urlName);
-
-    const cssCl = cssClass ? 'class="' + cssClass + '"' : '';
-    const onClick = closeOnClick ? '(click)="close()"' : '';
-
-    data.message = data.message + ' <a href="' + url + '" ' + cssCl + ' ' + onClick + '">' + urlName + '</a>';
-    return this.open(data);
-  }
-
-  public openWithCallback(data: VitamuiSnackBarData, callBack: Observable<any>, urlName: string): MatSnackBarRef<VitamUISnackBarComponent> {
-    data.message = this.getTranslateValue(data.translate, data.message, data.translateParams);
-    urlName = this.getTranslateValue(data.translate, urlName);
-
-    data.htmlContent = '<a class="underline">' + urlName + '</a>';
-    data.callBack = callBack;
-
-    return this.open(data);
   }
 
   /**

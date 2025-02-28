@@ -42,7 +42,13 @@
         <cdk-virtual-scroll-viewport itemSize="48" #scrollViewport class="h-100" minBufferPx="240" maxBufferPx="480">
           <div class="vitamui-mat-select-options">
             <ng-container *cdkVirtualFor="let option of selectedOptions; let last = last; let index = index">
-              <mat-option [id]="index" [value]="option.key" (onSelectionChange)="onSelectionChange($event)" [disabled]="option.disabled">
+              <mat-option
+                [id]="index"
+                [value]="option.key"
+                (onSelectionChange)="onSelectionChange($event)"
+                [disabled]="option.disabled"
+                [vitamuiTooltip]="option.info"
+              >
                 <span
                   [innerHTML]="option.label | highlight: this.searchTextControl.value"
                   vitamuiCommonEllipsis
@@ -94,6 +100,7 @@
                 [value]="option.key"
                 (onSelectionChange)="onSelectionChange($event)"
                 [disabled]="option.disabled"
+                [vitamuiTooltip]="option.info"
               >
                 <span
                   [innerHTML]="option.label | highlight: this.searchTextControl.value"
