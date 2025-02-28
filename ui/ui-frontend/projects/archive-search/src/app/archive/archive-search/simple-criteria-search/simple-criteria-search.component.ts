@@ -283,7 +283,10 @@ export class SimpleCriteriaSearchComponent implements OnInit {
     const customSearchTypes = schema.find((s) => s.item.ApiPath === path).item.CustomSearchTypes;
     return customSearchTypes?.length
       ? ['', ...customSearchTypes].map((type) => ({
-          label: this.translateService.instant(`ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.SEARCH_TYPES.${type}`),
+          label:
+            type === 'Strict' || type === ''
+              ? this.translateService.instant(`ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.SEARCH_TYPES.${type}`)
+              : type,
           value: type,
         }))
       : [];
