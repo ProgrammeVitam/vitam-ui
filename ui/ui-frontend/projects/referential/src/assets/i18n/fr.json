@@ -291,7 +291,7 @@
     "MESSAGE": "La demande de changement de statut a bien été prise en compte",
     "POP_UP_SECOND_TITLE": "Confirmez-vous vouloir réaliser une demande de changement de statut :",
     "POP_UP_NEXT_MESSAGE": "Modifier l'opération",
-    "POP_UP_REPLAY_MESSAGE": "Confirmer l’action",
+    "POP_UP_REPLAY_MESSAGE": "Rejouer l'opération",
     "POP_UP_REPLAY_SECOND_MESSAGE": "Avez-vous eu la confirmation que le problème technique à l'origine de la mise en pause fatale a été corrigé avant de relancer l'opération ?",
     "POP_UP_RESUME_MESSAGE": "Finaliser l'opération",
     "POP_UP_CANCEL_TITLE": "Forcer l'arrêt",
