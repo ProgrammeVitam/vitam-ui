@@ -152,5 +152,8 @@
     "PUBLIC_ARCHIVE": "Public archives",
     "PRIVATE_ARCHIVE": "Private archives",
     "PUBLIC_PRIVATE_ARCHIVE": "Public and private archives"
+  },
+  "EXPORT_CSV": {
+    "EXPORT_CSV_LIMIT_REACHED": "It's not possible to export more than 10 000 results, please update your filters."
   }
 }

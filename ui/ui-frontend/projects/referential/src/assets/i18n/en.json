@@ -1109,7 +1109,7 @@
     "RULE_DELETE_SUCCESS": "Management rule {{ name }} has been deleted",
     "RULE_DELETE_FAILED": "Management rule {{ name }} could not be deleted",
     "RULE_EXPORT_ALL": "Export of management rules in progress ...",
-    "EXPORT_CSV_LIMIT_REACHED": "Il n'est pas possible de réaliser un export csv sur plus de {{ limit }} résultats de recherche, veuillez restreindre votre sélection ou affiner votre recherche.",
+    "EXPORT_CSV_LIMIT_REACHED": "It's not possible to export more than {{ limit }} results, please update your filters.",
     "NO_ACCESS_CONTRACT_LINKED": "No access contract is associated with the user",
     "TRACEABILITY_OPERATION_SUCCESS": "Secure log verification audit has been initiated.",
     "TRACEABILITY_OPERATION_FAILED": "Secure log verification audit failed.",
