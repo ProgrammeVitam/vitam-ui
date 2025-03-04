@@ -156,8 +156,5 @@
     "PUBLIC_ARCHIVE": "Archives publiques",
     "PRIVATE_ARCHIVE": "Archives privées",
     "PUBLIC_PRIVATE_ARCHIVE": "Archives publiques et privées"
-  },
-  "EXPORT_CSV": {
-    "EXPORT_CSV_LIMIT_REACHED": "Il n'est pas possible de réaliser un export csv sur plus de 10 000 résultats de recherche, veuillez restreindre votre sélection ou affiner votre recherche."
   }
 }
