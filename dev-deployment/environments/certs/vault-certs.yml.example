@@ -1,7 +1,6 @@
 ---
 server_security_key: changeme
-server_iam_internal_key: changeme
-server_iam_external_key: changeme
+server_iam_key: changeme
 server_cas_server_key: changeme
 server_referential_key: changeme
 server_ingest_key: changeme

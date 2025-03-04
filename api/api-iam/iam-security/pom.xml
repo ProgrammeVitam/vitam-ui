@@ -6,8 +6,8 @@
 
 	<artifactId>iam-security</artifactId>
 	<packaging>jar</packaging>
-	<name>VITAMUI Iam Security</name>
-	<description>VITAMUI Iam Security</description>
+	<name>VITAMUI IAM Security</name>
+	<description>VITAMUI IAM Security</description>
 
 	<parent>
 		<groupId>fr.gouv.vitamui</groupId>
@@ -35,7 +35,7 @@
 		</dependency>
 		<dependency>
 			<groupId>fr.gouv.vitamui</groupId>
-			<artifactId>iam-external-client</artifactId>
+			<artifactId>iam-client</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>fr.gouv.vitamui</groupId>

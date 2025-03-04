@@ -133,7 +133,7 @@ vitamui.authn.x509.identifierAttributeExpansion:
 vitamui.authn.x509.defaultDomain: 'domain.com'
 ```
 
-You might need to change CAS URL `login.url` to `http://dev.vitamui.com/cas/login` in iam-external configuration.
+You might need to change CAS URL `login.url` to `http://dev.vitamui.com/cas/login` in iam configuration.
 
 Client certificate needs to be imported into local browser certificate store (password: `azerty`).
 
@@ -149,7 +149,7 @@ https://dev.vitamui.com:8080/cas/login).
 
 ## OpenId Connect (OIDC) authentication delegation
 
-VitamUI offers the possibility to delegate authentication to an external IDP using the OpenID Connect protocol. 
+VitamUI offers the possibility to delegate authentication to an external IDP using the OpenID Connect protocol.
 To configure an external provider in VitamUI, you will need to follow the procedure below:
 
 - Create an OIDC provider for the domain email.
@@ -172,12 +172,12 @@ We have additional parameters that depend on your OIDC client, such as:
 
 To ensure these configurations work properly, there are certain rules to follow:
 
-- you need to add the CAS Url and Vitamui Url to OIDC Client into the fields: 
+- you need to add the CAS Url and Vitamui Url to OIDC Client into the fields:
 
   - `Valid redirect URIs`
   - `Valid post logout redirect URIs`
   - `Web origins`
-  **Example** 
+  **Example**
      ```json
        "redirectUris": [
         "https://dev.vitamui.com:4200/*",
@@ -191,8 +191,8 @@ To ensure these configurations work properly, there are certain rules to follow:
         "https://myfirst-env.fr/*",
         "https://mysecond-env.fr/*"
       ]
-      ``` 
-  
+      ```
+
 - The external provider must be accessible from CAS VM, at least the `Discovery URL`.
 - You need to restart the CAS service after adding the provider.
 
@@ -270,7 +270,7 @@ To set up Saml V2 authentication with vitamui, please follow these steps:
         - Upload the CAS keystore file (with the associated password) (keystore_cas-server.jks)
         - Upload the IDP metadata file (e.g., FederationMetadata.xml)
         - After provider creation, we need to download the metadata file of the vitamui provider (spmetadata.xml), and
-          provide it to the external IDP provider, this file is used to declare our vitamui provider as a service. 
+          provide it to the external IDP provider, this file is used to declare our vitamui provider as a service.
 
 **Warnings:**
 - You need to restart the CAS service after adding the provider.
@@ -281,10 +281,10 @@ To test the saml authentication, bellow an example with an external CAS on versi
 
 - clone the example project ```https://github.com/casinthecloud/cas-overlay-demo.git```
   - Checkout the branch ```6.6.x```
-  - Create a directory ```/etc/cas``` with ```777``` permissions on the folder. 
+  - Create a directory ```/etc/cas``` with ```777``` permissions on the folder.
   - To run the test as a war without an application server, you need to update some settings:
       - in the ```pom.xml```:
-          - Replace each occurance of ```cas-server-webapp``` by ```cas-server-webapp-tomcat``` 
+          - Replace each occurance of ```cas-server-webapp``` by ```cas-server-webapp-tomcat```
           - Add the following dependencies:
                ```xml
                  <dependency>
@@ -296,9 +296,9 @@ To test the saml authentication, bellow an example with an external CAS on versi
                     <groupId>org.apereo.cas</groupId>
                     <artifactId>cas-server-support-oidc</artifactId>
                     <version>${cas.version}</version>
-                </dependency>    
+                </dependency>
                 ```
-          - Add the plugin: 
+          - Add the plugin:
             ```xml
                <plugin>
                   <groupId>org.springframework.boot</groupId>
@@ -321,10 +321,10 @@ To test the saml authentication, bellow an example with an external CAS on versi
                       </execution>
                   </executions>
               </plugin>
-            ``` 
+            ```
         - in the ```application.yml```:
           - update the port of the external cas by change the default port from ```8080``` to another port ex(```8383```)
-          and add these settings: 
+          and add these settings:
               ```yaml
             cas.server.name: http://localhost:8383
             cas.server.prefix: http://localhost:8383/cas
@@ -342,19 +342,19 @@ To test the saml authentication, bellow an example with an external CAS on versi
           - **myusernam@mydomainmail.fr**  is the user email for testing, and **mypassword** is the password
 
       - run ```mvn clean package``` on the project.
-      - run ```java -jar target/cas.war``` 
+      - run ```java -jar target/cas.war```
       - After launching,cas will generate some settings files inside the directory ```/etc/cas/saml```
       - Login in into Vitamui as a superadmin, create a SAML provider with the following information:
         - Pattern: email domain configured before: ```mydomainmail.fr```
         - Type: ```SAML```
-        - Email attribute: The attribute containing the user email sent by the idp after authentication, please check that the attribute 'nameid-format' to 'emailAddress' instead of 'transient'  
+        - Email attribute: The attribute containing the user email sent by the idp after authentication, please check that the attribute 'nameid-format' to 'emailAddress' instead of 'transient'
         - CAS Keystore: for testing: you upload any keystore with the right passowrd.
         - IDP Metadata: upload the file generated by running external CAS, from the path ```/etc/cas/saml/idp-metadata.xml```
         - Assertions : false
         - Signed request: false.
-      - On vitamui, after creating the provider (SSO list) : 
-        - we download the ```SPS-metadata.xml``` file and copy it in a directory accessible by external CAS, 
-            example ```/some-path-of-cas/SPS-metadata.xml```. 
+      - On vitamui, after creating the provider (SSO list) :
+        - we download the ```SPS-metadata.xml``` file and copy it in a directory accessible by external CAS,
+            example ```/some-path-of-cas/SPS-metadata.xml```.
         - create a new resource file on the project external CAS , example: ```saml-metadata.json``` in the directory:
              src/main/resources/services with the following content:
         ```json
@@ -367,8 +367,8 @@ To test the saml authentication, bellow an example with an external CAS on versi
           "skipGeneratingTransientNameId": true,
           "serviceId" : "https://vitamui_host/cas/login/{{technical-provider-id}}"
           }
-        ``` 
-        We have to check the following important informations: 
+        ```
+        We have to check the following important informations:
         **vitamui_host** is the url of the vitamui.
         **some-path-of-cas** is a directory path on the CAS external path vm.
         **technical-provider-id** is the ```technicalName``` of the provider in providers collection in vitamui db created before.
@@ -376,15 +376,15 @@ To test the saml authentication, bellow an example with an external CAS on versi
     - run ```java -jar target/cas.war```
 
 - You need to restart the CAS service on the Vitamui environment, after adding the provider.
-- Create a user into the organisation with email address ```myusernam@mydomainmail.fr``` 
-- We can test the SAML delegated authentication using the external CAS. 
-      
+- Create a user into the organisation with email address ```myusernam@mydomainmail.fr```
+- We can test the SAML delegated authentication using the external CAS.
+
 
 ## Auto provisioning:
 
 The auto provisioning allows the creation and the updating of users after authentication on external IdP.
-When enabled, the auto-provisioning of user call an ad-hoc back-end API that retrn user information based on their primary email address, which is the main authentication information. 
-This requires configuring a provisioning API within the iam-internal service. Below is an example configuration to achieve this.
+When enabled, the auto-provisioning of user call an ad-hoc back-end API that retrn user information based on their primary email address, which is the main authentication information.
+This requires configuring a provisioning API within the iam service. Below is an example configuration to achieve this.
 
 ```yaml
 provisioning-client:
@@ -395,14 +395,14 @@ provisioning-client:
         secure: false
         ssl-configuration:
           truststore:
-            key-path: /vitamui/conf/iam-internal/truststore_server.jks
+            key-path: /vitamui/conf/iam/truststore_server.jks
             key-password: AJ2Ft14CQHiU3eegIAlPqxPRp5uLNMizGadu8SficFja7nQN
           hostname-verification: false
 ```
 - The value of the parameter ```idp-identifier``` should be the ```_id``` of the provider from the collection iam->providers
   - The parameter ```uri``` is the url of the provisioning api that should return user information when it is called with request parameter ```email```
     - The api call has this format : ```GET {{provisionning-api}}/users?email={{user-email}}```
-    - The api response for user should have the following model : 
+    - The api response for user should have the following model :
       ```json
       {
         "lastname": "some lastname",
@@ -419,7 +419,7 @@ provisioning-client:
         "internalCode": "Some internal code"
         }
       ```
-    - ***Important*** 
+    - ***Important***
       - The information ```unit``` is very important for provisioning feature, this value is the main information to
         match the group to affect to the user after authentication, we should have a group having a field ```unit```
         with value this returned value from provisoning api.
@@ -434,8 +434,8 @@ provisioning-client:
                 'VITAM'
                 ]
             }
-        ```  
-           
+        ```
+
 # Development
 
 Développement des pages html - en static grace à thymeleaf et avec sass :
@@ -506,10 +506,8 @@ CAS implements standard workflows using spring WebFlow; an old yet flexible fram
 CAS customizations include :
 - Overriding static resources
 - Rewriting new Spring services that override partially or completely core CAS behavior.
-- Overwriting authentication workflows: Ex. Supporting multi-domain organizations / multiple-users with the same
-  login...
-- Overriding persistence: IAM internal is used for persisting of user account information, organizations (customers),
-  authentication providers...
+- Overwriting authentication workflows: Ex. Supporting multi-domain organizations / multiple-users with the same login...
+- Overriding persistence: IAM is used for persisting of user account information, organizations (customers), authentication providers...
 - ...
 
 **/!\ WARNING:**

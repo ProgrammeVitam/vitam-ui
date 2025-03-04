@@ -62,13 +62,8 @@ function start_api() {
 
      sleep 15
 
-     # Start Iam Server Internal
-     launch "../api/api-iam/iam-internal" "$SPRINGBOOT"
-
-     sleep 15
-
-     # Start Iam Server External
-     launch "../api/api-iam/iam-external" "$SPRINGBOOT"
+     # Start Iam Server
+     launch "../api/api-iam/iam" "$SPRINGBOOT"
 
      sleep 15
 

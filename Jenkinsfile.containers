@@ -52,7 +52,7 @@ pipeline {
                 script {
                     def dockerImages = [
                         '$SERVICE_DOCKER_PUSH_URL/vitamui/security',
-                        '$SERVICE_DOCKER_PUSH_URL/vitamui/iam-external',
+                        '$SERVICE_DOCKER_PUSH_URL/vitamui/iam',
                         '$SERVICE_DOCKER_PUSH_URL/vitamui/referential',
                         '$SERVICE_DOCKER_PUSH_URL/vitamui/ingest',
                         '$SERVICE_DOCKER_PUSH_URL/vitamui/archive-search',

@@ -85,7 +85,7 @@ Le sous bloc `customs` du bloc `constraints` concerne les configurations du prof
 Ce bloc contient la liste des messages personnalisés, et les différentes contraintes en termes des caractères alphanumérique, spéciaux, miniscules, majuscules etc..
 
 > Note:
-en cas de changement manuelle par l'administrateur système du nombre de mots passe anciens à utiliser, le changement devra se faire au niveau CAS et iam-internal.
+en cas de changement manuelle par l'administrateur système du nombre de mots passe anciens à utiliser, le changement devra se faire au niveau CAS et iam.
 > Le redémarrage de ces deux composants est nécessaire.
 >
 > La modification des contraintes d'authentification est transparente pour les utilisateurs qui possèdent déjà des comptes dans Vitam-UI.

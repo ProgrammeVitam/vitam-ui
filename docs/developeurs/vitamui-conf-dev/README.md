@@ -179,8 +179,8 @@ use this request to reproduce it in your local:
 ### 1c - Configure VITAMUI to access Vitam APIs
 
 The final Step is to configure VITAMUI modules that interacts with VITAM.
-Untill now there is two modules that interacts with VITAM endpoints,
-the `IAM` module and the `Ingest` module. specifically the `IAM-Internal` and `Ingest-Internal` modules.
+
+Until now there is 5 modules that interacts with VITAM endpoints: `IAM`, `Ingest`, `Archive-Search`, `Collect` & `Pastis`.
 
 #### Copie VITAM configuration files and necessary certificates to VITAMUI modules
 

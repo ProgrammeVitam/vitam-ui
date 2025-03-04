@@ -5,7 +5,7 @@
 
     <artifactId>iam-commons</artifactId>
     <packaging>jar</packaging>
-    <name>VITAMUI Iam API Common</name>
+    <name>VITAMUI IAM API Common</name>
 
     <parent>
         <groupId>fr.gouv.vitamui</groupId>

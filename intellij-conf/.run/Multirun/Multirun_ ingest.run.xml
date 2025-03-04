@@ -3,7 +3,7 @@
                    reuseTabsWithFailures="false" startOneByOne="true" markFailedProcess="true"
                    hideSuccessProcess="false" delayTime="0.0">
         <runConfiguration name="Multirun: common" type="Multirun"/>
-        <runConfiguration name="ingest external" type="Spring Boot"/>
+        <runConfiguration name="ingest" type="Spring Boot"/>
         <runConfiguration name="Angular: ingest" type="npm"/>
         <method v="2"/>
     </configuration>

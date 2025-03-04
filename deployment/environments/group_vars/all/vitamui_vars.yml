@@ -104,9 +104,9 @@ vitamui:
     port_admin: 7105
     server_connection_timeout: 60000
 
-  iam_external:
-    host: "vitamui-iam-external.service.{{ consul_domain }}"
-    vitamui_component: iam-external
+  iam:
+    host: "vitamui-iam.service.{{ consul_domain }}"
+    vitamui_component: iam
     port_service: 8101
     port_admin: 7101
 

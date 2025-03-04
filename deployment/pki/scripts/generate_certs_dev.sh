@@ -34,7 +34,7 @@ function generateCerts {
     # Zone interne
     generateHostCertAndStorePassphrase          security            hosts_vitamui_security
     #Zone externe
-    generateHostCertAndStorePassphrase          iam-external        hosts_vitamui_iam_external
+    generateHostCertAndStorePassphrase          iam                 hosts_vitamui_iam
     generateHostCertAndStorePassphrase          cas-server          hosts_cas_server
     generateHostCertAndStorePassphrase          referential         hosts_vitamui_referential
     generateHostCertAndStorePassphrase          ingest              hosts_vitamui_ingest

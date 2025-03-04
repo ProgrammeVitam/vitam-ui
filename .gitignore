@@ -234,7 +234,7 @@ deployment/playbooks/templates/vitamui/conf/*/*.p12
 api/api-archive-search/archive-search/src/main/resources/dev/vitam/
 api/api-archive-search/archive-search/src/main/resources/ontology/
 api/api-ingest/ingest/src/main/resources/dev/vitam/
-api/api-iam/iam-external/src/main/resources/dev/vitam/
+api/api-iam/iam/src/main/resources/dev/vitam/
 api/api-collect/collect/src/main/resources/dev/vitam/
 api/api-collect/collect/src/main/resources/ontology/
 api/api-pastis/pastis-standalone/external-schema-definition.json

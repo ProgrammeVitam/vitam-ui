@@ -66,7 +66,7 @@ pastis:
         key-path: ../../../dev-deployment/environments/keystores/server/truststore_server.jks
         key-password: changeme
       keystore:
-        key-path: ../../../dev-deployment/environments/keystores/server/localhost/keystore_archive-search-external.jks
+        key-path: ../../../dev-deployment/environments/keystores/server/localhost/keystore_pastis.jks
         key-password: changeme
         type: JKS
       hostname-verification: false

@@ -12,8 +12,7 @@ localhost   vitamui_site_name=dev   consul_domain=consul
 # ZONE APP
 
 [zone_vitamui_app:children]
-hosts_vitamui_iam_internal
-hosts_vitamui_iam_external
+hosts_vitamui_iam
 hosts_vitamui_security
 hosts_vitamui_referential
 hosts_vitamui_ingest
@@ -22,10 +21,7 @@ hosts_vitamui_collect
 hosts_vitamui_pastis
 hosts_vitamui_api_gateway
 
-[hosts_vitamui_iam_internal]
-localhost
-
-[hosts_vitamui_iam_external]
+[hosts_vitamui_iam]
 localhost
 
 [hosts_vitamui_referential]

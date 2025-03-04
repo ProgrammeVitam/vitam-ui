@@ -96,7 +96,7 @@
                 </exclusion>
                 <exclusion>
                     <groupId>fr.gouv.vitamui</groupId>
-                    <artifactId>iam-external-client</artifactId>
+                    <artifactId>iam-client</artifactId>
                 </exclusion>
                 <exclusion>
                     <groupId>fr.gouv.vitamui.commons</groupId>

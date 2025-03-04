@@ -16,20 +16,20 @@
     - security
 
 # External apps
-- hosts: hosts_vitamui_iam_external
+- hosts: hosts_vitamui_iam
   gather_facts: no
   any_errors_fatal: true
   roles:
     - vitamui
   vars:
-    vitamui_struct: "{{ vitamui.iam_external }}"
-    vitamui_certificate_type: "external"
-    password_keystore: "{{ keystores_server_iam_external }}"
+    vitamui_struct: "{{ vitamui.iam }}"
+    vitamui_certificate_type: external
+    password_keystore: "{{ keystores_server_iam }}"
     password_truststore: "{{ truststores_client_external }}"
     vitam_cert: "{{ vitam_certs.vitamui }}"
-    consul_tags: "iam-external, api, external"
+    consul_tags: "iam, api"
   tags:
-    - iam-external
+    - iam
 
 - hosts: hosts_cas_server
   gather_facts: no
@@ -39,7 +39,7 @@
     - vitamui
   vars:
     vitamui_struct: "{{ vitamui.cas_server }}"
-    vitamui_certificate_type: "external"
+    vitamui_certificate_type: external
     password_keystore: "{{ keystores_server_cas_server }}"
     password_truststore: "{{ truststores_client_external }}"
     consul_tags: "cas-server, cas, external"

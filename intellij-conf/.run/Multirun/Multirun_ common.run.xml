@@ -4,10 +4,10 @@
                    hideSuccessProcess="false" delayTime="0.0">
         <runConfiguration name="Start Mongo" type="Docker"/>
         <runConfiguration name="security" type="Spring Boot"/>
-        <runConfiguration name="IAM external" type="Spring Boot"/>
+        <runConfiguration name="IAM" type="Spring Boot"/>
         <runConfiguration name="API gateway" type="Spring Boot"/>
         <runConfiguration name="CAS" type="JAR Application"/>
-        <runConfiguration name="referential external" type="Spring Boot"/>
+        <runConfiguration name="referential" type="Spring Boot"/>
         <runConfiguration name="Angular: vitamui-library" type="npm"/>
         <runConfiguration name="Angular: portal" type="npm"/>
         <method v="2"/>

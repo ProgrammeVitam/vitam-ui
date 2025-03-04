@@ -47,7 +47,7 @@ ingest:
         key-path: ../../../dev-deployment/environments/keystores/server/truststore_server.jks
         key-password: changeme
       keystore:
-        key-path: ../../../dev-deployment/environments/keystores/server/localhost/keystore_archive-search-external.jks
+        key-path: ../../../dev-deployment/environments/keystores/server/localhost/keystore_ingest.jks
         key-password: changeme
         type: JKS
       hostname-verification: false
@@ -61,7 +61,6 @@ opentracing:
     udp-sender:
       host: localhost
       port: 6831
-
 
 logging:
   level:

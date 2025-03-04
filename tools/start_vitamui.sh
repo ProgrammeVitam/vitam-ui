@@ -44,11 +44,8 @@ function start_api() {
      # Start Iam Security
      launch "../api/api-security/security" "$SPRINGBOOT"
 
-     # Start Iam Server Internal
-     launch "../api/api-iam/iam-internal" "$SPRINGBOOT"
-
-     # Start Iam Server External
-     launch "../api/api-iam/iam-external" "$SPRINGBOOT"
+     # Start Iam Server
+     launch "../api/api-iam/iam" "$SPRINGBOOT"
 
      # Start Cas Server
      launch "../cas/cas-server" "java -Xmx512m -Dspring.config.additional-location=src/main/config/cas-server-application-dev.yml -jar target/cas-server.war"

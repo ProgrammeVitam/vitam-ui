@@ -1,7 +1,7 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Multirun: collect" type="Multirun" separateTabs="false" reuseTabsWithFailures="false" startOneByOne="true" markFailedProcess="true" hideSuccessProcess="false" delayTime="0.0">
     <runConfiguration name="Multirun: common" type="Multirun" />
-    <runConfiguration name="collect external" type="Spring Boot" />
+    <runConfiguration name="collect" type="Spring Boot" />
     <runConfiguration name="Angular: collect" type="npm" />
     <method v="2" />
   </configuration>

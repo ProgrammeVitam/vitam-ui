@@ -11,7 +11,7 @@
 
     <artifactId>collect</artifactId>
     <packaging>jar</packaging>
-    <name>VITAMUI Collect External API</name>
+    <name>VITAMUI Collect API</name>
 
     <properties>
         <rpm.skip>false</rpm.skip>
@@ -41,7 +41,7 @@
         </dependency>
         <dependency>
             <groupId>fr.gouv.vitamui</groupId>
-            <artifactId>iam-external-client</artifactId>
+            <artifactId>iam-client</artifactId>
         </dependency>
         <dependency>
             <groupId>fr.gouv.vitamui</groupId>

@@ -14,7 +14,7 @@ vitamui:
     # memory: "-Xms128m -Xmx512m"
     # gc: ""
     # java: ""
-  iam_external:
+  iam:
     jvm_opts:
     # memory: "-Xms128m -Xmx512m"
     # gc: ""

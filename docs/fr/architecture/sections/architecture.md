@@ -38,12 +38,6 @@ Les services disposent d'API REST pour suivre leur état et leur activité. Ces 
 
 Les services génèrent les logs techniques dans la solution de log centralisée basée sur ELK.
 
-### Service iam-external
-
-* Description : service externe pour la gestion des organisations, utilisateurs, profils, etc.
-* Contraintes
-* API swagger
-
 ### Service cas-server
 
 * Description : service d’authentification nécessaire et accessible uniquement par l'IAM CAS
@@ -71,22 +65,6 @@ Les services génèrent les logs techniques dans la solution de log centralisée
   * API des opérations permettant le lancement différents audits (cohérence, valeur probante ...).
 
   Pour plus d'information: voir la documentation des [référentiels](https://www.programmevitam.fr/pages/documentation/pour_archiviste/)
-
-### Service ingest
-
-* Description : service pour la gestion des opérations d'entrées d'archives de la solution logicielle VITAM.
-
-  Le service d'ingest a pour responsabilité la réception, la sécurisation des ressources internes de versement et la communication sécurisée avec les couches internes.
-
-  Le service d'ingest est composé de plusieurs points d'APIs:
-
-  * API de versement des archives permettant la consommation des flux d'archives (/v1/ingest/upload)
-  * API de visualisation des journaux d'opération des opérations d'entrées (API /v1/ingest)
-  * API de visualisation détaillé d'un journal d'une opération d'entrées (/v1/ingest/{id})
-  * API permettant le téléchargement d'un rapport sous forme ODT d'une opération d'entrée (/v1/ingest/odtreport/{id})
-  * API commune est utilisé pour le téléchargement du Manifest et de l'ATR (Archival Transfer Reply) d'une opération
-    d'entrée.
-    (Manifest: /logbooks/operations/{id}/download/manifest, ATR: /logbooks/operations/{id}/download/atr)
 
 ### Service archive-search
 
@@ -187,7 +165,7 @@ Les services disposent d'API REST pour suivre leur état et leur activité.
 
 Les services génèrent les logs techniques dans la solution de log centralisée basée sur ELK.
 
-### Service iam-internal
+### Service iam
 
 * Description : service d’administration des clients, des utilisateurs et des profils, portail
 * Contraintes
@@ -201,14 +179,13 @@ Les services génèrent les logs techniques dans la solution de log centralisée
 * API swagger
 * Modèle de données
 
-### Service ingest-internal
+### Service ingest
 
-* Description : service interne pour la gestion des opérations d'entrées d'archives de la solution logicielle VITAM.
+* Description : Service pour la gestion des opérations d'entrées d'archives de la solution logicielle VITAM.
 
-  Le service d'ingest interne a pour responsabilité la réception, et la communication sécurisée avec les couches
-  externes de VITAM.
+  Le service d'ingest interne a pour responsabilité la réception et la communication sécurisée avec les couches externes de VITAM.
 
-  Le service d'ingest interne est composé de plusieurs points d'APIs:
+  Le service d'ingest est composé de plusieurs points d'APIs:
 
   * API de versement des archives permettant la consommation des flux d'archives (/v1/ingest/upload)
   * API de visualisation des journaux d'opération des opérations d'entrées (API /v1/ingest)

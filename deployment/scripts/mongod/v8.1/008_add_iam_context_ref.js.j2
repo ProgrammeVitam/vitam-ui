@@ -1,0 +1,20 @@
+print("START 008_add_iam_context_ref.js");
+
+db = db.getSiblingDB('{{ mongodb.security.db | default('security') }}')
+
+// Add context for IAM
+db.contexts.insertOne({
+    "_id" : "iam_context",
+    "name": "Context IAM",
+    "fullAccess" : true,
+    "tenants" : [NumberInt({{ vitamui_platform_informations.proof_tenant }}), NumberInt({{ vitamui_platform_informations.cas_tenant }})],
+    "roleNames" : ["ROLE_PROVISIONING_USER"]
+});
+
+// Remove old IAM internal context
+db.contexts.deleteOne({ _id: "iam_internal_context" });
+
+// Remove old IAM internal certificates
+db.certificates.deleteMany({ "contextId": "iam_internal_context" });
+
+print("END 008_add_iam_context_ref.js");

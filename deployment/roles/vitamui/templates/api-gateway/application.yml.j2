@@ -57,8 +57,8 @@ spring:
             allowedMethods: "*"
             allowedHeaders: "*"
       routes:
-        - id: iam-external-service
-          uri: {{ 'https' if vitamui.iam_external.secure | default(secure) | bool else 'http' }}://{{ vitamui.iam_external.host }}:{{ vitamui.iam_external.port_service }}
+        - id: iam-service
+          uri: {{ 'https' if vitamui.iam.secure | default(secure) | bool else 'http' }}://{{ vitamui.iam.host }}:{{ vitamui.iam.port_service }}
           predicates:
             - >
               Path=

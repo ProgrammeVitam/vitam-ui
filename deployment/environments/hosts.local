@@ -97,7 +97,7 @@ localhost
 ################################################################################
 [zone_vitamui_app:children]
 hosts_vitamui_api_gateway
-hosts_vitamui_iam_external
+hosts_vitamui_iam
 hosts_vitamui_ingest
 hosts_vitamui_archive_search
 hosts_vitamui_collect
@@ -109,7 +109,7 @@ hosts_vitamui_pastis
 # EDIT: Mandatory
 localhost
 
-[hosts_vitamui_iam_external]
+[hosts_vitamui_iam]
 # EDIT: Mandatory
 localhost
 

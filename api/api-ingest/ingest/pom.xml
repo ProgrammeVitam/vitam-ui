@@ -40,18 +40,16 @@
         </dependency>
         <dependency>
             <groupId>fr.gouv.vitamui</groupId>
-            <artifactId>iam-external-client</artifactId>
+            <artifactId>iam-client</artifactId>
         </dependency>
-        <dependency>
-            <groupId>fr.gouv.vitamui</groupId>
-            <artifactId>ingest-external-client</artifactId>
-        </dependency>
-
         <dependency>
             <groupId>fr.gouv.vitamui</groupId>
             <artifactId>iam-security</artifactId>
         </dependency>
-
+        <dependency>
+            <groupId>fr.gouv.vitamui</groupId>
+            <artifactId>ingest-commons</artifactId>
+        </dependency>
         <!-- APACHE ODFtoolKit-->
         <dependency>
             <groupId>org.odftoolkit</groupId>

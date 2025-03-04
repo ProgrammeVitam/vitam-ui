@@ -40,7 +40,7 @@ import fr.gouv.vitamui.archives.search.external.server.searchcriteria.converter.
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-// TODO Commonize it with iam-external in api-commons // can be deleted ?
+// TODO Commonize it with iam in api-commons // can be deleted ?
 @Getter
 @AllArgsConstructor
 public class Converters {

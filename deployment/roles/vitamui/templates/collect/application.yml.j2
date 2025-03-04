@@ -71,10 +71,10 @@ collect:
       hostname-verification: false
 {% endif %}
   iam-external-client:
-    server-host: {{ vitamui.iam_external.host }}
-    server-port: {{ vitamui.iam_external.port_service }}
-{% if vitamui.iam_external.secure | default(secure) | bool == true %}
-    secure: {{ vitamui.iam_external.secure | default(secure) | lower }}
+    server-host: {{ vitamui.iam.host }}
+    server-port: {{ vitamui.iam.port_service }}
+{% if vitamui.iam.secure | default(secure) | bool == true %}
+    secure: {{ vitamui.iam.secure | default(secure) | lower }}
     ssl-configuration:
       truststore:
         key-path: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
