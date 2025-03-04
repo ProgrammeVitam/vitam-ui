@@ -17,7 +17,7 @@
     <modules>
         <module>pastis-commons</module>
         <module>pastis-client</module>
-        <module>pastis-external</module>
+        <module>pastis-server</module>
 
         <module>pastis-standalone</module>
 

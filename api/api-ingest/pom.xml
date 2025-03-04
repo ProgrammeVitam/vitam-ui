@@ -14,7 +14,7 @@
     <description>VITAMUI Ingest API</description>
 
     <modules>
-        <module>ingest-external</module>
+        <module>ingest-server</module>
         <module>ingest-commons</module>
     </modules>
 

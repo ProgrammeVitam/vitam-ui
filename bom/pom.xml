@@ -155,12 +155,12 @@
 
             <dependency>
                 <groupId>fr.gouv.vitamui</groupId>
-                <artifactId>referential-external</artifactId>
+                <artifactId>referential-server</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>fr.gouv.vitamui</groupId>
-                <artifactId>referential-external-client</artifactId>
+                <artifactId>referential-client</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
@@ -171,7 +171,7 @@
             </dependency>
             <dependency>
                 <groupId>fr.gouv.vitamui</groupId>
-                <artifactId>ingest-external</artifactId>
+                <artifactId>ingest-server</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
@@ -187,7 +187,7 @@
             </dependency>
             <dependency>
                 <groupId>fr.gouv.vitamui</groupId>
-                <artifactId>archive-search-external</artifactId>
+                <artifactId>archive-search-server</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
@@ -203,7 +203,7 @@
             </dependency>
             <dependency>
                 <groupId>fr.gouv.vitamui</groupId>
-                <artifactId>collect-external</artifactId>
+                <artifactId>collect-server</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
@@ -226,7 +226,7 @@
             </dependency>
             <dependency>
                 <groupId>fr.gouv.vitamui</groupId>
-                <artifactId>iam-external-client</artifactId>
+                <artifactId>iam-client</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
@@ -258,7 +258,7 @@
             </dependency>
             <dependency>
                 <groupId>fr.gouv.vitamui</groupId>
-                <artifactId>pastis-external</artifactId>
+                <artifactId>pastis-server</artifactId>
                 <version>${project.version}</version>
             </dependency>
 

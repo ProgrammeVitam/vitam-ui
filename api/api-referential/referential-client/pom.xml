@@ -2,13 +2,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>iam-external-client</artifactId>
+    <artifactId>referential-client</artifactId>
     <packaging>jar</packaging>
-    <name>VITAMUI Iam API External Client</name>
+    <name>VITAMUI Referential API External Client</name>
 
     <parent>
         <groupId>fr.gouv.vitamui</groupId>
-        <artifactId>api-iam</artifactId>
+        <artifactId>api-referential</artifactId>
         <version>8.1.0-SNAPSHOT</version>
     </parent>
 
@@ -16,7 +16,7 @@
         <!-- VITAMUI -->
         <dependency>
             <groupId>fr.gouv.vitamui</groupId>
-            <artifactId>iam-commons</artifactId>
+            <artifactId>referential-commons</artifactId>
         </dependency>
         <dependency>
             <groupId>fr.gouv.vitamui.commons</groupId>
@@ -77,16 +77,6 @@
 			<groupId>xml-apis</groupId>
 			<artifactId>xml-apis</artifactId>
 		</dependency>
-        <dependency>
-            <groupId>org.owasp.antisamy</groupId>
-            <artifactId>antisamy</artifactId>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>xerces</groupId>
-            <artifactId>xercesImpl</artifactId>
-            <scope>provided</scope>
-        </dependency>
 
         <!-- TEST -->
         <dependency>

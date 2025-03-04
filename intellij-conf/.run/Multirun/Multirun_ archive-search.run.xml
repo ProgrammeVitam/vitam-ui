@@ -3,7 +3,7 @@
                    reuseTabsWithFailures="false" startOneByOne="true" markFailedProcess="true"
                    hideSuccessProcess="false" delayTime="0.0">
         <runConfiguration name="Multirun: common" type="Multirun"/>
-        <runConfiguration name="archive-search external" type="Spring Boot"/>
+        <runConfiguration name="archive-search server" type="Spring Boot"/>
         <runConfiguration name="Angular: archive-search" type="npm"/>
         <method v="2"/>
     </configuration>

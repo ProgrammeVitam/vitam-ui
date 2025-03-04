@@ -1,36 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xmlns="http://maven.apache.org/POM/4.0.0"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>api-pastis</artifactId>
+        <artifactId>api-archive-search</artifactId>
         <groupId>fr.gouv.vitamui</groupId>
         <version>8.1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>pastis-external</artifactId>
+    <artifactId>archive-search-server</artifactId>
     <packaging>jar</packaging>
-    <name>VITAMUI Pastis API Server</name>
+    <name>VITAMUI Archive Search External API</name>
 
     <properties>
         <rpm.skip>false</rpm.skip>
         <swagger.dir>api-external</swagger.dir>
         <swagger.skip>false</swagger.skip>
-		<jib.skip>true</jib.skip>
+        <jib.skip>true</jib.skip>
     </properties>
 
     <dependencies>
-        <!-- VITAMUI -->
 
-        <dependency>
-            <groupId>fr.gouv.vitamui</groupId>
-            <artifactId>pastis-commons</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>fr.gouv.vitamui</groupId>
-            <artifactId>pastis-client</artifactId>
-        </dependency>
+        <!-- VITAMUI -->
         <dependency>
             <groupId>fr.gouv.vitamui.commons</groupId>
             <artifactId>commons-api</artifactId>
@@ -44,22 +36,40 @@
             <artifactId>commons-vitam</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-mongodb</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>fr.gouv.vitamui.commons</groupId>
+            <artifactId>commons-mongo</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>fr.gouv.vitamui</groupId>
             <artifactId>security-client</artifactId>
         </dependency>
         <dependency>
             <groupId>fr.gouv.vitamui</groupId>
-            <artifactId>iam-external-client</artifactId>
+            <artifactId>iam-client</artifactId>
         </dependency>
+
         <dependency>
             <groupId>fr.gouv.vitamui</groupId>
-            <artifactId>referential-external-client</artifactId>
+            <artifactId>archive-search-commons</artifactId>
         </dependency>
         <dependency>
             <groupId>fr.gouv.vitamui</groupId>
             <artifactId>iam-security</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bcprov-jdk18on</artifactId>
+        </dependency>
 
+        <dependency>
+            <groupId>com.opencsv</groupId>
+            <artifactId>opencsv</artifactId>
+        </dependency>
         <!-- SPRING BOOT -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -82,8 +92,18 @@
             <artifactId>spring-boot-configuration-processor</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-tx</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-consul-discovery</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>javax.ws.rs</groupId>
+                    <artifactId>jsr311-api</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
@@ -101,11 +121,20 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
         </dependency>
-
+        <dependency>
+            <groupId>io.opentracing.contrib</groupId>
+            <artifactId>opentracing-spring-jaeger-web-starter</artifactId>
+        </dependency>
         <!-- Metrics -->
         <dependency>
             <groupId>io.micrometer</groupId>
             <artifactId>micrometer-registry-prometheus</artifactId>
+        </dependency>
+
+        <!-- PAC4J -->
+        <dependency>
+            <groupId>org.pac4j</groupId>
+            <artifactId>pac4j-saml</artifactId>
         </dependency>
 
         <!-- UTIL -->
@@ -126,21 +155,14 @@
             <groupId>xml-apis</groupId>
             <artifactId>xml-apis</artifactId>
         </dependency>
+
         <dependency>
-            <groupId>commons-fileupload</groupId>
-            <artifactId>commons-fileupload</artifactId>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.synchronoss.cloud</groupId>
-            <artifactId>nio-multipart-parser</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-text</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-collections4</artifactId>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
         </dependency>
 
         <!-- Documentation -->
@@ -152,12 +174,6 @@
             <groupId>io.springfox</groupId>
             <artifactId>springfox-swagger-ui</artifactId>
         </dependency>
-
-        <dependency>
-            <groupId>io.opentracing.contrib</groupId>
-            <artifactId>opentracing-spring-jaeger-web-starter</artifactId>
-        </dependency>
-
 
         <!--TEST -->
         <dependency>
@@ -182,72 +198,54 @@
             <scope>test</scope>
             <type>test-jar</type>
         </dependency>
+
+
+        <!-- TESTS -->
         <dependency>
-            <groupId>org.junit.vintage</groupId>
-            <artifactId>junit-vintage-engine</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
 
-        <!--Start of Jaxb API and it's implementation and dependencies- Java11-->
         <dependency>
-            <groupId>javax.xml.bind</groupId>
-            <artifactId>jaxb-api</artifactId>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-inline</artifactId>
+            <scope>test</scope>
         </dependency>
 
         <dependency>
-            <groupId>com.sun.xml.bind</groupId>
-            <artifactId>jaxb-impl</artifactId>
+            <groupId>fr.gouv.vitamui.commons</groupId>
+            <artifactId>commons-test</artifactId>
+            <type>test-jar</type>
+            <scope>test</scope>
         </dependency>
 
-        <dependency>
-            <groupId>com.sun.istack</groupId>
-            <artifactId>istack-commons-runtime</artifactId>
-        </dependency>
-
-        <!--End of Jaxb API and it's implementation and dependencies- Java11-->
 
         <dependency>
-            <groupId>org.json</groupId>
-            <artifactId>json</artifactId>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>testcontainers</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>mongodb</artifactId>
+            <scope>test</scope>
         </dependency>
 
-        <dependency>
-            <groupId>javax.xml.parsers</groupId>
-            <artifactId>jaxp-api</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.opengis.cite.xerces</groupId>
-            <artifactId>xercesImpl-xsd11</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>xml-resolver</groupId>
-            <artifactId>xml-resolver</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.skyscreamer</groupId>
-            <artifactId>jsonassert</artifactId>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.google.code.gson</groupId>
-            <artifactId>gson</artifactId>
-        </dependency>
     </dependencies>
 
     <build>
         <plugins>
             <plugin>
-				<groupId>com.google.cloud.tools</groupId>
-				<artifactId>jib-maven-plugin</artifactId>
-                    <configuration>
-                        <to>
-                            <image>${env.SERVICE_DOCKER_PUSH_URL}/vitamui/pastis-external</image>
-                            <tags>${project.version}</tags>
-                        </to>
-                    </configuration>
-			</plugin>
+                <groupId>com.google.cloud.tools</groupId>
+                <artifactId>jib-maven-plugin</artifactId>
+                <configuration>
+                    <to>
+                        <image>${env.SERVICE_DOCKER_PUSH_URL}/vitamui/archive-search-external</image>
+                        <tags>${project.version}</tags>
+                    </to>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
@@ -268,8 +266,12 @@
                     <layout>JAR</layout>
                     <executable>true</executable>
                     <attach>false</attach> <!-- Need to use the original jar for integration-tests -->
-                    <mainClass>fr.gouv.vitamui.pastis.server.ApiPastisServerApplication</mainClass>
+                    <mainClass>
+                        fr.gouv.vitamui.archives.search.external.server.ApiArchivesSearchExternalServerApplication
+                    </mainClass>
                     <arguments>
+                        <!-- use src/main/config/application-dev.yml when using mvn spring-boot:run -->
+                        <!-- See : https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-external-config.html#boot-features-external-config-application-property-files -->
                         <argument>--spring.profiles.active=dev</argument>
                     </arguments>
                 </configuration>

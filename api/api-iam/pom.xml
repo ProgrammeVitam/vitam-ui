@@ -16,8 +16,8 @@
     <modules>
         <module>iam-commons</module>
         <module>iam-security</module>
-        <module>iam-external</module>
-        <module>iam-external-client</module>
+        <module>iam-server</module>
+        <module>iam-client</module>
     </modules>
 
 </project>

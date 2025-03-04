@@ -1,11 +1,11 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="referential external" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+  <configuration default="false" name="referential server" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
     <option name="ACTIVE_PROFILES" value="dev" />
     <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
-    <module name="referential-external" />
+    <module name="referential-server" />
     <option name="SPRING_BOOT_MAIN_CLASS" value="fr.gouv.vitamui.referential.external.server.ApiReferentialExternalServerApplication" />
     <option name="VM_PARAMETERS" value="-Xmx100m -Dvitam.config.folder=$vitamLocalShareFolder$/conf/vitam-ui" />
-    <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$/api/api-referential/referential-external" />
+    <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$/api/api-referential/referential-server" />
     <method v="2">
       <option name="Make" enabled="true" />
     </method>

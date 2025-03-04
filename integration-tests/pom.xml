@@ -25,11 +25,11 @@
 		<!--VITAMUI -->
 		<dependency>
 			<groupId>fr.gouv.vitamui</groupId>
-			<artifactId>iam-external-client</artifactId>
+			<artifactId>iam-client</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>fr.gouv.vitamui</groupId>
-			<artifactId>referential-external-client</artifactId>
+			<artifactId>referential-client</artifactId>
 		</dependency>
         <dependency>
             <groupId>fr.gouv.vitamui</groupId>

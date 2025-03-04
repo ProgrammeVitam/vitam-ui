@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>referential-external</artifactId>
+    <artifactId>referential-server</artifactId>
     <packaging>jar</packaging>
     <name>VITAMUI Referential API External</name>
 
@@ -50,7 +50,7 @@
         </dependency>
         <dependency>
             <groupId>fr.gouv.vitamui</groupId>
-            <artifactId>iam-external-client</artifactId>
+            <artifactId>iam-client</artifactId>
         </dependency>
 
         <!-- SPRING BOOT -->
