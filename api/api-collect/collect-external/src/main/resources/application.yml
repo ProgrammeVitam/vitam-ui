@@ -1,5 +1,5 @@
 # TECHNICAL PROPERTIES / DON'T put environment properties
-# This property can be override by a config file give at run time with spring.config.location
+# This property can be override by a config file give  at run time with spring.config.location
 
 spring:
   application:

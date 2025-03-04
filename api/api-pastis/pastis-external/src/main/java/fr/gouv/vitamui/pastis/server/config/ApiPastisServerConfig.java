@@ -45,8 +45,8 @@ import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
 import fr.gouv.vitamui.commons.rest.configuration.SwaggerConfiguration;
 import fr.gouv.vitamui.commons.vitam.api.administration.VitamProfileService;
 import fr.gouv.vitamui.commons.vitam.api.config.VitamAccessConfig;
-import fr.gouv.vitamui.iam.internal.client.IamInternalRestClientFactory;
-import fr.gouv.vitamui.iam.internal.client.UserInternalRestClient;
+import fr.gouv.vitamui.iam.external.client.IamExternalRestClientFactory;
+import fr.gouv.vitamui.iam.external.client.UserExternalRestClient;
 import fr.gouv.vitamui.iam.security.provider.ExternalApiAuthenticationProvider;
 import fr.gouv.vitamui.iam.security.service.ExternalAuthentificationService;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
@@ -107,27 +107,27 @@ public class ApiPastisServerConfig extends AbstractContextConfiguration {
     @Bean
     public ExternalAuthentificationService externalAuthentificationService(
         final ContextRestClient contextRestClient,
-        final UserInternalRestClient userInternalRestClient
+        final UserExternalRestClient userExternalRestClient
     ) {
-        return new ExternalAuthentificationService(contextRestClient, userInternalRestClient);
+        return new ExternalAuthentificationService(contextRestClient, userExternalRestClient);
     }
 
     @Bean
-    public IamInternalRestClientFactory iamInternalRestClientFactory(
+    public IamExternalRestClientFactory iamExternalRestClientFactory(
         final ApiPastisApplicationProperties apiArchiveExternalApplicationProperties,
         final RestTemplateBuilder restTemplateBuilder
     ) {
-        return new IamInternalRestClientFactory(
-            apiArchiveExternalApplicationProperties.getIamInternalClient(),
+        return new IamExternalRestClientFactory(
+            apiArchiveExternalApplicationProperties.getIamExternalClient(),
             restTemplateBuilder
         );
     }
 
     @Bean
-    public UserInternalRestClient userInternalRestClient(
-        final IamInternalRestClientFactory iamInternalRestClientFactory
+    public UserExternalRestClient userExternalRestClient(
+        final IamExternalRestClientFactory iamExternalRestClientFactory
     ) {
-        return iamInternalRestClientFactory.getUserInternalRestClient();
+        return iamExternalRestClientFactory.getUserExternalRestClient();
     }
 
     @Bean

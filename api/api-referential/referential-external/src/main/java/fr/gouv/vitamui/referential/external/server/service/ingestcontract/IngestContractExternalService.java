@@ -67,9 +67,8 @@ import fr.gouv.vitamui.commons.utils.JsonUtils;
 import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
 import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsResponseDto;
 import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
-import fr.gouv.vitamui.iam.internal.client.ApplicationInternalRestClient;
+import fr.gouv.vitamui.iam.external.client.ApplicationExternalRestClient;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
-import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import fr.gouv.vitamui.referential.common.dsl.VitamQueryHelper;
 import fr.gouv.vitamui.referential.common.dto.IngestContractDto;
 import fr.gouv.vitamui.referential.common.dto.IngestContractResponseDto;
@@ -120,9 +119,8 @@ public class IngestContractExternalService extends AbstractService {
 
     private final LogbookService logbookService;
 
-    private final ApplicationInternalRestClient applicationInternalRestClient;
-
-    private final InternalSecurityService internalSecurityService;
+    private final ApplicationExternalRestClient applicationExternalRestClient;
+    private final ExternalSecurityService externalSecurityService;
 
     @Autowired
     public IngestContractExternalService(
@@ -130,17 +128,16 @@ public class IngestContractExternalService extends AbstractService {
         ObjectMapper objectMapper,
         IngestContractConverter converter,
         LogbookService logbookService,
-        ApplicationInternalRestClient applicationInternalRestClient,
-        ExternalSecurityService externalSecurityService,
-        InternalSecurityService internalSecurityService
+        ApplicationExternalRestClient applicationExternalRestClient,
+        ExternalSecurityService externalSecurityService
     ) {
         super(externalSecurityService);
         this.ingestContractService = ingestContractService;
         this.objectMapper = objectMapper;
         this.converter = converter;
         this.logbookService = logbookService;
-        this.applicationInternalRestClient = applicationInternalRestClient;
-        this.internalSecurityService = internalSecurityService;
+        this.applicationExternalRestClient = applicationExternalRestClient;
+        this.externalSecurityService = externalSecurityService;
     }
 
     public IngestContractDto getOne(VitamContext vitamContext, String identifier) {
@@ -415,8 +412,8 @@ public class IngestContractExternalService extends AbstractService {
     }
 
     public ResponseEntity<Void> importIngestContracts(VitamContext vitamContext, MultipartFile file) {
-        Boolean isIdentifierMandatory = applicationInternalRestClient
-            .isApplicationExternalIdentifierEnabled(internalSecurityService.getHttpContext(), INGEST_CONTRACT)
+        Boolean isIdentifierMandatory = applicationExternalRestClient
+            .isApplicationExternalIdentifierEnabled(externalSecurityService.getHttpContext(), INGEST_CONTRACT)
             .getBody();
 
         if (isIdentifierMandatory == null) {

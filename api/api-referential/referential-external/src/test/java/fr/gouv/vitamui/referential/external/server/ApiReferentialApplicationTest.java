@@ -69,6 +69,5 @@ public class ApiReferentialApplicationTest {
         assertThat(env.getProperty("spring.config.name")).isEqualTo("referential-external-application");
 
         assertThat(referentialProperties).isNotNull();
-        assertThat(referentialProperties.getIamInternalClient()).isNotNull();
     }
 }

@@ -117,7 +117,7 @@ public class OperationService extends VitamUICrudService<OperationDto, Operation
      * {@inheritDoc}
      */
     @Override
-    protected OperationDto internalConvertFromEntityToDto(final Operation entity) {
+    public OperationDto internalConvertFromEntityToDto(final Operation entity) {
         return getConverter(entity.getType()).convertEntityToDto(entity);
     }
 

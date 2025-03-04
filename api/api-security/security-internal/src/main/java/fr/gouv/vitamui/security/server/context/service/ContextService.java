@@ -155,7 +155,7 @@ public class ContextService extends VitamUICrudService<ContextDto, Context> {
     }
 
     @Override
-    protected ContextDto internalConvertFromEntityToDto(final Context context) {
+    public ContextDto internalConvertFromEntityToDto(final Context context) {
         final ContextDto dto = new ContextDto();
         dto.setId(context.getId());
         dto.setName(context.getName());

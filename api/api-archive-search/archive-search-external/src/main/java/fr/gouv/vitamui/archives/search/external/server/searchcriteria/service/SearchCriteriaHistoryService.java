@@ -44,10 +44,10 @@ import fr.gouv.vitamui.commons.api.domain.Criterion;
 import fr.gouv.vitamui.commons.api.domain.CriterionOperator;
 import fr.gouv.vitamui.commons.api.domain.QueryDto;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaHistoryDto;
-import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
+import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.mongo.service.VitamUICrudService;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
-import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
+import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import lombok.Getter;
 import lombok.Setter;
 import org.slf4j.Logger;
@@ -67,19 +67,19 @@ public class SearchCriteriaHistoryService extends VitamUICrudService<SearchCrite
 
     private final SearchCriteriaHistoryConverter searchCriteriaHistoryConverter;
 
-    private final InternalSecurityService internalSecurityService;
+    private final ExternalSecurityService externalSecurityService;
 
     @Autowired
     public SearchCriteriaHistoryService(
-        final CustomSequenceRepository sequenceRepository,
+        final SequenceGeneratorService sequenceGeneratorService,
         final SearchCriteriaHistoryRepository searchCriteriaHistoryRepo,
         final SearchCriteriaHistoryConverter searchCriteriaHistoryConverter,
-        final InternalSecurityService internalSecurityService
+        final ExternalSecurityService externalSecurityService
     ) {
-        super(sequenceRepository);
+        super(sequenceGeneratorService);
         this.searchCriteriaHistoryRepo = searchCriteriaHistoryRepo;
         this.searchCriteriaHistoryConverter = searchCriteriaHistoryConverter;
-        this.internalSecurityService = internalSecurityService;
+        this.externalSecurityService = externalSecurityService;
     }
 
     /**
@@ -89,7 +89,7 @@ public class SearchCriteriaHistoryService extends VitamUICrudService<SearchCrite
      */
     public List<SearchCriteriaHistoryDto> getSearchCriteriaHistoryDtos() {
         LOGGER.debug("getSearchCriteriaHistoryDtos");
-        AuthUserDto authUserDto = internalSecurityService.getUser();
+        AuthUserDto authUserDto = externalSecurityService.getUser();
 
         LOGGER.debug("Get the search history for user : {}", authUserDto.getIdentifier());
         QueryDto criteria = new QueryDto();
@@ -99,7 +99,7 @@ public class SearchCriteriaHistoryService extends VitamUICrudService<SearchCrite
 
     @Override
     protected void beforeCreate(final SearchCriteriaHistoryDto dto) {
-        AuthUserDto authUserDto = internalSecurityService.getUser();
+        AuthUserDto authUserDto = externalSecurityService.getUser();
         dto.setUserId(authUserDto.getIdentifier());
         List<SearchCriteriaHistoryDto> list = getSearchCriteriaHistoryDtos();
         Assert.isTrue(

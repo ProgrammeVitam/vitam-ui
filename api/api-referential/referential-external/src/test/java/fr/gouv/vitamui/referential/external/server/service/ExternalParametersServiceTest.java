@@ -1,29 +1,31 @@
 package fr.gouv.vitamui.referential.external.server.service;
 
-import fr.gouv.vitamui.commons.api.domain.ExternalParametersDto;
-import fr.gouv.vitamui.commons.api.domain.ParameterDto;
-import fr.gouv.vitamui.iam.internal.client.ExternalParametersInternalRestClient;
+import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
+import fr.gouv.vitamui.iam.external.client.ExternalParametersExternalRestClient;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import fr.gouv.vitamui.referential.external.server.service.service.ExternalParametersService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mockito;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
 class ExternalParametersServiceTest {
 
-    @MockBean(name = "exteralParametersInternalRestClient")
-    private ExternalParametersInternalRestClient exteralParametersInternalRestClient;
+    @MockBean(name = "externalParametersExternalRestClient")
+    private ExternalParametersExternalRestClient externalParametersExternalRestClient;
 
     @MockBean(name = "securityService")
     private ExternalSecurityService securityService;
@@ -35,20 +37,19 @@ class ExternalParametersServiceTest {
 
     @BeforeEach
     public void setUp() {
-        externalParametersService = new ExternalParametersService(exteralParametersInternalRestClient, securityService);
+        doReturn(new ExternalHttpContext(0, "", "", "")).when(securityService).getHttpContext();
+        externalParametersService = new ExternalParametersService(
+            externalParametersExternalRestClient,
+            securityService
+        );
     }
 
     @Test
     void getProfileThresholdValue() {
-        ExternalParametersDto myExternalParameter = new ExternalParametersDto();
-        ParameterDto parameterDto = new ParameterDto();
-        parameterDto.setKey(ExternalParametersService.PARAM_BULK_OPERATIONS_THRESHOLD_NAME);
-        // get parameter that has a value
-        parameterDto.setValue("1000");
-        myExternalParameter.setParameters(List.of(parameterDto));
-        Mockito.when(
-            exteralParametersInternalRestClient.getMyExternalParameters(securityService.getInternalHttpContext())
-        ).thenReturn(myExternalParameter);
+        Map<String, String> parameters = Map.of(PARAM_BULK_OPERATIONS_THRESHOLD_NAME, "1000");
+        when(externalParametersExternalRestClient.getMyExternalParameters(any(ExternalHttpContext.class))).thenReturn(
+            parameters
+        );
         assertAll(
             "Grouped Assertions of a valid threshold",
             () -> assertTrue(externalParametersService.retrieveProfilThreshold().isPresent()),
@@ -58,31 +59,20 @@ class ExternalParametersServiceTest {
 
     @Test
     void getProfileThresholdEmptyValue() {
-        ExternalParametersDto myExternalParameter = new ExternalParametersDto();
-        ParameterDto parameterDto = new ParameterDto();
-        parameterDto.setKey(ExternalParametersService.PARAM_BULK_OPERATIONS_THRESHOLD_NAME);
-
-        // get from empty parameter value
-        parameterDto.setValue(null);
-        myExternalParameter.setParameters(List.of(parameterDto));
-        Mockito.when(
-            exteralParametersInternalRestClient.getMyExternalParameters(securityService.getInternalHttpContext())
-        ).thenReturn(myExternalParameter);
+        Map<String, String> parameters = new HashMap<>();
+        parameters.put(PARAM_BULK_OPERATIONS_THRESHOLD_NAME, null);
+        when(externalParametersExternalRestClient.getMyExternalParameters(any(ExternalHttpContext.class))).thenReturn(
+            parameters
+        );
         assertTrue(!externalParametersService.retrieveProfilThreshold().isPresent());
     }
 
     @Test
     void getEmptyProfileThreshold() {
-        ExternalParametersDto myExternalParameter = new ExternalParametersDto();
-        ParameterDto parameterDto = new ParameterDto();
-
-        // get from null parameter
-        parameterDto.setKey(null);
-        parameterDto.setValue(null);
-        myExternalParameter.setParameters(List.of(parameterDto));
-        Mockito.when(
-            exteralParametersInternalRestClient.getMyExternalParameters(securityService.getInternalHttpContext())
-        ).thenReturn(myExternalParameter);
+        Map<String, String> parameters = Map.of();
+        when(externalParametersExternalRestClient.getMyExternalParameters(any(ExternalHttpContext.class))).thenReturn(
+            parameters
+        );
 
         assertTrue(!externalParametersService.retrieveProfilThreshold().isPresent());
     }

@@ -41,10 +41,10 @@ import fr.gouv.vitamui.archives.search.external.server.searchcriteria.dao.Search
 import fr.gouv.vitamui.archives.search.external.server.searchcriteria.domain.SearchCriteriaHistory;
 import fr.gouv.vitamui.archives.search.external.server.utils.Utils;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaHistoryDto;
-import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
+import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.commons.utils.VitamUIUtils;
-import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
+import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -67,21 +67,21 @@ public class SearchCriteriaHistoryServiceTest {
         SearchCriteriaHistoryRepository.class
     );
 
-    private final InternalSecurityService internalSecurityService = mock(InternalSecurityService.class);
+    private final ExternalSecurityService externalSecurityService = mock(ExternalSecurityService.class);
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SearchCriteriaHistoryServiceTest.class);
 
-    private final CustomSequenceRepository sequenceRepository = mock(CustomSequenceRepository.class);
+    private final SequenceGeneratorService sequenceGeneratorService = mock(SequenceGeneratorService.class);
 
     private final SearchCriteriaHistoryConverter searchCriteriaHistoryConverter = new SearchCriteriaHistoryConverter();
 
     @BeforeEach
     public void setup() throws Exception {
         service = new SearchCriteriaHistoryService(
-            sequenceRepository,
+            sequenceGeneratorService,
             ssearchCriteriaHistoryRepository,
             searchCriteriaHistoryConverter,
-            internalSecurityService
+            externalSecurityService
         );
     }
 
@@ -99,7 +99,7 @@ public class SearchCriteriaHistoryServiceTest {
 
         final AuthUserDto user = Utils.buildAuthUserDto();
 
-        Mockito.when(internalSecurityService.getUser()).thenReturn(user);
+        Mockito.when(externalSecurityService.getUser()).thenReturn(user);
 
         final SearchCriteriaHistoryDto created = service.create(searchCriteriaHistoryDto);
 

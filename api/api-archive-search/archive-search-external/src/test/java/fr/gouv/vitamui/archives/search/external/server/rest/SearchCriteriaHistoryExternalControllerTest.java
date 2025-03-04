@@ -37,7 +37,7 @@
 package fr.gouv.vitamui.archives.search.external.server.rest;
 
 import fr.gouv.vitamui.archives.search.common.rest.RestApi;
-import fr.gouv.vitamui.archives.search.external.server.service.SearchCriteriaHistoryExternalService;
+import fr.gouv.vitamui.archives.search.external.server.searchcriteria.service.SearchCriteriaHistoryService;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaHistoryDto;
 import org.junit.jupiter.api.Test;
@@ -62,7 +62,7 @@ public class SearchCriteriaHistoryExternalControllerTest
     private static final Logger LOGGER = LoggerFactory.getLogger(SearchCriteriaHistoryExternalControllerTest.class);
 
     @MockBean
-    private SearchCriteriaHistoryExternalService service;
+    private SearchCriteriaHistoryService service;
 
     private SearchCriteriaHistoryExternalController mockedController = MvcUriComponentsBuilder.on(
         SearchCriteriaHistoryExternalController.class

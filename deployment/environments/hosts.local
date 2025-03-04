@@ -98,7 +98,6 @@ localhost
 [zone_vitamui_app:children]
 hosts_vitamui_api_gateway
 hosts_vitamui_iam_external
-hosts_vitamui_iam_internal
 hosts_vitamui_ingest_external
 hosts_vitamui_archive_search_external
 hosts_vitamui_collect_external
@@ -111,10 +110,6 @@ hosts_vitamui_pastis_external
 localhost
 
 [hosts_vitamui_iam_external]
-# EDIT: Mandatory
-localhost
-
-[hosts_vitamui_iam_internal]
 # EDIT: Mandatory
 localhost
 

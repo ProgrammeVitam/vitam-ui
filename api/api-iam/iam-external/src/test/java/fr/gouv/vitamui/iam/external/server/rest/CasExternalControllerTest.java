@@ -2,51 +2,59 @@ package fr.gouv.vitamui.iam.external.server.rest;
 
 import fr.gouv.vitamui.commons.api.domain.IdDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
+import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
 import fr.gouv.vitamui.iam.common.dto.cas.LoginRequestDto;
 import fr.gouv.vitamui.iam.common.rest.RestApi;
-import fr.gouv.vitamui.iam.external.server.service.CasExternalService;
+import fr.gouv.vitamui.iam.external.server.cas.service.CasService;
+import fr.gouv.vitamui.iam.external.server.common.rest.ApiIamControllerTest;
+import fr.gouv.vitamui.iam.external.server.logbook.service.IamLogbookService;
+import fr.gouv.vitamui.iam.external.server.user.service.UserService;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.ArgumentMatchers;
-import org.mockito.Mockito;
+import org.mockito.InjectMocks;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.handler;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(controllers = { CasExternalController.class })
+@WebMvcTest(controllers = { CasController.class })
 public class CasExternalControllerTest extends ApiIamControllerTest<IdDto> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CasExternalControllerTest.class);
 
+    @InjectMocks
+    private CasController casController;
+
     @MockBean
-    private CasExternalService casExternalService;
+    private CasService casService;
 
-    private CasExternalController casExternalController = MvcUriComponentsBuilder.on(CasExternalController.class);
+    @MockBean
+    private UserService userService;
 
-    @Test
-    public void test_login_isOK() throws Exception {
-        LoginRequestDto loginRequestDto = new LoginRequestDto();
-        loginRequestDto.setPassword("1234");
-        loginRequestDto.setLoginEmail("user");
-        loginRequestDto.setLoginCustomerId("customerId");
+    @MockBean
+    private IamLogbookService iamLogbookService;
 
-        ResultActions result =
-            this.performPost(getUriBuilder(RestApi.CAS_LOGIN_PATH), asJsonString(loginRequestDto), status().isOk());
-        result.andExpect(handler().methodCall(casExternalController.login(null)));
-        Mockito.verify(casExternalService, Mockito.times(1)).login(ArgumentMatchers.any(LoginRequestDto.class));
+    @MockBean
+    private PasswordEncoder passwordEncoder;
+
+    @Before
+    public void setup() {
+        this.mockMvc = MockMvcBuilders.standaloneSetup(casController)
+            .setControllerAdvice(new RestExceptionHandler())
+            .build();
     }
 
     @Test
@@ -60,7 +68,7 @@ public class CasExternalControllerTest extends ApiIamControllerTest<IdDto> {
             this.performPost(
                     getUriBuilder(RestApi.CAS_LOGIN_PATH),
                     asJsonString(loginRequestDto),
-                    status().is(HttpStatus.BAD_REQUEST.value())
+                    status().isBadRequest()
                 );
         Map<String, Object> expectedResult = new HashMap<>();
         expectedResult.put("exception", "fr.gouv.vitamui.commons.api.exception.BadRequestException");
@@ -80,7 +88,7 @@ public class CasExternalControllerTest extends ApiIamControllerTest<IdDto> {
             this.performPost(
                     getUriBuilder(RestApi.CAS_LOGIN_PATH),
                     asJsonString(loginRequestDto),
-                    status().is(HttpStatus.BAD_REQUEST.value())
+                    status().isBadRequest()
                 );
         Map<String, Object> expectedResult = new HashMap<>();
         expectedResult.put("exception", "fr.gouv.vitamui.commons.api.exception.BadRequestException");

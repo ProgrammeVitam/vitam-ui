@@ -41,9 +41,9 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  * The DTO v1 for a certificate.
@@ -57,7 +57,7 @@ import javax.validation.constraints.NotNull;
 public class CertificateDto extends IdDto {
 
     @NotNull
-    @Length(min = 2, max = 100)
+    @Size(min = 2, max = 100)
     private String subjectDN;
 
     @NotNull

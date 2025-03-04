@@ -41,6 +41,7 @@ import fr.gouv.vitamui.commons.api.application.AbstractContextConfiguration;
 import fr.gouv.vitamui.commons.api.converter.JsonPatchDtoToUpdateMultiQueryConverter;
 import fr.gouv.vitamui.commons.api.converter.UpdateMultiQueriesToBulkCommandDto;
 import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
+import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
 import fr.gouv.vitamui.commons.rest.configuration.SwaggerConfiguration;
 import fr.gouv.vitamui.commons.vitam.api.access.ExportDipV2Service;
@@ -49,15 +50,12 @@ import fr.gouv.vitamui.commons.vitam.api.access.TransferRequestService;
 import fr.gouv.vitamui.commons.vitam.api.access.UnitService;
 import fr.gouv.vitamui.commons.vitam.api.config.VitamAccessConfig;
 import fr.gouv.vitamui.commons.vitam.api.config.VitamAdministrationConfig;
-import fr.gouv.vitamui.iam.internal.client.ExternalParametersInternalRestClient;
-import fr.gouv.vitamui.iam.internal.client.IamInternalRestClientFactory;
-import fr.gouv.vitamui.iam.internal.client.UserInternalRestClient;
+import fr.gouv.vitamui.iam.external.client.ExternalParametersExternalRestClient;
+import fr.gouv.vitamui.iam.external.client.IamExternalRestClientFactory;
+import fr.gouv.vitamui.iam.external.client.UserExternalRestClient;
 import fr.gouv.vitamui.iam.security.provider.ExternalApiAuthenticationProvider;
-import fr.gouv.vitamui.iam.security.provider.InternalApiAuthenticationProvider;
 import fr.gouv.vitamui.iam.security.service.ExternalAuthentificationService;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
-import fr.gouv.vitamui.iam.security.service.InternalAuthentificationService;
-import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import fr.gouv.vitamui.security.client.ContextRestClient;
 import fr.gouv.vitamui.security.client.SecurityRestClientFactory;
 import org.springframework.boot.autoconfigure.http.HttpMessageConvertersAutoConfiguration;
@@ -80,6 +78,11 @@ import org.springframework.context.annotation.Import;
     }
 )
 public class ApiArchiveServerConfig extends AbstractContextConfiguration {
+
+    @Bean
+    public SequenceGeneratorService sequenceGeneratorService(final CustomSequenceRepository sequenceRepository) {
+        return new SequenceGeneratorService(sequenceRepository);
+    }
 
     @Bean
     public SecurityRestClientFactory securityRestClientFactory(
@@ -112,53 +115,34 @@ public class ApiArchiveServerConfig extends AbstractContextConfiguration {
     @Bean
     public ExternalAuthentificationService externalAuthentificationService(
         final ContextRestClient contextRestClient,
-        final UserInternalRestClient userInternalRestClient
+        final UserExternalRestClient userExternalRestClient
     ) {
-        return new ExternalAuthentificationService(contextRestClient, userInternalRestClient);
+        return new ExternalAuthentificationService(contextRestClient, userExternalRestClient);
     }
 
     @Bean
-    public IamInternalRestClientFactory iamInternalRestClientFactory(
+    public IamExternalRestClientFactory iamExternalRestClientFactory(
         final ApiArchiveExternalApplicationProperties apiArchiveExternalApplicationProperties,
         final RestTemplateBuilder restTemplateBuilder
     ) {
-        return new IamInternalRestClientFactory(
-            apiArchiveExternalApplicationProperties.getIamInternalClient(),
+        return new IamExternalRestClientFactory(
+            apiArchiveExternalApplicationProperties.getIamExternalClient(),
             restTemplateBuilder
         );
     }
 
     @Bean
-    public InternalAuthentificationService internalAuthentificationService(
-        final UserInternalRestClient userInternalRestClient
+    public UserExternalRestClient userExternalRestClient(
+        final IamExternalRestClientFactory iamExternalRestClientFactory
     ) {
-        return new InternalAuthentificationService(userInternalRestClient);
+        return iamExternalRestClientFactory.getUserExternalRestClient();
     }
 
     @Bean
-    public InternalSecurityService securityService() {
-        return new InternalSecurityService();
-    }
-
-    @Bean
-    public InternalApiAuthenticationProvider internalApiAuthenticationProvider(
-        final InternalAuthentificationService internalAuthentificationService
+    public ExternalParametersExternalRestClient externalParametersExternalRestClient(
+        final IamExternalRestClientFactory iamExternalRestClientFactory
     ) {
-        return new InternalApiAuthenticationProvider(internalAuthentificationService);
-    }
-
-    @Bean
-    public UserInternalRestClient userInternalRestClient(
-        final IamInternalRestClientFactory iamInternalRestClientFactory
-    ) {
-        return iamInternalRestClientFactory.getUserInternalRestClient();
-    }
-
-    @Bean
-    public ExternalParametersInternalRestClient externalParametersInternalRestClient(
-        final IamInternalRestClientFactory iamInternalRestClientFactory
-    ) {
-        return iamInternalRestClientFactory.getExternalParametersInternalRestClient();
+        return iamExternalRestClientFactory.getExternalParametersExternalRestClient();
     }
 
     @Bean
@@ -185,16 +169,16 @@ public class ApiArchiveServerConfig extends AbstractContextConfiguration {
 
     @Bean
     public SearchCriteriaHistoryService searchCriteriaHistoryInternalService(
-        final CustomSequenceRepository sequenceRepository,
+        final SequenceGeneratorService sequenceGeneratorService,
         final SearchCriteriaHistoryRepository searchCriteriaHistoryRepository,
         final SearchCriteriaHistoryConverter searchCriteriaHistoryConverter,
-        final InternalSecurityService internalSecurityService
+        final ExternalSecurityService externalSecurityService
     ) {
         return new SearchCriteriaHistoryService(
-            sequenceRepository,
+            sequenceGeneratorService,
             searchCriteriaHistoryRepository,
             searchCriteriaHistoryConverter,
-            internalSecurityService
+            externalSecurityService
         );
     }
 

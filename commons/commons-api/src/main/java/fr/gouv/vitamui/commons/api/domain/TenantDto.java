@@ -40,9 +40,9 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  * The DTO v1 for a tenant.
@@ -63,7 +63,7 @@ public class TenantDto extends CustomerIdDto {
     private boolean proof;
 
     @NotNull
-    @Length(max = 100)
+    @Size(max = 100)
     private String name;
 
     private Integer identifier;

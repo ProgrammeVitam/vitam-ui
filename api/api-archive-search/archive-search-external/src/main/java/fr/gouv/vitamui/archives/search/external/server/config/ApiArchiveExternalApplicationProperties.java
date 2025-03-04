@@ -43,7 +43,7 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "archive-search-external", ignoreUnknownFields = false)
 public class ApiArchiveExternalApplicationProperties {
 
-    private RestClientConfiguration iamInternalClient;
+    private RestClientConfiguration iamExternalClient;
 
     private RestClientConfiguration securityClient;
 }

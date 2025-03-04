@@ -226,16 +226,6 @@
             </dependency>
             <dependency>
                 <groupId>fr.gouv.vitamui</groupId>
-                <artifactId>iam-internal</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>fr.gouv.vitamui</groupId>
-                <artifactId>iam-internal-client</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>fr.gouv.vitamui</groupId>
                 <artifactId>iam-external-client</artifactId>
                 <version>${project.version}</version>
             </dependency>

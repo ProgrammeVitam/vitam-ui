@@ -23,7 +23,6 @@ function generateCerts {
     pki_logger "Génération des certificats serveurs"
     # Zone interne
     generateHostCertAndStorePassphrase   security-internal       hosts_vitamui_security_internal
-    generateHostCertAndStorePassphrase   iam-internal            hosts_vitamui_iam_internal
     generateHostCertAndStorePassphrase   api-gateway             hosts_vitamui_api_gateway
 
     #Zone externe

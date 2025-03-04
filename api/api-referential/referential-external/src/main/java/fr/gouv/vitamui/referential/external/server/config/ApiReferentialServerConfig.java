@@ -47,15 +47,13 @@ import fr.gouv.vitamui.commons.vitam.api.administration.AgencyService;
 import fr.gouv.vitamui.commons.vitam.api.administration.VitamOperationService;
 import fr.gouv.vitamui.commons.vitam.api.config.VitamAccessConfig;
 import fr.gouv.vitamui.commons.vitam.api.config.VitamAdministrationConfig;
-import fr.gouv.vitamui.iam.internal.client.ApplicationInternalRestClient;
-import fr.gouv.vitamui.iam.internal.client.ExternalParametersInternalRestClient;
-import fr.gouv.vitamui.iam.internal.client.IamInternalRestClientFactory;
-import fr.gouv.vitamui.iam.internal.client.IamInternalWebClientFactory;
-import fr.gouv.vitamui.iam.internal.client.UserInternalRestClient;
+import fr.gouv.vitamui.iam.external.client.ApplicationExternalRestClient;
+import fr.gouv.vitamui.iam.external.client.ExternalParametersExternalRestClient;
+import fr.gouv.vitamui.iam.external.client.IamExternalRestClientFactory;
+import fr.gouv.vitamui.iam.external.client.UserExternalRestClient;
 import fr.gouv.vitamui.iam.security.provider.ExternalApiAuthenticationProvider;
 import fr.gouv.vitamui.iam.security.service.ExternalAuthentificationService;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
-import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import fr.gouv.vitamui.referential.common.service.AccessionRegisterService;
 import fr.gouv.vitamui.referential.common.service.ImportSchemaService;
 import fr.gouv.vitamui.referential.common.service.IngestContractService;
@@ -134,15 +132,8 @@ public class ApiReferentialServerConfig extends AbstractContextConfiguration {
     }
 
     @Bean
-    public IamInternalWebClientFactory internalWebClientFactory(
-        final ApiReferentialApplicationProperties apiReferentialApplicationProperties
-    ) {
-        return new IamInternalWebClientFactory(apiReferentialApplicationProperties.getIamInternalClient());
-    }
-
-    @Bean
-    public InternalSecurityService securityService() {
-        return new InternalSecurityService();
+    public ExternalSecurityService securityService() {
+        return new ExternalSecurityService();
     }
 
     @Bean
@@ -231,21 +222,21 @@ public class ApiReferentialServerConfig extends AbstractContextConfiguration {
     }
 
     @Bean
-    public IamInternalRestClientFactory iamInternalRestClientFactory(
+    public IamExternalRestClientFactory iamExternalRestClientFactory(
         final ApiReferentialApplicationProperties apiReferentialApplicationProperties,
         final RestTemplateBuilder restTemplateBuilder
     ) {
-        return new IamInternalRestClientFactory(
-            apiReferentialApplicationProperties.getIamInternalClient(),
+        return new IamExternalRestClientFactory(
+            apiReferentialApplicationProperties.getIamExternalClient(),
             restTemplateBuilder
         );
     }
 
     @Bean
-    public ApplicationInternalRestClient applicationInternalRestClient(
-        final IamInternalRestClientFactory iamInternalRestClientFactory
+    public ApplicationExternalRestClient applicationInternalRestClient(
+        final IamExternalRestClientFactory iamExternalRestClientFactory
     ) {
-        return iamInternalRestClientFactory.getApplicationInternalRestClient();
+        return iamExternalRestClientFactory.getApplicationExternalRestClient();
     }
 
     @Bean
@@ -259,25 +250,25 @@ public class ApiReferentialServerConfig extends AbstractContextConfiguration {
     }
 
     @Bean
-    public ExternalParametersInternalRestClient externalParametersInternalRestClient(
-        final IamInternalRestClientFactory iamInternalRestClientFactory
+    public ExternalParametersExternalRestClient externalParametersExternalRestClient(
+        final IamExternalRestClientFactory iamExternalRestClientFactory
     ) {
-        return iamInternalRestClientFactory.getExternalParametersInternalRestClient();
+        return iamExternalRestClientFactory.getExternalParametersExternalRestClient();
     }
 
     @Bean
-    public UserInternalRestClient userInternalRestClient(
-        final IamInternalRestClientFactory iamInternalRestClientFactory
+    public UserExternalRestClient userExternalRestClient(
+        final IamExternalRestClientFactory iamExternalRestClientFactory
     ) {
-        return iamInternalRestClientFactory.getUserInternalRestClient();
+        return iamExternalRestClientFactory.getUserExternalRestClient();
     }
 
     @Bean
     public ExternalAuthentificationService externalAuthentificationService(
         final ContextRestClient contextRestClient,
-        final UserInternalRestClient userInternalRestClient
+        final UserExternalRestClient userExternalRestClient
     ) {
-        return new ExternalAuthentificationService(contextRestClient, userInternalRestClient);
+        return new ExternalAuthentificationService(contextRestClient, userExternalRestClient);
     }
 
     @Bean

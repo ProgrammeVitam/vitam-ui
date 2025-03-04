@@ -141,7 +141,7 @@ public abstract class VitamUIReadService<D extends IdDto, E extends BaseIdDocume
      * @param embedded Extra element to load.
      * @return The entities matching with the provided criteria.
      */
-    protected List<D> getMany(final List<String> ids, final Optional<String> embedded) {
+    public List<D> getMany(final List<String> ids, final Optional<String> embedded) {
         final String[] arrayIds = (ids == null) ? new String[0] : ids.toArray(new String[0]);
         final List<D> dtos = getMany(arrayIds);
         loadExtraInformations(dtos, embedded);
@@ -214,7 +214,7 @@ public abstract class VitamUIReadService<D extends IdDto, E extends BaseIdDocume
      * @param embedded Extra information to load.
      * @return The entity linked to the criteria.
      */
-    protected D getOne(final String id, final Optional<String> criteria, final Optional<String> embedded) {
+    public D getOne(final String id, final Optional<String> criteria, final Optional<String> embedded) {
         LOGGER.debug("Get {} {} {}", getObjectName(), id, embedded);
         final Query query = getQuerySecured(criteria);
         return getOne(id, query, embedded);
@@ -569,7 +569,7 @@ public abstract class VitamUIReadService<D extends IdDto, E extends BaseIdDocume
      * @param entity entity.
      * @return the resulting DTO.
      */
-    protected D internalConvertFromEntityToDto(final E entity) {
+    public D internalConvertFromEntityToDto(final E entity) {
         return getConverter().convertEntityToDto(entity);
     }
 

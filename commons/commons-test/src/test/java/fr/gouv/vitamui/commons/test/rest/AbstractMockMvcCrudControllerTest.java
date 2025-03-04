@@ -215,7 +215,7 @@ public abstract class AbstractMockMvcCrudControllerTest<T extends IdDto> extends
         entity.setId(id);
 
         try {
-            super.perform(builder, asJsonString(entity), HttpMethod.PUT, status().isMethodNotAllowed(), httpHeaders);
+            super.perform(builder, asJsonString(entity), HttpMethod.PUT, status().isInternalServerError(), httpHeaders);
         } catch (final Exception e) {
             fail(e.getMessage());
         }

@@ -56,11 +56,10 @@ import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.ConflictException;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.api.exception.UnavailableServiceException;
-import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
+import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
-import fr.gouv.vitamui.iam.internal.client.ApplicationInternalRestClient;
+import fr.gouv.vitamui.iam.external.client.ApplicationExternalRestClient;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
-import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import fr.gouv.vitamui.referential.common.dto.IngestContractDto;
 import fr.gouv.vitamui.referential.common.dto.SignaturePolicyDto;
 import fr.gouv.vitamui.referential.common.service.IngestContractService;
@@ -105,10 +104,7 @@ public class IngestContractInternalServiceTest {
     private LogbookService logbookService;
 
     @Mock
-    private ApplicationInternalRestClient applicationInternalRestClient;
-
-    @Mock
-    private InternalSecurityService internalSecurityService;
+    private ApplicationExternalRestClient applicationExternalRestClient;
 
     @Mock
     private ExternalSecurityService externalSecurityService;
@@ -126,9 +122,8 @@ public class IngestContractInternalServiceTest {
             objectMapper,
             converter,
             logbookService,
-            applicationInternalRestClient,
-            externalSecurityService,
-            internalSecurityService
+            applicationExternalRestClient,
+            externalSecurityService
         );
     }
 
@@ -462,13 +457,11 @@ public class IngestContractInternalServiceTest {
             getClass().getResourceAsStream("/data/" + fileName)
         );
 
-        when(internalSecurityService.getHttpContext()).thenReturn(
-            new InternalHttpContext(0, "", "", "", "", "", "", "")
-        );
+        when(externalSecurityService.getHttpContext()).thenReturn(new ExternalHttpContext(0, "", "", ""));
 
         when(
-            applicationInternalRestClient.isApplicationExternalIdentifierEnabled(
-                any(InternalHttpContext.class),
+            applicationExternalRestClient.isApplicationExternalIdentifierEnabled(
+                any(ExternalHttpContext.class),
                 eq("INGEST_CONTRACT")
             )
         ).thenReturn(new ResponseEntity<>(false, HttpStatus.OK));
@@ -496,13 +489,11 @@ public class IngestContractInternalServiceTest {
             getClass().getResourceAsStream("/data/" + fileName)
         );
 
-        when(internalSecurityService.getHttpContext()).thenReturn(
-            new InternalHttpContext(0, "", "", "", "", "", "", "")
-        );
+        when(externalSecurityService.getHttpContext()).thenReturn(new ExternalHttpContext(0, "", "", ""));
 
         when(
-            applicationInternalRestClient.isApplicationExternalIdentifierEnabled(
-                any(InternalHttpContext.class),
+            applicationExternalRestClient.isApplicationExternalIdentifierEnabled(
+                any(ExternalHttpContext.class),
                 eq("INGEST_CONTRACT")
             )
         ).thenReturn(new ResponseEntity<>(false, HttpStatus.OK));

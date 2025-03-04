@@ -4,7 +4,8 @@ import com.google.common.collect.ImmutableMap;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.domain.UserInfoDto;
 import fr.gouv.vitamui.iam.common.rest.RestApi;
-import fr.gouv.vitamui.iam.external.server.service.UserInfoExternalService;
+import fr.gouv.vitamui.iam.external.server.common.rest.ApiIamControllerTest;
+import fr.gouv.vitamui.iam.external.server.user.service.UserInfoService;
 import fr.gouv.vitamui.iam.external.server.utils.ApiIamServerUtils;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -20,17 +21,15 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(controllers = { UserInfoExternalController.class })
+@WebMvcTest(controllers = { UserInfoController.class })
 class UserInfoExternalControllerTest extends ApiIamControllerTest<UserInfoDto> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserInfoExternalControllerTest.class);
 
     @MockBean
-    private UserInfoExternalService userExternalService;
+    private UserInfoService userExternalService;
 
-    private final UserInfoExternalController userExternalController = MvcUriComponentsBuilder.on(
-        UserInfoExternalController.class
-    );
+    private final UserInfoController userExternalController = MvcUriComponentsBuilder.on(UserInfoController.class);
 
     @Test
     void test_patch_should_be_Ok() throws Exception {

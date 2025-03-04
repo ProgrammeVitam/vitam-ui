@@ -40,7 +40,7 @@
         </dependency>
         <dependency>
             <groupId>fr.gouv.vitamui</groupId>
-            <artifactId>iam-internal-client</artifactId>
+            <artifactId>iam-external-client</artifactId>
         </dependency>
         <dependency>
             <groupId>fr.gouv.vitamui</groupId>
@@ -166,11 +166,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>fr.gouv.vitamui</groupId>
-            <artifactId>iam-external-client</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>

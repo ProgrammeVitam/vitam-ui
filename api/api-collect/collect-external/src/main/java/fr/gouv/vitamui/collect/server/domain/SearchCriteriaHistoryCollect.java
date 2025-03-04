@@ -33,11 +33,11 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.hibernate.validator.constraints.Length;
 import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -54,7 +54,7 @@ import java.util.List;
 public class SearchCriteriaHistoryCollect extends IdDocument {
 
     @NotNull
-    @Length(min = 1, max = 150)
+    @Size(min = 1, max = 150)
     private String name;
 
     private String userId;

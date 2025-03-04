@@ -4,7 +4,8 @@ import com.google.common.collect.ImmutableMap;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.iam.common.dto.SubrogationDto;
 import fr.gouv.vitamui.iam.common.rest.RestApi;
-import fr.gouv.vitamui.iam.external.server.service.SubrogationExternalService;
+import fr.gouv.vitamui.iam.external.server.common.rest.ApiIamControllerTest;
+import fr.gouv.vitamui.iam.external.server.subrogation.service.SubrogationService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -14,13 +15,13 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(controllers = { SubrogationExternalController.class })
+@WebMvcTest(controllers = { SubrogationController.class })
 public class SubrogationExternalControllerTest extends ApiIamControllerTest<SubrogationDto> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SubrogationExternalControllerTest.class);
 
     @MockBean
-    private SubrogationExternalService subrogationExternalService;
+    SubrogationService subrogationService;
 
     @Test
     public void testDeleteSubrogation() {

@@ -35,29 +35,46 @@ import fr.gouv.vitamui.commons.api.domain.CriterionOperator;
 import fr.gouv.vitamui.commons.api.domain.QueryDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.domain.TenantDto;
+import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
 import fr.gouv.vitamui.iam.common.rest.RestApi;
 import fr.gouv.vitamui.iam.common.utils.IamDtoBuilder;
-import fr.gouv.vitamui.iam.external.server.service.TenantExternalService;
+import fr.gouv.vitamui.iam.external.server.common.rest.ApiIamControllerTest;
+import fr.gouv.vitamui.iam.external.server.tenant.service.TenantService;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(controllers = { TenantExternalController.class })
+@WebMvcTest(controllers = { TenantController.class })
 public class TenantExternalControllerTest extends ApiIamControllerTest<TenantDto> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TenantExternalControllerTest.class);
 
+    @Autowired
+    private TenantController tenantController;
+
     @MockBean
-    private TenantExternalService tenantExternalService;
+    private TenantService tenantService;
+
+    @Before
+    public void setup() {
+        MockitoAnnotations.initMocks(this);
+        this.mockMvc = MockMvcBuilders.standaloneSetup(tenantController)
+            .setControllerAdvice(new RestExceptionHandler())
+            .build();
+    }
 
     @Test
     public void testGetAllTenants() {
@@ -83,14 +100,14 @@ public class TenantExternalControllerTest extends ApiIamControllerTest<TenantDto
 
     @Test
     public void testCheckExistByName() {
-        Mockito.when(tenantExternalService.checkExists(any(String.class))).thenReturn(true);
+        Mockito.when(tenantService.checkExist(any(String.class))).thenReturn(true);
         final QueryDto criteria = QueryDto.criteria().addCriterion("name", "tenantName", CriterionOperator.EQUALS);
         super.performHead(CommonConstants.PATH_CHECK, ImmutableMap.of("criteria", criteria.toJson()));
     }
 
     @Test
     public void testCheckExistByBadCriteriaScriptThenReturnBadRequest() {
-        Mockito.when(tenantExternalService.checkExists(any(String.class))).thenReturn(true);
+        Mockito.when(tenantService.checkExist(any(String.class))).thenReturn(true);
         final QueryDto criteria = QueryDto.criteria()
             .addCriterion("name", "tenantName<s></s>", CriterionOperator.EQUALS);
         super.performHead(
@@ -102,7 +119,7 @@ public class TenantExternalControllerTest extends ApiIamControllerTest<TenantDto
 
     @Test
     public void testCheckExistByBadCriteriaForbiddenFieldTypeThenReturnBadRequest() {
-        Mockito.when(tenantExternalService.checkExists(any(String.class))).thenReturn(true);
+        Mockito.when(tenantService.checkExist(any(String.class))).thenReturn(true);
         final QueryDto criteria = QueryDto.criteria()
             .addCriterion("name", "tenantName<![CDATA[", CriterionOperator.EQUALS);
         super.performHead(

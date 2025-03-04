@@ -34,7 +34,7 @@ import fr.gouv.vitamui.commons.api.domain.Criterion;
 import fr.gouv.vitamui.commons.api.domain.CriterionOperator;
 import fr.gouv.vitamui.commons.api.domain.QueryDto;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaHistoryDto;
-import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
+import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.mongo.service.VitamUICrudService;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
@@ -57,12 +57,12 @@ public class SearchCriteriaHistoryService
     private final ExternalSecurityService externalSecurityService;
 
     public SearchCriteriaHistoryService(
-        final CustomSequenceRepository sequenceRepository,
+        final SequenceGeneratorService sequenceGeneratorService,
         final SearchCriteriaHistoryRepository searchCriteriaHistoryRepo,
         final SearchCriteriaHistoryConverter searchCriteriaHistoryConverter,
         final ExternalSecurityService externalSecurityService
     ) {
-        super(sequenceRepository);
+        super(sequenceGeneratorService);
         this.searchCriteriaHistoryRepo = searchCriteriaHistoryRepo;
         this.searchCriteriaHistoryConverter = searchCriteriaHistoryConverter;
         this.externalSecurityService = externalSecurityService;

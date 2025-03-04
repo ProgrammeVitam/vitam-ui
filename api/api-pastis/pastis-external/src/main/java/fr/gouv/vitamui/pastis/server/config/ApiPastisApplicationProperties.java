@@ -55,7 +55,7 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "pastis-external", ignoreUnknownFields = false)
 public class ApiPastisApplicationProperties {
 
-    private RestClientConfiguration iamInternalClient;
+    private RestClientConfiguration iamExternalClient;
 
     private RestClientConfiguration securityClient;
 }

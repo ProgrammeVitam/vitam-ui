@@ -37,8 +37,15 @@
 package fr.gouv.vitamui.iam.external.server.rest;
 
 import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.mongo.repository.VitamUIRepository;
+import fr.gouv.vitamui.iam.external.server.common.rest.BaseStatusController;
+import fr.gouv.vitamui.iam.external.server.idp.dao.IdentityProviderRepository;
 import io.swagger.annotations.Api;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * The status controller.
@@ -51,4 +58,15 @@ import org.springframework.stereotype.Controller;
     value = CommonConstants.STATUS_API_DOCUMENTATION_VALUE,
     description = CommonConstants.STATUS_API_DOCUMENTATION_DESCRIPTION
 )
-public class StatusController extends BaseStatusController {}
+public class StatusController extends BaseStatusController {
+
+    @Autowired
+    private IdentityProviderRepository identityProviderRepository;
+
+    @Override
+    protected Map<String, VitamUIRepository> getRepositories() {
+        final Map<String, VitamUIRepository> repositories = new HashMap<>();
+        repositories.put("Mongo(identity providers)", identityProviderRepository);
+        return repositories;
+    }
+}

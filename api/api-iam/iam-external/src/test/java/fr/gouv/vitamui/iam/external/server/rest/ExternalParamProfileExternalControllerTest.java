@@ -1,41 +1,52 @@
 package fr.gouv.vitamui.iam.external.server.rest;
 
 import fr.gouv.vitamui.commons.api.domain.ExternalParamProfileDto;
+import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
+import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
 import fr.gouv.vitamui.iam.common.rest.RestApi;
-import fr.gouv.vitamui.iam.external.server.service.ExternalParamProfileExternalService;
+import fr.gouv.vitamui.iam.external.server.common.rest.ApiIamControllerTest;
+import fr.gouv.vitamui.iam.external.server.externalparamprofile.service.ExternalParamProfileService;
 import fr.gouv.vitamui.iam.external.server.utils.ApiIamServerUtils;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doReturn;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(controllers = { ExternalParamProfileExternalController.class })
+@WebMvcTest(controllers = { ExternalParamProfileController.class })
 public class ExternalParamProfileExternalControllerTest extends ApiIamControllerTest<ExternalParamProfileDto> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ExternalParamProfileExternalControllerTest.class);
 
+    @Autowired
+    private ExternalParamProfileController externalParamProfileController;
+
     @MockBean
-    private ExternalParamProfileExternalService externalParamProfileExternalService;
+    ExternalParamProfileService externalParamProfileService;
 
-    private ExternalParamProfileExternalController mockedController = MvcUriComponentsBuilder.on(
-        ExternalParamProfileExternalController.class
-    );
-
-    @Test
-    public void testPatchExternalParamProfile() {
-        LOGGER.debug("testPatchExternalParamProfile");
-        super.testPatchEntity();
+    @Before
+    public void setup() throws Exception {
+        this.mockMvc = MockMvcBuilders.standaloneSetup(externalParamProfileController)
+            .setControllerAdvice(new RestExceptionHandler())
+            .build();
     }
 
     @Test
     public void testGetPaginatedExternalParamProfile() {
         LOGGER.debug("testGetPaginatedExternalParamProfile");
+        doReturn(new PaginatedValuesDto<>())
+            .when(externalParamProfileService)
+            .getAllPaginated(any(), any(), any(), any(), any());
         super.testGetPaginatedEntities();
     }
 

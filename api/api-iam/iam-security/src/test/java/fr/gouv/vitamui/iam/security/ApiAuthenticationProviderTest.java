@@ -7,7 +7,7 @@ import fr.gouv.vitamui.commons.api.exception.InvalidAuthenticationException;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
-import fr.gouv.vitamui.iam.internal.client.UserInternalRestClient;
+import fr.gouv.vitamui.iam.external.client.UserExternalRestClient;
 import fr.gouv.vitamui.iam.security.authentication.ExternalAuthentication;
 import fr.gouv.vitamui.iam.security.provider.ExternalApiAuthenticationProvider;
 import fr.gouv.vitamui.iam.security.service.ExternalAuthentificationService;
@@ -68,10 +68,10 @@ public final class ApiAuthenticationProviderTest {
     @Before
     public void setUp() throws Exception {
         final ContextRestClient contextRestClient = mock(ContextRestClient.class);
-        final UserInternalRestClient userInternalRestClient = mock(UserInternalRestClient.class);
+        final UserExternalRestClient userExternalRestClient = mock(UserExternalRestClient.class);
         final ExternalAuthentificationService securityService = new ExternalAuthentificationService(
             contextRestClient,
-            userInternalRestClient
+            userExternalRestClient
         );
         provider = new ExternalApiAuthenticationProvider(securityService);
         profiles = new ArrayList<>();
@@ -92,7 +92,7 @@ public final class ApiAuthenticationProviderTest {
                 eq(Base64.getEncoder().encodeToString(CERTIFICATE))
             )
         ).thenReturn(context);
-        when(userInternalRestClient.getMe(ArgumentMatchers.any())).thenReturn(userProfile);
+        when(userExternalRestClient.getMe(ArgumentMatchers.any())).thenReturn(userProfile);
     }
 
     @Test(expected = BadCredentialsException.class)

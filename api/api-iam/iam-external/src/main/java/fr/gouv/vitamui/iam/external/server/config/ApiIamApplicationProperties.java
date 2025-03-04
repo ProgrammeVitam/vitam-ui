@@ -53,7 +53,5 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "iam-external", ignoreUnknownFields = false)
 public class ApiIamApplicationProperties {
 
-    private RestClientConfiguration iamInternalClient;
-
     private RestClientConfiguration securityClient;
 }

@@ -36,6 +36,7 @@
  *  knowledge of the CeCILL-C license and that you accept its terms.
  *
  */
+
 package fr.gouv.vitamui.ingest.server.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -63,10 +64,9 @@ import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
 import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsResponseDto;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
-import fr.gouv.vitamui.iam.internal.client.CustomerInternalRestClient;
-import fr.gouv.vitamui.iam.internal.client.UserInternalRestClient;
+import fr.gouv.vitamui.iam.external.client.CustomerExternalRestClient;
+import fr.gouv.vitamui.iam.external.client.UserExternalRestClient;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
-import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import fr.gouv.vitamui.ingest.common.dsl.VitamQueryHelper;
 import fr.gouv.vitamui.ingest.common.dto.ArchiveUnitDto;
 import org.apache.commons.lang3.StringUtils;
@@ -101,7 +101,7 @@ public class IngestExternalService {
     private static final String ILLEGAL_CHARACTERS = "[\uFEFF-\uFFFF]";
     private static final String SELECTED_ORIGINATING_AGENCIES = "SELECTED_ORIGINATING_AGENCIES";
 
-    private final InternalSecurityService internalSecurityService;
+    private final ExternalSecurityService externalSecurityService;
 
     private final IngestExternalClient ingestExternalClient;
 
@@ -109,39 +109,36 @@ public class IngestExternalService {
 
     private final ObjectMapper objectMapper;
 
-    private final CustomerInternalRestClient customerInternalRestClient;
+    private final CustomerExternalRestClient customerExternalRestClient;
 
-    private final UserInternalRestClient userInternalRestClient;
+    private final UserExternalRestClient userExternalRestClient;
 
     private final IngestGeneratorODTFile ingestGeneratorODTFile;
 
     private final IngestExternalParametersService ingestExternalParametersService;
-    private final ExternalSecurityService externalSecurityService;
 
     private final IngestAccessContractService ingestAccessContractService;
 
     @Autowired
     public IngestExternalService(
-        final InternalSecurityService internalSecurityService,
+        final ExternalSecurityService externalSecurityService,
         final LogbookService logbookService,
         final ObjectMapper objectMapper,
         final IngestExternalClient ingestExternalClient,
-        final CustomerInternalRestClient customerInternalRestClient,
-        final UserInternalRestClient userInternalRestClient,
+        final CustomerExternalRestClient customerExternalRestClient,
+        final UserExternalRestClient userExternalRestClient,
         final IngestGeneratorODTFile ingestGeneratorODTFile,
         final IngestExternalParametersService ingestExternalParametersService,
-        final ExternalSecurityService externalSecurityService,
         final IngestAccessContractService ingestAccessContractService
     ) {
-        this.internalSecurityService = internalSecurityService;
+        this.externalSecurityService = externalSecurityService;
         this.ingestExternalClient = ingestExternalClient;
         this.logbookService = logbookService;
         this.objectMapper = objectMapper;
-        this.customerInternalRestClient = customerInternalRestClient;
-        this.userInternalRestClient = userInternalRestClient;
+        this.customerExternalRestClient = customerExternalRestClient;
+        this.userExternalRestClient = userExternalRestClient;
         this.ingestGeneratorODTFile = ingestGeneratorODTFile;
         this.ingestExternalParametersService = ingestExternalParametersService;
-        this.externalSecurityService = externalSecurityService;
         this.ingestAccessContractService = ingestAccessContractService;
     }
 
@@ -280,14 +277,14 @@ public class IngestExternalService {
         try {
             LOGGER.info("Generate ODT Report : get Manifest and ATR of the operation ID : {} ", id);
             VitamContext vitamContext = ingestExternalParametersService.buildVitamContextFromExternalParam();
-            AuthUserDto me = userInternalRestClient.getMe(externalSecurityService.getInternalHttpContext());
+            AuthUserDto me = userExternalRestClient.getMe(externalSecurityService.getHttpContext());
             if (me == null || StringUtils.isEmpty(me.getCustomerId())) {
                 throw new IngestFileGenerationException(
                     "Could not retrieve current user or his customer id to generate the document"
                 );
             }
-            CustomerDto myCustomer = customerInternalRestClient.getOne(
-                externalSecurityService.getInternalHttpContext(),
+            CustomerDto myCustomer = customerExternalRestClient.getOne(
+                externalSecurityService.getHttpContext(),
                 me.getCustomerId()
             );
             Resource customerLogo = null;
@@ -304,8 +301,8 @@ public class IngestExternalService {
             }
 
             if (myCustomer.isHasCustomGraphicIdentity()) {
-                customerLogo = customerInternalRestClient
-                    .getLogo(internalSecurityService.getHttpContext(), myCustomer.getId(), AttachmentType.HEADER)
+                customerLogo = customerExternalRestClient
+                    .getLogo(externalSecurityService.getHttpContext(), myCustomer.getId(), AttachmentType.HEADER)
                     .getBody();
             }
             List<ArchiveUnitDto> archiveUnitDtoList = ingestGeneratorODTFile.getValuesForDynamicTable(atr, manifest);

@@ -42,7 +42,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import org.apache.commons.lang3.StringUtils;
-import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -65,11 +64,11 @@ public class GroupDto extends CustomerIdDto {
     private String identifier;
 
     @NotNull
-    @Length(min = 2, max = 100)
+    @Size(min = 2, max = 100)
     private String name;
 
     @NotNull
-    @Length(min = 4, max = 100)
+    @Size(min = 4, max = 100)
     private String description;
 
     @NotNull
@@ -80,7 +79,7 @@ public class GroupDto extends CustomerIdDto {
 
     private boolean readonly = false;
 
-    @Length(max = 250)
+    @Size(max = 250)
     private String level = StringUtils.EMPTY;
 
     // Embedded

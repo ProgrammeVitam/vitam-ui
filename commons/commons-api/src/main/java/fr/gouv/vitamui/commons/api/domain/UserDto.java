@@ -44,10 +44,10 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.OffsetDateTime;
 import java.util.List;
 
@@ -65,11 +65,11 @@ public class UserDto extends CustomerIdDto {
     private static final long serialVersionUID = -7977759384732830987L;
 
     @NotNull
-    @Length(min = 2, max = 50)
+    @Size(min = 2, max = 50)
     private String lastname;
 
     @NotNull
-    @Length(min = 2, max = 50)
+    @Size(min = 2, max = 50)
     private String firstname;
 
     // no validations for identifier. Because during the creation step, the identifier is set by the backend.
@@ -79,7 +79,7 @@ public class UserDto extends CustomerIdDto {
     private String groupId;
 
     @NotNull
-    @Length(min = 4, max = 100)
+    @Size(min = 4, max = 100)
     @Email
     @JsonDeserialize(converter = ToLowerCaseConverter.class)
     private String email;

@@ -37,7 +37,7 @@
 package fr.gouv.vitamui.archives.search.external.server.rest;
 
 import fr.gouv.vitamui.archives.search.common.rest.RestApi;
-import fr.gouv.vitamui.archives.search.external.server.service.SearchCriteriaHistoryExternalService;
+import fr.gouv.vitamui.archives.search.external.server.searchcriteria.service.SearchCriteriaHistoryService;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
@@ -72,20 +72,18 @@ public class SearchCriteriaHistoryExternalController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SearchCriteriaHistoryExternalController.class);
 
-    private final SearchCriteriaHistoryExternalService searchCriteriaHistoryExternalService;
+    private final SearchCriteriaHistoryService searchCriteriaHistoryService;
 
     @Autowired
-    public SearchCriteriaHistoryExternalController(
-        final SearchCriteriaHistoryExternalService searchCriteriaHistoryExternalService
-    ) {
-        this.searchCriteriaHistoryExternalService = searchCriteriaHistoryExternalService;
+    public SearchCriteriaHistoryExternalController(final SearchCriteriaHistoryService searchCriteriaHistoryService) {
+        this.searchCriteriaHistoryService = searchCriteriaHistoryService;
     }
 
     @GetMapping
     @Secured(ServicesData.ARCHIVE_SEARCH_GET_ARCHIVE_SEARCH_ROLE)
     public List<SearchCriteriaHistoryDto> getSearchCriteriaHistory() {
         LOGGER.debug("getSearchCriteriaHistory archive external");
-        return searchCriteriaHistoryExternalService.getSearchCriteriaHistoryDtos();
+        return searchCriteriaHistoryService.getSearchCriteriaHistoryDtos();
     }
 
     @PostMapping
@@ -94,7 +92,7 @@ public class SearchCriteriaHistoryExternalController {
         throws PreconditionFailedException {
         SanityChecker.sanitizeCriteria(dto);
         LOGGER.debug("Create SearchCriteriaHistory {}", dto);
-        return searchCriteriaHistoryExternalService.create(dto);
+        return searchCriteriaHistoryService.create(dto);
     }
 
     @DeleteMapping(CommonConstants.PATH_ID)
@@ -102,7 +100,7 @@ public class SearchCriteriaHistoryExternalController {
     public void deleteSearchCriteriaHistory(final @PathVariable("id") String id) throws PreconditionFailedException {
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Delete SearchCriteriaHistory with id :{}", id);
-        searchCriteriaHistoryExternalService.delete(id);
+        searchCriteriaHistoryService.delete(id);
     }
 
     @ApiOperation(value = "Update Search criteria history")
@@ -113,6 +111,6 @@ public class SearchCriteriaHistoryExternalController {
         SanityChecker.sanitizeCriteria(entity);
         ParameterChecker.checkParameter("Identifier is mandatory : ", entity.getId());
         LOGGER.debug("Update SearchCriteriaHistory with id :{}", entity.getId());
-        searchCriteriaHistoryExternalService.update(entity);
+        searchCriteriaHistoryService.update(entity);
     }
 }

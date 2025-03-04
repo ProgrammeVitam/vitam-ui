@@ -40,7 +40,6 @@ import fr.gouv.vitamui.commons.api.domain.BaseIdDocument;
 import fr.gouv.vitamui.commons.api.domain.IdDto;
 import fr.gouv.vitamui.commons.api.service.BaseCrudService;
 import fr.gouv.vitamui.commons.mongo.CustomSequencesConstants;
-import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
@@ -66,15 +65,6 @@ public abstract class VitamUICrudService<D extends IdDto, E extends BaseIdDocume
      * Service allowing to manage a sequence.
      */
     protected SequenceGeneratorService sequenceGeneratorService;
-
-    /**
-     * Constructor allowing to initialize a default sequence generator.
-     * @param sequenceRepository Repository allowing to manage sequences.
-     */
-    @Deprecated
-    public VitamUICrudService(final CustomSequenceRepository sequenceRepository) {
-        sequenceGeneratorService = new SequenceGeneratorService(sequenceRepository);
-    }
 
     /**
      * Constructor allowing to initialize a custom sequence generator.

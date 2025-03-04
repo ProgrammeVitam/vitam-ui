@@ -43,14 +43,14 @@
             <groupId>fr.gouv.vitamui</groupId>
             <artifactId>security-client</artifactId>
         </dependency>
-        <dependency>
-            <groupId>fr.gouv.vitamui</groupId>
-            <artifactId>iam-internal-client</artifactId>
-        </dependency>
 
         <dependency>
             <groupId>fr.gouv.vitamui</groupId>
             <artifactId>iam-security</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>fr.gouv.vitamui</groupId>
+            <artifactId>iam-external-client</artifactId>
         </dependency>
 
         <!-- SPRING BOOT -->
@@ -173,11 +173,6 @@
         <dependency>
             <groupId>org.junit.vintage</groupId>
             <artifactId>junit-vintage-engine</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>fr.gouv.vitamui</groupId>
-            <artifactId>iam-external-client</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>

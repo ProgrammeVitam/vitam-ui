@@ -19,11 +19,6 @@ vitamui:
     # memory: "-Xms128m -Xmx512m"
     # gc: ""
     # java: ""
-  iam_internal:
-    jvm_opts:
-    # memory: "-Xms128m -Xmx512m"
-    # gc: ""
-    # java: ""
   cas_server:
     jvm_opts:
     # memory: "-Xms128m -Xmx512m"

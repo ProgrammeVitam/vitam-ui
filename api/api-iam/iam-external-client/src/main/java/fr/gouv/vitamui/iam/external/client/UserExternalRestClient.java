@@ -41,6 +41,7 @@ import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.rest.client.BasePaginatingAndSortingRestClient;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
+import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.iam.common.rest.RestApi;
 import org.apache.http.client.utils.URIBuilder;
 import org.slf4j.Logger;
@@ -79,6 +80,22 @@ public class UserExternalRestClient extends BasePaginatingAndSortingRestClient<U
         final URI uri = buildUriBuilder(uriBuilder);
         final HttpEntity<Map<String, Object>> request = new HttpEntity<>(partialDto, headers);
         final ResponseEntity<UserDto> response = restTemplate.exchange(uri, HttpMethod.PATCH, request, getDtoClass());
+        checkResponse(response);
+        return response.getBody();
+    }
+
+    public AuthUserDto getMe(final ExternalHttpContext context) {
+        LOGGER.debug("GetMe");
+
+        final HttpEntity<?> request = new HttpEntity<>(buildHeaders(context));
+        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl() + CommonConstants.PATH_ME);
+
+        final ResponseEntity<AuthUserDto> response = restTemplate.exchange(
+            uriBuilder.toUriString(),
+            HttpMethod.GET,
+            request,
+            AuthUserDto.class
+        );
         checkResponse(response);
         return response.getBody();
     }

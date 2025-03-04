@@ -16,8 +16,6 @@
     <modules>
         <module>iam-commons</module>
         <module>iam-security</module>
-        <module>iam-internal</module>
-        <module>iam-internal-client</module>
         <module>iam-external</module>
         <module>iam-external-client</module>
     </modules>
