@@ -3,9 +3,9 @@
 
 spring:
   application:
-    name: archive-search-external
+    name: archive-search-server
   api:
-    name: API Archive External
+    name: API Archive Search
     description: This API is used to manage Vitam's archives
     version: v1
   mvc:
@@ -20,7 +20,7 @@ spring:
 management:
   endpoints:
     jmx:
-      domain: archive-search-external
+      domain: archive-search-server
       web.exposure.include: info,health,prometheus
   endpoint:
     health:

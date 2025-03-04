@@ -144,7 +144,7 @@ public class VitamQueryHelper {
      * create a valid VITAM DSL Query from a map of criteria
      *
      * @param searchCriteriaMap the input criteria. Should match pattern Map(FieldName, SearchValue)
-     * @return The JsonNode required by VITAM external API for a DSL query
+     * @return The JsonNode required by VITAM API for a DSL query
      * @throws InvalidParseOperationException
      * @throws InvalidCreateOperationException
      */

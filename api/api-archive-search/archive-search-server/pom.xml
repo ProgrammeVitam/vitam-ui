@@ -241,7 +241,7 @@
                 <artifactId>jib-maven-plugin</artifactId>
                 <configuration>
                     <to>
-                        <image>${env.SERVICE_DOCKER_PUSH_URL}/vitamui/archive-search-external</image>
+                        <image>${env.SERVICE_DOCKER_PUSH_URL}/vitamui/archive-search-server</image>
                         <tags>${project.version}</tags>
                     </to>
                 </configuration>
@@ -267,7 +267,7 @@
                     <executable>true</executable>
                     <attach>false</attach> <!-- Need to use the original jar for integration-tests -->
                     <mainClass>
-                        fr.gouv.vitamui.archives.search.external.server.ApiArchivesSearchExternalServerApplication
+                        fr.gouv.vitamui.archives.search.server.ApiArchivesSearchServerApplication
                     </mainClass>
                     <arguments>
                         <!-- use src/main/config/application-dev.yml when using mvn spring-boot:run -->

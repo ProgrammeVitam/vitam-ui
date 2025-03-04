@@ -5,7 +5,7 @@ server_iam_external_key: changeme
 server_cas_server_key: changeme
 server_referential_external_key: changeme
 server_ingest_external_key: changeme
-server_archive_search_external_key: changeme
+server_archive_search_server_key: changeme
 server_collect_external_key: changeme
 server_pastis_external_key: changeme
 server_api_gateway_key: changeme

@@ -130,9 +130,9 @@ vitamui:
     port_service: 8108
     port_admin: 7108
 
-  archive_search_external:
-    host: "vitamui-archive-search-external.service.{{ consul_domain }}"
-    vitamui_component: archive-search-external
+  archive_search_server:
+    host: "vitamui-archive-search-server.service.{{ consul_domain }}"
+    vitamui_component: archive-search-server
     port_service: 8109
     port_admin: 7109
 

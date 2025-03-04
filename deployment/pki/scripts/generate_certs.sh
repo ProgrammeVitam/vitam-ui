@@ -30,7 +30,7 @@ function generateCerts {
     generateHostCertAndStorePassphrase   referential-external    hosts_vitamui_referential_external
     generateHostCertAndStorePassphrase   cas-server              hosts_cas_server
     generateHostCertAndStorePassphrase   ingest-external         hosts_vitamui_ingest_external
-    generateHostCertAndStorePassphrase   archive-search-external hosts_vitamui_archive_search_external
+    generateHostCertAndStorePassphrase   archive-search-server hosts_vitamui_archive_search_server
     generateHostCertAndStorePassphrase   collect-external        hosts_vitamui_collect_external
     generateHostCertAndStorePassphrase   pastis-external         hosts_vitamui_pastis_external
 

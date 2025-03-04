@@ -99,7 +99,7 @@ localhost
 hosts_vitamui_api_gateway
 hosts_vitamui_iam_external
 hosts_vitamui_ingest_external
-hosts_vitamui_archive_search_external
+hosts_vitamui_archive_search_server
 hosts_vitamui_collect_external
 hosts_vitamui_referential_external
 hosts_vitamui_security_internal
@@ -117,7 +117,7 @@ localhost
 # EDIT: Mandatory
 localhost
 
-[hosts_vitamui_archive_search_external]
+[hosts_vitamui_archive_search_server]
 # EDIT: Mandatory
 localhost
 

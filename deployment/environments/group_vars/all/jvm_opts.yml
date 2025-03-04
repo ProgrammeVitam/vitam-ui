@@ -34,7 +34,7 @@ vitamui:
     # memory: "-Xms128m -Xmx512m"
     # gc: ""
     # java: ""
-  archive_search_external:
+  archive_search_server:
     jvm_opts:
     # memory: "-Xms128m -Xmx512m"
     # gc: ""
